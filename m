@@ -1,248 +1,118 @@
-Return-Path: <stable+bounces-9669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF0CF824097
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 12:28:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFBF78240DB
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 12:43:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6AF86B23D06
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 11:28:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E1641F23874
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 11:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C49E21106;
-	Thu,  4 Jan 2024 11:28:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="c5T35EMF"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D1521357;
+	Thu,  4 Jan 2024 11:43:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B39621365
-	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 11:28:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-467a18fc0fcso120846137.3
-        for <stable@vger.kernel.org>; Thu, 04 Jan 2024 03:28:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704367719; x=1704972519; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tweg/D/5XWVwQJcIsArKsHkePEu/CHILd8GCHNr9cnk=;
-        b=c5T35EMFHwYjd+OxfWWrFPkGafWTvV1Nyngn6/TfCBUw+yD2YYU8pHhTB3vOVdT4hD
-         Kcs0jYNwYLu5j/9j1Ummt7tac1F4l4dJQ5trVCmbJot9DIpW5sLZkQ0RwnWwneh5Pqqr
-         LrZkuwbWgOJkIy8jCWzVrES3v1/kxn+QBVJFExrZq+jdowrZbhlGpAFxphKv0DrKScmE
-         GnWY+jTMt2d++5DnEZVO4f1CyRSF84mDbkGqtMEvbTE0NOzwuZtDNry7ty3G8/fRf/xs
-         Lbe8XBtPlgWkBjCb+iJ6oqnMffds6qXNq0bGvriAh0KpByAefDxN7K6QgP81f3cTQ661
-         f0wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704367719; x=1704972519;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tweg/D/5XWVwQJcIsArKsHkePEu/CHILd8GCHNr9cnk=;
-        b=aAsIrpz+aizqv+KwYgUW25ev8KAObV0j2rrh0Pltxh81efqLhOVUzugBeQWx83UF+I
-         x1+b3xoDJ1MsYGGuoSPlhRONHUn6qFDpCXrwtKa/LHAa6JneM8ys5SvVsiT567FyCkmW
-         1DZzuc1pMWn5ufY2RETkfRxRz5OClECXdLnh6IdL7jptOfiPtnEVdIUD36aRwya7agsy
-         /ceuYlZl6OrNrrZxpGj2djMHs4wSy8Y497HqEALcehYKzPa4t5/1GAbv2xmph/4T4C0F
-         BnpQLISb4ZJFOo9rchYdf9MROKGtZGywf3EEPYzruZh01abVthXQDDHMEqijCxKNPfPr
-         21tQ==
-X-Gm-Message-State: AOJu0YzPSFRXDfIN/zCryzZ9U/M1z5kNNU5KtOUjEmnIGDXK7tOxrg5d
-	s3ddo4oHPvaa4tRgYmXsAwpugnALB6EusLIqvH09IaR3zmmvBg==
-X-Google-Smtp-Source: AGHT+IEU2rSSQg/onyItb6pGiOtsfeAw8aUXOzj0XpNDIE+pMquEBDh+i2TfRqP7hH6b2oqlUZZB8s95rgLwdJE51Ts=
-X-Received: by 2002:a05:6102:3eca:b0:466:60a0:ca74 with SMTP id
- n10-20020a0561023eca00b0046660a0ca74mr374339vsv.10.1704367719386; Thu, 04 Jan
- 2024 03:28:39 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059EB21344;
+	Thu,  4 Jan 2024 11:43:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4T5Pp26WbpzWlj5;
+	Thu,  4 Jan 2024 19:42:18 +0800 (CST)
+Received: from dggpeml500021.china.huawei.com (unknown [7.185.36.21])
+	by mail.maildlp.com (Postfix) with ESMTPS id 314DD18001C;
+	Thu,  4 Jan 2024 19:43:01 +0800 (CST)
+Received: from [10.174.177.174] (10.174.177.174) by
+ dggpeml500021.china.huawei.com (7.185.36.21) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 4 Jan 2024 19:43:00 +0800
+Message-ID: <ec2bb12d-2b35-25c8-740b-30a80dd56d1f@huawei.com>
+Date: Thu, 4 Jan 2024 19:43:00 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240103164853.921194838@linuxfoundation.org>
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 4 Jan 2024 16:58:27 +0530
-Message-ID: <CA+G9fYvfo1Sr8fBYd=oDkG19Z0O5+z4mnonPvXyhNnhPBdbGUg@mail.gmail.com>
-Subject: Re: [PATCH 5.15 00/95] 5.15.146-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.1.2
+Subject: Re: [PATCH v2 4/8] ext4: avoid bb_free and bb_fragments inconsistency
+ in mb_free_blocks()
+Content-Language: en-US
+To: Jan Kara <jack@suse.cz>
+CC: <linux-ext4@vger.kernel.org>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>,
+	<ritesh.list@gmail.com>, <linux-kernel@vger.kernel.org>,
+	<yi.zhang@huawei.com>, <yangerkun@huawei.com>, <yukuai3@huawei.com>,
+	<stable@vger.kernel.org>, Baokun Li <libaokun1@huawei.com>
+References: <20231221150558.2740823-1-libaokun1@huawei.com>
+ <20231221150558.2740823-5-libaokun1@huawei.com>
+ <20240104104255.eewvmywxyqtfwzug@quack3>
+From: Baokun Li <libaokun1@huawei.com>
+In-Reply-To: <20240104104255.eewvmywxyqtfwzug@quack3>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpeml500021.china.huawei.com (7.185.36.21)
 
-On Wed, 3 Jan 2024 at 22:34, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On 2024/1/4 18:42, Jan Kara wrote:
+> On Thu 21-12-23 23:05:54, Baokun Li wrote:
+>> After updating bb_free in mb_free_blocks, it is possible to return without
+>> updating bb_fragments because the block being freed is found to have
+>> already been freed, which leads to inconsistency between bb_free and
+>> bb_fragments.
+>>
+>> Since the group may be unlocked in ext4_grp_locked_error(), this can lead
+>> to problems such as dividing by zero when calculating the average fragment
+>> length. Hence move the update of bb_free to after the block double-free
+>> check guarantees that the corresponding statistics are updated only after
+>> the core block bitmap is modified.
+>>
+>> Fixes: eabe0444df90 ("ext4: speed-up releasing blocks on commit")
+>> CC: stable@vger.kernel.org # 3.10
+>> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+> Just one nit below but regardless of that feel free to add:
 >
-> This is the start of the stable review cycle for the 5.15.146 release.
-> There are 95 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> Reviewed-by: Jan Kara <jack@suse.cz>
 >
-> Responses should be made by Fri, 05 Jan 2024 16:47:49 +0000.
-> Anything received after that time might be too late.
+>> @@ -1941,10 +1936,16 @@ static void mb_free_blocks(struct inode *inode, struct ext4_buddy *e4b,
+>>   				EXT4_GROUP_INFO_BBITMAP_CORRUPT);
+>>   		} else {
+>>   			mb_regenerate_buddy(e4b);
+>> +			goto check;
+>>   		}
+>> -		goto done;
+>> +		return;
+>>   	}
+> I think this might be more readable when we revert the condition like:
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.15.146-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.15.y
-> and the diffstat can be found below.
+> 		/*
+> 		 * Fastcommit replay can free already freed blocks which
+> 		 * corrupts allocation info. Regenerate it.
+> 		 */
+> 		if (sbi->s_mount_state & EXT4_FC_REPLAY) {
+> 	               	mb_regenerate_buddy(e4b);
+> 			goto check;
+> 		}
+>                  ext4_grp_locked_error(sb, e4b->bd_group,
+>                                        inode ? inode->i_ino : 0, blocknr,
+>                                        "freeing already freed block (bit %u); block bitmap corrupt.",
+>                                        block);
+>                  ext4_mark_group_bitmap_corrupted(sb, e4b->bd_group,
+>                                  EXT4_GROUP_INFO_BBITMAP_CORRUPT);
+> 		return;
+> 	}
 >
-> thanks,
->
-> greg k-h
+> 								Honza
+Yes, it looks much clearer that way!
+I will switch to it in the next version.
 
-
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
-
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build
-* kernel: 5.15.146-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-5.15.y
-* git commit: 927631a7bbf09d5c91bd27dc5c660eaff4c67b06
-* git describe: v5.15.145-96-g927631a7bbf0
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
-.145-96-g927631a7bbf0
-
-## Test Regressions (compared to v5.15.145)
-
-## Metric Regressions (compared to v5.15.145)
-
-## Test Fixes (compared to v5.15.145)
-
-## Metric Fixes (compared to v5.15.145)
-
-## Test result summary
-total: 96922, pass: 76690, fail: 2639, skip: 17532, xfail: 61
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 117 total, 117 passed, 0 failed
-* arm64: 44 total, 44 passed, 0 failed
-* i386: 33 total, 33 passed, 0 failed
-* mips: 24 total, 24 passed, 0 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 26 total, 26 passed, 0 failed
-* riscv: 11 total, 11 passed, 0 failed
-* s390: 11 total, 11 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 38 total, 38 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* libgpiod
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Thanks a lot!
+-- 
+With Best Regards,
+Baokun Li
+.
 
