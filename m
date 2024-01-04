@@ -1,112 +1,118 @@
-Return-Path: <stable+bounces-9720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DC9F824812
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 19:20:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9D0882481A
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 19:23:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0CCF1B242D6
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 18:20:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 872F1284B9F
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 18:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722B528DDE;
-	Thu,  4 Jan 2024 18:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623EE28DDC;
+	Thu,  4 Jan 2024 18:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YGO0DU2z"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TcJTE8z4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36EC728E03;
-	Thu,  4 Jan 2024 18:20:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31C25C433C8;
-	Thu,  4 Jan 2024 18:20:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704392443;
-	bh=9pOYKccvXyXpmaPnCPMf+km7/Tm6rrflrvnJ3M30nzw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YGO0DU2zV5pZNb0c+G2n/hJSgBoCQ2oukQqktCmejPYiPIHksQ6yZkj8lnBlSuWpz
-	 Uiw4fbqDWrhm7QZesXGwCQc/2TIudDHPE+yFfpiOieHY3zSjKTdZxzA+EA36bLjPMF
-	 tsaeDbwipoRXg5Kb+yktauZOtM096Zjf26r2Z9mM=
-Date: Thu, 4 Jan 2024 19:20:40 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH 6.1 086/100] platform/x86: p2sb: Allow p2sb_bar() calls
- during PCI device probe
-Message-ID: <2024010422-wanted-diabetes-8e0c@gregkh>
-References: <20240103164856.169912722@linuxfoundation.org>
- <20240103164909.026702193@linuxfoundation.org>
- <ikeipirtlgca6durdso7md6khlyd5wwh4wl2jzlxkqr2utu4p4@ou2wcovon7jt>
- <2024010401-shell-easiness-47c9@gregkh>
- <djjzvybh5z5q5ojn3isltl6g32gpvhcilzfr3rznb5hlijjavm@z3itpol7wec7>
- <5f97aaa-2d8e-498b-18d1-88e048443dcc@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF8992C68A
+	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 18:22:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dbdaee2f0ccso1003602276.0
+        for <stable@vger.kernel.org>; Thu, 04 Jan 2024 10:22:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1704392558; x=1704997358; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bbDN6W21p6F1EYYykal14M3FBVWLwpCqqmiZbB/3IKE=;
+        b=TcJTE8z4fFZw6YngnDvt/vBExHe+itRApJaM5qfV3Qs5OBOGkLb30/u0hMa4I3+m8y
+         G5fVbAJG7J5ZehQUGVwpM8dc+23488atiBdfwQmI2SSCC9VVggunD3HYNJCD9V9bDrXp
+         1t3v5HkIrN6Y6v6mHFhVhjCt59UlOpRlRWb3U3rW0nMljABwCuBlIO/FWYVYSYm1N2bs
+         fNM9rMDOb4ZrVS8T7q73AWnKuUAlzNeA1J+YpW8BNeO8bTW9S8qIlS5y5d/q0vDvC9uZ
+         7dvg0eW/EZTu+zWoXr1hLw+c8wDVBRtTI0Pkq8JoFdSN7FNQaUdvutWW7atkkSDGgOCx
+         lpwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704392558; x=1704997358;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bbDN6W21p6F1EYYykal14M3FBVWLwpCqqmiZbB/3IKE=;
+        b=PSf4gGejJ48AHiOLIgnTvY8bj1YtbG9UEQuIfrNlXF+w2+QGj/RhL9aHLkXkaNk8yv
+         UqopLT425x1+GI2+BQwbZo55q2zy7xudSmouTohWyFLR1tHob9en+hEwcOTxv5gC5jcs
+         4n14QoHqSXe3T70QggmzKAhfwMT21Ic2QgKoJKDEVglixObbenxd9eBb1pt8BW7HrOCS
+         Ju3CkpId0Gbe5dcSvxnmqvDNJ6jtcEPLmNXPFGW7Xc+8vGCohg2JIGCK4VfCuQSM/717
+         8nnL1DBypsa5QOWym1OH8VOeNnLc03WiT9TVAdoKe0BM6DSK01Fils/j9K7KhCMJ2kb5
+         Agyw==
+X-Gm-Message-State: AOJu0YwzlQmuYIsqbKWcMBZ8lKGnszVX+s56fW8P8ab1dUR91rKtKg8K
+	/VXj2JCYr4hRuvUXziMQqi3Hga+gws46jT8czw==
+X-Google-Smtp-Source: AGHT+IEaMRCHGS38DtQMJCrRm/hEwM4m2ug9DEysF+4xs9/4bbCvrTyBUAjUQhP7cnYM4OHndFKWnJ2AyNQ=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a05:6902:134e:b0:dbe:a220:68ee with SMTP id
+ g14-20020a056902134e00b00dbea22068eemr30231ybu.0.1704392557745; Thu, 04 Jan
+ 2024 10:22:37 -0800 (PST)
+Date: Thu, 4 Jan 2024 18:22:36 +0000
+In-Reply-To: <a327286a-36a6-4cdc-92bd-777fb763d88a@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <5f97aaa-2d8e-498b-18d1-88e048443dcc@linux.intel.com>
+Mime-Version: 1.0
+References: <20240104153939.129179-1-pbonzini@redhat.com> <a327286a-36a6-4cdc-92bd-777fb763d88a@linux.intel.com>
+Message-ID: <ZZbuwU8ShrcXWdMY@google.com>
+Subject: Re: [PATCH] KVM: x86/pmu: fix masking logic for MSR_CORE_PERF_GLOBAL_CTRL
+From: Sean Christopherson <seanjc@google.com>
+To: Kan Liang <kan.liang@linux.intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	peterz@infradead.org, linux-perf-users@vger.kernel.org, leitao@debian.org, 
+	acme@kernel.org, mingo@redhat.com, "Paul E . McKenney" <paulmck@kernel.org>, 
+	stable@vger.kernel.org, Like Xu <like.xu.linux@gmail.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, Jan 04, 2024 at 07:02:52PM +0200, Ilpo Järvinen wrote:
-> On Thu, 4 Jan 2024, Shinichiro Kawasaki wrote:
+On Thu, Jan 04, 2024, Liang, Kan wrote:
 > 
-> > On Jan 04, 2024 / 09:58, Greg Kroah-Hartman wrote:
-> > > On Thu, Jan 04, 2024 at 08:54:48AM +0000, Shinichiro Kawasaki wrote:
+> 
+> On 2024-01-04 10:39 a.m., Paolo Bonzini wrote:
+> > When commit c59a1f106f5c ("KVM: x86/pmu: Add IA32_PEBS_ENABLE
+> > MSR emulation for extended PEBS") switched the initialization of
+> > cpuc->guest_switch_msrs to use compound literals, it screwed up
+> > the boolean logic:
 > > 
+> > +	u64 pebs_mask = cpuc->pebs_enabled & x86_pmu.pebs_capable;
 > > ...
+> > -	arr[0].guest = intel_ctrl & ~cpuc->intel_ctrl_host_mask;
+> > -	arr[0].guest &= ~(cpuc->pebs_enabled & x86_pmu.pebs_capable);
+> > +               .guest = intel_ctrl & (~cpuc->intel_ctrl_host_mask | ~pebs_mask),
 > > 
-> > > > Greg, please drop this patch from 6.1-stable for now. Unfortunately, one issue
-> > > > has got reported [*].
-> > > > 
-> > > > [*] https://lore.kernel.org/platform-driver-x86/CABq1_vjfyp_B-f4LAL6pg394bP6nDFyvg110TOLHHb0x4aCPeg@mail.gmail.com/T/#u
-> > > 
-> > > What about 6.6.y, this is also queued up there too.
+> > Before the patch, the value of arr[0].guest would have been intel_ctrl &
+> > ~cpuc->intel_ctrl_host_mask & ~pebs_mask.  The intent is to always treat
+> > PEBS events as host-only because, while the guest runs, there is no way
+> > to tell the processor about the virtual address where to put PEBS records
+> > intended for the host.
 > > 
-> > Please drop it from 6.6.y too.
+> > Unfortunately, the new expression can be expanded to
 > > 
-> > > And when is this going to be reverted in Linus's tree?  6.7-rc8 has this
-> > > issue right now, right?
+> > 	(intel_ctrl & ~cpuc->intel_ctrl_host_mask) | (intel_ctrl & ~pebs_mask)
 > > 
-> > Yes. I agree that revert action is needed.
-> > 
-> > Ilpo,
-> > 
-> > As I commented to the response to the bug report, fix does not look straight
-> > forward to me. I guess fix discussion with x86 experts' will take some time
-> > (Andy is now away...). I will post a revert patch later. May I ask you to handle
-> > it?
+> > which makes no sense; it includes any bit that isn't *both* marked as
+> > exclude_guest and using PEBS.  So, reinstate the old logic.  
 > 
-> I've applied the revert and made a PR out of it:
+> I think the old logic will completely disable the PEBS in guest
+> capability. Because the counter which is assigned to a guest PEBS event
+> will also be set in the pebs_mask. The old logic disable the counter in
+> GLOBAL_CTRL in guest. Nothing will be counted.
 > 
-> https://lore.kernel.org/platform-driver-x86/1a6657ef8475862e4fc282efe832fa86.=%3FUTF-8%3Fq%3FIlpo=20J=C3=A4rvinen%3F=%20%3Cilpo.jarvinen@linux.intel.com/T/#u
-> 
-> 
-> I found it a bit disappointing to hear from Greg that patches can no 
-> longer be dropped from stable-queue (it certainly used to be possible 
-> earlier) but things are to be handled indirectly through commits in Linus' 
-> tree.
+> Like once proposed a fix in the intel_guest_get_msrs().
+> https://lore.kernel.org/lkml/20231129095055.88060-1-likexu@tencent.com/
+> It should work for the issue.
 
-They can be dropped, yes, but it's easier to add the follow-on revert so
-that all of the scripts out there don't keep resending the original
-change as part of the "hey, you missed this patch!" sweeps that people
-run.
+No, that patch only affects the path where hardware supports enabling PEBS in the
+the guest, i.e. intel_guest_get_msrs() will bail before getting to that code due
+to the lack of x86_pmu.pebs_ept support, which IIUC is all pre-Icelake Intel CPUs.
 
-So taking both of them is better, right?  That also ensures that Linus's
-tree is fixed up, which is key for everyone involved.
-
-For stuff that is "this should not be in the stable tree at all", we
-always drop those easily, that's never a problem.
-
-thanks,
-
-greg k-h
+	if (!kvm_pmu || !x86_pmu.pebs_ept)
+		return arr;
 
