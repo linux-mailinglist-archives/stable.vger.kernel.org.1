@@ -1,118 +1,145 @@
-Return-Path: <stable+bounces-9739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ACE2824B41
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 23:57:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B589F824B44
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 23:57:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD889286360
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 22:57:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBE931C22462
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 22:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83BC72D036;
-	Thu,  4 Jan 2024 22:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79C822D05A;
+	Thu,  4 Jan 2024 22:57:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="nnYAwOEd"
 X-Original-To: stable@vger.kernel.org
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D8612D02F
-	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 22:57:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ACULAB.COM
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aculab.com
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-52-8HlQ54MTNZ20SPJ_9fcAIg-1; Thu, 04 Jan 2024 22:57:24 +0000
-X-MC-Unique: 8HlQ54MTNZ20SPJ_9fcAIg-1
-Received: from AcuMS.Aculab.com (10.202.163.6) by AcuMS.aculab.com
- (10.202.163.6) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Thu, 4 Jan
- 2024 22:57:10 +0000
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Thu, 4 Jan 2024 22:57:10 +0000
-From: David Laight <David.Laight@ACULAB.COM>
-To: 'Zack Rusin' <zack.rusin@broadcom.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-CC: Dmitry Torokhov <dmitry.torokhov@gmail.com>, Arnd Bergmann
-	<arnd@arndb.de>, Robert Jarzmik <robert.jarzmik@free.fr>, Raul Rangel
-	<rrangel@chromium.org>, "linux-input@vger.kernel.org"
-	<linux-input@vger.kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH v2] input/vmmouse: Fix device name copies
-Thread-Topic: [PATCH v2] input/vmmouse: Fix device name copies
-Thread-Index: AQHaPsvFRvb2B19ESUahla1XzNFio7DKQqgg
-Date: Thu, 4 Jan 2024 22:57:10 +0000
-Message-ID: <645d8e19494d4a27b2ae775fee56e252@AcuMS.aculab.com>
-References: <20231127204206.3593559-1-zack@kde.org>
- <20240104050605.1773158-1-zack.rusin@broadcom.com>
-In-Reply-To: <20240104050605.1773158-1-zack.rusin@broadcom.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEB42D02B
+	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 22:57:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-517ab9a4a13so760765a12.1
+        for <stable@vger.kernel.org>; Thu, 04 Jan 2024 14:57:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1704409056; x=1705013856; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=F0xphhCE17SpyYQoGsUBG8Xw3xXoJ8LzymxUK0emg8Y=;
+        b=nnYAwOEdUo+djnN8WAV6981Cuuo31WZBEnDeFTWZ/q3csq9thmG7JBVSpr0qHfHx8v
+         JG9Q6dr4OdwkyN2vSgzPzEn/4yPSjkOI/RWFUJuEYQ8HuE9GWAGODofAlQo0naZ/DQGx
+         J4kfx4uiS26JN/e1MQbAZJKziAntrNlxKqf7o=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704409056; x=1705013856;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=F0xphhCE17SpyYQoGsUBG8Xw3xXoJ8LzymxUK0emg8Y=;
+        b=E8MlnlLtTRRO9olQXdzqabHTjbB6VjixWa4M4n0NqEZUP0tIlRI7tig+sMy+l8fZkr
+         AajptC2RZa82FkqpIdq9fdjRkpZXq8Gzxv7FmWhUVWlHaNl+rM6agaCxDZZzsE3d87NI
+         T8JnXuPfRcQtvi8mK+Zfb2u6wfOVpp2LeM9GFkEvI4Q8oSgrfUbgpsg0r3YwaEOco8IM
+         tcuzjDMB7cfL6ItOS2t2pD3fkn7TwnAMrJ5k2kMk7WW2hM+S0HoDFlRY428iqjiyWkkM
+         cW2jIqGpAphnJ1xPgcA4zRt6Hu1dZcuG3C1neDceyXZB5FsPByx6mtvFAxnyghZx+jIF
+         MfEg==
+X-Gm-Message-State: AOJu0YyC/mZgLoGAXIi2lSc34EAf8FjaJMiKVp74TUepr/z4BGUgBiK5
+	wyoknDc33VPxkkAItZyEu6IVvoytJJxW5LUKgDfiP2KTLw==
+X-Google-Smtp-Source: AGHT+IER3kWpjFvqhiONKYcT6reomulZYTjVxJi0ejh4vtPPkw0BNoBU0H8+KqfumzRsLcSi68s2rA==
+X-Received: by 2002:a05:6a20:4288:b0:199:431:ba28 with SMTP id o8-20020a056a20428800b001990431ba28mr1357678pzj.74.1704409056464;
+        Thu, 04 Jan 2024 14:57:36 -0800 (PST)
+Received: from localhost ([2620:15c:9d:2:c642:5162:9986:5b8b])
+        by smtp.gmail.com with UTF8SMTPSA id f50-20020a056a000b3200b006d9b2d86bcasm177557pfu.46.2024.01.04.14.57.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Jan 2024 14:57:36 -0800 (PST)
+From: Sarthak Kukreti <sarthakkukreti@chromium.org>
+To: stable@vger.kernel.org
+Cc: Sarthak Kukreti <sarthakkukreti@chromium.org>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1.y] block: Don't invalidate pagecache for invalid falloc modes
+Date: Thu,  4 Jan 2024 14:57:33 -0800
+Message-ID: <20240104225733.2021982-1-sarthakkukreti@chromium.org>
+X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
+In-Reply-To: <2023101511-outpost-crucial-c477@gregkh>
+References: <2023101511-outpost-crucial-c477@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 
-RnJvbTogWmFjayBSdXNpbg0KPiBTZW50OiAwNCBKYW51YXJ5IDIwMjQgMDU6MDYNCj4gDQo+IE1h
-a2Ugc3VyZSB2bW1vdXNlX2RhdGE6OnBoeXMgY2FuIGhvbGQgc2VyaW86OnBoeXMgKHdoaWNoIGlz
-IDMyIGJ5dGVzKQ0KPiBwbHVzIGFuIGV4dHJhIHN0cmluZywgZXh0ZW5kIGl0IHRvIDY0Lg0KPiAN
-Cj4gRml4ZXMgZ2NjMTMgd2FybmluZ3M6DQo+IGRyaXZlcnMvaW5wdXQvbW91c2Uvdm1tb3VzZS5j
-OiBJbiBmdW5jdGlvbiDigJh2bW1vdXNlX2luaXTigJk6DQo+IGRyaXZlcnMvaW5wdXQvbW91c2Uv
-dm1tb3VzZS5jOjQ1NTo1Mzogd2FybmluZzog4oCYL2lucHV0MeKAmSBkaXJlY3RpdmUgb3V0cHV0
-IG1heSBiZSB0cnVuY2F0ZWQgd3JpdGluZyA3DQo+IGJ5dGVzIGludG8gYSByZWdpb24gb2Ygc2l6
-ZSBiZXR3ZWVuIDEgYW5kIDMyIFstV2Zvcm1hdC10cnVuY2F0aW9uPV0NCj4gICA0NTUgfCAgICAg
-ICAgIHNucHJpbnRmKHByaXYtPnBoeXMsIHNpemVvZihwcml2LT5waHlzKSwgIiVzL2lucHV0MSIs
-DQo+ICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIF5+fn5+fn4NCj4gZHJpdmVycy9pbnB1dC9tb3VzZS92bW1vdXNlLmM6NDU1Ojk6IG5v
-dGU6IOKAmHNucHJpbnRm4oCZIG91dHB1dCBiZXR3ZWVuIDggYW5kIDM5IGJ5dGVzIGludG8gYSBk
-ZXN0aW5hdGlvbg0KPiBvZiBzaXplIDMyDQo+ICAgNDU1IHwgICAgICAgICBzbnByaW50Zihwcml2
-LT5waHlzLCBzaXplb2YocHJpdi0+cGh5cyksICIlcy9pbnB1dDEiLA0KPiAgICAgICB8ICAgICAg
-ICAgXn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4N
-Cj4gICA0NTYgfCAgICAgICAgICAgICAgICAgIHBzbW91c2UtPnBzMmRldi5zZXJpby0+cGh5cyk7
-DQo+ICAgICAgIHwgICAgICAgICAgICAgICAgICB+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+
-DQo+IA0KPiB2MjogVXNlIHRoZSBleGFjdCBzaXplIGZvciB0aGUgdm1tb3VzZV9kYXRhOjpwaHlz
-DQo+IA0KPiBTaWduZWQtb2ZmLWJ5OiBaYWNrIFJ1c2luIDx6YWNrLnJ1c2luQGJyb2FkY29tLmNv
-bT4NCj4gRml4ZXM6IDhiOGJlNTFiNGZkMyAoIklucHV0OiBhZGQgdm1tb3VzZSBkcml2ZXIiKQ0K
-PiBDYzogRG1pdHJ5IFRvcm9raG92IDxkbWl0cnkudG9yb2tob3ZAZ21haWwuY29tPg0KPiBDYzog
-QXJuZCBCZXJnbWFubiA8YXJuZEBhcm5kYi5kZT4NCj4gQ2M6IFJvYmVydCBKYXJ6bWlrIDxyb2Jl
-cnQuamFyem1pa0BmcmVlLmZyPg0KPiBDYzogUmF1bCBSYW5nZWwgPHJyYW5nZWxAY2hyb21pdW0u
-b3JnPg0KPiBDYzogbGludXgtaW5wdXRAdmdlci5rZXJuZWwub3JnDQo+IENjOiA8c3RhYmxlQHZn
-ZXIua2VybmVsLm9yZz4gIyB2NC4xKw0KPiAtLS0NCj4gIGRyaXZlcnMvaW5wdXQvbW91c2Uvdm1t
-b3VzZS5jIHwgOCArKysrKystLQ0KPiAgMSBmaWxlIGNoYW5nZWQsIDYgaW5zZXJ0aW9ucygrKSwg
-MiBkZWxldGlvbnMoLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2lucHV0L21vdXNlL3Zt
-bW91c2UuYyBiL2RyaXZlcnMvaW5wdXQvbW91c2Uvdm1tb3VzZS5jDQo+IGluZGV4IGVhOWVmZjdj
-ODA5OS4uNzQxMzE2NzNlMmYzIDEwMDY0NA0KPiAtLS0gYS9kcml2ZXJzL2lucHV0L21vdXNlL3Zt
-bW91c2UuYw0KPiArKysgYi9kcml2ZXJzL2lucHV0L21vdXNlL3ZtbW91c2UuYw0KPiBAQCAtNjMs
-NiArNjMsOCBAQA0KPiAgI2RlZmluZSBWTU1PVVNFX1ZFTkRPUiAiVk13YXJlIg0KPiAgI2RlZmlu
-ZSBWTU1PVVNFX05BTUUgICAiVk1Nb3VzZSINCj4gDQo+ICsjZGVmaW5lIFZNTU9VU0VfUEhZU19O
-QU1FX1BPU1RGSVhfU1RSICIvaW5wdXQxIg0KPiArDQo+ICAvKioNCj4gICAqIHN0cnVjdCB2bW1v
-dXNlX2RhdGEgLSBwcml2YXRlIGRhdGEgc3RydWN0dXJlIGZvciB0aGUgdm1tb3VzZSBkcml2ZXIN
-Cj4gICAqDQo+IEBAIC03Miw3ICs3NCw4IEBADQo+ICAgKi8NCj4gIHN0cnVjdCB2bW1vdXNlX2Rh
-dGEgew0KPiAgCXN0cnVjdCBpbnB1dF9kZXYgKmFic19kZXY7DQo+IC0JY2hhciBwaHlzWzMyXTsN
-Cj4gKwljaGFyIHBoeXNbc2l6ZW9mX2ZpZWxkKHN0cnVjdCBzZXJpbywgcGh5cykgKw0KPiArCQkg
-IHN0cmxlbihWTU1PVVNFX1BIWVNfTkFNRV9QT1NURklYX1NUUildOw0KPiAgCWNoYXIgZGV2X25h
-bWVbMTI4XTsNCj4gIH07DQo+IA0KPiBAQCAtNDUyLDcgKzQ1NSw4IEBAIGludCB2bW1vdXNlX2lu
-aXQoc3RydWN0IHBzbW91c2UgKnBzbW91c2UpDQo+ICAJcHNtb3VzZS0+cHJpdmF0ZSA9IHByaXY7
-DQo+IA0KPiAgCS8qIFNldCB1cCBhbmQgcmVnaXN0ZXIgYWJzb2x1dGUgZGV2aWNlICovDQo+IC0J
-c25wcmludGYocHJpdi0+cGh5cywgc2l6ZW9mKHByaXYtPnBoeXMpLCAiJXMvaW5wdXQxIiwNCj4g
-KwlzbnByaW50Zihwcml2LT5waHlzLCBzaXplb2YocHJpdi0+cGh5cyksDQo+ICsJCSAiJXMiIFZN
-TU9VU0VfUEhZU19OQU1FX1BPU1RGSVhfU1RSLA0KPiAgCQkgcHNtb3VzZS0+cHMyZGV2LnNlcmlv
-LT5waHlzKTsNCg0KTm90d2l0aHN0YW5kaW5nIGFueSBlcnJvciAoZml4ZWQpIG9yIG5vdCBmcm9t
-IHRoZSBnY2MvYnVpbGQgcm9iZXJ0DQpvciBzcGFyc2UgdGhhdCAnZml4JyBpcyBlbnRpcmVseSBo
-b3JyaWJsZS4NCg0KUmVsYXRlZCBJJ20gZ3Vlc3NpbmcgdGhhdCBkZXZfbmFtZVsxMjhdIGlzIGVp
-dGhlciBsaWtlbHkgdG8NCmJlIHRydW5jYXRlZCBvciBtYXNzaXZlbHkgZmFyIHRvbyBsb25nPw0K
-DQpUaGVyZSBhcmUgYSBmZXcgd2F5IHRvIGdldCBnY2MgdG8gU1RGVSA6LSkNCg0KCURhdmlkDQoN
-Ci0NClJlZ2lzdGVyZWQgQWRkcmVzcyBMYWtlc2lkZSwgQnJhbWxleSBSb2FkLCBNb3VudCBGYXJt
-LCBNaWx0b24gS2V5bmVzLCBNSzEgMVBULCBVSw0KUmVnaXN0cmF0aW9uIE5vOiAxMzk3Mzg2IChX
-YWxlcykNCg==
+Only call truncate_bdev_range() if the fallocate mode is supported. This
+fixes a bug where data in the pagecache could be invalidated if the
+fallocate() was called on the block device with an invalid mode.
+
+Fixes: 25f4c41415e5 ("block: implement (some of) fallocate for block devices")
+Cc: stable@vger.kernel.org
+Reported-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Sarthak Kukreti <sarthakkukreti@chromium.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Link: https://lore.kernel.org/r/20231011201230.750105-1-sarthakkukreti@chromium.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+(cherry picked from commit 1364a3c391aedfeb32aa025303ead3d7c91cdf9d)
+Signed-off-by: Sarthak Kukreti <sarthakkukreti@chromium.org>
+---
+ block/fops.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
+
+diff --git a/block/fops.c b/block/fops.c
+index 6197d1c41652..01cb6260fa24 100644
+--- a/block/fops.c
++++ b/block/fops.c
+@@ -655,24 +655,35 @@ static long blkdev_fallocate(struct file *file, int mode, loff_t start,
+ 
+ 	filemap_invalidate_lock(inode->i_mapping);
+ 
+-	/* Invalidate the page cache, including dirty pages. */
+-	error = truncate_bdev_range(bdev, file->f_mode, start, end);
+-	if (error)
+-		goto fail;
+-
++	/*
++	 * Invalidate the page cache, including dirty pages, for valid
++	 * de-allocate mode calls to fallocate().
++	 */
+ 	switch (mode) {
+ 	case FALLOC_FL_ZERO_RANGE:
+ 	case FALLOC_FL_ZERO_RANGE | FALLOC_FL_KEEP_SIZE:
++		error = truncate_bdev_range(bdev, file->f_mode, start, end);
++		if (error)
++			goto fail;
++
+ 		error = blkdev_issue_zeroout(bdev, start >> SECTOR_SHIFT,
+ 					     len >> SECTOR_SHIFT, GFP_KERNEL,
+ 					     BLKDEV_ZERO_NOUNMAP);
+ 		break;
+ 	case FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE:
++		error = truncate_bdev_range(bdev, file->f_mode, start, end);
++		if (error)
++			goto fail;
++
+ 		error = blkdev_issue_zeroout(bdev, start >> SECTOR_SHIFT,
+ 					     len >> SECTOR_SHIFT, GFP_KERNEL,
+ 					     BLKDEV_ZERO_NOFALLBACK);
+ 		break;
+ 	case FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE | FALLOC_FL_NO_HIDE_STALE:
++		error = truncate_bdev_range(bdev, file->f_mode, start, end);
++		if (error)
++			goto fail;
++
+ 		error = blkdev_issue_discard(bdev, start >> SECTOR_SHIFT,
+ 					     len >> SECTOR_SHIFT, GFP_KERNEL);
+ 		break;
+-- 
+2.43.0.472.g3155946c3a-goog
 
 
