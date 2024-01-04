@@ -1,148 +1,118 @@
-Return-Path: <stable+bounces-9630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17C3F823BAF
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 06:08:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC63C823BBD
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 06:20:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A185B24CA1
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 05:08:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C34351C24C8F
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 05:20:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3F9C134C2;
-	Thu,  4 Jan 2024 05:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 725C015485;
+	Thu,  4 Jan 2024 05:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Xzbd5741"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O9zCPk0X"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31EFB1862D
-	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 05:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-dbdabb23e91so119763276.3
-        for <stable@vger.kernel.org>; Wed, 03 Jan 2024 21:07:57 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271DF18EC3;
+	Thu,  4 Jan 2024 05:20:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1d3ec3db764so501585ad.2;
+        Wed, 03 Jan 2024 21:20:15 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1704344876; x=1704949676; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NR4TAdpORcUfD0xhX/PDqB5I0l6LiG232iyhYtTdcXk=;
-        b=Xzbd5741oyKnhhvoEHSeULcVgIj6YBH1khLLgns8y9PBG9eorUYHxMDjmEOSqzXdvq
-         +yy2UPFFKQpGIvKOWoFVyVszX8zBkbIb+8Z4sRJXgIbHFyQXGaJ6MCVfnJ+c7I2QtsMz
-         KI/tIjv1V6vFWxIaLEKCFNvcWSzmXtPFRYCxU=
+        d=gmail.com; s=20230601; t=1704345615; x=1704950415; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=g3NzzRz631nrmHxCWhVwS62FIh58ttvyDrTrVUoW0lw=;
+        b=O9zCPk0Xfh54Yy3nhnIRrDiQl07u0CF+2rNsog28dHrn3LW/hScCEq84hxlbQxtB1T
+         VDQb1zRJ+1AcPifRAbNortLahwLDdbuq7WuLBAM6uOiMqmUKG4PwW2wOjDNNy38/AFLa
+         CoLBXnd7qoa6pgsMsucNDzDLwRrYlde3VItAEg4OBVc85AWvrka2Ndfnd1WmTLf/SzkF
+         4BNRFwmmYM5RpoIkxjBrPK8SqoZqT9J/0iRUQZzwZWpsLdkDH/WpiMpH4NxNvoAu58bq
+         /ihUS2apFyqTui/rgPv7gC1tlDp9SHyotmtJETJ0EASK2X+0NPXnvLrAI+7l86NFdZxi
+         z5Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704344876; x=1704949676;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NR4TAdpORcUfD0xhX/PDqB5I0l6LiG232iyhYtTdcXk=;
-        b=MVi8XqYGBvL0uQXPJ9+e8JALKx7UMy6PKDZo1+4rHTK6ZyEGXfwcu9CTsfjxYpyGQ9
-         XfeQderY5nYSdfsb0h9BFBMQ5wIy2KVeDuiF2B/TZZE0BDxSjEN3QYhGyXs14bUb31be
-         A8bwzbgRYAYtG4dyuBKHbImPjpi7KYRIUf1Bfoj3jhYHWcurjwWPfWxQ9WIJXzMyK0Ss
-         UihVq84Na3WoymWzARueIxtl02rOXfWslD58rjhRB8ALTwTLj9pT1WN5Nc7uVmBwI9Zj
-         MMNk4UGWgT/+BLvLV0kK1u71Ys4PcK1zcCx0z0JZuY3pi8TthwjVztKKBbdYVZdej3/V
-         mzFA==
-X-Gm-Message-State: AOJu0YyQYUDcDplNskP7uNxTCXVuNeZ/HZSlHk5x6q0LmMENreFvK4g1
-	7mFjx5TMN9XoCCPPCTRqB8/87u3XXGqKNo3O2VRzeqJK4TL/
-X-Google-Smtp-Source: AGHT+IHI8p2FEmfb/7z21GPJ+1pzT9xTz9PkM/BO/OWWKOOKxJHUnn9pfn76e0JkEyVB52kC9L//CEt7wXYhpXkqWtI=
-X-Received: by 2002:a25:ab93:0:b0:dbd:5d43:953 with SMTP id
- v19-20020a25ab93000000b00dbd5d430953mr69780ybi.43.1704344876252; Wed, 03 Jan
- 2024 21:07:56 -0800 (PST)
+        d=1e100.net; s=20230601; t=1704345615; x=1704950415;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=g3NzzRz631nrmHxCWhVwS62FIh58ttvyDrTrVUoW0lw=;
+        b=bI2eo9sdSNmw+thD2EcMPSQRxJbLRpEYQOeCVJ1vqDdzPJTHxL74LzouHYF4O2tmuk
+         zCiKLghvVFF4oCFt/h9gSMFccQFw0RFKk1wnKUmyCjiUU7QLfNh5HONb2S2t6VbL24bU
+         MfYdsD+aasrRSaDxJ6upbrlrtcaVbgWZNsvgOXa7QVqta11utECIEmSx4IwBOTf1L7P7
+         IarTH8kSgSd3G/xFjRlg+viLZ0k8WwrIN7hm5R4nOje4GG0Tyw4MFMr5O4ZgurY0e54H
+         x9pnUigTBDalTE2LTcIEOwv9mCHKpKONNh0DrU9SNsNWIhyF6I6TOpHM6atKo7h1kBOL
+         N5Fg==
+X-Gm-Message-State: AOJu0Yzo3fpQO44KIiZgxgOHFuiLo6SB0D3CTMCvwdAAVDS2UnJGCgAn
+	EZVcUSuelemLItsVH8B32dnSiE93MQnihQ==
+X-Google-Smtp-Source: AGHT+IHjISQRzYh9tkBeu5tmOF7gvQHMQ0tUCQ/ANdl6BpSWfWZ36Dbys8MO+YxDFI819ttVLUoMWw==
+X-Received: by 2002:a17:902:db07:b0:1d4:cbfc:1ccb with SMTP id m7-20020a170902db0700b001d4cbfc1ccbmr56654plx.64.1704345615332;
+        Wed, 03 Jan 2024 21:20:15 -0800 (PST)
+Received: from archie.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id j4-20020a170902c3c400b001d395d3df30sm24573015plj.130.2024.01.03.21.20.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jan 2024 21:20:14 -0800 (PST)
+Received: by archie.me (Postfix, from userid 1000)
+	id 118BC184790CB; Thu,  4 Jan 2024 12:20:10 +0700 (WIB)
+Date: Thu, 4 Jan 2024 12:20:10 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: Re: [PATCH 6.6 00/49] 6.6.10-rc1 review
+Message-ID: <ZZZACjAEBXL0DvO2@archie.me>
+References: <20240103164834.970234661@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231127204206.3593559-1-zack@kde.org> <20240104050605.1773158-1-zack.rusin@broadcom.com>
-In-Reply-To: <20240104050605.1773158-1-zack.rusin@broadcom.com>
-From: Zack Rusin <zack.rusin@broadcom.com>
-Date: Thu, 4 Jan 2024 00:07:45 -0500
-Message-ID: <CABQX2QNjc7-wVZX1hZVbOjNmz+ow0xUOtn-XjpK-5p28-onpTQ@mail.gmail.com>
-Subject: Re: [PATCH v2] input/vmmouse: Fix device name copies
-To: linux-kernel@vger.kernel.org
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Robert Jarzmik <robert.jarzmik@free.fr>, Raul Rangel <rrangel@chromium.org>, 
-	linux-input@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="gCL66V2puD9uMZI8"
+Content-Disposition: inline
+In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
+
+
+--gCL66V2puD9uMZI8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 4, 2024 at 12:06=E2=80=AFAM Zack Rusin <zack.rusin@broadcom.com=
-> wrote:
->
-> Make sure vmmouse_data::phys can hold serio::phys (which is 32 bytes)
-> plus an extra string, extend it to 64.
->
-> Fixes gcc13 warnings:
-> drivers/input/mouse/vmmouse.c: In function =E2=80=98vmmouse_init=E2=80=99=
-:
-> drivers/input/mouse/vmmouse.c:455:53: warning: =E2=80=98/input1=E2=80=99 =
-directive output may be truncated writing 7 bytes into a region of size bet=
-ween 1 and 32 [-Wformat-truncation=3D]
->   455 |         snprintf(priv->phys, sizeof(priv->phys), "%s/input1",
->       |                                                     ^~~~~~~
-> drivers/input/mouse/vmmouse.c:455:9: note: =E2=80=98snprintf=E2=80=99 out=
-put between 8 and 39 bytes into a destination of size 32
->   455 |         snprintf(priv->phys, sizeof(priv->phys), "%s/input1",
->       |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->   456 |                  psmouse->ps2dev.serio->phys);
->       |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->
-> v2: Use the exact size for the vmmouse_data::phys
->
-> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-> Fixes: 8b8be51b4fd3 ("Input: add vmmouse driver")
-> Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Robert Jarzmik <robert.jarzmik@free.fr>
-> Cc: Raul Rangel <rrangel@chromium.org>
-> Cc: linux-input@vger.kernel.org
-> Cc: <stable@vger.kernel.org> # v4.1+
-> ---
->  drivers/input/mouse/vmmouse.c | 8 ++++++--
->  1 file changed, 6 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/input/mouse/vmmouse.c b/drivers/input/mouse/vmmouse.=
-c
-> index ea9eff7c8099..74131673e2f3 100644
-> --- a/drivers/input/mouse/vmmouse.c
-> +++ b/drivers/input/mouse/vmmouse.c
-> @@ -63,6 +63,8 @@
->  #define VMMOUSE_VENDOR "VMware"
->  #define VMMOUSE_NAME   "VMMouse"
->
-> +#define VMMOUSE_PHYS_NAME_POSTFIX_STR "/input1"
-> +
->  /**
->   * struct vmmouse_data - private data structure for the vmmouse driver
->   *
-> @@ -72,7 +74,8 @@
->   */
->  struct vmmouse_data {
->         struct input_dev *abs_dev;
-> -       char phys[32];
-> +       char phys[sizeof_field(struct serio, phys) +
-> +                 strlen(VMMOUSE_PHYS_NAME_POSTFIX_STR)];
->         char dev_name[128];
->  };
->
-> @@ -452,7 +455,8 @@ int vmmouse_init(struct psmouse *psmouse)
->         psmouse->private =3D priv;
->
->         /* Set up and register absolute device */
-> -       snprintf(priv->phys, sizeof(priv->phys), "%s/input1",
-> +       snprintf(priv->phys, sizeof(priv->phys),
-> +                "%s" VMMOUSE_PHYS_NAME_POSTFIX_STR,
->                  psmouse->ps2dev.serio->phys);
->
->         /* Mimic name setup for relative device in psmouse-base.c */
+On Wed, Jan 03, 2024 at 05:55:20PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.10 release.
+> There are 49 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
-Sorry, I missed the original discussion of this during the
-VMware->Broadcom email transition. How about we just use the exact
-sizing then like in the v2?
+Successfully compiled and installed the kernel on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
 
-z
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--gCL66V2puD9uMZI8
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZZY/+gAKCRD2uYlJVVFO
+o+iSAQDVZqyJauaNs1nMTVxRDf7yh24q/4XMnshBmztqxidgwgD9H7p1j+LlAuUX
+0EiwvKAigIjgLEgD+gp0nUlBby33pAc=
+=cKlU
+-----END PGP SIGNATURE-----
+
+--gCL66V2puD9uMZI8--
 
