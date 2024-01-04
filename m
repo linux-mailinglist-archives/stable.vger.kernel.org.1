@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-9736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98CFC824B24
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 23:46:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6380824B35
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 23:52:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 369DF285916
-	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 22:46:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDB8A1C22AC7
+	for <lists+stable@lfdr.de>; Thu,  4 Jan 2024 22:52:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 590392CCB2;
-	Thu,  4 Jan 2024 22:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A0482CCD9;
+	Thu,  4 Jan 2024 22:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="QBSUMdW2"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="BmMZgins"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13A32D61A
-	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 22:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C1E2D021
+	for <stable@vger.kernel.org>; Thu,  4 Jan 2024 22:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-28c0536806fso827297a91.0
-        for <stable@vger.kernel.org>; Thu, 04 Jan 2024 14:46:17 -0800 (PST)
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1d4ba539f6cso7463215ad.3
+        for <stable@vger.kernel.org>; Thu, 04 Jan 2024 14:52:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1704408376; x=1705013176; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1704408727; x=1705013527; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5saOzn+yoJIzJcV96SCVWHj3tbgytbdHtkZx2VfHHtI=;
-        b=QBSUMdW2qmMD0AC8kjb+b0CoNpLYWLI/148A8A9L5FgqR7v4lQNDPswKh7XEF0Q94n
-         GWbYMwXxrupVpbLysQCQbqAWpa7aXnsIOQAkW7sZ9udM9zwQMrrwQhL9L7X5xTbtBtHC
-         ORnPnORS4POZUzrWR5WoZ7jKqJ1dfBNO/COBA=
+        bh=3OnrW8plSOEZLjLGb2fCdktIXMiQt5aXJhwMz5FyPRo=;
+        b=BmMZginsuyi/I/3KpEE02Oo++RbNa9fN5YrX0pMpWCE2AYnZB7FZjHafQflWOodVhY
+         /ms0bo3e/9/DJbQAM6XkpWug1b4oJpSyvZ8e1A6j+KplZ1o4d7gcQqJRKTltljPS9dTL
+         QNZ2MMaVdCRt+N/AN93aehGql1YM54PKDmOKs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704408376; x=1705013176;
+        d=1e100.net; s=20230601; t=1704408727; x=1705013527;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5saOzn+yoJIzJcV96SCVWHj3tbgytbdHtkZx2VfHHtI=;
-        b=AvaKUsmxcLOEPCqGQkPn4aV1uLszJP6IM1Q2Xqt9rZXF0eBmnbu1VAtHnCBr8G76Rp
-         d1sY0VeqvHgTRW5P1eV93hszuyysAs8kVXBfLnlfuFHdwda/H/mp8DlVNNEa4HmOtpXj
-         JAkWzwqPB69ILxJTnT00CTKOBU3N0eIeNu2nd1STi0uYa8ldvi3FcBa4FoDPBOHQU/mu
-         pt9DWA+mBXGQpYbvU0L9CGjPvKvjrCErgnjYRPeOH/KsMyrZMqD5KgDC7a3boUHAvt9B
-         90Hr7jcHWXQLQqWM/n3Tighw3sUgFN2yPlXpruOly2ZJ47B+d47WJCVfczZIWSLqPo8W
-         5yCw==
-X-Gm-Message-State: AOJu0Yxp1/kCN0v4B/G2b3tf/fkH0Yg+6u49dUT7KTCbN6rY06U3piAh
-	WIaYkIsO6zEFKb6lLVz08NU2qHiB8SXnkGj/Daz9s9VO5A==
-X-Google-Smtp-Source: AGHT+IF5Apbtm3G4jyRbBnVRBTVeAtMdf8pkGDONcDKsh/0yzGwvYyOXklzPY8w/lRH7ZO0V/Sl/OQ==
-X-Received: by 2002:a17:90a:c485:b0:28c:a31f:e5c6 with SMTP id j5-20020a17090ac48500b0028ca31fe5c6mr1150407pjt.99.1704408376347;
-        Thu, 04 Jan 2024 14:46:16 -0800 (PST)
+        bh=3OnrW8plSOEZLjLGb2fCdktIXMiQt5aXJhwMz5FyPRo=;
+        b=Ay693aVN+mtnbX1BAc83BfVcc+9QWZ9Bdh0mWd9K+CUzyUCHdgSb/Y23FQDDNsPvDa
+         k//xnKBjBnXZb+O9QuogIWY3Hm5/pE/DcYM2Scd0KCDv0gRjnRC3Qfzw3rACQRN+vINi
+         sX5PdUgVZ1Xioz+oIe92CSVGwhDPsgNjvJa+fO3Xk6oIw32MP9wGYMFom4zAtklm9c5Z
+         x0dzXq92arvDJj7XoTLfXnbE9TWEU0bAoxIgslB2eX2HVO4O/NgcqFwhv6Mcx4KFEOqq
+         4mDly/dUq7MYHYpO0Qtj8PmhxKYS4NwRMbURcbbWHtEiPY8c1YpnwOWOgIYe8I7z0sts
+         vIOw==
+X-Gm-Message-State: AOJu0YxLMqIo76KeO4iYgCGn/4Dkpgadt8RYOc6i4XezhpZYfxCVgJg0
+	fYN+lYnepGNNKj1UGmjC63CHaIiJbTX0mvUD3dDMjX/qMQ==
+X-Google-Smtp-Source: AGHT+IHuw8jPpjqqo0zFleCIZTbILQBj1NF5JEZAra98kkruogG5l7OFUhzxb6bijA0UqTxE3FX7dw==
+X-Received: by 2002:a17:902:bd48:b0:1d4:20fb:c2ef with SMTP id b8-20020a170902bd4800b001d420fbc2efmr1173617plx.46.1704408727697;
+        Thu, 04 Jan 2024 14:52:07 -0800 (PST)
 Received: from localhost ([2620:15c:9d:2:c642:5162:9986:5b8b])
-        by smtp.gmail.com with UTF8SMTPSA id ie21-20020a17090b401500b0028b96c9424dsm227678pjb.1.2024.01.04.14.46.15
+        by smtp.gmail.com with UTF8SMTPSA id 21-20020a170902e9d500b001d40cc2c9c3sm127964plk.35.2024.01.04.14.52.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jan 2024 14:46:16 -0800 (PST)
+        Thu, 04 Jan 2024 14:52:07 -0800 (PST)
 From: Sarthak Kukreti <sarthakkukreti@chromium.org>
 To: stable@vger.kernel.org
 Cc: Sarthak Kukreti <sarthakkukreti@chromium.org>,
@@ -61,12 +61,12 @@ Cc: Sarthak Kukreti <sarthakkukreti@chromium.org>,
 	Christoph Hellwig <hch@lst.de>,
 	Mike Snitzer <snitzer@kernel.org>,
 	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10.y] block: Don't invalidate pagecache for invalid falloc modes
-Date: Thu,  4 Jan 2024 14:46:11 -0800
-Message-ID: <20240104224611.1913563-1-sarthakkukreti@chromium.org>
+Subject: [PATCH 5.15.y] block: Don't invalidate pagecache for invalid falloc modes
+Date: Thu,  4 Jan 2024 14:52:04 -0800
+Message-ID: <20240104225204.1960293-1-sarthakkukreti@chromium.org>
 X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
-In-Reply-To: <2023101513-depraved-ecosphere-6b50@gregkh>
-References: <2023101513-depraved-ecosphere-6b50@gregkh>
+In-Reply-To: <2023101512-hurt-guise-534b@gregkh>
+References: <2023101512-hurt-guise-534b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -91,21 +91,21 @@ Signed-off-by: Jens Axboe <axboe@kernel.dk>
 (cherry picked from commit 1364a3c391aedfeb32aa025303ead3d7c91cdf9d)
 Signed-off-by: Sarthak Kukreti <sarthakkukreti@chromium.org>
 ---
- fs/block_dev.c | 21 ++++++++++++++++-----
+ block/fops.c | 21 ++++++++++++++++-----
  1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/fs/block_dev.c b/fs/block_dev.c
-index 29f020c4b2d0..906f985c74e7 100644
---- a/fs/block_dev.c
-+++ b/fs/block_dev.c
-@@ -2031,22 +2031,33 @@ static long blkdev_fallocate(struct file *file, int mode, loff_t start,
- 	if ((start | len) & (bdev_logical_block_size(bdev) - 1))
- 		return -EINVAL;
+diff --git a/block/fops.c b/block/fops.c
+index 6c265a1bcf1b..4c8948979921 100644
+--- a/block/fops.c
++++ b/block/fops.c
+@@ -599,22 +599,33 @@ static long blkdev_fallocate(struct file *file, int mode, loff_t start,
+ 
+ 	filemap_invalidate_lock(inode->i_mapping);
  
 -	/* Invalidate the page cache, including dirty pages. */
 -	error = truncate_bdev_range(bdev, file->f_mode, start, end);
 -	if (error)
--		return error;
+-		goto fail;
 -
 +	/*
 +	 * Invalidate the page cache, including dirty pages, for valid
@@ -116,7 +116,7 @@ index 29f020c4b2d0..906f985c74e7 100644
  	case FALLOC_FL_ZERO_RANGE | FALLOC_FL_KEEP_SIZE:
 +		error = truncate_bdev_range(bdev, file->f_mode, start, end);
 +		if (error)
-+			break;
++			goto fail;
 +
  		error = blkdev_issue_zeroout(bdev, start >> 9, len >> 9,
  					    GFP_KERNEL, BLKDEV_ZERO_NOUNMAP);
@@ -124,7 +124,7 @@ index 29f020c4b2d0..906f985c74e7 100644
  	case FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE:
 +		error = truncate_bdev_range(bdev, file->f_mode, start, end);
 +		if (error)
-+			break;
++			goto fail;
 +
  		error = blkdev_issue_zeroout(bdev, start >> 9, len >> 9,
  					     GFP_KERNEL, BLKDEV_ZERO_NOFALLBACK);
@@ -132,7 +132,7 @@ index 29f020c4b2d0..906f985c74e7 100644
  	case FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE | FALLOC_FL_NO_HIDE_STALE:
 +		error = truncate_bdev_range(bdev, file->f_mode, start, end);
 +		if (error)
-+			break;
++			goto fail;
 +
  		error = blkdev_issue_discard(bdev, start >> 9, len >> 9,
  					     GFP_KERNEL, 0);
