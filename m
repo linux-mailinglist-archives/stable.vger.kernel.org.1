@@ -1,49 +1,46 @@
-Return-Path: <stable+bounces-9870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF42D8255CC
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:42:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 462B3825582
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:39:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E677B20CBE
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:42:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9C0E1C23124
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C962E2E3E4;
-	Fri,  5 Jan 2024 14:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDB8D2D7B2;
+	Fri,  5 Jan 2024 14:39:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZcSWOhyF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8MobS6I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D522AE74;
-	Fri,  5 Jan 2024 14:42:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BF0C433C8;
-	Fri,  5 Jan 2024 14:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FCA28FA;
+	Fri,  5 Jan 2024 14:39:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A63A5C433C7;
+	Fri,  5 Jan 2024 14:39:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465757;
-	bh=SChJFmomsrz9DKl6mdPq1/cyxA8JrxrGzJFsXQJN6D4=;
+	s=korg; t=1704465577;
+	bh=q1Y5+l1EtHb9ZCSpas6XJQBvfM5QLyXwaPwg8giq9UU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZcSWOhyF5VXboWJ9p3kUz5ykQ+rIUmQxk4WolIUXOhccUlWrlodr9gWplEVQHeHwp
-	 qVopVfUKu9NFGyOu7cvmVMiQvp+YI8dlQyunFFN6wVS5xbpg8rNowGJ5Fk7v16xHvF
-	 /OPHRn8/r+gfHdJWr7s9Tv1ERgl2TTLEALmAX6OM=
+	b=K8MobS6I7/iWUZDySesDX6TZ4utqZtPJ/e5FBJ44lGvd0M92k1nn8rJaHZWoHnBpN
+	 +80J0nlHXGdgBoab/rf54yVnm2/miBHKQ1exCGz1lfTm55SEa5Z98tcAKlT1/fzBby
+	 1T+TL+NJO8+KxB9xjzEXleN/nq1p1w/yWinCskuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Suvanto <markus.suvanto@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 16/47] afs: Fix dynamic root lookup DNS check
+	Reinhard Speyerer <rspmn@arcor.de>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 4.14 16/21] USB: serial: option: add Quectel RM500Q R13 firmware support
 Date: Fri,  5 Jan 2024 15:39:03 +0100
-Message-ID: <20240105143816.132286320@linuxfoundation.org>
+Message-ID: <20240105143812.286433228@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
-References: <20240105143815.541462991@linuxfoundation.org>
+In-Reply-To: <20240105143811.536282337@linuxfoundation.org>
+References: <20240105143811.536282337@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,80 +52,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Reinhard Speyerer <rspmn@arcor.de>
 
-[ Upstream commit 74cef6872ceaefb5b6c5c60641371ea28702d358 ]
+commit 06f22cd6635bdae7d73566fca9879b2026a08e00 upstream.
 
-In the afs dynamic root directory, the ->lookup() function does a DNS check
-on the cell being asked for and if the DNS upcall reports an error it will
-report an error back to userspace (typically ENOENT).
+Add support for Quectel RM500Q R13 firmware which uses Prot=40 for the
+NMEA port:
 
-However, if a failed DNS upcall returns a new-style result, it will return
-a valid result, with the status field set appropriately to indicate the
-type of failure - and in that case, dns_query() doesn't return an error and
-we let stat() complete with no error - which can cause confusion in
-userspace as subsequent calls that trigger d_automount then fail with
-ENOENT.
+T:  Bus=02 Lev=01 Prnt=01 Port=01 Cnt=01 Dev#=  8 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=2c7c ProdID=0800 Rev= 4.14
+S:  Manufacturer=Quectel
+S:  Product=RM500Q-AE
+S:  SerialNumber=xxxxxxxx
+C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=896mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=40 Driver=option
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=88(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
 
-Fix this by checking the status result from a valid dns_query() and
-returning an error if it indicates a failure.
-
-Fixes: bbb4c4323a4d ("dns: Allow the dns resolver to retrieve a server set")
-Reported-by: Markus Suvanto <markus.suvanto@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=216637
-Signed-off-by: David Howells <dhowells@redhat.com>
-Tested-by: Markus Suvanto <markus.suvanto@gmail.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Reinhard Speyerer <rspmn@arcor.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/afs/dynroot.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/usb/serial/option.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/afs/dynroot.c b/fs/afs/dynroot.c
-index f4f2ab6d877f3..d06994990fc35 100644
---- a/fs/afs/dynroot.c
-+++ b/fs/afs/dynroot.c
-@@ -20,6 +20,7 @@ static int afs_probe_cell_name(struct dentry *dentry)
- 	struct afs_net *net = afs_d2net(dentry);
- 	const char *name = dentry->d_name.name;
- 	size_t len = dentry->d_name.len;
-+	char *result = NULL;
- 	int ret;
- 
- 	/* Names prefixed with a dot are R/W mounts. */
-@@ -37,9 +38,22 @@ static int afs_probe_cell_name(struct dentry *dentry)
- 	}
- 
- 	ret = dns_query(net->net, "afsdb", name, len, "srv=1",
--			NULL, NULL, false);
--	if (ret == -ENODATA || ret == -ENOKEY)
-+			&result, NULL, false);
-+	if (ret == -ENODATA || ret == -ENOKEY || ret == 0)
- 		ret = -ENOENT;
-+	if (ret > 0 && ret >= sizeof(struct dns_server_list_v1_header)) {
-+		struct dns_server_list_v1_header *v1 = (void *)result;
-+
-+		if (v1->hdr.zero == 0 &&
-+		    v1->hdr.content == DNS_PAYLOAD_IS_SERVER_LIST &&
-+		    v1->hdr.version == 1 &&
-+		    (v1->status != DNS_LOOKUP_GOOD &&
-+		     v1->status != DNS_LOOKUP_GOOD_WITH_BAD))
-+			return -ENOENT;
-+
-+	}
-+
-+	kfree(result);
- 	return ret;
- }
- 
--- 
-2.43.0
-
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -1236,6 +1236,7 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_INTERFACE_CLASS(QUECTEL_VENDOR_ID, 0x0700, 0xff), /* BG95 */
+ 	  .driver_info = RSVD(3) | ZLP },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500Q, 0xff, 0xff, 0x30) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500Q, 0xff, 0, 0x40) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500Q, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500Q, 0xff, 0xff, 0x10),
+ 	  .driver_info = ZLP },
 
 
 
