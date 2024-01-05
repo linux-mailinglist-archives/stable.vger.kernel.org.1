@@ -1,118 +1,113 @@
-Return-Path: <stable+bounces-9780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47ED182522B
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 11:36:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A63D482524E
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 11:46:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1FE9B24796
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 10:36:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54CE2285227
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 10:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 230DD2D05E;
-	Fri,  5 Jan 2024 10:35:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F14250E1;
+	Fri,  5 Jan 2024 10:46:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KCDxuDH0"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=linosanfilippo@gmx.de header.b="ahcWSTWB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023942CCB4
-	for <stable@vger.kernel.org>; Fri,  5 Jan 2024 10:34:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-53fbf2c42bfso990417a12.3
-        for <stable@vger.kernel.org>; Fri, 05 Jan 2024 02:34:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704450898; x=1705055698; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WJ+3lkUD3PcgGfGxvkRaWTL+ma2UbkIJWkqsRj7YstE=;
-        b=KCDxuDH08tdQOVTXAWmPxq70pEK1uW7fGJDet6ALwH697BN8l52jB3aQnmjX5s7UHG
-         bhVirNpURID9AQO26/hnHfp4FrG5fLl4wv1cV4WNYazQkVkfeo0i7wCmn0U5zz/gVjS1
-         MT2TbVTiJwtZgrCPGCRJiG1rUc63wNUFQD1woDmAhqgRMTeg2fWnvDfD0hek685mA5at
-         wVcqjDDt1j646f1R+lxdtcj2locmLy3bGpV9ZqwMaJPYIy3KvuW/YKIyA84dbafk7KaD
-         ajzMeu9XB26TETptGAZomv7rK/KimwpuEuV1EKnG2PrP0gM7Mbx67/wpzVE066RMgaeg
-         UFCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704450898; x=1705055698;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WJ+3lkUD3PcgGfGxvkRaWTL+ma2UbkIJWkqsRj7YstE=;
-        b=QDWj9gVSSYHGv67SS+1pYis6EF+AueiGtbKzHNnxpzWtRjVFZ9bEqb4Beh9ipIK8Gw
-         UpEJAkBoXk2wgy9ZUcu2q2D6/MlDdZwrt1L+4VSyymeyAIw0qhXGGuBQiR7bqjGgUDRX
-         68c7lVeVpCZo4kkUul10lceo4EFo4CNb0T90Svwa0Lllo7AmkVtq0wznDLU7UxfMoW9k
-         JFC3yhDv5zJonZVbUwki8MAalPFXpB2RFMr1w3IUbxf/cUvlR+BjY8fkflwwfUPK60sw
-         Uk5+CpOIxOTsCsWE/E0UDzbrE+kzFV8vCqgi0bje7Y7tOHBzbFOFk0lmCZESiiQhu0PR
-         X7uQ==
-X-Gm-Message-State: AOJu0YyU78s4MTSEpRUoxccjSipnZev+ESbFIgDbZqueqti2xZtgMEMP
-	jNz0/QTriZ1OYcK3SnP9KuN96ATbiiieXg==
-X-Google-Smtp-Source: AGHT+IGUo41ABXS8rCxKJiuRcNLhqF2QPdz0DGJ/Fk7r3EeZouzt3jwZJdmpivBVOkXjjJi3lr2lZQ==
-X-Received: by 2002:a05:6a20:c759:b0:196:2018:2bac with SMTP id hj25-20020a056a20c75900b0019620182bacmr1486037pzb.107.1704450898337;
-        Fri, 05 Jan 2024 02:34:58 -0800 (PST)
-Received: from localhost ([122.172.86.168])
-        by smtp.gmail.com with ESMTPSA id ks13-20020a056a004b8d00b006d9b93ca5e2sm1126988pfb.146.2024.01.05.02.34.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jan 2024 02:34:57 -0800 (PST)
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Viresh Kumar <vireshk@kernel.org>,
-	Nishanth Menon <nm@ti.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>,
-	linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	"v5 . 18+" <stable@vger.kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] OPP: Pass rounded rate to _set_opp()
-Date: Fri,  5 Jan 2024 16:04:52 +0530
-Message-Id: <7269c250db1b89cda72ca419b7bd5e37997309d6.1704450876.git.viresh.kumar@linaro.org>
-X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21252C691;
+	Fri,  5 Jan 2024 10:46:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1704451469; x=1705056269; i=linosanfilippo@gmx.de;
+	bh=VlmhTpPZ6/DLSBoKQjVBM78xTc7tFS9bvVMLHu/gujI=;
+	h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:
+	 In-Reply-To;
+	b=ahcWSTWB4+Gg+VaPKht8owHL9Z/qgtVveN2C1ldaiQP9uyj36CNIkFErlWQY7oC7
+	 BSmHlKl0M1A21a3lxdPce5TyHsz5q9qtnO9z2fgbCMS5fbPyfLQzYDmeGbNW04I1X
+	 ZwkwAY/XdxpzHf8z0Gcxl/aowCcRrJwKYgFtkEUWJFMj8IUCHv7p16/nIEPx2uDAn
+	 DXAyt5ztSleSWT2FsjIbJcHjVLYN1Ougr/FDMW6W/JLicIbhsjcEcTneU9ou5aGrQ
+	 lPlndjPJ1xKqc0NNFSOlhTlLx7a8tsRH06AFI45spBvzqu8it0Dfb/JH/tAib0i1r
+	 oZ1G0LJHh5/R1pOi8Q==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.2.37] ([84.162.15.98]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mlf0K-1quebv0qaQ-00inRR; Fri, 05
+ Jan 2024 11:44:29 +0100
+Subject: Re: [PATCH v7 1/7] serial: Do not hold the port lock when setting
+ rx-during-tx GPIO
+To: =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, u.kleine-koenig@pengutronix.de,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, cniedermaier@dh-electronics.com,
+ hugo@hugovil.com, m.brock@vanmierlo.com, LKML
+ <linux-kernel@vger.kernel.org>, linux-serial <linux-serial@vger.kernel.org>,
+ Lukas Wunner <lukas@wunner.de>, p.rosenberger@kunbus.com,
+ stable@vger.kernel.org
+References: <20240103061818.564-1-l.sanfilippo@kunbus.com>
+ <20240103061818.564-2-l.sanfilippo@kunbus.com>
+ <485fbc21-d099-d316-2146-36fef116f894@linux.intel.com>
+From: Lino Sanfilippo <LinoSanfilippo@gmx.de>
+Message-ID: <ddf185b0-1a6e-cace-7dbe-ea48348491d0@gmx.de>
+Date: Fri, 5 Jan 2024 11:44:27 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <485fbc21-d099-d316-2146-36fef116f894@linux.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:cON+uAom9WLCxa7nEVAwB+HD1igo5z8st1aDwqQcTSX3daYFnri
+ hcTsI0tzVWPYUiv/tFud7Foma2G9Utb4yIvQdF8bVLhL22aTEUn9fh++MeWPh+jHhLuQUEe
+ Weiry39N7AuamQ3Qjim6UowZxSs8MIveQkh/mUE76kvcC40tf+VKFXnNNb3O9px+PcBWoIC
+ jmyGqgUxF0hsAqkETFxAA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:YniKicCEILw=;hNp7S56051Ato2JeMjKo75QDS48
+ y05JINy3OJGxV2pazbW0V5XPvlOh2Ft5WSQkDChWkHPrst9YDAOXiMDEz4wDOqmkj7YIewEtd
+ GEqRZQR/AaJ+UL+dg5woKXps8jQbxGrwMPaXjsgam8K8k3i4D5vC0/OYhkJwADi1HPImgV/tr
+ f982zggOdB9fAcMtACjH08CHHnNLfOsidjKl7cKmlWHvfrWHWml93g4aJecTiOqdvLY4aRw+t
+ VXdtzN7XxtoJFST+/SfPgr6nr2Z9kGeOuWq9FawMtpRILRXjYHOTzb8ikcU5Ski92QXoyDi7L
+ vyYjooDcLJao+XBZyCd2ptoo/Snp3woTxwnAecz0ypHFZf/qU6WOpKZRwc8AwLKO6PJajEvAA
+ I2Ppmn8DWHUGLsv/UzaUYaWVF2lrc2N4W4wLlh0WDscD0P8oRlOS1OwmQU/UTzzuoFJoENAiN
+ J0RGczLifvWnwkagERiJ06RVk16uRGsfFEujHRfBiFM9eri8mxJXJfYLZEtnzYogAxH0v0r1S
+ RhsWSa6llRr/quTguqD7CIhBzWE+k2TFHZ6cce6ArHuMp771m+Ti9boDhNewLGz/Elt4k6Lkh
+ GotJ8J68zUcLfDl4AYTwYVYmUcI4cqLv9v4H81ZeqnMBZ4cP7lB3Htk+FR1UA84e94f6LGNbK
+ cUNsEvlbvmKEkCbhHccKSD0OnKgPxxaCI0F8RkYPZ6vda0uzZK756jKFsYn8rt8g/VXnNpPwH
+ VHYiaDjqFIaj8eWMvhzsc0aHYbnCRouOCQGXYft0XNTv3ZrluY7KfdvO4pVER9BQNpDcVawwp
+ 6mdxMOb9J+KDi1TeGk8J7+Pufeb5pw0OYSRuR+2p89bN9V9lj9bmf0wApwdS+MdtMMqbJ15EB
+ XFL1ETteq7nLOdn9ww4ry307Q7uWdjEhRHYcUvmoVrGKVK2d9xqrBzHOn99fX9y+zNNZ/MAXu
+ EdfQv4Huxk3RiZE/QLeT5U0LN10=
 
-The OPP core finds the eventual frequency to set with the help of
-clk_round_rate() and the same was earlier getting passed to _set_opp()
-and that's what would get configured.
+On 03.01.24 at 12:10, Ilpo J=C3=A4rvinen wrote:
+> On Wed, 3 Jan 2024, Lino Sanfilippo wrote:
+>
 
-The commit 1efae8d2e777 ("OPP: Make dev_pm_opp_set_opp() independent of
-frequency") mistakenly changed that. Fix it.
+>> Also with commit c54d48543689 ("serial: stm32: Add support for rs485
+>> RX_DURING_TX output GPIO") the SER_RS485_RX_DURING_TX flag is only set =
+if a
+>> rx-during-tx GPIO is _not_ available, which is wrong. Fix this, too.
+>
+> This doesn't explain why it's wrong and I could figure it out myself
+> either.
+>
 
-Fixes: 1efae8d2e777 ("OPP: Make dev_pm_opp_set_opp() independent of frequency")
-Cc: v5.18+ <stable@vger.kernel.org> # v6.0+
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
----
- drivers/opp/core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Ugh, you are right. I confused some things here. This part of the patch is=
+ completely
+wrong and the concerning code was correct as it was before. I will correct=
+ this patch
+for v8.
 
-diff --git a/drivers/opp/core.c b/drivers/opp/core.c
-index 29f8160c3e38..5e6cfcbd2e87 100644
---- a/drivers/opp/core.c
-+++ b/drivers/opp/core.c
-@@ -1352,12 +1352,12 @@ int dev_pm_opp_set_rate(struct device *dev, unsigned long target_freq)
- 		 * value of the frequency. In such a case, do not abort but
- 		 * configure the hardware to the desired frequency forcefully.
- 		 */
--		forced = opp_table->rate_clk_single != target_freq;
-+		forced = opp_table->rate_clk_single != freq;
- 	}
- 
--	ret = _set_opp(dev, opp_table, opp, &target_freq, forced);
-+	ret = _set_opp(dev, opp_table, opp, &freq, forced);
- 
--	if (target_freq)
-+	if (freq)
- 		dev_pm_opp_put(opp);
- 
- put_opp_table:
--- 
-2.31.1.272.g89b43f80a514
 
+Thanks,
+Lino
 
