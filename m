@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-9862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C0938255C2
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:42:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33CA782558B
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:40:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB4CD1F25E04
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:42:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42AB61C22E4A
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45DD32D7B0;
-	Fri,  5 Jan 2024 14:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A202E3E3;
+	Fri,  5 Jan 2024 14:39:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uY/k9cBA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ueshYNt9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB9F28DDA;
-	Fri,  5 Jan 2024 14:42:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C32C433CB;
-	Fri,  5 Jan 2024 14:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64AE2D051;
+	Fri,  5 Jan 2024 14:39:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B83C433C7;
+	Fri,  5 Jan 2024 14:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465735;
-	bh=ZDbkRMVy0OpHdWe9ozbmfKbuKftfNaNcO07u/rUs4Uk=;
+	s=korg; t=1704465590;
+	bh=JyQvpQ5QY4Ki5CAjqIJz6pzmJzc3ATVF4/dMFbv7198=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uY/k9cBAB4a8Adzr/xqehAeSC6mMvRrpU2WcNge+kbxbz3w5ZP4juQ5lSYBc5YKL9
-	 XHqu58Pvj1EDcEKZQvPYrx+Si6Yn1aG/FPhj27q4zK9wNlQxAjwbXrkmqVqm4SEEr3
-	 FBsMsug+7wlQBpIe20Owu90YiDz2rr27EaXbtAho=
+	b=ueshYNt9GlyrQWdvWRwl1aayFugqzDubpJ9VRkUm6wEEja2+2q4o89IimiWvw7Gei
+	 QGcrcmeVfCcQpyMoggaanmXmhlQf0nMHxNphnN2A9Apkns0HFxDuMzKOt5fEvNuzpY
+	 7YwdlkYohYedx1+xQuXbckXkRrhz4YAwPOzctpTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 4.19 26/41] iio: common: ms_sensors: ms_sensors_i2c: fix humidity conversion time table
-Date: Fri,  5 Jan 2024 15:39:06 +0100
-Message-ID: <20240105143815.067013625@linuxfoundation.org>
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 4.14 20/21] dm-integrity: dont modify bios immutable bio_vec in integrity_metadata()
+Date: Fri,  5 Jan 2024 15:39:07 +0100
+Message-ID: <20240105143812.436516701@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143813.957669139@linuxfoundation.org>
-References: <20240105143813.957669139@linuxfoundation.org>
+In-Reply-To: <20240105143811.536282337@linuxfoundation.org>
+References: <20240105143811.536282337@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,111 +52,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 54cf39ec16335dadbe1ba008d8e5e98dae3e26f8 upstream.
+commit b86f4b790c998afdbc88fe1aa55cfe89c4068726 upstream.
 
-The HTU21 offers 4 sampling frequencies: 20, 40, 70 and 120, which are
-associated to an index that is used to select the right measurement
-resolution and its corresponding measurement time. The current
-implementation selects the measurement resolution and the temperature
-measurement time properly, but it does not select the right humidity
-measurement time in all cases.
+__bio_for_each_segment assumes that the first struct bio_vec argument
+doesn't change - it calls "bio_advance_iter_single((bio), &(iter),
+(bvl).bv_len)" to advance the iterator. Unfortunately, the dm-integrity
+code changes the bio_vec with "bv.bv_len -= pos". When this code path
+is taken, the iterator would be out of sync and dm-integrity would
+report errors. This happens if the machine is out of memory and
+"kmalloc" fails.
 
-In summary, the 40 and 70 humidity measurement times are swapped.
+Fix this bug by making a copy of "bv" and changing the copy instead.
 
-The reason for that is probably the unusual coding for the measurement
-resolution. According to the datasheet, the bits [7,0] of the "user
-register" are used as follows to select the bit resolution:
-
---------------------------------------------------
-| Bit 7 | Bit 0 | RH | Temp | Trh (us) | Tt (us) |
---------------------------------------------------
-|   0   |   0   | 12 |  14  |  16000   |  50000  |
---------------------------------------------------
-|   0   |   1   | 8  |  12  |  3000    |  13000  |
---------------------------------------------------
-|   1   |   0   | 10 |  13  |  5000    |  25000  |
---------------------------------------------------
-|   1   |   1   | 11 |  11  |  8000    |  7000   |
---------------------------------------------------
-*This table is available in the official datasheet, page 13/21. I have
-just appended the times provided in the humidity/temperature tables,
-pages 3/21, 5/21. Note that always a pair of resolutions is selected.
-
-The sampling frequencies [20, 40, 70, 120] are assigned to a linear
-index [0..3] which is then coded as follows [1]:
-
-Index    [7,0]
---------------
-idx 0     0,0
-idx 1     1,0
-idx 2     0,1
-idx 3     1,1
-
-That is done that way because the temperature measurements are being
-used as the reference for the sampling frequency (the frequencies and
-the temperature measurement times are correlated), so increasing the
-index always reduces the temperature measurement time and its
-resolution. Therefore, the temperature measurement time array is as
-simple as [50000, 25000, 13000, 7000]
-
-On the other hand, the humidity resolution cannot follow the same
-pattern because of the way it is coded in the "user register", where
-both resolutions are selected at the same time. The humidity measurement
-time array is the following: [16000, 3000, 5000, 8000], which defines
-the following assignments:
-
-Index    [7,0]    Trh
------------------------
-idx 0     0,0     16000  -> right, [0,0] selects 12 bits (Trh = 16000)
-idx 1     1,0     3000   -> wrong! [1,0] selects 10 bits (Trh = 5000)
-idx 2     0,1     5000   -> wrong! [0,1] selects 8 bits (Trh = 3000)
-idx 3     1,1     8000   -> right, [1,1] selects 11 bits (Trh = 8000)
-
-The times have been ordered as if idx = 1 -> [0,1] and idx = 2 -> [1,0],
-which is not the case for the reason explained above.
-
-So a simple modification is required to obtain the right humidity
-measurement time array, swapping the values in the positions 1 and 2.
-
-The right table should be the following: [16000, 5000, 3000, 8000]
-
-Fix the humidity measurement time array with the right idex/value
-coding.
-
-[1] The actual code that makes this coding and assigns it to the current
-value of the "user register" is the following:
-config_reg &= 0x7E;
-config_reg |= ((i & 1) << 7) + ((i & 2) >> 1);
-
-Fixes: d574a87cc311 ("Add meas-spec sensors common part")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20231026-topic-htu21_conversion_time-v1-1-bd257dc44209@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 7eada909bfd7 ("dm: add integrity target")
+Cc: stable@vger.kernel.org	# v4.12+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/common/ms_sensors/ms_sensors_i2c.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/dm-integrity.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
-+++ b/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
-@@ -16,8 +16,8 @@
- /* Conversion times in us */
- static const u16 ms_sensors_ht_t_conversion_time[] = { 50000, 25000,
- 						       13000, 7000 };
--static const u16 ms_sensors_ht_h_conversion_time[] = { 16000, 3000,
--						       5000, 8000 };
-+static const u16 ms_sensors_ht_h_conversion_time[] = { 16000, 5000,
-+						       3000, 8000 };
- static const u16 ms_sensors_tp_conversion_time[] = { 500, 1100, 2100,
- 						     4100, 8220, 16440 };
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -1257,11 +1257,12 @@ static void integrity_metadata(struct wo
+ 			checksums = checksums_onstack;
  
+ 		__bio_for_each_segment(bv, bio, iter, dio->orig_bi_iter) {
++			struct bio_vec bv_copy = bv;
+ 			unsigned pos;
+ 			char *mem, *checksums_ptr;
+ 
+ again:
+-			mem = (char *)kmap_atomic(bv.bv_page) + bv.bv_offset;
++			mem = (char *)kmap_atomic(bv_copy.bv_page) + bv_copy.bv_offset;
+ 			pos = 0;
+ 			checksums_ptr = checksums;
+ 			do {
+@@ -1270,7 +1271,7 @@ again:
+ 				sectors_to_process -= ic->sectors_per_block;
+ 				pos += ic->sectors_per_block << SECTOR_SHIFT;
+ 				sector += ic->sectors_per_block;
+-			} while (pos < bv.bv_len && sectors_to_process && checksums != checksums_onstack);
++			} while (pos < bv_copy.bv_len && sectors_to_process && checksums != checksums_onstack);
+ 			kunmap_atomic(mem);
+ 
+ 			r = dm_integrity_rw_tag(ic, checksums, &dio->metadata_block, &dio->metadata_offset,
+@@ -1290,9 +1291,9 @@ again:
+ 			if (!sectors_to_process)
+ 				break;
+ 
+-			if (unlikely(pos < bv.bv_len)) {
+-				bv.bv_offset += pos;
+-				bv.bv_len -= pos;
++			if (unlikely(pos < bv_copy.bv_len)) {
++				bv_copy.bv_offset += pos;
++				bv_copy.bv_len -= pos;
+ 				goto again;
+ 			}
+ 		}
 
 
 
