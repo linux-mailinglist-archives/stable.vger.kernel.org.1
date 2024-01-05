@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-9759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE018250C0
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 10:22:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29D9D8250BF
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 10:22:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64BE31C22BA5
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 09:22:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC4831F26C5E
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 09:22:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72E133C3F;
-	Fri,  5 Jan 2024 09:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B546E22F17;
+	Fri,  5 Jan 2024 09:22:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uY7rVVUa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBVeyWh2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1F022F0F
-	for <stable@vger.kernel.org>; Fri,  5 Jan 2024 09:22:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70020C433C7;
-	Fri,  5 Jan 2024 09:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F11822EF0
+	for <stable@vger.kernel.org>; Fri,  5 Jan 2024 09:22:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAA0FC433C7;
+	Fri,  5 Jan 2024 09:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704446561;
-	bh=WdJjBhxDJewLPN0o255p11ZaA0nw/OuOk+yCRknRg2Y=;
+	s=korg; t=1704446559;
+	bh=SfhL+eu0wn+gHO08cV2L/bVluW+KBAQj1WZKPl4AVu0=;
 	h=Subject:To:From:Date:From;
-	b=uY7rVVUaIIDbGn32qIC5ugRcZlNKPCI2ceaI5efHy7DbSaTTzXkFV7hPLmeLsXLvm
-	 7sKpyuyKOUoMv8Ck0qnvvfr41UD3/XCrl02MqcVs3Fi81WzEfYMxtkctC0o1p2Zzwj
-	 Q+dN7NdZchJCtBoPu5IJwMaNTgJ+Y3F7CFrOdaVc=
-Subject: patch "serial: omap: do not override settings for RS485 support" added to tty-next
-To: l.sanfilippo@kunbus.com,gregkh@linuxfoundation.org,ilpo.jarvinen@linux.intel.com,stable@vger.kernel.org
+	b=eBVeyWh2l+wgDZ+YaHSIalCK7KF+I+FVMRAYXLTiFLieUFJGFEpbiWmOQCbB9JL9W
+	 6kl/2WLFMhtfi8PJ+bXnG8kuos4JyRDv6hlbNTIAEyzYShvXA1f5gjmr3zGnkntr75
+	 IDIduR2Noh61jxDMRBr+wGOwOFc+/t3LLK+66DOY=
+Subject: patch "usb: dwc: ep0: Update request status in dwc3_ep0_stall_restart" added to usb-next
+To: quic_uaggarwa@quicinc.com,gregkh@linuxfoundation.org,stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
 Date: Fri, 05 Jan 2024 10:21:51 +0100
-Message-ID: <2024010550-scanner-unfilled-592e@gregkh>
+Message-ID: <2024010551-marina-reveal-679b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
 This is a note to let you know that I've just added the patch titled
 
-    serial: omap: do not override settings for RS485 support
+    usb: dwc: ep0: Update request status in dwc3_ep0_stall_restart
 
-to my tty git tree which can be found at
-    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git
-in the tty-next branch.
+to my usb git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
+in the usb-next branch.
 
 The patch will show up in the next release of the linux-next tree
 (usually sometime within the next 24 hours during the week.)
@@ -61,108 +61,61 @@ during the merge window.
 If you have any questions about this process, please let me know.
 
 
-From 51f93776b84dee23e44a7be880736669a01cec2b Mon Sep 17 00:00:00 2001
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Date: Wed, 3 Jan 2024 07:18:17 +0100
-Subject: serial: omap: do not override settings for RS485 support
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From e9d40b215e38480fd94c66b06d79045717a59e9c Mon Sep 17 00:00:00 2001
+From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Date: Fri, 22 Dec 2023 15:17:04 +0530
+Subject: usb: dwc: ep0: Update request status in dwc3_ep0_stall_restart
 
-The drivers RS485 support is deactivated if there is no RTS GPIO available.
-This is done by nullifying the ports rs485_supported struct. After that
-however the settings in serial_omap_rs485_supported are assigned to the
-same structure unconditionally, which results in an unintended reactivation
-of RS485 support.
+Current implementation blocks the running operations when Plug-out and
+Plug-In is performed continuously, process gets stuck in
+dwc3_thread_interrupt().
 
-Fix this by moving the assignment to the beginning of
-serial_omap_probe_rs485() and thus before uart_get_rs485_mode() gets
-called.
+Code Flow:
 
-Also replace the assignment of rs485_config() to have the complete RS485
-setup in one function.
+	CPU1
 
-Fixes: e2752ae3cfc9 ("serial: omap: Disallow RS-485 if rts-gpio is not specified")
+	->Gadget_start
+	->dwc3_interrupt
+	->dwc3_thread_interrupt
+	->dwc3_process_event_buf
+	->dwc3_process_event_entry
+	->dwc3_endpoint_interrupt
+	->dwc3_ep0_interrupt
+	->dwc3_ep0_inspect_setup
+	->dwc3_ep0_stall_and_restart
+
+By this time if pending_list is not empty, it will get the next request
+on the given list and calls dwc3_gadget_giveback which will unmap request
+and call its complete() callback to notify upper layers that it has
+completed. Currently dwc3_gadget_giveback status is set to -ECONNRESET,
+whereas it should be -ESHUTDOWN based on condition if not dwc->connected
+is true.
+
 Cc:  <stable@vger.kernel.org>
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240103061818.564-7-l.sanfilippo@kunbus.com
+Fixes: d742220b3577 ("usb: dwc3: ep0: giveback requests on stall_and_restart")
+Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Link: https://lore.kernel.org/r/20231222094704.20276-1-quic_uaggarwa@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/omap-serial.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
+ drivers/usb/dwc3/ep0.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/omap-serial.c b/drivers/tty/serial/omap-serial.c
-index 730755621879..f5a0b401af63 100644
---- a/drivers/tty/serial/omap-serial.c
-+++ b/drivers/tty/serial/omap-serial.c
-@@ -1483,6 +1483,13 @@ static struct omap_uart_port_info *of_get_uart_port_info(struct device *dev)
- 	return omap_up_info;
- }
+diff --git a/drivers/usb/dwc3/ep0.c b/drivers/usb/dwc3/ep0.c
+index b94243237293..6ae8a36f21cf 100644
+--- a/drivers/usb/dwc3/ep0.c
++++ b/drivers/usb/dwc3/ep0.c
+@@ -238,7 +238,10 @@ void dwc3_ep0_stall_and_restart(struct dwc3 *dwc)
+ 		struct dwc3_request	*req;
  
-+static const struct serial_rs485 serial_omap_rs485_supported = {
-+	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RTS_AFTER_SEND |
-+		 SER_RS485_RX_DURING_TX,
-+	.delay_rts_before_send = 1,
-+	.delay_rts_after_send = 1,
-+};
-+
- static int serial_omap_probe_rs485(struct uart_omap_port *up,
- 				   struct device *dev)
- {
-@@ -1497,6 +1504,9 @@ static int serial_omap_probe_rs485(struct uart_omap_port *up,
- 	if (!np)
- 		return 0;
- 
-+	up->port.rs485_config = serial_omap_config_rs485;
-+	up->port.rs485_supported = serial_omap_rs485_supported;
-+
- 	ret = uart_get_rs485_mode(&up->port);
- 	if (ret)
- 		return ret;
-@@ -1531,13 +1541,6 @@ static int serial_omap_probe_rs485(struct uart_omap_port *up,
- 	return 0;
- }
- 
--static const struct serial_rs485 serial_omap_rs485_supported = {
--	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RTS_AFTER_SEND |
--		 SER_RS485_RX_DURING_TX,
--	.delay_rts_before_send = 1,
--	.delay_rts_after_send = 1,
--};
--
- static int serial_omap_probe(struct platform_device *pdev)
- {
- 	struct omap_uart_port_info *omap_up_info = dev_get_platdata(&pdev->dev);
-@@ -1604,17 +1607,11 @@ static int serial_omap_probe(struct platform_device *pdev)
- 		dev_info(up->port.dev, "no wakeirq for uart%d\n",
- 			 up->port.line);
- 
--	ret = serial_omap_probe_rs485(up, &pdev->dev);
--	if (ret < 0)
--		goto err_rs485;
--
- 	sprintf(up->name, "OMAP UART%d", up->port.line);
- 	up->port.mapbase = mem->start;
- 	up->port.membase = base;
- 	up->port.flags = omap_up_info->flags;
- 	up->port.uartclk = omap_up_info->uartclk;
--	up->port.rs485_config = serial_omap_config_rs485;
--	up->port.rs485_supported = serial_omap_rs485_supported;
- 	if (!up->port.uartclk) {
- 		up->port.uartclk = DEFAULT_CLK_SPEED;
- 		dev_warn(&pdev->dev,
-@@ -1622,6 +1619,10 @@ static int serial_omap_probe(struct platform_device *pdev)
- 			 DEFAULT_CLK_SPEED);
+ 		req = next_request(&dep->pending_list);
+-		dwc3_gadget_giveback(dep, req, -ECONNRESET);
++		if (!dwc->connected)
++			dwc3_gadget_giveback(dep, req, -ESHUTDOWN);
++		else
++			dwc3_gadget_giveback(dep, req, -ECONNRESET);
  	}
  
-+	ret = serial_omap_probe_rs485(up, &pdev->dev);
-+	if (ret < 0)
-+		goto err_rs485;
-+
- 	up->latency = PM_QOS_CPU_LATENCY_DEFAULT_VALUE;
- 	up->calc_latency = PM_QOS_CPU_LATENCY_DEFAULT_VALUE;
- 	cpu_latency_qos_add_request(&up->pm_qos_request, up->latency);
+ 	dwc->eps[0]->trb_enqueue = 0;
 -- 
 2.43.0
 
