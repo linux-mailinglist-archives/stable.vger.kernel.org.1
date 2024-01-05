@@ -1,144 +1,120 @@
-Return-Path: <stable+bounces-9924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E22C0825B77
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 21:17:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 928C3825BD8
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 21:43:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 975EB1F23E7A
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 20:17:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B91211C2362B
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 20:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE9736087;
-	Fri,  5 Jan 2024 20:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6264620327;
+	Fri,  5 Jan 2024 20:40:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tesarici.cz header.i=@tesarici.cz header.b="Fcelzq8i"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="StVccSeM"
 X-Original-To: stable@vger.kernel.org
-Received: from bee.tesarici.cz (bee.tesarici.cz [77.93.223.253])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149E636084;
-	Fri,  5 Jan 2024 20:16:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tesarici.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tesarici.cz
-Received: from meshulam.tesarici.cz (dynamic-2a00-1028-83b8-1e7a-4427-cc85-6706-c595.ipv6.o2.cz [IPv6:2a00:1028:83b8:1e7a:4427:cc85:6706:c595])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by bee.tesarici.cz (Postfix) with ESMTPSA id 5B37B1A7F5E;
-	Fri,  5 Jan 2024 21:16:49 +0100 (CET)
-Authentication-Results: mail.tesarici.cz; dmarc=fail (p=none dis=none) header.from=tesarici.cz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tesarici.cz; s=mail;
-	t=1704485809; bh=Rgie3y1MCVWz4iJXdc7cU/di9Mv+ALEzEsBSdqdhNZ0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Fcelzq8iCxuzuPQK2zfETAdbIYvpguj11nigdMnDb43//ZQ3LSntwKkp2WJJlVU8E
-	 2VBewJoE5nfMlabQYoEk0CCoHZgTdwuVhGzC4KKZBjGIck8XRhUxDGVCvn77NpCMF4
-	 fZpSLE/UQjaWWydS7PN0cnDr2QB7HZcE8IKKaiI8w4l46YBr4JPMI1zAxA5a+FCJm9
-	 7YFebuleq0hQCvv8/YCQxGw4Fq1lmevpJGqtbckxfagIbynmgqGeMZLzG5UCSi8xYj
-	 b5KUjuZ7nEtlYoMSOIILglPzeMBUU18af5teEJh180+wp9OhwZe6kUm9vVKc3hDZ0d
-	 WJc3SWuu84+Hg==
-From: Petr Tesarik <petr@tesarici.cz>
-To: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	netdev@vger.kernel.org (open list:STMMAC ETHERNET DRIVER),
-	linux-stm32@st-md-mailman.stormreply.com (moderated list:ARM/STM32 ARCHITECTURE),
-	linux-arm-kernel@lists.infradead.org (moderated list:ARM/STM32 ARCHITECTURE),
-	linux-kernel@vger.kernel.org (open list)
-Cc: Petr Tesarik <petr@tesarici.cz>,
-	stable@vger.kernel.org
-Subject: [PATCH net] net: stmmac: fix ethtool per-queue  statistics
-Date: Fri,  5 Jan 2024 21:16:42 +0100
-Message-ID: <20240105201642.30904-1-petr@tesarici.cz>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D112030C;
+	Fri,  5 Jan 2024 20:40:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D83731BF206;
+	Fri,  5 Jan 2024 20:39:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1704487200;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ErApUWVCi+t5EtS/F6eodB58nXznfuCF4fRAcU35LiQ=;
+	b=StVccSeMOUQyEl95dqXt75Cd1mmJtZNf6TXqNpwA3nmd5WN6F9QAGxgQiIYPGqo2p3Zunz
+	57Mwo5aoB+xRNkOimOAW5pbSqPbb0prQfbBmwL4HfbOYODYr3olDjbGhVGfh6AQFYrwIAv
+	xlnDg8ZSW2+LJpj+xHqxHVIjhMIuB2JXISrDaIK9JY6KLbrs+qJrEqRtrw4Oojvrgfgd2y
+	LAhgXSwfxIvzOtxymLJ0kMbiKSq/LMBAK5YbXf0Z8tzKipEoaQ0Xqkw60dSdM8Xn4DbH5q
+	iyqPfamvQD+joknJo5xhbUaU1aBCD3DBvIUGe5KPQqUWv0Acav8nPLsd7zZ40A==
+Message-ID: <26e9b0a8-158c-45b3-b724-616287d36e58@bootlin.com>
+Date: Fri, 5 Jan 2024 21:39:58 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4.14 00/21] 4.14.335-rc1 review
+Content-Language: en-US
+To: =?UTF-8?Q?Daniel_D=C3=ADaz?= <daniel.diaz@linaro.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, liujian56@huawei.com
+References: <20240105143811.536282337@linuxfoundation.org>
+ <2948beff-a9f6-42b2-8bfb-534ec9188de6@linaro.org>
+From: =?UTF-8?Q?Alexis_Lothor=C3=A9?= <alexis.lothore@bootlin.com>
+In-Reply-To: <2948beff-a9f6-42b2-8bfb-534ec9188de6@linaro.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-GND-Sasl: alexis.lothore@bootlin.com
 
-Fix per-queue statistics for devices with more than one queue.
+Hello,
 
-The output data pointer is currently reset in each loop iteration,
-effectively summing all queue statistics in the first four u64 values.
+On 1/5/24 18:13, Daniel Díaz wrote:
+> Hello!
+> 
+> On 05/01/24 8:38 a. m., Greg Kroah-Hartman wrote:
 
-The summary values are not even labeled correctly. For example, if eth0 has
-2 queues, ethtool -S eth0 shows:
+[...]
 
-     q0_tx_pkt_n: 374 (actually tx_pkt_n over all queues)
-     q0_tx_irq_n: 23  (actually tx_normal_irq_n over all queues)
-     q1_tx_pkt_n: 462 (actually rx_pkt_n over all queues)
-     q1_tx_irq_n: 446 (actually rx_normal_irq_n over all queues)
-     q0_rx_pkt_n: 0
-     q0_rx_irq_n: 0
-     q1_rx_pkt_n: 0
-     q1_rx_irq_n: 0
+> Failure looks like this:
+> 
+> -----8<-----
+>   /builds/linux/drivers/pinctrl/pinctrl-at91-pio4.c: In function
+> 'atmel_pinctrl_probe':
+>   /builds/linux/drivers/pinctrl/pinctrl-at91-pio4.c:1054:3: error: too many
+> arguments to function 'irq_set_lockdep_class'
+>      irq_set_lockdep_class(irq, &atmel_lock_key, &atmel_request_key);
+>      ^~~~~~~~~~~~~~~~~~~~~
+>   In file included from /builds/linux/include/linux/irq.h:517,
+>                    from /builds/linux/include/linux/gpio/driver.h:7,
+>                    from /builds/linux/drivers/pinctrl/pinctrl-at91-pio4.c:18:
+>   /builds/linux/include/linux/irqdesc.h:250:1: note: declared here
+>    irq_set_lockdep_class(unsigned int irq, struct lock_class_key *class)
+>    ^~~~~~~~~~~~~~~~~~~~~
+>   make[3]: *** [/builds/linux/scripts/Makefile.build:330:
+> drivers/pinctrl/pinctrl-at91-pio4.o] Error 1
+> ----->8-----
+> 
+> Bisection points to:
+> 
+>   commit 6c47537ba008b3affe99360f65592ff5b797818f
+>   Author: Alexis Lothoré <alexis.lothore@bootlin.com>
+>   Date:   Fri Dec 15 22:34:24 2023 +0100
+> 
+>       pinctrl: at91-pio4: use dedicated lock class for IRQ
+>             [ Upstream commit 14694179e561b5f2f7e56a0f590e2cb49a9cc7ab ]
 
-Fixes: 133466c3bbe1 ("net: stmmac: use per-queue 64 bit statistics where necessary")
-Cc: stable@vger.kernel.org
-Signed-off-by: Petr Tesarik <petr@tesarici.cz>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+This fails because linux-4.14.y is older than 39c3fd58952d: kernel/irq: Extend
+lockdep class for request mutex, which updates irq_set_lockdep_class API.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-index f628411ae4ae..112a36a698f1 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-@@ -543,15 +543,12 @@ static void stmmac_get_per_qstats(struct stmmac_priv *priv, u64 *data)
- 	u32 rx_cnt = priv->plat->rx_queues_to_use;
- 	unsigned int start;
- 	int q, stat;
--	u64 *pos;
- 	char *p;
- 
--	pos = data;
- 	for (q = 0; q < tx_cnt; q++) {
- 		struct stmmac_txq_stats *txq_stats = &priv->xstats.txq_stats[q];
- 		struct stmmac_txq_stats snapshot;
- 
--		data = pos;
- 		do {
- 			start = u64_stats_fetch_begin(&txq_stats->syncp);
- 			snapshot = *txq_stats;
-@@ -559,17 +556,15 @@ static void stmmac_get_per_qstats(struct stmmac_priv *priv, u64 *data)
- 
- 		p = (char *)&snapshot + offsetof(struct stmmac_txq_stats, tx_pkt_n);
- 		for (stat = 0; stat < STMMAC_TXQ_STATS; stat++) {
--			*data++ += (*(u64 *)p);
-+			*data++ = (*(u64 *)p);
- 			p += sizeof(u64);
- 		}
- 	}
- 
--	pos = data;
- 	for (q = 0; q < rx_cnt; q++) {
- 		struct stmmac_rxq_stats *rxq_stats = &priv->xstats.rxq_stats[q];
- 		struct stmmac_rxq_stats snapshot;
- 
--		data = pos;
- 		do {
- 			start = u64_stats_fetch_begin(&rxq_stats->syncp);
- 			snapshot = *rxq_stats;
-@@ -577,7 +572,7 @@ static void stmmac_get_per_qstats(struct stmmac_priv *priv, u64 *data)
- 
- 		p = (char *)&snapshot + offsetof(struct stmmac_rxq_stats, rx_pkt_n);
- 		for (stat = 0; stat < STMMAC_RXQ_STATS; stat++) {
--			*data++ += (*(u64 *)p);
-+			*data++ = (*(u64 *)p);
- 			p += sizeof(u64);
- 		}
- 	}
+Looking at irq_set_lockdep_class update patch, what appears to be a simple fix is
+to simply remove the last parameter from irq_set_lockdep_class call in
+pinctrl-at91-pio4.c, but I am not even sure if the fix remains legitimate in this
+case (ie if the corresponding lockdep splat reappears), and I do not have access
+to corresponding hardware before the deadline, so if that's not already the plan,
+I suggest to drop this from 4.14 branch.
+
+Alexis
+
 -- 
-2.43.0
+Alexis Lothoré, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
