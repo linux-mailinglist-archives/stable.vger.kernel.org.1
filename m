@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-9849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E4168255B4
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:41:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7708C8255D9
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:43:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 209351F25860
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:41:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07826286028
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:43:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03AA52DF87;
-	Fri,  5 Jan 2024 14:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC072D634;
+	Fri,  5 Jan 2024 14:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tI/mc/pt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uvN15kqr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11C32D051;
-	Fri,  5 Jan 2024 14:41:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42CB4C433C8;
-	Fri,  5 Jan 2024 14:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B3E18EB7;
+	Fri,  5 Jan 2024 14:43:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D3BC433C7;
+	Fri,  5 Jan 2024 14:43:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465700;
-	bh=MJjy85CmaJX7aUWkqvBNbzfaVeJ4QXEbTeZIO3ZM0/w=;
+	s=korg; t=1704465799;
+	bh=q6v8o89sqYBPymzDfIir+/ml6g+SzCr37qBBCfB3UMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tI/mc/pt0AkwphYV+JNbHjWziXYlPUZwJuyuvLy/CQGpAEBcYEgG0gdUEl8DL7HwO
-	 Qdopzeg6tRdzcrxdq2LrbHGevrVM0fH/ben9S0gSD1mD/hPaIIRyTnIL3Usb32iYMK
-	 gNu2kFhCeZb68z8gQ+dNKBiFF0HIwPev++qLBP44=
+	b=uvN15kqrOIXHeXGg5t2Y3s81X7SLLWNb8TJUK/Eynj/zLsfJ1xadPGEgbKIEQCG4r
+	 a1mxnTadbO/BmI6usdufSquKBsE4kyUYGEW0ZhOZjyMucWvnGDxCs0CX068rmrnAEx
+	 mLHECK5u1bxBVsHL9YP7ibBSA78yJNe1thnr991M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Drew Fustini <drew@beagleboard.org>,
-	Tony Lindgren <tony@atomide.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Fabian Godehardt <fg@emlix.com>
-Subject: [PATCH 4.19 37/41] usb: musb: fix MUSB_QUIRK_B_DISCONNECT_99 handling
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.4 30/47] iio: common: ms_sensors: ms_sensors_i2c: fix humidity conversion time table
 Date: Fri,  5 Jan 2024 15:39:17 +0100
-Message-ID: <20240105143815.450392539@linuxfoundation.org>
+Message-ID: <20240105143816.721190143@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143813.957669139@linuxfoundation.org>
-References: <20240105143813.957669139@linuxfoundation.org>
+In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
+References: <20240105143815.541462991@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,65 +53,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-commit b65ba0c362be665192381cc59e3ac3ef6f0dd1e1 upstream.
+commit 54cf39ec16335dadbe1ba008d8e5e98dae3e26f8 upstream.
 
-In commit 92af4fc6ec33 ("usb: musb: Fix suspend with devices
-connected for a64"), the logic to support the
-MUSB_QUIRK_B_DISCONNECT_99 quirk was modified to only conditionally
-schedule the musb->irq_work delayed work.
+The HTU21 offers 4 sampling frequencies: 20, 40, 70 and 120, which are
+associated to an index that is used to select the right measurement
+resolution and its corresponding measurement time. The current
+implementation selects the measurement resolution and the temperature
+measurement time properly, but it does not select the right humidity
+measurement time in all cases.
 
-This commit badly breaks ECM Gadget on AM335X. Indeed, with this
-commit, one can observe massive packet loss:
+In summary, the 40 and 70 humidity measurement times are swapped.
 
-$ ping 192.168.0.100
-...
-15 packets transmitted, 3 received, 80% packet loss, time 14316ms
+The reason for that is probably the unusual coding for the measurement
+resolution. According to the datasheet, the bits [7,0] of the "user
+register" are used as follows to select the bit resolution:
 
-Reverting this commit brings back a properly functioning ECM
-Gadget. An analysis of the commit seems to indicate that a mistake was
-made: the previous code was not falling through into the
-MUSB_QUIRK_B_INVALID_VBUS_91, but now it is, unless the condition is
-taken.
+--------------------------------------------------
+| Bit 7 | Bit 0 | RH | Temp | Trh (us) | Tt (us) |
+--------------------------------------------------
+|   0   |   0   | 12 |  14  |  16000   |  50000  |
+--------------------------------------------------
+|   0   |   1   | 8  |  12  |  3000    |  13000  |
+--------------------------------------------------
+|   1   |   0   | 10 |  13  |  5000    |  25000  |
+--------------------------------------------------
+|   1   |   1   | 11 |  11  |  8000    |  7000   |
+--------------------------------------------------
+*This table is available in the official datasheet, page 13/21. I have
+just appended the times provided in the humidity/temperature tables,
+pages 3/21, 5/21. Note that always a pair of resolutions is selected.
 
-Changing the logic to be as it was before the problematic commit *and*
-only conditionally scheduling musb->irq_work resolves the regression:
+The sampling frequencies [20, 40, 70, 120] are assigned to a linear
+index [0..3] which is then coded as follows [1]:
 
-$ ping 192.168.0.100
-...
-64 packets transmitted, 64 received, 0% packet loss, time 64475ms
+Index    [7,0]
+--------------
+idx 0     0,0
+idx 1     1,0
+idx 2     0,1
+idx 3     1,1
 
-Fixes: 92af4fc6ec33 ("usb: musb: Fix suspend with devices connected for a64")
-Cc: stable@vger.kernel.org
-Tested-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Tested-by: Drew Fustini <drew@beagleboard.org>
-Acked-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Link: https://lore.kernel.org/r/20210528140446.278076-1-thomas.petazzoni@bootlin.com
-Signed-off-by: Fabian Godehardt <fg@emlix.com>
+That is done that way because the temperature measurements are being
+used as the reference for the sampling frequency (the frequencies and
+the temperature measurement times are correlated), so increasing the
+index always reduces the temperature measurement time and its
+resolution. Therefore, the temperature measurement time array is as
+simple as [50000, 25000, 13000, 7000]
+
+On the other hand, the humidity resolution cannot follow the same
+pattern because of the way it is coded in the "user register", where
+both resolutions are selected at the same time. The humidity measurement
+time array is the following: [16000, 3000, 5000, 8000], which defines
+the following assignments:
+
+Index    [7,0]    Trh
+-----------------------
+idx 0     0,0     16000  -> right, [0,0] selects 12 bits (Trh = 16000)
+idx 1     1,0     3000   -> wrong! [1,0] selects 10 bits (Trh = 5000)
+idx 2     0,1     5000   -> wrong! [0,1] selects 8 bits (Trh = 3000)
+idx 3     1,1     8000   -> right, [1,1] selects 11 bits (Trh = 8000)
+
+The times have been ordered as if idx = 1 -> [0,1] and idx = 2 -> [1,0],
+which is not the case for the reason explained above.
+
+So a simple modification is required to obtain the right humidity
+measurement time array, swapping the values in the positions 1 and 2.
+
+The right table should be the following: [16000, 5000, 3000, 8000]
+
+Fix the humidity measurement time array with the right idex/value
+coding.
+
+[1] The actual code that makes this coding and assigns it to the current
+value of the "user register" is the following:
+config_reg &= 0x7E;
+config_reg |= ((i & 1) << 7) + ((i & 2) >> 1);
+
+Fixes: d574a87cc311 ("Add meas-spec sensors common part")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://lore.kernel.org/r/20231026-topic-htu21_conversion_time-v1-1-bd257dc44209@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/musb/musb_core.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/iio/common/ms_sensors/ms_sensors_i2c.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/musb/musb_core.c
-+++ b/drivers/usb/musb/musb_core.c
-@@ -1873,9 +1873,8 @@ static void musb_pm_runtime_check_sessio
- 			schedule_delayed_work(&musb->irq_work,
- 					      msecs_to_jiffies(1000));
- 			musb->quirk_retries--;
--			break;
- 		}
--		/* fall through */
-+		break;
- 	case MUSB_QUIRK_B_INVALID_VBUS_91:
- 		if (musb->quirk_retries && !musb->flush_irq_work) {
- 			musb_dbg(musb,
+--- a/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
++++ b/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
+@@ -15,8 +15,8 @@
+ /* Conversion times in us */
+ static const u16 ms_sensors_ht_t_conversion_time[] = { 50000, 25000,
+ 						       13000, 7000 };
+-static const u16 ms_sensors_ht_h_conversion_time[] = { 16000, 3000,
+-						       5000, 8000 };
++static const u16 ms_sensors_ht_h_conversion_time[] = { 16000, 5000,
++						       3000, 8000 };
+ static const u16 ms_sensors_tp_conversion_time[] = { 500, 1100, 2100,
+ 						     4100, 8220, 16440 };
+ 
 
 
 
