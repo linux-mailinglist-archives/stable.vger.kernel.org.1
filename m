@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-9819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79DBD825594
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:40:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19AD582559E
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:41:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95DAF1C22E4A
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:40:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2F1C1F23FA0
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33562E3E4;
-	Fri,  5 Jan 2024 14:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB8E2D634;
+	Fri,  5 Jan 2024 14:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MeU9hszX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hWQdkRX5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7917C2D7AD;
-	Fri,  5 Jan 2024 14:40:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825A3C433C7;
-	Fri,  5 Jan 2024 14:40:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7C62E638;
+	Fri,  5 Jan 2024 14:40:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05049C433C8;
+	Fri,  5 Jan 2024 14:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465618;
-	bh=d63hlrZztnknIrZNtXDmFi6t6yXI2M7o0+ibVQHmjcs=;
+	s=korg; t=1704465643;
+	bh=CGd2At35d5zMsWtNGdRJFziR2O1QfB6oa0AdJAprJbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MeU9hszXgna6bfm/Yid6t7AFjLX0qBsJ2XCriUbD9/NdMkbEDxSi5IOwAtj2+54GT
-	 fvzoUZY3oMcMwtHvKhchu3a+K0Z8P2/TANHZ+TT3Mj30bwLHY5CEk6S9JNahim16Tp
-	 OXehkZ5aaTWYtM3LRvumVZ5+FhpN3H1JciIrn/n0=
+	b=hWQdkRX5tlcEMalgFcnwDRVDNiQ7TaCYh4HrKQVQCqFMBtKFpGjwDcYr4zDYEnivP
+	 rkCxm3uPKUaN9+l5toDzCsTyoHKisFucP0sBHY/mCNldacm3OjOWwav0kBs1qJ9Wma
+	 lBtSgT3V4sg2QOsz6i3OTfQ1ipLH0s+DvIBBt5bI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	David Howells <dhowells@redhat.com>,
+	Markus Suvanto <markus.suvanto@gmail.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 08/21] iio: imu: inv_mpu6050: fix an error code problem in inv_mpu6050_read_raw
-Date: Fri,  5 Jan 2024 15:38:55 +0100
-Message-ID: <20240105143811.923411203@linuxfoundation.org>
+Subject: [PATCH 4.19 16/41] afs: Fix the dynamic roots d_delete to always delete unused dentries
+Date: Fri,  5 Jan 2024 15:38:56 +0100
+Message-ID: <20240105143814.662924635@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143811.536282337@linuxfoundation.org>
-References: <20240105143811.536282337@linuxfoundation.org>
+In-Reply-To: <20240105143813.957669139@linuxfoundation.org>
+References: <20240105143813.957669139@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,46 +55,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit c3df0e29fb7788c4b3ddf37d5ed87dda2b822943 ]
+[ Upstream commit 71f8b55bc30e82d6355e07811213d847981a32e2 ]
 
-inv_mpu6050_sensor_show() can return -EINVAL or IIO_VAL_INT. Return the
-true value rather than only return IIO_VAL_INT.
+Fix the afs dynamic root's d_delete function to always delete unused
+dentries rather than only deleting them if they're positive.  With things
+as they stand upstream, negative dentries stemming from failed DNS lookups
+stick around preventing retries.
 
-Fixes: d5098447147c ("iio: imu: mpu6050: add calibration offset support")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20231030020218.65728-1-suhui@nfschina.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 66c7e1d319a5 ("afs: Split the dynroot stuff out and give it its own ops tables")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Tested-by: Markus Suvanto <markus.suvanto@gmail.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/afs/dynroot.c | 13 +------------
+ 1 file changed, 1 insertion(+), 12 deletions(-)
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-index 44830bce13dfe..689dfd1ef98b4 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-@@ -421,13 +421,13 @@ inv_mpu6050_read_raw(struct iio_dev *indio_dev,
- 			ret = inv_mpu6050_sensor_show(st, st->reg->gyro_offset,
- 						chan->channel2, val);
- 			mutex_unlock(&st->lock);
--			return IIO_VAL_INT;
-+			return ret;
- 		case IIO_ACCEL:
- 			mutex_lock(&st->lock);
- 			ret = inv_mpu6050_sensor_show(st, st->reg->accl_offset,
- 						chan->channel2, val);
- 			mutex_unlock(&st->lock);
--			return IIO_VAL_INT;
-+			return ret;
+diff --git a/fs/afs/dynroot.c b/fs/afs/dynroot.c
+index fc6c42eeb659c..ff21ce511f47c 100644
+--- a/fs/afs/dynroot.c
++++ b/fs/afs/dynroot.c
+@@ -172,20 +172,9 @@ static int afs_dynroot_d_revalidate(struct dentry *dentry, unsigned int flags)
+ 	return 1;
+ }
  
- 		default:
- 			return -EINVAL;
+-/*
+- * Allow the VFS to enquire as to whether a dentry should be unhashed (mustn't
+- * sleep)
+- * - called from dput() when d_count is going to 0.
+- * - return 1 to request dentry be unhashed, 0 otherwise
+- */
+-static int afs_dynroot_d_delete(const struct dentry *dentry)
+-{
+-	return d_really_is_positive(dentry);
+-}
+-
+ const struct dentry_operations afs_dynroot_dentry_operations = {
+ 	.d_revalidate	= afs_dynroot_d_revalidate,
+-	.d_delete	= afs_dynroot_d_delete,
++	.d_delete	= always_delete_dentry,
+ 	.d_release	= afs_d_release,
+ 	.d_automount	= afs_d_automount,
+ };
 -- 
 2.43.0
 
