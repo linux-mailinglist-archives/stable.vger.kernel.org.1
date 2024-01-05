@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-9871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D7A8255CB
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:42:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89567825585
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:39:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01F8D1F266B9
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:42:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DC471C23125
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5972E3EF;
-	Fri,  5 Jan 2024 14:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83C52D7B5;
+	Fri,  5 Jan 2024 14:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ReSMH+Uy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p5aHwOcr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C642DF66;
-	Fri,  5 Jan 2024 14:42:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7EE6C433C8;
-	Fri,  5 Jan 2024 14:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1672BD12;
+	Fri,  5 Jan 2024 14:39:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12FCAC433C8;
+	Fri,  5 Jan 2024 14:39:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465760;
-	bh=9BAGmP9IaSeFW87x0GLNJLWYzd4906GmQOr8JKfrv5E=;
+	s=korg; t=1704465582;
+	bh=YS/GGUl+HtCUcT0oX5BOYu5sjIMsQOrQk/es3BoVVtk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ReSMH+Uyy/865AJFtqOMsryFyuv88UVeyrIgdJE0D0HhGkLy5Juo88W5ZODjib1IO
-	 +QyyoEQMX2NdsHDJF6zugnndp2WAJ0fU70fpQx6C8kAlPmfKf1yam3HjxqwkIYqVd4
-	 La5r9gQTi2z0SVeYQqjWt2lva35NdAtaE6A1QSt4=
+	b=p5aHwOcr1QDoUiXktX4mnvC4Wn5WvcX/kVB4ljG+m/zAJ41vW+oeHHz7eoHMe3ynk
+	 v0nkKR7ANoAZkaitTzl9OXgTGFTWbppHeX2EQkNfsHwVEo74t5CylzI2B92Ww2PVtW
+	 0yhd8wGdP6fpk76GQscH+ktnffUqoAtFzXDlbJb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 17/47] net: warn if gso_type isnt set for a GSO SKB
-Date: Fri,  5 Jan 2024 15:39:04 +0100
-Message-ID: <20240105143816.169732131@linuxfoundation.org>
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Simon Horman <horms@kernel.org>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Dominique Martinet <asmadeus@codewreck.org>
+Subject: [PATCH 4.14 18/21] net: 9p: avoid freeing uninit memory in p9pdu_vreadf
+Date: Fri,  5 Jan 2024 15:39:05 +0100
+Message-ID: <20240105143812.350697010@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
-References: <20240105143815.541462991@linuxfoundation.org>
+In-Reply-To: <20240105143811.536282337@linuxfoundation.org>
+References: <20240105143811.536282337@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,54 +54,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 1d155dfdf50efc2b0793bce93c06d1a5b23d0877 ]
+commit ff49bf1867578f23a5ffdd38f927f6e1e16796c4 upstream.
 
-In bug report [0] a warning in r8169 driver was reported that was
-caused by an invalid GSO SKB (gso_type was 0). See [1] for a discussion
-about this issue. Still the origin of the invalid GSO SKB isn't clear.
+If some of p9pdu_readf() calls inside case 'T' in p9pdu_vreadf() fails,
+the error path is not handled properly. *wnames or members of *wnames
+array may be left uninitialized and invalidly freed.
 
-It shouldn't be a network drivers task to check for invalid GSO SKB's.
-Also, even if issue [0] can be fixed, we can't be sure that a
-similar issue doesn't pop up again at another place.
-Therefore let gso_features_check() check for such invalid GSO SKB's.
+Initialize *wnames to NULL in beginning of case 'T'. Initialize the first
+*wnames array element to NULL and nullify the failing *wnames element so
+that the error path freeing loop stops on the first NULL element and
+doesn't proceed further.
 
-[0] https://bugzilla.kernel.org/show_bug.cgi?id=209423
-[1] https://www.spinics.net/lists/netdev/msg690794.html
+Found by Linux Verification Center (linuxtesting.org).
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/97c78d21-7f0b-d843-df17-3589f224d2cf@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 24ab059d2ebd ("net: check dev->gso_max_size in gso_features_check()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ace51c4dd2f9 ("9p: add new protocol support code")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Message-ID: <20231206200913.16135-1-pchelkin@ispras.ru>
+Cc: stable@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/dev.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/9p/protocol.c |   17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index a381e87fb380b..9845dcf0a3ded 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3140,6 +3140,11 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 	if (gso_segs > dev->gso_max_segs)
- 		return features & ~NETIF_F_GSO_MASK;
+--- a/net/9p/protocol.c
++++ b/net/9p/protocol.c
+@@ -243,6 +243,8 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
+ 				uint16_t *nwname = va_arg(ap, uint16_t *);
+ 				char ***wnames = va_arg(ap, char ***);
  
-+	if (!skb_shinfo(skb)->gso_type) {
-+		skb_warn_bad_offload(skb);
-+		return features & ~NETIF_F_GSO_MASK;
-+	}
++				*wnames = NULL;
 +
- 	/* Support for GSO partial features requires software
- 	 * intervention before we can actually process the packets
- 	 * so we need to strip support for any partial features now
--- 
-2.43.0
-
+ 				errcode = p9pdu_readf(pdu, proto_version,
+ 								"w", nwname);
+ 				if (!errcode) {
+@@ -251,6 +253,8 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
+ 						    GFP_NOFS);
+ 					if (!*wnames)
+ 						errcode = -ENOMEM;
++					else
++						(*wnames)[0] = NULL;
+ 				}
+ 
+ 				if (!errcode) {
+@@ -262,8 +266,10 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
+ 								proto_version,
+ 								"s",
+ 								&(*wnames)[i]);
+-						if (errcode)
++						if (errcode) {
++							(*wnames)[i] = NULL;
+ 							break;
++						}
+ 					}
+ 				}
+ 
+@@ -271,11 +277,14 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
+ 					if (*wnames) {
+ 						int i;
+ 
+-						for (i = 0; i < *nwname; i++)
++						for (i = 0; i < *nwname; i++) {
++							if (!(*wnames)[i])
++								break;
+ 							kfree((*wnames)[i]);
++						}
++						kfree(*wnames);
++						*wnames = NULL;
+ 					}
+-					kfree(*wnames);
+-					*wnames = NULL;
+ 				}
+ 			}
+ 			break;
 
 
 
