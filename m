@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-9804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A83E7825581
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:39:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D428C8255A4
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:41:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59CE61F227CD
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:39:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 892CE1F23F9F
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:41:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273002E3E5;
-	Fri,  5 Jan 2024 14:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8862DF66;
+	Fri,  5 Jan 2024 14:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9FzrXsE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xN4M76ni"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFBD2D051;
-	Fri,  5 Jan 2024 14:39:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 116F2C433C7;
-	Fri,  5 Jan 2024 14:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C932E640;
+	Fri,  5 Jan 2024 14:40:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1ABC433C9;
+	Fri,  5 Jan 2024 14:40:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465571;
-	bh=QeTfBH6sfwlIiZ/OREzbLAIesl8FsELb7jE8I2fxB/M=;
+	s=korg; t=1704465659;
+	bh=mQupbT/8tUwUMSwUPqxu+oanuFk3QnZbPP5HYXQO1q0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l9FzrXsEzUhksl1NXAgtzJIHtkBRduzcMe32yXJDRJWsw4c86Ed5UB1I9DM4/7eN2
-	 rLDcn8aY+hqk9dDC6uLimJr6iSXH2rZ9SHskntlMh7uQHwo6g/Eto5Wozs4UEBsfui
-	 oQ3HnnhqLRIm+9MaA9nt5q2VdqyGKKjUxhtXwWZQ=
+	b=xN4M76niflAFkVqcAaew3MgxwbMgXIp/1DNmp0WPNzGqepvncg2adgAdxZKNbtrmG
+	 VKCrIdF1Of2g8Yqc5ajBm7GhWUEAcXTVdhTA0pnM6E/9MEENU9joR4H41bzKWcWKaj
+	 fbcqpATKUWptQEQoxL8atrcNX5GbCemgDuqnuKsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alper Ak <alperyasinak1@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 4.14 14/21] USB: serial: option: add Quectel EG912Y module support
+	Martin Michaelis <code@mgjm.de>,
+	Neal Gompa <neal@gompa.dev>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 21/41] btrfs: do not allow non subvolume root targets for snapshot
 Date: Fri,  5 Jan 2024 15:39:01 +0100
-Message-ID: <20240105143812.188568598@linuxfoundation.org>
+Message-ID: <20240105143814.881472528@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143811.536282337@linuxfoundation.org>
-References: <20240105143811.536282337@linuxfoundation.org>
+In-Reply-To: <20240105143813.957669139@linuxfoundation.org>
+References: <20240105143813.957669139@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,70 +55,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alper Ak <alperyasinak1@gmail.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit 6d79d9434c69bb8ffa8a631050eb0ad6b83d3e90 upstream.
+[ Upstream commit a8892fd71933126ebae3d60aec5918d4dceaae76 ]
 
-Add Quectel EG912Y "DIAG, AT, MODEM"
+Our btrfs subvolume snapshot <source> <destination> utility enforces
+that <source> is the root of the subvolume, however this isn't enforced
+in the kernel.  Update the kernel to also enforce this limitation to
+avoid problems with other users of this ioctl that don't have the
+appropriate checks in place.
 
-0x6001: ECM / RNDIS + DIAG + AT + MODEM
-
-T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=2c7c ProdID=6001 Rev= 3.18
-S:  Manufacturer=Android
-S:  Product=Android
-S:  SerialNumber=0000
-C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=06 Prot=00
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=89(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Alper Ak <alperyasinak1@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Martin Michaelis <code@mgjm.de>
+CC: stable@vger.kernel.org # 4.14+
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/ioctl.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -275,6 +275,7 @@ static void option_instat_callback(struc
- #define QUECTEL_PRODUCT_RM500Q			0x0800
- #define QUECTEL_PRODUCT_RM520N			0x0801
- #define QUECTEL_PRODUCT_EC200U			0x0901
-+#define QUECTEL_PRODUCT_EG912Y			0x6001
- #define QUECTEL_PRODUCT_EC200S_CN		0x6002
- #define QUECTEL_PRODUCT_EC200A			0x6005
- #define QUECTEL_PRODUCT_EM061K_LWW		0x6008
-@@ -1247,6 +1248,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200U, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200S_CN, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200T, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EG912Y, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500K, 0xff, 0x00, 0x00) },
- 
- 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_6001) },
+diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+index 23beabb489231..c76277ccf03b0 100644
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -1789,6 +1789,15 @@ static noinline int btrfs_ioctl_snap_create_transid(struct file *file,
+ 			 * are limited to own subvolumes only
+ 			 */
+ 			ret = -EPERM;
++		} else if (btrfs_ino(BTRFS_I(src_inode)) != BTRFS_FIRST_FREE_OBJECTID) {
++			/*
++			 * Snapshots must be made with the src_inode referring
++			 * to the subvolume inode, otherwise the permission
++			 * checking above is useless because we may have
++			 * permission on a lower directory but not the subvol
++			 * itself.
++			 */
++			ret = -EINVAL;
+ 		} else {
+ 			ret = btrfs_mksubvol(&file->f_path, name, namelen,
+ 					     BTRFS_I(src_inode)->root,
+-- 
+2.43.0
+
 
 
 
