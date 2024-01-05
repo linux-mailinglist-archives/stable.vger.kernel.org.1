@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-9892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A27E8255E1
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:43:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79DBD825594
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:40:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FD2A286ECF
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:43:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95DAF1C22E4A
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F272C692;
-	Fri,  5 Jan 2024 14:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B33562E3E4;
+	Fri,  5 Jan 2024 14:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XtLKfyFj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MeU9hszX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5041828DDA;
-	Fri,  5 Jan 2024 14:43:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9704C433C7;
-	Fri,  5 Jan 2024 14:43:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7917C2D7AD;
+	Fri,  5 Jan 2024 14:40:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825A3C433C7;
+	Fri,  5 Jan 2024 14:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465818;
-	bh=tITjgX1JAzjZXBixOhS0LbJvzyciXHUcNUHKSWtEauw=;
+	s=korg; t=1704465618;
+	bh=d63hlrZztnknIrZNtXDmFi6t6yXI2M7o0+ibVQHmjcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XtLKfyFjOxhCfZ1+jkAOXfTauK0irMFWjCfEfRc83yONjtRB/s9aMtyv8z5QEHOk7
-	 9v+UDjTpUzgngnpLs4LQiikOt8YxYKgA+TnRmY8jvBU9AyD/QMHNjtBL4j5zvVK9de
-	 BZ6H2cRjOVVIb446hb9VIqxQCBsh1DWiAA5ycw9A=
+	b=MeU9hszXgna6bfm/Yid6t7AFjLX0qBsJ2XCriUbD9/NdMkbEDxSi5IOwAtj2+54GT
+	 fvzoUZY3oMcMwtHvKhchu3a+K0Z8P2/TANHZ+TT3Mj30bwLHY5CEk6S9JNahim16Tp
+	 OXehkZ5aaTWYtM3LRvumVZ5+FhpN3H1JciIrn/n0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hu Haowen <xianfengting221@163.com>,
-	Saeed Mahameed <saeedm@mellanox.com>,
+	Su Hui <suhui@nfschina.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 08/47] net/mlx5: improve some comments
+Subject: [PATCH 4.14 08/21] iio: imu: inv_mpu6050: fix an error code problem in inv_mpu6050_read_raw
 Date: Fri,  5 Jan 2024 15:38:55 +0100
-Message-ID: <20240105143815.839048294@linuxfoundation.org>
+Message-ID: <20240105143811.923411203@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
-References: <20240105143815.541462991@linuxfoundation.org>
+In-Reply-To: <20240105143811.536282337@linuxfoundation.org>
+References: <20240105143811.536282337@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,37 +53,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hu Haowen <xianfengting221@163.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 6533380dfd003ea7636cb5672f4f85124b56328b ]
+[ Upstream commit c3df0e29fb7788c4b3ddf37d5ed87dda2b822943 ]
 
-Replaced "its" with "it's".
+inv_mpu6050_sensor_show() can return -EINVAL or IIO_VAL_INT. Return the
+true value rather than only return IIO_VAL_INT.
 
-Signed-off-by: Hu Haowen <xianfengting221@163.com>
-Signed-off-by: Saeed Mahameed <saeedm@mellanox.com>
-Stable-dep-of: 4261edf11cb7 ("net/mlx5: Fix fw tracer first block check")
+Fixes: d5098447147c ("iio: imu: mpu6050: add calibration offset support")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20231030020218.65728-1-suhui@nfschina.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-index 58d48d76c1b8a..8bd5b9ab5e157 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-@@ -687,7 +687,7 @@ static void mlx5_fw_tracer_handle_traces(struct work_struct *work)
- 		get_block_timestamp(tracer, &tmp_trace_block[TRACES_PER_BLOCK - 1]);
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+index 44830bce13dfe..689dfd1ef98b4 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
+@@ -421,13 +421,13 @@ inv_mpu6050_read_raw(struct iio_dev *indio_dev,
+ 			ret = inv_mpu6050_sensor_show(st, st->reg->gyro_offset,
+ 						chan->channel2, val);
+ 			mutex_unlock(&st->lock);
+-			return IIO_VAL_INT;
++			return ret;
+ 		case IIO_ACCEL:
+ 			mutex_lock(&st->lock);
+ 			ret = inv_mpu6050_sensor_show(st, st->reg->accl_offset,
+ 						chan->channel2, val);
+ 			mutex_unlock(&st->lock);
+-			return IIO_VAL_INT;
++			return ret;
  
- 	while (block_timestamp > tracer->last_timestamp) {
--		/* Check block override if its not the first block */
-+		/* Check block override if it's not the first block */
- 		if (!tracer->last_timestamp) {
- 			u64 *ts_event;
- 			/* To avoid block override be the HW in case of buffer
+ 		default:
+ 			return -EINVAL;
 -- 
 2.43.0
 
