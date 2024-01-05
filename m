@@ -1,76 +1,206 @@
-Return-Path: <stable+bounces-9796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 791F7825567
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:34:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A44D3825572
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:37:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 942411C22E86
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:34:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FEDC1C228E6
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:37:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D121E4A9;
-	Fri,  5 Jan 2024 14:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE3062C6B7;
+	Fri,  5 Jan 2024 14:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x8baXqh5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QnpWzyDl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2F9A2D051
-	for <stable@vger.kernel.org>; Fri,  5 Jan 2024 14:34:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA163C433C8;
-	Fri,  5 Jan 2024 14:34:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465275;
-	bh=zGhz4HK3OqtoT/s7fHpDT0nLKMtykEIhvfAADd+RUpc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=x8baXqh5mpSOXAlekxjBBlbAJ0N/7Vm+hMJPgEoLHVeYPKpTWflYJVwgUSMlAhn4X
-	 pW8tbuJ+0Ijd7HjSRp94oZybG+DsL6GOuU+Mz8iy/Ps7DmpI4B34yIKd73teYKpf/u
-	 myLBKBkGE0mTZFF3Jw1XE3bNnEIvBVexroWt0nbY=
-Date: Fri, 5 Jan 2024 15:34:32 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Sarthak Kukreti <sarthakkukreti@chromium.org>
-Cc: stable@vger.kernel.org, "Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>, Mike Snitzer <snitzer@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: Re: [PATCH 4.14.y] block: Don't invalidate pagecache for invalid
- falloc modes
-Message-ID: <2024010520-arming-resonate-825b@gregkh>
-References: <2023101517-patriarch-reuse-cc1c@gregkh>
- <20240104222745.1783780-1-sarthakkukreti@chromium.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248F32E629;
+	Fri,  5 Jan 2024 14:36:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-40d4f5d902dso15458815e9.2;
+        Fri, 05 Jan 2024 06:36:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704465409; x=1705070209; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZqHAz2Xd1ngk6xpnbEUa/1afBSe7yN4Mad/JN4+bPaM=;
+        b=QnpWzyDlUsRmVq78hKp2poG7vYaN8LAYEtHcGpeY1NgGsuo+zUGq08BYoALvLe0ufz
+         TaT353YRdvqksSDQfoIC28UMPRv/Yl82s5oX08ndJhC4K8l3PouIFx6pnIYzdV7yEnbE
+         +Wznb/jnyTv4Bea2MYA5EUqJF1acsFXz/5NqB4AmeLO7xQyILITW5CpBckYMQiz5G+7k
+         mimKB2TneLcv3E1i7bkffmZiPwdQC54VdZZmA489RD43RUuNMcrfgmz8tswCWDRK26fP
+         9pZYwrWpFWVQ4n95xpjKULF7NHlNTlDXwLwbZxlKCirBdFObeHRzpEvgS5ibGO/1DXRR
+         Y8Gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704465409; x=1705070209;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZqHAz2Xd1ngk6xpnbEUa/1afBSe7yN4Mad/JN4+bPaM=;
+        b=Y1nn0ZJCiZWqVU1AbWVGXmvuaonH4a9+nICGjDSoIq3/zJ74zW7MKCAsFkly8sWe0I
+         tIEjy0JGkZ3ndimB/5mGfLzQv4tud6JarNXwSw4DMmGdjFrGCYbEKfGqOpgzS3eLlMpP
+         1XAsv4GMQ+/Mp4AHb7hpANaDLma43wlvlkkq4IxqODcRFrnoAgJcL4aFaENu4+ETJ8X8
+         piT0TBqv8fBoTJbu7NGn5BQmM5xwWS3WrOau/cgco9Z8CP98C+umegcO7BJaIIIvIpZ/
+         QjzVYKyOvCshAh0HOHKETC6APfCbGecH0slZMIHTg2dh18Rmq7NRkZFdLmPqeqceQLTB
+         vLxQ==
+X-Gm-Message-State: AOJu0Yw0BpKSrcGZmVI3NZ8IbtG71XSveCVkySiSIVsXFdBDaR/xjNPZ
+	F1ni0wxh2tvNq1+G2cwU9wpmulpWCiY=
+X-Google-Smtp-Source: AGHT+IGtYm+CC1Qfcz8Yi5UqbCz4ZDJpp31y2l7p+kHmorxqfPDRZGIPBCQB53rw+oO0swheZhN+Kw==
+X-Received: by 2002:a05:600c:524f:b0:40e:35d8:5fe2 with SMTP id fc15-20020a05600c524f00b0040e35d85fe2mr865045wmb.158.1704465409111;
+        Fri, 05 Jan 2024 06:36:49 -0800 (PST)
+Received: from localhost.localdomain (host-80-116-159-187.retail.telecomitalia.it. [80.116.159.187])
+        by smtp.googlemail.com with ESMTPSA id fm26-20020a05600c0c1a00b0040d5e53d7c3sm1800809wmb.23.2024.01.05.06.36.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jan 2024 06:36:48 -0800 (PST)
+From: Christian Marangi <ansuelsmth@gmail.com>
+To: MyungJoo Ham <myungjoo.ham@samsung.com>,
+	Kyungmin Park <kyungmin.park@samsung.com>,
+	Chanwoo Choi <cw00.choi@samsung.com>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Jonghwa Lee <jonghwa3.lee@samsung.com>,
+	linux-kernel@vger.kernel.org,
+	linux-pm@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH v2] PM / devfreq: Fix buffer overflow in trans_stat_show
+Date: Fri,  5 Jan 2024 15:35:59 +0100
+Message-ID: <20240105143600.12811-1-ansuelsmth@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240104222745.1783780-1-sarthakkukreti@chromium.org>
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jan 04, 2024 at 02:27:45PM -0800, Sarthak Kukreti wrote:
-> Only call truncate_bdev_range() if the fallocate mode is supported. This
-> fixes a bug where data in the pagecache could be invalidated if the
-> fallocate() was called on the block device with an invalid mode.
-> 
-> Fixes: 25f4c41415e5 ("block: implement (some of) fallocate for block devices")
-> Cc: stable@vger.kernel.org
-> Reported-by: "Darrick J. Wong" <djwong@kernel.org>
-> Signed-off-by: Sarthak Kukreti <sarthakkukreti@chromium.org>
-> Reviewed-by: Christoph Hellwig <hch@lst.de>
-> Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-> Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-> Link: https://lore.kernel.org/r/20231011201230.750105-1-sarthakkukreti@chromium.org
-> Signed-off-by: Jens Axboe <axboe@kernel.dk>
-> (cherry picked from commit 1364a3c391aedfeb32aa025303ead3d7c91cdf9d)
-> Signed-off-by: Sarthak Kukreti <sarthakkukreti@chromium.org>
-> ---
->  fs/block_dev.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
+Fix buffer overflow in trans_stat_show().
 
-All now queued up, thanks for the backports.
+Convert simple snprintf to the more secure sysfs_emit.
 
-greg k-h
+Add condition checking if we are exceeding PAGE_SIZE and exit early from
+loop. Also add at the end a warning that we exceeded PAGE_SIZE and that
+stats is disabled.
+
+Return -EFBIG in the case where we don't have enough space to write the
+full transition table.
+
+Also document in the ABI that this function can return -EFBIG error.
+
+Cc: stable@vger.kernel.org
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218041
+Fixes: e552bbaf5b98 ("PM / devfreq: Add sysfs node for representing frequency transition information.")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+---
+Changes v2:
+- Squash and use directly sysfs_emit
+- Fix typo for df->freq_table[2]
+- Reduce check of PAGE_SIZE to only at the start of for loops
+
+ Documentation/ABI/testing/sysfs-class-devfreq |  3 ++
+ drivers/devfreq/devfreq.c                     | 47 ++++++++++++-------
+ 2 files changed, 33 insertions(+), 17 deletions(-)
+
+diff --git a/Documentation/ABI/testing/sysfs-class-devfreq b/Documentation/ABI/testing/sysfs-class-devfreq
+index 5e6b74f30406..1e7e0bb4c14e 100644
+--- a/Documentation/ABI/testing/sysfs-class-devfreq
++++ b/Documentation/ABI/testing/sysfs-class-devfreq
+@@ -52,6 +52,9 @@ Description:
+ 
+ 			echo 0 > /sys/class/devfreq/.../trans_stat
+ 
++		If the transition table is bigger than PAGE_SIZE, reading
++		this will return an -EFBIG error.
++
+ What:		/sys/class/devfreq/.../available_frequencies
+ Date:		October 2012
+ Contact:	Nishanth Menon <nm@ti.com>
+diff --git a/drivers/devfreq/devfreq.c b/drivers/devfreq/devfreq.c
+index 63347a5ae599..3b8019ab523d 100644
+--- a/drivers/devfreq/devfreq.c
++++ b/drivers/devfreq/devfreq.c
+@@ -1688,7 +1688,7 @@ static ssize_t trans_stat_show(struct device *dev,
+ 			       struct device_attribute *attr, char *buf)
+ {
+ 	struct devfreq *df = to_devfreq(dev);
+-	ssize_t len;
++	ssize_t len = 0;
+ 	int i, j;
+ 	unsigned int max_state;
+ 
+@@ -1697,7 +1697,7 @@ static ssize_t trans_stat_show(struct device *dev,
+ 	max_state = df->max_state;
+ 
+ 	if (max_state == 0)
+-		return sprintf(buf, "Not Supported.\n");
++		return sysfs_emit(buf, "Not Supported.\n");
+ 
+ 	mutex_lock(&df->lock);
+ 	if (!df->stop_polling &&
+@@ -1707,31 +1707,44 @@ static ssize_t trans_stat_show(struct device *dev,
+ 	}
+ 	mutex_unlock(&df->lock);
+ 
+-	len = sprintf(buf, "     From  :   To\n");
+-	len += sprintf(buf + len, "           :");
+-	for (i = 0; i < max_state; i++)
+-		len += sprintf(buf + len, "%10lu",
+-				df->freq_table[i]);
++	len += sysfs_emit_at(buf, len, "     From  :   To\n");
++	len += sysfs_emit_at(buf, len, "           :");
++	for (i = 0; i < max_state; i++) {
++		if (len >= PAGE_SIZE - 1)
++			break;
++		len += sysfs_emit_at(buf, len, "%10lu",
++				     df->freq_table[i]);
++	}
+ 
+-	len += sprintf(buf + len, "   time(ms)\n");
++	len += sysfs_emit_at(buf, len, "   time(ms)\n");
+ 
+ 	for (i = 0; i < max_state; i++) {
++		if (len >= PAGE_SIZE - 1)
++			break;
+ 		if (df->freq_table[i] == df->previous_freq)
+-			len += sprintf(buf + len, "*");
++			len += sysfs_emit_at(buf, len, "*");
+ 		else
+-			len += sprintf(buf + len, " ");
++			len += sysfs_emit_at(buf, len, " ");
+ 
+-		len += sprintf(buf + len, "%10lu:", df->freq_table[i]);
+-		for (j = 0; j < max_state; j++)
+-			len += sprintf(buf + len, "%10u",
++		len += sysfs_emit_at(buf, len, "%10lu:", df->freq_table[i]);
++		for (j = 0; j < max_state; j++) {
++			if (len >= PAGE_SIZE - 1)
++				break;
++			len += sysfs_emit_at(buf, len, "%10u",
+ 				df->stats.trans_table[(i * max_state) + j]);
++		}
++
++		len += sysfs_emit_at(buf, len, "%10llu\n", (u64)
++				     jiffies64_to_msecs(df->stats.time_in_state[i]));
++	}
+ 
+-		len += sprintf(buf + len, "%10llu\n", (u64)
+-			jiffies64_to_msecs(df->stats.time_in_state[i]));
++	len += sysfs_emit_at(buf, len, "Total transition : %u\n",
++			     df->stats.total_trans);
++	if (len >= PAGE_SIZE - 1) {
++		pr_warn_once("devfreq transition table exceeds PAGE_SIZE. Disabling\n");
++		return -EFBIG;
+ 	}
+ 
+-	len += sprintf(buf + len, "Total transition : %u\n",
+-					df->stats.total_trans);
+ 	return len;
+ }
+ 
+-- 
+2.43.0
+
 
