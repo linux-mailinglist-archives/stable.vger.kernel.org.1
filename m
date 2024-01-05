@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-9811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33CA782558B
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:40:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD6DC8255CF
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:42:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42AB61C22E4A
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:40:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8287D1F2666F
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A202E3E3;
-	Fri,  5 Jan 2024 14:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A1A2D7B0;
+	Fri,  5 Jan 2024 14:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ueshYNt9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSgtUQYh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64AE2D051;
-	Fri,  5 Jan 2024 14:39:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B83C433C7;
-	Fri,  5 Jan 2024 14:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1371E4A9;
+	Fri,  5 Jan 2024 14:42:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE2AC433C8;
+	Fri,  5 Jan 2024 14:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465590;
-	bh=JyQvpQ5QY4Ki5CAjqIJz6pzmJzc3ATVF4/dMFbv7198=;
+	s=korg; t=1704465768;
+	bh=v5mtCMcyQmR95HG7PwwU8HYH2YzVe/0Y5gjAjFFouHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ueshYNt9GlyrQWdvWRwl1aayFugqzDubpJ9VRkUm6wEEja2+2q4o89IimiWvw7Gei
-	 QGcrcmeVfCcQpyMoggaanmXmhlQf0nMHxNphnN2A9Apkns0HFxDuMzKOt5fEvNuzpY
-	 7YwdlkYohYedx1+xQuXbckXkRrhz4YAwPOzctpTo=
+	b=MSgtUQYhWluGJMuR+KAxvfRFGZHZ0jpoG3RmgEgOtiRu1D/Mk1b78tJVRcVf8QmQN
+	 pZ3rfdI9qtsAev3ntjiPHCiYtU3TAER2zhNlmUkrQAuSWIIXvElZmsf/AzaLcu0bKx
+	 c+62xFB9RlcwGjoInXWYFBrj+IH3owko2X7CL1SA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 4.14 20/21] dm-integrity: dont modify bios immutable bio_vec in integrity_metadata()
+	Quan Nguyen <quan@os.amperecomputing.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 20/47] i2c: aspeed: Handle the coalesced stop conditions with the start conditions.
 Date: Fri,  5 Jan 2024 15:39:07 +0100
-Message-ID: <20240105143812.436516701@linuxfoundation.org>
+Message-ID: <20240105143816.291843062@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143811.536282337@linuxfoundation.org>
-References: <20240105143811.536282337@linuxfoundation.org>
+In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
+References: <20240105143815.541462991@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,71 +55,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Quan Nguyen <quan@os.amperecomputing.com>
 
-commit b86f4b790c998afdbc88fe1aa55cfe89c4068726 upstream.
+[ Upstream commit b4cc1cbba5195a4dd497cf2f8f09e7807977d543 ]
 
-__bio_for_each_segment assumes that the first struct bio_vec argument
-doesn't change - it calls "bio_advance_iter_single((bio), &(iter),
-(bvl).bv_len)" to advance the iterator. Unfortunately, the dm-integrity
-code changes the bio_vec with "bv.bv_len -= pos". When this code path
-is taken, the iterator would be out of sync and dm-integrity would
-report errors. This happens if the machine is out of memory and
-"kmalloc" fails.
+Some masters may drive the transfers with low enough latency between
+the nak/stop phase of the current command and the start/address phase
+of the following command that the interrupts are coalesced by the
+time we process them.
+Handle the stop conditions before processing SLAVE_MATCH to fix the
+complaints that sometimes occur below.
 
-Fix this bug by making a copy of "bv" and changing the copy instead.
+"aspeed-i2c-bus 1e78a040.i2c-bus: irq handled != irq. Expected
+0x00000086, but was 0x00000084"
 
-Fixes: 7eada909bfd7 ("dm: add integrity target")
-Cc: stable@vger.kernel.org	# v4.12+
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f9eb91350bb2 ("i2c: aspeed: added slave support for Aspeed I2C driver")
+Signed-off-by: Quan Nguyen <quan@os.amperecomputing.com>
+Reviewed-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-integrity.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/i2c/busses/i2c-aspeed.c | 48 ++++++++++++++++++++++-----------
+ 1 file changed, 32 insertions(+), 16 deletions(-)
 
---- a/drivers/md/dm-integrity.c
-+++ b/drivers/md/dm-integrity.c
-@@ -1257,11 +1257,12 @@ static void integrity_metadata(struct wo
- 			checksums = checksums_onstack;
+diff --git a/drivers/i2c/busses/i2c-aspeed.c b/drivers/i2c/busses/i2c-aspeed.c
+index ff08bcb09a68e..3f0b072a4cc84 100644
+--- a/drivers/i2c/busses/i2c-aspeed.c
++++ b/drivers/i2c/busses/i2c-aspeed.c
+@@ -250,18 +250,46 @@ static u32 aspeed_i2c_slave_irq(struct aspeed_i2c_bus *bus, u32 irq_status)
+ 	if (!slave)
+ 		return 0;
  
- 		__bio_for_each_segment(bv, bio, iter, dio->orig_bi_iter) {
-+			struct bio_vec bv_copy = bv;
- 			unsigned pos;
- 			char *mem, *checksums_ptr;
+-	command = readl(bus->base + ASPEED_I2C_CMD_REG);
++	/*
++	 * Handle stop conditions early, prior to SLAVE_MATCH. Some masters may drive
++	 * transfers with low enough latency between the nak/stop phase of the current
++	 * command and the start/address phase of the following command that the
++	 * interrupts are coalesced by the time we process them.
++	 */
++	if (irq_status & ASPEED_I2CD_INTR_NORMAL_STOP) {
++		irq_handled |= ASPEED_I2CD_INTR_NORMAL_STOP;
++		bus->slave_state = ASPEED_I2C_SLAVE_STOP;
++	}
++
++	if (irq_status & ASPEED_I2CD_INTR_TX_NAK &&
++	    bus->slave_state == ASPEED_I2C_SLAVE_READ_PROCESSED) {
++		irq_handled |= ASPEED_I2CD_INTR_TX_NAK;
++		bus->slave_state = ASPEED_I2C_SLAVE_STOP;
++	}
++
++	/* Propagate any stop conditions to the slave implementation. */
++	if (bus->slave_state == ASPEED_I2C_SLAVE_STOP) {
++		i2c_slave_event(slave, I2C_SLAVE_STOP, &value);
++		bus->slave_state = ASPEED_I2C_SLAVE_INACTIVE;
++	}
  
- again:
--			mem = (char *)kmap_atomic(bv.bv_page) + bv.bv_offset;
-+			mem = (char *)kmap_atomic(bv_copy.bv_page) + bv_copy.bv_offset;
- 			pos = 0;
- 			checksums_ptr = checksums;
- 			do {
-@@ -1270,7 +1271,7 @@ again:
- 				sectors_to_process -= ic->sectors_per_block;
- 				pos += ic->sectors_per_block << SECTOR_SHIFT;
- 				sector += ic->sectors_per_block;
--			} while (pos < bv.bv_len && sectors_to_process && checksums != checksums_onstack);
-+			} while (pos < bv_copy.bv_len && sectors_to_process && checksums != checksums_onstack);
- 			kunmap_atomic(mem);
+-	/* Slave was requested, restart state machine. */
++	/*
++	 * Now that we've dealt with any potentially coalesced stop conditions,
++	 * address any start conditions.
++	 */
+ 	if (irq_status & ASPEED_I2CD_INTR_SLAVE_MATCH) {
+ 		irq_handled |= ASPEED_I2CD_INTR_SLAVE_MATCH;
+ 		bus->slave_state = ASPEED_I2C_SLAVE_START;
+ 	}
  
- 			r = dm_integrity_rw_tag(ic, checksums, &dio->metadata_block, &dio->metadata_offset,
-@@ -1290,9 +1291,9 @@ again:
- 			if (!sectors_to_process)
- 				break;
+-	/* Slave is not currently active, irq was for someone else. */
++	/*
++	 * If the slave has been stopped and not started then slave interrupt
++	 * handling is complete.
++	 */
+ 	if (bus->slave_state == ASPEED_I2C_SLAVE_INACTIVE)
+ 		return irq_handled;
  
--			if (unlikely(pos < bv.bv_len)) {
--				bv.bv_offset += pos;
--				bv.bv_len -= pos;
-+			if (unlikely(pos < bv_copy.bv_len)) {
-+				bv_copy.bv_offset += pos;
-+				bv_copy.bv_len -= pos;
- 				goto again;
- 			}
- 		}
++	command = readl(bus->base + ASPEED_I2C_CMD_REG);
+ 	dev_dbg(bus->dev, "slave irq status 0x%08x, cmd 0x%08x\n",
+ 		irq_status, command);
+ 
+@@ -280,17 +308,6 @@ static u32 aspeed_i2c_slave_irq(struct aspeed_i2c_bus *bus, u32 irq_status)
+ 		irq_handled |= ASPEED_I2CD_INTR_RX_DONE;
+ 	}
+ 
+-	/* Slave was asked to stop. */
+-	if (irq_status & ASPEED_I2CD_INTR_NORMAL_STOP) {
+-		irq_handled |= ASPEED_I2CD_INTR_NORMAL_STOP;
+-		bus->slave_state = ASPEED_I2C_SLAVE_STOP;
+-	}
+-	if (irq_status & ASPEED_I2CD_INTR_TX_NAK &&
+-	    bus->slave_state == ASPEED_I2C_SLAVE_READ_PROCESSED) {
+-		irq_handled |= ASPEED_I2CD_INTR_TX_NAK;
+-		bus->slave_state = ASPEED_I2C_SLAVE_STOP;
+-	}
+-
+ 	switch (bus->slave_state) {
+ 	case ASPEED_I2C_SLAVE_READ_REQUESTED:
+ 		if (unlikely(irq_status & ASPEED_I2CD_INTR_TX_ACK))
+@@ -319,8 +336,7 @@ static u32 aspeed_i2c_slave_irq(struct aspeed_i2c_bus *bus, u32 irq_status)
+ 		i2c_slave_event(slave, I2C_SLAVE_WRITE_RECEIVED, &value);
+ 		break;
+ 	case ASPEED_I2C_SLAVE_STOP:
+-		i2c_slave_event(slave, I2C_SLAVE_STOP, &value);
+-		bus->slave_state = ASPEED_I2C_SLAVE_INACTIVE;
++		/* Stop event handling is done early. Unreachable. */
+ 		break;
+ 	case ASPEED_I2C_SLAVE_START:
+ 		/* Slave was just started. Waiting for the next event. */;
+-- 
+2.43.0
+
 
 
 
