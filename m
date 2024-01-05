@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-9864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A943A8255C4
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:42:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5C2A825589
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:39:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4BBDCB20B27
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:42:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 400D3280C1F
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:39:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 922CB2D7B5;
-	Fri,  5 Jan 2024 14:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A222E3FD;
+	Fri,  5 Jan 2024 14:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sKQkMv4p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJ095QQ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCD218EB7;
-	Fri,  5 Jan 2024 14:42:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A0BC433C8;
-	Fri,  5 Jan 2024 14:42:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0798128FA;
+	Fri,  5 Jan 2024 14:39:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80634C433C7;
+	Fri,  5 Jan 2024 14:39:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465741;
-	bh=M5fDICDFIedbnj9T5RGP635sMabx1hEVik/Ksieyk0Q=;
+	s=korg; t=1704465587;
+	bh=p587OFCvdB+d2L+ZevkY+4PmElixk1Zxg5kmXhZLzUw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sKQkMv4p4iW4dfyaPOYoCTjHBN3cYzdUdcayBNriWSoV/3OYx1ODXIm69hvLywlzC
-	 BWfKvsQhMBf/Kk7xhVYcI+tYFeB8tj79vrXMzTraHx18Fz8bRlEd4IKtluftpuGzma
-	 lK8H76yRy4bvuG8a7q9Tzc2Q0/TvhkcyMhd1lo4I=
+	b=dJ095QQ2vq2j1p8fLehawwoc7n0haQGsh7HqWqwZgiCf+c0zpM82ANab884nGc8VE
+	 Pdx4wktBxxgvdhd/ZPPJWDWPlMtPZ6PzoPamWkQpXCuY5Dk+l/LkkFs0f5MKxGsZqr
+	 MU4EXXTGcqCGfJ541bKeUd7PuVQGumRpbaoMb82w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 02/47] ksmbd: fix wrong name of SMB2_CREATE_ALLOCATION_SIZE
+Subject: [PATCH 4.14 02/21] s390/vx: fix save/restore of fpu kernel context
 Date: Fri,  5 Jan 2024 15:38:49 +0100
-Message-ID: <20240105143815.625700584@linuxfoundation.org>
+Message-ID: <20240105143811.657718732@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
-References: <20240105143815.541462991@linuxfoundation.org>
+In-Reply-To: <20240105143811.536282337@linuxfoundation.org>
+References: <20240105143811.536282337@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,42 +54,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 13736654481198e519059d4a2e2e3b20fa9fdb3e ]
+[ Upstream commit e6b2dab41888332bf83f592131e7ea07756770a4 ]
 
-MS confirm that "AISi" name of SMB2_CREATE_ALLOCATION_SIZE in MS-SMB2
-specification is a typo. cifs/ksmbd have been using this wrong name from
-MS-SMB2. It should be "AlSi". Also It will cause problem when running
-smb2.create.open test in smbtorture against ksmbd.
+The KERNEL_FPR mask only contains a flag for the first eight vector
+registers. However floating point registers overlay parts of the first
+sixteen vector registers.
 
-Cc: stable@vger.kernel.org
-Fixes: 12197a7fdda9 ("Clarify SMB2/SMB3 create context and add missing ones")
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+This could lead to vector register corruption if a kernel fpu context uses
+any of the vector registers 8 to 15 and is interrupted or calls a
+KERNEL_FPR context. If that context uses also vector registers 8 to 15,
+their contents will be corrupted on return.
+
+Luckily this is currently not a real bug, since the kernel has only one
+KERNEL_FPR user with s390_adjust_jiffies() and it is only using floating
+point registers 0 to 2.
+
+Fix this by using the correct bits for KERNEL_FPR.
+
+Fixes: 7f79695cc1b6 ("s390/fpu: improve kernel_fpu_[begin|end]")
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Hendrik Brueckner <brueckner@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/smb2pdu.h | 2 +-
+ arch/s390/include/asm/fpu/api.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/cifs/smb2pdu.h b/fs/cifs/smb2pdu.h
-index 739556e385be8..297f5e455a348 100644
---- a/fs/cifs/smb2pdu.h
-+++ b/fs/cifs/smb2pdu.h
-@@ -651,7 +651,7 @@ struct smb2_tree_disconnect_rsp {
- #define SMB2_CREATE_SD_BUFFER			"SecD" /* security descriptor */
- #define SMB2_CREATE_DURABLE_HANDLE_REQUEST	"DHnQ"
- #define SMB2_CREATE_DURABLE_HANDLE_RECONNECT	"DHnC"
--#define SMB2_CREATE_ALLOCATION_SIZE		"AISi"
-+#define SMB2_CREATE_ALLOCATION_SIZE		"AlSi"
- #define SMB2_CREATE_QUERY_MAXIMAL_ACCESS_REQUEST "MxAc"
- #define SMB2_CREATE_TIMEWARP_REQUEST		"TWrp"
- #define SMB2_CREATE_QUERY_ON_DISK_ID		"QFid"
+diff --git a/arch/s390/include/asm/fpu/api.h b/arch/s390/include/asm/fpu/api.h
+index 34a7ae68485c6..be16a6c0f1276 100644
+--- a/arch/s390/include/asm/fpu/api.h
++++ b/arch/s390/include/asm/fpu/api.h
+@@ -76,7 +76,7 @@ static inline int test_fp_ctl(u32 fpc)
+ #define KERNEL_VXR_HIGH		(KERNEL_VXR_V16V23|KERNEL_VXR_V24V31)
+ 
+ #define KERNEL_VXR		(KERNEL_VXR_LOW|KERNEL_VXR_HIGH)
+-#define KERNEL_FPR		(KERNEL_FPC|KERNEL_VXR_V0V7)
++#define KERNEL_FPR		(KERNEL_FPC|KERNEL_VXR_LOW)
+ 
+ struct kernel_fpu;
+ 
 -- 
 2.43.0
 
