@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-9856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B3F98255BB
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:42:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 638258255D4
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:43:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D40921F25BF7
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:42:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E94E528666A
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:43:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2388D28DDA;
-	Fri,  5 Jan 2024 14:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916FE2D051;
+	Fri,  5 Jan 2024 14:43:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bwKu7tEh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iv8Lk+SK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24102AE74;
-	Fri,  5 Jan 2024 14:41:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A151C433C7;
-	Fri,  5 Jan 2024 14:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5949E1E4A9;
+	Fri,  5 Jan 2024 14:43:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1B18C433C7;
+	Fri,  5 Jan 2024 14:43:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465719;
-	bh=5GWftS4BVm19bGKEma0qrnJbyyfKbE6LWA6mVCxTGdI=;
+	s=korg; t=1704465782;
+	bh=/mOhLxdOVeZTAxH7n7CNfwg7iym5kouuJZSVqXiSjAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bwKu7tEhJfdx13vURmSBxN4IRixkr7KTSF1B+V2tQQ1zVTZ+1U84BxDZiJQqwdxq0
-	 XQ+Pd9a78fn1UYdE5SxJwBJ/ZO0+3WIhwQ52iU6WkABPl8FYMgep+qfagtBAC6M3jL
-	 ou8bq/X15k18wgzK5IM2lGRSwGyM2Pr0KXck3zzI=
+	b=iv8Lk+SK+jJsJn2Gt3bRoxDwxvayQh/fFr3Lx6uLu5293PZGmqB3Eq8QriBFRZSVB
+	 uL25sHs5XKL+9uB1ntDNLDbIR+IYYz529bTMTa0Gm+xvgz2TKhKO8Sr9Jx80LmoxUM
+	 lX7/h2N+5nOmUkkUkpn5YAx4XRpXumlW5XSq1A9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alper Ak <alperyasinak1@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 4.19 30/41] USB: serial: option: add Quectel EG912Y module support
-Date: Fri,  5 Jan 2024 15:39:10 +0100
-Message-ID: <20240105143815.204783828@linuxfoundation.org>
+	Robert Morris <rtm@csail.mit.edu>,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 24/47] smb: client: fix NULL deref in asn1_ber_decoder()
+Date: Fri,  5 Jan 2024 15:39:11 +0100
+Message-ID: <20240105143816.460905982@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143813.957669139@linuxfoundation.org>
-References: <20240105143813.957669139@linuxfoundation.org>
+In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
+References: <20240105143815.541462991@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,70 +54,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alper Ak <alperyasinak1@gmail.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit 6d79d9434c69bb8ffa8a631050eb0ad6b83d3e90 upstream.
+[ Upstream commit 90d025c2e953c11974e76637977c473200593a46 ]
 
-Add Quectel EG912Y "DIAG, AT, MODEM"
+If server replied SMB2_NEGOTIATE with a zero SecurityBufferOffset,
+smb2_get_data_area() sets @len to non-zero but return NULL, so
+decode_negTokeninit() ends up being called with a NULL @security_blob:
 
-0x6001: ECM / RNDIS + DIAG + AT + MODEM
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+  #PF: supervisor read access in kernel mode
+  #PF: error_code(0x0000) - not-present page
+  PGD 0 P4D 0
+  Oops: 0000 [#1] PREEMPT SMP NOPTI
+  CPU: 2 PID: 871 Comm: mount.cifs Not tainted 6.7.0-rc4 #2
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
+  RIP: 0010:asn1_ber_decoder+0x173/0xc80
+  Code: 01 4c 39 2c 24 75 09 45 84 c9 0f 85 2f 03 00 00 48 8b 14 24 4c 29 ea 48 83 fa 01 0f 86 1e 07 00 00 48 8b 74 24 28 4d 8d 5d 01 <42> 0f b6 3c 2e 89 fa 40 88 7c 24 5c f7 d2 83 e2 1f 0f 84 3d 07 00
+  RSP: 0018:ffffc9000063f950 EFLAGS: 00010202
+  RAX: 0000000000000002 RBX: 0000000000000000 RCX: 000000000000004a
+  RDX: 000000000000004a RSI: 0000000000000000 RDI: 0000000000000000
+  RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000002 R11: 0000000000000001 R12: 0000000000000000
+  R13: 0000000000000000 R14: 000000000000004d R15: 0000000000000000
+  FS:  00007fce52b0fbc0(0000) GS:ffff88806ba00000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000000000000000 CR3: 000000001ae64000 CR4: 0000000000750ef0
+  PKRU: 55555554
+  Call Trace:
+   <TASK>
+   ? __die+0x23/0x70
+   ? page_fault_oops+0x181/0x480
+   ? __stack_depot_save+0x1e6/0x480
+   ? exc_page_fault+0x6f/0x1c0
+   ? asm_exc_page_fault+0x26/0x30
+   ? asn1_ber_decoder+0x173/0xc80
+   ? check_object+0x40/0x340
+   decode_negTokenInit+0x1e/0x30 [cifs]
+   SMB2_negotiate+0xc99/0x17c0 [cifs]
+   ? smb2_negotiate+0x46/0x60 [cifs]
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   smb2_negotiate+0x46/0x60 [cifs]
+   cifs_negotiate_protocol+0xae/0x130 [cifs]
+   cifs_get_smb_ses+0x517/0x1040 [cifs]
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? queue_delayed_work_on+0x5d/0x90
+   cifs_mount_get_session+0x78/0x200 [cifs]
+   dfs_mount_share+0x13a/0x9f0 [cifs]
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? lock_acquire+0xbf/0x2b0
+   ? find_nls+0x16/0x80
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   cifs_mount+0x7e/0x350 [cifs]
+   cifs_smb3_do_mount+0x128/0x780 [cifs]
+   smb3_get_tree+0xd9/0x290 [cifs]
+   vfs_get_tree+0x2c/0x100
+   ? capable+0x37/0x70
+   path_mount+0x2d7/0xb80
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? _raw_spin_unlock_irqrestore+0x44/0x60
+   __x64_sys_mount+0x11a/0x150
+   do_syscall_64+0x47/0xf0
+   entry_SYSCALL_64_after_hwframe+0x6f/0x77
+  RIP: 0033:0x7fce52c2ab1e
 
-T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  3 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=2c7c ProdID=6001 Rev= 3.18
-S:  Manufacturer=Android
-S:  Product=Android
-S:  SerialNumber=0000
-C:* #Ifs= 5 Cfg#= 1 Atr=e0 MxPwr=500mA
-A:  FirstIf#= 0 IfCount= 2 Cls=02(comm.) Sub=06 Prot=00
-I:* If#= 0 Alt= 0 #EPs= 1 Cls=02(comm.) Sub=06 Prot=00 Driver=cdc_ether
-E:  Ad=87(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-I:  If#= 1 Alt= 0 #EPs= 0 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-I:* If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=00 Driver=cdc_ether
-E:  Ad=83(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0c(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0b(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=89(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=88(I) Atr=03(Int.) MxPS=  64 Ivl=4096ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=0a(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+Fix this by setting @len to zero when @off == 0 so callers won't
+attempt to dereference non-existing data areas.
 
-Signed-off-by: Alper Ak <alperyasinak1@gmail.com>
+Reported-by: Robert Morris <rtm@csail.mit.edu>
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/cifs/smb2misc.c | 26 ++++++++++----------------
+ 1 file changed, 10 insertions(+), 16 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -272,6 +272,7 @@ static void option_instat_callback(struc
- #define QUECTEL_PRODUCT_RM500Q			0x0800
- #define QUECTEL_PRODUCT_RM520N			0x0801
- #define QUECTEL_PRODUCT_EC200U			0x0901
-+#define QUECTEL_PRODUCT_EG912Y			0x6001
- #define QUECTEL_PRODUCT_EC200S_CN		0x6002
- #define QUECTEL_PRODUCT_EC200A			0x6005
- #define QUECTEL_PRODUCT_EM061K_LWW		0x6008
-@@ -1244,6 +1245,7 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200U, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200S_CN, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EC200T, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EG912Y, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_RM500K, 0xff, 0x00, 0x00) },
+diff --git a/fs/cifs/smb2misc.c b/fs/cifs/smb2misc.c
+index 7177720e822e1..d3d5d2c6c4013 100644
+--- a/fs/cifs/smb2misc.c
++++ b/fs/cifs/smb2misc.c
+@@ -302,6 +302,9 @@ static const bool has_smb2_data_area[NUMBER_OF_SMB2_COMMANDS] = {
+ char *
+ smb2_get_data_area_len(int *off, int *len, struct smb2_sync_hdr *shdr)
+ {
++	const int max_off = 4096;
++	const int max_len = 128 * 1024;
++
+ 	*off = 0;
+ 	*len = 0;
  
- 	{ USB_DEVICE(CMOTECH_VENDOR_ID, CMOTECH_PRODUCT_6001) },
+@@ -369,29 +372,20 @@ smb2_get_data_area_len(int *off, int *len, struct smb2_sync_hdr *shdr)
+ 	 * Invalid length or offset probably means data area is invalid, but
+ 	 * we have little choice but to ignore the data area in this case.
+ 	 */
+-	if (*off > 4096) {
+-		cifs_dbg(VFS, "offset %d too large, data area ignored\n", *off);
+-		*len = 0;
+-		*off = 0;
+-	} else if (*off < 0) {
+-		cifs_dbg(VFS, "negative offset %d to data invalid ignore data area\n",
+-			 *off);
++	if (unlikely(*off < 0 || *off > max_off ||
++		     *len < 0 || *len > max_len)) {
++		cifs_dbg(VFS, "%s: invalid data area (off=%d len=%d)\n",
++			 __func__, *off, *len);
+ 		*off = 0;
+ 		*len = 0;
+-	} else if (*len < 0) {
+-		cifs_dbg(VFS, "negative data length %d invalid, data area ignored\n",
+-			 *len);
+-		*len = 0;
+-	} else if (*len > 128 * 1024) {
+-		cifs_dbg(VFS, "data area larger than 128K: %d\n", *len);
++	} else if (*off == 0) {
+ 		*len = 0;
+ 	}
+ 
+ 	/* return pointer to beginning of data area, ie offset from SMB start */
+-	if ((*off != 0) && (*len != 0))
++	if (*off > 0 && *len > 0)
+ 		return (char *)shdr + *off;
+-	else
+-		return NULL;
++	return NULL;
+ }
+ 
+ /*
+-- 
+2.43.0
+
 
 
 
