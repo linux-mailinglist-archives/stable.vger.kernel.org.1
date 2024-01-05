@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-9855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A01EC8255BA
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:41:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 022BC8255D1
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:43:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 368561F25B09
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:41:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9286E1F267B7
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3302218EB7;
-	Fri,  5 Jan 2024 14:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 542A82C692;
+	Fri,  5 Jan 2024 14:42:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJV3R7ib"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpZSmZPs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A162AE74;
-	Fri,  5 Jan 2024 14:41:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7801AC433C8;
-	Fri,  5 Jan 2024 14:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FFC28FA;
+	Fri,  5 Jan 2024 14:42:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925DEC433C8;
+	Fri,  5 Jan 2024 14:42:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465716;
-	bh=cRicNy9x32dMsV6YMNxkd8Gh8fcHz2ji36XPkNNmP7Q=;
+	s=korg; t=1704465773;
+	bh=9XeR/GhrlH2lAutuHpRvJlbs/HIkn9CwJCqX0K6X9Io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aJV3R7ibruHtFdRpAljZComR0fyvJzHI0gJISkyyCJQSf9D6a6DCP9NyY5+UXN0ks
-	 LB6NVtmw/0/H3ZDmdyXD7AqbUf0oVuqrFxV/BUAICOOQmPXJ0fxFGER0Qdv5bQjC8i
-	 ok6hK4amG+l0qpVmZ5IqMbJVtj9p2it7QCyktpmE=
+	b=DpZSmZPsVnzGpWaN9Th2+1eu5HfSWDqLPPSFKObvOakeCZTZnDxy9ymWDZyR/ZRC2
+	 mrJpZqXCfKavWeRar9tk7SCcDG3tYgJL7tthRpVrbR3w6XySEFv5nwIf7xPt+6i9ee
+	 6SxBNzkZTEuzbp9vME8OtW4b6ax7UG7Rwhd3J14Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Glover <mark.glover@actisense.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 4.19 29/41] USB: serial: ftdi_sio: update Actisense PIDs constant names
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 22/47] ALSA: hda/hdmi: Add quirk to force pin connectivity on NUC10
 Date: Fri,  5 Jan 2024 15:39:09 +0100
-Message-ID: <20240105143815.167891803@linuxfoundation.org>
+Message-ID: <20240105143816.371983225@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143813.957669139@linuxfoundation.org>
-References: <20240105143813.957669139@linuxfoundation.org>
+In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
+References: <20240105143815.541462991@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,56 +53,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Glover <mark.glover@actisense.com>
+From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 
-commit 513d88a88e0203188a38f4647dd08170aebd85df upstream.
+[ Upstream commit e81d71e343c6c62cf323042caed4b7ca049deda5 ]
 
-Update the constant names for unused USB PIDs (product identifiers) to
-reflect the new products now using the PIDs.
+On some Intel NUC10 variants, codec reports AC_JACK_PORT_NONE as
+pin default config for all pins. This results in broken audio.
+Add a quirk to force connectivity.
 
-Signed-off-by: Mark Glover <mark.glover@actisense.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BugLink: https://github.com/clearlinux/distribution/issues/2396
+Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Link: https://lore.kernel.org/r/20210720153216.2200938-1-kai.vehmanen@linux.intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: 3b1ff57e24a7 ("ALSA: hda/hdmi: add force-connect quirk for NUC5CPYB")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/ftdi_sio.c     |    6 +++---
- drivers/usb/serial/ftdi_sio_ids.h |    6 +++---
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ sound/pci/hda/patch_hdmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/serial/ftdi_sio.c
-+++ b/drivers/usb/serial/ftdi_sio.c
-@@ -1001,9 +1001,9 @@ static const struct usb_device_id id_tab
- 	{ USB_DEVICE(FTDI_VID, ACTISENSE_USG_PID) },
- 	{ USB_DEVICE(FTDI_VID, ACTISENSE_NGT_PID) },
- 	{ USB_DEVICE(FTDI_VID, ACTISENSE_NGW_PID) },
--	{ USB_DEVICE(FTDI_VID, ACTISENSE_D9AC_PID) },
--	{ USB_DEVICE(FTDI_VID, ACTISENSE_D9AD_PID) },
--	{ USB_DEVICE(FTDI_VID, ACTISENSE_D9AE_PID) },
-+	{ USB_DEVICE(FTDI_VID, ACTISENSE_UID_PID) },
-+	{ USB_DEVICE(FTDI_VID, ACTISENSE_USA_PID) },
-+	{ USB_DEVICE(FTDI_VID, ACTISENSE_NGX_PID) },
- 	{ USB_DEVICE(FTDI_VID, ACTISENSE_D9AF_PID) },
- 	{ USB_DEVICE(FTDI_VID, CHETCO_SEAGAUGE_PID) },
- 	{ USB_DEVICE(FTDI_VID, CHETCO_SEASWITCH_PID) },
---- a/drivers/usb/serial/ftdi_sio_ids.h
-+++ b/drivers/usb/serial/ftdi_sio_ids.h
-@@ -1561,9 +1561,9 @@
- #define ACTISENSE_USG_PID		0xD9A9 /* USG USB Serial Adapter */
- #define ACTISENSE_NGT_PID		0xD9AA /* NGT NMEA2000 Interface */
- #define ACTISENSE_NGW_PID		0xD9AB /* NGW NMEA2000 Gateway */
--#define ACTISENSE_D9AC_PID		0xD9AC /* Actisense Reserved */
--#define ACTISENSE_D9AD_PID		0xD9AD /* Actisense Reserved */
--#define ACTISENSE_D9AE_PID		0xD9AE /* Actisense Reserved */
-+#define ACTISENSE_UID_PID		0xD9AC /* USB Isolating Device */
-+#define ACTISENSE_USA_PID		0xD9AD /* USB to Serial Adapter */
-+#define ACTISENSE_NGX_PID		0xD9AE /* NGX NMEA2000 Gateway */
- #define ACTISENSE_D9AF_PID		0xD9AF /* Actisense Reserved */
- #define CHETCO_SEAGAUGE_PID		0xA548 /* SeaGauge USB Adapter */
- #define CHETCO_SEASWITCH_PID		0xA549 /* SeaSwitch USB Adapter */
+diff --git a/sound/pci/hda/patch_hdmi.c b/sound/pci/hda/patch_hdmi.c
+index 56943daccfc72..a0de66674faaf 100644
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -1825,6 +1825,7 @@ static const struct snd_pci_quirk force_connect_list[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x86ae, "ASUS", 1),  /* Z170 PRO */
+ 	SND_PCI_QUIRK(0x1043, 0x86c7, "ASUS", 1),  /* Z170M PLUS */
+ 	SND_PCI_QUIRK(0x1462, 0xec94, "MS-7C94", 1),
++	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", 1),
+ 	{}
+ };
+ 
+-- 
+2.43.0
+
 
 
 
