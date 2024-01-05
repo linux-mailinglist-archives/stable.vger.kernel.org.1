@@ -1,138 +1,129 @@
-Return-Path: <stable+bounces-9785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19DB482532B
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 12:59:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A358825370
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 13:44:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8D32285152
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 11:59:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B5191F23A8F
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 12:44:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39542D03C;
-	Fri,  5 Jan 2024 11:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAACA2D04A;
+	Fri,  5 Jan 2024 12:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="dloLrNjA"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=linosanfilippo@gmx.de header.b="U6tNp3c1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 736472CCB4
-	for <stable@vger.kernel.org>; Fri,  5 Jan 2024 11:59:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3374eb61cbcso1316872f8f.0
-        for <stable@vger.kernel.org>; Fri, 05 Jan 2024 03:59:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1704455966; x=1705060766; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wUwzG5GAodV255BObcMC0Ee1zGNs3NstGJBAQNhp/Nk=;
-        b=dloLrNjAfPfiC6BfHpD9ek6pOj5Mwjn484aZ3kAJTTE2sc0LrhIl9Qpahm/ANBJ3iI
-         Uj5+bCq7kORY5ouQSA8Wu0R9iBRikv7Ol9wvAGlZGs7fl5Wc7Vml0vHli2HBDDv6hy6P
-         a5TIrlpOZgRhfLi+6AnXu65Q31pr4ly+D68s6yQFa0K6vUr9ZcZQUn+geAIX18xVdH8J
-         NDaiOcG9H6X2ok+pA2Y2OdCyYIAR64eZ/ugr0ZtDCTwXru/OeCY3xYmPDblZEtDJyP8A
-         bwFgOyIjnfSOBTXRNhXeIIrK/OMyftbDbbUD5YwyiMVuoV+yxyAf6J3ZArys0GtjovRy
-         FT9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704455966; x=1705060766;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wUwzG5GAodV255BObcMC0Ee1zGNs3NstGJBAQNhp/Nk=;
-        b=GAOtiIuHAVned3O7+1WXaK0U8pWt1zg4fpdFLZQCC+ZyGGkVbxQODiAhPzjn0PLhBU
-         JxA5mPcIPbtaLs/OKIZrvGZnBqXLQvVsVvxqSCKQNusSwi4eZvI0DyY7K9lmGDr+uHqJ
-         jTGTnm6K02YD70Ir77XDL/xSwPUxC1UQ6Qh3JznLcJAkTcuFWVu3EXF7jK+2fetIG3NC
-         yfQdBHL2fP0NPOR34R+DlNqPd77THQc0G4S8O6NBpSzXdm0RxepkQPszGSe32m6ax1Gz
-         lgECrmrJHDayP7aWkOkM/kTLhhGu3waBwU4/q/bvvdq3AKEagRrvDMB9Skc8wzMnq655
-         Sk9w==
-X-Gm-Message-State: AOJu0YwlYp7vVXMMJF6iMyMblDfx/arfdJt03POaXg2jcUoOq4mce5U3
-	5ilmfkypoCKJciN0qYh6gz/lr1pFnkCVHQ==
-X-Google-Smtp-Source: AGHT+IHypNR3urOgyfI7XDfw3H47tJXj98xYo3KaKlbG8MpMwxjU/6ekG0oMLeWW7Ho6yysYX0KKPg==
-X-Received: by 2002:adf:fc89:0:b0:337:5557:acf5 with SMTP id g9-20020adffc89000000b003375557acf5mr917086wrr.106.1704455966502;
-        Fri, 05 Jan 2024 03:59:26 -0800 (PST)
-Received: from localhost (host-213-179-129-39.customer.m-online.net. [213.179.129.39])
-        by smtp.gmail.com with ESMTPSA id e8-20020a5d5948000000b00336898daceasm1257030wri.96.2024.01.05.03.59.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jan 2024 03:59:26 -0800 (PST)
-Date: Fri, 5 Jan 2024 12:59:24 +0100
-From: Jiri Pirko <jiri@resnulli.us>
-To: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>, Phil Sutter <phil@nwl.cc>,
-	David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net v3 1/2] rtnetlink: allow to set iface down before
- enslaving it
-Message-ID: <ZZfvHEIGiL5OvWHk@nanopsycho>
-References: <20240104164300.3870209-1-nicolas.dichtel@6wind.com>
- <20240104164300.3870209-2-nicolas.dichtel@6wind.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FC32CCD5;
+	Fri,  5 Jan 2024 12:44:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1704458564; x=1705063364; i=linosanfilippo@gmx.de;
+	bh=FeFq9f1LEHSJJFeWAk7/qG+nMMyVg8j/quqe2kNS2K8=;
+	h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:
+	 In-Reply-To;
+	b=U6tNp3c1qGrUfmwFaWxWdK3m7Z9AxbgDAlMKEP/jP8T+9yDAwSNOH8M8skc68r23
+	 vubMOb6KUxUA5pZ7dRVDyvGrJfm6XRJ91QWOUNKccP9j/G33/qNjk7/Hp7tt+skP3
+	 OMVAYnnpfRDpeGleh0A9pTCHV8wwJpNp2Q2+KVJlU3BHDCza3kESAtM8hP0lUHP1F
+	 UIrsRrvdjW7WQSmQzB9IBq3eBVl/z/CN84kzkEB4gcHnvx4KW65AhLN2mEro6khyr
+	 mpBl4z6tQvcFvinBf0CMjnC4Tc44NQSvQsr3FDTNoyKXYfMtpyfyy7Q7PV0UPtxMW
+	 T0MEXhd/Cj3OGqQBZA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.2.37] ([84.162.15.98]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MdNcA-1qmOma03EG-00ZS1j; Fri, 05
+ Jan 2024 13:42:44 +0100
+Subject: Re: [PATCH v7 6/7] serial: omap: do not override settings for RS485
+ support
+To: =?UTF-8?Q?Ilpo_J=c3=a4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+ Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, u.kleine-koenig@pengutronix.de,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, mcoquelin.stm32@gmail.com,
+ alexandre.torgue@foss.st.com, cniedermaier@dh-electronics.com,
+ hugo@hugovil.com, m.brock@vanmierlo.com, LKML
+ <linux-kernel@vger.kernel.org>, linux-serial <linux-serial@vger.kernel.org>,
+ Lukas Wunner <lukas@wunner.de>, p.rosenberger@kunbus.com,
+ stable@vger.kernel.org
+References: <20240103061818.564-1-l.sanfilippo@kunbus.com>
+ <20240103061818.564-7-l.sanfilippo@kunbus.com>
+ <c88034d4-cb5-b64e-7a76-194ef35f28@linux.intel.com>
+From: Lino Sanfilippo <LinoSanfilippo@gmx.de>
+Message-ID: <a41ae447-565a-4db3-96ff-30aef6455a7c@gmx.de>
+Date: Fri, 5 Jan 2024 13:42:41 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240104164300.3870209-2-nicolas.dichtel@6wind.com>
+In-Reply-To: <c88034d4-cb5-b64e-7a76-194ef35f28@linux.intel.com>
+Content-Type: text/plain; charset=iso-8859-15
+Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:pchYpIMV93nsbeYzl5wDPqzNit1opOGKWax2b+K7V7kiudOo7Xh
+ 2XD2YIoFvNvoCM5jJUJINXGblK48tYOxLTRuSyJL8pcV3ci7UXozjlV2Wd9inajSMhUYf9w
+ D+xdKApyilZcu/uB6KNXCj2tvU7+a6NCVt/CLRuO8WJGH4M/7ks52EC2ivIY7O7LlaZPKw4
+ g9/CTU1ne66xifS1il+Pg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:T4KpTWouqx0=;OKKxA3jIye+cUL0iCOD9NzRy5pp
+ qDkUmW4P62E4SDjw9QRL6nCKpOclFMHVJVj5V9Yul3y+lbLgi/7TJJgPjvclseqD6Ulh4tkFp
+ vIG/tjjhAZvHZ74W4fYE9EO9lajkHSwNRSJEKoAOYtUHgrksU88ScnqSry1nXX/q58lPjxP9h
+ 3RBVt+AHKH+QbEwC3NAqXLn1nm7ACJZC40IMODouBCLobkgViWb+ovitzvgvX76yP4mAAgmEE
+ u7R2nUwspNVBHlh6bEJ7ncwwO/jXjTzVvg7XBmGMcxRTpa3OGeSxS9U6jv3pEMMQyhsopeP7Y
+ MiM+W77d0mZAo7Z07t4gwp6rrkoMDfZ78gol9N3oF+XzmT6vryg+0hNvAKKA1Z9hwIIz85hht
+ N7HO+nyDUYvdI/uus+3WcZCsjfqLWnDd1xbBtg0ImIqznZ2r4Mp3A9mFBaclh3vF2UV0x3Lbu
+ BMiews4A1xHsYP/fQlUvhhsrR7XWgyc0HykF4H5T27046fckP1XhuKbAAMjoCjisBNIPRlk0V
+ qs1tRe0OthmuB5itOhddTw00KbBy3xvQuECCI5LGPPp9U1mndHrGprV47ltpe1h+NsiWL5jkf
+ EzERKiWRCCBhUErBj3dwmGTzZxJO1JWz/nfq94h2CCqnpIObOfmkQphOYJ8eYIn+bvab1uqz9
+ r7Q8ppyuhaaelg3SDmSzyXvWEB7H59WgYfeB7uG/MmDrz69hi1MdJQ/S6oyfEzonf87JTq/z8
+ h/gglhvyi++W9AmXuo5XZMcdzbb2TxAzzEsPzAbgHZ0afeWakTqHYKA7mU5D2s9o7Xl1nwOeA
+ 7Rc0TEccqor7kMNv1ey7Ng2gwUH0O16Yp+/eNsWGjyDDpwHInbpSetPHngudF2z4+aXfBotig
+ LQIk8Bj/M/O5gOS8RzW2S0yTmQZDRlfdO8V9UFtthmNVF895QKCmnZkiT/9uTjDYsUaR7vO6Q
+ VgUStIs+MRWnH8OFoqW9tAE8YKA=
 
-Thu, Jan 04, 2024 at 05:42:59PM CET, nicolas.dichtel@6wind.com wrote:
->The below commit adds support for:
->> ip link set dummy0 down
->> ip link set dummy0 master bond0 up
+On 03.01.24 at 12:36, Ilpo J=E4rvinen wrote:
+> On Wed, 3 Jan 2024, Lino Sanfilippo wrote:
 >
->but breaks the opposite:
->> ip link set dummy0 up
->> ip link set dummy0 master bond0 down
+>> The drivers RS485 support is deactivated if there is no RTS GPIO availa=
+ble.
+>> This is done by nullifying the ports rs485_supported struct. After that
+>> however the settings in serial_omap_rs485_supported are assigned to the
+>> same structure unconditionally, which results in an unintended reactiva=
+tion
+>> of RS485 support.
+>>
+>> Fix this by moving the assignment to the beginning of
+>> serial_omap_probe_rs485() and thus before uart_get_rs485_mode() gets
+>> called.
+>
+> This doesn't seem to accurately reflect what the problem is (which you
+> correctly described in the paragraph above this). The problem doesn't se=
+em
+> to have anything to do with the placement of uart_get_rs485_mode() call
+> but the if (IS_ERR(up->rts_gpiod)) block that clears rs485_supported?
+>
 
-It is a bit weird to see these 2 and assume some ordering.
-The first one assumes:
-dummy0 master bond 0, dummy0 up
-The second one assumes:
-dummy0 down, dummy0 master bond 0
-But why?
-
-What is the practival reason for a4abfa627c38 existence? I mean,
-bond/team bring up the device themselfs when needed. Phil?
-Wouldn't simple revert do better job here?
+Right, this should be "...Fix this by moving the assignment to the beginni=
+ng of
+serial_omap_probe_rs485() and thus before the check for the RTS GPIO."
+I will correct this.
 
 
+> A future work item that came to my mind while reviewing this: I suppose
+> uart_disable_rs485_support() could be added into core which memsets
+> rs485_supported and rs485 to zero so this driver could just call it.
 >
->Let's add a workaround to have both commands working.
->
->Cc: stable@vger.kernel.org
->Fixes: a4abfa627c38 ("net: rtnetlink: Enslave device before bringing it up")
->Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
->Acked-by: Phil Sutter <phil@nwl.cc>
->Reviewed-by: David Ahern <dsahern@kernel.org>
->---
-> net/core/rtnetlink.c | 8 ++++++++
-> 1 file changed, 8 insertions(+)
->
->diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
->index e8431c6c8490..dd79693c2d91 100644
->--- a/net/core/rtnetlink.c
->+++ b/net/core/rtnetlink.c
->@@ -2905,6 +2905,14 @@ static int do_setlink(const struct sk_buff *skb,
-> 		call_netdevice_notifiers(NETDEV_CHANGEADDR, dev);
-> 	}
-> 
->+	/* Backward compat: enable to set interface down before enslaving it */
->+	if (!(ifm->ifi_flags & IFF_UP) && ifm->ifi_change & IFF_UP) {
->+		err = dev_change_flags(dev, rtnl_dev_combine_flags(dev, ifm),
->+				       extack);
->+		if (err < 0)
->+			goto errout;
->+	}
->+
-> 	if (tb[IFLA_MASTER]) {
-> 		err = do_set_master(dev, nla_get_u32(tb[IFLA_MASTER]), extack);
-> 		if (err)
->-- 
->2.39.2
->
->
+
+Yes, and the ar933x driver could use that as well.
+
+
+Regards,
+Lino
 
