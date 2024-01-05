@@ -1,91 +1,178 @@
-Return-Path: <stable+bounces-9747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4581824D1B
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 03:43:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D2B9824E15
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 06:24:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DF691F234D7
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 02:43:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23A291F230BF
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 05:24:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6391FDB;
-	Fri,  5 Jan 2024 02:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D243953AC;
+	Fri,  5 Jan 2024 05:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YZF5Gc/g"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g/WPVtQb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A716E20E6;
-	Fri,  5 Jan 2024 02:43:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49DAAC43391;
-	Fri,  5 Jan 2024 02:43:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704422624;
-	bh=rWN8Oxj4NlIFuGfV02gz0YSvDVcUX0Lebz4/0QC3IGI=;
-	h=In-Reply-To:References:From:Date:Subject:To:Cc:From;
-	b=YZF5Gc/gPqBQz+pf0J9R15qa7+pavkauDvvl5V2/Oo/FlF45T/UcPByAJYDhK9rYZ
-	 r4uYIjklXG6XW97f1/PM3zWKKT3hjBiwjXgGzZeViRXIIDdlpCVQxGjtQe6++QSXJH
-	 qebtyYPv8kS2MYQhgi71UJE0NZCxNKVj2uOjXO/VrpN5CzGboukhoYhJHJSpXvNgR4
-	 78puAVtEl5zdD2Wxu/riMbV//o/zqw3jZVfyERguACJCIqGwAER/kgsMmvyfbH+Zdr
-	 5v1cn9bf9mI93dNVSqs/qeewP0bPxhSbX1ZCjF413JzgCNVT+GompC3NTtCu0DNZRl
-	 c7SZTX47300tg==
-Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-203fb334415so640486fac.2;
-        Thu, 04 Jan 2024 18:43:44 -0800 (PST)
-X-Gm-Message-State: AOJu0Yzm/3ivtA2omYNgnpYef/ceTDoH86oYJGHeq/wtNODx0Pac/Z1u
-	l1uBsHEFzKfPd35p6BAXZ9jOPp+bKwy91AG2toE=
-X-Google-Smtp-Source: AGHT+IFrU783/2GXXJ3JkkUuny22+ef5hXh174D7y54izTQ9amqMNItOH+VT7bsmTu2/ASJYRpQ6DR70aw79qLXepGw=
-X-Received: by 2002:a05:6870:709a:b0:1fa:edc2:892e with SMTP id
- v26-20020a056870709a00b001faedc2892emr1629833oae.11.1704422623582; Thu, 04
- Jan 2024 18:43:43 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576191DDD9;
+	Fri,  5 Jan 2024 05:24:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-1d4a2526a7eso8045185ad.3;
+        Thu, 04 Jan 2024 21:24:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704432269; x=1705037069; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZUAzjzZKcTM5m6fQb9IcdJP313nlHgCPZQcP52iARe0=;
+        b=g/WPVtQbRiKwhnW1WNTkFvjsQQ9h4l5+z6Fpu31oQbOj69IHR3HJStuuIJcrbR+v6y
+         PF6gsZ88MHaaNBh8wcO1Bp9rpijeyTLpLFAT/muHWQSPgd4HOz1JmM8cuYLf6/H3qgNM
+         nJTk6wA0kOjuTPT5jhljrt6eBORatiHd8vN9cCl/f9EE4zWWSPByT3wzy3LNhdz2wxUX
+         S1XAz7H1hoZX4AmLgMYRmAHcOX0z0ikpViknfnpbGXgHDyl2ZVyj/YsVJz/gej4o6RXg
+         bA1pOMHjPjhgfSpPMPh2UKFOizCmp8AqEPwv4oifRWI8IWlGXwClTXUXD8ddb+76UzAG
+         ikMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704432269; x=1705037069;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZUAzjzZKcTM5m6fQb9IcdJP313nlHgCPZQcP52iARe0=;
+        b=WPCoB+l9+2mFNi70JqZwp6X+7zSNoDsjJkSIpAx7lTo7VNQZJeSFhiId9Y6yuSNIqZ
+         m/vTR+PSACOHYjKADAsmc9LqdkGGf2LjLjJVcoV6caiOZMAMKEurZK9eNyud5smboQIs
+         4L01nMxYA6swCpXRTg/qPZLLQDn8WHKFE14uNUpIpzOhWLPv08DVurrn4WubtXS8wyxb
+         LHOxHpcNLWsZuhCfVpSYAaQh6z707AzSmmIdzUsB7/zWuVVH91ynl52p16xxPYuBr3H8
+         5X5EwfGMejF7SWr1GVu/h+sWLHVWLW+DB/0FHiIQDzQXhINdxV+5lEBlKcO+vgw4QyKu
+         bJmQ==
+X-Gm-Message-State: AOJu0YxFs9lUQgexjA+vvytXBoMmoPr0OevCEoz2SIMj2wpG7Cs1ijd5
+	G1W+0lAaVyVVuPSDSbx9WOU=
+X-Google-Smtp-Source: AGHT+IHmvtk+B8CsCaQvyw6Z57dGQSva5h0HCt97/tCawph3GRd5Pq42T2N8B+2ctTasZPPaCMpK9A==
+X-Received: by 2002:a17:903:11c5:b0:1d4:3065:6647 with SMTP id q5-20020a17090311c500b001d430656647mr1692151plh.110.1704432269542;
+        Thu, 04 Jan 2024 21:24:29 -0800 (PST)
+Received: from g2039B650.. ([106.39.42.152])
+        by smtp.gmail.com with ESMTPSA id u3-20020a170902bf4300b001d4ea483473sm327841pls.82.2024.01.04.21.24.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jan 2024 21:24:29 -0800 (PST)
+From: Gui-Dong Han <2045gemini@gmail.com>
+To: gregkh@linuxfoundation.org,
+	rppt@kernel.org,
+	ivan.orlov0322@gmail.com,
+	akpm@linux-foundation.org,
+	sebastian.reichel@collabora.com,
+	surenb@google.com
+Cc: linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@outlook.com,
+	Gui-Dong Han <2045gemini@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] usb: mon: Fix atomicity violation in mon_bin_vma_fault
+Date: Fri,  5 Jan 2024 13:24:12 +0800
+Message-Id: <20240105052412.9377-1-2045gemini@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Received: by 2002:a8a:c13:0:b0:511:f2c1:11ee with HTTP; Thu, 4 Jan 2024
- 18:43:42 -0800 (PST)
-In-Reply-To: <20240103164834.970234661@linuxfoundation.org>
-References: <20240103164834.970234661@linuxfoundation.org>
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Fri, 5 Jan 2024 11:43:42 +0900
-X-Gmail-Original-Message-ID: <CAKYAXd_g_Y=wp9qbJpLg7su7ZsQU_NgoGE-sybpJU56aU9d0gg@mail.gmail.com>
-Message-ID: <CAKYAXd_g_Y=wp9qbJpLg7su7ZsQU_NgoGE-sybpJU56aU9d0gg@mail.gmail.com>
-Subject: Re: [PATCH 6.6 00/49] 6.6.10-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-2024-01-04 1:55 GMT+09:00, Greg Kroah-Hartman <gregkh@linuxfoundation.org>:
-> This is the start of the stable review cycle for the 6.6.10 release.
-> There are 49 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 05 Jan 2024 16:47:49 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.10-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-> linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
-I have tested smbtorture and tests through windows client against ksmbd.
+In mon_bin_vma_fault():
+    offset = vmf->pgoff << PAGE_SHIFT;
+    if (offset >= rp->b_size)
+        return VM_FAULT_SIGBUS;
+    chunk_idx = offset / CHUNK_SIZE;
+    pageptr = rp->b_vec[chunk_idx].pg;
+The code is executed without holding any lock.
 
-Tested-by: Namjae Jeon <linkinjeon@kernel.org>
+In mon_bin_vma_close():
+    spin_lock_irqsave(&rp->b_lock, flags);
+    rp->mmap_active--;
+    spin_unlock_irqrestore(&rp->b_lock, flags);
 
-Thanks!
+In mon_bin_ioctl():
+    spin_lock_irqsave(&rp->b_lock, flags);
+    if (rp->mmap_active) {
+        ...
+    } else {
+        ...
+        kfree(rp->b_vec);
+        rp->b_vec  = vec;
+        rp->b_size = size;
+        ...
+    }
+    spin_unlock_irqrestore(&rp->b_lock, flags);
+
+Concurrent execution of mon_bin_vma_fault() with mon_bin_vma_close() and
+mon_bin_ioctl() could lead to atomicity violations. mon_bin_vma_fault()
+accesses rp->b_size and rp->b_vec without locking, risking array
+out-of-bounds access or use-after-free bugs due to possible modifications
+in mon_bin_ioctl().
+
+This possible bug is found by an experimental static analysis tool
+developed by our team, BassCheck[1]. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations. The above
+possible bug is reported when our tool analyzes the source code of
+Linux 6.2.
+
+To address this issue, it is proposed to add a spin lock pair in
+mon_bin_vma_fault() to ensure atomicity. With this patch applied, our tool
+never reports the possible bug, with the kernel configuration allyesconfig
+for x86_64. Due to the lack of associated hardware, we cannot test the
+patch in runtime testing, and just verify it according to the code logic.
+
+[1] https://sites.google.com/view/basscheck/
+
+Fixes: 19e6317d24c2 ("usb: mon: Fix a deadlock in usbmon between ...")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
+---
+v2:
+* In this patch v2, we've added some information of the static analysis
+tool used, as per the researcher guidelines. Also, we've added a cc in the
+signed-off-by area, according to the stable-kernel-rules.
+  Thank Greg KH for helpful advice.
+---
+v3:
+* In this patch v3, we've added a necessary blank line and adjusted the
+position of spin_unlock_irqrestore() following Greg KH's suggestions.
+  Thank Greg KH for helpful advice.
+---
+ drivers/usb/mon/mon_bin.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/usb/mon/mon_bin.c b/drivers/usb/mon/mon_bin.c
+index 9ca9305243fe..fbc1a9c0b345 100644
+--- a/drivers/usb/mon/mon_bin.c
++++ b/drivers/usb/mon/mon_bin.c
+@@ -1250,14 +1250,19 @@ static vm_fault_t mon_bin_vma_fault(struct vm_fault *vmf)
+ 	struct mon_reader_bin *rp = vmf->vma->vm_private_data;
+ 	unsigned long offset, chunk_idx;
+ 	struct page *pageptr;
+-
++	unsigned long flags;
++
++	spin_lock_irqsave(&rp->b_lock, flags);
+ 	offset = vmf->pgoff << PAGE_SHIFT;
+-	if (offset >= rp->b_size)
++	if (offset >= rp->b_size) {
++		spin_unlock_irqrestore(&rp->b_lock, flags);
+ 		return VM_FAULT_SIGBUS;
++	}
+ 	chunk_idx = offset / CHUNK_SIZE;
+ 	pageptr = rp->b_vec[chunk_idx].pg;
+ 	get_page(pageptr);
+ 	vmf->page = pageptr;
++	spin_unlock_irqrestore(&rp->b_lock, flags);
+ 	return 0;
+ }
+ 
+-- 
+2.34.1
+
 
