@@ -1,45 +1,46 @@
-Return-Path: <stable+bounces-9848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 930FE8255B2
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:41:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E4168255B4
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:41:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FDF6285AD6
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:41:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 209351F25860
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825B12C692;
-	Fri,  5 Jan 2024 14:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03AA52DF87;
+	Fri,  5 Jan 2024 14:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9RYNQq2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tI/mc/pt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1931E4A9;
-	Fri,  5 Jan 2024 14:41:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D8A1C433C8;
-	Fri,  5 Jan 2024 14:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11C32D051;
+	Fri,  5 Jan 2024 14:41:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42CB4C433C8;
+	Fri,  5 Jan 2024 14:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465697;
-	bh=SC08ELtiqbmTJqYaUwrcWDOFyKzbx63KHxq/Z8Ken0I=;
+	s=korg; t=1704465700;
+	bh=MJjy85CmaJX7aUWkqvBNbzfaVeJ4QXEbTeZIO3ZM0/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T9RYNQq2pY9BFawYztxlmqfioH9DAHnZuZPxyQvbUtMfomrilHW0BZuPTl0ke3Ufq
-	 6ZdCebNgN9/UErhK0az9KaizEg6HMP3DxHkm4ysGlsHdE1gU5PnwUFI7ecv4lvBjGD
-	 rjJ/gwnj/oAsdoMOVkiQfBlmuaRotpugs6tpWSFE=
+	b=tI/mc/pt0AkwphYV+JNbHjWziXYlPUZwJuyuvLy/CQGpAEBcYEgG0gdUEl8DL7HwO
+	 Qdopzeg6tRdzcrxdq2LrbHGevrVM0fH/ben9S0gSD1mD/hPaIIRyTnIL3Usb32iYMK
+	 gNu2kFhCeZb68z8gQ+dNKBiFF0HIwPev++qLBP44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	stable@kernel.org
-Subject: [PATCH 4.19 36/41] x86/alternatives: Sync core before enabling interrupts
-Date: Fri,  5 Jan 2024 15:39:16 +0100
-Message-ID: <20240105143815.411646378@linuxfoundation.org>
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Drew Fustini <drew@beagleboard.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Fabian Godehardt <fg@emlix.com>
+Subject: [PATCH 4.19 37/41] usb: musb: fix MUSB_QUIRK_B_DISCONNECT_99 handling
+Date: Fri,  5 Jan 2024 15:39:17 +0100
+Message-ID: <20240105143815.450392539@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240105143813.957669139@linuxfoundation.org>
 References: <20240105143813.957669139@linuxfoundation.org>
@@ -58,48 +59,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 
-commit 3ea1704a92967834bf0e64ca1205db4680d04048 upstream.
+commit b65ba0c362be665192381cc59e3ac3ef6f0dd1e1 upstream.
 
-text_poke_early() does:
+In commit 92af4fc6ec33 ("usb: musb: Fix suspend with devices
+connected for a64"), the logic to support the
+MUSB_QUIRK_B_DISCONNECT_99 quirk was modified to only conditionally
+schedule the musb->irq_work delayed work.
 
-   local_irq_save(flags);
-   memcpy(addr, opcode, len);
-   local_irq_restore(flags);
-   sync_core();
+This commit badly breaks ECM Gadget on AM335X. Indeed, with this
+commit, one can observe massive packet loss:
 
-That's not really correct because the synchronization should happen before
-interrupts are re-enabled to ensure that a pending interrupt observes the
-complete update of the opcodes.
+$ ping 192.168.0.100
+...
+15 packets transmitted, 3 received, 80% packet loss, time 14316ms
 
-It's not entirely clear whether the interrupt entry provides enough
-serialization already, but moving the sync_core() invocation into interrupt
-disabled region does no harm and is obviously correct.
+Reverting this commit brings back a properly functioning ECM
+Gadget. An analysis of the commit seems to indicate that a mistake was
+made: the previous code was not falling through into the
+MUSB_QUIRK_B_INVALID_VBUS_91, but now it is, unless the condition is
+taken.
 
-Fixes: 6fffacb30349 ("x86/alternatives, jumplabel: Use text_poke_early() before mm_init()")
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/ZT6narvE%2BLxX%2B7Be@windriver.com
+Changing the logic to be as it was before the problematic commit *and*
+only conditionally scheduling musb->irq_work resolves the regression:
+
+$ ping 192.168.0.100
+...
+64 packets transmitted, 64 received, 0% packet loss, time 64475ms
+
+Fixes: 92af4fc6ec33 ("usb: musb: Fix suspend with devices connected for a64")
+Cc: stable@vger.kernel.org
+Tested-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Tested-by: Drew Fustini <drew@beagleboard.org>
+Acked-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Link: https://lore.kernel.org/r/20210528140446.278076-1-thomas.petazzoni@bootlin.com
+Signed-off-by: Fabian Godehardt <fg@emlix.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/alternative.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/musb/musb_core.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -690,8 +690,8 @@ void *__init_or_module text_poke_early(v
- 	} else {
- 		local_irq_save(flags);
- 		memcpy(addr, opcode, len);
--		local_irq_restore(flags);
- 		sync_core();
-+		local_irq_restore(flags);
- 
- 		/*
- 		 * Could also do a CLFLUSH here to speed up CPU recovery; but
+--- a/drivers/usb/musb/musb_core.c
++++ b/drivers/usb/musb/musb_core.c
+@@ -1873,9 +1873,8 @@ static void musb_pm_runtime_check_sessio
+ 			schedule_delayed_work(&musb->irq_work,
+ 					      msecs_to_jiffies(1000));
+ 			musb->quirk_retries--;
+-			break;
+ 		}
+-		/* fall through */
++		break;
+ 	case MUSB_QUIRK_B_INVALID_VBUS_91:
+ 		if (musb->quirk_retries && !musb->flush_irq_work) {
+ 			musb_dbg(musb,
 
 
 
