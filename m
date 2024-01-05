@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-9800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F1D782557D
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:39:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C2C8255A0
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:41:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2FE3284E72
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:39:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E54C1C231F2
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D71528FA;
-	Fri,  5 Jan 2024 14:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 896C228FA;
+	Fri,  5 Jan 2024 14:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PO+Yueo6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBS1OaOW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071552C6B7;
-	Fri,  5 Jan 2024 14:39:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36EC2C433C8;
-	Fri,  5 Jan 2024 14:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517062E415;
+	Fri,  5 Jan 2024 14:40:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66629C433C7;
+	Fri,  5 Jan 2024 14:40:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465560;
-	bh=fe1eBm2jGktvggZtYmw4+dPTpiRkxrs5lcN//9q2xbQ=;
+	s=korg; t=1704465648;
+	bh=ZT4WoTSgzAc85oJj4o+mbbEXAuUNzRfx7UpYsVOfquI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PO+Yueo6ce7uohdSC+/6XBAgg/uXivzzNMu1FdtrjuxzMGO+GDIKCN8lwug1fp3L3
-	 1wxNL2Psv0a+RdsOEUwrEAGw1uEmC8m8Uqr9n2H2U/2+J71N+kNgKMCMdrB/xiqyPd
-	 pDv4XryHNWVIDiXWOWWM8HkcvRr28F4Pjcjp8DWc=
+	b=kBS1OaOWftinSbw58FKrZc9zahvTz6oeIE7+UQgyB4Z4gGxSchKGq9fdOwlLkDTXr
+	 vUH52JvtLJpWP1TfAW0kAv8dzgXk5tmOgd3KDjTZ6Q9fcR3PQTYab7KDACvkS2CKGI
+	 0e5mm8izRghHa4bS2V6MadfmqIpVkZYcldLsThxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 4.14 10/21] iio: common: ms_sensors: ms_sensors_i2c: fix humidity conversion time table
-Date: Fri,  5 Jan 2024 15:38:57 +0100
-Message-ID: <20240105143811.998306866@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 18/41] net: check dev->gso_max_size in gso_features_check()
+Date: Fri,  5 Jan 2024 15:38:58 +0100
+Message-ID: <20240105143814.757494921@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143811.536282337@linuxfoundation.org>
-References: <20240105143811.536282337@linuxfoundation.org>
+In-Reply-To: <20240105143813.957669139@linuxfoundation.org>
+References: <20240105143813.957669139@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,111 +53,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 54cf39ec16335dadbe1ba008d8e5e98dae3e26f8 upstream.
+[ Upstream commit 24ab059d2ebd62fdccc43794796f6ffbabe49ebc ]
 
-The HTU21 offers 4 sampling frequencies: 20, 40, 70 and 120, which are
-associated to an index that is used to select the right measurement
-resolution and its corresponding measurement time. The current
-implementation selects the measurement resolution and the temperature
-measurement time properly, but it does not select the right humidity
-measurement time in all cases.
+Some drivers might misbehave if TSO packets get too big.
 
-In summary, the 40 and 70 humidity measurement times are swapped.
+GVE for instance uses a 16bit field in its TX descriptor,
+and will do bad things if a packet is bigger than 2^16 bytes.
 
-The reason for that is probably the unusual coding for the measurement
-resolution. According to the datasheet, the bits [7,0] of the "user
-register" are used as follows to select the bit resolution:
+Linux TCP stack honors dev->gso_max_size, but there are
+other ways for too big packets to reach an ndo_start_xmit()
+handler : virtio_net, af_packet, GRO...
 
---------------------------------------------------
-| Bit 7 | Bit 0 | RH | Temp | Trh (us) | Tt (us) |
---------------------------------------------------
-|   0   |   0   | 12 |  14  |  16000   |  50000  |
---------------------------------------------------
-|   0   |   1   | 8  |  12  |  3000    |  13000  |
---------------------------------------------------
-|   1   |   0   | 10 |  13  |  5000    |  25000  |
---------------------------------------------------
-|   1   |   1   | 11 |  11  |  8000    |  7000   |
---------------------------------------------------
-*This table is available in the official datasheet, page 13/21. I have
-just appended the times provided in the humidity/temperature tables,
-pages 3/21, 5/21. Note that always a pair of resolutions is selected.
+Add a generic check in gso_features_check() and fallback
+to GSO when needed.
 
-The sampling frequencies [20, 40, 70, 120] are assigned to a linear
-index [0..3] which is then coded as follows [1]:
+gso_max_size was added in the blamed commit.
 
-Index    [7,0]
---------------
-idx 0     0,0
-idx 1     1,0
-idx 2     0,1
-idx 3     1,1
-
-That is done that way because the temperature measurements are being
-used as the reference for the sampling frequency (the frequencies and
-the temperature measurement times are correlated), so increasing the
-index always reduces the temperature measurement time and its
-resolution. Therefore, the temperature measurement time array is as
-simple as [50000, 25000, 13000, 7000]
-
-On the other hand, the humidity resolution cannot follow the same
-pattern because of the way it is coded in the "user register", where
-both resolutions are selected at the same time. The humidity measurement
-time array is the following: [16000, 3000, 5000, 8000], which defines
-the following assignments:
-
-Index    [7,0]    Trh
------------------------
-idx 0     0,0     16000  -> right, [0,0] selects 12 bits (Trh = 16000)
-idx 1     1,0     3000   -> wrong! [1,0] selects 10 bits (Trh = 5000)
-idx 2     0,1     5000   -> wrong! [0,1] selects 8 bits (Trh = 3000)
-idx 3     1,1     8000   -> right, [1,1] selects 11 bits (Trh = 8000)
-
-The times have been ordered as if idx = 1 -> [0,1] and idx = 2 -> [1,0],
-which is not the case for the reason explained above.
-
-So a simple modification is required to obtain the right humidity
-measurement time array, swapping the values in the positions 1 and 2.
-
-The right table should be the following: [16000, 5000, 3000, 8000]
-
-Fix the humidity measurement time array with the right idex/value
-coding.
-
-[1] The actual code that makes this coding and assigns it to the current
-value of the "user register" is the following:
-config_reg &= 0x7E;
-config_reg |= ((i & 1) << 7) + ((i & 2) >> 1);
-
-Fixes: d574a87cc311 ("Add meas-spec sensors common part")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20231026-topic-htu21_conversion_time-v1-1-bd257dc44209@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 82cc1a7a5687 ("[NET]: Add per-connection option to set max TSO frame size")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20231219125331.4127498-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/common/ms_sensors/ms_sensors_i2c.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/dev.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
-+++ b/drivers/iio/common/ms_sensors/ms_sensors_i2c.c
-@@ -16,8 +16,8 @@
- /* Conversion times in us */
- static const u16 ms_sensors_ht_t_conversion_time[] = { 50000, 25000,
- 						       13000, 7000 };
--static const u16 ms_sensors_ht_h_conversion_time[] = { 16000, 3000,
--						       5000, 8000 };
-+static const u16 ms_sensors_ht_h_conversion_time[] = { 16000, 5000,
-+						       3000, 8000 };
- static const u16 ms_sensors_tp_conversion_time[] = { 500, 1100, 2100,
- 						     4100, 8220, 16440 };
+diff --git a/net/core/dev.c b/net/core/dev.c
+index ea05db68aa95a..b5c9648c2192f 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -3200,6 +3200,9 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
+ 	if (gso_segs > dev->gso_max_segs)
+ 		return features & ~NETIF_F_GSO_MASK;
  
++	if (unlikely(skb->len >= READ_ONCE(dev->gso_max_size)))
++		return features & ~NETIF_F_GSO_MASK;
++
+ 	if (!skb_shinfo(skb)->gso_type) {
+ 		skb_warn_bad_offload(skb);
+ 		return features & ~NETIF_F_GSO_MASK;
+-- 
+2.43.0
+
 
 
 
