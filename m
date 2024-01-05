@@ -1,123 +1,207 @@
-Return-Path: <stable+bounces-9752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDA81824F69
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 08:59:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 702BE8250BA
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 10:22:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E3341F23278
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 07:59:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96E5D1C22AB3
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 09:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 259241EB48;
-	Fri,  5 Jan 2024 07:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7DEA22EF0;
+	Fri,  5 Jan 2024 09:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="368kLgn+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KnZSstPs"
 X-Original-To: stable@vger.kernel.org
-Received: from omta034.useast.a.cloudfilter.net (omta034.useast.a.cloudfilter.net [44.202.169.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7A72030C
-	for <stable@vger.kernel.org>; Fri,  5 Jan 2024 07:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6004a.ext.cloudfilter.net ([10.0.30.197])
-	by cmsmtp with ESMTPS
-	id LB0HrqIqBAxAkLf6urU7Y2; Fri, 05 Jan 2024 07:59:20 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id Lf6greAa655BJLf6grMmgR; Fri, 05 Jan 2024 07:59:06 +0000
-X-Authority-Analysis: v=2.4 cv=QcR1A+Xv c=1 sm=1 tr=0 ts=6597b6ca
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=dEuoMetlWLkA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=g2e/F5BPYvgdJcXDMVQYAFFXy6wsbB+XD6222tBOk9k=; b=368kLgn+IMVcSQlBadM9yHjTZM
-	IY+mS7v7NPxe70G8zzmXbgd3tosZuXiUupJYIFfCwmoKZ/jhkgin78lyhIB5f7hmg0VknHv5QCaID
-	NBE0qXe4F1wvph4TYNfsi5+SCk0AFOAygcHw392+HkaNzWeaVedGgXSj493ksTNHnm1b7w9yaodXs
-	pUdLr1aMfcHB8iFv655o6qhgjR3i7Cghn+huMK0YejFgM+eLWPzSHQ4+1modRHqV9/aC4kS6+hZQY
-	ANb11tyB/oMtnf0d7xCDzlEXv/WplNSH0R0zLwonDrA58s2AXa1lRs2tTTv2BpruncZTF4p1x7abz
-	9uGPr2OQ==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:34264 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1rLf6d-003EDW-31;
-	Fri, 05 Jan 2024 00:59:03 -0700
-Subject: Re: [PATCH 5.15 00/95] 5.15.146-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-References: <20240103164853.921194838@linuxfoundation.org>
-In-Reply-To: <20240103164853.921194838@linuxfoundation.org>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <29d0cd93-0d0d-481c-d3f4-01552b30ebec@w6rz.net>
-Date: Thu, 4 Jan 2024 23:59:01 -0800
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B0B24B21
+	for <stable@vger.kernel.org>; Fri,  5 Jan 2024 09:22:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86CBC433C8;
+	Fri,  5 Jan 2024 09:22:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1704446540;
+	bh=WcNHOWHpueOJwAsJWlGPcbVAlr5FCaJxRRcHos+l9Vk=;
+	h=Subject:To:From:Date:From;
+	b=KnZSstPs4YPslGor9PixqnH62qEzzkrT/1E81e0BEyHrt1/I7uGfqMPL48Oga/0/O
+	 9eKByzOC3+eCCSaxfSvDCIckFhbEJq1MTdr4ciL3GB4IKSvrqhcXUZwkUOcnHjn2i/
+	 II1xB8AIgZyyslbWaEa46i1YSMoMmKMExOQsZ8OY=
+Subject: patch "serial: Do not hold the port lock when setting rx-during-tx GPIO" added to tty-next
+To: l.sanfilippo@kunbus.com,gregkh@linuxfoundation.org,s.hauer@pengutronix.de,shawnguo@kernel.org,stable@vger.kernel.org
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 05 Jan 2024 10:21:45 +0100
+Message-ID: <2024010545-pendant-salute-e641@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1rLf6d-003EDW-31
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:34264
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfJaB9wiUvFy9h65jhcKC+O/4EQlifbxnkpnpTEzspy++R9CNl/aIl0UwO+BVyt8i81bOIdE2Etd5uWbKhoKXv0uoDENmVRf2dpVKPUEPI+J4qdEPQd6d
- L3m0alrlY7A1Lwf30N8an+6Zp+tLH7bM2nPTI81pU1vlCB3j4Ix5V1OVH4DCm+UckCRoIFfae68/HQ==
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On 1/3/24 8:54 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.146 release.
-> There are 95 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 05 Jan 2024 16:47:49 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.146-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+This is a note to let you know that I've just added the patch titled
 
-Tested-by: Ron Economos <re@w6rz.net>
+    serial: Do not hold the port lock when setting rx-during-tx GPIO
+
+to my tty git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/tty.git
+in the tty-next branch.
+
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
+
+The patch will also be merged in the next major kernel release
+during the merge window.
+
+If you have any questions about this process, please let me know.
+
+
+From 07c30ea5861fb26a77dade8cdc787252f6122fb1 Mon Sep 17 00:00:00 2001
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Date: Wed, 3 Jan 2024 07:18:12 +0100
+Subject: serial: Do not hold the port lock when setting rx-during-tx GPIO
+
+Both the imx and stm32 driver set the rx-during-tx GPIO in rs485_config().
+Since this function is called with the port lock held, this can be a
+problem in case that setting the GPIO line can sleep (e.g. if a GPIO
+expander is used which is connected via SPI or I2C).
+
+Avoid this issue by moving the GPIO setting outside of the port lock into
+the serial core and thus making it a generic feature.
+
+Also with commit c54d48543689 ("serial: stm32: Add support for rs485
+RX_DURING_TX output GPIO") the SER_RS485_RX_DURING_TX flag is only set if a
+rx-during-tx GPIO is _not_ available, which is wrong. Fix this, too.
+
+Furthermore reset old GPIO settings in case that changing the RS485
+configuration failed.
+
+Fixes: c54d48543689 ("serial: stm32: Add support for rs485 RX_DURING_TX output GPIO")
+Fixes: ca530cfa968c ("serial: imx: Add support for RS485 RX_DURING_TX output GPIO")
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Link: https://lore.kernel.org/r/20240103061818.564-2-l.sanfilippo@kunbus.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/tty/serial/imx.c         |  4 ----
+ drivers/tty/serial/serial_core.c | 26 ++++++++++++++++++++++++--
+ drivers/tty/serial/stm32-usart.c |  8 ++------
+ 3 files changed, 26 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index a0fcf18cbeac..8b7d9c5a7455 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -1948,10 +1948,6 @@ static int imx_uart_rs485_config(struct uart_port *port, struct ktermios *termio
+ 	    rs485conf->flags & SER_RS485_RX_DURING_TX)
+ 		imx_uart_start_rx(port);
+ 
+-	if (port->rs485_rx_during_tx_gpio)
+-		gpiod_set_value_cansleep(port->rs485_rx_during_tx_gpio,
+-					 !!(rs485conf->flags & SER_RS485_RX_DURING_TX));
+-
+ 	return 0;
+ }
+ 
+diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+index cc866da50b81..8d381c283cec 100644
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -1407,6 +1407,16 @@ static void uart_set_rs485_termination(struct uart_port *port,
+ 				 !!(rs485->flags & SER_RS485_TERMINATE_BUS));
+ }
+ 
++static void uart_set_rs485_rx_during_tx(struct uart_port *port,
++					const struct serial_rs485 *rs485)
++{
++	if (!(rs485->flags & SER_RS485_ENABLED))
++		return;
++
++	gpiod_set_value_cansleep(port->rs485_rx_during_tx_gpio,
++				 !!(rs485->flags & SER_RS485_RX_DURING_TX));
++}
++
+ static int uart_rs485_config(struct uart_port *port)
+ {
+ 	struct serial_rs485 *rs485 = &port->rs485;
+@@ -1418,12 +1428,17 @@ static int uart_rs485_config(struct uart_port *port)
+ 
+ 	uart_sanitize_serial_rs485(port, rs485);
+ 	uart_set_rs485_termination(port, rs485);
++	uart_set_rs485_rx_during_tx(port, rs485);
+ 
+ 	uart_port_lock_irqsave(port, &flags);
+ 	ret = port->rs485_config(port, NULL, rs485);
+ 	uart_port_unlock_irqrestore(port, flags);
+-	if (ret)
++	if (ret) {
+ 		memset(rs485, 0, sizeof(*rs485));
++		/* unset GPIOs */
++		gpiod_set_value_cansleep(port->rs485_term_gpio, 0);
++		gpiod_set_value_cansleep(port->rs485_rx_during_tx_gpio, 0);
++	}
+ 
+ 	return ret;
+ }
+@@ -1462,6 +1477,7 @@ static int uart_set_rs485_config(struct tty_struct *tty, struct uart_port *port,
+ 		return ret;
+ 	uart_sanitize_serial_rs485(port, &rs485);
+ 	uart_set_rs485_termination(port, &rs485);
++	uart_set_rs485_rx_during_tx(port, &rs485);
+ 
+ 	uart_port_lock_irqsave(port, &flags);
+ 	ret = port->rs485_config(port, &tty->termios, &rs485);
+@@ -1473,8 +1489,14 @@ static int uart_set_rs485_config(struct tty_struct *tty, struct uart_port *port,
+ 			port->ops->set_mctrl(port, port->mctrl);
+ 	}
+ 	uart_port_unlock_irqrestore(port, flags);
+-	if (ret)
++	if (ret) {
++		/* restore old GPIO settings */
++		gpiod_set_value_cansleep(port->rs485_term_gpio,
++			!!(port->rs485.flags & SER_RS485_TERMINATE_BUS));
++		gpiod_set_value_cansleep(port->rs485_rx_during_tx_gpio,
++			!!(port->rs485.flags & SER_RS485_RX_DURING_TX));
+ 		return ret;
++	}
+ 
+ 	if (copy_to_user(rs485_user, &port->rs485, sizeof(port->rs485)))
+ 		return -EFAULT;
+diff --git a/drivers/tty/serial/stm32-usart.c b/drivers/tty/serial/stm32-usart.c
+index 9781c143def2..794b77512740 100644
+--- a/drivers/tty/serial/stm32-usart.c
++++ b/drivers/tty/serial/stm32-usart.c
+@@ -226,12 +226,6 @@ static int stm32_usart_config_rs485(struct uart_port *port, struct ktermios *ter
+ 
+ 	stm32_usart_clr_bits(port, ofs->cr1, BIT(cfg->uart_enable_bit));
+ 
+-	if (port->rs485_rx_during_tx_gpio)
+-		gpiod_set_value_cansleep(port->rs485_rx_during_tx_gpio,
+-					 !!(rs485conf->flags & SER_RS485_RX_DURING_TX));
+-	else
+-		rs485conf->flags |= SER_RS485_RX_DURING_TX;
+-
+ 	if (rs485conf->flags & SER_RS485_ENABLED) {
+ 		cr1 = readl_relaxed(port->membase + ofs->cr1);
+ 		cr3 = readl_relaxed(port->membase + ofs->cr3);
+@@ -256,6 +250,8 @@ static int stm32_usart_config_rs485(struct uart_port *port, struct ktermios *ter
+ 
+ 		writel_relaxed(cr3, port->membase + ofs->cr3);
+ 		writel_relaxed(cr1, port->membase + ofs->cr1);
++
++		rs485conf->flags |= SER_RS485_RX_DURING_TX;
+ 	} else {
+ 		stm32_usart_clr_bits(port, ofs->cr3,
+ 				     USART_CR3_DEM | USART_CR3_DEP);
+-- 
+2.43.0
+
 
 
