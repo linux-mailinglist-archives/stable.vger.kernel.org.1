@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-9845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6231E8255AF
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:41:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF9F98255E6
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:43:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A547E285F39
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:41:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 979E91C23209
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:43:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A1C628FA;
-	Fri,  5 Jan 2024 14:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F04031E4A9;
+	Fri,  5 Jan 2024 14:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdEDzzJY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7phsm4i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545472C692;
-	Fri,  5 Jan 2024 14:41:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A6EBC433C7;
-	Fri,  5 Jan 2024 14:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D2518EB7;
+	Fri,  5 Jan 2024 14:43:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BEB3C433C7;
+	Fri,  5 Jan 2024 14:43:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465689;
-	bh=b30KRt62vTzSMwhgrYVVxEZCthQ+CqiBXofAf+AzjUo=;
+	s=korg; t=1704465831;
+	bh=/PYoXlV3AGwHYpbw7aM3SSRhbm8GUtZZ23gKYP0AH+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XdEDzzJY4QUp0Oe74FcrIOS2GMs0gPwoc4CLjNw5JApK6B+O8FYKohVNWe+rxHRZt
-	 9PpBzESlWbWHDVrkPbnOLR3SNlNRsgrE4tuhjPDV2pHXIW65gTsV7++8Pih7SPqebo
-	 AP5stwFeUq+XSyv1CwdYmMJuh4DlAg3F6zMq06qk=
+	b=r7phsm4i6dY7q0qHKMyBJUtAFXA5wAdkjjpBEKKevATjVXiZniTHl4kBcwWESIy16
+	 Hsl156szk+HshrvRbcWs59I1IlwGC2i2FmQb4bVB8oqJJ8lfaplxmvHOUuEjWla5rH
+	 rnxj0rQMTMCtFQ8Pc6AgAbgAwBTNHQKirbVahSm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hu Haowen <xianfengting221@163.com>,
-	Saeed Mahameed <saeedm@mellanox.com>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Tony Lindgren <tony@atomide.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 10/41] net/mlx5: improve some comments
+Subject: [PATCH 5.4 03/47] ARM: OMAP2+: Fix null pointer dereference and memory leak in omap_soc_device_init
 Date: Fri,  5 Jan 2024 15:38:50 +0100
-Message-ID: <20240105143814.392205423@linuxfoundation.org>
+Message-ID: <20240105143815.665190329@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143813.957669139@linuxfoundation.org>
-References: <20240105143813.957669139@linuxfoundation.org>
+In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
+References: <20240105143815.541462991@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,37 +53,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hu Haowen <xianfengting221@163.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 6533380dfd003ea7636cb5672f4f85124b56328b ]
+[ Upstream commit c72b9c33ef9695ad7ce7a6eb39a9df8a01b70796 ]
 
-Replaced "its" with "it's".
+kasprintf() returns a pointer to dynamically allocated memory which can
+be NULL upon failure. When 'soc_dev_attr->family' is NULL,it'll trigger
+the null pointer dereference issue, such as in 'soc_info_show'.
 
-Signed-off-by: Hu Haowen <xianfengting221@163.com>
-Signed-off-by: Saeed Mahameed <saeedm@mellanox.com>
-Stable-dep-of: 4261edf11cb7 ("net/mlx5: Fix fw tracer first block check")
+And when 'soc_device_register' fails, it's necessary to release
+'soc_dev_attr->family' to avoid memory leaks.
+
+Fixes: 6770b2114325 ("ARM: OMAP2+: Export SoC information to userspace")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Message-ID: <20231123145237.609442-1-chentao@kylinos.cn>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-omap2/id.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-index 97e6b06b1bff3..21dbb25552140 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-@@ -651,7 +651,7 @@ static void mlx5_fw_tracer_handle_traces(struct work_struct *work)
- 		get_block_timestamp(tracer, &tmp_trace_block[TRACES_PER_BLOCK - 1]);
+diff --git a/arch/arm/mach-omap2/id.c b/arch/arm/mach-omap2/id.c
+index 188ea5258c999..8c9160779689d 100644
+--- a/arch/arm/mach-omap2/id.c
++++ b/arch/arm/mach-omap2/id.c
+@@ -797,10 +797,15 @@ void __init omap_soc_device_init(void)
  
- 	while (block_timestamp > tracer->last_timestamp) {
--		/* Check block override if its not the first block */
-+		/* Check block override if it's not the first block */
- 		if (!tracer->last_timestamp) {
- 			u64 *ts_event;
- 			/* To avoid block override be the HW in case of buffer
+ 	soc_dev_attr->machine  = soc_name;
+ 	soc_dev_attr->family   = omap_get_family();
++	if (!soc_dev_attr->family) {
++		kfree(soc_dev_attr);
++		return;
++	}
+ 	soc_dev_attr->revision = soc_rev;
+ 
+ 	soc_dev = soc_device_register(soc_dev_attr);
+ 	if (IS_ERR(soc_dev)) {
++		kfree(soc_dev_attr->family);
+ 		kfree(soc_dev_attr);
+ 		return;
+ 	}
 -- 
 2.43.0
 
