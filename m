@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-9886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB49A8255DB
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:43:24 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEBBF8255B5
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:41:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65C841F269D7
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:43:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB0431C20282
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:41:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E412D051;
-	Fri,  5 Jan 2024 14:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9582C692;
+	Fri,  5 Jan 2024 14:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ObmQUUDp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1DG4fFYl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7DA28FA;
-	Fri,  5 Jan 2024 14:43:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983A9C433C8;
-	Fri,  5 Jan 2024 14:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE9B18EB7;
+	Fri,  5 Jan 2024 14:41:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F192BC433C8;
+	Fri,  5 Jan 2024 14:41:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465802;
-	bh=N77d/bUhuSccw2aj+WNDm0CxSGVM+Eo8CLcJGiPouHM=;
+	s=korg; t=1704465703;
+	bh=rF1y//nudTupKhZgqds4XWYM7pjkpQ4beOBPCZIKvEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ObmQUUDp4JFa45eCOzNLQygRtDTW8NF3HCAJKITRe84ZM55X5UsYw0A5TGFaZ5Ljw
-	 L/znjF1dc52GZILnTfcxSPeG7szVDTC0aleoyaEv88w3QrEMRKOd9wYni1D/8pphLv
-	 TpXWpf6SutHlngTVaJqTjNDifJyf/OUuFj9m5BNM=
+	b=1DG4fFYlccuyXetXKLKVyl3qKFGkdpTAyUkZIOS9XJ0+YD47iEPwrUKX8rbk1azlU
+	 esxDfgNJy2dpIegEVFVO+cf8XnXkpw0WhoMtwQkC0W7etAbnNjU1FVE3pusi41WrpE
+	 sOMbu1S/ZiqZYycsTIUHWwM14noLNg5VjdGBhJm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wadim Egorov <w.egorov@phytec.de>,
-	Bhavya Kapoor <b-kapoor@ti.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.4 31/47] iio: adc: ti_am335x_adc: Fix return value check of tiadc_request_dma()
+	stable <stable@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 38/41] usb: fotg210-hcd: delete an incorrect bounds test
 Date: Fri,  5 Jan 2024 15:39:18 +0100
-Message-ID: <20240105143816.766143368@linuxfoundation.org>
+Message-ID: <20240105143815.481376449@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
-References: <20240105143815.541462991@linuxfoundation.org>
+In-Reply-To: <20240105143813.957669139@linuxfoundation.org>
+References: <20240105143813.957669139@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,45 +55,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wadim Egorov <w.egorov@phytec.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 60576e84c187043cef11f11d015249e71151d35a upstream.
+[ Upstream commit 7fbcd195e2b8cc952e4aeaeb50867b798040314c ]
 
-Fix wrong handling of a DMA request where the probing only failed
-if -EPROPE_DEFER was returned. Instead, let us fail if a non -ENODEV
-value is returned. This makes DMAs explicitly optional. Even if the
-DMA request is unsuccessfully, the ADC can still work properly.
-We do also handle the defer probe case by making use of dev_err_probe().
+Here "temp" is the number of characters that we have written and "size"
+is the size of the buffer.  The intent was clearly to say that if we have
+written to the end of the buffer then stop.
 
-Fixes: f438b9da75eb ("drivers: iio: ti_am335x_adc: add dma support")
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
-Reviewed-by: Bhavya Kapoor <b-kapoor@ti.com>
-Link: https://lore.kernel.org/r/20230925134427.214556-1-w.egorov@phytec.de
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+However, for that to work the comparison should have been done on the
+original "size" value instead of the "size -= temp" value.  Not only
+will that not trigger when we want to, but there is a small chance that
+it will trigger incorrectly before we want it to and we break from the
+loop slightly earlier than intended.
+
+This code was recently changed from using snprintf() to scnprintf().  With
+snprintf() we likely would have continued looping and passed a negative
+size parameter to snprintf().  This would have triggered an annoying
+WARN().  Now that we have converted to scnprintf() "size" will never
+drop below 1 and there is no real need for this test.  We could change
+the condition to "if (temp <= 1) goto done;" but just deleting the test
+is cleanest.
+
+Fixes: 7d50195f6c50 ("usb: host: Faraday fotg210-hcd driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Lee Jones <lee@kernel.org>
+Link: https://lore.kernel.org/r/ZXmwIwHe35wGfgzu@suswa
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ti_am335x_adc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/host/fotg210-hcd.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/drivers/iio/adc/ti_am335x_adc.c
-+++ b/drivers/iio/adc/ti_am335x_adc.c
-@@ -656,8 +656,10 @@ static int tiadc_probe(struct platform_d
- 	platform_set_drvdata(pdev, indio_dev);
+diff --git a/drivers/usb/host/fotg210-hcd.c b/drivers/usb/host/fotg210-hcd.c
+index 1577424319613..d87b4fb0d9af6 100644
+--- a/drivers/usb/host/fotg210-hcd.c
++++ b/drivers/usb/host/fotg210-hcd.c
+@@ -426,8 +426,6 @@ static void qh_lines(struct fotg210_hcd *fotg210, struct fotg210_qh *qh,
+ 			temp = size;
+ 		size -= temp;
+ 		next += temp;
+-		if (temp == size)
+-			goto done;
+ 	}
  
- 	err = tiadc_request_dma(pdev, adc_dev);
--	if (err && err == -EPROBE_DEFER)
-+	if (err && err != -ENODEV) {
-+		dev_err_probe(&pdev->dev, err, "DMA request failed\n");
- 		goto err_dma;
-+	}
+ 	temp = snprintf(next, size, "\n");
+@@ -437,7 +435,6 @@ static void qh_lines(struct fotg210_hcd *fotg210, struct fotg210_qh *qh,
+ 	size -= temp;
+ 	next += temp;
  
- 	return 0;
- 
+-done:
+ 	*sizep = size;
+ 	*nextp = next;
+ }
+-- 
+2.43.0
+
 
 
 
