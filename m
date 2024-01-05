@@ -1,114 +1,118 @@
-Return-Path: <stable+bounces-9779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE1E8825179
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 11:07:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47ED182522B
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 11:36:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F3D31F23A1F
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 10:07:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1FE9B24796
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 10:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8197D24B4C;
-	Fri,  5 Jan 2024 10:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 230DD2D05E;
+	Fri,  5 Jan 2024 10:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCPY23v5"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KCDxuDH0"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167B424B2F;
-	Fri,  5 Jan 2024 10:06:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10CFEC433C8;
-	Fri,  5 Jan 2024 10:06:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704449219;
-	bh=Exy/fCfgWx2532qZ1vXYkjfLM2k7/JjLhx9Pk8pooss=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sCPY23v50V2ll1z90icCOZpj4qdgoNJ3e9JEJNMtB2grMqRnAVcKBIcRZC7C0/hFt
-	 rOGRJWf+vMQbIij+5Syis7i+svqiVMboeSNjz0eRDvEZfgbAM3792ROS3uIaj0YeND
-	 sit07u3Dx2XIo4EzK+VdNzjZGNAArCVciPyjOiEs=
-Date: Fri, 5 Jan 2024 11:06:57 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jeffrey E Altman <jaltman@auristor.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Markus Suvanto <markus.suvanto@gmail.com>,
-	Wang Lei <wang840925@gmail.com>, Jeff Layton <jlayton@redhat.com>,
-	Steve French <smfrench@gmail.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-	linux-nfs@vger.kernel.org, ceph-devel@vger.kernel.org,
-	keyrings@vger.kernel.org, netdev@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 067/156] keys, dns: Allow key types (eg. DNS) to be
- reclaimed immediately on expiry
-Message-ID: <2024010556-tradition-reappoint-95a4@gregkh>
-References: <20231230115812.333117904@linuxfoundation.org>
- <20231230115814.539935693@linuxfoundation.org>
- <cd1d6f0d-a05b-412c-882a-e62ee9e67b85@auristor.com>
- <2024010526-catalyst-flame-2e33@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023942CCB4
+	for <stable@vger.kernel.org>; Fri,  5 Jan 2024 10:34:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-53fbf2c42bfso990417a12.3
+        for <stable@vger.kernel.org>; Fri, 05 Jan 2024 02:34:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1704450898; x=1705055698; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WJ+3lkUD3PcgGfGxvkRaWTL+ma2UbkIJWkqsRj7YstE=;
+        b=KCDxuDH08tdQOVTXAWmPxq70pEK1uW7fGJDet6ALwH697BN8l52jB3aQnmjX5s7UHG
+         bhVirNpURID9AQO26/hnHfp4FrG5fLl4wv1cV4WNYazQkVkfeo0i7wCmn0U5zz/gVjS1
+         MT2TbVTiJwtZgrCPGCRJiG1rUc63wNUFQD1woDmAhqgRMTeg2fWnvDfD0hek685mA5at
+         wVcqjDDt1j646f1R+lxdtcj2locmLy3bGpV9ZqwMaJPYIy3KvuW/YKIyA84dbafk7KaD
+         ajzMeu9XB26TETptGAZomv7rK/KimwpuEuV1EKnG2PrP0gM7Mbx67/wpzVE066RMgaeg
+         UFCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704450898; x=1705055698;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WJ+3lkUD3PcgGfGxvkRaWTL+ma2UbkIJWkqsRj7YstE=;
+        b=QDWj9gVSSYHGv67SS+1pYis6EF+AueiGtbKzHNnxpzWtRjVFZ9bEqb4Beh9ipIK8Gw
+         UpEJAkBoXk2wgy9ZUcu2q2D6/MlDdZwrt1L+4VSyymeyAIw0qhXGGuBQiR7bqjGgUDRX
+         68c7lVeVpCZo4kkUul10lceo4EFo4CNb0T90Svwa0Lllo7AmkVtq0wznDLU7UxfMoW9k
+         JFC3yhDv5zJonZVbUwki8MAalPFXpB2RFMr1w3IUbxf/cUvlR+BjY8fkflwwfUPK60sw
+         Uk5+CpOIxOTsCsWE/E0UDzbrE+kzFV8vCqgi0bje7Y7tOHBzbFOFk0lmCZESiiQhu0PR
+         X7uQ==
+X-Gm-Message-State: AOJu0YyU78s4MTSEpRUoxccjSipnZev+ESbFIgDbZqueqti2xZtgMEMP
+	jNz0/QTriZ1OYcK3SnP9KuN96ATbiiieXg==
+X-Google-Smtp-Source: AGHT+IGUo41ABXS8rCxKJiuRcNLhqF2QPdz0DGJ/Fk7r3EeZouzt3jwZJdmpivBVOkXjjJi3lr2lZQ==
+X-Received: by 2002:a05:6a20:c759:b0:196:2018:2bac with SMTP id hj25-20020a056a20c75900b0019620182bacmr1486037pzb.107.1704450898337;
+        Fri, 05 Jan 2024 02:34:58 -0800 (PST)
+Received: from localhost ([122.172.86.168])
+        by smtp.gmail.com with ESMTPSA id ks13-20020a056a004b8d00b006d9b93ca5e2sm1126988pfb.146.2024.01.05.02.34.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jan 2024 02:34:57 -0800 (PST)
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Viresh Kumar <vireshk@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>,
+	linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	"v5 . 18+" <stable@vger.kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] OPP: Pass rounded rate to _set_opp()
+Date: Fri,  5 Jan 2024 16:04:52 +0530
+Message-Id: <7269c250db1b89cda72ca419b7bd5e37997309d6.1704450876.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2024010526-catalyst-flame-2e33@gregkh>
 
-On Fri, Jan 05, 2024 at 10:51:50AM +0100, Greg Kroah-Hartman wrote:
-> On Thu, Jan 04, 2024 at 09:13:34PM -0500, Jeffrey E Altman wrote:
-> > On 12/30/2023 6:58 AM, Greg Kroah-Hartman wrote:
-> > > 6.6-stable review patch.  If anyone has any objections, please let me know.
-> > > 
-> > > ------------------
-> > > 
-> > > From: David Howells <dhowells@redhat.com>
-> > > 
-> > > [ Upstream commit 39299bdd2546688d92ed9db4948f6219ca1b9542 ]
-> > Greg,
-> > 
-> > Upstream commit 39299bdd2546688d92ed9db4948f6219ca1b9542 ("keys, dns: Allow
-> > key types (eg. DNS) to be reclaimed immediately on expiry") was subsequently
-> > fixed by
-> > 
-> >   commit 1997b3cb4217b09e49659b634c94da47f0340409
-> >   Author: Edward Adam Davis <eadavis@qq.com>
-> >   Date:   Sun Dec 24 00:02:49 2023 +0000
-> > 
-> >     keys, dns: Fix missing size check of V1 server-list header
-> > 
-> >   Fixes: b946001d3bb1 ("keys, dns: Allow key types (eg. DNS) to be reclaimed
-> > immediately on expiry")
-> > 
-> > If it is not too late, would it be possible to apply 1997b3cb421 to the
-> > branches b946001d3bb1 was cherry-picked to before release?
-> > I believe the complete set of branches are
-> > 
-> >   linux-6.6.y, linux-6.1.y, linux-5.15.y, linux-5.10.y, linux-5.0.y
-> 
-> The stable trees were already released with this change in it, so I'll
-> queue this up for the next round, thanks.
+The OPP core finds the eventual frequency to set with the help of
+clk_round_rate() and the same was earlier getting passed to _set_opp()
+and that's what would get configured.
 
-Ah, I see what happened, that line:
-	Fixes: b946001d3bb1 ("keys, dns: Allow key types (eg. DNS) to be reclaimed immediately on expiry")
-refers to a commit that is not in Linus's tree, and isn't the sha1 that
-you are pointing at here either.
+The commit 1efae8d2e777 ("OPP: Make dev_pm_opp_set_opp() independent of
+frequency") mistakenly changed that. Fix it.
 
-So I'll go add this manually, but this is why our checking scripts
-missed this, please be more careful about using the proper SHA1 values
-in commits.  Using invalid ones is almost worse than not using them at
-allm as it gives you the false sense that the markings are correct.
+Fixes: 1efae8d2e777 ("OPP: Make dev_pm_opp_set_opp() independent of frequency")
+Cc: v5.18+ <stable@vger.kernel.org> # v6.0+
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+---
+ drivers/opp/core.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-thanks,
+diff --git a/drivers/opp/core.c b/drivers/opp/core.c
+index 29f8160c3e38..5e6cfcbd2e87 100644
+--- a/drivers/opp/core.c
++++ b/drivers/opp/core.c
+@@ -1352,12 +1352,12 @@ int dev_pm_opp_set_rate(struct device *dev, unsigned long target_freq)
+ 		 * value of the frequency. In such a case, do not abort but
+ 		 * configure the hardware to the desired frequency forcefully.
+ 		 */
+-		forced = opp_table->rate_clk_single != target_freq;
++		forced = opp_table->rate_clk_single != freq;
+ 	}
+ 
+-	ret = _set_opp(dev, opp_table, opp, &target_freq, forced);
++	ret = _set_opp(dev, opp_table, opp, &freq, forced);
+ 
+-	if (target_freq)
++	if (freq)
+ 		dev_pm_opp_put(opp);
+ 
+ put_opp_table:
+-- 
+2.31.1.272.g89b43f80a514
 
-greg k-h
 
