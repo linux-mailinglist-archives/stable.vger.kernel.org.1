@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-9826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFB0A82559C
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:40:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E43C0825592
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:40:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0796A1C22E3C
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:40:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D142BB20151
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488FE2D7B0;
-	Fri,  5 Jan 2024 14:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FE92E3E8;
+	Fri,  5 Jan 2024 14:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YY3WxONJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5nNPTIZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F27621374;
-	Fri,  5 Jan 2024 14:40:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E2D5C433C8;
-	Fri,  5 Jan 2024 14:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805212D634;
+	Fri,  5 Jan 2024 14:40:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91071C433C7;
+	Fri,  5 Jan 2024 14:40:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465637;
-	bh=zfdCS7GwJ9eO5mBVp8ghI0gh0lJ1YLCE8PVxJ1/qXxk=;
+	s=korg; t=1704465615;
+	bh=hDtMPPNBcMJl74n5H16yauGvJx+kDyGfAeXjLAeejmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YY3WxONJZVZW9MEVu1ikGDhurb3Znw2bPcIwwZ9SmRmx2XBl8Wzw5kW6EVGrCkzXg
-	 SM735nO/kgZO+EqmyCHHfkr8MNVrF0QZlXUqrCM7ndTTP8cCx472CaWt/64PYwncAW
-	 USTrOZmc5xvE6wKB/8KUzQymF4G/Lhzn3QdsUDO0=
+	b=i5nNPTIZDzx8ac/0KQI9eR8XQbMu+U8wCwj1yonHO3JtnZ7oABkxk6GyTBs2K5c/7
+	 w2uXEO1vIRUti38bhrvUOUxfVVzN5TokDKcyzoGvXU5Gk/IJpy25FFvQGBTEfPB6GU
+	 KQaxBG07Gpnv3C98JJWA7dLv/8N3e5LdmUHx9HZM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Bernard Pidoux <f6bvp@free.fr>,
-	"David S. Miller" <davem@davemloft.net>,
+	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 14/41] net/rose: fix races in rose_kill_by_device()
+Subject: [PATCH 4.14 07/21] pinctrl: at91-pio4: use dedicated lock class for IRQ
 Date: Fri,  5 Jan 2024 15:38:54 +0100
-Message-ID: <20240105143814.566672983@linuxfoundation.org>
+Message-ID: <20240105143811.880163215@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143813.957669139@linuxfoundation.org>
-References: <20240105143813.957669139@linuxfoundation.org>
+In-Reply-To: <20240105143811.536282337@linuxfoundation.org>
+References: <20240105143811.536282337@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,181 +51,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Alexis Lothoré <alexis.lothore@bootlin.com>
 
-[ Upstream commit 64b8bc7d5f1434c636a40bdcfcd42b278d1714be ]
+[ Upstream commit 14694179e561b5f2f7e56a0f590e2cb49a9cc7ab ]
 
-syzbot found an interesting netdev refcounting issue in
-net/rose/af_rose.c, thanks to CONFIG_NET_DEV_REFCNT_TRACKER=y [1]
+Trying to suspend to RAM on SAMA5D27 EVK leads to the following lockdep
+warning:
 
-Problem is that rose_kill_by_device() can change rose->device
-while other threads do not expect the pointer to be changed.
+ ============================================
+ WARNING: possible recursive locking detected
+ 6.7.0-rc5-wt+ #532 Not tainted
+ --------------------------------------------
+ sh/92 is trying to acquire lock:
+ c3cf306c (&irq_desc_lock_class){-.-.}-{2:2}, at: __irq_get_desc_lock+0xe8/0x100
 
-We have to first collect sockets in a temporary array,
-then perform the changes while holding the socket
-lock and rose_list_lock spinlock (in this order)
+ but task is already holding lock:
+ c3d7c46c (&irq_desc_lock_class){-.-.}-{2:2}, at: __irq_get_desc_lock+0xe8/0x100
 
-Change rose_release() to also acquire rose_list_lock
-before releasing the netdev refcount.
+ other info that might help us debug this:
+  Possible unsafe locking scenario:
 
-[1]
+        CPU0
+        ----
+   lock(&irq_desc_lock_class);
+   lock(&irq_desc_lock_class);
 
-[ 1185.055088][ T7889] ref_tracker: reference already released.
-[ 1185.061476][ T7889] ref_tracker: allocated in:
-[ 1185.066081][ T7889]  rose_bind+0x4ab/0xd10
-[ 1185.070446][ T7889]  __sys_bind+0x1ec/0x220
-[ 1185.074818][ T7889]  __x64_sys_bind+0x72/0xb0
-[ 1185.079356][ T7889]  do_syscall_64+0x40/0x110
-[ 1185.083897][ T7889]  entry_SYSCALL_64_after_hwframe+0x63/0x6b
-[ 1185.089835][ T7889] ref_tracker: freed in:
-[ 1185.094088][ T7889]  rose_release+0x2f5/0x570
-[ 1185.098629][ T7889]  __sock_release+0xae/0x260
-[ 1185.103262][ T7889]  sock_close+0x1c/0x20
-[ 1185.107453][ T7889]  __fput+0x270/0xbb0
-[ 1185.111467][ T7889]  task_work_run+0x14d/0x240
-[ 1185.116085][ T7889]  get_signal+0x106f/0x2790
-[ 1185.120622][ T7889]  arch_do_signal_or_restart+0x90/0x7f0
-[ 1185.126205][ T7889]  exit_to_user_mode_prepare+0x121/0x240
-[ 1185.131846][ T7889]  syscall_exit_to_user_mode+0x1e/0x60
-[ 1185.137293][ T7889]  do_syscall_64+0x4d/0x110
-[ 1185.141783][ T7889]  entry_SYSCALL_64_after_hwframe+0x63/0x6b
-[ 1185.148085][ T7889] ------------[ cut here ]------------
+  *** DEADLOCK ***
 
-WARNING: CPU: 1 PID: 7889 at lib/ref_tracker.c:255 ref_tracker_free+0x61a/0x810 lib/ref_tracker.c:255
-Modules linked in:
-CPU: 1 PID: 7889 Comm: syz-executor.2 Not tainted 6.7.0-rc4-syzkaller-00162-g65c95f78917e #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
-RIP: 0010:ref_tracker_free+0x61a/0x810 lib/ref_tracker.c:255
-Code: 00 44 8b 6b 18 31 ff 44 89 ee e8 21 62 f5 fc 45 85 ed 0f 85 a6 00 00 00 e8 a3 66 f5 fc 48 8b 34 24 48 89 ef e8 27 5f f1 05 90 <0f> 0b 90 bb ea ff ff ff e9 52 fd ff ff e8 84 66 f5 fc 4c 8d 6d 44
-RSP: 0018:ffffc90004917850 EFLAGS: 00010202
-RAX: 0000000000000201 RBX: ffff88802618f4c0 RCX: 0000000000000000
-RDX: 0000000000000202 RSI: ffffffff8accb920 RDI: 0000000000000001
-RBP: ffff8880269ea5b8 R08: 0000000000000001 R09: fffffbfff23e35f6
-R10: ffffffff91f1afb7 R11: 0000000000000001 R12: 1ffff92000922f0c
-R13: 0000000005a2039b R14: ffff88802618f4d8 R15: 00000000ffffffff
-FS: 00007f0a720ef6c0(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f43a819d988 CR3: 0000000076c64000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<TASK>
-netdev_tracker_free include/linux/netdevice.h:4127 [inline]
-netdev_put include/linux/netdevice.h:4144 [inline]
-netdev_put include/linux/netdevice.h:4140 [inline]
-rose_kill_by_device net/rose/af_rose.c:195 [inline]
-rose_device_event+0x25d/0x330 net/rose/af_rose.c:218
-notifier_call_chain+0xb6/0x3b0 kernel/notifier.c:93
-call_netdevice_notifiers_info+0xbe/0x130 net/core/dev.c:1967
-call_netdevice_notifiers_extack net/core/dev.c:2005 [inline]
-call_netdevice_notifiers net/core/dev.c:2019 [inline]
-__dev_notify_flags+0x1f5/0x2e0 net/core/dev.c:8646
-dev_change_flags+0x122/0x170 net/core/dev.c:8682
-dev_ifsioc+0x9ad/0x1090 net/core/dev_ioctl.c:529
-dev_ioctl+0x224/0x1090 net/core/dev_ioctl.c:786
-sock_do_ioctl+0x198/0x270 net/socket.c:1234
-sock_ioctl+0x22e/0x6b0 net/socket.c:1339
-vfs_ioctl fs/ioctl.c:51 [inline]
-__do_sys_ioctl fs/ioctl.c:871 [inline]
-__se_sys_ioctl fs/ioctl.c:857 [inline]
-__x64_sys_ioctl+0x18f/0x210 fs/ioctl.c:857
-do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-do_syscall_64+0x40/0x110 arch/x86/entry/common.c:83
-entry_SYSCALL_64_after_hwframe+0x63/0x6b
-RIP: 0033:0x7f0a7147cba9
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f0a720ef0c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007f0a7159bf80 RCX: 00007f0a7147cba9
-RDX: 0000000020000040 RSI: 0000000000008914 RDI: 0000000000000004
-RBP: 00007f0a714c847a R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 000000000000000b R14: 00007f0a7159bf80 R15: 00007ffc8bb3a5f8
-</TASK>
+  May be due to missing lock nesting notation
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Bernard Pidoux <f6bvp@free.fr>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+ 6 locks held by sh/92:
+  #0: c3aa0258 (sb_writers#6){.+.+}-{0:0}, at: ksys_write+0xd8/0x178
+  #1: c4c2df44 (&of->mutex){+.+.}-{3:3}, at: kernfs_fop_write_iter+0x138/0x284
+  #2: c32684a0 (kn->active){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x148/0x284
+  #3: c232b6d4 (system_transition_mutex){+.+.}-{3:3}, at: pm_suspend+0x13c/0x4e8
+  #4: c387b088 (&dev->mutex){....}-{3:3}, at: __device_suspend+0x1e8/0x91c
+  #5: c3d7c46c (&irq_desc_lock_class){-.-.}-{2:2}, at: __irq_get_desc_lock+0xe8/0x100
+
+ stack backtrace:
+ CPU: 0 PID: 92 Comm: sh Not tainted 6.7.0-rc5-wt+ #532
+ Hardware name: Atmel SAMA5
+  unwind_backtrace from show_stack+0x18/0x1c
+  show_stack from dump_stack_lvl+0x34/0x48
+  dump_stack_lvl from __lock_acquire+0x19ec/0x3a0c
+  __lock_acquire from lock_acquire.part.0+0x124/0x2d0
+  lock_acquire.part.0 from _raw_spin_lock_irqsave+0x5c/0x78
+  _raw_spin_lock_irqsave from __irq_get_desc_lock+0xe8/0x100
+  __irq_get_desc_lock from irq_set_irq_wake+0xa8/0x204
+  irq_set_irq_wake from atmel_gpio_irq_set_wake+0x58/0xb4
+  atmel_gpio_irq_set_wake from irq_set_irq_wake+0x100/0x204
+  irq_set_irq_wake from gpio_keys_suspend+0xec/0x2b8
+  gpio_keys_suspend from dpm_run_callback+0xe4/0x248
+  dpm_run_callback from __device_suspend+0x234/0x91c
+  __device_suspend from dpm_suspend+0x224/0x43c
+  dpm_suspend from dpm_suspend_start+0x9c/0xa8
+  dpm_suspend_start from suspend_devices_and_enter+0x1e0/0xa84
+  suspend_devices_and_enter from pm_suspend+0x460/0x4e8
+  pm_suspend from state_store+0x78/0xe4
+  state_store from kernfs_fop_write_iter+0x1a0/0x284
+  kernfs_fop_write_iter from vfs_write+0x38c/0x6f4
+  vfs_write from ksys_write+0xd8/0x178
+  ksys_write from ret_fast_syscall+0x0/0x1c
+ Exception stack(0xc52b3fa8 to 0xc52b3ff0)
+ 3fa0:                   00000004 005a0ae8 00000001 005a0ae8 00000004 00000001
+ 3fc0: 00000004 005a0ae8 00000001 00000004 00000004 b6c616c0 00000020 0059d190
+ 3fe0: 00000004 b6c61678 aec5a041 aebf1a26
+
+This warning is raised because pinctrl-at91-pio4 uses chained IRQ. Whenever
+a wake up source configures an IRQ through irq_set_irq_wake, it will
+lock the corresponding IRQ desc, and then call irq_set_irq_wake on "parent"
+IRQ which will do the same on its own IRQ desc, but since those two locks
+share the same class, lockdep reports this as an issue.
+
+Fix lockdep false positive by setting a different class for parent and
+children IRQ
+
+Fixes: 776180848b57 ("pinctrl: introduce driver for Atmel PIO4 controller")
+Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
+Link: https://lore.kernel.org/r/20231215-lockdep_warning-v1-1-8137b2510ed5@bootlin.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rose/af_rose.c | 39 ++++++++++++++++++++++++++++++++++-----
- 1 file changed, 34 insertions(+), 5 deletions(-)
+ drivers/pinctrl/pinctrl-at91-pio4.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
-index d32fb40650a75..015e475f5554b 100644
---- a/net/rose/af_rose.c
-+++ b/net/rose/af_rose.c
-@@ -184,21 +184,47 @@ void rose_kill_by_neigh(struct rose_neigh *neigh)
-  */
- static void rose_kill_by_device(struct net_device *dev)
+diff --git a/drivers/pinctrl/pinctrl-at91-pio4.c b/drivers/pinctrl/pinctrl-at91-pio4.c
+index 8f18a35b66b61..5ef7dd8c9ccf0 100644
+--- a/drivers/pinctrl/pinctrl-at91-pio4.c
++++ b/drivers/pinctrl/pinctrl-at91-pio4.c
+@@ -899,6 +899,13 @@ static const struct of_device_id atmel_pctrl_of_match[] = {
+ 	}
+ };
+ 
++/*
++ * This lock class allows to tell lockdep that parent IRQ and children IRQ do
++ * not share the same class so it does not raise false positive
++ */
++static struct lock_class_key atmel_lock_key;
++static struct lock_class_key atmel_request_key;
++
+ static int atmel_pinctrl_probe(struct platform_device *pdev)
  {
--	struct sock *s;
-+	struct sock *sk, *array[16];
-+	struct rose_sock *rose;
-+	bool rescan;
-+	int i, cnt;
- 
-+start:
-+	rescan = false;
-+	cnt = 0;
- 	spin_lock_bh(&rose_list_lock);
--	sk_for_each(s, &rose_list) {
--		struct rose_sock *rose = rose_sk(s);
-+	sk_for_each(sk, &rose_list) {
-+		rose = rose_sk(sk);
-+		if (rose->device == dev) {
-+			if (cnt == ARRAY_SIZE(array)) {
-+				rescan = true;
-+				break;
-+			}
-+			sock_hold(sk);
-+			array[cnt++] = sk;
-+		}
-+	}
-+	spin_unlock_bh(&rose_list_lock);
- 
-+	for (i = 0; i < cnt; i++) {
-+		sk = array[cnt];
-+		rose = rose_sk(sk);
-+		lock_sock(sk);
-+		spin_lock_bh(&rose_list_lock);
- 		if (rose->device == dev) {
--			rose_disconnect(s, ENETUNREACH, ROSE_OUT_OF_ORDER, 0);
-+			rose_disconnect(sk, ENETUNREACH, ROSE_OUT_OF_ORDER, 0);
- 			if (rose->neighbour)
- 				rose->neighbour->use--;
- 			dev_put(rose->device);
- 			rose->device = NULL;
- 		}
-+		spin_unlock_bh(&rose_list_lock);
-+		release_sock(sk);
-+		sock_put(sk);
-+		cond_resched();
- 	}
--	spin_unlock_bh(&rose_list_lock);
-+	if (rescan)
-+		goto start;
- }
- 
- /*
-@@ -658,7 +684,10 @@ static int rose_release(struct socket *sock)
- 		break;
- 	}
- 
-+	spin_lock_bh(&rose_list_lock);
- 	dev_put(rose->device);
-+	rose->device = NULL;
-+	spin_unlock_bh(&rose_list_lock);
- 	sock->sk = NULL;
- 	release_sock(sk);
- 	sock_put(sk);
+ 	struct device *dev = &pdev->dev;
+@@ -1044,6 +1051,7 @@ static int atmel_pinctrl_probe(struct platform_device *pdev)
+ 		irq_set_chip_and_handler(irq, &atmel_gpio_irq_chip,
+ 					 handle_simple_irq);
+ 		irq_set_chip_data(irq, atmel_pioctrl);
++		irq_set_lockdep_class(irq, &atmel_lock_key, &atmel_request_key);
+ 		dev_dbg(dev,
+ 			"atmel gpio irq domain: hwirq: %d, linux irq: %d\n",
+ 			i, irq);
 -- 
 2.43.0
 
