@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-9829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8ACE82559F
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:41:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 545198255E3
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:43:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFE4C1C23124
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:41:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C833BB21AF9
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742222BD12;
-	Fri,  5 Jan 2024 14:40:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E123D2D7AB;
+	Fri,  5 Jan 2024 14:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xWGqxxy8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KP6F81g+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E59E2D7AD;
-	Fri,  5 Jan 2024 14:40:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72A5C433C7;
-	Fri,  5 Jan 2024 14:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADD51E4A9;
+	Fri,  5 Jan 2024 14:43:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EC86C433C7;
+	Fri,  5 Jan 2024 14:43:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465646;
-	bh=ErgLsLa88B22Ld79oA+OZIhqGg4KrB0gmxW0WM3Y9i8=;
+	s=korg; t=1704465823;
+	bh=ZyY5lMqonaccv+GiiQmbVS0iBBc8DQzlpjVKB3EVYbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xWGqxxy8kit7yUHJIJFdxHEFRUWcCYtbp8Wf/5d78Wo0k3fJYU4wLGbmNGLH69nXy
-	 iXG9vpd5zLQ0OOeGAmSa6qgAPV4FmHd0GhMO74pdZsAyc1eIDW2PKNtsgjWVNxqw4T
-	 UIvjc0p5HLnjsnTox5vHToWj0WbYxlkPxXiT66XI=
+	b=KP6F81g+laZ5Lt5APCt22SOMvjZEdJHdrOTLgcy59ElwqQCqwTqk53suN//HxK56r
+	 QTzIvmK9lpYzMsO8dk1QXF/QgRb5WMyv3NN6ShuYGTfwmib1Njen3NIMcJ35lkg1kc
+	 kMFo2xfJ2Y/5T6sPlHKi3namsQDA4piq/PR5KB0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 17/41] net: warn if gso_type isnt set for a GSO SKB
+Subject: [PATCH 5.4 10/47] net/mlx5e: Correct snprintf truncation handling for fw_version buffer used by representors
 Date: Fri,  5 Jan 2024 15:38:57 +0100
-Message-ID: <20240105143814.712196018@linuxfoundation.org>
+Message-ID: <20240105143815.923758894@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143813.957669139@linuxfoundation.org>
-References: <20240105143813.957669139@linuxfoundation.org>
+In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
+References: <20240105143815.541462991@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,51 +54,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-[ Upstream commit 1d155dfdf50efc2b0793bce93c06d1a5b23d0877 ]
+[ Upstream commit b13559b76157de9d74f04d3ca0e49d69de3b5675 ]
 
-In bug report [0] a warning in r8169 driver was reported that was
-caused by an invalid GSO SKB (gso_type was 0). See [1] for a discussion
-about this issue. Still the origin of the invalid GSO SKB isn't clear.
+snprintf returns the length of the formatted string, excluding the trailing
+null, without accounting for truncation. This means that is the return
+value is greater than or equal to the size parameter, the fw_version string
+was truncated.
 
-It shouldn't be a network drivers task to check for invalid GSO SKB's.
-Also, even if issue [0] can be fixed, we can't be sure that a
-similar issue doesn't pop up again at another place.
-Therefore let gso_features_check() check for such invalid GSO SKB's.
-
-[0] https://bugzilla.kernel.org/show_bug.cgi?id=209423
-[1] https://www.spinics.net/lists/netdev/msg690794.html
-
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/97c78d21-7f0b-d843-df17-3589f224d2cf@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 24ab059d2ebd ("net: check dev->gso_max_size in gso_features_check()")
+Link: https://docs.kernel.org/core-api/kernel-api.html#c.snprintf
+Fixes: 1b2bd0c0264f ("net/mlx5e: Check return value of snprintf writing to fw_version buffer for representors")
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_rep.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 0f9214fb36e01..ea05db68aa95a 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3200,6 +3200,11 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 	if (gso_segs > dev->gso_max_segs)
- 		return features & ~NETIF_F_GSO_MASK;
- 
-+	if (!skb_shinfo(skb)->gso_type) {
-+		skb_warn_bad_offload(skb);
-+		return features & ~NETIF_F_GSO_MASK;
-+	}
-+
- 	/* Support for GSO partial features requires software
- 	 * intervention before we can actually process the packets
- 	 * so we need to strip support for any partial features now
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+index ed37cc7c9ae00..a40fecfdb10ca 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
+@@ -78,7 +78,7 @@ static void mlx5e_rep_get_drvinfo(struct net_device *dev,
+ 	count = snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
+ 			 "%d.%d.%04d (%.16s)", fw_rev_maj(mdev),
+ 			 fw_rev_min(mdev), fw_rev_sub(mdev), mdev->board_id);
+-	if (count == sizeof(drvinfo->fw_version))
++	if (count >= sizeof(drvinfo->fw_version))
+ 		snprintf(drvinfo->fw_version, sizeof(drvinfo->fw_version),
+ 			 "%d.%d.%04d", fw_rev_maj(mdev),
+ 			 fw_rev_min(mdev), fw_rev_sub(mdev));
 -- 
 2.43.0
 
