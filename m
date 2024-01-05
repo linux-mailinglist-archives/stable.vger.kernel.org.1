@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-9772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035418250CE
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 10:24:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A4598250D0
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 10:25:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D70D286336
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 09:24:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FD081C226CC
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 09:25:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F31B822F17;
-	Fri,  5 Jan 2024 09:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122F422F0C;
+	Fri,  5 Jan 2024 09:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGuwVmRv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GmlkkvmC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7B23C3F
-	for <stable@vger.kernel.org>; Fri,  5 Jan 2024 09:24:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F43BC433C7;
-	Fri,  5 Jan 2024 09:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D9F22F04
+	for <stable@vger.kernel.org>; Fri,  5 Jan 2024 09:25:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08792C433C9;
+	Fri,  5 Jan 2024 09:25:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704446648;
-	bh=kLrwZLtHqqdGr7ptPviCsOkopYfFB+Lhv31VQV7BNnA=;
+	s=korg; t=1704446703;
+	bh=np0yMTEPh2A47QS32L2ysN/NmQwtfZ3qx09NlgeTw8Q=;
 	h=Subject:To:From:Date:From;
-	b=RGuwVmRv46hp8DiyEoxf8EfwHsiSQUAbMpyQibF15XqyUwymwOMQappDu/Rmg5lcG
-	 yjxee1Mldosw2m96GE982VqMU3E9tudTHetf2dz4UQGI0NjIo1UGYxlTQEpNGCV6/A
-	 At6vQXEJxkaeng+3WiqCFufiR4mSsoZs83OcOGFk=
-Subject: patch "usb: dwc3: gadget: Queue PM runtime idle on disconnect event" added to usb-next
-To: quic_wcheng@quicinc.com,gregkh@linuxfoundation.org,stable@vger.kernel.org
+	b=GmlkkvmCkzxGRa4Djy0OfMbjNaSXtJPAnuB5m+5MHE57tjgkydKOisjcuzsG316Xo
+	 WRWk3rYicT10sZJRQ/hzhZS2eM9ntPQk//jj0NZ2pcf13KVejM3KFmPxHuGh/0i15B
+	 ohQK3nFtCAN435hAfSU1E2yF8lxfkvGVrOYzFKbY=
+Subject: patch "usb: typec: class: fix typec_altmode_put_partner to put plugs" added to usb-next
+To: rdbabiera@google.com,gregkh@linuxfoundation.org,heikki.krogerus@linux.intel.com,lk@c--e.de,stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 05 Jan 2024 10:22:07 +0100
-Message-ID: <2024010507-catalyst-chase-4f87@gregkh>
+Date: Fri, 05 Jan 2024 10:22:23 +0100
+Message-ID: <2024010523-antidote-bunny-a98c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -46,7 +46,7 @@ Content-Transfer-Encoding: 8bit
 
 This is a note to let you know that I've just added the patch titled
 
-    usb: dwc3: gadget: Queue PM runtime idle on disconnect event
+    usb: typec: class: fix typec_altmode_put_partner to put plugs
 
 to my usb git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
@@ -61,60 +61,75 @@ during the merge window.
 If you have any questions about this process, please let me know.
 
 
-From 3c7af52c7616c3aa6dacd2336ec748d4a65df8f4 Mon Sep 17 00:00:00 2001
-From: Wesley Cheng <quic_wcheng@quicinc.com>
-Date: Wed, 3 Jan 2024 13:49:46 -0800
-Subject: usb: dwc3: gadget: Queue PM runtime idle on disconnect event
+From 5962ded777d689cd8bf04454273e32228d7fb71f Mon Sep 17 00:00:00 2001
+From: RD Babiera <rdbabiera@google.com>
+Date: Wed, 3 Jan 2024 18:17:55 +0000
+Subject: usb: typec: class: fix typec_altmode_put_partner to put plugs
 
-There is a scenario where DWC3 runtime suspend is blocked due to the
-dwc->connected flag still being true while PM usage_count is zero after
-DWC3 giveback is completed and the USB gadget session is being terminated.
-This leads to a case where nothing schedules a PM runtime idle for the
-device.
+When typec_altmode_put_partner is called by a plug altmode upon release,
+the port altmode the plug belongs to will not remove its reference to the
+plug. The check to see if the altmode being released is a plug evaluates
+against the released altmode's partner instead of the calling altmode, so
+change adev in typec_altmode_put_partner to properly refer to the altmode
+being released.
 
-The exact condition is seen with the following sequence:
-  1.  USB bus reset is issued by the host
-  2.  Shortly after, or concurrently, a USB PD DR SWAP request is received
-      (sink->source)
-  3.  USB bus reset event handler runs and issues
-      dwc3_stop_active_transfers(), and pending transfer are stopped
-  4.  DWC3 usage_count decremented to 0, and runtime idle occurs while
-      dwc->connected == true, returns -EBUSY
-  5.  DWC3 disconnect event seen, dwc->connected set to false due to DR
-      swap handling
-  6.  No runtime idle after this point
+Because typec_altmode_set_partner calls get_device() on the port altmode,
+add partner_adev that points to the port altmode in typec_put_partner to
+call put_device() on. typec_altmode_set_partner is not called for port
+altmodes, so add a check in typec_altmode_release to prevent
+typec_altmode_put_partner() calls on port altmode release.
 
-Address this by issuing an asynchronous PM runtime idle call after the
-disconnect event is completed, as it modifies the dwc->connected flag,
-which is what blocks the initial runtime idle.
-
-Fixes: fc8bb91bc83e ("usb: dwc3: implement runtime PM")
+Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
 Cc:  <stable@vger.kernel.org>
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Link: https://lore.kernel.org/r/20240103214946.2596-1-quic_wcheng@quicinc.com
+Co-developed-by: Christian A. Ehrhardt <lk@c--e.de>
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Tested-by: Christian A. Ehrhardt <lk@c--e.de>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240103181754.2492492-2-rdbabiera@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/gadget.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/typec/class.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index c15e965ea95a..019368f8e9c4 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -3989,6 +3989,13 @@ static void dwc3_gadget_disconnect_interrupt(struct dwc3 *dwc)
- 	usb_gadget_set_state(dwc->gadget, USB_STATE_NOTATTACHED);
+diff --git a/drivers/usb/typec/class.c b/drivers/usb/typec/class.c
+index 4d11f2b536fa..015aa9253353 100644
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -263,11 +263,13 @@ static void typec_altmode_put_partner(struct altmode *altmode)
+ {
+ 	struct altmode *partner = altmode->partner;
+ 	struct typec_altmode *adev;
++	struct typec_altmode *partner_adev;
  
- 	dwc3_ep0_reset_state(dwc);
-+
-+	/*
-+	 * Request PM idle to address condition where usage count is
-+	 * already decremented to zero, but waiting for the disconnect
-+	 * interrupt to set dwc->connected to FALSE.
-+	 */
-+	pm_request_idle(dwc->dev);
+ 	if (!partner)
+ 		return;
+ 
+-	adev = &partner->adev;
++	adev = &altmode->adev;
++	partner_adev = &partner->adev;
+ 
+ 	if (is_typec_plug(adev->dev.parent)) {
+ 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
+@@ -276,7 +278,7 @@ static void typec_altmode_put_partner(struct altmode *altmode)
+ 	} else {
+ 		partner->partner = NULL;
+ 	}
+-	put_device(&adev->dev);
++	put_device(&partner_adev->dev);
  }
  
- static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
+ /**
+@@ -497,7 +499,8 @@ static void typec_altmode_release(struct device *dev)
+ {
+ 	struct altmode *alt = to_altmode(to_typec_altmode(dev));
+ 
+-	typec_altmode_put_partner(alt);
++	if (!is_typec_port(dev->parent))
++		typec_altmode_put_partner(alt);
+ 
+ 	altmode_id_remove(alt->adev.dev.parent, alt->id);
+ 	kfree(alt);
 -- 
 2.43.0
 
