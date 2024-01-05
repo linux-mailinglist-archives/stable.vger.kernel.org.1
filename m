@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-9889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0365D8255DE
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:43:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E77878255B7
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:41:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FF39286EF7
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:43:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9645A285EB8
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69A162D7AB;
-	Fri,  5 Jan 2024 14:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12C6C2D7B5;
+	Fri,  5 Jan 2024 14:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFF8GL+H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K1FGu7MB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F15D18EB7;
-	Fri,  5 Jan 2024 14:43:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB387C433C8;
-	Fri,  5 Jan 2024 14:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA952D051;
+	Fri,  5 Jan 2024 14:41:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F8DC433C7;
+	Fri,  5 Jan 2024 14:41:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465810;
-	bh=wAVBMdeklR2QCFVOKTRUBTs1osdbRAH/91gw/cX4sCU=;
+	s=korg; t=1704465708;
+	bh=TDFfYrmbm9Cm+JJnNH6rL0c82mTKChYYu76lxnFB8f0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JFF8GL+HPFF99vqwV2dP/CHhdUnO6zcYfLfznuNUbxQG7N6OqbCEds4byTJz0hQT+
-	 OUu+G6OnavI2RPtnUWwhzwyAzgbOUvmXrkQDb9Soh+0WxtnBgrN6szKqSu0Ov/VzGT
-	 FavGrj/UpZu2sAStTWKNCKpckxYNk3XEXSLRTtxc=
+	b=K1FGu7MB4qHYrXz6bsx2LzU1ok7a+qMgnr0r5fBeAm5AtYCMY7ibMO/I/d4nRAXdF
+	 Izw0xBvA4PCMvPLhQ4pEjU1xsz4Dhk3XmeHinthV1OkXXzCiK7l+enRkT3NHpnDcv/
+	 G3+WqnAdhGanamZGUu2aobDQBmtpQbqINUkQ6DAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.4 33/47] wifi: cfg80211: fix certs build to not depend on file order
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 4.19 40/41] dm-integrity: dont modify bios immutable bio_vec in integrity_metadata()
 Date: Fri,  5 Jan 2024 15:39:20 +0100
-Message-ID: <20240105143816.852517745@linuxfoundation.org>
+Message-ID: <20240105143815.547690385@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
-References: <20240105143815.541462991@linuxfoundation.org>
+In-Reply-To: <20240105143813.957669139@linuxfoundation.org>
+References: <20240105143813.957669139@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,37 +52,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 3c2a8ebe3fe66a5f77d4c164a0bea8e2ff37b455 upstream.
+commit b86f4b790c998afdbc88fe1aa55cfe89c4068726 upstream.
 
-The file for the new certificate (Chen-Yu Tsai's) didn't
-end with a comma, so depending on the file order in the
-build rule, we'd end up with invalid C when concatenating
-the (now two) certificates. Fix that.
+__bio_for_each_segment assumes that the first struct bio_vec argument
+doesn't change - it calls "bio_advance_iter_single((bio), &(iter),
+(bvl).bv_len)" to advance the iterator. Unfortunately, the dm-integrity
+code changes the bio_vec with "bv.bv_len -= pos". When this code path
+is taken, the iterator would be out of sync and dm-integrity would
+report errors. This happens if the machine is out of memory and
+"kmalloc" fails.
 
-Cc: stable@vger.kernel.org
-Reported-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Fixes: fb768d3b13ff ("wifi: cfg80211: Add my certificate")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fix this bug by making a copy of "bv" and changing the copy instead.
+
+Fixes: 7eada909bfd7 ("dm: add integrity target")
+Cc: stable@vger.kernel.org	# v4.12+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/certs/wens.hex |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-integrity.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/net/wireless/certs/wens.hex
-+++ b/net/wireless/certs/wens.hex
-@@ -84,4 +84,4 @@
- 0xf0, 0xc7, 0x83, 0xbb, 0xa2, 0x81, 0x03, 0x2d,
- 0xd4, 0x2a, 0x63, 0x3f, 0xf7, 0x31, 0x2e, 0x40,
- 0x33, 0x5c, 0x46, 0xbc, 0x9b, 0xc1, 0x05, 0xa5,
--0x45, 0x4e, 0xc3
-+0x45, 0x4e, 0xc3,
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -1379,11 +1379,12 @@ static void integrity_metadata(struct wo
+ 			checksums = checksums_onstack;
+ 
+ 		__bio_for_each_segment(bv, bio, iter, dio->bio_details.bi_iter) {
++			struct bio_vec bv_copy = bv;
+ 			unsigned pos;
+ 			char *mem, *checksums_ptr;
+ 
+ again:
+-			mem = (char *)kmap_atomic(bv.bv_page) + bv.bv_offset;
++			mem = (char *)kmap_atomic(bv_copy.bv_page) + bv_copy.bv_offset;
+ 			pos = 0;
+ 			checksums_ptr = checksums;
+ 			do {
+@@ -1392,7 +1393,7 @@ again:
+ 				sectors_to_process -= ic->sectors_per_block;
+ 				pos += ic->sectors_per_block << SECTOR_SHIFT;
+ 				sector += ic->sectors_per_block;
+-			} while (pos < bv.bv_len && sectors_to_process && checksums != checksums_onstack);
++			} while (pos < bv_copy.bv_len && sectors_to_process && checksums != checksums_onstack);
+ 			kunmap_atomic(mem);
+ 
+ 			r = dm_integrity_rw_tag(ic, checksums, &dio->metadata_block, &dio->metadata_offset,
+@@ -1412,9 +1413,9 @@ again:
+ 			if (!sectors_to_process)
+ 				break;
+ 
+-			if (unlikely(pos < bv.bv_len)) {
+-				bv.bv_offset += pos;
+-				bv.bv_len -= pos;
++			if (unlikely(pos < bv_copy.bv_len)) {
++				bv_copy.bv_offset += pos;
++				bv_copy.bv_len -= pos;
+ 				goto again;
+ 			}
+ 		}
 
 
 
