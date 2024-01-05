@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-9774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09FAD8250EA
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 10:36:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 927F78250EE
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 10:37:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88B54B24DB4
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 09:36:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B93731C22D83
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 09:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6413221361;
-	Fri,  5 Jan 2024 09:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189A42377E;
+	Fri,  5 Jan 2024 09:37:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mrJePDuk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qxv7dCah"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2739724B33
-	for <stable@vger.kernel.org>; Fri,  5 Jan 2024 09:36:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B845C433C8;
-	Fri,  5 Jan 2024 09:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D92095399
+	for <stable@vger.kernel.org>; Fri,  5 Jan 2024 09:37:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F24C0C433C7;
+	Fri,  5 Jan 2024 09:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704447395;
-	bh=CfORS/Ip0xTY7/y1pjER1aKBLpvICeQpT1WPXlNQrHo=;
+	s=korg; t=1704447440;
+	bh=3jyfa2+EO0IzREDBp7AALSOCIoqTideZr6wWOqrTkBo=;
 	h=Subject:To:From:Date:From;
-	b=mrJePDuk4eOY3Ndtvjj2A1hHWs603dsIE0btLPDU37c9dnO9r90VxWHmOQW98nkN6
-	 FZ9sieK0617q4QBXObWON4crD+HTR6fqNrp0pXujpiqQqLTrSmcnc2G+rgXBwZhVNR
-	 lVAM6oiVpokoHrs0fq97ZkdZctxskkL71uUYZp1A=
-Subject: patch "usb: mon: Fix atomicity violation in mon_bin_vma_fault" added to usb-testing
+	b=Qxv7dCah0Xi2BS1ARhMCJf3c2R4o8KYYussCkJvW2gB8offIO+VEZxwFQVvt6KGtk
+	 m8pEn5HPu7QzIGaLl1msECFm8k4/5YvUDA/yBcImWZfcNw7AszJyZVtDg/szBUHvym
+	 O3Kkdj1OE/R6mU3e8NQcA1aJQ9pR5hZ3wYv8aD/s=
+Subject: patch "usb: mon: Fix atomicity violation in mon_bin_vma_fault" added to usb-next
 To: 2045gemini@gmail.com,gregkh@linuxfoundation.org,stable@vger.kernel.org
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 05 Jan 2024 10:36:23 +0100
-Message-ID: <2024010523-skimming-cross-53b5@gregkh>
+Date: Fri, 05 Jan 2024 10:37:08 +0100
+Message-ID: <2024010508-synthesis-squash-631d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,13 +50,13 @@ This is a note to let you know that I've just added the patch titled
 
 to my usb git tree which can be found at
     git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
-in the usb-testing branch.
+in the usb-next branch.
 
 The patch will show up in the next release of the linux-next tree
 (usually sometime within the next 24 hours during the week.)
 
-The patch will be merged to the usb-next branch sometime soon,
-after it passes testing, and the merge window is open.
+The patch will also be merged in the next major kernel release
+during the merge window.
 
 If you have any questions about this process, please let me know.
 
