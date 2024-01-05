@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-9808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89567825585
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:39:45 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E5A58255CD
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:42:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DC471C23125
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:39:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 923C6B21645
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:42:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83C52D7B5;
-	Fri,  5 Jan 2024 14:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A712DF66;
+	Fri,  5 Jan 2024 14:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p5aHwOcr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dhi07Fh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D1672BD12;
-	Fri,  5 Jan 2024 14:39:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12FCAC433C8;
-	Fri,  5 Jan 2024 14:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB6F1E4A9;
+	Fri,  5 Jan 2024 14:42:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F1FC433C7;
+	Fri,  5 Jan 2024 14:42:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465582;
-	bh=YS/GGUl+HtCUcT0oX5BOYu5sjIMsQOrQk/es3BoVVtk=;
+	s=korg; t=1704465762;
+	bh=5m2z9CglCo7917h+9Gy6+MVvqf9oU2i4sYc+F7fRjLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p5aHwOcr1QDoUiXktX4mnvC4Wn5WvcX/kVB4ljG+m/zAJ41vW+oeHHz7eoHMe3ynk
-	 v0nkKR7ANoAZkaitTzl9OXgTGFTWbppHeX2EQkNfsHwVEo74t5CylzI2B92Ww2PVtW
-	 0yhd8wGdP6fpk76GQscH+ktnffUqoAtFzXDlbJb0=
+	b=2dhi07Fh5Ysli4IH4IV9IM7jE1+4jeNG6cLXJN8q+hikK+B4m/hygevd9ybDBKHVe
+	 /pV/TQbucnKEmJwBTS41A0Lh5aK7bSrhewMIFMnkdJiGNaAmrMfxp40eolDEaAJXZ4
+	 BtiveSRBljX7ofZ/rpUlvGQt9S8wwKlZFpFWGcAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Simon Horman <horms@kernel.org>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	Dominique Martinet <asmadeus@codewreck.org>
-Subject: [PATCH 4.14 18/21] net: 9p: avoid freeing uninit memory in p9pdu_vreadf
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 18/47] net: check dev->gso_max_size in gso_features_check()
 Date: Fri,  5 Jan 2024 15:39:05 +0100
-Message-ID: <20240105143812.350697010@linuxfoundation.org>
+Message-ID: <20240105143816.215833968@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143811.536282337@linuxfoundation.org>
-References: <20240105143811.536282337@linuxfoundation.org>
+In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
+References: <20240105143815.541462991@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,87 +53,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Eric Dumazet <edumazet@google.com>
 
-commit ff49bf1867578f23a5ffdd38f927f6e1e16796c4 upstream.
+[ Upstream commit 24ab059d2ebd62fdccc43794796f6ffbabe49ebc ]
 
-If some of p9pdu_readf() calls inside case 'T' in p9pdu_vreadf() fails,
-the error path is not handled properly. *wnames or members of *wnames
-array may be left uninitialized and invalidly freed.
+Some drivers might misbehave if TSO packets get too big.
 
-Initialize *wnames to NULL in beginning of case 'T'. Initialize the first
-*wnames array element to NULL and nullify the failing *wnames element so
-that the error path freeing loop stops on the first NULL element and
-doesn't proceed further.
+GVE for instance uses a 16bit field in its TX descriptor,
+and will do bad things if a packet is bigger than 2^16 bytes.
 
-Found by Linux Verification Center (linuxtesting.org).
+Linux TCP stack honors dev->gso_max_size, but there are
+other ways for too big packets to reach an ndo_start_xmit()
+handler : virtio_net, af_packet, GRO...
 
-Fixes: ace51c4dd2f9 ("9p: add new protocol support code")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Message-ID: <20231206200913.16135-1-pchelkin@ispras.ru>
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Christian Schoenebeck <linux_oss@crudebyte.com>
-Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a generic check in gso_features_check() and fallback
+to GSO when needed.
+
+gso_max_size was added in the blamed commit.
+
+Fixes: 82cc1a7a5687 ("[NET]: Add per-connection option to set max TSO frame size")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20231219125331.4127498-1-edumazet@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/9p/protocol.c |   17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ net/core/dev.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/9p/protocol.c
-+++ b/net/9p/protocol.c
-@@ -243,6 +243,8 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
- 				uint16_t *nwname = va_arg(ap, uint16_t *);
- 				char ***wnames = va_arg(ap, char ***);
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 9845dcf0a3ded..5e043e6f09476 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -3140,6 +3140,9 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
+ 	if (gso_segs > dev->gso_max_segs)
+ 		return features & ~NETIF_F_GSO_MASK;
  
-+				*wnames = NULL;
++	if (unlikely(skb->len >= READ_ONCE(dev->gso_max_size)))
++		return features & ~NETIF_F_GSO_MASK;
 +
- 				errcode = p9pdu_readf(pdu, proto_version,
- 								"w", nwname);
- 				if (!errcode) {
-@@ -251,6 +253,8 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
- 						    GFP_NOFS);
- 					if (!*wnames)
- 						errcode = -ENOMEM;
-+					else
-+						(*wnames)[0] = NULL;
- 				}
- 
- 				if (!errcode) {
-@@ -262,8 +266,10 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
- 								proto_version,
- 								"s",
- 								&(*wnames)[i]);
--						if (errcode)
-+						if (errcode) {
-+							(*wnames)[i] = NULL;
- 							break;
-+						}
- 					}
- 				}
- 
-@@ -271,11 +277,14 @@ p9pdu_vreadf(struct p9_fcall *pdu, int p
- 					if (*wnames) {
- 						int i;
- 
--						for (i = 0; i < *nwname; i++)
-+						for (i = 0; i < *nwname; i++) {
-+							if (!(*wnames)[i])
-+								break;
- 							kfree((*wnames)[i]);
-+						}
-+						kfree(*wnames);
-+						*wnames = NULL;
- 					}
--					kfree(*wnames);
--					*wnames = NULL;
- 				}
- 			}
- 			break;
+ 	if (!skb_shinfo(skb)->gso_type) {
+ 		skb_warn_bad_offload(skb);
+ 		return features & ~NETIF_F_GSO_MASK;
+-- 
+2.43.0
+
 
 
 
