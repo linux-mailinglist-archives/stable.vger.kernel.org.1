@@ -1,46 +1,52 @@
-Return-Path: <stable+bounces-9809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AAB0825586
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:39:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 373038255CE
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:42:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 568401F23C5D
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:39:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07F561C2321F
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:42:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C6482C692;
-	Fri,  5 Jan 2024 14:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D022AE74;
+	Fri,  5 Jan 2024 14:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eoJUkANj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="klTpXUYj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA212D051;
-	Fri,  5 Jan 2024 14:39:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C530DC433C7;
-	Fri,  5 Jan 2024 14:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16182D051;
+	Fri,  5 Jan 2024 14:42:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 461ABC433C8;
+	Fri,  5 Jan 2024 14:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465585;
-	bh=SO30nGvxqJwXkpOSYQZNbT6ocwbyojX8bK66nRrlnCQ=;
+	s=korg; t=1704465765;
+	bh=lqpFmmyDWTZuNWAyp55bFjP+T9tYFflGR4E7V7m/OpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eoJUkANj2dZ2Jt2XRVN00lxXaySy92WmUFNO2Mik7520Ff+GGOpiFHdV0YmREaQIT
-	 gQybdAQvUgtcjrq0mHiYqDNMPzG7nEm6+p4odVvWE2khY2BEu0UxEF5Y0WQ+WGcJ8R
-	 naM/QQshyeIzWGyCKPsereVT2N0mMj9ffZPXsWWc=
+	b=klTpXUYjdT/xHPscmD2QeL6pbFeBwBNFrqmxBOwecGMOom+Ek7HcuTf+RLas7zXVJ
+	 xwMy74whDU7bj+10y74MXfLlwePFGoSIVOsyRur4mzEI13d+vhsZtJxpn14nA5xBOl
+	 6m6TKUsHlKffSsZ3TcLofkpfyZDba16hqb1pTOd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rouven Czerwinski <r.czerwinski@pengutronix.de>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 4.14 19/21] net: rfkill: gpio: set GPIO direction
+	David Howells <dhowells@redhat.com>,
+	Jeffrey Altman <jaltman@auristor.com>,
+	Anastasia Belova <abelova@astralinux.ru>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	lvc-project@linuxtesting.org,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 19/47] afs: Fix overwriting of result of DNS query
 Date: Fri,  5 Jan 2024 15:39:06 +0100
-Message-ID: <20240105143812.394635143@linuxfoundation.org>
+Message-ID: <20240105143816.251645551@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143811.536282337@linuxfoundation.org>
-References: <20240105143811.536282337@linuxfoundation.org>
+In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
+References: <20240105143815.541462991@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,50 +58,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+From: David Howells <dhowells@redhat.com>
 
-commit 23484d817082c3005252d8edfc8292c8a1006b5b upstream.
+[ Upstream commit a9e01ac8c5ff32669119c40dfdc9e80eb0b7d7aa ]
 
-Fix the undefined usage of the GPIO consumer API after retrieving the
-GPIO description with GPIO_ASIS. The API documentation mentions that
-GPIO_ASIS won't set a GPIO direction and requires the user to set a
-direction before using the GPIO.
+In afs_update_cell(), ret is the result of the DNS lookup and the errors
+are to be handled by a switch - however, the value gets clobbered in
+between by setting it to -ENOMEM in case afs_alloc_vlserver_list()
+fails.
 
-This can be confirmed on i.MX6 hardware, where rfkill-gpio is no longer
-able to enabled/disable a device, presumably because the GPIO controller
-was never configured for the output direction.
+Fix this by moving the setting of -ENOMEM into the error handling for
+OOM failure.  Further, only do it if we don't have an alternative error
+to return.
 
-Fixes: b2f750c3a80b ("net: rfkill: gpio: prevent value glitch during probe")
-Cc: stable@vger.kernel.org
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Link: https://msgid.link/20231207075835.3091694-1-r.czerwinski@pengutronix.de
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.  Based
+on a patch from Anastasia Belova [1].
+
+Fixes: d5c32c89b208 ("afs: Fix cell DNS lookup")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Jeffrey Altman <jaltman@auristor.com>
+cc: Anastasia Belova <abelova@astralinux.ru>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+cc: lvc-project@linuxtesting.org
+Link: https://lore.kernel.org/r/20231221085849.1463-1-abelova@astralinux.ru/ [1]
+Link: https://lore.kernel.org/r/1700862.1703168632@warthog.procyon.org.uk/ # v1
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rfkill/rfkill-gpio.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/afs/cell.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/net/rfkill/rfkill-gpio.c
-+++ b/net/rfkill/rfkill-gpio.c
-@@ -129,6 +129,14 @@ static int rfkill_gpio_probe(struct plat
- 		return -EINVAL;
- 	}
+diff --git a/fs/afs/cell.c b/fs/afs/cell.c
+index 296b489861a9a..1522fadd8d2d2 100644
+--- a/fs/afs/cell.c
++++ b/fs/afs/cell.c
+@@ -404,10 +404,12 @@ static int afs_update_cell(struct afs_cell *cell)
+ 		if (ret == -ENOMEM)
+ 			goto out_wake;
  
-+	ret = gpiod_direction_output(rfkill->reset_gpio, true);
-+	if (ret)
-+		return ret;
-+
-+	ret = gpiod_direction_output(rfkill->shutdown_gpio, true);
-+	if (ret)
-+		return ret;
-+
- 	rfkill->rfkill_dev = rfkill_alloc(rfkill->name, &pdev->dev,
- 					  rfkill->type, &rfkill_gpio_ops,
- 					  rfkill);
+-		ret = -ENOMEM;
+ 		vllist = afs_alloc_vlserver_list(0);
+-		if (!vllist)
++		if (!vllist) {
++			if (ret >= 0)
++				ret = -ENOMEM;
+ 			goto out_wake;
++		}
+ 
+ 		switch (ret) {
+ 		case -ENODATA:
+-- 
+2.43.0
+
 
 
 
