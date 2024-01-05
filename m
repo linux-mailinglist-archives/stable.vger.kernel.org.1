@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-9843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CAC68255AD
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:41:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B345182557A
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:39:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51AC21F24575
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:41:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BD7A284D59
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D73F2D7B0;
-	Fri,  5 Jan 2024 14:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 530642BD12;
+	Fri,  5 Jan 2024 14:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3vCVBEX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bg2akAoo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3E828FA;
-	Fri,  5 Jan 2024 14:41:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6F5C433C7;
-	Fri,  5 Jan 2024 14:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1673F2E3EF;
+	Fri,  5 Jan 2024 14:39:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45F66C433C8;
+	Fri,  5 Jan 2024 14:39:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465684;
-	bh=vXq1LrPa9tY65IsqP6MFV5XQlZOCb92a8Y1tqPxDKqA=;
+	s=korg; t=1704465552;
+	bh=Hqe63noenKbUilW7AwyFkqQKqfdD6Z2lhLGzswhJjLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s3vCVBEXZJUZxHhtJRkM3DSBRUOymgdvyLlni3DuEual5wxxumhcJ+2jJJNidhx+R
-	 +ialqDSyIXm6GNGRT8PocO7YLTmxlDWS5ah7O+/kqMa9+X/DcSVRTfOmcI8aa1POkA
-	 0mj/V97bbjBxjVS8pcm9sAKXUClmzQbtXpQw5WHE=
+	b=bg2akAooeP9R9nnZWXxf386HfNc0NEJZYAMi/XWxHAkgQLmA8lYFVxmvQYrk9iAXE
+	 ztgwP1vgYK71dAldeNi6Lk2EGOsvwoaYFevvjrVq1/LLIOfYW5+BelIfiu0dLaEefY
+	 bti5Et9QLews/zHsNQP1GmRaDUZlHd6tfBM9NGvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Hendrik Brueckner <brueckner@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Tony Lindgren <tony@atomide.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 08/41] s390/vx: fix save/restore of fpu kernel context
+Subject: [PATCH 4.14 01/21] ARM: OMAP2+: Fix null pointer dereference and memory leak in omap_soc_device_init
 Date: Fri,  5 Jan 2024 15:38:48 +0100
-Message-ID: <20240105143814.300921792@linuxfoundation.org>
+Message-ID: <20240105143811.605322683@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143813.957669139@linuxfoundation.org>
-References: <20240105143813.957669139@linuxfoundation.org>
+In-Reply-To: <20240105143811.536282337@linuxfoundation.org>
+References: <20240105143811.536282337@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,51 +53,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit e6b2dab41888332bf83f592131e7ea07756770a4 ]
+[ Upstream commit c72b9c33ef9695ad7ce7a6eb39a9df8a01b70796 ]
 
-The KERNEL_FPR mask only contains a flag for the first eight vector
-registers. However floating point registers overlay parts of the first
-sixteen vector registers.
+kasprintf() returns a pointer to dynamically allocated memory which can
+be NULL upon failure. When 'soc_dev_attr->family' is NULL,it'll trigger
+the null pointer dereference issue, such as in 'soc_info_show'.
 
-This could lead to vector register corruption if a kernel fpu context uses
-any of the vector registers 8 to 15 and is interrupted or calls a
-KERNEL_FPR context. If that context uses also vector registers 8 to 15,
-their contents will be corrupted on return.
+And when 'soc_device_register' fails, it's necessary to release
+'soc_dev_attr->family' to avoid memory leaks.
 
-Luckily this is currently not a real bug, since the kernel has only one
-KERNEL_FPR user with s390_adjust_jiffies() and it is only using floating
-point registers 0 to 2.
-
-Fix this by using the correct bits for KERNEL_FPR.
-
-Fixes: 7f79695cc1b6 ("s390/fpu: improve kernel_fpu_[begin|end]")
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Reviewed-by: Hendrik Brueckner <brueckner@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Fixes: 6770b2114325 ("ARM: OMAP2+: Export SoC information to userspace")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Message-ID: <20231123145237.609442-1-chentao@kylinos.cn>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/fpu/api.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-omap2/id.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/s390/include/asm/fpu/api.h b/arch/s390/include/asm/fpu/api.h
-index 34a7ae68485c6..be16a6c0f1276 100644
---- a/arch/s390/include/asm/fpu/api.h
-+++ b/arch/s390/include/asm/fpu/api.h
-@@ -76,7 +76,7 @@ static inline int test_fp_ctl(u32 fpc)
- #define KERNEL_VXR_HIGH		(KERNEL_VXR_V16V23|KERNEL_VXR_V24V31)
+diff --git a/arch/arm/mach-omap2/id.c b/arch/arm/mach-omap2/id.c
+index 79d71b1eae594..1bc17fd49e488 100644
+--- a/arch/arm/mach-omap2/id.c
++++ b/arch/arm/mach-omap2/id.c
+@@ -784,10 +784,15 @@ void __init omap_soc_device_init(void)
  
- #define KERNEL_VXR		(KERNEL_VXR_LOW|KERNEL_VXR_HIGH)
--#define KERNEL_FPR		(KERNEL_FPC|KERNEL_VXR_V0V7)
-+#define KERNEL_FPR		(KERNEL_FPC|KERNEL_VXR_LOW)
+ 	soc_dev_attr->machine  = soc_name;
+ 	soc_dev_attr->family   = omap_get_family();
++	if (!soc_dev_attr->family) {
++		kfree(soc_dev_attr);
++		return;
++	}
+ 	soc_dev_attr->revision = soc_rev;
  
- struct kernel_fpu;
- 
+ 	soc_dev = soc_device_register(soc_dev_attr);
+ 	if (IS_ERR(soc_dev)) {
++		kfree(soc_dev_attr->family);
+ 		kfree(soc_dev_attr);
+ 		return;
+ 	}
 -- 
 2.43.0
 
