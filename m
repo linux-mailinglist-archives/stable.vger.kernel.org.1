@@ -1,46 +1,49 @@
-Return-Path: <stable+bounces-9805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3CA8825583
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:39:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF42D8255CC
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:42:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DADCB226AA
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:39:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E677B20CBE
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0143B2E3EF;
-	Fri,  5 Jan 2024 14:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C962E2E3E4;
+	Fri,  5 Jan 2024 14:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qh4F7Da3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZcSWOhyF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC202D7B5;
-	Fri,  5 Jan 2024 14:39:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D38C433C8;
-	Fri,  5 Jan 2024 14:39:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D522AE74;
+	Fri,  5 Jan 2024 14:42:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14BF0C433C8;
+	Fri,  5 Jan 2024 14:42:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465574;
-	bh=rVD1oiKaamBe1ITumJCNNHEHyc+3fFJMmGdkb2XyfI8=;
+	s=korg; t=1704465757;
+	bh=SChJFmomsrz9DKl6mdPq1/cyxA8JrxrGzJFsXQJN6D4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qh4F7Da32b3aJ9MlFvZWX4QGYwRHsCl30Arc1U8c4ouvPKDtKQ+dV2wstiWaonAr9
-	 zmmfvWdKXPWelDW/XiWezY/ASJgts/fpywWBxOi/e8ft+QlUVIXuxwCaMTcx2MCk2z
-	 G1Vb/RWT8N7K9jM3aVzV8CpgGpee22TML4uvdb+o=
+	b=ZcSWOhyF5VXboWJ9p3kUz5ykQ+rIUmQxk4WolIUXOhccUlWrlodr9gWplEVQHeHwp
+	 qVopVfUKu9NFGyOu7cvmVMiQvp+YI8dlQyunFFN6wVS5xbpg8rNowGJ5Fk7v16xHvF
+	 /OPHRn8/r+gfHdJWr7s9Tv1ERgl2TTLEALmAX6OM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Slark Xiao <slark_xiao@163.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 4.14 15/21] USB: serial: option: add Foxconn T99W265 with new baseline
-Date: Fri,  5 Jan 2024 15:39:02 +0100
-Message-ID: <20240105143812.233960759@linuxfoundation.org>
+	Markus Suvanto <markus.suvanto@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 16/47] afs: Fix dynamic root lookup DNS check
+Date: Fri,  5 Jan 2024 15:39:03 +0100
+Message-ID: <20240105143816.132286320@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143811.536282337@linuxfoundation.org>
-References: <20240105143811.536282337@linuxfoundation.org>
+In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
+References: <20240105143815.541462991@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,53 +55,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Slark Xiao <slark_xiao@163.com>
+From: David Howells <dhowells@redhat.com>
 
-commit 13fde9ac23ca8c6d1ac13cc9eefe1f1ac3ee30a4 upstream.
+[ Upstream commit 74cef6872ceaefb5b6c5c60641371ea28702d358 ]
 
-This ID was added based on latest SDX12 code base line, and we
-made some changes with previous 0489:e0db.
+In the afs dynamic root directory, the ->lookup() function does a DNS check
+on the cell being asked for and if the DNS upcall reports an error it will
+report an error back to userspace (typically ENOENT).
 
-Test evidence as below:
-T:  Bus=02 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=ef(misc ) Sub=02 Prot=01 MxPS= 9 #Cfgs=  2
-P:  Vendor=0489 ProdID=e0da Rev=05.04
-S:  Manufacturer=Qualcomm
-S:  Product=Qualcomm Snapdragon X12
-S:  SerialNumber=2bda65fb
-C:  #Ifs= 6 Cfg#= 2 Atr=a0 MxPwr=896mA
-I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:  If#=0x2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-I:  If#=0x3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-I:  If#=0x4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-I:  If#=0x5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+However, if a failed DNS upcall returns a new-style result, it will return
+a valid result, with the status field set appropriately to indicate the
+type of failure - and in that case, dns_query() doesn't return an error and
+we let stat() complete with no error - which can cause confusion in
+userspace as subsequent calls that trigger d_automount then fail with
+ENOENT.
 
-0&1: MBIM, 2: Modem, 3:GNSS, 4:Diag, 5:ADB
+Fix this by checking the status result from a valid dns_query() and
+returning an error if it indicates a failure.
 
-Signed-off-by: Slark Xiao <slark_xiao@163.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bbb4c4323a4d ("dns: Allow the dns resolver to retrieve a server set")
+Reported-by: Markus Suvanto <markus.suvanto@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=216637
+Signed-off-by: David Howells <dhowells@redhat.com>
+Tested-by: Markus Suvanto <markus.suvanto@gmail.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/afs/dynroot.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2246,6 +2246,8 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(0) | RSVD(1) | RSVD(6) },
- 	{ USB_DEVICE(0x0489, 0xe0b5),						/* Foxconn T77W968 ESIM */
- 	  .driver_info = RSVD(0) | RSVD(1) | RSVD(6) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0da, 0xff),                     /* Foxconn T99W265 MBIM variant */
-+	  .driver_info = RSVD(3) | RSVD(5) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0db, 0xff),			/* Foxconn T99W265 MBIM */
- 	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0ee, 0xff),			/* Foxconn T99W368 MBIM */
+diff --git a/fs/afs/dynroot.c b/fs/afs/dynroot.c
+index f4f2ab6d877f3..d06994990fc35 100644
+--- a/fs/afs/dynroot.c
++++ b/fs/afs/dynroot.c
+@@ -20,6 +20,7 @@ static int afs_probe_cell_name(struct dentry *dentry)
+ 	struct afs_net *net = afs_d2net(dentry);
+ 	const char *name = dentry->d_name.name;
+ 	size_t len = dentry->d_name.len;
++	char *result = NULL;
+ 	int ret;
+ 
+ 	/* Names prefixed with a dot are R/W mounts. */
+@@ -37,9 +38,22 @@ static int afs_probe_cell_name(struct dentry *dentry)
+ 	}
+ 
+ 	ret = dns_query(net->net, "afsdb", name, len, "srv=1",
+-			NULL, NULL, false);
+-	if (ret == -ENODATA || ret == -ENOKEY)
++			&result, NULL, false);
++	if (ret == -ENODATA || ret == -ENOKEY || ret == 0)
+ 		ret = -ENOENT;
++	if (ret > 0 && ret >= sizeof(struct dns_server_list_v1_header)) {
++		struct dns_server_list_v1_header *v1 = (void *)result;
++
++		if (v1->hdr.zero == 0 &&
++		    v1->hdr.content == DNS_PAYLOAD_IS_SERVER_LIST &&
++		    v1->hdr.version == 1 &&
++		    (v1->status != DNS_LOOKUP_GOOD &&
++		     v1->status != DNS_LOOKUP_GOOD_WITH_BAD))
++			return -ENOENT;
++
++	}
++
++	kfree(result);
+ 	return ret;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
