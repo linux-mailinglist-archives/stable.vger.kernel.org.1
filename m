@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-9818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E43C0825592
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:40:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1B448255E0
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:43:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D142BB20151
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:40:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D377D1C23167
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:43:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FE92E3E8;
-	Fri,  5 Jan 2024 14:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C2A2D7AB;
+	Fri,  5 Jan 2024 14:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5nNPTIZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9sTz5WJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805212D634;
-	Fri,  5 Jan 2024 14:40:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91071C433C7;
-	Fri,  5 Jan 2024 14:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990432C692;
+	Fri,  5 Jan 2024 14:43:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E22CC433C7;
+	Fri,  5 Jan 2024 14:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465615;
-	bh=hDtMPPNBcMJl74n5H16yauGvJx+kDyGfAeXjLAeejmY=;
+	s=korg; t=1704465815;
+	bh=1iL3eDpPNiydwNhTvu+MIQ4ShJHyRierqLZCCNfx+m4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i5nNPTIZDzx8ac/0KQI9eR8XQbMu+U8wCwj1yonHO3JtnZ7oABkxk6GyTBs2K5c/7
-	 w2uXEO1vIRUti38bhrvUOUxfVVzN5TokDKcyzoGvXU5Gk/IJpy25FFvQGBTEfPB6GU
-	 KQaxBG07Gpnv3C98JJWA7dLv/8N3e5LdmUHx9HZM=
+	b=L9sTz5WJDtTFtpJM6fuw0OUSqLhef5okfFMhTBqimPXxiwc9RKT5P0V/UPbkAuIXT
+	 PvJEwGsMVtFyk9/Xy8iTSZukw/aLIzw3oEENBT4Veo5v9w6l+8wnbKwcDcxWNkwvWJ
+	 tS0aYzoV69xDy7IZzeOqdNdAe/XVk+0w5G1Xm24I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Vlad Buslov <vladbu@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 07/21] pinctrl: at91-pio4: use dedicated lock class for IRQ
+Subject: [PATCH 5.4 07/47] Revert "net/mlx5e: fix double free of encap_header"
 Date: Fri,  5 Jan 2024 15:38:54 +0100
-Message-ID: <20240105143811.880163215@linuxfoundation.org>
+Message-ID: <20240105143815.800040395@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143811.536282337@linuxfoundation.org>
-References: <20240105143811.536282337@linuxfoundation.org>
+In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
+References: <20240105143815.541462991@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,123 +51,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexis Lothoré <alexis.lothore@bootlin.com>
+From: Vlad Buslov <vladbu@nvidia.com>
 
-[ Upstream commit 14694179e561b5f2f7e56a0f590e2cb49a9cc7ab ]
+[ Upstream commit 5d089684dc434a31e08d32f0530066d0025c52e4 ]
 
-Trying to suspend to RAM on SAMA5D27 EVK leads to the following lockdep
-warning:
+This reverts commit 6f9b1a0731662648949a1c0587f6acb3b7f8acf1.
 
- ============================================
- WARNING: possible recursive locking detected
- 6.7.0-rc5-wt+ #532 Not tainted
- --------------------------------------------
- sh/92 is trying to acquire lock:
- c3cf306c (&irq_desc_lock_class){-.-.}-{2:2}, at: __irq_get_desc_lock+0xe8/0x100
+This patch is causing a null ptr issue, the proper fix is in the next
+patch.
 
- but task is already holding lock:
- c3d7c46c (&irq_desc_lock_class){-.-.}-{2:2}, at: __irq_get_desc_lock+0xe8/0x100
-
- other info that might help us debug this:
-  Possible unsafe locking scenario:
-
-        CPU0
-        ----
-   lock(&irq_desc_lock_class);
-   lock(&irq_desc_lock_class);
-
-  *** DEADLOCK ***
-
-  May be due to missing lock nesting notation
-
- 6 locks held by sh/92:
-  #0: c3aa0258 (sb_writers#6){.+.+}-{0:0}, at: ksys_write+0xd8/0x178
-  #1: c4c2df44 (&of->mutex){+.+.}-{3:3}, at: kernfs_fop_write_iter+0x138/0x284
-  #2: c32684a0 (kn->active){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x148/0x284
-  #3: c232b6d4 (system_transition_mutex){+.+.}-{3:3}, at: pm_suspend+0x13c/0x4e8
-  #4: c387b088 (&dev->mutex){....}-{3:3}, at: __device_suspend+0x1e8/0x91c
-  #5: c3d7c46c (&irq_desc_lock_class){-.-.}-{2:2}, at: __irq_get_desc_lock+0xe8/0x100
-
- stack backtrace:
- CPU: 0 PID: 92 Comm: sh Not tainted 6.7.0-rc5-wt+ #532
- Hardware name: Atmel SAMA5
-  unwind_backtrace from show_stack+0x18/0x1c
-  show_stack from dump_stack_lvl+0x34/0x48
-  dump_stack_lvl from __lock_acquire+0x19ec/0x3a0c
-  __lock_acquire from lock_acquire.part.0+0x124/0x2d0
-  lock_acquire.part.0 from _raw_spin_lock_irqsave+0x5c/0x78
-  _raw_spin_lock_irqsave from __irq_get_desc_lock+0xe8/0x100
-  __irq_get_desc_lock from irq_set_irq_wake+0xa8/0x204
-  irq_set_irq_wake from atmel_gpio_irq_set_wake+0x58/0xb4
-  atmel_gpio_irq_set_wake from irq_set_irq_wake+0x100/0x204
-  irq_set_irq_wake from gpio_keys_suspend+0xec/0x2b8
-  gpio_keys_suspend from dpm_run_callback+0xe4/0x248
-  dpm_run_callback from __device_suspend+0x234/0x91c
-  __device_suspend from dpm_suspend+0x224/0x43c
-  dpm_suspend from dpm_suspend_start+0x9c/0xa8
-  dpm_suspend_start from suspend_devices_and_enter+0x1e0/0xa84
-  suspend_devices_and_enter from pm_suspend+0x460/0x4e8
-  pm_suspend from state_store+0x78/0xe4
-  state_store from kernfs_fop_write_iter+0x1a0/0x284
-  kernfs_fop_write_iter from vfs_write+0x38c/0x6f4
-  vfs_write from ksys_write+0xd8/0x178
-  ksys_write from ret_fast_syscall+0x0/0x1c
- Exception stack(0xc52b3fa8 to 0xc52b3ff0)
- 3fa0:                   00000004 005a0ae8 00000001 005a0ae8 00000004 00000001
- 3fc0: 00000004 005a0ae8 00000001 00000004 00000004 b6c616c0 00000020 0059d190
- 3fe0: 00000004 b6c61678 aec5a041 aebf1a26
-
-This warning is raised because pinctrl-at91-pio4 uses chained IRQ. Whenever
-a wake up source configures an IRQ through irq_set_irq_wake, it will
-lock the corresponding IRQ desc, and then call irq_set_irq_wake on "parent"
-IRQ which will do the same on its own IRQ desc, but since those two locks
-share the same class, lockdep reports this as an issue.
-
-Fix lockdep false positive by setting a different class for parent and
-children IRQ
-
-Fixes: 776180848b57 ("pinctrl: introduce driver for Atmel PIO4 controller")
-Signed-off-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Link: https://lore.kernel.org/r/20231215-lockdep_warning-v1-1-8137b2510ed5@bootlin.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 6f9b1a073166 ("net/mlx5e: fix double free of encap_header")
+Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-at91-pio4.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-at91-pio4.c b/drivers/pinctrl/pinctrl-at91-pio4.c
-index 8f18a35b66b61..5ef7dd8c9ccf0 100644
---- a/drivers/pinctrl/pinctrl-at91-pio4.c
-+++ b/drivers/pinctrl/pinctrl-at91-pio4.c
-@@ -899,6 +899,13 @@ static const struct of_device_id atmel_pctrl_of_match[] = {
- 	}
- };
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
+index 5a4bee5253ec1..362f01bc8372e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
+@@ -290,6 +290,9 @@ int mlx5e_tc_tun_create_header_ipv4(struct mlx5e_priv *priv,
+ 	if (err)
+ 		goto destroy_neigh_entry;
  
-+/*
-+ * This lock class allows to tell lockdep that parent IRQ and children IRQ do
-+ * not share the same class so it does not raise false positive
-+ */
-+static struct lock_class_key atmel_lock_key;
-+static struct lock_class_key atmel_request_key;
++	e->encap_size = ipv4_encap_size;
++	e->encap_header = encap_header;
 +
- static int atmel_pinctrl_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
-@@ -1044,6 +1051,7 @@ static int atmel_pinctrl_probe(struct platform_device *pdev)
- 		irq_set_chip_and_handler(irq, &atmel_gpio_irq_chip,
- 					 handle_simple_irq);
- 		irq_set_chip_data(irq, atmel_pioctrl);
-+		irq_set_lockdep_class(irq, &atmel_lock_key, &atmel_request_key);
- 		dev_dbg(dev,
- 			"atmel gpio irq domain: hwirq: %d, linux irq: %d\n",
- 			i, irq);
+ 	if (!(nud_state & NUD_VALID)) {
+ 		neigh_event_send(n, NULL);
+ 		/* the encap entry will be made valid on neigh update event
+@@ -306,8 +309,6 @@ int mlx5e_tc_tun_create_header_ipv4(struct mlx5e_priv *priv,
+ 		goto destroy_neigh_entry;
+ 	}
+ 
+-	e->encap_size = ipv4_encap_size;
+-	e->encap_header = encap_header;
+ 	e->flags |= MLX5_ENCAP_ENTRY_VALID;
+ 	mlx5e_rep_queue_neigh_stats_work(netdev_priv(out_dev));
+ 	neigh_release(n);
+@@ -407,6 +408,9 @@ int mlx5e_tc_tun_create_header_ipv6(struct mlx5e_priv *priv,
+ 	if (err)
+ 		goto destroy_neigh_entry;
+ 
++	e->encap_size = ipv6_encap_size;
++	e->encap_header = encap_header;
++
+ 	if (!(nud_state & NUD_VALID)) {
+ 		neigh_event_send(n, NULL);
+ 		/* the encap entry will be made valid on neigh update event
+@@ -424,8 +428,6 @@ int mlx5e_tc_tun_create_header_ipv6(struct mlx5e_priv *priv,
+ 		goto destroy_neigh_entry;
+ 	}
+ 
+-	e->encap_size = ipv6_encap_size;
+-	e->encap_header = encap_header;
+ 	e->flags |= MLX5_ENCAP_ENTRY_VALID;
+ 	mlx5e_rep_queue_neigh_stats_work(netdev_priv(out_dev));
+ 	neigh_release(n);
 -- 
 2.43.0
 
