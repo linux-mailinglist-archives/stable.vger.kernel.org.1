@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-9872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E5A58255CD
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:42:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 090168255A7
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:41:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 923C6B21645
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:42:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BE531C23130
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:41:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A712DF66;
-	Fri,  5 Jan 2024 14:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA9E2E3F1;
+	Fri,  5 Jan 2024 14:41:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2dhi07Fh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NvxCfjZm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB6F1E4A9;
-	Fri,  5 Jan 2024 14:42:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F1FC433C7;
-	Fri,  5 Jan 2024 14:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3100818EB7;
+	Fri,  5 Jan 2024 14:41:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D98C433C8;
+	Fri,  5 Jan 2024 14:41:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465762;
-	bh=5m2z9CglCo7917h+9Gy6+MVvqf9oU2i4sYc+F7fRjLU=;
+	s=korg; t=1704465670;
+	bh=Rf/hGqgMxjrpoVp8TKeo5N69EG8x3tjs6VEKTxlJdkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2dhi07Fh5Ysli4IH4IV9IM7jE1+4jeNG6cLXJN8q+hikK+B4m/hygevd9ybDBKHVe
-	 /pV/TQbucnKEmJwBTS41A0Lh5aK7bSrhewMIFMnkdJiGNaAmrMfxp40eolDEaAJXZ4
-	 BtiveSRBljX7ofZ/rpUlvGQt9S8wwKlZFpFWGcAY=
+	b=NvxCfjZmNYlJ31QeOsMqilpK+8YlpZw12MVFgc4ZqAvt3yy3ocFaPyhs/+ZgzJWx7
+	 NGnMDf4LcPU3+NweJik7R63T1A1l9vRM7l3y+wtAafvTRL4esIU/4umHsh7ogOflL1
+	 zT6YwKLMxvfplpIJzCoGNjO/oNjLtJMXviFcjg7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Wei Yongjun <weiyongjun1@huawei.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 18/47] net: check dev->gso_max_size in gso_features_check()
+Subject: [PATCH 4.19 25/41] scsi: bnx2fc: Fix skb double free in bnx2fc_rcv()
 Date: Fri,  5 Jan 2024 15:39:05 +0100
-Message-ID: <20240105143816.215833968@linuxfoundation.org>
+Message-ID: <20240105143815.026951913@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
-References: <20240105143815.541462991@linuxfoundation.org>
+In-Reply-To: <20240105143813.957669139@linuxfoundation.org>
+References: <20240105143813.957669139@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,51 +53,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Wei Yongjun <weiyongjun1@huawei.com>
 
-[ Upstream commit 24ab059d2ebd62fdccc43794796f6ffbabe49ebc ]
+[ Upstream commit 08c94d80b2da481652fb633e79cbc41e9e326a91 ]
 
-Some drivers might misbehave if TSO packets get too big.
+skb_share_check() already drops the reference to the skb when returning
+NULL. Using kfree_skb() in the error handling path leads to an skb double
+free.
 
-GVE for instance uses a 16bit field in its TX descriptor,
-and will do bad things if a packet is bigger than 2^16 bytes.
+Fix this by removing the variable tmp_skb, and return directly when
+skb_share_check() returns NULL.
 
-Linux TCP stack honors dev->gso_max_size, but there are
-other ways for too big packets to reach an ndo_start_xmit()
-handler : virtio_net, af_packet, GRO...
-
-Add a generic check in gso_features_check() and fallback
-to GSO when needed.
-
-gso_max_size was added in the blamed commit.
-
-Fixes: 82cc1a7a5687 ("[NET]: Add per-connection option to set max TSO frame size")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20231219125331.4127498-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 01a4cc4d0cd6 ("bnx2fc: do not add shared skbs to the fcoe_rx_list")
+Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
+Link: https://lore.kernel.org/r/20221114110626.526643-1-weiyongjun@huaweicloud.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dev.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/bnx2fc/bnx2fc_fcoe.c | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 9845dcf0a3ded..5e043e6f09476 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -3140,6 +3140,9 @@ static netdev_features_t gso_features_check(const struct sk_buff *skb,
- 	if (gso_segs > dev->gso_max_segs)
- 		return features & ~NETIF_F_GSO_MASK;
+diff --git a/drivers/scsi/bnx2fc/bnx2fc_fcoe.c b/drivers/scsi/bnx2fc/bnx2fc_fcoe.c
+index 9f6a60bd64448..2ab1fbf12ae1f 100644
+--- a/drivers/scsi/bnx2fc/bnx2fc_fcoe.c
++++ b/drivers/scsi/bnx2fc/bnx2fc_fcoe.c
+@@ -435,7 +435,6 @@ static int bnx2fc_rcv(struct sk_buff *skb, struct net_device *dev,
+ 	struct fc_frame_header *fh;
+ 	struct fcoe_rcv_info *fr;
+ 	struct fcoe_percpu_s *bg;
+-	struct sk_buff *tmp_skb;
  
-+	if (unlikely(skb->len >= READ_ONCE(dev->gso_max_size)))
-+		return features & ~NETIF_F_GSO_MASK;
-+
- 	if (!skb_shinfo(skb)->gso_type) {
- 		skb_warn_bad_offload(skb);
- 		return features & ~NETIF_F_GSO_MASK;
+ 	interface = container_of(ptype, struct bnx2fc_interface,
+ 				 fcoe_packet_type);
+@@ -447,11 +446,9 @@ static int bnx2fc_rcv(struct sk_buff *skb, struct net_device *dev,
+ 		goto err;
+ 	}
+ 
+-	tmp_skb = skb_share_check(skb, GFP_ATOMIC);
+-	if (!tmp_skb)
+-		goto err;
+-
+-	skb = tmp_skb;
++	skb = skb_share_check(skb, GFP_ATOMIC);
++	if (!skb)
++		return -1;
+ 
+ 	if (unlikely(eth_hdr(skb)->h_proto != htons(ETH_P_FCOE))) {
+ 		printk(KERN_ERR PFX "bnx2fc_rcv: Wrong FC type frame\n");
 -- 
 2.43.0
 
