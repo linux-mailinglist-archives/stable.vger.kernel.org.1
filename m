@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-9884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 797948255DA
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:43:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 930FE8255B2
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:41:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BF1AB21ACA
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:43:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FDF6285AD6
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:41:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2911E4A9;
-	Fri,  5 Jan 2024 14:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 825B12C692;
+	Fri,  5 Jan 2024 14:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VeDkvVF3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9RYNQq2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55FF2AE74;
-	Fri,  5 Jan 2024 14:43:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB91C433C7;
-	Fri,  5 Jan 2024 14:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1931E4A9;
+	Fri,  5 Jan 2024 14:41:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D8A1C433C8;
+	Fri,  5 Jan 2024 14:41:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465796;
-	bh=qjqoDYXoO5t5gogJ1ZLXtcUP8glcBalsliqc6MffZ48=;
+	s=korg; t=1704465697;
+	bh=SC08ELtiqbmTJqYaUwrcWDOFyKzbx63KHxq/Z8Ken0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VeDkvVF3tGJEP2VMJDXAWG8Y7UjYo2z+2tJ+VUyLAjdBp2ttV38k7hicvVEX37X7y
-	 5JEIE3LXW5Oy6kipksZJDh8hKQcNimkwQ1plytczSHK9sskAJEJz9FhWqzMAZT/83Y
-	 OFIlyzrc6YBl2vShh4Wy82l211C9wArDN+kiW7Wk=
+	b=T9RYNQq2pY9BFawYztxlmqfioH9DAHnZuZPxyQvbUtMfomrilHW0BZuPTl0ke3Ufq
+	 6ZdCebNgN9/UErhK0az9KaizEg6HMP3DxHkm4ysGlsHdE1gU5PnwUFI7ecv4lvBjGD
+	 rjJ/gwnj/oAsdoMOVkiQfBlmuaRotpugs6tpWSFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Yongjun <weiyongjun1@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 29/47] scsi: bnx2fc: Fix skb double free in bnx2fc_rcv()
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	stable@kernel.org
+Subject: [PATCH 4.19 36/41] x86/alternatives: Sync core before enabling interrupts
 Date: Fri,  5 Jan 2024 15:39:16 +0100
-Message-ID: <20240105143816.681333311@linuxfoundation.org>
+Message-ID: <20240105143815.411646378@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
-References: <20240105143815.541462991@linuxfoundation.org>
+In-Reply-To: <20240105143813.957669139@linuxfoundation.org>
+References: <20240105143813.957669139@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,60 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Yongjun <weiyongjun1@huawei.com>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 08c94d80b2da481652fb633e79cbc41e9e326a91 ]
+commit 3ea1704a92967834bf0e64ca1205db4680d04048 upstream.
 
-skb_share_check() already drops the reference to the skb when returning
-NULL. Using kfree_skb() in the error handling path leads to an skb double
-free.
+text_poke_early() does:
 
-Fix this by removing the variable tmp_skb, and return directly when
-skb_share_check() returns NULL.
+   local_irq_save(flags);
+   memcpy(addr, opcode, len);
+   local_irq_restore(flags);
+   sync_core();
 
-Fixes: 01a4cc4d0cd6 ("bnx2fc: do not add shared skbs to the fcoe_rx_list")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-Link: https://lore.kernel.org/r/20221114110626.526643-1-weiyongjun@huaweicloud.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+That's not really correct because the synchronization should happen before
+interrupts are re-enabled to ensure that a pending interrupt observes the
+complete update of the opcodes.
+
+It's not entirely clear whether the interrupt entry provides enough
+serialization already, but moving the sync_core() invocation into interrupt
+disabled region does no harm and is obviously correct.
+
+Fixes: 6fffacb30349 ("x86/alternatives, jumplabel: Use text_poke_early() before mm_init()")
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: <stable@kernel.org>
+Link: https://lore.kernel.org/r/ZT6narvE%2BLxX%2B7Be@windriver.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/bnx2fc/bnx2fc_fcoe.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ arch/x86/kernel/alternative.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/bnx2fc/bnx2fc_fcoe.c b/drivers/scsi/bnx2fc/bnx2fc_fcoe.c
-index 9ed109fb6b67b..3bef2ed50a07b 100644
---- a/drivers/scsi/bnx2fc/bnx2fc_fcoe.c
-+++ b/drivers/scsi/bnx2fc/bnx2fc_fcoe.c
-@@ -430,7 +430,6 @@ static int bnx2fc_rcv(struct sk_buff *skb, struct net_device *dev,
- 	struct fcoe_ctlr *ctlr;
- 	struct fcoe_rcv_info *fr;
- 	struct fcoe_percpu_s *bg;
--	struct sk_buff *tmp_skb;
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -690,8 +690,8 @@ void *__init_or_module text_poke_early(v
+ 	} else {
+ 		local_irq_save(flags);
+ 		memcpy(addr, opcode, len);
+-		local_irq_restore(flags);
+ 		sync_core();
++		local_irq_restore(flags);
  
- 	interface = container_of(ptype, struct bnx2fc_interface,
- 				 fcoe_packet_type);
-@@ -442,11 +441,9 @@ static int bnx2fc_rcv(struct sk_buff *skb, struct net_device *dev,
- 		goto err;
- 	}
- 
--	tmp_skb = skb_share_check(skb, GFP_ATOMIC);
--	if (!tmp_skb)
--		goto err;
--
--	skb = tmp_skb;
-+	skb = skb_share_check(skb, GFP_ATOMIC);
-+	if (!skb)
-+		return -1;
- 
- 	if (unlikely(eth_hdr(skb)->h_proto != htons(ETH_P_FCOE))) {
- 		printk(KERN_ERR PFX "bnx2fc_rcv: Wrong FC type frame\n");
--- 
-2.43.0
-
+ 		/*
+ 		 * Could also do a CLFLUSH here to speed up CPU recovery; but
 
 
 
