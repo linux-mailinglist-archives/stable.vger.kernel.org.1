@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-9891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B448255E0
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:43:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EFB4B82559D
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:40:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D377D1C23167
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:43:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 773BA1C23121
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C2A2D7AB;
-	Fri,  5 Jan 2024 14:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69BE12D051;
+	Fri,  5 Jan 2024 14:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9sTz5WJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPU0nw+F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990432C692;
-	Fri,  5 Jan 2024 14:43:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E22CC433C7;
-	Fri,  5 Jan 2024 14:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3085121374;
+	Fri,  5 Jan 2024 14:40:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE6AC433C7;
+	Fri,  5 Jan 2024 14:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465815;
-	bh=1iL3eDpPNiydwNhTvu+MIQ4ShJHyRierqLZCCNfx+m4=;
+	s=korg; t=1704465640;
+	bh=M1v8dvhtYxvalSGXBxdawLRHyfT6GABHR2A0YpJOOpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L9sTz5WJDtTFtpJM6fuw0OUSqLhef5okfFMhTBqimPXxiwc9RKT5P0V/UPbkAuIXT
-	 PvJEwGsMVtFyk9/Xy8iTSZukw/aLIzw3oEENBT4Veo5v9w6l+8wnbKwcDcxWNkwvWJ
-	 tS0aYzoV69xDy7IZzeOqdNdAe/XVk+0w5G1Xm24I=
+	b=DPU0nw+F+QeU+i9BgvEJSDj+DiNU5vMamgg1p0gVO2UoK6j2E2LrD7rH/VxL/GLMe
+	 DF/Mk222bQFfWwSTZ/SWuYdQDVJwZLnU2W3ICDt8fps0XfXtS4SlfFbArJ1oMs4s0l
+	 YgSZs4Al0husRtapplhzLU3FUTLH5nVhEvZfhtKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlad Buslov <vladbu@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
+	Liu Jian <liujian56@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 07/47] Revert "net/mlx5e: fix double free of encap_header"
-Date: Fri,  5 Jan 2024 15:38:54 +0100
-Message-ID: <20240105143815.800040395@linuxfoundation.org>
+Subject: [PATCH 4.19 15/41] net: check vlan filter feature in vlan_vids_add_by_dev() and vlan_vids_del_by_dev()
+Date: Fri,  5 Jan 2024 15:38:55 +0100
+Message-ID: <20240105143814.608490111@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
-References: <20240105143815.541462991@linuxfoundation.org>
+In-Reply-To: <20240105143813.957669139@linuxfoundation.org>
+References: <20240105143813.957669139@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,69 +53,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlad Buslov <vladbu@nvidia.com>
+From: Liu Jian <liujian56@huawei.com>
 
-[ Upstream commit 5d089684dc434a31e08d32f0530066d0025c52e4 ]
+[ Upstream commit 01a564bab4876007ce35f312e16797dfe40e4823 ]
 
-This reverts commit 6f9b1a0731662648949a1c0587f6acb3b7f8acf1.
+I got the below warning trace:
 
-This patch is causing a null ptr issue, the proper fix is in the next
-patch.
+WARNING: CPU: 4 PID: 4056 at net/core/dev.c:11066 unregister_netdevice_many_notify
+CPU: 4 PID: 4056 Comm: ip Not tainted 6.7.0-rc4+ #15
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.15.0-1 04/01/2014
+RIP: 0010:unregister_netdevice_many_notify+0x9a4/0x9b0
+Call Trace:
+ rtnl_dellink
+ rtnetlink_rcv_msg
+ netlink_rcv_skb
+ netlink_unicast
+ netlink_sendmsg
+ __sock_sendmsg
+ ____sys_sendmsg
+ ___sys_sendmsg
+ __sys_sendmsg
+ do_syscall_64
+ entry_SYSCALL_64_after_hwframe
 
-Fixes: 6f9b1a073166 ("net/mlx5e: fix double free of encap_header")
-Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+It can be repoduced via:
+
+    ip netns add ns1
+    ip netns exec ns1 ip link add bond0 type bond mode 0
+    ip netns exec ns1 ip link add bond_slave_1 type veth peer veth2
+    ip netns exec ns1 ip link set bond_slave_1 master bond0
+[1] ip netns exec ns1 ethtool -K bond0 rx-vlan-filter off
+[2] ip netns exec ns1 ip link add link bond_slave_1 name bond_slave_1.0 type vlan id 0
+[3] ip netns exec ns1 ip link add link bond0 name bond0.0 type vlan id 0
+[4] ip netns exec ns1 ip link set bond_slave_1 nomaster
+[5] ip netns exec ns1 ip link del veth2
+    ip netns del ns1
+
+This is all caused by command [1] turning off the rx-vlan-filter function
+of bond0. The reason is the same as commit 01f4fd270870 ("bonding: Fix
+incorrect deletion of ETH_P_8021AD protocol vid from slaves"). Commands
+[2] [3] add the same vid to slave and master respectively, causing
+command [4] to empty slave->vlan_info. The following command [5] triggers
+this problem.
+
+To fix this problem, we should add VLAN_FILTER feature checks in
+vlan_vids_add_by_dev() and vlan_vids_del_by_dev() to prevent incorrect
+addition or deletion of vlan_vid information.
+
+Fixes: 348a1443cc43 ("vlan: introduce functions to do mass addition/deletion of vids by another device")
+Signed-off-by: Liu Jian <liujian56@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/8021q/vlan_core.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-index 5a4bee5253ec1..362f01bc8372e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun.c
-@@ -290,6 +290,9 @@ int mlx5e_tc_tun_create_header_ipv4(struct mlx5e_priv *priv,
- 	if (err)
- 		goto destroy_neigh_entry;
+diff --git a/net/8021q/vlan_core.c b/net/8021q/vlan_core.c
+index 4f60e86f4b8d3..e92c914316cbd 100644
+--- a/net/8021q/vlan_core.c
++++ b/net/8021q/vlan_core.c
+@@ -380,6 +380,8 @@ int vlan_vids_add_by_dev(struct net_device *dev,
+ 		return 0;
  
-+	e->encap_size = ipv4_encap_size;
-+	e->encap_header = encap_header;
-+
- 	if (!(nud_state & NUD_VALID)) {
- 		neigh_event_send(n, NULL);
- 		/* the encap entry will be made valid on neigh update event
-@@ -306,8 +309,6 @@ int mlx5e_tc_tun_create_header_ipv4(struct mlx5e_priv *priv,
- 		goto destroy_neigh_entry;
+ 	list_for_each_entry(vid_info, &vlan_info->vid_list, list) {
++		if (!vlan_hw_filter_capable(by_dev, vid_info->proto))
++			continue;
+ 		err = vlan_vid_add(dev, vid_info->proto, vid_info->vid);
+ 		if (err)
+ 			goto unwind;
+@@ -390,6 +392,8 @@ int vlan_vids_add_by_dev(struct net_device *dev,
+ 	list_for_each_entry_continue_reverse(vid_info,
+ 					     &vlan_info->vid_list,
+ 					     list) {
++		if (!vlan_hw_filter_capable(by_dev, vid_info->proto))
++			continue;
+ 		vlan_vid_del(dev, vid_info->proto, vid_info->vid);
  	}
  
--	e->encap_size = ipv4_encap_size;
--	e->encap_header = encap_header;
- 	e->flags |= MLX5_ENCAP_ENTRY_VALID;
- 	mlx5e_rep_queue_neigh_stats_work(netdev_priv(out_dev));
- 	neigh_release(n);
-@@ -407,6 +408,9 @@ int mlx5e_tc_tun_create_header_ipv6(struct mlx5e_priv *priv,
- 	if (err)
- 		goto destroy_neigh_entry;
+@@ -409,8 +413,11 @@ void vlan_vids_del_by_dev(struct net_device *dev,
+ 	if (!vlan_info)
+ 		return;
  
-+	e->encap_size = ipv6_encap_size;
-+	e->encap_header = encap_header;
-+
- 	if (!(nud_state & NUD_VALID)) {
- 		neigh_event_send(n, NULL);
- 		/* the encap entry will be made valid on neigh update event
-@@ -424,8 +428,6 @@ int mlx5e_tc_tun_create_header_ipv6(struct mlx5e_priv *priv,
- 		goto destroy_neigh_entry;
- 	}
+-	list_for_each_entry(vid_info, &vlan_info->vid_list, list)
++	list_for_each_entry(vid_info, &vlan_info->vid_list, list) {
++		if (!vlan_hw_filter_capable(by_dev, vid_info->proto))
++			continue;
+ 		vlan_vid_del(dev, vid_info->proto, vid_info->vid);
++	}
+ }
+ EXPORT_SYMBOL(vlan_vids_del_by_dev);
  
--	e->encap_size = ipv6_encap_size;
--	e->encap_header = encap_header;
- 	e->flags |= MLX5_ENCAP_ENTRY_VALID;
- 	mlx5e_rep_queue_neigh_stats_work(netdev_priv(out_dev));
- 	neigh_release(n);
 -- 
 2.43.0
 
