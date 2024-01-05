@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-9832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F2268255A2
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:41:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A7518255C8
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:42:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D21671F240BB
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:41:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B9391C231E2
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:42:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A02B72E41A;
-	Fri,  5 Jan 2024 14:40:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A52FC2E3F3;
+	Fri,  5 Jan 2024 14:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amrXPqQq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zezAfr6S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F8D2D7B5;
-	Fri,  5 Jan 2024 14:40:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0D41C433C7;
-	Fri,  5 Jan 2024 14:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DDAA18EB7;
+	Fri,  5 Jan 2024 14:42:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E37AFC433C7;
+	Fri,  5 Jan 2024 14:42:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465654;
-	bh=Nk7mdn3UZ+QUrzHkxgZDB/oyES1s853sRfRVSvpWwQU=;
+	s=korg; t=1704465749;
+	bh=3IH3yC7l8vP27tMReqa/KA+f5l5kUhr0B/EdhZG4jz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=amrXPqQqQflrrQKFDGaQebHkafoLMjw3qf+fSa523jtpc1a0KwhGEKXxcEUO8qa1E
-	 9AG/s/CoKT6LUztw6AyO07h1bJTvSIXiPJFK8oOcDdAq4rvwAH3RtSjAwff2SqfknJ
-	 AakXMIs7KJHthbpBEz0qGqO6kYBerx3kuNsAVJvg=
+	b=zezAfr6SVdpVO3I5i8Pyb45QmNNrkG4YGgMP/12gm1JOQ/Nur26AbBKNMSlcEJLcT
+	 gxBUheszwcSJnweLKvHPRTD6lONUggMF34lTupA0ff/QI8g7RSoSj6MOZXTZ/UO+O7
+	 R4TjWsQmFeKsbcuWWpKVHAZPakiwdRcWbe2u87bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Bernard Pidoux <f6bvp@free.fr>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 20/41] smb: client: fix NULL deref in asn1_ber_decoder()
+Subject: [PATCH 5.4 13/47] net/rose: fix races in rose_kill_by_device()
 Date: Fri,  5 Jan 2024 15:39:00 +0100
-Message-ID: <20240105143814.844738700@linuxfoundation.org>
+Message-ID: <20240105143816.021244377@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143813.957669139@linuxfoundation.org>
-References: <20240105143813.957669139@linuxfoundation.org>
+In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
+References: <20240105143815.541462991@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,138 +55,179 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 90d025c2e953c11974e76637977c473200593a46 ]
+[ Upstream commit 64b8bc7d5f1434c636a40bdcfcd42b278d1714be ]
 
-If server replied SMB2_NEGOTIATE with a zero SecurityBufferOffset,
-smb2_get_data_area() sets @len to non-zero but return NULL, so
-decode_negTokeninit() ends up being called with a NULL @security_blob:
+syzbot found an interesting netdev refcounting issue in
+net/rose/af_rose.c, thanks to CONFIG_NET_DEV_REFCNT_TRACKER=y [1]
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000000
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  PGD 0 P4D 0
-  Oops: 0000 [#1] PREEMPT SMP NOPTI
-  CPU: 2 PID: 871 Comm: mount.cifs Not tainted 6.7.0-rc4 #2
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-  RIP: 0010:asn1_ber_decoder+0x173/0xc80
-  Code: 01 4c 39 2c 24 75 09 45 84 c9 0f 85 2f 03 00 00 48 8b 14 24 4c 29 ea 48 83 fa 01 0f 86 1e 07 00 00 48 8b 74 24 28 4d 8d 5d 01 <42> 0f b6 3c 2e 89 fa 40 88 7c 24 5c f7 d2 83 e2 1f 0f 84 3d 07 00
-  RSP: 0018:ffffc9000063f950 EFLAGS: 00010202
-  RAX: 0000000000000002 RBX: 0000000000000000 RCX: 000000000000004a
-  RDX: 000000000000004a RSI: 0000000000000000 RDI: 0000000000000000
-  RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-  R10: 0000000000000002 R11: 0000000000000001 R12: 0000000000000000
-  R13: 0000000000000000 R14: 000000000000004d R15: 0000000000000000
-  FS:  00007fce52b0fbc0(0000) GS:ffff88806ba00000(0000) knlGS:0000000000000000
-  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  CR2: 0000000000000000 CR3: 000000001ae64000 CR4: 0000000000750ef0
-  PKRU: 55555554
-  Call Trace:
-   <TASK>
-   ? __die+0x23/0x70
-   ? page_fault_oops+0x181/0x480
-   ? __stack_depot_save+0x1e6/0x480
-   ? exc_page_fault+0x6f/0x1c0
-   ? asm_exc_page_fault+0x26/0x30
-   ? asn1_ber_decoder+0x173/0xc80
-   ? check_object+0x40/0x340
-   decode_negTokenInit+0x1e/0x30 [cifs]
-   SMB2_negotiate+0xc99/0x17c0 [cifs]
-   ? smb2_negotiate+0x46/0x60 [cifs]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   smb2_negotiate+0x46/0x60 [cifs]
-   cifs_negotiate_protocol+0xae/0x130 [cifs]
-   cifs_get_smb_ses+0x517/0x1040 [cifs]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? queue_delayed_work_on+0x5d/0x90
-   cifs_mount_get_session+0x78/0x200 [cifs]
-   dfs_mount_share+0x13a/0x9f0 [cifs]
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? lock_acquire+0xbf/0x2b0
-   ? find_nls+0x16/0x80
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   cifs_mount+0x7e/0x350 [cifs]
-   cifs_smb3_do_mount+0x128/0x780 [cifs]
-   smb3_get_tree+0xd9/0x290 [cifs]
-   vfs_get_tree+0x2c/0x100
-   ? capable+0x37/0x70
-   path_mount+0x2d7/0xb80
-   ? srso_alias_return_thunk+0x5/0xfbef5
-   ? _raw_spin_unlock_irqrestore+0x44/0x60
-   __x64_sys_mount+0x11a/0x150
-   do_syscall_64+0x47/0xf0
-   entry_SYSCALL_64_after_hwframe+0x6f/0x77
-  RIP: 0033:0x7fce52c2ab1e
+Problem is that rose_kill_by_device() can change rose->device
+while other threads do not expect the pointer to be changed.
 
-Fix this by setting @len to zero when @off == 0 so callers won't
-attempt to dereference non-existing data areas.
+We have to first collect sockets in a temporary array,
+then perform the changes while holding the socket
+lock and rose_list_lock spinlock (in this order)
 
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Change rose_release() to also acquire rose_list_lock
+before releasing the netdev refcount.
+
+[1]
+
+[ 1185.055088][ T7889] ref_tracker: reference already released.
+[ 1185.061476][ T7889] ref_tracker: allocated in:
+[ 1185.066081][ T7889]  rose_bind+0x4ab/0xd10
+[ 1185.070446][ T7889]  __sys_bind+0x1ec/0x220
+[ 1185.074818][ T7889]  __x64_sys_bind+0x72/0xb0
+[ 1185.079356][ T7889]  do_syscall_64+0x40/0x110
+[ 1185.083897][ T7889]  entry_SYSCALL_64_after_hwframe+0x63/0x6b
+[ 1185.089835][ T7889] ref_tracker: freed in:
+[ 1185.094088][ T7889]  rose_release+0x2f5/0x570
+[ 1185.098629][ T7889]  __sock_release+0xae/0x260
+[ 1185.103262][ T7889]  sock_close+0x1c/0x20
+[ 1185.107453][ T7889]  __fput+0x270/0xbb0
+[ 1185.111467][ T7889]  task_work_run+0x14d/0x240
+[ 1185.116085][ T7889]  get_signal+0x106f/0x2790
+[ 1185.120622][ T7889]  arch_do_signal_or_restart+0x90/0x7f0
+[ 1185.126205][ T7889]  exit_to_user_mode_prepare+0x121/0x240
+[ 1185.131846][ T7889]  syscall_exit_to_user_mode+0x1e/0x60
+[ 1185.137293][ T7889]  do_syscall_64+0x4d/0x110
+[ 1185.141783][ T7889]  entry_SYSCALL_64_after_hwframe+0x63/0x6b
+[ 1185.148085][ T7889] ------------[ cut here ]------------
+
+WARNING: CPU: 1 PID: 7889 at lib/ref_tracker.c:255 ref_tracker_free+0x61a/0x810 lib/ref_tracker.c:255
+Modules linked in:
+CPU: 1 PID: 7889 Comm: syz-executor.2 Not tainted 6.7.0-rc4-syzkaller-00162-g65c95f78917e #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
+RIP: 0010:ref_tracker_free+0x61a/0x810 lib/ref_tracker.c:255
+Code: 00 44 8b 6b 18 31 ff 44 89 ee e8 21 62 f5 fc 45 85 ed 0f 85 a6 00 00 00 e8 a3 66 f5 fc 48 8b 34 24 48 89 ef e8 27 5f f1 05 90 <0f> 0b 90 bb ea ff ff ff e9 52 fd ff ff e8 84 66 f5 fc 4c 8d 6d 44
+RSP: 0018:ffffc90004917850 EFLAGS: 00010202
+RAX: 0000000000000201 RBX: ffff88802618f4c0 RCX: 0000000000000000
+RDX: 0000000000000202 RSI: ffffffff8accb920 RDI: 0000000000000001
+RBP: ffff8880269ea5b8 R08: 0000000000000001 R09: fffffbfff23e35f6
+R10: ffffffff91f1afb7 R11: 0000000000000001 R12: 1ffff92000922f0c
+R13: 0000000005a2039b R14: ffff88802618f4d8 R15: 00000000ffffffff
+FS: 00007f0a720ef6c0(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f43a819d988 CR3: 0000000076c64000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<TASK>
+netdev_tracker_free include/linux/netdevice.h:4127 [inline]
+netdev_put include/linux/netdevice.h:4144 [inline]
+netdev_put include/linux/netdevice.h:4140 [inline]
+rose_kill_by_device net/rose/af_rose.c:195 [inline]
+rose_device_event+0x25d/0x330 net/rose/af_rose.c:218
+notifier_call_chain+0xb6/0x3b0 kernel/notifier.c:93
+call_netdevice_notifiers_info+0xbe/0x130 net/core/dev.c:1967
+call_netdevice_notifiers_extack net/core/dev.c:2005 [inline]
+call_netdevice_notifiers net/core/dev.c:2019 [inline]
+__dev_notify_flags+0x1f5/0x2e0 net/core/dev.c:8646
+dev_change_flags+0x122/0x170 net/core/dev.c:8682
+dev_ifsioc+0x9ad/0x1090 net/core/dev_ioctl.c:529
+dev_ioctl+0x224/0x1090 net/core/dev_ioctl.c:786
+sock_do_ioctl+0x198/0x270 net/socket.c:1234
+sock_ioctl+0x22e/0x6b0 net/socket.c:1339
+vfs_ioctl fs/ioctl.c:51 [inline]
+__do_sys_ioctl fs/ioctl.c:871 [inline]
+__se_sys_ioctl fs/ioctl.c:857 [inline]
+__x64_sys_ioctl+0x18f/0x210 fs/ioctl.c:857
+do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+do_syscall_64+0x40/0x110 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x63/0x6b
+RIP: 0033:0x7f0a7147cba9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f0a720ef0c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007f0a7159bf80 RCX: 00007f0a7147cba9
+RDX: 0000000020000040 RSI: 0000000000008914 RDI: 0000000000000004
+RBP: 00007f0a714c847a R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 000000000000000b R14: 00007f0a7159bf80 R15: 00007ffc8bb3a5f8
+</TASK>
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Bernard Pidoux <f6bvp@free.fr>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/cifs/smb2misc.c | 26 ++++++++++----------------
- 1 file changed, 10 insertions(+), 16 deletions(-)
+ net/rose/af_rose.c | 39 ++++++++++++++++++++++++++++++++++-----
+ 1 file changed, 34 insertions(+), 5 deletions(-)
 
-diff --git a/fs/cifs/smb2misc.c b/fs/cifs/smb2misc.c
-index 7177720e822e1..d3d5d2c6c4013 100644
---- a/fs/cifs/smb2misc.c
-+++ b/fs/cifs/smb2misc.c
-@@ -302,6 +302,9 @@ static const bool has_smb2_data_area[NUMBER_OF_SMB2_COMMANDS] = {
- char *
- smb2_get_data_area_len(int *off, int *len, struct smb2_sync_hdr *shdr)
+diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
+index fc9ef08788f73..9b36fb6aa3e13 100644
+--- a/net/rose/af_rose.c
++++ b/net/rose/af_rose.c
+@@ -159,21 +159,47 @@ void rose_kill_by_neigh(struct rose_neigh *neigh)
+  */
+ static void rose_kill_by_device(struct net_device *dev)
  {
-+	const int max_off = 4096;
-+	const int max_len = 128 * 1024;
-+
- 	*off = 0;
- 	*len = 0;
+-	struct sock *s;
++	struct sock *sk, *array[16];
++	struct rose_sock *rose;
++	bool rescan;
++	int i, cnt;
  
-@@ -369,29 +372,20 @@ smb2_get_data_area_len(int *off, int *len, struct smb2_sync_hdr *shdr)
- 	 * Invalid length or offset probably means data area is invalid, but
- 	 * we have little choice but to ignore the data area in this case.
- 	 */
--	if (*off > 4096) {
--		cifs_dbg(VFS, "offset %d too large, data area ignored\n", *off);
--		*len = 0;
--		*off = 0;
--	} else if (*off < 0) {
--		cifs_dbg(VFS, "negative offset %d to data invalid ignore data area\n",
--			 *off);
-+	if (unlikely(*off < 0 || *off > max_off ||
-+		     *len < 0 || *len > max_len)) {
-+		cifs_dbg(VFS, "%s: invalid data area (off=%d len=%d)\n",
-+			 __func__, *off, *len);
- 		*off = 0;
- 		*len = 0;
--	} else if (*len < 0) {
--		cifs_dbg(VFS, "negative data length %d invalid, data area ignored\n",
--			 *len);
--		*len = 0;
--	} else if (*len > 128 * 1024) {
--		cifs_dbg(VFS, "data area larger than 128K: %d\n", *len);
-+	} else if (*off == 0) {
- 		*len = 0;
++start:
++	rescan = false;
++	cnt = 0;
+ 	spin_lock_bh(&rose_list_lock);
+-	sk_for_each(s, &rose_list) {
+-		struct rose_sock *rose = rose_sk(s);
++	sk_for_each(sk, &rose_list) {
++		rose = rose_sk(sk);
++		if (rose->device == dev) {
++			if (cnt == ARRAY_SIZE(array)) {
++				rescan = true;
++				break;
++			}
++			sock_hold(sk);
++			array[cnt++] = sk;
++		}
++	}
++	spin_unlock_bh(&rose_list_lock);
+ 
++	for (i = 0; i < cnt; i++) {
++		sk = array[cnt];
++		rose = rose_sk(sk);
++		lock_sock(sk);
++		spin_lock_bh(&rose_list_lock);
+ 		if (rose->device == dev) {
+-			rose_disconnect(s, ENETUNREACH, ROSE_OUT_OF_ORDER, 0);
++			rose_disconnect(sk, ENETUNREACH, ROSE_OUT_OF_ORDER, 0);
+ 			if (rose->neighbour)
+ 				rose->neighbour->use--;
+ 			dev_put(rose->device);
+ 			rose->device = NULL;
+ 		}
++		spin_unlock_bh(&rose_list_lock);
++		release_sock(sk);
++		sock_put(sk);
++		cond_resched();
  	}
- 
- 	/* return pointer to beginning of data area, ie offset from SMB start */
--	if ((*off != 0) && (*len != 0))
-+	if (*off > 0 && *len > 0)
- 		return (char *)shdr + *off;
--	else
--		return NULL;
-+	return NULL;
+-	spin_unlock_bh(&rose_list_lock);
++	if (rescan)
++		goto start;
  }
  
  /*
+@@ -633,7 +659,10 @@ static int rose_release(struct socket *sock)
+ 		break;
+ 	}
+ 
++	spin_lock_bh(&rose_list_lock);
+ 	dev_put(rose->device);
++	rose->device = NULL;
++	spin_unlock_bh(&rose_list_lock);
+ 	sock->sk = NULL;
+ 	release_sock(sk);
+ 	sock_put(sk);
 -- 
 2.43.0
 
