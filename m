@@ -1,47 +1,45 @@
-Return-Path: <stable+bounces-9881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B7CF8255D6
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:43:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D65F8255BF
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:42:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E9B92861AB
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:43:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDC171F25D11
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:42:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC92B2D7AB;
-	Fri,  5 Jan 2024 14:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06CF82DF73;
+	Fri,  5 Jan 2024 14:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="siUL8EgD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PZNmbhYD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6AE828FA;
-	Fri,  5 Jan 2024 14:43:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32255C433C8;
-	Fri,  5 Jan 2024 14:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39C72D051;
+	Fri,  5 Jan 2024 14:42:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4935CC433C8;
+	Fri,  5 Jan 2024 14:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465788;
-	bh=+4Yq9tk5pwLPpiVojb2N4VsET24UcwtGXpCsh4SoVaM=;
+	s=korg; t=1704465727;
+	bh=EqAfeBI4sJEq+B8yLYcv4ykuzoWGzxUjDRfd29fRU44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=siUL8EgDPtiQg9mZK4J56lD9RhzxKyNagccqZUAt2qvdx9+NvqtjXqhTkyyVphnP8
-	 4hxG6TziEhbf8x2454Jdcj0xgeBypB6rBee+MkKleQJ0gTpFoD75eFsxlz+IvHiOQV
-	 4ue9vYhQuw1AwkRQChYd1IpMN3/R4WNGOXrjn0bo=
+	b=PZNmbhYDeceV8J/3ihiCD/vSA96a2899tTvxf8vIP16wZ8unUMHtHm+I++pA5yqwp
+	 pnvjwshH4E5fjTybtkNCIThi426o6JVgp+GDzI3KpRRWiAyNaprAE/Y8oT+w8vFqtb
+	 qUD7bBSRdHa2rBgo5uYXyyHPlDTDPSJtHdwY03LU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Tipton <quic_mdtipton@quicinc.com>,
-	Georgi Djakov <djakov@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 26/47] interconnect: Treat xlate() returning NULL node as an error
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 4.19 33/41] Bluetooth: hci_event: Fix not checking if HCI_OP_INQUIRY has been sent
 Date: Fri,  5 Jan 2024 15:39:13 +0100
-Message-ID: <20240105143816.543111770@linuxfoundation.org>
+Message-ID: <20240105143815.308065900@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
-References: <20240105143815.541462991@linuxfoundation.org>
+In-Reply-To: <20240105143813.957669139@linuxfoundation.org>
+References: <20240105143813.957669139@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,50 +51,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Tipton <quic_mdtipton@quicinc.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit ad2ab1297d0c80899125a842bb7a078abfe1e6ce ]
+commit 99e67d46e5ff3c7c901af6009edec72d3d363be8 upstream.
 
-Currently, if provider->xlate() or provider->xlate_extended()
-"successfully" return a NULL node, then of_icc_get_from_provider() won't
-consider that an error and will successfully return the NULL node. This
-bypasses error handling in of_icc_get_by_index() and leads to NULL
-dereferences in path_find().
+Before setting HCI_INQUIRY bit check if HCI_OP_INQUIRY was really sent
+otherwise the controller maybe be generating invalid events or, more
+likely, it is a result of fuzzing tools attempting to test the right
+behavior of the stack when unexpected events are generated.
 
-This could be avoided by ensuring provider callbacks always return an
-error for NULL nodes, but it's better to explicitly protect against this
-in the common framework.
-
-Fixes: 87e3031b6fbd ("interconnect: Allow endpoints translation via DT")
-Signed-off-by: Mike Tipton <quic_mdtipton@quicinc.com>
-Link: https://lore.kernel.org/r/20231025145829.11603-1-quic_mdtipton@quicinc.com
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218151
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/interconnect/core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/bluetooth/hci_event.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/interconnect/core.c b/drivers/interconnect/core.c
-index be3fa1ac4261c..8f6dfa6b6e4dc 100644
---- a/drivers/interconnect/core.c
-+++ b/drivers/interconnect/core.c
-@@ -280,6 +280,9 @@ static struct icc_node *of_icc_get_from_provider(struct of_phandle_args *spec)
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -1701,7 +1701,8 @@ static void hci_cs_inquiry(struct hci_de
+ 		return;
  	}
- 	mutex_unlock(&icc_lock);
  
-+	if (!node)
-+		return ERR_PTR(-EINVAL);
-+
- 	return node;
+-	set_bit(HCI_INQUIRY, &hdev->flags);
++	if (hci_sent_cmd_data(hdev, HCI_OP_INQUIRY))
++		set_bit(HCI_INQUIRY, &hdev->flags);
  }
  
--- 
-2.43.0
-
+ static void hci_cs_create_conn(struct hci_dev *hdev, __u8 status)
 
 
 
