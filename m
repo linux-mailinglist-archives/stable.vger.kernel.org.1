@@ -1,44 +1,43 @@
-Return-Path: <stable+bounces-9909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 049918255F2
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:44:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02BF88255E9
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 15:44:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22C221C211CA
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:44:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3722A1C231FB
+	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 14:44:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059F62DF66;
-	Fri,  5 Jan 2024 14:44:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E8E2C692;
+	Fri,  5 Jan 2024 14:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQDiFVWd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3vBmpO5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E9628DDA;
-	Fri,  5 Jan 2024 14:44:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D5DC433C7;
-	Fri,  5 Jan 2024 14:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53CFA2D634;
+	Fri,  5 Jan 2024 14:43:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 977C1C433C8;
+	Fri,  5 Jan 2024 14:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704465865;
-	bh=wYNUn1MRAaeVKECovL20+ZwN1sA6LJAXm/sIUYKvAsU=;
+	s=korg; t=1704465838;
+	bh=z3+vBIA5iLpiSpmUz7MO9Qp1v+1CIzBwYeaoscUTob4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cQDiFVWdvzlaXspNAEZ5iDGr427Y8RpTNxpMkaPvORSPbtk82K2WqOAbV1Md3Izqa
-	 8bIv8RClVuhpXBZxYvIjJmF6Z3z9z1tLw61xTrRCEwaiyRyYrLcVw0ZOajl/0zFn6U
-	 8Eabwo0+dVKsARWRkU3xA/ukOtye4Uk6iSNW+o6c=
+	b=E3vBmpO5qwLToSGUP9zmheWeru1e/PFnWi37RDwkfSDOJaDBD9o4q5MELKNsNIFzd
+	 BTiEHR8GsPqxEg65LB+XWyIQI7ifMY+OLP/0gSY3uckoDyYvmGGgn03fxq3soA71r2
+	 tl8OEIjiFZxSclPvAmUie9tkyw7g5QNMBZdkLtN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julien Panis <jpanis@baylibre.com>,
 	Tony Lindgren <tony@atomide.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 44/47] bus: ti-sysc: Use fsleep() instead of usleep_range() in sysc_reset()
-Date: Fri,  5 Jan 2024 15:39:31 +0100
-Message-ID: <20240105143817.351937255@linuxfoundation.org>
+Subject: [PATCH 5.4 45/47] bus: ti-sysc: Flush posted write only after srst_udelay
+Date: Fri,  5 Jan 2024 15:39:32 +0100
+Message-ID: <20240105143817.392006907@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240105143815.541462991@linuxfoundation.org>
 References: <20240105143815.541462991@linuxfoundation.org>
@@ -57,48 +56,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Julien Panis <jpanis@baylibre.com>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit d929b2b7464f95ec01e47f560b1e687482ba8929 ]
+[ Upstream commit f71f6ff8c1f682a1cae4e8d7bdeed9d7f76b8f75 ]
 
-The am335x-evm started producing boot errors because of subtle timing
-changes:
+Commit 34539b442b3b ("bus: ti-sysc: Flush posted write on enable before
+reset") caused a regression reproducable on omap4 duovero where the ISS
+target module can produce interconnect errors on boot. Turns out the
+registers are not accessible until after a delay for devices needing
+a ti,sysc-delay-us value.
 
-Unhandled fault: external abort on non-linefetch (0x1008) at 0xf03c1010
-...
-sysc_reset from sysc_probe+0xf60/0x1514
-sysc_probe from platform_probe+0x5c/0xbc
-...
+Let's fix this by flushing the posted write only after the reset delay.
+We do flushing also for ti,sysc-delay-us using devices as that should
+trigger an interconnect error if the delay is not properly configured.
 
-The fix consists in using the appropriate sleep function in sysc reset.
-For flexible sleeping, fsleep is recommended. Here, sysc delay parameter
-can take any value in [0 - 255] us range. As a result, fsleep() should
-be used, calling udelay() for a sysc delay lower than 10 us.
+Let's also add some comments while at it.
 
-Signed-off-by: Julien Panis <jpanis@baylibre.com>
-Fixes: e709ed70d122 ("bus: ti-sysc: Fix missing reset delay handling")
-Message-ID: <20230821-fix-ti-sysc-reset-v1-1-5a0a5d8fae55@baylibre.com>
+Fixes: 34539b442b3b ("bus: ti-sysc: Flush posted write on enable before reset")
+Cc: stable@vger.kernel.org
 Signed-off-by: Tony Lindgren <tony@atomide.com>
-Stable-dep-of: f71f6ff8c1f6 ("bus: ti-sysc: Flush posted write only after srst_udelay")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/ti-sysc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/bus/ti-sysc.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 70339f73181ea..8d82752c54d40 100644
+index 8d82752c54d40..8ad389ebd77a9 100644
 --- a/drivers/bus/ti-sysc.c
 +++ b/drivers/bus/ti-sysc.c
-@@ -1842,8 +1842,7 @@ static int sysc_reset(struct sysc *ddata)
+@@ -1837,13 +1837,23 @@ static int sysc_reset(struct sysc *ddata)
+ 		sysc_val = sysc_read_sysconfig(ddata);
+ 		sysc_val |= sysc_mask;
+ 		sysc_write(ddata, sysc_offset, sysc_val);
+-		/* Flush posted write */
++
++		/*
++		 * Some devices need a delay before reading registers
++		 * after reset. Presumably a srst_udelay is not needed
++		 * for devices that use a rstctrl register reset.
++		 */
++		if (ddata->cfg.srst_udelay)
++			fsleep(ddata->cfg.srst_udelay);
++
++		/*
++		 * Flush posted write. For devices needing srst_udelay
++		 * this should trigger an interconnect error if the
++		 * srst_udelay value is needed but not configured.
++		 */
+ 		sysc_val = sysc_read_sysconfig(ddata);
  	}
  
- 	if (ddata->cfg.srst_udelay)
--		usleep_range(ddata->cfg.srst_udelay,
--			     ddata->cfg.srst_udelay * 2);
-+		fsleep(ddata->cfg.srst_udelay);
- 
+-	if (ddata->cfg.srst_udelay)
+-		fsleep(ddata->cfg.srst_udelay);
+-
  	if (ddata->post_reset_quirk)
  		ddata->post_reset_quirk(ddata);
+ 
 -- 
 2.43.0
 
