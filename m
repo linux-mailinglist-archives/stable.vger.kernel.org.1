@@ -1,78 +1,65 @@
-Return-Path: <stable+bounces-9930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21E91825C75
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 23:19:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 215A2825E19
+	for <lists+stable@lfdr.de>; Sat,  6 Jan 2024 04:32:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20DD61C23AA8
-	for <lists+stable@lfdr.de>; Fri,  5 Jan 2024 22:19:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4B941F2401E
+	for <lists+stable@lfdr.de>; Sat,  6 Jan 2024 03:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42DCE358B6;
-	Fri,  5 Jan 2024 22:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFBF915B3;
+	Sat,  6 Jan 2024 03:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SIWWNajS"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=nwl.cc header.i=@nwl.cc header.b="jGTP4ySy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from orbyte.nwl.cc (orbyte.nwl.cc [151.80.46.58])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E21635890;
-	Fri,  5 Jan 2024 22:19:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-6daa89a6452so66195b3a.2;
-        Fri, 05 Jan 2024 14:19:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704493150; x=1705097950; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jEzsopUw3KlXSSQNrQJ1Qhdx8uIJ/YgpReJRgYkVS+Y=;
-        b=SIWWNajS8EobwcQtCHpwnkPWF/e4zUgZTpI2uYt3S+pOWEIG97ly2KwCLnePm0O1cw
-         nX2Hf/0P++U1bIWEIe509QHRVwI2qudjlfjbnUg+WVR9iES9xATKSNK8w1VMWprm0wFp
-         NzcKH+o3/JoK9Ii4byaVJ78E9NBVz7XbvMqKzgYz2b/ICgfMXqUQdIcC72t9TE4oWpgs
-         6qwmc0pWR0YJbl+wfI05/rv2+35q33tlCS2P6zVcWXB1c8CcOLhPigKC2ezxriMyiQbN
-         J+kig22aVsqHWznkgUdhW/0XbFA/aX/uBBd0VVMPhobf87MPfM9NxQAOY51VczXiiHxR
-         fNfw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704493150; x=1705097950;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jEzsopUw3KlXSSQNrQJ1Qhdx8uIJ/YgpReJRgYkVS+Y=;
-        b=HxRw3skemK6ntiy+mCG2gpt2kdpWqWFCkXucAcmmtRa+edOeimC0IrSqjCIY88nnkD
-         faVOfPtetdPsDGjiZ68VvfAwXJQwOzjgXHbTeQcjvmJxqHWyhlnOmp7OJFjWTVBVPtwb
-         X1nhPE0RWOM1UH9Op9/TKgcrPvP63wn/gIPHN0io/v/o0Np1bFuIrQHUnlVMy/CE1prB
-         aSiMnvP8wC55fNZsG4mevO5LmE3qSS9Bzs8Q4IE5uH9egAB3GDx9p6PRgHo63GlLqi9m
-         y3mZ5ii9esPWc1B5NZpC4Mi+Hnu1eN4aWdp1EBswKsLwjtUooOgwC4iRxwm07/dXVxXX
-         iRhw==
-X-Gm-Message-State: AOJu0Yz9H1KvVIpRRxpchkcmW3Fj/v24YOwFIK5b/N0jZOjySqQmgRab
-	f7vdBdMDVzTBHwLU17uDPJmA8gFjZKM=
-X-Google-Smtp-Source: AGHT+IHYaVUvDYTytHoUAgoh6ibf8bs4vasMNCYNnWAsi42vIgp5xLNGQPbQlS6nTSo1LgxdHfcYRg==
-X-Received: by 2002:a05:6a00:3d44:b0:6d9:bb6b:f418 with SMTP id lp4-20020a056a003d4400b006d9bb6bf418mr30109pfb.2.1704493149774;
-        Fri, 05 Jan 2024 14:19:09 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id u6-20020aa78386000000b006da6b404e7dsm1856783pfm.63.2024.01.05.14.19.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jan 2024 14:19:09 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Fri, 5 Jan 2024 14:19:07 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Pavel Machek <pavel@denx.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com
-Subject: Re: [PATCH 4.19 00/41] 4.19.304-rc1 review
-Message-ID: <72a5ad9b-4e10-4e8a-995d-a7450ab47a5c@roeck-us.net>
-References: <20240105143813.957669139@linuxfoundation.org>
- <ZZh1MloSmA7F4Z2Z@duo.ucw.cz>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68F415A5;
+	Sat,  6 Jan 2024 03:32:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nwl.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nwl.cc
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nwl.cc;
+	s=mail2022; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=XVoH2bWthC9wKGidUvWdR8qVLzbMp71NddPvjPGWg0M=; b=jGTP4ySyUKF9CKWJsZ5PMS4RFh
+	SxMMa80DZ3npfF/i3Oo8+l01eB97tRQ8Bf6pRMXMaG4+Ri/nqLD1quGKhDALXzZKb/+O/BbnitQtQ
+	/5tjPuyztaAFZ/FNNBpVXtEqiEuqPhdJpbHaZ3X1K1LPMbbloumcGV2JF4Urqw3sjwowWdjl98IKI
+	UgK9J5H/YCQAzI5L0t9SK/s6DbgrHFaJKrSkrf1voMb57wHuN4eaEyxITM5wo1tkwo00UZa4agXEA
+	m8+CjUcC2rw/VuVoN+yHLFZrHjNwTr+q56S0eFZJKMGH8Q9+S3t6gOnevMsgp9wK6opdW3aZBJUGs
+	bTCFVhCw==;
+Received: from n0-1 by orbyte.nwl.cc with local (Exim 4.97)
+	(envelope-from <phil@nwl.cc>)
+	id 1rLxPw-000000002A1-3nAh;
+	Sat, 06 Jan 2024 04:32:12 +0100
+Date: Sat, 6 Jan 2024 04:32:12 +0100
+From: Phil Sutter <phil@nwl.cc>
+To: Jiri Pirko <jiri@resnulli.us>
+Cc: Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH net v3 1/2] rtnetlink: allow to set iface down before
+ enslaving it
+Message-ID: <ZZjJvJY4facvIu8a@orbyte.nwl.cc>
+Mail-Followup-To: Phil Sutter <phil@nwl.cc>, Jiri Pirko <jiri@resnulli.us>,
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org,
+	stable@vger.kernel.org
+References: <20240104164300.3870209-1-nicolas.dichtel@6wind.com>
+ <20240104164300.3870209-2-nicolas.dichtel@6wind.com>
+ <ZZfvHEIGiL5OvWHk@nanopsycho>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -81,29 +68,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZZh1MloSmA7F4Z2Z@duo.ucw.cz>
+In-Reply-To: <ZZfvHEIGiL5OvWHk@nanopsycho>
 
-On Fri, Jan 05, 2024 at 10:31:30PM +0100, Pavel Machek wrote:
-> Hi!
-> 
-> > This is the start of the stable review cycle for the 4.19.304 release.
-> > There are 41 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> 
-> CIP testing did not find any problems here:
-> 
-> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-4.19.y
-> 
-> Tested-by: Pavel Machek (CIP) <pavel@denx.de>
-> 
-> Best regards,
->                                                                 Pavel
+Hi,
 
-Odd, I didn't get the rc announcement. The same happened with the e-mail
-announcing 5.15.146-rc1. That makes me woner if my spam filters are too
-strict. Do others have similar problems ?
+On Fri, Jan 05, 2024 at 12:59:24PM +0100, Jiri Pirko wrote:
+> Thu, Jan 04, 2024 at 05:42:59PM CET, nicolas.dichtel@6wind.com wrote:
+> >The below commit adds support for:
+> >> ip link set dummy0 down
+> >> ip link set dummy0 master bond0 up
+> >
+> >but breaks the opposite:
+> >> ip link set dummy0 up
+> >> ip link set dummy0 master bond0 down
+> 
+> It is a bit weird to see these 2 and assume some ordering.
+> The first one assumes:
+> dummy0 master bond 0, dummy0 up
+> The second one assumes:
+> dummy0 down, dummy0 master bond 0
+> But why?
+> 
+> What is the practival reason for a4abfa627c38 existence? I mean,
+> bond/team bring up the device themselfs when needed. Phil?
+> Wouldn't simple revert do better job here?
 
-Thanks,
-Guenter
+Ah, I wasn't aware bond master manipulates slaves' links itself and thus
+treated all types' link master setting the same by setting the slave up
+afterwards. This is basically what a4abfa627c38 is good for: Enabling
+'ip link set X master Y up' regardless of Y's link type.
+
+If setting a bond slave up manually is not recommended, the easiest
+solution is probbaly indeed to revert a4abfa627c38 and live with the
+quirk in bond driver.
+
+Cheers, Phil
 
