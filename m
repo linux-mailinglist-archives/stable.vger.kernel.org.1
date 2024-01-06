@@ -1,144 +1,109 @@
-Return-Path: <stable+bounces-9935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B4FE825EAE
-	for <lists+stable@lfdr.de>; Sat,  6 Jan 2024 08:16:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D22F825EE3
+	for <lists+stable@lfdr.de>; Sat,  6 Jan 2024 09:39:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94727284FA5
-	for <lists+stable@lfdr.de>; Sat,  6 Jan 2024 07:16:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B476AB22A6D
+	for <lists+stable@lfdr.de>; Sat,  6 Jan 2024 08:39:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 961CF4409;
-	Sat,  6 Jan 2024 07:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE37746BF;
+	Sat,  6 Jan 2024 08:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UFXeACEH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0svUTfy0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FBA13C15;
-	Sat,  6 Jan 2024 07:16:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9290FC433C7;
-	Sat,  6 Jan 2024 07:16:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704525408;
-	bh=dG0phtdnvCCkXxKsiM0aT+uPfINQvrWi1CxX3oZjNpk=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB9563AA;
+	Sat,  6 Jan 2024 08:38:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FD0FC433C8;
+	Sat,  6 Jan 2024 08:38:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1704530336;
+	bh=7vuXNlpf9BnOyE4McDlBL7Bb7sZyBrF0fs7gPJBM3V0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=UFXeACEHnSPawP6cd9scXaSiG/L0zYDNa6b03SxmQ06d+UguZqTrXUbK74SEx+QXa
-	 jXkGyoBBeJjY7TO/u0N50pS0Tfc624K+B4RUakx1tZ60wTlblLS+Tc9ZEYPX4z7Alw
-	 AgzgcBeA3CF+LkFyjNODcKMSNCb4oXWfJsu+rJFH7f6F2uQcSIXdroOKp0BB5YGdEw
-	 xOT3zbXOH6VrIY8NMQwd/yH80j4zHFV5kkJ0U8P3SHQwcKL8oHI5MSUHTtGKNlMKZE
-	 ynS31RyIRXfXEug2ZqdRD0jozOi/gP14IYrlGOn2LVYXpJsevBm4O7rPrWfX/jfgG2
-	 4avy2DAskjOyQ==
-Date: Sat, 6 Jan 2024 15:04:01 +0800
-From: Jisheng Zhang <jszhang@kernel.org>
-To: Petr Tesarik <petr@tesarici.cz>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"open list:STMMAC ETHERNET DRIVER" <netdev@vger.kernel.org>,
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-stm32@st-md-mailman.stormreply.com>,
-	"moderated list:ARM/STM32 ARCHITECTURE" <linux-arm-kernel@lists.infradead.org>,
-	open list <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH net] net: stmmac: fix ethtool per-queue  statistics
-Message-ID: <ZZj7YfYa3Hl5TW1n@xhacker>
-References: <20240105201642.30904-1-petr@tesarici.cz>
+	b=0svUTfy0dGrx5HeFZZ/hDbP4X/F8+SOMotQ3FfZhBYDqoUx/NkU+39mEMagngMbR/
+	 t1MBIVJcEmV6+8YOpkN0L/Y5e43njc7NRcaRfsk4v4JWYPzZcOBFEwQYI/FOxxPbUC
+	 TixtuLqkovVEJGoFWpyH3f1+GUfu3NxZMLT4M/kc=
+Date: Sat, 6 Jan 2024 09:38:52 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Daniel =?iso-8859-1?Q?D=EDaz?= <daniel.diaz@linaro.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, jpanis@baylibre.com
+Subject: Re: [PATCH 5.4 00/47] 5.4.266-rc1 review
+Message-ID: <2024010639-sinuous-expansion-417c@gregkh>
+References: <20240105143815.541462991@linuxfoundation.org>
+ <77569e45-ab73-4049-b90e-cd60cbb872ef@linaro.org>
+ <92d8ecc9-7b51-4d54-9942-efc5beb156cf@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240105201642.30904-1-petr@tesarici.cz>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <92d8ecc9-7b51-4d54-9942-efc5beb156cf@linaro.org>
 
-On Fri, Jan 05, 2024 at 09:16:42PM +0100, Petr Tesarik wrote:
-> Fix per-queue statistics for devices with more than one queue.
+On Fri, Jan 05, 2024 at 11:01:44AM -0600, Daniel Díaz wrote:
+> Hello!
 > 
-> The output data pointer is currently reset in each loop iteration,
-> effectively summing all queue statistics in the first four u64 values.
+> On 05/01/24 10:04 a. m., Daniel Díaz wrote:
+> > Hello!
+> > 
+> > On 05/01/24 8:38 a. m., Greg Kroah-Hartman wrote:
+> > > This is the start of the stable review cycle for the 5.4.266 release.
+> > > There are 47 patches in this series, all will be posted as a response
+> > > to this one.  If anyone has any issues with these being applied, please
+> > > let me know.
+> > > 
+> > > Responses should be made by Sun, 07 Jan 2024 14:38:02 +0000.
+> > > Anything received after that time might be too late.
+> > > 
+> > > The whole patch series can be found in one patch at:
+> > >     https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.266-rc1.gz
+> > > or in the git tree and branch at:
+> > >     git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> > > and the diffstat can be found below.
+> > > 
+> > > thanks,
+> > > 
+> > > greg k-h
+> > 
+> > Quick note that there are Arm32 failures:
+> > 
+> > -----8<-----
+> >    /builds/linux/drivers/bus/ti-sysc.c: In function 'sysc_reset':
+> >    /builds/linux/drivers/bus/ti-sysc.c:1847:4: error: implicit declaration of function 'fsleep'; did you mean 'ssleep'? [-Werror=implicit-function-declaration]
+> >     1847 |    fsleep(ddata->cfg.srst_udelay);
+> >          |    ^~~~~~
+> >          |    ssleep
+> >    cc1: some warnings being treated as errors
+> >    make[3]: *** [/builds/linux/scripts/Makefile.build:262: drivers/bus/ti-sysc.o] Error 1
+> > ----->8-----
 > 
-> The summary values are not even labeled correctly. For example, if eth0 has
-> 2 queues, ethtool -S eth0 shows:
+> Bisection points to:
 > 
->      q0_tx_pkt_n: 374 (actually tx_pkt_n over all queues)
->      q0_tx_irq_n: 23  (actually tx_normal_irq_n over all queues)
->      q1_tx_pkt_n: 462 (actually rx_pkt_n over all queues)
->      q1_tx_irq_n: 446 (actually rx_normal_irq_n over all queues)
->      q0_rx_pkt_n: 0
->      q0_rx_irq_n: 0
->      q1_rx_pkt_n: 0
->      q1_rx_irq_n: 0
+>   commit bed75624164c501b39531927d07a4fadc5738847
+>   Author: Julien Panis <jpanis@baylibre.com>
+>   Date:   Mon Aug 21 16:24:18 2023 +0200
 > 
-> Fixes: 133466c3bbe1 ("net: stmmac: use per-queue 64 bit statistics where necessary")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Petr Tesarik <petr@tesarici.cz>
+>       bus: ti-sysc: Use fsleep() instead of usleep_range() in sysc_reset()
+>       [ Upstream commit d929b2b7464f95ec01e47f560b1e687482ba8929 ]
+> 
+> Reverting (swapping back the content of that commit, as it wasn't a clean revert) did make the build pass.
 
-Good catch! I mixed this with the statics sum up for
-stmmac_qstats_string[].
+Thanks, now dropped and will push out a -rc2
 
-Reviewed-by: Jisheng Zhang <jszhang@kernel.org>
-
-> ---
->  drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 9 ++-------
->  1 file changed, 2 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-> index f628411ae4ae..112a36a698f1 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-> @@ -543,15 +543,12 @@ static void stmmac_get_per_qstats(struct stmmac_priv *priv, u64 *data)
->  	u32 rx_cnt = priv->plat->rx_queues_to_use;
->  	unsigned int start;
->  	int q, stat;
-> -	u64 *pos;
->  	char *p;
->  
-> -	pos = data;
->  	for (q = 0; q < tx_cnt; q++) {
->  		struct stmmac_txq_stats *txq_stats = &priv->xstats.txq_stats[q];
->  		struct stmmac_txq_stats snapshot;
->  
-> -		data = pos;
->  		do {
->  			start = u64_stats_fetch_begin(&txq_stats->syncp);
->  			snapshot = *txq_stats;
-> @@ -559,17 +556,15 @@ static void stmmac_get_per_qstats(struct stmmac_priv *priv, u64 *data)
->  
->  		p = (char *)&snapshot + offsetof(struct stmmac_txq_stats, tx_pkt_n);
->  		for (stat = 0; stat < STMMAC_TXQ_STATS; stat++) {
-> -			*data++ += (*(u64 *)p);
-> +			*data++ = (*(u64 *)p);
->  			p += sizeof(u64);
->  		}
->  	}
->  
-> -	pos = data;
->  	for (q = 0; q < rx_cnt; q++) {
->  		struct stmmac_rxq_stats *rxq_stats = &priv->xstats.rxq_stats[q];
->  		struct stmmac_rxq_stats snapshot;
->  
-> -		data = pos;
->  		do {
->  			start = u64_stats_fetch_begin(&rxq_stats->syncp);
->  			snapshot = *rxq_stats;
-> @@ -577,7 +572,7 @@ static void stmmac_get_per_qstats(struct stmmac_priv *priv, u64 *data)
->  
->  		p = (char *)&snapshot + offsetof(struct stmmac_rxq_stats, rx_pkt_n);
->  		for (stat = 0; stat < STMMAC_RXQ_STATS; stat++) {
-> -			*data++ += (*(u64 *)p);
-> +			*data++ = (*(u64 *)p);
->  			p += sizeof(u64);
->  		}
->  	}
-> -- 
-> 2.43.0
-> 
+greg k-h
 
