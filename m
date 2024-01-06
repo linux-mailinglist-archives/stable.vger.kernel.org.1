@@ -1,66 +1,65 @@
-Return-Path: <stable+bounces-9946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF89B825F41
-	for <lists+stable@lfdr.de>; Sat,  6 Jan 2024 11:39:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2FD0825F43
+	for <lists+stable@lfdr.de>; Sat,  6 Jan 2024 11:39:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34A381F22A59
-	for <lists+stable@lfdr.de>; Sat,  6 Jan 2024 10:39:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28D241F22A03
+	for <lists+stable@lfdr.de>; Sat,  6 Jan 2024 10:39:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 868B863DC;
-	Sat,  6 Jan 2024 10:38:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37716FD0;
+	Sat,  6 Jan 2024 10:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="hg14mBTY"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="f0L/fhtI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BE76FA4
-	for <stable@vger.kernel.org>; Sat,  6 Jan 2024 10:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A596FBF
+	for <stable@vger.kernel.org>; Sat,  6 Jan 2024 10:38:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-680b1956ca4so4068066d6.3
-        for <stable@vger.kernel.org>; Sat, 06 Jan 2024 02:38:43 -0800 (PST)
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-3bbbd4d2b4aso363085b6e.0
+        for <stable@vger.kernel.org>; Sat, 06 Jan 2024 02:38:45 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1704537523; x=1705142323; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1704537525; x=1705142325; darn=vger.kernel.org;
         h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Efa9OAGdIXp5RlkAVyC2icBnTohnKazl4L+o+7/Qbpo=;
-        b=hg14mBTYgOtiqBManfFZjFlKWz8f+XeVmzmmyPRAwOSZIiqqyCE2ZmfIzfCqgdKQXw
-         VLyd8AmBAnj/EWUX0bkHOtys3V9JQKkWOHmyUfsMwxtfOVXi8KnBk3vCsmq7M+8aXhN4
-         gBFmsIo/vTWx5LhoLxx0U7oMH22ea22Lgj/hI=
+        bh=0wJXFb/RE4ZpUwP8aR9K83EjXpJ6dVK7qSIZyh98B5M=;
+        b=f0L/fhtIiH00maaJk2J1PnbN220YwTmj/NZ3rMwMzgBht0mIKBaKtD36cOCH0hs+Tq
+         OiRPAz/X/7QmNpYzVmgK7I7o6bGglDU4Iw/CEqob9zrwQlyn91/gveqoWnFzfN1Xczd9
+         uU5ResdGu0rigp5mUg7qSzJpGfuwa3Zg90KX4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704537523; x=1705142323;
+        d=1e100.net; s=20230601; t=1704537525; x=1705142325;
         h=mime-version:references:in-reply-to:message-id:date:subject:cc:to
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Efa9OAGdIXp5RlkAVyC2icBnTohnKazl4L+o+7/Qbpo=;
-        b=dVY9JukEiTuPO7Hj7FNDmOfEtdsEhZc3S8RUs1ePWUHA76ON7aqpfmZcrbx1rLJUf1
-         LRfpXQ+2urANxBNKf//FgbDFEzCaBYI61+UTTekuNAKeaSGkJJ0+XM1TgP80xdAQEQtu
-         fYwxEJFG0a9cqjmu3l8xppNwTzXpLeHkzos5Lsjf59SatCreAjRFNJPo1E8ZdwqysjqJ
-         P47WaVenkd95wy//iLSAy7Gh5q2P2JnyidBTKawmapY65reM8WBD95RQy8vr2AG4o8Y2
-         4nbR+UnOrJd6sqcBj+oDj9nSpnRvyISOr0BqXLaxENhTk9hMwwWvJGue+sJYU1I0cCp1
-         Em6w==
-X-Gm-Message-State: AOJu0Yx6bBpN+33YUxmpzHkMBMr685epgfO4gFzCHbavGcZ2ZAU+U9Uk
-	6K0hNlGIXTg9RMmviYCKIs8xW5vksYMz
-X-Google-Smtp-Source: AGHT+IEfmT0CsN1idtospb/CO0VVtTfW7VNvmXOCI9NvhHqn9dY9mtKTFI4ekceYKyg19ab//KnCyw==
-X-Received: by 2002:a05:6214:1256:b0:680:c09c:6102 with SMTP id r22-20020a056214125600b00680c09c6102mr1108130qvv.62.1704537522921;
-        Sat, 06 Jan 2024 02:38:42 -0800 (PST)
+        bh=0wJXFb/RE4ZpUwP8aR9K83EjXpJ6dVK7qSIZyh98B5M=;
+        b=EDu5BBoUKjHZ6HDjgXHDPpDUFoONGwEzv7YjIY/h8Cfn0IRGKqeYwh/CzHUYe5bfcu
+         yZIgxiGz1UdkinIU9JNgDiH4OlPBGOkhctTA3KalQsZ+IRwkyttqKzfkJJ7bCYk1SMoe
+         13imNEl12g3CBwayXF8Tn2VKD344eqP4M2Gn3x3imiis8FtfJFX+claR4acllRI49zPF
+         7s4B4wzi3VCxpSTjyqIGkV3Zsp7b1sc5idsJiN88E9XtMvBvtgaUG2wxG0F45/qpGTjw
+         5CH7rkcNTn8zQEqvWIhpmJxFaK9EHdeSdc0tTTuQ0XrqxRrPoZRxt57/aSnQ8bGctp8g
+         DWCw==
+X-Gm-Message-State: AOJu0YwstO8/hsuxkauCrWLI8GdqoSwvx4TKL/htc7nteRcZ6yOBjJFk
+	o8CoJkXJoesDU/AWrqJCx+a72JaEygTUywVn3Z/TTeWrZ23AyeY=
+X-Google-Smtp-Source: AGHT+IF+jE7Prvz+WmUrBKmSaqaewdFpw+ykdLMYFrOWgb5H9Z+V+y2CTbEme+UJR8u4JfCGgfECLw==
+X-Received: by 2002:a05:6808:14c8:b0:3bd:20b5:1b20 with SMTP id f8-20020a05680814c800b003bd20b51b20mr319881oiw.69.1704537525202;
+        Sat, 06 Jan 2024 02:38:45 -0800 (PST)
 Received: from bld-bun-02.bun.broadcom.net ([192.19.148.250])
-        by smtp.gmail.com with ESMTPSA id k1-20020ad44501000000b0067f70fffc7bsm1312927qvu.2.2024.01.06.02.38.41
+        by smtp.gmail.com with ESMTPSA id k1-20020ad44501000000b0067f70fffc7bsm1312927qvu.2.2024.01.06.02.38.43
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sat, 06 Jan 2024 02:38:41 -0800 (PST)
+        Sat, 06 Jan 2024 02:38:43 -0800 (PST)
 From: Arend van Spriel <arend.vanspriel@broadcom.com>
 To: Kalle Valo <kvalo@kernel.org>
 Cc: linux-wireless@vger.kernel.org,
-	Hector Martin <marcan@marcan.st>,
-	stable@vger.kernel.org,
-	Arend van Spriel <arend.vanspriel@broadcom.com>
-Subject: [PATCH V2 1/3] wifi: brcmfmac: Demote vendor-specific attach/detach messages to info
-Date: Sat,  6 Jan 2024 11:38:33 +0100
-Message-Id: <20240106103835.269149-2-arend.vanspriel@broadcom.com>
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	stable@vger.kernel.org
+Subject: [PATCH V2 2/3] wifi: brcmfmac: avoid invalid list operation when vendor attach fails
+Date: Sat,  6 Jan 2024 11:38:34 +0100
+Message-Id: <20240106103835.269149-3-arend.vanspriel@broadcom.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20240106103835.269149-1-arend.vanspriel@broadcom.com>
 References: <20240106103835.269149-1-arend.vanspriel@broadcom.com>
@@ -71,207 +70,45 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="0000000000009349e4060e4491bf"
+	boundary="000000000000b6972a060e4491b6"
 
---0000000000009349e4060e4491bf
+--000000000000b6972a060e4491b6
 Content-Transfer-Encoding: 8bit
 
-From: Hector Martin <marcan@marcan.st>
-
-People are getting spooked by brcmfmac errors on their boot console.
-There's no reason for these messages to be errors.
+When the brcmf_fwvid_attach() fails the driver instance is not added
+to the vendor list. Hence we should not try to delete it from that
+list when the brcmf_fwvid_detach() function is called in cleanup path.
 
 Cc: stable@vger.kernel.org # 6.2.x
 Fixes: d6a5c562214f ("wifi: brcmfmac: add support for vendor-specific firmware api")
-Signed-off-by: Hector Martin <marcan@marcan.st>
-[arend.vanspriel@broadcom.com: remove attach/detach vendor callbacks]
 Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 ---
- .../broadcom/brcm80211/brcmfmac/bca/core.c    | 13 ----------
- .../broadcom/brcm80211/brcmfmac/cyw/core.c    | 13 ----------
- .../broadcom/brcm80211/brcmfmac/fwvid.c       |  7 +++--
- .../broadcom/brcm80211/brcmfmac/fwvid.h       | 26 ++-----------------
- .../broadcom/brcm80211/brcmfmac/wcc/core.c    | 15 +----------
- 5 files changed, 6 insertions(+), 68 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
-index a5d9ac5e6763..a963c242975a 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/bca/core.c
-@@ -11,17 +11,6 @@
- 
- #include "vops.h"
- 
--static int brcmf_bca_attach(struct brcmf_pub *drvr)
--{
--	pr_err("%s: executing\n", __func__);
--	return 0;
--}
--
--static void brcmf_bca_detach(struct brcmf_pub *drvr)
--{
--	pr_err("%s: executing\n", __func__);
--}
--
- static void brcmf_bca_feat_attach(struct brcmf_if *ifp)
- {
- 	/* SAE support not confirmed so disabling for now */
-@@ -29,7 +18,5 @@ static void brcmf_bca_feat_attach(struct brcmf_if *ifp)
- }
- 
- const struct brcmf_fwvid_ops brcmf_bca_ops = {
--	.attach = brcmf_bca_attach,
--	.detach = brcmf_bca_detach,
- 	.feat_attach = brcmf_bca_feat_attach,
- };
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-index 24670497f1a4..bec5748310b9 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cyw/core.c
-@@ -11,17 +11,6 @@
- 
- #include "vops.h"
- 
--static int brcmf_cyw_attach(struct brcmf_pub *drvr)
--{
--	pr_err("%s: executing\n", __func__);
--	return 0;
--}
--
--static void brcmf_cyw_detach(struct brcmf_pub *drvr)
--{
--	pr_err("%s: executing\n", __func__);
--}
--
- static int brcmf_cyw_set_sae_pwd(struct brcmf_if *ifp,
- 				 struct cfg80211_crypto_settings *crypto)
- {
-@@ -49,7 +38,5 @@ static int brcmf_cyw_set_sae_pwd(struct brcmf_if *ifp,
- }
- 
- const struct brcmf_fwvid_ops brcmf_cyw_ops = {
--	.attach = brcmf_cyw_attach,
--	.detach = brcmf_cyw_detach,
- 	.set_sae_password = brcmf_cyw_set_sae_pwd,
- };
 diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
-index 86eafdb40541..f633e2bbd891 100644
+index f633e2bbd891..b427782554b5 100644
 --- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
 +++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.c
-@@ -89,8 +89,7 @@ int brcmf_fwvid_register_vendor(enum brcmf_fwvendor fwvid, struct module *vmod,
- 	if (fwvid >= BRCMF_FWVENDOR_NUM)
- 		return -ERANGE;
+@@ -186,9 +186,10 @@ void brcmf_fwvid_detach(struct brcmf_pub *drvr)
  
--	if (WARN_ON(!vmod) || WARN_ON(!vops) ||
--	    WARN_ON(!vops->attach) || WARN_ON(!vops->detach))
-+	if (WARN_ON(!vmod) || WARN_ON(!vops))
- 		return -EINVAL;
+ 	mutex_lock(&fwvid_list_lock);
  
- 	if (WARN_ON(fwvid_list[fwvid].vmod))
-@@ -150,7 +149,7 @@ static inline int brcmf_fwvid_request_module(enum brcmf_fwvendor fwvid)
- }
- #endif
- 
--int brcmf_fwvid_attach_ops(struct brcmf_pub *drvr)
-+int brcmf_fwvid_attach(struct brcmf_pub *drvr)
- {
- 	enum brcmf_fwvendor fwvid = drvr->bus_if->fwvid;
- 	int ret;
-@@ -175,7 +174,7 @@ int brcmf_fwvid_attach_ops(struct brcmf_pub *drvr)
- 	return ret;
+-	drvr->vops = NULL;
+-	list_del(&drvr->bus_if->list);
+-
++	if (drvr->vops) {
++		drvr->vops = NULL;
++		list_del(&drvr->bus_if->list);
++	}
+ 	mutex_unlock(&fwvid_list_lock);
  }
  
--void brcmf_fwvid_detach_ops(struct brcmf_pub *drvr)
-+void brcmf_fwvid_detach(struct brcmf_pub *drvr)
- {
- 	enum brcmf_fwvendor fwvid = drvr->bus_if->fwvid;
- 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
-index d9fc76b46db9..dac22534d033 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwvid.h
-@@ -12,8 +12,6 @@ struct brcmf_pub;
- struct brcmf_if;
- 
- struct brcmf_fwvid_ops {
--	int (*attach)(struct brcmf_pub *drvr);
--	void (*detach)(struct brcmf_pub *drvr);
- 	void (*feat_attach)(struct brcmf_if *ifp);
- 	int (*set_sae_password)(struct brcmf_if *ifp, struct cfg80211_crypto_settings *crypto);
- };
-@@ -24,30 +22,10 @@ int brcmf_fwvid_register_vendor(enum brcmf_fwvendor fwvid, struct module *mod,
- int brcmf_fwvid_unregister_vendor(enum brcmf_fwvendor fwvid, struct module *mod);
- 
- /* core driver functions */
--int brcmf_fwvid_attach_ops(struct brcmf_pub *drvr);
--void brcmf_fwvid_detach_ops(struct brcmf_pub *drvr);
-+int brcmf_fwvid_attach(struct brcmf_pub *drvr);
-+void brcmf_fwvid_detach(struct brcmf_pub *drvr);
- const char *brcmf_fwvid_vendor_name(struct brcmf_pub *drvr);
- 
--static inline int brcmf_fwvid_attach(struct brcmf_pub *drvr)
--{
--	int ret;
--
--	ret = brcmf_fwvid_attach_ops(drvr);
--	if (ret)
--		return ret;
--
--	return drvr->vops->attach(drvr);
--}
--
--static inline void brcmf_fwvid_detach(struct brcmf_pub *drvr)
--{
--	if (!drvr->vops)
--		return;
--
--	drvr->vops->detach(drvr);
--	brcmf_fwvid_detach_ops(drvr);
--}
--
- static inline void brcmf_fwvid_feat_attach(struct brcmf_if *ifp)
- {
- 	const struct brcmf_fwvid_ops *vops = ifp->drvr->vops;
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c
-index 2d8f80bd7382..fd593b93ad40 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/wcc/core.c
-@@ -7,21 +7,10 @@
- #include <core.h>
- #include <bus.h>
- #include <fwvid.h>
--#include <fwil.h>
-+#include <cfg80211.h>
- 
- #include "vops.h"
- 
--static int brcmf_wcc_attach(struct brcmf_pub *drvr)
--{
--	pr_debug("%s: executing\n", __func__);
--	return 0;
--}
--
--static void brcmf_wcc_detach(struct brcmf_pub *drvr)
--{
--	pr_debug("%s: executing\n", __func__);
--}
--
- static int brcmf_wcc_set_sae_pwd(struct brcmf_if *ifp,
- 				 struct cfg80211_crypto_settings *crypto)
- {
-@@ -30,7 +19,5 @@ static int brcmf_wcc_set_sae_pwd(struct brcmf_if *ifp,
- }
- 
- const struct brcmf_fwvid_ops brcmf_wcc_ops = {
--	.attach = brcmf_wcc_attach,
--	.detach = brcmf_wcc_detach,
- 	.set_sae_password = brcmf_wcc_set_sae_pwd,
- };
 -- 
 2.32.0
 
 
---0000000000009349e4060e4491bf
+--000000000000b6972a060e4491b6
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -342,15 +179,15 @@ BtkeSGJx/8dy0h8YmRn+adOrxKXHxhSL8BNn8wsmIZyYWe6fRcBtO3Ks2DOLyHCdkoFlN8x9VUQF
 N2ulEgqCbRKkx+qNirW86eF138lr1gRxzclu/38ko//MmkAYR/+hP3WnBll7zbpIt0jc9wyFkSqH
 p8a1MYICbTCCAmkCAQEwazBbMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1z
 YTExMC8GA1UEAxMoR2xvYmFsU2lnbiBHQ0MgUjMgUGVyc29uYWxTaWduIDIgQ0EgMjAyMAIMTv1t
-bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCAtr1TbPFUpovlA0WB2
-R+fl2YwKJ0pWt1+ZhnC9ajFDJDAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
-BTEPFw0yNDAxMDYxMDM4NDNaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
+bpIzNUky46LXMA0GCWCGSAFlAwQCAQUAoIHUMC8GCSqGSIb3DQEJBDEiBCBh4x8LJX/1JQQt1h51
+kOY8Z0rl3TZAjFlYhljZ+inDQTAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwGCSqGSIb3DQEJ
+BTEPFw0yNDAxMDYxMDM4NDVaMGkGCSqGSIb3DQEJDzFcMFowCwYJYIZIAWUDBAEqMAsGCWCGSAFl
 AwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEKMAsGCSqGSIb3DQEBBzAL
-BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAxScq98/1UBbv1HwXGCS5L2hsqVKCoeM5vHg/
-Jkykt0md/9zP26+kjyZLxfQPCWglsif5G/T6+QoaxHs2HbNHctdJ1tTlhak2z6kOPRo102B3KnaE
-h8JnOA8lfKK6YrsL/ydAm08EfyyYSQkSNr7TZL0kqfbj3MFOfa87doqIg8be5SnKZjQMxOT6HZon
-HqJjfDmCiyUboMn4sJjPgarIWWB1Nb1j7cgMfQ4yZm2jiJXo37KykzB6RMFlFXqkKoEvmRQfLHgz
-dVV/NOBlAIUL/kbccGBcw+y4oy5dnbywwBue1em43kTydEW0l0jlHmHoNT4UX0IUILG5JMtdbYuk
-dg==
---0000000000009349e4060e4491bf--
+BglghkgBZQMEAgEwDQYJKoZIhvcNAQEBBQAEggEAPY6ys3lfk15JgIJ6eI/rd7PTIT3smI8vNrds
+6++LIGkpvsc1l3yXxAxeDKSdGg8SHui24fxoLkivnZtEkXuW00bHZ/1RFs78TkFvq9VfFv2Iwkpr
+RJJJjCAB6pIBnFXk0/e0t0eLaXFp41W2U6KUoLHfWUyfi4E1Q0MqIKiB/E00tmNTY6/0VpJX3XRK
+0i7nwh1tJDJ5DTowSW7EXoWpeZp6JTZpQCZQJRHfn1mT7DPaGSkrXp966cLz11RMgQMntwlqhgoN
+XYJRVC416W9iplszysqysQ3YX1tW37Tspio9AapOrTkWFnouT77L8gF24w0rm+9LGWD6hVWHOdyO
+vg==
+--000000000000b6972a060e4491b6--
 
