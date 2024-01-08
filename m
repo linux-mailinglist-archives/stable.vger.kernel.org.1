@@ -1,87 +1,109 @@
-Return-Path: <stable+bounces-10031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFACB827158
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:30:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FDE282715B
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:30:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63CDA1F2311F
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 14:30:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 199812842A3
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 14:30:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CCF47788;
-	Mon,  8 Jan 2024 14:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED22E6D6E3;
+	Mon,  8 Jan 2024 14:30:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=sairon.cz header.i=@sairon.cz header.b="EzbffgB1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA57846549;
-	Mon,  8 Jan 2024 14:30:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1d509222c11so2397425ad.1;
-        Mon, 08 Jan 2024 06:30:09 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416D76D6E4
+	for <stable@vger.kernel.org>; Mon,  8 Jan 2024 14:30:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sairon.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sairon.cz
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-40e43e489e4so16385965e9.1
+        for <stable@vger.kernel.org>; Mon, 08 Jan 2024 06:30:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sairon.cz; s=google; t=1704724242; x=1705329042; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pGXMp5GpRk2PaMKjnuYAVGhKrxrumxs21AnhEbKzyGg=;
+        b=EzbffgB106XzFE/wA3Ywjw0wm3jSDrk/2sKnwaUnYZi2FTPqY0ySk+oeelkhjcY/3k
+         FCz5Tz2SOOtJBKULY0Q9wxPodUNBoMB9UqWdF+3LVONWSAad3BHQNPDrVGyzrsamE0DD
+         ur9a2cRxTVRF1lsVZfI17gOoaUqQVpVrdlT+PxsQvSsV1rB7KmSuqlpGzCD4t7gaWozQ
+         tdGI9+i/OBx8h+w74dxqnn+cyxA0M/K0KtSsN4E8os8ZLpzHx2AEqudu4FDf1wRxfpSA
+         nB23+1iHkfEZ1hSZOYxQAkFxQ/bFOtXYKvjQkE6B5ca7u1pkCOsUcZy51g0DN40NiFVq
+         8rIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704724209; x=1705329009;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sVMqThbVP0Q8RE+595KzEmSzoEzPpkpeb2mdqe/54Po=;
-        b=CSKjqIRpIVC32YXnPiIi9gEcDdvhzJhJUcIcv3c0KMpBjZKHbiIM1ffjg0Unje7sOI
-         rVcQCeJu4F6cw7G9by8zUTTWKn5I157zDflfaSX6LOdTdYhMo6xWqUXXPuwKOuEYHwCq
-         0QTIROhOm4ydWCzyoaC3Mv1nMJpJaLEXfrAw9eozjLhHnSjMPs14auwJw7K6G4OT89NA
-         pfqiWEg4SKlIf2aP9FikWq/lDadyn5tZCLAO7lMNn5ROaswUfw7fuCin/NkDYHsiAY1r
-         v7Sjp1dJgZ3WQcEwLnUULoF9I6sPK7+dcvZ3BJ6a9eKEfp+Rjqi9NvQZylreAmjaoVgD
-         VGKw==
-X-Gm-Message-State: AOJu0YzO5KHyV+39daqPPiszMyn4sW/NxE71ywY/X0IAL4lcyeTZ5Tam
-	qMmKdtkaM24HKr8Tg+6VA8s=
-X-Google-Smtp-Source: AGHT+IE3fdqzVYISbL4ZtM/lxTCygtaE0GCar9x98h7e8R949MP4dVwbh+1fDeut8mKc+f/isMwbKQ==
-X-Received: by 2002:a17:902:ce81:b0:1d5:2197:46e9 with SMTP id f1-20020a170902ce8100b001d5219746e9mr1033721plg.117.1704724208990;
-        Mon, 08 Jan 2024 06:30:08 -0800 (PST)
-Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
-        by smtp.gmail.com with ESMTPSA id u13-20020a170902e5cd00b001d09c5424d4sm6321570plf.297.2024.01.08.06.30.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jan 2024 06:30:08 -0800 (PST)
-Date: Mon, 8 Jan 2024 23:30:06 +0900
-From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To: Jianjun Wang <jianjun.wang@mediatek.com>
-Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Ryder Lee <ryder.lee@mediatek.com>, linux-pci@vger.kernel.org,
-	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, qizhong.cheng@mediatek.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v4] PCI: mediatek: Clear interrupt status before
- dispatching handler
-Message-ID: <20240108143006.GA2602112@rocinante>
-References: <20231211094923.31967-1-jianjun.wang@mediatek.com>
+        d=1e100.net; s=20230601; t=1704724242; x=1705329042;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pGXMp5GpRk2PaMKjnuYAVGhKrxrumxs21AnhEbKzyGg=;
+        b=XS01p8YPl479xDjeSEq+NJ91AXYcYDzTL8Upgv+4djE8zFSi4vcCIbKPIr5zibB19l
+         3f3EJbfdO7X9hzgjP0iWF6pGSVBTsCtHuJzPsCAJalV3LEjFm/vxj7ATJK6aKiey9CyO
+         z67YydeKZXzkEPbnOV64MlXl4DnwCeG9Miv+jS+LZw2Yum1SlOGCtDpSrcxva/KnLiLH
+         adURbB+Jd0qBzZO9JoE5sfh5jm+VovCJQa0TK6E0KIM0LXKPdyVyvAbLJClSkANbeeyf
+         UO1HU1I7xyAXr5N4PhGjBvIjaWMYMrzh5nWmLAWMNNVtmJ+8XpLi1CakJ1+pTzUPK+pC
+         MoQg==
+X-Gm-Message-State: AOJu0Yzjhb4NZzQPSWWl5VY26tkdcIDs2/ICG05kfT795kjVa58dZcKR
+	tcqJ84EoJ5UYcphOWn4HwUVgpmsGm8yXznHB3ac509teMyRlYw6h
+X-Google-Smtp-Source: AGHT+IEwfWaQFbuUmHfcePvb/9jvgHiMiXgx98V8fXrKbWiwvPqs4Wg1a4jTyra0C+3xHwgQKgIF7w==
+X-Received: by 2002:a05:600c:2a8e:b0:40d:56a1:2538 with SMTP id x14-20020a05600c2a8e00b0040d56a12538mr2128824wmd.62.1704724241951;
+        Mon, 08 Jan 2024 06:30:41 -0800 (PST)
+Received: from [192.168.127.42] (ip-89-103-66-201.bb.vodafone.cz. [89.103.66.201])
+        by smtp.gmail.com with ESMTPSA id l12-20020a170906644c00b00a26ac88d801sm2213434ejn.30.2024.01.08.06.30.41
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Jan 2024 06:30:41 -0800 (PST)
+Message-ID: <d88ca689-47e2-44d3-a1c9-c76ab1e00ee0@sairon.cz>
+Date: Mon, 8 Jan 2024 15:30:41 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231211094923.31967-1-jianjun.wang@mediatek.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION 6.1.70] system calls with CIFS mounts failing with
+ "Resource temporarily unavailable"
+Content-Language: en-US
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Leonardo Brondani Schenkel <leonardo@schenkel.net>,
+ stable@vger.kernel.org, regressions@lists.linux.dev,
+ linux-cifs@vger.kernel.org, Paulo Alcantara <pc@manguebit.com>
+References: <8ad7c20e-0645-40f3-96e6-75257b4bd31a@schenkel.net>
+ <7425b05a-d9a1-4c06-89a2-575504e132c3@sairon.cz>
+ <2024010838-saddlebag-overspend-e027@gregkh>
+From: =?UTF-8?B?SmFuIMSMZXJtw6Fr?= <sairon@sairon.cz>
+In-Reply-To: <2024010838-saddlebag-overspend-e027@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hello,
+Hi Greg
 
-> We found a failure when used iperf tool for wifi performance testing,
-> there are some MSIs received while clearing the interrupt status,
-> these MSIs cannot be serviced.
+On 08. 01. 24 15:13, Greg KH wrote:
+> That's interesting, there's a different cifs report that says a
+> different commit was the issue:
+> 	https://lore.kernel.org/r/ZZhrpNJ3zxMR8wcU@eldamar.lan
 > 
-> The interrupt status can be cleared even the MSI status still remaining,
-> as an edge-triggered interrupts, its interrupt status should be cleared
-> before dispatching to the handler of device.
+> is that the same as this one?
+> 
 
-Applied to controller/mediatek, thank you!
+It seems to be a different issue. The one reported here by Leonardo 
+doesn't trigger NULL pointer dereference and seems to be related to stat 
+calls only, for which the CIFS client code in kernel just returns EAGAIN 
+every time. The only related kernel buffer logs (example taken from the 
+GH issue linked in my previous message) are these:
 
-[1/1] PCI: mediatek: Clear interrupt status before dispatching handler
-      https://git.kernel.org/pci/pci/c/4fea201e110e
+Jan 05 16:50:27 ha-ct kernel: CIFS: VFS: reconnect tcon failed rc = -11
+Jan 05 16:50:30 ha-ct kernel: CIFS: VFS: \\192.168.98.2 Send error in 
+SessSetup = -11
 
-	Krzysztof
+If I understand it correctly, the issue you linked has both a different 
+trigger and outcome.
+
+Cheers,
+Jan
 
