@@ -1,45 +1,44 @@
-Return-Path: <stable+bounces-10283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2DC6827432
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:45:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92085827439
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:45:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 137FE1C212BE
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:45:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F92E2871FC
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145055477C;
-	Mon,  8 Jan 2024 15:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F40A54750;
+	Mon,  8 Jan 2024 15:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jMsrLN2X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="unU6IhmW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77CC537FD;
-	Mon,  8 Jan 2024 15:42:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E135C433C9;
-	Mon,  8 Jan 2024 15:42:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CA753806;
+	Mon,  8 Jan 2024 15:42:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6113DC433C9;
+	Mon,  8 Jan 2024 15:42:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704728563;
-	bh=H/R/nhiya/oFUBkyRvt/rXR8LicDkrGN0ai8oDSTnE8=;
+	s=korg; t=1704728570;
+	bh=DG8jWMlVX5pJpY3m/hl4/GqqO/SpYpEIHZ98m3InmCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jMsrLN2X0CTGev0CpXebBcmEWYB+g9AW216/0Q++s7zIvng/98cHtbt0BMvYKvF0V
-	 khz9k/XCrO8pQL89g6tnUz9fHeV+zusy6hoFFl2lSRcOs/l84jhvEIVkLc7oB4R7Ua
-	 LkOngYlGlDtAnw95Mt55lcqpTiniW1RE3bmnaFYA=
+	b=unU6IhmWnW6Viu7An5UKbq2aNlvDICtos4ifV2EWtseOAj+eMWlQWle0ABXcWzuJ1
+	 4XiNSN1DayTEj8SSfc00GcD0xCwpu7NA/DcVLwmZMn5esCY6di4I/mYkP49EVhNsq9
+	 gT5zILtY7tXxumJHocMyMIP+EYHj695d8etd8nuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Richter <tmricht@linux.ibm.com>,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 089/150] s390/cpumf: support user space events for counting
-Date: Mon,  8 Jan 2024 16:35:40 +0100
-Message-ID: <20240108153515.337386634@linuxfoundation.org>
+Subject: [PATCH 6.1 090/150] f2fs: clean up i_compress_flag and i_compress_level usage
+Date: Mon,  8 Jan 2024 16:35:41 +0100
+Message-ID: <20240108153515.385454364@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108153511.214254205@linuxfoundation.org>
 References: <20240108153511.214254205@linuxfoundation.org>
@@ -58,91 +57,133 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Richter <tmricht@linux.ibm.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 91d5364dc673fa9cf3a5b7b30cf33c70803eb3a4 ]
+[ Upstream commit b90e5086df6bf5ba819216d5ecf0667370bd565f ]
 
-CPU Measurement counting facility events PROBLEM_STATE_CPU_CYCLES(32)
-and PROBLEM_STATE_INSTRUCTIONS(33) are valid events. However the device
-driver returns error -EOPNOTSUPP when these event are to be installed.
+.i_compress_level was introduced by commit 3fde13f817e2 ("f2fs: compress:
+support compress level"), but never be used.
 
-Fix this and allow installation of events PROBLEM_STATE_CPU_CYCLES,
-PROBLEM_STATE_CPU_CYCLES:u, PROBLEM_STATE_INSTRUCTIONS and
-PROBLEM_STATE_INSTRUCTIONS:u.
-Kernel space counting only is still not supported by s390.
+This patch updates as below:
+- load high 8-bits of on-disk .i_compress_flag to in-memory .i_compress_level
+- load low 8-bits of on-disk .i_compress_flag to in-memory .i_compress_flag
+- change type of in-memory .i_compress_flag from unsigned short to unsigned
+char.
 
-Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
-Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Stable-dep-of: 09cda0a40051 ("s390/mm: add missing arch_set_page_dat() call to vmem_crst_alloc()")
+w/ above changes, we can avoid unneeded bit shift whenever during
+.init_compress_ctx(), and shrink size of struct f2fs_inode_info.
+
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: f5f3bd903a5d ("f2fs: set the default compress_level on ioctl")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/perf_cpum_cf.c | 35 ++++++++++++++++++++++-----------
- 1 file changed, 24 insertions(+), 11 deletions(-)
+ fs/f2fs/compress.c |  8 +++-----
+ fs/f2fs/f2fs.h     |  7 +++----
+ fs/f2fs/inode.c    | 16 +++++++++++++---
+ 3 files changed, 19 insertions(+), 12 deletions(-)
 
-diff --git a/arch/s390/kernel/perf_cpum_cf.c b/arch/s390/kernel/perf_cpum_cf.c
-index f043a7ff220b7..28fa80fd69fa0 100644
---- a/arch/s390/kernel/perf_cpum_cf.c
-+++ b/arch/s390/kernel/perf_cpum_cf.c
-@@ -2,7 +2,7 @@
- /*
-  * Performance event support for s390x - CPU-measurement Counter Facility
-  *
-- *  Copyright IBM Corp. 2012, 2021
-+ *  Copyright IBM Corp. 2012, 2022
-  *  Author(s): Hendrik Brueckner <brueckner@linux.ibm.com>
-  *	       Thomas Richter <tmricht@linux.ibm.com>
-  */
-@@ -434,6 +434,12 @@ static void cpumf_hw_inuse(void)
- 	mutex_unlock(&pmc_reserve_mutex);
- }
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index 11d9dce994dbe..d509b47381d51 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -241,7 +241,7 @@ static int lz4_init_compress_ctx(struct compress_ctx *cc)
+ 	unsigned int size = LZ4_MEM_COMPRESS;
  
-+static int is_userspace_event(u64 ev)
-+{
-+	return cpumf_generic_events_user[PERF_COUNT_HW_CPU_CYCLES] == ev ||
-+	       cpumf_generic_events_user[PERF_COUNT_HW_INSTRUCTIONS] == ev;
-+}
-+
- static int __hw_perf_event_init(struct perf_event *event, unsigned int type)
+ #ifdef CONFIG_F2FS_FS_LZ4HC
+-	if (F2FS_I(cc->inode)->i_compress_flag >> COMPRESS_LEVEL_OFFSET)
++	if (F2FS_I(cc->inode)->i_compress_level)
+ 		size = LZ4HC_MEM_COMPRESS;
+ #endif
+ 
+@@ -267,8 +267,7 @@ static void lz4_destroy_compress_ctx(struct compress_ctx *cc)
+ #ifdef CONFIG_F2FS_FS_LZ4HC
+ static int lz4hc_compress_pages(struct compress_ctx *cc)
  {
- 	struct perf_event_attr *attr = &event->attr;
-@@ -456,19 +462,26 @@ static int __hw_perf_event_init(struct perf_event *event, unsigned int type)
- 		if (is_sampling_event(event))	/* No sampling support */
- 			return -ENOENT;
- 		ev = attr->config;
--		/* Count user space (problem-state) only */
- 		if (!attr->exclude_user && attr->exclude_kernel) {
--			if (ev >= ARRAY_SIZE(cpumf_generic_events_user))
--				return -EOPNOTSUPP;
--			ev = cpumf_generic_events_user[ev];
--
--		/* No support for kernel space counters only */
-+			/*
-+			 * Count user space (problem-state) only
-+			 * Handle events 32 and 33 as 0:u and 1:u
-+			 */
-+			if (!is_userspace_event(ev)) {
-+				if (ev >= ARRAY_SIZE(cpumf_generic_events_user))
-+					return -EOPNOTSUPP;
-+				ev = cpumf_generic_events_user[ev];
-+			}
- 		} else if (!attr->exclude_kernel && attr->exclude_user) {
-+			/* No support for kernel space counters only */
- 			return -EOPNOTSUPP;
--		} else {	/* Count user and kernel space */
--			if (ev >= ARRAY_SIZE(cpumf_generic_events_basic))
--				return -EOPNOTSUPP;
--			ev = cpumf_generic_events_basic[ev];
-+		} else {
-+			/* Count user and kernel space, incl. events 32 + 33 */
-+			if (!is_userspace_event(ev)) {
-+				if (ev >= ARRAY_SIZE(cpumf_generic_events_basic))
-+					return -EOPNOTSUPP;
-+				ev = cpumf_generic_events_basic[ev];
-+			}
- 		}
- 		break;
+-	unsigned char level = F2FS_I(cc->inode)->i_compress_flag >>
+-						COMPRESS_LEVEL_OFFSET;
++	unsigned char level = F2FS_I(cc->inode)->i_compress_level;
+ 	int len;
  
+ 	if (level)
+@@ -340,8 +339,7 @@ static int zstd_init_compress_ctx(struct compress_ctx *cc)
+ 	zstd_cstream *stream;
+ 	void *workspace;
+ 	unsigned int workspace_size;
+-	unsigned char level = F2FS_I(cc->inode)->i_compress_flag >>
+-						COMPRESS_LEVEL_OFFSET;
++	unsigned char level = F2FS_I(cc->inode)->i_compress_level;
+ 
+ 	if (!level)
+ 		level = F2FS_ZSTD_DEFAULT_CLEVEL;
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index f56abb39601ac..faf1a4953e845 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -840,7 +840,7 @@ struct f2fs_inode_info {
+ 	unsigned char i_compress_algorithm;	/* algorithm type */
+ 	unsigned char i_log_cluster_size;	/* log of cluster size */
+ 	unsigned char i_compress_level;		/* compress level (lz4hc,zstd) */
+-	unsigned short i_compress_flag;		/* compress flag */
++	unsigned char i_compress_flag;		/* compress flag */
+ 	unsigned int i_cluster_size;		/* cluster size */
+ 
+ 	unsigned int atomic_write_cnt;
+@@ -4339,9 +4339,8 @@ static inline int set_compress_context(struct inode *inode)
+ 	if ((F2FS_I(inode)->i_compress_algorithm == COMPRESS_LZ4 ||
+ 		F2FS_I(inode)->i_compress_algorithm == COMPRESS_ZSTD) &&
+ 			F2FS_OPTION(sbi).compress_level)
+-		F2FS_I(inode)->i_compress_flag |=
+-				F2FS_OPTION(sbi).compress_level <<
+-				COMPRESS_LEVEL_OFFSET;
++		F2FS_I(inode)->i_compress_level =
++				F2FS_OPTION(sbi).compress_level;
+ 	F2FS_I(inode)->i_flags |= F2FS_COMPR_FL;
+ 	set_inode_flag(inode, FI_COMPRESSED_FILE);
+ 	stat_inc_compr_inode(inode);
+diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
+index 1fc7760499f10..933554985d328 100644
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -450,11 +450,17 @@ static int do_read_inode(struct inode *inode)
+ 					(fi->i_flags & F2FS_COMPR_FL)) {
+ 		if (F2FS_FITS_IN_INODE(ri, fi->i_extra_isize,
+ 					i_log_cluster_size)) {
++			unsigned short compress_flag;
++
+ 			atomic_set(&fi->i_compr_blocks,
+ 					le64_to_cpu(ri->i_compr_blocks));
+ 			fi->i_compress_algorithm = ri->i_compress_algorithm;
+ 			fi->i_log_cluster_size = ri->i_log_cluster_size;
+-			fi->i_compress_flag = le16_to_cpu(ri->i_compress_flag);
++			compress_flag = le16_to_cpu(ri->i_compress_flag);
++			fi->i_compress_level = compress_flag >>
++						COMPRESS_LEVEL_OFFSET;
++			fi->i_compress_flag = compress_flag &
++					(BIT(COMPRESS_LEVEL_OFFSET) - 1);
+ 			fi->i_cluster_size = 1 << fi->i_log_cluster_size;
+ 			set_inode_flag(inode, FI_COMPRESSED_FILE);
+ 		}
+@@ -675,13 +681,17 @@ void f2fs_update_inode(struct inode *inode, struct page *node_page)
+ 		if (f2fs_sb_has_compression(F2FS_I_SB(inode)) &&
+ 			F2FS_FITS_IN_INODE(ri, F2FS_I(inode)->i_extra_isize,
+ 							i_log_cluster_size)) {
++			unsigned short compress_flag;
++
+ 			ri->i_compr_blocks =
+ 				cpu_to_le64(atomic_read(
+ 					&F2FS_I(inode)->i_compr_blocks));
+ 			ri->i_compress_algorithm =
+ 				F2FS_I(inode)->i_compress_algorithm;
+-			ri->i_compress_flag =
+-				cpu_to_le16(F2FS_I(inode)->i_compress_flag);
++			compress_flag = F2FS_I(inode)->i_compress_flag |
++				F2FS_I(inode)->i_compress_level <<
++						COMPRESS_LEVEL_OFFSET;
++			ri->i_compress_flag = cpu_to_le16(compress_flag);
+ 			ri->i_log_cluster_size =
+ 				F2FS_I(inode)->i_log_cluster_size;
+ 		}
 -- 
 2.43.0
 
