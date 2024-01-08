@@ -1,43 +1,47 @@
-Return-Path: <stable+bounces-10069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 711C3827245
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:11:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48650827253
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:11:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 840251C22AC0
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:11:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 607691C22ABA
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFFB4C3BB;
-	Mon,  8 Jan 2024 15:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A834C610;
+	Mon,  8 Jan 2024 15:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SC31Kuo0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwNubAD1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2582A4BA96;
-	Mon,  8 Jan 2024 15:11:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84253C433CA;
-	Mon,  8 Jan 2024 15:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 004034A99F;
+	Mon,  8 Jan 2024 15:11:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC5DCC433C8;
+	Mon,  8 Jan 2024 15:11:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704726663;
-	bh=2l6ZQbmsNxpK1ak799Dwl7m1/CswxEF0ogI4mhjEGC0=;
+	s=korg; t=1704726697;
+	bh=3SShSR/FU578ZaSq856P7j8hMcbbBEhvYCd1yrVrIgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SC31Kuo0uSIXHV2oWC2Sle41NNmldcrOmiwl7zboQbQjT3vf0XSFSvQcALseIMG4q
-	 0uvfsylFtxY0M80HmohDps8fqgyjdvV4Rhv38lKvfFkAkBwV0gmUdJOBEsJaT61Fm0
-	 Yu1hUm7aNCmRQNp46Xj3fooUvzESZikeHws6WDYI=
+	b=vwNubAD14k7uQvsDNcM2Tv7wfk9JTyXJtFz+Yj11Dj5+W4pxbDMizNX1eifXeOrFk
+	 +Lwf6jobTuUYg1KuAPvL7UYUK1lCRCvYLR71XYbiqn0R8q8BXhkhZ0IgyqslYpqX7x
+	 SJ3KMg/y5/gRShjcAeWvbQp+BTRrSG8Wr2hALnSw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 021/124] netfilter: nf_tables: set transport offset from mac header for netdev/egress
-Date: Mon,  8 Jan 2024 16:07:27 +0100
-Message-ID: <20240108150603.938636122@linuxfoundation.org>
+	Suman Ghosh <sumang@marvell.com>,
+	Siddh Raman Pant <code@siddh.me>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+bbe84a4010eeea00982d@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 022/124] nfc: llcp_core: Hold a ref to llcp_local->dev when holding a ref to llcp_local
+Date: Mon,  8 Jan 2024 16:07:28 +0100
+Message-ID: <20240108150603.987610350@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108150602.976232871@linuxfoundation.org>
 References: <20240108150602.976232871@linuxfoundation.org>
@@ -56,72 +60,125 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Siddh Raman Pant <code@siddh.me>
 
-[ Upstream commit 0ae8e4cca78781401b17721bfb72718fdf7b4912 ]
+[ Upstream commit c95f919567d6f1914f13350af61a1b044ac85014 ]
 
-Before this patch, transport offset (pkt->thoff) provides an offset
-relative to the network header. This is fine for the inet families
-because skb->data points to the network header in such case. However,
-from netdev/egress, skb->data points to the mac header (if available),
-thus, pkt->thoff is missing the mac header length.
+llcp_sock_sendmsg() calls nfc_llcp_send_ui_frame() which in turn calls
+nfc_alloc_send_skb(), which accesses the nfc_dev from the llcp_sock for
+getting the headroom and tailroom needed for skb allocation.
 
-Add skb_network_offset() to the transport offset (pkt->thoff) for
-netdev, so transport header mangling works as expected. Adjust payload
-fast eval function to use skb->data now that pkt->thoff provides an
-absolute offset. This explains why users report that matching on
-egress/netdev works but payload mangling does not.
+Parallelly the nfc_dev can be freed, as the refcount is decreased via
+nfc_free_device(), leading to a UAF reported by Syzkaller, which can
+be summarized as follows:
 
-This patch implicitly fixes payload mangling for IPv4 packets in
-netdev/egress given skb_store_bits() requires an offset from skb->data
-to reach the transport header.
+(1) llcp_sock_sendmsg() -> nfc_llcp_send_ui_frame()
+	-> nfc_alloc_send_skb() -> Dereference *nfc_dev
+(2) virtual_ncidev_close() -> nci_free_device() -> nfc_free_device()
+	-> put_device() -> nfc_release() -> Free *nfc_dev
 
-I suspect that nft_exthdr and the trace infra were also broken from
-netdev/egress because they also take skb->data as start, and pkt->thoff
-was not correct.
+When a reference to llcp_local is acquired, we do not acquire the same
+for the nfc_dev. This leads to freeing even when the llcp_local is in
+use, and this is the case with the UAF described above too.
 
-Note that IPv6 is fine because ipv6_find_hdr() already provides a
-transport offset starting from skb->data, which includes
-skb_network_offset().
+Thus, when we acquire a reference to llcp_local, we should acquire a
+reference to nfc_dev, and release the references appropriately later.
 
-The bridge family also uses nft_set_pktinfo_ipv4_validate(), but there
-skb_network_offset() is zero, so the update in this patch does not alter
-the existing behaviour.
+References for llcp_local is initialized in nfc_llcp_register_device()
+(which is called by nfc_register_device()). Thus, we should acquire a
+reference to nfc_dev there.
 
-Fixes: 42df6e1d221d ("netfilter: Introduce egress hook")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+nfc_unregister_device() calls nfc_llcp_unregister_device() which in
+turn calls nfc_llcp_local_put(). Thus, the reference to nfc_dev is
+appropriately released later.
+
+Reported-and-tested-by: syzbot+bbe84a4010eeea00982d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=bbe84a4010eeea00982d
+Fixes: c7aa12252f51 ("NFC: Take a reference on the LLCP local pointer when creating a socket")
+Reviewed-by: Suman Ghosh <sumang@marvell.com>
+Signed-off-by: Siddh Raman Pant <code@siddh.me>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables_ipv4.h | 2 +-
- net/netfilter/nf_tables_core.c         | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/nfc/llcp_core.c | 39 ++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 36 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables_ipv4.h b/include/net/netfilter/nf_tables_ipv4.h
-index 947973623dc77..60a7d0ce30804 100644
---- a/include/net/netfilter/nf_tables_ipv4.h
-+++ b/include/net/netfilter/nf_tables_ipv4.h
-@@ -30,7 +30,7 @@ static inline int __nft_set_pktinfo_ipv4_validate(struct nft_pktinfo *pkt)
- 		return -1;
+diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+index 1dac28136e6a3..18be13fb9b75a 100644
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -145,6 +145,13 @@ static void nfc_llcp_socket_release(struct nfc_llcp_local *local, bool device,
  
- 	len = iph_totlen(pkt->skb, iph);
--	thoff = iph->ihl * 4;
-+	thoff = skb_network_offset(pkt->skb) + (iph->ihl * 4);
- 	if (pkt->skb->len < len)
- 		return -1;
- 	else if (len < thoff)
-diff --git a/net/netfilter/nf_tables_core.c b/net/netfilter/nf_tables_core.c
-index 4d0ce12221f66..711c22ab701dd 100644
---- a/net/netfilter/nf_tables_core.c
-+++ b/net/netfilter/nf_tables_core.c
-@@ -158,7 +158,7 @@ static bool nft_payload_fast_eval(const struct nft_expr *expr,
- 	else {
- 		if (!(pkt->flags & NFT_PKTINFO_L4PROTO))
- 			return false;
--		ptr = skb_network_header(skb) + nft_thoff(pkt);
-+		ptr = skb->data + nft_thoff(pkt);
+ static struct nfc_llcp_local *nfc_llcp_local_get(struct nfc_llcp_local *local)
+ {
++	/* Since using nfc_llcp_local may result in usage of nfc_dev, whenever
++	 * we hold a reference to local, we also need to hold a reference to
++	 * the device to avoid UAF.
++	 */
++	if (!nfc_get_device(local->dev->idx))
++		return NULL;
++
+ 	kref_get(&local->ref);
+ 
+ 	return local;
+@@ -177,10 +184,18 @@ static void local_release(struct kref *ref)
+ 
+ int nfc_llcp_local_put(struct nfc_llcp_local *local)
+ {
++	struct nfc_dev *dev;
++	int ret;
++
+ 	if (local == NULL)
+ 		return 0;
+ 
+-	return kref_put(&local->ref, local_release);
++	dev = local->dev;
++
++	ret = kref_put(&local->ref, local_release);
++	nfc_put_device(dev);
++
++	return ret;
+ }
+ 
+ static struct nfc_llcp_sock *nfc_llcp_sock_get(struct nfc_llcp_local *local,
+@@ -959,8 +974,17 @@ static void nfc_llcp_recv_connect(struct nfc_llcp_local *local,
  	}
  
- 	ptr += priv->offset;
+ 	new_sock = nfc_llcp_sock(new_sk);
+-	new_sock->dev = local->dev;
++
+ 	new_sock->local = nfc_llcp_local_get(local);
++	if (!new_sock->local) {
++		reason = LLCP_DM_REJ;
++		sock_put(&new_sock->sk);
++		release_sock(&sock->sk);
++		sock_put(&sock->sk);
++		goto fail;
++	}
++
++	new_sock->dev = local->dev;
+ 	new_sock->rw = sock->rw;
+ 	new_sock->miux = sock->miux;
+ 	new_sock->nfc_protocol = sock->nfc_protocol;
+@@ -1597,7 +1621,16 @@ int nfc_llcp_register_device(struct nfc_dev *ndev)
+ 	if (local == NULL)
+ 		return -ENOMEM;
+ 
+-	local->dev = ndev;
++	/* As we are going to initialize local's refcount, we need to get the
++	 * nfc_dev to avoid UAF, otherwise there is no point in continuing.
++	 * See nfc_llcp_local_get().
++	 */
++	local->dev = nfc_get_device(ndev->idx);
++	if (!local->dev) {
++		kfree(local);
++		return -ENODEV;
++	}
++
+ 	INIT_LIST_HEAD(&local->list);
+ 	kref_init(&local->ref);
+ 	mutex_init(&local->sdp_lock);
 -- 
 2.43.0
 
