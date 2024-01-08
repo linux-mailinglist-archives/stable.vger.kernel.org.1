@@ -1,153 +1,102 @@
-Return-Path: <stable+bounces-10029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F40DA827120
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:23:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EDDC827129
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:23:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2FA828415F
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 14:23:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 231651C22946
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 14:23:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C8E47781;
-	Mon,  8 Jan 2024 14:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12054655D;
+	Mon,  8 Jan 2024 14:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zHdBrlC4"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="icnrmGyA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C05B4643F;
-	Mon,  8 Jan 2024 14:22:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3DA8C433A9;
-	Mon,  8 Jan 2024 14:22:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704723752;
-	bh=0D+xy1FufD+8vMrIsn4blb0LO8MsMkZgKuIv0Uset4w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zHdBrlC4cs6GxOf6cN3Ei9h3e3ihBSvu6fK5JdicjJjaik2fvEzoDF0sg2y2HL7Nk
-	 V1FKi2LPHorMZxfVccC1arKlMJI72x1UbgIcHFHrIIu+eNupon3N5qfjb5v+XX1pHL
-	 Ct2yhdzzAsNoEgzU3o1lrSrQjuLvT9SqqAuxiDAE=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 4.14 7/7] mmc: core: Cancel delayed work before releasing host
-Date: Mon,  8 Jan 2024 15:22:01 +0100
-Message-ID: <20240108141854.418650743@linuxfoundation.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240108141854.158274814@linuxfoundation.org>
-References: <20240108141854.158274814@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B066746533;
+	Mon,  8 Jan 2024 14:23:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 96F241BF20B;
+	Mon,  8 Jan 2024 14:23:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1704723798;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8/7gyP7Ro6EIbSwHo4bXO7Wl4exbJDbw0YZeICc6ouA=;
+	b=icnrmGyALvII03k+3GInGbojmaxtepRoQ7+GtXT2w0spXvKR1ks6erFkOAI2x9pIX0BBsc
+	MJcD5ANmD/A92ILssF2Da2xZ3qNH8sHiZ28QKKl8Kp8c4BPpaRUagJZtHuDNWMgnVAGDnq
+	hJO3W1ZMAJDbgqABnXKC0prKgPjmlcM+tlVXS2aYXWhl1HGZqKNgqDyyxABbjrYfebXu2X
+	lq0L96omGzIS6TEXJTBrR+ETUHeUwhT94HYhhVSMyopDtf1aDp1t5HuBBACmaIoWIYTNn7
+	fifQ+OACszEyUZ8XKo4P6W3Fs+rzBjyaVpXgx/CT18/mxUNwgMmUmc1z1Y4XEg==
+Date: Mon, 8 Jan 2024 15:23:38 +0100 (CET)
+From: Romain Gantois <romain.gantois@bootlin.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+cc: Romain Gantois <romain.gantois@bootlin.com>, 
+    Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+    Jose Abreu <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>, 
+    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+    Paolo Abeni <pabeni@redhat.com>, 
+    Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+    Miquel Raynal <miquel.raynal@bootlin.com>, 
+    Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+    Sylvain Girard <sylvain.girard@se.com>, 
+    Pascal EBERHARD <pascal.eberhard@se.com>, 
+    Richard Tresidder <rtresidd@electromag.com.au>, 
+    Linus Walleij <linus.walleij@linaro.org>, 
+    Florian Fainelli <f.fainelli@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+    netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+    linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v3 1/1] net: stmmac: Prevent DSA tags from breaking
+ C
+In-Reply-To: <20240108130238.j2denbdj3ifasbqi@skbuf>
+Message-ID: <3c2f6555-53b6-be1c-3d7b-7a6dc95b46fe@bootlin.com>
+References: <20240108130238.j2denbdj3ifasbqi@skbuf>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+X-GND-Sasl: romain.gantois@bootlin.com
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+On Mon, 8 Jan 2024, Vladimir Oltean wrote:
 
-------------------
+...
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+> Nitpick: you could render this in kernel-doc format.
+> https://docs.kernel.org/doc-guide/kernel-doc.html
+> 
+> > +static inline bool stmmac_has_ip_ethertype(struct sk_buff *skb)
+> 
+> Nitpick: in netdev it is preferred not to use the "inline" keyword at
+> all in C files, only "static inline" in headers, and to let the compiler
+> decide by itself when it is appropriate to inline the code (which it
+> does by itself even without the "inline" keyword). For a bit more
+> background why, you can view Documentation/process/4.Coding.rst, section
+> "Inline functions".
 
-commit 1036f69e251380573e256568cf814506e3fb9988 upstream.
+I see, the kernel docs were indeed enlightening on this point. As a side note, 
+I've just benchmarked both the "with-inline" and "without-inline" versions. 
+First of all, objdump seems to confirm that GCC does indeed follow this pragma 
+in this particular case. Also, RX perfs are better with stmmac_has_ip_ethertype 
+inlined, but TX perfs are actually consistently worse with this function 
+inlined, which could very well be caused by cache effects.
 
-On RZ/Five SMARC EVK, where probing of SDHI is deferred due to probe
-deferral of the vqmmc-supply regulator:
+In any case, I think it is better to remove the "inline" pragma as you said. 
+I'll do that in v4.
 
-    ------------[ cut here ]------------
-    WARNING: CPU: 0 PID: 0 at kernel/time/timer.c:1738 __run_timers.part.0+0x1d0/0x1e8
-    Modules linked in:
-    CPU: 0 PID: 0 Comm: swapper Not tainted 6.7.0-rc4 #101
-    Hardware name: Renesas SMARC EVK based on r9a07g043f01 (DT)
-    epc : __run_timers.part.0+0x1d0/0x1e8
-     ra : __run_timers.part.0+0x134/0x1e8
-    epc : ffffffff800771a4 ra : ffffffff80077108 sp : ffffffc800003e60
-     gp : ffffffff814f5028 tp : ffffffff8140c5c0 t0 : ffffffc800000000
-     t1 : 0000000000000001 t2 : ffffffff81201300 s0 : ffffffc800003f20
-     s1 : ffffffd8023bc4a0 a0 : 00000000fffee6b0 a1 : 0004010000400000
-     a2 : ffffffffc0000016 a3 : ffffffff81488640 a4 : ffffffc800003e60
-     a5 : 0000000000000000 a6 : 0000000004000000 a7 : ffffffc800003e68
-     s2 : 0000000000000122 s3 : 0000000000200000 s4 : 0000000000000000
-     s5 : ffffffffffffffff s6 : ffffffff81488678 s7 : ffffffff814886c0
-     s8 : ffffffff814f49c0 s9 : ffffffff81488640 s10: 0000000000000000
-     s11: ffffffc800003e60 t3 : 0000000000000240 t4 : 0000000000000a52
-     t5 : ffffffd8024ae018 t6 : ffffffd8024ae038
-    status: 0000000200000100 badaddr: 0000000000000000 cause: 0000000000000003
-    [<ffffffff800771a4>] __run_timers.part.0+0x1d0/0x1e8
-    [<ffffffff800771e0>] run_timer_softirq+0x24/0x4a
-    [<ffffffff80809092>] __do_softirq+0xc6/0x1fa
-    [<ffffffff80028e4c>] irq_exit_rcu+0x66/0x84
-    [<ffffffff80800f7a>] handle_riscv_irq+0x40/0x4e
-    [<ffffffff80808f48>] call_on_irq_stack+0x1c/0x28
-    ---[ end trace 0000000000000000 ]---
+Best Regards,
 
-What happens?
-
-    renesas_sdhi_probe()
-    {
-    	tmio_mmc_host_alloc()
-	    mmc_alloc_host()
-		INIT_DELAYED_WORK(&host->detect, mmc_rescan);
-
-	devm_request_irq(tmio_mmc_irq);
-
-	/*
-	 * After this, the interrupt handler may be invoked at any time
-	 *
-	 *  tmio_mmc_irq()
-	 *  {
-	 *	__tmio_mmc_card_detect_irq()
-	 *	    mmc_detect_change()
-	 *		_mmc_detect_change()
-	 *		    mmc_schedule_delayed_work(&host->detect, delay);
-	 *  }
-	 */
-
-	tmio_mmc_host_probe()
-	    tmio_mmc_init_ocr()
-		-EPROBE_DEFER
-
-	tmio_mmc_host_free()
-	    mmc_free_host()
-    }
-
-When expire_timers() runs later, it warns because the MMC host structure
-containing the delayed work was freed, and now contains an invalid work
-function pointer.
-
-Fix this by cancelling any pending delayed work before releasing the
-MMC host structure.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/205dc4c91b47e31b64392fe2498c7a449e717b4b.1701689330.git.geert+renesas@glider.be
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/mmc/core/host.c |    1 +
- 1 file changed, 1 insertion(+)
-
---- a/drivers/mmc/core/host.c
-+++ b/drivers/mmc/core/host.c
-@@ -477,6 +477,7 @@ EXPORT_SYMBOL(mmc_remove_host);
-  */
- void mmc_free_host(struct mmc_host *host)
- {
-+	cancel_delayed_work_sync(&host->detect);
- 	mmc_pwrseq_free(host);
- 	put_device(&host->class_dev);
- }
-
-
+-- 
+Romain Gantois, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
