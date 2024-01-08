@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-10144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6B5B8272A6
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:15:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB64A8272AA
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:15:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65D1D282A82
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:14:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F18F41C22677
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:15:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD664C3CC;
-	Mon,  8 Jan 2024 15:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B314C3D2;
+	Mon,  8 Jan 2024 15:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBNPPjY7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RxErga8a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B426D6DC;
-	Mon,  8 Jan 2024 15:14:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A9D3C433C8;
-	Mon,  8 Jan 2024 15:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90B44C3A0;
+	Mon,  8 Jan 2024 15:15:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E7A9C433C8;
+	Mon,  8 Jan 2024 15:15:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704726898;
-	bh=90hgttIimNU26HQcijFL7hjqUniYL0H/Ua84K7ZN1f8=;
+	s=korg; t=1704726907;
+	bh=57FGAXk3zDXdG2gu/7e0xr3hPpVmVzAsLnWZvTzF/ZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TBNPPjY7zxAAiepomtA6QLEqLJOZ5CRF9gEiONxECeDvpFt3rrEIY02D8R9dwYlvX
-	 t1JbTgd344lR0e0drW7fnZugk+3KIRT5lakXNR/RqTSEUDf8WlbKYV3yVLPTqfNTJ0
-	 4QQdjVYv064i9P9JqA7DFZjg4Vi+CFoHcxi4LSi8=
+	b=RxErga8aIwP1SjLDDZXcVJmI35CN63zGxFscVdFjWzuRd6N+bB0Q3mGAci+dv7CLm
+	 80tgK3KUk2+jbu32Y1u7gUqAxpQrTFbT47HTQT4NReYe7XnfLeSW6eOmyzyYlNtPXs
+	 Giv+ljQ78BllyQX4PA47B80Q53efxDfqutIJ8+pk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jai Luthra <j-luthra@ti.com>,
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
 	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 086/124] dmaengine: ti: k3-psil-am62a: Fix SPI PDMA data
-Date: Mon,  8 Jan 2024 16:08:32 +0100
-Message-ID: <20240108150606.943031207@linuxfoundation.org>
+Subject: [PATCH 6.6 087/124] dmaengine: fsl-edma: Do not suspend and resume the masked dma channel when the system is sleeping
+Date: Mon,  8 Jan 2024 16:08:33 +0100
+Message-ID: <20240108150606.985032506@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108150602.976232871@linuxfoundation.org>
 References: <20240108150602.976232871@linuxfoundation.org>
@@ -57,68 +57,85 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jai Luthra <j-luthra@ti.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-[ Upstream commit be37542afbfcd27b3bb99a135abf9b4736b96f75 ]
+[ Upstream commit 2838a897654c4810153cc51646414ffa54fd23b0 ]
 
-AM62Ax has 3 SPI channels where each channel has 4x TX and 4x RX
-threads. Also fix the thread numbers to match what the firmware expects
-according to the PSI-L device description.
+Some channels may be masked. When the system is suspended,
+if these masked channels are not filtered out, this will
+lead to null pointer operations and system crash:
 
-Link: http://downloads.ti.com/tisci/esd/latest/5_soc_doc/am62ax/psil_cfg.html [1]
-Fixes: aac6db7e243a ("dmaengine: ti: k3-psil-am62a: Add AM62Ax PSIL and PDMA data")
-Signed-off-by: Jai Luthra <j-luthra@ti.com>
-Link: https://lore.kernel.org/r/20231123-psil_fix-v1-1-6604d80819be@ti.com
+Unable to handle kernel NULL pointer dereference at virtual address
+Mem abort info:
+ESR = 0x0000000096000004
+EC = 0x25: DABT (current EL), IL = 32 bits
+SET = 0, FnV = 0
+EA = 0, S1PTW = 0
+FSC = 0x04: level 0 translation fault
+Data abort info:
+ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
+CM = 0, WnR = 0, TnD = 0, TagAccess = 0
+GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
+user pgtable: 4k pages, 48-bit VAs, pgdp=0000000894300000
+[00000000000002a0] pgd=0000000000000000, p4d=0000000000000000
+Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
+Modules linked in:
+CPU: 1 PID: 989 Comm: sh Tainted: G B 6.6.0-16203-g557fb7a3ec4c-dirty #70
+Hardware name: Freescale i.MX8QM MEK (DT)
+pstate: 400000c5 (nZcv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc: fsl_edma_disable_request+0x3c/0x78
+  lr: fsl_edma_disable_request+0x3c/0x78
+  sp:ffff800089ae7690
+  x29: ffff800089ae7690 x28: ffff000807ab5440 x27: ffff000807ab5830
+  x26: 0000000000000008 x25: 0000000000000278 x24: 0000000000000001
+  23: ffff000807ab4328 x22: 0000000000000000 x21: 0000000000000009
+  x20: ffff800082616940 x19: 0000000000000000 x18: 0000000000000000
+  x17: 3d3d3d3d3d3d3d3d x16: 3d3d3d3d3d3d3d3d x15: 3d3d3d3d3d3d3d3d
+  x14: 3d3d3d3d3d3d3d3d x13: 3d3d3d3d3d3d3d3d x12: 1ffff00010d45724
+  x11: ffff700010d45724 x10: dfff800000000000 x9: dfff800000000000
+  x8: 00008fffef2ba8dc x7: 0000000000000001 x6: ffff800086a2b927
+  x5: ffff800086a2b920 x4: ffff700010d45725 x3: ffff8000800d5bbc
+  x2 : 0000000000000000 x1 : ffff000800c1d880 x0 : 0000000000000001
+  Call trace:
+   fsl_edma_disable_request+0x3c/0x78
+   fsl_edma_suspend_late+0x128/0x12c
+  dpm_run_callback+0xd4/0x304
+   __device_suspend_late+0xd0/0x240
+  dpm_suspend_late+0x174/0x59c
+  suspend_devices_and_enter+0x194/0xd00
+  pm_suspend+0x3c4/0x910
+
+Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Link: https://lore.kernel.org/r/20231113225713.1892643-2-xiaolei.wang@windriver.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ti/k3-psil-am62a.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/dma/fsl-edma-main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/dma/ti/k3-psil-am62a.c b/drivers/dma/ti/k3-psil-am62a.c
-index ca9d71f914220..4cf9123b0e932 100644
---- a/drivers/dma/ti/k3-psil-am62a.c
-+++ b/drivers/dma/ti/k3-psil-am62a.c
-@@ -84,7 +84,9 @@ static struct psil_ep am62a_src_ep_map[] = {
- 	PSIL_SAUL(0x7505, 21, 35, 8, 36, 0),
- 	PSIL_SAUL(0x7506, 22, 43, 8, 43, 0),
- 	PSIL_SAUL(0x7507, 23, 43, 8, 44, 0),
--	/* PDMA_MAIN0 - SPI0-3 */
-+	/* PDMA_MAIN0 - SPI0-2 */
-+	PSIL_PDMA_XY_PKT(0x4300),
-+	PSIL_PDMA_XY_PKT(0x4301),
- 	PSIL_PDMA_XY_PKT(0x4302),
- 	PSIL_PDMA_XY_PKT(0x4303),
- 	PSIL_PDMA_XY_PKT(0x4304),
-@@ -95,8 +97,6 @@ static struct psil_ep am62a_src_ep_map[] = {
- 	PSIL_PDMA_XY_PKT(0x4309),
- 	PSIL_PDMA_XY_PKT(0x430a),
- 	PSIL_PDMA_XY_PKT(0x430b),
--	PSIL_PDMA_XY_PKT(0x430c),
--	PSIL_PDMA_XY_PKT(0x430d),
- 	/* PDMA_MAIN1 - UART0-6 */
- 	PSIL_PDMA_XY_PKT(0x4400),
- 	PSIL_PDMA_XY_PKT(0x4401),
-@@ -151,7 +151,9 @@ static struct psil_ep am62a_dst_ep_map[] = {
- 	/* SAUL */
- 	PSIL_SAUL(0xf500, 27, 83, 8, 83, 1),
- 	PSIL_SAUL(0xf501, 28, 91, 8, 91, 1),
--	/* PDMA_MAIN0 - SPI0-3 */
-+	/* PDMA_MAIN0 - SPI0-2 */
-+	PSIL_PDMA_XY_PKT(0xc300),
-+	PSIL_PDMA_XY_PKT(0xc301),
- 	PSIL_PDMA_XY_PKT(0xc302),
- 	PSIL_PDMA_XY_PKT(0xc303),
- 	PSIL_PDMA_XY_PKT(0xc304),
-@@ -162,8 +164,6 @@ static struct psil_ep am62a_dst_ep_map[] = {
- 	PSIL_PDMA_XY_PKT(0xc309),
- 	PSIL_PDMA_XY_PKT(0xc30a),
- 	PSIL_PDMA_XY_PKT(0xc30b),
--	PSIL_PDMA_XY_PKT(0xc30c),
--	PSIL_PDMA_XY_PKT(0xc30d),
- 	/* PDMA_MAIN1 - UART0-6 */
- 	PSIL_PDMA_XY_PKT(0xc400),
- 	PSIL_PDMA_XY_PKT(0xc401),
+diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+index 8c4ed7012e232..242a70cf85f4b 100644
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -640,6 +640,8 @@ static int fsl_edma_suspend_late(struct device *dev)
+ 
+ 	for (i = 0; i < fsl_edma->n_chans; i++) {
+ 		fsl_chan = &fsl_edma->chans[i];
++		if (fsl_edma->chan_masked & BIT(i))
++			continue;
+ 		spin_lock_irqsave(&fsl_chan->vchan.lock, flags);
+ 		/* Make sure chan is idle or will force disable. */
+ 		if (unlikely(!fsl_chan->idle)) {
+@@ -664,6 +666,8 @@ static int fsl_edma_resume_early(struct device *dev)
+ 
+ 	for (i = 0; i < fsl_edma->n_chans; i++) {
+ 		fsl_chan = &fsl_edma->chans[i];
++		if (fsl_edma->chan_masked & BIT(i))
++			continue;
+ 		fsl_chan->pm_state = RUNNING;
+ 		edma_write_tcdreg(fsl_chan, 0, csr);
+ 		if (fsl_chan->slave_id != 0)
 -- 
 2.43.0
 
