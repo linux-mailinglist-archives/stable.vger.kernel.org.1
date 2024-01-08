@@ -1,43 +1,49 @@
-Return-Path: <stable+bounces-10163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CC1E8272C2
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:16:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB1C8272B5
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:15:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 312AA1F2249C
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:16:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6D481F23680
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:15:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280AD4C3C9;
-	Mon,  8 Jan 2024 15:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 128B94C623;
+	Mon,  8 Jan 2024 15:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wX+1R2B/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLZUGhUf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36DD47791;
-	Mon,  8 Jan 2024 15:15:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDA8C433C9;
-	Mon,  8 Jan 2024 15:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF3DE4C612;
+	Mon,  8 Jan 2024 15:15:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E624FC433C8;
+	Mon,  8 Jan 2024 15:15:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704726957;
-	bh=qUZ4YcrcQQ7zezcRSLfKxgPk6qInWDHLRRzgj3he4JQ=;
+	s=korg; t=1704726929;
+	bh=WYs1w8QhSEti1a8S2RAc773ZT+rtIM4cjHoloc2kZLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wX+1R2B/dfRqae8Uzx/oPcL0i+Zb8MQrMAiUtxuX0HKOQ4edGnnF8D3q/frYjuDMA
-	 rsZxwCCuxfsB3+6D3jQ3ar4u9ylkCsUzIseBlV9Ns4nYNlQ3rYpTmFuho4YqSF+Mr7
-	 bVIdCeEQtKQZrBaCXLnxgpcbak+FSA30FU4ttuKU=
+	b=OLZUGhUf5KvYU5b2qqZsg9elDU8E8vB6v/mwzZ4a9+Lh69v4L1wdkGnedS7wgZ47O
+	 z0k/qOJqj7C7NTwaqIWQy4wkGxUJCfWUcFhNou6V5lSKHF3vUnjK1/ky5lxNforrf1
+	 n5jVpRlVy7nS3G7FN+Iv168A/BNKUbVnLVoKzARI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Xaver Hugl <xaver.hugl@gmail.com>,
+	Melissa Wen <mwen@igalia.com>,
+	Simon Berz <simon@berz.me>,
+	Xaver Hugl <xaver.hugl@kde.org>,
+	Joshua Ashton <joshua@froggi.es>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 115/124] drm/amd/display: add nv12 bounding box
-Date: Mon,  8 Jan 2024 16:09:01 +0100
-Message-ID: <20240108150608.264489150@linuxfoundation.org>
+Subject: [PATCH 6.6 116/124] drm/amd/display: Fix sending VSC (+ colorimetry) packets for DP/eDP displays without PSR
+Date: Mon,  8 Jan 2024 16:09:02 +0100
+Message-ID: <20240108150608.312433313@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108150602.976232871@linuxfoundation.org>
 References: <20240108150602.976232871@linuxfoundation.org>
@@ -56,141 +62,86 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Joshua Ashton <joshua@froggi.es>
 
-commit 7e725c20fea8914ef1829da777f517ce1a93d388 upstream.
+commit 202260f64519e591b5cd99626e441b6559f571a3 upstream.
 
-This was included in gpu_info firmware, move it into the
-driver for consistency with other nv1x parts.
+The check for sending the vsc infopacket to the display was gated behind
+PSR (Panel Self Refresh) being enabled.
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2318
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The vsc infopacket also contains the colorimetry (specifically the
+container color gamut) information for the stream on modern DP.
+
+PSR is typically only supported on mobile phone eDP displays, thus this
+was not getting sent for typical desktop monitors or TV screens.
+
+This functionality is needed for proper HDR10 functionality on DP as it
+wants BT2020 RGB/YCbCr for the container color space.
+
 Cc: stable@vger.kernel.org
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Xaver Hugl <xaver.hugl@gmail.com>
+Cc: Melissa Wen <mwen@igalia.com>
+Fixes: 15f9dfd545a1 ("drm/amd/display: Register Colorspace property for DP and HDMI")
+Tested-by: Simon Berz <simon@berz.me>
+Tested-by: Xaver Hugl <xaver.hugl@kde.org>
+Signed-off-by: Joshua Ashton <joshua@froggi.es>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c |  110 ++++++++++++++++++-
- 1 file changed, 109 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c             |    8 +++---
+ drivers/gpu/drm/amd/display/modules/info_packet/info_packet.c |   13 ++++++----
+ 2 files changed, 13 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
-@@ -438,7 +438,115 @@ struct _vcs_dpi_soc_bounding_box_st dcn2
- 	.use_urgent_burst_bw = 0
- };
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -6139,8 +6139,9 @@ create_stream_for_sink(struct amdgpu_dm_
  
--struct _vcs_dpi_soc_bounding_box_st dcn2_0_nv12_soc = { 0 };
-+struct _vcs_dpi_soc_bounding_box_st dcn2_0_nv12_soc = {
-+	.clock_limits = {
-+		{
-+			.state = 0,
-+			.dcfclk_mhz = 560.0,
-+			.fabricclk_mhz = 560.0,
-+			.dispclk_mhz = 513.0,
-+			.dppclk_mhz = 513.0,
-+			.phyclk_mhz = 540.0,
-+			.socclk_mhz = 560.0,
-+			.dscclk_mhz = 171.0,
-+			.dram_speed_mts = 1069.0,
-+		},
-+		{
-+			.state = 1,
-+			.dcfclk_mhz = 694.0,
-+			.fabricclk_mhz = 694.0,
-+			.dispclk_mhz = 642.0,
-+			.dppclk_mhz = 642.0,
-+			.phyclk_mhz = 600.0,
-+			.socclk_mhz = 694.0,
-+			.dscclk_mhz = 214.0,
-+			.dram_speed_mts = 1324.0,
-+		},
-+		{
-+			.state = 2,
-+			.dcfclk_mhz = 875.0,
-+			.fabricclk_mhz = 875.0,
-+			.dispclk_mhz = 734.0,
-+			.dppclk_mhz = 734.0,
-+			.phyclk_mhz = 810.0,
-+			.socclk_mhz = 875.0,
-+			.dscclk_mhz = 245.0,
-+			.dram_speed_mts = 1670.0,
-+		},
-+		{
-+			.state = 3,
-+			.dcfclk_mhz = 1000.0,
-+			.fabricclk_mhz = 1000.0,
-+			.dispclk_mhz = 1100.0,
-+			.dppclk_mhz = 1100.0,
-+			.phyclk_mhz = 810.0,
-+			.socclk_mhz = 1000.0,
-+			.dscclk_mhz = 367.0,
-+			.dram_speed_mts = 2000.0,
-+		},
-+		{
-+			.state = 4,
-+			.dcfclk_mhz = 1200.0,
-+			.fabricclk_mhz = 1200.0,
-+			.dispclk_mhz = 1284.0,
-+			.dppclk_mhz = 1284.0,
-+			.phyclk_mhz = 810.0,
-+			.socclk_mhz = 1200.0,
-+			.dscclk_mhz = 428.0,
-+			.dram_speed_mts = 2000.0,
-+		},
-+		{
-+			.state = 5,
-+			.dcfclk_mhz = 1200.0,
-+			.fabricclk_mhz = 1200.0,
-+			.dispclk_mhz = 1284.0,
-+			.dppclk_mhz = 1284.0,
-+			.phyclk_mhz = 810.0,
-+			.socclk_mhz = 1200.0,
-+			.dscclk_mhz = 428.0,
-+			.dram_speed_mts = 2000.0,
-+		},
-+	},
+ 	if (stream->signal == SIGNAL_TYPE_HDMI_TYPE_A)
+ 		mod_build_hf_vsif_infopacket(stream, &stream->vsp_infopacket);
+-
+-	if (stream->link->psr_settings.psr_feature_enabled || stream->link->replay_settings.replay_feature_enabled) {
++	else if (stream->signal == SIGNAL_TYPE_DISPLAY_PORT ||
++			 stream->signal == SIGNAL_TYPE_DISPLAY_PORT_MST ||
++			 stream->signal == SIGNAL_TYPE_EDP) {
+ 		//
+ 		// should decide stream support vsc sdp colorimetry capability
+ 		// before building vsc info packet
+@@ -6156,8 +6157,9 @@ create_stream_for_sink(struct amdgpu_dm_
+ 		if (stream->out_transfer_func->tf == TRANSFER_FUNCTION_GAMMA22)
+ 			tf = TRANSFER_FUNC_GAMMA_22;
+ 		mod_build_vsc_infopacket(stream, &stream->vsc_infopacket, stream->output_color_space, tf);
+-		aconnector->psr_skip_count = AMDGPU_DM_PSR_ENTRY_DELAY;
+ 
++		if (stream->link->psr_settings.psr_feature_enabled)
++			aconnector->psr_skip_count = AMDGPU_DM_PSR_ENTRY_DELAY;
+ 	}
+ finish:
+ 	dc_sink_release(sink);
+--- a/drivers/gpu/drm/amd/display/modules/info_packet/info_packet.c
++++ b/drivers/gpu/drm/amd/display/modules/info_packet/info_packet.c
+@@ -147,12 +147,15 @@ void mod_build_vsc_infopacket(const stru
+ 	}
+ 
+ 	/* VSC packet set to 4 for PSR-SU, or 2 for PSR1 */
+-	if (stream->link->psr_settings.psr_version == DC_PSR_VERSION_SU_1)
+-		vsc_packet_revision = vsc_packet_rev4;
+-	else if (stream->link->replay_settings.config.replay_supported)
++	if (stream->link->psr_settings.psr_feature_enabled) {
++		if (stream->link->psr_settings.psr_version == DC_PSR_VERSION_SU_1)
++			vsc_packet_revision = vsc_packet_rev4;
++		else if (stream->link->psr_settings.psr_version == DC_PSR_VERSION_1)
++			vsc_packet_revision = vsc_packet_rev2;
++	}
 +
-+	.num_states = 5,
-+	.sr_exit_time_us = 1.9,
-+	.sr_enter_plus_exit_time_us = 4.4,
-+	.urgent_latency_us = 3.0,
-+	.urgent_latency_pixel_data_only_us = 4.0,
-+	.urgent_latency_pixel_mixed_with_vm_data_us = 4.0,
-+	.urgent_latency_vm_data_only_us = 4.0,
-+	.urgent_out_of_order_return_per_channel_pixel_only_bytes = 4096,
-+	.urgent_out_of_order_return_per_channel_pixel_and_vm_bytes = 4096,
-+	.urgent_out_of_order_return_per_channel_vm_only_bytes = 4096,
-+	.pct_ideal_dram_sdp_bw_after_urgent_pixel_only = 40.0,
-+	.pct_ideal_dram_sdp_bw_after_urgent_pixel_and_vm = 40.0,
-+	.pct_ideal_dram_sdp_bw_after_urgent_vm_only = 40.0,
-+	.max_avg_sdp_bw_use_normal_percent = 40.0,
-+	.max_avg_dram_bw_use_normal_percent = 40.0,
-+	.writeback_latency_us = 12.0,
-+	.ideal_dram_bw_after_urgent_percent = 40.0,
-+	.max_request_size_bytes = 256,
-+	.dram_channel_width_bytes = 16,
-+	.fabric_datapath_to_dcn_data_return_bytes = 64,
-+	.dcn_downspread_percent = 0.5,
-+	.downspread_percent = 0.5,
-+	.dram_page_open_time_ns = 50.0,
-+	.dram_rw_turnaround_time_ns = 17.5,
-+	.dram_return_buffer_per_channel_bytes = 8192,
-+	.round_trip_ping_latency_dcfclk_cycles = 131,
-+	.urgent_out_of_order_return_per_channel_bytes = 4096,
-+	.channel_interleave_bytes = 256,
-+	.num_banks = 8,
-+	.num_chans = 16,
-+	.vmm_page_size_bytes = 4096,
-+	.dram_clock_change_latency_us = 45.0,
-+	.writeback_dram_clock_change_latency_us = 23.0,
-+	.return_bus_width_bytes = 64,
-+	.dispclk_dppclk_vco_speed_mhz = 3850,
-+	.xfc_bus_transport_time_us = 20,
-+	.xfc_xbuf_latency_tolerance_us = 50,
-+	.use_urgent_burst_bw = 0,
-+};
++	if (stream->link->replay_settings.config.replay_supported)
+ 		vsc_packet_revision = vsc_packet_rev4;
+-	else if (stream->link->psr_settings.psr_version == DC_PSR_VERSION_1)
+-		vsc_packet_revision = vsc_packet_rev2;
  
- struct _vcs_dpi_ip_params_st dcn2_1_ip = {
- 	.odm_capable = 1,
+ 	/* Update to revision 5 for extended colorimetry support */
+ 	if (stream->use_vsc_sdp_for_colorimetry)
 
 
 
