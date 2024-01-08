@@ -1,46 +1,43 @@
-Return-Path: <stable+bounces-10181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D42BD827397
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:37:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21E1A82739E
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:37:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E35701C22AE2
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:37:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A699DB21B2E
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 135711E4A2;
-	Mon,  8 Jan 2024 15:37:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DAFD4C3A0;
+	Mon,  8 Jan 2024 15:37:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BECCkqM+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCaKD/xw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D098C5102D;
-	Mon,  8 Jan 2024 15:37:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4588C4339A;
-	Mon,  8 Jan 2024 15:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55A465102D;
+	Mon,  8 Jan 2024 15:37:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61877C43395;
+	Mon,  8 Jan 2024 15:37:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704728257;
-	bh=lvDETJfH1yafyKAUtoTLfYgw4oe+vktYx+qvaD3fzgs=;
+	s=korg; t=1704728269;
+	bh=omZd7E8Lh6AGRSY4XpplDaGHD6b0S8k5r93E/cEnqxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BECCkqM+c2XOBXsftNFBrWArjeOakpQAqwHB9nzd/xjDyisJrHRZEaLj2XKos8ZDP
-	 DkEMVI/Z32UOWwARunc67KGiVX7LDlwOBcRqx5M+dIo9wz5IrWr2nDKE866ee+wwbC
-	 DAPQXWJAoB+nu7aGf5JIIGQ0yOdQLYTJVmXz6g3Y=
+	b=mCaKD/xwh/6IhvAbaRBxLVVUJ7xpU6RWwwBm7MuDsCd4NeHMG7O/75AjmEuDoNkx2
+	 T+Hg/SMFeavQ9xGzBrB4yjnKT2/qM30ejZkMcewAOYW31V0SueDUO3NYglM90eT7ld
+	 eG4N9nxViC+xZWQ6QMhj8m1nTbXekrvx33C/OG6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Sarthak Kukreti <sarthakkukreti@chromium.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 002/150] block: Dont invalidate pagecache for invalid falloc modes
-Date: Mon,  8 Jan 2024 16:34:13 +0100
-Message-ID: <20240108153511.343081049@linuxfoundation.org>
+	Aabish Malik <aabishmalik3337@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 003/150] ALSA: hda/realtek: enable SND_PCI_QUIRK for hp pavilion 14-ec1xxx series
+Date: Mon,  8 Jan 2024 16:34:14 +0100
+Message-ID: <20240108153511.386606299@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108153511.214254205@linuxfoundation.org>
 References: <20240108153511.214254205@linuxfoundation.org>
@@ -59,73 +56,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sarthak Kukreti <sarthakkukreti@chromium.org>
+From: Aabish Malik <aabishmalik3337@gmail.com>
 
-commit 1364a3c391aedfeb32aa025303ead3d7c91cdf9d upstream.
+commit 13a5b21197587a3d9cac9e1a00de9b91526a55e4 upstream.
 
-Only call truncate_bdev_range() if the fallocate mode is supported. This
-fixes a bug where data in the pagecache could be invalidated if the
-fallocate() was called on the block device with an invalid mode.
+The HP Pavilion 14 ec1xxx series uses the HP mainboard 8A0F with the
+ALC287 codec.
+The mute led can be enabled using the already existing
+ALC287_FIXUP_HP_GPIO_LED quirk.
+Tested on an HP Pavilion ec1003AU
 
-Fixes: 25f4c41415e5 ("block: implement (some of) fallocate for block devices")
-Cc: stable@vger.kernel.org
-Reported-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Sarthak Kukreti <sarthakkukreti@chromium.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Fixes: line?  I've never seen those wrapped.
-Link: https://lore.kernel.org/r/20231011201230.750105-1-sarthakkukreti@chromium.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sarthak Kukreti <sarthakkukreti@chromium.org>
+Signed-off-by: Aabish Malik <aabishmalik3337@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231229170352.742261-3-aabishmalik3337@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/fops.c |   21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/block/fops.c
-+++ b/block/fops.c
-@@ -655,24 +655,35 @@ static long blkdev_fallocate(struct file
- 
- 	filemap_invalidate_lock(inode->i_mapping);
- 
--	/* Invalidate the page cache, including dirty pages. */
--	error = truncate_bdev_range(bdev, file->f_mode, start, end);
--	if (error)
--		goto fail;
--
-+	/*
-+	 * Invalidate the page cache, including dirty pages, for valid
-+	 * de-allocate mode calls to fallocate().
-+	 */
- 	switch (mode) {
- 	case FALLOC_FL_ZERO_RANGE:
- 	case FALLOC_FL_ZERO_RANGE | FALLOC_FL_KEEP_SIZE:
-+		error = truncate_bdev_range(bdev, file->f_mode, start, end);
-+		if (error)
-+			goto fail;
-+
- 		error = blkdev_issue_zeroout(bdev, start >> SECTOR_SHIFT,
- 					     len >> SECTOR_SHIFT, GFP_KERNEL,
- 					     BLKDEV_ZERO_NOUNMAP);
- 		break;
- 	case FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE:
-+		error = truncate_bdev_range(bdev, file->f_mode, start, end);
-+		if (error)
-+			goto fail;
-+
- 		error = blkdev_issue_zeroout(bdev, start >> SECTOR_SHIFT,
- 					     len >> SECTOR_SHIFT, GFP_KERNEL,
- 					     BLKDEV_ZERO_NOFALLBACK);
- 		break;
- 	case FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE | FALLOC_FL_NO_HIDE_STALE:
-+		error = truncate_bdev_range(bdev, file->f_mode, start, end);
-+		if (error)
-+			goto fail;
-+
- 		error = blkdev_issue_discard(bdev, start >> SECTOR_SHIFT,
- 					     len >> SECTOR_SHIFT, GFP_KERNEL);
- 		break;
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9663,6 +9663,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x89c6, "Zbook Fury 17 G9", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x89ca, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x89d3, "HP EliteBook 645 G9 (MB 89D2)", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8a0f, "HP Pavilion 14-ec1xxx", ALC287_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8a20, "HP Laptop 15s-fq5xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x8a25, "HP Victus 16-d1xxx (MB 8A25)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8a78, "HP Dev One", ALC285_FIXUP_HP_LIMIT_INT_MIC_BOOST),
 
 
 
