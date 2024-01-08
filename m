@@ -1,64 +1,89 @@
-Return-Path: <stable+bounces-10020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81EA88270C8
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:12:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D7B08270CB
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:13:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CD361F22E92
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 14:12:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BBB0283A8B
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 14:13:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A13546427;
-	Mon,  8 Jan 2024 14:12:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43BC445C15;
+	Mon,  8 Jan 2024 14:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="potal3XF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mypvNLs5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D63645C07
-	for <stable@vger.kernel.org>; Mon,  8 Jan 2024 14:12:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2406C433C8;
-	Mon,  8 Jan 2024 14:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03CEA45BF6;
+	Mon,  8 Jan 2024 14:13:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF4DC433C7;
+	Mon,  8 Jan 2024 14:13:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704723147;
-	bh=g0CyI3IM59Nwu0RmGUbsGVo1YgOVrILQUQ5KDtCjkds=;
+	s=korg; t=1704723193;
+	bh=DMRsklMR8P9d0F90QDPNkLTmnPVPCiEoQBWpGF9hW1c=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=potal3XFdjaW2zkb4AgK8sVHUZSwO5XWgfNQVQdhmq2NS4VdMILXoM7TRtjO9X28Z
-	 vjmfMRYmKRu0LHjqt3qnWLZTEe3bFV04UI2TmRVg0ZJtswe6V6RWpG2qhsEQX521R+
-	 6o2xlBczTtiR3ijpiGXYV3KQbPHaDQR0AjMbTnBE=
-Date: Mon, 8 Jan 2024 15:12:24 +0100
+	b=mypvNLs5XlpGVxgNpq/lTji0dFqPlCI1zp1wJIV+LkOqOCmsj2PBlaOmZsdCKGNn2
+	 0mswuOXV++NqtquzRoLkMCt5aT2ppudsYrJ+K4G6EgMctgmNsY0C1diQ6/WOydRKRY
+	 R9MfhPcnVO03/hIxNSR68DaJweUqTTLTjkXIFuqk=
+Date: Mon, 8 Jan 2024 15:13:10 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Amit Pundir <amit.pundir@linaro.org>
-Cc: Sasha Levin <sashal@kernel.org>, Georgi Djakov <djakov@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Stable <stable@vger.kernel.org>
-Subject: Re: [PATCH for-6.1.y] Revert "interconnect: qcom: sm8250: Enable
- sync_state"
-Message-ID: <2024010850-latch-occupancy-e727@gregkh>
-References: <20240107155702.3395873-1-amit.pundir@linaro.org>
+To: Jan =?utf-8?B?xIxlcm3DoWs=?= <sairon@sairon.cz>
+Cc: Leonardo Brondani Schenkel <leonardo@schenkel.net>,
+	stable@vger.kernel.org, regressions@lists.linux.dev,
+	linux-cifs@vger.kernel.org, Paulo Alcantara <pc@manguebit.com>
+Subject: Re: [REGRESSION 6.1.70] system calls with CIFS mounts failing with
+ "Resource temporarily unavailable"
+Message-ID: <2024010838-saddlebag-overspend-e027@gregkh>
+References: <8ad7c20e-0645-40f3-96e6-75257b4bd31a@schenkel.net>
+ <7425b05a-d9a1-4c06-89a2-575504e132c3@sairon.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240107155702.3395873-1-amit.pundir@linaro.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7425b05a-d9a1-4c06-89a2-575504e132c3@sairon.cz>
 
-On Sun, Jan 07, 2024 at 09:27:02PM +0530, Amit Pundir wrote:
-> This reverts commit 3637f6bdfe2ccd53c493836b6e43c9a73e4513b3 which is
-> commit bfc7db1cb94ad664546d70212699f8cc6c539e8c upstream.
+On Mon, Jan 08, 2024 at 12:18:26PM +0100, Jan Čermák wrote:
+> Hi,
 > 
-> This resulted in boot regression on RB5 (sm8250), causing the device
-> to hard crash into USB crash dump mode everytime.
+> I confirm Leonardo's findings about 6.1.70 introducing this regression, this
+> issue manifested in Home Assistant OS [1] which was recently bumped to that
+> version. I bisected the issue between 6.1.69 and 6.1.70 which pointed me to
+> this bad commit:
 > 
-> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+> ----
+> commit bef4315f19ba6f434054f58b958c0cf058c7a43f (refs/bisect/bad)
+> Author: Paulo Alcantara <pc@manguebit.com>
+> Date:   Wed Dec 13 12:25:57 2023 -0300
+> 
+>     smb: client: fix OOB in SMB2_query_info_init()
+> 
+>     commit 33eae65c6f49770fec7a662935d4eb4a6406d24b upstream.
+> 
+>     A small CIFS buffer (448 bytes) isn't big enough to hold
+>     SMB2_QUERY_INFO request along with user's input data from
+>     CIFS_QUERY_INFO ioctl.  That is, if the user passed an input buffer >
+>     344 bytes, the client will memcpy() off the end of @req->Buffer in
+>     SMB2_query_info_init() thus causing the following KASAN splat:
+> 
+> (snip...)
+> ----
+> 
+> Reverting this change on 6.1.y makes the error go away.
 
-Any link to that report?  Is this also an issue in 6.7 and/or 6.6.y?
+That's interesting, there's a different cifs report that says a
+different commit was the issue:
+	https://lore.kernel.org/r/ZZhrpNJ3zxMR8wcU@eldamar.lan
+
+is that the same as this one?
 
 thanks,
 
