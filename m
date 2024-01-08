@@ -1,102 +1,140 @@
-Return-Path: <stable+bounces-10341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1D05827811
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 20:02:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9542827975
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 21:51:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F2161F23538
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 19:02:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9A211C2272C
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 20:51:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E3D4122F;
-	Mon,  8 Jan 2024 19:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685EB54679;
+	Mon,  8 Jan 2024 20:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KXhYikmK"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ferdQ/19"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f47.google.com (mail-ua1-f47.google.com [209.85.222.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFBA54F85;
-	Mon,  8 Jan 2024 19:02:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f47.google.com with SMTP id a1e0cc1a2514c-7cd42bc09adso606151241.2;
-        Mon, 08 Jan 2024 11:02:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704740550; x=1705345350; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=i6abKjHrQB2M3iEvyThch0ew2ujiuN7TwHMLgZSiAGw=;
-        b=KXhYikmKdUow0TClfQxzD0HP3VGvWEgLyHsURCbeJOCX2jSPV32MB2P5YVcacCOSAA
-         7cWkd10y/S18NcLNY9CC0LHnUpRfqpUb/Wi5+gxrU23QEDq6LJ3ByccqldrWKBY9dpZM
-         kO/x8Z6d33N8IWAliVHpcjtxWa+elvR88gZ6GDhmb9VHFVK+VLAxxPcaphGANaMWGHmM
-         s/HXOlnepuHWBh9y627d5FuBf4UIvRXuzVutE4QxWZD863GJIA7VIzazKAg1NCVULYQH
-         gu6tc3WB4HsqiogNcieeaKmwQU9uIgkaqMuKItcRA3l2U0kgqWbJEgXz4xRZ57ZhCAn6
-         fCtQ==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A345577C
+	for <stable@vger.kernel.org>; Mon,  8 Jan 2024 20:51:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1704747099;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2UkyxvZQ5pYouZXCc0oPIjClMUAkVOY8Na3esy8fS2w=;
+	b=ferdQ/19XsRuDo2yl/uNftdc6KZBZNlS55w8m7Zva3OYJKP13qQe3x3nNswLOvoO1s5aHP
+	EReLY8JnYh1Fzz/zoyhEu8PYex7au+LJ04iorxNXrzO1gZWb6u5Tn7JXJ87N/mXfxkN0mq
+	I6rQ75wEJjoyzM320hthcNUfRSENIwQ=
+Received: from mail-yw1-f198.google.com (mail-yw1-f198.google.com
+ [209.85.128.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-426-FekHwhCEO8Sngpy2C-kzNw-1; Mon, 08 Jan 2024 15:51:38 -0500
+X-MC-Unique: FekHwhCEO8Sngpy2C-kzNw-1
+Received: by mail-yw1-f198.google.com with SMTP id 00721157ae682-5e6fe91c706so35215087b3.2
+        for <stable@vger.kernel.org>; Mon, 08 Jan 2024 12:51:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704740550; x=1705345350;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i6abKjHrQB2M3iEvyThch0ew2ujiuN7TwHMLgZSiAGw=;
-        b=imzeWw1o8D8ohIADFnkg1FF1K130RGwyKFbySHPMDNjhuQYrTtEBnFYelxuIfutj7Y
-         oFKCHmZbY6XwtjkBe06FXddZJu4/9n/kkDete+mG8g2VvKVXHaVPbLSZsaptcDJRQQmj
-         BJDHDUcZD2xZcfyPvIN2CU09TltKZuxFLqX4pgUUSmzcqcqxzCzzQwPp7p97Cxzmzgck
-         y6pHh2Mzuun6RaaEUpz7Bez9ggeUgib00fRmAbClytHHc4JeFIMXZs6DBy1zrdw3X2jI
-         4SshvMegvEoVgJG0IdeMKFjEq3qa6tvvpT5Fl6gidCbTz6zoTbGbcDzo8TLL1J2/PF3q
-         pvYA==
-X-Gm-Message-State: AOJu0Yy3pI747JkgogUrTCm0uKX9iSLXv69JqixJwoyCV2PK17aBF9v2
-	+PL/MwJPZl3DzWMWBWrvBziNESZeoJnBOJ7zo5U=
-X-Google-Smtp-Source: AGHT+IFZ1oroFQ9FrqNxPzcXlCCnla9b5liu5pflOjp0/Ol/BjcIbkeCD8sMeSlMGrotbUouwpW/5I/1St5MfZUJ1D0=
-X-Received: by 2002:a05:6122:589:b0:4b7:97b9:527d with SMTP id
- i9-20020a056122058900b004b797b9527dmr1351897vko.26.1704740550525; Mon, 08 Jan
- 2024 11:02:30 -0800 (PST)
+        d=1e100.net; s=20230601; t=1704747097; x=1705351897;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2UkyxvZQ5pYouZXCc0oPIjClMUAkVOY8Na3esy8fS2w=;
+        b=hnIegDbuldIndspQhaocWPw7oqvJu8nZcKO6ibIldd/iyCdPRw+96Hb1tTi3IGmmzf
+         KxuU2oQPDfTKBBM5aVfaHw6Zwk3ZHeG3qz+NeO9/fTR6gRR6b8lVWyCnnfgL7lZOLKvB
+         cNEX52VArQjKIAypBrb/x1y21Jq7NwE/gyeSiCxM/PaSpgvx3Ci6qeSypv4Sgx0+8MtL
+         /k6NzzrD3uXltwz5dixBqEZLbvYxnwMnTH2Arlk55ROxMIiDyPUiE2iP61yNzv77PNqE
+         yDFr2TphIDIaw3TDOBFR6yt1VA7UBwhWbSJ3kpiooLBrFM+frSj9Nsi9DdTCoDxV7RkY
+         LWkQ==
+X-Gm-Message-State: AOJu0Yzj2SVbKoG0K3TUj9G95nEHN/FDcazbUmY+Z8JzlRrZbdZ7zYq1
+	0/xWZegwCwCN7iupffSJaAfhHntVw+coOiPYwki8J+dqX1BxaetTHsxQFVAt5sfLfEreL26DVpz
+	SflSO2YDj3whvsgodpPp848fYCPEUXam/CMAmUpfWsXSq8UyB
+X-Received: by 2002:a25:7391:0:b0:db7:dacf:ed65 with SMTP id o139-20020a257391000000b00db7dacfed65mr1729937ybc.70.1704747097762;
+        Mon, 08 Jan 2024 12:51:37 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEE32OTXBZZ4AqcenfCZ/npf5vs1T3rzedd0Tz3UXzGyBKTZfzreJp+V6uBk9p0wYuShiMc+Z+KKDA0CtYQxSY=
+X-Received: by 2002:a25:7391:0:b0:db7:dacf:ed65 with SMTP id
+ o139-20020a257391000000b00db7dacfed65mr1729902ybc.70.1704747097086; Mon, 08
+ Jan 2024 12:51:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240108150602.976232871@linuxfoundation.org>
-In-Reply-To: <20240108150602.976232871@linuxfoundation.org>
-From: Allen <allen.lkml@gmail.com>
-Date: Mon, 8 Jan 2024 11:02:19 -0800
-Message-ID: <CAOMdWSJei7UHccSGRcUD-A8uoKz-nGdpogVk5bOU6=3cHJ5s-w@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/124] 6.6.11-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+References: <20240108122823.2090312-1-sashal@kernel.org> <20240108122823.2090312-5-sashal@kernel.org>
+In-Reply-To: <20240108122823.2090312-5-sashal@kernel.org>
+From: David Airlie <airlied@redhat.com>
+Date: Tue, 9 Jan 2024 06:51:25 +1000
+Message-ID: <CAMwc25rAm1ndSiofWMMmQ1BeB0XxBvsHpcvaDKXUwEZp72iwEA@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.1 5/5] nouveau: fix disp disabling with GSP
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Dave Airlie <airlied@gmail.com>, kherbst@redhat.com, lyude@redhat.com, dakr@redhat.com, 
+	daniel@ffwll.ch, bskeggs@redhat.com, dri-devel@lists.freedesktop.org, 
+	nouveau@lists.freedesktop.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> This is the start of the stable review cycle for the 6.6.11 release.
-> There are 124 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+NAK for backporting this to anything, it is just a fix for 6.7
+
+
+On Mon, Jan 8, 2024 at 10:28=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
+te:
 >
-> Responses should be made by Wed, 10 Jan 2024 15:05:35 +0000.
-> Anything received after that time might be too late.
+> From: Dave Airlie <airlied@gmail.com>
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.11-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
+> [ Upstream commit 7854ea0e408d7f2e8faaada1773f3ddf9cb538f5 ]
 >
-> thanks,
+> This func ptr here is normally static allocation, but gsp r535
+> uses a dynamic pointer, so we need to handle that better.
 >
-> greg k-h
+> This fixes a crash with GSP when you use config=3Ddisp=3D0 to avoid
+> disp problems.
+>
+> Signed-off-by: Dave Airlie <airlied@redhat.com>
+> Link: https://patchwork.freedesktop.org/patch/msgid/20231222043308.309008=
+9-4-airlied@gmail.com
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/gpu/drm/nouveau/nvkm/engine/disp/base.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/nouveau/nvkm/engine/disp/base.c b/drivers/gp=
+u/drm/nouveau/nvkm/engine/disp/base.c
+> index 65c99d948b686..ae47eabd5d0bd 100644
+> --- a/drivers/gpu/drm/nouveau/nvkm/engine/disp/base.c
+> +++ b/drivers/gpu/drm/nouveau/nvkm/engine/disp/base.c
+> @@ -359,7 +359,7 @@ nvkm_disp_oneinit(struct nvkm_engine *engine)
+>         if (ret)
+>                 return ret;
+>
+> -       if (disp->func->oneinit) {
+> +       if (disp->func && disp->func->oneinit) {
+>                 ret =3D disp->func->oneinit(disp);
+>                 if (ret)
+>                         return ret;
+> @@ -461,8 +461,10 @@ nvkm_disp_new_(const struct nvkm_disp_func *func, st=
+ruct nvkm_device *device,
+>         spin_lock_init(&disp->client.lock);
+>
+>         ret =3D nvkm_engine_ctor(&nvkm_disp, device, type, inst, true, &d=
+isp->engine);
+> -       if (ret)
+> +       if (ret) {
+> +               disp->func =3D NULL;
+>                 return ret;
+> +       }
+>
+>         if (func->super) {
+>                 disp->super.wq =3D create_singlethread_workqueue("nvkm-di=
+sp");
+> --
+> 2.43.0
 >
 
-Compiled and booted on my x86_64 and ARM64 test systems. No errors or
-regressions.
-
-Tested-by: Allen Pais <apais@linux.microsoft.com>
-
-Thanks.
 
