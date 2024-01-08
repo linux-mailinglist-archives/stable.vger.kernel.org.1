@@ -1,48 +1,45 @@
-Return-Path: <stable+bounces-10198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F23318273AC
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:38:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F1C78273B8
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:39:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E1341F22855
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:38:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75BA81C22CEC
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:39:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C045C524A8;
-	Mon,  8 Jan 2024 15:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1B151C2E;
+	Mon,  8 Jan 2024 15:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LCQslfp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xyAl0yAP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8914751C5C;
-	Mon,  8 Jan 2024 15:38:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAB01C43391;
-	Mon,  8 Jan 2024 15:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225145103F;
+	Mon,  8 Jan 2024 15:38:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95263C433C8;
+	Mon,  8 Jan 2024 15:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704728295;
-	bh=vnOXTRwEIEHKXhGQGvT8a21htuQ5x8Z6r9APtgcF7BQ=;
+	s=korg; t=1704728330;
+	bh=PASqygUuI1rixLNTc+ZUF/+e0VnupNedd/R35bsXYzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1LCQslfpLZz894986RvZF7Zln/P3uJMhd0/VXrZjAijd5AGEDdL5Ib6d2DZ0sx1l3
-	 eDwZUPwYkGAMolYuerl1XKI3CMMHMp4/xg4OISEXUxTzIltMUbErCPrBV2U+1e/wvq
-	 dHJi88oqk20vsL2YWFOfpMjzSh8fQW47yvcS+yAo=
+	b=xyAl0yAPXn5IBhMka0qJnkGox5LkrmDnJGjYBYx92XqlUhZF6RnLHrSlh25d2cHwp
+	 pIbcIyg1FQ86V5oCuqPWmC34SGzjJSTPsB+JNbhqZ5ZmSXtOYeJ+c3ypj0JmkaHb1j
+	 1vdo/6RURVPB7UeX6BJOoP2UlMdLfdydP40VX+S4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suman Ghosh <sumang@marvell.com>,
-	Kurt Kanzenbach <kurt@linutronix.de>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Naama Meir <naamax.meir@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Chancel Liu <chancel.liu@nxp.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/150] igc: Check VLAN EtherType mask
-Date: Mon,  8 Jan 2024 16:34:35 +0100
-Message-ID: <20240108153512.405496117@linuxfoundation.org>
+Subject: [PATCH 6.1 025/150] ASoC: fsl_rpmsg: Fix error handler with pm_runtime_enable
+Date: Mon,  8 Jan 2024 16:34:36 +0100
+Message-ID: <20240108153512.437750208@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108153511.214254205@linuxfoundation.org>
 References: <20240108153511.214254205@linuxfoundation.org>
@@ -61,70 +58,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kurt Kanzenbach <kurt@linutronix.de>
+From: Chancel Liu <chancel.liu@nxp.com>
 
-[ Upstream commit 7afd49a38e73afd57ff62c8d1cf5af760c4d49c0 ]
+[ Upstream commit f9d378fc68c43fd41b35133edec9cd902ec334ec ]
 
-Currently the driver accepts VLAN EtherType steering rules regardless of
-the configured mask. And things might fail silently or with confusing error
-messages to the user. The VLAN EtherType can only be matched by full
-mask. Therefore, add a check for that.
+There is error message when defer probe happens:
 
-For instance the following rule is invalid, but the driver accepts it and
-ignores the user specified mask:
-|root@host:~# ethtool -N enp3s0 flow-type ether vlan-etype 0x8100 \
-|             m 0x00ff action 0
-|Added rule with ID 63
-|root@host:~# ethtool --show-ntuple enp3s0
-|4 RX rings available
-|Total 1 rules
-|
-|Filter: 63
-|        Flow Type: Raw Ethernet
-|        Src MAC addr: 00:00:00:00:00:00 mask: FF:FF:FF:FF:FF:FF
-|        Dest MAC addr: 00:00:00:00:00:00 mask: FF:FF:FF:FF:FF:FF
-|        Ethertype: 0x0 mask: 0xFFFF
-|        VLAN EtherType: 0x8100 mask: 0x0
-|        VLAN: 0x0 mask: 0xffff
-|        User-defined: 0x0 mask: 0xffffffffffffffff
-|        Action: Direct to queue 0
+fsl_rpmsg rpmsg_audio: Unbalanced pm_runtime_enable!
 
-After:
-|root@host:~# ethtool -N enp3s0 flow-type ether vlan-etype 0x8100 \
-|             m 0x00ff action 0
-|rmgr: Cannot insert RX class rule: Operation not supported
+Fix the error handler with pm_runtime_enable.
 
-Fixes: 2b477d057e33 ("igc: Integrate flex filter into ethtool ops")
-Suggested-by: Suman Ghosh <sumang@marvell.com>
-Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: b73d9e6225e8 ("ASoC: fsl_rpmsg: Add CPU DAI driver for audio base on rpmsg")
+Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+Link: https://lore.kernel.org/r/20231225080608.967953-1-chancel.liu@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_ethtool.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ sound/soc/fsl/fsl_rpmsg.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_ethtool.c b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-index e146357d61a8a..2bee9cace5983 100644
---- a/drivers/net/ethernet/intel/igc/igc_ethtool.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ethtool.c
-@@ -1356,6 +1356,14 @@ static int igc_ethtool_add_nfc_rule(struct igc_adapter *adapter,
- 		return -EOPNOTSUPP;
+diff --git a/sound/soc/fsl/fsl_rpmsg.c b/sound/soc/fsl/fsl_rpmsg.c
+index bf94838bdbefe..5c07a8ff0c9c0 100644
+--- a/sound/soc/fsl/fsl_rpmsg.c
++++ b/sound/soc/fsl/fsl_rpmsg.c
+@@ -231,7 +231,7 @@ static int fsl_rpmsg_probe(struct platform_device *pdev)
+ 	ret = devm_snd_soc_register_component(&pdev->dev, &fsl_component,
+ 					      &fsl_rpmsg_dai, 1);
+ 	if (ret)
+-		return ret;
++		goto err_pm_disable;
+ 
+ 	rpmsg->card_pdev = platform_device_register_data(&pdev->dev,
+ 							 "imx-audio-rpmsg",
+@@ -241,16 +241,22 @@ static int fsl_rpmsg_probe(struct platform_device *pdev)
+ 	if (IS_ERR(rpmsg->card_pdev)) {
+ 		dev_err(&pdev->dev, "failed to register rpmsg card\n");
+ 		ret = PTR_ERR(rpmsg->card_pdev);
+-		return ret;
++		goto err_pm_disable;
  	}
  
-+	/* VLAN EtherType can only be matched by full mask. */
-+	if ((fsp->flow_type & FLOW_EXT) &&
-+	    fsp->m_ext.vlan_etype &&
-+	    fsp->m_ext.vlan_etype != ETHER_TYPE_FULL_MASK) {
-+		netdev_dbg(netdev, "VLAN EtherType mask not supported\n");
-+		return -EOPNOTSUPP;
-+	}
+ 	return 0;
 +
- 	if (fsp->location >= IGC_MAX_RXNFC_RULES) {
- 		netdev_dbg(netdev, "Invalid location\n");
- 		return -EINVAL;
++err_pm_disable:
++	pm_runtime_disable(&pdev->dev);
++	return ret;
+ }
+ 
+ static int fsl_rpmsg_remove(struct platform_device *pdev)
+ {
+ 	struct fsl_rpmsg *rpmsg = platform_get_drvdata(pdev);
+ 
++	pm_runtime_disable(&pdev->dev);
++
+ 	if (rpmsg->card_pdev)
+ 		platform_device_unregister(rpmsg->card_pdev);
+ 
 -- 
 2.43.0
 
