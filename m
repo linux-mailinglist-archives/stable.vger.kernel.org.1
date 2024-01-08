@@ -1,131 +1,117 @@
-Return-Path: <stable+bounces-10035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72C2F8271E1
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:52:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE7B8271EB
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:53:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 107801F224CA
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 14:52:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FAFD1C22B0B
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 14:53:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604FB41767;
-	Mon,  8 Jan 2024 14:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA9647788;
+	Mon,  8 Jan 2024 14:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mRgG5hW+"
+	dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b="KdPWUVIq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx.manguebit.com (mx.manguebit.com [167.235.159.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268B94777C;
-	Mon,  8 Jan 2024 14:52:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DCB4C433C7;
-	Mon,  8 Jan 2024 14:52:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704725548;
-	bh=wdN+qxLwvdtOT6W/sXpFUa78ssD1EepeKJXNbsHBzuI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mRgG5hW+BKXr4DywkFqG48Vvtv1NQoyGPLh0gTgv1mGnJujs1MFUnl8KA/t1egtBu
-	 TzFTQnUdA/Nng8dovQYlXKiclk/OSqfDYjfkpLjMnyNG3P3Vsj16JPlCjKzjWSO+v4
-	 8d4SKcMummiHZB4aQopBeKANOXQCGHNmXN3LKPxY/IpkO7Fn+fjau9PFl7czYGka9Q
-	 7CyaL4zDBYkx1Eel8SGc4CUM0Ey/RlhFkMcFG9ISoWXaZxazuB2GnE/rpLwdE9SOes
-	 MpSwM9ppK/40LVoXVfaG6VajZK1EjrvJMZnL0MyKDr8Gsfwt6FhZZRQZEanCHY8q1b
-	 Dyt5Sqx03Y2mg==
-Date: Mon, 8 Jan 2024 14:52:24 +0000
-From: Lee Jones <lee@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.4 062/165] net: usb: lan78xx: reorder cleanup
- operations to avoid UAF bugs
-Message-ID: <20240108145224.GA641998@google.com>
-References: <20230809103642.720851262@linuxfoundation.org>
- <20230809103644.851543936@linuxfoundation.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF9E43140;
+	Mon,  8 Jan 2024 14:52:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.com
+Message-ID: <446860c571d0699ed664175262a9e84b@manguebit.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
+	s=dkim; t=1704725570;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t+i5JdjKCVjgU6vgNmEIDAR0g7GR4mu/Bvs75gpMMnE=;
+	b=KdPWUVIqX+Xh926sXVwSBYIO6gfEPBWlJ1qkNFoBRmZH4o4EY3ZvhF/GjDxh/FVHf8FNNX
+	/UH9mFM39l8mH7m+jQFVE9OdvHxmwpmh7jaZzNjIeEXiICjxHGKV8GwJGi81NN9H7nm5Iq
+	l8kOVX4qY7LggrbNhAW5JIA5qxsG6xjWGpsPZwIHxG8WsqprsqbHKSjk2BTF2v9QXUu2Z6
+	XYf9SQM2ccltnN9+A2PiaCnjvC6fAcpHN1mxRlXqLcfX8xUq33VQ7SiQEs4ALAiQe50tnJ
+	R5rt3xFuUFnmMFbTqjeLB6ufA64kY1f30tjyghe8oE5ZTKZGZjJ5Xj1R4iDqzw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
+	s=dkim; t=1704725570; h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t+i5JdjKCVjgU6vgNmEIDAR0g7GR4mu/Bvs75gpMMnE=;
+	b=TccRxjs6rPyPYQjuZvktAOMRhZYCLWTGDuWV0AG+Ruz7rkpqmFPBQnGmDzZY73gQUqzIrL
+	qlJ/uAJvU9sGoG6iyEc3Mk6fYjvZ2NOwOUHfhzRBxpM5LTLV6DdVU1y01uTf9Fr87XLvFG
+	KILXHkADqkGWxfyHt8Xb2ru7PWvKCEsRYADziGh6g4tjNGf5irGvqDB6lrtQ8+9WqnQfoe
+	pABEK8PRQcUdL/UupqNqGROZg1xN75Z6tzOwFh6YVKU2YsmfEEDzXjNKADtEMUE1oDMTTG
+	ut9ysVPR4iXBFryPujnlwVqmgNiL6T0XCPSbWbbzIZbIc+sGDo++ACNjL+d0YA==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.mailfrom=pc@manguebit.com
+ARC-Seal: i=1; s=dkim; d=manguebit.com; t=1704725570; a=rsa-sha256;
+	cv=none;
+	b=r9kVvNpNv7obhsk1ANYiPmKIqp/nUSBKIpuxQWB4fpQ9ItzWBU12jCnWpoTn7g3DhqOJpo
+	wi29P26fzH6D7cHIjb+Bg+oAxBsOA0+Nc/V7pXQtdw/Pb3OBr3z1OZGccUMA3rAifAVxYS
+	SQsbbbcYqeGnX93/cyZ1WTqad/+YsWNn/z5WGAEYIzwN8TIDpG9Es1910MBWWSWkAJx4JG
+	+P2nvdNq5TPobIHGRwLqXv8hjoPrjnIRUcSVw9czrPP3Ydf3PGLmkKHJeULeASOecWbJBd
+	L7AC6t6JxVrPjt0Y7qENuBXE94bjobvMvq1st0cJPn0k9Y2T4OnlvXf8XirYDA==
+From: Paulo Alcantara <pc@manguebit.com>
+To: Jan =?utf-8?B?xIxlcm3DoWs=?= <sairon@sairon.cz>, Leonardo Brondani
+ Schenkel
+ <leonardo@schenkel.net>, stable@vger.kernel.org, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>
+Cc: regressions@lists.linux.dev, linux-cifs@vger.kernel.org, Mathias
+ =?utf-8?Q?Wei=C3=9Fbach?= <m.weissbach@info-gate.de>
+Subject: Re: [REGRESSION 6.1.70] system calls with CIFS mounts failing with
+ "Resource temporarily unavailable"
+In-Reply-To: <7425b05a-d9a1-4c06-89a2-575504e132c3@sairon.cz>
+References: <8ad7c20e-0645-40f3-96e6-75257b4bd31a@schenkel.net>
+ <7425b05a-d9a1-4c06-89a2-575504e132c3@sairon.cz>
+Date: Mon, 08 Jan 2024 11:52:45 -0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230809103644.851543936@linuxfoundation.org>
+Content-Type: text/plain
 
-On Wed, 09 Aug 2023, Greg Kroah-Hartman wrote:
+Hi Jan,
 
-> From: Duoming Zhou <duoming@zju.edu.cn>
-> 
-> [ Upstream commit 1e7417c188d0a83fb385ba2dbe35fd2563f2b6f3 ]
-> 
-> The timer dev->stat_monitor can schedule the delayed work dev->wq and
-> the delayed work dev->wq can also arm the dev->stat_monitor timer.
-> 
-> When the device is detaching, the net_device will be deallocated. but
-> the net_device private data could still be dereferenced in delayed work
-> or timer handler. As a result, the UAF bugs will happen.
-> 
-> One racy situation is shown below:
-> 
->       (Thread 1)                 |      (Thread 2)
-> lan78xx_stat_monitor()           |
->  ...                             |  lan78xx_disconnect()
->  lan78xx_defer_kevent()          |    ...
->   ...                            |    cancel_delayed_work_sync(&dev->wq);
->   schedule_delayed_work()        |    ...
->   (wait some time)               |    free_netdev(net); //free net_device
->   lan78xx_delayedwork()          |
->   //use net_device private data  |
->   dev-> //use                    |
-> 
-> Although we use cancel_delayed_work_sync() to cancel the delayed work
-> in lan78xx_disconnect(), it could still be scheduled in timer handler
-> lan78xx_stat_monitor().
-> 
-> Another racy situation is shown below:
-> 
->       (Thread 1)                |      (Thread 2)
-> lan78xx_delayedwork             |
->  mod_timer()                    |  lan78xx_disconnect()
->                                 |   cancel_delayed_work_sync()
->  (wait some time)               |   if (timer_pending(&dev->stat_monitor))
->              	                |       del_timer_sync(&dev->stat_monitor);
->  lan78xx_stat_monitor()         |   ...
->   lan78xx_defer_kevent()        |   free_netdev(net); //free
->    //use net_device private data|
->    dev-> //use                  |
-> 
-> Although we use del_timer_sync() to delete the timer, the function
-> timer_pending() returns 0 when the timer is activated. As a result,
-> the del_timer_sync() will not be executed and the timer could be
-> re-armed.
-> 
-> In order to mitigate this bug, We use timer_shutdown_sync() to shutdown
-> the timer and then use cancel_delayed_work_sync() to cancel the delayed
-> work. As a result, the net_device could be deallocated safely.
-> 
-> What's more, the dev->flags is set to EVENT_DEV_DISCONNECT in
-> lan78xx_disconnect(). But it could still be set to EVENT_STAT_UPDATE
-> in lan78xx_stat_monitor(). So this patch put the set_bit() behind
-> timer_shutdown_sync().
-> 
-> Fixes: 77dfff5bb7e2 ("lan78xx: Fix race condition in disconnect handling")
+Thanks for the report.
 
-Any idea why this stopped at linux-6.4.y?  The aforementioned Fixes:
-commit also exists in linux-6.1.y and linux-5.15.y.  I don't see any
-earlier backport attempts or failure reports that would otherwise
-explain this.
+So this bug is related to an off-by-one in smb2_set_next_command() when
+the client attempts to pad SMB2_QUERY_INFO request -- since it isn't 8 byte
+aligned -- even though smb2_query_info_compound() doesn't provide an extra
+iov for such padding.
 
-> Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-> Signed-off-by: David S. Miller <davem@davemloft.net>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  drivers/net/usb/lan78xx.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
+v6.1.y doesn't have
 
--- 
-Lee Jones [李琼斯]
+        eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-arrays")
+
+and the commit does
+
+	+	if (unlikely(check_add_overflow(input_len, sizeof(*req), &len) ||
+	+		     len > CIFSMaxBufSize))
+	+		return -EINVAL;
+	+
+
+so sizeof(*req) will wrongly include the extra byte from
+smb2_query_info_req::Buffer making @len unaligned and therefore causing
+OOB in smb2_set_next_command().
+
+A simple fix for that would be
+
+	diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+	index 05ff8a457a3d..aed5067661de 100644
+	--- a/fs/smb/client/smb2pdu.c
+	+++ b/fs/smb/client/smb2pdu.c
+	@@ -3556,7 +3556,7 @@ SMB2_query_info_init(struct cifs_tcon *tcon, struct TCP_Server_Info *server,
+	 
+	 	iov[0].iov_base = (char *)req;
+	 	/* 1 for Buffer */
+	-	iov[0].iov_len = len;
+	+	iov[0].iov_len = len - 1;
+	 	return 0;
+	 }
 
