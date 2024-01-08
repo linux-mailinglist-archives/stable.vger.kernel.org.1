@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-10079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09A6482724F
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:11:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B837B827254
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:11:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CACE41C22902
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:11:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BF5F2844C5
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25BF4C602;
-	Mon,  8 Jan 2024 15:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F714C3DC;
+	Mon,  8 Jan 2024 15:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mmk6nCvd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rKXvD2RO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95734A99F;
-	Mon,  8 Jan 2024 15:11:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D177AC433C7;
-	Mon,  8 Jan 2024 15:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B6F487A7;
+	Mon,  8 Jan 2024 15:11:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52CFBC433C7;
+	Mon,  8 Jan 2024 15:11:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704726694;
-	bh=3W8zysRFWUCFuASFn0nlm1f58EL4Pnl/l4S1MX1vtO4=;
+	s=korg; t=1704726700;
+	bh=IFVo/+dEL+zIp6AIJO9oOUgaDp9R+/tIMQlKnNZBTAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mmk6nCvdhpDohdsFIpGLqVpIUlm/ww3oqICInOpRksmhj1uaq9y6YeLt1fPaXpz7p
-	 P8E4pvyaNgjP5/tO4X77UoRWhM5HDtw1BVB7CjfoL7FPs5M7cMdezd2vwXOLbz2Mnk
-	 xroeL07bvmibkU0oxK+OZC6gHq4gInvT5OpQ46Gs=
+	b=rKXvD2ROLS5CepKfaNEiOvBqdBEE1QxpsriHz5W+XxC2Vicj918z+s2dBxClBHQ80
+	 SYmtxiCgj9/1qvDC1vVm8ThErKlKvPGXpXZxnRzterZuhpn16Jey14daUJr5G3P2hD
+	 esu8jpOvTBpCuTuh7ED36AeKyTBTEnhN5dTG20uQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 048/124] ASoC: meson: g12a-toacodec: Fix event generation
-Date: Mon,  8 Jan 2024 16:07:54 +0100
-Message-ID: <20240108150605.182686022@linuxfoundation.org>
+Subject: [PATCH 6.6 049/124] ASoC: meson: g12a-tohdmitx: Fix event generation for S/PDIF mux
+Date: Mon,  8 Jan 2024 16:07:55 +0100
+Message-ID: <20240108150605.222582907@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108150602.976232871@linuxfoundation.org>
 References: <20240108150602.976232871@linuxfoundation.org>
@@ -58,27 +58,27 @@ Content-Transfer-Encoding: 8bit
 
 From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 172c88244b5f2d3375403ebb504d407be0fded59 ]
+[ Upstream commit b036d8ef3120b996751495ce25994eea58032a98 ]
 
 When a control changes value the return value from _put() should be 1 so
 we get events generated to userspace notifying applications of the change.
-We are checking if there has been a change and exiting early if not but we
-are not providing the correct return value in the latter case, fix this.
+While the I2S mux gets this right the S/PDIF mux does not, fix the return
+value.
 
-Fixes: af2618a2eee8 ("ASoC: meson: g12a: add internal DAC glue driver")
+Fixes: c8609f3870f7 ("ASoC: meson: add g12a tohdmitx control")
 Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240103-meson-enum-val-v1-3-424af7a8fb91@kernel.org
+Link: https://lore.kernel.org/r/20240103-meson-enum-val-v1-4-424af7a8fb91@kernel.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/meson/g12a-toacodec.c | 2 +-
+ sound/soc/meson/g12a-tohdmitx.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/meson/g12a-toacodec.c b/sound/soc/meson/g12a-toacodec.c
-index dd7f07de2685a..531bb8707a3ec 100644
---- a/sound/soc/meson/g12a-toacodec.c
-+++ b/sound/soc/meson/g12a-toacodec.c
-@@ -104,7 +104,7 @@ static int g12a_toacodec_mux_put_enum(struct snd_kcontrol *kcontrol,
+diff --git a/sound/soc/meson/g12a-tohdmitx.c b/sound/soc/meson/g12a-tohdmitx.c
+index 51b7703e1834f..b92434125face 100644
+--- a/sound/soc/meson/g12a-tohdmitx.c
++++ b/sound/soc/meson/g12a-tohdmitx.c
+@@ -118,7 +118,7 @@ static int g12a_tohdmitx_spdif_mux_put_enum(struct snd_kcontrol *kcontrol,
  
  	snd_soc_dapm_mux_update_power(dapm, kcontrol, mux, e, NULL);
  
@@ -86,7 +86,7 @@ index dd7f07de2685a..531bb8707a3ec 100644
 +	return 1;
  }
  
- static SOC_ENUM_SINGLE_DECL(g12a_toacodec_mux_enum, TOACODEC_CTRL0,
+ static SOC_ENUM_SINGLE_DECL(g12a_tohdmitx_spdif_mux_enum, TOHDMITX_CTRL0,
 -- 
 2.43.0
 
