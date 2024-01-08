@@ -1,142 +1,228 @@
-Return-Path: <stable+bounces-10169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA42382737C
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:36:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C4B682745B
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:46:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 464411F22840
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:36:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF5271F21E93
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A451051021;
-	Mon,  8 Jan 2024 15:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A1C953E19;
+	Mon,  8 Jan 2024 15:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QI6F3G0W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EvzpmsGZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C0451008;
-	Mon,  8 Jan 2024 15:36:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 408F0Oso004201;
-	Mon, 8 Jan 2024 15:36:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=1/yMGOYu2o111xMSjyfEKkROxqaEP9nQBApj9fCKdz4=; b=QI
-	6F3G0W+JWNl5H3o8RFlY/uNGzR6Xx8L0ys3flED1TKhKCl/YCmOy/LUxzTfuR2k4
-	7n/BZY49OOvD6ny29nNxXcSPBIQR/9Ej3JuP3uCTZ7rYfsyAOH2+dJUYJpWYtHg1
-	c1e+Z6y7NvL7hpWekFzijyK1ZJFh1FLJFci0+ok6+jwLNPdHPsqg7qbDHkq6V9M+
-	fNXap+eJ1VQc18E3k3ZijEMAqvmT19nLj+8SRPiZTUO7/1/oAN+bF0EisB07rGHE
-	34vL/Tk4iWfle2QpOlk7HqTpo3CSlfUlJHR2BUfK1V73hFg9rSfvfHSNKul+FRb1
-	+9MDqmiyHsemNdn6cE8A==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vg8mx9eks-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Jan 2024 15:36:20 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 408FaJE2025601
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 8 Jan 2024 15:36:19 GMT
-Received: from [10.216.17.83] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 8 Jan
- 2024 07:36:16 -0800
-Message-ID: <ee523f70-f41b-42be-967d-60691001b895@quicinc.com>
-Date: Mon, 8 Jan 2024 21:06:12 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22111537E3;
+	Mon,  8 Jan 2024 15:44:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32EBDC433C7;
+	Mon,  8 Jan 2024 15:44:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1704728670;
+	bh=JXPMbjN82ScDwLMyB4couM3pn+4slg1Pdrv/ULQzMNo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=EvzpmsGZKjwmj6prPsuQ4G4BjYkIjv9Uffghn5qywfGu9d4cim7/gCr2MncoOYcTN
+	 wmP47k/dy1ewZ5gF2kBy80/8lN4i0sPMIp1LbAxC5OTSC3b6sllaZN2JDZcF4dfQvX
+	 zM1O4XFnOl8EYyK/loSADJj1KuMB491M7BCp4Mao=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Vlad Buslov <vladbu@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 122/150] netfilter: flowtable: cache info of last offload
+Date: Mon,  8 Jan 2024 16:36:13 +0100
+Message-ID: <20240108153516.820414538@linuxfoundation.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240108153511.214254205@linuxfoundation.org>
+References: <20240108153511.214254205@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] usb: core: Prevent null pointer dereference in
- update_port_device_state
-Content-Language: en-US
-To: Alan Stern <stern@rowland.harvard.edu>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Krishna Kurapati
-	<quic_kriskura@quicinc.com>,
-        <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-References: <20240108130706.15698-1-quic_ugoswami@quicinc.com>
- <2d801dd7-93de-4323-a214-1a73cc5a8451@rowland.harvard.edu>
-From: Udipto Goswami <quic_ugoswami@quicinc.com>
-In-Reply-To: <2d801dd7-93de-4323-a214-1a73cc5a8451@rowland.harvard.edu>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: qEuM_RaaruA5_t3wM-mvA2220RFLOhSY
-X-Proofpoint-ORIG-GUID: qEuM_RaaruA5_t3wM-mvA2220RFLOhSY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
- malwarescore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
- mlxlogscore=811 adultscore=0 impostorscore=0 mlxscore=0 spamscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2401080132
+Content-Transfer-Encoding: 8bit
 
-On 1/8/2024 8:56 PM, Alan Stern wrote:
-> On Mon, Jan 08, 2024 at 06:37:06PM +0530, Udipto Goswami wrote:
->> Currently,the function update_port_device_state gets the usb_hub from
->> udev->parent by calling usb_hub_to_struct_hub.
->> However, in case the actconfig or the maxchild is 0, the usb_hub would
->> be NULL and upon further accessing to get port_dev would result in null
->> pointer dereference.
->>
->> Fix this by introducing an if check after the usb_hub is populated.
->>
->> Fixes: 83cb2604f641 ("usb: core: add sysfs entry for usb device state")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Udipto Goswami <quic_ugoswami@quicinc.com>
->> ---
->> v2: Introduced comment for the if check & CC'ed stable.
->>
->>   drivers/usb/core/hub.c | 15 ++++++++++++---
->>   1 file changed, 12 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
->> index ffd7c99e24a3..d40b5500f95b 100644
->> --- a/drivers/usb/core/hub.c
->> +++ b/drivers/usb/core/hub.c
->> @@ -2053,9 +2053,18 @@ static void update_port_device_state(struct usb_device *udev)
->>   
->>   	if (udev->parent) {
->>   		hub = usb_hub_to_struct_hub(udev->parent);
->> -		port_dev = hub->ports[udev->portnum - 1];
->> -		WRITE_ONCE(port_dev->state, udev->state);
->> -		sysfs_notify_dirent(port_dev->state_kn);
->> +
->> +		/*
->> +		 * usb_hub_to_struct_hub() if returns NULL can
->> +		 * potentially cause NULL pointer dereference upon further
->> +		 * access.
->> +		 * Avoid this with an if check.
->> +		 */
-> 
-> This is not what I meant.  It's perfectly obvious that if
-> usb_hub_to_struct_hub() returns NULL then there will be a NULL-pointer
-> dereference.  You don't need to explain that to anybody.
-> 
-> Instead, you need to explain why it is _possible_ for
-> usb_hub_to_struct_hub() to return NULL.  The reason is because the
-> lvstest driver messes around with usbcore internals without telling the
-> hub driver, so hub will be NULL in cases where udev was created by
-> lvstest.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
-aah okay, Thanks for the clarification. I'll re-write the comment 
-mentioning this.
+------------------
 
-Thanks,
--Udipto
+From: Vlad Buslov <vladbu@nvidia.com>
+
+[ Upstream commit 1a441a9b8be8849957a01413a144f84932c324cb ]
+
+Modify flow table offload to cache the last ct info status that was passed
+to the driver offload callbacks by extending enum nf_flow_flags with new
+"NF_FLOW_HW_ESTABLISHED" flag. Set the flag if ctinfo was 'established'
+during last act_ct meta actions fill call. This infrastructure change is
+necessary to optimize promoting of UDP connections from 'new' to
+'established' in following patches in this series.
+
+Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 125f1c7f26ff ("net/sched: act_ct: Take per-cb reference to tcf_ct_flow_table")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/net/netfilter/nf_flow_table.h |  7 ++++---
+ net/netfilter/nf_flow_table_inet.c    |  2 +-
+ net/netfilter/nf_flow_table_offload.c |  6 +++---
+ net/sched/act_ct.c                    | 12 +++++++-----
+ 4 files changed, 15 insertions(+), 12 deletions(-)
+
+diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
+index 88ab98ab41d9f..ebb28ec5b6faf 100644
+--- a/include/net/netfilter/nf_flow_table.h
++++ b/include/net/netfilter/nf_flow_table.h
+@@ -57,7 +57,7 @@ struct nf_flowtable_type {
+ 						 struct net_device *dev,
+ 						 enum flow_block_command cmd);
+ 	int				(*action)(struct net *net,
+-						  const struct flow_offload *flow,
++						  struct flow_offload *flow,
+ 						  enum flow_offload_tuple_dir dir,
+ 						  struct nf_flow_rule *flow_rule);
+ 	void				(*free)(struct nf_flowtable *ft);
+@@ -165,6 +165,7 @@ enum nf_flow_flags {
+ 	NF_FLOW_HW_DEAD,
+ 	NF_FLOW_HW_PENDING,
+ 	NF_FLOW_HW_BIDIRECTIONAL,
++	NF_FLOW_HW_ESTABLISHED,
+ };
+ 
+ enum flow_offload_type {
+@@ -313,10 +314,10 @@ void nf_flow_table_offload_flush_cleanup(struct nf_flowtable *flowtable);
+ int nf_flow_table_offload_setup(struct nf_flowtable *flowtable,
+ 				struct net_device *dev,
+ 				enum flow_block_command cmd);
+-int nf_flow_rule_route_ipv4(struct net *net, const struct flow_offload *flow,
++int nf_flow_rule_route_ipv4(struct net *net, struct flow_offload *flow,
+ 			    enum flow_offload_tuple_dir dir,
+ 			    struct nf_flow_rule *flow_rule);
+-int nf_flow_rule_route_ipv6(struct net *net, const struct flow_offload *flow,
++int nf_flow_rule_route_ipv6(struct net *net, struct flow_offload *flow,
+ 			    enum flow_offload_tuple_dir dir,
+ 			    struct nf_flow_rule *flow_rule);
+ 
+diff --git a/net/netfilter/nf_flow_table_inet.c b/net/netfilter/nf_flow_table_inet.c
+index 0ccabf3fa6aa3..9505f9d188ff2 100644
+--- a/net/netfilter/nf_flow_table_inet.c
++++ b/net/netfilter/nf_flow_table_inet.c
+@@ -39,7 +39,7 @@ nf_flow_offload_inet_hook(void *priv, struct sk_buff *skb,
+ }
+ 
+ static int nf_flow_rule_route_inet(struct net *net,
+-				   const struct flow_offload *flow,
++				   struct flow_offload *flow,
+ 				   enum flow_offload_tuple_dir dir,
+ 				   struct nf_flow_rule *flow_rule)
+ {
+diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
+index 8b852f10fab4b..1c26f03fc6617 100644
+--- a/net/netfilter/nf_flow_table_offload.c
++++ b/net/netfilter/nf_flow_table_offload.c
+@@ -679,7 +679,7 @@ nf_flow_rule_route_common(struct net *net, const struct flow_offload *flow,
+ 	return 0;
+ }
+ 
+-int nf_flow_rule_route_ipv4(struct net *net, const struct flow_offload *flow,
++int nf_flow_rule_route_ipv4(struct net *net, struct flow_offload *flow,
+ 			    enum flow_offload_tuple_dir dir,
+ 			    struct nf_flow_rule *flow_rule)
+ {
+@@ -704,7 +704,7 @@ int nf_flow_rule_route_ipv4(struct net *net, const struct flow_offload *flow,
+ }
+ EXPORT_SYMBOL_GPL(nf_flow_rule_route_ipv4);
+ 
+-int nf_flow_rule_route_ipv6(struct net *net, const struct flow_offload *flow,
++int nf_flow_rule_route_ipv6(struct net *net, struct flow_offload *flow,
+ 			    enum flow_offload_tuple_dir dir,
+ 			    struct nf_flow_rule *flow_rule)
+ {
+@@ -735,7 +735,7 @@ nf_flow_offload_rule_alloc(struct net *net,
+ {
+ 	const struct nf_flowtable *flowtable = offload->flowtable;
+ 	const struct flow_offload_tuple *tuple, *other_tuple;
+-	const struct flow_offload *flow = offload->flow;
++	struct flow_offload *flow = offload->flow;
+ 	struct dst_entry *other_dst = NULL;
+ 	struct nf_flow_rule *flow_rule;
+ 	int err = -ENOMEM;
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index 478cedc29b737..86d269724485a 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -168,11 +168,11 @@ tcf_ct_flow_table_add_action_nat_udp(const struct nf_conntrack_tuple *tuple,
+ 
+ static void tcf_ct_flow_table_add_action_meta(struct nf_conn *ct,
+ 					      enum ip_conntrack_dir dir,
++					      enum ip_conntrack_info ctinfo,
+ 					      struct flow_action *action)
+ {
+ 	struct nf_conn_labels *ct_labels;
+ 	struct flow_action_entry *entry;
+-	enum ip_conntrack_info ctinfo;
+ 	u32 *act_ct_labels;
+ 
+ 	entry = tcf_ct_flow_table_flow_action_get_next(action);
+@@ -180,8 +180,6 @@ static void tcf_ct_flow_table_add_action_meta(struct nf_conn *ct,
+ #if IS_ENABLED(CONFIG_NF_CONNTRACK_MARK)
+ 	entry->ct_metadata.mark = READ_ONCE(ct->mark);
+ #endif
+-	ctinfo = dir == IP_CT_DIR_ORIGINAL ? IP_CT_ESTABLISHED :
+-					     IP_CT_ESTABLISHED_REPLY;
+ 	/* aligns with the CT reference on the SKB nf_ct_set */
+ 	entry->ct_metadata.cookie = (unsigned long)ct | ctinfo;
+ 	entry->ct_metadata.orig_dir = dir == IP_CT_DIR_ORIGINAL;
+@@ -235,22 +233,26 @@ static int tcf_ct_flow_table_add_action_nat(struct net *net,
+ }
+ 
+ static int tcf_ct_flow_table_fill_actions(struct net *net,
+-					  const struct flow_offload *flow,
++					  struct flow_offload *flow,
+ 					  enum flow_offload_tuple_dir tdir,
+ 					  struct nf_flow_rule *flow_rule)
+ {
+ 	struct flow_action *action = &flow_rule->rule->action;
+ 	int num_entries = action->num_entries;
+ 	struct nf_conn *ct = flow->ct;
++	enum ip_conntrack_info ctinfo;
+ 	enum ip_conntrack_dir dir;
+ 	int i, err;
+ 
+ 	switch (tdir) {
+ 	case FLOW_OFFLOAD_DIR_ORIGINAL:
+ 		dir = IP_CT_DIR_ORIGINAL;
++		ctinfo = IP_CT_ESTABLISHED;
++		set_bit(NF_FLOW_HW_ESTABLISHED, &flow->flags);
+ 		break;
+ 	case FLOW_OFFLOAD_DIR_REPLY:
+ 		dir = IP_CT_DIR_REPLY;
++		ctinfo = IP_CT_ESTABLISHED_REPLY;
+ 		break;
+ 	default:
+ 		return -EOPNOTSUPP;
+@@ -260,7 +262,7 @@ static int tcf_ct_flow_table_fill_actions(struct net *net,
+ 	if (err)
+ 		goto err_nat;
+ 
+-	tcf_ct_flow_table_add_action_meta(ct, dir, action);
++	tcf_ct_flow_table_add_action_meta(ct, dir, ctinfo, action);
+ 	return 0;
+ 
+ err_nat:
+-- 
+2.43.0
+
+
+
 
