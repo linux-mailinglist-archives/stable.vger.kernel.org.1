@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-10272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B470D827426
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:44:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2DC6827432
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:45:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 635B0280FC6
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:44:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 137FE1C212BE
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:45:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2EA51C3D;
-	Mon,  8 Jan 2024 15:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145055477C;
+	Mon,  8 Jan 2024 15:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXyjTg8t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jMsrLN2X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7553652F8B;
-	Mon,  8 Jan 2024 15:42:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F058DC433C8;
-	Mon,  8 Jan 2024 15:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77CC537FD;
+	Mon,  8 Jan 2024 15:42:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E135C433C9;
+	Mon,  8 Jan 2024 15:42:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704728529;
-	bh=9gdN4uOo4NRNeW+VvTiM/+MN0ESLIHKr3Y9NNSauEUI=;
+	s=korg; t=1704728563;
+	bh=H/R/nhiya/oFUBkyRvt/rXR8LicDkrGN0ai8oDSTnE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VXyjTg8tpQmEyOW5VLgj6amvCIQ9tJBFbcL85oAipMlZ+/5GDPLZLKUNg4NXN3iW+
-	 K6vYZUOEGKKp0GsyYSYdFyArJBmvJxz3CZuqImag1QelN9esg1L67pFhkD1EbtAlyZ
-	 Ue6y7kWOAthpIZm6iliI27hEGVHc7wJ4lgjz9gVU=
+	b=jMsrLN2X0CTGev0CpXebBcmEWYB+g9AW216/0Q++s7zIvng/98cHtbt0BMvYKvF0V
+	 khz9k/XCrO8pQL89g6tnUz9fHeV+zusy6hoFFl2lSRcOs/l84jhvEIVkLc7oB4R7Ua
+	 LkOngYlGlDtAnw95Mt55lcqpTiniW1RE3bmnaFYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Sumanth Korikkar <sumanthk@linux.ibm.com>,
 	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/150] s390/mm: add missing arch_set_page_dat() call to vmem_crst_alloc()
-Date: Mon,  8 Jan 2024 16:35:39 +0100
-Message-ID: <20240108153515.289158857@linuxfoundation.org>
+Subject: [PATCH 6.1 089/150] s390/cpumf: support user space events for counting
+Date: Mon,  8 Jan 2024 16:35:40 +0100
+Message-ID: <20240108153515.337386634@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108153511.214254205@linuxfoundation.org>
 References: <20240108153511.214254205@linuxfoundation.org>
@@ -58,60 +58,90 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Thomas Richter <tmricht@linux.ibm.com>
 
-[ Upstream commit 09cda0a400519b1541591c506e54c9c48e3101bf ]
+[ Upstream commit 91d5364dc673fa9cf3a5b7b30cf33c70803eb3a4 ]
 
-If the cmma no-dat feature is available all pages that are not used for
-dynamic address translation are marked as "no-dat" with the ESSA
-instruction. This information is visible to the hypervisor, so that the
-hypervisor can optimize purging of guest TLB entries. This also means that
-pages which are used for dynamic address translation must not be marked as
-"no-dat", since the hypervisor may then incorrectly not purge guest TLB
-entries.
+CPU Measurement counting facility events PROBLEM_STATE_CPU_CYCLES(32)
+and PROBLEM_STATE_INSTRUCTIONS(33) are valid events. However the device
+driver returns error -EOPNOTSUPP when these event are to be installed.
 
-Region and segment tables allocated via vmem_crst_alloc() are incorrectly
-marked as "no-dat", as soon as slab_is_available() returns true.
+Fix this and allow installation of events PROBLEM_STATE_CPU_CYCLES,
+PROBLEM_STATE_CPU_CYCLES:u, PROBLEM_STATE_INSTRUCTIONS and
+PROBLEM_STATE_INSTRUCTIONS:u.
+Kernel space counting only is still not supported by s390.
 
-Such tables are allocated e.g. when kernel page tables are split, memory is
-hotplugged, or a DCSS segment is loaded.
-
-Fix this by adding the missing arch_set_page_dat() call.
-
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Thomas Richter <tmricht@linux.ibm.com>
+Acked-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
 Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Stable-dep-of: 09cda0a40051 ("s390/mm: add missing arch_set_page_dat() call to vmem_crst_alloc()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/mm/vmem.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/s390/kernel/perf_cpum_cf.c | 35 ++++++++++++++++++++++-----------
+ 1 file changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/arch/s390/mm/vmem.c b/arch/s390/mm/vmem.c
-index 9a0ce5315f36d..3cbb461820666 100644
---- a/arch/s390/mm/vmem.c
-+++ b/arch/s390/mm/vmem.c
-@@ -11,6 +11,7 @@
- #include <linux/list.h>
- #include <linux/hugetlb.h>
- #include <linux/slab.h>
-+#include <asm/page-states.h>
- #include <asm/cacheflush.h>
- #include <asm/nospec-branch.h>
- #include <asm/pgalloc.h>
-@@ -44,8 +45,11 @@ void *vmem_crst_alloc(unsigned long val)
- 	unsigned long *table;
- 
- 	table = vmem_alloc_pages(CRST_ALLOC_ORDER);
--	if (table)
--		crst_table_init(table, val);
-+	if (!table)
-+		return NULL;
-+	crst_table_init(table, val);
-+	if (slab_is_available())
-+		arch_set_page_dat(virt_to_page(table), CRST_ALLOC_ORDER);
- 	return table;
+diff --git a/arch/s390/kernel/perf_cpum_cf.c b/arch/s390/kernel/perf_cpum_cf.c
+index f043a7ff220b7..28fa80fd69fa0 100644
+--- a/arch/s390/kernel/perf_cpum_cf.c
++++ b/arch/s390/kernel/perf_cpum_cf.c
+@@ -2,7 +2,7 @@
+ /*
+  * Performance event support for s390x - CPU-measurement Counter Facility
+  *
+- *  Copyright IBM Corp. 2012, 2021
++ *  Copyright IBM Corp. 2012, 2022
+  *  Author(s): Hendrik Brueckner <brueckner@linux.ibm.com>
+  *	       Thomas Richter <tmricht@linux.ibm.com>
+  */
+@@ -434,6 +434,12 @@ static void cpumf_hw_inuse(void)
+ 	mutex_unlock(&pmc_reserve_mutex);
  }
+ 
++static int is_userspace_event(u64 ev)
++{
++	return cpumf_generic_events_user[PERF_COUNT_HW_CPU_CYCLES] == ev ||
++	       cpumf_generic_events_user[PERF_COUNT_HW_INSTRUCTIONS] == ev;
++}
++
+ static int __hw_perf_event_init(struct perf_event *event, unsigned int type)
+ {
+ 	struct perf_event_attr *attr = &event->attr;
+@@ -456,19 +462,26 @@ static int __hw_perf_event_init(struct perf_event *event, unsigned int type)
+ 		if (is_sampling_event(event))	/* No sampling support */
+ 			return -ENOENT;
+ 		ev = attr->config;
+-		/* Count user space (problem-state) only */
+ 		if (!attr->exclude_user && attr->exclude_kernel) {
+-			if (ev >= ARRAY_SIZE(cpumf_generic_events_user))
+-				return -EOPNOTSUPP;
+-			ev = cpumf_generic_events_user[ev];
+-
+-		/* No support for kernel space counters only */
++			/*
++			 * Count user space (problem-state) only
++			 * Handle events 32 and 33 as 0:u and 1:u
++			 */
++			if (!is_userspace_event(ev)) {
++				if (ev >= ARRAY_SIZE(cpumf_generic_events_user))
++					return -EOPNOTSUPP;
++				ev = cpumf_generic_events_user[ev];
++			}
+ 		} else if (!attr->exclude_kernel && attr->exclude_user) {
++			/* No support for kernel space counters only */
+ 			return -EOPNOTSUPP;
+-		} else {	/* Count user and kernel space */
+-			if (ev >= ARRAY_SIZE(cpumf_generic_events_basic))
+-				return -EOPNOTSUPP;
+-			ev = cpumf_generic_events_basic[ev];
++		} else {
++			/* Count user and kernel space, incl. events 32 + 33 */
++			if (!is_userspace_event(ev)) {
++				if (ev >= ARRAY_SIZE(cpumf_generic_events_basic))
++					return -EOPNOTSUPP;
++				ev = cpumf_generic_events_basic[ev];
++			}
+ 		}
+ 		break;
  
 -- 
 2.43.0
