@@ -1,45 +1,46 @@
-Return-Path: <stable+bounces-10250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A3B7827404
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:43:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 974AE827405
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:43:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DFBAB22811
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:43:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B4412850C9
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:43:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0826554F8E;
-	Mon,  8 Jan 2024 15:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBB253E07;
+	Mon,  8 Jan 2024 15:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wakMJWfr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTmnlEL6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C494A54F85;
-	Mon,  8 Jan 2024 15:41:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD02C433C8;
-	Mon,  8 Jan 2024 15:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280C8524A8;
+	Mon,  8 Jan 2024 15:41:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D97FC433C8;
+	Mon,  8 Jan 2024 15:41:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704728460;
-	bh=39KTWdDsa5zHdv93N5UZ6gpT7H27rZrYPaEd/GTZVsM=;
+	s=korg; t=1704728467;
+	bh=xNzukKnbhIw53ikfwtrZPxbe2zL23e98UDAuVbIYSC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wakMJWfrEcof1XmnzDaUCmIDT4C+XAUNwqhAjY7Y9dqnCPKdkJFCfIN6ssRc8wuZs
-	 w420O9ZnxeLrB2T+St7YH5IfwAupxfkLMQqt0yRo6N8TZN36oBcfdGIzwSq2t3Junx
-	 yQydUICJSYGO0sSwh2muzhvCNUc1UhrVn/j+JW9w=
+	b=aTmnlEL6BR5wfsdJjikxvYzxZpHESokL01r5ee/HvsR/NEV8jWh4QAVAXxHD8sDob
+	 hNSXhwdH8gGvUj+DmwFAVZwQe2DeAbY7hC5FjqEPcpXNS2sJt4ry3OU0FTV61c6eMI
+	 Vzpb6IHY75AUCCbFEXS42WJRLC5o0JXDJr4bM25k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Eduard Zingerman <eddyz87@gmail.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
+	Hao Sun <sunhao.th@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 083/150] bpf: Support new 32bit offset jmp instruction
-Date: Mon,  8 Jan 2024 16:35:34 +0100
-Message-ID: <20240108153515.057018112@linuxfoundation.org>
+Subject: [PATCH 6.1 084/150] bpf: handle ldimm64 properly in check_cfg()
+Date: Mon,  8 Jan 2024 16:35:35 +0100
+Message-ID: <20240108153515.104372889@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108153511.214254205@linuxfoundation.org>
 References: <20240108153511.214254205@linuxfoundation.org>
@@ -58,210 +59,151 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 4cd58e9af8b9d9fff6b7145e742abbfcda0af4af ]
+[ Upstream commit 3feb263bb516ee7e1da0acd22b15afbb9a7daa19 ]
 
-Add interpreter/jit/verifier support for 32bit offset jmp instruction.
-If a conditional jmp instruction needs more than 16bit offset,
-it can be simulated with a conditional jmp + a 32bit jmp insn.
+ldimm64 instructions are 16-byte long, and so have to be handled
+appropriately in check_cfg(), just like the rest of BPF verifier does.
+
+This has implications in three places:
+  - when determining next instruction for non-jump instructions;
+  - when determining next instruction for callback address ldimm64
+    instructions (in visit_func_call_insn());
+  - when checking for unreachable instructions, where second half of
+    ldimm64 is expected to be unreachable;
+
+We take this also as an opportunity to report jump into the middle of
+ldimm64. And adjust few test_verifier tests accordingly.
 
 Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20230728011231.3716103-1-yonghong.song@linux.dev
+Reported-by: Hao Sun <sunhao.th@gmail.com>
+Fixes: 475fb78fbf48 ("bpf: verifier (add branch/goto checks)")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20231110002638.4168352-2-andrii@kernel.org
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: 3feb263bb516 ("bpf: handle ldimm64 properly in check_cfg()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/net/bpf_jit_comp.c | 28 ++++++++++++++++++----------
- kernel/bpf/core.c           | 19 ++++++++++++++++---
- kernel/bpf/verifier.c       | 32 ++++++++++++++++++++++----------
- 3 files changed, 56 insertions(+), 23 deletions(-)
+ include/linux/bpf.h                           |  8 ++++--
+ kernel/bpf/verifier.c                         | 27 ++++++++++++++-----
+ .../testing/selftests/bpf/verifier/ld_imm64.c |  8 +++---
+ 3 files changed, 30 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
-index 84c695ae1940f..b69aee6245e4a 100644
---- a/arch/x86/net/bpf_jit_comp.c
-+++ b/arch/x86/net/bpf_jit_comp.c
-@@ -1625,16 +1625,24 @@ st:			if (is_imm8(insn->off))
- 			break;
- 
- 		case BPF_JMP | BPF_JA:
--			if (insn->off == -1)
--				/* -1 jmp instructions will always jump
--				 * backwards two bytes. Explicitly handling
--				 * this case avoids wasting too many passes
--				 * when there are long sequences of replaced
--				 * dead code.
--				 */
--				jmp_offset = -2;
--			else
--				jmp_offset = addrs[i + insn->off] - addrs[i];
-+		case BPF_JMP32 | BPF_JA:
-+			if (BPF_CLASS(insn->code) == BPF_JMP) {
-+				if (insn->off == -1)
-+					/* -1 jmp instructions will always jump
-+					 * backwards two bytes. Explicitly handling
-+					 * this case avoids wasting too many passes
-+					 * when there are long sequences of replaced
-+					 * dead code.
-+					 */
-+					jmp_offset = -2;
-+				else
-+					jmp_offset = addrs[i + insn->off] - addrs[i];
-+			} else {
-+				if (insn->imm == -1)
-+					jmp_offset = -2;
-+				else
-+					jmp_offset = addrs[i + insn->imm] - addrs[i];
-+			}
- 
- 			if (!jmp_offset) {
- 				/*
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 7225cb67c0d3a..0b55ebf4a9b1f 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -367,7 +367,12 @@ static int bpf_adj_delta_to_off(struct bpf_insn *insn, u32 pos, s32 end_old,
- {
- 	const s32 off_min = S16_MIN, off_max = S16_MAX;
- 	s32 delta = end_new - end_old;
--	s32 off = insn->off;
-+	s32 off;
-+
-+	if (insn->code == (BPF_JMP32 | BPF_JA))
-+		off = insn->imm;
-+	else
-+		off = insn->off;
- 
- 	if (curr < pos && curr + off + 1 >= end_old)
- 		off += delta;
-@@ -375,8 +380,12 @@ static int bpf_adj_delta_to_off(struct bpf_insn *insn, u32 pos, s32 end_old,
- 		off -= delta;
- 	if (off < off_min || off > off_max)
- 		return -ERANGE;
--	if (!probe_pass)
--		insn->off = off;
-+	if (!probe_pass) {
-+		if (insn->code == (BPF_JMP32 | BPF_JA))
-+			insn->imm = off;
-+		else
-+			insn->off = off;
-+	}
- 	return 0;
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index 619fcba84be22..ba22cf4f5fc0e 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -702,10 +702,14 @@ bpf_ctx_record_field_size(struct bpf_insn_access_aux *aux, u32 size)
+ 	aux->ctx_field_size = size;
  }
  
-@@ -1586,6 +1595,7 @@ EXPORT_SYMBOL_GPL(__bpf_call_base);
- 	INSN_3(JMP, JSLE, K),			\
- 	INSN_3(JMP, JSET, K),			\
- 	INSN_2(JMP, JA),			\
-+	INSN_2(JMP32, JA),			\
- 	/* Store instructions. */		\
- 	/*   Register based. */			\
- 	INSN_3(STX, MEM,  B),			\
-@@ -1862,6 +1872,9 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
- 	JMP_JA:
- 		insn += insn->off;
- 		CONT;
-+	JMP32_JA:
-+		insn += insn->imm;
-+		CONT;
- 	JMP_EXIT:
- 		return BPF_R0;
- 	/* JMP */
++static bool bpf_is_ldimm64(const struct bpf_insn *insn)
++{
++	return insn->code == (BPF_LD | BPF_IMM | BPF_DW);
++}
++
+ static inline bool bpf_pseudo_func(const struct bpf_insn *insn)
+ {
+-	return insn->code == (BPF_LD | BPF_IMM | BPF_DW) &&
+-	       insn->src_reg == BPF_PSEUDO_FUNC;
++	return bpf_is_ldimm64(insn) && insn->src_reg == BPF_PSEUDO_FUNC;
+ }
+ 
+ struct bpf_prog_ops {
 diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 73d500c51bd86..dd025f66efabc 100644
+index dd025f66efabc..95521beec66c5 100644
 --- a/kernel/bpf/verifier.c
 +++ b/kernel/bpf/verifier.c
-@@ -2254,7 +2254,10 @@ static int check_subprogs(struct bpf_verifier_env *env)
- 			goto next;
- 		if (BPF_OP(code) == BPF_EXIT || BPF_OP(code) == BPF_CALL)
- 			goto next;
--		off = i + insn[i].off + 1;
-+		if (code == (BPF_JMP32 | BPF_JA))
-+			off = i + insn[i].imm + 1;
-+		else
-+			off = i + insn[i].off + 1;
- 		if (off < subprog_start || off >= subprog_end) {
- 			verbose(env, "jump out of range from insn %d to %d\n", i, off);
- 			return -EINVAL;
-@@ -2266,6 +2269,7 @@ static int check_subprogs(struct bpf_verifier_env *env)
- 			 * or unconditional jump back
- 			 */
- 			if (code != (BPF_JMP | BPF_EXIT) &&
-+			    code != (BPF_JMP32 | BPF_JA) &&
- 			    code != (BPF_JMP | BPF_JA)) {
- 				verbose(env, "last insn is not an exit or jmp\n");
- 				return -EINVAL;
-@@ -11116,7 +11120,7 @@ static int visit_func_call_insn(int t, struct bpf_insn *insns,
+@@ -11090,15 +11090,16 @@ static int visit_func_call_insn(int t, struct bpf_insn *insns,
+ 				struct bpf_verifier_env *env,
+ 				bool visit_callee)
+ {
+-	int ret;
++	int ret, insn_sz;
+ 
+-	ret = push_insn(t, t + 1, FALLTHROUGH, env, false);
++	insn_sz = bpf_is_ldimm64(&insns[t]) ? 2 : 1;
++	ret = push_insn(t, t + insn_sz, FALLTHROUGH, env, false);
+ 	if (ret)
+ 		return ret;
+ 
+-	mark_prune_point(env, t + 1);
++	mark_prune_point(env, t + insn_sz);
+ 	/* when we exit from subprog, we need to record non-linear history */
+-	mark_jmp_point(env, t + 1);
++	mark_jmp_point(env, t + insn_sz);
+ 
+ 	if (visit_callee) {
+ 		mark_prune_point(env, t);
+@@ -11120,15 +11121,17 @@ static int visit_func_call_insn(int t, struct bpf_insn *insns,
  static int visit_insn(int t, struct bpf_verifier_env *env)
  {
  	struct bpf_insn *insns = env->prog->insnsi, *insn = &insns[t];
--	int ret;
-+	int ret, off;
+-	int ret, off;
++	int ret, off, insn_sz;
  
  	if (bpf_pseudo_func(insn))
  		return visit_func_call_insn(t, insns, env, true);
-@@ -11144,14 +11148,19 @@ static int visit_insn(int t, struct bpf_verifier_env *env)
- 		if (BPF_SRC(insn->code) != BPF_K)
- 			return -EINVAL;
  
-+		if (BPF_CLASS(insn->code) == BPF_JMP)
-+			off = insn->off;
-+		else
-+			off = insn->imm;
+ 	/* All non-branch instructions have a single fall-through edge. */
+ 	if (BPF_CLASS(insn->code) != BPF_JMP &&
+-	    BPF_CLASS(insn->code) != BPF_JMP32)
+-		return push_insn(t, t + 1, FALLTHROUGH, env, false);
++	    BPF_CLASS(insn->code) != BPF_JMP32) {
++		insn_sz = bpf_is_ldimm64(insn) ? 2 : 1;
++		return push_insn(t, t + insn_sz, FALLTHROUGH, env, false);
++	}
+ 
+ 	switch (BPF_OP(insn->code)) {
+ 	case BPF_EXIT:
+@@ -11227,11 +11230,21 @@ static int check_cfg(struct bpf_verifier_env *env)
+ 	}
+ 
+ 	for (i = 0; i < insn_cnt; i++) {
++		struct bpf_insn *insn = &env->prog->insnsi[i];
 +
- 		/* unconditional jump with single edge */
--		ret = push_insn(t, t + insn->off + 1, FALLTHROUGH, env,
-+		ret = push_insn(t, t + off + 1, FALLTHROUGH, env,
- 				true);
- 		if (ret)
- 			return ret;
+ 		if (insn_state[i] != EXPLORED) {
+ 			verbose(env, "unreachable insn %d\n", i);
+ 			ret = -EINVAL;
+ 			goto err_free;
+ 		}
++		if (bpf_is_ldimm64(insn)) {
++			if (insn_state[i + 1] != 0) {
++				verbose(env, "jump into the middle of ldimm64 insn %d\n", i);
++				ret = -EINVAL;
++				goto err_free;
++			}
++			i++; /* skip second half of ldimm64 */
++		}
+ 	}
+ 	ret = 0; /* cfg looks good */
  
--		mark_prune_point(env, t + insn->off + 1);
--		mark_jmp_point(env, t + insn->off + 1);
-+		mark_prune_point(env, t + off + 1);
-+		mark_jmp_point(env, t + off + 1);
- 
- 		return ret;
- 
-@@ -12687,15 +12696,18 @@ static int do_check(struct bpf_verifier_env *env)
- 					return err;
- 			} else if (opcode == BPF_JA) {
- 				if (BPF_SRC(insn->code) != BPF_K ||
--				    insn->imm != 0 ||
- 				    insn->src_reg != BPF_REG_0 ||
- 				    insn->dst_reg != BPF_REG_0 ||
--				    class == BPF_JMP32) {
-+				    (class == BPF_JMP && insn->imm != 0) ||
-+				    (class == BPF_JMP32 && insn->off != 0)) {
- 					verbose(env, "BPF_JA uses reserved fields\n");
- 					return -EINVAL;
- 				}
- 
--				env->insn_idx += insn->off + 1;
-+				if (class == BPF_JMP)
-+					env->insn_idx += insn->off + 1;
-+				else
-+					env->insn_idx += insn->imm + 1;
- 				continue;
- 
- 			} else if (opcode == BPF_EXIT) {
-@@ -13521,13 +13533,13 @@ static bool insn_is_cond_jump(u8 code)
+diff --git a/tools/testing/selftests/bpf/verifier/ld_imm64.c b/tools/testing/selftests/bpf/verifier/ld_imm64.c
+index f9297900cea6d..78f19c255f20b 100644
+--- a/tools/testing/selftests/bpf/verifier/ld_imm64.c
++++ b/tools/testing/selftests/bpf/verifier/ld_imm64.c
+@@ -9,8 +9,8 @@
+ 	BPF_MOV64_IMM(BPF_REG_0, 2),
+ 	BPF_EXIT_INSN(),
+ 	},
+-	.errstr = "invalid BPF_LD_IMM insn",
+-	.errstr_unpriv = "R1 pointer comparison",
++	.errstr = "jump into the middle of ldimm64 insn 1",
++	.errstr_unpriv = "jump into the middle of ldimm64 insn 1",
+ 	.result = REJECT,
+ },
  {
- 	u8 op;
- 
-+	op = BPF_OP(code);
- 	if (BPF_CLASS(code) == BPF_JMP32)
--		return true;
-+		return op != BPF_JA;
- 
- 	if (BPF_CLASS(code) != BPF_JMP)
- 		return false;
- 
--	op = BPF_OP(code);
- 	return op != BPF_JA && op != BPF_EXIT && op != BPF_CALL;
- }
- 
+@@ -23,8 +23,8 @@
+ 	BPF_LD_IMM64(BPF_REG_0, 1),
+ 	BPF_EXIT_INSN(),
+ 	},
+-	.errstr = "invalid BPF_LD_IMM insn",
+-	.errstr_unpriv = "R1 pointer comparison",
++	.errstr = "jump into the middle of ldimm64 insn 1",
++	.errstr_unpriv = "jump into the middle of ldimm64 insn 1",
+ 	.result = REJECT,
+ },
+ {
 -- 
 2.43.0
 
