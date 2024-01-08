@@ -1,48 +1,45 @@
-Return-Path: <stable+bounces-10101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4360582726D
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:12:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AF10827282
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:13:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6981F1C22ABF
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:12:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFD4628317D
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E7B4A99F;
-	Mon,  8 Jan 2024 15:12:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7334126AC1;
+	Mon,  8 Jan 2024 15:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YyNBp4mu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AV5TWm7/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FF04B5AB;
-	Mon,  8 Jan 2024 15:12:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E594C433BD;
-	Mon,  8 Jan 2024 15:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7964A99F;
+	Mon,  8 Jan 2024 15:13:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9263FC43215;
+	Mon,  8 Jan 2024 15:13:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704726764;
-	bh=sKAQQDYlqAayRQkNqpzzReaHrqaF4dAL/jMTEXNTlKI=;
+	s=korg; t=1704726798;
+	bh=X1N9ZGXArCvtWJ2nGd+LMiE7tn6Vd9ky+Sy+nFHp9K0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YyNBp4muyQvBUynN9T8q9qX0wyS7K/v4SmvGtDNDrbZQ0tQzn5mM51x0TMJPu4izD
-	 yt9RtmOW5GZ3OJbdzjpNR7Zn1ovT1YqNQGGFBfBgrNiPkVVD5soE8xo+7uXLnnmN9M
-	 PO742scpfoi3MDIhGmgUR8yCHVPMLXMoOwcX4MHk=
+	b=AV5TWm7/nvg/yKE5G4YOAIiYXtrJniZHZ1WylaekiqH+iIvpVfh5sF4jW8tmac1aD
+	 KBpVcSCBL7RfvMV2k17uGuJejpodcPq4v+ulttD9JioCvTohIllbs01ocE5lAsV1cy
+	 gCKDHe/FhqfHIZz2ZkjuJ2QbMgFps0N9thbDn3b0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
 	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
 	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 053/124] virtio_net: avoid data-races on dev->stats fields
-Date: Mon,  8 Jan 2024 16:07:59 +0100
-Message-ID: <20240108150605.403478904@linuxfoundation.org>
+Subject: [PATCH 6.6 054/124] virtio_net: fix missing dma unmap for resize
+Date: Mon,  8 Jan 2024 16:08:00 +0100
+Message-ID: <20240108150605.447907847@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108150602.976232871@linuxfoundation.org>
 References: <20240108150602.976232871@linuxfoundation.org>
@@ -61,140 +58,162 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 
-[ Upstream commit d12a26b74fb77434b73fe39022266c4b00907219 ]
+[ Upstream commit 2311e06b9bf3d44e15f9175af177a782806f688f ]
 
-Use DEV_STATS_INC() and DEV_STATS_READ() which provide
-atomicity on paths that can be used concurrently.
+For rq, we have three cases getting buffers from virtio core:
 
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 2311e06b9bf3 ("virtio_net: fix missing dma unmap for resize")
+1. virtqueue_get_buf{,_ctx}
+2. virtqueue_detach_unused_buf
+3. callback for virtqueue_resize
+
+But in commit 295525e29a5b("virtio_net: merge dma operations when
+filling mergeable buffers"), I missed the dma unmap for the #3 case.
+
+That will leak some memory, because I did not release the pages referred
+by the unused buffers.
+
+If we do such script, we will make the system OOM.
+
+    while true
+    do
+            ethtool -G ens4 rx 128
+            ethtool -G ens4 rx 256
+            free -m
+    done
+
+Fixes: 295525e29a5b ("virtio_net: merge dma operations when filling mergeable buffers")
+Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Link: https://lore.kernel.org/r/20231226094333.47740-1-xuanzhuo@linux.alibaba.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/virtio_net.c | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ drivers/net/virtio_net.c | 60 ++++++++++++++++++++--------------------
+ 1 file changed, 30 insertions(+), 30 deletions(-)
 
 diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index 0c0be6b872c6a..c1c634782672f 100644
+index c1c634782672f..deb2229ab4d82 100644
 --- a/drivers/net/virtio_net.c
 +++ b/drivers/net/virtio_net.c
-@@ -1258,7 +1258,7 @@ static struct sk_buff *receive_small(struct net_device *dev,
- 	if (unlikely(len > GOOD_PACKET_LEN)) {
- 		pr_debug("%s: rx error: len %u exceeds max size %d\n",
- 			 dev->name, len, GOOD_PACKET_LEN);
--		dev->stats.rx_length_errors++;
-+		DEV_STATS_INC(dev, rx_length_errors);
- 		goto err;
+@@ -334,7 +334,6 @@ struct virtio_net_common_hdr {
+ 	};
+ };
+ 
+-static void virtnet_rq_free_unused_buf(struct virtqueue *vq, void *buf);
+ static void virtnet_sq_free_unused_buf(struct virtqueue *vq, void *buf);
+ 
+ static bool is_xdp_frame(void *ptr)
+@@ -408,6 +407,17 @@ static struct page *get_a_page(struct receive_queue *rq, gfp_t gfp_mask)
+ 	return p;
+ }
+ 
++static void virtnet_rq_free_buf(struct virtnet_info *vi,
++				struct receive_queue *rq, void *buf)
++{
++	if (vi->mergeable_rx_bufs)
++		put_page(virt_to_head_page(buf));
++	else if (vi->big_packets)
++		give_pages(rq, buf);
++	else
++		put_page(virt_to_head_page(buf));
++}
++
+ static void enable_delayed_refill(struct virtnet_info *vi)
+ {
+ 	spin_lock_bh(&vi->refill_lock);
+@@ -634,17 +644,6 @@ static void *virtnet_rq_get_buf(struct receive_queue *rq, u32 *len, void **ctx)
+ 	return buf;
+ }
+ 
+-static void *virtnet_rq_detach_unused_buf(struct receive_queue *rq)
+-{
+-	void *buf;
+-
+-	buf = virtqueue_detach_unused_buf(rq->vq);
+-	if (buf && rq->do_dma)
+-		virtnet_rq_unmap(rq, buf, 0);
+-
+-	return buf;
+-}
+-
+ static void virtnet_rq_init_one_sg(struct receive_queue *rq, void *buf, u32 len)
+ {
+ 	struct virtnet_rq_dma *dma;
+@@ -744,6 +743,20 @@ static void virtnet_rq_set_premapped(struct virtnet_info *vi)
  	}
+ }
  
-@@ -1323,7 +1323,7 @@ static void mergeable_buf_free(struct receive_queue *rq, int num_buf,
- 		if (unlikely(!buf)) {
- 			pr_debug("%s: rx error: %d buffers missing\n",
- 				 dev->name, num_buf);
--			dev->stats.rx_length_errors++;
-+			DEV_STATS_INC(dev, rx_length_errors);
- 			break;
- 		}
- 		u64_stats_add(&stats->bytes, len);
-@@ -1432,7 +1432,7 @@ static int virtnet_build_xdp_buff_mrg(struct net_device *dev,
- 			pr_debug("%s: rx error: %d buffers out of %d missing\n",
- 				 dev->name, *num_buf,
- 				 virtio16_to_cpu(vi->vdev, hdr->num_buffers));
--			dev->stats.rx_length_errors++;
-+			DEV_STATS_INC(dev, rx_length_errors);
- 			goto err;
- 		}
- 
-@@ -1451,7 +1451,7 @@ static int virtnet_build_xdp_buff_mrg(struct net_device *dev,
- 			put_page(page);
- 			pr_debug("%s: rx error: len %u exceeds truesize %lu\n",
- 				 dev->name, len, (unsigned long)(truesize - room));
--			dev->stats.rx_length_errors++;
-+			DEV_STATS_INC(dev, rx_length_errors);
- 			goto err;
- 		}
- 
-@@ -1630,7 +1630,7 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
- 	if (unlikely(len > truesize - room)) {
- 		pr_debug("%s: rx error: len %u exceeds truesize %lu\n",
- 			 dev->name, len, (unsigned long)(truesize - room));
--		dev->stats.rx_length_errors++;
-+		DEV_STATS_INC(dev, rx_length_errors);
- 		goto err_skb;
- 	}
- 
-@@ -1662,7 +1662,7 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
- 				 dev->name, num_buf,
- 				 virtio16_to_cpu(vi->vdev,
- 						 hdr->num_buffers));
--			dev->stats.rx_length_errors++;
-+			DEV_STATS_INC(dev, rx_length_errors);
- 			goto err_buf;
- 		}
- 
-@@ -1676,7 +1676,7 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
- 		if (unlikely(len > truesize - room)) {
- 			pr_debug("%s: rx error: len %u exceeds truesize %lu\n",
- 				 dev->name, len, (unsigned long)(truesize - room));
--			dev->stats.rx_length_errors++;
-+			DEV_STATS_INC(dev, rx_length_errors);
- 			goto err_skb;
- 		}
- 
-@@ -1763,7 +1763,7 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
- 
++static void virtnet_rq_unmap_free_buf(struct virtqueue *vq, void *buf)
++{
++	struct virtnet_info *vi = vq->vdev->priv;
++	struct receive_queue *rq;
++	int i = vq2rxq(vq);
++
++	rq = &vi->rq[i];
++
++	if (rq->do_dma)
++		virtnet_rq_unmap(rq, buf, 0);
++
++	virtnet_rq_free_buf(vi, rq, buf);
++}
++
+ static void free_old_xmit_skbs(struct send_queue *sq, bool in_napi)
+ {
+ 	unsigned int len;
+@@ -1764,7 +1777,7 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
  	if (unlikely(len < vi->hdr_len + ETH_HLEN)) {
  		pr_debug("%s: short packet %i\n", dev->name, len);
--		dev->stats.rx_length_errors++;
-+		DEV_STATS_INC(dev, rx_length_errors);
- 		virtnet_rq_free_unused_buf(rq->vq, buf);
+ 		DEV_STATS_INC(dev, rx_length_errors);
+-		virtnet_rq_free_unused_buf(rq->vq, buf);
++		virtnet_rq_free_buf(vi, rq, buf);
  		return;
  	}
-@@ -1803,7 +1803,7 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
- 	return;
  
- frame_err:
--	dev->stats.rx_frame_errors++;
-+	DEV_STATS_INC(dev, rx_frame_errors);
- 	dev_kfree_skb(skb);
+@@ -2392,7 +2405,7 @@ static int virtnet_rx_resize(struct virtnet_info *vi,
+ 	if (running)
+ 		napi_disable(&rq->napi);
+ 
+-	err = virtqueue_resize(rq->vq, ring_num, virtnet_rq_free_unused_buf);
++	err = virtqueue_resize(rq->vq, ring_num, virtnet_rq_unmap_free_buf);
+ 	if (err)
+ 		netdev_err(vi->dev, "resize rx fail: rx queue index: %d err: %d\n", qindex, err);
+ 
+@@ -4031,19 +4044,6 @@ static void virtnet_sq_free_unused_buf(struct virtqueue *vq, void *buf)
+ 		xdp_return_frame(ptr_to_xdp(buf));
  }
  
-@@ -2352,12 +2352,12 @@ static netdev_tx_t start_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- 	/* This should not happen! */
- 	if (unlikely(err)) {
--		dev->stats.tx_fifo_errors++;
-+		DEV_STATS_INC(dev, tx_fifo_errors);
- 		if (net_ratelimit())
- 			dev_warn(&dev->dev,
- 				 "Unexpected TXQ (%d) queue failure: %d\n",
- 				 qnum, err);
--		dev->stats.tx_dropped++;
-+		DEV_STATS_INC(dev, tx_dropped);
- 		dev_kfree_skb_any(skb);
- 		return NETDEV_TX_OK;
+-static void virtnet_rq_free_unused_buf(struct virtqueue *vq, void *buf)
+-{
+-	struct virtnet_info *vi = vq->vdev->priv;
+-	int i = vq2rxq(vq);
+-
+-	if (vi->mergeable_rx_bufs)
+-		put_page(virt_to_head_page(buf));
+-	else if (vi->big_packets)
+-		give_pages(&vi->rq[i], buf);
+-	else
+-		put_page(virt_to_head_page(buf));
+-}
+-
+ static void free_unused_bufs(struct virtnet_info *vi)
+ {
+ 	void *buf;
+@@ -4057,10 +4057,10 @@ static void free_unused_bufs(struct virtnet_info *vi)
  	}
-@@ -2576,10 +2576,10 @@ static void virtnet_stats(struct net_device *dev,
- 		tot->tx_errors  += terrors;
- 	}
  
--	tot->tx_dropped = dev->stats.tx_dropped;
--	tot->tx_fifo_errors = dev->stats.tx_fifo_errors;
--	tot->rx_length_errors = dev->stats.rx_length_errors;
--	tot->rx_frame_errors = dev->stats.rx_frame_errors;
-+	tot->tx_dropped = DEV_STATS_READ(dev, tx_dropped);
-+	tot->tx_fifo_errors = DEV_STATS_READ(dev, tx_fifo_errors);
-+	tot->rx_length_errors = DEV_STATS_READ(dev, rx_length_errors);
-+	tot->rx_frame_errors = DEV_STATS_READ(dev, rx_frame_errors);
+ 	for (i = 0; i < vi->max_queue_pairs; i++) {
+-		struct receive_queue *rq = &vi->rq[i];
++		struct virtqueue *vq = vi->rq[i].vq;
+ 
+-		while ((buf = virtnet_rq_detach_unused_buf(rq)) != NULL)
+-			virtnet_rq_free_unused_buf(rq->vq, buf);
++		while ((buf = virtqueue_detach_unused_buf(vq)) != NULL)
++			virtnet_rq_unmap_free_buf(vq, buf);
+ 		cond_resched();
+ 	}
  }
- 
- static void virtnet_ack_link_announce(struct virtnet_info *vi)
 -- 
 2.43.0
 
