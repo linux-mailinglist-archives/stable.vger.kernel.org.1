@@ -1,44 +1,43 @@
-Return-Path: <stable+bounces-10058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57AB1827238
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:10:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 711C3827245
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:11:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBE69B227C0
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:10:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 840251C22AC0
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:11:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 437224B5AE;
-	Mon,  8 Jan 2024 15:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFFB4C3BB;
+	Mon,  8 Jan 2024 15:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8w72E7H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SC31Kuo0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5164C624;
-	Mon,  8 Jan 2024 15:10:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E11C433C8;
-	Mon,  8 Jan 2024 15:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2582A4BA96;
+	Mon,  8 Jan 2024 15:11:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84253C433CA;
+	Mon,  8 Jan 2024 15:11:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704726628;
-	bh=ZUZa31sLzmyoYL51E06bXyoZeS7pNPeu8Ab1J7RpTxs=;
+	s=korg; t=1704726663;
+	bh=2l6ZQbmsNxpK1ak799Dwl7m1/CswxEF0ogI4mhjEGC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m8w72E7HWCBIhFD/gL6W/z7Ywezv7Jz9be5vfVoom+JuevMXBgwtHLSLsSWrnO5JM
-	 CRIspH98GRjy9kMuW5XXUSmuJ01Bq+4xroeBnFVxhiDdmc/J8w9X3mwVS8vVTm7Lr3
-	 quG29qNROrTbgouk+oI+IGVdqNil0Jkow+MKp65k=
+	b=SC31Kuo0uSIXHV2oWC2Sle41NNmldcrOmiwl7zboQbQjT3vf0XSFSvQcALseIMG4q
+	 0uvfsylFtxY0M80HmohDps8fqgyjdvV4Rhv38lKvfFkAkBwV0gmUdJOBEsJaT61Fm0
+	 Yu1hUm7aNCmRQNp46Xj3fooUvzESZikeHws6WDYI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Boyd <swboyd@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 020/124] drm/bridge: ps8640: Fix size mismatch warning w/ len
-Date: Mon,  8 Jan 2024 16:07:26 +0100
-Message-ID: <20240108150603.890039978@linuxfoundation.org>
+Subject: [PATCH 6.6 021/124] netfilter: nf_tables: set transport offset from mac header for netdev/egress
+Date: Mon,  8 Jan 2024 16:07:27 +0100
+Message-ID: <20240108150603.938636122@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108150602.976232871@linuxfoundation.org>
 References: <20240108150602.976232871@linuxfoundation.org>
@@ -57,49 +56,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 35ba6bd582cf926a082296b7e9a876ec81136cb1 ]
+[ Upstream commit 0ae8e4cca78781401b17721bfb72718fdf7b4912 ]
 
-After commit 26195af57798 ("drm/bridge: ps8640: Drop the ability of
-ps8640 to fetch the EDID"), I got an error compiling:
+Before this patch, transport offset (pkt->thoff) provides an offset
+relative to the network header. This is fine for the inet families
+because skb->data points to the network header in such case. However,
+from netdev/egress, skb->data points to the mac header (if available),
+thus, pkt->thoff is missing the mac header length.
 
-  error: comparison of distinct pointer types
-  ('typeof (len) *' (aka 'unsigned int *') and
-   'typeof (msg->size) *' (aka 'unsigned long *'))
-  [-Werror,-Wcompare-distinct-pointer-types]
+Add skb_network_offset() to the transport offset (pkt->thoff) for
+netdev, so transport header mangling works as expected. Adjust payload
+fast eval function to use skb->data now that pkt->thoff provides an
+absolute offset. This explains why users report that matching on
+egress/netdev works but payload mangling does not.
 
-Fix it by declaring the `len` as size_t.
+This patch implicitly fixes payload mangling for IPv4 packets in
+netdev/egress given skb_store_bits() requires an offset from skb->data
+to reach the transport header.
 
-The above error only shows up on downstream kernels without commit
-d03eba99f5bf ("minmax: allow min()/max()/clamp() if the arguments have
-the same signedness."), but since commit 26195af57798 ("drm/bridge:
-ps8640: Drop the ability of ps8640 to fetch the EDID") is a "Fix" that
-will likely be backported it seems nice to make it easy. ...plus it's
-more correct to declare `len` as size_t anyway.
+I suspect that nft_exthdr and the trace infra were also broken from
+netdev/egress because they also take skb->data as start, and pkt->thoff
+was not correct.
 
-Fixes: 26195af57798 ("drm/bridge: ps8640: Drop the ability of ps8640 to fetch the EDID")
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231218090454.1.I5c6eb80b2f746439c4b58efab788e00701d08759@changeid
+Note that IPv6 is fine because ipv6_find_hdr() already provides a
+transport offset starting from skb->data, which includes
+skb_network_offset().
+
+The bridge family also uses nft_set_pktinfo_ipv4_validate(), but there
+skb_network_offset() is zero, so the update in this patch does not alter
+the existing behaviour.
+
+Fixes: 42df6e1d221d ("netfilter: Introduce egress hook")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/parade-ps8640.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/netfilter/nf_tables_ipv4.h | 2 +-
+ net/netfilter/nf_tables_core.c         | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/parade-ps8640.c b/drivers/gpu/drm/bridge/parade-ps8640.c
-index d264b80d909de..541e4f5afc4c8 100644
---- a/drivers/gpu/drm/bridge/parade-ps8640.c
-+++ b/drivers/gpu/drm/bridge/parade-ps8640.c
-@@ -210,7 +210,7 @@ static ssize_t ps8640_aux_transfer_msg(struct drm_dp_aux *aux,
- 	struct ps8640 *ps_bridge = aux_to_ps8640(aux);
- 	struct regmap *map = ps_bridge->regmap[PAGE0_DP_CNTL];
- 	struct device *dev = &ps_bridge->page[PAGE0_DP_CNTL]->dev;
--	unsigned int len = msg->size;
-+	size_t len = msg->size;
- 	unsigned int data;
- 	unsigned int base;
- 	int ret;
+diff --git a/include/net/netfilter/nf_tables_ipv4.h b/include/net/netfilter/nf_tables_ipv4.h
+index 947973623dc77..60a7d0ce30804 100644
+--- a/include/net/netfilter/nf_tables_ipv4.h
++++ b/include/net/netfilter/nf_tables_ipv4.h
+@@ -30,7 +30,7 @@ static inline int __nft_set_pktinfo_ipv4_validate(struct nft_pktinfo *pkt)
+ 		return -1;
+ 
+ 	len = iph_totlen(pkt->skb, iph);
+-	thoff = iph->ihl * 4;
++	thoff = skb_network_offset(pkt->skb) + (iph->ihl * 4);
+ 	if (pkt->skb->len < len)
+ 		return -1;
+ 	else if (len < thoff)
+diff --git a/net/netfilter/nf_tables_core.c b/net/netfilter/nf_tables_core.c
+index 4d0ce12221f66..711c22ab701dd 100644
+--- a/net/netfilter/nf_tables_core.c
++++ b/net/netfilter/nf_tables_core.c
+@@ -158,7 +158,7 @@ static bool nft_payload_fast_eval(const struct nft_expr *expr,
+ 	else {
+ 		if (!(pkt->flags & NFT_PKTINFO_L4PROTO))
+ 			return false;
+-		ptr = skb_network_header(skb) + nft_thoff(pkt);
++		ptr = skb->data + nft_thoff(pkt);
+ 	}
+ 
+ 	ptr += priv->offset;
 -- 
 2.43.0
 
