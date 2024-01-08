@@ -1,140 +1,118 @@
-Return-Path: <stable+bounces-10038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78B7182721F
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:08:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70FB28272AB
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:15:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 123FA1F22CCA
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:08:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09442284535
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:15:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21EB4487A7;
-	Mon,  8 Jan 2024 15:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FD134C3D3;
+	Mon,  8 Jan 2024 15:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rk7qSS+H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6y0w68H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B735A4C3A9;
-	Mon,  8 Jan 2024 15:08:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE6DC433C7;
-	Mon,  8 Jan 2024 15:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6657F6D6DC;
+	Mon,  8 Jan 2024 15:15:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37D65C433CC;
+	Mon,  8 Jan 2024 15:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704726516;
-	bh=02L8hpTjzezo9Oz2cpR3Buql9cPDka1bFiHwuFfTdAU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Rk7qSS+HxmB6iqsTnnAJcQaGYEISchJu7IIZcKNCNb75azOlMMOk2gi6FOrqU/RK3
-	 12uwYQx1/AsYooiYBvBJ3nYydm51lXOxFQO1xphBlE6BWZ9HTE3v1XMUJjaUhU5Ewt
-	 RIpOwHJRVuxn7DWR9F8RvIyNlVpAih9khjpku3dM=
-Date: Mon, 8 Jan 2024 16:08:33 +0100
+	s=korg; t=1704726910;
+	bh=bMnuKhriAJR9ZOnJ0z9KjgKyJzEb841PHXFiZ54e/ts=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=j6y0w68HxiWJu2Ef2AXFgf9PLFnhSEX4whQjwBpZzafnyiZuLZS764JjmaxHerB8H
+	 kghQuTGIN0N0Iml8qBN3F+j/XEWxTEOv3GBRuRwD9MkhxXtp64S0HwPcMfo0F5Kb3C
+	 RL1bnQDZ/qnlFrIUq9coB4wtBAm2YbgPvhix1+y8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Lee Jones <lee@kernel.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	"David S. Miller" <davem@davemloft.net>,
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.4 062/165] net: usb: lan78xx: reorder cleanup
- operations to avoid UAF bugs
-Message-ID: <2024010807-fantasy-species-3607@gregkh>
-References: <20230809103642.720851262@linuxfoundation.org>
- <20230809103644.851543936@linuxfoundation.org>
- <20240108145224.GA641998@google.com>
+Subject: [PATCH 6.6 088/124] dmaengine: fsl-edma: Add judgment on enabling round robin arbitration
+Date: Mon,  8 Jan 2024 16:08:34 +0100
+Message-ID: <20240108150607.039091180@linuxfoundation.org>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240108150602.976232871@linuxfoundation.org>
+References: <20240108150602.976232871@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240108145224.GA641998@google.com>
 
-On Mon, Jan 08, 2024 at 02:52:24PM +0000, Lee Jones wrote:
-> On Wed, 09 Aug 2023, Greg Kroah-Hartman wrote:
-> 
-> > From: Duoming Zhou <duoming@zju.edu.cn>
-> > 
-> > [ Upstream commit 1e7417c188d0a83fb385ba2dbe35fd2563f2b6f3 ]
-> > 
-> > The timer dev->stat_monitor can schedule the delayed work dev->wq and
-> > the delayed work dev->wq can also arm the dev->stat_monitor timer.
-> > 
-> > When the device is detaching, the net_device will be deallocated. but
-> > the net_device private data could still be dereferenced in delayed work
-> > or timer handler. As a result, the UAF bugs will happen.
-> > 
-> > One racy situation is shown below:
-> > 
-> >       (Thread 1)                 |      (Thread 2)
-> > lan78xx_stat_monitor()           |
-> >  ...                             |  lan78xx_disconnect()
-> >  lan78xx_defer_kevent()          |    ...
-> >   ...                            |    cancel_delayed_work_sync(&dev->wq);
-> >   schedule_delayed_work()        |    ...
-> >   (wait some time)               |    free_netdev(net); //free net_device
-> >   lan78xx_delayedwork()          |
-> >   //use net_device private data  |
-> >   dev-> //use                    |
-> > 
-> > Although we use cancel_delayed_work_sync() to cancel the delayed work
-> > in lan78xx_disconnect(), it could still be scheduled in timer handler
-> > lan78xx_stat_monitor().
-> > 
-> > Another racy situation is shown below:
-> > 
-> >       (Thread 1)                |      (Thread 2)
-> > lan78xx_delayedwork             |
-> >  mod_timer()                    |  lan78xx_disconnect()
-> >                                 |   cancel_delayed_work_sync()
-> >  (wait some time)               |   if (timer_pending(&dev->stat_monitor))
-> >              	                |       del_timer_sync(&dev->stat_monitor);
-> >  lan78xx_stat_monitor()         |   ...
-> >   lan78xx_defer_kevent()        |   free_netdev(net); //free
-> >    //use net_device private data|
-> >    dev-> //use                  |
-> > 
-> > Although we use del_timer_sync() to delete the timer, the function
-> > timer_pending() returns 0 when the timer is activated. As a result,
-> > the del_timer_sync() will not be executed and the timer could be
-> > re-armed.
-> > 
-> > In order to mitigate this bug, We use timer_shutdown_sync() to shutdown
-> > the timer and then use cancel_delayed_work_sync() to cancel the delayed
-> > work. As a result, the net_device could be deallocated safely.
-> > 
-> > What's more, the dev->flags is set to EVENT_DEV_DISCONNECT in
-> > lan78xx_disconnect(). But it could still be set to EVENT_STAT_UPDATE
-> > in lan78xx_stat_monitor(). So this patch put the set_bit() behind
-> > timer_shutdown_sync().
-> > 
-> > Fixes: 77dfff5bb7e2 ("lan78xx: Fix race condition in disconnect handling")
-> 
-> Any idea why this stopped at linux-6.4.y?  The aforementioned Fixes:
-> commit also exists in linux-6.1.y and linux-5.15.y.  I don't see any
-> earlier backport attempts or failure reports that would otherwise
-> explain this.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
-Did you try to build it:
+------------------
 
-	drivers/net/usb/lan78xx.c: In function ‘lan78xx_disconnect’:
-	drivers/net/usb/lan78xx.c:4234:9: error: implicit declaration of function ‘timer_shutdown_sync’ [-Werror=implicit-function-declaration]
-	 4234 |         timer_shutdown_sync(&dev->stat_monitor);
-	      |         ^~~~~~~~~~~~~~~~~~~
-	cc1: all warnings being treated as errors
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-That's a good reason to not include it...
+[ Upstream commit 3448397a47c08c291c3fccb7ac5f0f429fd547e0 ]
 
-Also, is it really an issue or just showing up on a CVE-checker
-somewhere?  (odds on the latter, based on the author of this commit...)
+Add judgment on enabling round robin arbitration to avoid
+exceptions if this function is not supported.
 
-If anyone really cares about it, I figured they would submit a working
-patch :)
+Call trace:
+ fsl_edma_resume_early+0x1d4/0x208
+ dpm_run_callback+0xd4/0x304
+ device_resume_early+0xb0/0x208
+ dpm_resume_early+0x224/0x528
+ suspend_devices_and_enter+0x3e4/0xd00
+ pm_suspend+0x3c4/0x910
+ state_store+0x90/0x124
+ kobj_attr_store+0x48/0x64
+ sysfs_kf_write+0x84/0xb4
+ kernfs_fop_write_iter+0x19c/0x264
+ vfs_write+0x664/0x858
+ ksys_write+0xc8/0x180
+ __arm64_sys_write+0x44/0x58
+ invoke_syscall+0x5c/0x178
+ el0_svc_common.constprop.0+0x11c/0x14c
+ do_el0_svc+0x30/0x40
+ el0_svc+0x58/0xa8
+ el0t_64_sync_handler+0xc0/0xc4
+ el0t_64_sync+0x190/0x194
 
-thanks,
+Fixes: 72f5801a4e2b ("dmaengine: fsl-edma: integrate v3 support")
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20231113225713.1892643-3-xiaolei.wang@windriver.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/dma/fsl-edma-main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-greg k-h
+diff --git a/drivers/dma/fsl-edma-main.c b/drivers/dma/fsl-edma-main.c
+index 242a70cf85f4b..db6cd8431f30a 100644
+--- a/drivers/dma/fsl-edma-main.c
++++ b/drivers/dma/fsl-edma-main.c
+@@ -674,7 +674,8 @@ static int fsl_edma_resume_early(struct device *dev)
+ 			fsl_edma_chan_mux(fsl_chan, fsl_chan->slave_id, true);
+ 	}
+ 
+-	edma_writel(fsl_edma, EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
++	if (!(fsl_edma->drvdata->flags & FSL_EDMA_DRV_SPLIT_REG))
++		edma_writel(fsl_edma, EDMA_CR_ERGA | EDMA_CR_ERCA, regs->cr);
+ 
+ 	return 0;
+ }
+-- 
+2.43.0
+
+
+
 
