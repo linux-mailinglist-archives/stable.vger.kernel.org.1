@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-10153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 657F28272B0
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:15:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B7982728C
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:13:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13036281C4F
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:15:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C8F8B2127B
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B166C4B5AB;
-	Mon,  8 Jan 2024 15:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFEB04B5AB;
+	Mon,  8 Jan 2024 15:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZGOT/3Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lCeseoZa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A1B94C3A0;
-	Mon,  8 Jan 2024 15:15:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD35C433CB;
-	Mon,  8 Jan 2024 15:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F4C6D6DC;
+	Mon,  8 Jan 2024 15:13:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB7CDC433C8;
+	Mon,  8 Jan 2024 15:13:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704726926;
-	bh=T1wUFqNeZbuSbwW4jXuIq48xUusz1s6py17BngTN3k4=;
+	s=korg; t=1704726829;
+	bh=QvTrv4k7k1cRfsKX0RWzEB+ALxCTS0AYjWjHDhQq3sA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QZGOT/3YpAdZV1trUfR6Hrim60RdtZ27nRtnc9lNULUQH1DDSnoiPJaHY7GUn3Cd2
-	 p0726J5JwcZ95t6bCCaGm0+6LAWPnE1ZjfoliBeMGG1F4lygZ3Su1yFbrTvaIl6EHU
-	 2XlNLg3bYbqyIgIKUV/9mtOkGLaOCFAP/Q0557Ew=
+	b=lCeseoZaFHZSwF2hB0LdSPTEjG9I8d8w3tLceYJAn6LkhaDKpTfqAMKMedQhTWKMb
+	 U9GLYHheITdHHx9+VHX+vb1F+wgHIEidqHdWWl30iwmqz4RLWpWn71N4fEbYcYM8L+
+	 gV5j7+ZKHVp2N14kS3VqWnVdHzIJ8BButT+Pb2H8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nico Boehr <nrb@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Andrew Davis <afd@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/124] KVM: s390: vsie: fix wrong VIR 37 when MSO is used
-Date: Mon,  8 Jan 2024 16:08:29 +0100
-Message-ID: <20240108150606.800950316@linuxfoundation.org>
+Subject: [PATCH 6.6 084/124] phy: ti: gmii-sel: Fix register offset when parent is not a syscon node
+Date: Mon,  8 Jan 2024 16:08:30 +0100
+Message-ID: <20240108150606.852821196@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108150602.976232871@linuxfoundation.org>
 References: <20240108150602.976232871@linuxfoundation.org>
@@ -58,68 +58,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+From: Andrew Davis <afd@ti.com>
 
-[ Upstream commit 80aea01c48971a1fffc0252d036995572d84950d ]
+[ Upstream commit 0f40d5099cd6d828fd7de6227d3eabe86016724c ]
 
-When the host invalidates a guest page, it will also check if the page
-was used to map the prefix of any guest CPUs, in which case they are
-stopped and marked as needing a prefix refresh. Upon starting the
-affected CPUs again, their prefix pages are explicitly faulted in and
-revalidated if they had been invalidated. A bit in the PGSTEs indicates
-whether or not a page might contain a prefix. The bit is allowed to
-overindicate. Pages above 2G are skipped, because they cannot be
-prefixes, since KVM runs all guests with MSO = 0.
+When the node for this phy selector is a child node of a syscon node then the
+property 'reg' is used as an offset into the parent regmap. When the node
+is standalone and gets its own regmap this offset is pre-applied. So we need
+to track which method was used to get the regmap and not apply the offset
+in the standalone case.
 
-The same applies for nested guests (VSIE). When the host invalidates a
-guest page that maps the prefix of the nested guest, it has to stop the
-affected nested guest CPUs and mark them as needing a prefix refresh.
-The same PGSTE bit used for the guest prefix is also used for the
-nested guest. Pages above 2G are skipped like for normal guests, which
-is the source of the bug.
-
-The nested guest runs is the guest primary address space. The guest
-could be running the nested guest using MSO != 0. If the MSO + prefix
-for the nested guest is above 2G, the check for nested prefix will skip
-it. This will cause the invalidation notifier to not stop the CPUs of
-the nested guest and not mark them as needing refresh. When the nested
-guest is run again, its prefix will not be refreshed, since it has not
-been marked for refresh. This will cause a fatal validity intercept
-with VIR code 37.
-
-Fix this by removing the check for 2G for nested guests. Now all
-invalidations of pages with the notify bit set will always scan the
-existing VSIE shadow state descriptors.
-
-This allows to catch invalidations of nested guest prefix mappings even
-when the prefix is above 2G in the guest virtual address space.
-
-Fixes: a3508fbe9dc6 ("KVM: s390: vsie: initial support for nested virtualization")
-Tested-by: Nico Boehr <nrb@linux.ibm.com>
-Reviewed-by: Nico Boehr <nrb@linux.ibm.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Message-ID: <20231102153549.53984-1-imbrenda@linux.ibm.com>
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Fixes: 1fdfa7cccd35 ("phy: ti: gmii-sel: Allow parent to not be syscon node")
+Signed-off-by: Andrew Davis <afd@ti.com>
+Reviewed-by: Roger Quadros <rogerq@kernel.org>
+Link: https://lore.kernel.org/r/20231025143302.1265633-1-afd@ti.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/vsie.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/phy/ti/phy-gmii-sel.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/kvm/vsie.c b/arch/s390/kvm/vsie.c
-index 61499293c2ac3..e55f489e1fb79 100644
---- a/arch/s390/kvm/vsie.c
-+++ b/arch/s390/kvm/vsie.c
-@@ -587,10 +587,6 @@ void kvm_s390_vsie_gmap_notifier(struct gmap *gmap, unsigned long start,
+diff --git a/drivers/phy/ti/phy-gmii-sel.c b/drivers/phy/ti/phy-gmii-sel.c
+index 555b323f45da1..bc847d3879f79 100644
+--- a/drivers/phy/ti/phy-gmii-sel.c
++++ b/drivers/phy/ti/phy-gmii-sel.c
+@@ -64,6 +64,7 @@ struct phy_gmii_sel_priv {
+ 	u32 num_ports;
+ 	u32 reg_offset;
+ 	u32 qsgmii_main_ports;
++	bool no_offset;
+ };
  
- 	if (!gmap_is_shadow(gmap))
- 		return;
--	if (start >= 1UL << 31)
--		/* We are only interested in prefix pages */
--		return;
--
- 	/*
- 	 * Only new shadow blocks are added to the list during runtime,
- 	 * therefore we can safely reference them all the time.
+ static int phy_gmii_sel_mode(struct phy *phy, enum phy_mode mode, int submode)
+@@ -402,7 +403,8 @@ static int phy_gmii_sel_init_ports(struct phy_gmii_sel_priv *priv)
+ 		priv->num_ports = size / sizeof(u32);
+ 		if (!priv->num_ports)
+ 			return -EINVAL;
+-		priv->reg_offset = __be32_to_cpu(*offset);
++		if (!priv->no_offset)
++			priv->reg_offset = __be32_to_cpu(*offset);
+ 	}
+ 
+ 	if_phys = devm_kcalloc(dev, priv->num_ports,
+@@ -471,6 +473,7 @@ static int phy_gmii_sel_probe(struct platform_device *pdev)
+ 			dev_err(dev, "Failed to get syscon %d\n", ret);
+ 			return ret;
+ 		}
++		priv->no_offset = true;
+ 	}
+ 
+ 	ret = phy_gmii_sel_init_ports(priv);
 -- 
 2.43.0
 
