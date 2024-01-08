@@ -1,117 +1,105 @@
-Return-Path: <stable+bounces-10162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B1F18272BF
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:15:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C8148272CB
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:18:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A16728359C
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:15:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92C251C22BC6
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:18:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDAEE4C3BB;
-	Mon,  8 Jan 2024 15:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC744C3D6;
+	Mon,  8 Jan 2024 15:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p3SHVj9P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zW8o0y5O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70156D6DC;
-	Mon,  8 Jan 2024 15:15:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26DD7C43391;
-	Mon,  8 Jan 2024 15:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7063251C34;
+	Mon,  8 Jan 2024 15:17:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3325C433AB;
+	Mon,  8 Jan 2024 15:17:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704726954;
-	bh=aSycVVzqELVLPQhnnYITxC1XN4B0QzZnM+Xvq2ylvVI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p3SHVj9Pkx4bG3nFTbNX1/8wIJ5sj6xPXT7HqHhpN05UJTmixLkfAmW4QaKwVZtkm
-	 XwYgbiYzMYH1AH1xOs4P24/EUxm5S9I0nzdxyseyjunnf+Fdi/ysPCswUJrTbouCD0
-	 vF2GLkORw7msIjbVKcitC6K9LtbMPzNU8v3TGr9I=
+	s=korg; t=1704727073;
+	bh=QBBvzPy3PIfE0zsc4vMISvmpZvyovM+ooqBsR697utQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=zW8o0y5Op5fYvE37RukX5xGNZ9ZrN/GvmE4MWLcI7Wfg1nRJ6r/JObycldPriqwy0
+	 U+6j2Ru+ihWteO/kCXv1XGzpTpseDMNmWuPL73+lQWvS+kj8/Keun3q8gSNq/PzAa6
+	 p/z5ARvEav/yfH2PAbOXcrmxld+oguaEcB1N6Ia0=
+Date: Mon, 8 Jan 2024 16:11:09 +0100
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 6.6 124/124] media: qcom: camss: Comment CSID dt_id field
-Date: Mon,  8 Jan 2024 16:09:10 +0100
-Message-ID: <20240108150608.669734246@linuxfoundation.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240108150602.976232871@linuxfoundation.org>
-References: <20240108150602.976232871@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+To: Paulo Alcantara <pc@manguebit.com>
+Cc: Jan =?utf-8?B?xIxlcm3DoWs=?= <sairon@sairon.cz>,
+	Leonardo Brondani Schenkel <leonardo@schenkel.net>,
+	stable@vger.kernel.org, regressions@lists.linux.dev,
+	linux-cifs@vger.kernel.org,
+	Mathias =?iso-8859-1?Q?Wei=DFbach?= <m.weissbach@info-gate.de>
+Subject: Re: [REGRESSION 6.1.70] system calls with CIFS mounts failing with
+ "Resource temporarily unavailable"
+Message-ID: <2024010846-hefty-program-09c0@gregkh>
+References: <8ad7c20e-0645-40f3-96e6-75257b4bd31a@schenkel.net>
+ <7425b05a-d9a1-4c06-89a2-575504e132c3@sairon.cz>
+ <446860c571d0699ed664175262a9e84b@manguebit.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <446860c571d0699ed664175262a9e84b@manguebit.com>
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+On Mon, Jan 08, 2024 at 11:52:45AM -0300, Paulo Alcantara wrote:
+> Hi Jan,
+> 
+> Thanks for the report.
+> 
+> So this bug is related to an off-by-one in smb2_set_next_command() when
+> the client attempts to pad SMB2_QUERY_INFO request -- since it isn't 8 byte
+> aligned -- even though smb2_query_info_compound() doesn't provide an extra
+> iov for such padding.
+> 
+> v6.1.y doesn't have
+> 
+>         eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-arrays")
+> 
+> and the commit does
+> 
+> 	+	if (unlikely(check_add_overflow(input_len, sizeof(*req), &len) ||
+> 	+		     len > CIFSMaxBufSize))
+> 	+		return -EINVAL;
+> 	+
+> 
+> so sizeof(*req) will wrongly include the extra byte from
+> smb2_query_info_req::Buffer making @len unaligned and therefore causing
+> OOB in smb2_set_next_command().
+> 
+> A simple fix for that would be
+> 
+> 	diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
+> 	index 05ff8a457a3d..aed5067661de 100644
+> 	--- a/fs/smb/client/smb2pdu.c
+> 	+++ b/fs/smb/client/smb2pdu.c
+> 	@@ -3556,7 +3556,7 @@ SMB2_query_info_init(struct cifs_tcon *tcon, struct TCP_Server_Info *server,
+> 	 
+> 	 	iov[0].iov_base = (char *)req;
+> 	 	/* 1 for Buffer */
+> 	-	iov[0].iov_len = len;
+> 	+	iov[0].iov_len = len - 1;
+> 	 	return 0;
+> 	 }
+> 
 
-------------------
+Why can't we just include eb3e28c1e89b ("smb3: Replace smb2pdu 1-element
+arrays with flex-arrays") to resolve this?
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+I've queued it up now.
 
-commit f910d3ba78a2677c23508f225eb047d89eb4b2b6 upstream.
+thanks,
 
-Digging into the documentation we find that the DT_ID bitfield is used to
-map the six bit DT to a two bit ID code. This value is concatenated to the
-VC bitfield to create a CID value. DT_ID is the two least significant bits
-of CID and VC the most significant bits.
-
-Originally we set dt_id = vc * 4 in and then subsequently set dt_id = vc.
-
-commit 3c4ed72a16bc ("media: camss: sm8250: Virtual channels for CSID")
-silently fixed the multiplication by four which would give a better
-value for the generated CID without mentioning what was being done or why.
-
-Next up I haplessly changed the value back to "dt_id = vc * 4" since there
-didn't appear to be any logic behind it.
-
-Hans asked what the change was for and I honestly couldn't remember the
-provenance of it, so I dug in.
-
-Link: https://lore.kernel.org/linux-arm-msm/edd4bf9b-0e1b-883c-1a4d-50f4102c3924@xs4all.nl/
-
-Add a comment so the next hapless programmer doesn't make this same
-mistake.
-
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/media/platform/qcom/camss/camss-csid-gen2.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
-
---- a/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-+++ b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-@@ -352,7 +352,19 @@ static void __csid_configure_stream(stru
- 		phy_sel = csid->phy.csiphy_id;
- 
- 	if (enable) {
--		u8 dt_id = vc;
-+		/*
-+		 * DT_ID is a two bit bitfield that is concatenated with
-+		 * the four least significant bits of the five bit VC
-+		 * bitfield to generate an internal CID value.
-+		 *
-+		 * CSID_RDI_CFG0(vc)
-+		 * DT_ID : 28:27
-+		 * VC    : 26:22
-+		 * DT    : 21:16
-+		 *
-+		 * CID   : VC 3:0 << 2 | DT_ID 1:0
-+		 */
-+		u8 dt_id = vc & 0x03;
- 
- 		if (tg->enabled) {
- 			/* configure one DT, infinite frames */
-
-
+greg k-h
 
