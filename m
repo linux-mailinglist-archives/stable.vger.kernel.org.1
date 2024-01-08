@@ -1,163 +1,145 @@
-Return-Path: <stable+bounces-9982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 759B8826C6E
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 12:18:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE7E826CAC
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 12:27:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D90FEB21E36
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 11:18:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AB66B22789
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 11:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6361429A;
-	Mon,  8 Jan 2024 11:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E675225769;
+	Mon,  8 Jan 2024 11:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sairon.cz header.i=@sairon.cz header.b="DFySzoXf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zdp42oOp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 815D614294
-	for <stable@vger.kernel.org>; Mon,  8 Jan 2024 11:18:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sairon.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sairon.cz
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a277339dcf4so168002866b.2
-        for <stable@vger.kernel.org>; Mon, 08 Jan 2024 03:18:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sairon.cz; s=google; t=1704712708; x=1705317508; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vvHvf7c2821g7elCMwADffZNIAMAL4JPAyxBNttzCkU=;
-        b=DFySzoXfz3uK9SXKhm73+RdjE3XhSxU2iTvCyfnADYPAQ3q2ISkCg9CBpXRZgIPMfo
-         R3bHmzy6tR4tjbQ4eXfw+d4FLfwOP7jrK7BHxBPdtu73peWpnPW90SCKwnxJ33Np0jqt
-         cU6h7j1NFVikEtd9+rsAmXPl5Y3XbWbNC2N4shsxeMC3ga/4uRt9puZLjHRTkRk6v6Lt
-         U4aRxguXBLDjC3vbXQVBeKNoMEC2OZVNssYBK4XZKOBUDUShcRRUXZgGxs/qfk+Sfmf0
-         9eu6ZROdTUdg+PIcYAz3sHRiJdjk/wpB9k0PaTCrKGxPMK7fqN24smUpeBbHARvKKKyG
-         S/xQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704712708; x=1705317508;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vvHvf7c2821g7elCMwADffZNIAMAL4JPAyxBNttzCkU=;
-        b=Mx9teNX+uhxpViU8swudW4A890QQeA+eBSvve6kgAE0gJwBuZG6XDUu+i8fxTOWjqD
-         URd4rJEesaZmkxHgbsyt8jnEROttFNrhqiiawuTaHS4mYbTuXc8xCRaCep4/ZD4F8alN
-         06Beg6eVYRAoxIilSPT1eO5JiUPn1VmyPOh6pQ1GPkhTHCl4PDZOqKEL+2m3Xp5e3atV
-         7KZj1SIa0TnGZFTpnjbRefbUhVHPuLBFEJTnj+bsD7kg1/1w2I/er0q/eozId+OdTpZh
-         FYkc8cbl5Albk3qWVRjtKJXim1F6FeFn7wry4wv8m7eLgesxuWBfqT+TpdeMyZyJpJLY
-         yd3g==
-X-Gm-Message-State: AOJu0YyPT5KRSn72f3JF7EuUUnCfj0FE+0klhdG0MUNZnDwxtcv7CrG5
-	3E4w0kbM+2b1a63cR1dQ90cqqbZP7B8kNg==
-X-Google-Smtp-Source: AGHT+IGrpOZtNKtQZgl0zlvg91S7nqHPfwc08Q05UcG0tbmEZZ41We+pivW5aWIKtkq+TGhVcx09YQ==
-X-Received: by 2002:a17:906:7252:b0:a27:eeca:c344 with SMTP id n18-20020a170906725200b00a27eecac344mr1151838ejk.65.1704712707592;
-        Mon, 08 Jan 2024 03:18:27 -0800 (PST)
-Received: from [192.168.127.42] (ip-89-103-66-201.bb.vodafone.cz. [89.103.66.201])
-        by smtp.gmail.com with ESMTPSA id n15-20020a170906688f00b00a281f88f2ebsm3818651ejr.38.2024.01.08.03.18.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Jan 2024 03:18:27 -0800 (PST)
-Message-ID: <7425b05a-d9a1-4c06-89a2-575504e132c3@sairon.cz>
-Date: Mon, 8 Jan 2024 12:18:26 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881C8219E2;
+	Mon,  8 Jan 2024 11:26:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D25DDC433D9;
+	Mon,  8 Jan 2024 11:26:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1704713183;
+	bh=O2+sahjlyDACaf0tpZwPgubJkEXIDHR2sZeJ5df5m38=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Zdp42oOpxJZxHOYq+PFcdxHRuiUi2zSwUJNqsbmXM7h5TexpyBZksza1Sd3nT0J+0
+	 mJqNR9bKqdie+s7pWeZBNFab8EVQR1FCDsPEX7tZysegF6v1ZMXe4EBTSqXkDNCwKm
+	 RwEN6FKJWLrHpaqjR6kZClH8p2v7ujPSLdJVGyio=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org,
+	torvalds@linux-foundation.org,
+	stable@vger.kernel.org
+Cc: lwn@lwn.net,
+	jslaby@suse.cz,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 4.14.335
+Date: Mon,  8 Jan 2024 12:26:18 +0100
+Message-ID: <2024010819-audition-creative-f1dc@gregkh>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION 6.1.70] system calls with CIFS mounts failing with
- "Resource temporarily unavailable"
-Content-Language: en-US
-To: Leonardo Brondani Schenkel <leonardo@schenkel.net>, stable@vger.kernel.org
-Cc: regressions@lists.linux.dev, linux-cifs@vger.kernel.org,
- Paulo Alcantara <pc@manguebit.com>
-References: <8ad7c20e-0645-40f3-96e6-75257b4bd31a@schenkel.net>
-From: =?UTF-8?B?SmFuIMSMZXJtw6Fr?= <sairon@sairon.cz>
-In-Reply-To: <8ad7c20e-0645-40f3-96e6-75257b4bd31a@schenkel.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi,
+I'm announcing the release of the 4.14.335 kernel.
 
-I confirm Leonardo's findings about 6.1.70 introducing this regression, 
-this issue manifested in Home Assistant OS [1] which was recently bumped 
-to that version. I bisected the issue between 6.1.69 and 6.1.70 which 
-pointed me to this bad commit:
+All users of the 4.14 kernel series must upgrade.
 
-----
-commit bef4315f19ba6f434054f58b958c0cf058c7a43f (refs/bisect/bad)
-Author: Paulo Alcantara <pc@manguebit.com>
-Date:   Wed Dec 13 12:25:57 2023 -0300
+The updated 4.14.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-4.14.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
 
-     smb: client: fix OOB in SMB2_query_info_init()
+thanks,
 
-     commit 33eae65c6f49770fec7a662935d4eb4a6406d24b upstream.
+greg k-h
 
-     A small CIFS buffer (448 bytes) isn't big enough to hold
-     SMB2_QUERY_INFO request along with user's input data from
-     CIFS_QUERY_INFO ioctl.  That is, if the user passed an input buffer >
-     344 bytes, the client will memcpy() off the end of @req->Buffer in
-     SMB2_query_info_init() thus causing the following KASAN splat:
+------------
 
-(snip...)
-----
+ Makefile                                        |    2 
+ arch/arm/mach-omap2/id.c                        |    5 +
+ arch/s390/include/asm/fpu/api.h                 |    2 
+ drivers/iio/common/ms_sensors/ms_sensors_i2c.c  |    4 -
+ drivers/iio/imu/inv_mpu6050/inv_mpu_core.c      |    4 -
+ drivers/input/keyboard/ipaq-micro-keys.c        |    3 
+ drivers/md/dm-integrity.c                       |   11 +--
+ drivers/net/ethernet/atheros/atl1e/atl1e_main.c |    5 +
+ drivers/usb/serial/ftdi_sio.c                   |    6 -
+ drivers/usb/serial/ftdi_sio_ids.h               |    6 -
+ drivers/usb/serial/option.c                     |    5 +
+ fs/block_dev.c                                  |    9 +-
+ net/9p/protocol.c                               |   17 +++-
+ net/bluetooth/hci_event.c                       |    3 
+ net/ife/ife.c                                   |    1 
+ net/mac80211/mesh_plink.c                       |   10 +-
+ net/rfkill/rfkill-gpio.c                        |    8 ++
+ net/wireless/certs/wens.hex                     |   87 ++++++++++++++++++++++++
+ 18 files changed, 158 insertions(+), 30 deletions(-)
 
-Reverting this change on 6.1.y makes the error go away.
+Alper Ak (1):
+      USB: serial: option: add Quectel EG912Y module support
 
-Adding linux-cifs and Paolo to CC.
+Chen-Yu Tsai (1):
+      wifi: cfg80211: Add my certificate
 
-Cheers,
-Jan
+Eric Dumazet (1):
+      net: sched: ife: fix potential use-after-free
 
+Fedor Pchelkin (1):
+      net: 9p: avoid freeing uninit memory in p9pdu_vreadf
 
-[1] https://github.com/home-assistant/operating-system/issues/3041
+Greg Kroah-Hartman (1):
+      Linux 4.14.335
 
+Haoran Liu (1):
+      Input: ipaq-micro-keys - add error handling for devm_kmemdup
 
-On 08. 01. 24 11:44, Leonardo Brondani Schenkel wrote:
-> I'm new here, first time reporting a regression, apologies in advance if 
-> I'm doing something wrong of if this was already reported (I found some 
-> CIFS issues but not exactly this one).
-> 
-> I'm using x86-64 Arch Linux and LTS kernel (6.1.71 as I write this) and 
-> I noticed a regression that I could reproduce in other boxes with other 
-> architectures as well (aarch64 with 6.1.70).
-> 
-> # mount.cifs //server/share /mnt
-> # mount
-> //server/share on /mnt type cifs (rw,relatime,vers=3.1.1...)
-> # cd /mnt
-> # df .
-> df: .: Resource temporarily unavailable
-> # ls -al
-> ls: .: Resource temporarily unavailable
-> ls: file1: Resource temporarily unavailable
-> ls: file2: Resource temporarily unavailable
-> [...then ls shows the listing...]
-> 
-> If I use strace with df, the problem is:
-> statfs(".", 0x.....) = -1 EAGAIN (Resource temporarily unavailable)
-> 
-> And with ls:
-> listxattr(".", 0x..., 152): -1 EAGAIN (Resource temporarily unavailable)
-> listxattr("file1", ..., 152): -1 EAGAIN (same as above)
-> ...
-> 
-> Initially I thought the problem was with the Samba server and/or the 
-> client mount flags, but I've spent a day trying a *lot* of different 
-> combinations and nothing worked. This happens with any share that I try, 
-> and I've tried mounting shares from multiple Linux boxes running 
-> different Samba and kernel versions.
-> 
-> Then I tried changing kernel versions at my client box. I booted latest 
-> 6.6.9 and the problem simply disappeared. My Debian server with 6.5.11 
-> also doesn't have it. I then started a VM and tried a "bisection" of 
-> 6.1.x versions, leading to kernel 6.1.70 when this started to happen.
-> 6.1.69 and older look fine.
-> 
-> I hope that this is enough information to reproduce this issue. I will 
-> be glad to provide more info if necessary.
-> 
-> // Leonardo.
-> 
+Heiko Carstens (1):
+      s390/vx: fix save/restore of fpu kernel context
+
+Javier Carrasco (1):
+      iio: common: ms_sensors: ms_sensors_i2c: fix humidity conversion time table
+
+Johannes Berg (2):
+      wifi: mac80211: mesh_plink: fix matches_local logic
+      wifi: cfg80211: fix certs build to not depend on file order
+
+Kunwu Chan (1):
+      ARM: OMAP2+: Fix null pointer dereference and memory leak in omap_soc_device_init
+
+Luiz Augusto von Dentz (1):
+      Bluetooth: hci_event: Fix not checking if HCI_OP_INQUIRY has been sent
+
+Mark Glover (1):
+      USB: serial: ftdi_sio: update Actisense PIDs constant names
+
+Mikulas Patocka (1):
+      dm-integrity: don't modify bio's immutable bio_vec in integrity_metadata()
+
+Reinhard Speyerer (1):
+      USB: serial: option: add Quectel RM500Q R13 firmware support
+
+Rouven Czerwinski (1):
+      net: rfkill: gpio: set GPIO direction
+
+Sarthak Kukreti (1):
+      block: Don't invalidate pagecache for invalid falloc modes
+
+Slark Xiao (1):
+      USB: serial: option: add Foxconn T99W265 with new baseline
+
+Su Hui (1):
+      iio: imu: inv_mpu6050: fix an error code problem in inv_mpu6050_read_raw
+
+Zhipeng Lu (1):
+      ethernet: atheros: fix a memleak in atl1e_setup_ring_resources
+
 
