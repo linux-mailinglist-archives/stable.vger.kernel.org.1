@@ -1,105 +1,76 @@
-Return-Path: <stable+bounces-10017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8AF2826FCF
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 14:30:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6178D8270AF
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:07:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C5B8282C97
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 13:30:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FDFC28157D
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 14:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0165544C8A;
-	Mon,  8 Jan 2024 13:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BFC146527;
+	Mon,  8 Jan 2024 14:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GPEyp9PK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZIDl5jkn"
 X-Original-To: stable@vger.kernel.org
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 631F644C7A;
-	Mon,  8 Jan 2024 13:29:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 9FFE1240008;
-	Mon,  8 Jan 2024 13:29:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1704720586;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=kfQYkI24IKxSDWmoC0/qvQq6SNd6yUAhqqt111/kkzo=;
-	b=GPEyp9PKlB8UzvwG6GITJdcl1GNaZ4PVmzWbdUEbT4EtUip/7WFDrRpenAfxbGz3P758wq
-	iHKvXGFmmv7luyI5l93cLBqGz24eaSalQz6SebnFOz8AdEdGuMnxyrxXPLlXwotjHigKAM
-	sdYGcN7nEyC57wPUgg/1Y+sQxrHCwqP/VXFABTgv6N9JYFUbQcCj+ii2To20JOFAdrRlS6
-	VkFvpZUJ/4SFMpJ6Gkd248R5nIIEWBxU/Sn8gdFMksSPA9Qp51/R/YnE2GSKdoBQrynOoG
-	sBQC/7iRDL3ZNW5yAtqll8vPm7t1EeLgv7/TQ2juc2RU+jEv7D27z/gCwZIhHw==
-Date: Mon, 8 Jan 2024 14:29:41 +0100
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: Romain Gantois <romain.gantois@bootlin.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Jose Abreu <joabreu@synopsys.com>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Maxime
- Coquelin <mcoquelin.stm32@gmail.com>, Maxime Chevallier
- <maxime.chevallier@bootlin.com>, Sylvain Girard <sylvain.girard@se.com>,
- Pascal EBERHARD <pascal.eberhard@se.com>, Richard Tresidder
- <rtresidd@electromag.com.au>, Linus Walleij <linus.walleij@linaro.org>,
- Florian Fainelli <f.fainelli@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
- netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v3 1/1] net: stmmac: Prevent DSA tags from breaking
- COE
-Message-ID: <20240108142941.2b14f90e@xps-13>
-In-Reply-To: <20240108130238.j2denbdj3ifasbqi@skbuf>
-References: <20240108111747.73872-2-romain.gantois@bootlin.com>
-	<20240108130238.j2denbdj3ifasbqi@skbuf>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D792346538
+	for <stable@vger.kernel.org>; Mon,  8 Jan 2024 14:07:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3500C433C8;
+	Mon,  8 Jan 2024 14:07:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1704722866;
+	bh=ipFeWVkdlpPV8YAdbkWjVxUBbVWjwhsCo2jpsX1Wayw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZIDl5jknN7GGPxCXxYpk7/M64UR4MIeV/MGCkRuZ1Q9mGSqGXbSu8ls/WmFPjp8SM
+	 bQgkIwgfy9aEnb93bjnazBQ8ggKytw4RURjh4cD+YRGEZ84SkpuF3JTkKJB+SIT1pA
+	 MSeCMvLOCeqWxrutjQu0nEkleaw6K5NBr7bNvrmc=
+Date: Mon, 8 Jan 2024 15:07:43 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Jann Horn <jannh@google.com>
+Cc: John Fastabend <john.fastabend@gmail.com>,
+	stable <stable@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Boris Pismenny <borisp@nvidia.com>
+Subject: Re: [missing stable fix on 5.x] [PATCH] net: tls, update curr on
+ splice as well
+Message-ID: <2024010822-clinking-kangaroo-e8fa@gregkh>
+References: <20231214194518.337211-1-john.fastabend@gmail.com>
+ <CAG48ez36YXSjKWMfpLFUj9RCRg13WzQG3dHC-cyUtyJLmZQ-Aw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAG48ez36YXSjKWMfpLFUj9RCRg13WzQG3dHC-cyUtyJLmZQ-Aw@mail.gmail.com>
 
-Hi Romain,
+On Mon, Jan 08, 2024 at 02:10:31PM +0100, Jann Horn wrote:
+> On Thu, Dec 14, 2023 at 8:45 PM John Fastabend <john.fastabend@gmail.com> wrote:
+> > commit c5a595000e2677e865a39f249c056bc05d6e55fd upstream.
+> >
+> > Backport of upstream fix for tls on 6.1 and lower kernels.
+> > The curr pointer must also be updated on the splice similar to how
+> > we do this for other copy types.
+> >
+> > Cc: stable@vger.kernel.org # 6.1.x-
+> 
+> I think this Cc marker was wrong - the commit message says "on 6.1 and
+> lower kernels", but this marker seems to say "6.1 and *newer*
+> kernels". The current status is that this issue is fixed on 6.6.7 and
+> 6.1.69, but not on the 5.x stable kernels.
 
-> > +/* Check if ethertype will trigger IP
-> > + * header checks/COE in hardware
-> > + */ =20
->=20
-> Nitpick: you could render this in kernel-doc format.
-> https://docs.kernel.org/doc-guide/kernel-doc.html
->=20
-> > +static inline bool stmmac_has_ip_ethertype(struct sk_buff *skb) =20
->=20
-> Nitpick: in netdev it is preferred not to use the "inline" keyword at
-> all in C files, only "static inline" in headers, and to let the compiler
-> decide by itself when it is appropriate to inline the code (which it
-> does by itself even without the "inline" keyword). For a bit more
-> background why, you can view Documentation/process/4.Coding.rst, section
-> "Inline functions".
->=20
-> > +{
-> > +	int depth =3D 0;
-> > +	__be16 proto;
-> > +
-> > +	proto =3D __vlan_get_protocol(skb, eth_header_parse_protocol(skb), &d=
-epth);
-> > +
-> > +	return depth <=3D ETH_HLEN && (proto =3D=3D htons(ETH_P_IP) || proto =
-=3D=3D htons(ETH_P_IPV6));
+Then can someone provide a working backport to those kernels?  Right
+now, this one does not apply at all there.
 
-I also want to nitpick a bit :) If you are to send a v4, maybe you can
-enclose the first condition within parenthesis to further clarify the
-return logic.
+thanks,
 
-Cheers,
-Miqu=C3=A8l
+greg k-h
 
