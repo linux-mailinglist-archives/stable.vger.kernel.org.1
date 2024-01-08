@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-10111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A42827280
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:13:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FA35827283
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:13:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF7C01C22AB9
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:13:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7EBB1F23656
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2885B4C616;
-	Mon,  8 Jan 2024 15:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1934C3D3;
+	Mon,  8 Jan 2024 15:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiJY/zgK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vz52vKh7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E69D24C3DE;
-	Mon,  8 Jan 2024 15:13:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2A8C433D9;
-	Mon,  8 Jan 2024 15:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DAF4BA96;
+	Mon,  8 Jan 2024 15:13:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA096C433BB;
+	Mon,  8 Jan 2024 15:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704726794;
-	bh=DjjeD9YZur++4yIonkCQ2Kbr01mcyuHHwkXw17SO2hQ=;
+	s=korg; t=1704726801;
+	bh=Uy2DjOE4u2hnBdq5GDLfdmc5qobDRwOusWQmiq5xl5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yiJY/zgK2vr9kmM4n3vgQUOvJHt9UD6lkNHunr+G/fEXGOVIBhGjPwr3+KEvJHG4j
-	 SKm+lzhhuFmMZC2nHuZHXPQqNn6EP4/tpUKC7uSlSZJaPssQtTZjisSX6ZOVBwgEpE
-	 905/3kdgtq21EcRJl4R+ASUyk0dQKVhvOL8DtS7E=
+	b=vz52vKh7Oc8R2rVJZO2tu3dHeViFDpvTVRbW6kBdmd2m0QyyVV9YKPa1cSHSY/Pnb
+	 lIdqfxPaQHsPQEeyXV50HQ96VwbWgmoxKMyFPAAmRfQGbzUPSZ4Fq3pqnjmQ97EL6A
+	 CBmjBTC3g00W5XToCt9snSP9ZjBlefD0ZUeJGt+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
 	Joel Fernandes <joel@joelfernandes.org>,
 	"Paul E. McKenney" <paulmck@kernel.org>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Frederic Weisbecker <frederic@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/124] rcu/tasks: Handle new PF_IDLE semantics
-Date: Mon,  8 Jan 2024 16:08:26 +0100
-Message-ID: <20240108150606.655265779@linuxfoundation.org>
+Subject: [PATCH 6.6 081/124] rcu/tasks-trace: Handle new PF_IDLE semantics
+Date: Mon,  8 Jan 2024 16:08:27 +0100
+Message-ID: <20240108150606.703319378@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108150602.976232871@linuxfoundation.org>
 References: <20240108150602.976232871@linuxfoundation.org>
@@ -61,38 +62,24 @@ Content-Transfer-Encoding: 8bit
 
 From: Frederic Weisbecker <frederic@kernel.org>
 
-[ Upstream commit 9715ed501b585d47444865071674c961c0cc0020 ]
+[ Upstream commit a80712b9cc7e57830260ec5e1feb9cdb59e1da2f ]
 
 The commit:
 
 	cff9b2332ab7 ("kernel/sched: Modify initial boot task idle setup")
 
 has changed the semantics of what is to be considered an idle task in
-such a way that CPU boot code preceding the actual idle loop is excluded
-from it.
+such a way that the idle task of an offline CPU may not carry the
+PF_IDLE flag anymore.
 
-This has however introduced new potential RCU-tasks stalls when either:
+However RCU-tasks-trace tests the opposite assertion, still assuming
+that idle tasks carry the PF_IDLE flag during their whole lifecycle.
 
-1) Grace period is started before init/0 had a chance to set PF_IDLE,
-   keeping it stuck in the holdout list until idle ever schedules.
+Remove this assumption to avoid spurious warnings but keep the initial
+test verifying that the idle task is the current task on any offline
+CPU.
 
-2) Grace period is started when some possible CPUs have never been
-   online, keeping their idle tasks stuck in the holdout list until the
-   CPU ever boots up.
-
-3) Similar to 1) but with secondary CPUs: Grace period is started
-   concurrently with secondary CPU booting, putting its idle task in
-   the holdout list because PF_IDLE isn't yet observed on it. It stays
-   then stuck in the holdout list until that CPU ever schedules. The
-   effect is mitigated here by the hotplug AP thread that must run to
-   bring the CPU up.
-
-Fix this with handling the new semantics of PF_IDLE, keeping in mind
-that it may or may not be set on an idle task. Take advantage of that to
-strengthen the coverage of an RCU-tasks quiescent state within an idle
-task, excluding the CPU boot code from it. Only the code running within
-the idle loop is now a quiescent state, along with offline CPUs.
-
+Reported-by: Naresh Kamboju <naresh.kamboju@linaro.org>
 Fixes: cff9b2332ab7 ("kernel/sched: Modify initial boot task idle setup")
 Suggested-by: Joel Fernandes <joel@joelfernandes.org>
 Suggested-by: "Paul E. McKenney" <paulmck@kernel.org>
@@ -100,60 +87,22 @@ Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tasks.h | 30 ++++++++++++++++++++++++++++--
- 1 file changed, 28 insertions(+), 2 deletions(-)
+ kernel/rcu/tasks.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
-index 8d65f7d576a34..b5dc1e5d78c83 100644
+index b5dc1e5d78c83..65e000ca332cc 100644
 --- a/kernel/rcu/tasks.h
 +++ b/kernel/rcu/tasks.h
-@@ -892,10 +892,36 @@ static void rcu_tasks_pregp_step(struct list_head *hop)
- 	synchronize_rcu();
- }
- 
-+/* Check for quiescent states since the pregp's synchronize_rcu() */
-+static bool rcu_tasks_is_holdout(struct task_struct *t)
-+{
-+	int cpu;
-+
-+	/* Has the task been seen voluntarily sleeping? */
-+	if (!READ_ONCE(t->on_rq))
-+		return false;
-+
-+	/*
-+	 * Idle tasks (or idle injection) within the idle loop are RCU-tasks
-+	 * quiescent states. But CPU boot code performed by the idle task
-+	 * isn't a quiescent state.
-+	 */
-+	if (is_idle_task(t))
-+		return false;
-+
-+	cpu = task_cpu(t);
-+
-+	/* Idle tasks on offline CPUs are RCU-tasks quiescent states. */
-+	if (t == idle_task(cpu) && !rcu_cpu_online(cpu))
-+		return false;
-+
-+	return true;
-+}
-+
- /* Per-task initial processing. */
- static void rcu_tasks_pertask(struct task_struct *t, struct list_head *hop)
- {
--	if (t != current && READ_ONCE(t->on_rq) && !is_idle_task(t)) {
-+	if (t != current && rcu_tasks_is_holdout(t)) {
- 		get_task_struct(t);
- 		t->rcu_tasks_nvcsw = READ_ONCE(t->nvcsw);
- 		WRITE_ONCE(t->rcu_tasks_holdout, true);
-@@ -944,7 +970,7 @@ static void check_holdout_task(struct task_struct *t,
- 
- 	if (!READ_ONCE(t->rcu_tasks_holdout) ||
- 	    t->rcu_tasks_nvcsw != READ_ONCE(t->nvcsw) ||
--	    !READ_ONCE(t->on_rq) ||
-+	    !rcu_tasks_is_holdout(t) ||
- 	    (IS_ENABLED(CONFIG_NO_HZ_FULL) &&
- 	     !is_idle_task(t) && t->rcu_tasks_idle_cpu >= 0)) {
- 		WRITE_ONCE(t->rcu_tasks_holdout, false);
+@@ -1548,7 +1548,7 @@ static int trc_inspect_reader(struct task_struct *t, void *bhp_in)
+ 	} else {
+ 		// The task is not running, so C-language access is safe.
+ 		nesting = t->trc_reader_nesting;
+-		WARN_ON_ONCE(ofl && task_curr(t) && !is_idle_task(t));
++		WARN_ON_ONCE(ofl && task_curr(t) && (t != idle_task(task_cpu(t))));
+ 		if (IS_ENABLED(CONFIG_TASKS_TRACE_RCU_READ_MB) && ofl)
+ 			n_heavy_reader_ofl_updates++;
+ 	}
 -- 
 2.43.0
 
