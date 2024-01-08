@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-10146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F34B68272A9
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:15:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CC1E8272C2
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:16:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91F881F23621
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:15:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 312AA1F2249C
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:16:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D173B4C3BB;
-	Mon,  8 Jan 2024 15:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 280AD4C3C9;
+	Mon,  8 Jan 2024 15:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="of1nWgj1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wX+1R2B/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998B16D6E4;
-	Mon,  8 Jan 2024 15:15:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B2B4C433C8;
-	Mon,  8 Jan 2024 15:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36DD47791;
+	Mon,  8 Jan 2024 15:15:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDA8C433C9;
+	Mon,  8 Jan 2024 15:15:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704726904;
-	bh=6vZ6SV3nz8V7DsF9KM0rAG1775doO2PUi+wcfF24otk=;
+	s=korg; t=1704726957;
+	bh=qUZ4YcrcQQ7zezcRSLfKxgPk6qInWDHLRRzgj3he4JQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=of1nWgj1Xs4psC2aecGxS0abEVIxkkW1MOqzRYWfMaQlibYLNlcc7mYB5dkGHUuJK
-	 eBbZGtC/FUaBb5oQwoGGeImmcfauuykJRZQYVZwbCvbTXirarPJhGUjZEBRRrGZWtX
-	 FB1CgvUEc9Enr5YvaffQXcX12HOMQjaQ4yrZrIqI=
+	b=wX+1R2B/dfRqae8Uzx/oPcL0i+Zb8MQrMAiUtxuX0HKOQ4edGnnF8D3q/frYjuDMA
+	 rsZxwCCuxfsB3+6D3jQ3ar4u9ylkCsUzIseBlV9Ns4nYNlQ3rYpTmFuho4YqSF+Mr7
+	 bVIdCeEQtKQZrBaCXLnxgpcbak+FSA30FU4ttuKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Hawking Zhang <Hawking.Zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 114/124] drm/amdgpu: skip gpu_info fw loading on navi12
-Date: Mon,  8 Jan 2024 16:09:00 +0100
-Message-ID: <20240108150608.216396686@linuxfoundation.org>
+Subject: [PATCH 6.6 115/124] drm/amd/display: add nv12 bounding box
+Date: Mon,  8 Jan 2024 16:09:01 +0100
+Message-ID: <20240108150608.264489150@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108150602.976232871@linuxfoundation.org>
 References: <20240108150602.976232871@linuxfoundation.org>
@@ -58,9 +58,10 @@ Content-Transfer-Encoding: 8bit
 
 From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 21f6137c64c65d6808c4a81006956197ca203383 upstream.
+commit 7e725c20fea8914ef1829da777f517ce1a93d388 upstream.
 
-It's no longer required.
+This was included in gpu_info firmware, move it into the
+driver for consistency with other nv1x parts.
 
 Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2318
 Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
@@ -68,29 +69,128 @@ Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |   11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c |  110 ++++++++++++++++++-
+ 1 file changed, 109 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -1896,15 +1896,8 @@ static int amdgpu_device_parse_gpu_info_
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
+@@ -438,7 +438,115 @@ struct _vcs_dpi_soc_bounding_box_st dcn2
+ 	.use_urgent_burst_bw = 0
+ };
  
- 	adev->firmware.gpu_info_fw = NULL;
+-struct _vcs_dpi_soc_bounding_box_st dcn2_0_nv12_soc = { 0 };
++struct _vcs_dpi_soc_bounding_box_st dcn2_0_nv12_soc = {
++	.clock_limits = {
++		{
++			.state = 0,
++			.dcfclk_mhz = 560.0,
++			.fabricclk_mhz = 560.0,
++			.dispclk_mhz = 513.0,
++			.dppclk_mhz = 513.0,
++			.phyclk_mhz = 540.0,
++			.socclk_mhz = 560.0,
++			.dscclk_mhz = 171.0,
++			.dram_speed_mts = 1069.0,
++		},
++		{
++			.state = 1,
++			.dcfclk_mhz = 694.0,
++			.fabricclk_mhz = 694.0,
++			.dispclk_mhz = 642.0,
++			.dppclk_mhz = 642.0,
++			.phyclk_mhz = 600.0,
++			.socclk_mhz = 694.0,
++			.dscclk_mhz = 214.0,
++			.dram_speed_mts = 1324.0,
++		},
++		{
++			.state = 2,
++			.dcfclk_mhz = 875.0,
++			.fabricclk_mhz = 875.0,
++			.dispclk_mhz = 734.0,
++			.dppclk_mhz = 734.0,
++			.phyclk_mhz = 810.0,
++			.socclk_mhz = 875.0,
++			.dscclk_mhz = 245.0,
++			.dram_speed_mts = 1670.0,
++		},
++		{
++			.state = 3,
++			.dcfclk_mhz = 1000.0,
++			.fabricclk_mhz = 1000.0,
++			.dispclk_mhz = 1100.0,
++			.dppclk_mhz = 1100.0,
++			.phyclk_mhz = 810.0,
++			.socclk_mhz = 1000.0,
++			.dscclk_mhz = 367.0,
++			.dram_speed_mts = 2000.0,
++		},
++		{
++			.state = 4,
++			.dcfclk_mhz = 1200.0,
++			.fabricclk_mhz = 1200.0,
++			.dispclk_mhz = 1284.0,
++			.dppclk_mhz = 1284.0,
++			.phyclk_mhz = 810.0,
++			.socclk_mhz = 1200.0,
++			.dscclk_mhz = 428.0,
++			.dram_speed_mts = 2000.0,
++		},
++		{
++			.state = 5,
++			.dcfclk_mhz = 1200.0,
++			.fabricclk_mhz = 1200.0,
++			.dispclk_mhz = 1284.0,
++			.dppclk_mhz = 1284.0,
++			.phyclk_mhz = 810.0,
++			.socclk_mhz = 1200.0,
++			.dscclk_mhz = 428.0,
++			.dram_speed_mts = 2000.0,
++		},
++	},
++
++	.num_states = 5,
++	.sr_exit_time_us = 1.9,
++	.sr_enter_plus_exit_time_us = 4.4,
++	.urgent_latency_us = 3.0,
++	.urgent_latency_pixel_data_only_us = 4.0,
++	.urgent_latency_pixel_mixed_with_vm_data_us = 4.0,
++	.urgent_latency_vm_data_only_us = 4.0,
++	.urgent_out_of_order_return_per_channel_pixel_only_bytes = 4096,
++	.urgent_out_of_order_return_per_channel_pixel_and_vm_bytes = 4096,
++	.urgent_out_of_order_return_per_channel_vm_only_bytes = 4096,
++	.pct_ideal_dram_sdp_bw_after_urgent_pixel_only = 40.0,
++	.pct_ideal_dram_sdp_bw_after_urgent_pixel_and_vm = 40.0,
++	.pct_ideal_dram_sdp_bw_after_urgent_vm_only = 40.0,
++	.max_avg_sdp_bw_use_normal_percent = 40.0,
++	.max_avg_dram_bw_use_normal_percent = 40.0,
++	.writeback_latency_us = 12.0,
++	.ideal_dram_bw_after_urgent_percent = 40.0,
++	.max_request_size_bytes = 256,
++	.dram_channel_width_bytes = 16,
++	.fabric_datapath_to_dcn_data_return_bytes = 64,
++	.dcn_downspread_percent = 0.5,
++	.downspread_percent = 0.5,
++	.dram_page_open_time_ns = 50.0,
++	.dram_rw_turnaround_time_ns = 17.5,
++	.dram_return_buffer_per_channel_bytes = 8192,
++	.round_trip_ping_latency_dcfclk_cycles = 131,
++	.urgent_out_of_order_return_per_channel_bytes = 4096,
++	.channel_interleave_bytes = 256,
++	.num_banks = 8,
++	.num_chans = 16,
++	.vmm_page_size_bytes = 4096,
++	.dram_clock_change_latency_us = 45.0,
++	.writeback_dram_clock_change_latency_us = 23.0,
++	.return_bus_width_bytes = 64,
++	.dispclk_dppclk_vco_speed_mhz = 3850,
++	.xfc_bus_transport_time_us = 20,
++	.xfc_xbuf_latency_tolerance_us = 50,
++	.use_urgent_burst_bw = 0,
++};
  
--	if (adev->mman.discovery_bin) {
--		/*
--		 * FIXME: The bounding box is still needed by Navi12, so
--		 * temporarily read it from gpu_info firmware. Should be dropped
--		 * when DAL no longer needs it.
--		 */
--		if (adev->asic_type != CHIP_NAVI12)
--			return 0;
--	}
-+	if (adev->mman.discovery_bin)
-+		return 0;
- 
- 	switch (adev->asic_type) {
- 	default:
+ struct _vcs_dpi_ip_params_st dcn2_1_ip = {
+ 	.odm_capable = 1,
 
 
 
