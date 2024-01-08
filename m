@@ -1,45 +1,44 @@
-Return-Path: <stable+bounces-10089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8168382725F
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:12:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57AB1827238
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:10:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D9571F23586
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:12:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBE69B227C0
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:10:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2747B4C3A9;
-	Mon,  8 Jan 2024 15:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 437224B5AE;
+	Mon,  8 Jan 2024 15:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IzOi/sd6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8w72E7H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24C74BA96;
-	Mon,  8 Jan 2024 15:12:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58818C433BB;
-	Mon,  8 Jan 2024 15:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5164C624;
+	Mon,  8 Jan 2024 15:10:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02E11C433C8;
+	Mon,  8 Jan 2024 15:10:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704726725;
-	bh=2zkg0mZUJ2ov9s9vhe8bG9iDHy1YeBUO9EpRqprp6sU=;
+	s=korg; t=1704726628;
+	bh=ZUZa31sLzmyoYL51E06bXyoZeS7pNPeu8Ab1J7RpTxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IzOi/sd6fb/TUzYJqQZXXwMkqNoY9ruoG8IkR12rEdwU4Rf9Klc45KpgDhLrKKvnR
-	 lVWVT+g0c01hKOTIgFcFSroq3TkOGpweYvSGbz2zgeyJ7itPhRoqQp+eFj58JIPPFX
-	 GPSlitc8KF5gAz65VArmZdlRe03KKzDslZnASUQ8=
+	b=m8w72E7HWCBIhFD/gL6W/z7Ywezv7Jz9be5vfVoom+JuevMXBgwtHLSLsSWrnO5JM
+	 CRIspH98GRjy9kMuW5XXUSmuJ01Bq+4xroeBnFVxhiDdmc/J8w9X3mwVS8vVTm7Lr3
+	 quG29qNROrTbgouk+oI+IGVdqNil0Jkow+MKp65k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Stephen Boyd <swboyd@chromium.org>,
-	Guenter Roeck <groeck@chromium.org>,
 	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/124] drm/bridge: ti-sn65dsi86: Never store more than msg->size bytes in AUX xfer
-Date: Mon,  8 Jan 2024 16:07:25 +0100
-Message-ID: <20240108150603.856019518@linuxfoundation.org>
+Subject: [PATCH 6.6 020/124] drm/bridge: ps8640: Fix size mismatch warning w/ len
+Date: Mon,  8 Jan 2024 16:07:26 +0100
+Message-ID: <20240108150603.890039978@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108150602.976232871@linuxfoundation.org>
 References: <20240108150602.976232871@linuxfoundation.org>
@@ -60,50 +59,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit aca58eac52b88138ab98c814afb389a381725cd7 ]
+[ Upstream commit 35ba6bd582cf926a082296b7e9a876ec81136cb1 ]
 
-For aux reads, the value `msg->size` indicates the size of the buffer
-provided by `msg->buffer`. We should never in any circumstances write
-more bytes to the buffer since it may overflow the buffer.
+After commit 26195af57798 ("drm/bridge: ps8640: Drop the ability of
+ps8640 to fetch the EDID"), I got an error compiling:
 
-In the ti-sn65dsi86 driver there is one code path that reads the
-transfer length from hardware. Even though it's never been seen to be
-a problem, we should make extra sure that the hardware isn't
-increasing the length since doing so would cause us to overrun the
-buffer.
+  error: comparison of distinct pointer types
+  ('typeof (len) *' (aka 'unsigned int *') and
+   'typeof (msg->size) *' (aka 'unsigned long *'))
+  [-Werror,-Wcompare-distinct-pointer-types]
 
-Fixes: 982f589bde7a ("drm/bridge: ti-sn65dsi86: Update reply on aux failures")
+Fix it by declaring the `len` as size_t.
+
+The above error only shows up on downstream kernels without commit
+d03eba99f5bf ("minmax: allow min()/max()/clamp() if the arguments have
+the same signedness."), but since commit 26195af57798 ("drm/bridge:
+ps8640: Drop the ability of ps8640 to fetch the EDID") is a "Fix" that
+will likely be backported it seems nice to make it easy. ...plus it's
+more correct to declare `len` as size_t anyway.
+
+Fixes: 26195af57798 ("drm/bridge: ps8640: Drop the ability of ps8640 to fetch the EDID")
 Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Reviewed-by: Guenter Roeck <groeck@chromium.org>
 Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231214123752.v3.2.I7b83c0f31aeedc6b1dc98c7c741d3e1f94f040f8@changeid
+Link: https://patchwork.freedesktop.org/patch/msgid/20231218090454.1.I5c6eb80b2f746439c4b58efab788e00701d08759@changeid
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/ti-sn65dsi86.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/parade-ps8640.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/ti-sn65dsi86.c b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-index 84148a79414b7..3309c01fa7153 100644
---- a/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-+++ b/drivers/gpu/drm/bridge/ti-sn65dsi86.c
-@@ -527,6 +527,7 @@ static ssize_t ti_sn_aux_transfer(struct drm_dp_aux *aux,
- 	u32 request_val = AUX_CMD_REQ(msg->request);
- 	u8 *buf = msg->buffer;
- 	unsigned int len = msg->size;
-+	unsigned int short_len;
- 	unsigned int val;
+diff --git a/drivers/gpu/drm/bridge/parade-ps8640.c b/drivers/gpu/drm/bridge/parade-ps8640.c
+index d264b80d909de..541e4f5afc4c8 100644
+--- a/drivers/gpu/drm/bridge/parade-ps8640.c
++++ b/drivers/gpu/drm/bridge/parade-ps8640.c
+@@ -210,7 +210,7 @@ static ssize_t ps8640_aux_transfer_msg(struct drm_dp_aux *aux,
+ 	struct ps8640 *ps_bridge = aux_to_ps8640(aux);
+ 	struct regmap *map = ps_bridge->regmap[PAGE0_DP_CNTL];
+ 	struct device *dev = &ps_bridge->page[PAGE0_DP_CNTL]->dev;
+-	unsigned int len = msg->size;
++	size_t len = msg->size;
+ 	unsigned int data;
+ 	unsigned int base;
  	int ret;
- 	u8 addr_len[SN_AUX_LENGTH_REG + 1 - SN_AUX_ADDR_19_16_REG];
-@@ -600,7 +601,8 @@ static ssize_t ti_sn_aux_transfer(struct drm_dp_aux *aux,
- 	}
- 
- 	if (val & AUX_IRQ_STATUS_AUX_SHORT) {
--		ret = regmap_read(pdata->regmap, SN_AUX_LENGTH_REG, &len);
-+		ret = regmap_read(pdata->regmap, SN_AUX_LENGTH_REG, &short_len);
-+		len = min(len, short_len);
- 		if (ret)
- 			goto exit;
- 	} else if (val & AUX_IRQ_STATUS_NAT_I2C_FAIL) {
 -- 
 2.43.0
 
