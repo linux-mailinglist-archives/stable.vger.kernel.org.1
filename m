@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-10271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 472A2827425
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:44:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D51B82742A
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:45:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 572971C212BE
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:44:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD8561F22BA4
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81CF54670;
-	Mon,  8 Jan 2024 15:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D335555770;
+	Mon,  8 Jan 2024 15:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V4LBIV1v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RMyHKA4z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72A005577C;
-	Mon,  8 Jan 2024 15:42:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57ADC433C9;
-	Mon,  8 Jan 2024 15:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96D6054675;
+	Mon,  8 Jan 2024 15:42:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A6DC433CB;
+	Mon,  8 Jan 2024 15:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704728526;
-	bh=7F0qPEk9ooC7I+fhAj1uCOcc52s4IsyRbz9jQ8FSoWQ=;
+	s=korg; t=1704728532;
+	bh=CW+Sf270tEzBr0FxvfufwJdUf6mJGwKQlOoqccldDIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V4LBIV1v71hUHnMPW7CBrvNzDEG7u/O0cnf/80Wph8tiRSYH3TWkAWpfMjOGoJ+N4
-	 iaIqwYa660ffCHjnVSiiXzfm1UZM7vmHdyV6SV/mR8kKN/j+UJWUi/D8vzplNkwmTV
-	 wZutTrCLG8PCZAC3vPpgE89IYkJwVqkUhg6PTHjQ=
+	b=RMyHKA4zGshLPBOURrw5PWhm2Rf3Ip4hq2yGNQmvKlsprvjPlV1Mp0q25/y7Xjxw9
+	 HCI+vUsM34jWzqsDUIk8noCMcOL3slk/ULSmBBrt0TWsQc1WXPLRvYuFFPpUXrXOAb
+	 WExnE3d2UJ1kU2GJGh87M960mNp+73vhGhm6I8mI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 105/150] smb: client: fix missing mode bits for SMB symlinks
-Date: Mon,  8 Jan 2024 16:35:56 +0100
-Message-ID: <20240108153516.015479269@linuxfoundation.org>
+Subject: [PATCH 6.1 106/150] net: dpaa2-eth: rearrange variable in dpaa2_eth_get_ethtool_stats
+Date: Mon,  8 Jan 2024 16:35:57 +0100
+Message-ID: <20240108153516.056507315@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108153511.214254205@linuxfoundation.org>
 References: <20240108153511.214254205@linuxfoundation.org>
@@ -57,34 +57,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
 
-[ Upstream commit ef22bb800d967616c7638d204bc1b425beac7f5f ]
+[ Upstream commit 3313206827678f6f036eca601a51f6c4524b559a ]
 
-When instantiating inodes for SMB symlinks, add the mode bits from
-@cifs_sb->ctx->file_mode as we already do for the other special files.
+Rearrange the variables in the dpaa2_eth_get_ethtool_stats() function so
+that we adhere to the reverse Christmas tree rule.
+Also, in the next patch we are adding more variables and I didn't know
+where to place them with the current ordering.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: beb1930f966d ("dpaa2-eth: recycle the RX buffer only after all processing done")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ethernet/freescale/dpaa2/dpaa2-ethtool.c   | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
-diff --git a/fs/smb/client/inode.c b/fs/smb/client/inode.c
-index 7be51f9d2fa18..5343898bac8a6 100644
---- a/fs/smb/client/inode.c
-+++ b/fs/smb/client/inode.c
-@@ -264,7 +264,7 @@ cifs_unix_basic_to_fattr(struct cifs_fattr *fattr, FILE_UNIX_BASIC_INFO *info,
- 		fattr->cf_dtype = DT_REG;
- 		break;
- 	case UNIX_SYMLINK:
--		fattr->cf_mode |= S_IFLNK;
-+		fattr->cf_mode |= S_IFLNK | cifs_sb->ctx->file_mode;
- 		fattr->cf_dtype = DT_LNK;
- 		break;
- 	case UNIX_DIR:
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c
+index eea7d7a07c007..59888826469b9 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-ethtool.c
+@@ -227,17 +227,8 @@ static void dpaa2_eth_get_ethtool_stats(struct net_device *net_dev,
+ 					struct ethtool_stats *stats,
+ 					u64 *data)
+ {
+-	int i = 0;
+-	int j, k, err;
+-	int num_cnt;
+-	union dpni_statistics dpni_stats;
+-	u32 fcnt, bcnt;
+-	u32 fcnt_rx_total = 0, fcnt_tx_total = 0;
+-	u32 bcnt_rx_total = 0, bcnt_tx_total = 0;
+-	u32 buf_cnt;
+ 	struct dpaa2_eth_priv *priv = netdev_priv(net_dev);
+-	struct dpaa2_eth_drv_stats *extras;
+-	struct dpaa2_eth_ch_stats *ch_stats;
++	union dpni_statistics dpni_stats;
+ 	int dpni_stats_page_size[DPNI_STATISTICS_CNT] = {
+ 		sizeof(dpni_stats.page_0),
+ 		sizeof(dpni_stats.page_1),
+@@ -247,6 +238,13 @@ static void dpaa2_eth_get_ethtool_stats(struct net_device *net_dev,
+ 		sizeof(dpni_stats.page_5),
+ 		sizeof(dpni_stats.page_6),
+ 	};
++	u32 fcnt_rx_total = 0, fcnt_tx_total = 0;
++	u32 bcnt_rx_total = 0, bcnt_tx_total = 0;
++	struct dpaa2_eth_ch_stats *ch_stats;
++	struct dpaa2_eth_drv_stats *extras;
++	int j, k, err, num_cnt, i = 0;
++	u32 fcnt, bcnt;
++	u32 buf_cnt;
+ 
+ 	memset(data, 0,
+ 	       sizeof(u64) * (DPAA2_ETH_NUM_STATS + DPAA2_ETH_NUM_EXTRA_STATS));
 -- 
 2.43.0
 
