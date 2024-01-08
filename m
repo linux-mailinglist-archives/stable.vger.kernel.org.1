@@ -1,56 +1,44 @@
-Return-Path: <stable+bounces-10039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 712C9827224
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:09:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C7A482722C
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:10:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11AB8B227C1
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:09:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C56D4B22A3B
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C2144C3AD;
-	Mon,  8 Jan 2024 15:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9308C4C3BE;
+	Mon,  8 Jan 2024 15:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GLGa1N8X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6jTjezk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A996D4C634;
-	Mon,  8 Jan 2024 15:09:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96657C433C8;
-	Mon,  8 Jan 2024 15:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D0747791;
+	Mon,  8 Jan 2024 15:10:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C42C433D9;
+	Mon,  8 Jan 2024 15:09:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704726569;
-	bh=U8KTyiuURqxpvOuhz5nzfh41N7zc3R/4ZtWh7oCsuKc=;
+	s=korg; t=1704726600;
+	bh=N4+O3EbR2jFmOE+f8rqg72ntkdRGeUujTK++HjIJoUc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GLGa1N8XSMtryKyBEAKbjCjLxW/W89NU2z3RloSYt7wlY3sY7tSiqWwmuKaie7eUu
-	 Hit95/SNOPJoPMyuv1/9dZW8+g8lcyWkepQnMcpUOuk8+fuauJfjOFfO6wH6S01IX5
-	 RJphz/TpPjLts/otHlbDhiFM5UdaS6tZahG5mtIs=
+	b=j6jTjezk+pR1GmeItEzc9MH+dPIOkIFFClhbBXSlX+7eZyYqLWlP6iG2h44bcITPL
+	 DvzE7iqSw4/FEhqCZulBCu+Bt87D1RGjs4h/JfjNwegJ2L/Pn3Ibjkni1HxeyKIT95
+	 g3omM/aT/xA6YoPL7//FGSWvVa1QUjodg2G6s40Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Edward Adam Davis <eadavis@qq.com>,
-	David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jeffrey E Altman <jaltman@auristor.com>,
-	Wang Lei <wang840925@gmail.com>,
-	Jeff Layton <jlayton@redhat.com>,
-	Steve French <sfrench@us.ibm.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	syzbot+94bbb75204a05da3d89f@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 001/124] keys, dns: Fix missing size check of V1 server-list header
-Date: Mon,  8 Jan 2024 16:07:07 +0100
-Message-ID: <20240108150603.039085545@linuxfoundation.org>
+	Mark Brown <broonie@kernel.org>,
+	Gergo Koteles <soyer@irl.hu>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 002/124] ALSA: hda/tas2781: do not use regcache
+Date: Mon,  8 Jan 2024 16:07:08 +0100
+Message-ID: <20240108150603.073423720@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108150602.976232871@linuxfoundation.org>
 References: <20240108150602.976232871@linuxfoundation.org>
@@ -69,115 +57,107 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Gergo Koteles <soyer@irl.hu>
 
-commit 1997b3cb4217b09e49659b634c94da47f0340409 upstream.
+commit 6dad45f4d28977bd1948973107cf325d431e5b7e upstream.
 
-The dns_resolver_preparse() function has a check on the size of the
-payload for the basic header of the binary-style payload, but is missing
-a check for the size of the V1 server-list payload header after
-determining that's what we've been given.
+There are two problems with using regcache in this module.
 
-Fix this by getting rid of the the pointer to the basic header and just
-assuming that we have a V1 server-list payload and moving the V1 server
-list pointer inside the if-statement.  Dealing with other types and
-versions can be left for when such have been defined.
+The amplifier has 3 addressing levels (BOOK, PAGE, REG). The firmware
+contains blocks that must be written to BOOK 0x8C. The regcache doesn't
+know anything about BOOK, so regcache_sync writes invalid values to the
+actual BOOK.
 
-This can be tested by doing the following with KASAN enabled:
+The module handles 2 or more separate amplifiers. The amplifiers have
+different register values, and the module uses only one regmap/regcache
+for all the amplifiers. The regcache_sync only writes the last amplifier
+used.
 
-    echo -n -e '\x0\x0\x1\x2' | keyctl padd dns_resolver foo @p
+The module successfully restores all the written register values (RC
+profile, program, configuration, calibration) without regcache.
 
-and produces an oops like the following:
+Remove regcache functions and set regmap cache_type to REGCACHE_NONE.
 
-    BUG: KASAN: slab-out-of-bounds in dns_resolver_preparse+0xc9f/0xd60 net/dns_resolver/dns_key.c:127
-    Read of size 1 at addr ffff888028894084 by task syz-executor265/5069
-    ...
-    Call Trace:
-      dns_resolver_preparse+0xc9f/0xd60 net/dns_resolver/dns_key.c:127
-      __key_create_or_update+0x453/0xdf0 security/keys/key.c:842
-      key_create_or_update+0x42/0x50 security/keys/key.c:1007
-      __do_sys_add_key+0x29c/0x450 security/keys/keyctl.c:134
-      do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-      do_syscall_64+0x40/0x110 arch/x86/entry/common.c:83
-      entry_SYSCALL_64_after_hwframe+0x62/0x6a
+Link: https://lore.kernel.org/r/21a183b5a08cb23b193af78d4b1114cc59419272.1701906455.git.soyer@irl.hu/
 
-This patch was originally by Edward Adam Davis, but was modified by
-Linus.
-
-Fixes: b946001d3bb1 ("keys, dns: Allow key types (eg. DNS) to be reclaimed immediately on expiry")
-Reported-and-tested-by: syzbot+94bbb75204a05da3d89f@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/r/0000000000009b39bc060c73e209@google.com/
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Tested-by: David Howells <dhowells@redhat.com>
-Cc: Edward Adam Davis <eadavis@qq.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Jeffrey E Altman <jaltman@auristor.com>
-Cc: Wang Lei <wang840925@gmail.com>
-Cc: Jeff Layton <jlayton@redhat.com>
-Cc: Steve French <sfrench@us.ibm.com>
-Cc: Marc Dionne <marc.dionne@auristor.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Jeffrey E Altman <jaltman@auristor.com>
+Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
+Acked-by: Mark Brown <broonie@kernel.org>
+CC: stable@vger.kernel.org
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Link: https://lore.kernel.org/r/491aeed0e2eecc3b704ec856f815db21bad3ba0e.1703202126.git.soyer@irl.hu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/dns_resolver/dns_key.c |   19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ sound/pci/hda/tas2781_hda_i2c.c   |   17 +----------------
+ sound/soc/codecs/tas2781-comlib.c |    2 +-
+ 2 files changed, 2 insertions(+), 17 deletions(-)
 
---- a/net/dns_resolver/dns_key.c
-+++ b/net/dns_resolver/dns_key.c
-@@ -91,8 +91,6 @@ const struct cred *dns_resolver_cache;
- static int
- dns_resolver_preparse(struct key_preparsed_payload *prep)
- {
--	const struct dns_server_list_v1_header *v1;
--	const struct dns_payload_header *bin;
- 	struct user_key_payload *upayload;
- 	unsigned long derrno;
- 	int ret;
-@@ -103,27 +101,28 @@ dns_resolver_preparse(struct key_prepars
- 		return -EINVAL;
+--- a/sound/pci/hda/tas2781_hda_i2c.c
++++ b/sound/pci/hda/tas2781_hda_i2c.c
+@@ -717,8 +717,6 @@ static int tas2781_runtime_suspend(struc
+ 		tas_priv->tasdevice[i].cur_conf = -1;
+ 	}
  
- 	if (data[0] == 0) {
-+		const struct dns_server_list_v1_header *v1;
-+
- 		/* It may be a server list. */
--		if (datalen <= sizeof(*bin))
-+		if (datalen <= sizeof(*v1))
- 			return -EINVAL;
+-	regcache_cache_only(tas_priv->regmap, true);
+-	regcache_mark_dirty(tas_priv->regmap);
  
--		bin = (const struct dns_payload_header *)data;
--		kenter("[%u,%u],%u", bin->content, bin->version, datalen);
--		if (bin->content != DNS_PAYLOAD_IS_SERVER_LIST) {
-+		v1 = (const struct dns_server_list_v1_header *)data;
-+		kenter("[%u,%u],%u", v1->hdr.content, v1->hdr.version, datalen);
-+		if (v1->hdr.content != DNS_PAYLOAD_IS_SERVER_LIST) {
- 			pr_warn_ratelimited(
- 				"dns_resolver: Unsupported content type (%u)\n",
--				bin->content);
-+				v1->hdr.content);
- 			return -EINVAL;
- 		}
+ 	mutex_unlock(&tas_priv->codec_lock);
  
--		if (bin->version != 1) {
-+		if (v1->hdr.version != 1) {
- 			pr_warn_ratelimited(
- 				"dns_resolver: Unsupported server list version (%u)\n",
--				bin->version);
-+				v1->hdr.version);
- 			return -EINVAL;
- 		}
+@@ -730,20 +728,11 @@ static int tas2781_runtime_resume(struct
+ 	struct tasdevice_priv *tas_priv = dev_get_drvdata(dev);
+ 	unsigned long calib_data_sz =
+ 		tas_priv->ndev * TASDEVICE_SPEAKER_CALIBRATION_SIZE;
+-	int ret;
  
--		v1 = (const struct dns_server_list_v1_header *)bin;
- 		if ((v1->status != DNS_LOOKUP_GOOD &&
- 		     v1->status != DNS_LOOKUP_GOOD_WITH_BAD)) {
- 			if (prep->expiry == TIME64_MAX)
+ 	dev_dbg(tas_priv->dev, "Runtime Resume\n");
+ 
+ 	mutex_lock(&tas_priv->codec_lock);
+ 
+-	regcache_cache_only(tas_priv->regmap, false);
+-	ret = regcache_sync(tas_priv->regmap);
+-	if (ret) {
+-		dev_err(tas_priv->dev,
+-			"Failed to restore register cache: %d\n", ret);
+-		goto out;
+-	}
+-
+ 	tasdevice_prmg_load(tas_priv, tas_priv->cur_prog);
+ 
+ 	/* If calibrated data occurs error, dsp will still works with default
+@@ -752,10 +741,9 @@ static int tas2781_runtime_resume(struct
+ 	if (tas_priv->cali_data.total_sz > calib_data_sz)
+ 		tas2781_apply_calib(tas_priv);
+ 
+-out:
+ 	mutex_unlock(&tas_priv->codec_lock);
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ static int tas2781_system_suspend(struct device *dev)
+@@ -770,10 +758,7 @@ static int tas2781_system_suspend(struct
+ 		return ret;
+ 
+ 	/* Shutdown chip before system suspend */
+-	regcache_cache_only(tas_priv->regmap, false);
+ 	tasdevice_tuning_switch(tas_priv, 1);
+-	regcache_cache_only(tas_priv->regmap, true);
+-	regcache_mark_dirty(tas_priv->regmap);
+ 
+ 	/*
+ 	 * Reset GPIO may be shared, so cannot reset here.
+--- a/sound/soc/codecs/tas2781-comlib.c
++++ b/sound/soc/codecs/tas2781-comlib.c
+@@ -39,7 +39,7 @@ static const struct regmap_range_cfg tas
+ static const struct regmap_config tasdevice_regmap = {
+ 	.reg_bits = 8,
+ 	.val_bits = 8,
+-	.cache_type = REGCACHE_RBTREE,
++	.cache_type = REGCACHE_NONE,
+ 	.ranges = tasdevice_ranges,
+ 	.num_ranges = ARRAY_SIZE(tasdevice_ranges),
+ 	.max_register = 256 * 128,
 
 
 
