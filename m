@@ -1,45 +1,46 @@
-Return-Path: <stable+bounces-10253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D154827406
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:43:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F6282743C
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:45:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12404284B1C
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:43:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 493871F23325
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:45:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC939524D1;
-	Mon,  8 Jan 2024 15:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46A454780;
+	Mon,  8 Jan 2024 15:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gND6ikw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIqsoiUF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7506E51C29;
-	Mon,  8 Jan 2024 15:41:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9A80C433C9;
-	Mon,  8 Jan 2024 15:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5185380A;
+	Mon,  8 Jan 2024 15:43:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11183C433C7;
+	Mon,  8 Jan 2024 15:43:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704728470;
-	bh=uf9yssLZQA6lSJhSCxmeRMk4ebUdyMsBa5zq3lZH4XU=;
+	s=korg; t=1704728588;
+	bh=yoqJtS7N5Q5/U9ObtR4pzh0YzsvmqDgEl3s+tHQZTsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0gND6ikwKOccOGQK2/HaM0RIQPmCNZMUXwn9kYX4b0ZiefccpB+FoXUo5H/OJPkDX
-	 Ait2/Gad7znIH7FwOYfiQqCfP0OzF+/oYh//FiJg25B0F71z/H0sYegAJkIjVwIKtO
-	 FvXxNQWQmelsK0orGM2388Hf5WZRK90DaUaemRtY=
+	b=qIqsoiUFAvP8o9HhG5VJVX5laAvUSnQoFkNs80fZnwf+SQR3u5EPf2Aq9Y3nI4JPu
+	 Jgw7T3JkR2zlpVuqa9vgkTfEb2E9g78h9NGb1awnSlRHuxaMGP6H2eSyTrHI5ILfCn
+	 0Fcq3BVlGT/kPHr877Fj4YevCbxmg9MJPkdh1Pkw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Yi Zhang <yi.zhang@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 085/150] bpf: fix precision backtracking instruction iteration
-Date: Mon,  8 Jan 2024 16:35:36 +0100
-Message-ID: <20240108153515.146424663@linuxfoundation.org>
+Subject: [PATCH 6.1 086/150] blk-mq: make sure active queue usage is held for bio_integrity_prep()
+Date: Mon,  8 Jan 2024 16:35:37 +0100
+Message-ID: <20240108153515.187120453@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108153511.214254205@linuxfoundation.org>
 References: <20240108153511.214254205@linuxfoundation.org>
@@ -58,87 +59,166 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Christoph Hellwig <hch@infradead.org>
 
-[ Upstream commit 4bb7ea946a370707315ab774432963ce47291946 ]
+[ Upstream commit b0077e269f6c152e807fdac90b58caf012cdbaab ]
 
-Fix an edge case in __mark_chain_precision() which prematurely stops
-backtracking instructions in a state if it happens that state's first
-and last instruction indexes are the same. This situations doesn't
-necessarily mean that there were no instructions simulated in a state,
-but rather that we starting from the instruction, jumped around a bit,
-and then ended up at the same instruction before checkpointing or
-marking precision.
+blk_integrity_unregister() can come if queue usage counter isn't held
+for one bio with integrity prepared, so this request may be completed with
+calling profile->complete_fn, then kernel panic.
 
-To distinguish between these two possible situations, we need to consult
-jump history. If it's empty or contain a single record "bridging" parent
-state and first instruction of processed state, then we indeed
-backtracked all instructions in this state. But if history is not empty,
-we are definitely not done yet.
+Another constraint is that bio_integrity_prep() needs to be called
+before bio merge.
 
-Move this logic inside get_prev_insn_idx() to contain it more nicely.
-Use -ENOENT return code to denote "we are out of instructions"
-situation.
+Fix the issue by:
 
-This bug was exposed by verifier_loop1.c's bounded_recursion subtest, once
-the next fix in this patch set is applied.
+- call bio_integrity_prep() with one queue usage counter grabbed reliably
 
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Fixes: b5dc0163d8fd ("bpf: precise scalar_value tracking")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20231110002638.4168352-3-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+- call bio_integrity_prep() before bio merge
+
+Fixes: 900e080752025f00 ("block: move queue enter logic into blk_mq_submit_bio()")
+Reported-by: Yi Zhang <yi.zhang@redhat.com>
+Cc: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Tested-by: Yi Zhang <yi.zhang@redhat.com>
+Link: https://lore.kernel.org/r/20231113035231.2708053-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
+ block/blk-mq.c | 75 +++++++++++++++++++++++++-------------------------
+ 1 file changed, 38 insertions(+), 37 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 95521beec66c5..142e10d49fd81 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -2551,12 +2551,29 @@ static int push_jmp_history(struct bpf_verifier_env *env,
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 100fb0c3114f8..383d94615e502 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -2855,11 +2855,8 @@ static struct request *blk_mq_get_new_requests(struct request_queue *q,
+ 	};
+ 	struct request *rq;
  
- /* Backtrack one insn at a time. If idx is not at the top of recorded
-  * history then previous instruction came from straight line execution.
-+ * Return -ENOENT if we exhausted all instructions within given state.
-+ *
-+ * It's legal to have a bit of a looping with the same starting and ending
-+ * insn index within the same state, e.g.: 3->4->5->3, so just because current
-+ * instruction index is the same as state's first_idx doesn't mean we are
-+ * done. If there is still some jump history left, we should keep going. We
-+ * need to take into account that we might have a jump history between given
-+ * state's parent and itself, due to checkpointing. In this case, we'll have
-+ * history entry recording a jump from last instruction of parent state and
-+ * first instruction of given state.
-  */
- static int get_prev_insn_idx(struct bpf_verifier_state *st, int i,
- 			     u32 *history)
+-	if (unlikely(bio_queue_enter(bio)))
+-		return NULL;
+-
+ 	if (blk_mq_attempt_bio_merge(q, bio, nsegs))
+-		goto queue_exit;
++		return NULL;
+ 
+ 	rq_qos_throttle(q, bio);
+ 
+@@ -2875,35 +2872,23 @@ static struct request *blk_mq_get_new_requests(struct request_queue *q,
+ 	rq_qos_cleanup(q, bio);
+ 	if (bio->bi_opf & REQ_NOWAIT)
+ 		bio_wouldblock_error(bio);
+-queue_exit:
+-	blk_queue_exit(q);
+ 	return NULL;
+ }
+ 
+-static inline struct request *blk_mq_get_cached_request(struct request_queue *q,
+-		struct blk_plug *plug, struct bio **bio, unsigned int nsegs)
++/* return true if this @rq can be used for @bio */
++static bool blk_mq_can_use_cached_rq(struct request *rq, struct blk_plug *plug,
++		struct bio *bio)
  {
- 	u32 cnt = *history;
+-	struct request *rq;
+-	enum hctx_type type, hctx_type;
++	enum hctx_type type = blk_mq_get_hctx_type(bio->bi_opf);
++	enum hctx_type hctx_type = rq->mq_hctx->type;
  
-+	if (i == st->first_insn_idx) {
-+		if (cnt == 0)
-+			return -ENOENT;
-+		if (cnt == 1 && st->jmp_history[0].idx == i)
-+			return -ENOENT;
+-	if (!plug)
+-		return NULL;
+-	rq = rq_list_peek(&plug->cached_rq);
+-	if (!rq || rq->q != q)
+-		return NULL;
+-
+-	if (blk_mq_attempt_bio_merge(q, *bio, nsegs)) {
+-		*bio = NULL;
+-		return NULL;
+-	}
++	WARN_ON_ONCE(rq_list_peek(&plug->cached_rq) != rq);
+ 
+-	type = blk_mq_get_hctx_type((*bio)->bi_opf);
+-	hctx_type = rq->mq_hctx->type;
+ 	if (type != hctx_type &&
+ 	    !(type == HCTX_TYPE_READ && hctx_type == HCTX_TYPE_DEFAULT))
+-		return NULL;
+-	if (op_is_flush(rq->cmd_flags) != op_is_flush((*bio)->bi_opf))
+-		return NULL;
++		return false;
++	if (op_is_flush(rq->cmd_flags) != op_is_flush(bio->bi_opf))
++		return false;
+ 
+ 	/*
+ 	 * If any qos ->throttle() end up blocking, we will have flushed the
+@@ -2911,11 +2896,11 @@ static inline struct request *blk_mq_get_cached_request(struct request_queue *q,
+ 	 * before we throttle.
+ 	 */
+ 	plug->cached_rq = rq_list_next(rq);
+-	rq_qos_throttle(q, *bio);
++	rq_qos_throttle(rq->q, bio);
+ 
+-	rq->cmd_flags = (*bio)->bi_opf;
++	rq->cmd_flags = bio->bi_opf;
+ 	INIT_LIST_HEAD(&rq->queuelist);
+-	return rq;
++	return true;
+ }
+ 
+ static void bio_set_ioprio(struct bio *bio)
+@@ -2944,7 +2929,7 @@ void blk_mq_submit_bio(struct bio *bio)
+ 	struct request_queue *q = bdev_get_queue(bio->bi_bdev);
+ 	struct blk_plug *plug = blk_mq_plug(bio);
+ 	const int is_sync = op_is_sync(bio->bi_opf);
+-	struct request *rq;
++	struct request *rq = NULL;
+ 	unsigned int nr_segs = 1;
+ 	blk_status_t ret;
+ 
+@@ -2955,20 +2940,36 @@ void blk_mq_submit_bio(struct bio *bio)
+ 			return;
+ 	}
+ 
+-	if (!bio_integrity_prep(bio))
+-		return;
+-
+ 	bio_set_ioprio(bio);
+ 
+-	rq = blk_mq_get_cached_request(q, plug, &bio, nr_segs);
+-	if (!rq) {
+-		if (!bio)
++	if (plug) {
++		rq = rq_list_peek(&plug->cached_rq);
++		if (rq && rq->q != q)
++			rq = NULL;
++	}
++	if (rq) {
++		if (!bio_integrity_prep(bio))
+ 			return;
+-		rq = blk_mq_get_new_requests(q, plug, bio, nr_segs);
+-		if (unlikely(!rq))
++		if (blk_mq_attempt_bio_merge(q, bio, nr_segs))
+ 			return;
++		if (blk_mq_can_use_cached_rq(rq, plug, bio))
++			goto done;
++		percpu_ref_get(&q->q_usage_counter);
++	} else {
++		if (unlikely(bio_queue_enter(bio)))
++			return;
++		if (!bio_integrity_prep(bio))
++			goto fail;
 +	}
 +
- 	if (cnt && st->jmp_history[cnt - 1].idx == i) {
- 		i = st->jmp_history[cnt - 1].prev_idx;
- 		(*history)--;
-@@ -3052,9 +3069,9 @@ static int __mark_chain_precision(struct bpf_verifier_env *env, int frame, int r
- 				 * Nothing to be tracked further in the parent state.
- 				 */
- 				return 0;
--			if (i == first_idx)
--				break;
- 			i = get_prev_insn_idx(st, i, &history);
-+			if (i == -ENOENT)
-+				break;
- 			if (i >= env->prog->len) {
- 				/* This can happen if backtracking reached insn 0
- 				 * and there are still reg_mask or stack_mask
++	rq = blk_mq_get_new_requests(q, plug, bio, nr_segs);
++	if (unlikely(!rq)) {
++fail:
++		blk_queue_exit(q);
++		return;
+ 	}
+ 
++done:
+ 	trace_block_getrq(bio);
+ 
+ 	rq_qos_track(q, rq, bio);
 -- 
 2.43.0
 
