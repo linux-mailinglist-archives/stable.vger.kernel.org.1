@@ -1,117 +1,103 @@
-Return-Path: <stable+bounces-10036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECE7B8271EB
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:53:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E4E827216
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:04:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FAFD1C22B0B
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 14:53:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DAC4284488
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:04:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DA9647788;
-	Mon,  8 Jan 2024 14:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C3546B81;
+	Mon,  8 Jan 2024 15:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=manguebit.com header.i=@manguebit.com header.b="KdPWUVIq"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eZvdNJQW"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.manguebit.com (mx.manguebit.com [167.235.159.17])
+Received: from mail-oa1-f51.google.com (mail-oa1-f51.google.com [209.85.160.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF9E43140;
-	Mon,  8 Jan 2024 14:52:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=manguebit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=manguebit.com
-Message-ID: <446860c571d0699ed664175262a9e84b@manguebit.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
-	s=dkim; t=1704725570;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t+i5JdjKCVjgU6vgNmEIDAR0g7GR4mu/Bvs75gpMMnE=;
-	b=KdPWUVIqX+Xh926sXVwSBYIO6gfEPBWlJ1qkNFoBRmZH4o4EY3ZvhF/GjDxh/FVHf8FNNX
-	/UH9mFM39l8mH7m+jQFVE9OdvHxmwpmh7jaZzNjIeEXiICjxHGKV8GwJGi81NN9H7nm5Iq
-	l8kOVX4qY7LggrbNhAW5JIA5qxsG6xjWGpsPZwIHxG8WsqprsqbHKSjk2BTF2v9QXUu2Z6
-	XYf9SQM2ccltnN9+A2PiaCnjvC6fAcpHN1mxRlXqLcfX8xUq33VQ7SiQEs4ALAiQe50tnJ
-	R5rt3xFuUFnmMFbTqjeLB6ufA64kY1f30tjyghe8oE5ZTKZGZjJ5Xj1R4iDqzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=manguebit.com;
-	s=dkim; t=1704725570; h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=t+i5JdjKCVjgU6vgNmEIDAR0g7GR4mu/Bvs75gpMMnE=;
-	b=TccRxjs6rPyPYQjuZvktAOMRhZYCLWTGDuWV0AG+Ruz7rkpqmFPBQnGmDzZY73gQUqzIrL
-	qlJ/uAJvU9sGoG6iyEc3Mk6fYjvZ2NOwOUHfhzRBxpM5LTLV6DdVU1y01uTf9Fr87XLvFG
-	KILXHkADqkGWxfyHt8Xb2ru7PWvKCEsRYADziGh6g4tjNGf5irGvqDB6lrtQ8+9WqnQfoe
-	pABEK8PRQcUdL/UupqNqGROZg1xN75Z6tzOwFh6YVKU2YsmfEEDzXjNKADtEMUE1oDMTTG
-	ut9ysVPR4iXBFryPujnlwVqmgNiL6T0XCPSbWbbzIZbIc+sGDo++ACNjL+d0YA==
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.mailfrom=pc@manguebit.com
-ARC-Seal: i=1; s=dkim; d=manguebit.com; t=1704725570; a=rsa-sha256;
-	cv=none;
-	b=r9kVvNpNv7obhsk1ANYiPmKIqp/nUSBKIpuxQWB4fpQ9ItzWBU12jCnWpoTn7g3DhqOJpo
-	wi29P26fzH6D7cHIjb+Bg+oAxBsOA0+Nc/V7pXQtdw/Pb3OBr3z1OZGccUMA3rAifAVxYS
-	SQsbbbcYqeGnX93/cyZ1WTqad/+YsWNn/z5WGAEYIzwN8TIDpG9Es1910MBWWSWkAJx4JG
-	+P2nvdNq5TPobIHGRwLqXv8hjoPrjnIRUcSVw9czrPP3Ydf3PGLmkKHJeULeASOecWbJBd
-	L7AC6t6JxVrPjt0Y7qENuBXE94bjobvMvq1st0cJPn0k9Y2T4OnlvXf8XirYDA==
-From: Paulo Alcantara <pc@manguebit.com>
-To: Jan =?utf-8?B?xIxlcm3DoWs=?= <sairon@sairon.cz>, Leonardo Brondani
- Schenkel
- <leonardo@schenkel.net>, stable@vger.kernel.org, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>
-Cc: regressions@lists.linux.dev, linux-cifs@vger.kernel.org, Mathias
- =?utf-8?Q?Wei=C3=9Fbach?= <m.weissbach@info-gate.de>
-Subject: Re: [REGRESSION 6.1.70] system calls with CIFS mounts failing with
- "Resource temporarily unavailable"
-In-Reply-To: <7425b05a-d9a1-4c06-89a2-575504e132c3@sairon.cz>
-References: <8ad7c20e-0645-40f3-96e6-75257b4bd31a@schenkel.net>
- <7425b05a-d9a1-4c06-89a2-575504e132c3@sairon.cz>
-Date: Mon, 08 Jan 2024 11:52:45 -0300
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FCB5100D
+	for <stable@vger.kernel.org>; Mon,  8 Jan 2024 15:03:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-oa1-f51.google.com with SMTP id 586e51a60fabf-2045bedb806so1951136fac.3
+        for <stable@vger.kernel.org>; Mon, 08 Jan 2024 07:03:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1704726217; x=1705331017; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=yUiP3KKGR0mBVVVBBTQ0Scya9qBaQyaIesgAU/UrY5k=;
+        b=eZvdNJQW3yYjj6nniJviqlngKEPYy5b3ffrrru6OUR3BeBXxjaq5gn6CrUK7SCX6Jt
+         UVpJGvGPwfEiavAW6rpM8DawmpwWqaCHw7wikkQdxTKPJ0QlSKx9QJtyqCkXzrT3Ht6Y
+         Cg/6PvuECGrnVZV5f+R8c+KS9Ppy2PCBK+ffIb/z6jkIS6XQYIPull4Ka+1hCNSm2YaB
+         1TqJOPGT+zZk6AEfAtvx5qMjZ+xtWoUWZ4rN2LKKQSdjLj0UnRMibZvmfO614h8q14Jg
+         J5j1V3rXtA16qBSvn5kEF5uwJPkPEAqiXFxRBxTR9LSQz1igFB039XcnQeDALRKEdkbj
+         8ukw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704726217; x=1705331017;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yUiP3KKGR0mBVVVBBTQ0Scya9qBaQyaIesgAU/UrY5k=;
+        b=fXgmOe23sNCxVP34NiEY8ab/7RSuRO0igEc23T0efedJxUedYB+Ae7EhTmm56UcNqS
+         gVhBhN3kqzmsiOUdgHMFQbyTKl/c1aRWOPY9VjHMipsqZj6j5RXSCugtwNRarl9CEUD1
+         kWf7UM5Oht19gDFeVTpPZSTYjn1UroKMbpetMLeiWQDWlpK3O7W+W4Snn4/IUu6lQyRr
+         /xKCnXmz8nAmv7e6adYpQCx//K1pByT8eP7Od7xyPbvnjWFZnOspcYGn93QwWW1EN4tb
+         GN13MP1DD4JMcaTHD9xb00p7EY6s52zu3H0NrCYDb8W0FL1NSjw32FUklJWTpSFd3tGb
+         SdEQ==
+X-Gm-Message-State: AOJu0Yw4MXJn8Kec7Ts43tHaOBsksAAHavxoT1tksESkP0vbJ/cPtmi5
+	UmZb01wV4VwaCmsOKimY/mupvcWRzVyTj16mF/IvAOVPuJ5x6g==
+X-Google-Smtp-Source: AGHT+IE80XL1LnyT+wMEKISvh/W678Gi3bEA0D0jl7KoK0yscUgs0E7tx6xp4rRwOy/41XDUnzSDq/POGegGOCJceEI=
+X-Received: by 2002:a05:6870:a3c7:b0:203:64c3:7b86 with SMTP id
+ h7-20020a056870a3c700b0020364c37b86mr5462616oak.44.1704726216940; Mon, 08 Jan
+ 2024 07:03:36 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20240107155702.3395873-1-amit.pundir@linaro.org> <2024010850-latch-occupancy-e727@gregkh>
+In-Reply-To: <2024010850-latch-occupancy-e727@gregkh>
+From: Amit Pundir <amit.pundir@linaro.org>
+Date: Mon, 8 Jan 2024 20:33:00 +0530
+Message-ID: <CAMi1Hd37L6NYKNpGOUnT7EO8kfc-HVQUqnoTTARA5gTpTc2wXQ@mail.gmail.com>
+Subject: Re: [PATCH for-6.1.y] Revert "interconnect: qcom: sm8250: Enable sync_state"
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>, Georgi Djakov <djakov@kernel.org>, 
+	Konrad Dybcio <konrad.dybcio@linaro.org>, Stable <stable@vger.kernel.org>, 
+	Yongqin Liu <yongqin.liu@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Jan,
+On Mon, 8 Jan 2024 at 19:42, Greg KH <gregkh@linuxfoundation.org> wrote:
+>
+> On Sun, Jan 07, 2024 at 09:27:02PM +0530, Amit Pundir wrote:
+> > This reverts commit 3637f6bdfe2ccd53c493836b6e43c9a73e4513b3 which is
+> > commit bfc7db1cb94ad664546d70212699f8cc6c539e8c upstream.
+> >
+> > This resulted in boot regression on RB5 (sm8250), causing the device
+> > to hard crash into USB crash dump mode everytime.
+> >
+> > Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+>
+> Any link to that report?  Is this also an issue in 6.7 and/or 6.6.y?
 
-Thanks for the report.
+Here is a fresh RB5 crash report running AOSP with upstream v6.1.71
+https://lkft.validation.linaro.org/scheduler/job/7151629#L4239
 
-So this bug is related to an off-by-one in smb2_set_next_command() when
-the client attempts to pad SMB2_QUERY_INFO request -- since it isn't 8 byte
-aligned -- even though smb2_query_info_compound() doesn't provide an extra
-iov for such padding.
+I do not see this crash on v6.7.
 
-v6.1.y doesn't have
+I have not tested v6.6.y yet. I'll test and submit a revert if I see
+this crash there as well.
 
-        eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-arrays")
+Regards,
+Amit Pundir
 
-and the commit does
-
-	+	if (unlikely(check_add_overflow(input_len, sizeof(*req), &len) ||
-	+		     len > CIFSMaxBufSize))
-	+		return -EINVAL;
-	+
-
-so sizeof(*req) will wrongly include the extra byte from
-smb2_query_info_req::Buffer making @len unaligned and therefore causing
-OOB in smb2_set_next_command().
-
-A simple fix for that would be
-
-	diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-	index 05ff8a457a3d..aed5067661de 100644
-	--- a/fs/smb/client/smb2pdu.c
-	+++ b/fs/smb/client/smb2pdu.c
-	@@ -3556,7 +3556,7 @@ SMB2_query_info_init(struct cifs_tcon *tcon, struct TCP_Server_Info *server,
-	 
-	 	iov[0].iov_base = (char *)req;
-	 	/* 1 for Buffer */
-	-	iov[0].iov_len = len;
-	+	iov[0].iov_len = len - 1;
-	 	return 0;
-	 }
+>
+> thanks,
+>
+> greg k-h
+>
 
