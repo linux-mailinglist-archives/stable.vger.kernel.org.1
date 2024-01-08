@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-10260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B39C82740E
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:43:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE5478273D8
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:40:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 598E71C211EA
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:43:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DC05B232F7
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC2752F6A;
-	Mon,  8 Jan 2024 15:41:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2933524A7;
+	Mon,  8 Jan 2024 15:39:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iy4aoyoc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gr5UvSVK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572E052F62;
-	Mon,  8 Jan 2024 15:41:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D9EC433C8;
-	Mon,  8 Jan 2024 15:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B8B524AA;
+	Mon,  8 Jan 2024 15:39:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74BCC433C7;
+	Mon,  8 Jan 2024 15:39:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704728492;
-	bh=RLpeuMr5iT22LNx6bBQ1HYfKScgAHhCcDJn1whk4nO0=;
+	s=korg; t=1704728394;
+	bh=DyEPa5vZKEpUtxJXzGFjh1NJEjkIgPboBvU77t3koZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iy4aoyocuXGS8ds5O27ty9Jk82N04XDYelYSY1v4/ehgxt5ez9R9CX5hbEnzdntL9
-	 t/PUSEGEqFH0cLJ1wXlgNsYyG/p0bzjgW700yb45OgbjWQlNoH3zg+1PolIoICXUwU
-	 okXtycH1CkPb4YhJ4G68c9DCU34r8vZQpAIAGxAM=
+	b=gr5UvSVKaaUv5CtnoCDfk8pvHdq6lUCfHDB51Cxds82CufSq9JvbIod0grNPyx8LW
+	 XMsYKWRRH2zeSk5bzg45o8+wNkds91rBdv39X8+lR06lLsao6QGY1pxuVlhIlQTvh1
+	 EbVHF8v6ZkZvoqotFlZI78TVmHEBWExjXgYIEK4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Thomas Lange <thomas@corelatus.se>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/150] bnxt_en: Remove mis-applied code from bnxt_cfg_ntp_filters()
-Date: Mon,  8 Jan 2024 16:35:05 +0100
-Message-ID: <20240108153513.720119902@linuxfoundation.org>
+Subject: [PATCH 6.1 055/150] net: Implement missing SO_TIMESTAMPING_NEW cmsg support
+Date: Mon,  8 Jan 2024 16:35:06 +0100
+Message-ID: <20240108153513.759383966@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108153511.214254205@linuxfoundation.org>
 References: <20240108153511.214254205@linuxfoundation.org>
@@ -58,45 +58,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael Chan <michael.chan@broadcom.com>
+From: Thomas Lange <thomas@corelatus.se>
 
-[ Upstream commit e009b2efb7a8850498796b360043ac25c8d3d28f ]
+[ Upstream commit 382a32018b74f407008615e0e831d05ed28e81cd ]
 
-The 2 lines to check for the BNXT_HWRM_PF_UNLOAD_SP_EVENT bit was
-mis-applied to bnxt_cfg_ntp_filters() and should have been applied to
-bnxt_sp_task().
+Commit 9718475e6908 ("socket: Add SO_TIMESTAMPING_NEW") added the new
+socket option SO_TIMESTAMPING_NEW. However, it was never implemented in
+__sock_cmsg_send thus breaking SO_TIMESTAMPING cmsg for platforms using
+SO_TIMESTAMPING_NEW.
 
-Fixes: 19241368443f ("bnxt_en: Send PF driver unload notification to all VFs.")
-Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 9718475e6908 ("socket: Add SO_TIMESTAMPING_NEW")
+Link: https://lore.kernel.org/netdev/6a7281bf-bc4a-4f75-bb88-7011908ae471@app.fastmail.com/
+Signed-off-by: Thomas Lange <thomas@corelatus.se>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20240104085744.49164-1-thomas@corelatus.se
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/sock.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 623cdeb29ed90..df4d88d35701b 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -12081,6 +12081,8 @@ static void bnxt_sp_task(struct work_struct *work)
- 		bnxt_cfg_ntp_filters(bp);
- 	if (test_and_clear_bit(BNXT_HWRM_EXEC_FWD_REQ_SP_EVENT, &bp->sp_event))
- 		bnxt_hwrm_exec_fwd_req(bp);
-+	if (test_and_clear_bit(BNXT_HWRM_PF_UNLOAD_SP_EVENT, &bp->sp_event))
-+		netdev_info(bp->dev, "Receive PF driver unload event!\n");
- 	if (test_and_clear_bit(BNXT_PERIODIC_STATS_SP_EVENT, &bp->sp_event)) {
- 		bnxt_hwrm_port_qstats(bp, 0);
- 		bnxt_hwrm_port_qstats_ext(bp, 0);
-@@ -13059,8 +13061,6 @@ static void bnxt_cfg_ntp_filters(struct bnxt *bp)
- 			}
- 		}
- 	}
--	if (test_and_clear_bit(BNXT_HWRM_PF_UNLOAD_SP_EVENT, &bp->sp_event))
--		netdev_info(bp->dev, "Receive PF driver unload event!\n");
- }
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 0d8754ec837dc..c50a14a02edd4 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2771,6 +2771,7 @@ int __sock_cmsg_send(struct sock *sk, struct msghdr *msg, struct cmsghdr *cmsg,
+ 		sockc->mark = *(u32 *)CMSG_DATA(cmsg);
+ 		break;
+ 	case SO_TIMESTAMPING_OLD:
++	case SO_TIMESTAMPING_NEW:
+ 		if (cmsg->cmsg_len != CMSG_LEN(sizeof(u32)))
+ 			return -EINVAL;
  
- #else
 -- 
 2.43.0
 
