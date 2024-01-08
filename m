@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-10240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFB778273F0
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:42:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF1A9827407
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:43:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07B461C22D36
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:42:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B2B6B22B5F
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:43:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4FF54736;
-	Mon,  8 Jan 2024 15:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 639EB53E02;
+	Mon,  8 Jan 2024 15:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WydC04A6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylrvrnHy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9EEE4645B;
-	Mon,  8 Jan 2024 15:40:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A1A7C433C7;
-	Mon,  8 Jan 2024 15:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB7F53E08;
+	Mon,  8 Jan 2024 15:41:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 551A2C433C8;
+	Mon,  8 Jan 2024 15:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704728429;
-	bh=5H+htleyB73dsab+1s2RAubbIysJRcobeoB5l4VX5hk=;
+	s=korg; t=1704728463;
+	bh=+Q5VFpxl30f7ZwS4DKspAysGfGR4Ww9OT3S0mnR7iAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WydC04A62FC2vKdpkSad7kq4usJmLW0DqTKTPei+pYd/For5ImwnaQS6DQOZJVj4f
-	 eoTLVkKydTqK9qUhEltMKL+K2wTWpwFLHUbxY81EpcLFAihSw0EjfzSmHKpig8LJ4M
-	 G0iXL+6IRO0syevvQoz2AhuP186oeorvZEf++dcg=
+	b=ylrvrnHyWH0YghtGm+N7VjidqMYQgD+GyUDcWm2+2EmUwxO24zSLWs9P4jnyIjb1G
+	 a7WDvjcWfcLeO9mo6jMGk6KcPY1dYtZb1H0uC4xkPjMyI3lhP0Yh1Tlz9cM3Up3zYf
+	 27UrPOuBNzpJabE5pc931mBt3WEEWLPh3js/4h7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	"kernelci.org bot" <bot@kernelci.org>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	"Mike Rapoport (IBM)" <rppt@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Laurent Dufour <ldufour@linux.ibm.com>,
+	Zhang Rui <rui.zhang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 056/150] selftests: secretmem: floor the memory size to the multiple of page_size
-Date: Mon,  8 Jan 2024 16:35:07 +0100
-Message-ID: <20240108153513.807916310@linuxfoundation.org>
+Subject: [PATCH 6.1 057/150] cpu/SMT: Create topology_smt_thread_allowed()
+Date: Mon,  8 Jan 2024 16:35:08 +0100
+Message-ID: <20240108153513.848789738@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108153511.214254205@linuxfoundation.org>
 References: <20240108153511.214254205@linuxfoundation.org>
@@ -61,53 +59,109 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 0aac13add26d546ac74c89d2883b3a5f0fbea039 ]
+[ Upstream commit 38253464bc821d6de6bba81bb1412ebb36f6cbd1 ]
 
-The "locked-in-memory size" limit per process can be non-multiple of
-page_size.  The mmap() fails if we try to allocate locked-in-memory with
-same size as the allowed limit if it isn't multiple of the page_size
-because mmap() rounds off the memory size to be allocated to next multiple
-of page_size.
+Some architectures allows partial SMT states, i.e. when not all SMT threads
+are brought online.
 
-Fix this by flooring the length to be allocated with mmap() to the
-previous multiple of the page_size.
+To support that, add an architecture helper which checks whether a given
+CPU is allowed to be brought online depending on how many SMT threads are
+currently enabled. Since this is only applicable to architecture supporting
+partial SMT, only these architectures should select the new configuration
+variable CONFIG_SMT_NUM_THREADS_DYNAMIC. For the other architectures, not
+supporting the partial SMT states, there is no need to define
+topology_cpu_smt_allowed(), the generic code assumed that all the threads
+are allowed or only the primary ones.
 
-This was getting triggered on KernelCI regularly because of different
-ulimit settings which wasn't multiple of the page_size.  Find logs
-here: https://linux.kernelci.org/test/plan/id/657654bd8e81e654fae13532/
-The bug in was present from the time test was first added.
+Call the helper from cpu_smt_enable(), and cpu_smt_allowed() when SMT is
+enabled, to check if the particular thread should be onlined. Notably,
+also call it from cpu_smt_disable() if CPU_SMT_ENABLED, to allow
+offlining some threads to move from a higher to lower number of threads
+online.
 
-Link: https://lkml.kernel.org/r/20231214101931.1155586-1-usama.anjum@collabora.com
-Fixes: 76fe17ef588a ("secretmem: test: add basic selftest for memfd_secret(2)")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Reported-by: "kernelci.org bot" <bot@kernelci.org>
-Closes: https://linux.kernelci.org/test/plan/id/657654bd8e81e654fae13532/
-Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-Cc: Mike Rapoport (IBM) <rppt@kernel.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ ldufour: Slightly reword the commit's description ]
+[ ldufour: Introduce CONFIG_SMT_NUM_THREADS_DYNAMIC ]
+
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Zhang Rui <rui.zhang@intel.com>
+Link: https://lore.kernel.org/r/20230705145143.40545-7-ldufour@linux.ibm.com
+Stable-dep-of: d91bdd96b55c ("cpu/SMT: Make SMT control more robust against enumeration failures")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/vm/memfd_secret.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/Kconfig |  3 +++
+ kernel/cpu.c | 24 +++++++++++++++++++++++-
+ 2 files changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/vm/memfd_secret.c b/tools/testing/selftests/vm/memfd_secret.c
-index 957b9e18c7295..9b298f6a04b37 100644
---- a/tools/testing/selftests/vm/memfd_secret.c
-+++ b/tools/testing/selftests/vm/memfd_secret.c
-@@ -62,6 +62,9 @@ static void test_mlock_limit(int fd)
- 	char *mem;
+diff --git a/arch/Kconfig b/arch/Kconfig
+index b60d271bf76a9..14273a6203dfc 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -34,6 +34,9 @@ config ARCH_HAS_SUBPAGE_FAULTS
+ config HOTPLUG_SMT
+ 	bool
  
- 	len = mlock_limit_cur;
-+	if (len % page_size != 0)
-+		len = (len/page_size) * page_size;
++config SMT_NUM_THREADS_DYNAMIC
++	bool
 +
- 	mem = mmap(NULL, len, prot, mode, fd, 0);
- 	if (mem == MAP_FAILED) {
- 		fail("unable to mmap secret memory\n");
+ config GENERIC_ENTRY
+        bool
+ 
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 551468d9c5a85..c37f1758a4865 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -446,9 +446,23 @@ static int __init smt_cmdline_disable(char *str)
+ }
+ early_param("nosmt", smt_cmdline_disable);
+ 
++/*
++ * For Archicture supporting partial SMT states check if the thread is allowed.
++ * Otherwise this has already been checked through cpu_smt_max_threads when
++ * setting the SMT level.
++ */
++static inline bool cpu_smt_thread_allowed(unsigned int cpu)
++{
++#ifdef CONFIG_SMT_NUM_THREADS_DYNAMIC
++	return topology_smt_thread_allowed(cpu);
++#else
++	return true;
++#endif
++}
++
+ static inline bool cpu_smt_allowed(unsigned int cpu)
+ {
+-	if (cpu_smt_control == CPU_SMT_ENABLED)
++	if (cpu_smt_control == CPU_SMT_ENABLED && cpu_smt_thread_allowed(cpu))
+ 		return true;
+ 
+ 	if (topology_is_primary_thread(cpu))
+@@ -2294,6 +2308,12 @@ int cpuhp_smt_disable(enum cpuhp_smt_control ctrlval)
+ 	for_each_online_cpu(cpu) {
+ 		if (topology_is_primary_thread(cpu))
+ 			continue;
++		/*
++		 * Disable can be called with CPU_SMT_ENABLED when changing
++		 * from a higher to lower number of SMT threads per core.
++		 */
++		if (ctrlval == CPU_SMT_ENABLED && cpu_smt_thread_allowed(cpu))
++			continue;
+ 		ret = cpu_down_maps_locked(cpu, CPUHP_OFFLINE);
+ 		if (ret)
+ 			break;
+@@ -2328,6 +2348,8 @@ int cpuhp_smt_enable(void)
+ 		/* Skip online CPUs and CPUs on offline nodes */
+ 		if (cpu_online(cpu) || !node_online(cpu_to_node(cpu)))
+ 			continue;
++		if (!cpu_smt_thread_allowed(cpu))
++			continue;
+ 		ret = _cpu_up(cpu, 0, CPUHP_ONLINE);
+ 		if (ret)
+ 			break;
 -- 
 2.43.0
 
