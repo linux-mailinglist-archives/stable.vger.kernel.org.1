@@ -1,46 +1,45 @@
-Return-Path: <stable+bounces-10261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE7D82740F
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:43:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B470D827426
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:44:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DBB91C22DEF
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:43:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 635B0280FC6
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:44:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9F2524A8;
-	Mon,  8 Jan 2024 15:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE2EA51C3D;
+	Mon,  8 Jan 2024 15:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koys0xBu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXyjTg8t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B2551032;
-	Mon,  8 Jan 2024 15:41:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 003A7C433CB;
-	Mon,  8 Jan 2024 15:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7553652F8B;
+	Mon,  8 Jan 2024 15:42:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F058DC433C8;
+	Mon,  8 Jan 2024 15:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704728495;
-	bh=uKjPlYKySLCr3LcoHuHlakQS83NOlngjHzjNgf7aOFE=;
+	s=korg; t=1704728529;
+	bh=9gdN4uOo4NRNeW+VvTiM/+MN0ESLIHKr3Y9NNSauEUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=koys0xBubI3YrDs2TP3Ne5OUh2opPnR7s+DkVzCf3l57vlUakC6viMFLvqt0iKyGT
-	 I20pg2EIeEXk9zLTHLPSe/vmqeifKqP5mRbmCmO69LiO3QSQn48kCU9IFPm4w0wJig
-	 LJt+Qyl1uNj41wcaEGuZb5EaxdkNsgSCd26/YjPw=
+	b=VXyjTg8tpQmEyOW5VLgj6amvCIQ9tJBFbcL85oAipMlZ+/5GDPLZLKUNg4NXN3iW+
+	 K6vYZUOEGKKp0GsyYSYdFyArJBmvJxz3CZuqImag1QelN9esg1L67pFhkD1EbtAlyZ
+	 Ue6y7kWOAthpIZm6iliI27hEGVHc7wJ4lgjz9gVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/150] net/mlx5: Increase size of irq name buffer
-Date: Mon,  8 Jan 2024 16:35:38 +0100
-Message-ID: <20240108153515.238297969@linuxfoundation.org>
+Subject: [PATCH 6.1 088/150] s390/mm: add missing arch_set_page_dat() call to vmem_crst_alloc()
+Date: Mon,  8 Jan 2024 16:35:39 +0100
+Message-ID: <20240108153515.289158857@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108153511.214254205@linuxfoundation.org>
 References: <20240108153511.214254205@linuxfoundation.org>
@@ -59,74 +58,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 3338bebfc26a1e2cebbba82a1cf12c0159608e73 ]
+[ Upstream commit 09cda0a400519b1541591c506e54c9c48e3101bf ]
 
-Without increased buffer size, will trigger -Wformat-truncation with W=1
-for the snprintf operation writing to the buffer.
+If the cmma no-dat feature is available all pages that are not used for
+dynamic address translation are marked as "no-dat" with the ESSA
+instruction. This information is visible to the hypervisor, so that the
+hypervisor can optimize purging of guest TLB entries. This also means that
+pages which are used for dynamic address translation must not be marked as
+"no-dat", since the hypervisor may then incorrectly not purge guest TLB
+entries.
 
-    drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c: In function 'mlx5_irq_alloc':
-    drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c:296:7: error: '@pci:' directive output may be truncated writing 5 bytes into a region of size between 1 and 32 [-Werror=format-truncation=]
-      296 |    "%s@pci:%s", name, pci_name(dev->pdev));
-          |       ^~~~~
-    drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c:295:2: note: 'snprintf' output 6 or more bytes (assuming 37) into a destination of size 32
-      295 |  snprintf(irq->name, MLX5_MAX_IRQ_NAME,
-          |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      296 |    "%s@pci:%s", name, pci_name(dev->pdev));
-          |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Region and segment tables allocated via vmem_crst_alloc() are incorrectly
+marked as "no-dat", as soon as slab_is_available() returns true.
 
-Fixes: ada9f5d00797 ("IB/mlx5: Fix eq names to display nicely in /proc/interrupts")
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=6d4ab2e97dcfbcd748ae71761a9d8e5e41cc732c
-Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Link: https://lore.kernel.org/r/20231114215846.5902-13-saeed@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Such tables are allocated e.g. when kernel page tables are split, memory is
+hotplugged, or a DCSS segment is loaded.
+
+Fix this by adding the missing arch_set_page_dat() call.
+
+Cc: <stable@vger.kernel.org>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c | 6 +++---
- drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h | 3 +++
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ arch/s390/mm/vmem.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-index d136360ac6a98..a6d3fc96e1685 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
-@@ -25,7 +25,7 @@
- struct mlx5_irq {
- 	struct atomic_notifier_head nh;
- 	cpumask_var_t mask;
--	char name[MLX5_MAX_IRQ_NAME];
-+	char name[MLX5_MAX_IRQ_FORMATTED_NAME];
- 	struct mlx5_irq_pool *pool;
- 	int refcount;
- 	u32 index;
-@@ -236,8 +236,8 @@ struct mlx5_irq *mlx5_irq_alloc(struct mlx5_irq_pool *pool, int i,
- 	else
- 		irq_sf_set_name(pool, name, i);
- 	ATOMIC_INIT_NOTIFIER_HEAD(&irq->nh);
--	snprintf(irq->name, MLX5_MAX_IRQ_NAME,
--		 "%s@pci:%s", name, pci_name(dev->pdev));
-+	snprintf(irq->name, MLX5_MAX_IRQ_FORMATTED_NAME,
-+		 MLX5_IRQ_NAME_FORMAT_STR, name, pci_name(dev->pdev));
- 	err = request_irq(irq->irqn, irq_int_handler, 0, irq->name,
- 			  &irq->nh);
- 	if (err) {
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h
-index 5c7e68bee43a0..4047179307c4a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h
-@@ -7,6 +7,9 @@
- #include <linux/mlx5/driver.h>
+diff --git a/arch/s390/mm/vmem.c b/arch/s390/mm/vmem.c
+index 9a0ce5315f36d..3cbb461820666 100644
+--- a/arch/s390/mm/vmem.c
++++ b/arch/s390/mm/vmem.c
+@@ -11,6 +11,7 @@
+ #include <linux/list.h>
+ #include <linux/hugetlb.h>
+ #include <linux/slab.h>
++#include <asm/page-states.h>
+ #include <asm/cacheflush.h>
+ #include <asm/nospec-branch.h>
+ #include <asm/pgalloc.h>
+@@ -44,8 +45,11 @@ void *vmem_crst_alloc(unsigned long val)
+ 	unsigned long *table;
  
- #define MLX5_MAX_IRQ_NAME (32)
-+#define MLX5_IRQ_NAME_FORMAT_STR ("%s@pci:%s")
-+#define MLX5_MAX_IRQ_FORMATTED_NAME \
-+	(MLX5_MAX_IRQ_NAME + sizeof(MLX5_IRQ_NAME_FORMAT_STR))
- /* max irq_index is 2047, so four chars */
- #define MLX5_MAX_IRQ_IDX_CHARS (4)
- #define MLX5_EQ_REFS_PER_IRQ (2)
+ 	table = vmem_alloc_pages(CRST_ALLOC_ORDER);
+-	if (table)
+-		crst_table_init(table, val);
++	if (!table)
++		return NULL;
++	crst_table_init(table, val);
++	if (slab_is_available())
++		arch_set_page_dat(virt_to_page(table), CRST_ALLOC_ORDER);
+ 	return table;
+ }
+ 
 -- 
 2.43.0
 
