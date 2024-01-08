@@ -1,102 +1,87 @@
-Return-Path: <stable+bounces-10030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EDDC827129
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:23:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFACB827158
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:30:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 231651C22946
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 14:23:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63CDA1F2311F
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 14:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12054655D;
-	Mon,  8 Jan 2024 14:23:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="icnrmGyA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33CCF47788;
+	Mon,  8 Jan 2024 14:30:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B066746533;
-	Mon,  8 Jan 2024 14:23:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 96F241BF20B;
-	Mon,  8 Jan 2024 14:23:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1704723798;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8/7gyP7Ro6EIbSwHo4bXO7Wl4exbJDbw0YZeICc6ouA=;
-	b=icnrmGyALvII03k+3GInGbojmaxtepRoQ7+GtXT2w0spXvKR1ks6erFkOAI2x9pIX0BBsc
-	MJcD5ANmD/A92ILssF2Da2xZ3qNH8sHiZ28QKKl8Kp8c4BPpaRUagJZtHuDNWMgnVAGDnq
-	hJO3W1ZMAJDbgqABnXKC0prKgPjmlcM+tlVXS2aYXWhl1HGZqKNgqDyyxABbjrYfebXu2X
-	lq0L96omGzIS6TEXJTBrR+ETUHeUwhT94HYhhVSMyopDtf1aDp1t5HuBBACmaIoWIYTNn7
-	fifQ+OACszEyUZ8XKo4P6W3Fs+rzBjyaVpXgx/CT18/mxUNwgMmUmc1z1Y4XEg==
-Date: Mon, 8 Jan 2024 15:23:38 +0100 (CET)
-From: Romain Gantois <romain.gantois@bootlin.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-cc: Romain Gantois <romain.gantois@bootlin.com>, 
-    Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-    Jose Abreu <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>, 
-    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-    Paolo Abeni <pabeni@redhat.com>, 
-    Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-    Miquel Raynal <miquel.raynal@bootlin.com>, 
-    Maxime Chevallier <maxime.chevallier@bootlin.com>, 
-    Sylvain Girard <sylvain.girard@se.com>, 
-    Pascal EBERHARD <pascal.eberhard@se.com>, 
-    Richard Tresidder <rtresidd@electromag.com.au>, 
-    Linus Walleij <linus.walleij@linaro.org>, 
-    Florian Fainelli <f.fainelli@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
-    netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-    linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v3 1/1] net: stmmac: Prevent DSA tags from breaking
- C
-In-Reply-To: <20240108130238.j2denbdj3ifasbqi@skbuf>
-Message-ID: <3c2f6555-53b6-be1c-3d7b-7a6dc95b46fe@bootlin.com>
-References: <20240108130238.j2denbdj3ifasbqi@skbuf>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA57846549;
+	Mon,  8 Jan 2024 14:30:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1d509222c11so2397425ad.1;
+        Mon, 08 Jan 2024 06:30:09 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704724209; x=1705329009;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sVMqThbVP0Q8RE+595KzEmSzoEzPpkpeb2mdqe/54Po=;
+        b=CSKjqIRpIVC32YXnPiIi9gEcDdvhzJhJUcIcv3c0KMpBjZKHbiIM1ffjg0Unje7sOI
+         rVcQCeJu4F6cw7G9by8zUTTWKn5I157zDflfaSX6LOdTdYhMo6xWqUXXPuwKOuEYHwCq
+         0QTIROhOm4ydWCzyoaC3Mv1nMJpJaLEXfrAw9eozjLhHnSjMPs14auwJw7K6G4OT89NA
+         pfqiWEg4SKlIf2aP9FikWq/lDadyn5tZCLAO7lMNn5ROaswUfw7fuCin/NkDYHsiAY1r
+         v7Sjp1dJgZ3WQcEwLnUULoF9I6sPK7+dcvZ3BJ6a9eKEfp+Rjqi9NvQZylreAmjaoVgD
+         VGKw==
+X-Gm-Message-State: AOJu0YzO5KHyV+39daqPPiszMyn4sW/NxE71ywY/X0IAL4lcyeTZ5Tam
+	qMmKdtkaM24HKr8Tg+6VA8s=
+X-Google-Smtp-Source: AGHT+IE3fdqzVYISbL4ZtM/lxTCygtaE0GCar9x98h7e8R949MP4dVwbh+1fDeut8mKc+f/isMwbKQ==
+X-Received: by 2002:a17:902:ce81:b0:1d5:2197:46e9 with SMTP id f1-20020a170902ce8100b001d5219746e9mr1033721plg.117.1704724208990;
+        Mon, 08 Jan 2024 06:30:08 -0800 (PST)
+Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
+        by smtp.gmail.com with ESMTPSA id u13-20020a170902e5cd00b001d09c5424d4sm6321570plf.297.2024.01.08.06.30.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jan 2024 06:30:08 -0800 (PST)
+Date: Mon, 8 Jan 2024 23:30:06 +0900
+From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To: Jianjun Wang <jianjun.wang@mediatek.com>
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Ryder Lee <ryder.lee@mediatek.com>, linux-pci@vger.kernel.org,
+	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, qizhong.cheng@mediatek.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4] PCI: mediatek: Clear interrupt status before
+ dispatching handler
+Message-ID: <20240108143006.GA2602112@rocinante>
+References: <20231211094923.31967-1-jianjun.wang@mediatek.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-GND-Sasl: romain.gantois@bootlin.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231211094923.31967-1-jianjun.wang@mediatek.com>
 
-On Mon, 8 Jan 2024, Vladimir Oltean wrote:
+Hello,
 
-...
-
-> Nitpick: you could render this in kernel-doc format.
-> https://docs.kernel.org/doc-guide/kernel-doc.html
+> We found a failure when used iperf tool for wifi performance testing,
+> there are some MSIs received while clearing the interrupt status,
+> these MSIs cannot be serviced.
 > 
-> > +static inline bool stmmac_has_ip_ethertype(struct sk_buff *skb)
-> 
-> Nitpick: in netdev it is preferred not to use the "inline" keyword at
-> all in C files, only "static inline" in headers, and to let the compiler
-> decide by itself when it is appropriate to inline the code (which it
-> does by itself even without the "inline" keyword). For a bit more
-> background why, you can view Documentation/process/4.Coding.rst, section
-> "Inline functions".
+> The interrupt status can be cleared even the MSI status still remaining,
+> as an edge-triggered interrupts, its interrupt status should be cleared
+> before dispatching to the handler of device.
 
-I see, the kernel docs were indeed enlightening on this point. As a side note, 
-I've just benchmarked both the "with-inline" and "without-inline" versions. 
-First of all, objdump seems to confirm that GCC does indeed follow this pragma 
-in this particular case. Also, RX perfs are better with stmmac_has_ip_ethertype 
-inlined, but TX perfs are actually consistently worse with this function 
-inlined, which could very well be caused by cache effects.
+Applied to controller/mediatek, thank you!
 
-In any case, I think it is better to remove the "inline" pragma as you said. 
-I'll do that in v4.
+[1/1] PCI: mediatek: Clear interrupt status before dispatching handler
+      https://git.kernel.org/pci/pci/c/4fea201e110e
 
-Best Regards,
-
--- 
-Romain Gantois, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+	Krzysztof
 
