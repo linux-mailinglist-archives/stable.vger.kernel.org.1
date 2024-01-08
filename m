@@ -1,193 +1,181 @@
-Return-Path: <stable+bounces-9972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E9982694C
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 09:17:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11C1282699D
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 09:39:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 399631C21B65
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 08:17:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7309F1F21E2C
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 08:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE559474;
-	Mon,  8 Jan 2024 08:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C2DBE65;
+	Mon,  8 Jan 2024 08:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="HoKSlezc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XPLZNJ5P"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42E358F77
-	for <stable@vger.kernel.org>; Mon,  8 Jan 2024 08:17:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-680b1956ca4so15452696d6.3
-        for <stable@vger.kernel.org>; Mon, 08 Jan 2024 00:17:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1704701868; x=1705306668; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=M7JX/XG4UeOfhBADs4/0tfMCsAlccOtRn7KjHfujLog=;
-        b=HoKSlezcTZcYFJPKYQX48MdyKiQtxELN1qz5OYZTT7/qfX+hWS0xWujR3rPkVHmHYE
-         /mwhsuBZyt0WPRarjqrDajpbqIXqPpfAResAncDLpdBO6EU+qePU04ZhYlLuA3KtPSYQ
-         SsAnZsAJe3x9eYqtmavq6NkTB653NVB47gfHw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704701868; x=1705306668;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=M7JX/XG4UeOfhBADs4/0tfMCsAlccOtRn7KjHfujLog=;
-        b=WerOO8DbhA5J83oNQNb0docltAd3im+HvFdoM9Oy0uW7sk7oWAtkj8VpPopSBpgiCq
-         fhd235AbmnO0u/my6g9EuOSLp/R44Mb5twytPtMqepdb00TlOVJVo9QdnUZkisty27D7
-         W8wFBnDDwgUxJPJNc3O+SRNcDbB2r28tKtFCiVN0Y12dmAKlRqAwP63d2hag1i7Vge1m
-         kgCoQJv/Ba0umn2OMMqWcVEumaxbSVeaDskQwbQRjf2UnCzqGRfRoxNvPJjJaZ+VPxa2
-         PA4XgCM/M5XGk+MZS1Z4zjb1V5DmXjZWlccjrjZ0SAM6VpU9MVY5a95t0tJwxv+sAuGS
-         NVEw==
-X-Gm-Message-State: AOJu0Yw4zUf4K5ruKWmK38cGKIxXUpDQpIeCjoE7CnykmBYwu0ch+03Q
-	n3is0wG9IQqWbAQNGbzVHTJfJMss9w8g
-X-Google-Smtp-Source: AGHT+IGptTWpMNyQDIYX52xrsGYTAvpv9R4EwsCPc08+j3vCXW2Nc3dRQ9UaKgZZwCuhWj3QWQKeeg==
-X-Received: by 2002:a05:6214:c4b:b0:680:c789:c4f2 with SMTP id r11-20020a0562140c4b00b00680c789c4f2mr4369988qvj.86.1704701868179;
-        Mon, 08 Jan 2024 00:17:48 -0800 (PST)
-Received: from denia.c.googlers.com (204.246.236.35.bc.googleusercontent.com. [35.236.246.204])
-        by smtp.gmail.com with ESMTPSA id x12-20020ad4458c000000b00681034fbc9esm924919qvu.94.2024.01.08.00.17.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jan 2024 00:17:47 -0800 (PST)
-From: Ricardo Ribalda <ribalda@chromium.org>
-Date: Mon, 08 Jan 2024 08:17:46 +0000
-Subject: [PATCH v4] media: ucvideo: Add quirk for Logitech Rally Bar
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF42DBA4B;
+	Mon,  8 Jan 2024 08:39:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A65C433C7;
+	Mon,  8 Jan 2024 08:39:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704703152;
+	bh=S/rMSRKH43CMn1oKC9RlDlUXo73YSColFYC3uuFnl3Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XPLZNJ5PRF1mtG1hcmuc32q7U58QIjFbxLhcGygkk+1FJUGi6hTJ7K6aYej03tYKx
+	 niO2yLUwph3gPHlv376rzVKbGdDQ1JFaULhsW+sO8f19WjTe9M99QM4hZd66kWtu57
+	 Ultytm0lH8GLNhBRn/ycnrQi2GVS2TBRZOnqb5qCGehDKeKIAtG8HkRhN6jMUsY473
+	 AY9YzXpQXkJ4dY/nZb4rqt5DvZl4QGBDDSIeZmrMeGUoQaZlsg3u/Ba2mvCMmEThSA
+	 nQk2GkkKeaZzIRO+8w9lOejkiqve5tRTHcjvJod/6KhOxFOaZQNkNu3myvZ4hU/d1B
+	 fglnISG44KHCw==
+Received: from johan by xi.lan with local (Exim 4.96.2)
+	(envelope-from <johan@kernel.org>)
+	id 1rMlA3-0008Cl-2I;
+	Mon, 08 Jan 2024 09:39:07 +0100
+Date: Mon, 8 Jan 2024 09:39:07 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Michael Schaller <michael@5challer.de>,
+	Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	regressions@lists.linux.dev,
+	"Maciej W . Rozycki" <macro@orcam.me.uk>,
+	Ajay Agarwal <ajayagarwal@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] Revert "PCI/ASPM: Remove pcie_aspm_pm_state_change()"
+Message-ID: <ZZu0qx2cmn7IwTyQ@hovoldconsulting.com>
+References: <76c61361-b8b4-435f-a9f1-32b716763d62@5challer.de>
+ <20240102232550.1751655-1-helgaas@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240108-rallybar-v4-1-a7450641e41b@chromium.org>
-X-B4-Tracking: v=1; b=H4sIAKqvm2UC/3XM0QqCMBTG8VeRXbfYOU7TrnqP6GJuUwfq4qwkE
- d+9KQQRdvkdzu8/s2DJ2cDOyczIji44P8QhDwnTrRoay52Jm6HAFBCRk+q6qVLEodRW6FyazOY
- svt/J1u61pa63uFsXHp6mrTzCet2JjMCBF1ihkiYFkdcX3ZLv3bM/emrY2hnxn8Vos0KWJkdVZ
- iB3bPqxUoD4tmm0QlVQnrSVSuGPXZblDVULOwUbAQAA
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Alan Stern <stern@rowland.harvard.edu>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-media@vger.kernel.org, stable@vger.kernel.org, 
- Ricardo Ribalda <ribalda@chromium.org>
-X-Mailer: b4 0.12.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240102232550.1751655-1-helgaas@kernel.org>
 
-Logitech Rally Bar devices, despite behaving as UVC cameras, have a
-different power management system that the other cameras from Logitech.
+Hi Bjorn,
 
-USB_QUIRK_RESET_RESUME is applied to all the UVC cameras from Logitech
-at the usb core. Unfortunately, USB_QUIRK_RESET_RESUME causes undesired
-USB disconnects, that make them completely unusable.
-
-Instead of creating a list for this family of devices in the core, let's
-create a quirk in the UVC driver.
-
-Fixes: e387ef5c47dd ("usb: Add USB_QUIRK_RESET_RESUME for all Logitech UVC webcams")
-Cc: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Alan Stern <stern@rowland.harvard.edu>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
----
-Tested with a Rallybar Mini with an Acer Chromebook Spin 513
----
-Changes in v4:
-- Include Logi Rally Bar Huddle (Thanks Kyle!)
-- Link to v3: https://lore.kernel.org/r/20240102-rallybar-v3-1-0ab197ce4aa2@chromium.org
-
-Changes in v3:
-- Move quirk to uvc driver
-- Link to v2: https://lore.kernel.org/r/20231222-rallybar-v2-1-5849d62a9514@chromium.org
-
-Changes in v2:
-- Add Fixes tag
-- Add UVC maintainer as Cc
-- Link to v1: https://lore.kernel.org/r/20231222-rallybar-v1-1-82b2a4d3106f@chromium.org
----
- drivers/media/usb/uvc/uvc_driver.c | 30 ++++++++++++++++++++++++++++++
- drivers/media/usb/uvc/uvcvideo.h   |  1 +
- 2 files changed, 31 insertions(+)
-
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index 08fcd2ffa727..9663bcac6843 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -14,6 +14,7 @@
- #include <linux/module.h>
- #include <linux/slab.h>
- #include <linux/usb.h>
-+#include <linux/usb/quirks.h>
- #include <linux/usb/uvc.h>
- #include <linux/videodev2.h>
- #include <linux/vmalloc.h>
-@@ -2233,6 +2234,8 @@ static int uvc_probe(struct usb_interface *intf,
- 	}
+On Tue, Jan 02, 2024 at 05:25:50PM -0600, Bjorn Helgaas wrote:
+> From: Bjorn Helgaas <bhelgaas@google.com>
+> 
+> This reverts commit 08d0cc5f34265d1a1e3031f319f594bd1970976c.
+> 
+> Michael reported that when attempting to resume from suspend to RAM on ASUS
+> mini PC PN51-BB757MDE1 (DMI model: MINIPC PN51-E1), 08d0cc5f3426
+> ("PCI/ASPM: Remove pcie_aspm_pm_state_change()") caused a 12-second delay
+> with no output, followed by a reboot.
+> 
+> Workarounds include:
+> 
+>   - Reverting 08d0cc5f3426 ("PCI/ASPM: Remove pcie_aspm_pm_state_change()")
+>   - Booting with "pcie_aspm=off"
+>   - Booting with "pcie_aspm.policy=performance"
+>   - "echo 0 | sudo tee /sys/bus/pci/devices/0000:03:00.0/link/l1_aspm"
+>     before suspending
+>   - Connecting a USB flash drive
+> 
+> Fixes: 08d0cc5f3426 ("PCI/ASPM: Remove pcie_aspm_pm_state_change()")
+> Reported-by: Michael Schaller <michael@5challer.de>
+> Link: https://lore.kernel.org/r/76c61361-b8b4-435f-a9f1-32b716763d62@5challer.de
+> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> Cc: <stable@vger.kernel.org>
+> ---
  
- 	uvc_dbg(dev, PROBE, "UVC device initialized\n");
-+	if (dev->quirks & UVC_QUIRK_FORCE_RESUME)
-+		udev->quirks &= ~USB_QUIRK_RESET_RESUME;
- 	usb_enable_autosuspend(udev);
- 	return 0;
- 
-@@ -2574,6 +2577,33 @@ static const struct usb_device_id uvc_ids[] = {
- 	  .bInterfaceSubClass	= 1,
- 	  .bInterfaceProtocol	= 0,
- 	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_RESTORE_CTRLS_ON_INIT) },
-+	/* Logitech Rally Bar Huddle */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x046d,
-+	  .idProduct		= 0x087c,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= 0,
-+	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_FORCE_RESUME) },
-+	/* Logitech Rally Bar */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x046d,
-+	  .idProduct		= 0x089b,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= 0,
-+	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_FORCE_RESUME) },
-+	/* Logitech Rally Bar Mini */
-+	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
-+				| USB_DEVICE_ID_MATCH_INT_INFO,
-+	  .idVendor		= 0x046d,
-+	  .idProduct		= 0x08d3,
-+	  .bInterfaceClass	= USB_CLASS_VIDEO,
-+	  .bInterfaceSubClass	= 1,
-+	  .bInterfaceProtocol	= 0,
-+	  .driver_info		= UVC_INFO_QUIRK(UVC_QUIRK_FORCE_RESUME) },
- 	/* Chicony CNF7129 (Asus EEE 100HE) */
- 	{ .match_flags		= USB_DEVICE_ID_MATCH_DEVICE
- 				| USB_DEVICE_ID_MATCH_INT_INFO,
-diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
-index 6fb0a78b1b00..fa59a21d2a28 100644
---- a/drivers/media/usb/uvc/uvcvideo.h
-+++ b/drivers/media/usb/uvc/uvcvideo.h
-@@ -73,6 +73,7 @@
- #define UVC_QUIRK_FORCE_Y8		0x00000800
- #define UVC_QUIRK_FORCE_BPP		0x00001000
- #define UVC_QUIRK_WAKE_AUTOSUSPEND	0x00002000
-+#define UVC_QUIRK_FORCE_RESUME		0x00004000
- 
- /* Format flags */
- #define UVC_FMT_FLAG_COMPRESSED		0x00000001
+> +/* @pdev: the root port or switch downstream port */
+> +void pcie_aspm_pm_state_change(struct pci_dev *pdev)
+> +{
+> +	struct pcie_link_state *link = pdev->link_state;
+> +
+> +	if (aspm_disabled || !link)
+> +		return;
+> +	/*
+> +	 * Devices changed PM state, we should recheck if latency
+> +	 * meets all functions' requirement
+> +	 */
+> +	down_read(&pci_bus_sem);
+> +	mutex_lock(&aspm_lock);
+> +	pcie_update_aspm_capable(link->root);
+> +	pcie_config_aspm_path(link);
+> +	mutex_unlock(&aspm_lock);
+> +	up_read(&pci_bus_sem);
+> +}
 
----
-base-commit: c0f65a7c112b3cfa691cead54bcf24d6cc2182b5
-change-id: 20231222-rallybar-19ce0c64d5e6
+This function is now restored in 6.7 final and is called in paths which
+already hold the pci_bus_sem as reported by lockdep (see splat below).
 
-Best regards,
--- 
-Ricardo Ribalda <ribalda@chromium.org>
+This can potentially lead to a deadlock and specifically prevents using
+lockdep on Qualcomm platforms.
 
+Not sure if you want to propagate whether the bus semaphore is held to
+pcie_aspm_pm_state_change() or if there was some alternative to
+restoring this function which should be explored instead.
+
+Johan
+
+
+   ============================================
+   WARNING: possible recursive locking detected
+   6.7.0 #40 Not tainted
+   --------------------------------------------
+   kworker/u16:5/90 is trying to acquire lock:
+   ffffacfa78ced000 (pci_bus_sem){++++}-{3:3}, at: pcie_aspm_pm_state_change+0x58/0xdc
+   pcieport 0002:00:00.0: PME: Signaling with IRQ 197
+   
+               but task is already holding lock:
+   ffffacfa78ced000
+   pcieport 0002:00:00.0: AER: enabled with IRQ 197
+    (pci_bus_sem
+   nvme nvme0: pci function 0002:01:00.0
+   ){++++}-{3:3}
+   nvme 0002:01:00.0: enabling device (0000 -> 0002)
+   , at: pci_walk_bus+0x34/0xbc
+   
+               other info that might help us debug this:
+    Possible unsafe locking scenario:
+
+          CPU0
+          ----
+     lock(pci_bus_sem);
+     lock(pci_bus_sem);
+   
+                *** DEADLOCK ***
+
+    May be due to missing lock nesting notation
+
+   4 locks held by kworker/u16:5/90:
+    #0: ffff06c5c0008d38 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x150/0x53c
+    #1: ffff800081c0bdd0 ((work_completion)(&entry->work)){+.+.}-{0:0}, at: process_one_work+0x150/0x53c
+    #2: ffff06c5c0b7d0f8 (&dev->mutex){....}-{3:3}, at: __driver_attach_async_helper+0x3c/0xf4
+    #3: ffffacfa78ced000 (pci_bus_sem){++++}-{3:3}, at: pci_walk_bus+0x34/0xbc
+   
+               stack backtrace:
+   CPU: 1 PID: 90 Comm: kworker/u16:5 Not tainted 6.7.0 #40
+   Hardware name: LENOVO 21BYZ9SRUS/21BYZ9SRUS, BIOS N3HET53W (1.25 ) 10/12/2022
+   Workqueue: events_unbound async_run_entry_fn
+   Call trace:
+    dump_backtrace+0x9c/0x11c
+    show_stack+0x18/0x24
+    dump_stack_lvl+0x60/0xac
+    dump_stack+0x18/0x24
+    print_deadlock_bug+0x25c/0x348
+    __lock_acquire+0x10a4/0x2064
+    lock_acquire+0x1e8/0x318
+    down_read+0x60/0x184
+    pcie_aspm_pm_state_change+0x58/0xdc
+    pci_set_full_power_state+0xa8/0x114
+    pci_set_power_state+0xc4/0x120
+    qcom_pcie_enable_aspm+0x1c/0x3c [pcie_qcom]
+    pci_walk_bus+0x64/0xbc
+    qcom_pcie_host_post_init_2_7_0+0x28/0x34 [pcie_qcom]
 
