@@ -1,45 +1,44 @@
-Return-Path: <stable+bounces-10315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EAA582745C
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:46:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E72A782745A
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:46:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CE521C22AB4
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:46:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85FBA1F22665
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:46:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C996253E14;
-	Mon,  8 Jan 2024 15:44:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0573353E1C;
+	Mon,  8 Jan 2024 15:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+Yp+atk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y3V5lGbd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5BD52F82;
-	Mon,  8 Jan 2024 15:44:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F09C433C9;
-	Mon,  8 Jan 2024 15:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26AF53E1A;
+	Mon,  8 Jan 2024 15:44:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D7EC433C7;
+	Mon,  8 Jan 2024 15:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704728660;
-	bh=eqvrGjGMnZ5fM5niaxYUfgpTNwU0ABji7kFZoGD4w6E=;
+	s=korg; t=1704728667;
+	bh=XZ5lozYbx+7KXJDunTwthWLfukdPU1ijmm0GTo9DtuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j+Yp+atk0ytaftCr+2FebMbXsMxvZAlKXRymJACdUrP0RP0232UGaC1nnUNqNnEHO
-	 p8pGCULihMNLqPBSd0EQnHoL652uvYOWIwdu2KOMTjW4iLBzHDIM65VOT2wlKRTPuV
-	 KquJWgR2/8Z2b9qjQiIRPne1v0y64VmkV95oyCiY=
+	b=Y3V5lGbdP6i1EwBWLJplnuojrhCAIOZ4PgkQvr0M5KOb5M/y6mccOgn9dnjv9vwKp
+	 2EgdkCle7j/QMpxs7YEYdSmqSdwzLeEAUNFnaWqruejnG3Bq56UVi0ml5NOc5MKrRc
+	 DdWS1fVmi7E6nQkWYeQKy4cYdzlRrNqHHnMh/yNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Vlad Buslov <vladbu@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 120/150] net: sched: call tcf_ct_params_free to free params in tcf_ct_init
-Date: Mon,  8 Jan 2024 16:36:11 +0100
-Message-ID: <20240108153516.727089290@linuxfoundation.org>
+Subject: [PATCH 6.1 121/150] netfilter: flowtable: allow unidirectional rules
+Date: Mon,  8 Jan 2024 16:36:12 +0100
+Message-ID: <20240108153516.772559347@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108153511.214254205@linuxfoundation.org>
 References: <20240108153511.214254205@linuxfoundation.org>
@@ -58,110 +57,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Vlad Buslov <vladbu@nvidia.com>
 
-[ Upstream commit 1913894100ca53205f2d56091cb34b8eba1de217 ]
+[ Upstream commit 8f84780b84d645d6e35467f4a6f3236b20d7f4b2 ]
 
-This patch is to make the err path simple by calling tcf_ct_params_free(),
-so that it won't cause problems when more members are added into param and
-need freeing on the err path.
+Modify flow table offload to support unidirectional connections by
+extending enum nf_flow_flags with new "NF_FLOW_HW_BIDIRECTIONAL" flag. Only
+offload reply direction when the flag is set. This infrastructure change is
+necessary to support offloading UDP NEW connections in original direction
+in following patches in series.
 
-Acked-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Vlad Buslov <vladbu@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Stable-dep-of: 125f1c7f26ff ("net/sched: act_ct: Take per-cb reference to tcf_ct_flow_table")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_ct.c | 35 ++++++++++++++++++-----------------
- 1 file changed, 18 insertions(+), 17 deletions(-)
+ include/net/netfilter/nf_flow_table.h |  1 +
+ net/netfilter/nf_flow_table_offload.c | 12 ++++++++----
+ 2 files changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
-index 4c7f7861ea967..478cedc29b737 100644
---- a/net/sched/act_ct.c
-+++ b/net/sched/act_ct.c
-@@ -345,11 +345,9 @@ static void tcf_ct_flow_table_cleanup_work(struct work_struct *work)
- 	module_put(THIS_MODULE);
- }
+diff --git a/include/net/netfilter/nf_flow_table.h b/include/net/netfilter/nf_flow_table.h
+index cd982f4a0f50c..88ab98ab41d9f 100644
+--- a/include/net/netfilter/nf_flow_table.h
++++ b/include/net/netfilter/nf_flow_table.h
+@@ -164,6 +164,7 @@ enum nf_flow_flags {
+ 	NF_FLOW_HW_DYING,
+ 	NF_FLOW_HW_DEAD,
+ 	NF_FLOW_HW_PENDING,
++	NF_FLOW_HW_BIDIRECTIONAL,
+ };
  
--static void tcf_ct_flow_table_put(struct tcf_ct_params *params)
-+static void tcf_ct_flow_table_put(struct tcf_ct_flow_table *ct_ft)
+ enum flow_offload_type {
+diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
+index 4d9b99abe37d6..8b852f10fab4b 100644
+--- a/net/netfilter/nf_flow_table_offload.c
++++ b/net/netfilter/nf_flow_table_offload.c
+@@ -895,8 +895,9 @@ static int flow_offload_rule_add(struct flow_offload_work *offload,
+ 
+ 	ok_count += flow_offload_tuple_add(offload, flow_rule[0],
+ 					   FLOW_OFFLOAD_DIR_ORIGINAL);
+-	ok_count += flow_offload_tuple_add(offload, flow_rule[1],
+-					   FLOW_OFFLOAD_DIR_REPLY);
++	if (test_bit(NF_FLOW_HW_BIDIRECTIONAL, &offload->flow->flags))
++		ok_count += flow_offload_tuple_add(offload, flow_rule[1],
++						   FLOW_OFFLOAD_DIR_REPLY);
+ 	if (ok_count == 0)
+ 		return -ENOENT;
+ 
+@@ -926,7 +927,8 @@ static void flow_offload_work_del(struct flow_offload_work *offload)
  {
--	struct tcf_ct_flow_table *ct_ft = params->ct_ft;
--
--	if (refcount_dec_and_test(&params->ct_ft->ref)) {
-+	if (refcount_dec_and_test(&ct_ft->ref)) {
- 		rhashtable_remove_fast(&zones_ht, &ct_ft->node, zones_params);
- 		INIT_RCU_WORK(&ct_ft->rwork, tcf_ct_flow_table_cleanup_work);
- 		queue_rcu_work(act_ct_wq, &ct_ft->rwork);
-@@ -832,18 +830,23 @@ static int tcf_ct_handle_fragments(struct net *net, struct sk_buff *skb,
- 	return err;
+ 	clear_bit(IPS_HW_OFFLOAD_BIT, &offload->flow->ct->status);
+ 	flow_offload_tuple_del(offload, FLOW_OFFLOAD_DIR_ORIGINAL);
+-	flow_offload_tuple_del(offload, FLOW_OFFLOAD_DIR_REPLY);
++	if (test_bit(NF_FLOW_HW_BIDIRECTIONAL, &offload->flow->flags))
++		flow_offload_tuple_del(offload, FLOW_OFFLOAD_DIR_REPLY);
+ 	set_bit(NF_FLOW_HW_DEAD, &offload->flow->flags);
  }
  
--static void tcf_ct_params_free(struct rcu_head *head)
-+static void tcf_ct_params_free(struct tcf_ct_params *params)
- {
--	struct tcf_ct_params *params = container_of(head,
--						    struct tcf_ct_params, rcu);
--
--	tcf_ct_flow_table_put(params);
--
-+	if (params->ct_ft)
-+		tcf_ct_flow_table_put(params->ct_ft);
- 	if (params->tmpl)
- 		nf_ct_put(params->tmpl);
- 	kfree(params);
- }
+@@ -946,7 +948,9 @@ static void flow_offload_work_stats(struct flow_offload_work *offload)
+ 	u64 lastused;
  
-+static void tcf_ct_params_free_rcu(struct rcu_head *head)
-+{
-+	struct tcf_ct_params *params;
-+
-+	params = container_of(head, struct tcf_ct_params, rcu);
-+	tcf_ct_params_free(params);
-+}
-+
- #if IS_ENABLED(CONFIG_NF_NAT)
- /* Modelled after nf_nat_ipv[46]_fn().
-  * range is only used for new, uninitialized NAT state.
-@@ -1390,7 +1393,7 @@ static int tcf_ct_init(struct net *net, struct nlattr *nla,
+ 	flow_offload_tuple_stats(offload, FLOW_OFFLOAD_DIR_ORIGINAL, &stats[0]);
+-	flow_offload_tuple_stats(offload, FLOW_OFFLOAD_DIR_REPLY, &stats[1]);
++	if (test_bit(NF_FLOW_HW_BIDIRECTIONAL, &offload->flow->flags))
++		flow_offload_tuple_stats(offload, FLOW_OFFLOAD_DIR_REPLY,
++					 &stats[1]);
  
- 	err = tcf_ct_flow_table_get(net, params);
- 	if (err)
--		goto cleanup_params;
-+		goto cleanup;
- 
- 	spin_lock_bh(&c->tcf_lock);
- 	goto_ch = tcf_action_set_ctrlact(*a, parm->action, goto_ch);
-@@ -1401,17 +1404,15 @@ static int tcf_ct_init(struct net *net, struct nlattr *nla,
- 	if (goto_ch)
- 		tcf_chain_put_by_act(goto_ch);
- 	if (params)
--		call_rcu(&params->rcu, tcf_ct_params_free);
-+		call_rcu(&params->rcu, tcf_ct_params_free_rcu);
- 
- 	return res;
- 
--cleanup_params:
--	if (params->tmpl)
--		nf_ct_put(params->tmpl);
- cleanup:
- 	if (goto_ch)
- 		tcf_chain_put_by_act(goto_ch);
--	kfree(params);
-+	if (params)
-+		tcf_ct_params_free(params);
- 	tcf_idr_release(*a, bind);
- 	return err;
- }
-@@ -1423,7 +1424,7 @@ static void tcf_ct_cleanup(struct tc_action *a)
- 
- 	params = rcu_dereference_protected(c->params, 1);
- 	if (params)
--		call_rcu(&params->rcu, tcf_ct_params_free);
-+		call_rcu(&params->rcu, tcf_ct_params_free_rcu);
- }
- 
- static int tcf_ct_dump_key_val(struct sk_buff *skb,
+ 	lastused = max_t(u64, stats[0].lastused, stats[1].lastused);
+ 	offload->flow->timeout = max_t(u64, offload->flow->timeout,
 -- 
 2.43.0
 
