@@ -1,147 +1,104 @@
-Return-Path: <stable+bounces-9975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89D00826AEC
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 10:41:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41783826B90
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 11:29:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B0BD1F221C5
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 09:41:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E93501F2228A
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 10:29:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F3E11CB2;
-	Mon,  8 Jan 2024 09:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC34E13AEE;
+	Mon,  8 Jan 2024 10:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=6wind.com header.i=@6wind.com header.b="UiwqmSFF"
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="3azg4+Vm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f98.google.com (mail-wr1-f98.google.com [209.85.221.98])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF9F12B94
-	for <stable@vger.kernel.org>; Mon,  8 Jan 2024 09:41:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=6wind.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=6wind.com
-Received: by mail-wr1-f98.google.com with SMTP id ffacd0b85a97d-33694bf8835so1546124f8f.3
-        for <stable@vger.kernel.org>; Mon, 08 Jan 2024 01:41:06 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1F113ADD
+	for <stable@vger.kernel.org>; Mon,  8 Jan 2024 10:29:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-336755f1688so1624990f8f.0
+        for <stable@vger.kernel.org>; Mon, 08 Jan 2024 02:29:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=6wind.com; s=google; t=1704706864; x=1705311664; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tqm8T6ZJilGE+jPbAasz3dYt01ixeTiw6V7R5wFltv4=;
-        b=UiwqmSFF3c+FLWWOU69nd4YF7hzGVkR61HubNl7UewJ+FcUCRg1pWlaRZ2+NVg+hKc
-         0uK6SrDwXRPHV0l+P6T9KsmDKaZZcjjm5aFPqCbk3EswlgZPyCCeOcAlz4JQTLBWSpFq
-         Ol1EaYrE8LhhnTLRgSTu5vsF91cWSeCEPo7/a8Oa94MhOrgmFytjjPj286FuFLHQhImL
-         MIDWXlf7jtzmk/TZPe5ng9eOAF70jI6TY4i2tb7nWe/e1AnZjHiDh1gmNaGcjFB+QuSa
-         oqDo8P8rMwUj6QoKmJH+3hyooU5uw6aG7p9vZAYBdWF2Fmu/3pUtuP3CIIEU7GTZRvBI
-         RlTQ==
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1704709751; x=1705314551; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kCXHaEQUi0ZUwYtkv2nkrbIUf7S+GGCSAoSggZuV//I=;
+        b=3azg4+VmmIflWBrQN37O7xeoh7wo9XXEcNs2lWpYO547Sr/hn09U1mUtmRs3nLnz/S
+         r7bllc/BnBWpmHYM14NNLcym76ZTUSJwi4YWS6d06i4gqimtu5VsD5yRPK5AJN6ngu3/
+         +Ef1HNulFsUk2gW4R28Iwwy2qSnUiyN1rLxSXnCOx+8G2WnVomkdcjf5LoeZZ7J1NOT5
+         UvaRI4CnIiqaFqahsCBzWCwdaoWv7U5B2CoYQrppCmNHEUmpxKlsMXes6Gxc79ACD1kS
+         A4/k7L/ENLIzsKRna1RG/X5WTpIBBx8hkO1ldCM5ckMzvlYJ1DGbnred59yH/Or/Ee3c
+         ERhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704706864; x=1705311664;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tqm8T6ZJilGE+jPbAasz3dYt01ixeTiw6V7R5wFltv4=;
-        b=gDbjVMFycmgsMGFFPu140Qx4XOJ/32SMIREdAJnI7vIQc3A34PtfOE+d/Y8fsL8HgO
-         XuwAYshJV3ni9AzPemQ3njvjtYmMzvfbxS8CAdQCZnfGrF0vD1qbO5PyMLqryvA6hv+z
-         zNp2mHbzY6TWQdnaD5I5WKrBmX5L1TZr4XKBy5dvgEak5dA4JziwIW/NYr72QEMFleIV
-         +Fx8hKlcIieTj+6fBAZxRx1S52hGIcAylLSvAtNnSjStgtxUkW8q58bOhKwDoynY1xa3
-         u90se4OOLvEoGymTjxG+gC1Of0pJhaHZI5+zJPnfgDt0i/YVky/k9m7fFc5xhJp8G0RU
-         FR/w==
-X-Gm-Message-State: AOJu0YwhoR8N6fsSQJFlVQtQOLNMtievePZOnjc4PVOvwOtRa0m2wdLo
-	jyYcyoO2fckbmHMVvOngyqGwRurqOdQ8+RK0T2nB4Vi8xXCRChSHZgEc0w==
-X-Google-Smtp-Source: AGHT+IEGYqCa3uqlQ/n8N3+SJuTlMWe4RkG6fop1gZ3cyiPRm0yClTlYfRj9ztkelTbGVOKxJT/K/vZQCn5E
-X-Received: by 2002:a05:6000:188b:b0:337:6804:446d with SMTP id a11-20020a056000188b00b003376804446dmr1432569wri.72.1704706864495;
-        Mon, 08 Jan 2024 01:41:04 -0800 (PST)
-Received: from smtpservice.6wind.com ([185.13.181.2])
-        by smtp-relay.gmail.com with ESMTP id bt28-20020a056000081c00b003372c0d3e4csm391867wrb.78.2024.01.08.01.41.04;
-        Mon, 08 Jan 2024 01:41:04 -0800 (PST)
-X-Relaying-Domain: 6wind.com
-Received: from bretzel (bretzel.dev.6wind.com [10.17.1.57])
-	by smtpservice.6wind.com (Postfix) with ESMTPS id 3CFF760106;
-	Mon,  8 Jan 2024 10:41:04 +0100 (CET)
-Received: from dichtel by bretzel with local (Exim 4.94.2)
-	(envelope-from <nicolas.dichtel@6wind.com>)
-	id 1rMm7z-008OeG-Uy; Mon, 08 Jan 2024 10:41:03 +0100
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-To: "David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Phil Sutter <phil@nwl.cc>,
-	David Ahern <dsahern@kernel.org>,
-	Jiri Pirko <jiri@resnulli.us>
-Cc: netdev@vger.kernel.org,
-	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+        d=1e100.net; s=20230601; t=1704709751; x=1705314551;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kCXHaEQUi0ZUwYtkv2nkrbIUf7S+GGCSAoSggZuV//I=;
+        b=ZjbSaevebnh444ze3WhBr9/t7QEuIzoDKo5se+S7OjRqrWg3rv1h5UVYbHn1xNV6GS
+         IWgSwIvxiQ4slIfQ3bfBGp04LkBRBTfS/UVSR9xybT02IO5uuJEXO0O9sb2PSL+FAX1v
+         +2k98fg/XmsDFq4PprOmq7Ifa6rEPRFG8J+k1BX2dF+y1LRACfD6rmp05/TleQai2yhS
+         xoUSpsup32u8rmxyGc8ydr40A2LyEP0jKMCvUfxlzcNlLGKrgmymmMOn0CaBuc/v3YqY
+         0XNwR0Z8RZDqGuqI56e57nWtR24TdcvnDDYblnvIMwV+SnazUBma/soRNop3Vrxx1JPS
+         jaWg==
+X-Gm-Message-State: AOJu0YyuKTTfInH5017EjsPqRs/7OfZrdyDq2ClEis92MFa2XhNjuoOE
+	GmLk2iL4yPN3dD9KyL0ovTQH3gh8h2lrPA==
+X-Google-Smtp-Source: AGHT+IGnOOQibmQuoA4v9IBTcePsKD9E6oPQOILhrmPo+lqiDBVQaa0TRXA4yibbMA4jKMtY3U/JDQ==
+X-Received: by 2002:a7b:cb8d:0:b0:40e:4272:9f32 with SMTP id m13-20020a7bcb8d000000b0040e42729f32mr1280219wmi.49.1704709750789;
+        Mon, 08 Jan 2024 02:29:10 -0800 (PST)
+Received: from localhost (host-213-179-129-39.customer.m-online.net. [213.179.129.39])
+        by smtp.gmail.com with ESMTPSA id r3-20020a05600c458300b0040d91912f2csm10544908wmo.1.2024.01.08.02.29.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jan 2024 02:29:10 -0800 (PST)
+Date: Mon, 8 Jan 2024 11:29:08 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Cc: "David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>, Phil Sutter <phil@nwl.cc>,
+	David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH net v4 1/2] Revert "net: rtnetlink: Enslave device before bringing it up"
-Date: Mon,  8 Jan 2024 10:41:02 +0100
-Message-Id: <20240108094103.2001224-2-nicolas.dichtel@6wind.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240108094103.2001224-1-nicolas.dichtel@6wind.com>
+Subject: Re: [PATCH net v4 1/2] Revert "net: rtnetlink: Enslave device before
+ bringing it up"
+Message-ID: <ZZvOdJ1eFodYHzjV@nanopsycho>
 References: <20240108094103.2001224-1-nicolas.dichtel@6wind.com>
+ <20240108094103.2001224-2-nicolas.dichtel@6wind.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240108094103.2001224-2-nicolas.dichtel@6wind.com>
 
-This reverts commit a4abfa627c3865c37e036bccb681619a50d3d93c.
+Mon, Jan 08, 2024 at 10:41:02AM CET, nicolas.dichtel@6wind.com wrote:
+>This reverts commit a4abfa627c3865c37e036bccb681619a50d3d93c.
+>
+>The patch broke:
+>> ip link set dummy0 up
+>> ip link set dummy0 master bond0 down
+>
+>This last command is useful to be able to enslave an interface with only
+>one netlink message.
+>
+>After discussion, there is no good reason to support:
+>> ip link set dummy0 down
+>> ip link set dummy0 master bond0 up
+>because the bond interface already set the slave up when it is up.
+>
+>Cc: stable@vger.kernel.org
+>Fixes: a4abfa627c38 ("net: rtnetlink: Enslave device before bringing it up")
+>Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 
-The patch broke:
-> ip link set dummy0 up
-> ip link set dummy0 master bond0 down
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
 
-This last command is useful to be able to enslave an interface with only
-one netlink message.
-
-After discussion, there is no good reason to support:
-> ip link set dummy0 down
-> ip link set dummy0 master bond0 up
-because the bond interface already set the slave up when it is up.
-
-Cc: stable@vger.kernel.org
-Fixes: a4abfa627c38 ("net: rtnetlink: Enslave device before bringing it up")
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
----
- net/core/rtnetlink.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index e8431c6c8490..bf4c3f65ad99 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -2905,13 +2905,6 @@ static int do_setlink(const struct sk_buff *skb,
- 		call_netdevice_notifiers(NETDEV_CHANGEADDR, dev);
- 	}
- 
--	if (tb[IFLA_MASTER]) {
--		err = do_set_master(dev, nla_get_u32(tb[IFLA_MASTER]), extack);
--		if (err)
--			goto errout;
--		status |= DO_SETLINK_MODIFIED;
--	}
--
- 	if (ifm->ifi_flags || ifm->ifi_change) {
- 		err = dev_change_flags(dev, rtnl_dev_combine_flags(dev, ifm),
- 				       extack);
-@@ -2919,6 +2912,13 @@ static int do_setlink(const struct sk_buff *skb,
- 			goto errout;
- 	}
- 
-+	if (tb[IFLA_MASTER]) {
-+		err = do_set_master(dev, nla_get_u32(tb[IFLA_MASTER]), extack);
-+		if (err)
-+			goto errout;
-+		status |= DO_SETLINK_MODIFIED;
-+	}
-+
- 	if (tb[IFLA_CARRIER]) {
- 		err = dev_change_carrier(dev, nla_get_u8(tb[IFLA_CARRIER]));
- 		if (err)
--- 
-2.39.2
-
+Thanks!
 
