@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-10196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52AB38273A6
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:38:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7894482738A
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:37:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3858281761
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:38:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28371281383
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99FB64C602;
-	Mon,  8 Jan 2024 15:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C42875102E;
+	Mon,  8 Jan 2024 15:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qg3fqjEN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0j00k8X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B534121D;
-	Mon,  8 Jan 2024 15:38:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C951C433CD;
-	Mon,  8 Jan 2024 15:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE5F4C3A0;
+	Mon,  8 Jan 2024 15:37:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBD3C433C9;
+	Mon,  8 Jan 2024 15:37:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704728288;
-	bh=d6xaQmyUMhGtgjg8Uq7KF5eYxkU4hknwRGo4ahDEUeQ=;
+	s=korg; t=1704728225;
+	bh=lexNMwr8Wq8jUWfnKZX4doDiKh08I5AnNGSeC8mmodk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qg3fqjENcB0//10e4/lX0RbyT8T75Mv18oEHzyJtbKC6O7KaNQ/4/lceaHJA19zZI
-	 UKCKsV8DfKfPUCMI84hm4axHLdwnirWn739nifWWwxoLf9HTQNT6+MvGDQoc28jbh5
-	 FtGy80JCyVZFkNZHxv99cjvwRy5TkU8TH0Yy1oEc=
+	b=T0j00k8XJCfpIaPlwzjb1FVAqcvG8ZSU1mW5iC4+nOZ0xbNEmfLVEavpj409zcIFs
+	 K3xmAsfVCgIGl1jVreVEGX24hEGNwLCHW9rpQbwup/46k58LFq99M6yj1qpoc4anX8
+	 BKPLZ9Qc10cF2tqg6nAYfwePJvjd7AZFYuAi8o+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Shyam Prasad N <sprasad@microsoft.com>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 009/150] cifs: cifs_chan_is_iface_active should be called with chan_lock held
-Date: Mon,  8 Jan 2024 16:34:20 +0100
-Message-ID: <20240108153511.668920042@linuxfoundation.org>
+Subject: [PATCH 6.1 010/150] cifs: do not depend on release_iface for maintaining iface_list
+Date: Mon,  8 Jan 2024 16:34:21 +0100
+Message-ID: <20240108153511.722254044@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108153511.214254205@linuxfoundation.org>
 References: <20240108153511.214254205@linuxfoundation.org>
@@ -58,63 +58,95 @@ Content-Transfer-Encoding: 8bit
 
 From: Shyam Prasad N <sprasad@microsoft.com>
 
-commit 7257bcf3bdc785eabc4eef1f329a59815b032508 upstream.
+commit 09eeb0723f219fbd96d8865bf9b935e03ee2ec22 upstream.
 
-cifs_chan_is_iface_active checks the channels of a session to see
-if the associated iface is active. This should always happen
-with chan_lock held. However, these two callers of this function
-were missing this locking.
+parse_server_interfaces should be in complete charge of maintaining
+the iface_list linked list. Today, iface entries are removed
+from the list only when the last refcount is dropped.
+i.e. in release_iface. However, this can result in undercounting
+of refcount if the server stops advertising interfaces (which
+Azure SMB server does).
 
-This change makes sure the function calls are protected with
-proper locking.
+This change puts parse_server_interfaces in full charge of
+maintaining the iface_list. So if an empty list is returned
+by the server, the entries in the list will immediately be
+removed. This way, a following call to the same function will
+not find entries in the list.
 
-Fixes: b54034a73baf ("cifs: during reconnect, update interface if necessary")
-Fixes: fa1d0508bdd4 ("cifs: account for primary channel in the interface list")
+Fixes: aa45dadd34e4 ("cifs: change iface_list from array to sorted linked list")
 Cc: stable@vger.kernel.org
 Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c |    7 +++++--
- fs/smb/client/smb2ops.c |    7 ++++++-
- 2 files changed, 11 insertions(+), 3 deletions(-)
+ fs/smb/client/cifsglob.h |    1 -
+ fs/smb/client/smb2ops.c  |   27 +++++++++++++++++----------
+ 2 files changed, 17 insertions(+), 11 deletions(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -258,10 +258,13 @@ cifs_mark_tcp_ses_conns_for_reconnect(st
- 	spin_lock(&cifs_tcp_ses_lock);
- 	list_for_each_entry_safe(ses, nses, &pserver->smb_ses_list, smb_ses_list) {
- 		/* check if iface is still active */
--		if (!cifs_chan_is_iface_active(ses, server))
-+		spin_lock(&ses->chan_lock);
-+		if (!cifs_chan_is_iface_active(ses, server)) {
-+			spin_unlock(&ses->chan_lock);
- 			cifs_chan_update_iface(ses, server);
-+			spin_lock(&ses->chan_lock);
-+		}
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -972,7 +972,6 @@ release_iface(struct kref *ref)
+ 	struct cifs_server_iface *iface = container_of(ref,
+ 						       struct cifs_server_iface,
+ 						       refcount);
+-	list_del_init(&iface->iface_head);
+ 	kfree(iface);
+ }
  
--		spin_lock(&ses->chan_lock);
- 		if (!mark_smb_session && cifs_chan_needs_reconnect(ses, server)) {
- 			spin_unlock(&ses->chan_lock);
- 			continue;
 --- a/fs/smb/client/smb2ops.c
 +++ b/fs/smb/client/smb2ops.c
-@@ -778,9 +778,14 @@ SMB3_request_interfaces(const unsigned i
- 		goto out;
+@@ -588,16 +588,12 @@ parse_server_interfaces(struct network_i
+ 	}
  
- 	/* check if iface is still active */
-+	spin_lock(&ses->chan_lock);
- 	pserver = ses->chans[0].server;
--	if (pserver && !cifs_chan_is_iface_active(ses, pserver))
-+	if (pserver && !cifs_chan_is_iface_active(ses, pserver)) {
-+		spin_unlock(&ses->chan_lock);
- 		cifs_chan_update_iface(ses, pserver);
-+		spin_lock(&ses->chan_lock);
-+	}
-+	spin_unlock(&ses->chan_lock);
+ 	/*
+-	 * Go through iface_list and do kref_put to remove
+-	 * any unused ifaces. ifaces in use will be removed
+-	 * when the last user calls a kref_put on it
++	 * Go through iface_list and mark them as inactive
+ 	 */
+ 	list_for_each_entry_safe(iface, niface, &ses->iface_list,
+-				 iface_head) {
++				 iface_head)
+ 		iface->is_active = 0;
+-		kref_put(&iface->refcount, release_iface);
+-		ses->iface_count--;
+-	}
++
+ 	spin_unlock(&ses->iface_lock);
+ 
+ 	/*
+@@ -672,10 +668,7 @@ parse_server_interfaces(struct network_i
+ 					 iface_head) {
+ 			ret = iface_cmp(iface, &tmp_iface);
+ 			if (!ret) {
+-				/* just get a ref so that it doesn't get picked/freed */
+ 				iface->is_active = 1;
+-				kref_get(&iface->refcount);
+-				ses->iface_count++;
+ 				spin_unlock(&ses->iface_lock);
+ 				goto next_iface;
+ 			} else if (ret < 0) {
+@@ -742,6 +735,20 @@ next_iface:
+ 	}
  
  out:
- 	kfree(out_buf);
++	/*
++	 * Go through the list again and put the inactive entries
++	 */
++	spin_lock(&ses->iface_lock);
++	list_for_each_entry_safe(iface, niface, &ses->iface_list,
++				 iface_head) {
++		if (!iface->is_active) {
++			list_del(&iface->iface_head);
++			kref_put(&iface->refcount, release_iface);
++			ses->iface_count--;
++		}
++	}
++	spin_unlock(&ses->iface_lock);
++
+ 	return rc;
+ }
+ 
 
 
 
