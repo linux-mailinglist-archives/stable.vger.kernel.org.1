@@ -1,47 +1,34 @@
-Return-Path: <stable+bounces-10165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94C798272DC
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:20:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 628A18272FE
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:26:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27794B23199
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:20:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F104C281564
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:26:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B3474CE0B;
-	Mon,  8 Jan 2024 15:19:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dAaMtRTa"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2794B4C624;
+	Mon,  8 Jan 2024 15:26:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC7751015
-	for <stable@vger.kernel.org>; Mon,  8 Jan 2024 15:19:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69DDC433C9;
-	Mon,  8 Jan 2024 15:19:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704727158;
-	bh=FyW63OZZAWONLYed31SdC2n9D0Lk8VwDfMkeyUx9UPU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dAaMtRTatyNG/ygbAM1RADe88874+UhIw2ivX5UQVQsMsvL2F0GCtB4qeWxJRiip/
-	 lXun+Ha9FzwBldF3ut0rbc4j3J2XuOqGWGJoL48uGWElBRqbxNDgBLM3F9+xlD+6lx
-	 iHG4qMIDXFliubUWdVUMjBR9gtHKVCvqZCatJEik=
-Date: Mon, 8 Jan 2024 16:19:14 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Amit Pundir <amit.pundir@linaro.org>
-Cc: Sasha Levin <sashal@kernel.org>, Georgi Djakov <djakov@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Stable <stable@vger.kernel.org>,
-	Yongqin Liu <yongqin.liu@linaro.org>
-Subject: Re: [PATCH for-6.1.y] Revert "interconnect: qcom: sm8250: Enable
- sync_state"
-Message-ID: <2024010845-widget-ether-ccd9@gregkh>
-References: <20240107155702.3395873-1-amit.pundir@linaro.org>
- <2024010850-latch-occupancy-e727@gregkh>
- <CAMi1Hd37L6NYKNpGOUnT7EO8kfc-HVQUqnoTTARA5gTpTc2wXQ@mail.gmail.com>
+Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id CE1695100B
+	for <stable@vger.kernel.org>; Mon,  8 Jan 2024 15:26:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netrider.rowland.org
+Received: (qmail 499378 invoked by uid 1000); 8 Jan 2024 10:26:07 -0500
+Date: Mon, 8 Jan 2024 10:26:07 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Udipto Goswami <quic_ugoswami@quicinc.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+  Krishna Kurapati <quic_kriskura@quicinc.com>, linux-usb@vger.kernel.org,
+  linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] usb: core: Prevent null pointer dereference in
+ update_port_device_state
+Message-ID: <2d801dd7-93de-4323-a214-1a73cc5a8451@rowland.harvard.edu>
+References: <20240108130706.15698-1-quic_ugoswami@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,30 +37,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMi1Hd37L6NYKNpGOUnT7EO8kfc-HVQUqnoTTARA5gTpTc2wXQ@mail.gmail.com>
+In-Reply-To: <20240108130706.15698-1-quic_ugoswami@quicinc.com>
 
-On Mon, Jan 08, 2024 at 08:33:00PM +0530, Amit Pundir wrote:
-> On Mon, 8 Jan 2024 at 19:42, Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Sun, Jan 07, 2024 at 09:27:02PM +0530, Amit Pundir wrote:
-> > > This reverts commit 3637f6bdfe2ccd53c493836b6e43c9a73e4513b3 which is
-> > > commit bfc7db1cb94ad664546d70212699f8cc6c539e8c upstream.
-> > >
-> > > This resulted in boot regression on RB5 (sm8250), causing the device
-> > > to hard crash into USB crash dump mode everytime.
-> > >
-> > > Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-> >
-> > Any link to that report?  Is this also an issue in 6.7 and/or 6.6.y?
+On Mon, Jan 08, 2024 at 06:37:06PM +0530, Udipto Goswami wrote:
+> Currently,the function update_port_device_state gets the usb_hub from
+> udev->parent by calling usb_hub_to_struct_hub.
+> However, in case the actconfig or the maxchild is 0, the usb_hub would
+> be NULL and upon further accessing to get port_dev would result in null
+> pointer dereference.
 > 
-> Here is a fresh RB5 crash report running AOSP with upstream v6.1.71
-> https://lkft.validation.linaro.org/scheduler/job/7151629#L4239
+> Fix this by introducing an if check after the usb_hub is populated.
 > 
-> I do not see this crash on v6.7.
+> Fixes: 83cb2604f641 ("usb: core: add sysfs entry for usb device state")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Udipto Goswami <quic_ugoswami@quicinc.com>
+> ---
+> v2: Introduced comment for the if check & CC'ed stable.
+> 
+>  drivers/usb/core/hub.c | 15 ++++++++++++---
+>  1 file changed, 12 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+> index ffd7c99e24a3..d40b5500f95b 100644
+> --- a/drivers/usb/core/hub.c
+> +++ b/drivers/usb/core/hub.c
+> @@ -2053,9 +2053,18 @@ static void update_port_device_state(struct usb_device *udev)
+>  
+>  	if (udev->parent) {
+>  		hub = usb_hub_to_struct_hub(udev->parent);
+> -		port_dev = hub->ports[udev->portnum - 1];
+> -		WRITE_ONCE(port_dev->state, udev->state);
+> -		sysfs_notify_dirent(port_dev->state_kn);
+> +
+> +		/*
+> +		 * usb_hub_to_struct_hub() if returns NULL can
+> +		 * potentially cause NULL pointer dereference upon further
+> +		 * access.
+> +		 * Avoid this with an if check.
+> +		 */
 
-So does that mean we are instead missing something here for this tree?
+This is not what I meant.  It's perfectly obvious that if 
+usb_hub_to_struct_hub() returns NULL then there will be a NULL-pointer 
+dereference.  You don't need to explain that to anybody.
 
-thanks,
+Instead, you need to explain why it is _possible_ for 
+usb_hub_to_struct_hub() to return NULL.  The reason is because the 
+lvstest driver messes around with usbcore internals without telling the 
+hub driver, so hub will be NULL in cases where udev was created by 
+lvstest.
 
-greg k-h
+Alan Stern
 
