@@ -1,181 +1,237 @@
-Return-Path: <stable+bounces-9973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-9974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C1282699D
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 09:39:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94524826A0A
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 10:01:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7309F1F21E2C
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 08:39:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA1C91C21D75
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 09:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C2DBE65;
-	Mon,  8 Jan 2024 08:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43D4C2FD;
+	Mon,  8 Jan 2024 09:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XPLZNJ5P"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="U0N7SIRX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF42DBA4B;
-	Mon,  8 Jan 2024 08:39:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A65C433C7;
-	Mon,  8 Jan 2024 08:39:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704703152;
-	bh=S/rMSRKH43CMn1oKC9RlDlUXo73YSColFYC3uuFnl3Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XPLZNJ5PRF1mtG1hcmuc32q7U58QIjFbxLhcGygkk+1FJUGi6hTJ7K6aYej03tYKx
-	 niO2yLUwph3gPHlv376rzVKbGdDQ1JFaULhsW+sO8f19WjTe9M99QM4hZd66kWtu57
-	 Ultytm0lH8GLNhBRn/ycnrQi2GVS2TBRZOnqb5qCGehDKeKIAtG8HkRhN6jMUsY473
-	 AY9YzXpQXkJ4dY/nZb4rqt5DvZl4QGBDDSIeZmrMeGUoQaZlsg3u/Ba2mvCMmEThSA
-	 nQk2GkkKeaZzIRO+8w9lOejkiqve5tRTHcjvJod/6KhOxFOaZQNkNu3myvZ4hU/d1B
-	 fglnISG44KHCw==
-Received: from johan by xi.lan with local (Exim 4.96.2)
-	(envelope-from <johan@kernel.org>)
-	id 1rMlA3-0008Cl-2I;
-	Mon, 08 Jan 2024 09:39:07 +0100
-Date: Mon, 8 Jan 2024 09:39:07 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Michael Schaller <michael@5challer.de>,
-	Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	regressions@lists.linux.dev,
-	"Maciej W . Rozycki" <macro@orcam.me.uk>,
-	Ajay Agarwal <ajayagarwal@google.com>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] Revert "PCI/ASPM: Remove pcie_aspm_pm_state_change()"
-Message-ID: <ZZu0qx2cmn7IwTyQ@hovoldconsulting.com>
-References: <76c61361-b8b4-435f-a9f1-32b716763d62@5challer.de>
- <20240102232550.1751655-1-helgaas@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08F411715
+	for <stable@vger.kernel.org>; Mon,  8 Jan 2024 09:01:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-4b739b49349so146103e0c.1
+        for <stable@vger.kernel.org>; Mon, 08 Jan 2024 01:01:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1704704462; x=1705309262; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UFjCzv0wMwtjh1YuQ8FxsYy2UVS53yTu4+7AY0ZgE1g=;
+        b=U0N7SIRXoskWNte8UCaK567PIlBTMwxnXS5qI/Vkmu7yorbhhuolX2QzQNZlj6YFzM
+         DLbtFT3Xu2qU4cChIUmiJAdcL9OL51vHz2d+OjrDIrcrcFlazVyrxmEXIv1Zn1BR6+dR
+         hLmwCSLD50QCgENL0fEtLOy0M4t9OMCQAOlOUwoAG48A52ygqkvdsWd+bkRvinp6G9tP
+         7KcA6XxxZzQ5VzmQ6eAJtw0l6j52Q0ELdJXOVGia1U57xkKrLt/WUVxi6VRpxhcC3l9j
+         L4tvbfcP1j0a1t87L0b8S5/0+Gs5tsWobK9JC5cFzPa7KK1Jb4DUEygV/yJQt+CC19hX
+         5CrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704704462; x=1705309262;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UFjCzv0wMwtjh1YuQ8FxsYy2UVS53yTu4+7AY0ZgE1g=;
+        b=EJKhSS6J8Q3lvRaTdjRF0ifzyXAV+DSLl990d5mvacOjRu1H5Cbik9prNGxS9LpmRL
+         x7nMpzUuWWfIMQB8pY+N0cjoGLXam0o82wO4yI9v1m5eDr+tv2+yC+EgD4kFLqsT/cHB
+         KxGbyRpGEplILS3D0Cf/uT/M17nrqtWGoljGdqlkptdnz2ZK0ijCQYxMUqsDYJa1HYsT
+         ob76STtmDvXEJFQ4SePsgENLBQt5Svzzcg/aaNDraIMNZdSr9drF6ToNotCitopAvctP
+         UNmQw+4XgUcte9gh2cjMSFp+uMEFzfWet4ZRWPd1YWg4BgToLkdy/vDE02ZwOany21HH
+         CcBA==
+X-Gm-Message-State: AOJu0YxWjdGiI9Mf7kj3j3Y7Wfj21dtUyVsncQrIPcSk3G3Q+eE5NjaC
+	lOE+97exjRfImQHx6ukwWm/ciJcXeypYhck8O3sw+1tpb1Zv2w==
+X-Google-Smtp-Source: AGHT+IG80yfhqGycs7SKTJxvgdfjKPJyKrWvjZqGjXKguPsR36dAPkp845OCnFOxSxMXRSUZQDA6d+T/QGsYxAHwmXQ=
+X-Received: by 2002:a05:6122:181d:b0:4b6:e848:bf1b with SMTP id
+ ay29-20020a056122181d00b004b6e848bf1bmr687292vkb.29.1704704462535; Mon, 08
+ Jan 2024 01:01:02 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240102232550.1751655-1-helgaas@kernel.org>
+References: <20240107123823.571931307@linuxfoundation.org>
+In-Reply-To: <20240107123823.571931307@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Mon, 8 Jan 2024 14:30:51 +0530
+Message-ID: <CA+G9fYu1vV-wiFPX-m-8qnuEtQ53w2exp14mY-Z-Xwxg31j+XA@mail.gmail.com>
+Subject: Re: [PATCH 4.14 00/19] 4.14.335-rc3 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Bjorn,
-
-On Tue, Jan 02, 2024 at 05:25:50PM -0600, Bjorn Helgaas wrote:
-> From: Bjorn Helgaas <bhelgaas@google.com>
-> 
-> This reverts commit 08d0cc5f34265d1a1e3031f319f594bd1970976c.
-> 
-> Michael reported that when attempting to resume from suspend to RAM on ASUS
-> mini PC PN51-BB757MDE1 (DMI model: MINIPC PN51-E1), 08d0cc5f3426
-> ("PCI/ASPM: Remove pcie_aspm_pm_state_change()") caused a 12-second delay
-> with no output, followed by a reboot.
-> 
-> Workarounds include:
-> 
->   - Reverting 08d0cc5f3426 ("PCI/ASPM: Remove pcie_aspm_pm_state_change()")
->   - Booting with "pcie_aspm=off"
->   - Booting with "pcie_aspm.policy=performance"
->   - "echo 0 | sudo tee /sys/bus/pci/devices/0000:03:00.0/link/l1_aspm"
->     before suspending
->   - Connecting a USB flash drive
-> 
-> Fixes: 08d0cc5f3426 ("PCI/ASPM: Remove pcie_aspm_pm_state_change()")
-> Reported-by: Michael Schaller <michael@5challer.de>
-> Link: https://lore.kernel.org/r/76c61361-b8b4-435f-a9f1-32b716763d62@5challer.de
-> Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-> Cc: <stable@vger.kernel.org>
-> ---
- 
-> +/* @pdev: the root port or switch downstream port */
-> +void pcie_aspm_pm_state_change(struct pci_dev *pdev)
-> +{
-> +	struct pcie_link_state *link = pdev->link_state;
-> +
-> +	if (aspm_disabled || !link)
-> +		return;
-> +	/*
-> +	 * Devices changed PM state, we should recheck if latency
-> +	 * meets all functions' requirement
-> +	 */
-> +	down_read(&pci_bus_sem);
-> +	mutex_lock(&aspm_lock);
-> +	pcie_update_aspm_capable(link->root);
-> +	pcie_config_aspm_path(link);
-> +	mutex_unlock(&aspm_lock);
-> +	up_read(&pci_bus_sem);
-> +}
-
-This function is now restored in 6.7 final and is called in paths which
-already hold the pci_bus_sem as reported by lockdep (see splat below).
-
-This can potentially lead to a deadlock and specifically prevents using
-lockdep on Qualcomm platforms.
-
-Not sure if you want to propagate whether the bus semaphore is held to
-pcie_aspm_pm_state_change() or if there was some alternative to
-restoring this function which should be explored instead.
-
-Johan
+On Sun, 7 Jan 2024 at 18:08, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 4.14.335 release.
+> There are 19 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Tue, 09 Jan 2024 12:38:13 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-=
+4.14.335-rc3.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-4.14.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
 
-   ============================================
-   WARNING: possible recursive locking detected
-   6.7.0 #40 Not tainted
-   --------------------------------------------
-   kworker/u16:5/90 is trying to acquire lock:
-   ffffacfa78ced000 (pci_bus_sem){++++}-{3:3}, at: pcie_aspm_pm_state_change+0x58/0xdc
-   pcieport 0002:00:00.0: PME: Signaling with IRQ 197
-   
-               but task is already holding lock:
-   ffffacfa78ced000
-   pcieport 0002:00:00.0: AER: enabled with IRQ 197
-    (pci_bus_sem
-   nvme nvme0: pci function 0002:01:00.0
-   ){++++}-{3:3}
-   nvme 0002:01:00.0: enabling device (0000 -> 0002)
-   , at: pci_walk_bus+0x34/0xbc
-   
-               other info that might help us debug this:
-    Possible unsafe locking scenario:
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-          CPU0
-          ----
-     lock(pci_bus_sem);
-     lock(pci_bus_sem);
-   
-                *** DEADLOCK ***
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-    May be due to missing lock nesting notation
+## Build
+* kernel: 4.14.335-rc3
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-4.14.y
+* git commit: 58efe9e4bff401aa96c1be73b8b05fed2437b3f7
+* git describe: v4.14.334-20-g58efe9e4bff4
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-4.14.y/build/v4.14=
+.334-20-g58efe9e4bff4
 
-   4 locks held by kworker/u16:5/90:
-    #0: ffff06c5c0008d38 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x150/0x53c
-    #1: ffff800081c0bdd0 ((work_completion)(&entry->work)){+.+.}-{0:0}, at: process_one_work+0x150/0x53c
-    #2: ffff06c5c0b7d0f8 (&dev->mutex){....}-{3:3}, at: __driver_attach_async_helper+0x3c/0xf4
-    #3: ffffacfa78ced000 (pci_bus_sem){++++}-{3:3}, at: pci_walk_bus+0x34/0xbc
-   
-               stack backtrace:
-   CPU: 1 PID: 90 Comm: kworker/u16:5 Not tainted 6.7.0 #40
-   Hardware name: LENOVO 21BYZ9SRUS/21BYZ9SRUS, BIOS N3HET53W (1.25 ) 10/12/2022
-   Workqueue: events_unbound async_run_entry_fn
-   Call trace:
-    dump_backtrace+0x9c/0x11c
-    show_stack+0x18/0x24
-    dump_stack_lvl+0x60/0xac
-    dump_stack+0x18/0x24
-    print_deadlock_bug+0x25c/0x348
-    __lock_acquire+0x10a4/0x2064
-    lock_acquire+0x1e8/0x318
-    down_read+0x60/0x184
-    pcie_aspm_pm_state_change+0x58/0xdc
-    pci_set_full_power_state+0xa8/0x114
-    pci_set_power_state+0xc4/0x120
-    qcom_pcie_enable_aspm+0x1c/0x3c [pcie_qcom]
-    pci_walk_bus+0x64/0xbc
-    qcom_pcie_host_post_init_2_7_0+0x28/0x34 [pcie_qcom]
+## Test Regressions (compared to v4.14.333)
+
+## Metric Regressions (compared to v4.14.333)
+
+## Test Fixes (compared to v4.14.333)
+
+## Metric Fixes (compared to v4.14.333)
+
+## Test result summary
+total: 54694, pass: 45673, fail: 1625, skip: 7350, xfail: 46
+
+## Build Summary
+* arc: 10 total, 10 passed, 0 failed
+* arm: 108 total, 103 passed, 5 failed
+* arm64: 35 total, 31 passed, 4 failed
+* i386: 21 total, 18 passed, 3 failed
+* mips: 19 total, 19 passed, 0 failed
+* parisc: 3 total, 0 passed, 3 failed
+* powerpc: 8 total, 7 passed, 1 failed
+* s390: 6 total, 5 passed, 1 failed
+* sh: 10 total, 10 passed, 0 failed
+* sparc: 6 total, 6 passed, 0 failed
+* x86_64: 27 total, 23 passed, 4 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-zram
+* kunit
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-crypto
+* ltp-cve
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
