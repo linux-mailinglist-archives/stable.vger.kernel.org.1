@@ -1,46 +1,44 @@
-Return-Path: <stable+bounces-10133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB6EF827298
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:14:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6B5B8272A6
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:15:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73B4F1F235F6
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:14:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65D1D282A82
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:14:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D8A4B5AB;
-	Mon,  8 Jan 2024 15:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD664C3CC;
+	Mon,  8 Jan 2024 15:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRDAjCyZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBNPPjY7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401426D6DC;
-	Mon,  8 Jan 2024 15:14:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 697DDC433CA;
-	Mon,  8 Jan 2024 15:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B426D6DC;
+	Mon,  8 Jan 2024 15:14:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A9D3C433C8;
+	Mon,  8 Jan 2024 15:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704726864;
-	bh=xufhh18Nj1AMyKU1rZPRi36A6s3+mQ6j+rPS08RkE/8=;
+	s=korg; t=1704726898;
+	bh=90hgttIimNU26HQcijFL7hjqUniYL0H/Ua84K7ZN1f8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PRDAjCyZTEMC1nJBufRk6kzMVDO5DJcNoXeOzSj4A+bIRmR1Hkqygr9s/cY943Vax
-	 1ucaBwtvksM2IoxKnutHdPL0sH6vjK5pViSRC+Oag/GQjGXBuOQbn/0SuohT62OEl2
-	 DRTcNNElL6NlAHXATMQKOQqYevc5YVkA7eRg7auQ=
+	b=TBNPPjY7zxAAiepomtA6QLEqLJOZ5CRF9gEiONxECeDvpFt3rrEIY02D8R9dwYlvX
+	 t1JbTgd344lR0e0drW7fnZugk+3KIRT5lakXNR/RqTSEUDf8WlbKYV3yVLPTqfNTJ0
+	 4QQdjVYv064i9P9JqA7DFZjg4Vi+CFoHcxi4LSi8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ronald Wahl <ronald.wahl@raritan.com>,
 	Jai Luthra <j-luthra@ti.com>,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
 	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/124] dmaengine: ti: k3-psil-am62: Fix SPI PDMA data
-Date: Mon,  8 Jan 2024 16:08:31 +0100
-Message-ID: <20240108150606.902631267@linuxfoundation.org>
+Subject: [PATCH 6.6 086/124] dmaengine: ti: k3-psil-am62a: Fix SPI PDMA data
+Date: Mon,  8 Jan 2024 16:08:32 +0100
+Message-ID: <20240108150606.943031207@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108150602.976232871@linuxfoundation.org>
 References: <20240108150602.976232871@linuxfoundation.org>
@@ -59,29 +57,29 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ronald Wahl <rwahl@gmx.de>
+From: Jai Luthra <j-luthra@ti.com>
 
-[ Upstream commit 744f5e7b69710701dc225020769138f8ca2894df ]
+[ Upstream commit be37542afbfcd27b3bb99a135abf9b4736b96f75 ]
 
-AM62x has 3 SPI channels where each channel has 4 TX and 4 RX threads.
-This also fixes the thread numbers.
+AM62Ax has 3 SPI channels where each channel has 4x TX and 4x RX
+threads. Also fix the thread numbers to match what the firmware expects
+according to the PSI-L device description.
 
-Signed-off-by: Ronald Wahl <ronald.wahl@raritan.com>
-Fixes: 5ac6bfb58777 ("dmaengine: ti: k3-psil: Add AM62x PSIL and PDMA data")
-Reviewed-by: Jai Luthra <j-luthra@ti.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Link: https://lore.kernel.org/r/20231030190113.16782-1-rwahl@gmx.de
+Link: http://downloads.ti.com/tisci/esd/latest/5_soc_doc/am62ax/psil_cfg.html [1]
+Fixes: aac6db7e243a ("dmaengine: ti: k3-psil-am62a: Add AM62Ax PSIL and PDMA data")
+Signed-off-by: Jai Luthra <j-luthra@ti.com>
+Link: https://lore.kernel.org/r/20231123-psil_fix-v1-1-6604d80819be@ti.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ti/k3-psil-am62.c | 12 ++++++------
+ drivers/dma/ti/k3-psil-am62a.c | 12 ++++++------
  1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/dma/ti/k3-psil-am62.c b/drivers/dma/ti/k3-psil-am62.c
-index 2b6fd6e37c610..1272b1541f61e 100644
---- a/drivers/dma/ti/k3-psil-am62.c
-+++ b/drivers/dma/ti/k3-psil-am62.c
-@@ -74,7 +74,9 @@ static struct psil_ep am62_src_ep_map[] = {
+diff --git a/drivers/dma/ti/k3-psil-am62a.c b/drivers/dma/ti/k3-psil-am62a.c
+index ca9d71f914220..4cf9123b0e932 100644
+--- a/drivers/dma/ti/k3-psil-am62a.c
++++ b/drivers/dma/ti/k3-psil-am62a.c
+@@ -84,7 +84,9 @@ static struct psil_ep am62a_src_ep_map[] = {
  	PSIL_SAUL(0x7505, 21, 35, 8, 36, 0),
  	PSIL_SAUL(0x7506, 22, 43, 8, 43, 0),
  	PSIL_SAUL(0x7507, 23, 43, 8, 44, 0),
@@ -92,7 +90,7 @@ index 2b6fd6e37c610..1272b1541f61e 100644
  	PSIL_PDMA_XY_PKT(0x4302),
  	PSIL_PDMA_XY_PKT(0x4303),
  	PSIL_PDMA_XY_PKT(0x4304),
-@@ -85,8 +87,6 @@ static struct psil_ep am62_src_ep_map[] = {
+@@ -95,8 +97,6 @@ static struct psil_ep am62a_src_ep_map[] = {
  	PSIL_PDMA_XY_PKT(0x4309),
  	PSIL_PDMA_XY_PKT(0x430a),
  	PSIL_PDMA_XY_PKT(0x430b),
@@ -101,7 +99,7 @@ index 2b6fd6e37c610..1272b1541f61e 100644
  	/* PDMA_MAIN1 - UART0-6 */
  	PSIL_PDMA_XY_PKT(0x4400),
  	PSIL_PDMA_XY_PKT(0x4401),
-@@ -141,7 +141,9 @@ static struct psil_ep am62_dst_ep_map[] = {
+@@ -151,7 +151,9 @@ static struct psil_ep am62a_dst_ep_map[] = {
  	/* SAUL */
  	PSIL_SAUL(0xf500, 27, 83, 8, 83, 1),
  	PSIL_SAUL(0xf501, 28, 91, 8, 91, 1),
@@ -112,7 +110,7 @@ index 2b6fd6e37c610..1272b1541f61e 100644
  	PSIL_PDMA_XY_PKT(0xc302),
  	PSIL_PDMA_XY_PKT(0xc303),
  	PSIL_PDMA_XY_PKT(0xc304),
-@@ -152,8 +154,6 @@ static struct psil_ep am62_dst_ep_map[] = {
+@@ -162,8 +164,6 @@ static struct psil_ep am62a_dst_ep_map[] = {
  	PSIL_PDMA_XY_PKT(0xc309),
  	PSIL_PDMA_XY_PKT(0xc30a),
  	PSIL_PDMA_XY_PKT(0xc30b),
