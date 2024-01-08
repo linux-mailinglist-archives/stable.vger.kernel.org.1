@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-10251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10254-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF1A9827407
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:43:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 991D3827408
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:43:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B2B6B22B5F
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:43:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32EEC2852C9
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 639EB53E02;
-	Mon,  8 Jan 2024 15:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3952524DE;
+	Mon,  8 Jan 2024 15:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylrvrnHy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qDXBclkJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB7F53E08;
-	Mon,  8 Jan 2024 15:41:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 551A2C433C8;
-	Mon,  8 Jan 2024 15:41:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2B051C29;
+	Mon,  8 Jan 2024 15:41:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 124ACC433C8;
+	Mon,  8 Jan 2024 15:41:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704728463;
-	bh=+Q5VFpxl30f7ZwS4DKspAysGfGR4Ww9OT3S0mnR7iAA=;
+	s=korg; t=1704728473;
+	bh=hWShnBm9KiLMkPSsmHXp4dP0p1SLXwbxrCHPKbpf3ds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ylrvrnHyWH0YghtGm+N7VjidqMYQgD+GyUDcWm2+2EmUwxO24zSLWs9P4jnyIjb1G
-	 a7WDvjcWfcLeO9mo6jMGk6KcPY1dYtZb1H0uC4xkPjMyI3lhP0Yh1Tlz9cM3Up3zYf
-	 27UrPOuBNzpJabE5pc931mBt3WEEWLPh3js/4h7Y=
+	b=qDXBclkJLik+IQURiTTg39LoMoojHZO85b2g1kB/S36tQdTBt0WbJIUPKwBMvwBOT
+	 sx15PfY9YqxEGv/aAMOp2OTFcVcpy3u2/0DNSzmA9zvVL5fNPgtit2BSFoAMcBkNAp
+	 u40ZwQ0gC7yHR+rTUcESljLX1tLPiAXRmpB0PeaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Juergen Gross <jgross@suse.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Laurent Dufour <ldufour@linux.ibm.com>,
+	Sohil Mehta <sohil.mehta@intel.com>,
+	Michael Kelley <mikelley@microsoft.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Zhang Rui <rui.zhang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 057/150] cpu/SMT: Create topology_smt_thread_allowed()
-Date: Mon,  8 Jan 2024 16:35:08 +0100
-Message-ID: <20240108153513.848789738@linuxfoundation.org>
+Subject: [PATCH 6.1 058/150] cpu/SMT: Make SMT control more robust against enumeration failures
+Date: Mon,  8 Jan 2024 16:35:09 +0100
+Message-ID: <20240108153513.900716546@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108153511.214254205@linuxfoundation.org>
 References: <20240108153511.214254205@linuxfoundation.org>
@@ -59,109 +61,111 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 38253464bc821d6de6bba81bb1412ebb36f6cbd1 ]
+[ Upstream commit d91bdd96b55cc3ce98d883a60f133713821b80a6 ]
 
-Some architectures allows partial SMT states, i.e. when not all SMT threads
-are brought online.
+The SMT control mechanism got added as speculation attack vector
+mitigation. The implemented logic relies on the primary thread mask to
+be set up properly.
 
-To support that, add an architecture helper which checks whether a given
-CPU is allowed to be brought online depending on how many SMT threads are
-currently enabled. Since this is only applicable to architecture supporting
-partial SMT, only these architectures should select the new configuration
-variable CONFIG_SMT_NUM_THREADS_DYNAMIC. For the other architectures, not
-supporting the partial SMT states, there is no need to define
-topology_cpu_smt_allowed(), the generic code assumed that all the threads
-are allowed or only the primary ones.
+This turns out to be an issue with XEN/PV guests because their CPU hotplug
+mechanics do not enumerate APICs and therefore the mask is never correctly
+populated.
 
-Call the helper from cpu_smt_enable(), and cpu_smt_allowed() when SMT is
-enabled, to check if the particular thread should be onlined. Notably,
-also call it from cpu_smt_disable() if CPU_SMT_ENABLED, to allow
-offlining some threads to move from a higher to lower number of threads
-online.
+This went unnoticed so far because by chance XEN/PV ends up with
+smp_num_siblings == 2. So smt_hotplug_control stays at its default value
+CPU_SMT_ENABLED and the primary thread mask is never evaluated in the
+context of CPU hotplug.
 
-[ ldufour: Slightly reword the commit's description ]
-[ ldufour: Introduce CONFIG_SMT_NUM_THREADS_DYNAMIC ]
+This stopped "working" with the upcoming overhaul of the topology
+evaluation which legitimately provides a fake topology for XEN/PV. That
+sets smp_num_siblings to 1, which causes the core CPU hot-plug core to
+refuse to bring up the APs.
 
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
+This happens because smt_hotplug_control is set to CPU_SMT_NOT_SUPPORTED
+which causes cpu_smt_allowed() to evaluate the unpopulated primary thread
+mask with the conclusion that all non-boot CPUs are not valid to be
+plugged.
+
+Make cpu_smt_allowed() more robust and take CPU_SMT_NOT_SUPPORTED and
+CPU_SMT_NOT_IMPLEMENTED into account. Rename it to cpu_bootable() while at
+it as that makes it more clear what the function is about.
+
+The primary mask issue on x86 XEN/PV needs to be addressed separately as
+there are users outside of the CPU hotplug code too.
+
+Fixes: 05736e4ac13c ("cpu/hotplug: Provide knobs to control SMT")
+Reported-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Juergen Gross <jgross@suse.com>
+Tested-by: Sohil Mehta <sohil.mehta@intel.com>
+Tested-by: Michael Kelley <mikelley@microsoft.com>
+Tested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Tested-by: Zhang Rui <rui.zhang@intel.com>
-Link: https://lore.kernel.org/r/20230705145143.40545-7-ldufour@linux.ibm.com
-Stable-dep-of: d91bdd96b55c ("cpu/SMT: Make SMT control more robust against enumeration failures")
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20230814085112.149440843@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/Kconfig |  3 +++
- kernel/cpu.c | 24 +++++++++++++++++++++++-
- 2 files changed, 26 insertions(+), 1 deletion(-)
+ kernel/cpu.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/arch/Kconfig b/arch/Kconfig
-index b60d271bf76a9..14273a6203dfc 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -34,6 +34,9 @@ config ARCH_HAS_SUBPAGE_FAULTS
- config HOTPLUG_SMT
- 	bool
- 
-+config SMT_NUM_THREADS_DYNAMIC
-+	bool
-+
- config GENERIC_ENTRY
-        bool
- 
 diff --git a/kernel/cpu.c b/kernel/cpu.c
-index 551468d9c5a85..c37f1758a4865 100644
+index c37f1758a4865..e6f0101941ed8 100644
 --- a/kernel/cpu.c
 +++ b/kernel/cpu.c
-@@ -446,9 +446,23 @@ static int __init smt_cmdline_disable(char *str)
+@@ -460,11 +460,19 @@ static inline bool cpu_smt_thread_allowed(unsigned int cpu)
+ #endif
  }
- early_param("nosmt", smt_cmdline_disable);
  
-+/*
-+ * For Archicture supporting partial SMT states check if the thread is allowed.
-+ * Otherwise this has already been checked through cpu_smt_max_threads when
-+ * setting the SMT level.
-+ */
-+static inline bool cpu_smt_thread_allowed(unsigned int cpu)
-+{
-+#ifdef CONFIG_SMT_NUM_THREADS_DYNAMIC
-+	return topology_smt_thread_allowed(cpu);
-+#else
-+	return true;
-+#endif
-+}
-+
- static inline bool cpu_smt_allowed(unsigned int cpu)
+-static inline bool cpu_smt_allowed(unsigned int cpu)
++static inline bool cpu_bootable(unsigned int cpu)
  {
--	if (cpu_smt_control == CPU_SMT_ENABLED)
-+	if (cpu_smt_control == CPU_SMT_ENABLED && cpu_smt_thread_allowed(cpu))
+ 	if (cpu_smt_control == CPU_SMT_ENABLED && cpu_smt_thread_allowed(cpu))
  		return true;
  
++	/* All CPUs are bootable if controls are not configured */
++	if (cpu_smt_control == CPU_SMT_NOT_IMPLEMENTED)
++		return true;
++
++	/* All CPUs are bootable if CPU is not SMT capable */
++	if (cpu_smt_control == CPU_SMT_NOT_SUPPORTED)
++		return true;
++
  	if (topology_is_primary_thread(cpu))
-@@ -2294,6 +2308,12 @@ int cpuhp_smt_disable(enum cpuhp_smt_control ctrlval)
- 	for_each_online_cpu(cpu) {
- 		if (topology_is_primary_thread(cpu))
- 			continue;
-+		/*
-+		 * Disable can be called with CPU_SMT_ENABLED when changing
-+		 * from a higher to lower number of SMT threads per core.
-+		 */
-+		if (ctrlval == CPU_SMT_ENABLED && cpu_smt_thread_allowed(cpu))
-+			continue;
- 		ret = cpu_down_maps_locked(cpu, CPUHP_OFFLINE);
- 		if (ret)
- 			break;
-@@ -2328,6 +2348,8 @@ int cpuhp_smt_enable(void)
- 		/* Skip online CPUs and CPUs on offline nodes */
- 		if (cpu_online(cpu) || !node_online(cpu_to_node(cpu)))
- 			continue;
-+		if (!cpu_smt_thread_allowed(cpu))
-+			continue;
- 		ret = _cpu_up(cpu, 0, CPUHP_ONLINE);
- 		if (ret)
- 			break;
+ 		return true;
+ 
+@@ -485,7 +493,7 @@ bool cpu_smt_possible(void)
+ }
+ EXPORT_SYMBOL_GPL(cpu_smt_possible);
+ #else
+-static inline bool cpu_smt_allowed(unsigned int cpu) { return true; }
++static inline bool cpu_bootable(unsigned int cpu) { return true; }
+ #endif
+ 
+ static inline enum cpuhp_state
+@@ -588,10 +596,10 @@ static int bringup_wait_for_ap(unsigned int cpu)
+ 	 * SMT soft disabling on X86 requires to bring the CPU out of the
+ 	 * BIOS 'wait for SIPI' state in order to set the CR4.MCE bit.  The
+ 	 * CPU marked itself as booted_once in notify_cpu_starting() so the
+-	 * cpu_smt_allowed() check will now return false if this is not the
++	 * cpu_bootable() check will now return false if this is not the
+ 	 * primary sibling.
+ 	 */
+-	if (!cpu_smt_allowed(cpu))
++	if (!cpu_bootable(cpu))
+ 		return -ECANCELED;
+ 
+ 	if (st->target <= CPUHP_AP_ONLINE_IDLE)
+@@ -1478,7 +1486,7 @@ static int cpu_up(unsigned int cpu, enum cpuhp_state target)
+ 		err = -EBUSY;
+ 		goto out;
+ 	}
+-	if (!cpu_smt_allowed(cpu)) {
++	if (!cpu_bootable(cpu)) {
+ 		err = -EPERM;
+ 		goto out;
+ 	}
 -- 
 2.43.0
 
