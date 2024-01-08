@@ -1,47 +1,44 @@
-Return-Path: <stable+bounces-10121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0475582728B
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:13:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8611E827260
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:12:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8473284530
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:13:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B71D1F2332A
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:12:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 457C06D6E4;
-	Mon,  8 Jan 2024 15:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86FC54C3A9;
+	Mon,  8 Jan 2024 15:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+/mAO3D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kc6or96B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE6A4BAB1;
-	Mon,  8 Jan 2024 15:13:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C2B9C433C9;
-	Mon,  8 Jan 2024 15:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4E74BA96;
+	Mon,  8 Jan 2024 15:12:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A710DC433B6;
+	Mon,  8 Jan 2024 15:12:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704726825;
-	bh=rL2+kG+XCF/SKXcJQJKV6F9Hgi5hIBhpq7nnsU2irHQ=;
+	s=korg; t=1704726729;
+	bh=PK9HPrxedxVK0DSErA4LenJMVxwKHl2qWdh4cGSBR0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l+/mAO3Doi/uF9jXnsO/nrHm8UWp0dsVHjZM2B+zE+1k9ueR9MLZm+qN3y+cRYaku
-	 bPYy2TTjqR9pr3hufd57nyuGNgUeTSDPUvG6+1lQgNv4LSEofDtSvckt0HDUrbJgG1
-	 Ye9oZ3VZnRPEgHbtadjOB0A/d6kbaSlkBZOnQ0Bg=
+	b=kc6or96B1Vtagz0JVYPpIjFt2kj3eRWMSX/gC7kR4nHdQFEjLMsR/3IMeebo/OnCO
+	 ab1UnQYaySalKTSyoGoiZB7QBokJ28RiGwRuoO1dUu/vbLErFahfj2tDGhBQ7+zqLj
+	 61+xVeERRBnsM9g+nDbaqmke0HdQHDf1bREqcNPY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kurt Kanzenbach <kurt@linutronix.de>,
-	Rodrigo Cataldo <rodrigo.cadore@l-acoustics.com>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Naama Meir <naamax.meir@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Georgia Garcia <georgia.garcia@canonical.com>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/124] igc: Fix hicredit calculation
-Date: Mon,  8 Jan 2024 16:07:57 +0100
-Message-ID: <20240108150605.307619373@linuxfoundation.org>
+Subject: [PATCH 6.6 052/124] apparmor: Fix move_mount mediation by detecting if source is detached
+Date: Mon,  8 Jan 2024 16:07:58 +0100
+Message-ID: <20240108150605.354496819@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108150602.976232871@linuxfoundation.org>
 References: <20240108150602.976232871@linuxfoundation.org>
@@ -60,43 +57,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rodrigo Cataldo <rodrigo.cadore@l-acoustics.com>
+From: John Johansen <john.johansen@canonical.com>
 
-[ Upstream commit 947dfc8138dfaeb6e966e2d661de89eb203e3064 ]
+[ Upstream commit 8026e40608b4d552216d2a818ca7080a4264bb44 ]
 
-According to the Intel Software Manual for I225, Section 7.5.2.7,
-hicredit should be multiplied by the constant link-rate value, 0x7736.
+Prevent move_mount from applying the attach_disconnected flag
+to move_mount(). This prevents detached mounts from appearing
+as / when applying mount mediation, which is not only incorrect
+but could result in bad policy being generated.
 
-Currently, the old constant link-rate value, 0x7735, from the boards
-supported on igb are being used, most likely due to a copy'n'paste, as
-the rest of the logic is the same for both drivers.
+Basic mount rules like
+  allow mount,
+  allow mount options=(move) -> /target/,
 
-Update hicredit accordingly.
+will allow detached mounts, allowing older policy to continue
+to function. New policy gains the ability to specify `detached` as
+a source option
+  allow mount detached -> /target/,
 
-Fixes: 1ab011b0bf07 ("igc: Add support for CBS offloading")
-Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
-Signed-off-by: Rodrigo Cataldo <rodrigo.cadore@l-acoustics.com>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+In addition make sure support of move_mount is advertised as
+a feature to userspace so that applications that generate policy
+can respond to the addition.
+
+Note: this fixes mediation of move_mount when a detached mount is used,
+      it does not fix the broader regression of apparmor mediation of
+      mounts under the new mount api.
+
+Link: https://lore.kernel.org/all/68c166b8-5b4d-4612-8042-1dee3334385b@leemhuis.info/T/#mb35fdde37f999f08f0b02d58dc1bf4e6b65b8da2
+Fixes: 157a3537d6bc ("apparmor: Fix regression in mount mediation")
+Reviewed-by: Georgia Garcia <georgia.garcia@canonical.com>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_tsn.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/apparmor/apparmorfs.c | 1 +
+ security/apparmor/mount.c      | 4 ++++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
-index a9c08321aca90..22cefb1eeedfa 100644
---- a/drivers/net/ethernet/intel/igc/igc_tsn.c
-+++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
-@@ -227,7 +227,7 @@ static int igc_tsn_enable_offload(struct igc_adapter *adapter)
- 			wr32(IGC_TQAVCC(i), tqavcc);
+diff --git a/security/apparmor/apparmorfs.c b/security/apparmor/apparmorfs.c
+index 261cef4c622fb..63ddefb6ddd1c 100644
+--- a/security/apparmor/apparmorfs.c
++++ b/security/apparmor/apparmorfs.c
+@@ -2364,6 +2364,7 @@ static struct aa_sfs_entry aa_sfs_entry_policy[] = {
  
- 			wr32(IGC_TQAVHC(i),
--			     0x80000000 + ring->hicredit * 0x7735);
-+			     0x80000000 + ring->hicredit * 0x7736);
- 		} else {
- 			/* Disable any CBS for the queue */
- 			txqctl &= ~(IGC_TXQCTL_QAV_SEL_MASK);
+ static struct aa_sfs_entry aa_sfs_entry_mount[] = {
+ 	AA_SFS_FILE_STRING("mask", "mount umount pivot_root"),
++	AA_SFS_FILE_STRING("move_mount", "detached"),
+ 	{ }
+ };
+ 
+diff --git a/security/apparmor/mount.c b/security/apparmor/mount.c
+index f2a114e540079..cb0fdbdb82d94 100644
+--- a/security/apparmor/mount.c
++++ b/security/apparmor/mount.c
+@@ -499,6 +499,10 @@ int aa_move_mount(const struct cred *subj_cred,
+ 	error = -ENOMEM;
+ 	if (!to_buffer || !from_buffer)
+ 		goto out;
++
++	if (!our_mnt(from_path->mnt))
++		/* moving a mount detached from the namespace */
++		from_path = NULL;
+ 	error = fn_for_each_confined(label, profile,
+ 			match_mnt(subj_cred, profile, to_path, to_buffer,
+ 				  from_path, from_buffer,
 -- 
 2.43.0
 
