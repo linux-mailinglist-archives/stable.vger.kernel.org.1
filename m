@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-10221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5B1C8273C6
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:39:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B39C82740E
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:43:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B2741F22698
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:39:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 598E71C211EA
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:43:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9E25101D;
-	Mon,  8 Jan 2024 15:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC2752F6A;
+	Mon,  8 Jan 2024 15:41:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGJ9p2fb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iy4aoyoc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633034C3A0;
-	Mon,  8 Jan 2024 15:39:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A76C433C9;
-	Mon,  8 Jan 2024 15:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 572E052F62;
+	Mon,  8 Jan 2024 15:41:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3D9EC433C8;
+	Mon,  8 Jan 2024 15:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704728368;
-	bh=sDkdUGiG0HzVq7klFbI1YNbC5OfmuZojmFRKElQVj7s=;
+	s=korg; t=1704728492;
+	bh=RLpeuMr5iT22LNx6bBQ1HYfKScgAHhCcDJn1whk4nO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GGJ9p2fbUP7suZ0lGN7ZMoKonc5VctlU+w+QuBwJBZgjwFnawYzzc/LIGd3AFuBaW
-	 ihn9WGRZeoVY0/TQuKPYIcPx8FkThhZAaVcH/4NaexRARJPykhwn7hLLJllbknJ784
-	 X6V3AoXwbRxljSYY+rkDVppYHMOYmIyK1+vgTm+w=
+	b=iy4aoyocuXGS8ds5O27ty9Jk82N04XDYelYSY1v4/ehgxt5ez9R9CX5hbEnzdntL9
+	 t/PUSEGEqFH0cLJ1wXlgNsYyG/p0bzjgW700yb45OgbjWQlNoH3zg+1PolIoICXUwU
+	 okXtycH1CkPb4YhJ4G68c9DCU34r8vZQpAIAGxAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 053/150] net: ravb: Wait for operating mode to be applied
-Date: Mon,  8 Jan 2024 16:35:04 +0100
-Message-ID: <20240108153513.670431080@linuxfoundation.org>
+Subject: [PATCH 6.1 054/150] bnxt_en: Remove mis-applied code from bnxt_cfg_ntp_filters()
+Date: Mon,  8 Jan 2024 16:35:05 +0100
+Message-ID: <20240108153513.720119902@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108153511.214254205@linuxfoundation.org>
 References: <20240108153511.214254205@linuxfoundation.org>
@@ -58,179 +58,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Michael Chan <michael.chan@broadcom.com>
 
-[ Upstream commit 9039cd4c61635b2d541009a7cd5e2cc052402f28 ]
+[ Upstream commit e009b2efb7a8850498796b360043ac25c8d3d28f ]
 
-CSR.OPS bits specify the current operating mode and (according to
-documentation) they are updated by HW when the operating mode change
-request is processed. To comply with this check CSR.OPS before proceeding.
+The 2 lines to check for the BNXT_HWRM_PF_UNLOAD_SP_EVENT bit was
+mis-applied to bnxt_cfg_ntp_filters() and should have been applied to
+bnxt_sp_task().
 
-Commit introduces ravb_set_opmode() that does all the necessities for
-setting the operating mode (set CCC.OPC (and CCC.GAC, CCC.CSEL, if any) and
-wait for CSR.OPS) and call it where needed. This should comply with all the
-HW manuals requirements as different manual variants specify that different
-modes need to be checked in CSR.OPS when setting CCC.OPC.
-
-If gPTP active in config mode is supported and it needs to be enabled, the
-CCC.GAC and CCC.CSEL needs to be configured along with CCC.OPC in the same
-write access. For this, ravb_set_opmode() allows passing GAC and CSEL as
-part of opmode and the function updates accordingly CCC register.
-
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Fixes: 19241368443f ("bnxt_en: Send PF driver unload notification to all VFs.")
+Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 65 +++++++++++++++---------
- 1 file changed, 42 insertions(+), 23 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 68cb5616ef991..c2c56a5289caf 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -68,16 +68,27 @@ int ravb_wait(struct net_device *ndev, enum ravb_reg reg, u32 mask, u32 value)
- 	return -ETIMEDOUT;
- }
- 
--static int ravb_config(struct net_device *ndev)
-+static int ravb_set_opmode(struct net_device *ndev, u32 opmode)
- {
-+	u32 csr_ops = 1U << (opmode & CCC_OPC);
-+	u32 ccc_mask = CCC_OPC;
- 	int error;
- 
--	/* Set config mode */
--	ravb_modify(ndev, CCC, CCC_OPC, CCC_OPC_CONFIG);
--	/* Check if the operating mode is changed to the config mode */
--	error = ravb_wait(ndev, CSR, CSR_OPS, CSR_OPS_CONFIG);
--	if (error)
--		netdev_err(ndev, "failed to switch device to config mode\n");
-+	/* If gPTP active in config mode is supported it needs to be configured
-+	 * along with CSEL and operating mode in the same access. This is a
-+	 * hardware limitation.
-+	 */
-+	if (opmode & CCC_GAC)
-+		ccc_mask |= CCC_GAC | CCC_CSEL;
-+
-+	/* Set operating mode */
-+	ravb_modify(ndev, CCC, ccc_mask, opmode);
-+	/* Check if the operating mode is changed to the requested one */
-+	error = ravb_wait(ndev, CSR, CSR_OPS, csr_ops);
-+	if (error) {
-+		netdev_err(ndev, "failed to switch device to requested mode (%u)\n",
-+			   opmode & CCC_OPC);
-+	}
- 
- 	return error;
- }
-@@ -675,7 +686,7 @@ static int ravb_dmac_init(struct net_device *ndev)
- 	int error;
- 
- 	/* Set CONFIG mode */
--	error = ravb_config(ndev);
-+	error = ravb_set_opmode(ndev, CCC_OPC_CONFIG);
- 	if (error)
- 		return error;
- 
-@@ -684,9 +695,7 @@ static int ravb_dmac_init(struct net_device *ndev)
- 		return error;
- 
- 	/* Setting the control will start the AVB-DMAC process. */
--	ravb_modify(ndev, CCC, CCC_OPC, CCC_OPC_OPERATION);
--
--	return 0;
-+	return ravb_set_opmode(ndev, CCC_OPC_OPERATION);
- }
- 
- static void ravb_get_tx_tstamp(struct net_device *ndev)
-@@ -1048,7 +1057,7 @@ static int ravb_stop_dma(struct net_device *ndev)
- 		return error;
- 
- 	/* Stop AVB-DMAC process */
--	return ravb_config(ndev);
-+	return ravb_set_opmode(ndev, CCC_OPC_CONFIG);
- }
- 
- /* E-MAC interrupt handler */
-@@ -2576,21 +2585,25 @@ static int ravb_set_gti(struct net_device *ndev)
- 	return 0;
- }
- 
--static void ravb_set_config_mode(struct net_device *ndev)
-+static int ravb_set_config_mode(struct net_device *ndev)
- {
- 	struct ravb_private *priv = netdev_priv(ndev);
- 	const struct ravb_hw_info *info = priv->info;
-+	int error;
- 
- 	if (info->gptp) {
--		ravb_modify(ndev, CCC, CCC_OPC, CCC_OPC_CONFIG);
-+		error = ravb_set_opmode(ndev, CCC_OPC_CONFIG);
-+		if (error)
-+			return error;
- 		/* Set CSEL value */
- 		ravb_modify(ndev, CCC, CCC_CSEL, CCC_CSEL_HPB);
- 	} else if (info->ccc_gac) {
--		ravb_modify(ndev, CCC, CCC_OPC, CCC_OPC_CONFIG |
--			    CCC_GAC | CCC_CSEL_HPB);
-+		error = ravb_set_opmode(ndev, CCC_OPC_CONFIG | CCC_GAC | CCC_CSEL_HPB);
- 	} else {
--		ravb_modify(ndev, CCC, CCC_OPC, CCC_OPC_CONFIG);
-+		error = ravb_set_opmode(ndev, CCC_OPC_CONFIG);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 623cdeb29ed90..df4d88d35701b 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -12081,6 +12081,8 @@ static void bnxt_sp_task(struct work_struct *work)
+ 		bnxt_cfg_ntp_filters(bp);
+ 	if (test_and_clear_bit(BNXT_HWRM_EXEC_FWD_REQ_SP_EVENT, &bp->sp_event))
+ 		bnxt_hwrm_exec_fwd_req(bp);
++	if (test_and_clear_bit(BNXT_HWRM_PF_UNLOAD_SP_EVENT, &bp->sp_event))
++		netdev_info(bp->dev, "Receive PF driver unload event!\n");
+ 	if (test_and_clear_bit(BNXT_PERIODIC_STATS_SP_EVENT, &bp->sp_event)) {
+ 		bnxt_hwrm_port_qstats(bp, 0);
+ 		bnxt_hwrm_port_qstats_ext(bp, 0);
+@@ -13059,8 +13061,6 @@ static void bnxt_cfg_ntp_filters(struct bnxt *bp)
+ 			}
+ 		}
  	}
-+
-+	return error;
+-	if (test_and_clear_bit(BNXT_HWRM_PF_UNLOAD_SP_EVENT, &bp->sp_event))
+-		netdev_info(bp->dev, "Receive PF driver unload event!\n");
  }
  
- /* Set tx and rx clock internal delay modes */
-@@ -2810,7 +2823,9 @@ static int ravb_probe(struct platform_device *pdev)
- 	ndev->ethtool_ops = &ravb_ethtool_ops;
- 
- 	/* Set AVB config mode */
--	ravb_set_config_mode(ndev);
-+	error = ravb_set_config_mode(ndev);
-+	if (error)
-+		goto out_disable_gptp_clk;
- 
- 	if (info->gptp || info->ccc_gac) {
- 		/* Set GTI value */
-@@ -2933,8 +2948,7 @@ static int ravb_remove(struct platform_device *pdev)
- 	dma_free_coherent(ndev->dev.parent, priv->desc_bat_size, priv->desc_bat,
- 			  priv->desc_bat_dma);
- 
--	/* Set reset mode */
--	ravb_write(ndev, CCC_OPC_RESET, CCC);
-+	ravb_set_opmode(ndev, CCC_OPC_RESET);
- 
- 	clk_disable_unprepare(priv->gptp_clk);
- 	clk_disable_unprepare(priv->refclk);
-@@ -3018,8 +3032,11 @@ static int __maybe_unused ravb_resume(struct device *dev)
- 	int ret = 0;
- 
- 	/* If WoL is enabled set reset mode to rearm the WoL logic */
--	if (priv->wol_enabled)
--		ravb_write(ndev, CCC_OPC_RESET, CCC);
-+	if (priv->wol_enabled) {
-+		ret = ravb_set_opmode(ndev, CCC_OPC_RESET);
-+		if (ret)
-+			return ret;
-+	}
- 
- 	/* All register have been reset to default values.
- 	 * Restore all registers which where setup at probe time and
-@@ -3027,7 +3044,9 @@ static int __maybe_unused ravb_resume(struct device *dev)
- 	 */
- 
- 	/* Set AVB config mode */
--	ravb_set_config_mode(ndev);
-+	ret = ravb_set_config_mode(ndev);
-+	if (ret)
-+		return ret;
- 
- 	if (info->gptp || info->ccc_gac) {
- 		/* Set GTI value */
+ #else
 -- 
 2.43.0
 
