@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-10259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3547827412
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:43:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCF4F8273DB
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:40:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B97A1F229D5
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:43:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E27811C222D3
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9172F52F6F;
-	Mon,  8 Jan 2024 15:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D4453813;
+	Mon,  8 Jan 2024 15:39:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSL4FHzj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/6a6+e/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A20451C2F;
-	Mon,  8 Jan 2024 15:41:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20DEC433C8;
-	Mon,  8 Jan 2024 15:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DED4524C2;
+	Mon,  8 Jan 2024 15:39:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB882C433C7;
+	Mon,  8 Jan 2024 15:39:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704728489;
-	bh=Qrl0F15PJPXJyP6Zy4kXgsXmwV9pjSrplwEpFfSlXw0=;
+	s=korg; t=1704728397;
+	bh=KxMSGRkDzbxuvwTf9LfkZfqcX0y3poimKoThDF8ux0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BSL4FHzjdSkhksowTjBhosfsDDNE/Qc9H0qb+uUZud4U4Zg6qOmmW0C6CuF8lRq9H
-	 2hmYhEUuTzYjv5BWpT+y8PEz/wjvYqL419gS4BVs/4kR580ParXfaNEgacB9PzrTFE
-	 Hq0Z9JNBY/N7hKMdQOsQRg9sDQ4x02RovPpfU1K8=
+	b=T/6a6+e/JIyNUn8rM2hffYAM/koBkyIzwg7qmcqQlIOwMNWoqciHW0Ysjq32jLRFB
+	 Cg4AI2cZMWl9HnzZfrRJzq4xiN8Xu4864Dy/zO8m9iK/uSvIgQm0QyxjVQtsSD7BVp
+	 4VnOHO19X69pQ7KZkSiWADfzFz4arQTJBFcOIShs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	David Howells <dhowells@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
 	Jens Axboe <axboe@kernel.dk>,
 	Matthew Wilcox <willy@infradead.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/150] net: Declare MSG_SPLICE_PAGES internal sendmsg() flag
-Date: Mon,  8 Jan 2024 16:35:14 +0100
-Message-ID: <20240108153514.142655635@linuxfoundation.org>
+Subject: [PATCH 6.1 064/150] udp: Convert udp_sendpage() to use MSG_SPLICE_PAGES
+Date: Mon,  8 Jan 2024 16:35:15 +0100
+Message-ID: <20240108153514.183352624@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108153511.214254205@linuxfoundation.org>
 References: <20240108153511.214254205@linuxfoundation.org>
@@ -62,90 +63,91 @@ Content-Transfer-Encoding: 8bit
 
 From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit b841b901c452d92610f739a36e54978453528876 ]
+[ Upstream commit 7ac7c987850c3ec617c778f7bd871804dc1c648d ]
 
-Declare MSG_SPLICE_PAGES, an internal sendmsg() flag, that hints to a
-network protocol that it should splice pages from the source iterator
-rather than copying the data if it can.  This flag is added to a list that
-is cleared by sendmsg syscalls on entry.
+Convert udp_sendpage() to use sendmsg() with MSG_SPLICE_PAGES rather than
+directly splicing in the pages itself.
 
-This is intended as a replacement for the ->sendpage() op, allowing a way
-to splice in several multipage folios in one go.
+This allows ->sendpage() to be replaced by something that can handle
+multiple multipage folios in a single transaction.
 
 Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
+cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+cc: David Ahern <dsahern@kernel.org>
 cc: Jens Axboe <axboe@kernel.dk>
 cc: Matthew Wilcox <willy@infradead.org>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Stable-dep-of: a0002127cd74 ("udp: move udp->no_check6_tx to udp->udp_flags")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/socket.h | 3 +++
- io_uring/net.c         | 2 ++
- net/socket.c           | 2 ++
- 3 files changed, 7 insertions(+)
+ net/ipv4/udp.c | 51 ++++++--------------------------------------------
+ 1 file changed, 6 insertions(+), 45 deletions(-)
 
-diff --git a/include/linux/socket.h b/include/linux/socket.h
-index 1db29aab8f9c3..b3c58042bd254 100644
---- a/include/linux/socket.h
-+++ b/include/linux/socket.h
-@@ -324,6 +324,7 @@ struct ucred {
- 					  */
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index 65abc92a81bd0..b49cb3df01bb4 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -1335,54 +1335,15 @@ EXPORT_SYMBOL(udp_sendmsg);
+ int udp_sendpage(struct sock *sk, struct page *page, int offset,
+ 		 size_t size, int flags)
+ {
+-	struct inet_sock *inet = inet_sk(sk);
+-	struct udp_sock *up = udp_sk(sk);
+-	int ret;
++	struct bio_vec bvec;
++	struct msghdr msg = { .msg_flags = flags | MSG_SPLICE_PAGES };
  
- #define MSG_ZEROCOPY	0x4000000	/* Use user data in kernel path */
-+#define MSG_SPLICE_PAGES 0x8000000	/* Splice the pages from the iterator in sendmsg() */
- #define MSG_FASTOPEN	0x20000000	/* Send data in TCP SYN */
- #define MSG_CMSG_CLOEXEC 0x40000000	/* Set close_on_exec for file
- 					   descriptor received through
-@@ -334,6 +335,8 @@ struct ucred {
- #define MSG_CMSG_COMPAT	0		/* We never have 32 bit fixups */
- #endif
+ 	if (flags & MSG_SENDPAGE_NOTLAST)
+-		flags |= MSG_MORE;
+-
+-	if (!up->pending) {
+-		struct msghdr msg = {	.msg_flags = flags|MSG_MORE };
+-
+-		/* Call udp_sendmsg to specify destination address which
+-		 * sendpage interface can't pass.
+-		 * This will succeed only when the socket is connected.
+-		 */
+-		ret = udp_sendmsg(sk, &msg, 0);
+-		if (ret < 0)
+-			return ret;
+-	}
+-
+-	lock_sock(sk);
++		msg.msg_flags |= MSG_MORE;
  
-+/* Flags to be cleared on entry by sendmsg and sendmmsg syscalls */
-+#define MSG_INTERNAL_SENDMSG_FLAGS (MSG_SPLICE_PAGES)
+-	if (unlikely(!up->pending)) {
+-		release_sock(sk);
+-
+-		net_dbg_ratelimited("cork failed\n");
+-		return -EINVAL;
+-	}
+-
+-	ret = ip_append_page(sk, &inet->cork.fl.u.ip4,
+-			     page, offset, size, flags);
+-	if (ret == -EOPNOTSUPP) {
+-		release_sock(sk);
+-		return sock_no_sendpage(sk->sk_socket, page, offset,
+-					size, flags);
+-	}
+-	if (ret < 0) {
+-		udp_flush_pending_frames(sk);
+-		goto out;
+-	}
+-
+-	up->len += size;
+-	if (!(READ_ONCE(up->corkflag) || (flags&MSG_MORE)))
+-		ret = udp_push_pending_frames(sk);
+-	if (!ret)
+-		ret = size;
+-out:
+-	release_sock(sk);
+-	return ret;
++	bvec_set_page(&bvec, page, size, offset);
++	iov_iter_bvec(&msg.msg_iter, ITER_SOURCE, &bvec, 1, size);
++	return udp_sendmsg(sk, &msg, size);
+ }
  
- /* Setsockoptions(2) level. Thanks to BSD these must match IPPROTO_xxx */
- #define SOL_IP		0
-diff --git a/io_uring/net.c b/io_uring/net.c
-index 57c626cb4d1a5..67f09a40bcb21 100644
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -389,6 +389,7 @@ int io_send(struct io_kiocb *req, unsigned int issue_flags)
- 	if (flags & MSG_WAITALL)
- 		min_ret = iov_iter_count(&msg.msg_iter);
- 
-+	flags &= ~MSG_INTERNAL_SENDMSG_FLAGS;
- 	msg.msg_flags = flags;
- 	ret = sock_sendmsg(sock, &msg);
- 	if (ret < min_ret) {
-@@ -1137,6 +1138,7 @@ int io_send_zc(struct io_kiocb *req, unsigned int issue_flags)
- 		msg_flags |= MSG_DONTWAIT;
- 	if (msg_flags & MSG_WAITALL)
- 		min_ret = iov_iter_count(&msg.msg_iter);
-+	msg_flags &= ~MSG_INTERNAL_SENDMSG_FLAGS;
- 
- 	msg.msg_flags = msg_flags;
- 	msg.msg_ubuf = &io_notif_to_data(zc->notif)->uarg;
-diff --git a/net/socket.c b/net/socket.c
-index 0104617b440dc..6f39f7b0cc85c 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -2131,6 +2131,7 @@ int __sys_sendto(int fd, void __user *buff, size_t len, unsigned int flags,
- 		msg.msg_name = (struct sockaddr *)&address;
- 		msg.msg_namelen = addr_len;
- 	}
-+	flags &= ~MSG_INTERNAL_SENDMSG_FLAGS;
- 	if (sock->file->f_flags & O_NONBLOCK)
- 		flags |= MSG_DONTWAIT;
- 	msg.msg_flags = flags;
-@@ -2482,6 +2483,7 @@ static int ____sys_sendmsg(struct socket *sock, struct msghdr *msg_sys,
- 		msg_sys->msg_control = ctl_buf;
- 		msg_sys->msg_control_is_user = false;
- 	}
-+	flags &= ~MSG_INTERNAL_SENDMSG_FLAGS;
- 	msg_sys->msg_flags = flags;
- 
- 	if (sock->file->f_flags & O_NONBLOCK)
+ #define UDP_SKB_IS_STATELESS 0x80000000
 -- 
 2.43.0
 
