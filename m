@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-10292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F6282743C
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:45:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE7D82740F
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:43:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 493871F23325
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:45:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DBB91C22DEF
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C46A454780;
-	Mon,  8 Jan 2024 15:43:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9F2524A8;
+	Mon,  8 Jan 2024 15:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qIqsoiUF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koys0xBu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5185380A;
-	Mon,  8 Jan 2024 15:43:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11183C433C7;
-	Mon,  8 Jan 2024 15:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B2551032;
+	Mon,  8 Jan 2024 15:41:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 003A7C433CB;
+	Mon,  8 Jan 2024 15:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704728588;
-	bh=yoqJtS7N5Q5/U9ObtR4pzh0YzsvmqDgEl3s+tHQZTsY=;
+	s=korg; t=1704728495;
+	bh=uKjPlYKySLCr3LcoHuHlakQS83NOlngjHzjNgf7aOFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qIqsoiUFAvP8o9HhG5VJVX5laAvUSnQoFkNs80fZnwf+SQR3u5EPf2Aq9Y3nI4JPu
-	 Jgw7T3JkR2zlpVuqa9vgkTfEb2E9g78h9NGb1awnSlRHuxaMGP6H2eSyTrHI5ILfCn
-	 0Fcq3BVlGT/kPHr877Fj4YevCbxmg9MJPkdh1Pkw=
+	b=koys0xBubI3YrDs2TP3Ne5OUh2opPnR7s+DkVzCf3l57vlUakC6viMFLvqt0iKyGT
+	 I20pg2EIeEXk9zLTHLPSe/vmqeifKqP5mRbmCmO69LiO3QSQn48kCU9IFPm4w0wJig
+	 LJt+Qyl1uNj41wcaEGuZb5EaxdkNsgSCd26/YjPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yi Zhang <yi.zhang@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 086/150] blk-mq: make sure active queue usage is held for bio_integrity_prep()
-Date: Mon,  8 Jan 2024 16:35:37 +0100
-Message-ID: <20240108153515.187120453@linuxfoundation.org>
+Subject: [PATCH 6.1 087/150] net/mlx5: Increase size of irq name buffer
+Date: Mon,  8 Jan 2024 16:35:38 +0100
+Message-ID: <20240108153515.238297969@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108153511.214254205@linuxfoundation.org>
 References: <20240108153511.214254205@linuxfoundation.org>
@@ -59,166 +59,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christoph Hellwig <hch@infradead.org>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-[ Upstream commit b0077e269f6c152e807fdac90b58caf012cdbaab ]
+[ Upstream commit 3338bebfc26a1e2cebbba82a1cf12c0159608e73 ]
 
-blk_integrity_unregister() can come if queue usage counter isn't held
-for one bio with integrity prepared, so this request may be completed with
-calling profile->complete_fn, then kernel panic.
+Without increased buffer size, will trigger -Wformat-truncation with W=1
+for the snprintf operation writing to the buffer.
 
-Another constraint is that bio_integrity_prep() needs to be called
-before bio merge.
+    drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c: In function 'mlx5_irq_alloc':
+    drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c:296:7: error: '@pci:' directive output may be truncated writing 5 bytes into a region of size between 1 and 32 [-Werror=format-truncation=]
+      296 |    "%s@pci:%s", name, pci_name(dev->pdev));
+          |       ^~~~~
+    drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c:295:2: note: 'snprintf' output 6 or more bytes (assuming 37) into a destination of size 32
+      295 |  snprintf(irq->name, MLX5_MAX_IRQ_NAME,
+          |  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      296 |    "%s@pci:%s", name, pci_name(dev->pdev));
+          |    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Fix the issue by:
-
-- call bio_integrity_prep() with one queue usage counter grabbed reliably
-
-- call bio_integrity_prep() before bio merge
-
-Fixes: 900e080752025f00 ("block: move queue enter logic into blk_mq_submit_bio()")
-Reported-by: Yi Zhang <yi.zhang@redhat.com>
-Cc: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Tested-by: Yi Zhang <yi.zhang@redhat.com>
-Link: https://lore.kernel.org/r/20231113035231.2708053-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: ada9f5d00797 ("IB/mlx5: Fix eq names to display nicely in /proc/interrupts")
+Link: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=6d4ab2e97dcfbcd748ae71761a9d8e5e41cc732c
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Link: https://lore.kernel.org/r/20231114215846.5902-13-saeed@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c | 75 +++++++++++++++++++++++++-------------------------
- 1 file changed, 38 insertions(+), 37 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c | 6 +++---
+ drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h | 3 +++
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 100fb0c3114f8..383d94615e502 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -2855,11 +2855,8 @@ static struct request *blk_mq_get_new_requests(struct request_queue *q,
- 	};
- 	struct request *rq;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
+index d136360ac6a98..a6d3fc96e1685 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.c
+@@ -25,7 +25,7 @@
+ struct mlx5_irq {
+ 	struct atomic_notifier_head nh;
+ 	cpumask_var_t mask;
+-	char name[MLX5_MAX_IRQ_NAME];
++	char name[MLX5_MAX_IRQ_FORMATTED_NAME];
+ 	struct mlx5_irq_pool *pool;
+ 	int refcount;
+ 	u32 index;
+@@ -236,8 +236,8 @@ struct mlx5_irq *mlx5_irq_alloc(struct mlx5_irq_pool *pool, int i,
+ 	else
+ 		irq_sf_set_name(pool, name, i);
+ 	ATOMIC_INIT_NOTIFIER_HEAD(&irq->nh);
+-	snprintf(irq->name, MLX5_MAX_IRQ_NAME,
+-		 "%s@pci:%s", name, pci_name(dev->pdev));
++	snprintf(irq->name, MLX5_MAX_IRQ_FORMATTED_NAME,
++		 MLX5_IRQ_NAME_FORMAT_STR, name, pci_name(dev->pdev));
+ 	err = request_irq(irq->irqn, irq_int_handler, 0, irq->name,
+ 			  &irq->nh);
+ 	if (err) {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h
+index 5c7e68bee43a0..4047179307c4a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/pci_irq.h
+@@ -7,6 +7,9 @@
+ #include <linux/mlx5/driver.h>
  
--	if (unlikely(bio_queue_enter(bio)))
--		return NULL;
--
- 	if (blk_mq_attempt_bio_merge(q, bio, nsegs))
--		goto queue_exit;
-+		return NULL;
- 
- 	rq_qos_throttle(q, bio);
- 
-@@ -2875,35 +2872,23 @@ static struct request *blk_mq_get_new_requests(struct request_queue *q,
- 	rq_qos_cleanup(q, bio);
- 	if (bio->bi_opf & REQ_NOWAIT)
- 		bio_wouldblock_error(bio);
--queue_exit:
--	blk_queue_exit(q);
- 	return NULL;
- }
- 
--static inline struct request *blk_mq_get_cached_request(struct request_queue *q,
--		struct blk_plug *plug, struct bio **bio, unsigned int nsegs)
-+/* return true if this @rq can be used for @bio */
-+static bool blk_mq_can_use_cached_rq(struct request *rq, struct blk_plug *plug,
-+		struct bio *bio)
- {
--	struct request *rq;
--	enum hctx_type type, hctx_type;
-+	enum hctx_type type = blk_mq_get_hctx_type(bio->bi_opf);
-+	enum hctx_type hctx_type = rq->mq_hctx->type;
- 
--	if (!plug)
--		return NULL;
--	rq = rq_list_peek(&plug->cached_rq);
--	if (!rq || rq->q != q)
--		return NULL;
--
--	if (blk_mq_attempt_bio_merge(q, *bio, nsegs)) {
--		*bio = NULL;
--		return NULL;
--	}
-+	WARN_ON_ONCE(rq_list_peek(&plug->cached_rq) != rq);
- 
--	type = blk_mq_get_hctx_type((*bio)->bi_opf);
--	hctx_type = rq->mq_hctx->type;
- 	if (type != hctx_type &&
- 	    !(type == HCTX_TYPE_READ && hctx_type == HCTX_TYPE_DEFAULT))
--		return NULL;
--	if (op_is_flush(rq->cmd_flags) != op_is_flush((*bio)->bi_opf))
--		return NULL;
-+		return false;
-+	if (op_is_flush(rq->cmd_flags) != op_is_flush(bio->bi_opf))
-+		return false;
- 
- 	/*
- 	 * If any qos ->throttle() end up blocking, we will have flushed the
-@@ -2911,11 +2896,11 @@ static inline struct request *blk_mq_get_cached_request(struct request_queue *q,
- 	 * before we throttle.
- 	 */
- 	plug->cached_rq = rq_list_next(rq);
--	rq_qos_throttle(q, *bio);
-+	rq_qos_throttle(rq->q, bio);
- 
--	rq->cmd_flags = (*bio)->bi_opf;
-+	rq->cmd_flags = bio->bi_opf;
- 	INIT_LIST_HEAD(&rq->queuelist);
--	return rq;
-+	return true;
- }
- 
- static void bio_set_ioprio(struct bio *bio)
-@@ -2944,7 +2929,7 @@ void blk_mq_submit_bio(struct bio *bio)
- 	struct request_queue *q = bdev_get_queue(bio->bi_bdev);
- 	struct blk_plug *plug = blk_mq_plug(bio);
- 	const int is_sync = op_is_sync(bio->bi_opf);
--	struct request *rq;
-+	struct request *rq = NULL;
- 	unsigned int nr_segs = 1;
- 	blk_status_t ret;
- 
-@@ -2955,20 +2940,36 @@ void blk_mq_submit_bio(struct bio *bio)
- 			return;
- 	}
- 
--	if (!bio_integrity_prep(bio))
--		return;
--
- 	bio_set_ioprio(bio);
- 
--	rq = blk_mq_get_cached_request(q, plug, &bio, nr_segs);
--	if (!rq) {
--		if (!bio)
-+	if (plug) {
-+		rq = rq_list_peek(&plug->cached_rq);
-+		if (rq && rq->q != q)
-+			rq = NULL;
-+	}
-+	if (rq) {
-+		if (!bio_integrity_prep(bio))
- 			return;
--		rq = blk_mq_get_new_requests(q, plug, bio, nr_segs);
--		if (unlikely(!rq))
-+		if (blk_mq_attempt_bio_merge(q, bio, nr_segs))
- 			return;
-+		if (blk_mq_can_use_cached_rq(rq, plug, bio))
-+			goto done;
-+		percpu_ref_get(&q->q_usage_counter);
-+	} else {
-+		if (unlikely(bio_queue_enter(bio)))
-+			return;
-+		if (!bio_integrity_prep(bio))
-+			goto fail;
-+	}
-+
-+	rq = blk_mq_get_new_requests(q, plug, bio, nr_segs);
-+	if (unlikely(!rq)) {
-+fail:
-+		blk_queue_exit(q);
-+		return;
- 	}
- 
-+done:
- 	trace_block_getrq(bio);
- 
- 	rq_qos_track(q, rq, bio);
+ #define MLX5_MAX_IRQ_NAME (32)
++#define MLX5_IRQ_NAME_FORMAT_STR ("%s@pci:%s")
++#define MLX5_MAX_IRQ_FORMATTED_NAME \
++	(MLX5_MAX_IRQ_NAME + sizeof(MLX5_IRQ_NAME_FORMAT_STR))
+ /* max irq_index is 2047, so four chars */
+ #define MLX5_MAX_IRQ_IDX_CHARS (4)
+ #define MLX5_EQ_REFS_PER_IRQ (2)
 -- 
 2.43.0
 
