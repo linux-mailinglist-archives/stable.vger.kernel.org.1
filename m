@@ -1,43 +1,46 @@
-Return-Path: <stable+bounces-10314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 584DA827459
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:46:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0458582745F
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 16:46:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC7D4B23504
-	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:46:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABB6F1F22303
+	for <lists+stable@lfdr.de>; Mon,  8 Jan 2024 15:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B19253E11;
-	Mon,  8 Jan 2024 15:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1788653E0C;
+	Mon,  8 Jan 2024 15:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JQkoGXwZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HxjYq+ey"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3300851C2E;
-	Mon,  8 Jan 2024 15:44:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5DD2C433C7;
-	Mon,  8 Jan 2024 15:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32F8524A1;
+	Mon,  8 Jan 2024 15:44:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 076B4C433C8;
+	Mon,  8 Jan 2024 15:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704728657;
-	bh=VIDIQX8XpJLRM/7MjeCxOM7MBkFT+V/8d2LtBVQ/kXM=;
+	s=korg; t=1704728663;
+	bh=motfFfHG4c7aA2zOrxJAWl0T9+VZR/tID6SuuPPX11A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JQkoGXwZNeLLZr1ALF09p9V/SRAlI6tYUoucYtx2S4GqoNZG77hApR+ojpe0W0Crm
-	 gCBpZNxUg6F/fgYNGXcBOoyJ95Wx19xiXWiEeHgShrF0Oscm3o2g1IMX7DK0S7cUOF
-	 shErUNVJ9/DNbygRc070TIrMFEAnKqgtYuGf+peE=
+	b=HxjYq+eykyscDL8BTmMmnQ7wbficfJc0PkZw3/slk9ANewtuzYAYn6LyC/EXvIg4T
+	 6flez/h9NZE8LfVPmRPSiipHGhDsBRE4QONBrS2UNFXBhGIBK58pq21YFdpw6VmZPc
+	 lsyRSiZ2VPx3e4j0Aw99J29f8fOP8QJsq2v+zwHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Andrii Nakryiko <andrii@kernel.org>
-Subject: [PATCH 6.1 146/150] bpf: Fix a verifier bug due to incorrect branch offset comparison with cpu=v4
-Date: Mon,  8 Jan 2024 16:36:37 +0100
-Message-ID: <20240108153517.932369000@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	syzbot+e8030702aefd3444fb9e@syzkaller.appspotmail.com,
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>
+Subject: [PATCH 6.1 147/150] bpf: syzkaller found null ptr deref in unix_bpf proto add
+Date: Mon,  8 Jan 2024 16:36:38 +0100
+Message-ID: <20240108153517.983160839@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240108153511.214254205@linuxfoundation.org>
 References: <20240108153511.214254205@linuxfoundation.org>
@@ -56,67 +59,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: John Fastabend <john.fastabend@gmail.com>
 
-commit dfce9cb3140592b886838e06f3e0c25fea2a9cae upstream.
+commit 8d6650646ce49e9a5b8c5c23eb94f74b1749f70f upstream.
 
-Bpf cpu=v4 support is introduced in [1] and Commit 4cd58e9af8b9
-("bpf: Support new 32bit offset jmp instruction") added support for new
-32bit offset jmp instruction. Unfortunately, in function
-bpf_adj_delta_to_off(), for new branch insn with 32bit offset, the offset
-(plus/minor a small delta) compares to 16-bit offset bound
-[S16_MIN, S16_MAX], which caused the following verification failure:
-  $ ./test_progs-cpuv4 -t verif_scale_pyperf180
-  ...
-  insn 10 cannot be patched due to 16-bit range
-  ...
-  libbpf: failed to load object 'pyperf180.bpf.o'
-  scale_test:FAIL:expect_success unexpected error: -12 (errno 12)
-  #405     verif_scale_pyperf180:FAIL
+I added logic to track the sock pair for stream_unix sockets so that we
+ensure lifetime of the sock matches the time a sockmap could reference
+the sock (see fixes tag). I forgot though that we allow af_unix unconnected
+sockets into a sock{map|hash} map.
 
-Note that due to recent llvm18 development, the patch [2] (already applied
-in bpf-next) needs to be applied to bpf tree for testing purpose.
+This is problematic because previous fixed expected sk_pair() to exist
+and did not NULL check it. Because unconnected sockets have a NULL
+sk_pair this resulted in the NULL ptr dereference found by syzkaller.
 
-The fix is rather simple. For 32bit offset branch insn, the adjusted
-offset compares to [S32_MIN, S32_MAX] and then verification succeeded.
+BUG: KASAN: null-ptr-deref in unix_stream_bpf_update_proto+0x72/0x430 net/unix/unix_bpf.c:171
+Write of size 4 at addr 0000000000000080 by task syz-executor360/5073
+Call Trace:
+ <TASK>
+ ...
+ sock_hold include/net/sock.h:777 [inline]
+ unix_stream_bpf_update_proto+0x72/0x430 net/unix/unix_bpf.c:171
+ sock_map_init_proto net/core/sock_map.c:190 [inline]
+ sock_map_link+0xb87/0x1100 net/core/sock_map.c:294
+ sock_map_update_common+0xf6/0x870 net/core/sock_map.c:483
+ sock_map_update_elem_sys+0x5b6/0x640 net/core/sock_map.c:577
+ bpf_map_update_value+0x3af/0x820 kernel/bpf/syscall.c:167
 
-  [1] https://lore.kernel.org/all/20230728011143.3710005-1-yonghong.song@linux.dev
-  [2] https://lore.kernel.org/bpf/20231110193644.3130906-1-yonghong.song@linux.dev
+We considered just checking for the null ptr and skipping taking a ref
+on the NULL peer sock. But, if the socket is then connected() after
+being added to the sockmap we can cause the original issue again. So
+instead this patch blocks adding af_unix sockets that are not in the
+ESTABLISHED state.
 
-Fixes: 4cd58e9af8b9 ("bpf: Support new 32bit offset jmp instruction")
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20231201024640.3417057-1-yonghong.song@linux.dev
+Reported-by: Eric Dumazet <edumazet@google.com>
+Reported-by: syzbot+e8030702aefd3444fb9e@syzkaller.appspotmail.com
+Fixes: 8866730aed51 ("bpf, sockmap: af_unix stream sockets need to hold ref for pair sock")
+Acked-by: Jakub Sitnicki <jakub@cloudflare.com>
+Signed-off-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20231201180139.328529-2-john.fastabend@gmail.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/core.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ include/net/sock.h  |    5 +++++
+ net/core/sock_map.c |    2 ++
+ 2 files changed, 7 insertions(+)
 
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -365,14 +365,18 @@ static int bpf_adj_delta_to_imm(struct b
- static int bpf_adj_delta_to_off(struct bpf_insn *insn, u32 pos, s32 end_old,
- 				s32 end_new, s32 curr, const bool probe_pass)
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -2829,6 +2829,11 @@ static inline bool sk_is_tcp(const struc
+ 	return sk->sk_type == SOCK_STREAM && sk->sk_protocol == IPPROTO_TCP;
+ }
+ 
++static inline bool sk_is_stream_unix(const struct sock *sk)
++{
++	return sk->sk_family == AF_UNIX && sk->sk_type == SOCK_STREAM;
++}
++
+ /**
+  * sk_eat_skb - Release a skb if it is no longer needed
+  * @sk: socket to eat this skb from
+--- a/net/core/sock_map.c
++++ b/net/core/sock_map.c
+@@ -538,6 +538,8 @@ static bool sock_map_sk_state_allowed(co
  {
--	const s32 off_min = S16_MIN, off_max = S16_MAX;
-+	s64 off_min, off_max, off;
- 	s32 delta = end_new - end_old;
--	s32 off;
+ 	if (sk_is_tcp(sk))
+ 		return (1 << sk->sk_state) & (TCPF_ESTABLISHED | TCPF_LISTEN);
++	if (sk_is_stream_unix(sk))
++		return (1 << sk->sk_state) & TCPF_ESTABLISHED;
+ 	return true;
+ }
  
--	if (insn->code == (BPF_JMP32 | BPF_JA))
-+	if (insn->code == (BPF_JMP32 | BPF_JA)) {
- 		off = insn->imm;
--	else
-+		off_min = S32_MIN;
-+		off_max = S32_MAX;
-+	} else {
- 		off = insn->off;
-+		off_min = S16_MIN;
-+		off_max = S16_MAX;
-+	}
- 
- 	if (curr < pos && curr + off + 1 >= end_old)
- 		off += delta;
 
 
 
