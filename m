@@ -1,135 +1,118 @@
-Return-Path: <stable+bounces-10351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C386F827EB5
-	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 07:17:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 633B1827EFD
+	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 08:03:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5775D1F244BE
-	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 06:17:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 165001F245EF
+	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 07:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 002D36138;
-	Tue,  9 Jan 2024 06:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC8D98F4F;
+	Tue,  9 Jan 2024 07:03:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="BzLKO1XI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VqoiXbgE"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F5717C2;
-	Tue,  9 Jan 2024 06:17:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4093LIp0019957;
-	Tue, 9 Jan 2024 06:17:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version:content-type; s=
-	qcppdkim1; bh=FmGVh3W2g4mUkpYE5hHFAFoo4UsVNaeXCU8Z582FdZQ=; b=Bz
-	LKO1XI5i1aSz0Y3Ngdv2pdIZlQ9++EztwQnAZgLEuQaPqM0wSEl1EobAsM1yFgEV
-	t7DT66rc5GGG+Zj8vd8dDxaEcMJqDUy+NeBF0hk2Cr/wjWqwS97RmbPt87yjZ7UF
-	d1xrPm/EJ9a2KAtLhIjoFv58mXE3Zb3jRlL+US2pCxNYF2G5FgqlNq73te0d/DhC
-	Fr4drzodfGqeBzB9bAh8EYHPtjXMbDGbI2Mn2KCjk1BqI43WShNRlkkUtDEYZBIG
-	tpA8j+EVe7b0Ie7o4/Tirtxqi7xFWT5RGWxaZ5MqUd64bccpTYT61ykrnUyLOWjt
-	Lq9jf9AJUsxjSRDLj6Kg==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vgq2ys23f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Jan 2024 06:17:27 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4096HRkC019581
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 9 Jan 2024 06:17:27 GMT
-Received: from hu-ugoswami-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Mon, 8 Jan 2024 22:17:24 -0800
-From: Udipto Goswami <quic_ugoswami@quicinc.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alan Stern
-	<stern@rowland.harvard.edu>
-CC: Krishna Kurapati <quic_kriskura@quicinc.com>, <linux-usb@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-        Udipto Goswami
-	<quic_ugoswami@quicinc.com>
-Subject: [PATCH v3] usb: core: Prevent null pointer dereference in update_port_device_state
-Date: Tue, 9 Jan 2024 11:47:08 +0530
-Message-ID: <20240109061708.26288-1-quic_ugoswami@quicinc.com>
-X-Mailer: git-send-email 2.17.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD1F8F48;
+	Tue,  9 Jan 2024 07:03:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-28c7e30c83fso1624243a91.1;
+        Mon, 08 Jan 2024 23:03:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704783824; x=1705388624; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xs3tOsO7zy1R5Dpwf1Worw1jnEX4JWvf4b/DnGpavKs=;
+        b=VqoiXbgETnXs2LvUFJcTF5bUFN4Fs5GDG2BDIK1s4eySyx8W2ejOpdEy9HX6J1QonT
+         PoJLOdf3VWWSZyOAeexp1HrEGzTJ/1q77SpdtkYdhWJy+oGw0ItujS5cVbGQ68wWPj8n
+         GA9cwPdodbULrgxQO13u0LIUI8cjFU67WXnYgS7cmn9n5DrqEKg33tO/UR/k8/sLmIPG
+         aTSXkT6AQ61KoznzAJBYOA75IurL6PrKk8+rY8oluu7MSNSUyRPSD17GFsLSDQjnrVU8
+         5N2H+KHs+srTAMPj0ArJeXaBUNt+bldCo7yqIgQC4TqN38u3zJWjMgoDXQotWDT6mI2p
+         Dh/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704783824; x=1705388624;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Xs3tOsO7zy1R5Dpwf1Worw1jnEX4JWvf4b/DnGpavKs=;
+        b=ZjGZfkQrHfbc8bnud33AiPaMSJ4je3rFaCvu2v87ipyBipi/SC/c3xL3xhk5zSBkND
+         uahl20tH54aPnkM3hdmB5yNE0agL1A+NP7ZnyyKU3ik6rP8yJxnq0wdFtwziUXjZirbm
+         TLd3yP/Cgy5Z3a0Nli1ri+aH06ghRf+zVYL9iqASNZNYWf9aJZkh4jHGn84ACktW1D+R
+         8wy0Quv8aUxobuo1OWN+uh9AmwPzWTpDQ+mL+igXs/wOrq/8+SHHjZTmjXdM6CHpR4GD
+         NQ+2BZzbevfG43kyQLMf8ZYghjaFpB9QK+H/8yeplUaT3FIdiZtlRZD3CTqCogbPD2Ai
+         i3+A==
+X-Gm-Message-State: AOJu0YxjiG3WcCHSQvGWp7ekC9rVMPAsYVjxCMhDb1OV7tU3wJM5PYvv
+	ktvbWH7lZ56ns4Hfji0lYXA=
+X-Google-Smtp-Source: AGHT+IHlKJ76g+fmxlFbm6sHZQfVBU5b579SBwlHShnFDtKCXWmJQCvm2U+ap2npA6+m4wrCrourKg==
+X-Received: by 2002:a17:90b:1b47:b0:28b:e09f:58c4 with SMTP id nv7-20020a17090b1b4700b0028be09f58c4mr1764267pjb.67.1704783823464;
+        Mon, 08 Jan 2024 23:03:43 -0800 (PST)
+Received: from archie.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id i2-20020a17090a2ac200b0028bc1df95c7sm1254646pjg.4.2024.01.08.23.03.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jan 2024 23:03:42 -0800 (PST)
+Received: by archie.me (Postfix, from userid 1000)
+	id 32439184790E7; Tue,  9 Jan 2024 14:03:40 +0700 (WIB)
+Date: Tue, 9 Jan 2024 14:03:40 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: Re: [PATCH 6.6 000/124] 6.6.11-rc1 review
+Message-ID: <ZZzvzNcUQCfDJyWJ@archie.me>
+References: <20240108150602.976232871@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: j7V46y80BPb3l08IrWMq5e68WHn60HEV
-X-Proofpoint-ORIG-GUID: j7V46y80BPb3l08IrWMq5e68WHn60HEV
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
- lowpriorityscore=0 impostorscore=0 bulkscore=0 malwarescore=0
- mlxlogscore=718 clxscore=1015 priorityscore=1501 phishscore=0 mlxscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2401090045
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Znhe3Gzkdkhr9ETQ"
+Content-Disposition: inline
+In-Reply-To: <20240108150602.976232871@linuxfoundation.org>
 
-Currently,the function update_port_device_state gets the usb_hub from
-udev->parent by calling usb_hub_to_struct_hub.
-However, in case the actconfig or the maxchild is 0, the usb_hub would
-be NULL and upon further accessing to get port_dev would result in null
-pointer dereference.
 
-Fix this by introducing an if check after the usb_hub is populated.
+--Znhe3Gzkdkhr9ETQ
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: 83cb2604f641 ("usb: core: add sysfs entry for usb device state")
-Cc: stable@vger.kernel.org
-Signed-off-by: Udipto Goswami <quic_ugoswami@quicinc.com>
----
-v3: Re-wrote the comment for better context.
-v2: Introduced comment for the if check & CC'ed stable.
+On Mon, Jan 08, 2024 at 04:07:06PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.11 release.
+> There are 124 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
- drivers/usb/core/hub.c | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+Successfully compiled and installed the kernel on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
 
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index ffd7c99e24a3..6b514546e59b 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -2053,9 +2053,23 @@ static void update_port_device_state(struct usb_device *udev)
- 
- 	if (udev->parent) {
- 		hub = usb_hub_to_struct_hub(udev->parent);
--		port_dev = hub->ports[udev->portnum - 1];
--		WRITE_ONCE(port_dev->state, udev->state);
--		sysfs_notify_dirent(port_dev->state_kn);
-+
-+		/*
-+		 * The Link Layer Validation System Driver (lvstest)
-+		 * has procedure of unbinding the hub before running
-+		 * the rest of the procedure. This triggers
-+		 * hub_disconnect will set the hub's maxchild to 0.
-+		 * This would result usb_hub_to_struct_hub in this
-+		 * function to return NULL.
-+		 *
-+		 * Add if check to avoid running into NULL pointer
-+		 * de-reference.
-+		 */
-+		if (hub) {
-+			port_dev = hub->ports[udev->portnum - 1];
-+			WRITE_ONCE(port_dev->state, udev->state);
-+			sysfs_notify_dirent(port_dev->state_kn);
-+		}
- 	}
- }
- 
--- 
-2.17.1
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
 
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--Znhe3Gzkdkhr9ETQ
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZZzvxwAKCRD2uYlJVVFO
+o8CKAP0WyKQZoY68dpZxDcQ82JWlTdXk1ikzn2Yo5vh3ecRn3QD+PJqd+Aj8h9VM
+u203dzRkEqfonJ7VtvY8hqTTDwRyiw8=
+=3kED
+-----END PGP SIGNATURE-----
+
+--Znhe3Gzkdkhr9ETQ--
 
