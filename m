@@ -1,146 +1,144 @@
-Return-Path: <stable+bounces-10377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C96E828598
-	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 12:58:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8DC88285A2
+	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 12:58:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8271B24130
-	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 11:58:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 010651C23CA7
+	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 11:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5DF374D9;
-	Tue,  9 Jan 2024 11:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355C13717D;
+	Tue,  9 Jan 2024 11:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="VlDz2CRN"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q4f3NEw0"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB6B38DD6;
-	Tue,  9 Jan 2024 11:57:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 409AkWKS001428;
-	Tue, 9 Jan 2024 11:57:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=HUAeeEbdoLwml3Qkib69/ikNISobITsTP6lTI8OvCmk=; b=Vl
-	Dz2CRNLIP41rtQSIXpewvTH/ElYpzCAnhYLgsH2aReyQhIbPHfNJ+ePgjGr5fhuS
-	BnJKGKBaawgR/41pmshPRRsa2qJ27EFZvGn4wCPnJGFd94GAq27Pu8i40559cV+P
-	3iK+Qfa9xKE07w9QMF2nkM59Fo425nfVMVh0fdF3LEWgeiz3wN2MHggmm4o1R6Mm
-	IR7P9+aU5cONWti8reWMxwJTl425TVZ3FMADHtQ8dUjyAu0hyQCrOrNAYSeWGU9A
-	o+3Wll7mf9VI/im3gMOkXAisElkus13UIoqTRbgJk18SiqTc73p9xNjdSPdllNGw
-	rqsDY1i0TpiH4siYzd8Q==
-Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vgwq1rx2r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 09 Jan 2024 11:57:56 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA05.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 409BvtvV015264
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 9 Jan 2024 11:57:55 GMT
-Received: from [10.217.219.221] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Tue, 9 Jan
- 2024 03:57:52 -0800
-Message-ID: <5ef9db3d-1e60-4f42-8a5b-52a9800e4707@quicinc.com>
-Date: Tue, 9 Jan 2024 17:27:49 +0530
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77889381C8
+	for <stable@vger.kernel.org>; Tue,  9 Jan 2024 11:58:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1704801495;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kLEhsfysWVsbGAff9BcrJlFshb5bLgks+b9spt728OA=;
+	b=Q4f3NEw0igmcD+cgNjciYQEY0HcwQel6DTwqc6vpL4bInI6Abm42U77WYnF7lkYTjtb70v
+	f3Bfje77wUeE3wrbrXfilSyq+YAWX7QCo3wr5iipjmnp5VUZbB3OmUcO30qvhUyUcenJKI
+	1v7T2rzNoxkDg9Dd52kSRIbj2Jee6P0=
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
+ [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-270-MEk0Gm9rO4q2l6yhURK3fA-1; Tue, 09 Jan 2024 06:58:13 -0500
+X-MC-Unique: MEk0Gm9rO4q2l6yhURK3fA-1
+Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-6d87bcf8a15so4291631a34.0
+        for <stable@vger.kernel.org>; Tue, 09 Jan 2024 03:58:13 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704801493; x=1705406293;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kLEhsfysWVsbGAff9BcrJlFshb5bLgks+b9spt728OA=;
+        b=UAtCRG70QLncU4cahI6hRRtUBVuFV/RXpGbJg2U8gPD3Xzoc17N8EeRBhKO13QbMTG
+         CtrmsJxk9WsxzSpCUkQaLSC2jUzO1PMSNqZyxACL0YNhLWGDfrQP45bj3RfY4r+KzrVk
+         LMhb9o52igoks5dc5EH7XZPXkyEmnVokfGweUi6HtI3WnfrprobkNbXGwWUcp7H9Af0b
+         YhCAg7uHxqJtbFsBqCxkapw305HvXu9nsOEiLgcKJqG6tKpRt9MuG5Q88gHmPiadhde5
+         ybrw0kz+Tae1qar0cXu/v0TXEV19Lnx/UdFpJOMuOi3hTbJzIJUJ8i8i6N528wnvko9e
+         UPWw==
+X-Gm-Message-State: AOJu0Ywjhb9qRaLtTbPfxZOJIji/l3ujdmVfyxJTDawnxHpbiF2yaYMJ
+	xESkTs0SrfhYzofmHLGZdIzcEE5tbSGuK2BXe+1Dx6uacFIu9u4MQuS5NCpQfaL6OyCsm+OsnnZ
+	i/4Q0p5MbN5B+GV4HCgVI8nXoK4NzrVaiE8IR5fN6
+X-Received: by 2002:a05:6358:904c:b0:173:22a:635a with SMTP id f12-20020a056358904c00b00173022a635amr6635720rwf.30.1704801493139;
+        Tue, 09 Jan 2024 03:58:13 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEYYF1UAXyy35byvlzqClPDRriMCETENXfHEtYLAsA9koVTqTBmhiuA274QkV5nOqAzNLBaSn0y6U7I1Y6mUTo=
+X-Received: by 2002:a05:6358:904c:b0:173:22a:635a with SMTP id
+ f12-20020a056358904c00b00173022a635amr6635712rwf.30.1704801492840; Tue, 09
+ Jan 2024 03:58:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] usb: core: Prevent null pointer dereference in
- update_port_device_state
-Content-Language: en-US
-To: Sergei Shtylyov <sergei.shtylyov@gmail.com>,
-        Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>,
-        Alan Stern <stern@rowland.harvard.edu>
-CC: Krishna Kurapati <quic_kriskura@quicinc.com>, <linux-usb@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-References: <20240109061708.26288-1-quic_ugoswami@quicinc.com>
- <3bb51617-81e1-7d19-598d-2b57164320e1@gmail.com>
-From: Udipto Goswami <quic_ugoswami@quicinc.com>
-In-Reply-To: <3bb51617-81e1-7d19-598d-2b57164320e1@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: BtjOb8AzAwaf74a8g6BNVskhpdeZaDgv
-X-Proofpoint-ORIG-GUID: BtjOb8AzAwaf74a8g6BNVskhpdeZaDgv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- clxscore=1011 lowpriorityscore=0 suspectscore=0 malwarescore=0
- adultscore=0 phishscore=0 impostorscore=0 mlxlogscore=949 spamscore=0
- bulkscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2401090097
+References: <2023091601-spotted-untie-0ba4@gregkh>
+In-Reply-To: <2023091601-spotted-untie-0ba4@gregkh>
+From: Miklos Szeredi <mszeredi@redhat.com>
+Date: Tue, 9 Jan 2024 12:58:01 +0100
+Message-ID: <CAOssrKe9GKw7yOhWnHDjx1poiG=g_iU5qLLNWnB8fLatkGGaJQ@mail.gmail.com>
+Subject: Re: FAILED: patch "[PATCH] fuse: nlookup missing decrement in
+ fuse_direntplus_link" failed to apply to 4.19-stable tree
+To: gregkh@linuxfoundation.org
+Cc: ruan.meisi@zte.com.cn, stable@vger.kernel.org
+Content-Type: multipart/mixed; boundary="00000000000065a1bd060e82077a"
 
-Hi Sergei,
+--00000000000065a1bd060e82077a
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 1/9/2024 3:01 PM, Sergei Shtylyov wrote:
-> On 1/9/24 9:17 AM, Udipto Goswami wrote:
-> 
->> Currently,the function update_port_device_state gets the usb_hub from
->> udev->parent by calling usb_hub_to_struct_hub.
->> However, in case the actconfig or the maxchild is 0, the usb_hub would
->> be NULL and upon further accessing to get port_dev would result in null
->> pointer dereference.
->>
->> Fix this by introducing an if check after the usb_hub is populated.
->>
->> Fixes: 83cb2604f641 ("usb: core: add sysfs entry for usb device state")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Udipto Goswami <quic_ugoswami@quicinc.com>
->> ---
->> v3: Re-wrote the comment for better context.
->> v2: Introduced comment for the if check & CC'ed stable.
->>
->>   drivers/usb/core/hub.c | 20 +++++++++++++++++---
->>   1 file changed, 17 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
->> index ffd7c99e24a3..6b514546e59b 100644
->> --- a/drivers/usb/core/hub.c
->> +++ b/drivers/usb/core/hub.c
->> @@ -2053,9 +2053,23 @@ static void update_port_device_state(struct usb_device *udev)
->>   
->>   	if (udev->parent) {
->>   		hub = usb_hub_to_struct_hub(udev->parent);
->> -		port_dev = hub->ports[udev->portnum - 1];
->> -		WRITE_ONCE(port_dev->state, udev->state);
->> -		sysfs_notify_dirent(port_dev->state_kn);
->> +
->> +		/*
->> +		 * The Link Layer Validation System Driver (lvstest)
->> +		 * has procedure of unbinding the hub before running
->> +		 * the rest of the procedure. This triggers
->> +		 * hub_disconnect will set the hub's maxchild to 0.
-> 
->     I can't parse this sentence, s/th is missing...
-Thanks for the review.
-Maybe this would sound better?
+On Sat, Sep 16, 2023 at 2:19=E2=80=AFPM <gregkh@linuxfoundation.org> wrote:
+>
+>
+> The patch below does not apply to the 4.19-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+>
+> To reproduce the conflict and resubmit, you may use the following command=
+s:
+>
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi=
+t/ linux-4.19.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x b8bd342d50cbf606666488488f9fea374aceb2d5
 
-"This triggers hub_disconnect which will set hub's maxchild to 0"
-> 
->> +		 * This would result usb_hub_to_struct_hub in this
->> +		 * function to return NULL.
-> 
->     "This would result in usb_hub_to_struct_hub in this function
-> returning NULL", perhaps?
-
-yah sound better. Will take care of it in next version.
+Attaching the backport.  This applies cleanly to  v4.14 and v4.19.
 
 Thanks,
--Udipto
+Miklos
+
+--00000000000065a1bd060e82077a
+Content-Type: text/x-patch; charset="US-ASCII"; 
+	name="fuse-nlookup-missing-decrement-in-fuse_direntplus_li-v4.14-v4.19.patch"
+Content-Disposition: attachment; 
+	filename="fuse-nlookup-missing-decrement-in-fuse_direntplus_li-v4.14-v4.19.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_lr6anj1m0>
+X-Attachment-Id: f_lr6anj1m0
+
+RnJvbSAxZDcyMDcwOWZjMTk3MmU0YzZjN2U1NDhhMzdjYjM4OTk3MzM5ZmNhIE1vbiBTZXAgMTcg
+MDA6MDA6MDAgMjAwMQpGcm9tOiBydWFubWVpc2kgPHJ1YW4ubWVpc2lAenRlLmNvbS5jbj4KRGF0
+ZTogVHVlLCAyNSBBcHIgMjAyMyAxOToxMzo1NCArMDgwMApTdWJqZWN0OiBbUEFUQ0hdIGZ1c2U6
+IG5sb29rdXAgbWlzc2luZyBkZWNyZW1lbnQgaW4gZnVzZV9kaXJlbnRwbHVzX2xpbmsKCkR1cmlu
+ZyBvdXIgZGVidWdnaW5nIG9mIGdsdXN0ZXJmcywgd2UgZm91bmQgYW4gQXNzZXJ0aW9uIGZhaWxl
+ZCBlcnJvcjoKaW5vZGVfbG9va3VwID49IG5sb29rdXAsIHdoaWNoIHdhcyBjYXVzZWQgYnkgdGhl
+IG5sb29rdXAgdmFsdWUgaW4gdGhlCmtlcm5lbCBiZWluZyBncmVhdGVyIHRoYW4gdGhhdCBpbiB0
+aGUgRlVTRSBmaWxlIHN5c3RlbS4KClRoZSBpc3N1ZSB3YXMgaW50cm9kdWNlZCBieSBmdXNlX2Rp
+cmVudHBsdXNfbGluaywgd2hlcmUgaW4gdGhlIGZ1bmN0aW9uLApmdXNlX2lnZXQgaW5jcmVtZW50
+cyBubG9va3VwLCBhbmQgaWYgZF9zcGxpY2VfYWxpYXMgcmV0dXJucyBmYWlsdXJlLApmdXNlX2Rp
+cmVudHBsdXNfbGluayByZXR1cm5zIGZhaWx1cmUgd2l0aG91dCBkZWNyZW1lbnRpbmcgbmxvb2t1
+cApodHRwczovL2dpdGh1Yi5jb20vZ2x1c3Rlci9nbHVzdGVyZnMvcHVsbC80MDgxCgpTaWduZWQt
+b2ZmLWJ5OiBydWFubWVpc2kgPHJ1YW4ubWVpc2lAenRlLmNvbS5jbj4KRml4ZXM6IDBiMDViMTgz
+ODFlZSAoImZ1c2U6IGltcGxlbWVudCBORlMtbGlrZSByZWFkZGlycGx1cyBzdXBwb3J0IikKQ2M6
+IDxzdGFibGVAdmdlci5rZXJuZWwub3JnPiAjIHYzLjkKU2lnbmVkLW9mZi1ieTogTWlrbG9zIFN6
+ZXJlZGkgPG1zemVyZWRpQHJlZGhhdC5jb20+CihjaGVycnkgcGlja2VkIGZyb20gY29tbWl0IGI4
+YmQzNDJkNTBjYmY2MDY2NjY0ODg0ODhmOWZlYTM3NGFjZWIyZDUpCi0tLQogZnMvZnVzZS9kaXIu
+YyB8IDEwICsrKysrKysrKy0KIDEgZmlsZSBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKyksIDEgZGVs
+ZXRpb24oLSkKCmRpZmYgLS1naXQgYS9mcy9mdXNlL2Rpci5jIGIvZnMvZnVzZS9kaXIuYwppbmRl
+eCA4ZTUxMjU5MDQ3NjIuLmJkNjAyYjdlOGU0NiAxMDA2NDQKLS0tIGEvZnMvZnVzZS9kaXIuYwor
+KysgYi9mcy9mdXNlL2Rpci5jCkBAIC0xMjk5LDggKzEyOTksMTYgQEAgc3RhdGljIGludCBmdXNl
+X2RpcmVudHBsdXNfbGluayhzdHJ1Y3QgZmlsZSAqZmlsZSwKIAkJCWRwdXQoZGVudHJ5KTsKIAkJ
+CWRlbnRyeSA9IGFsaWFzOwogCQl9Ci0JCWlmIChJU19FUlIoZGVudHJ5KSkKKwkJaWYgKElTX0VS
+UihkZW50cnkpKSB7CisJCQlpZiAoIUlTX0VSUihpbm9kZSkpIHsKKwkJCQlzdHJ1Y3QgZnVzZV9p
+bm9kZSAqZmkgPSBnZXRfZnVzZV9pbm9kZShpbm9kZSk7CisKKwkJCQlzcGluX2xvY2soJmZjLT5s
+b2NrKTsKKwkJCQlmaS0+bmxvb2t1cC0tOworCQkJCXNwaW5fdW5sb2NrKCZmYy0+bG9jayk7CisJ
+CQl9CiAJCQlyZXR1cm4gUFRSX0VSUihkZW50cnkpOworCQl9CiAJfQogCWlmIChmYy0+cmVhZGRp
+cnBsdXNfYXV0bykKIAkJc2V0X2JpdChGVVNFX0lfSU5JVF9SRFBMVVMsICZnZXRfZnVzZV9pbm9k
+ZShpbm9kZSktPnN0YXRlKTsKLS0gCjIuNDMuMAoK
+--00000000000065a1bd060e82077a--
+
 
