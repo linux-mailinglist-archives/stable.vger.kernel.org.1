@@ -1,128 +1,162 @@
-Return-Path: <stable+bounces-10394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8074D8289F4
-	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 17:28:20 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B66CD828A72
+	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 17:51:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21C842868D2
-	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 16:28:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 164BCB241EB
+	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 16:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3CF3A1D7;
-	Tue,  9 Jan 2024 16:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA41C3A8CA;
+	Tue,  9 Jan 2024 16:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yzzA21IB"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="d98OVYiv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+Received: from mail-il1-f172.google.com (mail-il1-f172.google.com [209.85.166.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3180A3A1C2
-	for <stable@vger.kernel.org>; Tue,  9 Jan 2024 16:28:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dbce2a8d700so3286306276.1
-        for <stable@vger.kernel.org>; Tue, 09 Jan 2024 08:28:09 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD2A3A8C4
+	for <stable@vger.kernel.org>; Tue,  9 Jan 2024 16:51:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-il1-f172.google.com with SMTP id e9e14a558f8ab-36066190a99so18480885ab.3
+        for <stable@vger.kernel.org>; Tue, 09 Jan 2024 08:51:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1704817688; x=1705422488; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=X5OuBSK2ue8Kgm1k8HYnk3iBNLImCMNlra+LgIioncU=;
-        b=yzzA21IByFPLyQzVXsFpW/hisjZetZ4FJaOWOSFOwPJQCToW9XcidnmPI5Bb5wEOaS
-         3G9cjVUoTTI1ZZYqteaVG2jj9X4HTpHJPj+t4e0LCNnvSX6xGf71ceQQ4oWrwB7OcbMc
-         qpxPSt+bGMpLjEB8/7ztdrh2iGtex1wtETo1BvvYczEOWLJb/rVktZfaC1LgKyiTKLYl
-         2aPah1P3Eh07H0NbBi30i7rrPzMZ1QZ4tp9E8fjXv5dgWkD/r0+3axOXFoB+64e67wzW
-         bGI31Tr7gdQ0nLJ/yVtNo6I3YvHEP8omg4kTlxMOWVZkIqrJ9Z4fd6UK2w9KWEJjxeGq
-         RLHw==
+        d=chromium.org; s=google; t=1704819060; x=1705423860; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=uV5MEnsTPvblCSpnlyxwVtt9fk763n7/MDrWTIfZnok=;
+        b=d98OVYivllbnDuKnYQ2IRawOBiPUDUUCI8BkXAlC0/zoODQ46L+sHVPO4eUZo4wpAK
+         HRuKsEvnSPerUfpNfnToo47LtHj9b2Ad6KtimED8MdzJ49eYnvl6rTNR2vyOARaKf9D9
+         6vp+kWqvUUj3PiFJ7/SMYPKrqVVE/a6KuVkAg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704817688; x=1705422488;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=X5OuBSK2ue8Kgm1k8HYnk3iBNLImCMNlra+LgIioncU=;
-        b=oib6AVziFQ1mWNAohb9i9gCyJDfEAW7Y+ZEZcg5ICcBTeZvNrIZdTl3J1SgWCcZu37
-         qSX/I6f9SrKQcOmtj3OQoRjQMi1eOXtmqZch83TDSdRHJ0qeiG0H15e+duR2p9Wy9np4
-         riyUXBN9HGXDRgZWijh87Mu04ODCkQaiLePSW26oekHoOCxp/trtPhjXHjrQh6cDvYmK
-         00VwDf2FPEvYXwmM4aVuZ5U1joA+WTUq+8t7o6y8hRQDXaFXSuBjcHwZNgCmq0vEH7uY
-         ayFmGAZ5hkpF5DRon8UiKHTAJ88ufp/8pdU09S+YRo0xT52tiBTnquRYR8Rr0TQKQLgM
-         Vovw==
-X-Gm-Message-State: AOJu0YzvVk/f/whURrZWFfENU8xWzwJtLeeGD5HB6LU403GMf5jBccHI
-	hEhBVE++Ycm/cbKJkm/KUrp9Cba10LrkSbCi3Q==
-X-Google-Smtp-Source: AGHT+IFSDvWVPac68q4BzCp/M7oq0Dprmnoi25LHdAWG2rkmmNus3vqOs8OrjdJwg44iO8Kai9BqtK53kUw=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a25:8186:0:b0:dbc:1b48:dc1e with SMTP id
- p6-20020a258186000000b00dbc1b48dc1emr211467ybk.2.1704817688232; Tue, 09 Jan
- 2024 08:28:08 -0800 (PST)
-Date: Tue, 9 Jan 2024 08:28:06 -0800
-In-Reply-To: <20240109112445.590736-1-usama.anjum@collabora.com>
+        d=1e100.net; s=20230601; t=1704819060; x=1705423860;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uV5MEnsTPvblCSpnlyxwVtt9fk763n7/MDrWTIfZnok=;
+        b=eB1TRnvpXiYFrw04CDU+6r94XHjQHkyLpTTEG/3hsV16liirgLWaFTGoxn5s/sl3P2
+         a/aeJIQXEky57hxAhCaDlBu3PdDrdrQIJ847nRwTvUf5yWnDyDFCAkWtSoG7V28so8vw
+         dOYukC1laE+nT20zmL3obvNX8doZm5ytrjpGYSdkFBBqchg48SRGAter00db0r7nf06I
+         PgEvRMhfzt3jg+7ZLOLlFQxarnm/hopVGiWJpslgwctJjXFCQurP+0I2fYDbxSSog1s3
+         1/dSjKmrsrBTpM9BXGGb4xWrISKHvgmHkrFsH9Qf4XbmbSvVDL+vgcK8CM3cUw5D13HO
+         R5Vw==
+X-Gm-Message-State: AOJu0YwzwzAxX1Wj0JxNJBgPmO9dNyWVe4PWIUbc9dFL5RCtQbbXC4yt
+	zwf4IOivR663voN0fxf3uel11sfFGT19
+X-Google-Smtp-Source: AGHT+IHlU8waFtg4YB7aQ65CXpn+4z/PCbvQeBpftavO899tUFqMDX2wxm5vCuDdVh2D10JRxrXaZA==
+X-Received: by 2002:a92:ca09:0:b0:360:7c05:e479 with SMTP id j9-20020a92ca09000000b003607c05e479mr9251232ils.47.1704819059849;
+        Tue, 09 Jan 2024 08:50:59 -0800 (PST)
+Received: from localhost (110.41.72.34.bc.googleusercontent.com. [34.72.41.110])
+        by smtp.gmail.com with UTF8SMTPSA id t12-20020a92c90c000000b003607ff64574sm689592ilp.64.2024.01.09.08.50.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Jan 2024 08:50:59 -0800 (PST)
+Date: Tue, 9 Jan 2024 16:50:59 +0000
+From: Matthias Kaehlcke <mka@chromium.org>
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	linux-bluetooth@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
+	Doug Anderson <dianders@google.com>,
+	Stephen Boyd <swboyd@google.com>
+Subject: Re: [PATCH] Bluetooth: qca: fix device-address endianness
+Message-ID: <ZZ15c1HUQIH2cY5o@google.com>
+References: <20231227180306.6319-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240109112445.590736-1-usama.anjum@collabora.com>
-Message-ID: <ZZ10FqvnVWIbyo-9@google.com>
-Subject: Re: [PATCH] fs/proc/task_mmu: move mmu notification mechanism inside
- mm lock
-From: Sean Christopherson <seanjc@google.com>
-To: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
-	Andrei Vagin <avagin@google.com>, Peter Xu <peterx@redhat.com>, Hugh Dickins <hughd@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Ryan Roberts <ryan.roberts@arm.com>, 
-	Kefeng Wang <wangkefeng.wang@huawei.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	"=?utf-8?B?TWljaGHFgiBNaXJvc8WCYXc=?=" <mirq-linux@rere.qmqm.pl>, Stephen Rothwell <sfr@canb.auug.org.au>, 
-	Arnd Bergmann <arnd@arndb.de>, kernel@collabora.com, 
-	syzbot+81227d2bd69e9dedb802@syzkaller.appspotmail.com, stable@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20231227180306.6319-1-johan+linaro@kernel.org>
 
-On Tue, Jan 09, 2024, Muhammad Usama Anjum wrote:
-> Move mmu notification mechanism inside mm lock to prevent race condition
-> in other components which depend on it. The notifier will invalidate
-> memory range. Depending upon the number of iterations, different memory
-> ranges would be invalidated.
+Hi Johan,
+
+On Wed, Dec 27, 2023 at 07:03:06PM +0100, Johan Hovold wrote:
+> The WCN6855 firmware on the Lenovo ThinkPad X13s expects the Bluetooth
+> device address in MSB order when setting it using the
+> EDL_WRITE_BD_ADDR_OPCODE command.
 > 
-> The following warning would be removed by this patch:
-> WARNING: CPU: 0 PID: 5067 at arch/x86/kvm/../../../virt/kvm/kvm_main.c:734 kvm_mmu_notifier_change_pte+0x860/0x960 arch/x86/kvm/../../../virt/kvm/kvm_main.c:734
+> Presumably, this is the case for all non-ROME devices which all use the
+> EDL_WRITE_BD_ADDR_OPCODE command for this (unlike the ROME devices which
+> use a different command and expect the address in LSB order).
 > 
-> There is no behavioural and performance change with this patch when
-> there is no component registered with the mmu notifier.
+> Reverse the little-endian address before setting it to make sure that
+> the address can be configured using tools like btmgmt or using the
+> 'local-bd-address' devicetree property.
 > 
-> Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
-> Reported-by: syzbot+81227d2bd69e9dedb802@syzkaller.appspotmail.com
-> Link: https://lore.kernel.org/all/000000000000f6d051060c6785bc@google.com/
-> Cc: Sean Christopherson <seanjc@google.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> Note that this can potentially break systems with boot firmware which
+> has started relying on the broken behaviour and is incorrectly passing
+> the address via devicetree in MSB order.
+
+We should not break existing devices. Their byte order for
+'local-bd-address' may not adhere to the 'spec', however in practice
+it is the correct format for existing kernels.
+
+I suggest adding a quirk like 'local-bd-address-msb-quirk' or
+'qcom,local-bd-address-msb-quirk' to make sure existing devices keep
+working properly.
+
+Thanks
+
+Matthias
+
+> 
+> Fixes: 5c0a1001c8be ("Bluetooth: hci_qca: Add helper to set device address")
+> Cc: stable@vger.kernel.org      # 5.1
+> Cc: Balakrishna Godavarthi <quic_bgodavar@quicinc.com>
+> Cc: Matthias Kaehlcke <mka@chromium.org>
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 > ---
->  fs/proc/task_mmu.c | 22 ++++++++++++----------
->  1 file changed, 12 insertions(+), 10 deletions(-)
 > 
-> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> index 62b16f42d5d2..56c2e7357494 100644
-> --- a/fs/proc/task_mmu.c
-> +++ b/fs/proc/task_mmu.c
-> @@ -2448,13 +2448,6 @@ static long do_pagemap_scan(struct mm_struct *mm, unsigned long uarg)
->  	if (ret)
->  		return ret;
+> Hi Qualcomm people,
+> 
+> Could you please verify with your documentation that all non-ROME
+> devices expect the address provided in the EDL_WRITE_BD_ADDR_OPCODE
+> command in MSB order?
+> 
+> I assume this is not something that anyone would change between firmware
+> revisions, but if that turns out to be the case, we'd need to reverse
+> the address based on firmware revision or similar.
+> 
+> Johan
+> 
+> 
+>  drivers/bluetooth/btqca.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/bluetooth/btqca.c b/drivers/bluetooth/btqca.c
+> index fdb0fae88d1c..29035daf21bc 100644
+> --- a/drivers/bluetooth/btqca.c
+> +++ b/drivers/bluetooth/btqca.c
+> @@ -826,11 +826,15 @@ EXPORT_SYMBOL_GPL(qca_uart_setup);
 >  
-> -	/* Protection change for the range is going to happen. */
-> -	if (p.arg.flags & PM_SCAN_WP_MATCHING) {
-> -		mmu_notifier_range_init(&range, MMU_NOTIFY_PROTECTION_VMA, 0,
-> -					mm, p.arg.start, p.arg.end);
-> -		mmu_notifier_invalidate_range_start(&range);
-> -	}
-> -
->  	for (walk_start = p.arg.start; walk_start < p.arg.end;
->  			walk_start = p.arg.walk_end) {
->  		long n_out;
-
-Nit, might be worth moving
-
-		struct mmu_notifier_range range;
-
-inside the loop to guard against stale usage, but that's definitely optional.
-
-Reviewed-by: Sean Christopherson <seanjc@google.com>
+>  int qca_set_bdaddr(struct hci_dev *hdev, const bdaddr_t *bdaddr)
+>  {
+> +	bdaddr_t bdaddr_swapped;
+>  	struct sk_buff *skb;
+>  	int err;
+>  
+> -	skb = __hci_cmd_sync_ev(hdev, EDL_WRITE_BD_ADDR_OPCODE, 6, bdaddr,
+> -				HCI_EV_VENDOR, HCI_INIT_TIMEOUT);
+> +	baswap(&bdaddr_swapped, bdaddr);
+> +
+> +	skb = __hci_cmd_sync_ev(hdev, EDL_WRITE_BD_ADDR_OPCODE, 6,
+> +				&bdaddr_swapped, HCI_EV_VENDOR,
+> +				HCI_INIT_TIMEOUT);
+>  	if (IS_ERR(skb)) {
+>  		err = PTR_ERR(skb);
+>  		bt_dev_err(hdev, "QCA Change address cmd failed (%d)", err);
+> -- 
+> 2.41.0
+> 
 
