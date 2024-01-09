@@ -1,123 +1,120 @@
-Return-Path: <stable+bounces-10399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CA5B828C4A
-	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 19:15:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B25E4828C50
+	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 19:17:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D7951F2489D
-	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 18:05:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 666A11F27474
+	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 18:17:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD7C3C099;
-	Tue,  9 Jan 2024 18:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FD093BB3A;
+	Tue,  9 Jan 2024 18:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="eNRXrH42"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xRQLx/48"
 X-Original-To: stable@vger.kernel.org
-Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A323BB50
-	for <stable@vger.kernel.org>; Tue,  9 Jan 2024 18:05:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6007a.ext.cloudfilter.net ([10.0.30.247])
-	by cmsmtp with ESMTPS
-	id N9q1rcwpzTHHuNGTMrm7be; Tue, 09 Jan 2024 18:05:08 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id NGTLrTuhnyxR5NGTLrSmew; Tue, 09 Jan 2024 18:05:07 +0000
-X-Authority-Analysis: v=2.4 cv=JYOvEGGV c=1 sm=1 tr=0 ts=659d8ad3
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=dEuoMetlWLkA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=ShZgbusUVzgfLCYWmlYSUaE5l0n2E0ElTdeBn5V6XPQ=; b=eNRXrH42C6r4Z0hwXhePVSjfMA
-	x3c9waN7oS0XvF11QcJgEMYA0jC4/tbZUARvt//oHCLLNVa68m59mYDU1kyVqOGRt0OgptxJhZsHM
-	GR8fMYnRxggdqbXB4aIax1LIknI8qcmEFloT6UBtn9C8MIEF1jtbAwfi4Z6HHQGLd5xz45zPvckpD
-	CnLTQ5L8KTQXE6MOF8F1nlU2gKm5uF4kzVuoYz40bKds5fMVVfu2XFNNU93302Yzz5ZVYWQWok/rw
-	+9WYXp5wR6SN9rClLQ0STflg7IIj1s/mIH3Y7wZfsvnAEDjYFjxHyweH7T6VvY8KUC+yyeUMSwK4Q
-	4v+270uQ==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:34710 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1rNGTI-002hc7-2j;
-	Tue, 09 Jan 2024 11:05:04 -0700
-Subject: Re: [PATCH 6.1 000/150] 6.1.72-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-References: <20240108153511.214254205@linuxfoundation.org>
-In-Reply-To: <20240108153511.214254205@linuxfoundation.org>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <2dac3ce1-ab25-bdd3-fea8-c8975580cc80@w6rz.net>
-Date: Tue, 9 Jan 2024 10:05:02 -0800
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8333D0A8
+	for <stable@vger.kernel.org>; Tue,  9 Jan 2024 18:17:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jsperbeck.bounces.google.com
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-dbea05a6de5so3519221276.3
+        for <stable@vger.kernel.org>; Tue, 09 Jan 2024 10:17:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1704824245; x=1705429045; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3O3ZA/l4pzFbG0RopZ5eYIp00WCcdEIP2ujlegYMRy0=;
+        b=xRQLx/48kjafNaP++8H6Ez+PeV4tghNVikTFVMZD81TkhGm7eCnZPBl0cCFAKbxYWE
+         8DS7gset6Sy+dVL61qK6/uKHgsQzaLXihXpIYCWaQ+KXCGtyYlYVauyPiD925DUaCN8r
+         kejNO2IUQeg/JY7Ki7juCgfy7hYXKrEAmT4FUHBjnGvHimHA+v7IRT8awtYHf46PJrT/
+         Ba+P2zRuLhhcrL+b/W5TgJmBmmGoww/8o1ig2+BxCVSk6G0x1YV9StPUd/jiPr+FT/Tc
+         d2xD6lzihR3UVPlKa8wvmUgbfHa7ouFSIRTR7vHTSKSekhrFAuzAv+BNIrPp6pThbgaJ
+         zapA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704824245; x=1705429045;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3O3ZA/l4pzFbG0RopZ5eYIp00WCcdEIP2ujlegYMRy0=;
+        b=YidAMRGgTnWXnQfQnPlF9GNhYLjuYhoiA5tHn7XwIR6CKnYsFbWsfD5reRm2o6ur3q
+         Eu9s7y7yfZM5GXkQT31ngkYx0QG7O5iXK/fHQjE5yd4r9GQRnqHFA2XJvCd2wl5od4ZF
+         t1dLmuVwWSqxxyTatAvKnomsNXXNfV/zwh4VNAg1KvKSXyfaQ2eP5mvPOIqYF2DcxWo/
+         8HfsMZnnyl1/kHHNVZMUBnWo4UIBRk7ipRSqEnl3phMLC7eemQEYvv/ypLTUG8+k0fTJ
+         VuFq4nNcFAa6Mpsbs2ElMQ8mj4JCpa9vLU+649FpUU5KxX4Sm8YkbIlhh6ow2t8dhxz9
+         p1ew==
+X-Gm-Message-State: AOJu0YzzYFMFlT7YyJON9jQridQAyjCbwk1j8tVaoYHaRbJnJyvSR0px
+	JDV+bByyJG7jd6BxFXDZpwsM+BaAZG+luW4xtDrqGg==
+X-Google-Smtp-Source: AGHT+IGWMruYM2IGEpW/Wzs1QzYPqFF2y3cxBj33maPl8AD3opKxTZOu26tWCKRS81IiyNIQu2xXII1BaxTB064=
+X-Received: from jsperbeck7.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:26dc])
+ (user=jsperbeck job=sendgmr) by 2002:a25:824c:0:b0:dbe:a677:5de5 with SMTP id
+ d12-20020a25824c000000b00dbea6775de5mr197494ybn.4.1704824244782; Tue, 09 Jan
+ 2024 10:17:24 -0800 (PST)
+Date: Tue,  9 Jan 2024 10:17:22 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1rNGTI-002hc7-2j
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:34710
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfP0MWmqp0Fwdc2P2B0wEs9ys+TVAokS7S6DgEFjL6lTAeKhduxNFyeLFb2KL3XTw20XF/4qra5M6EAd6GWs+3euO1z2GroEoOMFtB309Mb5IMspCLdy1
- wj5z5lKGEfU4wP9meyV/Q6bQTy4JdP4IdMwCKhfVZUgIKhamTwKfhLH90Ibo7dxOHI4mwwOGtu7+5Q==
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
+Message-ID: <20240109181722.228783-1-jsperbeck@google.com>
+Subject: Crash in NVME tracing on 5.10LTS
+From: John Sperbeck <jsperbeck@google.com>
+To: Bean Huo <beanhuo@micron.com>, Sagi Grimberg <sagi@grimberg.me>
+Cc: khazhy@google.com, Jens Axboe <axboe@kernel.dk>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 1/8/24 7:34 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.72 release.
-> There are 150 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 10 Jan 2024 15:34:37 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.72-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+With 5.10LTS (e.g., 5.10.206), on a machine using an NVME device, the
+following tracing commands will trigger a crash due to a NULL pointer
+dereference:
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+KDIR=/sys/kernel/debug/tracing
+echo 1 > $KDIR/tracing_on
+echo 1 > $KDIR/events/nvme/enable
+echo "Waiting for trace events..."
+cat $KDIR/trace_pipe
 
-Tested-by: Ron Economos <re@w6rz.net>
+The backtrace looks something like this:
 
+Call Trace:
+ <IRQ>
+ ? __die_body+0x6b/0xb0
+ ? __die+0x9e/0xb0
+ ? no_context+0x3eb/0x460
+ ? ttwu_do_activate+0xf0/0x120
+ ? __bad_area_nosemaphore+0x157/0x200
+ ? select_idle_sibling+0x2f/0x410
+ ? bad_area_nosemaphore+0x13/0x20
+ ? do_user_addr_fault+0x2ab/0x360
+ ? exc_page_fault+0x69/0x180
+ ? asm_exc_page_fault+0x1e/0x30
+ ? trace_event_raw_event_nvme_complete_rq+0xba/0x170
+ ? trace_event_raw_event_nvme_complete_rq+0xa3/0x170
+ nvme_complete_rq+0x168/0x170
+ nvme_pci_complete_rq+0x16c/0x1f0
+ nvme_handle_cqe+0xde/0x190
+ nvme_irq+0x78/0x100
+ __handle_irq_event_percpu+0x77/0x1e0
+ handle_irq_event+0x54/0xb0
+ handle_edge_irq+0xdf/0x230
+ asm_call_irq_on_stack+0xf/0x20
+ </IRQ>
+ common_interrupt+0x9e/0x150
+ asm_common_interrupt+0x1e/0x40
+
+It looks to me like these two upstream commits were backported to 5.10:
+
+679c54f2de67 ("nvme: use command_id instead of req->tag in trace_nvme_complete_rq()")
+e7006de6c238 ("nvme: code command_id with a genctr for use-after-free validation")
+
+But they depend on this upstream commit to initialize the 'cmd' field in
+some cases:
+
+f4b9e6c90c57 ("nvme: use driver pdu command for passthrough")
+
+Does it sound like I'm on the right track?  The 5.15LTS and later seems to be okay.
 
