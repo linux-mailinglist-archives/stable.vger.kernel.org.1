@@ -1,149 +1,123 @@
-Return-Path: <stable+bounces-10398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51538828B86
-	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 18:54:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CA5B828C4A
+	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 19:15:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9CAFB238E3
-	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 17:54:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D7951F2489D
+	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 18:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D341E3B7A9;
-	Tue,  9 Jan 2024 17:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD7C3C099;
+	Tue,  9 Jan 2024 18:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ONGmHqBf"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="eNRXrH42"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4618D3C07B
-	for <stable@vger.kernel.org>; Tue,  9 Jan 2024 17:54:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-io1-f49.google.com with SMTP id ca18e2360f4ac-7beda2e6794so33141539f.1
-        for <stable@vger.kernel.org>; Tue, 09 Jan 2024 09:54:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1704822842; x=1705427642; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uvxQk9rfheLP9Xtji27sCGT3Sv4bNLZc44jbbgusrDU=;
-        b=ONGmHqBfC1ejBCiK95L/gKcx3N81BvYLZ0b2EkYRCOJoWTJ9/Yhz4EdmUERPQWGhus
-         FptUlXtgTzBIsA/xeUfVugvbhq8iALAGLmHftOKjPoYrJDeZbh4K1KTQg/vYQOJ+8yj9
-         +dCc+ruL4a31Dh1J9oHMbkzlOMLlucY9szbPg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704822842; x=1705427642;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uvxQk9rfheLP9Xtji27sCGT3Sv4bNLZc44jbbgusrDU=;
-        b=QrofWPDbAzLMFnwUi0U6WBwzTodQuy4To2NbvXrFapzKbhvGHpm4zNSB+jNdUYWjBK
-         UhWyYYV9mWsiQn8MoZnw0xhNi48EqDnhmTuTOhfk7HcRiHQ+Yyd0+9P+LsSIYnmsz6RC
-         I1GHnHaOHSOu9AfzmsJd4mL0L4ZnqmnBkPJvrVm3PE/uI7mmSomiIk6SZWSG/9aNgsJz
-         bzW74BoK6plz2+D18VygI6f5KMiJssRMxYlUM2+nElobaX1kgh1K/dpGFrt6oPxJGUAI
-         hgxNlJotVyYTW0D2dZhAbodZz8oQlcOCGfgjHRzM/ceC9nCvI0S1t6scR4GCzY+/OFmn
-         ru3g==
-X-Gm-Message-State: AOJu0Yww7BcMC36DVvsSUuE73w+0/eW5TL2U20Diuj+Ux5sC1/iR9Jj0
-	UtC73VjAkgPBI5zbaYFXzWuMhBjpD20J
-X-Google-Smtp-Source: AGHT+IETNvPU0pqR+rjwETC6lClyltQG+AAsL2rUrDmov8iCP0gjm6NfVC+6GYU4F02uh16JW6lf7g==
-X-Received: by 2002:a5d:94ce:0:b0:7bc:2607:7caf with SMTP id y14-20020a5d94ce000000b007bc26077cafmr850204ior.21.1704822842469;
-        Tue, 09 Jan 2024 09:54:02 -0800 (PST)
-Received: from localhost (110.41.72.34.bc.googleusercontent.com. [34.72.41.110])
-        by smtp.gmail.com with UTF8SMTPSA id e15-20020a6b500f000000b007bedb7d78b3sm441971iob.24.2024.01.09.09.54.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 09 Jan 2024 09:54:02 -0800 (PST)
-Date: Tue, 9 Jan 2024 17:54:01 +0000
-From: Matthias Kaehlcke <mka@chromium.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	linux-bluetooth@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
-	Doug Anderson <dianders@google.com>,
-	Stephen Boyd <swboyd@google.com>
-Subject: Re: [PATCH] Bluetooth: qca: fix device-address endianness
-Message-ID: <ZZ2IOQEekFffJoHQ@google.com>
-References: <20231227180306.6319-1-johan+linaro@kernel.org>
- <ZZ15c1HUQIH2cY5o@google.com>
- <ZZ1-ehpU-g6i9Qem@hovoldconsulting.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A323BB50
+	for <stable@vger.kernel.org>; Tue,  9 Jan 2024 18:05:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-6007a.ext.cloudfilter.net ([10.0.30.247])
+	by cmsmtp with ESMTPS
+	id N9q1rcwpzTHHuNGTMrm7be; Tue, 09 Jan 2024 18:05:08 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id NGTLrTuhnyxR5NGTLrSmew; Tue, 09 Jan 2024 18:05:07 +0000
+X-Authority-Analysis: v=2.4 cv=JYOvEGGV c=1 sm=1 tr=0 ts=659d8ad3
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=dEuoMetlWLkA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ShZgbusUVzgfLCYWmlYSUaE5l0n2E0ElTdeBn5V6XPQ=; b=eNRXrH42C6r4Z0hwXhePVSjfMA
+	x3c9waN7oS0XvF11QcJgEMYA0jC4/tbZUARvt//oHCLLNVa68m59mYDU1kyVqOGRt0OgptxJhZsHM
+	GR8fMYnRxggdqbXB4aIax1LIknI8qcmEFloT6UBtn9C8MIEF1jtbAwfi4Z6HHQGLd5xz45zPvckpD
+	CnLTQ5L8KTQXE6MOF8F1nlU2gKm5uF4kzVuoYz40bKds5fMVVfu2XFNNU93302Yzz5ZVYWQWok/rw
+	+9WYXp5wR6SN9rClLQ0STflg7IIj1s/mIH3Y7wZfsvnAEDjYFjxHyweH7T6VvY8KUC+yyeUMSwK4Q
+	4v+270uQ==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:34710 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1rNGTI-002hc7-2j;
+	Tue, 09 Jan 2024 11:05:04 -0700
+Subject: Re: [PATCH 6.1 000/150] 6.1.72-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+References: <20240108153511.214254205@linuxfoundation.org>
+In-Reply-To: <20240108153511.214254205@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <2dac3ce1-ab25-bdd3-fea8-c8975580cc80@w6rz.net>
+Date: Tue, 9 Jan 2024 10:05:02 -0800
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <ZZ1-ehpU-g6i9Qem@hovoldconsulting.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1rNGTI-002hc7-2j
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:34710
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfP0MWmqp0Fwdc2P2B0wEs9ys+TVAokS7S6DgEFjL6lTAeKhduxNFyeLFb2KL3XTw20XF/4qra5M6EAd6GWs+3euO1z2GroEoOMFtB309Mb5IMspCLdy1
+ wj5z5lKGEfU4wP9meyV/Q6bQTy4JdP4IdMwCKhfVZUgIKhamTwKfhLH90Ibo7dxOHI4mwwOGtu7+5Q==
 
-On Tue, Jan 09, 2024 at 06:12:26PM +0100, Johan Hovold wrote:
-> On Tue, Jan 09, 2024 at 04:50:59PM +0000, Matthias Kaehlcke wrote:
-> 
-> > On Wed, Dec 27, 2023 at 07:03:06PM +0100, Johan Hovold wrote:
-> > > The WCN6855 firmware on the Lenovo ThinkPad X13s expects the Bluetooth
-> > > device address in MSB order when setting it using the
-> > > EDL_WRITE_BD_ADDR_OPCODE command.
-> > > 
-> > > Presumably, this is the case for all non-ROME devices which all use the
-> > > EDL_WRITE_BD_ADDR_OPCODE command for this (unlike the ROME devices which
-> > > use a different command and expect the address in LSB order).
-> > > 
-> > > Reverse the little-endian address before setting it to make sure that
-> > > the address can be configured using tools like btmgmt or using the
-> > > 'local-bd-address' devicetree property.
-> > > 
-> > > Note that this can potentially break systems with boot firmware which
-> > > has started relying on the broken behaviour and is incorrectly passing
-> > > the address via devicetree in MSB order.
-> > 
-> > We should not break existing devices. Their byte order for
-> > 'local-bd-address' may not adhere to the 'spec', however in practice
-> > it is the correct format for existing kernels.
-> 
-> That depends on in what way the current devices are broken.
-> 
-> Any machines that correctly specify their address in little-endian order
-> in the devicetree would no longer be configured using the wrong address.
-> So no problem there (except requiring users to re-pair their gadgets).
-> 
-> And tools like btgmt is broken on all of these Qualcomm machine in any
-> case and would now start working as expected. So no problem there either
-> (unless user space had adapted an inverted the addresses to btmgmt).
-> 
-> So the first question is whether there actually is any boot firmware out
-> there which passes the BD_ADDR in reverse order?
+On 1/8/24 7:34 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.72 release.
+> There are 150 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 10 Jan 2024 15:34:37 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.72-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Yes, (at least) the boot firmware for sc7180-trogdor devices.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-hexdump -C /proc/device-tree/soc\@0/geniqup\@8c0000/serial\@88c000/bluetooth/local-bd-address
-00000000  8c fd f0 40 15 dc
+Tested-by: Ron Economos <re@w6rz.net>
 
-hciconfig
-hci0:   Type: Primary  Bus: UART
-        BD Address: 8C:FD:F0:40:15:DC  ACL MTU: 1024:8  SCO MTU: 240:8
-        UP RUNNING 
-        RX bytes:1700 acl:0 sco:0 events:95 errors:0
-        TX bytes:128949 acl:0 sco:0 commands:578 errors:0
-
-> > I suggest adding a quirk like 'local-bd-address-msb-quirk' or
-> > 'qcom,local-bd-address-msb-quirk' to make sure existing devices keep
-> > working properly.
-> 
-> I don't think that would work. If this is something that we really need
-> to handle, then there's probably no way around introducing new
-> compatible strings for boot firmware that isn't broken while maintaining
-> the current broken behaviour with respect to 'local-bd-address' for some
-> of the current ones.
-
-I think it should work for sc7180-trogdor. For these devices the device tree
-is bundled with the kernel image and can be updated. That might not be true
-for other devices though.
-
-Matthias
 
