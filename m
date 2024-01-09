@@ -1,154 +1,97 @@
-Return-Path: <stable+bounces-10379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D901C8285E2
-	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 13:16:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B3C82863C
+	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 13:49:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 703781F21BD5
-	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 12:16:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBC81B246FE
+	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 12:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE58381CF;
-	Tue,  9 Jan 2024 12:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4FDF38DDC;
+	Tue,  9 Jan 2024 12:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="Wgg6wF/Y"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="SRFTF1ul"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED4638F8A;
-	Tue,  9 Jan 2024 12:15:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 1BB001C0050; Tue,  9 Jan 2024 13:15:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-	t=1704802521;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vhmmk20k+rX0c1WjGIu9zhcLkj4LuGk5mXhRFdHCwT8=;
-	b=Wgg6wF/Ybo76dMzrukPWaRtTMu7leyzUfIdDlQfXEhmd2bKfW80R+otm7nEB8PHghBapgI
-	qFUt5QvEBRCLOlz/H1TRTc77OV0soYdmd91idoZdkpSv4mzOMfEaGEHWKQJd5jiJkzDuvr
-	XKpXULk0q4xpYnSq6nOjH5TdjnqwRH0=
-Date: Tue, 9 Jan 2024 13:15:20 +0100
-From: Pavel Machek <pavel@ucw.cz>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, bvanassche@acm.org,
-	hch@lst.de, hare@suse.de, martin.petersen@oracle.com
-Cc: linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-	torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
-	jslaby@suse.cz
-Subject: scsi_get_lba breakage in 5.10 -- Re: Linux 5.10.206
-Message-ID: <ZZ042FejzwMM5vDW@duo.ucw.cz>
-References: <2024010527-revision-ended-aea2@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E86381CB
+	for <stable@vger.kernel.org>; Tue,  9 Jan 2024 12:48:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-28bc8540299so1664207a91.0
+        for <stable@vger.kernel.org>; Tue, 09 Jan 2024 04:48:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1704804524; x=1705409324; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=equj060FCt2kUxy+zeJ1G6xYNbtT2kIm8VC3uUxQ9x0=;
+        b=SRFTF1ulw2TAO7H8y2gr8dkwuAMEbEb+7jHFj4zkx3AmnqK6w3hMijt2Q0ARZbY19U
+         n28DwBJISHHEiCDTomIJN9XBHsdZbIv1RekOnt6DOkdNQ+qA9i7LqumussR6DX9lXbjo
+         nUBWp94cLqfHr6TQa4qCondjRzmmIHwt8C0Mg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704804524; x=1705409324;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=equj060FCt2kUxy+zeJ1G6xYNbtT2kIm8VC3uUxQ9x0=;
+        b=dJi2AnHb64QV5WBYWc3SFa4FusT/WQC1ypjaHFYiyqQl+6VMkq4RAszPtx7/QtnZli
+         TXwojjCuPo5zZIylDR6NPEeCF+T558X0lJVNXEuXjmxx9s4J4F8S7cr1Nm9zVk9YLzaA
+         ZenGHbC+6y0XiuRDlDeJUeqUCvJG4UDEhm8Jt0t/oUAA5s/sg51jRyMIazzdFw4kDhNj
+         ikvPgH55n7QvW5p4KI1o37xK1y8jOvIhtEyardaU6d2Dl1XOPD3kPo2O3TuqDAYluFbC
+         Iy5VaYtKGJD0s5M8KnHOH1szMERWAZnG3uVba2mJwDQMdAZMCtZL1BTGm0pS0Wf1ENzI
+         4GiA==
+X-Gm-Message-State: AOJu0YzplIY/svLVHZJ9Khs+4l1YPRs7a+Gexy9dk28zvRrAH3ooAmtC
+	6P5MLg/OQKy5/KT3diR9qbKC+nyjlAQx
+X-Google-Smtp-Source: AGHT+IFaKPZTM2YqYrni+6vdDEZ1l2skb9dMVIwfSfVJEvEFl4Gkl73woedlMgZ1EXGQC6+X2xvV7w==
+X-Received: by 2002:a17:90a:17ab:b0:28c:93c5:1f9e with SMTP id q40-20020a17090a17ab00b0028c93c51f9emr2332149pja.63.1704804523918;
+        Tue, 09 Jan 2024 04:48:43 -0800 (PST)
+Received: from google.com (KD124209171220.ppp-bb.dion.ne.jp. [124.209.171.220])
+        by smtp.gmail.com with ESMTPSA id f21-20020a17090a9b1500b0028d9c540b12sm1292899pjp.23.2024.01.09.04.48.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 09 Jan 2024 04:48:43 -0800 (PST)
+Date: Tue, 9 Jan 2024 21:48:38 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Ricardo Ribalda <ribalda@chromium.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4] media: ucvideo: Add quirk for Logitech Rally Bar
+Message-ID: <20240109124838.GB1012017@google.com>
+References: <20240108-rallybar-v4-1-a7450641e41b@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="MXcu7+91PUeNfjQF"
-Content-Disposition: inline
-In-Reply-To: <2024010527-revision-ended-aea2@gregkh>
-
-
---MXcu7+91PUeNfjQF
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240108-rallybar-v4-1-a7450641e41b@chromium.org>
 
-Hi!
+On (24/01/08 08:17), Ricardo Ribalda wrote:
+> Logitech Rally Bar devices, despite behaving as UVC cameras, have a
+> different power management system that the other cameras from Logitech.
+> 
+> USB_QUIRK_RESET_RESUME is applied to all the UVC cameras from Logitech
+> at the usb core. Unfortunately, USB_QUIRK_RESET_RESUME causes undesired
+> USB disconnects, that make them completely unusable.
+> 
+> Instead of creating a list for this family of devices in the core, let's
+> create a quirk in the UVC driver.
+> 
+> Fixes: e387ef5c47dd ("usb: Add USB_QUIRK_RESET_RESUME for all Logitech UVC webcams")
+> Cc: stable@vger.kernel.org
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Alan Stern <stern@rowland.harvard.edu>
+> Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 
-> I'm announcing the release of the 5.10.206 kernel.
-
-
-> Martin K. Petersen (2):
->       scsi: core: Make scsi_get_lba() return the LBA
-
-This is bad idea. This changes return value, but without fixing
-callers; there will be subtle bugs somewhere.
-
-At minimum, we need this:
-
-87662a472a9d8980b26ba5803447df2c4981d467 scsi: iser: Use scsi_get_sector() =
-instead of scsi_get_lba()
-
-That will fix iser, but there's also:
-
-drivers/s390/scsi/zfcp_fsf.c:           io->ref_tag_value =3D scsi_get_lba(=
-scsi_cmnd) & 0xFFFFFFFF;
-drivers/scsi/isci/request.c:            tc->ref_tag_seed_gen =3D scsi_get_l=
-ba(scmd) & 0xffffffff;
-drivers/scsi/isci/request.c:            tc->ref_tag_seed_verify =3D scsi_ge=
-t_lba(scmd) & 0xffffffff;
-drivers/scsi/lpfc/lpfc_scsi.c:  lba =3D scsi_get_lba(sc);
-drivers/scsi/lpfc/lpfc_scsi.c:  reftag =3D (uint32_t)scsi_get_lba(sc); /* T=
-runcate LBA */
-drivers/scsi/lpfc/lpfc_scsi.c:  reftag =3D (uint32_t)scsi_get_lba(sc); /* T=
-runcate LBA */
-drivers/scsi/lpfc/lpfc_scsi.c:  reftag =3D (uint32_t)scsi_get_lba(sc); /* T=
-runcate LBA */
-drivers/scsi/lpfc/lpfc_scsi.c:  reftag =3D (uint32_t)scsi_get_lba(sc); /* T=
-runcate LBA */
-drivers/scsi/lpfc/lpfc_scsi.c:          start_ref_tag =3D (uint32_t)scsi_ge=
-t_lba(cmd); /* Truncate LBA */
-drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long)scsi=
-_get_lba(cmd),
-drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long)scsi=
-_get_lba(cmd),
-drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long)scsi=
-_get_lba(cmd),
-drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long long=
-)scsi_get_lba(cmd),
-drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long long=
-)scsi_get_lba(cmd),
-drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long long=
-)scsi_get_lba(cmd),
-drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long long=
-)scsi_get_lba(cmd),
-drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long long=
-)scsi_get_lba(cmd),
-drivers/scsi/lpfc/lpfc_scsi.c:          failing_sector =3D scsi_get_lba(cmd=
-);
-drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long long=
-)scsi_get_lba(cmd),
-drivers/scsi/lpfc/lpfc_scsi.c:                                   (unsigned =
-long long)scsi_get_lba(cmnd),
-drivers/scsi/lpfc/lpfc_scsi.c:                                   (unsigned =
-long long)scsi_get_lba(cmnd),
-drivers/scsi/qla2xxx/qla_iocb.c:                    (0xffffffff & scsi_get_=
-lba(cmd)));
-drivers/scsi/qla2xxx/qla_iocb.c:                    (0xffffffff & scsi_get_=
-lba(cmd)));
-drivers/scsi/qla2xxx/qla_iocb.c:                    (0xffffffff & scsi_get_=
-lba(cmd)));
-drivers/scsi/qla2xxx/qla_isr.c:     cmd->cmnd[0], (u64)scsi_get_lba(cmd), a=
-_ref_tag, e_ref_tag,
-drivers/scsi/qla2xxx/qla_isr.c:         sector_t lba_s =3D scsi_get_lba(cmd=
-);
-include/scsi/scsi_cmnd.h:static inline sector_t scsi_get_lba(struct scsi_cm=
-nd *scmd)
-
-That needs to be fixed somehow. This may be quite critical due to data
-corruption...?
-
-Best regards,
-										Pavel
---=20
-People of Russia, stop Putin before his war on Ukraine escalates.
-
---MXcu7+91PUeNfjQF
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZZ042AAKCRAw5/Bqldv6
-8nutAJ9XN12LGj1gtySQhYo49aL6ZI3woACgtuWNLK74oIxA2iwhTXYN3Rgud5U=
-=IrAN
------END PGP SIGNATURE-----
-
---MXcu7+91PUeNfjQF--
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 
