@@ -1,108 +1,180 @@
-Return-Path: <stable+bounces-10358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72807828034
-	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 09:13:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C03EF828219
+	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 09:40:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DCE61F279CF
-	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 08:13:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A93228803B
+	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 08:40:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B55D13ACF;
-	Tue,  9 Jan 2024 08:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4407229433;
+	Tue,  9 Jan 2024 08:32:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Wx+pSBhg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UIH4jQSc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910CE29432
-	for <stable@vger.kernel.org>; Tue,  9 Jan 2024 08:13:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-40d604b4b30so20985715e9.1
-        for <stable@vger.kernel.org>; Tue, 09 Jan 2024 00:13:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1704787984; x=1705392784; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+1COLRupOMO77VMV9Mt2MrHA2R7Q54lSMFZhM27v8nA=;
-        b=Wx+pSBhgZlJuHioCpkpiWn5xDJRH2KWmD+CR5/WJ1uT2lIQvwnivKZVLpVBw8Na8ZE
-         Yz0aG00p7jbKThfkPV1qt1y7u+ZqBTkvkNYlnP7VGpfy/dNnN+TSAp87DfXT4ygMbAMD
-         UCqYNq46EQS/r9bK5kk+G5kFfEqg8rXf3Vu3RRQS/hEGF3sCsVHThV4hWwukgIggHIz/
-         5h4Zoak3mWaHX9buFaHLtUFNQNQgS9E/T70tjNVSm+IIJTCwzsRztVky69lp8USEP1H9
-         /IoAHV6pOTRuRNAOc6/1yLFAbaYaPXFYpDHx4PDjAiU1C1TeCzNemaB4DcWltzoqU8GX
-         FnMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704787984; x=1705392784;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+1COLRupOMO77VMV9Mt2MrHA2R7Q54lSMFZhM27v8nA=;
-        b=AvnKwd1sv2dVr+AYl2twiUtPBLs2Bi9/K8ogDFHcG+Rc3PYoYmDL80ZsV05AT/jrCh
-         FnCvtXG4iw71mIOsqYh24AMNSGPU5ZMBLOPrXrhbKrQ/yes0Cu0eHnsqxa0AcZApJlFN
-         RVbAD4wDu/eEtE4GuK4XQhv3O2yWOKQcl1EfUYKXr93gI4oHeMEsWm9C4qm0oCrqICMS
-         DYzkLVSIKC/j3Mt6qwHUgDE/u7s4rNqfSomtmDLJhtl8Z0db6dEHH5KTet1wIFWXFgvp
-         P07AZ6rXMk38t7BXZQxJmA2aYYGPCjUfpWiHWRr7yURZZNnjKMkhTRgEBTlJaNliAt+u
-         3R3Q==
-X-Gm-Message-State: AOJu0Yz8rKN2sWWNX0u/pt8jPY5ZbHdpEmI91TiD17Uca0uraye2/55o
-	Ebd3GmJ5ROBoFW3x/sKnh6BS8X/j0DGBfw==
-X-Google-Smtp-Source: AGHT+IFh4etKDv5DqxBx1VDGukffIzcMl42znwEO74QkPkL0OrCjUXOmjbqhJ31eGCDvDf9YczBJlA==
-X-Received: by 2002:a05:600c:1d09:b0:40e:43db:7174 with SMTP id l9-20020a05600c1d0900b0040e43db7174mr183460wms.27.1704787983804;
-        Tue, 09 Jan 2024 00:13:03 -0800 (PST)
-Received: from localhost ([102.140.209.237])
-        by smtp.gmail.com with ESMTPSA id t7-20020a05600c198700b0040d6b91efd9sm13811533wmq.44.2024.01.09.00.13.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jan 2024 00:13:03 -0800 (PST)
-Date: Tue, 9 Jan 2024 11:12:59 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Hidenori Kobayashi <hidenorik@chromium.org>
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Tianshu Qiu <tian.shu.qiu@intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Yong Zhi <yong.zhi@intel.com>, stable@vger.kernel.org,
-	Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-	linux-media@vger.kernel.org, linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] media: staging: ipu3-imgu: Set fields before
- media_entity_pads_init()
-Message-ID: <398e06b3-351e-4a1d-b3e4-9c02893ccd83@moroto.mountain>
-References: <20240109080910.2859780-1-hidenorik@chromium.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CB329431;
+	Tue,  9 Jan 2024 08:32:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AC70C433F1;
+	Tue,  9 Jan 2024 08:32:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704789175;
+	bh=+6w7os/oKX5yZtjN/akBKdWLap4kHD39ILnrrP4cJHA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=UIH4jQScZcwbxHgQbv+yqe3QmSHFU/SsaoBnTfBbRXjpg4OQzNs5R5a78Xp92/5ZY
+	 0Cj3TSPGfcFrzONRzIkQfpib7p0EHTuY2LDHf3+Jlh3NUxfL/i2MVfMhK99a75/cL6
+	 IvH12nM3ZyylEs3pBpI5p6ly4WYIIK20n5CACgxxB5XlHz7xXImx+/MvV9RWGpijUw
+	 GEY2ywnQW9YM2Vaf8kJn1HcQhwEbXXKKQ6gyboDi7gooOjktgl39D7lxNwNijXvtEC
+	 rzff3O1PSkj+5nO0R5bTN0JQluOPkdOcQ2lyBv3LibhQ8+gMzkDP+VBGQQKIh/wUW2
+	 l2ICQSJ1Q32GA==
+Date: Tue, 9 Jan 2024 08:32:51 +0000
+From: Lee Jones <lee@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Duoming Zhou <duoming@zju.edu.cn>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.4 062/165] net: usb: lan78xx: reorder cleanup
+ operations to avoid UAF bugs
+Message-ID: <20240109083251.GD7948@google.com>
+References: <20230809103642.720851262@linuxfoundation.org>
+ <20230809103644.851543936@linuxfoundation.org>
+ <20240108145224.GA641998@google.com>
+ <2024010807-fantasy-species-3607@gregkh>
+ <20240108165806.GA7948@google.com>
+ <2024010845-foam-efficient-6ae4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240109080910.2859780-1-hidenorik@chromium.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2024010845-foam-efficient-6ae4@gregkh>
 
-On Tue, Jan 09, 2024 at 05:09:09PM +0900, Hidenori Kobayashi wrote:
-> The imgu driver fails to probe with the following message because it
-> does not set the pad's flags before calling media_entity_pads_init().
+On Mon, 08 Jan 2024, Greg Kroah-Hartman wrote:
+
+> On Mon, Jan 08, 2024 at 04:58:06PM +0000, Lee Jones wrote:
+> > On Mon, 08 Jan 2024, Greg Kroah-Hartman wrote:
+> > 
+> > > On Mon, Jan 08, 2024 at 02:52:24PM +0000, Lee Jones wrote:
+> > > > On Wed, 09 Aug 2023, Greg Kroah-Hartman wrote:
+> > > > 
+> > > > > From: Duoming Zhou <duoming@zju.edu.cn>
+> > > > > 
+> > > > > [ Upstream commit 1e7417c188d0a83fb385ba2dbe35fd2563f2b6f3 ]
+> > > > > 
+> > > > > The timer dev->stat_monitor can schedule the delayed work dev->wq and
+> > > > > the delayed work dev->wq can also arm the dev->stat_monitor timer.
+> > > > > 
+> > > > > When the device is detaching, the net_device will be deallocated. but
+> > > > > the net_device private data could still be dereferenced in delayed work
+> > > > > or timer handler. As a result, the UAF bugs will happen.
+> > > > > 
+> > > > > One racy situation is shown below:
+> > > > > 
+> > > > >       (Thread 1)                 |      (Thread 2)
+> > > > > lan78xx_stat_monitor()           |
+> > > > >  ...                             |  lan78xx_disconnect()
+> > > > >  lan78xx_defer_kevent()          |    ...
+> > > > >   ...                            |    cancel_delayed_work_sync(&dev->wq);
+> > > > >   schedule_delayed_work()        |    ...
+> > > > >   (wait some time)               |    free_netdev(net); //free net_device
+> > > > >   lan78xx_delayedwork()          |
+> > > > >   //use net_device private data  |
+> > > > >   dev-> //use                    |
+> > > > > 
+> > > > > Although we use cancel_delayed_work_sync() to cancel the delayed work
+> > > > > in lan78xx_disconnect(), it could still be scheduled in timer handler
+> > > > > lan78xx_stat_monitor().
+> > > > > 
+> > > > > Another racy situation is shown below:
+> > > > > 
+> > > > >       (Thread 1)                |      (Thread 2)
+> > > > > lan78xx_delayedwork             |
+> > > > >  mod_timer()                    |  lan78xx_disconnect()
+> > > > >                                 |   cancel_delayed_work_sync()
+> > > > >  (wait some time)               |   if (timer_pending(&dev->stat_monitor))
+> > > > >              	                |       del_timer_sync(&dev->stat_monitor);
+> > > > >  lan78xx_stat_monitor()         |   ...
+> > > > >   lan78xx_defer_kevent()        |   free_netdev(net); //free
+> > > > >    //use net_device private data|
+> > > > >    dev-> //use                  |
+> > > > > 
+> > > > > Although we use del_timer_sync() to delete the timer, the function
+> > > > > timer_pending() returns 0 when the timer is activated. As a result,
+> > > > > the del_timer_sync() will not be executed and the timer could be
+> > > > > re-armed.
+> > > > > 
+> > > > > In order to mitigate this bug, We use timer_shutdown_sync() to shutdown
+> > > > > the timer and then use cancel_delayed_work_sync() to cancel the delayed
+> > > > > work. As a result, the net_device could be deallocated safely.
+> > > > > 
+> > > > > What's more, the dev->flags is set to EVENT_DEV_DISCONNECT in
+> > > > > lan78xx_disconnect(). But it could still be set to EVENT_STAT_UPDATE
+> > > > > in lan78xx_stat_monitor(). So this patch put the set_bit() behind
+> > > > > timer_shutdown_sync().
+> > > > > 
+> > > > > Fixes: 77dfff5bb7e2 ("lan78xx: Fix race condition in disconnect handling")
+> > > > 
+> > > > Any idea why this stopped at linux-6.4.y?  The aforementioned Fixes:
+> > > > commit also exists in linux-6.1.y and linux-5.15.y.  I don't see any
+> > > > earlier backport attempts or failure reports that would otherwise
+> > > > explain this.
+> > > 
+> > > Did you try to build it:
+> > 
+> > No, I just noticed that it was missing.
+> > 
+> > > 	drivers/net/usb/lan78xx.c: In function ‘lan78xx_disconnect’:
+> > > 	drivers/net/usb/lan78xx.c:4234:9: error: implicit declaration of function ‘timer_shutdown_sync’ [-Werror=implicit-function-declaration]
+> > > 	 4234 |         timer_shutdown_sync(&dev->stat_monitor);
+> > > 	      |         ^~~~~~~~~~~~~~~~~~~
+> > > 	cc1: all warnings being treated as errors
+> > > 
+> > > That's a good reason to not include it...
+> > 
+> > It's a perfect reason not to include it.
+> > 
+> > The issue is not that the patch is not present.  It's more the lack of
+> > transparency in terms of searchable information on why it was not
+> > included.
+> > 
+> > I was under the impression that a report is usually sent out when a
+> > patch failed to apply for any reason?
 > 
-> [   14.596315] ipu3-imgu 0000:00:05.0: failed initialize subdev media entity (-22)
-> [   14.596322] ipu3-imgu 0000:00:05.0: failed to register subdev0 ret (-22)
-> [   14.596327] ipu3-imgu 0000:00:05.0: failed to register pipes (-22)
-> [   14.596331] ipu3-imgu 0000:00:05.0: failed to create V4L2 devices (-22)
+> For patches that are explicitly tagged for stable inclusion, yes, that
+> will happen.  That is not the case for this commit.
 > 
-> Fix the initialization order so that the driver probe succeeds. The ops
-> initialization is also moved together for readability.
+> For patches that only have a "Fixes:" tag on it, those are gotten to on
+> a "best effort" basis when we get a chance, as those were obviously not
+> explicitly asked to be backported.  And when they are backported, if
+> they fail, they will fail silently as the author/maintainer was not
+> explicitly asking them to be applied to a stable tree, so it would just
+> be noise to complain about it.
 > 
-> Fixes: a0ca1627b450 ("media: staging/intel-ipu3: Add v4l2 driver based on media framework")
-> Cc: <stable@vger.kernel.org> # 6.7
-> Cc: Dan Carpenter <dan.carpenter@linaro.org>
-> Signed-off-by: Hidenori Kobayashi <hidenorik@chromium.org>
-> ---
+> So, it's lucky that this patch was backported at all to any stable tree :)
 
-Thanks so much!
+That's fair to a point.
 
-regards,
-dan carpenter
+Just know that if there are no other means to determine the actions
+taken place behind closed doors, then these queries are likely to
+reoccur.
 
+It would be far nicer if an automated mail was sent out when a failed
+backport attempt were made in all cases.  Even if we drop the individual
+contributor/maintainer addresses and only ping the mailing lists, since
+at least it then becomes helpfully searchable on LORE.  Is it really
+more work to duplicate the workflow between intended Stable inclusions
+and any other attempt?
+
+-- 
+Lee Jones [李琼斯]
 
