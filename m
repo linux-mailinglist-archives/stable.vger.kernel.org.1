@@ -1,148 +1,127 @@
-Return-Path: <stable+bounces-10349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A0CC827DCC
-	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 05:15:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 914BF827E4C
+	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 06:21:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36DB2B22C2D
-	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 04:15:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B790B1C235A6
+	for <lists+stable@lfdr.de>; Tue,  9 Jan 2024 05:21:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB2EF63CF;
-	Tue,  9 Jan 2024 04:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC5E15A7;
+	Tue,  9 Jan 2024 05:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ksbCsVGY"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="oEP/DGGF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80AB613AF8
-	for <stable@vger.kernel.org>; Tue,  9 Jan 2024 04:15:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1d3ea5cc137so22434625ad.0
-        for <stable@vger.kernel.org>; Mon, 08 Jan 2024 20:15:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1704773726; x=1705378526; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JnmP9HCW0xFGvAZ+PSrTWWszc0HwZwOSM+5mszcUNAM=;
-        b=ksbCsVGYZ5Djhduu9K5DQ5WbC00hIJo1XMogbR+xXh1mcPIxS6tcrz00O3nNDdvbcq
-         eUeV6SlLxE8pYFv/4iZPc9ddJnSVluZUqplKqowGHwtfdyBpcP81GdtSj4V2xMDpMsIJ
-         S7+hni+qABt8d0hSx5G9M5FKDq40rqM8b4FRg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704773726; x=1705378526;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JnmP9HCW0xFGvAZ+PSrTWWszc0HwZwOSM+5mszcUNAM=;
-        b=a4g/IqN1ZRZDLGhviTBqMs9bTwc07MREfiYOlg/dmTzy3OitSdNfmQFV6937FkdXcJ
-         opiEfVK0gmIj3occeLL059GoVzKknO2mC456AeQXDh8eQJXxKJ7hWbZqvpSAi1AJYYyB
-         K1ydmDq+DzBRkhhMxO66vu3E0+EnB+jWc5kdCGY+eo/Z8l7sLGJ+8lFHbtEGTNgvZt9F
-         +Q6iwIogQSVYwbJGypzTpybX/qV80uqUCiuI/aRlWwogmXBEc05pNtXcDgpR4W2j6Sju
-         HpXHNj0R3gTxTzBU3Qhx2fD6C8vqKdD2q1RGAPMXOCTnPr+Td4SQm5gksc1Uofye9NVp
-         WDvQ==
-X-Gm-Message-State: AOJu0YxUajF7fTWbKNYFyo2B7fpYl8lho7z9MFQYgcuQbWx7EbBi+IOb
-	IlpCUAtNopP+fRiy8/spvTXIVT7NBIIsRgsk9GtwctCK96sS
-X-Google-Smtp-Source: AGHT+IF3uJr4ZPBFgHi2TnCaHhnHGSyb45pHnnaiRhbevj48cA0aVAd55nYw45YSBxFM48EXSUaCAQ==
-X-Received: by 2002:a17:902:7d88:b0:1d0:737d:2ae5 with SMTP id a8-20020a1709027d8800b001d0737d2ae5mr4724686plm.87.1704773725815;
-        Mon, 08 Jan 2024 20:15:25 -0800 (PST)
-Received: from localhost ([2401:fa00:8f:203:7b29:709a:867f:fec5])
-        by smtp.gmail.com with ESMTPSA id w8-20020a170902a70800b001d3dff2575fsm676499plq.52.2024.01.08.20.15.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jan 2024 20:15:25 -0800 (PST)
-From: Hidenori Kobayashi <hidenorik@chromium.org>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Tianshu Qiu <tian.shu.qiu@intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Yong Zhi <yong.zhi@intel.com>
-Cc: Dan Carpenter <dan.carpenter@linaro.org>,
-	Hidenori Kobayashi <hidenorik@chromium.org>,
-	stable@vger.kernel.org,
-	Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-	linux-media@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] media: staging: ipu3-imgu: Set fields before media_entity_pads_init()
-Date: Tue,  9 Jan 2024 13:14:59 +0900
-Message-ID: <20240109041500.2790754-1-hidenorik@chromium.org>
-X-Mailer: git-send-email 2.43.0.472.g3155946c3a-goog
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D3065C;
+	Tue,  9 Jan 2024 05:20:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 408NZ2ra031357;
+	Tue, 9 Jan 2024 05:20:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=LekOZ25M5MgIUTbVHPQ4h4bL3UgN+dZGJYO8vJbrwTY=; b=oE
+	P/DGGFugdcHC/HGMgpcTL5sZS9r4elaa69FqYB0tvRkn4dbDcPxkeoqqctmVFI0l
+	tZuL0JNkXiHKPTcGWo2MmkVtQ6FVsrERhvsNtdjf/RBG4soweSKxncZLhof6ds0k
+	HMP7Y/BNwSVDysihFl6izuf4ydwQWGg1vayjgCW8HJNeP7fybqXbYPeDzn7CPzov
+	dJmRffWBymYUabYW3Cfyob25wVds7EBafI4DWvB2thczDTFiIbT46JMW/lsnhH/4
+	OYvy+htw4SBToJuOy9YIy1Fiwcdr2vnMciMc4DvFlxFHIXN423micw3sRqE50tlw
+	lHXw74j0NYesvTqVrTNg==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vgkkh9jka-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 09 Jan 2024 05:20:43 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 4095Kg6I018882
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 9 Jan 2024 05:20:42 GMT
+Received: from [10.218.35.239] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Mon, 8 Jan
+ 2024 21:20:40 -0800
+Message-ID: <3e311ffa-1be2-4361-a17f-4527461c9b6b@quicinc.com>
+Date: Tue, 9 Jan 2024 10:50:36 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH v2 1/2] usb: dwc3: host: Set XHCI_SG_TRB_CACHE_SIZE_QUIRK
+Content-Language: en-US
+To: Mathias Nyman <mathias.nyman@linux.intel.com>,
+        Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>
+CC: Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Mathias Nyman
+	<mathias.nyman@intel.com>,
+        <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+        <stable@vger.kernel.org>
+References: <20231212112521.3774610-1-quic_prashk@quicinc.com>
+ <20231212112521.3774610-2-quic_prashk@quicinc.com>
+ <2023121518-uncharted-riddance-7c58@gregkh>
+ <849d0ea9-d4f7-c568-968c-88835f64fadf@quicinc.com>
+ <2023122212-stellar-handlebar-2f70@gregkh>
+ <43ff1971-aeb1-21e1-4700-9ee84cd5aede@quicinc.com>
+ <b88a9573-6ab5-ed86-dabc-dd07875f88f3@linux.intel.com>
+From: Prashanth K <quic_prashk@quicinc.com>
+In-Reply-To: <b88a9573-6ab5-ed86-dabc-dd07875f88f3@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: iwVAl3-SMpA7fHL2jrewOcOmbcYgVyAs
+X-Proofpoint-ORIG-GUID: iwVAl3-SMpA7fHL2jrewOcOmbcYgVyAs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1011
+ spamscore=0 suspectscore=0 priorityscore=1501 mlxlogscore=717
+ impostorscore=0 malwarescore=0 lowpriorityscore=0 bulkscore=0 mlxscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401090036
 
-The imgu driver fails to probe because it does not set the pad's flags
-before calling media_entity_pads_init(). Fix the initialization order so
-that the driver probe succeeds. The ops initialization is also moved
-together for readability.
 
-Fixes: a0ca1627b450 ("media: staging/intel-ipu3: Add v4l2 driver based on media framework")
-Cc: <stable@vger.kernel.org> # 6.7
-Signed-off-by: Hidenori Kobayashi <hidenorik@chromium.org>
----
-Changes in v2:
-- Add Fixes tag and revise commit message (Thanks Dan!)
-- Link to v1: https://lore.kernel.org/lkml/20231228093926.748001-1-hidenorik@chromium.org
----
- drivers/staging/media/ipu3/ipu3-v4l2.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/staging/media/ipu3/ipu3-v4l2.c b/drivers/staging/media/ipu3/ipu3-v4l2.c
-index a66f034380c0..3df58eb3e882 100644
---- a/drivers/staging/media/ipu3/ipu3-v4l2.c
-+++ b/drivers/staging/media/ipu3/ipu3-v4l2.c
-@@ -1069,6 +1069,11 @@ static int imgu_v4l2_subdev_register(struct imgu_device *imgu,
- 	struct imgu_media_pipe *imgu_pipe = &imgu->imgu_pipe[pipe];
- 
- 	/* Initialize subdev media entity */
-+	imgu_sd->subdev.entity.ops = &imgu_media_ops;
-+	for (i = 0; i < IMGU_NODE_NUM; i++) {
-+		imgu_sd->subdev_pads[i].flags = imgu_pipe->nodes[i].output ?
-+			MEDIA_PAD_FL_SINK : MEDIA_PAD_FL_SOURCE;
-+	}
- 	r = media_entity_pads_init(&imgu_sd->subdev.entity, IMGU_NODE_NUM,
- 				   imgu_sd->subdev_pads);
- 	if (r) {
-@@ -1076,11 +1081,6 @@ static int imgu_v4l2_subdev_register(struct imgu_device *imgu,
- 			"failed initialize subdev media entity (%d)\n", r);
- 		return r;
- 	}
--	imgu_sd->subdev.entity.ops = &imgu_media_ops;
--	for (i = 0; i < IMGU_NODE_NUM; i++) {
--		imgu_sd->subdev_pads[i].flags = imgu_pipe->nodes[i].output ?
--			MEDIA_PAD_FL_SINK : MEDIA_PAD_FL_SOURCE;
--	}
- 
- 	/* Initialize subdev */
- 	v4l2_subdev_init(&imgu_sd->subdev, &imgu_subdev_ops);
-@@ -1177,15 +1177,15 @@ static int imgu_v4l2_node_setup(struct imgu_device *imgu, unsigned int pipe,
- 	}
- 
- 	/* Initialize media entities */
-+	node->vdev_pad.flags = node->output ?
-+		MEDIA_PAD_FL_SOURCE : MEDIA_PAD_FL_SINK;
-+	vdev->entity.ops = NULL;
- 	r = media_entity_pads_init(&vdev->entity, 1, &node->vdev_pad);
- 	if (r) {
- 		dev_err(dev, "failed initialize media entity (%d)\n", r);
- 		mutex_destroy(&node->lock);
- 		return r;
- 	}
--	node->vdev_pad.flags = node->output ?
--		MEDIA_PAD_FL_SOURCE : MEDIA_PAD_FL_SINK;
--	vdev->entity.ops = NULL;
- 
- 	/* Initialize vbq */
- 	vbq->type = node->vdev_fmt.type;
--- 
-2.43.0.472.g3155946c3a-goog
+On 02-01-24 06:02 pm, Mathias Nyman wrote:
+> 
+> I remember this now.
+> 
+> Original series had three patches, two adding the feature to xhci, and 
+> one for dwc3 enabling it.
+> The xhci patches were fine and got in.
+> 
+> https://marc.info/?l=linux-usb&m=160570849625065&w=2
+> 
+> The last dwc3 patch had issues and never apparently got in
+> 
+> https://marc.info/?l=linux-usb&m=161008968009766&w=2
+> 
+> As this feature hasn't been enabled and code not widely run I think it 
+> would be  better
+> to skip stable for now. Stable can be added later once this has been 
+> successfully running
+> in upstream for a while.
+> 
+> Thanks
+> Mathias
+> 
 
+Thanks Mathias, do you want me to send the patch again without the 
+stable tag?
+
+Regards,
+Prashanth K
 
