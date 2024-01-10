@@ -1,150 +1,90 @@
-Return-Path: <stable+bounces-10421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62E73829383
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 07:00:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2A7F829490
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 08:59:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF591283275
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 05:59:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F7701F26EE3
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 07:59:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15CCBDF71;
-	Wed, 10 Jan 2024 05:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 562613A8EB;
+	Wed, 10 Jan 2024 07:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="f1r611M2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZxeCzBw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B4ADF56;
-	Wed, 10 Jan 2024 05:59:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A8C3C433F1;
-	Wed, 10 Jan 2024 05:59:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1704866394;
-	bh=m5CUiue0GETYIesq8P6U7DRL+kDKwEeBo1yCttuE0MM=;
-	h=Date:To:From:Subject:From;
-	b=f1r611M2gDviTlNg/+s3CxLtKtFipOLq/M5sAVMEnu+UK1TamscCUECb57AXBhe3K
-	 sqT5K6LmyABWZNxhexz3mcrte7KjPasdmNjbKhBh0hiWC4F3bjcKurnkfpXvjssT+P
-	 c0rK8t3CW4IkuovBajr+NOHd0h32cgCZ9mTBMu8g=
-Date: Tue, 09 Jan 2024 21:59:53 -0800
-To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,guoxuenan@huawei.com,jack@suse.cz,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + readahead-avoid-multiple-marked-readahead-pages.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240110055954.2A8C3C433F1@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101783A1CF;
+	Wed, 10 Jan 2024 07:58:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0F50C433C7;
+	Wed, 10 Jan 2024 07:58:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1704873539;
+	bh=lE9/mgHGGaw+iCzOhrYVTWyL3krx3bVGhgsCRq2dNtU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=0ZxeCzBw1fNktCiKJyKjgyS1UxzrXlwuino0MaqulPIBcDECORT42uxKZ4B3u1Jkw
+	 Mus5ASEYcxCX750f2SqbaRWiJHc4krjZOiLhebpeLF7rZSk8CurOosheNz19o2wDfW
+	 iWKW62iH1b8nQtmX6+MrVfi8C9gP0kJ3VQp8AE/c=
+Date: Wed, 10 Jan 2024 08:58:56 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Namhyung Kim <namhyung@kernel.org>
+Cc: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Darren Kenny <darren.kenny@oracle.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Ian Rogers <irogers@google.com>, Jiri Olsa <jolsa@kernel.org>,
+	Lieven Hey <lieven.hey@kdab.com>
+Subject: Re: [PATCH for-5.15] perf inject: Fix GEN_ELF_TEXT_OFFSET for jit
+Message-ID: <2024011043-unearned-manned-12b7@gregkh>
+References: <2024010711-skeletal-material-15e8@gregkh>
+ <20240109214955.451513-1-namhyung@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240109214955.451513-1-namhyung@kernel.org>
 
+On Tue, Jan 09, 2024 at 01:49:55PM -0800, Namhyung Kim wrote:
+> From: Adrian Hunter <adrian.hunter@intel.com>
+> 
+> When a program header was added, it moved the text section but
+> GEN_ELF_TEXT_OFFSET was not updated.
+> 
+> Fix by adding the program header size and aligning.
+> 
+> Fixes: babd04386b1df8c3 ("perf jit: Include program header in ELF files")
+> Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+> Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+> Cc: Ian Rogers <irogers@google.com>
+> Cc: Jiri Olsa <jolsa@kernel.org>
+> Cc: Lieven Hey <lieven.hey@kdab.com>
+> Link: https://lore.kernel.org/r/20221014170905.64069-7-adrian.hunter@intel.com
+> Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+> [namhyung: use "linux/kernel.h" instead to avoid build failure]
+> Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+> ---
+>  tools/perf/util/genelf.h | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 
-The patch titled
-     Subject: readahead: avoid multiple marked readahead pages
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     readahead-avoid-multiple-marked-readahead-pages.patch
+What is the git commit id of this change in Linus's tree?
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/readahead-avoid-multiple-marked-readahead-pages.patch
+thanks,
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Jan Kara <jack@suse.cz>
-Subject: readahead: avoid multiple marked readahead pages
-Date: Thu, 4 Jan 2024 09:58:39 +0100
-
-ra_alloc_folio() marks a page that should trigger next round of async
-readahead.  However it rounds up computed index to the order of page being
-allocated.  This can however lead to multiple consecutive pages being
-marked with readahead flag.  Consider situation with index == 1, mark ==
-1, order == 0.  We insert order 0 page at index 1 and mark it.  Then we
-bump order to 1, index to 2, mark (still == 1) is rounded up to 2 so page
-at index 2 is marked as well.  Then we bump order to 2, index is
-incremented to 4, mark gets rounded to 4 so page at index 4 is marked as
-well.  The fact that multiple pages get marked within a single readahead
-window confuses the readahead logic and results in readahead window being
-trimmed back to 1.  This situation is triggered in particular when maximum
-readahead window size is not a power of two (in the observed case it was
-768 KB) and as a result sequential read throughput suffers.
-
-Fix the problem by rounding 'mark' down instead of up.  Because the index
-is naturally aligned to 'order', we are guaranteed 'rounded mark' == index
-iff 'mark' is within the page we are allocating at 'index' and thus
-exactly one page is marked with readahead flag as required by the
-readahead code and sequential read performance is restored.
-
-This effectively reverts part of commit b9ff43dd2743 ("mm/readahead: Fix
-readahead with large folios").  The commit changed the rounding with the
-rationale:
-
-"...  we were setting the readahead flag on the folio which contains the
-last byte read from the block.  This is wrong because we will trigger
-readahead at the end of the read without waiting to see if a subsequent
-read is going to use the pages we just read."
-
-Although this is true, the fact is this was always the case with read
-sizes not aligned to folio boundaries and large folios in the page cache
-just make the situation more obvious (and frequent).  Also for sequential
-read workloads it is better to trigger the readahead earlier rather than
-later.  It is true that the difference in the rounding and thus earlier
-triggering of the readahead can result in reading more for semi-random
-workloads.  However workloads really suffering from this seem to be rare. 
-In particular I have verified that the workload described in commit
-b9ff43dd2743 ("mm/readahead: Fix readahead with large folios") of reading
-random 100k blocks from a file like:
-
-[reader]
-bs=100k
-rw=randread
-numjobs=1
-size=64g
-runtime=60s
-
-is not impacted by the rounding change and achieves ~70MB/s in both cases.
-
-Link: https://lkml.kernel.org/r/20240104085839.21029-1-jack@suse.cz
-Fixes: b9ff43dd2743 ("mm/readahead: Fix readahead with large folios")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Guo Xuenan <guoxuenan@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/readahead.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/mm/readahead.c~readahead-avoid-multiple-marked-readahead-pages
-+++ a/mm/readahead.c
-@@ -469,7 +469,7 @@ static inline int ra_alloc_folio(struct
- 
- 	if (!folio)
- 		return -ENOMEM;
--	mark = round_up(mark, 1UL << order);
-+	mark = round_down(mark, 1UL << order);
- 	if (index == mark)
- 		folio_set_readahead(folio);
- 	err = filemap_add_folio(ractl->mapping, folio, index, gfp);
-_
-
-Patches currently in -mm which might be from jack@suse.cz are
-
-readahead-avoid-multiple-marked-readahead-pages.patch
-
+greg k-h
 
