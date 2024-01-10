@@ -1,166 +1,107 @@
-Return-Path: <stable+bounces-10416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C964F829301
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 05:27:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E48882930C
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 05:44:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5FF3DB20FB0
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 04:27:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C4B41C253F1
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 04:44:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE53B6125;
-	Wed, 10 Jan 2024 04:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122286FB1;
+	Wed, 10 Jan 2024 04:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="X/3TPrAb"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Xz/QTWGU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747982F35;
-	Wed, 10 Jan 2024 04:27:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB69C433F1;
-	Wed, 10 Jan 2024 04:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B053A6FAF;
+	Wed, 10 Jan 2024 04:43:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFFCC433F1;
+	Wed, 10 Jan 2024 04:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1704860867;
-	bh=gtdHYz/o3ItxvBU7yiVsn2eZsqWL38gdH2GqRZQOZP8=;
-	h=Date:To:From:Subject:From;
-	b=X/3TPrAbTkGcYG9qG9JDITqrG1ouCaFKj5DEydkOctHdK90l3Eb7HCWTenmZhSqCi
-	 P/IpTNRn/6zSd5EsZ0EoeM2IO23nkrvwiszId9BqAQM4PAuMAJqpJ17XDSQNR3iD1W
-	 DB/s0KbKuC1ztjcDWDQeopLLd7xgso6yGniblvrE=
-Date: Tue, 09 Jan 2024 20:27:46 -0800
-To: mm-commits@vger.kernel.org,will@kernel.org,trix@redhat.com,stable@vger.kernel.org,quic_eberman@quicinc.com,ndesaulniers@google.com,nathan@kernel.org,masahiroy@kernel.org,justinstitt@google.com,jstultz@google.com,cmllamas@google.com,akpm@linux-foundation.org
+	s=korg; t=1704861837;
+	bh=RKClabnfbCkpoH3vhzF2N9v90yEPu3odm1xJiTbC6Qk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Xz/QTWGUo/6dZ6/hjpWWoB0F1FjKRq+euouAygBcGRWgToVFGW3nslnADnZ/9K87p
+	 7fu3CoEto8PtfPTdNEMs5pUtTcZ6fMFi4NqNiJn6qtFCwjZWrY1FbOOx1J8sUIuzsH
+	 Ngz4WszWViXwj6voGoRqpPneYmWIfr6RJ3V2k7Fc=
+Date: Tue, 9 Jan 2024 20:43:56 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + scripts-decode_stacktracesh-optionally-use-llvm-utilities.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240110042746.DEB69C433F1@smtp.kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>, David Hildenbrand
+ <david@redhat.com>, Andrei Vagin <avagin@google.com>, Peter Xu
+ <peterx@redhat.com>, Hugh Dickins <hughd@google.com>, Suren Baghdasaryan
+ <surenb@google.com>, Ryan Roberts <ryan.roberts@arm.com>, Kefeng Wang
+ <wangkefeng.wang@huawei.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ =?UTF-8?Q?"Micha=C5=82_Miros=C5=82aw"?= <mirq-linux@rere.qmqm.pl>, Stephen
+ Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>,
+ kernel@collabora.com,
+ syzbot+81227d2bd69e9dedb802@syzkaller.appspotmail.com,
+ stable@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH] fs/proc/task_mmu: move mmu notification mechanism
+ inside mm lock
+Message-Id: <20240109204356.6c088124a9ba0ce0b5a4bb00@linux-foundation.org>
+In-Reply-To: <ZZ10FqvnVWIbyo-9@google.com>
+References: <20240109112445.590736-1-usama.anjum@collabora.com>
+	<ZZ10FqvnVWIbyo-9@google.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Tue, 9 Jan 2024 08:28:06 -0800 Sean Christopherson <seanjc@google.com> wrote:
 
-The patch titled
-     Subject: scripts/decode_stacktrace.sh: optionally use LLVM utilities
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     scripts-decode_stacktracesh-optionally-use-llvm-utilities.patch
+> > -	/* Protection change for the range is going to happen. */
+> > -	if (p.arg.flags & PM_SCAN_WP_MATCHING) {
+> > -		mmu_notifier_range_init(&range, MMU_NOTIFY_PROTECTION_VMA, 0,
+> > -					mm, p.arg.start, p.arg.end);
+> > -		mmu_notifier_invalidate_range_start(&range);
+> > -	}
+> > -
+> >  	for (walk_start = p.arg.start; walk_start < p.arg.end;
+> >  			walk_start = p.arg.walk_end) {
+> >  		long n_out;
+> 
+> Nit, might be worth moving
+> 
+> 		struct mmu_notifier_range range;
+> 
+> inside the loop to guard against stale usage, but that's definitely optional.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/scripts-decode_stacktracesh-optionally-use-llvm-utilities.patch
+Yes, I think that's nicer.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Carlos Llamas <cmllamas@google.com>
-Subject: scripts/decode_stacktrace.sh: optionally use LLVM utilities
-Date: Fri, 29 Sep 2023 03:48:17 +0000
-
-GNU's addr2line can have problems parsing a vmlinux built with LLVM,
-particularly when LTO was used.  In order to decode the traces correctly
-this patch adds the ability to switch to LLVM's utilities readelf and
-addr2line.  The same approach is followed by Will in [1].
-
-Before:
-  $ scripts/decode_stacktrace.sh vmlinux < kernel.log
-  [17716.240635] Call trace:
-  [17716.240646] skb_cow_data (??:?)
-  [17716.240654] esp6_input (ld-temp.o:?)
-  [17716.240666] xfrm_input (ld-temp.o:?)
-  [17716.240674] xfrm6_rcv (??:?)
-  [...]
-
-After:
-  $ LLVM=1 scripts/decode_stacktrace.sh vmlinux < kernel.log
-  [17716.240635] Call trace:
-  [17716.240646] skb_cow_data (include/linux/skbuff.h:2172 net/core/skbuff.c:4503)
-  [17716.240654] esp6_input (net/ipv6/esp6.c:977)
-  [17716.240666] xfrm_input (net/xfrm/xfrm_input.c:659)
-  [17716.240674] xfrm6_rcv (net/ipv6/xfrm6_input.c:172)
-  [...]
-
-Note that one could set CROSS_COMPILE=llvm- instead to hack around this
-issue.  However, doing so can break the decodecode routine as it will
-force the selection of other LLVM utilities down the line e.g.  llvm-as.
-
-[1] https://lore.kernel.org/all/20230914131225.13415-3-will@kernel.org/
-
-Link: https://lkml.kernel.org/r/20230929034836.403735-1-cmllamas@google.com
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Reviewed-by: Elliot Berman <quic_eberman@quicinc.com>
-Tested-by: Justin Stitt <justinstitt@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: John Stultz <jstultz@google.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Tom Rix <trix@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- scripts/decode_stacktrace.sh |   19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
-
---- a/scripts/decode_stacktrace.sh~scripts-decode_stacktracesh-optionally-use-llvm-utilities
-+++ a/scripts/decode_stacktrace.sh
-@@ -16,6 +16,21 @@ elif type c++filt >/dev/null 2>&1 ; then
- 	cppfilt_opts=-i
- fi
+--- a/fs/proc/task_mmu.c~fs-proc-task_mmu-move-mmu-notification-mechanism-inside-mm-lock-fix
++++ a/fs/proc/task_mmu.c
+@@ -2432,7 +2432,6 @@ static long pagemap_scan_flush_buffer(st
  
-+UTIL_SUFFIX=
-+if [[ -z ${LLVM:-} ]]; then
-+	UTIL_PREFIX=${CROSS_COMPILE:-}
-+else
-+	UTIL_PREFIX=llvm-
-+	if [[ ${LLVM} == */ ]]; then
-+		UTIL_PREFIX=${LLVM}${UTIL_PREFIX}
-+	elif [[ ${LLVM} == -* ]]; then
-+		UTIL_SUFFIX=${LLVM}
-+	fi
-+fi
-+
-+READELF=${UTIL_PREFIX}readelf${UTIL_SUFFIX}
-+ADDR2LINE=${UTIL_PREFIX}addr2line${UTIL_SUFFIX}
-+
- if [[ $1 == "-r" ]] ; then
- 	vmlinux=""
- 	basepath="auto"
-@@ -75,7 +90,7 @@ find_module() {
+ static long do_pagemap_scan(struct mm_struct *mm, unsigned long uarg)
+ {
+-	struct mmu_notifier_range range;
+ 	struct pagemap_scan_private p = {0};
+ 	unsigned long walk_start;
+ 	size_t n_ranges_out = 0;
+@@ -2450,6 +2449,7 @@ static long do_pagemap_scan(struct mm_st
  
- 	if [[ "$modpath" != "" ]] ; then
- 		for fn in $(find "$modpath" -name "${module//_/[-_]}.ko*") ; do
--			if readelf -WS "$fn" | grep -qwF .debug_line ; then
-+			if ${READELF} -WS "$fn" | grep -qwF .debug_line ; then
- 				echo $fn
- 				return
- 			fi
-@@ -169,7 +184,7 @@ parse_symbol() {
- 	if [[ $aarray_support == true && "${cache[$module,$address]+isset}" == "isset" ]]; then
- 		local code=${cache[$module,$address]}
- 	else
--		local code=$(${CROSS_COMPILE}addr2line -i -e "$objfile" "$address" 2>/dev/null)
-+		local code=$(${ADDR2LINE} -i -e "$objfile" "$address" 2>/dev/null)
- 		if [[ $aarray_support == true ]]; then
- 			cache[$module,$address]=$code
- 		fi
+ 	for (walk_start = p.arg.start; walk_start < p.arg.end;
+ 			walk_start = p.arg.walk_end) {
++		struct mmu_notifier_range range;
+ 		long n_out;
+ 
+ 		if (fatal_signal_pending(current)) {
 _
 
-Patches currently in -mm which might be from cmllamas@google.com are
 
-scripts-decode_stacktracesh-optionally-use-llvm-utilities.patch
+I'm surprised this code doesn't generate a might-be-used-uninitialized
+warning.  I guess gcc got smarter.
 
 
