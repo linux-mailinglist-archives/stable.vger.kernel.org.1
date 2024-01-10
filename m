@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-10418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C9EB829310
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 05:44:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12964829331
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 06:10:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F68E1C254FD
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 04:44:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93B03282849
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 05:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2D176FB0;
-	Wed, 10 Jan 2024 04:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AEECD530;
+	Wed, 10 Jan 2024 05:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="rnhwtp6g"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="o/afsZPA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88586DDA3;
-	Wed, 10 Jan 2024 04:44:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51440C433F1;
-	Wed, 10 Jan 2024 04:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C023DD520;
+	Wed, 10 Jan 2024 05:10:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 362FBC43330;
+	Wed, 10 Jan 2024 05:10:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1704861848;
-	bh=+6fdKkPZhTIdFY2AyAKSnwV4oFfhJZdPoqrogPUEyAM=;
+	s=korg; t=1704863444;
+	bh=3gcRJZQvHsmgGSwn2CZAQdcFAZ2CDYS0qQx239Wuq4g=;
 	h=Date:To:From:Subject:From;
-	b=rnhwtp6gF68hBPm+inPSE3hvZ6fnEh53xKkQazjIBNfGD/FdkNCZs1TqEZL+0I5qQ
-	 GpSXnz6gGEGaITcvrJLd28XXRet90Xqd8J9u5ZP+5w/lwgbktEeQqZIn55yMdUVPr7
-	 sEUqhzBLLQ1LMQCioN7LyZAjeUBaVYiFQ/tMAZw8=
-Date: Tue, 09 Jan 2024 20:44:07 -0800
-To: mm-commits@vger.kernel.org,wangkefeng.wang@huawei.com,surenb@google.com,stable@vger.kernel.org,sfr@canb.auug.org.au,seanjc@google.com,ryan.roberts@arm.com,peterx@redhat.com,mirq-linux@rere.qmqm.pl,Liam.Howlett@oracle.com,hughd@google.com,david@redhat.com,avagin@google.com,arnd@arndb.de,usama.anjum@collabora.com,akpm@linux-foundation.org
+	b=o/afsZPA/65dyGuTA8UzcNcHRrqo1RsS+Nft+X2kMT3m6dO+Wpd2tydf2G/h1idCD
+	 ZZsYLweRX9pN0ZJ0un2vhjpnZycNNcUeADhJC5sSfoCmCbOXw/+Spw7AkSKkvf1vjM
+	 n6AL99+GqAiQeIl4+0JsL4RDEGQ4iEmII4Fig8F4=
+Date: Tue, 09 Jan 2024 21:10:43 -0800
+To: mm-commits@vger.kernel.org,wens@csie.org,tony.luck@intel.com,tglx@linutronix.de,stable@vger.kernel.org,sre@kernel.org,seanjc@google.com,samuel@sholland.org,pbonzini@redhat.com,pavel@ucw.cz,orsonzhai@gmail.com,mingo@redhat.com,maz@kernel.org,jschoenh@amazon.de,jernej.skrabec@gmail.com,graf@amazon.de,ebiederm@xmission.com,bp@alien8.de,bhe@redhat.com,arnd@arndb.de,jgowans@amazon.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + fs-proc-task_mmu-move-mmu-notification-mechanism-inside-mm-lock.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240110044408.51440C433F1@smtp.kernel.org>
+Subject: + kexec-do-syscore_shutdown-in-kernel_kexec.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240110051044.362FBC43330@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -42,12 +42,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: fs/proc/task_mmu: move mmu notification mechanism inside mm lock
+     Subject: kexec: do syscore_shutdown() in kernel_kexec
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     fs-proc-task_mmu-move-mmu-notification-mechanism-inside-mm-lock.patch
+     kexec-do-syscore_shutdown-in-kernel_kexec.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fs-proc-task_mmu-move-mmu-notification-mechanism-inside-mm-lock.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kexec-do-syscore_shutdown-in-kernel_kexec.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -65,96 +65,99 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Subject: fs/proc/task_mmu: move mmu notification mechanism inside mm lock
-Date: Tue, 9 Jan 2024 16:24:42 +0500
+From: James Gowans <jgowans@amazon.com>
+Subject: kexec: do syscore_shutdown() in kernel_kexec
+Date: Wed, 13 Dec 2023 08:40:04 +0200
 
-Move mmu notification mechanism inside mm lock to prevent race condition
-in other components which depend on it.  The notifier will invalidate
-memory range.  Depending upon the number of iterations, different memory
-ranges would be invalidated.
+syscore_shutdown() runs driver and module callbacks to get the system into
+a state where it can be correctly shut down.  In commit 6f389a8f1dd2 ("PM
+/ reboot: call syscore_shutdown() after disable_nonboot_cpus()")
+syscore_shutdown() was removed from kernel_restart_prepare() and hence got
+(incorrectly?) removed from the kexec flow.  This was innocuous until
+commit 6735150b6997 ("KVM: Use syscore_ops instead of reboot_notifier to
+hook restart/shutdown") changed the way that KVM registered its shutdown
+callbacks, switching from reboot notifiers to syscore_ops.shutdown.  As
+syscore_shutdown() is missing from kexec, KVM's shutdown hook is not run
+and virtualisation is left enabled on the boot CPU which results in triple
+faults when switching to the new kernel on Intel x86 VT-x with VMXE
+enabled.
 
-The following warning would be removed by this patch:
-WARNING: CPU: 0 PID: 5067 at arch/x86/kvm/../../../virt/kvm/kvm_main.c:734 kvm_mmu_notifier_change_pte+0x860/0x960 arch/x86/kvm/../../../virt/kvm/kvm_main.c:734
+Fix this by adding syscore_shutdown() to the kexec sequence.  In terms of
+where to add it, it is being added after migrating the kexec task to the
+boot CPU, but before APs are shut down.  It is not totally clear if this
+is the best place: in commit 6f389a8f1dd2 ("PM / reboot: call
+syscore_shutdown() after disable_nonboot_cpus()") it is stated that
+"syscore_ops operations should be carried with one CPU on-line and
+interrupts disabled." APs are only offlined later in machine_shutdown(),
+so this syscore_shutdown() is being run while APs are still online.  This
+seems to be the correct place as it matches where syscore_shutdown() is
+run in the reboot and halt flows - they also run it before APs are shut
+down.  The assumption is that the commit message in commit 6f389a8f1dd2
+("PM / reboot: call syscore_shutdown() after disable_nonboot_cpus()") is
+no longer valid.
 
-There is no behavioural and performance change with this patch when
-there is no component registered with the mmu notifier.
+KVM has been discussed here as it is what broke loudly by not having
+syscore_shutdown() in kexec, but this change impacts more than just KVM;
+all drivers/modules which register a syscore_ops.shutdown callback will
+now be invoked in the kexec flow.  Looking at some of them like x86 MCE it
+is probably more correct to also shut these down during kexec. 
+Maintainers of all drivers which use syscore_ops.shutdown are added on CC
+for visibility.  They are:
 
-Link: https://lkml.kernel.org/r/20240109112445.590736-1-usama.anjum@collabora.com
-Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Reported-by: syzbot+81227d2bd69e9dedb802@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/000000000000f6d051060c6785bc@google.com/
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Cc: Andrei Vagin <avagin@google.com>
+arch/powerpc/platforms/cell/spu_base.c  .shutdown = spu_shutdown,
+arch/x86/kernel/cpu/mce/core.c	        .shutdown = mce_syscore_shutdown,
+arch/x86/kernel/i8259.c                 .shutdown = i8259A_shutdown,
+drivers/irqchip/irq-i8259.c	        .shutdown = i8259A_shutdown,
+drivers/irqchip/irq-sun6i-r.c	        .shutdown = sun6i_r_intc_shutdown,
+drivers/leds/trigger/ledtrig-cpu.c	.shutdown = ledtrig_cpu_syscore_shutdown,
+drivers/power/reset/sc27xx-poweroff.c	.shutdown = sc27xx_poweroff_shutdown,
+kernel/irq/generic-chip.c	        .shutdown = irq_gc_shutdown,
+virt/kvm/kvm_main.c	                .shutdown = kvm_shutdown,
+
+This has been tested by doing a kexec on x86_64 and aarch64.
+
+Link: https://lkml.kernel.org/r/20231213064004.2419447-1-jgowans@amazon.com
+Fixes: 6735150b6997 ("KVM: Use syscore_ops instead of reboot_notifier to hook restart/shutdown")
+Signed-off-by: James Gowans <jgowans@amazon.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Sean Christopherson <seanjc@google.com>
+Cc: Marc Zyngier <maz@kernel.org>
 Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Michał Mirosław <mirq-linux@rere.qmqm.pl>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Chen-Yu Tsai <wens@csie.org>
+Cc: Jernej Skrabec <jernej.skrabec@gmail.com>
+Cc: Samuel Holland <samuel@sholland.org>
+Cc: Pavel Machek <pavel@ucw.cz>
+Cc: Sebastian Reichel <sre@kernel.org>
+Cc: Orson Zhai <orsonzhai@gmail.com>
+Cc: Alexander Graf <graf@amazon.de>
+Cc: Jan H. Schoenherr <jschoenh@amazon.de>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/proc/task_mmu.c |   22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ kernel/kexec_core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/proc/task_mmu.c~fs-proc-task_mmu-move-mmu-notification-mechanism-inside-mm-lock
-+++ a/fs/proc/task_mmu.c
-@@ -2448,13 +2448,6 @@ static long do_pagemap_scan(struct mm_st
- 	if (ret)
- 		return ret;
+--- a/kernel/kexec_core.c~kexec-do-syscore_shutdown-in-kernel_kexec
++++ a/kernel/kexec_core.c
+@@ -1257,6 +1257,7 @@ int kernel_kexec(void)
+ 		kexec_in_progress = true;
+ 		kernel_restart_prepare("kexec reboot");
+ 		migrate_to_reboot_cpu();
++		syscore_shutdown();
  
--	/* Protection change for the range is going to happen. */
--	if (p.arg.flags & PM_SCAN_WP_MATCHING) {
--		mmu_notifier_range_init(&range, MMU_NOTIFY_PROTECTION_VMA, 0,
--					mm, p.arg.start, p.arg.end);
--		mmu_notifier_invalidate_range_start(&range);
--	}
--
- 	for (walk_start = p.arg.start; walk_start < p.arg.end;
- 			walk_start = p.arg.walk_end) {
- 		long n_out;
-@@ -2467,8 +2460,20 @@ static long do_pagemap_scan(struct mm_st
- 		ret = mmap_read_lock_killable(mm);
- 		if (ret)
- 			break;
-+
-+		/* Protection change for the range is going to happen. */
-+		if (p.arg.flags & PM_SCAN_WP_MATCHING) {
-+			mmu_notifier_range_init(&range, MMU_NOTIFY_PROTECTION_VMA, 0,
-+						mm, walk_start, p.arg.end);
-+			mmu_notifier_invalidate_range_start(&range);
-+		}
-+
- 		ret = walk_page_range(mm, walk_start, p.arg.end,
- 				      &pagemap_scan_ops, &p);
-+
-+		if (p.arg.flags & PM_SCAN_WP_MATCHING)
-+			mmu_notifier_invalidate_range_end(&range);
-+
- 		mmap_read_unlock(mm);
- 
- 		n_out = pagemap_scan_flush_buffer(&p);
-@@ -2494,9 +2499,6 @@ static long do_pagemap_scan(struct mm_st
- 	if (pagemap_scan_writeback_args(&p.arg, uarg))
- 		ret = -EFAULT;
- 
--	if (p.arg.flags & PM_SCAN_WP_MATCHING)
--		mmu_notifier_invalidate_range_end(&range);
--
- 	kfree(p.vec_buf);
- 	return ret;
- }
+ 		/*
+ 		 * migrate_to_reboot_cpu() disables CPU hotplug assuming that
 _
 
-Patches currently in -mm which might be from usama.anjum@collabora.com are
+Patches currently in -mm which might be from jgowans@amazon.com are
 
-fs-proc-task_mmu-move-mmu-notification-mechanism-inside-mm-lock.patch
+kexec-do-syscore_shutdown-in-kernel_kexec.patch
 
 
