@@ -1,129 +1,96 @@
-Return-Path: <stable+bounces-10443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 206E0829D96
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 16:32:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D44FE829DBD
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 16:40:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E234284AE5
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 15:32:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1711D1C226BE
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 15:40:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 458254C3A6;
-	Wed, 10 Jan 2024 15:32:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="2e4iu7+m"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC93D4C60A;
+	Wed, 10 Jan 2024 15:39:23 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D001D683;
-	Wed, 10 Jan 2024 15:32:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A287C433C7;
-	Wed, 10 Jan 2024 15:32:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1704900740;
-	bh=SSE859ZKpB0eYzK233X0/uAqLdDI1iU0hHw9Rn7AzoU=;
-	h=Date:To:From:Subject:From;
-	b=2e4iu7+mRAqic3MkQ65KB95c0retXan88By6VPdL0iI6tc/K20POH4NI3/YlDO/To
-	 qH770I0s69Q+P0vLspmTyYb7ebscJSoERJ+Wk+EBKTzFIIMkLAe5badAEGtQOWVuPW
-	 zXIvT3tYcC6xXHtLQegO8ZSKEibBPgMp7il0Y5ao=
-Date: Wed, 10 Jan 2024 07:32:19 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,mhocko@suse.com,hca@linux.ibm.com,gor@linux.ibm.com,gerald.schaefer@linux.ibm.com,david@redhat.com,aneesh.kumar@linux.ibm.com,agordeev@linux.ibm.com,sumanthk@linux.ibm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-memory_hotplug-fix-memmap_on_memory-sysfs-value-retrieval.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240110153220.3A287C433C7@smtp.kernel.org>
+Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
+	by smtp.subspace.kernel.org (Postfix) with SMTP id 224524C3BD
+	for <stable@vger.kernel.org>; Wed, 10 Jan 2024 15:39:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netrider.rowland.org
+Received: (qmail 568340 invoked by uid 1000); 10 Jan 2024 10:39:13 -0500
+Date: Wed, 10 Jan 2024 10:39:13 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Udipto Goswami <quic_ugoswami@quicinc.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+  Krishna Kurapati <quic_kriskura@quicinc.com>,
+  Sergei Shtylyov <sergei.shtylyov@gmail.com>, linux-usb@vger.kernel.org,
+  linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v5] usb: core: Prevent null pointer dereference in
+ update_port_device_state
+Message-ID: <20abaa31-9558-4a56-9d34-4407f175cada@rowland.harvard.edu>
+References: <20240110095814.7626-1-quic_ugoswami@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240110095814.7626-1-quic_ugoswami@quicinc.com>
 
+On Wed, Jan 10, 2024 at 03:28:14PM +0530, Udipto Goswami wrote:
+> Currently, the function update_port_device_state gets the usb_hub from
+> udev->parent by calling usb_hub_to_struct_hub.
+> However, in case the actconfig or the maxchild is 0, the usb_hub would
+> be NULL and upon further accessing to get port_dev would result in null
+> pointer dereference.
+> 
+> Fix this by introducing an if check after the usb_hub is populated.
+> 
+> Fixes: 83cb2604f641 ("usb: core: add sysfs entry for usb device state")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Udipto Goswami <quic_ugoswami@quicinc.com>
+> ---
+> v5: Addressed nit picks in commit and the comment.
+> v4: Fixed minor mistakes in the comment.
+> v3: Re-wrote the comment for better context.
+> v2: Introduced comment for the if check & CC'ed stable.
 
-The patch titled
-     Subject: mm/memory_hotplug: fix memmap_on_memory sysfs value retrieval
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-memory_hotplug-fix-memmap_on_memory-sysfs-value-retrieval.patch
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memory_hotplug-fix-memmap_on_memory-sysfs-value-retrieval.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Subject: mm/memory_hotplug: fix memmap_on_memory sysfs value retrieval
-Date: Wed, 10 Jan 2024 15:01:27 +0100
-
-set_memmap_mode() stores the kernel parameter memmap mode as an integer. 
-However, the get_memmap_mode() function utilizes param_get_bool() to fetch
-the value as a boolean, leading to potential endianness issue.  On
-Big-endian architectures, the memmap_on_memory is consistently displayed
-as 'N' regardless of its actual status.
-
-To address this endianness problem, the solution involves obtaining the
-mode as an integer.  This adjustment ensures the proper display of the
-memmap_on_memory parameter, presenting it as one of the following options:
-Force, Y, or N.
-
-Link: https://lkml.kernel.org/r/20240110140127.241451-1-sumanthk@linux.ibm.com
-Fixes: 2d1f649c7c08 ("mm/memory_hotplug: support memmap_on_memory when memmap is not aligned to pageblocks")
-Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Suggested-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: <stable@vger.kernel.org>	[6.6+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/memory_hotplug.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
---- a/mm/memory_hotplug.c~mm-memory_hotplug-fix-memmap_on_memory-sysfs-value-retrieval
-+++ a/mm/memory_hotplug.c
-@@ -101,9 +101,11 @@ static int set_memmap_mode(const char *v
- 
- static int get_memmap_mode(char *buffer, const struct kernel_param *kp)
- {
--	if (*((int *)kp->arg) == MEMMAP_ON_MEMORY_FORCE)
--		return sprintf(buffer,  "force\n");
--	return param_get_bool(buffer, kp);
-+	int mode = *((int *)kp->arg);
-+
-+	if (mode == MEMMAP_ON_MEMORY_FORCE)
-+		return sprintf(buffer, "force\n");
-+	return sprintf(buffer, "%c\n", mode ? 'Y' : 'N');
- }
- 
- static const struct kernel_param_ops memmap_mode_ops = {
-_
-
-Patches currently in -mm which might be from sumanthk@linux.ibm.com are
-
-mm-memory_hotplug-fix-memmap_on_memory-sysfs-value-retrieval.patch
-mm-memory_hotplug-introduce-mem_prepare_online-mem_finish_offline-notifiers.patch
-s390-mm-allocate-vmemmap-pages-from-self-contained-memory-range.patch
-s390-sclp-remove-unhandled-memory-notifier-type.patch
-s390-mm-implement-mem_prepare_online-mem_finish_offline-notifiers.patch
-s390-enable-mhp_memmap_on_memory.patch
-
+>  drivers/usb/core/hub.c | 16 +++++++++++++---
+>  1 file changed, 13 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+> index ffd7c99e24a3..48409d51ea43 100644
+> --- a/drivers/usb/core/hub.c
+> +++ b/drivers/usb/core/hub.c
+> @@ -2053,9 +2053,19 @@ static void update_port_device_state(struct usb_device *udev)
+>  
+>  	if (udev->parent) {
+>  		hub = usb_hub_to_struct_hub(udev->parent);
+> -		port_dev = hub->ports[udev->portnum - 1];
+> -		WRITE_ONCE(port_dev->state, udev->state);
+> -		sysfs_notify_dirent(port_dev->state_kn);
+> +
+> +		/*
+> +		 * The Link Layer Validation System Driver (lvstest)
+> +		 * has a test step to unbind the hub before running the
+> +		 * rest of the procedure. This triggers hub_disconnect
+> +		 * which will set the hub's maxchild to 0, further
+> +		 * resulting in usb_hub_to_struct_hub returning NULL.
+> +		 */
+> +		if (hub) {
+> +			port_dev = hub->ports[udev->portnum - 1];
+> +			WRITE_ONCE(port_dev->state, udev->state);
+> +			sysfs_notify_dirent(port_dev->state_kn);
+> +		}
+>  	}
+>  }
+>  
+> -- 
+> 2.17.1
+> 
 
