@@ -1,96 +1,145 @@
-Return-Path: <stable+bounces-10444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44FE829DBD
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 16:40:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5260829DCA
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 16:42:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1711D1C226BE
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 15:40:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 621FD1F27813
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 15:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC93D4C60A;
-	Wed, 10 Jan 2024 15:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E46C4C3AC;
+	Wed, 10 Jan 2024 15:42:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="rUNIu27o"
 X-Original-To: stable@vger.kernel.org
-Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
-	by smtp.subspace.kernel.org (Postfix) with SMTP id 224524C3BD
-	for <stable@vger.kernel.org>; Wed, 10 Jan 2024 15:39:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netrider.rowland.org
-Received: (qmail 568340 invoked by uid 1000); 10 Jan 2024 10:39:13 -0500
-Date: Wed, 10 Jan 2024 10:39:13 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Udipto Goswami <quic_ugoswami@quicinc.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-  Krishna Kurapati <quic_kriskura@quicinc.com>,
-  Sergei Shtylyov <sergei.shtylyov@gmail.com>, linux-usb@vger.kernel.org,
-  linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v5] usb: core: Prevent null pointer dereference in
- update_port_device_state
-Message-ID: <20abaa31-9558-4a56-9d34-4407f175cada@rowland.harvard.edu>
-References: <20240110095814.7626-1-quic_ugoswami@quicinc.com>
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336654BA9C;
+	Wed, 10 Jan 2024 15:42:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4ABC43390;
+	Wed, 10 Jan 2024 15:42:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1704901335;
+	bh=lgBhteLAx1FByiMEbREllr2C5IQMJgtcd/RLMHa+nrs=;
+	h=Date:To:From:Subject:From;
+	b=rUNIu27oBWRx2YjX/x8L6wcTPNB1rF3SW9Mq0dq2IJ1uzXC/wDRtdvu4zc3Cm1JZ4
+	 4QsfJFb2ZSu58n2gYIaT7KVOpsei7tzVd5DQZ/5pz3XhPogDFi9pqki5pBSthctDRp
+	 DquxTDSGzvwquktViiNmCBPxs2BpWFGQeMD0OaG0=
+Date: Wed, 10 Jan 2024 07:42:14 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,tzimmermann@suse.de,tvrtko.ursulin@linux.intel.com,stable@vger.kernel.org,rodrigo.vivi@intel.com,ray.huang@amd.com,mripard@kernel.org,maarten.lankhorst@linux.intel.com,joonas.lahtinen@linux.intel.com,jarkko@kernel.org,jani.nikula@linux.intel.com,hughd@google.com,djwong@kernel.org,dhowells@redhat.com,dave.hansen@linux.intel.com,daniel@ffwll.ch,christian.koenig@amd.com,chandan.babu@oracle.com,airlied@gmail.com,hch@lst.de,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-add-a-mapping_clear_large_folios-helper.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240110154215.8D4ABC43390@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240110095814.7626-1-quic_ugoswami@quicinc.com>
 
-On Wed, Jan 10, 2024 at 03:28:14PM +0530, Udipto Goswami wrote:
-> Currently, the function update_port_device_state gets the usb_hub from
-> udev->parent by calling usb_hub_to_struct_hub.
-> However, in case the actconfig or the maxchild is 0, the usb_hub would
-> be NULL and upon further accessing to get port_dev would result in null
-> pointer dereference.
-> 
-> Fix this by introducing an if check after the usb_hub is populated.
-> 
-> Fixes: 83cb2604f641 ("usb: core: add sysfs entry for usb device state")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Udipto Goswami <quic_ugoswami@quicinc.com>
-> ---
-> v5: Addressed nit picks in commit and the comment.
-> v4: Fixed minor mistakes in the comment.
-> v3: Re-wrote the comment for better context.
-> v2: Introduced comment for the if check & CC'ed stable.
 
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+The patch titled
+     Subject: mm: add a mapping_clear_large_folios helper
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-add-a-mapping_clear_large_folios-helper.patch
 
->  drivers/usb/core/hub.c | 16 +++++++++++++---
->  1 file changed, 13 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-> index ffd7c99e24a3..48409d51ea43 100644
-> --- a/drivers/usb/core/hub.c
-> +++ b/drivers/usb/core/hub.c
-> @@ -2053,9 +2053,19 @@ static void update_port_device_state(struct usb_device *udev)
->  
->  	if (udev->parent) {
->  		hub = usb_hub_to_struct_hub(udev->parent);
-> -		port_dev = hub->ports[udev->portnum - 1];
-> -		WRITE_ONCE(port_dev->state, udev->state);
-> -		sysfs_notify_dirent(port_dev->state_kn);
-> +
-> +		/*
-> +		 * The Link Layer Validation System Driver (lvstest)
-> +		 * has a test step to unbind the hub before running the
-> +		 * rest of the procedure. This triggers hub_disconnect
-> +		 * which will set the hub's maxchild to 0, further
-> +		 * resulting in usb_hub_to_struct_hub returning NULL.
-> +		 */
-> +		if (hub) {
-> +			port_dev = hub->ports[udev->portnum - 1];
-> +			WRITE_ONCE(port_dev->state, udev->state);
-> +			sysfs_notify_dirent(port_dev->state_kn);
-> +		}
->  	}
->  }
->  
-> -- 
-> 2.17.1
-> 
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-add-a-mapping_clear_large_folios-helper.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Christoph Hellwig <hch@lst.de>
+Subject: mm: add a mapping_clear_large_folios helper
+Date: Wed, 10 Jan 2024 10:21:08 +0100
+
+Patch series "disable large folios for shmem file used by xfs xfile".
+
+Darrick reported that the fairly new XFS xfile code blows up when force
+enabling large folio for shmem.  This series fixes this quickly by
+disabling large folios for this particular shmem file for now until it can
+be fixed properly, which will be a lot more invasive.
+
+
+This patch (of 2):
+
+Users of shmem_kernel_file_setup might not be able to deal with large
+folios (yet).  Give them a way to disable large folio support on their
+mapping.
+
+Link: https://lkml.kernel.org/r/20240110092109.1950011-1-hch@lst.de
+Link: https://lkml.kernel.org/r/20240110092109.1950011-2-hch@lst.de
+Fixes: 137db333b2918 ("xfs: teach xfile to pass back direct-map pages to caller")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Cc: Chandan Babu R <chandan.babu@oracle.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Dave Airlie <airlied@gmail.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Huang Rui <ray.huang@amd.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/pagemap.h |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+--- a/include/linux/pagemap.h~mm-add-a-mapping_clear_large_folios-helper
++++ a/include/linux/pagemap.h
+@@ -343,6 +343,20 @@ static inline void mapping_set_large_fol
+ 	__set_bit(AS_LARGE_FOLIO_SUPPORT, &mapping->flags);
+ }
+ 
++/**
++ * mapping_clear_large_folios() - Disable large folio support for a mapping
++ * @mapping: The mapping.
++ *
++ * This can be called to undo the effect of mapping_set_large_folios().
++ *
++ * Context: This should not be called while the inode is active as it
++ * is non-atomic.
++ */
++static inline void mapping_clear_large_folios(struct address_space *mapping)
++{
++	__clear_bit(AS_LARGE_FOLIO_SUPPORT, &mapping->flags);
++}
++
+ /*
+  * Large folio support currently depends on THP.  These dependencies are
+  * being worked on but are not yet fixed.
+_
+
+Patches currently in -mm which might be from hch@lst.de are
+
+mm-add-a-mapping_clear_large_folios-helper.patch
+xfs-disable-large-folio-support-in-xfile_create.patch
+
 
