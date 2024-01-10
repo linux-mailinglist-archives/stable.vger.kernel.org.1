@@ -1,110 +1,133 @@
-Return-Path: <stable+bounces-10435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7B73829906
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 12:29:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F3738299A6
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 12:48:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7805E28202D
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 11:29:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C21B21F25D80
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 11:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556B94779D;
-	Wed, 10 Jan 2024 11:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC4847F49;
+	Wed, 10 Jan 2024 11:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=marliere.net header.i=@marliere.net header.b="HioB4ei+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g5G8AHBk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 553FA4776D;
-	Wed, 10 Jan 2024 11:29:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=marliere.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-28c7e30c83fso2615733a91.1;
-        Wed, 10 Jan 2024 03:29:29 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704886168; x=1705490968;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:dkim-signature:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=sd9KoMYLeziNK4DDc7cQHmh6PfB06g+zdl70q6cPYIg=;
-        b=f1rP7yr3tWhzGDwLAmA9nqhIF//0k96EpX9alVIDLamDElSSTV3UNtvYyDd+mJGsen
-         tMomz39JcaytLqrrp+zAn/jPdaHAvrHG1Kks2vuOf3b9FqRThEMgDDZH5wVwYHo28Y9N
-         ujO3N6CVdEkg+nXizBlHNJB/lwlGQ7AIORDEr04pOryzLR4XnhyPHqdoDtYZzLjoTCh5
-         GWgJb4jU3HEJXDr4InmpeoSc6KvVttLxpnuFRiQueGzwFWN+EQzjlg0SETeZAtfNmC2d
-         g2P0MgionfLJkxFIKdl3viwkQbqVXyqQd+Q3Zqs22wWB+Ryt2opDYfEGbrYHNOqvj3xM
-         ITPQ==
-X-Gm-Message-State: AOJu0YzZ4vlHssYtXYCKp7+PC/KrKziWooSk9i/HZUOndDgaMx8vAHTg
-	tbSIdqyhMXOnQO3u0w6mWDE=
-X-Google-Smtp-Source: AGHT+IGUaroPt6ao2/Q+kSx/LjIuD93mF78quMxU86dAnctI1ISMFoW3uRBD7N6iSjeIEqnKq9uaDw==
-X-Received: by 2002:a17:90a:b883:b0:28c:5b7:87c5 with SMTP id o3-20020a17090ab88300b0028c05b787c5mr411371pjr.2.1704886168502;
-        Wed, 10 Jan 2024 03:29:28 -0800 (PST)
-Received: from mail.marliere.net ([24.199.118.162])
-        by smtp.gmail.com with ESMTPSA id r7-20020a17090ad40700b00286920600a9sm1283168pju.32.2024.01.10.03.29.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jan 2024 03:29:27 -0800 (PST)
-Date: Wed, 10 Jan 2024 08:29:26 -0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
-	s=2023; t=1704886166;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=sd9KoMYLeziNK4DDc7cQHmh6PfB06g+zdl70q6cPYIg=;
-	b=HioB4ei+m4iR+RQEiNF+din6hdYrf6xMT6HKSS2BpKdw+CcHDihLB3fyM2aDVCUMvmKHpj
-	FJSy8F26WGNT6Gvqoyf2j+Ctss10SrgFfIrHJ3MbwGHlfuPMrDIzy8VgYjU5LH9BB1uqhC
-	PSpxWvWPueimV/USCu5ziJTIhgTptIfOkrSKshflZR7Lfh/XndzC2J69yem1AOogCkaNtG
-	TVPL5Zl2LenfqSoFR4RcDeJZQg6qYCP4xr9UAXwnFO7SGcEIJ4DMQAcshXlmEOD9dEJ22X
-	LQtZ6N0rL/O5VDpbyXTv2KAB94dmd9gznwo4ABAopTYraXooHnhna13lIGK90g==
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=ricardo@marliere.net smtp.mailfrom=ricardo@marliere.net
-From: "Ricardo B. Marliere" <ricardo@marliere.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
-	allen.lkml@gmail.com
-Subject: Re: [PATCH 6.6 000/124] 6.6.11-rc1 review
-Message-ID: <4mmnqui4njnmr4lik4jf6iaoi3ykivewytoba4dhydk3qr6juj@2im6qkfei2lv>
-References: <20240108150602.976232871@linuxfoundation.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F604CB39;
+	Wed, 10 Jan 2024 11:44:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7588C433A6;
+	Wed, 10 Jan 2024 11:44:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704887057;
+	bh=Jmw8wSq2Lmym4LTn+EPUUNqMjAmmRyoITXyDdYPs5OI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=g5G8AHBkvnpyT/diGNZrlLUSH9ElTbMePJuZOpdwUZOZnNH7z1UHVkgRbFYKGdsW8
+	 nnMoGenbVHKZ1GMCjhFRnXcPbG+N51dJSJRDfK0W43DYq9uxedHq6aVF+2eEMDniTf
+	 NX2IBmajI971yb+TQsphykGHFy/Umo7FZNSQn5fTj4p0FlanpBE40lBT9xqdK4eHvY
+	 PTfs0voLcCAxhwOQcYyUstYrFr9961ReMrezfAXOHJV6643fmhTSLIi258wY1H8ED5
+	 7k4N9JrrnbZ9KHMSJOglfc7e3VlwIz+edL+2ZCZXlcQwal/rqsIV/ErqgjOYUqbP2n
+	 kZxxGP16USUuQ==
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a2adc52f213so325648266b.0;
+        Wed, 10 Jan 2024 03:44:17 -0800 (PST)
+X-Gm-Message-State: AOJu0YwiAhndRa8eVtxZqsySY81ah9UXm/NBty/VlHZVFMjhPeauQnLh
+	nd5Ch1/Vug0uFKCGb5yGswcV4wuwPAJdSXhWsEw=
+X-Google-Smtp-Source: AGHT+IGXX0A6N0d/UZrIdrom4CojUCM5Rsn4OuqmU75TcF1sPqNZyXNM7eAzbkvq72xKRJ29mFmSD533tnaokk0cuk4=
+X-Received: by 2002:a17:907:7205:b0:a28:a940:5305 with SMTP id
+ dr5-20020a170907720500b00a28a9405305mr696168ejc.6.1704887056150; Wed, 10 Jan
+ 2024 03:44:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240108150602.976232871@linuxfoundation.org>
+References: <0d35011f8afe8bd55c1f0318b0d2515ea10eac7f.1704839283.git.wqu@suse.com>
+ <20240110005428.GN28693@twin.jikos.cz>
+In-Reply-To: <20240110005428.GN28693@twin.jikos.cz>
+From: Filipe Manana <fdmanana@kernel.org>
+Date: Wed, 10 Jan 2024 11:43:39 +0000
+X-Gmail-Original-Message-ID: <CAL3q7H5rryOLzp3EKq8RTbjMHMHeaJubfpsVLF6H4qJnKCUR1w@mail.gmail.com>
+Message-ID: <CAL3q7H5rryOLzp3EKq8RTbjMHMHeaJubfpsVLF6H4qJnKCUR1w@mail.gmail.com>
+Subject: Re: [PATCH] btrfs: defrag: reject unknown flags of btrfs_ioctl_defrag_range_args
+To: dsterba@suse.cz
+Cc: Qu Wenruo <wqu@suse.com>, linux-btrfs@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On  8 Jan 16:07, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.11 release.
-> There are 124 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 10 Jan 2024 15:05:35 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.11-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Wed, Jan 10, 2024 at 12:55=E2=80=AFAM David Sterba <dsterba@suse.cz> wro=
+te:
+>
+> On Wed, Jan 10, 2024 at 08:58:26AM +1030, Qu Wenruo wrote:
+> > Add extra sanity check for btrfs_ioctl_defrag_range_args::flags.
+> >
+> > This is not really to enhance fuzzing tests, but as a preparation for
+> > future expansion on btrfs_ioctl_defrag_range_args.
+> >
+> > In the future we're adding new members, allowing more fine tuning for
+> > btrfs defrag.
+> > Without the -ENONOTSUPP error, there would be no way to detect if the
+> > kernel supports those new defrag features.
+> >
+> > cc: stable@vger.kernel.org #4.14+
+> > Signed-off-by: Qu Wenruo <wqu@suse.com>
+>
+> Added to misc-next, thanks.
+>
+> > ---
+> >  fs/btrfs/ioctl.c           | 4 ++++
+> >  include/uapi/linux/btrfs.h | 2 ++
+> >  2 files changed, 6 insertions(+)
+> >
+> > diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
+> > index a1743904202b..3a846b983b28 100644
+> > --- a/fs/btrfs/ioctl.c
+> > +++ b/fs/btrfs/ioctl.c
+> > @@ -2608,6 +2608,10 @@ static int btrfs_ioctl_defrag(struct file *file,=
+ void __user *argp)
+> >                               ret =3D -EFAULT;
+> >                               goto out;
+> >                       }
+> > +                     if (range.flags & ~BTRFS_DEFRAG_RANGE_FLAGS_SUPP)=
+ {
+> > +                             ret =3D -EOPNOTSUPP;
+>
+> This should be EINVAL, this is for invalid parameter values or
+> combinations, EOPNOTSUPP would be for the whole ioctl as not supported.
 
-System runs fine, no noticeable regressions.
+I'm confused now.
+We return EOPNOTSUPP for a lot of ioctls when they are given an
+unknown flag, for example
+at btrfs_ioctl_scrub():
 
-Linux version 6.6.11-rc1-ktest-gc52463eb66c8 (rbmarliere@debian) (gcc (Debian 13.2.0-9) 13.2.0, GNU ld (GNU Binutils for Debian) 2.41.50.20231227) #1 SMP PREEMPT_DYNAMIC Tue Jan  9 14:26:52 -03 2024
+if (sa->flags & ~BTRFS_SCRUB_SUPPORTED_FLAGS) {
+    ret =3D -EOPNOTSUPP;
+    goto out;
+}
 
-Tested-by: Ricardo B. Marliere <ricardo@marliere.net>
+Or at btrfs_ioctl_snap_create_v2():
 
-Thanks,
--	Ricardo
+if (vol_args->flags & ~BTRFS_SUBVOL_CREATE_ARGS_MASK) {
+   ret =3D -EOPNOTSUPP;
+   goto free_args;
+}
+
+We also do similar for fallocate, at btrfs_fallocate():
+
+if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE |
+        FALLOC_FL_ZERO_RANGE))
+    return -EOPNOTSUPP;
+
+I was under the expectation that EOPNOTSUPP is the correct thing to do
+in this patch.
+So what's different in this patch from those existing examples to
+justify EINVAL instead?
+
+Thanks.
+
+>
 
