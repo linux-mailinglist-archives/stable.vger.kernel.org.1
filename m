@@ -1,124 +1,154 @@
-Return-Path: <stable+bounces-10425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEDDB8294DD
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 09:12:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7698D82955E
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 09:48:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E46341C2579C
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 08:12:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FC47B24F16
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 08:48:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5041C3D967;
-	Wed, 10 Jan 2024 08:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1660239FC8;
+	Wed, 10 Jan 2024 08:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SQlp1VWr"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="G7KSC65h"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065753EA70;
-	Wed, 10 Jan 2024 08:12:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB37C433F1;
-	Wed, 10 Jan 2024 08:12:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704874326;
-	bh=R1kRyvFyie9bKSVcbmLw40Yht8pGWPEU2b8QAHOxWHQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SQlp1VWrNtN5sqOM/Q21XGCkCRIJ51Cm9y4InIlGy6zFI1LtK9h1hKXQuIZu+Aknu
-	 Mqp6WcYpif4RMZi3CvhSAL/4fsysfOi6Cif/njrdgAcgti+OxL1uBZ2Ls8AJTUhzMy
-	 e6uDISvtKraYM7U/8/kLuIPoPKFSs/KOUdqA6ndeQH6P+PJRUBHspDEyUJ74MpKhTi
-	 j7wmFeZUJR9WBt7KMIP/l0BOjqjhYP21f43dOxOSx+Nf8T7jP1F5abcPxRBhkSo655
-	 KzM0FNx4SD5wIW2Gy2CoWr9kNyZjtZhAvTC3S03bs0SC8kpy5TEP/Ja/JZ0kRdLn5x
-	 LzMJi9ttPpf7w==
-Received: from johan by xi.lan with local (Exim 4.96.2)
-	(envelope-from <johan@kernel.org>)
-	id 1rNTh0-0007J5-21;
-	Wed, 10 Jan 2024 09:12:07 +0100
-Date: Wed, 10 Jan 2024 09:12:06 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Matthias Kaehlcke <mka@chromium.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Bjorn Andersson <quic_bjorande@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	linux-bluetooth@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
-	Doug Anderson <dianders@google.com>,
-	Stephen Boyd <swboyd@google.com>
-Subject: Re: [PATCH] Bluetooth: qca: fix device-address endianness
-Message-ID: <ZZ5RVpL88XNbgKIy@hovoldconsulting.com>
-References: <20231227180306.6319-1-johan+linaro@kernel.org>
- <ZZ15c1HUQIH2cY5o@google.com>
- <ZZ1-ehpU-g6i9Qem@hovoldconsulting.com>
- <ZZ2IOQEekFffJoHQ@google.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 440EE37149;
+	Wed, 10 Jan 2024 08:48:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40A8fNNO020732;
+	Wed, 10 Jan 2024 08:48:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	qcppdkim1; bh=TSIDIGzx91eb9galuGPWbdpthE7PmbdcJStbdBlFstk=; b=G7
+	KSC65hvc465oP3e708IoRORMfBEVGVeCZv4x5JWCobpdGxRH9Ur99JSpa5UOk9H/
+	f61HXmDm1cTMFnVX8Ru7Dip0fiW72Jc+qCN1Kr251NCuiwOBdt7bEwtTNzotUatl
+	KbyRDtebgFl2oiGxEnF7AVrDviU6MOyUimA7YSRF9VFgrudXmTYRhJMgzfYhmE8i
+	oEZ0SHcOOb+3vjAyBrDZwn2/m5KmkBGrv7xH++o7y/yVf0qj7kDZ8E0U2OgpB7WR
+	0RNSUmC34GC/InsNB/LVhr8x32TKtUQHZGWq3K2zQq5zPDqpg6Kt94kX9MPxvhL6
+	QsNrbifuRS+xfMaqbz0Q==
+Received: from nalasppmta03.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vhkem0hr4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Jan 2024 08:48:09 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA03.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40A8m8Tk001399
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Jan 2024 08:48:08 GMT
+Received: from [10.217.219.221] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Wed, 10 Jan
+ 2024 00:48:05 -0800
+Message-ID: <dc2c940d-7be6-45dd-994d-2d6691bdadc2@quicinc.com>
+Date: Wed, 10 Jan 2024 14:18:02 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZZ2IOQEekFffJoHQ@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] usb: core: Prevent null pointer dereference in
+ update_port_device_state
+To: Sergei Shtylyov <sergei.shtylyov@gmail.com>,
+        Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>,
+        Alan Stern <stern@rowland.harvard.edu>
+CC: Krishna Kurapati <quic_kriskura@quicinc.com>, <linux-usb@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20240109061708.26288-1-quic_ugoswami@quicinc.com>
+ <3bb51617-81e1-7d19-598d-2b57164320e1@gmail.com>
+ <5ef9db3d-1e60-4f42-8a5b-52a9800e4707@quicinc.com>
+ <3c2b2183-b1ee-6226-be5b-f2f9fc39e247@gmail.com>
+Content-Language: en-US
+From: Udipto Goswami <quic_ugoswami@quicinc.com>
+In-Reply-To: <3c2b2183-b1ee-6226-be5b-f2f9fc39e247@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: kvLih4B66fr1EspK8GcuVM0v8HuFlS5p
+X-Proofpoint-GUID: kvLih4B66fr1EspK8GcuVM0v8HuFlS5p
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_01,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
+ mlxlogscore=999 impostorscore=0 phishscore=0 bulkscore=0 suspectscore=0
+ lowpriorityscore=0 spamscore=0 priorityscore=1501 adultscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2311290000 definitions=main-2401100071
 
-On Tue, Jan 09, 2024 at 05:54:01PM +0000, Matthias Kaehlcke wrote:
-> On Tue, Jan 09, 2024 at 06:12:26PM +0100, Johan Hovold wrote:
 
-> > That depends on in what way the current devices are broken.
-> > 
-> > Any machines that correctly specify their address in little-endian order
-> > in the devicetree would no longer be configured using the wrong address.
-> > So no problem there (except requiring users to re-pair their gadgets).
-> > 
-> > And tools like btgmt is broken on all of these Qualcomm machine in any
-> > case and would now start working as expected. So no problem there either
-> > (unless user space had adapted an inverted the addresses to btmgmt).
-> > 
-> > So the first question is whether there actually is any boot firmware out
-> > there which passes the BD_ADDR in reverse order?
+
+On 1/9/2024 8:10 PM, Sergei Shtylyov wrote:
+> On 1/9/24 2:57 PM, Udipto Goswami wrote:
+> [...]
 > 
-> Yes, (at least) the boot firmware for sc7180-trogdor devices.
+>>>> Currently,the function update_port_device_state gets the usb_hub from
+>>>> udev->parent by calling usb_hub_to_struct_hub.
+>>>> However, in case the actconfig or the maxchild is 0, the usb_hub would
+>>>> be NULL and upon further accessing to get port_dev would result in null
+>>>> pointer dereference.
+>>>>
+>>>> Fix this by introducing an if check after the usb_hub is populated.
+>>>>
+>>>> Fixes: 83cb2604f641 ("usb: core: add sysfs entry for usb device state")
+>>>> Cc: stable@vger.kernel.org
+>>>> Signed-off-by: Udipto Goswami <quic_ugoswami@quicinc.com>
+>>>> ---
+>>>> v3: Re-wrote the comment for better context.
+>>>> v2: Introduced comment for the if check & CC'ed stable.
+>>>>
+>>>>    drivers/usb/core/hub.c | 20 +++++++++++++++++---
+>>>>    1 file changed, 17 insertions(+), 3 deletions(-)
+>>>>
+>>>> diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+>>>> index ffd7c99e24a3..6b514546e59b 100644
+>>>> --- a/drivers/usb/core/hub.c
+>>>> +++ b/drivers/usb/core/hub.c
+>>>> @@ -2053,9 +2053,23 @@ static void update_port_device_state(struct usb_device *udev)
+>>>>          if (udev->parent) {
+>>>>            hub = usb_hub_to_struct_hub(udev->parent);
+>>>> -        port_dev = hub->ports[udev->portnum - 1];
+>>>> -        WRITE_ONCE(port_dev->state, udev->state);
+>>>> -        sysfs_notify_dirent(port_dev->state_kn);
+>>>> +
+>>>> +        /*
+>>>> +         * The Link Layer Validation System Driver (lvstest)
+>>>> +         * has procedure of unbinding the hub before running
+>>>> +         * the rest of the procedure. This triggers
+>>>> +         * hub_disconnect will set the hub's maxchild to 0.
+>>>
+>>>      I can't parse this sentence, s/th is missing...
+>> Thanks for the review.
+>> Maybe this would sound better?
+>>
+>> "This triggers hub_disconnect which will set hub's maxchild to 0"
 > 
-> hexdump -C /proc/device-tree/soc\@0/geniqup\@8c0000/serial\@88c000/bluetooth/local-bd-address
-> 00000000  8c fd f0 40 15 dc
-
-Indeed, this should have been LE order.
-
-> hciconfig
-> hci0:   Type: Primary  Bus: UART
->         BD Address: 8C:FD:F0:40:15:DC  ACL MTU: 1024:8  SCO MTU: 240:8
->         UP RUNNING 
->         RX bytes:1700 acl:0 sco:0 events:95 errors:0
->         TX bytes:128949 acl:0 sco:0 commands:578 errors:0
-
-And any user space tool overriding the address would currently need to
-provide the address in reverse order on Qualcomm platforms like this
-one (e.g. if generating the address for privacy reasons).
- 
-> > > I suggest adding a quirk like 'local-bd-address-msb-quirk' or
-> > > 'qcom,local-bd-address-msb-quirk' to make sure existing devices keep
-> > > working properly.
-> > 
-> > I don't think that would work. If this is something that we really need
-> > to handle, then there's probably no way around introducing new
-> > compatible strings for boot firmware that isn't broken while maintaining
-> > the current broken behaviour with respect to 'local-bd-address' for some
-> > of the current ones.
+>     That seems parsable. :-)
 > 
-> I think it should work for sc7180-trogdor. For these devices the device tree
-> is bundled with the kernel image and can be updated. That might not be true
-> for other devices though.
+>>>> +         * This would result usb_hub_to_struct_hub in this
+>>>> +         * function to return NULL.
+>>>
+>>>      "This would result in usb_hub_to_struct_hub in this function
+>>> returning NULL", perhaps?
+>>
+>> yah sound better. Will take care of it in next version.
+> 
+>     Probably "in this function" should be dropped altogether...
 
-Thanks for confirming.
+sure, i'll remove in v4.
 
-I'm still hoping we can get away with not having to add quirks to
-Bluetooth core for broken Qualcomm boot firmware. Let's see if anyone
-knows of a use case that makes that impossible to avoid.
-
-Johan
+Thanks,
+-Udipto
 
