@@ -1,206 +1,132 @@
-Return-Path: <stable+bounces-10450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA074829E00
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 16:54:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99945829E64
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 17:20:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 518811C26302
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 15:54:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E494B23570
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 16:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECC574C62F;
-	Wed, 10 Jan 2024 15:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A39A4CB35;
+	Wed, 10 Jan 2024 16:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="0KOjMGf6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RG4lNkjW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29F14C609;
-	Wed, 10 Jan 2024 15:53:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 643D0C433C7;
-	Wed, 10 Jan 2024 15:53:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1704902037;
-	bh=V4wFmqnhd6HesBMKQEbZMkMIrBWeB9ojeIREab2bMnc=;
-	h=Date:To:From:Subject:From;
-	b=0KOjMGf6TgTulG4DpYTEHwJz0xPQL/KEUQ0cnJ6q35AjINp0EOg8b+lhxMW/PHRL3
-	 yfIR7+TDfUWmRy3Hh+v0EKy+6bB+L2mSJYF366UA0m6zZOWX7gK9315e0mzUYt7jGa
-	 YBnf18pLtvWyKdL9iDsqSjAe02u/2rQhgXrhQtqA=
-Date: Wed, 10 Jan 2024 07:53:56 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,muchun.song@linux.dev,donettom@linux.vnet.ibm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + selftests-mm-hugepage-vmemmap-fails-on-64k-page-size-systems.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240110155357.643D0C433C7@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D57F4BAB5;
+	Wed, 10 Jan 2024 16:20:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5571e662b93so3716318a12.2;
+        Wed, 10 Jan 2024 08:20:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704903630; x=1705508430; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GiGQ3HzqRw9BhGq2ukZfu7U4Ux6Gx0fec0Z0CywCxtU=;
+        b=RG4lNkjWWdnPtqE+8AEccWeqIEicxZTP8bCadI2UA8+WX3FKFYA1aOVZgzXM3n1giS
+         t4Wf24pJXo44G1IgwOB2v0y/oqJSJKuDaa7AjMVGGSGkvJl70ZWlknUBy0g/JOrG7549
+         nTlq27CjrPoaDM7KAezNsNmS4Q2fUKg92CX3i3jc+ItpQ9T1aaAM0W6/Afkm78GXK9qv
+         Zik7DEI3z7eyfwAZwrrkOaKtBOGSte+2fFUXGore9JnuYfkxAXkNsCt84fUaHxisGx4e
+         r5CsT1uBSgk4uqrnJaMWFTZRVBMOapXg9N8lX5QpsW/8TRBZdz1Wv64XDnu4cxYUHsvY
+         xYsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704903630; x=1705508430;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GiGQ3HzqRw9BhGq2ukZfu7U4Ux6Gx0fec0Z0CywCxtU=;
+        b=fqYn002n9nOmdG4pBKWmejKR0wIh2ssUoQUpgQI/xLRaBnZxdfq5gvFqISvyV4yEWk
+         w0llMZrkGNy2rZCYiDAJBJJuDZChDYotL3Pi1tL3Gehsda3c2DwctU5pCjqoWOK8lBSM
+         l3LahjSzzq0PAoCPBnDqb6hfIkHHCTPCY1FVV06XLbOKxjvxSFzmgnGdGNwTXPnsz7/N
+         Eb4GPLh66dhe28PCiWKoUe6LUeMCAWQJJDCSUXXSm5FkwQb6h9/PwpXjsA6Iio+Js7hF
+         YCVb+2XIyae6K/wev2cfKns5eIZwa3fztHbEgTXm6Jsstv7j9E0CKPy3CqS7Wccncmp/
+         L0kQ==
+X-Gm-Message-State: AOJu0YzLgMqw7w3cBjtZqk81FwOAWCsvf/vRA+Y8qd9e2ntirpFfrvdv
+	pvkQYcctU46KsaTwkfa5eP8=
+X-Google-Smtp-Source: AGHT+IHIX8ycHGd0EqT2+MdwAY36uRF5Dgt9eDaeEe5o8UpwwsXB+tUmydMpiBcVjI8SP8rgJa9KIw==
+X-Received: by 2002:a50:9e87:0:b0:557:ba20:839 with SMTP id a7-20020a509e87000000b00557ba200839mr643069edf.41.1704903630339;
+        Wed, 10 Jan 2024 08:20:30 -0800 (PST)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id ig15-20020a056402458f00b0055871ed18f9sm390720edb.89.2024.01.10.08.20.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jan 2024 08:20:28 -0800 (PST)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 0525EBE2DE0; Wed, 10 Jan 2024 17:20:28 +0100 (CET)
+Date: Wed, 10 Jan 2024 17:20:27 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: David Howells <dhowells@redhat.com>, Paulo Alcantara <pc@manguebit.com>,
+	Shyam Prasad N <nspmangalore@gmail.com>,
+	Rohith Surabattula <rohiths.msft@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Cc: "Jitindar Singh, Suraj" <surajjs@amazon.com>,
+	"rohiths.msft@gmail.com" <rohiths.msft@gmail.com>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"stfrench@microsoft.com" <stfrench@microsoft.com>,
+	"pc@manguebit.com" <pc@manguebit.com>,
+	"jlayton@kernel.org" <jlayton@kernel.org>,
+	"nspmangalore@gmail.com" <nspmangalore@gmail.com>,
+	"willy@infradead.org" <willy@infradead.org>,
+	"stable-commits@vger.kernel.org" <stable-commits@vger.kernel.org>,
+	stable@vger.kernel.org, linux-cifs@vger.kernel.org,
+	Linux regressions mailing list <regressions@lists.linux.dev>
+Subject: Re: [Regression 6.1.y] From "cifs: Fix flushing, invalidation and
+ file size with copy_file_range()"
+Message-ID: <ZZ7Dy69ZJCEyKhhS@eldamar.lan>
+References: <2023121124-trifle-uncharted-2622@gregkh>
+ <a76b370f93cb928c049b94e1fde0d2da506dfcb2.camel@amazon.com>
+ <ZZhrpNJ3zxMR8wcU@eldamar.lan>
+ <8e59220d-b0f3-4dae-afc3-36acfa6873e4@leemhuis.info>
+ <ZZk6qA54A-KfzmSz@eldamar.lan>
+ <13a70cc5-78fc-49a4-8d78-41e5479e3023@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <13a70cc5-78fc-49a4-8d78-41e5479e3023@leemhuis.info>
 
+Hi
 
-The patch titled
-     Subject: selftests: mm: hugepage-vmemmap fails on 64K page size systems.
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     selftests-mm-hugepage-vmemmap-fails-on-64k-page-size-systems.patch
+Sorry if this is to prematurely to ask already again.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-hugepage-vmemmap-fails-on-64k-page-size-systems.patch
+On Sat, Jan 06, 2024 at 01:02:16PM +0100, Linux regression tracking (Thorsten Leemhuis) wrote:
+> On 06.01.24 12:34, Salvatore Bonaccorso wrote:
+> > On Sat, Jan 06, 2024 at 11:40:58AM +0100, Linux regression tracking (Thorsten Leemhuis) wrote:
+> >>
+> >> Does this problem also happen in mainline, e.g. with 6.7-rc8?
+> > 
+> > Thanks a lot for replying back. So far I can tell, the regression is
+> > in 6.1.y only 
+> 
+> Ahh, good to know, thx!
+> 
+> > For this reason I added to regzbot only "regzbot ^introduced
+> > 18b02e4343e8f5be6a2f44c7ad9899b385a92730" which is the commit in
+> > v6.1.68.
+> 
+> Which was the totally right thing to do, thx. Guess I sooner or later
+> will add something like "#regzbot tag notinmainline" to avoid the
+> ambiguity we just cleared up, but maybe that's overkill.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Do we have already a picture on the best move forward? Should the
+patch and the what depends on it be reverted or was someone already
+able to isolate where the problem comes from specifically for the
+6.1.y series? 
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Donet Tom <donettom@linux.vnet.ibm.com>
-Subject: selftests: mm: hugepage-vmemmap fails on 64K page size systems.
-Date: Wed, 10 Jan 2024 14:03:35 +0530
-
-The kernel sefltest mm/hugepage-vmemmap fails on architectures which has
-different page size other than 4K.  In hugepage-vmemmap page size used is
-4k so the pfn calculation will go wrong on systems which has different
-page size .The length of MAP_HUGETLB memory must be hugepage aligned but
-in hugepage-vmemmap map length is 2M so this will not get aligned if the
-system has differnet hugepage size.
-
-Added  psize() to get the page size and default_huge_page_size() to
-get the default hugepage size at run time, hugepage-vmemmap test pass
-on powerpc with 64K page size and x86 with 4K page size.
-
-Result on powerpc without patch (page size 64K)
-*# ./hugepage-vmemmap
-Returned address is 0x7effff000000 whose pfn is 0
-Head page flags (100000000) is invalid
-check_page_flags: Invalid argument
-*#
-
-Result on powerpc with patch (page size 64K)
-*# ./hugepage-vmemmap
-Returned address is 0x7effff000000 whose pfn is 600
-*#
-
-Result on x86 with patch (page size 4K)
-*# ./hugepage-vmemmap
-Returned address is 0x7fc7c2c00000 whose pfn is 1dac00
-*#
-
-Link: https://lkml.kernel.org/r/3b3a3ae37ba21218481c482a872bbf7526031600.1704865754.git.donettom@linux.vnet.ibm.com
-Fixes: b147c89cd429 ("selftests: vm: add a hugetlb test case")
-Signed-off-by: Donet Tom <donettom@linux.vnet.ibm.com>
-Reported-by: Geetika Moolchandani (geetika@linux.ibm.com)
-Tested-by: Geetika Moolchandani (geetika@linux.ibm.com)
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- tools/testing/selftests/mm/hugepage-vmemmap.c |   29 +++++++++-------
- 1 file changed, 18 insertions(+), 11 deletions(-)
-
---- a/tools/testing/selftests/mm/hugepage-vmemmap.c~selftests-mm-hugepage-vmemmap-fails-on-64k-page-size-systems
-+++ a/tools/testing/selftests/mm/hugepage-vmemmap.c
-@@ -10,10 +10,7 @@
- #include <unistd.h>
- #include <sys/mman.h>
- #include <fcntl.h>
--
--#define MAP_LENGTH		(2UL * 1024 * 1024)
--
--#define PAGE_SIZE		4096
-+#include "vm_util.h"
- 
- #define PAGE_COMPOUND_HEAD	(1UL << 15)
- #define PAGE_COMPOUND_TAIL	(1UL << 16)
-@@ -39,6 +36,9 @@
- #define MAP_FLAGS		(MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB)
- #endif
- 
-+static size_t pagesize;
-+static size_t maplength;
-+
- static void write_bytes(char *addr, size_t length)
- {
- 	unsigned long i;
-@@ -56,7 +56,7 @@ static unsigned long virt_to_pfn(void *a
- 	if (fd < 0)
- 		return -1UL;
- 
--	lseek(fd, (unsigned long)addr / PAGE_SIZE * sizeof(pagemap), SEEK_SET);
-+	lseek(fd, (unsigned long)addr / pagesize * sizeof(pagemap), SEEK_SET);
- 	read(fd, &pagemap, sizeof(pagemap));
- 	close(fd);
- 
-@@ -86,7 +86,7 @@ static int check_page_flags(unsigned lon
- 	 * this also verifies kernel has correctly set the fake page_head to tail
- 	 * while hugetlb_free_vmemmap is enabled.
- 	 */
--	for (i = 1; i < MAP_LENGTH / PAGE_SIZE; i++) {
-+	for (i = 1; i < maplength / pagesize; i++) {
- 		read(fd, &pageflags, sizeof(pageflags));
- 		if ((pageflags & TAIL_PAGE_FLAGS) != TAIL_PAGE_FLAGS ||
- 		    (pageflags & HEAD_PAGE_FLAGS) == HEAD_PAGE_FLAGS) {
-@@ -106,18 +106,25 @@ int main(int argc, char **argv)
- 	void *addr;
- 	unsigned long pfn;
- 
--	addr = mmap(MAP_ADDR, MAP_LENGTH, PROT_READ | PROT_WRITE, MAP_FLAGS, -1, 0);
-+	pagesize  = psize();
-+	maplength = default_huge_page_size();
-+	if (!maplength) {
-+		printf("Unable to determine huge page size\n");
-+		exit(1);
-+	}
-+
-+	addr = mmap(MAP_ADDR, maplength, PROT_READ | PROT_WRITE, MAP_FLAGS, -1, 0);
- 	if (addr == MAP_FAILED) {
- 		perror("mmap");
- 		exit(1);
- 	}
- 
- 	/* Trigger allocation of HugeTLB page. */
--	write_bytes(addr, MAP_LENGTH);
-+	write_bytes(addr, maplength);
- 
- 	pfn = virt_to_pfn(addr);
- 	if (pfn == -1UL) {
--		munmap(addr, MAP_LENGTH);
-+		munmap(addr, maplength);
- 		perror("virt_to_pfn");
- 		exit(1);
- 	}
-@@ -125,13 +132,13 @@ int main(int argc, char **argv)
- 	printf("Returned address is %p whose pfn is %lx\n", addr, pfn);
- 
- 	if (check_page_flags(pfn) < 0) {
--		munmap(addr, MAP_LENGTH);
-+		munmap(addr, maplength);
- 		perror("check_page_flags");
- 		exit(1);
- 	}
- 
- 	/* munmap() length of MAP_HUGETLB memory must be hugepage aligned */
--	if (munmap(addr, MAP_LENGTH)) {
-+	if (munmap(addr, maplength)) {
- 		perror("munmap");
- 		exit(1);
- 	}
-_
-
-Patches currently in -mm which might be from donettom@linux.vnet.ibm.com are
-
-selftests-mm-hugepage-vmemmap-fails-on-64k-page-size-systems.patch
-
+Regards,
+Salvatore
 
