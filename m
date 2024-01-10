@@ -1,43 +1,61 @@
-Return-Path: <stable+bounces-10424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B820C829495
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 09:00:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEDDB8294DD
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 09:12:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69B1C1F27551
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 08:00:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E46341C2579C
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 08:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1762C3A27E;
-	Wed, 10 Jan 2024 08:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5041C3D967;
+	Wed, 10 Jan 2024 08:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGAyWX1U"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SQlp1VWr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4B0E3E460
-	for <stable@vger.kernel.org>; Wed, 10 Jan 2024 08:00:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E70AFC433C7;
-	Wed, 10 Jan 2024 08:00:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704873615;
-	bh=dNxjZ7SgBHuhIFhL2vwCPfnm5n975bEbk4Db+Bp049I=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065753EA70;
+	Wed, 10 Jan 2024 08:12:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB37C433F1;
+	Wed, 10 Jan 2024 08:12:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1704874326;
+	bh=R1kRyvFyie9bKSVcbmLw40Yht8pGWPEU2b8QAHOxWHQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HGAyWX1UJzqRugISwMAv2zfTo9g9OxczCS5ejrRksO5ibSRI+DWRGZg7AFaka0n01
-	 lSFSvJhpgfJMDGfQ6FCi6x0tjgNSNkVfyRAFan9V29vbYfCOLjwsGU5mQ6wzd/BNTe
-	 7OiIQYf6AGTH2RfLwoubeODsIbJ4IWrn1l95mm6c=
-Date: Wed, 10 Jan 2024 09:00:12 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jaime Liao <jaimeliao.tw@gmail.com>
-Cc: stable@vger.kernel.org, miquel.raynal@bootlin.com,
-	jaimeliao@mxic.com.tw
-Subject: Re: [PATCH] mtd: spinand: macronix: Correct faulty page size of
- MX35LF4GE4AD
-Message-ID: <2024011001-luridness-snowcap-b5c5@gregkh>
-References: <20240110025428.158812-1-jaimeliao.tw@gmail.com>
+	b=SQlp1VWrNtN5sqOM/Q21XGCkCRIJ51Cm9y4InIlGy6zFI1LtK9h1hKXQuIZu+Aknu
+	 Mqp6WcYpif4RMZi3CvhSAL/4fsysfOi6Cif/njrdgAcgti+OxL1uBZ2Ls8AJTUhzMy
+	 e6uDISvtKraYM7U/8/kLuIPoPKFSs/KOUdqA6ndeQH6P+PJRUBHspDEyUJ74MpKhTi
+	 j7wmFeZUJR9WBt7KMIP/l0BOjqjhYP21f43dOxOSx+Nf8T7jP1F5abcPxRBhkSo655
+	 KzM0FNx4SD5wIW2Gy2CoWr9kNyZjtZhAvTC3S03bs0SC8kpy5TEP/Ja/JZ0kRdLn5x
+	 LzMJi9ttPpf7w==
+Received: from johan by xi.lan with local (Exim 4.96.2)
+	(envelope-from <johan@kernel.org>)
+	id 1rNTh0-0007J5-21;
+	Wed, 10 Jan 2024 09:12:07 +0100
+Date: Wed, 10 Jan 2024 09:12:06 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Matthias Kaehlcke <mka@chromium.org>
+Cc: Johan Hovold <johan+linaro@kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	linux-bluetooth@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
+	Doug Anderson <dianders@google.com>,
+	Stephen Boyd <swboyd@google.com>
+Subject: Re: [PATCH] Bluetooth: qca: fix device-address endianness
+Message-ID: <ZZ5RVpL88XNbgKIy@hovoldconsulting.com>
+References: <20231227180306.6319-1-johan+linaro@kernel.org>
+ <ZZ15c1HUQIH2cY5o@google.com>
+ <ZZ1-ehpU-g6i9Qem@hovoldconsulting.com>
+ <ZZ2IOQEekFffJoHQ@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -46,42 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240110025428.158812-1-jaimeliao.tw@gmail.com>
+In-Reply-To: <ZZ2IOQEekFffJoHQ@google.com>
 
-On Wed, Jan 10, 2024 at 10:54:28AM +0800, Jaime Liao wrote:
-> From: JaimeLiao <jaimeliao@mxic.com.tw>
-> 
-> Correct page size of MX35LF4GE4AD to 4096.
-> 
-> Signed-off-by: JaimeLiao <jaimeliao@mxic.com.tw>
-> ---
->  drivers/mtd/nand/spi/macronix.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mtd/nand/spi/macronix.c b/drivers/mtd/nand/spi/macronix.c
-> index bbb1d68bce4a..f18c6cfe8ff5 100644
-> --- a/drivers/mtd/nand/spi/macronix.c
-> +++ b/drivers/mtd/nand/spi/macronix.c
-> @@ -125,7 +125,7 @@ static const struct spinand_info macronix_spinand_table[] = {
->  		     SPINAND_HAS_QE_BIT,
->  		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout, NULL)),
->  	SPINAND_INFO("MX35LF4GE4AD", 0x37,
-> -		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 1, 1),
-> +		     NAND_MEMORG(1, 4096, 128, 64, 2048, 40, 1, 1, 1),
->  		     NAND_ECCREQ(8, 512),
->  		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
->  					      &write_cache_variants,
-> -- 
-> 2.25.1
-> 
-> 
+On Tue, Jan 09, 2024 at 05:54:01PM +0000, Matthias Kaehlcke wrote:
+> On Tue, Jan 09, 2024 at 06:12:26PM +0100, Johan Hovold wrote:
 
-<formletter>
+> > That depends on in what way the current devices are broken.
+> > 
+> > Any machines that correctly specify their address in little-endian order
+> > in the devicetree would no longer be configured using the wrong address.
+> > So no problem there (except requiring users to re-pair their gadgets).
+> > 
+> > And tools like btgmt is broken on all of these Qualcomm machine in any
+> > case and would now start working as expected. So no problem there either
+> > (unless user space had adapted an inverted the addresses to btmgmt).
+> > 
+> > So the first question is whether there actually is any boot firmware out
+> > there which passes the BD_ADDR in reverse order?
+> 
+> Yes, (at least) the boot firmware for sc7180-trogdor devices.
+> 
+> hexdump -C /proc/device-tree/soc\@0/geniqup\@8c0000/serial\@88c000/bluetooth/local-bd-address
+> 00000000  8c fd f0 40 15 dc
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+Indeed, this should have been LE order.
 
-</formletter>
+> hciconfig
+> hci0:   Type: Primary  Bus: UART
+>         BD Address: 8C:FD:F0:40:15:DC  ACL MTU: 1024:8  SCO MTU: 240:8
+>         UP RUNNING 
+>         RX bytes:1700 acl:0 sco:0 events:95 errors:0
+>         TX bytes:128949 acl:0 sco:0 commands:578 errors:0
+
+And any user space tool overriding the address would currently need to
+provide the address in reverse order on Qualcomm platforms like this
+one (e.g. if generating the address for privacy reasons).
+ 
+> > > I suggest adding a quirk like 'local-bd-address-msb-quirk' or
+> > > 'qcom,local-bd-address-msb-quirk' to make sure existing devices keep
+> > > working properly.
+> > 
+> > I don't think that would work. If this is something that we really need
+> > to handle, then there's probably no way around introducing new
+> > compatible strings for boot firmware that isn't broken while maintaining
+> > the current broken behaviour with respect to 'local-bd-address' for some
+> > of the current ones.
+> 
+> I think it should work for sc7180-trogdor. For these devices the device tree
+> is bundled with the kernel image and can be updated. That might not be true
+> for other devices though.
+
+Thanks for confirming.
+
+I'm still hoping we can get away with not having to add quirks to
+Bluetooth core for broken Qualcomm boot firmware. Let's see if anyone
+knows of a use case that makes that impossible to avoid.
+
+Johan
 
