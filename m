@@ -1,104 +1,110 @@
-Return-Path: <stable+bounces-10414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4474282928B
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 03:56:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E7B58292F3
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 05:13:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B16D1C241B9
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 02:56:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5A901C2538C
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 04:13:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DDDB1870;
-	Wed, 10 Jan 2024 02:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6959B523C;
+	Wed, 10 Jan 2024 04:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lmI2oJG/"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="xGXQulHB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9FC320C
-	for <stable@vger.kernel.org>; Wed, 10 Jan 2024 02:55:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1d4414ec9c7so17507835ad.0
-        for <stable@vger.kernel.org>; Tue, 09 Jan 2024 18:55:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704855359; x=1705460159; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GUmVHJjZjFlMnRho+FxPh8GlLi7ACEuv/Yg7ul1J0rs=;
-        b=lmI2oJG/mJFLEj2ocn6sQODbIuFenh/JcTEXhA7tA3lLuGz1PcPEQQVEF9SMjROHzD
-         ioU8e0GcoEolwiXoX0hBblYfxbDvy94FRq6M5TS+I9HlWa4+UuOJnO48Gclazh8vGACc
-         MGy1wjEfw1MS4UqK/novMNTwbpz7KmiH8BeYLVA0f+o//G2EyJ2lE36dxW9y6O6v3m5n
-         oMbqmBSYBb6fstbHzISEl5XyB7edWZasP6LK48wxekkCsFvjHRK8fT9tbN+YnRO+oHi3
-         k48stO+DdALe/uy1NFFGX5gLKSbHfcDEuJQ9zMbLU1q+b9Afa6LiNrLPrIdLQfZNf8Yh
-         S+jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704855359; x=1705460159;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GUmVHJjZjFlMnRho+FxPh8GlLi7ACEuv/Yg7ul1J0rs=;
-        b=b+JhBZe6AfwE6xHYppszwRiLLp10QO4SzFMfMmo5RXmr2MUch3UwhY0av56OHLJuKK
-         cw5n8CzivTCG7RqYNwMfGuaaV2FdZWOzFUSaA/s2+IcNHF6e65qdZKnNnzEfPrJosC3v
-         RGmphMgGJ2KPOCbUHG9uCLD81R+IFhTLsoXdBgRsIEfU69KzLJAWM54bPeHZg0dnQi3I
-         ln2KlZS1SgctUPv12iXd7Ym282x5CuNi3HKLLLWhYX4W094Ylzox+RSibkPbwDMYjYDl
-         cGPhPcG2kB1dMFR0CXUSlP4jVp7uo5p6hi4FAU+z8iZcegKdMRUUjtST3Q+AP5BctDCf
-         Zv6g==
-X-Gm-Message-State: AOJu0YzycdwSqcN0x6M7KvNJvL+y0aK8W/nwcm9v8Cd42GQQ+eogXdtN
-	BT9P2lnhQNZNmYbB6rJkloM=
-X-Google-Smtp-Source: AGHT+IGRymKI53hpY/v59IOKdjN94ApqZ2zwM+j/cc1tkfAqj0QSDhueCGNrIY4PcebB3dMjCbXwTg==
-X-Received: by 2002:a17:903:244a:b0:1d4:4a66:dad3 with SMTP id l10-20020a170903244a00b001d44a66dad3mr325471pls.42.1704855359216;
-        Tue, 09 Jan 2024 18:55:59 -0800 (PST)
-Received: from twhmp6px (mxsmtp211.mxic.com.tw. [211.75.127.162])
-        by smtp.gmail.com with ESMTPSA id c12-20020a170902c1cc00b001d55fa244afsm1752277plc.207.2024.01.09.18.55.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jan 2024 18:55:01 -0800 (PST)
-Received: from hqs-appsw-appswa2.mp600.macronix.com (linux-patcher [172.17.236.35])
-	by twhmp6px (Postfix) with ESMTPS id 151318050D;
-	Wed, 10 Jan 2024 10:58:40 +0800 (CST)
-From: Jaime Liao <jaimeliao.tw@gmail.com>
-To: stable@vger.kernel.org,
-	miquel.raynal@bootlin.com
-Cc: jaimeliao@mxic.com.tw,
-	jaimeliao.tw@gmail.com
-Subject: [PATCH] mtd: spinand: macronix: Correct faulty page size of MX35LF4GE4AD
-Date: Wed, 10 Jan 2024 10:54:28 +0800
-Message-Id: <20240110025428.158812-1-jaimeliao.tw@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ED7A6107;
+	Wed, 10 Jan 2024 04:12:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 901C1C433C7;
+	Wed, 10 Jan 2024 04:12:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1704859974;
+	bh=GmI+DF4ZuYqvQfS7ulf87Al1XvlQ/67VMhNCPrL1IgY=;
+	h=Date:To:From:Subject:From;
+	b=xGXQulHBTn+W5bFYNC9Ce3Zhr1fkJCwxBMF93rJ74BuoDZGjb7FjJt/9VEd8/keky
+	 VYdBbnLIChqjllQc1Lzqpf7YyXPI48xkkyJk1SRkEUzfAZNU7C6RMW1O/N1fjbkb68
+	 28fhKmbSr/5aoCA3NwxQZTjTCNkHv2ygV7TGvbnI=
+Date: Tue, 09 Jan 2024 20:12:53 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,riel@surriel.com,peterz@infradead.org,mingo@kernel.org,mgorman@techsingularity.net,willy@infradead.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + bounds-support-non-power-of-two-config_nr_cpus.patch added to mm-nonmm-unstable branch
+Message-Id: <20240110041254.901C1C433C7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: JaimeLiao <jaimeliao@mxic.com.tw>
 
-Correct page size of MX35LF4GE4AD to 4096.
+The patch titled
+     Subject: bounds: support non-power-of-two CONFIG_NR_CPUS
+has been added to the -mm mm-nonmm-unstable branch.  Its filename is
+     bounds-support-non-power-of-two-config_nr_cpus.patch
 
-Signed-off-by: JaimeLiao <jaimeliao@mxic.com.tw>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/bounds-support-non-power-of-two-config_nr_cpus.patch
+
+This patch will later appear in the mm-nonmm-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Subject: bounds: support non-power-of-two CONFIG_NR_CPUS
+Date: Tue, 10 Oct 2023 15:55:49 +0100
+
+ilog2() rounds down, so for example when PowerPC 85xx sets CONFIG_NR_CPUS
+to 24, we will only allocate 4 bits to store the number of CPUs instead of
+5.  Use bits_per() instead, which rounds up.  Found by code inspection. 
+The effect of this would probably be a misaccounting when doing NUMA
+balancing, so to a user, it would only be a performance penalty.  The
+effects may be more wide-spread; it's hard to tell.
+
+Link: https://lkml.kernel.org/r/20231010145549.1244748-1-willy@infradead.org
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Fixes: 90572890d202 ("mm: numa: Change page last {nid,pid} into {cpu,pid}")
+Reviewed-by: Rik van Riel <riel@surriel.com>
+Acked-by: Mel Gorman <mgorman@techsingularity.net>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/mtd/nand/spi/macronix.c | 2 +-
+
+ kernel/bounds.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/spi/macronix.c b/drivers/mtd/nand/spi/macronix.c
-index bbb1d68bce4a..f18c6cfe8ff5 100644
---- a/drivers/mtd/nand/spi/macronix.c
-+++ b/drivers/mtd/nand/spi/macronix.c
-@@ -125,7 +125,7 @@ static const struct spinand_info macronix_spinand_table[] = {
- 		     SPINAND_HAS_QE_BIT,
- 		     SPINAND_ECCINFO(&mx35lfxge4ab_ooblayout, NULL)),
- 	SPINAND_INFO("MX35LF4GE4AD", 0x37,
--		     NAND_MEMORG(1, 2048, 128, 64, 2048, 40, 1, 1, 1),
-+		     NAND_MEMORG(1, 4096, 128, 64, 2048, 40, 1, 1, 1),
- 		     NAND_ECCREQ(8, 512),
- 		     SPINAND_INFO_OP_VARIANTS(&read_cache_variants,
- 					      &write_cache_variants,
--- 
-2.25.1
+--- a/kernel/bounds.c~bounds-support-non-power-of-two-config_nr_cpus
++++ a/kernel/bounds.c
+@@ -19,7 +19,7 @@ int main(void)
+ 	DEFINE(NR_PAGEFLAGS, __NR_PAGEFLAGS);
+ 	DEFINE(MAX_NR_ZONES, __MAX_NR_ZONES);
+ #ifdef CONFIG_SMP
+-	DEFINE(NR_CPUS_BITS, ilog2(CONFIG_NR_CPUS));
++	DEFINE(NR_CPUS_BITS, bits_per(CONFIG_NR_CPUS));
+ #endif
+ 	DEFINE(SPINLOCK_SIZE, sizeof(spinlock_t));
+ #ifdef CONFIG_LRU_GEN
+_
+
+Patches currently in -mm which might be from willy@infradead.org are
+
+bounds-support-non-power-of-two-config_nr_cpus.patch
 
 
