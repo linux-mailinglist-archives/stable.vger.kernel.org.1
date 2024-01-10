@@ -1,139 +1,140 @@
-Return-Path: <stable+bounces-10428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF792829609
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 10:15:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B42AA829636
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 10:22:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A00372815A1
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 09:15:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C433C1C218EB
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 09:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A843D567;
-	Wed, 10 Jan 2024 09:15:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49943E47B;
+	Wed, 10 Jan 2024 09:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jwzagr8r"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RGYisLeb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234082E846;
-	Wed, 10 Jan 2024 09:15:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47841C433C7;
-	Wed, 10 Jan 2024 09:15:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704878137;
-	bh=ahio7T25Z11avb9NbE7tOGh6X6/776n8O1/ownXKe10=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jwzagr8rUcwaOjiUjF3gbJ54Tl1s+O9RpmfCsYDue3E1YUowoTRPX4cEtYJx5qD3A
-	 j3seAQxKPwmyfv7lVKhWRyVHLJDQbaCvNX3qlFkXQ4ZlaUX+508N/MjNy2+wlVaLNZ
-	 sekmwa4NU2A+KjyNUmrzeFCzV3zXtL0W28NJP2NU=
-Date: Wed, 10 Jan 2024 10:15:34 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: Pavel Machek <pavel@ucw.cz>, bvanassche@acm.org, hch@lst.de,
-	hare@suse.de, linux-kernel@vger.kernel.org,
-	akpm@linux-foundation.org, torvalds@linux-foundation.org,
-	stable@vger.kernel.org, lwn@lwn.net, jslaby@suse.cz
-Subject: Re: scsi_get_lba breakage in 5.10 -- Re: Linux 5.10.206
-Message-ID: <2024011047-clench-scheme-1f46@gregkh>
-References: <2024010527-revision-ended-aea2@gregkh>
- <ZZ042FejzwMM5vDW@duo.ucw.cz>
- <yq1jzoi7hrt.fsf@ca-mkp.ca.oracle.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35ED3FB01;
+	Wed, 10 Jan 2024 09:22:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-50e741123acso4269273e87.0;
+        Wed, 10 Jan 2024 01:22:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704878557; x=1705483357; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=y/cX7LhHOFu7/SWqzyr1HY0k2frn1F7ztP3n5/hwhKQ=;
+        b=RGYisLebyQz3WOWIzUsYSkjmKkur4dmqoRpqhpTz1Ew/0STsC3czr0BYkSvgra12MK
+         LBjtp8Z09Fa4lIhCqS4tY3cgCgxymoJmdatoiI37IbxMaERc88bG2X024v0yP6N1kbec
+         n1dUODz+zabjqQxzpC3hmfKdMlD/3/DRN87ro7qLWD5lzIP50SXlCQsfzN6MPz2fmFL9
+         qYPYx+7oQlDb6zSCPbVrlG9VUFdGqm56rWX1I5lyRB0wGn/A6/0iwawgczjFt7MTA+L2
+         M6j0mgsh4C9jKwaXh/rjFDCUjLA3ol3/z8c7VL6NP+whWFdjY8Q25nictZaKFuDZmRlv
+         VQng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704878557; x=1705483357;
+        h=content-transfer-encoding:content-language:in-reply-to:mime-version
+         :user-agent:date:message-id:from:references:cc:to:subject
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=y/cX7LhHOFu7/SWqzyr1HY0k2frn1F7ztP3n5/hwhKQ=;
+        b=Cm7OYIw8jPxhAp9TAXybxPIQ5pdRKBy6S+k2yrxIl55oW5q2CMcXcKmJxDHsUkXJJs
+         JpuAaZLEnDygfNF3E4INQbqN0mNZSSlxrSvDXgOs0KrIGIA2Pr0dhsA5dcSY62D08mwo
+         P0+xht6/CBGWyY/Or3YLkOlT4Cy9wW5zGjNErPQz8eS1LwTpufh9vD4VpuK75jzS3d/b
+         9ZpJAWCD8IUIP78zjEDfV7xyZLYai/wI47XiSFDmphsppR5qAtazUjpFYseB0LsCza24
+         yrd2SUXHSRPe/xXM0hA69C/GlJI98wcT5Ti71MJ/CmyZPHn2+yi+8g3xmlkz706RTqai
+         tWbA==
+X-Gm-Message-State: AOJu0YxrLfkubGGDrsB5gf2gMOh6jhyk1dsXVV5SMn/lR7GAARTjDUm5
+	CAAPtPf/BD01JAZmzcX3A/EtAkW/M2M=
+X-Google-Smtp-Source: AGHT+IG705GfnTGOKqaWb7fp2idlD7S4ghIOQnyTKmhk73jZ37PWMTPM+ZVnwFEa/YppiutnkSquyw==
+X-Received: by 2002:ac2:4e8d:0:b0:50e:ac2a:6b6d with SMTP id o13-20020ac24e8d000000b0050eac2a6b6dmr214375lfr.119.1704878557121;
+        Wed, 10 Jan 2024 01:22:37 -0800 (PST)
+Received: from [192.168.1.105] ([178.176.72.35])
+        by smtp.gmail.com with ESMTPSA id n7-20020a05651203e700b0050e84a3d75bsm605855lfq.254.2024.01.10.01.22.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Jan 2024 01:22:36 -0800 (PST)
+Subject: Re: [PATCH v4] usb: core: Prevent null pointer dereference in
+ update_port_device_state
+To: Udipto Goswami <quic_ugoswami@quicinc.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Alan Stern <stern@rowland.harvard.edu>
+Cc: Krishna Kurapati <quic_kriskura@quicinc.com>, linux-usb@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20240110091422.25347-1-quic_ugoswami@quicinc.com>
+From: Sergei Shtylyov <sergei.shtylyov@gmail.com>
+Message-ID: <4e272d5d-ec19-7621-1346-4363b0070b1c@gmail.com>
+Date: Wed, 10 Jan 2024 12:22:34 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yq1jzoi7hrt.fsf@ca-mkp.ca.oracle.com>
+In-Reply-To: <20240110091422.25347-1-quic_ugoswami@quicinc.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jan 09, 2024 at 08:55:52AM -0500, Martin K. Petersen wrote:
-> 
-> Pavel,
-> 
-> > This is bad idea. This changes return value, but without fixing
-> > callers; there will be subtle bugs somewhere.
-> 
-> I'm not sure why this particular change was backported since it was part
-> of a larger cleanup of explicitly distinguishing between block layer
-> sectors and device-specific LBAs. This was done to fix devices using PI
-> with 4 KB blocks which would otherwise end up getting programmed with
-> the wrong reference tag value.
-> 
-> > At minimum, we need this:
-> >
-> > 87662a472a9d8980b26ba5803447df2c4981d467 scsi: iser: Use scsi_get_sector() instead of scsi_get_lba()
-> 
-> I agree this would be appropriate. Otherwise we'll print the error being
-> at the wrong sector in case of an error on a PI device with 4 KB blocks.
-> However, the message is purely informative.
-> 
-> > That will fix iser, but there's also:
-> >
-> > drivers/s390/scsi/zfcp_fsf.c:           io->ref_tag_value = scsi_get_lba(scsi_cmnd) & 0xFFFFFFFF;
-> > drivers/scsi/isci/request.c:            tc->ref_tag_seed_gen = scsi_get_lba(scmd) & 0xffffffff;
-> > drivers/scsi/isci/request.c:            tc->ref_tag_seed_verify = scsi_get_lba(scmd) & 0xffffffff;
-> > drivers/scsi/lpfc/lpfc_scsi.c:  lba = scsi_get_lba(sc);
-> > drivers/scsi/lpfc/lpfc_scsi.c:  reftag = (uint32_t)scsi_get_lba(sc); /* Truncate LBA */
-> > drivers/scsi/lpfc/lpfc_scsi.c:  reftag = (uint32_t)scsi_get_lba(sc); /* Truncate LBA */
-> > drivers/scsi/lpfc/lpfc_scsi.c:  reftag = (uint32_t)scsi_get_lba(sc); /* Truncate LBA */
-> > drivers/scsi/lpfc/lpfc_scsi.c:  reftag = (uint32_t)scsi_get_lba(sc); /* Truncate LBA */
-> > drivers/scsi/lpfc/lpfc_scsi.c:          start_ref_tag = (uint32_t)scsi_get_lba(cmd); /* Truncate LBA */
-> > drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long)scsi_get_lba(cmd),
-> > drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long)scsi_get_lba(cmd),
-> > drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long)scsi_get_lba(cmd),
-> > drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long long)scsi_get_lba(cmd),
-> > drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long long)scsi_get_lba(cmd),
-> > drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long long)scsi_get_lba(cmd),
-> > drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long long)scsi_get_lba(cmd),
-> > drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long long)scsi_get_lba(cmd),
-> > drivers/scsi/lpfc/lpfc_scsi.c:          failing_sector = scsi_get_lba(cmd);
-> > drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long long)scsi_get_lba(cmd),
-> > drivers/scsi/lpfc/lpfc_scsi.c:                                   (unsigned long long)scsi_get_lba(cmnd),
-> > drivers/scsi/lpfc/lpfc_scsi.c:                                   (unsigned long long)scsi_get_lba(cmnd),
-> > drivers/scsi/qla2xxx/qla_iocb.c:                    (0xffffffff & scsi_get_lba(cmd)));
-> > drivers/scsi/qla2xxx/qla_iocb.c:                    (0xffffffff & scsi_get_lba(cmd)));
-> > drivers/scsi/qla2xxx/qla_iocb.c:                    (0xffffffff & scsi_get_lba(cmd)));
-> > drivers/scsi/qla2xxx/qla_isr.c:     cmd->cmnd[0], (u64)scsi_get_lba(cmd), a_ref_tag, e_ref_tag,
-> > drivers/scsi/qla2xxx/qla_isr.c:         sector_t lba_s = scsi_get_lba(cmd);
-> 
-> Save for two cases in lpfc_queuecommand (which like the iser case will
-> print the wrong sector number on error) all these look OK to me. Note
-> that almost all callers of scsi_get_lba() actually intended to get the
-> protocol LBA as the name indicates and not the block layer sector
-> number.
+On 1/10/24 12:14 PM, Udipto Goswami wrote:
 
-Ick, this is going to get complex fast.  How about I revert the whole
-series, and then just add the one bugfix at the end, in a "fixed by
-hand" version like I have here below.  Would that be better overall?
+> Currently,the function update_port_device_state gets the usb_hub from
 
-Thanks,
+   Need space between comma and "the"...
 
-greg k-h
+> udev->parent by calling usb_hub_to_struct_hub.
+> However, in case the actconfig or the maxchild is 0, the usb_hub would
+> be NULL and upon further accessing to get port_dev would result in null
+> pointer dereference.
+> 
+> Fix this by introducing an if check after the usb_hub is populated.
+> 
+> Fixes: 83cb2604f641 ("usb: core: add sysfs entry for usb device state")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Udipto Goswami <quic_ugoswami@quicinc.com>
+[...]
 
+> diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
+> index ffd7c99e24a3..5ba1875e6bf4 100644
+> --- a/drivers/usb/core/hub.c
+> +++ b/drivers/usb/core/hub.c
+> @@ -2053,9 +2053,22 @@ static void update_port_device_state(struct usb_device *udev)
+>  
+>  	if (udev->parent) {
+>  		hub = usb_hub_to_struct_hub(udev->parent);
+> -		port_dev = hub->ports[udev->portnum - 1];
+> -		WRITE_ONCE(port_dev->state, udev->state);
+> -		sysfs_notify_dirent(port_dev->state_kn);
+> +
+> +		/*
+> +		 * The Link Layer Validation System Driver (lvstest)
+> +		 * has step to unbind the hub before running the rest
+> +		 * of the procedure. This triggers hub_disconnect which
+> +		 * will set the hub's maxchild to 0, further resulting
 
-diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
-index 0c4bc42b55c2..3d3d139127ee 100644
---- a/drivers/scsi/scsi_error.c
-+++ b/drivers/scsi/scsi_error.c
-@@ -1069,6 +1069,7 @@ static int scsi_send_eh_cmnd(struct scsi_cmnd *scmd, unsigned char *cmnd,
- 
- 	scsi_log_send(scmd);
- 	scmd->scsi_done = scsi_eh_done;
-+	scmd->flags |= SCMD_LAST;
- 
- 	/*
- 	 * Lock sdev->state_mutex to avoid that scsi_device_quiesce() can
-@@ -2361,6 +2362,7 @@ scsi_ioctl_reset(struct scsi_device *dev, int __user *arg)
- 	scsi_init_command(dev, scmd);
- 	scmd->request = rq;
- 	scmd->cmnd = scsi_req(rq)->cmd;
-+	scmd->flags |= SCMD_LAST;
- 
- 	scmd->scsi_done		= scsi_reset_provider_done_command;
- 	memset(&scmd->sdb, 0, sizeof(scmd->sdb));
+   Resulting in.
+
+> +		 * usb_hub_to_struct_hub returning NULL.
+> +		 *
+> +		 * Add if check to avoid running into NULL pointer
+> +		 * de-reference.
+
+   This is obvious from the code below, I think...
+
+> +		 */
+> +		if (hub) {
+> +			port_dev = hub->ports[udev->portnum - 1];
+> +			WRITE_ONCE(port_dev->state, udev->state);
+> +			sysfs_notify_dirent(port_dev->state_kn);
+> +		}
+>  	}
+>  }
+>  
+
+MBR, Sergey
 
