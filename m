@@ -1,133 +1,101 @@
-Return-Path: <stable+bounces-10436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F3738299A6
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 12:48:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48511829A41
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 13:13:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C21B21F25D80
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 11:48:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAB40B20943
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 12:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC4847F49;
-	Wed, 10 Jan 2024 11:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19104481A8;
+	Wed, 10 Jan 2024 12:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g5G8AHBk"
+	dkim=pass (2048-bit key) header.d=ntlworld.com header.i=@ntlworld.com header.b="NMTgxFaQ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from dsmtpq2-prd-nl1-vmo.edge.unified.services (dsmtpq2-prd-nl1-vmo.edge.unified.services [84.116.6.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F604CB39;
-	Wed, 10 Jan 2024 11:44:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7588C433A6;
-	Wed, 10 Jan 2024 11:44:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704887057;
-	bh=Jmw8wSq2Lmym4LTn+EPUUNqMjAmmRyoITXyDdYPs5OI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=g5G8AHBkvnpyT/diGNZrlLUSH9ElTbMePJuZOpdwUZOZnNH7z1UHVkgRbFYKGdsW8
-	 nnMoGenbVHKZ1GMCjhFRnXcPbG+N51dJSJRDfK0W43DYq9uxedHq6aVF+2eEMDniTf
-	 NX2IBmajI971yb+TQsphykGHFy/Umo7FZNSQn5fTj4p0FlanpBE40lBT9xqdK4eHvY
-	 PTfs0voLcCAxhwOQcYyUstYrFr9961ReMrezfAXOHJV6643fmhTSLIi258wY1H8ED5
-	 7k4N9JrrnbZ9KHMSJOglfc7e3VlwIz+edL+2ZCZXlcQwal/rqsIV/ErqgjOYUqbP2n
-	 kZxxGP16USUuQ==
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a2adc52f213so325648266b.0;
-        Wed, 10 Jan 2024 03:44:17 -0800 (PST)
-X-Gm-Message-State: AOJu0YwiAhndRa8eVtxZqsySY81ah9UXm/NBty/VlHZVFMjhPeauQnLh
-	nd5Ch1/Vug0uFKCGb5yGswcV4wuwPAJdSXhWsEw=
-X-Google-Smtp-Source: AGHT+IGXX0A6N0d/UZrIdrom4CojUCM5Rsn4OuqmU75TcF1sPqNZyXNM7eAzbkvq72xKRJ29mFmSD533tnaokk0cuk4=
-X-Received: by 2002:a17:907:7205:b0:a28:a940:5305 with SMTP id
- dr5-20020a170907720500b00a28a9405305mr696168ejc.6.1704887056150; Wed, 10 Jan
- 2024 03:44:16 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C50B47F7B
+	for <stable@vger.kernel.org>; Wed, 10 Jan 2024 12:13:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ntlworld.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ntlworld.com
+Received: from csmtpq2-prd-nl1-vmo.edge.unified.services ([84.116.50.37])
+	by dsmtpq2-prd-nl1-vmo.edge.unified.services with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <shaky.start@ntlworld.com>)
+	id 1rNXCS-00G8wx-3a
+	for stable@vger.kernel.org; Wed, 10 Jan 2024 12:56:48 +0100
+Received: from csmtp2-prd-nl1-vmo.nl1.unified.services ([100.107.82.134] helo=csmtp2-prd-nl1-vmo.edge.unified.services)
+	by csmtpq2-prd-nl1-vmo.edge.unified.services with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <shaky.start@ntlworld.com>)
+	id 1rNXCJ-000mwJ-Rz
+	for stable@vger.kernel.org; Wed, 10 Jan 2024 12:56:39 +0100
+Received: from [192.168.0.37] ([82.26.39.196])
+	by csmtp2-prd-nl1-vmo.edge.unified.services with ESMTPA
+	id NXCJrfPss6YCcNXCJr9qZr; Wed, 10 Jan 2024 12:56:39 +0100
+X-SourceIP: 82.26.39.196
+X-Authenticated-Sender: shaky.start@ntlworld.com
+X-Spam: 0
+X-Authority: v=2.4 cv=auO0CzZV c=1 sm=1 tr=0 ts=659e85f7 cx=a_exe
+ a=PQm/cASMPoKUPy80G5uqbg==:117 a=PQm/cASMPoKUPy80G5uqbg==:17
+ a=IkcTkHD0fZMA:10 a=dEuoMetlWLkA:10 a=z-n8faunNKXTG8fyN2AA:9 a=QEXdDO2ut3YA:10
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ntlworld.com;
+	s=meg.feb2017; t=1704887799;
+	bh=A2i7qTM5U2xEfvOQmcs9KDcoXLgiS9N+Az2nzguhkGI=;
+	h=Date:To:Cc:From:Subject;
+	b=NMTgxFaQbaFIVPb0N4D496JrZ/+p5SXOzlbWsltGA45fn4v2zAwgN7PmpflWwOyTE
+	 qASc7KNG10LMJGJvdnYoJfxwfo8lkqKLw1LH3O5W/RMPYBATTxd5HorZZBx3mvbX4f
+	 CA1GyV5Bl+BMkSaRbs/XRWcFk/ZN4vtrbXovV+2zwPqcrCtaW1NIKHa3MqK9AmWa9P
+	 ubWv5JwX0dMyc2NPFfRsCH+IaZZnuJJv1V84NqTMwib3bmoU8XLJ1O6Da8U3IStIDv
+	 XYkbezj+t/OaOHUp7ICcxxQ0r9B561BnYnfgUo+v1EPSVNVMkj71p8GZHkQWIN36C+
+	 bI+HQfFxMzdrA==
+Message-ID: <7fb16281-e94f-46d0-808b-81f892c287ec@ntlworld.com>
+Date: Wed, 10 Jan 2024 11:56:39 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <0d35011f8afe8bd55c1f0318b0d2515ea10eac7f.1704839283.git.wqu@suse.com>
- <20240110005428.GN28693@twin.jikos.cz>
-In-Reply-To: <20240110005428.GN28693@twin.jikos.cz>
-From: Filipe Manana <fdmanana@kernel.org>
-Date: Wed, 10 Jan 2024 11:43:39 +0000
-X-Gmail-Original-Message-ID: <CAL3q7H5rryOLzp3EKq8RTbjMHMHeaJubfpsVLF6H4qJnKCUR1w@mail.gmail.com>
-Message-ID: <CAL3q7H5rryOLzp3EKq8RTbjMHMHeaJubfpsVLF6H4qJnKCUR1w@mail.gmail.com>
-Subject: Re: [PATCH] btrfs: defrag: reject unknown flags of btrfs_ioctl_defrag_range_args
-To: dsterba@suse.cz
-Cc: Qu Wenruo <wqu@suse.com>, linux-btrfs@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Content-Language: en-GB
+To: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev
+From: tony Hamilton <shaky.start@ntlworld.com>
+Subject: Advice on where to seek advice
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CMAE-Envelope: MS4xfGLkDK3qeY1rVF/EZuuPqXg9Bh4MidOHnexp8wwq1Qnhrp38334PWzYkAr/y1ENs3nNE75C27RSlx2ATTpbZ0fdq2jy4/q75uSBemGxnYwfe5QnfvVJp
+ UeOD7EVGBxM2k312fNkCtEjAPtEdbEjDh/X9888DIwV7tMrnyB1kz8cQ24qoEUWmcHFktxk8BPbaEOxUEpDQb2/+hiZiKdW7IzBpxxPITOgQkjnpfrLCXXMD
+ togJBMeo/NMhEEgABXU6pw==
 
-On Wed, Jan 10, 2024 at 12:55=E2=80=AFAM David Sterba <dsterba@suse.cz> wro=
-te:
->
-> On Wed, Jan 10, 2024 at 08:58:26AM +1030, Qu Wenruo wrote:
-> > Add extra sanity check for btrfs_ioctl_defrag_range_args::flags.
-> >
-> > This is not really to enhance fuzzing tests, but as a preparation for
-> > future expansion on btrfs_ioctl_defrag_range_args.
-> >
-> > In the future we're adding new members, allowing more fine tuning for
-> > btrfs defrag.
-> > Without the -ENONOTSUPP error, there would be no way to detect if the
-> > kernel supports those new defrag features.
-> >
-> > cc: stable@vger.kernel.org #4.14+
-> > Signed-off-by: Qu Wenruo <wqu@suse.com>
->
-> Added to misc-next, thanks.
->
-> > ---
-> >  fs/btrfs/ioctl.c           | 4 ++++
-> >  include/uapi/linux/btrfs.h | 2 ++
-> >  2 files changed, 6 insertions(+)
-> >
-> > diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-> > index a1743904202b..3a846b983b28 100644
-> > --- a/fs/btrfs/ioctl.c
-> > +++ b/fs/btrfs/ioctl.c
-> > @@ -2608,6 +2608,10 @@ static int btrfs_ioctl_defrag(struct file *file,=
- void __user *argp)
-> >                               ret =3D -EFAULT;
-> >                               goto out;
-> >                       }
-> > +                     if (range.flags & ~BTRFS_DEFRAG_RANGE_FLAGS_SUPP)=
- {
-> > +                             ret =3D -EOPNOTSUPP;
->
-> This should be EINVAL, this is for invalid parameter values or
-> combinations, EOPNOTSUPP would be for the whole ioctl as not supported.
+This is a request for guidance on where is the most appropriate I should ask
+for advice on how to do problem source identification on a problem with a
+Linux PC which looks like it might be kernel-related. I an providing the
+minimal amount of problem symptom information here that will help responders.
 
-I'm confused now.
-We return EOPNOTSUPP for a lot of ioctls when they are given an
-unknown flag, for example
-at btrfs_ioctl_scrub():
+Simple problem statement: My PC (Gigabyte GA-H81M-S2H based) will not start
+the OS (Linux MX 23.2, Debian 12, Kernel 6.2) if my PCIE GPU card (ZOTAC
+nVidia GTX-1050) is installed. The start-up process hangs after Grub is
+processed but before the Login screen is presented. Start-up completes
+normally when the PCIE card is not installed.
 
-if (sa->flags & ~BTRFS_SCRUB_SUPPORTED_FLAGS) {
-    ret =3D -EOPNOTSUPP;
-    goto out;
-}
+Further detail:
+The ZOTAC card works without issue in another PC with a different brand
+motherboard.
 
-Or at btrfs_ioctl_snap_create_v2():
+This PC works without issue, with the ZOTAC card installed, with a different
+kernel/distribution (e.g. Mint 21.2, Ubuntu 22.04, Kernel 5.15/5.19 or Windows
+10).
 
-if (vol_args->flags & ~BTRFS_SUBVOL_CREATE_ARGS_MASK) {
-   ret =3D -EOPNOTSUPP;
-   goto free_args;
-}
+With any Linux version installed in this PC, which uses a Via chip, operation
+is subject to the issue which prevents USB 3 operation on back plane ports,
+unless ‘iommu=off’ is set in grub. This might be an entirely different problem
+to that associated with the presence of the PCIE card.
 
-We also do similar for fallocate, at btrfs_fallocate():
-
-if (mode & ~(FALLOC_FL_KEEP_SIZE | FALLOC_FL_PUNCH_HOLE |
-        FALLOC_FL_ZERO_RANGE))
-    return -EOPNOTSUPP;
-
-I was under the expectation that EOPNOTSUPP is the correct thing to do
-in this patch.
-So what's different in this patch from those existing examples to
-justify EINVAL instead?
-
-Thanks.
-
->
+Who should I be seeking help/advice problem resolution from ?
 
