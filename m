@@ -1,128 +1,157 @@
-Return-Path: <stable+bounces-10446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24A0E829DCB
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 16:42:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD61B829DDE
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 16:46:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B01C4286BA5
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 15:42:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11C96B271CC
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 15:46:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C3594C3BF;
-	Wed, 10 Jan 2024 15:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65DA64CB24;
+	Wed, 10 Jan 2024 15:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="JI8cJAUN"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Y3uEX2GT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 517634BA9C;
-	Wed, 10 Jan 2024 15:42:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D8CC43390;
-	Wed, 10 Jan 2024 15:42:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1704901337;
-	bh=ZNu73zuf7NYTJBEkIYHcS8AYQ205RpbL6BfU2KD6CpI=;
-	h=Date:To:From:Subject:From;
-	b=JI8cJAUNZla5dQpPRSpeWC/1DmtSU08zPEnQa18QRMMW4aMVhnxEPrDiQ62xykvbN
-	 x8XlOT71Et3CNQkklQpk1XofnTKrNs6ir/xqEPZRvARSBlYaJ02XNfNvqoqC6aBnym
-	 q8CMuQDJrlwipVGdA5VL8eztR78pTJrQXLJ7bQp0=
-Date: Wed, 10 Jan 2024 07:42:17 -0800
-To: mm-commits@vger.kernel.org,willy@infradead.org,tzimmermann@suse.de,tvrtko.ursulin@linux.intel.com,stable@vger.kernel.org,rodrigo.vivi@intel.com,ray.huang@amd.com,mripard@kernel.org,maarten.lankhorst@linux.intel.com,joonas.lahtinen@linux.intel.com,jarkko@kernel.org,jani.nikula@linux.intel.com,hughd@google.com,djwong@kernel.org,dhowells@redhat.com,dave.hansen@linux.intel.com,daniel@ffwll.ch,christian.koenig@amd.com,chandan.babu@oracle.com,airlied@gmail.com,hch@lst.de,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + xfs-disable-large-folio-support-in-xfile_create.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240110154217.A1D8CC43390@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652B74CB21;
+	Wed, 10 Jan 2024 15:44:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353727.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40AEtT60007939;
+	Wed, 10 Jan 2024 15:44:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : date :
+ mime-version : subject : to : cc : references : from : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=46davaovqwEtnCcydpQdJJqyzVaiWwhAxC2+wADQOeE=;
+ b=Y3uEX2GTc+BOW/lGynTiqOoi9fhgxYA8FLKgyRVh+7WQC1SBfScL0862Hlsj3ZlMdQO9
+ ZiW6y8KxAOnc+XJcIOKDcs52X7+N+CFvYIZnfwUQVtEHSoOeux2VVOaWgZis6EY5mh1r
+ Xu7bScke2Bz5ex3AEUxhKuOzNiGU+Wm1dxuBf8/C07ng0crWo4F/a9wOrqCmFhe6Ug16
+ Am1LQ8vRQfJgflDi69AbteF6tB3bC/qwXTkrD6jfOi5twDwL5abAUGStNUCU/O4jW/MI
+ bvgTNCYUXxE/PnLcHzEsZIeCcR42fhRwqU3PBuXYJhpja007OG4kbhl6v0Ctlacx83UE yw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vhuu9m3yb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Jan 2024 15:44:46 +0000
+Received: from m0353727.ppops.net (m0353727.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40AFfrYZ016567;
+	Wed, 10 Jan 2024 15:44:45 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vhuu9m3xp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Jan 2024 15:44:45 +0000
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40AEc1JD028030;
+	Wed, 10 Jan 2024 15:44:44 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vgwfst3bu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 10 Jan 2024 15:44:44 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40AFiguL11993778
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 10 Jan 2024 15:44:43 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D94FC5805B;
+	Wed, 10 Jan 2024 15:44:42 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4B4C458058;
+	Wed, 10 Jan 2024 15:44:41 +0000 (GMT)
+Received: from [9.61.170.131] (unknown [9.61.170.131])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 10 Jan 2024 15:44:41 +0000 (GMT)
+Message-ID: <41baa1b2-4afd-9adb-2121-b14c8943d9b1@linux.ibm.com>
+Date: Wed, 10 Jan 2024 10:44:40 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v2 6/6] s390/vfio-ap: do not reset queue removed from host
+ config
+To: Tony Krowiak <akrowiak@linux.ibm.com>, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Cc: borntraeger@de.ibm.com, pasic@linux.ibm.com, pbonzini@redhat.com,
+        frankja@linux.ibm.com, imbrenda@linux.ibm.com,
+        alex.williamson@redhat.com, kwankhede@nvidia.com,
+        stable@vger.kernel.org
+References: <20231212212522.307893-1-akrowiak@linux.ibm.com>
+ <20231212212522.307893-7-akrowiak@linux.ibm.com>
+Content-Language: en-US
+From: "Jason J. Herne" <jjherne@linux.ibm.com>
+In-Reply-To: <20231212212522.307893-7-akrowiak@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: IsjIOTzPVQKvr0QmfztB0n_OxtMcN7ET
+X-Proofpoint-ORIG-GUID: 17mlDLuzrl3HOz48TJCLJGVBUouciBuT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-10_07,2024-01-10_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 malwarescore=0
+ adultscore=0 bulkscore=0 impostorscore=0 priorityscore=1501 phishscore=0
+ mlxscore=0 mlxlogscore=999 lowpriorityscore=0 suspectscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2401100128
 
 
-The patch titled
-     Subject: xfs: disable large folio support in xfile_create
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     xfs-disable-large-folio-support-in-xfile_create.patch
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/xfs-disable-large-folio-support-in-xfile_create.patch
+On 12/12/23 4:25 PM, Tony Krowiak wrote:
+> When a queue is unbound from the vfio_ap device driver, it is reset to
+> ensure its crypto data is not leaked when it is bound to another device
+> driver. If the queue is unbound due to the fact that the adapter or domain
+> was removed from the host's AP configuration, then attempting to reset it
+> will fail with response code 01 (APID not valid) getting returned from the
+> reset command. Let's ensure that the queue is assigned to the host's
+> configuration before resetting it.
+> 
+> Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
+> Fixes: eeb386aeb5b7 ("s390/vfio-ap: handle config changed and scan complete notification")
+> Cc: <stable@vger.kernel.org>
+> ---
+>   drivers/s390/crypto/vfio_ap_ops.c | 14 ++++++++++++--
+>   1 file changed, 12 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/s390/crypto/vfio_ap_ops.c b/drivers/s390/crypto/vfio_ap_ops.c
+> index e014108067dc..84decb0d5c97 100644
+> --- a/drivers/s390/crypto/vfio_ap_ops.c
+> +++ b/drivers/s390/crypto/vfio_ap_ops.c
+> @@ -2197,6 +2197,8 @@ void vfio_ap_mdev_remove_queue(struct ap_device *apdev)
+>   	q = dev_get_drvdata(&apdev->device);
+>   	get_update_locks_for_queue(q);
+>   	matrix_mdev = q->matrix_mdev;
+> +	apid = AP_QID_CARD(q->apqn);
+> +	apqi = AP_QID_QUEUE(q->apqn);
+>   
+>   	if (matrix_mdev) {
+>   		/* If the queue is assigned to the guest's AP configuration */
+> @@ -2214,8 +2216,16 @@ void vfio_ap_mdev_remove_queue(struct ap_device *apdev)
+>   		}
+>   	}
+>   
+> -	vfio_ap_mdev_reset_queue(q);
+> -	flush_work(&q->reset_work);
+> +	/*
+> +	 * If the queue is not in the host's AP configuration, then resetting
+> +	 * it will fail with response code 01, (APQN not valid); so, let's make
+> +	 * sure it is in the host's config.
+> +	 */
+> +	if (test_bit_inv(apid, (unsigned long *)matrix_dev->info.apm) &&
+> +	    test_bit_inv(apqi, (unsigned long *)matrix_dev->info.aqm)) {
+> +		vfio_ap_mdev_reset_queue(q);
+> +		flush_work(&q->reset_work);
+> +	}
+>   
+>   done:
+>   	if (matrix_mdev)
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Christoph Hellwig <hch@lst.de>
-Subject: xfs: disable large folio support in xfile_create
-Date: Wed, 10 Jan 2024 10:21:09 +0100
-
-The xfarray code will crash if large folios are force enabled using:
-
-   echo force > /sys/kernel/mm/transparent_hugepage/shmem_enabled
-
-Fixing this will require a bit of an API change, and prefeably sorting out
-the hwpoison story for pages vs folio and where it is placed in the shmem
-API.  For now use this one liner to disable large folios.
-
-Link: https://lkml.kernel.org/r/20240110092109.1950011-3-hch@lst.de
-Reported-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Cc: Chandan Babu R <chandan.babu@oracle.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Dave Airlie <airlied@gmail.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: David Howells <dhowells@redhat.com>
-Cc: Huang Rui <ray.huang@amd.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Tvrtko Ursulin <tvrtko.ursulin@linux.intel.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/xfs/scrub/xfile.c |    5 +++++
- 1 file changed, 5 insertions(+)
-
---- a/fs/xfs/scrub/xfile.c~xfs-disable-large-folio-support-in-xfile_create
-+++ a/fs/xfs/scrub/xfile.c
-@@ -94,6 +94,11 @@ xfile_create(
- 
- 	lockdep_set_class(&inode->i_rwsem, &xfile_i_mutex_key);
- 
-+	/*
-+	 * We're not quite ready for large folios yet.
-+	 */
-+	mapping_clear_large_folios(inode->i_mapping);
-+
- 	trace_xfile_create(xf);
- 
- 	*xfilep = xf;
-_
-
-Patches currently in -mm which might be from hch@lst.de are
-
-mm-add-a-mapping_clear_large_folios-helper.patch
-xfs-disable-large-folio-support-in-xfile_create.patch
-
+Reviewed-by: Jason J. Herne <jjherne@linux.ibm.com>
 
