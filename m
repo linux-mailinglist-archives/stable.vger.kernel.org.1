@@ -1,137 +1,139 @@
-Return-Path: <stable+bounces-10427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8A65829603
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 10:15:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF792829609
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 10:15:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 688B41F2632D
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 09:15:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A00372815A1
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 09:15:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5933EA71;
-	Wed, 10 Jan 2024 09:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A843D567;
+	Wed, 10 Jan 2024 09:15:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="niAPxXdT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jwzagr8r"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFE73D57E;
-	Wed, 10 Jan 2024 09:14:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40A8cYUm020369;
-	Wed, 10 Jan 2024 09:14:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version:content-type; s=
-	qcppdkim1; bh=yAhA8Oceyu1djk0D/e5KpYlLpin5FLpfjCsMWaRJTFw=; b=ni
-	APxXdT8ExeUBnMttdN4GJMHaeL1ytoT8dE2Hil1QiyEFOsgWG6wfPu1HyOMV48sq
-	qLk9AV9SbDpVRCLRzzcY0U0JCCQc53/QSkHKTm7D/Xuz8XV21BCrYfnBiSB2Ja4Y
-	Z18IhdV4/buwRsFevYK7iyyxCqmFdqRvLiMuWko+/Dhwek9jrn4gwDkVahaagf4y
-	jhJy50CBSdi1BaUQEgW74TiGUCavPU2VjSaaN48SatDjT5oV5H3/aL4M4o06evGv
-	AWWeXa+O6OdNTG6CY/G8XZ5Zk9YbIJPx3VKv595xj8fMaaI0ByaGe4SvrczB+2is
-	uEVzC9534q4SZ+h2jQ0A==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vhjh2rq4y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Jan 2024 09:14:43 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40A9Eg0Z014725
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 10 Jan 2024 09:14:42 GMT
-Received: from hu-ugoswami-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Wed, 10 Jan 2024 01:14:39 -0800
-From: Udipto Goswami <quic_ugoswami@quicinc.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alan Stern
-	<stern@rowland.harvard.edu>
-CC: Krishna Kurapati <quic_kriskura@quicinc.com>,
-        Sergei Shtylyov
-	<sergei.shtylyov@gmail.com>,
-        <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>, Udipto Goswami
-	<quic_ugoswami@quicinc.com>
-Subject: [PATCH v4] usb: core: Prevent null pointer dereference in update_port_device_state
-Date: Wed, 10 Jan 2024 14:44:22 +0530
-Message-ID: <20240110091422.25347-1-quic_ugoswami@quicinc.com>
-X-Mailer: git-send-email 2.17.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234082E846;
+	Wed, 10 Jan 2024 09:15:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47841C433C7;
+	Wed, 10 Jan 2024 09:15:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1704878137;
+	bh=ahio7T25Z11avb9NbE7tOGh6X6/776n8O1/ownXKe10=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jwzagr8rUcwaOjiUjF3gbJ54Tl1s+O9RpmfCsYDue3E1YUowoTRPX4cEtYJx5qD3A
+	 j3seAQxKPwmyfv7lVKhWRyVHLJDQbaCvNX3qlFkXQ4ZlaUX+508N/MjNy2+wlVaLNZ
+	 sekmwa4NU2A+KjyNUmrzeFCzV3zXtL0W28NJP2NU=
+Date: Wed, 10 Jan 2024 10:15:34 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: Pavel Machek <pavel@ucw.cz>, bvanassche@acm.org, hch@lst.de,
+	hare@suse.de, linux-kernel@vger.kernel.org,
+	akpm@linux-foundation.org, torvalds@linux-foundation.org,
+	stable@vger.kernel.org, lwn@lwn.net, jslaby@suse.cz
+Subject: Re: scsi_get_lba breakage in 5.10 -- Re: Linux 5.10.206
+Message-ID: <2024011047-clench-scheme-1f46@gregkh>
+References: <2024010527-revision-ended-aea2@gregkh>
+ <ZZ042FejzwMM5vDW@duo.ucw.cz>
+ <yq1jzoi7hrt.fsf@ca-mkp.ca.oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: Z-F7FYVwYTcqWfTAMF69RFMQ-nVvd2_I
-X-Proofpoint-GUID: Z-F7FYVwYTcqWfTAMF69RFMQ-nVvd2_I
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- mlxlogscore=659 clxscore=1015 bulkscore=0 malwarescore=0 spamscore=0
- phishscore=0 priorityscore=1501 adultscore=0 impostorscore=0
- suspectscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2401100075
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yq1jzoi7hrt.fsf@ca-mkp.ca.oracle.com>
 
-Currently,the function update_port_device_state gets the usb_hub from
-udev->parent by calling usb_hub_to_struct_hub.
-However, in case the actconfig or the maxchild is 0, the usb_hub would
-be NULL and upon further accessing to get port_dev would result in null
-pointer dereference.
+On Tue, Jan 09, 2024 at 08:55:52AM -0500, Martin K. Petersen wrote:
+> 
+> Pavel,
+> 
+> > This is bad idea. This changes return value, but without fixing
+> > callers; there will be subtle bugs somewhere.
+> 
+> I'm not sure why this particular change was backported since it was part
+> of a larger cleanup of explicitly distinguishing between block layer
+> sectors and device-specific LBAs. This was done to fix devices using PI
+> with 4 KB blocks which would otherwise end up getting programmed with
+> the wrong reference tag value.
+> 
+> > At minimum, we need this:
+> >
+> > 87662a472a9d8980b26ba5803447df2c4981d467 scsi: iser: Use scsi_get_sector() instead of scsi_get_lba()
+> 
+> I agree this would be appropriate. Otherwise we'll print the error being
+> at the wrong sector in case of an error on a PI device with 4 KB blocks.
+> However, the message is purely informative.
+> 
+> > That will fix iser, but there's also:
+> >
+> > drivers/s390/scsi/zfcp_fsf.c:           io->ref_tag_value = scsi_get_lba(scsi_cmnd) & 0xFFFFFFFF;
+> > drivers/scsi/isci/request.c:            tc->ref_tag_seed_gen = scsi_get_lba(scmd) & 0xffffffff;
+> > drivers/scsi/isci/request.c:            tc->ref_tag_seed_verify = scsi_get_lba(scmd) & 0xffffffff;
+> > drivers/scsi/lpfc/lpfc_scsi.c:  lba = scsi_get_lba(sc);
+> > drivers/scsi/lpfc/lpfc_scsi.c:  reftag = (uint32_t)scsi_get_lba(sc); /* Truncate LBA */
+> > drivers/scsi/lpfc/lpfc_scsi.c:  reftag = (uint32_t)scsi_get_lba(sc); /* Truncate LBA */
+> > drivers/scsi/lpfc/lpfc_scsi.c:  reftag = (uint32_t)scsi_get_lba(sc); /* Truncate LBA */
+> > drivers/scsi/lpfc/lpfc_scsi.c:  reftag = (uint32_t)scsi_get_lba(sc); /* Truncate LBA */
+> > drivers/scsi/lpfc/lpfc_scsi.c:          start_ref_tag = (uint32_t)scsi_get_lba(cmd); /* Truncate LBA */
+> > drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long)scsi_get_lba(cmd),
+> > drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long)scsi_get_lba(cmd),
+> > drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long)scsi_get_lba(cmd),
+> > drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long long)scsi_get_lba(cmd),
+> > drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long long)scsi_get_lba(cmd),
+> > drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long long)scsi_get_lba(cmd),
+> > drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long long)scsi_get_lba(cmd),
+> > drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long long)scsi_get_lba(cmd),
+> > drivers/scsi/lpfc/lpfc_scsi.c:          failing_sector = scsi_get_lba(cmd);
+> > drivers/scsi/lpfc/lpfc_scsi.c:                          (unsigned long long)scsi_get_lba(cmd),
+> > drivers/scsi/lpfc/lpfc_scsi.c:                                   (unsigned long long)scsi_get_lba(cmnd),
+> > drivers/scsi/lpfc/lpfc_scsi.c:                                   (unsigned long long)scsi_get_lba(cmnd),
+> > drivers/scsi/qla2xxx/qla_iocb.c:                    (0xffffffff & scsi_get_lba(cmd)));
+> > drivers/scsi/qla2xxx/qla_iocb.c:                    (0xffffffff & scsi_get_lba(cmd)));
+> > drivers/scsi/qla2xxx/qla_iocb.c:                    (0xffffffff & scsi_get_lba(cmd)));
+> > drivers/scsi/qla2xxx/qla_isr.c:     cmd->cmnd[0], (u64)scsi_get_lba(cmd), a_ref_tag, e_ref_tag,
+> > drivers/scsi/qla2xxx/qla_isr.c:         sector_t lba_s = scsi_get_lba(cmd);
+> 
+> Save for two cases in lpfc_queuecommand (which like the iser case will
+> print the wrong sector number on error) all these look OK to me. Note
+> that almost all callers of scsi_get_lba() actually intended to get the
+> protocol LBA as the name indicates and not the block layer sector
+> number.
 
-Fix this by introducing an if check after the usb_hub is populated.
+Ick, this is going to get complex fast.  How about I revert the whole
+series, and then just add the one bugfix at the end, in a "fixed by
+hand" version like I have here below.  Would that be better overall?
 
-Fixes: 83cb2604f641 ("usb: core: add sysfs entry for usb device state")
-Cc: stable@vger.kernel.org
-Signed-off-by: Udipto Goswami <quic_ugoswami@quicinc.com>
----
-v4: Fixed minor mistakes in the comment.
-v3: Re-wrote the comment for better context.
-v2: Introduced comment for the if check & CC'ed stable.
+Thanks,
 
- drivers/usb/core/hub.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+greg k-h
 
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index ffd7c99e24a3..5ba1875e6bf4 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -2053,9 +2053,22 @@ static void update_port_device_state(struct usb_device *udev)
+
+diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
+index 0c4bc42b55c2..3d3d139127ee 100644
+--- a/drivers/scsi/scsi_error.c
++++ b/drivers/scsi/scsi_error.c
+@@ -1069,6 +1069,7 @@ static int scsi_send_eh_cmnd(struct scsi_cmnd *scmd, unsigned char *cmnd,
  
- 	if (udev->parent) {
- 		hub = usb_hub_to_struct_hub(udev->parent);
--		port_dev = hub->ports[udev->portnum - 1];
--		WRITE_ONCE(port_dev->state, udev->state);
--		sysfs_notify_dirent(port_dev->state_kn);
-+
-+		/*
-+		 * The Link Layer Validation System Driver (lvstest)
-+		 * has step to unbind the hub before running the rest
-+		 * of the procedure. This triggers hub_disconnect which
-+		 * will set the hub's maxchild to 0, further resulting
-+		 * usb_hub_to_struct_hub returning NULL.
-+		 *
-+		 * Add if check to avoid running into NULL pointer
-+		 * de-reference.
-+		 */
-+		if (hub) {
-+			port_dev = hub->ports[udev->portnum - 1];
-+			WRITE_ONCE(port_dev->state, udev->state);
-+			sysfs_notify_dirent(port_dev->state_kn);
-+		}
- 	}
- }
+ 	scsi_log_send(scmd);
+ 	scmd->scsi_done = scsi_eh_done;
++	scmd->flags |= SCMD_LAST;
  
--- 
-2.17.1
-
+ 	/*
+ 	 * Lock sdev->state_mutex to avoid that scsi_device_quiesce() can
+@@ -2361,6 +2362,7 @@ scsi_ioctl_reset(struct scsi_device *dev, int __user *arg)
+ 	scsi_init_command(dev, scmd);
+ 	scmd->request = rq;
+ 	scmd->cmnd = scsi_req(rq)->cmd;
++	scmd->flags |= SCMD_LAST;
+ 
+ 	scmd->scsi_done		= scsi_reset_provider_done_command;
+ 	memset(&scmd->sdb, 0, sizeof(scmd->sdb));
 
