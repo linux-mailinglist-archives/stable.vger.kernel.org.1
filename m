@@ -1,107 +1,160 @@
-Return-Path: <stable+bounces-10417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E48882930C
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 05:44:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C9EB829310
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 05:44:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C4B41C253F1
-	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 04:44:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F68E1C254FD
+	for <lists+stable@lfdr.de>; Wed, 10 Jan 2024 04:44:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 122286FB1;
-	Wed, 10 Jan 2024 04:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2D176FB0;
+	Wed, 10 Jan 2024 04:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Xz/QTWGU"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="rnhwtp6g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B053A6FAF;
-	Wed, 10 Jan 2024 04:43:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFFCC433F1;
-	Wed, 10 Jan 2024 04:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88586DDA3;
+	Wed, 10 Jan 2024 04:44:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51440C433F1;
+	Wed, 10 Jan 2024 04:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1704861837;
-	bh=RKClabnfbCkpoH3vhzF2N9v90yEPu3odm1xJiTbC6Qk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Xz/QTWGUo/6dZ6/hjpWWoB0F1FjKRq+euouAygBcGRWgToVFGW3nslnADnZ/9K87p
-	 7fu3CoEto8PtfPTdNEMs5pUtTcZ6fMFi4NqNiJn6qtFCwjZWrY1FbOOx1J8sUIuzsH
-	 Ngz4WszWViXwj6voGoRqpPneYmWIfr6RJ3V2k7Fc=
-Date: Tue, 9 Jan 2024 20:43:56 -0800
+	s=korg; t=1704861848;
+	bh=+6fdKkPZhTIdFY2AyAKSnwV4oFfhJZdPoqrogPUEyAM=;
+	h=Date:To:From:Subject:From;
+	b=rnhwtp6gF68hBPm+inPSE3hvZ6fnEh53xKkQazjIBNfGD/FdkNCZs1TqEZL+0I5qQ
+	 GpSXnz6gGEGaITcvrJLd28XXRet90Xqd8J9u5ZP+5w/lwgbktEeQqZIn55yMdUVPr7
+	 sEUqhzBLLQ1LMQCioN7LyZAjeUBaVYiFQ/tMAZw8=
+Date: Tue, 09 Jan 2024 20:44:07 -0800
+To: mm-commits@vger.kernel.org,wangkefeng.wang@huawei.com,surenb@google.com,stable@vger.kernel.org,sfr@canb.auug.org.au,seanjc@google.com,ryan.roberts@arm.com,peterx@redhat.com,mirq-linux@rere.qmqm.pl,Liam.Howlett@oracle.com,hughd@google.com,david@redhat.com,avagin@google.com,arnd@arndb.de,usama.anjum@collabora.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>, David Hildenbrand
- <david@redhat.com>, Andrei Vagin <avagin@google.com>, Peter Xu
- <peterx@redhat.com>, Hugh Dickins <hughd@google.com>, Suren Baghdasaryan
- <surenb@google.com>, Ryan Roberts <ryan.roberts@arm.com>, Kefeng Wang
- <wangkefeng.wang@huawei.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- =?UTF-8?Q?"Micha=C5=82_Miros=C5=82aw"?= <mirq-linux@rere.qmqm.pl>, Stephen
- Rothwell <sfr@canb.auug.org.au>, Arnd Bergmann <arnd@arndb.de>,
- kernel@collabora.com,
- syzbot+81227d2bd69e9dedb802@syzkaller.appspotmail.com,
- stable@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH] fs/proc/task_mmu: move mmu notification mechanism
- inside mm lock
-Message-Id: <20240109204356.6c088124a9ba0ce0b5a4bb00@linux-foundation.org>
-In-Reply-To: <ZZ10FqvnVWIbyo-9@google.com>
-References: <20240109112445.590736-1-usama.anjum@collabora.com>
-	<ZZ10FqvnVWIbyo-9@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Subject: + fs-proc-task_mmu-move-mmu-notification-mechanism-inside-mm-lock.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240110044408.51440C433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Tue, 9 Jan 2024 08:28:06 -0800 Sean Christopherson <seanjc@google.com> wrote:
 
-> > -	/* Protection change for the range is going to happen. */
-> > -	if (p.arg.flags & PM_SCAN_WP_MATCHING) {
-> > -		mmu_notifier_range_init(&range, MMU_NOTIFY_PROTECTION_VMA, 0,
-> > -					mm, p.arg.start, p.arg.end);
-> > -		mmu_notifier_invalidate_range_start(&range);
-> > -	}
-> > -
-> >  	for (walk_start = p.arg.start; walk_start < p.arg.end;
-> >  			walk_start = p.arg.walk_end) {
-> >  		long n_out;
-> 
-> Nit, might be worth moving
-> 
-> 		struct mmu_notifier_range range;
-> 
-> inside the loop to guard against stale usage, but that's definitely optional.
+The patch titled
+     Subject: fs/proc/task_mmu: move mmu notification mechanism inside mm lock
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     fs-proc-task_mmu-move-mmu-notification-mechanism-inside-mm-lock.patch
 
-Yes, I think that's nicer.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fs-proc-task_mmu-move-mmu-notification-mechanism-inside-mm-lock.patch
 
---- a/fs/proc/task_mmu.c~fs-proc-task_mmu-move-mmu-notification-mechanism-inside-mm-lock-fix
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Subject: fs/proc/task_mmu: move mmu notification mechanism inside mm lock
+Date: Tue, 9 Jan 2024 16:24:42 +0500
+
+Move mmu notification mechanism inside mm lock to prevent race condition
+in other components which depend on it.  The notifier will invalidate
+memory range.  Depending upon the number of iterations, different memory
+ranges would be invalidated.
+
+The following warning would be removed by this patch:
+WARNING: CPU: 0 PID: 5067 at arch/x86/kvm/../../../virt/kvm/kvm_main.c:734 kvm_mmu_notifier_change_pte+0x860/0x960 arch/x86/kvm/../../../virt/kvm/kvm_main.c:734
+
+There is no behavioural and performance change with this patch when
+there is no component registered with the mmu notifier.
+
+Link: https://lkml.kernel.org/r/20240109112445.590736-1-usama.anjum@collabora.com
+Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Reported-by: syzbot+81227d2bd69e9dedb802@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/000000000000f6d051060c6785bc@google.com/
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Cc: Andrei Vagin <avagin@google.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/proc/task_mmu.c |   22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
+
+--- a/fs/proc/task_mmu.c~fs-proc-task_mmu-move-mmu-notification-mechanism-inside-mm-lock
 +++ a/fs/proc/task_mmu.c
-@@ -2432,7 +2432,6 @@ static long pagemap_scan_flush_buffer(st
+@@ -2448,13 +2448,6 @@ static long do_pagemap_scan(struct mm_st
+ 	if (ret)
+ 		return ret;
  
- static long do_pagemap_scan(struct mm_struct *mm, unsigned long uarg)
- {
--	struct mmu_notifier_range range;
- 	struct pagemap_scan_private p = {0};
- 	unsigned long walk_start;
- 	size_t n_ranges_out = 0;
-@@ -2450,6 +2449,7 @@ static long do_pagemap_scan(struct mm_st
- 
+-	/* Protection change for the range is going to happen. */
+-	if (p.arg.flags & PM_SCAN_WP_MATCHING) {
+-		mmu_notifier_range_init(&range, MMU_NOTIFY_PROTECTION_VMA, 0,
+-					mm, p.arg.start, p.arg.end);
+-		mmu_notifier_invalidate_range_start(&range);
+-	}
+-
  	for (walk_start = p.arg.start; walk_start < p.arg.end;
  			walk_start = p.arg.walk_end) {
-+		struct mmu_notifier_range range;
  		long n_out;
+@@ -2467,8 +2460,20 @@ static long do_pagemap_scan(struct mm_st
+ 		ret = mmap_read_lock_killable(mm);
+ 		if (ret)
+ 			break;
++
++		/* Protection change for the range is going to happen. */
++		if (p.arg.flags & PM_SCAN_WP_MATCHING) {
++			mmu_notifier_range_init(&range, MMU_NOTIFY_PROTECTION_VMA, 0,
++						mm, walk_start, p.arg.end);
++			mmu_notifier_invalidate_range_start(&range);
++		}
++
+ 		ret = walk_page_range(mm, walk_start, p.arg.end,
+ 				      &pagemap_scan_ops, &p);
++
++		if (p.arg.flags & PM_SCAN_WP_MATCHING)
++			mmu_notifier_invalidate_range_end(&range);
++
+ 		mmap_read_unlock(mm);
  
- 		if (fatal_signal_pending(current)) {
+ 		n_out = pagemap_scan_flush_buffer(&p);
+@@ -2494,9 +2499,6 @@ static long do_pagemap_scan(struct mm_st
+ 	if (pagemap_scan_writeback_args(&p.arg, uarg))
+ 		ret = -EFAULT;
+ 
+-	if (p.arg.flags & PM_SCAN_WP_MATCHING)
+-		mmu_notifier_invalidate_range_end(&range);
+-
+ 	kfree(p.vec_buf);
+ 	return ret;
+ }
 _
 
+Patches currently in -mm which might be from usama.anjum@collabora.com are
 
-I'm surprised this code doesn't generate a might-be-used-uninitialized
-warning.  I guess gcc got smarter.
+fs-proc-task_mmu-move-mmu-notification-mechanism-inside-mm-lock.patch
 
 
