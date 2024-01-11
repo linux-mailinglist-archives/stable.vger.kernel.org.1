@@ -1,54 +1,70 @@
-Return-Path: <stable+bounces-10497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E5B482ABAE
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 11:14:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CED2082ABC2
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 11:17:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE2F51F25C83
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 10:14:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5926C28A8B9
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 10:17:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32BB512E4D;
-	Thu, 11 Jan 2024 10:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DA0F12E6A;
+	Thu, 11 Jan 2024 10:17:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="cgl3/fIT"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gulit7CF"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686FF14F60;
-	Thu, 11 Jan 2024 10:14:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40B2ogpQ010118;
-	Thu, 11 Jan 2024 10:14:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=h/DbbzHoNkxnGW4L2L75cbtUpAz/S+Y5/h6ZMK3OrJk=; b=cg
-	l3/fIT9N+aKNDm215gnsQQN+s9+izMv0Pb0qUKlLA4NH3U+3VFxzmPK6yexWblp3
-	v0U5dWPNdVnxBa/CiUNZWTEcbuxX0aU2LFTBmXqhy7RBfVnP7zd3aiCKfuF9dguO
-	aUXWNarJQx/iKHn1IgmSxDYqB55QSkVIqPLgmZze7gXfCxUIGyaO41LeK5rDg7KG
-	vBzBiGWE0uvi8OIcyUjqT+n3FSgiw0OVOHbyO9ulTvMNSWu9mKOzz3dyGPj/r4yp
-	T711K7pl0ukOaIgy7seK1i5wpylsexGvJ0twjC0pJgZFZ+FaPJCv4qRSq4teZc4u
-	WwkZJ5zjGHzwOqulVjbA==
-Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vj7w58w6s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jan 2024 10:14:32 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40BAEVvl007213
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jan 2024 10:14:31 GMT
-Received: from [10.253.76.230] (10.80.80.8) by nasanex01a.na.qualcomm.com
- (10.52.223.231) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 11 Jan
- 2024 02:14:29 -0800
-Message-ID: <7975f7af-3369-4590-b943-ad10da247bac@quicinc.com>
-Date: Thu, 11 Jan 2024 18:14:27 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90AB14A86
+	for <stable@vger.kernel.org>; Thu, 11 Jan 2024 10:17:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1704968220;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Xvfh+d/PF2/QGoAtt0okJqQ5raTsSFhD1s6pDC9b/Lw=;
+	b=gulit7CFMvLNiJpgOjIioRW7jFxcroYAaxo/8SjpqVCbSAIaTPl06riAU+N9R/SGa8PWRH
+	Qh5JXvRG8ZTBAdx0v3mYTrNDnvgZns3Y0PN5v2lXTuQWuPjJ2vRfMEcdM4XP1yCZfQrlgr
+	V0kvwBdT4huDA7lG9ojoiwX+RgSVnu4=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-480-G2hWZ4EBNRScdZbK5wty6g-1; Thu, 11 Jan 2024 05:16:58 -0500
+X-MC-Unique: G2hWZ4EBNRScdZbK5wty6g-1
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-a2c66901828so12199266b.0
+        for <stable@vger.kernel.org>; Thu, 11 Jan 2024 02:16:58 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704968217; x=1705573017;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Xvfh+d/PF2/QGoAtt0okJqQ5raTsSFhD1s6pDC9b/Lw=;
+        b=blgCcm08jyJxfWneDrULuWQNAyIJHav+e6gBgivHH5LEJUPBljvgXcq7tjlPnx0cZN
+         uTHcS5jMQC4uCcVgY++heSBIYnuN+Otc+3TGbfVnJ7ZtdoesJaDi7Arg/Gv0nkPxIODd
+         NY0Mdc5ZgV4HDCWfIxSX6rpLOP2GEag0Lef523AeC/DsnLzSFai637NODDy85hMAykVk
+         p68CPCqwT0v/y3IKPUILkLBaxXeLXzdssk2iG7MwS/K0B88dQXVduM/rdIQO4Pn+oegV
+         v41rCPZTWrK4zyi1a59rthy9cRN8NYzn4LQQlou5f0GRAbMtWeDBx1TrbXbCQUl5QyrU
+         aVKQ==
+X-Gm-Message-State: AOJu0YxUGTo91Ur94yWptbBE6E1VzEOerirtZpomkBKPbqtvGGLtuk3E
+	7m4BH3WlmWserGhOlqL8u8O//aXBQzvwZ8FQszPEoD0JAaeChupaL0jy1dSnr39H7ykasiKXHK1
+	6+bS4vi3HYJ21EKD+ofeCQ0Hq
+X-Received: by 2002:a17:907:1118:b0:a26:88f4:3fae with SMTP id qu24-20020a170907111800b00a2688f43faemr445677ejb.67.1704968217749;
+        Thu, 11 Jan 2024 02:16:57 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEXhoFxHtuchywcndajp7x42HN6ov4dAJlvko9sTO5poziYHxnk5h2wfHQuhiVgOiK4ROnANQ==
+X-Received: by 2002:a17:907:1118:b0:a26:88f4:3fae with SMTP id qu24-20020a170907111800b00a2688f43faemr445667ejb.67.1704968217476;
+        Thu, 11 Jan 2024 02:16:57 -0800 (PST)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id 19-20020a170906301300b00a26a93731c5sm387607ejz.111.2024.01.11.02.16.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Jan 2024 02:16:57 -0800 (PST)
+Message-ID: <c62db276-289e-4a21-8e2f-6a6055e7c4ca@redhat.com>
+Date: Thu, 11 Jan 2024 11:16:56 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,152 +72,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] Bluetooth: qca: Fix crash when btattach controller
- ROME
-Content-Language: en-US
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-CC: <luiz.dentz@gmail.com>, <marcel@holtmann.org>, <jiangzp@google.com>,
-        <linux-bluetooth@vger.kernel.org>, <stable@vger.kernel.org>
-References: <1704960978-5437-1-git-send-email-quic_zijuhu@quicinc.com>
- <bf74d533-c0ff-42c6-966f-b4b28c5e0f60@molgen.mpg.de>
-From: quic_zijuhu <quic_zijuhu@quicinc.com>
-In-Reply-To: <bf74d533-c0ff-42c6-966f-b4b28c5e0f60@molgen.mpg.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: YD99fuqPA7JUPIH5Nr1xjLKy8CDa55d3
-X-Proofpoint-GUID: YD99fuqPA7JUPIH5Nr1xjLKy8CDa55d3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 mlxscore=0
- suspectscore=0 bulkscore=0 lowpriorityscore=0 phishscore=0 adultscore=0
- spamscore=0 clxscore=1015 malwarescore=0 priorityscore=1501
- mlxlogscore=865 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2401110083
+Subject: Re: [PATCH v2 1/2] usb: dwc3: host: Set XHCI_SG_TRB_CACHE_SIZE_QUIRK
+Content-Language: en-US, nl
+To: Prashanth K <quic_prashk@quicinc.com>,
+ Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+ Mathias Nyman <mathias.nyman@intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20231212112521.3774610-1-quic_prashk@quicinc.com>
+ <20231212112521.3774610-2-quic_prashk@quicinc.com>
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <20231212112521.3774610-2-quic_prashk@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 1/11/2024 5:46 PM, Paul Menzel wrote:
-> Dear Zijun,
-> 
-> 
-> Thank you for your patch.
-> 
-> Am 11.01.24 um 09:16 schrieb Zijun Hu:
->> A crash will happen when btattach controller ROME, and it is caused by
-> 
-> What does “btattach controller ROME” mean? Is ROME a platform? If so, should it be *on ROME* or similar?
-> 
-ROME is a type of BT controller name, and refer to QCA_ROME of below defination:
-drivers/bluetooth/btqca.h:
-enum qca_btsoc_type {
-	QCA_INVALID = -1,
-	QCA_AR3002,
-	QCA_ROME,
-	QCA_WCN3988,
-	QCA_WCN3990,
-	QCA_WCN3998,
-	QCA_WCN3991,
-	QCA_QCA2066,
-	QCA_QCA6390,
-	QCA_WCN6750,
-	QCA_WCN6855,
-	QCA_WCN7850,
-};
+Hi,
 
-Connect a external ROME module to ubuntu machine by BT UART to USB cable,  then run
-"sudo btattach -B /dev/ttyUSB0 -P qca" within ubuntu.
-
-will optimize description.
-
->> dereferring nullptr hu->serdev, fixed by null check before access.
+On 12/12/23 12:25, Prashanth K wrote:
+> Upstream commit bac1ec551434 ("usb: xhci: Set quirk for
+> XHCI_SG_TRB_CACHE_SIZE_QUIRK") introduced a new quirk in XHCI
+> which fixes XHC timeout, which was seen on synopsys XHCs while
+> using SG buffers. But the support for this quirk isn't present
+> in the DWC3 layer.
 > 
-> dereferring → dereferencing
->
-will correct it.
->>
->> sudo btattach -B /dev/ttyUSB0 -P qca
->> Bluetooth: hci1: QCA setup on UART is completed
->> BUG: kernel NULL pointer dereference, address: 00000000000002f0
->> ......
->> Workqueue: hci1 hci_power_on [bluetooth]
->> RIP: 0010:qca_setup+0x7c1/0xe30 [hci_uart]
->> ......
->> Call Trace:
->>   <TASK>
->>   ? show_regs+0x72/0x90
->>   ? __die+0x25/0x80
->>   ? page_fault_oops+0x154/0x4c0
->>   ? srso_alias_return_thunk+0x5/0xfbef5
->>   ? kmem_cache_alloc+0x16b/0x310
->>   ? do_user_addr_fault+0x330/0x6e0
->>   ? srso_alias_return_thunk+0x5/0xfbef5
->>   ? exc_page_fault+0x84/0x1b0
->>   ? asm_exc_page_fault+0x27/0x30
->>   ? qca_setup+0x7c1/0xe30 [hci_uart]
->>   hci_uart_setup+0x5c/0x1a0 [hci_uart]
->>   hci_dev_open_sync+0xee/0xca0 [bluetooth]
->>   hci_dev_do_open+0x2a/0x70 [bluetooth]
->>   hci_power_on+0x46/0x210 [bluetooth]
->>   process_one_work+0x17b/0x360
->>   worker_thread+0x307/0x430
->>   ? __pfx_worker_thread+0x10/0x10
->>   kthread+0xf7/0x130
->>   ? __pfx_kthread+0x10/0x10
->>   ret_from_fork+0x46/0x70
->>   ? __pfx_kthread+0x10/0x10
->>   ret_from_fork_asm+0x1b/0x30
->>   </TASK>
->>
->> Fixes: 03b0093f7b31 ("Bluetooth: hci_qca: get wakeup status from serdev device handle")
->> Cc: <stable@vger.kernel.org>
->> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
->> Tested-by: Zijun Hu <quic_zijuhu@quicinc.com>
+> We will encounter this XHCI timeout/hung issue if we run iperf
+> loopback tests using RTL8156 ethernet adaptor on DWC3 targets
+> with scatter-gather enabled. This gets resolved after enabling
+> the XHCI_SG_TRB_CACHE_SIZE_QUIRK. This patch enables it using
+> the xhci device property since its needed for DWC3 controller.
 > 
-> On what device?
+> In Synopsys DWC3 databook,
+> Table 9-3: xHCI Debug Capability Limitations
+> Chained TRBs greater than TRB cache size: The debug capability
+> driver must not create a multi-TRB TD that describes smaller
+> than a 1K packet that spreads across 8 or more TRBs on either
+> the IN TR or the OUT TR.
 > 
-this crash will happens on any generic linux machine, for example,
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+> ---
+>  drivers/usb/dwc3/host.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/usb/dwc3/host.c b/drivers/usb/dwc3/host.c
+> index 61f57fe5bb78..31a496233d87 100644
+> --- a/drivers/usb/dwc3/host.c
+> +++ b/drivers/usb/dwc3/host.c
+> @@ -89,6 +89,8 @@ int dwc3_host_init(struct dwc3 *dwc)
+>  
+>  	memset(props, 0, sizeof(struct property_entry) * ARRAY_SIZE(props));
+>  
+> +	props[prop_idx++] = PROPERTY_ENTRY_BOOL("xhci-sg-trb-cache-size-quirk");
+> +
 
-lsb_release -a
-No LSB modules are available.
-Distributor ID: Ubuntu
-Description:    Ubuntu 22.04.3 LTS
-Release:        22.04
-Codename:       jammy
+If you do this you also need to make the props array 1 entry bigger (increase
+it from 4 to 5 entries). Before this patch there are max 3 properties added
+and there needs to be an empty terminating property at the end (which
+is what the memset is for). So before this patch props[] needs to have
+4 entries (which it does) and thus after this patch props[] needs to
+have 5 entire.s
 
->> ---
->>   drivers/bluetooth/hci_qca.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
->> index 94b8c406f0c0..6fcfc1f7bb12 100644
->> --- a/drivers/bluetooth/hci_qca.c
->> +++ b/drivers/bluetooth/hci_qca.c
->> @@ -1951,7 +1951,7 @@ static int qca_setup(struct hci_uart *hu)
->>           qca_debugfs_init(hdev);
->>           hu->hdev->hw_error = qca_hw_error;
->>           hu->hdev->cmd_timeout = qca_cmd_timeout;
->> -        if (device_can_wakeup(hu->serdev->ctrl->dev.parent))
->> +        if (hu->serdev && device_can_wakeup(hu->serdev->ctrl->dev.parent))
->>               hu->hdev->wakeup = qca_wakeup;
-> 
-> Why is `hu->serdev` not set on the device?
-> 
-actually, hu->serdev ONLY exists for BT controller which is embedded within machine's board,
-and it will be probed by serdev driver and also don't have available device node for user to btattach.
-also don't need to btattach.
+Regards,
 
-for external BT module, it is tty instead of serdev. so hu->serdev is nullptr.
+Hans
 
 
->>       } else if (ret == -ENOENT) {
->>           /* No patch/nvm-config found, run with original fw/config */
-> 
-> 
-> Kind regards,
-> 
-> Paul
 
 
