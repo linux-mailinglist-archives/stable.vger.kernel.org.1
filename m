@@ -1,73 +1,145 @@
-Return-Path: <stable+bounces-10502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04C8C82AC67
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 11:46:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B86C082AC74
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 11:50:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DA1EB277F5
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 10:46:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEAF61C214C8
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 10:50:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D0D14AB9;
-	Thu, 11 Jan 2024 10:46:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C67114ABB;
+	Thu, 11 Jan 2024 10:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NTsOzYs2"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="OCIorzlf"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDAD14A92
-	for <stable@vger.kernel.org>; Thu, 11 Jan 2024 10:46:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC03C433F1;
-	Thu, 11 Jan 2024 10:46:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704969967;
-	bh=0ScNN4lO6pY3pCvEbVVscLZn7UO6nqQIv4/T/DCDYCs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NTsOzYs2bwS7xxTzQEiBfoTDi2lZRjE9m+q8/FVdWwfLv7SddP2QkaUKrl34Gv5Y/
-	 GgHM1c8JsUzLyiG0lxPc4jiMRSgQ+h4gO3jhUnYRprvlwB5igp6lVGYwNA+KkuSbjs
-	 dO0+vSRPW9h8Xq0/LnpVMR5+fAQAXErQSnxWqoUI=
-Date: Thu, 11 Jan 2024 11:46:05 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Miklos Szeredi <mszeredi@redhat.com>
-Cc: ruan.meisi@zte.com.cn, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] fuse: nlookup missing decrement in
- fuse_direntplus_link" failed to apply to 4.19-stable tree
-Message-ID: <2024011144-pectin-lavish-e44f@gregkh>
-References: <2023091601-spotted-untie-0ba4@gregkh>
- <CAOssrKe9GKw7yOhWnHDjx1poiG=g_iU5qLLNWnB8fLatkGGaJQ@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573E514AB2;
+	Thu, 11 Jan 2024 10:50:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40BAXrhI032505;
+	Thu, 11 Jan 2024 10:49:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	from:to:cc:subject:date:message-id:in-reply-to:references
+	:mime-version:content-type; s=qcppdkim1; bh=fhW2Rd9c+yae/f0I2Axy
+	qB5G4hBNo+cU6Dfw0WMIcro=; b=OCIorzlfJa79DKQnKiXU7gnk/44w54OoBb4O
+	IJyFKHzKIKegI2sDolWRZz5LmEQaCT6PJDBxf9mTtkp222UIotz0+B4sApbp65Ex
+	q5EWI/+piJmInT/NBtk5jSpZmK4xjOHZDBf/N9lBIU2QH3FUl1gC7gKjJEoTlDow
+	ejBwSNy/y0JADtSd7B/8Xd5YfeOKMzRASJda6UwtMNJEamqF1XZv6GdjgMoGIloj
+	cDkZerb7XKhcDj4cAznNXLhl0OQ2pS2q3wFMye2sB1c/nOnDw0+JZ1f+RdNpk3rl
+	9T7DyfWn3RAxHGP5mM76lg1XzEkIaP66pj8vF7GzUBXyNUplgA==
+Received: from nasanppmta04.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vj0sk9qtu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Jan 2024 10:49:59 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40BAnwkl030136
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Jan 2024 10:49:58 GMT
+Received: from zijuhu-gv.qualcomm.com (10.80.80.8) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Thu, 11 Jan 2024 02:49:56 -0800
+From: Zijun Hu <quic_zijuhu@quicinc.com>
+To: <luiz.dentz@gmail.com>, <marcel@holtmann.org>, <jiangzp@google.com>
+CC: <linux-bluetooth@vger.kernel.org>, <quic_zijuhu@quicinc.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH v2] Bluetooth: qca: Fix crash when btattach BT controller QCA_ROME
+Date: Thu, 11 Jan 2024 18:49:41 +0800
+Message-ID: <1704970181-30092-1-git-send-email-quic_zijuhu@quicinc.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1704960978-5437-1-git-send-email-quic_zijuhu@quicinc.com>
+References: <1704960978-5437-1-git-send-email-quic_zijuhu@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOssrKe9GKw7yOhWnHDjx1poiG=g_iU5qLLNWnB8fLatkGGaJQ@mail.gmail.com>
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-GUID: mRDApUkr9_-VP3OfsXS3GwxO9gjOsRa_
+X-Proofpoint-ORIG-GUID: mRDApUkr9_-VP3OfsXS3GwxO9gjOsRa_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1015
+ adultscore=0 suspectscore=0 impostorscore=0 malwarescore=0 mlxlogscore=945
+ bulkscore=0 lowpriorityscore=0 spamscore=0 phishscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2311290000
+ definitions=main-2401110087
 
-On Tue, Jan 09, 2024 at 12:58:01PM +0100, Miklos Szeredi wrote:
-> On Sat, Sep 16, 2023 at 2:19 PM <gregkh@linuxfoundation.org> wrote:
-> >
-> >
-> > The patch below does not apply to the 4.19-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> >
-> > To reproduce the conflict and resubmit, you may use the following commands:
-> >
-> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-> > git checkout FETCH_HEAD
-> > git cherry-pick -x b8bd342d50cbf606666488488f9fea374aceb2d5
-> 
-> Attaching the backport.  This applies cleanly to  v4.14 and v4.19.
+A crash will happen when use tool btattach to attach a BT controller
+QCA_ROME, and it is caused by dereferencing nullptr hu->serdev, fixed
+by null check before access.
 
-Now queued up, thanks, but note that 4.14.y is now end-of-life so I
-can't apply it there.
+sudo btattach -B /dev/ttyUSB0 -P qca
+Bluetooth: hci1: QCA setup on UART is completed
+BUG: kernel NULL pointer dereference, address: 00000000000002f0
+......
+Workqueue: hci1 hci_power_on [bluetooth]
+RIP: 0010:qca_setup+0x7c1/0xe30 [hci_uart]
+......
+Call Trace:
+ <TASK>
+ ? show_regs+0x72/0x90
+ ? __die+0x25/0x80
+ ? page_fault_oops+0x154/0x4c0
+ ? srso_alias_return_thunk+0x5/0xfbef5
+ ? kmem_cache_alloc+0x16b/0x310
+ ? do_user_addr_fault+0x330/0x6e0
+ ? srso_alias_return_thunk+0x5/0xfbef5
+ ? exc_page_fault+0x84/0x1b0
+ ? asm_exc_page_fault+0x27/0x30
+ ? qca_setup+0x7c1/0xe30 [hci_uart]
+ hci_uart_setup+0x5c/0x1a0 [hci_uart]
+ hci_dev_open_sync+0xee/0xca0 [bluetooth]
+ hci_dev_do_open+0x2a/0x70 [bluetooth]
+ hci_power_on+0x46/0x210 [bluetooth]
+ process_one_work+0x17b/0x360
+ worker_thread+0x307/0x430
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0xf7/0x130
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x46/0x70
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork_asm+0x1b/0x30
+ </TASK>
 
-greg k-h
+Fixes: 03b0093f7b31 ("Bluetooth: hci_qca: get wakeup status from serdev device handle")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Tested-by: Zijun Hu <quic_zijuhu@quicinc.com>
+---
+Changes since v1:
+ - Correct tile and commit message based on Paul's suggestions
+
+ drivers/bluetooth/hci_qca.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
+index 94b8c406f0c0..6fcfc1f7bb12 100644
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -1951,7 +1951,7 @@ static int qca_setup(struct hci_uart *hu)
+ 		qca_debugfs_init(hdev);
+ 		hu->hdev->hw_error = qca_hw_error;
+ 		hu->hdev->cmd_timeout = qca_cmd_timeout;
+-		if (device_can_wakeup(hu->serdev->ctrl->dev.parent))
++		if (hu->serdev && device_can_wakeup(hu->serdev->ctrl->dev.parent))
+ 			hu->hdev->wakeup = qca_wakeup;
+ 	} else if (ret == -ENOENT) {
+ 		/* No patch/nvm-config found, run with original fw/config */
+-- 
+2.7.4
+
 
