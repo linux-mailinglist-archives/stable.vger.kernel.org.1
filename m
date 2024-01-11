@@ -1,132 +1,133 @@
-Return-Path: <stable+bounces-10486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3206882AB30
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 10:47:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5772782AB50
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 10:53:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAB8AB27330
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 09:47:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBE65281F79
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 09:53:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B62FC11733;
-	Thu, 11 Jan 2024 09:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A983A12E55;
+	Thu, 11 Jan 2024 09:53:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0RtdqRMj"
 X-Original-To: stable@vger.kernel.org
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0960912E52;
-	Thu, 11 Jan 2024 09:47:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [192.168.0.6] (unknown [95.90.244.42])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id F1CF661E5FE06;
-	Thu, 11 Jan 2024 10:46:34 +0100 (CET)
-Message-ID: <bf74d533-c0ff-42c6-966f-b4b28c5e0f60@molgen.mpg.de>
-Date: Thu, 11 Jan 2024 10:46:34 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D46212E4C;
+	Thu, 11 Jan 2024 09:53:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51154C433C7;
+	Thu, 11 Jan 2024 09:52:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1704966779;
+	bh=Rg+uWdSn7M8siVwGtnph84S0VwOHlpKxDjRqhHzmUBE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=0RtdqRMjVtvj+J7ROrMeb6Sr/+F4RqCQItOXOt4+RNnO0MS+dLkH7f+78WQrgQEJW
+	 20YmvNzQFZP8ohR1Y7yg1gIB75sO+PLU7vjmMoUWutRHxfWvw2RmFw/m5LRE+kyWUf
+	 x1NR2Xo3BuTYiQu+gp+nh5sbJUdc0+uy9VCwAMAI=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: [PATCH 5.10 0/7] 5.10.207-rc1 review
+Date: Thu, 11 Jan 2024 10:52:49 +0100
+Message-ID: <20240111094700.222742213@linuxfoundation.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] Bluetooth: qca: Fix crash when btattach controller
- ROME
-Content-Language: en-US
-To: Zijun Hu <quic_zijuhu@quicinc.com>
-Cc: luiz.dentz@gmail.com, marcel@holtmann.org, jiangzp@google.com,
- linux-bluetooth@vger.kernel.org, stable@vger.kernel.org
-References: <1704960978-5437-1-git-send-email-quic_zijuhu@quicinc.com>
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <1704960978-5437-1-git-send-email-quic_zijuhu@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.207-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-5.10.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 5.10.207-rc1
+X-KernelTest-Deadline: 2024-01-13T09:47+00:00
 Content-Transfer-Encoding: 8bit
 
-Dear Zijun,
+This is the start of the stable review cycle for the 5.10.207 release.
+There are 7 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
+
+Responses should be made by Sat, 13 Jan 2024 09:46:53 +0000.
+Anything received after that time might be too late.
+
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.207-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+and the diffstat can be found below.
+
+thanks,
+
+greg k-h
+
+-------------
+Pseudo-Shortlog of commits:
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 5.10.207-rc1
+
+Alexander Atanasov <alexander.atanasov@virtuozzo.com>
+    scsi: core: Always send batch on reset or error handling command
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Revert "scsi: core: Add scsi_prot_ref_tag() helper"
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Revert "scsi: core: Introduce scsi_get_sector()"
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Revert "scsi: core: Make scsi_get_lba() return the LBA"
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Revert "scsi: core: Use scsi_cmd_to_rq() instead of scsi_cmnd.request"
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Revert "scsi: core: Use a structure member to track the SCSI command submitter"
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Revert "scsi: core: Always send batch on reset or error handling command"
 
 
-Thank you for your patch.
+-------------
 
-Am 11.01.24 um 09:16 schrieb Zijun Hu:
-> A crash will happen when btattach controller ROME, and it is caused by
+Diffstat:
 
-What does “btattach controller ROME” mean? Is ROME a platform? If so, 
-should it be *on ROME* or similar?
-
-> dereferring nullptr hu->serdev, fixed by null check before access.
-
-dereferring → dereferencing
-
-> 
-> sudo btattach -B /dev/ttyUSB0 -P qca
-> Bluetooth: hci1: QCA setup on UART is completed
-> BUG: kernel NULL pointer dereference, address: 00000000000002f0
-> ......
-> Workqueue: hci1 hci_power_on [bluetooth]
-> RIP: 0010:qca_setup+0x7c1/0xe30 [hci_uart]
-> ......
-> Call Trace:
->   <TASK>
->   ? show_regs+0x72/0x90
->   ? __die+0x25/0x80
->   ? page_fault_oops+0x154/0x4c0
->   ? srso_alias_return_thunk+0x5/0xfbef5
->   ? kmem_cache_alloc+0x16b/0x310
->   ? do_user_addr_fault+0x330/0x6e0
->   ? srso_alias_return_thunk+0x5/0xfbef5
->   ? exc_page_fault+0x84/0x1b0
->   ? asm_exc_page_fault+0x27/0x30
->   ? qca_setup+0x7c1/0xe30 [hci_uart]
->   hci_uart_setup+0x5c/0x1a0 [hci_uart]
->   hci_dev_open_sync+0xee/0xca0 [bluetooth]
->   hci_dev_do_open+0x2a/0x70 [bluetooth]
->   hci_power_on+0x46/0x210 [bluetooth]
->   process_one_work+0x17b/0x360
->   worker_thread+0x307/0x430
->   ? __pfx_worker_thread+0x10/0x10
->   kthread+0xf7/0x130
->   ? __pfx_kthread+0x10/0x10
->   ret_from_fork+0x46/0x70
->   ? __pfx_kthread+0x10/0x10
->   ret_from_fork_asm+0x1b/0x30
->   </TASK>
-> 
-> Fixes: 03b0093f7b31 ("Bluetooth: hci_qca: get wakeup status from serdev device handle")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-> Tested-by: Zijun Hu <quic_zijuhu@quicinc.com>
-
-On what device?
-
-> ---
->   drivers/bluetooth/hci_qca.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-> index 94b8c406f0c0..6fcfc1f7bb12 100644
-> --- a/drivers/bluetooth/hci_qca.c
-> +++ b/drivers/bluetooth/hci_qca.c
-> @@ -1951,7 +1951,7 @@ static int qca_setup(struct hci_uart *hu)
->   		qca_debugfs_init(hdev);
->   		hu->hdev->hw_error = qca_hw_error;
->   		hu->hdev->cmd_timeout = qca_cmd_timeout;
-> -		if (device_can_wakeup(hu->serdev->ctrl->dev.parent))
-> +		if (hu->serdev && device_can_wakeup(hu->serdev->ctrl->dev.parent))
->   			hu->hdev->wakeup = qca_wakeup;
-
-Why is `hu->serdev` not set on the device?
-
->   	} else if (ret == -ENOENT) {
->   		/* No patch/nvm-config found, run with original fw/config */
+ Makefile                    |  4 ++--
+ drivers/scsi/scsi.c         |  2 +-
+ drivers/scsi/scsi_error.c   | 34 +++++++++++++++++++---------------
+ drivers/scsi/scsi_lib.c     | 38 +++++++++++++-------------------------
+ drivers/scsi/scsi_logging.c | 18 ++++++++----------
+ drivers/scsi/scsi_priv.h    |  1 -
+ include/scsi/scsi_cmnd.h    | 29 +++--------------------------
+ include/scsi/scsi_device.h  | 16 +++++++---------
+ 8 files changed, 53 insertions(+), 89 deletions(-)
 
 
-Kind regards,
-
-Paul
 
