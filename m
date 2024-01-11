@@ -1,98 +1,71 @@
-Return-Path: <stable+bounces-10481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A12682AACD
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 10:23:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F14B82AAEB
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 10:31:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D7E57B27D81
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 09:23:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B98A28AE39
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 09:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC43710962;
-	Thu, 11 Jan 2024 09:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58CAD10A0D;
+	Thu, 11 Jan 2024 09:30:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="kJTPamY8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ws7Be4KD"
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B965714F7E;
-	Thu, 11 Jan 2024 09:22:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=qb7VEPoWO8ajGU/TxkKVc2YmRBYx8R6ZQDgTNtF9mho=;
-	t=1704964934; x=1706174534; b=kJTPamY8DNarEBm2RWGesZ5jW4iP9wf44X+LNS+tn8nPvrp
-	I3oP3EuDaGCsTfjz8a2+IXmfM4ga/ZxEa797xj11jtcBVR5FSHSmb5n7odZ6FxrpXbw6lXf8cOxFm
-	PtoR86e93QBGjcfZWqsT6/B8zYDQhU0SX+g/xfm24ZBGPd8LXCzpXVrfbQTTSBH+xX5+XFlxLdRTg
-	EPfvlo7VtLPdEIMfEiy1niek4Ezo/q26AnfCS9qcF8EkgM3bV/Gn5hxxO6Cj9rDLiS8mJnk54fQ9+
-	0+0o1QhEBoCrnbrhvJmDF3cIGKWxb2BogEyPFvl4b4WppqP3GjfmYU7FcddM23Ug==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1rNrGD-0000000EybY-2U0Q;
-	Thu, 11 Jan 2024 10:22:01 +0100
-Message-ID: <2cedb42a9eca23c37f03938cbccbd8489d0130d7.camel@sipsolutions.net>
-Subject: Re: [PATCH v5 RESEND 0/5] Regather scattered PCI-Code
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Philipp Stanner <pstanner@redhat.com>, Bjorn Helgaas
- <bhelgaas@google.com>,  Arnd Bergmann <arnd@arndb.de>, Randy Dunlap
- <rdunlap@infradead.org>, NeilBrown <neilb@suse.de>,  John Sanpe
- <sanpeqf@gmail.com>, Kent Overstreet <kent.overstreet@gmail.com>, Niklas
- Schnelle <schnelle@linux.ibm.com>, Dave Jiang <dave.jiang@intel.com>,
- Uladzislau Koshchanka <koshchanka@gmail.com>, "Masami Hiramatsu (Google)"
- <mhiramat@kernel.org>, David Gow <davidgow@google.com>, Kees Cook
- <keescook@chromium.org>, Rae Moar <rmoar@google.com>, Geert Uytterhoeven
- <geert@linux-m68k.org>, "wuqiang.matt" <wuqiang.matt@bytedance.com>, Yury
- Norov <yury.norov@gmail.com>, Jason Baron <jbaron@akamai.com>, Thomas
- Gleixner <tglx@linutronix.de>, Marco Elver <elver@google.com>, Andrew
- Morton <akpm@linux-foundation.org>, Ben Dooks <ben.dooks@codethink.co.uk>,
- dakr@redhat.com
-Cc: linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-arch@vger.kernel.org, stable@vger.kernel.org
-Date: Thu, 11 Jan 2024 10:22:00 +0100
-In-Reply-To: <42cf5ca70c940b3e68c8ad0e4bab6f14f87d4486.camel@redhat.com>
-References: <20240111085540.7740-1-pstanner@redhat.com>
-	 <43478eb70cf5f1120316739803c7622ab5f9e16a.camel@sipsolutions.net>
-	 <42cf5ca70c940b3e68c8ad0e4bab6f14f87d4486.camel@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.2 (3.50.2-1.fc39) 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0ED910785;
+	Thu, 11 Jan 2024 09:30:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD14C433C7;
+	Thu, 11 Jan 2024 09:30:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1704965453;
+	bh=fIwKddEdRd2iqyN2NzN5eSjY5GafL8H5ChP4IrV/UpY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ws7Be4KDSZUuO78BIyu9u0SErZBMCOXxRHHrOY9TngvJS8KF6QpfJ5oDhL1QviNCX
+	 GXBzOzp5us7etIWyMoD7KPNa4bQF6bhwtIvL7VAk+8pCQ7iNr86RaIL61bUOz1tpUn
+	 lFohj5ltcjFiO3bLUHO3uYFWGtK5RqJW1KiNNcB0=
+Date: Thu, 11 Jan 2024 10:30:50 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: email200202 <email200202@yahoo.com>
+Cc: regressions@lists.linux.dev, kernel@gentoo.org, stable@vger.kernel.org,
+	linux-nfs@vger.kernel.org
+Subject: Re: [REGRESSION] After kernel upgrade 6.1.70 to 6.1.71, the computer
+ hangs during shutdown
+Message-ID: <2024011127-excluding-bodacious-1950@gregkh>
+References: <58ac38ae-4d64-4a53-81e0-35785961c41c.ref@yahoo.com>
+ <58ac38ae-4d64-4a53-81e0-35785961c41c@yahoo.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <58ac38ae-4d64-4a53-81e0-35785961c41c@yahoo.com>
 
-On Thu, 2024-01-11 at 10:14 +0100, Philipp Stanner wrote:
-> On Thu, 2024-01-11 at 10:03 +0100, Johannes Berg wrote:
-> > On Thu, 2024-01-11 at 09:55 +0100, Philipp Stanner wrote:
-> > > Second Resend. Would be cool if someone could tell me what I'll
-> > > have to
-> > > do so we can get this merged.
-> >=20
-> > I don't even know who'd merge it, but um doesn't seem appropriate...
->=20
-> UM isn't a recipent, I'd guess it's some mail filter which might make
-> it appear that way :)
+On Thu, Jan 11, 2024 at 07:20:02PM +1100, email200202 wrote:
+> Reverting the following 3 commits fixed the problem in kernel 6.1.71:
+> 
+> f9a01938e07910224d4a2fd00583725d686c3f38
+> bb4f791cb2de1140d0fbcedfe9e791ff364021d7
+> 03d68ffc48b94cc1e15bbf3b4f16f1e1e4fa286a
 
-Oh. I guess I thought I was CC'ed as UM maintainer :)
+When sending us git ids, please show the full context so we have a hint
+as to what they are.  For this, it should be:
 
-> The lists I sent this to are
-> linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-> linux-arch@vger.kernel.org, stable@vger.kernel.org
->=20
-> Anyways, PCI is for sure who should merge this, since it's 100% about
-> PCI.
+f9a01938e079 ("NFSD: fix possible oops when nfsd/pool_stats is closed.")
+bb4f791cb2de ("nfsd: call nfsd_last_thread() before final nfsd_put()")
+03d68ffc48b9 ("nfsd: separate nfsd_last_thread() from nfsd_put()")
 
-Sounds good :)
+Do you also have these issues in the latest 6.6.y release?  6.7?
 
-johannes
+thanks,
+
+greg k-h
 
