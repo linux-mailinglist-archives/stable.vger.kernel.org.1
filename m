@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-10537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BA0F82B57A
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 20:54:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E61B982B67A
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 22:14:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D42A51F25331
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 19:54:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 688F7B21E77
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 21:14:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54AAE56750;
-	Thu, 11 Jan 2024 19:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BBD558121;
+	Thu, 11 Jan 2024 21:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="fsuIuCwS"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="pLS5mTPL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D4614F7A;
-	Thu, 11 Jan 2024 19:54:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F2FC433F1;
-	Thu, 11 Jan 2024 19:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC5D58205;
+	Thu, 11 Jan 2024 21:14:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F73EC433F1;
+	Thu, 11 Jan 2024 21:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1705002876;
-	bh=z4/HwMdBiPc1YGqeHo3mx2i3czMutlf2Lv2YvjH+mUM=;
+	s=korg; t=1705007660;
+	bh=XLD78mXF3GfkDd5hMDTNHKe08UvMIrlFGV+Sa7uY1sk=;
 	h=Date:To:From:Subject:From;
-	b=fsuIuCwS8pA9wuQEDGoh610RwC/WlEkCj5WcjLVks8NOOJg/lP6WQQ3mnL/7VkNrM
-	 ZDqdaHLj1pmYCCnQ90PG/Fi/r/moPxeFRxeDT8F0fK/+E/cjBaAQ1Cc0WOmCbQeUq6
-	 WZcqbn4kJJoQUcJPPZuQeQEB3VhxXM2f/q66QCXc=
-Date: Thu, 11 Jan 2024 11:54:35 -0800
-To: mm-commits@vger.kernel.org,willy@infradead.org,usama.anjum@collabora.com,stable@vger.kernel.org,shy828301@gmail.com,naoya.horiguchi@nec.com,muchun.song@linux.dev,linmiaohe@huawei.com,jthoughton@google.com,jiaqiyan@google.com,sidhartha.kumar@oracle.com,akpm@linux-foundation.org
+	b=pLS5mTPLl2SoULqsHcE7X2Dt+VPWcenj4clFzLUgG07lqoflotIFJlKOPmf2FjDmh
+	 oZSx5TN5wPOSMgl8VL05zQIOBgz/1sPGOT0K92g0zWV1GQ/jPWOSJhzbLRJNzr54Yq
+	 V8yz8X7HHXvwGR3QbcJH6lUeAb8pe9mH1R+xd+6U=
+Date: Thu, 11 Jan 2024 13:14:19 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,lstoakes@gmail.com,joel@joelfernandes.org,usama.anjum@collabora.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + fix-hugetlbfs-hwpoison-handling.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240111195436.79F2FC433F1@smtp.kernel.org>
+Subject: + selftests-mm-mremap_test-fix-build-warning.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240111211420.5F73EC433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -42,12 +42,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: fs/hugetlbfs/inode.c: mm/memory-failure.c
+     Subject: selftests/mm: mremap_test: fix build warning
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     fix-hugetlbfs-hwpoison-handling.patch
+     selftests-mm-mremap_test-fix-build-warning.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fix-hugetlbfs-hwpoison-handling.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-mremap_test-fix-build-warning.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -65,74 +65,42 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Subject: fs/hugetlbfs/inode.c: mm/memory-failure.c
-fix hugetlbfs hwpoison handling
-Date: Thu, 11 Jan 2024 11:16:55 -0800
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Subject: selftests/mm: mremap_test: fix build warning
+Date: Thu, 11 Jan 2024 13:20:38 +0500
 
-has_extra_refcount() makes the assumption that a ref count of 1 means the
-page is not referenced by other users.  Commit a08c7193e4f1 (mm/filemap:
-remove hugetlb special casing in filemap.c) modifies __filemap_add_folio()
-by calling folio_ref_add(folio, nr); for all cases (including hugtetlb)
-where nr is the number of pages in the folio.  We should check if the page
-is not referenced by other users by checking the page count against the
-number of pages rather than 1.
+Fix following build warning:
+warning: format `%d' expects argument of type `int', but argument 2 has type `long long unsigned int'
 
-In hugetlbfs_read_iter(), folio_test_has_hwpoisoned() is testing the wrong
-flag as, in the hugetlb case, memory-failure code calls
-folio_test_set_hwpoison() to indicate poison.  folio_test_hwpoison() is
-the correct function to test for that flag.
-
-After these fixes, the hugetlb hwpoison read selftest passes all cases.
-
-Link: https://lkml.kernel.org/r/20240111191655.295530-1-sidhartha.kumar@oracle.com
-Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
-Closes: https://lore.kernel.org/linux-mm/20230713001833.3778937-1-jiaqiyan@google.com/T/#m8e1469119e5b831bbd05d495f96b842e4a1c5519
-Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: James Houghton <jthoughton@google.com>
-Cc: Jiaqi Yan <jiaqiyan@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Naoya Horiguchi <naoya.horiguchi@nec.com>
-Cc: Yang Shi <shy828301@gmail.com>
-Cc: <stable@vger.kernel.org>	[6.7+]
+Link: https://lkml.kernel.org/r/20240111082039.3398848-1-usama.anjum@collabora.com
+Fixes: a4cb3b243343 ("selftests: mm: add a test for remapping to area immediately after existing mapping")
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: Joel Fernandes (Google) <joel@joelfernandes.org>
+Cc: Lorenzo Stoakes <lstoakes@gmail.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/hugetlbfs/inode.c |    2 +-
- mm/memory-failure.c  |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/mm/mremap_test.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/hugetlbfs/inode.c~fix-hugetlbfs-hwpoison-handling
-+++ a/fs/hugetlbfs/inode.c
-@@ -340,7 +340,7 @@ static ssize_t hugetlbfs_read_iter(struc
- 		} else {
- 			folio_unlock(folio);
+--- a/tools/testing/selftests/mm/mremap_test.c~selftests-mm-mremap_test-fix-build-warning
++++ a/tools/testing/selftests/mm/mremap_test.c
+@@ -457,7 +457,7 @@ static long long remap_region(struct con
+ 			char c = (char) rand();
  
--			if (!folio_test_has_hwpoisoned(folio))
-+			if (!folio_test_hwpoison(folio))
- 				want = nr;
- 			else {
- 				/*
---- a/mm/memory-failure.c~fix-hugetlbfs-hwpoison-handling
-+++ a/mm/memory-failure.c
-@@ -979,7 +979,7 @@ struct page_state {
- static bool has_extra_refcount(struct page_state *ps, struct page *p,
- 			       bool extra_pins)
- {
--	int count = page_count(p) - 1;
-+	int count = page_count(p) - folio_nr_pages(page_folio(p));
- 
- 	if (extra_pins)
- 		count -= 1;
+ 			if (((char *) dest_preamble_addr)[i] != c) {
+-				ksft_print_msg("Preamble data after remap doesn't match at offset %d\n",
++				ksft_print_msg("Preamble data after remap doesn't match at offset %llu\n",
+ 					       i);
+ 				ksft_print_msg("Expected: %#x\t Got: %#x\n", c & 0xff,
+ 					       ((char *) dest_preamble_addr)[i] & 0xff);
 _
 
-Patches currently in -mm which might be from sidhartha.kumar@oracle.com are
+Patches currently in -mm which might be from usama.anjum@collabora.com are
 
-fix-hugetlbfs-hwpoison-handling.patch
-maple_tree-fix-comment-describing-mas_node_count_gfp.patch
+fs-proc-task_mmu-move-mmu-notification-mechanism-inside-mm-lock.patch
+selftests-mm-mremap_test-fix-build-warning.patch
 
 
