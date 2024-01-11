@@ -1,108 +1,86 @@
-Return-Path: <stable+bounces-10508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D28382AF31
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 14:07:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5EB182AF3B
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 14:11:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71E521C21FC1
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 13:07:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED4F81C22B78
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 13:11:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37B0A15E96;
-	Thu, 11 Jan 2024 13:07:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AZWFmp/o"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98FA715E9D;
+	Thu, 11 Jan 2024 13:10:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FDCEAC0;
-	Thu, 11 Jan 2024 13:07:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1704978455; x=1736514455;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=JyOWSBPF19QDkDIcdyM5RJ//TjolSWLTjGfiBY87nPY=;
-  b=AZWFmp/oI6D1OeXluE4EeB4LIIH/OJm9krhdiBRnkdA+7jAHRerxl3Gn
-   Yg916jxbScTROpZNsql7AsfpHqKumc4A2bvbGFa3YGM3Nq091LrRgtZyh
-   wU93Lv/1+IrYJyGgz9Qx+K5AghSgodRRkHT/gMqofknF8ecYGcbVB1nf2
-   wXejxjziLJcx1UfsED6O/TQB+lyqdSEArIu3lWbkjqsGNO90D9pOv+qJM
-   lnFwrG40KygknQrgzTjbUyUgzQJoWDiI5NHKJlnZ1Ut2CNdOct+GqsI5n
-   a0PXLS9rfuaWrgA+SzWlXq5Y9PHqQ+Ifz3EufiUpP/mWeA7xSzl6tcrrk
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="389278795"
-X-IronPort-AV: E=Sophos;i="6.04,186,1695711600"; 
-   d="scan'208";a="389278795"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2024 05:07:34 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10949"; a="782637317"
-X-IronPort-AV: E=Sophos;i="6.04,186,1695711600"; 
-   d="scan'208";a="782637317"
-Received: from unknown (HELO WEIS0040.iil.intel.com) ([10.12.217.108])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2024 05:07:32 -0800
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-To: johannes@sipsolutions.net
-Cc: linux-wireless@vger.kernel.org,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] wifi: iwlwifi: fix a memory corruption
-Date: Thu, 11 Jan 2024 15:07:25 +0200
-Message-Id: <20240111150610.2d2b8b870194.I14ed76505a5cf87304e0c9cc05cc0ae85ed3bf91@changeid>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF5415E89;
+	Thu, 11 Jan 2024 13:10:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id E791E1C0075; Thu, 11 Jan 2024 14:10:48 +0100 (CET)
+Date: Thu, 11 Jan 2024 14:10:48 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 5.10 0/7] 5.10.207-rc1 review
+Message-ID: <ZZ/o2OGwJIzNyp23@duo.ucw.cz>
+References: <20240111094700.222742213@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Israel (74) Limited
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="GNy15mOdkqSrRFua"
+Content-Disposition: inline
+In-Reply-To: <20240111094700.222742213@linuxfoundation.org>
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-iwl_fw_ini_trigger_tlv::data is a pointer to a __le32, which means that
-if we copy to iwl_fw_ini_trigger_tlv::data + offset while offset is in
-bytes, we'll write past the buffer.
+--GNy15mOdkqSrRFua
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Cc: stable@vger.kernel.org
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218233
-Fixes: cf29c5b66b9f ("iwlwifi: dbg_ini: implement time point handling")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
----
-v2: Change 'Link' to 'Closes'
+Hi!
 
- drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> This is the start of the stable review cycle for the 5.10.207 release.
+> There are 7 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-index b658cf228fbe..9160d81a871e 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-dbg-tlv.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2018-2023 Intel Corporation
-+ * Copyright (C) 2018-2024 Intel Corporation
-  */
- #include <linux/firmware.h>
- #include "iwl-drv.h"
-@@ -1096,7 +1096,7 @@ static int iwl_dbg_tlv_override_trig_node(struct iwl_fw_runtime *fwrt,
- 		node_trig = (void *)node_tlv->data;
- 	}
- 
--	memcpy(node_trig->data + offset, trig->data, trig_data_len);
-+	memcpy((u8 *)node_trig->data + offset, trig->data, trig_data_len);
- 	node_tlv->length = cpu_to_le32(size);
- 
- 	if (policy & IWL_FW_INI_APPLY_POLICY_OVERRIDE_CFG) {
--- 
-2.34.1
+CIP testing did not find any problems here:
 
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+5.10.y
+
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
+
+Best regards,
+                                                                Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--GNy15mOdkqSrRFua
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZZ/o2AAKCRAw5/Bqldv6
+8ixDAJ0cKFDioeTW/n3cJMaUSG7/RjRoYwCgrUs+RN0xml0GsHonocfrTaNWc/Q=
+=va7i
+-----END PGP SIGNATURE-----
+
+--GNy15mOdkqSrRFua--
 
