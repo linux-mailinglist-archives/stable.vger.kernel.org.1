@@ -1,163 +1,138 @@
-Return-Path: <stable+bounces-10536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90C6982B541
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 20:38:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BA0F82B57A
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 20:54:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 250FE1F26465
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 19:38:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D42A51F25331
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 19:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7192555E4C;
-	Thu, 11 Jan 2024 19:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54AAE56750;
+	Thu, 11 Jan 2024 19:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="GPQELZ5d"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="fsuIuCwS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261D353E16
-	for <stable@vger.kernel.org>; Thu, 11 Jan 2024 19:38:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-360576be804so3541585ab.0
-        for <stable@vger.kernel.org>; Thu, 11 Jan 2024 11:38:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1705001885; x=1705606685; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mnFwFbkAikblbLT9tn/zGUorZlUhk9IO39A1Via1qFU=;
-        b=GPQELZ5daNarhrLKgySstTAoaEHqrYmCcP7WE9U0RxiQ00d9UUXjJQ0yaBqzc8Bqzp
-         yOg0jYTx1kjToXeGBY4tdCMlj4xkglPzEvoEpnR0EvV9j7umn56lYg2sEMR8M7S21Tf9
-         MpOKxxKQ1P+kiy+BKGcnh6RYqH9u0ps2ux4JnKBllVH+Z5tWiU95kyzMPIg2i1Mksdn7
-         OQKajQurSGaK7P5kXddznoSbkhP4atVcBWIp2ruhmONGxYZUbazxf0t06uM8h5jo9DFj
-         2z7vOUYcYSgPrw5gUG3uyDoEI9q35HmgcK+vfHDXkuIL5DYVG+yhGQ8HT06VFHtBnujQ
-         k+ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705001885; x=1705606685;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mnFwFbkAikblbLT9tn/zGUorZlUhk9IO39A1Via1qFU=;
-        b=wcssumKe+W36WR9P/5FmYy5ySvEnw8O+MbtFYq6gDJJqmTrhYP66Jp8pGxjU/Gpn37
-         YuPeZKMFAzOxFQhdaxuKVNVtVSIhb+nzY+CgExUtlplYuM1HHFY5yV1TBMpjbiJ0i3Ky
-         0IRAB1oqhGnpmBGgUMJZiXR5eOZRtGBStAxmO3BmIhGXWdYbpEv/v0i8OJSA0RLJDrHK
-         liAGv9k4BdfVekkuTsKhgn1tFwJbKeFGv2Y2Yo3kXiZ2PjVbUR4gBPXxbK+y+zO+mcMX
-         JmFabcqD/OEHNbY/ryuyErTycUejptxBb/52xBARf9IszayzGTWle7Wsst7Vmq6GPTDV
-         aoxg==
-X-Gm-Message-State: AOJu0YyAY56YJCLmGcljrKn06TFBHWtBa9lpOWSrIUtICzlzBTS48trK
-	kegC9vQ0quLSRZRmNaE/jVtkAtoAETiMbA==
-X-Google-Smtp-Source: AGHT+IEnwBmRrqBHbjlYwlHbR62zmvzQU+Ho9fDPqbi2IK34qYp2FVKY6xFoUVkT1mDFN5ku9qCLWg==
-X-Received: by 2002:a05:6602:1799:b0:7bf:f20:2c78 with SMTP id y25-20020a056602179900b007bf0f202c78mr292297iox.1.1705001885147;
-        Thu, 11 Jan 2024 11:38:05 -0800 (PST)
-Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id cq9-20020a056638478900b00469328386c8sm481037jab.162.2024.01.11.11.38.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Jan 2024 11:38:04 -0800 (PST)
-Message-ID: <eec063eb-853a-40ac-b0f6-ce14da5b3c6a@kernel.dk>
-Date: Thu, 11 Jan 2024 12:38:03 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D4614F7A;
+	Thu, 11 Jan 2024 19:54:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F2FC433F1;
+	Thu, 11 Jan 2024 19:54:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1705002876;
+	bh=z4/HwMdBiPc1YGqeHo3mx2i3czMutlf2Lv2YvjH+mUM=;
+	h=Date:To:From:Subject:From;
+	b=fsuIuCwS8pA9wuQEDGoh610RwC/WlEkCj5WcjLVks8NOOJg/lP6WQQ3mnL/7VkNrM
+	 ZDqdaHLj1pmYCCnQ90PG/Fi/r/moPxeFRxeDT8F0fK/+E/cjBaAQ1Cc0WOmCbQeUq6
+	 WZcqbn4kJJoQUcJPPZuQeQEB3VhxXM2f/q66QCXc=
+Date: Thu, 11 Jan 2024 11:54:35 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,usama.anjum@collabora.com,stable@vger.kernel.org,shy828301@gmail.com,naoya.horiguchi@nec.com,muchun.song@linux.dev,linmiaohe@huawei.com,jthoughton@google.com,jiaqiyan@google.com,sidhartha.kumar@oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + fix-hugetlbfs-hwpoison-handling.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240111195436.79F2FC433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Crash in NVME tracing on 5.10LTS
-Content-Language: en-US
-To: John Sperbeck <jsperbeck@google.com>, Greg KH <gregkh@linuxfoundation.org>
-Cc: Bean Huo <beanhuo@micron.com>, Sagi Grimberg <sagi@grimberg.me>,
- khazhy@google.com, stable@vger.kernel.org
-References: <20240109181722.228783-1-jsperbeck@google.com>
- <2024011150-twins-humorist-e01d@gregkh>
- <CAFNjLiVJ0OKp7kKsNTr-mCJvG+dkYis2F1fE==Fhz65eZfT+aQ@mail.gmail.com>
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <CAFNjLiVJ0OKp7kKsNTr-mCJvG+dkYis2F1fE==Fhz65eZfT+aQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 1/11/24 10:00 AM, John Sperbeck wrote:
-> On Thu, Jan 11, 2024 at 1:46?AM Greg KH <gregkh@linuxfoundation.org> wrote:
->>
->> On Tue, Jan 09, 2024 at 10:17:22AM -0800, John Sperbeck wrote:
->>> With 5.10LTS (e.g., 5.10.206), on a machine using an NVME device, the
->>> following tracing commands will trigger a crash due to a NULL pointer
->>> dereference:
->>>
->>> KDIR=/sys/kernel/debug/tracing
->>> echo 1 > $KDIR/tracing_on
->>> echo 1 > $KDIR/events/nvme/enable
->>> echo "Waiting for trace events..."
->>> cat $KDIR/trace_pipe
->>>
->>> The backtrace looks something like this:
->>>
->>> Call Trace:
->>>  <IRQ>
->>>  ? __die_body+0x6b/0xb0
->>>  ? __die+0x9e/0xb0
->>>  ? no_context+0x3eb/0x460
->>>  ? ttwu_do_activate+0xf0/0x120
->>>  ? __bad_area_nosemaphore+0x157/0x200
->>>  ? select_idle_sibling+0x2f/0x410
->>>  ? bad_area_nosemaphore+0x13/0x20
->>>  ? do_user_addr_fault+0x2ab/0x360
->>>  ? exc_page_fault+0x69/0x180
->>>  ? asm_exc_page_fault+0x1e/0x30
->>>  ? trace_event_raw_event_nvme_complete_rq+0xba/0x170
->>>  ? trace_event_raw_event_nvme_complete_rq+0xa3/0x170
->>>  nvme_complete_rq+0x168/0x170
->>>  nvme_pci_complete_rq+0x16c/0x1f0
->>>  nvme_handle_cqe+0xde/0x190
->>>  nvme_irq+0x78/0x100
->>>  __handle_irq_event_percpu+0x77/0x1e0
->>>  handle_irq_event+0x54/0xb0
->>>  handle_edge_irq+0xdf/0x230
->>>  asm_call_irq_on_stack+0xf/0x20
->>>  </IRQ>
->>>  common_interrupt+0x9e/0x150
->>>  asm_common_interrupt+0x1e/0x40
->>>
->>> It looks to me like these two upstream commits were backported to 5.10:
->>>
->>> 679c54f2de67 ("nvme: use command_id instead of req->tag in trace_nvme_complete_rq()")
->>> e7006de6c238 ("nvme: code command_id with a genctr for use-after-free validation")
->>>
->>> But they depend on this upstream commit to initialize the 'cmd' field in
->>> some cases:
->>>
->>> f4b9e6c90c57 ("nvme: use driver pdu command for passthrough")
->>>
->>> Does it sound like I'm on the right track?  The 5.15LTS and later seems to be okay.
->>>
->>
->> If you apply that commit, does it solve the issue for you?
->>
->> thanks,
->>
->> greg k-h
-> 
-> The f4b9e6c90c57 ("nvme: use driver pdu command for passthrough")
-> upstream commit doesn't apply cleanly to 5.10LTS.  If I adjust it to
-> fit, then the crash no longer occurs for me.
-> 
-> A revert of 706960d328f5 ("nvme: use command_id instead of req->tag in
-> trace_nvme_complete_rq()") from 5.10LTS also prevents the crash.
-> 
-> My leaning would be for a revert from 5.10LTS, but I think the
-> maintainers would have better insight then me.  It's also possible
-> that this isn't serious enough to worry about in general.  I don't
-> really know.
 
-Either solution is fine with me, doesn't really matter. I was wondering
-how this ended up in stable, and it looks like it was one of those
-auto-selections... Those seem particularly dangerous the further back
-you go.
+The patch titled
+     Subject: fs/hugetlbfs/inode.c: mm/memory-failure.c
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     fix-hugetlbfs-hwpoison-handling.patch
 
--- 
-Jens Axboe
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fix-hugetlbfs-hwpoison-handling.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Subject: fs/hugetlbfs/inode.c: mm/memory-failure.c
+fix hugetlbfs hwpoison handling
+Date: Thu, 11 Jan 2024 11:16:55 -0800
+
+has_extra_refcount() makes the assumption that a ref count of 1 means the
+page is not referenced by other users.  Commit a08c7193e4f1 (mm/filemap:
+remove hugetlb special casing in filemap.c) modifies __filemap_add_folio()
+by calling folio_ref_add(folio, nr); for all cases (including hugtetlb)
+where nr is the number of pages in the folio.  We should check if the page
+is not referenced by other users by checking the page count against the
+number of pages rather than 1.
+
+In hugetlbfs_read_iter(), folio_test_has_hwpoisoned() is testing the wrong
+flag as, in the hugetlb case, memory-failure code calls
+folio_test_set_hwpoison() to indicate poison.  folio_test_hwpoison() is
+the correct function to test for that flag.
+
+After these fixes, the hugetlb hwpoison read selftest passes all cases.
+
+Link: https://lkml.kernel.org/r/20240111191655.295530-1-sidhartha.kumar@oracle.com
+Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
+Closes: https://lore.kernel.org/linux-mm/20230713001833.3778937-1-jiaqiyan@google.com/T/#m8e1469119e5b831bbd05d495f96b842e4a1c5519
+Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: James Houghton <jthoughton@google.com>
+Cc: Jiaqi Yan <jiaqiyan@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Naoya Horiguchi <naoya.horiguchi@nec.com>
+Cc: Yang Shi <shy828301@gmail.com>
+Cc: <stable@vger.kernel.org>	[6.7+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/hugetlbfs/inode.c |    2 +-
+ mm/memory-failure.c  |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+--- a/fs/hugetlbfs/inode.c~fix-hugetlbfs-hwpoison-handling
++++ a/fs/hugetlbfs/inode.c
+@@ -340,7 +340,7 @@ static ssize_t hugetlbfs_read_iter(struc
+ 		} else {
+ 			folio_unlock(folio);
+ 
+-			if (!folio_test_has_hwpoisoned(folio))
++			if (!folio_test_hwpoison(folio))
+ 				want = nr;
+ 			else {
+ 				/*
+--- a/mm/memory-failure.c~fix-hugetlbfs-hwpoison-handling
++++ a/mm/memory-failure.c
+@@ -979,7 +979,7 @@ struct page_state {
+ static bool has_extra_refcount(struct page_state *ps, struct page *p,
+ 			       bool extra_pins)
+ {
+-	int count = page_count(p) - 1;
++	int count = page_count(p) - folio_nr_pages(page_folio(p));
+ 
+ 	if (extra_pins)
+ 		count -= 1;
+_
+
+Patches currently in -mm which might be from sidhartha.kumar@oracle.com are
+
+fix-hugetlbfs-hwpoison-handling.patch
+maple_tree-fix-comment-describing-mas_node_count_gfp.patch
 
 
