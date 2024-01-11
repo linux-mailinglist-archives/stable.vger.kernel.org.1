@@ -1,118 +1,98 @@
-Return-Path: <stable+bounces-10513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A411482B078
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 15:18:13 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0449A82B0B7
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 15:38:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52CE21F24E6F
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 14:18:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D78F31C23667
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 14:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6FF63C693;
-	Thu, 11 Jan 2024 14:18:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="aTWSFowT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D256A482F2;
+	Thu, 11 Jan 2024 14:38:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7DD29CFA;
-	Thu, 11 Jan 2024 14:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40BDUnAQ019952;
-	Thu, 11 Jan 2024 14:18:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=mTSColWjPxMy5hFmeWj7zZt2o1PCif6a70FoRgHVrZQ=;
- b=aTWSFowTkjelJhZBVITSLaXkzq3HRXeI5eTrgg3uwZCeXNIyg0mve+dUxrQpx6kNUy6c
- mwXJi7oh+C1zpGEj6Rwt1EK7DILkw8G9EO+J090O43zfnWHD5J36oVKdSCZ9qzRMR2ym
- THXeqNr3rpmaqZZQ0354vRxve7flgMSxLfxXcpXd13h9eBhy4nsgz064P0OpWKQbSNmO
- 0bOfgu+Xau/ePlskVXhWWGkt+2BiHj7lPKDutU2XZGJRDRR3KtVzTC3r7JR/WpYVfyRh
- zLwCjpAhHWVOLoP5MCQhfHtQXr/n3wJ7QhWTUJ7mPjlE1DnI/Cj3lquQrCWj8NAlaCuN 3g== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjh2yhgtr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jan 2024 14:18:02 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40BDYLoM001569;
-	Thu, 11 Jan 2024 14:18:01 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vjh2yhgt2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jan 2024 14:18:00 +0000
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40BE1gOo027421;
-	Thu, 11 Jan 2024 14:17:59 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vfkw2bd00-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jan 2024 14:17:59 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40BEHsvW61342140
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 11 Jan 2024 14:17:54 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 974B42004D;
-	Thu, 11 Jan 2024 14:17:54 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6CB1920043;
-	Thu, 11 Jan 2024 14:17:54 +0000 (GMT)
-Received: from li-ce58cfcc-320b-11b2-a85c-85e19b5285e0 (unknown [9.152.224.212])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 11 Jan 2024 14:17:54 +0000 (GMT)
-Date: Thu, 11 Jan 2024 15:17:18 +0100
-From: Halil Pasic <pasic@linux.ibm.com>
-To: Tony Krowiak <akrowiak@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, jjherne@linux.ibm.com, borntraeger@de.ibm.com,
-        pbonzini@redhat.com, frankja@linux.ibm.com, imbrenda@linux.ibm.com,
-        alex.williamson@redhat.com, kwankhede@nvidia.com,
-        stable@vger.kernel.org, Halil Pasic <pasic@linux.ibm.com>
-Subject: Re: [PATCH v2 6/6] s390/vfio-ap: do not reset queue removed from
- host config
-Message-ID: <20240111151718.5d32e747.pasic@linux.ibm.com>
-In-Reply-To: <20231212212522.307893-7-akrowiak@linux.ibm.com>
-References: <20231212212522.307893-1-akrowiak@linux.ibm.com>
-	<20231212212522.307893-7-akrowiak@linux.ibm.com>
-Organization: IBM
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-redhat-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805AF3B185;
+	Thu, 11 Jan 2024 14:38:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from r.smirnovsmtp.omp.ru (10.189.215.22) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Thu, 11 Jan
+ 2024 17:38:30 +0300
+From: Roman Smirnov <r.smirnov@omp.ru>
+To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Roman Smirnov <r.smirnov@omp.ru>, "Matthew Wilcox (Oracle)"
+	<willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, Alexey
+ Khoroshilov <khoroshilov@ispras.ru>, Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Karina Yankevich <k.yankevich@omp.ru>, <lvc-project@linuxtesting.org>,
+	<linux-fsdevel@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>
+Subject: [PATCH 5.10 0/2] mm/truncate: fix issue in ext4_set_page_dirty()
+Date: Thu, 11 Jan 2024 14:37:45 +0000
+Message-ID: <20240111143747.4418-1-r.smirnov@omp.ru>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: oNnj3N06fsAPsUgWGBMUGXTJnQ03Nntt
-X-Proofpoint-ORIG-GUID: yS9H-1cmFgokDSIXfEidxa7IeLBvAi34
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-11_07,2024-01-11_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1011
- bulkscore=0 impostorscore=0 malwarescore=0 suspectscore=0 spamscore=0
- mlxscore=0 lowpriorityscore=0 mlxlogscore=999 phishscore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401110113
+Content-Type: text/plain
+X-ClientProxiedBy: msexch02.omp.ru (10.188.4.13) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.0, Database issued on: 01/11/2024 14:25:57
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 182570 [Jan 11 2024]
+X-KSE-AntiSpam-Info: Version: 6.1.0.3
+X-KSE-AntiSpam-Info: Envelope from: r.smirnov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 7 0.3.7 6d6bf5bd8eea7373134f756a2fd73e9456bb7d1a
+X-KSE-AntiSpam-Info: {Tracking_one_url, url3}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info:
+	127.0.0.199:7.1.2;r.smirnovsmtp.omp.ru:7.1.1;omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;syzkaller.appspot.com:5.0.1,7.1.1
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 01/11/2024 14:31:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 1/11/2024 1:37:00 PM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
-On Tue, 12 Dec 2023 16:25:17 -0500
-Tony Krowiak <akrowiak@linux.ibm.com> wrote:
+Syzkaller reports warning in ext4_set_page_dirty() in 5.10 stable 
+releases. The problem can be fixed by the following patches 
+which can be cleanly applied to the 5.10 branch.
 
-> When a queue is unbound from the vfio_ap device driver, it is reset to
-> ensure its crypto data is not leaked when it is bound to another device
-> driver. If the queue is unbound due to the fact that the adapter or domain
-> was removed from the host's AP configuration, then attempting to reset it
-> will fail with response code 01 (APID not valid) getting returned from the
-> reset command. Let's ensure that the queue is assigned to the host's
-> configuration before resetting it.
-> 
-> Signed-off-by: Tony Krowiak <akrowiak@linux.ibm.com>
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-Reviewed-by: Halil Pasic <pasic@linux.ibm.com>
+Link: https://syzkaller.appspot.com/bug?extid=02f21431b65c214aa1d6
+
+Matthew Wilcox (Oracle) (2):
+  mm/truncate: Inline invalidate_complete_page() into its one caller
+  mm/truncate: Replace page_mapped() call in invalidate_inode_page()
+
+ kernel/futex/core.c |  2 +-
+ mm/truncate.c       | 34 +++++++---------------------------
+ 2 files changed, 8 insertions(+), 28 deletions(-)
+
+-- 
+2.34.1
+
 
