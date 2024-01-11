@@ -1,113 +1,71 @@
-Return-Path: <stable+bounces-10493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 190B982AB56
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 10:53:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05D0982AB68
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 10:56:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8383280F22
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 09:53:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 981281F25DEF
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 09:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CB65125CA;
-	Thu, 11 Jan 2024 09:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A814511722;
+	Thu, 11 Jan 2024 09:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JA1N0E6l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wD1F1Mth"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0461311727;
-	Thu, 11 Jan 2024 09:53:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3628AC433C7;
-	Thu, 11 Jan 2024 09:53:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73BFE12E7C
+	for <stable@vger.kernel.org>; Thu, 11 Jan 2024 09:56:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB40C433F1;
+	Thu, 11 Jan 2024 09:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1704966802;
-	bh=ZkCdZZ4A87Ys6dklvLYXbCzV9uRAWrk4Cex4rFEHVko=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JA1N0E6lPMsL65ZZJYELxkQ0L9GlMxKo9kdCSNgZy7zfRjOnkyoN7FrBaBUcZUF7n
-	 co4hWjVgrn4b4GgHbtxBCigHDWyDVgoEtv6FWv3K1dldwT6+5K3TS508Zz6FsWqYbO
-	 ByljFtHO27LrcG2jJeXWIaSNv2w6S0wYseKzJedI=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Alexander Atanasov <alexander.atanasov@virtuozzo.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 7/7] scsi: core: Always send batch on reset or error handling command
-Date: Thu, 11 Jan 2024 10:52:56 +0100
-Message-ID: <20240111094700.571797003@linuxfoundation.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240111094700.222742213@linuxfoundation.org>
-References: <20240111094700.222742213@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=korg; t=1704966991;
+	bh=P9sEDuSzqxqXpyo30FC2veX3grbd6FyB6jxxHkCjJBw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=wD1F1Mthn+kl7fNsMUxtnXyc3QQouRcLfAN9VDyXd0qr3DJvPL6arTQGLtNXXaFrn
+	 b0+pdclciMvwXqdGoi1ZZ/Sl/bkgM9d5m8A6due56SDi/ktcwvDqSgM8Q9lcyQRM2V
+	 ZkH1ptgfyu4HYNZjdzxpp7xl5blQrfBKgupgTl+E=
+Date: Thu, 11 Jan 2024 10:56:29 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: John Fastabend <john.fastabend@gmail.com>
+Cc: stable@vger.kernel.org, jannh@google.com, kuba@kernel.org,
+	daniel@iogearbox.net, borisp@nvidia.com
+Subject: Re: [PATCH] net: tls, update curr on splice as well
+Message-ID: <2024011122-aflutter-juniper-1f81@gregkh>
+References: <20240109225956.279609-1-john.fastabend@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240109225956.279609-1-john.fastabend@gmail.com>
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+On Tue, Jan 09, 2024 at 02:59:56PM -0800, John Fastabend wrote:
+> commit c5a595000e2677e865a39f249c056bc05d6e55fd upstream.
+> 
+> Backport of upstream fix for tls on 5.x kernels.
+> 
+> The curr pointer must also be updated on the splice similar to how
+> we do this for other copy types.
+> 
+> Cc: stable@vger.kernel.org # 5.15.x
+> Cc: stable@vger.kernel.org # 5.10.x
+> Cc: stable@vger.kernel.org # 5.4.x
+> Reported-by: Jann Horn <jannh@google.com>
+> Fixes: d829e9c4112b ("tls: convert to generic sk_msg interface")
+> Signed-off-by: John Fastabend <john.fastabend@gmail.com>
+> ---
+>  net/tls/tls_sw.c | 2 ++
+>  1 file changed, 2 insertions(+)
 
-------------------
+Now queued up, thanks.
 
-From: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
-
-commit 066c5b46b6eaf2f13f80c19500dbb3b84baabb33 upstream.
-
-In commit 8930a6c20791 ("scsi: core: add support for request batching") the
-block layer bd->last flag was mapped to SCMD_LAST and used as an indicator
-to send the batch for the drivers that implement this feature. However, the
-error handling code was not updated accordingly.
-
-scsi_send_eh_cmnd() is used to send error handling commands and request
-sense. The problem is that request sense comes as a single command that
-gets into the batch queue and times out. As a result the device goes
-offline after several failed resets. This was observed on virtio_scsi
-during a device resize operation.
-
-[  496.316946] sd 0:0:4:0: [sdd] tag#117 scsi_eh_0: requesting sense
-[  506.786356] sd 0:0:4:0: [sdd] tag#117 scsi_send_eh_cmnd timeleft: 0
-[  506.787981] sd 0:0:4:0: [sdd] tag#117 abort
-
-To fix this always set SCMD_LAST flag in scsi_send_eh_cmnd() and
-scsi_reset_ioctl().
-
-Fixes: 8930a6c20791 ("scsi: core: add support for request batching")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Alexander Atanasov <alexander.atanasov@virtuozzo.com>
-Link: https://lore.kernel.org/r/20231215121008.2881653-1-alexander.atanasov@virtuozzo.com
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/scsi/scsi_error.c |    2 ++
- 1 file changed, 2 insertions(+)
-
---- a/drivers/scsi/scsi_error.c
-+++ b/drivers/scsi/scsi_error.c
-@@ -1069,6 +1069,7 @@ retry:
- 
- 	scsi_log_send(scmd);
- 	scmd->scsi_done = scsi_eh_done;
-+	scmd->flags |= SCMD_LAST;
- 
- 	/*
- 	 * Lock sdev->state_mutex to avoid that scsi_device_quiesce() can
-@@ -2361,6 +2362,7 @@ scsi_ioctl_reset(struct scsi_device *dev
- 	scsi_init_command(dev, scmd);
- 	scmd->request = rq;
- 	scmd->cmnd = scsi_req(rq)->cmd;
-+	scmd->flags |= SCMD_LAST;
- 
- 	scmd->scsi_done		= scsi_reset_provider_done_command;
- 	memset(&scmd->sdb, 0, sizeof(scmd->sdb));
-
-
+greg k-h
 
