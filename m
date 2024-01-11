@@ -1,141 +1,83 @@
-Return-Path: <stable+bounces-10525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80DB482B1BB
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 16:26:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 758F182B1D9
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 16:31:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FB84289581
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 15:26:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 084C1B2192D
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 15:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EE2A4CB25;
-	Thu, 11 Jan 2024 15:26:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB19B4CB47;
+	Thu, 11 Jan 2024 15:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AitQAYf4"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="eDYVkCvm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02E14D5AA;
-	Thu, 11 Jan 2024 15:26:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-467ec031988so736757137.2;
-        Thu, 11 Jan 2024 07:26:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704986777; x=1705591577; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=MIAyy+z6UYldKOuTvWdH3GAJfQlZGcwrrthZvbRfQPA=;
-        b=AitQAYf4KRelNWXE5PKv8C3wwOGEgBpZE22b0Qj/kkvWfbbxkU8GhtTCjHnhud6Qj3
-         GomS9Q6a1Kn81ceJNp1oSwyvUqDBaAgkgB/S8AtkbwOePXGkLxFKcAllrjDq2ZbDzZ1+
-         qC8ckSEg8/JqpH1C6zdyZ1FbmucPpOSQZDkSZ1vBvcfTPbdSiGKz5IrFLGT1LMSDeKi2
-         LUzNxLwhUmkyMVupziJ9tD5juMqgwXnS89eowHGH85v5tdZa8h76B9fjQEn+Tf7PYHkR
-         rGFuLMVoFPguW+txiAcmiHPb12NGQyCZ6lg/XWIhJuiBnTWTAUlHPlRugEnFmQ9FJAMS
-         EOlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704986777; x=1705591577;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MIAyy+z6UYldKOuTvWdH3GAJfQlZGcwrrthZvbRfQPA=;
-        b=RoHkyCg0WO+8EBjXuVpYE2G/Vy9ZxgQdjL/lOOIrY5XQFvgmpzv4L6sM0Nf9T5L79Q
-         xmX2Vu6lj223eLAUfFZhXxgM4tpadnbPYsGRjZVwOJbXYygyJ1LwjjdeeyYGH7vQQ587
-         bGrOwqkfZRwghXnpuTqn0sTrwOYNgeCu0EeKkJfTJ9qaMHF8Y0ZpKRlIIhgzZcuW+EAm
-         OAn+ANreX4pECnuWpfX1YcA2MdDnTevvFGOoE1ZTziVCR7M0JaWaGIloKbVitNF6lpMz
-         y41J/jiM3jP1On2RGbJ4lr1G3jH2EjgbYpxMVXF3V3DWtnzrXr6NIqPQp7+y9a7Lwpa1
-         xxHQ==
-X-Gm-Message-State: AOJu0YxE4L7jSL7l3/nl1z7qj+B7ixdo6ZwzLflLRN3q5+jTl4HMbfK/
-	QNzJuXAYz/90Hl0PSwDoIjrZxbOjQbXBr25fwCak8E/vmcc=
-X-Google-Smtp-Source: AGHT+IGTSDl5uJ9mbgdIzjqEw0QmPY8o7XrxvUnQFzfAPE09kqM28vO2a70ynypXQguZMRD2d2gDf0vcO2uPqxwGLZQ=
-X-Received: by 2002:ac5:c199:0:b0:4b7:e96b:8b12 with SMTP id
- z25-20020ac5c199000000b004b7e96b8b12mr415581vkb.19.1704986777113; Thu, 11 Jan
- 2024 07:26:17 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0C34EB5C;
+	Thu, 11 Jan 2024 15:31:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=bWePOa8GLZpZTN02izOhGMD/Rc7CJVvB+zX37Yp82gU=; b=eDYVkCvmb3TPwZ6xVGBlnXj025
+	zGxz3Mfnp5uqvF48Js3mxq9WIuc7ujsQLtkU7CsBFblH5mi0nw23nnPMh4X9jnL0QGkY+OMkptcLi
+	OTRVklfR+6gVYOUVHyXpo71PFkPw6ck0ibLiA+E/IHWMc4G+iAfjj9l9zojyjHBFH0aDfJdJcm3Q4
+	P0jIGhcYwkw5lpcuwHi0A6Bw/UoKbp35xpZp5Ij1j7fYQekMgd/MFiBXxB/8GP82GrnTXX+Ji5g1I
+	806nh8P5PeqAKAAUSA+WJWZOw1SoiVBuOHwpbUAsJOZMqSTU5kIxgCYV1KQn/wiafidkgA4daYwLS
+	lEgrcmdw==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1rNx1U-00EB3W-L9; Thu, 11 Jan 2024 15:31:12 +0000
+Date: Thu, 11 Jan 2024 15:31:12 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Roman Smirnov <r.smirnov@omp.ru>
+Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alexey Khoroshilov <khoroshilov@ispras.ru>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Karina Yankevich <k.yankevich@omp.ru>, lvc-project@linuxtesting.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH 5.10 0/2] mm/truncate: fix issue in ext4_set_page_dirty()
+Message-ID: <ZaAJwEg4rvleFuC9@casper.infradead.org>
+References: <20240111143747.4418-1-r.smirnov@omp.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Allen <allen.lkml@gmail.com>
-Date: Thu, 11 Jan 2024 07:26:06 -0800
-Message-ID: <CAOMdWS+A8-5yT+_O+7xmyVvAfZmEsDr7nDwWHtLWLeefmDFqOA@mail.gmail.com>
-Subject: EXT4-fs: Intermitent segfault with memory corruption
-To: linux-ext4@vger.kernel.org, tytso@mit.edu, jack@suse.cz, 
-	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
-Cc: Allen Pais <apais@linux.microsoft.com>, kelseysteele@linux.microsoft.com, 
-	tyhicks@linux.microsoft.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240111143747.4418-1-r.smirnov@omp.ru>
 
-Hello Ext4 Developers,
+On Thu, Jan 11, 2024 at 02:37:45PM +0000, Roman Smirnov wrote:
+> Syzkaller reports warning in ext4_set_page_dirty() in 5.10 stable 
+> releases. The problem can be fixed by the following patches 
+> which can be cleanly applied to the 5.10 branch.
 
-I hope this email finds you well. We are reaching out to report a
-persistent issue that we have been facing on Windows Subsystem for
-Linux (WSL)[1] with various kernel versions. We have encountered the
-problem on kernel versions v5.15, v6.1, v6.6 stable kernels, and also
-the current upstream kernel. While the issue takes longer to reproduce
-on v5.15, it is consistently observable across these versions.
+I do not understand the crash, and I do not understand why this patch
+would fix it.  Can you explain either?
 
-Issue Description:
-Intermittent segfault with memory corruption. The time of segfault and
-output can vary, though one of the notable failures manifests as a
-segfault with the following error message:
-
-EXT4-fs error (device sdc): ext4_find_dest_de:2092: inode #32168:
-block 2334198: comm dpkg: bad entry in directory: rec_len is smaller
-than minimal - offset=0, inode=0, rec_len=0, size=4084 fake=0
-
-and
-
-EXT4-fs warning (device sdc): dx_probe:890: inode #27771: comm dpkg:
-dx entry: limit 0 != root limit 508
-EXT4-fs warning (device sdc): dx_probe:964: inode #27771: comm dpkg:
-Corrupt directory, running e2fsck is recommended
-EXT4-fs error (device sdc): ext4_empty_dir:3098: inode #27753: block
-133944722: comm dpkg: bad entry in directory: rec_len is smaller than
-minimal - offset=0, inode=0, rec_len=0, size=4096 fake=0
-
-or we see a segfault message where the source can change depending on
-which command we're testing with (dpkg, apt, gcc..):
-
-dpkg[135]: segfault at 0 ip 00007f9209eb6a19 sp 00007ffd8a6a0b08 error
-4 in libc-2.31.so[7f9209d6e000+159000] likely on CPU 1 (core 0, socket
-0)
-
-Reproduction Steps:
-The steps to reproduce the issue are seemingly straightforward: Run an
-install or upgrade. The larger the change the better.
-
-Installing Gimp has been a go to for testing, though we have
-reproduced the failure with:
-- apt upgrade
-- apt install
-- dpkg install
-- gcc building source files
-
-Observations:
-
-The issue occurs consistently across multiple kernel versions.
-Reproduction is faster on more recent kernels.
-Longer intervals are required for v5.15.
-When adding more debugging options that increases processing time,
-segfault seems to be harder to hit.
-
-When DX_DEBUG is enabled, during the installation process(dpkg
-install), we observed instances where both rlen and de->name_len
-values become 0.
-
-We wanted to bring this to your attention and seek guidance on how we
-could proceed with debugging and resolving this issue. Your insights
-and assistance would be greatly appreciated.
-
-Thank you for your time and consideration.
-
-
-[1] What is Windows Subsystem for Linux:
-    https://learn.microsoft.com/en-us/windows/wsl/about
-
--- 
-       - Allen
+> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+> 
+> Link: https://syzkaller.appspot.com/bug?extid=02f21431b65c214aa1d6
+> 
+> Matthew Wilcox (Oracle) (2):
+>   mm/truncate: Inline invalidate_complete_page() into its one caller
+>   mm/truncate: Replace page_mapped() call in invalidate_inode_page()
+> 
+>  kernel/futex/core.c |  2 +-
+>  mm/truncate.c       | 34 +++++++---------------------------
+>  2 files changed, 8 insertions(+), 28 deletions(-)
+> 
+> -- 
+> 2.34.1
+> 
 
