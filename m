@@ -1,103 +1,234 @@
-Return-Path: <stable+bounces-10523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E08382B114
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 15:55:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1F1D82B12C
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 15:58:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51FB61F256FC
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 14:55:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21EDC285841
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 14:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A1F4F5F8;
-	Thu, 11 Jan 2024 14:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A5048CE8;
+	Thu, 11 Jan 2024 14:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ii9rTNIH"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="MyZXJOcj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C694F5EF;
-	Thu, 11 Jan 2024 14:53:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1354C433F1;
-	Thu, 11 Jan 2024 14:53:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1704984820;
-	bh=+BqtsdmJgllie0f+TedmDOkSJxfwyuvJ7XtBHEWUI+w=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=ii9rTNIHuhCcC5SFO36i+uwShspbZKQIChMO1ToULIRBnM8aehcOxo7Fpwa8NjUph
-	 uLv6MGpH5QGiY9wytE3zVj+6SrNeL9P35PUpSgJqAgKY9Q/kmtV9cOzARg7s7LjCQz
-	 VmXu4CklM0NEtcGAtnYPq+MDPhqOuy6Tg4ascn0bkMa8VyAoAyk3ScssPWxPN00BjC
-	 Ed13owoFf0UZS3HP/dk+UG0HPgar2uFmL8BrDn+D5IkJpj5Og6wFLBJMnU87TysnG0
-	 Mj2shKLMrrPdjSUbF8fffW7hYKhTtMs22pDLQGJtqSBmcXdvGG/s4zeML3RPE7wY9L
-	 dZq3QqKloPQsQ==
-Date: Thu, 11 Jan 2024 08:53:38 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Philipp Stanner <pstanner@redhat.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Randy Dunlap <rdunlap@infradead.org>, NeilBrown <neilb@suse.de>,
-	John Sanpe <sanpeqf@gmail.com>,
-	Kent Overstreet <kent.overstreet@gmail.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Uladzislau Koshchanka <koshchanka@gmail.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	David Gow <davidgow@google.com>, Kees Cook <keescook@chromium.org>,
-	Rae Moar <rmoar@google.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	"wuqiang.matt" <wuqiang.matt@bytedance.com>,
-	Yury Norov <yury.norov@gmail.com>, Jason Baron <jbaron@akamai.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marco Elver <elver@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Ben Dooks <ben.dooks@codethink.co.uk>, dakr@redhat.com,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-arch@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v5 RESEND 0/5] Regather scattered PCI-Code
-Message-ID: <20240111145338.GA2173492@bhelgaas>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575A415EBE;
+	Thu, 11 Jan 2024 14:58:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id F196BC0002;
+	Thu, 11 Jan 2024 14:58:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1704985113;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=R2bbJVq+6aJv4+RN9gD8jwYvKFV5uKbbfrkkWD/CfRk=;
+	b=MyZXJOcjfpxkuDWgNYFkienl9aktx2n25MGLI+87VxLE2qHZJgcjOIcpIP7FVK7aOdqnZn
+	Yko4so3kFlgow8ciqN8tQj7ISHmpEsfArJ/xtrbn/YcJ1JS/jpu6u37lHUhZSaPA0v50xC
+	TUyIAKizs96izTpSo0jWft0qQLhhy3o05jrRkUgnO6l8k6aXg43nwXDXuiWxWJBf+Uuwza
+	DAs++aWtaa7bjzGxDfcKAcy0fsvMkC2d5iBGwYMvFvDZbhwmRPTnvFODkPaR2Eqi7s7olA
+	LbJJuRYpKhnZ8w6OL8Xk+hDsOGmRV6xk7J3jQiBoecU8XLxBocGVyY4AL3M8PQ==
+From: Romain Gantois <romain.gantois@bootlin.com>
+Date: Thu, 11 Jan 2024 15:58:51 +0100
+Subject: [PATCH net v5] net: stmmac: Prevent DSA tags from breaking COE
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240111085540.7740-1-pstanner@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240111-prevent_dsa_tags-v5-1-63e795a4d129@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIACoCoGUC/2WO0QrCIBSGX2V4nUPN0rrqPWIM3XQ70DRURjH27
+ p1GN6PL7/Cdj38h2SVwmVyrhSQ3Q4YYEE6HinSjCYOj0CMTwYRknGn6RMuF0vbZtMUMmSprWe8
+ 8663mBN9Q8PDakncSXCENHn2KEy1jcmZX45wrqWp11EpQQVEyEOrBhBIh32yM5YHcxekbHiGXm
+ N7b1Flu+V/n8r9qlpRTr7VWinsj/HlXa9Z1/QCpe2qL+wAAAA==
+To: Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Jose Abreu <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Sylvain Girard <sylvain.girard@se.com>, 
+ Pascal EBERHARD <pascal.eberhard@se.com>, 
+ Richard Tresidder <rtresidd@electromag.com.au>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Vladimir Oltean <olteanv@gmail.com>, Andrew Lunn <andrew@lunn.ch>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, 
+ Romain Gantois <romain.gantois@bootlin.com>, 
+ Vladimir Oltean <vladimir.oltean@nxp.com>
+X-Mailer: b4 0.12.4
+X-GND-Sasl: romain.gantois@bootlin.com
 
-On Thu, Jan 11, 2024 at 09:55:35AM +0100, Philipp Stanner wrote:
-> Second Resend. Would be cool if someone could tell me what I'll have to
-> do so we can get this merged. This is blocking the followup work I've
-> got in the pipe
+Some DSA tagging protocols change the EtherType field in the MAC header
+e.g.  DSA_TAG_PROTO_(DSA/EDSA/BRCM/MTK/RTL4C_A/SJA1105). On TX these tagged
+frames are ignored by the checksum offload engine and IP header checker of
+some stmmac cores.
 
-This seems PCI-focused, and I'll look at merging this after v6.8-rc1
-is tagged and the merge window closes (probably Jan 21).  Then I'll
-rebase it to v6.8-rc1, tidy the subject lines to look like the rest
-of drivers/pci/, etc.
+On RX, the stmmac driver wrongly assumes that checksums have been computed
+for these tagged packets, and sets CHECKSUM_UNNECESSARY.
 
-> Philipp Stanner (5):
->   lib/pci_iomap.c: fix cleanup bugs in pci_iounmap()
->   lib: move pci_iomap.c to drivers/pci/
->   lib: move pci-specific devres code to drivers/pci/
->   pci: move devres code from pci.c to devres.c
->   lib, pci: unify generic pci_iounmap()
-> 
->  MAINTAINERS                            |   1 -
->  drivers/pci/Kconfig                    |   5 +
->  drivers/pci/Makefile                   |   3 +-
->  drivers/pci/devres.c                   | 450 +++++++++++++++++++++++++
->  lib/pci_iomap.c => drivers/pci/iomap.c |  49 +--
->  drivers/pci/pci.c                      | 249 --------------
->  drivers/pci/pci.h                      |  24 ++
->  include/asm-generic/io.h               |  27 +-
->  include/asm-generic/iomap.h            |  21 ++
->  lib/Kconfig                            |   3 -
->  lib/Makefile                           |   1 -
->  lib/devres.c                           | 208 +-----------
->  lib/iomap.c                            |  28 +-
->  13 files changed, 566 insertions(+), 503 deletions(-)
->  create mode 100644 drivers/pci/devres.c
->  rename lib/pci_iomap.c => drivers/pci/iomap.c (75%)
+Add an additional check in the stmmac TX and RX hotpaths so that COE is
+deactivated for packets with ethertypes that will not trigger the COE and
+IP header checks.
+
+Fixes: 6b2c6e4a938f ("net: stmmac: propagate feature flags to vlan")
+Cc:  <stable@vger.kernel.org>
+Reported-by: Richard Tresidder <rtresidd@electromag.com.au>
+Link: https://lore.kernel.org/netdev/e5c6c75f-2dfa-4e50-a1fb-6bf4cdb617c2@electromag.com.au/
+Reported-by: Romain Gantois <romain.gantois@bootlin.com>
+Link: https://lore.kernel.org/netdev/c57283ed-6b9b-b0e6-ee12-5655c1c54495@bootlin.com/
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
+---
+Hello everyone,
+
+This is the fifth version of my proposed fix for the stmmac checksum
+offloading issue that has recently been reported.
+
+significant changes in v4:
+- Removed "inline" from declaration of stmmac_has_ip_ethertype
+
+significant changes in v3:
+- Use __vlan_get_protocol to make sure that 8021Q-encapsulated
+  traffic is checked correctly.
+
+significant changes in v2:
+- Replaced the stmmac_link_up-based fix with an ethertype check in the TX
+  and RX hotpaths.
+
+The Checksum Offloading Engine of some stmmac cores (e.g. DWMAC1000)
+computes an incorrect checksum when presented with DSA-tagged packets. This
+causes all TCP/UDP transfers to break when the stmmac device is connected
+to the CPU port of a DSA switch.
+
+I ran some tests using different tagging protocols with DSA_LOOP, and all
+of the protocols that set a custom ethertype field in the MAC header caused
+the checksum offload engine to ignore the tagged packets. On TX, this
+caused packets to egress with incorrect checksums. On RX, these packets
+were similarly ignored by the COE, yet the stmmac driver set
+CHECKSUM_UNNECESSARY, wrongly assuming that their checksums had been
+verified in hardware.
+
+Version 2 of this patch series fixes this issue by checking ethertype
+fields in both the TX and RX hotpaths of the stmmac driver. On TX, if a
+non-IP ethertype is detected, the packet is checksummed in software.  On
+RX, the same condition causes stmmac to avoid setting CHECKSUM_UNNECESSARY.
+
+To measure the performance degradation to the TX/RX hotpaths, I did some
+iperf3 runs with 512-byte unfragmented UDP packets.
+
+measured degradation on TX: -466 pps (-0.2%) on RX: -338 pps (-1.2%)
+original performances on TX: 22kpps on RX: 27kpps
+
+The performance hit on the RX path can be partly explained by the fact that
+the stmmac driver doesn't set CHECKSUM_UNNECESSARY anymore.
+
+The TX performance degradation observed in v2 seems to have improved.
+It's not entirely clear to me why that is.
+
+Best Regards,
+
+Romain
+
+Romain Gantois (1):
+  net: stmmac: Prevent DSA tags from breaking COE
+
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 23 ++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
+
+--
+2.43.0
+---
+Changes in v5:
+- Added missing "net" tag to subject of patch series
+- Link to v4: https://lore.kernel.org/r/20240109-prevent_dsa_tags-v4-1-f888771fa2f6@bootlin.com
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 29 ++++++++++++++++++++---
+ 1 file changed, 26 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 37e64283f910..b30dba06dbd1 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -4371,6 +4371,25 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	return NETDEV_TX_OK;
+ }
+ 
++/**
++ * stmmac_has_ip_ethertype() - Check if packet has IP ethertype
++ * @skb: socket buffer to check
++ *
++ * Check if a packet has an ethertype that will trigger the IP header checks
++ * and IP/TCP checksum engine of the stmmac core.
++ *
++ * Return: true if the ethertype can trigger the checksum engine, false otherwise
++ */
++static bool stmmac_has_ip_ethertype(struct sk_buff *skb)
++{
++	int depth = 0;
++	__be16 proto;
++
++	proto = __vlan_get_protocol(skb, eth_header_parse_protocol(skb), &depth);
++
++	return (depth <= ETH_HLEN) && (proto == htons(ETH_P_IP) || proto == htons(ETH_P_IPV6));
++}
++
+ /**
+  *  stmmac_xmit - Tx entry point of the driver
+  *  @skb : the socket buffer
+@@ -4435,9 +4454,13 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	/* DWMAC IPs can be synthesized to support tx coe only for a few tx
+ 	 * queues. In that case, checksum offloading for those queues that don't
+ 	 * support tx coe needs to fallback to software checksum calculation.
++	 *
++	 * Packets that won't trigger the COE e.g. most DSA-tagged packets will
++	 * also have to be checksummed in software.
+ 	 */
+ 	if (csum_insertion &&
+-	    priv->plat->tx_queues_cfg[queue].coe_unsupported) {
++	    (priv->plat->tx_queues_cfg[queue].coe_unsupported ||
++	    !stmmac_has_ip_ethertype(skb))) {
+ 		if (unlikely(skb_checksum_help(skb)))
+ 			goto dma_map_err;
+ 		csum_insertion = !csum_insertion;
+@@ -4997,7 +5020,7 @@ static void stmmac_dispatch_skb_zc(struct stmmac_priv *priv, u32 queue,
+ 	stmmac_rx_vlan(priv->dev, skb);
+ 	skb->protocol = eth_type_trans(skb, priv->dev);
+ 
+-	if (unlikely(!coe))
++	if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb))
+ 		skb_checksum_none_assert(skb);
+ 	else
+ 		skb->ip_summed = CHECKSUM_UNNECESSARY;
+@@ -5513,7 +5536,7 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
+ 		stmmac_rx_vlan(priv->dev, skb);
+ 		skb->protocol = eth_type_trans(skb, priv->dev);
+ 
+-		if (unlikely(!coe))
++		if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb))
+ 			skb_checksum_none_assert(skb);
+ 		else
+ 			skb->ip_summed = CHECKSUM_UNNECESSARY;
+
+---
+base-commit: ac631873c9e7a50d2a8de457cfc4b9f86666403e
+change-id: 20240108-prevent_dsa_tags-7bb0def0db81
+
+Best regards,
+-- 
+Romain Gantois <romain.gantois@bootlin.com>
+
 
