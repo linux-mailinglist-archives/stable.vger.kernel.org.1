@@ -1,372 +1,159 @@
-Return-Path: <stable+bounces-10531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A821982B4BA
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 19:24:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31D9482B4FC
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 20:00:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E7E71C21AC5
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 18:24:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83D46B25682
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 19:00:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFEB154673;
-	Thu, 11 Jan 2024 18:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B69353E2C;
+	Thu, 11 Jan 2024 18:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YmKlIrA7"
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="ZkTHIsZp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B0F54BC8;
-	Thu, 11 Jan 2024 18:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2cd853c159eso12166111fa.2;
-        Thu, 11 Jan 2024 10:24:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704997488; x=1705602288; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yyBT7jM+aIZptm06ap1srTB7H57hxp3UzIPmoWZA/f8=;
-        b=YmKlIrA7FYkp+D7ROsP6EetGvYRHxOl1eV1F3fBfhuaDNeMdEu5slyCyzGsUO4baCN
-         QQfsv7/vH2CK4GKbUOLq/ZWdxrEmRoY9YxbVOj9DEzQ5WxLUTT7TJyzH27yAWRPA3MOh
-         X6YDxcN7cKqX0AWp2MK39hlQqNqf1L+RK/9QLEudMhDGAFeL1NAuUnExjxFFCoDqdvzO
-         gRyk/rnTWuPxc60FI9evr+pl+ccu4z812XkufaaaOcD8WAAcjwm1bckD9OOZpAzta6Zg
-         p5ekJiIakUwYrY3PvP4TPqtA5aglm4feX+GkL9/zz60SrL2VBTeZ/0jkEuOQ5uioqOgI
-         lV7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704997488; x=1705602288;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yyBT7jM+aIZptm06ap1srTB7H57hxp3UzIPmoWZA/f8=;
-        b=MhjEl/w04V2z5ZPTmihbDY3IpT+UBNtgE9rlGeGzadPAs1X21r4yNVcWyuKmY59bGG
-         I/kZ13XAWjPInFOtkCvKSdJBwSgYtxldGgFoC1Gs1eY793Np5AM+xwyBLOB8wjxhMQCP
-         eSKBcWiVpu6RmwHGm/aJ163cmzLNqfyWyiBIWzltJSHBXNQTno8SYxhpwTvrYAFPvKsR
-         ddlD1wFcdeSF7BnGhWjB0+o3D8/cY/6Z5ZLdk57fX2GJi3lWBWbDNx1NBFiwnVdn+ZQ5
-         5ClWW1LbzR8ZCv6J+LCuNpdjYEoh1T+n8vPiF43u7zhc/64gaQ4NTKl8PP4GaIqlHujr
-         G/lQ==
-X-Gm-Message-State: AOJu0YzXBpgQKDAs+eAv6y3DgcdTHn4+fdaVXFFvAqk6TSILLRJEph5B
-	xHxfuu4+rfb5HwKb2FwYsKJgSN75VIpl+X4Qq88=
-X-Google-Smtp-Source: AGHT+IEmo0saIdH36YsMWqNGsmAsJp0i9AuOjCayj0CvreuxjV8N0Ql+pYhBFk0nTb6UlkHPbrLNX3Zz8bDzmqoOuvw=
-X-Received: by 2002:a2e:8059:0:b0:2cc:cde7:bb82 with SMTP id
- p25-20020a2e8059000000b002cccde7bb82mr70214ljg.32.1704997487437; Thu, 11 Jan
- 2024 10:24:47 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E940254BE0
+	for <stable@vger.kernel.org>; Thu, 11 Jan 2024 18:59:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
+Received: from cwcc.thunk.org (pool-173-48-116-100.bstnma.fios.verizon.net [173.48.116.100])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 40BIxUMO029748
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Jan 2024 13:59:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1704999572; bh=gcMsWKBHfHITg90LTV5PJyLcI8YcXQhS+yVAEbZ7a1Q=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=ZkTHIsZpdNnL3WQfqmiUyWvO6IYSdWBC+aI5ThXCi3D8fYjJnstaa3jiX1WBQIW/+
+	 ROdWOY8SsW1AuFec7bsdnroWT6Xaiqq8hmyCEGrjfEAtA1/zGcN1O/SHgWkxTZjNe6
+	 wb5K4/M1wEwd/XsVhNWafA96OJLmu9LODNO3Ej1uYV2gXPceYgIwDqegUZ7VUXsyOD
+	 UO5q3RGUneAIHALri3/jZKdBGK+x5fRDH13GOjcb1h1JM8KdqIUwF7efTUKQmICeuk
+	 2xv0jeyfQdUy9hSMHbPe16KIPlyQWyVswJ1IhRtzshh30lwIqQ/YDQGTlOo4DjvA1o
+	 q+n/LZ3so5Cng==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id 12EBB15C0276; Thu, 11 Jan 2024 13:59:30 -0500 (EST)
+Date: Thu, 11 Jan 2024 13:59:30 -0500
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Allen <allen.lkml@gmail.com>
+Cc: linux-ext4@vger.kernel.org, jack@suse.cz,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        stable@vger.kernel.org, Allen Pais <apais@linux.microsoft.com>,
+        kelseysteele@linux.microsoft.com, tyhicks@linux.microsoft.com
+Subject: Re: EXT4-fs: Intermitent segfault with memory corruption
+Message-ID: <20240111185930.GA911245@mit.edu>
+References: <CAOMdWS+A8-5yT+_O+7xmyVvAfZmEsDr7nDwWHtLWLeefmDFqOA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231208061407.2125867-1-yuzhao@google.com> <CAMgjq7BTaV5OvHNjGRVJP2VDxj+PXhfd6957CjS4BJ9J4OY8HA@mail.gmail.com>
- <CAOUHufYwZAUaJh6i8Fazc4gVMSqcsz9JbRNpj0cpx2qR+bZBFw@mail.gmail.com>
- <CAMgjq7AtceR-CXnKFfQHM3qi0y4oGyJ4_sw_uh5EkpXCBzkCXg@mail.gmail.com>
- <CAMgjq7CJ3hYHysyRfHzYU4hOYqhUOttxMYGtg0FxzM_wvvyhFA@mail.gmail.com>
- <CAOUHufa=ybd-EPos9DryLHYyhphN0P7qyV5NY3Pui0dfVSk9tQ@mail.gmail.com>
- <ZXpx0K8Vdo3FJixg@google.com> <CAMgjq7CRf4iEKuW2qWKzbhssMbixBo3UoLPqsSk4b+Tvw8at8A@mail.gmail.com>
- <CAOUHufY6x_Erz02Bzoejfs_g2hcmrMFpiOdjiaWZ97oirz71aQ@mail.gmail.com>
- <ZXvcgyjTu92Qqk5X@google.com> <CAMgjq7BsY1tJeOZwSppxUN7Lha-_a7WLfhv1_bxTuU4EuiQyVg@mail.gmail.com>
- <CAOUHufZFkdDjCdQKBV5+W_bp_7x5VwrwkYbJeDdQ19S=m4Mc6A@mail.gmail.com>
- <CAOUHufbRq8WsGzNRn119GqL5AmeSOkZxQv3L2LTaCm=k3bzrRA@mail.gmail.com>
- <CAMgjq7C8uUOz5i8rEHNCs37fdEiAuMZsuV+Ktnz3TMX9Nf8F+g@mail.gmail.com>
- <CAOUHufamzdOL8ByV9V7KQJKnvZBMboVz-EGD=Fus7LZk1inhCw@mail.gmail.com>
- <CAOUHufaWkAvQK_fmXF5WZW4ZKQ0W4UZfjWDG+OZAxgF_J0dOuA@mail.gmail.com>
- <CAMgjq7BR4wyT5itvs58Wjar6EymdazhKvpAjSPHF-SYvrguu2Q@mail.gmail.com>
- <CAOUHufbZTJN6TRv55DVDjMp3frqpJOZP0HsQx3Y7veGCuaih8g@mail.gmail.com>
- <CAMgjq7C+zMYtoE=JVsXZitxKHoCh5MqB76OENs7a+NDgGGQ0Kw@mail.gmail.com>
- <CAOUHufbnLX60n+=OV92kXLZGY5_-f_y0ZtETV+0uTqFo5dvBCg@mail.gmail.com>
- <CAOUHufa12C7Knp78fq4C-ohGz1yrtdriW5xQD=wchinTJD8UVQ@mail.gmail.com>
- <CAMgjq7BRaRgYLf2+8=+=nWtzkrHFKmudZPRm41PR6W+A+L=AKA@mail.gmail.com> <CAOUHufahuWcKf5f1Sg3emnqX+cODuR=2TQo7T4Gr-QYLujn4RA@mail.gmail.com>
-In-Reply-To: <CAOUHufahuWcKf5f1Sg3emnqX+cODuR=2TQo7T4Gr-QYLujn4RA@mail.gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 12 Jan 2024 02:24:28 +0800
-Message-ID: <CAMgjq7CWRH0sJLCTU80c44gG9z=ff75u_S104iot0wNv_ModdQ@mail.gmail.com>
-Subject: Re: [PATCH mm-unstable v1 1/4] mm/mglru: fix underprotected page cache
-To: Yu Zhao <yuzhao@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Charan Teja Kalla <quic_charante@quicinc.com>, 
-	Kalesh Singh <kaleshsingh@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAOMdWS+A8-5yT+_O+7xmyVvAfZmEsDr7nDwWHtLWLeefmDFqOA@mail.gmail.com>
 
-Yu Zhao <yuzhao@google.com> =E4=BA=8E2024=E5=B9=B41=E6=9C=8811=E6=97=A5=E5=
-=91=A8=E5=9B=9B 15:02=E5=86=99=E9=81=93=EF=BC=9A
-> Could you try the attached patch on the mainline v6.7 and see how it
-> compares with the results above? Thanks.
+On Thu, Jan 11, 2024 at 07:26:06AM -0800, Allen wrote:
+> 
+> I hope this email finds you well. We are reaching out to report a
+> persistent issue that we have been facing on Windows Subsystem for
+> Linux (WSL)[1] with various kernel versions. We have encountered the
+> problem on kernel versions v5.15, v6.1, v6.6 stable kernels, and also
+> the current upstream kernel. While the issue takes longer to reproduce
+> on v5.15, it is consistently observable across these versions.
 
-Hi Yu,
+You've tried reproducing (successfully) the problem across multiple
+kernel versions.  Have you tried reproducing this on multiple
+different hardware platforms?  e.g., with different desktops and/or
+servers, and with different storage devices?
 
-Thanks for the patch, it helped in some degrees, but not as effective:
-On that exclusive baremetal, I did a resetup, rebase on 6.7 mainline
-and reran the test:
+The symptoms you are reporting are very highly correlated with
+hardware problems, or in the case where you are running under
+virtualization, with bugs in the VMM and/or the host OS's storage
+stack.
 
-Refault distance series:
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-Execution Results after 901 seconds
-------------------------------------------------------------------
-                  Executed        Time (=C2=B5s)       Rate
-  STOCK_LEVEL     4224            27030724835.9   0.16 txn/s
-------------------------------------------------------------------
-  TOTAL           4224            27030724835.9   0.16 txn/s
+In particular, these errors:
 
-workingset_nodes 111349
-workingset_refault_anon 261331
-workingset_refault_file 42862224
-workingset_activate_anon 0
-workingset_activate_file 13803763
-workingset_restore_anon 250743
-workingset_restore_file 599031
-workingset_nodereclaim 23708
+> EXT4-fs error (device sdc): ext4_find_dest_de:2092: inode #32168:
+> block 2334198: comm dpkg: bad entry in directory: rec_len is smaller
+> than minimal - offset=0, inode=0, rec_len=0, size=4084 fake=0
+> 
+> and
+> 
+> EXT4-fs warning (device sdc): dx_probe:890: inode #27771: comm dpkg:
+> dx entry: limit 0 != root limit 508
+> EXT4-fs warning (device sdc): dx_probe:964: inode #27771: comm dpkg:
+> Corrupt directory, running e2fsck is recommended
+> EXT4-fs error (device sdc): ext4_empty_dir:3098: inode #27753: block
+> 133944722: comm dpkg: bad entry in directory: rec_len is smaller than
+> minimal - offset=0, inode=0, rec_len=0, size=4096 fake=0
 
-memcg    67 /machine.slice/libpod-edbf5a3cb2574c60180c1fb5ddb2fb160df00bcee=
-3758b7649f2b31baa97ed78.scope/container
- node     0
-         10     347163     518379      207449
-                     0          0r          2e          0p      33017r
-   1726749e          0p
-                     1          0r          0e          0p       7278r
-    496268e          0p
-                     2          0r          0e          0p      19789r
-     55418e          0p
-                     3          0r          0e          0p          0r
-         0e    4747801p
-                                0           0           0           0
-         0           0
-         11     283279     154400     4791558
-                     0          0           0           0           0
-         0           0
-                     1          0           0           0           0
-         0           0
-                     2          0           0           0           0
-         0           0
-                     3          0           0           0           0
-         0           0
-                                0           0           0           0
-         0           0
-         12     158723     431513       37647
-                     0          0           0           0           0
-         0           0
-                     1          0           0           0           0
-         0           0
-                     2          0           0           0           0
-         0           0
-                     3          0           0           0           0
-         0           0
-                                0           0           0           0
-         0           0
-         13      44775     104986       27258
-                     0        576R        982T          0     2488768R
-   5769505T          0
-                     1          0R          0T          0     2335910R
-   3357277T          0
-                     2          0R          0T          0      647398R
-    753021T          0
-                     3          0R         20T          0       52725R
-   4740516T          0
-                          2819476L      31196O    2551928Y       8298N
-      5549F       5329A
+... sesem to hint that ext4 has read a directory block where all or
+part of its contents have been replaced with all zeros (hence the
+record length, or the hash tree index, is zero).  That typically is
+caused by a hardware and/or VMM problem.
 
-Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s
-kB_read    kB_wrtn    kB_dscd
-dm-0             12.81       546.32        39.04         0.00
-520178      37171          0
-dm-1              0.05         1.10         0.00         0.00
-1044          0          0
-nvme0n1          13.17       561.99        41.19         0.00
-535103      39219          0
-nvme1n1        5220.39    227385.96      1028.17         0.00
-216505545     978976          0
-zram0          2440.61      2856.32      6907.13         0.00
-2719644    6576628          0
+> or we see a segfault message where the source can change depending on
+> which command we're testing with (dpkg, apt, gcc..):
+> 
+> dpkg[135]: segfault at 0 ip 00007f9209eb6a19 sp 00007ffd8a6a0b08 error
+> 4 in libc-2.31.so[7f9209d6e000+159000] likely on CPU 1 (core 0, socket
+> 0)
 
-               total        used        free      shared  buff/cache   avai=
-lable
-Mem:           31830       11251         332           0       20246       =
-20144
-Swap:          31829        3761       28068
+And this could very well be because a data block has been replaced
+with garbage, or the wrong data block, or all zeroes.
 
-Your attachment:
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-Execution Results after 905 seconds
-------------------------------------------------------------------
-                  Executed        Time (=C2=B5s)       Rate
-  STOCK_LEVEL     4070            27170023578.4   0.15 txn/s
-------------------------------------------------------------------
-  TOTAL           4070            27170023578.4   0.15 txn/s
+It might also be load related --- that is, the problem only shows up
+the system is more heavily loaded, which might explain when enabling
+debugging causes the problem to be harder to reproduce.
 
-workingset_nodes 121864
-workingset_refault_anon 430917
-workingset_refault_file 42915675
-workingset_activate_anon 100194
-workingset_activate_file 21619480
-workingset_restore_anon 100194
-workingset_restore_file 165054
-workingset_nodereclaim 26851
 
-memcg    65 /machine.slice/libpod-c6d8c5fedb9b390ec7f1db7d0d7c57d6a284a94e7=
-4a3923d93ea0ce4e4ffdf28.scope/container
- node     0
-          8     418689      55033      106862
-                     0         16r         17e          0p    2789768r
-   6034831e          0p
-                     1          0r          0e          0p     239664r
-    490278e          0p
-                     2          0r          0e          0p      79145r
-    126408e          0p
-                     3         23r         23e          0p      23404r
-     27107e    4736933p
-                                0           0           0           0
-         0           0
-          9     322798     237713     4759110
-                     0          0           0           0           0
-         0           0
-                     1          0           0           0           0
-         0           0
-                     2          0           0           0           0
-         0           0
-                     3          0           0           0           0
-         0           0
-                                0           0           0           0
-         0           0
-         10     182729     942701        5348
-                     0          0           0           0           0
-         0           0
-                     1          0           0           0           0
-         0           0
-                     2          0           0           0           0
-         0           0
-                     3          0           0           0           0
-         0           0
-                                0           0           0           0
-         0           0
-         11     120287        560         375
-                     0      25187R      29324T          0     1679308R
-   4256147T          0
-                     1          0R          0T          0      153592R
-    364122T          0
-                     2          0R          0T          0       51825R
-     98646T          0
-                     3        101R       2944T          0       13985R
-   4743515T          0
-                          7702245L     865749O    6514831Y      16843N
-     15088F      14167A
+I am very doubtful that the problem is in the ext4 code proper,
+especially since no one else has reported this problem, and at $WORK,
+we are running continuous testing where we are running fstests runs on
+ext4 against a wide range of hardware (e.g., HDD's, SSD's, iscsi,
+etc.) and hardware platforms (arm64 and x86).  And that's just for our
+data center kernels which are based on various LTS kernels.  For
+Google's Compute Optimized OS, which is used in both 1st party and 3rd
+party VM's in Google Cloud VM's, we are doing similar testing using
+gce-xfstests[1] on a continuous basis, and we haven't seen the kind of
+bugs that you are reporting.
 
-Device             tps    kB_read/s    kB_wrtn/s    kB_dscd/s
-kB_read    kB_wrtn    kB_dscd
-dm-0             11.49       489.97        41.80         0.00
-488006      41633          0
-dm-1              0.05         1.05         0.00         0.00
-1044          0          0
-nvme0n1          11.83       504.95        43.86         0.00
-502932      43682          0
-nvme0n1        5145.44    218803.29       984.46         0.00
-217928081     980520          0
-zram0          3164.11      4399.55      8257.84         0.00
-4381952    8224812          0
+[1] https://thunk.org/gce-xfstests.
 
-               total        used        free      shared  buff/cache   avai=
-lable
-Mem:           31830       11583         310           1       19935       =
-19809
-Swap:          31829        3710       28119
+For that matter, I am regularly running gce-xfstests for ext4's
+upstream development, and other ext4 developers run fstests using
+kvm-xfstests and fstests on a varriety of different hardware devices
+and virtualization environments.  So that tends to suggest that the
+problem is either in the hardware or virtualization environment (WSL)
+that you are using.
 
-Refault distance series still have a better performance and lower total IO.
 
-Similar result on that VM:
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-Execution Results after 907 seconds
-------------------------------------------------------------------
-                  Executed        Time (=C2=B5s)       Rate
-  STOCK_LEVEL     1667            27151581934.5   0.06 txn/s
-------------------------------------------------------------------
-  TOTAL           1667            27151581934.5   0.06 txn/s
+So to that end, you might want to consider running some lower-level
+tests --- for example using fio with data verification enabled.  We
+also get a huge amount of mileage using fstests to detect problems
+lower in the file system stack.  This is why we use fstests/xfstests
+on ext4 for essentially every single storage device (such as iSCSI,
+HDD, Flash, etc.)  So setting up fstesets on a variety of file systems
+and storage devices is not a bad idea.
 
-While refault distance series had about ~2500 - 2600 txns, mainline
-6.7 had about ~800 - 900 txns.
+It shouldn't be difficult to take the test appliance in
+kvm-xfstests[2][3] and getting it to work under WSL.  (For example,
+over the holidays, I've gotten fstests running on MacOS on a Macbook
+Air M2 15" using the hvf framework.)  However, I suggest that you
+focus on lower-level block and memory stress testing before worrying
+about how to run fstests under WSL.
 
-Loop test so far:
-Using refault distance seriese (previous result, it doesn't change much any=
-way):
-  STOCK_LEVEL     2605            27120667462.8   0.10 txn/s
-  STOCK_LEVEL     3000            27106854857.2   0.11 txn/s
-  STOCK_LEVEL     2925            27066601064.4   0.11 txn/s
-  STOCK_LEVEL     2757            27035248005.2   0.10 txn/s
-  STOCK_LEVEL     1325            28053716046.8   0.05 txn/s
-  STOCK_LEVEL     717             27455091366.3   0.03 txn/s
-  STOCK_LEVEL     967             27404085208.2   0.04 txn/s
-Refault stat here:
-workingset_refault_anon 109337
-workingset_refault_file 191249716
+[2] https://github.com/tytso/xfstests-bld/blob/master/Documentation/kvm-quickstart.md
+[3] https://github.com/tytso/xfstests-bld/blob/master/Documentation/kvm-xfstests.md
 
-Using the attached patch:
-STOCK_LEVEL     1667            27151581934.5   0.06 txn/s
-STOCK_LEVEL     2999            27085125092.3   0.11 txn/s
-STOCK_LEVEL     2874            27120635371.2   0.11 txn/s
-STOCK_LEVEL     2658            27139142413.9   0.10 txn/s
-STOCK_LEVEL     1254            27526009063.7   0.05 txn/s
-STOCK_LEVEL     993             28065506801.8   0.04 txn/s
-STOCK_LEVEL     954             27226012906.3   0.04 txn/s
-Refault stat here:
-workingset_refault_anon 383579
-workingset_refault_file 205493832
+Cheers,
 
-The peak performance almost equal, but still starts slow, refault is
-higher too. File refault might be interfered due to some IO layer
-issue, but anon refault is always accurate.
-
-I see the improvement you did in the attachment patch, I think
-actually they are not in conflict with the refault distance series.
-Maybe they can be combined into a even better result.
-
-Refault distance (which originally used by active/inactive LRU) is
-used here to give evicted pages priorities based on eviction distance
-and add extra feedback to PID and gen. While the PID info recorded in
-page flags/shadow represents pages's access pattern before eviction,
-and all the check and logics about it can also be improved.
-
-One critical effect of the refault distance series that boost the
-MongoDB startup (and I haven't see any negative effect of it on other
-test / workload / benchmark yet, except the overhead of memcg
-statistics itself) is it prevents overprotecting of tier 0 page: that
-is, a tier 0 page evicted but refaulted very quickly (refault distance
-< LRU / MAX_NR_GEN, this value may worth some more adjustment, but
-with LRU / MAX_NR_GEN, it can be imaged as an idea that having a small
-shadow gen holding these page shadows...) will be categorised as tier
-1 and get protect. Other wise, if I got everything right, when most
-pages are stuck in tier 0 and keep refaulting, tier 0 will have a very
-high refault rate, and no pages will be protect, until randomness
-causes quick repeated read of some page, so they get promoted to tier
-3 get get protected.
-
-Now min_seq contains lower tier pages and new pages will be added to
-min_seq too, so min_seq will stay for a long time, while min_seq + 1
-holds protected full ref tier 3 pages and they stay long enough to get
-promoted as tier 3 again, so they will always be kept in memory.
-Now MongoDB will perform well even without refault distance series,
-but this period may take a long time (~15 min for the MongoDB test for
-SATA SSD, which is based on a real workload), long enough to cause
-real issue.
-
-And this also means PID won't react to workload change fast enough.
-
-Also the anon refault's refs value is adjusted by refault distance too
-in the series, it tries to split the whole LRU as at least two gens
-for refaulted pages (only page with refault distance < LRU /
-MIN_NR_GEN will have full refs set, else will have refs - 1 set as
-penalty for long time evicted and unused page, which complies with
-LRU's nature). Which seems actually decreased refault of anon pages.
-
-There are some other issue that refault distance series is trying to
-solve too, eg. if there is a user agent force MGLRU to age
-periodically for proactive memory reclaim, or MGLRU simply ages fast,
-min_seq will grow periodically and PID won't catch enough feedback
-using previous logic.
+					- Ted
 
