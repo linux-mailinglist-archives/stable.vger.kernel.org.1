@@ -1,135 +1,151 @@
-Return-Path: <stable+bounces-10527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D839982B1DC
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 16:32:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D7C082B38E
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 18:01:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACD11B214BF
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 15:32:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A15D5B21418
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 17:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E074CB47;
-	Thu, 11 Jan 2024 15:32:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 542385100C;
+	Thu, 11 Jan 2024 17:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jRrSRa2A"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HW3IaXw8"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D83F4BAB0
-	for <stable@vger.kernel.org>; Thu, 11 Jan 2024 15:32:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1704987150;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KzKa5s33X3IKu2M/hTuWcesIvEV9ZEphom5s5UiSxgA=;
-	b=jRrSRa2AAkb6V2K9aKQGknAXkV+JWzufk448BsaeZdq7BFl1dOTE+rNDB5q0+zA/c6ZGXj
-	kSFAMovBomsEYfC3CcnjXw+vffMmid3cXduFHAH6mSWr/X9w2dDFE4mImfJzxWSi4SSD2K
-	xdUfiPAJY0FbKBR7ePmM4fO0ruKJFZQ=
-Received: from mail-pl1-f198.google.com (mail-pl1-f198.google.com
- [209.85.214.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-61-vpGAOfYVOV6rmjYM_WHYdA-1; Thu, 11 Jan 2024 10:32:28 -0500
-X-MC-Unique: vpGAOfYVOV6rmjYM_WHYdA-1
-Received: by mail-pl1-f198.google.com with SMTP id d9443c01a7336-1d44a50ab19so12090955ad.1
-        for <stable@vger.kernel.org>; Thu, 11 Jan 2024 07:32:28 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814D551013
+	for <stable@vger.kernel.org>; Thu, 11 Jan 2024 17:00:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-55818b7053eso13684a12.0
+        for <stable@vger.kernel.org>; Thu, 11 Jan 2024 09:00:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1704992454; x=1705597254; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WVpHmRU4t7msu8p8UIFuWi7e+gfkGhiO1WXPb0mMfbs=;
+        b=HW3IaXw8BMlWitp8ap2t9490M9Xd8WL4B0G4s5i3vlaVU8gadCgnva/MgehpIhLExe
+         bplbBK/oKMmLr9KDewjzT5KV4XGTV523pHARyc1nA/I1fmu2XffvupEXitEEEgiLgZiC
+         v87nv7/jIEiuqHPmQYZJskxcRar8q6vCSzYNdswNORXxxNVHySEauAOpKK8XaqRiMDBz
+         LeurCGdZrzseoTS8NzjKVZfdQB2pNoPsr1HkcFzMv9RenP0nuv4K3prLnyRdYxeueITl
+         XfPNDOCqEIGqY4FqtCd+eD4RsBnghKrDhpzvFD0xmdW8dkqwlA7xKsBgEPY2xnadwzVb
+         Om1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704987148; x=1705591948;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KzKa5s33X3IKu2M/hTuWcesIvEV9ZEphom5s5UiSxgA=;
-        b=aDpJTmdjDOix6O/Sa/MxU7rHeTdkKKk7KjcOcLbobvcQ+NMYbShCzy5FDUNQxRuYIf
-         sCHGoWBcPZLm8jNagjJ/HhxqJ0FJltJ1uqe1lZuAoeOc9ltlORlvKFkshtfEWkzvsKqf
-         ZAxHCCd84E7tN+tJDx3ksRp8Nzy3fv5dC0C2PmUKGUowN8Yjb9/FBEkcnaz4+ze5syqg
-         VrIJmLizJhnAuVsagLp9NENH3VwXccPUVyNCgETwmbYY/swC9YPhMPQbQ3VOUoYqBaNy
-         X95xRREQ9Fnjd/fXoB4OkffcHsTAI5D2on2ojYOIAYrGCdEwK/RDlD/FzlynBBZwc1w2
-         xEjw==
-X-Gm-Message-State: AOJu0YyRxLrNbURQuE/4oI9CK0ZjeHqcbrP2Nv8fu47U1FQX2DReQF8V
-	xGQorJrJvcsBisoxtVnzHgBAMH8ohLC50fyRxbPAnQ6iYOXfJvcGUedUiSAO7LLTURsO6ro50nQ
-	8h+FU1kQCUQZvP8Chfu58aLLS
-X-Received: by 2002:a17:902:db04:b0:1d3:f36a:9d21 with SMTP id m4-20020a170902db0400b001d3f36a9d21mr2604391plx.4.1704987147878;
-        Thu, 11 Jan 2024 07:32:27 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFbn18LxwZvVOyuJQJGtvaDTZ6vhKK8BhyP+hkC6mfTUc/QgQYyoPY7OXXHe7LVU1236f3k7A==
-X-Received: by 2002:a17:902:db04:b0:1d3:f36a:9d21 with SMTP id m4-20020a170902db0400b001d3f36a9d21mr2604348plx.4.1704987147537;
-        Thu, 11 Jan 2024 07:32:27 -0800 (PST)
-Received: from pstanner-thinkpadt14sgen1.remote.csb (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id kh4-20020a170903064400b001d4c9c9be42sm1295127plb.151.2024.01.11.07.32.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jan 2024 07:32:26 -0800 (PST)
-Message-ID: <3400ff3fbcd6f310f777be8cceddb253246b87fa.camel@redhat.com>
-Subject: Re: [PATCH v5 RESEND 0/5] Regather scattered PCI-Code
-From: Philipp Stanner <pstanner@redhat.com>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, Arnd Bergmann <arnd@arndb.de>, 
- Johannes Berg <johannes@sipsolutions.net>, Randy Dunlap
- <rdunlap@infradead.org>, NeilBrown <neilb@suse.de>,  John Sanpe
- <sanpeqf@gmail.com>, Kent Overstreet <kent.overstreet@gmail.com>, Niklas
- Schnelle <schnelle@linux.ibm.com>, Dave Jiang <dave.jiang@intel.com>,
- Uladzislau Koshchanka <koshchanka@gmail.com>, "Masami Hiramatsu (Google)"
- <mhiramat@kernel.org>, David Gow <davidgow@google.com>, Kees Cook
- <keescook@chromium.org>, Rae Moar <rmoar@google.com>, Geert Uytterhoeven
- <geert@linux-m68k.org>, "wuqiang.matt" <wuqiang.matt@bytedance.com>, Yury
- Norov <yury.norov@gmail.com>, Jason Baron <jbaron@akamai.com>, Thomas
- Gleixner <tglx@linutronix.de>, Marco Elver <elver@google.com>, Andrew
- Morton <akpm@linux-foundation.org>, Ben Dooks <ben.dooks@codethink.co.uk>,
- dakr@redhat.com, linux-kernel@vger.kernel.org,  linux-pci@vger.kernel.org,
- linux-arch@vger.kernel.org, stable@vger.kernel.org
-Date: Thu, 11 Jan 2024 16:32:07 +0100
-In-Reply-To: <20240111145338.GA2173492@bhelgaas>
-References: <20240111145338.GA2173492@bhelgaas>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        d=1e100.net; s=20230601; t=1704992454; x=1705597254;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WVpHmRU4t7msu8p8UIFuWi7e+gfkGhiO1WXPb0mMfbs=;
+        b=MpW1i891VwC1R01fQN070fcOooVbfzUrG8J98lKwoq9jYo+j9mP2ku3HmCYLkjlKYm
+         uhI+2n8EGhE7T0gsfvilDk89J+u3l9Y+eJjMKuNljV9Da3MrkTb4NtRdWTgcaqmKO6kh
+         d3LANWA6xajVyEN7+1IaHsvagin1gzCst1xjZ+EtVcobsqS0bPpp7TBQp3Y88pX4VOqs
+         vK7GecekaIc59Q1lCRyYGJQLBIZSCyI/GxTnAwhUqOla9EVLKVc7Dg98K63aAv5Mw77W
+         9y9ElsXj5Dw5CSnmTFjaZ1tJ3Vl2Y4aKN3gJT0agaYmhKRfUYU6T/y8Gk0cLp+pY4iKy
+         DAvQ==
+X-Gm-Message-State: AOJu0Yx678TnN1p2WGHLtwdLp3I2jn6xAueh7clTcGi+DwfctUFthxhT
+	R7+Cv3hQ53K/2AuPjUpW8iSdLZWRqjfOyyBSYx4lOxJDFdab
+X-Google-Smtp-Source: AGHT+IECGVU7ifFt3/CmGLptso4Zf2qxVEwZRmCovmC2Vw55bATpEcsLBqx7fiNcGtd9gI97Ova2aMGEu0KwCiGIgrY=
+X-Received: by 2002:aa7:c411:0:b0:558:b501:1d2a with SMTP id
+ j17-20020aa7c411000000b00558b5011d2amr58381edq.6.1704992453633; Thu, 11 Jan
+ 2024 09:00:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20240109181722.228783-1-jsperbeck@google.com> <2024011150-twins-humorist-e01d@gregkh>
+In-Reply-To: <2024011150-twins-humorist-e01d@gregkh>
+From: John Sperbeck <jsperbeck@google.com>
+Date: Thu, 11 Jan 2024 09:00:40 -0800
+Message-ID: <CAFNjLiVJ0OKp7kKsNTr-mCJvG+dkYis2F1fE==Fhz65eZfT+aQ@mail.gmail.com>
+Subject: Re: Crash in NVME tracing on 5.10LTS
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Bean Huo <beanhuo@micron.com>, Sagi Grimberg <sagi@grimberg.me>, khazhy@google.com, 
+	Jens Axboe <axboe@kernel.dk>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-T24gVGh1LCAyMDI0LTAxLTExIGF0IDA4OjUzIC0wNjAwLCBCam9ybiBIZWxnYWFzIHdyb3RlOgo+
-IE9uIFRodSwgSmFuIDExLCAyMDI0IGF0IDA5OjU1OjM1QU0gKzAxMDAsIFBoaWxpcHAgU3Rhbm5l
-ciB3cm90ZToKPiA+IFNlY29uZCBSZXNlbmQuIFdvdWxkIGJlIGNvb2wgaWYgc29tZW9uZSBjb3Vs
-ZCB0ZWxsIG1lIHdoYXQgSSdsbAo+ID4gaGF2ZSB0bwo+ID4gZG8gc28gd2UgY2FuIGdldCB0aGlz
-IG1lcmdlZC4gVGhpcyBpcyBibG9ja2luZyB0aGUgZm9sbG93dXAgd29yawo+ID4gSSd2ZQo+ID4g
-Z290IGluIHRoZSBwaXBlCj4gCj4gVGhpcyBzZWVtcyBQQ0ktZm9jdXNlZCwgYW5kIEknbGwgbG9v
-ayBhdCBtZXJnaW5nIHRoaXMgYWZ0ZXIgdjYuOC1yYzEKPiBpcyB0YWdnZWQgYW5kIHRoZSBtZXJn
-ZSB3aW5kb3cgY2xvc2VzIChwcm9iYWJseSBKYW4gMjEpLsKgIFRoZW4gSSdsbAo+IHJlYmFzZSBp
-dCB0byB2Ni44LXJjMSwgdGlkeSB0aGUgc3ViamVjdCBsaW5lcyB0byBsb29rIGxpa2UgdGhlIHJl
-c3QKPiBvZiBkcml2ZXJzL3BjaS8sIGV0Yy4KCkNvb2whCgpKdXN0IHBpbmcgeW91IGlmIHlvdSBu
-ZWVkIG1lIHRvIGRvIHNvbWV0aGluZwoKUmVnYXJkcywKUC4KCj4gCj4gPiBQaGlsaXBwIFN0YW5u
-ZXIgKDUpOgo+ID4gwqAgbGliL3BjaV9pb21hcC5jOiBmaXggY2xlYW51cCBidWdzIGluIHBjaV9p
-b3VubWFwKCkKPiA+IMKgIGxpYjogbW92ZSBwY2lfaW9tYXAuYyB0byBkcml2ZXJzL3BjaS8KPiA+
-IMKgIGxpYjogbW92ZSBwY2ktc3BlY2lmaWMgZGV2cmVzIGNvZGUgdG8gZHJpdmVycy9wY2kvCj4g
-PiDCoCBwY2k6IG1vdmUgZGV2cmVzIGNvZGUgZnJvbSBwY2kuYyB0byBkZXZyZXMuYwo+ID4gwqAg
-bGliLCBwY2k6IHVuaWZ5IGdlbmVyaWMgcGNpX2lvdW5tYXAoKQo+ID4gCj4gPiDCoE1BSU5UQUlO
-RVJTwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-IHzCoMKgIDEgLQo+ID4gwqBkcml2ZXJzL3BjaS9LY29uZmlnwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAgfMKgwqAgNSArCj4gPiDCoGRyaXZlcnMvcGNpL01ha2VmaWxlwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoMKgIDMgKy0KPiA+IMKgZHJpdmVy
-cy9wY2kvZGV2cmVzLmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfCA0NTAK
-PiA+ICsrKysrKysrKysrKysrKysrKysrKysrKysKPiA+IMKgbGliL3BjaV9pb21hcC5jID0+IGRy
-aXZlcnMvcGNpL2lvbWFwLmMgfMKgIDQ5ICstLQo+ID4gwqBkcml2ZXJzL3BjaS9wY2kuY8KgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8IDI0OSAtLS0tLS0tLS0tLS0t
-LQo+ID4gwqBkcml2ZXJzL3BjaS9wY2kuaMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoCB8wqAgMjQgKysKPiA+IMKgaW5jbHVkZS9hc20tZ2VuZXJpYy9pby5owqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAgMjcgKy0KPiA+IMKgaW5jbHVkZS9hc20tZ2VuZXJp
-Yy9pb21hcC5owqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8wqAgMjEgKysKPiA+IMKgbGliL0tjb25m
-aWfCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
-fMKgwqAgMyAtCj4gPiDCoGxpYi9NYWtlZmlsZcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfMKgwqAgMSAtCj4gPiDCoGxpYi9kZXZyZXMuY8KgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgfCAyMDggKy0t
-LS0tLS0tLS0tCj4gPiDCoGxpYi9pb21hcC5jwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHzCoCAyOCArLQo+ID4gwqAxMyBmaWxlcyBjaGFuZ2Vk
-LCA1NjYgaW5zZXJ0aW9ucygrKSwgNTAzIGRlbGV0aW9ucygtKQo+ID4gwqBjcmVhdGUgbW9kZSAx
-MDA2NDQgZHJpdmVycy9wY2kvZGV2cmVzLmMKPiA+IMKgcmVuYW1lIGxpYi9wY2lfaW9tYXAuYyA9
-PiBkcml2ZXJzL3BjaS9pb21hcC5jICg3NSUpCj4gCgo=
+On Thu, Jan 11, 2024 at 1:46=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> On Tue, Jan 09, 2024 at 10:17:22AM -0800, John Sperbeck wrote:
+> > With 5.10LTS (e.g., 5.10.206), on a machine using an NVME device, the
+> > following tracing commands will trigger a crash due to a NULL pointer
+> > dereference:
+> >
+> > KDIR=3D/sys/kernel/debug/tracing
+> > echo 1 > $KDIR/tracing_on
+> > echo 1 > $KDIR/events/nvme/enable
+> > echo "Waiting for trace events..."
+> > cat $KDIR/trace_pipe
+> >
+> > The backtrace looks something like this:
+> >
+> > Call Trace:
+> >  <IRQ>
+> >  ? __die_body+0x6b/0xb0
+> >  ? __die+0x9e/0xb0
+> >  ? no_context+0x3eb/0x460
+> >  ? ttwu_do_activate+0xf0/0x120
+> >  ? __bad_area_nosemaphore+0x157/0x200
+> >  ? select_idle_sibling+0x2f/0x410
+> >  ? bad_area_nosemaphore+0x13/0x20
+> >  ? do_user_addr_fault+0x2ab/0x360
+> >  ? exc_page_fault+0x69/0x180
+> >  ? asm_exc_page_fault+0x1e/0x30
+> >  ? trace_event_raw_event_nvme_complete_rq+0xba/0x170
+> >  ? trace_event_raw_event_nvme_complete_rq+0xa3/0x170
+> >  nvme_complete_rq+0x168/0x170
+> >  nvme_pci_complete_rq+0x16c/0x1f0
+> >  nvme_handle_cqe+0xde/0x190
+> >  nvme_irq+0x78/0x100
+> >  __handle_irq_event_percpu+0x77/0x1e0
+> >  handle_irq_event+0x54/0xb0
+> >  handle_edge_irq+0xdf/0x230
+> >  asm_call_irq_on_stack+0xf/0x20
+> >  </IRQ>
+> >  common_interrupt+0x9e/0x150
+> >  asm_common_interrupt+0x1e/0x40
+> >
+> > It looks to me like these two upstream commits were backported to 5.10:
+> >
+> > 679c54f2de67 ("nvme: use command_id instead of req->tag in trace_nvme_c=
+omplete_rq()")
+> > e7006de6c238 ("nvme: code command_id with a genctr for use-after-free v=
+alidation")
+> >
+> > But they depend on this upstream commit to initialize the 'cmd' field i=
+n
+> > some cases:
+> >
+> > f4b9e6c90c57 ("nvme: use driver pdu command for passthrough")
+> >
+> > Does it sound like I'm on the right track?  The 5.15LTS and later seems=
+ to be okay.
+> >
+>
+> If you apply that commit, does it solve the issue for you?
+>
+> thanks,
+>
+> greg k-h
 
+The f4b9e6c90c57 ("nvme: use driver pdu command for passthrough")
+upstream commit doesn't apply cleanly to 5.10LTS.  If I adjust it to
+fit, then the crash no longer occurs for me.
+
+A revert of 706960d328f5 ("nvme: use command_id instead of req->tag in
+trace_nvme_complete_rq()") from 5.10LTS also prevents the crash.
+
+My leaning would be for a revert from 5.10LTS, but I think the
+maintainers would have better insight then me.  It's also possible
+that this isn't serious enough to worry about in general.  I don't
+really know.
 
