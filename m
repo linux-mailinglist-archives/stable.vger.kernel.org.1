@@ -1,94 +1,110 @@
-Return-Path: <stable+bounces-10541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4446282B6E0
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 22:54:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3763082B7FD
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 00:25:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69B5E1C22283
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 21:53:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 570FA1C2302F
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 23:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5584758206;
-	Thu, 11 Jan 2024 21:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5DF5A0E0;
+	Thu, 11 Jan 2024 23:24:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k2oszTF8"
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0277058205
-	for <stable@vger.kernel.org>; Thu, 11 Jan 2024 21:53:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4T9yr711smz9sWs;
-	Thu, 11 Jan 2024 22:44:55 +0100 (CET)
-From: Markus Boehme <markubo@amazon.com>
-To: stable@vger.kernel.org
-Cc: Andrii Nakryiko <andrii@kernel.org>,
-	Francis Laniel <flaniel@linux.microsoft.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Song Liu <song@kernel.org>,
-	Markus Boehme <markubo@amazon.com>
-Subject: [PATCH 5.15 2/2] tracing/kprobes: Fix symbol counting logic by looking at modules as well
-Date: Thu, 11 Jan 2024 22:43:54 +0100
-Message-Id: <20240111214354.369299-3-markubo@amazon.com>
-In-Reply-To: <20240111214354.369299-1-markubo@amazon.com>
-References: <20240111214354.369299-1-markubo@amazon.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D6859B70;
+	Thu, 11 Jan 2024 23:24:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-28c0df4b42eso4829812a91.1;
+        Thu, 11 Jan 2024 15:24:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705015495; x=1705620295; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9zoWmFoYkKu4HBJVGwO275SshfSpYBWqc1pCmIP2iww=;
+        b=k2oszTF88DADtVlbfJV0f9YhuMWn/gELTAxMYD/grJ41U7RTY2+8gy9aVrHzl4b7wB
+         u80Dr+JjIJB0Uebum5ufn2plXaoOocy0xzJsCf5LWFeib3EFov6ALdyszbA4ELVPDyYB
+         Ara4Fdi6vJUplK4DvDtv+lEHj/SinkJ0bjyu3xF8Cmay/G1bAGHGoP5/elcQEQv1w9Wa
+         +XHTN7hWGRSR19nIaRPmxAwa+bR/Vns7hBnEaqs0SG+SB4Vz2SijWa1EEbO1/scgXXtJ
+         kbuXs4aQO2M+e4dAGoEZD9pl7p6ojq2hC9pRQpYuygan2x1seRqn8NSsC0j47CJkWWjb
+         jiHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705015495; x=1705620295;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9zoWmFoYkKu4HBJVGwO275SshfSpYBWqc1pCmIP2iww=;
+        b=vHo4LtUDcO6k++iUl11nUPCzV+yy2f4JxdTH1YMjqPQXgeT2VKLBG3sMzeA/ZaBlwr
+         prz5iDz5rr1ZLF0D8apszeXqpfpMh/qTkricVQbpSd85xsXYxRfowcH2kfxHY7+c5uGv
+         isuDDbjYcD9NW6nhSzfvbq3TRwE/EBhr6z4fcGMIJkEtsduVnm8ggL5ZpeqYFiK254KD
+         IsrqjxjptpJC3GkE8dPCUV/7U6+9tOEPHLKSiRzcBwIGcKSCeZ2q3WSOqiRoZL98g18M
+         HvgDL3qTuRoHiyUshk8RoSea9HP16Zrsz4zMllrv+xzn/hSNgblIJl+6IBYVSiDFAOvp
+         QHqQ==
+X-Gm-Message-State: AOJu0Yy+Y/61s/GslucLWe6Gp0sbOf/4SD2CkXbQvqPhI+wiO7KMX4UZ
+	tOSReKIJX2KmLJBMpDLHzYc=
+X-Google-Smtp-Source: AGHT+IGWZE4gB9+B2RUPYypL6rlRC93oxdf4Aigp9TozTAlb2bl06PhD3Oq3MZkBSEJqJc0a7CXCRw==
+X-Received: by 2002:a17:90b:4b03:b0:28c:7e73:2485 with SMTP id lx3-20020a17090b4b0300b0028c7e732485mr2181349pjb.36.1705015495237;
+        Thu, 11 Jan 2024 15:24:55 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id h28-20020a63385c000000b005ce71f1440bsm1781548pgn.72.2024.01.11.15.24.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 11 Jan 2024 15:24:54 -0800 (PST)
+Message-ID: <29e54f0d-aa80-44fd-9fe8-311faf87cd09@gmail.com>
+Date: Thu, 11 Jan 2024 15:24:52 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: his558k76asxontc38awp7f3i8fp3ou5
-X-MBO-RS-ID: 0d30bc5577d47cad795
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10 0/7] 5.10.207-rc1 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com
+References: <20240111094700.222742213@linuxfoundation.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240111094700.222742213@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Andrii Nakryiko <andrii@kernel.org>
+On 1/11/24 01:52, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.207 release.
+> There are 7 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 13 Jan 2024 09:46:53 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.207-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-commit 926fe783c8a64b33997fec405cf1af3e61aed441 upstream.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
-Recent changes to count number of matching symbols when creating
-a kprobe event failed to take into account kernel modules. As such, it
-breaks kprobes on kernel module symbols, by assuming there is no match.
-
-Fix this my calling module_kallsyms_on_each_symbol() in addition to
-kallsyms_on_each_match_symbol() to perform a proper counting.
-
-Link: https://lore.kernel.org/all/20231027233126.2073148-1-andrii@kernel.org/
-
-Cc: Francis Laniel <flaniel@linux.microsoft.com>
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Fixes: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Song Liu <song@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Markus Boehme <markubo@amazon.com>
----
- kernel/trace/trace_kprobe.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
-index 1c565db2de7b..21aef22a8489 100644
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -735,6 +735,8 @@ static unsigned int number_of_same_symbols(char *func_name)
- 
- 	kallsyms_on_each_symbol(count_symbols, &args);
- 
-+	module_kallsyms_on_each_symbol(count_symbols, &args);
-+
- 	return args.count;
- }
- 
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.40.1
+Florian
 
 
