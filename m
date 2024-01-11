@@ -1,42 +1,42 @@
-Return-Path: <stable+bounces-10540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DBD482B6CA
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 22:45:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4446282B6E0
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 22:54:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C388B1C24154
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 21:45:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69B5E1C22283
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 21:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB1D58202;
-	Thu, 11 Jan 2024 21:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5584758206;
+	Thu, 11 Jan 2024 21:53:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E291058136
-	for <stable@vger.kernel.org>; Thu, 11 Jan 2024 21:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0277058205
+	for <stable@vger.kernel.org>; Thu, 11 Jan 2024 21:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4T9yqy5L4Cz9sbM;
-	Thu, 11 Jan 2024 22:44:46 +0100 (CET)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4T9yr711smz9sWs;
+	Thu, 11 Jan 2024 22:44:55 +0100 (CET)
 From: Markus Boehme <markubo@amazon.com>
 To: stable@vger.kernel.org
-Cc: Jiri Olsa <jolsa@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+Cc: Andrii Nakryiko <andrii@kernel.org>,
+	Francis Laniel <flaniel@linux.microsoft.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
 	Song Liu <song@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Markus Boehme <markubo@amazon.com>
-Subject: [PATCH 5.15 1/2] kallsyms: Make module_kallsyms_on_each_symbol generally available
-Date: Thu, 11 Jan 2024 22:43:53 +0100
-Message-Id: <20240111214354.369299-2-markubo@amazon.com>
+Subject: [PATCH 5.15 2/2] tracing/kprobes: Fix symbol counting logic by looking at modules as well
+Date: Thu, 11 Jan 2024 22:43:54 +0100
+Message-Id: <20240111214354.369299-3-markubo@amazon.com>
 In-Reply-To: <20240111214354.369299-1-markubo@amazon.com>
 References: <20240111214354.369299-1-markubo@amazon.com>
 Precedence: bulk
@@ -46,75 +46,48 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-META: on6r5jzks5193do39ioeow7qoxgypzsf
-X-MBO-RS-ID: 650a9c2ec41d721d75b
+X-MBO-RS-META: his558k76asxontc38awp7f3i8fp3ou5
+X-MBO-RS-ID: 0d30bc5577d47cad795
 
-From: Jiri Olsa <jolsa@kernel.org>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-commit 73feb8d5fa3b755bb51077c0aabfb6aa556fd498 upstream.
+commit 926fe783c8a64b33997fec405cf1af3e61aed441 upstream.
 
-Making module_kallsyms_on_each_symbol generally available, so it
-can be used outside CONFIG_LIVEPATCH option in following changes.
+Recent changes to count number of matching symbols when creating
+a kprobe event failed to take into account kernel modules. As such, it
+breaks kprobes on kernel module symbols, by assuming there is no match.
 
-Rather than adding another ifdef option let's make the function
-generally available (when CONFIG_KALLSYMS and CONFIG_MODULES
-options are defined).
+Fix this my calling module_kallsyms_on_each_symbol() in addition to
+kallsyms_on_each_match_symbol() to perform a proper counting.
 
-Cc: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/all/20231027233126.2073148-1-andrii@kernel.org/
+
+Cc: Francis Laniel <flaniel@linux.microsoft.com>
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Fixes: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
 Acked-by: Song Liu <song@kernel.org>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20221025134148.3300700-2-jolsa@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 926fe783c8a6 ("tracing/kprobes: Fix symbol counting logic by looking at modules as well")
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Markus Boehme <markubo@amazon.com>
 ---
- include/linux/module.h | 9 +++++++++
- kernel/module.c        | 2 --
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ kernel/trace/trace_kprobe.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/linux/module.h b/include/linux/module.h
-index c9f1200b2312..701c150485b2 100644
---- a/include/linux/module.h
-+++ b/include/linux/module.h
-@@ -867,8 +867,17 @@ static inline bool module_sig_ok(struct module *module)
- }
- #endif	/* CONFIG_MODULE_SIG */
+diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
+index 1c565db2de7b..21aef22a8489 100644
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -735,6 +735,8 @@ static unsigned int number_of_same_symbols(char *func_name)
  
-+#if defined(CONFIG_MODULES) && defined(CONFIG_KALLSYMS)
- int module_kallsyms_on_each_symbol(int (*fn)(void *, const char *,
- 					     struct module *, unsigned long),
- 				   void *data);
-+#else
-+static inline int module_kallsyms_on_each_symbol(int (*fn)(void *, const char *,
-+						 struct module *, unsigned long),
-+						 void *data)
-+{
-+	return -EOPNOTSUPP;
-+}
-+#endif  /* CONFIG_MODULES && CONFIG_KALLSYMS */
+ 	kallsyms_on_each_symbol(count_symbols, &args);
  
- #endif /* _LINUX_MODULE_H */
-diff --git a/kernel/module.c b/kernel/module.c
-index 3c90840133c0..ba9f2bb57889 100644
---- a/kernel/module.c
-+++ b/kernel/module.c
-@@ -4482,7 +4482,6 @@ unsigned long module_kallsyms_lookup_name(const char *name)
- 	return ret;
++	module_kallsyms_on_each_symbol(count_symbols, &args);
++
+ 	return args.count;
  }
  
--#ifdef CONFIG_LIVEPATCH
- int module_kallsyms_on_each_symbol(int (*fn)(void *, const char *,
- 					     struct module *, unsigned long),
- 				   void *data)
-@@ -4514,7 +4513,6 @@ int module_kallsyms_on_each_symbol(int (*fn)(void *, const char *,
- 	mutex_unlock(&module_mutex);
- 	return ret;
- }
--#endif /* CONFIG_LIVEPATCH */
- #endif /* CONFIG_KALLSYMS */
- 
- static void cfi_init(struct module *mod)
 -- 
 2.40.1
 
