@@ -1,139 +1,189 @@
-Return-Path: <stable+bounces-10469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C82E82A8DE
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 09:16:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BAA482A8F8
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 09:21:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B7111C2279A
-	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 08:16:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 448012876B5
+	for <lists+stable@lfdr.de>; Thu, 11 Jan 2024 08:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE56D53C;
-	Thu, 11 Jan 2024 08:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C51011194;
+	Thu, 11 Jan 2024 08:20:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="Uwu1Q7XX"
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="TUVNsday"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic313-15.consmr.mail.bf2.yahoo.com (sonic313-15.consmr.mail.bf2.yahoo.com [74.6.133.125])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B32F9D2;
-	Thu, 11 Jan 2024 08:16:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40B7TYrl003904;
-	Thu, 11 Jan 2024 08:16:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version:content-type; s=
-	qcppdkim1; bh=ZoOpTDkO3PZHFU5dQRmU3J9Ylc/ozw3QutY0nMOReec=; b=Uw
-	u1Q7XX/4351c6TZfTAn0jKRaFDGJeH2FohuiGDeUzqXBLI8dWJUObveH3PYJKr/A
-	zRPYMXuBq9uK5oJmwQagJgXeXEqgSsYyPQTXWHzJVFzGEZHwiO7lxsAjvTPbvU8k
-	PgnVq7fz4q17rXHXJ3I6iq5jr9glBv7Vnt2b4eGbqjJe2Dz/+P5nCkXnjnSp7+pm
-	meSCut7eOudJTHuLSAygoKw/RYz94PfQnts4cg/Wt9HYcOSXDHTSNEy8Z1uVIyZ0
-	v/Ek2ydGKkfeFPRFWkPt2SH7+hTFdM/R1TwbSHJ9Qxr36Zn7x1Dw9cq1KRHkKh1O
-	y8lxV/GDhxbGcRGMGE6w==
-Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vhsqytp96-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jan 2024 08:16:26 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA01.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40B8GOMC015570
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 11 Jan 2024 08:16:24 GMT
-Received: from zijuhu-gv.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Thu, 11 Jan 2024 00:16:23 -0800
-From: Zijun Hu <quic_zijuhu@quicinc.com>
-To: <luiz.dentz@gmail.com>, <marcel@holtmann.org>, <jiangzp@google.com>
-CC: <linux-bluetooth@vger.kernel.org>, <quic_zijuhu@quicinc.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v1] Bluetooth: qca: Fix crash when btattach controller ROME
-Date: Thu, 11 Jan 2024 16:16:18 +0800
-Message-ID: <1704960978-5437-1-git-send-email-quic_zijuhu@quicinc.com>
-X-Mailer: git-send-email 2.7.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3B2F4F2
+	for <stable@vger.kernel.org>; Thu, 11 Jan 2024 08:20:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1704961212; bh=Ufx5rIOzslZrIE1fgKAMS0hK+TCR3JnfrICcjOFNjVk=; h=Date:From:To:Cc:Subject:References:From:Subject:Reply-To; b=TUVNsdayAuoDhEgqvg7os5sC0z0cph1Y475NQPK9Oz8ygkH7ACE5JDBIzjYItuIn27B5lbxuuBpeG2/HeNhRpwD5Ua/uD7Ey16EkbE98+7SKKlpM39XW6a+CUHeGPjISmTqj4YK1vEJqopoC6z4LZYkbsLFCjxhCeChEEpMk9jrEa2zJ1RbTzawiC/dkcowBH8WSuq2IMhrcV1HpfmTheqcilk+gHJ97kc/8GKQzekC1jZVcm0yTZOjS8v9n1sQbxWevc3siZOnECwgP9Vu72Fdx8AwpY4YVNBSObu1Ig036In8a33lzBVt7DilHwAVMuzH86l5T2chylDMB/XFCUg==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1704961212; bh=6Y5m5V7txkMjX0dEsVYtbLYVgEOdGt5unrlXuYnF67a=; h=X-Sonic-MF:Date:From:To:Subject:From:Subject; b=YKHME696I7HFHbfaiLgm+SFzu8PuTGKixgmId8zm1tnJcqubbr9K1mvmSqIPgc0vyp3YKsHa3SM3tNpaQydj7w0PlkHUB4o9icM79pRPwjK3gfo3NOECGb2Guo+uqerm0v8/P3XmTrd4qyeqQchynbQZ5ryJm9eCeiAfohoG1XAF2lJnRSVTj7dHhP+LEkrM9YAKJIag45l6AmgZPF1IFeLZPO+bCIuxqwdsOIyMemVMmatVIvS4Xfq6BqUx7SdVOShmXrcCOcnR7UR65Kw3hM99wLXUPHsoytYG61E+fgmfDHtk5SFbYtuOTR3jMp5jesOTumgjiRpvDuXBrIVycw==
+X-YMail-OSG: iekjkz8VM1nx2vHQ2wd_XfQkRf1RvfEN6jswCBVV0XIOzqu51m09vCkhI_kJdkX
+ CNijaJ0VvyxyUB3rKrFuBoXyotw7Crw1MN9at9yUmxFBWFdTknPWaD_GjPVymXMvWFjTYw9z5lgX
+ JlMaNvze4e1JLkgJsWTBp3_ezVqa9VqWhEJNrgtoBQfJM0Upi8EshkmCeC7MbE01PNqHpTs.IgX_
+ M.d8R72UiXhxLn_JcqAmTT2fL__ucT85K2XGHsJ1ws8PGy5tPdGt50MonKOxRfRCcyekjWSS.JrO
+ iQ03ebKBc3CxpGGIoSUn4kYXEqbIjdwQyWjF7RDcJLmi3aIs_h1VslNhDzO50As6q2cYdhdAmrmD
+ p8PJ2C9yK.8ITTNC9Nm66ALtnki0IFmgOu.BZzcbKzC6s0zeylMG8yUeEaf1uEg4vl6nHYdudGEQ
+ 8peveM5zwWZwTA7R7X3zxAzEo.lerJZ_TNq28oxYgoVO_q4ZmhkOCS.QHvMHA.9B72mBih1n.pZ.
+ ijwOVKi2nUQbPc4LWKGrTYak3Nzu0CbM7A4YPKyEGR4mNldwI66dVUGNvmM1oyNSG0pgPMHcVfRD
+ mMjmIOoC060ljF9yRr2ZMKqdn505GDmLC0m11kni0FUKbEcZxwRLvVXNhVaZjMU7_.81_nlq26K1
+ kqOQR_OLBPTCeL.8SbqryWrnuyy4iCSyPBNV9wU60bYnI5Sq5B1J1Cj2bEltZovLZE6BGl5hwfqf
+ EcxZBoUOIADdIE09LC43GRGOQtUAgrb4LbtRwDjTtmc5LluUFEsnFZPkD.7k1rAbUagGqsMdOYU9
+ vFtHp7VgRypZ_ISZ0OFgVeLycWfQUJi4LpP4FAl.xWb_Fn93RyvsjmaxcA8HjDR5q6ycMkHx96ro
+ xumUHs7e0pJCulj3bfRmpt5JRl.c41y6FVggDWNcU0AN4Q3TVZ1TwWQ5yGAMsowP07DGJ2.0yKLt
+ 1Ai2K_e0KRVPQJMxisZ0CoFG92zvsdPx5pEqcDpuRMOHx3knwix0klYTMqoa91beVJ00YTP97MGm
+ rFFCOKIeJCugPWDhHe7d5rLlQEA4XeUzwO5wpOdG9dotwGn1C187WyVpFb34fvhkER0tFB4Iba51
+ 0Aeo5iEZ0Pvna8MPk8lS1S4q91DkndgoRx4cS0Kz_Rj3zhzT7LaHAcOUXBVQ.dKVg80nCBOtn2ve
+ cQePaXAcA5nVtjzcwjFgohgu45fge10A2XVuJmmjRFfZfzs.oeljJVwAqMCDE5g1SCeB6tmKQnGd
+ XiVs4ddM4OINRs.JgYEiIHEnybOyB70eWmbxAjlxgiwtyuJOLtFH5qNWY0gE8DhfdhF2Ce72ax73
+ .fHjliWUw.grlvGnifRW02MahI1UI6WBvQru_y1waVMWIjV4ftNQzJ.mLELCUj03rQs9dvOU5GVC
+ XQ_t5ZagR.rY5Hh6snUNpKo0tw1f2dwyQjT4lQ7e8rAzo_LwLULBIn9A20tRwEpHuFh6nPXHWF_X
+ QJngtykdkZdV6fvoX2w0eRSp4luzcM499LWcJ.sjhzT_KijMZl8kBVC05v_96alT1UaXWeFzSfu4
+ weNh.emKuAYVJ6.83y.teGB3tDbmXEaKL2sxny05Mn5HZ.jP14XbImjHx6OHJ7sn2.3GmyXA_XQ6
+ mBEMoxGsySbuS80rVMoCjt7ZA8pwG05SJ.35E9ssx6CSOfCglME7iyd_fnL7PPM9ipcyY.Z57jrd
+ 3puCfAjUO40_cHVKBHmB0oh2CrYDa8AYPgvhLuLjf8V4EoC_xid_bnEQEJcKcK6EEp_CdIH_OVIw
+ tSeNVoJDKKVori.GHUGOBa.EAtWGayLK.e6YcDCB04YPjPaq3QDiEZR2YFWKzOQ_cgAaw_iRsH8h
+ D3VE16V4mbcjJoRheoO6r4ELVFw0XBkrbkly7ENx2oMhzAnQfneiDsPCyLoBuqaNRbxDUxcMCOP4
+ w6enPGKQnnQ_o9xiFcIdvwiqXeveiCuCjZHh.l96Gx47sLO9QPDy0tF_gYK5yZmT.8CcX.25B8nX
+ jMBY.bgwJZ9b.X1o6ES3Mux6NYeRHo_ui.0po7Y9YNLlNkiL1iHYYA5f0cZSC0RbuYyE63rVBKl5
+ crFumxRBq_JU9O7IV_CAb_IyzItFo4nd9cJplyFJH7aUAJSO3wNBnOvbtUDjC9Hsin0jfo470Brf
+ DPseilnWA2sPYEsXVeLf4F0MLAR8JPdBTFDjiIvUVMmgjp4bftUOwjpo3czYlOeWlZLjg0g2e8hO
+ 1FwezlK.cICJ0mfYspHJmYJxJ7Z467Ulcx_U3pufVxOcG2wNX_Bc-
+X-Sonic-MF: <email200202@yahoo.com>
+X-Sonic-ID: 4450a33c-aef9-49e1-b3fc-345f56f6adb5
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.bf2.yahoo.com with HTTP; Thu, 11 Jan 2024 08:20:12 +0000
+Received: by hermes--production-gq1-78d49cd6df-t49qq (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 97d1b92ffe0fdce95aeca671c72f318c;
+          Thu, 11 Jan 2024 08:20:06 +0000 (UTC)
+Message-ID: <58ac38ae-4d64-4a53-81e0-35785961c41c@yahoo.com>
+Date: Thu, 11 Jan 2024 19:20:02 +1100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: sMbQPrTlxl-qBcTzGDJhAYj39sy80rSu
-X-Proofpoint-ORIG-GUID: sMbQPrTlxl-qBcTzGDJhAYj39sy80rSu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2023-12-09_02,2023-12-07_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
- lowpriorityscore=0 bulkscore=0 clxscore=1011 phishscore=0 adultscore=0
- mlxlogscore=846 spamscore=0 priorityscore=1501 impostorscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2401110065
+User-Agent: Mozilla Thunderbird
+From: email200202 <email200202@yahoo.com>
+Content-Language: en-US
+To: regressions@lists.linux.dev
+Cc: kernel@gentoo.org, stable@vger.kernel.org, linux-nfs@vger.kernel.org
+Subject: [REGRESSION] After kernel upgrade 6.1.70 to 6.1.71, the computer
+ hangs during shutdown
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+References: <58ac38ae-4d64-4a53-81e0-35785961c41c.ref@yahoo.com>
+X-Mailer: WebService/1.1.22010 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-A crash will happen when btattach controller ROME, and it is caused by
-dereferring nullptr hu->serdev, fixed by null check before access.
 
-sudo btattach -B /dev/ttyUSB0 -P qca
-Bluetooth: hci1: QCA setup on UART is completed
-BUG: kernel NULL pointer dereference, address: 00000000000002f0
-......
-Workqueue: hci1 hci_power_on [bluetooth]
-RIP: 0010:qca_setup+0x7c1/0xe30 [hci_uart]
-......
-Call Trace:
- <TASK>
- ? show_regs+0x72/0x90
- ? __die+0x25/0x80
- ? page_fault_oops+0x154/0x4c0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? kmem_cache_alloc+0x16b/0x310
- ? do_user_addr_fault+0x330/0x6e0
- ? srso_alias_return_thunk+0x5/0xfbef5
- ? exc_page_fault+0x84/0x1b0
- ? asm_exc_page_fault+0x27/0x30
- ? qca_setup+0x7c1/0xe30 [hci_uart]
- hci_uart_setup+0x5c/0x1a0 [hci_uart]
- hci_dev_open_sync+0xee/0xca0 [bluetooth]
- hci_dev_do_open+0x2a/0x70 [bluetooth]
- hci_power_on+0x46/0x210 [bluetooth]
- process_one_work+0x17b/0x360
- worker_thread+0x307/0x430
- ? __pfx_worker_thread+0x10/0x10
- kthread+0xf7/0x130
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x46/0x70
- ? __pfx_kthread+0x10/0x10
- ret_from_fork_asm+0x1b/0x30
- </TASK>
+#regzbot introduced: v6.1.70..v6.1.71
 
-Fixes: 03b0093f7b31 ("Bluetooth: hci_qca: get wakeup status from serdev device handle")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Tested-by: Zijun Hu <quic_zijuhu@quicinc.com>
----
- drivers/bluetooth/hci_qca.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/hci_qca.c b/drivers/bluetooth/hci_qca.c
-index 94b8c406f0c0..6fcfc1f7bb12 100644
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -1951,7 +1951,7 @@ static int qca_setup(struct hci_uart *hu)
- 		qca_debugfs_init(hdev);
- 		hu->hdev->hw_error = qca_hw_error;
- 		hu->hdev->cmd_timeout = qca_cmd_timeout;
--		if (device_can_wakeup(hu->serdev->ctrl->dev.parent))
-+		if (hu->serdev && device_can_wakeup(hu->serdev->ctrl->dev.parent))
- 			hu->hdev->wakeup = qca_wakeup;
- 	} else if (ret == -ENOENT) {
- 		/* No patch/nvm-config found, run with original fw/config */
--- 
-2.7.4
+After kernel upgrade 6.1.70 to 6.1.71, the computer hangs during shutdown.
+
+The problem is related to NFS service. Stopping NFS service hangs:
+
+# /etc/init.d/nfs  stop
+  * Caching service dependencies ... [ ok ]
+  * Stopping NFS mountd ... [ ok ]
+  * Stopping NFS daemon ... [ ok ]
+
+then it hangs
+
+
+Shutdown does not hang when NFS service is removed.
+
+# rc-update  del  nfs
+
+I had this kernel error in the log:
+
+Jan 10 17:32:25 [rpc.mountd] Caught signal 15, un-registering and exiting.
+Jan 10 17:32:25 [kernel] [ 2005.560991] ------------[ cut here ]------------
+Jan 10 17:32:25 [kernel] [ 2005.560996] kernel BUG at net/sunrpc/svc.c:576!
+Jan 10 17:32:25 [kernel] [ 2005.561004] invalid opcode: 0000 [#1] 
+PREEMPT SMP PTI
+Jan 10 17:32:25 [kernel] [ 2005.561012] CPU: 0 PID: 8079 Comm: nfsd 
+Tainted: P           O       6.1.71-gentoo #1
+Jan 10 17:32:25 [kernel] [ 2005.561017] Hardware name: Gigabyte 
+Technology Co., Ltd. X58A-UD3R/X58A-UD3R, BIOS FB 08/24/2010
+Jan 10 17:32:25 [kernel] [ 2005.561020] RIP: 0010:svc_destroy+0x1f/0x56
+Jan 10 17:32:25 [kernel] [ 2005.561033] Code: 5b 5d 41 5c 41 5d c3 cc cc 
+cc cc 55 48 8d 6f ec 53 48 89 fb 48 83 c7 44 e8 b6 6c 5f ff 48 8b 53 1c 
+48 8d 43 1c 48 39 c2 74 02 <0f> 0b 48 8b 53 2c 48 8d 43 2c 48 39 c2 74 
+02 0f 0b 48 89 ef e8 6b
+Jan 10 17:32:25 [kernel] [ 2005.561038] RSP: 0018:ffffc90001edbee8 
+EFLAGS: 00010287
+Jan 10 17:32:25 [kernel] [ 2005.561043] RAX: ffff88816c1a1c30 RBX: 
+ffff88816c1a1c14 RCX: 0000000000000000
+Jan 10 17:32:25 [kernel] [ 2005.561047] RDX: ffff88813dfcc018 RSI: 
+0000000000000286 RDI: ffff88890bc9b9c0
+Jan 10 17:32:25 [kernel] [ 2005.561051] RBP: ffff88816c1a1c00 R08: 
+ffff88810310b600 R09: 0000000000000000
+Jan 10 17:32:25 [kernel] [ 2005.561055] R10: ffff8881bc3b4000 R11: 
+ffff8881bc3b4000 R12: ffffffff82e061c0
+Jan 10 17:32:25 [kernel] [ 2005.561058] R13: ffff8881bc0e8000 R14: 
+ffff88810310b600 R15: ffffc90002323c80
+Jan 10 17:32:25 [kernel] [ 2005.561062] FS:  0000000000000000(0000) 
+GS:ffff88890bc00000(0000) knlGS:0000000000000000
+Jan 10 17:32:25 [kernel] [ 2005.561067] CS:  0010 DS: 0000 ES: 0000 CR0: 
+0000000080050033
+Jan 10 17:32:25 [kernel] [ 2005.561071] CR2: 000055e971e376f8 CR3: 
+000000000260a000 CR4: 00000000000006f0
+Jan 10 17:32:25 [kernel] [ 2005.561075] Call Trace:
+Jan 10 17:32:25 [kernel] [ 2005.561079]  <TASK>
+Jan 10 17:32:25 [kernel] [ 2005.561082]  ? __die_body+0x15/0x57
+Jan 10 17:32:25 [kernel] [ 2005.561091]  ? die+0x2b/0x44
+Jan 10 17:32:25 [kernel] [ 2005.561097]  ? do_trap+0x76/0xf9
+Jan 10 17:32:25 [kernel] [ 2005.561102]  ? svc_destroy+0x1f/0x56
+Jan 10 17:32:25 [kernel] [ 2005.561108]  ? svc_destroy+0x1f/0x56
+Jan 10 17:32:25 [kernel] [ 2005.561114]  ? do_error_trap+0x69/0x93
+Jan 10 17:32:25 [kernel] [ 2005.561119]  ? svc_destroy+0x1f/0x56
+Jan 10 17:32:25 [kernel] [ 2005.561126]  ? exc_invalid_op+0x49/0x5d
+Jan 10 17:32:25 [kernel] [ 2005.561133]  ? svc_destroy+0x1f/0x56
+Jan 10 17:32:25 [kernel] [ 2005.561139]  ? asm_exc_invalid_op+0x16/0x20
+Jan 10 17:32:25 [kernel] [ 2005.561148]  ? svc_destroy+0x1f/0x56
+Jan 10 17:32:25 [kernel] [ 2005.561155]  ? svc_destroy+0x12/0x56
+Jan 10 17:32:25 [kernel] [ 2005.561161]  nfsd+0x13d/0x162
+Jan 10 17:32:25 [kernel] [ 2005.561170]  ? svc_put+0x2f/0x2f
+Jan 10 17:32:25 [kernel] [ 2005.561176]  kthread+0xd0/0xd8
+Jan 10 17:32:25 [kernel] [ 2005.561183]  ? 
+kthread_complete_and_exit+0x16/0x16
+Jan 10 17:32:25 [kernel] [ 2005.561189]  ret_from_fork+0x22/0x30
+Jan 10 17:32:25 [kernel] [ 2005.561196]  </TASK>
+Jan 10 17:32:25 [kernel] [ 2005.561198] Modules linked in: snd_seq_dummy 
+snd_seq snd_seq_device nvidia_uvm(PO) bluetooth ecdh_generic ecc bridge 
+stp llc ipv6 crc_ccitt ch341 usbserial nvidia_drm(PO) nvidia_modeset(PO) 
+nvidia(PO) tda10048 tda8290 iTCO_wdt iTCO_vendor_support tda18271 it87 
+hwmon_vid dm_crypt coretemp dm_multipath dm_mod kvm_intel dax video 
+snd_hda_codec_realtek snd_hda_codec_generic kvm drm_kms_helper irqbypass 
+ledtrig_audio i2c_i801 pcspkr serio_raw drm i2c_smbus snd_hda_intel 
+i2c_core snd_intel_dspcfg fb_sys_fops syscopyarea snd_hda_codec 
+sysfillrect lpc_ich snd_hda_core sysimgblt mfd_core snd_hwdep uhci_hcd 
+rtc_cmos wmi
+Jan 10 17:32:25 [kernel] [ 2005.561274] ---[ end trace 0000000000000000 ]---
+Jan 10 17:32:25 [kernel] [ 2005.561277] RIP: 0010:svc_destroy+0x1f/0x56
+Jan 10 17:32:25 [kernel] [ 2005.561284] Code: 5b 5d 41 5c 41 5d c3 cc cc 
+cc cc 55 48 8d 6f ec 53 48 89 fb 48 83 c7 44 e8 b6 6c 5f ff 48 8b 53 1c 
+48 8d 43 1c 48 39 c2 74 02 <0f> 0b 48 8b 53 2c 48 8d 43 2c 48 39 c2 74 
+02 0f 0b 48 89 ef e8 6b
+
+The problem is always reproducible. Steps to reproduce:
+1. Update to kernel 6.1.71
+2. Start nfs service
+3. Try to shutdown
+4. The computer hangs
+
+Reverting the following 3 commits fixed the problem in kernel 6.1.71:
+
+f9a01938e07910224d4a2fd00583725d686c3f38
+bb4f791cb2de1140d0fbcedfe9e791ff364021d7
+03d68ffc48b94cc1e15bbf3b4f16f1e1e4fa286a
+
+
 
 
