@@ -1,39 +1,39 @@
-Return-Path: <stable+bounces-10604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D820082C7E7
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 00:21:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98E2582C7E9
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 00:21:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76CE41F236B5
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 23:21:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B2D31F2262F
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 23:21:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41BC519464;
-	Fri, 12 Jan 2024 23:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58386199C1;
+	Fri, 12 Jan 2024 23:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="UBcHpn0T"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GRuKMxlr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0838218EA9;
-	Fri, 12 Jan 2024 23:21:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5454CC433F1;
-	Fri, 12 Jan 2024 23:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC7018EA9;
+	Fri, 12 Jan 2024 23:21:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B7C1C433F1;
+	Fri, 12 Jan 2024 23:21:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1705101694;
-	bh=cYkbbRPNxqkT+TbMIg0EHzIdvmK/YAdVe2ESpDB/4d0=;
+	s=korg; t=1705101696;
+	bh=PPKIH1xfPkUsJXkTjE0c6pSSCyS9PXm7DpYptZSaPcg=;
 	h=Date:To:From:Subject:From;
-	b=UBcHpn0TtTdAi7nC0qKzoR7LFsN7csD/plgLZ4UrAav2KoLwwosQRBua0IuoBZs05
-	 PUT+BCUMAZ1R5ziF+qKVnLlbZHkrjuxkLsow+XChpGy98Drll1eb6on+PsL1hBMyRR
-	 0DeK4ge+qXjXKUm6zvxV9Y6884v5URkcjm4h4akE=
-Date: Fri, 12 Jan 2024 15:21:33 -0800
-To: mm-commits@vger.kernel.org,will@kernel.org,trix@redhat.com,stable@vger.kernel.org,quic_eberman@quicinc.com,ndesaulniers@google.com,nathan@kernel.org,masahiroy@kernel.org,justinstitt@google.com,jstultz@google.com,cmllamas@google.com,akpm@linux-foundation.org
+	b=GRuKMxlrvXzbEq2mNUDOtFJmIVyPPtxo/L0kZpLXoVzsLBEoBTAujL5gWoKr2L2UV
+	 7kvVFpS1tA7XXyY+hjhGU0h8AXAlznSKWK1KhGC8t5l6RMFFY+FBQGCIFY4j4sM5sR
+	 5eSdrraQI7OTQ8PJyebZ+wlwfih+ryKoPyOxOnk4=
+Date: Fri, 12 Jan 2024 15:21:36 -0800
+To: mm-commits@vger.kernel.org,wangkefeng.wang@huawei.com,surenb@google.com,stable@vger.kernel.org,sfr@canb.auug.org.au,seanjc@google.com,ryan.roberts@arm.com,peterx@redhat.com,mirq-linux@rere.qmqm.pl,Liam.Howlett@oracle.com,hughd@google.com,david@redhat.com,avagin@google.com,arnd@arndb.de,usama.anjum@collabora.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] scripts-decode_stacktracesh-optionally-use-llvm-utilities.patch removed from -mm tree
-Message-Id: <20240112232134.5454CC433F1@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] fs-proc-task_mmu-move-mmu-notification-mechanism-inside-mm-lock.patch removed from -mm tree
+Message-Id: <20240112232136.8B7C1C433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -42,109 +42,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: scripts/decode_stacktrace.sh: optionally use LLVM utilities
+     Subject: fs/proc/task_mmu: move mmu notification mechanism inside mm lock
 has been removed from the -mm tree.  Its filename was
-     scripts-decode_stacktracesh-optionally-use-llvm-utilities.patch
+     fs-proc-task_mmu-move-mmu-notification-mechanism-inside-mm-lock.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Carlos Llamas <cmllamas@google.com>
-Subject: scripts/decode_stacktrace.sh: optionally use LLVM utilities
-Date: Fri, 29 Sep 2023 03:48:17 +0000
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Subject: fs/proc/task_mmu: move mmu notification mechanism inside mm lock
+Date: Tue, 9 Jan 2024 16:24:42 +0500
 
-GNU's addr2line can have problems parsing a vmlinux built with LLVM,
-particularly when LTO was used.  In order to decode the traces correctly
-this patch adds the ability to switch to LLVM's utilities readelf and
-addr2line.  The same approach is followed by Will in [1].
+Move mmu notification mechanism inside mm lock to prevent race condition
+in other components which depend on it.  The notifier will invalidate
+memory range.  Depending upon the number of iterations, different memory
+ranges would be invalidated.
 
-Before:
-  $ scripts/decode_stacktrace.sh vmlinux < kernel.log
-  [17716.240635] Call trace:
-  [17716.240646] skb_cow_data (??:?)
-  [17716.240654] esp6_input (ld-temp.o:?)
-  [17716.240666] xfrm_input (ld-temp.o:?)
-  [17716.240674] xfrm6_rcv (??:?)
-  [...]
+The following warning would be removed by this patch:
+WARNING: CPU: 0 PID: 5067 at arch/x86/kvm/../../../virt/kvm/kvm_main.c:734 kvm_mmu_notifier_change_pte+0x860/0x960 arch/x86/kvm/../../../virt/kvm/kvm_main.c:734
 
-After:
-  $ LLVM=1 scripts/decode_stacktrace.sh vmlinux < kernel.log
-  [17716.240635] Call trace:
-  [17716.240646] skb_cow_data (include/linux/skbuff.h:2172 net/core/skbuff.c:4503)
-  [17716.240654] esp6_input (net/ipv6/esp6.c:977)
-  [17716.240666] xfrm_input (net/xfrm/xfrm_input.c:659)
-  [17716.240674] xfrm6_rcv (net/ipv6/xfrm6_input.c:172)
-  [...]
+There is no behavioural and performance change with this patch when
+there is no component registered with the mmu notifier.
 
-Note that one could set CROSS_COMPILE=llvm- instead to hack around this
-issue.  However, doing so can break the decodecode routine as it will
-force the selection of other LLVM utilities down the line e.g.  llvm-as.
-
-[1] https://lore.kernel.org/all/20230914131225.13415-3-will@kernel.org/
-
-Link: https://lkml.kernel.org/r/20230929034836.403735-1-cmllamas@google.com
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Reviewed-by: Elliot Berman <quic_eberman@quicinc.com>
-Tested-by: Justin Stitt <justinstitt@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: John Stultz <jstultz@google.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Tom Rix <trix@redhat.com>
+[akpm@linux-foundation.org: narrow the scope of `range', per Sean]
+Link: https://lkml.kernel.org/r/20240109112445.590736-1-usama.anjum@collabora.com
+Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Reported-by: syzbot+81227d2bd69e9dedb802@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/000000000000f6d051060c6785bc@google.com/
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Cc: Andrei Vagin <avagin@google.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Stephen Rothwell <sfr@canb.auug.org.au>
+Cc: Suren Baghdasaryan <surenb@google.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- scripts/decode_stacktrace.sh |   19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ fs/proc/task_mmu.c |   24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
---- a/scripts/decode_stacktrace.sh~scripts-decode_stacktracesh-optionally-use-llvm-utilities
-+++ a/scripts/decode_stacktrace.sh
-@@ -16,6 +16,21 @@ elif type c++filt >/dev/null 2>&1 ; then
- 	cppfilt_opts=-i
- fi
+--- a/fs/proc/task_mmu.c~fs-proc-task_mmu-move-mmu-notification-mechanism-inside-mm-lock
++++ a/fs/proc/task_mmu.c
+@@ -2432,7 +2432,6 @@ static long pagemap_scan_flush_buffer(st
  
-+UTIL_SUFFIX=
-+if [[ -z ${LLVM:-} ]]; then
-+	UTIL_PREFIX=${CROSS_COMPILE:-}
-+else
-+	UTIL_PREFIX=llvm-
-+	if [[ ${LLVM} == */ ]]; then
-+		UTIL_PREFIX=${LLVM}${UTIL_PREFIX}
-+	elif [[ ${LLVM} == -* ]]; then
-+		UTIL_SUFFIX=${LLVM}
-+	fi
-+fi
-+
-+READELF=${UTIL_PREFIX}readelf${UTIL_SUFFIX}
-+ADDR2LINE=${UTIL_PREFIX}addr2line${UTIL_SUFFIX}
-+
- if [[ $1 == "-r" ]] ; then
- 	vmlinux=""
- 	basepath="auto"
-@@ -75,7 +90,7 @@ find_module() {
+ static long do_pagemap_scan(struct mm_struct *mm, unsigned long uarg)
+ {
+-	struct mmu_notifier_range range;
+ 	struct pagemap_scan_private p = {0};
+ 	unsigned long walk_start;
+ 	size_t n_ranges_out = 0;
+@@ -2448,15 +2447,9 @@ static long do_pagemap_scan(struct mm_st
+ 	if (ret)
+ 		return ret;
  
- 	if [[ "$modpath" != "" ]] ; then
- 		for fn in $(find "$modpath" -name "${module//_/[-_]}.ko*") ; do
--			if readelf -WS "$fn" | grep -qwF .debug_line ; then
-+			if ${READELF} -WS "$fn" | grep -qwF .debug_line ; then
- 				echo $fn
- 				return
- 			fi
-@@ -169,7 +184,7 @@ parse_symbol() {
- 	if [[ $aarray_support == true && "${cache[$module,$address]+isset}" == "isset" ]]; then
- 		local code=${cache[$module,$address]}
- 	else
--		local code=$(${CROSS_COMPILE}addr2line -i -e "$objfile" "$address" 2>/dev/null)
-+		local code=$(${ADDR2LINE} -i -e "$objfile" "$address" 2>/dev/null)
- 		if [[ $aarray_support == true ]]; then
- 			cache[$module,$address]=$code
- 		fi
+-	/* Protection change for the range is going to happen. */
+-	if (p.arg.flags & PM_SCAN_WP_MATCHING) {
+-		mmu_notifier_range_init(&range, MMU_NOTIFY_PROTECTION_VMA, 0,
+-					mm, p.arg.start, p.arg.end);
+-		mmu_notifier_invalidate_range_start(&range);
+-	}
+-
+ 	for (walk_start = p.arg.start; walk_start < p.arg.end;
+ 			walk_start = p.arg.walk_end) {
++		struct mmu_notifier_range range;
+ 		long n_out;
+ 
+ 		if (fatal_signal_pending(current)) {
+@@ -2467,8 +2460,20 @@ static long do_pagemap_scan(struct mm_st
+ 		ret = mmap_read_lock_killable(mm);
+ 		if (ret)
+ 			break;
++
++		/* Protection change for the range is going to happen. */
++		if (p.arg.flags & PM_SCAN_WP_MATCHING) {
++			mmu_notifier_range_init(&range, MMU_NOTIFY_PROTECTION_VMA, 0,
++						mm, walk_start, p.arg.end);
++			mmu_notifier_invalidate_range_start(&range);
++		}
++
+ 		ret = walk_page_range(mm, walk_start, p.arg.end,
+ 				      &pagemap_scan_ops, &p);
++
++		if (p.arg.flags & PM_SCAN_WP_MATCHING)
++			mmu_notifier_invalidate_range_end(&range);
++
+ 		mmap_read_unlock(mm);
+ 
+ 		n_out = pagemap_scan_flush_buffer(&p);
+@@ -2494,9 +2499,6 @@ static long do_pagemap_scan(struct mm_st
+ 	if (pagemap_scan_writeback_args(&p.arg, uarg))
+ 		ret = -EFAULT;
+ 
+-	if (p.arg.flags & PM_SCAN_WP_MATCHING)
+-		mmu_notifier_invalidate_range_end(&range);
+-
+ 	kfree(p.vec_buf);
+ 	return ret;
+ }
 _
 
-Patches currently in -mm which might be from cmllamas@google.com are
+Patches currently in -mm which might be from usama.anjum@collabora.com are
 
+selftests-mm-mremap_test-fix-build-warning.patch
+selftests-mm-hugepage-shm-conform-test-to-tap-format-output.patch
+selftests-mm-hugepage-vmemmap-conform-test-to-tap-format-output.patch
+selftests-mm-hugetlb-madvise-conform-test-to-tap-format-output.patch
+selftests-mm-khugepaged-conform-test-to-tap-format-output.patch
+selftests-mm-hugetlb-read-hwpoison-conform-test-to-tap-format-output.patch
+selftests-mm-ksm_tests-conform-test-to-tap-format-output.patch
+selftests-mm-config-add-missing-configs.patch
 
 
