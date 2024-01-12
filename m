@@ -1,88 +1,94 @@
-Return-Path: <stable+bounces-10567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2395882C0F6
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 14:40:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BD9382C10C
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 14:46:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7EBDB23D44
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 13:40:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BD15B231CB
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 13:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4C16D1A7;
-	Fri, 12 Jan 2024 13:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7076B6D1AE;
+	Fri, 12 Jan 2024 13:45:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QR/KQuBT"
 X-Original-To: stable@vger.kernel.org
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A981B25746;
-	Fri, 12 Jan 2024 13:40:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from msexch01.omp.ru (10.188.4.12) by msexch01.omp.ru (10.188.4.12)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Fri, 12 Jan
- 2024 16:40:17 +0300
-Received: from msexch01.omp.ru ([fe80::4020:d881:621a:6b6b]) by
- msexch01.omp.ru ([fe80::4020:d881:621a:6b6b%5]) with mapi id 15.02.1258.012;
- Fri, 12 Jan 2024 16:40:17 +0300
-From: Roman Smirnov <r.smirnov@omp.ru>
-To: Matthew Wilcox <willy@infradead.org>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>,
-	Alexey Khoroshilov <khoroshilov@ispras.ru>, Sergey Shtylyov
-	<s.shtylyov@omp.ru>, Karina Yankevich <k.yankevich@omp.ru>,
-	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>
-Subject: Re: [PATCH 5.10 0/2] mm/truncate: fix issue in ext4_set_page_dirty()
-Thread-Topic: [PATCH 5.10 0/2] mm/truncate: fix issue in ext4_set_page_dirty()
-Thread-Index: AQHaRJvZs/ufXYdw80SbjgapkLNiNLDUiucAgAGlSY4=
-Date: Fri, 12 Jan 2024 13:40:17 +0000
-Message-ID: <3cd52f6e1b3d4daba35fb350e990e646@omp.ru>
-References: <20240111143747.4418-1-r.smirnov@omp.ru>,<ZaAJwEg4rvleFuC9@casper.infradead.org>
-In-Reply-To: <ZaAJwEg4rvleFuC9@casper.infradead.org>
-Accept-Language: ru-RU, en-US
-Content-Language: ru-RU
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-kse-serverinfo: msexch01.omp.ru, 9
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: Clean, bases: 1/12/2024 9:53:00 AM
-x-kse-attachment-filter-triggered-rules: Clean
-x-kse-attachment-filter-triggered-filters: Clean
-x-kse-bulkmessagesfiltering-scan-result: InTheLimit
-Content-Type: text/plain; charset="koi8-r"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B276BB57;
+	Fri, 12 Jan 2024 13:45:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC25C433C7;
+	Fri, 12 Jan 2024 13:45:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1705067157;
+	bh=3JvVbXEnnqfnUcUOJti8cVIgK7zS+xCztEk0ikLx4bc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QR/KQuBT4SI9zAmjsxh+lK2uJYFId8jfgfi57BoDSrw7XEVNb5SWhIf4ptc3B72/g
+	 p/PbGG+75eylrbonEh9SUr9p/5N7j0HDhmYkEBThJhlHVkNP1ZBnTTsYF+1h9ZsWsO
+	 +yWCrn20MHFBYNsdeH5TTIlsMVLKzH9+EHF5umXc=
+Date: Fri, 12 Jan 2024 14:45:54 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Gui-Dong Han <2045gemini@gmail.com>
+Cc: jirislaby@kernel.org, ilpo.jarvinen@linux.intel.com, tony@atomide.com,
+	l.sanfilippo@kunbus.com, john.ogness@linutronix.de,
+	tglx@linutronix.de, andriy.shevchenko@linux.intel.com,
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+	baijiaju1990@outlook.com, stable@vger.kernel.org
+Subject: Re: [PATCH] serial: core: Fix double fetch in
+ uart_throttle/uart_unthrottle
+Message-ID: <2024011259-drab-ashy-0370@gregkh>
+References: <20240112121844.17580-1-2045gemini@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240112121844.17580-1-2045gemini@gmail.com>
 
-On Thu, 11 Jan 2024 15:31:12 +0000, Matthew Wilcox wrote:
+On Fri, Jan 12, 2024 at 08:18:44PM +0800, Gui-Dong Han wrote:
+> In uart_throttle() and uart_unthrottle():
+>     if (port->status & mask) {
+>         port->ops->throttle/unthrottle(port);
+>         mask &= ~port->status;
+>     }
+>     // Code segment utilizing the mask value to determine UART behavior
+> 
+> In uart_change_line_settings():
+>     uart_port_lock_irq(uport);
+>     // Code segment responsible for updating uport->status
+>     uart_port_unlock_irq(uport);
+> 
+> In the uart_throttle() and uart_unthrottle() functions, there is a double
+> fetch issue due to concurrent execution with uart_change_line_settings().
+> In uart_throttle() and uart_unthrottle(), the check
+> if (port->status & mask) is made, followed by mask &= ~port->status,
+> where the relevant bits are cleared. However, port->status may be modified
+> in uart_change_line_settings(). The current implementation does not ensure
+> atomicity in the access and modification of port->status and mask. This
+> can result in mask being updated based on a modified port->status value,
+> leading to improper UART actions.
 
-> I do not understand the crash, and I do not understand why this patch
-> would fix it.  Can you explain either?
+What would be modifying the status and mask at the same point in time?
+Are you sure that it is possible do this?
 
-The WARNING appears in the following location:
-https://elixir.bootlin.com/linux/v5.10.205/source/fs/ext4/inode.c#L3693
+> This possible bug is found by an experimental static analysis tool
+> developed by our team, BassCheck[1]. This tool analyzes the locking APIs
+> to extract function pairs that can be concurrently executed, and then
+> analyzes the instructions in the paired functions to identify possible
+> concurrency bugs including data races and atomicity violations. The above
+> possible bug is reported when our tool analyzes the source code of
+> Linux 5.17.
 
-Reverse bisection pointed at the 2nd patch as a fix, but after=20
-backporting this patch to 5.10 branch I still hit the WARNING.
-I noticed that there was some missing code compared to the original
-patch:
+5.17 is VERY old and obsolete, please work against 6.7 at the oldest.
+No one can take a patch for 5.17 anymore, you know this :(
 
-if (folio_has_private(folio) && !filemap_release_folio(folio, 0))
-         return 0;
+thanks,
 
-Then I found a patch with this code before using folio, applied it,
-and tests showed the WARNING disappeared. I also used the linux test
-project to make sure nothing was broken. I'll try to dig a little
-deeper and explain the crash.
-
-Thanks for the reply.
+greg k-h
 
