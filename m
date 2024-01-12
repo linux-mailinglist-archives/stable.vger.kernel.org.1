@@ -1,72 +1,73 @@
-Return-Path: <stable+bounces-10554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE91C82BB89
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 08:15:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CAAA82BBDE
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 08:39:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87EEA287858
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 07:15:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08A62B230A3
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 07:39:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 395CD5C90B;
-	Fri, 12 Jan 2024 07:15:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255425C91C;
+	Fri, 12 Jan 2024 07:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CFsureoa"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AhuOaNR0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972755C8E6;
-	Fri, 12 Jan 2024 07:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B085C90C;
+	Fri, 12 Jan 2024 07:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-203fb334415so4002659fac.2;
-        Thu, 11 Jan 2024 23:15:50 -0800 (PST)
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-6d9cdd0a5e6so3696431b3a.3;
+        Thu, 11 Jan 2024 23:39:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705043749; x=1705648549; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1705045151; x=1705649951; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=XaiivCdRiflUGAhs3GPaW8lDbk654fv72WhTYZD7nnI=;
-        b=CFsureoaO4Auk7HfcT9cMPHLq5JxeV8RUZR499mo8GsVqYCWEjgZ2X+WjHMiJb9QFL
-         Z0i2pGxQeqToDWPlXzGLYihOKOP0vpZdkfVS03Nbx2eHeKL/L9Uc9lpOOycWqGmk1CyH
-         JmD0G1YKF1V/F4lMdrODcXgVFvvXS3JvUBJjva+3yFJhzUUDqLZR2kfUwIbfSJ/h15Z1
-         iWbblEZ8Tmjl0snQP+APv49eZPU/jnc99VhiBOAn/FnQjer0iGAYF4Ykn2baIq0geRUC
-         e7l9CmMekIOr8EFKN52h6u00VCJSu1QI7/BkOsJ+F3W6Ldsy0yHjumCNxccePxrtFpo1
-         Lhfw==
+        bh=ltxfqdn8oMs6HiFEgPdU5d3jRUgHJ3wntYFCndBlEL0=;
+        b=AhuOaNR0pSJdkFQuwOxyK/b+ALALPGdN+knq/7Nz+ZiLKnzr42VEUvIB6C0wAb+lLQ
+         iw+NxI045owqxnRWew7nA9pydu0QuTP6+CDhD9Vj6W3iD2xp50tionHGh5njl1DtCC8Y
+         rbWf3aI3OGCpt1PIPLXhW0B2IM+kuqUYcrAzzDB3gnWCVs3S9yvySfWHO0inAAfJGg1D
+         TyRN8vHfahW8kcwZUL8wioTzM83ZMsGu+vR1VTFdFFCoxpQSn58QMBsJZi+A1hGlzsyc
+         tFcIw1VMBYymTW7YfBZHAw2WAQ/zO63v7CyhXDVUIFKCrj/tb51UMJi9vfqa3odonm+y
+         OSVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705043749; x=1705648549;
+        d=1e100.net; s=20230601; t=1705045151; x=1705649951;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=XaiivCdRiflUGAhs3GPaW8lDbk654fv72WhTYZD7nnI=;
-        b=FDjrXENo3itA3g3Ibb+8ZydiiF8JcEpv3THQkch/V3CwI9A4M5D+XNNuMVPdQX7oga
-         zdIsCLg1kvRJa1s7J33lFCBTFyGzy+1AexgedJ0JspYCNM7osd3zg3zFKG3fvPKH58La
-         HVfoy+HMXNTbTha03QW/qzfOttfsoh8cPz48ssRPsGdWhnmgii1HRX0KPeS3LLw5IKQw
-         qlhoCpdKK/TK+GwcwTAA8WBz4oQGK2QbcLPmVbpKoV9svLLJc3bUAWLANw1Fzj/l3v7O
-         6wlvRyK8NJ6OSkb0VM3FQ0JzzfuWUWokrSL4ryUbD2QeQluvL7qBwfn3mmhi15AzQWRm
-         uDKg==
-X-Gm-Message-State: AOJu0YxcIXibO5p+LubYNuKnoAhyAPk5z5Nih7cThP84XySMFnWvIk34
-	mNYfbb8rg5KcoOn3yOW3uJAHQ7Do7GJkMA==
-X-Google-Smtp-Source: AGHT+IG5DRBvRgvUq8RgIT4mdKhROYYYlwAv8/K2wX8tZra7wx76FJMW5zUpUzeSkJZGIHm3J5mMnQ==
-X-Received: by 2002:a05:6a20:1699:b0:19a:508a:7f70 with SMTP id q25-20020a056a20169900b0019a508a7f70mr389807pzc.30.1705043430082;
-        Thu, 11 Jan 2024 23:10:30 -0800 (PST)
+        bh=ltxfqdn8oMs6HiFEgPdU5d3jRUgHJ3wntYFCndBlEL0=;
+        b=PbuAG5MdgrEoyADk99a6m7ZqnaUmM/0N5jocaRUdK0phYPx4yCbs6mkw7MKnNoeBV2
+         Eo6pDzv+f2NoqeXPyz/2ewhZCrWMTipjmTDZXfCeMth1jorYv9T0an3ipV/cU1x/+DFK
+         sfbalUDROK6Mbb/Q43FL1GYQSVd+PwfKFCy1ZMcIKQUZxC8nOuUDCeo/692axVSyhEuE
+         2SasWymN3TGYpi/bGMAR8hbEaRrSNdpYHP9CzBbXGV4lazLMLS5u1s9a0dhyDnUNbvyN
+         wa+UDagVNLc6EB7Zc13k71KMtNko+cv6EJJX57EgJWnfQD8WYN9ZAeVR5oJfJS1izERm
+         VzyA==
+X-Gm-Message-State: AOJu0YyenFN72QPgNBX8R7Mtp7TTGzMtf4HHO9AtZ6HwBVWft6suBIv7
+	C+C4TwzBecgkNqIw9EKci9E=
+X-Google-Smtp-Source: AGHT+IHHyM4INeewJgDCfByb1wR/DWXGrSMUSzpTM4WgHiY4EFQ9S7QWLIsDnv8bY2tCOBNXv8rW+w==
+X-Received: by 2002:aa7:9e52:0:b0:6d9:a0a2:a7c0 with SMTP id z18-20020aa79e52000000b006d9a0a2a7c0mr388151pfq.66.1705045150890;
+        Thu, 11 Jan 2024 23:39:10 -0800 (PST)
 Received: from g2039B650.. ([106.39.42.152])
-        by smtp.gmail.com with ESMTPSA id b15-20020a170902d50f00b001d1cd7e4ad2sm2374631plg.125.2024.01.11.23.10.26
+        by smtp.gmail.com with ESMTPSA id ka6-20020a056a00938600b006d991505b4csm2565570pfb.76.2024.01.11.23.39.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jan 2024 23:10:29 -0800 (PST)
+        Thu, 11 Jan 2024 23:39:10 -0800 (PST)
 From: Gui-Dong Han <2045gemini@gmail.com>
-To: song@kernel.org,
-	yukuai3@huawei.com
-Cc: linux-raid@vger.kernel.org,
+To: dmitry.torokhov@gmail.com,
+	arnd@kernel.org,
+	schnelle@linux.ibm.com
+Cc: linux-input@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	baijiaju1990@outlook.com,
 	Gui-Dong Han <2045gemini@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v4] md/raid5: fix atomicity violation in raid5_cache_count
-Date: Fri, 12 Jan 2024 15:10:17 +0800
-Message-Id: <20240112071017.16313-1-2045gemini@gmail.com>
+Subject: [PATCH] Input: fix atomicity violation in gameport_run_poll_handler
+Date: Fri, 12 Jan 2024 15:38:55 +0800
+Message-Id: <20240112073855.16594-1-2045gemini@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -76,124 +77,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In raid5_cache_count():
-    if (conf->max_nr_stripes < conf->min_nr_stripes)
-        return 0;
-    return conf->max_nr_stripes - conf->min_nr_stripes;
-The current check is ineffective, as the values could change immediately
-after being checked.
+In gameport_run_poll_handler():
+    ...
+    if (gameport->poll_cnt)
+        mod_timer(&gameport->poll_timer, jiffies + ...));
 
-In raid5_set_cache_size():
-    ...
-    conf->min_nr_stripes = size;
-    ...
-    while (size > conf->max_nr_stripes)
-        conf->min_nr_stripes = conf->max_nr_stripes;
-    ...
+In gameport_stop_polling():
+    spin_lock(&gameport->timer_lock);
+    if (!--gameport->poll_cnt)
+        del_timer(&gameport->poll_timer);
+    spin_unlock(&gameport->timer_lock);
 
-Due to intermediate value updates in raid5_set_cache_size(), concurrent
-execution of raid5_cache_count() and raid5_set_cache_size() may lead to
-inconsistent reads of conf->max_nr_stripes and conf->min_nr_stripes.
-The current checks are ineffective as values could change immediately
-after being checked, raising the risk of conf->min_nr_stripes exceeding
-conf->max_nr_stripes and potentially causing an integer overflow.
+An atomicity violation occurs due to the concurrent execution of
+gameport_run_poll_handler() and gameport_stop_polling(). The current check
+for gameport->poll_cnt in gameport_run_poll_handler() is not effective
+because poll_cnt can be decremented to 0 and del_timer can be called in
+gameport_stop_polling() before mod_timer is called in
+gameport_run_poll_handler(). This situation leads to the risk of calling
+mod_timer for a timer that has already been deleted in
+gameport_stop_polling(). Since calling mod_timer on a deleted timer
+reactivates it, this atomicity violation could result in the timer being
+activated while the poll_cnt value is 0.
 
 This possible bug is found by an experimental static analysis tool
-developed by our team. This tool analyzes the locking APIs to extract
-function pairs that can be concurrently executed, and then analyzes the
-instructions in the paired functions to identify possible concurrency bugs
-including data races and atomicity violations. The above possible bug is
-reported when our tool analyzes the source code of Linux 6.2.
+developed by our team, BassCheck[1]. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations. The above
+possible bug is reported when our tool analyzes the source code of
+Linux 5.17.
 
-To resolve this issue, it is suggested to introduce local variables
-'min_stripes' and 'max_stripes' in raid5_cache_count() to ensure the
-values remain stable throughout the check. Adding locks in
-raid5_cache_count() fails to resolve atomicity violations, as
-raid5_set_cache_size() may hold intermediate values of
-conf->min_nr_stripes while unlocked. With this patch applied, our tool no
-longer reports the bug, with the kernel configuration allyesconfig for
-x86_64. Due to the lack of associated hardware, we cannot test the patch
-in runtime testing, and just verify it according to the code logic.
+To resolve this issue, it is suggested to add a spinlock pair in
+gameport_run_poll_handler() to ensure atomicity. With this patch applied,
+our tool no longer reports the bug, with the kernel configuration
+allyesconfig for x86_64. Due to the absence of the requisite hardware, we
+are unable to conduct runtime testing of the patch. Therefore, our
+verification is solely based on code logic analysis.
 
-Fixes: edbe83ab4c27 ("md/raid5: allow the stripe_cache to grow and shrink.")
+[1] https://sites.google.com/view/basscheck/
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
 Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
 ---
-v2:
-* In this patch v2, we've updated to use READ_ONCE() instead of direct
-reads for accessing max_nr_stripes and min_nr_stripes, since read and
-write can concurrent.
-  Thank Yu Kuai for helpful advice.
----
-v3:
-* In this patch v3, we've updated to use WRITE_ONCE() in 
-raid5_set_cache_size(), grow_one_stripe() and drop_one_stripe(), in order
-to pair READ_ONCE() with WRITE_ONCE().
-  Thank Yu Kuai for helpful advice.
----
-v4:
-* In this patch v4, we've addressed several code style issues.
-  Thank Yu Kuai for helpful advice.
----
- drivers/md/raid5.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/input/gameport/gameport.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
-index 8497880135ee..30e118d10c0b 100644
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -2412,7 +2412,7 @@ static int grow_one_stripe(struct r5conf *conf, gfp_t gfp)
- 	atomic_inc(&conf->active_stripes);
+diff --git a/drivers/input/gameport/gameport.c b/drivers/input/gameport/gameport.c
+index 34f416a3ebcb..12af46d3c059 100644
+--- a/drivers/input/gameport/gameport.c
++++ b/drivers/input/gameport/gameport.c
+@@ -202,8 +202,13 @@ static void gameport_run_poll_handler(struct timer_list *t)
+ 	struct gameport *gameport = from_timer(gameport, t, poll_timer);
  
- 	raid5_release_stripe(sh);
--	conf->max_nr_stripes++;
-+	WRITE_ONCE(conf->max_nr_stripes, conf->max_nr_stripes + 1);
- 	return 1;
+ 	gameport->poll_handler(gameport);
++
++	spin_lock(&gameport->timer_lock);
++
+ 	if (gameport->poll_cnt)
+ 		mod_timer(&gameport->poll_timer, jiffies + msecs_to_jiffies(gameport->poll_interval));
++
++	spin_unlock(&gameport->timer_lock);
  }
  
-@@ -2707,7 +2707,7 @@ static int drop_one_stripe(struct r5conf *conf)
- 	shrink_buffers(sh);
- 	free_stripe(conf->slab_cache, sh);
- 	atomic_dec(&conf->active_stripes);
--	conf->max_nr_stripes--;
-+	WRITE_ONCE(conf->max_nr_stripes, conf->max_nr_stripes - 1);
- 	return 1;
- }
- 
-@@ -6820,7 +6820,7 @@ raid5_set_cache_size(struct mddev *mddev, int size)
- 	if (size <= 16 || size > 32768)
- 		return -EINVAL;
- 
--	conf->min_nr_stripes = size;
-+	WRITE_ONCE(conf->min_nr_stripes, size);
- 	mutex_lock(&conf->cache_size_mutex);
- 	while (size < conf->max_nr_stripes &&
- 	       drop_one_stripe(conf))
-@@ -6832,7 +6832,7 @@ raid5_set_cache_size(struct mddev *mddev, int size)
- 	mutex_lock(&conf->cache_size_mutex);
- 	while (size > conf->max_nr_stripes)
- 		if (!grow_one_stripe(conf, GFP_KERNEL)) {
--			conf->min_nr_stripes = conf->max_nr_stripes;
-+			WRITE_ONCE(conf->min_nr_stripes, conf->max_nr_stripes);
- 			result = -ENOMEM;
- 			break;
- 		}
-@@ -7390,11 +7390,13 @@ static unsigned long raid5_cache_count(struct shrinker *shrink,
- 				       struct shrink_control *sc)
- {
- 	struct r5conf *conf = shrink->private_data;
-+	int max_stripes = READ_ONCE(conf->max_nr_stripes);
-+	int min_stripes = READ_ONCE(conf->min_nr_stripes);
- 
--	if (conf->max_nr_stripes < conf->min_nr_stripes)
-+	if (max_stripes < min_stripes)
- 		/* unlikely, but not impossible */
- 		return 0;
--	return conf->max_nr_stripes - conf->min_nr_stripes;
-+	return max_stripes - min_stripes;
- }
- 
- static struct r5conf *setup_conf(struct mddev *mddev)
+ /*
 -- 
 2.34.1
 
