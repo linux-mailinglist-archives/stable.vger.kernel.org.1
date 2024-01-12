@@ -1,155 +1,143 @@
-Return-Path: <stable+bounces-10564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65E1182C038
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 13:58:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA5E82C0DE
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 14:27:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEBA6B224A3
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 12:58:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27A59286C7D
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 13:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B4B26A353;
-	Fri, 12 Jan 2024 12:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFE76D1A6;
+	Fri, 12 Jan 2024 13:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i9sgU9YS"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sUygNlSy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083B059B4E;
-	Fri, 12 Jan 2024 12:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-598699c0f1eso2457143eaf.2;
-        Fri, 12 Jan 2024 04:58:15 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC586BB59
+	for <stable@vger.kernel.org>; Fri, 12 Jan 2024 13:27:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dbce2a8d700so7987610276.1
+        for <stable@vger.kernel.org>; Fri, 12 Jan 2024 05:27:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705064295; x=1705669095; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=SKCP4kSmi8Znay+ncNnEwwM69gACCAM8H97RoLluFSU=;
-        b=i9sgU9YS4bbT/hL35ORVlh7BSyMLzDm4VYmgEcS2w8+k4SlBGyEUtmQQA5p+MoLY5m
-         o0pH/usAbtSngmVqc1e53QGetkcOQ9e2TKDXtSVfkW+eKSA4PQhvZBqtG8pFSk02iClO
-         iPgx5vVrMj5t0qTuMCGvRH937H51AtiGu0lK/OAV2JzGTJPUW/WwRZA7PDuPRQYNt5wM
-         BpZdUlJjrcahzzjxVqlF8uvDnWYxoWh0tMI1evcd5RmGlSkAk3V9z496xjKcon2/8XsK
-         Kp7S8UtQwv2ouqKPi+1i8ODiVu8cDatmvkO2IQqkfIMzsj46H62SeTXbCAgqp5e8HOVq
-         g/yA==
+        d=google.com; s=20230601; t=1705066021; x=1705670821; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=f93Ig9LJYi6SxdMZrbYZZHjHKOcib3L6QU/xnO4vU2I=;
+        b=sUygNlSyCS5vY6Fk6MTb1dALHL9wYVw3GoCyPUx/hDpPatN0773TiQ5XqszcdpNVmv
+         /fs9w1ONsQDFoy+fGNLRndio09a21H3GFteGWTdkvT2COxdPO+MVUscmXim5VRkGsgbq
+         hdsNs/j1EJd2TN6zeqNVrsuBJnxGFiLRljVVz9WQ35m5if1Qb4Acn+tBBvZWqoU9LEd/
+         NoMtNRuuxpYiw826QdLA1v53r71GL2T/geoCcBiH3dlWMFW8cYWFkdCLuxzhWi4VRKfd
+         nQVBtHncuyfGktgFuPSN0Z9CzDTcV+BlxYaMM1QuTfSX6G4FjAx9TZ3Ja8PbUqMeXhUs
+         INRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705064295; x=1705669095;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SKCP4kSmi8Znay+ncNnEwwM69gACCAM8H97RoLluFSU=;
-        b=TJw7c5kNHIMih9HNNyYOmPPpwAxft0+mv877XxDmXkuzu2GSKMF4uCz233PH3r8+l7
-         +k61fjhxjy03W6YNGH1/ZnfJVfeYPqm1X/gVcusO7YvqupudlsnyNJfs/bT6+b66uKQk
-         GaWbp8BUf7/nvEbSA151Z0CK2rKesf554pUEo4ykbCfLDKBIGZkBFrkAFr5ID/XYB1c/
-         Ede/QQQjaGQKCsF1iX3oiR2EcepaHSjBbyu7PvfFSa+T54dUaSnQL3owv6CHw6z7dhpi
-         ke3ySCOBIC1eVuggZGPcOBZb351psxWSq1Ei7t1cFfx+as/QoM0gkawsIPmPtEVFjaC2
-         AjJQ==
-X-Gm-Message-State: AOJu0YxCJyL6QKus+ne/TqCwveemwoA6+vdEGOXU9+SeH2p0mLy7890A
-	y4fhthPY0UYiPiAzcfiVDw0=
-X-Google-Smtp-Source: AGHT+IFyWL6bt24i5tSo2BMxGDGJWVKgM4GucDENZVqsHtJAJBXAYskf/llxHwOfhtIMdDRmCxXWaA==
-X-Received: by 2002:a05:6358:4d83:b0:172:ae2a:2256 with SMTP id cc3-20020a0563584d8300b00172ae2a2256mr1350395rwb.27.1705064294552;
-        Fri, 12 Jan 2024 04:58:14 -0800 (PST)
-Received: from g2039B650.. ([106.39.42.152])
-        by smtp.gmail.com with ESMTPSA id fd14-20020a056a002e8e00b006dad4c91e8fsm3103080pfb.205.2024.01.12.04.58.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jan 2024 04:58:14 -0800 (PST)
-From: Gui-Dong Han <2045gemini@gmail.com>
-To: gregkh@linuxfoundation.org,
-	jirislaby@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	baijiaju1990@outlook.com,
-	Gui-Dong Han <2045gemini@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] tty: fix atomicity violation in n_tty_read
-Date: Fri, 12 Jan 2024 20:58:01 +0800
-Message-Id: <20240112125801.2650-1-2045gemini@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1705066021; x=1705670821;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=f93Ig9LJYi6SxdMZrbYZZHjHKOcib3L6QU/xnO4vU2I=;
+        b=DMLDColGO5dX4vt2eMOb02sbqpXNCbslw1Dtw6Cho7t9oZ4kVMpb7+lsT8R0Ln6267
+         HEO6iRDs8A9T4GOQY5IezFa9zr/u2+0IUt7btki6kYGrNcmtdFYuBoUXYjNMQCa58VET
+         muk55f1hDEsGhQ7KoDtXh6sXEqDsSKK1oc4jdKYY8GbPGJojd/VZWcij5pI9M8gIOawq
+         A33Ag+de3w8UPQ2dN+1H2wwz/giWcuCFc8wOQWyR1glkSf7r9pLCjSfAOPHq0gOERkdE
+         IAZN7lsXM6oj0i+hRFFfQOWn9Toj+d8NGWcvpyt9+z88Cl3zRpn4jOmS6A40UuGqALoe
+         AHXQ==
+X-Gm-Message-State: AOJu0YylFLE0/mzeEHHMuKbsVp1vVPIX19bbgVEBapN8yWY7315JuTx/
+	D97xcH2ib44oF4r7jpBZEUY7p70BsxN+jWH36FwA
+X-Google-Smtp-Source: AGHT+IEdNpp9MV1efGqWVumTNO6v9b0Uyr5We6/Yz4ZyzAHpiTLmjWlQyhYuSCloT/e8oLsD+H1RgUnxsQqoUQ==
+X-Received: from edumazet1.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:395a])
+ (user=edumazet job=sendgmr) by 2002:a05:6902:2483:b0:dbd:73bd:e55a with SMTP
+ id ds3-20020a056902248300b00dbd73bde55amr21536ybb.4.1705066020920; Fri, 12
+ Jan 2024 05:27:00 -0800 (PST)
+Date: Fri, 12 Jan 2024 13:26:57 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.275.g3460e3d667-goog
+Message-ID: <20240112132657.647112-1-edumazet@google.com>
+Subject: [PATCH net] nbd: always initialize struct msghdr completely
+From: Eric Dumazet <edumazet@google.com>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: linux-kernel <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org, 
+	Eric Dumazet <edumazet@google.com>, Eric Dumazet <eric.dumazet@gmail.com>, 
+	syzbot <syzkaller@googlegroups.com>, stable@vger.kernel.org, 
+	Josef Bacik <josef@toxicpanda.com>, linux-block@vger.kernel.org, nbd@other.debian.org
+Content-Type: text/plain; charset="UTF-8"
 
-In n_tty_read():
-    if (packet && tty->link->ctrl.pktstatus) {
-    ...
-    spin_lock_irq(&tty->link->ctrl.lock);
-    cs = tty->link->ctrl.pktstatus;
-    tty->link->ctrl.pktstatus = 0;
-    spin_unlock_irq(&tty->link->ctrl.lock);
-    *kb++ = cs;
-    ...
+syzbot complains that msg->msg_get_inq value can be uninitialized [1]
 
-In n_tty_read() function, there is a potential atomicity violation issue.
-The tty->link->ctrl.pktstatus might be set to 0 after being checked, which
-could lead to incorrect values in the kernel space buffer
-pointer (kb/kbuf). The check if (packet && tty->link->ctrl.pktstatus)
-occurs outside the spin_lock_irq(&tty->link->ctrl.lock) block. This may
-lead to tty->link->ctrl.pktstatus being altered between the check and the
-lock, causing *kb++ = cs; to be assigned with a zero pktstatus value.
+struct msghdr got many new fields recently, we should always make
+sure their values is zero by default.
 
-This possible bug is found by an experimental static analysis tool
-developed by our team, BassCheck[1]. This tool analyzes the locking APIs
-to extract function pairs that can be concurrently executed, and then
-analyzes the instructions in the paired functions to identify possible
-concurrency bugs including data races and atomicity violations. The above
-possible bug is reported when our tool analyzes the source code of
-Linux 5.17.
+[1]
+ BUG: KMSAN: uninit-value in tcp_recvmsg+0x686/0xac0 net/ipv4/tcp.c:2571
+  tcp_recvmsg+0x686/0xac0 net/ipv4/tcp.c:2571
+  inet_recvmsg+0x131/0x580 net/ipv4/af_inet.c:879
+  sock_recvmsg_nosec net/socket.c:1044 [inline]
+  sock_recvmsg+0x12b/0x1e0 net/socket.c:1066
+  __sock_xmit+0x236/0x5c0 drivers/block/nbd.c:538
+  nbd_read_reply drivers/block/nbd.c:732 [inline]
+  recv_work+0x262/0x3100 drivers/block/nbd.c:863
+  process_one_work kernel/workqueue.c:2627 [inline]
+  process_scheduled_works+0x104e/0x1e70 kernel/workqueue.c:2700
+  worker_thread+0xf45/0x1490 kernel/workqueue.c:2781
+  kthread+0x3ed/0x540 kernel/kthread.c:388
+  ret_from_fork+0x66/0x80 arch/x86/kernel/process.c:147
+  ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
 
-To resolve this atomicity issue, it is suggested to move the condition
-check if (packet && tty->link->ctrl.pktstatus) inside the spin_lock block.
-With this patch applied, our tool no longer reports the bug, with the
-kernel configuration allyesconfig for x86_64. Due to the absence of the
-requisite hardware, we are unable to conduct runtime testing of the patch.
-Therefore, our verification is solely based on code logic analysis.
+Local variable msg created at:
+  __sock_xmit+0x4c/0x5c0 drivers/block/nbd.c:513
+  nbd_read_reply drivers/block/nbd.c:732 [inline]
+  recv_work+0x262/0x3100 drivers/block/nbd.c:863
 
-[1] https://sites.google.com/view/basscheck/
+CPU: 1 PID: 7465 Comm: kworker/u5:1 Not tainted 6.7.0-rc7-syzkaller-00041-gf016f7547aee #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
+Workqueue: nbd5-recv recv_work
 
-Fixes: 64d608db38ff ("tty: cumulate and document tty_struct::ctrl* members")
+Fixes: f94fd25cb0aa ("tcp: pass back data left in socket after receive")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
+Cc: Josef Bacik <josef@toxicpanda.com>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org
+Cc: nbd@other.debian.org
 ---
- drivers/tty/n_tty.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/block/nbd.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/tty/n_tty.c b/drivers/tty/n_tty.c
-index f252d0b5a434..df54ab0c4d8c 100644
---- a/drivers/tty/n_tty.c
-+++ b/drivers/tty/n_tty.c
-@@ -2222,19 +2222,23 @@ static ssize_t n_tty_read(struct tty_struct *tty, struct file *file, u8 *kbuf,
- 	add_wait_queue(&tty->read_wait, &wait);
- 	while (nr) {
- 		/* First test for status change. */
-+		spin_lock_irq(&tty->link->ctrl.lock);
- 		if (packet && tty->link->ctrl.pktstatus) {
- 			u8 cs;
--			if (kb != kbuf)
-+			if (kb != kbuf) {
-+				spin_unlock_irq(&tty->link->ctrl.lock);
- 				break;
--			spin_lock_irq(&tty->link->ctrl.lock);
-+			}
- 			cs = tty->link->ctrl.pktstatus;
- 			tty->link->ctrl.pktstatus = 0;
- 			spin_unlock_irq(&tty->link->ctrl.lock);
- 			*kb++ = cs;
- 			nr--;
- 			break;
-+		} else {
-+			spin_unlock_irq(&tty->link->ctrl.lock);
- 		}
--
-+
- 		if (!input_available_p(tty, 0)) {
- 			up_read(&tty->termios_rwsem);
- 			tty_buffer_flush_work(tty->port);
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index 4e72ec4e25ac5a0f41bca299e7efaecf6503c451..33a8f37bb6a1f504060f783c6d727e4c76026a2e 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -508,7 +508,7 @@ static int __sock_xmit(struct nbd_device *nbd, struct socket *sock, int send,
+ 		       struct iov_iter *iter, int msg_flags, int *sent)
+ {
+ 	int result;
+-	struct msghdr msg;
++	struct msghdr msg = {} ;
+ 	unsigned int noreclaim_flag;
+ 
+ 	if (unlikely(!sock)) {
+@@ -524,10 +524,6 @@ static int __sock_xmit(struct nbd_device *nbd, struct socket *sock, int send,
+ 	do {
+ 		sock->sk->sk_allocation = GFP_NOIO | __GFP_MEMALLOC;
+ 		sock->sk->sk_use_task_frag = false;
+-		msg.msg_name = NULL;
+-		msg.msg_namelen = 0;
+-		msg.msg_control = NULL;
+-		msg.msg_controllen = 0;
+ 		msg.msg_flags = msg_flags | MSG_NOSIGNAL;
+ 
+ 		if (send)
 -- 
-2.34.1
+2.43.0.275.g3460e3d667-goog
 
 
