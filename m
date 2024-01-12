@@ -1,135 +1,90 @@
-Return-Path: <stable+bounces-10595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB0482C5D1
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 20:19:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FCBC82C5E2
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 20:31:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AFCAB228E6
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 19:19:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACBDA284CAE
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 19:31:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A5715AEF;
-	Fri, 12 Jan 2024 19:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E348F15AFA;
+	Fri, 12 Jan 2024 19:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="blqxzh+j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hv2Wyt/S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1A914F6D;
-	Fri, 12 Jan 2024 19:19:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C836EC433F1;
-	Fri, 12 Jan 2024 19:19:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1705087175;
-	bh=mE1L5pWCFB/dCagdNEAuyUMcg+GZSx/m1RH19GQTQv4=;
-	h=Date:To:From:Subject:From;
-	b=blqxzh+j/rfxPg+2R5lBsJ9PhzbB73JA/70OeAJ0Z5FGSnqyK30Qq/M4JRTjMneyG
-	 Q+5rubH4gVnlDYrJU4nAvzYTfuEPw6Cb6rq/xNp2X/LNpzUpizRoYgEmrXPW/0FLd1
-	 PDTpM/C2zq9Nv+y9nfhRX4RZQFcJhxRet05qcXnY=
-Date: Fri, 12 Jan 2024 11:19:35 -0800
-To: mm-commits@vger.kernel.org,willy@infradead.org,usama.anjum@collabora.com,stable@vger.kernel.org,naoya.horiguchi@nec.com,muchun.song@linux.dev,linmiaohe@huawei.com,jthoughton@google.com,jiaqiyan@google.com,sidhartha.kumar@oracle.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + fs-hugetlbfs-inodec-mm-memory-failurec-fix-hugetlbfs-hwpoison-handling.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240112191935.C836EC433F1@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B38614F6D;
+	Fri, 12 Jan 2024 19:31:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C207C433F1;
+	Fri, 12 Jan 2024 19:31:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1705087893;
+	bh=FvQJcr9tDVeV5tst8ttPoAR1yrrsKUrGxfwyN8pTbuM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hv2Wyt/S8vaNTb/tchv5D88XUyCfkJBo6JFVkePkT93GwR2Rl9JY2ky40Ld7UulEi
+	 9bivVJUyX7QGDVhUNOqNyzPFkK26QvLlYJFb3UAsENrWVme9bzr+JJyBISw+cTlcft
+	 VLwK0VeqxJfHiuSpYUOgL4R2qWQFwxJ5lkc7ljIg=
+Date: Fri, 12 Jan 2024 20:31:30 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+Cc: Dave Kleikamp <shaggy@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>, Jan Kara <jack@suse.cz>,
+	jfs-discussion@lists.sourceforge.net, stable@vger.kernel.org,
+	lvc-project@linuxtesting.org, linux-kernel@vger.kernel.org,
+	Mikhail Ivanov <iwanov-23@bk.ru>,
+	Pavel Koshutin <koshutin.pavel@yandex.ru>,
+	Artem Sadovnikov <ancowi69@gmail.com>
+Subject: Re: [PATCH 5.10/5.15] jfs: add check if log->bdev is NULL in
+ lbmStartIO()
+Message-ID: <2024011216-rubdown-buddhist-6d1e@gregkh>
+References: <20240112165007.4764-1-mish.uxin2012@yandex.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240112165007.4764-1-mish.uxin2012@yandex.ru>
 
+On Fri, Jan 12, 2024 at 07:50:07PM +0300, Mikhail Ukhin wrote:
+> Fuzzing of 5.10 stable branch shows NULL pointer dereference happens in 
+> lbmStartIO() on log->bdev pointer. The reason for bdev being NULL is the 
+> JFS_NOINTEGRITY flag is set on mount of this fs. When this flag is enabled,
+> it results in the open_dummy_log function being called, which initializes a
+> new dummy_log, but does not assign a value to bdev.
+> 
+> The error is fixed in 5.18 by commit
+> 07888c665b405b1cd3577ddebfeb74f4717a84c4.
+> Backport of this commit is too intrusive, so it is more reasonable to apply
+> a small patch to fix this issue.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with syzkaller.
+> 
+> Signed-off-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+> Signed-off-by: Mikhail Ivanov <iwanov-23@bk.ru>
+> Signed-off-by: Pavel Koshutin <koshutin.pavel@yandex.ru>
+> Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
+> ---
+>  fs/jfs/jfs_logmgr.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 
-The patch titled
-     Subject: fs/hugetlbfs/inode.c: mm/memory-failure.c: fix hugetlbfs hwpoison handling
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     fs-hugetlbfs-inodec-mm-memory-failurec-fix-hugetlbfs-hwpoison-handling.patch
+Who is using jfs in 5.10 and 5.15?  Why not just mark the filesystem as
+BROKEN there instead?  If you need to access your ancient filesystem
+image just use a newer kernel.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fs-hugetlbfs-inodec-mm-memory-failurec-fix-hugetlbfs-hwpoison-handling.patch
+For filesystems that are not used in older kernels, work like this feels
+odd, especially for something just like a NULL dereference which doesn't
+do much, right?
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+thanks,
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Subject: fs/hugetlbfs/inode.c: mm/memory-failure.c: fix hugetlbfs hwpoison handling
-Date: Fri, 12 Jan 2024 10:08:40 -0800
-
-has_extra_refcount() makes the assumption that the page cache adds a ref
-count of 1 and subtracts this in the extra_pins case.  Commit a08c7193e4f1
-(mm/filemap: remove hugetlb special casing in filemap.c) modifies
-__filemap_add_folio() by calling folio_ref_add(folio, nr); for all cases
-(including hugtetlb) where nr is the number of pages in the folio.  We
-should adjust the number of references coming from the page cache by
-subtracing the number of pages rather than 1.
-
-In hugetlbfs_read_iter(), folio_test_has_hwpoisoned() is testing the wrong
-flag as, in the hugetlb case, memory-failure code calls
-folio_test_set_hwpoison() to indicate poison.  folio_test_hwpoison() is
-the correct function to test for that flag.
-
-After these fixes, the hugetlb hwpoison read selftest passes all cases.
-
-Link: https://lkml.kernel.org/r/20240112180840.367006-1-sidhartha.kumar@oracle.com
-Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
-Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Closes: https://lore.kernel.org/linux-mm/20230713001833.3778937-1-jiaqiyan@google.com/T/#m8e1469119e5b831bbd05d495f96b842e4a1c5519
-Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: James Houghton <jthoughton@google.com>
-Cc: Jiaqi Yan <jiaqiyan@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Naoya Horiguchi <naoya.horiguchi@nec.com>
-Cc: <stable@vger.kernel.org>	[6.7+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/hugetlbfs/inode.c |    2 +-
- mm/memory-failure.c  |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
---- a/fs/hugetlbfs/inode.c~fs-hugetlbfs-inodec-mm-memory-failurec-fix-hugetlbfs-hwpoison-handling
-+++ a/fs/hugetlbfs/inode.c
-@@ -340,7 +340,7 @@ static ssize_t hugetlbfs_read_iter(struc
- 		} else {
- 			folio_unlock(folio);
- 
--			if (!folio_test_has_hwpoisoned(folio))
-+			if (!folio_test_hwpoison(folio))
- 				want = nr;
- 			else {
- 				/*
---- a/mm/memory-failure.c~fs-hugetlbfs-inodec-mm-memory-failurec-fix-hugetlbfs-hwpoison-handling
-+++ a/mm/memory-failure.c
-@@ -982,7 +982,7 @@ static bool has_extra_refcount(struct pa
- 	int count = page_count(p) - 1;
- 
- 	if (extra_pins)
--		count -= 1;
-+		count -= folio_nr_pages(page_folio(p));
- 
- 	if (count > 0) {
- 		pr_err("%#lx: %s still referenced by %d users\n",
-_
-
-Patches currently in -mm which might be from sidhartha.kumar@oracle.com are
-
-fs-hugetlbfs-inodec-mm-memory-failurec-fix-hugetlbfs-hwpoison-handling.patch
-maple_tree-fix-comment-describing-mas_node_count_gfp.patch
-
+greg k-h
 
