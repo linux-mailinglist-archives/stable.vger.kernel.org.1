@@ -1,127 +1,112 @@
-Return-Path: <stable+bounces-10549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C49082B9D8
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 04:02:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E641B82B9EB
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 04:20:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32616B22977
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 03:02:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99EA41F24EB9
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 03:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD053139A;
-	Fri, 12 Jan 2024 03:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41C0F15C6;
+	Fri, 12 Jan 2024 03:20:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADEF10A15;
-	Fri, 12 Jan 2024 03:02:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4TB5sF3MFmz1Q7m0;
-	Fri, 12 Jan 2024 11:01:21 +0800 (CST)
-Received: from canpemm500002.china.huawei.com (unknown [7.192.104.244])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0BB5114093A;
-	Fri, 12 Jan 2024 11:01:53 +0800 (CST)
-Received: from [10.174.151.185] (10.174.151.185) by
- canpemm500002.china.huawei.com (7.192.104.244) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Fri, 12 Jan 2024 11:01:52 +0800
-Subject: Re: [PATCH] fix hugetlbfs hwpoison handling
-To: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-CC: <akpm@linux-foundation.org>, <usama.anjum@collabora.com>,
-	<muchun.song@linux.dev>, <jiaqiyan@google.com>, <willy@infradead.org>,
-	<naoya.horiguchi@nec.com>, <shy828301@gmail.com>, <jthoughton@google.com>,
-	<jane.chu@oracle.com>, <stable@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<ying.huang@linux.intel.com>
-References: <20240111191655.295530-1-sidhartha.kumar@oracle.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <3b1206e2-85e5-7c66-b5eb-288cc7117420@huawei.com>
-Date: Fri, 12 Jan 2024 11:01:35 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42521841;
+	Fri, 12 Jan 2024 03:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=sladewatkins.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-67fe0210665so31821846d6.1;
+        Thu, 11 Jan 2024 19:20:46 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705029646; x=1705634446;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JjSZW8FnU+OrzwsALUbbUaF+dnHxygb6H1sJlT6LvIE=;
+        b=NVDgfN89LkE73k3iBohCCwUAv6aSd9wSHcUGW6F9odTmLE8FYVBW7oO4AnLHXa4aD1
+         6fMEOWMlswvjLJXOy0wltDy5p+p/LVjEYKJuIwJjlDf/yaePZhonP4GWHo8O1qtxeNC5
+         yDckkyox167SzZujC1JxqHEsSahIbxb/edUrCFjnE60lMUiK2brPQ5Tjqu0wE1ZdWOGg
+         zOb2SyHmw+PmY1LMEC+HEtOunDVMTqd2sRmgqy15fAryvs9DosATWilIrEbZPAq0XyUg
+         6MQni+cA7MvCa2E53Adej93ui+z8aHKAOfzWMNjhuGOcivJ438ndbSAoLI6cfC1jmLRa
+         9NGQ==
+X-Gm-Message-State: AOJu0YzipwMRB3beT5b8Rr3M6VFy4wLh7yqffTzaH/ZSJk2C/6Vkujjq
+	uQCsbieWNBvBSLGjwM4Zi2ME7xXnIIk=
+X-Google-Smtp-Source: AGHT+IE+IjGMHZFRTO2SsMQm57qvjPv4hTZEK4rGOiUbRXGOPUCiSpYiymbpFBky4s8Qucq7uOeIHA==
+X-Received: by 2002:a05:6214:2aa1:b0:681:304d:6712 with SMTP id js1-20020a0562142aa100b00681304d6712mr275862qvb.77.1705029645689;
+        Thu, 11 Jan 2024 19:20:45 -0800 (PST)
+Received: from smtpclient.apple (pool-108-4-150-17.albyny.fios.verizon.net. [108.4.150.17])
+        by smtp.gmail.com with ESMTPSA id t18-20020a05621405d200b006810a0ebf24sm759708qvz.33.2024.01.11.19.20.44
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 11 Jan 2024 19:20:45 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <20240111191655.295530-1-sidhartha.kumar@oracle.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- canpemm500002.china.huawei.com (7.192.104.244)
-
-On 2024/1/12 3:16, Sidhartha Kumar wrote:
-> has_extra_refcount() makes the assumption that a ref count of 1 means
-> the page is not referenced by other users. Commit a08c7193e4f1
-> (mm/filemap: remove hugetlb special casing in filemap.c) modifies
-> __filemap_add_folio() by calling folio_ref_add(folio, nr); for all cases
-> (including hugtetlb) where nr is the number of pages in the folio. We
-> should check if the page is not referenced by other users by checking
-> the page count against the number of pages rather than 1.
-
-Thanks for your patch.
-
-> 
-> In hugetlbfs_read_iter(), folio_test_has_hwpoisoned() is testing the wrong
-> flag as, in the hugetlb case, memory-failure code calls
-> folio_test_set_hwpoison() to indicate poison. folio_test_hwpoison() is the
-> correct function to test for that flag.
-> 
-> After these fixes, the hugetlb hwpoison read selftest passes all cases.
-> 
-> Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
-> Closes: https://lore.kernel.org/linux-mm/20230713001833.3778937-1-jiaqiyan@google.com/T/#m8e1469119e5b831bbd05d495f96b842e4a1c5519
-> Cc: <stable@vger.kernel.org> # 6.7+
-> Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-> Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-> Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-> ---
->  fs/hugetlbfs/inode.c | 2 +-
->  mm/memory-failure.c  | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> index 36132c9125f9..3a248e4f7e93 100644
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -340,7 +340,7 @@ static ssize_t hugetlbfs_read_iter(struct kiocb *iocb, struct iov_iter *to)
->  		} else {
->  			folio_unlock(folio);
->  
-> -			if (!folio_test_has_hwpoisoned(folio))
-> +			if (!folio_test_hwpoison(folio))
->  				want = nr;
->  			else {
->  				/*
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index d8c853b35dbb..87f6bf7d8bc1 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -973,7 +973,7 @@ struct page_state {
->  static bool has_extra_refcount(struct page_state *ps, struct page *p,
->  			       bool extra_pins)
->  {
-> -	int count = page_count(p) - 1;
-> +	int count = page_count(p) - folio_nr_pages(page_folio(p));
-
-IIRC, the refcnt of 1 here means the page is held by memory-failure. So I think it shouldn't be
-changed to folio_nr_pages(page_folio(p)).
-
->  
->  	if (extra_pins)
->  		count -= 1;
-
-Indeed @extra_pins indicates whether hugetlb page is kept in page cache. So the page refcnt of
-'folio_nr_pages(page_folio(p))' might be used here.
-
-Thanks.
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.61.1.2\))
+Subject: Re: [PATCH 5.10 0/7] 5.10.207-rc1 review
+From: Slade Watkins <srw@sladewatkins.net>
+In-Reply-To: <20240111094700.222742213@linuxfoundation.org>
+Date: Thu, 11 Jan 2024 22:20:43 -0500
+Cc: stable@vger.kernel.org,
+ patches@lists.linux.dev,
+ linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org,
+ akpm@linux-foundation.org,
+ linux@roeck-us.net,
+ shuah@kernel.org,
+ patches@kernelci.org,
+ lkft-triage@lists.linaro.org,
+ pavel@denx.de,
+ jonathanh@nvidia.com,
+ f.fainelli@gmail.com,
+ sudipm.mukherjee@gmail.com,
+ rwarsow@gmx.de,
+ conor@kernel.org,
+ allen.lkml@gmail.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <D11BBDBD-C19A-428F-B459-95B0761EDC16@sladewatkins.net>
+References: <20240111094700.222742213@linuxfoundation.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+X-Mailer: Apple Mail (2.3774.300.61.1.2)
 
 
+> On Jan 11, 2024, at 4:52=E2=80=AFAM, Greg Kroah-Hartman =
+<gregkh@linuxfoundation.org> wrote:
+>=20
+> This is the start of the stable review cycle for the 5.10.207 release.
+> There are 7 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, =
+please
+> let me know.
+>=20
+> Responses should be made by Sat, 13 Jan 2024 09:46:53 +0000.
+> Anything received after that time might be too late.
+>=20
+> The whole patch series can be found in one patch at:
+> =
+https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.207-=
+rc1.gz
+> or in the git tree and branch at:
+> =
+git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git =
+linux-5.10.y
+> and the diffstat can be found below.
+
+Hi,
+5.10.207-rc1 compiled and booted just fine on x86_64, no errors or =
+regressions.
+
+Tested-by: Slade Watkins <srw@sladewatkins.net =
+<mailto:srw@sladewatkins.net>>
+
+Best,
+Slade=
 
