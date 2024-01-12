@@ -1,94 +1,135 @@
-Return-Path: <stable+bounces-10594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1870082C59D
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 19:53:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB0482C5D1
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 20:19:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADFDC285411
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 18:53:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AFCAB228E6
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 19:19:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C8AB156E3;
-	Fri, 12 Jan 2024 18:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A5715AEF;
+	Fri, 12 Jan 2024 19:19:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GuvMqsp0"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="blqxzh+j"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267BB15E8E;
-	Fri, 12 Jan 2024 18:53:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1d5a7954b8bso5533235ad.1;
-        Fri, 12 Jan 2024 10:53:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705085598; x=1705690398; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=84k2E/jFHGmRPt2TX0Wfbqb1lV5t099ixH2DWzPbXTY=;
-        b=GuvMqsp0gsZwDL+b8Ce2D5inphp3ylxd+i1QfmBu2DEum+5B1YnDb1cbj+LEXhdQA5
-         VC+GEZb8g9yo5UcBuaZeYz403A8h/wBoFCcFsWLSOKjoKOKzfNIXJp2DsWQDmxVc2TBc
-         x6PZtPZrm/qjzl9zvdt4shHP9lEO9Wa3EjrguH7V1zqw/8bk61jljcHyW+JTBhyDj5mG
-         7HwhWzmBU7XkVJ8itVsCXNUkh76z1FPRp5l1YKSiqNi1A7IEnaYUXTMsVSX4Gl0YLQOU
-         Q3uUinvyIkfR0Q19uui091DF76raMi2m23aS76dqVqvyFA1oShzu0LSAAfr4CQK2fGRC
-         XwsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705085598; x=1705690398;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=84k2E/jFHGmRPt2TX0Wfbqb1lV5t099ixH2DWzPbXTY=;
-        b=iaAz0unmrBqtbgw6Cyld1pCRrHvXpamXp8r/MnIdqTACSC7hWmfpLPQliAMQz6vXgU
-         bHSeSqjVOjNDHY9VlOe+9tPupI6GX7JMTk9G+In5QZdE8JefIygR2SFT54534hRGUXNx
-         DZslleWmJymZ6w0RWKO+cdLtkunZoLqx/ju1BYFegr33yD1wHL2RLCgGu+vn7Am0IFVB
-         lA+wSEoBJvcMSI9Up4JWpkTIdp4FaPFbB50wYVL7H0NpqGeSmdiSPFYWEyLDkhG3Trvj
-         I2HS5iddCtzzDhQW6o9xBfS5d96JgqNaY/0/moexmkFYJv5jHYHs814TXz6gaxx2KjKQ
-         RMuQ==
-X-Gm-Message-State: AOJu0Yyy648FcHKb1xXhJvelrzFTBfilvY7SMP+sGHSe9em5PE7EyY+6
-	A/WqNWEt7x7/ACQuQ/0t4uHFoLp9mW3iyiSs71Y=
-X-Google-Smtp-Source: AGHT+IFg4NCjR9gKqEIPMZ/TQOXnEfnqmDJRUIJiD4cqo5huuacha57jJ6vQS/BvEejG+/wUOygIp+m6gQLapXDoa7U=
-X-Received: by 2002:a17:90a:eb0a:b0:28e:1eff:241d with SMTP id
- j10-20020a17090aeb0a00b0028e1eff241dmr369026pjz.67.1705085598366; Fri, 12 Jan
- 2024 10:53:18 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C1A914F6D;
+	Fri, 12 Jan 2024 19:19:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C836EC433F1;
+	Fri, 12 Jan 2024 19:19:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1705087175;
+	bh=mE1L5pWCFB/dCagdNEAuyUMcg+GZSx/m1RH19GQTQv4=;
+	h=Date:To:From:Subject:From;
+	b=blqxzh+j/rfxPg+2R5lBsJ9PhzbB73JA/70OeAJ0Z5FGSnqyK30Qq/M4JRTjMneyG
+	 Q+5rubH4gVnlDYrJU4nAvzYTfuEPw6Cb6rq/xNp2X/LNpzUpizRoYgEmrXPW/0FLd1
+	 PDTpM/C2zq9Nv+y9nfhRX4RZQFcJhxRet05qcXnY=
+Date: Fri, 12 Jan 2024 11:19:35 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,usama.anjum@collabora.com,stable@vger.kernel.org,naoya.horiguchi@nec.com,muchun.song@linux.dev,linmiaohe@huawei.com,jthoughton@google.com,jiaqiyan@google.com,sidhartha.kumar@oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + fs-hugetlbfs-inodec-mm-memory-failurec-fix-hugetlbfs-hwpoison-handling.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240112191935.C836EC433F1@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240112121844.17580-1-2045gemini@gmail.com> <3bbabf34-1eba-8983-439e-f23e811e80a8@linux.intel.com>
-In-Reply-To: <3bbabf34-1eba-8983-439e-f23e811e80a8@linux.intel.com>
-From: Gui-Dong Han <2045gemini@gmail.com>
-Date: Sat, 13 Jan 2024 02:52:42 +0800
-Message-ID: <CAOPYjvZYAxo=-H2eeJ8mHjx4af=TetbtZ_54-iX2cokzEHFeaA@mail.gmail.com>
-Subject: Re: [PATCH] serial: core: Fix double fetch in uart_throttle/uart_unthrottle
-To: =?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
-	Tony Lindgren <tony@atomide.com>, l.sanfilippo@kunbus.com, john.ogness@linutronix.de, 
-	tglx@linutronix.de, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	LKML <linux-kernel@vger.kernel.org>, linux-serial <linux-serial@vger.kernel.org>, 
-	baijiaju1990@outlook.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
 
-Hi
 
-I apologize for any issues and lack of clarity in my previous patch.
-In patch v2, I've revised the fix to use local variables instead of
-locks and improved the description to clearly explain the harm and
-potential for concurrency.
+The patch titled
+     Subject: fs/hugetlbfs/inode.c: mm/memory-failure.c: fix hugetlbfs hwpoison handling
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     fs-hugetlbfs-inodec-mm-memory-failurec-fix-hugetlbfs-hwpoison-handling.patch
 
-The patch was developed and tested on linux-next, not Linux 5.17. My
-reference to 5.17 was due to a project I'm working on, which involves
-kernel static analysis and a comparison with earlier studies that
-support up to Linux 5.17. Therefore, I initially ran my tool on 5.17
-to filter potential bugs that are still unaddressed in the upstream.
-Then I worked on linux-next to develop and test the patch. I
-understand this might have caused misunderstandings, and I'll aim for
-clearer communication in future submissions.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/fs-hugetlbfs-inodec-mm-memory-failurec-fix-hugetlbfs-hwpoison-handling.patch
 
-Thanks,
-Han
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Subject: fs/hugetlbfs/inode.c: mm/memory-failure.c: fix hugetlbfs hwpoison handling
+Date: Fri, 12 Jan 2024 10:08:40 -0800
+
+has_extra_refcount() makes the assumption that the page cache adds a ref
+count of 1 and subtracts this in the extra_pins case.  Commit a08c7193e4f1
+(mm/filemap: remove hugetlb special casing in filemap.c) modifies
+__filemap_add_folio() by calling folio_ref_add(folio, nr); for all cases
+(including hugtetlb) where nr is the number of pages in the folio.  We
+should adjust the number of references coming from the page cache by
+subtracing the number of pages rather than 1.
+
+In hugetlbfs_read_iter(), folio_test_has_hwpoisoned() is testing the wrong
+flag as, in the hugetlb case, memory-failure code calls
+folio_test_set_hwpoison() to indicate poison.  folio_test_hwpoison() is
+the correct function to test for that flag.
+
+After these fixes, the hugetlb hwpoison read selftest passes all cases.
+
+Link: https://lkml.kernel.org/r/20240112180840.367006-1-sidhartha.kumar@oracle.com
+Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
+Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Closes: https://lore.kernel.org/linux-mm/20230713001833.3778937-1-jiaqiyan@google.com/T/#m8e1469119e5b831bbd05d495f96b842e4a1c5519
+Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Cc: James Houghton <jthoughton@google.com>
+Cc: Jiaqi Yan <jiaqiyan@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Naoya Horiguchi <naoya.horiguchi@nec.com>
+Cc: <stable@vger.kernel.org>	[6.7+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/hugetlbfs/inode.c |    2 +-
+ mm/memory-failure.c  |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+--- a/fs/hugetlbfs/inode.c~fs-hugetlbfs-inodec-mm-memory-failurec-fix-hugetlbfs-hwpoison-handling
++++ a/fs/hugetlbfs/inode.c
+@@ -340,7 +340,7 @@ static ssize_t hugetlbfs_read_iter(struc
+ 		} else {
+ 			folio_unlock(folio);
+ 
+-			if (!folio_test_has_hwpoisoned(folio))
++			if (!folio_test_hwpoison(folio))
+ 				want = nr;
+ 			else {
+ 				/*
+--- a/mm/memory-failure.c~fs-hugetlbfs-inodec-mm-memory-failurec-fix-hugetlbfs-hwpoison-handling
++++ a/mm/memory-failure.c
+@@ -982,7 +982,7 @@ static bool has_extra_refcount(struct pa
+ 	int count = page_count(p) - 1;
+ 
+ 	if (extra_pins)
+-		count -= 1;
++		count -= folio_nr_pages(page_folio(p));
+ 
+ 	if (count > 0) {
+ 		pr_err("%#lx: %s still referenced by %d users\n",
+_
+
+Patches currently in -mm which might be from sidhartha.kumar@oracle.com are
+
+fs-hugetlbfs-inodec-mm-memory-failurec-fix-hugetlbfs-hwpoison-handling.patch
+maple_tree-fix-comment-describing-mas_node_count_gfp.patch
+
 
