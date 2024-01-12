@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-10575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F34B82C17B
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 15:21:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD8882C17C
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 15:21:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6075EB2128B
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7AC11C2208E
 	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 14:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F61A6DCEB;
-	Fri, 12 Jan 2024 14:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B55376DCE8;
+	Fri, 12 Jan 2024 14:21:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GpJurPph"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OrdKBKpn"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171546DCE8
-	for <stable@vger.kernel.org>; Fri, 12 Jan 2024 14:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8916DCE9
+	for <stable@vger.kernel.org>; Fri, 12 Jan 2024 14:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705069291; x=1736605291;
+  t=1705069292; x=1736605292;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=qMii7LqnHUt2EQWjCfLS5licgwrZHEYubSesPKNL3xs=;
-  b=GpJurPphDOOpowpNtTzLPH3nG5moV6twKGTDueH6nP7Z6M7OHfwECVPg
-   JSmeEyWw7eCkUmRrTxJQYmTALCLZApb1WMR2jknViyXhw0g1w/oJ7E7ic
-   OrKOMmg8oX53VxxylectWevvrtlKsQVEbSfpTIu2+8MVkZyvMUHNLEBQj
-   muQteXBDErazlKSKpFrfsHXRr2ENCOvZehUyhUcgOUtiOPNF1gptiOLQu
-   LqAWw4KHXZlLylQbxYxJWwOMAFb0ykHrPcd9a5Vfn1ZTI3ESEiqAiYM4M
-   Un72aB/IqcE+LvJlwqZGAKDmcxM8QlNIDyYW3ejV7XYaJrf+10TYwPWYU
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10951"; a="430357799"
+  bh=jvgAdFkGuJK3FafDRpWYZ+sNU8SWAv4c2C5WdkYXUJw=;
+  b=OrdKBKpnWdWggd2Y8ZRgJCImSVqCNde8BwqyJK6pEKpfRkvci8nzZgbL
+   r+TLh7S78vGADHXD9NcV+l1zcZzAmhE5C3dN8ucUo5fI+4VzSNVZLKVy5
+   56Cv1IjHBk8oeemRWDujV2UMUWtVKVKMe1LFxqIGG7EQRGEzSfOOtU+Hh
+   JSwBIgkCO/314Xvxxdf0U4W2DTukgRCs1N1UKEvWIl8WO5DZlAy/3WYrM
+   g31RaoIsES77hym8LGz9qSjstSLA9LvlX0dNGcki8yfMG+dMNTdTh3gsS
+   GbaM8BHpLPv8VlAATKYkE5uFB5iNnbkSYcoocLAr2oudyfBAyUGPEM+lU
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10951"; a="430357835"
 X-IronPort-AV: E=Sophos;i="6.04,189,1695711600"; 
-   d="scan'208";a="430357799"
+   d="scan'208";a="430357835"
 Received: from fmsmga005.fm.intel.com ([10.253.24.32])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2024 06:21:24 -0800
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2024 06:21:27 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10951"; a="1114235362"
+X-IronPort-AV: E=McAfee;i="6600,9927,10951"; a="1114235371"
 X-IronPort-AV: E=Sophos;i="6.04,189,1695711600"; 
-   d="scan'208";a="1114235362"
+   d="scan'208";a="1114235371"
 Received: from bartoszp-dev.igk.intel.com ([10.91.3.51])
-  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2024 06:21:21 -0800
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2024 06:21:25 -0800
 From: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
 To: stable@vger.kernel.org,
 	sashal@kernel.org
@@ -55,11 +55,12 @@ Cc: joel.a.gibson@intel.com,
 	sridhar.samudrala@intel.com,
 	lihong.yang@intel.com,
 	Bartosz Pawlowski <bartosz.pawlowski@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 4.19 1/2] PCI: Extract ATS disabling to a helper function
-Date: Fri, 12 Jan 2024 14:20:55 +0000
-Message-ID: <20240112142056.395197-2-bartosz.pawlowski@intel.com>
+	Alexander Lobakin <aleksander.lobakin@intel.com>
+Subject: [PATCH 4.19 2/2] PCI: Disable ATS for specific Intel IPU E2000 devices
+Date: Fri, 12 Jan 2024 14:20:56 +0000
+Message-ID: <20240112142056.395197-3-bartosz.pawlowski@intel.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240112142056.395197-1-bartosz.pawlowski@intel.com>
 References: <20240112142056.395197-1-bartosz.pawlowski@intel.com>
@@ -71,47 +72,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-[ Upstream commit f18b1137d38c091cc8c16365219f0a1d4a30b3d1 ]
+[ Upstream commit a18615b1cfc04f00548c60eb9a77e0ce56e848fd ]
 
-Introduce quirk_no_ats() helper function to provide a standard way to
-disable ATS capability in PCI quirks.
+Due to a hardware issue in A and B steppings of Intel IPU E2000, it expects
+wrong endianness in ATS invalidation message body. This problem can lead to
+outdated translations being returned as valid and finally cause system
+instability.
 
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230908143606.685930-2-bartosz.pawlowski@intel.com
+To prevent such issues, add quirk_intel_e2000_no_ats() to disable ATS for
+vulnerable IPU E2000 devices.
+
+Link: https://lore.kernel.org/r/20230908143606.685930-3-bartosz.pawlowski@intel.com
 Signed-off-by: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
 ---
- drivers/pci/quirks.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/pci/quirks.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
 diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 3a165710fbb8..20180894f82d 100644
+index 20180894f82d..eb507751c115 100644
 --- a/drivers/pci/quirks.c
 +++ b/drivers/pci/quirks.c
-@@ -5182,6 +5182,12 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SERVERWORKS, 0x0420, quirk_no_ext_tags);
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SERVERWORKS, 0x0422, quirk_no_ext_tags);
- 
- #ifdef CONFIG_PCI_ATS
-+static void quirk_no_ats(struct pci_dev *pdev)
-+{
-+	pci_info(pdev, "disabling ATS\n");
-+	pdev->ats_cap = 0;
-+}
+@@ -5212,6 +5212,25 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x7312, quirk_amd_harvest_no_ats);
+ /* AMD Navi14 dGPU */
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x7340, quirk_amd_harvest_no_ats);
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x7341, quirk_amd_harvest_no_ats);
 +
- /*
-  * Some devices require additional driver setup to enable ATS.  Don't use
-  * ATS for those devices as ATS will be enabled before the driver has had a
-@@ -5194,8 +5200,7 @@ static void quirk_amd_harvest_no_ats(struct pci_dev *pdev)
- 	    (pdev->device == 0x7341 && pdev->revision != 0x00))
- 		return;
++/*
++ * Intel IPU E2000 revisions before C0 implement incorrect endianness
++ * in ATS Invalidate Request message body. Disable ATS for those devices.
++ */
++static void quirk_intel_e2000_no_ats(struct pci_dev *pdev)
++{
++	if (pdev->revision < 0x20)
++		quirk_no_ats(pdev);
++}
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1451, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1452, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1453, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1454, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1455, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1457, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1459, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x145a, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x145c, quirk_intel_e2000_no_ats);
+ #endif /* CONFIG_PCI_ATS */
  
--	pci_info(pdev, "disabling ATS\n");
--	pdev->ats_cap = 0;
-+	quirk_no_ats(pdev);
- }
- 
- /* AMD Stoney platform GPU */
+ /* Freescale PCIe doesn't support MSI in RC mode */
 -- 
 2.43.0
 
