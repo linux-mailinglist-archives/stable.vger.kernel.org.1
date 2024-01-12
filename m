@@ -1,152 +1,88 @@
-Return-Path: <stable+bounces-10566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 798A982C0E0
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 14:29:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2395882C0F6
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 14:40:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 204D91F258E5
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 13:29:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7EBDB23D44
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 13:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66E9B6BB5C;
-	Fri, 12 Jan 2024 13:28:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="B88b5jAL";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aJ+PHM6K"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4C16D1A7;
+	Fri, 12 Jan 2024 13:40:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42C46A019;
-	Fri, 12 Jan 2024 13:28:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: John Ogness <john.ogness@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1705066134;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5PpAnkyBikMPd+fkvnJS1FP8hHu1DaIJO182JY2898Q=;
-	b=B88b5jALuLKzn77McNRQ8kARoRQQ1O+F5/G484snrPAXu2BwC9NiFygIlT80t57Lfb6kuB
-	pB9WL9x7GFEba4aSiW8wxTUjWVc1L7kRn02efCFDMpBndpSxNaRN4xjRzo//Qvak4sSySL
-	Ac9nOdY05N6loI9Zpu6zDtNXjnslPg+tN4W7D0jgZVS/gmvsAVZiKqluCq9enaCCXs3Ymd
-	0Cxg2Ioc/XyXLJ73qIiEwAON4R6csC+CMhdPLWel6eWdaSMVbrBVdi2QEo1oaIwwxjirsN
-	9MkkKkwZIfdsf0EnRnyKX6S+vTQ4w2fXkpQ3btUsZiPmWlu418auXh9Pdu+/Bw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1705066134;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5PpAnkyBikMPd+fkvnJS1FP8hHu1DaIJO182JY2898Q=;
-	b=aJ+PHM6Kk/LrQscByIkEzUBDPXW1pP/K1fg8c11IA7qfem/vbsshb0nwmgT32bitxTrDM5
-	k2ezn9+xAJu7D1BQ==
-To: Gui-Dong Han <2045gemini@gmail.com>, gregkh@linuxfoundation.org,
- jirislaby@kernel.org, ilpo.jarvinen@linux.intel.com, tony@atomide.com,
- l.sanfilippo@kunbus.com, tglx@linutronix.de,
- andriy.shevchenko@linux.intel.com
-Cc: linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
- baijiaju1990@outlook.com, Gui-Dong Han <2045gemini@gmail.com>,
- stable@vger.kernel.org
-Subject: Re: [PATCH] serial: core: Fix double fetch in
- uart_throttle/uart_unthrottle
-In-Reply-To: <20240112121844.17580-1-2045gemini@gmail.com>
-References: <20240112121844.17580-1-2045gemini@gmail.com>
-Date: Fri, 12 Jan 2024 14:34:52 +0106
-Message-ID: <87h6ji7ka3.fsf@jogness.linutronix.de>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A981B25746;
+	Fri, 12 Jan 2024 13:40:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from msexch01.omp.ru (10.188.4.12) by msexch01.omp.ru (10.188.4.12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Fri, 12 Jan
+ 2024 16:40:17 +0300
+Received: from msexch01.omp.ru ([fe80::4020:d881:621a:6b6b]) by
+ msexch01.omp.ru ([fe80::4020:d881:621a:6b6b%5]) with mapi id 15.02.1258.012;
+ Fri, 12 Jan 2024 16:40:17 +0300
+From: Roman Smirnov <r.smirnov@omp.ru>
+To: Matthew Wilcox <willy@infradead.org>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Andrew Morton <akpm@linux-foundation.org>,
+	Alexey Khoroshilov <khoroshilov@ispras.ru>, Sergey Shtylyov
+	<s.shtylyov@omp.ru>, Karina Yankevich <k.yankevich@omp.ru>,
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>
+Subject: Re: [PATCH 5.10 0/2] mm/truncate: fix issue in ext4_set_page_dirty()
+Thread-Topic: [PATCH 5.10 0/2] mm/truncate: fix issue in ext4_set_page_dirty()
+Thread-Index: AQHaRJvZs/ufXYdw80SbjgapkLNiNLDUiucAgAGlSY4=
+Date: Fri, 12 Jan 2024 13:40:17 +0000
+Message-ID: <3cd52f6e1b3d4daba35fb350e990e646@omp.ru>
+References: <20240111143747.4418-1-r.smirnov@omp.ru>,<ZaAJwEg4rvleFuC9@casper.infradead.org>
+In-Reply-To: <ZaAJwEg4rvleFuC9@casper.infradead.org>
+Accept-Language: ru-RU, en-US
+Content-Language: ru-RU
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-kse-serverinfo: msexch01.omp.ru, 9
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: Clean, bases: 1/12/2024 9:53:00 AM
+x-kse-attachment-filter-triggered-rules: Clean
+x-kse-attachment-filter-triggered-filters: Clean
+x-kse-bulkmessagesfiltering-scan-result: InTheLimit
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
 
-On 2024-01-12, Gui-Dong Han <2045gemini@gmail.com> wrote:
-> In uart_throttle() and uart_unthrottle():
->     if (port->status & mask) {
->         port->ops->throttle/unthrottle(port);
->         mask &= ~port->status;
->     }
->     // Code segment utilizing the mask value to determine UART behavior
->
-> In uart_change_line_settings():
->     uart_port_lock_irq(uport);
->     // Code segment responsible for updating uport->status
->     uart_port_unlock_irq(uport);
->
-> In the uart_throttle() and uart_unthrottle() functions, there is a double
-> fetch issue due to concurrent execution with uart_change_line_settings().
-> In uart_throttle() and uart_unthrottle(), the check
-> if (port->status & mask) is made, followed by mask &= ~port->status,
-> where the relevant bits are cleared. However, port->status may be modified
-> in uart_change_line_settings(). The current implementation does not ensure
-> atomicity in the access and modification of port->status and mask. This
-> can result in mask being updated based on a modified port->status value,
-> leading to improper UART actions.
->
-> This possible bug is found by an experimental static analysis tool
-> developed by our team, BassCheck[1]. This tool analyzes the locking APIs
-> to extract function pairs that can be concurrently executed, and then
-> analyzes the instructions in the paired functions to identify possible
-> concurrency bugs including data races and atomicity violations. The above
-> possible bug is reported when our tool analyzes the source code of
-> Linux 5.17.
->
-> To resolve this double fetch, it is suggested to add a uart_port_lock pair
-> in uart_throttle() and uart_unthrottle(). With this patch applied, our
-> tool no longer reports the bug, with the kernel configuration allyesconfig
-> for x86_64. Due to the absence of the requisite hardware, we are unable to
-> conduct runtime testing of the patch. Therefore, our verification is
-> solely based on code logic analysis.
->
-> [1] https://sites.google.com/view/basscheck/
->
-> Fixes: 391f93f2ec9f ("serial: core: Rework hw-assisted flow control support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
-> ---
->  drivers/tty/serial/serial_core.c | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
-> index 80085b151b34..9d905fdf2843 100644
-> --- a/drivers/tty/serial/serial_core.c
-> +++ b/drivers/tty/serial/serial_core.c
-> @@ -723,11 +723,13 @@ static void uart_throttle(struct tty_struct *tty)
->  		mask |= UPSTAT_AUTOXOFF;
->  	if (C_CRTSCTS(tty))
->  		mask |= UPSTAT_AUTORTS;
-> -
-> +
-> +	uart_port_lock_irq(port);
->  	if (port->status & mask) {
->  		port->ops->throttle(port);
->  		mask &= ~port->status;
->  	}
-> +	uart_port_unlock_irq(port);
+On Thu, 11 Jan 2024 15:31:12 +0000, Matthew Wilcox wrote:
 
-You would also need to remove uart_port_lock_irq() out of all the
-throttle() callbacks.
+> I do not understand the crash, and I do not understand why this patch
+> would fix it.  Can you explain either?
 
->  
->  	if (mask & UPSTAT_AUTORTS)
->  		uart_clear_mctrl(port, TIOCM_RTS);
-> @@ -753,10 +755,12 @@ static void uart_unthrottle(struct tty_struct *tty)
->  	if (C_CRTSCTS(tty))
->  		mask |= UPSTAT_AUTORTS;
->  
-> +	uart_port_lock_irq(port);
->  	if (port->status & mask) {
->  		port->ops->unthrottle(port);
->  		mask &= ~port->status;
->  	}
-> +	uart_port_unlock_irq(port);
+The WARNING appears in the following location:
+https://elixir.bootlin.com/linux/v5.10.205/source/fs/ext4/inode.c#L3693
 
-You would also need to remove uart_port_lock_irq() out of all the
-unthrottle() callbacks.
+Reverse bisection pointed at the 2nd patch as a fix, but after=20
+backporting this patch to 5.10 branch I still hit the WARNING.
+I noticed that there was some missing code compared to the original
+patch:
 
-John Ogness
+if (folio_has_private(folio) && !filemap_release_folio(folio, 0))
+         return 0;
+
+Then I found a patch with this code before using folio, applied it,
+and tests showed the WARNING disappeared. I also used the linux test
+project to make sure nothing was broken. I'll try to dig a little
+deeper and explain the crash.
+
+Thanks for the reply.
 
