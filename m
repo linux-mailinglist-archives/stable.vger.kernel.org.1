@@ -1,71 +1,97 @@
-Return-Path: <stable+bounces-10569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C875082C115
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 14:48:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AED1282C153
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 15:05:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 799A42865B7
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 13:48:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59A9B285817
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 14:05:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A1E6D1B2;
-	Fri, 12 Jan 2024 13:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81A56D1C8;
+	Fri, 12 Jan 2024 14:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LPFbBNAq"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oKDDUd8r"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747AB6D1A8;
-	Fri, 12 Jan 2024 13:48:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516F5C433C7;
-	Fri, 12 Jan 2024 13:48:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705067301;
-	bh=EFpXmdi+94w1NoCiiu1BKtTy8v+SRmS3ykZ0eRaUW30=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LPFbBNAqGLfRO+EmAnPz+SzHL4dFyN4vF9ZdZIZp/bYmcGQ4PkvfKjov3ndqXJ1PU
-	 4lqr8S6BF6ld4MjJqZ6ehTp7/RwVGwxuAONtXSwq8Co/n/gDiZ02sDP9rvqciLBfE/
-	 TFgt+yDnQnjyv8VXbZlAnmDtT4/fL1yozlGYckf4=
-Date: Fri, 12 Jan 2024 14:48:18 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA43D59175;
+	Fri, 12 Jan 2024 14:05:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1705068342; x=1736604342;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=77qUhIk8UEJUQ4AxK+DOYzJtZ9F/QPegLGP5CRgl2gg=;
+  b=oKDDUd8rXYobRYrhlRWSI5vhQ3NY9pzP5eAym6h7km4dG6AZKtWxFI9H
+   awtaanxcXxnycq8+AxE8GVS16z+FlSXiyiNdNsZ/oNpNmQKWgoBLqEAUo
+   7vgvs+Jns8yoDrktkIFcccCX9OFyL1dZrhT1CqdB9z/708H5opbXKOBd+
+   Rj/h21ZKZPUOqH0saz5vOiOya29+/i8ewpkT7VsP0pG1vImFcaQZZJhMg
+   VO+yLU6xz4QLlMGWtumASkhZIFPKVA2U/texz7RATNz7RdKOgx3gmjewi
+   hsJvb6k4beCSt0aFB5pEKE9gzEY/F17iK3b7v5zGopei8ZnRHX6bC50UV
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10951"; a="398862244"
+X-IronPort-AV: E=Sophos;i="6.04,189,1695711600"; 
+   d="scan'208";a="398862244"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2024 06:05:41 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10951"; a="786357248"
+X-IronPort-AV: E=Sophos;i="6.04,189,1695711600"; 
+   d="scan'208";a="786357248"
+Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.246.33.141])
+  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2024 06:05:37 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Fri, 12 Jan 2024 16:05:34 +0200 (EET)
 To: Gui-Dong Han <2045gemini@gmail.com>
-Cc: jirislaby@kernel.org, linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org, baijiaju1990@outlook.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] tty: fix atomicity violation in n_tty_read
-Message-ID: <2024011212-disbelief-respect-5230@gregkh>
-References: <20240112125801.2650-1-2045gemini@gmail.com>
+cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+    Jiri Slaby <jirislaby@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+    l.sanfilippo@kunbus.com, john.ogness@linutronix.de, tglx@linutronix.de, 
+    Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+    LKML <linux-kernel@vger.kernel.org>, 
+    linux-serial <linux-serial@vger.kernel.org>, baijiaju1990@outlook.com, 
+    stable@vger.kernel.org
+Subject: Re: [PATCH] serial: core: Fix double fetch in
+ uart_throttle/uart_unthrottle
+In-Reply-To: <20240112121844.17580-1-2045gemini@gmail.com>
+Message-ID: <3bbabf34-1eba-8983-439e-f23e811e80a8@linux.intel.com>
+References: <20240112121844.17580-1-2045gemini@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240112125801.2650-1-2045gemini@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
 
-On Fri, Jan 12, 2024 at 08:58:01PM +0800, Gui-Dong Han wrote:
-> In n_tty_read():
->     if (packet && tty->link->ctrl.pktstatus) {
->     ...
->     spin_lock_irq(&tty->link->ctrl.lock);
->     cs = tty->link->ctrl.pktstatus;
->     tty->link->ctrl.pktstatus = 0;
->     spin_unlock_irq(&tty->link->ctrl.lock);
->     *kb++ = cs;
->     ...
+On Fri, 12 Jan 2024, Gui-Dong Han wrote:
+
+> In uart_throttle() and uart_unthrottle():
+>     if (port->status & mask) {
+>         port->ops->throttle/unthrottle(port);
+>         mask &= ~port->status;
+>     }
+>     // Code segment utilizing the mask value to determine UART behavior
 > 
-> In n_tty_read() function, there is a potential atomicity violation issue.
-> The tty->link->ctrl.pktstatus might be set to 0 after being checked, which
-> could lead to incorrect values in the kernel space buffer
-> pointer (kb/kbuf). The check if (packet && tty->link->ctrl.pktstatus)
-> occurs outside the spin_lock_irq(&tty->link->ctrl.lock) block. This may
-> lead to tty->link->ctrl.pktstatus being altered between the check and the
-> lock, causing *kb++ = cs; to be assigned with a zero pktstatus value.
+> In uart_change_line_settings():
+>     uart_port_lock_irq(uport);
+>     // Code segment responsible for updating uport->status
+>     uart_port_unlock_irq(uport);
+> 
+> In the uart_throttle() and uart_unthrottle() functions, there is a double
+> fetch issue due to concurrent execution with uart_change_line_settings().
+> In uart_throttle() and uart_unthrottle(), the check
+> if (port->status & mask) is made, followed by mask &= ~port->status,
+> where the relevant bits are cleared. However, port->status may be modified
+> in uart_change_line_settings(). The current implementation does not ensure
+> atomicity in the access and modification of port->status and mask. This
+> can result in mask being updated based on a modified port->status value,
+> leading to improper UART actions.
 > 
 > This possible bug is found by an experimental static analysis tool
 > developed by our team, BassCheck[1]. This tool analyzes the locking APIs
@@ -74,46 +100,74 @@ On Fri, Jan 12, 2024 at 08:58:01PM +0800, Gui-Dong Han wrote:
 > concurrency bugs including data races and atomicity violations. The above
 > possible bug is reported when our tool analyzes the source code of
 > Linux 5.17.
-
-Again, we can't do anything with 5.17 patches :(
-
-> To resolve this atomicity issue, it is suggested to move the condition
-> check if (packet && tty->link->ctrl.pktstatus) inside the spin_lock block.
-> With this patch applied, our tool no longer reports the bug, with the
-> kernel configuration allyesconfig for x86_64. Due to the absence of the
-> requisite hardware, we are unable to conduct runtime testing of the patch.
-> Therefore, our verification is solely based on code logic analysis.
+> 
+> To resolve this double fetch, it is suggested to add a uart_port_lock pair
+> in uart_throttle() and uart_unthrottle(). With this patch applied, our
+> tool no longer reports the bug, with the kernel configuration allyesconfig
+> for x86_64. Due to the absence of the requisite hardware, we are unable to
+> conduct runtime testing of the patch. Therefore, our verification is
+> solely based on code logic analysis.
 > 
 > [1] https://sites.google.com/view/basscheck/
 > 
-> Fixes: 64d608db38ff ("tty: cumulate and document tty_struct::ctrl* members")
-
-That is not where this code came from :(
-
+> Fixes: 391f93f2ec9f ("serial: core: Rework hw-assisted flow control support")
 > Cc: stable@vger.kernel.org
 > Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
 > ---
->  drivers/tty/n_tty.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
+>  drivers/tty/serial/serial_core.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/tty/n_tty.c b/drivers/tty/n_tty.c
-> index f252d0b5a434..df54ab0c4d8c 100644
-> --- a/drivers/tty/n_tty.c
-> +++ b/drivers/tty/n_tty.c
-> @@ -2222,19 +2222,23 @@ static ssize_t n_tty_read(struct tty_struct *tty, struct file *file, u8 *kbuf,
->  	add_wait_queue(&tty->read_wait, &wait);
->  	while (nr) {
->  		/* First test for status change. */
-> +		spin_lock_irq(&tty->link->ctrl.lock);
+> diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+> index 80085b151b34..9d905fdf2843 100644
+> --- a/drivers/tty/serial/serial_core.c
+> +++ b/drivers/tty/serial/serial_core.c
+> @@ -723,11 +723,13 @@ static void uart_throttle(struct tty_struct *tty)
+>  		mask |= UPSTAT_AUTOXOFF;
+>  	if (C_CRTSCTS(tty))
+>  		mask |= UPSTAT_AUTORTS;
+> -
+> +
+> +	uart_port_lock_irq(port);
+>  	if (port->status & mask) {
+>  		port->ops->throttle(port);
+>  		mask &= ~port->status;
+>  	}
+> +	uart_port_unlock_irq(port);
+>  
+>  	if (mask & UPSTAT_AUTORTS)
+>  		uart_clear_mctrl(port, TIOCM_RTS);
+> @@ -753,10 +755,12 @@ static void uart_unthrottle(struct tty_struct *tty)
+>  	if (C_CRTSCTS(tty))
+>  		mask |= UPSTAT_AUTORTS;
+>  
+> +	uart_port_lock_irq(port);
+>  	if (port->status & mask) {
+>  		port->ops->unthrottle(port);
+>  		mask &= ~port->status;
+>  	}
+> +	uart_port_unlock_irq(port);
+>  
+>  	if (mask & UPSTAT_AUTORTS)
+>  		uart_set_mctrl(port, TIOCM_RTS);
 
-What is this lock going to do for the performance?  The n_tty_read path
-is VERY tricky, and heavily used and tested, without a real reproducer
-or proof of a bug here, we are going to be very loath to change anything
-for obvious reasons.
+Hi,
 
-Also, how was this tested?
+This is very bogus "fix". While change to the local variable gets 
+"protected", uart_change_line_settings() can race after unlock and the 
+value held in mask is again stale.
 
-thanks,
+If, and it's a big if, this is a real problem, the patch does not fix 
+anything! It proves your tool is flawed because it doesn't detect the 
+race with uart_change_line_settings() issue still exists after this 
+non-fix.
 
-greg k-h
+So NAK from me. Please provide a real fix instead if you think there is
+a real issue.
+
+Also, don't use vague wording like "leading to improper UART action" but 
+describe precisely what goes wrong!
+
+-- 
+ i.
+
 
