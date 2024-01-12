@@ -1,155 +1,197 @@
-Return-Path: <stable+bounces-10547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 299DE82B943
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 02:55:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3049982B974
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 03:21:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA149B24DA1
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 01:55:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7BF81F24721
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 02:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A6D1117;
-	Fri, 12 Jan 2024 01:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75B441118;
+	Fri, 12 Jan 2024 02:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="cMLJGJQr"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="mf/6KC/u";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="x0yYFOPR"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EFE2110D
-	for <stable@vger.kernel.org>; Fri, 12 Jan 2024 01:55:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com [209.85.160.197])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 8A4373F184
-	for <stable@vger.kernel.org>; Fri, 12 Jan 2024 01:55:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1705024536;
-	bh=r3WXFnWFPclS/tkFV/FisWCvXKNSCcSOQQ8WNnFhxeE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version;
-	b=cMLJGJQrWoaKXRAZIOU77knVsp8wkjXUASV0YWiWL2iP7wkzf2EjZHFux7bAf2smv
-	 uYQJx/L5tN/sV9iIWNIVs3pxgJx9MY4PQb3AZk6zEwF+ULH5Qa9QEIxZcXi8idon3t
-	 kz4zJHJWTlI+z8ljOrO/C3t5MySAQMQZdf4xJ93/BuZw0En61Rr4N+28Ej8CPOY6k6
-	 hzes+/VFPnvaQX4aSshFB6RYNfey/xv0YvEkODJ/inSX0cCRPsHbSkxb7c4+91jOd2
-	 98xe98dfC7VP5ix45Sjj3AexJECd0cLwD+uOswmd4RrfQo0rYBe1ZJassEr6TaKjCP
-	 P1APcnzL3YClw==
-Received: by mail-qt1-f197.google.com with SMTP id d75a77b69052e-429a05fd0b7so41162101cf.3
-        for <stable@vger.kernel.org>; Thu, 11 Jan 2024 17:55:36 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705024532; x=1705629332;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=r3WXFnWFPclS/tkFV/FisWCvXKNSCcSOQQ8WNnFhxeE=;
-        b=Ju+Vfsib2qFdFA5zjnp1yB8qwdLFT9+xtWmb3o0UoeRdWbO1LOrd0s3aFTGHBP7f7n
-         Y9RqNPMxzdlqede36jMb0kWdHzCsfUmd1P0AKQgyRQSAijUfiekt0KeO3peOc13UFCsn
-         v2RUa8tDBrVwuNjlFXw21NO2Dl8ymooBWY8ppnRgNwmsC/kVOGvAE3nUesq1eECutiOm
-         qpMpkZcAgFMQrD+EBKnFV5Tm2yEQ3IKhFP63RT0XRsOGYNn2h7Q9Yrpzj6AfFNhTfK+x
-         dZIdXYAeRq0kEFua6yz1P3qmammqdZpscvUOlUJHxdB3lDo85EwTacPEB7wOOnhi2Bog
-         vy3Q==
-X-Gm-Message-State: AOJu0YzDGhYmHInz46DP33ulzA63DyeTxj1gYimEqyFrX+6kcVwrNNt5
-	wGdP7EUtOmGboRlgtjUiFpMiuq6QSDv9Z1oOBqOdXakU2+b60AiQ2gFWpX0DWV9SQs8Mq5RQVh0
-	NfES/EZqyho4rOgh372W9HUbvVT3K/nxwMac8p9v9
-X-Received: by 2002:ac8:7d45:0:b0:429:c02d:bcd9 with SMTP id h5-20020ac87d45000000b00429c02dbcd9mr648610qtb.8.1705024532793;
-        Thu, 11 Jan 2024 17:55:32 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFk8NBvD4XYyK8cUQEl2IIxo7xJg5v3guFwOHhvQ99wUhdX75mRJ/TugTl24xJ2A0ShzWR0kQ==
-X-Received: by 2002:ac8:7d45:0:b0:429:c02d:bcd9 with SMTP id h5-20020ac87d45000000b00429c02dbcd9mr648601qtb.8.1705024532558;
-        Thu, 11 Jan 2024 17:55:32 -0800 (PST)
-Received: from localhost (uk.sesame.canonical.com. [185.125.190.60])
-        by smtp.gmail.com with ESMTPSA id ev11-20020a05622a510b00b0042987c129e7sm956117qtb.55.2024.01.11.17.55.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jan 2024 17:55:32 -0800 (PST)
-From: Cengiz Can <cengiz.can@canonical.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09B1136B;
+	Fri, 12 Jan 2024 02:21:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40C1AGWQ003400;
+	Fri, 12 Jan 2024 02:21:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : content-type :
+ mime-version; s=corp-2023-11-20;
+ bh=phDZoDxnXn2C0XqNUVkv6DN6RJaUZkIFuIKrU7now7w=;
+ b=mf/6KC/u/h4pMnafxVGDG776/qbCfxZHEBASQvDFqhxTPLSP1tdVD/drtozZVnjilVn4
+ 97Z3fogZstT/BnmUIn3iv3J5nSxZhd8v6lVGzKYby28EW/FEBE8kacVCc/L/TuGLOfiQ
+ bOm8hnc4fr/S8bGpspF+IsBCrLjFKA8v7n3x+5WuJkRosUS3n3nPyBeqCz3PMFKB9MKy
+ 7OCKlQxkcHJsiW1rWvfL1cFLbQvFB/bjqInghuwFSyc/yarlpeUNeKvj9cHxoAfxmsGE
+ V915zgyqPdW3/sFT53mXNz5XtkLaGEeq5pxSrfGepIdJigbzhGYnZJ0aNKSFpb7zWj2Y YQ== 
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vjnwv8xwu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Jan 2024 02:21:05 +0000
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 40C17n9j008761;
+	Fri, 12 Jan 2024 02:21:05 GMT
+Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2041.outbound.protection.outlook.com [104.47.66.41])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3vfuup33un-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 12 Jan 2024 02:21:05 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=jrSLJz5HSE7UFW7ettnpRBVHV0r3dz0nFmMtMtGZzVdpDu2iHNZuWk1oX93TANQ/9lBVKDxZRIb44QvjBsCaB8oqq7hXitNvy8UiSHxtD0Nhg7GwfORoRmF7m9wYYmdlP7IPBEzsnS0xZaSGuCB0hX6WkSg5QA9arJRkjXzkKr9XinDZW/P6WQ0O6Vnbmv0sp14uOoufvVOiLaRVBtUEm3+lGt3vJJM3TVeYYQXUF0JYo1krDUb0cLt9wer8IPmE2A7A72qm976S/VCL1cHRiWxkEn618DZUX52CrqXdLU1nOzrEkI6XXxhLT/ba6y3PF2TD3Je1RxEsO9v/3OLmTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=phDZoDxnXn2C0XqNUVkv6DN6RJaUZkIFuIKrU7now7w=;
+ b=a48qx4AWhQz9CB1lEJsSaDkUlg7fzGzwTk2nLa5apGCduufqHLPk3qrRiLOGkNdfB55rQiANk0aqUT8bt7t9gXeBUBcH4Kf8Oh1J0VHwBwL7fSkf6Fs1Ztgl4x6hFX8ls3slL1oRNk1knQ9zLpT6FR07GLINqpqv1nfrfyPK1IP1YhZTHcXTKntQKMWbbqw5SKiz9WSIOAN/RMo1aUWDey7uszZsGcnhAuP87GcJRDX8DFeaVbmtCJkAH0OtMY7chkqjRznIxypz5DPwKgSKXJ1mccmnMltIdhAvjDizLdtkDM3867V/ZGJ3tpk0UJVNYQaRZuheU97twz8HgGIn5w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=phDZoDxnXn2C0XqNUVkv6DN6RJaUZkIFuIKrU7now7w=;
+ b=x0yYFOPR/0RScovC8OBSSJka/ebHiKUo2PizO0UZ5lfzmRcYRJUG8W62Q/D9rrqq1BvQTvLmkghXCJWDWSTaSSTir71mwBCHCf5Twzp0n0Jn6wv/rpJ2pkXox6hPAr81yOQJt7N7p6XKprnRL5Pb1KT9JzFJkuV35sSaUO24w/U=
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
+ by CH0PR10MB4969.namprd10.prod.outlook.com (2603:10b6:610:c8::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.21; Fri, 12 Jan
+ 2024 02:21:02 +0000
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::2b0c:62b3:f9a9:5972]) by PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::2b0c:62b3:f9a9:5972%4]) with mapi id 15.20.7181.019; Fri, 12 Jan 2024
+ 02:21:02 +0000
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
-	"David S . Miller" <davem@davemloft.net>,
-	stable@vger.kernel.org
-Subject: [PATCH 5.15.y] netfilter: nf_tables: Reject tables of unsupported family
-Date: Fri, 12 Jan 2024 04:54:37 +0300
-Message-Id: <20240112015436.1117482-3-cengiz.can@canonical.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20240112015436.1117482-1-cengiz.can@canonical.com>
-References: <20240112015436.1117482-1-cengiz.can@canonical.com>
+Cc: "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Pavel Machek
+ <pavel@ucw.cz>, bvanassche@acm.org, hch@lst.de,
+        hare@suse.de, linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+        torvalds@linux-foundation.org, stable@vger.kernel.org, lwn@lwn.net,
+        jslaby@suse.cz
+Subject: Re: scsi_get_lba breakage in 5.10 -- Re: Linux 5.10.206
+From: "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq1il3z5m4y.fsf@ca-mkp.ca.oracle.com>
+References: <2024010527-revision-ended-aea2@gregkh>
+	<ZZ042FejzwMM5vDW@duo.ucw.cz> <yq1jzoi7hrt.fsf@ca-mkp.ca.oracle.com>
+	<2024011047-clench-scheme-1f46@gregkh>
+	<2024011121-unfailing-backroom-14e6@gregkh>
+Date: Thu, 11 Jan 2024 21:21:00 -0500
+In-Reply-To: <2024011121-unfailing-backroom-14e6@gregkh> (Greg Kroah-Hartman's
+	message of "Thu, 11 Jan 2024 10:45:38 +0100")
+Content-Type: text/plain
+X-ClientProxiedBy: SJ0PR13CA0058.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c2::33) To PH0PR10MB4759.namprd10.prod.outlook.com
+ (2603:10b6:510:3d::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB4759:EE_|CH0PR10MB4969:EE_
+X-MS-Office365-Filtering-Correlation-Id: e4b6e389-d9c6-42f1-bc42-08dc13151f9a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	882RNh1eeCnsyu0dJc38LrO6oON5ZXVlGhxfS+tc4HeniDP5Da31PY70cEBE7L4E24cJMqc66I6P5MMX7UvBT9Eb+o9KCcNFJy+cPyCZztc4HwIUL+pK3+UIrvVkqZAyaxLlbFruUVhUBMGY3nuxMNqp+2heF9UGGIbYxVi+mktP1movETZrq5+Fr8pX30ElIfg3kUITHldiJF8KzjrEKtIVfWa1H9/rNrVqCHpzNS12/OEQLduan31wey23/k+n2e+6HmBx6x4oC+9RkrNX+VcacNRezIc5JLCUGoyJX0rga2jdag11cv+Z6hq7cgGtrBuD+pk8/i2jTH/pWbN5KmgVb0Hz5T67DBG2Fr7CcxPP8CT2/AJe5uGSdYmSa9Ll8CD+Qt4s+2QV+I0W3gdusb7/jqSLILyazndVudPhBUKaSWs3EO/fu7cqj/7cuIlipZGIL7lA4flcyn/qbEla41kRgkiXOC4KfXHsF3y9B/mKaM/fqRIgWDikAcSTLQuisrZ/wlAT9bcQS3Lb7GtFJeCHjf6pvQKQBl7ATg6tPDj2EkTZwR0WLfNFlr3J/PFl
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4759.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(136003)(366004)(346002)(39860400002)(396003)(376002)(230922051799003)(186009)(1800799012)(451199024)(64100799003)(8676002)(8936002)(5660300002)(478600001)(4326008)(38100700002)(6512007)(6506007)(36916002)(4744005)(2906002)(7416002)(66476007)(66946007)(66556008)(54906003)(6486002)(316002)(6916009)(26005)(83380400001)(41300700001)(86362001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?us-ascii?Q?3KawuotghE91fqTlZlbfX49D7MsH/Z5o35Cf/YOVOuBA+c5P62REENVjeiNf?=
+ =?us-ascii?Q?rQDU1UT3xNnCM4enxfmoKHD+q/3PSx5Fhn2idUrKOtNUZMOstCMLX1yIE7io?=
+ =?us-ascii?Q?9459XGBa+h43Jvi5evVK1FgckeFOhiz1UMnMicI/8orNs2zrWoqPekC+ia92?=
+ =?us-ascii?Q?fvGDbVT0lb5PkReYRd8ddPSN5QWXJMOaoPJonnJr6pvlB0xcdh+R9wdRPSnU?=
+ =?us-ascii?Q?R8BySj+2WMAsP/4UmZcjDXxxmcJ3MMOHfDi44vk6gotQOTB2cm2Rl4wLphMt?=
+ =?us-ascii?Q?MLT4sOwj5Ing3Fppj9IycSi9X/RV9otg9mm65+aDHeBqKxz59LNtAgEpT9GF?=
+ =?us-ascii?Q?a6vIJ7seCdvimG6rA5BydgHppWPUden3YiO6FQo+DHCVbvfa6EScxAfhx3kv?=
+ =?us-ascii?Q?EMARXCWnSR+0RWU3kD7qtW2Zk/VM+ZA2/1+OyZS93FLD+cRENr0Lf7fHtmnI?=
+ =?us-ascii?Q?suNNSr3dPsCWYhrKLWmz4yayVRXFsEhm6rvSx0/fq6DXNjmGlNvddf8nqAo3?=
+ =?us-ascii?Q?1o5snCJHfQR7U9cLrQML7Xg1eIrafwqH3p3S38OxU+4cJRv12FIS7Bt6IR/z?=
+ =?us-ascii?Q?AOVo2r0svMLKzAaHgtNUdoCCEpHAl2/+PVx/hlT2D3Wa80wrG4nKnkka7rlW?=
+ =?us-ascii?Q?PLbiEQUnoLu+Ou5qF7oAJJZ1m+1p01yde4HI9l5xvKUSooHXYoPFfeoRvH/5?=
+ =?us-ascii?Q?Pdzx2YvoyfcjBHT4IhosuEAPT31uE6IYcNooSn8oTmqgz9nKYC4UZskfV4Hk?=
+ =?us-ascii?Q?i3pJP7wHJeB02GF5cWWkVV3Ilz3vtb9JKu5mpDagLDzTBORJ0G+rhdruU9s+?=
+ =?us-ascii?Q?8BOThQnb41XaTsFzlWixlrn0NWGFkOuKpy76xGBOiShKBnUOFWAVkWChGFRI?=
+ =?us-ascii?Q?ceChCIaVOjAWJtIRON7xh3KBWhKP+VBOKPyfUM9sAU+sK1sO4pLPPkQVp9d2?=
+ =?us-ascii?Q?kIlBMC+pGMLvZsb4yTa1ZIQQ8fDZmZaY4q4H07yx+AS+P6xmLASQoWz8UiAd?=
+ =?us-ascii?Q?0yivDEX6P13OmLDQd5cFBc3oJI/a9MegDZKzZeZNHCx9nJLTxTbvhR8Pdg+G?=
+ =?us-ascii?Q?a3TZTj9Pay3vaYb8wrMhVUNxtmNCaZB0dFkgwZgBSRx3PKMxKq+uf5X3ky77?=
+ =?us-ascii?Q?Grf+q6vvUe3SJT43vvkAb0GR5K8DQf/+aroS0tof4Eg4iGrVHTms/lomeXKK?=
+ =?us-ascii?Q?7E/+CXTgIYvyZv36l/Q9HM8+SH1h7HtmkoRfy3ldlS4fPwTs3qq5S4oUJCLj?=
+ =?us-ascii?Q?1MN0CIZgYG4q+SJpuYR46EHukrBfvdd2LCDOPh+BRheJSz7gHjMAuQxKTnX3?=
+ =?us-ascii?Q?tFaCcfZ/gGCUdCsQjXO8AuKzGJ+114DX0i7DAfwKcfthHM2H44DIMbSUwRqy?=
+ =?us-ascii?Q?RYTScaSjci84/3qKgkrz5zP3F4j4nZBr/3vqnWP43/gU916GZkUIRkev4pk9?=
+ =?us-ascii?Q?LrzRplz/LIs+wy86ClhxxJOvWJYkivVbU1e/2PXDAPwF3ESfGa9KOZFEb81O?=
+ =?us-ascii?Q?/BT7qnN++nJg3nd3so/WVhwoJqMTepOXZTAijhqKgIRQ3fLT/GJf4xQYSWEz?=
+ =?us-ascii?Q?nw/2T50rUQaIy3GGKXlQtv38mtLDENMpoNNOjJEu0wGo+k5WsfZO188l6SN+?=
+ =?us-ascii?Q?HA=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
+	Vywfcy1lTpPgz95M7gQbUV5F79WE92Tnzq92r/VShSfezt8UQ/ClqT9fsfzw6jGPp0QiYr6UA+ZNSvZiczBxftzWj6qNauPIfC/lXYpcH/mzFcAQgvO3mB8T3QgObojzT3lQAvxQvlWzpumJfaGnj9MZ7+7fU+rgbHWsCLF9EkzJ8theKj397rlgXzQgKTalRDRiPMwmcpqDcfOlKsoRUSfoqQ/DTgVvH564DE6Bh5luLZRyddTHQ54m/voNdnQeXn6XFBNvUskHsWPExjei7hzBj/1OdYket0EU5tqQSZ5R49tmXtHuojDEwl5Vi8u3qOiMe5+vnLaAkWoOom0Q+4OTD9iC0vcld+Sob8tVSFiIKKQhoHx9aoSE7EdsiPzcuFSMpI6w5uZYwjSNT0dhrGdM4MAt14MpZ/l558GMWtVMu6OaVzwvJqb1deI8ZfR369chMFOMZPxM0dsH37z5d5CvfJfZvVXtCq4+tfxLOEgnYRtKqm7HRtZ4dcwbXmcGiwUnag1IaC51GQ77oW9ZZRuCdp+GPVRroFOgykaq4PISiQl4aDl2adDZO9gKORyzGcRlqUUQJjsPCLGBc3hYZZy1sH3e9HrbJzVvR/R1vvE=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4b6e389-d9c6-42f1-bc42-08dc13151f9a
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jan 2024 02:21:02.7580
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: OsZhnBFgOhRQs3u9IbnIoLciPPBOXU17YmYAI7Ptb7JAguA9OT8Rd3cIA7v2Vynila/9ad5gYuxArMHFmTRSkgiyfZnAQyKGgpE21b6il5o=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR10MB4969
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-11_15,2024-01-11_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=968 phishscore=0 mlxscore=0
+ spamscore=0 adultscore=0 malwarescore=0 suspectscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2401120014
+X-Proofpoint-GUID: yWpU9yXzRgewfb2SKcf17dezgBpQPBV8
+X-Proofpoint-ORIG-GUID: yWpU9yXzRgewfb2SKcf17dezgBpQPBV8
 
-From: Phil Sutter <phil@nwl.cc>
 
-commit f1082dd31fe461d482d69da2a8eccfeb7bf07ac2 upstream.
+Greg,
 
-An nftables family is merely a hollow container, its family just a
-number and such not reliant on compile-time options other than nftables
-support itself. Add an artificial check so attempts at using a family
-the kernel can't support fail as early as possible. This helps user
-space detect kernels which lack e.g. NFPROTO_INET.
+>> diff --git a/drivers/scsi/scsi_error.c b/drivers/scsi/scsi_error.c
+>> index 0c4bc42b55c2..3d3d139127ee 100644
+>> --- a/drivers/scsi/scsi_error.c
+>> +++ b/drivers/scsi/scsi_error.c
+>> @@ -1069,6 +1069,7 @@ static int scsi_send_eh_cmnd(struct scsi_cmnd *scmd, unsigned char *cmnd,
+>>  
+>>  	scsi_log_send(scmd);
+>>  	scmd->scsi_done = scsi_eh_done;
+>> +	scmd->flags |= SCMD_LAST;
+>>  
+>>  	/*
+>>  	 * Lock sdev->state_mutex to avoid that scsi_device_quiesce() can
+>> @@ -2361,6 +2362,7 @@ scsi_ioctl_reset(struct scsi_device *dev, int __user *arg)
+>>  	scsi_init_command(dev, scmd);
+>>  	scmd->request = rq;
+>>  	scmd->cmnd = scsi_req(rq)->cmd;
+>> +	scmd->flags |= SCMD_LAST;
+>>  
+>>  	scmd->scsi_done		= scsi_reset_provider_done_command;
+>>  	memset(&scmd->sdb, 0, sizeof(scmd->sdb));
+>
+> Ok, I have now done this and will push out a -rc1 with these changes in
+> it.
 
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Cengiz Can <cengiz.can@canonical.com>
----
- net/netfilter/nf_tables_api.c | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+Yeah, no need to bring in all those PI updates with associated driver
+changes just for this.
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 3ee0f632a942..3556818c7162 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -1247,6 +1247,30 @@ static int nft_objname_hash_cmp(struct rhashtable_compare_arg *arg,
- 	return strcmp(obj->key.name, k->name);
- }
- 
-+static bool nft_supported_family(u8 family)
-+{
-+	return false
-+#ifdef CONFIG_NF_TABLES_INET
-+		|| family == NFPROTO_INET
-+#endif
-+#ifdef CONFIG_NF_TABLES_IPV4
-+		|| family == NFPROTO_IPV4
-+#endif
-+#ifdef CONFIG_NF_TABLES_ARP
-+		|| family == NFPROTO_ARP
-+#endif
-+#ifdef CONFIG_NF_TABLES_NETDEV
-+		|| family == NFPROTO_NETDEV
-+#endif
-+#if IS_ENABLED(CONFIG_NF_TABLES_BRIDGE)
-+		|| family == NFPROTO_BRIDGE
-+#endif
-+#ifdef CONFIG_NF_TABLES_IPV6
-+		|| family == NFPROTO_IPV6
-+#endif
-+		;
-+}
-+
- static int nf_tables_newtable(struct sk_buff *skb, const struct nfnl_info *info,
- 			      const struct nlattr * const nla[])
- {
-@@ -1261,6 +1285,9 @@ static int nf_tables_newtable(struct sk_buff *skb, const struct nfnl_info *info,
- 	u32 flags = 0;
- 	int err;
- 
-+	if (!nft_supported_family(family))
-+		return -EOPNOTSUPP;
-+
- 	lockdep_assert_held(&nft_net->commit_mutex);
- 	attr = nla[NFTA_TABLE_NAME];
- 	table = nft_table_lookup(net, attr, family, genmask,
 -- 
-2.40.1
-
+Martin K. Petersen	Oracle Linux Engineering
 
