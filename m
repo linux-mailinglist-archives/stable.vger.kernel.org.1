@@ -1,73 +1,78 @@
-Return-Path: <stable+bounces-10555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CAAA82BBDE
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 08:39:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5351282BC1A
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 08:58:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08A62B230A3
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 07:39:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E35261F24819
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 07:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255425C91C;
-	Fri, 12 Jan 2024 07:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49B355D73B;
+	Fri, 12 Jan 2024 07:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AhuOaNR0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VJ4VUlhU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B085C90C;
-	Fri, 12 Jan 2024 07:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F7A5D8E0;
+	Fri, 12 Jan 2024 07:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-6d9cdd0a5e6so3696431b3a.3;
-        Thu, 11 Jan 2024 23:39:11 -0800 (PST)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1d3e416f303so26204095ad.0;
+        Thu, 11 Jan 2024 23:57:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705045151; x=1705649951; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1705046272; x=1705651072; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ltxfqdn8oMs6HiFEgPdU5d3jRUgHJ3wntYFCndBlEL0=;
-        b=AhuOaNR0pSJdkFQuwOxyK/b+ALALPGdN+knq/7Nz+ZiLKnzr42VEUvIB6C0wAb+lLQ
-         iw+NxI045owqxnRWew7nA9pydu0QuTP6+CDhD9Vj6W3iD2xp50tionHGh5njl1DtCC8Y
-         rbWf3aI3OGCpt1PIPLXhW0B2IM+kuqUYcrAzzDB3gnWCVs3S9yvySfWHO0inAAfJGg1D
-         TyRN8vHfahW8kcwZUL8wioTzM83ZMsGu+vR1VTFdFFCoxpQSn58QMBsJZi+A1hGlzsyc
-         tFcIw1VMBYymTW7YfBZHAw2WAQ/zO63v7CyhXDVUIFKCrj/tb51UMJi9vfqa3odonm+y
-         OSVQ==
+        bh=1zgSO6gdbHTTWvN7qp5pJTd1aLnPZ/lO5bfOXL9xEyU=;
+        b=VJ4VUlhU9TyiNT5zC6TewmmfeL/bpvtO3pviO7z14701Z3m/mtMFPeHRCPbrTj+tsL
+         qat8Pj8eYuKvNytFVfHXMUm4uP1Ml17zHoY/eupe0QR8S6EIROsCsBJBM/wIIOUmy0HI
+         Jxr0Q958BaZxmbz9HjVsuUqKgTTwTFU8GUwbJ3YDFnSONkbwyQlR6Dixh/ZAHvMLrJHF
+         Tk8Pl31G3lKBqLDhAW9scJIev++jXuIBmTFdLXSRrSFu4toa9GcgU+paaZj6IBiqgarK
+         dUXjxYba93YGwwO2O8ufkt4WjNccBeGmjiMJ9t14aKce+eFjxgfYHQzCuzb3ZOW62E3m
+         iC2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705045151; x=1705649951;
+        d=1e100.net; s=20230601; t=1705046272; x=1705651072;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ltxfqdn8oMs6HiFEgPdU5d3jRUgHJ3wntYFCndBlEL0=;
-        b=PbuAG5MdgrEoyADk99a6m7ZqnaUmM/0N5jocaRUdK0phYPx4yCbs6mkw7MKnNoeBV2
-         Eo6pDzv+f2NoqeXPyz/2ewhZCrWMTipjmTDZXfCeMth1jorYv9T0an3ipV/cU1x/+DFK
-         sfbalUDROK6Mbb/Q43FL1GYQSVd+PwfKFCy1ZMcIKQUZxC8nOuUDCeo/692axVSyhEuE
-         2SasWymN3TGYpi/bGMAR8hbEaRrSNdpYHP9CzBbXGV4lazLMLS5u1s9a0dhyDnUNbvyN
-         wa+UDagVNLc6EB7Zc13k71KMtNko+cv6EJJX57EgJWnfQD8WYN9ZAeVR5oJfJS1izERm
-         VzyA==
-X-Gm-Message-State: AOJu0YyenFN72QPgNBX8R7Mtp7TTGzMtf4HHO9AtZ6HwBVWft6suBIv7
-	C+C4TwzBecgkNqIw9EKci9E=
-X-Google-Smtp-Source: AGHT+IHHyM4INeewJgDCfByb1wR/DWXGrSMUSzpTM4WgHiY4EFQ9S7QWLIsDnv8bY2tCOBNXv8rW+w==
-X-Received: by 2002:aa7:9e52:0:b0:6d9:a0a2:a7c0 with SMTP id z18-20020aa79e52000000b006d9a0a2a7c0mr388151pfq.66.1705045150890;
-        Thu, 11 Jan 2024 23:39:10 -0800 (PST)
-Received: from g2039B650.. ([106.39.42.152])
-        by smtp.gmail.com with ESMTPSA id ka6-20020a056a00938600b006d991505b4csm2565570pfb.76.2024.01.11.23.39.07
+        bh=1zgSO6gdbHTTWvN7qp5pJTd1aLnPZ/lO5bfOXL9xEyU=;
+        b=mjVAA5ujWv8qEUvOAdfe5XWIG0lwMe20VlzwVR9lYfINq1dA40HzpkCAEk8IE3pbUC
+         Kw5VnBlla7MZlDeIOKHxFVg4bKXTTmMgk0O01o6ARpZuhvhHjKf2SzLNiPT5XtVUGqEm
+         rOI/lcX4dYYL28BnFmIU1eU7zhV21PV4GhCXc6pbnOSERmRhLFxl38aqQSXiHGoIcNQ6
+         hSIhg+oayNPMVpjdgs+v/33e5zUOW+ciOGle0zDc0ceX21krwMhQc3FplMRossHwmORH
+         xWg2nX9H9TIsRxRkiIh2anbmH93q9agCJTzhEkdjvwPp/6bTh0ysktQi6vMWwVDA6nHM
+         yNew==
+X-Gm-Message-State: AOJu0YzIgjThc9ajuLsR0n2UaHwNVWVgYnC5CWf8+QpEuyJTjEpUVYgH
+	G1zMhrEZhBCX+WYy5liJop0=
+X-Google-Smtp-Source: AGHT+IHe33Y/uheKihjZM9nRKDUPf7PYrG/DOFV1Ag5i+kukZ3cQlRtp0Ayv6V3BBWOjwgLBz/v8cQ==
+X-Received: by 2002:a17:902:c18d:b0:1d4:9c06:1815 with SMTP id d13-20020a170902c18d00b001d49c061815mr434195pld.59.1705046272109;
+        Thu, 11 Jan 2024 23:57:52 -0800 (PST)
+Received: from g2039B650.. ([2001:da8:203:a502:f7b6:d9a7:52f2:e69c])
+        by smtp.gmail.com with ESMTPSA id lo13-20020a170903434d00b001d3a371cd24sm2496117plb.53.2024.01.11.23.57.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jan 2024 23:39:10 -0800 (PST)
+        Thu, 11 Jan 2024 23:57:51 -0800 (PST)
 From: Gui-Dong Han <2045gemini@gmail.com>
-To: dmitry.torokhov@gmail.com,
-	arnd@kernel.org,
-	schnelle@linux.ibm.com
-Cc: linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+To: gregkh@linuxfoundation.org,
+	jirislaby@kernel.org,
+	ilpo.jarvinen@linux.intel.com,
+	tony@atomide.com,
+	l.sanfilippo@kunbus.com,
+	john.ogness@linutronix.de,
+	tglx@linutronix.de,
+	andriy.shevchenko@linux.intel.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
 	baijiaju1990@outlook.com,
 	Gui-Dong Han <2045gemini@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] Input: fix atomicity violation in gameport_run_poll_handler
-Date: Fri, 12 Jan 2024 15:38:55 +0800
-Message-Id: <20240112073855.16594-1-2045gemini@gmail.com>
+Subject: [PATCH] serial: core: Fix atomicity violation in uart_tiocmget
+Date: Fri, 12 Jan 2024 15:57:32 +0800
+Message-Id: <20240112075732.16730-1-2045gemini@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -77,27 +82,27 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In gameport_run_poll_handler():
+In uart_tiocmget():
+    result = uport->mctrl;
+    uart_port_lock_irq(uport);
+    result |= uport->ops->get_mctrl(uport);
+    uart_port_unlock_irq(uport);
     ...
-    if (gameport->poll_cnt)
-        mod_timer(&gameport->poll_timer, jiffies + ...));
+    return result;
 
-In gameport_stop_polling():
-    spin_lock(&gameport->timer_lock);
-    if (!--gameport->poll_cnt)
-        del_timer(&gameport->poll_timer);
-    spin_unlock(&gameport->timer_lock);
+In uart_update_mctrl():
+    uart_port_lock_irqsave(port, &flags);
+    ...
+    port->mctrl = (old & ~clear) | set;
+    ...
+    uart_port_unlock_irqrestore(port, flags);
 
-An atomicity violation occurs due to the concurrent execution of
-gameport_run_poll_handler() and gameport_stop_polling(). The current check
-for gameport->poll_cnt in gameport_run_poll_handler() is not effective
-because poll_cnt can be decremented to 0 and del_timer can be called in
-gameport_stop_polling() before mod_timer is called in
-gameport_run_poll_handler(). This situation leads to the risk of calling
-mod_timer for a timer that has already been deleted in
-gameport_stop_polling(). Since calling mod_timer on a deleted timer
-reactivates it, this atomicity violation could result in the timer being
-activated while the poll_cnt value is 0.
+An atomicity violation is identified due to the concurrent execution of
+uart_tiocmget() and uart_update_mctrl(). After assigning
+result = uport->mctrl, the mctrl value may change in uart_update_mctrl(),
+leading to a mismatch between the value returned by
+uport->ops->get_mctrl(uport) and the mctrl value previously read.
+This can result in uart_tiocmget() returning an incorrect value.
 
 This possible bug is found by an experimental static analysis tool
 developed by our team, BassCheck[1]. This tool analyzes the locking APIs
@@ -107,40 +112,38 @@ concurrency bugs including data races and atomicity violations. The above
 possible bug is reported when our tool analyzes the source code of
 Linux 5.17.
 
-To resolve this issue, it is suggested to add a spinlock pair in
-gameport_run_poll_handler() to ensure atomicity. With this patch applied,
-our tool no longer reports the bug, with the kernel configuration
-allyesconfig for x86_64. Due to the absence of the requisite hardware, we
-are unable to conduct runtime testing of the patch. Therefore, our
-verification is solely based on code logic analysis.
+To address this issue, it is suggested to move the line
+result = uport->mctrl inside the uart_port_lock block to ensure atomicity
+and prevent the mctrl value from being altered during the execution of
+uart_tiocmget(). With this patch applied, our tool no longer reports the
+bug, with the kernel configuration allyesconfig for x86_64. Due to the
+absence of the requisite hardware, we are unable to conduct runtime
+testing of the patch. Therefore, our verification is solely based on code
+logic analysis.
 
 [1] https://sites.google.com/view/basscheck/
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 559c7ff4e324 ("serial: core: Use port lock wrappers")
 Cc: stable@vger.kernel.org
 Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
 ---
- drivers/input/gameport/gameport.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/tty/serial/serial_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/input/gameport/gameport.c b/drivers/input/gameport/gameport.c
-index 34f416a3ebcb..12af46d3c059 100644
---- a/drivers/input/gameport/gameport.c
-+++ b/drivers/input/gameport/gameport.c
-@@ -202,8 +202,13 @@ static void gameport_run_poll_handler(struct timer_list *t)
- 	struct gameport *gameport = from_timer(gameport, t, poll_timer);
+diff --git a/drivers/tty/serial/serial_core.c b/drivers/tty/serial/serial_core.c
+index 80085b151b34..a9e39416d877 100644
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -1085,8 +1085,8 @@ static int uart_tiocmget(struct tty_struct *tty)
+ 		goto out;
  
- 	gameport->poll_handler(gameport);
-+
-+	spin_lock(&gameport->timer_lock);
-+
- 	if (gameport->poll_cnt)
- 		mod_timer(&gameport->poll_timer, jiffies + msecs_to_jiffies(gameport->poll_interval));
-+
-+	spin_unlock(&gameport->timer_lock);
- }
- 
- /*
+ 	if (!tty_io_error(tty)) {
+-		result = uport->mctrl;
+ 		uart_port_lock_irq(uport);
++		result = uport->mctrl;
+ 		result |= uport->ops->get_mctrl(uport);
+ 		uart_port_unlock_irq(uport);
+ 	}
 -- 
 2.34.1
 
