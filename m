@@ -1,178 +1,112 @@
-Return-Path: <stable+bounces-10588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 602D682C3E6
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 17:47:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB73F82C3F9
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 17:50:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 794551C21914
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 16:47:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D21851C21A6A
+	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 16:50:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D2077635;
-	Fri, 12 Jan 2024 16:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D26677638;
+	Fri, 12 Jan 2024 16:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KITWq1LX"
+	dkim=pass (1024-bit key) header.d=yandex.ru header.i=@yandex.ru header.b="cRjBV0eg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from forward101a.mail.yandex.net (forward101a.mail.yandex.net [178.154.239.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74AF6DD08;
-	Fri, 12 Jan 2024 16:47:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E740C433C7;
-	Fri, 12 Jan 2024 16:47:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705078034;
-	bh=XLbIi+FzvkY5/phGa7UWlshotiTTgXJvXXEBTRX287o=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=KITWq1LXFy2rWhdf5KnEM7ohv/qcZ55BbfDOZBpd8DML1T75Q9kxR6YdsoyoN7cKw
-	 n/A67rKfrGZmJXi7sdecwb9zAmbeTEckeP/sRFs9/nNL44Y5nBu6c7FHDz0xD/2K7J
-	 v7+jqnXqmL21ttSZcbwROoZ11hoK9+s1lcHXTIeAzzGWNLiXB2e0OPJtwMB7awUFdE
-	 491D6uhQF7JgEDokUBbrPI9BhPl5v59BhzdXMt58jWccx2qdowY7NAlbCxxHeZjb43
-	 CSaVCyHK0vDEzDaPlyojrZ3bjNWvU2bWcdtK4Q+5inRKXt4HnhWR+Am7bNCxYORePR
-	 Dl6g86OSZWdSg==
-Date: Fri, 12 Jan 2024 10:47:12 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Krishna chaitanya chundru <quic_krichai@quicinc.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Brian Masney <bmasney@redhat.com>,
-	Georgi Djakov <djakov@kernel.org>, linux-arm-msm@vger.kernel.org,
-	vireshk@kernel.org, quic_vbadigan@quicinc.com,
-	quic_skananth@quicinc.com, quic_nitegupt@quicinc.com,
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v6 3/6] PCI: qcom: Add missing icc bandwidth vote for cpu
- to PCIe path
-Message-ID: <20240112164712.GA2271535@bhelgaas>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FF577628;
+	Fri, 12 Jan 2024 16:50:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex.ru
+Received: from mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net (mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:5408:0:640:72fa:0])
+	by forward101a.mail.yandex.net (Yandex) with ESMTP id 99742608F4;
+	Fri, 12 Jan 2024 19:50:33 +0300 (MSK)
+Received: by mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net (smtp/Yandex) with ESMTPSA id JonQVQ0tDiE0-IWp8t1EP;
+	Fri, 12 Jan 2024 19:50:32 +0300
+X-Yandex-Fwd: 1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex.ru; s=mail;
+	t=1705078232; bh=rVVwhkAzgNNIjBnRMvtTLSOGJVz0cJRV+tdzW1zfGkg=;
+	h=Message-Id:Date:Cc:Subject:To:From;
+	b=cRjBV0eglXmwE22B1dB+3kFCg6WSmP/CvWnfVgvwSWy6A9rLFrJ/6QklGA7VrhxiF
+	 zWrm7Wts5nypD2W3tyHH3mVUkjvbzB1v6GM113GqiVgKvkn5rOTUU3NG8hY8CMX6nD
+	 p2gY5FwY3gLOmih6HLZR7eJtDi+AJd5UlWFe9OYQ=
+Authentication-Results: mail-nwsmtp-smtp-production-main-52.vla.yp-c.yandex.net; dkim=pass header.i=@yandex.ru
+From: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+To: Dave Kleikamp <shaggy@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Jan Kara <jack@suse.cz>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Mikhail Ukhin <mish.uxin2012@yandex.ru>,
+	jfs-discussion@lists.sourceforge.net,
+	stable@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	linux-kernel@vger.kernel.org,
+	Mikhail Ivanov <iwanov-23@bk.ru>,
+	Pavel Koshutin <koshutin.pavel@yandex.ru>,
+	Artem Sadovnikov <ancowi69@gmail.com>
+Subject: [PATCH 5.10/5.15] jfs: add check if log->bdev is NULL in lbmStartIO()
+Date: Fri, 12 Jan 2024 19:50:07 +0300
+Message-Id: <20240112165007.4764-1-mish.uxin2012@yandex.ru>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240112-opp_support-v6-3-77bbf7d0cc37@quicinc.com>
+Content-Transfer-Encoding: 8bit
 
-Capitalize "ICC" and "CPU" to make the subject easier to read.
-"Missing" might be superfluous in the subject?  It would be nice to
-have the ICC expansion once in the commit log as a hook for newbies
-like me :)
+Fuzzing of 5.10 stable branch shows NULL pointer dereference happens in 
+lbmStartIO() on log->bdev pointer. The reason for bdev being NULL is the 
+JFS_NOINTEGRITY flag is set on mount of this fs. When this flag is enabled,
+it results in the open_dummy_log function being called, which initializes a
+new dummy_log, but does not assign a value to bdev.
 
-On Fri, Jan 12, 2024 at 07:52:02PM +0530, Krishna chaitanya chundru wrote:
-> CPU-PCIe path consits for registers PCIe BAR space, config space.
-> As there is less access on this path compared to pcie to mem path
-> add minimum vote i.e GEN1x1 bandwidth always.
+The error is fixed in 5.18 by commit
+07888c665b405b1cd3577ddebfeb74f4717a84c4.
+Backport of this commit is too intrusive, so it is more reasonable to apply
+a small patch to fix this issue.
 
-"GEN1x1" is unnecessarily ambiguous, and the spec recommends avoiding
-it (PCIe r6.0, sec 1.2).  Use the actual bandwidth numbers instead.
+Found by Linux Verification Center (linuxtesting.org) with syzkaller.
 
-"PCIe" to match above.  Also below in comments and messages.
+Signed-off-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+Signed-off-by: Mikhail Ivanov <iwanov-23@bk.ru>
+Signed-off-by: Pavel Koshutin <koshutin.pavel@yandex.ru>
+Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
+---
+ fs/jfs/jfs_logmgr.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-> In suspend remove the cpu vote after register space access is done.
+diff --git a/fs/jfs/jfs_logmgr.c b/fs/jfs/jfs_logmgr.c
+index 78fd136ac13b..d6f0fea96ba1 100644
+--- a/fs/jfs/jfs_logmgr.c
++++ b/fs/jfs/jfs_logmgr.c
+@@ -1983,7 +1983,8 @@ static int lbmRead(struct jfs_log * log, int pn, struct lbuf ** bpp)
+ 	bio = bio_alloc(GFP_NOFS, 1);
+ 
+ 	bio->bi_iter.bi_sector = bp->l_blkno << (log->l2bsize - 9);
+-	bio_set_dev(bio, log->bdev);
++	if (log->bdev != NULL)
++		bio_set_dev(bio, log->bdev);
+ 
+ 	bio_add_page(bio, bp->l_page, LOGPSIZE, bp->l_offset);
+ 	BUG_ON(bio->bi_iter.bi_size != LOGPSIZE);
+@@ -2127,7 +2128,8 @@ static void lbmStartIO(struct lbuf * bp)
+ 
+ 	bio = bio_alloc(GFP_NOFS, 1);
+ 	bio->bi_iter.bi_sector = bp->l_blkno << (log->l2bsize - 9);
+-	bio_set_dev(bio, log->bdev);
++	if (log->bdev != NULL)
++		bio_set_dev(bio, log->bdev);
+ 
+ 	bio_add_page(bio, bp->l_page, LOGPSIZE, bp->l_offset);
+ 	BUG_ON(bio->bi_iter.bi_size != LOGPSIZE);
+-- 
+2.25.1
 
-"CPU" to match above.
-
-> Fixes: c4860af88d0c ("PCI: qcom: Add basic interconnect support")
-> cc: stable@vger.kernel.org
-> Signed-off-by: Krishna chaitanya chundru <quic_krichai@quicinc.com>
-> ---
->  drivers/pci/controller/dwc/pcie-qcom.c | 31 +++++++++++++++++++++++++++++--
->  1 file changed, 29 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-> index 11c80555d975..035953f0b6d8 100644
-> --- a/drivers/pci/controller/dwc/pcie-qcom.c
-> +++ b/drivers/pci/controller/dwc/pcie-qcom.c
-> @@ -240,6 +240,7 @@ struct qcom_pcie {
->  	struct phy *phy;
->  	struct gpio_desc *reset;
->  	struct icc_path *icc_mem;
-> +	struct icc_path *icc_cpu;
->  	const struct qcom_pcie_cfg *cfg;
->  	struct dentry *debugfs;
->  	bool suspended;
-> @@ -1372,6 +1373,9 @@ static int qcom_pcie_icc_init(struct qcom_pcie *pcie)
->  	if (IS_ERR(pcie->icc_mem))
->  		return PTR_ERR(pcie->icc_mem);
->  
-> +	pcie->icc_cpu = devm_of_icc_get(pci->dev, "cpu-pcie");
-> +	if (IS_ERR(pcie->icc_cpu))
-> +		return PTR_ERR(pcie->icc_cpu);
->  	/*
->  	 * Some Qualcomm platforms require interconnect bandwidth constraints
->  	 * to be set before enabling interconnect clocks.
-> @@ -1381,7 +1385,18 @@ static int qcom_pcie_icc_init(struct qcom_pcie *pcie)
->  	 */
->  	ret = icc_set_bw(pcie->icc_mem, 0, QCOM_PCIE_LINK_SPEED_TO_BW(1));
->  	if (ret) {
-> -		dev_err(pci->dev, "failed to set interconnect bandwidth: %d\n",
-> +		dev_err(pci->dev, "failed to set interconnect bandwidth for pcie-mem: %d\n",
-> +			ret);
-> +		return ret;
-> +	}
-> +
-> +	/*
-> +	 * The config space, BAR space and registers goes through cpu-pcie path.
-> +	 * Set peak bandwidth to single-lane Gen1 for this path all the time.
-
-Numbers instead of "Gen1".
-
-> +	 */
-> +	ret = icc_set_bw(pcie->icc_cpu, 0, QCOM_PCIE_LINK_SPEED_TO_BW(1));
-> +	if (ret) {
-> +		dev_err(pci->dev, "failed to set interconnect bandwidth for cpu-pcie: %d\n",
->  			ret);
->  		return ret;
->  	}
-> @@ -1573,7 +1588,7 @@ static int qcom_pcie_suspend_noirq(struct device *dev)
->  	 */
->  	ret = icc_set_bw(pcie->icc_mem, 0, kBps_to_icc(1));
->  	if (ret) {
-> -		dev_err(dev, "Failed to set interconnect bandwidth: %d\n", ret);
-> +		dev_err(dev, "Failed to set interconnect bandwidth for pcie-mem: %d\n", ret);
->  		return ret;
->  	}
->  
-> @@ -1597,6 +1612,12 @@ static int qcom_pcie_suspend_noirq(struct device *dev)
->  		pcie->suspended = true;
->  	}
->  
-> +	/* Remove cpu path vote after all the register access is done */
-> +	ret = icc_set_bw(pcie->icc_cpu, 0, 0);
-> +	if (ret) {
-> +		dev_err(dev, "failed to set interconnect bandwidth for cpu-pcie: %d\n", ret);
-> +		return ret;
-> +	}
->  	return 0;
->  }
->  
-> @@ -1605,6 +1626,12 @@ static int qcom_pcie_resume_noirq(struct device *dev)
->  	struct qcom_pcie *pcie = dev_get_drvdata(dev);
->  	int ret;
->  
-> +	ret = icc_set_bw(pcie->icc_cpu, 0, QCOM_PCIE_LINK_SPEED_TO_BW(1));
-> +	if (ret) {
-> +		dev_err(dev, "failed to set interconnect bandwidth for cpu-pcie: %d\n", ret);
-> +		return ret;
-> +	}
-> +
->  	if (pcie->suspended) {
->  		ret = qcom_pcie_host_init(&pcie->pci->pp);
->  		if (ret)
-> 
-> -- 
-> 2.42.0
-> 
 
