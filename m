@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-10729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FF4E82CB5F
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:59:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 582BD82CBA3
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:02:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EAAE2843A7
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:59:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEE27B22A51
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E0E1095B;
-	Sat, 13 Jan 2024 09:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083031EF1C;
+	Sat, 13 Jan 2024 10:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="woti+4ic"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gR0mf8W/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2C51869;
-	Sat, 13 Jan 2024 09:58:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6899C433F1;
-	Sat, 13 Jan 2024 09:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C991846;
+	Sat, 13 Jan 2024 10:02:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42CB0C433C7;
+	Sat, 13 Jan 2024 10:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139932;
-	bh=MfcE9PjhiqsMiqpOmGMEverxxjiSaSYZ1+H1S+9vPLI=;
+	s=korg; t=1705140120;
+	bh=tLTsRALtj1H371jgCVsCpED1I0hZdomJaFJRjR+/+aE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=woti+4ic0utH8KBSUu8Hq/vAzIzOyb0x0YlDnp9R9n3gH4PDUyY7Ea1K4Q4BWNSqz
-	 CxsPecEn0eVou6ghcqBjE4oV24oWZ5mVEWViDtjDL9h/XVJG/QrKy4eVExprTXAjBo
-	 YJeMQfoxjyitirrCshV+oza1Q9JoK5/497WKMVuo=
+	b=gR0mf8W/bXyvTugxfaLtorID48LHLf7u8BXP+TsM1hhXEN+CBKhF3ggn5dDc83p8K
+	 CSv34IQ2Pul3KZrNT5/JY76NNFf3zwrCNRPnLdsFcxZ/b6f4w3+jrHB5QlOUA8oDUj
+	 0oxjIlG94LsEs0++i/+oXBE8p5JPI9L5DLHUiLvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Pawlowski <bartosz.pawlowski@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 5.10 41/43] PCI: Extract ATS disabling to a helper function
-Date: Sat, 13 Jan 2024 10:50:20 +0100
-Message-ID: <20240113094208.280788483@linuxfoundation.org>
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 50/59] mmc: core: Cancel delayed work before releasing host
+Date: Sat, 13 Jan 2024 10:50:21 +0100
+Message-ID: <20240113094210.820794544@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
-References: <20240113094206.930684111@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,52 +53,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit f18b1137d38c091cc8c16365219f0a1d4a30b3d1 upstream.
+commit 1036f69e251380573e256568cf814506e3fb9988 upstream.
 
-Introduce quirk_no_ats() helper function to provide a standard way to
-disable ATS capability in PCI quirks.
+On RZ/Five SMARC EVK, where probing of SDHI is deferred due to probe
+deferral of the vqmmc-supply regulator:
 
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230908143606.685930-2-bartosz.pawlowski@intel.com
-Signed-off-by: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+    ------------[ cut here ]------------
+    WARNING: CPU: 0 PID: 0 at kernel/time/timer.c:1738 __run_timers.part.0+0x1d0/0x1e8
+    Modules linked in:
+    CPU: 0 PID: 0 Comm: swapper Not tainted 6.7.0-rc4 #101
+    Hardware name: Renesas SMARC EVK based on r9a07g043f01 (DT)
+    epc : __run_timers.part.0+0x1d0/0x1e8
+     ra : __run_timers.part.0+0x134/0x1e8
+    epc : ffffffff800771a4 ra : ffffffff80077108 sp : ffffffc800003e60
+     gp : ffffffff814f5028 tp : ffffffff8140c5c0 t0 : ffffffc800000000
+     t1 : 0000000000000001 t2 : ffffffff81201300 s0 : ffffffc800003f20
+     s1 : ffffffd8023bc4a0 a0 : 00000000fffee6b0 a1 : 0004010000400000
+     a2 : ffffffffc0000016 a3 : ffffffff81488640 a4 : ffffffc800003e60
+     a5 : 0000000000000000 a6 : 0000000004000000 a7 : ffffffc800003e68
+     s2 : 0000000000000122 s3 : 0000000000200000 s4 : 0000000000000000
+     s5 : ffffffffffffffff s6 : ffffffff81488678 s7 : ffffffff814886c0
+     s8 : ffffffff814f49c0 s9 : ffffffff81488640 s10: 0000000000000000
+     s11: ffffffc800003e60 t3 : 0000000000000240 t4 : 0000000000000a52
+     t5 : ffffffd8024ae018 t6 : ffffffd8024ae038
+    status: 0000000200000100 badaddr: 0000000000000000 cause: 0000000000000003
+    [<ffffffff800771a4>] __run_timers.part.0+0x1d0/0x1e8
+    [<ffffffff800771e0>] run_timer_softirq+0x24/0x4a
+    [<ffffffff80809092>] __do_softirq+0xc6/0x1fa
+    [<ffffffff80028e4c>] irq_exit_rcu+0x66/0x84
+    [<ffffffff80800f7a>] handle_riscv_irq+0x40/0x4e
+    [<ffffffff80808f48>] call_on_irq_stack+0x1c/0x28
+    ---[ end trace 0000000000000000 ]---
+
+What happens?
+
+    renesas_sdhi_probe()
+    {
+    	tmio_mmc_host_alloc()
+	    mmc_alloc_host()
+		INIT_DELAYED_WORK(&host->detect, mmc_rescan);
+
+	devm_request_irq(tmio_mmc_irq);
+
+	/*
+	 * After this, the interrupt handler may be invoked at any time
+	 *
+	 *  tmio_mmc_irq()
+	 *  {
+	 *	__tmio_mmc_card_detect_irq()
+	 *	    mmc_detect_change()
+	 *		_mmc_detect_change()
+	 *		    mmc_schedule_delayed_work(&host->detect, delay);
+	 *  }
+	 */
+
+	tmio_mmc_host_probe()
+	    tmio_mmc_init_ocr()
+		-EPROBE_DEFER
+
+	tmio_mmc_host_free()
+	    mmc_free_host()
+    }
+
+When expire_timers() runs later, it warns because the MMC host structure
+containing the delayed work was freed, and now contains an invalid work
+function pointer.
+
+Fix this by cancelling any pending delayed work before releasing the
+MMC host structure.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/205dc4c91b47e31b64392fe2498c7a449e717b4b.1701689330.git.geert+renesas@glider.be
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/mmc/core/host.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5353,6 +5353,12 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SE
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SERVERWORKS, 0x0422, quirk_no_ext_tags);
- 
- #ifdef CONFIG_PCI_ATS
-+static void quirk_no_ats(struct pci_dev *pdev)
-+{
-+	pci_info(pdev, "disabling ATS\n");
-+	pdev->ats_cap = 0;
-+}
-+
- /*
-  * Some devices require additional driver setup to enable ATS.  Don't use
-  * ATS for those devices as ATS will be enabled before the driver has had a
-@@ -5365,8 +5371,7 @@ static void quirk_amd_harvest_no_ats(str
- 	    (pdev->device == 0x7341 && pdev->revision != 0x00))
- 		return;
- 
--	pci_info(pdev, "disabling ATS\n");
--	pdev->ats_cap = 0;
-+	quirk_no_ats(pdev);
+--- a/drivers/mmc/core/host.c
++++ b/drivers/mmc/core/host.c
+@@ -661,6 +661,7 @@ EXPORT_SYMBOL(mmc_remove_host);
+  */
+ void mmc_free_host(struct mmc_host *host)
+ {
++	cancel_delayed_work_sync(&host->detect);
+ 	mmc_pwrseq_free(host);
+ 	put_device(&host->class_dev);
  }
- 
- /* AMD Stoney platform GPU */
 
 
 
