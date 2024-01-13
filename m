@@ -1,44 +1,45 @@
-Return-Path: <stable+bounces-10691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F120182CB39
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:57:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADCE382CB3A
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:57:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F5F6282E7E
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:57:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B8A4282F42
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0AB63C3;
-	Sat, 13 Jan 2024 09:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A2B1846;
+	Sat, 13 Jan 2024 09:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d21I1hXp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0F+ISedN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D656C1848;
-	Sat, 13 Jan 2024 09:57:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F107DC433C7;
-	Sat, 13 Jan 2024 09:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B9EEC5;
+	Sat, 13 Jan 2024 09:57:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF261C43601;
+	Sat, 13 Jan 2024 09:57:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139821;
-	bh=TyaMzqTHORtKAzyQz3tkTBoKT5Gd46+vj1a3LdOLJAA=;
+	s=korg; t=1705139824;
+	bh=atgPHSSQyfaztTDp377+GYR2/dqPXUWoWRgd1XBUDqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d21I1hXp9Q99v2WBVEr7GQKGuWWNkYxQrHf9BuGiwdB4HQtBafdlmcQdW6BQbAoPV
-	 txFR9k/b2p6IuTPHXMx5Zox066XYgbKkcyuwmr21B3FbINvJCB0CRt0OpQSaNZ0P2r
-	 27FwC38PWcs7MlqZnEbKfxSZCs3oBgx550jH8hB4=
+	b=0F+ISedN3uv/Y4V4B17bfqnjsXPDgYTdxG0U9aWWXf/aOIyFDCXK9v7Sg8yx3ZDHQ
+	 S1pXgzFy1bv394YLEXJmiywauaoYuE5VyPvFFb42xWXR6DteYtxndPJimvh1KEpWJD
+	 quPUwXNpM24XkX8+zPBk+iOFspk9KsLa0xVdv4sU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Bartosz Pawlowski <bartosz.pawlowski@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 5.4 34/38] PCI: Extract ATS disabling to a helper function
-Date: Sat, 13 Jan 2024 10:50:10 +0100
-Message-ID: <20240113094207.497708654@linuxfoundation.org>
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>
+Subject: [PATCH 5.4 35/38] PCI: Disable ATS for specific Intel IPU E2000 devices
+Date: Sat, 13 Jan 2024 10:50:11 +0100
+Message-ID: <20240113094207.524416202@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
 References: <20240113094206.455533180@linuxfoundation.org>
@@ -59,46 +60,54 @@ Content-Transfer-Encoding: 8bit
 
 From: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
 
-commit f18b1137d38c091cc8c16365219f0a1d4a30b3d1 upstream.
+commit a18615b1cfc04f00548c60eb9a77e0ce56e848fd upstream.
 
-Introduce quirk_no_ats() helper function to provide a standard way to
-disable ATS capability in PCI quirks.
+Due to a hardware issue in A and B steppings of Intel IPU E2000, it expects
+wrong endianness in ATS invalidation message body. This problem can lead to
+outdated translations being returned as valid and finally cause system
+instability.
 
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230908143606.685930-2-bartosz.pawlowski@intel.com
+To prevent such issues, add quirk_intel_e2000_no_ats() to disable ATS for
+vulnerable IPU E2000 devices.
+
+Link: https://lore.kernel.org/r/20230908143606.685930-3-bartosz.pawlowski@intel.com
 Signed-off-by: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/pci/quirks.c |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
 --- a/drivers/pci/quirks.c
 +++ b/drivers/pci/quirks.c
-@@ -5389,6 +5389,12 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SE
- DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SERVERWORKS, 0x0422, quirk_no_ext_tags);
- 
- #ifdef CONFIG_PCI_ATS
-+static void quirk_no_ats(struct pci_dev *pdev)
-+{
-+	pci_info(pdev, "disabling ATS\n");
-+	pdev->ats_cap = 0;
-+}
+@@ -5419,6 +5419,25 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AT
+ /* AMD Navi14 dGPU */
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x7340, quirk_amd_harvest_no_ats);
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x7341, quirk_amd_harvest_no_ats);
 +
- /*
-  * Some devices require additional driver setup to enable ATS.  Don't use
-  * ATS for those devices as ATS will be enabled before the driver has had a
-@@ -5401,8 +5407,7 @@ static void quirk_amd_harvest_no_ats(str
- 	    (pdev->device == 0x7341 && pdev->revision != 0x00))
- 		return;
++/*
++ * Intel IPU E2000 revisions before C0 implement incorrect endianness
++ * in ATS Invalidate Request message body. Disable ATS for those devices.
++ */
++static void quirk_intel_e2000_no_ats(struct pci_dev *pdev)
++{
++	if (pdev->revision < 0x20)
++		quirk_no_ats(pdev);
++}
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1451, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1452, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1453, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1454, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1455, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1457, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1459, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x145a, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x145c, quirk_intel_e2000_no_ats);
+ #endif /* CONFIG_PCI_ATS */
  
--	pci_info(pdev, "disabling ATS\n");
--	pdev->ats_cap = 0;
-+	quirk_no_ats(pdev);
- }
- 
- /* AMD Stoney platform GPU */
+ /* Freescale PCIe doesn't support MSI in RC mode */
 
 
 
