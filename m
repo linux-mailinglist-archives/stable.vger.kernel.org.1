@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-10757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5BFD82CB7E
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:00:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E888E82CB12
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:55:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8550F1F22B93
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:00:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CE9528355D
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:55:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4807185A;
-	Sat, 13 Jan 2024 10:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CB3C4A33;
+	Sat, 13 Jan 2024 09:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7WPbv3y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R0Y491Ho"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6A963C3;
-	Sat, 13 Jan 2024 10:00:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0336BC433F1;
-	Sat, 13 Jan 2024 10:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627EF1846;
+	Sat, 13 Jan 2024 09:55:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 651FFC433C7;
+	Sat, 13 Jan 2024 09:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705140014;
-	bh=rqptuo3T52oxadtzlQ/WawZuS1I5bvYVmyAvYwW4daU=;
+	s=korg; t=1705139726;
+	bh=MTUFmxC+CCLUpzfZbSHp1uYClp7X1e3YJJTEhIHKb+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n7WPbv3yN3+m04d8E1vVRTGeCUwHFPNgTEg3C7C2o/3BUZx5+sD4jRAzfbuF0eVV1
-	 +RC0n3m6pJ6mMTnVd8ETmc6PjBYyvHSN0yvnD2udCHC0sLoABod74nJlmePmKY+ug5
-	 atnKC4rYaqbHZLmrootRlO51SVf9vjjQ2KQfdiIo=
+	b=R0Y491HoH+oileu5r3Mi0Kl/c58NUKJGLJlgD2YtACHCtUdoBPGpQ9QkAuHqWjrr/
+	 w1CRw05rpXvNfTN+Llx8KIrhLTYAvpN0U4tqXKTEEjXDQwSd5SEZIVJE0rLVfi9K/6
+	 7WuoIMyYyEbEnHu6MGNwXoisou7C/2htc3TtdUlo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suman Ghosh <sumang@marvell.com>,
-	Siddh Raman Pant <code@siddh.me>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+bbe84a4010eeea00982d@syzkaller.appspotmail.com
-Subject: [PATCH 5.15 07/59] nfc: llcp_core: Hold a ref to llcp_local->dev when holding a ref to llcp_local
+	Andrii Staikov <andrii.staikov@intel.com>,
+	Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Bharathi Sreenivas <bharathi.sreenivas@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 02/38] i40e: Fix filter input checks to prevent config with invalid values
 Date: Sat, 13 Jan 2024 10:49:38 +0100
-Message-ID: <20240113094209.531881831@linuxfoundation.org>
+Message-ID: <20240113094206.529581163@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
-References: <20240113094209.301672391@linuxfoundation.org>
+In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
+References: <20240113094206.455533180@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,129 +57,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddh Raman Pant <code@siddh.me>
+From: Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>
 
-[ Upstream commit c95f919567d6f1914f13350af61a1b044ac85014 ]
+[ Upstream commit 3e48041d9820c17e0a51599d12e66c6e12a8d08d ]
 
-llcp_sock_sendmsg() calls nfc_llcp_send_ui_frame() which in turn calls
-nfc_alloc_send_skb(), which accesses the nfc_dev from the llcp_sock for
-getting the headroom and tailroom needed for skb allocation.
+Prevent VF from configuring filters with unsupported actions or use
+REDIRECT action with invalid tc number. Current checks could cause
+out of bounds access on PF side.
 
-Parallelly the nfc_dev can be freed, as the refcount is decreased via
-nfc_free_device(), leading to a UAF reported by Syzkaller, which can
-be summarized as follows:
-
-(1) llcp_sock_sendmsg() -> nfc_llcp_send_ui_frame()
-	-> nfc_alloc_send_skb() -> Dereference *nfc_dev
-(2) virtual_ncidev_close() -> nci_free_device() -> nfc_free_device()
-	-> put_device() -> nfc_release() -> Free *nfc_dev
-
-When a reference to llcp_local is acquired, we do not acquire the same
-for the nfc_dev. This leads to freeing even when the llcp_local is in
-use, and this is the case with the UAF described above too.
-
-Thus, when we acquire a reference to llcp_local, we should acquire a
-reference to nfc_dev, and release the references appropriately later.
-
-References for llcp_local is initialized in nfc_llcp_register_device()
-(which is called by nfc_register_device()). Thus, we should acquire a
-reference to nfc_dev there.
-
-nfc_unregister_device() calls nfc_llcp_unregister_device() which in
-turn calls nfc_llcp_local_put(). Thus, the reference to nfc_dev is
-appropriately released later.
-
-Reported-and-tested-by: syzbot+bbe84a4010eeea00982d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=bbe84a4010eeea00982d
-Fixes: c7aa12252f51 ("NFC: Take a reference on the LLCP local pointer when creating a socket")
-Reviewed-by: Suman Ghosh <sumang@marvell.com>
-Signed-off-by: Siddh Raman Pant <code@siddh.me>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
+Reviewed-by: Andrii Staikov <andrii.staikov@intel.com>
+Signed-off-by: Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Bharathi Sreenivas <bharathi.sreenivas@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/llcp_core.c | 39 ++++++++++++++++++++++++++++++++++++---
- 1 file changed, 36 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
-index 92f70686bee0a..da3cb0d29b972 100644
---- a/net/nfc/llcp_core.c
-+++ b/net/nfc/llcp_core.c
-@@ -147,6 +147,13 @@ static void nfc_llcp_socket_release(struct nfc_llcp_local *local, bool device,
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index 37ce764ed3730..d53e535a447d6 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -3332,16 +3332,16 @@ static int i40e_validate_cloud_filter(struct i40e_vf *vf,
+ 	bool found = false;
+ 	int bkt;
  
- static struct nfc_llcp_local *nfc_llcp_local_get(struct nfc_llcp_local *local)
- {
-+	/* Since using nfc_llcp_local may result in usage of nfc_dev, whenever
-+	 * we hold a reference to local, we also need to hold a reference to
-+	 * the device to avoid UAF.
-+	 */
-+	if (!nfc_get_device(local->dev->idx))
-+		return NULL;
-+
- 	kref_get(&local->ref);
- 
- 	return local;
-@@ -179,10 +186,18 @@ static void local_release(struct kref *ref)
- 
- int nfc_llcp_local_put(struct nfc_llcp_local *local)
- {
-+	struct nfc_dev *dev;
-+	int ret;
-+
- 	if (local == NULL)
- 		return 0;
- 
--	return kref_put(&local->ref, local_release);
-+	dev = local->dev;
-+
-+	ret = kref_put(&local->ref, local_release);
-+	nfc_put_device(dev);
-+
-+	return ret;
- }
- 
- static struct nfc_llcp_sock *nfc_llcp_sock_get(struct nfc_llcp_local *local,
-@@ -968,8 +983,17 @@ static void nfc_llcp_recv_connect(struct nfc_llcp_local *local,
+-	if (!tc_filter->action) {
++	if (tc_filter->action != VIRTCHNL_ACTION_TC_REDIRECT) {
+ 		dev_info(&pf->pdev->dev,
+-			 "VF %d: Currently ADq doesn't support Drop Action\n",
+-			 vf->vf_id);
++			 "VF %d: ADQ doesn't support this action (%d)\n",
++			 vf->vf_id, tc_filter->action);
+ 		goto err;
  	}
  
- 	new_sock = nfc_llcp_sock(new_sk);
--	new_sock->dev = local->dev;
-+
- 	new_sock->local = nfc_llcp_local_get(local);
-+	if (!new_sock->local) {
-+		reason = LLCP_DM_REJ;
-+		sock_put(&new_sock->sk);
-+		release_sock(&sock->sk);
-+		sock_put(&sock->sk);
-+		goto fail;
-+	}
-+
-+	new_sock->dev = local->dev;
- 	new_sock->rw = sock->rw;
- 	new_sock->miux = sock->miux;
- 	new_sock->nfc_protocol = sock->nfc_protocol;
-@@ -1607,7 +1631,16 @@ int nfc_llcp_register_device(struct nfc_dev *ndev)
- 	if (local == NULL)
- 		return -ENOMEM;
- 
--	local->dev = ndev;
-+	/* As we are going to initialize local's refcount, we need to get the
-+	 * nfc_dev to avoid UAF, otherwise there is no point in continuing.
-+	 * See nfc_llcp_local_get().
-+	 */
-+	local->dev = nfc_get_device(ndev->idx);
-+	if (!local->dev) {
-+		kfree(local);
-+		return -ENODEV;
-+	}
-+
- 	INIT_LIST_HEAD(&local->list);
- 	kref_init(&local->ref);
- 	mutex_init(&local->sdp_lock);
+ 	/* action_meta is TC number here to which the filter is applied */
+ 	if (!tc_filter->action_meta ||
+-	    tc_filter->action_meta > I40E_MAX_VF_VSI) {
++	    tc_filter->action_meta > vf->num_tc) {
+ 		dev_info(&pf->pdev->dev, "VF %d: Invalid TC number %u\n",
+ 			 vf->vf_id, tc_filter->action_meta);
+ 		goto err;
 -- 
 2.43.0
 
