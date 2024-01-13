@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-10759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 542E482CB80
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:00:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AD6982CB14
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:55:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E51E6283ECB
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:00:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A231FB20E0C
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968DA185A;
-	Sat, 13 Jan 2024 10:00:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07FAB1848;
+	Sat, 13 Jan 2024 09:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e1t6Hez+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZIGJ/Yn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF6728F7;
-	Sat, 13 Jan 2024 10:00:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2B12C433F1;
-	Sat, 13 Jan 2024 10:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5160EC5;
+	Sat, 13 Jan 2024 09:55:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44881C433C7;
+	Sat, 13 Jan 2024 09:55:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705140020;
-	bh=HctQXMDlZgDfADNGo0797r2sdJ4x5LCcUdut553yTwc=;
+	s=korg; t=1705139732;
+	bh=z/0XkT/stFu1fwmBIaPl/sKmoDnefsB3JSgrWupSjYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e1t6Hez+gutEvrhYHww/MnaHK1MfLaktb6+GQBTvUPEDSuDoVXnie0AnIuCc1iz4x
-	 M0NmK5a1HIb8vrQPppF1iwijH7gmNLD75vhYwAw6Zif7/R7FSkWHhGhMqV/IbJb3w0
-	 jZgZuGYMfSOWnuJRpjwFIi6yfHlLJ4673mFIih40=
+	b=LZIGJ/Yn+NPrRQ1fMIFki8Z4oWWTf74BAU9wqzPqRuMKLXJ7uKnNmfTTh7TAoLzIh
+	 zs5GeLbdau0+lFxmF4OgzX+KLlHhc2rOFDXGykauqQMJlUniaENAw2vx5XTiwy8JCU
+	 RNNdfvruDeHIg7UAqBifRDcU5lfvmDexUCR8DVfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jani Nikula <jani.nikula@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Lee Shawn C <shawn.c.lee@intel.com>,
-	Khaled Almahallawy <khaled.almahallawy@intel.com>,
+	=?UTF-8?q?J=C3=B6rn-Thorben=20Hinz?= <jthinz@mailbox.tu-berlin.de>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 09/59] drm/i915/dp: Fix passing the correct DPCD_REV for drm_dp_set_phy_test_pattern
+Subject: [PATCH 5.4 04/38] net: Implement missing getsockopt(SO_TIMESTAMPING_NEW)
 Date: Sat, 13 Jan 2024 10:49:40 +0100
-Message-ID: <20240113094209.589386260@linuxfoundation.org>
+Message-ID: <20240113094206.585928230@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
-References: <20240113094209.301672391@linuxfoundation.org>
+In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
+References: <20240113094206.455533180@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,45 +52,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Khaled Almahallawy <khaled.almahallawy@intel.com>
+From: Jörn-Thorben Hinz <jthinz@mailbox.tu-berlin.de>
 
-[ Upstream commit 2bd7a06a1208aaacb4e7a2a5436c23bce8d70801 ]
+[ Upstream commit 7f6ca95d16b96567ce4cf458a2790ff17fa620c3 ]
 
-Using link_status to get DPCD_REV fails when disabling/defaulting
-phy pattern. Use intel_dp->dpcd to access DPCD_REV correctly.
+Commit 9718475e6908 ("socket: Add SO_TIMESTAMPING_NEW") added the new
+socket option SO_TIMESTAMPING_NEW. Setting the option is handled in
+sk_setsockopt(), querying it was not handled in sk_getsockopt(), though.
 
-Fixes: 8cdf72711928 ("drm/i915/dp: Program vswing, pre-emphasis, test-pattern")
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: Lee Shawn C <shawn.c.lee@intel.com>
-Signed-off-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231213211542.3585105-3-khaled.almahallawy@intel.com
-(cherry picked from commit 3ee302ec22d6e1d7d1e6d381b0d507ee80f2135c)
+Following remarks on an earlier submission of this patch, keep the old
+behavior of getsockopt(SO_TIMESTAMPING_OLD) which returns the active
+flags even if they actually have been set through SO_TIMESTAMPING_NEW.
+
+The new getsockopt(SO_TIMESTAMPING_NEW) is stricter, returning flags
+only if they have been set through the same option.
+
+Fixes: 9718475e6908 ("socket: Add SO_TIMESTAMPING_NEW")
+Link: https://lore.kernel.org/lkml/20230703175048.151683-1-jthinz@mailbox.tu-berlin.de/
+Link: https://lore.kernel.org/netdev/0d7cddc9-03fa-43db-a579-14f3e822615b@app.fastmail.com/
+Signed-off-by: Jörn-Thorben Hinz <jthinz@mailbox.tu-berlin.de>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/core/sock.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index 6cc1258578088..a0c04b9d9c739 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -3275,7 +3275,7 @@ static void intel_dp_process_phy_request(struct intel_dp *intel_dp,
- 			  intel_dp->train_set, crtc_state->lane_count);
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 2c3c5df139345..a3ca522434a6e 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -1309,9 +1309,16 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
+ 		break;
  
- 	drm_dp_set_phy_test_pattern(&intel_dp->aux, data,
--				    link_status[DP_DPCD_REV]);
-+				    intel_dp->dpcd[DP_DPCD_REV]);
- }
+ 	case SO_LINGER:
++	case SO_TIMESTAMPING_NEW:
+ 		lv		= sizeof(v.ling);
+-		v.ling.l_onoff	= sock_flag(sk, SOCK_LINGER);
+-		v.ling.l_linger	= sk->sk_lingertime / HZ;
++		/* For the later-added case SO_TIMESTAMPING_NEW: Be strict about only
++		 * returning the flags when they were set through the same option.
++		 * Don't change the beviour for the old case SO_TIMESTAMPING_OLD.
++		 */
++		if (optname == SO_TIMESTAMPING_OLD || sock_flag(sk, SOCK_TSTAMP_NEW)) {
++			v.ling.l_onoff	= sock_flag(sk, SOCK_LINGER);
++			v.ling.l_linger	= sk->sk_lingertime / HZ;
++		}
+ 		break;
  
- static u8 intel_dp_autotest_phy_pattern(struct intel_dp *intel_dp)
+ 	case SO_BSDCOMPAT:
 -- 
 2.43.0
 
