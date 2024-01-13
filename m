@@ -1,59 +1,47 @@
-Return-Path: <stable+bounces-10697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BCFF82CB3F
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:57:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D04082CB36
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:56:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF940283512
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:57:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D5452827EA
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:56:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8346B1848;
-	Sat, 13 Jan 2024 09:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A6F1846;
+	Sat, 13 Jan 2024 09:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CD8upUI8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dPyJWiL+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3541846;
-	Sat, 13 Jan 2024 09:57:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D58C433C7;
-	Sat, 13 Jan 2024 09:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7887715AF;
+	Sat, 13 Jan 2024 09:56:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA301C43394;
+	Sat, 13 Jan 2024 09:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139838;
-	bh=rYT4FRic/2d+H9pP5KSKNmNyRQvFvI4eb1Rc0l6u06E=;
+	s=korg; t=1705139815;
+	bh=OSMOv2cGfLkePejzxu5Alh4WLQtxgK9BjSgJ4O81As0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CD8upUI8HrU6SK4KctBK1wDA5kAfS00tdp0H6UFLhGP8F1rmdMcHM3Q3aFTdB1GB6
-	 kSxYLMemzKB4kBaAxq2KjQ9Y3sVywfcnrDHjWS4nDoLrLEsS6+hnrnBA+h3sCPS13r
-	 lO9ErlR59L/fp5VNi0sHTV8gWbAUH+WO+JdJ2iNE=
+	b=dPyJWiL+PJ9YqGDYHYybMntjPHxVeP4yQSb8LoAIcfjZwre3IXJoy7gKzUnza95rv
+	 P9vmjAiW4CeUOuiH7Eczjn2klMgHB/kMjGv/XzR85zoZNcPCK1oX/jzl+v38XTZnSu
+	 o1KlLVZECsaPuKX+RbhptO+amIEdKueBTT1oY7h4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Edward Adam Davis <eadavis@qq.com>,
-	David Howells <dhowells@redhat.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Jeffrey E Altman <jaltman@auristor.com>,
-	Wang Lei <wang840925@gmail.com>,
-	Jeff Layton <jlayton@redhat.com>,
-	Steve French <sfrench@us.ibm.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	syzbot+94bbb75204a05da3d89f@syzkaller.appspotmail.com
-Subject: [PATCH 5.10 01/43] keys, dns: Fix missing size check of V1 server-list header
-Date: Sat, 13 Jan 2024 10:49:40 +0100
-Message-ID: <20240113094206.977905274@linuxfoundation.org>
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 05/38] can: raw: add support for SO_TXTIME/SCM_TXTIME
+Date: Sat, 13 Jan 2024 10:49:41 +0100
+Message-ID: <20240113094206.619467945@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
-References: <20240113094206.930684111@linuxfoundation.org>
+In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
+References: <20240113094206.455533180@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,119 +53,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit 1997b3cb4217b09e49659b634c94da47f0340409 upstream.
+[ Upstream commit 51a0d5e51178fcd147c1b8fdab2ed16b561326db ]
 
-The dns_resolver_preparse() function has a check on the size of the
-payload for the basic header of the binary-style payload, but is missing
-a check for the size of the V1 server-list payload header after
-determining that's what we've been given.
+This patch calls into sock_cmsg_send() to parse the user supplied
+control information into a struct sockcm_cookie. Then assign the
+requested transmit time to the skb.
 
-Fix this by getting rid of the the pointer to the basic header and just
-assuming that we have a V1 server-list payload and moving the V1 server
-list pointer inside the if-statement.  Dealing with other types and
-versions can be left for when such have been defined.
+This makes it possible to use the Earliest TXTIME First (ETF) packet
+scheduler with the CAN_RAW protocol. The user can send a CAN_RAW frame
+with a TXTIME and the kernel (with the ETF scheduler) will take care
+of sending it to the network interface.
 
-This can be tested by doing the following with KASAN enabled:
-
-    echo -n -e '\x0\x0\x1\x2' | keyctl padd dns_resolver foo @p
-
-and produces an oops like the following:
-
-    BUG: KASAN: slab-out-of-bounds in dns_resolver_preparse+0xc9f/0xd60 net/dns_resolver/dns_key.c:127
-    Read of size 1 at addr ffff888028894084 by task syz-executor265/5069
-    ...
-    Call Trace:
-      dns_resolver_preparse+0xc9f/0xd60 net/dns_resolver/dns_key.c:127
-      __key_create_or_update+0x453/0xdf0 security/keys/key.c:842
-      key_create_or_update+0x42/0x50 security/keys/key.c:1007
-      __do_sys_add_key+0x29c/0x450 security/keys/keyctl.c:134
-      do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-      do_syscall_64+0x40/0x110 arch/x86/entry/common.c:83
-      entry_SYSCALL_64_after_hwframe+0x62/0x6a
-
-This patch was originally by Edward Adam Davis, but was modified by
-Linus.
-
-Fixes: b946001d3bb1 ("keys, dns: Allow key types (eg. DNS) to be reclaimed immediately on expiry")
-Reported-and-tested-by: syzbot+94bbb75204a05da3d89f@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/r/0000000000009b39bc060c73e209@google.com/
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-Tested-by: David Howells <dhowells@redhat.com>
-Cc: Edward Adam Davis <eadavis@qq.com>
-Cc: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Jeffrey E Altman <jaltman@auristor.com>
-Cc: Wang Lei <wang840925@gmail.com>
-Cc: Jeff Layton <jlayton@redhat.com>
-Cc: Steve French <sfrench@us.ibm.com>
-Cc: Marc Dionne <marc.dionne@auristor.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Jeffrey E Altman <jaltman@auristor.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/all/20220502091946.1916211-3-mkl@pengutronix.de
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Stable-dep-of: 7f6ca95d16b9 ("net: Implement missing getsockopt(SO_TIMESTAMPING_NEW)")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dns_resolver/dns_key.c |   19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ net/can/raw.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/net/dns_resolver/dns_key.c
-+++ b/net/dns_resolver/dns_key.c
-@@ -91,8 +91,6 @@ const struct cred *dns_resolver_cache;
- static int
- dns_resolver_preparse(struct key_preparsed_payload *prep)
+diff --git a/net/can/raw.c b/net/can/raw.c
+index bb837019d1724..2700153262771 100644
+--- a/net/can/raw.c
++++ b/net/can/raw.c
+@@ -770,6 +770,7 @@ static int raw_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
  {
--	const struct dns_server_list_v1_header *v1;
--	const struct dns_payload_header *bin;
- 	struct user_key_payload *upayload;
- 	unsigned long derrno;
- 	int ret;
-@@ -103,27 +101,28 @@ dns_resolver_preparse(struct key_prepars
- 		return -EINVAL;
+ 	struct sock *sk = sock->sk;
+ 	struct raw_sock *ro = raw_sk(sk);
++	struct sockcm_cookie sockc;
+ 	struct sk_buff *skb;
+ 	struct net_device *dev;
+ 	int ifindex;
+@@ -815,11 +816,19 @@ static int raw_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
+ 	if (err < 0)
+ 		goto free_skb;
  
- 	if (data[0] == 0) {
-+		const struct dns_server_list_v1_header *v1;
+-	skb_setup_tx_timestamp(skb, sk->sk_tsflags);
++	sockcm_init(&sockc, sk);
++	if (msg->msg_controllen) {
++		err = sock_cmsg_send(sk, msg, &sockc);
++		if (unlikely(err))
++			goto free_skb;
++	}
+ 
+ 	skb->dev = dev;
+ 	skb->sk  = sk;
+ 	skb->priority = sk->sk_priority;
++	skb->tstamp = sockc.transmit_time;
 +
- 		/* It may be a server list. */
--		if (datalen <= sizeof(*bin))
-+		if (datalen <= sizeof(*v1))
- 			return -EINVAL;
++	skb_setup_tx_timestamp(skb, sockc.tsflags);
  
--		bin = (const struct dns_payload_header *)data;
--		kenter("[%u,%u],%u", bin->content, bin->version, datalen);
--		if (bin->content != DNS_PAYLOAD_IS_SERVER_LIST) {
-+		v1 = (const struct dns_server_list_v1_header *)data;
-+		kenter("[%u,%u],%u", v1->hdr.content, v1->hdr.version, datalen);
-+		if (v1->hdr.content != DNS_PAYLOAD_IS_SERVER_LIST) {
- 			pr_warn_ratelimited(
- 				"dns_resolver: Unsupported content type (%u)\n",
--				bin->content);
-+				v1->hdr.content);
- 			return -EINVAL;
- 		}
+ 	err = can_send(skb, ro->loopback);
  
--		if (bin->version != 1) {
-+		if (v1->hdr.version != 1) {
- 			pr_warn_ratelimited(
- 				"dns_resolver: Unsupported server list version (%u)\n",
--				bin->version);
-+				v1->hdr.version);
- 			return -EINVAL;
- 		}
- 
--		v1 = (const struct dns_server_list_v1_header *)bin;
- 		if ((v1->status != DNS_LOOKUP_GOOD &&
- 		     v1->status != DNS_LOOKUP_GOOD_WITH_BAD)) {
- 			if (prep->expiry == TIME64_MAX)
+-- 
+2.43.0
+
 
 
 
