@@ -1,190 +1,154 @@
-Return-Path: <stable+bounces-10609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1690E82C7EC
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 00:21:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5248282C874
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 01:43:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB4BCB236FC
-	for <lists+stable@lfdr.de>; Fri, 12 Jan 2024 23:21:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1D4B1F237ED
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 00:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D82199D9;
-	Fri, 12 Jan 2024 23:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07D8107A6;
+	Sat, 13 Jan 2024 00:43:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="WA1XZmto"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="S5PwQw6W"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp-fw-33001.amazon.com (smtp-fw-33001.amazon.com [207.171.190.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4002319451;
-	Fri, 12 Jan 2024 23:21:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD174C43394;
-	Fri, 12 Jan 2024 23:21:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1705101705;
-	bh=byWArrWY89eQGqq6MExRZnI58hPNPsuMybHOebVbi/I=;
-	h=Date:To:From:Subject:From;
-	b=WA1XZmtoeu0gd4cfPMxdM1cx7hFePFufcXg2bXopwBlEkyFbXmAJxAXPbP7ERSj43
-	 a2eNSGzvqqNoY012POhjHM3n63IRJ9pBAUYkWF9WyAFiNTv1xjo51xkBXi352YC4ps
-	 s0TTPU8QQbrAdZUADNU+yX/UeimoW6TOGTN4buGE=
-Date: Fri, 12 Jan 2024 15:21:45 -0800
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,muchun.song@linux.dev,geetika@linux.ibm.com,donettom@linux.vnet.ibm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] selftests-mm-hugepage-vmemmap-fails-on-64k-page-size-systems.patch removed from -mm tree
-Message-Id: <20240112232145.AD174C43394@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C86F4FB
+	for <stable@vger.kernel.org>; Sat, 13 Jan 2024 00:43:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1705106620; x=1736642620;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=hHlpdMtZPZlKg2xUMnyd509FHxLUqQfhW+WX8tKarUs=;
+  b=S5PwQw6Wfh59tkLUSqmU0aOsJsvEkj1bIMPlwJpphZfMpX7leSxAg/7l
+   urKe7gMKK4Es1s6n2FKPYyeI/yVM8a+smzh7zErqfvUjohXe7dRwZCSdN
+   hba0sxNIlBjiHn41yzZDwRd9upclYE9msxiqd321PobBzW7aN2hNIYqrr
+   A=;
+X-IronPort-AV: E=Sophos;i="6.04,191,1695686400"; 
+   d="scan'208";a="321425343"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-pdx-2a-m6i4x-1197e3af.us-west-2.amazon.com) ([10.43.8.6])
+  by smtp-border-fw-33001.sea14.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2024 00:43:38 +0000
+Received: from smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev (pdx2-ws-svc-p26-lb5-vlan2.pdx.amazon.com [10.39.38.66])
+	by email-inbound-relay-pdx-2a-m6i4x-1197e3af.us-west-2.amazon.com (Postfix) with ESMTPS id 648151005FC;
+	Sat, 13 Jan 2024 00:43:36 +0000 (UTC)
+Received: from EX19MTAUWB002.ant.amazon.com [10.0.21.151:51305]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.9.54:2525] with esmtp (Farcaster)
+ id e12ff9c0-7db3-48ad-bdc2-67597fe5dcc5; Sat, 13 Jan 2024 00:43:36 +0000 (UTC)
+X-Farcaster-Flow-ID: e12ff9c0-7db3-48ad-bdc2-67597fe5dcc5
+Received: from EX19D030UWB002.ant.amazon.com (10.13.139.182) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Sat, 13 Jan 2024 00:43:35 +0000
+Received: from u1e958862c3245e.ant.amazon.com (10.187.171.38) by
+ EX19D030UWB002.ant.amazon.com (10.13.139.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Sat, 13 Jan 2024 00:43:35 +0000
+From: Suraj Jitindar Singh <surajjs@amazon.com>
+To: <stable@vger.kernel.org>
+CC: <gregkh@linuxfoundation.org>, <trawets@amazon.com>, <security@kernel.org>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Suraj
+ Jitindar Singh" <surajjs@amazon.com>
+Subject: [PATCH stable 5.4.x 1/3] net/dst: use a smaller percpu_counter batch for dst entries accounting
+Date: Fri, 12 Jan 2024 16:42:52 -0800
+Message-ID: <20240113004254.2416044-1-surajjs@amazon.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <2024011155-gruffly-chunk-e186@gregkh>
+References: <2024011155-gruffly-chunk-e186@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EX19D039UWA001.ant.amazon.com (10.13.139.110) To
+ EX19D030UWB002.ant.amazon.com (10.13.139.182)
 
+From: Eric Dumazet <edumazet@google.com>
 
-The quilt patch titled
-     Subject: selftests: mm: hugepage-vmemmap fails on 64K page size systems
-has been removed from the -mm tree.  Its filename was
-     selftests-mm-hugepage-vmemmap-fails-on-64k-page-size-systems.patch
+commit cf86a086a18095e33e0637cb78cda1fcf5280852 upstream.
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+percpu_counter_add() uses a default batch size which is quite big
+on platforms with 256 cpus. (2*256 -> 512)
 
-------------------------------------------------------
-From: Donet Tom <donettom@linux.vnet.ibm.com>
-Subject: selftests: mm: hugepage-vmemmap fails on 64K page size systems
-Date: Wed, 10 Jan 2024 14:03:35 +0530
+This means dst_entries_get_fast() can be off by +/- 2*(nr_cpus^2)
+(131072 on servers with 256 cpus)
 
-The kernel sefltest mm/hugepage-vmemmap fails on architectures which has
-different page size other than 4K.  In hugepage-vmemmap page size used is
-4k so the pfn calculation will go wrong on systems which has different
-page size .The length of MAP_HUGETLB memory must be hugepage aligned but
-in hugepage-vmemmap map length is 2M so this will not get aligned if the
-system has differnet hugepage size.
+Reduce the batch size to something more reasonable, and
+add logic to ip6_dst_gc() to call dst_entries_get_slow()
+before calling the _very_ expensive fib6_run_gc() function.
 
-Added  psize() to get the page size and default_huge_page_size() to
-get the default hugepage size at run time, hugepage-vmemmap test pass
-on powerpc with 64K page size and x86 with 4K page size.
-
-Result on powerpc without patch (page size 64K)
-*# ./hugepage-vmemmap
-Returned address is 0x7effff000000 whose pfn is 0
-Head page flags (100000000) is invalid
-check_page_flags: Invalid argument
-*#
-
-Result on powerpc with patch (page size 64K)
-*# ./hugepage-vmemmap
-Returned address is 0x7effff000000 whose pfn is 600
-*#
-
-Result on x86 with patch (page size 4K)
-*# ./hugepage-vmemmap
-Returned address is 0x7fc7c2c00000 whose pfn is 1dac00
-*#
-
-Link: https://lkml.kernel.org/r/3b3a3ae37ba21218481c482a872bbf7526031600.1704865754.git.donettom@linux.vnet.ibm.com
-Fixes: b147c89cd429 ("selftests: vm: add a hugetlb test case")
-Signed-off-by: Donet Tom <donettom@linux.vnet.ibm.com>
-Reported-by: Geetika Moolchandani <geetika@linux.ibm.com>
-Tested-by: Geetika Moolchandani <geetika@linux.ibm.com>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
+Cc: <stable@vger.kernel.org> # 5.4.x
 ---
+ include/net/dst_ops.h | 4 +++-
+ net/core/dst.c        | 8 ++++----
+ net/ipv6/route.c      | 3 +++
+ 3 files changed, 10 insertions(+), 5 deletions(-)
 
- tools/testing/selftests/mm/hugepage-vmemmap.c |   29 +++++++++-------
- 1 file changed, 18 insertions(+), 11 deletions(-)
-
---- a/tools/testing/selftests/mm/hugepage-vmemmap.c~selftests-mm-hugepage-vmemmap-fails-on-64k-page-size-systems
-+++ a/tools/testing/selftests/mm/hugepage-vmemmap.c
-@@ -10,10 +10,7 @@
- #include <unistd.h>
- #include <sys/mman.h>
- #include <fcntl.h>
--
--#define MAP_LENGTH		(2UL * 1024 * 1024)
--
--#define PAGE_SIZE		4096
-+#include "vm_util.h"
+diff --git a/include/net/dst_ops.h b/include/net/dst_ops.h
+index 443863c7b8da..88ff7bb2bb9b 100644
+--- a/include/net/dst_ops.h
++++ b/include/net/dst_ops.h
+@@ -53,9 +53,11 @@ static inline int dst_entries_get_slow(struct dst_ops *dst)
+ 	return percpu_counter_sum_positive(&dst->pcpuc_entries);
+ }
  
- #define PAGE_COMPOUND_HEAD	(1UL << 15)
- #define PAGE_COMPOUND_TAIL	(1UL << 16)
-@@ -39,6 +36,9 @@
- #define MAP_FLAGS		(MAP_PRIVATE | MAP_ANONYMOUS | MAP_HUGETLB)
- #endif
- 
-+static size_t pagesize;
-+static size_t maplength;
-+
- static void write_bytes(char *addr, size_t length)
++#define DST_PERCPU_COUNTER_BATCH 32
+ static inline void dst_entries_add(struct dst_ops *dst, int val)
  {
- 	unsigned long i;
-@@ -56,7 +56,7 @@ static unsigned long virt_to_pfn(void *a
- 	if (fd < 0)
- 		return -1UL;
+-	percpu_counter_add(&dst->pcpuc_entries, val);
++	percpu_counter_add_batch(&dst->pcpuc_entries, val,
++				 DST_PERCPU_COUNTER_BATCH);
+ }
  
--	lseek(fd, (unsigned long)addr / PAGE_SIZE * sizeof(pagemap), SEEK_SET);
-+	lseek(fd, (unsigned long)addr / pagesize * sizeof(pagemap), SEEK_SET);
- 	read(fd, &pagemap, sizeof(pagemap));
- 	close(fd);
+ static inline int dst_entries_init(struct dst_ops *dst)
+diff --git a/net/core/dst.c b/net/core/dst.c
+index 193af526e908..d6b6ced0d451 100644
+--- a/net/core/dst.c
++++ b/net/core/dst.c
+@@ -81,11 +81,11 @@ void *dst_alloc(struct dst_ops *ops, struct net_device *dev,
+ {
+ 	struct dst_entry *dst;
  
-@@ -86,7 +86,7 @@ static int check_page_flags(unsigned lon
- 	 * this also verifies kernel has correctly set the fake page_head to tail
- 	 * while hugetlb_free_vmemmap is enabled.
- 	 */
--	for (i = 1; i < MAP_LENGTH / PAGE_SIZE; i++) {
-+	for (i = 1; i < maplength / pagesize; i++) {
- 		read(fd, &pageflags, sizeof(pageflags));
- 		if ((pageflags & TAIL_PAGE_FLAGS) != TAIL_PAGE_FLAGS ||
- 		    (pageflags & HEAD_PAGE_FLAGS) == HEAD_PAGE_FLAGS) {
-@@ -106,18 +106,25 @@ int main(int argc, char **argv)
- 	void *addr;
- 	unsigned long pfn;
+-	if (ops->gc && dst_entries_get_fast(ops) > ops->gc_thresh) {
++	if (ops->gc &&
++	    !(flags & DST_NOCOUNT) &&
++	    dst_entries_get_fast(ops) > ops->gc_thresh) {
+ 		if (ops->gc(ops)) {
+-			printk_ratelimited(KERN_NOTICE "Route cache is full: "
+-					   "consider increasing sysctl "
+-					   "net.ipv[4|6].route.max_size.\n");
++			pr_notice_ratelimited("Route cache is full: consider increasing sysctl net.ipv6.route.max_size.\n");
+ 			return NULL;
+ 		}
+ 	}
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index 209d52ebbd19..c38e421ca783 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -3218,6 +3218,9 @@ static int ip6_dst_gc(struct dst_ops *ops)
+ 	int entries;
  
--	addr = mmap(MAP_ADDR, MAP_LENGTH, PROT_READ | PROT_WRITE, MAP_FLAGS, -1, 0);
-+	pagesize  = psize();
-+	maplength = default_huge_page_size();
-+	if (!maplength) {
-+		printf("Unable to determine huge page size\n");
-+		exit(1);
-+	}
+ 	entries = dst_entries_get_fast(ops);
++	if (entries > rt_max_size)
++		entries = dst_entries_get_slow(ops);
 +
-+	addr = mmap(MAP_ADDR, maplength, PROT_READ | PROT_WRITE, MAP_FLAGS, -1, 0);
- 	if (addr == MAP_FAILED) {
- 		perror("mmap");
- 		exit(1);
- 	}
- 
- 	/* Trigger allocation of HugeTLB page. */
--	write_bytes(addr, MAP_LENGTH);
-+	write_bytes(addr, maplength);
- 
- 	pfn = virt_to_pfn(addr);
- 	if (pfn == -1UL) {
--		munmap(addr, MAP_LENGTH);
-+		munmap(addr, maplength);
- 		perror("virt_to_pfn");
- 		exit(1);
- 	}
-@@ -125,13 +132,13 @@ int main(int argc, char **argv)
- 	printf("Returned address is %p whose pfn is %lx\n", addr, pfn);
- 
- 	if (check_page_flags(pfn) < 0) {
--		munmap(addr, MAP_LENGTH);
-+		munmap(addr, maplength);
- 		perror("check_page_flags");
- 		exit(1);
- 	}
- 
- 	/* munmap() length of MAP_HUGETLB memory must be hugepage aligned */
--	if (munmap(addr, MAP_LENGTH)) {
-+	if (munmap(addr, maplength)) {
- 		perror("munmap");
- 		exit(1);
- 	}
-_
-
-Patches currently in -mm which might be from donettom@linux.vnet.ibm.com are
-
+ 	if (time_after(rt_last_gc + rt_min_interval, jiffies) &&
+ 	    entries <= rt_max_size)
+ 		goto out;
+-- 
+2.34.1
 
 
