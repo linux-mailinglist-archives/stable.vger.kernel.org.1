@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-10730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA78782CB61
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:59:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CB9F82CBA4
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:02:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56B552842CD
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:59:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D5CB28371E
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2D41119C;
-	Sat, 13 Jan 2024 09:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E20951848;
+	Sat, 13 Jan 2024 10:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U4025i3z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJrtV7Hd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 238CC11190;
-	Sat, 13 Jan 2024 09:58:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9479BC433F1;
-	Sat, 13 Jan 2024 09:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A973263C3;
+	Sat, 13 Jan 2024 10:02:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27625C433C7;
+	Sat, 13 Jan 2024 10:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139935;
-	bh=69OoYpVS0vMj7UFxN+VzgkF+tc6T4d74kD1xbf9WuyQ=;
+	s=korg; t=1705140123;
+	bh=Mpqkociv5oMzq1OBdlZGo3fnH08CjMXYYArq4GPYx2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U4025i3zsCOJIRBY0E3sipz9M1NL3+5PgkarYqjsX1YIBLpOftaJp22/c4rdNrXY0
-	 NR2BlVxIwoxjGATbw3xMDt8Q5aMzWDjMgbe0DpTpKpYUfO0IwDagDgLIvSrXpSz64Z
-	 Q6ve7wsAh4bwPBlQ2A4Se3W53DABnevuuGAYNfss=
+	b=fJrtV7HdxfFIsOr0ZDglQOLLHnXzCrK776jVfQYhFlTfHi2UQmn8f+/cnynW5wVCa
+	 s7utZMjVvsSuMbPyE6a11WPzcPof+zltZcFpbyT9lqU28MM94h7lh2qoVbOoo7/CoX
+	 pxKlMwHKqqn8AhjTVG1+8az247p20IBKYWvE3rw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Pawlowski <bartosz.pawlowski@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>
-Subject: [PATCH 5.10 42/43] PCI: Disable ATS for specific Intel IPU E2000 devices
-Date: Sat, 13 Jan 2024 10:50:21 +0100
-Message-ID: <20240113094208.320366139@linuxfoundation.org>
+	Wenchao Chen <wenchao.chen@unisoc.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 51/59] mmc: sdhci-sprd: Fix eMMC init failure after hw reset
+Date: Sat, 13 Jan 2024 10:50:22 +0100
+Message-ID: <20240113094210.850139930@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
-References: <20240113094206.930684111@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,60 +53,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
+From: Wenchao Chen <wenchao.chen@unisoc.com>
 
-commit a18615b1cfc04f00548c60eb9a77e0ce56e848fd upstream.
+commit 8abf77c88929b6d20fa4f9928b18d6448d64e293 upstream.
 
-Due to a hardware issue in A and B steppings of Intel IPU E2000, it expects
-wrong endianness in ATS invalidation message body. This problem can lead to
-outdated translations being returned as valid and finally cause system
-instability.
+Some eMMC devices that do not close the auto clk gate after hw reset will
+cause eMMC initialization to fail. Let's fix this.
 
-To prevent such issues, add quirk_intel_e2000_no_ats() to disable ATS for
-vulnerable IPU E2000 devices.
-
-Link: https://lore.kernel.org/r/20230908143606.685930-3-bartosz.pawlowski@intel.com
-Signed-off-by: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: Wenchao Chen <wenchao.chen@unisoc.com>
+Fixes: ff874dbc4f86 ("mmc: sdhci-sprd: Disable CLK_AUTO when the clock is less than 400K")
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20231204064934.21236-1-wenchao.chen@unisoc.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/mmc/host/sdhci-sprd.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5383,6 +5383,25 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AT
- /* AMD Navi14 dGPU */
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x7340, quirk_amd_harvest_no_ats);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x7341, quirk_amd_harvest_no_ats);
-+
-+/*
-+ * Intel IPU E2000 revisions before C0 implement incorrect endianness
-+ * in ATS Invalidate Request message body. Disable ATS for those devices.
-+ */
-+static void quirk_intel_e2000_no_ats(struct pci_dev *pdev)
-+{
-+	if (pdev->revision < 0x20)
-+		quirk_no_ats(pdev);
-+}
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1451, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1452, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1453, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1454, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1455, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1457, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1459, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x145a, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x145c, quirk_intel_e2000_no_ats);
- #endif /* CONFIG_PCI_ATS */
+--- a/drivers/mmc/host/sdhci-sprd.c
++++ b/drivers/mmc/host/sdhci-sprd.c
+@@ -224,15 +224,19 @@ static inline void _sdhci_sprd_set_clock
+ 	div = ((div & 0x300) >> 2) | ((div & 0xFF) << 8);
+ 	sdhci_enable_clk(host, div);
  
- /* Freescale PCIe doesn't support MSI in RC mode */
++	val = sdhci_readl(host, SDHCI_SPRD_REG_32_BUSY_POSI);
++	mask = SDHCI_SPRD_BIT_OUTR_CLK_AUTO_EN | SDHCI_SPRD_BIT_INNR_CLK_AUTO_EN;
+ 	/* Enable CLK_AUTO when the clock is greater than 400K. */
+ 	if (clk > 400000) {
+-		val = sdhci_readl(host, SDHCI_SPRD_REG_32_BUSY_POSI);
+-		mask = SDHCI_SPRD_BIT_OUTR_CLK_AUTO_EN |
+-			SDHCI_SPRD_BIT_INNR_CLK_AUTO_EN;
+ 		if (mask != (val & mask)) {
+ 			val |= mask;
+ 			sdhci_writel(host, val, SDHCI_SPRD_REG_32_BUSY_POSI);
+ 		}
++	} else {
++		if (val & mask) {
++			val &= ~mask;
++			sdhci_writel(host, val, SDHCI_SPRD_REG_32_BUSY_POSI);
++		}
+ 	}
+ }
+ 
 
 
 
