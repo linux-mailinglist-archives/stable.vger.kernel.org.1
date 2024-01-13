@@ -1,46 +1,52 @@
-Return-Path: <stable+bounces-10642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9CD82CB01
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:54:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46FDD82CB4C
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:57:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45C3C2859F4
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:54:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6061282672
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD611110;
-	Sat, 13 Jan 2024 09:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49FFB15C9;
+	Sat, 13 Jan 2024 09:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xCRQ0Q3p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ClUoTp4p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2033415AF;
-	Sat, 13 Jan 2024 09:54:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9268EC433C7;
-	Sat, 13 Jan 2024 09:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 120AD1848;
+	Sat, 13 Jan 2024 09:57:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 808CCC433F1;
+	Sat, 13 Jan 2024 09:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139677;
-	bh=zAoY1+Bo/D/0CvzTpTUggiLoo7mmM+R0/u3JVhFfX+0=;
+	s=korg; t=1705139876;
+	bh=k16BbxQglZJrHVqYnqv3axTjEwczUirO70wgPjOI3wQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xCRQ0Q3pXl2eTZSAex9a0z8/piJVN1zfa6c+wTok5qqpZulMnujMYVQzlkWV9o+fw
-	 0HrsrO6jmtW4yrzNJDE8ZWspOCDFlqeLstiay4OrfqjYoEK9fBzN20DRNhKHl7YhLW
-	 VLi8J22r2uP+xps+CpM4laiTivDN6RuGJ0zrV524=
+	b=ClUoTp4p4efmtT5f7HbNRVnqnRFueVtDstgPf2bWN809gClx7+yP27eWo4a2UrpKU
+	 F3k8IDsmtHOdXVpipUYy+BaDKh8W7foyr6SZ18gFD98cwIwQax9rV5/haL8j4XCfV+
+	 tMTGxeyDodet+zgSaZJSvDffSDvS/rJquBd8Ry4I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.19 19/25] netfilter: nf_tables: Reject tables of unsupported family
+	Karen Ostrowska <karen.ostrowska@intel.com>,
+	Mateusz Palczewski <mateusz.palczewski@intel.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrii Staikov <andrii.staikov@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 21/43] i40e: Restore VF MSI-X state during PCI reset
 Date: Sat, 13 Jan 2024 10:50:00 +0100
-Message-ID: <20240113094205.642158790@linuxfoundation.org>
+Message-ID: <20240113094207.594373532@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094205.025407355@linuxfoundation.org>
-References: <20240113094205.025407355@linuxfoundation.org>
+In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
+References: <20240113094206.930684111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,70 +58,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Andrii Staikov <andrii.staikov@intel.com>
 
-commit f1082dd31fe461d482d69da2a8eccfeb7bf07ac2 upstream.
+[ Upstream commit 371e576ff3e8580d91d49026e5d5faebf5565558 ]
 
-An nftables family is merely a hollow container, its family just a
-number and such not reliant on compile-time options other than nftables
-support itself. Add an artificial check so attempts at using a family
-the kernel can't support fail as early as possible. This helps user
-space detect kernels which lack e.g. NFPROTO_INET.
+During a PCI FLR the MSI-X Enable flag in the VF PCI MSI-X capability
+register will be cleared. This can lead to issues when a VF is
+assigned to a VM because in these cases the VF driver receives no
+indication of the PF PCI error/reset and additionally it is incapable
+of restoring the cleared flag in the hypervisor configuration space
+without fully reinitializing the driver interrupt functionality.
 
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since the VF driver is unable to easily resolve this condition on its own,
+restore the VF MSI-X flag during the PF PCI reset handling.
+
+Fixes: 19b7960b2da1 ("i40e: implement split PCI error reset handler")
+Co-developed-by: Karen Ostrowska <karen.ostrowska@intel.com>
+Signed-off-by: Karen Ostrowska <karen.ostrowska@intel.com>
+Co-developed-by: Mateusz Palczewski <mateusz.palczewski@intel.com>
+Signed-off-by: Mateusz Palczewski <mateusz.palczewski@intel.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Andrii Staikov <andrii.staikov@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |   27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_main.c   |  3 +++
+ .../ethernet/intel/i40e/i40e_virtchnl_pf.c    | 26 +++++++++++++++++++
+ .../ethernet/intel/i40e/i40e_virtchnl_pf.h    |  3 +++
+ 3 files changed, 32 insertions(+)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -893,6 +893,30 @@ static int nft_chain_hash_cmp(struct rha
- 	return strcmp(chain->name, name);
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index f4752ba8fd952..d83b96aa3e42a 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -15764,6 +15764,9 @@ static void i40e_pci_error_reset_done(struct pci_dev *pdev)
+ 	struct i40e_pf *pf = pci_get_drvdata(pdev);
+ 
+ 	i40e_reset_and_rebuild(pf, false, false);
++#ifdef CONFIG_PCI_IOV
++	i40e_restore_all_vfs_msi_state(pdev);
++#endif /* CONFIG_PCI_IOV */
  }
  
-+static bool nft_supported_family(u8 family)
-+{
-+	return false
-+#ifdef CONFIG_NF_TABLES_INET
-+		|| family == NFPROTO_INET
-+#endif
-+#ifdef CONFIG_NF_TABLES_IPV4
-+		|| family == NFPROTO_IPV4
-+#endif
-+#ifdef CONFIG_NF_TABLES_ARP
-+		|| family == NFPROTO_ARP
-+#endif
-+#ifdef CONFIG_NF_TABLES_NETDEV
-+		|| family == NFPROTO_NETDEV
-+#endif
-+#if IS_ENABLED(CONFIG_NF_TABLES_BRIDGE)
-+		|| family == NFPROTO_BRIDGE
-+#endif
-+#ifdef CONFIG_NF_TABLES_IPV6
-+		|| family == NFPROTO_IPV6
-+#endif
-+		;
-+}
-+
- static int nf_tables_newtable(struct net *net, struct sock *nlsk,
- 			      struct sk_buff *skb, const struct nlmsghdr *nlh,
- 			      const struct nlattr * const nla[],
-@@ -908,6 +932,9 @@ static int nf_tables_newtable(struct net
- 	struct nft_ctx ctx;
- 	int err;
+ /**
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index 115749e527205..7b0ed15f4df32 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -99,6 +99,32 @@ void i40e_vc_notify_reset(struct i40e_pf *pf)
+ 			     (u8 *)&pfe, sizeof(struct virtchnl_pf_event));
+ }
  
-+	if (!nft_supported_family(family))
-+		return -EOPNOTSUPP;
++#ifdef CONFIG_PCI_IOV
++void i40e_restore_all_vfs_msi_state(struct pci_dev *pdev)
++{
++	u16 vf_id;
++	u16 pos;
 +
- 	lockdep_assert_held(&nft_net->commit_mutex);
- 	attr = nla[NFTA_TABLE_NAME];
- 	table = nft_table_lookup(net, attr, family, genmask);
++	/* Continue only if this is a PF */
++	if (!pdev->is_physfn)
++		return;
++
++	if (!pci_num_vf(pdev))
++		return;
++
++	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_SRIOV);
++	if (pos) {
++		struct pci_dev *vf_dev = NULL;
++
++		pci_read_config_word(pdev, pos + PCI_SRIOV_VF_DID, &vf_id);
++		while ((vf_dev = pci_get_device(pdev->vendor, vf_id, vf_dev))) {
++			if (vf_dev->is_virtfn && vf_dev->physfn == pdev)
++				pci_restore_msi_state(vf_dev);
++		}
++	}
++}
++#endif /* CONFIG_PCI_IOV */
++
+ /**
+  * i40e_vc_notify_vf_reset
+  * @vf: pointer to the VF structure
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
+index 358bbdb587951..bd497cc5303a1 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
+@@ -135,6 +135,9 @@ int i40e_ndo_set_vf_spoofchk(struct net_device *netdev, int vf_id, bool enable);
+ 
+ void i40e_vc_notify_link_state(struct i40e_pf *pf);
+ void i40e_vc_notify_reset(struct i40e_pf *pf);
++#ifdef CONFIG_PCI_IOV
++void i40e_restore_all_vfs_msi_state(struct pci_dev *pdev);
++#endif /* CONFIG_PCI_IOV */
+ int i40e_get_vf_stats(struct net_device *netdev, int vf_id,
+ 		      struct ifla_vf_stats *vf_stats);
+ 
+-- 
+2.43.0
+
 
 
 
