@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-10669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69C0282CB1F
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:56:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA8BD82CAFD
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:54:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E46B1F234B3
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:56:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51489B20F4C
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE4A185A;
-	Sat, 13 Jan 2024 09:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4471110;
+	Sat, 13 Jan 2024 09:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRG6cjZr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hMQnkWd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0509412E63;
-	Sat, 13 Jan 2024 09:55:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C90C433C7;
-	Sat, 13 Jan 2024 09:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927D617E8;
+	Sat, 13 Jan 2024 09:54:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE16C433C7;
+	Sat, 13 Jan 2024 09:54:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139756;
-	bh=3xdnyEWnVcLjb+nLqtDYzxAiNv0NM459UcxEqZI7vNU=;
+	s=korg; t=1705139665;
+	bh=4lgrvBM0YiQAij5gX4qsxMrFzEqDuMIbJ2NLKVBTHxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DRG6cjZrmIMT4imqdPT6OAeHmGPniBjIhyvFJ3N23o79DtPdcV2sz/Ddginaa2vAT
-	 2CeF2qFuXMCX8Npu4ElQ7vr3ytJQTdxxjUe/vqJO+vLfBTgayJKCFeEKcAVij2otuE
-	 W9wkqL6MApQXb5CMtq+/rDoRX2Jzr5XDh0a7Y8Vs=
+	b=0hMQnkWdneMcpd0SUU0rRRb7qKrEwu8yDRavuJyKThneGPu7jSrUMK+KqQQBV7OQw
+	 P+E6I3bEoh38yTKmTtGqnK9PB+JlT7YFagjCm1/9yzCAKFYM+dlKRG74+MWKluehWB
+	 Be6CoKLOK+pPpQPUcdug8LqZqrF5S8NQDqyRcAyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Lange <thomas@corelatus.se>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 20/38] net: Implement missing SO_TIMESTAMPING_NEW cmsg support
+	Jiajun Xie <jiajun.xie.sh@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 4.19 15/25] mm: fix unmap_mapping_range high bits shift bug
 Date: Sat, 13 Jan 2024 10:49:56 +0100
-Message-ID: <20240113094207.067061361@linuxfoundation.org>
+Message-ID: <20240113094205.509103039@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
-References: <20240113094206.455533180@linuxfoundation.org>
+In-Reply-To: <20240113094205.025407355@linuxfoundation.org>
+References: <20240113094205.025407355@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,45 +52,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Lange <thomas@corelatus.se>
+From: Jiajun Xie <jiajun.xie.sh@gmail.com>
 
-[ Upstream commit 382a32018b74f407008615e0e831d05ed28e81cd ]
+commit 9eab0421fa94a3dde0d1f7e36ab3294fc306c99d upstream.
 
-Commit 9718475e6908 ("socket: Add SO_TIMESTAMPING_NEW") added the new
-socket option SO_TIMESTAMPING_NEW. However, it was never implemented in
-__sock_cmsg_send thus breaking SO_TIMESTAMPING cmsg for platforms using
-SO_TIMESTAMPING_NEW.
+The bug happens when highest bit of holebegin is 1, suppose holebegin is
+0x8000000111111000, after shift, hba would be 0xfff8000000111111, then
+vma_interval_tree_foreach would look it up fail or leads to the wrong
+result.
 
-Fixes: 9718475e6908 ("socket: Add SO_TIMESTAMPING_NEW")
-Link: https://lore.kernel.org/netdev/6a7281bf-bc4a-4f75-bb88-7011908ae471@app.fastmail.com/
-Signed-off-by: Thomas Lange <thomas@corelatus.se>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20240104085744.49164-1-thomas@corelatus.se
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+error call seq e.g.:
+- mmap(..., offset=0x8000000111111000)
+  |- syscall(mmap, ... unsigned long, off):
+     |- ksys_mmap_pgoff( ... , off >> PAGE_SHIFT);
+
+  here pgoff is correctly shifted to 0x8000000111111,
+  but pass 0x8000000111111000 as holebegin to unmap
+  would then cause terrible result, as shown below:
+
+- unmap_mapping_range(..., loff_t const holebegin)
+  |- pgoff_t hba = holebegin >> PAGE_SHIFT;
+          /* hba = 0xfff8000000111111 unexpectedly */
+
+The issue happens in Heterogeneous computing, where the device(e.g.
+gpu) and host share the same virtual address space.
+
+A simple workflow pattern which hit the issue is:
+        /* host */
+    1. userspace first mmap a file backed VA range with specified offset.
+                        e.g. (offset=0x800..., mmap return: va_a)
+    2. write some data to the corresponding sys page
+                         e.g. (va_a = 0xAABB)
+        /* device */
+    3. gpu workload touches VA, triggers gpu fault and notify the host.
+        /* host */
+    4. reviced gpu fault notification, then it will:
+            4.1 unmap host pages and also takes care of cpu tlb
+                  (use unmap_mapping_range with offset=0x800...)
+            4.2 migrate sys page to device
+            4.3 setup device page table and resolve device fault.
+        /* device */
+    5. gpu workload continued, it accessed va_a and got 0xAABB.
+    6. gpu workload continued, it wrote 0xBBCC to va_a.
+        /* host */
+    7. userspace access va_a, as expected, it will:
+            7.1 trigger cpu vm fault.
+            7.2 driver handling fault to migrate gpu local page to host.
+    8. userspace then could correctly get 0xBBCC from va_a
+    9. done
+
+But in step 4.1, if we hit the bug this patch mentioned, then userspace
+would never trigger cpu fault, and still get the old value: 0xAABB.
+
+Making holebegin unsigned first fixes the bug.
+
+Link: https://lkml.kernel.org/r/20231220052839.26970-1-jiajun.xie.sh@gmail.com
+Signed-off-by: Jiajun Xie <jiajun.xie.sh@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/sock.c | 1 +
- 1 file changed, 1 insertion(+)
+ mm/memory.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index a3ca522434a6e..42076a3e12c3c 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2310,6 +2310,7 @@ int __sock_cmsg_send(struct sock *sk, struct msghdr *msg, struct cmsghdr *cmsg,
- 		sockc->mark = *(u32 *)CMSG_DATA(cmsg);
- 		break;
- 	case SO_TIMESTAMPING_OLD:
-+	case SO_TIMESTAMPING_NEW:
- 		if (cmsg->cmsg_len != CMSG_LEN(sizeof(u32)))
- 			return -EINVAL;
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3042,8 +3042,8 @@ void unmap_mapping_pages(struct address_
+ void unmap_mapping_range(struct address_space *mapping,
+ 		loff_t const holebegin, loff_t const holelen, int even_cows)
+ {
+-	pgoff_t hba = holebegin >> PAGE_SHIFT;
+-	pgoff_t hlen = (holelen + PAGE_SIZE - 1) >> PAGE_SHIFT;
++	pgoff_t hba = (pgoff_t)(holebegin) >> PAGE_SHIFT;
++	pgoff_t hlen = ((pgoff_t)(holelen) + PAGE_SIZE - 1) >> PAGE_SHIFT;
  
--- 
-2.43.0
-
+ 	/* Check for overflow. */
+ 	if (sizeof(holelen) > sizeof(hlen)) {
 
 
 
