@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-10692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADCE382CB3A
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:57:06 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0279282CB69
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:59:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B8A4282F42
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:57:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AE7BB20E2B
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:59:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A2B1846;
-	Sat, 13 Jan 2024 09:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFCE7CA71;
+	Sat, 13 Jan 2024 09:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0F+ISedN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHjtH33+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B9EEC5;
-	Sat, 13 Jan 2024 09:57:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF261C43601;
-	Sat, 13 Jan 2024 09:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C3E1846;
+	Sat, 13 Jan 2024 09:59:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1877CC43390;
+	Sat, 13 Jan 2024 09:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139824;
-	bh=atgPHSSQyfaztTDp377+GYR2/dqPXUWoWRgd1XBUDqk=;
+	s=korg; t=1705139949;
+	bh=D7oNDxFN973nsX0xb8ZHDYoNtN9m1xieuWxs45IQXEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0F+ISedN3uv/Y4V4B17bfqnjsXPDgYTdxG0U9aWWXf/aOIyFDCXK9v7Sg8yx3ZDHQ
-	 S1pXgzFy1bv394YLEXJmiywauaoYuE5VyPvFFb42xWXR6DteYtxndPJimvh1KEpWJD
-	 quPUwXNpM24XkX8+zPBk+iOFspk9KsLa0xVdv4sU=
+	b=SHjtH33+3DpNX0izA0IREg9dKtRshxgATAJw4pP06s+aZJrdPoLqAMJL5+jBH6YkO
+	 pqWmHhKsIKqQjXhZlvAVtB7ocXXmazd1cbaPfp1LEo2lFJRkf9QZOAGzTK0sXJy6S9
+	 L8HJZix5m0XHE+O0llcLREbjASrB5TE7PkTFcJdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Pawlowski <bartosz.pawlowski@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>
-Subject: [PATCH 5.4 35/38] PCI: Disable ATS for specific Intel IPU E2000 devices
+	Ziyang Huang <hzyitc@outlook.com>,
+	Anand Moon <linux.amoon@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 32/43] mmc: meson-mx-sdhc: Fix initialization frozen issue
 Date: Sat, 13 Jan 2024 10:50:11 +0100
-Message-ID: <20240113094207.524416202@linuxfoundation.org>
+Message-ID: <20240113094207.959603565@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
-References: <20240113094206.455533180@linuxfoundation.org>
+In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
+References: <20240113094206.930684111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,60 +53,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
+From: Ziyang Huang <hzyitc@outlook.com>
 
-commit a18615b1cfc04f00548c60eb9a77e0ce56e848fd upstream.
+commit 8c124d998ea0c9022e247b11ac51f86ec8afa0e1 upstream.
 
-Due to a hardware issue in A and B steppings of Intel IPU E2000, it expects
-wrong endianness in ATS invalidation message body. This problem can lead to
-outdated translations being returned as valid and finally cause system
-instability.
+Commit 4bc31edebde5 ("mmc: core: Set HS clock speed before sending
+HS CMD13") set HS clock (52MHz) before switching to HS mode. For this
+freq, FCLK_DIV5 will be selected and div value is 10 (reg value is 9).
+Then we set rx_clk_phase to 11 or 15 which is out of range and make
+hardware frozen. After we send command request, no irq will be
+interrupted and the mmc driver will keep to wait for request finished,
+even durning rebooting.
 
-To prevent such issues, add quirk_intel_e2000_no_ats() to disable ATS for
-vulnerable IPU E2000 devices.
+So let's set it to Phase 90 which should work in most cases. Then let
+meson_mx_sdhc_execute_tuning() to find the accurate value for data
+transfer.
 
-Link: https://lore.kernel.org/r/20230908143606.685930-3-bartosz.pawlowski@intel.com
-Signed-off-by: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+If this doesn't work, maybe need to define a factor in dts.
+
+Fixes: e4bf1b0970ef ("mmc: host: meson-mx-sdhc: new driver for the Amlogic Meson SDHC host")
+Signed-off-by: Ziyang Huang <hzyitc@outlook.com>
+Tested-by: Anand Moon <linux.amoon@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/TYZPR01MB5556A3E71554A2EC08597EA4C9CDA@TYZPR01MB5556.apcprd01.prod.exchangelabs.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/mmc/host/meson-mx-sdhc-mmc.c | 26 +++++---------------------
+ 1 file changed, 5 insertions(+), 21 deletions(-)
 
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5419,6 +5419,25 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AT
- /* AMD Navi14 dGPU */
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x7340, quirk_amd_harvest_no_ats);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x7341, quirk_amd_harvest_no_ats);
-+
-+/*
-+ * Intel IPU E2000 revisions before C0 implement incorrect endianness
-+ * in ATS Invalidate Request message body. Disable ATS for those devices.
-+ */
-+static void quirk_intel_e2000_no_ats(struct pci_dev *pdev)
-+{
-+	if (pdev->revision < 0x20)
-+		quirk_no_ats(pdev);
-+}
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1451, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1452, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1453, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1454, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1455, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1457, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1459, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x145a, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x145c, quirk_intel_e2000_no_ats);
- #endif /* CONFIG_PCI_ATS */
+diff --git a/drivers/mmc/host/meson-mx-sdhc-mmc.c b/drivers/mmc/host/meson-mx-sdhc-mmc.c
+index 528ec8166e7c..1ed9731e77ef 100644
+--- a/drivers/mmc/host/meson-mx-sdhc-mmc.c
++++ b/drivers/mmc/host/meson-mx-sdhc-mmc.c
+@@ -269,7 +269,7 @@ static int meson_mx_sdhc_enable_clks(struct mmc_host *mmc)
+ static int meson_mx_sdhc_set_clk(struct mmc_host *mmc, struct mmc_ios *ios)
+ {
+ 	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
+-	u32 rx_clk_phase;
++	u32 val, rx_clk_phase;
+ 	int ret;
  
- /* Freescale PCIe doesn't support MSI in RC mode */
+ 	meson_mx_sdhc_disable_clks(mmc);
+@@ -290,27 +290,11 @@ static int meson_mx_sdhc_set_clk(struct mmc_host *mmc, struct mmc_ios *ios)
+ 		mmc->actual_clock = clk_get_rate(host->sd_clk);
+ 
+ 		/*
+-		 * according to Amlogic the following latching points are
+-		 * selected with empirical values, there is no (known) formula
+-		 * to calculate these.
++		 * Phase 90 should work in most cases. For data transmission,
++		 * meson_mx_sdhc_execute_tuning() will find a accurate value
+ 		 */
+-		if (mmc->actual_clock > 100000000) {
+-			rx_clk_phase = 1;
+-		} else if (mmc->actual_clock > 45000000) {
+-			if (ios->signal_voltage == MMC_SIGNAL_VOLTAGE_330)
+-				rx_clk_phase = 15;
+-			else
+-				rx_clk_phase = 11;
+-		} else if (mmc->actual_clock >= 25000000) {
+-			rx_clk_phase = 15;
+-		} else if (mmc->actual_clock > 5000000) {
+-			rx_clk_phase = 23;
+-		} else if (mmc->actual_clock > 1000000) {
+-			rx_clk_phase = 55;
+-		} else {
+-			rx_clk_phase = 1061;
+-		}
+-
++		regmap_read(host->regmap, MESON_SDHC_CLKC, &val);
++		rx_clk_phase = FIELD_GET(MESON_SDHC_CLKC_CLK_DIV, val) / 4;
+ 		regmap_update_bits(host->regmap, MESON_SDHC_CLK2,
+ 				   MESON_SDHC_CLK2_RX_CLK_PHASE,
+ 				   FIELD_PREP(MESON_SDHC_CLK2_RX_CLK_PHASE,
+-- 
+2.43.0
+
 
 
 
