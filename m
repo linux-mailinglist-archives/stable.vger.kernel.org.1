@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-10750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882E782CB77
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:59:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CCE282CB41
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:57:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D1BA1F22C5C
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:59:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C189F1F2243D
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608E2185A;
-	Sat, 13 Jan 2024 09:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 135D315BD;
+	Sat, 13 Jan 2024 09:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OyX2j/Io"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gsAllkcZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282021846;
-	Sat, 13 Jan 2024 09:59:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99059C433F1;
-	Sat, 13 Jan 2024 09:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A0F1846;
+	Sat, 13 Jan 2024 09:57:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C69C433F1;
+	Sat, 13 Jan 2024 09:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139994;
-	bh=LNjdVDZqClTL+iEuzyVXFM7HdstHJOoe4jK8flIaw70=;
+	s=korg; t=1705139841;
+	bh=PfJabXxY0GPJRPoFO5L2Hs2rE3o/BVtd7/sAH3sooac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OyX2j/IoZDbLZVeVni3x39iyC8BpAuNFNG4SCfuQKc30utwAqQUnA0Nx1dlCNMaFE
-	 wqfLakWWqW5KJ8VPiYnfTj/r/6+qYBPduGPHXCadFC28a1H3mFhJ5Ikx9S20kWWmQz
-	 oPwo9SLpr9qN6g2N3ojajD5lAWXOxFW2rlnCQsmc=
+	b=gsAllkcZeVMxJYhK+zQ9i7pTwkTEOXwjWEotYTChtGKNF8lT7+Mz1ubpZpTVwyTaK
+	 hUj1swJfAf6s32aGrjcGT1LnBIlcA7YMBhxzTG8JpGeY+pIAS1p6jN5RQSEtTTfCFo
+	 y0zYp9pOQ8PsvjlrFhsbUg4nHFTeQGV9IlYFfr/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?J=C3=B6rn-Thorben=20Hinz?= <jthinz@mailbox.tu-berlin.de>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 18/59] net: Implement missing getsockopt(SO_TIMESTAMPING_NEW)
+Subject: [PATCH 5.10 10/43] ARM: sun9i: smp: Fix array-index-out-of-bounds read in sunxi_mc_smp_init
 Date: Sat, 13 Jan 2024 10:49:49 +0100
-Message-ID: <20240113094209.871593031@linuxfoundation.org>
+Message-ID: <20240113094207.264319801@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
-References: <20240113094209.301672391@linuxfoundation.org>
+In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
+References: <20240113094206.930684111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,62 +52,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jörn-Thorben Hinz <jthinz@mailbox.tu-berlin.de>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 7f6ca95d16b96567ce4cf458a2790ff17fa620c3 ]
+[ Upstream commit 72ad3b772b6d393701df58ba1359b0bb346a19ed ]
 
-Commit 9718475e6908 ("socket: Add SO_TIMESTAMPING_NEW") added the new
-socket option SO_TIMESTAMPING_NEW. Setting the option is handled in
-sk_setsockopt(), querying it was not handled in sk_getsockopt(), though.
+Running a multi-arch kernel (multi_v7_defconfig) on a Raspberry Pi 3B+
+with enabled CONFIG_UBSAN triggers the following warning:
 
-Following remarks on an earlier submission of this patch, keep the old
-behavior of getsockopt(SO_TIMESTAMPING_OLD) which returns the active
-flags even if they actually have been set through SO_TIMESTAMPING_NEW.
+ UBSAN: array-index-out-of-bounds in arch/arm/mach-sunxi/mc_smp.c:810:29
+ index 2 is out of range for type 'sunxi_mc_smp_data [2]'
+ CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.7.0-rc6-00248-g5254c0cbc92d
+ Hardware name: BCM2835
+  unwind_backtrace from show_stack+0x10/0x14
+  show_stack from dump_stack_lvl+0x40/0x4c
+  dump_stack_lvl from ubsan_epilogue+0x8/0x34
+  ubsan_epilogue from __ubsan_handle_out_of_bounds+0x78/0x80
+  __ubsan_handle_out_of_bounds from sunxi_mc_smp_init+0xe4/0x4cc
+  sunxi_mc_smp_init from do_one_initcall+0xa0/0x2fc
+  do_one_initcall from kernel_init_freeable+0xf4/0x2f4
+  kernel_init_freeable from kernel_init+0x18/0x158
+  kernel_init from ret_from_fork+0x14/0x28
 
-The new getsockopt(SO_TIMESTAMPING_NEW) is stricter, returning flags
-only if they have been set through the same option.
+Since the enabled method couldn't match with any entry from
+sunxi_mc_smp_data, the value of the index shouldn't be used right after
+the loop. So move it after the check of ret in order to have a valid
+index.
 
-Fixes: 9718475e6908 ("socket: Add SO_TIMESTAMPING_NEW")
-Link: https://lore.kernel.org/lkml/20230703175048.151683-1-jthinz@mailbox.tu-berlin.de/
-Link: https://lore.kernel.org/netdev/0d7cddc9-03fa-43db-a579-14f3e822615b@app.fastmail.com/
-Signed-off-by: Jörn-Thorben Hinz <jthinz@mailbox.tu-berlin.de>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 1631090e34f5 ("ARM: sun9i: smp: Add is_a83t field")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20231228193903.9078-1-wahrenst@gmx.net
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ arch/arm/mach-sunxi/mc_smp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 662cd6d54ac70..ef29106af6046 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -1534,9 +1534,16 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
- 		break;
+diff --git a/arch/arm/mach-sunxi/mc_smp.c b/arch/arm/mach-sunxi/mc_smp.c
+index 26cbce1353387..b2f5f4f28705f 100644
+--- a/arch/arm/mach-sunxi/mc_smp.c
++++ b/arch/arm/mach-sunxi/mc_smp.c
+@@ -808,12 +808,12 @@ static int __init sunxi_mc_smp_init(void)
+ 			break;
+ 	}
  
- 	case SO_TIMESTAMPING_OLD:
-+	case SO_TIMESTAMPING_NEW:
- 		lv = sizeof(v.timestamping);
--		v.timestamping.flags = sk->sk_tsflags;
--		v.timestamping.bind_phc = sk->sk_bind_phc;
-+		/* For the later-added case SO_TIMESTAMPING_NEW: Be strict about only
-+		 * returning the flags when they were set through the same option.
-+		 * Don't change the beviour for the old case SO_TIMESTAMPING_OLD.
-+		 */
-+		if (optname == SO_TIMESTAMPING_OLD || sock_flag(sk, SOCK_TSTAMP_NEW)) {
-+			v.timestamping.flags = sk->sk_tsflags;
-+			v.timestamping.bind_phc = sk->sk_bind_phc;
-+		}
- 		break;
+-	is_a83t = sunxi_mc_smp_data[i].is_a83t;
+-
+ 	of_node_put(node);
+ 	if (ret)
+ 		return -ENODEV;
  
- 	case SO_RCVTIMEO_OLD:
++	is_a83t = sunxi_mc_smp_data[i].is_a83t;
++
+ 	if (!sunxi_mc_smp_cpu_table_init())
+ 		return -EINVAL;
+ 
 -- 
 2.43.0
 
