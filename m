@@ -1,53 +1,47 @@
-Return-Path: <stable+bounces-10784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32D8182CB99
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:01:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B30C82CAFE
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:54:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 595791C218E2
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:01:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAC44B20F3A
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3CCB185A;
-	Sat, 13 Jan 2024 10:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C8D17E8;
+	Sat, 13 Jan 2024 09:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XRj7CCEB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jYKCWxF1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DE811EEE6;
-	Sat, 13 Jan 2024 10:01:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 766D3C433C7;
-	Sat, 13 Jan 2024 10:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FEC0EC5;
+	Sat, 13 Jan 2024 09:54:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B23FCC433C7;
+	Sat, 13 Jan 2024 09:54:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705140094;
-	bh=GqEJer72AF6sheD/zUOX3oU6E+hVZ97AUWlyBkF7T8o=;
+	s=korg; t=1705139671;
+	bh=oxm94l1JTw6aHl5Skk8QTNgIEoZwUkf0pv+aRmzXTjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XRj7CCEBDgzmnxZ8ywwDtEYte0cwsWCGh6qOos21Hx7MT1zG8RFlKS8L4JRMkyJfZ
-	 6W43kCncCZbmfG2JqErueoLVJqBjppL6Jo+yjXQluWGTj5fLoxAQ/tLXXerdS3FqgR
-	 rSzfjoXZ4lyaLHiPMWcXl47Hn4WjKRcEmorjZ8Nw=
+	b=jYKCWxF1SsWdDELGoQHh/UIrKBSQXXWXk2gYuCEgbaW77Eh4mZikin0VsocnNdRhW
+	 4N2ecB6hU+mKhwnMLsp661uNKbRmufv/V9XM6VYvEE2GLVi0kO6p48trqojePtw+Gb
+	 IGMD5YmJPvmko0o/ecCDpo/TIKx28DNR+PUnz1rE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ke Xiao <xiaoke@sangfor.com.cn>,
-	Ding Hui <dinghui@sangfor.com.cn>,
-	Di Zhu <zhudi2@huawei.com>,
-	Jan Sokolowski <jan.sokolowski@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 5.15 27/59] i40e: fix use-after-free in i40e_aqc_add_filters()
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 4.19 17/25] mmc: core: Cancel delayed work before releasing host
 Date: Sat, 13 Jan 2024 10:49:58 +0100
-Message-ID: <20240113094210.140394284@linuxfoundation.org>
+Message-ID: <20240113094205.582947827@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
-References: <20240113094209.301672391@linuxfoundation.org>
+In-Reply-To: <20240113094205.025407355@linuxfoundation.org>
+References: <20240113094205.025407355@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,125 +53,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ke Xiao <xiaoke@sangfor.com.cn>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 6a15584e99db8918b60e507539c7446375dcf366 ]
+commit 1036f69e251380573e256568cf814506e3fb9988 upstream.
 
-Commit 3116f59c12bd ("i40e: fix use-after-free in
-i40e_sync_filters_subtask()") avoided use-after-free issues,
-by increasing refcount during update the VSI filter list to
-the HW. However, it missed the unicast situation.
+On RZ/Five SMARC EVK, where probing of SDHI is deferred due to probe
+deferral of the vqmmc-supply regulator:
 
-When deleting an unicast FDB entry, the i40e driver will release
-the mac_filter, and i40e_service_task will concurrently request
-firmware to add the mac_filter, which will lead to the following
-use-after-free issue.
+    ------------[ cut here ]------------
+    WARNING: CPU: 0 PID: 0 at kernel/time/timer.c:1738 __run_timers.part.0+0x1d0/0x1e8
+    Modules linked in:
+    CPU: 0 PID: 0 Comm: swapper Not tainted 6.7.0-rc4 #101
+    Hardware name: Renesas SMARC EVK based on r9a07g043f01 (DT)
+    epc : __run_timers.part.0+0x1d0/0x1e8
+     ra : __run_timers.part.0+0x134/0x1e8
+    epc : ffffffff800771a4 ra : ffffffff80077108 sp : ffffffc800003e60
+     gp : ffffffff814f5028 tp : ffffffff8140c5c0 t0 : ffffffc800000000
+     t1 : 0000000000000001 t2 : ffffffff81201300 s0 : ffffffc800003f20
+     s1 : ffffffd8023bc4a0 a0 : 00000000fffee6b0 a1 : 0004010000400000
+     a2 : ffffffffc0000016 a3 : ffffffff81488640 a4 : ffffffc800003e60
+     a5 : 0000000000000000 a6 : 0000000004000000 a7 : ffffffc800003e68
+     s2 : 0000000000000122 s3 : 0000000000200000 s4 : 0000000000000000
+     s5 : ffffffffffffffff s6 : ffffffff81488678 s7 : ffffffff814886c0
+     s8 : ffffffff814f49c0 s9 : ffffffff81488640 s10: 0000000000000000
+     s11: ffffffc800003e60 t3 : 0000000000000240 t4 : 0000000000000a52
+     t5 : ffffffd8024ae018 t6 : ffffffd8024ae038
+    status: 0000000200000100 badaddr: 0000000000000000 cause: 0000000000000003
+    [<ffffffff800771a4>] __run_timers.part.0+0x1d0/0x1e8
+    [<ffffffff800771e0>] run_timer_softirq+0x24/0x4a
+    [<ffffffff80809092>] __do_softirq+0xc6/0x1fa
+    [<ffffffff80028e4c>] irq_exit_rcu+0x66/0x84
+    [<ffffffff80800f7a>] handle_riscv_irq+0x40/0x4e
+    [<ffffffff80808f48>] call_on_irq_stack+0x1c/0x28
+    ---[ end trace 0000000000000000 ]---
 
-Fix again for both netdev->uc and netdev->mc.
+What happens?
 
-BUG: KASAN: use-after-free in i40e_aqc_add_filters+0x55c/0x5b0 [i40e]
-Read of size 2 at addr ffff888eb3452d60 by task kworker/8:7/6379
+    renesas_sdhi_probe()
+    {
+    	tmio_mmc_host_alloc()
+	    mmc_alloc_host()
+		INIT_DELAYED_WORK(&host->detect, mmc_rescan);
 
-CPU: 8 PID: 6379 Comm: kworker/8:7 Kdump: loaded Tainted: G
-Workqueue: i40e i40e_service_task [i40e]
-Call Trace:
- dump_stack+0x71/0xab
- print_address_description+0x6b/0x290
- kasan_report+0x14a/0x2b0
- i40e_aqc_add_filters+0x55c/0x5b0 [i40e]
- i40e_sync_vsi_filters+0x1676/0x39c0 [i40e]
- i40e_service_task+0x1397/0x2bb0 [i40e]
- process_one_work+0x56a/0x11f0
- worker_thread+0x8f/0xf40
- kthread+0x2a0/0x390
- ret_from_fork+0x1f/0x40
+	devm_request_irq(tmio_mmc_irq);
 
-Allocated by task 21948:
- kasan_kmalloc+0xa6/0xd0
- kmem_cache_alloc_trace+0xdb/0x1c0
- i40e_add_filter+0x11e/0x520 [i40e]
- i40e_addr_sync+0x37/0x60 [i40e]
- __hw_addr_sync_dev+0x1f5/0x2f0
- i40e_set_rx_mode+0x61/0x1e0 [i40e]
- dev_uc_add_excl+0x137/0x190
- i40e_ndo_fdb_add+0x161/0x260 [i40e]
- rtnl_fdb_add+0x567/0x950
- rtnetlink_rcv_msg+0x5db/0x880
- netlink_rcv_skb+0x254/0x380
- netlink_unicast+0x454/0x610
- netlink_sendmsg+0x747/0xb00
- sock_sendmsg+0xe2/0x120
- __sys_sendto+0x1ae/0x290
- __x64_sys_sendto+0xdd/0x1b0
- do_syscall_64+0xa0/0x370
- entry_SYSCALL_64_after_hwframe+0x65/0xca
+	/*
+	 * After this, the interrupt handler may be invoked at any time
+	 *
+	 *  tmio_mmc_irq()
+	 *  {
+	 *	__tmio_mmc_card_detect_irq()
+	 *	    mmc_detect_change()
+	 *		_mmc_detect_change()
+	 *		    mmc_schedule_delayed_work(&host->detect, delay);
+	 *  }
+	 */
 
-Freed by task 21948:
- __kasan_slab_free+0x137/0x190
- kfree+0x8b/0x1b0
- __i40e_del_filter+0x116/0x1e0 [i40e]
- i40e_del_mac_filter+0x16c/0x300 [i40e]
- i40e_addr_unsync+0x134/0x1b0 [i40e]
- __hw_addr_sync_dev+0xff/0x2f0
- i40e_set_rx_mode+0x61/0x1e0 [i40e]
- dev_uc_del+0x77/0x90
- rtnl_fdb_del+0x6a5/0x860
- rtnetlink_rcv_msg+0x5db/0x880
- netlink_rcv_skb+0x254/0x380
- netlink_unicast+0x454/0x610
- netlink_sendmsg+0x747/0xb00
- sock_sendmsg+0xe2/0x120
- __sys_sendto+0x1ae/0x290
- __x64_sys_sendto+0xdd/0x1b0
- do_syscall_64+0xa0/0x370
- entry_SYSCALL_64_after_hwframe+0x65/0xca
+	tmio_mmc_host_probe()
+	    tmio_mmc_init_ocr()
+		-EPROBE_DEFER
 
-Fixes: 3116f59c12bd ("i40e: fix use-after-free in i40e_sync_filters_subtask()")
-Fixes: 41c445ff0f48 ("i40e: main driver core")
-Signed-off-by: Ke Xiao <xiaoke@sangfor.com.cn>
-Signed-off-by: Ding Hui <dinghui@sangfor.com.cn>
-Cc: Di Zhu <zhudi2@huawei.com>
-Reviewed-by: Jan Sokolowski <jan.sokolowski@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	tmio_mmc_host_free()
+	    mmc_free_host()
+    }
+
+When expire_timers() runs later, it warns because the MMC host structure
+containing the delayed work was freed, and now contains an invalid work
+function pointer.
+
+Fix this by cancelling any pending delayed work before releasing the
+MMC host structure.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/205dc4c91b47e31b64392fe2498c7a449e717b4b.1701689330.git.geert+renesas@glider.be
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/mmc/core/host.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index cf085bd8d790f..04b8a006b21f1 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -102,12 +102,18 @@ static struct workqueue_struct *i40e_wq;
- static void netdev_hw_addr_refcnt(struct i40e_mac_filter *f,
- 				  struct net_device *netdev, int delta)
+--- a/drivers/mmc/core/host.c
++++ b/drivers/mmc/core/host.c
+@@ -489,6 +489,7 @@ EXPORT_SYMBOL(mmc_remove_host);
+  */
+ void mmc_free_host(struct mmc_host *host)
  {
-+	struct netdev_hw_addr_list *ha_list;
- 	struct netdev_hw_addr *ha;
- 
- 	if (!f || !netdev)
- 		return;
- 
--	netdev_for_each_mc_addr(ha, netdev) {
-+	if (is_unicast_ether_addr(f->macaddr) || is_link_local_ether_addr(f->macaddr))
-+		ha_list = &netdev->uc;
-+	else
-+		ha_list = &netdev->mc;
-+
-+	netdev_hw_addr_list_for_each(ha, ha_list) {
- 		if (ether_addr_equal(ha->addr, f->macaddr)) {
- 			ha->refcount += delta;
- 			if (ha->refcount <= 0)
--- 
-2.43.0
-
++	cancel_delayed_work_sync(&host->detect);
+ 	mmc_pwrseq_free(host);
+ 	put_device(&host->class_dev);
+ }
 
 
 
