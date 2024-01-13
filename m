@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-10735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0279282CB69
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:59:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07C8482CB8F
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:01:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AE7BB20E2B
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:59:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A5F4B2281D
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:01:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFCE7CA71;
-	Sat, 13 Jan 2024 09:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0221EEE6;
+	Sat, 13 Jan 2024 10:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHjtH33+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QKtV79O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C3E1846;
-	Sat, 13 Jan 2024 09:59:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1877CC43390;
-	Sat, 13 Jan 2024 09:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C4912E63;
+	Sat, 13 Jan 2024 10:01:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3840C433C7;
+	Sat, 13 Jan 2024 10:01:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139949;
-	bh=D7oNDxFN973nsX0xb8ZHDYoNtN9m1xieuWxs45IQXEo=;
+	s=korg; t=1705140061;
+	bh=+Dp3mskmtYgzaHW2nsNxwvzvBiFXu8kqcq2/Nbz1oBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SHjtH33+3DpNX0izA0IREg9dKtRshxgATAJw4pP06s+aZJrdPoLqAMJL5+jBH6YkO
-	 pqWmHhKsIKqQjXhZlvAVtB7ocXXmazd1cbaPfp1LEo2lFJRkf9QZOAGzTK0sXJy6S9
-	 L8HJZix5m0XHE+O0llcLREbjASrB5TE7PkTFcJdw=
+	b=1QKtV79OYwPSA1i/c5B2Ktceq9Z5dCRYVLrRGi38r0/l/gKkO9Qo6nM5j7koe4jNE
+	 UItLr3wMSmWlrvdYaKRaOpxsaQ4s4x1dWsvwTMRsHziRMU1SN12YJ1LZc56CtG94L8
+	 cnvX500UPuVovBBQtlkt5mw/zyusXfyIJ8A5DJKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziyang Huang <hzyitc@outlook.com>,
-	Anand Moon <linux.amoon@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 32/43] mmc: meson-mx-sdhc: Fix initialization frozen issue
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 40/59] bnxt_en: Remove mis-applied code from bnxt_cfg_ntp_filters()
 Date: Sat, 13 Jan 2024 10:50:11 +0100
-Message-ID: <20240113094207.959603565@linuxfoundation.org>
+Message-ID: <20240113094210.538543817@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
-References: <20240113094206.930684111@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,84 +54,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyang Huang <hzyitc@outlook.com>
+From: Michael Chan <michael.chan@broadcom.com>
 
-commit 8c124d998ea0c9022e247b11ac51f86ec8afa0e1 upstream.
+[ Upstream commit e009b2efb7a8850498796b360043ac25c8d3d28f ]
 
-Commit 4bc31edebde5 ("mmc: core: Set HS clock speed before sending
-HS CMD13") set HS clock (52MHz) before switching to HS mode. For this
-freq, FCLK_DIV5 will be selected and div value is 10 (reg value is 9).
-Then we set rx_clk_phase to 11 or 15 which is out of range and make
-hardware frozen. After we send command request, no irq will be
-interrupted and the mmc driver will keep to wait for request finished,
-even durning rebooting.
+The 2 lines to check for the BNXT_HWRM_PF_UNLOAD_SP_EVENT bit was
+mis-applied to bnxt_cfg_ntp_filters() and should have been applied to
+bnxt_sp_task().
 
-So let's set it to Phase 90 which should work in most cases. Then let
-meson_mx_sdhc_execute_tuning() to find the accurate value for data
-transfer.
-
-If this doesn't work, maybe need to define a factor in dts.
-
-Fixes: e4bf1b0970ef ("mmc: host: meson-mx-sdhc: new driver for the Amlogic Meson SDHC host")
-Signed-off-by: Ziyang Huang <hzyitc@outlook.com>
-Tested-by: Anand Moon <linux.amoon@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/TYZPR01MB5556A3E71554A2EC08597EA4C9CDA@TYZPR01MB5556.apcprd01.prod.exchangelabs.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 19241368443f ("bnxt_en: Send PF driver unload notification to all VFs.")
+Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/meson-mx-sdhc-mmc.c | 26 +++++---------------------
- 1 file changed, 5 insertions(+), 21 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mmc/host/meson-mx-sdhc-mmc.c b/drivers/mmc/host/meson-mx-sdhc-mmc.c
-index 528ec8166e7c..1ed9731e77ef 100644
---- a/drivers/mmc/host/meson-mx-sdhc-mmc.c
-+++ b/drivers/mmc/host/meson-mx-sdhc-mmc.c
-@@ -269,7 +269,7 @@ static int meson_mx_sdhc_enable_clks(struct mmc_host *mmc)
- static int meson_mx_sdhc_set_clk(struct mmc_host *mmc, struct mmc_ios *ios)
- {
- 	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
--	u32 rx_clk_phase;
-+	u32 val, rx_clk_phase;
- 	int ret;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 42fa218295295..631639a19bad8 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -11749,6 +11749,8 @@ static void bnxt_sp_task(struct work_struct *work)
+ 		bnxt_cfg_ntp_filters(bp);
+ 	if (test_and_clear_bit(BNXT_HWRM_EXEC_FWD_REQ_SP_EVENT, &bp->sp_event))
+ 		bnxt_hwrm_exec_fwd_req(bp);
++	if (test_and_clear_bit(BNXT_HWRM_PF_UNLOAD_SP_EVENT, &bp->sp_event))
++		netdev_info(bp->dev, "Receive PF driver unload event!\n");
+ 	if (test_and_clear_bit(BNXT_PERIODIC_STATS_SP_EVENT, &bp->sp_event)) {
+ 		bnxt_hwrm_port_qstats(bp, 0);
+ 		bnxt_hwrm_port_qstats_ext(bp, 0);
+@@ -12694,8 +12696,6 @@ static void bnxt_cfg_ntp_filters(struct bnxt *bp)
+ 			}
+ 		}
+ 	}
+-	if (test_and_clear_bit(BNXT_HWRM_PF_UNLOAD_SP_EVENT, &bp->sp_event))
+-		netdev_info(bp->dev, "Receive PF driver unload event!\n");
+ }
  
- 	meson_mx_sdhc_disable_clks(mmc);
-@@ -290,27 +290,11 @@ static int meson_mx_sdhc_set_clk(struct mmc_host *mmc, struct mmc_ios *ios)
- 		mmc->actual_clock = clk_get_rate(host->sd_clk);
- 
- 		/*
--		 * according to Amlogic the following latching points are
--		 * selected with empirical values, there is no (known) formula
--		 * to calculate these.
-+		 * Phase 90 should work in most cases. For data transmission,
-+		 * meson_mx_sdhc_execute_tuning() will find a accurate value
- 		 */
--		if (mmc->actual_clock > 100000000) {
--			rx_clk_phase = 1;
--		} else if (mmc->actual_clock > 45000000) {
--			if (ios->signal_voltage == MMC_SIGNAL_VOLTAGE_330)
--				rx_clk_phase = 15;
--			else
--				rx_clk_phase = 11;
--		} else if (mmc->actual_clock >= 25000000) {
--			rx_clk_phase = 15;
--		} else if (mmc->actual_clock > 5000000) {
--			rx_clk_phase = 23;
--		} else if (mmc->actual_clock > 1000000) {
--			rx_clk_phase = 55;
--		} else {
--			rx_clk_phase = 1061;
--		}
--
-+		regmap_read(host->regmap, MESON_SDHC_CLKC, &val);
-+		rx_clk_phase = FIELD_GET(MESON_SDHC_CLKC_CLK_DIV, val) / 4;
- 		regmap_update_bits(host->regmap, MESON_SDHC_CLK2,
- 				   MESON_SDHC_CLK2_RX_CLK_PHASE,
- 				   FIELD_PREP(MESON_SDHC_CLK2_RX_CLK_PHASE,
+ #else
 -- 
 2.43.0
 
