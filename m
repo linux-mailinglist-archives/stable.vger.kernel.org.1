@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-10718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03B1982CB54
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:58:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA34F82CB03
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:54:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A4141C21993
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:58:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E9471F23102
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C0501846;
-	Sat, 13 Jan 2024 09:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6061110;
+	Sat, 13 Jan 2024 09:54:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kT1N5QbN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYFITuHn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33917EC5;
-	Sat, 13 Jan 2024 09:58:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E17C43390;
-	Sat, 13 Jan 2024 09:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F4115BD;
+	Sat, 13 Jan 2024 09:54:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 740D0C433C7;
+	Sat, 13 Jan 2024 09:54:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139900;
-	bh=ZlGn8fu2VJXT/lSEPufOMTj2+nW2khX4INCu6T8M7es=;
+	s=korg; t=1705139685;
+	bh=vnhNyn1DHkQtrpUy9vNbhX80D7pwY0TWXc6ZSaWjkeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kT1N5QbNoQ1IIjKTwi/wQNMULIxG/+5Lb/dP59Q6z1cMOvXbuqViO/X7APjXZCYMe
-	 8i4rGVzTfWksDP8GxF7HuZj/BfJgDQr1Dzhujtq1jxtk0ByOfJf1N+WeylmjPKmqsr
-	 kM7KN1+tW2MYbauITZbaasZx3OQnaTAMsD0n7vTY=
+	b=QYFITuHn+oMamouhaIvNoPDof6SE1PeQUa6iA6TXR9YL0Gs38jRiSpo1qx7v3y6MQ
+	 Zal5Y2fNDa6irUfjvq1CTKe1NZPp7aOX9U6pU8o4TdLxuAXouoCNYaANBWukAlMA7O
+	 ngWbUC+h0KLoLP6fsqeZ6FlMD5oklNv6b49TtwqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suman Ghosh <sumang@marvell.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 05/43] octeontx2-af: Fix marking couple of structure as __packed
-Date: Sat, 13 Jan 2024 10:49:44 +0100
-Message-ID: <20240113094207.108779115@linuxfoundation.org>
+Subject: [PATCH 4.19 04/25] ARM: sun9i: smp: Fix array-index-out-of-bounds read in sunxi_mc_smp_init
+Date: Sat, 13 Jan 2024 10:49:45 +0100
+Message-ID: <20240113094205.167090967@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
-References: <20240113094206.930684111@linuxfoundation.org>
+In-Reply-To: <20240113094205.025407355@linuxfoundation.org>
+References: <20240113094205.025407355@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,48 +54,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suman Ghosh <sumang@marvell.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 0ee2384a5a0f3b4eeac8d10bb01a0609d245a4d1 ]
+[ Upstream commit 72ad3b772b6d393701df58ba1359b0bb346a19ed ]
 
-Couple of structures was not marked as __packed. This patch
-fixes the same and mark them as __packed.
+Running a multi-arch kernel (multi_v7_defconfig) on a Raspberry Pi 3B+
+with enabled CONFIG_UBSAN triggers the following warning:
 
-Fixes: 42006910b5ea ("octeontx2-af: cleanup KPU config data")
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+ UBSAN: array-index-out-of-bounds in arch/arm/mach-sunxi/mc_smp.c:810:29
+ index 2 is out of range for type 'sunxi_mc_smp_data [2]'
+ CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.7.0-rc6-00248-g5254c0cbc92d
+ Hardware name: BCM2835
+  unwind_backtrace from show_stack+0x10/0x14
+  show_stack from dump_stack_lvl+0x40/0x4c
+  dump_stack_lvl from ubsan_epilogue+0x8/0x34
+  ubsan_epilogue from __ubsan_handle_out_of_bounds+0x78/0x80
+  __ubsan_handle_out_of_bounds from sunxi_mc_smp_init+0xe4/0x4cc
+  sunxi_mc_smp_init from do_one_initcall+0xa0/0x2fc
+  do_one_initcall from kernel_init_freeable+0xf4/0x2f4
+  kernel_init_freeable from kernel_init+0x18/0x158
+  kernel_init from ret_from_fork+0x14/0x28
+
+Since the enabled method couldn't match with any entry from
+sunxi_mc_smp_data, the value of the index shouldn't be used right after
+the loop. So move it after the check of ret in order to have a valid
+index.
+
+Fixes: 1631090e34f5 ("ARM: sun9i: smp: Add is_a83t field")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20231228193903.9078-1-wahrenst@gmx.net
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/npc.h | 4 ++--
+ arch/arm/mach-sunxi/mc_smp.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/npc.h b/drivers/net/ethernet/marvell/octeontx2/af/npc.h
-index 407b9477da248..dc34e564c9192 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/npc.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/npc.h
-@@ -359,7 +359,7 @@ struct npc_lt_def {
- 	u8	ltype_mask;
- 	u8	ltype_match;
- 	u8	lid;
--};
-+} __packed;
+diff --git a/arch/arm/mach-sunxi/mc_smp.c b/arch/arm/mach-sunxi/mc_smp.c
+index ff173e67eed21..527bb82072d9a 100644
+--- a/arch/arm/mach-sunxi/mc_smp.c
++++ b/arch/arm/mach-sunxi/mc_smp.c
+@@ -805,12 +805,12 @@ static int __init sunxi_mc_smp_init(void)
+ 			break;
+ 	}
  
- struct npc_lt_def_ipsec {
- 	u8	ltype_mask;
-@@ -367,7 +367,7 @@ struct npc_lt_def_ipsec {
- 	u8	lid;
- 	u8	spi_offset;
- 	u8	spi_nz;
--};
-+} __packed;
+-	is_a83t = sunxi_mc_smp_data[i].is_a83t;
+-
+ 	of_node_put(node);
+ 	if (ret)
+ 		return -ENODEV;
  
- struct npc_lt_def_cfg {
- 	struct npc_lt_def	rx_ol2;
++	is_a83t = sunxi_mc_smp_data[i].is_a83t;
++
+ 	if (!sunxi_mc_smp_cpu_table_init())
+ 		return -EINVAL;
+ 
 -- 
 2.43.0
 
