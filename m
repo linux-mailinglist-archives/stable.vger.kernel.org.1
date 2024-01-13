@@ -1,49 +1,51 @@
-Return-Path: <stable+bounces-10708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04F0D82CB4A
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:57:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FDF82CB6F
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:59:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A1B81C21AA9
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:57:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 717F4B22872
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C281869;
-	Sat, 13 Jan 2024 09:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D32185A;
+	Sat, 13 Jan 2024 09:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDAAPQ+y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHcahZL3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D5951846;
-	Sat, 13 Jan 2024 09:57:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2CECC433C7;
-	Sat, 13 Jan 2024 09:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A87CCA71;
+	Sat, 13 Jan 2024 09:59:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7BB0C43399;
+	Sat, 13 Jan 2024 09:59:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139871;
-	bh=cPF6DcROJf/pB+MhFZvtizhw53fxd+ZgaVZTiti4NzA=;
+	s=korg; t=1705139970;
+	bh=Fe8/xojviZAR7sSSx0ztDNRjz/z9gMq7rff1odaDeN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RDAAPQ+yKkXPY+9vqilpvprVBP4tW59QfN4BkSVdev6RXTf+0yFbTYYogb+WV9qkC
-	 d9GhJlQNN5IPAYfzYP84fFdJLWuCuX2T4Z82bREmiYWND8xZ/4d/9TzyYedf4+hfYi
-	 QlvL90bQ2YNblm1A6VYgL8NA/R92jRXIYBPbVERM=
+	b=GHcahZL3YtYJVtL4yNIt9A+3EVx5O3Gijb3RNmtH9HWuYCePv+6+SXD6jIsyL6H00
+	 A6s8tgji485zpZ+99AhMbbb//GByPuRXlsmgQDQVqXDVXJ78ko1lde/CXHUMJQCIqU
+	 HXCksBgqE9ObzyESmcOEn7qO2ZNIHZLXGUZYCPC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Sarthak Kukreti <sarthakkukreti@chromium.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10 02/43] block: Dont invalidate pagecache for invalid falloc modes
+	Andrii Staikov <andrii.staikov@intel.com>,
+	Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Bharathi Sreenivas <bharathi.sreenivas@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 10/59] i40e: Fix filter input checks to prevent config with invalid values
 Date: Sat, 13 Jan 2024 10:49:41 +0100
-Message-ID: <20240113094207.010915551@linuxfoundation.org>
+Message-ID: <20240113094209.618300289@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
-References: <20240113094206.930684111@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,75 +57,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarthak Kukreti <sarthakkukreti@chromium.org>
+From: Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>
 
-commit 1364a3c391aedfeb32aa025303ead3d7c91cdf9d upstream.
+[ Upstream commit 3e48041d9820c17e0a51599d12e66c6e12a8d08d ]
 
-Only call truncate_bdev_range() if the fallocate mode is supported. This
-fixes a bug where data in the pagecache could be invalidated if the
-fallocate() was called on the block device with an invalid mode.
+Prevent VF from configuring filters with unsupported actions or use
+REDIRECT action with invalid tc number. Current checks could cause
+out of bounds access on PF side.
 
-Fixes: 25f4c41415e5 ("block: implement (some of) fallocate for block devices")
-Cc: stable@vger.kernel.org
-Reported-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Sarthak Kukreti <sarthakkukreti@chromium.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Fixes: line?  I've never seen those wrapped.
-Link: https://lore.kernel.org/r/20231011201230.750105-1-sarthakkukreti@chromium.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sarthak Kukreti <sarthakkukreti@chromium.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
+Reviewed-by: Andrii Staikov <andrii.staikov@intel.com>
+Signed-off-by: Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Bharathi Sreenivas <bharathi.sreenivas@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/block_dev.c |   21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/block_dev.c
-+++ b/fs/block_dev.c
-@@ -2031,22 +2031,33 @@ static long blkdev_fallocate(struct file
- 	if ((start | len) & (bdev_logical_block_size(bdev) - 1))
- 		return -EINVAL;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index 7950b18cb7a41..0946565b157cd 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -3427,16 +3427,16 @@ static int i40e_validate_cloud_filter(struct i40e_vf *vf,
+ 	bool found = false;
+ 	int bkt;
  
--	/* Invalidate the page cache, including dirty pages. */
--	error = truncate_bdev_range(bdev, file->f_mode, start, end);
--	if (error)
--		return error;
--
-+	/*
-+	 * Invalidate the page cache, including dirty pages, for valid
-+	 * de-allocate mode calls to fallocate().
-+	 */
- 	switch (mode) {
- 	case FALLOC_FL_ZERO_RANGE:
- 	case FALLOC_FL_ZERO_RANGE | FALLOC_FL_KEEP_SIZE:
-+		error = truncate_bdev_range(bdev, file->f_mode, start, end);
-+		if (error)
-+			break;
-+
- 		error = blkdev_issue_zeroout(bdev, start >> 9, len >> 9,
- 					    GFP_KERNEL, BLKDEV_ZERO_NOUNMAP);
- 		break;
- 	case FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE:
-+		error = truncate_bdev_range(bdev, file->f_mode, start, end);
-+		if (error)
-+			break;
-+
- 		error = blkdev_issue_zeroout(bdev, start >> 9, len >> 9,
- 					     GFP_KERNEL, BLKDEV_ZERO_NOFALLBACK);
- 		break;
- 	case FALLOC_FL_PUNCH_HOLE | FALLOC_FL_KEEP_SIZE | FALLOC_FL_NO_HIDE_STALE:
-+		error = truncate_bdev_range(bdev, file->f_mode, start, end);
-+		if (error)
-+			break;
-+
- 		error = blkdev_issue_discard(bdev, start >> 9, len >> 9,
- 					     GFP_KERNEL, 0);
- 		break;
+-	if (!tc_filter->action) {
++	if (tc_filter->action != VIRTCHNL_ACTION_TC_REDIRECT) {
+ 		dev_info(&pf->pdev->dev,
+-			 "VF %d: Currently ADq doesn't support Drop Action\n",
+-			 vf->vf_id);
++			 "VF %d: ADQ doesn't support this action (%d)\n",
++			 vf->vf_id, tc_filter->action);
+ 		goto err;
+ 	}
+ 
+ 	/* action_meta is TC number here to which the filter is applied */
+ 	if (!tc_filter->action_meta ||
+-	    tc_filter->action_meta > I40E_MAX_VF_VSI) {
++	    tc_filter->action_meta > vf->num_tc) {
+ 		dev_info(&pf->pdev->dev, "VF %d: Invalid TC number %u\n",
+ 			 vf->vf_id, tc_filter->action_meta);
+ 		goto err;
+-- 
+2.43.0
+
 
 
 
