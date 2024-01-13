@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-10786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39D8682CB9C
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:01:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C762D82CB29
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:56:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE47F284701
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:01:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 784CF282338
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4FE1848;
-	Sat, 13 Jan 2024 10:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2271846;
+	Sat, 13 Jan 2024 09:56:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xH5HgGIH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fgsQNlpR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CBF1EEE6;
-	Sat, 13 Jan 2024 10:01:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B21DC433F1;
-	Sat, 13 Jan 2024 10:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8CCC8DD;
+	Sat, 13 Jan 2024 09:56:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08FC5C433C7;
+	Sat, 13 Jan 2024 09:56:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705140100;
-	bh=DjUxWnR+0Gi6jQV42fNkt6pEUdhyGlPa8hjdFxDO61E=;
+	s=korg; t=1705139774;
+	bh=SiQs2sObLGhIvOxn0GzkwF/tCdicVpjg86iGyHRwDD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xH5HgGIH7vT8PvjCD3ru+D5UrF6prsvetfpWf5Csv1A+7P+ipRFPXOe1Lo5CSYN/W
-	 zeXu/mC2EuGJec0eHtJIzbA96kU6/okum49jFaTP9AGULBIfhAVd5zrP5SQ1T6Q66R
-	 qvvOO61JvwCJeIcVjc55tvq7mG7KMiEI0x9Cbq9s=
+	b=fgsQNlpRXvxM69aa0CyWXmCekjZXfVbRmNC3RF8bw0av1rQThDlG1EZQYSOC58ONJ
+	 KvvidQi+iNMy+LuBSscq7wcjw2S5qCoI1ZsViXHRJK4LCiDLHyhnMUCIGd8hKuNig8
+	 U91soKqO7lbl7M7IV8JEEX8SF+iVaACTPcjiTKHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 29/59] ASoC: meson: g12a-tohdmitx: Validate written enum values
-Date: Sat, 13 Jan 2024 10:50:00 +0100
-Message-ID: <20240113094210.207231326@linuxfoundation.org>
+	Jorge Ramirez-Ortiz <jorge@foundries.io>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.4 25/38] mmc: rpmb: fixes pause retune on all RPMB partitions.
+Date: Sat, 13 Jan 2024 10:50:01 +0100
+Message-ID: <20240113094207.213940780@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
-References: <20240113094209.301672391@linuxfoundation.org>
+In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
+References: <20240113094206.455533180@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,55 +53,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Jorge Ramirez-Ortiz <jorge@foundries.io>
 
-[ Upstream commit 1e001206804be3f3d21f4a1cf16e5d059d75643f ]
+commit e7794c14fd73e5eb4a3e0ecaa5334d5a17377c50 upstream.
 
-When writing to an enum we need to verify that the value written is valid
-for the enumeration, the helper function snd_soc_item_enum_to_val() doesn't
-do it since it needs to return an unsigned (and in any case we'd need to
-check the return value).
+When RPMB was converted to a character device, it added support for
+multiple RPMB partitions (Commit 97548575bef3 ("mmc: block: Convert RPMB to
+a character device").
 
-Fixes: c8609f3870f7 ("ASoC: meson: add g12a tohdmitx control")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240103-meson-enum-val-v1-2-424af7a8fb91@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+One of the changes in this commit was transforming the variable target_part
+defined in __mmc_blk_ioctl_cmd into a bitmask. This inadvertently regressed
+the validation check done in mmc_blk_part_switch_pre() and
+mmc_blk_part_switch_post(), so let's fix it.
+
+Fixes: 97548575bef3 ("mmc: block: Convert RPMB to a character device")
+Signed-off-by: Jorge Ramirez-Ortiz <jorge@foundries.io>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231201153143.1449753-1-jorge@foundries.io
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/meson/g12a-tohdmitx.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/mmc/core/block.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/meson/g12a-tohdmitx.c b/sound/soc/meson/g12a-tohdmitx.c
-index 6c99052feafd8..6b16159733f72 100644
---- a/sound/soc/meson/g12a-tohdmitx.c
-+++ b/sound/soc/meson/g12a-tohdmitx.c
-@@ -45,6 +45,9 @@ static int g12a_tohdmitx_i2s_mux_put_enum(struct snd_kcontrol *kcontrol,
- 	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
- 	unsigned int mux, changed;
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -850,9 +850,10 @@ static const struct block_device_operati
+ static int mmc_blk_part_switch_pre(struct mmc_card *card,
+ 				   unsigned int part_type)
+ {
++	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
+ 	int ret = 0;
  
-+	if (ucontrol->value.enumerated.item[0] >= e->items)
-+		return -EINVAL;
-+
- 	mux = snd_soc_enum_item_to_val(e, ucontrol->value.enumerated.item[0]);
- 	changed = snd_soc_component_test_bits(component, e->reg,
- 					      CTRL0_I2S_DAT_SEL,
-@@ -93,6 +96,9 @@ static int g12a_tohdmitx_spdif_mux_put_enum(struct snd_kcontrol *kcontrol,
- 	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
- 	unsigned int mux, changed;
+-	if (part_type == EXT_CSD_PART_CONFIG_ACC_RPMB) {
++	if ((part_type & mask) == mask) {
+ 		if (card->ext_csd.cmdq_en) {
+ 			ret = mmc_cmdq_disable(card);
+ 			if (ret)
+@@ -867,9 +868,10 @@ static int mmc_blk_part_switch_pre(struc
+ static int mmc_blk_part_switch_post(struct mmc_card *card,
+ 				    unsigned int part_type)
+ {
++	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
+ 	int ret = 0;
  
-+	if (ucontrol->value.enumerated.item[0] >= e->items)
-+		return -EINVAL;
-+
- 	mux = snd_soc_enum_item_to_val(e, ucontrol->value.enumerated.item[0]);
- 	changed = snd_soc_component_test_bits(component, TOHDMITX_CTRL0,
- 					      CTRL0_SPDIF_SEL,
--- 
-2.43.0
-
+-	if (part_type == EXT_CSD_PART_CONFIG_ACC_RPMB) {
++	if ((part_type & mask) == mask) {
+ 		mmc_retune_unpause(card->host);
+ 		if (card->reenable_cmdq && !card->ext_csd.cmdq_en)
+ 			ret = mmc_cmdq_enable(card);
+@@ -3091,4 +3093,3 @@ module_exit(mmc_blk_exit);
+ 
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("Multimedia Card (MMC) block device driver");
+-
 
 
 
