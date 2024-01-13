@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-10783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAA5382CB9A
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:01:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A5E482CB48
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:57:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B0D81F22872
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:01:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF6FA282ACD
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A2F185A;
-	Sat, 13 Jan 2024 10:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9720A1846;
+	Sat, 13 Jan 2024 09:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h+KL9iyV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wh9It1pj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C83F1EEE6;
-	Sat, 13 Jan 2024 10:01:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9EAC43390;
-	Sat, 13 Jan 2024 10:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609C41848;
+	Sat, 13 Jan 2024 09:57:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D17F3C433C7;
+	Sat, 13 Jan 2024 09:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705140091;
-	bh=uYqBex7favLUQ/QGXJow/CFksWUXgwzKijEqIb9yufI=;
+	s=korg; t=1705139865;
+	bh=mU7IayQFwTDvX2QP4OnHzdtUyWBNI3/eGc2ZCIcQROA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h+KL9iyVvxEuVz7tH75EVkCmMP5aBYoRuIEwS6kxe7yEvVPkVHeQ+tDhnic33jCjC
-	 NvcaYqOIgQwgGZsSE17MI1uO6+g/w5UJUKj+hKLl3qKb7YZGzsmOAhCkNMRBjS0+WD
-	 cIkwwr7EmUxLpbgPyiuXyZD8S2PYrnAbx0Y5Y38g=
+	b=wh9It1pjtDHT5UnVELeQu809KYfWJ3+mYUPxeuXHjVJ6jBmy5PYdanSvgOzxeMKY2
+	 4Uk7tWFgElZKbcezoUZYuFV8EqyC3VT3/M8oxt9XL4/ybX7brks5zy07rad4AJ3ik2
+	 1h1tJu7I8TewAr1vIEDsE4vn5gedPfWsv2wOb7Uc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 26/59] net: Save and restore msg_namelen in sock_sendmsg
+Subject: [PATCH 5.10 18/43] ASoC: meson: g12a-tohdmitx: Validate written enum values
 Date: Sat, 13 Jan 2024 10:49:57 +0100
-Message-ID: <20240113094210.112784376@linuxfoundation.org>
+Message-ID: <20240113094207.501126802@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
-References: <20240113094209.301672391@linuxfoundation.org>
+In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
+References: <20240113094206.930684111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,57 +52,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Dionne <marc.dionne@auristor.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 01b2885d9415152bcb12ff1f7788f500a74ea0ed ]
+[ Upstream commit 1e001206804be3f3d21f4a1cf16e5d059d75643f ]
 
-Commit 86a7e0b69bd5 ("net: prevent rewrite of msg_name in
-sock_sendmsg()") made sock_sendmsg save the incoming msg_name pointer
-and restore it before returning, to insulate the caller against
-msg_name being changed by the called code.  If the address length
-was also changed however, we may return with an inconsistent structure
-where the length doesn't match the address, and attempts to reuse it may
-lead to lost packets.
+When writing to an enum we need to verify that the value written is valid
+for the enumeration, the helper function snd_soc_item_enum_to_val() doesn't
+do it since it needs to return an unsigned (and in any case we'd need to
+check the return value).
 
-For example, a kernel that doesn't have commit 1c5950fc6fe9 ("udp6: fix
-potential access to stale information") will replace a v4 mapped address
-with its ipv4 equivalent, and shorten namelen accordingly from 28 to 16.
-If the caller attempts to reuse the resulting msg structure, it will have
-the original ipv6 (v4 mapped) address but an incorrect v4 length.
-
-Fixes: 86a7e0b69bd5 ("net: prevent rewrite of msg_name in sock_sendmsg()")
-Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: c8609f3870f7 ("ASoC: meson: add g12a tohdmitx control")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240103-meson-enum-val-v1-2-424af7a8fb91@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/socket.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/meson/g12a-tohdmitx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/socket.c b/net/socket.c
-index 57c2b78b446b5..f7cfc703bd213 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -728,6 +728,7 @@ int sock_sendmsg(struct socket *sock, struct msghdr *msg)
- {
- 	struct sockaddr_storage *save_addr = (struct sockaddr_storage *)msg->msg_name;
- 	struct sockaddr_storage address;
-+	int save_len = msg->msg_namelen;
- 	int ret;
+diff --git a/sound/soc/meson/g12a-tohdmitx.c b/sound/soc/meson/g12a-tohdmitx.c
+index 6c99052feafd8..6b16159733f72 100644
+--- a/sound/soc/meson/g12a-tohdmitx.c
++++ b/sound/soc/meson/g12a-tohdmitx.c
+@@ -45,6 +45,9 @@ static int g12a_tohdmitx_i2s_mux_put_enum(struct snd_kcontrol *kcontrol,
+ 	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
+ 	unsigned int mux, changed;
  
- 	if (msg->msg_name) {
-@@ -737,6 +738,7 @@ int sock_sendmsg(struct socket *sock, struct msghdr *msg)
++	if (ucontrol->value.enumerated.item[0] >= e->items)
++		return -EINVAL;
++
+ 	mux = snd_soc_enum_item_to_val(e, ucontrol->value.enumerated.item[0]);
+ 	changed = snd_soc_component_test_bits(component, e->reg,
+ 					      CTRL0_I2S_DAT_SEL,
+@@ -93,6 +96,9 @@ static int g12a_tohdmitx_spdif_mux_put_enum(struct snd_kcontrol *kcontrol,
+ 	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
+ 	unsigned int mux, changed;
  
- 	ret = __sock_sendmsg(sock, msg);
- 	msg->msg_name = save_addr;
-+	msg->msg_namelen = save_len;
- 
- 	return ret;
- }
++	if (ucontrol->value.enumerated.item[0] >= e->items)
++		return -EINVAL;
++
+ 	mux = snd_soc_enum_item_to_val(e, ucontrol->value.enumerated.item[0]);
+ 	changed = snd_soc_component_test_bits(component, TOHDMITX_CTRL0,
+ 					      CTRL0_SPDIF_SEL,
 -- 
 2.43.0
 
