@@ -1,52 +1,47 @@
-Return-Path: <stable+bounces-10664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC8382CB18
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:55:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3F4B82CAF6
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:54:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 011DD1C21511
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:55:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 38A47B20BB3
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E01A15C9;
-	Sat, 13 Jan 2024 09:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5912017E8;
+	Sat, 13 Jan 2024 09:54:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fkIuxLbp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YOKlzOmR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1579813ACC;
-	Sat, 13 Jan 2024 09:55:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F67CC433F1;
-	Sat, 13 Jan 2024 09:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132F415BD;
+	Sat, 13 Jan 2024 09:54:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DBABC43390;
+	Sat, 13 Jan 2024 09:54:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139741;
-	bh=U9jHDcDloyCQs7jevGfaJEwpwu42bYF6PdcysxC2gnA=;
+	s=korg; t=1705139653;
+	bh=6tN77h4b+HtaItHfoFJiOnpRyJvjXBAePXtoe4cYkXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fkIuxLbpiNlBOs11w8uNtcbiBT5kLq0xIY+muzBmoxq2XmK2lJ8ZIXJH1iyiPOpJV
-	 dQB19erQWIwOLWXqXMWW4zvtQd1mIj9FIriSg3zoStIWdWwzDxqO95vGc064r9eJJX
-	 LXU2dXF4FiZGi6rAwE/seRftX2i0VZwrEu0THxKQ=
+	b=YOKlzOmRNvxYb66gMg4mknQnuB4nZtCqC48JcdKEcyya+HU+SDQv070dpE2y5gGsn
+	 6Bob4g/zsI0wEE9ik/auDS8iBpsy8KBf+ogGDtIg22YZ1Kemvi7Baur2YuZRTtRAP2
+	 RyupKvlhuKXPMHvhEt2+9U8xNJRn/maGp89TyM78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karen Ostrowska <karen.ostrowska@intel.com>,
-	Mateusz Palczewski <mateusz.palczewski@intel.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrii Staikov <andrii.staikov@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 15/38] i40e: Restore VF MSI-X state during PCI reset
-Date: Sat, 13 Jan 2024 10:49:51 +0100
-Message-ID: <20240113094206.925972760@linuxfoundation.org>
+Subject: [PATCH 4.19 11/25] asix: Add check for usbnet_get_endpoints
+Date: Sat, 13 Jan 2024 10:49:52 +0100
+Message-ID: <20240113094205.391066193@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
-References: <20240113094206.455533180@linuxfoundation.org>
+In-Reply-To: <20240113094205.025407355@linuxfoundation.org>
+References: <20240113094205.025407355@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,105 +53,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Staikov <andrii.staikov@intel.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 371e576ff3e8580d91d49026e5d5faebf5565558 ]
+[ Upstream commit eaac6a2d26b65511e164772bec6918fcbc61938e ]
 
-During a PCI FLR the MSI-X Enable flag in the VF PCI MSI-X capability
-register will be cleared. This can lead to issues when a VF is
-assigned to a VM because in these cases the VF driver receives no
-indication of the PF PCI error/reset and additionally it is incapable
-of restoring the cleared flag in the hypervisor configuration space
-without fully reinitializing the driver interrupt functionality.
+Add check for usbnet_get_endpoints() and return the error if it fails
+in order to transfer the error.
 
-Since the VF driver is unable to easily resolve this condition on its own,
-restore the VF MSI-X flag during the PF PCI reset handling.
-
-Fixes: 19b7960b2da1 ("i40e: implement split PCI error reset handler")
-Co-developed-by: Karen Ostrowska <karen.ostrowska@intel.com>
-Signed-off-by: Karen Ostrowska <karen.ostrowska@intel.com>
-Co-developed-by: Mateusz Palczewski <mateusz.palczewski@intel.com>
-Signed-off-by: Mateusz Palczewski <mateusz.palczewski@intel.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Andrii Staikov <andrii.staikov@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 16626b0cc3d5 ("asix: Add a new driver for the AX88172A")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c   |  3 +++
- .../ethernet/intel/i40e/i40e_virtchnl_pf.c    | 26 +++++++++++++++++++
- .../ethernet/intel/i40e/i40e_virtchnl_pf.h    |  3 +++
- 3 files changed, 32 insertions(+)
+ drivers/net/usb/ax88172a.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index b44ba73414831..fa938281281a4 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -15716,6 +15716,9 @@ static void i40e_pci_error_reset_done(struct pci_dev *pdev)
- 	struct i40e_pf *pf = pci_get_drvdata(pdev);
+diff --git a/drivers/net/usb/ax88172a.c b/drivers/net/usb/ax88172a.c
+index 909755ef71ac3..5881620e44365 100644
+--- a/drivers/net/usb/ax88172a.c
++++ b/drivers/net/usb/ax88172a.c
+@@ -198,7 +198,9 @@ static int ax88172a_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	u8 buf[ETH_ALEN];
+ 	struct ax88172a_private *priv;
  
- 	i40e_reset_and_rebuild(pf, false, false);
-+#ifdef CONFIG_PCI_IOV
-+	i40e_restore_all_vfs_msi_state(pdev);
-+#endif /* CONFIG_PCI_IOV */
- }
+-	usbnet_get_endpoints(dev, intf);
++	ret = usbnet_get_endpoints(dev, intf);
++	if (ret)
++		return ret;
  
- /**
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index d53e535a447d6..e79b8dc5c2a5e 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -99,6 +99,32 @@ void i40e_vc_notify_reset(struct i40e_pf *pf)
- 			     (u8 *)&pfe, sizeof(struct virtchnl_pf_event));
- }
- 
-+#ifdef CONFIG_PCI_IOV
-+void i40e_restore_all_vfs_msi_state(struct pci_dev *pdev)
-+{
-+	u16 vf_id;
-+	u16 pos;
-+
-+	/* Continue only if this is a PF */
-+	if (!pdev->is_physfn)
-+		return;
-+
-+	if (!pci_num_vf(pdev))
-+		return;
-+
-+	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_SRIOV);
-+	if (pos) {
-+		struct pci_dev *vf_dev = NULL;
-+
-+		pci_read_config_word(pdev, pos + PCI_SRIOV_VF_DID, &vf_id);
-+		while ((vf_dev = pci_get_device(pdev->vendor, vf_id, vf_dev))) {
-+			if (vf_dev->is_virtfn && vf_dev->physfn == pdev)
-+				pci_restore_msi_state(vf_dev);
-+		}
-+	}
-+}
-+#endif /* CONFIG_PCI_IOV */
-+
- /**
-  * i40e_vc_notify_vf_reset
-  * @vf: pointer to the VF structure
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-index 23182731a73d0..75d916714ad8a 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-@@ -141,5 +141,8 @@ int i40e_ndo_set_vf_spoofchk(struct net_device *netdev, int vf_id, bool enable);
- 
- void i40e_vc_notify_link_state(struct i40e_pf *pf);
- void i40e_vc_notify_reset(struct i40e_pf *pf);
-+#ifdef CONFIG_PCI_IOV
-+void i40e_restore_all_vfs_msi_state(struct pci_dev *pdev);
-+#endif /* CONFIG_PCI_IOV */
- 
- #endif /* _I40E_VIRTCHNL_PF_H_ */
+ 	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
 -- 
 2.43.0
 
