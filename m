@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-10652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 400B282CB0E
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:55:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EF9D82CB2A
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:56:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D68EF285D0F
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:55:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39AA4282350
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:56:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C8715C6;
-	Sat, 13 Jan 2024 09:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B452015C9;
+	Sat, 13 Jan 2024 09:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTENYUEB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0f18cEL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD15C5683;
-	Sat, 13 Jan 2024 09:55:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6E7C433F1;
-	Sat, 13 Jan 2024 09:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D4DA185A;
+	Sat, 13 Jan 2024 09:56:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED43DC433F1;
+	Sat, 13 Jan 2024 09:56:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139706;
-	bh=CtqfeLUx5a9dyOVY0b9hqY/OnYwfw8vFEkQhEitsRk8=;
+	s=korg; t=1705139777;
+	bh=3bVH6V5z28rjv5k2G9zcW6gq6MtSQ0m3p9tqOHKdNBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UTENYUEBwjFSecOkYTRSY/9Cef+lMRTXE44wxArSlcrIU1xtRzIpzcpuVP8QVyRtk
-	 MXKm0Uuigtr3Q7K9caml9NTEZ5+k7Kup0pCHP/p7SI3jMMA3dOzL0h+njlkYVEblnW
-	 XmC7sLaBZLg9xS3K76w+vm4WZtzKTzdH33NA0pwg=
+	b=K0f18cELNlFkMVLxXWb1HsdbLFaPzovXPFVRnIsiHPGXOGScLsrmHbh3V104+WhAs
+	 UNGPs/+XSXVUnW0RQH6+387JgFNNujdJ2l/V44VM3nucS/jqmxOwkd47q7ahC/Rb66
+	 7PozcV/NnZUqbLYupAwGy9OvCODnmfU53pwAVQkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Pawlowski <bartosz.pawlowski@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>
-Subject: [PATCH 4.19 21/25] PCI: Disable ATS for specific Intel IPU E2000 devices
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.4 26/38] mmc: core: Cancel delayed work before releasing host
 Date: Sat, 13 Jan 2024 10:50:02 +0100
-Message-ID: <20240113094205.699001062@linuxfoundation.org>
+Message-ID: <20240113094207.254203461@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094205.025407355@linuxfoundation.org>
-References: <20240113094205.025407355@linuxfoundation.org>
+In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
+References: <20240113094206.455533180@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,60 +53,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit a18615b1cfc04f00548c60eb9a77e0ce56e848fd upstream.
+commit 1036f69e251380573e256568cf814506e3fb9988 upstream.
 
-Due to a hardware issue in A and B steppings of Intel IPU E2000, it expects
-wrong endianness in ATS invalidation message body. This problem can lead to
-outdated translations being returned as valid and finally cause system
-instability.
+On RZ/Five SMARC EVK, where probing of SDHI is deferred due to probe
+deferral of the vqmmc-supply regulator:
 
-To prevent such issues, add quirk_intel_e2000_no_ats() to disable ATS for
-vulnerable IPU E2000 devices.
+    ------------[ cut here ]------------
+    WARNING: CPU: 0 PID: 0 at kernel/time/timer.c:1738 __run_timers.part.0+0x1d0/0x1e8
+    Modules linked in:
+    CPU: 0 PID: 0 Comm: swapper Not tainted 6.7.0-rc4 #101
+    Hardware name: Renesas SMARC EVK based on r9a07g043f01 (DT)
+    epc : __run_timers.part.0+0x1d0/0x1e8
+     ra : __run_timers.part.0+0x134/0x1e8
+    epc : ffffffff800771a4 ra : ffffffff80077108 sp : ffffffc800003e60
+     gp : ffffffff814f5028 tp : ffffffff8140c5c0 t0 : ffffffc800000000
+     t1 : 0000000000000001 t2 : ffffffff81201300 s0 : ffffffc800003f20
+     s1 : ffffffd8023bc4a0 a0 : 00000000fffee6b0 a1 : 0004010000400000
+     a2 : ffffffffc0000016 a3 : ffffffff81488640 a4 : ffffffc800003e60
+     a5 : 0000000000000000 a6 : 0000000004000000 a7 : ffffffc800003e68
+     s2 : 0000000000000122 s3 : 0000000000200000 s4 : 0000000000000000
+     s5 : ffffffffffffffff s6 : ffffffff81488678 s7 : ffffffff814886c0
+     s8 : ffffffff814f49c0 s9 : ffffffff81488640 s10: 0000000000000000
+     s11: ffffffc800003e60 t3 : 0000000000000240 t4 : 0000000000000a52
+     t5 : ffffffd8024ae018 t6 : ffffffd8024ae038
+    status: 0000000200000100 badaddr: 0000000000000000 cause: 0000000000000003
+    [<ffffffff800771a4>] __run_timers.part.0+0x1d0/0x1e8
+    [<ffffffff800771e0>] run_timer_softirq+0x24/0x4a
+    [<ffffffff80809092>] __do_softirq+0xc6/0x1fa
+    [<ffffffff80028e4c>] irq_exit_rcu+0x66/0x84
+    [<ffffffff80800f7a>] handle_riscv_irq+0x40/0x4e
+    [<ffffffff80808f48>] call_on_irq_stack+0x1c/0x28
+    ---[ end trace 0000000000000000 ]---
 
-Link: https://lore.kernel.org/r/20230908143606.685930-3-bartosz.pawlowski@intel.com
-Signed-off-by: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+What happens?
+
+    renesas_sdhi_probe()
+    {
+    	tmio_mmc_host_alloc()
+	    mmc_alloc_host()
+		INIT_DELAYED_WORK(&host->detect, mmc_rescan);
+
+	devm_request_irq(tmio_mmc_irq);
+
+	/*
+	 * After this, the interrupt handler may be invoked at any time
+	 *
+	 *  tmio_mmc_irq()
+	 *  {
+	 *	__tmio_mmc_card_detect_irq()
+	 *	    mmc_detect_change()
+	 *		_mmc_detect_change()
+	 *		    mmc_schedule_delayed_work(&host->detect, delay);
+	 *  }
+	 */
+
+	tmio_mmc_host_probe()
+	    tmio_mmc_init_ocr()
+		-EPROBE_DEFER
+
+	tmio_mmc_host_free()
+	    mmc_free_host()
+    }
+
+When expire_timers() runs later, it warns because the MMC host structure
+containing the delayed work was freed, and now contains an invalid work
+function pointer.
+
+Fix this by cancelling any pending delayed work before releasing the
+MMC host structure.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/205dc4c91b47e31b64392fe2498c7a449e717b4b.1701689330.git.geert+renesas@glider.be
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/mmc/core/host.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -5212,6 +5212,25 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AT
- /* AMD Navi14 dGPU */
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x7340, quirk_amd_harvest_no_ats);
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x7341, quirk_amd_harvest_no_ats);
-+
-+/*
-+ * Intel IPU E2000 revisions before C0 implement incorrect endianness
-+ * in ATS Invalidate Request message body. Disable ATS for those devices.
-+ */
-+static void quirk_intel_e2000_no_ats(struct pci_dev *pdev)
-+{
-+	if (pdev->revision < 0x20)
-+		quirk_no_ats(pdev);
-+}
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1451, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1452, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1453, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1454, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1455, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1457, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1459, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x145a, quirk_intel_e2000_no_ats);
-+DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x145c, quirk_intel_e2000_no_ats);
- #endif /* CONFIG_PCI_ATS */
- 
- /* Freescale PCIe doesn't support MSI in RC mode */
+--- a/drivers/mmc/core/host.c
++++ b/drivers/mmc/core/host.c
+@@ -570,6 +570,7 @@ EXPORT_SYMBOL(mmc_remove_host);
+  */
+ void mmc_free_host(struct mmc_host *host)
+ {
++	cancel_delayed_work_sync(&host->detect);
+ 	mmc_pwrseq_free(host);
+ 	put_device(&host->class_dev);
+ }
 
 
 
