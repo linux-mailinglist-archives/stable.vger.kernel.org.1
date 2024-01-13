@@ -1,51 +1,49 @@
-Return-Path: <stable+bounces-10720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3886382CB5B
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:58:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB75482CB04
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:54:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4BE228380C
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:58:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AD12285A89
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49B2B15C9;
-	Sat, 13 Jan 2024 09:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46EE715C6;
+	Sat, 13 Jan 2024 09:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FD8B+BeL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+gOfyJh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1206817542;
-	Sat, 13 Jan 2024 09:58:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83B69C433A6;
-	Sat, 13 Jan 2024 09:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B12117E8;
+	Sat, 13 Jan 2024 09:54:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C6DEC433C7;
+	Sat, 13 Jan 2024 09:54:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139905;
-	bh=+pTk2fR67gJ8BvkujzYNwY5lfp82VWyCL+CnXFwVAlI=;
+	s=korg; t=1705139688;
+	bh=E/HO3TXeI9o49uTuyF6u95GfzVadBelGgqoEXDaNIhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FD8B+BeL05msuM+mysF3A8xofv00cNSH0X+XmkoMCUdHcNnYPP9/6Ng4dlYhIIEWF
-	 WSriCYxctAERamo2cMp8s40GgUPWeJNB64vNYEVaZfj6lylPaPAh/Drg8XP1kvqHqg
-	 /qk4sFJkHEB9TfdKUbJzvdqYdXPwfeFyKzvLwalQ=
+	b=P+gOfyJhTKjzDfQg0xDJiRVNKDC2D1rZry2yCd05jHwcCD36/bchs/UwwL9CEfe/K
+	 Qg4vP0kt5OB0FO55e+C5FI2z7Y3i2GXj+cZJnxswBGfPmAvwOfARtzNGglvN/gTdYf
+	 IMg8L55QJbeeO9Dc3Sz8TmZfPC1QpLmFjiUG6Poo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Staikov <andrii.staikov@intel.com>,
-	Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Bharathi Sreenivas <bharathi.sreenivas@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Adrian Cinal <adriancinal1@gmail.com>,
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 07/43] i40e: Fix filter input checks to prevent config with invalid values
+Subject: [PATCH 4.19 05/25] net: bcmgenet: Fix FCS generation for fragmented skbuffs
 Date: Sat, 13 Jan 2024 10:49:46 +0100
-Message-ID: <20240113094207.167042823@linuxfoundation.org>
+Message-ID: <20240113094205.195624501@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
-References: <20240113094206.930684111@linuxfoundation.org>
+In-Reply-To: <20240113094205.025407355@linuxfoundation.org>
+References: <20240113094205.025407355@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,55 +55,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>
+From: Adrian Cinal <adriancinal@gmail.com>
 
-[ Upstream commit 3e48041d9820c17e0a51599d12e66c6e12a8d08d ]
+[ Upstream commit e584f2ff1e6cc9b1d99e8a6b0f3415940d1b3eb3 ]
 
-Prevent VF from configuring filters with unsupported actions or use
-REDIRECT action with invalid tc number. Current checks could cause
-out of bounds access on PF side.
+The flag DMA_TX_APPEND_CRC was only written to the first DMA descriptor
+in the TX path, where each descriptor corresponds to a single skbuff
+fragment (or the skbuff head). This led to packets with no FCS appearing
+on the wire if the kernel allocated the packet in fragments, which would
+always happen when using PACKET_MMAP/TPACKET (cf. tpacket_fill_skb() in
+net/af_packet.c).
 
-Fixes: e284fc280473 ("i40e: Add and delete cloud filter")
-Reviewed-by: Andrii Staikov <andrii.staikov@intel.com>
-Signed-off-by: Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Bharathi Sreenivas <bharathi.sreenivas@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 1c1008c793fa ("net: bcmgenet: add main driver file")
+Signed-off-by: Adrian Cinal <adriancinal1@gmail.com>
+Acked-by: Doug Berger <opendmb@gmail.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20231228135638.1339245-1-adriancinal1@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index dfaa34f2473ab..115749e527205 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -3369,16 +3369,16 @@ static int i40e_validate_cloud_filter(struct i40e_vf *vf,
- 	bool found = false;
- 	int bkt;
- 
--	if (!tc_filter->action) {
-+	if (tc_filter->action != VIRTCHNL_ACTION_TC_REDIRECT) {
- 		dev_info(&pf->pdev->dev,
--			 "VF %d: Currently ADq doesn't support Drop Action\n",
--			 vf->vf_id);
-+			 "VF %d: ADQ doesn't support this action (%d)\n",
-+			 vf->vf_id, tc_filter->action);
- 		goto err;
- 	}
- 
- 	/* action_meta is TC number here to which the filter is applied */
- 	if (!tc_filter->action_meta ||
--	    tc_filter->action_meta > I40E_MAX_VF_VSI) {
-+	    tc_filter->action_meta > vf->num_tc) {
- 		dev_info(&pf->pdev->dev, "VF %d: Invalid TC number %u\n",
- 			 vf->vf_id, tc_filter->action_meta);
- 		goto err;
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index d518577313145..8bbc5dcf8cb43 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -1650,8 +1650,10 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		/* Note: if we ever change from DMA_TX_APPEND_CRC below we
+ 		 * will need to restore software padding of "runt" packets
+ 		 */
++		len_stat |= DMA_TX_APPEND_CRC;
++
+ 		if (!i) {
+-			len_stat |= DMA_TX_APPEND_CRC | DMA_SOP;
++			len_stat |= DMA_SOP;
+ 			if (skb->ip_summed == CHECKSUM_PARTIAL)
+ 				len_stat |= DMA_TX_DO_CSUM;
+ 		}
 -- 
 2.43.0
 
