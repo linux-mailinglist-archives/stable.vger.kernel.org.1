@@ -1,124 +1,87 @@
-Return-Path: <stable+bounces-10805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D24D82CBAF
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:02:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C43D82CBAB
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:02:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E7FC1F23227
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:02:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C30B285B1C
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:02:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3234363C3;
-	Sat, 13 Jan 2024 10:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D6D71869;
+	Sat, 13 Jan 2024 10:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vovk1fYA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oxqIq6Nn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB95E185A;
-	Sat, 13 Jan 2024 10:02:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B956C433F1;
-	Sat, 13 Jan 2024 10:02:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557361EF1C;
+	Sat, 13 Jan 2024 10:02:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6450C433C7;
+	Sat, 13 Jan 2024 10:02:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705140155;
-	bh=Lpqomv6yINfDgfYvdmGQosJFAe5tGqe9/wyszdmObRA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=vovk1fYApjgsNyO9uXb4+Zlwwrg3yXz6+Qh/nGLIisqC+ay3HHvEgLz4yNCeT4yLN
-	 MlrJFtCBPqHZByTkAf7OZ/uD8vp2zup77/iCUnHNeGFZWFni6+V7FlqfI2S7n/5/fK
-	 ug5x0esDEyKXC5B0IF8lFzDp7k+muFCUr5lVArbs=
+	s=korg; t=1705140144;
+	bh=O2ybDPFZCpFtp3sDjRHcRkkqQvUVSS6RiY07fGqjuhA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=oxqIq6NnKpCylg8LhWT5hBjZDZL2TPXn0jqYBJouc9uzD17biSJtd5kNC5Ado8oLO
+	 OJYworGBJ2ip56sWJRJfryrtzX1HNsH2QCKC7Zf1LQV+VGZCd5ejE37SvxILf5yCbI
+	 g82UMPl4OjnWQ15p9euy7FbPg9sMBVsuU3XWOurc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com
-Subject: [PATCH 6.1 0/4] 6.1.73-rc1 review
-Date: Sat, 13 Jan 2024 10:50:38 +0100
-Message-ID: <20240113094204.017594027@linuxfoundation.org>
+	David Howells <dhowells@redhat.com>,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 1/4] cifs: fix flushing folio regression for 6.1 backport
+Date: Sat, 13 Jan 2024 10:50:39 +0100
+Message-ID: <20240113094204.068608649@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240113094204.017594027@linuxfoundation.org>
+References: <20240113094204.017594027@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.73-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.1.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.1.73-rc1
-X-KernelTest-Deadline: 2024-01-15T09:42+00:00
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.1.73 release.
-There are 4 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Mon, 15 Jan 2024 09:41:55 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.73-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-and the diffstat can be found below.
+filemap_get_folio works differenty in 6.1 vs. later kernels
+(returning NULL in 6.1 instead of an error).  Add
+this minor correction which addresses the regression in the patch:
+  cifs: Fix flushing, invalidation and file size with copy_file_range()
 
-thanks,
+Suggested-by: David Howells <dhowells@redhat.com>
+Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Tested-by: Salvatore Bonaccorso <carnil@debian.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ fs/smb/client/cifsfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-greg k-h
-
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.1.73-rc1
-
-Jon Maxwell <jmaxwell37@gmail.com>
-    ipv6: remove max_size check inline with ipv4
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Revert "nfsd: separate nfsd_last_thread() from nfsd_put()"
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Revert "nfsd: call nfsd_last_thread() before final nfsd_put()"
-
-Steve French <stfrench@microsoft.com>
-    cifs: fix flushing folio regression for 6.1 backport
-
-
--------------
-
-Diffstat:
-
- Makefile               |  4 ++--
- fs/nfsd/nfsctl.c       |  9 ++-------
- fs/nfsd/nfsd.h         |  8 +-------
- fs/nfsd/nfssvc.c       | 52 ++++++++++++++++++++++++++++++++------------------
- fs/smb/client/cifsfs.c |  2 +-
- include/net/dst_ops.h  |  2 +-
- net/core/dst.c         |  8 ++------
- net/ipv6/route.c       | 13 +++++--------
- 8 files changed, 47 insertions(+), 51 deletions(-)
+--- a/fs/smb/client/cifsfs.c
++++ b/fs/smb/client/cifsfs.c
+@@ -1240,7 +1240,7 @@ static int cifs_flush_folio(struct inode
+ 	int rc = 0;
+ 
+ 	folio = filemap_get_folio(inode->i_mapping, index);
+-	if (IS_ERR(folio))
++	if ((!folio) || (IS_ERR(folio)))
+ 		return 0;
+ 
+ 	size = folio_size(folio);
 
 
 
