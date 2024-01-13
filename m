@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-10766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C103082CB87
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:00:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B614A82CB2D
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:56:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F67F284448
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:00:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66754282250
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DDFADF6D;
-	Sat, 13 Jan 2024 10:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09EF81846;
+	Sat, 13 Jan 2024 09:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07SI4Dt3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9wzHdKG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26430111BB;
-	Sat, 13 Jan 2024 10:00:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A4DCC433F1;
-	Sat, 13 Jan 2024 10:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E63EC5;
+	Sat, 13 Jan 2024 09:56:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE0E4C43390;
+	Sat, 13 Jan 2024 09:56:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705140040;
-	bh=wzCWX38v3j5koHhlM411NgU279ozWn78xUCL0G9DMxc=;
+	s=korg; t=1705139786;
+	bh=KhEH+g8ExSeecwpEINSqzJ9WmQK4HhFJFuMdFQNEKGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=07SI4Dt3Y8oDFwWiIFucDSA96/FHwpbu+cAr2CTHpDsj6uJUbFsm0tuUZ2BsunNdH
-	 4gSmyNAJrIi/vVCm2zr64Clsyafv0Y7LcY8+XAzv9C/Kr25nODCGC8E1J2OsH5v3fz
-	 RRfMDcjdJ4hSMaqp47oP5fuHWUjl081KfWda7wzo=
+	b=o9wzHdKGi0vVzw/LanCwRTPjHlCWWOGyxz3zuwaMxgv+53GnfhyM84EH9XCNsy/v+
+	 IZv0CyoRLNVp+Tcy8Z53G81ysJltrfx4IN+DUZ7eJTjzNGsBsd3mgs5EtY/oQkjdf1
+	 ae/vpktyPbgTiDUPpXRP7Zk+o9MXrFXKXjHpqHCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinghao Liu <dinghao.liu@zju.edu.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 34/59] net/qla3xxx: fix potential memleak in ql_alloc_buffer_queues
+	Rakesh Pillai <pillair@codeaurora.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Kalle Valo <kvalo@codeaurora.org>,
+	Amit Pundir <amit.pundir@linaro.org>
+Subject: [PATCH 5.4 29/38] ath10k: Add interrupt summary based CE processing
 Date: Sat, 13 Jan 2024 10:50:05 +0100
-Message-ID: <20240113094210.356829015@linuxfoundation.org>
+Message-ID: <20240113094207.349744576@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
-References: <20240113094209.301672391@linuxfoundation.org>
+In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
+References: <20240113094206.455533180@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,49 +54,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Rakesh Pillai <pillair@codeaurora.org>
 
-[ Upstream commit 89f45c30172c80e55c887f32f1af8e184124577b ]
+[ Upstream commit b92aba35d39d10d8a6bdf2495172fd490c598b4a ]
 
-When dma_alloc_coherent() fails, we should free qdev->lrg_buf
-to prevent potential memleak.
+Currently the NAPI processing loops through all
+the copy engines and processes a particular copy
+engine is the copy completion is set for that copy
+engine. The host driver is not supposed to access
+any copy engine register after clearing the interrupt
+status register.
 
-Fixes: 1357bfcf7106 ("qla3xxx: Dynamically size the rx buffer queue based on the MTU.")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Link: https://lore.kernel.org/r/20231227070227.10527-1-dinghao.liu@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This might result in kernel crash like the one below
+[ 1159.220143] Call trace:
+[ 1159.220170]  ath10k_snoc_read32+0x20/0x40 [ath10k_snoc]
+[ 1159.220193]  ath10k_ce_per_engine_service_any+0x78/0x130 [ath10k_core]
+[ 1159.220203]  ath10k_snoc_napi_poll+0x38/0x8c [ath10k_snoc]
+[ 1159.220270]  net_rx_action+0x100/0x3b0
+[ 1159.220312]  __do_softirq+0x164/0x30c
+[ 1159.220345]  run_ksoftirqd+0x2c/0x64
+[ 1159.220380]  smpboot_thread_fn+0x1b0/0x288
+[ 1159.220405]  kthread+0x11c/0x12c
+[ 1159.220423]  ret_from_fork+0x10/0x18
+
+To avoid such a scenario, we generate an interrupt
+summary by reading the copy completion for all the
+copy engine before actually processing any of them.
+This will avoid reading the interrupt status register
+for any CE after the interrupt status is cleared.
+
+Tested-on: WCN3990 hw1.0 SNOC WLAN.HL.3.1-01040-QCAHLSWMTPLZ-1
+
+Signed-off-by: Rakesh Pillai <pillair@codeaurora.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Tested-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+Link: https://lore.kernel.org/r/1593193967-29897-1-git-send-email-pillair@codeaurora.org
+Stable-dep-of: 170c75d43a77 ("ath10k: Don't touch the CE interrupt registers after power up")
+Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/qlogic/qla3xxx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/ath/ath10k/ce.c |   63 +++++++++++++++++++++--------------
+ drivers/net/wireless/ath/ath10k/ce.h |    5 +-
+ 2 files changed, 42 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qla3xxx.c b/drivers/net/ethernet/qlogic/qla3xxx.c
-index 29837e533cee8..127daad4410b9 100644
---- a/drivers/net/ethernet/qlogic/qla3xxx.c
-+++ b/drivers/net/ethernet/qlogic/qla3xxx.c
-@@ -2589,6 +2589,7 @@ static int ql_alloc_buffer_queues(struct ql3_adapter *qdev)
+--- a/drivers/net/wireless/ath/ath10k/ce.c
++++ b/drivers/net/wireless/ath/ath10k/ce.c
+@@ -481,15 +481,38 @@ static inline void ath10k_ce_engine_int_
+ 	ath10k_ce_write32(ar, ce_ctrl_addr + wm_regs->addr, mask);
+ }
  
- 	if (qdev->lrg_buf_q_alloc_virt_addr == NULL) {
- 		netdev_err(qdev->ndev, "lBufQ failed\n");
-+		kfree(qdev->lrg_buf);
- 		return -ENOMEM;
- 	}
- 	qdev->lrg_buf_q_virt_addr = qdev->lrg_buf_q_alloc_virt_addr;
-@@ -2613,6 +2614,7 @@ static int ql_alloc_buffer_queues(struct ql3_adapter *qdev)
- 				  qdev->lrg_buf_q_alloc_size,
- 				  qdev->lrg_buf_q_alloc_virt_addr,
- 				  qdev->lrg_buf_q_alloc_phy_addr);
-+		kfree(qdev->lrg_buf);
- 		return -ENOMEM;
- 	}
+-static inline bool ath10k_ce_engine_int_status_check(struct ath10k *ar,
+-						     u32 ce_ctrl_addr,
+-						     unsigned int mask)
++static bool ath10k_ce_engine_int_status_check(struct ath10k *ar, u32 ce_ctrl_addr,
++					      unsigned int mask)
+ {
+ 	struct ath10k_hw_ce_host_wm_regs *wm_regs = ar->hw_ce_regs->wm_regs;
  
--- 
-2.43.0
-
+ 	return ath10k_ce_read32(ar, ce_ctrl_addr + wm_regs->addr) & mask;
+ }
+ 
++u32 ath10k_ce_gen_interrupt_summary(struct ath10k *ar)
++{
++	struct ath10k_hw_ce_host_wm_regs *wm_regs = ar->hw_ce_regs->wm_regs;
++	struct ath10k_ce_pipe *ce_state;
++	struct ath10k_ce *ce;
++	u32 irq_summary = 0;
++	u32 ctrl_addr;
++	u32 ce_id;
++
++	ce = ath10k_ce_priv(ar);
++
++	for (ce_id = 0; ce_id < CE_COUNT; ce_id++) {
++		ce_state = &ce->ce_states[ce_id];
++		ctrl_addr = ce_state->ctrl_addr;
++		if (ath10k_ce_engine_int_status_check(ar, ctrl_addr,
++						      wm_regs->cc_mask)) {
++			irq_summary |= BIT(ce_id);
++		}
++	}
++
++	return irq_summary;
++}
++EXPORT_SYMBOL(ath10k_ce_gen_interrupt_summary);
++
+ /*
+  * Guts of ath10k_ce_send.
+  * The caller takes responsibility for any needed locking.
+@@ -1308,32 +1331,24 @@ void ath10k_ce_per_engine_service(struct
+ 	struct ath10k_hw_ce_host_wm_regs *wm_regs = ar->hw_ce_regs->wm_regs;
+ 	u32 ctrl_addr = ce_state->ctrl_addr;
+ 
+-	spin_lock_bh(&ce->ce_lock);
+-
+-	if (ath10k_ce_engine_int_status_check(ar, ctrl_addr,
+-					      wm_regs->cc_mask)) {
+-		/* Clear before handling */
+-		ath10k_ce_engine_int_status_clear(ar, ctrl_addr,
+-						  wm_regs->cc_mask);
+-
+-		spin_unlock_bh(&ce->ce_lock);
+-
+-		if (ce_state->recv_cb)
+-			ce_state->recv_cb(ce_state);
+-
+-		if (ce_state->send_cb)
+-			ce_state->send_cb(ce_state);
+-
+-		spin_lock_bh(&ce->ce_lock);
+-	}
+-
+ 	/*
++	 * Clear before handling
++	 *
+ 	 * Misc CE interrupts are not being handled, but still need
+ 	 * to be cleared.
++	 *
++	 * NOTE: When the last copy engine interrupt is cleared the
++	 * hardware will go to sleep.  Once this happens any access to
++	 * the CE registers can cause a hardware fault.
+ 	 */
+-	ath10k_ce_engine_int_status_clear(ar, ctrl_addr, wm_regs->wm_mask);
++	ath10k_ce_engine_int_status_clear(ar, ctrl_addr,
++					  wm_regs->cc_mask | wm_regs->wm_mask);
+ 
+-	spin_unlock_bh(&ce->ce_lock);
++	if (ce_state->recv_cb)
++		ce_state->recv_cb(ce_state);
++
++	if (ce_state->send_cb)
++		ce_state->send_cb(ce_state);
+ }
+ EXPORT_SYMBOL(ath10k_ce_per_engine_service);
+ 
+--- a/drivers/net/wireless/ath/ath10k/ce.h
++++ b/drivers/net/wireless/ath/ath10k/ce.h
+@@ -259,6 +259,8 @@ int ath10k_ce_disable_interrupts(struct
+ void ath10k_ce_enable_interrupts(struct ath10k *ar);
+ void ath10k_ce_dump_registers(struct ath10k *ar,
+ 			      struct ath10k_fw_crash_data *crash_data);
++
++u32 ath10k_ce_gen_interrupt_summary(struct ath10k *ar);
+ void ath10k_ce_alloc_rri(struct ath10k *ar);
+ void ath10k_ce_free_rri(struct ath10k *ar);
+ 
+@@ -369,7 +371,6 @@ static inline u32 ath10k_ce_base_address
+ 	(((x) & CE_WRAPPER_INTERRUPT_SUMMARY_HOST_MSI_MASK) >> \
+ 		CE_WRAPPER_INTERRUPT_SUMMARY_HOST_MSI_LSB)
+ #define CE_WRAPPER_INTERRUPT_SUMMARY_ADDRESS			0x0000
+-#define CE_INTERRUPT_SUMMARY		(GENMASK(CE_COUNT_MAX - 1, 0))
+ 
+ static inline u32 ath10k_ce_interrupt_summary(struct ath10k *ar)
+ {
+@@ -380,7 +381,7 @@ static inline u32 ath10k_ce_interrupt_su
+ 			ce->bus_ops->read32((ar), CE_WRAPPER_BASE_ADDRESS +
+ 			CE_WRAPPER_INTERRUPT_SUMMARY_ADDRESS));
+ 	else
+-		return CE_INTERRUPT_SUMMARY;
++		return ath10k_ce_gen_interrupt_summary(ar);
+ }
+ 
+ /* Host software's Copy Engine configuration. */
 
 
 
