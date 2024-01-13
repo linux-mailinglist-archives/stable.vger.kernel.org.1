@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-10663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D884082CB17
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:55:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CD4B82CB70
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:59:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A8F31C20B7C
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:55:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A009283A0F
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:59:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E10412E67;
-	Sat, 13 Jan 2024 09:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABA88185A;
+	Sat, 13 Jan 2024 09:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xmD3a1XT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qRwEZPDv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAAB712E52;
-	Sat, 13 Jan 2024 09:55:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3C7C433F1;
-	Sat, 13 Jan 2024 09:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748401848;
+	Sat, 13 Jan 2024 09:59:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6BD2C433F1;
+	Sat, 13 Jan 2024 09:59:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139738;
-	bh=mlhMj/iD+MyOtRUnkONQhioOzCUbbQ3fxh1PwrrDSCk=;
+	s=korg; t=1705139973;
+	bh=RgBP0xliUO0SNtZe1kwrKBrJ0em3S+95DhKjiEz30cI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xmD3a1XTpYMdMOfFNwV3ww2JxXClraiFO3a+vkl+8rfAXNZImMhuWV7H/J99i4eQh
-	 RliGtiv99vjG2Lss9lbRO4vqaYO82rtThQiJY08/sbHcliAk5BeE1czHjPyIUwhV+i
-	 h6a07B08yMzKwfgjLRf9bmF6MfD2BszYYHZMb4XA=
+	b=qRwEZPDv7BgdnpZ1PUEQ82rp+bQYuUPsrokREyF+iCY+NTZDfjM6xjmLNsHryV43Y
+	 AGc5Q5XSAHOraCuwY/RV5/t/7419GHlnoe+I1MogXRe0guSLfE/+Vu2LUMknoJE6ZY
+	 DQhQl3PZ3lwDFgy4kf0kVLNLGGMygV+XXZdQ/QmE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Naama Meir <naamax.meir@linux.intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 06/38] can: raw: add support for SO_MARK
+Subject: [PATCH 5.15 11/59] igc: Report VLAN EtherType matching back to user
 Date: Sat, 13 Jan 2024 10:49:42 +0100
-Message-ID: <20240113094206.651260503@linuxfoundation.org>
+Message-ID: <20240113094209.648284423@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
-References: <20240113094206.455533180@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,38 +56,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Kurt Kanzenbach <kurt@linutronix.de>
 
-[ Upstream commit 0826e82b8a32e646b7b32ba8b68ba30812028e47 ]
+[ Upstream commit 088464abd48cf3735aee91f9e211b32da9d81117 ]
 
-Add support for SO_MARK to the CAN_RAW protocol. This makes it
-possible to add traffic control filters based on the fwmark.
+Currently the driver allows to configure matching by VLAN EtherType.
+However, the retrieval function does not report it back to the user. Add
+it.
 
-Link: https://lore.kernel.org/all/20221210113653.170346-1-mkl@pengutronix.de
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Stable-dep-of: 7f6ca95d16b9 ("net: Implement missing getsockopt(SO_TIMESTAMPING_NEW)")
+Before:
+|root@host:~# ethtool -N enp3s0 flow-type ether vlan-etype 0x8100 action 0
+|Added rule with ID 63
+|root@host:~# ethtool --show-ntuple enp3s0
+|4 RX rings available
+|Total 1 rules
+|
+|Filter: 63
+|        Flow Type: Raw Ethernet
+|        Src MAC addr: 00:00:00:00:00:00 mask: FF:FF:FF:FF:FF:FF
+|        Dest MAC addr: 00:00:00:00:00:00 mask: FF:FF:FF:FF:FF:FF
+|        Ethertype: 0x0 mask: 0xFFFF
+|        Action: Direct to queue 0
+
+After:
+|root@host:~# ethtool -N enp3s0 flow-type ether vlan-etype 0x8100 action 0
+|Added rule with ID 63
+|root@host:~# ethtool --show-ntuple enp3s0
+|4 RX rings available
+|Total 1 rules
+|
+|Filter: 63
+|        Flow Type: Raw Ethernet
+|        Src MAC addr: 00:00:00:00:00:00 mask: FF:FF:FF:FF:FF:FF
+|        Dest MAC addr: 00:00:00:00:00:00 mask: FF:FF:FF:FF:FF:FF
+|        Ethertype: 0x0 mask: 0xFFFF
+|        VLAN EtherType: 0x8100 mask: 0x0
+|        VLAN: 0x0 mask: 0xffff
+|        User-defined: 0x0 mask: 0xffffffffffffffff
+|        Action: Direct to queue 0
+
+Fixes: 2b477d057e33 ("igc: Integrate flex filter into ethtool ops")
+Signed-off-by: Kurt Kanzenbach <kurt@linutronix.de>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/raw.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/igc/igc_ethtool.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/can/raw.c b/net/can/raw.c
-index 2700153262771..2f500d8a0af24 100644
---- a/net/can/raw.c
-+++ b/net/can/raw.c
-@@ -826,6 +826,7 @@ static int raw_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
- 	skb->dev = dev;
- 	skb->sk  = sk;
- 	skb->priority = sk->sk_priority;
-+	skb->mark = sk->sk_mark;
- 	skb->tstamp = sockc.transmit_time;
+diff --git a/drivers/net/ethernet/intel/igc/igc_ethtool.c b/drivers/net/ethernet/intel/igc/igc_ethtool.c
+index 3bffd2729a439..ea4545e431dc5 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ethtool.c
++++ b/drivers/net/ethernet/intel/igc/igc_ethtool.c
+@@ -972,6 +972,12 @@ static int igc_ethtool_get_nfc_rule(struct igc_adapter *adapter,
+ 		fsp->m_u.ether_spec.h_proto = ETHER_TYPE_FULL_MASK;
+ 	}
  
- 	skb_setup_tx_timestamp(skb, sockc.tsflags);
++	if (rule->filter.match_flags & IGC_FILTER_FLAG_VLAN_ETYPE) {
++		fsp->flow_type |= FLOW_EXT;
++		fsp->h_ext.vlan_etype = rule->filter.vlan_etype;
++		fsp->m_ext.vlan_etype = ETHER_TYPE_FULL_MASK;
++	}
++
+ 	if (rule->filter.match_flags & IGC_FILTER_FLAG_VLAN_TCI) {
+ 		fsp->flow_type |= FLOW_EXT;
+ 		fsp->h_ext.vlan_tci = htons(rule->filter.vlan_tci);
 -- 
 2.43.0
 
