@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-10792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BDB482CBA2
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:02:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FF4E82CB5F
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:59:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3AD7B22849
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:01:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EAAE2843A7
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:59:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD57185A;
-	Sat, 13 Jan 2024 10:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E0E1095B;
+	Sat, 13 Jan 2024 09:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwRzXi7s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="woti+4ic"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25752C8DD;
-	Sat, 13 Jan 2024 10:01:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FCE7C433F1;
-	Sat, 13 Jan 2024 10:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2C51869;
+	Sat, 13 Jan 2024 09:58:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6899C433F1;
+	Sat, 13 Jan 2024 09:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705140117;
-	bh=y6Shhf89RK2OvOg8zQ8LePHzuoV4oTPDog/iM1RTZLM=;
+	s=korg; t=1705139932;
+	bh=MfcE9PjhiqsMiqpOmGMEverxxjiSaSYZ1+H1S+9vPLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mwRzXi7steyeYeTD5jvCusH+/X+qtsvoSF1wpnNwliLUnvwjUwrWn3yqG4syU3UGN
-	 KBGwqK19JeIHhuZIiMuY2t1Me91EHqptI3kLryHKAZaatLfmepJ2nzldnbzJ0gbucq
-	 ceI8IffQ/iajh87AA/UjGx2r8OeBp4aSu/FyrDLk=
+	b=woti+4ic0utH8KBSUu8Hq/vAzIzOyb0x0YlDnp9R9n3gH4PDUyY7Ea1K4Q4BWNSqz
+	 CxsPecEn0eVou6ghcqBjE4oV24oWZ5mVEWViDtjDL9h/XVJG/QrKy4eVExprTXAjBo
+	 YJeMQfoxjyitirrCshV+oza1Q9JoK5/497WKMVuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jorge Ramirez-Ortiz <jorge@foundries.io>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 49/59] mmc: rpmb: fixes pause retune on all RPMB partitions.
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Pawlowski <bartosz.pawlowski@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 5.10 41/43] PCI: Extract ATS disabling to a helper function
 Date: Sat, 13 Jan 2024 10:50:20 +0100
-Message-ID: <20240113094210.791113040@linuxfoundation.org>
+Message-ID: <20240113094208.280788483@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
-References: <20240113094209.301672391@linuxfoundation.org>
+In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
+References: <20240113094206.930684111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,65 +53,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jorge Ramirez-Ortiz <jorge@foundries.io>
+From: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
 
-commit e7794c14fd73e5eb4a3e0ecaa5334d5a17377c50 upstream.
+commit f18b1137d38c091cc8c16365219f0a1d4a30b3d1 upstream.
 
-When RPMB was converted to a character device, it added support for
-multiple RPMB partitions (Commit 97548575bef3 ("mmc: block: Convert RPMB to
-a character device").
+Introduce quirk_no_ats() helper function to provide a standard way to
+disable ATS capability in PCI quirks.
 
-One of the changes in this commit was transforming the variable target_part
-defined in __mmc_blk_ioctl_cmd into a bitmask. This inadvertently regressed
-the validation check done in mmc_blk_part_switch_pre() and
-mmc_blk_part_switch_post(), so let's fix it.
-
-Fixes: 97548575bef3 ("mmc: block: Convert RPMB to a character device")
-Signed-off-by: Jorge Ramirez-Ortiz <jorge@foundries.io>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231201153143.1449753-1-jorge@foundries.io
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230908143606.685930-2-bartosz.pawlowski@intel.com
+Signed-off-by: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/block.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/pci/quirks.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -839,9 +839,10 @@ static const struct block_device_operati
- static int mmc_blk_part_switch_pre(struct mmc_card *card,
- 				   unsigned int part_type)
- {
-+	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
- 	int ret = 0;
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5353,6 +5353,12 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SE
+ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SERVERWORKS, 0x0422, quirk_no_ext_tags);
  
--	if (part_type == EXT_CSD_PART_CONFIG_ACC_RPMB) {
-+	if ((part_type & mask) == mask) {
- 		if (card->ext_csd.cmdq_en) {
- 			ret = mmc_cmdq_disable(card);
- 			if (ret)
-@@ -856,9 +857,10 @@ static int mmc_blk_part_switch_pre(struc
- static int mmc_blk_part_switch_post(struct mmc_card *card,
- 				    unsigned int part_type)
- {
-+	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
- 	int ret = 0;
+ #ifdef CONFIG_PCI_ATS
++static void quirk_no_ats(struct pci_dev *pdev)
++{
++	pci_info(pdev, "disabling ATS\n");
++	pdev->ats_cap = 0;
++}
++
+ /*
+  * Some devices require additional driver setup to enable ATS.  Don't use
+  * ATS for those devices as ATS will be enabled before the driver has had a
+@@ -5365,8 +5371,7 @@ static void quirk_amd_harvest_no_ats(str
+ 	    (pdev->device == 0x7341 && pdev->revision != 0x00))
+ 		return;
  
--	if (part_type == EXT_CSD_PART_CONFIG_ACC_RPMB) {
-+	if ((part_type & mask) == mask) {
- 		mmc_retune_unpause(card->host);
- 		if (card->reenable_cmdq && !card->ext_csd.cmdq_en)
- 			ret = mmc_cmdq_enable(card);
-@@ -3126,4 +3128,3 @@ module_exit(mmc_blk_exit);
+-	pci_info(pdev, "disabling ATS\n");
+-	pdev->ats_cap = 0;
++	quirk_no_ats(pdev);
+ }
  
- MODULE_LICENSE("GPL");
- MODULE_DESCRIPTION("Multimedia Card (MMC) block device driver");
--
+ /* AMD Stoney platform GPU */
 
 
 
