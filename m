@@ -1,69 +1,67 @@
-Return-Path: <stable+bounces-10611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B3A82C872
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 01:43:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A716682C87D
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 01:55:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CEA31F2321C
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 00:43:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED830B23EE6
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 00:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F960107B3;
-	Sat, 13 Jan 2024 00:43:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE4CF503;
+	Sat, 13 Jan 2024 00:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="YYOvxET3"
+	dkim=pass (1024-bit key) header.d=amazon.com header.i=@amazon.com header.b="mjIoRTX1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52005.amazon.com (smtp-fw-52005.amazon.com [52.119.213.156])
+Received: from smtp-fw-9102.amazon.com (smtp-fw-9102.amazon.com [207.171.184.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A12F4FE
-	for <stable@vger.kernel.org>; Sat, 13 Jan 2024 00:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE0310797
+	for <stable@vger.kernel.org>; Sat, 13 Jan 2024 00:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1705106619; x=1736642619;
+  t=1705107332; x=1736643332;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=jgMNgwyHYksEgQGuACAJhnrmxzeTaWMN++3ccDxgzWM=;
-  b=YYOvxET3ghyHzPK8F8Hg8xugTED2K7iFzQLbWDqynkJwrna7ppz3Gxe5
-   nZXH6/XVROVQHH01q95pk19uNVSPmDJY4B1WOQin+VnCtIJRsfbFjvlsw
-   pu4I53cXwt25UbWPLztyYFYuVo6dMQx5FQwl88Nf6SJBXc6zE5RTXnd81
-   Y=;
+  bh=agsLXchAQ2QVAKnUpd3j0QPlc5+iFPD1UdzFYRgZdaU=;
+  b=mjIoRTX1P8XwSd+nnIJEXQBrAJJEKcKjIaLegS/l5u7NSJBnGbF+D/dN
+   HgDB70vhHcwfGI/oiQhgL+T24haEQ+zjoNX/6PrTe6Aa4e/Di72OAKOIA
+   yc+yY3yS4OTRU1oF5wX2nnRxOGtQwpZqF4nMQJLlT6tVsXR5zmlxZhSfN
+   g=;
 X-IronPort-AV: E=Sophos;i="6.04,191,1695686400"; 
-   d="scan'208";a="627400774"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-iad-1a-m6i4x-93c3b254.us-east-1.amazon.com) ([10.43.8.6])
-  by smtp-border-fw-52005.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2024 00:43:38 +0000
+   d="scan'208";a="389545044"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO email-inbound-relay-iad-1a-m6i4x-47cc8a4c.us-east-1.amazon.com) ([10.25.36.214])
+  by smtp-border-fw-9102.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2024 00:55:31 +0000
 Received: from smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev (iad7-ws-svc-p70-lb3-vlan2.iad.amazon.com [10.32.235.34])
-	by email-inbound-relay-iad-1a-m6i4x-93c3b254.us-east-1.amazon.com (Postfix) with ESMTPS id CF8D8E19A5;
-	Sat, 13 Jan 2024 00:43:37 +0000 (UTC)
-Received: from EX19MTAUWB001.ant.amazon.com [10.0.21.151:15110]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.23.241:2525] with esmtp (Farcaster)
- id 91633665-5e70-413f-bd59-b716abd654f4; Sat, 13 Jan 2024 00:43:36 +0000 (UTC)
-X-Farcaster-Flow-ID: 91633665-5e70-413f-bd59-b716abd654f4
+	by email-inbound-relay-iad-1a-m6i4x-47cc8a4c.us-east-1.amazon.com (Postfix) with ESMTPS id 92D1F1607FC;
+	Sat, 13 Jan 2024 00:55:29 +0000 (UTC)
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.7.35:62764]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.19.220:2525] with esmtp (Farcaster)
+ id 1fa0be87-add7-46dd-8961-feee4852bc91; Sat, 13 Jan 2024 00:55:29 +0000 (UTC)
+X-Farcaster-Flow-ID: 1fa0be87-add7-46dd-8961-feee4852bc91
 Received: from EX19D030UWB002.ant.amazon.com (10.13.139.182) by
- EX19MTAUWB001.ant.amazon.com (10.250.64.248) with Microsoft SMTP Server
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Sat, 13 Jan 2024 00:43:36 +0000
+ 15.2.1118.40; Sat, 13 Jan 2024 00:55:28 +0000
 Received: from u1e958862c3245e.ant.amazon.com (10.187.171.38) by
  EX19D030UWB002.ant.amazon.com (10.13.139.182) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Sat, 13 Jan 2024 00:43:36 +0000
+ 15.2.1118.40; Sat, 13 Jan 2024 00:55:27 +0000
 From: Suraj Jitindar Singh <surajjs@amazon.com>
 To: <stable@vger.kernel.org>
 CC: <gregkh@linuxfoundation.org>, <trawets@amazon.com>, <security@kernel.org>,
-	Jon Maxwell <jmaxwell37@gmail.com>, Andrea Mayer <andrea.mayer@uniroma2.it>,
-	David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, "Suraj
- Jitindar Singh" <surajjs@amazon.com>
-Subject: [PATCH stable 5.4.x 3/3] ipv6: remove max_size check inline with ipv4
-Date: Fri, 12 Jan 2024 16:42:54 -0800
-Message-ID: <20240113004254.2416044-3-surajjs@amazon.com>
+	Peter Oskolkov <posk@google.com>, "David S . Miller" <davem@davemloft.net>,
+	Suraj Jitindar Singh <surajjs@amazon.com>
+Subject: [PATCH stable 4.19.x 1/4] net: add a route cache full diagnostic message
+Date: Fri, 12 Jan 2024 16:53:05 -0800
+Message-ID: <20240113005308.2422331-1-surajjs@amazon.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240113004254.2416044-1-surajjs@amazon.com>
+In-Reply-To: <2024011155-gruffly-chunk-e186@gregkh>
 References: <2024011155-gruffly-chunk-e186@gregkh>
- <20240113004254.2416044-1-surajjs@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,212 +70,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EX19D039UWA001.ant.amazon.com (10.13.139.110) To
+X-ClientProxiedBy: EX19D044UWB004.ant.amazon.com (10.13.139.134) To
  EX19D030UWB002.ant.amazon.com (10.13.139.182)
 
-From: Jon Maxwell <jmaxwell37@gmail.com>
+From: Peter Oskolkov <posk@google.com>
 
-commit af6d10345ca76670c1b7c37799f0d5576ccef277 upstream.
+commit 22c2ad616b74f3de2256b242572ab449d031d941 upstream.
 
-In ip6_dst_gc() replace:
+In some testing scenarios, dst/route cache can fill up so quickly
+that even an explicit GC call occasionally fails to clean it up. This leads
+to sporadically failing calls to dst_alloc and "network unreachable" errors
+to the user, which is confusing.
 
-  if (entries > gc_thresh)
+This patch adds a diagnostic message to make the cause of the failure
+easier to determine.
 
-With:
-
-  if (entries > ops->gc_thresh)
-
-Sending Ipv6 packets in a loop via a raw socket triggers an issue where a
-route is cloned by ip6_rt_cache_alloc() for each packet sent. This quickly
-consumes the Ipv6 max_size threshold which defaults to 4096 resulting in
-these warnings:
-
-[1]   99.187805] dst_alloc: 7728 callbacks suppressed
-[2] Route cache is full: consider increasing sysctl net.ipv6.route.max_size.
-.
-.
-[300] Route cache is full: consider increasing sysctl net.ipv6.route.max_size.
-
-When this happens the packet is dropped and sendto() gets a network is
-unreachable error:
-
-remaining pkt 200557 errno 101
-remaining pkt 196462 errno 101
-.
-.
-remaining pkt 126821 errno 101
-
-Implement David Aherns suggestion to remove max_size check seeing that Ipv6
-has a GC to manage memory usage. Ipv4 already does not check max_size.
-
-Here are some memory comparisons for Ipv4 vs Ipv6 with the patch:
-
-Test by running 5 instances of a program that sends UDP packets to a raw
-socket 5000000 times. Compare Ipv4 and Ipv6 performance with a similar
-program.
-
-Ipv4:
-
-Before test:
-
-MemFree:        29427108 kB
-Slab:             237612 kB
-
-ip6_dst_cache       1912   2528    256   32    2 : tunables    0    0    0
-xfrm_dst_cache         0      0    320   25    2 : tunables    0    0    0
-ip_dst_cache        2881   3990    192   42    2 : tunables    0    0    0
-
-During test:
-
-MemFree:        29417608 kB
-Slab:             247712 kB
-
-ip6_dst_cache       1912   2528    256   32    2 : tunables    0    0    0
-xfrm_dst_cache         0      0    320   25    2 : tunables    0    0    0
-ip_dst_cache       44394  44394    192   42    2 : tunables    0    0    0
-
-After test:
-
-MemFree:        29422308 kB
-Slab:             238104 kB
-
-ip6_dst_cache       1912   2528    256   32    2 : tunables    0    0    0
-xfrm_dst_cache         0      0    320   25    2 : tunables    0    0    0
-ip_dst_cache        3048   4116    192   42    2 : tunables    0    0    0
-
-Ipv6 with patch:
-
-Errno 101 errors are not observed anymore with the patch.
-
-Before test:
-
-MemFree:        29422308 kB
-Slab:             238104 kB
-
-ip6_dst_cache       1912   2528    256   32    2 : tunables    0    0    0
-xfrm_dst_cache         0      0    320   25    2 : tunables    0    0    0
-ip_dst_cache        3048   4116    192   42    2 : tunables    0    0    0
-
-During Test:
-
-MemFree:        29431516 kB
-Slab:             240940 kB
-
-ip6_dst_cache      11980  12064    256   32    2 : tunables    0    0    0
-xfrm_dst_cache         0      0    320   25    2 : tunables    0    0    0
-ip_dst_cache        3048   4116    192   42    2 : tunables    0    0    0
-
-After Test:
-
-MemFree:        29441816 kB
-Slab:             238132 kB
-
-ip6_dst_cache       1902   2432    256   32    2 : tunables    0    0    0
-xfrm_dst_cache         0      0    320   25    2 : tunables    0    0    0
-ip_dst_cache        3048   4116    192   42    2 : tunables    0    0    0
-
-Tested-by: Andrea Mayer <andrea.mayer@uniroma2.it>
-Signed-off-by: Jon Maxwell <jmaxwell37@gmail.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://lore.kernel.org/r/20230112012532.311021-1-jmaxwell37@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Peter Oskolkov <posk@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
-Cc: <stable@vger.kernel.org> # 5.4.x
+Cc: <stable@vger.kernel.org> # 4.19.x
 ---
- include/net/dst_ops.h |  2 +-
- net/core/dst.c        |  8 ++------
- net/ipv6/route.c      | 13 +++++--------
- 3 files changed, 8 insertions(+), 15 deletions(-)
+ net/core/dst.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/dst_ops.h b/include/net/dst_ops.h
-index 88ff7bb2bb9b..632086b2f644 100644
---- a/include/net/dst_ops.h
-+++ b/include/net/dst_ops.h
-@@ -16,7 +16,7 @@ struct dst_ops {
- 	unsigned short		family;
- 	unsigned int		gc_thresh;
- 
--	int			(*gc)(struct dst_ops *ops);
-+	void			(*gc)(struct dst_ops *ops);
- 	struct dst_entry *	(*check)(struct dst_entry *, __u32 cookie);
- 	unsigned int		(*default_advmss)(const struct dst_entry *);
- 	unsigned int		(*mtu)(const struct dst_entry *);
 diff --git a/net/core/dst.c b/net/core/dst.c
-index d6b6ced0d451..107aea25a564 100644
+index 81ccf20e2826..a263309df115 100644
 --- a/net/core/dst.c
 +++ b/net/core/dst.c
-@@ -83,12 +83,8 @@ void *dst_alloc(struct dst_ops *ops, struct net_device *dev,
+@@ -98,8 +98,12 @@ void *dst_alloc(struct dst_ops *ops, struct net_device *dev,
+ 	struct dst_entry *dst;
  
- 	if (ops->gc &&
- 	    !(flags & DST_NOCOUNT) &&
--	    dst_entries_get_fast(ops) > ops->gc_thresh) {
--		if (ops->gc(ops)) {
--			pr_notice_ratelimited("Route cache is full: consider increasing sysctl net.ipv6.route.max_size.\n");
--			return NULL;
--		}
--	}
-+	    dst_entries_get_fast(ops) > ops->gc_thresh)
-+		ops->gc(ops);
+ 	if (ops->gc && dst_entries_get_fast(ops) > ops->gc_thresh) {
+-		if (ops->gc(ops))
++		if (ops->gc(ops)) {
++			printk_ratelimited(KERN_NOTICE "Route cache is full: "
++					   "consider increasing sysctl "
++					   "net.ipv[4|6].route.max_size.\n");
+ 			return NULL;
++		}
+ 	}
  
  	dst = kmem_cache_alloc(ops->kmem_cachep, GFP_ATOMIC);
- 	if (!dst)
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index adf5ffab4398..c26e832fddb7 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -88,7 +88,7 @@ static struct dst_entry *ip6_negative_advice(struct dst_entry *);
- static void		ip6_dst_destroy(struct dst_entry *);
- static void		ip6_dst_ifdown(struct dst_entry *,
- 				       struct net_device *dev, int how);
--static int		 ip6_dst_gc(struct dst_ops *ops);
-+static void		 ip6_dst_gc(struct dst_ops *ops);
- 
- static int		ip6_pkt_discard(struct sk_buff *skb);
- static int		ip6_pkt_discard_out(struct net *net, struct sock *sk, struct sk_buff *skb);
-@@ -3207,11 +3207,10 @@ struct dst_entry *icmp6_dst_alloc(struct net_device *dev,
- 	return dst;
- }
- 
--static int ip6_dst_gc(struct dst_ops *ops)
-+static void ip6_dst_gc(struct dst_ops *ops)
- {
- 	struct net *net = container_of(ops, struct net, ipv6.ip6_dst_ops);
- 	int rt_min_interval = net->ipv6.sysctl.ip6_rt_gc_min_interval;
--	int rt_max_size = net->ipv6.sysctl.ip6_rt_max_size;
- 	int rt_elasticity = net->ipv6.sysctl.ip6_rt_gc_elasticity;
- 	int rt_gc_timeout = net->ipv6.sysctl.ip6_rt_gc_timeout;
- 	unsigned long rt_last_gc = net->ipv6.ip6_rt_last_gc;
-@@ -3219,11 +3218,10 @@ static int ip6_dst_gc(struct dst_ops *ops)
- 	int entries;
- 
- 	entries = dst_entries_get_fast(ops);
--	if (entries > rt_max_size)
-+	if (entries > ops->gc_thresh)
- 		entries = dst_entries_get_slow(ops);
- 
--	if (time_after(rt_last_gc + rt_min_interval, jiffies) &&
--	    entries <= rt_max_size)
-+	if (time_after(rt_last_gc + rt_min_interval, jiffies))
- 		goto out;
- 
- 	fib6_run_gc(atomic_inc_return(&net->ipv6.ip6_rt_gc_expire), net, true);
-@@ -3233,7 +3231,6 @@ static int ip6_dst_gc(struct dst_ops *ops)
- out:
- 	val = atomic_read(&net->ipv6.ip6_rt_gc_expire);
- 	atomic_set(&net->ipv6.ip6_rt_gc_expire, val - (val >> rt_elasticity));
--	return entries > rt_max_size;
- }
- 
- static int ip6_nh_lookup_table(struct net *net, struct fib6_config *cfg,
-@@ -6321,7 +6318,7 @@ static int __net_init ip6_route_net_init(struct net *net)
- #endif
- 
- 	net->ipv6.sysctl.flush_delay = 0;
--	net->ipv6.sysctl.ip6_rt_max_size = 4096;
-+	net->ipv6.sysctl.ip6_rt_max_size = INT_MAX;
- 	net->ipv6.sysctl.ip6_rt_gc_min_interval = HZ / 2;
- 	net->ipv6.sysctl.ip6_rt_gc_timeout = 60*HZ;
- 	net->ipv6.sysctl.ip6_rt_gc_interval = 30*HZ;
 -- 
 2.34.1
 
