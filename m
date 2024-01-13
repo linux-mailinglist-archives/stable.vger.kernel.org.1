@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-10680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B081582CB2E
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:56:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA3782CB88
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:00:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57CD92825CB
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:56:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F19371C21741
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D419315C9;
-	Sat, 13 Jan 2024 09:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E040163C3;
+	Sat, 13 Jan 2024 10:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pd5I+sPc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uj0fR5bI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D213185A;
-	Sat, 13 Jan 2024 09:56:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0B33C433F1;
-	Sat, 13 Jan 2024 09:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7349C8DD;
+	Sat, 13 Jan 2024 10:00:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24BABC433F1;
+	Sat, 13 Jan 2024 10:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139789;
-	bh=CN1ib1r4Aq37cV0advF/cYy9nelKLm/J9Xws+527dSg=;
+	s=korg; t=1705140043;
+	bh=yGliNyXmMq7953sYMgWEXBdYhtgy9F3mT6rXFcocTW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pd5I+sPcoDyKKIjFTFnIiBKGUUFPXXFFV+Yx750Xl2i12B0BLpUZw+KtJpebr9ymh
-	 Hnl0vh1VQHNRWy9A7JtjeNtUS9P4lGn4zgTpOkkIZagCIRXSFgcUUDt6wvAgXTfrkm
-	 K8DCxTDMg27vHAUvUgmOfe3AIIrcyjRwqMosU6HE=
+	b=uj0fR5bInK76YpP1fqYB3UVC6sXe3WJ6vUzgeFlyJH6klXSZWSgwa/GZuoKC9bToz
+	 TCLVjn+PhKAfygCUgHssI0xSK3cbvVejU5L06EG196Ror2M1PCBFu9Zq+0Sz2sb+70
+	 rlO1aWtmQla9KIx0GNkaqQsyyQZ7Q2TZ0nBW+xlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Rakesh Pillai <pillair@codeaurora.org>,
-	Brian Norris <briannorris@chromium.org>,
-	Kalle Valo <kvalo@codeaurora.org>,
-	Amit Pundir <amit.pundir@linaro.org>
-Subject: [PATCH 5.4 30/38] ath10k: Keep track of which interrupts fired, dont poll them
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 35/59] octeontx2-af: Dont enable Pause frames by default
 Date: Sat, 13 Jan 2024 10:50:06 +0100
-Message-ID: <20240113094207.378801613@linuxfoundation.org>
+Message-ID: <20240113094210.386136085@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
-References: <20240113094206.455533180@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,270 +54,275 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-[ Upstream commit d66d24ac300cf41c6b88367fc9b4b6348679273d ]
+[ Upstream commit d957b51f7ed66dbe6102f1bba0587fdfc0119a94 ]
 
-If we have a per CE (Copy Engine) IRQ then we have no summary
-register.  Right now the code generates a summary register by
-iterating over all copy engines and seeing if they have an interrupt
-pending.
+Current implementation is such that 802.3x pause frames are
+enabled by default.  As CGX and RPM blocks support PFC
+(priority flow control) also, instead of driver enabling one
+between them enable them upon request from PF or its VFs.
+Also add support to disable pause frames in driver unbind.
 
-This has a problem.  Specifically if _none_ if the Copy Engines have
-an interrupt pending then they might go into low power mode and
-reading from their address space will cause a full system crash.  This
-was seen to happen when two interrupts went off at nearly the same
-time.  Both were handled by a single call of ath10k_snoc_napi_poll()
-but, because there were two interrupts handled and thus two calls to
-napi_schedule() there was still a second call to
-ath10k_snoc_napi_poll() which ran with no interrupts pending.
-
-Instead of iterating over all the copy engines, let's just keep track
-of the IRQs that fire.  Then we can effectively generate our own
-summary without ever needing to read the Copy Engines.
-
-Tested-on: WCN3990 SNOC WLAN.HL.3.2.2-00490-QCAHLSWMTPL-1
-
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Rakesh Pillai <pillair@codeaurora.org>
-Reviewed-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20200709082024.v2.1.I4d2f85ffa06f38532631e864a3125691ef5ffe06@changeid
-Stable-dep-of: 170c75d43a77 ("ath10k: Don't touch the CE interrupt registers after power up")
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Signed-off-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: a0d9528f6daf ("octeontx2-af: Always configure NIX TX link credits based on max frame size")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/ce.c   |   84 ++++++++++++---------------------
- drivers/net/wireless/ath/ath10k/ce.h   |   14 ++---
- drivers/net/wireless/ath/ath10k/snoc.c |   19 +++++--
- drivers/net/wireless/ath/ath10k/snoc.h |    1 
- 4 files changed, 52 insertions(+), 66 deletions(-)
+ .../net/ethernet/marvell/octeontx2/af/cgx.c   | 41 ++++++----------
+ .../net/ethernet/marvell/octeontx2/af/rpm.c   | 47 +++++--------------
+ .../ethernet/marvell/octeontx2/af/rvu_nix.c   |  8 ----
+ .../marvell/octeontx2/nic/otx2_common.c       |  1 +
+ .../ethernet/marvell/octeontx2/nic/otx2_pf.c  | 15 +++---
+ .../ethernet/marvell/octeontx2/nic/otx2_vf.c  | 12 +++--
+ 6 files changed, 44 insertions(+), 80 deletions(-)
 
---- a/drivers/net/wireless/ath/ath10k/ce.c
-+++ b/drivers/net/wireless/ath/ath10k/ce.c
-@@ -481,38 +481,6 @@ static inline void ath10k_ce_engine_int_
- 	ath10k_ce_write32(ar, ce_ctrl_addr + wm_regs->addr, mask);
- }
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+index 8ac95cb7bbb74..098504aa0fd2b 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+@@ -789,21 +789,8 @@ static void cgx_lmac_pause_frm_config(void *cgxd, int lmac_id, bool enable)
  
--static bool ath10k_ce_engine_int_status_check(struct ath10k *ar, u32 ce_ctrl_addr,
--					      unsigned int mask)
--{
--	struct ath10k_hw_ce_host_wm_regs *wm_regs = ar->hw_ce_regs->wm_regs;
+ 	if (!is_lmac_valid(cgx, lmac_id))
+ 		return;
+-	if (enable) {
+-		/* Enable receive pause frames */
+-		cfg = cgx_read(cgx, lmac_id, CGXX_SMUX_RX_FRM_CTL);
+-		cfg |= CGX_SMUX_RX_FRM_CTL_CTL_BCK;
+-		cgx_write(cgx, lmac_id, CGXX_SMUX_RX_FRM_CTL, cfg);
 -
--	return ath10k_ce_read32(ar, ce_ctrl_addr + wm_regs->addr) & mask;
--}
+-		cfg = cgx_read(cgx, lmac_id, CGXX_GMP_GMI_RXX_FRM_CTL);
+-		cfg |= CGX_GMP_GMI_RXX_FRM_CTL_CTL_BCK;
+-		cgx_write(cgx, lmac_id, CGXX_GMP_GMI_RXX_FRM_CTL, cfg);
 -
--u32 ath10k_ce_gen_interrupt_summary(struct ath10k *ar)
--{
--	struct ath10k_hw_ce_host_wm_regs *wm_regs = ar->hw_ce_regs->wm_regs;
--	struct ath10k_ce_pipe *ce_state;
--	struct ath10k_ce *ce;
--	u32 irq_summary = 0;
--	u32 ctrl_addr;
--	u32 ce_id;
--
--	ce = ath10k_ce_priv(ar);
--
--	for (ce_id = 0; ce_id < CE_COUNT; ce_id++) {
--		ce_state = &ce->ce_states[ce_id];
--		ctrl_addr = ce_state->ctrl_addr;
--		if (ath10k_ce_engine_int_status_check(ar, ctrl_addr,
--						      wm_regs->cc_mask)) {
--			irq_summary |= BIT(ce_id);
--		}
+-		/* Enable pause frames transmission */
+-		cfg = cgx_read(cgx, lmac_id, CGXX_SMUX_TX_CTL);
+-		cfg |= CGX_SMUX_TX_CTL_L2P_BP_CONV;
+-		cgx_write(cgx, lmac_id, CGXX_SMUX_TX_CTL, cfg);
+ 
++	if (enable) {
+ 		/* Set pause time and interval */
+ 		cgx_write(cgx, lmac_id, CGXX_SMUX_TX_PAUSE_PKT_TIME,
+ 			  DEFAULT_PAUSE_TIME);
+@@ -820,21 +807,21 @@ static void cgx_lmac_pause_frm_config(void *cgxd, int lmac_id, bool enable)
+ 		cfg &= ~0xFFFFULL;
+ 		cgx_write(cgx, lmac_id, CGXX_GMP_GMI_TX_PAUSE_PKT_INTERVAL,
+ 			  cfg | (DEFAULT_PAUSE_TIME / 2));
+-	} else {
+-		/* ALL pause frames received are completely ignored */
+-		cfg = cgx_read(cgx, lmac_id, CGXX_SMUX_RX_FRM_CTL);
+-		cfg &= ~CGX_SMUX_RX_FRM_CTL_CTL_BCK;
+-		cgx_write(cgx, lmac_id, CGXX_SMUX_RX_FRM_CTL, cfg);
++	}
+ 
+-		cfg = cgx_read(cgx, lmac_id, CGXX_GMP_GMI_RXX_FRM_CTL);
+-		cfg &= ~CGX_GMP_GMI_RXX_FRM_CTL_CTL_BCK;
+-		cgx_write(cgx, lmac_id, CGXX_GMP_GMI_RXX_FRM_CTL, cfg);
++	/* ALL pause frames received are completely ignored */
++	cfg = cgx_read(cgx, lmac_id, CGXX_SMUX_RX_FRM_CTL);
++	cfg &= ~CGX_SMUX_RX_FRM_CTL_CTL_BCK;
++	cgx_write(cgx, lmac_id, CGXX_SMUX_RX_FRM_CTL, cfg);
+ 
+-		/* Disable pause frames transmission */
+-		cfg = cgx_read(cgx, lmac_id, CGXX_SMUX_TX_CTL);
+-		cfg &= ~CGX_SMUX_TX_CTL_L2P_BP_CONV;
+-		cgx_write(cgx, lmac_id, CGXX_SMUX_TX_CTL, cfg);
 -	}
++	cfg = cgx_read(cgx, lmac_id, CGXX_GMP_GMI_RXX_FRM_CTL);
++	cfg &= ~CGX_GMP_GMI_RXX_FRM_CTL_CTL_BCK;
++	cgx_write(cgx, lmac_id, CGXX_GMP_GMI_RXX_FRM_CTL, cfg);
++
++	/* Disable pause frames transmission */
++	cfg = cgx_read(cgx, lmac_id, CGXX_SMUX_TX_CTL);
++	cfg &= ~CGX_SMUX_TX_CTL_L2P_BP_CONV;
++	cgx_write(cgx, lmac_id, CGXX_SMUX_TX_CTL, cfg);
+ }
+ 
+ void cgx_lmac_ptp_config(void *cgxd, int lmac_id, bool enable)
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
+index 9ea2f6ac38ec1..8c0b35a868cfe 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
+@@ -167,26 +167,6 @@ void rpm_lmac_pause_frm_config(void *rpmd, int lmac_id, bool enable)
+ 	u64 cfg;
+ 
+ 	if (enable) {
+-		/* Enable 802.3 pause frame mode */
+-		cfg = rpm_read(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG);
+-		cfg &= ~RPMX_MTI_MAC100X_COMMAND_CONFIG_PFC_MODE;
+-		rpm_write(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG, cfg);
 -
--	return irq_summary;
--}
--EXPORT_SYMBOL(ath10k_ce_gen_interrupt_summary);
+-		/* Enable receive pause frames */
+-		cfg = rpm_read(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG);
+-		cfg &= ~RPMX_MTI_MAC100X_COMMAND_CONFIG_RX_P_DISABLE;
+-		rpm_write(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG, cfg);
 -
- /*
-  * Guts of ath10k_ce_send.
-  * The caller takes responsibility for any needed locking.
-@@ -1399,45 +1367,55 @@ static void ath10k_ce_per_engine_handler
- 	ath10k_ce_watermark_intr_disable(ar, ctrl_addr);
- }
- 
--int ath10k_ce_disable_interrupts(struct ath10k *ar)
-+void ath10k_ce_disable_interrupt(struct ath10k *ar, int ce_id)
- {
- 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
- 	struct ath10k_ce_pipe *ce_state;
- 	u32 ctrl_addr;
--	int ce_id;
- 
--	for (ce_id = 0; ce_id < CE_COUNT; ce_id++) {
--		ce_state  = &ce->ce_states[ce_id];
--		if (ce_state->attr_flags & CE_ATTR_POLL)
--			continue;
-+	ce_state  = &ce->ce_states[ce_id];
-+	if (ce_state->attr_flags & CE_ATTR_POLL)
-+		return;
- 
--		ctrl_addr = ath10k_ce_base_address(ar, ce_id);
-+	ctrl_addr = ath10k_ce_base_address(ar, ce_id);
- 
--		ath10k_ce_copy_complete_intr_disable(ar, ctrl_addr);
--		ath10k_ce_error_intr_disable(ar, ctrl_addr);
--		ath10k_ce_watermark_intr_disable(ar, ctrl_addr);
--	}
-+	ath10k_ce_copy_complete_intr_disable(ar, ctrl_addr);
-+	ath10k_ce_error_intr_disable(ar, ctrl_addr);
-+	ath10k_ce_watermark_intr_disable(ar, ctrl_addr);
-+}
-+EXPORT_SYMBOL(ath10k_ce_disable_interrupt);
- 
--	return 0;
-+void ath10k_ce_disable_interrupts(struct ath10k *ar)
-+{
-+	int ce_id;
-+
-+	for (ce_id = 0; ce_id < CE_COUNT; ce_id++)
-+		ath10k_ce_disable_interrupt(ar, ce_id);
- }
- EXPORT_SYMBOL(ath10k_ce_disable_interrupts);
- 
--void ath10k_ce_enable_interrupts(struct ath10k *ar)
-+void ath10k_ce_enable_interrupt(struct ath10k *ar, int ce_id)
- {
- 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
--	int ce_id;
- 	struct ath10k_ce_pipe *ce_state;
- 
-+	ce_state  = &ce->ce_states[ce_id];
-+	if (ce_state->attr_flags & CE_ATTR_POLL)
-+		return;
-+
-+	ath10k_ce_per_engine_handler_adjust(ce_state);
-+}
-+EXPORT_SYMBOL(ath10k_ce_enable_interrupt);
-+
-+void ath10k_ce_enable_interrupts(struct ath10k *ar)
-+{
-+	int ce_id;
-+
- 	/* Enable interrupts for copy engine that
- 	 * are not using polling mode.
- 	 */
--	for (ce_id = 0; ce_id < CE_COUNT; ce_id++) {
--		ce_state  = &ce->ce_states[ce_id];
--		if (ce_state->attr_flags & CE_ATTR_POLL)
--			continue;
+-		/* Enable forward pause to TX block */
+-		cfg = rpm_read(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG);
+-		cfg &= ~RPMX_MTI_MAC100X_COMMAND_CONFIG_PAUSE_IGNORE;
+-		rpm_write(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG, cfg);
 -
--		ath10k_ce_per_engine_handler_adjust(ce_state);
+-		/* Enable pause frames transmission */
+-		cfg = rpm_read(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG);
+-		cfg &= ~RPMX_MTI_MAC100X_COMMAND_CONFIG_TX_P_DISABLE;
+-		rpm_write(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG, cfg);
+-
+ 		/* Set pause time and interval */
+ 		cfg = rpm_read(rpm, lmac_id,
+ 			       RPMX_MTI_MAC100X_CL01_PAUSE_QUANTA);
+@@ -199,23 +179,22 @@ void rpm_lmac_pause_frm_config(void *rpmd, int lmac_id, bool enable)
+ 		cfg &= ~0xFFFFULL;
+ 		rpm_write(rpm, lmac_id, RPMX_MTI_MAC100X_CL01_QUANTA_THRESH,
+ 			  cfg | (RPM_DEFAULT_PAUSE_TIME / 2));
++	}
+ 
+-	} else {
+-		/* ALL pause frames received are completely ignored */
+-		cfg = rpm_read(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG);
+-		cfg |= RPMX_MTI_MAC100X_COMMAND_CONFIG_RX_P_DISABLE;
+-		rpm_write(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG, cfg);
++	/* ALL pause frames received are completely ignored */
++	cfg = rpm_read(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG);
++	cfg |= RPMX_MTI_MAC100X_COMMAND_CONFIG_RX_P_DISABLE;
++	rpm_write(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG, cfg);
+ 
+-		/* Disable forward pause to TX block */
+-		cfg = rpm_read(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG);
+-		cfg |= RPMX_MTI_MAC100X_COMMAND_CONFIG_PAUSE_IGNORE;
+-		rpm_write(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG, cfg);
++	/* Disable forward pause to TX block */
++	cfg = rpm_read(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG);
++	cfg |= RPMX_MTI_MAC100X_COMMAND_CONFIG_PAUSE_IGNORE;
++	rpm_write(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG, cfg);
+ 
+-		/* Disable pause frames transmission */
+-		cfg = rpm_read(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG);
+-		cfg |= RPMX_MTI_MAC100X_COMMAND_CONFIG_TX_P_DISABLE;
+-		rpm_write(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG, cfg);
 -	}
-+	for (ce_id = 0; ce_id < CE_COUNT; ce_id++)
-+		ath10k_ce_enable_interrupt(ar, ce_id);
- }
- EXPORT_SYMBOL(ath10k_ce_enable_interrupts);
- 
---- a/drivers/net/wireless/ath/ath10k/ce.h
-+++ b/drivers/net/wireless/ath/ath10k/ce.h
-@@ -255,12 +255,13 @@ int ath10k_ce_cancel_send_next(struct at
- /*==================CE Interrupt Handlers====================*/
- void ath10k_ce_per_engine_service_any(struct ath10k *ar);
- void ath10k_ce_per_engine_service(struct ath10k *ar, unsigned int ce_id);
--int ath10k_ce_disable_interrupts(struct ath10k *ar);
-+void ath10k_ce_disable_interrupt(struct ath10k *ar, int ce_id);
-+void ath10k_ce_disable_interrupts(struct ath10k *ar);
-+void ath10k_ce_enable_interrupt(struct ath10k *ar, int ce_id);
- void ath10k_ce_enable_interrupts(struct ath10k *ar);
- void ath10k_ce_dump_registers(struct ath10k *ar,
- 			      struct ath10k_fw_crash_data *crash_data);
- 
--u32 ath10k_ce_gen_interrupt_summary(struct ath10k *ar);
- void ath10k_ce_alloc_rri(struct ath10k *ar);
- void ath10k_ce_free_rri(struct ath10k *ar);
- 
-@@ -376,12 +377,9 @@ static inline u32 ath10k_ce_interrupt_su
- {
- 	struct ath10k_ce *ce = ath10k_ce_priv(ar);
- 
--	if (!ar->hw_params.per_ce_irq)
--		return CE_WRAPPER_INTERRUPT_SUMMARY_HOST_MSI_GET(
--			ce->bus_ops->read32((ar), CE_WRAPPER_BASE_ADDRESS +
--			CE_WRAPPER_INTERRUPT_SUMMARY_ADDRESS));
--	else
--		return ath10k_ce_gen_interrupt_summary(ar);
-+	return CE_WRAPPER_INTERRUPT_SUMMARY_HOST_MSI_GET(
-+		ce->bus_ops->read32((ar), CE_WRAPPER_BASE_ADDRESS +
-+		CE_WRAPPER_INTERRUPT_SUMMARY_ADDRESS));
++	/* Disable pause frames transmission */
++	cfg = rpm_read(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG);
++	cfg |= RPMX_MTI_MAC100X_COMMAND_CONFIG_TX_P_DISABLE;
++	rpm_write(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG, cfg);
  }
  
- /* Host software's Copy Engine configuration. */
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -3,6 +3,7 @@
-  * Copyright (c) 2018 The Linux Foundation. All rights reserved.
-  */
+ int rpm_get_rx_stats(void *rpmd, int lmac_id, int idx, u64 *rx_stat)
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+index 5f9f6da5c45bb..1ab9dc544eeea 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+@@ -296,7 +296,6 @@ static int nix_interface_init(struct rvu *rvu, u16 pcifunc, int type, int nixlf,
+ 	struct rvu_hwinfo *hw = rvu->hw;
+ 	struct sdp_node_info *sdp_info;
+ 	int pkind, pf, vf, lbkid, vfid;
+-	struct mac_ops *mac_ops;
+ 	u8 cgx_id, lmac_id;
+ 	bool from_vf;
+ 	int err;
+@@ -326,13 +325,6 @@ static int nix_interface_init(struct rvu *rvu, u16 pcifunc, int type, int nixlf,
+ 		cgx_set_pkind(rvu_cgx_pdata(cgx_id, rvu), lmac_id, pkind);
+ 		rvu_npc_set_pkind(rvu, pkind, pfvf);
  
-+#include <linux/bits.h>
- #include <linux/clk.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-@@ -927,6 +928,7 @@ static int ath10k_snoc_hif_start(struct
+-		mac_ops = get_mac_ops(rvu_cgx_pdata(cgx_id, rvu));
+-
+-		/* By default we enable pause frames */
+-		if ((pcifunc & RVU_PFVF_FUNC_MASK) == 0)
+-			mac_ops->mac_enadis_pause_frm(rvu_cgx_pdata(cgx_id,
+-								    rvu),
+-						      lmac_id, true, true);
+ 		break;
+ 	case NIX_INTF_TYPE_LBK:
+ 		vf = (pcifunc & RVU_PFVF_FUNC_MASK) - 1;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+index b743646993ca2..572c981171bac 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -262,6 +262,7 @@ int otx2_config_pause_frm(struct otx2_nic *pfvf)
+ 	mutex_unlock(&pfvf->mbox.lock);
+ 	return err;
+ }
++EXPORT_SYMBOL(otx2_config_pause_frm);
+ 
+ int otx2_set_flowkey_cfg(struct otx2_nic *pfvf)
  {
- 	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+index f9bb0e9e73592..167b926196c83 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
+@@ -1785,9 +1785,6 @@ int otx2_open(struct net_device *netdev)
+ 	if (pf->linfo.link_up && !(pf->pcifunc & RVU_PFVF_FUNC_MASK))
+ 		otx2_handle_link_event(pf);
  
-+	bitmap_clear(ar_snoc->pending_ce_irqs, 0, CE_COUNT_MAX);
- 	napi_enable(&ar->napi);
- 	ath10k_snoc_irq_enable(ar);
- 	ath10k_snoc_rx_post(ar);
-@@ -1166,7 +1168,9 @@ static irqreturn_t ath10k_snoc_per_engin
- 		return IRQ_HANDLED;
- 	}
+-	/* Restore pause frame settings */
+-	otx2_config_pause_frm(pf);
+-
+ 	/* Install DMAC Filters */
+ 	if (pf->flags & OTX2_FLAG_DMACFLTR_SUPPORT)
+ 		otx2_dmacflt_reinstall_flows(pf);
+@@ -2777,10 +2774,6 @@ static int otx2_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	/* Enable link notifications */
+ 	otx2_cgx_config_linkevents(pf, true);
  
--	ath10k_snoc_irq_disable(ar);
-+	ath10k_ce_disable_interrupt(ar, ce_id);
-+	set_bit(ce_id, ar_snoc->pending_ce_irqs);
+-	/* Enable pause frames by default */
+-	pf->flags |= OTX2_FLAG_RX_PAUSE_ENABLED;
+-	pf->flags |= OTX2_FLAG_TX_PAUSE_ENABLED;
+-
+ 	return 0;
+ 
+ err_pf_sriov_init:
+@@ -2924,6 +2917,14 @@ static void otx2_remove(struct pci_dev *pdev)
+ 	if (pf->flags & OTX2_FLAG_RX_TSTAMP_ENABLED)
+ 		otx2_config_hw_rx_tstamp(pf, false);
+ 
++	/* Disable 802.3x pause frames */
++	if (pf->flags & OTX2_FLAG_RX_PAUSE_ENABLED ||
++	    (pf->flags & OTX2_FLAG_TX_PAUSE_ENABLED)) {
++		pf->flags &= ~OTX2_FLAG_RX_PAUSE_ENABLED;
++		pf->flags &= ~OTX2_FLAG_TX_PAUSE_ENABLED;
++		otx2_config_pause_frm(pf);
++	}
 +
- 	napi_schedule(&ar->napi);
+ 	cancel_work_sync(&pf->reset_task);
+ 	/* Disable link notifications */
+ 	otx2_cgx_config_linkevents(pf, false);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
+index e69b0e2729cb2..689e0853ab9cd 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_vf.c
+@@ -695,10 +695,6 @@ static int otx2vf_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	if (err)
+ 		goto err_unreg_netdev;
  
- 	return IRQ_HANDLED;
-@@ -1175,20 +1179,25 @@ static irqreturn_t ath10k_snoc_per_engin
- static int ath10k_snoc_napi_poll(struct napi_struct *ctx, int budget)
- {
- 	struct ath10k *ar = container_of(ctx, struct ath10k, napi);
-+	struct ath10k_snoc *ar_snoc = ath10k_snoc_priv(ar);
- 	int done = 0;
-+	int ce_id;
+-	/* Enable pause frames by default */
+-	vf->flags |= OTX2_FLAG_RX_PAUSE_ENABLED;
+-	vf->flags |= OTX2_FLAG_TX_PAUSE_ENABLED;
+-
+ 	return 0;
  
- 	if (test_bit(ATH10K_FLAG_CRASH_FLUSH, &ar->dev_flags)) {
- 		napi_complete(ctx);
- 		return done;
- 	}
+ err_unreg_netdev:
+@@ -732,6 +728,14 @@ static void otx2vf_remove(struct pci_dev *pdev)
  
--	ath10k_ce_per_engine_service_any(ar);
-+	for (ce_id = 0; ce_id < CE_COUNT; ce_id++)
-+		if (test_and_clear_bit(ce_id, ar_snoc->pending_ce_irqs)) {
-+			ath10k_ce_per_engine_service(ar, ce_id);
-+			ath10k_ce_enable_interrupt(ar, ce_id);
-+		}
+ 	vf = netdev_priv(netdev);
+ 
++	/* Disable 802.3x pause frames */
++	if (vf->flags & OTX2_FLAG_RX_PAUSE_ENABLED ||
++	    (vf->flags & OTX2_FLAG_TX_PAUSE_ENABLED)) {
++		vf->flags &= ~OTX2_FLAG_RX_PAUSE_ENABLED;
++		vf->flags &= ~OTX2_FLAG_TX_PAUSE_ENABLED;
++		otx2_config_pause_frm(vf);
++	}
 +
- 	done = ath10k_htt_txrx_compl_task(ar, budget);
- 
--	if (done < budget) {
-+	if (done < budget)
- 		napi_complete(ctx);
--		ath10k_snoc_irq_enable(ar);
--	}
- 
- 	return done;
- }
---- a/drivers/net/wireless/ath/ath10k/snoc.h
-+++ b/drivers/net/wireless/ath/ath10k/snoc.h
-@@ -81,6 +81,7 @@ struct ath10k_snoc {
- 	struct ath10k_clk_info *clk;
- 	struct ath10k_qmi *qmi;
- 	unsigned long flags;
-+	DECLARE_BITMAP(pending_ce_irqs, CE_COUNT_MAX);
- };
- 
- static inline struct ath10k_snoc *ath10k_snoc_priv(struct ath10k *ar)
+ 	cancel_work_sync(&vf->reset_task);
+ 	otx2_unregister_dl(vf);
+ 	unregister_netdev(netdev);
+-- 
+2.43.0
+
 
 
 
