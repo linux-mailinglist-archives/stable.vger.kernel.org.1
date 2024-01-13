@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-10763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25B5682CB85
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:00:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 400B282CB0E
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:55:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9526282EF3
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:00:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D68EF285D0F
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943A010958;
-	Sat, 13 Jan 2024 10:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C8715C6;
+	Sat, 13 Jan 2024 09:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUBpMXU+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UTENYUEB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DCD41846;
-	Sat, 13 Jan 2024 10:00:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87848C433C7;
-	Sat, 13 Jan 2024 10:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD15C5683;
+	Sat, 13 Jan 2024 09:55:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB6E7C433F1;
+	Sat, 13 Jan 2024 09:55:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705140031;
-	bh=/ALhDNlROROohi+RtTy36dXThgfwLjEj9hVunfrruDY=;
+	s=korg; t=1705139706;
+	bh=CtqfeLUx5a9dyOVY0b9hqY/OnYwfw8vFEkQhEitsRk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HUBpMXU+UfhBY0xDx2H28NRZA3HMwn4hvJX4X97UKpJmw9OErt9zRx/6cPteXuEzu
-	 ipVs6bGiVmzLfXDhPAw4/OdjXzn8HinlBhnjuYscjIvYBKiK/tP4mnOpiW21Lo3QCx
-	 uM6lJ9p4GSq+MmV25a+POVIVfL1OoFmETL6QVzAM=
+	b=UTENYUEBwjFSecOkYTRSY/9Cef+lMRTXE44wxArSlcrIU1xtRzIpzcpuVP8QVyRtk
+	 MXKm0Uuigtr3Q7K9caml9NTEZ5+k7Kup0pCHP/p7SI3jMMA3dOzL0h+njlkYVEblnW
+	 XmC7sLaBZLg9xS3K76w+vm4WZtzKTzdH33NA0pwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 31/59] ASoC: meson: g12a-tohdmitx: Fix event generation for S/PDIF mux
+	Bartosz Pawlowski <bartosz.pawlowski@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>
+Subject: [PATCH 4.19 21/25] PCI: Disable ATS for specific Intel IPU E2000 devices
 Date: Sat, 13 Jan 2024 10:50:02 +0100
-Message-ID: <20240113094210.266533138@linuxfoundation.org>
+Message-ID: <20240113094205.699001062@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
-References: <20240113094209.301672391@linuxfoundation.org>
+In-Reply-To: <20240113094205.025407355@linuxfoundation.org>
+References: <20240113094205.025407355@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,44 +54,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
 
-[ Upstream commit b036d8ef3120b996751495ce25994eea58032a98 ]
+commit a18615b1cfc04f00548c60eb9a77e0ce56e848fd upstream.
 
-When a control changes value the return value from _put() should be 1 so
-we get events generated to userspace notifying applications of the change.
-While the I2S mux gets this right the S/PDIF mux does not, fix the return
-value.
+Due to a hardware issue in A and B steppings of Intel IPU E2000, it expects
+wrong endianness in ATS invalidation message body. This problem can lead to
+outdated translations being returned as valid and finally cause system
+instability.
 
-Fixes: c8609f3870f7 ("ASoC: meson: add g12a tohdmitx control")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240103-meson-enum-val-v1-4-424af7a8fb91@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To prevent such issues, add quirk_intel_e2000_no_ats() to disable ATS for
+vulnerable IPU E2000 devices.
+
+Link: https://lore.kernel.org/r/20230908143606.685930-3-bartosz.pawlowski@intel.com
+Signed-off-by: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/meson/g12a-tohdmitx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/quirks.c |   19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
-diff --git a/sound/soc/meson/g12a-tohdmitx.c b/sound/soc/meson/g12a-tohdmitx.c
-index 6b16159733f72..4a9b67421c705 100644
---- a/sound/soc/meson/g12a-tohdmitx.c
-+++ b/sound/soc/meson/g12a-tohdmitx.c
-@@ -118,7 +118,7 @@ static int g12a_tohdmitx_spdif_mux_put_enum(struct snd_kcontrol *kcontrol,
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5212,6 +5212,25 @@ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_AT
+ /* AMD Navi14 dGPU */
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x7340, quirk_amd_harvest_no_ats);
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_ATI, 0x7341, quirk_amd_harvest_no_ats);
++
++/*
++ * Intel IPU E2000 revisions before C0 implement incorrect endianness
++ * in ATS Invalidate Request message body. Disable ATS for those devices.
++ */
++static void quirk_intel_e2000_no_ats(struct pci_dev *pdev)
++{
++	if (pdev->revision < 0x20)
++		quirk_no_ats(pdev);
++}
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1451, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1452, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1453, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1454, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1455, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1457, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x1459, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x145a, quirk_intel_e2000_no_ats);
++DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_INTEL, 0x145c, quirk_intel_e2000_no_ats);
+ #endif /* CONFIG_PCI_ATS */
  
- 	snd_soc_dapm_mux_update_power(dapm, kcontrol, mux, e, NULL);
- 
--	return 0;
-+	return 1;
- }
- 
- static SOC_ENUM_SINGLE_DECL(g12a_tohdmitx_spdif_mux_enum, TOHDMITX_CTRL0,
--- 
-2.43.0
-
+ /* Freescale PCIe doesn't support MSI in RC mode */
 
 
 
