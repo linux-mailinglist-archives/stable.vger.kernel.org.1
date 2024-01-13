@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-10724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41EBD82CB5D
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:58:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAC6E82CB8B
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:00:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA6101F225A1
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:58:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CE9AB22C35
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:00:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C996C17547;
-	Sat, 13 Jan 2024 09:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D664D10958;
+	Sat, 13 Jan 2024 10:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHWt3sUc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBzlpuqR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9363717545;
-	Sat, 13 Jan 2024 09:58:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144B7C433C7;
-	Sat, 13 Jan 2024 09:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4A61EEE6;
+	Sat, 13 Jan 2024 10:00:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A0DBC433C7;
+	Sat, 13 Jan 2024 10:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139917;
-	bh=9CHbAdfWZINGZIAO7sZ5/AU9sbf/Y4SHKYHfTAWlb+M=;
+	s=korg; t=1705140046;
+	bh=BdVaFwYepQoWnE5D1TBFBPMh4UQysKIho0Za5qTc3Ok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hHWt3sUcNgIK4nPtueoHjBA0zr52ohyWFLfcKY3gDdu+pVisNMRrKRbMXNvlEaA+K
-	 3rMBRYZm+KJAtOkd8q64Ql7Qb5QSlT5uCUaLqOZNUf43w8Il1o0fBNueSILZ6fZZvj
-	 fqKvA9yR/f1+OXoug47yJr3qQEa0ciitL3oQMehI=
+	b=SBzlpuqRGXCMX+OpUJl5E/FzR2ibtZIpWWC7OjcaNJknP9TGbaMFHkW8C8zroFt94
+	 26J97lTzUWNPMfFZzes7vf1nXcdK6mT99JNzxo5ATOT6bE6fD91Gm1WnGTeb+z0NJS
+	 pq+/uIAeFb4TZFwlkB1ZVWgDhtrMJA2HJqkL+XZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Tobias Gruetzmacher <tobias-lists@23.gs>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Subject: [PATCH 5.10 28/43] firewire: ohci: suppress unexpected system reboot in AMD Ryzen machines and ASM108x/VT630x PCIe cards
+	Nithin Dabilpuram <ndabilpuram@marvell.com>,
+	Sunil Goutham <sgoutham@marvell.com>,
+	Geetha Sowjanya <gakula@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 36/59] octeontx2-af: Set NIX link credits based on max LMAC
 Date: Sat, 13 Jan 2024 10:50:07 +0100
-Message-ID: <20240113094207.818068243@linuxfoundation.org>
+Message-ID: <20240113094210.415849316@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
-References: <20240113094206.930684111@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,130 +55,257 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+From: Sunil Goutham <sgoutham@marvell.com>
 
-commit ac9184fbb8478dab4a0724b279f94956b69be827 upstream.
+[ Upstream commit 459f326e995ce6f02f3dc79ca5bc4e2abe33d156 ]
 
-VIA VT6306/6307/6308 provides PCI interface compliant to 1394 OHCI. When
-the hardware is combined with Asmedia ASM1083/1085 PCIe-to-PCI bus bridge,
-it appears that accesses to its 'Isochronous Cycle Timer' register (offset
-0xf0 on PCI memory space) often causes unexpected system reboot in any
-type of AMD Ryzen machine (both 0x17 and 0x19 families). It does not
-appears in the other type of machine (AMD pre-Ryzen machine, Intel
-machine, at least), or in the other OHCI 1394 hardware (e.g. Texas
-Instruments).
+When number of LMACs active on a CGX/RPM are 3, then
+current NIX link credit config based on per lmac fifo
+length which inturn  is calculated as
+'lmac_fifo_len = total_fifo_len / 3', is incorrect. In HW
+one of the LMAC gets half of the FIFO and rest gets 1/4th.
 
-The issue explicitly appears at a commit dcadfd7f7c74 ("firewire: core:
-use union for callback of transaction completion") added to v6.5 kernel.
-It changed 1394 OHCI driver to access to the register every time to
-dispatch local asynchronous transaction. However, the issue exists in
-older version of kernel as long as it runs in AMD Ryzen machine, since
-the access to the register is required to maintain bus time. It is not
-hard to imagine that users experience the unexpected system reboot when
-generating bus reset by plugging any devices in, or reading the register
-by time-aware application programs; e.g. audio sample processing.
-
-This commit suppresses the unexpected system reboot in the combination of
-hardware. It avoids the access itself. As a result, the software stack can
-not provide the hardware time anymore to unit drivers, userspace
-applications, and nodes in the same IEEE 1394 bus. It brings apparent
-disadvantage since time-aware application programs require it, while
-time-unaware applications are available again; e.g. sbp2.
-
-Cc: stable@vger.kernel.org
-Reported-by: Jiri Slaby <jirislaby@kernel.org>
-Closes: https://bugzilla.suse.com/show_bug.cgi?id=1215436
-Reported-by: Mario Limonciello <mario.limonciello@amd.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217994
-Reported-by: Tobias Gruetzmacher <tobias-lists@23.gs>
-Closes: https://sourceforge.net/p/linux1394/mailman/message/58711901/
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2240973
-Closes: https://bugs.launchpad.net/linux/+bug/2043905
-Link: https://lore.kernel.org/r/20240102110150.244475-1-o-takashi@sakamocchi.jp
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Nithin Dabilpuram <ndabilpuram@marvell.com>
+Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
+Signed-off-by: Geetha Sowjanya <gakula@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: a0d9528f6daf ("octeontx2-af: Always configure NIX TX link credits based on max frame size")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firewire/ohci.c |   51 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ .../net/ethernet/marvell/octeontx2/af/cgx.c   | 27 +++++++++++++++
+ .../marvell/octeontx2/af/lmac_common.h        |  1 +
+ .../net/ethernet/marvell/octeontx2/af/rpm.c   | 30 ++++++++++++++++
+ .../net/ethernet/marvell/octeontx2/af/rpm.h   |  1 +
+ .../net/ethernet/marvell/octeontx2/af/rvu.h   |  2 +-
+ .../ethernet/marvell/octeontx2/af/rvu_cgx.c   | 16 +++++++++
+ .../ethernet/marvell/octeontx2/af/rvu_nix.c   | 34 ++++++++++++++-----
+ 7 files changed, 102 insertions(+), 9 deletions(-)
 
---- a/drivers/firewire/ohci.c
-+++ b/drivers/firewire/ohci.c
-@@ -279,6 +279,51 @@ static char ohci_driver_name[] = KBUILD_
- #define QUIRK_TI_SLLZ059		0x20
- #define QUIRK_IR_WAKE			0x40
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+index 098504aa0fd2b..1a269a2e61fdb 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+@@ -505,6 +505,32 @@ static u8 cgx_get_lmac_type(void *cgxd, int lmac_id)
+ 	return (cfg >> CGX_LMAC_TYPE_SHIFT) & CGX_LMAC_TYPE_MASK;
+ }
  
-+// On PCI Express Root Complex in any type of AMD Ryzen machine, VIA VT6306/6307/6308 with Asmedia
-+// ASM1083/1085 brings an inconvenience that the read accesses to 'Isochronous Cycle Timer' register
-+// (at offset 0xf0 in PCI I/O space) often causes unexpected system reboot. The mechanism is not
-+// clear, since the read access to the other registers is enough safe; e.g. 'Node ID' register,
-+// while it is probable due to detection of any type of PCIe error.
-+#define QUIRK_REBOOT_BY_CYCLE_TIMER_READ	0x80000000
-+
-+#if IS_ENABLED(CONFIG_X86)
-+
-+static bool has_reboot_by_cycle_timer_read_quirk(const struct fw_ohci *ohci)
++static u32 cgx_get_lmac_fifo_len(void *cgxd, int lmac_id)
 +{
-+	return !!(ohci->quirks & QUIRK_REBOOT_BY_CYCLE_TIMER_READ);
++	struct cgx *cgx = cgxd;
++	u8 num_lmacs;
++	u32 fifo_len;
++
++	fifo_len = cgx->mac_ops->fifo_len;
++	num_lmacs = cgx->mac_ops->get_nr_lmacs(cgx);
++
++	switch (num_lmacs) {
++	case 1:
++		return fifo_len;
++	case 2:
++		return fifo_len / 2;
++	case 3:
++		/* LMAC0 gets half of the FIFO, reset 1/4th */
++		if (lmac_id == 0)
++			return fifo_len / 2;
++		return fifo_len / 4;
++	case 4:
++	default:
++		return fifo_len / 4;
++	}
++	return 0;
 +}
 +
-+#define PCI_DEVICE_ID_ASMEDIA_ASM108X	0x1080
-+
-+static bool detect_vt630x_with_asm1083_on_amd_ryzen_machine(const struct pci_dev *pdev)
+ /* Configure CGX LMAC in internal loopback mode */
+ int cgx_lmac_internal_loopback(void *cgxd, int lmac_id, bool enable)
+ {
+@@ -1557,6 +1583,7 @@ static struct mac_ops	cgx_mac_ops    = {
+ 	.tx_stats_cnt   =       18,
+ 	.get_nr_lmacs	=	cgx_get_nr_lmacs,
+ 	.get_lmac_type  =       cgx_get_lmac_type,
++	.lmac_fifo_len	=	cgx_get_lmac_fifo_len,
+ 	.mac_lmac_intl_lbk =    cgx_lmac_internal_loopback,
+ 	.mac_get_rx_stats  =	cgx_get_rx_stats,
+ 	.mac_get_tx_stats  =	cgx_get_tx_stats,
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/lmac_common.h b/drivers/net/ethernet/marvell/octeontx2/af/lmac_common.h
+index b33e7d1d0851c..f6eb9fec1e8d6 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/lmac_common.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/lmac_common.h
+@@ -76,6 +76,7 @@ struct mac_ops {
+ 	 */
+ 	int			(*get_nr_lmacs)(void *cgx);
+ 	u8                      (*get_lmac_type)(void *cgx, int lmac_id);
++	u32                     (*lmac_fifo_len)(void *cgx, int lmac_id);
+ 	int                     (*mac_lmac_intl_lbk)(void *cgx, int lmac_id,
+ 						     bool enable);
+ 	/* Register Stats related functions */
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
+index 8c0b35a868cfe..3ac26ba31e2f3 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
+@@ -22,6 +22,7 @@ static struct mac_ops	rpm_mac_ops   = {
+ 	.tx_stats_cnt   =       34,
+ 	.get_nr_lmacs	=	rpm_get_nr_lmacs,
+ 	.get_lmac_type  =       rpm_get_lmac_type,
++	.lmac_fifo_len	=	rpm_get_lmac_fifo_len,
+ 	.mac_lmac_intl_lbk =    rpm_lmac_internal_loopback,
+ 	.mac_get_rx_stats  =	rpm_get_rx_stats,
+ 	.mac_get_tx_stats  =	rpm_get_tx_stats,
+@@ -261,6 +262,35 @@ u8 rpm_get_lmac_type(void *rpmd, int lmac_id)
+ 	return err;
+ }
+ 
++u32 rpm_get_lmac_fifo_len(void *rpmd, int lmac_id)
 +{
-+	const struct pci_dev *pcie_to_pci_bridge;
++	rpm_t *rpm = rpmd;
++	u64 hi_perf_lmac;
++	u8 num_lmacs;
++	u32 fifo_len;
 +
-+	// Detect any type of AMD Ryzen machine.
-+	if (!static_cpu_has(X86_FEATURE_ZEN))
-+		return false;
++	fifo_len = rpm->mac_ops->fifo_len;
++	num_lmacs = rpm->mac_ops->get_nr_lmacs(rpm);
 +
-+	// Detect VIA VT6306/6307/6308.
-+	if (pdev->vendor != PCI_VENDOR_ID_VIA)
-+		return false;
-+	if (pdev->device != PCI_DEVICE_ID_VIA_VT630X)
-+		return false;
-+
-+	// Detect Asmedia ASM1083/1085.
-+	pcie_to_pci_bridge = pdev->bus->self;
-+	if (pcie_to_pci_bridge->vendor != PCI_VENDOR_ID_ASMEDIA)
-+		return false;
-+	if (pcie_to_pci_bridge->device != PCI_DEVICE_ID_ASMEDIA_ASM108X)
-+		return false;
-+
-+	return true;
++	switch (num_lmacs) {
++	case 1:
++		return fifo_len;
++	case 2:
++		return fifo_len / 2;
++	case 3:
++		/* LMAC marked as hi_perf gets half of the FIFO and rest 1/4th */
++		hi_perf_lmac = rpm_read(rpm, 0, CGXX_CMRX_RX_LMACS);
++		hi_perf_lmac = (hi_perf_lmac >> 4) & 0x3ULL;
++		if (lmac_id == hi_perf_lmac)
++			return fifo_len / 2;
++		return fifo_len / 4;
++	case 4:
++	default:
++		return fifo_len / 4;
++	}
++	return 0;
 +}
 +
-+#else
-+#define has_reboot_by_cycle_timer_read_quirk(ohci) false
-+#define detect_vt630x_with_asm1083_on_amd_ryzen_machine(pdev)	false
-+#endif
-+
- /* In case of multiple matches in ohci_quirks[], only the first one is used. */
- static const struct {
- 	unsigned short vendor, device, revision, flags;
-@@ -1713,6 +1758,9 @@ static u32 get_cycle_time(struct fw_ohci
- 	s32 diff01, diff12;
- 	int i;
+ int rpm_lmac_internal_loopback(void *rpmd, int lmac_id, bool enable)
+ {
+ 	rpm_t *rpm = rpmd;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rpm.h b/drivers/net/ethernet/marvell/octeontx2/af/rpm.h
+index ff580311edd03..39e9a1d068353 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rpm.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rpm.h
+@@ -49,6 +49,7 @@
+ /* Function Declarations */
+ int rpm_get_nr_lmacs(void *rpmd);
+ u8 rpm_get_lmac_type(void *rpmd, int lmac_id);
++u32 rpm_get_lmac_fifo_len(void *rpmd, int lmac_id);
+ int rpm_lmac_internal_loopback(void *rpmd, int lmac_id, bool enable);
+ void rpm_lmac_enadis_rx_pause_fwding(void *rpmd, int lmac_id, bool enable);
+ int rpm_lmac_get_pause_frm_status(void *cgxd, int lmac_id, u8 *tx_pause,
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+index 9d517e6dac2f0..8d1df8a70ae0d 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+@@ -813,7 +813,7 @@ u32  rvu_cgx_get_fifolen(struct rvu *rvu);
+ void *rvu_first_cgx_pdata(struct rvu *rvu);
+ int cgxlmac_to_pf(struct rvu *rvu, int cgx_id, int lmac_id);
+ int rvu_cgx_config_tx(void *cgxd, int lmac_id, bool enable);
+-
++u32 rvu_cgx_get_lmac_fifolen(struct rvu *rvu, int cgx, int lmac);
+ int npc_get_nixlf_mcam_index(struct npc_mcam *mcam, u16 pcifunc, int nixlf,
+ 			     int type);
+ bool is_mcam_entry_enabled(struct rvu *rvu, struct npc_mcam *mcam, int blkaddr,
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
+index f4c7bb6bf053a..4bd511b007cbc 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cgx.c
+@@ -831,6 +831,22 @@ u32 rvu_cgx_get_fifolen(struct rvu *rvu)
+ 	return fifo_len;
+ }
  
-+	if (has_reboot_by_cycle_timer_read_quirk(ohci))
++u32 rvu_cgx_get_lmac_fifolen(struct rvu *rvu, int cgx, int lmac)
++{
++	struct mac_ops *mac_ops;
++	void *cgxd;
++
++	cgxd = rvu_cgx_pdata(cgx, rvu);
++	if (!cgxd)
 +		return 0;
 +
- 	c2 = reg_read(ohci, OHCI1394_IsochronousCycleTimer);
- 
- 	if (ohci->quirks & QUIRK_CYCLE_TIMER) {
-@@ -3615,6 +3663,9 @@ static int pci_probe(struct pci_dev *dev
- 	if (param_quirks)
- 		ohci->quirks = param_quirks;
- 
-+	if (detect_vt630x_with_asm1083_on_amd_ryzen_machine(dev))
-+		ohci->quirks |= QUIRK_REBOOT_BY_CYCLE_TIMER_READ;
++	mac_ops = get_mac_ops(cgxd);
++	if (!mac_ops->lmac_fifo_len)
++		return 0;
 +
- 	/*
- 	 * Because dma_alloc_coherent() allocates at least one page,
- 	 * we save space by using a common buffer for the AR request/
++	return mac_ops->lmac_fifo_len(cgxd, lmac);
++}
++
+ static int rvu_cgx_config_intlbk(struct rvu *rvu, u16 pcifunc, bool en)
+ {
+ 	int pf = rvu_get_pf(pcifunc);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+index 1ab9dc544eeea..874248499ef9a 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+@@ -4036,9 +4036,13 @@ int rvu_mbox_handler_nix_set_hw_frs(struct rvu *rvu, struct nix_frs_cfg *req,
+ 		return 0;
+ 
+ 	/* Update transmit credits for CGX links */
+-	lmac_fifo_len =
+-		rvu_cgx_get_fifolen(rvu) /
+-		cgx_get_lmac_cnt(rvu_cgx_pdata(cgx, rvu));
++	lmac_fifo_len = rvu_cgx_get_lmac_fifolen(rvu, cgx, lmac);
++	if (!lmac_fifo_len) {
++		dev_err(rvu->dev,
++			"%s: Failed to get CGX/RPM%d:LMAC%d FIFO size\n",
++			__func__, cgx, lmac);
++		return 0;
++	}
+ 	return nix_config_link_credits(rvu, blkaddr, link, pcifunc,
+ 				       (lmac_fifo_len - req->maxlen) / 16);
+ }
+@@ -4086,7 +4090,10 @@ static void nix_link_config(struct rvu *rvu, int blkaddr,
+ 	struct rvu_hwinfo *hw = rvu->hw;
+ 	int cgx, lmac_cnt, slink, link;
+ 	u16 lbk_max_frs, lmac_max_frs;
++	unsigned long lmac_bmap;
+ 	u64 tx_credits, cfg;
++	u64 lmac_fifo_len;
++	int iter;
+ 
+ 	rvu_get_lbk_link_max_frs(rvu, &lbk_max_frs);
+ 	rvu_get_lmac_link_max_frs(rvu, &lmac_max_frs);
+@@ -4120,12 +4127,23 @@ static void nix_link_config(struct rvu *rvu, int blkaddr,
+ 		/* Skip when cgx is not available or lmac cnt is zero */
+ 		if (lmac_cnt <= 0)
+ 			continue;
+-		tx_credits = ((rvu_cgx_get_fifolen(rvu) / lmac_cnt) -
+-			       lmac_max_frs) / 16;
+-		/* Enable credits and set credit pkt count to max allowed */
+-		cfg =  (tx_credits << 12) | (0x1FF << 2) | BIT_ULL(1);
+ 		slink = cgx * hw->lmac_per_cgx;
+-		for (link = slink; link < (slink + lmac_cnt); link++) {
++
++		/* Get LMAC id's from bitmap */
++		lmac_bmap = cgx_get_lmac_bmap(rvu_cgx_pdata(cgx, rvu));
++		for_each_set_bit(iter, &lmac_bmap, MAX_LMAC_PER_CGX) {
++			lmac_fifo_len = rvu_cgx_get_lmac_fifolen(rvu, cgx, iter);
++			if (!lmac_fifo_len) {
++				dev_err(rvu->dev,
++					"%s: Failed to get CGX/RPM%d:LMAC%d FIFO size\n",
++					__func__, cgx, iter);
++				continue;
++			}
++			tx_credits = (lmac_fifo_len - lmac_max_frs) / 16;
++			/* Enable credits and set credit pkt count to max allowed */
++			cfg =  (tx_credits << 12) | (0x1FF << 2) | BIT_ULL(1);
++
++			link = iter + slink;
+ 			nix_hw->tx_credits[link] = tx_credits;
+ 			rvu_write64(rvu, blkaddr,
+ 				    NIX_AF_TX_LINKX_NORM_CREDIT(link), cfg);
+-- 
+2.43.0
+
 
 
 
