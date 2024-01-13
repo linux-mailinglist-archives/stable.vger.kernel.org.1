@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-10788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4338682CB9E
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:01:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6033C82CB62
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:59:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 511C11C21ECE
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:01:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F781B23242
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:59:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06DB1848;
-	Sat, 13 Jan 2024 10:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A89810958;
+	Sat, 13 Jan 2024 09:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0EF9QQn5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mGDS4CpH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACF728F7;
-	Sat, 13 Jan 2024 10:01:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B42BC433F1;
-	Sat, 13 Jan 2024 10:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53BF163C3;
+	Sat, 13 Jan 2024 09:58:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C51A6C433F1;
+	Sat, 13 Jan 2024 09:58:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705140105;
-	bh=Mcf0Y2OMdOh5NcyIMUJajAMAXbrJTaIWTOE+b2fGRIo=;
+	s=korg; t=1705139929;
+	bh=8AZUYp159gMs733l1tSCh+CNA2SkrF0+4h52GTL8/Ik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0EF9QQn5KNZuWoB11NPyeKSh5zUTOJkWbm3ftjPxsee+UX3ceyRBambQyolpEpDXC
-	 rPySU5StnXv+ocMfu/1hqWObBRbSfdhW16Jx+28vbtIAsK4jKYb3+DB1ProGdIHUrL
-	 8GTnKLOhqblg1bWF5eZg78gFx6bVyQsNBpSS2k9g=
+	b=mGDS4CpHUiGp6H7nBpGh3UnyzYvw88pvnmQWYuGw2oCMJPwFWb/tZntKSAZOuDNOg
+	 JTHdJqhikUb1+hFQhkEov160/V99kpzJdLf+pLYFCNOVHNvqUk4xyyheBYawxcV2pB
+	 Hk9wi9ZuDhzWa964SKnoesZENJj++SeE380OnC4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziyang Huang <hzyitc@outlook.com>,
-	Anand Moon <linux.amoon@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 48/59] mmc: meson-mx-sdhc: Fix initialization frozen issue
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.10 40/43] netfilter: nf_tables: Reject tables of unsupported family
 Date: Sat, 13 Jan 2024 10:50:19 +0100
-Message-ID: <20240113094210.765240434@linuxfoundation.org>
+Message-ID: <20240113094208.247364809@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
-References: <20240113094209.301672391@linuxfoundation.org>
+In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
+References: <20240113094206.930684111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,82 +52,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyang Huang <hzyitc@outlook.com>
+From: Phil Sutter <phil@nwl.cc>
 
-commit 8c124d998ea0c9022e247b11ac51f86ec8afa0e1 upstream.
+commit f1082dd31fe461d482d69da2a8eccfeb7bf07ac2 upstream.
 
-Commit 4bc31edebde5 ("mmc: core: Set HS clock speed before sending
-HS CMD13") set HS clock (52MHz) before switching to HS mode. For this
-freq, FCLK_DIV5 will be selected and div value is 10 (reg value is 9).
-Then we set rx_clk_phase to 11 or 15 which is out of range and make
-hardware frozen. After we send command request, no irq will be
-interrupted and the mmc driver will keep to wait for request finished,
-even durning rebooting.
+An nftables family is merely a hollow container, its family just a
+number and such not reliant on compile-time options other than nftables
+support itself. Add an artificial check so attempts at using a family
+the kernel can't support fail as early as possible. This helps user
+space detect kernels which lack e.g. NFPROTO_INET.
 
-So let's set it to Phase 90 which should work in most cases. Then let
-meson_mx_sdhc_execute_tuning() to find the accurate value for data
-transfer.
-
-If this doesn't work, maybe need to define a factor in dts.
-
-Fixes: e4bf1b0970ef ("mmc: host: meson-mx-sdhc: new driver for the Amlogic Meson SDHC host")
-Signed-off-by: Ziyang Huang <hzyitc@outlook.com>
-Tested-by: Anand Moon <linux.amoon@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/TYZPR01MB5556A3E71554A2EC08597EA4C9CDA@TYZPR01MB5556.apcprd01.prod.exchangelabs.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/meson-mx-sdhc-mmc.c |   26 +++++---------------------
- 1 file changed, 5 insertions(+), 21 deletions(-)
+ net/netfilter/nf_tables_api.c |   27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
---- a/drivers/mmc/host/meson-mx-sdhc-mmc.c
-+++ b/drivers/mmc/host/meson-mx-sdhc-mmc.c
-@@ -269,7 +269,7 @@ static int meson_mx_sdhc_enable_clks(str
- static int meson_mx_sdhc_set_clk(struct mmc_host *mmc, struct mmc_ios *ios)
- {
- 	struct meson_mx_sdhc_host *host = mmc_priv(mmc);
--	u32 rx_clk_phase;
-+	u32 val, rx_clk_phase;
- 	int ret;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1186,6 +1186,30 @@ static int nft_objname_hash_cmp(struct r
+ 	return strcmp(obj->key.name, k->name);
+ }
  
- 	meson_mx_sdhc_disable_clks(mmc);
-@@ -290,27 +290,11 @@ static int meson_mx_sdhc_set_clk(struct
- 		mmc->actual_clock = clk_get_rate(host->sd_clk);
++static bool nft_supported_family(u8 family)
++{
++	return false
++#ifdef CONFIG_NF_TABLES_INET
++		|| family == NFPROTO_INET
++#endif
++#ifdef CONFIG_NF_TABLES_IPV4
++		|| family == NFPROTO_IPV4
++#endif
++#ifdef CONFIG_NF_TABLES_ARP
++		|| family == NFPROTO_ARP
++#endif
++#ifdef CONFIG_NF_TABLES_NETDEV
++		|| family == NFPROTO_NETDEV
++#endif
++#if IS_ENABLED(CONFIG_NF_TABLES_BRIDGE)
++		|| family == NFPROTO_BRIDGE
++#endif
++#ifdef CONFIG_NF_TABLES_IPV6
++		|| family == NFPROTO_IPV6
++#endif
++		;
++}
++
+ static int nf_tables_newtable(struct net *net, struct sock *nlsk,
+ 			      struct sk_buff *skb, const struct nlmsghdr *nlh,
+ 			      const struct nlattr * const nla[],
+@@ -1201,6 +1225,9 @@ static int nf_tables_newtable(struct net
+ 	u32 flags = 0;
+ 	int err;
  
- 		/*
--		 * according to Amlogic the following latching points are
--		 * selected with empirical values, there is no (known) formula
--		 * to calculate these.
-+		 * Phase 90 should work in most cases. For data transmission,
-+		 * meson_mx_sdhc_execute_tuning() will find a accurate value
- 		 */
--		if (mmc->actual_clock > 100000000) {
--			rx_clk_phase = 1;
--		} else if (mmc->actual_clock > 45000000) {
--			if (ios->signal_voltage == MMC_SIGNAL_VOLTAGE_330)
--				rx_clk_phase = 15;
--			else
--				rx_clk_phase = 11;
--		} else if (mmc->actual_clock >= 25000000) {
--			rx_clk_phase = 15;
--		} else if (mmc->actual_clock > 5000000) {
--			rx_clk_phase = 23;
--		} else if (mmc->actual_clock > 1000000) {
--			rx_clk_phase = 55;
--		} else {
--			rx_clk_phase = 1061;
--		}
--
-+		regmap_read(host->regmap, MESON_SDHC_CLKC, &val);
-+		rx_clk_phase = FIELD_GET(MESON_SDHC_CLKC_CLK_DIV, val) / 4;
- 		regmap_update_bits(host->regmap, MESON_SDHC_CLK2,
- 				   MESON_SDHC_CLK2_RX_CLK_PHASE,
- 				   FIELD_PREP(MESON_SDHC_CLK2_RX_CLK_PHASE,
++	if (!nft_supported_family(family))
++		return -EOPNOTSUPP;
++
+ 	lockdep_assert_held(&nft_net->commit_mutex);
+ 	attr = nla[NFTA_TABLE_NAME];
+ 	table = nft_table_lookup(net, attr, family, genmask);
 
 
 
