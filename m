@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-10693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5672182CB3B
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:57:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E734882CB68
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:59:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06C47282E7E
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:57:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96917283331
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:59:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E3C215C9;
-	Sat, 13 Jan 2024 09:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B67861869;
+	Sat, 13 Jan 2024 09:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UeU4QjE3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qDO+9/sN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FC7185A;
-	Sat, 13 Jan 2024 09:57:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6AC0C433C7;
-	Sat, 13 Jan 2024 09:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7601615BD;
+	Sat, 13 Jan 2024 09:59:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B1FC433F1;
+	Sat, 13 Jan 2024 09:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139827;
-	bh=Vqyo80m/S1p2ph4Jo2X46Rd0KT0wNGGJ8PRTN5rvrjU=;
+	s=korg; t=1705139952;
+	bh=6OjD+dRYsz5cGyYUcOJVsfn4KihL0zFku7G6ZKJQWpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UeU4QjE3wKRCtCCFMIO9+wvcv86b/1BtWr4zgmgNNk4+rxBXPsRRwLORCVYDXfVkZ
-	 AGpPk8ncKiDmq6J0PRDUgMMZpKWBGtjLBomDqtz0gbgP7wqsR7rhxQs3X1tk7t8GdY
-	 eNIQXEVj6lqj4+45h+V8Ji1aamXIMHF6Sb3sHNAA=
+	b=qDO+9/sNXngWp462TvO0AQcg1WnNgOQMymEGWYnkA6480vUvDKPvfnMOAvcZSGxPI
+	 GoJnij/MnGjPQXkdRPEgqv4CGPJsT7JrA2ITAfsBv0+UAOobG2OM75Fh9/yWJ2ElVU
+	 CFyhvjy+oSuKReVO0S8Jwvl1QrtDBJNZAdUAj3g0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Suraj Jitindar Singh <surajjs@amazon.com>
-Subject: [PATCH 5.4 36/38] net/dst: use a smaller percpu_counter batch for dst entries accounting
+	Jorge Ramirez-Ortiz <jorge@foundries.io>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 33/43] mmc: rpmb: fixes pause retune on all RPMB partitions.
 Date: Sat, 13 Jan 2024 10:50:12 +0100
-Message-ID: <20240113094207.556743428@linuxfoundation.org>
+Message-ID: <20240113094207.993955891@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
-References: <20240113094206.455533180@linuxfoundation.org>
+In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
+References: <20240113094206.930684111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,80 +53,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jorge Ramirez-Ortiz <jorge@foundries.io>
 
-commit cf86a086a18095e33e0637cb78cda1fcf5280852 upstream.
+commit e7794c14fd73e5eb4a3e0ecaa5334d5a17377c50 upstream.
 
-percpu_counter_add() uses a default batch size which is quite big
-on platforms with 256 cpus. (2*256 -> 512)
+When RPMB was converted to a character device, it added support for
+multiple RPMB partitions (Commit 97548575bef3 ("mmc: block: Convert RPMB to
+a character device").
 
-This means dst_entries_get_fast() can be off by +/- 2*(nr_cpus^2)
-(131072 on servers with 256 cpus)
+One of the changes in this commit was transforming the variable target_part
+defined in __mmc_blk_ioctl_cmd into a bitmask. This inadvertently regressed
+the validation check done in mmc_blk_part_switch_pre() and
+mmc_blk_part_switch_post(), so let's fix it.
 
-Reduce the batch size to something more reasonable, and
-add logic to ip6_dst_gc() to call dst_entries_get_slow()
-before calling the _very_ expensive fib6_run_gc() function.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
-Cc: <stable@vger.kernel.org> # 5.4.x
+Fixes: 97548575bef3 ("mmc: block: Convert RPMB to a character device")
+Signed-off-by: Jorge Ramirez-Ortiz <jorge@foundries.io>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231201153143.1449753-1-jorge@foundries.io
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/dst_ops.h |    4 +++-
- net/core/dst.c        |    8 ++++----
- net/ipv6/route.c      |    3 +++
- 3 files changed, 10 insertions(+), 5 deletions(-)
+ drivers/mmc/core/block.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/include/net/dst_ops.h
-+++ b/include/net/dst_ops.h
-@@ -53,9 +53,11 @@ static inline int dst_entries_get_slow(s
- 	return percpu_counter_sum_positive(&dst->pcpuc_entries);
- }
- 
-+#define DST_PERCPU_COUNTER_BATCH 32
- static inline void dst_entries_add(struct dst_ops *dst, int val)
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -800,9 +800,10 @@ static const struct block_device_operati
+ static int mmc_blk_part_switch_pre(struct mmc_card *card,
+ 				   unsigned int part_type)
  {
--	percpu_counter_add(&dst->pcpuc_entries, val);
-+	percpu_counter_add_batch(&dst->pcpuc_entries, val,
-+				 DST_PERCPU_COUNTER_BATCH);
- }
++	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
+ 	int ret = 0;
  
- static inline int dst_entries_init(struct dst_ops *dst)
---- a/net/core/dst.c
-+++ b/net/core/dst.c
-@@ -81,11 +81,11 @@ void *dst_alloc(struct dst_ops *ops, str
+-	if (part_type == EXT_CSD_PART_CONFIG_ACC_RPMB) {
++	if ((part_type & mask) == mask) {
+ 		if (card->ext_csd.cmdq_en) {
+ 			ret = mmc_cmdq_disable(card);
+ 			if (ret)
+@@ -817,9 +818,10 @@ static int mmc_blk_part_switch_pre(struc
+ static int mmc_blk_part_switch_post(struct mmc_card *card,
+ 				    unsigned int part_type)
  {
- 	struct dst_entry *dst;
++	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
+ 	int ret = 0;
  
--	if (ops->gc && dst_entries_get_fast(ops) > ops->gc_thresh) {
-+	if (ops->gc &&
-+	    !(flags & DST_NOCOUNT) &&
-+	    dst_entries_get_fast(ops) > ops->gc_thresh) {
- 		if (ops->gc(ops)) {
--			printk_ratelimited(KERN_NOTICE "Route cache is full: "
--					   "consider increasing sysctl "
--					   "net.ipv[4|6].route.max_size.\n");
-+			pr_notice_ratelimited("Route cache is full: consider increasing sysctl net.ipv6.route.max_size.\n");
- 			return NULL;
- 		}
- 	}
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -3218,6 +3218,9 @@ static int ip6_dst_gc(struct dst_ops *op
- 	int entries;
+-	if (part_type == EXT_CSD_PART_CONFIG_ACC_RPMB) {
++	if ((part_type & mask) == mask) {
+ 		mmc_retune_unpause(card->host);
+ 		if (card->reenable_cmdq && !card->ext_csd.cmdq_en)
+ 			ret = mmc_cmdq_enable(card);
+@@ -3102,4 +3104,3 @@ module_exit(mmc_blk_exit);
  
- 	entries = dst_entries_get_fast(ops);
-+	if (entries > rt_max_size)
-+		entries = dst_entries_get_slow(ops);
-+
- 	if (time_after(rt_last_gc + rt_min_interval, jiffies) &&
- 	    entries <= rt_max_size)
- 		goto out;
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("Multimedia Card (MMC) block device driver");
+-
 
 
 
