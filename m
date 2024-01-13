@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-10747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 033BA82CB74
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:59:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAFBE82CB32
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:56:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 935C6B23178
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:59:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 690BF28286B
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:56:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF76CA71;
-	Sat, 13 Jan 2024 09:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C6431848;
+	Sat, 13 Jan 2024 09:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tyV2JGVW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZrHBDQZ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C5415C9;
-	Sat, 13 Jan 2024 09:59:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EDBC433F1;
-	Sat, 13 Jan 2024 09:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9A3CEC5;
+	Sat, 13 Jan 2024 09:56:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A7A4C433C7;
+	Sat, 13 Jan 2024 09:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139985;
-	bh=ofQMMzopVvEayVuEqaka8H0M+Kha2DyxbGeEzhJog/Y=;
+	s=korg; t=1705139800;
+	bh=cMOW/ab3qypE8n/zm8w8tCUGolR9tOlD/d+RrtDDhy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tyV2JGVWOHtdSjM4MENwbtJwIsCxi7bFfWss53SZY0vRt+Y1jrNsJdX6U9tDeyZHH
-	 U/v7AW9gdo243lkg5kX//uQAW/NaiKmaB80C/JPw8WWejg1+4j4kgvIcv3Wm9P00Rt
-	 K1w7xIvKBAZAOrbwisQL00r2gsraschCXx7Xtgy0=
+	b=ZrHBDQZ6UIuKG5WpNYumC+3TiNJNY32rxr7jnMw/XTPyriQR+PbCCAMzheAEl4ii4
+	 dOPln1Ju364QrEgf4OKnWWAqE/W+4kx10UAbIm7s380C8+us6JFlGMkgQ2c655sW4P
+	 Dckskyf0BvnAZuW6DaKTTNRkKKKLo6Twyw8apEB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Asmaa Mnebhi <asmaa@nvidia.com>,
-	David Thompson <davthompson@nvidia.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Willem de Bruijn <willemb@google.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 15/59] mlxbf_gige: fix receive packet race condition
+Subject: [PATCH 5.4 10/38] net: Save and restore msg_namelen in sock_sendmsg
 Date: Sat, 13 Jan 2024 10:49:46 +0100
-Message-ID: <20240113094209.779210801@linuxfoundation.org>
+Message-ID: <20240113094206.769077308@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
-References: <20240113094209.301672391@linuxfoundation.org>
+In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
+References: <20240113094206.455533180@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,65 +54,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Thompson <davthompson@nvidia.com>
+From: Marc Dionne <marc.dionne@auristor.com>
 
-[ Upstream commit dcea1bd45e6d111cc8fc1aaefa7e31694089bda3 ]
+[ Upstream commit 01b2885d9415152bcb12ff1f7788f500a74ea0ed ]
 
-Under heavy traffic, the BlueField Gigabit interface can
-become unresponsive. This is due to a possible race condition
-in the mlxbf_gige_rx_packet function, where the function exits
-with producer and consumer indices equal but there are remaining
-packet(s) to be processed. In order to prevent this situation,
-read receive consumer index *before* the HW replenish so that
-the mlxbf_gige_rx_packet function returns an accurate return
-value even if a packet is received into just-replenished buffer
-prior to exiting this routine. If the just-replenished buffer
-is received and occupies the last RX ring entry, the interface
-would not recover and instead would encounter RX packet drops
-related to internal buffer shortages since the driver RX logic
-is not being triggered to drain the RX ring. This patch will
-address and prevent this "ring full" condition.
+Commit 86a7e0b69bd5 ("net: prevent rewrite of msg_name in
+sock_sendmsg()") made sock_sendmsg save the incoming msg_name pointer
+and restore it before returning, to insulate the caller against
+msg_name being changed by the called code.  If the address length
+was also changed however, we may return with an inconsistent structure
+where the length doesn't match the address, and attempts to reuse it may
+lead to lost packets.
 
-Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
-Reviewed-by: Asmaa Mnebhi <asmaa@nvidia.com>
-Signed-off-by: David Thompson <davthompson@nvidia.com>
+For example, a kernel that doesn't have commit 1c5950fc6fe9 ("udp6: fix
+potential access to stale information") will replace a v4 mapped address
+with its ipv4 equivalent, and shorten namelen accordingly from 28 to 16.
+If the caller attempts to reuse the resulting msg structure, it will have
+the original ipv6 (v4 mapped) address but an incorrect v4 length.
+
+Fixes: 86a7e0b69bd5 ("net: prevent rewrite of msg_name in sock_sendmsg()")
+Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/socket.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
-index 0d5a41a2ae010..227d01cace3f0 100644
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
-@@ -267,6 +267,13 @@ static bool mlxbf_gige_rx_packet(struct mlxbf_gige *priv, int *rx_pkts)
- 		priv->stats.rx_truncate_errors++;
- 	}
+diff --git a/net/socket.c b/net/socket.c
+index 38c26e20511d7..e3a50f107d64d 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -661,6 +661,7 @@ int sock_sendmsg(struct socket *sock, struct msghdr *msg)
+ {
+ 	struct sockaddr_storage *save_addr = (struct sockaddr_storage *)msg->msg_name;
+ 	struct sockaddr_storage address;
++	int save_len = msg->msg_namelen;
+ 	int ret;
  
-+	/* Read receive consumer index before replenish so that this routine
-+	 * returns accurate return value even if packet is received into
-+	 * just-replenished buffer prior to exiting this routine.
-+	 */
-+	rx_ci = readq(priv->base + MLXBF_GIGE_RX_CQE_PACKET_CI);
-+	rx_ci_rem = rx_ci % priv->rx_q_entries;
-+
- 	/* Let hardware know we've replenished one buffer */
- 	rx_pi++;
+ 	if (msg->msg_name) {
+@@ -670,6 +671,7 @@ int sock_sendmsg(struct socket *sock, struct msghdr *msg)
  
-@@ -279,8 +286,6 @@ static bool mlxbf_gige_rx_packet(struct mlxbf_gige *priv, int *rx_pkts)
- 	rx_pi_rem = rx_pi % priv->rx_q_entries;
- 	if (rx_pi_rem == 0)
- 		priv->valid_polarity ^= 1;
--	rx_ci = readq(priv->base + MLXBF_GIGE_RX_CQE_PACKET_CI);
--	rx_ci_rem = rx_ci % priv->rx_q_entries;
+ 	ret = __sock_sendmsg(sock, msg);
+ 	msg->msg_name = save_addr;
++	msg->msg_namelen = save_len;
  
- 	if (skb)
- 		netif_receive_skb(skb);
+ 	return ret;
+ }
 -- 
 2.43.0
 
