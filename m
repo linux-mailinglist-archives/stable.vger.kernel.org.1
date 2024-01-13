@@ -1,203 +1,187 @@
-Return-Path: <stable+bounces-10651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B195982CB09
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:55:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A9C782CAF4
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:54:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3B7E1C21BCB
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:55:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C9B1284FF2
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D877015C9;
-	Sat, 13 Jan 2024 09:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72C011110;
+	Sat, 13 Jan 2024 09:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLrAGUFo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wF1P1/7g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A05A15AF;
-	Sat, 13 Jan 2024 09:55:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE089C43390;
-	Sat, 13 Jan 2024 09:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227C2139F;
+	Sat, 13 Jan 2024 09:54:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D42C433F1;
+	Sat, 13 Jan 2024 09:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139703;
-	bh=lPcX0J5qRVqaYPlTjXVDkneajbzOqa9R2yhv5MfOCXA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=cLrAGUFo1wk4z9qmbWKmjQMf5OVuXJymXlBEph7KLuspzqZ+uR1OgmwXtP5OfNKK0
-	 08ilQ8ZrqEywCoFNNgWTKLjuWXDqffUopUgPhgiRF/uc+IJxmN1Vl34iFUQWZP2K6o
-	 8K4bbLiDjONUX0cuStsAiziYrIpBoKRCqt/9grgs=
+	s=korg; t=1705139647;
+	bh=naia9IyH+ILQg6oJS3Ll0KfWnHgegcGHlgrZq8lyU9Y=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=wF1P1/7gMwpznr72NkSsJrBgsf7gYmC8UI8gn3ZqQA0KQt8I2HJ6MNqEISapvSuPp
+	 R5q+DvIe3k7hF4a8/f4FxD0tL1Wn0pw5x7HSvy7SMfJvMxl4fCNhc5Lbel9Hdnc/5P
+	 O2RBwfkg2LAWujfvwa/KmiHONA1jFR2Ufp5W4u34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com
-Subject: [PATCH 4.19 00/25] 4.19.305-rc1 review
-Date: Sat, 13 Jan 2024 10:49:41 +0100
-Message-ID: <20240113094205.025407355@linuxfoundation.org>
+	Suman Ghosh <sumang@marvell.com>,
+	Siddh Raman Pant <code@siddh.me>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+bbe84a4010eeea00982d@syzkaller.appspotmail.com
+Subject: [PATCH 4.19 01/25] nfc: llcp_core: Hold a ref to llcp_local->dev when holding a ref to llcp_local
+Date: Sat, 13 Jan 2024 10:49:42 +0100
+Message-ID: <20240113094205.078669942@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240113094205.025407355@linuxfoundation.org>
+References: <20240113094205.025407355@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.305-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-4.19.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 4.19.305-rc1
-X-KernelTest-Deadline: 2024-01-15T09:42+00:00
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 4.19.305 release.
-There are 25 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Mon, 15 Jan 2024 09:41:55 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.305-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
-and the diffstat can be found below.
+From: Siddh Raman Pant <code@siddh.me>
 
-thanks,
+[ Upstream commit c95f919567d6f1914f13350af61a1b044ac85014 ]
 
-greg k-h
+llcp_sock_sendmsg() calls nfc_llcp_send_ui_frame() which in turn calls
+nfc_alloc_send_skb(), which accesses the nfc_dev from the llcp_sock for
+getting the headroom and tailroom needed for skb allocation.
 
--------------
-Pseudo-Shortlog of commits:
+Parallelly the nfc_dev can be freed, as the refcount is decreased via
+nfc_free_device(), leading to a UAF reported by Syzkaller, which can
+be summarized as follows:
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 4.19.305-rc1
+(1) llcp_sock_sendmsg() -> nfc_llcp_send_ui_frame()
+	-> nfc_alloc_send_skb() -> Dereference *nfc_dev
+(2) virtual_ncidev_close() -> nci_free_device() -> nfc_free_device()
+	-> put_device() -> nfc_release() -> Free *nfc_dev
 
-Jon Maxwell <jmaxwell37@gmail.com>
-    ipv6: remove max_size check inline with ipv4
+When a reference to llcp_local is acquired, we do not acquire the same
+for the nfc_dev. This leads to freeing even when the llcp_local is in
+use, and this is the case with the UAF described above too.
 
-Eric Dumazet <edumazet@google.com>
-    ipv6: make ip6_rt_gc_expire an atomic_t
+Thus, when we acquire a reference to llcp_local, we should acquire a
+reference to nfc_dev, and release the references appropriately later.
 
-Eric Dumazet <edumazet@google.com>
-    net/dst: use a smaller percpu_counter batch for dst entries accounting
+References for llcp_local is initialized in nfc_llcp_register_device()
+(which is called by nfc_register_device()). Thus, we should acquire a
+reference to nfc_dev there.
 
-Peter Oskolkov <posk@google.com>
-    net: add a route cache full diagnostic message
+nfc_unregister_device() calls nfc_llcp_unregister_device() which in
+turn calls nfc_llcp_local_put(). Thus, the reference to nfc_dev is
+appropriately released later.
 
-Bartosz Pawlowski <bartosz.pawlowski@intel.com>
-    PCI: Disable ATS for specific Intel IPU E2000 devices
+Reported-and-tested-by: syzbot+bbe84a4010eeea00982d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=bbe84a4010eeea00982d
+Fixes: c7aa12252f51 ("NFC: Take a reference on the LLCP local pointer when creating a socket")
+Reviewed-by: Suman Ghosh <sumang@marvell.com>
+Signed-off-by: Siddh Raman Pant <code@siddh.me>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/nfc/llcp_core.c | 39 ++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 36 insertions(+), 3 deletions(-)
 
-Bartosz Pawlowski <bartosz.pawlowski@intel.com>
-    PCI: Extract ATS disabling to a helper function
+diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
+index c30b28465e644..a217830f0f34c 100644
+--- a/net/nfc/llcp_core.c
++++ b/net/nfc/llcp_core.c
+@@ -157,6 +157,13 @@ static void nfc_llcp_socket_release(struct nfc_llcp_local *local, bool device,
+ 
+ struct nfc_llcp_local *nfc_llcp_local_get(struct nfc_llcp_local *local)
+ {
++	/* Since using nfc_llcp_local may result in usage of nfc_dev, whenever
++	 * we hold a reference to local, we also need to hold a reference to
++	 * the device to avoid UAF.
++	 */
++	if (!nfc_get_device(local->dev->idx))
++		return NULL;
++
+ 	kref_get(&local->ref);
+ 
+ 	return local;
+@@ -190,10 +197,18 @@ static void local_release(struct kref *ref)
+ 
+ int nfc_llcp_local_put(struct nfc_llcp_local *local)
+ {
++	struct nfc_dev *dev;
++	int ret;
++
+ 	if (local == NULL)
+ 		return 0;
+ 
+-	return kref_put(&local->ref, local_release);
++	dev = local->dev;
++
++	ret = kref_put(&local->ref, local_release);
++	nfc_put_device(dev);
++
++	return ret;
+ }
+ 
+ static struct nfc_llcp_sock *nfc_llcp_sock_get(struct nfc_llcp_local *local,
+@@ -951,8 +966,17 @@ static void nfc_llcp_recv_connect(struct nfc_llcp_local *local,
+ 	}
+ 
+ 	new_sock = nfc_llcp_sock(new_sk);
+-	new_sock->dev = local->dev;
++
+ 	new_sock->local = nfc_llcp_local_get(local);
++	if (!new_sock->local) {
++		reason = LLCP_DM_REJ;
++		sock_put(&new_sock->sk);
++		release_sock(&sock->sk);
++		sock_put(&sock->sk);
++		goto fail;
++	}
++
++	new_sock->dev = local->dev;
+ 	new_sock->rw = sock->rw;
+ 	new_sock->miux = sock->miux;
+ 	new_sock->nfc_protocol = sock->nfc_protocol;
+@@ -1584,7 +1608,16 @@ int nfc_llcp_register_device(struct nfc_dev *ndev)
+ 	if (local == NULL)
+ 		return -ENOMEM;
+ 
+-	local->dev = ndev;
++	/* As we are going to initialize local's refcount, we need to get the
++	 * nfc_dev to avoid UAF, otherwise there is no point in continuing.
++	 * See nfc_llcp_local_get().
++	 */
++	local->dev = nfc_get_device(ndev->idx);
++	if (!local->dev) {
++		kfree(local);
++		return -ENODEV;
++	}
++
+ 	INIT_LIST_HEAD(&local->list);
+ 	kref_init(&local->ref);
+ 	mutex_init(&local->sdp_lock);
+-- 
+2.43.0
 
-Phil Sutter <phil@nwl.cc>
-    netfilter: nf_tables: Reject tables of unsupported family
-
-ruanmeisi <ruan.meisi@zte.com.cn>
-    fuse: nlookup missing decrement in fuse_direntplus_link
-
-Geert Uytterhoeven <geert+renesas@glider.be>
-    mmc: core: Cancel delayed work before releasing host
-
-Jorge Ramirez-Ortiz <jorge@foundries.io>
-    mmc: rpmb: fixes pause retune on all RPMB partitions.
-
-Jiajun Xie <jiajun.xie.sh@gmail.com>
-    mm: fix unmap_mapping_range high bits shift bug
-
-Takashi Sakamoto <o-takashi@sakamocchi.jp>
-    firewire: ohci: suppress unexpected system reboot in AMD Ryzen machines and ASM108x/VT630x PCIe cards
-
-Matthew Wilcox (Oracle) <willy@infradead.org>
-    mm/memory-failure: check the mapcount of the precise page
-
-Michael Chan <michael.chan@broadcom.com>
-    bnxt_en: Remove mis-applied code from bnxt_cfg_ntp_filters()
-
-Chen Ni <nichen@iscas.ac.cn>
-    asix: Add check for usbnet_get_endpoints
-
-Dinghao Liu <dinghao.liu@zju.edu.cn>
-    net/qla3xxx: fix potential memleak in ql_alloc_buffer_queues
-
-Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-    net/qla3xxx: switch from 'pci_' to 'dma_' API
-
-Andrii Staikov <andrii.staikov@intel.com>
-    i40e: Restore VF MSI-X state during PCI reset
-
-Ke Xiao <xiaoke@sangfor.com.cn>
-    i40e: fix use-after-free in i40e_aqc_add_filters()
-
-Marc Dionne <marc.dionne@auristor.com>
-    net: Save and restore msg_namelen in sock_sendmsg
-
-Adrian Cinal <adriancinal@gmail.com>
-    net: bcmgenet: Fix FCS generation for fragmented skbuffs
-
-Stefan Wahren <wahrenst@gmx.net>
-    ARM: sun9i: smp: Fix array-index-out-of-bounds read in sunxi_mc_smp_init
-
-Hangyu Hua <hbh25y@gmail.com>
-    net: sched: em_text: fix possible memory leak in em_text_destroy()
-
-Sudheer Mogilappagari <sudheer.mogilappagari@intel.com>
-    i40e: Fix filter input checks to prevent config with invalid values
-
-Siddh Raman Pant <code@siddh.me>
-    nfc: llcp_core: Hold a ref to llcp_local->dev when holding a ref to llcp_local
-
-
--------------
-
-Diffstat:
-
- Makefile                                           |   4 +-
- arch/arm/mach-sunxi/mc_smp.c                       |   4 +-
- drivers/firewire/ohci.c                            |  51 ++++++
- drivers/mmc/core/block.c                           |   7 +-
- drivers/mmc/core/host.c                            |   1 +
- drivers/net/ethernet/broadcom/bnxt/bnxt.c          |   4 +-
- drivers/net/ethernet/broadcom/genet/bcmgenet.c     |   4 +-
- drivers/net/ethernet/intel/i40e/i40e_main.c        |  11 +-
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |  34 +++-
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h |   3 +
- drivers/net/ethernet/qlogic/qla3xxx.c              | 198 +++++++++------------
- drivers/net/usb/ax88172a.c                         |   4 +-
- drivers/pci/quirks.c                               |  28 ++-
- fs/fuse/dir.c                                      |  10 +-
- include/net/dst_ops.h                              |   6 +-
- include/net/netns/ipv6.h                           |   4 +-
- mm/memory-failure.c                                |   6 +-
- mm/memory.c                                        |   4 +-
- net/core/dst.c                                     |   8 +-
- net/ipv6/route.c                                   |  25 +--
- net/netfilter/nf_tables_api.c                      |  27 +++
- net/nfc/llcp_core.c                                |  39 +++-
- net/sched/em_text.c                                |   4 +-
- net/socket.c                                       |   2 +
- 24 files changed, 331 insertions(+), 157 deletions(-)
 
 
 
