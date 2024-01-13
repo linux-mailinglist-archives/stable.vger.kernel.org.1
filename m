@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-10771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A68B82CB90
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:01:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F120182CB39
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:57:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6945CB22BF5
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:01:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F5F6282E7E
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:57:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2F6F1848;
-	Sat, 13 Jan 2024 10:00:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0AB63C3;
+	Sat, 13 Jan 2024 09:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TV/ZaJMu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d21I1hXp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC431EEE6;
-	Sat, 13 Jan 2024 10:00:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED94DC43390;
-	Sat, 13 Jan 2024 10:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D656C1848;
+	Sat, 13 Jan 2024 09:57:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F107DC433C7;
+	Sat, 13 Jan 2024 09:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705140055;
-	bh=0vOfbbx6E1UKs5YftXjfDwXn0OQrbvNBgyyP/vTPpP0=;
+	s=korg; t=1705139821;
+	bh=TyaMzqTHORtKAzyQz3tkTBoKT5Gd46+vj1a3LdOLJAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TV/ZaJMuHGjEQHGRr8p2cXBpianyZ4GVlVu+LkeC3oM12gndKgcKEUWf0ycHTnQhE
-	 NCDVj2pRoHvci1DcHdQITIxNM/8dvpv9nSc2tfQAefpMwAN/gz0hdreQPdzqCnPEhf
-	 ek1sO7vQ1B+I4T/w5VY4GMmpPldKjUNUGnmRwltA=
+	b=d21I1hXp9Q99v2WBVEr7GQKGuWWNkYxQrHf9BuGiwdB4HQtBafdlmcQdW6BQbAoPV
+	 txFR9k/b2p6IuTPHXMx5Zox066XYgbKkcyuwmr21B3FbINvJCB0CRt0OpQSaNZ0P2r
+	 27FwC38PWcs7MlqZnEbKfxSZCs3oBgx550jH8hB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 39/59] asix: Add check for usbnet_get_endpoints
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Pawlowski <bartosz.pawlowski@intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 5.4 34/38] PCI: Extract ATS disabling to a helper function
 Date: Sat, 13 Jan 2024 10:50:10 +0100
-Message-ID: <20240113094210.510543043@linuxfoundation.org>
+Message-ID: <20240113094207.497708654@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
-References: <20240113094209.301672391@linuxfoundation.org>
+In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
+References: <20240113094206.455533180@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,43 +53,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
 
-[ Upstream commit eaac6a2d26b65511e164772bec6918fcbc61938e ]
+commit f18b1137d38c091cc8c16365219f0a1d4a30b3d1 upstream.
 
-Add check for usbnet_get_endpoints() and return the error if it fails
-in order to transfer the error.
+Introduce quirk_no_ats() helper function to provide a standard way to
+disable ATS capability in PCI quirks.
 
-Fixes: 16626b0cc3d5 ("asix: Add a new driver for the AX88172A")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230908143606.685930-2-bartosz.pawlowski@intel.com
+Signed-off-by: Bartosz Pawlowski <bartosz.pawlowski@intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/ax88172a.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pci/quirks.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/ax88172a.c b/drivers/net/usb/ax88172a.c
-index d9777d9a7c5df..bc6c8c253911b 100644
---- a/drivers/net/usb/ax88172a.c
-+++ b/drivers/net/usb/ax88172a.c
-@@ -161,7 +161,9 @@ static int ax88172a_bind(struct usbnet *dev, struct usb_interface *intf)
- 	u8 buf[ETH_ALEN];
- 	struct ax88172a_private *priv;
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -5389,6 +5389,12 @@ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SE
+ DECLARE_PCI_FIXUP_EARLY(PCI_VENDOR_ID_SERVERWORKS, 0x0422, quirk_no_ext_tags);
  
--	usbnet_get_endpoints(dev, intf);
-+	ret = usbnet_get_endpoints(dev, intf);
-+	if (ret)
-+		return ret;
+ #ifdef CONFIG_PCI_ATS
++static void quirk_no_ats(struct pci_dev *pdev)
++{
++	pci_info(pdev, "disabling ATS\n");
++	pdev->ats_cap = 0;
++}
++
+ /*
+  * Some devices require additional driver setup to enable ATS.  Don't use
+  * ATS for those devices as ATS will be enabled before the driver has had a
+@@ -5401,8 +5407,7 @@ static void quirk_amd_harvest_no_ats(str
+ 	    (pdev->device == 0x7341 && pdev->revision != 0x00))
+ 		return;
  
- 	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
--- 
-2.43.0
-
+-	pci_info(pdev, "disabling ATS\n");
+-	pdev->ats_cap = 0;
++	quirk_no_ats(pdev);
+ }
+ 
+ /* AMD Stoney platform GPU */
 
 
 
