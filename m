@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-10705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4ADC82CB47
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:57:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69C0282CB1F
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:56:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 639F81F22B8C
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:57:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E46B1F234B3
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:56:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF23F185A;
-	Sat, 13 Jan 2024 09:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE4A185A;
+	Sat, 13 Jan 2024 09:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgwU9zTz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRG6cjZr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A5B1848;
-	Sat, 13 Jan 2024 09:57:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0DB2C433C7;
-	Sat, 13 Jan 2024 09:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0509412E63;
+	Sat, 13 Jan 2024 09:55:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C90C433C7;
+	Sat, 13 Jan 2024 09:55:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139862;
-	bh=y2ml15tHxKk2gWgDtuMuYh9Y/S7/9pRldJZLEIw4tSs=;
+	s=korg; t=1705139756;
+	bh=3xdnyEWnVcLjb+nLqtDYzxAiNv0NM459UcxEqZI7vNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CgwU9zTzrstT45Eu+t8lXNwL1uZI8CoZvfwMBpiqjukFFXvLMkRUM85XKeLsf5CdP
-	 j05oz8d2MKlD/SwzuqDz7c4QRdC5sikrYiZ/h1cvvXcF47uEKlg2WUzoB/vNCNTy+m
-	 DVeDIw0GjhgH+L/Jbl2cem0KqCc8VwpLqDaRr++0=
+	b=DRG6cjZrmIMT4imqdPT6OAeHmGPniBjIhyvFJ3N23o79DtPdcV2sz/Ddginaa2vAT
+	 2CeF2qFuXMCX8Npu4ElQ7vr3ytJQTdxxjUe/vqJO+vLfBTgayJKCFeEKcAVij2otuE
+	 W9wkqL6MApQXb5CMtq+/rDoRX2Jzr5XDh0a7Y8Vs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
+	Thomas Lange <thomas@corelatus.se>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 17/43] ASoC: meson: g12a-toacodec: Validate written enum values
+Subject: [PATCH 5.4 20/38] net: Implement missing SO_TIMESTAMPING_NEW cmsg support
 Date: Sat, 13 Jan 2024 10:49:56 +0100
-Message-ID: <20240113094207.469141037@linuxfoundation.org>
+Message-ID: <20240113094207.067061361@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
-References: <20240113094206.930684111@linuxfoundation.org>
+In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
+References: <20240113094206.455533180@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,42 +54,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Thomas Lange <thomas@corelatus.se>
 
-[ Upstream commit 3150b70e944ead909260285dfb5707d0bedcf87b ]
+[ Upstream commit 382a32018b74f407008615e0e831d05ed28e81cd ]
 
-When writing to an enum we need to verify that the value written is valid
-for the enumeration, the helper function snd_soc_item_enum_to_val() doesn't
-do it since it needs to return an unsigned (and in any case we'd need to
-check the return value).
+Commit 9718475e6908 ("socket: Add SO_TIMESTAMPING_NEW") added the new
+socket option SO_TIMESTAMPING_NEW. However, it was never implemented in
+__sock_cmsg_send thus breaking SO_TIMESTAMPING cmsg for platforms using
+SO_TIMESTAMPING_NEW.
 
-Fixes: af2618a2eee8 ("ASoC: meson: g12a: add internal DAC glue driver")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240103-meson-enum-val-v1-1-424af7a8fb91@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 9718475e6908 ("socket: Add SO_TIMESTAMPING_NEW")
+Link: https://lore.kernel.org/netdev/6a7281bf-bc4a-4f75-bb88-7011908ae471@app.fastmail.com/
+Signed-off-by: Thomas Lange <thomas@corelatus.se>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://lore.kernel.org/r/20240104085744.49164-1-thomas@corelatus.se
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/meson/g12a-toacodec.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/core/sock.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/meson/g12a-toacodec.c b/sound/soc/meson/g12a-toacodec.c
-index 9339fabccb796..0938f590de226 100644
---- a/sound/soc/meson/g12a-toacodec.c
-+++ b/sound/soc/meson/g12a-toacodec.c
-@@ -46,6 +46,9 @@ static int g12a_toacodec_mux_put_enum(struct snd_kcontrol *kcontrol,
- 	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
- 	unsigned int mux, changed;
+diff --git a/net/core/sock.c b/net/core/sock.c
+index a3ca522434a6e..42076a3e12c3c 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2310,6 +2310,7 @@ int __sock_cmsg_send(struct sock *sk, struct msghdr *msg, struct cmsghdr *cmsg,
+ 		sockc->mark = *(u32 *)CMSG_DATA(cmsg);
+ 		break;
+ 	case SO_TIMESTAMPING_OLD:
++	case SO_TIMESTAMPING_NEW:
+ 		if (cmsg->cmsg_len != CMSG_LEN(sizeof(u32)))
+ 			return -EINVAL;
  
-+	if (ucontrol->value.enumerated.item[0] >= e->items)
-+		return -EINVAL;
-+
- 	mux = snd_soc_enum_item_to_val(e, ucontrol->value.enumerated.item[0]);
- 	changed = snd_soc_component_test_bits(component, e->reg,
- 					      CTRL0_DAT_SEL,
 -- 
 2.43.0
 
