@@ -1,34 +1,34 @@
-Return-Path: <stable+bounces-10658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72AD982CB11
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:55:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5BFD82CB7E
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:00:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FCD8285F88
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:55:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8550F1F22B93
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2511869;
-	Sat, 13 Jan 2024 09:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4807185A;
+	Sat, 13 Jan 2024 10:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="chB8Pezv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7WPbv3y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9385139F;
-	Sat, 13 Jan 2024 09:55:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66DABC433F1;
-	Sat, 13 Jan 2024 09:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6A963C3;
+	Sat, 13 Jan 2024 10:00:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0336BC433F1;
+	Sat, 13 Jan 2024 10:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139723;
-	bh=h3vx/5q6FYpVP9Hia2Ap6idxujyYjPOU0UuwOY03KRw=;
+	s=korg; t=1705140014;
+	bh=rqptuo3T52oxadtzlQ/WawZuS1I5bvYVmyAvYwW4daU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=chB8PezvgX/5P60Al2l0HA6jZQR9clOOqOGKf4gclhkwfXHfN3Q3QLkvp6L0eNoYl
-	 dIMrEDdtjJo72T2taBmfXQyj4op1mluGCqVqHB3PrKXujgmk0PUhV1oNt+kxjlQ3GO
-	 5i3Bkiqc4XpyalzQn7RaeFFC/ZxkT3AJGW3oKJo0=
+	b=n7WPbv3yN3+m04d8E1vVRTGeCUwHFPNgTEg3C7C2o/3BUZx5+sD4jRAzfbuF0eVV1
+	 +RC0n3m6pJ6mMTnVd8ETmc6PjBYyvHSN0yvnD2udCHC0sLoABod74nJlmePmKY+ug5
+	 atnKC4rYaqbHZLmrootRlO51SVf9vjjQ2KQfdiIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -39,12 +39,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
 	syzbot+bbe84a4010eeea00982d@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 01/38] nfc: llcp_core: Hold a ref to llcp_local->dev when holding a ref to llcp_local
-Date: Sat, 13 Jan 2024 10:49:37 +0100
-Message-ID: <20240113094206.501630311@linuxfoundation.org>
+Subject: [PATCH 5.15 07/59] nfc: llcp_core: Hold a ref to llcp_local->dev when holding a ref to llcp_local
+Date: Sat, 13 Jan 2024 10:49:38 +0100
+Message-ID: <20240113094209.531881831@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
-References: <20240113094206.455533180@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
