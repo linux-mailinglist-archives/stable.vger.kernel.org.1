@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-10653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 856F582CB0B
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:55:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEBD182CB4F
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:58:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B30C285D1E
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:55:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E00328134A
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:58:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E14615C9;
-	Sat, 13 Jan 2024 09:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF7501846;
+	Sat, 13 Jan 2024 09:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPibs+Rx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HV7itgxg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6685B1110;
-	Sat, 13 Jan 2024 09:55:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D484BC433C7;
-	Sat, 13 Jan 2024 09:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A952C1848;
+	Sat, 13 Jan 2024 09:58:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27599C433C7;
+	Sat, 13 Jan 2024 09:58:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139709;
-	bh=FYkWVibhDnBcaT/QmS31Cp4C/LC3w5k1EqCbzOA4oqw=;
+	s=korg; t=1705139885;
+	bh=UbRLosD9JvY82v7lJQ8zGrQ6Zc8Xe4nDVkc6wmdcGp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPibs+Rxxyyc1CYIO1mGEgK8xJrbnJHOFQjWAcMjJ2MSgJ5AgWKxxB2dZkKakfC+o
-	 vjFS4xCJaqfoTPgDHvMdb9SGxEz7AG1ID2pQ/s3e5mSEDvnHdOiGgjwdqbXyJ6Nccw
-	 zEV+Yhi6xj/Xa57kLWz2xqS4ApZbrQAdRSZmNnm8=
+	b=HV7itgxgQOdiI9hzG3eZd5ekEBtFVVa/kUtLuAJuTDJhl/h5aNPII9MfooYbBTETv
+	 WpGmKkmLp/bbeZAbB6RGqhk+qHelo6RCjIgMvwIz0xSlFTZSOWkUr2+aLXI+1hYL97
+	 Y2Frr2g+syNkRHbW/nJ3qHfaEZ0LRQ239aLtvuvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Oskolkov <posk@google.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
 	"David S. Miller" <davem@davemloft.net>,
-	Suraj Jitindar Singh <surajjs@amazon.com>
-Subject: [PATCH 4.19 22/25] net: add a route cache full diagnostic message
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 24/43] asix: Add check for usbnet_get_endpoints
 Date: Sat, 13 Jan 2024 10:50:03 +0100
-Message-ID: <20240113094205.733342417@linuxfoundation.org>
+Message-ID: <20240113094207.686172598@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094205.025407355@linuxfoundation.org>
-References: <20240113094205.025407355@linuxfoundation.org>
+In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
+References: <20240113094206.930684111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,47 +53,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oskolkov <posk@google.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-commit 22c2ad616b74f3de2256b242572ab449d031d941 upstream.
+[ Upstream commit eaac6a2d26b65511e164772bec6918fcbc61938e ]
 
-In some testing scenarios, dst/route cache can fill up so quickly
-that even an explicit GC call occasionally fails to clean it up. This leads
-to sporadically failing calls to dst_alloc and "network unreachable" errors
-to the user, which is confusing.
+Add check for usbnet_get_endpoints() and return the error if it fails
+in order to transfer the error.
 
-This patch adds a diagnostic message to make the cause of the failure
-easier to determine.
-
-Signed-off-by: Peter Oskolkov <posk@google.com>
+Fixes: 16626b0cc3d5 ("asix: Add a new driver for the AX88172A")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
-Cc: <stable@vger.kernel.org> # 4.19.x
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/dst.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/usb/ax88172a.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/core/dst.c
-+++ b/net/core/dst.c
-@@ -98,8 +98,12 @@ void *dst_alloc(struct dst_ops *ops, str
- 	struct dst_entry *dst;
+diff --git a/drivers/net/usb/ax88172a.c b/drivers/net/usb/ax88172a.c
+index fd3a04d98dc14..2bdb163e458ad 100644
+--- a/drivers/net/usb/ax88172a.c
++++ b/drivers/net/usb/ax88172a.c
+@@ -175,7 +175,9 @@ static int ax88172a_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	u8 buf[ETH_ALEN];
+ 	struct ax88172a_private *priv;
  
- 	if (ops->gc && dst_entries_get_fast(ops) > ops->gc_thresh) {
--		if (ops->gc(ops))
-+		if (ops->gc(ops)) {
-+			printk_ratelimited(KERN_NOTICE "Route cache is full: "
-+					   "consider increasing sysctl "
-+					   "net.ipv[4|6].route.max_size.\n");
- 			return NULL;
-+		}
- 	}
+-	usbnet_get_endpoints(dev, intf);
++	ret = usbnet_get_endpoints(dev, intf);
++	if (ret)
++		return ret;
  
- 	dst = kmem_cache_alloc(ops->kmem_cachep, GFP_ATOMIC);
+ 	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+-- 
+2.43.0
+
 
 
 
