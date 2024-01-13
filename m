@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-10719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25A6782CB56
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:58:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 033BA82CB74
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:59:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD496B2318B
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:58:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 935C6B23178
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:59:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F31310A32;
-	Sat, 13 Jan 2024 09:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF76CA71;
+	Sat, 13 Jan 2024 09:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fhqb6Ua/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tyV2JGVW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188441869;
-	Sat, 13 Jan 2024 09:58:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F81C433A6;
-	Sat, 13 Jan 2024 09:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C5415C9;
+	Sat, 13 Jan 2024 09:59:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EDBC433F1;
+	Sat, 13 Jan 2024 09:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139902;
-	bh=URgs9NGkXcfC3Ttvg1kHdh3IpPAiOfW39pDqOr0S4/A=;
+	s=korg; t=1705139985;
+	bh=ofQMMzopVvEayVuEqaka8H0M+Kha2DyxbGeEzhJog/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fhqb6Ua/3PHsCj428LvBBIe/Ic6yz+PMC5KIiw1s7KqZ9nzk9P16GBOygmTm7l9SD
-	 ep9kD7djBYDCvDaifGfnTHgyaKKapMviMq/UNVMmY8YPlnQqkoCatfSMGtOFEOJW92
-	 QAuSL5EI59M401sNp+BCFyOmYkEqYKgVXQ2bXkI8=
+	b=tyV2JGVWOHtdSjM4MENwbtJwIsCxi7bFfWss53SZY0vRt+Y1jrNsJdX6U9tDeyZHH
+	 U/v7AW9gdo243lkg5kX//uQAW/NaiKmaB80C/JPw8WWejg1+4j4kgvIcv3Wm9P00Rt
+	 K1w7xIvKBAZAOrbwisQL00r2gsraschCXx7Xtgy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jani Nikula <jani.nikula@intel.com>,
-	Imre Deak <imre.deak@intel.com>,
-	Lee Shawn C <shawn.c.lee@intel.com>,
-	Khaled Almahallawy <khaled.almahallawy@intel.com>,
+	Asmaa Mnebhi <asmaa@nvidia.com>,
+	David Thompson <davthompson@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 06/43] drm/i915/dp: Fix passing the correct DPCD_REV for drm_dp_set_phy_test_pattern
-Date: Sat, 13 Jan 2024 10:49:45 +0100
-Message-ID: <20240113094207.137972611@linuxfoundation.org>
+Subject: [PATCH 5.15 15/59] mlxbf_gige: fix receive packet race condition
+Date: Sat, 13 Jan 2024 10:49:46 +0100
+Message-ID: <20240113094209.779210801@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
-References: <20240113094206.930684111@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,43 +54,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Khaled Almahallawy <khaled.almahallawy@intel.com>
+From: David Thompson <davthompson@nvidia.com>
 
-[ Upstream commit 2bd7a06a1208aaacb4e7a2a5436c23bce8d70801 ]
+[ Upstream commit dcea1bd45e6d111cc8fc1aaefa7e31694089bda3 ]
 
-Using link_status to get DPCD_REV fails when disabling/defaulting
-phy pattern. Use intel_dp->dpcd to access DPCD_REV correctly.
+Under heavy traffic, the BlueField Gigabit interface can
+become unresponsive. This is due to a possible race condition
+in the mlxbf_gige_rx_packet function, where the function exits
+with producer and consumer indices equal but there are remaining
+packet(s) to be processed. In order to prevent this situation,
+read receive consumer index *before* the HW replenish so that
+the mlxbf_gige_rx_packet function returns an accurate return
+value even if a packet is received into just-replenished buffer
+prior to exiting this routine. If the just-replenished buffer
+is received and occupies the last RX ring entry, the interface
+would not recover and instead would encounter RX packet drops
+related to internal buffer shortages since the driver RX logic
+is not being triggered to drain the RX ring. This patch will
+address and prevent this "ring full" condition.
 
-Fixes: 8cdf72711928 ("drm/i915/dp: Program vswing, pre-emphasis, test-pattern")
-Cc: Jani Nikula <jani.nikula@intel.com>
-Cc: Imre Deak <imre.deak@intel.com>
-Cc: Lee Shawn C <shawn.c.lee@intel.com>
-Signed-off-by: Khaled Almahallawy <khaled.almahallawy@intel.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231213211542.3585105-3-khaled.almahallawy@intel.com
-(cherry picked from commit 3ee302ec22d6e1d7d1e6d381b0d507ee80f2135c)
+Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
+Reviewed-by: Asmaa Mnebhi <asmaa@nvidia.com>
+Signed-off-by: David Thompson <davthompson@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_dp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index 7f633f8b3239a..a79c62c43a6ff 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -5584,7 +5584,7 @@ void intel_dp_process_phy_request(struct intel_dp *intel_dp)
- 	intel_dp_autotest_phy_ddi_enable(intel_dp, data->num_lanes);
+diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
+index 0d5a41a2ae010..227d01cace3f0 100644
+--- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
++++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
+@@ -267,6 +267,13 @@ static bool mlxbf_gige_rx_packet(struct mlxbf_gige *priv, int *rx_pkts)
+ 		priv->stats.rx_truncate_errors++;
+ 	}
  
- 	drm_dp_set_phy_test_pattern(&intel_dp->aux, data,
--				    link_status[DP_DPCD_REV]);
-+				    intel_dp->dpcd[DP_DPCD_REV]);
- }
++	/* Read receive consumer index before replenish so that this routine
++	 * returns accurate return value even if packet is received into
++	 * just-replenished buffer prior to exiting this routine.
++	 */
++	rx_ci = readq(priv->base + MLXBF_GIGE_RX_CQE_PACKET_CI);
++	rx_ci_rem = rx_ci % priv->rx_q_entries;
++
+ 	/* Let hardware know we've replenished one buffer */
+ 	rx_pi++;
  
- static u8 intel_dp_autotest_phy_pattern(struct intel_dp *intel_dp)
+@@ -279,8 +286,6 @@ static bool mlxbf_gige_rx_packet(struct mlxbf_gige *priv, int *rx_pkts)
+ 	rx_pi_rem = rx_pi % priv->rx_q_entries;
+ 	if (rx_pi_rem == 0)
+ 		priv->valid_polarity ^= 1;
+-	rx_ci = readq(priv->base + MLXBF_GIGE_RX_CQE_PACKET_CI);
+-	rx_ci_rem = rx_ci % priv->rx_q_entries;
+ 
+ 	if (skb)
+ 		netif_receive_skb(skb);
 -- 
 2.43.0
 
