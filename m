@@ -1,49 +1,47 @@
-Return-Path: <stable+bounces-10699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD1AD82CB40
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:57:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3316F82CB78
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:59:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 696C22833FA
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:57:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0047284784
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:59:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED27F1869;
-	Sat, 13 Jan 2024 09:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4634B1869;
+	Sat, 13 Jan 2024 09:59:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fK/ruyEI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jUy4Ew8c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72C11846;
-	Sat, 13 Jan 2024 09:57:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A92C433C7;
-	Sat, 13 Jan 2024 09:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB4815BD;
+	Sat, 13 Jan 2024 09:59:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A80C433C7;
+	Sat, 13 Jan 2024 09:59:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139844;
-	bh=JoTIvdSrnZ7FacuOJs1bev78sekHnP3GIGTc2Uyi6xc=;
+	s=korg; t=1705139996;
+	bh=hEir8W/F+01iamgs1mw3792O9ClyRvUAu+kVweECSGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fK/ruyEIDnYavD+PtQasjJpaOLp1W+Z5Sik0leeCMZ2tU4Vl9p/h1n5eR3rsxjYho
-	 fW49IkRPmvv5+pAx2dHNi5jTcnCxP1QlLv0ysPrLyeqU99dPXbsgLji6i5jFz/RW+2
-	 sreyrPwkLrxN54gIlD2rATNoOP+mblPkCchodokE=
+	b=jUy4Ew8cSJeIq/I6cIh1xb7HOKO67tn2mkluo+iWULgHLNMw8lyTjOtEn9Z4Xrvsy
+	 Fwdxz2qO5g4XU+0pZEZuhjWf8gtK6y+/FVo3xLJELwb76g+MhDoo0vuIlBSZuhxhTO
+	 aRyI1yrro+wA801Z7NMrh+C5R0fwB2n86YS284tQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Edward Cree <ecree.xilinx@gmail.com>,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 11/43] sfc: fix a double-free bug in efx_probe_filters
+Subject: [PATCH 5.15 19/59] can: raw: add support for SO_TXTIME/SCM_TXTIME
 Date: Sat, 13 Jan 2024 10:49:50 +0100
-Message-ID: <20240113094207.289451444@linuxfoundation.org>
+Message-ID: <20240113094209.903855105@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
-References: <20240113094206.930684111@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,53 +53,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit d5a306aedba34e640b11d7026dbbafb78ee3a5f6 ]
+[ Upstream commit 51a0d5e51178fcd147c1b8fdab2ed16b561326db ]
 
-In efx_probe_filters, the channel->rps_flow_id is freed in a
-efx_for_each_channel marco  when success equals to 0.
-However, after the following call chain:
+This patch calls into sock_cmsg_send() to parse the user supplied
+control information into a struct sockcm_cookie. Then assign the
+requested transmit time to the skb.
 
-ef100_net_open
-  |-> efx_probe_filters
-  |-> ef100_net_stop
-        |-> efx_remove_filters
+This makes it possible to use the Earliest TXTIME First (ETF) packet
+scheduler with the CAN_RAW protocol. The user can send a CAN_RAW frame
+with a TXTIME and the kernel (with the ETF scheduler) will take care
+of sending it to the network interface.
 
-The channel->rps_flow_id is freed again in the efx_for_each_channel of
-efx_remove_filters, triggering a double-free bug.
-
-Fixes: a9dc3d5612ce ("sfc_ef100: RX filter table management and related gubbins")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Edward Cree <ecree.xilinx@gmail.com>
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Link: https://lore.kernel.org/r/20231225112915.3544581-1-alexious@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/all/20220502091946.1916211-3-mkl@pengutronix.de
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Stable-dep-of: 7f6ca95d16b9 ("net: Implement missing getsockopt(SO_TIMESTAMPING_NEW)")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/sfc/rx_common.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/can/raw.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/sfc/rx_common.c b/drivers/net/ethernet/sfc/rx_common.c
-index 36b46ddb67107..0ea3168e08960 100644
---- a/drivers/net/ethernet/sfc/rx_common.c
-+++ b/drivers/net/ethernet/sfc/rx_common.c
-@@ -837,8 +837,10 @@ int efx_probe_filters(struct efx_nic *efx)
- 		}
+diff --git a/net/can/raw.c b/net/can/raw.c
+index 8877d22da67ee..ed8834b853bee 100644
+--- a/net/can/raw.c
++++ b/net/can/raw.c
+@@ -780,6 +780,7 @@ static int raw_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
+ {
+ 	struct sock *sk = sock->sk;
+ 	struct raw_sock *ro = raw_sk(sk);
++	struct sockcm_cookie sockc;
+ 	struct sk_buff *skb;
+ 	struct net_device *dev;
+ 	int ifindex;
+@@ -825,11 +826,19 @@ static int raw_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
+ 	if (err < 0)
+ 		goto free_skb;
  
- 		if (!success) {
--			efx_for_each_channel(channel, efx)
-+			efx_for_each_channel(channel, efx) {
- 				kfree(channel->rps_flow_id);
-+				channel->rps_flow_id = NULL;
-+			}
- 			efx->type->filter_table_remove(efx);
- 			rc = -ENOMEM;
- 			goto out_unlock;
+-	skb_setup_tx_timestamp(skb, sk->sk_tsflags);
++	sockcm_init(&sockc, sk);
++	if (msg->msg_controllen) {
++		err = sock_cmsg_send(sk, msg, &sockc);
++		if (unlikely(err))
++			goto free_skb;
++	}
+ 
+ 	skb->dev = dev;
+ 	skb->sk = sk;
+ 	skb->priority = sk->sk_priority;
++	skb->tstamp = sockc.transmit_time;
++
++	skb_setup_tx_timestamp(skb, sockc.tsflags);
+ 
+ 	err = can_send(skb, ro->loopback);
+ 
 -- 
 2.43.0
 
