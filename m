@@ -1,49 +1,48 @@
-Return-Path: <stable+bounces-10780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90A7582CB96
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:01:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 728C782CB45
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:57:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3123CB22C98
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:01:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F46628355D
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D5D28F7;
-	Sat, 13 Jan 2024 10:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4371846;
+	Sat, 13 Jan 2024 09:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fUR9E2P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTWE2I1O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3280F1846;
-	Sat, 13 Jan 2024 10:01:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D3DC433C7;
-	Sat, 13 Jan 2024 10:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C9615AF;
+	Sat, 13 Jan 2024 09:57:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E25CFC433C7;
+	Sat, 13 Jan 2024 09:57:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705140082;
-	bh=s5V6z+FNnHic6nCzJ0cU68M9uWRHcMd/THX2G3S0O3o=;
+	s=korg; t=1705139856;
+	bh=LO2SPxaeU9tC3ZXBbAr3yWZaUnB1c5akIm39WpwgYqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1fUR9E2Py8tCuVGn6U24sFHWi72jANJ91bKrKT+sMDYU9yEtG8guQlXPOwinPBYye
-	 PS5/PuDJO38jyn5bE3/tg4w+D7LOkyqsEQrdkg1hWHlTSchwx36UVho7I3tCwnNYM6
-	 c+AgPeEwh46eHa3DwVLRy40cWq1qdH3vU3QmERcU=
+	b=GTWE2I1Ok5lNSGbMvxadgEBdYedvxcomib9176ZKT3AdYUOqZuSUIXB2GWLFhhNLw
+	 17sBFOuxj57lfjqdsndBih+lVCyyNB1K9SlZc3F4qqHAxm6P2g8KI6ckWHq6kUwmnS
+	 beYHviJ20mb1Z0bMRteRkfMgmuQMKiRrqgODoaP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Edward Cree <ecree.xilinx@gmail.com>,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 23/59] sfc: fix a double-free bug in efx_probe_filters
+Subject: [PATCH 5.10 15/43] net: Save and restore msg_namelen in sock_sendmsg
 Date: Sat, 13 Jan 2024 10:49:54 +0100
-Message-ID: <20240113094210.021820384@linuxfoundation.org>
+Message-ID: <20240113094207.400481348@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
-References: <20240113094209.301672391@linuxfoundation.org>
+In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
+References: <20240113094206.930684111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,53 +54,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Marc Dionne <marc.dionne@auristor.com>
 
-[ Upstream commit d5a306aedba34e640b11d7026dbbafb78ee3a5f6 ]
+[ Upstream commit 01b2885d9415152bcb12ff1f7788f500a74ea0ed ]
 
-In efx_probe_filters, the channel->rps_flow_id is freed in a
-efx_for_each_channel marco  when success equals to 0.
-However, after the following call chain:
+Commit 86a7e0b69bd5 ("net: prevent rewrite of msg_name in
+sock_sendmsg()") made sock_sendmsg save the incoming msg_name pointer
+and restore it before returning, to insulate the caller against
+msg_name being changed by the called code.  If the address length
+was also changed however, we may return with an inconsistent structure
+where the length doesn't match the address, and attempts to reuse it may
+lead to lost packets.
 
-ef100_net_open
-  |-> efx_probe_filters
-  |-> ef100_net_stop
-        |-> efx_remove_filters
+For example, a kernel that doesn't have commit 1c5950fc6fe9 ("udp6: fix
+potential access to stale information") will replace a v4 mapped address
+with its ipv4 equivalent, and shorten namelen accordingly from 28 to 16.
+If the caller attempts to reuse the resulting msg structure, it will have
+the original ipv6 (v4 mapped) address but an incorrect v4 length.
 
-The channel->rps_flow_id is freed again in the efx_for_each_channel of
-efx_remove_filters, triggering a double-free bug.
-
-Fixes: a9dc3d5612ce ("sfc_ef100: RX filter table management and related gubbins")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Edward Cree <ecree.xilinx@gmail.com>
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Link: https://lore.kernel.org/r/20231225112915.3544581-1-alexious@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 86a7e0b69bd5 ("net: prevent rewrite of msg_name in sock_sendmsg()")
+Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/sfc/rx_common.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/socket.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/sfc/rx_common.c b/drivers/net/ethernet/sfc/rx_common.c
-index a804c754cd7d0..0f2d6efdbba1c 100644
---- a/drivers/net/ethernet/sfc/rx_common.c
-+++ b/drivers/net/ethernet/sfc/rx_common.c
-@@ -837,8 +837,10 @@ int efx_probe_filters(struct efx_nic *efx)
- 		}
+diff --git a/net/socket.c b/net/socket.c
+index 36e38ee434ea1..2a48aa89c035b 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -675,6 +675,7 @@ int sock_sendmsg(struct socket *sock, struct msghdr *msg)
+ {
+ 	struct sockaddr_storage *save_addr = (struct sockaddr_storage *)msg->msg_name;
+ 	struct sockaddr_storage address;
++	int save_len = msg->msg_namelen;
+ 	int ret;
  
- 		if (!success) {
--			efx_for_each_channel(channel, efx)
-+			efx_for_each_channel(channel, efx) {
- 				kfree(channel->rps_flow_id);
-+				channel->rps_flow_id = NULL;
-+			}
- 			efx->type->filter_table_remove(efx);
- 			rc = -ENOMEM;
- 			goto out_unlock;
+ 	if (msg->msg_name) {
+@@ -684,6 +685,7 @@ int sock_sendmsg(struct socket *sock, struct msghdr *msg)
+ 
+ 	ret = __sock_sendmsg(sock, msg);
+ 	msg->msg_name = save_addr;
++	msg->msg_namelen = save_len;
+ 
+ 	return ret;
+ }
 -- 
 2.43.0
 
