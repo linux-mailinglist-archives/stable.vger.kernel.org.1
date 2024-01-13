@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-10673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFFF282CB27
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:56:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39D8682CB9C
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:01:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 817F1282250
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:56:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE47F284701
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:01:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F1415BD;
-	Sat, 13 Jan 2024 09:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F4FE1848;
+	Sat, 13 Jan 2024 10:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I3FTkNUN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xH5HgGIH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E3EDF6D;
-	Sat, 13 Jan 2024 09:56:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23866C43390;
-	Sat, 13 Jan 2024 09:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27CBF1EEE6;
+	Sat, 13 Jan 2024 10:01:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B21DC433F1;
+	Sat, 13 Jan 2024 10:01:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139768;
-	bh=vz3lTZD5j0hnadsF5MUiTzRU5xO1DGcmd5AIUPTKa7E=;
+	s=korg; t=1705140100;
+	bh=DjUxWnR+0Gi6jQV42fNkt6pEUdhyGlPa8hjdFxDO61E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I3FTkNUN1nUci7ASzOtgm4RhDdUWnpP+D2bPRcK5EbZGSjqllv9ovIMwrzbrTaY4b
-	 nyC0FvpM/gLYjsWuhk+NNchbV5VtRoRYW0f1NcWW9aZwAI8YubnkGZaFDzrN3Rrxjv
-	 5+Iq+0O6q99T6o1xS073Fy1bD9/XJZxvQEjFBNko=
+	b=xH5HgGIH7vT8PvjCD3ru+D5UrF6prsvetfpWf5Csv1A+7P+ipRFPXOe1Lo5CSYN/W
+	 zeXu/mC2EuGJec0eHtJIzbA96kU6/okum49jFaTP9AGULBIfhAVd5zrP5SQ1T6Q66R
+	 qvvOO61JvwCJeIcVjc55tvq7mG7KMiEI0x9Cbq9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiajun Xie <jiajun.xie.sh@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 24/38] mm: fix unmap_mapping_range high bits shift bug
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 29/59] ASoC: meson: g12a-tohdmitx: Validate written enum values
 Date: Sat, 13 Jan 2024 10:50:00 +0100
-Message-ID: <20240113094207.187633705@linuxfoundation.org>
+Message-ID: <20240113094210.207231326@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
-References: <20240113094206.455533180@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,86 +52,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiajun Xie <jiajun.xie.sh@gmail.com>
+From: Mark Brown <broonie@kernel.org>
 
-commit 9eab0421fa94a3dde0d1f7e36ab3294fc306c99d upstream.
+[ Upstream commit 1e001206804be3f3d21f4a1cf16e5d059d75643f ]
 
-The bug happens when highest bit of holebegin is 1, suppose holebegin is
-0x8000000111111000, after shift, hba would be 0xfff8000000111111, then
-vma_interval_tree_foreach would look it up fail or leads to the wrong
-result.
+When writing to an enum we need to verify that the value written is valid
+for the enumeration, the helper function snd_soc_item_enum_to_val() doesn't
+do it since it needs to return an unsigned (and in any case we'd need to
+check the return value).
 
-error call seq e.g.:
-- mmap(..., offset=0x8000000111111000)
-  |- syscall(mmap, ... unsigned long, off):
-     |- ksys_mmap_pgoff( ... , off >> PAGE_SHIFT);
-
-  here pgoff is correctly shifted to 0x8000000111111,
-  but pass 0x8000000111111000 as holebegin to unmap
-  would then cause terrible result, as shown below:
-
-- unmap_mapping_range(..., loff_t const holebegin)
-  |- pgoff_t hba = holebegin >> PAGE_SHIFT;
-          /* hba = 0xfff8000000111111 unexpectedly */
-
-The issue happens in Heterogeneous computing, where the device(e.g.
-gpu) and host share the same virtual address space.
-
-A simple workflow pattern which hit the issue is:
-        /* host */
-    1. userspace first mmap a file backed VA range with specified offset.
-                        e.g. (offset=0x800..., mmap return: va_a)
-    2. write some data to the corresponding sys page
-                         e.g. (va_a = 0xAABB)
-        /* device */
-    3. gpu workload touches VA, triggers gpu fault and notify the host.
-        /* host */
-    4. reviced gpu fault notification, then it will:
-            4.1 unmap host pages and also takes care of cpu tlb
-                  (use unmap_mapping_range with offset=0x800...)
-            4.2 migrate sys page to device
-            4.3 setup device page table and resolve device fault.
-        /* device */
-    5. gpu workload continued, it accessed va_a and got 0xAABB.
-    6. gpu workload continued, it wrote 0xBBCC to va_a.
-        /* host */
-    7. userspace access va_a, as expected, it will:
-            7.1 trigger cpu vm fault.
-            7.2 driver handling fault to migrate gpu local page to host.
-    8. userspace then could correctly get 0xBBCC from va_a
-    9. done
-
-But in step 4.1, if we hit the bug this patch mentioned, then userspace
-would never trigger cpu fault, and still get the old value: 0xAABB.
-
-Making holebegin unsigned first fixes the bug.
-
-Link: https://lkml.kernel.org/r/20231220052839.26970-1-jiajun.xie.sh@gmail.com
-Signed-off-by: Jiajun Xie <jiajun.xie.sh@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c8609f3870f7 ("ASoC: meson: add g12a tohdmitx control")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240103-meson-enum-val-v1-2-424af7a8fb91@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memory.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/meson/g12a-tohdmitx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2872,8 +2872,8 @@ void unmap_mapping_pages(struct address_
- void unmap_mapping_range(struct address_space *mapping,
- 		loff_t const holebegin, loff_t const holelen, int even_cows)
- {
--	pgoff_t hba = holebegin >> PAGE_SHIFT;
--	pgoff_t hlen = (holelen + PAGE_SIZE - 1) >> PAGE_SHIFT;
-+	pgoff_t hba = (pgoff_t)(holebegin) >> PAGE_SHIFT;
-+	pgoff_t hlen = ((pgoff_t)(holelen) + PAGE_SIZE - 1) >> PAGE_SHIFT;
+diff --git a/sound/soc/meson/g12a-tohdmitx.c b/sound/soc/meson/g12a-tohdmitx.c
+index 6c99052feafd8..6b16159733f72 100644
+--- a/sound/soc/meson/g12a-tohdmitx.c
++++ b/sound/soc/meson/g12a-tohdmitx.c
+@@ -45,6 +45,9 @@ static int g12a_tohdmitx_i2s_mux_put_enum(struct snd_kcontrol *kcontrol,
+ 	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
+ 	unsigned int mux, changed;
  
- 	/* Check for overflow. */
- 	if (sizeof(holelen) > sizeof(hlen)) {
++	if (ucontrol->value.enumerated.item[0] >= e->items)
++		return -EINVAL;
++
+ 	mux = snd_soc_enum_item_to_val(e, ucontrol->value.enumerated.item[0]);
+ 	changed = snd_soc_component_test_bits(component, e->reg,
+ 					      CTRL0_I2S_DAT_SEL,
+@@ -93,6 +96,9 @@ static int g12a_tohdmitx_spdif_mux_put_enum(struct snd_kcontrol *kcontrol,
+ 	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
+ 	unsigned int mux, changed;
+ 
++	if (ucontrol->value.enumerated.item[0] >= e->items)
++		return -EINVAL;
++
+ 	mux = snd_soc_enum_item_to_val(e, ucontrol->value.enumerated.item[0]);
+ 	changed = snd_soc_component_test_bits(component, TOHDMITX_CTRL0,
+ 					      CTRL0_SPDIF_SEL,
+-- 
+2.43.0
+
 
 
 
