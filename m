@@ -1,48 +1,52 @@
-Return-Path: <stable+bounces-10698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CCE282CB41
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:57:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0F582CB07
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:55:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C189F1F2243D
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:57:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7DB5285A60
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 135D315BD;
-	Sat, 13 Jan 2024 09:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5579315C6;
+	Sat, 13 Jan 2024 09:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gsAllkcZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFKOD7TF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A0F1846;
-	Sat, 13 Jan 2024 09:57:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C69C433F1;
-	Sat, 13 Jan 2024 09:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDA4A3F;
+	Sat, 13 Jan 2024 09:54:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EB4C433F1;
+	Sat, 13 Jan 2024 09:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139841;
-	bh=PfJabXxY0GPJRPoFO5L2Hs2rE3o/BVtd7/sAH3sooac=;
+	s=korg; t=1705139697;
+	bh=WNY4VIMa/Vo5bD2yCuEQYGzhDFfOVTpt1qA+ld+lnqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gsAllkcZeVMxJYhK+zQ9i7pTwkTEOXwjWEotYTChtGKNF8lT7+Mz1ubpZpTVwyTaK
-	 hUj1swJfAf6s32aGrjcGT1LnBIlcA7YMBhxzTG8JpGeY+pIAS1p6jN5RQSEtTTfCFo
-	 y0zYp9pOQ8PsvjlrFhsbUg4nHFTeQGV9IlYFfr/0=
+	b=jFKOD7TFfK9n/iyxA+kxYF4V5En54Ft2zI4nHkr7HVKu54+k2uww0f0VSDdgTPpd3
+	 GnvfRq0T/r5BOZRLPuzEfNQ6xOBKwcJvVwbsyj8YVSO982x7+mAgM8mag4wAQMbNu9
+	 YVVjd3b3Do3qIwNRkhRTm0Ia9xbzzdZPxdF/dgeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Karen Ostrowska <karen.ostrowska@intel.com>,
+	Mateusz Palczewski <mateusz.palczewski@intel.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrii Staikov <andrii.staikov@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 10/43] ARM: sun9i: smp: Fix array-index-out-of-bounds read in sunxi_mc_smp_init
+Subject: [PATCH 4.19 08/25] i40e: Restore VF MSI-X state during PCI reset
 Date: Sat, 13 Jan 2024 10:49:49 +0100
-Message-ID: <20240113094207.264319801@linuxfoundation.org>
+Message-ID: <20240113094205.294108458@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
-References: <20240113094206.930684111@linuxfoundation.org>
+In-Reply-To: <20240113094205.025407355@linuxfoundation.org>
+References: <20240113094205.025407355@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,65 +58,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Andrii Staikov <andrii.staikov@intel.com>
 
-[ Upstream commit 72ad3b772b6d393701df58ba1359b0bb346a19ed ]
+[ Upstream commit 371e576ff3e8580d91d49026e5d5faebf5565558 ]
 
-Running a multi-arch kernel (multi_v7_defconfig) on a Raspberry Pi 3B+
-with enabled CONFIG_UBSAN triggers the following warning:
+During a PCI FLR the MSI-X Enable flag in the VF PCI MSI-X capability
+register will be cleared. This can lead to issues when a VF is
+assigned to a VM because in these cases the VF driver receives no
+indication of the PF PCI error/reset and additionally it is incapable
+of restoring the cleared flag in the hypervisor configuration space
+without fully reinitializing the driver interrupt functionality.
 
- UBSAN: array-index-out-of-bounds in arch/arm/mach-sunxi/mc_smp.c:810:29
- index 2 is out of range for type 'sunxi_mc_smp_data [2]'
- CPU: 0 PID: 1 Comm: swapper/0 Not tainted 6.7.0-rc6-00248-g5254c0cbc92d
- Hardware name: BCM2835
-  unwind_backtrace from show_stack+0x10/0x14
-  show_stack from dump_stack_lvl+0x40/0x4c
-  dump_stack_lvl from ubsan_epilogue+0x8/0x34
-  ubsan_epilogue from __ubsan_handle_out_of_bounds+0x78/0x80
-  __ubsan_handle_out_of_bounds from sunxi_mc_smp_init+0xe4/0x4cc
-  sunxi_mc_smp_init from do_one_initcall+0xa0/0x2fc
-  do_one_initcall from kernel_init_freeable+0xf4/0x2f4
-  kernel_init_freeable from kernel_init+0x18/0x158
-  kernel_init from ret_from_fork+0x14/0x28
+Since the VF driver is unable to easily resolve this condition on its own,
+restore the VF MSI-X flag during the PF PCI reset handling.
 
-Since the enabled method couldn't match with any entry from
-sunxi_mc_smp_data, the value of the index shouldn't be used right after
-the loop. So move it after the check of ret in order to have a valid
-index.
-
-Fixes: 1631090e34f5 ("ARM: sun9i: smp: Add is_a83t field")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20231228193903.9078-1-wahrenst@gmx.net
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 19b7960b2da1 ("i40e: implement split PCI error reset handler")
+Co-developed-by: Karen Ostrowska <karen.ostrowska@intel.com>
+Signed-off-by: Karen Ostrowska <karen.ostrowska@intel.com>
+Co-developed-by: Mateusz Palczewski <mateusz.palczewski@intel.com>
+Signed-off-by: Mateusz Palczewski <mateusz.palczewski@intel.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Andrii Staikov <andrii.staikov@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-sunxi/mc_smp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c   |  3 +++
+ .../ethernet/intel/i40e/i40e_virtchnl_pf.c    | 26 +++++++++++++++++++
+ .../ethernet/intel/i40e/i40e_virtchnl_pf.h    |  3 +++
+ 3 files changed, 32 insertions(+)
 
-diff --git a/arch/arm/mach-sunxi/mc_smp.c b/arch/arm/mach-sunxi/mc_smp.c
-index 26cbce1353387..b2f5f4f28705f 100644
---- a/arch/arm/mach-sunxi/mc_smp.c
-+++ b/arch/arm/mach-sunxi/mc_smp.c
-@@ -808,12 +808,12 @@ static int __init sunxi_mc_smp_init(void)
- 			break;
- 	}
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index 552f5025d265b..97cf144a4ff99 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -14476,6 +14476,9 @@ static void i40e_pci_error_reset_done(struct pci_dev *pdev)
+ 	struct i40e_pf *pf = pci_get_drvdata(pdev);
  
--	is_a83t = sunxi_mc_smp_data[i].is_a83t;
--
- 	of_node_put(node);
- 	if (ret)
- 		return -ENODEV;
+ 	i40e_reset_and_rebuild(pf, false, false);
++#ifdef CONFIG_PCI_IOV
++	i40e_restore_all_vfs_msi_state(pdev);
++#endif /* CONFIG_PCI_IOV */
+ }
  
-+	is_a83t = sunxi_mc_smp_data[i].is_a83t;
+ /**
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index 32b19c4c581b6..412f8002f918b 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -99,6 +99,32 @@ void i40e_vc_notify_reset(struct i40e_pf *pf)
+ 			     (u8 *)&pfe, sizeof(struct virtchnl_pf_event));
+ }
+ 
++#ifdef CONFIG_PCI_IOV
++void i40e_restore_all_vfs_msi_state(struct pci_dev *pdev)
++{
++	u16 vf_id;
++	u16 pos;
 +
- 	if (!sunxi_mc_smp_cpu_table_init())
- 		return -EINVAL;
++	/* Continue only if this is a PF */
++	if (!pdev->is_physfn)
++		return;
++
++	if (!pci_num_vf(pdev))
++		return;
++
++	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_SRIOV);
++	if (pos) {
++		struct pci_dev *vf_dev = NULL;
++
++		pci_read_config_word(pdev, pos + PCI_SRIOV_VF_DID, &vf_id);
++		while ((vf_dev = pci_get_device(pdev->vendor, vf_id, vf_dev))) {
++			if (vf_dev->is_virtfn && vf_dev->physfn == pdev)
++				pci_restore_msi_state(vf_dev);
++		}
++	}
++}
++#endif /* CONFIG_PCI_IOV */
++
+ /**
+  * i40e_vc_notify_vf_reset
+  * @vf: pointer to the VF structure
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
+index 1e001b2bd761b..c9e0a591a344d 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
+@@ -137,5 +137,8 @@ int i40e_ndo_set_vf_spoofchk(struct net_device *netdev, int vf_id, bool enable);
  
+ void i40e_vc_notify_link_state(struct i40e_pf *pf);
+ void i40e_vc_notify_reset(struct i40e_pf *pf);
++#ifdef CONFIG_PCI_IOV
++void i40e_restore_all_vfs_msi_state(struct pci_dev *pdev);
++#endif /* CONFIG_PCI_IOV */
+ 
+ #endif /* _I40E_VIRTCHNL_PF_H_ */
 -- 
 2.43.0
 
