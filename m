@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-10739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3C182CB6C
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:59:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43BFB82CB94
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:01:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A0371F22B25
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:59:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4C611F22804
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:01:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28611869;
-	Sat, 13 Jan 2024 09:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828641EEE6;
+	Sat, 13 Jan 2024 10:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neloPb1z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2C8oJy+K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B37B1846;
-	Sat, 13 Jan 2024 09:59:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A13C433F1;
-	Sat, 13 Jan 2024 09:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF731869;
+	Sat, 13 Jan 2024 10:01:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC2AEC433C7;
+	Sat, 13 Jan 2024 10:01:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139961;
-	bh=zt4trwVM8mArt3AeAPBSHqWkA5W93PO1x3EgDaGEeqU=;
+	s=korg; t=1705140076;
+	bh=d9uKJtJ4sjtffrTYXpyqQV+JWhbI8FWcilnllHW/rOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=neloPb1z8jiI4hgf1/hdY7GF0WmR7RWOZPE17ZR5l6gpcE507oh0I2hQG6gw5zDsW
-	 gZfy9V5b+kmJeXPfRJfbJzPshMRpFgkkY0Eph6F/cLTHds+nlZU9bchZt3s+19nCZ8
-	 O0P0J6C80ACAZteIc9/lmpA1p5ejVK/BZEHHcOaE=
+	b=2C8oJy+KPZlx942OHng0iPJtGv1UmfmepxPW36nexc66tpiqT54fu0OQ4sLm9w4L5
+	 HMycSGiJb/7vYU+vLooMIPyobbfMZDq8PEMHuGdIuQbY7eoRUN2cf9k2vwng378xK0
+	 3opbDRTqnQo6Sh3IyG7u1pYYo87RfTMU+rwPQFhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Gupta <adityag@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>
-Subject: [PATCH 5.10 36/43] powerpc: update ppc_save_regs to save current r1 in pt_regs
-Date: Sat, 13 Jan 2024 10:50:15 +0100
-Message-ID: <20240113094208.104649943@linuxfoundation.org>
+	Jinghao Jia <jinghao7@illinois.edu>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+Subject: [PATCH 5.15 45/59] x86/kprobes: fix incorrect return address calculation in kprobe_emulate_call_indirect
+Date: Sat, 13 Jan 2024 10:50:16 +0100
+Message-ID: <20240113094210.673448756@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
-References: <20240113094206.930684111@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,106 +52,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Gupta <adityag@linux.ibm.com>
+From: Jinghao Jia <jinghao7@illinois.edu>
 
-commit b684c09f09e7a6af3794d4233ef785819e72db79 upstream.
+commit f5d03da48d062966c94f0199d20be0b3a37a7982 upstream.
 
-ppc_save_regs() skips one stack frame while saving the CPU register states.
-Instead of saving current R1, it pulls the previous stack frame pointer.
+kprobe_emulate_call_indirect currently uses int3_emulate_call to emulate
+indirect calls. However, int3_emulate_call always assumes the size of
+the call to be 5 bytes when calculating the return address. This is
+incorrect for register-based indirect calls in x86, which can be either
+2 or 3 bytes depending on whether REX prefix is used. At kprobe runtime,
+the incorrect return address causes control flow to land onto the wrong
+place after return -- possibly not a valid instruction boundary. This
+can lead to a panic like the following:
 
-When vmcores caused by direct panic call (such as `echo c >
-/proc/sysrq-trigger`), are debugged with gdb, gdb fails to show the
-backtrace correctly. On further analysis, it was found that it was because
-of mismatch between r1 and NIP.
+[    7.308204][    C1] BUG: unable to handle page fault for address: 000000000002b4d8
+[    7.308883][    C1] #PF: supervisor read access in kernel mode
+[    7.309168][    C1] #PF: error_code(0x0000) - not-present page
+[    7.309461][    C1] PGD 0 P4D 0
+[    7.309652][    C1] Oops: 0000 [#1] SMP
+[    7.309929][    C1] CPU: 1 PID: 0 Comm: swapper/1 Not tainted 6.7.0-rc5-trace-for-next #6
+[    7.310397][    C1] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.0-20220807_005459-localhost 04/01/2014
+[    7.311068][    C1] RIP: 0010:__common_interrupt+0x52/0xc0
+[    7.311349][    C1] Code: 01 00 4d 85 f6 74 39 49 81 fe 00 f0 ff ff 77 30 4c 89 f7 4d 8b 5e 68 41 ba 91 76 d8 42 45 03 53 fc 74 02 0f 0b cc ff d3 65 48 <8b> 05 30 c7 ff 7e 65 4c 89 3d 28 c7 ff 7e 5b 41 5c 41 5e 41 5f c3
+[    7.312512][    C1] RSP: 0018:ffffc900000e0fd0 EFLAGS: 00010046
+[    7.312899][    C1] RAX: 0000000000000001 RBX: 0000000000000023 RCX: 0000000000000001
+[    7.313334][    C1] RDX: 00000000000003cd RSI: 0000000000000001 RDI: ffff888100d302a4
+[    7.313702][    C1] RBP: 0000000000000001 R08: 0ef439818636191f R09: b1621ff338a3b482
+[    7.314146][    C1] R10: ffffffff81e5127b R11: ffffffff81059810 R12: 0000000000000023
+[    7.314509][    C1] R13: 0000000000000000 R14: ffff888100d30200 R15: 0000000000000000
+[    7.314951][    C1] FS:  0000000000000000(0000) GS:ffff88813bc80000(0000) knlGS:0000000000000000
+[    7.315396][    C1] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    7.315691][    C1] CR2: 000000000002b4d8 CR3: 0000000003028003 CR4: 0000000000370ef0
+[    7.316153][    C1] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[    7.316508][    C1] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[    7.316948][    C1] Call Trace:
+[    7.317123][    C1]  <IRQ>
+[    7.317279][    C1]  ? __die_body+0x64/0xb0
+[    7.317482][    C1]  ? page_fault_oops+0x248/0x370
+[    7.317712][    C1]  ? __wake_up+0x96/0xb0
+[    7.317964][    C1]  ? exc_page_fault+0x62/0x130
+[    7.318211][    C1]  ? asm_exc_page_fault+0x22/0x30
+[    7.318444][    C1]  ? __cfi_native_send_call_func_single_ipi+0x10/0x10
+[    7.318860][    C1]  ? default_idle+0xb/0x10
+[    7.319063][    C1]  ? __common_interrupt+0x52/0xc0
+[    7.319330][    C1]  common_interrupt+0x78/0x90
+[    7.319546][    C1]  </IRQ>
+[    7.319679][    C1]  <TASK>
+[    7.319854][    C1]  asm_common_interrupt+0x22/0x40
+[    7.320082][    C1] RIP: 0010:default_idle+0xb/0x10
+[    7.320309][    C1] Code: 4c 01 c7 4c 29 c2 e9 72 ff ff ff cc cc cc cc 90 90 90 90 90 90 90 90 90 90 90 b8 0c 67 40 a5 66 90 0f 00 2d 09 b9 3b 00 fb f4 <fa> c3 0f 1f 00 90 90 90 90 90 90 90 90 90 90 90 b8 0c 67 40 a5 e9
+[    7.321449][    C1] RSP: 0018:ffffc9000009bee8 EFLAGS: 00000256
+[    7.321808][    C1] RAX: ffff88813bca8b68 RBX: 0000000000000001 RCX: 000000000001ef0c
+[    7.322227][    C1] RDX: 0000000000000000 RSI: 0000000000000001 RDI: 000000000001ef0c
+[    7.322656][    C1] RBP: ffffc9000009bef8 R08: 8000000000000000 R09: 00000000000008c2
+[    7.323083][    C1] R10: 0000000000000000 R11: ffffffff81058e70 R12: 0000000000000000
+[    7.323530][    C1] R13: ffff8881002b30c0 R14: 0000000000000000 R15: 0000000000000000
+[    7.323948][    C1]  ? __cfi_lapic_next_deadline+0x10/0x10
+[    7.324239][    C1]  default_idle_call+0x31/0x50
+[    7.324464][    C1]  do_idle+0xd3/0x240
+[    7.324690][    C1]  cpu_startup_entry+0x25/0x30
+[    7.324983][    C1]  start_secondary+0xb4/0xc0
+[    7.325217][    C1]  secondary_startup_64_no_verify+0x179/0x17b
+[    7.325498][    C1]  </TASK>
+[    7.325641][    C1] Modules linked in:
+[    7.325906][    C1] CR2: 000000000002b4d8
+[    7.326104][    C1] ---[ end trace 0000000000000000 ]---
+[    7.326354][    C1] RIP: 0010:__common_interrupt+0x52/0xc0
+[    7.326614][    C1] Code: 01 00 4d 85 f6 74 39 49 81 fe 00 f0 ff ff 77 30 4c 89 f7 4d 8b 5e 68 41 ba 91 76 d8 42 45 03 53 fc 74 02 0f 0b cc ff d3 65 48 <8b> 05 30 c7 ff 7e 65 4c 89 3d 28 c7 ff 7e 5b 41 5c 41 5e 41 5f c3
+[    7.327570][    C1] RSP: 0018:ffffc900000e0fd0 EFLAGS: 00010046
+[    7.327910][    C1] RAX: 0000000000000001 RBX: 0000000000000023 RCX: 0000000000000001
+[    7.328273][    C1] RDX: 00000000000003cd RSI: 0000000000000001 RDI: ffff888100d302a4
+[    7.328632][    C1] RBP: 0000000000000001 R08: 0ef439818636191f R09: b1621ff338a3b482
+[    7.329223][    C1] R10: ffffffff81e5127b R11: ffffffff81059810 R12: 0000000000000023
+[    7.329780][    C1] R13: 0000000000000000 R14: ffff888100d30200 R15: 0000000000000000
+[    7.330193][    C1] FS:  0000000000000000(0000) GS:ffff88813bc80000(0000) knlGS:0000000000000000
+[    7.330632][    C1] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    7.331050][    C1] CR2: 000000000002b4d8 CR3: 0000000003028003 CR4: 0000000000370ef0
+[    7.331454][    C1] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[    7.331854][    C1] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[    7.332236][    C1] Kernel panic - not syncing: Fatal exception in interrupt
+[    7.332730][    C1] Kernel Offset: disabled
+[    7.333044][    C1] ---[ end Kernel panic - not syncing: Fatal exception in interrupt ]---
 
-GDB uses NIP to get current function symbol and uses corresponding debug
-info of that function to unwind previous frames, but due to the
-mismatching r1 and NIP, the unwinding does not work, and it fails to
-unwind to the 2nd frame and hence does not show the backtrace.
+The relevant assembly code is (from objdump, faulting address
+highlighted):
 
-GDB backtrace with vmcore of kernel without this patch:
+ffffffff8102ed9d:       41 ff d3                  call   *%r11
+ffffffff8102eda0:       65 48 <8b> 05 30 c7 ff    mov    %gs:0x7effc730(%rip),%rax
 
----------
-(gdb) bt
- #0  0xc0000000002a53e8 in crash_setup_regs (oldregs=<optimized out>,
-    newregs=0xc000000004f8f8d8) at ./arch/powerpc/include/asm/kexec.h:69
- #1  __crash_kexec (regs=<optimized out>) at kernel/kexec_core.c:974
- #2  0x0000000000000063 in ?? ()
- #3  0xc000000003579320 in ?? ()
----------
+The emulation incorrectly sets the return address to be ffffffff8102ed9d
++ 0x5 = ffffffff8102eda2, which is the 8b byte in the middle of the next
+mov. This in turn causes incorrect subsequent instruction decoding and
+eventually triggers the page fault above.
 
-Further analysis revealed that the mismatch occurred because
-"ppc_save_regs" was saving the previous stack's SP instead of the current
-r1. This patch fixes this by storing current r1 in the saved pt_regs.
+Instead of invoking int3_emulate_call, perform push and jmp emulation
+directly in kprobe_emulate_call_indirect. At this point we can obtain
+the instruction size from p->ainsn.size so that we can calculate the
+correct return address.
 
-GDB backtrace with vmcore of patched kernel:
+Link: https://lore.kernel.org/all/20240102233345.385475-1-jinghao7@illinois.edu/
 
---------
-(gdb) bt
- #0  0xc0000000002a53e8 in crash_setup_regs (oldregs=0x0, newregs=0xc00000000670b8d8)
-    at ./arch/powerpc/include/asm/kexec.h:69
- #1  __crash_kexec (regs=regs@entry=0x0) at kernel/kexec_core.c:974
- #2  0xc000000000168918 in panic (fmt=fmt@entry=0xc000000001654a60 "sysrq triggered crash\n")
-    at kernel/panic.c:358
- #3  0xc000000000b735f8 in sysrq_handle_crash (key=<optimized out>) at drivers/tty/sysrq.c:155
- #4  0xc000000000b742cc in __handle_sysrq (key=key@entry=99, check_mask=check_mask@entry=false)
-    at drivers/tty/sysrq.c:602
- #5  0xc000000000b7506c in write_sysrq_trigger (file=<optimized out>, buf=<optimized out>,
-    count=2, ppos=<optimized out>) at drivers/tty/sysrq.c:1163
- #6  0xc00000000069a7bc in pde_write (ppos=<optimized out>, count=<optimized out>,
-    buf=<optimized out>, file=<optimized out>, pde=0xc00000000362cb40) at fs/proc/inode.c:340
- #7  proc_reg_write (file=<optimized out>, buf=<optimized out>, count=<optimized out>,
-    ppos=<optimized out>) at fs/proc/inode.c:352
- #8  0xc0000000005b3bbc in vfs_write (file=file@entry=0xc000000006aa6b00,
-    buf=buf@entry=0x61f498b4f60 <error: Cannot access memory at address 0x61f498b4f60>,
-    count=count@entry=2, pos=pos@entry=0xc00000000670bda0) at fs/read_write.c:582
- #9  0xc0000000005b4264 in ksys_write (fd=<optimized out>,
-    buf=0x61f498b4f60 <error: Cannot access memory at address 0x61f498b4f60>, count=2)
-    at fs/read_write.c:637
- #10 0xc00000000002ea2c in system_call_exception (regs=0xc00000000670be80, r0=<optimized out>)
-    at arch/powerpc/kernel/syscall.c:171
- #11 0xc00000000000c270 in system_call_vectored_common ()
-    at arch/powerpc/kernel/interrupt_64.S:192
---------
-
-Nick adds:
-  So this now saves regs as though it was an interrupt taken in the
-  caller, at the instruction after the call to ppc_save_regs, whereas
-  previously the NIP was there, but R1 came from the caller's caller and
-  that mismatch is what causes gdb's dwarf unwinder to go haywire.
-
-Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
-Fixes: d16a58f8854b1 ("powerpc: Improve ppc_save_regs()")
-Reivewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230615091047.90433-1-adityag@linux.ibm.com
+Fixes: 6256e668b7af ("x86/kprobes: Use int3 instead of debug trap for single-step")
 Cc: stable@vger.kernel.org
-Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+Signed-off-by: Jinghao Jia <jinghao7@illinois.edu>
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/ppc_save_regs.S |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kernel/kprobes/core.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/powerpc/kernel/ppc_save_regs.S
-+++ b/arch/powerpc/kernel/ppc_save_regs.S
-@@ -58,10 +58,10 @@ _GLOBAL(ppc_save_regs)
- 	lbz	r0,PACAIRQSOFTMASK(r13)
- 	PPC_STL	r0,SOFTE-STACK_FRAME_OVERHEAD(r3)
- #endif
--	/* go up one stack frame for SP */
--	PPC_LL	r4,0(r1)
--	PPC_STL	r4,1*SZL(r3)
-+	/* store current SP */
-+	PPC_STL r1,1*SZL(r3)
- 	/* get caller's LR */
-+	PPC_LL	r4,0(r1)
- 	PPC_LL	r0,LRSAVE(r4)
- 	PPC_STL	r0,_LINK-STACK_FRAME_OVERHEAD(r3)
- 	mflr	r0
+--- a/arch/x86/kernel/kprobes/core.c
++++ b/arch/x86/kernel/kprobes/core.c
+@@ -563,7 +563,8 @@ static void kprobe_emulate_call_indirect
+ {
+ 	unsigned long offs = addrmode_regoffs[p->ainsn.indirect.reg];
+ 
+-	int3_emulate_call(regs, regs_get_register(regs, offs));
++	int3_emulate_push(regs, regs->ip - INT3_INSN_SIZE + p->ainsn.size);
++	int3_emulate_jmp(regs, regs_get_register(regs, offs));
+ }
+ NOKPROBE_SYMBOL(kprobe_emulate_call_indirect);
+ 
 
 
 
