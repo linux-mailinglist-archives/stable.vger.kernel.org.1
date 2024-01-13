@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-10728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6033C82CB62
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:59:08 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BDB482CBA2
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:02:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F781B23242
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:59:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3AD7B22849
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A89810958;
-	Sat, 13 Jan 2024 09:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD57185A;
+	Sat, 13 Jan 2024 10:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mGDS4CpH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwRzXi7s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53BF163C3;
-	Sat, 13 Jan 2024 09:58:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C51A6C433F1;
-	Sat, 13 Jan 2024 09:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25752C8DD;
+	Sat, 13 Jan 2024 10:01:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FCE7C433F1;
+	Sat, 13 Jan 2024 10:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139929;
-	bh=8AZUYp159gMs733l1tSCh+CNA2SkrF0+4h52GTL8/Ik=;
+	s=korg; t=1705140117;
+	bh=y6Shhf89RK2OvOg8zQ8LePHzuoV4oTPDog/iM1RTZLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mGDS4CpHUiGp6H7nBpGh3UnyzYvw88pvnmQWYuGw2oCMJPwFWb/tZntKSAZOuDNOg
-	 JTHdJqhikUb1+hFQhkEov160/V99kpzJdLf+pLYFCNOVHNvqUk4xyyheBYawxcV2pB
-	 Hk9wi9ZuDhzWa964SKnoesZENJj++SeE380OnC4U=
+	b=mwRzXi7steyeYeTD5jvCusH+/X+qtsvoSF1wpnNwliLUnvwjUwrWn3yqG4syU3UGN
+	 KBGwqK19JeIHhuZIiMuY2t1Me91EHqptI3kLryHKAZaatLfmepJ2nzldnbzJ0gbucq
+	 ceI8IffQ/iajh87AA/UjGx2r8OeBp4aSu/FyrDLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.10 40/43] netfilter: nf_tables: Reject tables of unsupported family
-Date: Sat, 13 Jan 2024 10:50:19 +0100
-Message-ID: <20240113094208.247364809@linuxfoundation.org>
+	Jorge Ramirez-Ortiz <jorge@foundries.io>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 49/59] mmc: rpmb: fixes pause retune on all RPMB partitions.
+Date: Sat, 13 Jan 2024 10:50:20 +0100
+Message-ID: <20240113094210.791113040@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
-References: <20240113094206.930684111@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,70 +53,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Jorge Ramirez-Ortiz <jorge@foundries.io>
 
-commit f1082dd31fe461d482d69da2a8eccfeb7bf07ac2 upstream.
+commit e7794c14fd73e5eb4a3e0ecaa5334d5a17377c50 upstream.
 
-An nftables family is merely a hollow container, its family just a
-number and such not reliant on compile-time options other than nftables
-support itself. Add an artificial check so attempts at using a family
-the kernel can't support fail as early as possible. This helps user
-space detect kernels which lack e.g. NFPROTO_INET.
+When RPMB was converted to a character device, it added support for
+multiple RPMB partitions (Commit 97548575bef3 ("mmc: block: Convert RPMB to
+a character device").
 
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+One of the changes in this commit was transforming the variable target_part
+defined in __mmc_blk_ioctl_cmd into a bitmask. This inadvertently regressed
+the validation check done in mmc_blk_part_switch_pre() and
+mmc_blk_part_switch_post(), so let's fix it.
+
+Fixes: 97548575bef3 ("mmc: block: Convert RPMB to a character device")
+Signed-off-by: Jorge Ramirez-Ortiz <jorge@foundries.io>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231201153143.1449753-1-jorge@foundries.io
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |   27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ drivers/mmc/core/block.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -1186,6 +1186,30 @@ static int nft_objname_hash_cmp(struct r
- 	return strcmp(obj->key.name, k->name);
- }
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -839,9 +839,10 @@ static const struct block_device_operati
+ static int mmc_blk_part_switch_pre(struct mmc_card *card,
+ 				   unsigned int part_type)
+ {
++	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
+ 	int ret = 0;
  
-+static bool nft_supported_family(u8 family)
-+{
-+	return false
-+#ifdef CONFIG_NF_TABLES_INET
-+		|| family == NFPROTO_INET
-+#endif
-+#ifdef CONFIG_NF_TABLES_IPV4
-+		|| family == NFPROTO_IPV4
-+#endif
-+#ifdef CONFIG_NF_TABLES_ARP
-+		|| family == NFPROTO_ARP
-+#endif
-+#ifdef CONFIG_NF_TABLES_NETDEV
-+		|| family == NFPROTO_NETDEV
-+#endif
-+#if IS_ENABLED(CONFIG_NF_TABLES_BRIDGE)
-+		|| family == NFPROTO_BRIDGE
-+#endif
-+#ifdef CONFIG_NF_TABLES_IPV6
-+		|| family == NFPROTO_IPV6
-+#endif
-+		;
-+}
-+
- static int nf_tables_newtable(struct net *net, struct sock *nlsk,
- 			      struct sk_buff *skb, const struct nlmsghdr *nlh,
- 			      const struct nlattr * const nla[],
-@@ -1201,6 +1225,9 @@ static int nf_tables_newtable(struct net
- 	u32 flags = 0;
- 	int err;
+-	if (part_type == EXT_CSD_PART_CONFIG_ACC_RPMB) {
++	if ((part_type & mask) == mask) {
+ 		if (card->ext_csd.cmdq_en) {
+ 			ret = mmc_cmdq_disable(card);
+ 			if (ret)
+@@ -856,9 +857,10 @@ static int mmc_blk_part_switch_pre(struc
+ static int mmc_blk_part_switch_post(struct mmc_card *card,
+ 				    unsigned int part_type)
+ {
++	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
+ 	int ret = 0;
  
-+	if (!nft_supported_family(family))
-+		return -EOPNOTSUPP;
-+
- 	lockdep_assert_held(&nft_net->commit_mutex);
- 	attr = nla[NFTA_TABLE_NAME];
- 	table = nft_table_lookup(net, attr, family, genmask);
+-	if (part_type == EXT_CSD_PART_CONFIG_ACC_RPMB) {
++	if ((part_type & mask) == mask) {
+ 		mmc_retune_unpause(card->host);
+ 		if (card->reenable_cmdq && !card->ext_csd.cmdq_en)
+ 			ret = mmc_cmdq_enable(card);
+@@ -3126,4 +3128,3 @@ module_exit(mmc_blk_exit);
+ 
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("Multimedia Card (MMC) block device driver");
+-
 
 
 
