@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-10671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DC8182CB24
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:56:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 467E982CB4B
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:57:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1AD21F237C0
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:56:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6ABF21C2146B
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:57:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCEDA1848;
-	Sat, 13 Jan 2024 09:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C1721846;
+	Sat, 13 Jan 2024 09:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dNV2ck/B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asarVYA7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94DAC1095B;
-	Sat, 13 Jan 2024 09:56:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E639C433F1;
-	Sat, 13 Jan 2024 09:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25481EC5;
+	Sat, 13 Jan 2024 09:57:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 923CAC433F1;
+	Sat, 13 Jan 2024 09:57:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139762;
-	bh=82xbk1QsaJaPle7LMtfbWlGl778wlL5UGEcQrGwUY3g=;
+	s=korg; t=1705139874;
+	bh=NPzVWZqu50dUIV2cscZRDwSkeQZH/JataR51bb5VtqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dNV2ck/BfT6+nbOWV46blJmIIidzt1Q7iDN2nA3ISKjh9bK4L0Q3HvD0N3neOOlZS
-	 HOoCFMkS1y68xQZDeKHoIuLoB49vCiYEWdhpSnOt1+br6v1+JGBJNe/qU0a0fjLGbw
-	 oLJ7GyUrHbkT/3yoYCWlC7PeN2UL7bn0U7hycoFM=
+	b=asarVYA7AsfZbnaxLC5M15qGHtmN5RIOch1Ihye/ELK45I2bmtFeZ+DEEuVNTrXIg
+	 SwZeJNuek7c4hh85AkceB10847eh7o4FbsH0ThvBe31K8HAtgN4QEBzjJnc/KRxk6f
+	 XESBhCqDGoJrJnETsInC0OyO0eJh/CagVjmuTsAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Tobias Gruetzmacher <tobias-lists@23.gs>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Subject: [PATCH 5.4 22/38] firewire: ohci: suppress unexpected system reboot in AMD Ryzen machines and ASM108x/VT630x PCIe cards
-Date: Sat, 13 Jan 2024 10:49:58 +0100
-Message-ID: <20240113094207.132873943@linuxfoundation.org>
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 20/43] ASoC: meson: g12a-tohdmitx: Fix event generation for S/PDIF mux
+Date: Sat, 13 Jan 2024 10:49:59 +0100
+Message-ID: <20240113094207.561516359@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
-References: <20240113094206.455533180@linuxfoundation.org>
+In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
+References: <20240113094206.930684111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,130 +52,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+From: Mark Brown <broonie@kernel.org>
 
-commit ac9184fbb8478dab4a0724b279f94956b69be827 upstream.
+[ Upstream commit b036d8ef3120b996751495ce25994eea58032a98 ]
 
-VIA VT6306/6307/6308 provides PCI interface compliant to 1394 OHCI. When
-the hardware is combined with Asmedia ASM1083/1085 PCIe-to-PCI bus bridge,
-it appears that accesses to its 'Isochronous Cycle Timer' register (offset
-0xf0 on PCI memory space) often causes unexpected system reboot in any
-type of AMD Ryzen machine (both 0x17 and 0x19 families). It does not
-appears in the other type of machine (AMD pre-Ryzen machine, Intel
-machine, at least), or in the other OHCI 1394 hardware (e.g. Texas
-Instruments).
+When a control changes value the return value from _put() should be 1 so
+we get events generated to userspace notifying applications of the change.
+While the I2S mux gets this right the S/PDIF mux does not, fix the return
+value.
 
-The issue explicitly appears at a commit dcadfd7f7c74 ("firewire: core:
-use union for callback of transaction completion") added to v6.5 kernel.
-It changed 1394 OHCI driver to access to the register every time to
-dispatch local asynchronous transaction. However, the issue exists in
-older version of kernel as long as it runs in AMD Ryzen machine, since
-the access to the register is required to maintain bus time. It is not
-hard to imagine that users experience the unexpected system reboot when
-generating bus reset by plugging any devices in, or reading the register
-by time-aware application programs; e.g. audio sample processing.
-
-This commit suppresses the unexpected system reboot in the combination of
-hardware. It avoids the access itself. As a result, the software stack can
-not provide the hardware time anymore to unit drivers, userspace
-applications, and nodes in the same IEEE 1394 bus. It brings apparent
-disadvantage since time-aware application programs require it, while
-time-unaware applications are available again; e.g. sbp2.
-
-Cc: stable@vger.kernel.org
-Reported-by: Jiri Slaby <jirislaby@kernel.org>
-Closes: https://bugzilla.suse.com/show_bug.cgi?id=1215436
-Reported-by: Mario Limonciello <mario.limonciello@amd.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217994
-Reported-by: Tobias Gruetzmacher <tobias-lists@23.gs>
-Closes: https://sourceforge.net/p/linux1394/mailman/message/58711901/
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2240973
-Closes: https://bugs.launchpad.net/linux/+bug/2043905
-Link: https://lore.kernel.org/r/20240102110150.244475-1-o-takashi@sakamocchi.jp
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c8609f3870f7 ("ASoC: meson: add g12a tohdmitx control")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240103-meson-enum-val-v1-4-424af7a8fb91@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firewire/ohci.c |   51 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ sound/soc/meson/g12a-tohdmitx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/firewire/ohci.c
-+++ b/drivers/firewire/ohci.c
-@@ -279,6 +279,51 @@ static char ohci_driver_name[] = KBUILD_
- #define QUIRK_TI_SLLZ059		0x20
- #define QUIRK_IR_WAKE			0x40
+diff --git a/sound/soc/meson/g12a-tohdmitx.c b/sound/soc/meson/g12a-tohdmitx.c
+index 6b16159733f72..4a9b67421c705 100644
+--- a/sound/soc/meson/g12a-tohdmitx.c
++++ b/sound/soc/meson/g12a-tohdmitx.c
+@@ -118,7 +118,7 @@ static int g12a_tohdmitx_spdif_mux_put_enum(struct snd_kcontrol *kcontrol,
  
-+// On PCI Express Root Complex in any type of AMD Ryzen machine, VIA VT6306/6307/6308 with Asmedia
-+// ASM1083/1085 brings an inconvenience that the read accesses to 'Isochronous Cycle Timer' register
-+// (at offset 0xf0 in PCI I/O space) often causes unexpected system reboot. The mechanism is not
-+// clear, since the read access to the other registers is enough safe; e.g. 'Node ID' register,
-+// while it is probable due to detection of any type of PCIe error.
-+#define QUIRK_REBOOT_BY_CYCLE_TIMER_READ	0x80000000
-+
-+#if IS_ENABLED(CONFIG_X86)
-+
-+static bool has_reboot_by_cycle_timer_read_quirk(const struct fw_ohci *ohci)
-+{
-+	return !!(ohci->quirks & QUIRK_REBOOT_BY_CYCLE_TIMER_READ);
-+}
-+
-+#define PCI_DEVICE_ID_ASMEDIA_ASM108X	0x1080
-+
-+static bool detect_vt630x_with_asm1083_on_amd_ryzen_machine(const struct pci_dev *pdev)
-+{
-+	const struct pci_dev *pcie_to_pci_bridge;
-+
-+	// Detect any type of AMD Ryzen machine.
-+	if (!static_cpu_has(X86_FEATURE_ZEN))
-+		return false;
-+
-+	// Detect VIA VT6306/6307/6308.
-+	if (pdev->vendor != PCI_VENDOR_ID_VIA)
-+		return false;
-+	if (pdev->device != PCI_DEVICE_ID_VIA_VT630X)
-+		return false;
-+
-+	// Detect Asmedia ASM1083/1085.
-+	pcie_to_pci_bridge = pdev->bus->self;
-+	if (pcie_to_pci_bridge->vendor != PCI_VENDOR_ID_ASMEDIA)
-+		return false;
-+	if (pcie_to_pci_bridge->device != PCI_DEVICE_ID_ASMEDIA_ASM108X)
-+		return false;
-+
-+	return true;
-+}
-+
-+#else
-+#define has_reboot_by_cycle_timer_read_quirk(ohci) false
-+#define detect_vt630x_with_asm1083_on_amd_ryzen_machine(pdev)	false
-+#endif
-+
- /* In case of multiple matches in ohci_quirks[], only the first one is used. */
- static const struct {
- 	unsigned short vendor, device, revision, flags;
-@@ -1717,6 +1762,9 @@ static u32 get_cycle_time(struct fw_ohci
- 	s32 diff01, diff12;
- 	int i;
+ 	snd_soc_dapm_mux_update_power(dapm, kcontrol, mux, e, NULL);
  
-+	if (has_reboot_by_cycle_timer_read_quirk(ohci))
-+		return 0;
-+
- 	c2 = reg_read(ohci, OHCI1394_IsochronousCycleTimer);
+-	return 0;
++	return 1;
+ }
  
- 	if (ohci->quirks & QUIRK_CYCLE_TIMER) {
-@@ -3619,6 +3667,9 @@ static int pci_probe(struct pci_dev *dev
- 	if (param_quirks)
- 		ohci->quirks = param_quirks;
- 
-+	if (detect_vt630x_with_asm1083_on_amd_ryzen_machine(dev))
-+		ohci->quirks |= QUIRK_REBOOT_BY_CYCLE_TIMER_READ;
-+
- 	/*
- 	 * Because dma_alloc_coherent() allocates at least one page,
- 	 * we save space by using a common buffer for the AR request/
+ static SOC_ENUM_SINGLE_DECL(g12a_tohdmitx_spdif_mux_enum, TOHDMITX_CTRL0,
+-- 
+2.43.0
+
 
 
 
