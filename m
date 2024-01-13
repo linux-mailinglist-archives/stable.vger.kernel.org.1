@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-10633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4524882CAF5
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:54:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD2882CB42
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:57:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7873285ACB
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:54:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 929681C20D42
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 490B915C6;
-	Sat, 13 Jan 2024 09:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBEC51848;
+	Sat, 13 Jan 2024 09:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VwlZxHxp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Clx40gGX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AFD515BD;
-	Sat, 13 Jan 2024 09:54:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 272EDC433F1;
-	Sat, 13 Jan 2024 09:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A563CEC5;
+	Sat, 13 Jan 2024 09:57:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2245CC433C7;
+	Sat, 13 Jan 2024 09:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139650;
-	bh=FdUF4Aay6nHsHD2NBzhuqCpeCB3jwjmJa1EacOl2Zq8=;
+	s=korg; t=1705139847;
+	bh=5XlAsVRFU9b+ntU6IK9OklGUNjTS5CTe2eA1vUIJ9qc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VwlZxHxp8Kq5ns6t+caxWFjR7HtRvEvGc+GUAmo8mJUYy3C2YZ9aqz3MIpYzdKW7r
-	 4rSfm5BaCgDuZ2A1eP1UcZA11hCUHWFPkzJLGJn1n7r5syLA4UefNLHGXFMBaYzwr7
-	 F1lInQsD//D54j3UNsJDKTCoM2Vf6SsU/Noypuro=
+	b=Clx40gGXrEbzswndXynp5aNFjFKJyt3eKbUPFWe7zMAYdV8fHtCmpJSiuR7Vjzi0c
+	 U79bMM6f7J1OL6VxOFfKbDoMpzkPFgtbYfLOm2QmfK6iUd9bbTvD6PMgnUNJHoNlHd
+	 Ekqlaz4wWH5UinOaHHEKwodNgacaeGbdggrODn94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinghao Liu <dinghao.liu@zju.edu.cn>,
+	Adrian Cinal <adriancinal1@gmail.com>,
+	Doug Berger <opendmb@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 10/25] net/qla3xxx: fix potential memleak in ql_alloc_buffer_queues
+Subject: [PATCH 5.10 12/43] net: bcmgenet: Fix FCS generation for fragmented skbuffs
 Date: Sat, 13 Jan 2024 10:49:51 +0100
-Message-ID: <20240113094205.350065693@linuxfoundation.org>
+Message-ID: <20240113094207.314043377@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094205.025407355@linuxfoundation.org>
-References: <20240113094205.025407355@linuxfoundation.org>
+In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
+References: <20240113094206.930684111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,46 +55,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Adrian Cinal <adriancinal@gmail.com>
 
-[ Upstream commit 89f45c30172c80e55c887f32f1af8e184124577b ]
+[ Upstream commit e584f2ff1e6cc9b1d99e8a6b0f3415940d1b3eb3 ]
 
-When dma_alloc_coherent() fails, we should free qdev->lrg_buf
-to prevent potential memleak.
+The flag DMA_TX_APPEND_CRC was only written to the first DMA descriptor
+in the TX path, where each descriptor corresponds to a single skbuff
+fragment (or the skbuff head). This led to packets with no FCS appearing
+on the wire if the kernel allocated the packet in fragments, which would
+always happen when using PACKET_MMAP/TPACKET (cf. tpacket_fill_skb() in
+net/af_packet.c).
 
-Fixes: 1357bfcf7106 ("qla3xxx: Dynamically size the rx buffer queue based on the MTU.")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Link: https://lore.kernel.org/r/20231227070227.10527-1-dinghao.liu@zju.edu.cn
+Fixes: 1c1008c793fa ("net: bcmgenet: add main driver file")
+Signed-off-by: Adrian Cinal <adriancinal1@gmail.com>
+Acked-by: Doug Berger <opendmb@gmail.com>
+Acked-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20231228135638.1339245-1-adriancinal1@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qla3xxx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/broadcom/genet/bcmgenet.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qla3xxx.c b/drivers/net/ethernet/qlogic/qla3xxx.c
-index 6350872fd5a52..99949140c2e70 100644
---- a/drivers/net/ethernet/qlogic/qla3xxx.c
-+++ b/drivers/net/ethernet/qlogic/qla3xxx.c
-@@ -2591,6 +2591,7 @@ static int ql_alloc_buffer_queues(struct ql3_adapter *qdev)
- 
- 	if (qdev->lrg_buf_q_alloc_virt_addr == NULL) {
- 		netdev_err(qdev->ndev, "lBufQ failed\n");
-+		kfree(qdev->lrg_buf);
- 		return -ENOMEM;
- 	}
- 	qdev->lrg_buf_q_virt_addr = qdev->lrg_buf_q_alloc_virt_addr;
-@@ -2615,6 +2616,7 @@ static int ql_alloc_buffer_queues(struct ql3_adapter *qdev)
- 				  qdev->lrg_buf_q_alloc_size,
- 				  qdev->lrg_buf_q_alloc_virt_addr,
- 				  qdev->lrg_buf_q_alloc_phy_addr);
-+		kfree(qdev->lrg_buf);
- 		return -ENOMEM;
- 	}
- 
+diff --git a/drivers/net/ethernet/broadcom/genet/bcmgenet.c b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+index 145488449f133..8edf12077e663 100644
+--- a/drivers/net/ethernet/broadcom/genet/bcmgenet.c
++++ b/drivers/net/ethernet/broadcom/genet/bcmgenet.c
+@@ -2086,8 +2086,10 @@ static netdev_tx_t bcmgenet_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		/* Note: if we ever change from DMA_TX_APPEND_CRC below we
+ 		 * will need to restore software padding of "runt" packets
+ 		 */
++		len_stat |= DMA_TX_APPEND_CRC;
++
+ 		if (!i) {
+-			len_stat |= DMA_TX_APPEND_CRC | DMA_SOP;
++			len_stat |= DMA_SOP;
+ 			if (skb->ip_summed == CHECKSUM_PARTIAL)
+ 				len_stat |= DMA_TX_DO_CSUM;
+ 		}
 -- 
 2.43.0
 
