@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-10703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 728C782CB45
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:57:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3627982CAF8
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:54:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F46628355D
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:57:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9DE21F231F8
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:54:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4371846;
-	Sat, 13 Jan 2024 09:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F2A15C6;
+	Sat, 13 Jan 2024 09:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTWE2I1O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bho2CTWg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C9615AF;
-	Sat, 13 Jan 2024 09:57:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E25CFC433C7;
-	Sat, 13 Jan 2024 09:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF0B015AF;
+	Sat, 13 Jan 2024 09:54:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E109EC433F1;
+	Sat, 13 Jan 2024 09:54:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139856;
-	bh=LO2SPxaeU9tC3ZXBbAr3yWZaUnB1c5akIm39WpwgYqU=;
+	s=korg; t=1705139659;
+	bh=+JXjBZLgfZU9aiO2nEPbtTqRBh60ilpIFy9NCvjpJUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GTWE2I1Ok5lNSGbMvxadgEBdYedvxcomib9176ZKT3AdYUOqZuSUIXB2GWLFhhNLw
-	 17sBFOuxj57lfjqdsndBih+lVCyyNB1K9SlZc3F4qqHAxm6P2g8KI6ckWHq6kUwmnS
-	 beYHviJ20mb1Z0bMRteRkfMgmuQMKiRrqgODoaP8=
+	b=Bho2CTWghdeh226uAZJlB7Zda/pu1tizWyFJY8eAoUnkpwL+Krsoqi1OIrdKTuYVD
+	 p1K+Rdn1Kaw6FtalmjZaYbgGpT+ZD7xWtH2QJLkE/jPw/gok4A3qUuJjuig/Uv0iSK
+	 Q9U/HLkYksra5u40eCyPgU2+GCwjZKOc54kalBGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 15/43] net: Save and restore msg_namelen in sock_sendmsg
+Subject: [PATCH 4.19 13/25] mm/memory-failure: check the mapcount of the precise page
 Date: Sat, 13 Jan 2024 10:49:54 +0100
-Message-ID: <20240113094207.400481348@linuxfoundation.org>
+Message-ID: <20240113094205.453376430@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
-References: <20240113094206.930684111@linuxfoundation.org>
+In-Reply-To: <20240113094205.025407355@linuxfoundation.org>
+References: <20240113094205.025407355@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,57 +55,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Dionne <marc.dionne@auristor.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit 01b2885d9415152bcb12ff1f7788f500a74ea0ed ]
+[ Upstream commit c79c5a0a00a9457718056b588f312baadf44e471 ]
 
-Commit 86a7e0b69bd5 ("net: prevent rewrite of msg_name in
-sock_sendmsg()") made sock_sendmsg save the incoming msg_name pointer
-and restore it before returning, to insulate the caller against
-msg_name being changed by the called code.  If the address length
-was also changed however, we may return with an inconsistent structure
-where the length doesn't match the address, and attempts to reuse it may
-lead to lost packets.
+A process may map only some of the pages in a folio, and might be missed
+if it maps the poisoned page but not the head page.  Or it might be
+unnecessarily hit if it maps the head page, but not the poisoned page.
 
-For example, a kernel that doesn't have commit 1c5950fc6fe9 ("udp6: fix
-potential access to stale information") will replace a v4 mapped address
-with its ipv4 equivalent, and shorten namelen accordingly from 28 to 16.
-If the caller attempts to reuse the resulting msg structure, it will have
-the original ipv6 (v4 mapped) address but an incorrect v4 length.
-
-Fixes: 86a7e0b69bd5 ("net: prevent rewrite of msg_name in sock_sendmsg()")
-Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Link: https://lkml.kernel.org/r/20231218135837.3310403-3-willy@infradead.org
+Fixes: 7af446a841a2 ("HWPOISON, hugetlb: enable error handling path for hugepage")
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Naoya Horiguchi <n-horiguchi@ah.jp.nec.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/socket.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/memory-failure.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/socket.c b/net/socket.c
-index 36e38ee434ea1..2a48aa89c035b 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -675,6 +675,7 @@ int sock_sendmsg(struct socket *sock, struct msghdr *msg)
- {
- 	struct sockaddr_storage *save_addr = (struct sockaddr_storage *)msg->msg_name;
- 	struct sockaddr_storage address;
-+	int save_len = msg->msg_namelen;
- 	int ret;
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index 3da3c63dccd1a..c971d5e11f932 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -989,7 +989,7 @@ static bool hwpoison_user_mappings(struct page *p, unsigned long pfn,
+ 	 * This check implies we don't kill processes if their pages
+ 	 * are in the swap cache early. Those are always late kills.
+ 	 */
+-	if (!page_mapped(hpage))
++	if (!page_mapped(p))
+ 		return true;
  
- 	if (msg->msg_name) {
-@@ -684,6 +685,7 @@ int sock_sendmsg(struct socket *sock, struct msghdr *msg)
+ 	if (PageKsm(p)) {
+@@ -1033,10 +1033,10 @@ static bool hwpoison_user_mappings(struct page *p, unsigned long pfn,
+ 	if (kill)
+ 		collect_procs(hpage, &tokill, flags & MF_ACTION_REQUIRED);
  
- 	ret = __sock_sendmsg(sock, msg);
- 	msg->msg_name = save_addr;
-+	msg->msg_namelen = save_len;
+-	unmap_success = try_to_unmap(hpage, ttu);
++	unmap_success = try_to_unmap(p, ttu);
+ 	if (!unmap_success)
+ 		pr_err("Memory failure: %#lx: failed to unmap page (mapcount=%d)\n",
+-		       pfn, page_mapcount(hpage));
++		       pfn, page_mapcount(p));
  
- 	return ret;
- }
+ 	/*
+ 	 * try_to_unmap() might put mlocked page in lru cache, so call
 -- 
 2.43.0
 
