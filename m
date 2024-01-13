@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-10712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CEFE82CB4E
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:58:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B5682CB85
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:00:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEFC21F225A1
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:58:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9526282EF3
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1173315C9;
-	Sat, 13 Jan 2024 09:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943A010958;
+	Sat, 13 Jan 2024 10:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axYWB2I9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUBpMXU+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEFE7EC5;
-	Sat, 13 Jan 2024 09:58:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DAFAC433C7;
-	Sat, 13 Jan 2024 09:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DCD41846;
+	Sat, 13 Jan 2024 10:00:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87848C433C7;
+	Sat, 13 Jan 2024 10:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139882;
-	bh=kaCChfvA58kmznV5CNVGhWeP7iyNX6kB1UKizn8mzr8=;
+	s=korg; t=1705140031;
+	bh=/ALhDNlROROohi+RtTy36dXThgfwLjEj9hVunfrruDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=axYWB2I905t8GvEyhCt3Hl+S0dvntsfTfFJ2eo7/zuu6Me4+InqukdPWMyQy8KQqx
-	 gHJqn3iJ8Tpy35VfVjBvATXe5tI5iSov7eWSb4CUJz5f2QW+uCMsRFNBXbV03rxros
-	 yYsON/MAXv8OUjIUi9oclO/9lyX2mpZcWfIPQbXo=
+	b=HUBpMXU+UfhBY0xDx2H28NRZA3HMwn4hvJX4X97UKpJmw9OErt9zRx/6cPteXuEzu
+	 ipVs6bGiVmzLfXDhPAw4/OdjXzn8HinlBhnjuYscjIvYBKiK/tP4mnOpiW21Lo3QCx
+	 uM6lJ9p4GSq+MmV25a+POVIVfL1OoFmETL6QVzAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinghao Liu <dinghao.liu@zju.edu.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 23/43] net/qla3xxx: fix potential memleak in ql_alloc_buffer_queues
+Subject: [PATCH 5.15 31/59] ASoC: meson: g12a-tohdmitx: Fix event generation for S/PDIF mux
 Date: Sat, 13 Jan 2024 10:50:02 +0100
-Message-ID: <20240113094207.655056530@linuxfoundation.org>
+Message-ID: <20240113094210.266533138@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
-References: <20240113094206.930684111@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,46 +52,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 89f45c30172c80e55c887f32f1af8e184124577b ]
+[ Upstream commit b036d8ef3120b996751495ce25994eea58032a98 ]
 
-When dma_alloc_coherent() fails, we should free qdev->lrg_buf
-to prevent potential memleak.
+When a control changes value the return value from _put() should be 1 so
+we get events generated to userspace notifying applications of the change.
+While the I2S mux gets this right the S/PDIF mux does not, fix the return
+value.
 
-Fixes: 1357bfcf7106 ("qla3xxx: Dynamically size the rx buffer queue based on the MTU.")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Link: https://lore.kernel.org/r/20231227070227.10527-1-dinghao.liu@zju.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c8609f3870f7 ("ASoC: meson: add g12a tohdmitx control")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240103-meson-enum-val-v1-4-424af7a8fb91@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/qlogic/qla3xxx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/meson/g12a-tohdmitx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qla3xxx.c b/drivers/net/ethernet/qlogic/qla3xxx.c
-index 29837e533cee8..127daad4410b9 100644
---- a/drivers/net/ethernet/qlogic/qla3xxx.c
-+++ b/drivers/net/ethernet/qlogic/qla3xxx.c
-@@ -2589,6 +2589,7 @@ static int ql_alloc_buffer_queues(struct ql3_adapter *qdev)
+diff --git a/sound/soc/meson/g12a-tohdmitx.c b/sound/soc/meson/g12a-tohdmitx.c
+index 6b16159733f72..4a9b67421c705 100644
+--- a/sound/soc/meson/g12a-tohdmitx.c
++++ b/sound/soc/meson/g12a-tohdmitx.c
+@@ -118,7 +118,7 @@ static int g12a_tohdmitx_spdif_mux_put_enum(struct snd_kcontrol *kcontrol,
  
- 	if (qdev->lrg_buf_q_alloc_virt_addr == NULL) {
- 		netdev_err(qdev->ndev, "lBufQ failed\n");
-+		kfree(qdev->lrg_buf);
- 		return -ENOMEM;
- 	}
- 	qdev->lrg_buf_q_virt_addr = qdev->lrg_buf_q_alloc_virt_addr;
-@@ -2613,6 +2614,7 @@ static int ql_alloc_buffer_queues(struct ql3_adapter *qdev)
- 				  qdev->lrg_buf_q_alloc_size,
- 				  qdev->lrg_buf_q_alloc_virt_addr,
- 				  qdev->lrg_buf_q_alloc_phy_addr);
-+		kfree(qdev->lrg_buf);
- 		return -ENOMEM;
- 	}
+ 	snd_soc_dapm_mux_update_power(dapm, kcontrol, mux, e, NULL);
  
+-	return 0;
++	return 1;
+ }
+ 
+ static SOC_ENUM_SINGLE_DECL(g12a_tohdmitx_spdif_mux_enum, TOHDMITX_CTRL0,
 -- 
 2.43.0
 
