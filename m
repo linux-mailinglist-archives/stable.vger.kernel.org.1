@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-10715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5BE182CB51
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:58:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C103082CB87
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:00:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54FB6283AC5
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:58:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F67F284448
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2CD1848;
-	Sat, 13 Jan 2024 09:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DDFADF6D;
+	Sat, 13 Jan 2024 10:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lt+EJMS4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="07SI4Dt3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982B61846;
-	Sat, 13 Jan 2024 09:58:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 179F2C433F1;
-	Sat, 13 Jan 2024 09:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26430111BB;
+	Sat, 13 Jan 2024 10:00:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A4DCC433F1;
+	Sat, 13 Jan 2024 10:00:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139891;
-	bh=6Wtv63WM5HwCju8Qlwa9MvBk1vQpSD0crBdvpzdJV4Q=;
+	s=korg; t=1705140040;
+	bh=wzCWX38v3j5koHhlM411NgU279ozWn78xUCL0G9DMxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lt+EJMS4HAAX7lQwtyZT/I3k+qA4P5rMotoLHknoq2PmHAXpzOCyetkmvm6rjLO0U
-	 bwGOV5fhCDONUbbkSVQM97ef3vYOPrwRrZj5+GYip3+Aeo8tzCiEKejKTdXx8MZMjk
-	 2Bza/0C0QYsLRTBkAVsVf4CASkltFFbh3+IHXNqU=
+	b=07SI4Dt3Y8oDFwWiIFucDSA96/FHwpbu+cAr2CTHpDsj6uJUbFsm0tuUZ2BsunNdH
+	 4gSmyNAJrIi/vVCm2zr64Clsyafv0Y7LcY8+XAzv9C/Kr25nODCGC8E1J2OsH5v3fz
+	 RRfMDcjdJ4hSMaqp47oP5fuHWUjl081KfWda7wzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Lange <thomas@corelatus.se>,
-	Willem de Bruijn <willemb@google.com>,
+	Dinghao Liu <dinghao.liu@zju.edu.cn>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 26/43] net: Implement missing SO_TIMESTAMPING_NEW cmsg support
+Subject: [PATCH 5.15 34/59] net/qla3xxx: fix potential memleak in ql_alloc_buffer_queues
 Date: Sat, 13 Jan 2024 10:50:05 +0100
-Message-ID: <20240113094207.754508628@linuxfoundation.org>
+Message-ID: <20240113094210.356829015@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
-References: <20240113094206.930684111@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,41 +53,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Lange <thomas@corelatus.se>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-[ Upstream commit 382a32018b74f407008615e0e831d05ed28e81cd ]
+[ Upstream commit 89f45c30172c80e55c887f32f1af8e184124577b ]
 
-Commit 9718475e6908 ("socket: Add SO_TIMESTAMPING_NEW") added the new
-socket option SO_TIMESTAMPING_NEW. However, it was never implemented in
-__sock_cmsg_send thus breaking SO_TIMESTAMPING cmsg for platforms using
-SO_TIMESTAMPING_NEW.
+When dma_alloc_coherent() fails, we should free qdev->lrg_buf
+to prevent potential memleak.
 
-Fixes: 9718475e6908 ("socket: Add SO_TIMESTAMPING_NEW")
-Link: https://lore.kernel.org/netdev/6a7281bf-bc4a-4f75-bb88-7011908ae471@app.fastmail.com/
-Signed-off-by: Thomas Lange <thomas@corelatus.se>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://lore.kernel.org/r/20240104085744.49164-1-thomas@corelatus.se
+Fixes: 1357bfcf7106 ("qla3xxx: Dynamically size the rx buffer queue based on the MTU.")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Link: https://lore.kernel.org/r/20231227070227.10527-1-dinghao.liu@zju.edu.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/qlogic/qla3xxx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 9c3bc24bfdd1f..aa5237a6116e1 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2402,6 +2402,7 @@ int __sock_cmsg_send(struct sock *sk, struct msghdr *msg, struct cmsghdr *cmsg,
- 		sockc->mark = *(u32 *)CMSG_DATA(cmsg);
- 		break;
- 	case SO_TIMESTAMPING_OLD:
-+	case SO_TIMESTAMPING_NEW:
- 		if (cmsg->cmsg_len != CMSG_LEN(sizeof(u32)))
- 			return -EINVAL;
+diff --git a/drivers/net/ethernet/qlogic/qla3xxx.c b/drivers/net/ethernet/qlogic/qla3xxx.c
+index 29837e533cee8..127daad4410b9 100644
+--- a/drivers/net/ethernet/qlogic/qla3xxx.c
++++ b/drivers/net/ethernet/qlogic/qla3xxx.c
+@@ -2589,6 +2589,7 @@ static int ql_alloc_buffer_queues(struct ql3_adapter *qdev)
+ 
+ 	if (qdev->lrg_buf_q_alloc_virt_addr == NULL) {
+ 		netdev_err(qdev->ndev, "lBufQ failed\n");
++		kfree(qdev->lrg_buf);
+ 		return -ENOMEM;
+ 	}
+ 	qdev->lrg_buf_q_virt_addr = qdev->lrg_buf_q_alloc_virt_addr;
+@@ -2613,6 +2614,7 @@ static int ql_alloc_buffer_queues(struct ql3_adapter *qdev)
+ 				  qdev->lrg_buf_q_alloc_size,
+ 				  qdev->lrg_buf_q_alloc_virt_addr,
+ 				  qdev->lrg_buf_q_alloc_phy_addr);
++		kfree(qdev->lrg_buf);
+ 		return -ENOMEM;
+ 	}
  
 -- 
 2.43.0
