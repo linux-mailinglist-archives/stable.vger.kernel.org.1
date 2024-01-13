@@ -1,47 +1,46 @@
-Return-Path: <stable+bounces-10675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C762D82CB29
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:56:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAE5C82CB84
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:00:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 784CF282338
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:56:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D05981C214C6
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2271846;
-	Sat, 13 Jan 2024 09:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6962328F7;
+	Sat, 13 Jan 2024 10:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fgsQNlpR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2tEfuOc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8CCC8DD;
-	Sat, 13 Jan 2024 09:56:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08FC5C433C7;
-	Sat, 13 Jan 2024 09:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317C815AF6;
+	Sat, 13 Jan 2024 10:00:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A28C7C43390;
+	Sat, 13 Jan 2024 10:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139774;
-	bh=SiQs2sObLGhIvOxn0GzkwF/tCdicVpjg86iGyHRwDD4=;
+	s=korg; t=1705140029;
+	bh=EOnRDofVMBrr62BfFFl+EzhdfLAV4uxG4w89YnKXO7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fgsQNlpRXvxM69aa0CyWXmCekjZXfVbRmNC3RF8bw0av1rQThDlG1EZQYSOC58ONJ
-	 KvvidQi+iNMy+LuBSscq7wcjw2S5qCoI1ZsViXHRJK4LCiDLHyhnMUCIGd8hKuNig8
-	 U91soKqO7lbl7M7IV8JEEX8SF+iVaACTPcjiTKHU=
+	b=u2tEfuOc3QbKADvEotwoa61OuGDOEgvMUlQOmJyJtTBVrne3kt3aazVsdk+SjcIWF
+	 Fl9o3x/dG+I35kMmzp2qvF/Q19wtsJ2DlVIbeYD799JKiKC8VG45oirVS62uH/iGaP
+	 B4N5Eik97T5Uv1QkR7p/9IMwNyF30PDoyhbjSwOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jorge Ramirez-Ortiz <jorge@foundries.io>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.4 25/38] mmc: rpmb: fixes pause retune on all RPMB partitions.
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 30/59] ASoC: meson: g12a-toacodec: Fix event generation
 Date: Sat, 13 Jan 2024 10:50:01 +0100
-Message-ID: <20240113094207.213940780@linuxfoundation.org>
+Message-ID: <20240113094210.235209280@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
-References: <20240113094206.455533180@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,65 +52,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jorge Ramirez-Ortiz <jorge@foundries.io>
+From: Mark Brown <broonie@kernel.org>
 
-commit e7794c14fd73e5eb4a3e0ecaa5334d5a17377c50 upstream.
+[ Upstream commit 172c88244b5f2d3375403ebb504d407be0fded59 ]
 
-When RPMB was converted to a character device, it added support for
-multiple RPMB partitions (Commit 97548575bef3 ("mmc: block: Convert RPMB to
-a character device").
+When a control changes value the return value from _put() should be 1 so
+we get events generated to userspace notifying applications of the change.
+We are checking if there has been a change and exiting early if not but we
+are not providing the correct return value in the latter case, fix this.
 
-One of the changes in this commit was transforming the variable target_part
-defined in __mmc_blk_ioctl_cmd into a bitmask. This inadvertently regressed
-the validation check done in mmc_blk_part_switch_pre() and
-mmc_blk_part_switch_post(), so let's fix it.
-
-Fixes: 97548575bef3 ("mmc: block: Convert RPMB to a character device")
-Signed-off-by: Jorge Ramirez-Ortiz <jorge@foundries.io>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231201153143.1449753-1-jorge@foundries.io
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: af2618a2eee8 ("ASoC: meson: g12a: add internal DAC glue driver")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240103-meson-enum-val-v1-3-424af7a8fb91@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/block.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ sound/soc/meson/g12a-toacodec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -850,9 +850,10 @@ static const struct block_device_operati
- static int mmc_blk_part_switch_pre(struct mmc_card *card,
- 				   unsigned int part_type)
- {
-+	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
- 	int ret = 0;
+diff --git a/sound/soc/meson/g12a-toacodec.c b/sound/soc/meson/g12a-toacodec.c
+index 10a2ff1ecf33e..1cd62ba56e06b 100644
+--- a/sound/soc/meson/g12a-toacodec.c
++++ b/sound/soc/meson/g12a-toacodec.c
+@@ -104,7 +104,7 @@ static int g12a_toacodec_mux_put_enum(struct snd_kcontrol *kcontrol,
  
--	if (part_type == EXT_CSD_PART_CONFIG_ACC_RPMB) {
-+	if ((part_type & mask) == mask) {
- 		if (card->ext_csd.cmdq_en) {
- 			ret = mmc_cmdq_disable(card);
- 			if (ret)
-@@ -867,9 +868,10 @@ static int mmc_blk_part_switch_pre(struc
- static int mmc_blk_part_switch_post(struct mmc_card *card,
- 				    unsigned int part_type)
- {
-+	const unsigned int mask = EXT_CSD_PART_CONFIG_ACC_RPMB;
- 	int ret = 0;
+ 	snd_soc_dapm_mux_update_power(dapm, kcontrol, mux, e, NULL);
  
--	if (part_type == EXT_CSD_PART_CONFIG_ACC_RPMB) {
-+	if ((part_type & mask) == mask) {
- 		mmc_retune_unpause(card->host);
- 		if (card->reenable_cmdq && !card->ext_csd.cmdq_en)
- 			ret = mmc_cmdq_enable(card);
-@@ -3091,4 +3093,3 @@ module_exit(mmc_blk_exit);
+-	return 0;
++	return 1;
+ }
  
- MODULE_LICENSE("GPL");
- MODULE_DESCRIPTION("Multimedia Card (MMC) block device driver");
--
+ static SOC_ENUM_SINGLE_DECL(g12a_toacodec_mux_enum, TOACODEC_CTRL0,
+-- 
+2.43.0
+
 
 
 
