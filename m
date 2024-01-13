@@ -1,48 +1,47 @@
-Return-Path: <stable+bounces-10777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AF9382CB93
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:01:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA3C182CB6C
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:59:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 032141F224B8
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:01:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A0371F22B25
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB1231848;
-	Sat, 13 Jan 2024 10:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28611869;
+	Sat, 13 Jan 2024 09:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tHvg40Lx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="neloPb1z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3C5563C3;
-	Sat, 13 Jan 2024 10:01:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE90FC433F1;
-	Sat, 13 Jan 2024 10:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B37B1846;
+	Sat, 13 Jan 2024 09:59:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A13C433F1;
+	Sat, 13 Jan 2024 09:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705140073;
-	bh=6MgylHYZihgVusPnWRRzM1CzS2izel+IsnUMIi5Kr48=;
+	s=korg; t=1705139961;
+	bh=zt4trwVM8mArt3AeAPBSHqWkA5W93PO1x3EgDaGEeqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tHvg40LxuMFYG9j6LG7EotiwKKkZ1ajAUMSnFfatfbqnfUJlxOAOxE1r1agPy0B7z
-	 SYFkw1Xmb2stvCWApNRGIi0cB/ifYQxIKrTgCqPL4C2sim4BzWqLQrRRtWxKm30ggs
-	 L2zH3E5DxQ8HKZ68QI4woKd32MseN5tGs8LOjoVU=
+	b=neloPb1z8jiI4hgf1/hdY7GF0WmR7RWOZPE17ZR5l6gpcE507oh0I2hQG6gw5zDsW
+	 gZfy9V5b+kmJeXPfRJfbJzPshMRpFgkkY0Eph6F/cLTHds+nlZU9bchZt3s+19nCZ8
+	 O0P0J6C80ACAZteIc9/lmpA1p5ejVK/BZEHHcOaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Tobias Gruetzmacher <tobias-lists@23.gs>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Subject: [PATCH 5.15 44/59] firewire: ohci: suppress unexpected system reboot in AMD Ryzen machines and ASM108x/VT630x PCIe cards
+	Aditya Gupta <adityag@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>
+Subject: [PATCH 5.10 36/43] powerpc: update ppc_save_regs to save current r1 in pt_regs
 Date: Sat, 13 Jan 2024 10:50:15 +0100
-Message-ID: <20240113094210.647105764@linuxfoundation.org>
+Message-ID: <20240113094208.104649943@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
-References: <20240113094209.301672391@linuxfoundation.org>
+In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
+References: <20240113094206.930684111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,130 +53,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+From: Aditya Gupta <adityag@linux.ibm.com>
 
-commit ac9184fbb8478dab4a0724b279f94956b69be827 upstream.
+commit b684c09f09e7a6af3794d4233ef785819e72db79 upstream.
 
-VIA VT6306/6307/6308 provides PCI interface compliant to 1394 OHCI. When
-the hardware is combined with Asmedia ASM1083/1085 PCIe-to-PCI bus bridge,
-it appears that accesses to its 'Isochronous Cycle Timer' register (offset
-0xf0 on PCI memory space) often causes unexpected system reboot in any
-type of AMD Ryzen machine (both 0x17 and 0x19 families). It does not
-appears in the other type of machine (AMD pre-Ryzen machine, Intel
-machine, at least), or in the other OHCI 1394 hardware (e.g. Texas
-Instruments).
+ppc_save_regs() skips one stack frame while saving the CPU register states.
+Instead of saving current R1, it pulls the previous stack frame pointer.
 
-The issue explicitly appears at a commit dcadfd7f7c74 ("firewire: core:
-use union for callback of transaction completion") added to v6.5 kernel.
-It changed 1394 OHCI driver to access to the register every time to
-dispatch local asynchronous transaction. However, the issue exists in
-older version of kernel as long as it runs in AMD Ryzen machine, since
-the access to the register is required to maintain bus time. It is not
-hard to imagine that users experience the unexpected system reboot when
-generating bus reset by plugging any devices in, or reading the register
-by time-aware application programs; e.g. audio sample processing.
+When vmcores caused by direct panic call (such as `echo c >
+/proc/sysrq-trigger`), are debugged with gdb, gdb fails to show the
+backtrace correctly. On further analysis, it was found that it was because
+of mismatch between r1 and NIP.
 
-This commit suppresses the unexpected system reboot in the combination of
-hardware. It avoids the access itself. As a result, the software stack can
-not provide the hardware time anymore to unit drivers, userspace
-applications, and nodes in the same IEEE 1394 bus. It brings apparent
-disadvantage since time-aware application programs require it, while
-time-unaware applications are available again; e.g. sbp2.
+GDB uses NIP to get current function symbol and uses corresponding debug
+info of that function to unwind previous frames, but due to the
+mismatching r1 and NIP, the unwinding does not work, and it fails to
+unwind to the 2nd frame and hence does not show the backtrace.
 
+GDB backtrace with vmcore of kernel without this patch:
+
+---------
+(gdb) bt
+ #0  0xc0000000002a53e8 in crash_setup_regs (oldregs=<optimized out>,
+    newregs=0xc000000004f8f8d8) at ./arch/powerpc/include/asm/kexec.h:69
+ #1  __crash_kexec (regs=<optimized out>) at kernel/kexec_core.c:974
+ #2  0x0000000000000063 in ?? ()
+ #3  0xc000000003579320 in ?? ()
+---------
+
+Further analysis revealed that the mismatch occurred because
+"ppc_save_regs" was saving the previous stack's SP instead of the current
+r1. This patch fixes this by storing current r1 in the saved pt_regs.
+
+GDB backtrace with vmcore of patched kernel:
+
+--------
+(gdb) bt
+ #0  0xc0000000002a53e8 in crash_setup_regs (oldregs=0x0, newregs=0xc00000000670b8d8)
+    at ./arch/powerpc/include/asm/kexec.h:69
+ #1  __crash_kexec (regs=regs@entry=0x0) at kernel/kexec_core.c:974
+ #2  0xc000000000168918 in panic (fmt=fmt@entry=0xc000000001654a60 "sysrq triggered crash\n")
+    at kernel/panic.c:358
+ #3  0xc000000000b735f8 in sysrq_handle_crash (key=<optimized out>) at drivers/tty/sysrq.c:155
+ #4  0xc000000000b742cc in __handle_sysrq (key=key@entry=99, check_mask=check_mask@entry=false)
+    at drivers/tty/sysrq.c:602
+ #5  0xc000000000b7506c in write_sysrq_trigger (file=<optimized out>, buf=<optimized out>,
+    count=2, ppos=<optimized out>) at drivers/tty/sysrq.c:1163
+ #6  0xc00000000069a7bc in pde_write (ppos=<optimized out>, count=<optimized out>,
+    buf=<optimized out>, file=<optimized out>, pde=0xc00000000362cb40) at fs/proc/inode.c:340
+ #7  proc_reg_write (file=<optimized out>, buf=<optimized out>, count=<optimized out>,
+    ppos=<optimized out>) at fs/proc/inode.c:352
+ #8  0xc0000000005b3bbc in vfs_write (file=file@entry=0xc000000006aa6b00,
+    buf=buf@entry=0x61f498b4f60 <error: Cannot access memory at address 0x61f498b4f60>,
+    count=count@entry=2, pos=pos@entry=0xc00000000670bda0) at fs/read_write.c:582
+ #9  0xc0000000005b4264 in ksys_write (fd=<optimized out>,
+    buf=0x61f498b4f60 <error: Cannot access memory at address 0x61f498b4f60>, count=2)
+    at fs/read_write.c:637
+ #10 0xc00000000002ea2c in system_call_exception (regs=0xc00000000670be80, r0=<optimized out>)
+    at arch/powerpc/kernel/syscall.c:171
+ #11 0xc00000000000c270 in system_call_vectored_common ()
+    at arch/powerpc/kernel/interrupt_64.S:192
+--------
+
+Nick adds:
+  So this now saves regs as though it was an interrupt taken in the
+  caller, at the instruction after the call to ppc_save_regs, whereas
+  previously the NIP was there, but R1 came from the caller's caller and
+  that mismatch is what causes gdb's dwarf unwinder to go haywire.
+
+Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
+Fixes: d16a58f8854b1 ("powerpc: Improve ppc_save_regs()")
+Reivewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230615091047.90433-1-adityag@linux.ibm.com
 Cc: stable@vger.kernel.org
-Reported-by: Jiri Slaby <jirislaby@kernel.org>
-Closes: https://bugzilla.suse.com/show_bug.cgi?id=1215436
-Reported-by: Mario Limonciello <mario.limonciello@amd.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217994
-Reported-by: Tobias Gruetzmacher <tobias-lists@23.gs>
-Closes: https://sourceforge.net/p/linux1394/mailman/message/58711901/
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2240973
-Closes: https://bugs.launchpad.net/linux/+bug/2043905
-Link: https://lore.kernel.org/r/20240102110150.244475-1-o-takashi@sakamocchi.jp
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Aditya Gupta <adityag@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firewire/ohci.c |   51 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
+ arch/powerpc/kernel/ppc_save_regs.S |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/firewire/ohci.c
-+++ b/drivers/firewire/ohci.c
-@@ -279,6 +279,51 @@ static char ohci_driver_name[] = KBUILD_
- #define QUIRK_TI_SLLZ059		0x20
- #define QUIRK_IR_WAKE			0x40
- 
-+// On PCI Express Root Complex in any type of AMD Ryzen machine, VIA VT6306/6307/6308 with Asmedia
-+// ASM1083/1085 brings an inconvenience that the read accesses to 'Isochronous Cycle Timer' register
-+// (at offset 0xf0 in PCI I/O space) often causes unexpected system reboot. The mechanism is not
-+// clear, since the read access to the other registers is enough safe; e.g. 'Node ID' register,
-+// while it is probable due to detection of any type of PCIe error.
-+#define QUIRK_REBOOT_BY_CYCLE_TIMER_READ	0x80000000
-+
-+#if IS_ENABLED(CONFIG_X86)
-+
-+static bool has_reboot_by_cycle_timer_read_quirk(const struct fw_ohci *ohci)
-+{
-+	return !!(ohci->quirks & QUIRK_REBOOT_BY_CYCLE_TIMER_READ);
-+}
-+
-+#define PCI_DEVICE_ID_ASMEDIA_ASM108X	0x1080
-+
-+static bool detect_vt630x_with_asm1083_on_amd_ryzen_machine(const struct pci_dev *pdev)
-+{
-+	const struct pci_dev *pcie_to_pci_bridge;
-+
-+	// Detect any type of AMD Ryzen machine.
-+	if (!static_cpu_has(X86_FEATURE_ZEN))
-+		return false;
-+
-+	// Detect VIA VT6306/6307/6308.
-+	if (pdev->vendor != PCI_VENDOR_ID_VIA)
-+		return false;
-+	if (pdev->device != PCI_DEVICE_ID_VIA_VT630X)
-+		return false;
-+
-+	// Detect Asmedia ASM1083/1085.
-+	pcie_to_pci_bridge = pdev->bus->self;
-+	if (pcie_to_pci_bridge->vendor != PCI_VENDOR_ID_ASMEDIA)
-+		return false;
-+	if (pcie_to_pci_bridge->device != PCI_DEVICE_ID_ASMEDIA_ASM108X)
-+		return false;
-+
-+	return true;
-+}
-+
-+#else
-+#define has_reboot_by_cycle_timer_read_quirk(ohci) false
-+#define detect_vt630x_with_asm1083_on_amd_ryzen_machine(pdev)	false
-+#endif
-+
- /* In case of multiple matches in ohci_quirks[], only the first one is used. */
- static const struct {
- 	unsigned short vendor, device, revision, flags;
-@@ -1713,6 +1758,9 @@ static u32 get_cycle_time(struct fw_ohci
- 	s32 diff01, diff12;
- 	int i;
- 
-+	if (has_reboot_by_cycle_timer_read_quirk(ohci))
-+		return 0;
-+
- 	c2 = reg_read(ohci, OHCI1394_IsochronousCycleTimer);
- 
- 	if (ohci->quirks & QUIRK_CYCLE_TIMER) {
-@@ -3615,6 +3663,9 @@ static int pci_probe(struct pci_dev *dev
- 	if (param_quirks)
- 		ohci->quirks = param_quirks;
- 
-+	if (detect_vt630x_with_asm1083_on_amd_ryzen_machine(dev))
-+		ohci->quirks |= QUIRK_REBOOT_BY_CYCLE_TIMER_READ;
-+
- 	/*
- 	 * Because dma_alloc_coherent() allocates at least one page,
- 	 * we save space by using a common buffer for the AR request/
+--- a/arch/powerpc/kernel/ppc_save_regs.S
++++ b/arch/powerpc/kernel/ppc_save_regs.S
+@@ -58,10 +58,10 @@ _GLOBAL(ppc_save_regs)
+ 	lbz	r0,PACAIRQSOFTMASK(r13)
+ 	PPC_STL	r0,SOFTE-STACK_FRAME_OVERHEAD(r3)
+ #endif
+-	/* go up one stack frame for SP */
+-	PPC_LL	r4,0(r1)
+-	PPC_STL	r4,1*SZL(r3)
++	/* store current SP */
++	PPC_STL r1,1*SZL(r3)
+ 	/* get caller's LR */
++	PPC_LL	r4,0(r1)
+ 	PPC_LL	r0,LRSAVE(r4)
+ 	PPC_STL	r0,_LINK-STACK_FRAME_OVERHEAD(r3)
+ 	mflr	r0
 
 
 
