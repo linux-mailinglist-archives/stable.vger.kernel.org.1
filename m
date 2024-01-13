@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-10654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B95C982CB0C
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:55:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F72582CB89
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:00:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49665285EA3
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:55:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F444283B52
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:00:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 901BE15AF;
-	Sat, 13 Jan 2024 09:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF3D1848;
+	Sat, 13 Jan 2024 10:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5Vin5AL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gGEIoIW9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580B017E8;
-	Sat, 13 Jan 2024 09:55:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C831DC433C7;
-	Sat, 13 Jan 2024 09:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320CADF6D;
+	Sat, 13 Jan 2024 10:00:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48AF4C433C7;
+	Sat, 13 Jan 2024 10:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139712;
-	bh=CywxgpJnsGm3E7+w30wOR3a6IBEMY0ezao1CQOdUTBU=;
+	s=korg; t=1705140037;
+	bh=ItvyajfT1IYvMlwaYu7txzEv9QxfwEzVtV6JABJKM8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l5Vin5ALHe3EivHZS2MuMyeHXLhUIK0602nvxpwPPepZzlpU/nPsqNfTlwojiwZql
-	 yQODIMFJhO0AzsWE02MGX/WSZys+uIfPNoH3jutLUBXZ2SB5z4TLDuol7JS20fgb16
-	 RG+7Fd0aMUbs32II9x+6SxggG0l1ghoY8Ekaa+Wc=
+	b=gGEIoIW94pah+J4bDZ4e2RG2Ano6H6hisIGCwQy7a8sh+89IkdubdkEgOZw+7yFeU
+	 rfofkRmG051HBQQt8bmqxPly+2GqTxdy2h2tf1jEx15QypYMsVhma9KKxqNZscG7H8
+	 oHGC+awnCxztveCl92hFrm2Z9F03p8H1yMZG8rvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Suraj Jitindar Singh <surajjs@amazon.com>
-Subject: [PATCH 4.19 23/25] net/dst: use a smaller percpu_counter batch for dst entries accounting
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	Rodrigo Cataldo <rodrigo.cadore@l-acoustics.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Naama Meir <naamax.meir@linux.intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 33/59] igc: Fix hicredit calculation
 Date: Sat, 13 Jan 2024 10:50:04 +0100
-Message-ID: <20240113094205.769860346@linuxfoundation.org>
+Message-ID: <20240113094210.326336599@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094205.025407355@linuxfoundation.org>
-References: <20240113094205.025407355@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,80 +56,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Rodrigo Cataldo <rodrigo.cadore@l-acoustics.com>
 
-commit cf86a086a18095e33e0637cb78cda1fcf5280852 upstream.
+[ Upstream commit 947dfc8138dfaeb6e966e2d661de89eb203e3064 ]
 
-percpu_counter_add() uses a default batch size which is quite big
-on platforms with 256 cpus. (2*256 -> 512)
+According to the Intel Software Manual for I225, Section 7.5.2.7,
+hicredit should be multiplied by the constant link-rate value, 0x7736.
 
-This means dst_entries_get_fast() can be off by +/- 2*(nr_cpus^2)
-(131072 on servers with 256 cpus)
+Currently, the old constant link-rate value, 0x7735, from the boards
+supported on igb are being used, most likely due to a copy'n'paste, as
+the rest of the logic is the same for both drivers.
 
-Reduce the batch size to something more reasonable, and
-add logic to ip6_dst_gc() to call dst_entries_get_slow()
-before calling the _very_ expensive fib6_run_gc() function.
+Update hicredit accordingly.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
-Cc: <stable@vger.kernel.org> # 4.19.x
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1ab011b0bf07 ("igc: Add support for CBS offloading")
+Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+Signed-off-by: Rodrigo Cataldo <rodrigo.cadore@l-acoustics.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/dst_ops.h |    4 +++-
- net/core/dst.c        |    8 ++++----
- net/ipv6/route.c      |    3 +++
- 3 files changed, 10 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_tsn.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/net/dst_ops.h
-+++ b/include/net/dst_ops.h
-@@ -53,9 +53,11 @@ static inline int dst_entries_get_slow(s
- 	return percpu_counter_sum_positive(&dst->pcpuc_entries);
- }
+diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
+index 356c7455c5cee..2330b1ff915e7 100644
+--- a/drivers/net/ethernet/intel/igc/igc_tsn.c
++++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
+@@ -185,7 +185,7 @@ static int igc_tsn_enable_offload(struct igc_adapter *adapter)
+ 			wr32(IGC_TQAVCC(i), tqavcc);
  
-+#define DST_PERCPU_COUNTER_BATCH 32
- static inline void dst_entries_add(struct dst_ops *dst, int val)
- {
--	percpu_counter_add(&dst->pcpuc_entries, val);
-+	percpu_counter_add_batch(&dst->pcpuc_entries, val,
-+				 DST_PERCPU_COUNTER_BATCH);
- }
- 
- static inline int dst_entries_init(struct dst_ops *dst)
---- a/net/core/dst.c
-+++ b/net/core/dst.c
-@@ -97,11 +97,11 @@ void *dst_alloc(struct dst_ops *ops, str
- {
- 	struct dst_entry *dst;
- 
--	if (ops->gc && dst_entries_get_fast(ops) > ops->gc_thresh) {
-+	if (ops->gc &&
-+	    !(flags & DST_NOCOUNT) &&
-+	    dst_entries_get_fast(ops) > ops->gc_thresh) {
- 		if (ops->gc(ops)) {
--			printk_ratelimited(KERN_NOTICE "Route cache is full: "
--					   "consider increasing sysctl "
--					   "net.ipv[4|6].route.max_size.\n");
-+			pr_notice_ratelimited("Route cache is full: consider increasing sysctl net.ipv6.route.max_size.\n");
- 			return NULL;
- 		}
- 	}
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -2778,6 +2778,9 @@ static int ip6_dst_gc(struct dst_ops *op
- 	int entries;
- 
- 	entries = dst_entries_get_fast(ops);
-+	if (entries > rt_max_size)
-+		entries = dst_entries_get_slow(ops);
-+
- 	if (time_after(rt_last_gc + rt_min_interval, jiffies) &&
- 	    entries <= rt_max_size)
- 		goto out;
+ 			wr32(IGC_TQAVHC(i),
+-			     0x80000000 + ring->hicredit * 0x7735);
++			     0x80000000 + ring->hicredit * 0x7736);
+ 		} else {
+ 			/* Disable any CBS for the queue */
+ 			txqctl &= ~(IGC_TXQCTL_QAV_SEL_MASK);
+-- 
+2.43.0
+
 
 
 
