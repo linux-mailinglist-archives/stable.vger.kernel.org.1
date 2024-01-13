@@ -1,48 +1,46 @@
-Return-Path: <stable+bounces-10761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1305182CB83
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:00:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD41482CB43
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:57:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39F201C2119F
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:00:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45EED282886
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:57:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77DDF12E63;
-	Sat, 13 Jan 2024 10:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC3AB15BD;
+	Sat, 13 Jan 2024 09:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mbwaIsr0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4xGmZHg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF0412E5E;
-	Sat, 13 Jan 2024 10:00:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A85A4C433C7;
-	Sat, 13 Jan 2024 10:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D13185A;
+	Sat, 13 Jan 2024 09:57:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD3DC433F1;
+	Sat, 13 Jan 2024 09:57:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705140026;
-	bh=VUrhgkM4gEsjXmddXhFopGWpJVhv7XYRO+09nWBcsR4=;
+	s=korg; t=1705139850;
+	bh=QLHevKnjLQFM5hKEcAfQfpInXOS/DeUnlPyUMZt/vRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mbwaIsr0IPngx1YL0TTA1B2hYBzvmc/z7sXCIOnS8JRie3eoW0pkWPDPYpwvBS+w9
-	 hj5XEzLqRmKiInsRU1axTyhotDKWfean9FZJTVu1bHM/M4IbhAsZPaUAktgMParOHv
-	 nhEwCCvbUSXanQyO769vYX30eCbC3za3ssNhHYJo=
+	b=d4xGmZHgb1CbOU2vNF4/6I/btWKbdXPMYANYLtLKwGuvcBdkBd0BvKEbiBkYyrfb6
+	 TAGyK09WwkWmlu0NrWGmNwulWZ0+9pAu5FAY6KHs5E2lpEBZT7W7xKY2kL0xkqdWD+
+	 7HNXZWSD8hpy5iJrM9BtTfgPQmtvFr18eC5EMSJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vadim Fedorenko <vadfed@meta.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 21/59] net-timestamp: extend SOF_TIMESTAMPING_OPT_ID to HW timestamps
+Subject: [PATCH 5.10 13/43] netfilter: nftables: add loop check helper function
 Date: Sat, 13 Jan 2024 10:49:52 +0100
-Message-ID: <20240113094209.960941475@linuxfoundation.org>
+Message-ID: <20240113094207.343856033@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
-References: <20240113094209.301672391@linuxfoundation.org>
+In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
+References: <20240113094206.930684111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,54 +52,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vadim Fedorenko <vadfed@meta.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 8ca5a5790b9a1ce147484d2a2c4e66d2553f3d6c ]
+[ Upstream commit 6387aa6e59be8d1158c5703f34553c93d7743d8c ]
 
-When the feature was added it was enabled for SW timestamps only but
-with current hardware the same out-of-order timestamps can be seen.
-Let's expand the area for the feature to all types of timestamps.
+This patch adds nft_check_loops() to reuse it in the new catch-all
+element codebase.
 
-Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 7f6ca95d16b9 ("net: Implement missing getsockopt(SO_TIMESTAMPING_NEW)")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: b29be0ca8e81 ("netfilter: nft_immediate: drop chain reference counter on error")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ip_output.c  | 2 +-
- net/ipv6/ip6_output.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index a5f09d64c6ed1..a445e4e05e0d1 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -990,7 +990,7 @@ static int __ip_append_data(struct sock *sk,
- 	mtu = cork->gso_size ? IP_MAX_MTU : cork->fragsize;
- 	paged = !!cork->gso_size;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index f244a4323a43b..03189738a73b9 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -8994,26 +8994,38 @@ EXPORT_SYMBOL_GPL(nft_chain_validate_hooks);
+ static int nf_tables_check_loops(const struct nft_ctx *ctx,
+ 				 const struct nft_chain *chain);
  
--	if (cork->tx_flags & SKBTX_ANY_SW_TSTAMP &&
-+	if (cork->tx_flags & SKBTX_ANY_TSTAMP &&
- 	    sk->sk_tsflags & SOF_TIMESTAMPING_OPT_ID)
- 		tskey = atomic_inc_return(&sk->sk_tskey) - 1;
++static int nft_check_loops(const struct nft_ctx *ctx,
++			   const struct nft_set_ext *ext)
++{
++	const struct nft_data *data;
++	int ret;
++
++	data = nft_set_ext_data(ext);
++	switch (data->verdict.code) {
++	case NFT_JUMP:
++	case NFT_GOTO:
++		ret = nf_tables_check_loops(ctx, data->verdict.chain);
++		break;
++	default:
++		ret = 0;
++		break;
++	}
++
++	return ret;
++}
++
+ static int nf_tables_loop_check_setelem(const struct nft_ctx *ctx,
+ 					struct nft_set *set,
+ 					const struct nft_set_iter *iter,
+ 					struct nft_set_elem *elem)
+ {
+ 	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
+-	const struct nft_data *data;
  
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 5045b479c2a95..7205473ba28d3 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -1484,7 +1484,7 @@ static int __ip6_append_data(struct sock *sk,
- 	mtu = cork->gso_size ? IP6_MAX_MTU : cork->fragsize;
- 	orig_mtu = mtu;
+ 	if (nft_set_ext_exists(ext, NFT_SET_EXT_FLAGS) &&
+ 	    *nft_set_ext_flags(ext) & NFT_SET_ELEM_INTERVAL_END)
+ 		return 0;
  
--	if (cork->tx_flags & SKBTX_ANY_SW_TSTAMP &&
-+	if (cork->tx_flags & SKBTX_ANY_TSTAMP &&
- 	    sk->sk_tsflags & SOF_TIMESTAMPING_OPT_ID)
- 		tskey = atomic_inc_return(&sk->sk_tskey) - 1;
+-	data = nft_set_ext_data(ext);
+-	switch (data->verdict.code) {
+-	case NFT_JUMP:
+-	case NFT_GOTO:
+-		return nf_tables_check_loops(ctx, data->verdict.chain);
+-	default:
+-		return 0;
+-	}
++	return nft_check_loops(ctx, ext);
+ }
  
+ static int nf_tables_check_loops(const struct nft_ctx *ctx,
 -- 
 2.43.0
 
