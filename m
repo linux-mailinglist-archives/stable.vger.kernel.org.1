@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-10678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D0DD82CB2C
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:56:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F080C82CB50
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:58:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4208F1C20D42
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:56:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 780AAB21A1D
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991811869;
-	Sat, 13 Jan 2024 09:56:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFCAD15C9;
+	Sat, 13 Jan 2024 09:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogrMAFf3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WBUl4DKH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62A431848;
-	Sat, 13 Jan 2024 09:56:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1148C433F1;
-	Sat, 13 Jan 2024 09:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA6E21848;
+	Sat, 13 Jan 2024 09:58:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2844BC433C7;
+	Sat, 13 Jan 2024 09:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139783;
-	bh=zPFQ9Gs91xdsM9xrHU/ngR1EE6KY8HGmJtB8NyS838E=;
+	s=korg; t=1705139888;
+	bh=KVATUPz+nrV1Tde0aeIBlXSmdhvwMtwDP2/7slsfNhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ogrMAFf3pD3VZJd+c/dbU4wCiQJMvJN4bOa616PTqchRA6r/6YblCx/ZW5pJqGMDb
-	 ozy7yH7y+vvcUdwGNAeVCIfn4CJ5VKb2W9qWH1M9gmX7wnCJKzvOyEc7++CU5lBcnk
-	 a2l40GL2KuP58x7FNYytmjEeULJDDgx/IFhXYx0I=
+	b=WBUl4DKHH/e83k1Gb9rO2w7JZoiPwPFypWYehZ61Zzs7mnHLeV7b/734x/MY7/r8p
+	 flaJIcFXmrnbyoKJH3NQM1egSG8uHQvjchK/69vAaq+kutiz365J5lZsewDsywvte6
+	 6Q4Tgydo73IOYc6lEJyIsfpLzBQfGhJxj54U46z4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Kalle Valo <kvalo@codeaurora.org>,
-	Amit Pundir <amit.pundir@linaro.org>
-Subject: [PATCH 5.4 28/38] ath10k: Wait until copy complete is actually done before completing
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 25/43] bnxt_en: Remove mis-applied code from bnxt_cfg_ntp_filters()
 Date: Sat, 13 Jan 2024 10:50:04 +0100
-Message-ID: <20240113094207.316101222@linuxfoundation.org>
+Message-ID: <20240113094207.718398714@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
-References: <20240113094206.455533180@linuxfoundation.org>
+In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
+References: <20240113094206.930684111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,100 +54,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Michael Chan <michael.chan@broadcom.com>
 
-[ Upstream commit 8f9ed93d09a97444733d492a3bbf66bcb786a777 ]
+[ Upstream commit e009b2efb7a8850498796b360043ac25c8d3d28f ]
 
-On wcn3990 we have "per_ce_irq = true".  That makes the
-ath10k_ce_interrupt_summary() function always return 0xfff. The
-ath10k_ce_per_engine_service_any() function will see this and think
-that _all_ copy engines have an interrupt.  Without checking, the
-ath10k_ce_per_engine_service() assumes that if it's called that the
-"copy complete" (cc) interrupt fired.  This combination seems bad.
+The 2 lines to check for the BNXT_HWRM_PF_UNLOAD_SP_EVENT bit was
+mis-applied to bnxt_cfg_ntp_filters() and should have been applied to
+bnxt_sp_task().
 
-Let's add a check to make sure that the "copy complete" interrupt
-actually fired in ath10k_ce_per_engine_service().
-
-This might fix a hard-to-reproduce failure where it appears that the
-copy complete handlers run before the copy is really complete.
-Specifically a symptom was that we were seeing this on a Qualcomm
-sc7180 board:
-  arm-smmu 15000000.iommu: Unhandled context fault:
-  fsr=0x402, iova=0x7fdd45780, fsynr=0x30003, cbfrsynra=0xc1, cb=10
-
-Even on platforms that don't have wcn3990 this still seems like it
-would be a sane thing to do.  Specifically the current IRQ handler
-comments indicate that there might be other misc interrupt sources
-firing that need to be cleared.  If one of those sources was the one
-that caused the IRQ handler to be called it would also be important to
-double-check that the interrupt we cared about actually fired.
-
-Tested-on: WCN3990 SNOC WLAN.HL.3.2.2-00490-QCAHLSWMTPL-1
-
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20200609082015.1.Ife398994e5a0a6830e4d4a16306ef36e0144e7ba@changeid
-Stable-dep-of: 170c75d43a77 ("ath10k: Don't touch the CE interrupt registers after power up")
-Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 19241368443f ("bnxt_en: Send PF driver unload notification to all VFs.")
+Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/ce.c |   30 +++++++++++++++++++++---------
- 1 file changed, 21 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/wireless/ath/ath10k/ce.c
-+++ b/drivers/net/wireless/ath/ath10k/ce.c
-@@ -481,6 +481,15 @@ static inline void ath10k_ce_engine_int_
- 	ath10k_ce_write32(ar, ce_ctrl_addr + wm_regs->addr, mask);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index c67a108c2c07f..584f365de563f 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -11143,6 +11143,8 @@ static void bnxt_sp_task(struct work_struct *work)
+ 		bnxt_cfg_ntp_filters(bp);
+ 	if (test_and_clear_bit(BNXT_HWRM_EXEC_FWD_REQ_SP_EVENT, &bp->sp_event))
+ 		bnxt_hwrm_exec_fwd_req(bp);
++	if (test_and_clear_bit(BNXT_HWRM_PF_UNLOAD_SP_EVENT, &bp->sp_event))
++		netdev_info(bp->dev, "Receive PF driver unload event!\n");
+ 	if (test_and_clear_bit(BNXT_PERIODIC_STATS_SP_EVENT, &bp->sp_event)) {
+ 		bnxt_hwrm_port_qstats(bp, 0);
+ 		bnxt_hwrm_port_qstats_ext(bp, 0);
+@@ -12097,8 +12099,6 @@ static void bnxt_cfg_ntp_filters(struct bnxt *bp)
+ 			}
+ 		}
+ 	}
+-	if (test_and_clear_bit(BNXT_HWRM_PF_UNLOAD_SP_EVENT, &bp->sp_event))
+-		netdev_info(bp->dev, "Receive PF driver unload event!\n");
  }
  
-+static inline bool ath10k_ce_engine_int_status_check(struct ath10k *ar,
-+						     u32 ce_ctrl_addr,
-+						     unsigned int mask)
-+{
-+	struct ath10k_hw_ce_host_wm_regs *wm_regs = ar->hw_ce_regs->wm_regs;
-+
-+	return ath10k_ce_read32(ar, ce_ctrl_addr + wm_regs->addr) & mask;
-+}
-+
- /*
-  * Guts of ath10k_ce_send.
-  * The caller takes responsibility for any needed locking.
-@@ -1301,19 +1310,22 @@ void ath10k_ce_per_engine_service(struct
- 
- 	spin_lock_bh(&ce->ce_lock);
- 
--	/* Clear the copy-complete interrupts that will be handled here. */
--	ath10k_ce_engine_int_status_clear(ar, ctrl_addr,
--					  wm_regs->cc_mask);
-+	if (ath10k_ce_engine_int_status_check(ar, ctrl_addr,
-+					      wm_regs->cc_mask)) {
-+		/* Clear before handling */
-+		ath10k_ce_engine_int_status_clear(ar, ctrl_addr,
-+						  wm_regs->cc_mask);
- 
--	spin_unlock_bh(&ce->ce_lock);
-+		spin_unlock_bh(&ce->ce_lock);
- 
--	if (ce_state->recv_cb)
--		ce_state->recv_cb(ce_state);
-+		if (ce_state->recv_cb)
-+			ce_state->recv_cb(ce_state);
- 
--	if (ce_state->send_cb)
--		ce_state->send_cb(ce_state);
-+		if (ce_state->send_cb)
-+			ce_state->send_cb(ce_state);
- 
--	spin_lock_bh(&ce->ce_lock);
-+		spin_lock_bh(&ce->ce_lock);
-+	}
- 
- 	/*
- 	 * Misc CE interrupts are not being handled, but still need
+ #else
+-- 
+2.43.0
+
 
 
 
