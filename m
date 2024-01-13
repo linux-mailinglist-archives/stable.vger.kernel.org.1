@@ -1,46 +1,47 @@
-Return-Path: <stable+bounces-10734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B51FE82CB67
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:59:12 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A68B82CB90
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:01:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AD571F225D7
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:59:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6945CB22BF5
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75071848;
-	Sat, 13 Jan 2024 09:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2F6F1848;
+	Sat, 13 Jan 2024 10:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GqCIKumi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TV/ZaJMu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF74310958;
-	Sat, 13 Jan 2024 09:59:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC60C433F1;
-	Sat, 13 Jan 2024 09:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC431EEE6;
+	Sat, 13 Jan 2024 10:00:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED94DC43390;
+	Sat, 13 Jan 2024 10:00:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139946;
-	bh=Meqi9drEIokpyaZdeQidmLxfN65xZnkWqvgWGR6uhC8=;
+	s=korg; t=1705140055;
+	bh=0vOfbbx6E1UKs5YftXjfDwXn0OQrbvNBgyyP/vTPpP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GqCIKumiVK+h8Dqj8baUMrlJLzetW1RxJT7llu4OWw0JVchhvx325vzv7dm8zF448
-	 f7nZiKP20aM3CpS/ctq8dhKM1I2YXb3xKOStYfoC7Sl+y9FBDkdihQoqkCMta2ac1K
-	 ZvKLrQ3chgT3E5ki7wq6LEdWKASok1r71RJ4EcaQ=
+	b=TV/ZaJMuHGjEQHGRr8p2cXBpianyZ4GVlVu+LkeC3oM12gndKgcKEUWf0ycHTnQhE
+	 NCDVj2pRoHvci1DcHdQITIxNM/8dvpv9nSc2tfQAefpMwAN/gz0hdreQPdzqCnPEhf
+	 ek1sO7vQ1B+I4T/w5VY4GMmpPldKjUNUGnmRwltA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiajun Xie <jiajun.xie.sh@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 31/43] mm: fix unmap_mapping_range high bits shift bug
+	Chen Ni <nichen@iscas.ac.cn>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 39/59] asix: Add check for usbnet_get_endpoints
 Date: Sat, 13 Jan 2024 10:50:10 +0100
-Message-ID: <20240113094207.927859670@linuxfoundation.org>
+Message-ID: <20240113094210.510543043@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
-References: <20240113094206.930684111@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,86 +53,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiajun Xie <jiajun.xie.sh@gmail.com>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-commit 9eab0421fa94a3dde0d1f7e36ab3294fc306c99d upstream.
+[ Upstream commit eaac6a2d26b65511e164772bec6918fcbc61938e ]
 
-The bug happens when highest bit of holebegin is 1, suppose holebegin is
-0x8000000111111000, after shift, hba would be 0xfff8000000111111, then
-vma_interval_tree_foreach would look it up fail or leads to the wrong
-result.
+Add check for usbnet_get_endpoints() and return the error if it fails
+in order to transfer the error.
 
-error call seq e.g.:
-- mmap(..., offset=0x8000000111111000)
-  |- syscall(mmap, ... unsigned long, off):
-     |- ksys_mmap_pgoff( ... , off >> PAGE_SHIFT);
-
-  here pgoff is correctly shifted to 0x8000000111111,
-  but pass 0x8000000111111000 as holebegin to unmap
-  would then cause terrible result, as shown below:
-
-- unmap_mapping_range(..., loff_t const holebegin)
-  |- pgoff_t hba = holebegin >> PAGE_SHIFT;
-          /* hba = 0xfff8000000111111 unexpectedly */
-
-The issue happens in Heterogeneous computing, where the device(e.g.
-gpu) and host share the same virtual address space.
-
-A simple workflow pattern which hit the issue is:
-        /* host */
-    1. userspace first mmap a file backed VA range with specified offset.
-                        e.g. (offset=0x800..., mmap return: va_a)
-    2. write some data to the corresponding sys page
-                         e.g. (va_a = 0xAABB)
-        /* device */
-    3. gpu workload touches VA, triggers gpu fault and notify the host.
-        /* host */
-    4. reviced gpu fault notification, then it will:
-            4.1 unmap host pages and also takes care of cpu tlb
-                  (use unmap_mapping_range with offset=0x800...)
-            4.2 migrate sys page to device
-            4.3 setup device page table and resolve device fault.
-        /* device */
-    5. gpu workload continued, it accessed va_a and got 0xAABB.
-    6. gpu workload continued, it wrote 0xBBCC to va_a.
-        /* host */
-    7. userspace access va_a, as expected, it will:
-            7.1 trigger cpu vm fault.
-            7.2 driver handling fault to migrate gpu local page to host.
-    8. userspace then could correctly get 0xBBCC from va_a
-    9. done
-
-But in step 4.1, if we hit the bug this patch mentioned, then userspace
-would never trigger cpu fault, and still get the old value: 0xAABB.
-
-Making holebegin unsigned first fixes the bug.
-
-Link: https://lkml.kernel.org/r/20231220052839.26970-1-jiajun.xie.sh@gmail.com
-Signed-off-by: Jiajun Xie <jiajun.xie.sh@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 16626b0cc3d5 ("asix: Add a new driver for the AX88172A")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memory.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/usb/ax88172a.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -3300,8 +3300,8 @@ void unmap_mapping_pages(struct address_
- void unmap_mapping_range(struct address_space *mapping,
- 		loff_t const holebegin, loff_t const holelen, int even_cows)
- {
--	pgoff_t hba = holebegin >> PAGE_SHIFT;
--	pgoff_t hlen = (holelen + PAGE_SIZE - 1) >> PAGE_SHIFT;
-+	pgoff_t hba = (pgoff_t)(holebegin) >> PAGE_SHIFT;
-+	pgoff_t hlen = ((pgoff_t)(holelen) + PAGE_SIZE - 1) >> PAGE_SHIFT;
+diff --git a/drivers/net/usb/ax88172a.c b/drivers/net/usb/ax88172a.c
+index d9777d9a7c5df..bc6c8c253911b 100644
+--- a/drivers/net/usb/ax88172a.c
++++ b/drivers/net/usb/ax88172a.c
+@@ -161,7 +161,9 @@ static int ax88172a_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	u8 buf[ETH_ALEN];
+ 	struct ax88172a_private *priv;
  
- 	/* Check for overflow. */
- 	if (sizeof(holelen) > sizeof(hlen)) {
+-	usbnet_get_endpoints(dev, intf);
++	ret = usbnet_get_endpoints(dev, intf);
++	if (ret)
++		return ret;
+ 
+ 	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+-- 
+2.43.0
+
 
 
 
