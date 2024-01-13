@@ -1,46 +1,48 @@
-Return-Path: <stable+bounces-10638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA8BD82CAFD
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:54:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAA5382CB9A
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:01:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51489B20F4C
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:54:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B0D81F22872
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4471110;
-	Sat, 13 Jan 2024 09:54:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52A2F185A;
+	Sat, 13 Jan 2024 10:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0hMQnkWd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h+KL9iyV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 927D617E8;
-	Sat, 13 Jan 2024 09:54:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEE16C433C7;
-	Sat, 13 Jan 2024 09:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C83F1EEE6;
+	Sat, 13 Jan 2024 10:01:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9EAC43390;
+	Sat, 13 Jan 2024 10:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139665;
-	bh=4lgrvBM0YiQAij5gX4qsxMrFzEqDuMIbJ2NLKVBTHxI=;
+	s=korg; t=1705140091;
+	bh=uYqBex7favLUQ/QGXJow/CFksWUXgwzKijEqIb9yufI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0hMQnkWdneMcpd0SUU0rRRb7qKrEwu8yDRavuJyKThneGPu7jSrUMK+KqQQBV7OQw
-	 P+E6I3bEoh38yTKmTtGqnK9PB+JlT7YFagjCm1/9yzCAKFYM+dlKRG74+MWKluehWB
-	 Be6CoKLOK+pPpQPUcdug8LqZqrF5S8NQDqyRcAyA=
+	b=h+KL9iyVvxEuVz7tH75EVkCmMP5aBYoRuIEwS6kxe7yEvVPkVHeQ+tDhnic33jCjC
+	 NvcaYqOIgQwgGZsSE17MI1uO6+g/w5UJUKj+hKLl3qKb7YZGzsmOAhCkNMRBjS0+WD
+	 cIkwwr7EmUxLpbgPyiuXyZD8S2PYrnAbx0Y5Y38g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiajun Xie <jiajun.xie.sh@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 15/25] mm: fix unmap_mapping_range high bits shift bug
-Date: Sat, 13 Jan 2024 10:49:56 +0100
-Message-ID: <20240113094205.509103039@linuxfoundation.org>
+	Marc Dionne <marc.dionne@auristor.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 26/59] net: Save and restore msg_namelen in sock_sendmsg
+Date: Sat, 13 Jan 2024 10:49:57 +0100
+Message-ID: <20240113094210.112784376@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094205.025407355@linuxfoundation.org>
-References: <20240113094205.025407355@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,86 +54,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiajun Xie <jiajun.xie.sh@gmail.com>
+From: Marc Dionne <marc.dionne@auristor.com>
 
-commit 9eab0421fa94a3dde0d1f7e36ab3294fc306c99d upstream.
+[ Upstream commit 01b2885d9415152bcb12ff1f7788f500a74ea0ed ]
 
-The bug happens when highest bit of holebegin is 1, suppose holebegin is
-0x8000000111111000, after shift, hba would be 0xfff8000000111111, then
-vma_interval_tree_foreach would look it up fail or leads to the wrong
-result.
+Commit 86a7e0b69bd5 ("net: prevent rewrite of msg_name in
+sock_sendmsg()") made sock_sendmsg save the incoming msg_name pointer
+and restore it before returning, to insulate the caller against
+msg_name being changed by the called code.  If the address length
+was also changed however, we may return with an inconsistent structure
+where the length doesn't match the address, and attempts to reuse it may
+lead to lost packets.
 
-error call seq e.g.:
-- mmap(..., offset=0x8000000111111000)
-  |- syscall(mmap, ... unsigned long, off):
-     |- ksys_mmap_pgoff( ... , off >> PAGE_SHIFT);
+For example, a kernel that doesn't have commit 1c5950fc6fe9 ("udp6: fix
+potential access to stale information") will replace a v4 mapped address
+with its ipv4 equivalent, and shorten namelen accordingly from 28 to 16.
+If the caller attempts to reuse the resulting msg structure, it will have
+the original ipv6 (v4 mapped) address but an incorrect v4 length.
 
-  here pgoff is correctly shifted to 0x8000000111111,
-  but pass 0x8000000111111000 as holebegin to unmap
-  would then cause terrible result, as shown below:
-
-- unmap_mapping_range(..., loff_t const holebegin)
-  |- pgoff_t hba = holebegin >> PAGE_SHIFT;
-          /* hba = 0xfff8000000111111 unexpectedly */
-
-The issue happens in Heterogeneous computing, where the device(e.g.
-gpu) and host share the same virtual address space.
-
-A simple workflow pattern which hit the issue is:
-        /* host */
-    1. userspace first mmap a file backed VA range with specified offset.
-                        e.g. (offset=0x800..., mmap return: va_a)
-    2. write some data to the corresponding sys page
-                         e.g. (va_a = 0xAABB)
-        /* device */
-    3. gpu workload touches VA, triggers gpu fault and notify the host.
-        /* host */
-    4. reviced gpu fault notification, then it will:
-            4.1 unmap host pages and also takes care of cpu tlb
-                  (use unmap_mapping_range with offset=0x800...)
-            4.2 migrate sys page to device
-            4.3 setup device page table and resolve device fault.
-        /* device */
-    5. gpu workload continued, it accessed va_a and got 0xAABB.
-    6. gpu workload continued, it wrote 0xBBCC to va_a.
-        /* host */
-    7. userspace access va_a, as expected, it will:
-            7.1 trigger cpu vm fault.
-            7.2 driver handling fault to migrate gpu local page to host.
-    8. userspace then could correctly get 0xBBCC from va_a
-    9. done
-
-But in step 4.1, if we hit the bug this patch mentioned, then userspace
-would never trigger cpu fault, and still get the old value: 0xAABB.
-
-Making holebegin unsigned first fixes the bug.
-
-Link: https://lkml.kernel.org/r/20231220052839.26970-1-jiajun.xie.sh@gmail.com
-Signed-off-by: Jiajun Xie <jiajun.xie.sh@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 86a7e0b69bd5 ("net: prevent rewrite of msg_name in sock_sendmsg()")
+Signed-off-by: Marc Dionne <marc.dionne@auristor.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memory.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/socket.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -3042,8 +3042,8 @@ void unmap_mapping_pages(struct address_
- void unmap_mapping_range(struct address_space *mapping,
- 		loff_t const holebegin, loff_t const holelen, int even_cows)
+diff --git a/net/socket.c b/net/socket.c
+index 57c2b78b446b5..f7cfc703bd213 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -728,6 +728,7 @@ int sock_sendmsg(struct socket *sock, struct msghdr *msg)
  {
--	pgoff_t hba = holebegin >> PAGE_SHIFT;
--	pgoff_t hlen = (holelen + PAGE_SIZE - 1) >> PAGE_SHIFT;
-+	pgoff_t hba = (pgoff_t)(holebegin) >> PAGE_SHIFT;
-+	pgoff_t hlen = ((pgoff_t)(holelen) + PAGE_SIZE - 1) >> PAGE_SHIFT;
+ 	struct sockaddr_storage *save_addr = (struct sockaddr_storage *)msg->msg_name;
+ 	struct sockaddr_storage address;
++	int save_len = msg->msg_namelen;
+ 	int ret;
  
- 	/* Check for overflow. */
- 	if (sizeof(holelen) > sizeof(hlen)) {
+ 	if (msg->msg_name) {
+@@ -737,6 +738,7 @@ int sock_sendmsg(struct socket *sock, struct msghdr *msg)
+ 
+ 	ret = __sock_sendmsg(sock, msg);
+ 	msg->msg_name = save_addr;
++	msg->msg_namelen = save_len;
+ 
+ 	return ret;
+ }
+-- 
+2.43.0
+
 
 
 
