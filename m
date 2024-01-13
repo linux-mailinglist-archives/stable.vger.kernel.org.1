@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-10640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B30C82CAFE
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:54:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC8182CB24
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:56:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAC44B20F3A
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:54:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1AD21F237C0
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:56:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C8D17E8;
-	Sat, 13 Jan 2024 09:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCEDA1848;
+	Sat, 13 Jan 2024 09:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jYKCWxF1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dNV2ck/B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FEC0EC5;
-	Sat, 13 Jan 2024 09:54:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B23FCC433C7;
-	Sat, 13 Jan 2024 09:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94DAC1095B;
+	Sat, 13 Jan 2024 09:56:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E639C433F1;
+	Sat, 13 Jan 2024 09:56:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139671;
-	bh=oxm94l1JTw6aHl5Skk8QTNgIEoZwUkf0pv+aRmzXTjg=;
+	s=korg; t=1705139762;
+	bh=82xbk1QsaJaPle7LMtfbWlGl778wlL5UGEcQrGwUY3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jYKCWxF1SsWdDELGoQHh/UIrKBSQXXWXk2gYuCEgbaW77Eh4mZikin0VsocnNdRhW
-	 4N2ecB6hU+mKhwnMLsp661uNKbRmufv/V9XM6VYvEE2GLVi0kO6p48trqojePtw+Gb
-	 IGMD5YmJPvmko0o/ecCDpo/TIKx28DNR+PUnz1rE=
+	b=dNV2ck/BfT6+nbOWV46blJmIIidzt1Q7iDN2nA3ISKjh9bK4L0Q3HvD0N3neOOlZS
+	 HOoCFMkS1y68xQZDeKHoIuLoB49vCiYEWdhpSnOt1+br6v1+JGBJNe/qU0a0fjLGbw
+	 oLJ7GyUrHbkT/3yoYCWlC7PeN2UL7bn0U7hycoFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 4.19 17/25] mmc: core: Cancel delayed work before releasing host
+	Jiri Slaby <jirislaby@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Tobias Gruetzmacher <tobias-lists@23.gs>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Subject: [PATCH 5.4 22/38] firewire: ohci: suppress unexpected system reboot in AMD Ryzen machines and ASM108x/VT630x PCIe cards
 Date: Sat, 13 Jan 2024 10:49:58 +0100
-Message-ID: <20240113094205.582947827@linuxfoundation.org>
+Message-ID: <20240113094207.132873943@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094205.025407355@linuxfoundation.org>
-References: <20240113094205.025407355@linuxfoundation.org>
+In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
+References: <20240113094206.455533180@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,101 +54,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 
-commit 1036f69e251380573e256568cf814506e3fb9988 upstream.
+commit ac9184fbb8478dab4a0724b279f94956b69be827 upstream.
 
-On RZ/Five SMARC EVK, where probing of SDHI is deferred due to probe
-deferral of the vqmmc-supply regulator:
+VIA VT6306/6307/6308 provides PCI interface compliant to 1394 OHCI. When
+the hardware is combined with Asmedia ASM1083/1085 PCIe-to-PCI bus bridge,
+it appears that accesses to its 'Isochronous Cycle Timer' register (offset
+0xf0 on PCI memory space) often causes unexpected system reboot in any
+type of AMD Ryzen machine (both 0x17 and 0x19 families). It does not
+appears in the other type of machine (AMD pre-Ryzen machine, Intel
+machine, at least), or in the other OHCI 1394 hardware (e.g. Texas
+Instruments).
 
-    ------------[ cut here ]------------
-    WARNING: CPU: 0 PID: 0 at kernel/time/timer.c:1738 __run_timers.part.0+0x1d0/0x1e8
-    Modules linked in:
-    CPU: 0 PID: 0 Comm: swapper Not tainted 6.7.0-rc4 #101
-    Hardware name: Renesas SMARC EVK based on r9a07g043f01 (DT)
-    epc : __run_timers.part.0+0x1d0/0x1e8
-     ra : __run_timers.part.0+0x134/0x1e8
-    epc : ffffffff800771a4 ra : ffffffff80077108 sp : ffffffc800003e60
-     gp : ffffffff814f5028 tp : ffffffff8140c5c0 t0 : ffffffc800000000
-     t1 : 0000000000000001 t2 : ffffffff81201300 s0 : ffffffc800003f20
-     s1 : ffffffd8023bc4a0 a0 : 00000000fffee6b0 a1 : 0004010000400000
-     a2 : ffffffffc0000016 a3 : ffffffff81488640 a4 : ffffffc800003e60
-     a5 : 0000000000000000 a6 : 0000000004000000 a7 : ffffffc800003e68
-     s2 : 0000000000000122 s3 : 0000000000200000 s4 : 0000000000000000
-     s5 : ffffffffffffffff s6 : ffffffff81488678 s7 : ffffffff814886c0
-     s8 : ffffffff814f49c0 s9 : ffffffff81488640 s10: 0000000000000000
-     s11: ffffffc800003e60 t3 : 0000000000000240 t4 : 0000000000000a52
-     t5 : ffffffd8024ae018 t6 : ffffffd8024ae038
-    status: 0000000200000100 badaddr: 0000000000000000 cause: 0000000000000003
-    [<ffffffff800771a4>] __run_timers.part.0+0x1d0/0x1e8
-    [<ffffffff800771e0>] run_timer_softirq+0x24/0x4a
-    [<ffffffff80809092>] __do_softirq+0xc6/0x1fa
-    [<ffffffff80028e4c>] irq_exit_rcu+0x66/0x84
-    [<ffffffff80800f7a>] handle_riscv_irq+0x40/0x4e
-    [<ffffffff80808f48>] call_on_irq_stack+0x1c/0x28
-    ---[ end trace 0000000000000000 ]---
+The issue explicitly appears at a commit dcadfd7f7c74 ("firewire: core:
+use union for callback of transaction completion") added to v6.5 kernel.
+It changed 1394 OHCI driver to access to the register every time to
+dispatch local asynchronous transaction. However, the issue exists in
+older version of kernel as long as it runs in AMD Ryzen machine, since
+the access to the register is required to maintain bus time. It is not
+hard to imagine that users experience the unexpected system reboot when
+generating bus reset by plugging any devices in, or reading the register
+by time-aware application programs; e.g. audio sample processing.
 
-What happens?
+This commit suppresses the unexpected system reboot in the combination of
+hardware. It avoids the access itself. As a result, the software stack can
+not provide the hardware time anymore to unit drivers, userspace
+applications, and nodes in the same IEEE 1394 bus. It brings apparent
+disadvantage since time-aware application programs require it, while
+time-unaware applications are available again; e.g. sbp2.
 
-    renesas_sdhi_probe()
-    {
-    	tmio_mmc_host_alloc()
-	    mmc_alloc_host()
-		INIT_DELAYED_WORK(&host->detect, mmc_rescan);
-
-	devm_request_irq(tmio_mmc_irq);
-
-	/*
-	 * After this, the interrupt handler may be invoked at any time
-	 *
-	 *  tmio_mmc_irq()
-	 *  {
-	 *	__tmio_mmc_card_detect_irq()
-	 *	    mmc_detect_change()
-	 *		_mmc_detect_change()
-	 *		    mmc_schedule_delayed_work(&host->detect, delay);
-	 *  }
-	 */
-
-	tmio_mmc_host_probe()
-	    tmio_mmc_init_ocr()
-		-EPROBE_DEFER
-
-	tmio_mmc_host_free()
-	    mmc_free_host()
-    }
-
-When expire_timers() runs later, it warns because the MMC host structure
-containing the delayed work was freed, and now contains an invalid work
-function pointer.
-
-Fix this by cancelling any pending delayed work before releasing the
-MMC host structure.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/205dc4c91b47e31b64392fe2498c7a449e717b4b.1701689330.git.geert+renesas@glider.be
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reported-by: Jiri Slaby <jirislaby@kernel.org>
+Closes: https://bugzilla.suse.com/show_bug.cgi?id=1215436
+Reported-by: Mario Limonciello <mario.limonciello@amd.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217994
+Reported-by: Tobias Gruetzmacher <tobias-lists@23.gs>
+Closes: https://sourceforge.net/p/linux1394/mailman/message/58711901/
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2240973
+Closes: https://bugs.launchpad.net/linux/+bug/2043905
+Link: https://lore.kernel.org/r/20240102110150.244475-1-o-takashi@sakamocchi.jp
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/host.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/firewire/ohci.c |   51 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 51 insertions(+)
 
---- a/drivers/mmc/core/host.c
-+++ b/drivers/mmc/core/host.c
-@@ -489,6 +489,7 @@ EXPORT_SYMBOL(mmc_remove_host);
-  */
- void mmc_free_host(struct mmc_host *host)
- {
-+	cancel_delayed_work_sync(&host->detect);
- 	mmc_pwrseq_free(host);
- 	put_device(&host->class_dev);
- }
+--- a/drivers/firewire/ohci.c
++++ b/drivers/firewire/ohci.c
+@@ -279,6 +279,51 @@ static char ohci_driver_name[] = KBUILD_
+ #define QUIRK_TI_SLLZ059		0x20
+ #define QUIRK_IR_WAKE			0x40
+ 
++// On PCI Express Root Complex in any type of AMD Ryzen machine, VIA VT6306/6307/6308 with Asmedia
++// ASM1083/1085 brings an inconvenience that the read accesses to 'Isochronous Cycle Timer' register
++// (at offset 0xf0 in PCI I/O space) often causes unexpected system reboot. The mechanism is not
++// clear, since the read access to the other registers is enough safe; e.g. 'Node ID' register,
++// while it is probable due to detection of any type of PCIe error.
++#define QUIRK_REBOOT_BY_CYCLE_TIMER_READ	0x80000000
++
++#if IS_ENABLED(CONFIG_X86)
++
++static bool has_reboot_by_cycle_timer_read_quirk(const struct fw_ohci *ohci)
++{
++	return !!(ohci->quirks & QUIRK_REBOOT_BY_CYCLE_TIMER_READ);
++}
++
++#define PCI_DEVICE_ID_ASMEDIA_ASM108X	0x1080
++
++static bool detect_vt630x_with_asm1083_on_amd_ryzen_machine(const struct pci_dev *pdev)
++{
++	const struct pci_dev *pcie_to_pci_bridge;
++
++	// Detect any type of AMD Ryzen machine.
++	if (!static_cpu_has(X86_FEATURE_ZEN))
++		return false;
++
++	// Detect VIA VT6306/6307/6308.
++	if (pdev->vendor != PCI_VENDOR_ID_VIA)
++		return false;
++	if (pdev->device != PCI_DEVICE_ID_VIA_VT630X)
++		return false;
++
++	// Detect Asmedia ASM1083/1085.
++	pcie_to_pci_bridge = pdev->bus->self;
++	if (pcie_to_pci_bridge->vendor != PCI_VENDOR_ID_ASMEDIA)
++		return false;
++	if (pcie_to_pci_bridge->device != PCI_DEVICE_ID_ASMEDIA_ASM108X)
++		return false;
++
++	return true;
++}
++
++#else
++#define has_reboot_by_cycle_timer_read_quirk(ohci) false
++#define detect_vt630x_with_asm1083_on_amd_ryzen_machine(pdev)	false
++#endif
++
+ /* In case of multiple matches in ohci_quirks[], only the first one is used. */
+ static const struct {
+ 	unsigned short vendor, device, revision, flags;
+@@ -1717,6 +1762,9 @@ static u32 get_cycle_time(struct fw_ohci
+ 	s32 diff01, diff12;
+ 	int i;
+ 
++	if (has_reboot_by_cycle_timer_read_quirk(ohci))
++		return 0;
++
+ 	c2 = reg_read(ohci, OHCI1394_IsochronousCycleTimer);
+ 
+ 	if (ohci->quirks & QUIRK_CYCLE_TIMER) {
+@@ -3619,6 +3667,9 @@ static int pci_probe(struct pci_dev *dev
+ 	if (param_quirks)
+ 		ohci->quirks = param_quirks;
+ 
++	if (detect_vt630x_with_asm1083_on_amd_ryzen_machine(dev))
++		ohci->quirks |= QUIRK_REBOOT_BY_CYCLE_TIMER_READ;
++
+ 	/*
+ 	 * Because dma_alloc_coherent() allocates at least one page,
+ 	 * we save space by using a common buffer for the AR request/
 
 
 
