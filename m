@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-10690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA26182CB38
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:57:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B51FE82CB67
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:59:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED1361C2190A
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:56:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AD571F225D7
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15A3C15BD;
-	Sat, 13 Jan 2024 09:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E75071848;
+	Sat, 13 Jan 2024 09:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CIWQzSOx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GqCIKumi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BD01848;
-	Sat, 13 Jan 2024 09:56:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBABFC43399;
-	Sat, 13 Jan 2024 09:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF74310958;
+	Sat, 13 Jan 2024 09:59:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC60C433F1;
+	Sat, 13 Jan 2024 09:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139818;
-	bh=wRkONm2Pjd5tjrbQ35KYutH/LPCZvsuQhT+Ghvep/gs=;
+	s=korg; t=1705139946;
+	bh=Meqi9drEIokpyaZdeQidmLxfN65xZnkWqvgWGR6uhC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CIWQzSOxtumEfCu+rFAHAzjMm+9aIGsgPkreaeRs7sh/9kV+9sz3ijMtugdTAYjrc
-	 qzXYbpzM3N1L7rYmbPDMEpIPVb1MD25rrj7PoiwG1eQH5a6M2Ipf0i5OhCAzttpicl
-	 u+xOvXW09/ctX0Ho+n9F0rr8N5QgTQrzFVElXYF8=
+	b=GqCIKumiVK+h8Dqj8baUMrlJLzetW1RxJT7llu4OWw0JVchhvx325vzv7dm8zF448
+	 f7nZiKP20aM3CpS/ctq8dhKM1I2YXb3xKOStYfoC7Sl+y9FBDkdihQoqkCMta2ac1K
+	 ZvKLrQ3chgT3E5ki7wq6LEdWKASok1r71RJ4EcaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.4 33/38] netfilter: nf_tables: Reject tables of unsupported family
-Date: Sat, 13 Jan 2024 10:50:09 +0100
-Message-ID: <20240113094207.469987090@linuxfoundation.org>
+	Jiajun Xie <jiajun.xie.sh@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 31/43] mm: fix unmap_mapping_range high bits shift bug
+Date: Sat, 13 Jan 2024 10:50:10 +0100
+Message-ID: <20240113094207.927859670@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
-References: <20240113094206.455533180@linuxfoundation.org>
+In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
+References: <20240113094206.930684111@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,70 +52,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Jiajun Xie <jiajun.xie.sh@gmail.com>
 
-commit f1082dd31fe461d482d69da2a8eccfeb7bf07ac2 upstream.
+commit 9eab0421fa94a3dde0d1f7e36ab3294fc306c99d upstream.
 
-An nftables family is merely a hollow container, its family just a
-number and such not reliant on compile-time options other than nftables
-support itself. Add an artificial check so attempts at using a family
-the kernel can't support fail as early as possible. This helps user
-space detect kernels which lack e.g. NFPROTO_INET.
+The bug happens when highest bit of holebegin is 1, suppose holebegin is
+0x8000000111111000, after shift, hba would be 0xfff8000000111111, then
+vma_interval_tree_foreach would look it up fail or leads to the wrong
+result.
 
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+error call seq e.g.:
+- mmap(..., offset=0x8000000111111000)
+  |- syscall(mmap, ... unsigned long, off):
+     |- ksys_mmap_pgoff( ... , off >> PAGE_SHIFT);
+
+  here pgoff is correctly shifted to 0x8000000111111,
+  but pass 0x8000000111111000 as holebegin to unmap
+  would then cause terrible result, as shown below:
+
+- unmap_mapping_range(..., loff_t const holebegin)
+  |- pgoff_t hba = holebegin >> PAGE_SHIFT;
+          /* hba = 0xfff8000000111111 unexpectedly */
+
+The issue happens in Heterogeneous computing, where the device(e.g.
+gpu) and host share the same virtual address space.
+
+A simple workflow pattern which hit the issue is:
+        /* host */
+    1. userspace first mmap a file backed VA range with specified offset.
+                        e.g. (offset=0x800..., mmap return: va_a)
+    2. write some data to the corresponding sys page
+                         e.g. (va_a = 0xAABB)
+        /* device */
+    3. gpu workload touches VA, triggers gpu fault and notify the host.
+        /* host */
+    4. reviced gpu fault notification, then it will:
+            4.1 unmap host pages and also takes care of cpu tlb
+                  (use unmap_mapping_range with offset=0x800...)
+            4.2 migrate sys page to device
+            4.3 setup device page table and resolve device fault.
+        /* device */
+    5. gpu workload continued, it accessed va_a and got 0xAABB.
+    6. gpu workload continued, it wrote 0xBBCC to va_a.
+        /* host */
+    7. userspace access va_a, as expected, it will:
+            7.1 trigger cpu vm fault.
+            7.2 driver handling fault to migrate gpu local page to host.
+    8. userspace then could correctly get 0xBBCC from va_a
+    9. done
+
+But in step 4.1, if we hit the bug this patch mentioned, then userspace
+would never trigger cpu fault, and still get the old value: 0xAABB.
+
+Making holebegin unsigned first fixes the bug.
+
+Link: https://lkml.kernel.org/r/20231220052839.26970-1-jiajun.xie.sh@gmail.com
+Signed-off-by: Jiajun Xie <jiajun.xie.sh@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |   27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ mm/memory.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -1005,6 +1005,30 @@ static int nft_objname_hash_cmp(struct r
- 	return strcmp(obj->key.name, k->name);
- }
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -3300,8 +3300,8 @@ void unmap_mapping_pages(struct address_
+ void unmap_mapping_range(struct address_space *mapping,
+ 		loff_t const holebegin, loff_t const holelen, int even_cows)
+ {
+-	pgoff_t hba = holebegin >> PAGE_SHIFT;
+-	pgoff_t hlen = (holelen + PAGE_SIZE - 1) >> PAGE_SHIFT;
++	pgoff_t hba = (pgoff_t)(holebegin) >> PAGE_SHIFT;
++	pgoff_t hlen = ((pgoff_t)(holelen) + PAGE_SIZE - 1) >> PAGE_SHIFT;
  
-+static bool nft_supported_family(u8 family)
-+{
-+	return false
-+#ifdef CONFIG_NF_TABLES_INET
-+		|| family == NFPROTO_INET
-+#endif
-+#ifdef CONFIG_NF_TABLES_IPV4
-+		|| family == NFPROTO_IPV4
-+#endif
-+#ifdef CONFIG_NF_TABLES_ARP
-+		|| family == NFPROTO_ARP
-+#endif
-+#ifdef CONFIG_NF_TABLES_NETDEV
-+		|| family == NFPROTO_NETDEV
-+#endif
-+#if IS_ENABLED(CONFIG_NF_TABLES_BRIDGE)
-+		|| family == NFPROTO_BRIDGE
-+#endif
-+#ifdef CONFIG_NF_TABLES_IPV6
-+		|| family == NFPROTO_IPV6
-+#endif
-+		;
-+}
-+
- static int nf_tables_newtable(struct net *net, struct sock *nlsk,
- 			      struct sk_buff *skb, const struct nlmsghdr *nlh,
- 			      const struct nlattr * const nla[],
-@@ -1020,6 +1044,9 @@ static int nf_tables_newtable(struct net
- 	struct nft_ctx ctx;
- 	int err;
- 
-+	if (!nft_supported_family(family))
-+		return -EOPNOTSUPP;
-+
- 	lockdep_assert_held(&nft_net->commit_mutex);
- 	attr = nla[NFTA_TABLE_NAME];
- 	table = nft_table_lookup(net, attr, family, genmask);
+ 	/* Check for overflow. */
+ 	if (sizeof(holelen) > sizeof(hlen)) {
 
 
 
