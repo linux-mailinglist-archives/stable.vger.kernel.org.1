@@ -1,53 +1,48 @@
-Return-Path: <stable+bounces-10648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B28882CB06
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:54:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 882E782CB77
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:59:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFEDA284E2F
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:54:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D1BA1F22C5C
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:59:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D48139F;
-	Sat, 13 Jan 2024 09:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608E2185A;
+	Sat, 13 Jan 2024 09:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJi198US"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OyX2j/Io"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19C7215AF;
-	Sat, 13 Jan 2024 09:54:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B0BC433C7;
-	Sat, 13 Jan 2024 09:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282021846;
+	Sat, 13 Jan 2024 09:59:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99059C433F1;
+	Sat, 13 Jan 2024 09:59:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139694;
-	bh=C8tFP9QL01Cqia59Sp++pxHO0/RgD5q2Csl//FmVZOY=;
+	s=korg; t=1705139994;
+	bh=LNjdVDZqClTL+iEuzyVXFM7HdstHJOoe4jK8flIaw70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JJi198US82ZZCLkuGfwqdEK73UsMoWmJrrUr1AvewMFk7LIdPt8xOQnDvKpJ1h5Lz
-	 vWYr1dFVli89lnn1BqplRTBgty+AoVFNRXHdwihXkyVseUUZiUsd5Hrp14xca0uPNY
-	 qngNts+P2wA/EB8OmtIApTFbmOkrXCBVW75/Wn2w=
+	b=OyX2j/IoZDbLZVeVni3x39iyC8BpAuNFNG4SCfuQKc30utwAqQUnA0Nx1dlCNMaFE
+	 wqfLakWWqW5KJ8VPiYnfTj/r/6+qYBPduGPHXCadFC28a1H3mFhJ5Ikx9S20kWWmQz
+	 oPwo9SLpr9qN6g2N3ojajD5lAWXOxFW2rlnCQsmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ke Xiao <xiaoke@sangfor.com.cn>,
-	Ding Hui <dinghui@sangfor.com.cn>,
-	Di Zhu <zhudi2@huawei.com>,
-	Jan Sokolowski <jan.sokolowski@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 4.19 07/25] i40e: fix use-after-free in i40e_aqc_add_filters()
-Date: Sat, 13 Jan 2024 10:49:48 +0100
-Message-ID: <20240113094205.256362637@linuxfoundation.org>
+	=?UTF-8?q?J=C3=B6rn-Thorben=20Hinz?= <jthinz@mailbox.tu-berlin.de>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 18/59] net: Implement missing getsockopt(SO_TIMESTAMPING_NEW)
+Date: Sat, 13 Jan 2024 10:49:49 +0100
+Message-ID: <20240113094209.871593031@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094205.025407355@linuxfoundation.org>
-References: <20240113094205.025407355@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,124 +52,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ke Xiao <xiaoke@sangfor.com.cn>
+From: Jörn-Thorben Hinz <jthinz@mailbox.tu-berlin.de>
 
-[ Upstream commit 6a15584e99db8918b60e507539c7446375dcf366 ]
+[ Upstream commit 7f6ca95d16b96567ce4cf458a2790ff17fa620c3 ]
 
-Commit 3116f59c12bd ("i40e: fix use-after-free in
-i40e_sync_filters_subtask()") avoided use-after-free issues,
-by increasing refcount during update the VSI filter list to
-the HW. However, it missed the unicast situation.
+Commit 9718475e6908 ("socket: Add SO_TIMESTAMPING_NEW") added the new
+socket option SO_TIMESTAMPING_NEW. Setting the option is handled in
+sk_setsockopt(), querying it was not handled in sk_getsockopt(), though.
 
-When deleting an unicast FDB entry, the i40e driver will release
-the mac_filter, and i40e_service_task will concurrently request
-firmware to add the mac_filter, which will lead to the following
-use-after-free issue.
+Following remarks on an earlier submission of this patch, keep the old
+behavior of getsockopt(SO_TIMESTAMPING_OLD) which returns the active
+flags even if they actually have been set through SO_TIMESTAMPING_NEW.
 
-Fix again for both netdev->uc and netdev->mc.
+The new getsockopt(SO_TIMESTAMPING_NEW) is stricter, returning flags
+only if they have been set through the same option.
 
-BUG: KASAN: use-after-free in i40e_aqc_add_filters+0x55c/0x5b0 [i40e]
-Read of size 2 at addr ffff888eb3452d60 by task kworker/8:7/6379
-
-CPU: 8 PID: 6379 Comm: kworker/8:7 Kdump: loaded Tainted: G
-Workqueue: i40e i40e_service_task [i40e]
-Call Trace:
- dump_stack+0x71/0xab
- print_address_description+0x6b/0x290
- kasan_report+0x14a/0x2b0
- i40e_aqc_add_filters+0x55c/0x5b0 [i40e]
- i40e_sync_vsi_filters+0x1676/0x39c0 [i40e]
- i40e_service_task+0x1397/0x2bb0 [i40e]
- process_one_work+0x56a/0x11f0
- worker_thread+0x8f/0xf40
- kthread+0x2a0/0x390
- ret_from_fork+0x1f/0x40
-
-Allocated by task 21948:
- kasan_kmalloc+0xa6/0xd0
- kmem_cache_alloc_trace+0xdb/0x1c0
- i40e_add_filter+0x11e/0x520 [i40e]
- i40e_addr_sync+0x37/0x60 [i40e]
- __hw_addr_sync_dev+0x1f5/0x2f0
- i40e_set_rx_mode+0x61/0x1e0 [i40e]
- dev_uc_add_excl+0x137/0x190
- i40e_ndo_fdb_add+0x161/0x260 [i40e]
- rtnl_fdb_add+0x567/0x950
- rtnetlink_rcv_msg+0x5db/0x880
- netlink_rcv_skb+0x254/0x380
- netlink_unicast+0x454/0x610
- netlink_sendmsg+0x747/0xb00
- sock_sendmsg+0xe2/0x120
- __sys_sendto+0x1ae/0x290
- __x64_sys_sendto+0xdd/0x1b0
- do_syscall_64+0xa0/0x370
- entry_SYSCALL_64_after_hwframe+0x65/0xca
-
-Freed by task 21948:
- __kasan_slab_free+0x137/0x190
- kfree+0x8b/0x1b0
- __i40e_del_filter+0x116/0x1e0 [i40e]
- i40e_del_mac_filter+0x16c/0x300 [i40e]
- i40e_addr_unsync+0x134/0x1b0 [i40e]
- __hw_addr_sync_dev+0xff/0x2f0
- i40e_set_rx_mode+0x61/0x1e0 [i40e]
- dev_uc_del+0x77/0x90
- rtnl_fdb_del+0x6a5/0x860
- rtnetlink_rcv_msg+0x5db/0x880
- netlink_rcv_skb+0x254/0x380
- netlink_unicast+0x454/0x610
- netlink_sendmsg+0x747/0xb00
- sock_sendmsg+0xe2/0x120
- __sys_sendto+0x1ae/0x290
- __x64_sys_sendto+0xdd/0x1b0
- do_syscall_64+0xa0/0x370
- entry_SYSCALL_64_after_hwframe+0x65/0xca
-
-Fixes: 3116f59c12bd ("i40e: fix use-after-free in i40e_sync_filters_subtask()")
-Fixes: 41c445ff0f48 ("i40e: main driver core")
-Signed-off-by: Ke Xiao <xiaoke@sangfor.com.cn>
-Signed-off-by: Ding Hui <dinghui@sangfor.com.cn>
-Cc: Di Zhu <zhudi2@huawei.com>
-Reviewed-by: Jan Sokolowski <jan.sokolowski@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 9718475e6908 ("socket: Add SO_TIMESTAMPING_NEW")
+Link: https://lore.kernel.org/lkml/20230703175048.151683-1-jthinz@mailbox.tu-berlin.de/
+Link: https://lore.kernel.org/netdev/0d7cddc9-03fa-43db-a579-14f3e822615b@app.fastmail.com/
+Signed-off-by: Jörn-Thorben Hinz <jthinz@mailbox.tu-berlin.de>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ net/core/sock.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 75a553f4e26f6..552f5025d265b 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -99,12 +99,18 @@ static struct workqueue_struct *i40e_wq;
- static void netdev_hw_addr_refcnt(struct i40e_mac_filter *f,
- 				  struct net_device *netdev, int delta)
- {
-+	struct netdev_hw_addr_list *ha_list;
- 	struct netdev_hw_addr *ha;
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 662cd6d54ac70..ef29106af6046 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -1534,9 +1534,16 @@ int sock_getsockopt(struct socket *sock, int level, int optname,
+ 		break;
  
- 	if (!f || !netdev)
- 		return;
+ 	case SO_TIMESTAMPING_OLD:
++	case SO_TIMESTAMPING_NEW:
+ 		lv = sizeof(v.timestamping);
+-		v.timestamping.flags = sk->sk_tsflags;
+-		v.timestamping.bind_phc = sk->sk_bind_phc;
++		/* For the later-added case SO_TIMESTAMPING_NEW: Be strict about only
++		 * returning the flags when they were set through the same option.
++		 * Don't change the beviour for the old case SO_TIMESTAMPING_OLD.
++		 */
++		if (optname == SO_TIMESTAMPING_OLD || sock_flag(sk, SOCK_TSTAMP_NEW)) {
++			v.timestamping.flags = sk->sk_tsflags;
++			v.timestamping.bind_phc = sk->sk_bind_phc;
++		}
+ 		break;
  
--	netdev_for_each_mc_addr(ha, netdev) {
-+	if (is_unicast_ether_addr(f->macaddr) || is_link_local_ether_addr(f->macaddr))
-+		ha_list = &netdev->uc;
-+	else
-+		ha_list = &netdev->mc;
-+
-+	netdev_hw_addr_list_for_each(ha, ha_list) {
- 		if (ether_addr_equal(ha->addr, f->macaddr)) {
- 			ha->refcount += delta;
- 			if (ha->refcount <= 0)
+ 	case SO_RCVTIMEO_OLD:
 -- 
 2.43.0
 
