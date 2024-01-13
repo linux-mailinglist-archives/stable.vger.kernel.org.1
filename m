@@ -1,47 +1,48 @@
-Return-Path: <stable+bounces-10725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6074382CB5E
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:59:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9113C82CB95
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:01:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69E601C21EBC
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:59:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F23E1F21CDB
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:01:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5EE51426C;
-	Sat, 13 Jan 2024 09:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66635185A;
+	Sat, 13 Jan 2024 10:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fsiVvlkc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VuqmXn80"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D56E1754C;
-	Sat, 13 Jan 2024 09:58:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF891C433C7;
-	Sat, 13 Jan 2024 09:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9ED63C3;
+	Sat, 13 Jan 2024 10:01:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFEBC433C7;
+	Sat, 13 Jan 2024 10:01:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139920;
-	bh=40CnQVlywXGdIfbGKArpffXv0iqHIDzR7jWCHnVILao=;
+	s=korg; t=1705140079;
+	bh=mzSYKgUVTHuoqdqzJ1RgOrrZdwhLRv48nInwdHrbbFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fsiVvlkcj17VlnKVAvdVl4nPfijzUkC4CH6u1NHNlpk9kVp9joCNYdBYxoN0uQZ56
-	 sVFOL0Z/2MVxrKxEl6tp0w0WczpWWE5Rp9h5dIpUdz09VnAvMgnn9N2WQKzLmN9aXi
-	 njTKeoY/iJF8+JEyVlx5GFzIOo6m08qHEP8JLQNE=
+	b=VuqmXn80sdeU7wk3puVNDX4UV+DngBu92ZWuMO1VVgAuUiYsy+KksXm/ZZqKAhVJB
+	 cZSEEL4N5NhdYL6vWVe6S2AhGIfgzH4796YD1jVX40hk1AtFY0sPjsBP5vwuLSibe6
+	 BCINDrAsfGUfAatejkQjrajkFuGX8oDwF+3pjmzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Fastabend <john.fastabend@gmail.com>,
-	Jann Horn <jannh@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 37/43] net: tls, update curr on splice as well
-Date: Sat, 13 Jan 2024 10:50:16 +0100
-Message-ID: <20240113094208.144532559@linuxfoundation.org>
+	Benjamin Bara <benjamin.bara@skidata.com>,
+	Michael Walle <mwalle@kernel.org>,
+	Tor Vic <torvic9@mailbox.org>,
+	Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 5.15 46/59] i2c: core: Fix atomic xfer check for non-preempt config
+Date: Sat, 13 Jan 2024 10:50:17 +0100
+Message-ID: <20240113094210.703699910@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
-References: <20240113094206.930684111@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,38 +54,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Fastabend <john.fastabend@gmail.com>
+From: Benjamin Bara <benjamin.bara@skidata.com>
 
-commit c5a595000e2677e865a39f249c056bc05d6e55fd upstream.
+commit a3368e1186e3ce8e38f78cbca019622095b1f331 upstream.
 
-The curr pointer must also be updated on the splice similar to how
-we do this for other copy types.
+Since commit aa49c90894d0 ("i2c: core: Run atomic i2c xfer when
+!preemptible"), the whole reboot/power off sequence on non-preempt kernels
+is using atomic i2c xfer, as !preemptible() always results to 1.
 
-Fixes: d829e9c4112b ("tls: convert to generic sk_msg interface")
-Signed-off-by: John Fastabend <john.fastabend@gmail.com>
-Reported-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20231206232706.374377-2-john.fastabend@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+During device_shutdown(), the i2c might be used a lot and not all busses
+have implemented an atomic xfer handler. This results in a lot of
+avoidable noise, like:
+
+[   12.687169] No atomic I2C transfer handler for 'i2c-0'
+[   12.692313] WARNING: CPU: 6 PID: 275 at drivers/i2c/i2c-core.h:40 i2c_smbus_xfer+0x100/0x118
+...
+
+Fix this by allowing non-atomic xfer when the interrupts are enabled, as
+it was before.
+
+Link: https://lore.kernel.org/r/20231222230106.73f030a5@yea
+Link: https://lore.kernel.org/r/20240102150350.3180741-1-mwalle@kernel.org
+Link: https://lore.kernel.org/linux-i2c/13271b9b-4132-46ef-abf8-2c311967bb46@mailbox.org/
+Fixes: aa49c90894d0 ("i2c: core: Run atomic i2c xfer when !preemptible")
+Cc: stable@vger.kernel.org # v5.2+
+Signed-off-by: Benjamin Bara <benjamin.bara@skidata.com>
+Tested-by: Michael Walle <mwalle@kernel.org>
+Tested-by: Tor Vic <torvic9@mailbox.org>
+[wsa: removed a comment which needs more work, code is ok]
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tls/tls_sw.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/i2c/i2c-core.h |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1215,6 +1215,8 @@ alloc_payload:
- 		}
+--- a/drivers/i2c/i2c-core.h
++++ b/drivers/i2c/i2c-core.h
+@@ -3,6 +3,7 @@
+  * i2c-core.h - interfaces internal to the I2C framework
+  */
  
- 		sk_msg_page_add(msg_pl, page, copy, offset);
-+		msg_pl->sg.copybreak = 0;
-+		msg_pl->sg.curr = msg_pl->sg.end;
- 		sk_mem_charge(sk, copy);
++#include <linux/kconfig.h>
+ #include <linux/rwsem.h>
  
- 		offset += copy;
+ struct i2c_devinfo {
+@@ -29,7 +30,8 @@ int i2c_dev_irq_from_resources(const str
+  */
+ static inline bool i2c_in_atomic_xfer_mode(void)
+ {
+-	return system_state > SYSTEM_RUNNING && !preemptible();
++	return system_state > SYSTEM_RUNNING &&
++	       (IS_ENABLED(CONFIG_PREEMPT_COUNT) ? !preemptible() : irqs_disabled());
+ }
+ 
+ static inline int __i2c_lock_bus_helper(struct i2c_adapter *adap)
 
 
 
