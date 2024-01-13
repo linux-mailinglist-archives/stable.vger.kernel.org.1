@@ -1,92 +1,144 @@
-Return-Path: <stable+bounces-10630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8036E82CAE2
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:39:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D9F382CAE5
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:41:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 353E01F22587
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:39:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 064661F229F1
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B71E15AF;
-	Sat, 13 Jan 2024 09:39:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6346139F;
+	Sat, 13 Jan 2024 09:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNrEedWW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwwJrL3m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B017A3F;
-	Sat, 13 Jan 2024 09:39:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E29C433F1;
-	Sat, 13 Jan 2024 09:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6FD1841;
+	Sat, 13 Jan 2024 09:41:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A019FC433F1;
+	Sat, 13 Jan 2024 09:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705138779;
-	bh=Zfxdud4rAsFy9TpMi/AUgz2Y98SIwOTtypCcxU+DC/Q=;
+	s=korg; t=1705138893;
+	bh=iIfRNzMwCZatwlz6+5d9iYQFQ+seLrr3ObHXV7KLTFE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MNrEedWWayvccZ8/9GVIgrUDo2sTxO3jljGB2Gzbh+psqqz1JEdc8fpV8t4if+cbU
-	 S03YGIDKBWsCWisL42Hy0f5HkNG+rha3UqZSP5/DNlJ7xva1zdHblbt+KiFNKquDEA
-	 ybV1Aa7dm6Jv5T+3oOX6yodNIMAohFRCTu55tZVw=
-Date: Sat, 13 Jan 2024 10:39:36 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: email200202 <email200202@yahoo.com>, regressions@lists.linux.dev,
-	kernel@gentoo.org, stable@vger.kernel.org,
-	linux-nfs@vger.kernel.org
-Subject: Re: [REGRESSION] After kernel upgrade 6.1.70 to 6.1.71, the computer
- hangs during shutdown
-Message-ID: <2024011327-probably-dilation-f801@gregkh>
-References: <58ac38ae-4d64-4a53-81e0-35785961c41c.ref@yahoo.com>
- <58ac38ae-4d64-4a53-81e0-35785961c41c@yahoo.com>
- <2024011127-excluding-bodacious-1950@gregkh>
- <e341cb408b5663d8c91b8fa57b41bb984be43448.camel@kernel.org>
- <2024011353-spookily-gliding-5fc6@gregkh>
+	b=NwwJrL3mwwhtQ07kxdy3ufGdzw+38uC8UDoEHv545zn3IoGY/9A6+NYu6qCxRIWHd
+	 gdM+8cPyhgg80YqF5UjGcUDNEDiFQb9TW9JisY00ksCInw+kCwBEL1aVLgCc4Zrjlx
+	 js5ORG2ErbNS3TCZXdMTgu/q84Hz22Vr9BmZ90lk=
+Date: Sat, 13 Jan 2024 10:41:30 +0100
+From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To: Salvatore Bonaccorso <carnil@debian.org>
+Cc: Steve French <smfrench@gmail.com>, David Howells <dhowells@redhat.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Shyam Prasad N <nspmangalore@gmail.com>,
+	Rohith Surabattula <rohiths.msft@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	"Jitindar Singh, Suraj" <surajjs@amazon.com>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"stable-commits@vger.kernel.org" <stable-commits@vger.kernel.org>,
+	stable@vger.kernel.org, linux-cifs@vger.kernel.org,
+	Linux regressions mailing list <regressions@lists.linux.dev>
+Subject: Re: [Regression 6.1.y] From "cifs: Fix flushing, invalidation and
+ file size with copy_file_range()"
+Message-ID: <2024011316-cathouse-relearn-df14@gregkh>
+References: <a76b370f93cb928c049b94e1fde0d2da506dfcb2.camel@amazon.com>
+ <ZZhrpNJ3zxMR8wcU@eldamar.lan>
+ <8e59220d-b0f3-4dae-afc3-36acfa6873e4@leemhuis.info>
+ <ZZk6qA54A-KfzmSz@eldamar.lan>
+ <13a70cc5-78fc-49a4-8d78-41e5479e3023@leemhuis.info>
+ <ZZ7Dy69ZJCEyKhhS@eldamar.lan>
+ <2024011115-neatly-trout-5532@gregkh>
+ <2162049.1705069551@warthog.procyon.org.uk>
+ <CAH2r5mtBSvp9D8s3bX7KNWjXdTuOHPx5Z005jp8F5kuJgU3Z-g@mail.gmail.com>
+ <ZaJYgkI9o5J1U3TX@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <2024011353-spookily-gliding-5fc6@gregkh>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZaJYgkI9o5J1U3TX@eldamar.lan>
 
-On Sat, Jan 13, 2024 at 10:35:09AM +0100, Greg KH wrote:
-> On Thu, Jan 11, 2024 at 12:26:39PM -0500, Jeff Layton wrote:
-> > On Thu, 2024-01-11 at 10:30 +0100, Greg KH wrote:
-> > > On Thu, Jan 11, 2024 at 07:20:02PM +1100, email200202 wrote:
-> > > > Reverting the following 3 commits fixed the problem in kernel 6.1.71:
-> > > > 
-> > > > f9a01938e07910224d4a2fd00583725d686c3f38
-> > > > bb4f791cb2de1140d0fbcedfe9e791ff364021d7
-> > > > 03d68ffc48b94cc1e15bbf3b4f16f1e1e4fa286a
-> > > 
-> > > When sending us git ids, please show the full context so we have a hint
-> > > as to what they are.  For this, it should be:
-> > > 
-> > > f9a01938e079 ("NFSD: fix possible oops when nfsd/pool_stats is closed.")
-> > > bb4f791cb2de ("nfsd: call nfsd_last_thread() before final nfsd_put()")
-> > > 03d68ffc48b9 ("nfsd: separate nfsd_last_thread() from nfsd_put()")
-> > > 
-> > > Do you also have these issues in the latest 6.6.y release?  6.7?
-> > > 
-> > > 
-> > 
-> > I wasn't able to reproduce the exact same bug as the reporter, but I did
-> > see a different panic due to the above patches. Some of those fixes
-> > aren't appropriate without pulling in earlier commits, but I think it's
-> > probably best to just drop these two:
-> > 
-> > bb4f791cb2de ("nfsd: call nfsd_last_thread() before final nfsd_put()")
-> > 03d68ffc48b9 ("nfsd: separate nfsd_last_thread() from nfsd_put()")
-> > 
-> > Greg, does that sound OK?
+On Sat, Jan 13, 2024 at 10:31:46AM +0100, Salvatore Bonaccorso wrote:
+> Hi,
 > 
-> Sure, can you send reverts for them, or do you need me to make them?
+> On Fri, Jan 12, 2024 at 11:20:53PM -0600, Steve French wrote:
+> > Here is a patch similar to what David suggested.  Seems
+> > straightforward fix.  See attached.
+> > I did limited testing on it tonight with 6.1 (will do more tomorrow,
+> > but feedback welcome) but it did fix the regression in xfstest
+> > generic/001 mentioned in this thread.
+> > 
+> > 
+> > 
+> > 
+> > On Fri, Jan 12, 2024 at 8:26 AM David Howells <dhowells@redhat.com> wrote:
+> > >
+> > > gregkh@linuxfoundation.org <gregkh@linuxfoundation.org> wrote:
+> > >
+> > > > I guess I can just revert the single commit here?  Can someone send me
+> > > > the revert that I need to do so as I get it right?
+> > >
+> > > In cifs_flush_folio() the error check for filemap_get_folio() just needs
+> > > changing to check !folio instead of IS_ERR(folio).
+> > >
+> > > David
+> > >
+> > >
+> > 
+> > 
+> > --
+> > Thanks,
+> > 
+> > Steve
+> 
+> > From ba288a873fb8ac3d1bf5563366558a905620c071 Mon Sep 17 00:00:00 2001
+> > From: Steve French <stfrench@microsoft.com>
+> > Date: Fri, 12 Jan 2024 23:08:51 -0600
+> > Subject: [PATCH] cifs: fix flushing folio regression for 6.1 backport
+> > 
+> > filemap_get_folio works differenty in 6.1 vs. later kernels
+> > (returning NULL in 6.1 instead of an error).  Add
+> > this minor correction which addresses the regression in the patch:
+> >   cifs: Fix flushing, invalidation and file size with copy_file_range()
+> > 
+> > Suggested-by: David Howells <dhowells@redhat.com>
+> > Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+> > Signed-off-by: Steve French <stfrench@microsoft.com>
+> > ---
+> >  fs/smb/client/cifsfs.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+> > index 2e15b182e59f..ac0b7f229a23 100644
+> > --- a/fs/smb/client/cifsfs.c
+> > +++ b/fs/smb/client/cifsfs.c
+> > @@ -1240,7 +1240,7 @@ static int cifs_flush_folio(struct inode *inode, loff_t pos, loff_t *_fstart, lo
+> >  	int rc = 0;
+> >  
+> >  	folio = filemap_get_folio(inode->i_mapping, index);
+> > -	if (IS_ERR(folio))
+> > +	if ((!folio) || (IS_ERR(folio)))
+> >  		return 0;
+> >  
+> >  	size = folio_size(folio);
+> 
+> I was able to test the patch with the case from the Debian bugreport
+> and seems to resolve the issue. Even if late, as Greg just queued up
+> already:
+> 
+> Tested-by: Salvatore Bonaccorso <carnil@debian.org>
 
-Nevermind, I made them, thanks.
+Thanks, I've added your tested-by to the patch now.
 
 greg k-h
 
