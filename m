@@ -1,52 +1,46 @@
-Return-Path: <stable+bounces-10649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A0F582CB07
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:55:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F5682CB35
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:56:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7DB5285A60
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:54:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 949701F226ED
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5579315C6;
-	Sat, 13 Jan 2024 09:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2E71848;
+	Sat, 13 Jan 2024 09:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFKOD7TF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKDoim7E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDA4A3F;
-	Sat, 13 Jan 2024 09:54:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43EB4C433F1;
-	Sat, 13 Jan 2024 09:54:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8499E1846;
+	Sat, 13 Jan 2024 09:56:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02959C433C7;
+	Sat, 13 Jan 2024 09:56:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139697;
-	bh=WNY4VIMa/Vo5bD2yCuEQYGzhDFfOVTpt1qA+ld+lnqI=;
+	s=korg; t=1705139809;
+	bh=n6VDkn1GGmhuIY0/h6LAZk6xQTPVmjndWLtTUg/2sPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jFKOD7TFfK9n/iyxA+kxYF4V5En54Ft2zI4nHkr7HVKu54+k2uww0f0VSDdgTPpd3
-	 GnvfRq0T/r5BOZRLPuzEfNQ6xOBKwcJvVwbsyj8YVSO982x7+mAgM8mag4wAQMbNu9
-	 YVVjd3b3Do3qIwNRkhRTm0Ia9xbzzdZPxdF/dgeM=
+	b=OKDoim7E01JSARqlJ/4K6YUUIhonLauSAHKRpeQ4HAhoHbwpjG2Lqlw7DDWmUZSuO
+	 qgBQX1lwDFW2Jfh8BgQ5V+SlALGHxm9jaSXs0WNO7Jfsd9avB35KSAePVDsseaBBX/
+	 BAFa525HK7bqN2HWpFWWTSM4tg/9Mw2Q+awndsHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karen Ostrowska <karen.ostrowska@intel.com>,
-	Mateusz Palczewski <mateusz.palczewski@intel.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrii Staikov <andrii.staikov@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 08/25] i40e: Restore VF MSI-X state during PCI reset
+Subject: [PATCH 5.4 13/38] ASoC: meson: g12a-tohdmitx: Validate written enum values
 Date: Sat, 13 Jan 2024 10:49:49 +0100
-Message-ID: <20240113094205.294108458@linuxfoundation.org>
+Message-ID: <20240113094206.858794346@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094205.025407355@linuxfoundation.org>
-References: <20240113094205.025407355@linuxfoundation.org>
+In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
+References: <20240113094206.455533180@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,105 +52,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Staikov <andrii.staikov@intel.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 371e576ff3e8580d91d49026e5d5faebf5565558 ]
+[ Upstream commit 1e001206804be3f3d21f4a1cf16e5d059d75643f ]
 
-During a PCI FLR the MSI-X Enable flag in the VF PCI MSI-X capability
-register will be cleared. This can lead to issues when a VF is
-assigned to a VM because in these cases the VF driver receives no
-indication of the PF PCI error/reset and additionally it is incapable
-of restoring the cleared flag in the hypervisor configuration space
-without fully reinitializing the driver interrupt functionality.
+When writing to an enum we need to verify that the value written is valid
+for the enumeration, the helper function snd_soc_item_enum_to_val() doesn't
+do it since it needs to return an unsigned (and in any case we'd need to
+check the return value).
 
-Since the VF driver is unable to easily resolve this condition on its own,
-restore the VF MSI-X flag during the PF PCI reset handling.
-
-Fixes: 19b7960b2da1 ("i40e: implement split PCI error reset handler")
-Co-developed-by: Karen Ostrowska <karen.ostrowska@intel.com>
-Signed-off-by: Karen Ostrowska <karen.ostrowska@intel.com>
-Co-developed-by: Mateusz Palczewski <mateusz.palczewski@intel.com>
-Signed-off-by: Mateusz Palczewski <mateusz.palczewski@intel.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Andrii Staikov <andrii.staikov@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: c8609f3870f7 ("ASoC: meson: add g12a tohdmitx control")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240103-meson-enum-val-v1-2-424af7a8fb91@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c   |  3 +++
- .../ethernet/intel/i40e/i40e_virtchnl_pf.c    | 26 +++++++++++++++++++
- .../ethernet/intel/i40e/i40e_virtchnl_pf.h    |  3 +++
- 3 files changed, 32 insertions(+)
+ sound/soc/meson/g12a-tohdmitx.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 552f5025d265b..97cf144a4ff99 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -14476,6 +14476,9 @@ static void i40e_pci_error_reset_done(struct pci_dev *pdev)
- 	struct i40e_pf *pf = pci_get_drvdata(pdev);
+diff --git a/sound/soc/meson/g12a-tohdmitx.c b/sound/soc/meson/g12a-tohdmitx.c
+index d02825669484a..2f44c138e1dee 100644
+--- a/sound/soc/meson/g12a-tohdmitx.c
++++ b/sound/soc/meson/g12a-tohdmitx.c
+@@ -44,6 +44,9 @@ static int g12a_tohdmitx_i2s_mux_put_enum(struct snd_kcontrol *kcontrol,
+ 	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
+ 	unsigned int mux, changed;
  
- 	i40e_reset_and_rebuild(pf, false, false);
-+#ifdef CONFIG_PCI_IOV
-+	i40e_restore_all_vfs_msi_state(pdev);
-+#endif /* CONFIG_PCI_IOV */
- }
++	if (ucontrol->value.enumerated.item[0] >= e->items)
++		return -EINVAL;
++
+ 	mux = snd_soc_enum_item_to_val(e, ucontrol->value.enumerated.item[0]);
+ 	changed = snd_soc_component_test_bits(component, e->reg,
+ 					      CTRL0_I2S_DAT_SEL,
+@@ -92,6 +95,9 @@ static int g12a_tohdmitx_spdif_mux_put_enum(struct snd_kcontrol *kcontrol,
+ 	struct soc_enum *e = (struct soc_enum *)kcontrol->private_value;
+ 	unsigned int mux, changed;
  
- /**
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index 32b19c4c581b6..412f8002f918b 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -99,6 +99,32 @@ void i40e_vc_notify_reset(struct i40e_pf *pf)
- 			     (u8 *)&pfe, sizeof(struct virtchnl_pf_event));
- }
- 
-+#ifdef CONFIG_PCI_IOV
-+void i40e_restore_all_vfs_msi_state(struct pci_dev *pdev)
-+{
-+	u16 vf_id;
-+	u16 pos;
++	if (ucontrol->value.enumerated.item[0] >= e->items)
++		return -EINVAL;
 +
-+	/* Continue only if this is a PF */
-+	if (!pdev->is_physfn)
-+		return;
-+
-+	if (!pci_num_vf(pdev))
-+		return;
-+
-+	pos = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_SRIOV);
-+	if (pos) {
-+		struct pci_dev *vf_dev = NULL;
-+
-+		pci_read_config_word(pdev, pos + PCI_SRIOV_VF_DID, &vf_id);
-+		while ((vf_dev = pci_get_device(pdev->vendor, vf_id, vf_dev))) {
-+			if (vf_dev->is_virtfn && vf_dev->physfn == pdev)
-+				pci_restore_msi_state(vf_dev);
-+		}
-+	}
-+}
-+#endif /* CONFIG_PCI_IOV */
-+
- /**
-  * i40e_vc_notify_vf_reset
-  * @vf: pointer to the VF structure
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-index 1e001b2bd761b..c9e0a591a344d 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-@@ -137,5 +137,8 @@ int i40e_ndo_set_vf_spoofchk(struct net_device *netdev, int vf_id, bool enable);
- 
- void i40e_vc_notify_link_state(struct i40e_pf *pf);
- void i40e_vc_notify_reset(struct i40e_pf *pf);
-+#ifdef CONFIG_PCI_IOV
-+void i40e_restore_all_vfs_msi_state(struct pci_dev *pdev);
-+#endif /* CONFIG_PCI_IOV */
- 
- #endif /* _I40E_VIRTCHNL_PF_H_ */
+ 	mux = snd_soc_enum_item_to_val(e, ucontrol->value.enumerated.item[0]);
+ 	changed = snd_soc_component_test_bits(component, TOHDMITX_CTRL0,
+ 					      CTRL0_SPDIF_SEL,
 -- 
 2.43.0
 
