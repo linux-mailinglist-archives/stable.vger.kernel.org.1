@@ -1,47 +1,49 @@
-Return-Path: <stable+bounces-10667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F084D82CB1C
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:56:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90A7582CB96
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 11:01:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F5AF1F23204
-	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 09:56:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3123CB22C98
+	for <lists+stable@lfdr.de>; Sat, 13 Jan 2024 10:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DDE411C8D;
-	Sat, 13 Jan 2024 09:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D5D28F7;
+	Sat, 13 Jan 2024 10:01:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fh5G1hTr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fUR9E2P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677CA1119C;
-	Sat, 13 Jan 2024 09:55:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E78C433C7;
-	Sat, 13 Jan 2024 09:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3280F1846;
+	Sat, 13 Jan 2024 10:01:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D3DC433C7;
+	Sat, 13 Jan 2024 10:01:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705139750;
-	bh=OkZP6TR83VjCSgMTcaYcvVG1GvRuSQPQ5WHt1JK0rj4=;
+	s=korg; t=1705140082;
+	bh=s5V6z+FNnHic6nCzJ0cU68M9uWRHcMd/THX2G3S0O3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fh5G1hTrbUQ4CMD4/N5RjBu8xxVLZ9JSV5i5KBsfcFDvLizsrfKE2vMJvqMG6yNQ4
-	 zWH1DWdqUUNG6U5T4r+DzH08raHHkwKbiztxzG/K/DGmcA4lmIpij5YU1PF+9ChmU5
-	 qM/CKhfMLcIKrnIoWUnBikCYktqbn7EZxHXrn8IU=
+	b=1fUR9E2Py8tCuVGn6U24sFHWi72jANJ91bKrKT+sMDYU9yEtG8guQlXPOwinPBYye
+	 PS5/PuDJO38jyn5bE3/tg4w+D7LOkyqsEQrdkg1hWHlTSchwx36UVho7I3tCwnNYM6
+	 c+AgPeEwh46eHa3DwVLRy40cWq1qdH3vU3QmERcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	"David S. Miller" <davem@davemloft.net>,
+	Simon Horman <horms@kernel.org>,
+	Edward Cree <ecree.xilinx@gmail.com>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 18/38] asix: Add check for usbnet_get_endpoints
+Subject: [PATCH 5.15 23/59] sfc: fix a double-free bug in efx_probe_filters
 Date: Sat, 13 Jan 2024 10:49:54 +0100
-Message-ID: <20240113094207.011256543@linuxfoundation.org>
+Message-ID: <20240113094210.021820384@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
-References: <20240113094206.455533180@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094209.301672391@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,40 +55,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit eaac6a2d26b65511e164772bec6918fcbc61938e ]
+[ Upstream commit d5a306aedba34e640b11d7026dbbafb78ee3a5f6 ]
 
-Add check for usbnet_get_endpoints() and return the error if it fails
-in order to transfer the error.
+In efx_probe_filters, the channel->rps_flow_id is freed in a
+efx_for_each_channel marco  when success equals to 0.
+However, after the following call chain:
 
-Fixes: 16626b0cc3d5 ("asix: Add a new driver for the AX88172A")
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+ef100_net_open
+  |-> efx_probe_filters
+  |-> ef100_net_stop
+        |-> efx_remove_filters
+
+The channel->rps_flow_id is freed again in the efx_for_each_channel of
+efx_remove_filters, triggering a double-free bug.
+
+Fixes: a9dc3d5612ce ("sfc_ef100: RX filter table management and related gubbins")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Edward Cree <ecree.xilinx@gmail.com>
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Link: https://lore.kernel.org/r/20231225112915.3544581-1-alexious@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/ax88172a.c | 4 +++-
+ drivers/net/ethernet/sfc/rx_common.c | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/ax88172a.c b/drivers/net/usb/ax88172a.c
-index 6101d82102e79..bf65262e2256d 100644
---- a/drivers/net/usb/ax88172a.c
-+++ b/drivers/net/usb/ax88172a.c
-@@ -186,7 +186,9 @@ static int ax88172a_bind(struct usbnet *dev, struct usb_interface *intf)
- 	u8 buf[ETH_ALEN];
- 	struct ax88172a_private *priv;
+diff --git a/drivers/net/ethernet/sfc/rx_common.c b/drivers/net/ethernet/sfc/rx_common.c
+index a804c754cd7d0..0f2d6efdbba1c 100644
+--- a/drivers/net/ethernet/sfc/rx_common.c
++++ b/drivers/net/ethernet/sfc/rx_common.c
+@@ -837,8 +837,10 @@ int efx_probe_filters(struct efx_nic *efx)
+ 		}
  
--	usbnet_get_endpoints(dev, intf);
-+	ret = usbnet_get_endpoints(dev, intf);
-+	if (ret)
-+		return ret;
- 
- 	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
+ 		if (!success) {
+-			efx_for_each_channel(channel, efx)
++			efx_for_each_channel(channel, efx) {
+ 				kfree(channel->rps_flow_id);
++				channel->rps_flow_id = NULL;
++			}
+ 			efx->type->filter_table_remove(efx);
+ 			rc = -ENOMEM;
+ 			goto out_unlock;
 -- 
 2.43.0
 
