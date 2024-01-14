@@ -1,178 +1,118 @@
-Return-Path: <stable+bounces-10834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62F6782CF8F
-	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 04:24:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E04282CFD8
+	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 06:34:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC0ED1F21E5A
-	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 03:24:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76EB51C20F64
+	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 05:34:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86E017CA;
-	Sun, 14 Jan 2024 03:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE95F1841;
+	Sun, 14 Jan 2024 05:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W9VpVtDa"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dNM2gNJo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22231841;
-	Sun, 14 Jan 2024 03:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E807E;
+	Sun, 14 Jan 2024 05:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2cd64022164so81160541fa.3;
-        Sat, 13 Jan 2024 19:23:56 -0800 (PST)
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-3bd4e6a7cb0so2122654b6e.3;
+        Sat, 13 Jan 2024 21:34:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705202635; x=1705807435; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gfta0bZFvjFZJvC0F4xMIC685zJ7SAda9ZzxTagHvw4=;
-        b=W9VpVtDaOUUQFPLw8XvE8hWY8Vu/tBwKkyBPbo2a6AtpqP8GMJKpR8Fyux1FiResLw
-         pRlY4vVyy6XztFRASezvKg8jh/lyoL1ZmMoKAe9lNEO6T2wm1a2AL6et8dl3sU3kUtmy
-         53XZ0uTZ4Z/O/Ke079oerhIh3mrZGCl/GGppmvTGc2fFZnsNA80yxyeYsCO0Z+jENM4W
-         79NJ8vzgqlS1XOcu8ldDmUFGF/txfMavw3uD2JS2CH9VPBdBzudKHDlXf7HvIbOpG1EK
-         HD4droo9XiKE343aP/6eIdR6JoC4eZH375zQJ1l/LaliYqwaTnhwEt4FulDD3VV1FZY+
-         ZDsQ==
+        d=gmail.com; s=20230601; t=1705210489; x=1705815289; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6sE8GJgZQUurHRznhkMrLCR2jJi1Q8GCwy2Ue2LjotM=;
+        b=dNM2gNJojTv1QW57qpzbynCbwdUD53Eh6nUSQHzv1PkY17+Pq7UTUXy+M0fVTMZvW2
+         9fG3buEkl/LvHZZs3j9j7hG6j6JAKAE9/zOJyilPC1LHiWCA4FGpnid4KB09Tu4P95S+
+         hYhhCytM9ws2eGiLcumBPgeOXGDdJ6MXHT9z3tpK8qQ7xR/iCONzFebw5h0zXEPcHClV
+         AcmTM429kk39vzqMbAsCg45lYQldIdt+mMblMJOx8cEiJTwZC5rWyrAsSFoZsClnzMh0
+         7kBD1W3hEuoFZ5O8/tJrqigo/BqmHFZp4Vj8qX3ta/PNN1VT3eDy+ff8M3FUiPxqTSSX
+         xvuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705202635; x=1705807435;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gfta0bZFvjFZJvC0F4xMIC685zJ7SAda9ZzxTagHvw4=;
-        b=WaRFHls+E7PgPfVwSjE1KMUCibfC+HzJzjBzBk7uxWvWyhLSrFbYxpnlejl8Ct6RUM
-         mMytpk3ZlbxbLMh9sqIoqYxjV8Qtl5VQhZRHaWekaFJls7RSztwo0Jb5GGVeT2pzQDLC
-         X7oHtosgh1qqfLNew2YkS0kIEQ3c4vIgPCO5/HDrDEN4DSsCeloK8a1f2bnSmetdem7e
-         hF5FlHDbG532gxdizGi9vLf5b/u7ObftGQCwyZ0xIZPyOJDBgQ7z9Wn3hIJTg8t+JpOb
-         2o1TABSRd8o1+NU63WJeckjLrczHLfORP3AOhPSuKgihM7tTl3hBBjpL9UcqTRnSJQHu
-         53Zw==
-X-Gm-Message-State: AOJu0Yw5F1MSPbW85MtG2E/JO+FnC50zpcsPIzvzI0wK9vaQ+kdl3LW6
-	s93y/inlrHG7058/fe8FfTbUVGqy+TTkVrIPS/s=
-X-Google-Smtp-Source: AGHT+IHp2Jx9EpAWnyz05z7ZSv6ATR2OJO4m7nQlWoPvbzSMzQn2WZ/mqDTyJ/wGxu1LoMGKhW1HWVA6N84aJAq1mZQ=
-X-Received: by 2002:a2e:a409:0:b0:2cc:5e44:a8ee with SMTP id
- p9-20020a2ea409000000b002cc5e44a8eemr1815150ljn.105.1705202634498; Sat, 13
- Jan 2024 19:23:54 -0800 (PST)
+        d=1e100.net; s=20230601; t=1705210489; x=1705815289;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6sE8GJgZQUurHRznhkMrLCR2jJi1Q8GCwy2Ue2LjotM=;
+        b=p0+HqhxgHo4WZdBFMs4iHk6ENMjhDvgKIdhhVI/3Xj2fr6iL+xMX0XzSquZlF//1ns
+         fOnxJi77KNAay9r9zrQiym3PHY3fEI+JewYSzBvcbPz1JBQr7DrL1hzLBJX3tsaF1Mbm
+         8+4GJGhiYCbCoW90ONHt2hqIGZ/IFrfncZNCbsrsFCNCFMtEI73YW70yFkTExOzeaS2+
+         J0F2zxoE8pXry9gjklfs9hoKzO5bc3t5bqy620ArYuPUyQS9Fj4Dhr/FTqeW980tnDuI
+         NLtq0PPG++YYUtGYYa22DUT2y21o4exArqKYKhfqEmaGg0WsF4qrhFbkP90jB+DV9OwH
+         o0jA==
+X-Gm-Message-State: AOJu0Yzl+Xdo8363pIF/pgQyt+gXQeul9sCeB4z4XDbxwK/lSqC8Xx3I
+	iCTQg3tdZYXdKIV0PaJCiuo=
+X-Google-Smtp-Source: AGHT+IHTG+PgGBbFgr5D7soUP+YgGL2BeumCRe0trgMNggDvAmVDnKvr+0kfpm4+h7VZoM2z5cvURw==
+X-Received: by 2002:a05:6808:f15:b0:3bd:578c:d866 with SMTP id m21-20020a0568080f1500b003bd578cd866mr4727902oiw.35.1705210489281;
+        Sat, 13 Jan 2024 21:34:49 -0800 (PST)
+Received: from archie.me ([103.131.18.64])
+        by smtp.gmail.com with ESMTPSA id ke12-20020a170903340c00b001cfc3f73920sm5550792plb.227.2024.01.13.21.34.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 13 Jan 2024 21:34:48 -0800 (PST)
+Received: by archie.me (Postfix, from userid 1000)
+	id 06AF51846DA01; Sun, 14 Jan 2024 12:34:40 +0700 (WIB)
+Date: Sun, 14 Jan 2024 12:34:40 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	allen.lkml@gmail.com
+Subject: Re: [PATCH 6.6 0/1] 6.6.12-rc1 review
+Message-ID: <ZaNycIqURYZLW1Yt@archie.me>
+References: <20240113094204.275569789@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <a76b370f93cb928c049b94e1fde0d2da506dfcb2.camel@amazon.com>
- <ZZhrpNJ3zxMR8wcU@eldamar.lan> <8e59220d-b0f3-4dae-afc3-36acfa6873e4@leemhuis.info>
- <ZZk6qA54A-KfzmSz@eldamar.lan> <13a70cc5-78fc-49a4-8d78-41e5479e3023@leemhuis.info>
- <ZZ7Dy69ZJCEyKhhS@eldamar.lan> <2024011115-neatly-trout-5532@gregkh>
- <2162049.1705069551@warthog.procyon.org.uk> <CAH2r5mtBSvp9D8s3bX7KNWjXdTuOHPx5Z005jp8F5kuJgU3Z-g@mail.gmail.com>
- <ZaJYgkI9o5J1U3TX@eldamar.lan> <2024011316-cathouse-relearn-df14@gregkh>
-In-Reply-To: <2024011316-cathouse-relearn-df14@gregkh>
-From: Steve French <smfrench@gmail.com>
-Date: Sat, 13 Jan 2024 21:23:43 -0600
-Message-ID: <CAH2r5msjAwRmQNOvkDm5NZD0zh141iNV87urxOK04n-6FQ5wbQ@mail.gmail.com>
-Subject: Re: [Regression 6.1.y] From "cifs: Fix flushing, invalidation and
- file size with copy_file_range()"
-To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-Cc: Salvatore Bonaccorso <carnil@debian.org>, David Howells <dhowells@redhat.com>, 
-	Paulo Alcantara <pc@manguebit.com>, Shyam Prasad N <nspmangalore@gmail.com>, 
-	Rohith Surabattula <rohiths.msft@gmail.com>, Matthew Wilcox <willy@infradead.org>, 
-	Jeff Layton <jlayton@kernel.org>, Steve French <stfrench@microsoft.com>, 
-	"Jitindar Singh, Suraj" <surajjs@amazon.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
-	"stable-commits@vger.kernel.org" <stable-commits@vger.kernel.org>, stable@vger.kernel.org, 
-	linux-cifs@vger.kernel.org, 
-	Linux regressions mailing list <regressions@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="JGCWdCXWhEvYzJz7"
+Content-Disposition: inline
+In-Reply-To: <20240113094204.275569789@linuxfoundation.org>
+
+
+--JGCWdCXWhEvYzJz7
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-tested out fine so far
+On Sat, Jan 13, 2024 at 10:50:58AM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.12 release.
+> There are 1 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
-On Sat, Jan 13, 2024 at 3:41=E2=80=AFAM gregkh@linuxfoundation.org
-<gregkh@linuxfoundation.org> wrote:
->
-> On Sat, Jan 13, 2024 at 10:31:46AM +0100, Salvatore Bonaccorso wrote:
-> > Hi,
-> >
-> > On Fri, Jan 12, 2024 at 11:20:53PM -0600, Steve French wrote:
-> > > Here is a patch similar to what David suggested.  Seems
-> > > straightforward fix.  See attached.
-> > > I did limited testing on it tonight with 6.1 (will do more tomorrow,
-> > > but feedback welcome) but it did fix the regression in xfstest
-> > > generic/001 mentioned in this thread.
-> > >
-> > >
-> > >
-> > >
-> > > On Fri, Jan 12, 2024 at 8:26=E2=80=AFAM David Howells <dhowells@redha=
-t.com> wrote:
-> > > >
-> > > > gregkh@linuxfoundation.org <gregkh@linuxfoundation.org> wrote:
-> > > >
-> > > > > I guess I can just revert the single commit here?  Can someone se=
-nd me
-> > > > > the revert that I need to do so as I get it right?
-> > > >
-> > > > In cifs_flush_folio() the error check for filemap_get_folio() just =
-needs
-> > > > changing to check !folio instead of IS_ERR(folio).
-> > > >
-> > > > David
-> > > >
-> > > >
-> > >
-> > >
-> > > --
-> > > Thanks,
-> > >
-> > > Steve
-> >
-> > > From ba288a873fb8ac3d1bf5563366558a905620c071 Mon Sep 17 00:00:00 200=
-1
-> > > From: Steve French <stfrench@microsoft.com>
-> > > Date: Fri, 12 Jan 2024 23:08:51 -0600
-> > > Subject: [PATCH] cifs: fix flushing folio regression for 6.1 backport
-> > >
-> > > filemap_get_folio works differenty in 6.1 vs. later kernels
-> > > (returning NULL in 6.1 instead of an error).  Add
-> > > this minor correction which addresses the regression in the patch:
-> > >   cifs: Fix flushing, invalidation and file size with copy_file_range=
-()
-> > >
-> > > Suggested-by: David Howells <dhowells@redhat.com>
-> > > Reported-by: Salvatore Bonaccorso <carnil@debian.org>
-> > > Signed-off-by: Steve French <stfrench@microsoft.com>
-> > > ---
-> > >  fs/smb/client/cifsfs.c | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
-> > > index 2e15b182e59f..ac0b7f229a23 100644
-> > > --- a/fs/smb/client/cifsfs.c
-> > > +++ b/fs/smb/client/cifsfs.c
-> > > @@ -1240,7 +1240,7 @@ static int cifs_flush_folio(struct inode *inode=
-, loff_t pos, loff_t *_fstart, lo
-> > >     int rc =3D 0;
-> > >
-> > >     folio =3D filemap_get_folio(inode->i_mapping, index);
-> > > -   if (IS_ERR(folio))
-> > > +   if ((!folio) || (IS_ERR(folio)))
-> > >             return 0;
-> > >
-> > >     size =3D folio_size(folio);
-> >
-> > I was able to test the patch with the case from the Debian bugreport
-> > and seems to resolve the issue. Even if late, as Greg just queued up
-> > already:
-> >
-> > Tested-by: Salvatore Bonaccorso <carnil@debian.org>
->
-> Thanks, I've added your tested-by to the patch now.
->
-> greg k-h
+Successfully compiled and installed the kernel on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
 
-
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
 
 --=20
-Thanks,
+An old man doll... just what I always wanted! - Clara
 
-Steve
+--JGCWdCXWhEvYzJz7
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZaNyawAKCRD2uYlJVVFO
+o2JaAQDxLRLceubxCaSwvgyu7sQ6J7gVQIjdjD8/1ifIc0aq5QEAsd4mDLOz50D/
+KDvdhnKa4f3YVGQCKctZ+SuYBXsG7AE=
+=xq/3
+-----END PGP SIGNATURE-----
+
+--JGCWdCXWhEvYzJz7--
 
