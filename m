@@ -1,64 +1,90 @@
-Return-Path: <stable+bounces-10845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A1682D0E8
-	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 15:34:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32E7782D1E7
+	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 19:55:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97A151F2161E
-	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 14:34:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0DF8281B36
+	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 18:55:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709D51C14;
-	Sun, 14 Jan 2024 14:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 207CB1078B;
+	Sun, 14 Jan 2024 18:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YRArPb4R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KZWeDXxT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3330F2570;
-	Sun, 14 Jan 2024 14:34:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79AF5C433F1;
-	Sun, 14 Jan 2024 14:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09FC1640B;
+	Sun, 14 Jan 2024 18:55:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA64C433C7;
+	Sun, 14 Jan 2024 18:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705242846;
-	bh=EszImnKYJnEnKFk1wt073gthk8M6xM7ENBGQn/T0edM=;
+	s=k20201202; t=1705258547;
+	bh=j57z2FuABnO5E4/9dPETH3wR/+lTQdlklV9KN1rL0SU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YRArPb4RPBK5ot3z0ZMSvwVELOPnXJAKuuuJj9y66aWMPRrNCtvXuxwYfTIi7G5eD
-	 C1FHSsamBbHNJeu3dMT/fYJXcbaTcofAAP6gYcV3adLquCsCXqxQs0kse1ALhluIIO
-	 It0E4jdkX8FSI78tOaSAy8mv2M1JIXUv2sXPZVxRBuTxxQabC8jwuOnjv+fAgm/jxE
-	 h9sqSe+9jF4gkFSBFm1a3sLN6iVmiX9WTU33xgknss7HFnQF1gXfY3ohSJIInIgTTL
-	 9hhF/Fl5RUTeIWp8ucrBo4SeNSfQnlWN6wAvvq4nJH5aj/9BZGtY4CVmfFqAQCR4cC
-	 N4P5HOW9L59sA==
-Date: Sun, 14 Jan 2024 09:34:05 -0500
+	b=KZWeDXxTfFkote0uBLuO9SG4LSyprfuQHOPhanXYfS4/VDJZ8zsziARZgTf4gmRL4
+	 hwUltMEV6kSW3xK1yqQ59I6c2RWsS42S5in5FYLJfNa/nhyla70XxE8irdrMQUFejJ
+	 GF0heRYoivSfwN+Kf14TSeQ/FAhGf44fn1lYz5cnGWkbSGG8NNF2Lg+IduQyJkyMcb
+	 GfMcPZCgmWX0PqC3cumth+o0cv+PIEhTBfvNytQRqW2MaEyaZdj0iA9Hh3spNFJZmD
+	 GX1ReKGKpkxpzp33ZI9byVmjtJlSY4Uf98r0MAMK4/LhhE/KCelLCksN4/d1hftzsd
+	 5ceV6D12nvSiw==
+Date: Sun, 14 Jan 2024 13:55:45 -0500
 From: Sasha Levin <sashal@kernel.org>
-To: David Airlie <airlied@redhat.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Dave Airlie <airlied@gmail.com>, kherbst@redhat.com,
-	lyude@redhat.com, dakr@redhat.com, daniel@ffwll.ch,
-	bskeggs@redhat.com, dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org
-Subject: Re: [PATCH AUTOSEL 6.1 5/5] nouveau: fix disp disabling with GSP
-Message-ID: <ZaPw3WAmT2OwHY98@sashalap>
-References: <20240108122823.2090312-1-sashal@kernel.org>
- <20240108122823.2090312-5-sashal@kernel.org>
- <CAMwc25rAm1ndSiofWMMmQ1BeB0XxBvsHpcvaDKXUwEZp72iwEA@mail.gmail.com>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+Cc: Pavel Machek <pavel@ucw.cz>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	linux-input@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 4.19 4/7] Input: amimouse - convert to platform
+ remove callback returning void
+Message-ID: <ZaQuMZFSC4iwntY2@sashalap>
+References: <20231226002649.7290-1-sashal@kernel.org>
+ <20231226002649.7290-4-sashal@kernel.org>
+ <ZZ0xt75z/qSf5f8V@duo.ucw.cz>
+ <qkb22czelncqf43vr2kuz6i6npuq4juyr3ggl3jkdbp6t2uzfs@ftbna3qj6qhq>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
 Content-Disposition: inline
-In-Reply-To: <CAMwc25rAm1ndSiofWMMmQ1BeB0XxBvsHpcvaDKXUwEZp72iwEA@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <qkb22czelncqf43vr2kuz6i6npuq4juyr3ggl3jkdbp6t2uzfs@ftbna3qj6qhq>
 
-On Tue, Jan 09, 2024 at 06:51:25AM +1000, David Airlie wrote:
->NAK for backporting this to anything, it is just a fix for 6.7
+On Tue, Jan 09, 2024 at 10:50:04PM +0100, Uwe Kleine-König wrote:
+>On Tue, Jan 09, 2024 at 12:44:55PM +0100, Pavel Machek wrote:
+>> Hi!
+>>
+>> > From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+>> >
+>> > [ Upstream commit 42b8ff47720258d1f6a4412e780a480c139773a0 ]
+>> >
+>> > The .remove() callback for a platform driver returns an int which makes
+>> > many driver authors wrongly assume it's possible to do error handling by
+>> > returning an error code. However the value returned is ignored (apart
+>> > from emitting a warning) and this typically results in resource leaks.
+>> >
+>> > To improve here there is a quest to make the remove callback return
+>> > void. In the first step of this quest all drivers are converted to
+>> > .remove_new(), which already returns void. Eventually after all drivers
+>> > are converted, .remove_new() will be renamed to .remove().
+>> >
+>> > Trivially convert this driver from always returning zero in the remove
+>> > callback to the void returning variant.
+>>
+>> We don't really need this for -stable.
+>
+>Agreed! These patches shouldn't get backported to stable. Even if they
+>are a dependency (which isn't the case for this patch AFAICT),
+>backporting of later patches isn't hard even when dropping these
+>patches.
 
-Dropped it from everywhere, thanks!
+I'll drop it, thanks!
 
 -- 
 Thanks,
