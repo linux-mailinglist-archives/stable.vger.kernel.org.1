@@ -1,117 +1,123 @@
-Return-Path: <stable+bounces-10837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5267C82CFF6
-	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 09:07:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E48382D02B
+	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 10:41:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0767C1F21CF6
-	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 08:07:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 092931F21C22
+	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 09:41:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C2E1860;
-	Sun, 14 Jan 2024 08:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6EA1FA5;
+	Sun, 14 Jan 2024 09:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="X1w5pVYs"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="g/IbegEI"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8888420EB
-	for <stable@vger.kernel.org>; Sun, 14 Jan 2024 08:07:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1705219648;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ffLmMyOaklOqYbWQCeCLRdG1Ympe93V9wLE3GPAo5oQ=;
-	b=X1w5pVYsQcQ4fjj9qu9p6xJFSa8AYGoc87hb8r9GmIT/OY4W3LwO5zhqqZ5eFM/nPCD3T+
-	jFBiGqCfoyI7fWa1nmfJkyyoWFfNvPM11m47Imdyyu1xc8+wwMWengAYbKtVObjVq5oRsD
-	xqf5slr/uc+ysyWTKgk+nyvvq1rGP1s=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-621-TTVYK9QGOK6liqwc9JxW7w-1; Sun, 14 Jan 2024 03:07:26 -0500
-X-MC-Unique: TTVYK9QGOK6liqwc9JxW7w-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9B3E683B7EF;
-	Sun, 14 Jan 2024 08:07:25 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.39.192.26])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 702331C066AE;
-	Sun, 14 Jan 2024 08:07:23 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: masahiroy@kernel.org
-Cc: dcavalca@meta.com,
-	jtornosm@redhat.com,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	nathan@kernel.org,
-	ndesaulniers@google.com,
-	nicolas@fjasle.eu,
-	stable@vger.kernel.org
-Subject: [PATCH V5 2/2] rpm-pkg: avoid install/remove the running kernel
-Date: Sun, 14 Jan 2024 09:07:11 +0100
-Message-ID: <20240114080711.5109-1-jtornosm@redhat.com>
-In-Reply-To: <CAK7LNAR_wgQBs-q9NH1icb_FPBoVMNEhQpvV8qzH2dFsrDS0pQ@mail.gmail.com>
-References: <CAK7LNAR_wgQBs-q9NH1icb_FPBoVMNEhQpvV8qzH2dFsrDS0pQ@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014B21C3E
+	for <stable@vger.kernel.org>; Sun, 14 Jan 2024 09:41:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5006a.ext.cloudfilter.net ([10.0.29.179])
+	by cmsmtp with ESMTPS
+	id OrfIr0SUZ9gG6OwzgrwBWq; Sun, 14 Jan 2024 09:41:28 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id OwzfrBS3kim6EOwzgr3bZz; Sun, 14 Jan 2024 09:41:28 +0000
+X-Authority-Analysis: v=2.4 cv=Qft1A+Xv c=1 sm=1 tr=0 ts=65a3ac48
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
+ a=IkcTkHD0fZMA:10 a=dEuoMetlWLkA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=CgIWkzQF1333AAWbJpCgmT5k6SyV4mmwshRIMMQqQOo=; b=g/IbegEIDfXnB/pvjIfRog+Q7V
+	5anza1eXomXXt/1M00sdxgJbZlqQ6aP+XT17Q90KmxMs6ww+aTpFtROb0iU2gdhe2A9ideM31IPhS
+	JxXGWoOvGKWthsvQriGX4Cfil594UQmJJRaNWCqv17OEtcPqirt9bHXM7MH3HCAbE1Fk02UtY+2bv
+	mFckOIOXMD6KMGKQR/y/AP0GCQjJFRVV41J4nTmGavNLsU5AOLfSXsftNHS8/G45bwhjOUQxnydT6
+	90rZPqa6lsUWDzidhUPw0fTUxaDIccfPtA75fDwPPwE0UmmbxF3erUp036orRmiWmGKQgspibuZli
+	tZj8iYeQ==;
+Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:35196 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1rOwzd-0045k3-1d;
+	Sun, 14 Jan 2024 02:41:25 -0700
+Subject: Re: [PATCH 5.15 00/59] 5.15.147-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+References: <20240113094209.301672391@linuxfoundation.org>
+In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <22cc7b9a-90c8-1d3c-f7d5-9fcedaff502c@w6rz.net>
+Date: Sun, 14 Jan 2024 01:41:23 -0800
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 98.207.139.8
+X-Source-L: No
+X-Exim-ID: 1rOwzd-0045k3-1d
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:35196
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfJpuGXbUmR91RXSZYTqS1e28S9tTdfNK/ibhCotQhOELca0FU407zlBkxjfT/7cC/A/DMsEGkcYOE1n8+P/Gc5IH0ogfy7DsT1oI5K1GhtC1VOK5mk1f
+ UbVcjykDIuTr2i4JTwaeu763MR9+ADdz7nSDsCPtnkR6r8VLtDBays9ykXhzi4KRXk/TsV6DZPZfKA==
 
-Normally, upper tools and scripts are checking if we want to modify the
-running kernel but not always. Check install and remove operation that
-affect the running kernel to avoid possible issues.
+On 1/13/24 1:49 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.147 release.
+> There are 59 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Mon, 15 Jan 2024 09:41:55 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.147-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Tested with Fedora 38, Fedora 39, RHEL 9, Oracle Linux 9.3,
-openSUSE Tumbleweed and openMandrive ROME, using dnf/zypper and rpm tools.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-cc: stable@vger.kernel.org
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
----
- scripts/package/kernel.spec | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
-index 74542af8cbfe..216514cbf5f6 100644
---- a/scripts/package/kernel.spec
-+++ b/scripts/package/kernel.spec
-@@ -69,6 +69,12 @@ ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot}/lib/modules/%{KERNELRELEA
- %clean
- rm -rf %{buildroot}
- 
-+%pre
-+if [ $(uname -r) == %{KERNELRELEASE} ];then
-+echo "same kernel release is running" > /dev/stderr
-+exit 1
-+fi
-+
- %post
- if [ -x /usr/bin/kernel-install ]; then
- /usr/bin/kernel-install add %{KERNELRELEASE} /lib/modules/%{KERNELRELEASE}/vmlinuz
-@@ -85,6 +91,10 @@ fi
- done
- 
- %preun
-+if [ $(uname -r) == %{KERNELRELEASE} ];then
-+echo "same kernel release is running" > /dev/stderr
-+exit 1
-+fi
- if [ -x /sbin/new-kernel-pkg ]; then
- new-kernel-pkg --remove %{KERNELRELEASE} --rminitrd --initrdfile=/boot/initramfs-%{KERNELRELEASE}.img
- elif [ -x /usr/bin/kernel-install ]; then
--- 
-2.43.0
+Tested-by: Ron Economos <re@w6rz.net>
 
 
