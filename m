@@ -1,139 +1,111 @@
-Return-Path: <stable+bounces-10849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F37F82D200
-	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 20:43:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A8E82D225
+	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 23:01:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47A25B21240
-	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 19:43:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4055DB20EF0
+	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 22:01:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F28E15AF6;
-	Sun, 14 Jan 2024 19:43:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="N01dN+PV"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4C6214F86;
+	Sun, 14 Jan 2024 22:01:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70CA1428F
-	for <stable@vger.kernel.org>; Sun, 14 Jan 2024 19:43:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
-Received: from cwcc.thunk.org (pool-173-48-115-247.bstnma.fios.verizon.net [173.48.115.247])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 40EJh2ka006080
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 14 Jan 2024 14:43:03 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
-	t=1705261384; bh=a75MRiqS9CjUQICmsOz6vLm4VvbBzhVgndG6jX7qNGk=;
-	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
-	b=N01dN+PVpl/brM0NjN29+9kPca7ppSxnfjf60nGIVY9NprZlJwjxjxKKMVC/nNp2+
-	 B0rjauTe60PGS6437w0vG/rduGC6fSKZTnwckmKszNMq+KVTzJ4NCzHFnkz7DOgYeF
-	 bN6wT8RRl+pMMlnGhXPiiHqn1MMSOPqBOpg0/aDm4889x+vEuGyXKVCjkN1Lf1SsYP
-	 PFNxyT+dylCS77yrA1iJasIrTUW6/qYG7po3nnX9O+KAz2R6HcNUiMp199c4ClN++z
-	 IbX7KGnnQwMllq7FfbHfeyfFefhCywSpBXJdLPFg5pWAHecZNgF9kuZkEm5LRyXgTn
-	 WKLhstsa4HUtA==
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
-	id 170EB15C0278; Sun, 14 Jan 2024 14:43:02 -0500 (EST)
-Date: Sun, 14 Jan 2024 14:43:02 -0500
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: Gui-Dong Han <2045gemini@gmail.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>, jirislaby@kernel.org,
-        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
-        baijiaju1990@outlook.com, stable@vger.kernel.org
-Subject: Re: [PATCH] tty: fix atomicity violation in n_tty_read
-Message-ID: <20240114194302.GC911245@mit.edu>
-References: <20240112125801.2650-1-2045gemini@gmail.com>
- <2024011212-disbelief-respect-5230@gregkh>
- <CAOPYjvZYdPSiZ+jX4vhwPQ3AKRvW15XT1znAa8vd9a6DVoor5w@mail.gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705A2EAF7;
+	Sun, 14 Jan 2024 22:01:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=sladewatkins.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7831e87ba13so771233385a.0;
+        Sun, 14 Jan 2024 14:01:19 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705269678; x=1705874478;
+        h=to:references:message-id:content-transfer-encoding:cc:date
+         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZruNkfd9PVNgfFD6iIT+fQvo//foIvGP7J1NcC9VQ38=;
+        b=L7IeVus7lkXoB7DWnx4Od9l7stZkLO+3n1AxscpUSJqPIc0zwOggAchPs4r7MgpFzY
+         ei97nVaDu2+9DeXTAc8nIVCcPkRTFBvZnoEtI9Xp9uXzEbEViXRilxg8zYepYQ7/aHDW
+         xZMNZv7DKYV89SYvIz04HVwP6OHSLo9TsD74JinzknH0BNv6Q4qMe49yw2Qj2GYlMtB7
+         nKlYxMoLGMMoiSJLCZA9rfd3SR1CryvIaxCBpqe9CfARzXhBqOrH4cJnLG6eGue18Mzc
+         5VxDUDLd8dik0j5dZKjp5BYREbVb0C6+SxEkWuxwj70qm5hQVSvaEeSEIWNmYdtfXhhl
+         DD/Q==
+X-Gm-Message-State: AOJu0Yxhl2xmFXoiZqGimlmW31rUF4xeofzxeBpTukzzv+9L9eEdhmMD
+	FVMaFn/bn5PdeA1nM2DnOME=
+X-Google-Smtp-Source: AGHT+IGa7WwA2XLOKz2kFhSdEKxOhayRlscu6wgBOozx6WXEd5kfph7zONqrTT8rB+szFpLDcqdI1Q==
+X-Received: by 2002:a05:620a:126d:b0:783:1e4c:b5e3 with SMTP id b13-20020a05620a126d00b007831e4cb5e3mr5452147qkl.88.1705269678399;
+        Sun, 14 Jan 2024 14:01:18 -0800 (PST)
+Received: from smtpclient.apple (pool-108-4-150-17.albyny.fios.verizon.net. [108.4.150.17])
+        by smtp.gmail.com with ESMTPSA id a6-20020a05620a124600b0078327d52206sm2509717qkl.63.2024.01.14.14.01.17
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 14 Jan 2024 14:01:18 -0800 (PST)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOPYjvZYdPSiZ+jX4vhwPQ3AKRvW15XT1znAa8vd9a6DVoor5w@mail.gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.300.61.1.2\))
+Subject: Re: [PATCH 6.1 0/4] 6.1.73-rc1 review
+From: Slade Watkins <srw@sladewatkins.net>
+In-Reply-To: <20240113094204.017594027@linuxfoundation.org>
+Date: Sun, 14 Jan 2024 17:01:16 -0500
+Cc: stable@vger.kernel.org,
+ patches@lists.linux.dev,
+ LKML <linux-kernel@vger.kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Guenter Roeck <linux@roeck-us.net>,
+ shuah@kernel.org,
+ patches@kernelci.org,
+ lkft-triage@lists.linaro.org,
+ Pavel Machek <pavel@denx.de>,
+ Jon Hunter <jonathanh@nvidia.com>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+ rwarsow@gmx.de,
+ conor@kernel.org,
+ allen.lkml@gmail.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <6DDB9D3E-357A-4151-AF8B-2B71C38744AA@sladewatkins.net>
+References: <20240113094204.017594027@linuxfoundation.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+X-Mailer: Apple Mail (2.3774.300.61.1.2)
 
-On Sat, Jan 13, 2024 at 12:59:11AM +0800, Gui-Dong Han wrote:
-> 
-> I apologize for any confusion caused by my reference to Linux 5.17 in
-> the patch description. I'm currently working on a project involving
-> kernel static analysis to identify atomicity violations, and part of
-> this work involves comparison with a previous study that supports up
-> to Linux 5.17. Therefore, I initially ran my tool on 5.17 to filter
-> potential bugs that are still unaddressed in the upstream. I want to
-> clarify that the patch was developed and tested on linux-next. I
-> realize now that this may have led to misunderstandings, and I will
-> ensure clearer communication in future submissions.
-> My experience with Linux kernel contributions is still growing, and I
-> acknowledge that my recent submission might have been hasty and lacked
-> thorough consideration, especially regarding the critical nature of
-> n_tty_read and the potential impacts of the patch, like performance
-> concerns. I will take more care in future assessments before
-> submitting patches and continue to familiarize myself with the rules
-> and practices of the Linux kernel community.
 
-In general, static analysis tools need to be supplemented by an
-attempt to understand what the code is trying to do.  This code is
-related to the packet mode, which is related to pseudo-tty's --- *not*
-the linux serial driver.
+> On Jan 13, 2024, at 4:50=E2=80=AFAM, Greg Kroah-Hartman =
+<gregkh@linuxfoundation.org> wrote:
+>=20
+> This is the start of the stable review cycle for the 6.1.73 release.
+> There are 4 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, =
+please
+> let me know.
+>=20
+> Responses should be made by Mon, 15 Jan 2024 09:41:55 +0000.
+> Anything received after that time might be too late.
+>=20
+> The whole patch series can be found in one patch at:
+> =
+https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.73-rc=
+1.gz
+> or in the git tree and branch at:
+> =
+git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git =
+linux-6.1.y
+> and the diffstat can be found below.
 
-From the man page for tty_ioctl:
+Hi,
+6.1.73-rc1 compiled and booted just fine on x86_64, no errors or =
+regressions.
 
-       TIOCPKT
-              Argument: const int *argp
+Tested-by: Slade Watkins <srw@sladewatkins.net>
 
-              Enable (when *argp is nonzero) or disable packet mode.
-              Can be applied to the master side of a pseudoterminal
-              only (and will return ENOTTY otherwise).  In packet
-              mode, each subsequent read(2) will return a packet that
-              either contains a single nonzero control byte, or has a
-              single byte containing zero ('\0') followed by data
-              written on the slave side of the pseudoterminal.  If the
-              first byte is not TI‐ OCPKT_DATA (0), it is an OR of one
-              or more of the following bits:
-
-              TIOCPKT_FLUSHREAD    The read queue for the terminal is flushed.
-              TIOCPKT_FLUSHWRITE   The write queue for the terminal is flushed.
-              TIOCPKT_STOP         Output to the terminal is stopped.
-              TIOCPKT_START        Output to the terminal is restarted.
-              TIOCPKT_DOSTOP       The start and stop characters are ^S/^Q.
-
-              TIOCPKT_NOSTOP       The start and stop characters are not ^S/^Q.
-
-              While  packet  mode is in use, the presence of control status informa‐
-              tion to be read from the master side may be detected  by  a  select(2)
-              for exceptional conditions or a poll(2) for the POLLPRI event.
-
-              This  mode  is used by rlogin(1) and rlogind(8) to implement a remote-
-              echoed, locally ^S/^Q flow-controlled remote login.
-
-The n_tty_read() function is called by the userspace program on the
-master side of the pty pair.  This is not, strictly speaking a hot
-path; it's not on the interrupt service path of the serial driver, for
-example.  So it's unliklely that "fixing" this problem is going to
-result an measurable performance impact.
-
-It's also the case that not taking the spinlock before checking the
-packet mode is not necessarily going to be disastrous.  Yes, it might
-mean that when the user types ^S, sshd might not stop sending
-characters to the client right away, and the status report about the
-status of the pty gets delayed by a millisecond or two.
-
-So it's actually *not* a big deal.  Now, if you want to make the
-argument that it would be nice if these sorts of "false positives" are
-suppressed so that it's easier to find real bugs, that's one thing.
-But if you're looking at proof that your static checker is actually
-fixing Real Bugs (tm), this is probably not the best example.
-
-Cheers,
-
-					- Ted
+Best,
+Slade=
 
