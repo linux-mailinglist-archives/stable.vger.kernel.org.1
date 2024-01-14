@@ -1,118 +1,203 @@
-Return-Path: <stable+bounces-10835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E04282CFD8
-	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 06:34:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B276082CFF4
+	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 09:07:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76EB51C20F64
-	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 05:34:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 272051F21CD4
+	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 08:07:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE95F1841;
-	Sun, 14 Jan 2024 05:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA25186A;
+	Sun, 14 Jan 2024 08:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dNM2gNJo"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XEt4hlq7"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E807E;
-	Sun, 14 Jan 2024 05:34:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-3bd4e6a7cb0so2122654b6e.3;
-        Sat, 13 Jan 2024 21:34:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705210489; x=1705815289; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6sE8GJgZQUurHRznhkMrLCR2jJi1Q8GCwy2Ue2LjotM=;
-        b=dNM2gNJojTv1QW57qpzbynCbwdUD53Eh6nUSQHzv1PkY17+Pq7UTUXy+M0fVTMZvW2
-         9fG3buEkl/LvHZZs3j9j7hG6j6JAKAE9/zOJyilPC1LHiWCA4FGpnid4KB09Tu4P95S+
-         hYhhCytM9ws2eGiLcumBPgeOXGDdJ6MXHT9z3tpK8qQ7xR/iCONzFebw5h0zXEPcHClV
-         AcmTM429kk39vzqMbAsCg45lYQldIdt+mMblMJOx8cEiJTwZC5rWyrAsSFoZsClnzMh0
-         7kBD1W3hEuoFZ5O8/tJrqigo/BqmHFZp4Vj8qX3ta/PNN1VT3eDy+ff8M3FUiPxqTSSX
-         xvuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705210489; x=1705815289;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6sE8GJgZQUurHRznhkMrLCR2jJi1Q8GCwy2Ue2LjotM=;
-        b=p0+HqhxgHo4WZdBFMs4iHk6ENMjhDvgKIdhhVI/3Xj2fr6iL+xMX0XzSquZlF//1ns
-         fOnxJi77KNAay9r9zrQiym3PHY3fEI+JewYSzBvcbPz1JBQr7DrL1hzLBJX3tsaF1Mbm
-         8+4GJGhiYCbCoW90ONHt2hqIGZ/IFrfncZNCbsrsFCNCFMtEI73YW70yFkTExOzeaS2+
-         J0F2zxoE8pXry9gjklfs9hoKzO5bc3t5bqy620ArYuPUyQS9Fj4Dhr/FTqeW980tnDuI
-         NLtq0PPG++YYUtGYYa22DUT2y21o4exArqKYKhfqEmaGg0WsF4qrhFbkP90jB+DV9OwH
-         o0jA==
-X-Gm-Message-State: AOJu0Yzl+Xdo8363pIF/pgQyt+gXQeul9sCeB4z4XDbxwK/lSqC8Xx3I
-	iCTQg3tdZYXdKIV0PaJCiuo=
-X-Google-Smtp-Source: AGHT+IHTG+PgGBbFgr5D7soUP+YgGL2BeumCRe0trgMNggDvAmVDnKvr+0kfpm4+h7VZoM2z5cvURw==
-X-Received: by 2002:a05:6808:f15:b0:3bd:578c:d866 with SMTP id m21-20020a0568080f1500b003bd578cd866mr4727902oiw.35.1705210489281;
-        Sat, 13 Jan 2024 21:34:49 -0800 (PST)
-Received: from archie.me ([103.131.18.64])
-        by smtp.gmail.com with ESMTPSA id ke12-20020a170903340c00b001cfc3f73920sm5550792plb.227.2024.01.13.21.34.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Jan 2024 21:34:48 -0800 (PST)
-Received: by archie.me (Postfix, from userid 1000)
-	id 06AF51846DA01; Sun, 14 Jan 2024 12:34:40 +0700 (WIB)
-Date: Sun, 14 Jan 2024 12:34:40 +0700
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com
-Subject: Re: [PATCH 6.6 0/1] 6.6.12-rc1 review
-Message-ID: <ZaNycIqURYZLW1Yt@archie.me>
-References: <20240113094204.275569789@linuxfoundation.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E2C185A
+	for <stable@vger.kernel.org>; Sun, 14 Jan 2024 08:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1705219620;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A0s0Hjd145psVg+vyp1j2biOKXfWkJ5AMOPdt7wW0Ns=;
+	b=XEt4hlq7+2LJXbMQrZBInCb6u7lFDZ9RmHtUFRThwo2XGE5zBjGn18Iyx0X6hu2mdyHuS4
+	4fFS1k6M9suY+/n/I+ZDICV1UodzokDaGcg77y6W1IoE1Zn2uP3xjqjcTS6s9JYO2vHWNc
+	wFAxN5elhZDgxYFhiIIsD1BkKIf0S+Q=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-270-HUToJckrPciSCawYaglI-A-1; Sun, 14 Jan 2024 03:06:57 -0500
+X-MC-Unique: HUToJckrPciSCawYaglI-A-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 84D9385A588;
+	Sun, 14 Jan 2024 08:06:56 +0000 (UTC)
+Received: from localhost.localdomain (unknown [10.39.192.26])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id BCC3E2166B31;
+	Sun, 14 Jan 2024 08:06:53 +0000 (UTC)
+From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+To: masahiroy@kernel.org
+Cc: dcavalca@meta.com,
+	jtornosm@redhat.com,
+	linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	nathan@kernel.org,
+	ndesaulniers@google.com,
+	nicolas@fjasle.eu,
+	stable@vger.kernel.org
+Subject: [PATCH V5 1/2] rpm-pkg: simplify installkernel %post
+Date: Sun, 14 Jan 2024 09:06:44 +0100
+Message-ID: <20240114080644.5086-1-jtornosm@redhat.com>
+In-Reply-To: <CAK7LNAR_wgQBs-q9NH1icb_FPBoVMNEhQpvV8qzH2dFsrDS0pQ@mail.gmail.com>
+References: <CAK7LNAR_wgQBs-q9NH1icb_FPBoVMNEhQpvV8qzH2dFsrDS0pQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="JGCWdCXWhEvYzJz7"
-Content-Disposition: inline
-In-Reply-To: <20240113094204.275569789@linuxfoundation.org>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 
+The new installkernel application that is now included in systemd-udev
+package allows installation although destination files are already present
+in the boot directory of the kernel package, but is failing with the
+implemented workaround for the old installkernel application from grubby
+package.
 
---JGCWdCXWhEvYzJz7
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+For the new installkernel application, as Davide says:
+<<The %post currently does a shuffling dance before calling installkernel.
+This isn't actually necessary afaict, and the current implementation
+ends up triggering downstream issues such as
+https://github.com/systemd/systemd/issues/29568
+This commit simplifies the logic to remove the shuffling. For reference,
+the original logic was added in commit 3c9c7a14b627("rpm-pkg: add %post
+section to create initramfs and grub hooks").>>
 
-On Sat, Jan 13, 2024 at 10:50:58AM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.12 release.
-> There are 1 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
+But we need to keep the old behavior as well, because the old installkernel
+application from grubby package, does not allow this simplification and
+we need to be backward compatible to avoid issues with the different
+packages.
 
-Successfully compiled and installed the kernel on my computer (Acer
-Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
+Mimic Fedora shipping process and store vmlinuz, config amd System.map
+in the module directory instead of the boot directory. In this way, we will
+avoid the commented problem for all the cases, because the new destination
+files are not going to exist in the boot directory of the kernel package.
 
-Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Replace installkernel tool with kernel-install tool, because the latter is
+more complete.
 
---=20
-An old man doll... just what I always wanted! - Clara
+Besides, after installkernel tool execution, check to complete if suitable
+(same release and build) vmlinuz, System.map and config files are present
+in /boot directory, and if necessary, copy manually for install operation
+or remmove manually for remove operation.
 
---JGCWdCXWhEvYzJz7
-Content-Type: application/pgp-signature; name="signature.asc"
+Tested with Fedora 38, Fedora 39, RHEL 9, Oracle Linux 9.3,
+openSUSE Tumbleweed and openMandrive ROME, using dnf/zypper and rpm tools.
 
------BEGIN PGP SIGNATURE-----
+cc: stable@vger.kernel.org
+Co-Developed-by: Davide Cavalca <dcavalca@meta.com>
+Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
+---
+V1 -> V2:
+- Complete to be backward compatible with the previous installkernel
+application.
+V2 -> V3:
+- Follow the suggestions from Masahiro Yamada and change the installation
+destination to avoid problems instead of checking the package.
+V3 -> V4:
+- Make the patch applicable to linux-kbuild/for-next (ia64 support was
+already removed).
+V4 -> V5:
+- Complete for other Linux distributions.
 
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZaNyawAKCRD2uYlJVVFO
-o2JaAQDxLRLceubxCaSwvgyu7sQ6J7gVQIjdjD8/1ifIc0aq5QEAsd4mDLOz50D/
-KDvdhnKa4f3YVGQCKctZ+SuYBXsG7AE=
-=xq/3
------END PGP SIGNATURE-----
+ scripts/package/kernel.spec | 39 +++++++++++++++++++++++++------------
+ 1 file changed, 27 insertions(+), 12 deletions(-)
 
---JGCWdCXWhEvYzJz7--
+diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
+index 89298983a169..74542af8cbfe 100644
+--- a/scripts/package/kernel.spec
++++ b/scripts/package/kernel.spec
+@@ -55,12 +55,12 @@ patch -p1 < %{SOURCE2}
+ %{make} %{makeflags} KERNELRELEASE=%{KERNELRELEASE} KBUILD_BUILD_VERSION=%{release}
+ 
+ %install
+-mkdir -p %{buildroot}/boot
+-cp $(%{make} %{makeflags} -s image_name) %{buildroot}/boot/vmlinuz-%{KERNELRELEASE}
++mkdir -p %{buildroot}/lib/modules/%{KERNELRELEASE}
++cp $(%{make} %{makeflags} -s image_name) %{buildroot}/lib/modules/%{KERNELRELEASE}/vmlinuz
+ %{make} %{makeflags} INSTALL_MOD_PATH=%{buildroot} modules_install
+ %{make} %{makeflags} INSTALL_HDR_PATH=%{buildroot}/usr headers_install
+-cp System.map %{buildroot}/boot/System.map-%{KERNELRELEASE}
+-cp .config %{buildroot}/boot/config-%{KERNELRELEASE}
++cp System.map %{buildroot}/lib/modules/%{KERNELRELEASE}
++cp .config %{buildroot}/lib/modules/%{KERNELRELEASE}/config
+ ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot}/lib/modules/%{KERNELRELEASE}/build
+ %if %{with_devel}
+ %{make} %{makeflags} run-command KBUILD_RUN_COMMAND='${srctree}/scripts/package/install-extmod-build %{buildroot}/usr/src/kernels/%{KERNELRELEASE}'
+@@ -70,19 +70,35 @@ ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot}/lib/modules/%{KERNELRELEA
+ rm -rf %{buildroot}
+ 
+ %post
+-if [ -x /sbin/installkernel -a -r /boot/vmlinuz-%{KERNELRELEASE} -a -r /boot/System.map-%{KERNELRELEASE} ]; then
+-cp /boot/vmlinuz-%{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm
+-cp /boot/System.map-%{KERNELRELEASE} /boot/.System.map-%{KERNELRELEASE}-rpm
+-rm -f /boot/vmlinuz-%{KERNELRELEASE} /boot/System.map-%{KERNELRELEASE}
+-/sbin/installkernel %{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm /boot/.System.map-%{KERNELRELEASE}-rpm
+-rm -f /boot/.vmlinuz-%{KERNELRELEASE}-rpm /boot/.System.map-%{KERNELRELEASE}-rpm
++if [ -x /usr/bin/kernel-install ]; then
++/usr/bin/kernel-install add %{KERNELRELEASE} /lib/modules/%{KERNELRELEASE}/vmlinuz
+ fi
++if [ -e /boot/vmlinuz-%{KERNELRELEASE} ] && file -bL /boot/vmlinuz-%{KERNELRELEASE} | grep -q " #%{release} "; then
++release_match=0
++else
++release_match=1
++fi
++for file in vmlinuz System.map config; do
++if [ ! -e /boot/${file}-%{KERNELRELEASE} ] || [ ${release_match} != 0 ]; then
++cp -v /lib/modules/%{KERNELRELEASE}/${file} /boot/${file}-%{KERNELRELEASE}
++fi
++done
+ 
+ %preun
+ if [ -x /sbin/new-kernel-pkg ]; then
+ new-kernel-pkg --remove %{KERNELRELEASE} --rminitrd --initrdfile=/boot/initramfs-%{KERNELRELEASE}.img
+ elif [ -x /usr/bin/kernel-install ]; then
+-kernel-install remove %{KERNELRELEASE}
++/usr/bin/kernel-install remove %{KERNELRELEASE}
++if [ -e /boot/vmlinuz-%{KERNELRELEASE} ] && file -bL /boot/vmlinuz-%{KERNELRELEASE} | grep -q " #%{release} "; then
++release_match=0
++else
++release_match=1
++fi
++for file in vmlinuz System.map config; do
++if [ -e /boot/${file}-%{KERNELRELEASE} ] && [ ${release_match} == 0 ]; then
++rm -v /boot/${file}-%{KERNELRELEASE}
++fi
++done
+ fi
+ 
+ %postun
+@@ -94,7 +110,6 @@ fi
+ %defattr (-, root, root)
+ /lib/modules/%{KERNELRELEASE}
+ %exclude /lib/modules/%{KERNELRELEASE}/build
+-/boot/*
+ 
+ %files headers
+ %defattr (-, root, root)
+-- 
+2.43.0
+
 
