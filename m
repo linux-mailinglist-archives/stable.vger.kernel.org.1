@@ -1,195 +1,178 @@
-Return-Path: <stable+bounces-10833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BACC82CF87
-	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 04:12:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62F6782CF8F
+	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 04:24:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF33C1F21BB8
-	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 03:12:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC0ED1F21E5A
+	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 03:24:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB3BA17CA;
-	Sun, 14 Jan 2024 03:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86E017CA;
+	Sun, 14 Jan 2024 03:23:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W9VpVtDa"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (unknown [45.249.212.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94D51102;
-	Sun, 14 Jan 2024 03:12:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4TCL1F23zBz4f3jpr;
-	Sun, 14 Jan 2024 11:12:33 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id 574361A08C8;
-	Sun, 14 Jan 2024 11:12:35 +0800 (CST)
-Received: from [10.174.176.73] (unknown [10.174.176.73])
-	by APP1 (Coremail) with SMTP id cCh0CgAX5g4iUaNl9_UYAw--.15255S3;
-	Sun, 14 Jan 2024 11:12:35 +0800 (CST)
-Subject: Re: [PATCH v4] md/raid5: fix atomicity violation in raid5_cache_count
-To: Gui-Dong Han <2045gemini@gmail.com>, song@kernel.org
-Cc: linux-raid@vger.kernel.org, linux-kernel@vger.kernel.org,
- baijiaju1990@outlook.com, stable@vger.kernel.org,
- "yukuai (C)" <yukuai3@huawei.com>
-References: <20240112071017.16313-1-2045gemini@gmail.com>
-From: Yu Kuai <yukuai1@huaweicloud.com>
-Message-ID: <3c2951fb-a70f-d91f-c80c-64381d5e427a@huaweicloud.com>
-Date: Sun, 14 Jan 2024 11:12:34 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.8.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22231841;
+	Sun, 14 Jan 2024 03:23:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2cd64022164so81160541fa.3;
+        Sat, 13 Jan 2024 19:23:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705202635; x=1705807435; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gfta0bZFvjFZJvC0F4xMIC685zJ7SAda9ZzxTagHvw4=;
+        b=W9VpVtDaOUUQFPLw8XvE8hWY8Vu/tBwKkyBPbo2a6AtpqP8GMJKpR8Fyux1FiResLw
+         pRlY4vVyy6XztFRASezvKg8jh/lyoL1ZmMoKAe9lNEO6T2wm1a2AL6et8dl3sU3kUtmy
+         53XZ0uTZ4Z/O/Ke079oerhIh3mrZGCl/GGppmvTGc2fFZnsNA80yxyeYsCO0Z+jENM4W
+         79NJ8vzgqlS1XOcu8ldDmUFGF/txfMavw3uD2JS2CH9VPBdBzudKHDlXf7HvIbOpG1EK
+         HD4droo9XiKE343aP/6eIdR6JoC4eZH375zQJ1l/LaliYqwaTnhwEt4FulDD3VV1FZY+
+         ZDsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705202635; x=1705807435;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gfta0bZFvjFZJvC0F4xMIC685zJ7SAda9ZzxTagHvw4=;
+        b=WaRFHls+E7PgPfVwSjE1KMUCibfC+HzJzjBzBk7uxWvWyhLSrFbYxpnlejl8Ct6RUM
+         mMytpk3ZlbxbLMh9sqIoqYxjV8Qtl5VQhZRHaWekaFJls7RSztwo0Jb5GGVeT2pzQDLC
+         X7oHtosgh1qqfLNew2YkS0kIEQ3c4vIgPCO5/HDrDEN4DSsCeloK8a1f2bnSmetdem7e
+         hF5FlHDbG532gxdizGi9vLf5b/u7ObftGQCwyZ0xIZPyOJDBgQ7z9Wn3hIJTg8t+JpOb
+         2o1TABSRd8o1+NU63WJeckjLrczHLfORP3AOhPSuKgihM7tTl3hBBjpL9UcqTRnSJQHu
+         53Zw==
+X-Gm-Message-State: AOJu0Yw5F1MSPbW85MtG2E/JO+FnC50zpcsPIzvzI0wK9vaQ+kdl3LW6
+	s93y/inlrHG7058/fe8FfTbUVGqy+TTkVrIPS/s=
+X-Google-Smtp-Source: AGHT+IHp2Jx9EpAWnyz05z7ZSv6ATR2OJO4m7nQlWoPvbzSMzQn2WZ/mqDTyJ/wGxu1LoMGKhW1HWVA6N84aJAq1mZQ=
+X-Received: by 2002:a2e:a409:0:b0:2cc:5e44:a8ee with SMTP id
+ p9-20020a2ea409000000b002cc5e44a8eemr1815150ljn.105.1705202634498; Sat, 13
+ Jan 2024 19:23:54 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20240112071017.16313-1-2045gemini@gmail.com>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgAX5g4iUaNl9_UYAw--.15255S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxGrWDXryrJFyfArWfZF1kKrg_yoW7JF1kpF
-	Z3u3WUXr48XwnYyrWDZr4kuFWfC398XFy7Jw47Xw1kZa9Y9FWIyw4xGry5Xry8J3y8GrZ2
-	qF9093s5ur4ktrJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUyEb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij
-	64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
-	8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE
-	2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42
-	xK8VAvwI8IcIk0rVW3JVWrJr1lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY
-	1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IUbPEf5UUUUU==
-X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
+References: <a76b370f93cb928c049b94e1fde0d2da506dfcb2.camel@amazon.com>
+ <ZZhrpNJ3zxMR8wcU@eldamar.lan> <8e59220d-b0f3-4dae-afc3-36acfa6873e4@leemhuis.info>
+ <ZZk6qA54A-KfzmSz@eldamar.lan> <13a70cc5-78fc-49a4-8d78-41e5479e3023@leemhuis.info>
+ <ZZ7Dy69ZJCEyKhhS@eldamar.lan> <2024011115-neatly-trout-5532@gregkh>
+ <2162049.1705069551@warthog.procyon.org.uk> <CAH2r5mtBSvp9D8s3bX7KNWjXdTuOHPx5Z005jp8F5kuJgU3Z-g@mail.gmail.com>
+ <ZaJYgkI9o5J1U3TX@eldamar.lan> <2024011316-cathouse-relearn-df14@gregkh>
+In-Reply-To: <2024011316-cathouse-relearn-df14@gregkh>
+From: Steve French <smfrench@gmail.com>
+Date: Sat, 13 Jan 2024 21:23:43 -0600
+Message-ID: <CAH2r5msjAwRmQNOvkDm5NZD0zh141iNV87urxOK04n-6FQ5wbQ@mail.gmail.com>
+Subject: Re: [Regression 6.1.y] From "cifs: Fix flushing, invalidation and
+ file size with copy_file_range()"
+To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+Cc: Salvatore Bonaccorso <carnil@debian.org>, David Howells <dhowells@redhat.com>, 
+	Paulo Alcantara <pc@manguebit.com>, Shyam Prasad N <nspmangalore@gmail.com>, 
+	Rohith Surabattula <rohiths.msft@gmail.com>, Matthew Wilcox <willy@infradead.org>, 
+	Jeff Layton <jlayton@kernel.org>, Steve French <stfrench@microsoft.com>, 
+	"Jitindar Singh, Suraj" <surajjs@amazon.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"stable-commits@vger.kernel.org" <stable-commits@vger.kernel.org>, stable@vger.kernel.org, 
+	linux-cifs@vger.kernel.org, 
+	Linux regressions mailing list <regressions@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-ÔÚ 2024/01/12 15:10, Gui-Dong Han Ð´µÀ:
-> In raid5_cache_count():
->      if (conf->max_nr_stripes < conf->min_nr_stripes)
->          return 0;
->      return conf->max_nr_stripes - conf->min_nr_stripes;
-> The current check is ineffective, as the values could change immediately
-> after being checked.
-> 
-> In raid5_set_cache_size():
->      ...
->      conf->min_nr_stripes = size;
->      ...
->      while (size > conf->max_nr_stripes)
->          conf->min_nr_stripes = conf->max_nr_stripes;
->      ...
-> 
-> Due to intermediate value updates in raid5_set_cache_size(), concurrent
-> execution of raid5_cache_count() and raid5_set_cache_size() may lead to
-> inconsistent reads of conf->max_nr_stripes and conf->min_nr_stripes.
-> The current checks are ineffective as values could change immediately
-> after being checked, raising the risk of conf->min_nr_stripes exceeding
-> conf->max_nr_stripes and potentially causing an integer overflow.
-> 
-> This possible bug is found by an experimental static analysis tool
-> developed by our team. This tool analyzes the locking APIs to extract
-> function pairs that can be concurrently executed, and then analyzes the
-> instructions in the paired functions to identify possible concurrency bugs
-> including data races and atomicity violations. The above possible bug is
-> reported when our tool analyzes the source code of Linux 6.2.
-> 
-> To resolve this issue, it is suggested to introduce local variables
-> 'min_stripes' and 'max_stripes' in raid5_cache_count() to ensure the
-> values remain stable throughout the check. Adding locks in
-> raid5_cache_count() fails to resolve atomicity violations, as
-> raid5_set_cache_size() may hold intermediate values of
-> conf->min_nr_stripes while unlocked. With this patch applied, our tool no
-> longer reports the bug, with the kernel configuration allyesconfig for
-> x86_64. Due to the lack of associated hardware, we cannot test the patch
-> in runtime testing, and just verify it according to the code logic.
-> 
-> Fixes: edbe83ab4c27 ("md/raid5: allow the stripe_cache to grow and shrink.")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
+tested out fine so far
 
-LGTM
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+On Sat, Jan 13, 2024 at 3:41=E2=80=AFAM gregkh@linuxfoundation.org
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Sat, Jan 13, 2024 at 10:31:46AM +0100, Salvatore Bonaccorso wrote:
+> > Hi,
+> >
+> > On Fri, Jan 12, 2024 at 11:20:53PM -0600, Steve French wrote:
+> > > Here is a patch similar to what David suggested.  Seems
+> > > straightforward fix.  See attached.
+> > > I did limited testing on it tonight with 6.1 (will do more tomorrow,
+> > > but feedback welcome) but it did fix the regression in xfstest
+> > > generic/001 mentioned in this thread.
+> > >
+> > >
+> > >
+> > >
+> > > On Fri, Jan 12, 2024 at 8:26=E2=80=AFAM David Howells <dhowells@redha=
+t.com> wrote:
+> > > >
+> > > > gregkh@linuxfoundation.org <gregkh@linuxfoundation.org> wrote:
+> > > >
+> > > > > I guess I can just revert the single commit here?  Can someone se=
+nd me
+> > > > > the revert that I need to do so as I get it right?
+> > > >
+> > > > In cifs_flush_folio() the error check for filemap_get_folio() just =
+needs
+> > > > changing to check !folio instead of IS_ERR(folio).
+> > > >
+> > > > David
+> > > >
+> > > >
+> > >
+> > >
+> > > --
+> > > Thanks,
+> > >
+> > > Steve
+> >
+> > > From ba288a873fb8ac3d1bf5563366558a905620c071 Mon Sep 17 00:00:00 200=
+1
+> > > From: Steve French <stfrench@microsoft.com>
+> > > Date: Fri, 12 Jan 2024 23:08:51 -0600
+> > > Subject: [PATCH] cifs: fix flushing folio regression for 6.1 backport
+> > >
+> > > filemap_get_folio works differenty in 6.1 vs. later kernels
+> > > (returning NULL in 6.1 instead of an error).  Add
+> > > this minor correction which addresses the regression in the patch:
+> > >   cifs: Fix flushing, invalidation and file size with copy_file_range=
+()
+> > >
+> > > Suggested-by: David Howells <dhowells@redhat.com>
+> > > Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+> > > Signed-off-by: Steve French <stfrench@microsoft.com>
+> > > ---
+> > >  fs/smb/client/cifsfs.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/fs/smb/client/cifsfs.c b/fs/smb/client/cifsfs.c
+> > > index 2e15b182e59f..ac0b7f229a23 100644
+> > > --- a/fs/smb/client/cifsfs.c
+> > > +++ b/fs/smb/client/cifsfs.c
+> > > @@ -1240,7 +1240,7 @@ static int cifs_flush_folio(struct inode *inode=
+, loff_t pos, loff_t *_fstart, lo
+> > >     int rc =3D 0;
+> > >
+> > >     folio =3D filemap_get_folio(inode->i_mapping, index);
+> > > -   if (IS_ERR(folio))
+> > > +   if ((!folio) || (IS_ERR(folio)))
+> > >             return 0;
+> > >
+> > >     size =3D folio_size(folio);
+> >
+> > I was able to test the patch with the case from the Debian bugreport
+> > and seems to resolve the issue. Even if late, as Greg just queued up
+> > already:
+> >
+> > Tested-by: Salvatore Bonaccorso <carnil@debian.org>
+>
+> Thanks, I've added your tested-by to the patch now.
+>
+> greg k-h
 
-> ---
-> v2:
-> * In this patch v2, we've updated to use READ_ONCE() instead of direct
-> reads for accessing max_nr_stripes and min_nr_stripes, since read and
-> write can concurrent.
->    Thank Yu Kuai for helpful advice.
-> ---
-> v3:
-> * In this patch v3, we've updated to use WRITE_ONCE() in
-> raid5_set_cache_size(), grow_one_stripe() and drop_one_stripe(), in order
-> to pair READ_ONCE() with WRITE_ONCE().
->    Thank Yu Kuai for helpful advice.
-> ---
-> v4:
-> * In this patch v4, we've addressed several code style issues.
->    Thank Yu Kuai for helpful advice.
-> ---
->   drivers/md/raid5.c | 14 ++++++++------
->   1 file changed, 8 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
-> index 8497880135ee..30e118d10c0b 100644
-> --- a/drivers/md/raid5.c
-> +++ b/drivers/md/raid5.c
-> @@ -2412,7 +2412,7 @@ static int grow_one_stripe(struct r5conf *conf, gfp_t gfp)
->   	atomic_inc(&conf->active_stripes);
->   
->   	raid5_release_stripe(sh);
-> -	conf->max_nr_stripes++;
-> +	WRITE_ONCE(conf->max_nr_stripes, conf->max_nr_stripes + 1);
->   	return 1;
->   }
->   
-> @@ -2707,7 +2707,7 @@ static int drop_one_stripe(struct r5conf *conf)
->   	shrink_buffers(sh);
->   	free_stripe(conf->slab_cache, sh);
->   	atomic_dec(&conf->active_stripes);
-> -	conf->max_nr_stripes--;
-> +	WRITE_ONCE(conf->max_nr_stripes, conf->max_nr_stripes - 1);
->   	return 1;
->   }
->   
-> @@ -6820,7 +6820,7 @@ raid5_set_cache_size(struct mddev *mddev, int size)
->   	if (size <= 16 || size > 32768)
->   		return -EINVAL;
->   
-> -	conf->min_nr_stripes = size;
-> +	WRITE_ONCE(conf->min_nr_stripes, size);
->   	mutex_lock(&conf->cache_size_mutex);
->   	while (size < conf->max_nr_stripes &&
->   	       drop_one_stripe(conf))
-> @@ -6832,7 +6832,7 @@ raid5_set_cache_size(struct mddev *mddev, int size)
->   	mutex_lock(&conf->cache_size_mutex);
->   	while (size > conf->max_nr_stripes)
->   		if (!grow_one_stripe(conf, GFP_KERNEL)) {
-> -			conf->min_nr_stripes = conf->max_nr_stripes;
-> +			WRITE_ONCE(conf->min_nr_stripes, conf->max_nr_stripes);
->   			result = -ENOMEM;
->   			break;
->   		}
-> @@ -7390,11 +7390,13 @@ static unsigned long raid5_cache_count(struct shrinker *shrink,
->   				       struct shrink_control *sc)
->   {
->   	struct r5conf *conf = shrink->private_data;
-> +	int max_stripes = READ_ONCE(conf->max_nr_stripes);
-> +	int min_stripes = READ_ONCE(conf->min_nr_stripes);
->   
-> -	if (conf->max_nr_stripes < conf->min_nr_stripes)
-> +	if (max_stripes < min_stripes)
->   		/* unlikely, but not impossible */
->   		return 0;
-> -	return conf->max_nr_stripes - conf->min_nr_stripes;
-> +	return max_stripes - min_stripes;
->   }
->   
->   static struct r5conf *setup_conf(struct mddev *mddev)
-> 
 
+
+--=20
+Thanks,
+
+Steve
 
