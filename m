@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-10937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76A3882E0E7
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 20:47:39 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6312682E0EC
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 20:48:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C2531F22CCE
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 19:47:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAC602832F2
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 19:48:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CDBA18E1A;
-	Mon, 15 Jan 2024 19:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2233218E20;
+	Mon, 15 Jan 2024 19:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QMQ6N65l"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V9+AkzJY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2852E18E10;
-	Mon, 15 Jan 2024 19:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD8419477;
+	Mon, 15 Jan 2024 19:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-4692b24f147so353039137.3;
-        Mon, 15 Jan 2024 11:47:31 -0800 (PST)
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-7d250629e25so84749241.1;
+        Mon, 15 Jan 2024 11:48:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705348051; x=1705952851; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1705348081; x=1705952881; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jde4lpmFdsAFmDNQO8S4NfMsn10GcVLzErOQlO9jFaM=;
-        b=QMQ6N65l4/91RAhurvMlJxH/KeTgnE45QiTwIw7h4hzqwyrBMReEu5anlJgttc7kk3
-         LnByIvkmsCohGKIMsc/dg9xxx4X4JGZei+lxJIxQGr4kNqenrNik1Js6z44x2dRFBHCe
-         uhc6UBDsSEl97lPeH9uwqAcFtfSGxJrH5gC0NtA012xjXco8zALrqbr4BihTld9jTQDN
-         PHqcJOtJYn07+y4ix5DUAHNtKyIho8NLaSJoXHAior7Q00DyG/sT6x3gsqWbW7MLpwpK
-         tEuLlQP18i0D/beig/5RFECA326IygUPnvpKYkQ6XUzcMFNtoC6IiSBhhCHSA4kdD7Gj
-         9l3w==
+        bh=HhSzSqpM4RD5lUwEkRLdlmlmzOc+rc60P8bLEmJ2fEE=;
+        b=V9+AkzJYJJ9rlQ+mJE1qNVvUk7XuXFsOOAgAX/HiNFlOUiV+Ek4Dv/XNGlIknb+AJQ
+         wIdLgSg/JpmPuBjLRbhytvsviK70RB8uG8IvVKOjXo1Epb4sYIeuegsN2zS3IRBshX89
+         D1YKn6aTCxWlE56I2cbR3VP1DQqenkyUNUwgLUL2xN67kWRwcuunmBhFX7c3s5Is7GJS
+         QhQbQZevbUGaPfKXvLtNqIucXoTv6PyoT2lMWZFMxCGcnQB6XegtAcLJXKw77zkVgE/x
+         gfLEYPCqfuixakr1zVXkV3SuvZI/VZrbDEDGg1RydM6FtEHGb/6mR/z8AG5tyMQfxElM
+         xajw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705348051; x=1705952851;
+        d=1e100.net; s=20230601; t=1705348081; x=1705952881;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Jde4lpmFdsAFmDNQO8S4NfMsn10GcVLzErOQlO9jFaM=;
-        b=q+EzRqmVlsEktNCM15TQYueDnBhsxXFHtv2lEUXlHTfLuN9BLn48LR5KIz+DoLHnqS
-         zS9P5W5uC/jZluKczWz2P0VRECypNmIG+7gcKHq9hlQQyRXIGsdBPgFGcgwXqQnOCJK/
-         Ht1RNdgcJfztekuzSWYKMxlKaZX0RfNvjnTaDZYcEYEISbBXEuuoWqBV2GnMgQ/Y5mA+
-         HaBiST8XqryMs3Udtg3p1pGfW1we+sSyprqQrCOyf9k3zaXRLrRGrFHEAVclywJHHlH6
-         ukLRERfnShCSgoAIXv767vtHKr9It/kPobNqHW69Ck2aj20+66CwJEUrxabJB5Ri7cqa
-         e+sg==
-X-Gm-Message-State: AOJu0YwbQNfW03cIwTSvxCkdsCLR2XDU/NGkiyVL8iUlyLq07NxgB064
-	1sbwVoz8O3oSCOqPB5pHllBzXoxprzGWQv/miJE=
-X-Google-Smtp-Source: AGHT+IHregLe8WyP6+3NAesPPtoO6c++SbsJWado1i51htlQ7l0vXhxAKYCYLuD9rgjNGDLCA4qdUnE52WR0+WhgXfM=
-X-Received: by 2002:a67:fd64:0:b0:468:df5:2e47 with SMTP id
- h4-20020a67fd64000000b004680df52e47mr3883309vsa.11.1705348051084; Mon, 15 Jan
- 2024 11:47:31 -0800 (PST)
+        bh=HhSzSqpM4RD5lUwEkRLdlmlmzOc+rc60P8bLEmJ2fEE=;
+        b=JjxlV2kjfvLV93mHkWs1ua4JavCta+HhhpAFDS6tfCGOIZ9XL1iOmiWRSufrlKuc1E
+         YnyccuMGZEGAwNQ2ZvP1QQQ6ln4C49CILjjPq+hAP/vxUdrEYeLpSbKN+yOd5S5TA9J5
+         UAlaxRnO6FqQovCI/6/KsgOjXFDDTxJcLcUQClio1QcIQtE5YCBe4Ji1P2Jci51vPeWg
+         XIKHKJOL8AhUTPtWDTcaqZddN03gxuRMO1XClrtBuaLKMdY8N0kYV5TIJahPg90s/SmF
+         PcxKz2/TfUJkGQNWx83k4Yq/G6ruH7JhoZHi1l5hJOQ3uB1FXZcFfh8FxMpnCKQzDSiw
+         wHcw==
+X-Gm-Message-State: AOJu0YyJKvmPggFzaZ3B6wIov3wZw+VOLNpTm5s/5D1sntja8ayx4hor
+	ydix5mlklitgZmbWZ6I7sAm67FOqSt36y8pUB5g=
+X-Google-Smtp-Source: AGHT+IGgktmkY/M5xIKuehYQ1+S8h1tKJGay4wHBQL9/hhSxWWiM3b6eHLdMrGu4BkK+MZ4cFH175/FqXrWreNJNF9E=
+X-Received: by 2002:a67:c786:0:b0:468:17fc:f4ae with SMTP id
+ t6-20020a67c786000000b0046817fcf4aemr4170295vsk.6.1705348080161; Mon, 15 Jan
+ 2024 11:48:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240113094209.301672391@linuxfoundation.org>
-In-Reply-To: <20240113094209.301672391@linuxfoundation.org>
+References: <20240113094206.930684111@linuxfoundation.org>
+In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
 From: Allen <allen.lkml@gmail.com>
-Date: Mon, 15 Jan 2024 11:47:19 -0800
-Message-ID: <CAOMdWSJqEfcsrKG4aiijMU0DX_YLZ1n+sQ+g1Va52mq81R51yQ@mail.gmail.com>
-Subject: Re: [PATCH 5.15 00/59] 5.15.147-rc1 review
+Date: Mon, 15 Jan 2024 11:47:48 -0800
+Message-ID: <CAOMdWSLA4SYN_HvJoAAgGdR_KSeeqc5Zyy-JiLcQyM9inPh3vQ@mail.gmail.com>
+Subject: Re: [PATCH 5.10 00/43] 5.10.208-rc1 review
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
 	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
@@ -74,8 +74,8 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-> This is the start of the stable review cycle for the 5.15.147 release.
-> There are 59 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 5.10.208 release.
+> There are 43 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 >
@@ -83,15 +83,16 @@ Content-Type: text/plain; charset="UTF-8"
 > Anything received after that time might be too late.
 >
 > The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.147-rc1.gz
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.208-rc1.gz
 > or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
 > and the diffstat can be found below.
 >
 > thanks,
 >
 > greg k-h
 >
+
 
 Compiled and booted on my x86_64 and ARM64 test systems. No errors or
 regressions.
