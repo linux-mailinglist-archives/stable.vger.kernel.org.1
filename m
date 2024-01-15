@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-10859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EA0F82D52A
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 09:42:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4038282D54D
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 09:50:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97D10B2104E
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 08:42:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA6022818DF
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 08:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95E623A7;
-	Mon, 15 Jan 2024 08:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EECBBE79;
+	Mon, 15 Jan 2024 08:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OKdEtTCK"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="S+zEg/YC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF91B2CAB
-	for <stable@vger.kernel.org>; Mon, 15 Jan 2024 08:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534CC8839
+	for <stable@vger.kernel.org>; Mon, 15 Jan 2024 08:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-467d58e133eso1806307137.0
-        for <stable@vger.kernel.org>; Mon, 15 Jan 2024 00:42:28 -0800 (PST)
+Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-4b7153b8d76so1314381e0c.0
+        for <stable@vger.kernel.org>; Mon, 15 Jan 2024 00:50:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1705308147; x=1705912947; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1705308615; x=1705913415; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=nWklBxYj0tGpLnXSdFPOjTfuQ/CNbb5ajISFOFHW0CY=;
-        b=OKdEtTCK8zi/2jiC0ilsynXCG9DYbXxNTKiTbZ0E7VI8Af8kMkjD8X/NHQPuTgqKkJ
-         PTJ4LXGv9o3lIDud14M1iNX4EP7g6GMnLTcX5zt6WNIFeLIbAvHYMT3wtDQ1eseuObIh
-         XeJy9a45l100K9wRP8zMSqzRiDwouVX0OS3BTmSbB6hkBlehjRPdzoPylUjhH+lTryvG
-         O5DydFBqOnXY82O2TJg6RIU2q0BMf0pv8eTyQPUFoUhpp2iLBbM8+Lc6XtdQa/K2I78L
-         qUbgsyZDEN9HwXIzsCA/UMbiSUBoZChcHwrTm8+HJXJCAplgT/izfdZO4rgHoCFj6w0Z
-         T0RQ==
+        bh=jnB0KQ9n30qRjDbWGaCy0bZrFlz+zGMbjPXvFhazWYk=;
+        b=S+zEg/YCg0kQRHrdN1WsXg26TdPCG22tM66mOsViXlj3oJnd6+hQU7m9foE5tvKbGr
+         8EXRWNCcDLJAK6SMWBrey94QLJumiUQLR0wLsQf03bkGZuGCtD7BOeiFa4GLf+PpTxGl
+         TYfHG618xgbTlnT50BK53ZQguH1vOfmIocLD57ob5Ku4ueHubpHSJtSV9OT1r/Ofhi4i
+         +nWnzODT1K/3SVvjTdhom4hf1ZnjQNFh1YIg8iWwdzPGwpu02sNdA5FPGVuDlih+XIbY
+         2n68rdgtrptK7a12+dX5F9lCC/5FpJJWEQkjlyg9+3gGrfWDKUOCq21/aUcOSFqzVYtQ
+         +Mvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705308147; x=1705912947;
+        d=1e100.net; s=20230601; t=1705308615; x=1705913415;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=nWklBxYj0tGpLnXSdFPOjTfuQ/CNbb5ajISFOFHW0CY=;
-        b=fk1yA8VgiWyeB8y9Dl12a+boQXHEvJxvQ/rQGc1GAsUDmso8xVubdHIogx69rKx6ZE
-         qWjJ5mFxHJNTjjLjtXWBkkyFWsMCw0p2GWPjdy2+J08l6Hq2AesyEC5jjTOGIHkJ7YvG
-         bTHFPhSwtJpdMQ1mfS3TyyabOMyPMunOwzAbOP+Xn/a7wHbNlBu3T+mg8bsbBpBjsQlV
-         4UT8CsL7aIFPkriP9jpDyCRXGDX7bc8f2nsmPZd80G//syboCZcQItgajrPc3pmO63j5
-         vYcc9NUHzFHJMq3/Y6s9MmqPJtiK+stu2RbWrnpG3SjLCop6rGzBYnzhLlGolHqlnUEG
-         IJLQ==
-X-Gm-Message-State: AOJu0YzwJ+Yf2RXI9Fffm20QXtniQA6bSVXnew7RhYK4vLFQFL6WcAk4
-	TeQh4+IdzenD7stOpY7kFiJXFtsfoHCCYyEAl1b54v/RPh6kiA==
-X-Google-Smtp-Source: AGHT+IHwy4X6eM6gN21Si2MfkEaDI1PJLsuWjZQ0ZFZw6Se66jnpJn4l5USsOBJ75/E6l6Z60Q5J8qPRpWSq+kTOTdM=
-X-Received: by 2002:a05:6102:22d1:b0:469:554f:f8bc with SMTP id
- a17-20020a05610222d100b00469554ff8bcmr957065vsh.2.1705308147641; Mon, 15 Jan
- 2024 00:42:27 -0800 (PST)
+        bh=jnB0KQ9n30qRjDbWGaCy0bZrFlz+zGMbjPXvFhazWYk=;
+        b=Z8XbrTLI3OHB4gVO+GmsHl+iDIVTW+507KgAuvf3t2vb8dsBafGcvyfHYdn4fTcu3T
+         /ELnvdMBmaMrBI1zt5bJATxcT3BJW+OA97ToWMMPv+L5QximxYFH3IuO3ZAoSGTE4yt5
+         q0hnzK7qIX9XdpKGN3bKZbcGPAcadSyHtLxtJD01ViXfKdyAPo+e//Ny66SKT+uTrqqp
+         4XD9B1MhSgTiMMEKODGU3T0dmm6FKrPFMdEI31nLXXcpDajmCLJdpfA485ZR3Jv3OEYS
+         guEDJRnT53Bbof/t8jIFeB8HWT2gdadjbm2/9B8Xwk4y4nJ12zjN1te1Ap/mDIV1TArb
+         xtUw==
+X-Gm-Message-State: AOJu0YzS0zwjxm85ZBcDr4TWFoyABOlMtD1WTAO84FggmSLLojEAYkrJ
+	XP95kAJ3g9DyPrq0fXxumz5nmJybTU5isUOuL3XWJ6gYchMylA==
+X-Google-Smtp-Source: AGHT+IER2LHdcYASLqpy/PfdO8Gpg40SfDQcuW1fxoPYHs8Q2bhDpNHi14VF6ecCs7jo2egVbIqPe1MtNxnKV+D9l+8=
+X-Received: by 2002:a05:6122:448e:b0:4b6:ca2c:b420 with SMTP id
+ cz14-20020a056122448e00b004b6ca2cb420mr1640394vkb.2.1705308615173; Mon, 15
+ Jan 2024 00:50:15 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240113094204.275569789@linuxfoundation.org>
-In-Reply-To: <20240113094204.275569789@linuxfoundation.org>
+References: <20240113094204.017594027@linuxfoundation.org>
+In-Reply-To: <20240113094204.017594027@linuxfoundation.org>
 From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Mon, 15 Jan 2024 14:12:16 +0530
-Message-ID: <CA+G9fYvx6RcaLq3Gjc1_AJgmu+zxk7ZP8wWZgghmOSpFbYNTFQ@mail.gmail.com>
-Subject: Re: [PATCH 6.6 0/1] 6.6.12-rc1 review
+Date: Mon, 15 Jan 2024 14:20:04 +0530
+Message-ID: <CA+G9fYsg1tT9-HHRbPmiQAV+BZ3o7BJepQzskYmRU=JHLxucEw@mail.gmail.com>
+Subject: Re: [PATCH 6.1 0/4] 6.1.73-rc1 review
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
 	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
@@ -79,8 +79,8 @@ Content-Transfer-Encoding: quoted-printable
 On Sat, 13 Jan 2024 at 15:32, Greg Kroah-Hartman
 <gregkh@linuxfoundation.org> wrote:
 >
-> This is the start of the stable review cycle for the 6.6.12 release.
-> There are 1 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.1.73 release.
+> There are 4 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 >
@@ -89,13 +89,16 @@ On Sat, 13 Jan 2024 at 15:32, Greg Kroah-Hartman
 >
 > The whole patch series can be found in one patch at:
 >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.12-rc1.gz
+6.1.73-rc1.gz
 > or in the git tree and branch at:
 >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
+-rc.git linux-6.1.y
 > and the diffstat can be found below.
 >
 > thanks,
+>
+> greg k-h
+
 
 Results from Linaro=E2=80=99s test farm.
 No regressions on arm64, arm, x86_64, and i386.
@@ -103,39 +106,39 @@ No regressions on arm64, arm, x86_64, and i386.
 Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
 ## Build
-* kernel: 6.6.12-rc1
+* kernel: 6.1.73-rc1
 * git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.6.y
-* git commit: f44c56831910cb87cac2c18e1b03dfa59e3523ce
-* git describe: v6.6.11-2-gf44c56831910
+* git branch: linux-6.1.y
+* git commit: ccaabe94627897d3e2d2234aa6b2196c32a63325
+* git describe: v6.1.72-5-gccaabe946278
 * test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.1=
-1-2-gf44c56831910/
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.7=
+2-5-gccaabe946278/
 
-## Test Regressions (compared to v6.6.10)
+## Test Regressions (compared to v6.1.71)
 
-## Metric Regressions (compared to v6.6.10)
+## Metric Regressions (compared to v6.1.71)
 
-## Test Fixes (compared to v6.6.10)
+## Test Fixes (compared to v6.1.71)
 
-## Metric Fixes (compared to v6.6.10)
+## Metric Fixes (compared to v6.1.71)
 
 ## Test result summary
-total: 284816, pass: 245629, fail: 3651, skip: 35205, xfail: 331
+total: 253149, pass: 214510, fail: 4787, skip: 33543, xfail: 309
 
 ## Build Summary
 * arc: 5 total, 5 passed, 0 failed
-* arm: 145 total, 144 passed, 1 failed
-* arm64: 52 total, 49 passed, 3 failed
-* i386: 41 total, 40 passed, 1 failed
+* arm: 151 total, 150 passed, 1 failed
+* arm64: 52 total, 52 passed, 0 failed
+* i386: 39 total, 39 passed, 0 failed
 * mips: 26 total, 26 passed, 0 failed
 * parisc: 4 total, 4 passed, 0 failed
 * powerpc: 36 total, 36 passed, 0 failed
-* riscv: 25 total, 24 passed, 1 failed
-* s390: 13 total, 13 passed, 0 failed
+* riscv: 15 total, 14 passed, 1 failed
+* s390: 16 total, 16 passed, 0 failed
 * sh: 10 total, 10 passed, 0 failed
 * sparc: 8 total, 8 passed, 0 failed
-* x86_64: 46 total, 44 passed, 2 failed
+* x86_64: 46 total, 46 passed, 0 failed
 
 ## Test suites summary
 * boot
@@ -166,7 +169,6 @@ total: 284816, pass: 245629, fail: 3651, skip: 35205, xfail: 331
 * kselftest-kexec
 * kselftest-kvm
 * kselftest-lib
-* kselftest-livepatch
 * kselftest-membarrier
 * kselftest-memfd
 * kselftest-memory-hotplug
@@ -195,19 +197,16 @@ total: 284816, pass: 245629, fail: 3651, skip: 35205, xfail: 331
 * kselftest-sysctl
 * kselftest-tc-testing
 * kselftest-timens
-* kselftest-timers
 * kselftest-tmpfs
 * kselftest-tpm2
 * kselftest-user
 * kselftest-user_events
 * kselftest-vDSO
 * kselftest-vm
-* kselftest-watchdog
 * kselftest-x86
 * kselftest-zram
 * kunit
 * libgpiod
-* libhugetlbfs
 * log-parser-boot
 * log-parser-test
 * ltp-cap_bounds
