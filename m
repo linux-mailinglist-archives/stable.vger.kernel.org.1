@@ -1,110 +1,90 @@
-Return-Path: <stable+bounces-10851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8BAB82D296
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 00:15:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9C9482D34C
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 04:24:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 790861F2138A
-	for <lists+stable@lfdr.de>; Sun, 14 Jan 2024 23:15:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76D5D1F2139D
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 03:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4432C682;
-	Sun, 14 Jan 2024 23:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA4B1842;
+	Mon, 15 Jan 2024 03:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=marliere.net header.i=@marliere.net header.b="mr9Rkc7M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FBYUsvo0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B93B2C680;
-	Sun, 14 Jan 2024 23:15:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=marliere.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6d9344f30caso5427403b3a.1;
-        Sun, 14 Jan 2024 15:15:37 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705274137; x=1705878937;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:dkim-signature:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=QGViPHtjJMlurFPTzBSSPEkkat6LUsMaxd6YuoP9bZE=;
-        b=EcFTMhO9K8bAo2qqynDYDOxpGUtrvnKoYTgY703Xzif0ajJsSiqIIJnCIg9E9xX3wp
-         Ff/22/J+DjlKkOd6SWlrrTOkFvpuiMRKCkdyJONj52If/ilkY7I8nPExP9uHnY0ypmbu
-         Aflyqq/Df9sqwlHUiSuRnchEiApEvbUBaP5Wv5beD4qIdfgQWhjucgKWpU1NUmSGUNzI
-         GFWsojrYKORPMvADN1SaacgOM+yd2u8q6M4o4EOottzAzJRQpF+T0CH0RAhbEIouBrTg
-         kQYaJAVq7Zti0f7xkWuNv5FvW9cxFK/RcqaRiuBmsR1pTBczl+sg4ONWfTRBBuOy+l3Z
-         IByw==
-X-Gm-Message-State: AOJu0Yx0u3LY4gL1sUcapCiH6esjnlXKt109EL0np/bBDANhDhhlEq1E
-	0iURAIJrZOp8pUNVQcfPc6I=
-X-Google-Smtp-Source: AGHT+IGX6Pz3j6wT5XGBdGkNsTcNQay3wFitLsf0ZTkMu21EsbWQmrDkQcFXNxS/GAzmihrtd2gFnQ==
-X-Received: by 2002:a05:6a00:4b0d:b0:6d9:bf50:196e with SMTP id kq13-20020a056a004b0d00b006d9bf50196emr5766190pfb.19.1705274137340;
-        Sun, 14 Jan 2024 15:15:37 -0800 (PST)
-Received: from mail.marliere.net ([24.199.118.162])
-        by smtp.gmail.com with ESMTPSA id ei6-20020a056a0080c600b006dae1c8c817sm6495523pfb.74.2024.01.14.15.15.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 14 Jan 2024 15:15:36 -0800 (PST)
-Date: Sun, 14 Jan 2024 20:15:38 -0300
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marliere.net;
-	s=2023; t=1705274134;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QGViPHtjJMlurFPTzBSSPEkkat6LUsMaxd6YuoP9bZE=;
-	b=mr9Rkc7M5rCAcuie0IEgYS6HZeCbDJJr9e0HB5GhSydRms/1CC31Db9XU/abTy3Rt3+wxY
-	/WCIUdOnJKbyNGP3ul8Bl4JC+DR7eLl+/7mPa531B/x8WSVL5VpYns9AjVVh6+X7VaJ6gs
-	k5boUZ7+XYk1K0rAjcmDb3KGXp0SST4SaQPW77BqTGHakjURR3oYPPSXQc+G4y1g4BENmq
-	nAE+vZzxjx0ow/g/rCllZdsP+3cZwddxZPeGDPk2HM5IQitjHtO2QhFHuMJ9Yfs4nHl0hP
-	ypaN/9p1M0d4Mk0jAXJL8/jesps+V1C/KvA8D1XUd+BpYGkNUXY8fjsAMlLrEQ==
-Authentication-Results: ORIGINATING;
-	auth=pass smtp.auth=ricardo@marliere.net smtp.mailfrom=ricardo@marliere.net
-From: "Ricardo B. Marliere" <ricardo@marliere.net>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
-	allen.lkml@gmail.com
-Subject: Re: [PATCH 6.6 0/1] 6.6.12-rc1 review
-Message-ID: <k4fx6zf7tohistdg4dt2vuz7h2by3k3w4u2xulzta5drkvevye@2nki7zdt4j4l>
-References: <20240113094204.275569789@linuxfoundation.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357ED3C0B;
+	Mon, 15 Jan 2024 03:24:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 817DDC433C7;
+	Mon, 15 Jan 2024 03:24:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705289090;
+	bh=mo76Nukq1W2YdcLMIvym+hHc0dhnYF0ZzSC0le28VnA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FBYUsvo0XHkzqVRKkeZu9QuGyxEdZTZEIgkUT2atkEStyBstrXRoCv84LXOliWvVs
+	 cliKqsVslsAazoPzFIZ3vHKIhBh2Nyd2kvF3atNT0uasFEx56sW/tvt5Ov/RJNXEQ3
+	 3bHaG1DSmTdyVTHjiT+axC/q891hn9HKnQF+ZTospsYDu9Ni4Rmc4f2E+dDfrfz/fM
+	 FEf3mKVswtOp5dxJ/mGMbXyEOVZE8D/nO65MtJS6dMqnrL6QUHhQRctiHzzk+yIuQG
+	 F4yszopL0vNniBhZHNo5qLwSPiGikBU7NQUMCFzk7BSmWtN12ijgEiLpH9VoIRVmUu
+	 gc7+cnHApoxzQ==
+Date: Sun, 14 Jan 2024 22:24:49 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Jani Nikula <jani.nikula@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	tzimmermann@suse.de, Ziqi Zhao <astrajoan@yahoo.com>,
+	Maxime Ripard <mripard@kernel.org>, dri-devel@lists.freedesktop.org,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
+Subject: Re: [PATCH AUTOSEL 4.14 3/6] drm/crtc: Fix uninit-value bug in
+ drm_mode_setcrtc
+Message-ID: <ZaSlgTAz7vdk97JJ@sashalap>
+References: <20231218124725.1382738-1-sashal@kernel.org>
+ <20231218124725.1382738-3-sashal@kernel.org>
+ <87bkamvay5.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20240113094204.275569789@linuxfoundation.org>
+In-Reply-To: <87bkamvay5.fsf@intel.com>
 
-On 13 Jan 10:50, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.12 release.
-> There are 1 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Mon, 15 Jan 2024 09:41:55 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.12-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Tue, Dec 19, 2023 at 10:44:02AM +0200, Jani Nikula wrote:
+>On Mon, 18 Dec 2023, Sasha Levin <sashal@kernel.org> wrote:
+>> From: Ziqi Zhao <astrajoan@yahoo.com>
+>>
+>> [ Upstream commit 3823119b9c2b5f9e9b760336f75bc989b805cde6 ]
+>>
+>> The connector_set contains uninitialized values when allocated with
+>> kmalloc_array. However, in the "out" branch, the logic assumes that any
+>> element in connector_set would be equal to NULL if failed to
+>> initialize, which causes the bug reported by Syzbot. The fix is to use
+>> an extra variable to keep track of how many connectors are initialized
+>> indeed, and use that variable to decrease any refcounts in the "out"
+>> branch.
+>>
+>> Reported-by: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
+>> Signed-off-by: Ziqi Zhao <astrajoan@yahoo.com>
+>> Reported-and-tested-by: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
+>> Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+>> Link: https://lore.kernel.org/r/20230721161446.8602-1-astrajoan@yahoo.com
+>> Signed-off-by: Maxime Ripard <mripard@kernel.org>
+>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+>This commit fixes an uninitialized value, but introduces a new
+>one. Please backport 6e455f5dcdd1 ("drm/crtc: fix uninitialized variable
+>use") from v6.7-rc6 to go with it.
 
-System runs fine, no noticeable regressions.
+I'll take 6e455f5dcdd1 too, thanks!
 
-[    0.000000] Linux version 6.6.12-rc1-ktest-gf44c56831910 (rbmarliere@debian) (gcc (Debian 13.2.0-9) 13.2.0, GNU ld (GNU Binutils for Debian) 2.41.50.20231227) #2 SMP PREEMPT_DYNAMIC Sun Jan 14 19:53:04 -03 2024
-
-Tested-by: Ricardo B. Marliere <ricardo@marliere.net>
-
-Thanks!
--	Ricardo
+-- 
+Thanks,
+Sasha
 
