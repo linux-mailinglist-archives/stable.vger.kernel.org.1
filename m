@@ -1,103 +1,110 @@
-Return-Path: <stable+bounces-10938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6312682E0EC
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 20:48:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB6982E16E
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 21:17:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAC602832F2
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 19:48:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 452A8283798
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 20:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2233218E20;
-	Mon, 15 Jan 2024 19:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4D519471;
+	Mon, 15 Jan 2024 20:17:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V9+AkzJY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oPqEnLF5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DD8419477;
-	Mon, 15 Jan 2024 19:48:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-7d250629e25so84749241.1;
-        Mon, 15 Jan 2024 11:48:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705348081; x=1705952881; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=HhSzSqpM4RD5lUwEkRLdlmlmzOc+rc60P8bLEmJ2fEE=;
-        b=V9+AkzJYJJ9rlQ+mJE1qNVvUk7XuXFsOOAgAX/HiNFlOUiV+Ek4Dv/XNGlIknb+AJQ
-         wIdLgSg/JpmPuBjLRbhytvsviK70RB8uG8IvVKOjXo1Epb4sYIeuegsN2zS3IRBshX89
-         D1YKn6aTCxWlE56I2cbR3VP1DQqenkyUNUwgLUL2xN67kWRwcuunmBhFX7c3s5Is7GJS
-         QhQbQZevbUGaPfKXvLtNqIucXoTv6PyoT2lMWZFMxCGcnQB6XegtAcLJXKw77zkVgE/x
-         gfLEYPCqfuixakr1zVXkV3SuvZI/VZrbDEDGg1RydM6FtEHGb/6mR/z8AG5tyMQfxElM
-         xajw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705348081; x=1705952881;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HhSzSqpM4RD5lUwEkRLdlmlmzOc+rc60P8bLEmJ2fEE=;
-        b=JjxlV2kjfvLV93mHkWs1ua4JavCta+HhhpAFDS6tfCGOIZ9XL1iOmiWRSufrlKuc1E
-         YnyccuMGZEGAwNQ2ZvP1QQQ6ln4C49CILjjPq+hAP/vxUdrEYeLpSbKN+yOd5S5TA9J5
-         UAlaxRnO6FqQovCI/6/KsgOjXFDDTxJcLcUQClio1QcIQtE5YCBe4Ji1P2Jci51vPeWg
-         XIKHKJOL8AhUTPtWDTcaqZddN03gxuRMO1XClrtBuaLKMdY8N0kYV5TIJahPg90s/SmF
-         PcxKz2/TfUJkGQNWx83k4Yq/G6ruH7JhoZHi1l5hJOQ3uB1FXZcFfh8FxMpnCKQzDSiw
-         wHcw==
-X-Gm-Message-State: AOJu0YyJKvmPggFzaZ3B6wIov3wZw+VOLNpTm5s/5D1sntja8ayx4hor
-	ydix5mlklitgZmbWZ6I7sAm67FOqSt36y8pUB5g=
-X-Google-Smtp-Source: AGHT+IGgktmkY/M5xIKuehYQ1+S8h1tKJGay4wHBQL9/hhSxWWiM3b6eHLdMrGu4BkK+MZ4cFH175/FqXrWreNJNF9E=
-X-Received: by 2002:a67:c786:0:b0:468:17fc:f4ae with SMTP id
- t6-20020a67c786000000b0046817fcf4aemr4170295vsk.6.1705348080161; Mon, 15 Jan
- 2024 11:48:00 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC4518EB2;
+	Mon, 15 Jan 2024 20:17:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E72C433C7;
+	Mon, 15 Jan 2024 20:17:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705349866;
+	bh=hbvF2zJNkvnNPZrMPX0XPRUfiPsnEZS1lIR4xv3NkoU=;
+	h=From:Date:Subject:To:Cc:From;
+	b=oPqEnLF5Hexfow5DJQAq4T/eH1P+1dujL4Tlv5skvCXd7yDnG3IjP2hKFqspl/85x
+	 DzLAqlxJRXoiZQTuG0Tg6stu6PWVrFQNeITf9wAapW7GNZNCfDp8Mh38W3WGc89HHz
+	 /zP6pddK5st4IMmlsqq8Y/2105eKYOo6hzcVofk1qP9QEcvAJzbW1PLgxcx8t9Th9b
+	 r85jhp4KW0uOALQm04tiuBBZiPcdQgT/2jXZ2TTz7GgQClVVQHxYKE1srm5vrqFm0x
+	 kQoTvM4CPOSnFUqUsfCN8RsOpkok7s7wjsmTGJYFxWqkk9ZujOdvAqANKI135+NRPk
+	 YnDkdJAARAcFg==
+From: Mark Brown <broonie@kernel.org>
+Date: Mon, 15 Jan 2024 20:15:46 +0000
+Subject: [PATCH] arm64/sme: Always exit sme_alloc() early with existing
+ storage
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240113094206.930684111@linuxfoundation.org>
-In-Reply-To: <20240113094206.930684111@linuxfoundation.org>
-From: Allen <allen.lkml@gmail.com>
-Date: Mon, 15 Jan 2024 11:47:48 -0800
-Message-ID: <CAOMdWSLA4SYN_HvJoAAgGdR_KSeeqc5Zyy-JiLcQyM9inPh3vQ@mail.gmail.com>
-Subject: Re: [PATCH 5.10 00/43] 5.10.208-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240115-arm64-sme-flush-v1-1-7472bd3459b7@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAHGSpWUC/x3MTQqAIBBA4avErBtQkaCuEi1SxxzoD4ciCO+et
+ PwW770glJkEhuaFTDcLH3uFbhvwad4XQg7VYJSxSmuDc946i7IRxvWShKp3wVvlnI0eanVmivz
+ 8x3Eq5QOsnnR1YQAAAA==
+To: Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>
+Cc: Dave Martin <dave.martin@arm.com>, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.13-dev-5c066
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1379; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=hbvF2zJNkvnNPZrMPX0XPRUfiPsnEZS1lIR4xv3NkoU=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBlpZLnCdbCdkfdcefQ47pJjfDfPa6LkOOGHaTIu1aI
+ QVlccIeJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZaWS5wAKCRAk1otyXVSH0AKNB/
+ 4+VX/uyNw6PWsdrgvLLVtIVBln/gopyMmLZWzHYQOqOpAtlmvOUyeZc8TB/bfTLBSOuvtmeQszlGGw
+ Mk/7SGEkxrRVo0wVNfM2R5/sH+dIb1+fZ3EtM63SRKsO6nUTxKiXb5tAyng6HzyB/kwrHSwd4ZwA/2
+ YI8ACoXNvV5R2cu7qRYhnzI0GOa2CxqhSam0KXFvTvb9ST/LzmAc0qYwppCAvRCacZPG8mPEW7/bsp
+ wH+6MEL2sRYseLh8np2x5mT03Dico0+/yRgGekjLn5/wB1UYw+O0piMgpgJ+Sextu8dj/pqvZsyXz+
+ TleshIECm9xi+IYUEFp4LTFcB33EcR
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-> This is the start of the stable review cycle for the 5.10.208 release.
-> There are 43 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Mon, 15 Jan 2024 09:41:55 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.208-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+When sme_alloc() is called with existing storage and we are not flushing we
+will always allocate new storage, both leaking the existing storage and
+corrupting the state. Fix this by separating the checks for flushing and
+for existing storage as we do for SVE.
 
+Callers that reallocate (eg, due to changing the vector length) should
+call sme_free() themselves.
 
-Compiled and booted on my x86_64 and ARM64 test systems. No errors or
-regressions.
+Fixes: 5d0a8d2fba50 (arm64/ptrace: Ensure that SME is set up for target when writing SSVE state)
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc:  <stable@vger.kernel.org>
+---
+ arch/arm64/kernel/fpsimd.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Tested-by: Allen Pais <apais@linux.microsoft.com>
+diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+index 1559c706d32d..7363f2eb98e8 100644
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1245,8 +1245,10 @@ void fpsimd_release_task(struct task_struct *dead_task)
+  */
+ void sme_alloc(struct task_struct *task, bool flush)
+ {
+-	if (task->thread.sme_state && flush) {
+-		memset(task->thread.sme_state, 0, sme_state_size(task));
++	if (task->thread.sme_state) {
++		if (flush)
++			memset(task->thread.sme_state, 0,
++			       sme_state_size(task));
+ 		return;
+ 	}
+ 
 
-Thanks.
+---
+base-commit: 0dd3ee31125508cd67f7e7172247f05b7fd1753a
+change-id: 20240112-arm64-sme-flush-09bdc40bb4fc
+
+Best regards,
+-- 
+Mark Brown <broonie@kernel.org>
+
 
