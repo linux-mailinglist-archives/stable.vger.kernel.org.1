@@ -1,130 +1,100 @@
-Return-Path: <stable+bounces-10857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61E3682D4AF
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 08:49:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4833D82D502
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 09:25:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 800131C211A4
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 07:49:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5615B20C62
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 08:25:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD2114409;
-	Mon, 15 Jan 2024 07:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4F55C98;
+	Mon, 15 Jan 2024 08:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="R4JcS7dy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hkH0t46i"
 X-Original-To: stable@vger.kernel.org
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1048C4402;
-	Mon, 15 Jan 2024 07:49:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1705304980;
-	bh=N3XCgFDqk2GrOitAp3uyTP3EuoDEu1xWts+NDkUZPHA=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=R4JcS7dyyz17O7mEwJV5qf5f1nlW0Mo+tFwR2hRBttaxbdHrHFV9bu112yi4NmNKM
-	 WePKXscCqpfwoLQdSrq8LmRyrU4+p9e8B34nesX4bKlSywDbP9KZPCa/OwAGHd/Jil
-	 5XVZOLJ4FoAPN6lbdhWFd8ea8wJVkPuFP2rhjq2HCg2F6E+UiUQZSWvpWzUugebhuM
-	 DsE9N3xhNK/swZdhrk+IyRRLu/HkES7LqIYI9bmHueOrj+ZXApD3fQTL2BlUgcWiHY
-	 H9gUgEg9fTLL10FK0z7xgB9vjaBV5fSby/gTseJ/EHR+MGvTu3HiqaKkFMjLAK1t3r
-	 sDyeDvE6peUmg==
-Received: from [100.96.234.34] (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: usama.anjum)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 4264D37813DD;
-	Mon, 15 Jan 2024 07:49:37 +0000 (UTC)
-Message-ID: <b0c85ee9-5c43-444b-b81c-0c1a8401f2e0@collabora.com>
-Date: Mon, 15 Jan 2024 12:49:45 +0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 092235689
+	for <stable@vger.kernel.org>; Mon, 15 Jan 2024 08:25:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E495C433F1;
+	Mon, 15 Jan 2024 08:25:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1705307126;
+	bh=xaGnhtvwtZ3IDwAH/diSmw4UUfdlBaNyNg03un69HC4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hkH0t46iXDN+JxeuUotit4CYlZ6sK2tGXWKIHqDf8VMhVQjV47OllY2Fqo4q/Tmau
+	 eOKQhSHG8KSkJo2Inc6ZDi5rPTOkUwWO5geglTtIZ/JnlCupUzYVgbrIYozYgM1zXD
+	 O7BORXRTJryXbQlEHByXFl4WJZGwLvB6HLf+bE0Y=
+Date: Mon, 15 Jan 2024 09:25:23 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: =?utf-8?B?0JzQsNGA0Log0JrQvtGA0LXQvdCx0LXRgNCz?= <socketpair@gmail.com>
+Cc: stable@vger.kernel.org
+Subject: Re: kernel BUG on network namespace deletion
+Message-ID: <2024011517-nursery-flinch-3101@gregkh>
+References: <CAEmTpZHU5JBkQOVWvp4i2f02et2e0v9mTFzhmxhFOE47xPyqYg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
- akpm@linux-foundation.org, muchun.song@linux.dev, jiaqiyan@google.com,
- willy@infradead.org, linmiaohe@huawei.com, naoya.horiguchi@nec.com,
- shy828301@gmail.com, jthoughton@google.com, jane.chu@oracle.com,
- stable@vger.kernel.org, "kernel@collabora.com" <kernel@collabora.com>
-Subject: Re: [PATCH v2] fs/hugetlbfs/inode.c: mm/memory-failure.c: fix
- hugetlbfs hwpoison handling
-Content-Language: en-US
-To: Sidhartha Kumar <sidhartha.kumar@oracle.com>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20240112180840.367006-1-sidhartha.kumar@oracle.com>
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-In-Reply-To: <20240112180840.367006-1-sidhartha.kumar@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAEmTpZHU5JBkQOVWvp4i2f02et2e0v9mTFzhmxhFOE47xPyqYg@mail.gmail.com>
 
-On 1/12/24 11:08 PM, Sidhartha Kumar wrote:
-> has_extra_refcount() makes the assumption that the page cache adds a ref
-> count of 1 and subtracts this in the extra_pins case. Commit a08c7193e4f1
-> (mm/filemap: remove hugetlb special casing in filemap.c) modifies
-> __filemap_add_folio() by calling folio_ref_add(folio, nr); for all cases
-> (including hugtetlb) where nr is the number of pages in the folio. We
-> should adjust the number of references coming from the page cache by
-> subtracing the number of pages rather than 1.
+On Mon, Jan 15, 2024 at 12:19:06PM +0500, Марк Коренберг wrote:
+> Kernel 6.6.9-200.fc39.x86_64
 > 
-> In hugetlbfs_read_iter(), folio_test_has_hwpoisoned() is testing the wrong
-> flag as, in the hugetlb case, memory-failure code calls
-> folio_test_set_hwpoison() to indicate poison. folio_test_hwpoison() is the
-> correct function to test for that flag.
+> The following bash script demonstrates the problem (run under root):
 > 
-> After these fixes, the hugetlb hwpoison read selftest passes all cases.
+> ```
+> #!/bin/bash
 > 
-> Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
-> Closes: https://lore.kernel.org/linux-mm/20230713001833.3778937-1-jiaqiyan@google.com/T/#m8e1469119e5b831bbd05d495f96b842e4a1c5519
-> Cc: <stable@vger.kernel.org> # 6.7+
-> Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-> Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> set -e -u -x
+> 
+> # Some cleanups
+> ip netns delete myspace || :
+> ip link del qweqwe1 || :
+> 
+> # The bug happens only with physical interfaces, not with, say, dummy one
+> ip link property add dev enp0s20f0u2 altname myname
+> ip netns add myspace
+> ip link set enp0s20f0u2 netns myspace
+> 
+> # add dummy interface + set the same altname as in background namespace.
+> ip link add name qweqwe1 type dummy
+> ip link property add dev qweqwe1 altname myname
+> 
+> # Trigger the bug. The kernel will try to return ethernet interface
+> back to root namespace, but it can not, because of conflicting
+> altnames.
+> ip netns delete myspace
+> 
+> # now `ip link` will hang forever !!!!!
+> ```
+> 
+> I think, the problem is obvious. Althougn I don't know how to fix.
+> Remove conflicting altnames for interfaces that returns from killed
+> namespaces ?
 
-> ---
-> 
-> v1 -> v2:
->     move ref_count adjustment to if(extra_pins) block as that represents
->     ref counts from the page cache per Miaohe Lin.
-> 
->  fs/hugetlbfs/inode.c | 2 +-
->  mm/memory-failure.c  | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
-> index 36132c9125f9..3a248e4f7e93 100644
-> --- a/fs/hugetlbfs/inode.c
-> +++ b/fs/hugetlbfs/inode.c
-> @@ -340,7 +340,7 @@ static ssize_t hugetlbfs_read_iter(struct kiocb *iocb, struct iov_iter *to)
->  		} else {
->  			folio_unlock(folio);
->  
-> -			if (!folio_test_has_hwpoisoned(folio))
-> +			if (!folio_test_hwpoison(folio))
->  				want = nr;
->  			else {
->  				/*
-> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-> index d8c853b35dbb..ef7ae73b65bd 100644
-> --- a/mm/memory-failure.c
-> +++ b/mm/memory-failure.c
-> @@ -976,7 +976,7 @@ static bool has_extra_refcount(struct page_state *ps, struct page *p,
->  	int count = page_count(p) - 1;
->  
->  	if (extra_pins)
-> -		count -= 1;
-> +		count -= folio_nr_pages(page_folio(p));
->  
->  	if (count > 0) {
->  		pr_err("%#lx: %s still referenced by %d users\n",
+As this can only be triggered by root, not much for us to do here,
+perhaps discuss it on the netdev mailing list for all network developers
+to work on?
 
--- 
-BR,
-Muhammad Usama Anjum
+> On kernel 6.3.8 (at least) was another bug, that allows dulicate
+> altnames, and it was fixed mainline somewhere. I have another script
+> to trigger the bug on these old kernels. I did not bisect.
+
+If this is an issue on 6.1.y, that would be good to know so that we can
+try to fix the issue there if bisection can find it.  Care to share the
+script so that I can test?
+
+thanks,
+
+greg k-h
 
