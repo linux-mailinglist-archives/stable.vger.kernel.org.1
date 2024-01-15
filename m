@@ -1,128 +1,102 @@
-Return-Path: <stable+bounces-10934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8460B82E0C9
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 20:39:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D74282E0E0
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 20:46:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC4921C22116
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 19:39:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A8EBB20F86
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 19:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53D318C03;
-	Mon, 15 Jan 2024 19:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1520B18E15;
+	Mon, 15 Jan 2024 19:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="saHgx8RO";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="saHgx8RO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fMhh/RnL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC18B18E08;
-	Mon, 15 Jan 2024 19:39:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 01B3721F89;
-	Mon, 15 Jan 2024 19:39:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1705347564; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=xPddsAhoUIJjKHEVphr4Es22DeusDXsUbfRQwQezHfs=;
-	b=saHgx8ROksqrbJyHiqQ+5biI/Z+Oj2PIvnEUNRXkyccbm8IFyFtAilUpphGQ7jMCnREhix
-	mgJbcNiQrgnS1hEhBMXA/+mEcZa27WpQFRTtAKxc+fD0bx2m2GYUcbq3mPYBofVYRMcV0U
-	oLPYFq27jPQzodmgDTEzkE2C7vRdanA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1705347564; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=xPddsAhoUIJjKHEVphr4Es22DeusDXsUbfRQwQezHfs=;
-	b=saHgx8ROksqrbJyHiqQ+5biI/Z+Oj2PIvnEUNRXkyccbm8IFyFtAilUpphGQ7jMCnREhix
-	mgJbcNiQrgnS1hEhBMXA/+mEcZa27WpQFRTtAKxc+fD0bx2m2GYUcbq3mPYBofVYRMcV0U
-	oLPYFq27jPQzodmgDTEzkE2C7vRdanA=
-Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id EC2E713BF6;
-	Mon, 15 Jan 2024 19:39:23 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([10.150.64.162])
-	by imap2.dmz-prg2.suse.org with ESMTPSA
-	id JoFlOeuJpWVMFAAAn2gu4w
-	(envelope-from <dsterba@suse.com>); Mon, 15 Jan 2024 19:39:23 +0000
-From: David Sterba <dsterba@suse.com>
-To: linux-btrfs@vger.kernel.org
-Cc: David Sterba <dsterba@suse.com>,
-	stable@vger.kernel.org,
-	syzbot+4a4f1eba14eb5c3417d1@syzkaller.appspotmail.com
-Subject: [PATCH] btrfs: don't warn if discard range is not aligned to sector
-Date: Mon, 15 Jan 2024 20:38:59 +0100
-Message-ID: <20240115193859.1521-1-dsterba@suse.com>
-X-Mailer: git-send-email 2.42.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0E818E0A;
+	Mon, 15 Jan 2024 19:46:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-7ce55932330so1502992241.0;
+        Mon, 15 Jan 2024 11:46:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705347967; x=1705952767; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=JIbfkPiR6M/kmxy2zdTQeSRuTcxVNa/RonwKaeglhrM=;
+        b=fMhh/RnLXHu/2bf4FgU7zzTgfVX6S/1wel1rybPltnMy/99WDDflfyW/e/ZId/9bRl
+         M28JIdeGSDgb6Dr7Z4ByS1JzF6YVGoJLNflu/aOEueoPXrjcJepYaXJgoLh65HRGLWzu
+         exLqaTPSTiDrDo3tfm4/xrb1QMDe7CyoTujsaGPNcMB8OCqBvHlB4WjbRETJtrNyfCDZ
+         aIsKPeLBi15bcF5DwWpYAbwqGE+Jm7KQT/2lh15k09h1fUZtTOgWs2nIrh0WVDjuwsEe
+         FuxfnofVNLzlxGsQBcSip5kMasaLKAMlG8sFxcBXGszKZOUflA67mc9UWfal7MotJvOU
+         j8sA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705347967; x=1705952767;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JIbfkPiR6M/kmxy2zdTQeSRuTcxVNa/RonwKaeglhrM=;
+        b=lsiqqicZ1uroea1otK7z6Cn6AgYuznKs+aTRr0a+XNPXkXMQ2+9Th95uS6ZCsd0pHh
+         +KnzbwCfNQ+lwcYlFZKgHqOggAQ4iUEi4dg01N+nZb/Qg44mKnIqMvX9sjlte8070i9w
+         fXdmKCSutcBC2EBrOPmRM6iZlyBE5MJX/x0BYERtfjM3lN9KMHxRA3qjomrTuxgD1exL
+         wk2boLAVa4xOnOuvl3rnV0eSixKm2czCQKcWnQk9fic9st2ZM8ZRKNMgTjA2cdWUV0O5
+         4/pn7ox409Madd2cpdPCvOcqBCsVKKC5mG+nld6b54VzA3ZKbpifkZfLYBPU+8UjmUZP
+         HWUQ==
+X-Gm-Message-State: AOJu0YzBnpVPHwwR8n11OUdrr1T98bRaJupv8TLKfg0ySw/xsnCCJtlY
+	BWjygKc/pzMhjhrhCmDar1dqmDZDTWlniw5x/O0=
+X-Google-Smtp-Source: AGHT+IHb/CMeHORAxtWRRGn6N6ab3r/Xv6z27ogqUBsIkqEjTTznz/OGBR8VGl4EHxuhi1bPGgPVvqr2Q7B/LJ6CMLY=
+X-Received: by 2002:a67:c78b:0:b0:467:cb07:fd1 with SMTP id
+ t11-20020a67c78b000000b00467cb070fd1mr2273871vsk.11.1705347967413; Mon, 15
+ Jan 2024 11:46:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Authentication-Results: smtp-out1.suse.de;
-	none
-X-Spamd-Result: default: False [4.90 / 50.00];
-	 ARC_NA(0.00)[];
-	 RCVD_VIA_SMTP_AUTH(0.00)[];
-	 FROM_HAS_DN(0.00)[];
-	 RCPT_COUNT_THREE(0.00)[4];
-	 R_MISSING_CHARSET(2.50)[];
-	 TO_MATCH_ENVRCPT_ALL(0.00)[];
-	 TAGGED_RCPT(0.00)[4a4f1eba14eb5c3417d1];
-	 MIME_GOOD(-0.10)[text/plain];
-	 BROKEN_CONTENT_TYPE(1.50)[];
-	 TO_DN_SOME(0.00)[];
-	 RCVD_COUNT_THREE(0.00)[3];
-	 DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	 MID_CONTAINS_FROM(1.00)[];
-	 DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email];
-	 FUZZY_BLOCKED(0.00)[rspamd.com];
-	 FROM_EQ_ENVFROM(0.00)[];
-	 MIME_TRACE(0.00)[0:+];
-	 RCVD_TLS_ALL(0.00)[];
-	 BAYES_HAM(-0.00)[22.33%]
-X-Spam-Level: ****
-X-Spam-Score: 4.90
-X-Spam-Flag: NO
+References: <20240113094204.275569789@linuxfoundation.org>
+In-Reply-To: <20240113094204.275569789@linuxfoundation.org>
+From: Allen <allen.lkml@gmail.com>
+Date: Mon, 15 Jan 2024 11:45:56 -0800
+Message-ID: <CAOMdWSLBK0FsWn+4BmRxrE=FC=E212NcaA2jkhEekmP51iWThg@mail.gmail.com>
+Subject: Re: [PATCH 6.6 0/1] 6.6.12-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-There's a warning in btrfs_issue_discard() when the range is not aligned
-to 512 bytes, originally added in 4d89d377bbb0 ("btrfs:
-btrfs_issue_discard ensure offset/length are aligned to sector
-boundaries"). We can't do sub-sector writes anyway so the adjustment is
-the only thing that we can do and the warning is unnecessary.
+> This is the start of the stable review cycle for the 6.6.12 release.
+> There are 1 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Mon, 15 Jan 2024 09:41:55 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.12-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-CC: stable@vger.kernel.org # 4.19+
-Reported-by: syzbot+4a4f1eba14eb5c3417d1@syzkaller.appspotmail.com
-Signed-off-by: David Sterba <dsterba@suse.com>
----
- fs/btrfs/extent-tree.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Compiled and booted on my x86_64 and ARM64 test systems. No errors or
+regressions.
 
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index 6d680031211a..8e8cc1111277 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -1260,7 +1260,8 @@ static int btrfs_issue_discard(struct block_device *bdev, u64 start, u64 len,
- 	u64 bytes_left, end;
- 	u64 aligned_start = ALIGN(start, 1 << SECTOR_SHIFT);
- 
--	if (WARN_ON(start != aligned_start)) {
-+	/* Adjust the range to be aligned to 512B sectors if necessary. */
-+	if (start != aligned_start) {
- 		len -= aligned_start - start;
- 		len = round_down(len, 1 << SECTOR_SHIFT);
- 		start = aligned_start;
--- 
-2.42.1
+Tested-by: Allen Pais <apais@linux.microsoft.com>
 
+Thanks.
 
