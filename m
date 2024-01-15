@@ -1,141 +1,172 @@
-Return-Path: <stable+bounces-10877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC19082D7E6
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 11:57:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF82882D83F
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 12:19:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A6D428246D
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 10:57:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D67131C21942
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 11:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 064481E865;
-	Mon, 15 Jan 2024 10:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D11A82575F;
+	Mon, 15 Jan 2024 11:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="T8RytRwW"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=friedrich.vock@gmx.de header.b="uCGtIxvq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F9C2C683;
-	Mon, 15 Jan 2024 10:57:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 6C9C340E01B0;
-	Mon, 15 Jan 2024 10:57:04 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id CT0U0ryi_cwl; Mon, 15 Jan 2024 10:57:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1705316221; bh=dBLz6sHRTRwRzMhz1RnAxa5woAu6m0QqdNFPLlvlckg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=T8RytRwWb4406iHrxFvcsDwWYNL/Ych+TUHeFTixndVm9ncfjPwSTFtz2kJKTpMAf
-	 ok/GU/iAXjyXTERCD+dscHgqCMRCIVhqSA6AhSpg7plWuZn0NzsNWu7DJj1ODtMRBw
-	 Z3pfX5bDah8VsMhivMkwO5WBKzBRlPKFNYM0Fq1krhxFvd24BNC0j3ZPYKESMnv+1V
-	 gz8bTrJszlrh9ax2/VVDNt9IGEp46/EiZ2s4f55+D1zWnr3DrPI+efx3oWSvlNZm41
-	 rQ8pGhBmOhFUNfjILMO3pXNPyYDbyBPKCkqR+LjcFhz2Xo8mRRg9AjVzc6q+ZXXMNN
-	 d6pEHYda/Ev+ybTwjXVEK/o048umMEYl9s6TcBuLuZlAnG9JaNBpzNqSLB6M3/u8QP
-	 QtIK2RrNzl7jpoHKqghXID+N1jPo2hlnKYpWzgy3ZfwhbnfZ8yr3ccESId2puR8V+1
-	 S3d2tkVFbNkr4f4uRaSVfRBe7js62JeGvuYF+0umuBP0FFD/mD6ZxzTSuhYrb9rp4h
-	 GpNqYcQKoVzljA5t+i/Yg2BLbM0rvD1fKK4fOry+4DGvLGWaSYH9yzcicV6fRDMjhB
-	 PKcSGWr9O0po1PTh7M52fKZtCQJtO7/Bif9WXc8BEr15TcRZn4EKgxdD3Ns5XP4dj1
-	 tZ5WTuONm6w3mj1c528XInlo=
-Received: from zn.tnic (pd9530f8c.dip0.t-ipconnect.de [217.83.15.140])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 8F9D540E00C5;
-	Mon, 15 Jan 2024 10:56:55 +0000 (UTC)
-Date: Mon, 15 Jan 2024 11:56:50 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, x86@kernel.org,
-	Borislav Petkov <bp@suse.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH stable] x86/microcode: do not cache microcode if it will
- not be used
-Message-ID: <20240115105650.GDZaUPcgv2rkWI921b@fat_crate.local>
-References: <20240115102202.1321115-1-pbonzini@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29381219E1
+	for <stable@vger.kernel.org>; Mon, 15 Jan 2024 11:19:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+	t=1705317581; x=1705922381; i=friedrich.vock@gmx.de;
+	bh=Zfci03ZVVyDlxWE+6PmufB1R4hxifBBzUHUc/2VqNiw=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+	 In-Reply-To;
+	b=uCGtIxvqiXYBynJGrIXHo+D76N3TXvGt2Smh/kV12Hgxm1Nb/ir/zFXi0dn4pG7p
+	 yufK9hbm30m45OibpFlgTXPFtL9TGfJGYcF6/jOvDI2/dIJRkfS7dzbCKUtax69sN
+	 6uCGnLQpP/EPlPGuGyXU0BCVG81q7O9QcHqdmBCTlbhPbwjqWi8ri0BTW59/RZ2O4
+	 ZgzYCRhPrXDsRtH5UZuP/zBMA9dVZBHtpcbxNQt6rI0PvRJ2Z9wDLVNIxkdamo/K/
+	 35QsjbpBRs4w5di6TESy5tihvH8WbOO0JVF54eV6H5O4r1x2KiUBWCKdH20p6g6Gx
+	 HRmVoiUtMmJBXsvtsw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [10.8.95.157] ([134.34.7.10]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M3DJv-1rQATo02X7-003bCV; Mon, 15
+ Jan 2024 12:19:41 +0100
+Message-ID: <8e81fd02-c5e3-4c0c-bb8f-b81217863ce2@gmx.de>
+Date: Mon, 15 Jan 2024 12:19:40 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240115102202.1321115-1-pbonzini@redhat.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] drm/amdgpu: Process fences on IH overflow
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>,
+ amd-gfx@lists.freedesktop.org
+Cc: Alex Deucher <alexander.deucher@amd.com>, Joshua Ashton
+ <joshua@froggi.es>, stable@vger.kernel.org
+References: <20240114130008.868941-1-friedrich.vock@gmx.de>
+ <20240114130008.868941-2-friedrich.vock@gmx.de>
+ <ef01b29e-8529-43d2-befc-a3e3d8eaccf9@gmail.com>
+Content-Language: en-US
+From: Friedrich Vock <friedrich.vock@gmx.de>
+In-Reply-To: <ef01b29e-8529-43d2-befc-a3e3d8eaccf9@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ZpJ9QTCsijTrh4lu7DrAaUL1PXlw9LyVsicXM1BTIM5NXMMvsU1
+ +7WoQKeiycECz8Mzk6MTzELdoZriLoQdA7rKbuCPtSDLcN1M3LX8CkNfTHx/wiVqazcW5NQ
+ H3mwYJchflqLnI100r18OFQGz7UvTpSls7hh2HZZwLgFNYkmJeNwTdMNITXWgP+6SX4TG68
+ sXxCI51Hh7KTBtxRJqyCg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:b0zBoBhZ9a0=;o5rs9Cc/T5jZQx8K7y2DSJk9eLs
+ n2fsZxIMj1YRGorXzr+YiXKzQw1xvy3i5PAFbsxr2/igl1C33f484vmP2Lrglh9jeTzaWZ6qh
+ xMTmzbQqQ8DgVVaL4K2DUvWbKcV49ih2krahaQABZmeMc3qbmZ/ThI05w4xuOBwzb9OFqgAQZ
+ 2vyyWXpx1o7OsvXw5hS2HZEH3VuSyl4LJfftmXEdSP2nzSIMZAwwEGc4WcaC9/avu6klO0vtR
+ JTlqYrl5EIyC3gARDh2jAlSSHXYbGYhfxPvMg8Ypes6e/eZIJZZ9smvHGQcp5Vn9V6r6qP0oi
+ 7uky7D0NXrUXlzY1b07ZKS/Qhgr453IV7sqFJdG/iITUue11iODPWTSMYl0b87XrOFHIK8cee
+ W1hDUDf9JMcByXI/tEachA03KFqYETqX9o3mRMdUAodGz6wsx08TBpgt3qn4sZ8cEcLFKLMmU
+ fH2QinGJT4gEx/XOYD/d8/D6jPoDln3pG9PTTWVUHikQ7AtrsdnWEQo8p05DgNNdd49liBmEj
+ k0bnex0Acyzu5xL3Sdwm8Ex6d+5YqNfvrNs8Jcy+YjzfqzBQ4loMLH/d0LB/+TmtXDIwwg6ca
+ g8knNA/6CLfvzgiE7xpW2x95hJG4IGy91LdjY38iTKq89r2Bk52RPxgXHl/ppK2F2Foh1BP58
+ RgGjGAT6dJhwUC8Hw5SuyYz9LEUem09gzGVSXIyrzEMD5oaA8asfzmSPi9kz6TSbar5iWwSIk
+ Gsr2mHxxKDAwWxVLlQO+4PCi/DG0ffjKHAIe3HzudHI82KOlnULu7eQn8h42mUzYqYnvjvQuk
+ vnbEPe+x8h/j5QNMJoLeNu0/LSq+5c/Q0cYG8dFRidyurw+V81/MUXj2uaPQHn7MP6peFuCL0
+ 3vQh5je1cV44BxiVVx5pvU4Anv+r2QFcMgMxFMAkHkEMIYNX25XV8PZQYeMri0ZuXhe3IRsob
+ FAhn6A==
 
-On Mon, Jan 15, 2024 at 11:22:02AM +0100, Paolo Bonzini wrote:
-> [ Upstream commit a7939f01672034a58ad3fdbce69bb6c665ce0024 ]
-> 
-> Builtin/initrd microcode will not be used the ucode loader is disabled.
-> But currently, save_microcode_in_initrd is always performed and it
-> accesses MSR_IA32_UCODE_REV even if dis_ucode_ldr is true, and in
-> particular even if X86_FEATURE_HYPERVISOR is set; the TDX module does not
-> implement the MSR and the result is a call trace at boot for TDX guests.
-> 
-> Mainline Linux fixed this as part of a more complex rework of microcode
-> caching that went into 6.7 (see in particular commits dd5e3e3ca6,
-> "x86/microcode/intel: Simplify early loading"; and a7939f0167203,
-> "x86/microcode/amd: Cache builtin/initrd microcode early").  Do the bare
-> minimum in stable kernels, setting initrd_gone just like mainline Linux
-> does in mark_initrd_gone().
-> 
-> Note that save_microcode_in_initrd() is not in the microcode application
-> path, which runs with paging disabled on 32-bit systems, so it can (and
-> has to) use dis_ucode_ldr instead of check_loader_disabled_ap().
+On 15.01.24 11:26, Christian K=C3=B6nig wrote:
+> Am 14.01.24 um 14:00 schrieb Friedrich Vock:
+>> If the IH ring buffer overflows, it's possible that fence signal events
+>> were lost. Check each ring for progress to prevent job timeouts/GPU
+>> hangs due to the fences staying unsignaled despite the work being done.
+>
+> That's completely unnecessary and in some cases even harmful.
+How is it harmful? The only effect it can have is prevent unnecessary
+GPU hangs, no? It's not like it hides any legitimate errors that you'd
+otherwise see.
+>
+> We already have a timeout handler for that and overflows point to
+> severe system problem so they should never occur in a production system.
 
-... simply because save_microcode_in_initrd() is a fs_initcall and by
-then 32-bit has managed to enable paging.
+IH ring buffer overflows are pretty reliably reproducible if you trigger
+a lot of page faults, at least on Deck. Why shouldn't enough page faults
+in quick succession be able to overflow the IH ring buffer?
 
-> Cc: stable@vger.kernel.org # v6.6+
-> Cc: x86@kernel.org # v6.6+
-> Cc: Borislav Petkov <bp@suse.de>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  arch/x86/kernel/cpu/microcode/core.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
-> index 35d39a13dc90..503b5da56685 100644
-> --- a/arch/x86/kernel/cpu/microcode/core.c
-> +++ b/arch/x86/kernel/cpu/microcode/core.c
-> @@ -214,6 +214,11 @@ static int __init save_microcode_in_initrd(void)
->  	struct cpuinfo_x86 *c = &boot_cpu_data;
->  	int ret = -EINVAL;
->  
-> +	if (dis_ucode_ldr) {
-> +		ret = 0;
-> +		goto out;
-> +	}
-> +
->  	switch (c->x86_vendor) {
->  	case X86_VENDOR_INTEL:
->  		if (c->x86 >= 6)
-> @@ -227,6 +230,7 @@ static int __init save_microcode_in_initrd(void)
->  		break;
->  	}
->  
-> +out:
->  	initrd_gone = true;
->  
->  	return ret;
-> -- 
+The fence fallback timer as it is now is useless for this because it
+only gets triggered once after 0.5s. I guess an alternative approach
+would be to make a timer trigger for each work item in flight every
+0.5s, but why should that be better than just handling overflow errors
+as they occur?
 
-Makes sense to me.
+Regards,
+Friedrich
 
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+>
+> Regards,
+> Christian.
+>
+>>
+>> Cc: Joshua Ashton <joshua@froggi.es>
+>> Cc: Alex Deucher <alexander.deucher@amd.com>
+>> Cc: stable@vger.kernel.org
+>>
+>> Signed-off-by: Friedrich Vock <friedrich.vock@gmx.de>
+>> ---
+>> =C2=A0 drivers/gpu/drm/amd/amdgpu/amdgpu_ih.c | 15 +++++++++++++++
+>> =C2=A0 1 file changed, 15 insertions(+)
+>>
+>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.c
+>> b/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.c
+>> index f3b0aaf3ebc6..2a246db1d3a7 100644
+>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.c
+>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.c
+>> @@ -209,6 +209,7 @@ int amdgpu_ih_process(struct amdgpu_device *adev,
+>> struct amdgpu_ih_ring *ih)
+>> =C2=A0 {
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int count;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 u32 wptr;
+>> +=C2=A0=C2=A0=C2=A0 int i;
+>>
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (!ih->enabled || adev->shutdown)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return IRQ_NONE;
+>> @@ -227,6 +228,20 @@ int amdgpu_ih_process(struct amdgpu_device
+>> *adev, struct amdgpu_ih_ring *ih)
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ih->rptr &=3D ih=
+->ptr_mask;
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>>
+>> +=C2=A0=C2=A0=C2=A0 /* If the ring buffer overflowed, we might have los=
+t some fence
+>> +=C2=A0=C2=A0=C2=A0=C2=A0 * signal interrupts. Check if there was any a=
+ctivity so the signal
+>> +=C2=A0=C2=A0=C2=A0=C2=A0 * doesn't get lost.
+>> +=C2=A0=C2=A0=C2=A0=C2=A0 */
+>> +=C2=A0=C2=A0=C2=A0 if (ih->overflow) {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 for (i =3D 0; i < AMDGPU_MA=
+X_RINGS; ++i) {
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 str=
+uct amdgpu_ring *ring =3D adev->rings[i];
+>> +
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if =
+(!ring || !ring->fence_drv.initialized)
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 continue;
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 amd=
+gpu_fence_process(ring);
+>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 }
+>> +=C2=A0=C2=A0=C2=A0 }
+>> +
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 amdgpu_ih_set_rptr(adev, ih);
+>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 wake_up_all(&ih->wait_process);
+>>
+>> --
+>> 2.43.0
+>>
+>
 
