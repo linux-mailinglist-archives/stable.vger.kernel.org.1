@@ -1,144 +1,128 @@
-Return-Path: <stable+bounces-10933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C954D82E079
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 20:10:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8460B82E0C9
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 20:39:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 398551F2337E
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 19:10:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC4921C22116
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 19:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA0E18C21;
-	Mon, 15 Jan 2024 19:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53D318C03;
+	Mon, 15 Jan 2024 19:39:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Koytqyoc"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="saHgx8RO";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="saHgx8RO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D1719470;
-	Mon, 15 Jan 2024 19:09:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-6813c12c1b8so31316156d6.3;
-        Mon, 15 Jan 2024 11:09:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705345778; x=1705950578; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Wp/EprOhs457r37IGwu1zZB7TYcpjfKOzvSTpOetNbA=;
-        b=KoytqyocJCM8ayjz/MFAhWK6y51FE4vasmbEXvA8cWrXOEWtM0rC+ylEG9ngIkUVAy
-         6TC36QfrWGsqgdYt3OLio2OcAMXd0rx+9Ye3YAH4iYIUAXtZs/gbeZ9Sm+o/NxktWWhJ
-         Et+oOQGSTORdLF9Xr+yoPtYOmMEGoDG+IkuGjUheJPtTHjhfVsZ+EhNP2msBr0JMNCPL
-         eBA4cEPpeRTF4ORcc/OlmrAvPbH66tazyAMRUdrmCyRCYO0zLap1SpBIt/pMkEMCkCPT
-         t3/QEDTz5foXqCm8xMsPvoMEfJ/caL3Age4V3Lmd9f+zIHeYbYYHwCm/pIPt3QHYoOh7
-         6MnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705345778; x=1705950578;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Wp/EprOhs457r37IGwu1zZB7TYcpjfKOzvSTpOetNbA=;
-        b=txTOhojcY8lF0Ouz/sCoO4GFEA976BIxm34KdAcLmUMROmHzupC9Fn3R55P27cAuEE
-         HJuMzcdRUNhfpnIgoZ8WBskhRcwiGR7rLnvonW+g+IL7pJgxhLEPuVVQtMcn4WkSoIFK
-         tVAXGk1jlz1zL8G9cmPJ+dprJ11HwMyOAqOrCt2WABHQ4X5ygHuRw+N51WOnf805H6Do
-         0fhMFNeetrl1g51Nwqwsxxd8VOOtnI7bGrJBV0CCVWUqRDYVOa2EQuzXMXw9IvKV8SZq
-         H+/C03YeT3WzkhIwt1M6ZHUSvim1VzuUxSDbrf3l5ze1MG7DjMvJwqVXAdmq04HWue2e
-         j9Wg==
-X-Gm-Message-State: AOJu0YzuQHwozho7ef3hVrxqHUZqQZa4I3CorjamNMlKo+tF6zYVzbRc
-	xGUWaKy3EIawhNQNeEoE+3E=
-X-Google-Smtp-Source: AGHT+IF05HfngCBeRxPoONFrQ72obhgPkKlmqq3wzzwdSdLDUmY0iQiueT9mH84RSNa/DLB2HfEvZg==
-X-Received: by 2002:a05:6214:20ee:b0:681:304b:56ab with SMTP id 14-20020a05621420ee00b00681304b56abmr7085493qvk.50.1705345778174;
-        Mon, 15 Jan 2024 11:09:38 -0800 (PST)
-Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
-        by smtp.gmail.com with ESMTPSA id pl6-20020ad44686000000b0067f859a8ef5sm3498189qvb.105.2024.01.15.11.09.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Jan 2024 11:09:36 -0800 (PST)
-Message-ID: <0e931d32-797a-4494-a99b-bc41f602064b@gmail.com>
-Date: Mon, 15 Jan 2024 11:09:33 -0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC18B18E08;
+	Mon, 15 Jan 2024 19:39:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 01B3721F89;
+	Mon, 15 Jan 2024 19:39:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1705347564; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=xPddsAhoUIJjKHEVphr4Es22DeusDXsUbfRQwQezHfs=;
+	b=saHgx8ROksqrbJyHiqQ+5biI/Z+Oj2PIvnEUNRXkyccbm8IFyFtAilUpphGQ7jMCnREhix
+	mgJbcNiQrgnS1hEhBMXA/+mEcZa27WpQFRTtAKxc+fD0bx2m2GYUcbq3mPYBofVYRMcV0U
+	oLPYFq27jPQzodmgDTEzkE2C7vRdanA=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1705347564; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=xPddsAhoUIJjKHEVphr4Es22DeusDXsUbfRQwQezHfs=;
+	b=saHgx8ROksqrbJyHiqQ+5biI/Z+Oj2PIvnEUNRXkyccbm8IFyFtAilUpphGQ7jMCnREhix
+	mgJbcNiQrgnS1hEhBMXA/+mEcZa27WpQFRTtAKxc+fD0bx2m2GYUcbq3mPYBofVYRMcV0U
+	oLPYFq27jPQzodmgDTEzkE2C7vRdanA=
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id EC2E713BF6;
+	Mon, 15 Jan 2024 19:39:23 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id JoFlOeuJpWVMFAAAn2gu4w
+	(envelope-from <dsterba@suse.com>); Mon, 15 Jan 2024 19:39:23 +0000
+From: David Sterba <dsterba@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: David Sterba <dsterba@suse.com>,
+	stable@vger.kernel.org,
+	syzbot+4a4f1eba14eb5c3417d1@syzkaller.appspotmail.com
+Subject: [PATCH] btrfs: don't warn if discard range is not aligned to sector
+Date: Mon, 15 Jan 2024 20:38:59 +0100
+Message-ID: <20240115193859.1521-1-dsterba@suse.com>
+X-Mailer: git-send-email 2.42.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 0/1] 6.6.12-rc1 review
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com
-References: <20240113094204.275569789@linuxfoundation.org>
-From: Florian Fainelli <f.fainelli@gmail.com>
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- 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
- HGuUuzv+GKZ6nsysJw==
-In-Reply-To: <20240113094204.275569789@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Authentication-Results: smtp-out1.suse.de;
+	none
+X-Spamd-Result: default: False [4.90 / 50.00];
+	 ARC_NA(0.00)[];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 RCPT_COUNT_THREE(0.00)[4];
+	 R_MISSING_CHARSET(2.50)[];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 TAGGED_RCPT(0.00)[4a4f1eba14eb5c3417d1];
+	 MIME_GOOD(-0.10)[text/plain];
+	 BROKEN_CONTENT_TYPE(1.50)[];
+	 TO_DN_SOME(0.00)[];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	 MID_CONTAINS_FROM(1.00)[];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[appspotmail.com:email];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[];
+	 BAYES_HAM(-0.00)[22.33%]
+X-Spam-Level: ****
+X-Spam-Score: 4.90
+X-Spam-Flag: NO
 
+There's a warning in btrfs_issue_discard() when the range is not aligned
+to 512 bytes, originally added in 4d89d377bbb0 ("btrfs:
+btrfs_issue_discard ensure offset/length are aligned to sector
+boundaries"). We can't do sub-sector writes anyway so the adjustment is
+the only thing that we can do and the warning is unnecessary.
 
+CC: stable@vger.kernel.org # 4.19+
+Reported-by: syzbot+4a4f1eba14eb5c3417d1@syzkaller.appspotmail.com
+Signed-off-by: David Sterba <dsterba@suse.com>
+---
+ fs/btrfs/extent-tree.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-On 1/13/2024 1:50 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.12 release.
-> There are 1 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Mon, 15 Jan 2024 09:41:55 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.12-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
-
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index 6d680031211a..8e8cc1111277 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -1260,7 +1260,8 @@ static int btrfs_issue_discard(struct block_device *bdev, u64 start, u64 len,
+ 	u64 bytes_left, end;
+ 	u64 aligned_start = ALIGN(start, 1 << SECTOR_SHIFT);
+ 
+-	if (WARN_ON(start != aligned_start)) {
++	/* Adjust the range to be aligned to 512B sectors if necessary. */
++	if (start != aligned_start) {
+ 		len -= aligned_start - start;
+ 		len = round_down(len, 1 << SECTOR_SHIFT);
+ 		start = aligned_start;
 -- 
-Florian
+2.42.1
+
 
