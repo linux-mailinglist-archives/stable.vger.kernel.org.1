@@ -1,138 +1,145 @@
-Return-Path: <stable+bounces-10928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8686D82E05D
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 19:57:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BD7B82E06F
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 20:09:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04B702831D3
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 18:57:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FB411C21F7A
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 19:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661FD18B15;
-	Mon, 15 Jan 2024 18:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648B118AF0;
+	Mon, 15 Jan 2024 19:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hAK/VnFs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IIYuY3kw"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA2718AEE
-	for <stable@vger.kernel.org>; Mon, 15 Jan 2024 18:55:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1705344913;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GthAXNtsk/z7gO/RnYZ5f/Z0hY8DxVn6/8xfaoTAglE=;
-	b=hAK/VnFsiM9KXLcvb4UF4W7zf27CVpSlIHLedgytb0SZSOv22D8Xui3aYBMuiC3LLvbjX8
-	cHJ7Go4XWmlqdaRYJi7XvfLmumz+dZIVdZqw6wFpx7uCrhwsymZhxfF8/lEM7NgTyUDVEA
-	27FbqMUoN1EgMmdblznCftk/RDwzDpM=
-Received: from mail-yb1-f200.google.com (mail-yb1-f200.google.com
- [209.85.219.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-80-nf6NPiELO2S5RTrYM9MGPg-1; Mon, 15 Jan 2024 13:55:12 -0500
-X-MC-Unique: nf6NPiELO2S5RTrYM9MGPg-1
-Received: by mail-yb1-f200.google.com with SMTP id 3f1490d57ef6-dbed0713422so7038130276.0
-        for <stable@vger.kernel.org>; Mon, 15 Jan 2024 10:55:12 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D651118E15;
+	Mon, 15 Jan 2024 19:09:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-680a9796b38so64190706d6.0;
+        Mon, 15 Jan 2024 11:09:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705345761; x=1705950561; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=gcB0oLovVcMy8vSKRc8BK7jRBx+6gt82tnoE9yT0Vp4=;
+        b=IIYuY3kwaDOotP5FitH0d6/TAYCIHXvhyt7whVEISgZRqB+fD+k2KQyfKgKkZ2vSEv
+         tt8tUllM4S1MXA28HSx0Jwh1PRvlDZQupJZ6vCymcV/JldqOuzEH1r3rUjXwZimiJY7c
+         3fDZDblXP58RXgA95f98waobVZFTeYQhrGevHt3XxiMq5oaGflgJlaQY0pYb5vTYDxhZ
+         kneJB4xxzgpGmfcWcew9mTAHmVg0ZTjLrjvy20mroBwI8/Yvh+tfRzs3ua5GpSdgO70Z
+         iEAwlbYJuURBpkMzK9z5H1SClEFRxAvQvw5D1+f20MaqPP3Sm3Jlwg/PNYTzD4Y6is+u
+         CoGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705344911; x=1705949711;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GthAXNtsk/z7gO/RnYZ5f/Z0hY8DxVn6/8xfaoTAglE=;
-        b=EPZf05MqubhKNV7/oWZC7LdCLSkNh2D99I/mf6lNZ8IhC/6J+OZZ0sxwjJZx4QVjpb
-         3hVpij1RG6cpsYlPaT5+lM9igsV+7u+3OdS2LTqevrNApZkpg0N1wYhnstAmjqoRlm3e
-         POA49n5Dz9yZTW7jmfawAKQLiwv2aDMEvJlaLoYpuzFPSeeiCZQBJUb1JeMdHicBf1Zu
-         TlqZkZeDI55kAMa8NLKdmuaVAARDB1UDwrvTHWepNdO+XurrtTm1xY26orP8+tRQ9vv2
-         /ExGZVVFsn00YQJ2slxVd12UWC3HO6uxJdeQR77WNgBvLseJI7huU/wWLDjRCVpws7bD
-         9FxQ==
-X-Gm-Message-State: AOJu0YzMz+wuc2cHFNEYej5NwDKpO+PD/bKvuJzg/EeJq2uhIkMbGkHb
-	XwNftXq2kHRMvOZ/B6+M/3HBu5deIuiNL3UBv2CY+2LGxNbfQHKHg1khD9OsVw31dXySLHtMwZR
-	DHfe04mV/8maf9JxbdnLRUm5ilNIsdbPe7R1nz6tz0iWsHj3QVuQ=
-X-Received: by 2002:a25:d287:0:b0:dbe:ab15:2ffc with SMTP id j129-20020a25d287000000b00dbeab152ffcmr2223271ybg.108.1705344910972;
-        Mon, 15 Jan 2024 10:55:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE8/Pr+RHGkHS1w1pJSo1nV+YfK7/PsArpNSUrdCY6hNsPiQe4QgkfgzOOzYdHkj/WNdw6IrZQaM29w1oXEqfY=
-X-Received: by 2002:a25:d287:0:b0:dbe:ab15:2ffc with SMTP id
- j129-20020a25d287000000b00dbeab152ffcmr2223261ybg.108.1705344910694; Mon, 15
- Jan 2024 10:55:10 -0800 (PST)
+        d=1e100.net; s=20230601; t=1705345761; x=1705950561;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gcB0oLovVcMy8vSKRc8BK7jRBx+6gt82tnoE9yT0Vp4=;
+        b=XlP2EHDccAX4muhL4ovHmxTZH01xc3bBiriL/v+j7t+lxlhqRYfOwJJGsN1fBckGV4
+         ZKzVe6IMpSxsxgEKMVYW3JjaEmtVeUv85VIeSDAc29qpYMl5eI6gNvrCPIuqOzs2VK2N
+         +0UkaQe7f5ySmn25VBooNaXQDqtWd0RLg/xOgDKQ/DiHEOJtD3ECPdsPBRshCq2Eo15Q
+         j2xoPDjD+RUSqlqVI+59rzGVlZIVKdFSuqV+bkUJA45kYJdvJFXyxsAkeNbJbJ4h3sQj
+         Q8o/2Aw/POpQlbgjTZsEsLzfOsyoTZmKJ3pksyAZvKiB+9OXZ05XSjBxGsr9zU0Rc5yj
+         yeRQ==
+X-Gm-Message-State: AOJu0Ywhh6rjfKVbSmTSgPcOFDLZDaf8EmIfzyEE62Qrf23EDpKg4xXQ
+	GcAX53TTz98wQ1w63H/zRck=
+X-Google-Smtp-Source: AGHT+IGkpgMm9bv3MPX/8FMw4NjHraS700SKGCgr08eN7R1SjJnSJbMJa/UZ9Pm3FizZzYpRrWPeXw==
+X-Received: by 2002:a05:6214:ca4:b0:681:35b:fea4 with SMTP id s4-20020a0562140ca400b00681035bfea4mr8300802qvs.41.1705345760730;
+        Mon, 15 Jan 2024 11:09:20 -0800 (PST)
+Received: from [192.168.1.3] (ip68-4-215-93.oc.oc.cox.net. [68.4.215.93])
+        by smtp.gmail.com with ESMTPSA id pl6-20020ad44686000000b0067f859a8ef5sm3498189qvb.105.2024.01.15.11.09.18
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 15 Jan 2024 11:09:19 -0800 (PST)
+Message-ID: <14dbfd4f-f5f3-458a-8bbc-a4f827c78919@gmail.com>
+Date: Mon, 15 Jan 2024 11:09:16 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240115102202.1321115-1-pbonzini@redhat.com> <2024011502-shoptalk-gurgling-61f5@gregkh>
-In-Reply-To: <2024011502-shoptalk-gurgling-61f5@gregkh>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Mon, 15 Jan 2024 19:54:59 +0100
-Message-ID: <CABgObfZ0gpw2-n2d5vyEjuCefOp+3TPyUuMvjScAbae2GKfO0A@mail.gmail.com>
-Subject: Re: [PATCH stable] x86/microcode: do not cache microcode if it will
- not be used
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, x86@kernel.org, 
-	Borislav Petkov <bp@suse.de>, Dave Hansen <dave.hansen@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.4 00/38] 5.4.267-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com
+References: <20240113094206.455533180@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+ HGuUuzv+GKZ6nsysJw==
+In-Reply-To: <20240113094206.455533180@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jan 15, 2024 at 7:35=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Mon, Jan 15, 2024 at 11:22:02AM +0100, Paolo Bonzini wrote:
-> > [ Upstream commit a7939f01672034a58ad3fdbce69bb6c665ce0024 ]
->
-> This really isn't this commit id, sorry.
 
-True, that's the point of the mainline kernel where the logic most
-closely resembles the patch. stable-kernel-rules.rst does not quite
-say what to do in this case.
 
-> > Builtin/initrd microcode will not be used the ucode loader is disabled.
-> > But currently, save_microcode_in_initrd is always performed and it
-> > accesses MSR_IA32_UCODE_REV even if dis_ucode_ldr is true, and in
-> > particular even if X86_FEATURE_HYPERVISOR is set; the TDX module does n=
-ot
-> > implement the MSR and the result is a call trace at boot for TDX guests=
-.
-> >
-> > Mainline Linux fixed this as part of a more complex rework of microcode
-> > caching that went into 6.7 (see in particular commits dd5e3e3ca6,
-> > "x86/microcode/intel: Simplify early loading"; and a7939f0167203,
-> > "x86/microcode/amd: Cache builtin/initrd microcode early").  Do the bar=
-e
-> > minimum in stable kernels, setting initrd_gone just like mainline Linux
-> > does in mark_initrd_gone().
->
-> Why can't we take the changes in 6.7?  Doing a one-off almost always
-> causes problems :(
-
-The series is
-https://lore.kernel.org/all/20231002115506.217091296@linutronix.de/
-
-+ fixes at
-https://lore.kernel.org/lkml/20231010150702.495139089@linutronix.de/T/
-
-for a total of 35 patches and 800 lines changed.
-
-There is no individual patch that fixes the bug, because it wasn't
-really intentional in those patches; it just came out naturally as a
-consequence of cleaning up unnecessary code. It is fixed as of patch
-7, so one possibility would be to apply patches 1-7 in the series
-above but, especially for older kernels, that would be way more scary
-than this three line patch. It literally says "if microcode won't be
-loaded in the processor don't keep it in memory either".
-
-Paolo
-
-> What exact commits are needed?
->
+On 1/13/2024 1:49 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.4.267 release.
+> There are 38 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Mon, 15 Jan 2024 09:41:55 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.267-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+> and the diffstat can be found below.
+> 
 > thanks,
->
-> greg
->
+> 
+> greg k-h
 
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
+
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
