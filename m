@@ -1,117 +1,130 @@
-Return-Path: <stable+bounces-10856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 939E982D4AA
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 08:41:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E3682D4AF
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 08:49:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 219191F2177D
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 07:41:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 800131C211A4
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 07:49:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8788440D;
-	Mon, 15 Jan 2024 07:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD2114409;
+	Mon, 15 Jan 2024 07:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bA+Dq1bM"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="R4JcS7dy"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD80929B4;
-	Mon, 15 Jan 2024 07:41:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705304471; x=1736840471;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=u9xDS5m0/Xi1G++zGCcpFutHH1c/4WneyytlOz4IGWY=;
-  b=bA+Dq1bMRKWJU7l07DUq+dCVD7x5pJ548vwWextArvNUkZ5iOnoZqTWE
-   k6J1iKOZpF+apb7X2ou83cjjux7QFxq3PHJgSG21q9Pmya1U5C0G/ILZ6
-   E6+KZLyHKlnWLT6hVv0KhoFsEtvbV+EecglY0qrxfqNW62rzaI0BFef8X
-   o8xU5TC7/vlrNxD6EzXdDHMvS+Q10FPqGhQE6HABj5BHpGNxIVZnh8PxM
-   75uaFXYdf1FsLtepPgVLRiIEAnN16NCwU29eMGJPqqBp54m9BoqXdYx24
-   gxkUVmWs0OalRhc8C1Ysmff+3o4Cm9vS3pyPtGrTwTeO6UkJSbR8VTMzW
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="396695762"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; 
-   d="scan'208";a="396695762"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2024 23:41:09 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10953"; a="906984077"
-X-IronPort-AV: E=Sophos;i="6.04,196,1695711600"; 
-   d="scan'208";a="906984077"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by orsmga004.jf.intel.com with SMTP; 14 Jan 2024 23:41:07 -0800
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 15 Jan 2024 09:41:06 +0200
-Date: Mon, 15 Jan 2024 09:41:06 +0200
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc: Greg KH <gregkh@linuxfoundation.org>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] usb: dwc3: pci: add support for the Intel Arrow Lake-H
-Message-ID: <ZaThkgy/MPLahejz@kuha.fi.intel.com>
-References: <20240112143723.3823787-1-heikki.krogerus@linux.intel.com>
- <20240113013918.fhcz32gkwtlf6viu@synopsys.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1048C4402;
+	Mon, 15 Jan 2024 07:49:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1705304980;
+	bh=N3XCgFDqk2GrOitAp3uyTP3EuoDEu1xWts+NDkUZPHA=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=R4JcS7dyyz17O7mEwJV5qf5f1nlW0Mo+tFwR2hRBttaxbdHrHFV9bu112yi4NmNKM
+	 WePKXscCqpfwoLQdSrq8LmRyrU4+p9e8B34nesX4bKlSywDbP9KZPCa/OwAGHd/Jil
+	 5XVZOLJ4FoAPN6lbdhWFd8ea8wJVkPuFP2rhjq2HCg2F6E+UiUQZSWvpWzUugebhuM
+	 DsE9N3xhNK/swZdhrk+IyRRLu/HkES7LqIYI9bmHueOrj+ZXApD3fQTL2BlUgcWiHY
+	 H9gUgEg9fTLL10FK0z7xgB9vjaBV5fSby/gTseJ/EHR+MGvTu3HiqaKkFMjLAK1t3r
+	 sDyeDvE6peUmg==
+Received: from [100.96.234.34] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: usama.anjum)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 4264D37813DD;
+	Mon, 15 Jan 2024 07:49:37 +0000 (UTC)
+Message-ID: <b0c85ee9-5c43-444b-b81c-0c1a8401f2e0@collabora.com>
+Date: Mon, 15 Jan 2024 12:49:45 +0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240113013918.fhcz32gkwtlf6viu@synopsys.com>
+User-Agent: Mozilla Thunderbird
+Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>,
+ akpm@linux-foundation.org, muchun.song@linux.dev, jiaqiyan@google.com,
+ willy@infradead.org, linmiaohe@huawei.com, naoya.horiguchi@nec.com,
+ shy828301@gmail.com, jthoughton@google.com, jane.chu@oracle.com,
+ stable@vger.kernel.org, "kernel@collabora.com" <kernel@collabora.com>
+Subject: Re: [PATCH v2] fs/hugetlbfs/inode.c: mm/memory-failure.c: fix
+ hugetlbfs hwpoison handling
+Content-Language: en-US
+To: Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+References: <20240112180840.367006-1-sidhartha.kumar@oracle.com>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+In-Reply-To: <20240112180840.367006-1-sidhartha.kumar@oracle.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sat, Jan 13, 2024 at 01:39:22AM +0000, Thinh Nguyen wrote:
-> On Fri, Jan 12, 2024, Heikki Krogerus wrote:
-> > This patch adds the necessary PCI ID for Intel Arrow Lake-H
-> > devices.
-> > 
-> > Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-> > Cc: stable@vger.kernel.org
-> > ---
-> >  drivers/usb/dwc3/dwc3-pci.c | 4 ++++
-> >  1 file changed, 4 insertions(+)
-> > 
-> > diff --git a/drivers/usb/dwc3/dwc3-pci.c b/drivers/usb/dwc3/dwc3-pci.c
-> > index 6604845c397c..39564e17f3b0 100644
-> > --- a/drivers/usb/dwc3/dwc3-pci.c
-> > +++ b/drivers/usb/dwc3/dwc3-pci.c
-> > @@ -51,6 +51,8 @@
-> >  #define PCI_DEVICE_ID_INTEL_MTLP		0x7ec1
-> >  #define PCI_DEVICE_ID_INTEL_MTLS		0x7f6f
-> >  #define PCI_DEVICE_ID_INTEL_MTL			0x7e7e
-> > +#define PCI_DEVICE_ID_INTEL_ARLH		0x7ec1
-> > +#define PCI_DEVICE_ID_INTEL_ARLH_PCH		0x777e
-> >  #define PCI_DEVICE_ID_INTEL_TGL			0x9a15
-> >  #define PCI_DEVICE_ID_AMD_MR			0x163a
-> >  
-> > @@ -421,6 +423,8 @@ static const struct pci_device_id dwc3_pci_id_table[] = {
-> >  	{ PCI_DEVICE_DATA(INTEL, MTLP, &dwc3_pci_intel_swnode) },
-> >  	{ PCI_DEVICE_DATA(INTEL, MTL, &dwc3_pci_intel_swnode) },
-> >  	{ PCI_DEVICE_DATA(INTEL, MTLS, &dwc3_pci_intel_swnode) },
-> > +	{ PCI_DEVICE_DATA(INTEL, ARLH, &dwc3_pci_intel_swnode) },
-> > +	{ PCI_DEVICE_DATA(INTEL, ARLH_PCH, &dwc3_pci_intel_swnode) },
-> >  	{ PCI_DEVICE_DATA(INTEL, TGL, &dwc3_pci_intel_swnode) },
-> >  
-> >  	{ PCI_DEVICE_DATA(AMD, NL_USB, &dwc3_pci_amd_swnode) },
-> > -- 
-> > 2.43.0
-> > 
+On 1/12/24 11:08 PM, Sidhartha Kumar wrote:
+> has_extra_refcount() makes the assumption that the page cache adds a ref
+> count of 1 and subtracts this in the extra_pins case. Commit a08c7193e4f1
+> (mm/filemap: remove hugetlb special casing in filemap.c) modifies
+> __filemap_add_folio() by calling folio_ref_add(folio, nr); for all cases
+> (including hugtetlb) where nr is the number of pages in the folio. We
+> should adjust the number of references coming from the page cache by
+> subtracing the number of pages rather than 1.
 > 
-> Can you send a "v2" and a change log under the --- line next time?
+> In hugetlbfs_read_iter(), folio_test_has_hwpoisoned() is testing the wrong
+> flag as, in the hugetlb case, memory-failure code calls
+> folio_test_set_hwpoison() to indicate poison. folio_test_hwpoison() is the
+> correct function to test for that flag.
 > 
-> Regardless whether you'd send a v2:
+> After these fixes, the hugetlb hwpoison read selftest passes all cases.
 > 
-> Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+> Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
+> Closes: https://lore.kernel.org/linux-mm/20230713001833.3778937-1-jiaqiyan@google.com/T/#m8e1469119e5b831bbd05d495f96b842e4a1c5519
+> Cc: <stable@vger.kernel.org> # 6.7+
+> Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+> Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-Yes, sorry about that. I'll send v3.
+> ---
+> 
+> v1 -> v2:
+>     move ref_count adjustment to if(extra_pins) block as that represents
+>     ref counts from the page cache per Miaohe Lin.
+> 
+>  fs/hugetlbfs/inode.c | 2 +-
+>  mm/memory-failure.c  | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+> index 36132c9125f9..3a248e4f7e93 100644
+> --- a/fs/hugetlbfs/inode.c
+> +++ b/fs/hugetlbfs/inode.c
+> @@ -340,7 +340,7 @@ static ssize_t hugetlbfs_read_iter(struct kiocb *iocb, struct iov_iter *to)
+>  		} else {
+>  			folio_unlock(folio);
+>  
+> -			if (!folio_test_has_hwpoisoned(folio))
+> +			if (!folio_test_hwpoison(folio))
+>  				want = nr;
+>  			else {
+>  				/*
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index d8c853b35dbb..ef7ae73b65bd 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -976,7 +976,7 @@ static bool has_extra_refcount(struct page_state *ps, struct page *p,
+>  	int count = page_count(p) - 1;
+>  
+>  	if (extra_pins)
+> -		count -= 1;
+> +		count -= folio_nr_pages(page_folio(p));
+>  
+>  	if (count > 0) {
+>  		pr_err("%#lx: %s still referenced by %d users\n",
 
 -- 
-heikki
+BR,
+Muhammad Usama Anjum
 
