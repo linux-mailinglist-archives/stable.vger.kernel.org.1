@@ -1,139 +1,155 @@
-Return-Path: <stable+bounces-10869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-10870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C11F82D728
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 11:22:15 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFADE82D732
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 11:23:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F6B01F21F03
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 10:22:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B0AE1F21FFA
+	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 10:23:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB12EFBF4;
-	Mon, 15 Jan 2024 10:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D0C101C6;
+	Mon, 15 Jan 2024 10:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dHpok5xG"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PCcSvILn"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2088.outbound.protection.outlook.com [40.107.220.88])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B571F9EC
-	for <stable@vger.kernel.org>; Mon, 15 Jan 2024 10:22:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1705314126;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=K4+D1x6d473u1B/OH3x1vFCMppzL+VsC3/Prb9EM8Ro=;
-	b=dHpok5xGUu2z3MDk80cYUiiYmF0JooetD1kEqOyg9Fii5ISUmiQZ/yOzGIiEe6mkRBxtrF
-	9YqNCnkK4vSc2cYHxTEFOvvFeBxAAEF1H8Yl/5W79iTwEuJD9fLKs5sgscBHUcUoCxBnNp
-	JbpswPjvGg8z5IhwPtVFiJ2m7v/1ZPE=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-618-SCEiNkgOOBiQVJbTq6k_VQ-1; Mon, 15 Jan 2024 05:22:05 -0500
-X-MC-Unique: SCEiNkgOOBiQVJbTq6k_VQ-1
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-a2b068401b4so641501566b.1
-        for <stable@vger.kernel.org>; Mon, 15 Jan 2024 02:22:04 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705314124; x=1705918924;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=K4+D1x6d473u1B/OH3x1vFCMppzL+VsC3/Prb9EM8Ro=;
-        b=qywZe+n25dRLrA/mL5znpiqnTqTaTPil/AziPji8q1r/CS6/0PGrXH1SmHIswlfs9V
-         vKnUcXXJ9ZDrAo54dO+TOzMG8PDz6oKLpvVy+dibkVCFwr2RELSRj1fNWTWJgXctItuc
-         XHhoiXH158WUvkXEdkMKN9LKhy9DI3/NVKHHO4LZh2gTfuIEMe8ODaJuwQuCzsgIHV3i
-         Gk//DRZt/PZMCnootY5HhJZRZT4YHCC4L3TGgADg21IWCitDoZINtySxaQpVyFP25Nqg
-         aDWu0Ttf1VwsHeOzFTCHTzCFDj4DE5s68l6xeX6UTWW8UuZyOo40tsqNBPL9BhpsLx23
-         c6fQ==
-X-Gm-Message-State: AOJu0YyPA99pdJB9SXayV4WHqMmYgP/WP8rmti1nEHHsrv8rgWHaQiC+
-	FtYDmrQE1nK8J81f7WWygToX+Z/DsEhxnpD1B4gLETAM7BlPgVd2PzR7cHgcfoYjpdtJPsH1VHy
-	9qrCq+oOj7SLhhdxTNfknwo+j
-X-Received: by 2002:a17:906:2304:b0:a29:905d:1815 with SMTP id l4-20020a170906230400b00a29905d1815mr5191189eja.60.1705314124041;
-        Mon, 15 Jan 2024 02:22:04 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFOqbjQ332BDbGcd20NfCd7fMuM6DUwLFuPXHwpfw8JH8XhdeGykcj3xaokj37ZrmlwciADbw==
-X-Received: by 2002:a17:906:2304:b0:a29:905d:1815 with SMTP id l4-20020a170906230400b00a29905d1815mr5191179eja.60.1705314123650;
-        Mon, 15 Jan 2024 02:22:03 -0800 (PST)
-Received: from [192.168.10.118] ([2001:b07:6468:f312:63a7:c72e:ea0e:6045])
-        by smtp.gmail.com with ESMTPSA id f11-20020a170906084b00b00a2c32b6053dsm5110933ejd.166.2024.01.15.02.22.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jan 2024 02:22:02 -0800 (PST)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	x86@kernel.org,
-	Borislav Petkov <bp@suse.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH stable] x86/microcode: do not cache microcode if it will not be used
-Date: Mon, 15 Jan 2024 11:22:02 +0100
-Message-ID: <20240115102202.1321115-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.43.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8D7101C1;
+	Mon, 15 Jan 2024 10:23:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=RXS9U9TCrgNzCaoyC8E+aGupG0AwADcKMF20Jw8gxxpLPCXtE5KdVueMIZKSqvSpp1RitDM3ObMb+r35tsCa6SvYeNTW5b1urNJpP6OjsxZOMQ+c30ry+qvsGmqKTmiJPSYARuJsTIlwGMuO4+KpTvgL+SyHTMNyb7wsenur5ax3zmtNntMHN1V6vIfzstHglluWSZURCsfuF5P19cxcya91mq6qU4tkWP7x53qB3OaU66rmEFi2SOE/2vn+VO9em3Ndw5pQKLOg4qT/7s/VLRbTHzLzZ+hJsPeQn7nToTYkZYWE/kqXjh6XkcfwSK6e1nV6Q3XE27ODXz73LfPirQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=M0sm2CSOtsYWL1ekXbon0kV9Ps3azI3I+L9538Xwphw=;
+ b=l0QD+g3pkg6Jtvcb/rJjw83jBWqF2l4Gy2/9NR/ZjWf18ucNFUtOaiFZYXh3mpjpWNxw0Ybv2eBFoJZIhkrr7yQGPJ3+Jd50ZuplTFYOES64aAc0cYLJinEL+pElFKfU8hDUwVR3sa9T/AdnvfWe9PAOgWZqlb4khTVYKiH1x8rERP1IUZNgfp9eX8QdvsuzB6zy+61MlhAD2nZbUb/uk/sTMvJhqOnB5w/iY1MvYMu1vxMbs9e3umLPPWnYe+2HteOofqqkPPM7yx7mrDw8DdL4cl2fahMuBOIVlMwqtL6qXnItkf1Vzrz8IShHmtX+3RWIY/XZV0ODDVe8YS1vNQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=M0sm2CSOtsYWL1ekXbon0kV9Ps3azI3I+L9538Xwphw=;
+ b=PCcSvILnw52P16DxmDPUsqug70W1/I8GiuJ8IHtHKUTHIImfcG3CYJVijoR3B9v3uJciMagHBTI5kZG9ih+lJI24D3ldy+SRsPjYaoSj95XL6oR6bLJBIicBS+oQjToa8W8XhTGGXRtttgPN2norQbUUE/a3bOog6ha6hVmPBboiPY5REMY9tOKn6y7zIBhttK7Otypgj8KkqQTuIjVen4asDbKxnSkuCEinOjS1DEKAo3xbBzCz5b1hVGmGTur8ItYqmAjzFVZ3P1C9Plnz59jTk3SkWFjZXgAmmFafMV5BUA5HuWUHygZYBjn7yWJJCOrS64WPTDHiSY9usVPK+w==
+Received: from MW4PR04CA0284.namprd04.prod.outlook.com (2603:10b6:303:89::19)
+ by PH8PR12MB6745.namprd12.prod.outlook.com (2603:10b6:510:1c0::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.24; Mon, 15 Jan
+ 2024 10:23:26 +0000
+Received: from MWH0EPF000989E7.namprd02.prod.outlook.com
+ (2603:10b6:303:89:cafe::23) by MW4PR04CA0284.outlook.office365.com
+ (2603:10b6:303:89::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.23 via Frontend
+ Transport; Mon, 15 Jan 2024 10:23:26 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ MWH0EPF000989E7.mail.protection.outlook.com (10.167.241.134) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7202.16 via Frontend Transport; Mon, 15 Jan 2024 10:23:25 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41; Mon, 15 Jan
+ 2024 02:23:21 -0800
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.41; Mon, 15 Jan 2024 02:23:20 -0800
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.126.190.182) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.41 via Frontend
+ Transport; Mon, 15 Jan 2024 02:23:20 -0800
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
+	<linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 4.19 00/25] 4.19.305-rc1 review
+In-Reply-To: <20240113094205.025407355@linuxfoundation.org>
+References: <20240113094205.025407355@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Message-ID: <0f51a020-ce31-46d3-a2bf-cd52434c80bd@drhqmail203.nvidia.com>
+Date: Mon, 15 Jan 2024 02:23:20 -0800
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MWH0EPF000989E7:EE_|PH8PR12MB6745:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3b134cdc-75fb-43d1-125f-08dc15b40282
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	CawBj73gkiY5+HY0Oi1WI7k6EBaoOWWLpiu/mL1IpLiG8uVrn16QO0Fkm++KnrF4eMMxwJS+FknO5wPJsU//e0YDBL7PGhlHE30qVxg7hY2d+2N5lBRuM1DvQFi0WYBLKzdacpZ+JcXNkAe1jdpJwomoN9VfrraGaQWnyjhnt+npeZPryarO3mmQvRaMv+2hi77HXSgiUjzWKXLq77d4y17WF2Uaos9CVxB5yfuuAXgxhltgNBXY1c3r25pjvdx+DATvsoEvR8uCYVpdb+KDWIGdaCOGkdqbZtB+qUCGcmmYDW9J4sqQ8mP33j+edV1idlM0G/ASgJ+VBoj8wtV5YdiFtj8sSSMGzk3MoMBxEewc5Gu+nJ4E+8lzBb80VEMm8/JsRDCOzLzHjeLwu6LM2D6MNdkRW1QtXi+VYyNmSCG14w/cU7zcyWHpAkFY7PgXpVcK5KAmzHt7aij9K7g9oXn1Yh3KvzRzUBc7lCy9+DQvBIP9uf6p4ytN7Uew8/GCb0ZVFEbqTABuYl7eYLuJDsF/ngT0ZLBTtTHci7WiKWBqJrG2yxV/WskaB2fCVwuwg+Ku3AY4yIfGe8gowFV0jiIfrCNFlO1jOjfrUaE/5YL+4mhznAWV7nJe2qsTf4c/Er1XhnXiN8TuksDmQ7uY0ydHNMgIRP+zVMHzZotGQU+HM6pLD89wG6peqGYL4VBWiEGQUNDGTiQ/H8g5jLD2ZgjKk0XJULqDTMEkvo+FiqTqtOav1F9t04e929BAlR1ZkLuLtbAPRig71aN8FFxCsG8kT9RepLxM5drq+TQFImY=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(376002)(396003)(136003)(346002)(230922051799003)(82310400011)(186009)(64100799003)(1800799012)(451199024)(46966006)(40470700004)(36840700001)(31686004)(40480700001)(40460700003)(426003)(336012)(26005)(86362001)(31696002)(356005)(7636003)(36860700001)(47076005)(4326008)(5660300002)(82740400003)(8936002)(6916009)(316002)(478600001)(8676002)(54906003)(70586007)(70206006)(7416002)(41300700001)(2906002)(966005);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2024 10:23:25.9205
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3b134cdc-75fb-43d1-125f-08dc15b40282
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	MWH0EPF000989E7.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6745
 
-[ Upstream commit a7939f01672034a58ad3fdbce69bb6c665ce0024 ]
+On Sat, 13 Jan 2024 10:49:41 +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 4.19.305 release.
+> There are 25 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Mon, 15 Jan 2024 09:41:55 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.305-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Builtin/initrd microcode will not be used the ucode loader is disabled.
-But currently, save_microcode_in_initrd is always performed and it
-accesses MSR_IA32_UCODE_REV even if dis_ucode_ldr is true, and in
-particular even if X86_FEATURE_HYPERVISOR is set; the TDX module does not
-implement the MSR and the result is a call trace at boot for TDX guests.
+All tests passing for Tegra ...
 
-Mainline Linux fixed this as part of a more complex rework of microcode
-caching that went into 6.7 (see in particular commits dd5e3e3ca6,
-"x86/microcode/intel: Simplify early loading"; and a7939f0167203,
-"x86/microcode/amd: Cache builtin/initrd microcode early").  Do the bare
-minimum in stable kernels, setting initrd_gone just like mainline Linux
-does in mark_initrd_gone().
+Test results for stable-v4.19:
+    10 builds:	10 pass, 0 fail
+    20 boots:	20 pass, 0 fail
+    37 tests:	37 pass, 0 fail
 
-Note that save_microcode_in_initrd() is not in the microcode application
-path, which runs with paging disabled on 32-bit systems, so it can (and
-has to) use dis_ucode_ldr instead of check_loader_disabled_ap().
+Linux version:	4.19.305-rc1-gcb74230da507
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra30-cardhu-a04
 
-Cc: stable@vger.kernel.org # v6.6+
-Cc: x86@kernel.org # v6.6+
-Cc: Borislav Petkov <bp@suse.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kernel/cpu/microcode/core.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
-index 35d39a13dc90..503b5da56685 100644
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -214,6 +214,11 @@ static int __init save_microcode_in_initrd(void)
- 	struct cpuinfo_x86 *c = &boot_cpu_data;
- 	int ret = -EINVAL;
- 
-+	if (dis_ucode_ldr) {
-+		ret = 0;
-+		goto out;
-+	}
-+
- 	switch (c->x86_vendor) {
- 	case X86_VENDOR_INTEL:
- 		if (c->x86 >= 6)
-@@ -227,6 +230,7 @@ static int __init save_microcode_in_initrd(void)
- 		break;
- 	}
- 
-+out:
- 	initrd_gone = true;
- 
- 	return ret;
--- 
-2.43.0
-
+Jon
 
