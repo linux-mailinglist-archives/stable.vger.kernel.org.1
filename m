@@ -1,109 +1,83 @@
-Return-Path: <stable+bounces-11328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A053082ED32
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 11:54:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39FD182ED54
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 12:02:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E2541F24129
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 10:54:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB5471F241C5
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 11:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35225199D3;
-	Tue, 16 Jan 2024 10:54:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CkibayD3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB9351A5BB;
+	Tue, 16 Jan 2024 11:02:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E355A1946A;
-	Tue, 16 Jan 2024 10:54:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2429C433F1;
-	Tue, 16 Jan 2024 10:54:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705402474;
-	bh=/TPtCyoAj2paX8eC4HnNYeTrC2FQGolk8jnOVJ8gIv8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CkibayD3nkZ6flLmYjvkpiDDMSNhJ6bsH4iI5jBfozOGIlVv4NFG96Avn6FuypmNe
-	 LyURk6NvYS5ptoKaN04vXcxi3rwhXwcmIfiCS22xl4S/Gfbq5XXcIQsrIe1oBnOApw
-	 Ax44UY8Mdi9/eved8OsMDNFlRLAr1CrtE+K7OkieDG3eCyWPH5Wgy/z58EGNSqCKQW
-	 1KnI0K4KhrRcwErjEnbKDnZF1NKjgs8yyNjUQ8wO9+hI0CIVbgxeRoQiXdIkkYOJzD
-	 7u3NRwdlBS2SAeYNgRSFyxLOorDwox4jvaqfMZTAZpwf8fHC9EEGq7UKWNHDm2aflO
-	 P8OQMk3y9kBBA==
-Received: from johan by xi.lan with local (Exim 4.96.2)
-	(envelope-from <johan@kernel.org>)
-	id 1rPh5Z-0005ZS-1a;
-	Tue, 16 Jan 2024 11:54:37 +0100
-Date: Tue, 16 Jan 2024 11:54:37 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Konrad Dybcio <konrad.dybcio@linaro.org>
-Cc: Krishna chaitanya chundru <quic_krichai@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Brian Masney <bmasney@redhat.com>,
-	Georgi Djakov <djakov@kernel.org>, linux-arm-msm@vger.kernel.org,
-	vireshk@kernel.org, quic_vbadigan@quicinc.com,
-	quic_skananth@quicinc.com, quic_nitegupt@quicinc.com,
-	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v6 3/6] PCI: qcom: Add missing icc bandwidth vote for cpu
- to PCIe path
-Message-ID: <ZaZgba6wSMtuHz7i@hovoldconsulting.com>
-References: <20240112-opp_support-v6-0-77bbf7d0cc37@quicinc.com>
- <20240112-opp_support-v6-3-77bbf7d0cc37@quicinc.com>
- <ZaFhzOCTpZYlAh60@hovoldconsulting.com>
- <c278d89d-4eba-4ea7-8cf5-6b1de90dedbe@linaro.org>
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9AE1AAA3
+	for <stable@vger.kernel.org>; Tue, 16 Jan 2024 11:02:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7DCC8FEC;
+	Tue, 16 Jan 2024 03:03:20 -0800 (PST)
+Received: from lakrids.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 251723F6C4;
+	Tue, 16 Jan 2024 03:02:26 -0800 (PST)
+From: Mark Rutland <mark.rutland@arm.com>
+To: linux-arm-kernel@lists.infradead.org
+Cc: catalin.marinas@arm.com,
+	james.morse@arm.com,
+	mark.rutland@arm.com,
+	robh@kernel.org,
+	stable@vger.kernel.org,
+	will@kernel.org
+Subject: [PATCH 0/2] arm64: fix+cleanup for ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
+Date: Tue, 16 Jan 2024 11:02:19 +0000
+Message-Id: <20240116110221.420467-1-mark.rutland@arm.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c278d89d-4eba-4ea7-8cf5-6b1de90dedbe@linaro.org>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jan 12, 2024 at 11:37:03PM +0100, Konrad Dybcio wrote:
-> On 12.01.2024 16:59, Johan Hovold wrote:
-> > On Fri, Jan 12, 2024 at 07:52:02PM +0530, Krishna chaitanya chundru wrote:
-> >> CPU-PCIe path consits for registers PCIe BAR space, config space.
-> > 
-> > consits?
-> > 
-> >> As there is less access on this path compared to pcie to mem path
-> >> add minimum vote i.e GEN1x1 bandwidth always.
-> > 
-> > gen1 bandwidth can't be right.
-> > 
-> >> In suspend remove the cpu vote after register space access is done.
-> >>
-> >> Fixes: c4860af88d0c ("PCI: qcom: Add basic interconnect support")
-> >> cc: stable@vger.kernel.org
-> > 
-> > This does not look like a fix so drop the above.
-> > 
-> > The commit you refer to explicitly left this path unconfigured for now
-> > and only added support for the configuring the mem path as needed on
-> > sc8280xp which otherwise would crash.
-> 
-> I only sorta agree. I'd include a fixes tag but point it to either 8450
-> addition or original driver introduction, as this is patching up a real
-> hole (see my reply to Bryan).
+Hi,
 
-Right, the above Fixes tag is not correct in any case.
+While testing an unrelated patch on the arm64 for-next/core branch, I
+spotted an issue in the ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
+workaround. The first patch fixes that issue, and the second patch
+cleans up the remaining logic.
 
-And with a complete commit message it may be possible to tell whether
-a Fixes tag is warranted or not.
+The issue has existed since the workaround was introduced in commit:
 
-Johan
+  471470bc7052d28c ("arm64: errata: Add Cortex-A520 speculative unprivileged load workaround")
+
+As that logic has recently been reworked in the arm64 for-next/core
+branch, these patches are based atop that rework, specifically atop
+commit:
+
+  546b7cde9b1dd360 ("arm64: Rename ARM64_WORKAROUND_2966298")
+
+As the patches alter the KPTI exception return logic, I've given this
+testing with KPTI forced on, forced off, and disabled at build time,
+which all appear to be fine. I don't have any hardware requiring the
+ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD workaround, but as the
+resulting logic for this is very simple I do not expect any issues with
+that part of the logic.
+
+Mark.
+
+Mark Rutland (2):
+  arm64: entry: fix ARM64_WORKAROUND_SPECULATIVE_UNPRIV_LOAD
+  arm64: entry: simplify kernel_exit logic
+
+ arch/arm64/kernel/entry.S | 25 ++++++++++++++-----------
+ 1 file changed, 14 insertions(+), 11 deletions(-)
+
+-- 
+2.30.2
+
 
