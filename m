@@ -1,53 +1,95 @@
-Return-Path: <stable+bounces-11353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17E0C82F369
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 18:44:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 154D582F3AE
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 19:08:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12CDD1C23778
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 17:44:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31F631C23770
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 18:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDD351CABA;
-	Tue, 16 Jan 2024 17:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E5D1CD20;
+	Tue, 16 Jan 2024 18:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GmzkVcmD"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Ve8Faakb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DA61CAB2
-	for <stable@vger.kernel.org>; Tue, 16 Jan 2024 17:44:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA32F6ABA;
+	Tue, 16 Jan 2024 18:08:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705427044; cv=none; b=P560LwMy6kW/pWZWhh/dgYIFsGSpH1/76bsTztW1uXWAX1ts80Ep73FVQFzY/1/+XEZ3lL3PLGa9oQzDkPBFrPtQdEZM+Hg5xLAiWaEyxJV6lypAtxbTiHEXSBepNeCa4NABUncSifyncxA9GuboOPsN+IOr+IW0L/5XffCU8Yo=
+	t=1705428527; cv=none; b=SmNLEq0GY7bzhp92E+sIMQwHflG5zVfHKa65A65rtmYdjymCf5f0XV0mH36Q4j3wPxeDTpb1rtnX3fBcZDfY6i0urVC7biTSi0wk0yaMhZ2mWTcdZ8kQyctN/NxJ/qAhWPY7/Eg4jzLdUZvXpiQfXuUsGcQNz65n7yK9F4CtA3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705427044; c=relaxed/simple;
-	bh=BnGmetIxwYZGo6XR0Wr9y46T7cLqt411cCoM2s3SavM=;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To; b=Zv9qqpEUfLGdWG3lGtSgG5BIxp0IAhRHoWEFGiZVk6p/rCpM2dWhP5UOWsw9juQW62tIKobHL27zdSwtBcDi4cIN46x2H/cetGYBWDl4bviFwbspxzRwU0EiEPbxczajYNp0lf6MCNXV1Zw08iXfXw0TWVKT54MAFWnkFXwzC9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GmzkVcmD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC656C433C7;
-	Tue, 16 Jan 2024 17:44:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705427044;
-	bh=BnGmetIxwYZGo6XR0Wr9y46T7cLqt411cCoM2s3SavM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GmzkVcmDcPC85lc1i/l3cerzZjTA5aXLuknX+WEUlUnbAGMslEDOmRdZZ1pd5/OkW
-	 GiVFD3r0y4oXGKfkJMZZJkbNSD4+oMWY21uoLB44kovd0rY0JXTQ/75dvDwhrl/KeK
-	 AwBLlYWkAxNGjBi2JeO2fhr3V+x0Tf3CHHwimL2Q=
-Date: Tue, 16 Jan 2024 18:44:01 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: stable@vger.kernel.org
-Subject: Re: fs/bcachefs/
-Message-ID: <2024011644-lifter-evade-c485@gregkh>
-References: <g6el7eghhdk2v5osukhobvi4pige5bsfu5koqtmoyeknat36t7@irmmk7zo7edh>
- <2024011614-modify-primer-65dd@gregkh>
- <2ve257m37wusszvzkr254hp62nvxecmdcnybmft5ebl6n7hesj@yelqgrderuay>
+	s=arc-20240116; t=1705428527; c=relaxed/simple;
+	bh=CGsnDROhCodxiCvYY3JgqSrViuyF9ZSQMhYlWQDj+aA=;
+	h=Received:DKIM-Signature:Received:Received:Received:Received:
+	 Received:Received:Received:Received:Received:Date:From:To:Cc:
+	 Subject:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:X-TM-AS-GCONF:
+	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details; b=u59nnEeHSGdssjaGoRXpvNs9Q/gUMe49AjVhlgyao06LayAa/WzZB95yC2gIL9Y9VoWS7jroIwhIUqLpYpQUNv8mf1nu7JWWXGJX11h5oBkvuB0eR1OenmqrQe0j6SZdH2Y2w0FCbVd6hKIeioV8k67x2s3ks9rTNNQsjZNttIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Ve8Faakb; arc=none smtp.client-ip=148.163.156.1
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40GI79xW013088;
+	Tue, 16 Jan 2024 18:08:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=VMRRoZGEbNDKMzcsIuD608LUrCeDX/CHVCbe+ZNWqug=;
+ b=Ve8FaakbyzKYUs1fwZqy6sK8N2oaMzasCMvWb3IoNbY+vWWjmvXIPF+L/MaRnVL47vCY
+ 27Jige9DiFs99GqKmHrc2WSZF3pxvwJyrlWfesNHPN9ajoF6Hm4jv/LoNBp5Jl+trsZk
+ yglL1b8wpGLYG7FwQi4xVXhlRnzKxHzexdu5pVW/scLhdnrUMo3g/NcV64ZTXXs6P6qj
+ 48yKPQZ2qxM3ZC2JNISKkiI3dglznLQSdZc7UaRHTuLBNguXCV8Cq/IsDF59mklX/vW1
+ 04x89KAzXbILEC4bkLKOG1wmBB9weeqfOroflNMUOznrPt8Gycx3ErT10TKcqan5Mcnf 9Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vnxswr58v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jan 2024 18:08:41 +0000
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40GI7NTO014282;
+	Tue, 16 Jan 2024 18:08:27 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vnxswr431-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jan 2024 18:08:26 +0000
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40GGSV6H019884;
+	Tue, 16 Jan 2024 18:08:11 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vm72jyw89-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 16 Jan 2024 18:08:11 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40GI86sD18875094
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 16 Jan 2024 18:08:06 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6BF1220043;
+	Tue, 16 Jan 2024 18:08:06 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 53E5720040;
+	Tue, 16 Jan 2024 18:08:05 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.171.88.12])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 16 Jan 2024 18:08:05 +0000 (GMT)
+Date: Tue, 16 Jan 2024 19:08:03 +0100
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Tony Krowiak <akrowiak@linux.ibm.com>
+Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kvm@vger.kernel.org, jjherne@linux.ibm.com, borntraeger@de.ibm.com,
+        pasic@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
+        imbrenda@linux.ibm.com, alex.williamson@redhat.com,
+        kwankhede@nvidia.com, gor@linux.ibm.com, stable@vger.kernel.org
+Subject: Re: [PATCH v4 4/6] s390/vfio-ap: reset queues filtered from the
+ guest's AP config
+Message-ID: <ZabGAx5BpIiYW+b3@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+References: <20240115185441.31526-1-akrowiak@linux.ibm.com>
+ <20240115185441.31526-5-akrowiak@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,36 +98,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2ve257m37wusszvzkr254hp62nvxecmdcnybmft5ebl6n7hesj@yelqgrderuay>
+In-Reply-To: <20240115185441.31526-5-akrowiak@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: qr-HNzAfCi4ZJhU7UfWPkVpaO4WRdxRE
+X-Proofpoint-GUID: KpFaRAXl_1zNmYew_c9e92rP3dK_QZU6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-16_10,2024-01-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
+ mlxscore=0 suspectscore=0 clxscore=1011 spamscore=0 phishscore=0
+ priorityscore=1501 impostorscore=0 malwarescore=0 mlxlogscore=875
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2311290000 definitions=main-2401160143
 
-On Tue, Jan 16, 2024 at 12:26:38PM -0500, Kent Overstreet wrote:
-> On Tue, Jan 16, 2024 at 03:13:08PM +0100, Greg KH wrote:
-> > On Mon, Jan 15, 2024 at 05:12:17PM -0500, Kent Overstreet wrote:
-> > > Hi stable team - please don't take patches for fs/bcachefs/ except from
-> > > myself; I'll be doing backports and sending pull requests after stuff
-> > > has been tested by my CI.
-> > 
-> > Now done:
-> > 	https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=9bf1f8f1ca9ae53cf3bc8781e4efdb6ebaee70db
-> > 
-> > We will ignore it for any "Fixes:" tags, or AUTOSEL, but if you
-> > explicitly add a "cc: stable@" in the signed-off-by area, we will pick
-> > that up.
-> 
-> Would it work for your process to ignore cc: stable@ as well?
+On Mon, Jan 15, 2024 at 01:54:34PM -0500, Tony Krowiak wrote:
+> From: Tony Krowiak <akrowiak@linux.ibm.com>
+...
+> diff --git a/drivers/s390/crypto/vfio_ap_private.h b/drivers/s390/crypto/vfio_ap_private.h
+> index 88aff8b81f2f..20eac8b0f0b9 100644
+> --- a/drivers/s390/crypto/vfio_ap_private.h
+> +++ b/drivers/s390/crypto/vfio_ap_private.h
+> @@ -83,10 +83,10 @@ struct ap_matrix {
+>  };
+>  
+>  /**
+> - * struct ap_queue_table - a table of queue objects.
+> - *
+> - * @queues: a hashtable of queues (struct vfio_ap_queue).
+> - */
+> +  * struct ap_queue_table - a table of queue objects.
+> +  *
+> +  * @queues: a hashtable of queues (struct vfio_ap_queue).
+> +  */
+>  struct ap_queue_table {
+>  	DECLARE_HASHTABLE(queues, 8);
+>  };
 
-Nope!  That's explicit, you add it for when you want us to pick up a
-change when it hits Linus's tree.  If you don't want that to happen,
-then don't add it.
-
-> I want a tag that I can have tooling grep for later that means "this
-> patch should be backported later, after seeing sufficient testing", and
-> cc: stable@ has that meaning in current usage.
-
-Just use a "Fixes:" tag then, that's what networking did for years
-before they gave up and now use cc: stable.
-
-thanks,
-
-greg k-h
+If this change is intended?
 
