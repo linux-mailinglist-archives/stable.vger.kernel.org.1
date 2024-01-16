@@ -1,51 +1,46 @@
-Return-Path: <stable+bounces-11790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2356082FC49
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 23:17:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8EF282FC51
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 23:17:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B12A628C933
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 22:17:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAEC51C27BFB
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 22:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A22750A85;
-	Tue, 16 Jan 2024 20:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465C6250F8;
+	Tue, 16 Jan 2024 20:46:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B050C50A88;
-	Tue, 16 Jan 2024 20:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847DD250EF;
+	Tue, 16 Jan 2024 20:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705437916; cv=none; b=mf7mhNHTkjICj+P6cb8LHyaBD2VCWrdIpH/xsTZH7Cwmwr26vkD5rVVVR6oxg+rORALdWm/K/BxST9CNTWWM8O+TqQGE9+yoyNEqaK9aI64lFyiaFwLDnt4oR9BSfVBCSq2VKCh34A0UpV0lXNVBgWKbO75Ox4iaRzz8XcUA+1U=
+	t=1705438018; cv=none; b=CUX3Q6FyLvVSeu3kbUssuClqT35xLmx8dikidHdtpHCex5eveFlcMkEkkcwgv7FW0S/cfJfhdfXbPZD2JTIV/yA1va/qoSio2rTWUa+hEjjOPgNs7ajWCKXyZZ7xmGVyVH/cFb4kMESQXNc3gAuQ0OjF3BGmGiuU3+Rwy6Az11w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705437916; c=relaxed/simple;
-	bh=cpoF2QRvffxs5P0l93ZWXcMU8qnywNzlM0H3okDE7U0=;
+	s=arc-20240116; t=1705438018; c=relaxed/simple;
+	bh=ospxE6Ywnr4fHa2us3RDJ0glfrJaABYoOmOTOUL9jbM=;
 	h=Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=NYLQY0R+duT/fF7kS3ngqYD2b0frF3hEHVlu6Co1OkPKyHy+Cr2kR6GgGNhRHe6OCU/DCgFZq1L2WqSVfswYo1hPwOk3eyRS/DDH+kGqtFjwFmiAIysCJfaJ6CgOGDxGZWqGGlukPIdK+/jA0R7lQVddZcFJAGHLnJ7EUULB3c8=
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=QzFuojRiM5slxTcUt5+RlN+F+rATzbTaFqVFk+gGsz8oWE96avsTywnhpPCodJlYvcW6AMOjvAsx3RCxm9hsd+5SMsAXXszuXlXAKL5ZRLtD3J+M+QMIYO/EQMwmv6VjjVOSRHhWcHAfNHku6l+4H47/ad+cgEYD6jVYIYCHRdo=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id CFFBB1C007B; Tue, 16 Jan 2024 21:45:12 +0100 (CET)
-Date: Tue, 16 Jan 2024 21:45:12 +0100
+	id DE19D1C007B; Tue, 16 Jan 2024 21:46:54 +0100 (CET)
+Date: Tue, 16 Jan 2024 21:46:54 +0100
 From: Pavel Machek <pavel@denx.de>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Avadhut Naik <Avadhut.Naik@amd.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Tony Luck <tony.luck@intel.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-	bleung@chromium.org, tzungbi@kernel.org,
-	chrome-platform@lists.linux.dev
-Subject: Re: [PATCH AUTOSEL 5.10 3/8] platform/chrome: cros_ec_debugfs: Fix
- permissions for panicinfo
-Message-ID: <Zabq2PKJwsllm9zk@duo.ucw.cz>
-References: <20240116001457.214018-1-sashal@kernel.org>
- <20240116001457.214018-3-sashal@kernel.org>
+	Andreas Gruenbacher <agruenba@redhat.com>, gfs2@lists.linux.dev
+Subject: Re: [PATCH AUTOSEL 4.19 11/12] gfs2: Refcounting fix in
+ gfs2_thaw_super
+Message-ID: <ZabrPnsVr6WHz2lM@duo.ucw.cz>
+References: <20240116002817.216837-1-sashal@kernel.org>
+ <20240116002817.216837-11-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,53 +48,67 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="675u0NmgRUhg/z09"
+	protocol="application/pgp-signature"; boundary="w5MB4wnlx5osspG+"
 Content-Disposition: inline
-In-Reply-To: <20240116001457.214018-3-sashal@kernel.org>
+In-Reply-To: <20240116002817.216837-11-sashal@kernel.org>
 
 
---675u0NmgRUhg/z09
+--w5MB4wnlx5osspG+
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> From: Avadhut Naik <Avadhut.Naik@amd.com>
+> From: Andreas Gruenbacher <agruenba@redhat.com>
 >=20
-> [ Upstream commit 0706526ec7704dcd046239078ac175d11a88a95e ]
+> [ Upstream commit 4e58543e7da4859c4ba61d15493e3522b6ad71fd ]
 >=20
-> The debugfs_create_blob() function has been used to create read-only bina=
-ry
-> blobs in debugfs. The function filters out permissions, other than S_IRUS=
-R,
-> S_IRGRP and S_IROTH, provided while creating the blobs.
->=20
-> The very behavior though is being changed through previous patch in the
-> series (fs: debugfs: Add write functionality to debugfs blobs) which makes
-> the binary blobs writable by owners. Thus, all permissions provided while
-> creating the blobs, except S_IRUSR,S_IWUSR, S_IRGRP, S_IROTH, will be
-> filtered by debugfs_create_blob().
+> It turns out that the .freeze_super and .thaw_super operations require
+> the filesystem to manage the superblock refcount itself.  We are using
+> the freeze_super() and thaw_super() helpers to mostly take care of that
+> for us, but this means that the superblock may no longer be around by
+> when thaw_super() returns, and gfs2_thaw_super() will then access freed
+> memory.  Take an extra superblock reference in gfs2_thaw_super() to fix
+> that.
 
-This needs previous patch to make sense (according to changelog), and
-we don't have that. Please drop.
+Patch was broken during backport.
+
+> +++ b/fs/gfs2/super.c
+> @@ -1013,6 +1013,7 @@ static int gfs2_freeze(struct super_block *sb)
+>  		goto out;
+>  	}
+> =20
+> +	atomic_inc(&sb->s_active);
+>  	for (;;) {
+>  		error =3D gfs2_lock_fs_check_clean(sdp, &sdp->sd_freeze_gh);
+>  		if (!error)
+> @@ -1034,6 +1035,7 @@ static int gfs2_freeze(struct super_block *sb)
+>  	error =3D 0;
+>  out:
+>  	mutex_unlock(&sdp->sd_freeze_mutex);
+> +	deactivate_super(sb);
+>  	return error;
+>  }
+
+Notice the goto out? That now jumps around the atomic_inc, but we
+still do decrease. This will break 4.19, please fix or drop.
 
 BR,
 								Pavel
-
 --=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---675u0NmgRUhg/z09
+--w5MB4wnlx5osspG+
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZabq2AAKCRAw5/Bqldv6
-8jkYAKCM+eQYH8va0mKtV3wZTZtsHTbUVACfXo1J98rXiWFpnEW18o9a48UABcc=
-=hK0M
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZabrPgAKCRAw5/Bqldv6
+8vXvAJ4xPIsInQY8b9aJf+YojgyqIbnsEgCfdfWZWyfqcu9gi+6i7xz/o4JIdnY=
+=u5qo
 -----END PGP SIGNATURE-----
 
---675u0NmgRUhg/z09--
+--w5MB4wnlx5osspG+--
 
