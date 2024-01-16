@@ -1,130 +1,110 @@
-Return-Path: <stable+bounces-11796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97AC482FC80
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 23:22:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1992382FCB5
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 23:27:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E2881F29DC6
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 22:22:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A47DA1F2D3DF
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 22:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F2A2C864;
-	Tue, 16 Jan 2024 21:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB175D91F;
+	Tue, 16 Jan 2024 21:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MJIGfXPT"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="BAnTcFXe"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C032C6B8
-	for <stable@vger.kernel.org>; Tue, 16 Jan 2024 21:08:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E2434CF3;
+	Tue, 16 Jan 2024 21:30:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705439308; cv=none; b=N26gqeidddKEMHbwIVJkVBWY8IWFETN7lWZJ4QInnvrY+33HdrSfj2LowTPNjZEr6upJMUHJsCXwuHtHRcZeQYNXTxkm8mTjDZXGKM64ncMM7LQ8Kvz8vUlD4VVq4sztjLJNAEFKOPRtzeIuQ9jelrR3I5Ns1AbKJND5DXOr6Os=
+	t=1705440621; cv=none; b=IdZAkFHWpeA02kmyQGA2AQhSjkIF9qOgelPSOrzbw8PNwupsvP+mKCocqMqYRDXNdipF3KG+N8vVPnNaNh95fpZMlFkRTvPajdsVM2k+ijA+oA8H0seadMMsB339RZobnl14wPqe5UZfml+fkz0rDSYcfanyi22bWvagaPc7p3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705439308; c=relaxed/simple;
-	bh=77CdDDc6o3iAbM+CJcfqyFxbx9fFdEFF0iLtNPrYUY4=;
-	h=DKIM-Signature:X-IronPort-AV:X-IronPort-AV:Received:X-ExtLoop1:
-	 X-IronPort-AV:X-IronPort-AV:Received:Received:From:To:Cc:Subject:
-	 Date:Message-ID:X-Mailer:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding; b=EB4uIvcRjloQSkpCawVGHVMiZ4rg7/mIdP+8W0rprZgyayUMfqwLVxkT7COsdSd+ehopRMBsxmHF4jz/3laSsvFDRbpWqWxDtuM/ukNtu/XZ2te6VjVFJwKbaWWe9OobmuU8b9IBSmNfFu6HCfl3NW34nZNkIXkfz4d2QBFEZ54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MJIGfXPT; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705439306; x=1736975306;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=77CdDDc6o3iAbM+CJcfqyFxbx9fFdEFF0iLtNPrYUY4=;
-  b=MJIGfXPTIGIG2llEl0IroXu4BWiMW6V0/nAHJ2DiOGICSuFShOwDnCfj
-   bFLNgajI1jfplihPaizaDQReQjSNnAaYPoBNT1LKq6craaLh0VLR0mmjy
-   +iGelkO2wBYui5K7PPRjRedktf3EXhXQ37jY9ryWDqaXDbbFTE7WAJ06j
-   RjdCKGpkeXmPeB3cBMCDSAT5z/ur9UCI8R6yeyfcBAvlt0v2z6UnY/e4p
-   b6lSYQoxC7XELXGZoKUKaWNUxSXp2YeJ5JPArl8ZWCadLUrKFNZ4SFV/l
-   nT9wOAgdKCQnsu69SHfQURJRaoXEpK1NurXtrnp5WFcpfNbRGxFRVFOo1
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10955"; a="21468070"
-X-IronPort-AV: E=Sophos;i="6.05,200,1701158400"; 
-   d="scan'208";a="21468070"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2024 13:08:24 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10955"; a="777201876"
-X-IronPort-AV: E=Sophos;i="6.05,200,1701158400"; 
-   d="scan'208";a="777201876"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by orsmga007.jf.intel.com with SMTP; 16 Jan 2024 13:08:21 -0800
-Received: by stinkbox (sSMTP sendmail emulation); Tue, 16 Jan 2024 23:08:21 +0200
-From: Ville Syrjala <ville.syrjala@linux.intel.com>
-To: intel-gfx@lists.freedesktop.org
-Cc: stable@vger.kernel.org
-Subject: [PATCH] Revert "drm/i915/dsi: Do display on sequence later on icl+"
-Date: Tue, 16 Jan 2024 23:08:21 +0200
-Message-ID: <20240116210821.30194-1-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.41.0
+	s=arc-20240116; t=1705440621; c=relaxed/simple;
+	bh=9mBTImWWy3SGrRbzyE15IxTVRNYtD8T+YpnHzJ2/24s=;
+	h=DKIM-Signature:Received:From:To:Cc:Date:Message-Id:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
+	 X-SA-Exim-Connect-IP:X-SA-Exim-Mail-From:X-Spam-Checker-Version:
+	 X-Spam-Level:X-Spam-Report:X-Spam-Status:Subject:X-SA-Exim-Version:
+	 X-SA-Exim-Scanned; b=fZqZfLm2W6EyAKd84iXCFpAvvlBjwx6VMZH2jBrGvHZEXDyJR6zpqw54x8quaegtOWozODLaOjZZxcN2dV1Bnb6NRxS5//2Si0H+UviECSPoylzrfozJ/lS+pBSmGtp7FBp7BINRL3OVtrdPBAy/1jG4SoJMTr6WDBk8XejJnxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=BAnTcFXe; arc=none smtp.client-ip=162.243.120.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Cc:To
+	:From:subject:date:message-id:reply-to;
+	bh=LO5AMJoi4lTGu7m9IP/Mq7nyuFtod3doZ0XW/a9gDtY=; b=BAnTcFXeeaFHwk54f77LfkYZmJ
+	k4LXbCe4HPNJFQMZM+XdJNn/8RbVJt9kE+YlYPaRkS26/J2gDg/gxptBEZdMZiDbOHJv+STz+1EPj
+	nbpNRnwx2mYKbaH2Tioi0rD8O3WY3YpQqeN3q08XXJvpIt2XvDhZaO8TOxnT1dHcpbHw=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:47418 helo=pettiford.lan)
+	by mail.hugovil.com with esmtpa (Exim 4.92)
+	(envelope-from <hugo@hugovil.com>)
+	id 1rPr0X-0002ia-Ky; Tue, 16 Jan 2024 16:30:06 -0500
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: gregkh@linuxfoundation.org,
+	jirislaby@kernel.org,
+	jan.kundrat@cesnet.cz,
+	shc_work@mail.ru
+Cc: linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	hugo@hugovil.com,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	stable@vger.kernel.org
+Date: Tue, 16 Jan 2024 16:29:58 -0500
+Message-Id: <20240116213001.3691629-2-hugo@hugovil.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240116213001.3691629-1-hugo@hugovil.com>
+References: <20240116213001.3691629-1-hugo@hugovil.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 70.80.174.168
+X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Spam-Level: 
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	* -0.0 T_SCC_BODY_TEXT_LINE No description available.
+Subject: [PATCH 1/4] serial: max310x: set default value when reading clock ready bit
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-This reverts commit 88b065943cb583e890324d618e8d4b23460d51a3.
+If regmap_read() returns a non-zero value, the 'val' variable can be left
+uninitialized.
 
-Lenovo 82TQ is unhappy if we do the display on sequence this
-late. The display output shows severe corruption.
+Clear it before calling regmap_read() to make sure we properly detect
+the clock ready bit.
 
-It's unclear if this is a failure on our part (perhaps
-something to do with sending commands in LP mode after HS
-/video mode transmission has been started? Though the backlight
-on command at least seems to work) or simply that there are
-some commands in the sequence that are needed to be done
-earlier (eg. could be some DSC init stuff?). If the latter
-then I don't think the current Windows code would work
-either, but maybe this was originally tested with an older
-driver, who knows.
-
-Root causing this fully would likely require a lot of
-experimentation which isn't really feasible without direct
-access to the machine, so let's just accept failure and
-go back to the original sequence.
-
-Cc: stable@vger.kernel.org
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/10071
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Fixes: 4cf9a888fd3c ("serial: max310x: Check the clock readiness")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 ---
- drivers/gpu/drm/i915/display/icl_dsi.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/tty/serial/max310x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/display/icl_dsi.c b/drivers/gpu/drm/i915/display/icl_dsi.c
-index ac456a2275db..eda4a8b88590 100644
---- a/drivers/gpu/drm/i915/display/icl_dsi.c
-+++ b/drivers/gpu/drm/i915/display/icl_dsi.c
-@@ -1155,6 +1155,7 @@ static void gen11_dsi_powerup_panel(struct intel_encoder *encoder)
- 	}
+diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
+index f3a99daebdaa..b2c753ba9cbf 100644
+--- a/drivers/tty/serial/max310x.c
++++ b/drivers/tty/serial/max310x.c
+@@ -641,7 +641,7 @@ static u32 max310x_set_ref_clk(struct device *dev, struct max310x_port *s,
  
- 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_INIT_OTP);
-+	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DISPLAY_ON);
- 
- 	/* ensure all panel commands dispatched before enabling transcoder */
- 	wait_for_cmds_dispatched_to_panel(encoder);
-@@ -1255,8 +1256,6 @@ static void gen11_dsi_enable(struct intel_atomic_state *state,
- 	/* step6d: enable dsi transcoder */
- 	gen11_dsi_enable_transcoder(encoder);
- 
--	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_DISPLAY_ON);
--
- 	/* step7: enable backlight */
- 	intel_backlight_enable(crtc_state, conn_state);
- 	intel_dsi_vbt_exec_sequence(intel_dsi, MIPI_SEQ_BACKLIGHT_ON);
+ 	/* Wait for crystal */
+ 	if (xtal) {
+-		unsigned int val;
++		unsigned int val = 0;
+ 		msleep(10);
+ 		regmap_read(s->regmap, MAX310X_STS_IRQSTS_REG, &val);
+ 		if (!(val & MAX310X_STS_CLKREADY_BIT)) {
 -- 
-2.41.0
+2.39.2
 
 
