@@ -1,66 +1,59 @@
-Return-Path: <stable+bounces-11469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C84982F743
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 21:18:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0FD582F7A1
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 21:27:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39BB81C2483C
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 20:18:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 658562885E6
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 20:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB23E7FBC8;
-	Tue, 16 Jan 2024 19:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE28224DA;
+	Tue, 16 Jan 2024 19:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="twXVq/PD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XLI9u5r/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636A17FBBF;
-	Tue, 16 Jan 2024 19:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2248509C;
+	Tue, 16 Jan 2024 19:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705434429; cv=none; b=C4pAoDbYkNOn6WdD/R27Y5o6dNq/XsMbtICz5n3DxzU8HFGEGkXEy4oCRxQB5s51bvNGMMQxXRUWdDOEIq5ZztArBaXWesBqKsw8PBcAUfZfWQu7SBKW8IBwPI8/oWlq2H5V6fZVbaI1jmMbFYmbq+tDGrSDblbx4kLpvrpu2Dw=
+	t=1705434552; cv=none; b=MORz5/0X+Gm2e7HFcSRG82CBIYFRx3fmCyN4R9mSvCfygYuIqi3EY21USmhjvzeYBTqjZoYVPx4EfgEPJkMgrfCrW/TbMRMi+DPB2++RWLZVM8i8xAsT8ZXJrqlMQKRCBNKFZrPCkhivuVLfwMh6iYZnheWCZ3Ci4nrXoJsY55k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705434429; c=relaxed/simple;
-	bh=ImwsUSJ4sDJoPPMy6FyHLHga57K6HRPtG7DKT4WNcJ4=;
+	s=arc-20240116; t=1705434552; c=relaxed/simple;
+	bh=tIH1Lv0iXYkXYNFVwBt7OBZPs5FAlwpQhvwCM6EyewA=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:X-stable:
-	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=V8PFDBcS6iob+gfoAz/8voFQtCzDq3bv7Bs7AtfKqKdHJkdO92XNTAgboNt9o+UDsWfgQ28VbBx4hbSRUAfoxPPGD+PO5JuewWETBRtiozqo7F/V8d2HUbCBK84oP1BZW4oxafD/wTLXwX3k+OF8xVtM25HMqB7MuspIfkSe5U4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=twXVq/PD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68A8C433B2;
-	Tue, 16 Jan 2024 19:47:07 +0000 (UTC)
+	 X-Mailer:MIME-Version:X-stable:X-Patchwork-Hint:X-stable-base:
+	 Content-Transfer-Encoding; b=VlT6eoedUhfEHL50HJET90jCwbLWCSlhNhqSNNUyJHWU/WDPLYAsOdJHj4ADFwhZrHT3Bls5mpXO79o4XlDPZZv29Y7osqOrcDzkt43Dsb3zPq+vzATBcBIjrcsKw72cV2Nu+pFQ32SEShbbWC6RwbDy6WNotyidES9d/I3S/Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XLI9u5r/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F09BDC433F1;
+	Tue, 16 Jan 2024 19:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705434429;
-	bh=ImwsUSJ4sDJoPPMy6FyHLHga57K6HRPtG7DKT4WNcJ4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=twXVq/PDAhvx2n8YlILwdGB2YF0Hu7Aninfztdyh7gj/yQK2hzwx+G0XzIUsZGJgZ
-	 yLMxrKxn2f6IzOtrGvsclXLM64tSZZCf9OyALgx+bS7n9H6tBOKDet/1SctjidDJgv
-	 tmTgqiuVBrYUjMH0gg17X2gm20MoNmDD9/Fy4rSLTiaFyKIb0aitPkkR6viMmCHrnw
-	 U9ts/uZxpaYA/1S/vK6kscruemrseNs7PJL3XHdzlUlPXbfCCWCeL+tr2pbWoKs3K3
-	 bRjfAyTC22dU4eDvYa7jqe9FDqdoYJTjTTNkgL+L5S0MR8LmcmHSdzCpehOMAV+iTA
-	 pOctnMmiJ86Kg==
+	s=k20201202; t=1705434551;
+	bh=tIH1Lv0iXYkXYNFVwBt7OBZPs5FAlwpQhvwCM6EyewA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=XLI9u5r/V+u1GQJN/HBzr5kKhnSEEaxWUoEszCK2bvk0OlcdNc94wHCFFv6p+2xp+
+	 dWt4b97Tn+ZLsghV8GQjbHo0FGfXKkQBIZB1Bi4gk//HrTqAldVSaY2+pmTAU0Wq1V
+	 nRFx5Y7AgB1NedZBtYfADr2Nc+kSayxfjSlB3YEv3GuVjfdii7xpu151hAz6A7Jmkb
+	 ez/ynrspvmzUaZfpP4zj/BgbMo5lYOCmj/jqNkiuZdNK5KMuucyfyV0xWGsLxeqVE5
+	 RNHCeFIt86MjnAI34Eelgyp+DOdx9oLKMKkGWcmqGG1tfzper1etrw28ikgX5xHdfC
+	 vL8YpDPVP1+AQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Linus Walleij <linus.walleij@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
+Cc: Dmitry Antipov <dmantipov@yandex.ru>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linusw@kernel.org,
-	kaloz@openwrt.org,
-	robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.7 108/108] ARM: dts: usr8200: Fix phy registers
-Date: Tue, 16 Jan 2024 14:40:14 -0500
-Message-ID: <20240116194225.250921-108-sashal@kernel.org>
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 001/104] wifi: rtw89: fix timeout calculation in rtw89_roc_end()
+Date: Tue, 16 Jan 2024 14:45:27 -0500
+Message-ID: <20240116194908.253437-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240116194225.250921-1-sashal@kernel.org>
-References: <20240116194225.250921-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,80 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.7
+X-stable-base: Linux 6.6.12
 Content-Transfer-Encoding: 8bit
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 18a1ee9d716d355361da2765f87dbbadcdea03bf ]
+[ Upstream commit e416514e309f7e25e577fee45a65f246f67b2261 ]
 
-The MV88E6060 switch has internal PHY registers at MDIO
-addresses 0x00..0x04. Tie each port to the corresponding
-PHY.
+Since 'rtw89_core_tx_kick_off_and_wait()' assumes timeout
+(actually RTW89_ROC_TX_TIMEOUT) in milliseconds, I suppose
+that RTW89_ROC_IDLE_TIMEOUT is in milliseconds as well. If
+so, 'msecs_to_jiffies()' should be used in a call to
+'ieee80211_queue_delayed_work()' from 'rtw89_roc_end()'.
+Compile tested only.
 
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20231020-ixp4xx-usr8200-dtsfix-v1-1-3a8591dea259@linaro.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20231024143137.30393-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ixp/intel-ixp42x-usrobotics-usr8200.dts   | 22 +++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/net/wireless/realtek/rtw89/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/intel/ixp/intel-ixp42x-usrobotics-usr8200.dts b/arch/arm/boot/dts/intel/ixp/intel-ixp42x-usrobotics-usr8200.dts
-index 90fd51b36e7d..2c89db34c8d8 100644
---- a/arch/arm/boot/dts/intel/ixp/intel-ixp42x-usrobotics-usr8200.dts
-+++ b/arch/arm/boot/dts/intel/ixp/intel-ixp42x-usrobotics-usr8200.dts
-@@ -165,6 +165,24 @@ mdio {
- 				#address-cells = <1>;
- 				#size-cells = <0>;
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 133bf289bacb..535393eca564 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -2548,7 +2548,7 @@ void rtw89_roc_end(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
  
-+				/*
-+				 * PHY 0..4 are internal to the MV88E6060 switch but appear
-+				 * as independent devices.
-+				 */
-+				phy0: ethernet-phy@0 {
-+					reg = <0>;
-+				};
-+				phy1: ethernet-phy@1 {
-+					reg = <1>;
-+				};
-+				phy2: ethernet-phy@2 {
-+					reg = <2>;
-+				};
-+				phy3: ethernet-phy@3 {
-+					reg = <3>;
-+				};
-+
-+				/* Altima AMI101L used by the WAN port */
- 				phy9: ethernet-phy@9 {
- 					reg = <9>;
- 				};
-@@ -181,21 +199,25 @@ ports {
- 						port@0 {
- 							reg = <0>;
- 							label = "lan1";
-+							phy-handle = <&phy0>;
- 						};
+ 	if (hw->conf.flags & IEEE80211_CONF_IDLE)
+ 		ieee80211_queue_delayed_work(hw, &roc->roc_work,
+-					     RTW89_ROC_IDLE_TIMEOUT);
++					     msecs_to_jiffies(RTW89_ROC_IDLE_TIMEOUT));
+ }
  
- 						port@1 {
- 							reg = <1>;
- 							label = "lan2";
-+							phy-handle = <&phy1>;
- 						};
- 
- 						port@2 {
- 							reg = <2>;
- 							label = "lan3";
-+							phy-handle = <&phy2>;
- 						};
- 
- 						port@3 {
- 							reg = <3>;
- 							label = "lan4";
-+							phy-handle = <&phy3>;
- 						};
- 
- 						port@5 {
+ void rtw89_roc_work(struct work_struct *work)
 -- 
 2.43.0
 
