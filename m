@@ -1,56 +1,41 @@
-Return-Path: <stable+bounces-11340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8EED82EF80
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 14:10:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53FE282F057
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 15:13:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D90A21C2332E
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 13:10:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAF18B21AD0
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 14:13:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0841BC4A;
-	Tue, 16 Jan 2024 13:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 648AE1BDE0;
+	Tue, 16 Jan 2024 14:13:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oDhj0ufm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NTSdV00k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7D66FBF;
-	Tue, 16 Jan 2024 13:10:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9C9BC433C7;
-	Tue, 16 Jan 2024 13:10:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705410616;
-	bh=i4dry6M6WDVUsf16531MxNHkF/ieE3KAF4x/oxtezNo=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1325C1BDCA
+	for <stable@vger.kernel.org>; Tue, 16 Jan 2024 14:13:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34BB0C433F1;
+	Tue, 16 Jan 2024 14:13:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1705414391;
+	bh=dMCU6fAjjIBzndeJX+j1oJtgqwqmoJr5J2cyrfAGzEk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oDhj0ufmBZ5rhO3OPZzmZDuzn9J90cGHPEF3adOa7IMzTRLXaZV8Khdd0rmAMF7uV
-	 xHL3+MkX22jLdE1SRP3SEZdWUmdK/vaubuGSljwLzIZwx851xPFEnxuYQxDMZHmeN4
-	 xQFtajGQnZNKQJ0qHzO1I+PRphGmAcAkMhVha4UnfFp2w9QL9TuWOJGylInnhAnxmH
-	 RTiGLN1xKE/9HhRETXXIV7h8u0Rw3e3e7IdFE6Aex92sBHh1GepwBotSwxhVGrNvCh
-	 Um+7ZN8Ltee3ql6l11b3vrvEY8inpgpGSS/NksYL6I5isd9hQ+MqSqW0149552QpOP
-	 djgnIp4WMSTJA==
-Received: from johan by xi.lan with local (Exim 4.96.2)
-	(envelope-from <johan@kernel.org>)
-	id 1rPjCt-00065Y-1B;
-	Tue, 16 Jan 2024 14:10:20 +0100
-Date: Tue, 16 Jan 2024 14:10:19 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>, Mark Brown <broonie@kernel.org>,
-	Banajit Goswami <bgoswami@quicinc.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/7] ASoC: codecs: lpass-wsa-macro: fix compander volume
- hack
-Message-ID: <ZaaAO8SMczq7YUAE@hovoldconsulting.com>
-References: <20240116093903.19403-1-johan+linaro@kernel.org>
- <20240116093903.19403-3-johan+linaro@kernel.org>
- <8bb1cad6-6a85-444a-b881-c03ab0051009@linaro.org>
+	b=NTSdV00kZGsy6Q5Ktz1rEYq5npcx9h0LCwzyTJUICmptxMPUv40tSKYWGzyx6lGJn
+	 mBsegRygckmIbnvzmF+hyFLvEZpea8szak1oJsUVSIs8nWouhewTWnDan2yCbrwgUu
+	 MXPoiKHCx5PYWlraF4kaqqXS+F1djGHIHyTW5XaQ=
+Date: Tue, 16 Jan 2024 15:13:08 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: stable@vger.kernel.org
+Subject: Re: fs/bcachefs/
+Message-ID: <2024011614-modify-primer-65dd@gregkh>
+References: <g6el7eghhdk2v5osukhobvi4pige5bsfu5koqtmoyeknat36t7@irmmk7zo7edh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,60 +44,24 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <8bb1cad6-6a85-444a-b881-c03ab0051009@linaro.org>
+In-Reply-To: <g6el7eghhdk2v5osukhobvi4pige5bsfu5koqtmoyeknat36t7@irmmk7zo7edh>
 
-On Tue, Jan 16, 2024 at 11:10:21AM +0000, Srinivas Kandagatla wrote:
-> Thanks Johan for this patch,
-> 
-> On 16/01/2024 09:38, Johan Hovold wrote:
-> > The LPASS WSA macro codec driver is updating the digital gain settings
-> > behind the back of user space on DAPM events if companding has been
-> > enabled.
-> > 
-> > As compander control is exported to user space, this can result in the
-> > digital gain setting being incremented (or decremented) every time the
-> > sound server is started and the codec suspended depending on what the
-> > UCM configuration looks like.
-> > 
-> > Soon enough playback will become distorted (or too quiet).
-> > 
-> > This is specifically a problem on the Lenovo ThinkPad X13s as this
-> > bypasses the limit for the digital gain setting that has been set by the
-> > machine driver.
-> > 
-> > Fix this by simply dropping the compander gain hack. If someone cares
-> > about modelling the impact of the compander setting this can possibly be
-> > done by exporting it as a volume control later.
-> > 
-> This is not a hack, wsa codec requires gain to be programmed after the 
-> clk is enabled for that particular interpolator.
+On Mon, Jan 15, 2024 at 05:12:17PM -0500, Kent Overstreet wrote:
+> Hi stable team - please don't take patches for fs/bcachefs/ except from
+> myself; I'll be doing backports and sending pull requests after stuff
+> has been tested by my CI.
 
-Ok, but then it's also broken as, as I mentioned off-list, these
-registers are cached so unless companding is enabled, the write on
-enable will have no effect.
+Now done:
+	https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=9bf1f8f1ca9ae53cf3bc8781e4efdb6ebaee70db
 
-> However I agree with you on programming the gain that is different to 
-> what user set it.
-> 
-> This is because of unimplemented or half baked implementation of half-db 
-> feature of gain control in this codec.
-> 
-> We can clean that half baked implementation for now and still continue 
-> to program the gain values after the clks are enabled.
-> 
-> lets remove spkr_gain_offset and associated code paths in this codec, 
-> which should fix the issue that you have reported and still do the right 
-> thing of programming gain after clks are enabled.
+We will ignore it for any "Fixes:" tags, or AUTOSEL, but if you
+explicitly add a "cc: stable@" in the signed-off-by area, we will pick
+that up.
 
-Removing the offset which can alter the gain, will cause both of these
-writes to become no-ops as the registers are cached (e.g. just as for
-the follow-on codec cleanups). So then we might as well just remove
-this too.
+> Thanks, and let me know if there's any other workflow things I should
+> know about
 
-How is the half-dB feature supposed to work?
+This is going to cause you more work, but less for us, so thanks!
 
-And are you sure that you need to reprogram the gain value after
-enabling the clock? Everything seems to work without doing so.
-
-Johan
+greg k-h
 
