@@ -1,70 +1,128 @@
-Return-Path: <stable+bounces-11301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A921C82E7BD
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 02:55:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE1B582E7EE
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 03:36:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DADCB22470
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 01:55:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 940B3284A7F
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 02:36:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C492810A3E;
-	Tue, 16 Jan 2024 01:46:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ZlXKQLsh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83E823A7;
+	Tue, 16 Jan 2024 02:36:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E3810A39
-	for <stable@vger.kernel.org>; Tue, 16 Jan 2024 01:46:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Mon, 15 Jan 2024 20:46:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1705369571;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r6/n0XiF/8/YjROtnAGW4lI9P3RjbqlOQAnxgBHRLTc=;
-	b=ZlXKQLshjOj9RqbUmtlp+8VOGvS/N6fDqya5t0KpJazJL/CAWeAMKFzfCgm4qkFYTv7AJy
-	GvrLXVCMEIDoPVlreB7aQWQbwS9Zd4T21z4jTCWupHHpx/CEX1zgARn2xL60ltIhEzMofC
-	gItiwSCdpW/iKZoj2Vqh3/Il504zjic=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Suren Baghdasaryan <surenb@google.com>, catalin.marinas@arm.com, will@kernel.org, keescook@chromium.org, 
-	arnd@arndb.de, mark.rutland@arm.com, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH AUTOSEL 5.15 05/11] arm64: Fix circular header dependency
-Message-ID: <hevfrjvifsaglbjta3ut6og54wcy6bu2ymjab5wly3a7kawrn7@6ctlgbhpfhso>
-References: <20240116010729.219219-1-sashal@kernel.org>
- <20240116010729.219219-5-sashal@kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710A47E;
+	Tue, 16 Jan 2024 02:36:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4TDY4S31fxz1V47r;
+	Tue, 16 Jan 2024 10:34:32 +0800 (CST)
+Received: from canpemm500002.china.huawei.com (unknown [7.192.104.244])
+	by mail.maildlp.com (Postfix) with ESMTPS id B17FE14011F;
+	Tue, 16 Jan 2024 10:36:09 +0800 (CST)
+Received: from [10.173.135.154] (10.173.135.154) by
+ canpemm500002.china.huawei.com (7.192.104.244) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Tue, 16 Jan 2024 10:36:09 +0800
+Subject: Re: [PATCH v2] fs/hugetlbfs/inode.c: mm/memory-failure.c: fix
+ hugetlbfs hwpoison handling
+To: Sidhartha Kumar <sidhartha.kumar@oracle.com>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+CC: <akpm@linux-foundation.org>, <usama.anjum@collabora.com>,
+	<muchun.song@linux.dev>, <jiaqiyan@google.com>, <willy@infradead.org>,
+	<naoya.horiguchi@nec.com>, <shy828301@gmail.com>, <jthoughton@google.com>,
+	<jane.chu@oracle.com>, <stable@vger.kernel.org>
+References: <20240112180840.367006-1-sidhartha.kumar@oracle.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <1e59e3c8-63d5-bba1-9c00-218c3cc8f5ff@huawei.com>
+Date: Tue, 16 Jan 2024 10:36:08 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240116010729.219219-5-sashal@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <20240112180840.367006-1-sidhartha.kumar@oracle.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ canpemm500002.china.huawei.com (7.192.104.244)
 
-On Mon, Jan 15, 2024 at 08:07:05PM -0500, Sasha Levin wrote:
-> From: Kent Overstreet <kent.overstreet@linux.dev>
+On 2024/1/13 2:08, Sidhartha Kumar wrote:
+> has_extra_refcount() makes the assumption that the page cache adds a ref
+> count of 1 and subtracts this in the extra_pins case. Commit a08c7193e4f1
+> (mm/filemap: remove hugetlb special casing in filemap.c) modifies
+> __filemap_add_folio() by calling folio_ref_add(folio, nr); for all cases
+> (including hugtetlb) where nr is the number of pages in the folio. We
+> should adjust the number of references coming from the page cache by
+> subtracing the number of pages rather than 1.
 > 
-> [ Upstream commit 04bc786d663543512d08f1b86c7bcefb5144afe3 ]
+> In hugetlbfs_read_iter(), folio_test_has_hwpoisoned() is testing the wrong
+> flag as, in the hugetlb case, memory-failure code calls
+> folio_test_set_hwpoison() to indicate poison. folio_test_hwpoison() is the
+> correct function to test for that flag.
 > 
-> Replace linux/percpu.h include with asm/percpu.h to avoid circular
-> dependency.
+> After these fixes, the hugetlb hwpoison read selftest passes all cases.
 > 
-> Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> Fixes: a08c7193e4f1 ("mm/filemap: remove hugetlb special casing in filemap.c")
+> Closes: https://lore.kernel.org/linux-mm/20230713001833.3778937-1-jiaqiyan@google.com/T/#m8e1469119e5b831bbd05d495f96b842e4a1c5519
+> Cc: <stable@vger.kernel.org> # 6.7+
+> Signed-off-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+> Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> ---
+> 
+> v1 -> v2:
+>     move ref_count adjustment to if(extra_pins) block as that represents
+>     ref counts from the page cache per Miaohe Lin.
 
-This patch doesn't need to be backported, it's fixing an issue that
-occurs with the memory allocation profiling patchset
+Thanks for your update of patch.
+
+> 
+>  fs/hugetlbfs/inode.c | 2 +-
+>  mm/memory-failure.c  | 2 +-
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+> index 36132c9125f9..3a248e4f7e93 100644
+> --- a/fs/hugetlbfs/inode.c
+> +++ b/fs/hugetlbfs/inode.c
+> @@ -340,7 +340,7 @@ static ssize_t hugetlbfs_read_iter(struct kiocb *iocb, struct iov_iter *to)
+>  		} else {
+>  			folio_unlock(folio);
+>  
+> -			if (!folio_test_has_hwpoisoned(folio))
+> +			if (!folio_test_hwpoison(folio))
+>  				want = nr;
+>  			else {
+>  				/*
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index d8c853b35dbb..ef7ae73b65bd 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -976,7 +976,7 @@ static bool has_extra_refcount(struct page_state *ps, struct page *p,
+>  	int count = page_count(p) - 1;
+>  
+>  	if (extra_pins)
+> -		count -= 1;
+> +		count -= folio_nr_pages(page_folio(p));
+
+I think this should be the right solution. @extra_pins indicates the extra page refcnt from page cache.
+
+Acked-by: Miaohe Lin <linmiaohe@huawei.com>
+Thanks.
+
+>  
+>  	if (count > 0) {
+>  		pr_err("%#lx: %s still referenced by %d users\n",
+> 
+
 
