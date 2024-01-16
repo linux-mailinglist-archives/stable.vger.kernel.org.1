@@ -1,54 +1,51 @@
-Return-Path: <stable+bounces-11789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A82A82FC41
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 23:16:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2356082FC49
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 23:17:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 138F41C27B7E
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 22:16:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B12A628C933
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 22:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D069A3CF51;
-	Tue, 16 Jan 2024 20:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A22750A85;
+	Tue, 16 Jan 2024 20:45:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C4124B5F;
-	Tue, 16 Jan 2024 20:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B050C50A88;
+	Tue, 16 Jan 2024 20:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705437845; cv=none; b=ESWNVvQt1ZrPLaGgGhWMC3YycZWIhrjJTW7C2fstjABYpQrBm9SRk5CtNdq7tsOOQP8xml95c/DPtCGxf0025DJg/8SjYFO4CRwFJJx10thelkKWuPU2aFIdtFoUPOpdvIeOHBw7/jkEpasOakwLmf9ELE2zTl/ihDuO8vKgNvQ=
+	t=1705437916; cv=none; b=mf7mhNHTkjICj+P6cb8LHyaBD2VCWrdIpH/xsTZH7Cwmwr26vkD5rVVVR6oxg+rORALdWm/K/BxST9CNTWWM8O+TqQGE9+yoyNEqaK9aI64lFyiaFwLDnt4oR9BSfVBCSq2VKCh34A0UpV0lXNVBgWKbO75Ox4iaRzz8XcUA+1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705437845; c=relaxed/simple;
-	bh=CZ7ei0D4dK8lP4GUlsYoGNzXEf7NzkxYKYx3wMd+cEI=;
+	s=arc-20240116; t=1705437916; c=relaxed/simple;
+	bh=cpoF2QRvffxs5P0l93ZWXcMU8qnywNzlM0H3okDE7U0=;
 	h=Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=c7d6qBUms3hGpvY9XYZsSl1nqqyIlpc3XkzBqPzmsn4zKVbHyye/u5ShnF6GkxZrw66pc5UXEowtD2gztL7HIGcPDEmZSiVZMxz0CjCvJlpjwj2fuoCZcJhLhMyq5Da+GksOfPLNxpTOdnHIqVZ1tF5okfaV9qtBmTSr5QMiiHk=
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=NYLQY0R+duT/fF7kS3ngqYD2b0frF3hEHVlu6Co1OkPKyHy+Cr2kR6GgGNhRHe6OCU/DCgFZq1L2WqSVfswYo1hPwOk3eyRS/DDH+kGqtFjwFmiAIysCJfaJ6CgOGDxGZWqGGlukPIdK+/jA0R7lQVddZcFJAGHLnJ7EUULB3c8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 9713A1C0079; Tue, 16 Jan 2024 21:44:01 +0100 (CET)
-Date: Tue, 16 Jan 2024 21:44:01 +0100
+	id CFFBB1C007B; Tue, 16 Jan 2024 21:45:12 +0100 (CET)
+Date: Tue, 16 Jan 2024 21:45:12 +0100
 From: Pavel Machek <pavel@denx.de>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	"Borislav Petkov (AMD)" <bp@alien8.de>, tglx@linutronix.de,
-	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
-	puwen@hygon.cn, seanjc@google.com, kim.phillips@amd.com,
-	reinette.chatre@intel.com, babu.moger@amd.com, jmattson@google.com,
-	peterz@infradead.org, ashok.raj@intel.com,
-	rick.p.edgecombe@intel.com, brgerst@gmail.com, mjguzik@gmail.com,
-	jpoimboe@kernel.org, nik.borisov@suse.com, aik@amd.com,
-	vegard.nossum@oracle.com, daniel.sneddon@linux.intel.com,
-	acdunlap@google.com
-Subject: Re: [PATCH AUTOSEL 5.10 09/10] x86/barrier: Do not serialize MSR
- accesses on AMD
-Message-ID: <ZabqkZ2vXaicy3pZ@duo.ucw.cz>
-References: <20240115232818.210010-1-sashal@kernel.org>
- <20240115232818.210010-9-sashal@kernel.org>
+	Avadhut Naik <Avadhut.Naik@amd.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Tony Luck <tony.luck@intel.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	bleung@chromium.org, tzungbi@kernel.org,
+	chrome-platform@lists.linux.dev
+Subject: Re: [PATCH AUTOSEL 5.10 3/8] platform/chrome: cros_ec_debugfs: Fix
+ permissions for panicinfo
+Message-ID: <Zabq2PKJwsllm9zk@duo.ucw.cz>
+References: <20240116001457.214018-1-sashal@kernel.org>
+ <20240116001457.214018-3-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,60 +53,53 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="4Ia2zJT+I07Stjth"
+	protocol="application/pgp-signature"; boundary="675u0NmgRUhg/z09"
 Content-Disposition: inline
-In-Reply-To: <20240115232818.210010-9-sashal@kernel.org>
+In-Reply-To: <20240116001457.214018-3-sashal@kernel.org>
 
 
---4Ia2zJT+I07Stjth
+--675u0NmgRUhg/z09
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> From: "Borislav Petkov (AMD)" <bp@alien8.de>
+> From: Avadhut Naik <Avadhut.Naik@amd.com>
 >=20
-> [ Upstream commit 04c3024560d3a14acd18d0a51a1d0a89d29b7eb5 ]
+> [ Upstream commit 0706526ec7704dcd046239078ac175d11a88a95e ]
 >=20
-> AMD does not have the requirement for a synchronization barrier when
-> acccessing a certain group of MSRs. Do not incur that unnecessary
-> penalty there.
-=2E..
-> Performance captured using an unmodified ipi-bench using the 'mesh-ipi' o=
-ption
-> with and without weak_wrmsr_fence() on a Zen4 system also showed signific=
-ant
-> performance improvement without weak_wrmsr_fence(). The 'mesh-ipi' option=
- ignores
-> CCX or CCD and just picks random vCPU.
+> The debugfs_create_blob() function has been used to create read-only bina=
+ry
+> blobs in debugfs. The function filters out permissions, other than S_IRUS=
+R,
+> S_IRGRP and S_IROTH, provided while creating the blobs.
 >=20
->   Average throughput (10 iterations) with weak_wrmsr_fence(),
->         Cumulative throughput: 4933374 IPI/s
->=20
->   Average throughput (10 iterations) without weak_wrmsr_fence(),
->         Cumulative throughput: 6355156 IPI/s
->=20
-> [1] https://github.com/bytedance/kvm-utils/tree/master/microbenchmark/ipi=
--bench
+> The very behavior though is being changed through previous patch in the
+> series (fs: debugfs: Add write functionality to debugfs blobs) which makes
+> the binary blobs writable by owners. Thus, all permissions provided while
+> creating the blobs, except S_IRUSR,S_IWUSR, S_IRGRP, S_IROTH, will be
+> filtered by debugfs_create_blob().
 
-Speed improvement, not a bugfix. Please drop.
+This needs previous patch to make sense (according to changelog), and
+we don't have that. Please drop.
 
 BR,
-									Pavel
-									--=20
+								Pavel
+
+--=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---4Ia2zJT+I07Stjth
+--675u0NmgRUhg/z09
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZabqkQAKCRAw5/Bqldv6
-8uONAJ0WBAl/1FnlM9UMYG/+rhKbGP0K0gCgm6w4SGSIymFTPMqja4N0JqK9w7k=
-=ojzs
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZabq2AAKCRAw5/Bqldv6
+8jkYAKCM+eQYH8va0mKtV3wZTZtsHTbUVACfXo1J98rXiWFpnEW18o9a48UABcc=
+=hK0M
 -----END PGP SIGNATURE-----
 
---4Ia2zJT+I07Stjth--
+--675u0NmgRUhg/z09--
 
