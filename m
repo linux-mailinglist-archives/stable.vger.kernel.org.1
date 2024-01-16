@@ -1,69 +1,59 @@
-Return-Path: <stable+bounces-11689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8329382FAA5
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 22:37:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CBEE82FAAC
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 22:38:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2203B1F27869
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 21:37:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABD911C26468
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 21:38:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A782158D8D;
-	Tue, 16 Jan 2024 20:00:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D49B2159598;
+	Tue, 16 Jan 2024 20:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dOOarD0f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C0CqQpnF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8DAF158D86;
-	Tue, 16 Jan 2024 20:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D096159578;
+	Tue, 16 Jan 2024 20:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705435212; cv=none; b=Oc3Ai9cljF6asx9rYsqxf2QoQuF0VycOzNMtEnAVGrWS70lRJ14pw9zyCgfLsouNwy3v6cc5w/MAKyfTeaJKKgyvq1sT0RlyujQuLGtC3pf7MMp8b2On/kXSk9OxXHb6Edaua15e7Y8eEBsQaL4OOcFiTu3uQFzRc23Ohyncx/0=
+	t=1705435247; cv=none; b=i3zddoZqPmO4N5yHj1PSUFwPgUE6ioKLpQLmoTcs9DIjL4+fcK3bORa4et8+190qm8srQ/+U8sYus1lmIGNOZ8tZq1GTSxvCTVnPyCx0+ThVVR1Y3wIXwguiOzicqp5kmMUnB3qXqqyLUB+qSNymyejNWppjYnFtuq0JCVXURBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705435212; c=relaxed/simple;
-	bh=zIO1TX1zi5sOTvJ5L/DBIDGyOxuOuCNW9OYiMj1zxTQ=;
+	s=arc-20240116; t=1705435247; c=relaxed/simple;
+	bh=BFuDl7jZgUpCrCi2lYx1c4RCb0gQPBMpbsEwz7aPAPo=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:X-stable:
-	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=R7cZbGaGDSw8d4Ql4IAojNvybISKNAEGydQHaCNBPiEs8xmBGpA+eTIwWN5DCe6oSgw3Y3vumjZbZVBt/jfWvHw6z6SFkvj1PrwN5tfsQITzN1SAFBaAQIRJagTjUGFdLsqYChc3Re7x8YkBV+fuqBKZQL8ubjIQH2y52zf8m/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dOOarD0f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0CB2C43390;
-	Tue, 16 Jan 2024 20:00:10 +0000 (UTC)
+	 X-Mailer:MIME-Version:X-stable:X-Patchwork-Hint:X-stable-base:
+	 Content-Transfer-Encoding; b=WQm1PHXLK5XvMZQHlai+eefiXJl2RxL7M6ZamUcASQIOIDm1SWamUvy1oF741e+F2L6cPtM1iMAZeDHAFfc5Wc/UcBWIH5FGr1y7VzfxyGtteTq0df4+qEYT7VbOtrG3+mYjcMpCET3RPBrnAmsAEekGFsxJlz3H7GXxVX2TDTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C0CqQpnF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B6E8C433C7;
+	Tue, 16 Jan 2024 20:00:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705435212;
-	bh=zIO1TX1zi5sOTvJ5L/DBIDGyOxuOuCNW9OYiMj1zxTQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dOOarD0fvVMaaOsC+nLB/Oap/iDVAbqxQtSb/GOMJPU26zihygIFHmkRG8wUSEgxg
-	 WUUSAe63e5h70AZojGA5ttwt5cPeajtZKFhmhTJ8CN/2Rlk9E8kuPwPR3NUX9XWWeY
-	 Dn6Qm4yAnZOYjASGCmkE9nH+k0/xhQY1UJ3s4hOKRnjr4CZp0W7h4OtTjHOORV7p8p
-	 Y9EKBw7S0bWDn3v7m7/YPZpgvLHNZR/K9Ok3omB7wLqEkp5pxRWLLVrpEV/GyeU2Pc
-	 6dYyf8by50LVa2jlCsTHeHHj8/XVi728GQ+qCBjb2mWfeaLJRAhOZyISkCONAeT7yT
-	 VfFufnj5zfWMA==
+	s=k20201202; t=1705435247;
+	bh=BFuDl7jZgUpCrCi2lYx1c4RCb0gQPBMpbsEwz7aPAPo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=C0CqQpnFSPnnI2HnyuIjL+uycWVnX8tPJptmh53vGCy8NREp8AK4HyUbXekjFf28X
+	 YaHN5XGbp/ND5+bUpUsiMWpUJlE/uRc3zPCHUSFdEAzpACvx3qgugpca+2ltye1yS7
+	 wadyIHRWlbXE5VXyd8UyeM2u14/peV9RAPGpfghPssZf6OCAX+ItxWHmS2Wn5UXWbR
+	 WQTl3g2PmkUb6FboIALF5Ybi3CJWsisig/WNB75ljdmQ3bdBE8sXZ4vcDujRF9uume
+	 sYFCBKF6tjKS4tyRNARQkoUejO0pSncH6js1wxhhpvjwv1ud59BLbD/raLWOuEEm5+
+	 QaZ6BpBoIaJ/g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Suman Ghosh <sumang@marvell.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Shiji Yang <yangshiji66@outlook.com>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	sgoutham@marvell.com,
-	lcherian@marvell.com,
-	gakula@marvell.com,
-	jerinj@marvell.com,
-	hkelam@marvell.com,
-	sbhatta@marvell.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 47/47] octeontx2-af: Fix max NPC MCAM entry check while validating ref_entry
-Date: Tue, 16 Jan 2024 14:57:50 -0500
-Message-ID: <20240116195834.257313-47-sashal@kernel.org>
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 01/44] wifi: rt2x00: restart beacon queue when hardware reset
+Date: Tue, 16 Jan 2024 14:59:30 -0500
+Message-ID: <20240116200044.258335-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240116195834.257313-1-sashal@kernel.org>
-References: <20240116195834.257313-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,55 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.147
+X-stable-base: Linux 5.10.208
 Content-Transfer-Encoding: 8bit
 
-From: Suman Ghosh <sumang@marvell.com>
+From: Shiji Yang <yangshiji66@outlook.com>
 
-[ Upstream commit 4ebb1f95e0c3c3e0eec5bb21aa43097580c4b6e4 ]
+[ Upstream commit a11d965a218f0cd95b13fe44d0bcd8a20ce134a8 ]
 
-As of today, the last MCAM entry was not getting allocated because of
-a <= check with the max_bmap count. This patch modifies that and if the
-requested entry is greater than the available entries then set it to the
-max value.
+When a hardware reset is triggered, all registers are reset, so all
+queues are forced to stop in hardware interface. However, mac80211
+will not automatically stop the queue. If we don't manually stop the
+beacon queue, the queue will be deadlocked and unable to start again.
+This patch fixes the issue where Apple devices cannot connect to the
+AP after calling ieee80211_restart_hw().
 
-Signed-off-by: Suman Ghosh <sumang@marvell.com>
-Link: https://lore.kernel.org/r/20240101145042.419697-1-sumang@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/TYAP286MB031530EB6D98DCE4DF20766CBCA4A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/net/wireless/ralink/rt2x00/rt2x00dev.c |  3 +++
+ drivers/net/wireless/ralink/rt2x00/rt2x00mac.c | 11 +++++++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-index 8b16738e249f..70b4f2a3b02f 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-@@ -2625,18 +2625,17 @@ int rvu_mbox_handler_npc_mcam_alloc_entry(struct rvu *rvu,
- 	rsp->entry = NPC_MCAM_ENTRY_INVALID;
- 	rsp->free_count = 0;
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+index b04f76551ca4..be3c153ab3b0 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+@@ -101,6 +101,7 @@ void rt2x00lib_disable_radio(struct rt2x00_dev *rt2x00dev)
+ 	rt2x00link_stop_tuner(rt2x00dev);
+ 	rt2x00queue_stop_queues(rt2x00dev);
+ 	rt2x00queue_flush_queues(rt2x00dev, true);
++	rt2x00queue_stop_queue(rt2x00dev->bcn);
  
--	/* Check if ref_entry is within range */
--	if (req->priority && req->ref_entry >= mcam->bmap_entries) {
--		dev_err(rvu->dev, "%s: reference entry %d is out of range\n",
--			__func__, req->ref_entry);
--		return NPC_MCAM_INVALID_REQ;
--	}
-+	/* Check if ref_entry is greater that the range
-+	 * then set it to max value.
-+	 */
-+	if (req->ref_entry > mcam->bmap_entries)
-+		req->ref_entry = mcam->bmap_entries;
+ 	/*
+ 	 * Disable radio.
+@@ -1272,6 +1273,7 @@ int rt2x00lib_start(struct rt2x00_dev *rt2x00dev)
+ 	rt2x00dev->intf_ap_count = 0;
+ 	rt2x00dev->intf_sta_count = 0;
+ 	rt2x00dev->intf_associated = 0;
++	rt2x00dev->intf_beaconing = 0;
  
- 	/* ref_entry can't be '0' if requested priority is high.
- 	 * Can't be last entry if requested priority is low.
+ 	/* Enable the radio */
+ 	retval = rt2x00lib_enable_radio(rt2x00dev);
+@@ -1298,6 +1300,7 @@ void rt2x00lib_stop(struct rt2x00_dev *rt2x00dev)
+ 	rt2x00dev->intf_ap_count = 0;
+ 	rt2x00dev->intf_sta_count = 0;
+ 	rt2x00dev->intf_associated = 0;
++	rt2x00dev->intf_beaconing = 0;
+ }
+ 
+ static inline void rt2x00lib_set_if_combinations(struct rt2x00_dev *rt2x00dev)
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
+index 2f68a31072ae..795bd3b0ebd8 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
+@@ -599,6 +599,17 @@ void rt2x00mac_bss_info_changed(struct ieee80211_hw *hw,
  	 */
- 	if ((!req->ref_entry && req->priority == NPC_MCAM_HIGHER_PRIO) ||
--	    ((req->ref_entry == (mcam->bmap_entries - 1)) &&
-+	    ((req->ref_entry == mcam->bmap_entries) &&
- 	     req->priority == NPC_MCAM_LOWER_PRIO))
- 		return NPC_MCAM_INVALID_REQ;
- 
+ 	if (changes & BSS_CHANGED_BEACON_ENABLED) {
+ 		mutex_lock(&intf->beacon_skb_mutex);
++
++		/*
++		 * Clear the 'enable_beacon' flag and clear beacon because
++		 * the beacon queue has been stopped after hardware reset.
++		 */
++		if (test_bit(DEVICE_STATE_RESET, &rt2x00dev->flags) &&
++		    intf->enable_beacon) {
++			intf->enable_beacon = false;
++			rt2x00queue_clear_beacon(rt2x00dev, vif);
++		}
++
+ 		if (!bss_conf->enable_beacon && intf->enable_beacon) {
+ 			rt2x00dev->intf_beaconing--;
+ 			intf->enable_beacon = false;
 -- 
 2.43.0
 
