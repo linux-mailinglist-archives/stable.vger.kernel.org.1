@@ -1,109 +1,155 @@
-Return-Path: <stable+bounces-11320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA44C82EC88
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 11:06:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A88FF82ECB0
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 11:24:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44F6E1F234AF
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 10:06:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABB911C22FEB
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 10:24:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8627134C1;
-	Tue, 16 Jan 2024 10:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97F7134D9;
+	Tue, 16 Jan 2024 10:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ps98n9t7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SklX3cVU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE3A13AC8
-	for <stable@vger.kernel.org>; Tue, 16 Jan 2024 10:06:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-40e72a567eeso22191345e9.0
-        for <stable@vger.kernel.org>; Tue, 16 Jan 2024 02:06:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1705399609; x=1706004409; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZFO1yAGQW6jbC/7S5Gp/UgcbedeazJqK9TO6R35VgwI=;
-        b=Ps98n9t7TWDphCp7Dbtbbj46IBH4zH9YZqEHcoxZFVIiLkrrixnXqo9xu3w7eG5DsE
-         aVm2cCq9X3rKOaQ2AjVa/4+V2MFf0LIDxw6gJm8UsZd4/SooQCTv6+iuj6Lq1+qmM3Wt
-         3j305rHvb66gHvFOeeZrTtASv/7kzLkHuhLEYU/Fcp8XbnEllPAvQzufjWCd7mRtz5ln
-         vO2C/gn7NqX/oB3tDRrb2OErNTdrANznVcB9+v3XqbPYwZlxYpxXaDBEg12ciKZdAguX
-         y0qEpsWMtY2G4iHQW4XtJFn99pwqtPB7GKBmVS9rdExvfh58UEPHpx0L2LkusLPBmuCo
-         9tnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705399609; x=1706004409;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZFO1yAGQW6jbC/7S5Gp/UgcbedeazJqK9TO6R35VgwI=;
-        b=ZdezjsUqHeRWYfLt7+i5U8l+OT+wptjYJK1qLRikB3a3Mnyleal4zvQ2HnNKL4hBOC
-         uzGfJhpNCyZd/2AUUi+NAicdittWQKkIsSTpimPa0c5uouMikoQOrRZcKkRtzpWIHsiA
-         K0skUG264HUHtYdjl12KwmNfjgjVPNKYLRvepP/XCOsgC5vU6Fum9UsdqLSEuoIGmIiC
-         Va7CKbRe1qFC4/5syBtzI6RA3w1lFw60st+xdFNsFi8X95/OT0Y/3SLJA5lnEyNx4t5Q
-         ji+JmwkilP/g2SBWPn1wo8KZlpHZw4oEw6kAhpvNLLJT8Cq6zYGr3sP+/wRBHJb0XtCi
-         OfQg==
-X-Gm-Message-State: AOJu0YwVsJns873qfRQPHWIL4uXKhBwzKMZAouv5hCdaiOGQ/59YQucq
-	lyzfCSco4hTbnSUMpweV6uQnS99XqOGAKg==
-X-Google-Smtp-Source: AGHT+IEuBcf7ha8y/meOXJZo7IFgJlNJ3lP22wG1IplH414bJivQ5NZPrWXvHrCfQNI8GahECMcjEw==
-X-Received: by 2002:a05:600c:4187:b0:40e:350e:4f6c with SMTP id p7-20020a05600c418700b0040e350e4f6cmr2178432wmh.56.1705399609320;
-        Tue, 16 Jan 2024 02:06:49 -0800 (PST)
-Received: from [192.168.100.86] ([37.228.218.3])
-        by smtp.gmail.com with ESMTPSA id f6-20020a05600c4e8600b0040d6ffae526sm22850811wmq.39.2024.01.16.02.06.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Jan 2024 02:06:48 -0800 (PST)
-Message-ID: <cf8093a2-be15-4ec5-8b9e-84d7803ddae3@linaro.org>
-Date: Tue, 16 Jan 2024 10:06:47 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D014134C1;
+	Tue, 16 Jan 2024 10:24:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1705400640; x=1736936640;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=YniVLZD2s3E4XeUi3U56nsCA0cbZEvcrCwDUGCUg620=;
+  b=SklX3cVUqlzCqfl6Rpb+SaaYOZ9te08JZHY3fLYzxK3wohb84042IAmP
+   e+Dz3fh/ZTICyxGi9iOjTcKslJEe2Zej9Y6vbg0MO49zloNINv/8YBdhG
+   0IOcWhzNNrIeHSfCkaVmRuBpP8nhTPioO4TACOenMB9i45Uxm4Wyxon/y
+   C6Y262FlqLSxQD0V/h4qa31Y/f/34bJAH50vPEv8R7ew0CeP+1wWJ5God
+   z95z6PtxkrPqPXKz8nZmZVqKzdpk1HSgdCwZdIjFJqbv5zk63C1pfVQyZ
+   Jx9YARFfAiNncavNV4ytTpERCTuuvyayJy5Fg0DOVS6JnTnpE0J4UxOcm
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10954"; a="466194397"
+X-IronPort-AV: E=Sophos;i="6.04,198,1695711600"; 
+   d="scan'208";a="466194397"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2024 02:14:54 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.04,198,1695711600"; 
+   d="scan'208";a="18417568"
+Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.246.35.68])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2024 02:14:51 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Tue, 16 Jan 2024 12:14:47 +0200 (EET)
+To: Gui-Dong Han <2045gemini@gmail.com>
+cc: gregkh@linuxfoundation.org, jirislaby@kernel.org, 
+    linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
+    baijiaju1990@outlook.com, stable@vger.kernel.org
+Subject: Re: [PATCH] tty: fix atomicity violation in n_tty_read
+In-Reply-To: <20240112125801.2650-1-2045gemini@gmail.com>
+Message-ID: <7f51ab12-bbfe-0aae-3755-275ee4762f03@linux.intel.com>
+References: <20240112125801.2650-1-2045gemini@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 3/6] PCI: qcom: Add missing icc bandwidth vote for cpu
- to PCIe path
-Content-Language: en-US
-To: Krishna Chaitanya Chundru <quic_krichai@quicinc.com>,
- Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>, Bjorn Helgaas
- <bhelgaas@google.com>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Manivannan Sadhasivam <mani@kernel.org>,
- Rob Herring <robh+dt@kernel.org>, Johan Hovold <johan+linaro@kernel.org>,
- Brian Masney <bmasney@redhat.com>, Georgi Djakov <djakov@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, vireshk@kernel.org,
- quic_vbadigan@quicinc.com, quic_skananth@quicinc.com,
- quic_nitegupt@quicinc.com, linux-pci@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240112-opp_support-v6-0-77bbf7d0cc37@quicinc.com>
- <20240112-opp_support-v6-3-77bbf7d0cc37@quicinc.com>
- <fecfd2d9-7302-4eb6-92d0-c2efbe824bf4@linaro.org>
- <1b7912c5-983c-b642-ca56-ae1e2def9633@quicinc.com>
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <1b7912c5-983c-b642-ca56-ae1e2def9633@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 
-On 16/01/2024 04:52, Krishna Chaitanya Chundru wrote:
->>
-> There is no change required in the dts because the cpu-pcie path is
-> already present in the dts.
+On Fri, 12 Jan 2024, Gui-Dong Han wrote:
 
-Not at c4860af88d0cb1bb006df12615c5515ae509f73b its not, those dts 
-entries get added later.
+> In n_tty_read():
+>     if (packet && tty->link->ctrl.pktstatus) {
+>     ...
+>     spin_lock_irq(&tty->link->ctrl.lock);
+>     cs = tty->link->ctrl.pktstatus;
+>     tty->link->ctrl.pktstatus = 0;
+>     spin_unlock_irq(&tty->link->ctrl.lock);
+>     *kb++ = cs;
+>     ...
+> 
+> In n_tty_read() function, there is a potential atomicity violation issue.
+> The tty->link->ctrl.pktstatus might be set to 0 after being checked, which
+> could lead to incorrect values in the kernel space buffer
+> pointer (kb/kbuf). The check if (packet && tty->link->ctrl.pktstatus)
+> occurs outside the spin_lock_irq(&tty->link->ctrl.lock) block. This may
+> lead to tty->link->ctrl.pktstatus being altered between the check and the
+> lock, causing *kb++ = cs; to be assigned with a zero pktstatus value.
+> 
+> This possible bug is found by an experimental static analysis tool
+> developed by our team, BassCheck[1]. This tool analyzes the locking APIs
+> to extract function pairs that can be concurrently executed, and then
+> analyzes the instructions in the paired functions to identify possible
+> concurrency bugs including data races and atomicity violations. The above
+> possible bug is reported when our tool analyzes the source code of
+> Linux 5.17.
+> 
+> To resolve this atomicity issue, it is suggested to move the condition
+> check if (packet && tty->link->ctrl.pktstatus) inside the spin_lock block.
+> With this patch applied, our tool no longer reports the bug, with the
+> kernel configuration allyesconfig for x86_64. Due to the absence of the
+> requisite hardware, we are unable to conduct runtime testing of the patch.
+> Therefore, our verification is solely based on code logic analysis.
+> 
+> [1] https://sites.google.com/view/basscheck/
+> 
+> Fixes: 64d608db38ff ("tty: cumulate and document tty_struct::ctrl* members")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
+> ---
+>  drivers/tty/n_tty.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/tty/n_tty.c b/drivers/tty/n_tty.c
+> index f252d0b5a434..df54ab0c4d8c 100644
+> --- a/drivers/tty/n_tty.c
+> +++ b/drivers/tty/n_tty.c
+> @@ -2222,19 +2222,23 @@ static ssize_t n_tty_read(struct tty_struct *tty, struct file *file, u8 *kbuf,
+>  	add_wait_queue(&tty->read_wait, &wait);
+>  	while (nr) {
+>  		/* First test for status change. */
+> +		spin_lock_irq(&tty->link->ctrl.lock);
+>  		if (packet && tty->link->ctrl.pktstatus) {
+>  			u8 cs;
+> -			if (kb != kbuf)
+> +			if (kb != kbuf) {
+> +				spin_unlock_irq(&tty->link->ctrl.lock);
+>  				break;
+> -			spin_lock_irq(&tty->link->ctrl.lock);
+> +			}
+>  			cs = tty->link->ctrl.pktstatus;
+>  			tty->link->ctrl.pktstatus = 0;
+>  			spin_unlock_irq(&tty->link->ctrl.lock);
+>  			*kb++ = cs;
+>  			nr--;
+>  			break;
+> +		} else {
+> +			spin_unlock_irq(&tty->link->ctrl.lock);
 
-But anyway re-reading your commit log "vote for minimum bandwidth as at 
-c4860af88d0cb1bb006df12615c5515ae509f73b" makes sense to me.
+This seems way over-engineered. Wouldn't it be much simpler to just test 
+if cs is non-zero after the original critical section to detect if there 
+were any changes into pktstatus before the lock was acquired? That would 
+avoid all this lock dance and enlarging the critical section.
 
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+>  		}
+> -
+> +
+
+Spurious changes like this should not be included into patches.
+
+>  		if (!input_available_p(tty, 0)) {
+>  			up_read(&tty->termios_rwsem);
+>  			tty_buffer_flush_work(tty->port);
+> 
+
+-- 
+ i.
+
 
