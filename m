@@ -1,138 +1,100 @@
-Return-Path: <stable+bounces-11354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 154D582F3AE
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 19:08:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BA4F82F42B
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 19:24:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31F631C23770
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 18:08:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 796201C23946
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 18:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E5D1CD20;
-	Tue, 16 Jan 2024 18:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68ADA1CD31;
+	Tue, 16 Jan 2024 18:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Ve8Faakb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NFH8wYuI"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA32F6ABA;
-	Tue, 16 Jan 2024 18:08:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224261CD29;
+	Tue, 16 Jan 2024 18:24:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705428527; cv=none; b=SmNLEq0GY7bzhp92E+sIMQwHflG5zVfHKa65A65rtmYdjymCf5f0XV0mH36Q4j3wPxeDTpb1rtnX3fBcZDfY6i0urVC7biTSi0wk0yaMhZ2mWTcdZ8kQyctN/NxJ/qAhWPY7/Eg4jzLdUZvXpiQfXuUsGcQNz65n7yK9F4CtA3E=
+	t=1705429443; cv=none; b=PQvEwKtSUuxz76r/Y+kXsBxeJAhJpYtUN8qwj+zt4TUSuHkDuW4dEaW4NuDDt7un3RqlOs+khh59jONre2E6E2kHzXvX3xDLeVj1CklQr1Z9HaOs5MFxk4GBiZYpg3jBKHCk9pg40kyTPjZJNqbjAW+HWEThxHwBU4yw7gpC+40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705428527; c=relaxed/simple;
-	bh=CGsnDROhCodxiCvYY3JgqSrViuyF9ZSQMhYlWQDj+aA=;
-	h=Received:DKIM-Signature:Received:Received:Received:Received:
-	 Received:Received:Received:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-TM-AS-GCONF:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-GUID:
-	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details; b=u59nnEeHSGdssjaGoRXpvNs9Q/gUMe49AjVhlgyao06LayAa/WzZB95yC2gIL9Y9VoWS7jroIwhIUqLpYpQUNv8mf1nu7JWWXGJX11h5oBkvuB0eR1OenmqrQe0j6SZdH2Y2w0FCbVd6hKIeioV8k67x2s3ks9rTNNQsjZNttIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Ve8Faakb; arc=none smtp.client-ip=148.163.156.1
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40GI79xW013088;
-	Tue, 16 Jan 2024 18:08:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=VMRRoZGEbNDKMzcsIuD608LUrCeDX/CHVCbe+ZNWqug=;
- b=Ve8FaakbyzKYUs1fwZqy6sK8N2oaMzasCMvWb3IoNbY+vWWjmvXIPF+L/MaRnVL47vCY
- 27Jige9DiFs99GqKmHrc2WSZF3pxvwJyrlWfesNHPN9ajoF6Hm4jv/LoNBp5Jl+trsZk
- yglL1b8wpGLYG7FwQi4xVXhlRnzKxHzexdu5pVW/scLhdnrUMo3g/NcV64ZTXXs6P6qj
- 48yKPQZ2qxM3ZC2JNISKkiI3dglznLQSdZc7UaRHTuLBNguXCV8Cq/IsDF59mklX/vW1
- 04x89KAzXbILEC4bkLKOG1wmBB9weeqfOroflNMUOznrPt8Gycx3ErT10TKcqan5Mcnf 9Q== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vnxswr58v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Jan 2024 18:08:41 +0000
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40GI7NTO014282;
-	Tue, 16 Jan 2024 18:08:27 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vnxswr431-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Jan 2024 18:08:26 +0000
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40GGSV6H019884;
-	Tue, 16 Jan 2024 18:08:11 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 3vm72jyw89-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Jan 2024 18:08:11 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40GI86sD18875094
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 16 Jan 2024 18:08:06 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6BF1220043;
-	Tue, 16 Jan 2024 18:08:06 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 53E5720040;
-	Tue, 16 Jan 2024 18:08:05 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.171.88.12])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 16 Jan 2024 18:08:05 +0000 (GMT)
-Date: Tue, 16 Jan 2024 19:08:03 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Tony Krowiak <akrowiak@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, jjherne@linux.ibm.com, borntraeger@de.ibm.com,
-        pasic@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
-        imbrenda@linux.ibm.com, alex.williamson@redhat.com,
-        kwankhede@nvidia.com, gor@linux.ibm.com, stable@vger.kernel.org
-Subject: Re: [PATCH v4 4/6] s390/vfio-ap: reset queues filtered from the
- guest's AP config
-Message-ID: <ZabGAx5BpIiYW+b3@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-References: <20240115185441.31526-1-akrowiak@linux.ibm.com>
- <20240115185441.31526-5-akrowiak@linux.ibm.com>
+	s=arc-20240116; t=1705429443; c=relaxed/simple;
+	bh=Ny7yUTWUQmymtTX7P4DBusGcRxTBntr9KtUV8w6jbQg=;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To; b=ZO6v7FVWdPA6mwfi9SKx38ALUv8s+9coX86XKEb5qTkeb68PFo6x4YCLgDRXonbBdCSwmjrmQb/r74mq1IxcpjfaFLWfdYR4I0AGiiOXm1TT3aRH+8ojtMf1+Z/UL+NHHs09k5f12an59IQimyDV9pIgGRg5WLAuxymnw089pC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NFH8wYuI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64177C433F1;
+	Tue, 16 Jan 2024 18:24:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705429442;
+	bh=Ny7yUTWUQmymtTX7P4DBusGcRxTBntr9KtUV8w6jbQg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NFH8wYuIlYf2tCV++H4TxMsYm8W3QXQq7OBPAgOImKlhiUN3qkV47KbVlgsxoJ+h0
+	 Pj+NqnOJ9AJ9IHUElT4Tc+De1Disw9P/nFvB3I5BJDE7L0jh2JYoqLjv978rsdYbPT
+	 QMKMCTvdp2AnkgkrtDlpies2vmrheHFd+qFp0ysrGipua4HJywo5yAdvEukoom4Ep/
+	 hq6xqBpUEznsELr7Ubpg5lR6R0I7HChmIIUaL1zcJEjF2b/9iTF7n0Zszsx8zPjoUX
+	 IJqiB8XJyRcoRpovhPZAlquCnlRFTxnKea1UHYfhj/zCMLsVxQpiwK0rOlkBkWndJw
+	 4bErFPZwkudzQ==
+Date: Tue, 16 Jan 2024 13:24:00 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: stable-commits@vger.kernel.org, stable@vger.kernel.org,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Daniel Baluta <daniel.baluta@nxp.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>, Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>
+Subject: Re: Patch "ASoC: SOF: mediatek: mt8186: Add Google Steelix topology
+ compatible" has been added to the 6.1-stable tree
+Message-ID: <ZabJwJax7gY-uTzC@sashalap>
+References: <20240116105221.235358-1-sashal@kernel.org>
+ <71af3837-d1a9-478d-82fa-1b52fddd5aa2@collabora.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20240115185441.31526-5-akrowiak@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: qr-HNzAfCi4ZJhU7UfWPkVpaO4WRdxRE
-X-Proofpoint-GUID: KpFaRAXl_1zNmYew_c9e92rP3dK_QZU6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-16_10,2024-01-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
- mlxscore=0 suspectscore=0 clxscore=1011 spamscore=0 phishscore=0
- priorityscore=1501 impostorscore=0 malwarescore=0 mlxlogscore=875
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401160143
+In-Reply-To: <71af3837-d1a9-478d-82fa-1b52fddd5aa2@collabora.com>
 
-On Mon, Jan 15, 2024 at 01:54:34PM -0500, Tony Krowiak wrote:
-> From: Tony Krowiak <akrowiak@linux.ibm.com>
-...
-> diff --git a/drivers/s390/crypto/vfio_ap_private.h b/drivers/s390/crypto/vfio_ap_private.h
-> index 88aff8b81f2f..20eac8b0f0b9 100644
-> --- a/drivers/s390/crypto/vfio_ap_private.h
-> +++ b/drivers/s390/crypto/vfio_ap_private.h
-> @@ -83,10 +83,10 @@ struct ap_matrix {
->  };
->  
->  /**
-> - * struct ap_queue_table - a table of queue objects.
-> - *
-> - * @queues: a hashtable of queues (struct vfio_ap_queue).
-> - */
-> +  * struct ap_queue_table - a table of queue objects.
-> +  *
-> +  * @queues: a hashtable of queues (struct vfio_ap_queue).
-> +  */
->  struct ap_queue_table {
->  	DECLARE_HASHTABLE(queues, 8);
->  };
+On Tue, Jan 16, 2024 at 12:40:55PM +0100, AngeloGioacchino Del Regno wrote:
+>Il 16/01/24 11:52, Sasha Levin ha scritto:
+>>This is a note to let you know that I've just added the patch titled
+>>
+>>     ASoC: SOF: mediatek: mt8186: Add Google Steelix topology compatible
+>>
+>>to the 6.1-stable tree which can be found at:
+>>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>>
+>>The filename of the patch is:
+>>      asoc-sof-mediatek-mt8186-add-google-steelix-topology.patch
+>>and it can be found in the queue-6.1 subdirectory.
+>>
+>>If you, or anyone else, feels it should not be added to the stable tree,
+>>please let <stable@vger.kernel.org> know about it.
+>>
+>
+>This commit got reverted afterwards, please don't backport.
+>
+>Ref.: https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git/commit/?id=d20d36755a605a21e737b6b16c566658589b1811
 
-If this change is intended?
+I'll drop it, thanks!
+
+-- 
+Thanks,
+Sasha
 
