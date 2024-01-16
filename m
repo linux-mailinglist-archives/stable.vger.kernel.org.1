@@ -1,144 +1,109 @@
-Return-Path: <stable+bounces-11326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6108E82ED1D
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 11:52:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39CFD82ED23
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 11:52:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1664C1F21C66
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 10:52:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC9FC1F23E16
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 10:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49B341944D;
-	Tue, 16 Jan 2024 10:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 730FC1945B;
+	Tue, 16 Jan 2024 10:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N1ma1vf+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q/siWHr/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101F918ED8;
-	Tue, 16 Jan 2024 10:51:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDADC433B2;
-	Tue, 16 Jan 2024 10:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F5D918ED4;
+	Tue, 16 Jan 2024 10:52:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01973C433C7;
+	Tue, 16 Jan 2024 10:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705402314;
-	bh=P8tqp8EC1bLMwSOm33OFhQamnUjYm2hce6stofe2tD8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=N1ma1vf+EDPxUMn8fN2JBsbhj0wxc+Sh4YHtqwguZnYvvHi6bGAyKX1wEBvVTdut4
-	 gjkyffF7+2TM3nGN75eBQTw3gEqfUe4LlcXgYpGhHTCFERmNj79j85DZooJG6+jYw1
-	 wdY6VbQIiRPKzTIt/VkvRlAmDff8gPxDl+ihaoDaupk5/Lnebow3UYxSjjHl2HcN9w
-	 BK513gQf0TThSxNfT6TfVJoimghdbOuS+voSkmDX7QcmBSweV6dLuJu0OQenTSF2fA
-	 CvVJR6deqwmQ5+3w+0Z61t60yd7TtTiw9QDYXxDN9lTrh3C79AfgnQxXWbjCMkW52H
-	 lN1tnKG6cVtnA==
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3bd813ff6ebso646985b6e.1;
-        Tue, 16 Jan 2024 02:51:54 -0800 (PST)
-X-Gm-Message-State: AOJu0YzqNjE76sEagJPU9OOdVhvbcjm3Oh5TurfLAdLmelaW40Z/ShFY
-	WyDVSI5TgUfMh/gf/0VlajdRx0PgNJvMyGuLyuw=
-X-Google-Smtp-Source: AGHT+IETFqwkJQIj4Ddyfoj46BZVi7zTxJO0Cq/ktw9PbRRnWq5ZRJp+1ptYev3sDy6DdHrpvhYT4cCXCdH0R1NlYw8=
-X-Received: by 2002:a05:6870:6e10:b0:203:4b98:a239 with SMTP id
- qt16-20020a0568706e1000b002034b98a239mr4547545oab.89.1705402314238; Tue, 16
- Jan 2024 02:51:54 -0800 (PST)
+	s=k20201202; t=1705402335;
+	bh=BpbxDcIY7558bHQDUuyuGyNMq+oP8ZHFVNuaKBYpl5M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=q/siWHr/EtfTYBSZGrMUixPO2QBiptnFHYjLQBr5LUvxrxyXz3BlOhinXJ4TE8w0N
+	 1Y327yig1QkwHLajIcsJePKdi752w8xm1aZrrC4Ge5ijT2a9BgTrv8hh0JgzmSeF/+
+	 58GadoI3bn7VV6u5xfgV4qUTtVOQxjrza4YtsS+/Dei5SnoGt6wciahu96xVjDioch
+	 fzSY4/Za0lY023dsWvm9kOFtzUeTqR4gAMUNc2s/aIm4nn523DK9Lr+CcO7j7BSdfa
+	 XqseLTVloahJwwqWXjNr06aZSHCkKJfXWrgyDJUq1Veh2SRH5cV+Ov7U5B2LRhORpq
+	 zAeOIKsleeZLg==
+Received: from johan by xi.lan with local (Exim 4.96.2)
+	(envelope-from <johan@kernel.org>)
+	id 1rPh3I-0005Z7-38;
+	Tue, 16 Jan 2024 11:52:17 +0100
+Date: Tue, 16 Jan 2024 11:52:16 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Konrad Dybcio <konrad.dybcio@linaro.org>
+Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Krishna chaitanya chundru <quic_krichai@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Brian Masney <bmasney@redhat.com>,
+	Georgi Djakov <djakov@kernel.org>, linux-arm-msm@vger.kernel.org,
+	vireshk@kernel.org, quic_vbadigan@quicinc.com,
+	quic_skananth@quicinc.com, quic_nitegupt@quicinc.com,
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v6 3/6] PCI: qcom: Add missing icc bandwidth vote for cpu
+ to PCIe path
+Message-ID: <ZaZf4EyX5oADXG9N@hovoldconsulting.com>
+References: <20240112-opp_support-v6-0-77bbf7d0cc37@quicinc.com>
+ <20240112-opp_support-v6-3-77bbf7d0cc37@quicinc.com>
+ <fecfd2d9-7302-4eb6-92d0-c2efbe824bf4@linaro.org>
+ <f9a177e0-3698-4865-9463-220c65c653fb@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240116001526.214354-1-sashal@kernel.org> <20240116001526.214354-5-sashal@kernel.org>
-In-Reply-To: <20240116001526.214354-5-sashal@kernel.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 16 Jan 2024 19:51:18 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARFMD3HwQUDAcd4L12Je=XNKWUxiF=Ps_Mp28Vdv=TyKw@mail.gmail.com>
-Message-ID: <CAK7LNARFMD3HwQUDAcd4L12Je=XNKWUxiF=Ps_Mp28Vdv=TyKw@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 4.19 5/5] selftests/nolibc: use EFI -bios for
- LoongArch qemu
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
-	Willy Tarreau <w@1wt.eu>, linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f9a177e0-3698-4865-9463-220c65c653fb@linaro.org>
 
-On Tue, Jan 16, 2024 at 9:15=E2=80=AFAM Sasha Levin <sashal@kernel.org> wro=
-te:
+On Fri, Jan 12, 2024 at 11:33:15PM +0100, Konrad Dybcio wrote:
+> On 12.01.2024 16:17, Bryan O'Donoghue wrote:
+> > On 12/01/2024 14:22, Krishna chaitanya chundru wrote:
+> >> CPU-PCIe path consits for registers PCIe BAR space, config space.
+> >> As there is less access on this path compared to pcie to mem path
+> >> add minimum vote i.e GEN1x1 bandwidth always.
+> >>
+> >> In suspend remove the cpu vote after register space access is done.
+> >>
+> >> Fixes: c4860af88d0c ("PCI: qcom: Add basic interconnect support")
+> > 
+> > If this patch is a Fixes then don't you need the accompanying dts change as a parallel Fixes too ?
+> > 
+> > i.e. without the dts update - you won't have the nodes in the dts to consume => applying this code to the stable kernel absent the dts will result in no functional change and therefore no bugfix.
+> 
+> The Fixes tag denotes a bug fix, its use for backport autosel is just
+> a nice "coincidence".
 >
-> From: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
->
-> [ Upstream commit bdeeeaba83682225a7bf5f100fe8652a59590d33 ]
+> Fixing a lack of a required icc path and having to rely on BL leftovers
+> / keepalive bus settings is definitely worth this tag in my eyes.
 
+An incomplete implementation can sometimes be considered a bug, but not
+always. If this is needed to enable a new use case, then it's hard to
+argue that the original omission was a bug.
 
+And as I just mentioned to Krishna, the above Fixes tag is not correct
+as that commit did not *introduce* any issue. It solved the bit that was
+strictly needed for sc8280xp, but now it seems you may need something
+more for an even newer platform (even if no details and motivation was
+included in the commit message as it should have been).
 
-
-
-
->
-> qemu for LoongArch does not work properly with direct kernel boot.
-> The kernel will panic during initialization and hang without any output.
->
-> When booting in EFI mode everything work correctly.
->
-> While users most likely don't have the LoongArch EFI binary installed at
-> least an explicit error about 'file not found' is better than a hanging
-> test without output that can never succeed.
->
-> Link: https://lore.kernel.org/loongarch/1738d60a-df3a-4102-b1da-d16a29b6e=
-06a@t-8ch.de/
-> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
-> Acked-by: Willy Tarreau <w@1wt.eu>
-> Link: https://lore.kernel.org/r/20231031-nolibc-out-of-tree-v1-1-47c92f73=
-590a@weissschuh.net
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  Makefile | 9 ++++++++-
-
-
-Same for the AUTOSEL 5.4.
-
-
-
-
-
-
->  1 file changed, 8 insertions(+), 1 deletion(-)
->
-> diff --git a/Makefile b/Makefile
-> index fc7bc81130dc..40c860f1c0a3 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -548,6 +548,13 @@ ifeq ($(config-targets),1)
->  # *config targets only - make sure prerequisites are updated, and descen=
-d
->  # in scripts/kconfig to make the *config target
->
-> +QEMU_BIOS_DIR =3D /usr/share/edk2/
-> +QEMU_BIOS_loongarch =3D $(QEMU_BIOS_DIR)/loongarch64/OVMF_CODE.fd
-> +
-> +ifneq ($(QEMU_BIOS_$(XARCH)),)
-> +QEMU_ARGS_BIOS =3D -bios $(QEMU_BIOS_$(XARCH))
-> +endif
-> +
->  # Read arch specific Makefile to set KBUILD_DEFCONFIG as needed.
->  # KBUILD_DEFCONFIG may point out an alternative default configuration
->  # used for 'make defconfig'
-> @@ -1303,7 +1310,7 @@ _modinst_:
->         fi
->         @cp -f $(objtree)/modules.order $(MODLIB)/
->         @cp -f $(objtree)/modules.builtin $(MODLIB)/
-> -       $(Q)$(MAKE) -f $(srctree)/scripts/Makefile.modinst
-> +       $(Q)$(MAKE) $(QEMU_ARGS_BIOS) -f $(srctree)/scripts/Makefile.modi=
-nst
->
->  # This depmod is only for convenience to give the initial
->  # boot a modules.dep even before / is mounted read-write.  However the
-> --
-> 2.43.0
->
-
-
---
-Best Regards
-
-Masahiro Yamada
+Johan
 
