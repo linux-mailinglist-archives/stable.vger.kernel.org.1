@@ -1,120 +1,157 @@
-Return-Path: <stable+bounces-11324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046BB82ECF2
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 11:46:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EA4582ED0E
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 11:51:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9E731F230DB
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 10:46:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FD1B1C230F2
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 10:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 414BD17BB4;
-	Tue, 16 Jan 2024 10:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D2D18ED1;
+	Tue, 16 Jan 2024 10:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ucw.cz header.i=@ucw.cz header.b="a1SnG66i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BsxJpqkm"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC6E17BBC;
-	Tue, 16 Jan 2024 10:46:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ucw.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ucw.cz
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id B91A11C0071; Tue, 16 Jan 2024 11:46:45 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-	t=1705402005;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uJ6VNVEe3MQa3aVTkgyy1bVeVbAM3wMV1HKk86y3sEw=;
-	b=a1SnG66iualXG5lAh86nGw5Eqoy1w1F657wNFWVxKHDjdTwolm7tmUO0PBNukU0k9dyY9N
-	NAHwZjmRJAOlOkl67WpNPzvgCGdbx9hMoDwYyI5le9r1+0nGoLxDOxxYBVG8h7lFB34IF3
-	5dHoQPkrDmzRWj+EeeKY9Mh9ipnXyYs=
-Date: Tue, 16 Jan 2024 11:46:45 +0100
-From: Pavel Machek <pavel@ucw.cz>
-To: Sasha Levin <sashal@kernel.org>
-Cc: Jani Nikula <jani.nikula@linux.intel.com>, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, tzimmermann@suse.de,
-	Ziqi Zhao <astrajoan@yahoo.com>, Maxime Ripard <mripard@kernel.org>,
-	dri-devel@lists.freedesktop.org,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
-Subject: End of 4.14 autosel? Re: [PATCH AUTOSEL 4.14 3/6] drm/crtc: Fix
- uninit-value bug in drm_mode_setcrtc
-Message-ID: <ZaZelbUWUsmYxLPB@duo.ucw.cz>
-References: <20231218124725.1382738-1-sashal@kernel.org>
- <20231218124725.1382738-3-sashal@kernel.org>
- <87bkamvay5.fsf@intel.com>
- <ZaSlgTAz7vdk97JJ@sashalap>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A781134D6;
+	Tue, 16 Jan 2024 10:50:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F44C433C7;
+	Tue, 16 Jan 2024 10:50:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705402254;
+	bh=fg+u4GK6DKFx16CsnCP6JZlz9e2/T4cItts13457GWA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=BsxJpqkm2Jm1chIN21JxxYKKzI4VoGRAdHWfuacXisteLEN6RF9KLBF9yOidKbkiZ
+	 nT+LFz3kbvO108MuvU8NQOh8hJN58b1xtcMy4DgkCr8K3PLxHqZ0UQ0j5MkIqhSQ4W
+	 +qJK3scjugND5L4ujNCnvilC2LjJsPuHkL2As+D5pwxT57wqu5zIp+89n09wsljGg+
+	 Mh5BNAjzJN6gyd4TRq7o7SNkzOuBxt61N+9/30H5wL4JngKp9N/bdIJOaxhUTXyGvS
+	 d6KPs4vXKaXKBobup2mfOo1FZ44MJoJMKM55+7TbwFB3l28oz2Iygp11hqRaCoskxb
+	 jfT8z4a+fKbeQ==
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-6dddf12f280so5370493a34.0;
+        Tue, 16 Jan 2024 02:50:54 -0800 (PST)
+X-Gm-Message-State: AOJu0Yyi5ZDjYAQ4ip+9FwehbSra1QEdgPkTQwXmtVnVZyn3Wl6woan6
+	jEGV9C66p7IxJ3PWbq9/91jwLWrjrnypCGsnuRQ=
+X-Google-Smtp-Source: AGHT+IH8NadaWc4/zirP3PWnCkUjkpGPSorQduwoY/EsVpWj+T2/XzHxRklsoREU0xX3+boxBb3/Mh7qawVIr21Mhto=
+X-Received: by 2002:a05:6870:525:b0:206:74c9:c0e3 with SMTP id
+ j37-20020a056870052500b0020674c9c0e3mr9062285oao.6.1705402253568; Tue, 16 Jan
+ 2024 02:50:53 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="o+sd9barL1BWDrsW"
-Content-Disposition: inline
-In-Reply-To: <ZaSlgTAz7vdk97JJ@sashalap>
-
-
---o+sd9barL1BWDrsW
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20240116001514.214199-1-sashal@kernel.org> <20240116001514.214199-7-sashal@kernel.org>
+In-Reply-To: <20240116001514.214199-7-sashal@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Tue, 16 Jan 2024 19:50:17 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQHRwqjLcjLoOm8SEn5wje6A7aKhbjBdyFpxU1jorhPcw@mail.gmail.com>
+Message-ID: <CAK7LNAQHRwqjLcjLoOm8SEn5wje6A7aKhbjBdyFpxU1jorhPcw@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 5.4 7/7] selftests/nolibc: use EFI -bios for
+ LoongArch qemu
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
+	Willy Tarreau <w@1wt.eu>, linux-kbuild@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi!
+On Tue, Jan 16, 2024 at 9:15=E2=80=AFAM Sasha Levin <sashal@kernel.org> wro=
+te:
+>
+> From: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
+>
+> [ Upstream commit bdeeeaba83682225a7bf5f100fe8652a59590d33 ]
+>
+> qemu for LoongArch does not work properly with direct kernel boot.
+> The kernel will panic during initialization and hang without any output.
+>
+> When booting in EFI mode everything work correctly.
+>
+> While users most likely don't have the LoongArch EFI binary installed at
+> least an explicit error about 'file not found' is better than a hanging
+> test without output that can never succeed.
+>
+> Link: https://lore.kernel.org/loongarch/1738d60a-df3a-4102-b1da-d16a29b6e=
+06a@t-8ch.de/
+> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
+> Acked-by: Willy Tarreau <w@1wt.eu>
+> Link: https://lore.kernel.org/r/20231031-nolibc-out-of-tree-v1-1-47c92f73=
+590a@weissschuh.net
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  Makefile | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
 
-> > > From: Ziqi Zhao <astrajoan@yahoo.com>
-> > >=20
-> > > [ Upstream commit 3823119b9c2b5f9e9b760336f75bc989b805cde6 ]
-> > >=20
-> > > The connector_set contains uninitialized values when allocated with
-> > > kmalloc_array. However, in the "out" branch, the logic assumes that a=
-ny
-> > > element in connector_set would be equal to NULL if failed to
-> > > initialize, which causes the bug reported by Syzbot. The fix is to use
-> > > an extra variable to keep track of how many connectors are initialized
-> > > indeed, and use that variable to decrease any refcounts in the "out"
-> > > branch.
-> > >=20
-> > > Reported-by: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
-> > > Signed-off-by: Ziqi Zhao <astrajoan@yahoo.com>
-> > > Reported-and-tested-by: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspot=
-mail.com
-> > > Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-> > > Link: https://lore.kernel.org/r/20230721161446.8602-1-astrajoan@yahoo=
-=2Ecom
-> > > Signed-off-by: Maxime Ripard <mripard@kernel.org>
-> > > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> >=20
-> > This commit fixes an uninitialized value, but introduces a new
-> > one. Please backport 6e455f5dcdd1 ("drm/crtc: fix uninitialized variable
-> > use") from v6.7-rc6 to go with it.
->=20
-> I'll take 6e455f5dcdd1 too, thanks!
 
-So, what is the status of 4.14-stable? Last one was
-marked. .. well. .. as last one, so perhaps AUTOSEL should start
-ignoring it, too?
 
-Best regards,
-								Pavel
+
+This backport makes me upset.
+
+The original commit, bdeeeaba83682225a7bf5f100fe8652a59590d33,
+changed tools/testing/selftests/nolibc/Makefile.
+
+
+However, this backport changes the top Makefile.
+
+
+What is happening in the back-port logic?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+> diff --git a/Makefile b/Makefile
+> index 500edb9d9f15..33d118fbb432 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -584,6 +584,13 @@ ifdef config-build
+>  # *config targets only - make sure prerequisites are updated, and descen=
+d
+>  # in scripts/kconfig to make the *config target
+>
+> +QEMU_BIOS_DIR =3D /usr/share/edk2/
+> +QEMU_BIOS_loongarch =3D $(QEMU_BIOS_DIR)/loongarch64/OVMF_CODE.fd
+> +
+> +ifneq ($(QEMU_BIOS_$(XARCH)),)
+> +QEMU_ARGS_BIOS =3D -bios $(QEMU_BIOS_$(XARCH))
+> +endif
+> +
+>  # Read arch specific Makefile to set KBUILD_DEFCONFIG as needed.
+>  # KBUILD_DEFCONFIG may point out an alternative default configuration
+>  # used for 'make defconfig'
+> @@ -1375,7 +1382,7 @@ _modinst_:
+>         @sed 's:^:kernel/:' modules.order > $(MODLIB)/modules.order
+>         @sed 's:^:kernel/:' modules.builtin > $(MODLIB)/modules.builtin
+>         @cp -f $(objtree)/modules.builtin.modinfo $(MODLIB)/
+> -       $(Q)$(MAKE) -f $(srctree)/scripts/Makefile.modinst
+> +       $(Q)$(MAKE) $(QEMU_ARGS_BIOS) -f $(srctree)/scripts/Makefile.modi=
+nst
+>
+>  # This depmod is only for convenience to give the initial
+>  # boot a modules.dep even before / is mounted read-write.  However the
+> --
+> 2.43.0
+>
+
+
 --=20
-People of Russia, stop Putin before his war on Ukraine escalates.
-
---o+sd9barL1BWDrsW
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZaZelQAKCRAw5/Bqldv6
-8sdcAJ9rTyq5VQW4BNAizG86yFj6oniPRACgi8ro35eyUnFqN72aI2RVAxI1qYg=
-=SCC6
------END PGP SIGNATURE-----
-
---o+sd9barL1BWDrsW--
+Best Regards
+Masahiro Yamada
 
