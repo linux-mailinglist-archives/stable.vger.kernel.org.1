@@ -1,174 +1,98 @@
-Return-Path: <stable+bounces-11342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B6282F066
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 15:18:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E5D782F110
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 16:10:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B17F1C232E6
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 14:18:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DE5F2811FF
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 15:10:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191781BDF7;
-	Tue, 16 Jan 2024 14:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63EEB1BF47;
+	Tue, 16 Jan 2024 15:10:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ST+tFi/j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sQBmJlPe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f202.google.com (mail-lj1-f202.google.com [209.85.208.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC8F1B979
-	for <stable@vger.kernel.org>; Tue, 16 Jan 2024 14:18:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--khtsai.bounces.google.com
-Received: by mail-lj1-f202.google.com with SMTP id 38308e7fff4ca-2cccd597247so87676271fa.0
-        for <stable@vger.kernel.org>; Tue, 16 Jan 2024 06:18:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1705414720; x=1706019520; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=cakF87CadgCIOgMCOG5EwBp6+8GtSy9HpPwc++zV4Aw=;
-        b=ST+tFi/j4TY+OOWbSSHf3Mm7LvUHvrs8FSG1j+qlmzn7q0VLhdc9BYHrhApvA+acHb
-         dZjXNDDS2ARz2XAnauAN1cslh6Xy8zfFH4QrPfXC8MbwMVuXIsKJWJOVRrU9eqV38C52
-         C8apA1q+bc8lXq0qdC2ipZx5qoJ8so1qW5BtdlobgxgMRV52eyayEonCQRWeIvjNnydx
-         KnJkjNlYhpDGIiBzW9sky3uvl8zwMrbZKHbhicch6sEu5u4c9mYX1HLS+XHdu9Vr3pkV
-         RzrPdPPKfipNwnCXRxftZmuUE/JQSAz+hNRZxZ+FwISftV9hAPBUzUdoBsq36UEfWRbm
-         tu6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705414720; x=1706019520;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cakF87CadgCIOgMCOG5EwBp6+8GtSy9HpPwc++zV4Aw=;
-        b=B7hUPRJgXSpCEXBzm6wTkVeEWH18QNjudLRb5Ri7asHi2GLoY94OmZ2qzI/Fkedqov
-         TZBIn2dZLq7/rb/32kMaWp6FP0UzIxSGxHI+asms3VcC2iMZEXVHmzopZmLZwwvGLTHa
-         YWuo6+zhbPSghtKI7CMW1sGVzwVYvgy/lNU+/YXfvUu+dDVWuYX0C2m9R23hCickYF3M
-         MNYwytXlZr0H8odZVpr7o3z5cqSWsZvPY0JRMli99RPtky+IS4XUfKtB3LLBezfpZ5OK
-         7FNgSI6P0ZsEStoaBu5xZDtz51oisD1sGTBavvAP1puDuUzRiHC0lFJacJZ+KZlany2v
-         G0eA==
-X-Gm-Message-State: AOJu0Yz8Po/ez6coMnRIWU9iAbdartI+lZDMGVMB2T93881hnwPjL6+9
-	BTfVyKTPCY/pXYbHg6p5bjUtXkHQSabfwx8d5A==
-X-Google-Smtp-Source: AGHT+IHCvq//e0n+7yiArRVI/iVOEbDs4vwkpKIx4neEAk9pynG5pMexDdUPZmZ3F37zts1U7xT8AZQIzEo=
-X-Received: from khtsai-large-gcloudtop.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:289])
- (user=khtsai job=sendgmr) by 2002:a2e:bb86:0:b0:2cd:b310:f5a6 with SMTP id
- y6-20020a2ebb86000000b002cdb310f5a6mr8054lje.5.1705414720418; Tue, 16 Jan
- 2024 06:18:40 -0800 (PST)
-Date: Tue, 16 Jan 2024 22:16:17 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251451BF41;
+	Tue, 16 Jan 2024 15:10:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC60C433F1;
+	Tue, 16 Jan 2024 15:10:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705417813;
+	bh=B1FJIuGceQwGGUr1VdWXxI5e+Mbkrvt6mGSLavFdtRM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sQBmJlPeo0s/7USxGte5IlqP3pBJU3TX0Ms0p3AN/ACkQN1ZvtUv+Hfb8hGkjSsdw
+	 nZCx54vGUXhQXZqC5yaybqyjfbRayZ+FeyjVopDy62wGeb346r/imKBgGbHg10Htmk
+	 R5KdV7BAuHpDIwAb3zGjoSkB5eLnIZPFAL6COuYYWSYInKGnyfhLJGpPR/FeJa0ps5
+	 qYfRtTz1Sm9YQK97x6hztp8OqZjG8l8MxmsfVjG1N7XI8ayXGR+IbE2JTUah7GyYm7
+	 Zd7eavOKvMQr6+ltIHe8IhhtyfoEvwB+AoyTHx45YQSUbICdpRDoiFOFsbo3XAf8uX
+	 klsxHD33fhclQ==
+Date: Tue, 16 Jan 2024 15:10:08 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Cc: Johan Hovold <johan+linaro@kernel.org>,
+	Banajit Goswami <bgoswami@quicinc.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 1/7] ASoC: qcom: sc8280xp: limit speaker volumes
+Message-ID: <029c8d1b-a621-41cb-a577-dd5829fe8427@sirena.org.uk>
+References: <20240116093903.19403-1-johan+linaro@kernel.org>
+ <20240116093903.19403-2-johan+linaro@kernel.org>
+ <1cc50979-741b-4341-9e9e-2fdee1dd2e65@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.43.0.275.g3460e3d667-goog
-Message-ID: <20240116141801.396398-1-khtsai@google.com>
-Subject: [PATCH] usb: gadget: u_serial: Add null pointer checks after RX/TX submission
-From: Kuen-Han Tsai <khtsai@google.com>
-To: gregkh@linuxfoundation.org, quic_prashk@quicinc.com, jirislaby@kernel.org, 
-	stern@rowland.harvard.edu, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Cc: Kuen-Han Tsai <khtsai@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ShzZHTDGEX/OI1T3"
+Content-Disposition: inline
+In-Reply-To: <1cc50979-741b-4341-9e9e-2fdee1dd2e65@linaro.org>
+X-Cookie: Programmers do it bit by bit.
 
-Commit ffd603f21423 ("usb: gadget: u_serial: Add null pointer check in
-gs_start_io") adds null pointer checks to gs_start_io(), but it doesn't
-fully fix the potential null pointer dereference issue. While
-gserial_connect() calls gs_start_io() with port_lock held, gs_start_rx()
-and gs_start_tx() release the lock during endpoint request submission.
-This creates a window where gs_close() could set port->port_tty to NULL,
-leading to a dereference when the lock is reacquired.
 
-This patch adds a null pointer check for port->port_tty after RX/TX
-submission, and removes the initial null pointer check in gs_start_io()
-since the caller must hold port_lock and guarantee non-null values for
-port_usb and port_tty.
+--ShzZHTDGEX/OI1T3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: ffd603f21423 ("usb: gadget: u_serial: Add null pointer check in gs_start_io")
-Cc: stable@vger.kernel.org
-Signed-off-by: Kuen-Han Tsai <khtsai@google.com>
----
-Explanation:
-    CPU1:                            CPU2:
-    gserial_connect() // lock
-                                     gs_close() // await lock
-    gs_start_rx()     // unlock
-    usb_ep_queue()
-                                     gs_close() // lock, reset port_tty and unlock
-    gs_start_rx()     // lock
-    tty_wakeup()      // dereference
+On Tue, Jan 16, 2024 at 11:11:47AM +0000, Srinivas Kandagatla wrote:
+> On 16/01/2024 09:38, Johan Hovold wrote:
+> > The current UCM configuration sets the speaker PA volume to 15 dB when
+> > enabling the speakers but this does not prevent the user from increasing
+> > the volume further.
+> >=20
+> > Limit the PA volume to 15 dB in the machine driver to reduce the risk of
+> > speaker damage until we have active speaker protection in place.
 
-Stack traces:
-[   51.494375][  T278] ttyGS1: shutdown
-[   51.494817][  T269] android_work: sent uevent USB_STATE=DISCONNECTED
-[   52.115792][ T1508] usb: [dm_bind] generic ttyGS1: super speed IN/ep1in OUT/ep1out
-[   52.516288][ T1026] android_work: sent uevent USB_STATE=CONNECTED
-[   52.551667][ T1533] gserial_connect: start ttyGS1
-[   52.565634][ T1533] [khtsai] enter gs_start_io, ttyGS1, port->port.tty=0000000046bd4060
-[   52.565671][ T1533] [khtsai] gs_start_rx, unlock port ttyGS1
-[   52.591552][ T1533] [khtsai] gs_start_rx, lock port ttyGS1
-[   52.619901][ T1533] [khtsai] gs_start_rx, unlock port ttyGS1
-[   52.638659][ T1325] [khtsai] gs_close, lock port ttyGS1
-[   52.656842][ T1325] gs_close: ttyGS1 (0000000046bd4060,00000000be9750a5) ...
-[   52.683005][ T1325] [khtsai] gs_close, clear ttyGS1
-[   52.683007][ T1325] gs_close: ttyGS1 (0000000046bd4060,00000000be9750a5) done!
-[   52.708643][ T1325] [khtsai] gs_close, unlock port ttyGS1
-[   52.747592][ T1533] [khtsai] gs_start_rx, lock port ttyGS1
-[   52.747616][ T1533] [khtsai] gs_start_io, ttyGS1, going to call tty_wakeup(), port->port.tty=0000000000000000
-[   52.747629][ T1533] Unable to handle kernel NULL pointer dereference at virtual address 00000000000001f8
----
- drivers/usb/gadget/function/u_serial.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+> LGTM, We can get rid of this limit once we have Speaker protection inplac=
+e.
 
-diff --git a/drivers/usb/gadget/function/u_serial.c b/drivers/usb/gadget/function/u_serial.c
-index a92eb6d90976..2f1890c8f473 100644
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -539,20 +539,16 @@ static int gs_alloc_requests(struct usb_ep *ep, struct list_head *head,
- static int gs_start_io(struct gs_port *port)
- {
- 	struct list_head	*head = &port->read_pool;
--	struct usb_ep		*ep;
-+	struct usb_ep		*ep = port->port_usb->out;
- 	int			status;
- 	unsigned		started;
+There should be a userspace component for speaker protection so you'll
+need to limit things when that's not running.
 
--	if (!port->port_usb || !port->port.tty)
--		return -EIO;
--
- 	/* Allocate RX and TX I/O buffers.  We can't easily do this much
- 	 * earlier (with GFP_KERNEL) because the requests are coupled to
- 	 * endpoints, as are the packet sizes we'll be using.  Different
- 	 * configurations may use different endpoints with a given port;
- 	 * and high speed vs full speed changes packet sizes too.
- 	 */
--	ep = port->port_usb->out;
- 	status = gs_alloc_requests(ep, head, gs_read_complete,
- 		&port->read_allocated);
- 	if (status)
-@@ -569,12 +565,22 @@ static int gs_start_io(struct gs_port *port)
- 	port->n_read = 0;
- 	started = gs_start_rx(port);
+--ShzZHTDGEX/OI1T3
+Content-Type: application/pgp-signature; name="signature.asc"
 
-+	/*
-+	 * The TTY may be set to NULL by gs_close() after gs_start_rx() or
-+	 * gs_start_tx() release locks for endpoint request submission.
-+	 */
-+	if (!port->port.tty)
-+		goto out;
-+
- 	if (started) {
- 		gs_start_tx(port);
- 		/* Unblock any pending writes into our circular buffer, in case
- 		 * we didn't in gs_start_tx() */
-+		if (!port->port.tty)
-+			goto out;
- 		tty_wakeup(port->port.tty);
- 	} else {
-+out:
- 		gs_free_requests(ep, head, &port->read_allocated);
- 		gs_free_requests(port->port_usb->in, &port->write_pool,
- 			&port->write_allocated);
---
-2.43.0.275.g3460e3d667-goog
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWmnE8ACgkQJNaLcl1U
+h9Dbmgf+IblLPaBg7D2oSrtByTikbx592QEXrkcWHGjqquxgdEdDaTQXUNfUE9oR
+N7Dllk3rRDTEPEc78Gb5hFvjE7zut/xjfOoaGqSiwtv9/pA8TkEI8qBB65eQxSNt
+5Zpcy5Y2bZ3AkzcggF3JFZsUBx1pdE6CVi7BrR3SCOsvnZGowBpVRaMP+MWvZPO1
+I+mntld1hnmH2g/1fnMmPIpvXlGSKPQ3bbcqd7d7IVnxBagNzPdKyQVnpMlHTQM0
+5w2XCZc8Nikf/8UzUrM6DBL8AeNww6V9etfyjkquZ5COHeaW16quGxMksHtpO7bL
+2MAtAP7YlZTbCeQv/VmF4TshVtrPqw==
+=ukiF
+-----END PGP SIGNATURE-----
+
+--ShzZHTDGEX/OI1T3--
 
