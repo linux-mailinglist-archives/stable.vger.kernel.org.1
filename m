@@ -1,48 +1,54 @@
-Return-Path: <stable+bounces-11788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF7382FC3C
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 23:16:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A82A82FC41
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 23:16:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7867328E93B
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 22:16:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 138F41C27B7E
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 22:16:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C87A24A1F;
-	Tue, 16 Jan 2024 20:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D069A3CF51;
+	Tue, 16 Jan 2024 20:44:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5786C1D695;
-	Tue, 16 Jan 2024 20:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C4124B5F;
+	Tue, 16 Jan 2024 20:44:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705437794; cv=none; b=Dw8Np/jfAs2OSiyFxXv/oApTiOLHzXguvwb1juR6ABawdLoztZeg7SJOKXbhLHBeviIlW9aC/ZiQVNRKujtAJWGTxZ4YxjZleNd21C0EfJNC8Kas+JosXiW4lrDM+08p9SWokksrH9ka+nUydD/fHH8mAAmePe2LP/VgIccdq1E=
+	t=1705437845; cv=none; b=ESWNVvQt1ZrPLaGgGhWMC3YycZWIhrjJTW7C2fstjABYpQrBm9SRk5CtNdq7tsOOQP8xml95c/DPtCGxf0025DJg/8SjYFO4CRwFJJx10thelkKWuPU2aFIdtFoUPOpdvIeOHBw7/jkEpasOakwLmf9ELE2zTl/ihDuO8vKgNvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705437794; c=relaxed/simple;
-	bh=sZJXPXcvlS/jVke7bDGNZMdYz3tnl4Zho2n6I37BIZU=;
+	s=arc-20240116; t=1705437845; c=relaxed/simple;
+	bh=CZ7ei0D4dK8lP4GUlsYoGNzXEf7NzkxYKYx3wMd+cEI=;
 	h=Received:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=MBj75tkeDS+wc7ClU/DxYq5HjoiAOIbuzsUm/PGCj2fuBZu5ITIHWBjGmzaN302Y1mSvipLSloGvS5NeJIwiVHkrLWBo1CrtpG9cIiVETojtnUPPrgHvUMBG0o+yOzpImSQwz94XYXk0CjxseTuiWx3mOVG0+G4PNAuV+dljKCc=
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=c7d6qBUms3hGpvY9XYZsSl1nqqyIlpc3XkzBqPzmsn4zKVbHyye/u5ShnF6GkxZrw66pc5UXEowtD2gztL7HIGcPDEmZSiVZMxz0CjCvJlpjwj2fuoCZcJhLhMyq5Da+GksOfPLNxpTOdnHIqVZ1tF5okfaV9qtBmTSr5QMiiHk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 16AF71C0071; Tue, 16 Jan 2024 21:43:10 +0100 (CET)
-Date: Tue, 16 Jan 2024 21:43:09 +0100
+	id 9713A1C0079; Tue, 16 Jan 2024 21:44:01 +0100 (CET)
+Date: Tue, 16 Jan 2024 21:44:01 +0100
 From: Pavel Machek <pavel@denx.de>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Christian Brauner <brauner@kernel.org>, zack.rusin@broadcom.com,
-	mcgrof@kernel.org, pstanner@redhat.com, nick.alcock@oracle.com,
-	code@siddh.me, ddiss@suse.de
-Subject: Re: [PATCH AUTOSEL 5.10 01/10] watch_queue: fix kcalloc() arguments
- order
-Message-ID: <ZabqXRf4X7wUgeqL@duo.ucw.cz>
+	"Borislav Petkov (AMD)" <bp@alien8.de>, tglx@linutronix.de,
+	mingo@redhat.com, dave.hansen@linux.intel.com, x86@kernel.org,
+	puwen@hygon.cn, seanjc@google.com, kim.phillips@amd.com,
+	reinette.chatre@intel.com, babu.moger@amd.com, jmattson@google.com,
+	peterz@infradead.org, ashok.raj@intel.com,
+	rick.p.edgecombe@intel.com, brgerst@gmail.com, mjguzik@gmail.com,
+	jpoimboe@kernel.org, nik.borisov@suse.com, aik@amd.com,
+	vegard.nossum@oracle.com, daniel.sneddon@linux.intel.com,
+	acdunlap@google.com
+Subject: Re: [PATCH AUTOSEL 5.10 09/10] x86/barrier: Do not serialize MSR
+ accesses on AMD
+Message-ID: <ZabqkZ2vXaicy3pZ@duo.ucw.cz>
 References: <20240115232818.210010-1-sashal@kernel.org>
+ <20240115232818.210010-9-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,39 +56,44 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="ynXok9RdLEYysjzt"
+	protocol="application/pgp-signature"; boundary="4Ia2zJT+I07Stjth"
 Content-Disposition: inline
-In-Reply-To: <20240115232818.210010-1-sashal@kernel.org>
+In-Reply-To: <20240115232818.210010-9-sashal@kernel.org>
 
 
---ynXok9RdLEYysjzt
+--4Ia2zJT+I07Stjth
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> From: Dmitry Antipov <dmantipov@yandex.ru>
+> From: "Borislav Petkov (AMD)" <bp@alien8.de>
 >=20
-> [ Upstream commit 1bfc466b13cf6652ba227c282c27a30ffede69a5 ]
+> [ Upstream commit 04c3024560d3a14acd18d0a51a1d0a89d29b7eb5 ]
 >=20
-> When compiling with gcc version 14.0.0 20231220 (experimental)
-> and W=3D1, I've noticed the following warning:
+> AMD does not have the requirement for a synchronization barrier when
+> acccessing a certain group of MSRs. Do not incur that unnecessary
+> penalty there.
+=2E..
+> Performance captured using an unmodified ipi-bench using the 'mesh-ipi' o=
+ption
+> with and without weak_wrmsr_fence() on a Zen4 system also showed signific=
+ant
+> performance improvement without weak_wrmsr_fence(). The 'mesh-ipi' option=
+ ignores
+> CCX or CCD and just picks random vCPU.
 >=20
-> kernel/watch_queue.c: In function 'watch_queue_set_size':
-> kernel/watch_queue.c:273:32: warning: 'kcalloc' sizes specified with 'siz=
-eof'
-> in the earlier argument and not in the later argument [-Wcalloc-transpose=
-d-args]
->   273 |         pages =3D kcalloc(sizeof(struct page *), nr_pages, GFP_KE=
-RNEL);
->       |                                ^~~~~~
+>   Average throughput (10 iterations) with weak_wrmsr_fence(),
+>         Cumulative throughput: 4933374 IPI/s
 >=20
-> Since 'n' and 'size' arguments of 'kcalloc()' are multiplied to
-> calculate the final size, their actual order doesn't affect the
-> result and so this is not a bug. But it's still worth to fix it.
+>   Average throughput (10 iterations) without weak_wrmsr_fence(),
+>         Cumulative throughput: 6355156 IPI/s
+>=20
+> [1] https://github.com/bytedance/kvm-utils/tree/master/microbenchmark/ipi=
+-bench
 
-Not a bugfix, please drop.
+Speed improvement, not a bugfix. Please drop.
 
 BR,
 									Pavel
@@ -90,15 +101,15 @@ BR,
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---ynXok9RdLEYysjzt
+--4Ia2zJT+I07Stjth
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZabqXQAKCRAw5/Bqldv6
-8sy4AJ48W6k2JPWpiIdoOOSsvyaGuUWJhwCdFtc8G45hj7QvRwAdO840zEPPBOA=
-=ZAQg
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZabqkQAKCRAw5/Bqldv6
+8uONAJ0WBAl/1FnlM9UMYG/+rhKbGP0K0gCgm6w4SGSIymFTPMqja4N0JqK9w7k=
+=ojzs
 -----END PGP SIGNATURE-----
 
---ynXok9RdLEYysjzt--
+--4Ia2zJT+I07Stjth--
 
