@@ -1,98 +1,102 @@
-Return-Path: <stable+bounces-11343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E5D782F110
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 16:10:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EEBF82F164
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 16:23:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DE5F2811FF
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 15:10:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E517A2848C7
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 15:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63EEB1BF47;
-	Tue, 16 Jan 2024 15:10:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F89B1BF56;
+	Tue, 16 Jan 2024 15:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sQBmJlPe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nq4ggkoL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 251451BF41;
-	Tue, 16 Jan 2024 15:10:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC60C433F1;
-	Tue, 16 Jan 2024 15:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D741C280;
+	Tue, 16 Jan 2024 15:23:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF7FC433C7;
+	Tue, 16 Jan 2024 15:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705417813;
-	bh=B1FJIuGceQwGGUr1VdWXxI5e+Mbkrvt6mGSLavFdtRM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sQBmJlPeo0s/7USxGte5IlqP3pBJU3TX0Ms0p3AN/ACkQN1ZvtUv+Hfb8hGkjSsdw
-	 nZCx54vGUXhQXZqC5yaybqyjfbRayZ+FeyjVopDy62wGeb346r/imKBgGbHg10Htmk
-	 R5KdV7BAuHpDIwAb3zGjoSkB5eLnIZPFAL6COuYYWSYInKGnyfhLJGpPR/FeJa0ps5
-	 qYfRtTz1Sm9YQK97x6hztp8OqZjG8l8MxmsfVjG1N7XI8ayXGR+IbE2JTUah7GyYm7
-	 Zd7eavOKvMQr6+ltIHe8IhhtyfoEvwB+AoyTHx45YQSUbICdpRDoiFOFsbo3XAf8uX
-	 klsxHD33fhclQ==
-Date: Tue, 16 Jan 2024 15:10:08 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Cc: Johan Hovold <johan+linaro@kernel.org>,
-	Banajit Goswami <bgoswami@quicinc.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 1/7] ASoC: qcom: sc8280xp: limit speaker volumes
-Message-ID: <029c8d1b-a621-41cb-a577-dd5829fe8427@sirena.org.uk>
-References: <20240116093903.19403-1-johan+linaro@kernel.org>
- <20240116093903.19403-2-johan+linaro@kernel.org>
- <1cc50979-741b-4341-9e9e-2fdee1dd2e65@linaro.org>
+	s=k20201202; t=1705418582;
+	bh=AmZdj0eOvsIB/ujpQpyR8C/TssJ81P4jo/0LQq93d8Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=nq4ggkoL4EWs4nhCK2iucl9MmiXNhmC6pgZ7TaIeIM/Lg6XVkB87rwndBWwYB4Q3P
+	 sPyclCXTudskQ8Je4/NNXPRb8KGgOGlHhnzqXHFAkDmizz2mLMlcGmeqwUlPapk5gl
+	 RLCNplQFOJ0ZQDPT6FrjflKizAYloysT3Vs9H/iNzKyyAAjXE2pw/nJlA2nTwPy4ZA
+	 /C5LT8PZweUUzWRPgiPlxupO9ja20RncG5jXUvGlDyjhPi35Fpn97B//GgvnA3u4sQ
+	 qIULyU8tFAdke8LtHCx1uT4gcbLSQLwP+4gTxyx+zk58r5haZpwFnpZEsdmvQ936HF
+	 fvrrmMX8KjY6g==
+Date: Tue, 16 Jan 2024 07:23:00 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Romain Gantois <romain.gantois@bootlin.com>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>, Jose Abreu
+ <joabreu@synopsys.com>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Maxime
+ Coquelin <mcoquelin.stm32@gmail.com>, Miquel Raynal
+ <miquel.raynal@bootlin.com>, Maxime Chevallier
+ <maxime.chevallier@bootlin.com>, Sylvain Girard <sylvain.girard@se.com>,
+ Pascal EBERHARD <pascal.eberhard@se.com>, Richard Tresidder
+ <rtresidd@electromag.com.au>, Linus Walleij <linus.walleij@linaro.org>,
+ Vladimir Oltean <olteanv@gmail.com>, Andrew Lunn <andrew@lunn.ch>, Thomas
+ Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org, Vladimir
+ Oltean <vladimir.oltean@nxp.com>
+Subject: Re: [PATCH net v5] net: stmmac: Prevent DSA tags from breaking COE
+Message-ID: <20240116072300.3a6e0dbe@kernel.org>
+In-Reply-To: <fca39a53-743e-f79d-d2d1-f23d8e919f82@bootlin.com>
+References: <20240111-prevent_dsa_tags-v5-1-63e795a4d129@bootlin.com>
+	<20240112181327.505b424e@kernel.org>
+	<fca39a53-743e-f79d-d2d1-f23d8e919f82@bootlin.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ShzZHTDGEX/OI1T3"
-Content-Disposition: inline
-In-Reply-To: <1cc50979-741b-4341-9e9e-2fdee1dd2e65@linaro.org>
-X-Cookie: Programmers do it bit by bit.
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Tue, 16 Jan 2024 13:14:15 +0100 (CET) Romain Gantois wrote:
+> > > @@ -4997,7 +5020,7 @@ static void stmmac_dispatch_skb_zc(struct stmmac_priv *priv, u32 queue,
+> > >  	stmmac_rx_vlan(priv->dev, skb);
+> > >  	skb->protocol = eth_type_trans(skb, priv->dev);
+> > >  
+> > > -	if (unlikely(!coe))
+> > > +	if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb))  
+> > 
+> > The lack of Rx side COE checking in this driver is kinda crazy.
+> > Looking at enh_desc_coe_rdes0() it seems like RDES0_FRAME_TYPE
+> > may be the indication we need here?   
+> 
+> I don't think that RDES0_FRAME_TYPE would be enough, at least not on its own. 
+> That bit is set by checking the length/ethertype field to see if is an 
+> Ethernet II frame or an IEEE802.3 frame. But even Ethernet II frames with non-IP 
+> ethertypes will not be checksummed. Also protocols with a non-fixed ethertype 
+> field such as DSA_TAG_PROTO could trigger the bit, or not, depending on what 
+> they put in the DSA tag.
 
---ShzZHTDGEX/OI1T3
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hm, the comment in enh_desc_coe_rdes0() says:
 
-On Tue, Jan 16, 2024 at 11:11:47AM +0000, Srinivas Kandagatla wrote:
-> On 16/01/2024 09:38, Johan Hovold wrote:
-> > The current UCM configuration sets the speaker PA volume to 15 dB when
-> > enabling the speakers but this does not prevent the user from increasing
-> > the volume further.
-> >=20
-> > Limit the PA volume to 15 dB in the machine driver to reduce the risk of
-> > speaker damage until we have active speaker protection in place.
+	/* bits 5 7 0 | Frame status
+	 * ----------------------------------------------------------
+	 *      0 0 0 | IEEE 802.3 Type frame (length < 1536 octects)
+	 *      1 0 0 | IPv4/6 No CSUM errorS.
+	 *      1 0 1 | IPv4/6 CSUM PAYLOAD error
+	 *      1 1 0 | IPv4/6 CSUM IP HR error
+	 *      1 1 1 | IPv4/6 IP PAYLOAD AND HEADER errorS
+	 *      0 0 1 | IPv4/6 unsupported IP PAYLOAD
+	 *      0 1 1 | COE bypassed.. no IPv4/6 frame
+	 *      0 1 0 | Reserved.
+	 */
 
-> LGTM, We can get rid of this limit once we have Speaker protection inplac=
-e.
-
-There should be a userspace component for speaker protection so you'll
-need to limit things when that's not running.
-
---ShzZHTDGEX/OI1T3
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWmnE8ACgkQJNaLcl1U
-h9Dbmgf+IblLPaBg7D2oSrtByTikbx592QEXrkcWHGjqquxgdEdDaTQXUNfUE9oR
-N7Dllk3rRDTEPEc78Gb5hFvjE7zut/xjfOoaGqSiwtv9/pA8TkEI8qBB65eQxSNt
-5Zpcy5Y2bZ3AkzcggF3JFZsUBx1pdE6CVi7BrR3SCOsvnZGowBpVRaMP+MWvZPO1
-I+mntld1hnmH2g/1fnMmPIpvXlGSKPQ3bbcqd7d7IVnxBagNzPdKyQVnpMlHTQM0
-5w2XCZc8Nikf/8UzUrM6DBL8AeNww6V9etfyjkquZ5COHeaW16quGxMksHtpO7bL
-2MAtAP7YlZTbCeQv/VmF4TshVtrPqw==
-=ukiF
------END PGP SIGNATURE-----
-
---ShzZHTDGEX/OI1T3--
+which makes it sound like bit 5 will not be set for a Ethernet II frame
+with unsupported IP payload, or not an IP frame. Does the bit mean other
+things in different descriptor formats?
 
