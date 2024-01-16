@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-11334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D45A282EDB7
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 12:29:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F41CD82EDBC
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 12:31:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A6F3B2161A
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 11:29:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B90B28355C
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 11:31:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76241B804;
-	Tue, 16 Jan 2024 11:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F9F1B804;
+	Tue, 16 Jan 2024 11:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NKWagJjt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r6ulxtos"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD271B7FD;
-	Tue, 16 Jan 2024 11:29:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E45F3C433F1;
-	Tue, 16 Jan 2024 11:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 844381B7F3;
+	Tue, 16 Jan 2024 11:31:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3342C433C7;
+	Tue, 16 Jan 2024 11:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705404586;
-	bh=6w6HVjkdpppHRgfqwMZmBwawH3Y4Fnl30VFp/Ugh2Rk=;
+	s=k20201202; t=1705404665;
+	bh=vMXrSx4Nwi3vxadj/00+0r1snv5SIOyd7UNE/keErUs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NKWagJjt1E81Cfdajv9z0xej0D/Ht7ATq2Bo3pPI8I/Jt8Si7Obqhwhff90rFufHt
-	 0ZZ2zovpUFdZiuJ/gpWkM87CN7zJ+w3pADxpVtDmg/auD/m/4b7NkldRldvQTjPGQg
-	 FPQ339PDlMpn6nXukfTeFJWqSmWWCInieij9SDinnbA2j2+3u+rV5Gg6wHHlwRjzH+
-	 fWVlBbwaEKoW/A0fImZnZpRF9yqbYMKkJQwz9LbZiR4ETZoGjo6nzxRYHseKFc7bVK
-	 Y8NS9JkTOc6jkQAZcOXNes3h8ggL6MRPjhZHARZAZfLgPNgyj5hdBgg279gGnem80w
-	 Bg5YQojv1O9CA==
-Date: Tue, 16 Jan 2024 06:29:44 -0500
+	b=r6ulxtosPZDLXQfq7ZLtVa2oAUTeFS+XSpqns4C/59N+hsLl6Ik4FqYUwln2OejAL
+	 aJG7JXNux7JxFa6kYvXxBBXulmqGj9pP4Z0Fs39kABNXplkuLhpjiY4/7M7SVya6Vx
+	 MV8Rqg3mTHVnth1HKu8o9ocl58v4I0hKFkf2BBpZWytxsmuRMdnrUM9Du5Gqpr0gva
+	 rDNqfhG/vTqWp7nJ2+3QznBVxEqc/ynJdwmLVZtSQi729X5bugG0lBfhqnkuSexyw/
+	 6K5a1sc38srQhS6DB6fjgRrvsZoT4bryFmdeuOaJcNqy37eZmDFbWW8q5oJx6MB4O8
+	 pfqU+lfOSqilQ==
+Date: Tue, 16 Jan 2024 06:31:03 -0500
 From: Sasha Levin <sashal@kernel.org>
-To: Masahiro Yamada <masahiroy@kernel.org>
+To: Amir Goldstein <amir73il@gmail.com>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
-	Willy Tarreau <w@1wt.eu>, linux-kbuild@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 5.4 7/7] selftests/nolibc: use EFI -bios for
- LoongArch qemu
-Message-ID: <ZaZoqGxvuUEZ04Wo@sashalap>
-References: <20240116001514.214199-1-sashal@kernel.org>
- <20240116001514.214199-7-sashal@kernel.org>
- <CAK7LNAQHRwqjLcjLoOm8SEn5wje6A7aKhbjBdyFpxU1jorhPcw@mail.gmail.com>
+	Miklos Szeredi <mszeredi@redhat.com>, Ian Kent <raven@themaw.net>,
+	Christian Brauner <brauner@kernel.org>, viro@zeniv.linux.org.uk,
+	linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.1 12/14] add unique mount ID
+Message-ID: <ZaZo98YNJNilBSVI@sashalap>
+References: <20240115232611.209265-1-sashal@kernel.org>
+ <20240115232611.209265-12-sashal@kernel.org>
+ <CAOQ4uxgGY1949dr0-rt5wuNu-LH=DiRSZrJnamD9bgUtGM9hKQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,50 +53,27 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK7LNAQHRwqjLcjLoOm8SEn5wje6A7aKhbjBdyFpxU1jorhPcw@mail.gmail.com>
+In-Reply-To: <CAOQ4uxgGY1949dr0-rt5wuNu-LH=DiRSZrJnamD9bgUtGM9hKQ@mail.gmail.com>
 
-On Tue, Jan 16, 2024 at 07:50:17PM +0900, Masahiro Yamada wrote:
->On Tue, Jan 16, 2024 at 9:15 AM Sasha Levin <sashal@kernel.org> wrote:
+On Tue, Jan 16, 2024 at 11:04:12AM +0200, Amir Goldstein wrote:
+>On Tue, Jan 16, 2024 at 1:46 AM Sasha Levin <sashal@kernel.org> wrote:
 >>
->> From: Thomas Weißschuh <linux@weissschuh.net>
+>> From: Miklos Szeredi <mszeredi@redhat.com>
 >>
->> [ Upstream commit bdeeeaba83682225a7bf5f100fe8652a59590d33 ]
+>> [ Upstream commit 98d2b43081972abeb5bb5a087bc3e3197531c46e ]
 >>
->> qemu for LoongArch does not work properly with direct kernel boot.
->> The kernel will panic during initialization and hang without any output.
+>> If a mount is released then its mnt_id can immediately be reused.  This is
+>> bad news for user interfaces that want to uniquely identify a mount.
 >>
->> When booting in EFI mode everything work correctly.
->>
->> While users most likely don't have the LoongArch EFI binary installed at
->> least an explicit error about 'file not found' is better than a hanging
->> test without output that can never succeed.
->>
->> Link: https://lore.kernel.org/loongarch/1738d60a-df3a-4102-b1da-d16a29b6e06a@t-8ch.de/
->> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
->> Acked-by: Willy Tarreau <w@1wt.eu>
->> Link: https://lore.kernel.org/r/20231031-nolibc-out-of-tree-v1-1-47c92f73590a@weissschuh.net
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>  Makefile | 9 ++++++++-
->>  1 file changed, 8 insertions(+), 1 deletion(-)
 >
+>Sasha,
 >
+>This is a new API, not a bug fix.
+>Maybe AUTOSEL was triggered by the words "This is bad news for user...."?
 >
->
->This backport makes me upset.
->
->The original commit, bdeeeaba83682225a7bf5f100fe8652a59590d33,
->changed tools/testing/selftests/nolibc/Makefile.
->
->
->However, this backport changes the top Makefile.
->
->
->What is happening in the back-port logic?
+>You have also selected this to other 6.*.y kernels.
 
-I'm... not entierly sure. This wasn't hand massaged.
-
-I'll drop it from everywhere.
+Ack, I'll drop it from everywhere. Thanks!
 
 -- 
 Thanks,
