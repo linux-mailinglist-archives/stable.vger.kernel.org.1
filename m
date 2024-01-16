@@ -1,71 +1,59 @@
-Return-Path: <stable+bounces-11733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DEEA82FB3A
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 22:51:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFC0882FB3D
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 22:51:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1071528864D
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 21:51:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDC201C2685C
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 21:51:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49742162770;
-	Tue, 16 Jan 2024 20:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D5F0162E3B;
+	Tue, 16 Jan 2024 20:03:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pQ2QXEaS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H68tAaI7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03205162769;
-	Tue, 16 Jan 2024 20:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9CF9162E33;
+	Tue, 16 Jan 2024 20:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705435359; cv=none; b=ib1IeR8rlU7bMveAIMK5jSz3LhqTYRYNpNeIxwNXjHu+I7yrng9oRcUnzWXRTHeX3rBnyS45QbJQkIWoveQ5uUDJM8BUwbz+3n6PxFu8/zKQVFCQ9zjdFLNbb4ZGy6pytFqnHeZQfYzLuXF92P+gzwzDvNS730iXP4D1Po6hYp4=
+	t=1705435393; cv=none; b=KUJVEmCzmjaTj0XWEylyuuBCLAt1bNDw+Ap70DoBdanyC609wc4b42+o8TjbdSiptpbH2ZRV0TMypv22fQjaS+0S1ZBsrPe4mZHBTID4FZ4KMxwtKHxbIkkymJ8E8umSUAYwY29YHRO237kTLEij5uk92KdXkAyCmdtKggsTQbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705435359; c=relaxed/simple;
-	bh=gJKiIBBbDy53AjLvncnJKbuQ+GetRLTkRmFZqpRLLdY=;
+	s=arc-20240116; t=1705435393; c=relaxed/simple;
+	bh=bL2TTO0opeE6hdG1ijW9igPA7Kj3xrx8gfgfSS3fAPM=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:X-stable:
-	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=HqMTG2t0FC9l7mrpxg1cQ6xZU4ZifDyAL2kiKom1Oek0Lb0+2Bb7csfzoSrqHOKTtIkV7rRSyGipl1a46ptQSSEby/YmhgzgRdASfFofZ/Scf4Ve0TrSkpkOptcmykNjBYTPfdnGnYify4cVtNqpIk3Cosw2DgkFf1wxPUTCffY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pQ2QXEaS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35AAC433C7;
-	Tue, 16 Jan 2024 20:02:36 +0000 (UTC)
+	 X-Mailer:MIME-Version:X-stable:X-Patchwork-Hint:X-stable-base:
+	 Content-Transfer-Encoding; b=myIrUo43qw0d37arPPaM6yEq/7qq8pfAlxzlGz1nUqOXIxZbocP4caLYxYlaj2xX7aIQspr3wjKyZ15az5qJWNId1FhrgjDorlmxPUkwkAyPh0zhPzZBJMOj/x/YrKJkoGfrb8/hrbAJsASZSuxtEfiy9Q+EjS537FOrwkdS5Dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H68tAaI7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91370C433C7;
+	Tue, 16 Jan 2024 20:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705435358;
-	bh=gJKiIBBbDy53AjLvncnJKbuQ+GetRLTkRmFZqpRLLdY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pQ2QXEaSm1qsOFRzziFk+eI9icNbTH0w2xlJbpnLCVUwlPo7kWq59hZUG9yi+Gjhu
-	 0AsBJsMC9Wx/lRDzGys3CWJSfrc2MCo0AezH25XlncT8mSlPnB+KoGTX0T5F+PUit8
-	 EALPff/eJQcv1w/mRppUOZHNCJeBhiRxGHUeclj8CH8aTuuXUpMy8l3goHAebevBWq
-	 0VHHVYWur+bzP4fjqmZSoYSjvFWsOYoPIU7kh6temPsmOVwP5KK6H0YTKGz6V02hnu
-	 4XzFPzoWZUSJ7Q1AvW3yaEO4ecHTIHh7FeixZ3uVQlb2axq5B0ltQZJHb82AoOCzje
-	 UxPQNkd2A8yQw==
+	s=k20201202; t=1705435393;
+	bh=bL2TTO0opeE6hdG1ijW9igPA7Kj3xrx8gfgfSS3fAPM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=H68tAaI7ry/wdhlzirqIx6zwbJwg2fcVmz48mc7oEcTz5WFs73QiGhabezM9bWjZV
+	 BkmmQmwTnE+bZDbHlUoFdi6OfN0si9nRZrcmI5kTq/4dhBUDnWnGyhrPad9k4+bqk0
+	 aqVwhifKpc0nz0OY4TBz1rOXq4OzNQPaFMqMehxTsm6do4FP1VVjrrYr7M/I4wUQbJ
+	 ZNT0CYBflHY87fF5TV2bHygDg5IIquJT7VVLWDxlhv081VgqNE/WSCjSvaL7ckY2ET
+	 5itEWeSWrL1hRmzLuKJYB+OtTKhs9+XTZUoAGDFAvkrikj/CRWcvSdY4Yp9XygMS5n
+	 oNhg7ZJ2txoHQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andrii Staikov <andrii.staikov@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Jan Sokolowski <jan.sokolowski@intel.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+Cc: Shiji Yang <yangshiji66@outlook.com>,
+	Stanislaw Gruszka <stf_xl@wp.pl>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jesse.brandeburg@intel.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 44/44] i40e: Fix VF disable behavior to block all traffic
-Date: Tue, 16 Jan 2024 15:00:13 -0500
-Message-ID: <20240116200044.258335-44-sashal@kernel.org>
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 01/31] wifi: rt2x00: restart beacon queue when hardware reset
+Date: Tue, 16 Jan 2024 15:02:10 -0500
+Message-ID: <20240116200310.259340-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240116200044.258335-1-sashal@kernel.org>
-References: <20240116200044.258335-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,124 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.208
+X-stable-base: Linux 5.4.267
 Content-Transfer-Encoding: 8bit
 
-From: Andrii Staikov <andrii.staikov@intel.com>
+From: Shiji Yang <yangshiji66@outlook.com>
 
-[ Upstream commit 31deb12e85c35ddd2c037f0107d05d8674cab2c0 ]
+[ Upstream commit a11d965a218f0cd95b13fe44d0bcd8a20ce134a8 ]
 
-Currently, if a VF is disabled using the
-'ip link set dev $ETHX vf $VF_NUM state disable' command, the VF is still
-able to receive traffic.
+When a hardware reset is triggered, all registers are reset, so all
+queues are forced to stop in hardware interface. However, mac80211
+will not automatically stop the queue. If we don't manually stop the
+beacon queue, the queue will be deadlocked and unable to start again.
+This patch fixes the issue where Apple devices cannot connect to the
+AP after calling ieee80211_restart_hw().
 
-Fix the behavior of the 'ip link set dev $ETHX vf $VF_NUM state disable'
-to completely shutdown the VF's queues making it entirely disabled and
-not able to receive or send any traffic.
-
-Modify the behavior of the 'ip link set $ETHX vf $VF_NUM state enable'
-command to make a VF do reinitialization bringing the queues back up.
-
-Co-developed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Jan Sokolowski <jan.sokolowski@intel.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Andrii Staikov <andrii.staikov@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Shiji Yang <yangshiji66@outlook.com>
+Acked-by: Stanislaw Gruszka <stf_xl@wp.pl>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/TYAP286MB031530EB6D98DCE4DF20766CBCA4A@TYAP286MB0315.JPNP286.PROD.OUTLOOK.COM
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/intel/i40e/i40e_virtchnl_pf.c    | 32 +++++++++++++++++++
- .../ethernet/intel/i40e/i40e_virtchnl_pf.h    |  1 +
- 2 files changed, 33 insertions(+)
+ drivers/net/wireless/ralink/rt2x00/rt2x00dev.c |  3 +++
+ drivers/net/wireless/ralink/rt2x00/rt2x00mac.c | 11 +++++++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index dfaa34f2473a..91892d07124f 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -2519,6 +2519,14 @@ static int i40e_vc_enable_queues_msg(struct i40e_vf *vf, u8 *msg)
- 	i40e_status aq_ret = 0;
- 	int i;
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+index c3eab767bc21..f504f3529407 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00dev.c
+@@ -101,6 +101,7 @@ void rt2x00lib_disable_radio(struct rt2x00_dev *rt2x00dev)
+ 	rt2x00link_stop_tuner(rt2x00dev);
+ 	rt2x00queue_stop_queues(rt2x00dev);
+ 	rt2x00queue_flush_queues(rt2x00dev, true);
++	rt2x00queue_stop_queue(rt2x00dev->bcn);
  
-+	if (vf->is_disabled_from_host) {
-+		aq_ret = -EPERM;
-+		dev_info(&pf->pdev->dev,
-+			 "Admin has disabled VF %d, will not enable queues\n",
-+			 vf->vf_id);
-+		goto error_param;
-+	}
-+
- 	if (!test_bit(I40E_VF_STATE_ACTIVE, &vf->vf_states)) {
- 		aq_ret = I40E_ERR_PARAM;
- 		goto error_param;
-@@ -4561,9 +4569,12 @@ int i40e_ndo_set_vf_link_state(struct net_device *netdev, int vf_id, int link)
- 	struct i40e_pf *pf = np->vsi->back;
- 	struct virtchnl_pf_event pfe;
- 	struct i40e_hw *hw = &pf->hw;
-+	struct i40e_vsi *vsi;
-+	unsigned long q_map;
- 	struct i40e_vf *vf;
- 	int abs_vf_id;
- 	int ret = 0;
-+	int tmp;
+ 	/*
+ 	 * Disable radio.
+@@ -1283,6 +1284,7 @@ int rt2x00lib_start(struct rt2x00_dev *rt2x00dev)
+ 	rt2x00dev->intf_ap_count = 0;
+ 	rt2x00dev->intf_sta_count = 0;
+ 	rt2x00dev->intf_associated = 0;
++	rt2x00dev->intf_beaconing = 0;
  
- 	if (test_and_set_bit(__I40E_VIRTCHNL_OP_PENDING, pf->state)) {
- 		dev_warn(&pf->pdev->dev, "Unable to configure VFs, other operation is pending.\n");
-@@ -4586,6 +4597,9 @@ int i40e_ndo_set_vf_link_state(struct net_device *netdev, int vf_id, int link)
- 	switch (link) {
- 	case IFLA_VF_LINK_STATE_AUTO:
- 		vf->link_forced = false;
-+		vf->is_disabled_from_host = false;
-+		/* reset needed to reinit VF resources */
-+		i40e_vc_reset_vf(vf, true);
- 		pfe.event_data.link_event.link_status =
- 			pf->hw.phy.link_info.link_info & I40E_AQ_LINK_UP;
- 		pfe.event_data.link_event.link_speed =
-@@ -4595,6 +4609,9 @@ int i40e_ndo_set_vf_link_state(struct net_device *netdev, int vf_id, int link)
- 	case IFLA_VF_LINK_STATE_ENABLE:
- 		vf->link_forced = true;
- 		vf->link_up = true;
-+		vf->is_disabled_from_host = false;
-+		/* reset needed to reinit VF resources */
-+		i40e_vc_reset_vf(vf, true);
- 		pfe.event_data.link_event.link_status = true;
- 		pfe.event_data.link_event.link_speed = VIRTCHNL_LINK_SPEED_40GB;
- 		break;
-@@ -4603,6 +4620,21 @@ int i40e_ndo_set_vf_link_state(struct net_device *netdev, int vf_id, int link)
- 		vf->link_up = false;
- 		pfe.event_data.link_event.link_status = false;
- 		pfe.event_data.link_event.link_speed = 0;
+ 	/* Enable the radio */
+ 	retval = rt2x00lib_enable_radio(rt2x00dev);
+@@ -1310,6 +1312,7 @@ void rt2x00lib_stop(struct rt2x00_dev *rt2x00dev)
+ 	rt2x00dev->intf_ap_count = 0;
+ 	rt2x00dev->intf_sta_count = 0;
+ 	rt2x00dev->intf_associated = 0;
++	rt2x00dev->intf_beaconing = 0;
+ }
+ 
+ static inline void rt2x00lib_set_if_combinations(struct rt2x00_dev *rt2x00dev)
+diff --git a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
+index beb20c5faf5f..a0fb167b58fe 100644
+--- a/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
++++ b/drivers/net/wireless/ralink/rt2x00/rt2x00mac.c
+@@ -578,6 +578,17 @@ void rt2x00mac_bss_info_changed(struct ieee80211_hw *hw,
+ 	 */
+ 	if (changes & BSS_CHANGED_BEACON_ENABLED) {
+ 		mutex_lock(&intf->beacon_skb_mutex);
 +
-+		vsi = pf->vsi[vf->lan_vsi_idx];
-+		q_map = BIT(vsi->num_queue_pairs) - 1;
-+
-+		vf->is_disabled_from_host = true;
-+
-+		/* Try to stop both Tx&Rx rings even if one of the calls fails
-+		 * to ensure we stop the rings even in case of errors.
-+		 * If any of them returns with an error then the first
-+		 * error that occurred will be returned.
++		/*
++		 * Clear the 'enable_beacon' flag and clear beacon because
++		 * the beacon queue has been stopped after hardware reset.
 +		 */
-+		tmp = i40e_ctrl_vf_tx_rings(vsi, q_map, false);
-+		ret = i40e_ctrl_vf_rx_rings(vsi, q_map, false);
++		if (test_bit(DEVICE_STATE_RESET, &rt2x00dev->flags) &&
++		    intf->enable_beacon) {
++			intf->enable_beacon = false;
++			rt2x00queue_clear_beacon(rt2x00dev, vif);
++		}
 +
-+		ret = tmp ? tmp : ret;
- 		break;
- 	default:
- 		ret = -EINVAL;
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-index 358bbdb58795..010e5730465e 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.h
-@@ -98,6 +98,7 @@ struct i40e_vf {
- 	bool link_forced;
- 	bool link_up;		/* only valid if VF link is forced */
- 	bool spoofchk;
-+	bool is_disabled_from_host; /* PF ctrl of VF enable/disable */
- 	u16 num_vlan;
- 
- 	/* ADq related variables */
+ 		if (!bss_conf->enable_beacon && intf->enable_beacon) {
+ 			rt2x00dev->intf_beaconing--;
+ 			intf->enable_beacon = false;
 -- 
 2.43.0
 
