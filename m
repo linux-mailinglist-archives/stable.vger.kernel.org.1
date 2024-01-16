@@ -1,184 +1,167 @@
-Return-Path: <stable+bounces-11345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BC1582F1A6
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 16:35:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B54C82F1DB
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 16:51:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42FFD1C235BF
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 15:35:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D40B1C23681
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 15:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BE21C298;
-	Tue, 16 Jan 2024 15:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 271721C68F;
+	Tue, 16 Jan 2024 15:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="E5EH4NcV"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="nUIUeFhl";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="fpiGqUh+";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="zSG0p7Co";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="XoSiFsqU"
 X-Original-To: stable@vger.kernel.org
-Received: from m15.mail.163.com (m15.mail.163.com [45.254.50.219])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BBC21C287
-	for <stable@vger.kernel.org>; Tue, 16 Jan 2024 15:35:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:Subject:Date:Message-Id:MIME-Version:
-	Content-Type; bh=ooCF7Vzto8FXLhyEotqCRcMbVrMXRboq+L6146dRPCc=;
-	b=E5EH4NcVSWVM1Kkfssqi0xZoRp801byU+wkAHGPtPE2bJhRQzyqeoSebA3OTlg
-	sPzQEuAjjRbOrEmiqAKIWT1805QMRbqUbCof8hpj6S2Y5W1jmuk5XmdyzOdtwBdK
-	tQRPKgXKRuRUaW6dFH6WW+NdFxEYHbQ9S3YQzoa4SRilQ=
-Received: from lqr-OptiPlex-7080.lan (unknown [39.174.145.253])
-	by zwqz-smtp-mta-g0-1 (Coremail) with SMTP id _____wDn13ohoqZlSwq+BQ--.26458S2;
-	Tue, 16 Jan 2024 23:34:59 +0800 (CST)
-From: liboti <hoshimi10mang@163.com>
-To: ast@kernel.org
-Cc: shenwenbo@zju.edu.cn,
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA091CA8F;
+	Tue, 16 Jan 2024 15:50:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap2.dmz-prg2.suse.org (imap2.dmz-prg2.suse.org [10.150.64.98])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 7CCF01FBAC;
+	Tue, 16 Jan 2024 15:50:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1705420242;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5I6WjaywApmiHShfQHSCr8iYg9z7vrVvRPjhnwVbcE0=;
+	b=nUIUeFhlm4KVMKH7j+2p6P2m+cdP0H2pUs77iXzPy85usHQbf2smYaGfEV7kFG1qF572Gj
+	B9ZpPYEaoyIHk7WrVQ+2VYEEIOmJDxoCBCGNqSSMR+hPbXcKUalU70qCaLpgJ3WQQBNlT4
+	TMWsF1/fc9V38E68bIyshen+i1HfWhU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1705420242;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5I6WjaywApmiHShfQHSCr8iYg9z7vrVvRPjhnwVbcE0=;
+	b=fpiGqUh+Xv3LHq9heB3M4P/YKZ/9bIctP5/l9kRUTqHBjdPTGG3QJBW/XF+iqnte2OqF2J
+	PpmCrNwizQA0OYBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1705420240;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5I6WjaywApmiHShfQHSCr8iYg9z7vrVvRPjhnwVbcE0=;
+	b=zSG0p7Co1+LJ+f1LFjVIGulCLzvwc1ZTcNG5uTupauUaT4qobFTGbeYQuaDMux74Ywvvpp
+	O+8AQv3yLA5vB+tdu8CYomASsdKDCoPeUckPEUux3W0E+BKRCEqywaUY81lLhhcvaNXPWR
+	2MxFeP6c2sC9wphhmtv+eObB4Qttjmo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1705420240;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5I6WjaywApmiHShfQHSCr8iYg9z7vrVvRPjhnwVbcE0=;
+	b=XoSiFsqUZGm4icp0J8kG0Vmw8CMNy73Vs5glyPyWPEZ3SdHT5v5Dar5DAaVu5k8Uukj4L/
+	K3xb89PIWirPT/Dw==
+Received: from imap2.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap2.dmz-prg2.suse.org (Postfix) with ESMTPS id 5CBAC133CE;
+	Tue, 16 Jan 2024 15:50:40 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([10.150.64.162])
+	by imap2.dmz-prg2.suse.org with ESMTPSA
+	id FwzqFdClpmWbJwAAn2gu4w
+	(envelope-from <dsterba@suse.cz>); Tue, 16 Jan 2024 15:50:40 +0000
+Date: Tue, 16 Jan 2024 16:50:18 +0100
+From: David Sterba <dsterba@suse.cz>
+To: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Cc: David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org,
 	stable@vger.kernel.org,
-	liboti <hoshimi10mang@163.com>
-Subject: [PATCH] kernel: fix insecure config of eBPF generated by Kconfig
-Date: Tue, 16 Jan 2024 23:34:14 +0800
-Message-Id: <20240116153414.14230-1-hoshimi10mang@163.com>
-X-Mailer: git-send-email 2.34.1
+	syzbot+4a4f1eba14eb5c3417d1@syzkaller.appspotmail.com
+Subject: Re: [PATCH] btrfs: don't warn if discard range is not aligned to
+ sector
+Message-ID: <20240116155018.GX31555@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+References: <20240115193859.1521-1-dsterba@suse.com>
+ <4cc5ba4d-299a-46eb-b452-21eac629ace8@gmx.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wDn13ohoqZlSwq+BQ--.26458S2
-X-Coremail-Antispam: 1Uf129KBjvJXoWxXF1rtry7Cr4rZFWxWFW7Jwb_yoWrCFW5pF
-	yfKw13Cr1DXF1akayfCa4xWry5Aw1kXr15GFnxJ348AFW3K3s7Zrsaqr1UZFy2vrn2gayF
-	qFZa9F1qk3WDX37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRewZwUUUUU=
-X-CM-SenderInfo: xkrvxxtplrizxdqjqiywtou0bp/1tbiNABnm2VOBIYQUwABsj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4cc5ba4d-299a-46eb-b452-21eac629ace8@gmx.com>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+Authentication-Results: smtp-out2.suse.de;
+	none
+X-Spam-Level: 
+X-Spam-Score: 0.50
+X-Spamd-Result: default: False [0.50 / 50.00];
+	 ARC_NA(0.00)[];
+	 HAS_REPLYTO(0.30)[dsterba@suse.cz];
+	 RCVD_VIA_SMTP_AUTH(0.00)[];
+	 FROM_HAS_DN(0.00)[];
+	 TO_DN_SOME(0.00)[];
+	 FREEMAIL_ENVRCPT(0.00)[gmx.com];
+	 TO_MATCH_ENVRCPT_ALL(0.00)[];
+	 TAGGED_RCPT(0.00)[4a4f1eba14eb5c3417d1];
+	 REPLYTO_ADDR_EQ_FROM(0.00)[];
+	 NEURAL_HAM_LONG(-1.00)[-1.000];
+	 MIME_GOOD(-0.10)[text/plain];
+	 RCPT_COUNT_FIVE(0.00)[5];
+	 RCVD_COUNT_THREE(0.00)[3];
+	 DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	 NEURAL_HAM_SHORT(-0.20)[-1.000];
+	 BAYES_HAM(-0.00)[36.98%];
+	 DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,appspotmail.com:email];
+	 FREEMAIL_TO(0.00)[gmx.com];
+	 FUZZY_BLOCKED(0.00)[rspamd.com];
+	 FROM_EQ_ENVFROM(0.00)[];
+	 MIME_TRACE(0.00)[0:+];
+	 RCVD_TLS_ALL(0.00)[];
+	 SUSPICIOUS_RECIPS(1.50)[]
+X-Spam-Flag: NO
 
-In stable linux (4.19~5.15), if “CONFIG_BPF_SYSCALL=y” is set，
-the .config generated by Kconfig does not set
-“CONFIG_BPF_JIT_ALWAYS_ON” and “CONFIG_BPF_UNPRIV_DEFAULT_OFF”.
- If the kernel is compiled with such .config, a normal user
- without any capabilities at all can load eBPF programs
- (SOCKET_FILTER type), and uses the interpreter.
-Due to the threat of side-channel attacks and inextirpable
-mistakes in the verifier, this is considered insecure.
- We have report this issue to maintainers of architectures.
- RISCV and s390 maintainers have confirmed and advise us to
-patch the Kconfig so that all architectures can be fixed.
-So this patch add "default y" to these config entries.
+On Tue, Jan 16, 2024 at 07:42:39PM +1030, Qu Wenruo wrote:
+> 
+> 
+> On 2024/1/16 06:08, David Sterba wrote:
+> > There's a warning in btrfs_issue_discard() when the range is not aligned
+> > to 512 bytes, originally added in 4d89d377bbb0 ("btrfs:
+> > btrfs_issue_discard ensure offset/length are aligned to sector
+> > boundaries"). We can't do sub-sector writes anyway so the adjustment is
+> > the only thing that we can do and the warning is unnecessary.
+> >
+> > CC: stable@vger.kernel.org # 4.19+
+> > Reported-by: syzbot+4a4f1eba14eb5c3417d1@syzkaller.appspotmail.com
+> > Signed-off-by: David Sterba <dsterba@suse.com>
+> > ---
+> >   fs/btrfs/extent-tree.c | 3 ++-
+> >   1 file changed, 2 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+> > index 6d680031211a..8e8cc1111277 100644
+> > --- a/fs/btrfs/extent-tree.c
+> > +++ b/fs/btrfs/extent-tree.c
+> > @@ -1260,7 +1260,8 @@ static int btrfs_issue_discard(struct block_device *bdev, u64 start, u64 len,
+> >   	u64 bytes_left, end;
+> >   	u64 aligned_start = ALIGN(start, 1 << SECTOR_SHIFT);
+> >
+> > -	if (WARN_ON(start != aligned_start)) {
+> > +	/* Adjust the range to be aligned to 512B sectors if necessary. */
+> > +	if (start != aligned_start) {
+> >   		len -= aligned_start - start;
+> >   		len = round_down(len, 1 << SECTOR_SHIFT);
+> >   		start = aligned_start;
+> Can we do one step further in mkfs and device add, by rounding down the
+> device size to btrfs sector boundary?
 
-On the other hand, we found that such configs facilitate kernel
-bug exploitation. Specifically, an attacker can leverage existing
-CVEs to corrupt eBPF prog-array map, hijacking a bpf_prog pointer
-(ptrs[xx]) to point to a forged BPF program. In this way, arbitrary
-bytecode execution can be achieved, we have proved this concept with
-various CVEs(e.g. CVE-2018-18445). Such an attack enhances the
-exploitability of CVEs, and is more dangerous than side-channel
-threats.
-
-Signed-off-by: liboti <hoshimi10mang@163.com>
----
- kernel/bpf/Kconfig | 91 ++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 91 insertions(+)
- create mode 100644 kernel/bpf/Kconfig
-
-diff --git a/kernel/bpf/Kconfig b/kernel/bpf/Kconfig
-new file mode 100644
-index 0000000..8abdc0d
---- /dev/null
-+++ b/kernel/bpf/Kconfig
-@@ -0,0 +1,91 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
-+# BPF interpreter that, for example, classic socket filters depend on.
-+config BPF
-+	bool
-+
-+# Used by archs to tell that they support BPF JIT compiler plus which
-+# flavour. Only one of the two can be selected for a specific arch since
-+# eBPF JIT supersedes the cBPF JIT.
-+
-+# Classic BPF JIT (cBPF)
-+config HAVE_CBPF_JIT
-+	bool
-+
-+# Extended BPF JIT (eBPF)
-+config HAVE_EBPF_JIT
-+	bool
-+
-+# Used by archs to tell that they want the BPF JIT compiler enabled by
-+# default for kernels that were compiled with BPF JIT support.
-+config ARCH_WANT_DEFAULT_BPF_JIT
-+	bool
-+
-+menu "BPF subsystem"
-+
-+config BPF_SYSCALL
-+	bool "Enable bpf() system call"
-+	select BPF
-+	select IRQ_WORK
-+	select TASKS_TRACE_RCU
-+	select BINARY_PRINTF
-+	select NET_SOCK_MSG if NET
-+	default n
-+	help
-+	  Enable the bpf() system call that allows to manipulate BPF programs
-+	  and maps via file descriptors.
-+
-+config BPF_JIT
-+	bool "Enable BPF Just In Time compiler"
-+	depends on BPF
-+	depends on HAVE_CBPF_JIT || HAVE_EBPF_JIT
-+	depends on MODULES
-+	help
-+	  BPF programs are normally handled by a BPF interpreter. This option
-+	  allows the kernel to generate native code when a program is loaded
-+	  into the kernel. This will significantly speed-up processing of BPF
-+	  programs.
-+
-+	  Note, an admin should enable this feature changing:
-+	  /proc/sys/net/core/bpf_jit_enable
-+	  /proc/sys/net/core/bpf_jit_harden   (optional)
-+	  /proc/sys/net/core/bpf_jit_kallsyms (optional)
-+
-+config BPF_JIT_ALWAYS_ON
-+	bool "Permanently enable BPF JIT and remove BPF interpreter"
-+	depends on BPF_SYSCALL && HAVE_EBPF_JIT && BPF_JIT
-+	default y
-+	help
-+	  Enables BPF JIT and removes BPF interpreter to avoid speculative
-+	  execution of BPF instructions by the interpreter.
-+
-+config BPF_JIT_DEFAULT_ON
-+	def_bool ARCH_WANT_DEFAULT_BPF_JIT || BPF_JIT_ALWAYS_ON
-+	depends on HAVE_EBPF_JIT && BPF_JIT
-+
-+config BPF_UNPRIV_DEFAULT_OFF
-+	bool "Disable unprivileged BPF by default"
-+	depends on BPF_SYSCALL
-+	default y
-+	help
-+	  Disables unprivileged BPF by default by setting the corresponding
-+	  /proc/sys/kernel/unprivileged_bpf_disabled knob to 2. An admin can
-+	  still reenable it by setting it to 0 later on, or permanently
-+	  disable it by setting it to 1 (from which no other transition to
-+	  0 is possible anymore).
-+
-+source "kernel/bpf/preload/Kconfig"
-+
-+config BPF_LSM
-+	bool "Enable BPF LSM Instrumentation"
-+	depends on BPF_EVENTS
-+	depends on BPF_SYSCALL
-+	depends on SECURITY
-+	depends on BPF_JIT
-+	help
-+	  Enables instrumentation of the security hooks with BPF programs for
-+	  implementing dynamic MAC and Audit Policies.
-+
-+	  If you are unsure how to answer this question, answer N.
-+
-+endmenu # "BPF subsystem"
--- 
-2.34.1
-
+This is not device size but the range that gets passed to discard. The
+start and size get converted to the 512B units anyway when calling
+blkdev_issue_discard(), so nothing else needs to be done.
 
