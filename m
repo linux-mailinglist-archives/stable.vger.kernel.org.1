@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-11718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5646982FB07
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 22:46:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F007182FB0B
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 22:46:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E93C21F2A6D8
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 21:46:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 058851C2642C
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 21:46:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B2E615F32A;
-	Tue, 16 Jan 2024 20:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F38415FB05;
+	Tue, 16 Jan 2024 20:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rmAFCAN1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lMLIpDZn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473A515F321;
-	Tue, 16 Jan 2024 20:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3995C15F30A;
+	Tue, 16 Jan 2024 20:02:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705435323; cv=none; b=CTt/Dm2mZPw2LmBswdqu5FOIzD9VVmz3bW5OLglv/bvs3vwf7T1oNFtwQVRJtRgDVTaL5WJ36ezOMTNgNnfvqFi+9OklYqaLbsMfcxtTJk2SmkN9BrwHri2+UMfU3lF5gz8L/9enrN92EoF563kguJ3SmuCS+UWVT6/gzXmqVrI=
+	t=1705435325; cv=none; b=Gc2PNosYgqpFcGCMoqSYsh0tI+C2Vspzdy3+5+13Rrfn36EEW+aN8wn36uL95j8k4PJ4+0pK4op1EmHgCqJIr5qwXRlVqQw/PF8KfnyukYaSrHt4gBjAeXYPRb3RxRHjGROAaudDI8Ia+lIb+NaZcyEe/4QLDluEx/MbOfujk74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705435323; c=relaxed/simple;
-	bh=+0dGaX1WomVTx+JiBsBfua71kEuDLYrscLBuSIfB700=;
+	s=arc-20240116; t=1705435325; c=relaxed/simple;
+	bh=JlI0diivkOm2Nup6xaGE01ASMvwED6wXlfSg0DXu1XA=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:X-stable:
-	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=Tf0q80NDpnfP3J7ZeMr82k9wyKgZCfWJO3eUwqCk1NZas+rW6Rzp01qyF272PB5mjfaJ3bqYJWDvSPOGqMV+1zKlcOGNBmDBfChlJdvwiQCGWytI2OhhBglzBS6kaIhJ7d/OuNeaHYwK3i/042UPpPgWwoXWx1462k+lMVULmSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rmAFCAN1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A57CC43609;
-	Tue, 16 Jan 2024 20:02:01 +0000 (UTC)
+	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=hqFssuzBsUmAnwAtbMwnXTdSCDF7U6f17+HhDSdWT34byt+XLaooeIyvIk4aCSem6hru6Blzjq1SpSQnkpz1f8eO01kbw5TW15byjLYYNlXELfrjshhjK55i86X9q/V5q3s6+GQ0jjPc3JMSwvTR+xzRKK46qorg+1BxzMrrio4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lMLIpDZn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E552EC43394;
+	Tue, 16 Jan 2024 20:02:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705435323;
-	bh=+0dGaX1WomVTx+JiBsBfua71kEuDLYrscLBuSIfB700=;
+	s=k20201202; t=1705435325;
+	bh=JlI0diivkOm2Nup6xaGE01ASMvwED6wXlfSg0DXu1XA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rmAFCAN1QR6FTTklSUDjHe7JnnkjiBlQcJ8ICl7pQy8KZ7xopS7ixEmhcHC1067cR
-	 bW7IpcRO3cWj800AzWXBZXCCc0ep15NgoCmcua+0XflEx5YaGU0Q0wLlHJlgBnVpSA
-	 O2e28SEJQKhEXBpY1WhEoIsXvR8zgr7xNpbtIWPjzWc+zoc3Fr+iI1KBgE+3aY7VQq
-	 XOdpczOHIHAYjoNc+xGaPk7dF5Cn3HjUttctOSoPpK9Zuwk9tr8JIxq1xfO99cVkfM
-	 y9eMjHutavMKlMFmacQlnNAcFRHLnYYYKVbVrv0JYxjsilpWAVO+clGKR6bnt97ZMV
-	 6PIe73uosxkEA==
+	b=lMLIpDZn2C72HSkOOpN7Aq772W8IHbvaWFo5uMb90ErtMofR4mHXeW9lB/JDJPi2P
+	 TNI3AmSXiH+zX5Z21Qr4BErev1Fam0InCakD+zUnE1Xmdt+Jhi56ao5hshXq2QWR0c
+	 CXG5UrZQOrEuL9gfXXvWyMyoL5BJj4VYC60Y813YBKygg7TMpp9Hikk8iYoxivLJro
+	 wmzalWTFplRPm16si1I5xKu0vqLBxAYizsCianHgV2I+7ggtOKnRTjv3YeYwqI1YxE
+	 8GlunZgYPRvlmyWPGP3NrRMEddImAF4StuI8OQ7CgSx60j0z9YlUspYL9JHYUvKrbS
+	 OfDy3YUkUTXjg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -53,9 +53,9 @@ Cc: Fabio Estevam <festevam@denx.de>,
 	conor+dt@kernel.org,
 	devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.10 29/44] ARM: dts: imx27-apf27dev: Fix LED name
-Date: Tue, 16 Jan 2024 14:59:58 -0500
-Message-ID: <20240116200044.258335-29-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 30/44] ARM: dts: imx23-sansa: Use preferred i2c-gpios properties
+Date: Tue, 16 Jan 2024 14:59:59 -0500
+Message-ID: <20240116200044.258335-30-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240116200044.258335-1-sashal@kernel.org>
 References: <20240116200044.258335-1-sashal@kernel.org>
@@ -72,35 +72,57 @@ Content-Transfer-Encoding: 8bit
 
 From: Fabio Estevam <festevam@denx.de>
 
-[ Upstream commit dc35e253d032b959d92e12f081db5b00db26ae64 ]
+[ Upstream commit e3aa1a82fb20ee97597022f6528823a8ab82bde6 ]
 
-Per leds-gpio.yaml, the led names should start with 'led'.
+The 'gpios' property to describe the SDA and SCL GPIOs is considered
+deprecated according to i2c-gpio.yaml.
 
-Change it to fix the following dt-schema warning:
+Switch to the preferred 'sda-gpios' and 'scl-gpios' properties.
 
-imx27-apf27dev.dtb: leds: 'user' does not match any of the regexes: '(^led-[0-9a-f]$|led)', 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/leds/leds-gpio.yaml#
+This fixes the following schema warnings:
+
+imx23-sansa.dtb: i2c-0: 'sda-gpios' is a required property
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
+imx23-sansa.dtb: i2c-0: 'scl-gpios' is a required property
+	from schema $id: http://devicetree.org/schemas/i2c/i2c-gpio.yaml#
 
 Signed-off-by: Fabio Estevam <festevam@denx.de>
 Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx27-apf27dev.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/imx23-sansa.dts | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx27-apf27dev.dts b/arch/arm/boot/dts/imx27-apf27dev.dts
-index 68fcb5ce9a9e..3d9bb7fc3be2 100644
---- a/arch/arm/boot/dts/imx27-apf27dev.dts
-+++ b/arch/arm/boot/dts/imx27-apf27dev.dts
-@@ -47,7 +47,7 @@ leds {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&pinctrl_gpio_leds>;
+diff --git a/arch/arm/boot/dts/imx23-sansa.dts b/arch/arm/boot/dts/imx23-sansa.dts
+index 46057d9bf555..c2efcc20ae80 100644
+--- a/arch/arm/boot/dts/imx23-sansa.dts
++++ b/arch/arm/boot/dts/imx23-sansa.dts
+@@ -175,10 +175,8 @@ i2c-0 {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		compatible = "i2c-gpio";
+-		gpios = <
+-			&gpio1 24 0		/* SDA */
+-			&gpio1 22 0		/* SCL */
+-		>;
++		sda-gpios = <&gpio1 24 0>;
++		scl-gpios = <&gpio1 22 0>;
+ 		i2c-gpio,delay-us = <2>;	/* ~100 kHz */
+ 	};
  
--		user {
-+		led-user {
- 			label = "Heartbeat";
- 			gpios = <&gpio6 14 GPIO_ACTIVE_HIGH>;
- 			linux,default-trigger = "heartbeat";
+@@ -186,10 +184,8 @@ i2c-1 {
+ 		#address-cells = <1>;
+ 		#size-cells = <0>;
+ 		compatible = "i2c-gpio";
+-		gpios = <
+-			&gpio0 31 0		/* SDA */
+-			&gpio0 30 0		/* SCL */
+-		>;
++		sda-gpios = <&gpio0 31 0>;
++		scl-gpios = <&gpio0 30 0>;
+ 		i2c-gpio,delay-us = <2>;	/* ~100 kHz */
+ 
+ 		touch: touch@20 {
 -- 
 2.43.0
 
