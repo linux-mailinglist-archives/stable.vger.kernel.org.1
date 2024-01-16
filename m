@@ -1,193 +1,114 @@
-Return-Path: <stable+bounces-11311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 260B082E9D6
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 08:18:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 888A682EA5B
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 08:53:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A30951F2376A
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 07:17:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEE58284F5A
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 07:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940B410A21;
-	Tue, 16 Jan 2024 07:17:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nm4K5LbC"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C493111A8;
+	Tue, 16 Jan 2024 07:53:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34BF10A1E
-	for <stable@vger.kernel.org>; Tue, 16 Jan 2024 07:17:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-40e800461baso9572065e9.3
-        for <stable@vger.kernel.org>; Mon, 15 Jan 2024 23:17:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705389466; x=1705994266; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BW+W+dIv4lN7r4SC9Umj94UHkB8iKRe5wxYPF0vpeL0=;
-        b=Nm4K5LbColdCApidhrlmrTGnhfniQNKEvgmKT+nNsq/+X6KVZdxDdxmA7Nv3+Qglkl
-         H12qXrhMW6gZfjPf4S1WoSf1VuHz/Cfyinn0n1B8uMQ/TGwAX6ejlAmcsO3OHJsqSXJf
-         zqFhAeCe9S0BLckvC4yYhd0IFzYTBj3ltojMPELIMr3TCe5eeOpJMb7X8S8tzj98eNar
-         upxp/+BJkoX0pa06anqBoWjq58wr/qQHS2pZsXtQEAAtlQsHsqnJMzCzziUJTpcU4U/K
-         9ck4NYIGsbSM6KSV3ir6cKlCKhR1xjiDY8LkWaz72SUreL8G/A2UQe0dROE8oZSWkNU7
-         uw/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705389466; x=1705994266;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BW+W+dIv4lN7r4SC9Umj94UHkB8iKRe5wxYPF0vpeL0=;
-        b=sNUH9iEFppXPK7+LlpPkeSlxKuvSC07F/+P146aJEd/odw8OMzFRDv1gOpGTOT+4CP
-         dqY4iNGNm6wUirAsdFyoo/L4fy3PEYgvS1uPwpT6/STpraSeeV1VSapQQ8Mb418wK7Y8
-         aFx3ZwzwfUXPW5aagaZVZKGZFgKaNWapuXDWxNDDjpiJAuP+LL9eTKyjU1YGWBMPcHxe
-         A2+nrHVGPX1K2bX8ofAytVYZW3fskWAo/lgrcJD+rkoVsfHp29y2hmdHLq2JXiLE1IDl
-         D1RWUsSXdvgx3u+BZIPG7cIRcOpt5yxlE7vthILfxG3QnREtQpYoGhfPwaV+rKG8Uw7i
-         pCpA==
-X-Gm-Message-State: AOJu0Yw705rfHJqk6R7UXLal26UkGB/c7ZttPU+K3Y5pZ1EdG+beAvOv
-	UdNy0QeynP9X1s3P3niVMMLdLRXpeW9oEg==
-X-Google-Smtp-Source: AGHT+IEFTD9mOGuy4O+1A27ae4lkNbmqjc8773lZH0WP+R2mfsYFBKQ9T5aqV8so5vOj3q10koJtkQ==
-X-Received: by 2002:a05:600c:4314:b0:40e:43dd:1e47 with SMTP id p20-20020a05600c431400b0040e43dd1e47mr2015713wme.261.1705389465598;
-        Mon, 15 Jan 2024 23:17:45 -0800 (PST)
-Received: from [10.254.108.81] (munvpn.amd.com. [165.204.72.6])
-        by smtp.gmail.com with ESMTPSA id iv11-20020a05600c548b00b0040d8ff79fd8sm18255442wmb.7.2024.01.15.23.17.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Jan 2024 23:17:45 -0800 (PST)
-Message-ID: <3df101b7-8df6-44a0-8c53-aaec480a1907@gmail.com>
-Date: Tue, 16 Jan 2024 08:17:43 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C1E7483;
+	Tue, 16 Jan 2024 07:53:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from [192.168.1.105] (31.173.86.62) by msexch01.omp.ru (10.188.4.12)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Tue, 16 Jan
+ 2024 10:53:12 +0300
+Subject: Re: [PATCH v3 2/2] usb: host: xhci-plat: Add support for
+ XHCI_SG_TRB_CACHE_SIZE_QUIRK
+To: Prashanth K <quic_prashk@quicinc.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Mathias Nyman <mathias.nyman@intel.com>
+CC: Hans de Goede <hdegoede@redhat.com>, <linux-kernel@vger.kernel.org>,
+	<linux-usb@vger.kernel.org>, <stable@vger.kernel.org>
+References: <20240116055816.1169821-1-quic_prashk@quicinc.com>
+ <20240116055816.1169821-3-quic_prashk@quicinc.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
+Organization: Open Mobile Platform
+Message-ID: <f0dd0455-e278-ee28-5463-34879ad9868c@omp.ru>
+Date: Tue, 16 Jan 2024 10:53:11 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] drm/amdgpu: Process fences on IH overflow
+In-Reply-To: <20240116055816.1169821-3-quic_prashk@quicinc.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
-To: Friedrich Vock <friedrich.vock@gmx.de>, amd-gfx@lists.freedesktop.org
-Cc: Alex Deucher <alexander.deucher@amd.com>, Joshua Ashton
- <joshua@froggi.es>, stable@vger.kernel.org
-References: <20240114130008.868941-1-friedrich.vock@gmx.de>
- <20240114130008.868941-2-friedrich.vock@gmx.de>
- <ef01b29e-8529-43d2-befc-a3e3d8eaccf9@gmail.com>
- <8e81fd02-c5e3-4c0c-bb8f-b81217863ce2@gmx.de>
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <ckoenig.leichtzumerken@gmail.com>
-In-Reply-To: <8e81fd02-c5e3-4c0c-bb8f-b81217863ce2@gmx.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.0, Database issued on: 01/16/2024 07:33:55
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 59
+X-KSE-AntiSpam-Info: Lua profiles 182664 [Jan 16 2024]
+X-KSE-AntiSpam-Info: Version: 6.1.0.3
+X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 7 0.3.7 6d6bf5bd8eea7373134f756a2fd73e9456bb7d1a
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {relay has no DNS name}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 31.173.86.62 in (user)
+ b.barracudacentral.org}
+X-KSE-AntiSpam-Info:
+	127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;omp.ru:7.1.1
+X-KSE-AntiSpam-Info: ApMailHostAddress: 31.173.86.62
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 59
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 01/16/2024 07:39:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 1/16/2024 5:28:00 AM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
-Am 15.01.24 um 12:19 schrieb Friedrich Vock:
-> On 15.01.24 11:26, Christian König wrote:
->> Am 14.01.24 um 14:00 schrieb Friedrich Vock:
->>> If the IH ring buffer overflows, it's possible that fence signal events
->>> were lost. Check each ring for progress to prevent job timeouts/GPU
->>> hangs due to the fences staying unsignaled despite the work being done.
->>
->> That's completely unnecessary and in some cases even harmful.
-> How is it harmful? The only effect it can have is prevent unnecessary
-> GPU hangs, no? It's not like it hides any legitimate errors that you'd
-> otherwise see.
+On 1/16/24 8:58 AM, Prashanth K wrote:
 
-We have no guarantee that all ring buffers are actually fully 
-initialized to allow fence processing.
+> Upstream commit bac1ec551434 ("usb: xhci: Set quirk for
+> XHCI_SG_TRB_CACHE_SIZE_QUIRK") introduced a new quirk in XHCI
 
-Apart from that fence processing is the least of your problems when an 
-IV overflow occurs. Other interrupt source which are not repeated are 
-usually for more worse.
+   It's xHCI. :-)
 
->>
->> We already have a timeout handler for that and overflows point to
->> severe system problem so they should never occur in a production system.
->
-> IH ring buffer overflows are pretty reliably reproducible if you trigger
-> a lot of page faults, at least on Deck. Why shouldn't enough page faults
-> in quick succession be able to overflow the IH ring buffer?
+> which fixes XHC timeout, which was seen on synopsys XHCs while
 
-At least not on recent hw generations. Since gfx9 we have a rate limit 
-on the number of page faults generated.
+   xHC.
 
-What could maybe do as well is to change the default of vm_fault_stop, 
-but for your case that would be even worse in production.
+> using SG buffers. Currently this quirk can only be set using
+> xhci private data. But there are some drivers like dwc3/host.c
+> which adds adds quirks using software node for xhci device.
 
->
-> The fence fallback timer as it is now is useless for this because it
-> only gets triggered once after 0.5s. I guess an alternative approach
-> would be to make a timer trigger for each work item in flight every
-> 0.5s, but why should that be better than just handling overflow errors
-> as they occur?
+   Double "adds".
 
-That is intentional. As I said an IH overflow just points out that there 
-is something massively wrong in the HW programming.
+> Hence set this xhci quirk by iterating over device properties.
+> 
+> Cc: <stable@vger.kernel.org> # 5.11
+> Fixes: bac1ec551434 ("usb: xhci: Set quirk for XHCI_SG_TRB_CACHE_SIZE_QUIRK")
+> Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
+[...]
 
-After gfx9 the IH should never produce overflow any more, otherwise 
-either the ratelimit doesn't work or isn't enabled for some reason or 
-the IH ring buffer is just to small.
-
-Regards,
-Christian.
-
->
-> Regards,
-> Friedrich
->
->>
->> Regards,
->> Christian.
->>
->>>
->>> Cc: Joshua Ashton <joshua@froggi.es>
->>> Cc: Alex Deucher <alexander.deucher@amd.com>
->>> Cc: stable@vger.kernel.org
->>>
->>> Signed-off-by: Friedrich Vock <friedrich.vock@gmx.de>
->>> ---
->>>   drivers/gpu/drm/amd/amdgpu/amdgpu_ih.c | 15 +++++++++++++++
->>>   1 file changed, 15 insertions(+)
->>>
->>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.c
->>> b/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.c
->>> index f3b0aaf3ebc6..2a246db1d3a7 100644
->>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.c
->>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.c
->>> @@ -209,6 +209,7 @@ int amdgpu_ih_process(struct amdgpu_device *adev,
->>> struct amdgpu_ih_ring *ih)
->>>   {
->>>       unsigned int count;
->>>       u32 wptr;
->>> +    int i;
->>>
->>>       if (!ih->enabled || adev->shutdown)
->>>           return IRQ_NONE;
->>> @@ -227,6 +228,20 @@ int amdgpu_ih_process(struct amdgpu_device
->>> *adev, struct amdgpu_ih_ring *ih)
->>>           ih->rptr &= ih->ptr_mask;
->>>       }
->>>
->>> +    /* If the ring buffer overflowed, we might have lost some fence
->>> +     * signal interrupts. Check if there was any activity so the 
->>> signal
->>> +     * doesn't get lost.
->>> +     */
->>> +    if (ih->overflow) {
->>> +        for (i = 0; i < AMDGPU_MAX_RINGS; ++i) {
->>> +            struct amdgpu_ring *ring = adev->rings[i];
->>> +
->>> +            if (!ring || !ring->fence_drv.initialized)
->>> +                continue;
->>> +            amdgpu_fence_process(ring);
->>> +        }
->>> +    }
->>> +
->>>       amdgpu_ih_set_rptr(adev, ih);
->>>       wake_up_all(&ih->wait_process);
->>>
->>> -- 
->>> 2.43.0
->>>
->>
-
+MBR, Sergey
 
