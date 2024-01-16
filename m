@@ -1,65 +1,68 @@
-Return-Path: <stable+bounces-11512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB6B282F838
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 21:40:56 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BE3682F83B
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 21:41:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 968BA28829F
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 20:40:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C09B0B2648C
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 20:41:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90E7412F59B;
-	Tue, 16 Jan 2024 19:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3A312F5BE;
+	Tue, 16 Jan 2024 19:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cBFk4/Mk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LISdilLR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1DD12F596;
-	Tue, 16 Jan 2024 19:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E0312F5B2;
+	Tue, 16 Jan 2024 19:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705434645; cv=none; b=SX7khBNGs7KnivOANnsCafUPnH7C2E4ILJzd7KCaqgCqIJxNPF/P0vhn2Y4nWcSbhsD7myiht9rRFxD8xlp9ZlXZN2qFM/nI1YRRI2kebmmpRwCXFWknJkFbKVM6KdNjyyINH7o41WuWd9YiuFfM1g1+RnvQwFbxkbzTQTnCBt0=
+	t=1705434670; cv=none; b=uL7IWSHnWUbXkzcKsXqyxmsdn3Wq0ddpGr/0Dgo35KMlHLAxSrE+s8zFQk6Qe1o7o6Pb2GBmFIXskdPzUoFWbvcpsq3X3YbG+Ku6ujlu7/nxJMb45q6Z7FaqcgeeQ4RTxWfhMYadib4ykILIB8eTu/3Y6aQNIneHcVDlwZlaM9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705434645; c=relaxed/simple;
-	bh=dNGLvOuWVcwowEavgF3jNgTCnZXjhZCAOaWKo3UrFbo=;
+	s=arc-20240116; t=1705434670; c=relaxed/simple;
+	bh=rBoYvdVS2YzR0spwdUAt2VoFNa3jDoAge0YXkInyX40=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:X-stable:
-	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=W7K2lOL5fpwqV2TI7j8ealxKxUcBHldpeZwHbQeaCQd2UFf0TqjD2fgfQ9tZ8EaLrZWMa+Tr5j4a22Z4icclz9Jgqug4gdI6e+5v5TZseFDG9Su+Miog8VenpRNkyyMCo71GWis8JJY0dqrexKoNxACEPFI09+xFj9vDXj/Ws08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cBFk4/Mk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7880CC433F1;
-	Tue, 16 Jan 2024 19:50:43 +0000 (UTC)
+	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=oNIwAsOZFgoiaB+2yKMNgi1LIgbpk6Mzlu5v0nn4EyjxvWZZGg8lh4B6KXw7OaC3iRvOHECOudphk3B7UTGdeEil81GHhiLfEidMZ8R1DsYMxNX8qEcqY5vvZlW9MlAg9/22MnMdBuG8bimQpeAFiXJTi2058BVOz2JbaDfSo28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LISdilLR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A59A8C433C7;
+	Tue, 16 Jan 2024 19:51:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705434645;
-	bh=dNGLvOuWVcwowEavgF3jNgTCnZXjhZCAOaWKo3UrFbo=;
+	s=k20201202; t=1705434670;
+	bh=rBoYvdVS2YzR0spwdUAt2VoFNa3jDoAge0YXkInyX40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cBFk4/MkW/kuFwY024OfF7QM3X+sq2mexex/VFTEOTbm2aYVpPmHWDAx2mSqksHwq
-	 aRayOhyoUywpHKkT6LyA6HON98IMlMVnjvU3C0L77QWpOzAHMnhX7CaABUJQiLx4HS
-	 N4VMMgeEEzPPTMKY4OXff75jxCImiFpI9ORnh3erzQdTicTnNlkUeiUZGwf2D51WdA
-	 gNA1N0rdWM3GIXfbuEQ/R9xM4sh6hAI6bnpzWOmsQFskKZ6F7J1+q1B0k7KK95rPyZ
-	 Fudfec3eKroynBKVjNcA4ifGXhFXyr+Cm8TCVdZZjLSSNm6Z9IVLee2BbEbkE9A82G
-	 EvAGDPEZTAa1A==
+	b=LISdilLRDQXLNqrR1GEBuA8ht45dpbcgWYDq8TAnY7KfUC5p2E+aqREwbL3TYHBIa
+	 Z+KhNMDGH87h8wBOUSvP+BRc6r+s1U70uiJATxBlKbe9tO+Vo07LMhhHHHNs/dYNHx
+	 3ITrx/BlJr1Q33ESuIAdbEXzToj3Y9QMl2ZyPSTu6PvkYfDN6FhF45gQxJI7hjDog2
+	 w90o2UBRwmUAWDALEuj9EXMsQOcoj37ObCudImwQXDiMjEoB7iovW9DJaIZOdcnLTS
+	 wwZvSj865w+YRlySU6zLr/UOWtrPYKXTv2/DgY2UFkkHx9m1NJATiA1A6mFMykSjPZ
+	 6gm2wpId6b14A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tobias Waldekranz <tobias@waldekranz.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	u.kleine-koenig@pengutronix.de,
+	gregkh@linuxfoundation.org,
+	hdegoede@redhat.com,
+	saranya.gopal@intel.com,
+	fabrice.gasnier@foss.st.com,
+	quic_jackp@quicinc.com,
+	andriy.shevchenko@linux.intel.com,
+	minhuadotchen@gmail.com,
+	johan+linaro@kernel.org,
 	robh@kernel.org,
-	krzysztof.kozlowski@linaro.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 042/104] net: mvmdio: Avoid excessive sleeps in polled mode
-Date: Tue, 16 Jan 2024 14:46:08 -0500
-Message-ID: <20240116194908.253437-42-sashal@kernel.org>
+	linux-usb@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 043/104] usb: typec: ucsi: fix UCSI on buggy Qualcomm devices
+Date: Tue, 16 Jan 2024 14:46:09 -0500
+Message-ID: <20240116194908.253437-43-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240116194908.253437-1-sashal@kernel.org>
 References: <20240116194908.253437-1-sashal@kernel.org>
@@ -74,137 +77,99 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.12
 Content-Transfer-Encoding: 8bit
 
-From: Tobias Waldekranz <tobias@waldekranz.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 7dd12fe34686d89c332b1a05104d18d728591f0a ]
+[ Upstream commit 1d103d6af241dbfc7e11eb9a46dff65db257a37f ]
 
-Before this change, when operating in polled mode, i.e. no IRQ is
-available, every individual C45 access would be hit with a 150us sleep
-after the bus access.
+On sevral Qualcomm platforms (SC8180X, SM8350, SC8280XP) a call to
+UCSI_GET_PDOS for non-PD partners will cause a firmware crash with no
+easy way to recover from it. Since we have no easy way to determine
+whether the partner really has PD support, shortcut UCSI_GET_PDOS on
+such platforms. This allows us to enable UCSI support on such devices.
 
-For example, on a board with a CN9130 SoC connected to an MV88X3310
-PHY, a single C45 read would take around 165us:
-
-    root@infix:~$ mdio f212a600.mdio-mii mmd 4:1 bench 0xc003
-    Performed 1000 reads in 165ms
-
-By replacing the long sleep with a tighter poll loop, we observe a 10x
-increase in bus throughput:
-
-    root@infix:~$ mdio f212a600.mdio-mii mmd 4:1 bench 0xc003
-    Performed 1000 reads in 15ms
-
-Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Tested-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20231204100811.2708884-3-tobias@waldekranz.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20231025115620.905538-2-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvmdio.c | 53 ++++++++-------------------
- 1 file changed, 16 insertions(+), 37 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c       |  3 +++
+ drivers/usb/typec/ucsi/ucsi.h       |  3 +++
+ drivers/usb/typec/ucsi/ucsi_glink.c | 13 +++++++++++++
+ 3 files changed, 19 insertions(+)
 
-diff --git a/drivers/net/ethernet/marvell/mvmdio.c b/drivers/net/ethernet/marvell/mvmdio.c
-index 674913184ebf..2ef613a237d8 100644
---- a/drivers/net/ethernet/marvell/mvmdio.c
-+++ b/drivers/net/ethernet/marvell/mvmdio.c
-@@ -23,6 +23,7 @@
- #include <linux/delay.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
-+#include <linux/iopoll.h>
- #include <linux/kernel.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
-@@ -58,11 +59,6 @@
-  * - Armada 370       (Globalscale Mirabox):   41us to 43us (Polled)
-  */
- #define MVMDIO_SMI_TIMEOUT		1000 /* 1000us = 1ms */
--#define MVMDIO_SMI_POLL_INTERVAL_MIN	45
--#define MVMDIO_SMI_POLL_INTERVAL_MAX	55
--
--#define MVMDIO_XSMI_POLL_INTERVAL_MIN	150
--#define MVMDIO_XSMI_POLL_INTERVAL_MAX	160
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index 61b64558f96c..5392ec698959 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -578,6 +578,9 @@ static int ucsi_read_pdos(struct ucsi_connector *con,
+ 	u64 command;
+ 	int ret;
  
- struct orion_mdio_dev {
- 	void __iomem *regs;
-@@ -84,8 +80,6 @@ enum orion_mdio_bus_type {
- 
- struct orion_mdio_ops {
- 	int (*is_done)(struct orion_mdio_dev *);
--	unsigned int poll_interval_min;
--	unsigned int poll_interval_max;
- };
- 
- /* Wait for the SMI unit to be ready for another operation
-@@ -94,34 +88,23 @@ static int orion_mdio_wait_ready(const struct orion_mdio_ops *ops,
- 				 struct mii_bus *bus)
- {
- 	struct orion_mdio_dev *dev = bus->priv;
--	unsigned long timeout = usecs_to_jiffies(MVMDIO_SMI_TIMEOUT);
--	unsigned long end = jiffies + timeout;
--	int timedout = 0;
-+	unsigned long timeout;
-+	int done;
- 
--	while (1) {
--	        if (ops->is_done(dev))
-+	if (dev->err_interrupt <= 0) {
-+		if (!read_poll_timeout_atomic(ops->is_done, done, done, 2,
-+					      MVMDIO_SMI_TIMEOUT, false, dev))
-+			return 0;
-+	} else {
-+		/* wait_event_timeout does not guarantee a delay of at
-+		 * least one whole jiffie, so timeout must be no less
-+		 * than two.
-+		 */
-+		timeout = max(usecs_to_jiffies(MVMDIO_SMI_TIMEOUT), 2);
++	if (ucsi->quirks & UCSI_NO_PARTNER_PDOS)
++		return 0;
 +
-+		if (wait_event_timeout(dev->smi_busy_wait,
-+				       ops->is_done(dev), timeout))
- 			return 0;
--	        else if (timedout)
--			break;
--
--	        if (dev->err_interrupt <= 0) {
--			usleep_range(ops->poll_interval_min,
--				     ops->poll_interval_max);
--
--			if (time_is_before_jiffies(end))
--				++timedout;
--	        } else {
--			/* wait_event_timeout does not guarantee a delay of at
--			 * least one whole jiffie, so timeout must be no less
--			 * than two.
--			 */
--			if (timeout < 2)
--				timeout = 2;
--			wait_event_timeout(dev->smi_busy_wait,
--				           ops->is_done(dev), timeout);
--
--			++timedout;
--	        }
- 	}
- 
- 	dev_err(bus->parent, "Timeout: SMI busy for too long\n");
-@@ -135,8 +118,6 @@ static int orion_mdio_smi_is_done(struct orion_mdio_dev *dev)
- 
- static const struct orion_mdio_ops orion_mdio_smi_ops = {
- 	.is_done = orion_mdio_smi_is_done,
--	.poll_interval_min = MVMDIO_SMI_POLL_INTERVAL_MIN,
--	.poll_interval_max = MVMDIO_SMI_POLL_INTERVAL_MAX,
+ 	command = UCSI_COMMAND(UCSI_GET_PDOS) | UCSI_CONNECTOR_NUMBER(con->num);
+ 	command |= UCSI_GET_PDOS_PARTNER_PDO(is_partner);
+ 	command |= UCSI_GET_PDOS_PDO_OFFSET(offset);
+diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
+index 474315a72c77..6478016d5cb8 100644
+--- a/drivers/usb/typec/ucsi/ucsi.h
++++ b/drivers/usb/typec/ucsi/ucsi.h
+@@ -317,6 +317,9 @@ struct ucsi {
+ #define EVENT_PENDING	0
+ #define COMMAND_PENDING	1
+ #define ACK_PENDING	2
++
++	unsigned long quirks;
++#define UCSI_NO_PARTNER_PDOS	BIT(0)	/* Don't read partner's PDOs */
  };
  
- static int orion_mdio_smi_read(struct mii_bus *bus, int mii_id,
-@@ -194,8 +175,6 @@ static int orion_mdio_xsmi_is_done(struct orion_mdio_dev *dev)
+ #define UCSI_MAX_SVID		5
+diff --git a/drivers/usb/typec/ucsi/ucsi_glink.c b/drivers/usb/typec/ucsi/ucsi_glink.c
+index 4853141cd10c..53a7ede8556d 100644
+--- a/drivers/usb/typec/ucsi/ucsi_glink.c
++++ b/drivers/usb/typec/ucsi/ucsi_glink.c
+@@ -6,6 +6,7 @@
+ #include <linux/auxiliary_bus.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
++#include <linux/of_device.h>
+ #include <linux/property.h>
+ #include <linux/soc/qcom/pdr.h>
+ #include <linux/usb/typec_mux.h>
+@@ -296,11 +297,19 @@ static void pmic_glink_ucsi_destroy(void *data)
+ 	mutex_unlock(&ucsi->lock);
+ }
  
- static const struct orion_mdio_ops orion_mdio_xsmi_ops = {
- 	.is_done = orion_mdio_xsmi_is_done,
--	.poll_interval_min = MVMDIO_XSMI_POLL_INTERVAL_MIN,
--	.poll_interval_max = MVMDIO_XSMI_POLL_INTERVAL_MAX,
- };
++static const struct of_device_id pmic_glink_ucsi_of_quirks[] = {
++	{ .compatible = "qcom,sc8180x-pmic-glink", .data = (void *)UCSI_NO_PARTNER_PDOS, },
++	{ .compatible = "qcom,sc8280xp-pmic-glink", .data = (void *)UCSI_NO_PARTNER_PDOS, },
++	{ .compatible = "qcom,sm8350-pmic-glink", .data = (void *)UCSI_NO_PARTNER_PDOS, },
++	{}
++};
++
+ static int pmic_glink_ucsi_probe(struct auxiliary_device *adev,
+ 				 const struct auxiliary_device_id *id)
+ {
+ 	struct pmic_glink_ucsi *ucsi;
+ 	struct device *dev = &adev->dev;
++	const struct of_device_id *match;
+ 	struct fwnode_handle *fwnode;
+ 	int ret;
  
- static int orion_mdio_xsmi_read_c45(struct mii_bus *bus, int mii_id,
+@@ -327,6 +336,10 @@ static int pmic_glink_ucsi_probe(struct auxiliary_device *adev,
+ 	if (ret)
+ 		return ret;
+ 
++	match = of_match_device(pmic_glink_ucsi_of_quirks, dev->parent);
++	if (match)
++		ucsi->ucsi->quirks = (unsigned long)match->data;
++
+ 	ucsi_set_drvdata(ucsi->ucsi, ucsi);
+ 
+ 	device_for_each_child_node(dev, fwnode) {
 -- 
 2.43.0
 
