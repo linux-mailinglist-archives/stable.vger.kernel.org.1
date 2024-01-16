@@ -1,67 +1,65 @@
-Return-Path: <stable+bounces-11518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7383C82F84F
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 21:43:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EA7D82F855
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 21:43:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 272DB1F26156
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 20:43:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F2DDB241C1
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 20:43:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB0DB1306FE;
-	Tue, 16 Jan 2024 19:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7000B24B5B;
+	Tue, 16 Jan 2024 19:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QA/xK0xp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P3ivBYF8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968BA24B49;
-	Tue, 16 Jan 2024 19:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C37524B54;
+	Tue, 16 Jan 2024 19:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705434682; cv=none; b=rRV6CSvyNrePymypIKElxd9oud8QObmjQZKfCCjnB0TKsp3njuErqNCGWdvriRqEJmjpC7VNwG/Ti9gTjzLYMkiYI+jnGMAJ/uOd8h0jZtHLL1hON3b2Uhtzx/1mDDD1ZceK1u7ptygY7cbQnLmTmc6kPJf9b9k9kOadhgSNvy4=
+	t=1705434690; cv=none; b=SafSoQOcOS36AJdSXLrJ8/xZ0/ulPXWIY9TLdswwerXwRpHn4jP6V7Ah5maLn2huIc2q/WlUHrGgdBCiAstBGGhLDyF5DCXWPVbLMzAUmNCe7Fs3D98aVPzfL2YE+qFoxtIN54guGb/D/S5FNOi9RsQvS/QiECCnqtPnOebLRzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705434682; c=relaxed/simple;
-	bh=xbDbzMEtgVcUrOQCXkaSw4wRsKzePZtQjF/09aWkAeA=;
+	s=arc-20240116; t=1705434690; c=relaxed/simple;
+	bh=BtqA+sNM66b7KK6xY6BvU9nMAVkX1m27+Hn1UAJLH6I=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:X-stable:
-	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=NSdeU4qIzlXP35xgkvgvlwEKWb5TmjYLzCXK2aFYIxuXpr17QnhsPw/Lti7WCS1fQGdwArUwS8ZuvsLrFXIQPl1xrqB27LDIbp8rG72ONh5Efcla1nf9WRIDvgb25FxzvHhGQKhjYXYgoHeAjs61LsJgTs8wuUoLlZni90MyV4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QA/xK0xp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73EACC43394;
-	Tue, 16 Jan 2024 19:51:20 +0000 (UTC)
+	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=D087vg1AEstZRsCxh9mqWWCKAJdX66WRlrRFxHNJRHjymtPKsgLhd4qxFYp13o4c8DeWvX1VVtNzazjXdlPiEVxtMG2iAgukNmI/cKrUUG4VPDPbOdsgBOQ1Cqmk177H8DvnNBrOhjsiiWe0/BMOUOxn7LVVijvxGtzVONJ1xT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P3ivBYF8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0A4C433C7;
+	Tue, 16 Jan 2024 19:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705434682;
-	bh=xbDbzMEtgVcUrOQCXkaSw4wRsKzePZtQjF/09aWkAeA=;
+	s=k20201202; t=1705434690;
+	bh=BtqA+sNM66b7KK6xY6BvU9nMAVkX1m27+Hn1UAJLH6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QA/xK0xprNc7T+oAOolTv7PWZrDfzVu2QrEs3RpNtlHG9amuoH0E8UvtuzXabHz+U
-	 hIYq6ZTJ3Bq1T7+JrMcXHuIt6/Befay6Md5blAlsf0IAeHBHqmRpPUx9Mo/XbvqmSG
-	 BM0R96kUk8KCID6L+hkPECY22bQg6Xo7DwjQiLDWMS02bJ5rJs6eL6EFab5pkGjAXE
-	 32jwlLoqU3i6m/RQfQtVxHPUu1sSqp65QC56iC9JBBeAnmnfC1U9ORQKMBap5lpW7E
-	 KHg+Wr5gKvSMWHiYaaEaU7uG4+ybhcRZ1mSKIjpHrLNgcMxHbIVGxGqFWLCAftA3eB
-	 8KZz60iUvCAOA==
+	b=P3ivBYF8+ZfglOggXQY6KJXkhCccMKNjJycz+oNjFXzZiljnbzf2LVmcfGnLOXE8s
+	 T9+n/IncH+Vwzjuginpv7ovLbrUBJ9SvU5/Ip22xj3cSLtJKDvTZYZZMHkdSslyYCY
+	 Wp3PcDMLhW6rUlqFnOjw3qH2zdbl+xaN9oinrIq9NHaRHgLWG9NPBCAFEudOybW3H+
+	 bdSRB3H1ogLWb2UdJvDdsuSaQNCz3HWaaLWOqIDGgFNtJCke8Zz/4UGSdWIndGSuZL
+	 lzI7Bh3guIpzssupWy1WTzd5SI51n1lCQ8O2YT9RzQDliR+quRbUFq27CkNdnVgUpJ
+	 8MvExmnFNCKUw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+Cc: duanqiangwen <duanqiangwen@net-swift.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	kvalo@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	sujuan.chen@mediatek.com,
-	chui-hao.chiu@mediatek.com,
-	linux-wireless@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 048/104] wifi: mt76: mt7996: add PCI IDs for mt7992
-Date: Tue, 16 Jan 2024 14:46:14 -0500
-Message-ID: <20240116194908.253437-48-sashal@kernel.org>
+	jiawenwu@trustnetic.com,
+	mengyuanlou@net-swift.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	bhelgaas@google.com,
+	maciej.fijalkowski@intel.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 049/104] net: wangxun: fix changing mac failed when running
+Date: Tue, 16 Jan 2024 14:46:15 -0500
+Message-ID: <20240116194908.253437-49-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240116194908.253437-1-sashal@kernel.org>
 References: <20240116194908.253437-1-sashal@kernel.org>
@@ -76,58 +74,47 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.12
 Content-Transfer-Encoding: 8bit
 
-From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+From: duanqiangwen <duanqiangwen@net-swift.com>
 
-[ Upstream commit 3d3f117a259a65353bf2714a18e25731b3ca5770 ]
+[ Upstream commit 87e839c82cc36346a2cd183ca941316902110716 ]
 
-Add PCI device IDs to enable mt7992 chipsets support.
+in some bonding mode, service need to change mac when
+netif is running. Wangxun netdev add IFF_LIVE_ADDR_CHANGE
+priv_flag to support it.
 
-Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: duanqiangwen <duanqiangwen@net-swift.com>
+Link: https://lore.kernel.org/r/20231206095044.17844-1-duanqiangwen@net-swift.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/pci.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c   | 1 +
+ drivers/net/ethernet/wangxun/txgbe/txgbe_main.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/pci.c b/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
-index c5301050ff8b..67c015896243 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/pci.c
-@@ -17,11 +17,13 @@ static u32 hif_idx;
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+index a4d63d2f3c5b..2085b9c38a15 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+@@ -580,6 +580,7 @@ static int ngbe_probe(struct pci_dev *pdev,
  
- static const struct pci_device_id mt7996_pci_device_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7990) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7992) },
- 	{ },
- };
+ 	netdev->priv_flags |= IFF_UNICAST_FLT;
+ 	netdev->priv_flags |= IFF_SUPP_NOFCS;
++	netdev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
  
- static const struct pci_device_id mt7996_hif_device_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x7991) },
-+	{ PCI_DEVICE(PCI_VENDOR_ID_MEDIATEK, 0x799a) },
- 	{ },
- };
+ 	netdev->min_mtu = ETH_MIN_MTU;
+ 	netdev->max_mtu = WX_MAX_JUMBO_FRAME_SIZE -
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index d60c26ba0ba4..2482b661bc99 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -637,6 +637,7 @@ static int txgbe_probe(struct pci_dev *pdev,
  
-@@ -60,7 +62,9 @@ static void mt7996_put_hif2(struct mt7996_hif *hif)
- static struct mt7996_hif *mt7996_pci_init_hif2(struct pci_dev *pdev)
- {
- 	hif_idx++;
--	if (!pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x7991, NULL))
-+
-+	if (!pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x7991, NULL) &&
-+	    !pci_get_device(PCI_VENDOR_ID_MEDIATEK, 0x799a, NULL))
- 		return NULL;
+ 	netdev->priv_flags |= IFF_UNICAST_FLT;
+ 	netdev->priv_flags |= IFF_SUPP_NOFCS;
++	netdev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
  
- 	writel(hif_idx | MT_PCIE_RECOG_ID_SEM,
-@@ -113,7 +117,7 @@ static int mt7996_pci_probe(struct pci_dev *pdev,
- 
- 	mt76_pci_disable_aspm(pdev);
- 
--	if (id->device == 0x7991)
-+	if (id->device == 0x7991 || id->device == 0x799a)
- 		return mt7996_pci_hif2_probe(pdev);
- 
- 	dev = mt7996_mmio_probe(&pdev->dev, pcim_iomap_table(pdev)[0],
+ 	netdev->min_mtu = ETH_MIN_MTU;
+ 	netdev->max_mtu = WX_MAX_JUMBO_FRAME_SIZE -
 -- 
 2.43.0
 
