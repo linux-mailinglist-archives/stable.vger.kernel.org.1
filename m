@@ -1,121 +1,104 @@
-Return-Path: <stable+bounces-11361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13CD582F56F
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 20:34:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C250A82F5AA
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 20:42:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A61B01F24CA4
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 19:34:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E734B241FA
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 19:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7889A1D534;
-	Tue, 16 Jan 2024 19:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 232381D546;
+	Tue, 16 Jan 2024 19:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="nQ2He1Hg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HF9tJcbd"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8C51D521;
-	Tue, 16 Jan 2024 19:34:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD651D52B;
+	Tue, 16 Jan 2024 19:42:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705433659; cv=none; b=DnoDJ9qOs3aYv0gp+cFCwP2AUrp2X/0DWGxC8nz6PpzKgtBBq8dJBMAvbqM/pnfFWPgYwsMAStnx6VpEQJ5XeZU55SsEyT2S3Em5CcF/TpdPhzAFwqsktRIwJPj9dk1Xqy/LkWufy1VqUZ7z1u/Zoo4gM6vrA7QO66aC0FuWpMs=
+	t=1705434148; cv=none; b=c//03aTKo6stFlItm59LZzFwieXBlHgGUpbek8Vtqqf3xQfko6arlBab6nrCuTIHKTj7s8FWZkRveeFQXORcrDqgG57/NxjQlTwyBMgxBQRgz76pJeV+yqVCrM9sTkTuGbbc8mHCMigJA+aaPpVW5oTc6ef8GVQFSmMkXyY3IBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705433659; c=relaxed/simple;
-	bh=Mcd1b64Vm+CHXiONNdtt+LcCzFybfKPnMfbrChadFrU=;
-	h=Received:DKIM-Signature:Received:Received:Received:Received:
-	 Received:Received:Received:Received:Received:Date:From:To:Cc:
-	 Subject:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:X-TM-AS-GCONF:X-Proofpoint-GUID:
-	 X-Proofpoint-ORIG-GUID:X-Proofpoint-Virus-Version:
-	 X-Proofpoint-Spam-Details; b=UD8uk/J/d0TB2DRG8fjmXe/oY4Z6mNOmB39YC3uJhF+6ZYMmscM2gufU7F8gDjMPdKV8Flwbk+0/+A/+hqODFWkJXU6/PHohGf9e5jQlaZjzC7cpe0zOjKzjfZBDzIA6rz+JvwcKfww6L0fr1hAsaYflqZoB6av+F4GVBXk8rvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=nQ2He1Hg; arc=none smtp.client-ip=148.163.156.1
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40GJS1au017967;
-	Tue, 16 Jan 2024 19:34:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=Mcd1b64Vm+CHXiONNdtt+LcCzFybfKPnMfbrChadFrU=;
- b=nQ2He1Hge2Lmt1cSCZiK+88s/vslBaKgm9xjvKEUOkRKDK6M/aBFl0Ny+oHxurdqW5ET
- AphaptcgjC5Y+37zzs5YoHu2l4Az99qr9RKloqbAu87gW44EBp/EzVkUdl3+/GugpNsB
- +FiNLR2/BrGiGqRjUTvca+ccev0M3ZwPQ100Tj+7eww+hpG9jsIh/d75tNt0kzih0fX6
- ST54HSVnVNwWG/mr5Ula3WxvHyHeuzvyFQquvpA68N8qqZhD9vvuerdOl7i6oCt5DtuO
- F899gKEO1qtv9B9YFtkZANiQgs3IILdC7e37fEQMJYEWi11vd0YuNIhu0EM+dMEd+v9k wA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vnykn8x95-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Jan 2024 19:34:13 +0000
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 40GJ3CBo019046;
-	Tue, 16 Jan 2024 19:34:13 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3vnykn8x86-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Jan 2024 19:34:13 +0000
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 40GJ1fRt010969;
-	Tue, 16 Jan 2024 19:34:11 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3vm57ygu86-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 16 Jan 2024 19:34:11 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 40GJY61423134924
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 16 Jan 2024 19:34:06 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 84BF82005A;
-	Tue, 16 Jan 2024 19:34:06 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 357CC2004B;
-	Tue, 16 Jan 2024 19:34:05 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.171.88.12])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 16 Jan 2024 19:34:05 +0000 (GMT)
-Date: Tue, 16 Jan 2024 20:34:03 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Anthony Krowiak <akrowiak@linux.ibm.com>
-Cc: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, jjherne@linux.ibm.com, borntraeger@de.ibm.com,
-        pasic@linux.ibm.com, pbonzini@redhat.com, frankja@linux.ibm.com,
-        imbrenda@linux.ibm.com, alex.williamson@redhat.com,
-        kwankhede@nvidia.com, gor@linux.ibm.com, stable@vger.kernel.org
-Subject: Re: [PATCH v4 4/6] s390/vfio-ap: reset queues filtered from the
- guest's AP config
-Message-ID: <ZabaK3DxABHiGh8V@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-References: <20240115185441.31526-1-akrowiak@linux.ibm.com>
- <20240115185441.31526-5-akrowiak@linux.ibm.com>
- <ZabGAx5BpIiYW+b3@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
- <a54e223c-8965-480c-9361-b483b47502d0@linux.ibm.com>
+	s=arc-20240116; t=1705434148; c=relaxed/simple;
+	bh=ydks/e5IH7FasqqTx9rcS78Zu0NPFlqiVB3AdAuGvQs=;
+	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
+	 X-Mailer:MIME-Version:X-stable:X-Patchwork-Hint:X-stable-base:
+	 Content-Transfer-Encoding; b=VHE0uXGDr/vi2DmYcprfAIxn7fyqzgY05nQKJNSEHxA0rTgwzEfyvMXDNRqLZIsch0mkMONnjd71Cg3GbqfvjqXHJcwbu1E253V+P4LF4elmigl7gQme7GAhgGZ726/9jDABT+8XnjBcIRJHmOAoEpp/zAUZuh5U9slsjSbx2J0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HF9tJcbd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FBC7C433F1;
+	Tue, 16 Jan 2024 19:42:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705434148;
+	bh=ydks/e5IH7FasqqTx9rcS78Zu0NPFlqiVB3AdAuGvQs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=HF9tJcbdwDPOZAs+LQDZomVgJAVcb09JN/mTNpIfUwf8DTI4G6TkkQQJMwATtdOK8
+	 kB3TqzYgEpTpGF5v8TbByFPxQp7KZI7MbOjkFPtx2/Hor7BWxZ9KmBTY56axwJbkvW
+	 fjXZzyaAFX/+UmNHkC70wOQxkYxCLUMhHeAAgMXqZy8aiBmJLisMKh2K1NhzKOSqdF
+	 QT1lxmVEwh8qfLKPq3YKg5Qsz/YyG7WRRFc7spafxRWBJDSm+XuC/ARPT9++G5biNJ
+	 9Mmptwh2EIueTkHdGcfiMeDQsf1RWmdmYZ6IVSYK9FyfIIsewJwGSIl+/CWrRVva1n
+	 xdZ8epEmpm35A==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Dmitry Antipov <dmantipov@yandex.ru>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.7 001/108] wifi: rtw89: fix timeout calculation in rtw89_roc_end()
+Date: Tue, 16 Jan 2024 14:38:27 -0500
+Message-ID: <20240116194225.250921-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a54e223c-8965-480c-9361-b483b47502d0@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: t7leTYHrFA54YdoXPwKrZjRvj_CSCmXn
-X-Proofpoint-ORIG-GUID: -It2vX2kJvngxepizgDOPQRFRmwQwVXm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-16_12,2024-01-16_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 impostorscore=0
- phishscore=0 priorityscore=1501 mlxscore=0 clxscore=1015 bulkscore=0
- spamscore=0 lowpriorityscore=0 mlxlogscore=550 suspectscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2311290000 definitions=main-2401160154
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.7
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jan 16, 2024 at 02:21:23PM -0500, Anthony Krowiak wrote:
-> > If this change is intended?
-> Shall I fix this and submit a v5?
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-No, I will handle it.
+[ Upstream commit e416514e309f7e25e577fee45a65f246f67b2261 ]
+
+Since 'rtw89_core_tx_kick_off_and_wait()' assumes timeout
+(actually RTW89_ROC_TX_TIMEOUT) in milliseconds, I suppose
+that RTW89_ROC_IDLE_TIMEOUT is in milliseconds as well. If
+so, 'msecs_to_jiffies()' should be used in a call to
+'ieee80211_queue_delayed_work()' from 'rtw89_roc_end()'.
+Compile tested only.
+
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20231024143137.30393-1-dmantipov@yandex.ru
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/realtek/rtw89/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/realtek/rtw89/core.c b/drivers/net/wireless/realtek/rtw89/core.c
+index 3d75165e48be..a3624ebf01b7 100644
+--- a/drivers/net/wireless/realtek/rtw89/core.c
++++ b/drivers/net/wireless/realtek/rtw89/core.c
+@@ -2886,7 +2886,7 @@ void rtw89_roc_end(struct rtw89_dev *rtwdev, struct rtw89_vif *rtwvif)
+ 
+ 	if (hw->conf.flags & IEEE80211_CONF_IDLE)
+ 		ieee80211_queue_delayed_work(hw, &roc->roc_work,
+-					     RTW89_ROC_IDLE_TIMEOUT);
++					     msecs_to_jiffies(RTW89_ROC_IDLE_TIMEOUT));
+ }
+ 
+ void rtw89_roc_work(struct work_struct *work)
+-- 
+2.43.0
+
 
