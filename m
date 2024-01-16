@@ -1,52 +1,62 @@
-Return-Path: <stable+bounces-11018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D457582E406
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 00:45:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95FCB82E42C
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 01:08:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 756281F25231
-	for <lists+stable@lfdr.de>; Mon, 15 Jan 2024 23:45:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0DDF28310D
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 00:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6601CD30;
-	Mon, 15 Jan 2024 23:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3453D387;
+	Tue, 16 Jan 2024 00:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uZ4dkR3T"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mxw/HXk8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5639D286AC;
-	Mon, 15 Jan 2024 23:29:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECE4CC433F1;
-	Mon, 15 Jan 2024 23:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC71A193;
+	Tue, 16 Jan 2024 00:08:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A42C433C7;
+	Tue, 16 Jan 2024 00:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705361385;
-	bh=4sz/D6BUjVTtSNq5aU5z2RxJVXyWrK9kgwUbcjvX90I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uZ4dkR3TJr4dlj79rA9Br15XrZi+Mtd8nduH4UyO3C83RMqH/+Jyo+UqG6tOmW+/9
-	 BBnmpFLIqYkJZ7bX3FabT9rYSYujiqjXpM+YKW1hOPYvycshbkmM3NilLf1++XGjWq
-	 bBY1dVpbZwkwGE5e7lk08BgbBthXAP9vT7sCwXq9dhjoy/N1Pk7z0KcjRAzuyzM1vQ
-	 HSfgGe5rbBuBBDuszmv92kSOgTQNyrOAU+v9Byf+CiN63Dbhj61/h8X8WlwxHLubRP
-	 2xlLpaccXW5jx+R0rLCkC5atXUTPDoRt15TTqr1ph+U3t7OuADvxRhlsYqtXiEH+lV
-	 p5xAB4oiMEXcQ==
+	s=k20201202; t=1705363722;
+	bh=XkhCEJwfPjfgpAonk61uf59FuoJ2/3YBNAe7yKZHVUM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Mxw/HXk8ODZ4c2rcTcxsb9nACueYeski2Ar+FhJO9mIF32uhcXiW5RDj8hcQWzToe
+	 d869/VofoX8h0zW9up86t2yi9dHXH2aSfuV5FogpJ3STWyCtDfwiNAbrzGB4vNnZBf
+	 zatTTRN16JSppAwKKDbm+GEDbOHVxvhbNuJJEQSbZa5ZhCkFv7b2Tsw9lSy9iLQHGq
+	 yVLD3iQJrnyLnRgdRgZlXBjMrlUv88+ZlfSPw22TIMS7RH/qk1swR4UnmNWxvyL2OV
+	 DdeAX2tNpOtyKhSP2JJ8HtRgpX5bzTOMi3SoE9d3B5is/wmD5Nsgd2P5iifernHiD4
+	 QU9xd//QlaeAg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Naveen N Rao <naveen@kernel.org>,
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+Cc: Raghavendra K T <raghavendra.kt@amd.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Mel Gorman <mgorman@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	christophe.leroy@csgroup.eu,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 4.19 4/4] powerpc/lib: Validate size for vector operations
-Date: Mon, 15 Jan 2024 18:29:29 -0500
-Message-ID: <20240115232935.210529-4-sashal@kernel.org>
+	mingo@redhat.com,
+	juri.lelli@redhat.com,
+	vincent.guittot@linaro.org,
+	akpm@linux-foundation.org,
+	willy@infradead.org,
+	surenb@google.com,
+	mgorman@techsingularity.net,
+	jhubbard@nvidia.com,
+	Liam.Howlett@oracle.com,
+	jgg@ziepe.ca,
+	mathieu.desnoyers@efficios.com,
+	vishal.moola@gmail.com,
+	dhowells@redhat.com,
+	sidhartha.kumar@oracle.com
+Subject: [PATCH AUTOSEL 6.7 1/8] sched/numa: Fix mm numa_scan_seq based unconditional scan
+Date: Mon, 15 Jan 2024 19:08:13 -0500
+Message-ID: <20240116000838.212299-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240115232935.210529-1-sashal@kernel.org>
-References: <20240115232935.210529-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,72 +65,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.19.305
+X-stable-base: Linux 6.7
 Content-Transfer-Encoding: 8bit
 
-From: Naveen N Rao <naveen@kernel.org>
+From: Raghavendra K T <raghavendra.kt@amd.com>
 
-[ Upstream commit 8f9abaa6d7de0a70fc68acaedce290c1f96e2e59 ]
+[ Upstream commit 84db47ca7146d7bd00eb5cf2b93989a971c84650 ]
 
-Some of the fp/vmx code in sstep.c assume a certain maximum size for the
-instructions being emulated. The size of those operations however is
-determined separately in analyse_instr().
+Since commit fc137c0ddab2 ("sched/numa: enhance vma scanning logic")
 
-Add a check to validate the assumption on the maximum size of the
-operations, so as to prevent any unintended kernel stack corruption.
+NUMA Balancing allows updating PTEs to trap NUMA hinting faults if the
+task had previously accessed VMA. However unconditional scan of VMAs are
+allowed during initial phase of VMA creation until process's
+mm numa_scan_seq reaches 2 even though current task had not accessed VMA.
 
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Build-tested-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231123071705.397625-1-naveen@kernel.org
+Rationale:
+ - Without initial scan subsequent PTE update may never happen.
+ - Give fair opportunity to all the VMAs to be scanned and subsequently
+understand the access pattern of all the VMAs.
+
+But it has a corner case where, if a VMA is created after some time,
+process's mm numa_scan_seq could be already greater than 2.
+
+For e.g., values of mm numa_scan_seq when VMAs are created by running
+mmtest autonuma benchmark briefly looks like:
+start_seq=0 : 459
+start_seq=2 : 138
+start_seq=3 : 144
+start_seq=4 : 8
+start_seq=8 : 1
+start_seq=9 : 1
+This results in no unconditional PTE updates for those VMAs created after
+some time.
+
+Fix:
+ - Note down the initial value of mm numa_scan_seq in per VMA start_seq.
+ - Allow unconditional scan till start_seq + 2.
+
+Result:
+SUT: AMD EPYC Milan with 2 NUMA nodes 256 cpus.
+base kernel: upstream 6.6-rc6 with Mels patches [1] applied.
+
+kernbench
+==========		base                  patched %gain
+Amean    elsp-128      165.09 ( 0.00%)      164.78 *   0.19%*
+
+Duration User       41404.28    41375.08
+Duration System      9862.22     9768.48
+Duration Elapsed      519.87      518.72
+
+Ops NUMA PTE updates           1041416.00      831536.00
+Ops NUMA hint faults            263296.00      220966.00
+Ops NUMA pages migrated         258021.00      212769.00
+Ops AutoNUMA cost                 1328.67        1114.69
+
+autonumabench
+
+NUMA01_THREADLOCAL
+==================
+Amean  elsp-NUMA01_THREADLOCAL   81.79 (0.00%)  67.74 *  17.18%*
+
+Duration User       54832.73    47379.67
+Duration System        75.00      185.75
+Duration Elapsed      576.72      476.09
+
+Ops NUMA PTE updates                  394429.00    11121044.00
+Ops NUMA hint faults                    1001.00     8906404.00
+Ops NUMA pages migrated                  288.00     2998694.00
+Ops AutoNUMA cost                          7.77       44666.84
+
+Signed-off-by: Raghavendra K T <raghavendra.kt@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Mel Gorman <mgorman@suse.de>
+Link: https://lore.kernel.org/r/2ea7cbce80ac7c62e90cbfb9653a7972f902439f.1697816692.git.raghavendra.kt@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/lib/sstep.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ include/linux/mm_types.h | 3 +++
+ kernel/sched/fair.c      | 4 +++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index 30c434abe861..3da6290e3ccc 100644
---- a/arch/powerpc/lib/sstep.c
-+++ b/arch/powerpc/lib/sstep.c
-@@ -473,6 +473,8 @@ static int do_fp_load(struct instruction_op *op, unsigned long ea,
- 	} u;
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 957ce38768b2..950df415d7de 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -600,6 +600,9 @@ struct vma_numab_state {
+ 	 */
+ 	unsigned long pids_active[2];
  
- 	nb = GETSIZE(op->type);
-+	if (nb > sizeof(u))
-+		return -EINVAL;
- 	if (!address_ok(regs, ea, nb))
- 		return -EFAULT;
- 	rn = op->reg;
-@@ -523,6 +525,8 @@ static int do_fp_store(struct instruction_op *op, unsigned long ea,
- 	} u;
- 
- 	nb = GETSIZE(op->type);
-+	if (nb > sizeof(u))
-+		return -EINVAL;
- 	if (!address_ok(regs, ea, nb))
- 		return -EFAULT;
- 	rn = op->reg;
-@@ -567,6 +571,9 @@ static nokprobe_inline int do_vec_load(int rn, unsigned long ea,
- 		u8 b[sizeof(__vector128)];
- 	} u = {};
- 
-+	if (size > sizeof(u))
-+		return -EINVAL;
++	/* MM scan sequence ID when scan first started after VMA creation */
++	int start_scan_seq;
 +
- 	if (!address_ok(regs, ea & ~0xfUL, 16))
- 		return -EFAULT;
- 	/* align to multiple of size */
-@@ -594,6 +601,9 @@ static nokprobe_inline int do_vec_store(int rn, unsigned long ea,
- 		u8 b[sizeof(__vector128)];
- 	} u;
+ 	/*
+ 	 * MM scan sequence ID when the VMA was last completely scanned.
+ 	 * A VMA is not eligible for scanning if prev_scan_seq == numa_scan_seq
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index d7a3c63a2171..44b5262b6657 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -3164,7 +3164,7 @@ static bool vma_is_accessed(struct mm_struct *mm, struct vm_area_struct *vma)
+ 	 * This is also done to avoid any side effect of task scanning
+ 	 * amplifying the unfairness of disjoint set of VMAs' access.
+ 	 */
+-	if (READ_ONCE(current->mm->numa_scan_seq) < 2)
++	if ((READ_ONCE(current->mm->numa_scan_seq) - vma->numab_state->start_scan_seq) < 2)
+ 		return true;
  
-+	if (size > sizeof(u))
-+		return -EINVAL;
+ 	pids = vma->numab_state->pids_active[0] | vma->numab_state->pids_active[1];
+@@ -3307,6 +3307,8 @@ static void task_numa_work(struct callback_head *work)
+ 			if (!vma->numab_state)
+ 				continue;
+ 
++			vma->numab_state->start_scan_seq = mm->numa_scan_seq;
 +
- 	if (!address_ok(regs, ea & ~0xfUL, 16))
- 		return -EFAULT;
- 	/* align to multiple of size */
+ 			vma->numab_state->next_scan = now +
+ 				msecs_to_jiffies(sysctl_numa_balancing_scan_delay);
+ 
 -- 
 2.43.0
 
