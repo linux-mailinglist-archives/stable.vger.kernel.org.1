@@ -1,61 +1,59 @@
-Return-Path: <stable+bounces-11397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D69A82F62B
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 20:53:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C5682F62F
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 20:53:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0D0A1F2309E
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 19:53:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 336361F2304B
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 19:53:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB1428DBA;
-	Tue, 16 Jan 2024 19:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39A328E0D;
+	Tue, 16 Jan 2024 19:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GtY2s3yq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F+CcMzY6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C7EA28DB4;
-	Tue, 16 Jan 2024 19:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CFBD28E01;
+	Tue, 16 Jan 2024 19:43:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705434238; cv=none; b=YocTVv/UeiFntqi196pkWqcPnS7kZZBvqzsCpuu6Qr2MhUvGJQ6IwOLfKoS31iTJjo5AUgK8dZxmQgVR3gFWmIWDoCwyBn2eQjs2Vzjuhtw1XJiFVPpYspnVHckxdXXO3DuDB7KK3DJKrh3AizMHxuHk1atFu3ZB4jqoq3jAYGI=
+	t=1705434239; cv=none; b=hIYukrb/rsNKoNNsy8UVpVdOp84p49Jp60YBcnaLm9AaPCUusmnZMKyo/akCDTIuOZ+6Bj/DQ/FigfysnNR6+5NIIbNoQZxxC8Aa8phbmxbv+Puvz80xRZikKf5i4M+C/VVx9GW0RYfkNQZDrM5clqejZcRgTihBnHm1SyAXOvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705434238; c=relaxed/simple;
-	bh=IFFpEYIdX1DqTWpc6Dnp/CFvCpZiKT4CYGbBsshzT4U=;
+	s=arc-20240116; t=1705434239; c=relaxed/simple;
+	bh=vuBI9Flk2osas8XVrL3HId0po9MjKVz8FBootcs+Va4=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:MIME-Version:X-stable:
-	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=GgjRhzQPykWKgjZpMsXkOXacq3d4igIyywHrYF7tcv/ojjSDdd19QeJ7diN7Si9h2zJuQ9PYzV2UiY91svLBDN1DhLSc7i8VDbJm/g6dJAOVUAVexPz3iHSZg/F2WXkhH8jSURN1SGYSPYzL3tNzbpUT9rKqiQ1auUKoiSua2Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GtY2s3yq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5CEEC433A6;
-	Tue, 16 Jan 2024 19:43:56 +0000 (UTC)
+	 X-Patchwork-Hint:X-stable-base:Content-Transfer-Encoding; b=RNVZNRoNVtVBvbaTYb1fc8qqA4uqaxljTnctclvw8ebLhlSjE5AinIOpxw4yfvuYGnushVzOHk995f7/73AyXahbS0mnRta4EB9qrJhVtoeBRnNe3k3p3231ovgMfPvGl1GFVVEiQuYqVrqx6ojrZC2yWvf8IrHfHiPFtHZbJJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F+CcMzY6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70252C433C7;
+	Tue, 16 Jan 2024 19:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705434237;
-	bh=IFFpEYIdX1DqTWpc6Dnp/CFvCpZiKT4CYGbBsshzT4U=;
+	s=k20201202; t=1705434239;
+	bh=vuBI9Flk2osas8XVrL3HId0po9MjKVz8FBootcs+Va4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GtY2s3yqwL4P8f5jPRVtuoe/Ie8l8Nd4DU8F8pEBlT1IchBaPjhVnGv+4kvaXrYde
-	 xbJvv58nwZwmGJgz//Xl87R3+hhrclljxBAaaGRt44vB9Q38Lz+ulxJvf5TBaRc420
-	 q+umyUmBl+7AmGC6dt3HjlsLkrGdC3YSdpESpytOEZ+refod0F9KB50RIu+kj6lsJu
-	 RVzZJGTWKgUvIY/TzctK4lyhKKeSlSPWFY7sziFkEIvEd25eKxtO1/6RfGCAcce1BM
-	 CmP8IsLd60wpHA3M26TdRyApY4GgUoHGicOHTMFKO/oO5t8djloGaITp2p6A23Gf7p
-	 GJKrPFraNFgoA==
+	b=F+CcMzY6/3kDTUsJS8JNWT8ptmVz9yNC+TT/E7X0Xa6GbY/mssnkls2/i3gj7ryYJ
+	 tpmMBkB1RdoLwlhr49dbPKy6mmyWU19P7DJ0vjlvbq2WIzxCnHbxWFfVNSSl5k64kw
+	 C/9dQrjfP4INZGLzD1V3mvK/auzoLvZxgRSTfos4gLJgOIJt6IdFT0VaEvCra0N7Hq
+	 WFEi4pMjUVLqb+qI4Qbv7h6/0nTVoU57W1KmoR2foYaUYKDbASFYd99sc51NrTGK4S
+	 euQ1XnqkoXx/aJSCb69Rs72nTKPEb6jBBXG4dHmEFtsaK7CltMfJouISl+GomoyKNv
+	 Qjuj9pfOLNWRw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Michael Chan <michael.chan@broadcom.com>,
-	Andy Gospodarek <gospo@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.7 036/108] bnxt_en: Add 5760X (P7) PCI IDs
-Date: Tue, 16 Jan 2024 14:39:02 -0500
-Message-ID: <20240116194225.250921-36-sashal@kernel.org>
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.7 037/108] bpf: Check rcu_read_lock_trace_held() before calling bpf map helpers
+Date: Tue, 16 Jan 2024 14:39:03 -0500
+Message-ID: <20240116194225.250921-37-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240116194225.250921-1-sashal@kernel.org>
 References: <20240116194225.250921-1-sashal@kernel.org>
@@ -70,64 +68,93 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.7
 Content-Transfer-Encoding: 8bit
 
-From: Michael Chan <michael.chan@broadcom.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 2012a6abc87657c6c8171bb5ff13dd9bafb241bf ]
+[ Upstream commit 169410eba271afc9f0fb476d996795aa26770c6d ]
 
-Now with basic support for the new chip family, add the PCI IDs of the
-new devices.
+These three bpf_map_{lookup,update,delete}_elem() helpers are also
+available for sleepable bpf program, so add the corresponding lock
+assertion for sleepable bpf program, otherwise the following warning
+will be reported when a sleepable bpf program manipulates bpf map under
+interpreter mode (aka bpf_jit_enable=0):
 
-Reviewed-by: Andy Gospodarek <gospo@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://lore.kernel.org/r/20231201223924.26955-16-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+  WARNING: CPU: 3 PID: 4985 at kernel/bpf/helpers.c:40 ......
+  CPU: 3 PID: 4985 Comm: test_progs Not tainted 6.6.0+ #2
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996) ......
+  RIP: 0010:bpf_map_lookup_elem+0x54/0x60
+  ......
+  Call Trace:
+   <TASK>
+   ? __warn+0xa5/0x240
+   ? bpf_map_lookup_elem+0x54/0x60
+   ? report_bug+0x1ba/0x1f0
+   ? handle_bug+0x40/0x80
+   ? exc_invalid_op+0x18/0x50
+   ? asm_exc_invalid_op+0x1b/0x20
+   ? __pfx_bpf_map_lookup_elem+0x10/0x10
+   ? rcu_lockdep_current_cpu_online+0x65/0xb0
+   ? rcu_is_watching+0x23/0x50
+   ? bpf_map_lookup_elem+0x54/0x60
+   ? __pfx_bpf_map_lookup_elem+0x10/0x10
+   ___bpf_prog_run+0x513/0x3b70
+   __bpf_prog_run32+0x9d/0xd0
+   ? __bpf_prog_enter_sleepable_recur+0xad/0x120
+   ? __bpf_prog_enter_sleepable_recur+0x3e/0x120
+   bpf_trampoline_6442580665+0x4d/0x1000
+   __x64_sys_getpgid+0x5/0x30
+   ? do_syscall_64+0x36/0xb0
+   entry_SYSCALL_64_after_hwframe+0x6e/0x76
+   </TASK>
+
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20231204140425.1480317-2-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 8 ++++++++
- drivers/net/ethernet/broadcom/bnxt/bnxt.h | 4 ++++
- 2 files changed, 12 insertions(+)
+ kernel/bpf/helpers.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index e1f1e646cf48..56da7ba7d68d 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -120,6 +120,10 @@ static const struct {
- 	[BCM57508] = { "Broadcom BCM57508 NetXtreme-E 10Gb/25Gb/50Gb/100Gb/200Gb Ethernet" },
- 	[BCM57504] = { "Broadcom BCM57504 NetXtreme-E 10Gb/25Gb/50Gb/100Gb/200Gb Ethernet" },
- 	[BCM57502] = { "Broadcom BCM57502 NetXtreme-E 10Gb/25Gb/50Gb Ethernet" },
-+	[BCM57608] = { "Broadcom BCM57608 NetXtreme-E 10Gb/25Gb/50Gb/100Gb/200Gb/400Gb Ethernet" },
-+	[BCM57604] = { "Broadcom BCM57604 NetXtreme-E 10Gb/25Gb/50Gb/100Gb/200Gb Ethernet" },
-+	[BCM57602] = { "Broadcom BCM57602 NetXtreme-E 10Gb/25Gb/50Gb/100Gb Ethernet" },
-+	[BCM57601] = { "Broadcom BCM57601 NetXtreme-E 10Gb/25Gb/50Gb/100Gb/200Gb/400Gb Ethernet" },
- 	[BCM57508_NPAR] = { "Broadcom BCM57508 NetXtreme-E Ethernet Partition" },
- 	[BCM57504_NPAR] = { "Broadcom BCM57504 NetXtreme-E Ethernet Partition" },
- 	[BCM57502_NPAR] = { "Broadcom BCM57502 NetXtreme-E Ethernet Partition" },
-@@ -174,6 +178,10 @@ static const struct pci_device_id bnxt_pci_tbl[] = {
- 	{ PCI_VDEVICE(BROADCOM, 0x1750), .driver_data = BCM57508 },
- 	{ PCI_VDEVICE(BROADCOM, 0x1751), .driver_data = BCM57504 },
- 	{ PCI_VDEVICE(BROADCOM, 0x1752), .driver_data = BCM57502 },
-+	{ PCI_VDEVICE(BROADCOM, 0x1760), .driver_data = BCM57608 },
-+	{ PCI_VDEVICE(BROADCOM, 0x1761), .driver_data = BCM57604 },
-+	{ PCI_VDEVICE(BROADCOM, 0x1762), .driver_data = BCM57602 },
-+	{ PCI_VDEVICE(BROADCOM, 0x1763), .driver_data = BCM57601 },
- 	{ PCI_VDEVICE(BROADCOM, 0x1800), .driver_data = BCM57502_NPAR },
- 	{ PCI_VDEVICE(BROADCOM, 0x1801), .driver_data = BCM57504_NPAR },
- 	{ PCI_VDEVICE(BROADCOM, 0x1802), .driver_data = BCM57508_NPAR },
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index a7d7b09ea162..1471e9ec9107 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -1697,6 +1697,10 @@ enum board_idx {
- 	BCM57508_NPAR,
- 	BCM57504_NPAR,
- 	BCM57502_NPAR,
-+	BCM57608,
-+	BCM57604,
-+	BCM57602,
-+	BCM57601,
- 	BCM58802,
- 	BCM58804,
- 	BCM58808,
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 56b0c1f678ee..f43038931935 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -32,12 +32,13 @@
+  *
+  * Different map implementations will rely on rcu in map methods
+  * lookup/update/delete, therefore eBPF programs must run under rcu lock
+- * if program is allowed to access maps, so check rcu_read_lock_held in
+- * all three functions.
++ * if program is allowed to access maps, so check rcu_read_lock_held() or
++ * rcu_read_lock_trace_held() in all three functions.
+  */
+ BPF_CALL_2(bpf_map_lookup_elem, struct bpf_map *, map, void *, key)
+ {
+-	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
++	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held() &&
++		     !rcu_read_lock_bh_held());
+ 	return (unsigned long) map->ops->map_lookup_elem(map, key);
+ }
+ 
+@@ -53,7 +54,8 @@ const struct bpf_func_proto bpf_map_lookup_elem_proto = {
+ BPF_CALL_4(bpf_map_update_elem, struct bpf_map *, map, void *, key,
+ 	   void *, value, u64, flags)
+ {
+-	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
++	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held() &&
++		     !rcu_read_lock_bh_held());
+ 	return map->ops->map_update_elem(map, key, value, flags);
+ }
+ 
+@@ -70,7 +72,8 @@ const struct bpf_func_proto bpf_map_update_elem_proto = {
+ 
+ BPF_CALL_2(bpf_map_delete_elem, struct bpf_map *, map, void *, key)
+ {
+-	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
++	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held() &&
++		     !rcu_read_lock_bh_held());
+ 	return map->ops->map_delete_elem(map, key);
+ }
+ 
 -- 
 2.43.0
 
