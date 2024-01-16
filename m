@@ -1,197 +1,143 @@
-Return-Path: <stable+bounces-11316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEA6682EB3D
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 10:04:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C94A382EB4E
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 10:13:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6AB41C22E26
-	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 09:04:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79A20285436
+	for <lists+stable@lfdr.de>; Tue, 16 Jan 2024 09:13:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF90125C4;
-	Tue, 16 Jan 2024 09:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D31D9125CD;
+	Tue, 16 Jan 2024 09:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XJHz/uxT"
+	dkim=pass (2048-bit key) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.b="MznAwDtF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A81F510782;
-	Tue, 16 Jan 2024 09:04:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-680a13af19bso60737736d6.0;
-        Tue, 16 Jan 2024 01:04:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705395863; x=1706000663; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uWDRecvJH/tBfBcAESVK7bhkquoB7rKpSpOtLZHAkmI=;
-        b=XJHz/uxTVccqxXc10c9YAwijh6zQMggb2Rh23pRqe50E9h9Z0wQ+oZuR47Oszrf1o7
-         //KHCMudYE9LeKDc7K1/lLQ/i2tMTgcILyAqmwke733WOcKYqMupQQy6YdbsvS4XRi4w
-         nAqLd1LRykoVjVbfSg2hpVqMJGI2GXu5OWtR/C8GRS+PPBKQZ8CRNxZ8rVecaF5BPR/e
-         E2vIGzS+FRAwS5Y2FJtEcZzXpAiFUdCBcl027vbVFbmK6KEcHgyl7Zp8IFr0hCYJKtxF
-         T5CpwktsnPFDjxNI6NC7VjcH2UVR8hB473FDVdd2rfXjNcNGHnhEFV5t61BJL8nFMKG6
-         uISw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705395863; x=1706000663;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uWDRecvJH/tBfBcAESVK7bhkquoB7rKpSpOtLZHAkmI=;
-        b=BRY79LsY2KsRJZ4bb+hEHn6lkBywzXivq7ZEzScU7S74lF5d8x/SMcPKLsZ4uqZu2u
-         Uckp+TavTuqp47Z2ZwV6toNajsZX2CnqXHpPfPYd1h/o0k4mdqh/c1FJ9k8ranpT7tQS
-         GytvRKYu5YjmaMhsNPpN/tiTV/0BmbfAsYKKq4/mASoOufybeVx+K3A53eKASBuYJD4X
-         fmwiQHAiGcHK3o44ijoomctFmpr7ne0yJKEnmhuRQW1jnai5oStPJGvhtnsigrw3sEiM
-         VXx0VYG9G60x30xUmMNakmPEd//84z6Tes4ACEZB6SeVyM0eoKkdaYy2bYBAQaRafxNe
-         +9+A==
-X-Gm-Message-State: AOJu0Yyhx0fWwyPoFo0sU4kjUEi2fI/Fu2sl5kkaztM/zCa+bNSoNDVX
-	yrnTQ+0BRhLpxC0KqvDtwtkj7zBL9Z6VCVbKlfo=
-X-Google-Smtp-Source: AGHT+IGWKyufLse5EGJdpy8ol/yrNSirXSN+1lIVNC17PLfzyN9+ty3GRnNxFXtaHlcfbAOD1P+pzX+ag9nf4PZ+BR8=
-X-Received: by 2002:ad4:5c49:0:b0:67f:2ab2:d8b3 with SMTP id
- a9-20020ad45c49000000b0067f2ab2d8b3mr10157636qva.30.1705395863540; Tue, 16
- Jan 2024 01:04:23 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 452BC12B8D;
+	Tue, 16 Jan 2024 09:12:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.com;
+	s=s31663417; t=1705396363; x=1706001163; i=quwenruo.btrfs@gmx.com;
+	bh=jI6sDzQkPN+DfPBKgNfksiXi37NWcrYrS2OPe6mAuzY=;
+	h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:
+	 In-Reply-To;
+	b=MznAwDtF/ES/ZNLD7MABrPa3lUldNkEi6cLfjHDewciNLUmtOEccn5yaaIG7m5Yf
+	 WAfZwzSWGunENe+LMTz72O16EUrO1a8FceGF5osFYBs9oVEEqnB83U4MVG2NavX+t
+	 2N44ZnxSVAXucPpUJ0SWZ9KC/67QFURFcgRJ5io6zslQa+/yonT7Fwn1GrRhsZP6G
+	 ZW3yqTSDOCdqW0Cu/eo4yPZf2F0PNJl43urdxY37fXe+wFNHupw/pIBn6HoepF+x3
+	 Nh1P1rjyCVPazHdBbBqaiu7/rdwunxcsrZeea/2O2G7JJ+jb88V9oQjMMnhGBF544
+	 9XTSeTL9gHIWVN7vhQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [172.16.0.153] ([61.245.157.120]) by mail.gmx.net (mrgmx105
+ [212.227.17.174]) with ESMTPSA (Nemesis) id 1N1fmq-1r1Z2p0aoy-0121za; Tue, 16
+ Jan 2024 10:12:43 +0100
+Message-ID: <4cc5ba4d-299a-46eb-b452-21eac629ace8@gmx.com>
+Date: Tue, 16 Jan 2024 19:42:39 +1030
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240115232611.209265-1-sashal@kernel.org> <20240115232611.209265-12-sashal@kernel.org>
-In-Reply-To: <20240115232611.209265-12-sashal@kernel.org>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Tue, 16 Jan 2024 11:04:12 +0200
-Message-ID: <CAOQ4uxgGY1949dr0-rt5wuNu-LH=DiRSZrJnamD9bgUtGM9hKQ@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 6.1 12/14] add unique mount ID
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Miklos Szeredi <mszeredi@redhat.com>, Ian Kent <raven@themaw.net>, 
-	Christian Brauner <brauner@kernel.org>, viro@zeniv.linux.org.uk, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] btrfs: don't warn if discard range is not aligned to
+ sector
+Content-Language: en-US
+To: David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org,
+ syzbot+4a4f1eba14eb5c3417d1@syzkaller.appspotmail.com
+References: <20240115193859.1521-1-dsterba@suse.com>
+From: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Autocrypt: addr=quwenruo.btrfs@gmx.com; keydata=
+ xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
+ 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
+ 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
+ 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
+ gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
+ AAHNIlF1IFdlbnJ1byA8cXV3ZW5ydW8uYnRyZnNAZ214LmNvbT7CwJQEEwEIAD4CGwMFCwkI
+ BwIGFQgJCgsCBBYCAwECHgECF4AWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCY00iVQUJDToH
+ pgAKCRDCPZHzoSX+qNKACACkjDLzCvcFuDlgqCiS4ajHAo6twGra3uGgY2klo3S4JespWifr
+ BLPPak74oOShqNZ8yWzB1Bkz1u93Ifx3c3H0r2vLWrImoP5eQdymVqMWmDAq+sV1Koyt8gXQ
+ XPD2jQCrfR9nUuV1F3Z4Lgo+6I5LjuXBVEayFdz/VYK63+YLEAlSowCF72Lkz06TmaI0XMyj
+ jgRNGM2MRgfxbprCcsgUypaDfmhY2nrhIzPUICURfp9t/65+/PLlV4nYs+DtSwPyNjkPX72+
+ LdyIdY+BqS8cZbPG5spCyJIlZonADojLDYQq4QnufARU51zyVjzTXMg5gAttDZwTH+8LbNI4
+ mm2YzsBNBFnVga8BCACqU+th4Esy/c8BnvliFAjAfpzhI1wH76FD1MJPmAhA3DnX5JDORcga
+ CbPEwhLj1xlwTgpeT+QfDmGJ5B5BlrrQFZVE1fChEjiJvyiSAO4yQPkrPVYTI7Xj34FnscPj
+ /IrRUUka68MlHxPtFnAHr25VIuOS41lmYKYNwPNLRz9Ik6DmeTG3WJO2BQRNvXA0pXrJH1fN
+ GSsRb+pKEKHKtL1803x71zQxCwLh+zLP1iXHVM5j8gX9zqupigQR/Cel2XPS44zWcDW8r7B0
+ q1eW4Jrv0x19p4P923voqn+joIAostyNTUjCeSrUdKth9jcdlam9X2DziA/DHDFfS5eq4fEv
+ ABEBAAHCwHwEGAEIACYCGwwWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCY00ibgUJDToHvwAK
+ CRDCPZHzoSX+qK6vB/9yyZlsS+ijtsvwYDjGA2WhVhN07Xa5SBBvGCAycyGGzSMkOJcOtUUf
+ tD+ADyrLbLuVSfRN1ke738UojphwkSFj4t9scG5A+U8GgOZtrlYOsY2+cG3R5vjoXUgXMP37
+ INfWh0KbJodf0G48xouesn08cbfUdlphSMXujCA8y5TcNyRuNv2q5Nizl8sKhUZzh4BascoK
+ DChBuznBsucCTAGrwPgG4/ul6HnWE8DipMKvkV9ob1xJS2W4WJRPp6QdVrBWJ9cCdtpR6GbL
+ iQi22uZXoSPv/0oUrGU+U5X4IvdnvT+8viPzszL5wXswJZfqfy8tmHM85yjObVdIG6AlnrrD
+In-Reply-To: <20240115193859.1521-1-dsterba@suse.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:iRnlzFSNJPCJl1ODabPRI+EROOJhSAY8iwjhY0ZHQ+zQVi0CGXf
+ xlaV7L5HWQjgW/7H+hfL15mY8GIesGdchISje1bWAqUyX02/mhLG6/azdiwEcMpOWW3yiAf
+ 9EOcQ35QZzo7m9iDZR0RPBJWrd70MsLF+MOgCRbDBy4rigAjzhJsP8wK76+P2VT/Se6pcdg
+ WD7qddXv1hA62MG+/8ysQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:MrwAzFOjfR8=;SoAuHHJeI/m8fDGjXQ6pccsl6Kq
+ BIDiODGqsptgNCq0LvXG/X9MvzJZFB/qPE+XfAeTvObTPFdEz5gmhFjVfTlbQkeHeHlyEcpQq
+ boqbd9+qtMPGnSPPKdssm3PbKIB/0hKWSb1dIkG8orUVy0vcZ3fKotiCO/TULgMAuz/SCPzF7
+ tzUf/lIz5MYQNVDka8WfsqUDnoe+f7rDL24KH2TdzjW4nEgHMZsUECvIspNX3/IzIIE+UThFp
+ sP9mPQoYQ6BFMS4Ab5SURs612GIYNww7dCTEUg0rxiHT1TcUDGxQMd89HPrvSn+LbewoAVH+W
+ XTLotRmEjnPEO393i5TM3rwX1f97Lc+pIz+RypG19BY+je29NwjcGGFr17fPW9Z4Uj6gfesPV
+ +dAoSSgDlP8t5t+Clg/kjE6RPK8IsTTduLLkXRaDMZncT2UKNqFkBWQy3h8s5HApADFs8+9r4
+ C4fkitYdjMYVlasd9LxiPh5EFJ/BOwfuk+BP8ZxJnskJwxM2gKX5QwLIQ6mx8A4m3AEIe5pmT
+ KF9auM9ijFMCZJ5lY7kbEDOjSwb3Ba6EFz5dRPHCP+jbXPkhqx0zxd25oI1fDgRBAKySpkd4B
+ 3y5n5X5U0D5WxLvlCeLY7f1ndcIS5mPJgcHVCqbbTc0RAqvtuk1XWrjre4MdkAM8n24AIk7/Y
+ QS5L6mfzujxdmQCcEV4hBYNe69iimqr151XFEAaReyL/4AEwVEs+Gpovu/P9yRA1/3l1dwgSu
+ XV+SUflWBkF3K5+8JtaTdNqSaLmESklSRrfZeNOQjCeywC2RavKC0KjWsIufC3Zr/E88jAGW4
+ VADHhJi810aO3ljhsi2PDu75ctF+fzVRcha1xtCRADdaNbktz88OLgtvOURCncwAXSRJ13Uxe
+ EeVFxnbR0gl9tR3cmkhY8o9nKSHirlKixwsqP/xqhezX2a5j4NXL/ls2R9cIbHIuMXunhUNNH
+ 7s8iOVuzyX7I70PBn6vIEWiI/lY=
 
-On Tue, Jan 16, 2024 at 1:46=E2=80=AFAM Sasha Levin <sashal@kernel.org> wro=
-te:
->
-> From: Miklos Szeredi <mszeredi@redhat.com>
->
-> [ Upstream commit 98d2b43081972abeb5bb5a087bc3e3197531c46e ]
->
-> If a mount is released then its mnt_id can immediately be reused.  This i=
-s
-> bad news for user interfaces that want to uniquely identify a mount.
->
 
-Sasha,
 
-This is a new API, not a bug fix.
-Maybe AUTOSEL was triggered by the words "This is bad news for user...."?
+On 2024/1/16 06:08, David Sterba wrote:
+> There's a warning in btrfs_issue_discard() when the range is not aligned
+> to 512 bytes, originally added in 4d89d377bbb0 ("btrfs:
+> btrfs_issue_discard ensure offset/length are aligned to sector
+> boundaries"). We can't do sub-sector writes anyway so the adjustment is
+> the only thing that we can do and the warning is unnecessary.
+>
+> CC: stable@vger.kernel.org # 4.19+
+> Reported-by: syzbot+4a4f1eba14eb5c3417d1@syzkaller.appspotmail.com
+> Signed-off-by: David Sterba <dsterba@suse.com>
+> ---
+>   fs/btrfs/extent-tree.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+> index 6d680031211a..8e8cc1111277 100644
+> --- a/fs/btrfs/extent-tree.c
+> +++ b/fs/btrfs/extent-tree.c
+> @@ -1260,7 +1260,8 @@ static int btrfs_issue_discard(struct block_device=
+ *bdev, u64 start, u64 len,
+>   	u64 bytes_left, end;
+>   	u64 aligned_start =3D ALIGN(start, 1 << SECTOR_SHIFT);
+>
+> -	if (WARN_ON(start !=3D aligned_start)) {
+> +	/* Adjust the range to be aligned to 512B sectors if necessary. */
+> +	if (start !=3D aligned_start) {
+>   		len -=3D aligned_start - start;
+>   		len =3D round_down(len, 1 << SECTOR_SHIFT);
+>   		start =3D aligned_start;
+Can we do one step further in mkfs and device add, by rounding down the
+device size to btrfs sector boundary?
 
-You have also selected this to other 6.*.y kernels.
+Add maybe output a warning message at mount time when adding one device?
 
 Thanks,
-Amir.
-
-
-> Implementing a unique mount ID is trivial (use a 64bit counter).
-> Unfortunately userspace assumes 32bit size and would overflow after the
-> counter reaches 2^32.
->
-> Introduce a new 64bit ID alongside the old one.  Initialize the counter t=
-o
-> 2^32, this guarantees that the old and new IDs are never mixed up.
->
-> Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
-> Link: https://lore.kernel.org/r/20231025140205.3586473-2-mszeredi@redhat.=
-com
-> Reviewed-by: Ian Kent <raven@themaw.net>
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  fs/mount.h                | 3 ++-
->  fs/namespace.c            | 4 ++++
->  fs/stat.c                 | 9 +++++++--
->  include/uapi/linux/stat.h | 1 +
->  4 files changed, 14 insertions(+), 3 deletions(-)
->
-> diff --git a/fs/mount.h b/fs/mount.h
-> index 130c07c2f8d2..a14f762b3f29 100644
-> --- a/fs/mount.h
-> +++ b/fs/mount.h
-> @@ -72,7 +72,8 @@ struct mount {
->         struct fsnotify_mark_connector __rcu *mnt_fsnotify_marks;
->         __u32 mnt_fsnotify_mask;
->  #endif
-> -       int mnt_id;                     /* mount identifier */
-> +       int mnt_id;                     /* mount identifier, reused */
-> +       u64 mnt_id_unique;              /* mount ID unique until reboot *=
-/
->         int mnt_group_id;               /* peer group identifier */
->         int mnt_expiry_mark;            /* true if marked for expiry */
->         struct hlist_head mnt_pins;
-> diff --git a/fs/namespace.c b/fs/namespace.c
-> index e04a9e9e3f14..12c8e2eeda91 100644
-> --- a/fs/namespace.c
-> +++ b/fs/namespace.c
-> @@ -68,6 +68,9 @@ static u64 event;
->  static DEFINE_IDA(mnt_id_ida);
->  static DEFINE_IDA(mnt_group_ida);
->
-> +/* Don't allow confusion with old 32bit mount ID */
-> +static atomic64_t mnt_id_ctr =3D ATOMIC64_INIT(1ULL << 32);
-> +
->  static struct hlist_head *mount_hashtable __read_mostly;
->  static struct hlist_head *mountpoint_hashtable __read_mostly;
->  static struct kmem_cache *mnt_cache __read_mostly;
-> @@ -130,6 +133,7 @@ static int mnt_alloc_id(struct mount *mnt)
->         if (res < 0)
->                 return res;
->         mnt->mnt_id =3D res;
-> +       mnt->mnt_id_unique =3D atomic64_inc_return(&mnt_id_ctr);
->         return 0;
->  }
->
-> diff --git a/fs/stat.c b/fs/stat.c
-> index ef50573c72a2..a003e891a682 100644
-> --- a/fs/stat.c
-> +++ b/fs/stat.c
-> @@ -232,8 +232,13 @@ static int vfs_statx(int dfd, struct filename *filen=
-ame, int flags,
->
->         error =3D vfs_getattr(&path, stat, request_mask, flags);
->
-> -       stat->mnt_id =3D real_mount(path.mnt)->mnt_id;
-> -       stat->result_mask |=3D STATX_MNT_ID;
-> +       if (request_mask & STATX_MNT_ID_UNIQUE) {
-> +               stat->mnt_id =3D real_mount(path.mnt)->mnt_id_unique;
-> +               stat->result_mask |=3D STATX_MNT_ID_UNIQUE;
-> +       } else {
-> +               stat->mnt_id =3D real_mount(path.mnt)->mnt_id;
-> +               stat->result_mask |=3D STATX_MNT_ID;
-> +       }
->
->         if (path.mnt->mnt_root =3D=3D path.dentry)
->                 stat->attributes |=3D STATX_ATTR_MOUNT_ROOT;
-> diff --git a/include/uapi/linux/stat.h b/include/uapi/linux/stat.h
-> index 7cab2c65d3d7..2f2ee82d5517 100644
-> --- a/include/uapi/linux/stat.h
-> +++ b/include/uapi/linux/stat.h
-> @@ -154,6 +154,7 @@ struct statx {
->  #define STATX_BTIME            0x00000800U     /* Want/got stx_btime */
->  #define STATX_MNT_ID           0x00001000U     /* Got stx_mnt_id */
->  #define STATX_DIOALIGN         0x00002000U     /* Want/got direct I/O al=
-ignment info */
-> +#define STATX_MNT_ID_UNIQUE    0x00004000U     /* Want/got extended stx_=
-mount_id */
->
->  #define STATX__RESERVED                0x80000000U     /* Reserved for f=
-uture struct statx expansion */
->
-> --
-> 2.43.0
->
->
+Qu
 
