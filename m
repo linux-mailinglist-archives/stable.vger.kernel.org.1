@@ -1,75 +1,83 @@
-Return-Path: <stable+bounces-11810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 012CA82FE7E
-	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 02:43:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 871CF82FE96
+	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 02:55:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AF0AB26862
-	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 01:43:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 267A31F277E2
+	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 01:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2061A15B7;
-	Wed, 17 Jan 2024 01:43:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D51217D9;
+	Wed, 17 Jan 2024 01:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uGRkVa4a"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="i2LbIqNG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0E91364;
-	Wed, 17 Jan 2024 01:43:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A401385;
+	Wed, 17 Jan 2024 01:55:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705455797; cv=none; b=XeUhoYhwBFgZPQJh4deVvI3tOWuNTdGJmqj1BycrdXvWFDDf7yxDdAOgWnS0luYXANMlfDNHGNrUYJp7pE7LxCSMlO+k/UbFGVp9DdKwI1fFE0dRbsvhzOeHku8t1SNSkHbyzhVTQOPxderUc8jLgDbWj0db/TMvgyesoZybMYs=
+	t=1705456501; cv=none; b=YgnUz6edHGhGAqMXbkVhYxeBlaWrO/oGiCUP/xJk5zVGUzBr+eOV5EUkn2/yBaseTOgGRX+wZ5yX+7zUY2fGdJ0P7pqlXEyy+AfXWfK+ZCBiBAh5Qd9G6OnQJByakqaFuO+0H+qjgQg1XBagmrcM3mPIl4M6jozLZTrziffbPqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705455797; c=relaxed/simple;
-	bh=HBlVacBPS2gtzegM5iopkMScTOK/n0vk5gf2QfxARa0=;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 In-Reply-To:References:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding; b=D9flh1hPihuTSw3na8KBOzDm4axJdyWEzekBKaN+xadAaMhGdoyny6LrVbWJEyu3ZC+MDl3ZSyWchx9drF/YS/kNEqQ6choYcLkF0XVm/1PJ6KkbE33wzS99c/kXW4zT6y3O5a9QqOz93GfzJWZNRoPsqrCjU3MnKY8ipl81jjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uGRkVa4a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3315C433C7;
-	Wed, 17 Jan 2024 01:43:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705455797;
-	bh=HBlVacBPS2gtzegM5iopkMScTOK/n0vk5gf2QfxARa0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uGRkVa4aioWaNa1h27oLiRO9iebL7y9z6ANWjYql2ZrKDQ7/sINLqm68GnxVmAFX6
-	 VURrIY5ea92M36CO+YbYq7vlCLZHBDlEV5WqhV6UoO8ZhIYEs9hpAH9oY3hserl6ZD
-	 a9RVzcYugnnyjZ4rvuuB9Fcw8QnQWnUrODGyg4YsKHDo9GPJJ4eptMmPJTyNtAcZ5X
-	 nL61hbNW0sS+MII7lnHO+0YieuWyXTEQ0bsj1qAryS3maHzFUS5xkESCkcwursETtS
-	 ciogQcfAO2xsoMugjNLLUsJLVw7WzEvMGNNVFEaaXNL87MKP8NGHzEt+X9brcUly/T
-	 /k/7ozbjmJt2A==
-Date: Tue, 16 Jan 2024 17:43:15 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, Heiner Kallweit
- <hkallweit1@gmail.com>, Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
- Simon Horman <horms@kernel.org>, "David S . Miller" <davem@davemloft.net>,
- nic_swsd@realtek.com, edumazet@google.com, pabeni@redhat.com,
- netdev@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.7 021/108] r8169: improve RTL8411b phy-down
- fixup
-Message-ID: <20240116174315.2629f21c@kernel.org>
-In-Reply-To: <20240116194225.250921-21-sashal@kernel.org>
+	s=arc-20240116; t=1705456501; c=relaxed/simple;
+	bh=ClQhewjh6YitxqtuZ+PJn8u9gtQ4R5nstBALVRqBAO8=;
+	h=DKIM-Signature:Received:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 In-Reply-To; b=qNIMlQRss1uCWOMsM8sTsPS3KOCzsEOTvHo+C3S2zcDNOefUFfGL2gizKtEqt1WO4zTgqd5xY+vGrjbQqSdI49Ho/GJnX2C1922K9B3oE399TFmrhwiqJLfkydTTjwh9Sn27dxn0SaAc+9pA8YTdzFOJdcxga1x36G7Vwgq4Gvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=i2LbIqNG; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=JW2WdnUR/LjyRgH7ypAslY0/uBukhqoSGdAA5b8yuZg=; b=i2LbIqNGggcW7t1V71pNjrVgkX
+	LS+JTQVa/8QXKl2ct+ADiXzrU1Qrnyxln9XIeGkucv1DwBZ73sCH1gXikX3CE8NPOZAxGqtz43C3C
+	KUM0SEAkFf4nhdSt7hdtX/cNolWbI7B+b1IjGIyRE6lHXZwMUod6OVXKJgnGKvbNnlvo=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1rPv8k-005MzP-PH; Wed, 17 Jan 2024 02:54:50 +0100
+Date: Wed, 17 Jan 2024 02:54:50 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Tobias Waldekranz <tobias@waldekranz.com>,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	horms@kernel.org, krzysztof.kozlowski@linaro.org, robh@kernel.org,
+	u.kleine-koenig@pengutronix.de, netdev@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.7 043/108] net: mvmdio: Avoid excessive sleeps
+ in polled mode
+Message-ID: <824aec45-e474-455e-b2c6-00e618445c71@lunn.ch>
 References: <20240116194225.250921-1-sashal@kernel.org>
-	<20240116194225.250921-21-sashal@kernel.org>
+ <20240116194225.250921-43-sashal@kernel.org>
+ <20240116174226.52231f8f@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240116174226.52231f8f@kernel.org>
 
-On Tue, 16 Jan 2024 14:38:47 -0500 Sasha Levin wrote:
-> Mirsad proposed a patch to reduce the number of spinlock lock/unlock
-> operations and the function code size. This can be further improved
-> because the function sets a consecutive register block.
+On Tue, Jan 16, 2024 at 05:42:26PM -0800, Jakub Kicinski wrote:
+> On Tue, 16 Jan 2024 14:39:09 -0500 Sasha Levin wrote:
+> > Signed-off-by: Tobias Waldekranz <tobias@waldekranz.com>
+> > Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> 
+> Andrew and Tobias can override, but vote to drop this.
+> Timing changes can backfire easily on flaky HW.
 
-Clearly a noop and a lot of LoC changed. I vote to drop this from 
-the backport.
+It was not intended for stable. It does not have a fixes tag, it was
+not Cc: to stable, etc. Its just an optimisation.  So i agree with
+Jakub, this should be dropped.
+
+       Andrew
 
