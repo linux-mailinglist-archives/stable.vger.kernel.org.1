@@ -1,102 +1,87 @@
-Return-Path: <stable+bounces-11852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E512830812
-	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 15:30:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D2A583095A
+	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 16:14:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5FBC287B0F
-	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 14:30:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 613181C2194C
+	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 15:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D90520338;
-	Wed, 17 Jan 2024 14:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C45522F00;
+	Wed, 17 Jan 2024 15:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="5f1LJ4A+"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IrakBhjW"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2072.outbound.protection.outlook.com [40.107.101.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F556208A2;
-	Wed, 17 Jan 2024 14:29:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.101.72
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705501800; cv=fail; b=QfscC6zGySdYPwgVz87UPorw4+N4ocJKFVHcA2S6AUzA2aSuLDKu7NbzGO0mGIhGtTJ6vYmkgl4pepP+L/GUBo3+N9wJm2OBmN1fdOfrblv5DV0q4pR+ROlaaJtLnFuGmgX8h2sU+Yhs1kwnl5GBuBE4jA8RVRAmTEkLR5p/ahs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705501800; c=relaxed/simple;
-	bh=5MGeDMwdac3qOnTXylMmZDfoh8QhiSf5rTd/nPCo/e8=;
-	h=ARC-Message-Signature:ARC-Authentication-Results:DKIM-Signature:
-	 Received:Received:X-MS-Exchange-Authentication-Results:
-	 Received-SPF:Received:Received:From:To:CC:Subject:Date:Message-ID:
-	 X-Mailer:MIME-Version:Content-Transfer-Encoding:Content-Type:
-	 X-Originating-IP:X-ClientProxiedBy:X-EOPAttributedMessage:
-	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
-	 X-MS-Office365-Filtering-Correlation-Id:
-	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
-	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
-	 X-Forefront-Antispam-Report:X-OriginatorOrg:
-	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
-	 X-MS-Exchange-CrossTenant-Network-Message-Id:
-	 X-MS-Exchange-CrossTenant-Id:
-	 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp:
-	 X-MS-Exchange-CrossTenant-AuthSource:
-	 X-MS-Exchange-CrossTenant-AuthAs:
-	 X-MS-Exchange-CrossTenant-FromEntityHeader:
-	 X-MS-Exchange-Transport-CrossTenantHeadersStamped; b=auH5qDL2l6IxDHa6xNKDhDKE1q8DSx9Q3QFFMIAarFMoXSgNSwywzUyGW4fHzw/g3AdYFuZzeYmagJ2uMf4Esz+oMCMCn4K/unV+V2pAMmWdBKqrLl8kI93rl6yif7c6GEA0XCNDLdrdA2s7sBuQPiMHAK1GuRn6FgnxEiRt99Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=5f1LJ4A+; arc=fail smtp.client-ip=40.107.101.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=IjgVr3sA5S99BZOTP/HY8JaifHuPqMhTqpez1b0wwzY6XizoPJ7itoYzIBk0h/vRxnLxH4mdJRzQDNnKqnuwE6dxV3cipBNJIm9lG6iWT2Z6N6phG4EuP6JSgAbe5FHWQPUYZ7uA1c6FBT97h3PdxbSNU1pliYfBAnV+jRSMuR9drxmCgesG3ZOlgzjbiDF776BxZEE6/bTwaI4fo5REB8NPqzuJmr1DawTkqBGK4YQ25ILD48UlJt1CxYKuYJnuLL+SC6/bvYaAHEIUw8bbEx1o1Va9ZfqKFJuN5QolhsT+OKn97RBJHLt0nFiIXhVCHpZIgtbVfTUtwYNdQVMWpA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ROyCHzRr+wDiwZvVrEPMZhAzfPJSRR/6CH+IKYyKJ04=;
- b=jn9OLPLPXzCJk1jbYojwhyIaaGqC0iGs5QXz/8h2dNsYqVxmlPw9XWzj75XIQeqPkTu+qYCPPjf20dqNwzaz3C3XjzpqPDqlG7DisEtspKPlOt8HbSKs7on9ZIqS/Dmh+TNwM1lnz9++65yTSEnIsbUA80pJVlcU+0vUhFtCQdaly37ErEMfCsZ2fZ9N9kbnH8Da7nkYpkP9ERiyAysrxovEYsSs4Jx2BXbPFvV2nVeKbi22wu60gKHr5GZS1dMvo5ps76XdKIR0IaYjWSUcfEANdsGq5CGJLnLG9NvIoBY4bNYtaqFU7pn4lcZETJsrgXgyAYlHOifV9/DriFReHQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linaro.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ROyCHzRr+wDiwZvVrEPMZhAzfPJSRR/6CH+IKYyKJ04=;
- b=5f1LJ4A+7MNKCuC+DVrEHm10nnFbvPKy0ti4rNNmjcGRCKAt5MiU+rlFpT6CsCvrJSdkCNQIt8a8ZmcrLT2fKUAisZNRuGS7T32X3gj+l3HyhjP50b5qBhs1+sfKiwIKNyhF9uUQXRRFf8HFMUz0iVDqwXYuMecEdnyaGSamV9Q=
-Received: from DM6PR07CA0095.namprd07.prod.outlook.com (2603:10b6:5:337::28)
- by DS7PR12MB6008.namprd12.prod.outlook.com (2603:10b6:8:7f::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.19; Wed, 17 Jan
- 2024 14:29:56 +0000
-Received: from CY4PEPF0000EE36.namprd05.prod.outlook.com
- (2603:10b6:5:337:cafe::81) by DM6PR07CA0095.outlook.office365.com
- (2603:10b6:5:337::28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.24 via Frontend
- Transport; Wed, 17 Jan 2024 14:29:56 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000EE36.mail.protection.outlook.com (10.167.242.42) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7202.16 via Frontend Transport; Wed, 17 Jan 2024 14:29:56 +0000
-Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Wed, 17 Jan
- 2024 08:29:55 -0600
-From: Mario Limonciello <mario.limonciello@amd.com>
-To: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski
-	<brgl@bgdev.pl>
-CC: "open list:PIN CONTROL SUBSYSTEM" <linux-gpio@vger.kernel.org>, open list
-	<linux-kernel@vger.kernel.org>, <linux-acpi@vger.kernel.org>, Andy Shevchenko
-	<andriy.shevchenko@linux.intel.com>, Mario Limonciello
-	<mario.limonciello@amd.com>, <stable@vger.kernel.org>, George Melikov
-	<mail@gmelikov.ru>
-Subject: [PATCH] gpiolib: acpi: Ignore touchpad wakeup on GPD G1619-04
-Date: Wed, 17 Jan 2024 08:29:42 -0600
-Message-ID: <20240117142942.5924-1-mario.limonciello@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 853E4225AA
+	for <stable@vger.kernel.org>; Wed, 17 Jan 2024 15:12:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705504342; cv=none; b=KgYp3ZgOPpEDzUv3edK+urNF5h+e4ZAmbpUiZS2SzPnAgMUyykuOlFSEoo9GHOLCeghxjGP8XgkmCETfEWioeoUXshSQ8NTLEguMxe6+wydYM8hREDrVKaCTWuhvBbq55NJ1pr9NjpM4JnxuZogTohzyykUhugYB0nyol90qn3Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705504342; c=relaxed/simple;
+	bh=zTLF4pKwDUhmIJpTw+ifYX48G8Y/tLdkZCXLW1dsOdg=;
+	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:From:
+	 To:Cc:Subject:Date:Message-Id:X-Mailer:MIME-Version:
+	 Content-Transfer-Encoding; b=ndoiD6DeWZt1qvB1Iq5URx8SmAHEtV8E7xUq5sOxTZLoUc3rB6x4D0ShmYUpiC7iKwLggtnsy+dUs2cmKKoMaDy64Ps8hER4WzIMroTVrHfzzMZ9ZBeEQHVPwxv8wm+sYdxPoJ8OxuC993n9YXXV0QckFZ6ChOS0MtR6xRmivW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IrakBhjW; arc=none smtp.client-ip=209.85.222.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7831c604a84so818333985a.1
+        for <stable@vger.kernel.org>; Wed, 17 Jan 2024 07:12:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1705504338; x=1706109138; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aZ5dWg/o67onmhTzNFtXrOTvUPTxoBK6DGUcni7z13M=;
+        b=IrakBhjWYcTx281uJkfflWwa2NOYOeI1bCsGnxGVZrm6IjaBFUx7p0duk6zyKECBmQ
+         dY/7X03ylYyCkWz59EehpkTbs8mKqgtBHJSZ/QWQeK9fDPI283k0wJ5UmQqtlYKrPGvm
+         OWbP23UZMsfMSm6B5xliduX7ujbSXRKph1AgCZgFWgKSMVdp1T9fLtX8ov9Ec9aeYYom
+         baa9xku1mtGfyq662seh7VQELl01Wg64sLh8kFd8W0DgONwth41KNlNEvdhFNdGIab1q
+         MyE30R3wPb+HvgHbmC1dHoBz3oqYYXHlpjMqxwL0GJYb5nPqsbQk+O9wFMXudX9GodPm
+         tceQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705504338; x=1706109138;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=aZ5dWg/o67onmhTzNFtXrOTvUPTxoBK6DGUcni7z13M=;
+        b=IJDn6a9SBk9Gri1GiRxQCI39R17Ml63up0YtpnLzGcpiVZ+Ezs2OXTS2Rz7Ejqa6jF
+         OwFtl7JdS7G/6w+u8+6ukQTQMFW+KtFWNHNjd2mkS33bFXqNtI+rInSJhn2vzK/5Zj3p
+         bX68H8oZNa+JPGWMN3hqZfKXc2w1KxqJtHZtK7oGtMRU19DBLoP94x2izT1M/UR1vL4b
+         D05jzqjuI8yL2p5JVgtP5/+iN2Xx0SjEFst+RuoNAodMs//iwz5NauKXR2jwmjbEk60X
+         A0NH3CyzWLL0eiT3eEiAbqbFizOWrRgLlp72eC3MTPV28DZaD1PbBH2RFGrTqd/Y9zCA
+         q4yQ==
+X-Gm-Message-State: AOJu0YwPCp96Lr2AiGW7rKW3j2aDhIQfp4MlHzzJBFnGpvVjWqkwaFuu
+	5Br8XI8+DQy7eYeBYCpE0lIuQbXO83cpMQ==
+X-Google-Smtp-Source: AGHT+IFuzN2ZXkdL1furtqKyL/+PADgDDPC7U/QwREJrS3KVsloHm7pc6AYqgLOErGBf8DiUCfrogw==
+X-Received: by 2002:a05:620a:55b0:b0:783:54a1:136f with SMTP id vr16-20020a05620a55b000b0078354a1136fmr5882267qkn.58.1705504338226;
+        Wed, 17 Jan 2024 07:12:18 -0800 (PST)
+Received: from krzk-bin.. ([178.197.215.66])
+        by smtp.gmail.com with ESMTPSA id m7-20020a05620a24c700b007816cf21f7asm4519337qkn.76.2024.01.17.07.12.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Jan 2024 07:12:17 -0800 (PST)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Banajit Goswami <bgoswami@quicinc.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	alsa-devel@alsa-project.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/3] ASoC: codecs: wcd938x: handle deferred probe
+Date: Wed, 17 Jan 2024 16:12:06 +0100
+Message-Id: <20240117151208.1219755-1-krzysztof.kozlowski@linaro.org>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -105,68 +90,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE36:EE_|DS7PR12MB6008:EE_
-X-MS-Office365-Filtering-Correlation-Id: 91440ce2-3bfe-4420-1b30-08dc1768c70a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	d+wiLKJoVmuVqIlrO3jMRJrs55hSoOs6iR7oye3GnKTD7AL92wMABJKpE+OG3o3JFFH1jpyl+LkKQUYNk3kjQUojbDDRX4PGVGl7KV1OKXcBflX12WMHrgmvS/f4ARis04MY0UPvScTtgStWoFROQNQz5YVQ7UU6KP0eK6/Ig1LYGGjrxN/EIlXZ2hAFyVFx2l+2OgtBOTGHGDxB4I2P8CPgqbxj+df32xaGSoHnLMNKHjiDBtZfH0ZcxYDPCRGYBe0f5sVyv5/BL7aQuf0XbQf4e4edkN+ZsumHtZESzPjGtjjbAFyllfS+QJCp7UZkPp1a7CggsFaSt1b1tOl5/EeMGOjMsQN6Ib5xM8OqA41wmUq6BZ79p52GXarzC+QpM9h+Lx1cHrAgLHg6eC7yoHPzwNMUdyVxAUETibCpigijfFnsqW6VDeOzH6bbaG24syCMxbMjKnevOuQV7F9nLBSz2A4sfy4d9gOtvMXpTe8E9WxKpuWvIqLntsHkN/3gfXcAezrTGwKgepenF7XV2N82/Smhkywi4d4TTG5rFdQaJGvRM+QvV+1AkN8Z5c+MZQnuKUxZaOFS6h35XRZcSZuQ5RHUe6rEEg3Wt5yWw8u+ho3tGWEzvRYXn706MIaI7v3w6kxJH002kP3JCut0C+MfYcwmjOQXOXF5rawLdKOj5T/LBs00omQ9uaiOLTdGzLSPF90Fo4FNqMrY4q/v4JZdD8jq29tmzOxLIbcM5Sk+C/dQb7gIVu30vOvC5oJr
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(376002)(136003)(346002)(396003)(39860400002)(230922051799003)(186009)(82310400011)(451199024)(1800799012)(64100799003)(46966006)(36840700001)(40470700004)(1076003)(40480700001)(40460700003)(6666004)(336012)(966005)(7696005)(16526019)(426003)(2616005)(26005)(478600001)(5660300002)(82740400003)(86362001)(81166007)(356005)(36756003)(70586007)(44832011)(83380400001)(4326008)(41300700001)(47076005)(36860700001)(316002)(2906002)(8936002)(54906003)(8676002)(110136005)(70206006)(36900700001);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2024 14:29:56.2196
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 91440ce2-3bfe-4420-1b30-08dc1768c70a
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EE36.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6008
 
-Spurious wakeups are reported on the GPD G1619-04 which
-can be absolved by programming the GPIO to ignore wakeups.
+WCD938x sound codec driver ignores return status of getting regulators
+and returns EINVAL instead of EPROBE_DEFER.  If regulator provider
+probes after the codec, system is left without probed audio:
 
-Cc: stable@vger.kernel.org
-Reported-and-tested-by: George Melikov <mail@gmelikov.ru>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3073
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+  wcd938x_codec audio-codec: wcd938x_probe: Fail to obtain platform data
+  wcd938x_codec: probe of audio-codec failed with error -22
+
+Fixes: 16572522aece ("ASoC: codecs: wcd938x-sdw: add SoundWire driver")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- drivers/gpio/gpiolib-acpi.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ sound/soc/codecs/wcd938x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
-index 88066826d8e5..cd3e9657cc36 100644
---- a/drivers/gpio/gpiolib-acpi.c
-+++ b/drivers/gpio/gpiolib-acpi.c
-@@ -1651,6 +1651,20 @@ static const struct dmi_system_id gpiolib_acpi_quirks[] __initconst = {
- 			.ignore_interrupt = "INT33FC:00@3",
- 		},
- 	},
-+	{
-+		/*
-+		 * Spurious wakeups from TP_ATTN# pin
-+		 * Found in BIOS 0.35
-+		 * https://gitlab.freedesktop.org/drm/amd/-/issues/3073
-+		 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "GPD"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "G1619-04"),
-+		},
-+		.driver_data = &(struct acpi_gpiolib_dmi_quirk) {
-+			.ignore_wake = "PNP0C50:00@8",
-+		},
-+	},
- 	{} /* Terminating entry */
- };
+diff --git a/sound/soc/codecs/wcd938x.c b/sound/soc/codecs/wcd938x.c
+index faf8d3f9b3c5..0aaf494844aa 100644
+--- a/sound/soc/codecs/wcd938x.c
++++ b/sound/soc/codecs/wcd938x.c
+@@ -3589,7 +3589,7 @@ static int wcd938x_probe(struct platform_device *pdev)
+ 	ret = wcd938x_populate_dt_data(wcd938x, dev);
+ 	if (ret) {
+ 		dev_err(dev, "%s: Fail to obtain platform data\n", __func__);
+-		return -EINVAL;
++		return ret;
+ 	}
  
+ 	ret = wcd938x_add_slave_components(wcd938x, dev, &match);
 -- 
 2.34.1
 
