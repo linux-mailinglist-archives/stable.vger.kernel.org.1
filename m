@@ -1,162 +1,131 @@
-Return-Path: <stable+bounces-11868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C420830ECC
-	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 22:52:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C0D830F4F
+	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 23:39:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C77D21F22E4B
-	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 21:52:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D90E41F23E7D
+	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 22:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3AB2557B;
-	Wed, 17 Jan 2024 21:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65359288DF;
+	Wed, 17 Jan 2024 22:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3sIgyPcK"
+	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="E866bWcU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C79D2562D
-	for <stable@vger.kernel.org>; Wed, 17 Jan 2024 21:52:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76861E880;
+	Wed, 17 Jan 2024 22:39:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705528346; cv=none; b=DWdMhlmHclMBHGLxny0X2p6keGoe45M73UnG6N9txMNISfqMDB/ouc1bibH+VPzCa3qamUJ+MHg0J1YtzGRiX7fnLfsl9peWFJ8A3kUJzAgeBaXXmHzapCwS4cifPOVMKIeFcH3xp28YbeCkap0DYEKQwxBi08hvNhZjImK6Fuw=
+	t=1705531159; cv=none; b=uMuCOHxVZNKYmyg6fKxVZ0UDICOaALUQTi/Nl3NEpaQf7qpYpn4WatrLPMW+2/rub8lCfJOSFZyra0mxvdFMJvbyr+q5cMZ4f7b2GLdox723ebVqSQ0RPUiwgiljXeGQrSFC5NGduoBJ4XTGpKmKCoQXRBB8sQmOvUw+qchMDCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705528346; c=relaxed/simple;
-	bh=IvStd2xTfDq5Oo+gHa6tUQKtis3gXAShwVPWtd0rtEA=;
-	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
-	 References:In-Reply-To:From:Date:Message-ID:Subject:To:Cc:
-	 Content-Type:Content-Transfer-Encoding; b=KnOwP23IS7hQ3idKy26eTjipUSFfdX473hGovc+jra2jm1eRRzgxr7YDgPvMBndx9FYiPO4KmUFGUzmQZGlpnKp+nytSUotUFZIMyoOgKwCx/s83gzen03i4WgRxIAr+xw+aJ3ZCVdZcK5g3MqmctOeF0elsMS9JMobNWMxhAUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3sIgyPcK; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-40e865bccb4so78085e9.0
-        for <stable@vger.kernel.org>; Wed, 17 Jan 2024 13:52:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1705528343; x=1706133143; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fgsNp3I1GyR8LKSkgpTGCtUknvU84IXVbgB3bgHNMiQ=;
-        b=3sIgyPcKFiATnmCr4gLRw1tq9VSn2IP+qZK919eCenod9UkRtlC5P56zGLkxpaCV+a
-         GyNUCuklAVdomTHdJ8fueFCo37kmFcgyDZqVZO3dm8e+pvp6/aUSG1GQMIlttfzzARrA
-         Zgonf58FuhDNAhZvSjarE/i2wJEFF+8BSaoLnSxa0HK9aX6wkhD/UVLOYYAkvFHImCRq
-         7qkjjNHLB4U4ruo4AFbfzvnF8hDU4cEFbRREvWav+eb/jPfQzgP9JN765yd2l/IlP5LU
-         FfFMBdV46pE12wViyfc8np1rRHiOCWv4qnmvigpt2L4P0smNF0AkL6KF8vwqBbnJUYg9
-         EgOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705528343; x=1706133143;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fgsNp3I1GyR8LKSkgpTGCtUknvU84IXVbgB3bgHNMiQ=;
-        b=wc1jG4AOc8HsvpEj6Wl3eBfXjx9/a47DxNHVOVzAiY7IOeha8nF1hELCbvWBC5cj8f
-         8FeoywREBaQ0514DQiOOFyOEUXmjNbvZLuD9OI9I5uo4F0AqXVesPXegNO1bNIzu9hfo
-         O2BS+oX0liyCsAtPz4VGVPOKKGVVYiYOITWYS3KzACqvkKO7bR9+wbxrtQYeerbmo0ET
-         urdJ6+oLoh6cogYnfSRynQpMQANettGOLclJhSQIxO0vd0MHnaBvRHh9tBh09CGIexBb
-         UFyBeTlfTNlC6uB51m/MxxD8rc8Wp6EscW15LiqXaBDwjBgOvuOfWc//OSZKEmgggb9y
-         7ppA==
-X-Gm-Message-State: AOJu0YxLabXL2hRiRl02l+Cc0SOWzkqXPE2+WTdeJMbS+RDNAdMzNqlI
-	RSS1uYQNm92AgdY8KdPwgNvAC2oASz6AIyn4/3yDZ0bcMOSOtmCuhhHU0SOotKSBlI8AQi2OW6B
-	BhKJv0eIlGsDOGTY9OtudDEMTWDF0Bf7II72n
-X-Google-Smtp-Source: AGHT+IEjpv76xho9RIPvXy4nuNt63b8j9OdHAk+UiuVJdba+peVWPGHxPnwtg0NTkMnxiWXXWBec0vFbBgxMqviuurQ=
-X-Received: by 2002:a05:600c:310b:b0:40e:61cf:af91 with SMTP id
- g11-20020a05600c310b00b0040e61cfaf91mr197767wmo.7.1705528342730; Wed, 17 Jan
- 2024 13:52:22 -0800 (PST)
+	s=arc-20240116; t=1705531159; c=relaxed/simple;
+	bh=JxAIwi/qUhrUaUWQ8/K5Ko3ejpPbufELSYtxhSEZq1Y=;
+	h=DKIM-Signature:Received:From:To:Cc:Date:Message-Id:X-Mailer:
+	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
+	 X-SA-Exim-Connect-IP:X-SA-Exim-Mail-From:X-Spam-Checker-Version:
+	 X-Spam-Level:X-Spam-Report:X-Spam-Status:Subject:X-SA-Exim-Version:
+	 X-SA-Exim-Scanned; b=iNmauPcGrXjfZ3s/tmtMRFZjTuOp+YR2Aw6b6qYn6CjY4Xv5QxVLrD/akyHbzOiktCGFBEPp8ib3yEehqBJEygmEkjm7tVT+EXHVkeK/9Eri93UCpP/roqXh/5vrqhgRjEa8uqCMnr/e+LFZLOK7CSASzCH9wx+7N+yxESUDhaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=E866bWcU; arc=none smtp.client-ip=162.243.120.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
+	; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Cc:To
+	:From:subject:date:message-id:reply-to;
+	bh=49BSI7LohOlv3IEqF6g8pkyxrAbWkBIJ6p9Fo9vDxts=; b=E866bWcUKh642Ke/DV2E+CeFzC
+	FSjp0Ztxi7BAJ+zDxUZkWurMXH71g6FLRJq8n9FG4Zyhst31ZnOGXJjdZ21nnNVIua++hcIHiYClW
+	8cMiEnccXftRXKuhzjihvKPQYIjqxTwO9Aax1q3g98yrcI0CaJnufswg7XPapyiE0nO8=;
+Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:52924 helo=pettiford.lan)
+	by mail.hugovil.com with esmtpa (Exim 4.92)
+	(envelope-from <hugo@hugovil.com>)
+	id 1rQEYp-000155-3B; Wed, 17 Jan 2024 17:39:03 -0500
+From: Hugo Villeneuve <hugo@hugovil.com>
+To: gregkh@linuxfoundation.org,
+	jirislaby@kernel.org,
+	cosmin.tanislav@analog.com,
+	andy.shevchenko@gmail.com,
+	shc_work@mail.ru
+Cc: linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	hugo@hugovil.com,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	stable@vger.kernel.org
+Date: Wed, 17 Jan 2024 17:38:39 -0500
+Message-Id: <20240117223856.2303475-2-hugo@hugovil.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240117223856.2303475-1-hugo@hugovil.com>
+References: <20240117223856.2303475-1-hugo@hugovil.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20231227180306.6319-1-johan+linaro@kernel.org>
- <ZZ15c1HUQIH2cY5o@google.com> <ZZ1-ehpU-g6i9Qem@hovoldconsulting.com>
- <ZZ2IOQEekFffJoHQ@google.com> <ZZ5RVpL88XNbgKIy@hovoldconsulting.com>
-In-Reply-To: <ZZ5RVpL88XNbgKIy@hovoldconsulting.com>
-From: Doug Anderson <dianders@google.com>
-Date: Wed, 17 Jan 2024 13:52:08 -0800
-Message-ID: <CAD=FV=W61ZHYJADiR1CYgS-aNisDR4KoEA3RW2_8kW3KUd1g5g@mail.gmail.com>
-Subject: Re: [PATCH] Bluetooth: qca: fix device-address endianness
-To: Johan Hovold <johan@kernel.org>
-Cc: Matthias Kaehlcke <mka@chromium.org>, Johan Hovold <johan+linaro@kernel.org>, 
-	Marcel Holtmann <marcel@holtmann.org>, Johan Hedberg <johan.hedberg@gmail.com>, 
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Bjorn Andersson <quic_bjorande@quicinc.com>, 
-	Konrad Dybcio <konrad.dybcio@linaro.org>, linux-bluetooth@vger.kernel.org, 
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, 
-	Stephen Boyd <swboyd@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 70.80.174.168
+X-SA-Exim-Mail-From: hugo@hugovil.com
+X-Spam-Level: 
+X-Spam-Report: 
+	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+	* -0.0 T_SCC_BODY_TEXT_LINE No description available.
+Subject: [PATCH 01/18] serial: max310x: fix NULL pointer dereference in I2C instantiation
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
 
-Hi,
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-On Wed, Jan 10, 2024 at 12:12=E2=80=AFAM Johan Hovold <johan@kernel.org> wr=
-ote:
->
-> > > So the first question is whether there actually is any boot firmware =
-out
-> > > there which passes the BD_ADDR in reverse order?
-> >
-> > Yes, (at least) the boot firmware for sc7180-trogdor devices.
-> >
-> > hexdump -C /proc/device-tree/soc\@0/geniqup\@8c0000/serial\@88c000/blue=
-tooth/local-bd-address
-> > 00000000  8c fd f0 40 15 dc
->
-> Indeed, this should have been LE order.
+When trying to instantiate a max14830 device from userspace:
 
-In case it adds any extra data points, we also do similar with the
-WiFi MAC address and it also seems to be big endian.
+    echo max14830 0x60 > /sys/bus/i2c/devices/i2c-2/new_device
 
-lazor-rev9 /proc/device-tree/soc@0/wifi@18800000 # hexdump -C local-mac-add=
-ress
-00000000  8c fd f0 3e 3e 86                                 |...>>.|
-00000006
+we get the following error:
 
-lazor-rev9 /proc/device-tree/soc@0/wifi@18800000 # ifconfig wlan0 | grep et=
-her
-        ether 8c:fd:f0:3e:3e:86  txqueuelen 1000  (Ethernet)
+    Unable to handle kernel NULL pointer dereference at virtual address...
+    ...
+    Call trace:
+        max310x_i2c_probe+0x48/0x170 [max310x]
+        i2c_device_probe+0x150/0x2a0
+    ...
 
+Add check for validity of devtype to prevent the error, and abort probe
+with a meaningful error message.
 
-> > hciconfig
-> > hci0:   Type: Primary  Bus: UART
-> >         BD Address: 8C:FD:F0:40:15:DC  ACL MTU: 1024:8  SCO MTU: 240:8
-> >         UP RUNNING
-> >         RX bytes:1700 acl:0 sco:0 events:95 errors:0
-> >         TX bytes:128949 acl:0 sco:0 commands:578 errors:0
->
-> And any user space tool overriding the address would currently need to
-> provide the address in reverse order on Qualcomm platforms like this
-> one (e.g. if generating the address for privacy reasons).
->
-> > > > I suggest adding a quirk like 'local-bd-address-msb-quirk' or
-> > > > 'qcom,local-bd-address-msb-quirk' to make sure existing devices kee=
-p
-> > > > working properly.
-> > >
-> > > I don't think that would work. If this is something that we really ne=
-ed
-> > > to handle, then there's probably no way around introducing new
-> > > compatible strings for boot firmware that isn't broken while maintain=
-ing
-> > > the current broken behaviour with respect to 'local-bd-address' for s=
-ome
-> > > of the current ones.
-> >
-> > I think it should work for sc7180-trogdor. For these devices the device=
- tree
-> > is bundled with the kernel image and can be updated. That might not be =
-true
-> > for other devices though.
->
-> Thanks for confirming.
->
-> I'm still hoping we can get away with not having to add quirks to
-> Bluetooth core for broken Qualcomm boot firmware. Let's see if anyone
-> knows of a use case that makes that impossible to avoid.
->
-> Johan
+Fixes: 2e1f2d9a9bdb ("serial: max310x: implement I2C support")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+---
+ drivers/tty/serial/max310x.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
+index f3a99daebdaa..4a33fd950ed2 100644
+--- a/drivers/tty/serial/max310x.c
++++ b/drivers/tty/serial/max310x.c
+@@ -1602,13 +1602,16 @@ static unsigned short max310x_i2c_slave_addr(unsigned short addr,
+ 
+ static int max310x_i2c_probe(struct i2c_client *client)
+ {
+-	const struct max310x_devtype *devtype =
+-			device_get_match_data(&client->dev);
++	const struct max310x_devtype *devtype;
+ 	struct i2c_client *port_client;
+ 	struct regmap *regmaps[4];
+ 	unsigned int i;
+ 	u8 port_addr;
+ 
++	devtype = device_get_match_data(&client->dev);
++	if (!devtype)
++		return dev_err_probe(&client->dev, -ENODEV, "Failed to match device\n");
++
+ 	if (client->addr < devtype->slave_addr.min ||
+ 		client->addr > devtype->slave_addr.max)
+ 		return dev_err_probe(&client->dev, -EINVAL,
+-- 
+2.39.2
+
 
