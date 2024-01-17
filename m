@@ -1,121 +1,208 @@
-Return-Path: <stable+bounces-11814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F29F182FF7E
-	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 05:17:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B64E82FF89
+	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 05:23:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A72AB1F25780
-	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 04:17:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CB7BB24A0D
+	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 04:23:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5ED65247;
-	Wed, 17 Jan 2024 04:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20AED522E;
+	Wed, 17 Jan 2024 04:23:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="D7lrFoGF";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="LV7vCDoG"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (unknown [45.249.212.51])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1364522E;
-	Wed, 17 Jan 2024 04:16:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705465014; cv=none; b=pFXsoStpSE5VkasQ1HDNm73yNXHrSBH3dE6h+sexuZaA2QubG1Ef5EtFOSAVA3A851fEMWRxjUOo+FMkT92sKFzjgpwBJ/tmo42Nf3y55tt4NY/XhSn4d914B9qnLdk5f00qF4klc0OE+0B7MNznKTpdyqBcxtS9ze40QPGUDVI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705465014; c=relaxed/simple;
-	bh=UjBgP1/h3DRyPoAPBNnSr0/jtAiU7iaOd8ATf56ctUo=;
-	h=Received:Received:Received:Subject:To:Cc:References:From:
-	 Message-ID:Date:User-Agent:MIME-Version:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:Content-Language:X-CM-TRANSID:
-	 X-Coremail-Antispam:X-CM-SenderInfo; b=r+lNKav9ZgBaLYcG8yuuSWaUrj7hgFhYWpF3m6UabkThy3qKgeWCfsrGz8JPHq0L+wbrxx7YBGmBA4FNl9ul7V4JP8ZmgMtEjFZuR3FVDQyZW4cc8DsZpMiJckwN7RE7u/IWZoTE5sDExCNUoQl4fPme8DOoQQc+kugVp+7h8y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4TFCHz1Gfxz4f3k6G;
-	Wed, 17 Jan 2024 12:16:47 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 4ED6B1A016E;
-	Wed, 17 Jan 2024 12:16:49 +0800 (CST)
-Received: from [10.174.176.117] (unknown [10.174.176.117])
-	by APP4 (Coremail) with SMTP id gCh0CgDHGm2wVKdlDMZVBA--.33496S2;
-	Wed, 17 Jan 2024 12:16:49 +0800 (CST)
-Subject: Re: [PATCH AUTOSEL 5.4 11/31] bpf: Add map and need_defer parameters
- to .map_fd_put_ptr()
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: Alexei Starovoitov <ast@kernel.org>, daniel@iogearbox.net,
- andrii@kernel.org, bpf@vger.kernel.org
-References: <20240116200310.259340-1-sashal@kernel.org>
- <20240116200310.259340-11-sashal@kernel.org>
-From: Hou Tao <houtao@huaweicloud.com>
-Message-ID: <5b3c2a41-2347-f8d5-2901-2287b350c536@huaweicloud.com>
-Date: Wed, 17 Jan 2024 12:16:48 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E3D6AB8;
+	Wed, 17 Jan 2024 04:23:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705465388; cv=fail; b=lykczm5rW64s61dmz0m2VUUtlTPbE5kxyix7052uk9O9zAvl2Z/5AapZwQzCXu4BwZh8OQ2bMdToRkU74o7ChqRXAEjEeWbmkDIAUc8V18oWfvoF8czCDRsja86TXJUQePvYZCaVcc8tFwdqqdlq0EhBT3YyaDp4FFnYUdG3wKM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705465388; c=relaxed/simple;
+	bh=SimHHyf2sznc4C/LqoMScUIBdzY3Yc0vV9QmXpzPgvQ=;
+	h=Received:DKIM-Signature:Received:Received:Received:
+	 ARC-Message-Signature:ARC-Authentication-Results:DKIM-Signature:
+	 Received:Received:Message-ID:Date:User-Agent:Subject:To:Cc:
+	 References:Content-Language:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:X-ClientProxiedBy:MIME-Version:
+	 X-MS-PublicTrafficType:X-MS-TrafficTypeDiagnostic:
+	 X-MS-Office365-Filtering-Correlation-Id:
+	 X-MS-Exchange-SenderADCheck:X-MS-Exchange-AntiSpam-Relay:
+	 X-Microsoft-Antispam:X-Microsoft-Antispam-Message-Info:
+	 X-Forefront-Antispam-Report:
+	 X-MS-Exchange-AntiSpam-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-MessageData-0:
+	 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount:
+	 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:X-OriginatorOrg:
+	 X-MS-Exchange-CrossTenant-Network-Message-Id:
+	 X-MS-Exchange-CrossTenant-AuthSource:
+	 X-MS-Exchange-CrossTenant-AuthAs:
+	 X-MS-Exchange-CrossTenant-OriginalArrivalTime:
+	 X-MS-Exchange-CrossTenant-FromEntityHeader:
+	 X-MS-Exchange-CrossTenant-Id:X-MS-Exchange-CrossTenant-MailboxType:
+	 X-MS-Exchange-CrossTenant-UserPrincipalName:
+	 X-MS-Exchange-Transport-CrossTenantHeadersStamped:
+	 X-Proofpoint-Virus-Version:X-Proofpoint-Spam-Details:
+	 X-Proofpoint-GUID:X-Proofpoint-ORIG-GUID; b=YCIXDI0AGMJ/hNk7Ua9EXh01EBpkIkGTJjIrXyyCsyMuQn5O4tdCnL+7hRMCBdLBi/DkoLBvHKCpJgN/zoIPT//Tjt/Bk0+flcCiBRwVApNjPk4KFVtY4IHmcaP+6rC3RdAOWKlSPM0NK0gVxxYaIBoT5t8Ym42+lpBH1PcpffI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=D7lrFoGF; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=LV7vCDoG; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40H1O2IY029811;
+	Wed, 17 Jan 2024 04:23:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
+ subject : to : cc : references : from : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=corp-2023-11-20;
+ bh=sRjN30fiiwmlQ/SJgNyiYMYuKYv0mATv1mdhXKD4fr0=;
+ b=D7lrFoGFhndRE4y+ky4zDnppfZQfITTPRaSnl90UdgJqkmUHO/Bo1enyCRB0lhMsrpD+
+ aduumD8IEumPZAZQAVqZmyrroUIPzQSWtCaD0OthkqwpEU9P9o18PYgzx5vCD3jr0mn3
+ P1oMQT1zntFtn5hb0z0gL4hg0Uyak3nzxkXGydh9ESmodiY3fu07XT4tWEXDoriu+c//
+ uWp0Ud+RBobTRFRiYr8as3/R4FgHcmCXSPYoQo3edp0jiL0lwssHfUtPkprB5abbaLXS
+ eMxoSjDLAMXKAUzVgWdrq5PVLAKe653VTAlJIg1gPpM9H4e0LWfj7Ko8O0jkIxsoSfCb gA== 
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vkqcdxek5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 17 Jan 2024 04:23:00 +0000
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 40H29eNT025000;
+	Wed, 17 Jan 2024 04:22:58 GMT
+Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2101.outbound.protection.outlook.com [104.47.58.101])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3vkgy9mq0t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 17 Jan 2024 04:22:58 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=GlpDNjnQ7fPpfpNo2V0FTXS5AH6PafrbLVWfBMezUMkpwUyplYdB0hEM2NVZ0r0Pupv/EFCE9dqva6ApsdO3SNe5nBvo1SDUGq8Dwmz68o4bHIx8CPZ8mOxkDz/VXCYba7HAKxYCIplDqRFY4exGQYf5HYjXRB7XbZWfVJyP2fBu+CmMfSXLUNwgjgdRMUvfmsEPCPSG1j6QsL1RkvZReLVKH9G8hjH3fEQj4x3QfgAwc+LilFmXKcNxLGLoa5EqfL+bkuIz6eDPdcllq0ifH91KLlvW4qhlpQsOsFC1VTbcVkZwRJmJyld7Wstz4g5i8gu842DFsp5bnh7xvkMfkA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sRjN30fiiwmlQ/SJgNyiYMYuKYv0mATv1mdhXKD4fr0=;
+ b=n3++JG4yulhx66NQSLH8wwFTlnRoVoRuRfg6SVcALOMTUiVlTbU5nuhob6OiadcL1RuNmpaGivl+4nIGphrWM25FPbW/jgS9sJcnvFvKRHo/9vQ3z6ge6d65znvbp2AEHzXK/Ewyvu6GomQCtVn2+zr5TUf9xJcx28RsnCoHHnRA7K6j8ExIqTRKrO5R1wstoeCSotDmjtH1/iR2154r2CqmguLEScEaPsOyn1TqVPAi/PHti4qJp+vep4NNaGTR5zaMFT+fXZpykkdcVn0oPuEVtbrpLlxUxMxB5WRmmn8tDpj23ozNQUufMjhrQ9WEhULkFfDmlwRMBokQmugXdA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sRjN30fiiwmlQ/SJgNyiYMYuKYv0mATv1mdhXKD4fr0=;
+ b=LV7vCDoGJGNKyRvJbP2kRClbztHX6m2kZGKUx/jlhIQx6LPRqXhV3r6VNQA7nZK/cUKcFAmC9LsckigX+7nVQmbwH4dFSdqC8iGsFmjuop8FEXQlTBDEeZSen7lL+d7kES0xPxrW1pfrxIaBkmLIF6cQOtXYawYQtK8JFaRMPEw=
+Received: from PH0PR10MB5706.namprd10.prod.outlook.com (2603:10b6:510:148::10)
+ by PH7PR10MB6483.namprd10.prod.outlook.com (2603:10b6:510:1ee::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.24; Wed, 17 Jan
+ 2024 04:22:56 +0000
+Received: from PH0PR10MB5706.namprd10.prod.outlook.com
+ ([fe80::2000:9c78:19f5:176a]) by PH0PR10MB5706.namprd10.prod.outlook.com
+ ([fe80::2000:9c78:19f5:176a%3]) with mapi id 15.20.7181.019; Wed, 17 Jan 2024
+ 04:22:56 +0000
+Message-ID: <0b1c471f-6c9b-466b-b4f6-874a41a93545@oracle.com>
+Date: Wed, 17 Jan 2024 12:22:51 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] btrfs: don't warn if discard range is not aligned to
+ sector
+To: David Sterba <dsterba@suse.com>, linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org,
+        syzbot+4a4f1eba14eb5c3417d1@syzkaller.appspotmail.com
+References: <20240115193859.1521-1-dsterba@suse.com>
+Content-Language: en-US
+From: Anand Jain <anand.jain@oracle.com>
+In-Reply-To: <20240115193859.1521-1-dsterba@suse.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SG2PR06CA0207.apcprd06.prod.outlook.com
+ (2603:1096:4:68::15) To PH0PR10MB5706.namprd10.prod.outlook.com
+ (2603:10b6:510:148::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20240116200310.259340-11-sashal@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-CM-TRANSID:gCh0CgDHGm2wVKdlDMZVBA--.33496S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cr1DWw17WFWDKFW8JryxKrg_yoW8WrykpF
-	WfXF4Utw4kJayvganxAanrZrWFywn3Jr90kr40qw1rZFZ8X34fKrWxta1a9Fy5CryF9Fy7
-	XwnFy3WIywn5Aa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkEb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AK
-	xVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F4
-	0E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1l
-	IxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxV
-	AFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r4j6FyUMIIF0xvEx4A2jsIE14v26r1j
-	6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07Upyx
-	iUUUUU=
-X-CM-SenderInfo: xkrx3t3r6k3tpzhluzxrxghudrp/
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5706:EE_|PH7PR10MB6483:EE_
+X-MS-Office365-Filtering-Correlation-Id: 818c81d1-f961-406a-c3ad-08dc1713fac9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	7Eu2knIXeX30qHvJvIQo/iG8aximoKDgmdNbY6jTliCon3e3wbeVqMBANvGGZhXSQrulqtvVLk2TEtdE8gbWnEc6rkddtC0OELLd3UvVwnh1xqgcwYvYTh6/8BwcjZulrW2ppSWfM2OQMKkN/N7S7xiwnMgfY0VEZBymxEhOy6Rr/HCqUcqejyyN1OsQIb5wMNn6bK/1C+XtIwJTH2VFB82iXa9IaKPzJFrV3ugG/SO0wPY/K61fsBHCE6WfLn91ECKaJl2T/6VVzaqF7eCdIY2b4XkDxYKTyyXWFm2j7f2CP9EdGhv73Bv56qngutCoQOkSRNPwU8SzpJRfE26xizR5iUDGgQnmousekp1vXWOfpWrT5DQIyRGVOiWp/YhWXbE4PilojMMcH9/U+hynAsXGi8C7O36eUUvn2XDM5dqCb0tO3UFQhD+g4LHGCJbZmh5TyTFj2eqmn7pERwYznpdaCf/2ABUMAL5rkGqnFkKSGiHJwQ/DZ0Xla1yoFXuqkmGDWu6yCErPs+7GXepGMuJ3ZsocbZ7dgEePci9THwexygmeDguFZtn6zoC8Nxj4JPBMOtxX3TUfCdhJUGM4XvsE7S+lG0PaT58tZeaB2q7WjamvM1TYpb2ZOgEbF9WvV4qnrK6uo5rGnWTe8k0s7Q==
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5706.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376002)(366004)(39860400002)(396003)(136003)(346002)(230922051799003)(1800799012)(451199024)(186009)(64100799003)(26005)(6486002)(5660300002)(66946007)(6506007)(4326008)(2616005)(6512007)(66476007)(38100700002)(478600001)(8936002)(44832011)(8676002)(6666004)(2906002)(31696002)(316002)(66556008)(41300700001)(86362001)(36756003)(558084003)(31686004)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?MTZYV2NsZUlGeitCNFM1Uk4wODlyL1NKZXRYYzY0REhQaWNGRVAvSkxLd2pl?=
+ =?utf-8?B?ZzVkb1laVEhlYmhub25iZjBqNkkwb1hxTGs1RFN0NkNrNzV4bm5KUzd6dmp6?=
+ =?utf-8?B?SEg2dkJkaEZhOG5Kc0Q1ZUQxZXV1T05xbVNrMFY4aFVPUHdTUVg5aU9KQ0tx?=
+ =?utf-8?B?WHVqMlRseWpvRS9CRWI0bEZJU2lxR0UxYTAvNUdmelBwdGo0Q3QxaWhTOGs1?=
+ =?utf-8?B?bXd6dWQ5UTNJTGRsQzUvYjZlN0FXWWRRdEN4dzBCUXE5OG5YRFRiZE04WnhT?=
+ =?utf-8?B?MGJVOWY0YnM1RXE4ZFo1T2NGN1pkOHl2SFU3L0JRN1RXbXhKakJtVksxTllz?=
+ =?utf-8?B?RWdyWWllSmxGTmM2UU84dVZTeTUrbWdmS1JIcExOSWtmd0pxZzVnR0FFWHJh?=
+ =?utf-8?B?dTZUMFNYVzJNZjZ0OERqYUpNelcxTVZrUlZ0ZzVNbDdYZ1hBWWYrdldmdUl0?=
+ =?utf-8?B?RDM0aWN2UWZJNUtHVDN5MTk2RHZLd3pEbWhBNTlPZjdPNU5odll5eHB3emRD?=
+ =?utf-8?B?QlhVUHVoeXVCN2c1N1J4cjF6dkRQcm9jZ3M0UzZBcDV6QmQybklBSDhMQmpk?=
+ =?utf-8?B?TWppODlmOCsrVFNCMmpQNFgxU2NhSVNGMGdCTjdRVnB4UWhiWTA0SUNqVVpT?=
+ =?utf-8?B?R2VhbmtyZkpRL3NFNnpoVWpTaVczalhpR2hqVW93R2Rxbld6VHFCTDN1QzNh?=
+ =?utf-8?B?ekx4YkF3RXlYMGpHTE1XcFMrVVVHSURQbmdHczJ2VVlNMTZPdC90QmxvSktx?=
+ =?utf-8?B?eTl2OGVIVzI1TEtaTVJkTTFzejVFak9aZUdQZWg0bytFUkE2RGpXS3pYc2hH?=
+ =?utf-8?B?VzFwWnRuSkI2akJYdkhYVDdNbFR6TG1vc1piT2g5ZjhMZC9adklldnJJWCtG?=
+ =?utf-8?B?QXFYaThjaitkcDdNUWJFUXNackJ0dHBqN3Y3WnVRcmtkWDNiUGV1Z2kwYkNH?=
+ =?utf-8?B?MitFY25qOFRYUGNESDVBTmpDSktLZndYUngyeDZWUG1zZGEwU3AzcG9aUHF6?=
+ =?utf-8?B?ODFvSTM2Y1hDV2RZYTRyZGtuL2hpSnBMSXBlL3FraGtrWXVQSTI3UzBDbjFu?=
+ =?utf-8?B?cU1pRzBpSVJzZzFIVWM3TndFVzdVSWNreWVHOXEraVZyYW56U0wvaGo3bHAy?=
+ =?utf-8?B?UGlQOVRORHJUZlpUSUx0R2NUMVVJS3NDOXdJUUNhQkFFdHpTSEk2S1dhdHBk?=
+ =?utf-8?B?K2l2NkgvQWNUUExGUGplOTBGOWVZd1kyb0Zuc2RocXV5Y3d5Mkw4bmNuMWV2?=
+ =?utf-8?B?Q2xWem1GMHRQeWxXdm4yVTB2SlFpRXEwT3NReGREV0RhOGUyMnVqVlpOYkI1?=
+ =?utf-8?B?NVNsd3dHUS8vOE5yRFpSaVlKVVVIaHYzQkdJUTEzbFc4N2dtSDdCbVBZSWtz?=
+ =?utf-8?B?S0ozazJIY21ndENqWFdraE9kR1BZWVVoSnpaTm91bmR6cjcyZnliU254ZERw?=
+ =?utf-8?B?c1k3TFh5MFVtU3lZbmdBZTMvTTV5VmR2QWsvVnFCY2Q5dWhYaUhVY0l6QVh5?=
+ =?utf-8?B?b3QyT0UvZk1sNTdaSUxLU2Qxd3ROc3c1bkZyc3BPdWR3Z3Y5OWs2c1k3MUVh?=
+ =?utf-8?B?RW1sMStwWHVRMElkUDhmR0diLzAvZUZUSmI4eldyNEtsT3dIOUE2RG04d0VU?=
+ =?utf-8?B?K1p3N0xTcnFFbmFkbVFxMEM4bzBoYytHaThtQUFnVTM0aks1L0dlWW1FZ0Ri?=
+ =?utf-8?B?TzI1OWZTOEtibHBhTlZ3TzJNNmU5QVdLdy9qZ0V4WlorOW5BSTYwS3V0TU1N?=
+ =?utf-8?B?eDZxa0FwUCtjSFJhNFlSUm5BVk9MekRCRG15V1pUVXBPc1BrdG9kSmJ1QW9N?=
+ =?utf-8?B?SzJYWmdrLzN5VUYzcCsyQ0QvbVM1Y3NmTXdqcVBiUEM3NHJ5SFNpMUJ5NHIw?=
+ =?utf-8?B?a3RrUitMYnBtN2JFdVpsV2JNd083ZXpOcFZZNWg4WE5adHZJaEhESzExaFU4?=
+ =?utf-8?B?R2FaOG1jUFdObEZWcjM4R0tTZStrNlBiSytURHRMelN3Nkp1YVg5bVpzRENB?=
+ =?utf-8?B?N2lCcEhUZzIwWVJpbWtKdkNvVjNjbkNmd1owREpEOFhJNWJ4aGhFQVVSOGdF?=
+ =?utf-8?B?cEhzWWhQTFM5QzArZkxBLzVkNUF4V0xhTGRtSFI2Y2t3UVgyM2dPZU42MFFJ?=
+ =?utf-8?Q?zJqbiglBJr5zzWtFd36YD2SFP?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
+	rsOPKTWr26X3YuS9X4R/p6JzoNFHU8dWeQuD95hfxColJNAYUwhuWF3tAWs27c6lTTDxc0L/be7gz0Ym61YNCwyN0xHGJWhdUuWSGaJrW8ts0IOh8FfAJn9m+tfCQv7b8TuvitFl5Nu0t4WugNjQV73hzwIBejI2lKPsRiWN8glNryOtY0Xu0+pBzJwPKOZ9SCIjdZc6h0y842NargokSFF7FdBZlp/d+naykkHVkU4djXm2LrQRTLCc9fetrY6VAa8X9t9pg8oUQLFoBFWkImqU5VsQpFPwoA0MKTRE0Mdyf1ymO/uLDsxmUYmhPnpQAs3oGoCCbmLHqzT8hm1fQLHy/YH8FutpnGSU8hld031LYB3EaNK7zhga4mKSoGfo6K+5FPlzf7H1i+oJQBmi1Knx4DoGt3wQA/pSqfgNggAd4AyS4ug/hOrjgHiunXvu0duTIpH3iMEDtxgrtkBYOB92xr4fBIxlOwxpH4PDx7stoj73k27SrjZIgCJMLOdN6IuS8MfX+HSTgUW8nhGzw4uI8qqq0CV4hI7th5+LybiLBNiGKmlQdtPgOHVh5XOsjbhQiUtXKjFPbrFGhTfnUYeNvrO6tVKgbZeqYCrq8EE=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 818c81d1-f961-406a-c3ad-08dc1713fac9
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5706.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2024 04:22:56.4449
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QOKKLfYeqdOd4W6uB9fub6zlZa4M7B9pIQo65PcfhnyYHk4Uu1gvAxOqj6tyYNlG75i1tqcXH+k99ylUv+O3qQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB6483
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-01-17_01,2024-01-16_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 bulkscore=0
+ malwarescore=0 spamscore=0 suspectscore=0 mlxlogscore=999 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
+ definitions=main-2401170028
+X-Proofpoint-GUID: U_0N8Gtb3Pw_wyjutEMQ9RpXOfDIgiox
+X-Proofpoint-ORIG-GUID: U_0N8Gtb3Pw_wyjutEMQ9RpXOfDIgiox
 
-Hi Sasha,
 
-On 1/17/2024 4:02 AM, Sasha Levin wrote:
-> From: Hou Tao <houtao1@huawei.com>
->
-> [ Upstream commit 20c20bd11a0702ce4dc9300c3da58acf551d9725 ]
->
-> map is the pointer of outer map, and need_defer needs some explanation.
-> need_defer tells the implementation to defer the reference release of
-> the passed element and ensure that the element is still alive before
-> the bpf program, which may manipulate it, exits.
->
-> The following three cases will invoke map_fd_put_ptr() and different
-> need_defer values will be passed to these callers:
->
-> 1) release the reference of the old element in the map during map update
->    or map deletion. The release must be deferred, otherwise the bpf
->    program may incur use-after-free problem, so need_defer needs to be
->    true.
-> 2) release the reference of the to-be-added element in the error path of
->    map update. The to-be-added element is not visible to any bpf
->    program, so it is OK to pass false for need_defer parameter.
-> 3) release the references of all elements in the map during map release.
->    Any bpf program which has access to the map must have been exited and
->    released, so need_defer=false will be OK.
->
-> These two parameters will be used by the following patches to fix the
-> potential use-after-free problem for map-in-map.
->
-> Signed-off-by: Hou Tao <houtao1@huawei.com>
-> Link: https://lore.kernel.org/r/20231204140425.1480317-3-houtao@huaweicloud.com
-> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> -	if (WARN_ON(start != aligned_start)) {
+> +	/* Adjust the range to be aligned to 512B sectors if necessary. */
+> +	if (start != aligned_start) {
 
-The patch is just a preparatory patch for fix, please drop it.
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+
+Thanks, Anand
 
 
