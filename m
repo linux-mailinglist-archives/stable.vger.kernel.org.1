@@ -1,100 +1,168 @@
-Return-Path: <stable+bounces-11830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1EB183034D
-	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 11:10:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22AFD8303A9
+	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 11:32:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 545BEB217DF
-	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 10:10:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50AF81C2109F
+	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 10:32:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6522F14292;
-	Wed, 17 Jan 2024 10:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65861C695;
+	Wed, 17 Jan 2024 10:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gs849v/x"
+	dkim=pass (2048-bit key) header.d=alu.hr header.i=@alu.hr header.b="EqerjZEj";
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=alu.unizg.hr header.i=@alu.unizg.hr header.b="UCZ2W8OW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from domac.alu.hr (domac.alu.unizg.hr [161.53.235.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB6914270;
-	Wed, 17 Jan 2024 10:10:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00C41DDC8;
+	Wed, 17 Jan 2024 10:31:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=161.53.235.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705486225; cv=none; b=RS8kMib8CYyFKAcwTvyAjEzDSOVc5+6PYHw6V4RZ8fSbXj1ROiwPiyKG2XDTPip5GSZPLglrCYa8HTuakFXA9L9w9ogU+usLfPsVn6egNO8wEQddiw9gPK7uKNuq3eyp5ppdQtMQEKKWqZ31zfBvVHsKUjGujMkQ9Qex9evsKWI=
+	t=1705487473; cv=none; b=qBwVbZXnJo3Rug8zrqxEYxHNzrWFlj1Y3aO1d9YtVP7MwscPa1vrFt4hSB1Q4UIyYHwjp+bU0L9NjHEJsAnCKKvrjXetEGoZ6/yXU+f1mro4OdDUEugQe1mItLqiO8Y2S8QdEew6MPLsmhFGzIU493empeNXZRPvHdmTg94aJrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705486225; c=relaxed/simple;
-	bh=ltH2gx/NkmeSjFHTVwnNNG4AcsxsBQsX+VOOFImuNsE=;
-	h=Received:DKIM-Signature:Received:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=d0Dt0Pd3zki5LCobu5L5Wq/sz6Pz/98H3AGBXU1qcR3H9DELuKPEOqmr2FCjzCLMnuUSfmlW8GzVBDKntAK+6WAkOux3wO8dVWSZkUQ3eCWWR9tlQHh+NVwK9hsv8YxLGPevccGglSk24K4z61MN0lNVwdlCNHP/1RgfND1pWys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gs849v/x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9FF6CC43390;
-	Wed, 17 Jan 2024 10:10:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705486224;
-	bh=ltH2gx/NkmeSjFHTVwnNNG4AcsxsBQsX+VOOFImuNsE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Gs849v/xnktV+VT6AsLGVXoOWnaF2qjI5b7TxxlXAgEHz8EaiymWV63JIZgG00veL
-	 Or3IQejwT0l5fRVloJ6WcfCDwSTHHpbILxvnJtXsVxKPZVkFXGl5w5azujol/rWwr1
-	 GZ6SSB3IAPRl5rEyGNE48bd3q6/e86quWKvVH1WBuMZefts88BC3N+I1B8x+xPjow2
-	 7xLN4Tp2BLj1zm2kQulWhyyrxZ7U5yzonjbi1Jy5cmGvwTFQrcQahXhBaCv1n25M8n
-	 Dta3p4yEKWLEwahuoPnIpoAtQqMUIdbImY+WxULLx/Mr7rz3yOeyezCuUPlPhMyAG+
-	 0PmHINHf3DJrQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 8722BD8C971;
-	Wed, 17 Jan 2024 10:10:24 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1705487473; c=relaxed/simple;
+	bh=iwSt0dX080YAZAjn6l0J2DH9z0NHNrOKDfSGJeVuk2Q=;
+	h=Received:DKIM-Signature:X-Virus-Scanned:Received:Received:
+	 DKIM-Signature:Message-ID:Date:MIME-Version:User-Agent:Subject:
+	 Content-Language:To:Cc:References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding; b=AsYpUik46Eyk7zrBXocw9UkQ+Rd6SqEbcBJMy4ej/T6Oy+fz2qkVcGZ2wgb1e8mYjxt+p+PwrOJxLh1j4Ct6tbV5RCzmUzqSp1g0rtiR7TJAuk9yrm2biOlLbGfIBs/Jtx1WmGUXuOY84o9PSANjChd8DmYQWg5+HCbcW+OWGYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alu.hr; spf=pass smtp.mailfrom=alu.hr; dkim=pass (2048-bit key) header.d=alu.hr header.i=@alu.hr header.b=EqerjZEj; dkim=fail (2048-bit key) header.d=alu.unizg.hr header.i=@alu.unizg.hr header.b=UCZ2W8OW reason="signature verification failed"; arc=none smtp.client-ip=161.53.235.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=alu.hr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alu.hr
+Received: from localhost (localhost [127.0.0.1])
+	by domac.alu.hr (Postfix) with ESMTP id C14606017C;
+	Wed, 17 Jan 2024 11:30:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.hr; s=mail;
+	t=1705487458; bh=iwSt0dX080YAZAjn6l0J2DH9z0NHNrOKDfSGJeVuk2Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=EqerjZEjtm+TYGTrkvZPBdK3LDNPyshZ60TIZ4IrfuBJQp27noPbojxqjy2OSfC8m
+	 JEh6pqhDqa3TqL/NofyF4qkdH2S3WCm6ALq/QjCpfsm/1r0MLkYxGC4TCdTQzMiAqX
+	 dAAkh+M/oUMY44Z6J1ExB8aPRRnKBZCCGMPqzbKn66MUMWHcZbTu+1Ig8JP9D5B/aS
+	 O6CnZkk/uQTQh9zmBmKahW3zcZiTK9fJWQJ2QbN/bPa61+qJ8QxGjLoSbdwWOFrQ8j
+	 +OxFp3ia/qOTQDAYXhseMBW9A0Q8GZNU5sY0qxC3sWLuzMPYERid1gyGC07ZgjwRbD
+	 HHQoWq4WaOhIQ==
+X-Virus-Scanned: Debian amavisd-new at domac.alu.hr
+Received: from domac.alu.hr ([127.0.0.1])
+	by localhost (domac.alu.hr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id eKV4VozrfsID; Wed, 17 Jan 2024 11:30:56 +0100 (CET)
+Received: from [10.0.1.190] (unknown [161.53.83.23])
+	by domac.alu.hr (Postfix) with ESMTPSA id 3681860177;
+	Wed, 17 Jan 2024 11:30:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=alu.unizg.hr; s=mail;
+	t=1705487456; bh=iwSt0dX080YAZAjn6l0J2DH9z0NHNrOKDfSGJeVuk2Q=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=UCZ2W8OWe6R7kIOQORPkPRTQEi4uf3Ss1maQsrE0OcNLWMYJbGVY1S2+JxcnaQtaA
+	 2Dk0gsR4EhZp5UXV+qjyj4Z3w1wtPHOcZ5isE+fPLlRveY2R+IuoQXF9ZR6nTF02a5
+	 41z4NCbpfCr7qVugG3F2JQ8XAw556XGtER+dKO1gJ5vXwV1qBcVMeHjJXp8731lmb/
+	 ate34pEnVTz4Po8vQwNrtVkXb3fOGsHhj6EiwYmNCzsvd6IJW/VyPWQn949ExMCsPs
+	 4HkL8OFm0fff45WNsQA9Z0uio/4meJ4LWTKH2/EwxNc+JZjq7VN6o+O9zmEal1DY2Z
+	 ScsjErwWMm3Xg==
+Message-ID: <4523ad21-d06a-4ba2-9b46-974a6093b189@alu.unizg.hr>
+Date: Wed, 17 Jan 2024 11:30:53 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH AUTOSEL 6.7 021/108] r8169: improve RTL8411b phy-down
+ fixup
+Content-Language: en-US
+To: Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Heiner Kallweit <hkallweit1@gmail.com>,
+ Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+ Simon Horman <horms@kernel.org>, "David S . Miller" <davem@davemloft.net>,
+ nic_swsd@realtek.com, edumazet@google.com, pabeni@redhat.com,
+ netdev@vger.kernel.org
+References: <20240116194225.250921-1-sashal@kernel.org>
+ <20240116194225.250921-21-sashal@kernel.org>
+ <20240116174315.2629f21c@kernel.org>
+From: Mirsad Todorovac <mirsad.todorovac@alu.hr>
+In-Reply-To: <20240116174315.2629f21c@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v6] net: stmmac: Prevent DSA tags from breaking COE
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <170548622454.19813.11293177026584189048.git-patchwork-notify@kernel.org>
-Date: Wed, 17 Jan 2024 10:10:24 +0000
-References: <20240116-prevent_dsa_tags-v6-1-ec44ed59744b@bootlin.com>
-In-Reply-To: <20240116-prevent_dsa_tags-v6-1-ec44ed59744b@bootlin.com>
-To: Romain Gantois <romain.gantois@bootlin.com>
-Cc: alexandre.torgue@foss.st.com, joabreu@synopsys.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- mcoquelin.stm32@gmail.com, miquel.raynal@bootlin.com,
- maxime.chevallier@bootlin.com, sylvain.girard@se.com, pascal.eberhard@se.com,
- rtresidd@electromag.com.au, linus.walleij@linaro.org, olteanv@gmail.com,
- andrew@lunn.ch, thomas.petazzoni@bootlin.com, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
- vladimir.oltean@nxp.com
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
-
-On Tue, 16 Jan 2024 13:19:17 +0100 you wrote:
-> Some DSA tagging protocols change the EtherType field in the MAC header
-> e.g.  DSA_TAG_PROTO_(DSA/EDSA/BRCM/MTK/RTL4C_A/SJA1105). On TX these tagged
-> frames are ignored by the checksum offload engine and IP header checker of
-> some stmmac cores.
+On 1/17/24 02:43, Jakub Kicinski wrote:
+> On Tue, 16 Jan 2024 14:38:47 -0500 Sasha Levin wrote:
+>> Mirsad proposed a patch to reduce the number of spinlock lock/unlock
+>> operations and the function code size. This can be further improved
+>> because the function sets a consecutive register block.
 > 
-> On RX, the stmmac driver wrongly assumes that checksums have been computed
-> for these tagged packets, and sets CHECKSUM_UNNECESSARY.
-> 
-> [...]
+> Clearly a noop and a lot of LoC changed. I vote to drop this from
+> the backport.
 
-Here is the summary with links:
-  - [net,v6] net: stmmac: Prevent DSA tags from breaking COE
-    https://git.kernel.org/netdev/net/c/c2945c435c99
+Dear Jakub,
 
-You are awesome, thank you!
+I will not argue with a senior developer, but please let me plead for the
+cause.
+
+There are a couple of issues here:
+
+1. Heiner's patch generates smaller and faster code, with 100+
+spin_lock_irqsave()/spin_unlock_restore() pairs less.
+
+According to this table:
+
+[1] https://mirrors.edge.kernel.org/pub/linux/kernel/people/paulmck/perfbook/perfbook-1c.2023.06.11a.pdf#table.3.1
+
+The cost of single lock can be 15.4 - 101.9 ns (for the example CPU),
+so total savings would be 1709 - 11310 ns. But as the event of PHY power
+down is not frequent, this might be a insignificant saving indeed.
+
+2. Why I had advertised atomic programming of RTL registers in the first
+place?
+
+The mac_ocp_lock was introduced recently:
+
+commit 91c8643578a21e435c412ffbe902bb4b4773e262
+Author: Heiner Kallweit <hkallweit1@gmail.com>
+Date:   Mon Mar 6 22:23:15 2023 +0100
+
+     r8169: use spinlock to protect mac ocp register access
+
+     For disabling ASPM during NAPI poll we'll have to access mac ocp
+     registers in atomic context. This could result in races because
+     a mac ocp read consists of a write to register OCPDR, followed
+     by a read from the same register. Therefore add a spinlock to
+     protect access to mac ocp registers.
+
+     Reviewed-by: Simon Horman <simon.horman@corigine.com>
+     Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+     Tested-by: Holger Hoffstätte <holger@applied-asynchrony.com>
+     Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+     Signed-off-by: David S. Miller <davem@davemloft.net>
+
+Well, the answer is in the question - the very need for protecting the access
+to RTL_W(8|16|32) with locks comes from the fact that something was accessing
+the RTL card asynchronously.
+
+Forgive me if this is a stupid question ...
+
+Now - do we have a guarantee that the card will not be used asynchronously
+half-programmed from something else in that case, leading to another spurious
+lockup?
+
+IMHO, shouldn't the entire reprogramming of PHY down recovery of the RTL 8411b
+be done atomically, under a single spin_lock_irqsave()/spin_unlock_irqrestore()
+pair?
+
+Best regards,
+Mirsad Todorovac
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+CARNet system engineer
+Faculty of Graphic Arts | Academy of Fine Arts
+University of Zagreb
 
+CARNet sistem inženjer
+Grafički fakultet | Akademija likovnih umjetnosti
+Sveučilište u Zagrebu
 
 
