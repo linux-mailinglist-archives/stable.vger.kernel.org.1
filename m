@@ -1,108 +1,97 @@
-Return-Path: <stable+bounces-11847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A781B830729
-	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 14:35:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8437A830735
+	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 14:38:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 476AA1F25C32
-	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 13:35:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 364D01F267EA
+	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 13:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE251EB57;
-	Wed, 17 Jan 2024 13:35:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20C31F60B;
+	Wed, 17 Jan 2024 13:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dcsbxi0R"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MchJ+yVh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24FFA1DDEA;
-	Wed, 17 Jan 2024 13:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B9D14A87
+	for <stable@vger.kernel.org>; Wed, 17 Jan 2024 13:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.55.52.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705498545; cv=none; b=FHpbzjWbMTKlV+CE98XzoJoJPCKbJ5O6VYP5X8MUMxhNP/1t8p5CBmBXXS8nU2m/B8M+CyYqzKdWiB0Mv75i+rSatlEk5aR/tTlR1a4qPP5A7GxaBIF+BliPURbzaWKTcg4C/t2QNTg/gqfWInuA3E+hdcC4HMsQ/Q/TSp2255Q=
+	t=1705498689; cv=none; b=mItGzzvzrnkiDJQUpAcVjCkrJZPk2ewv7PlSbhj1XA5nsOzXBTrza0R9UFS65ppga4PKalo8yWEYtFOW1PdhFetAOD3u8wAWw5wQAn3/sks9U5FzXI87hWZvwF6gj+iTdEOkEaF7NdQUDOX/XSPIlIUBveLlE8jMecgAtOSP0HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705498545; c=relaxed/simple;
-	bh=4PkCqWXiCJeINEgOlLi3mczfTlNmb99L3hNOtrSsW5o=;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding; b=HixreDoTiBBmBRsaRgtA8Z4MhHfvAbxSef3c0xUPskZb6rEVJ+FxFOvEqXAepOVWdwP0GKhUbq3XzomcnGhQkuj+gpjZq2AEwQCQ8D8eC+PQcpEnVh5JpJGnNBrzZTKbUSTwbvq6t9Cw66qATLPZ867qcj8bIMFdDzMQFxsWN0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dcsbxi0R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 145D8C43390;
-	Wed, 17 Jan 2024 13:35:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705498544;
-	bh=4PkCqWXiCJeINEgOlLi3mczfTlNmb99L3hNOtrSsW5o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dcsbxi0RxgskVZrsdkfGE7mn6KLiiI7FCyF8jPHgA0kAsgKGkm6Buuh2rxRaBtbsh
-	 iSAyxXOwTg+PgHBSL1db+a7owBSfXak2hyzk8AABgX1Qtefs6Q9ClY4c7B3dDkXmSI
-	 RwIyk2Oq4HEQIN/7MMZ/x0D+J52lveOllpTEwPAnEAWsvqu2zm45KJBnzTbFaZuOPv
-	 ZROGXXp6HMESw7CcxPc0ln3PY6yJEs0nG2nSsFyfsSrUJjb0xoCByNh6V0m02HdFUP
-	 U4qs0LSCLB36GN+lva0RWEHSKCkIQmwHHIXinMdhY0R6MW2AYd9lEaaTj8ILiexqlY
-	 nrFcf/YGNcz1w==
-From: Jiri Olsa <jolsa@kernel.org>
-To: stable@vger.kernel.org
-Cc: bpf@vger.kernel.org,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Alan Maguire <alan.maguire@oracle.com>
-Subject: [PATCHv2 stable 6.1 2/2] bpf: Add --skip_encoding_btf_inconsistent_proto, --btf_gen_optimized to pahole flags for v1.25
-Date: Wed, 17 Jan 2024 14:35:20 +0100
-Message-ID: <20240117133520.733288-3-jolsa@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240117133520.733288-1-jolsa@kernel.org>
-References: <20240117133520.733288-1-jolsa@kernel.org>
+	s=arc-20240116; t=1705498689; c=relaxed/simple;
+	bh=fGT48Zw5xEX/HcJfmi+SxK9GweVFjsjrtkK1fkz0rAY=;
+	h=DKIM-Signature:X-IronPort-AV:X-IronPort-AV:Received:X-ExtLoop1:
+	 X-IronPort-AV:Received:Received:Date:From:To:Cc:Subject:Message-ID:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=D5A0mPeAHSXeAE5koBoqqxHwSZAhZ8UhYy5D2ZjlaGW82iZcCDzX+09PsYFtghBZvQAtKISbj5vdVHJ1sW3ye0S+fDmseBJ7LhimW5L9zaTB0/MzkWhMTQ82/oYoGEyYwyUSpg+h7resbwi8mP72cjpzb4sA8TTwKfFcE70WyVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MchJ+yVh; arc=none smtp.client-ip=192.55.52.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1705498686; x=1737034686;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=fGT48Zw5xEX/HcJfmi+SxK9GweVFjsjrtkK1fkz0rAY=;
+  b=MchJ+yVhq3bPnLghMtMAGJeonmn+e3RwLhaxN1hD3OZ1RyVgAsrRKKGK
+   JiTpsb+QmQspK4ChyDLrITEs1RxncD3Yqd5v/pxPeFnTMkOtXUbZVW1Dr
+   gryiIMBtDfGNt6q5OPwYdADkA3xQBAHUqZSyysSCij57Ek0T0HQNxKVgz
+   aRkY5IAJv9rkqVNmTNODs3z1rfFYR2tboSiZVr8ekUdXsdUuKMO/Sr1jG
+   H9RDc/pboSNT+kDqz3EWRQM4U3vCjyeCqny2VuIoztsF+CMZWsXzRyIUV
+   0HVUt9KSiclZHUrPDMPokkEZNPzWG1pJfb4ouTBMd1A/gFL5q0nfuOA9X
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10955"; a="397322292"
+X-IronPort-AV: E=Sophos;i="6.05,200,1701158400"; 
+   d="scan'208";a="397322292"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jan 2024 05:38:05 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.05,200,1701158400"; 
+   d="scan'208";a="43628"
+Received: from lkp-server01.sh.intel.com (HELO 961aaaa5b03c) ([10.239.97.150])
+  by orviesa005.jf.intel.com with ESMTP; 17 Jan 2024 05:38:04 -0800
+Received: from kbuild by 961aaaa5b03c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rQ67F-00022M-0t;
+	Wed, 17 Jan 2024 13:38:01 +0000
+Date: Wed, 17 Jan 2024 21:37:14 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jiri Olsa <jolsa@kernel.org>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCHv2 stable 6.1 1/2] btf, scripts: Exclude Rust CUs with
+ pahole
+Message-ID: <ZafYCmLzkWeqI6sF@fc6e15c3a4e0>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240117133520.733288-2-jolsa@kernel.org>
 
-From: Alan Maguire <alan.maguire@oracle.com>
+Hi,
 
-commit 7b99f75942da332e3f4f865e55a10fec95a30d4f upstream.
+Thanks for your patch.
 
-v1.25 of pahole supports filtering out functions with multiple inconsistent
-function prototypes or optimized-out parameters from the BTF representation.
-These present problems because there is no additional info in BTF saying which
-inconsistent prototype matches which function instance to help guide attachment,
-and functions with optimized-out parameters can lead to incorrect assumptions
-about register contents.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-So for now, filter out such functions while adding BTF representations for
-functions that have "."-suffixes (foo.isra.0) but not optimized-out parameters.
-This patch assumes that below linked changes land in pahole for v1.25.
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-Issues with pahole filtering being too aggressive in removing functions
-appear to be resolved now, but CI and further testing will confirm.
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCHv2 stable 6.1 1/2] btf, scripts: Exclude Rust CUs with pahole
+Link: https://lore.kernel.org/stable/20240117133520.733288-2-jolsa%40kernel.org
 
-Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20230510130241.1696561-1-alan.maguire@oracle.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Jiri Olsa <jolsa@kernel.org>
----
- scripts/pahole-flags.sh | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/scripts/pahole-flags.sh b/scripts/pahole-flags.sh
-index 1f1f1d397c39..728d55190d97 100755
---- a/scripts/pahole-flags.sh
-+++ b/scripts/pahole-flags.sh
-@@ -23,5 +23,8 @@ if [ "${pahole_ver}" -ge "124" ]; then
- 	# see PAHOLE_HAS_LANG_EXCLUDE
- 	extra_paholeopt="${extra_paholeopt} --lang_exclude=rust"
- fi
-+if [ "${pahole_ver}" -ge "125" ]; then
-+	extra_paholeopt="${extra_paholeopt} --skip_encoding_btf_inconsistent_proto --btf_gen_optimized"
-+fi
- 
- echo ${extra_paholeopt}
 -- 
-2.43.0
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
