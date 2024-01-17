@@ -1,115 +1,214 @@
-Return-Path: <stable+bounces-11819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD279830004
-	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 07:11:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0570C830036
+	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 07:40:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46059287D8C
-	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 06:11:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 070B71C23A1F
+	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 06:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1F5879F4;
-	Wed, 17 Jan 2024 06:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14AAE8F59;
+	Wed, 17 Jan 2024 06:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UGyMzZZh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cLa6qYMR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7341B945A;
-	Wed, 17 Jan 2024 06:11:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5334685;
+	Wed, 17 Jan 2024 06:40:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705471912; cv=none; b=bX3u9o6uIMOXPe5gtus1zG2inScvnH4snh2HNS5JohPj0svuDBzS7Jo3TY/zo9J5TFMad9bEuJXMLbzJoiEBmft9oYYfZL5YFO1CJtuXFw8P2RYhjGgdXdyMdMHzJJOp8eR8DTB/qpUs8pQcn1Kqvfdix9rT4lW0WJLf9qTi964=
+	t=1705473607; cv=none; b=OPCvdZSfmYF6RFjtXWWiFk8fxBAWtDT8MIEKZJsx5K3XQBOpz9Bh8KYx55DsrvvFS4vmeiQ+UmTsFooCLuIVD1KuM826ja+/9bGZwiZ5nvIChPw7LHFDq1GRXGvN8/jelqhETDDl+Dgj4R4YC4eLHybXlUrfwwYcgMbI/mqMKaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705471912; c=relaxed/simple;
-	bh=agyNKKHeWmBULe5eCNrnhpH47X6wjlLOcZf7OlF16TQ=;
-	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding; b=WVps+iayEvilx6uKfN2BVneAWWBoS+az4BnRz6BHUc+uocXBhfE85RKd/vdjzppVndLds88DYsD8Fz5qC+hwFd2xQcZV+FiTZN9oaZ9I0fUFyGBBi4/Ixc9eUbADXcvfMa3MKIEoDGOHoSohnz/RgX02A53NxgttKVKYoQyjp/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UGyMzZZh; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-5c65ca2e1eeso5036519a12.2;
-        Tue, 16 Jan 2024 22:11:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705471911; x=1706076711; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OuJailNbnMKsoTe4rvq4VOL/78ldsC8lUzKL4himcuw=;
-        b=UGyMzZZh9FdwMDIRGSytAaHsO/FGpSl9uWe2x5wTCgFeO7bVlkhrddaiDbcbdKHLB1
-         vVucVQ8jF0LfNKwoJr6Nu5y1+EryePmEEPwsZOKPnpL2ZJ0iww0vCXV3+FN/t2EBCGX5
-         fcY+0sOg644DB0LHTjGpLoJeqkfJvjyFjnqeEhvA0UY6JrAqExlXkk1zr5lCDeSoYpcj
-         QnWtI0dpycnssfyOa/KGOwnJM1ncrgbq9PhHab2cd+QFJ7Zw0wgrlzFfklb5c1oRX6t0
-         myLl0TkmMC7PjUfTXa41+Xgj91MZM4G5VxyKTKysht5inG+34mPYnZHc0BW6vNCfwYeu
-         YzeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705471911; x=1706076711;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OuJailNbnMKsoTe4rvq4VOL/78ldsC8lUzKL4himcuw=;
-        b=Z0xLU515h7BectVQjpO3A+vJzuoN5+Il2cJKCyvygg2etC05ICO9GbAaQiDem6j05c
-         apuGFF0IyGIJ43UbEQ7MaHI5yuwOe4Mkpo/HKG/PVHLEo5ipDZsICAQLfgjg2qiu6AOl
-         qDJZRxz1zjfVIqXz2Qgn61GcYqxA+rQ/ZXlKfFlTofJMtKTKp/OvxiIp6ieMPSJALvFK
-         mv3v9N4gNWX9pcjwIHiFk2AhRCA8BWAAeMRyKPc8kW3snFge7XZGgT24r5kx4J1EPeuX
-         1XrQ3/1FK3YpBs5VkRS6ZY4LC28PE+UTl+QX8k/NqwwpYoFu8j02iP902wBW+hplgczs
-         +0zg==
-X-Gm-Message-State: AOJu0Yzw7lVafXmZ7rbC6xCC4kQLbDMYE+gmYmwXZKifbhjNmrA4RGaa
-	j572qPC8N1ervIcUsryTycwZ8oTAsQs=
-X-Google-Smtp-Source: AGHT+IHJTgNC3XOQcrLVeV1yrDVV12NKDyRqb4t0DsgepV6OX32Ke9U2ebYhPQKqqd9SPiVcfX2FQQ==
-X-Received: by 2002:a05:6a21:3982:b0:19a:fa18:c2fe with SMTP id ad2-20020a056a21398200b0019afa18c2femr3179002pzc.44.1705471910635;
-        Tue, 16 Jan 2024 22:11:50 -0800 (PST)
-Received: from [192.168.7.25] (45.78.55.121.16clouds.com. [45.78.55.121])
-        by smtp.gmail.com with ESMTPSA id mi15-20020a170902fccf00b001d5f009a69fsm1637873plb.142.2024.01.16.22.11.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 16 Jan 2024 22:11:50 -0800 (PST)
-Message-ID: <ce4f98a3-7683-490b-a717-0eeb035cbd86@gmail.com>
-Date: Wed, 17 Jan 2024 14:11:46 +0800
+	s=arc-20240116; t=1705473607; c=relaxed/simple;
+	bh=zCxriXr/T6GxyRjtTV+oey32YWyxeNIjJCrOraLjzTY=;
+	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
+	 References:MIME-Version:Content-Type:Content-Disposition:
+	 Content-Transfer-Encoding:In-Reply-To; b=ByADg3TLj3tXQZmvXCsnyCuF6H0amjWDODSotlka9r3d0P1Q9Nzh1fINi9/N4nvoYiumg3Tjr9Fns8OKUXwlqMOQrR2E0JvFs6n1Fl1kSZuKOmSWgGB60XZokfhjR/R6TE97fUYJBC6rfpZC0PeBvk5O2fru/1bMuNu9olRJVmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cLa6qYMR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B95C433C7;
+	Wed, 17 Jan 2024 06:39:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705473606;
+	bh=zCxriXr/T6GxyRjtTV+oey32YWyxeNIjJCrOraLjzTY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cLa6qYMRljdBvuMPxaeiZchWO22a/CYZq/JKoBE4saA+gPDn+KtmCgvI8cVASCaOk
+	 bNxJocm4YIvgOteU4sRCFXHIyRkJMlPRqg6MqdmYoNktfXHiwG2JlgM4aLB+i0+plt
+	 rTk1wlhP7qrj37/kmF0p1y0igQS3c92SVvqrDe+lMduY4zb/kfpZlqozJDoS47wF99
+	 pLSTisK2pwtbW2gFcB6Ai+/FGbcgwnQLgytj9b93yoXQmt04G9tUzPfbrHRW93Uz/F
+	 SqrS9tGVe16hqwnLgRmEyUmn+lsmzHnDGVUXBNTb+Xem1wIRD8FdSJGyyra6p/doHp
+	 o2/XE/tZKM3hw==
+Date: Wed, 17 Jan 2024 12:09:38 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Krishna Chaitanya Chundru <quic_krichai@quicinc.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Brian Masney <bmasney@redhat.com>,
+	Georgi Djakov <djakov@kernel.org>, linux-arm-msm@vger.kernel.org,
+	vireshk@kernel.org, quic_vbadigan@quicinc.com,
+	quic_skananth@quicinc.com, quic_nitegupt@quicinc.com,
+	linux-pci@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v6 3/6] PCI: qcom: Add missing icc bandwidth vote for cpu
+ to PCIe path
+Message-ID: <20240117063938.GC8708@thinkpad>
+References: <20240112-opp_support-v6-0-77bbf7d0cc37@quicinc.com>
+ <20240112-opp_support-v6-3-77bbf7d0cc37@quicinc.com>
+ <CAA8EJprq1s42hkbXXKtXTGnyYePQN98t+gmFoHDOGMWJH4Ot3g@mail.gmail.com>
+ <2bc92420-b3b9-047d-e5e4-22a19b4d07d3@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] block: fix length of strscpy()
-To: Jens Axboe <axboe@kernel.dk>
-Cc: linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240101175051.38479-2-pugokushin@gmail.com>
- <cb12eefa-9588-4244-a1de-b1ea62f6096d@kernel.dk>
-Content-Language: en-US
-From: Guoxin Pu <pugokushin@gmail.com>
-In-Reply-To: <cb12eefa-9588-4244-a1de-b1ea62f6096d@kernel.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2bc92420-b3b9-047d-e5e4-22a19b4d07d3@quicinc.com>
 
-On 02/01/2024 05:26, Jens Axboe wrote:
-> On 1/1/24 10:50 AM, Guoxin Pu wrote:
->> In commit 146afeb235ccec10c17ad8ea26327c0c79dbd968 ("block: use strscpy()
->> to instead of strncpy()") , the length that should now represent the length
->> of the string with the terminating NULL was not updated alongside the
->> change.
->>
->> This has caused blkdevparts= definition on kernel cmdline to be not
->> correctly recognized and partitions not correctly initialized, breaking any
->> device relying on such partitions to boot, on stable releases since 6.6
->>
->> This patch fixes the lengths to contain the terminating NULL.
-> This needs a Fixes line.
->
-Sorry for the late reply.
+On Tue, Jan 16, 2024 at 10:27:23AM +0530, Krishna Chaitanya Chundru wrote:
+> 
+> 
+> On 1/12/2024 9:00 PM, Dmitry Baryshkov wrote:
+> > On Fri, 12 Jan 2024 at 16:24, Krishna chaitanya chundru
+> > <quic_krichai@quicinc.com> wrote:
+> > > 
+> > > CPU-PCIe path consits for registers PCIe BAR space, config space.
+> > > As there is less access on this path compared to pcie to mem path
+> > > add minimum vote i.e GEN1x1 bandwidth always.
+> > 
+> > Is this BW amount a real requirement or just a random number? I mean,
+> > the register space in my opinion consumes much less bandwidth compared
+> > to Gen1 memory access.
+> > 
+> Not register space right the BAR space and config space access from CPU
+> goes through this path only. There is no recommended value we need to
+> vote for this path. Keeping BAR space and config space we tried to vote
+> for GEN1x1.
+> 
+> Please suggest any recommended value, I will change that in the next
+> series.
+> 
 
-Thank you for the review. The Fixes line was added and I've sent the new 
-patch as "[PATCH v2] block: fix length of strscpy()" earlier on Jan, 2nd.
+You should ask the HW folks on the recommended value to keep the reg access
+clocking. We cannot suggest a value here.
 
-And since 6.7 is out, do I need to rework the v2 patch and add cc stable 
-6.7.x?
+If they say, "there is no recommended value", then ask them what would the
+minimum value and use it here.
 
+- Mani
+
+> - Krishna Chaitanya.
+> > > 
+> > > In suspend remove the cpu vote after register space access is done.
+> > > 
+> > > Fixes: c4860af88d0c ("PCI: qcom: Add basic interconnect support")
+> > > cc: stable@vger.kernel.org
+> > > Signed-off-by: Krishna chaitanya chundru <quic_krichai@quicinc.com>
+> > > ---
+> > >   drivers/pci/controller/dwc/pcie-qcom.c | 31 +++++++++++++++++++++++++++++--
+> > >   1 file changed, 29 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+> > > index 11c80555d975..035953f0b6d8 100644
+> > > --- a/drivers/pci/controller/dwc/pcie-qcom.c
+> > > +++ b/drivers/pci/controller/dwc/pcie-qcom.c
+> > > @@ -240,6 +240,7 @@ struct qcom_pcie {
+> > >          struct phy *phy;
+> > >          struct gpio_desc *reset;
+> > >          struct icc_path *icc_mem;
+> > > +       struct icc_path *icc_cpu;
+> > >          const struct qcom_pcie_cfg *cfg;
+> > >          struct dentry *debugfs;
+> > >          bool suspended;
+> > > @@ -1372,6 +1373,9 @@ static int qcom_pcie_icc_init(struct qcom_pcie *pcie)
+> > >          if (IS_ERR(pcie->icc_mem))
+> > >                  return PTR_ERR(pcie->icc_mem);
+> > > 
+> > > +       pcie->icc_cpu = devm_of_icc_get(pci->dev, "cpu-pcie");
+> > > +       if (IS_ERR(pcie->icc_cpu))
+> > > +               return PTR_ERR(pcie->icc_cpu);
+> > >          /*
+> > >           * Some Qualcomm platforms require interconnect bandwidth constraints
+> > >           * to be set before enabling interconnect clocks.
+> > > @@ -1381,7 +1385,18 @@ static int qcom_pcie_icc_init(struct qcom_pcie *pcie)
+> > >           */
+> > >          ret = icc_set_bw(pcie->icc_mem, 0, QCOM_PCIE_LINK_SPEED_TO_BW(1));
+> > >          if (ret) {
+> > > -               dev_err(pci->dev, "failed to set interconnect bandwidth: %d\n",
+> > > +               dev_err(pci->dev, "failed to set interconnect bandwidth for pcie-mem: %d\n",
+> > > +                       ret);
+> > > +               return ret;
+> > > +       }
+> > > +
+> > > +       /*
+> > > +        * The config space, BAR space and registers goes through cpu-pcie path.
+> > > +        * Set peak bandwidth to single-lane Gen1 for this path all the time.
+> > > +        */
+> > > +       ret = icc_set_bw(pcie->icc_cpu, 0, QCOM_PCIE_LINK_SPEED_TO_BW(1));
+> > > +       if (ret) {
+> > > +               dev_err(pci->dev, "failed to set interconnect bandwidth for cpu-pcie: %d\n",
+> > >                          ret);
+> > >                  return ret;
+> > >          }
+> > > @@ -1573,7 +1588,7 @@ static int qcom_pcie_suspend_noirq(struct device *dev)
+> > >           */
+> > >          ret = icc_set_bw(pcie->icc_mem, 0, kBps_to_icc(1));
+> > >          if (ret) {
+> > > -               dev_err(dev, "Failed to set interconnect bandwidth: %d\n", ret);
+> > > +               dev_err(dev, "Failed to set interconnect bandwidth for pcie-mem: %d\n", ret);
+> > >                  return ret;
+> > >          }
+> > > 
+> > > @@ -1597,6 +1612,12 @@ static int qcom_pcie_suspend_noirq(struct device *dev)
+> > >                  pcie->suspended = true;
+> > >          }
+> > > 
+> > > +       /* Remove cpu path vote after all the register access is done */
+> > > +       ret = icc_set_bw(pcie->icc_cpu, 0, 0);
+> > > +       if (ret) {
+> > > +               dev_err(dev, "failed to set interconnect bandwidth for cpu-pcie: %d\n", ret);
+> > > +               return ret;
+> > > +       }
+> > >          return 0;
+> > >   }
+> > > 
+> > > @@ -1605,6 +1626,12 @@ static int qcom_pcie_resume_noirq(struct device *dev)
+> > >          struct qcom_pcie *pcie = dev_get_drvdata(dev);
+> > >          int ret;
+> > > 
+> > > +       ret = icc_set_bw(pcie->icc_cpu, 0, QCOM_PCIE_LINK_SPEED_TO_BW(1));
+> > > +       if (ret) {
+> > > +               dev_err(dev, "failed to set interconnect bandwidth for cpu-pcie: %d\n", ret);
+> > > +               return ret;
+> > > +       }
+> > > +
+> > >          if (pcie->suspended) {
+> > >                  ret = qcom_pcie_host_init(&pcie->pci->pp);
+> > >                  if (ret)
+> > > 
+> > > --
+> > > 2.42.0
+> > > 
+> > > 
+> > 
+> > 
+> 
+
+-- 
+மணிவண்ணன் சதாசிவம்
 
