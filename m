@@ -1,216 +1,129 @@
-Return-Path: <stable+bounces-11835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87F9E830435
-	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 12:10:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CF958304A0
+	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 12:38:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C0D41C21676
-	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 11:10:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC2651F2276C
+	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 11:38:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56F71CF8C;
-	Wed, 17 Jan 2024 11:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3861DFCF;
+	Wed, 17 Jan 2024 11:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jFpKRV9H"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="liwYCmpV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E277D19BA5;
-	Wed, 17 Jan 2024 11:10:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B041DDE9
+	for <stable@vger.kernel.org>; Wed, 17 Jan 2024 11:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705489805; cv=none; b=YEQshHdD9EmiB+WY+jcQP33cRfNqyNKANxspTY7QN7iuCOf8M8trtlDD+M373yBdkm/mGdcasmXvYnxht40MZ2hrX6FNOWw/F2r+PzfUqBDijqxeNL9vZff5lafr8Jbd4duRnTrWIwzzWwhXwLaJ9uWLf7h6hmLSQc/7RqzW0mI=
+	t=1705491494; cv=none; b=QdGO69+AZT0St5PEDTQj+YFumkvkIim7ctK+Cn6aF9vxGwbpqUZwYAjl9ITxcZ/YJoN6RUqIRgtCMjK+JHc8DkEumY28EUrXrkCfAka0DQoz8HGxq/EYOEF8nm8gcT+wzctqEIMctEXJx6F2tZm7D6w6BAkCah9UvJ24n+wiKuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705489805; c=relaxed/simple;
-	bh=xagCtJI/UE9cEscEpZYujLCzcWiSxiPwe3VnzQ6LeyA=;
+	s=arc-20240116; t=1705491494; c=relaxed/simple;
+	bh=PYJp2nLrI9r8h/8LkHvioy23opDePS5vBpBicUrJSGE=;
 	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:To:Cc:References:
-	 Content-Language:From:Autocrypt:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding; b=EyqHKJUa17nu5XLpu9hq/O5IBpC8ehmGFMh9hMx8TvotxhX+TECMJpLL2eRyracdfXp9cOFP7geAPSc8OCeEHa/QMc0OuFMgB45d1BoblRkkJd8z74d70qlZ84jh6tZEcbEBZxOS8G7OEMMh1V+T4TQsa2yeYBaVuQFbg0Sr7Jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jFpKRV9H; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-40e8cc3b738so1869475e9.2;
-        Wed, 17 Jan 2024 03:10:03 -0800 (PST)
+	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Date:
+	 Mime-Version:X-Mailer:Message-ID:Subject:From:To:Cc:Content-Type;
+	b=XcyRkBNsOmNKxycdEeex2GpDKDU2LT9uC0pOSwYrp6JLtv9T/QGLVWTNxHPI39XF+yDT1DmIKosbDeZ+esvkP33lJp/zDEzD4d5cPZyYvKUGq+XXaJPb4sJaEdvDbHqCrBfCkUhTW6lbiBAb1aCBaCJoECJ+cavJJXnCqBJPIOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--badhri.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=liwYCmpV; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--badhri.bounces.google.com
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-28bb7083fb5so6606683a91.2
+        for <stable@vger.kernel.org>; Wed, 17 Jan 2024 03:38:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705489802; x=1706094602; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=mv/nrXIESsSJYBNAu5Sl6HoVMbP+O5FSONc3E6eB9NY=;
-        b=jFpKRV9HxyQYzbfMEf8sZ1GS5zyp/Zdl2sNYibCKRDWlg/3MSMiIXVMroXO8EwF8qs
-         zoDftKT7aJtIfwRdRyCnRyU64hy1x+v4pewEYpv4ERPkwpBfnC8eOc8N6TwlSsEiIjdu
-         HhON8mcV09jrQDwTMebgk+OvLrrIvMBZi9GC5wAHuAVeAp5gUlF5FuMMYmHIOApTpNLS
-         xkVnhSvlKSj9fnMEftkvP73GFVNFWP1lsvGk5wFu70nkqatb+duS+8QGq2MhFlXOzRjl
-         NKd5Bpj+hS3PXqk54TqGRQycm3llKYwToneMwVLwpkjyuMJZR/p4YysJGJcph3FpGjHe
-         PwZw==
+        d=google.com; s=20230601; t=1705491492; x=1706096292; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Z4JdV8kFxtKhHRthXQH9G50zNT6LFN+iPkzR+QshzVU=;
+        b=liwYCmpVmLSim6JbCZgJQaNlNZKT/7yvXs1fp/2X3nKgAJoIK8e/prsty62FKG/3g6
+         d30Rn0ZHZMtNkDWU2wjfQQqwDy7zdy2+15APBds7NDyKECB7mlcq6ZRfiOPNo/Bl3uRG
+         Co2N9/zcpO2cUSrK5E9IlKhoTceYxbdew05UtKCZZI4cu+/TLrE1YDXbqrA1Vn4kpBta
+         ey04C1Yf4nUIhknwjyMnUA791KcD/DgaJHh5aZqh6MNIQg8UpuorbtxhrS0YCJBurLBd
+         aQYEc4xGzkIoO6eEa1/FMVvQK+H+Thg2vUUA6u0qSjKI690/EVlbg+ivfmCYAUVfjoUE
+         s9Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705489802; x=1706094602;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mv/nrXIESsSJYBNAu5Sl6HoVMbP+O5FSONc3E6eB9NY=;
-        b=GU0CvEAfE+fABxbIbEkeU3WMWW0alBk6LKIwT7PQ06ezecuZe+PU4oylvFvXPOfBGO
-         gCpHWe2u/YO+R8n/2DMGATTzlO18nVz9gAliTdc2QsJEhJiXeu+HyXo+UkXHI36V4ACf
-         zueUi1Kg/9Ms7wDFkuCON5Ce2pom0woIQVMOo2NFVHg6VmKSlaMy4+ByQqRpUHWzQGdG
-         AtAeypkhL+y4lPaUXlum5DI+b0iDc5EbSSwQyOmBW0MtYNsxYJivLMv4yEczMivJbkJe
-         FVp26XxJvHKlt03soXRk+5jU7cylUZCppW/ErUjpTwE2NDj5uKaXaccGpQaIdanhQ91I
-         1PIg==
-X-Gm-Message-State: AOJu0YyUK70Dzr1KhvV0KJBFbsxh2HYtYqEe3PXGqIY3Vdg/g8yZ4Z8R
-	eoFQYEULRhaCaL07zqoEsUw=
-X-Google-Smtp-Source: AGHT+IFJh0Tmf+H9LI0Wey4DKpKCyICZUAR+AN9VgVspgEArHptuoE7Dc7GqpMgSvJ1/VS37gIkdeQ==
-X-Received: by 2002:a05:600c:1c05:b0:40e:52f4:81bb with SMTP id j5-20020a05600c1c0500b0040e52f481bbmr4830425wms.146.1705489801650;
-        Wed, 17 Jan 2024 03:10:01 -0800 (PST)
-Received: from ?IPV6:2a01:c22:7370:4500:28da:a7c3:29bb:d21e? (dynamic-2a01-0c22-7370-4500-28da-a7c3-29bb-d21e.c22.pool.telefonica.de. [2a01:c22:7370:4500:28da:a7c3:29bb:d21e])
-        by smtp.googlemail.com with ESMTPSA id p1-20020a05600c1d8100b0040e8d913629sm10743wms.17.2024.01.17.03.10.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Jan 2024 03:10:01 -0800 (PST)
-Message-ID: <8c83c826-e8a3-4057-88c6-4a7813ed6497@gmail.com>
-Date: Wed, 17 Jan 2024 12:10:01 +0100
+        d=1e100.net; s=20230601; t=1705491492; x=1706096292;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Z4JdV8kFxtKhHRthXQH9G50zNT6LFN+iPkzR+QshzVU=;
+        b=TNxaAN1xjThMpnZb79GfM11rVTvpGptGlChBYM4wTdtn5iaZpbn1PRMHRWeyUu2MY3
+         0KTYwV93u46GOoLGXBj9KILqsNLsBEwWtDtUp7W7BzSlraVJStktvm0QQVARTnNcZPek
+         EiylczzFPe843yg2w08Z/rPyzyTOsVElAGW2q36BfHVWpMlICmMOoHmm+Yxy2C5K74Lr
+         3b6AfHRAHcclaQ0VbvqGEziiAkRnuP4+/4ZBUnMzdJZCnU1vAxuzje+0f+9Jt38D6GNR
+         xGSix02cpZanx4KG8t7Goi5TDQDx+P+OroyMLyLeULCIR5LgTL84bQ+0kxXQfziG9IVg
+         2gcg==
+X-Gm-Message-State: AOJu0YzS+hJ8hJcQM8mU9B7qzCh0erEKmQ5Ey1UjzzWGGJ/LbMJ6JMg0
+	sVuQ5cseIzFURrAfod55NkyuhbOyeIMW3tbrgg==
+X-Google-Smtp-Source: AGHT+IGjP8x81OyM46jxmx1E+RfQKTwqso7GoQ2AyYom1wVdI96zSCsX5JK88Swop5uVIpBi/sk/PCQ/VeI=
+X-Received: from badhri.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:6442])
+ (user=badhri job=sendgmr) by 2002:a17:90b:1fc7:b0:28d:bc0f:58f3 with SMTP id
+ st7-20020a17090b1fc700b0028dbc0f58f3mr612274pjb.3.1705491491475; Wed, 17 Jan
+ 2024 03:38:11 -0800 (PST)
+Date: Wed, 17 Jan 2024 11:38:06 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH AUTOSEL 6.7 021/108] r8169: improve RTL8411b phy-down
- fixup
-To: Mirsad Todorovac <mirsad.todorovac@alu.hr>,
- Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
- Simon Horman <horms@kernel.org>, "David S . Miller" <davem@davemloft.net>,
- nic_swsd@realtek.com, edumazet@google.com, pabeni@redhat.com,
- netdev@vger.kernel.org
-References: <20240116194225.250921-1-sashal@kernel.org>
- <20240116194225.250921-21-sashal@kernel.org>
- <20240116174315.2629f21c@kernel.org>
- <4523ad21-d06a-4ba2-9b46-974a6093b189@alu.unizg.hr>
-Content-Language: en-US
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Autocrypt: addr=hkallweit1@gmail.com; keydata=
- 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
-In-Reply-To: <4523ad21-d06a-4ba2-9b46-974a6093b189@alu.unizg.hr>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
+Message-ID: <20240117113806.2584341-1-badhri@google.com>
+Subject: [PATCH v1] Revert "usb: typec: tcpm: fix cc role at port reset"
+From: Badhri Jagan Sridharan <badhri@google.com>
+To: gregkh@linuxfoundation.org, linux@roeck-us.net, 
+	heikki.krogerus@linux.intel.com
+Cc: kyletso@google.com, linux-usb@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rdbabiera@google.com, amitsd@google.com, 
+	stable@vger.kernel.org, Badhri Jagan Sridharan <badhri@google.com>, stable@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 17.01.2024 11:30, Mirsad Todorovac wrote:
-> On 1/17/24 02:43, Jakub Kicinski wrote:
->> On Tue, 16 Jan 2024 14:38:47 -0500 Sasha Levin wrote:
->>> Mirsad proposed a patch to reduce the number of spinlock lock/unlock
->>> operations and the function code size. This can be further improved
->>> because the function sets a consecutive register block.
->>
->> Clearly a noop and a lot of LoC changed. I vote to drop this from
->> the backport.
-> 
-> Dear Jakub,
-> 
-> I will not argue with a senior developer, but please let me plead for the
-> cause.
-> 
-> There are a couple of issues here:
-> 
-> 1. Heiner's patch generates smaller and faster code, with 100+
-> spin_lock_irqsave()/spin_unlock_restore() pairs less.
-> 
-> According to this table:
-> 
-> [1] https://mirrors.edge.kernel.org/pub/linux/kernel/people/paulmck/perfbook/perfbook-1c.2023.06.11a.pdf#table.3.1
-> 
-> The cost of single lock can be 15.4 - 101.9 ns (for the example CPU),
-> so total savings would be 1709 - 11310 ns. But as the event of PHY power
-> down is not frequent, this might be a insignificant saving indeed.
-> 
-> 2. Why I had advertised atomic programming of RTL registers in the first
-> place?
-> 
-> The mac_ocp_lock was introduced recently:
-> 
-> commit 91c8643578a21e435c412ffbe902bb4b4773e262
-> Author: Heiner Kallweit <hkallweit1@gmail.com>
-> Date:   Mon Mar 6 22:23:15 2023 +0100
-> 
->     r8169: use spinlock to protect mac ocp register access
-> 
->     For disabling ASPM during NAPI poll we'll have to access mac ocp
->     registers in atomic context. This could result in races because
->     a mac ocp read consists of a write to register OCPDR, followed
->     by a read from the same register. Therefore add a spinlock to
->     protect access to mac ocp registers.
-> 
->     Reviewed-by: Simon Horman <simon.horman@corigine.com>
->     Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
->     Tested-by: Holger Hoffstätte <holger@applied-asynchrony.com>
->     Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
->     Signed-off-by: David S. Miller <davem@davemloft.net>
-> 
-> Well, the answer is in the question - the very need for protecting the access
-> to RTL_W(8|16|32) with locks comes from the fact that something was accessing
-> the RTL card asynchronously.
-> 
-> Forgive me if this is a stupid question ...
-> 
-> Now - do we have a guarantee that the card will not be used asynchronously
-> half-programmed from something else in that case, leading to another spurious
-> lockup?
-> 
-> IMHO, shouldn't the entire reprogramming of PHY down recovery of the RTL 8411b
-> be done atomically, under a single spin_lock_irqsave()/spin_unlock_irqrestore()
-> pair?
-> 
+This reverts commit 1e35f074399dece73d5df11847d4a0d7a6f49434.
 
-There's no actual issue that requires fixing. It's an improvement.
+Given that ERROR_RECOVERY calls into PORT_RESET for Hi-Zing
+the CC pins, setting CC pins to default state during PORT_RESET
+breaks error recovery.
 
-> Best regards,
-> Mirsad Todorovac
-> 
+4.5.2.2.2.1 ErrorRecovery State Requirements
+The port shall not drive VBUS or VCONN, and shall present a
+high-impedance to ground (above zOPEN) on its CC1 and CC2 pins.
+
+Hi-Zing the CC pins is the inteded behavior for PORT_RESET.
+CC pins are set to default state after tErrorRecovery in
+PORT_RESET_WAIT_OFF.
+
+4.5.2.2.2.2 Exiting From ErrorRecovery State
+A Sink shall transition to Unattached.SNK after tErrorRecovery.
+A Source shall transition to Unattached.SRC after tErrorRecovery.
+
+Cc: stable@kernel.org
+Fixes: 1e35f074399d ("usb: typec: tcpm: fix cc role at port reset")
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+---
+ drivers/usb/typec/tcpm/tcpm.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index 5945e3a2b0f7..9d410718eaf4 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -4876,8 +4876,7 @@ static void run_state_machine(struct tcpm_port *port)
+ 		break;
+ 	case PORT_RESET:
+ 		tcpm_reset_port(port);
+-		tcpm_set_cc(port, tcpm_default_state(port) == SNK_UNATTACHED ?
+-			    TYPEC_CC_RD : tcpm_rp_cc(port));
++		tcpm_set_cc(port, TYPEC_CC_OPEN);
+ 		tcpm_set_state(port, PORT_RESET_WAIT_OFF,
+ 			       PD_T_ERROR_RECOVERY);
+ 		break;
+
+base-commit: 933bb7b878ddd0f8c094db45551a7daddf806e00
+-- 
+2.43.0.429.g432eaa2c6b-goog
 
 
