@@ -1,131 +1,178 @@
-Return-Path: <stable+bounces-11869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43C0D830F4F
-	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 23:39:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A0F4830F81
+	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 23:49:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D90E41F23E7D
-	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 22:39:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A5B3A1F235C7
+	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 22:49:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65359288DF;
-	Wed, 17 Jan 2024 22:39:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790F91E88C;
+	Wed, 17 Jan 2024 22:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="E866bWcU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iIVKaUCh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B76861E880;
-	Wed, 17 Jan 2024 22:39:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9461E87F;
+	Wed, 17 Jan 2024 22:49:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705531159; cv=none; b=uMuCOHxVZNKYmyg6fKxVZ0UDICOaALUQTi/Nl3NEpaQf7qpYpn4WatrLPMW+2/rub8lCfJOSFZyra0mxvdFMJvbyr+q5cMZ4f7b2GLdox723ebVqSQ0RPUiwgiljXeGQrSFC5NGduoBJ4XTGpKmKCoQXRBB8sQmOvUw+qchMDCc=
+	t=1705531764; cv=none; b=KCWEIPMAeRVp2hEMG3HYRHP8G7T+muA2FYTZD8e3mA4NtBXprKEdUXQVrEqmaUcsFBz+zkUuxexkElHEAjr0/S3W6YghErQTOG/d7lAyoGq9JMlzORQmzE61L4t7WL1/yZ1SKd2kl9LRsZpIFbp0ee7X4FkX+ehwNg6Vp4HcwrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705531159; c=relaxed/simple;
-	bh=JxAIwi/qUhrUaUWQ8/K5Ko3ejpPbufELSYtxhSEZq1Y=;
-	h=DKIM-Signature:Received:From:To:Cc:Date:Message-Id:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
-	 X-SA-Exim-Connect-IP:X-SA-Exim-Mail-From:X-Spam-Checker-Version:
-	 X-Spam-Level:X-Spam-Report:X-Spam-Status:Subject:X-SA-Exim-Version:
-	 X-SA-Exim-Scanned; b=iNmauPcGrXjfZ3s/tmtMRFZjTuOp+YR2Aw6b6qYn6CjY4Xv5QxVLrD/akyHbzOiktCGFBEPp8ib3yEehqBJEygmEkjm7tVT+EXHVkeK/9Eri93UCpP/roqXh/5vrqhgRjEa8uqCMnr/e+LFZLOK7CSASzCH9wx+7N+yxESUDhaw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=E866bWcU; arc=none smtp.client-ip=162.243.120.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-	; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Cc:To
-	:From:subject:date:message-id:reply-to;
-	bh=49BSI7LohOlv3IEqF6g8pkyxrAbWkBIJ6p9Fo9vDxts=; b=E866bWcUKh642Ke/DV2E+CeFzC
-	FSjp0Ztxi7BAJ+zDxUZkWurMXH71g6FLRJq8n9FG4Zyhst31ZnOGXJjdZ21nnNVIua++hcIHiYClW
-	8cMiEnccXftRXKuhzjihvKPQYIjqxTwO9Aax1q3g98yrcI0CaJnufswg7XPapyiE0nO8=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:52924 helo=pettiford.lan)
-	by mail.hugovil.com with esmtpa (Exim 4.92)
-	(envelope-from <hugo@hugovil.com>)
-	id 1rQEYp-000155-3B; Wed, 17 Jan 2024 17:39:03 -0500
-From: Hugo Villeneuve <hugo@hugovil.com>
-To: gregkh@linuxfoundation.org,
-	jirislaby@kernel.org,
-	cosmin.tanislav@analog.com,
-	andy.shevchenko@gmail.com,
-	shc_work@mail.ru
-Cc: linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	hugo@hugovil.com,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	stable@vger.kernel.org
-Date: Wed, 17 Jan 2024 17:38:39 -0500
-Message-Id: <20240117223856.2303475-2-hugo@hugovil.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240117223856.2303475-1-hugo@hugovil.com>
-References: <20240117223856.2303475-1-hugo@hugovil.com>
+	s=arc-20240116; t=1705531764; c=relaxed/simple;
+	bh=qaE/HlWhBZGUp+I9ZP25s5E7Fw4PribzaVcu0eirskc=;
+	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
+	 References:In-Reply-To:From:Date:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding; b=S59IA3M2IZVU5GSBe01KNd3izmr9i8dTQzTTN5Z6nZtc2codFpOjbxe7o2TONHGUkq+9FRkbTY5xLwvJKWIoshNXBMAGvuSVaZHVgd0ECd85cCCksBtGqr51CUF5gGdGi+H0s0+Z/dd0pnB1Oy9sRL3QsnwMR5BHKfHiOzy+qkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iIVKaUCh; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2cd2f472665so123538171fa.2;
+        Wed, 17 Jan 2024 14:49:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705531760; x=1706136560; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9/mowEtNIcXszHVTA9q/88Y6qPyzZTlnvSSg/H5073M=;
+        b=iIVKaUChX9CXCmbFeQ7zAO48WoaIyCbPgpIjTjxU+Wcim++YI8r4FFBJhEmDxF5Bdn
+         Pop2+iI/0oAY1bldPdZokSI4CFI46H/vnx2cnbNoNu9O5Pd/ESK6nNhDHb/aBMALGPNE
+         NWm3TEBSLSS+rj5VmsYnN/nKUObq+qJBCb+TB+d2ApFYsmiXArgwL0JhNQyAHFYIdm55
+         Y5pP+hmLtmPo+j3H7yb1GzvJIoz/5bmMYLY8ZymGgG3Wq2rfnrPYRNhq4W9DJy8soThJ
+         ZxqdMtSTUQF7eeg4uBrLkMyDLhtDNhKGw7CSjoFGU2O8IQX46llokz3adSqHb/eDQTJw
+         HKkg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705531760; x=1706136560;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9/mowEtNIcXszHVTA9q/88Y6qPyzZTlnvSSg/H5073M=;
+        b=kh8BfgiakWlwOgLzzHEldSElysIt7FeGyOeGRL85+SwcLCzOvpgMkFHaGdfURpkUbz
+         quVL2Ck5JJ+M/ofk7qx3AC12nEOt6cZyuGZ2OaYo8YXcDlUOk9vSbHBJ48KWA3OYdnFk
+         P27to6enh4lfB9P8ahjEeWOlvworoIHl7hqxHiJuy6dNu3cwpoVLPiWYTVyRWkpUjh3H
+         kFCBY0DYitkEwr2OD4a6BipUWnITqvI0j8fCFqP8btgOiOgGLyoYfFg30pa9QL6LnVgQ
+         mlXtbUD9WwHLaDkW5Go48R/OlwmKsnRKfRq+6/4hZgD/tamwaAYo6ehXQo5k6cnz/3lQ
+         6HDQ==
+X-Gm-Message-State: AOJu0YyrsgVaR4+R0E3zh/ZJC9dyvIWvhX4CwTwt7bfjB/Y4VGo6pnX7
+	IdAar9MzvNH7n9NMyHtt9cQ6GnExmqVJPBz71tM=
+X-Google-Smtp-Source: AGHT+IEUPDQNOlmNlr9Q7Qccr51WOHkRZxqKucf6Ci5wug+N0hT4DADtN5YAKbeFLlZqrJzLfSQ7B68V+QZk4yoFQuw=
+X-Received: by 2002:a2e:b6c1:0:b0:2cd:279a:d3a9 with SMTP id
+ m1-20020a2eb6c1000000b002cd279ad3a9mr4183206ljo.51.1705531760260; Wed, 17 Jan
+ 2024 14:49:20 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
-X-Spam-Level: 
-X-Spam-Report: 
-	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-	* -0.0 T_SCC_BODY_TEXT_LINE No description available.
-Subject: [PATCH 01/18] serial: max310x: fix NULL pointer dereference in I2C instantiation
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
+References: <20231227180306.6319-1-johan+linaro@kernel.org>
+ <ZZ15c1HUQIH2cY5o@google.com> <ZZ1-ehpU-g6i9Qem@hovoldconsulting.com>
+ <ZZ2IOQEekFffJoHQ@google.com> <ZZ5RVpL88XNbgKIy@hovoldconsulting.com>
+In-Reply-To: <ZZ5RVpL88XNbgKIy@hovoldconsulting.com>
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Date: Wed, 17 Jan 2024 17:49:07 -0500
+Message-ID: <CABBYNZJ_EAuGEdeW+vZzXu20nVqLkLwiQbYQ9XzoABxQ5rAzdQ@mail.gmail.com>
+Subject: Re: [PATCH] Bluetooth: qca: fix device-address endianness
+To: Johan Hovold <johan@kernel.org>
+Cc: Matthias Kaehlcke <mka@chromium.org>, Johan Hovold <johan+linaro@kernel.org>, 
+	Marcel Holtmann <marcel@holtmann.org>, Johan Hedberg <johan.hedberg@gmail.com>, 
+	Bjorn Andersson <quic_bjorande@quicinc.com>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	linux-bluetooth@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, Doug Anderson <dianders@google.com>, 
+	Stephen Boyd <swboyd@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Hi Johan,
 
-When trying to instantiate a max14830 device from userspace:
+On Wed, Jan 10, 2024 at 3:12=E2=80=AFAM Johan Hovold <johan@kernel.org> wro=
+te:
+>
+> On Tue, Jan 09, 2024 at 05:54:01PM +0000, Matthias Kaehlcke wrote:
+> > On Tue, Jan 09, 2024 at 06:12:26PM +0100, Johan Hovold wrote:
+>
+> > > That depends on in what way the current devices are broken.
+> > >
+> > > Any machines that correctly specify their address in little-endian or=
+der
+> > > in the devicetree would no longer be configured using the wrong addre=
+ss.
+> > > So no problem there (except requiring users to re-pair their gadgets)=
+.
+> > >
+> > > And tools like btgmt is broken on all of these Qualcomm machine in an=
+y
+> > > case and would now start working as expected. So no problem there eit=
+her
+> > > (unless user space had adapted an inverted the addresses to btmgmt).
+> > >
+> > > So the first question is whether there actually is any boot firmware =
+out
+> > > there which passes the BD_ADDR in reverse order?
+> >
+> > Yes, (at least) the boot firmware for sc7180-trogdor devices.
+> >
+> > hexdump -C /proc/device-tree/soc\@0/geniqup\@8c0000/serial\@88c000/blue=
+tooth/local-bd-address
+> > 00000000  8c fd f0 40 15 dc
+>
+> Indeed, this should have been LE order.
+>
+> > hciconfig
+> > hci0:   Type: Primary  Bus: UART
+> >         BD Address: 8C:FD:F0:40:15:DC  ACL MTU: 1024:8  SCO MTU: 240:8
+> >         UP RUNNING
+> >         RX bytes:1700 acl:0 sco:0 events:95 errors:0
+> >         TX bytes:128949 acl:0 sco:0 commands:578 errors:0
+>
+> And any user space tool overriding the address would currently need to
+> provide the address in reverse order on Qualcomm platforms like this
+> one (e.g. if generating the address for privacy reasons).
 
-    echo max14830 0x60 > /sys/bus/i2c/devices/i2c-2/new_device
+Perhaps we could attempt to resolve the address byteorder, in
+userspace we use hwdb_get_company to resolve the company but since
+this shall only really care about Qualcomm range(s) perhaps we can
+hardcode them check in which order the address is, that said if the
+device is configured with a Static Random Address then that would not
+work, but that is only really possible for BLE only devices.
 
-we get the following error:
+> > > > I suggest adding a quirk like 'local-bd-address-msb-quirk' or
+> > > > 'qcom,local-bd-address-msb-quirk' to make sure existing devices kee=
+p
+> > > > working properly.
+> > >
+> > > I don't think that would work. If this is something that we really ne=
+ed
+> > > to handle, then there's probably no way around introducing new
+> > > compatible strings for boot firmware that isn't broken while maintain=
+ing
+> > > the current broken behaviour with respect to 'local-bd-address' for s=
+ome
+> > > of the current ones.
+> >
+> > I think it should work for sc7180-trogdor. For these devices the device=
+ tree
+> > is bundled with the kernel image and can be updated. That might not be =
+true
+> > for other devices though.
+>
+> Thanks for confirming.
+>
+> I'm still hoping we can get away with not having to add quirks to
+> Bluetooth core for broken Qualcomm boot firmware. Let's see if anyone
+> knows of a use case that makes that impossible to avoid.
+>
+> Johan
 
-    Unable to handle kernel NULL pointer dereference at virtual address...
-    ...
-    Call trace:
-        max310x_i2c_probe+0x48/0x170 [max310x]
-        i2c_device_probe+0x150/0x2a0
-    ...
 
-Add check for validity of devtype to prevent the error, and abort probe
-with a meaningful error message.
 
-Fixes: 2e1f2d9a9bdb ("serial: max310x: implement I2C support")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
----
- drivers/tty/serial/max310x.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
-index f3a99daebdaa..4a33fd950ed2 100644
---- a/drivers/tty/serial/max310x.c
-+++ b/drivers/tty/serial/max310x.c
-@@ -1602,13 +1602,16 @@ static unsigned short max310x_i2c_slave_addr(unsigned short addr,
- 
- static int max310x_i2c_probe(struct i2c_client *client)
- {
--	const struct max310x_devtype *devtype =
--			device_get_match_data(&client->dev);
-+	const struct max310x_devtype *devtype;
- 	struct i2c_client *port_client;
- 	struct regmap *regmaps[4];
- 	unsigned int i;
- 	u8 port_addr;
- 
-+	devtype = device_get_match_data(&client->dev);
-+	if (!devtype)
-+		return dev_err_probe(&client->dev, -ENODEV, "Failed to match device\n");
-+
- 	if (client->addr < devtype->slave_addr.min ||
- 		client->addr > devtype->slave_addr.max)
- 		return dev_err_probe(&client->dev, -EINVAL,
--- 
-2.39.2
-
+--=20
+Luiz Augusto von Dentz
 
