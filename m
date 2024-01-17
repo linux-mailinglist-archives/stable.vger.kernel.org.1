@@ -1,191 +1,128 @@
-Return-Path: <stable+bounces-11856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B23808309AB
-	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 16:25:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A780F830A02
+	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 16:48:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F05E1F23635
-	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 15:25:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 945121C22728
+	for <lists+stable@lfdr.de>; Wed, 17 Jan 2024 15:48:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05AA1219F5;
-	Wed, 17 Jan 2024 15:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F2FA21A13;
+	Wed, 17 Jan 2024 15:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q/QcRA+H"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="mozzu9K+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DF7210F4;
-	Wed, 17 Jan 2024 15:25:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A03222306
+	for <stable@vger.kernel.org>; Wed, 17 Jan 2024 15:48:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705505139; cv=none; b=o4sAtXA2cMm9V0+A3AhFnQghkVMj8lcC4uvIJ5QteouCmmTxDlyHzRRo0aUW5hA4VOE8jxXQD2spfm/zNqcmJueshGQz1q+AAQgyxiIMg83Xw0YDmPqlYgfaH7u1JESCS0TIsZjRj5KZPpD/VEM4+i/MTfjxLq9yChnG9wgm/ak=
+	t=1705506485; cv=none; b=Mgjr6fw15WGeRmwNArg6or96UF65stcfOa6QTToxCUz8Sz4SRfF2bt1dKpxhKooBPEl5dyfeKxo1w9yZVysdn/x86mgtJgstJoDmR/Cbwgdn/5dFhkOqHS/gkEQ3oki1hIv7YiJIpUXFozb9cY+XxfLQvp9CZlHEpFg0k005aWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705505139; c=relaxed/simple;
-	bh=Rcs+b1DhIDaUE+WOqZ4ASK9U+kRcwL+nmYcX0OBTNI8=;
+	s=arc-20240116; t=1705506485; c=relaxed/simple;
+	bh=mu7VhaAc515ipMhWdzPtT2TPxqqmKOKMcNFGqTwz8wM=;
 	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:Sender:
-	 Message-ID:Date:MIME-Version:User-Agent:Subject:Content-Language:
-	 To:Cc:References:From:Autocrypt:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding; b=kLPKBtXVlbdZXh1AToLxgyL7zOrgmG7zKAiFiKuvOe7OfnO47YEYgHFQhZMTYgveRrAC0vB6KGavMc+2tNkfYCA+e2aUcUdoTCMPN+8eQVfkv7aSdFHfhHa1Kz4t3X49GGUq/tOI+GL2OVF0Ld51lVSC657rdngiuprimkQBEw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q/QcRA+H; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1d4414ec9c7so56853065ad.0;
-        Wed, 17 Jan 2024 07:25:37 -0800 (PST)
+	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:Received:From:
+	 To:Cc:In-Reply-To:References:Subject:Message-Id:Date:MIME-Version:
+	 Content-Type:Content-Transfer-Encoding:X-Mailer; b=VtSkZ2Vbb+Rwqhjzp0vTCagQjeV4dNxMOMXFxm3JQL9o5pdR7DaNX1hL++X+DLWqig2KeiLSPkuvXI4TI0/z+PRd8W1QOt+DpW/ozMgpycgAgtQcg6xItWnqxfjwVt0Va+w7E+lofV/cpC/HTS1b6CB5ynDJ/gAGcJT0OZYzFsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=mozzu9K+; arc=none smtp.client-ip=209.85.166.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-7beeeb1ba87so54389439f.0
+        for <stable@vger.kernel.org>; Wed, 17 Jan 2024 07:48:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705505137; x=1706109937; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=nS6nMmsu/9xE5EGiCBV7dIp6aXfPWddYayi2QGOSCU0=;
-        b=Q/QcRA+H/Htuf5Crx+HjfnK2OS2g+BWRJZozH+n917A2/E+LZLHxHpwES+VRnhYjJa
-         +5RP/f1+eZTzclPuCe0k8JPif6YpyePBcgRfm4zb4qtsxVbtUHBANuX+Zxo1KrR2ZD7q
-         uzmMEI8oJ4G9Po1Oeye3unPawZA6eMEjKj2aVmx4Vzz8HmrffkO8Jau/172lk6qsxcwH
-         4Odbfu0sZiIrgX58wa3fP/ddC3PRj0z86ZJrcb0wIc9+KmgPTX98ajRv2Cm/WqSQPhjd
-         gRemyBkT5DwEgNZNhUTo4arQmXSZuthKhH5Z3Z3ENFWCLHtw2T1Ue7rH6CR0RGeaDLra
-         xgyA==
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1705506482; x=1706111282; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MBwQPpl+zXik806WtECeSYlAHrweUHc1hm7lYkwTJFs=;
+        b=mozzu9K+nmHJy5WeFP+F0bOU78P4JJr4xv1z1j4HKBISbL89EbcfFZf+0Xx7H/c2VA
+         kTf9A8Xi++6dB+1h5Xuy9/asxCN+b4PQYI4DcdqjJkS6qUJpyNzF8zBvoEttVWPyN1Fr
+         PkCiGQlXesvlySenB2Wt1BongGGycIn4kVxg9SWqnDqaJFhjltlTEJelguJTD4GzAdYo
+         hg9rD9Fb6gd75W6YrDUNvBvFFiLy4Jwp7TbZrKj7ovSxQ9uSIbSfg/kk8K4RXJK4pUq4
+         2Q0eAlKluaBg9CsFolEkhHbG9ojPdnrWBmeaevZ7aRG+bAA2CWoWyyJX5OMX2IuMUPYB
+         3erw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705505137; x=1706109937;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nS6nMmsu/9xE5EGiCBV7dIp6aXfPWddYayi2QGOSCU0=;
-        b=Xms9/dRYUEbtSc8VarGuZNe1loHeH8z+7dKp2DQDJ03llh3aAC3kSI7PQua408Tv7J
-         yWGIMs48an7mqi9AC25wmhb1HqDlE49VtlDqg2xM6354IHsAlj2YoUEC5mpl6vMoXur6
-         21NzyUXbCAD0Xv2hZV1UCGGGR6gT0jjZHjWuBSj4Ku6tj4njl7p0hHUhpajXwAAKqagi
-         S67qIRc0j4i5NOvbOoe6Ja1Ix0oettHUuG7UFqs8AXp27EPhC+UNOrv9NVAnt7mDLAwg
-         8CP7CsxacMPF3kvl7sgK4x6UsY7Ye2Fcfn2H304FxsFDia8F6vpKEn1gId2uTV3tEmRX
-         1tLA==
-X-Gm-Message-State: AOJu0YyGZ6TM6RgWi5FvTdLVdo81nB7syAJyDmdI53zzRx6XQe6wcEuO
-	zWjwBSkcowWbB2tfAQYSnfYNukXCY6g=
-X-Google-Smtp-Source: AGHT+IHS6BjT658xRAftbMO4VXSqxB/OZZCC4i+Zjs+fptjEmBRN6x1Qr3gkziPOnZER1wnmoIdoSg==
-X-Received: by 2002:a17:903:183:b0:1d4:c2a9:ad34 with SMTP id z3-20020a170903018300b001d4c2a9ad34mr6598766plg.113.1705505136991;
-        Wed, 17 Jan 2024 07:25:36 -0800 (PST)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id t16-20020a170902e85000b001d3d8c04331sm11147048plg.64.2024.01.17.07.25.34
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 17 Jan 2024 07:25:35 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <803e93ac-dda1-41a0-a973-34f9449ccae3@roeck-us.net>
-Date: Wed, 17 Jan 2024 07:25:34 -0800
+        d=1e100.net; s=20230601; t=1705506482; x=1706111282;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MBwQPpl+zXik806WtECeSYlAHrweUHc1hm7lYkwTJFs=;
+        b=rPvg901bBPhDEVek0xpJZSWpe7D/edHF83urVZWn353CIPfx7ONU6ucwazm4U0n67X
+         g0iFxVpHjEaqVFF7g15qWSnlmY3rXF3Ge+kTeoYYLhsyhNffhaosd0s1h2ntrD7UmI3s
+         6Bpj7/DRfBQ33Qpdasd3T3eOgf2j06t4973JadyviEUBBmtN14TdADNragldIqbvlIZ0
+         QDR6m7FsxH09O5yQaYFZRr4TnJ6VSMYx4Yn2UBBt3KdQPsZfEoxMSMki2HQNHHsR1fQU
+         UObkiq6/FukJgzmaWq3x/PhvrOeCH6PM4AkbECAl2unbWOVigVPqFbjMdlsaMcS5KjBZ
+         W6tw==
+X-Gm-Message-State: AOJu0Yz07m4sZsiOzrfXwoTFvWAGckMxI8kP1/mc6wqfgvEK/uzKoQ/r
+	V7386HGGG7vDV/fAqLT0f4v9JOav5xsuQA==
+X-Google-Smtp-Source: AGHT+IFZZGSI3LvvEy+XRSDgw/MUW2O98Sa/T0cEKhvZ1zzsrKqvOW8y4/IMwgbP32kgoihbqtn42w==
+X-Received: by 2002:a6b:5803:0:b0:7bf:4758:2a12 with SMTP id m3-20020a6b5803000000b007bf47582a12mr8519442iob.0.1705506482496;
+        Wed, 17 Jan 2024 07:48:02 -0800 (PST)
+Received: from [127.0.0.1] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id c34-20020a029625000000b0046e4c2f9f5csm482353jai.28.2024.01.17.07.48.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Jan 2024 07:48:01 -0800 (PST)
+From: Jens Axboe <axboe@kernel.dk>
+To: Eric Dumazet <edumazet@google.com>
+Cc: linux-kernel <linux-kernel@vger.kernel.org>, netdev@vger.kernel.org, 
+ Eric Dumazet <eric.dumazet@gmail.com>, syzbot <syzkaller@googlegroups.com>, 
+ stable@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>, 
+ linux-block@vger.kernel.org, nbd@other.debian.org
+In-Reply-To: <20240112132657.647112-1-edumazet@google.com>
+References: <20240112132657.647112-1-edumazet@google.com>
+Subject: Re: [PATCH net] nbd: always initialize struct msghdr completely
+Message-Id: <170550648165.620853.7074880501945877841.b4-ty@kernel.dk>
+Date: Wed, 17 Jan 2024 08:48:01 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] Revert "usb: typec: tcpm: fix cc role at port reset"
-Content-Language: en-US
-To: Badhri Jagan Sridharan <badhri@google.com>, gregkh@linuxfoundation.org,
- heikki.krogerus@linux.intel.com
-Cc: kyletso@google.com, linux-usb@vger.kernel.org,
- linux-kernel@vger.kernel.org, rdbabiera@google.com, amitsd@google.com,
- stable@vger.kernel.org, frank.wang@rock-chips.com
-References: <20240117114742.2587779-1-badhri@google.com>
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20240117114742.2587779-1-badhri@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.5-dev-2aabd
 
-On 1/17/24 03:47, Badhri Jagan Sridharan wrote:
-> This reverts commit 1e35f074399dece73d5df11847d4a0d7a6f49434.
-> 
-> Given that ERROR_RECOVERY calls into PORT_RESET for Hi-Zing
-> the CC pins, setting CC pins to default state during PORT_RESET
-> breaks error recovery.
-> 
-> 4.5.2.2.2.1 ErrorRecovery State Requirements
-> The port shall not drive VBUS or VCONN, and shall present a
-> high-impedance to ground (above zOPEN) on its CC1 and CC2 pins.
-> 
-> Hi-Zing the CC pins is the inteded behavior for PORT_RESET.
 
-intended
-
-> CC pins are set to default state after tErrorRecovery in
-> PORT_RESET_WAIT_OFF.
+On Fri, 12 Jan 2024 13:26:57 +0000, Eric Dumazet wrote:
+> syzbot complains that msg->msg_get_inq value can be uninitialized [1]
 > 
-> 4.5.2.2.2.2 Exiting From ErrorRecovery State
-> A Sink shall transition to Unattached.SNK after tErrorRecovery.
-> A Source shall transition to Unattached.SRC after tErrorRecovery.
+> struct msghdr got many new fields recently, we should always make
+> sure their values is zero by default.
 > 
-
-Makes sense to me.
-
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-
-> Cc: stable@vger.kernel.org
-> Cc: Frank Wang <frank.wang@rock-chips.com>
-> Fixes: 1e35f074399d ("usb: typec: tcpm: fix cc role at port reset")
-> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-> ---
->   drivers/usb/typec/tcpm/tcpm.c | 3 +--
->   1 file changed, 1 insertion(+), 2 deletions(-)
+> [1]
+>  BUG: KMSAN: uninit-value in tcp_recvmsg+0x686/0xac0 net/ipv4/tcp.c:2571
+>   tcp_recvmsg+0x686/0xac0 net/ipv4/tcp.c:2571
+>   inet_recvmsg+0x131/0x580 net/ipv4/af_inet.c:879
+>   sock_recvmsg_nosec net/socket.c:1044 [inline]
+>   sock_recvmsg+0x12b/0x1e0 net/socket.c:1066
+>   __sock_xmit+0x236/0x5c0 drivers/block/nbd.c:538
+>   nbd_read_reply drivers/block/nbd.c:732 [inline]
+>   recv_work+0x262/0x3100 drivers/block/nbd.c:863
+>   process_one_work kernel/workqueue.c:2627 [inline]
+>   process_scheduled_works+0x104e/0x1e70 kernel/workqueue.c:2700
+>   worker_thread+0xf45/0x1490 kernel/workqueue.c:2781
+>   kthread+0x3ed/0x540 kernel/kthread.c:388
+>   ret_from_fork+0x66/0x80 arch/x86/kernel/process.c:147
+>   ret_from_fork_asm+0x11/0x20 arch/x86/entry/entry_64.S:242
 > 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 5945e3a2b0f7..9d410718eaf4 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -4876,8 +4876,7 @@ static void run_state_machine(struct tcpm_port *port)
->   		break;
->   	case PORT_RESET:
->   		tcpm_reset_port(port);
-> -		tcpm_set_cc(port, tcpm_default_state(port) == SNK_UNATTACHED ?
-> -			    TYPEC_CC_RD : tcpm_rp_cc(port));
-> +		tcpm_set_cc(port, TYPEC_CC_OPEN);
->   		tcpm_set_state(port, PORT_RESET_WAIT_OFF,
->   			       PD_T_ERROR_RECOVERY);
->   		break;
-> 
-> base-commit: 933bb7b878ddd0f8c094db45551a7daddf806e00
+> [...]
+
+Applied, thanks!
+
+[1/1] nbd: always initialize struct msghdr completely
+      commit: 78fbb92af27d0982634116c7a31065f24d092826
+
+Best regards,
+-- 
+Jens Axboe
+
+
 
 
