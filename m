@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-12030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C70831768
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 514818316EC
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:51:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9088D28727A
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EBA1284148
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:51:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD4E822F0B;
-	Thu, 18 Jan 2024 10:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9CA22F1B;
+	Thu, 18 Jan 2024 10:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAWaTapi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFs7pofN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B47D1774B;
-	Thu, 18 Jan 2024 10:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6770822EF7;
+	Thu, 18 Jan 2024 10:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575410; cv=none; b=kMW+ryGTZDhP2ngP8jT7lDARontuNNKt3aQTs7QpC1i6QKe+AG0TUTfwJaGVUS03H0DBYCw7j4atZe5Uoys3UMO2uhG3d1kfFQ5C8UUeosRtmytPMNKsvgYClre3EVOPnmbokbkAkYtIKUNgdBQx6ZxK/5OlZtZzEVdCczcj7qU=
+	t=1705575091; cv=none; b=kpDRJD7HwM49ho/VKcA6+Wg8r3BSBIYMaW/g3E75SeR/eafry712CLMrc3kxCCE6y+hsB6vBi1yKuldd1IzDQY2mGTSNVYe1uKY7dU+RDNjsV2MmGdLG5k5JaBMOE+1gE90NNg3f/UjtfMCl0s9TInA7nX1NcPU6EnolygloTMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575410; c=relaxed/simple;
-	bh=Pj8UpIG4SvI5ByRcx6JfXYX4xe5XRU/O/pBJuAzQRqI=;
+	s=arc-20240116; t=1705575091; c=relaxed/simple;
+	bh=vO2IGzgcj8+TjO/sBh07c0aGUATKflMb87lwtL5SOkE=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding; b=J/kflSnCOKuLenzfSb83MXik2c2G/lVdgplaGQd6MAampDhmUmnpVfMWjFakmIfKu61wEc8I5h/HiXcWsY+6IssjiNXks4WdKuLw10srJ+aIbix324QJVfJ3rJfm1+m+RO9AEBpZeCciEAtBYwRn1up1XcsxfYlBVqb5b4TLyXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AAWaTapi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE22C433C7;
-	Thu, 18 Jan 2024 10:56:49 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=pk8SgbLc/XzpDc+wxkJbRWH1Tx/UlUx5BjOX0sdSFxYpXJo2XYXY5nYPU7FFg2+Bqmz2FQNgYF3Dc6wt4SgdQP6HLSkzzI6eIV96Cu2YeEn6Fs8oev5024Jk4piC9OriFu/MyeTWuQMhmuLm3WDsJTy5ACaMWTOFFH0Cc+nQfQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFs7pofN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E5EC433F1;
+	Thu, 18 Jan 2024 10:51:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575410;
-	bh=Pj8UpIG4SvI5ByRcx6JfXYX4xe5XRU/O/pBJuAzQRqI=;
+	s=korg; t=1705575090;
+	bh=vO2IGzgcj8+TjO/sBh07c0aGUATKflMb87lwtL5SOkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AAWaTapipyMj4wKFYGwZEDSELrfcVqDYzcdxClrPU+ZIaXQBgxn9f+0yOf2quVl18
-	 YcIBQdSQdPO1N78ndmI0uZmInrhb24v6Xib/afLVP6JGN9yIEMi6mjRd9ie23MpK4c
-	 A8VjeRTEVPpdpf3T/qhTgWW2RoViTw7Nv1aGWgqI=
+	b=SFs7pofNi/yjMoLpwFSFFRXVI+OjpimQwhXxlox3zl2slRsBV3g83c1ijw895b9Xs
+	 n8kIA2Wppi6D0b9hYylW974gBh/Bc+pRDdikYdSCT+AduqIgmTA27VMgr9Wae5BCD1
+	 7/9XD4tIaMOylbyN94/1gmfOnsHk/GZM6ArTGwrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suwan Kim <suwan.kim027@gmail.com>,
-	kernel test robot <lkp@intel.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 121/150] virtio_blk: fix snprintf truncation compiler warning
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.7 13/28] ksmbd: dont allow O_TRUNC open on read-only share
 Date: Thu, 18 Jan 2024 11:49:03 +0100
-Message-ID: <20240118104325.662649314@linuxfoundation.org>
+Message-ID: <20240118104301.694908338@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
+References: <20240118104301.249503558@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +60,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Hajnoczi <stefanha@redhat.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit b8e0792449928943c15d1af9f63816911d139267 ]
+commit d592a9158a112d419f341f035d18d02f8d232def upstream.
 
-Commit 4e0400525691 ("virtio-blk: support polling I/O") triggers the
-following gcc 13 W=1 warnings:
+When file is changed using notepad on read-only share(read_only = yes in
+ksmbd.conf), There is a problem where existing data is truncated.
+notepad in windows try to O_TRUNC open(FILE_OVERWRITE_IF) and all data
+in file is truncated. This patch don't allow  O_TRUNC open on read-only
+share and add KSMBD_TREE_CONN_FLAG_WRITABLE check in smb2_set_info().
 
-drivers/block/virtio_blk.c: In function ‘init_vq’:
-drivers/block/virtio_blk.c:1077:68: warning: ‘%d’ directive output may be truncated writing between 1 and 11 bytes into a region of size 7 [-Wformat-truncation=]
- 1077 |                 snprintf(vblk->vqs[i].name, VQ_NAME_LEN, "req_poll.%d", i);
-      |                                                                    ^~
-drivers/block/virtio_blk.c:1077:58: note: directive argument in the range [-2147483648, 65534]
- 1077 |                 snprintf(vblk->vqs[i].name, VQ_NAME_LEN, "req_poll.%d", i);
-      |                                                          ^~~~~~~~~~~~~
-drivers/block/virtio_blk.c:1077:17: note: ‘snprintf’ output between 11 and 21 bytes into a destination of size 16
- 1077 |                 snprintf(vblk->vqs[i].name, VQ_NAME_LEN, "req_poll.%d", i);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-This is a false positive because the lower bound -2147483648 is
-incorrect. The true range of i is [0, num_vqs - 1] where 0 < num_vqs <
-65536.
-
-The code mixes int, unsigned short, and unsigned int types in addition
-to using "%d" for an unsigned value. Use unsigned short and "%u"
-consistently to solve the compiler warning.
-
-Cc: Suwan Kim <suwan.kim027@gmail.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202312041509.DIyvEt9h-lkp@intel.com/
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-Id: <20231204140743.1487843-1-stefanha@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/virtio_blk.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/smb/server/smb2pdu.c |   23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
-index 4a4b9bad551e..225c86c74d4e 100644
---- a/drivers/block/virtio_blk.c
-+++ b/drivers/block/virtio_blk.c
-@@ -1021,12 +1021,12 @@ static void virtblk_config_changed(struct virtio_device *vdev)
- static int init_vq(struct virtio_blk *vblk)
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2971,7 +2971,7 @@ int smb2_open(struct ksmbd_work *work)
+ 					    &may_flags);
+ 
+ 	if (!test_tree_conn_flag(tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
+-		if (open_flags & O_CREAT) {
++		if (open_flags & (O_CREAT | O_TRUNC)) {
+ 			ksmbd_debug(SMB,
+ 				    "User does not have write permission\n");
+ 			rc = -EACCES;
+@@ -5943,12 +5943,6 @@ static int smb2_set_info_file(struct ksm
+ 	}
+ 	case FILE_RENAME_INFORMATION:
+ 	{
+-		if (!test_tree_conn_flag(work->tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
+-			ksmbd_debug(SMB,
+-				    "User does not have write permission\n");
+-			return -EACCES;
+-		}
+-
+ 		if (buf_len < sizeof(struct smb2_file_rename_info))
+ 			return -EINVAL;
+ 
+@@ -5968,12 +5962,6 @@ static int smb2_set_info_file(struct ksm
+ 	}
+ 	case FILE_DISPOSITION_INFORMATION:
+ 	{
+-		if (!test_tree_conn_flag(work->tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
+-			ksmbd_debug(SMB,
+-				    "User does not have write permission\n");
+-			return -EACCES;
+-		}
+-
+ 		if (buf_len < sizeof(struct smb2_file_disposition_info))
+ 			return -EINVAL;
+ 
+@@ -6035,7 +6023,7 @@ int smb2_set_info(struct ksmbd_work *wor
  {
- 	int err;
--	int i;
-+	unsigned short i;
- 	vq_callback_t **callbacks;
- 	const char **names;
- 	struct virtqueue **vqs;
- 	unsigned short num_vqs;
--	unsigned int num_poll_vqs;
-+	unsigned short num_poll_vqs;
- 	struct virtio_device *vdev = vblk->vdev;
- 	struct irq_affinity desc = { 0, };
+ 	struct smb2_set_info_req *req;
+ 	struct smb2_set_info_rsp *rsp;
+-	struct ksmbd_file *fp;
++	struct ksmbd_file *fp = NULL;
+ 	int rc = 0;
+ 	unsigned int id = KSMBD_NO_FID, pid = KSMBD_NO_FID;
  
-@@ -1070,13 +1070,13 @@ static int init_vq(struct virtio_blk *vblk)
- 
- 	for (i = 0; i < num_vqs - num_poll_vqs; i++) {
- 		callbacks[i] = virtblk_done;
--		snprintf(vblk->vqs[i].name, VQ_NAME_LEN, "req.%d", i);
-+		snprintf(vblk->vqs[i].name, VQ_NAME_LEN, "req.%u", i);
- 		names[i] = vblk->vqs[i].name;
+@@ -6055,6 +6043,13 @@ int smb2_set_info(struct ksmbd_work *wor
+ 		rsp = smb2_get_msg(work->response_buf);
  	}
  
- 	for (; i < num_vqs; i++) {
- 		callbacks[i] = NULL;
--		snprintf(vblk->vqs[i].name, VQ_NAME_LEN, "req_poll.%d", i);
-+		snprintf(vblk->vqs[i].name, VQ_NAME_LEN, "req_poll.%u", i);
- 		names[i] = vblk->vqs[i].name;
- 	}
- 
--- 
-2.43.0
-
++	if (!test_tree_conn_flag(work->tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
++		ksmbd_debug(SMB, "User does not have write permission\n");
++		pr_err("User does not have write permission\n");
++		rc = -EACCES;
++		goto err_out;
++	}
++
+ 	if (!has_file_id(id)) {
+ 		id = req->VolatileFileId;
+ 		pid = req->PersistentFileId;
 
 
 
