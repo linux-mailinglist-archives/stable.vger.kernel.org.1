@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-11916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39B8C8316ED
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:51:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EA9A8316F8
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:52:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D3E41C223D4
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:51:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1B631C2235C
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:52:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6EC123746;
-	Thu, 18 Jan 2024 10:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A19722EF7;
+	Thu, 18 Jan 2024 10:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GXwclD5X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f2YP6KZd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F021B96D;
-	Thu, 18 Jan 2024 10:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8F11B96D;
+	Thu, 18 Jan 2024 10:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575093; cv=none; b=uYqEpnjjMy58+pheQghL6qMgGb1/9+XxZSNuGwy+6VglGH2f9ErJu+OCzqSh2aGBunpoMU6O4UTY9c74RQqcLojF0Yib/v9EGq73zI3YKRG3B1qQLpAvpj0vTj0qa43Mbm0JwfLkZWxBOkzNWlTUTbWZrZVrOZXuxKjmkcAQLsA=
+	t=1705575124; cv=none; b=ns20MnNocpzgRc7foivveWJXLSrt83xssV1D7LQAOmyYv+k7oSEMi1jvtANjg4+pL1wmTnyJIpjUb/BjR18eyE7skF5qUJtLp4O2BC5J8E39K1XfoakvGvemXEmUu+c6aj//ef3EILlGGqmOJkN7aQv1c6pBgO6PWp6oqelyo7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575093; c=relaxed/simple;
-	bh=D2XuAGC7vTjqBDX5t4AMt5BdPKdJPUGsVa34aQffAL8=;
+	s=arc-20240116; t=1705575124; c=relaxed/simple;
+	bh=12Y6PpZuckzJpz03tNd7sFfAnGwg1Ll3nCz0T+cTycc=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=PEIk7rvUJFZe6xiCt11T+35Vv63a6cdCO8jVluonqxJwvPPFePXxZqpFHCBVa6aniTRUMsSq/iUOQE1JRb0rH6HOM0/RWNxPdjVN1Sdn3VTjFS2Pxq77mgf4iFZXgamtLVgyqkQvtu8OHNH5Oxx5eXG9a2IgE/glqbA5ujC0kXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GXwclD5X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13184C433C7;
-	Thu, 18 Jan 2024 10:51:32 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=X6jd+WHc8Kz0ng+nl7aXw1WHFTLoUkt7R5DzABDzUNmaW04RDEUSWTGFEoznpdjJdrQAcYO/m9Z8Mj0obSL+Un4CLhQyAYF7mrBDa8ABotCxrkKe6B97EvSjB1vaOwj+DzAxJuBEFlk49huF0d7ui88kBgMegrOLFkttO4AhBAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f2YP6KZd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7178BC433C7;
+	Thu, 18 Jan 2024 10:52:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575093;
-	bh=D2XuAGC7vTjqBDX5t4AMt5BdPKdJPUGsVa34aQffAL8=;
+	s=korg; t=1705575123;
+	bh=12Y6PpZuckzJpz03tNd7sFfAnGwg1Ll3nCz0T+cTycc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GXwclD5XdNrJBMJAt74u1SPSmbEyZRCDCojSTI+tBqYDkUitsdlEoe1rPwZs+sWyl
-	 oIuHDIAs8I02O7GZs8ahHrq7FuAEcjKogs8i3V35MW2UyEqXwCRXvUAcBk2j2Isqgn
-	 bZ2U0mNqHVrmnmStnXZ+JhGLts8tAiBGRsEuZ8/M=
+	b=f2YP6KZdVZkdVam7hcQ/xuQxo3FgPprePRCZsiT9LlpVg9G15LmPOmMn7kF6mpXAr
+	 +E8ZJLMIWAWjq8+UE9FVbcb2M5ZpaDDJ+jDVYxyqHNRYJcp9OABdXR21K2ouC5aDZT
+	 MVIuZWDQs1+9eO/xmbdYCfOG7jV4o46vokhhvbhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.6 001/150] f2fs: explicitly null-terminate the xattr list
-Date: Thu, 18 Jan 2024 11:47:03 +0100
-Message-ID: <20240118104320.100026486@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Chester Lin <clin@suse.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 002/150] pinctrl: s32cc: Avoid possible string truncation
+Date: Thu, 18 Jan 2024 11:47:04 +0100
+Message-ID: <20240118104320.147257659@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
 References: <20240118104320.029537060@linuxfoundation.org>
@@ -67,37 +68,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Chester Lin <clin@suse.com>
 
-commit e26b6d39270f5eab0087453d9b544189a38c8564 upstream.
+[ Upstream commit 08e8734d877a9a0fb8af1254a4ce58734fbef296 ]
 
-When setting an xattr, explicitly null-terminate the xattr list.  This
-eliminates the fragile assumption that the unused xattr space is always
-zeroed.
+With "W=1" and "-Wformat-truncation" build options, the kernel test robot
+found a possible string truncation warning in pinctrl-s32cc.c, which uses
+an 8-byte char array to hold a memory region name "map%u". Since the
+maximum number of digits that a u32 value can present is 10, and the "map"
+string occupies 3 bytes with a termination '\0', which means the rest 4
+bytes cannot fully present the integer "X" that exceeds 4 digits.
 
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Here we check if the number >= 10000, which is the lowest value that
+contains more than 4 digits.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311030159.iyUGjNGF-lkp@intel.com/
+Signed-off-by: Chester Lin <clin@suse.com>
+Link: https://lore.kernel.org/r/20231107141044.24058-1-clin@suse.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/xattr.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/pinctrl/nxp/pinctrl-s32cc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/f2fs/xattr.c
-+++ b/fs/f2fs/xattr.c
-@@ -754,6 +754,12 @@ retry:
- 		memcpy(pval, value, size);
- 		last->e_value_size = cpu_to_le16(size);
- 		new_hsize += newsize;
-+		/*
-+		 * Explicitly add the null terminator.  The unused xattr space
-+		 * is supposed to always be zeroed, which would make this
-+		 * unnecessary, but don't depend on that.
-+		 */
-+		*(u32 *)((u8 *)last + newsize) = 0;
+diff --git a/drivers/pinctrl/nxp/pinctrl-s32cc.c b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+index 7daff9f186cd..f0cad2c501f7 100644
+--- a/drivers/pinctrl/nxp/pinctrl-s32cc.c
++++ b/drivers/pinctrl/nxp/pinctrl-s32cc.c
+@@ -843,8 +843,8 @@ static int s32_pinctrl_probe_dt(struct platform_device *pdev,
+ 	if (!np)
+ 		return -ENODEV;
+ 
+-	if (mem_regions == 0) {
+-		dev_err(&pdev->dev, "mem_regions is 0\n");
++	if (mem_regions == 0 || mem_regions >= 10000) {
++		dev_err(&pdev->dev, "mem_regions is invalid: %u\n", mem_regions);
+ 		return -EINVAL;
  	}
  
- 	error = write_all_xattrs(inode, new_hsize, base_addr, ipage);
+-- 
+2.43.0
+
 
 
 
