@@ -1,141 +1,87 @@
-Return-Path: <stable+bounces-12217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F42883205F
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 21:17:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AEBF8320B4
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 22:08:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B260B1F222FB
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 20:17:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF0F5289A96
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 21:08:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D742E63A;
-	Thu, 18 Jan 2024 20:17:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 897872E852;
+	Thu, 18 Jan 2024 21:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gQErISbG"
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="aayS9Jld"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93A02D03C;
-	Thu, 18 Jan 2024 20:17:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2DF250EF
+	for <stable@vger.kernel.org>; Thu, 18 Jan 2024 21:08:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705609035; cv=none; b=RvVg1D5mTh5nYYgR1x+SCwb6XbiYKl6PFxDlVyo6SCoH9Mfh/iS6mI1JweGb4VwIp4OjgfcgDD1DeVq089rU2fZoZg6c72adYPqNoYW8bxjDcbnoqxC7w95DdPGZvCej8khoOtQdom9LtIAC2kuKtohQaWQfw/ejLgi3ckYz1wA=
+	t=1705612109; cv=none; b=kbjmDGq5qBh/wU2Ndd7KCLxo0b9/vBkdtw7AIx8d3te7Elr4JPN3j+kFTWx7y42FSIztUTN+APaADW+Em7+PiRNYUrYCxRFZAFewT17nfXrNqHptZ8RQmVKwnv9gbLc/pP3ypUW5FLWKoBJjpkGwJLuMKrm3T/dihbIejuICj9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705609035; c=relaxed/simple;
-	bh=b6ZY/1ULU74ptnFYteTCIH4Y8oRwvww/2IBdUJCHpUI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OkxWmqedd/KPbYmIoToheBDnvBAzm95K+gI+3WjYrrkFV1P3P8MhDgdyz7Z3SmUk/MVrRYwhzgrOy0TtDFk0U/91Rz4AqYoVXkVp9Ig+Mcjc0GO8w3xPFYoLs0cL+7QzBr3wg8Zykhg6z5rTfwFVs5bsUmvQO3Z9lS+rlCaTtZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gQErISbG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C946EC433F1;
-	Thu, 18 Jan 2024 20:17:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705609035;
-	bh=b6ZY/1ULU74ptnFYteTCIH4Y8oRwvww/2IBdUJCHpUI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gQErISbGywbKb9ZYKZ/SB91VCn59q0iG044fDp5f+tF+pykWJM6AkX57UdGeK9Uvh
-	 OtZiLX5DNII1ZBTvcO4681MlBubJ7KFtXiRwXNoKHEjTAaZOWriBfq09hDjs4f/A43
-	 5TMwrJJVpFkC4LmXX/Z5E9VrXIbOqA/d19VQKgamiMc5+3vflNWqOIGRoGfdXC7DEV
-	 RUMXwrsSWuYrckuCrq9dhuV/SUYuHKcHS+7iJU6atVN+mCigMpLumBLHs/uGTbl81t
-	 7XB1ZT8SVhQ7+XLoUaP+xQvxFvu+hNh7Hc7gA7BDW5rXv6VXzvJQbJor4LBfFzX4xP
-	 yK8CoHrdvVwrg==
-From: SeongJae Park <sj@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	allen.lkml@gmail.com,
-	damon@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>
-Subject: Re: [PATCH 6.7 00/28] 6.7.1-rc1 review
-Date: Thu, 18 Jan 2024 12:17:12 -0800
-Message-Id: <20240118201712.80859-1-sj@kernel.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
-References: 
+	s=arc-20240116; t=1705612109; c=relaxed/simple;
+	bh=yoaXCZLTxdcf0hMRY/eUuyi/D4CQA02aZSSApyKwMf4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=fjYS+Je2AOty/vy+9WGTOJh/eU/jwZHY8CMwPUh+DPVvpkWQ+aMhgRYk2xF/+TMkF+tY857xStHUQfT9Z/UbkaKwNFY4uLdrdlmoLYtkrIuiYecxKaUGHYaHE90OU20vRM2Vn/XPPGVhQG0uS6vbZSLAqjXdKojmYS0+5/RlXso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=aayS9Jld; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+Received: from localhost (unknown [IPv6:2601:280:5e00:7e19::646])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id AC80C7A2D;
+	Thu, 18 Jan 2024 21:08:26 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net AC80C7A2D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1705612106; bh=fDSeRX+YsPcg2SclbKtEH61vR1ItK45Qc5jXxd2tHhE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=aayS9JldwHalELvDxuNWpMdrsURvkuAHZHFdqKB/0nU0nqHO1YcYr2W5+Sn6IHd5/
+	 shnIiVpsxOMP6cbaWUJG66NIzyG1if/uds7O5ps71kkpu71qfnAePr5rzKDJNKML34
+	 KwR9CqoqZPE7FG1+cDD6DWwQCTOjqumkkj9nruJm2Hlps+LmXa6YkmmVHdgefzu+0O
+	 KQwBqT9lOJAns4+O+2Q1Oi3vTf751JDGypYVE9x4x8qq3X1pFqzC/zbQsRfvR6tdLs
+	 8316iZB1ECs9ntt7FF9HkPjGw6xMQWRN5U2FKLfeCjWoQ1ScgAXnHwx/nSwTeoUUfg
+	 nUBkzvmkBzJEQ==
+From: Jonathan Corbet <corbet@lwn.net>
+To: gregkh@linuxfoundation.org, vegard.nossum@oracle.com, jani.nikula@intel.com
+Cc: stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] docs: kernel_feat.py: fix potential
+ command injection" failed to apply to 6.1-stable tree
+In-Reply-To: <2024011832-stadium-anew-7be3@gregkh>
+References: <2024011832-stadium-anew-7be3@gregkh>
+Date: Thu, 18 Jan 2024 14:08:25 -0700
+Message-ID: <87jzo6wdrq.fsf@meer.lwn.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Hello,
+<gregkh@linuxfoundation.org> writes:
 
-On Thu, 18 Jan 2024 11:48:50 +0100 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> The patch below does not apply to the 6.1-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+>
+> To reproduce the conflict and resubmit, you may use the following commands:
+>
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x c48a7c44a1d02516309015b6134c9bb982e17008
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024011832-stadium-anew-7be3@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-> This is the start of the stable review cycle for the 6.7.1 release.
-> There are 28 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 20 Jan 2024 10:42:49 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.1-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
-> and the diffstat can be found below.
+Ah, this ran afoul of the Documentation/arch/ move.  It's fixable, but
+maybe it's not worth the effort to do it; I'll come back to it if I get
+a moment.
 
-This rc kernel passes DAMON functionality test[1] on my test machine.
-Attaching the test results summary below.  Please note that I retrieved the
-kernel from linux-stable-rc tree[2].
-
-Tested-by: SeongJae Park <sj@kernel.org>
-
-[1] https://github.com/awslabs/damon-tests/tree/next/corr
-[2] ef44e963b02e ("Linux 6.7.1-rc1")
-
-Thanks,
-SJ
-
-[...]
-
----
-
-ok 1 selftests: damon: debugfs_attrs.sh
-ok 2 selftests: damon: debugfs_schemes.sh
-ok 3 selftests: damon: debugfs_target_ids.sh
-ok 4 selftests: damon: debugfs_empty_targets.sh
-ok 5 selftests: damon: debugfs_huge_count_read_write.sh
-ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
-ok 7 selftests: damon: debugfs_rm_non_contexts.sh
-ok 8 selftests: damon: sysfs.sh
-ok 9 selftests: damon: sysfs_update_removed_scheme_dir.sh
-ok 10 selftests: damon: reclaim.sh
-ok 11 selftests: damon: lru_sort.sh
-ok 1 selftests: damon-tests: kunit.sh
-ok 2 selftests: damon-tests: huge_count_read_write.sh
-ok 3 selftests: damon-tests: buffer_overflow.sh
-ok 4 selftests: damon-tests: rm_contexts.sh
-ok 5 selftests: damon-tests: record_null_deref.sh
-ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
-ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
-ok 8 selftests: damon-tests: damo_tests.sh
-ok 9 selftests: damon-tests: masim-record.sh
-ok 10 selftests: damon-tests: build_i386.sh
-ok 11 selftests: damon-tests: build_arm64.sh
-ok 12 selftests: damon-tests: build_m68k.sh
-ok 13 selftests: damon-tests: build_i386_idle_flag.sh
-ok 14 selftests: damon-tests: build_i386_highpte.sh
-ok 15 selftests: damon-tests: build_nomemcg.sh
- [33m
- [92mPASS [39m
+jon
 
