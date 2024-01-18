@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-12058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8516831785
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:58:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8836D8317F7
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 070B91C22875
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:58:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD7521C2424A
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB36A22F16;
-	Thu, 18 Jan 2024 10:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E1D23771;
+	Thu, 18 Jan 2024 11:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZoACzrn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FEYcnw/4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0D01774B;
-	Thu, 18 Jan 2024 10:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4D0223762;
+	Thu, 18 Jan 2024 11:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575488; cv=none; b=R+CuGX8SFP+zBB2uRgErrNbMwHEF2cyG+TcK+ZXQPePdlhotdvECmVP/y8Nm0usMw2KJxVf44/TdddNSIKFucO+HCCAgIazNeX5IWES9+g2vK3XZVLd0+QQGbtA7RAhMW4hT4vmmMwbOQFU3pw0BV2vfYabpgx2aiww8q3B3ifE=
+	t=1705575732; cv=none; b=TSgpBDCOc2pMIJpFOus9SJB7mS25rD0IShljIUTlv/FqfVPJrW43BvRzqfSNdKKR2icn5+0Xzu15PIv/zCnFRzqRfbBCK8b7ZalXcOzlKKYRf5NKxAJNI0eIe/XjNyLmstVmAuyi1YTcYtZ3fykt9pwsT+Ujqy3av4loA16/vec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575488; c=relaxed/simple;
-	bh=9TWK2t7WlGOSx4FX18jBWiAZksclzLbgeyWtQdasJN4=;
+	s=arc-20240116; t=1705575732; c=relaxed/simple;
+	bh=vSgCP0XslL8OsyO5ZN1bRY1SHJHmeyCy3mVBqWmK+Wo=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=EMQQBrKItLQ+mYg/tnvZ4NrMi9/9CVvmnZJnjHhMaf9a8e9gsD3rJ/HqYZk7kaQ6s4m2qR2UT2VvFix15HHbQHEjskVLdhJ9bCop2KXXY3FsvPUeG2VmIna6q2ll5fT9BscyqghTar2Deuk5FiSu0Ejsuj1MSK6x075wLvJQo00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZoACzrn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD86AC433C7;
-	Thu, 18 Jan 2024 10:58:07 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=OV6ftqfZyYzD2fYg5u8Q6Q/xAO6mu0NTdAOzKDKkTrRtpRDLaIHj90AQ8pWkxV4vxgiDPc3xut2bCG3RUrMa57nneJx/s9TuX4blx7H/DVfOLDbLcieBNbYeTKCkGhe5Y5TK677QWLzK9cZAXye9uMPh7RwLy4zuCo8rj+wegmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FEYcnw/4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A13C43390;
+	Thu, 18 Jan 2024 11:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575488;
-	bh=9TWK2t7WlGOSx4FX18jBWiAZksclzLbgeyWtQdasJN4=;
+	s=korg; t=1705575732;
+	bh=vSgCP0XslL8OsyO5ZN1bRY1SHJHmeyCy3mVBqWmK+Wo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lZoACzrnqgxBJGvwlzfIZKL9fMi5ABl5UTYAfSmlVsS0Qyn763X4dVPSPP7ln/Spw
-	 f8nL7PKGMq29Uk08zCBVYhASpj6mzA2O0n/QRMwciebonwZOq/8qKHsBePaCIoGVni
-	 ON8c2m/3KwuVgYKJepjMXwGjedPYeaT9IJdwJtuI=
+	b=FEYcnw/4mqVbOJV3sw8c5BWc0rD/PhD5Azkay1ASSjaVwbihXUKgeHV6WrPXs0ncZ
+	 5TLV23edgCGiMCWK3IFUvTusfei1IxbSG699EmFxzOOLBYU5vTBA9oULzVbKOtOEe5
+	 J0jl6yOtR4rAqvpFr0Q0X7J5VbAlQsSdOuNplAew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 150/150] mm/memory_hotplug: fix memmap_on_memory sysfs value retrieval
-Date: Thu, 18 Jan 2024 11:49:32 +0100
-Message-ID: <20240118104327.005303427@linuxfoundation.org>
+	Eric Curtin <ecurtin@redhat.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Neal Gompa <neal@gompa.dev>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>
+Subject: [PATCH 6.1 085/100] btf, scripts: Exclude Rust CUs with pahole
+Date: Thu, 18 Jan 2024 11:49:33 +0100
+Message-ID: <20240118104314.599592214@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,65 +67,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 
-commit 11684134140bb708b6e6de969a060535630b1b53 upstream.
+commit c1177979af9c616661a126a80dd486ad0543b836 upstream.
 
-set_memmap_mode() stores the kernel parameter memmap mode as an integer.
-However, the get_memmap_mode() function utilizes param_get_bool() to fetch
-the value as a boolean, leading to potential endianness issue.  On
-Big-endian architectures, the memmap_on_memory is consistently displayed
-as 'N' regardless of its actual status.
+Version 1.24 of pahole has the capability to exclude compilation units (CUs)
+of specific languages [1] [2]. Rust, as of writing, is not currently supported
+by pahole and if it's used with a build that has BTF debugging enabled it
+results in malformed kernel and module binaries [3]. So it's better for pahole
+to exclude Rust CUs until support for it arrives.
 
-To address this endianness problem, the solution involves obtaining the
-mode as an integer.  This adjustment ensures the proper display of the
-memmap_on_memory parameter, presenting it as one of the following options:
-Force, Y, or N.
-
-Link: https://lkml.kernel.org/r/20240110140127.241451-1-sumanthk@linux.ibm.com
-Fixes: 2d1f649c7c08 ("mm/memory_hotplug: support memmap_on_memory when memmap is not aligned to pageblocks")
-Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Suggested-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: <stable@vger.kernel.org>	[6.6+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Co-developed-by: Eric Curtin <ecurtin@redhat.com>
+Signed-off-by: Eric Curtin <ecurtin@redhat.com>
+Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: Eric Curtin <ecurtin@redhat.com>
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Acked-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Link: https://git.kernel.org/pub/scm/devel/pahole/pahole.git/commit/?id=49358dfe2aaae4e90b072332c3e324019826783f [1]
+Link: https://git.kernel.org/pub/scm/devel/pahole/pahole.git/commit/?id=8ee363790b7437283c53090a85a9fec2f0b0fbc4 [2]
+Link: https://github.com/Rust-for-Linux/linux/issues/735 [3]
+Link: https://lore.kernel.org/bpf/20230111152050.559334-1-yakoyoku@gmail.com
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory_hotplug.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ init/Kconfig            |    2 +-
+ lib/Kconfig.debug       |    9 +++++++++
+ scripts/pahole-flags.sh |    4 ++++
+ 3 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index b3c0ff52bb72..21890994c1d3 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -101,9 +101,11 @@ static int set_memmap_mode(const char *val, const struct kernel_param *kp)
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1914,7 +1914,7 @@ config RUST
+ 	depends on !MODVERSIONS
+ 	depends on !GCC_PLUGINS
+ 	depends on !RANDSTRUCT
+-	depends on !DEBUG_INFO_BTF
++	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
+ 	select CONSTRUCTORS
+ 	help
+ 	  Enables Rust support in the kernel.
+--- a/lib/Kconfig.debug
++++ b/lib/Kconfig.debug
+@@ -364,6 +364,15 @@ config PAHOLE_HAS_BTF_TAG
+ 	  btf_decl_tag) or not. Currently only clang compiler implements
+ 	  these attributes, so make the config depend on CC_IS_CLANG.
  
- static int get_memmap_mode(char *buffer, const struct kernel_param *kp)
- {
--	if (*((int *)kp->arg) == MEMMAP_ON_MEMORY_FORCE)
--		return sprintf(buffer,  "force\n");
--	return param_get_bool(buffer, kp);
-+	int mode = *((int *)kp->arg);
++config PAHOLE_HAS_LANG_EXCLUDE
++	def_bool PAHOLE_VERSION >= 124
++	help
++	  Support for the --lang_exclude flag which makes pahole exclude
++	  compilation units from the supplied language. Used in Kbuild to
++	  omit Rust CUs which are not supported in version 1.24 of pahole,
++	  otherwise it would emit malformed kernel and module binaries when
++	  using DEBUG_INFO_BTF_MODULES.
 +
-+	if (mode == MEMMAP_ON_MEMORY_FORCE)
-+		return sprintf(buffer, "force\n");
-+	return sprintf(buffer, "%c\n", mode ? 'Y' : 'N');
- }
+ config DEBUG_INFO_BTF_MODULES
+ 	def_bool y
+ 	depends on DEBUG_INFO_BTF && MODULES && PAHOLE_HAS_SPLIT_BTF
+--- a/scripts/pahole-flags.sh
++++ b/scripts/pahole-flags.sh
+@@ -19,5 +19,9 @@ fi
+ if [ "${pahole_ver}" -ge "122" ]; then
+ 	extra_paholeopt="${extra_paholeopt} -j"
+ fi
++if [ "${pahole_ver}" -ge "124" ]; then
++	# see PAHOLE_HAS_LANG_EXCLUDE
++	extra_paholeopt="${extra_paholeopt} --lang_exclude=rust"
++fi
  
- static const struct kernel_param_ops memmap_mode_ops = {
--- 
-2.43.0
-
+ echo ${extra_paholeopt}
 
 
 
