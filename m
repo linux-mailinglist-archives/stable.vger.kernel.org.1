@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-11901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B748316DE
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:51:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 530FF83178D
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:58:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AE551C22397
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:51:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 204522880FD
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFE423761;
-	Thu, 18 Jan 2024 10:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1D623741;
+	Thu, 18 Jan 2024 10:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1vlqm5mD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBjPtDsN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1045B65C;
-	Thu, 18 Jan 2024 10:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29BC1774B;
+	Thu, 18 Jan 2024 10:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575051; cv=none; b=ZVmUU7sYARkBBQN4M3jd/POPxTGHsGR74yDHHMkSDpsLMnmQV5yh7g9fvnyFOFBvrWXKEkxl+XkkVVz9ZcNuBIR8/fJJAhVLsPQqSr0NBvK+6IgftvR8NRMNCjJmqaPPpfLPbJQpHpenQFw9KOFwZ55sXn/2oaVeOJ6XCvwyjVE=
+	t=1705575507; cv=none; b=hmlVRHgCMlHqwkosRXC2RfFInoGyLs4mItpljgoEsJ+8ZTcm+/itJnIEtT+BNPio+36Ix0v1emhLcF4cnZjoRf5yKjTOMOnMUFX4QbeVXplyWjXvdORv7T9AMUEzxJ0RQSPNQm6qEcr+XUIgXkowOguHvqjBfonRqJ5xl3A/QeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575051; c=relaxed/simple;
-	bh=D899onBO7v2hnluCiMbrmLZ0+ThPTHDx1aPQXJxrAhU=;
+	s=arc-20240116; t=1705575507; c=relaxed/simple;
+	bh=Ve4zWD7DyKEaSKpLx8B4HVajm+gRqdtmItazRO58LO4=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding; b=IG9aOyCOhITcIC39+8ASzrANpDfsS4NHa9a8uGrifJIsab7SdZvdC/yYQHlYbuldIui5AO2VrsWA3QBP3zEjBSlIE2YVPHnBFTqc5U0ml6lkDuXYu6ERRd2Vk+XuHdAdk+Ipo/6BqA+KuwDiJDL2DNZ2VWOVopWTgq2ouq4FeFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1vlqm5mD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD35C433F1;
-	Thu, 18 Jan 2024 10:50:50 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=tuS9QDOrfRDLI24T4hVSO1ovOMp5SVJf3tmA2FSlTvE/Lxj/bEA18omPVChsCxxUw4dnQfH92CLONFHvLZt1dUa5gvD5zvdBH63IyFHE76b3cx9KDbeB+ixtVfNKm17wUKvOGmrQCgKAtARxCTzPTwR7i5KU6xbpiA3aOBFswQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBjPtDsN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 577ABC433F1;
+	Thu, 18 Jan 2024 10:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575051;
-	bh=D899onBO7v2hnluCiMbrmLZ0+ThPTHDx1aPQXJxrAhU=;
+	s=korg; t=1705575507;
+	bh=Ve4zWD7DyKEaSKpLx8B4HVajm+gRqdtmItazRO58LO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1vlqm5mDg7E8D3Z//3wh+1WxCAR5yQySFG9/L+E9IwPdFDVyr2sn4poIi21KlnhWI
-	 /N0cuplm7/UsbU3b1VwcttpwUr6YDpDM40/UednR7Tz8NZrA4l7/Ji3xMX67Doc7Mh
-	 MEnVMCnz9U0y0gJI3sqMbpYJ3HWPV895BDmLuZEg=
+	b=XBjPtDsNnu1M4Kb4v2jHGwBbLIGRVmYRZxHtgI7o5Pc04teGJEGDSlzmKZz4WguNT
+	 xinGRi0ktKmZGlZQ6MQc0ItJ3KsI1WeLwHR5b+34vj7MxQACIK+Jm6xHK7KR13ZZDg
+	 k6UHbOGu2bTkX5YwRPxhYkoOx+2UMfZGqoy8jxe8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Eckert <fe@dev.tdt.de>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.7 23/28] leds: ledtrig-tty: Free allocated ttyname buffer on deactivate
+	Luis Acuna <ldacuna@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.6 131/150] ACPI: resource: Add another DMI match for the TongFang GMxXGxx
 Date: Thu, 18 Jan 2024 11:49:13 +0100
-Message-ID: <20240118104302.021359138@linuxfoundation.org>
+Message-ID: <20240118104326.112948234@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
-References: <20240118104301.249503558@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Eckert <fe@dev.tdt.de>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 25054b232681c286fca9c678854f56494d1352cc upstream.
+commit df0cced74159c79e36ce7971f0bf250673296d93 upstream.
 
-The ttyname buffer for the ledtrig_tty_data struct is allocated in the
-sysfs ttyname_store() function. This buffer must be released on trigger
-deactivation. This was missing and is thus a memory leak.
+The TongFang GMxXGxx, which needs IRQ overriding for the keyboard to work,
+is also sold as the Eluktronics RP-15 which does not use the standard
+TongFang GMxXGxx DMI board_name.
 
-While we are at it, the TTY handler in the ledtrig_tty_data struct should
-also be returned in case of the trigger deactivation call.
+Add an entry for this laptop to the irq1_edge_low_force_override[] DMI
+table to make the internal keyboard functional.
 
-Cc: stable@vger.kernel.org
-Fixes: fd4a641ac88f ("leds: trigger: implement a tty trigger")
-Signed-off-by: Florian Eckert <fe@dev.tdt.de>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20231127081621.774866-1-fe@dev.tdt.de
-Signed-off-by: Lee Jones <lee@kernel.org>
+Reported-by: Luis Acuna <ldacuna@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/trigger/ledtrig-tty.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/acpi/resource.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/leds/trigger/ledtrig-tty.c
-+++ b/drivers/leds/trigger/ledtrig-tty.c
-@@ -168,6 +168,10 @@ static void ledtrig_tty_deactivate(struc
- 
- 	cancel_delayed_work_sync(&trigger_data->dwork);
- 
-+	kfree(trigger_data->ttyname);
-+	tty_kref_put(trigger_data->tty);
-+	trigger_data->tty = NULL;
-+
- 	kfree(trigger_data);
- }
- 
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -509,6 +509,13 @@ static const struct dmi_system_id mainge
+ 		},
+ 	},
+ 	{
++		/* TongFang GMxXGxx sold as Eluktronics Inc. RP-15 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
++			DMI_MATCH(DMI_BOARD_NAME, "RP-15"),
++		},
++	},
++	{
+ 		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "GM6XGxX"),
 
 
 
