@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-12072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B5F0831795
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:58:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D157283173D
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:54:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31D9BB20FD4
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:58:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10CFF1C225EC
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B4EA23754;
-	Thu, 18 Jan 2024 10:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2747222F0F;
+	Thu, 18 Jan 2024 10:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2JbIipys"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZBVQHz7c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 383F422F1B;
-	Thu, 18 Jan 2024 10:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC03F1B96D;
+	Thu, 18 Jan 2024 10:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575527; cv=none; b=WBxl8vWh22SP7CsB9QckIrMvcagg4nE48j60zqFVTIypRJv9pvteGRVoILVvtmV6YIKqTsnbujWTk+yjy1g7KfT5SSbZ/i9P54sC0cPgkXJQdU30ZV9LHj1ZhBpaYFoFGyRg2optd4J6/E8c4mVsuvwR3hOPP+N8LAmzxlCed0g=
+	t=1705575293; cv=none; b=B90Gp7uID5JhzbYqUp/AsVZ0gOfvV444/Z39aApFjCVEJBursOlD13BT7co82QPAnMcq0Zm9s4HjvbNts11dpR3uDNyxTle9dVC/ST6PreNUCZIX9Wy2nKAKw6YGZwY0SfyDGAeu3aqgO/aMSz0/OKmoWrod4/S3gLVmXe65Grg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575527; c=relaxed/simple;
-	bh=enLLsixOyGkckTu/x8QKKOryh6YWtCSYozsu9PY7Us4=;
+	s=arc-20240116; t=1705575293; c=relaxed/simple;
+	bh=5sF5uXPsHrsCrRvlpL0ihnyIOt1maYIwOT7ekzWMz7U=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=tgJIxI16W2yKV6zG3mit9fPxIHOIlBoEkH4KosLzzKieMAzZgyiVM27AtYRsowEZEaGWKZdLwouNBnICQP8AH8NLEwktDj61N28CFwOiiQ8dUAj421+ZDibBRkPrASyz4zxY9zcr2+eVLKswkYMR5kAthx2GUM3vRssnAX8gBl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2JbIipys; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF94AC433F1;
-	Thu, 18 Jan 2024 10:58:46 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=irlmaP65hwRuWpSrfjIj8+qwoB6oHeyKNBsz3M3xxPbqR51m4njEwoN7Uzr8kql193RkSeRuJZv626BcB35IWK/2tmcHAfSxLO+lDyMCcMSUw6lOaKUaw+APVDaJFVy/mco6v+ib9Za2KTACmvpZgr8RU7JYzxsdeJ9pMS+vsNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZBVQHz7c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44114C433C7;
+	Thu, 18 Jan 2024 10:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575527;
-	bh=enLLsixOyGkckTu/x8QKKOryh6YWtCSYozsu9PY7Us4=;
+	s=korg; t=1705575293;
+	bh=5sF5uXPsHrsCrRvlpL0ihnyIOt1maYIwOT7ekzWMz7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2JbIipyszjbUWc3HSCIprqR/4wvUyKL/UiFySxurCiVYAHdCjP/dNVLAH0/d/TGKm
-	 ghgSk/wRRk87mPLjeFpWn6yta5bKV5II3UsaffJm6/WBMJde5JUfGLx89JBSSNj8BI
-	 NkLP1axcHZQ871bVhpQJhHljSF4X8ilhkJcPGeiE=
+	b=ZBVQHz7czuZY1p+U6NyYCNjJMzdRSJjp5jKrIPUwqDGBgCIimfVN7sd5gjWkxbFZH
+	 +pstqY2bwKP/rlyXAROICDSWC9/0wBfB44mN+TCWaPzw4CnvPBvZsOQFLRlDcJ+3tL
+	 qQ2Q/9Q11VuF5XE8Zd+G0dKXeMbHfGPWL+qH6E8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Snitzer <snitzer@kernel.org>,
-	David Jeffery <djeffery@redhat.com>,
-	John Pittman <jpittman@redhat.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 014/100] blk-mq: dont count completed flush data request as inflight in case of quiesce
+Subject: [PATCH 6.6 080/150] tracing: Add size check when printing trace_marker output
 Date: Thu, 18 Jan 2024 11:48:22 +0100
-Message-ID: <20240118104311.511678352@linuxfoundation.org>
+Message-ID: <20240118104323.667410401@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,71 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 0e4237ae8d159e3d28f3cd83146a46f576ffb586 ]
+[ Upstream commit 60be76eeabb3d83858cc6577fc65c7d0f36ffd42 ]
 
-Request queue quiesce may interrupt flush sequence, and the original request
-may have been marked as COMPLETE, but can't get finished because of
-queue quiesce.
+If for some reason the trace_marker write does not have a nul byte for the
+string, it will overflow the print:
 
-This way is fine from driver viewpoint, because flush sequence is block
-layer concept, and it isn't related with driver.
+  trace_seq_printf(s, ": %s", field->buf);
 
-However, driver(such as dm-rq) can call blk_mq_queue_inflight() to count &
-drain inflight requests, then the wait & drain never gets done because
-the completed & not-finished flush request is counted as inflight.
+The field->buf could be missing the nul byte. To prevent overflow, add the
+max size that the buf can be by using the event size and the field
+location.
 
-Fix this issue by not counting completed flush data request as inflight in
-case of quiesce.
+  int max = iter->ent_size - offsetof(struct print_entry, buf);
 
-Cc: Mike Snitzer <snitzer@kernel.org>
-Cc: David Jeffery <djeffery@redhat.com>
-Cc: John Pittman <jpittman@redhat.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20231201085605.577730-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+  trace_seq_printf(s, ": %*.s", max, field->buf);
+
+Link: https://lore.kernel.org/linux-trace-kernel/20231212084444.4619b8ce@gandalf.local.home
+
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ kernel/trace/trace_output.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 383d94615e50..368f1947c895 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -1500,14 +1500,26 @@ void blk_mq_delay_kick_requeue_list(struct request_queue *q,
- }
- EXPORT_SYMBOL(blk_mq_delay_kick_requeue_list);
- 
-+static bool blk_is_flush_data_rq(struct request *rq)
-+{
-+	return (rq->rq_flags & RQF_FLUSH_SEQ) && !is_flush_rq(rq);
-+}
-+
- static bool blk_mq_rq_inflight(struct request *rq, void *priv)
+diff --git a/kernel/trace/trace_output.c b/kernel/trace/trace_output.c
+index db575094c498..3b7d3e9eb6ea 100644
+--- a/kernel/trace/trace_output.c
++++ b/kernel/trace/trace_output.c
+@@ -1587,11 +1587,12 @@ static enum print_line_t trace_print_print(struct trace_iterator *iter,
  {
- 	/*
- 	 * If we find a request that isn't idle we know the queue is busy
- 	 * as it's checked in the iter.
- 	 * Return false to stop the iteration.
-+	 *
-+	 * In case of queue quiesce, if one flush data request is completed,
-+	 * don't count it as inflight given the flush sequence is suspended,
-+	 * and the original flush data request is invisible to driver, just
-+	 * like other pending requests because of quiesce
- 	 */
--	if (blk_mq_request_started(rq)) {
-+	if (blk_mq_request_started(rq) && !(blk_queue_quiesced(rq->q) &&
-+				blk_is_flush_data_rq(rq) &&
-+				blk_mq_request_completed(rq))) {
- 		bool *busy = priv;
+ 	struct print_entry *field;
+ 	struct trace_seq *s = &iter->seq;
++	int max = iter->ent_size - offsetof(struct print_entry, buf);
  
- 		*busy = true;
+ 	trace_assign_type(field, iter->ent);
+ 
+ 	seq_print_ip_sym(s, field->ip, flags);
+-	trace_seq_printf(s, ": %s", field->buf);
++	trace_seq_printf(s, ": %.*s", max, field->buf);
+ 
+ 	return trace_handle_return(s);
+ }
+@@ -1600,10 +1601,11 @@ static enum print_line_t trace_print_raw(struct trace_iterator *iter, int flags,
+ 					 struct trace_event *event)
+ {
+ 	struct print_entry *field;
++	int max = iter->ent_size - offsetof(struct print_entry, buf);
+ 
+ 	trace_assign_type(field, iter->ent);
+ 
+-	trace_seq_printf(&iter->seq, "# %lx %s", field->ip, field->buf);
++	trace_seq_printf(&iter->seq, "# %lx %.*s", field->ip, max, field->buf);
+ 
+ 	return trace_handle_return(&iter->seq);
+ }
 -- 
 2.43.0
 
