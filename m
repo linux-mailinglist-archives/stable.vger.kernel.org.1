@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-12097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43E9B8317B7
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:00:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AA458317D0
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:01:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED2271F25753
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:00:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90681B25864
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:01:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99F4241E2;
-	Thu, 18 Jan 2024 10:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB2E9241F6;
+	Thu, 18 Jan 2024 11:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJKzj5SK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="naq5qgOu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7978A2377A;
-	Thu, 18 Jan 2024 10:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FE723757;
+	Thu, 18 Jan 2024 11:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575598; cv=none; b=ANn9p2rTuVAMeLQNYrV744LePirv7WohnepxpPVi4p3qBoCZYMai5x6/oZ7tUag59iI3XyDDc5tiHasAuzXvSVi/AAMddAHk61cyH3/xrprrnpDnmONEpk8e1Ddyy6Srgl2Oxwm9ri7xl3F2bY0EGIxw4PPB0CF7YD26CK7HO1U=
+	t=1705575629; cv=none; b=TbgS58pwf0a+cN1TVzW6E8X1LceQiO3YQgYsdGd38hhseG4bYP07cF7LRv33n1n/YG6J3UgVMcBKbWCaTsJNbhWqMiYxauqQ6mJTHxj/mjJl4umbCqatucjvViVyphwSEf62iGzsz4ucl9TLW4slVgx06Y++k8uTQd0alc+mqbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575598; c=relaxed/simple;
-	bh=xPHEc3fhmS835VGl1WBt2XibKmzZ11hVopAQt3yuKdo=;
+	s=arc-20240116; t=1705575629; c=relaxed/simple;
+	bh=I8lSrD/z3eqORiat5z67rJfX3rHJVwFVOuWlMp4XzNg=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=GP+LtwDlLI6FW2i0GhV/dF+17cpzojxX7mpINs5rDNRxL46wAYyF6F3d1Lwmb47XGlTBSgt4qs80YtSoXVvtpvhNJWkiltyUUw7CSm5tYrjiO2OQXQSh/YCdOugOda+Soj4a/e3apJB9JUbAeIO4CjQArm6dzZFtakcQpIvjQrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJKzj5SK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E5EC43390;
-	Thu, 18 Jan 2024 10:59:57 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=BV1ABqY6XHcXgZHmSziew69Tw5VFl23Mo7xv5thCBxLJ7rB6bSsDdF0X0lgGuu/MFuTyaMLuOgvNHgNZW4zuMA2kqNvPnCQG293W3+hMZDVR1RYVFeDmIqDmRyaRhvCN0uKbPDtrAKFbwUmmX6Q0TM6aL00+NDx3dBLM5ULHVa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=naq5qgOu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29988C433C7;
+	Thu, 18 Jan 2024 11:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575598;
-	bh=xPHEc3fhmS835VGl1WBt2XibKmzZ11hVopAQt3yuKdo=;
+	s=korg; t=1705575629;
+	bh=I8lSrD/z3eqORiat5z67rJfX3rHJVwFVOuWlMp4XzNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJKzj5SKzwxHpczkamMT3qqPSULcPGB1qwbFC/RaM7WkDBW5Q9paN1JE20yXdRdkw
-	 3Vx/AQ5B9HadLAP9HbNEPKUmE7DXXCMLgVgvXTMhU0JcOQVAmfMzyMBcvjlVx1dWCe
-	 ue3cSw+/7Jgw2l7Zql92y8eGCiq9GmaDEIatGQM4=
+	b=naq5qgOuHr3Cm6AfO3ajSbXMN1eBgqfLanm0XMb1ok2+cqVOavxU3bNmmMHKAf8P9
+	 S8HAzMYMhkvcc3i9EMhNMO3oaKhzI+u5YXSGX3T8Lf1Xlrv0zLbmABsUUZNr1sY7jB
+	 hDcM6jTzWGgJeg0jQI7NvnOQXl/lP6uBIegiMuZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Rau <David.Rau.opensource@dm.renesas.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 031/100] ASoC: da7219: Support low DC impedance headset
-Date: Thu, 18 Jan 2024 11:48:39 +0100
-Message-ID: <20240118104312.272306553@linuxfoundation.org>
+Subject: [PATCH 6.1 032/100] ASoC: ops: add correct range check for limiting volume
+Date: Thu, 18 Jan 2024 11:48:40 +0100
+Message-ID: <20240118104312.314169811@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
 References: <20240118104310.892180084@linuxfoundation.org>
@@ -67,34 +68,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Rau <David.Rau.opensource@dm.renesas.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
 
-[ Upstream commit 5f44de697383fcc9a9a1a78f99e09d1838704b90 ]
+[ Upstream commit fb9ad24485087e0f00d84bee7a5914640b2b9024 ]
 
-Change the default MIC detection impedance threshold to 200ohm
-to support low mic DC impedance headset.
+Volume can have ranges that start with negative values, ex: -84dB to
++40dB. Apply correct range check in snd_soc_limit_volume before setting
+the platform_max. Without this patch, for example setting a 0dB limit on
+a volume range of -84dB to +40dB would fail.
 
-Signed-off-by: David Rau <David.Rau.opensource@dm.renesas.com>
-Link: https://lore.kernel.org/r/20231201042933.26392-1-David.Rau.opensource@dm.renesas.com
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20231204124736.132185-2-srinivas.kandagatla@linaro.org
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/da7219-aad.c | 2 +-
+ sound/soc/soc-ops.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/da7219-aad.c b/sound/soc/codecs/da7219-aad.c
-index 9251490548e8..c8410769188a 100644
---- a/sound/soc/codecs/da7219-aad.c
-+++ b/sound/soc/codecs/da7219-aad.c
-@@ -663,7 +663,7 @@ static struct da7219_aad_pdata *da7219_aad_fw_to_pdata(struct device *dev)
- 		aad_pdata->mic_det_thr =
- 			da7219_aad_fw_mic_det_thr(dev, fw_val32);
- 	else
--		aad_pdata->mic_det_thr = DA7219_AAD_MIC_DET_THR_500_OHMS;
-+		aad_pdata->mic_det_thr = DA7219_AAD_MIC_DET_THR_200_OHMS;
- 
- 	if (fwnode_property_read_u32(aad_np, "dlg,jack-ins-deb", &fw_val32) >= 0)
- 		aad_pdata->jack_ins_deb =
+diff --git a/sound/soc/soc-ops.c b/sound/soc/soc-ops.c
+index 55b009d3c681..2d25748ca706 100644
+--- a/sound/soc/soc-ops.c
++++ b/sound/soc/soc-ops.c
+@@ -661,7 +661,7 @@ int snd_soc_limit_volume(struct snd_soc_card *card,
+ 	kctl = snd_soc_card_get_kcontrol(card, name);
+ 	if (kctl) {
+ 		struct soc_mixer_control *mc = (struct soc_mixer_control *)kctl->private_value;
+-		if (max <= mc->max) {
++		if (max <= mc->max - mc->min) {
+ 			mc->platform_max = max;
+ 			ret = 0;
+ 		}
 -- 
 2.43.0
 
