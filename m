@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-12121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E8308317DC
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49263831751
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 516CB1C212E8
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3797D1F20F26
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F28624B3A;
-	Thu, 18 Jan 2024 11:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72E2241E1;
+	Thu, 18 Jan 2024 10:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bs69F+Vt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jqauxi9Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1D924B2C;
-	Thu, 18 Jan 2024 11:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87AAC23741;
+	Thu, 18 Jan 2024 10:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575668; cv=none; b=fcoUfB7d6WohmkHgU0W/lkVe5f1grmWEgfR+mGjaFf+kFrLqdKeJU9DHu+U33c7qvg+mB2V3QYRwhRyVG4a9Yw0F6kZT7tqCMC4p8R6LH+ayPNYM2hSlmcc11RwAr9zxzgEgnyMoQVTTOplRC1Hs/yASEPK9VAJ+jJr425Ts52Y=
+	t=1705575346; cv=none; b=Kb/pioj0yCA3lJHpY8zlXYXUF730niOXvn31LjwfONJaDI0ILeixU+Tp7QW7Af/KrQ6uccHVjLHHn6GlR84/V22vNnm2+/157Fy78Hebohw+mSSe6zaRspi1RPwBMJJli5d1B0zdVW1iLhWXGTHz5/YS6FhZ2OACWMv6caVVo0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575668; c=relaxed/simple;
-	bh=UD+HBMbZtZ3g1yjxFIwtdYBTcOOMsJdX7QTpI17iMZ8=;
+	s=arc-20240116; t=1705575346; c=relaxed/simple;
+	bh=gGDPzRIpp8EwK9tcB7qR+enTeIpnsd5WMHdRC+nwNA0=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=E8v1Cj/ja335KDBvCcNhIABqEJ6sPFhZ2GWI3YINnbej8kQH9cPcepw74I6f2Ln0zizPk/tpNLueuTi+vNWwFJI4MaqVpV0nUKYIBr+/g5fvdzX0QqLajeUhiWl8VpAgGTupxcaRmXACFIzTo2ike2TLduVBDtmcr83f/uEau14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bs69F+Vt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2214C433C7;
-	Thu, 18 Jan 2024 11:01:07 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=hk14wc853S2Txf49F2n+8Bjng5INrPqd8IfmgDEvFjEzzRNADA0Uy7k5fv8ZDOzU6z9dTfG1a9OHkFG/uZB+iHcVPTBq47NOwYfpr6tAAF96ZbDb82Ws001Np1NKZAr7v4PO87vGU7jplHsDGa6AB2uZ5bwDlExo7s8GxEWNWjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jqauxi9Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1CDEC43399;
+	Thu, 18 Jan 2024 10:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575668;
-	bh=UD+HBMbZtZ3g1yjxFIwtdYBTcOOMsJdX7QTpI17iMZ8=;
+	s=korg; t=1705575346;
+	bh=gGDPzRIpp8EwK9tcB7qR+enTeIpnsd5WMHdRC+nwNA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bs69F+VtR46TK3JIU6ngsfAey6bvjE85E4Q9kWvl5wlB2+c1/OkQDuiDK9rtiAcJB
-	 Q+TW0rx6fdMyYgies3E5akBfAtTgVUWi6STel7kSBez3x3QJU/oxIaPGZqEIsQrOHg
-	 hokXzlo6mIp2FJZqXpT+RsnBbGNhtV0vhiNpFpd8=
+	b=Jqauxi9YUmBsUnl6ltMHJT2/5W7c54nbmhiEYSNUSdS+NMnOvgushRR9Kgi+a+KsO
+	 jCV+YTby7FeUB+yIuSwakdHQz/uD7KQazov4xcsTmU0ZwIuhQDcJg34PrgJziTEoLB
+	 tCV5toxozk2hVyVnVkqnjJ44wwYFFsO60c+PX3Ww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nitesh Shetty <nj.shetty@samsung.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Ryan McClelland <rymcclel@gmail.com>,
+	"Daniel J. Ogorchock" <djogorchock@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 034/100] nvme: prevent potential spectre v1 gadget
+Subject: [PATCH 6.6 100/150] HID: nintendo: fix initializer element is not constant error
 Date: Thu, 18 Jan 2024 11:48:42 +0100
-Message-ID: <20240118104312.409877389@linuxfoundation.org>
+Message-ID: <20240118104324.677565403@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +65,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nitesh Shetty <nj.shetty@samsung.com>
+From: Ryan McClelland <rymcclel@gmail.com>
 
-[ Upstream commit 20dc66f2d76b4a410df14e4675e373b718babc34 ]
+[ Upstream commit 0b7dd38c1c520b650a889a81919838671b689eb9 ]
 
-This patch fixes the smatch warning, "nvmet_ns_ana_grpid_store() warn:
-potential spectre issue 'nvmet_ana_group_enabled' [w] (local cap)"
-Prevent the contents of kernel memory from being leaked to  user space
-via speculative execution by using array_index_nospec.
+With gcc-7 builds, an error happens with the controller button values being
+defined as const. Change to a define.
 
-Signed-off-by: Nitesh Shetty <nj.shetty@samsung.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202312141227.C2h1IzfI-lkp@intel.com/
+
+Signed-off-by: Ryan McClelland <rymcclel@gmail.com>
+Reviewed-by: Daniel J. Ogorchock <djogorchock@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/configfs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/hid/hid-nintendo.c | 44 +++++++++++++++++++-------------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/nvme/target/configfs.c b/drivers/nvme/target/configfs.c
-index 6a2816f3b4e8..73ae16059a1c 100644
---- a/drivers/nvme/target/configfs.c
-+++ b/drivers/nvme/target/configfs.c
-@@ -16,6 +16,7 @@
- #endif
- #include <crypto/hash.h>
- #include <crypto/kpp.h>
-+#include <linux/nospec.h>
+diff --git a/drivers/hid/hid-nintendo.c b/drivers/hid/hid-nintendo.c
+index 10468f727e5b..7644edee996a 100644
+--- a/drivers/hid/hid-nintendo.c
++++ b/drivers/hid/hid-nintendo.c
+@@ -325,28 +325,28 @@ struct joycon_imu_cal {
+  * All the controller's button values are stored in a u32.
+  * They can be accessed with bitwise ANDs.
+  */
+-static const u32 JC_BTN_Y	= BIT(0);
+-static const u32 JC_BTN_X	= BIT(1);
+-static const u32 JC_BTN_B	= BIT(2);
+-static const u32 JC_BTN_A	= BIT(3);
+-static const u32 JC_BTN_SR_R	= BIT(4);
+-static const u32 JC_BTN_SL_R	= BIT(5);
+-static const u32 JC_BTN_R	= BIT(6);
+-static const u32 JC_BTN_ZR	= BIT(7);
+-static const u32 JC_BTN_MINUS	= BIT(8);
+-static const u32 JC_BTN_PLUS	= BIT(9);
+-static const u32 JC_BTN_RSTICK	= BIT(10);
+-static const u32 JC_BTN_LSTICK	= BIT(11);
+-static const u32 JC_BTN_HOME	= BIT(12);
+-static const u32 JC_BTN_CAP	= BIT(13); /* capture button */
+-static const u32 JC_BTN_DOWN	= BIT(16);
+-static const u32 JC_BTN_UP	= BIT(17);
+-static const u32 JC_BTN_RIGHT	= BIT(18);
+-static const u32 JC_BTN_LEFT	= BIT(19);
+-static const u32 JC_BTN_SR_L	= BIT(20);
+-static const u32 JC_BTN_SL_L	= BIT(21);
+-static const u32 JC_BTN_L	= BIT(22);
+-static const u32 JC_BTN_ZL	= BIT(23);
++#define JC_BTN_Y	 BIT(0)
++#define JC_BTN_X	 BIT(1)
++#define JC_BTN_B	 BIT(2)
++#define JC_BTN_A	 BIT(3)
++#define JC_BTN_SR_R	 BIT(4)
++#define JC_BTN_SL_R	 BIT(5)
++#define JC_BTN_R	 BIT(6)
++#define JC_BTN_ZR	 BIT(7)
++#define JC_BTN_MINUS	 BIT(8)
++#define JC_BTN_PLUS	 BIT(9)
++#define JC_BTN_RSTICK	 BIT(10)
++#define JC_BTN_LSTICK	 BIT(11)
++#define JC_BTN_HOME	 BIT(12)
++#define JC_BTN_CAP	 BIT(13) /* capture button */
++#define JC_BTN_DOWN	 BIT(16)
++#define JC_BTN_UP	 BIT(17)
++#define JC_BTN_RIGHT	 BIT(18)
++#define JC_BTN_LEFT	 BIT(19)
++#define JC_BTN_SR_L	 BIT(20)
++#define JC_BTN_SL_L	 BIT(21)
++#define JC_BTN_L	 BIT(22)
++#define JC_BTN_ZL	 BIT(23)
  
- #include "nvmet.h"
- 
-@@ -508,6 +509,7 @@ static ssize_t nvmet_ns_ana_grpid_store(struct config_item *item,
- 
- 	down_write(&nvmet_ana_sem);
- 	oldgrpid = ns->anagrpid;
-+	newgrpid = array_index_nospec(newgrpid, NVMET_MAX_ANAGRPS);
- 	nvmet_ana_group_enabled[newgrpid]++;
- 	ns->anagrpid = newgrpid;
- 	nvmet_ana_group_enabled[oldgrpid]--;
-@@ -1580,6 +1582,7 @@ static struct config_group *nvmet_ana_groups_make_group(
- 	grp->grpid = grpid;
- 
- 	down_write(&nvmet_ana_sem);
-+	grpid = array_index_nospec(grpid, NVMET_MAX_ANAGRPS);
- 	nvmet_ana_group_enabled[grpid]++;
- 	up_write(&nvmet_ana_sem);
- 
+ enum joycon_msg_type {
+ 	JOYCON_MSG_TYPE_NONE,
 -- 
 2.43.0
 
