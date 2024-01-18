@@ -1,89 +1,89 @@
-Return-Path: <stable+bounces-11877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB82183164C
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:57:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38BAD831651
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:59:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B989B28272C
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 09:57:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67F1B1C24DC5
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 09:59:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0491F959;
-	Thu, 18 Jan 2024 09:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DD3200BD;
+	Thu, 18 Jan 2024 09:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gTgLgHMG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRfOJFZa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D654200AC
-	for <stable@vger.kernel.org>; Thu, 18 Jan 2024 09:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418FE20B10;
+	Thu, 18 Jan 2024 09:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705571853; cv=none; b=siIgB+kS+ZVJuEQUf/0pwbBTw/0sQ5nw5qw+kzEB0iXTo/ItvPydwqt4s1fXUchyIrDqFbUaa9q7ySiwMxZhSaC7GreR2u5wH4ELBFxjeYAH3sdl23GHQ7ofMdx8yeqG62ENvCXYxzu4Rkv8NSvSYYBSh0PWRC8eER8ev6xChp8=
+	t=1705571923; cv=none; b=qf/gkYcMLC3qRxicAs3go4/86AxjITJ0OGz6YHwbb8YPvBdu/GcnpAldGPatggNd02zIY0AHMVFOJzoA/m6JbBaseLU2GkP6Ih2fDnE+pG+8ZfC7k+cxXo9WrFLxNegBOeZ+kH2HUy4FaxZo5i+PfORV/k0VEw9Qjqe+guTkjw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705571853; c=relaxed/simple;
-	bh=0YwnoqKFcC2rNWjKNKy28MM27uJ5tkgjUFt5rBX43+I=;
+	s=arc-20240116; t=1705571923; c=relaxed/simple;
+	bh=Ali6VhBWvgEa8c3vvAdCoQmaY9kgbCr8S1JGwhC2gHI=;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:
-	 Content-Transfer-Encoding:In-Reply-To; b=iCfoeIJ9439+9kngYN/kMLN0og/xI0KuGjkxxCzc8XXtXLaUGfhjyYGoSctilUeKXHb6940owH0g1SgKc0vM4Dy7ioFNMOBbkwrpSea9nTivJrVdRmZ2r+Zi2VmJWjDQUl/9bkg3uKxTNlJpqnc31OX/290xVau/foiNH8P19CE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gTgLgHMG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDF2DC433F1;
-	Thu, 18 Jan 2024 09:57:32 +0000 (UTC)
+	 In-Reply-To; b=WfsxXdulo4su0NIRdNdm4+Qd/Is8cY0RXOvB3Ie+ScZEVPaQ/nC4mDEs+FJclnUoSSCE9CsfPwkpgx3ELkiRW+8Kl10R7tf1BlTDTnYuSOA+XMBV6XsGho9Mk9IMm/67G6SBk0+2ZoX8nlR4BprGGnA0tcx5boHtlFcP3iyKyMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRfOJFZa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D343C43390;
+	Thu, 18 Jan 2024 09:58:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705571853;
-	bh=0YwnoqKFcC2rNWjKNKy28MM27uJ5tkgjUFt5rBX43+I=;
+	s=korg; t=1705571922;
+	bh=Ali6VhBWvgEa8c3vvAdCoQmaY9kgbCr8S1JGwhC2gHI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gTgLgHMGT6bdGjpxmA1MRcUmR7dZNl9QWacLDVlMP1nyMthnvLXQ9lX49jrRQVHk5
-	 /GBbVwlKUiRffAfwahkynndKFWWfSy22JNzfe6Qy4IPXoTAYp1SymTq1yTn9LlPCv5
-	 e76wmVSsUPxNFPdHBm0536Bi56FM/Z55H7dgG6FQ=
-Date: Thu, 18 Jan 2024 10:57:30 +0100
+	b=rRfOJFZatbNWICyCPcGR/P1336TSJmzcwCYLmmzjkk6+zN/tqViE0r7xIJTLrJeGu
+	 EerVcl9D2CfleTpb2RbzsXCR0hbQPCQpNXYA7vmmgHzLDToiZymej5dGGev9YLXZgk
+	 UuEpOB70DglCsjOQnvTi5PxkrC2THbgVDscKjS3g=
+Date: Thu, 18 Jan 2024 10:58:40 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Alex Deucher <alexdeucher@gmail.com>
-Cc: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-	"Siqueira, Rodrigo" <Rodrigo.Siqueira@amd.com>
-Subject: Re: drm/amd/display: Pass pwrseq inst for backlight and ABM
-Message-ID: <2024011822-swell-living-0e94@gregkh>
-References: <CADnq5_PCqgDS=2Gh3QScfhutgY4wf4hoS15fW5Ox-nziXWGnBg@mail.gmail.com>
- <2024011750-outhouse-overbid-9139@gregkh>
- <CADnq5_OsYC2aAo-m5DS+0nPrQ6UfZGCGBDHaYEsvswVVO2+oYg@mail.gmail.com>
+To: Jiri Olsa <jolsa@kernel.org>
+Cc: stable@vger.kernel.org, bpf@vger.kernel.org,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Alan Maguire <alan.maguire@oracle.com>
+Subject: Re: [PATCHv2 stable 6.1 0/2] btf, scripts: Update pahole options
+Message-ID: <2024011832-unsoiled-sublime-9d16@gregkh>
+References: <20240117133520.733288-1-jolsa@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADnq5_OsYC2aAo-m5DS+0nPrQ6UfZGCGBDHaYEsvswVVO2+oYg@mail.gmail.com>
+In-Reply-To: <20240117133520.733288-1-jolsa@kernel.org>
 
-On Wed, Jan 17, 2024 at 12:21:27PM -0500, Alex Deucher wrote:
-> On Wed, Jan 17, 2024 at 11:49 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Wed, Jan 17, 2024 at 11:16:27AM -0500, Alex Deucher wrote:
-> > > Hi Greg, Sasha,
-> > >
-> > > Please cherry pick upstream commit b17ef04bf3a4 ("drm/amd/display:
-> > > Pass pwrseq inst for backlight and ABM") to stable kernel 6.6.x and
-> > > newer.
-> >
-> > It does not apply to 6.6.y, how did you test this?  I've applied it to
-> > 6.7.y now.
-> >
-> > For 6.6.y, we need a backported, and tested, version of the commit to do
-> > anything here.
+On Wed, Jan 17, 2024 at 02:35:18PM +0100, Jiri Olsa wrote:
+> hi,
+> we need to be able to use latest pahole options for 6.1 kernels,
+> updating the scripts/pahole-flags.sh with that (clean backports).
 > 
-> Weird.  `git cherry-pick -x b17ef04bf3a4346d66404454d6a646343ddc9749`
-> worked fine here and we tested that.
+> thanks,
+> jirka
 > 
-> Oh, I see, there is an unused variable warning in the cherry-pick
-> depending on the config.  That must have been what failed.  Attached
-> patch should resolve that.  Sorry for the confusion.
+> v2 changes:
+>   - added missing SOB
+> 
+> ---
+> Alan Maguire (1):
+>       bpf: Add --skip_encoding_btf_inconsistent_proto, --btf_gen_optimized to pahole flags for v1.25
+> 
+> Martin Rodriguez Reboredo (1):
+>       btf, scripts: Exclude Rust CUs with pahole
+> 
+>  init/Kconfig            | 2 +-
+>  lib/Kconfig.debug       | 9 +++++++++
+>  scripts/pahole-flags.sh | 7 +++++++
+>  3 files changed, 17 insertions(+), 1 deletion(-)
+> 
 
-Thanks, now queued up.
+All now queued up, thanks.
 
 greg k-h
 
