@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-11881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 217DA831693
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:21:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D54B3831699
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:24:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E8FFB23933
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:21:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C5401F23402
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E01A208B1;
-	Thu, 18 Jan 2024 10:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0756A208AD;
+	Thu, 18 Jan 2024 10:23:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PzuqU0kc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oDnjrRyg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EAD0208B3
-	for <stable@vger.kernel.org>; Thu, 18 Jan 2024 10:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94A2208A6
+	for <stable@vger.kernel.org>; Thu, 18 Jan 2024 10:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705573269; cv=none; b=SV7xj1KagmBCM78YcBQOijfPndgcNRU1qAZsB3EoPkaHZ4fwtWnAsPOkBu07trp1a9Ce3trb2jkxJJCUCIUAr7rFbuMYmcQog5sXzeo7LXX6tsPrWlvZGsvm7KcSB1WUggy7jFC9PEWjrnYY8c1RaH67W1bQlBUlAF90MIL1AjE=
+	t=1705573438; cv=none; b=iHMsWpEMqsatt700vUhaST5Z/P/t4VV6Am9dcS8iJ+819D/pzlEncZjthP/a4xNYxxbUwlEA10GcG9ZYPNuVtI54RFFmfdE+Kii+rFBvBrxtIXtrfKgiJbfiy/w70tRvEFbMErigldIO2DPCOP0TLbz8AZQlBHshlVOBH1eTdLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705573269; c=relaxed/simple;
-	bh=ClTlNEC4682zCAqN7fYCEyWkyRVVxcQKSmIb3C3NjHs=;
+	s=arc-20240116; t=1705573438; c=relaxed/simple;
+	bh=qR5sZPUVISBt939S3WregiK76MdF8eUVIiHvKSjjfe8=;
 	h=Received:DKIM-Signature:Subject:To:Cc:From:Date:Message-ID:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding; b=Ce/C9hxqJUHRjb3ac4dPcAHbgZRyx7Ub0QLbSH0yXJxQJkpMlX93m7ntPZ/8E2kcnS/wj2W7FjlztpvovDoGBWvc3EJMeycgipRV56UA17gMrcuzX0fAaKVPL8Q529ot+UcOko3H6lt9HPblli8iJTOs9QC2EKtg4KulQY+GjpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PzuqU0kc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C212C433C7;
-	Thu, 18 Jan 2024 10:21:08 +0000 (UTC)
+	 MIME-Version:Content-Type:Content-Transfer-Encoding; b=NLUh/pn3sOpEwDXqtdaIYoOCbGWfgeBTaawVH0Sj4wopitXOpq1Xsrxhoj+hIZa8OP29KX9800Et/TlbZ4YKl4o4J6Ovhp0rhUvmG7M3b76MuXliAayETxL6ARTprkw9A0h+wldavtSdd4XLdZOPpiZVBsAhnllebuBNCBGw1qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oDnjrRyg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F719C433F1;
+	Thu, 18 Jan 2024 10:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705573268;
-	bh=ClTlNEC4682zCAqN7fYCEyWkyRVVxcQKSmIb3C3NjHs=;
+	s=korg; t=1705573438;
+	bh=qR5sZPUVISBt939S3WregiK76MdF8eUVIiHvKSjjfe8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=PzuqU0kcoXivQFqRUCeITfzVJT6mjCP5A1JliHGbOHlRbrbImAiKHvjWVbsle+r4l
-	 0q2E7f/yUR5ADsCMNUFcVvpadZl5DngyZ59cVv+RsrLwqoGDqWGquNCgNpmOUFVHVm
-	 aE21SuXHBCQchSvdX5ElG7SdCQ4oZAyyyvNy/dow=
-Subject: FAILED: patch "[PATCH] ksmbd: don't allow O_TRUNC open on read-only share" failed to apply to 5.15-stable tree
-To: linkinjeon@kernel.org,stfrench@microsoft.com
+	b=oDnjrRygqZmVWSZ2pqN5vGPVugVK9xaofwHrvfp9m90OLJ+vvjRtBREV5fcJWu1mn
+	 PiIPl3+3beWdtb7ixj9MXTrsR6BAJtletdNQHAG4YX5nbCZAIHa0wLGWOpmeHFvCiT
+	 W9vnd2IgUQihD1p1uO4C35020pHTx96bHGeH/79g=
+Subject: FAILED: patch "[PATCH] binder: fix use-after-free in shinker's callback" failed to apply to 5.4-stable tree
+To: cmllamas@google.com,aliceryhl@google.com,gregkh@linuxfoundation.org,liam.howlett@oracle.com,minchan@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 18 Jan 2024 11:21:05 +0100
-Message-ID: <2024011805-atlantic-diffuser-53a5@gregkh>
+Date: Thu, 18 Jan 2024 11:23:55 +0100
+Message-ID: <2024011855-lyricist-marshy-4883@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,28 +54,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x d592a9158a112d419f341f035d18d02f8d232def
+git cherry-pick -x 3f489c2067c5824528212b0fc18b28d51332d906
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024011805-atlantic-diffuser-53a5@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024011855-lyricist-marshy-4883@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-d592a9158a11 ("ksmbd: don't allow O_TRUNC open on read-only share")
-38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
-abdb1742a312 ("cifs: get rid of mount options string parsing")
-9fd29a5bae6e ("cifs: use fs_context for automounts")
-5dd8ce24667a ("cifs: missing directory in MAINTAINERS file")
-332019e23a51 ("Merge tag '5.20-rc-smb3-client-fixes-part2' of git://git.samba.org/sfrench/cifs-2.6")
+
 
 thanks,
 
@@ -83,82 +78,102 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d592a9158a112d419f341f035d18d02f8d232def Mon Sep 17 00:00:00 2001
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Sun, 7 Jan 2024 21:24:07 +0900
-Subject: [PATCH] ksmbd: don't allow O_TRUNC open on read-only share
+From 3f489c2067c5824528212b0fc18b28d51332d906 Mon Sep 17 00:00:00 2001
+From: Carlos Llamas <cmllamas@google.com>
+Date: Fri, 1 Dec 2023 17:21:31 +0000
+Subject: [PATCH] binder: fix use-after-free in shinker's callback
 
-When file is changed using notepad on read-only share(read_only = yes in
-ksmbd.conf), There is a problem where existing data is truncated.
-notepad in windows try to O_TRUNC open(FILE_OVERWRITE_IF) and all data
-in file is truncated. This patch don't allow  O_TRUNC open on read-only
-share and add KSMBD_TREE_CONN_FLAG_WRITABLE check in smb2_set_info().
+The mmap read lock is used during the shrinker's callback, which means
+that using alloc->vma pointer isn't safe as it can race with munmap().
+As of commit dd2283f2605e ("mm: mmap: zap pages with read mmap_sem in
+munmap") the mmap lock is downgraded after the vma has been isolated.
 
+I was able to reproduce this issue by manually adding some delays and
+triggering page reclaiming through the shrinker's debug sysfs. The
+following KASAN report confirms the UAF:
+
+  ==================================================================
+  BUG: KASAN: slab-use-after-free in zap_page_range_single+0x470/0x4b8
+  Read of size 8 at addr ffff356ed50e50f0 by task bash/478
+
+  CPU: 1 PID: 478 Comm: bash Not tainted 6.6.0-rc5-00055-g1c8b86a3799f-dirty #70
+  Hardware name: linux,dummy-virt (DT)
+  Call trace:
+   zap_page_range_single+0x470/0x4b8
+   binder_alloc_free_page+0x608/0xadc
+   __list_lru_walk_one+0x130/0x3b0
+   list_lru_walk_node+0xc4/0x22c
+   binder_shrink_scan+0x108/0x1dc
+   shrinker_debugfs_scan_write+0x2b4/0x500
+   full_proxy_write+0xd4/0x140
+   vfs_write+0x1ac/0x758
+   ksys_write+0xf0/0x1dc
+   __arm64_sys_write+0x6c/0x9c
+
+  Allocated by task 492:
+   kmem_cache_alloc+0x130/0x368
+   vm_area_alloc+0x2c/0x190
+   mmap_region+0x258/0x18bc
+   do_mmap+0x694/0xa60
+   vm_mmap_pgoff+0x170/0x29c
+   ksys_mmap_pgoff+0x290/0x3a0
+   __arm64_sys_mmap+0xcc/0x144
+
+  Freed by task 491:
+   kmem_cache_free+0x17c/0x3c8
+   vm_area_free_rcu_cb+0x74/0x98
+   rcu_core+0xa38/0x26d4
+   rcu_core_si+0x10/0x1c
+   __do_softirq+0x2fc/0xd24
+
+  Last potentially related work creation:
+   __call_rcu_common.constprop.0+0x6c/0xba0
+   call_rcu+0x10/0x1c
+   vm_area_free+0x18/0x24
+   remove_vma+0xe4/0x118
+   do_vmi_align_munmap.isra.0+0x718/0xb5c
+   do_vmi_munmap+0xdc/0x1fc
+   __vm_munmap+0x10c/0x278
+   __arm64_sys_munmap+0x58/0x7c
+
+Fix this issue by performing instead a vma_lookup() which will fail to
+find the vma that was isolated before the mmap lock downgrade. Note that
+this option has better performance than upgrading to a mmap write lock
+which would increase contention. Plus, mmap_write_trylock() has been
+recently removed anyway.
+
+Fixes: dd2283f2605e ("mm: mmap: zap pages with read mmap_sem in munmap")
 Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20231201172212.1813387-3-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index a2f729675183..2a335bfe25a4 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2972,7 +2972,7 @@ int smb2_open(struct ksmbd_work *work)
- 					    &may_flags);
+diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
+index 138f6d43d13b..9d2eff70c3ba 100644
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -1005,7 +1005,9 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+ 		goto err_mmget;
+ 	if (!mmap_read_trylock(mm))
+ 		goto err_mmap_read_lock_failed;
+-	vma = binder_alloc_get_vma(alloc);
++	vma = vma_lookup(mm, page_addr);
++	if (vma && vma != binder_alloc_get_vma(alloc))
++		goto err_invalid_vma;
  
- 	if (!test_tree_conn_flag(tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
--		if (open_flags & O_CREAT) {
-+		if (open_flags & (O_CREAT | O_TRUNC)) {
- 			ksmbd_debug(SMB,
- 				    "User does not have write permission\n");
- 			rc = -EACCES;
-@@ -5944,12 +5944,6 @@ static int smb2_set_info_file(struct ksmbd_work *work, struct ksmbd_file *fp,
- 	}
- 	case FILE_RENAME_INFORMATION:
- 	{
--		if (!test_tree_conn_flag(work->tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
--			ksmbd_debug(SMB,
--				    "User does not have write permission\n");
--			return -EACCES;
--		}
--
- 		if (buf_len < sizeof(struct smb2_file_rename_info))
- 			return -EINVAL;
+ 	list_lru_isolate(lru, item);
+ 	spin_unlock(lock);
+@@ -1031,6 +1033,8 @@ enum lru_status binder_alloc_free_page(struct list_head *item,
+ 	mutex_unlock(&alloc->mutex);
+ 	return LRU_REMOVED_RETRY;
  
-@@ -5969,12 +5963,6 @@ static int smb2_set_info_file(struct ksmbd_work *work, struct ksmbd_file *fp,
- 	}
- 	case FILE_DISPOSITION_INFORMATION:
- 	{
--		if (!test_tree_conn_flag(work->tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
--			ksmbd_debug(SMB,
--				    "User does not have write permission\n");
--			return -EACCES;
--		}
--
- 		if (buf_len < sizeof(struct smb2_file_disposition_info))
- 			return -EINVAL;
- 
-@@ -6036,7 +6024,7 @@ int smb2_set_info(struct ksmbd_work *work)
- {
- 	struct smb2_set_info_req *req;
- 	struct smb2_set_info_rsp *rsp;
--	struct ksmbd_file *fp;
-+	struct ksmbd_file *fp = NULL;
- 	int rc = 0;
- 	unsigned int id = KSMBD_NO_FID, pid = KSMBD_NO_FID;
- 
-@@ -6056,6 +6044,13 @@ int smb2_set_info(struct ksmbd_work *work)
- 		rsp = smb2_get_msg(work->response_buf);
- 	}
- 
-+	if (!test_tree_conn_flag(work->tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
-+		ksmbd_debug(SMB, "User does not have write permission\n");
-+		pr_err("User does not have write permission\n");
-+		rc = -EACCES;
-+		goto err_out;
-+	}
-+
- 	if (!has_file_id(id)) {
- 		id = req->VolatileFileId;
- 		pid = req->PersistentFileId;
++err_invalid_vma:
++	mmap_read_unlock(mm);
+ err_mmap_read_lock_failed:
+ 	mmput_async(mm);
+ err_mmget:
 
 
