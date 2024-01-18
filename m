@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-12110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F02698317CF
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:01:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A0D0831763
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2F4628A79A
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:01:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC81F1C224A9
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9337F241FD;
-	Thu, 18 Jan 2024 11:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B684422F0B;
+	Thu, 18 Jan 2024 10:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pf8Vzove"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLRNFAWu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A9A023757;
-	Thu, 18 Jan 2024 11:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762E522F06;
+	Thu, 18 Jan 2024 10:56:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575635; cv=none; b=PhyrhkIxxZsGcm/fTMmIN1RF2IU6mAHWwTgxkZ9/D0byzb3UlVnRPIsAwVXAQP0ptSf9ZvGJCuleUvazipBEplS/ST3BzdCC2XkZazWAs4xeZFy4HLe1/p4T/XZC+YVOsey40Vu4SuZmFX47AS0ZFeQY9CJj6lI1oGL8Qv3HcwU=
+	t=1705575396; cv=none; b=BUOpEEE8hh4M5hWT099bdciPnHnKSdgR46DSNIWrcWZzD18FvQxPRbY5xUwUVg8oI6cW1gitnYinXBzHK4iJEso4PvIHLHyRlG9s2/hc6b5EOqr8ZmLr3NW0QjA8LTKzRNGx2ghIoSf9b8RYD6/kvafHBsXyyB5S+pmEByNDJTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575635; c=relaxed/simple;
-	bh=f2xveUwfloysFRn2lWwvYQvhFAYoxNEAn+rMfr1/udA=;
+	s=arc-20240116; t=1705575396; c=relaxed/simple;
+	bh=2b8LSXk3RfvAQqSIMf9mwtEBV3qv1r0KRzgHPva7e9M=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=kxeQ3uvwComOvRgz5rvDZgU58txFeEmfLq6jYuZ16OP1Kunshz97B+0l6jw0mI7svGV9G0Mi8jsl7Lwo0dBwKjzEUROeetChSkrD01Ri1ioRzngeCn+axsAtvZBwYrTLloXEbak1UQ5rD8/j+qO0Ju6Ryv0luQNrzXndMvEN6Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pf8Vzove; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFC4AC433C7;
-	Thu, 18 Jan 2024 11:00:34 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=aSwXHaufKVMNtDCEwSIhpGLKz/tKDVuyn11dPMyCZILwI8IJ+PvKsB/7SROv8RibDVDGOBIJyrvf6MCXag6coa/IIJNgxWBDrIpS8P1XHLNsNmhLNtv75IhlUFTuQTYl7vopJGkWRZy3TBEwZUW0ldEUthVtfmv/+z3nh6r6LVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLRNFAWu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF424C433F1;
+	Thu, 18 Jan 2024 10:56:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575635;
-	bh=f2xveUwfloysFRn2lWwvYQvhFAYoxNEAn+rMfr1/udA=;
+	s=korg; t=1705575396;
+	bh=2b8LSXk3RfvAQqSIMf9mwtEBV3qv1r0KRzgHPva7e9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pf8VzoveUkc0CdKk6Uiukhu8GMlN4Qz2MPa8HK+B3HZNaFkNpDTjNgd9G5wbHdOch
-	 D0rZuhHigBTGDoq36eWQWCxzGR3kIf9exOzgwDiPOJ9m+JOdHi35pgxXK6pqsb6/YZ
-	 8JwE5Ih+sIUnx4Tz1XbU7aZPFyOzAn5FUwqjsaps=
+	b=TLRNFAWuDsuH6RrWsAbjPkuYprTjB7VYqeg/ZE5nFzEpbxD/Fv4SS3wxLPf38OUrE
+	 9b8kZfDZyhmGC2iB8gpJbwGSam1IVfreXpXZH3UqgP/Hqp8M4DKcAEmpeL9sQ+QkHO
+	 /IAwhD07P/ro8QaRiJaOvl6WAwHGahNVpc0kQ4TM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Patrick Rudolph <patrick.rudolph@9elements.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/100] tracing: Add size check when printing trace_marker output
+Subject: [PATCH 6.6 117/150] pinctrl: cy8c95x0: Fix regression
 Date: Thu, 18 Jan 2024 11:48:59 +0100
-Message-ID: <20240118104313.128825447@linuxfoundation.org>
+Message-ID: <20240118104325.471458411@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,69 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Patrick Rudolph <patrick.rudolph@9elements.com>
 
-[ Upstream commit 60be76eeabb3d83858cc6577fc65c7d0f36ffd42 ]
+[ Upstream commit 04dfca968cf7349773126340991b68a83378aca2 ]
 
-If for some reason the trace_marker write does not have a nul byte for the
-string, it will overflow the print:
+Commit 1fa3df901f2c ("pinctrl: cy8c95x0: Remove custom ->set_config()")
+removed support for PIN_CONFIG_INPUT_ENABLE and
+PIN_CONFIG_OUTPUT.
 
-  trace_seq_printf(s, ": %s", field->buf);
+Add the following options to restore functionality:
+- PIN_CONFIG_INPUT_ENABLE
+- PIN_CONFIG_OUTPUT_ENABLE
 
-The field->buf could be missing the nul byte. To prevent overflow, add the
-max size that the buf can be by using the event size and the field
-location.
-
-  int max = iter->ent_size - offsetof(struct print_entry, buf);
-
-  trace_seq_printf(s, ": %*.s", max, field->buf);
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231212084444.4619b8ce@gandalf.local.home
-
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Patrick Rudolph <patrick.rudolph@9elements.com>
+Link: https://lore.kernel.org/r/20231219125120.4028862-2-patrick.rudolph@9elements.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_output.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/pinctrl/pinctrl-cy8c95x0.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/kernel/trace/trace_output.c b/kernel/trace/trace_output.c
-index 5cd4fb656306..bf1965b18099 100644
---- a/kernel/trace/trace_output.c
-+++ b/kernel/trace/trace_output.c
-@@ -1445,11 +1445,12 @@ static enum print_line_t trace_print_print(struct trace_iterator *iter,
+diff --git a/drivers/pinctrl/pinctrl-cy8c95x0.c b/drivers/pinctrl/pinctrl-cy8c95x0.c
+index 993b30ebc684..280d7ebd50b7 100644
+--- a/drivers/pinctrl/pinctrl-cy8c95x0.c
++++ b/drivers/pinctrl/pinctrl-cy8c95x0.c
+@@ -307,6 +307,9 @@ static const char * const cy8c95x0_groups[] = {
+ 	"gp77",
+ };
+ 
++static int cy8c95x0_pinmux_direction(struct cy8c95x0_pinctrl *chip,
++				     unsigned int pin, bool input);
++
+ static inline u8 cypress_get_port(struct cy8c95x0_pinctrl *chip, unsigned int pin)
  {
- 	struct print_entry *field;
- 	struct trace_seq *s = &iter->seq;
-+	int max = iter->ent_size - offsetof(struct print_entry, buf);
+ 	/* Account for GPORT2 which only has 4 bits */
+@@ -726,6 +729,7 @@ static int cy8c95x0_gpio_set_pincfg(struct cy8c95x0_pinctrl *chip,
+ 	u8 port = cypress_get_port(chip, off);
+ 	u8 bit = cypress_get_pin_mask(chip, off);
+ 	unsigned long param = pinconf_to_config_param(config);
++	unsigned long arg = pinconf_to_config_argument(config);
+ 	unsigned int reg;
+ 	int ret;
  
- 	trace_assign_type(field, iter->ent);
- 
- 	seq_print_ip_sym(s, field->ip, flags);
--	trace_seq_printf(s, ": %s", field->buf);
-+	trace_seq_printf(s, ": %.*s", max, field->buf);
- 
- 	return trace_handle_return(s);
- }
-@@ -1458,10 +1459,11 @@ static enum print_line_t trace_print_raw(struct trace_iterator *iter, int flags,
- 					 struct trace_event *event)
- {
- 	struct print_entry *field;
-+	int max = iter->ent_size - offsetof(struct print_entry, buf);
- 
- 	trace_assign_type(field, iter->ent);
- 
--	trace_seq_printf(&iter->seq, "# %lx %s", field->ip, field->buf);
-+	trace_seq_printf(&iter->seq, "# %lx %.*s", field->ip, max, field->buf);
- 
- 	return trace_handle_return(&iter->seq);
- }
+@@ -764,6 +768,12 @@ static int cy8c95x0_gpio_set_pincfg(struct cy8c95x0_pinctrl *chip,
+ 	case PIN_CONFIG_MODE_PWM:
+ 		reg = CY8C95X0_PWMSEL;
+ 		break;
++	case PIN_CONFIG_OUTPUT_ENABLE:
++		ret = cy8c95x0_pinmux_direction(chip, off, !arg);
++		goto out;
++	case PIN_CONFIG_INPUT_ENABLE:
++		ret = cy8c95x0_pinmux_direction(chip, off, arg);
++		goto out;
+ 	default:
+ 		ret = -ENOTSUPP;
+ 		goto out;
 -- 
 2.43.0
 
