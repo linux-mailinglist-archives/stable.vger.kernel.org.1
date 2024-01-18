@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-11892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D07328316D4
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:50:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B32488317C8
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:01:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E77C1C2223A
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:50:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86D5B28A537
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27877241EF;
-	Thu, 18 Jan 2024 10:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0672377A;
+	Thu, 18 Jan 2024 11:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KAgwehJz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWlqcLm2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA79722F09;
-	Thu, 18 Jan 2024 10:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2742375B;
+	Thu, 18 Jan 2024 11:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575026; cv=none; b=Zw4RQ9j3niF4oHLubuF4ZvP5Cwg9OiqCE2evTQRoKMKJDO8/1fEuJ5MXgwLLtkTI8byMkS9DqqyngTQfTUWsv0JsmtkSQydpyBY9jhzbd9iccUcFCdEa1Iz55wdQqIV42Xq3KOf+UrwYHeiOx8wAu1jk5UQ480swxqURnp+UnEk=
+	t=1705575618; cv=none; b=I+ktarkEBpwNjL4X2iJt9hzuAPLayQeEiY/osJvyB+8C51xEkH+w8ekMcWEj2+r8umRThK73H8Luv8RNSPsVLkW/EszJhsLqnmr8H8yt4z+c7og78mfsWMoQ+ogyVEt79hJzn/p1L/xWED9V1w9HgWXoJPDxQHLsJhcpn7xvHi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575026; c=relaxed/simple;
-	bh=xtzDBWg56CYNg1PLLR16q7sU+GhYzBLlsfnwOZqRZtI=;
+	s=arc-20240116; t=1705575618; c=relaxed/simple;
+	bh=cA63myGio3TwFy2HqvICzw5xyr51MNpS/5K08bvm6m8=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=eS1DKvu4q+6S4UqDwNmEtu4FDlGBbbZ60ueuJ4HYi61PNFz7B3t69JsBxB3zC5qoD/jXbF/ifMuPto0OqAD+/TWHql7jQytUXL0ViByGlK+qxVTq++TUBPMvkEJ/TrPz3qDlQzvn8rvb+17MgWsxVMU6tDbAqzVLfsE4G1h0jJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KAgwehJz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D794C433F1;
-	Thu, 18 Jan 2024 10:50:25 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=pah9KRu5xqTqyGc4KmsftKRe7T3V5VIhMqkaRKT8soc1R6qM7iOS0N+JUr+BszmwDqBU/fGsmtWNafRHxiERLF8vYEs1SOxs2YbsEroVQnD+vxdTcatZJdaAZn/TJNQz1GJ/tu6b2hxJCrXzgSJeTA+ZJyv4uv9yWQOZMUbmpPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWlqcLm2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D47C433F1;
+	Thu, 18 Jan 2024 11:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575026;
-	bh=xtzDBWg56CYNg1PLLR16q7sU+GhYzBLlsfnwOZqRZtI=;
+	s=korg; t=1705575618;
+	bh=cA63myGio3TwFy2HqvICzw5xyr51MNpS/5K08bvm6m8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KAgwehJzv1wCnSawdCR6wHlTLFU5MF4CsEUeDKjruwfLduCHAdGbuGkHgfKM5j0pA
-	 8QyfpJi7FSCo/EzB+7hkt2RrNUNIVj2e7M+OUa4uqRoQEyZC1+scKIpv9/bFp6c48q
-	 eBpF2ddg26m8+chPxX7GgpPfsA1qVT+mFECkLeoA=
+	b=BWlqcLm2l/keRVgS0xyHNpIQxxDvymjrlMvvKJ8jknZgOchdgQdl37aUU1elRAuJj
+	 E5Fd+Mm9lJFxycn1Dvx2UAkYkndnBzFGG97AVfYXLKceCRiR5NV2ItTldFO4WAKEYg
+	 ntiG6Frh53fUA4i20zxB6Tn1Li4ZEha0nHLTlco0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.7 03/28] ALSA: hda: cs35l41: Support additional Dell models without _DSD
-Date: Thu, 18 Jan 2024 11:48:53 +0100
-Message-ID: <20240118104301.359206991@linuxfoundation.org>
+	syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com,
+	Ziqi Zhao <astrajoan@yahoo.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 046/100] drm/crtc: Fix uninit-value bug in drm_mode_setcrtc
+Date: Thu, 18 Jan 2024 11:48:54 +0100
+Message-ID: <20240118104312.914325629@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
-References: <20240118104301.249503558@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +65,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Ziqi Zhao <astrajoan@yahoo.com>
 
-commit ee694e7db47e1af00ffb29f569904a9ed576868f upstream.
+[ Upstream commit 3823119b9c2b5f9e9b760336f75bc989b805cde6 ]
 
-Add new model entries into configuration table.
+The connector_set contains uninitialized values when allocated with
+kmalloc_array. However, in the "out" branch, the logic assumes that any
+element in connector_set would be equal to NULL if failed to
+initialize, which causes the bug reported by Syzbot. The fix is to use
+an extra variable to keep track of how many connectors are initialized
+indeed, and use that variable to decrease any refcounts in the "out"
+branch.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Cc: <stable@vger.kernel.org> # v6.7+
-Link: https://lore.kernel.org/r/20231221132518.3213-2-sbinding@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
+Signed-off-by: Ziqi Zhao <astrajoan@yahoo.com>
+Reported-and-tested-by: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
+Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Link: https://lore.kernel.org/r/20230721161446.8602-1-astrajoan@yahoo.com
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/cs35l41_hda_property.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/drm_crtc.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/sound/pci/hda/cs35l41_hda_property.c
-+++ b/sound/pci/hda/cs35l41_hda_property.c
-@@ -35,6 +35,10 @@ struct cs35l41_config {
- };
+diff --git a/drivers/gpu/drm/drm_crtc.c b/drivers/gpu/drm/drm_crtc.c
+index df9bf3c9206e..d718c17ab1e9 100644
+--- a/drivers/gpu/drm/drm_crtc.c
++++ b/drivers/gpu/drm/drm_crtc.c
+@@ -715,8 +715,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 	struct drm_mode_set set;
+ 	uint32_t __user *set_connectors_ptr;
+ 	struct drm_modeset_acquire_ctx ctx;
+-	int ret;
+-	int i;
++	int ret, i, num_connectors;
  
- static const struct cs35l41_config cs35l41_config_table[] = {
-+	{ "10280B27", SPI, 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, 2, 0, 1000, 4500, 24 },
-+	{ "10280B28", SPI, 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, 2, 0, 1000, 4500, 24 },
-+	{ "10280BEB", SPI, 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, -1, 0, 0, 0, 0 },
-+	{ "10280C4D", I2C, 4, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, CS35L41_LEFT, CS35L41_RIGHT }, 0, 1, -1, 1000, 4500, 24 },
- /*
-  * Device 103C89C6 does have _DSD, however it is setup to use the wrong boost type.
-  * We can override the _DSD to correct the boost type here.
-@@ -345,6 +349,10 @@ struct cs35l41_prop_model {
- static const struct cs35l41_prop_model cs35l41_prop_model_table[] = {
- 	{ "CLSA0100", NULL, lenovo_legion_no_acpi },
- 	{ "CLSA0101", NULL, lenovo_legion_no_acpi },
-+	{ "CSC3551", "10280B27", generic_dsd_config },
-+	{ "CSC3551", "10280B28", generic_dsd_config },
-+	{ "CSC3551", "10280BEB", generic_dsd_config },
-+	{ "CSC3551", "10280C4D", generic_dsd_config },
- 	{ "CSC3551", "103C89C6", generic_dsd_config },
- 	{ "CSC3551", "104312AF", generic_dsd_config },
- 	{ "CSC3551", "10431433", generic_dsd_config },
+ 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
+ 		return -EOPNOTSUPP;
+@@ -851,6 +850,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 			goto out;
+ 		}
+ 
++		num_connectors = 0;
+ 		for (i = 0; i < crtc_req->count_connectors; i++) {
+ 			connector_set[i] = NULL;
+ 			set_connectors_ptr = (uint32_t __user *)(unsigned long)crtc_req->set_connectors_ptr;
+@@ -871,6 +871,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 					connector->name);
+ 
+ 			connector_set[i] = connector;
++			num_connectors++;
+ 		}
+ 	}
+ 
+@@ -879,7 +880,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 	set.y = crtc_req->y;
+ 	set.mode = mode;
+ 	set.connectors = connector_set;
+-	set.num_connectors = crtc_req->count_connectors;
++	set.num_connectors = num_connectors;
+ 	set.fb = fb;
+ 
+ 	if (drm_drv_uses_atomic_modeset(dev))
+@@ -892,7 +893,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 		drm_framebuffer_put(fb);
+ 
+ 	if (connector_set) {
+-		for (i = 0; i < crtc_req->count_connectors; i++) {
++		for (i = 0; i < num_connectors; i++) {
+ 			if (connector_set[i])
+ 				drm_connector_put(connector_set[i]);
+ 		}
+-- 
+2.43.0
+
 
 
 
