@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-12086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F56C8317AA
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:59:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30829831766
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1947B24785
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:59:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 030A2287AE1
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9751E241EA;
-	Thu, 18 Jan 2024 10:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3670222F0B;
+	Thu, 18 Jan 2024 10:56:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJeKEJBR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vmTR59iq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B8D2377D;
-	Thu, 18 Jan 2024 10:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96961774B;
+	Thu, 18 Jan 2024 10:56:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575566; cv=none; b=DQTz6f3iNFD4mY8evAxeq+ntUBPkwnnZBGpvM+DQcsg/U032Ixe7n0BQAj+xkffE/mhyeg6o2FN/lNktmsOl3MpJFv7GasW7GBrvEFfDOIX3So1nBsgI7ijra4rnXRFHE92BtPbHbjoew4VRRydNw/un1vy/1pza3AxgR0jQ9og=
+	t=1705575405; cv=none; b=toQ4JvsG4ZPZLrC081yNVy6xlJEZdVT+UnQHijd9O5Gm8FAEVOIWOVZsZ5ruJEmWYEq0IJUzEFGXFHfELTPJVgbhoV59UjPktsgwfFe8lmGV/KuEyg//Hp3VR9nLzD9v92Xz/nExL5yZDYCB/937Dj0Iu9dlSheJGybJo2G6Ddc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575566; c=relaxed/simple;
-	bh=jPVWix6dJNZGrfrBfOhAroqBmKBTKzG76p9chJl4Koo=;
+	s=arc-20240116; t=1705575405; c=relaxed/simple;
+	bh=2fuKmE0iJtvMy94Ov77WFG26ZZc2DylF33HyxXbt0iE=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=ucEikHv51bL/5SKw6Se0yND14mfiCWr8dFh7TbroeA9rEtjXOgsu9Ax3jI9rz0DWUR60CNlwgWwrTRq32RAWMdMzVScTlfVEbVecoVXyUtndkxOVE7mng091+/RScxRsfgGLCi5Dv+dmpvmTZSD6IrlEZop/EKQNPvfgDe3QL0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJeKEJBR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF7CDC433F1;
-	Thu, 18 Jan 2024 10:59:25 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=QDEc5nTciu7halZPVqu8EUWSq2N7TOqQKxpsP5DqH0LbDmJQXTkxS8wLDOs7Bc+Dol+UXrkzYR7z7mg5Z1uQ4g4AQ/GDJqYrTmjy9KOfYgnCHq0Z6psWHSPkSRNI7AzcGiJNTOBbXjIfqFKEZxC3AtzYV1ZXPWY++t6sj7wPC+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vmTR59iq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E2C1C433F1;
+	Thu, 18 Jan 2024 10:56:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575566;
-	bh=jPVWix6dJNZGrfrBfOhAroqBmKBTKzG76p9chJl4Koo=;
+	s=korg; t=1705575404;
+	bh=2fuKmE0iJtvMy94Ov77WFG26ZZc2DylF33HyxXbt0iE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XJeKEJBR05c3al5gOJvxEvCT6fGd/3Wun2H4p+ma18y6tFZ6ay30d1PmzmpRiSGxF
-	 HweBRrq7xw6J6TxVORnuVU9MMignMtonoDSky8sjx8cY6SYeoaR8jn/g89MefpVF7l
-	 1qvi1Ed5tKa2L0GIPusudj4999LlbLYeWGEUYCW4=
+	b=vmTR59iqYlLrha38En8bH+Egmyvch/+7sFeYjrUidEX31yG196nLQymjaZs9Qz6fc
+	 Cg9l+L8iBXu04mL6GvPryyvgRUgGown9SuYLSmfeq3Wiqn+nGTVrVnr7ynD7KaMpeB
+	 4bghT3vHzFGSq9xcM8DIxk3ZF9HM1laPPM8H+JUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Airlie <airlied@redhat.com>,
-	Danilo Krummrich <dakr@redhat.com>,
+	Vineeth Vijayan <vneethv@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 027/100] nouveau/tu102: flush all pdbs on vmm flush
+Subject: [PATCH 6.6 093/150] s390/scm: fix virtual vs physical address confusion
 Date: Thu, 18 Jan 2024 11:48:35 +0100
-Message-ID: <20240118104312.094901334@linuxfoundation.org>
+Message-ID: <20240118104324.251311072@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Airlie <airlied@redhat.com>
+From: Vineeth Vijayan <vneethv@linux.ibm.com>
 
-[ Upstream commit cb9c919364653eeafb49e7ff5cd32f1ad64063ac ]
+[ Upstream commit b1a6a1a77f0666a5a6dc0893ab6ec8fcae46f24c ]
 
-This is a hack around a bug exposed with the GSP code, I'm not sure
-what is happening exactly, but it appears some of our flushes don't
-result in proper tlb invalidation for out BAR2 and we get a BAR2
-fault from GSP and it all dies.
+Fix virtual vs physical address confusion (which currently are the same).
 
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231130010852.4034774-1-airlied@gmail.com
+Signed-off-by: Vineeth Vijayan <vneethv@linux.ibm.com>
+Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/subdev/mmu/vmmtu102.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/s390/block/scm_blk.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/mmu/vmmtu102.c b/drivers/gpu/drm/nouveau/nvkm/subdev/mmu/vmmtu102.c
-index 6cb5eefa45e9..5a08458fe1b7 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/mmu/vmmtu102.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/mmu/vmmtu102.c
-@@ -31,7 +31,7 @@ tu102_vmm_flush(struct nvkm_vmm *vmm, int depth)
+diff --git a/drivers/s390/block/scm_blk.c b/drivers/s390/block/scm_blk.c
+index 3a9cc8a4a230..ade95e91b3c8 100644
+--- a/drivers/s390/block/scm_blk.c
++++ b/drivers/s390/block/scm_blk.c
+@@ -17,6 +17,7 @@
+ #include <linux/blk-mq.h>
+ #include <linux/slab.h>
+ #include <linux/list.h>
++#include <linux/io.h>
+ #include <asm/eadm.h>
+ #include "scm_blk.h"
  
- 	type |= 0x00000001; /* PAGE_ALL */
- 	if (atomic_read(&vmm->engref[NVKM_SUBDEV_BAR]))
--		type |= 0x00000004; /* HUB_ONLY */
-+		type |= 0x00000006; /* HUB_ONLY | ALL PDB (hack) */
+@@ -130,7 +131,7 @@ static void scm_request_done(struct scm_request *scmrq)
  
- 	mutex_lock(&vmm->mmu->mutex);
+ 	for (i = 0; i < nr_requests_per_io && scmrq->request[i]; i++) {
+ 		msb = &scmrq->aob->msb[i];
+-		aidaw = msb->data_addr;
++		aidaw = (u64)phys_to_virt(msb->data_addr);
+ 
+ 		if ((msb->flags & MSB_FLAG_IDA) && aidaw &&
+ 		    IS_ALIGNED(aidaw, PAGE_SIZE))
+@@ -195,12 +196,12 @@ static int scm_request_prepare(struct scm_request *scmrq)
+ 	msb->scm_addr = scmdev->address + ((u64) blk_rq_pos(req) << 9);
+ 	msb->oc = (rq_data_dir(req) == READ) ? MSB_OC_READ : MSB_OC_WRITE;
+ 	msb->flags |= MSB_FLAG_IDA;
+-	msb->data_addr = (u64) aidaw;
++	msb->data_addr = (u64)virt_to_phys(aidaw);
+ 
+ 	rq_for_each_segment(bv, req, iter) {
+ 		WARN_ON(bv.bv_offset);
+ 		msb->blk_count += bv.bv_len >> 12;
+-		aidaw->data_addr = (u64) page_address(bv.bv_page);
++		aidaw->data_addr = virt_to_phys(page_address(bv.bv_page));
+ 		aidaw++;
+ 	}
  
 -- 
 2.43.0
