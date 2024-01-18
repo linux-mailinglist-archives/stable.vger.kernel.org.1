@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-12063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 263AE83178A
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:58:26 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E0C8317FF
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:03:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5928F1C22886
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:58:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E93121C23B5A
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:03:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C47523754;
-	Thu, 18 Jan 2024 10:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6CF24B25;
+	Thu, 18 Jan 2024 11:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MpFTAmnL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bfALDnnh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA381774B;
-	Thu, 18 Jan 2024 10:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0C21774B;
+	Thu, 18 Jan 2024 11:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575502; cv=none; b=Fq6FpT2MaCj68eAMri+DweoPJLdHK4o08UC+PnYB28lrFyZbalfFBhfzTGO7XjvaD3JziZ1y11wdlR2qi69CrFGrC9cQMbEC/kJpLrdlQ0O7faK6g01aG1ol4FPnSlecCg0pilbDbEOBTpO3Y9y+GivFGvhZ4J+BGknwAwY4sb0=
+	t=1705575750; cv=none; b=tm9JTkzsNAXuScvyNon5JN9e9d6h3/X/Sbt5b7Qt6n3jQjFZ5FEZpwCj4SIUrLmh32EhIBvjvvMojrJtzXTI1f+iyua8KUu/xY++x+ap0UjVwUO6wIRkTjR/Gupf26Q9gYKdz13xDJQjsb9lGww9EGYyTVqoAvidrmA7VzUOYqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575502; c=relaxed/simple;
-	bh=Rqt9d8H9b7ON2dY22pUE5JwX1GzNwB3+PYGDm4bKB/E=;
+	s=arc-20240116; t=1705575750; c=relaxed/simple;
+	bh=dQCAJ85MB+Ou5E/5mmV3FPatQuBZNyv+xPlg1fbjEB4=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=KiUKZS35UA3nPOAVkzoyfObq9YON7qDkU8OCpCghqJ9bh2g7br3+Q+z/eqMIXfNuiv2jg+OlspWrNbUAVzQHNAbVHfgmpUZKH7ehxtlVCRZ89dc28C9EW93Kca8lHRlOtQr2et6fV7UW4XD8wTnRtCbu089XC6Mf0mGjFkw1EmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MpFTAmnL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18ECC433F1;
-	Thu, 18 Jan 2024 10:58:21 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=kxIa2Gj3L6J0ckDgaKn9dWKUJeLCJ/AYQnPXzpc/KlD0pCSQrY//7WbayrfyiCZF+cvS25KgJygAe9xewPvhgdhK4UX5MN79xQ+8h+anxm8EVV3ZjXpHO1ZFiTdxZ0UKeNtM6waRlNx3hPiBwTDYSGyANsSl3nokqUnzVRUsssk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bfALDnnh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38A6C43601;
+	Thu, 18 Jan 2024 11:02:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575502;
-	bh=Rqt9d8H9b7ON2dY22pUE5JwX1GzNwB3+PYGDm4bKB/E=;
+	s=korg; t=1705575750;
+	bh=dQCAJ85MB+Ou5E/5mmV3FPatQuBZNyv+xPlg1fbjEB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MpFTAmnLYx+DzpKxhXO/jxzN+fklmEPLz8kgGOvq1f4y5DoLx2B+7aCJQuhBTQF0R
-	 aN3U9OiC/sCdVmPchK65S8ea/VGPpM6pOwRSPUPvmOvzEMWwjzHQNyBXS0KYeNWHVv
-	 jEdM3qSWbaJj2oDAXPkqgHLPgrwjfPDe0Dg3ktRU=
+	b=bfALDnnhG1/ZqWgw1Oe3Osb2gV/jUjEaKzRniHlCCa6QVUbpVlAyRMSNFxAeKZLE6
+	 7nw7FOoqxEnDAgj29U8+mFcRPaHdSTRQlFpYDRNvzhJa1SE1RCWSTxreKqIK7p+17F
+	 Fg/+AYHSFsL/IP6Pdcw6ufKTMqdSVSKIG4baM7oM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	x86@kernel.org
-Subject: [PATCH 6.6 129/150] x86/microcode: do not cache microcode if it will not be used
-Date: Thu, 18 Jan 2024 11:49:11 +0100
-Message-ID: <20240118104326.023345747@linuxfoundation.org>
+	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 064/100] kselftest: alsa: fixed a print formatting warning
+Date: Thu, 18 Jan 2024 11:49:12 +0100
+Message-ID: <20240118104313.720966799@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-No relevant upstream kernel due to refactoring in 6.7
+From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
 
-Builtin/initrd microcode will not be used the ucode loader is disabled.
-But currently, save_microcode_in_initrd is always performed and it
-accesses MSR_IA32_UCODE_REV even if dis_ucode_ldr is true, and in
-particular even if X86_FEATURE_HYPERVISOR is set; the TDX module does not
-implement the MSR and the result is a call trace at boot for TDX guests.
+[ Upstream commit 13d605e32e4cfdedcecdf3d98d21710ffe887708 ]
 
-Mainline Linux fixed this as part of a more complex rework of microcode
-caching that went into 6.7 (see in particular commits dd5e3e3ca6,
-"x86/microcode/intel: Simplify early loading"; and a7939f0167203,
-"x86/microcode/amd: Cache builtin/initrd microcode early").  Do the bare
-minimum in stable kernels, setting initrd_gone just like mainline Linux
-does in mark_initrd_gone().
+A statement used %d print formatter where %s should have
+been used. The same has been fixed in this commit.
 
-Note that save_microcode_in_initrd() is not in the microcode application
-path, which runs with paging disabled on 32-bit systems, so it can (and
-has to) use dis_ucode_ldr instead of check_loader_disabled_ap().
-
-Cc: stable@vger.kernel.org # v6.6+
-Cc: x86@kernel.org # v6.6+
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+Link: 5aaf9efffc57 ("kselftest: alsa: Add simplistic test for ALSA mixer controls kselftest")
+Link: https://lore.kernel.org/r/20231217080019.1063476-1-ghanshyam1898@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/microcode/core.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ tools/testing/selftests/alsa/mixer-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -208,6 +208,11 @@ static int __init save_microcode_in_init
- 	struct cpuinfo_x86 *c = &boot_cpu_data;
- 	int ret = -EINVAL;
- 
-+	if (dis_ucode_ldr) {
-+		ret = 0;
-+		goto out;
-+	}
-+
- 	switch (c->x86_vendor) {
- 	case X86_VENDOR_INTEL:
- 		if (c->x86 >= 6)
-@@ -221,6 +226,7 @@ static int __init save_microcode_in_init
- 		break;
- 	}
- 
-+out:
- 	initrd_gone = true;
- 
- 	return ret;
+diff --git a/tools/testing/selftests/alsa/mixer-test.c b/tools/testing/selftests/alsa/mixer-test.c
+index a38b89c28030..37da902545a4 100644
+--- a/tools/testing/selftests/alsa/mixer-test.c
++++ b/tools/testing/selftests/alsa/mixer-test.c
+@@ -177,7 +177,7 @@ static void find_controls(void)
+ 			err = snd_ctl_elem_info(card_data->handle,
+ 						ctl_data->info);
+ 			if (err < 0) {
+-				ksft_print_msg("%s getting info for %d\n",
++				ksft_print_msg("%s getting info for %s\n",
+ 					       snd_strerror(err),
+ 					       ctl_data->name);
+ 			}
+-- 
+2.43.0
+
 
 
 
