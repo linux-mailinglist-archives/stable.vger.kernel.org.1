@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-11900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B3228316DD
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:51:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E4E0831770
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:57:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06F61283B84
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:51:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7A56287D75
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33AE241EB;
-	Thu, 18 Jan 2024 10:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2F3922F1B;
+	Thu, 18 Jan 2024 10:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TdOPLAT/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbcKd8Ig"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04DA23773;
-	Thu, 18 Jan 2024 10:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1A2B1774B;
+	Thu, 18 Jan 2024 10:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575048; cv=none; b=b5Kv+bTIOYEKZihxswwMN3vsjGA+LWSWhilfcsPwAbZaRT7WLshk3nG/tm1pbY6zihwvLbwTCQV3GCCGl5xUCGL833yoAB7piZamZlJ3KDoLu9r0Z1/IfHKHdOhL9ZHdEphhG/sqmURladyXtKaDMcRTdvOvMh8N3smu5joeXKI=
+	t=1705575432; cv=none; b=cQOckc+MM8i6v2gLlZMmzHHSeKwvMKo2dnJdzk6DTGbtODtpzBFyp/liY/KJej4tyiubnUMtxu8lItvKbcRDCQnh7R/zgZSbbQko2bWH6ZlZe5gC2MJ09VQ3/tdPzo+aWgtLp1puEAKnCndW8QsGG3PmEVkntIglm/6UsBHkwKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575048; c=relaxed/simple;
-	bh=socXSL5kwuZNzamP8PEY39QdEIQfEEdYHL5YYpL/FGk=;
+	s=arc-20240116; t=1705575432; c=relaxed/simple;
+	bh=0jHz9hCWb+VOSkNm5IqLSKFYfA8pC+EjAOhrqscCq6M=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=Ql3oEOZmUe9fQmWKUCC/m6PDvwFX9pj4Lpaz+1Uvm0kxxj3153luwf3S3W+TKrY5gTpPMEa45vBctSloxy0Bz97kDeGddIH+Zd08i38rhOplmqLqfZAp+ip3QlFyJKjiDVx2x+3wXkT92jRsnrkF2yZto/BZOdHEOkAP7rU3FCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TdOPLAT/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2631DC433C7;
-	Thu, 18 Jan 2024 10:50:47 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=riyGuKUfrIExjkwfIIcchwby5HsY+Z9JtttrF3UZjZkQO8BshKAe8VcJ3UzgrGmlhE1sFfRIIEnAg1rY87ETyPB/iYv6fIPrK/Zpj4oO4ZJil4VivEq3G1HTIngQghj46PvU+Osyb8xJ03Qf7YTT0HYUGveQSg0k97r/vDyuiRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbcKd8Ig; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340FBC433F1;
+	Thu, 18 Jan 2024 10:57:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575048;
-	bh=socXSL5kwuZNzamP8PEY39QdEIQfEEdYHL5YYpL/FGk=;
+	s=korg; t=1705575432;
+	bh=0jHz9hCWb+VOSkNm5IqLSKFYfA8pC+EjAOhrqscCq6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TdOPLAT//mUpvHGaSitZDT6Rm1TilYeCsG2SnnqqbcI4fFsBday+Eddny3D0UGTWa
-	 gi+KlDf6XbuJ5CPJFwphuWaKP2JASqg8fkWXppq3VQKdJ3imhRoCjjIT/YblQ6GO9p
-	 dbaRC5WxqU5UWuZamlRLvEluwt1ZI/V/Ap1c23UY=
+	b=dbcKd8Ig4N+TIe6XtLBKJQh/p9wurJqplDcNbauTuwYSNZf28nDBWezmCNX/EOTan
+	 wtmkIf8iFu0ZZeMaT3UH3UV0Lpdg4arvEICTTreuW6GGk9ZwkELs7r6BDU6/wob+Bw
+	 2DdrNdSn9qOL+WxJoIfC/RGEfLbRUQdo8MJc5t4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.7 14/28] ksmbd: free ppace array on error in parse_dacl
-Date: Thu, 18 Jan 2024 11:49:04 +0100
-Message-ID: <20240118104301.724392561@linuxfoundation.org>
+	Sarannya Sasikumar <quic_sarannya@quicinc.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 123/150] net: qrtr: ns: Return 0 if server port is not present
+Date: Thu, 18 Jan 2024 11:49:05 +0100
+Message-ID: <20240118104325.750085325@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
-References: <20240118104301.249503558@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Sarannya S <quic_sarannya@quicinc.com>
 
-commit 8cf9bedfc3c47d24bb0de386f808f925dc52863e upstream.
+[ Upstream commit 9bf2e9165f90dc9f416af53c902be7e33930f728 ]
 
-The ppace array is not freed if one of the init_acl_state() calls inside
-parse_dacl() fails. At the moment the function may fail only due to the
-memory allocation errors so it's highly unlikely in this case but
-nevertheless a fix is needed.
+When a 'DEL_CLIENT' message is received from the remote, the corresponding
+server port gets deleted. A DEL_SERVER message is then announced for this
+server. As part of handling the subsequent DEL_SERVER message, the name-
+server attempts to delete the server port which results in a '-ENOENT' error.
+The return value from server_del() is then propagated back to qrtr_ns_worker,
+causing excessive error prints.
+To address this, return 0 from control_cmd_del_server() without checking the
+return value of server_del(), since the above scenario is not an error case
+and hence server_del() doesn't have any other error return value.
 
-Move ppace allocation after the init_acl_state() calls with proper error
-handling.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sarannya Sasikumar <quic_sarannya@quicinc.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smbacl.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ net/qrtr/ns.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -401,10 +401,6 @@ static void parse_dacl(struct mnt_idmap
- 	if (num_aces > ULONG_MAX / sizeof(struct smb_ace *))
- 		return;
+diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+index b1db0b519179..abb0c70ffc8b 100644
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -512,7 +512,9 @@ static int ctrl_cmd_del_server(struct sockaddr_qrtr *from,
+ 	if (!node)
+ 		return -ENOENT;
  
--	ppace = kmalloc_array(num_aces, sizeof(struct smb_ace *), GFP_KERNEL);
--	if (!ppace)
--		return;
--
- 	ret = init_acl_state(&acl_state, num_aces);
- 	if (ret)
- 		return;
-@@ -413,6 +409,13 @@ static void parse_dacl(struct mnt_idmap
- 		free_acl_state(&acl_state);
- 		return;
- 	}
+-	return server_del(node, port, true);
++	server_del(node, port, true);
 +
-+	ppace = kmalloc_array(num_aces, sizeof(struct smb_ace *), GFP_KERNEL);
-+	if (!ppace) {
-+		free_acl_state(&default_acl_state);
-+		free_acl_state(&acl_state);
-+		return;
-+	}
++	return 0;
+ }
  
- 	/*
- 	 * reset rwx permissions for user/group/other.
+ static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
+-- 
+2.43.0
+
 
 
 
