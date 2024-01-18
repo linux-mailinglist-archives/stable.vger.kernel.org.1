@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-12134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739148317EB
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A52283177E
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:57:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15AAD1F219D1
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED8D5B2173D
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A547423766;
-	Thu, 18 Jan 2024 11:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E64E22F1B;
+	Thu, 18 Jan 2024 10:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDcvkrpf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TS4XYhXt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6326D1774B;
-	Thu, 18 Jan 2024 11:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF2D22F06;
+	Thu, 18 Jan 2024 10:57:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575704; cv=none; b=h3pXqr6pAV2v/fJc8atCXgrXPoWYdBU7DqaxDiWrDyL89nkH08gERNw59OxFvToLKmcnFOjFvqQFPWZSjbeT/bJctKMwW/hxq3TOV6fOp9+vz48yl8u/oN2ranGbjlgj7w0wr2x2+DCTVxtQH83cvoGa5OU2MzDBcAmmrb4Nj4U=
+	t=1705575469; cv=none; b=N+RUrIfDCeiwzwOQLZVWXIig/HJ7xgsmkyhcaHilEkADpYSj9CcqGLAQ+FI03Hxom577U1JhjX05uCFQI0mD5hTqom4n7zHrcoy9rf35Lfwk4Fk3SM1JWxTzPDW14Wi7rpyCoqef8KIiJrnU3BGSnd4kUwMTXP+19bRlU1ml+B4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575704; c=relaxed/simple;
-	bh=gHUQ/oF0m5GJ2z7vNe5cuMlkYnY6Hi3t4EqnftT3dKY=;
+	s=arc-20240116; t=1705575469; c=relaxed/simple;
+	bh=llhaA+YxyxeowkTvOlZs7TS/1bhRUT4/f0f7hPqKUS8=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=WsXL0Zvlz40ds37C/o6JmewEmto0wVZ7k/ei2Rn9IbEXG7z0aPEabOftmsU9WYHJvaPaOkQaMsUnz6PuaCnD0h+fDB71EQs+0Oi8c9OnipncCq8L4us5+0kAYKPyGY2OwdybjcRXeEjeIo2mJOzKdu4qQysTcEg2JLP2Odq7B8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDcvkrpf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89FBC433F1;
-	Thu, 18 Jan 2024 11:01:43 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=Y28ttDr9bCOPFgrFxiGDOP572fc6zu1bJJ62ugJTlS0YQt6AdDIqVJWg0wnpS6jJ2lKFoTlBTte9xt1U3JSOZloRVrTLXZ1xxcF0mBpO+njrWHA+idDn7vuVFda/cG8W764DsQErB0jLCQ660+GA6oTtyJSupq9QLDI8AxUkJ+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TS4XYhXt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94FD6C433C7;
+	Thu, 18 Jan 2024 10:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575704;
-	bh=gHUQ/oF0m5GJ2z7vNe5cuMlkYnY6Hi3t4EqnftT3dKY=;
+	s=korg; t=1705575469;
+	bh=llhaA+YxyxeowkTvOlZs7TS/1bhRUT4/f0f7hPqKUS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cDcvkrpfp5RhhgwFh2Nyd/4TH6ezeFWfIrROWUi/GYGyEe9F0S0qXCb8ONphOUsW9
-	 GdiKDOJnjTnPlYDPtAapIh/H3E4GWWyiNL9RrVyXH9/gC9jWENrsXmaP6WC1GcDxS6
-	 QtV6JAjFuxlb/sc05yOIe8nELCVDUpJUSfjGrQ0I=
+	b=TS4XYhXtPdzHhmXZS5pnvABt5r40zZ02jbtdGaIwvdjaeZgFyx2t9JVRCHywjLOo1
+	 60IpighQ20YYso2yRrDefg36cgEmFXSCNzYDI8SXmIEQ3gZwhbQO+jFe1QzpcHba9F
+	 Gw+SK4IpbVreE4Wc9r+zWzoB6QSxEBk/xOX+L53g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrick Rudolph <patrick.rudolph@9elements.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 076/100] pinctrl: cy8c95x0: Fix get_pincfg
-Date: Thu, 18 Jan 2024 11:49:24 +0100
-Message-ID: <20240118104314.211957789@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Guanghui Feng <guanghuifeng@linux.alibaba.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Subject: [PATCH 6.6 143/150] uio: Fix use-after-free in uio_open
+Date: Thu, 18 Jan 2024 11:49:25 +0100
+Message-ID: <20240118104326.683943450@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrick Rudolph <patrick.rudolph@9elements.com>
+From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
 
-[ Upstream commit 94c71705cc49092cef60ece13a28680809096fd4 ]
+commit 0c9ae0b8605078eafc3bea053cc78791e97ba2e2 upstream.
 
-Invert the register value for PIN_CONFIG_OUTPUT_ENABLE to return
-the opposite of PIN_CONFIG_INPUT_ENABLE.
+core-1				core-2
+-------------------------------------------------------
+uio_unregister_device		uio_open
+				idev = idr_find()
+device_unregister(&idev->dev)
+put_device(&idev->dev)
+uio_device_release
+				get_device(&idev->dev)
+kfree(idev)
+uio_free_minor(minor)
+				uio_release
+				put_device(&idev->dev)
+				kfree(idev)
+-------------------------------------------------------
 
-Signed-off-by: Patrick Rudolph <patrick.rudolph@9elements.com>
-Link: https://lore.kernel.org/r/20231219125120.4028862-3-patrick.rudolph@9elements.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In the core-1 uio_unregister_device(), the device_unregister will kfree
+idev when the idev->dev kobject ref is 1. But after core-1
+device_unregister, put_device and before doing kfree, the core-2 may
+get_device. Then:
+1. After core-1 kfree idev, the core-2 will do use-after-free for idev.
+2. When core-2 do uio_release and put_device, the idev will be double
+   freed.
+
+To address this issue, we can get idev atomic & inc idev reference with
+minor_lock.
+
+Fixes: 57c5f4df0a5a ("uio: fix crash after the device is unregistered")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Link: https://lore.kernel.org/r/1703152663-59949-1-git-send-email-guanghuifeng@linux.alibaba.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-cy8c95x0.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/uio/uio.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-cy8c95x0.c b/drivers/pinctrl/pinctrl-cy8c95x0.c
-index 99c3fe4ca518..5abab6bc763a 100644
---- a/drivers/pinctrl/pinctrl-cy8c95x0.c
-+++ b/drivers/pinctrl/pinctrl-cy8c95x0.c
-@@ -749,6 +749,8 @@ static int cy8c95x0_gpio_get_pincfg(struct cy8c95x0_pinctrl *chip,
- 	ret = regmap_read(chip->regmap, reg, &reg_val);
- 	if (reg_val & bit)
- 		arg = 1;
-+	if (param == PIN_CONFIG_OUTPUT_ENABLE)
-+		arg = !arg;
+--- a/drivers/uio/uio.c
++++ b/drivers/uio/uio.c
+@@ -466,13 +466,13 @@ static int uio_open(struct inode *inode,
  
- 	*config = pinconf_to_config_packed(param, (u16)arg);
- out:
--- 
-2.43.0
-
+ 	mutex_lock(&minor_lock);
+ 	idev = idr_find(&uio_idr, iminor(inode));
+-	mutex_unlock(&minor_lock);
+ 	if (!idev) {
+ 		ret = -ENODEV;
++		mutex_unlock(&minor_lock);
+ 		goto out;
+ 	}
+-
+ 	get_device(&idev->dev);
++	mutex_unlock(&minor_lock);
+ 
+ 	if (!try_module_get(idev->owner)) {
+ 		ret = -ENODEV;
+@@ -1064,9 +1064,8 @@ void uio_unregister_device(struct uio_in
+ 	wake_up_interruptible(&idev->wait);
+ 	kill_fasync(&idev->async_queue, SIGIO, POLL_HUP);
+ 
+-	device_unregister(&idev->dev);
+-
+ 	uio_free_minor(minor);
++	device_unregister(&idev->dev);
+ 
+ 	return;
+ }
 
 
 
