@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-12034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 621A683176C
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:57:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43E9B8317B7
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:00:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 948141C222B2
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:57:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED2271F25753
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:00:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2BE22F16;
-	Thu, 18 Jan 2024 10:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99F4241E2;
+	Thu, 18 Jan 2024 10:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hs8vqohH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJKzj5SK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0A722323;
-	Thu, 18 Jan 2024 10:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7978A2377A;
+	Thu, 18 Jan 2024 10:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575421; cv=none; b=jzOW0pIJhPzU/8DAb6mXOms8N7bHB3kpoQi4wln+2CSAijKDJUnrR2dtmfYCZPJ/oTXVz0qPpTg1TshCcYShBXdgg4M3ygQ2FBq6RY+kyCaCW/Lj0jGs1te44tdPhbOqdW/qwWtqc6d7maAI3wy0/IySyjCfBLd+FwdCE5v0Ml0=
+	t=1705575598; cv=none; b=ANn9p2rTuVAMeLQNYrV744LePirv7WohnepxpPVi4p3qBoCZYMai5x6/oZ7tUag59iI3XyDDc5tiHasAuzXvSVi/AAMddAHk61cyH3/xrprrnpDnmONEpk8e1Ddyy6Srgl2Oxwm9ri7xl3F2bY0EGIxw4PPB0CF7YD26CK7HO1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575421; c=relaxed/simple;
-	bh=1yv4BDUz1d3qAEY3KptcJ0/3m7yNiJD1cmCp2QNNn7w=;
+	s=arc-20240116; t=1705575598; c=relaxed/simple;
+	bh=xPHEc3fhmS835VGl1WBt2XibKmzZ11hVopAQt3yuKdo=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=qBXUzGEPc+jyX5DoWnwZe3Rd8o0h5ZCIXkL7X7v6TJtQNrh0mQKRrDsV7+uIIOgDTtP6qSbSCljNoLEGc41iTFJYf93zOcffSzrr3dnfwZcjf2Oqnb1lQW5Tlson1DAqqGW0HWnETzVzSmwWi9J/m9gTZr8ukUqRrMQhcVvQCns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hs8vqohH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE5DC433C7;
-	Thu, 18 Jan 2024 10:57:00 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=GP+LtwDlLI6FW2i0GhV/dF+17cpzojxX7mpINs5rDNRxL46wAYyF6F3d1Lwmb47XGlTBSgt4qs80YtSoXVvtpvhNJWkiltyUUw7CSm5tYrjiO2OQXQSh/YCdOugOda+Soj4a/e3apJB9JUbAeIO4CjQArm6dzZFtakcQpIvjQrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJKzj5SK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E5EC43390;
+	Thu, 18 Jan 2024 10:59:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575421;
-	bh=1yv4BDUz1d3qAEY3KptcJ0/3m7yNiJD1cmCp2QNNn7w=;
+	s=korg; t=1705575598;
+	bh=xPHEc3fhmS835VGl1WBt2XibKmzZ11hVopAQt3yuKdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hs8vqohHYskhOibJ4J9S/TCCNlO01x0vKxOrEEVbztR9PwdvgmhnUCnls00hxMbZM
-	 zfG2pR7NFyto2Izc561+Wdw7b8E/zuCunkIr3Z8Eoi+pyHbxprboaiZ8B1+nJcraPx
-	 DDyOgH85DMCbkW4L2QZnwDw6YHKLeniMgtAkFA8w=
+	b=oJKzj5SKzwxHpczkamMT3qqPSULcPGB1qwbFC/RaM7WkDBW5Q9paN1JE20yXdRdkw
+	 3Vx/AQ5B9HadLAP9HbNEPKUmE7DXXCMLgVgvXTMhU0JcOQVAmfMzyMBcvjlVx1dWCe
+	 ue3cSw+/7Jgw2l7Zql92y8eGCiq9GmaDEIatGQM4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca@z3ntu.xyz>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	David Rau <David.Rau.opensource@dm.renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 097/150] Input: xpad - add Razer Wolverine V2 support
+Subject: [PATCH 6.1 031/100] ASoC: da7219: Support low DC impedance headset
 Date: Thu, 18 Jan 2024 11:48:39 +0100
-Message-ID: <20240118104324.441696320@linuxfoundation.org>
+Message-ID: <20240118104312.272306553@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,36 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca@z3ntu.xyz>
+From: David Rau <David.Rau.opensource@dm.renesas.com>
 
-[ Upstream commit c3d1610345b79cbe29ef6ca04a4780eff0d360c7 ]
+[ Upstream commit 5f44de697383fcc9a9a1a78f99e09d1838704b90 ]
 
-Add the VID and PID of Razer Wolverine V2 to xpad_device.
+Change the default MIC detection impedance threshold to 200ohm
+to support low mic DC impedance headset.
 
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-Link: https://lore.kernel.org/r/20231125-razer-wolverine-v2-v1-1-979fe9f9288e@z3ntu.xyz
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: David Rau <David.Rau.opensource@dm.renesas.com>
+Link: https://lore.kernel.org/r/20231201042933.26392-1-David.Rau.opensource@dm.renesas.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/joystick/xpad.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/codecs/da7219-aad.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
-index f5c21565bb3c..e2c1848182de 100644
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -286,6 +286,7 @@ static const struct xpad_device {
- 	{ 0x146b, 0x0604, "Bigben Interactive DAIJA Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
- 	{ 0x1532, 0x0a00, "Razer Atrox Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOXONE },
- 	{ 0x1532, 0x0a03, "Razer Wildcat", 0, XTYPE_XBOXONE },
-+	{ 0x1532, 0x0a29, "Razer Wolverine V2", 0, XTYPE_XBOXONE },
- 	{ 0x15e4, 0x3f00, "Power A Mini Pro Elite", 0, XTYPE_XBOX360 },
- 	{ 0x15e4, 0x3f0a, "Xbox Airflo wired controller", 0, XTYPE_XBOX360 },
- 	{ 0x15e4, 0x3f10, "Batarang Xbox 360 controller", 0, XTYPE_XBOX360 },
+diff --git a/sound/soc/codecs/da7219-aad.c b/sound/soc/codecs/da7219-aad.c
+index 9251490548e8..c8410769188a 100644
+--- a/sound/soc/codecs/da7219-aad.c
++++ b/sound/soc/codecs/da7219-aad.c
+@@ -663,7 +663,7 @@ static struct da7219_aad_pdata *da7219_aad_fw_to_pdata(struct device *dev)
+ 		aad_pdata->mic_det_thr =
+ 			da7219_aad_fw_mic_det_thr(dev, fw_val32);
+ 	else
+-		aad_pdata->mic_det_thr = DA7219_AAD_MIC_DET_THR_500_OHMS;
++		aad_pdata->mic_det_thr = DA7219_AAD_MIC_DET_THR_200_OHMS;
+ 
+ 	if (fwnode_property_read_u32(aad_np, "dlg,jack-ins-deb", &fw_val32) >= 0)
+ 		aad_pdata->jack_ins_deb =
 -- 
 2.43.0
 
