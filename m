@@ -1,110 +1,121 @@
-Return-Path: <stable+bounces-12204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F6AE831E5E
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 18:24:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15620831F08
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 19:20:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18F57282E2C
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 17:24:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6C7528638E
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 18:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD76F2C854;
-	Thu, 18 Jan 2024 17:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E8712D619;
+	Thu, 18 Jan 2024 18:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U/wR20Ik"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mlWjCP1q"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 645A02C84B;
-	Thu, 18 Jan 2024 17:24:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F1E2D60E
+	for <stable@vger.kernel.org>; Thu, 18 Jan 2024 18:20:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705598663; cv=none; b=F5/4LPORlRObvk8Uc6e7vBNIjDLDrZ83tU6s7OF8Yos0N5TO8MYNo94lIBy4jAogx6nXjPWWcwc0aLNsl8ln02QXv/yNFHnvPIjQLx4y0UC272nOvnhENH57Yp5D2kXa0/pXhfJuX48OWJqpaDt4kYa5luK/C8q3GYWWf5qlMcw=
+	t=1705602030; cv=none; b=tB9ctBw+51hArC6wYyABjNIKo5eSdYPuEjT0FQhWv/mBWMZeqBZmzl2u3BrusBYVBKcHgY+zG5Ca7jNB9we4JoTKO/jnp0PXtbWOuwiTilsgqOJdPCJO5JAujvAAeReE1NQGrbDk4zzMvvEp7yI7hf+doTa60M3YBC5uYXlcuag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705598663; c=relaxed/simple;
-	bh=fwjbGDSFIjc8qlO4WD/Kh7B3ZcBVJBmaJHRvtZrLsQA=;
-	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
-	 References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To:X-Cookie; b=gkk9z1ucXBe+Mas0F35YAuOQMydXAkGVM9iGBHs6lzm/QJf6vZ7BOyA5pk2p35n7KAVuH9rFkKfzD1+HqnBQB9KvpS7t9fd6mgBDuBx/JzTTsX0L7BMC6eaOS80p2F0epht0b56EyH882Md8igzwcyB+YYSbhgIok9l/qyJcSVg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U/wR20Ik; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80269C433C7;
-	Thu, 18 Jan 2024 17:24:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705598661;
-	bh=fwjbGDSFIjc8qlO4WD/Kh7B3ZcBVJBmaJHRvtZrLsQA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=U/wR20IkdFKEa6etry0nq9xG/nHA6/iN+lCrnxbPsqLCqSxt+JloUKnAkZTwEtm2L
-	 rN0YE18lsRlwry23wNjsqN3FVeNhPGEdQomhbXJdmfZ2DCDM1cL/S5BmpdFfTr5CCw
-	 RCrPu+FA+uyaO9Bg10TPMbr3KJA0TE0l5epsNE7ar1S48lsgm3Q4KkNa6fnXO6G3og
-	 4e+JVM7jlBBitrbR52ybBsKc6SICKubRk17Qpr0I0/vnurvxjcvEP5qCbahNA9mMtS
-	 VDbsSGBcdxYWOWNhbM64BpzRhCq9rwXmuxiAVEscG6RT8cEdhd8RbMJ2Z1K2iP73eG
-	 KZyRGikvIWLLQ==
-Date: Thu, 18 Jan 2024 17:24:16 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Johan Hovold <johan+linaro@kernel.org>
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Banajit Goswami <bgoswami@quicinc.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/5] ASoC: codecs: wsa883x: fix PA volume control
-Message-ID: <a9e1f3b8-9597-454e-b68d-4014e923ee61@sirena.org.uk>
-References: <20240118165811.13672-1-johan+linaro@kernel.org>
- <20240118165811.13672-2-johan+linaro@kernel.org>
+	s=arc-20240116; t=1705602030; c=relaxed/simple;
+	bh=Y4wmMazQYQJZUJH7gTHSE/jgCDvQWE1mnVYqHc036PU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=UV/6QgGXGk9B7PDcM7DrSBuqkzEkQ1vAY/sfWea1ELw+Jfh47DMjWr7almHVXWJTQmiKqAUvyoWpyIJpjGIHYGJ8lZWbmsd3R8VsZt4UECzd3BsqXXyR/NVF4hpJOk5MzT14MOu1QjN3i+ArytYUQGmL+UNPCNwc1PGpa9z9INc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--zokeefe.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mlWjCP1q; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--zokeefe.bounces.google.com
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-5f250d8f876so229131897b3.3
+        for <stable@vger.kernel.org>; Thu, 18 Jan 2024 10:20:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1705602027; x=1706206827; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Q4qEVRx2ddSU7H+X65h3lnAP0N9W1FBS+7gcr4VsH4g=;
+        b=mlWjCP1qM64P8Kge4a/CapRQne+ORn8IAAvnAnQm128jFDVKElCrP+mNNQs93C+18D
+         ffi+RJh4/8UTnHZmPPjUeYbjg6azzPhlyKFcFJs4toF1QQj2b5uMPnPD+XwwRKlyQmq+
+         ifpSdcOckKcpTssqitaUs7BEjzVbSM6pJaT71y1ePOxTy22CpoxTv0RASie3UPInvkQZ
+         z+jg8wiQ48tsZwXkK3VjhF75FOYaItxisSQRyG5QHTVd4e9MAivUiQoRT2YTIhvRj20Q
+         nbF2wntuLIBx4ACAhursubRgCbFqnLwPCUIQbMZHTtlhd+gOyxKDfktao4xyuZ76zFL7
+         ZcSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705602027; x=1706206827;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Q4qEVRx2ddSU7H+X65h3lnAP0N9W1FBS+7gcr4VsH4g=;
+        b=ON1+3jXdZ9GybhIt98Q9cKHc9GubQdVCtKOTpY6wTLuoRKyS0zQyc7hBEMC4GtRYsi
+         DTte1o65TSmTAgsX0RVprXNoXB4OiIOE0YEGMlrbhJCQt+LUQ+8j590lAx+ftblTzIxQ
+         6VFbof0WNHsuclDHN4GuU/KTKjkLplhbTUgm/GR2/Ik3Be7ShykFx1opztX0GcAObghR
+         uKKFLNfyqt3EvDqCI05s/YvnrXiRB0ow34dTYUIvrrmQbvVo5bCS64B+iRAvgL9Ai5jJ
+         hjOF5tJQqoDprHUGK7mjNg8dyMqiuPqzqJJfIzXfmUPR2BIhqApPGwANC5+wEGn3z0Ql
+         aNkg==
+X-Gm-Message-State: AOJu0Yx+V/cBJnkUm0Kr/LRGWqIhspcx+qfZnfmXmkSrO7QaCdGeY7sz
+	OMKPokQh83UbGXZNrmmd4T03k/5Oivxcxz53UKm5X7DrBd7vjxZckI3zBTG56+ooMNsXW33RS17
+	52SrmqA==
+X-Google-Smtp-Source: AGHT+IGLUNghu6mxF3SS7FJWjiDaHrXi0fENYH/7FmfNi5ZJUccLxbTU4wHujCNx5nF1YSmUscKnrwovWwgK
+X-Received: from zokeefe3.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:2971])
+ (user=zokeefe job=sendgmr) by 2002:a05:6902:181f:b0:dbd:b91e:9b87 with SMTP
+ id cf31-20020a056902181f00b00dbdb91e9b87mr525809ybb.2.1705602027541; Thu, 18
+ Jan 2024 10:20:27 -0800 (PST)
+Date: Thu, 18 Jan 2024 10:19:53 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="uU07sBcsXDNnOMTd"
-Content-Disposition: inline
-In-Reply-To: <20240118165811.13672-2-johan+linaro@kernel.org>
-X-Cookie: FEELINGS are cascading over me!!!
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
+Message-ID: <20240118181954.1415197-1-zokeefe@google.com>
+Subject: [PATCH] mm/writeback: fix possible divide-by-zero in
+ wb_dirty_limits(), again
+From: "Zach O'Keefe" <zokeefe@google.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	"Zach O'Keefe" <zokeefe@google.com>, Maxim Patlasov <MPatlasov@parallels.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
+(struct dirty_throttle_control *)->thresh is an unsigned long, but is
+passed as the u32 divisor argument to div_u64().  On architectures where
+unsigned long is 64 bytes, the argument will be implicitly truncated.
 
---uU07sBcsXDNnOMTd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Use div64_u64() instead of div_u64() so that the value used in the "is
+this a safe division" check is the same as the divisor.
 
-On Thu, Jan 18, 2024 at 05:58:07PM +0100, Johan Hovold wrote:
-> The PA gain can be set in steps of 1.5 dB from -3 dB to 18 dB, that is,
-> in fifteen levels.
->=20
-> Fix the range of the PA volume control to avoid having the first
-> sixteen levels all map to -3 dB.
->=20
-> Note that level 0 (-3 dB) does not mute the PA so the mute flag should
-> also not be set.
->=20
-> Fixes: cdb09e623143 ("ASoC: codecs: wsa883x: add control, dapm widgets an=
-d map")
-> Cc: stable@vger.kernel.org      # 6.0
+Also, remove redundant cast of the numerator to u64, as that should
+happen implicitly.
 
-This will mean that any configuration saved with alsactl store will
-change effect, it might be better to just fix the TLV description and
-live with the unfortunate UX...
+This would be difficult to exploit in memcg domain, given the
+ratio-based arithmetic domain_drity_limits() uses, but is much easier in
+global writeback domain with a BDI_CAP_STRICTLIMIT-backing device, using
+e.g. vm.dirty_bytes=(1<<32)*PAGE_SIZE so that dtc->thresh == (1<<32)
 
---uU07sBcsXDNnOMTd
-Content-Type: application/pgp-signature; name="signature.asc"
+Fixes: f6789593d5ce ("mm/page-writeback.c: fix divide by zero in bdi_dirty_limits()")
+Cc: Maxim Patlasov <MPatlasov@parallels.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Zach O'Keefe <zokeefe@google.com>
+---
+ mm/page-writeback.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
------BEGIN PGP SIGNATURE-----
+diff --git a/mm/page-writeback.c b/mm/page-writeback.c
+index cd4e4ae77c40a..02147b61712bc 100644
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -1638,7 +1638,7 @@ static inline void wb_dirty_limits(struct dirty_throttle_control *dtc)
+ 	 */
+ 	dtc->wb_thresh = __wb_calc_thresh(dtc);
+ 	dtc->wb_bg_thresh = dtc->thresh ?
+-		div_u64((u64)dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
++		div64_u64(dtc->wb_thresh * dtc->bg_thresh, dtc->thresh) : 0;
+ 
+ 	/*
+ 	 * In order to avoid the stacked BDI deadlock we need
+-- 
+2.43.0.429.g432eaa2c6b-goog
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWpXr8ACgkQJNaLcl1U
-h9Dj7Qf/RUbEhZL9xGzztZhdMbhnvQx3zBa7jW2Du147E9JDgc8KtkPj7Vkk4Uf3
-3FmSoDvBaUI0PGj6+Tno9DunZpJatVosXbxfSECDIKQAfq7MMO03jdQSvVM8jW9J
-QXu/yx8ZS1JTm3RioGwhZLfrqz2NqiidN75JdRwMHEIMOp+sMjqJMtExzCWxYs2O
-QDkeI1nR5sZvFmIajm+FfcvbUVRn6g43gzAodZv7T/jsqjCd/9id10UV0Z48wEzG
-Xt968j4d6CJ/D5YZpat/7RuGEmqde4l7ILaDXnrJyjCdvZ7vLVuLYH0T1YpfzCbD
-2VmGNoDs1sLPwPR+Og3WQ+PuTozqIQ==
-=QGG2
------END PGP SIGNATURE-----
-
---uU07sBcsXDNnOMTd--
 
