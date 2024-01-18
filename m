@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-11975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51DCE831730
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:54:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF12783179A
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:59:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24C2C285393
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:54:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E29321C22854
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C36922323;
-	Thu, 18 Jan 2024 10:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44FE023760;
+	Thu, 18 Jan 2024 10:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cZ+mRN1v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ccWN2x32"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE091B96D;
-	Thu, 18 Jan 2024 10:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0282122F0F;
+	Thu, 18 Jan 2024 10:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575257; cv=none; b=tMpEvAi05/BLum5i3EEsdnblxLlXilD/3NNDJZ8/fBCZlYyeeH81chuECDqQkkbFy/bg7da16oFepezDG3xc9HbjxDTE4oItcgjQmMKTKa9B0rYzT9E7myqB238jSKQ+YqxCYptSUvOOWbjoh4xZvVFXY560196BVwQJIXlfoBM=
+	t=1705575544; cv=none; b=m6KXm5dpZyKMFji2q7zpCAwlAfrKf84pTcj4lYc0Z0m4mti3TLr78quoE4FeY6xaX9j3eiY7wOK3x0gdSrGu0tsMgnnYBAbkzKHnRc1xv5mE8IqWN6+eKlCxh6zYZGschaJLDxsij98QkPxGjHeSt5RODDy6PmtSZPXpzzbhVxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575257; c=relaxed/simple;
-	bh=vnuX+LgN0jW9hMl3TtaU2bvGkupuAEDLBGZ+SpYYUlo=;
+	s=arc-20240116; t=1705575544; c=relaxed/simple;
+	bh=R3lDUZ6pytjuWilZpskhG5uXEUkI6RHLVk/RCLEJvbk=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=HyrUzU2NJraGzRuhKMITu0St+5q4+qhW0XQkpSy9nftIVbDtF+h+emaKyAHl5V7Q8dRNgiqFybeBWSpBqfS7EKTIpWtFhaEVzwpeLENQp6RE7Q8eRiRtYqPhDlZUBurRPGP1hZHahSJxBijE6FmEm4MnF1F9jjAXj9JsC9Nhai4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cZ+mRN1v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD04AC433F1;
-	Thu, 18 Jan 2024 10:54:16 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=hTu50QomP2/Tgx2jxIOqnusWNwZ+BrkaQn1FqcIpaWt4QksI0iDV/nCJew3kVAszZWgIxb1MH9I5OKIGZeMkRMjdhvb9VIEduNSzhsCEl6883Sl2echtTTFq+xqlRxat1bS2iJOzzpMPIoZnsWjhj7ZUn+CPX1T07Ak8/LvUmlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ccWN2x32; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B079C433B1;
+	Thu, 18 Jan 2024 10:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575257;
-	bh=vnuX+LgN0jW9hMl3TtaU2bvGkupuAEDLBGZ+SpYYUlo=;
+	s=korg; t=1705575543;
+	bh=R3lDUZ6pytjuWilZpskhG5uXEUkI6RHLVk/RCLEJvbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cZ+mRN1vVk+cJeDg45CuDvRB2EbkV0fH5Sqt0dgks4Tie9Y+jlZerYuTBwOP3UdyV
-	 CJrm2gKgu5zMNEK4uSCy+Kkr60JQIzsSQ1QwAsWOT9ARIasBaGUhR15FehMJBMe3M5
-	 Ui27QIBZuPDMGhQtm5hL45ewxs1zwNhvuyWP2xlg=
+	b=ccWN2x3274BOIYcqxjT36JEaXGVajD4uFSWYFlurd6U7iPpF1ZR0pwvUWihkzkPaZ
+	 +i7KPSOcT8eMnhWUIj043k5tuTmywCgkkuIFjSQebCW+r7guSli2Ie8T14hhG4HJgk
+	 0nDkyH/kIQA5Bid4dn2TPT3jnvaR70/9jQkU3Jhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hengqi Chen <hengqi.chen@gmail.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	kernel test robot <lkp@intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/150] LoongArch: Preserve syscall nr across execve()
+Subject: [PATCH 6.1 002/100] pinctrl: lochnagar: Dont build on MIPS
 Date: Thu, 18 Jan 2024 11:48:10 +0100
-Message-ID: <20240118104323.117387570@linuxfoundation.org>
+Message-ID: <20240118104311.004149272@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hengqi Chen <hengqi.chen@gmail.com>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit d6c5f06e46a836e6a70c7cfd95bb38a67d9252ec ]
+[ Upstream commit 6588732445ff19f6183f0fa72ddedf67e5a5be32 ]
 
-Currently, we store syscall nr in pt_regs::regs[11] and syscall execve()
-accidentally overrides it during its execution:
+MIPS appears to define a RST symbol at a high level, which clashes
+with some register naming in the driver. Since there is currently
+no case for running this driver on MIPS devices simply cut off the
+build of this driver on MIPS.
 
-    sys_execve()
-      -> do_execve()
-        -> do_execveat_common()
-          -> bprm_execve()
-            -> exec_binprm()
-              -> search_binary_handler()
-                -> load_elf_binary()
-                  -> ELF_PLAT_INIT()
-
-ELF_PLAT_INIT() reset regs[11] to 0, so in syscall_exit_to_user_mode()
-we later get a wrong syscall nr. This breaks tools like execsnoop since
-it relies on execve() tracepoints.
-
-Skip pt_regs::regs[11] reset in ELF_PLAT_INIT() to fix the issue.
-
-Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311071303.JJMAOjy4-lkp@intel.com/
+Suggested-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20231115162853.1891940-1-ckeepax@opensource.cirrus.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/elf.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/cirrus/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/include/asm/elf.h b/arch/loongarch/include/asm/elf.h
-index b9a4ab54285c..9b16a3b8e706 100644
---- a/arch/loongarch/include/asm/elf.h
-+++ b/arch/loongarch/include/asm/elf.h
-@@ -293,7 +293,7 @@ extern const char *__elf_platform;
- #define ELF_PLAT_INIT(_r, load_addr)	do { \
- 	_r->regs[1] = _r->regs[2] = _r->regs[3] = _r->regs[4] = 0;	\
- 	_r->regs[5] = _r->regs[6] = _r->regs[7] = _r->regs[8] = 0;	\
--	_r->regs[9] = _r->regs[10] = _r->regs[11] = _r->regs[12] = 0;	\
-+	_r->regs[9] = _r->regs[10] /* syscall n */ = _r->regs[12] = 0;	\
- 	_r->regs[13] = _r->regs[14] = _r->regs[15] = _r->regs[16] = 0;	\
- 	_r->regs[17] = _r->regs[18] = _r->regs[19] = _r->regs[20] = 0;	\
- 	_r->regs[21] = _r->regs[22] = _r->regs[23] = _r->regs[24] = 0;	\
+diff --git a/drivers/pinctrl/cirrus/Kconfig b/drivers/pinctrl/cirrus/Kconfig
+index 530426a74f75..b3cea8d56c4f 100644
+--- a/drivers/pinctrl/cirrus/Kconfig
++++ b/drivers/pinctrl/cirrus/Kconfig
+@@ -1,7 +1,8 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ config PINCTRL_LOCHNAGAR
+ 	tristate "Cirrus Logic Lochnagar pinctrl driver"
+-	depends on MFD_LOCHNAGAR
++	# Avoid clash caused by MIPS defining RST, which is used in the driver
++	depends on MFD_LOCHNAGAR && !MIPS
+ 	select GPIOLIB
+ 	select PINMUX
+ 	select PINCONF
 -- 
 2.43.0
 
