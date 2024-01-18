@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-12045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FEB0831777
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:57:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C9458317E6
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FBC91C22667
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:57:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F7001C23F16
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3C5422F0B;
-	Thu, 18 Jan 2024 10:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 808972376A;
+	Thu, 18 Jan 2024 11:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n5OAyqLC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BOD85K5t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F911774B;
-	Thu, 18 Jan 2024 10:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE3C22EF7;
+	Thu, 18 Jan 2024 11:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575452; cv=none; b=F/jf/vbjf+Va76MG2nKgdjJ9tFQiF67H+kd/kLBbge6zbjPjhYwF7LVCb0LmA3BN4qrrFRb81NZgFGzF5ZPLdIkDa+nmZ5navExKlB8135sXU+6+XXbOcMqdwMP/WMY+eUdAQzFsYYu4x80/vdyRZtMreTD1k45HIa6cnrwvm4w=
+	t=1705575693; cv=none; b=YVWL3p0xUEtQ5Ac4WSVzRyhbqfewTQmF9FJ2EbwdQ9bVPi/t7/t39M0iYIdcpHhPS+s6djwnqaHT5R3WePiAamrEqcbOIr3JbnAbX7y7K2xKEqg67k3saJalVkndm+OByTRvcepP84lun9eBnkVARbTR7SPuFhki+DkRslsLrws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575452; c=relaxed/simple;
-	bh=s4v6moDL3072uoFs+GrdPStM08R8NOVL9tbOPqMtcEc=;
+	s=arc-20240116; t=1705575693; c=relaxed/simple;
+	bh=Q906M49oBQnymsysIlm97ZFEHZgAPkLs++0ZEbS7Y2U=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=HOX6MZtBAbXLSoVpfD/b3uBuVfZmycpNfBz0GnQXOou+B19VXsLwtBtxabZdzEP4RpMFEe3RYtYeq9k2ztoySR6AUjax4Qhs3dEHNAhvmplr99MYRfMFbzmUp/HIcjNOXY6wuGxmgjQZs/zNL9VzSod385rkhS9WKzyukxVvu+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n5OAyqLC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8439C433F1;
-	Thu, 18 Jan 2024 10:57:31 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=TX99vIJ+8PhB2wU92lr622Y895oB2oUIt+2FUobJqdSTVFK7edvOTwEKwuSHsCJltwNvCQHn4NkHlXTu6IQZdQpFL+0+s0HV3+AjIkt2secT0zco7LBOQJI2DrvZ+Hl6sK6xji7DytIlckR00eZjBAEt7f4ohmHAnlnyeIwfw28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BOD85K5t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B77C433C7;
+	Thu, 18 Jan 2024 11:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575452;
-	bh=s4v6moDL3072uoFs+GrdPStM08R8NOVL9tbOPqMtcEc=;
+	s=korg; t=1705575693;
+	bh=Q906M49oBQnymsysIlm97ZFEHZgAPkLs++0ZEbS7Y2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n5OAyqLChvkMH0EPB+DMvfSht57apPdi2Vi96XMf5r86QNFaK3nz11PyKIGr4woU7
-	 Z36drC44bN8HaeypmOOegnEq3kcBPfCgpH6Rfza+0GpQ/R5m43Gcd/GGHYTWbfgT/I
-	 BA3O8uEJhWrsy4VLpNYOkQLIHy9gcNX5NHqg5AWQ=
+	b=BOD85K5tNI864c8zKrzp7hWm7iy6VLLpycL5xCZrU2nug7acXNuVkrHSauCLf43VA
+	 69pkBshpZlYDyTvjt0iBZpZlHyLZJXC2AWx/mJn32S/HmtmLZGNNhlhya1T1A9Kgae
+	 F+975APPcFP2Aven3V6h+orxkmtToZs1Mc9/Ckqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>
-Subject: [PATCH 6.6 138/150] Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d"
+	j51569436@gmail.com,
+	Paulo Alcantara <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 072/100] smb: client: fix potential OOB in smb2_dump_detail()
 Date: Thu, 18 Jan 2024 11:49:20 +0100
-Message-ID: <20240118104326.440578789@linuxfoundation.org>
+Message-ID: <20240118104314.059272956@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +64,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxiao Bi <junxiao.bi@oracle.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit bed9e27baf52a09b7ba2a3714f1e24e17ced386d upstream.
+[ Upstream commit 567320c46a60a3c39b69aa1df802d753817a3f86 ]
 
-This reverts commit 5e2cf333b7bd5d3e62595a44d598a254c697cd74.
+Validate SMB message with ->check_message() before calling
+->calc_smb_size().
 
-That commit introduced the following race and can cause system hung.
+This fixes CVE-2023-6610.
 
- md_write_start:             raid5d:
- // mddev->in_sync == 1
- set "MD_SB_CHANGE_PENDING"
-                            // running before md_write_start wakeup it
-                             waiting "MD_SB_CHANGE_PENDING" cleared
-                             >>>>>>>>> hung
- wakeup mddev->thread
- ...
- waiting "MD_SB_CHANGE_PENDING" cleared
- >>>> hung, raid5d should clear this flag
- but get hung by same flag.
-
-The issue reverted commit fixing is fixed by last patch in a new way.
-
-Fixes: 5e2cf333b7bd ("md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d")
-Cc: stable@vger.kernel.org # v5.19+
-Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20231108182216.73611-2-junxiao.bi@oracle.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: j51569436@gmail.com
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218219
+Cc; stable@vger.kernel.org
+Signed-off-by: Paulo Alcantara <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5.c |   12 ------------
- 1 file changed, 12 deletions(-)
+ fs/smb/client/smb2misc.c | 30 +++++++++++++++---------------
+ fs/smb/client/smb2ops.c  |  6 ++++--
+ 2 files changed, 19 insertions(+), 17 deletions(-)
 
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -36,7 +36,6 @@
-  */
- 
- #include <linux/blkdev.h>
--#include <linux/delay.h>
- #include <linux/kthread.h>
- #include <linux/raid/pq.h>
- #include <linux/async_tx.h>
-@@ -6843,18 +6842,7 @@ static void raid5d(struct md_thread *thr
- 			spin_unlock_irq(&conf->device_lock);
- 			md_check_recovery(mddev);
- 			spin_lock_irq(&conf->device_lock);
--
--			/*
--			 * Waiting on MD_SB_CHANGE_PENDING below may deadlock
--			 * seeing md_check_recovery() is needed to clear
--			 * the flag when using mdmon.
--			 */
--			continue;
- 		}
--
--		wait_event_lock_irq(mddev->sb_wait,
--			!test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags),
--			conf->device_lock);
+diff --git a/fs/smb/client/smb2misc.c b/fs/smb/client/smb2misc.c
+index fdf7a7f188c5..15fa022e7999 100644
+--- a/fs/smb/client/smb2misc.c
++++ b/fs/smb/client/smb2misc.c
+@@ -173,6 +173,21 @@ smb2_check_message(char *buf, unsigned int len, struct TCP_Server_Info *server)
  	}
- 	pr_debug("%d stripes handled\n", handled);
  
+ 	mid = le64_to_cpu(shdr->MessageId);
++	if (check_smb2_hdr(shdr, mid))
++		return 1;
++
++	if (shdr->StructureSize != SMB2_HEADER_STRUCTURE_SIZE) {
++		cifs_dbg(VFS, "Invalid structure size %u\n",
++			 le16_to_cpu(shdr->StructureSize));
++		return 1;
++	}
++
++	command = le16_to_cpu(shdr->Command);
++	if (command >= NUMBER_OF_SMB2_COMMANDS) {
++		cifs_dbg(VFS, "Invalid SMB2 command %d\n", command);
++		return 1;
++	}
++
+ 	if (len < pdu_size) {
+ 		if ((len >= hdr_size)
+ 		    && (shdr->Status != 0)) {
+@@ -193,21 +208,6 @@ smb2_check_message(char *buf, unsigned int len, struct TCP_Server_Info *server)
+ 		return 1;
+ 	}
+ 
+-	if (check_smb2_hdr(shdr, mid))
+-		return 1;
+-
+-	if (shdr->StructureSize != SMB2_HEADER_STRUCTURE_SIZE) {
+-		cifs_dbg(VFS, "Invalid structure size %u\n",
+-			 le16_to_cpu(shdr->StructureSize));
+-		return 1;
+-	}
+-
+-	command = le16_to_cpu(shdr->Command);
+-	if (command >= NUMBER_OF_SMB2_COMMANDS) {
+-		cifs_dbg(VFS, "Invalid SMB2 command %d\n", command);
+-		return 1;
+-	}
+-
+ 	if (smb2_rsp_struct_sizes[command] != pdu->StructureSize2) {
+ 		if (command != SMB2_OPLOCK_BREAK_HE && (shdr->Status == 0 ||
+ 		    pdu->StructureSize2 != SMB2_ERROR_STRUCTURE_SIZE2_LE)) {
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 4596d2dfdec3..5a157000bdfe 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -398,8 +398,10 @@ smb2_dump_detail(void *buf, struct TCP_Server_Info *server)
+ 	cifs_server_dbg(VFS, "Cmd: %d Err: 0x%x Flags: 0x%x Mid: %llu Pid: %d\n",
+ 		 shdr->Command, shdr->Status, shdr->Flags, shdr->MessageId,
+ 		 shdr->Id.SyncId.ProcessId);
+-	cifs_server_dbg(VFS, "smb buf %p len %u\n", buf,
+-		 server->ops->calc_smb_size(buf));
++	if (!server->ops->check_message(buf, server->total_read, server)) {
++		cifs_server_dbg(VFS, "smb buf %p len %u\n", buf,
++				server->ops->calc_smb_size(buf));
++	}
+ #endif
+ }
+ 
+-- 
+2.43.0
+
 
 
 
