@@ -1,91 +1,174 @@
-Return-Path: <stable+bounces-12193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A4D5831C95
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 16:31:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F84831C9D
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 16:31:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EECC01F241D3
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 15:31:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66ACC288FB0
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 15:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C28C128DDB;
-	Thu, 18 Jan 2024 15:30:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4620A286B4;
+	Thu, 18 Jan 2024 15:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BSriI94n"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gmp1uWa1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E7228DC9
-	for <stable@vger.kernel.org>; Thu, 18 Jan 2024 15:30:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726C51DDC6;
+	Thu, 18 Jan 2024 15:31:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705591846; cv=none; b=hkZYT8DkNNx54w4F8/vjGEDRdl0AiETFK5lqiHxhxRV5BpiGXGpW0ijrFLUYol7xP25RGrn8fySformuis5twI8V44Jt7VCPk24Mh4LkWosgK0FdNJZrqx+BOBlJrUsBa8mQsLqbh2B8S3yCtACm8O+us8hIM6NjIRpLsS3wTZA=
+	t=1705591869; cv=none; b=TGQRdajfSEklpld05RcSDhEynvvnz26hznAWIrk4QhR5PEaXYYqgHFMqPaYNIBHJp1ONUzbVmuMGWUaoxXaPEdQOY7BECRS0hU5jGN3GwRwD8JYhiIYrEqq8suXzQVzxy1Gz2Rz34mLJgPG2lgflmk4dltdC+L2Xo/sYb5UAnms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705591846; c=relaxed/simple;
-	bh=/ehlJVuBkx1l+7fER1WfZoln/Q07Kd9+puf2rGzvQrY=;
+	s=arc-20240116; t=1705591869; c=relaxed/simple;
+	bh=l79NY2dKBoF9XTkQ1wdRVseM0jwGQtTbZVF6sXmEHUg=;
 	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
 	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
-	 From:Date:Message-ID:Subject:To:Content-Type; b=LodMBEaz48lcXSD/Cc7BlfXwGHF7oQ+wC48Pf+9uxxhLOTo3p5dWGceYkn0FRMeSa1520J863sIb+OEfk7j0PLNhM8OP9CwAkshjLIzWqBg4PlvVIa9L0kOrZsU5LqfRXNV2OwWrAjN4dWDjwKjbVvqkKsUM0A+r35hZz7zr/HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BSriI94n; arc=none smtp.client-ip=209.85.160.47
+	 References:In-Reply-To:From:Date:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding; b=q2qSJMRE5NlRR53JEtuPLbVcWEK03vn7iTpKmwGeT9VRvP6P7Z+UzNc04Yj7dsTgZ104UM0Tn73l4OI2NiRzqLRfhbRt/EfbfO3gqrXVYMrXCf+8L/JW/191EfbWJNUjbcgvl9y/ovZKMI+9XTPv+I141JLvapSBfEpUseYRwZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gmp1uWa1; arc=none smtp.client-ip=209.85.208.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-2107f19e331so1483935fac.3
-        for <stable@vger.kernel.org>; Thu, 18 Jan 2024 07:30:45 -0800 (PST)
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2cddb0ee311so38235121fa.0;
+        Thu, 18 Jan 2024 07:31:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705591844; x=1706196644; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=/ehlJVuBkx1l+7fER1WfZoln/Q07Kd9+puf2rGzvQrY=;
-        b=BSriI94nJgm4TWAquz+/4YnPQOcZLBO5kxFUuo0E5u8lZZJyXRYjX3Cxa/1+2DMsTq
-         bX6p6b33EkwwojZHbjA4NavS2gCBLQWAJ0/uCaaKuEJt+wP172uR0//q7wv29kaMHIuM
-         VCgoFJ+FpVC1vLd37B6xS6P7dkgKPFlR+ftuS2E9YkPx0y7uywDxVs72oWelkFxGwaz5
-         9g15bFaLleiFjovnBtR1XxpakJl6cCgYsSsnKLsiZEb/o3zelnoGdreRYQn+GDGDcb3X
-         x60q9edXGLlhhY+TNbBh0IGrwH4NBGCDtuT6eIHV8064YSSwCoYWda7l9Yh8yt6Sq2vo
-         q5LQ==
+        d=gmail.com; s=20230601; t=1705591865; x=1706196665; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ClAFFQl72AYBcbeJb8sfymN7hdNir4YEOmgS30D5baQ=;
+        b=Gmp1uWa1C/YZ/Zbt2WvqJtKhJQLxijsxmx8hYfHqPYvsvjBmIcqOMOF/71MEz0YHNp
+         EPucKN0HtwS5oLowmGEuuljlBlo1P3YIk/TWktm8khco6IfSQl/NQp6O39ctP4a6+75I
+         rHAzr3/I09TMExRbKrc1E0kbcHvS4Ofh+QZBKJAEbvk9ZOeGvgOp7QAeST5PBhAS/IJt
+         uZdcme7E8NhUTRvUkkNxuceF6i+lHDIR/G4+n5WWzIq0ziPugpnoYNfmg6kQEz/bFYAi
+         cFNSZNqY7Q/BzsoobOoLYz6UzsBnZC/H7vj/JQeBdwbsKplEOGeHcWZLhmco3TPQs1Bd
+         Q23A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705591844; x=1706196644;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/ehlJVuBkx1l+7fER1WfZoln/Q07Kd9+puf2rGzvQrY=;
-        b=RPhruCfbcjHI+DTwllFr+IaSGfYlaI0xgnMBB8AW1Yt9WmOhWt/opoRmSOLyVDRaBi
-         sZGzPRcFezHDo/1Zvp9kB6WUVzODe4p9SWo09GLdGcvbYm8sLLYySGS7aCk6lz5Mo5O1
-         lKfdkGXSM9K8ilbP1mTXkHbt29dE+YH2Z8E/mpbhRS48co0UkXBJ/ofnfqq7dUhvOBTk
-         LF8c5BSuYz67pf7sK9wQV2qms7G6bMBAkkKIx9A0GNELVtes8n8uFRaPIg1nlWqvH4Vp
-         Fy62GWvJ1Fxuzgqo6K7zOU/9CTsjzvDgl87u8dms/cp0tcJp2mahUBxXvMhCFbpMj4gL
-         CPDg==
-X-Gm-Message-State: AOJu0YwlWgbt0R9OJcVKzZ8vKiC/lvhySE+gRLW5SW34MGvhnFEnLlo+
-	g59ZiC07m1xzdJVQQX9yg0s6uZUgwJQEB629Bz6CoaRRHS5GDinHBu3cJ42cV/KFup6i0Doa81W
-	TcRhr8etO8uTPO0Yvaz/29ucuPu33HHQ7GpQ=
-X-Google-Smtp-Source: AGHT+IHkZB30wP6D5yfWdxNmlllEAgJZ6J15csIhnxCOO8DDE+TLxAi+xXjBVslHCo2Gcll6XTFzX3BLTjPAcVuTht8=
-X-Received: by 2002:a05:6870:d189:b0:210:af25:a5a0 with SMTP id
- a9-20020a056870d18900b00210af25a5a0mr855695oac.1.1705591844302; Thu, 18 Jan
- 2024 07:30:44 -0800 (PST)
+        d=1e100.net; s=20230601; t=1705591865; x=1706196665;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ClAFFQl72AYBcbeJb8sfymN7hdNir4YEOmgS30D5baQ=;
+        b=LtYU/pNS611HcZCGvj+kkeAwwSbv7jPAH3bJ1YxVHu2eLE/FdZ4I4/GXqFn5FPW/Xz
+         16xtVUN3oxNgMiiK0Z11dNR5qQlErQlLV9c2sNFtP1mmxTOzw6FDoeThoFtc2PPLdvv/
+         yo/EXe94ct85i0hNyPNraznT6SD8ODSPi5TLF7jxPlVI8Zw/o0jIgnOqO5bnlBoD14Cz
+         SRpqIqmxT+sM9EfEHZDdz9AZl8sYF9b3s6JCUVmcp06ee6W1VOloP4usO9cHHnCFLW88
+         X9Je9N/hP0PvkmJuQMbo2kmzVKuqKLh/e0IvLK8L7JntK4eKcZ1nH3aaPF9oIf05cJXd
+         SBrA==
+X-Gm-Message-State: AOJu0YzWUNhdA70iporOcYaE+UGUQF6tdSwLinPLWDZzRYS8xH3aD+kS
+	33w8Lj9EjGu+6xl0ucAsGCf0q2cu3vMFjAIC2OryDqw5C8Zo7G5zIJrZwpaszADotPdDs4buv74
+	Z01qVjnFeEVZWNZ/Mi50AI005Z238ctWrAbM=
+X-Google-Smtp-Source: AGHT+IGsbx3wnyrWjOXm3YY25A2iEm2aIDxpxx8+OisUG8gtw4CKBY18wsSvaREIQJhkNkfjUX4WeruJYPCN39awfzE=
+X-Received: by 2002:a2e:6e06:0:b0:2cd:df43:9539 with SMTP id
+ j6-20020a2e6e06000000b002cddf439539mr247922ljc.193.1705591865219; Thu, 18 Jan
+ 2024 07:31:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Thu, 18 Jan 2024 10:30:32 -0500
-Message-ID: <CADnq5_MYFeuVtaCMVo6wuy8tXn6iui1sGRLANfc5FTmcaHW8Lw@mail.gmail.com>
-Subject: Revert "drm/amdkfd: Relocate TBA/TMA to opposite side of VM hole"
-To: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, 
-	stable@vger.kernel.org
+References: <20231227180306.6319-1-johan+linaro@kernel.org>
+ <ZZ15c1HUQIH2cY5o@google.com> <ZZ1-ehpU-g6i9Qem@hovoldconsulting.com>
+ <ZZ2IOQEekFffJoHQ@google.com> <ZZ5RVpL88XNbgKIy@hovoldconsulting.com>
+ <CABBYNZJ_EAuGEdeW+vZzXu20nVqLkLwiQbYQ9XzoABxQ5rAzdQ@mail.gmail.com> <ZajkA6oxtMcxKY4X@hovoldconsulting.com>
+In-Reply-To: <ZajkA6oxtMcxKY4X@hovoldconsulting.com>
+From: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Date: Thu, 18 Jan 2024 10:30:50 -0500
+Message-ID: <CABBYNZLV9o9hsYGVTGA7dPby-j1P_a35yNrDy4d9PMJq=TaRsQ@mail.gmail.com>
+Subject: Re: [PATCH] Bluetooth: qca: fix device-address endianness
+To: Johan Hovold <johan@kernel.org>
+Cc: Matthias Kaehlcke <mka@chromium.org>, Johan Hovold <johan+linaro@kernel.org>, 
+	Marcel Holtmann <marcel@holtmann.org>, Johan Hedberg <johan.hedberg@gmail.com>, 
+	Bjorn Andersson <quic_bjorande@quicinc.com>, Konrad Dybcio <konrad.dybcio@linaro.org>, 
+	linux-bluetooth@vger.kernel.org, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>, Doug Anderson <dianders@google.com>, 
+	Stephen Boyd <swboyd@google.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Greg, Sasha,
+Hi Johan,
 
-Please cherry pick upstream commit 0f35b0a7b8fa ("Revert "drm/amdkfd:
-Relocate TBA/TMA to opposite side of VM hole"") to stable kernel 6.6.x
-and newer.
+On Thu, Jan 18, 2024 at 3:40=E2=80=AFAM Johan Hovold <johan@kernel.org> wro=
+te:
+>
+> On Wed, Jan 17, 2024 at 05:49:07PM -0500, Luiz Augusto von Dentz wrote:
+> > On Wed, Jan 10, 2024 at 3:12=E2=80=AFAM Johan Hovold <johan@kernel.org>=
+ wrote:
+> > > On Tue, Jan 09, 2024 at 05:54:01PM +0000, Matthias Kaehlcke wrote:
+>
+> > > > hciconfig
+> > > > hci0:   Type: Primary  Bus: UART
+> > > >         BD Address: 8C:FD:F0:40:15:DC  ACL MTU: 1024:8  SCO MTU: 24=
+0:8
+> > > >         UP RUNNING
+> > > >         RX bytes:1700 acl:0 sco:0 events:95 errors:0
+> > > >         TX bytes:128949 acl:0 sco:0 commands:578 errors:0
+> > >
+> > > And any user space tool overriding the address would currently need t=
+o
+> > > provide the address in reverse order on Qualcomm platforms like this
+> > > one (e.g. if generating the address for privacy reasons).
+> >
+> > Perhaps we could attempt to resolve the address byteorder, in
+> > userspace we use hwdb_get_company to resolve the company but since
+> > this shall only really care about Qualcomm range(s) perhaps we can
+> > hardcode them check in which order the address is, that said if the
+> > device is configured with a Static Random Address then that would not
+> > work, but that is only really possible for BLE only devices.
+>
+> It's not just Qualcomm ranges; The Lenovo ThinkPad X13s that I noticed
+> this on has been assigned a Wistron OUI, for example.
 
-This fixes a segfault in mixed graphics and compute workloads.
+Well we could still attempt to check if it has a valid OUI and then it
+fail swap and check again.
 
-Thanks,
+> We're still hoping to learn how to retrieve this address (from the
+> secure world firmware) so that we can set it directly from the driver,
+> but for now it needs to be set using btmgmt (or the local-bd-address
+> devicetree property).
+>
+> As was discussed here:
+>
+>         https://github.com/bluez/bluez/issues/107
+>
+> it would be useful to teach bluetoothd to (generate and) set an address
+> for devices that lack (accessible) persistent storage. And any such
+> generic tool would need to work using the standard interfaces and the
+> address endianness that those interfaces expect.
 
-Alex
+Yep, patches are welcome in this regard, note that we do something like thi=
+s:
+
+https://github.com/bluez/bluez/blob/master/src/adapter.c#L9847
+
+But the first thing it checks is if the controller supports BR/EDR, so
+if you want to extend that we need at least the OUI portion to be able
+to allocate a valid public address, we could perhaps attempt to fetch
+the manufacturer somehow or use the controller manufacturer
+(adapter->manufacturer) in case there is nothing else to use.
+
+> And from skimming the Bluetooth spec, I was under the impression that
+> random addresses applied also to non-BLE devices (e.g. requiring the two
+> most-significants bits to be 1).
+
+Not really, BR/EDR/classic addresses are always considered public
+addresses, the HCI interface doesn't even have an address type to be
+able to handle something like a random address or privacy for the same
+reason.
+
+> But to summarise, I don't really see any way around fixing the Qualcomm
+> driver.
+>
+> Johan
+
+
+
+--=20
+Luiz Augusto von Dentz
 
