@@ -1,120 +1,91 @@
-Return-Path: <stable+bounces-12195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F4E831D1F
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 17:01:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A4D5831C95
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 16:31:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 603EC1F22756
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 16:01:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EECC01F241D3
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 15:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7551424B40;
-	Thu, 18 Jan 2024 16:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C28C128DDB;
+	Thu, 18 Jan 2024 15:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="hUEZ8kij"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BSriI94n"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp70.ord1d.emailsrvr.com (smtp70.ord1d.emailsrvr.com [184.106.54.70])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06B228DC5
-	for <stable@vger.kernel.org>; Thu, 18 Jan 2024 16:01:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=184.106.54.70
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52E7228DC9
+	for <stable@vger.kernel.org>; Thu, 18 Jan 2024 15:30:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705593709; cv=none; b=dXrIb0a0JgnEcNgcs64rpV1vMDLv5OBP8u1HS23d5zSsjjKnznzfUes86KWtxAIGM686UCAUdVwSOSWbwlEEiJmwIH2UdbjnebZlRt9OIkGU28nPIMiS+JeTm0mpAXrjU92w3bCwuazK0kavmvfXo3KbziikZLkoDio5UOS4BBs=
+	t=1705591846; cv=none; b=hkZYT8DkNNx54w4F8/vjGEDRdl0AiETFK5lqiHxhxRV5BpiGXGpW0ijrFLUYol7xP25RGrn8fySformuis5twI8V44Jt7VCPk24Mh4LkWosgK0FdNJZrqx+BOBlJrUsBa8mQsLqbh2B8S3yCtACm8O+us8hIM6NjIRpLsS3wTZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705593709; c=relaxed/simple;
-	bh=781GUzTrZR4lCWVjwiN2ZImuwJhWCk5byAoPzKtiyGE=;
-	h=DKIM-Signature:X-Auth-ID:Received:Message-ID:Date:MIME-Version:
-	 User-Agent:Subject:Content-Language:To:Cc:References:From:
-	 Organization:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 X-Classification-ID; b=udRe9bfeZ/73XC3nzvEBM+zv+C7n5fcdDD5q2yDT9uTJqTPCreq6eXGdOfiTsEN1+FSnxpskWVheXWc+NvVOohGL0FS6kqY7YDkumlsscoL3jTsw70a2lVXSJV2NB8YyGHsvFXgHV0NarW3NAHzmuQX9njzLUj09AvnaGzYHAvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=hUEZ8kij; arc=none smtp.client-ip=184.106.54.70
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
-	s=20221208-6x11dpa4; t=1705591432;
-	bh=781GUzTrZR4lCWVjwiN2ZImuwJhWCk5byAoPzKtiyGE=;
-	h=Date:Subject:To:From:From;
-	b=hUEZ8kijvooAGFa9qlCf3BydtAWS9IJUIAITwfdqlgCIzth6uo/EOmFlkATt0BwHV
-	 2xx+eWgYTXOlgNKTwYDGLem1K5S+YR/eF6j7U/vhFC2XKtHq/C++kSrFnA0XRieWW+
-	 QJ+zHeMoIqMT2mRhme7YFioRx9u0RZDfW5bHqUN0=
-X-Auth-ID: abbotti@mev.co.uk
-Received: by smtp17.relay.ord1d.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id BF753200A8;
-	Thu, 18 Jan 2024 10:23:51 -0500 (EST)
-Message-ID: <02c0b221-9d4e-43fd-9dc8-40827698e947@mev.co.uk>
-Date: Thu, 18 Jan 2024 15:23:50 +0000
+	s=arc-20240116; t=1705591846; c=relaxed/simple;
+	bh=/ehlJVuBkx1l+7fER1WfZoln/Q07Kd9+puf2rGzvQrY=;
+	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
+	 From:Date:Message-ID:Subject:To:Content-Type; b=LodMBEaz48lcXSD/Cc7BlfXwGHF7oQ+wC48Pf+9uxxhLOTo3p5dWGceYkn0FRMeSa1520J863sIb+OEfk7j0PLNhM8OP9CwAkshjLIzWqBg4PlvVIa9L0kOrZsU5LqfRXNV2OwWrAjN4dWDjwKjbVvqkKsUM0A+r35hZz7zr/HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BSriI94n; arc=none smtp.client-ip=209.85.160.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-2107f19e331so1483935fac.3
+        for <stable@vger.kernel.org>; Thu, 18 Jan 2024 07:30:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705591844; x=1706196644; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=/ehlJVuBkx1l+7fER1WfZoln/Q07Kd9+puf2rGzvQrY=;
+        b=BSriI94nJgm4TWAquz+/4YnPQOcZLBO5kxFUuo0E5u8lZZJyXRYjX3Cxa/1+2DMsTq
+         bX6p6b33EkwwojZHbjA4NavS2gCBLQWAJ0/uCaaKuEJt+wP172uR0//q7wv29kaMHIuM
+         VCgoFJ+FpVC1vLd37B6xS6P7dkgKPFlR+ftuS2E9YkPx0y7uywDxVs72oWelkFxGwaz5
+         9g15bFaLleiFjovnBtR1XxpakJl6cCgYsSsnKLsiZEb/o3zelnoGdreRYQn+GDGDcb3X
+         x60q9edXGLlhhY+TNbBh0IGrwH4NBGCDtuT6eIHV8064YSSwCoYWda7l9Yh8yt6Sq2vo
+         q5LQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705591844; x=1706196644;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/ehlJVuBkx1l+7fER1WfZoln/Q07Kd9+puf2rGzvQrY=;
+        b=RPhruCfbcjHI+DTwllFr+IaSGfYlaI0xgnMBB8AW1Yt9WmOhWt/opoRmSOLyVDRaBi
+         sZGzPRcFezHDo/1Zvp9kB6WUVzODe4p9SWo09GLdGcvbYm8sLLYySGS7aCk6lz5Mo5O1
+         lKfdkGXSM9K8ilbP1mTXkHbt29dE+YH2Z8E/mpbhRS48co0UkXBJ/ofnfqq7dUhvOBTk
+         LF8c5BSuYz67pf7sK9wQV2qms7G6bMBAkkKIx9A0GNELVtes8n8uFRaPIg1nlWqvH4Vp
+         Fy62GWvJ1Fxuzgqo6K7zOU/9CTsjzvDgl87u8dms/cp0tcJp2mahUBxXvMhCFbpMj4gL
+         CPDg==
+X-Gm-Message-State: AOJu0YwlWgbt0R9OJcVKzZ8vKiC/lvhySE+gRLW5SW34MGvhnFEnLlo+
+	g59ZiC07m1xzdJVQQX9yg0s6uZUgwJQEB629Bz6CoaRRHS5GDinHBu3cJ42cV/KFup6i0Doa81W
+	TcRhr8etO8uTPO0Yvaz/29ucuPu33HHQ7GpQ=
+X-Google-Smtp-Source: AGHT+IHkZB30wP6D5yfWdxNmlllEAgJZ6J15csIhnxCOO8DDE+TLxAi+xXjBVslHCo2Gcll6XTFzX3BLTjPAcVuTht8=
+X-Received: by 2002:a05:6870:d189:b0:210:af25:a5a0 with SMTP id
+ a9-20020a056870d18900b00210af25a5a0mr855695oac.1.1705591844302; Thu, 18 Jan
+ 2024 07:30:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] comedi: drivers: ni_tio: Fix arithmetic expression
- overflow
-Content-Language: en-GB
-To: David Laight <David.Laight@ACULAB.COM>,
- 'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>,
- Denis Arefev <arefev@swemel.ru>
-Cc: H Hartley Sweeten <hsweeten@visionengravers.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20240118123747.45795-1-arefev@swemel.ru>
- <2024011842-groggy-badly-393c@gregkh>
- <3f8d1a69e3434d2085aa3564357fa31d@AcuMS.aculab.com>
-From: Ian Abbott <abbotti@mev.co.uk>
-Organization: MEV Ltd.
-In-Reply-To: <3f8d1a69e3434d2085aa3564357fa31d@AcuMS.aculab.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Classification-ID: 89e0e230-a6d3-467b-8623-55334269d420-1-1
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Thu, 18 Jan 2024 10:30:32 -0500
+Message-ID: <CADnq5_MYFeuVtaCMVo6wuy8tXn6iui1sGRLANfc5FTmcaHW8Lw@mail.gmail.com>
+Subject: Revert "drm/amdkfd: Relocate TBA/TMA to opposite side of VM hole"
+To: Greg KH <gregkh@linuxfoundation.org>, Sasha Levin <sashal@kernel.org>, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 2024-01-18 14:37, David Laight wrote:
->> -----Original Message-----
->> From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->> Sent: 18 January 2024 14:14
->> To: Denis Arefev <arefev@swemel.ru>
->> Cc: Ian Abbott <abbotti@mev.co.uk>; H Hartley Sweeten <hsweeten@visionengravers.com>; linux-
->> kernel@vger.kernel.org; lvc-project@linuxtesting.org; stable@vger.kernel.org
->> Subject: Re: [PATCH] comedi: drivers: ni_tio: Fix arithmetic expression overflow
->>
->> On Thu, Jan 18, 2024 at 03:37:47PM +0300, Denis Arefev wrote:
->>> The value of an arithmetic expression period_ns * 1000 is subject
->>> to overflow due to a failure to cast operands to a larger data
->>> type before performing arithmetic
->>>
->>> Found by Linux Verification Center (linuxtesting.org) with SVACE.
->>>
->>> Fixes: 3e90b1c7ebe9 ("staging: comedi: ni_tio: tidy up ni_tio_set_clock_src() and helpers")
->>> Cc: <stable@vger.kernel.org> # v5.15+
->>> Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
->>> Signed-off-by: Denis Arefev <arefev@swemel.ru>
->>> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
->>> ---
->>>   drivers/comedi/drivers/ni_tio.c | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/comedi/drivers/ni_tio.c b/drivers/comedi/drivers/ni_tio.c
->>> index da6826d77e60..acc914903c70 100644
->>> --- a/drivers/comedi/drivers/ni_tio.c
->>> +++ b/drivers/comedi/drivers/ni_tio.c
->>> @@ -800,7 +800,7 @@ static int ni_tio_set_clock_src(struct ni_gpct *counter,
->>>   				GI_PRESCALE_X2(counter_dev->variant) |
->>>   				GI_PRESCALE_X8(counter_dev->variant), bits);
->>>   	}
->>> -	counter->clock_period_ps = period_ns * 1000;
->>> +	counter->clock_period_ps = period_ns * 1000UL;
-> 
-> What about 32bit systems...
+Hi Greg, Sasha,
 
-Oh, good point.  It should be 1000ULL.
+Please cherry pick upstream commit 0f35b0a7b8fa ("Revert "drm/amdkfd:
+Relocate TBA/TMA to opposite side of VM hole"") to stable kernel 6.6.x
+and newer.
 
--- 
--=( Ian Abbott <abbotti@mev.co.uk> || MEV Ltd. is a company  )=-
--=( registered in England & Wales.  Regd. number: 02862268.  )=-
--=( Regd. addr.: S11 & 12 Building 67, Europa Business Park, )=-
--=( Bird Hall Lane, STOCKPORT, SK3 0XA, UK. || www.mev.co.uk )=-
+This fixes a segfault in mixed graphics and compute workloads.
+
+Thanks,
+
+Alex
 
