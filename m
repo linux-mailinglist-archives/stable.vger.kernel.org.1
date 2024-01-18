@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-11915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514818316EC
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:51:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B344D83178E
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:58:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EBA1284148
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:51:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69D3B1F2145D
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9CA22F1B;
-	Thu, 18 Jan 2024 10:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D268423754;
+	Thu, 18 Jan 2024 10:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFs7pofN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6+GZVCc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6770822EF7;
-	Thu, 18 Jan 2024 10:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F521774B;
+	Thu, 18 Jan 2024 10:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575091; cv=none; b=kpDRJD7HwM49ho/VKcA6+Wg8r3BSBIYMaW/g3E75SeR/eafry712CLMrc3kxCCE6y+hsB6vBi1yKuldd1IzDQY2mGTSNVYe1uKY7dU+RDNjsV2MmGdLG5k5JaBMOE+1gE90NNg3f/UjtfMCl0s9TInA7nX1NcPU6EnolygloTMA=
+	t=1705575510; cv=none; b=K5FHSVHpyn0Nr1syW5kLonnGEHsmNFK0TbN+frsLsLQJHBbvZnzHlGn9/rEz33oDDyYXbM3gS96xx3m93882AtU/8cFkInoxECBSUKyfZVLFdMZJHPmtOeuOujj4dHCMg6Ui9qfVyzyC4bOUIdRX/tUkpCYRx3myf7IomAzTtvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575091; c=relaxed/simple;
-	bh=vO2IGzgcj8+TjO/sBh07c0aGUATKflMb87lwtL5SOkE=;
+	s=arc-20240116; t=1705575510; c=relaxed/simple;
+	bh=bwLqZkpY6hyQ/i7gV77yA5FpnoAT1MkxstAZHCGW+tU=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=pk8SgbLc/XzpDc+wxkJbRWH1Tx/UlUx5BjOX0sdSFxYpXJo2XYXY5nYPU7FFg2+Bqmz2FQNgYF3Dc6wt4SgdQP6HLSkzzI6eIV96Cu2YeEn6Fs8oev5024Jk4piC9OriFu/MyeTWuQMhmuLm3WDsJTy5ACaMWTOFFH0Cc+nQfQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFs7pofN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08E5EC433F1;
-	Thu, 18 Jan 2024 10:51:29 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=Ro7pdFMbz2iNZ7OiL9kT3vVItoz+DtJCWWhDpvhWYLaiswvg6k79sTAnEfisaffFFRP7MsIzu9ozDM2y4h6txNMQjOHWAAKhbX6lklRSF4nYQlTglszlzEkDeCUEbMvS/hkthrDB90cIggj3KGgTHVJDL3CFS7XHQpIL2DA4iQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6+GZVCc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16807C433F1;
+	Thu, 18 Jan 2024 10:58:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575090;
-	bh=vO2IGzgcj8+TjO/sBh07c0aGUATKflMb87lwtL5SOkE=;
+	s=korg; t=1705575510;
+	bh=bwLqZkpY6hyQ/i7gV77yA5FpnoAT1MkxstAZHCGW+tU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SFs7pofNi/yjMoLpwFSFFRXVI+OjpimQwhXxlox3zl2slRsBV3g83c1ijw895b9Xs
-	 n8kIA2Wppi6D0b9hYylW974gBh/Bc+pRDdikYdSCT+AduqIgmTA27VMgr9Wae5BCD1
-	 7/9XD4tIaMOylbyN94/1gmfOnsHk/GZM6ArTGwrg=
+	b=K6+GZVCcy4WCo+bFfMo3nBHHGAMeIqrV28TXI30Gv2ZTWVaS8VaLJswfrQOF8bKtP
+	 v2BWFeoClSXsqDLtMDPpv+DJIveHwHKIllyFaRWRPxT2hWELTKdlmBy/bmAsRovLOu
+	 u7FrBWYNte/suOnRK4IrPQJ0V68SOxnWq2aHcn8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.7 13/28] ksmbd: dont allow O_TRUNC open on read-only share
-Date: Thu, 18 Jan 2024 11:49:03 +0100
-Message-ID: <20240118104301.694908338@linuxfoundation.org>
+	Siddh Raman Pant <code@siddh.me>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Suman Ghosh <sumang@marvell.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 122/150] nfc: Do not send datagram if socket state isnt LLCP_BOUND
+Date: Thu, 18 Jan 2024 11:49:04 +0100
+Message-ID: <20240118104325.707184004@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
-References: <20240118104301.249503558@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Siddh Raman Pant <code@siddh.me>
 
-commit d592a9158a112d419f341f035d18d02f8d232def upstream.
+[ Upstream commit 6ec0d7527c4287369b52df3bcefd21a0c4fb2b7c ]
 
-When file is changed using notepad on read-only share(read_only = yes in
-ksmbd.conf), There is a problem where existing data is truncated.
-notepad in windows try to O_TRUNC open(FILE_OVERWRITE_IF) and all data
-in file is truncated. This patch don't allow  O_TRUNC open on read-only
-share and add KSMBD_TREE_CONN_FLAG_WRITABLE check in smb2_set_info().
+As we know we cannot send the datagram (state can be set to LLCP_CLOSED
+by nfc_llcp_socket_release()), there is no need to proceed further.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Thus, bail out early from llcp_sock_sendmsg().
+
+Signed-off-by: Siddh Raman Pant <code@siddh.me>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Suman Ghosh <sumang@marvell.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |   23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+ net/nfc/llcp_sock.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2971,7 +2971,7 @@ int smb2_open(struct ksmbd_work *work)
- 					    &may_flags);
- 
- 	if (!test_tree_conn_flag(tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
--		if (open_flags & O_CREAT) {
-+		if (open_flags & (O_CREAT | O_TRUNC)) {
- 			ksmbd_debug(SMB,
- 				    "User does not have write permission\n");
- 			rc = -EACCES;
-@@ -5943,12 +5943,6 @@ static int smb2_set_info_file(struct ksm
- 	}
- 	case FILE_RENAME_INFORMATION:
- 	{
--		if (!test_tree_conn_flag(work->tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
--			ksmbd_debug(SMB,
--				    "User does not have write permission\n");
--			return -EACCES;
--		}
--
- 		if (buf_len < sizeof(struct smb2_file_rename_info))
- 			return -EINVAL;
- 
-@@ -5968,12 +5962,6 @@ static int smb2_set_info_file(struct ksm
- 	}
- 	case FILE_DISPOSITION_INFORMATION:
- 	{
--		if (!test_tree_conn_flag(work->tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
--			ksmbd_debug(SMB,
--				    "User does not have write permission\n");
--			return -EACCES;
--		}
--
- 		if (buf_len < sizeof(struct smb2_file_disposition_info))
- 			return -EINVAL;
- 
-@@ -6035,7 +6023,7 @@ int smb2_set_info(struct ksmbd_work *wor
- {
- 	struct smb2_set_info_req *req;
- 	struct smb2_set_info_rsp *rsp;
--	struct ksmbd_file *fp;
-+	struct ksmbd_file *fp = NULL;
- 	int rc = 0;
- 	unsigned int id = KSMBD_NO_FID, pid = KSMBD_NO_FID;
- 
-@@ -6055,6 +6043,13 @@ int smb2_set_info(struct ksmbd_work *wor
- 		rsp = smb2_get_msg(work->response_buf);
+diff --git a/net/nfc/llcp_sock.c b/net/nfc/llcp_sock.c
+index 645677f84dba..819157bbb5a2 100644
+--- a/net/nfc/llcp_sock.c
++++ b/net/nfc/llcp_sock.c
+@@ -796,6 +796,11 @@ static int llcp_sock_sendmsg(struct socket *sock, struct msghdr *msg,
  	}
  
-+	if (!test_tree_conn_flag(work->tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
-+		ksmbd_debug(SMB, "User does not have write permission\n");
-+		pr_err("User does not have write permission\n");
-+		rc = -EACCES;
-+		goto err_out;
-+	}
+ 	if (sk->sk_type == SOCK_DGRAM) {
++		if (sk->sk_state != LLCP_BOUND) {
++			release_sock(sk);
++			return -ENOTCONN;
++		}
 +
- 	if (!has_file_id(id)) {
- 		id = req->VolatileFileId;
- 		pid = req->PersistentFileId;
+ 		DECLARE_SOCKADDR(struct sockaddr_nfc_llcp *, addr,
+ 				 msg->msg_name);
+ 
+-- 
+2.43.0
+
 
 
 
