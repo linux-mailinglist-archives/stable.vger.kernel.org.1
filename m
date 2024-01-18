@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-12091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 930ED8317AF
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:59:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C474831733
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:54:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33EAC1F253A8
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:59:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D45D51F26040
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:54:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C600C2377A;
-	Thu, 18 Jan 2024 10:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E1F1B96D;
+	Thu, 18 Jan 2024 10:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nweo2lAm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdzZo1EK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866A72375A;
-	Thu, 18 Jan 2024 10:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6AC522EF7;
+	Thu, 18 Jan 2024 10:54:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575580; cv=none; b=nrBIud5H7mgtjtjKuP8Y7lUdfFWjMxBGYVFatJLpBfHViKxoC/CiurBEseywlM7Pm934SkNMaSdXeUio0JXKJldoYEX7TN6Ezn377+1vwbVFKbNpjptkqPV0y09PQ4zZWbTJNBe2kAp2eDtt2rECdX0BJ3jWp9G0iAS+b+o3/5g=
+	t=1705575265; cv=none; b=bC7SvDlKFTbKNZFq55zVpezY3oFTnC8wLxBThDpXfm4soK029Bc5VkRhc836gk9ZeTP2PV35L9ZCGYS8K+w+RouVjB7D6JOCULIhrkvA86NjyaCNA5jpafb/Fo4/n3ohsqWuC9m/oNoUo2X7foG5JezFRCZ2XeBiJTjLXkiKC0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575580; c=relaxed/simple;
-	bh=xFgvBljBDWV3pTu2+gUpyJ6e/WQGHlGuTyPOJ879JrI=;
+	s=arc-20240116; t=1705575265; c=relaxed/simple;
+	bh=n8R2yQgQLdYpwvYMLJdlMK/Gpqdhcb9NXxCVyheeTbM=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=gcuCZK7/p8bs57g9HWKTKX6Hk+oYiJVc86U6dqABXm3q5/fsWq+bhlJ21pYEo8c3+x+osyrFaxxo8b894p7EoJnNp8dq8JrhdzrM2yAwYJoD/8aQui1/JEIVM1NjUDtiSxtixMhrg/mnB/MfSZPkgIwsR2O1dcadZv1uXaDQ80Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nweo2lAm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09968C433C7;
-	Thu, 18 Jan 2024 10:59:39 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=GqYUaQaU3+icjbjRtSUOrAkjB+qEb9U5guaI0JmSBwdKiFTNEmb5IO+r/9A+CsbS5sCUu+v7MKr15wcLp6L3UeZbIRTpuvMszDKhbxWlpj6CJNckxgXyaEHRPtSSmeyhcWc9kf0lagnNC7mLpVN727RpxSk+VPUYCpN/U6Zg7B4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdzZo1EK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28727C433C7;
+	Thu, 18 Jan 2024 10:54:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575580;
-	bh=xFgvBljBDWV3pTu2+gUpyJ6e/WQGHlGuTyPOJ879JrI=;
+	s=korg; t=1705575265;
+	bh=n8R2yQgQLdYpwvYMLJdlMK/Gpqdhcb9NXxCVyheeTbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nweo2lAmVY4osf0bdzjVZnHiQmFcKja9XskEd1GpLXig1kz/e6icmbF/m9wGz1LmM
-	 Eq1ZEVmZ4RCwCjayEsZZHt9ddZ0jeMC9s0Hs5mmXNv8+qs19RUnltn+c8PIfMLi4ty
-	 fD8kGJP+xrwq6mRlP+SyCOkwzqURPFHdb5ZSFJX8=
+	b=AdzZo1EKZsqOaGyATX4kFPkLlDV6tdPtbT/6tOVa5Ag75ekYoU9LPdDGRizYnxTZM
+	 TbXNfkt8uuGCkm8f48NYg4JiEJrIBEkbUTVA/X2FNqGOvHLwZq582VycSyUeMIBf3Z
+	 93egaN+skZeWilYLH1bWRbqmDojzEII4KSO9UcjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7e59a5bfc7a897247e18@syzkaller.appspotmail.com,
-	Johannes Berg <johannes.berg@intel.com>,
+	Chao Song <chao.song@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 005/100] wifi: cfg80211: lock wiphy mutex for rfkill poll
+Subject: [PATCH 6.6 071/150] soundwire: intel_ace2x: fix AC timing setting for ACE2.x
 Date: Thu, 18 Jan 2024 11:48:13 +0100
-Message-ID: <20240118104311.105766830@linuxfoundation.org>
+Message-ID: <20240118104323.263399189@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Chao Song <chao.song@linux.intel.com>
 
-[ Upstream commit 8e2f6f2366219b3304b227bdd2f04b64c92e3e12 ]
+[ Upstream commit 393cae5f32d640b9798903702018a48c7a45e59f ]
 
-We want to guarantee the mutex is held for pretty much
-all operations, so ensure that here as well.
+Start from ACE1.x, DOAISE is added to AC timing control
+register bit 5, it combines with DOAIS to get effective
+timing, and has the default value 1.
 
-Reported-by: syzbot+7e59a5bfc7a897247e18@syzkaller.appspotmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The current code fills DOAIS, DACTQE and DODS bits to a
+variable initialized to zero, and updates the variable
+to AC timing control register. With this operation, We
+change DOAISE to 0, and force a much more aggressive
+timing. The timing is even unable to form a working
+waveform on SDA pin.
+
+This patch uses read-modify-write operation for the AC
+timing control register access, thus makes sure those
+bits not supposed and intended to change are not touched.
+
+Signed-off-by: Chao Song <chao.song@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://lore.kernel.org/r/20231127124735.2080562-1-yung-chuan.liao@linux.intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/soundwire/intel_ace2x.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/wireless/core.c b/net/wireless/core.c
-index 63d75fecc2c5..8809e668ed91 100644
---- a/net/wireless/core.c
-+++ b/net/wireless/core.c
-@@ -216,7 +216,9 @@ static void cfg80211_rfkill_poll(struct rfkill *rfkill, void *data)
+diff --git a/drivers/soundwire/intel_ace2x.c b/drivers/soundwire/intel_ace2x.c
+index a9d25ae0b73f..e320c9128913 100644
+--- a/drivers/soundwire/intel_ace2x.c
++++ b/drivers/soundwire/intel_ace2x.c
+@@ -23,8 +23,9 @@
+ static void intel_shim_vs_init(struct sdw_intel *sdw)
  {
- 	struct cfg80211_registered_device *rdev = data;
+ 	void __iomem *shim_vs = sdw->link_res->shim_vs;
+-	u16 act = 0;
++	u16 act;
  
-+	wiphy_lock(&rdev->wiphy);
- 	rdev_rfkill_poll(rdev);
-+	wiphy_unlock(&rdev->wiphy);
- }
- 
- void cfg80211_stop_p2p_device(struct cfg80211_registered_device *rdev,
++	act = intel_readw(shim_vs, SDW_SHIM2_INTEL_VS_ACTMCTL);
+ 	u16p_replace_bits(&act, 0x1, SDW_SHIM2_INTEL_VS_ACTMCTL_DOAIS);
+ 	act |= SDW_SHIM2_INTEL_VS_ACTMCTL_DACTQE;
+ 	act |=  SDW_SHIM2_INTEL_VS_ACTMCTL_DODS;
 -- 
 2.43.0
 
