@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-12119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F7CD8317DA
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8308317DC
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C821A28AE06
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 516CB1C212E8
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 253A024B25;
-	Thu, 18 Jan 2024 11:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F28624B3A;
+	Thu, 18 Jan 2024 11:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JsCsgaur"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bs69F+Vt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F5423771;
-	Thu, 18 Jan 2024 11:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1D924B2C;
+	Thu, 18 Jan 2024 11:01:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575662; cv=none; b=AvNKc9ICLPSHX7IsPMAQId7sZGe+NJNaalm6xbPykwWzYOJksJOewZoNvon4pTz6cGCJw3elk4gHzEWjML4ZDL81bPfuTp06ZYlMdH82bhzrGgVx6bRV9WhKYClm7bf9fPI0FiBud67N9uzrhfbuvjWe7hlZo+++dQ9ki4Q7jrA=
+	t=1705575668; cv=none; b=fcoUfB7d6WohmkHgU0W/lkVe5f1grmWEgfR+mGjaFf+kFrLqdKeJU9DHu+U33c7qvg+mB2V3QYRwhRyVG4a9Yw0F6kZT7tqCMC4p8R6LH+ayPNYM2hSlmcc11RwAr9zxzgEgnyMoQVTTOplRC1Hs/yASEPK9VAJ+jJr425Ts52Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575662; c=relaxed/simple;
-	bh=3WAhMstpWYQEUwOg+4xLzWO7nm5s1+aick5lNhmZvls=;
+	s=arc-20240116; t=1705575668; c=relaxed/simple;
+	bh=UD+HBMbZtZ3g1yjxFIwtdYBTcOOMsJdX7QTpI17iMZ8=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=bsT1p3YBKL69uUxC+nvpMNevdPg1p1TQltiikBojyxIwKtOo9xvKWAQbsA7CPi89zc8+oYLWC/lIHKuwdxxtTuBs2+WZgwX0w07Mty1goNFnOiu+EyYYM41s8g4C2Jc1i9Xp2x2RzmRD6j86kLBlaCiFPNgGYeAca1F9uCz7Pzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JsCsgaur; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 539DAC433C7;
-	Thu, 18 Jan 2024 11:01:02 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=E8v1Cj/ja335KDBvCcNhIABqEJ6sPFhZ2GWI3YINnbej8kQH9cPcepw74I6f2Ln0zizPk/tpNLueuTi+vNWwFJI4MaqVpV0nUKYIBr+/g5fvdzX0QqLajeUhiWl8VpAgGTupxcaRmXACFIzTo2ike2TLduVBDtmcr83f/uEau14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bs69F+Vt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2214C433C7;
+	Thu, 18 Jan 2024 11:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575662;
-	bh=3WAhMstpWYQEUwOg+4xLzWO7nm5s1+aick5lNhmZvls=;
+	s=korg; t=1705575668;
+	bh=UD+HBMbZtZ3g1yjxFIwtdYBTcOOMsJdX7QTpI17iMZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JsCsgaur2FcZiOtsSQb8YFZylBpag63xC9KxPIASg6X6rNKRTZO8S+jJracnkGFCn
-	 E3V2Tm8iB1tAq1POMEOGAWAU1Q/3SeVZdruYHbVC3aUkrhRbssDHJ6QuXgjnzQf/KX
-	 WSf0Ee8psiSupKQCdD1nZ1UqnBxQcuT32BNmUgWE=
+	b=bs69F+VtR46TK3JIU6ngsfAey6bvjE85E4Q9kWvl5wlB2+c1/OkQDuiDK9rtiAcJB
+	 Q+TW0rx6fdMyYgies3E5akBfAtTgVUWi6STel7kSBez3x3QJU/oxIaPGZqEIsQrOHg
+	 hokXzlo6mIp2FJZqXpT+RsnBbGNhtV0vhiNpFpd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Nitesh Shetty <nj.shetty@samsung.com>,
+	Christoph Hellwig <hch@lst.de>,
 	Sagi Grimberg <sagi@grimberg.me>,
 	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/100] nvme: introduce helper function to get ctrl state
-Date: Thu, 18 Jan 2024 11:48:41 +0100
-Message-ID: <20240118104312.363761028@linuxfoundation.org>
+Subject: [PATCH 6.1 034/100] nvme: prevent potential spectre v1 gadget
+Date: Thu, 18 Jan 2024 11:48:42 +0100
+Message-ID: <20240118104312.409877389@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
 References: <20240118104310.892180084@linuxfoundation.org>
@@ -67,38 +69,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Nitesh Shetty <nj.shetty@samsung.com>
 
-[ Upstream commit 5c687c287c46fadb14644091823298875a5216aa ]
+[ Upstream commit 20dc66f2d76b4a410df14e4675e373b718babc34 ]
 
-The controller state is typically written by another CPU, so reading it
-should ensure no optimizations are taken. This is a repeated pattern in
-the driver, so start with adding a convenience function that returns the
-controller state with READ_ONCE().
+This patch fixes the smatch warning, "nvmet_ns_ana_grpid_store() warn:
+potential spectre issue 'nvmet_ana_group_enabled' [w] (local cap)"
+Prevent the contents of kernel memory from being leaked to  user space
+via speculative execution by using array_index_nospec.
 
+Signed-off-by: Nitesh Shetty <nj.shetty@samsung.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
 Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/nvme.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/nvme/target/configfs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
-index 118bf08a708b..a892d679e338 100644
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -382,6 +382,11 @@ struct nvme_ctrl {
- 	enum nvme_dctype dctype;
- };
+diff --git a/drivers/nvme/target/configfs.c b/drivers/nvme/target/configfs.c
+index 6a2816f3b4e8..73ae16059a1c 100644
+--- a/drivers/nvme/target/configfs.c
++++ b/drivers/nvme/target/configfs.c
+@@ -16,6 +16,7 @@
+ #endif
+ #include <crypto/hash.h>
+ #include <crypto/kpp.h>
++#include <linux/nospec.h>
  
-+static inline enum nvme_ctrl_state nvme_ctrl_state(struct nvme_ctrl *ctrl)
-+{
-+	return READ_ONCE(ctrl->state);
-+}
-+
- enum nvme_iopolicy {
- 	NVME_IOPOLICY_NUMA,
- 	NVME_IOPOLICY_RR,
+ #include "nvmet.h"
+ 
+@@ -508,6 +509,7 @@ static ssize_t nvmet_ns_ana_grpid_store(struct config_item *item,
+ 
+ 	down_write(&nvmet_ana_sem);
+ 	oldgrpid = ns->anagrpid;
++	newgrpid = array_index_nospec(newgrpid, NVMET_MAX_ANAGRPS);
+ 	nvmet_ana_group_enabled[newgrpid]++;
+ 	ns->anagrpid = newgrpid;
+ 	nvmet_ana_group_enabled[oldgrpid]--;
+@@ -1580,6 +1582,7 @@ static struct config_group *nvmet_ana_groups_make_group(
+ 	grp->grpid = grpid;
+ 
+ 	down_write(&nvmet_ana_sem);
++	grpid = array_index_nospec(grpid, NVMET_MAX_ANAGRPS);
+ 	nvmet_ana_group_enabled[grpid]++;
+ 	up_write(&nvmet_ana_sem);
+ 
 -- 
 2.43.0
 
