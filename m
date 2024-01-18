@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-12017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86E0283175B
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C21D8317A9
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:59:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9F371C221AC
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F3811C23EC2
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4B0F23760;
-	Thu, 18 Jan 2024 10:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF852377F;
+	Thu, 18 Jan 2024 10:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p62oCSFr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bRela6ad"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9556D22F0F;
-	Thu, 18 Jan 2024 10:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90CB023776;
+	Thu, 18 Jan 2024 10:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575374; cv=none; b=Q1M30D9baG1SajT1V8XuPa6YKvs9ddc3ZxY2OxXa947pxsDn8DVmgtqS0Jgnsat1Cbj2sOuVyA9EO8kEnFnae2gS6hnhOHjLDpXEiWbbb6TKMRnT0tckbHWII3oYg0sv6QrqFghvcvNZ0BMfMWwORpoWq+ZZ5rt6GYNPgRDUBs0=
+	t=1705575563; cv=none; b=eolPr5bU3xARDCGMSrTB4Htsb9oT/96gILxIVFpcsxUd2Wwaz/m3nb0cP3oZRFlpg0ptN4FjOOw+heT86acY14YohZz4F2njMBCYLTW60eyq6EUpnj8sU9aFqOHk85JO6ZH0xuJKeAItxCxSVhfhE2ClZkqtubaW/jJE44rvQE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575374; c=relaxed/simple;
-	bh=jZLCjbF+okfUc53SxVYWdFaIjuSpMbI7cBIGf08EYJ0=;
+	s=arc-20240116; t=1705575563; c=relaxed/simple;
+	bh=E8JC7GkiJh+NEa+dX43VfFK3bpI2Fo1jiWoKJs3JjOU=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=UhNub1pgzILqEVEsMQECNtVHHNpudHU6xtJkNQzn3GayvBvnDWVy12LEO6/NSOOh37RGxMa9VSQkQuOBHCo9gVRMLpCyzOEoxSJyeaRSBNpLU9xPRYN5Ke4+50c04Y7hG9h7nUf/yrSvuQmveOjhiY1yBaa54Y75bUg1221Fiqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p62oCSFr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1568CC433F1;
-	Thu, 18 Jan 2024 10:56:13 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=GzZq0ZVtB3vcfkd2kYn/0m5V/umKHDiNifoDUmO8lUAvc8i3HTolA3DfMMCpCiJTxVbEhWiJdD0ozz1DC6+YEW3P+hcEEGA6kqcSxCdKOR2YPqjNHUmailOuF30vQY+obzlZI2JeeCHk7oAr31Ncf8JBg3Kz3fn0MoLv4Mw15vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bRela6ad; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15CCDC433C7;
+	Thu, 18 Jan 2024 10:59:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575374;
-	bh=jZLCjbF+okfUc53SxVYWdFaIjuSpMbI7cBIGf08EYJ0=;
+	s=korg; t=1705575563;
+	bh=E8JC7GkiJh+NEa+dX43VfFK3bpI2Fo1jiWoKJs3JjOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p62oCSFr937v3kWXX0SNZt118DdPK/bv1CVkaTXAzXTRnxaHjPhB56SNfFk+jJJZV
-	 r1T0hdt8/1V2ZEWJXkSJSx1so3+tUaA4T5r7NmHfGKp0MU+Skkip9KTaLmFVd9nZvw
-	 Y7JkDOfZFxQIPyOwqbqCi4yOzG36IWcITzR/tNSw=
+	b=bRela6ad8Z+UaIJ6ocVVehDOIPkVsvmmWbZB6yN5qLAOGqsFd66BORyo/wkmbHjjn
+	 DQAlINRvFZ55/Y0n4sj3cgi2oMGSbwplo6AeIYvlmV/UeyctsQQeuSpbXhNsSuOYc9
+	 EIHwNOay4BraPAGcJR4dcTmLancQDCuZwT0FKFpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Rivera-Matos <rriveram@opensource.cirrus.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/150] ASoC: cs35l45: Prevents spinning during runtime suspend
+Subject: [PATCH 6.1 026/100] ASoC: Intel: skl_hda_dsp_generic: Drop HDMI routes when HDMI is not available
 Date: Thu, 18 Jan 2024 11:48:34 +0100
-Message-ID: <20240118104324.201403187@linuxfoundation.org>
+Message-ID: <20240118104312.053613682@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +66,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Rivera-Matos <rriveram@opensource.cirrus.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit a0ffa8115e1ea9786b03edc3f431d2f4ef3e7a2e ]
+[ Upstream commit 3d1dc8b1030df8ca0fdfd4905c88ee10db943bf8 ]
 
-Masks the "DSP Virtual Mailbox 2 write" interrupt when before
-issuing the hibernate command to the DSP. The interrupt is
-unmasked when exiting runtime suspend as it is required for
-DSP operation.
+When the HDMI is not present due to disabled display support
+we will use dummy codec and the HDMI routes will refer to non existent
+DAPM widgets.
 
-Without this change the DSP fires an interrupt when hibernating
-causing the system spin between runtime suspend and runtime
-resume.
+Trim the route list from the HDMI routes to be able to probe the card even
+if the HDMI dais are not registered.
 
-Signed-off-by: Ricardo Rivera-Matos <rriveram@opensource.cirrus.com>
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20231206160318.1255034-4-rriveram@opensource.cirrus.com
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20231124124015.15878-1-peter.ujfalusi@linux.intel.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l45.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/soc/intel/boards/skl_hda_dsp_generic.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/codecs/cs35l45.c b/sound/soc/codecs/cs35l45.c
-index 310747b7689d..9b9fc2d49108 100644
---- a/sound/soc/codecs/cs35l45.c
-+++ b/sound/soc/codecs/cs35l45.c
-@@ -775,6 +775,8 @@ static int cs35l45_enter_hibernate(struct cs35l45_private *cs35l45)
- 
- 	cs35l45_setup_hibernate(cs35l45);
- 
-+	regmap_set_bits(cs35l45->regmap, CS35L45_IRQ1_MASK_2, CS35L45_DSP_VIRT2_MBOX_MASK);
-+
- 	// Don't wait for ACK since bus activity would wake the device
- 	regmap_write(cs35l45->regmap, CS35L45_DSP_VIRT1_MBOX_1, CSPL_MBOX_CMD_HIBERNATE);
- 
-@@ -795,6 +797,8 @@ static int cs35l45_exit_hibernate(struct cs35l45_private *cs35l45)
- 					  CSPL_MBOX_CMD_OUT_OF_HIBERNATE);
- 			if (!ret) {
- 				dev_dbg(cs35l45->dev, "Wake success at cycle: %d\n", j);
-+				regmap_clear_bits(cs35l45->regmap, CS35L45_IRQ1_MASK_2,
-+						 CS35L45_DSP_VIRT2_MBOX_MASK);
- 				return 0;
- 			}
- 			usleep_range(100, 200);
+diff --git a/sound/soc/intel/boards/skl_hda_dsp_generic.c b/sound/soc/intel/boards/skl_hda_dsp_generic.c
+index 879ebba52832..463ffb85121d 100644
+--- a/sound/soc/intel/boards/skl_hda_dsp_generic.c
++++ b/sound/soc/intel/boards/skl_hda_dsp_generic.c
+@@ -157,6 +157,8 @@ static int skl_hda_fill_card_info(struct snd_soc_acpi_mach_params *mach_params)
+ 		card->dapm_widgets = skl_hda_widgets;
+ 		card->num_dapm_widgets = ARRAY_SIZE(skl_hda_widgets);
+ 		if (!ctx->idisp_codec) {
++			card->dapm_routes = &skl_hda_map[IDISP_ROUTE_COUNT];
++			num_route -= IDISP_ROUTE_COUNT;
+ 			for (i = 0; i < IDISP_DAI_COUNT; i++) {
+ 				skl_hda_be_dai_links[i].codecs = dummy_codec;
+ 				skl_hda_be_dai_links[i].num_codecs =
 -- 
 2.43.0
 
