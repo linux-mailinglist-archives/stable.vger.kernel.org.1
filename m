@@ -1,105 +1,95 @@
-Return-Path: <stable+bounces-12170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 797CF831879
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:30:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2946D831884
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:36:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 319EE1F23994
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:30:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAF5DB22694
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56ADC24A10;
-	Thu, 18 Jan 2024 11:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D87D241F5;
+	Thu, 18 Jan 2024 11:36:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.124.171])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045B624A0C;
-	Thu, 18 Jan 2024 11:30:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.124.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BD3241E9;
+	Thu, 18 Jan 2024 11:36:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705577439; cv=none; b=E9ISZHOV1jHEXcylzFVd5ujefgbNqg3bt/0wAqxitmHi2IybqHCxWfCFY6Mvd1eQ+t+CwyfmtpasOaJNrAeW7n6mMIfNccoqJi7pi1WmUyIVqHTeEp34GxrkRn9/PwNrZxc2jKf50Zi47X6TE3ny9Xq74S/fWYfI4tp3nxSAogU=
+	t=1705577792; cv=none; b=HoUn18M04gnySt8a6hI/4RAGHaHp77s3eqfLGawk5JkUjsAwCLYvO4Maxuyz2Z3dvUmgIXQceMMgUvrL4aT9bORG0F697vbrtODxre75r7SY3/txdME+ZUcCS6eHWBhkbZDeXXVKCuHMks7qDkqd8M9uQUeDg/dnUzLqaMNKx3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705577439; c=relaxed/simple;
-	bh=MTfDNh/H4RzACudbIKWTS9CwPWm85VD13SywdtsfirI=;
-	h=X-QQ-mid:X-QQ-Originating-IP:Received:X-QQ-SSF:X-QQ-FEAT:
-	 X-QQ-GoodBg:X-BIZMAIL-ID:From:To:Cc:Subject:Date:Message-Id:
-	 X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding:X-QQ-SENDSIZE:Feedback-ID; b=JdO2N9p86UrwqBO9VfkSpnPE4Rd7oLkKMr5IA1T4ADc8NpuCGP7UZXXfKd+SwHVlfAt3uHtrdMD50y+oAMY7kenTlgbPyxqd3Q++I1Gzi59NN6VV6FiyZn1XU0H3UXXKfXybFxl8xDbSD5PmA1DAIzcqDHTnumEkQR3HspfFFCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn; spf=pass smtp.mailfrom=shingroup.cn; arc=none smtp.client-ip=114.132.124.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shingroup.cn
-X-QQ-mid: bizesmtp73t1705577390tkg4v9vl
-X-QQ-Originating-IP: aAaUCGoHCcdq2hp9fxQg6peErxbrvoXx7bAu/R6yqng=
-Received: from localhost ( [183.209.108.228])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 18 Jan 2024 19:29:48 +0800 (CST)
-X-QQ-SSF: 01400000000000504000000A0000000
-X-QQ-FEAT: 3M0okmaRx3ibVvpE3700jKK10kv893khAgTcIyG6+NPJ+eepQqQ0gVty3jdFg
-	K/uKj5OqV0RO6mEgw4TclQmACO/shCVYvH3En/+KEyKkKNsBQXnJ/oMH3C4yO8QeB1wDS9c
-	0CYh3pAxHXHVBf5jgWwgZsBWmD9zWufKb9BVmr4aw2M3cwEkVQyzjXZe5blV/GHmA4OnvOP
-	P9VKVgfiG9Q16PbOuV0DONspkzna8UdleWXn3Xn+5ua/fJLimjm4WK/h5gHxnKjSZfokqkV
-	3NguAy1Bp3sH/Vj4RZ+ZLO171tDHaCGOz9zBRe7o7J47vVqLyVoQoKPnL+IYuO9LsOE0FGq
-	UtaSRbsNBh0CSxfxB5ioAZAsTHMYrx37Ol5zzgjr6/jclqYngv2VrLRS4eFM3Cy7ScRxMa6
-	24UsMzyQaZw=
-X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 10002877068990544694
-From: Dawei Li <dawei.li@shingroup.cn>
-To: tglx@linutronix.de,
-	maz@kernel.org
-Cc: sdonthineni@nvidia.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	dawei.li@shingroup.cn,
-	set_pte_at@outlook.com,
-	stable@vger.kernel.org
-Subject: [PATCH 4/4] genirq: Initialize resend_node hlist for all irq_desc
-Date: Thu, 18 Jan 2024 19:27:39 +0800
-Message-Id: <20240118112739.2000497-5-dawei.li@shingroup.cn>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20240118112739.2000497-1-dawei.li@shingroup.cn>
-References: <20240118112739.2000497-1-dawei.li@shingroup.cn>
+	s=arc-20240116; t=1705577792; c=relaxed/simple;
+	bh=M7EAn7R7Qzkjp1pLVtrjmJ8cFDKmactEzIq7QW5zduA=;
+	h=Received:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=f+By21M1Q7cTqkSsoXDDGHPvSZp62gb6nX5sZ8mYU03JzgKJrXxb6ZkysT4uGO1NnMAo3Jq1gxYj8TVxUOPbwF9/VO+NTI+GbkA36xG27w66d70Ulerpmb3bTV5VuPn3DGjfzMsgPq9cSK4JVgZDR4KzKOeUcRIwTEtj50qymwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 3D15B1C0071; Thu, 18 Jan 2024 12:36:22 +0100 (CET)
+Date: Thu, 18 Jan 2024 12:36:21 +0100
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 6.1 000/100] 6.1.74-rc1 review
+Message-ID: <ZakNNSaezSvgWSvv@duo.ucw.cz>
+References: <20240118104310.892180084@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz5a-1
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="JiSdNXSbHFccVNUj"
+Content-Disposition: inline
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
 
-For !CONFIG_SPARSE_IRQ kernel, early_irq_init() is supposed to
-initialize all the desc entries in system, desc->resend_node
-included.
 
-Thus, initialize desc->resend_node for all irq_desc entries, rather
-than irq_desc[0] only, which is the current implementation is about.
+--JiSdNXSbHFccVNUj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Fixes: bc06a9e08742 ("genirq: Use hlist for managing resend handlers")
-Cc: stable@vger.kernel.org
+Hi!
 
-Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
----
- kernel/irq/irqdesc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> This is the start of the stable review cycle for the 6.1.74 release.
+> There are 100 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
-index 27ca1c866f29..371eb1711d34 100644
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -600,7 +600,7 @@ int __init early_irq_init(void)
- 		mutex_init(&desc[i].request_mutex);
- 		init_waitqueue_head(&desc[i].wait_for_threads);
- 		desc_set_defaults(i, &desc[i], node, NULL, NULL);
--		irq_resend_init(desc);
-+		irq_resend_init(&desc[i]);
- 	}
- 	return arch_early_irq_init();
- }
--- 
-2.27.0
+CIP testing did not find any problems here:
 
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.1.y
+
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
+
+Best regards,
+                                                                Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--JiSdNXSbHFccVNUj
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZakNNQAKCRAw5/Bqldv6
+8qv/AJ9RMEDyA3LDTlsFrG6LKCpK6hznDQCgvcivROelW8n9Iqskhi0PxNHSOeY=
+=FF9/
+-----END PGP SIGNATURE-----
+
+--JiSdNXSbHFccVNUj--
 
