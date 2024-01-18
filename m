@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-12062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 808AF831789
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:58:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B10A58317E4
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B26EA1C227E2
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:58:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E427B1C23E54
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE50422F16;
-	Thu, 18 Jan 2024 10:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC90623779;
+	Thu, 18 Jan 2024 11:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCOeKnFi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Tx1HKwh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D5741774B;
-	Thu, 18 Jan 2024 10:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB9F23746;
+	Thu, 18 Jan 2024 11:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575499; cv=none; b=WMi94KNx/eNzjsfNfyObQmDifTEwnxwJFBrz85uT4795JTjIIU6fdc8wsTQhVtUewhc4ct0RrBBGNOoCioenrwQQ54g7dPQlm9g7iDjB7WdBjPthuAhrZEZna0FRfLWgceIeoI2xg0e3KMHa4/dgP3GWNXy+farRJf1uKjzuN0s=
+	t=1705575687; cv=none; b=uZasdMGW87bHYONhJ/Gr1dYRuOwga+MkyrPg7wZAnmcibOgP67ZvFiQR2inV1hMBsGgxRaCV8E5vjtC1aI8HF7J/WY/caCD4OE+2KUzYUcN5Q+P2fQ33MmHbDJLJfE/Z1f00oUP3B6c+WLqNL5o8mMAiLrJCx614QX86vd1WtnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575499; c=relaxed/simple;
-	bh=FB1+2i3WAqx+CJWzeWPuMJmHQYPU/ioFx9V+V1cmHJE=;
+	s=arc-20240116; t=1705575687; c=relaxed/simple;
+	bh=/n4/i0AwGI1QbUFegnylFyYLq6Kg6w9W9r8UnfKRwMo=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=mQsDvT0ZRiamILKMRVkLZd6RWg3zrMUAaK5pmZBkduVq1CoT+FXN4NudcSPFY4NqhRasMYn0+hLlp+mm6i0+MG8XhgF9mg7bGdOD99XOiI4LkxVgineZRGDuCYYmMGDRAcbFrtpOIygiLd4ARuHnWzqIl/dDfPRz/sjGWGhMl0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCOeKnFi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1399DC433F1;
-	Thu, 18 Jan 2024 10:58:18 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=UYdghIwj8kZRSZost6M1LaO1LtcljprvPf0mwEA6imT/0vP8itPEDcLdIQPl6PyyMwkYPrJBjlPyuQAt16jbjBC4m00Fi1nGpNS2PRVf0q+j+/bbv4G3VIBmonPUKYhv6A06OWSUP0dbjoaOJLdfwabWStT9f8UzQlr+9XYNfmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Tx1HKwh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E80FC433F1;
+	Thu, 18 Jan 2024 11:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575499;
-	bh=FB1+2i3WAqx+CJWzeWPuMJmHQYPU/ioFx9V+V1cmHJE=;
+	s=korg; t=1705575687;
+	bh=/n4/i0AwGI1QbUFegnylFyYLq6Kg6w9W9r8UnfKRwMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yCOeKnFiLQRHvZYaLj93oDbczFVs3z1ChTdwo7pAiC0qzyhjFE/vrdGo+v1tJNxiQ
-	 yKEUf4lmHayItew88ysPTRV3wDDbGiNjRX1UWK0hd5GoHJ8Y1vkcmbi49RTyABYvWn
-	 YFFCcRc4gcQXaqtJYEeuBI4wI5bmRUNEHerjqI7U=
+	b=2Tx1HKwhXx3BZHWMWmHTJJ2FkQLkF7exnOSybnOTB64ynwtZ/lw+0VSO/evXhVrfk
+	 lmOq4Z95nWCXM+4Tg2knWqHe3+YX0HpplsZFRqelyIYZQarVeLy/lLBbu38fxjaLrW
+	 TnRcFft4HIolNYVYk7a5Ve3pWSIhM1E+PiBbB9Gk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com,
-	Ziqi Zhao <astrajoan@yahoo.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Avraham Stern <avraham.stern@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 128/150] drm/crtc: fix uninitialized variable use
+Subject: [PATCH 6.1 062/100] wifi: iwlwifi: pcie: avoid a NULL pointer dereference
 Date: Thu, 18 Jan 2024 11:49:10 +0100
-Message-ID: <20240118104325.982170994@linuxfoundation.org>
+Message-ID: <20240118104313.624624137@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,56 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-[ Upstream commit 6e455f5dcdd15fa28edf0ffb5b44d3508512dccf ]
+[ Upstream commit ce038edfce43fb345f8dfdca0f7b17f535896701 ]
 
-Commit 3823119b9c2b ("drm/crtc: Fix uninit-value bug in
-drm_mode_setcrtc") was supposed to fix use of an uninitialized variable,
-but introduced another.
+It possible that while the rx rb is being handled, the transport has
+been stopped and re-started. In this case the tx queue pointer is not
+yet initialized, which will lead to a NULL pointer dereference.
+Fix it.
 
-num_connectors is only initialized if crtc_req->count_connectors > 0,
-but it's used regardless. Fix it.
-
-Fixes: 3823119b9c2b ("drm/crtc: Fix uninit-value bug in drm_mode_setcrtc")
-Cc: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
-Cc: Ziqi Zhao <astrajoan@yahoo.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231208131238.2924571-1-jani.nikula@intel.com
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20231207044813.cd0898cafd89.I0b84daae753ba9612092bf383f5c6f761446e964@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_crtc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_crtc.c b/drivers/gpu/drm/drm_crtc.c
-index d718c17ab1e9..cb90e70d85e8 100644
---- a/drivers/gpu/drm/drm_crtc.c
-+++ b/drivers/gpu/drm/drm_crtc.c
-@@ -715,7 +715,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 	struct drm_mode_set set;
- 	uint32_t __user *set_connectors_ptr;
- 	struct drm_modeset_acquire_ctx ctx;
--	int ret, i, num_connectors;
-+	int ret, i, num_connectors = 0;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+index 57a11ee05bc3..91b73e7a4113 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+@@ -1381,7 +1381,7 @@ static void iwl_pcie_rx_handle_rb(struct iwl_trans *trans,
+ 		 * if it is true then one of the handlers took the page.
+ 		 */
  
- 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
- 		return -EOPNOTSUPP;
-@@ -850,7 +850,6 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 			goto out;
- 		}
- 
--		num_connectors = 0;
- 		for (i = 0; i < crtc_req->count_connectors; i++) {
- 			connector_set[i] = NULL;
- 			set_connectors_ptr = (uint32_t __user *)(unsigned long)crtc_req->set_connectors_ptr;
+-		if (reclaim) {
++		if (reclaim && txq) {
+ 			u16 sequence = le16_to_cpu(pkt->hdr.sequence);
+ 			int index = SEQ_TO_INDEX(sequence);
+ 			int cmd_index = iwl_txq_get_cmd_index(txq, index);
 -- 
 2.43.0
 
