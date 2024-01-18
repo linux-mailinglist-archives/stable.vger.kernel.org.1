@@ -1,114 +1,117 @@
-Return-Path: <stable+bounces-12196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B2CA831D99
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 17:36:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97904831DFE
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 17:58:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EF0F1F21FE2
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 16:36:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB58B1C225B3
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 16:58:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 034442C693;
-	Thu, 18 Jan 2024 16:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4790B2C875;
+	Thu, 18 Jan 2024 16:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MVpaGvP9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JSLp7lP+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB102C6A2;
-	Thu, 18 Jan 2024 16:35:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14D62C1BD;
+	Thu, 18 Jan 2024 16:58:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705595750; cv=none; b=ahUfI/LQDuz15lxDzDBScshvdFe+TlIPqrct+DnTmZHfG4LhYkCOPP54LGRNQX+6CKTSttAOIG1RqaVvw8oFz0/IA/E6zOb+DWkTx5jY1CTJ6h2+DgNvzs2bT0/Zc04KsockLADbTExV/QHis4mh64wiauLKFuYiUphGw2pi388=
+	t=1705597106; cv=none; b=XlRCm4wBRQFaeTJgmploynDAHCaIKnlkJSNTdVFo61G9/mrwMmOVugItxpJ7JvznGJVL63nlqeb/3bIN82VZOc62vOtTSq1SmUOqqsacWssT4JzJYtP88Z9O2r5YdaCXP7kMPh4OO0CDv3wwBw1tJPPWPjahk6+EnUrtlcWQrOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705595750; c=relaxed/simple;
-	bh=HVtIWULhKgdre+jmToxGqERh4Fcm+IoYq7p6h7HkQ6E=;
-	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
-	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
-	 References:In-Reply-To:From:Date:Message-ID:Subject:To:Cc:
-	 Content-Type; b=XDek8eeRLXL2Ru0Oy00kF8uQAIoDOf5Fee/afkMoIFaOGHQdwll4oZwkNeKykzLW+OX5Wyat1Jgll4KvZZRvaPwZ+WCeERKihAuS2Q3i9D2LQfg5i+YANmPu6FWrx3TDKlcXQfMlH6qE6mNHWX5R/8t9xIijtLYLSGw3a1uRKfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MVpaGvP9; arc=none smtp.client-ip=209.85.222.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-7cecc0a662dso2104663241.1;
-        Thu, 18 Jan 2024 08:35:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705595748; x=1706200548; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=gpvBWl64BM2U+Fa3xxlD+umyFQJyzuRde12Sfj64vBo=;
-        b=MVpaGvP9YRJ6RjFSVsQTGH8Q7Ef9A5bKnp6lno+s4DDJ8CIYYKccyKyvE9AIECCNIQ
-         3CtYyqOdDLQ0iut5/OCmyqjyWFrCQcLhLiumQhtn0qtFp69rsCSbRUw0DAG5d0M101FQ
-         0ZrwkN5RKVAMIlahL/p6O97u3qLKw6fWeEWD38++LFMBeJdmIM2ss/CVHnNr+wt1Krso
-         RczYhDIx9uV1+F66R/T1KS9aqXv93/3XeayNExXOrrWt1UcFv9TTHXGqY/15sEorzRGA
-         ai3TFSkclmqZml7y+IxSxI7yOPhNjnwZxd5FTKwaM+a/AXXUZIBZHG4y5dNLkAHpHNGm
-         +wOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705595748; x=1706200548;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gpvBWl64BM2U+Fa3xxlD+umyFQJyzuRde12Sfj64vBo=;
-        b=fAF4zzPYaOEDF3j6n57i+huLM1BvlbIhY1C3uYzqKNV01NZ45NWIdZ+i6OrUmQE6rw
-         IpAO2clTHSmOrRmYj5bo5kJlrjeHRqT9FXBljXJhc/RAw2GUnRW2BZuIvwEFemNp3T2H
-         lny51dVTca+9zPKwSoPufYyrnTpWtG2n078Z62SGDMHav7es4UZmLq05ml9o2hf1d2LG
-         BT7ef/1qMxGO+O/7FMbrlMqWB6g0PiHySKXVkie8ZNfai0X7Js5vtbgtSG1QEa8jwvCG
-         08tTnHNEQQPnxKyS4P0qhoPIYLKwnLsjyzXke88qPSuufqzo+g/dKUn0569OqRAJwEBs
-         GGuA==
-X-Gm-Message-State: AOJu0YwpYpIfvESFvEklm5kp3KIe+y8ji/VFlgS3rFTp1UbD4hGn7FZQ
-	n0xr4Lugvge9jHjL+a8UZBqJfIpdHwF3qbeJr4zGhaPJ8PbJ6VDlBUhbac1A+nVBuJ3XMrNm96V
-	6FR7CxQKpSU6u5ndRWbABF9Zs7d4=
-X-Google-Smtp-Source: AGHT+IGMs6yZyS34Oap5tc2ZDXBJhIXQx0gOhbO4B68g+nsccnaReqwgyA/t+qBdbyFSF6xrgOnuxZep/LYYPo8vPfA=
-X-Received: by 2002:ac5:c8ac:0:b0:4b6:d3f2:6d26 with SMTP id
- o12-20020ac5c8ac000000b004b6d3f26d26mr726202vkl.26.1705595748326; Thu, 18 Jan
- 2024 08:35:48 -0800 (PST)
+	s=arc-20240116; t=1705597106; c=relaxed/simple;
+	bh=j++VE3yyl/3Aq6hN2lI/I5Lv3fNUZ9f2+8EY9q5HghQ=;
+	h=Received:DKIM-Signature:Received:From:To:Cc:Subject:Date:
+	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
+	 Content-Transfer-Encoding; b=oWnl9dzwyTJwXs371qVreHQvu/pkTEkzHljrms5/af7rDGG6zNR8TRCSF0e87zPFl1++TtwBXtRHyTbza9JjrLSwACTfra/D1VatCQXg8vC3PGh71HIa1OngWW2GGhDiRiuzwSVuyyQRnwm4Rjq+hZjHidrTt+gTpOBrDvwhroY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JSLp7lP+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DEFFC433C7;
+	Thu, 18 Jan 2024 16:58:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705597105;
+	bh=j++VE3yyl/3Aq6hN2lI/I5Lv3fNUZ9f2+8EY9q5HghQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=JSLp7lP+yt2+TNDtjYwQo3EhajRF3UyEJl8Qt1EyujY64k5U+PZVx5JcOKgBs+35j
+	 6n3xNowULaMqLpw5e66YN3REKKMbwnPoceprkwxWR18V4gXCc8z3+DYZClyIIHNX/9
+	 CejlplkAfn1oKeq2i3MofOS4s4MMM2K9dhViBL7eiziFiW+DbnxgIN/W4SnItWKGzU
+	 1D00ayoUHdNqDpTBxrzzT7o34mt6DRlKEvYW5kzNfpCuVdvss2jiLNZGZcNPlj7Hgj
+	 NcuDaBV7sw7h52cu8Zg+kq1ou4oStn41Bh8sbtJqOj1cMENM3ZQwzLAp4aEyaBiPvU
+	 9COmIaQoyDZfw==
+Received: from johan by xi.lan with local (Exim 4.96.2)
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1rQVir-0003Yy-1q;
+	Thu, 18 Jan 2024 17:58:33 +0100
+From: Johan Hovold <johan+linaro@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Banajit Goswami <bgoswami@quicinc.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	alsa-devel@alsa-project.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/5] ASoC: codecs: wsa883x: fix PA volume control
+Date: Thu, 18 Jan 2024 17:58:07 +0100
+Message-ID: <20240118165811.13672-2-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20240118165811.13672-1-johan+linaro@kernel.org>
+References: <20240118165811.13672-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240118104301.249503558@linuxfoundation.org>
-In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
-From: Allen <allen.lkml@gmail.com>
-Date: Thu, 18 Jan 2024 08:35:37 -0800
-Message-ID: <CAOMdWSLdLSOMpNb24CWDDOf2qH9ZLw+7_+vOmAiDWB6St_XnBA@mail.gmail.com>
-Subject: Re: [PATCH 6.7 00/28] 6.7.1-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-> This is the start of the stable review cycle for the 6.7.1 release.
-> There are 28 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 20 Jan 2024 10:42:49 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.1-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
->
+The PA gain can be set in steps of 1.5 dB from -3 dB to 18 dB, that is,
+in fifteen levels.
 
-Compiled and booted on my x86_64 and ARM64 test systems. No errors or
-regressions.
+Fix the range of the PA volume control to avoid having the first
+sixteen levels all map to -3 dB.
 
-Tested-by: Allen Pais <apais@linux.microsoft.com>
+Note that level 0 (-3 dB) does not mute the PA so the mute flag should
+also not be set.
 
-Thanks.
+Fixes: cdb09e623143 ("ASoC: codecs: wsa883x: add control, dapm widgets and map")
+Cc: stable@vger.kernel.org      # 6.0
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ sound/soc/codecs/wsa883x.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/sound/soc/codecs/wsa883x.c b/sound/soc/codecs/wsa883x.c
+index cb83c569e18d..32983ca9afba 100644
+--- a/sound/soc/codecs/wsa883x.c
++++ b/sound/soc/codecs/wsa883x.c
+@@ -1098,7 +1098,7 @@ static int wsa_dev_mode_put(struct snd_kcontrol *kcontrol,
+ 	return 1;
+ }
+ 
+-static const DECLARE_TLV_DB_SCALE(pa_gain, -300, 150, -300);
++static const DECLARE_TLV_DB_SCALE(pa_gain, -300, 150, 0);
+ 
+ static int wsa883x_get_swr_port(struct snd_kcontrol *kcontrol,
+ 				struct snd_ctl_elem_value *ucontrol)
+@@ -1239,7 +1239,7 @@ static const struct snd_soc_dapm_widget wsa883x_dapm_widgets[] = {
+ 
+ static const struct snd_kcontrol_new wsa883x_snd_controls[] = {
+ 	SOC_SINGLE_RANGE_TLV("PA Volume", WSA883X_DRE_CTL_1, 1,
+-			     0x0, 0x1f, 1, pa_gain),
++			     0x1, 0xf, 1, pa_gain),
+ 	SOC_ENUM_EXT("WSA MODE", wsa_dev_mode_enum,
+ 		     wsa_dev_mode_get, wsa_dev_mode_put),
+ 	SOC_SINGLE_EXT("COMP Offset", SND_SOC_NOPM, 0, 4, 0,
+-- 
+2.41.0
+
 
