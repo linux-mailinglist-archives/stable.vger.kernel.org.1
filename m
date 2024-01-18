@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-12055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07A6831782
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:58:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9799E8317F3
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 916011F22530
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:58:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB03F1C241CC
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8405122F16;
-	Thu, 18 Jan 2024 10:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E6F24206;
+	Thu, 18 Jan 2024 11:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvE2Ra21"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4SVXUyg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441471774B;
-	Thu, 18 Jan 2024 10:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F3C200A0;
+	Thu, 18 Jan 2024 11:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575480; cv=none; b=srNyGrxWuiZVTLWyV1L8k/4ynRx8S15VdR6o9B3XbkpAlcR5tx7RVsa8rYenJNwzxjDuvh3MRO5VRGOyBxfA0W4UZcLJNVDPZptcQ5B+15GC5y2ABjHMvjvf761oK2op19J2Nvsq7KRQ4DqFjAFGINJf4K/u5JCdVPjn92BQtKw=
+	t=1705575721; cv=none; b=IudtoghJQN/dUDj3CiqlZ9cuuaoR5cGaZTrjhyeX/HmQsOLK0d9ZePyvqus7tWW/tYoLXbnLpS0ofCpToQolafGVACYzE4lBjhywU8iwTrqZsIIhQDq8tfwIWDcO2j3+jdOJ18Ce0oBkqeuxI/5ukeSXAE6QDFKgzrgFZzxj0rU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575480; c=relaxed/simple;
-	bh=kIjz0m31cKKsfh0JDjBydTYgZJ/oJfvIADNqRL/VPD4=;
+	s=arc-20240116; t=1705575721; c=relaxed/simple;
+	bh=KVxZ5l604JVDqfDmQz11GwzPw1Pm8IZDp3xOBk0IsN0=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=qCYOTxb4c+/vrFO5ZwrVdv8mV9BVOZvie37VAkJSUhNNdYHICKe6jxw3kXMibDMHqlmk3kZn3lKglIHxxRXiNXWFtLa6ON35ngnxHGD0PVfgej77vgmLTwMMiCYsuSS0Kn9rtx20EpBUEjzmfUpBtoL1N3cGaQTDXqQRboveDno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvE2Ra21; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD227C433C7;
-	Thu, 18 Jan 2024 10:57:59 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=gAq6vF7ptOjAsrZcPlCJ1OUXcY8So6Alp7tZY0BfYo6lt5+C+8aeLxozWoWuwDW1mtZpBSXUivih2Qyx8NlOAZPFbCCp9vWgLRRfZVZKU+Jdz8opUZNPCEkcB9KJI+XE/ka/KRBJTCSpBf5SJ3D+YeKQalxka5hFd57OyRMRKvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4SVXUyg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0302C433C7;
+	Thu, 18 Jan 2024 11:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575480;
-	bh=kIjz0m31cKKsfh0JDjBydTYgZJ/oJfvIADNqRL/VPD4=;
+	s=korg; t=1705575721;
+	bh=KVxZ5l604JVDqfDmQz11GwzPw1Pm8IZDp3xOBk0IsN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vvE2Ra213njVJNXs2NeDDNUlIMk68KlgAN6y+q6pr07EdgBU2eiaIkB4pFzoszRsJ
-	 VMZu6GD0Wah/X7IoxycrOrhDiUg/UzzJbOWdQWS3PE5H/GFJozvxJSGy4y2Xa2THt/
-	 LFhNu+Ya15Y9RM34c0fNEkIIzWFbdh5uDwtFJQV8=
+	b=q4SVXUygrYJkWbPfOw2OuT8XM5/jnVGJMyjmDf0QqGUi6qi/6zWwidXWFcdZgALf1
+	 fyiAP5dDruXOKllEUbw/TyVjH55Z/3jsI+4JBlOGGMZa4jBMdEuFvAZUNzdaSUal7l
+	 ZZxt6W6a3pjIDoMAQbK39Z9eqMqZVHnHEcmLAmeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	LeoLiuoc <LeoLiu-oc@zhaoxin.com>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.6 147/150] PCI: Add ACS quirk for more Zhaoxin Root Ports
+	syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com,
+	Ziqi Zhao <astrajoan@yahoo.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 081/100] drm/crtc: fix uninitialized variable use
 Date: Thu, 18 Jan 2024 11:49:29 +0100
-Message-ID: <20240118104326.861351986@linuxfoundation.org>
+Message-ID: <20240118104314.429737186@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +67,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit e367e3c765f5477b2e79da0f1399aed49e2d1e37 upstream.
+[ Upstream commit 6e455f5dcdd15fa28edf0ffb5b44d3508512dccf ]
 
-Add more Root Port Device IDs to pci_quirk_zhaoxin_pcie_ports_acs() for
-some new Zhaoxin platforms.
+Commit 3823119b9c2b ("drm/crtc: Fix uninit-value bug in
+drm_mode_setcrtc") was supposed to fix use of an uninitialized variable,
+but introduced another.
 
-Fixes: 299bd044a6f3 ("PCI: Add ACS quirk for Zhaoxin Root/Downstream Ports")
-Link: https://lore.kernel.org/r/20231211091543.735903-1-LeoLiu-oc@zhaoxin.com
-Signed-off-by: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
-[bhelgaas: update subject, drop changelog, add Fixes, add stable tag, fix
-whitespace, wrap code comment]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: <stable@vger.kernel.org>	# 5.7
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+num_connectors is only initialized if crtc_req->count_connectors > 0,
+but it's used regardless. Fix it.
+
+Fixes: 3823119b9c2b ("drm/crtc: Fix uninit-value bug in drm_mode_setcrtc")
+Cc: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
+Cc: Ziqi Zhao <astrajoan@yahoo.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231208131238.2924571-1-jani.nikula@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_crtc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -4699,17 +4699,21 @@ static int pci_quirk_xgene_acs(struct pc
-  * But the implementation could block peer-to-peer transactions between them
-  * and provide ACS-like functionality.
-  */
--static int  pci_quirk_zhaoxin_pcie_ports_acs(struct pci_dev *dev, u16 acs_flags)
-+static int pci_quirk_zhaoxin_pcie_ports_acs(struct pci_dev *dev, u16 acs_flags)
- {
- 	if (!pci_is_pcie(dev) ||
- 	    ((pci_pcie_type(dev) != PCI_EXP_TYPE_ROOT_PORT) &&
- 	     (pci_pcie_type(dev) != PCI_EXP_TYPE_DOWNSTREAM)))
- 		return -ENOTTY;
+diff --git a/drivers/gpu/drm/drm_crtc.c b/drivers/gpu/drm/drm_crtc.c
+index d718c17ab1e9..cb90e70d85e8 100644
+--- a/drivers/gpu/drm/drm_crtc.c
++++ b/drivers/gpu/drm/drm_crtc.c
+@@ -715,7 +715,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 	struct drm_mode_set set;
+ 	uint32_t __user *set_connectors_ptr;
+ 	struct drm_modeset_acquire_ctx ctx;
+-	int ret, i, num_connectors;
++	int ret, i, num_connectors = 0;
  
-+	/*
-+	 * Future Zhaoxin Root Ports and Switch Downstream Ports will
-+	 * implement ACS capability in accordance with the PCIe Spec.
-+	 */
- 	switch (dev->device) {
- 	case 0x0710 ... 0x071e:
- 	case 0x0721:
--	case 0x0723 ... 0x0732:
-+	case 0x0723 ... 0x0752:
- 		return pci_acs_ctrl_enabled(acs_flags,
- 			PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
- 	}
+ 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
+ 		return -EOPNOTSUPP;
+@@ -850,7 +850,6 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 			goto out;
+ 		}
+ 
+-		num_connectors = 0;
+ 		for (i = 0; i < crtc_req->count_connectors; i++) {
+ 			connector_set[i] = NULL;
+ 			set_connectors_ptr = (uint32_t __user *)(unsigned long)crtc_req->set_connectors_ptr;
+-- 
+2.43.0
+
 
 
 
