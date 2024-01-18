@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-12080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD6A8317A4
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:59:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6AA5831744
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:55:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3DF1A1C23F2C
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:59:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 403A01F26C13
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:55:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E361B23763;
-	Thu, 18 Jan 2024 10:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B93122323;
+	Thu, 18 Jan 2024 10:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YmfU6Mck"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lOFSwjo8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3695200DA;
-	Thu, 18 Jan 2024 10:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C2401774B;
+	Thu, 18 Jan 2024 10:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575549; cv=none; b=GW5Y5QnalMXj5ZQFhRi8TmArlWJLwisf9zwLrB8OMSLRvPcxDkWgn42Ci7KyRA2sDc+teBC+cyLU/g74lPn8GvuWxseTigI9IK2iZyZj250HJPq+/XtS2Im5Zmn4SSZQUlJtIgzSL3xUHR+QwEMkvkZviXWSwTyY9depTtpfWVE=
+	t=1705575313; cv=none; b=kihxowRdCymJ/WN7lDK5jeQBHX3Mh3nARpq2eG6mQOX4kx+1S7d3HjV09VUjD1Yp5gqsKMDW1olfa57mfnS6SdCJwOXbL0lxP5NTCOjuTdYHWCEkw+fIxIVeha0w7skT/P3f1vdYc4PGAsyVLV3cyoToL2P9UxWF2I7judKkvVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575549; c=relaxed/simple;
-	bh=i8btsqygJr3/mefdCMEEIA5juYaCh9/dIb0MWCzpCQs=;
+	s=arc-20240116; t=1705575313; c=relaxed/simple;
+	bh=48+mZLTphqgqAnHDC9Ju+OL7d1n1R3HL9riRqbc+ACc=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=JtqeVXaJhTDoTYyo7eJmuUTD2oCnfNeAJUfCRsCV1SbpbsXE0AlPPC4YchO8QhQrajYN2HLNkyKUFPIOMn9iFAnUSmmylPGWykxCqB05xURkgIDMJKtaPahpirgnZB0fpRaJwYXWY4CurBS1tcY/Jaebu9M+GC+NU/SrwIM4ARw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YmfU6Mck; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F603C433C7;
-	Thu, 18 Jan 2024 10:59:08 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=cTrppXFVRLD6d1Y284r3Qc1CMQzvWpgyRBY5sh5+eB6cDr3ZYBt/LDGh/14awsDNZUBXiT00c6Iltdjn5e7SUkhIjYt4Nxn+pqy0OAofINHZ8xDjn4WSTKaYyJpaiVYXWyIemKTIZmVAzpbuJk00+5x5cIQw38cpdgPifK/qZmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lOFSwjo8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D11C433F1;
+	Thu, 18 Jan 2024 10:55:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575549;
-	bh=i8btsqygJr3/mefdCMEEIA5juYaCh9/dIb0MWCzpCQs=;
+	s=korg; t=1705575313;
+	bh=48+mZLTphqgqAnHDC9Ju+OL7d1n1R3HL9riRqbc+ACc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YmfU6MckvpVHnlY21FIlCd2CR+odz/PMTtjzqpOjsKJcSwaG/iG/Z/mDmw+aaolvY
-	 iHgU5hPCeamsXD9F1EQc0ERMFGw+bImCcjUlfxuzt1XNSCB2HxwpYDOI8mNwv3/q/E
-	 22aIgCH20AEjYFKDSoYPNJtnfj3PO6hv0/GGz7vQ=
+	b=lOFSwjo8V5R219tJCz1zTIYBTsaBx67dAKN2KwfnmOSo2Efns9j6y6JpaWqibEHvT
+	 +BwqxGV7A+PSb9JzT8cTfJ6lZb5iFNa0tbO/0Hu6dO8PhDvvNxg15G37myQaKT/eoH
+	 iWPLXyE+NNmgE5QMOmNzmB6iakzEE/qZnk8KYoDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	David Lin <CTLIN0@nuvoton.com>,
-	Mark Brown <broonie@kernel.org>,
+	Shang Ye <yesh25@mail2.sysu.edu.cn>,
+	gurevitch <mail@gurevit.ch>,
+	Egor Ignatov <egori@altlinux.org>,
+	Anton Zhilyaev <anton@cpp.in>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 021/100] ASoC: nau8822: Fix incorrect type in assignment and cast to restricted __be16
+Subject: [PATCH 6.6 087/150] Input: atkbd - skip ATKBD_CMD_GETID in translated mode
 Date: Thu, 18 Jan 2024 11:48:29 +0100
-Message-ID: <20240118104311.836929957@linuxfoundation.org>
+Message-ID: <20240118104323.987760125@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +67,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lin <CTLIN0@nuvoton.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit c1501f2597dd08601acd42256a4b0a0fc36bf302 ]
+[ Upstream commit 936e4d49ecbc8c404790504386e1422b599dec39 ]
 
-This issue is reproduced when W=1 build in compiler gcc-12.
-The following are sparse warnings:
+There have been multiple reports of keyboard issues on recent laptop models
+which can be worked around by setting i8042.dumbkbd, with the downside
+being this breaks the capslock LED.
 
-sound/soc/codecs/nau8822.c:199:25: sparse: sparse: incorrect type in assignment
-sound/soc/codecs/nau8822.c:199:25: sparse: expected unsigned short
-sound/soc/codecs/nau8822.c:199:25: sparse: got restricted __be16
-sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
-sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
-sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
-sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
+It seems that these issues are caused by recent laptops getting confused by
+ATKBD_CMD_GETID. Rather then adding and endless growing list of quirks for
+this, just skip ATKBD_CMD_GETID alltogether on laptops in translated mode.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311122320.T1opZVkP-lkp@intel.com/
-Signed-off-by: David Lin <CTLIN0@nuvoton.com>
-Link: https://lore.kernel.org/r/20231117043011.1747594-1-CTLIN0@nuvoton.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The main goal of sending ATKBD_CMD_GETID is to skip binding to ps/2
+mice/touchpads and those are never used in translated mode.
+
+Examples of laptop models which benefit from skipping ATKBD_CMD_GETID:
+
+* "HP Laptop 15s-fq2xxx", "HP laptop 15s-fq4xxx" and "HP Laptop 15-dy2xxx"
+  models the kbd stops working for the first 2 - 5 minutes after boot
+  (waiting for EC watchdog reset?)
+
+* On "HP Spectre x360 13-aw2xxx" atkbd fails to probe the keyboard
+
+* At least 9 different Lenovo models have issues with ATKBD_CMD_GETID, see:
+  https://github.com/yescallop/atkbd-nogetid
+
+This has been tested on:
+
+1. A MSI B550M PRO-VDH WIFI desktop, where the i8042 controller is not
+   in translated mode when no keyboard is plugged in and with a ps/2 kbd
+   a "AT Translated Set 2 keyboard" /dev/input/event# node shows up
+
+2. A Lenovo ThinkPad X1 Yoga gen 8 (always has a translated set 2 keyboard)
+
+Reported-by: Shang Ye <yesh25@mail2.sysu.edu.cn>
+Closes: https://lore.kernel.org/linux-input/886D6167733841AE+20231017135318.11142-1-yesh25@mail2.sysu.edu.cn/
+Closes: https://github.com/yescallop/atkbd-nogetid
+Reported-by: gurevitch <mail@gurevit.ch>
+Closes: https://lore.kernel.org/linux-input/2iAJTwqZV6lQs26cTb38RNYqxvsink6SRmrZ5h0cBUSuf9NT0tZTsf9fEAbbto2maavHJEOP8GA1evlKa6xjKOsaskDhtJWxjcnrgPigzVo=@gurevit.ch/
+Reported-by: Egor Ignatov <egori@altlinux.org>
+Closes: https://lore.kernel.org/all/20210609073333.8425-1-egori@altlinux.org/
+Reported-by: Anton Zhilyaev <anton@cpp.in>
+Closes: https://lore.kernel.org/linux-input/20210201160336.16008-1-anton@cpp.in/
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2086156
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20231115174625.7462-1-hdegoede@redhat.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/nau8822.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/input/keyboard/atkbd.c | 46 +++++++++++++++++++++++++++++++---
+ 1 file changed, 42 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/codecs/nau8822.c b/sound/soc/codecs/nau8822.c
-index 1aef281a9972..cd5053cfd521 100644
---- a/sound/soc/codecs/nau8822.c
-+++ b/sound/soc/codecs/nau8822.c
-@@ -184,6 +184,7 @@ static int nau8822_eq_get(struct snd_kcontrol *kcontrol,
- 	struct soc_bytes_ext *params = (void *)kcontrol->private_value;
- 	int i, reg;
- 	u16 reg_val, *val;
-+	__be16 tmp;
+diff --git a/drivers/input/keyboard/atkbd.c b/drivers/input/keyboard/atkbd.c
+index c92e544c792d..786f00f6b7fd 100644
+--- a/drivers/input/keyboard/atkbd.c
++++ b/drivers/input/keyboard/atkbd.c
+@@ -765,6 +765,44 @@ static void atkbd_deactivate(struct atkbd *atkbd)
+ 			ps2dev->serio->phys);
+ }
  
- 	val = (u16 *)ucontrol->value.bytes.data;
- 	reg = NAU8822_REG_EQ1;
-@@ -192,8 +193,8 @@ static int nau8822_eq_get(struct snd_kcontrol *kcontrol,
- 		/* conversion of 16-bit integers between native CPU format
- 		 * and big endian format
- 		 */
--		reg_val = cpu_to_be16(reg_val);
--		memcpy(val + i, &reg_val, sizeof(reg_val));
-+		tmp = cpu_to_be16(reg_val);
-+		memcpy(val + i, &tmp, sizeof(tmp));
- 	}
++#ifdef CONFIG_X86
++static bool atkbd_is_portable_device(void)
++{
++	static const char * const chassis_types[] = {
++		"8",	/* Portable */
++		"9",	/* Laptop */
++		"10",	/* Notebook */
++		"14",	/* Sub-Notebook */
++		"31",	/* Convertible */
++		"32",	/* Detachable */
++	};
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(chassis_types); i++)
++		if (dmi_match(DMI_CHASSIS_TYPE, chassis_types[i]))
++			return true;
++
++	return false;
++}
++
++/*
++ * On many modern laptops ATKBD_CMD_GETID may cause problems, on these laptops
++ * the controller is always in translated mode. In this mode mice/touchpads will
++ * not work. So in this case simply assume a keyboard is connected to avoid
++ * confusing some laptop keyboards.
++ *
++ * Skipping ATKBD_CMD_GETID ends up using a fake keyboard id. Using a fake id is
++ * ok in translated mode, only atkbd_select_set() checks atkbd->id and in
++ * translated mode that is a no-op.
++ */
++static bool atkbd_skip_getid(struct atkbd *atkbd)
++{
++	return atkbd->translated && atkbd_is_portable_device();
++}
++#else
++static inline bool atkbd_skip_getid(struct atkbd *atkbd) { return false; }
++#endif
++
+ /*
+  * atkbd_probe() probes for an AT keyboard on a serio port.
+  */
+@@ -794,12 +832,12 @@ static int atkbd_probe(struct atkbd *atkbd)
+  */
  
- 	return 0;
-@@ -216,6 +217,7 @@ static int nau8822_eq_put(struct snd_kcontrol *kcontrol,
- 	void *data;
- 	u16 *val, value;
- 	int i, reg, ret;
-+	__be16 *tmp;
+ 	param[0] = param[1] = 0xa5;	/* initialize with invalid values */
+-	if (ps2_command(ps2dev, param, ATKBD_CMD_GETID)) {
++	if (atkbd_skip_getid(atkbd) || ps2_command(ps2dev, param, ATKBD_CMD_GETID)) {
  
- 	data = kmemdup(ucontrol->value.bytes.data,
- 		params->max, GFP_KERNEL | GFP_DMA);
-@@ -228,7 +230,8 @@ static int nau8822_eq_put(struct snd_kcontrol *kcontrol,
- 		/* conversion of 16-bit integers between native CPU format
- 		 * and big endian format
- 		 */
--		value = be16_to_cpu(*(val + i));
-+		tmp = (__be16 *)(val + i);
-+		value = be16_to_cpup(tmp);
- 		ret = snd_soc_component_write(component, reg + i, value);
- 		if (ret) {
- 			dev_err(component->dev,
+ /*
+- * If the get ID command failed, we check if we can at least set the LEDs on
+- * the keyboard. This should work on every keyboard out there. It also turns
+- * the LEDs off, which we want anyway.
++ * If the get ID command was skipped or failed, we check if we can at least set
++ * the LEDs on the keyboard. This should work on every keyboard out there.
++ * It also turns the LEDs off, which we want anyway.
+  */
+ 		param[0] = 0;
+ 		if (ps2_command(ps2dev, param, ATKBD_CMD_SETLEDS))
 -- 
 2.43.0
 
