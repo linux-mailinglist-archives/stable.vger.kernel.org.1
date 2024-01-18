@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-12081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 601A18317A5
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:59:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC9EF831747
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:55:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92E1C1C23542
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:59:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B8541F26C3C
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAE3123765;
-	Thu, 18 Jan 2024 10:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D5322F06;
+	Thu, 18 Jan 2024 10:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avLkx9TM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SKU/z+Xk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692F6200DA;
-	Thu, 18 Jan 2024 10:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F24C1774B;
+	Thu, 18 Jan 2024 10:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575552; cv=none; b=GHL5UoDKtteNwOk8drHsG7TYIfbmlTK6SeaXEXL92QtKF9un4SywSzeOT3ixHRHfdoAWET6RLsvR6XBGj/SQ5xZvqM/Yn7VAqRlRafGjDauhp1iAYmFTn+ZBFSM6IEPQLAAZhTUdpeZShMYvw5dw9A2E5PemrXB0jqXTEG6XREc=
+	t=1705575321; cv=none; b=rZ9OXPfXniAVxPO4/LBug00fNJEsmFuJnqwaRcSPZ7hFyf7Jgk318qqqhebcqj4qt+QGmsoL4yPuuWTMJLIQotEb+60pb4txCugyUoB1j2TMulznfMwfgqsSnY72LR5ki4Z+LtrenOfpapbeZD393yS6IFJWSNibjmuxK6Qlabk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575552; c=relaxed/simple;
-	bh=X/6A3/OjDJe9tcxe1gJrKfp6936xg1zlTGSKNV9JLhk=;
+	s=arc-20240116; t=1705575321; c=relaxed/simple;
+	bh=noLTKSOU0B6mhyxM5GivMUP74dS5BvE3Gmch5ommtAY=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding; b=cCPM2IqviSf5Q52F2VyxFIaoTbT/h4S136tvtKr2I13wayXd9Nbtvjs2txa2bRc0extSj4x7WSJXsIJmaVSp2JUFJdwnuT8jZbbz2gLViTnJPWg7uXIDHEm/QDVqpHUxd42iO65z1xVUKdhJsiIJQrbCkBBGg8O/4/bXGMbc5f8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avLkx9TM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF6CC433F1;
-	Thu, 18 Jan 2024 10:59:11 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=tHjET4KxFP0v86NhF5zqTV1w7Q6JWwgzVKot5ljUgiLiq+mP5wNrNwF32tRNoD8bFEog1uu81QafSn1SBHKsUwJGH6zhBQ3SsxiW5qxFKdkI3l+WKJqgzW7jw4qzHwf1E7HDpBMYVGlsb+OcLJH6BOfTBysMbesGXbF1roxZ/ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKU/z+Xk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAFCAC433C7;
+	Thu, 18 Jan 2024 10:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575552;
-	bh=X/6A3/OjDJe9tcxe1gJrKfp6936xg1zlTGSKNV9JLhk=;
+	s=korg; t=1705575321;
+	bh=noLTKSOU0B6mhyxM5GivMUP74dS5BvE3Gmch5ommtAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=avLkx9TMijsOxceTOHzGosL9ahWuGgC9iYDIYzDPV+j8Xg8GV+b/BoRwJfxxWC609
-	 YpZQOllBofFjNp6AZQ5QVXVkC0sKWVQCwIH/D5pMy8nioOF0L70cjT/nhQfAM5ApZe
-	 iIr202QiJmboqaOdBwhFyqtOKFW23hShvW9V2YyM=
+	b=SKU/z+Xk3/bMpsr+cUx6OiU2XQtOUA5h4dg/PlrBmwKCyTbylFPj0q5CX9FLpGNWI
+	 iG3wu8LwH+x5zpQ4v8s0yerr+rYYvHs6NaplZN1TqVaWrtzWPanK22Q43SkY7M6rb2
+	 SDK9jbm2TIinZ2Egh2jlT1oMcMEaZU2wvuAH5BmA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamil Duljas <kamil.duljas@gmail.com>,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 022/100] ASoC: Intel: Skylake: mem leak in skl register function
-Date: Thu, 18 Jan 2024 11:48:30 +0100
-Message-ID: <20240118104311.879345553@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Marcus Aram <marcus+oss@oxar.nl>,
+	Mark Herbert <mark.herbert42@gmail.com>
+Subject: [PATCH 6.6 089/150] pinctrl: amd: Mask non-wake source pins with interrupt enabled at suspend
+Date: Thu, 18 Jan 2024 11:48:31 +0100
+Message-ID: <20240118104324.076721447@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamil Duljas <kamil.duljas@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit f8ba14b780273fd290ddf7ee0d7d7decb44cc365 ]
+[ Upstream commit 2fff0b5e1a6b9c577b4dd4958902c877159c856b ]
 
-skl_platform_register() uses krealloc. When krealloc is fail,
-then previous memory is not freed. The leak is also when soc
-component registration failed.
+If a pin isn't marked as a wake source processing any interrupts is
+just going to destroy battery life.  The APU may wake up from a hardware
+sleep state to process the interrupt but not return control to the OS.
 
-Signed-off-by: Kamil Duljas <kamil.duljas@gmail.com>
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20231116224112.2209-2-kamil.duljas@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Mask interrupt for all non-wake source pins at suspend. They'll be
+re-enabled at resume.
+
+Reported-and-tested-by: Marcus Aram <marcus+oss@oxar.nl>
+Reported-and-tested-by: Mark Herbert <mark.herbert42@gmail.com>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2812
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20231203032431.30277-3-mario.limonciello@amd.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/skylake/skl-pcm.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-amd.c | 9 +++++++++
+ drivers/pinctrl/pinctrl-amd.h | 5 +++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/sound/soc/intel/skylake/skl-pcm.c b/sound/soc/intel/skylake/skl-pcm.c
-index 7ef004107513..adee4be2dea7 100644
---- a/sound/soc/intel/skylake/skl-pcm.c
-+++ b/sound/soc/intel/skylake/skl-pcm.c
-@@ -1473,6 +1473,7 @@ int skl_platform_register(struct device *dev)
- 		dais = krealloc(skl->dais, sizeof(skl_fe_dai) +
- 				sizeof(skl_platform_dai), GFP_KERNEL);
- 		if (!dais) {
-+			kfree(skl->dais);
- 			ret = -ENOMEM;
- 			goto err;
- 		}
-@@ -1485,8 +1486,10 @@ int skl_platform_register(struct device *dev)
+diff --git a/drivers/pinctrl/pinctrl-amd.c b/drivers/pinctrl/pinctrl-amd.c
+index 74241b2ff21e..86034c457c04 100644
+--- a/drivers/pinctrl/pinctrl-amd.c
++++ b/drivers/pinctrl/pinctrl-amd.c
+@@ -923,6 +923,15 @@ static int amd_gpio_suspend(struct device *dev)
  
- 	ret = devm_snd_soc_register_component(dev, &skl_component,
- 					 skl->dais, num_dais);
--	if (ret)
-+	if (ret) {
-+		kfree(skl->dais);
- 		dev_err(dev, "soc component registration failed %d\n", ret);
-+	}
- err:
- 	return ret;
- }
+ 		raw_spin_lock_irqsave(&gpio_dev->lock, flags);
+ 		gpio_dev->saved_regs[i] = readl(gpio_dev->base + pin * 4) & ~PIN_IRQ_PENDING;
++
++		/* mask any interrupts not intended to be a wake source */
++		if (!(gpio_dev->saved_regs[i] & WAKE_SOURCE)) {
++			writel(gpio_dev->saved_regs[i] & ~BIT(INTERRUPT_MASK_OFF),
++			       gpio_dev->base + pin * 4);
++			pm_pr_dbg("Disabling GPIO #%d interrupt for suspend.\n",
++				  pin);
++		}
++
+ 		raw_spin_unlock_irqrestore(&gpio_dev->lock, flags);
+ 	}
+ 
+diff --git a/drivers/pinctrl/pinctrl-amd.h b/drivers/pinctrl/pinctrl-amd.h
+index 34c5c3e71fb2..cf59089f2776 100644
+--- a/drivers/pinctrl/pinctrl-amd.h
++++ b/drivers/pinctrl/pinctrl-amd.h
+@@ -80,6 +80,11 @@
+ #define FUNCTION_MASK		GENMASK(1, 0)
+ #define FUNCTION_INVALID	GENMASK(7, 0)
+ 
++#define WAKE_SOURCE	(BIT(WAKE_CNTRL_OFF_S0I3) | \
++			 BIT(WAKE_CNTRL_OFF_S3)   | \
++			 BIT(WAKE_CNTRL_OFF_S4)   | \
++			 BIT(WAKECNTRL_Z_OFF))
++
+ struct amd_function {
+ 	const char *name;
+ 	const char * const groups[NSELECTS];
 -- 
 2.43.0
 
