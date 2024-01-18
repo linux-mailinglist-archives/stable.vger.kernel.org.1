@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-12023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4D2C831762
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:36 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8BE88316D8
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:50:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 573BDB21EEB
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C8161F265B6
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:50:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A911222F0B;
-	Thu, 18 Jan 2024 10:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF5423767;
+	Thu, 18 Jan 2024 10:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yl4UzFVx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJKwF784"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686CD1774B;
-	Thu, 18 Jan 2024 10:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F333AB65C;
+	Thu, 18 Jan 2024 10:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575391; cv=none; b=ijIeqHOB4aZFuygvk4nuiKdomg1ByKkq6VW+y7/wkVBihjAjmZPPXneHsquOLFk3+f/AUGhYTIN1m6H/rdvucxNjKJAr5tbU2J75vy3LRf0R6+fWDzmn3S3TLdFto3sslS+22W/UloKY1YNtfVNsZxRUUstvbbTF51/Jn3KgZqs=
+	t=1705575038; cv=none; b=tNkes4hg3wD9edqe5BSVP+EYUKOnUZ0Cf99mGDKFboxH5Q0aqOrRxb4/270IoJn5UkkfPeLkT6fSr8y7+CgZbqxlsrbFZpB13KrJHHwxDesc/BZ09qvChbGRRyMeWv1q45Rll6G41fZVi5fYRvTiztDu7mfQOyfHovY94UhLzp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575391; c=relaxed/simple;
-	bh=BEuutCHUELKNrBeoHcHtCy4pCkuUIPcfaeDo3K8+jUs=;
+	s=arc-20240116; t=1705575038; c=relaxed/simple;
+	bh=zfG0HL/tnSI+lxV0iHqFertDZH+QZ1QVdAobVHDG1rk=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=GEzgbUwU30YurFVm2ZCiWuvFKKyoCnuJEbRNjIKCrPCxqy/L556fGa+Kl58FhBycFc8Nlhyf3bW/X5kK6bHRsGGw8XR+plKmq2guymAGt07G+6XyG+hAZsYUy03t90A4aG3K+lAUYGRDokuPSkkVxM3MRzE+pukCuIK52CR7shQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yl4UzFVx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7D3C433C7;
-	Thu, 18 Jan 2024 10:56:30 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=NvqQ1qmfsoqqbgKZXmwdZHSYmiKZ7Iaki79ZhzX9c40luGeoWifTrMzMGLFvxGJJMGQL+dqlO1pHEnJnbbxlj4Tek/2QPvyXClbmW8DLurMLI+7mXfXj5S9L9zyyZD9nfEKbc9D73I4PACpttB7XMnzcu5oHXTT/kfAXnkciAgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJKwF784; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21A86C433F1;
+	Thu, 18 Jan 2024 10:50:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575390;
-	bh=BEuutCHUELKNrBeoHcHtCy4pCkuUIPcfaeDo3K8+jUs=;
+	s=korg; t=1705575037;
+	bh=zfG0HL/tnSI+lxV0iHqFertDZH+QZ1QVdAobVHDG1rk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yl4UzFVxBIbn6RPE29jk/jf+JHrzJ/OXyEA4jWBRDuIEyykn7eOJiOiPlANdNlV2n
-	 /Xo5sbyZD2ufz+baSndFy5peTfCklLdGoufD4gTdWHJA8tpxqLgOaroCiyoGN2wcDq
-	 TdiClhVeaVmW5GOYGx5foxt/0BLNPz9cNvjD3t5Q=
+	b=AJKwF784hLx0vU1xN7LEKBLthETljN/cNTKMAjsMReQ35E8ZfJrYmNO3j9TMGt3CS
+	 0xa2rG1x5pO1h57h3pHliRX+i75itADHSkVmljuUucH9DI6O5g4ylx6cgWb9lilrOw
+	 i2I9zxgw6UzGZ2wPnht8Kri6l9CFZaX46cN5bLbw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Charlene Liu <charlene.liu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 115/150] drm/amd/display: get dprefclk ss info from integration info table
+	Tom Jason Schwanke <tom@catboys.cloud>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.7 07/28] ALSA: hda/realtek: Fix mute and mic-mute LEDs for HP Envy X360 13-ay0xxx
 Date: Thu, 18 Jan 2024 11:48:57 +0100
-Message-ID: <20240118104325.377592093@linuxfoundation.org>
+Message-ID: <20240118104301.493360051@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
+References: <20240118104301.249503558@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charlene Liu <charlene.liu@amd.com>
+From: Tom Jason Schwanke <tom@catboys.cloud>
 
-[ Upstream commit 51e7b64690776a9981355428b537af9048308a95 ]
+commit 6b3d14b7f9b1acaf7303d8499836bf78ee9c470c upstream.
 
-[why & how]
-we have two SSC_En:
-we get ssc_info from dce_info for MPLL_SSC_EN.
-we used to call VBIOS cmdtbl's smu_info's SS persentage for DPRECLK SS info,
-is used for DP AUDIO and VBIOS' smu_info table was from systemIntegrationInfoTable.
+This enables the mute and mic-mute LEDs on the HP Envy X360 13-ay0xxx
+convertibles.
+The quirk 'ALC245_FIXUP_HP_X360_MUTE_LEDS' already exists and is now
+enabled for this device.
 
-since dcn35 VBIOS removed smu_info, driver need to use integrationInfotable directly.
-
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Charlene Liu <charlene.liu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=216197
+Signed-off-by: Tom Jason Schwanke <tom@catboys.cloud>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/651b26e9-e86b-45dd-aa90-3e43d6b99823@catboys.cloud
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c          |   19 ++++++++----
- drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h |    2 +
- 2 files changed, 16 insertions(+), 5 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -1015,13 +1015,20 @@ static enum bp_result get_ss_info_v4_5(
- 		DC_LOG_BIOS("AS_SIGNAL_TYPE_HDMI ss_percentage: %d\n", ss_info->spread_spectrum_percentage);
- 		break;
- 	case AS_SIGNAL_TYPE_DISPLAY_PORT:
--		ss_info->spread_spectrum_percentage =
-+		if (bp->base.integrated_info) {
-+			DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", bp->base.integrated_info->gpuclk_ss_percentage);
-+			ss_info->spread_spectrum_percentage =
-+					bp->base.integrated_info->gpuclk_ss_percentage;
-+			ss_info->type.CENTER_MODE =
-+					bp->base.integrated_info->gpuclk_ss_type;
-+		} else {
-+			ss_info->spread_spectrum_percentage =
- 				disp_cntl_tbl->dp_ss_percentage;
--		ss_info->spread_spectrum_range =
-+			ss_info->spread_spectrum_range =
- 				disp_cntl_tbl->dp_ss_rate_10hz * 10;
--		if (disp_cntl_tbl->dp_ss_mode & ATOM_SS_CENTRE_SPREAD_MODE)
--			ss_info->type.CENTER_MODE = true;
--
-+			if (disp_cntl_tbl->dp_ss_mode & ATOM_SS_CENTRE_SPREAD_MODE)
-+				ss_info->type.CENTER_MODE = true;
-+		}
- 		DC_LOG_BIOS("AS_SIGNAL_TYPE_DISPLAY_PORT ss_percentage: %d\n", ss_info->spread_spectrum_percentage);
- 		break;
- 	case AS_SIGNAL_TYPE_GPU_PLL:
-@@ -2826,6 +2833,8 @@ static enum bp_result get_integrated_inf
- 	info->ma_channel_number = info_v2_2->umachannelnumber;
- 	info->dp_ss_control =
- 		le16_to_cpu(info_v2_2->reserved1);
-+	info->gpuclk_ss_percentage = info_v2_2->gpuclk_ss_percentage;
-+	info->gpuclk_ss_type = info_v2_2->gpuclk_ss_type;
- 
- 	for (i = 0; i < NUMBER_OF_UCHAR_FOR_GUID; ++i) {
- 		info->ext_disp_conn_info.gu_id[i] =
---- a/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
-+++ b/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
-@@ -417,6 +417,8 @@ struct integrated_info {
- 	/* V2.1 */
- 	struct edp_info edp1_info;
- 	struct edp_info edp2_info;
-+	uint32_t gpuclk_ss_percentage;
-+	uint32_t gpuclk_ss_type;
- };
- 
- /*
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9829,6 +9829,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8735, "HP ProBook 435 G7", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8736, "HP", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8760, "HP", ALC285_FIXUP_HP_MUTE_LED),
++	SND_PCI_QUIRK(0x103c, 0x876e, "HP ENVY x360 Convertible 13-ay0xxx", ALC245_FIXUP_HP_X360_MUTE_LEDS),
+ 	SND_PCI_QUIRK(0x103c, 0x877a, "HP", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x877d, "HP", ALC236_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8780, "HP ZBook Fury 17 G7 Mobile Workstation",
 
 
 
