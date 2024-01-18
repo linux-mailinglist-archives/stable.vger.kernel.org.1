@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-11891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD81F8316D3
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:50:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E971E8317C6
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:01:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E8EC1F25FED
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:50:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2864E1C23B48
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:01:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63866241E2;
-	Thu, 18 Jan 2024 10:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 352D224B5E;
+	Thu, 18 Jan 2024 11:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ue2p0fsB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WljIQNwm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F8323772;
-	Thu, 18 Jan 2024 10:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7FF924B5F;
+	Thu, 18 Jan 2024 11:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575024; cv=none; b=cGfBGY8/+WS5qt7IeyaSv0BOr3bsro2BNkCb8TnqPJvcTLbLqo3zls9nf7aL9rr1BPUBRb1wS/zWtF17QoU7wf5tERp/79QpbgzDDmN+0SShDjabsZSGBvwPeu6BQlryMX2p0eJS2m/T8PPvpNQRbfaXUwXaKvqEVg87ZNFfz+g=
+	t=1705575613; cv=none; b=JSKUDhwxtvOkzT3/4p7oFlP1JehPbEVdjuYsnFior+snfWXS7lObXHZAFXEh8C79879yc2bxYVc3eHnRCxcx7SIedjKaz+lyUd/rl5ztlS7f3yqmH6zd8lWG+ZuX53AZc55nrX0am/tk3HckOakLETgkBdLC9zEQSg0pTAo/QXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575024; c=relaxed/simple;
-	bh=cWWFLIeXdvwg9T2k20mrKYoISIa9ZNQWaAjXU+weiso=;
+	s=arc-20240116; t=1705575613; c=relaxed/simple;
+	bh=mJF92q/mRy0Sw5S8dXPGrtJbG4dNjjkbyH6GqVCXzDg=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=SRq0maTIjmgvcfFF8mDdMX8TMReJwyrR8MUFX/xSSUZxZfD1bk03UQf0lD0FPzn3DVLU+qkvPq758RmMYikhgfp1/soTaAiYFs5EalnFIdR2QHFD2vVVaif0k7TOWbUc2a/9uOiqJhzwFnLUmIgSXua77Zg+MZ2IvW3jvqeuJtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ue2p0fsB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B3EC433C7;
-	Thu, 18 Jan 2024 10:50:23 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=aL7ZO9F7WQW5x/t/FzCGvGk83y6WdeuJitsZnIDWUyuku1wk1EurPsL2318uUG12iHmEe0HU5klaYJzv7mGTyOR4miyymK9aFH1CwtCnAUAd4eXmjgYuKsn/eE3HNdXw+AaXJTpvoxBNLBRLKVffRzgbrqjjxz0xxLkUIUKAORI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WljIQNwm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66120C43390;
+	Thu, 18 Jan 2024 11:00:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575023;
-	bh=cWWFLIeXdvwg9T2k20mrKYoISIa9ZNQWaAjXU+weiso=;
+	s=korg; t=1705575612;
+	bh=mJF92q/mRy0Sw5S8dXPGrtJbG4dNjjkbyH6GqVCXzDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ue2p0fsBvDQEOUeLDSIv84qLG5OKz+fu6mzHbYtDKWkdmaETf0XnxthGpd8L2j2rc
-	 vC/HEMno++nuTDO0WSJ6A/O4Ov1VQKYvhgDWfxxkuZ3XSLdYAnQS1G7QhJ06Yo76Xj
-	 6ne9VJI2zKfeKJa3/lPExDSovSjqwUhwD/cpt2os=
+	b=WljIQNwmoh8917uv8CspKfHW9guJdWWlv1GPAB/GCllrq9LwwcJ7FQQX0WAEIAMxJ
+	 lEV4b6rC6wH5HXFKPhe5s4R3R7mRk0cR5c1+nnqZWM8hcdZ1PCceEp19sxu9vCtG6b
+	 5pL+IgGhZbnyoEHGqAIjhYgAN1S/DMbsoLbOZubQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.7 02/28] ALSA: hda/realtek: Add quirks for Dell models
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 044/100] jbd2: correct the printing of write_flags in jbd2_write_superblock()
 Date: Thu, 18 Jan 2024 11:48:52 +0100
-Message-ID: <20240118104301.328085520@linuxfoundation.org>
+Message-ID: <20240118104312.818658981@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
-References: <20240118104301.249503558@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-commit 423206604b28174698d77bf5ea81365cdd6c0f77 upstream.
+[ Upstream commit 85559227211020b270728104c3b89918f7af27ac ]
 
-These models use 2 or 4 CS35L41 amps with HDA using SPI and I2C.
-Models use internal and external boost.
-All models require DSD support to be added inside
-cs35l41_hda_property.c
+The write_flags print in the trace of jbd2_write_superblock() is not
+real, so move the modification before the trace.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Cc: <stable@vger.kernel.org> # v6.7+
-Link: https://lore.kernel.org/r/20231221132518.3213-4-sbinding@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20231129114740.2686201-1-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ fs/jbd2/journal.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index c3a756528886..19040887ff67 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -6956,6 +6956,11 @@ static void cs35l41_fixup_i2c_two(struct hda_codec *cdc, const struct hda_fixup
- 	cs35l41_generic_fixup(cdc, action, "i2c", "CSC3551", 2);
- }
+diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+index 2696f43e7239..611337b0b5ad 100644
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -1620,9 +1620,11 @@ static int jbd2_write_superblock(journal_t *journal, blk_opf_t write_flags)
+ 		return -EIO;
+ 	}
  
-+static void cs35l41_fixup_i2c_four(struct hda_codec *cdc, const struct hda_fixup *fix, int action)
-+{
-+	cs35l41_generic_fixup(cdc, action, "i2c", "CSC3551", 4);
-+}
+-	trace_jbd2_write_superblock(journal, write_flags);
+ 	if (!(journal->j_flags & JBD2_BARRIER))
+ 		write_flags &= ~(REQ_FUA | REQ_PREFLUSH);
 +
- static void cs35l41_fixup_spi_two(struct hda_codec *codec, const struct hda_fixup *fix, int action)
- {
- 	cs35l41_generic_fixup(codec, action, "spi", "CSC3551", 2);
-@@ -7441,6 +7446,7 @@ enum {
- 	ALC287_FIXUP_LEGION_16ACHG6,
- 	ALC287_FIXUP_CS35L41_I2C_2,
- 	ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED,
-+	ALC287_FIXUP_CS35L41_I2C_4,
- 	ALC245_FIXUP_CS35L41_SPI_2,
- 	ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED,
- 	ALC245_FIXUP_CS35L41_SPI_4,
-@@ -9427,6 +9433,10 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.chained = true,
- 		.chain_id = ALC285_FIXUP_HP_MUTE_LED,
- 	},
-+	[ALC287_FIXUP_CS35L41_I2C_4] = {
-+		.type = HDA_FIXUP_FUNC,
-+		.v.func = cs35l41_fixup_i2c_four,
-+	},
- 	[ALC245_FIXUP_CS35L41_SPI_2] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = cs35l41_fixup_spi_two,
-@@ -9703,6 +9713,8 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1028, 0x0a9e, "Dell Latitude 5430", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1028, 0x0b19, "Dell XPS 15 9520", ALC289_FIXUP_DUAL_SPK),
- 	SND_PCI_QUIRK(0x1028, 0x0b1a, "Dell Precision 5570", ALC289_FIXUP_DUAL_SPK),
-+	SND_PCI_QUIRK(0x1028, 0x0b27, "Dell", ALC245_FIXUP_CS35L41_SPI_2),
-+	SND_PCI_QUIRK(0x1028, 0x0b28, "Dell", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1028, 0x0b37, "Dell Inspiron 16 Plus 7620 2-in-1", ALC295_FIXUP_DELL_INSPIRON_TOP_SPEAKERS),
- 	SND_PCI_QUIRK(0x1028, 0x0b71, "Dell Inspiron 16 Plus 7620", ALC295_FIXUP_DELL_INSPIRON_TOP_SPEAKERS),
- 	SND_PCI_QUIRK(0x1028, 0x0beb, "Dell XPS 15 9530 (2023)", ALC289_FIXUP_DELL_CS35L41_SPI_2),
-@@ -9713,6 +9725,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1028, 0x0c1c, "Dell Precision 3540", ALC236_FIXUP_DELL_DUAL_CODECS),
- 	SND_PCI_QUIRK(0x1028, 0x0c1d, "Dell Precision 3440", ALC236_FIXUP_DELL_DUAL_CODECS),
- 	SND_PCI_QUIRK(0x1028, 0x0c1e, "Dell Precision 3540", ALC236_FIXUP_DELL_DUAL_CODECS),
-+	SND_PCI_QUIRK(0x1028, 0x0c4d, "Dell", ALC287_FIXUP_CS35L41_I2C_4),
- 	SND_PCI_QUIRK(0x1028, 0x0cbd, "Dell Oasis 13 CS MTL-U", ALC289_FIXUP_DELL_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1028, 0x0cbe, "Dell Oasis 13 2-IN-1 MTL-U", ALC289_FIXUP_DELL_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1028, 0x0cbf, "Dell Oasis 13 Low Weight MTU-L", ALC289_FIXUP_DELL_CS35L41_SPI_2),
++	trace_jbd2_write_superblock(journal, write_flags);
++
+ 	if (buffer_write_io_error(bh)) {
+ 		/*
+ 		 * Oh, dear.  A previous attempt to write the journal
 -- 
 2.43.0
 
