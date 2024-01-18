@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-12126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 261508317E2
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C7E8831757
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 599A91C20936
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CEC04B22BBB
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87B824B42;
-	Thu, 18 Jan 2024 11:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F117823767;
+	Thu, 18 Jan 2024 10:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+SBM/4l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yzgdy9XU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8691622F0F;
-	Thu, 18 Jan 2024 11:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFAD21774B;
+	Thu, 18 Jan 2024 10:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575682; cv=none; b=oHCCcaxSbbhZzAbsb4xb2k/EGu0r2sjqxVW2NCm8YVMB7iwq9i4pvgoL6+ZHm++fgQItdv8v/aXGuYqOtC1ddfUiNjjGLMkLflzy6M9ro+EhylW/apGHUYysXNT/orGLUYQ89e/8nu0kStEQ1TvEgcedIh5vwVFr2BCbfKMS6Rw=
+	t=1705575360; cv=none; b=hd/HgQGk9D1rsW38Kg942GIxGfO0bNSW88lQzR7G1SF//RWZWCd712GVp0VkVPZMb+r/9SBKFTUzcv39tJfAhVvvr4zt5yePSoYqMHpthWgb6aHtVprp4pCmPGya3vBCsPOIYHzjZZtaIcRLZmMi5TZXbyjULkaLSDJxziOmbQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575682; c=relaxed/simple;
-	bh=GTQ1192VpDnPDVm57I3EadHngOBjbKJpiBdOogmK8D4=;
+	s=arc-20240116; t=1705575360; c=relaxed/simple;
+	bh=y/2V4EVJ74gOA0J7SCx56Hyq37hVa7249hBFZM/J+js=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=Ulybc66nLLLs+aOGYb4+PlEHkCuBsMHUqrNeFEzNSUC6ArLVp3kfYxeHSnPQy0tIxLXvjML1ERvMpnYWevzr4AU4a+152sIWsZTAH11vsPjIwkQ4JIz1w+lR+KUVNyvICUcn2DQ6mcoOVenjC/HD72XWCXicm3//QgVKPOE9H+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+SBM/4l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C17C433C7;
-	Thu, 18 Jan 2024 11:01:21 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding; b=QpW4lNZYstCUAh2zv7290eZA6r52i68ZlSGBDd/etcvq0qeL1iQubQQ7q9tPEVd0cbIiKmymAFUhR9fM2ZU5ikK/g9b4fLGBDxpALsyBEGyjCkMVSLitJJSeSA1JLGE5GXrA4LWs0+31MDPJ2Mg1GdY8bEPSaXP+zabhNSOr5Ns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yzgdy9XU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31823C433F1;
+	Thu, 18 Jan 2024 10:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575682;
-	bh=GTQ1192VpDnPDVm57I3EadHngOBjbKJpiBdOogmK8D4=;
+	s=korg; t=1705575360;
+	bh=y/2V4EVJ74gOA0J7SCx56Hyq37hVa7249hBFZM/J+js=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y+SBM/4lFfjEwEctrxXA0QTzK3yEwWqqDfdabh4yAfnCwvcSLDLfOZONrQ1FZ4trf
-	 2r5SxYd6UXsY6F24DEUniE6fa80z8xlEjxFDVOvxiA2eVDXRUqOn7zA+qeVOq3KdA+
-	 Z7xmnmM/uH0lNrfilMD062qOu3c1vAkrBVKBRsJU=
+	b=yzgdy9XUMwnxrVBoTvuDt7CWnAK2iKBs/F6+Xm03+lYc7l2F+DZpnRNedfJDlJFDb
+	 vWVOSKaZOM6XaESQbvQqmVCn9va4zDieKX+Dl9zDzXTmLc06SDEU3TUkWpp0Pop0Zh
+	 DmqoU6mfl1vVZ/GMEeTSt4EOSeL1Iq3pKcvbgxpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Inki Dae <inki.dae@samsung.com>,
+	Kieran Levin <ktl@framework.net>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/100] drm/exynos: fix a wrong error checking
+Subject: [PATCH 6.6 105/150] platform/x86/amd/pmc: Disable keyboard wakeup on AMD Framework 13
 Date: Thu, 18 Jan 2024 11:48:47 +0100
-Message-ID: <20240118104312.610727799@linuxfoundation.org>
+Message-ID: <20240118104324.918869760@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +64,102 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Inki Dae <inki.dae@samsung.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 8d1b7809684c688005706125b804e1f9792d2b1b ]
+[ Upstream commit a55bdad5dfd1efd4ed9ffe518897a21ca8e4e193 ]
 
-Fix a wrong error checking in exynos_drm_dma.c module.
+The Laptop 13 (AMD Ryzen 7040Series) BIOS 03.03 has a workaround
+included in the EC firmware that will cause the EC to emit a "spurious"
+keypress during the resume from s0i3 [1].
 
-In the exynos_drm_register_dma function, both arm_iommu_create_mapping()
-and iommu_get_domain_for_dev() functions are expected to return NULL as
-an error.
+This series of keypress events can be observed in the kernel log on
+resume.
 
-However, the error checking is performed using the statement
-if(IS_ERR(mapping)), which doesn't provide a suitable error value.
-So check if 'mapping' is NULL, and if it is, return -ENODEV.
+```
+atkbd serio0: Unknown key pressed (translated set 2, code 0x6b on isa0060/serio0).
+atkbd serio0: Use 'setkeycodes 6b <keycode>' to make it known.
+atkbd serio0: Unknown key released (translated set 2, code 0x6b on isa0060/serio0).
+atkbd serio0: Use 'setkeycodes 6b <keycode>' to make it known.
+```
 
-This issue[1] was reported by Dan.
+In some user flows this is harmless, but if a user has specifically
+suspended the laptop and then closed the lid it will cause the laptop
+to wakeup. The laptop wakes up because the ACPI SCI triggers when
+the lid is closed and when the kernel sees that IRQ1 is "also" active.
+The kernel can't distinguish from a real keyboard keypress and wakes the
+system.
 
-Changelog v1:
-- fix build warning.
+Add the model into the list of quirks to disable keyboard wakeup source.
+This is intentionally only matching the production BIOS version in hopes
+that a newer EC firmware included in a newer BIOS can avoid this behavior.
 
-[1] https://lore.kernel.org/all/33e52277-1349-472b-a55b-ab5c3462bfcf@moroto.mountain/
-
-Reported-by : Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Cc: Kieran Levin <ktl@framework.net>
+Link: https://github.com/FrameworkComputer/EmbeddedController/blob/lotus-zephyr/zephyr/program/lotus/azalea/src/power_sequence.c#L313 [1]
+Link: https://community.frame.work/t/amd-wont-sleep-properly/41755
+Link: https://community.frame.work/t/tracking-framework-amd-ryzen-7040-series-lid-wakeup-behavior-feedback/39128
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20231212045006.97581-5-mario.limonciello@amd.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_drm_dma.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/platform/x86/amd/pmc/pmc-quirks.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_drm_dma.c b/drivers/gpu/drm/exynos/exynos_drm_dma.c
-index a971590b8132..e2c7373f20c6 100644
---- a/drivers/gpu/drm/exynos/exynos_drm_dma.c
-+++ b/drivers/gpu/drm/exynos/exynos_drm_dma.c
-@@ -107,18 +107,16 @@ int exynos_drm_register_dma(struct drm_device *drm, struct device *dev,
- 		return 0;
+diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+index c32046dfa960..b456370166b6 100644
+--- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
++++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+@@ -16,12 +16,17 @@
  
- 	if (!priv->mapping) {
--		void *mapping;
-+		void *mapping = NULL;
+ struct quirk_entry {
+ 	u32 s2idle_bug_mmio;
++	bool spurious_8042;
+ };
  
- 		if (IS_ENABLED(CONFIG_ARM_DMA_USE_IOMMU))
- 			mapping = arm_iommu_create_mapping(&platform_bus_type,
- 				EXYNOS_DEV_ADDR_START, EXYNOS_DEV_ADDR_SIZE);
- 		else if (IS_ENABLED(CONFIG_IOMMU_DMA))
- 			mapping = iommu_get_domain_for_dev(priv->dma_dev);
--		else
--			mapping = ERR_PTR(-ENODEV);
+ static struct quirk_entry quirk_s2idle_bug = {
+ 	.s2idle_bug_mmio = 0xfed80380,
+ };
  
--		if (IS_ERR(mapping))
--			return PTR_ERR(mapping);
-+		if (!mapping)
-+			return -ENODEV;
- 		priv->mapping = mapping;
- 	}
++static struct quirk_entry quirk_spurious_8042 = {
++	.spurious_8042 = true,
++};
++
+ static const struct dmi_system_id fwbug_list[] = {
+ 	{
+ 		.ident = "L14 Gen2 AMD",
+@@ -193,6 +198,16 @@ static const struct dmi_system_id fwbug_list[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "HP Laptop 15s-eq2xxx"),
+ 		}
+ 	},
++	/* https://community.frame.work/t/tracking-framework-amd-ryzen-7040-series-lid-wakeup-behavior-feedback/39128 */
++	{
++		.ident = "Framework Laptop 13 (Phoenix)",
++		.driver_data = &quirk_spurious_8042,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Framework"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Laptop 13 (AMD Ryzen 7040Series)"),
++			DMI_MATCH(DMI_BIOS_VERSION, "03.03"),
++		}
++	},
+ 	{}
+ };
  
+@@ -245,4 +260,6 @@ void amd_pmc_quirks_init(struct amd_pmc_dev *dev)
+ 	if (dev->quirks->s2idle_bug_mmio)
+ 		pr_info("Using s2idle quirk to avoid %s platform firmware bug\n",
+ 			dmi_id->ident);
++	if (dev->quirks->spurious_8042)
++		dev->disable_8042_wakeup = true;
+ }
 -- 
 2.43.0
 
