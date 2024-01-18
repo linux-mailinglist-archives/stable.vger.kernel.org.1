@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-12115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98C788317D7
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B3228316DD
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:51:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CADB01C21175
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06F61283B84
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:51:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E666C24A01;
-	Thu, 18 Jan 2024 11:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E33AE241EB;
+	Thu, 18 Jan 2024 10:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGttmUZy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TdOPLAT/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E0A23762;
-	Thu, 18 Jan 2024 11:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04DA23773;
+	Thu, 18 Jan 2024 10:50:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575649; cv=none; b=OM7HHTXiCZXOWEG/SpwP2BbFhABM4OpOLa1Si1mkFii8F+uVhbYhUbjghV+Nz/bLUMHrVcArm6pZvlTZLibzGxozagkRakkUzJ/rZx9lCpR5S81k3HUL+KorEZzix/+kLJDAR3XgtJ5Um8bgtBNe6wuRJV7EqvNS0N9HpzHHc6M=
+	t=1705575048; cv=none; b=b5Kv+bTIOYEKZihxswwMN3vsjGA+LWSWhilfcsPwAbZaRT7WLshk3nG/tm1pbY6zihwvLbwTCQV3GCCGl5xUCGL833yoAB7piZamZlJ3KDoLu9r0Z1/IfHKHdOhL9ZHdEphhG/sqmURladyXtKaDMcRTdvOvMh8N3smu5joeXKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575649; c=relaxed/simple;
-	bh=b8vRcPpfiSfwsrrRsEbPV7mFgXBnzAQGXt9KRYQRq7w=;
+	s=arc-20240116; t=1705575048; c=relaxed/simple;
+	bh=socXSL5kwuZNzamP8PEY39QdEIQfEEdYHL5YYpL/FGk=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding; b=LRA41CNwp2OK8iZqVhhcAILooXx9WKRodzBiC0WKRpIwmPXABOa1kQ3tniPx6bwAR2Nzrge8oFGSVsSc8/sCCXwOVjfE07r7hBshVXYssAeiRqCFJJmk9bD5rxTLrRG1WvDLUOjy1Zgy0kw+IONwdCKXiwE8+BEYqMLRuh2tbLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGttmUZy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8ACC433C7;
-	Thu, 18 Jan 2024 11:00:48 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=Ql3oEOZmUe9fQmWKUCC/m6PDvwFX9pj4Lpaz+1Uvm0kxxj3153luwf3S3W+TKrY5gTpPMEa45vBctSloxy0Bz97kDeGddIH+Zd08i38rhOplmqLqfZAp+ip3QlFyJKjiDVx2x+3wXkT92jRsnrkF2yZto/BZOdHEOkAP7rU3FCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TdOPLAT/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2631DC433C7;
+	Thu, 18 Jan 2024 10:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575649;
-	bh=b8vRcPpfiSfwsrrRsEbPV7mFgXBnzAQGXt9KRYQRq7w=;
+	s=korg; t=1705575048;
+	bh=socXSL5kwuZNzamP8PEY39QdEIQfEEdYHL5YYpL/FGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TGttmUZywBsPIZDy4bLyiqP4TPUASbdfsovv/OzlsAp1Bo3lbWNcA341I1IgdKaqO
-	 dUj97JicJt6ARIqh9X5G+1xUFXRupTm7cYdEtz8OKnmFglKaHVPlNkvgWEaGGFMHOm
-	 hU+wBlEQokrfH+fJCGBVUHwNUOhhI6ry+ls1+kbA=
+	b=TdOPLAT//mUpvHGaSitZDT6Rm1TilYeCsG2SnnqqbcI4fFsBday+Eddny3D0UGTWa
+	 gi+KlDf6XbuJ5CPJFwphuWaKP2JASqg8fkWXppq3VQKdJ3imhRoCjjIT/YblQ6GO9p
+	 dbaRC5WxqU5UWuZamlRLvEluwt1ZI/V/Ap1c23UY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jos=C3=A9=20Pekkarinen?= <jose.pekkarinen@foxhound.fi>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 056/100] Input: psmouse - enable Synaptics InterTouch for ThinkPad L14 G1
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.7 14/28] ksmbd: free ppace array on error in parse_dacl
 Date: Thu, 18 Jan 2024 11:49:04 +0100
-Message-ID: <20240118104313.350260450@linuxfoundation.org>
+Message-ID: <20240118104301.724392561@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
+References: <20240118104301.249503558@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: José Pekkarinen <jose.pekkarinen@foxhound.fi>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit c1f342f35f820b33390571293498c3e2e9bc77ec ]
+commit 8cf9bedfc3c47d24bb0de386f808f925dc52863e upstream.
 
-Observed on dmesg of my laptop I see the following
-output:
+The ppace array is not freed if one of the init_acl_state() calls inside
+parse_dacl() fails. At the moment the function may fail only due to the
+memory allocation errors so it's highly unlikely in this case but
+nevertheless a fix is needed.
 
-[   19.898700] psmouse serio1: synaptics: queried max coordinates: x [..5678], y [..4694]
-[   19.936057] psmouse serio1: synaptics: queried min coordinates: x [1266..], y [1162..]
-[   19.936076] psmouse serio1: synaptics: Your touchpad (PNP: LEN0411 PNP0f13) says it can support a different bus. If i2c-hid and hid-rmi are not used, you might want to try setting psmouse.synaptics_intertouch to 1 and report this to linux-input@vger.kernel.org.
-[   20.008901] psmouse serio1: synaptics: Touchpad model: 1, fw: 10.32, id: 0x1e2a1, caps: 0xf014a3/0x940300/0x12e800/0x500000, board id: 3471, fw id: 2909640
-[   20.008925] psmouse serio1: synaptics: serio: Synaptics pass-through port at isa0060/serio1/input0
-[   20.053344] input: SynPS/2 Synaptics TouchPad as /devices/platform/i8042/serio1/input/input7
-[   20.397608] mousedev: PS/2 mouse device common for all mice
+Move ppace allocation after the init_acl_state() calls with proper error
+handling.
 
-This patch will add its pnp id to the smbus list to
-produce the setup of intertouch for the device.
+Found by Linux Verification Center (linuxtesting.org).
 
-Signed-off-by: José Pekkarinen <jose.pekkarinen@foxhound.fi>
-Link: https://lore.kernel.org/r/20231114063607.71772-1-jose.pekkarinen@foxhound.fi
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e2f34481b24d ("cifsd: add server-side procedures for SMB3")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/mouse/synaptics.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/server/smbacl.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/input/mouse/synaptics.c b/drivers/input/mouse/synaptics.c
-index e43e93ac2798..b6749af46262 100644
---- a/drivers/input/mouse/synaptics.c
-+++ b/drivers/input/mouse/synaptics.c
-@@ -183,6 +183,7 @@ static const char * const smbus_pnp_ids[] = {
- 	"LEN009b", /* T580 */
- 	"LEN0402", /* X1 Extreme Gen 2 / P1 Gen 2 */
- 	"LEN040f", /* P1 Gen 3 */
-+	"LEN0411", /* L14 Gen 1 */
- 	"LEN200f", /* T450s */
- 	"LEN2044", /* L470  */
- 	"LEN2054", /* E480 */
--- 
-2.43.0
-
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -401,10 +401,6 @@ static void parse_dacl(struct mnt_idmap
+ 	if (num_aces > ULONG_MAX / sizeof(struct smb_ace *))
+ 		return;
+ 
+-	ppace = kmalloc_array(num_aces, sizeof(struct smb_ace *), GFP_KERNEL);
+-	if (!ppace)
+-		return;
+-
+ 	ret = init_acl_state(&acl_state, num_aces);
+ 	if (ret)
+ 		return;
+@@ -413,6 +409,13 @@ static void parse_dacl(struct mnt_idmap
+ 		free_acl_state(&acl_state);
+ 		return;
+ 	}
++
++	ppace = kmalloc_array(num_aces, sizeof(struct smb_ace *), GFP_KERNEL);
++	if (!ppace) {
++		free_acl_state(&default_acl_state);
++		free_acl_state(&acl_state);
++		return;
++	}
+ 
+ 	/*
+ 	 * reset rwx permissions for user/group/other.
 
 
 
