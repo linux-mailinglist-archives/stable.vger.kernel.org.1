@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-11887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65A208316CD
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:50:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45B1483175A
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9924A1C20AB7
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:50:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0AE21F241AF
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6435B23741;
-	Thu, 18 Jan 2024 10:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F6923746;
+	Thu, 18 Jan 2024 10:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MdTtGTl0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ASrSVaVw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2F723760;
-	Thu, 18 Jan 2024 10:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11E9222323;
+	Thu, 18 Jan 2024 10:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575013; cv=none; b=R9ObB6owm1stsudQXS/gMLZR8+esgPGKAXOFwZxAGmo5sNxedau4H7sQCvIV+t4oeLGHwoI9HzCwgQIJIQMGmkIylQOUA9YpBWKIScRMCu4K/SIXcfYt6keJt/LiLjB4UAsfDtEa/hNlVeHLvrVB2fhkUFWs1LYsUDQrcuBKhC8=
+	t=1705575372; cv=none; b=Fk7HetUyS/tc9CYSL+ySEspGE6rEYxWwpqoG+6x8p7e7ThbltogJrdl4JkBbeDRwO94Ex25Zq2EUjKZ/bzAgcjFWs4ihFW6o2en+7vK/1WItIPHoGaAB1SXOjL98Ua+CmQKCdX37lAzX3BgaFMfuYlFbX3rAYMUsFM8hNPTOdXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575013; c=relaxed/simple;
-	bh=tD0z/bAHXoiF1Plhr6mjT4xGN/dpkGVqsKFcmXCSe7Y=;
+	s=arc-20240116; t=1705575372; c=relaxed/simple;
+	bh=XonA3s1GNBPROxhMmRov3j2QVmi9PvI/xWp9hM69tXM=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=j/K6r/BZ9ZmeMcen/XgfLnadcY8gbaAQhKDK982K3ZQxp9RTA4IJxm17RFhhD6b/JP1CX8+BTHlK3jkxm2pSX1U9LoV9V6POxSYUdk6cAsWbaw5mSd0pTfcTS0sy2kRT8JgCZHUpqKgMhdghBSdIqrKZrxNYib1hKINUewsfdik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MdTtGTl0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E56DC433F1;
-	Thu, 18 Jan 2024 10:50:12 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=iEay80zvP/1dT7BaV4HaHsnZqA9fR/eGB21p85JWi94Y18Y0Zhq7YUC0PZmjovXOKcrkwkO1ghSwdBgesiu2/VaAUnGEoxUF3HHSv9AMMzj84O2TScPQB2lXBJNE7WDOJ07Zx5TfA7GcT1C8gIAgxubkvdwFF9n0fZzFpqNpSmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ASrSVaVw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45BCAC433C7;
+	Thu, 18 Jan 2024 10:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575012;
-	bh=tD0z/bAHXoiF1Plhr6mjT4xGN/dpkGVqsKFcmXCSe7Y=;
+	s=korg; t=1705575371;
+	bh=XonA3s1GNBPROxhMmRov3j2QVmi9PvI/xWp9hM69tXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MdTtGTl0V0kRhlb6ZMZqlmjpbrimPmO5ArTT2NIqv5iZ3kTHdXulWk+fYqBxCf3vR
-	 BgdKU3vyVSzmKZmWWUYIHx7YdTsWfZKw/FOZUf49UFmi7cd7RinpzD+3hf52OlE0y4
-	 e9S6zJH0oGiPH2CoiHzGTkzCgEIzOm37MyEh03EU=
+	b=ASrSVaVw2fjkbid1hUsSMSYg35+6O4orlSEQtnzDtQ7dM7SeAsNYmsr3N8KVLwU5m
+	 mUyPYoqm4FrBtrw5Cos8Xps58sk76Xp4To/Op1SSMk/d0ETYv8Udqzr+zGsUeedQJc
+	 mZL3l/+pqLuThiIHL+vDfX8q53Vwx0eq8JyIxV/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.7 01/28] f2fs: explicitly null-terminate the xattr list
+	Mike Snitzer <snitzer@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 109/150] dm audit: fix Kconfig so DM_AUDIT depends on BLK_DEV_DM
 Date: Thu, 18 Jan 2024 11:48:51 +0100
-Message-ID: <20240118104301.297099258@linuxfoundation.org>
+Message-ID: <20240118104325.093417355@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
-References: <20240118104301.249503558@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Mike Snitzer <snitzer@kernel.org>
 
-commit e26b6d39270f5eab0087453d9b544189a38c8564 upstream.
+[ Upstream commit 6849302fdff126997765d16df355b73231f130d4 ]
 
-When setting an xattr, explicitly null-terminate the xattr list.  This
-eliminates the fragile assumption that the unused xattr space is always
-zeroed.
-
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/xattr.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/md/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/f2fs/xattr.c
-+++ b/fs/f2fs/xattr.c
-@@ -754,6 +754,12 @@ retry:
- 		memcpy(pval, value, size);
- 		last->e_value_size = cpu_to_le16(size);
- 		new_hsize += newsize;
-+		/*
-+		 * Explicitly add the null terminator.  The unused xattr space
-+		 * is supposed to always be zeroed, which would make this
-+		 * unnecessary, but don't depend on that.
-+		 */
-+		*(u32 *)((u8 *)last + newsize) = 0;
- 	}
+diff --git a/drivers/md/Kconfig b/drivers/md/Kconfig
+index 2a8b081bce7d..3ff87cb4dc49 100644
+--- a/drivers/md/Kconfig
++++ b/drivers/md/Kconfig
+@@ -660,6 +660,7 @@ config DM_ZONED
  
- 	error = write_all_xattrs(inode, new_hsize, base_addr, ipage);
+ config DM_AUDIT
+ 	bool "DM audit events"
++	depends on BLK_DEV_DM
+ 	depends on AUDIT
+ 	help
+ 	  Generate audit events for device-mapper.
+-- 
+2.43.0
+
 
 
 
