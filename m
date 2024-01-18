@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-12037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C5D583176F
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:57:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CFCE8317A6
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:59:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1119287D75
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:57:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E67251F254AB
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:59:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C3CE22F0F;
-	Thu, 18 Jan 2024 10:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E142033B;
+	Thu, 18 Jan 2024 10:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tQPhGWto"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FpBKR2pF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7FA1774B;
-	Thu, 18 Jan 2024 10:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039CE22F0F;
+	Thu, 18 Jan 2024 10:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575430; cv=none; b=HC392R9hWxF31A1bjHzJjh86GttGbqf8bs0yiLfd4DMzlD0vEfbxwcmNPrLEK+gZDCto4KUHL89ZEIpjFcmnUqKMEmcDwAyXz7JxZh254K5ftwAG1cAIs04g3TrAUzbewSKKj9L0vABHW/Nt6CgGUZ00OQt4yfeh6CGHj/Pz+aI=
+	t=1705575558; cv=none; b=ZCV8KeJVBEG3m5jNRDp7Csln8VycXadZj1VvYlaaXzwOa5UW13BF4jWHKoRmjUVc5Bc5yIZrox7qeJCDxByPkTbxZJ1booxVljFYyMAsPTic7itwd1LPk+lOuvp2x1vGDgDV1TcBi9FJ4vD6C8YJ+JbgN/OoWv4qo7AYj7Q+bOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575430; c=relaxed/simple;
-	bh=jLg1XBLM1Z3bs/uRBeARl5h7rW20vEAoNVjgxYzkZds=;
+	s=arc-20240116; t=1705575558; c=relaxed/simple;
+	bh=5eLFiS8RAMhIPvJNZC1nLc/D8AY399UcX2QhRO9GrsE=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=HmhJK76z11Uqmr1tN1vLzYerGPJCYCepxa7wD+XW8ELF6TYvCHiomKm5XRjzyPxpcpRgVz/g/5UkAqDi+yAl+7m4Eyr14EGWrQXMz5UWNyjlrT3txwlsIUu8RgQ8sE8x3mI0aPyx8lUnppDNahYzzhsjpShL+3IxkS/6pNIk/Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tQPhGWto; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF64C433C7;
-	Thu, 18 Jan 2024 10:57:09 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=lEiH3OuU+8CNhtXgB2JJjGZxET/Jou+GqphSJx2fyKDuS0fs95p4NhQ2iBd4M/CiHoxbwCfBqToWEFmU0+ckwRmBkO7vgS+40HOL1+3k6lqhTap2I9ubmi1YRLlGho6QQBG2uXSv5HRQlJqcHUTaqjFeRGLnKuO1gEWEEq9Ggwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FpBKR2pF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE5AC433F1;
+	Thu, 18 Jan 2024 10:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575429;
-	bh=jLg1XBLM1Z3bs/uRBeARl5h7rW20vEAoNVjgxYzkZds=;
+	s=korg; t=1705575557;
+	bh=5eLFiS8RAMhIPvJNZC1nLc/D8AY399UcX2QhRO9GrsE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tQPhGWtoQ8KIYJHy4vA1GtjklfC+RATv+4kgEgGDrIHIEnUQQtui3TmnYcMptE0Ye
-	 O31KFJiWujDUPdfz3h6Nwz+eIyfzjK6IFU/7viwOPHhFueeLU2XJ7e4AxmInRuctzG
-	 OMqQbvLrlO4faZLxsHBBTtsQ97KUgKEFFPlcv+co=
+	b=FpBKR2pFrFQO7BP6Hdyy+tLZFc8/nk3RSYRVZed449UCRZmRFxnS6js9MAg/ey8Qg
+	 5YqLJuS+wQmxkLJVBR7e+Qxs/yUG83zpXt5erOfis2YxZMJ3OljFGXfXbxfZhAYnnz
+	 8VyiGBIYhhJrFa5mkFr09tRzlR5qte/yzfUzPZ2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Rivera-Matos <rriveram@opensource.cirrus.com>,
+	Maciej Strozek <mstrozek@opensource.cirrus.com>,
 	Charles Keepax <ckeepax@opensource.cirrus.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/150] ASoC: cs35l45: Use modern pm_ops
+Subject: [PATCH 6.1 024/100] ASoC: cs43130: Fix incorrect frame delay configuration
 Date: Thu, 18 Jan 2024 11:48:32 +0100
-Message-ID: <20240118104324.119734837@linuxfoundation.org>
+Message-ID: <20240118104311.960788006@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +64,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Rivera-Matos <rriveram@opensource.cirrus.com>
+From: Maciej Strozek <mstrozek@opensource.cirrus.com>
 
-[ Upstream commit 12e102b1bd22ee00361559d57a5876445bcb2407 ]
+[ Upstream commit aa7e8e5e4011571022dc06e4d7a2f108feb53d1a ]
 
-Make use of the recently introduced EXPORT_GPL_DEV_PM_OPS() macro, to
-conditionally export the runtime/system PM functions.
-
-Replace the old SET_{RUNTIME,SYSTEM_SLEEP,NOIRQ_SYSTEM_SLEEP}_PM_OPS()
-helpers with their modern alternatives and get rid of the now
-unnecessary '__maybe_unused' annotations on all PM functions.
-
-Additionally, use the pm_ptr() macro to fix the following errors when
-building with CONFIG_PM disabled:
-
-Signed-off-by: Ricardo Rivera-Matos <rriveram@opensource.cirrus.com>
+Signed-off-by: Maciej Strozek <mstrozek@opensource.cirrus.com>
 Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20231206160318.1255034-2-rriveram@opensource.cirrus.com
+Link: https://lore.kernel.org/r/20231117141344.64320-3-mstrozek@opensource.cirrus.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l45-i2c.c | 2 +-
- sound/soc/codecs/cs35l45-spi.c | 2 +-
- sound/soc/codecs/cs35l45.c     | 9 ++++-----
- 3 files changed, 6 insertions(+), 7 deletions(-)
+ sound/soc/codecs/cs43130.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/cs35l45-i2c.c b/sound/soc/codecs/cs35l45-i2c.c
-index 77e0f8750f37..bc2af1ed0fe9 100644
---- a/sound/soc/codecs/cs35l45-i2c.c
-+++ b/sound/soc/codecs/cs35l45-i2c.c
-@@ -62,7 +62,7 @@ static struct i2c_driver cs35l45_i2c_driver = {
- 	.driver = {
- 		.name		= "cs35l45",
- 		.of_match_table = cs35l45_of_match,
--		.pm		= &cs35l45_pm_ops,
-+		.pm		= pm_ptr(&cs35l45_pm_ops),
- 	},
- 	.id_table	= cs35l45_id_i2c,
- 	.probe		= cs35l45_i2c_probe,
-diff --git a/sound/soc/codecs/cs35l45-spi.c b/sound/soc/codecs/cs35l45-spi.c
-index 5efb77530cc3..39e203a5f060 100644
---- a/sound/soc/codecs/cs35l45-spi.c
-+++ b/sound/soc/codecs/cs35l45-spi.c
-@@ -64,7 +64,7 @@ static struct spi_driver cs35l45_spi_driver = {
- 	.driver = {
- 		.name		= "cs35l45",
- 		.of_match_table = cs35l45_of_match,
--		.pm		= &cs35l45_pm_ops,
-+		.pm		= pm_ptr(&cs35l45_pm_ops),
- 	},
- 	.id_table	= cs35l45_id_spi,
- 	.probe		= cs35l45_spi_probe,
-diff --git a/sound/soc/codecs/cs35l45.c b/sound/soc/codecs/cs35l45.c
-index be4f4229576c..b1d0f2c8f2ca 100644
---- a/sound/soc/codecs/cs35l45.c
-+++ b/sound/soc/codecs/cs35l45.c
-@@ -810,7 +810,7 @@ static int cs35l45_exit_hibernate(struct cs35l45_private *cs35l45)
- 	return -ETIMEDOUT;
- }
- 
--static int __maybe_unused cs35l45_runtime_suspend(struct device *dev)
-+static int cs35l45_runtime_suspend(struct device *dev)
- {
- 	struct cs35l45_private *cs35l45 = dev_get_drvdata(dev);
- 
-@@ -827,7 +827,7 @@ static int __maybe_unused cs35l45_runtime_suspend(struct device *dev)
- 	return 0;
- }
- 
--static int __maybe_unused cs35l45_runtime_resume(struct device *dev)
-+static int cs35l45_runtime_resume(struct device *dev)
- {
- 	struct cs35l45_private *cs35l45 = dev_get_drvdata(dev);
- 	int ret;
-@@ -1289,10 +1289,9 @@ void cs35l45_remove(struct cs35l45_private *cs35l45)
- }
- EXPORT_SYMBOL_NS_GPL(cs35l45_remove, SND_SOC_CS35L45);
- 
--const struct dev_pm_ops cs35l45_pm_ops = {
--	SET_RUNTIME_PM_OPS(cs35l45_runtime_suspend, cs35l45_runtime_resume, NULL)
-+EXPORT_GPL_DEV_PM_OPS(cs35l45_pm_ops) = {
-+	RUNTIME_PM_OPS(cs35l45_runtime_suspend, cs35l45_runtime_resume, NULL)
- };
--EXPORT_SYMBOL_NS_GPL(cs35l45_pm_ops, SND_SOC_CS35L45);
- 
- MODULE_DESCRIPTION("ASoC CS35L45 driver");
- MODULE_AUTHOR("James Schulman, Cirrus Logic Inc, <james.schulman@cirrus.com>");
+diff --git a/sound/soc/codecs/cs43130.c b/sound/soc/codecs/cs43130.c
+index 1fcbf2ffccff..0b8ecd917a08 100644
+--- a/sound/soc/codecs/cs43130.c
++++ b/sound/soc/codecs/cs43130.c
+@@ -579,7 +579,7 @@ static int cs43130_set_sp_fmt(int dai_id, unsigned int bitwidth_sclk,
+ 		break;
+ 	case SND_SOC_DAIFMT_LEFT_J:
+ 		hi_size = bitwidth_sclk;
+-		frm_delay = 2;
++		frm_delay = 0;
+ 		frm_phase = 1;
+ 		break;
+ 	case SND_SOC_DAIFMT_DSP_A:
 -- 
 2.43.0
 
