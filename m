@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-12027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45F98831765
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CA708317D5
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D78528249A
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 418CB1C23542
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F3122F16;
-	Thu, 18 Jan 2024 10:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16815249E5;
+	Thu, 18 Jan 2024 11:00:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgBHJswg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VpO1QLY+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33F9D1774B;
-	Thu, 18 Jan 2024 10:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA49F23776;
+	Thu, 18 Jan 2024 11:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575402; cv=none; b=IT3R6C+jsN4w9+ZXJdAeKgWY4buFP9oXkz07I62G0LJ2cIc4QxbsMDGQESU34MwUjYpUEmRHRt5PXplhsiRN0ReDfcHbtJrwhgzbu90UvYcVamdaZZcVexhYNlvRXMqKY8b9TB41UDUVu402CSXZFgZyC/+nY/v5QOLJXWLzQjY=
+	t=1705575643; cv=none; b=lE44cIB9hAP4JgQdxXc5hCOtPeEfZ9ojmNfnvf1Q7WYyAUWGvzm7kEC52UAsSX9ncglM/c58ZR3ePXZv7Zc+fvxof9FMtjrU788c1LHmcwDzmyjFSUPFEj2+4ksVzurBh8jQ4V7YlO0D2C611KCdvxNVkGXAGXZDpjeA2RxwC2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575402; c=relaxed/simple;
-	bh=j22Y1gIMhrWJuTYCrWfAgKATHJpjAIaI2UGOpya9Gqw=;
+	s=arc-20240116; t=1705575643; c=relaxed/simple;
+	bh=Qe63haLIztYebrMJyRogj1XXscLyWmVfN0QuK991bzE=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=LxqGauoj8oU1xctqUArk+RSA55C5wf313rclkh254n5EhUVwiWSvdx5vRP8A5lmVewsefynSrc/mr9UjFWkYsoZ7OX7YsUHglpYAKwRwF4C3+q9443aIfyqxjI+o2iCdx2qUvuZgRcK2F/zTqzkhFCKAiK31RfxYq9oY6Rxrj3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgBHJswg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A378DC433F1;
-	Thu, 18 Jan 2024 10:56:41 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=uZGnzcYf1DB+CXKvhEqmfaq/Tl9zug0JSCt7Y7koQo4GuzFHOOKGNRiOedKEo1/zpfcb7nDuv68j8fSuj0jG0WGTsVZX17Eod9ZV9rvg6H/M+DfwQyrC0UFh5vGLFwBA8qXR3av/x6cc8CTvwRAEXoH3r3tWCFMLENaXuNMgbTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VpO1QLY+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49FB4C433C7;
+	Thu, 18 Jan 2024 11:00:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575402;
-	bh=j22Y1gIMhrWJuTYCrWfAgKATHJpjAIaI2UGOpya9Gqw=;
+	s=korg; t=1705575643;
+	bh=Qe63haLIztYebrMJyRogj1XXscLyWmVfN0QuK991bzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vgBHJswgxKyW91gbfkHHV5T5N5CEPDdC3xRGIx1jXH/ozTSmxm0H5ZUYW+eFfunGD
-	 7i9pIWQTd4mRpUZv5RI1I1UEzRlju3O5CRgYo2TGIFkBXbDAuw203hlD8X7rXQCVOu
-	 vF1JILRUdrHnL54ZLRbGjC85vux0FAWzwklaBF0I=
+	b=VpO1QLY+lgGpq41DG0eS4sOg/OXlfBtwVoX3kFEZOZ9kVcXPHIWO+6o0tgCzNt06q
+	 PpV8QRMuD2h2ikRYDSWVE67z4Au2xb6ArOmrddn8JHc+DSz2GDFwaVyOUbtQMbBQsq
+	 KzKcqJkdUMqHGRmMztrR8TNQbkMEUUbNbSqkYt5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <oliver.sang@intel.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Zheng Yejian <zhengyejian1@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 119/150] posix-timers: Get rid of [COMPAT_]SYS_NI() uses
-Date: Thu, 18 Jan 2024 11:49:01 +0100
-Message-ID: <20240118104325.563083094@linuxfoundation.org>
+Subject: [PATCH 6.1 054/100] tracing: Fix uaf issue when open the hist or hist_debug file
+Date: Thu, 18 Jan 2024 11:49:02 +0100
+Message-ID: <20240118104313.256364141@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,339 +63,182 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Zheng Yejian <zhengyejian1@huawei.com>
 
-[ Upstream commit a4aebe936554dac6a91e5d091179c934f8325708 ]
+[ Upstream commit 1cc111b9cddc71ce161cd388f11f0e9048edffdb ]
 
-Only the posix timer system calls use this (when the posix timer support
-is disabled, which does not actually happen in any normal case), because
-they had debug code to print out a warning about missing system calls.
+KASAN report following issue. The root cause is when opening 'hist'
+file of an instance and accessing 'trace_event_file' in hist_show(),
+but 'trace_event_file' has been freed due to the instance being removed.
+'hist_debug' file has the same problem. To fix it, call
+tracing_{open,release}_file_tr() in file_operations callback to have
+the ref count and avoid 'trace_event_file' being freed.
 
-Get rid of that special case, and just use the standard COND_SYSCALL
-interface that creates weak system call stubs that return -ENOSYS for
-when the system call does not exist.
+  BUG: KASAN: slab-use-after-free in hist_show+0x11e0/0x1278
+  Read of size 8 at addr ffff242541e336b8 by task head/190
 
-This fixes a kCFI issue with the SYS_NI() hackery:
+  CPU: 4 PID: 190 Comm: head Not tainted 6.7.0-rc5-g26aff849438c #133
+  Hardware name: linux,dummy-virt (DT)
+  Call trace:
+   dump_backtrace+0x98/0xf8
+   show_stack+0x1c/0x30
+   dump_stack_lvl+0x44/0x58
+   print_report+0xf0/0x5a0
+   kasan_report+0x80/0xc0
+   __asan_report_load8_noabort+0x1c/0x28
+   hist_show+0x11e0/0x1278
+   seq_read_iter+0x344/0xd78
+   seq_read+0x128/0x1c0
+   vfs_read+0x198/0x6c8
+   ksys_read+0xf4/0x1e0
+   __arm64_sys_read+0x70/0xa8
+   invoke_syscall+0x70/0x260
+   el0_svc_common.constprop.0+0xb0/0x280
+   do_el0_svc+0x44/0x60
+   el0_svc+0x34/0x68
+   el0t_64_sync_handler+0xb8/0xc0
+   el0t_64_sync+0x168/0x170
 
-  CFI failure at int80_emulation+0x67/0xb0 (target: sys_ni_posix_timers+0x0/0x70; expected type: 0xb02b34d9)
-  WARNING: CPU: 0 PID: 48 at int80_emulation+0x67/0xb0
+  Allocated by task 188:
+   kasan_save_stack+0x28/0x50
+   kasan_set_track+0x28/0x38
+   kasan_save_alloc_info+0x20/0x30
+   __kasan_slab_alloc+0x6c/0x80
+   kmem_cache_alloc+0x15c/0x4a8
+   trace_create_new_event+0x84/0x348
+   __trace_add_new_event+0x18/0x88
+   event_trace_add_tracer+0xc4/0x1a0
+   trace_array_create_dir+0x6c/0x100
+   trace_array_create+0x2e8/0x568
+   instance_mkdir+0x48/0x80
+   tracefs_syscall_mkdir+0x90/0xe8
+   vfs_mkdir+0x3c4/0x610
+   do_mkdirat+0x144/0x200
+   __arm64_sys_mkdirat+0x8c/0xc0
+   invoke_syscall+0x70/0x260
+   el0_svc_common.constprop.0+0xb0/0x280
+   do_el0_svc+0x44/0x60
+   el0_svc+0x34/0x68
+   el0t_64_sync_handler+0xb8/0xc0
+   el0t_64_sync+0x168/0x170
 
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Tested-by: Sami Tolvanen <samitolvanen@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+  Freed by task 191:
+   kasan_save_stack+0x28/0x50
+   kasan_set_track+0x28/0x38
+   kasan_save_free_info+0x34/0x58
+   __kasan_slab_free+0xe4/0x158
+   kmem_cache_free+0x19c/0x508
+   event_file_put+0xa0/0x120
+   remove_event_file_dir+0x180/0x320
+   event_trace_del_tracer+0xb0/0x180
+   __remove_instance+0x224/0x508
+   instance_rmdir+0x44/0x78
+   tracefs_syscall_rmdir+0xbc/0x140
+   vfs_rmdir+0x1cc/0x4c8
+   do_rmdir+0x220/0x2b8
+   __arm64_sys_unlinkat+0xc0/0x100
+   invoke_syscall+0x70/0x260
+   el0_svc_common.constprop.0+0xb0/0x280
+   do_el0_svc+0x44/0x60
+   el0_svc+0x34/0x68
+   el0t_64_sync_handler+0xb8/0xc0
+   el0t_64_sync+0x168/0x170
+
+Link: https://lore.kernel.org/linux-trace-kernel/20231214012153.676155-1-zhengyejian1@huawei.com
+
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/syscall_wrapper.h |  4 ---
- arch/riscv/include/asm/syscall_wrapper.h |  5 ---
- arch/s390/include/asm/syscall_wrapper.h  | 13 +------
- arch/x86/include/asm/syscall_wrapper.h   | 34 +++---------------
- kernel/sys_ni.c                          | 14 ++++++++
- kernel/time/posix-stubs.c                | 45 ------------------------
- 6 files changed, 19 insertions(+), 96 deletions(-)
+ kernel/trace/trace.c             |  6 ++++++
+ kernel/trace/trace.h             |  1 +
+ kernel/trace/trace_events_hist.c | 12 ++++++++----
+ 3 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/include/asm/syscall_wrapper.h b/arch/arm64/include/asm/syscall_wrapper.h
-index 17f687510c48..7a0e7b59be9b 100644
---- a/arch/arm64/include/asm/syscall_wrapper.h
-+++ b/arch/arm64/include/asm/syscall_wrapper.h
-@@ -44,9 +44,6 @@
- 		return sys_ni_syscall();						\
- 	}
- 
--#define COMPAT_SYS_NI(name) \
--	SYSCALL_ALIAS(__arm64_compat_sys_##name, sys_ni_posix_timers);
--
- #endif /* CONFIG_COMPAT */
- 
- #define __SYSCALL_DEFINEx(x, name, ...)						\
-@@ -82,6 +79,5 @@
- 	}
- 
- asmlinkage long __arm64_sys_ni_syscall(const struct pt_regs *__unused);
--#define SYS_NI(name) SYSCALL_ALIAS(__arm64_sys_##name, sys_ni_posix_timers);
- 
- #endif /* __ASM_SYSCALL_WRAPPER_H */
-diff --git a/arch/riscv/include/asm/syscall_wrapper.h b/arch/riscv/include/asm/syscall_wrapper.h
-index 1d7942c8a6cb..eeec04b7dae6 100644
---- a/arch/riscv/include/asm/syscall_wrapper.h
-+++ b/arch/riscv/include/asm/syscall_wrapper.h
-@@ -46,9 +46,6 @@ asmlinkage long __riscv_sys_ni_syscall(const struct pt_regs *);
- 		return sys_ni_syscall();						\
- 	}
- 
--#define COMPAT_SYS_NI(name) \
--	SYSCALL_ALIAS(__riscv_compat_sys_##name, sys_ni_posix_timers);
--
- #endif /* CONFIG_COMPAT */
- 
- #define __SYSCALL_DEFINEx(x, name, ...)						\
-@@ -82,6 +79,4 @@ asmlinkage long __riscv_sys_ni_syscall(const struct pt_regs *);
- 		return sys_ni_syscall();					\
- 	}
- 
--#define SYS_NI(name) SYSCALL_ALIAS(__riscv_sys_##name, sys_ni_posix_timers);
--
- #endif /* __ASM_SYSCALL_WRAPPER_H */
-diff --git a/arch/s390/include/asm/syscall_wrapper.h b/arch/s390/include/asm/syscall_wrapper.h
-index 9286430fe729..35c1d1b860d8 100644
---- a/arch/s390/include/asm/syscall_wrapper.h
-+++ b/arch/s390/include/asm/syscall_wrapper.h
-@@ -63,10 +63,6 @@
- 	cond_syscall(__s390x_sys_##name);				\
- 	cond_syscall(__s390_sys_##name)
- 
--#define SYS_NI(name)							\
--	SYSCALL_ALIAS(__s390x_sys_##name, sys_ni_posix_timers);		\
--	SYSCALL_ALIAS(__s390_sys_##name, sys_ni_posix_timers)
--
- #define COMPAT_SYSCALL_DEFINEx(x, name, ...)						\
- 	long __s390_compat_sys##name(struct pt_regs *regs);				\
- 	ALLOW_ERROR_INJECTION(__s390_compat_sys##name, ERRNO);				\
-@@ -85,15 +81,11 @@
- 
- /*
-  * As some compat syscalls may not be implemented, we need to expand
-- * COND_SYSCALL_COMPAT in kernel/sys_ni.c and COMPAT_SYS_NI in
-- * kernel/time/posix-stubs.c to cover this case as well.
-+ * COND_SYSCALL_COMPAT in kernel/sys_ni.c to cover this case as well.
-  */
- #define COND_SYSCALL_COMPAT(name)					\
- 	cond_syscall(__s390_compat_sys_##name)
- 
--#define COMPAT_SYS_NI(name)						\
--	SYSCALL_ALIAS(__s390_compat_sys_##name, sys_ni_posix_timers)
--
- #define __S390_SYS_STUBx(x, name, ...)						\
- 	long __s390_sys##name(struct pt_regs *regs);				\
- 	ALLOW_ERROR_INJECTION(__s390_sys##name, ERRNO);				\
-@@ -124,9 +116,6 @@
- #define COND_SYSCALL(name)						\
- 	cond_syscall(__s390x_sys_##name)
- 
--#define SYS_NI(name)							\
--	SYSCALL_ALIAS(__s390x_sys_##name, sys_ni_posix_timers)
--
- #define __S390_SYS_STUBx(x, fullname, name, ...)
- 
- #endif /* CONFIG_COMPAT */
-diff --git a/arch/x86/include/asm/syscall_wrapper.h b/arch/x86/include/asm/syscall_wrapper.h
-index fd2669b1cb2d..21f9407be5d3 100644
---- a/arch/x86/include/asm/syscall_wrapper.h
-+++ b/arch/x86/include/asm/syscall_wrapper.h
-@@ -86,9 +86,6 @@ extern long __ia32_sys_ni_syscall(const struct pt_regs *regs);
- 		return sys_ni_syscall();				\
- 	}
- 
--#define __SYS_NI(abi, name)						\
--	SYSCALL_ALIAS(__##abi##_##name, sys_ni_posix_timers);
--
- #ifdef CONFIG_X86_64
- #define __X64_SYS_STUB0(name)						\
- 	__SYS_STUB0(x64, sys_##name)
-@@ -100,13 +97,10 @@ extern long __ia32_sys_ni_syscall(const struct pt_regs *regs);
- #define __X64_COND_SYSCALL(name)					\
- 	__COND_SYSCALL(x64, sys_##name)
- 
--#define __X64_SYS_NI(name)						\
--	__SYS_NI(x64, sys_##name)
- #else /* CONFIG_X86_64 */
- #define __X64_SYS_STUB0(name)
- #define __X64_SYS_STUBx(x, name, ...)
- #define __X64_COND_SYSCALL(name)
--#define __X64_SYS_NI(name)
- #endif /* CONFIG_X86_64 */
- 
- #if defined(CONFIG_X86_32) || defined(CONFIG_IA32_EMULATION)
-@@ -120,13 +114,10 @@ extern long __ia32_sys_ni_syscall(const struct pt_regs *regs);
- #define __IA32_COND_SYSCALL(name)					\
- 	__COND_SYSCALL(ia32, sys_##name)
- 
--#define __IA32_SYS_NI(name)						\
--	__SYS_NI(ia32, sys_##name)
- #else /* CONFIG_X86_32 || CONFIG_IA32_EMULATION */
- #define __IA32_SYS_STUB0(name)
- #define __IA32_SYS_STUBx(x, name, ...)
- #define __IA32_COND_SYSCALL(name)
--#define __IA32_SYS_NI(name)
- #endif /* CONFIG_X86_32 || CONFIG_IA32_EMULATION */
- 
- #ifdef CONFIG_IA32_EMULATION
-@@ -135,8 +126,7 @@ extern long __ia32_sys_ni_syscall(const struct pt_regs *regs);
-  * additional wrappers (aptly named __ia32_sys_xyzzy) which decode the
-  * ia32 regs in the proper order for shared or "common" syscalls. As some
-  * syscalls may not be implemented, we need to expand COND_SYSCALL in
-- * kernel/sys_ni.c and SYS_NI in kernel/time/posix-stubs.c to cover this
-- * case as well.
-+ * kernel/sys_ni.c to cover this case as well.
-  */
- #define __IA32_COMPAT_SYS_STUB0(name)					\
- 	__SYS_STUB0(ia32, compat_sys_##name)
-@@ -148,14 +138,10 @@ extern long __ia32_sys_ni_syscall(const struct pt_regs *regs);
- #define __IA32_COMPAT_COND_SYSCALL(name)				\
- 	__COND_SYSCALL(ia32, compat_sys_##name)
- 
--#define __IA32_COMPAT_SYS_NI(name)					\
--	__SYS_NI(ia32, compat_sys_##name)
--
- #else /* CONFIG_IA32_EMULATION */
- #define __IA32_COMPAT_SYS_STUB0(name)
- #define __IA32_COMPAT_SYS_STUBx(x, name, ...)
- #define __IA32_COMPAT_COND_SYSCALL(name)
--#define __IA32_COMPAT_SYS_NI(name)
- #endif /* CONFIG_IA32_EMULATION */
- 
- 
-@@ -175,13 +161,10 @@ extern long __ia32_sys_ni_syscall(const struct pt_regs *regs);
- #define __X32_COMPAT_COND_SYSCALL(name)					\
- 	__COND_SYSCALL(x64, compat_sys_##name)
- 
--#define __X32_COMPAT_SYS_NI(name)					\
--	__SYS_NI(x64, compat_sys_##name)
- #else /* CONFIG_X86_X32_ABI */
- #define __X32_COMPAT_SYS_STUB0(name)
- #define __X32_COMPAT_SYS_STUBx(x, name, ...)
- #define __X32_COMPAT_COND_SYSCALL(name)
--#define __X32_COMPAT_SYS_NI(name)
- #endif /* CONFIG_X86_X32_ABI */
- 
- 
-@@ -212,17 +195,12 @@ extern long __ia32_sys_ni_syscall(const struct pt_regs *regs);
- 
- /*
-  * As some compat syscalls may not be implemented, we need to expand
-- * COND_SYSCALL_COMPAT in kernel/sys_ni.c and COMPAT_SYS_NI in
-- * kernel/time/posix-stubs.c to cover this case as well.
-+ * COND_SYSCALL_COMPAT in kernel/sys_ni.c to cover this case as well.
-  */
- #define COND_SYSCALL_COMPAT(name) 					\
- 	__IA32_COMPAT_COND_SYSCALL(name)				\
- 	__X32_COMPAT_COND_SYSCALL(name)
- 
--#define COMPAT_SYS_NI(name)						\
--	__IA32_COMPAT_SYS_NI(name)					\
--	__X32_COMPAT_SYS_NI(name)
--
- #endif /* CONFIG_COMPAT */
- 
- #define __SYSCALL_DEFINEx(x, name, ...)					\
-@@ -243,8 +221,8 @@ extern long __ia32_sys_ni_syscall(const struct pt_regs *regs);
-  * As the generic SYSCALL_DEFINE0() macro does not decode any parameters for
-  * obvious reasons, and passing struct pt_regs *regs to it in %rdi does not
-  * hurt, we only need to re-define it here to keep the naming congruent to
-- * SYSCALL_DEFINEx() -- which is essential for the COND_SYSCALL() and SYS_NI()
-- * macros to work correctly.
-+ * SYSCALL_DEFINEx() -- which is essential for the COND_SYSCALL() macro
-+ * to work correctly.
-  */
- #define SYSCALL_DEFINE0(sname)						\
- 	SYSCALL_METADATA(_##sname, 0);					\
-@@ -257,10 +235,6 @@ extern long __ia32_sys_ni_syscall(const struct pt_regs *regs);
- 	__X64_COND_SYSCALL(name)					\
- 	__IA32_COND_SYSCALL(name)
- 
--#define SYS_NI(name)							\
--	__X64_SYS_NI(name)						\
--	__IA32_SYS_NI(name)
--
- 
- /*
-  * For VSYSCALLS, we need to declare these three syscalls with the new
-diff --git a/kernel/sys_ni.c b/kernel/sys_ni.c
-index e137c1385c56..11c55593a2e9 100644
---- a/kernel/sys_ni.c
-+++ b/kernel/sys_ni.c
-@@ -200,6 +200,20 @@ COND_SYSCALL(recvmmsg_time32);
- COND_SYSCALL_COMPAT(recvmmsg_time32);
- COND_SYSCALL_COMPAT(recvmmsg_time64);
- 
-+/* Posix timer syscalls may be configured out */
-+COND_SYSCALL(timer_create);
-+COND_SYSCALL(timer_gettime);
-+COND_SYSCALL(timer_getoverrun);
-+COND_SYSCALL(timer_settime);
-+COND_SYSCALL(timer_delete);
-+COND_SYSCALL(clock_adjtime);
-+COND_SYSCALL(getitimer);
-+COND_SYSCALL(setitimer);
-+COND_SYSCALL(alarm);
-+COND_SYSCALL_COMPAT(timer_create);
-+COND_SYSCALL_COMPAT(getitimer);
-+COND_SYSCALL_COMPAT(setitimer);
-+
- /*
-  * Architecture specific syscalls: see further below
-  */
-diff --git a/kernel/time/posix-stubs.c b/kernel/time/posix-stubs.c
-index 828aeecbd1e8..9b6fcb8d85e7 100644
---- a/kernel/time/posix-stubs.c
-+++ b/kernel/time/posix-stubs.c
-@@ -17,40 +17,6 @@
- #include <linux/time_namespace.h>
- #include <linux/compat.h>
- 
--#ifdef CONFIG_ARCH_HAS_SYSCALL_WRAPPER
--/* Architectures may override SYS_NI and COMPAT_SYS_NI */
--#include <asm/syscall_wrapper.h>
--#endif
--
--asmlinkage long sys_ni_posix_timers(void)
--{
--	pr_err_once("process %d (%s) attempted a POSIX timer syscall "
--		    "while CONFIG_POSIX_TIMERS is not set\n",
--		    current->pid, current->comm);
--	return -ENOSYS;
--}
--
--#ifndef SYS_NI
--#define SYS_NI(name)  SYSCALL_ALIAS(sys_##name, sys_ni_posix_timers)
--#endif
--
--#ifndef COMPAT_SYS_NI
--#define COMPAT_SYS_NI(name)  SYSCALL_ALIAS(compat_sys_##name, sys_ni_posix_timers)
--#endif
--
--SYS_NI(timer_create);
--SYS_NI(timer_gettime);
--SYS_NI(timer_getoverrun);
--SYS_NI(timer_settime);
--SYS_NI(timer_delete);
--SYS_NI(clock_adjtime);
--SYS_NI(getitimer);
--SYS_NI(setitimer);
--SYS_NI(clock_adjtime32);
--#ifdef __ARCH_WANT_SYS_ALARM
--SYS_NI(alarm);
--#endif
--
- /*
-  * We preserve minimal support for CLOCK_REALTIME and CLOCK_MONOTONIC
-  * as it is easy to remain compatible with little code. CLOCK_BOOTTIME
-@@ -158,18 +124,7 @@ SYSCALL_DEFINE4(clock_nanosleep, const clockid_t, which_clock, int, flags,
- 				 which_clock);
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index b751c2ce9a34..2b3c4cd8382b 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -4916,6 +4916,12 @@ int tracing_release_file_tr(struct inode *inode, struct file *filp)
+ 	return 0;
  }
  
--#ifdef CONFIG_COMPAT
--COMPAT_SYS_NI(timer_create);
--#endif
--
--#if defined(CONFIG_COMPAT) || defined(CONFIG_ALPHA)
--COMPAT_SYS_NI(getitimer);
--COMPAT_SYS_NI(setitimer);
--#endif
--
- #ifdef CONFIG_COMPAT_32BIT_TIME
--SYS_NI(timer_settime32);
--SYS_NI(timer_gettime32);
++int tracing_single_release_file_tr(struct inode *inode, struct file *filp)
++{
++	tracing_release_file_tr(inode, filp);
++	return single_release(inode, filp);
++}
++
+ static int tracing_mark_open(struct inode *inode, struct file *filp)
+ {
+ 	stream_open(inode, filp);
+diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
+index 10aaafa2936d..aad7fcd84617 100644
+--- a/kernel/trace/trace.h
++++ b/kernel/trace/trace.h
+@@ -592,6 +592,7 @@ int tracing_open_generic(struct inode *inode, struct file *filp);
+ int tracing_open_generic_tr(struct inode *inode, struct file *filp);
+ int tracing_open_file_tr(struct inode *inode, struct file *filp);
+ int tracing_release_file_tr(struct inode *inode, struct file *filp);
++int tracing_single_release_file_tr(struct inode *inode, struct file *filp);
+ bool tracing_is_disabled(void);
+ bool tracer_tracing_is_on(struct trace_array *tr);
+ void tracer_tracing_on(struct trace_array *tr);
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index 1470af219073..3b0da1bddf63 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -5532,10 +5532,12 @@ static int event_hist_open(struct inode *inode, struct file *file)
+ {
+ 	int ret;
  
- SYSCALL_DEFINE2(clock_settime32, const clockid_t, which_clock,
- 		struct old_timespec32 __user *, tp)
+-	ret = security_locked_down(LOCKDOWN_TRACEFS);
++	ret = tracing_open_file_tr(inode, file);
+ 	if (ret)
+ 		return ret;
+ 
++	/* Clear private_data to avoid warning in single_open() */
++	file->private_data = NULL;
+ 	return single_open(file, hist_show, file);
+ }
+ 
+@@ -5543,7 +5545,7 @@ const struct file_operations event_hist_fops = {
+ 	.open = event_hist_open,
+ 	.read = seq_read,
+ 	.llseek = seq_lseek,
+-	.release = single_release,
++	.release = tracing_single_release_file_tr,
+ };
+ 
+ #ifdef CONFIG_HIST_TRIGGERS_DEBUG
+@@ -5809,10 +5811,12 @@ static int event_hist_debug_open(struct inode *inode, struct file *file)
+ {
+ 	int ret;
+ 
+-	ret = security_locked_down(LOCKDOWN_TRACEFS);
++	ret = tracing_open_file_tr(inode, file);
+ 	if (ret)
+ 		return ret;
+ 
++	/* Clear private_data to avoid warning in single_open() */
++	file->private_data = NULL;
+ 	return single_open(file, hist_debug_show, file);
+ }
+ 
+@@ -5820,7 +5824,7 @@ const struct file_operations event_hist_debug_fops = {
+ 	.open = event_hist_debug_open,
+ 	.read = seq_read,
+ 	.llseek = seq_lseek,
+-	.release = single_release,
++	.release = tracing_single_release_file_tr,
+ };
+ #endif
+ 
 -- 
 2.43.0
 
