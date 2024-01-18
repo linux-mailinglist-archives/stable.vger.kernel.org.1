@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-12137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DCA68317EF
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D9FD831781
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:58:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2FD31F2113E
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6838B22104
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49009241F6;
-	Thu, 18 Jan 2024 11:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BABA922F0B;
+	Thu, 18 Jan 2024 10:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ihs89KNp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEPMkTgM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07910BE7F;
-	Thu, 18 Jan 2024 11:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9AA1774B;
+	Thu, 18 Jan 2024 10:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575713; cv=none; b=Bf73SRSK9byjZCk/+ldX1tRbV6+ZJ0ugpop8OYBDZVEZ9Q5p/auRuFgwjQstVffzhefQCW/8BgVMNZJl6xyF/27BAjn/ZI64G4zvBRymq8hCa/LYCdzHCfGtA4YcMSngtfrtzMTq3tTF5FG/Q9LmghnO9pMz/fNeDWh8eR+jb+M=
+	t=1705575477; cv=none; b=dUVjsMrZIzQ6yVNetZUjPN4TXKIaTEkjz8Xa4ea7AI3F/BzcKwgUPSoqrqpZzAQTLn0pDpg8pFV8F5ij9EgsBTdcanpT5PnCN1IDSJxZoLqOEY9iVI1JiQnPNSYq1sict6r0QRVJH3qGsDm0ZU2slpAl3t+tKYxYQFMHjYXJd1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575713; c=relaxed/simple;
-	bh=921yFkaS1u+DikEfL1yop4eZeFhS502uVLwAJ62US7U=;
+	s=arc-20240116; t=1705575477; c=relaxed/simple;
+	bh=aFIY3Rc0nvctBtB7dFZ2H2Wc/ZZhT8axgwxboJ5QbQI=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=eacTpzO5HtsXtDon3eutcPJttpYOJVfIWZXYRXaspWS+ZB3ldmkssipCsYg31ndl1hO7mNgDohML302q8QwM9IVuT6EQ9XFj61MCjrcbydkKC6gQW2A18Tk3SqtgXbJv93LhN89givQH64MJ0L9a0hx7PHiNUSquIdc/6lj6J2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ihs89KNp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77B15C433F1;
-	Thu, 18 Jan 2024 11:01:52 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding; b=el7VKtKZfdQNI7rb8w5pqF9F467ov24MrAekVAUx/ZgiTfR1J6kwMLXbL1laXV18j+mO1bOKEHeW7bqSDZHEggM9YamqWX4d6bIUVDYTWV2qOoTkStbe/SfF2TtkYco54Z0Aftkbo9Vy3MhKUpOEpUDky+bTNa5V831GZKJRM/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEPMkTgM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDCC7C433C7;
+	Thu, 18 Jan 2024 10:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575712;
-	bh=921yFkaS1u+DikEfL1yop4eZeFhS502uVLwAJ62US7U=;
+	s=korg; t=1705575477;
+	bh=aFIY3Rc0nvctBtB7dFZ2H2Wc/ZZhT8axgwxboJ5QbQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ihs89KNpIxLBpN+7TOWcSTQKKSBkeEWMWfbn+keAsNdT3PM9Aeauyws+Et1zgZUHD
-	 BAlRfFbjMP5EZk21ldiAMJjYTzPyDe97az/EDaCm6RyXz/orjJe6zRnw8TBm9uMqrw
-	 /7/UFVbJWh5hFSRc+juYEhMgMpbmQLRkQHNwu+vo=
+	b=EEPMkTgMuDeXc/qqxJAHYUBNdY1oPQRKlRV8cdsXBkECK5z3HEv177tib1cLEWgcU
+	 gX7sA3CEV9p0cCFPkdY3XhtpbbJCz0E2QhS/M6AFp/W746ZRB4FT3GDdUR8TzTEDd7
+	 mpAm+BlmgTPVyGmtEKGKyLok+omUXnRIjwFR3fqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarannya Sasikumar <quic_sarannya@quicinc.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 079/100] net: qrtr: ns: Return 0 if server port is not present
-Date: Thu, 18 Jan 2024 11:49:27 +0100
-Message-ID: <20240118104314.335717027@linuxfoundation.org>
+	Florian Eckert <fe@dev.tdt.de>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.6 146/150] leds: ledtrig-tty: Free allocated ttyname buffer on deactivate
+Date: Thu, 18 Jan 2024 11:49:28 +0100
+Message-ID: <20240118104326.817467242@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarannya S <quic_sarannya@quicinc.com>
+From: Florian Eckert <fe@dev.tdt.de>
 
-[ Upstream commit 9bf2e9165f90dc9f416af53c902be7e33930f728 ]
+commit 25054b232681c286fca9c678854f56494d1352cc upstream.
 
-When a 'DEL_CLIENT' message is received from the remote, the corresponding
-server port gets deleted. A DEL_SERVER message is then announced for this
-server. As part of handling the subsequent DEL_SERVER message, the name-
-server attempts to delete the server port which results in a '-ENOENT' error.
-The return value from server_del() is then propagated back to qrtr_ns_worker,
-causing excessive error prints.
-To address this, return 0 from control_cmd_del_server() without checking the
-return value of server_del(), since the above scenario is not an error case
-and hence server_del() doesn't have any other error return value.
+The ttyname buffer for the ledtrig_tty_data struct is allocated in the
+sysfs ttyname_store() function. This buffer must be released on trigger
+deactivation. This was missing and is thus a memory leak.
 
-Signed-off-by: Sarannya Sasikumar <quic_sarannya@quicinc.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While we are at it, the TTY handler in the ledtrig_tty_data struct should
+also be returned in case of the trigger deactivation call.
+
+Cc: stable@vger.kernel.org
+Fixes: fd4a641ac88f ("leds: trigger: implement a tty trigger")
+Signed-off-by: Florian Eckert <fe@dev.tdt.de>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20231127081621.774866-1-fe@dev.tdt.de
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/qrtr/ns.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/leds/trigger/ledtrig-tty.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-index 3e40a1ba48f7..4a13b9f7abb4 100644
---- a/net/qrtr/ns.c
-+++ b/net/qrtr/ns.c
-@@ -569,7 +569,9 @@ static int ctrl_cmd_del_server(struct sockaddr_qrtr *from,
- 	if (!node)
- 		return -ENOENT;
+--- a/drivers/leds/trigger/ledtrig-tty.c
++++ b/drivers/leds/trigger/ledtrig-tty.c
+@@ -168,6 +168,10 @@ static void ledtrig_tty_deactivate(struc
  
--	return server_del(node, port, true);
-+	server_del(node, port, true);
+ 	cancel_delayed_work_sync(&trigger_data->dwork);
+ 
++	kfree(trigger_data->ttyname);
++	tty_kref_put(trigger_data->tty);
++	trigger_data->tty = NULL;
 +
-+	return 0;
+ 	kfree(trigger_data);
  }
  
- static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
--- 
-2.43.0
-
 
 
 
