@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-11895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B2888316D7
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:50:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55728831760
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B44C1F2654C
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:50:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 886D81C225EC
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AC1423763;
-	Thu, 18 Jan 2024 10:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A32D22F0F;
+	Thu, 18 Jan 2024 10:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zg6kcc/0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4tocwk6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD78322F0F;
-	Thu, 18 Jan 2024 10:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B151774B;
+	Thu, 18 Jan 2024 10:56:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575035; cv=none; b=JG4GHjdYEUpaHjXBHMuIMtUgrUKjuh0dKzgdSJelc0zw9h4dL9Qs2Melbh/mX6J+nvRr5nSY1xP+pUhHrVCFuKt0voZPhZRP0aeLbKAyODzARs4d1VvKFe+J7YtqY4Rjw4tn5LYCbDT53xCmKEe6vfttdOfs6PXFvMeJaZnrxR4=
+	t=1705575388; cv=none; b=gsSGyz0fzi43xnzaKGavDdeOQirmiR+wQ8PF7df+dsSJVSVvD10PSBou+XTEjtxgBkHLyOdHEvC9tK1aRVaHE/HlzHhkCF3MqX4WNo+kj1Tts2nb1hE+7HVlUWeZHJVusT5gZloUwN0LOG8dYuxgfq6+JmerQeBXUlEMS4iCfUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575035; c=relaxed/simple;
-	bh=bv+Lt+xqi1qHxjmKnDuZouXo5sRZnvzU+A1Ol8ZEV20=;
+	s=arc-20240116; t=1705575388; c=relaxed/simple;
+	bh=eS0tUIi1U3IBKT11h2lTnF93wWY30EZsd/nTI1gncMg=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=nkCSpZYCQYfWCkD1Sy5pes56J5r5pKjQNyCJDv7prsO8loRSOCCQ1SIkoQOHlgx59O58QucNO7hyEmSNjTUwZkLfWhJaaUzJ12ggBxgRyKRSs+lQeFUQud1eIYxP8Igq+aZ8JovYbMEWtUZEMuJ7BN6mUYcxTbGn8c0DhB2I/O8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zg6kcc/0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 589F9C433C7;
-	Thu, 18 Jan 2024 10:50:34 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=SaXW33HbKdSXCD6PZneyzeVioBM4QtrkxLHHJXIqf8sSuthM7z+vW9Pd9yuBJhSZP3Vs/dHDOCjDrAZh8XNff6EMfON6txE8uazHhbuKG8xVn6oEtA7NfOVxVamqubGlJxSapOrkmhX8PLSDzD+luQJoWb+T2WKBLwvqtg6LykE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4tocwk6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E8FC433C7;
+	Thu, 18 Jan 2024 10:56:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575034;
-	bh=bv+Lt+xqi1qHxjmKnDuZouXo5sRZnvzU+A1Ol8ZEV20=;
+	s=korg; t=1705575388;
+	bh=eS0tUIi1U3IBKT11h2lTnF93wWY30EZsd/nTI1gncMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zg6kcc/0kOK9PGUAP0CL6aPyoYq22fEv4HrV4Gzm0X3b4IJsowHFpoXYCPT2IUxZ6
-	 vwhVgXLxFAWyoZu8plekptxyhHre5WpUUld19ft5dEZkVBh7r45mkEhmJIqrQyRbJN
-	 vk3kBi8nyANIZ3+YjqMN6TA6MzwRgtR/c8K7aRaw=
+	b=A4tocwk62zouV2Qj9CmussfACRxN/OHufLlROKTkWFolOhoiNXTehqbkTHZuqvvbr
+	 Sitml7O+O7fD/oiTgkz3N0zODFbkwzd+k8Hez8vEeuL4bXOAV/y5LEbK6U1d9pc1Bf
+	 5MBCfcw+l8gJTnXsSt/ZkwDsKgRcVYYGB++Pey10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dorian Cruveiller <doriancruveiller@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.7 06/28] ALSA: hda/realtek: enable SND_PCI_QUIRK for Lenovo Legion Slim 7 Gen 8 (2023) serie
+	Roman Li <roman.li@amd.com>,
+	Jun Lei <jun.lei@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 114/150] drm/amd/display: Add case for dcn35 to support usb4 dmub hpd event
 Date: Thu, 18 Jan 2024 11:48:56 +0100
-Message-ID: <20240118104301.457309052@linuxfoundation.org>
+Message-ID: <20240118104325.327202901@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
-References: <20240118104301.249503558@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +66,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dorian Cruveiller <doriancruveiller@gmail.com>
+From: Wayne Lin <wayne.lin@amd.com>
 
-commit 99af5b11c57d33c32d761797f6308b40936c22ed upstream.
+[ Upstream commit 989824589f793120833bef13aa4e21f5a836a707 ]
 
-Link up the realtek audio chip to the cirrus cs35l41 sound amplifier chip
-on 4 models of the Lenovo legion slim 7 gen 8 (2023). These models are
-16IRH8 (2 differents subsystem id) and 16APH8 (2 differents subsystem ids).
+[Why & how]
+Refactor dc_is_dmub_outbox_supported() a bit and add case for dcn35 to
+register dmub outbox notification irq to handle usb4 relevant hpd event.
 
-Subsystem ids list:
- - 17AA38B4
- - 17AA38B5
- - 17AA38B6
- - 17AA38B7
-
-Signed-off-by: Dorian Cruveiller <doriancruveiller@gmail.com>
-Cc: <stable@vger.kernel.org> # v6.7
-Link: https://lore.kernel.org/r/20231230114001.19855-1-doriancruveiller@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Roman Li <roman.li@amd.com>
+Reviewed-by: Jun Lei <jun.lei@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 26 ++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10242,6 +10242,10 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x17aa, 0x3886, "Y780 VECO DUAL", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x38a7, "Y780P AMD YG dual", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x38a8, "Y780P AMD VECO dual", ALC287_FIXUP_TAS2781_I2C),
-+	SND_PCI_QUIRK(0x17aa, 0x38b4, "Legion Slim 7 16IRH8", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x17aa, 0x38b5, "Legion Slim 7 16IRH8", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x17aa, 0x38b6, "Legion Slim 7 16APH8", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x17aa, 0x38b7, "Legion Slim 7 16APH8", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x17aa, 0x38ba, "Yoga S780-14.5 Air AMD quad YC", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x38bb, "Yoga S780-14.5 Air AMD quad AAC", ALC287_FIXUP_TAS2781_I2C),
- 	SND_PCI_QUIRK(0x17aa, 0x38be, "Yoga S980-14.5 proX YC Dual", ALC287_FIXUP_TAS2781_I2C),
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index a1be93f6385c..8cdf380bf366 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -4865,18 +4865,28 @@ void dc_mclk_switch_using_fw_based_vblank_stretch_shut_down(struct dc *dc)
+  */
+ bool dc_is_dmub_outbox_supported(struct dc *dc)
+ {
+-	/* DCN31 B0 USB4 DPIA needs dmub notifications for interrupts */
+-	if (dc->ctx->asic_id.chip_family == FAMILY_YELLOW_CARP &&
+-	    dc->ctx->asic_id.hw_internal_rev == YELLOW_CARP_B0 &&
+-	    !dc->debug.dpia_debug.bits.disable_dpia)
+-		return true;
++	switch (dc->ctx->asic_id.chip_family) {
+ 
+-	if (dc->ctx->asic_id.chip_family == AMDGPU_FAMILY_GC_11_0_1 &&
+-	    !dc->debug.dpia_debug.bits.disable_dpia)
+-		return true;
++	case FAMILY_YELLOW_CARP:
++		/* DCN31 B0 USB4 DPIA needs dmub notifications for interrupts */
++		if (dc->ctx->asic_id.hw_internal_rev == YELLOW_CARP_B0 &&
++		    !dc->debug.dpia_debug.bits.disable_dpia)
++			return true;
++	break;
++
++	case AMDGPU_FAMILY_GC_11_0_1:
++	case AMDGPU_FAMILY_GC_11_5_0:
++		if (!dc->debug.dpia_debug.bits.disable_dpia)
++			return true;
++	break;
++
++	default:
++		break;
++	}
+ 
+ 	/* dmub aux needs dmub notifications to be enabled */
+ 	return dc->debug.enable_dmub_aux_for_legacy_ddc;
++
+ }
+ 
+ /**
+-- 
+2.43.0
+
 
 
 
