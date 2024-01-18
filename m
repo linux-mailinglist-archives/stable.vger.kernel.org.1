@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-11943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD71C831709
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:52:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ABFD83171A
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:53:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 848241F26BA8
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:52:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5F682815A2
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B687C23765;
-	Thu, 18 Jan 2024 10:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A0902377D;
+	Thu, 18 Jan 2024 10:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ByIUiHlR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NAHbOyE/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7511523760;
-	Thu, 18 Jan 2024 10:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE22922F1B;
+	Thu, 18 Jan 2024 10:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575168; cv=none; b=I0UyBo4SdQQG/a1MkDakB5GaWoPzVQp/fxhGHapfaa8c4GgOM1CIgctSd4/hLAxEL8l9b8iawl7FizYnRHryc6XRwffJV6WUli0aEgf/3elhMZnfzYnI0Ys8DBxoMgcGUnnoM4YjQ6WLkq28fojKkY1zLSuYz686RCCpbEUIG7U=
+	t=1705575199; cv=none; b=U3cWD2TGhxros9QLDOndoIwTt9iYDG/OOi4DvTbAxQRibEguPNM5si2mSNHVRCrA8miWxA3fTQ9PGSiesZjwO+vWvk9T1g7GfXZnInQfDicm4NxhgqxuaKLZAHSqIHs8yPdYPO7FMFTIvfyj40MitPb0WTH4qdYvGK7nZpcYc3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575168; c=relaxed/simple;
-	bh=OBB3fJ+zpoU8NcWlzmErrHwTP+cn8IYLbMJM7n2AVKc=;
+	s=arc-20240116; t=1705575199; c=relaxed/simple;
+	bh=RR1k+SczGvPZpBy2H4/SCDOanPWX9fOJed0+FRLSy/8=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=DJ19hBcMTqS43ddDTTAQyvEBGxltRXEvXYQPWGVugx0hIZrAjS+cM91H1dFEWE7B6P08BMJFDwAP6t6pHghH5akXZ9pdZVxPjnkcobtdzE9Uh0af3WXK5xwuGbcus2RGVFkyW/jNVHVLKxvHt4SWX8khH472w46rbvPoVoic9zE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ByIUiHlR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC3E4C43390;
-	Thu, 18 Jan 2024 10:52:47 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=DLHx7R9L71pVHRXhQjgOo9cIdzj+UGM3oyOJ78B1YRuf779bmb3tTXbhkZCAIX4ESEb2L1hobHxQqd0z7ddpIEMbcaucLlC/VjPJNcmJMIMTTOsuvXpp3+ZShjgDBznjt5YLHMhDgjHsXCiVzMlmVYch6aFUyYjL5b2YUqHo57A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NAHbOyE/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6209CC433F1;
+	Thu, 18 Jan 2024 10:53:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575168;
-	bh=OBB3fJ+zpoU8NcWlzmErrHwTP+cn8IYLbMJM7n2AVKc=;
+	s=korg; t=1705575198;
+	bh=RR1k+SczGvPZpBy2H4/SCDOanPWX9fOJed0+FRLSy/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ByIUiHlRo9P8d8kH6Zt28vGAkTMCJVISLWNnFgI2c4tH4sMC6nPpVjj8nv8PAxJ5n
-	 TyKne+ZBPfGzXmU2e6aDCthuh7n8wb4OWZwo70h3ioT1iE10eyrkoawKKWsDfZkBv6
-	 ygenVNwZ/9ci7EvPIhzGcJ23QTX4Vfi1u3e+8CHU=
+	b=NAHbOyE/BPaQbZMqwM7u6xtSW+HTwcZDLf96nwEbTunQlHvJKVhu2WeZKAOhWtz5O
+	 Ie07Ttn5oK6np5BxTJ89UN+oI8eu0Wkqvlr98f5myuJhtoaxlOx11Ea14issuTQGco
+	 ttsnPJjDcoO+/EemeRtZqHjZbThcVnmSb+rMyPRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matus Malych <matus@malych.org>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 028/150] ASoC: amd: yc: Add HP 255 G10 into quirk table
-Date: Thu, 18 Jan 2024 11:47:30 +0100
-Message-ID: <20240118104321.384024830@linuxfoundation.org>
+Subject: [PATCH 6.6 029/150] ASoC: wm8974: Correct boost mixer inputs
+Date: Thu, 18 Jan 2024 11:47:31 +0100
+Message-ID: <20240118104321.432796413@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
 References: <20240118104320.029537060@linuxfoundation.org>
@@ -67,39 +67,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Matus Malych <matus@malych.org>
+From: Charles Keepax <ckeepax@opensource.cirrus.com>
 
-[ Upstream commit 0c6498a59fbbcbf3d0a58c282dd6f0bca0eed92a ]
+[ Upstream commit 37e6fd0cebf0b9f71afb38fd95b10408799d1f0b ]
 
-HP 255 G10's internal microphone array can be made
-to work by adding it to the quirk table.
+Bit 6 of INPPGA (INPPGAMUTE) does not control the Aux path, it controls
+the input PGA path, as can been seen from Figure 8 Input Boost Stage in
+the datasheet. Update the naming of things in the driver to match this
+and update the routing to also reflect this.
 
-Signed-off-by: Matus Malych <matus@malych.org>
-Link: https://lore.kernel.org/r/20231112165403.3221-1-matus@malych.org
+Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20231113155916.1741027-1-ckeepax@opensource.cirrus.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/soc/codecs/wm8974.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 3babb17a56bb..a3424d880019 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -374,6 +374,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "8A3E"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
-+			DMI_MATCH(DMI_BOARD_NAME, "8B2F"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
+diff --git a/sound/soc/codecs/wm8974.c b/sound/soc/codecs/wm8974.c
+index 044b6f604c09..260bac695b20 100644
+--- a/sound/soc/codecs/wm8974.c
++++ b/sound/soc/codecs/wm8974.c
+@@ -186,7 +186,7 @@ SOC_DAPM_SINGLE("PCM Playback Switch", WM8974_MONOMIX, 0, 1, 0),
+ 
+ /* Boost mixer */
+ static const struct snd_kcontrol_new wm8974_boost_mixer[] = {
+-SOC_DAPM_SINGLE("Aux Switch", WM8974_INPPGA, 6, 1, 1),
++SOC_DAPM_SINGLE("PGA Switch", WM8974_INPPGA, 6, 1, 1),
+ };
+ 
+ /* Input PGA */
+@@ -246,8 +246,8 @@ static const struct snd_soc_dapm_route wm8974_dapm_routes[] = {
+ 
+ 	/* Boost Mixer */
+ 	{"ADC", NULL, "Boost Mixer"},
+-	{"Boost Mixer", "Aux Switch", "Aux Input"},
+-	{"Boost Mixer", NULL, "Input PGA"},
++	{"Boost Mixer", NULL, "Aux Input"},
++	{"Boost Mixer", "PGA Switch", "Input PGA"},
+ 	{"Boost Mixer", NULL, "MICP"},
+ 
+ 	/* Input PGA */
 -- 
 2.43.0
 
