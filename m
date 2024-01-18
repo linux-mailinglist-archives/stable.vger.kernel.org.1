@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-12138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7391A8317F0
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F07A6831782
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:58:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BD201F2384D
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 916011F22530
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:58:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFC0241FC;
-	Thu, 18 Jan 2024 11:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8405122F16;
+	Thu, 18 Jan 2024 10:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J9mlp5Br"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvE2Ra21"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1422241E9;
-	Thu, 18 Jan 2024 11:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441471774B;
+	Thu, 18 Jan 2024 10:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575715; cv=none; b=peQKZATWr+YY5PNIcCpOW/1C9UtM/Y3kBTF9Dd08WqZiqIYqMz4GFJ0RrY/eG6TSE/rptgp8UYdyFyM6l55YY6Kl8aaur6lm7WmwvM8IXYz4+cwh3RaN9nyQIiDCM2DPF5JT2AQvRcG0b3yDPIJIHwKFmCks9Kh9woJmgiJ8w9A=
+	t=1705575480; cv=none; b=srNyGrxWuiZVTLWyV1L8k/4ynRx8S15VdR6o9B3XbkpAlcR5tx7RVsa8rYenJNwzxjDuvh3MRO5VRGOyBxfA0W4UZcLJNVDPZptcQ5B+15GC5y2ABjHMvjvf761oK2op19J2Nvsq7KRQ4DqFjAFGINJf4K/u5JCdVPjn92BQtKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575715; c=relaxed/simple;
-	bh=AjoJOwUdDOduSpuVNiB8ax3+N4+OuESuNlHxbB6Hdn8=;
+	s=arc-20240116; t=1705575480; c=relaxed/simple;
+	bh=kIjz0m31cKKsfh0JDjBydTYgZJ/oJfvIADNqRL/VPD4=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=gKYepyq7i7L/gQ+0xjsgAilRSXnU+PnrB5wpL1Pq4bFu4QzdrcRHjtsmGnhLAKQft2bJk730LjU3LojNGWvEWFxXcGC1dPg1ga65sYzVbQYKXGzcflBGaRqRSMfmRsWd3M0T6wPGEJMS5TeEit4u2WM3/ojiO3pzkWZ1kSgtUdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J9mlp5Br; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 541D7C433C7;
-	Thu, 18 Jan 2024 11:01:55 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=qCYOTxb4c+/vrFO5ZwrVdv8mV9BVOZvie37VAkJSUhNNdYHICKe6jxw3kXMibDMHqlmk3kZn3lKglIHxxRXiNXWFtLa6ON35ngnxHGD0PVfgej77vgmLTwMMiCYsuSS0Kn9rtx20EpBUEjzmfUpBtoL1N3cGaQTDXqQRboveDno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvE2Ra21; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD227C433C7;
+	Thu, 18 Jan 2024 10:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575715;
-	bh=AjoJOwUdDOduSpuVNiB8ax3+N4+OuESuNlHxbB6Hdn8=;
+	s=korg; t=1705575480;
+	bh=kIjz0m31cKKsfh0JDjBydTYgZJ/oJfvIADNqRL/VPD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J9mlp5Breb+lUD7EgCIAQaVOCWo/FQw9/jwKhgDJzhHN57YBYBxvM9EKzHicZ4Yxg
-	 O1Rd14/0qJpmYkM5/v0HfmGPH+vidrHD87m3rBslYjWOWc02/qVKPpBqgF80HVIeMG
-	 LnuYl1NfrWMJVMczfSAgjbbOvXFbSYCSYBLaDNOY=
+	b=vvE2Ra213njVJNXs2NeDDNUlIMk68KlgAN6y+q6pr07EdgBU2eiaIkB4pFzoszRsJ
+	 VMZu6GD0Wah/X7IoxycrOrhDiUg/UzzJbOWdQWS3PE5H/GFJozvxJSGy4y2Xa2THt/
+	 LFhNu+Ya15Y9RM34c0fNEkIIzWFbdh5uDwtFJQV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 080/100] ARM: sun9i: smp: fix return code check of of_property_match_string
-Date: Thu, 18 Jan 2024 11:49:28 +0100
-Message-ID: <20240118104314.381397901@linuxfoundation.org>
+	LeoLiuoc <LeoLiu-oc@zhaoxin.com>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.6 147/150] PCI: Add ACS quirk for more Zhaoxin Root Ports
+Date: Thu, 18 Jan 2024 11:49:29 +0100
+Message-ID: <20240118104326.861351986@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,54 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
 
-[ Upstream commit 643fe70e7bcdcc9e2d96952f7fc2bab56385cce5 ]
+commit e367e3c765f5477b2e79da0f1399aed49e2d1e37 upstream.
 
-of_property_match_string returns an int; either an index from 0 or
-greater if successful or negative on failure. Even it's very
-unlikely that the DT CPU node contains multiple enable-methods
-these checks should be fixed.
+Add more Root Port Device IDs to pci_quirk_zhaoxin_pcie_ports_acs() for
+some new Zhaoxin platforms.
 
-This patch was inspired by the work of Nick Desaulniers.
-
-Link: https://lore.kernel.org/lkml/20230516-sunxi-v1-1-ac4b9651a8c1@google.com/T/
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20231228193903.9078-2-wahrenst@gmx.net
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 299bd044a6f3 ("PCI: Add ACS quirk for Zhaoxin Root/Downstream Ports")
+Link: https://lore.kernel.org/r/20231211091543.735903-1-LeoLiu-oc@zhaoxin.com
+Signed-off-by: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
+[bhelgaas: update subject, drop changelog, add Fixes, add stable tag, fix
+whitespace, wrap code comment]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: <stable@vger.kernel.org>	# 5.7
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-sunxi/mc_smp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/quirks.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-sunxi/mc_smp.c b/arch/arm/mach-sunxi/mc_smp.c
-index b2f5f4f28705..f779e386b6e7 100644
---- a/arch/arm/mach-sunxi/mc_smp.c
-+++ b/arch/arm/mach-sunxi/mc_smp.c
-@@ -804,12 +804,12 @@ static int __init sunxi_mc_smp_init(void)
- 	for (i = 0; i < ARRAY_SIZE(sunxi_mc_smp_data); i++) {
- 		ret = of_property_match_string(node, "enable-method",
- 					       sunxi_mc_smp_data[i].enable_method);
--		if (!ret)
-+		if (ret >= 0)
- 			break;
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4699,17 +4699,21 @@ static int pci_quirk_xgene_acs(struct pc
+  * But the implementation could block peer-to-peer transactions between them
+  * and provide ACS-like functionality.
+  */
+-static int  pci_quirk_zhaoxin_pcie_ports_acs(struct pci_dev *dev, u16 acs_flags)
++static int pci_quirk_zhaoxin_pcie_ports_acs(struct pci_dev *dev, u16 acs_flags)
+ {
+ 	if (!pci_is_pcie(dev) ||
+ 	    ((pci_pcie_type(dev) != PCI_EXP_TYPE_ROOT_PORT) &&
+ 	     (pci_pcie_type(dev) != PCI_EXP_TYPE_DOWNSTREAM)))
+ 		return -ENOTTY;
+ 
++	/*
++	 * Future Zhaoxin Root Ports and Switch Downstream Ports will
++	 * implement ACS capability in accordance with the PCIe Spec.
++	 */
+ 	switch (dev->device) {
+ 	case 0x0710 ... 0x071e:
+ 	case 0x0721:
+-	case 0x0723 ... 0x0732:
++	case 0x0723 ... 0x0752:
+ 		return pci_acs_ctrl_enabled(acs_flags,
+ 			PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
  	}
- 
- 	of_node_put(node);
--	if (ret)
-+	if (ret < 0)
- 		return -ENODEV;
- 
- 	is_a83t = sunxi_mc_smp_data[i].is_a83t;
--- 
-2.43.0
-
 
 
 
