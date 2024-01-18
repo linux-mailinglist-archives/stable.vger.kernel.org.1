@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-12123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 295488317DE
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4E90831754
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD1E21F21219
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 536F41F22E70
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7565624A10;
-	Thu, 18 Jan 2024 11:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE27923746;
+	Thu, 18 Jan 2024 10:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="twT2x21z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQHBO8GH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E1B22F16;
-	Thu, 18 Jan 2024 11:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C34122323;
+	Thu, 18 Jan 2024 10:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575674; cv=none; b=IUKBy7EvPtym67KyNfe7gHSAJcleb/pOAijC/dpCIr1cYB49E88BKVHLa1aJ7pYS0+Mz7+caieH5xs7wLtjsB4QUaHCOy23VNpTfBJ9Yw+ZFvNHACEXl0Mtz3cyem1z9OoYgwO/XASk7XtFYysl6WXUwC7UzgcLYwH2U46faEGI=
+	t=1705575354; cv=none; b=dNUI6UU13UIDBzXGUX2kloBaf9xiv/PzoaQ6yRj5MLG2RBsn3/13PoNx0lTa6wb+ckCfBAZ93AdfvTcKfA0G/SGDncSIl+Lr3z4ZNSKIgiJgw+kCX3PRhffvXDKHQsXNV+SW/R8qHxNoX8dkUHa1yWebOoQt6R7t/gXvdz2ABBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575674; c=relaxed/simple;
-	bh=TROUpB22GyDfGFBAC/QtFfG+4S+mIIIFxO/7nYY/WaI=;
+	s=arc-20240116; t=1705575354; c=relaxed/simple;
+	bh=ft1u/8iaaphD6WpB62i8i2HIFry+EoLlyKDOmGz6NFg=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=TAA9UVf7OqIvJJav2mPnn0SQJvzdJloJEFj6ALAPj5mW8OO+Y/Znq9CdnLjboSwpNx2/PmDBXEysDptf29yMKY+Xgqgq/McefbU8FLNosEBUbRXP9EsWrR/1u0LUAaBuHXZBNyoWwRLLvqB0aSLz2I08URJGFdXGNgpsKquLa6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=twT2x21z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED88C43390;
-	Thu, 18 Jan 2024 11:01:13 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding; b=GWcHGjhSnW6ZSNUQcijjOFjEMQ5TDTgjfDLxEYInpiLDBQG7IJPeHelm6SAcWnEaiCeUzrrhL2aGHIqYkRKainodnRGf15q34fyAFkA6jKAVQH3PrzexoQ58r+pCC01IBUit4UfujCAIAt/2NfpO8RnIV+pZZw6LK3bwcFSzuAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQHBO8GH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01904C433C7;
+	Thu, 18 Jan 2024 10:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575673;
-	bh=TROUpB22GyDfGFBAC/QtFfG+4S+mIIIFxO/7nYY/WaI=;
+	s=korg; t=1705575354;
+	bh=ft1u/8iaaphD6WpB62i8i2HIFry+EoLlyKDOmGz6NFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=twT2x21zRBcqr1JKtGqQV8UuXYyXZuZMqSxZpvzNeGE3hdXZGb6LihBnnbEHlXmsg
-	 NkyipHpueSn7es6hQwG7+oC+Nio+MyLy9IHXwHwBgKtig0guDebLl5tUKjoIq3Qdm6
-	 yM0k/eLmaUuYcdDfGvc7oM3wWhKoLlMBOxSavFlc=
+	b=fQHBO8GHmTr8rSsJqUy1PRVkmMGOHX3QwBGvn8HxcQ2raeU8quS5DazkGIXLMfFwY
+	 UlzKpaFxYmS/a5woSgjBjItSaR7f0sDfjA5FQrv/7j/+02OBXfk/QzKm0XRJ+H6RDm
+	 sIXWDd3iseVXPw48DJXiM84jKZVEfvhEJVb/MVfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wiehler <stefan.wiehler@nokia.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/100] mips/smp: Call rcutree_report_cpu_starting() earlier
-Date: Thu, 18 Jan 2024 11:48:44 +0100
-Message-ID: <20240118104312.487232798@linuxfoundation.org>
+Subject: [PATCH 6.6 103/150] platform/x86/amd/pmc: Only run IRQ1 firmware version check on Cezanne
+Date: Thu, 18 Jan 2024 11:48:45 +0100
+Message-ID: <20240118104324.828218759@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wiehler <stefan.wiehler@nokia.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 55702ec9603ebeffb15e6f7b113623fe1d8872f4 ]
+[ Upstream commit 2d53c0ab61e62302d7b62d660fe76de2bff6bf45 ]
 
-rcutree_report_cpu_starting() must be called before
-clockevents_register_device() to avoid the following lockdep splat triggered by
-calling list_add() when CONFIG_PROVE_RCU_LIST=y:
+amd_pmc_wa_czn_irq1() only runs on Cezanne platforms currently but
+may be extended to other platforms in the future.  Rename the function
+and only check platform firmware version when it's called for a Cezanne
+based platform.
 
-  WARNING: suspicious RCU usage
-  ...
-  -----------------------------
-  kernel/locking/lockdep.c:3680 RCU-list traversed in non-reader section!!
-
-  other info that might help us debug this:
-
-  RCU used illegally from offline CPU!
-  rcu_scheduler_active = 1, debug_locks = 1
-  no locks held by swapper/1/0.
-  ...
-  Call Trace:
-  [<ffffffff8012a434>] show_stack+0x64/0x158
-  [<ffffffff80a93d98>] dump_stack_lvl+0x90/0xc4
-  [<ffffffff801c9e9c>] __lock_acquire+0x1404/0x2940
-  [<ffffffff801cbf3c>] lock_acquire+0x14c/0x448
-  [<ffffffff80aa4260>] _raw_spin_lock_irqsave+0x50/0x88
-  [<ffffffff8021e0c8>] clockevents_register_device+0x60/0x1e8
-  [<ffffffff80130ff0>] r4k_clockevent_init+0x220/0x3a0
-  [<ffffffff801339d0>] start_secondary+0x50/0x3b8
-
-raw_smp_processor_id() is required in order to avoid calling into lockdep
-before RCU has declared the CPU to be watched for readers.
-
-See also commit 29368e093921 ("x86/smpboot:  Move rcu_cpu_starting() earlier"),
-commit de5d9dae150c ("s390/smp: move rcu_cpu_starting() earlier") and commit
-99f070b62322 ("powerpc/smp: Call rcu_cpu_starting() earlier").
-
-Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20231212045006.97581-3-mario.limonciello@amd.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/smp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/platform/x86/amd/pmc/pmc.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-index 1d93b85271ba..b951ce3a53ab 100644
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -333,10 +333,11 @@ early_initcall(mips_smp_ipi_init);
-  */
- asmlinkage void start_secondary(void)
+diff --git a/drivers/platform/x86/amd/pmc/pmc.c b/drivers/platform/x86/amd/pmc/pmc.c
+index 3fea32880ac8..f28bee6854f4 100644
+--- a/drivers/platform/x86/amd/pmc/pmc.c
++++ b/drivers/platform/x86/amd/pmc/pmc.c
+@@ -704,19 +704,22 @@ static int amd_pmc_get_os_hint(struct amd_pmc_dev *dev)
+ 	return -EINVAL;
+ }
+ 
+-static int amd_pmc_czn_wa_irq1(struct amd_pmc_dev *pdev)
++static int amd_pmc_wa_irq1(struct amd_pmc_dev *pdev)
  {
--	unsigned int cpu;
-+	unsigned int cpu = raw_smp_processor_id();
+ 	struct device *d;
+ 	int rc;
  
- 	cpu_probe();
- 	per_cpu_trap_init(false);
-+	rcutree_report_cpu_starting(cpu);
- 	mips_clockevent_init();
- 	mp_ops->init_secondary();
- 	cpu_report();
-@@ -348,7 +349,6 @@ asmlinkage void start_secondary(void)
- 	 */
+-	if (!pdev->major) {
+-		rc = amd_pmc_get_smu_version(pdev);
+-		if (rc)
+-			return rc;
+-	}
++	/* cezanne platform firmware has a fix in 64.66.0 */
++	if (pdev->cpu_id == AMD_CPU_ID_CZN) {
++		if (!pdev->major) {
++			rc = amd_pmc_get_smu_version(pdev);
++			if (rc)
++				return rc;
++		}
  
- 	calibrate_delay();
--	cpu = smp_processor_id();
- 	cpu_data[cpu].udelay_val = loops_per_jiffy;
+-	if (pdev->major > 64 || (pdev->major == 64 && pdev->minor > 65))
+-		return 0;
++		if (pdev->major > 64 || (pdev->major == 64 && pdev->minor > 65))
++			return 0;
++	}
  
- 	set_cpu_sibling_map(cpu);
+ 	d = bus_find_device_by_name(&serio_bus, NULL, "serio0");
+ 	if (!d)
+@@ -876,7 +879,7 @@ static int amd_pmc_suspend_handler(struct device *dev)
+ 	struct amd_pmc_dev *pdev = dev_get_drvdata(dev);
+ 
+ 	if (pdev->cpu_id == AMD_CPU_ID_CZN && !disable_workarounds) {
+-		int rc = amd_pmc_czn_wa_irq1(pdev);
++		int rc = amd_pmc_wa_irq1(pdev);
+ 
+ 		if (rc) {
+ 			dev_err(pdev->dev, "failed to adjust keyboard wakeup: %d\n", rc);
 -- 
 2.43.0
 
