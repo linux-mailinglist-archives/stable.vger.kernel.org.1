@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-12154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06BED831803
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:03:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67B748316DE
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:51:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDB2028BD0D
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:03:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AE551C22397
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F68A23771;
-	Thu, 18 Jan 2024 11:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFE423761;
+	Thu, 18 Jan 2024 10:50:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PM3+ne+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1vlqm5mD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E396023765;
-	Thu, 18 Jan 2024 11:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1045B65C;
+	Thu, 18 Jan 2024 10:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575762; cv=none; b=OJNvCAeGgJ02mrpJnXeRhTgbQHZPYVTDKPJ+ySTh6QkVjQiI9xYTcdhfyHX38eMl5BQIkEMZOTlI/ZgL9BEz5myoC1tSqVQUy0KtH2qPbHIuxTMeP8/E9lFE3PwhpiZG0VVxeGNhSAr+eCvx+9BcXbUmnvdUabSAAc0Vq2XNV+M=
+	t=1705575051; cv=none; b=ZVmUU7sYARkBBQN4M3jd/POPxTGHsGR74yDHHMkSDpsLMnmQV5yh7g9fvnyFOFBvrWXKEkxl+XkkVVz9ZcNuBIR8/fJJAhVLsPQqSr0NBvK+6IgftvR8NRMNCjJmqaPPpfLPbJQpHpenQFw9KOFwZ55sXn/2oaVeOJ6XCvwyjVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575762; c=relaxed/simple;
-	bh=R3sJQdEP6yFMB6YxRkNMXNByQnbJOMurA3TPTgYtpBQ=;
+	s=arc-20240116; t=1705575051; c=relaxed/simple;
+	bh=D899onBO7v2hnluCiMbrmLZ0+ThPTHDx1aPQXJxrAhU=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=p9IthzfSRZZsWZq82hmRAU0+uELcxfrgL/w2DTUoN38Xm94k+JflxqnNj492EAatMdcJ4ryY4a6YuuvIZhtJT3VUVTo174Y1XdHcMMo5YMNnhR/sUzI6tgyyVs4qafdaun18neRhXA0f20v2cstC+/M4XDUzSfVDh/FI2xump1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PM3+ne+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61C4EC433F1;
-	Thu, 18 Jan 2024 11:02:41 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding; b=IG9aOyCOhITcIC39+8ASzrANpDfsS4NHa9a8uGrifJIsab7SdZvdC/yYQHlYbuldIui5AO2VrsWA3QBP3zEjBSlIE2YVPHnBFTqc5U0ml6lkDuXYu6ERRd2Vk+XuHdAdk+Ipo/6BqA+KuwDiJDL2DNZ2VWOVopWTgq2ouq4FeFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1vlqm5mD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD35C433F1;
+	Thu, 18 Jan 2024 10:50:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575761;
-	bh=R3sJQdEP6yFMB6YxRkNMXNByQnbJOMurA3TPTgYtpBQ=;
+	s=korg; t=1705575051;
+	bh=D899onBO7v2hnluCiMbrmLZ0+ThPTHDx1aPQXJxrAhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PM3+ne+WuZQfSSQm1bY9cq303qtjcxD2GCsyURAycXQBzKpQVBpVB0dc4JYwl9xxA
-	 Z7zq0V13X/TCYG8iA3+Psyl+xcoC84YBA64WMk+sGu8JuugDr+/Mh7S/iQaHUx8zFl
-	 LPYhPWbS54ofJl9riG3RfNdy4L9Ve5OhHKQbFEO0=
+	b=1vlqm5mDg7E8D3Z//3wh+1WxCAR5yQySFG9/L+E9IwPdFDVyr2sn4poIi21KlnhWI
+	 /N0cuplm7/UsbU3b1VwcttpwUr6YDpDM40/UednR7Tz8NZrA4l7/Ji3xMX67Doc7Mh
+	 MEnVMCnz9U0y0gJI3sqMbpYJ3HWPV895BDmLuZEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Ryan McClelland <rymcclel@gmail.com>,
-	"Daniel J. Ogorchock" <djogorchock@gmail.com>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 065/100] HID: nintendo: fix initializer element is not constant error
+	Florian Eckert <fe@dev.tdt.de>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.7 23/28] leds: ledtrig-tty: Free allocated ttyname buffer on deactivate
 Date: Thu, 18 Jan 2024 11:49:13 +0100
-Message-ID: <20240118104313.763216284@linuxfoundation.org>
+Message-ID: <20240118104302.021359138@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
+References: <20240118104301.249503558@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan McClelland <rymcclel@gmail.com>
+From: Florian Eckert <fe@dev.tdt.de>
 
-[ Upstream commit 0b7dd38c1c520b650a889a81919838671b689eb9 ]
+commit 25054b232681c286fca9c678854f56494d1352cc upstream.
 
-With gcc-7 builds, an error happens with the controller button values being
-defined as const. Change to a define.
+The ttyname buffer for the ledtrig_tty_data struct is allocated in the
+sysfs ttyname_store() function. This buffer must be released on trigger
+deactivation. This was missing and is thus a memory leak.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202312141227.C2h1IzfI-lkp@intel.com/
+While we are at it, the TTY handler in the ledtrig_tty_data struct should
+also be returned in case of the trigger deactivation call.
 
-Signed-off-by: Ryan McClelland <rymcclel@gmail.com>
-Reviewed-by: Daniel J. Ogorchock <djogorchock@gmail.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: fd4a641ac88f ("leds: trigger: implement a tty trigger")
+Signed-off-by: Florian Eckert <fe@dev.tdt.de>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20231127081621.774866-1-fe@dev.tdt.de
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-nintendo.c | 44 +++++++++++++++++++-------------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+ drivers/leds/trigger/ledtrig-tty.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/hid/hid-nintendo.c b/drivers/hid/hid-nintendo.c
-index 8a8a3dd8af0c..907c9b574e3b 100644
---- a/drivers/hid/hid-nintendo.c
-+++ b/drivers/hid/hid-nintendo.c
-@@ -325,28 +325,28 @@ struct joycon_imu_cal {
-  * All the controller's button values are stored in a u32.
-  * They can be accessed with bitwise ANDs.
-  */
--static const u32 JC_BTN_Y	= BIT(0);
--static const u32 JC_BTN_X	= BIT(1);
--static const u32 JC_BTN_B	= BIT(2);
--static const u32 JC_BTN_A	= BIT(3);
--static const u32 JC_BTN_SR_R	= BIT(4);
--static const u32 JC_BTN_SL_R	= BIT(5);
--static const u32 JC_BTN_R	= BIT(6);
--static const u32 JC_BTN_ZR	= BIT(7);
--static const u32 JC_BTN_MINUS	= BIT(8);
--static const u32 JC_BTN_PLUS	= BIT(9);
--static const u32 JC_BTN_RSTICK	= BIT(10);
--static const u32 JC_BTN_LSTICK	= BIT(11);
--static const u32 JC_BTN_HOME	= BIT(12);
--static const u32 JC_BTN_CAP	= BIT(13); /* capture button */
--static const u32 JC_BTN_DOWN	= BIT(16);
--static const u32 JC_BTN_UP	= BIT(17);
--static const u32 JC_BTN_RIGHT	= BIT(18);
--static const u32 JC_BTN_LEFT	= BIT(19);
--static const u32 JC_BTN_SR_L	= BIT(20);
--static const u32 JC_BTN_SL_L	= BIT(21);
--static const u32 JC_BTN_L	= BIT(22);
--static const u32 JC_BTN_ZL	= BIT(23);
-+#define JC_BTN_Y	 BIT(0)
-+#define JC_BTN_X	 BIT(1)
-+#define JC_BTN_B	 BIT(2)
-+#define JC_BTN_A	 BIT(3)
-+#define JC_BTN_SR_R	 BIT(4)
-+#define JC_BTN_SL_R	 BIT(5)
-+#define JC_BTN_R	 BIT(6)
-+#define JC_BTN_ZR	 BIT(7)
-+#define JC_BTN_MINUS	 BIT(8)
-+#define JC_BTN_PLUS	 BIT(9)
-+#define JC_BTN_RSTICK	 BIT(10)
-+#define JC_BTN_LSTICK	 BIT(11)
-+#define JC_BTN_HOME	 BIT(12)
-+#define JC_BTN_CAP	 BIT(13) /* capture button */
-+#define JC_BTN_DOWN	 BIT(16)
-+#define JC_BTN_UP	 BIT(17)
-+#define JC_BTN_RIGHT	 BIT(18)
-+#define JC_BTN_LEFT	 BIT(19)
-+#define JC_BTN_SR_L	 BIT(20)
-+#define JC_BTN_SL_L	 BIT(21)
-+#define JC_BTN_L	 BIT(22)
-+#define JC_BTN_ZL	 BIT(23)
+--- a/drivers/leds/trigger/ledtrig-tty.c
++++ b/drivers/leds/trigger/ledtrig-tty.c
+@@ -168,6 +168,10 @@ static void ledtrig_tty_deactivate(struc
  
- enum joycon_msg_type {
- 	JOYCON_MSG_TYPE_NONE,
--- 
-2.43.0
-
+ 	cancel_delayed_work_sync(&trigger_data->dwork);
+ 
++	kfree(trigger_data->ttyname);
++	tty_kref_put(trigger_data->tty);
++	trigger_data->tty = NULL;
++
+ 	kfree(trigger_data);
+ }
+ 
 
 
 
