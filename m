@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-12150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6E0C8317FF
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:03:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C67A8316EB
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:51:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E93121C23B5A
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:03:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3B9B282301
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:51:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6CF24B25;
-	Thu, 18 Jan 2024 11:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AEA823763;
+	Thu, 18 Jan 2024 10:51:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bfALDnnh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g34b8wxO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0C21774B;
-	Thu, 18 Jan 2024 11:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3F722F06;
+	Thu, 18 Jan 2024 10:51:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575750; cv=none; b=tm9JTkzsNAXuScvyNon5JN9e9d6h3/X/Sbt5b7Qt6n3jQjFZ5FEZpwCj4SIUrLmh32EhIBvjvvMojrJtzXTI1f+iyua8KUu/xY++x+ap0UjVwUO6wIRkTjR/Gupf26Q9gYKdz13xDJQjsb9lGww9EGYyTVqoAvidrmA7VzUOYqk=
+	t=1705575087; cv=none; b=FjQQQnm6CjpU3E793CMhT39qFgWKekeLIS+gwGFJ0cxslrajmgCbmNr9mBAvNxqnr/qAIx9BA0v3QU2agabjztnSr2fesX6kKrfhbvhhAiSjWPzSdXA2n+L4dxEScmvXpDCTkTO6zZUG2BfR5v7CMVzFFhkTwGE0Tcvf1OUfuKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575750; c=relaxed/simple;
-	bh=dQCAJ85MB+Ou5E/5mmV3FPatQuBZNyv+xPlg1fbjEB4=;
+	s=arc-20240116; t=1705575087; c=relaxed/simple;
+	bh=j4Heej8uIzbphshWiHqpI36vFGpI2Xqga0Bm8eVELgs=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=kxIa2Gj3L6J0ckDgaKn9dWKUJeLCJ/AYQnPXzpc/KlD0pCSQrY//7WbayrfyiCZF+cvS25KgJygAe9xewPvhgdhK4UX5MN79xQ+8h+anxm8EVV3ZjXpHO1ZFiTdxZ0UKeNtM6waRlNx3hPiBwTDYSGyANsSl3nokqUnzVRUsssk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bfALDnnh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F38A6C43601;
-	Thu, 18 Jan 2024 11:02:29 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=IY8j4R0ljhXqP4kP+A3PpO/ucJQP/R40jUlqkJbXYuOk92BhmRuyPI5He+ZPreOCqN/wbFd0FFVniBTom/hs0QmZ0xGc0G3Nimj3Z/pB2UsK08I6zXmQikKq4cQ2X1qwayu9ZvJ5uLkmEu0xHf+I34sParZu/pUc6Ae6AF3Dwck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g34b8wxO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51443C433C7;
+	Thu, 18 Jan 2024 10:51:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575750;
-	bh=dQCAJ85MB+Ou5E/5mmV3FPatQuBZNyv+xPlg1fbjEB4=;
+	s=korg; t=1705575087;
+	bh=j4Heej8uIzbphshWiHqpI36vFGpI2Xqga0Bm8eVELgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bfALDnnhG1/ZqWgw1Oe3Osb2gV/jUjEaKzRniHlCCa6QVUbpVlAyRMSNFxAeKZLE6
-	 7nw7FOoqxEnDAgj29U8+mFcRPaHdSTRQlFpYDRNvzhJa1SE1RCWSTxreKqIK7p+17F
-	 Fg/+AYHSFsL/IP6Pdcw6ufKTMqdSVSKIG4baM7oM=
+	b=g34b8wxOZW4FlKHCVcXVRnxfADc6wfhHhWDqyvV4otL/4HpRhX32evC5B53pl7Ysz
+	 /9SAaTS5zY5K0ZUirTA6XV6JxSlU38AEWha0ZWepMekjHei6uJv4JlZpOCkrQo4wqf
+	 +/eCQts17eR6OCQBvBgymoHg1Dy+nVd9m4oUCelA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 064/100] kselftest: alsa: fixed a print formatting warning
+	Cameron Williams <cang1@live.co.uk>,
+	Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Subject: [PATCH 6.7 22/28] parport: parport_serial: Add Brainboxes device IDs and geometry
 Date: Thu, 18 Jan 2024 11:49:12 +0100
-Message-ID: <20240118104313.720966799@linuxfoundation.org>
+Message-ID: <20240118104301.991794287@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
+References: <20240118104301.249503558@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+From: Cameron Williams <cang1@live.co.uk>
 
-[ Upstream commit 13d605e32e4cfdedcecdf3d98d21710ffe887708 ]
+commit 6aa1fc5a8085bbc01687aa708dcf2dbe637a5ee3 upstream.
 
-A statement used %d print formatter where %s should have
-been used. The same has been fixed in this commit.
+Add device IDs for the Brainboxes UC-203, UC-257, UC-414, UC-475,
+IS-300/IS-500 and PX-263/PX-295 and define the relevant "geometry"
+for the cards.
+This patch requires part 1 of this series.
 
-Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
-Link: 5aaf9efffc57 ("kselftest: alsa: Add simplistic test for ALSA mixer controls kselftest")
-Link: https://lore.kernel.org/r/20231217080019.1063476-1-ghanshyam1898@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Cameron Williams <cang1@live.co.uk>
+Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Link: https://lore.kernel.org/r/AS4PR02MB7903A4094564BE28F1F926A6C4A6A@AS4PR02MB7903.eurprd02.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/alsa/mixer-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/parport/parport_serial.c |   56 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 56 insertions(+)
 
-diff --git a/tools/testing/selftests/alsa/mixer-test.c b/tools/testing/selftests/alsa/mixer-test.c
-index a38b89c28030..37da902545a4 100644
---- a/tools/testing/selftests/alsa/mixer-test.c
-+++ b/tools/testing/selftests/alsa/mixer-test.c
-@@ -177,7 +177,7 @@ static void find_controls(void)
- 			err = snd_ctl_elem_info(card_data->handle,
- 						ctl_data->info);
- 			if (err < 0) {
--				ksft_print_msg("%s getting info for %d\n",
-+				ksft_print_msg("%s getting info for %s\n",
- 					       snd_strerror(err),
- 					       ctl_data->name);
- 			}
--- 
-2.43.0
-
+--- a/drivers/parport/parport_serial.c
++++ b/drivers/parport/parport_serial.c
+@@ -285,6 +285,38 @@ static struct pci_device_id parport_seri
+ 	{ PCI_VENDOR_ID_SUNIX, PCI_DEVICE_ID_SUNIX_1999, PCI_VENDOR_ID_SUNIX,
+ 	  0x0104, 0, 0, sunix_5099a },
+ 
++	/* Brainboxes UC-203 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0bc1,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0bc2,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++
++	/* Brainboxes UC-257 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0861,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0862,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0863,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++
++	/* Brainboxes UC-414 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0e61,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc414 },
++
++	/* Brainboxes UC-475 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0981,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0982,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
++
++	/* Brainboxes IS-300/IS-500 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x0da0,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_is300 },
++
++	/* Brainboxes PX-263/PX-295 */
++	{ PCI_VENDOR_ID_INTASHIELD, 0x402c,
++	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_px263 },
++
+ 	{ 0, } /* terminate list */
+ };
+ MODULE_DEVICE_TABLE(pci,parport_serial_pci_tbl);
+@@ -550,6 +582,30 @@ static struct pciserial_board pci_parpor
+ 		.base_baud      = 921600,
+ 		.uart_offset	= 0x8,
+ 	},
++	[brainboxes_uc257] = {
++		.flags		= FL_BASE2,
++		.num_ports	= 2,
++		.base_baud	= 115200,
++		.uart_offset	= 8,
++	},
++	[brainboxes_is300] = {
++		.flags		= FL_BASE2,
++		.num_ports	= 1,
++		.base_baud	= 115200,
++		.uart_offset	= 8,
++	},
++	[brainboxes_uc414] = {
++		.flags		= FL_BASE2,
++		.num_ports	= 4,
++		.base_baud	= 115200,
++		.uart_offset	= 8,
++	},
++	[brainboxes_px263] = {
++		.flags		= FL_BASE2,
++		.num_ports	= 4,
++		.base_baud	= 921600,
++		.uart_offset	= 8,
++	},
+ };
+ 
+ struct parport_serial_private {
 
 
 
