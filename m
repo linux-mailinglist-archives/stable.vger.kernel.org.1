@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-12048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FA4483177B
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:57:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E91AD8317E8
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D15FA1C2276E
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:57:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8F9828B1AC
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E55C622F0F;
-	Thu, 18 Jan 2024 10:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62F1241EA;
+	Thu, 18 Jan 2024 11:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TdrpzwTp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQF57XnT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B451774B;
-	Thu, 18 Jan 2024 10:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AC01774B;
+	Thu, 18 Jan 2024 11:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575460; cv=none; b=QZCi91irpe34MQB4jGRtIICBrohcicemQ29aoK023C4OKczJZMKLsamxzJ9AFB6LgKpqI7qWUzqScejqh5D5+wPzqc3gM/Gs1jHwYIsQucUN7z8xz+u8FJ/cC3RZHrmlpWBr5tf9rUx8azT8XJyA80N+Bd02600Qm93+kaedGVA=
+	t=1705575701; cv=none; b=dO5k+G3xWvTUAUTxHZSTk+3mbnJQD3mmOweHdnXUBd1jy7OHVjSFBvNmVhbbmT3QhH4XADnneTovZ904FNifFazgMFr5h5Zxwz/ktob7gBAVmsOsJoLWaCpK90TquhYNSu2pjdWMV4HyCAt+zjF11PsUMaHgqk+hGCh7CzA1654=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575460; c=relaxed/simple;
-	bh=9uPgzFlu7Wt0U+u+faC0V7RP84x5DYOK7bDwnoOk5qk=;
+	s=arc-20240116; t=1705575701; c=relaxed/simple;
+	bh=2uL0sTiBtEiA3lEcIVRyl8S+ZCpqKsIRfackowyN93c=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=PZvcrAjelZAxcD4+uVZpmWd6UUVXs5rjdO1YeNKgmcF0/uEQGA8az17WJhb1PdXdvqlWnsLPwxu+dg2aw2YlXC7knj8r/IYw6O3zOgv05HQ4uM8xy+k7eGlO2L6VuqTrDYfKiMyY6BvGReQiwACE7mBFZRR9o8USt/Hn2uxcxXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TdrpzwTp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29A47C43390;
-	Thu, 18 Jan 2024 10:57:39 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=BJ8lm3GO4d4zDKcFxbI34Xygowp3nKlUYLtpZ6lqExTUtaETT2JCROVaXvBeP7jAFkaYnnlm7Vxp84ftRyIyCd2uNNEh3oAdqdWwGD09clzG9NK9JIH4ea1CxFi8lIE/cnWj7hbPbxGuSg3JY8CyP6TOf1NpCw/7MVVbuFeH6I8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQF57XnT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 196D0C433F1;
+	Thu, 18 Jan 2024 11:01:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575460;
-	bh=9uPgzFlu7Wt0U+u+faC0V7RP84x5DYOK7bDwnoOk5qk=;
+	s=korg; t=1705575701;
+	bh=2uL0sTiBtEiA3lEcIVRyl8S+ZCpqKsIRfackowyN93c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TdrpzwTp+q1P+WregI4pk5K1KtYGyAQLISFRnOz+7Kqs5AS3GY4MSVyuHFAujc02Z
-	 cuLfe8w0afcjexahd3jCBBvI4xr9XNYpy7Gv1VKz3zKYPoYGsH2qoyyJZMpiplwWoV
-	 4iR+nE8hKMZOnOP/ZlY16GN/aZso8Z1rUunPyxX0=
+	b=jQF57XnTJFSloqIdYEaVaXrOlBNfbc06pV9SA/todVehfFZfdKIcvcOW9ikNE4dAR
+	 edE1PTu3aCJLP9sGsDOBdmiQmv49t9Y5xOS4l6zLtXeZsv+ZUpuJJswH/wt+x/5Dgf
+	 dpiQQcBelj5h7qN+DPS914/SzyokA4usNeFG0sfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 6.6 141/150] binder: fix trivial typo of binder_free_buf_locked()
+	Patrick Rudolph <patrick.rudolph@9elements.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 075/100] pinctrl: cy8c95x0: Fix typo
 Date: Thu, 18 Jan 2024 11:49:23 +0100
-Message-ID: <20240118104326.590816658@linuxfoundation.org>
+Message-ID: <20240118104314.168970259@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Patrick Rudolph <patrick.rudolph@9elements.com>
 
-commit 122a3c1cb0ff304c2b8934584fcfea4edb2fe5e3 upstream.
+[ Upstream commit 47b1fa48116238208c1b1198dba10f56fc1b6eb2 ]
 
-Fix minor misspelling of the function in the comment section.
+Fix typo to make pinctrl-cy8c95x compile again.
 
-No functional changes in this patch.
-
-Cc: stable@vger.kernel.org
-Fixes: 0f966cba95c7 ("binder: add flag to clear buffer on txn complete")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-7-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Patrick Rudolph <patrick.rudolph@9elements.com>
+Link: https://lore.kernel.org/r/20231219125120.4028862-1-patrick.rudolph@9elements.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder_alloc.c |    2 +-
+ drivers/pinctrl/pinctrl-cy8c95x0.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -706,7 +706,7 @@ void binder_alloc_free_buf(struct binder
- 	/*
- 	 * We could eliminate the call to binder_alloc_clear_buf()
- 	 * from binder_alloc_deferred_release() by moving this to
--	 * binder_alloc_free_buf_locked(). However, that could
-+	 * binder_free_buf_locked(). However, that could
- 	 * increase contention for the alloc mutex if clear_on_free
- 	 * is used frequently for large buffers. The mutex is not
- 	 * needed for correctness here.
+diff --git a/drivers/pinctrl/pinctrl-cy8c95x0.c b/drivers/pinctrl/pinctrl-cy8c95x0.c
+index 68509a2301b8..99c3fe4ca518 100644
+--- a/drivers/pinctrl/pinctrl-cy8c95x0.c
++++ b/drivers/pinctrl/pinctrl-cy8c95x0.c
+@@ -857,7 +857,7 @@ static int cy8c95x0_setup_gpiochip(struct cy8c95x0_pinctrl *chip)
+ 	gc->get_direction = cy8c95x0_gpio_get_direction;
+ 	gc->get_multiple = cy8c95x0_gpio_get_multiple;
+ 	gc->set_multiple = cy8c95x0_gpio_set_multiple;
+-	gc->set_config = gpiochip_generic_config,
++	gc->set_config = gpiochip_generic_config;
+ 	gc->can_sleep = true;
+ 	gc->add_pin_ranges = cy8c95x0_add_pin_ranges;
+ 
+-- 
+2.43.0
+
 
 
 
