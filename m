@@ -1,171 +1,161 @@
-Return-Path: <stable+bounces-12166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FA77831810
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:03:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3B5A831840
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:15:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 436061C2410E
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:03:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C26BB23663
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:15:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77595241F6;
-	Thu, 18 Jan 2024 11:03:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="08yaSlCg"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89CA02375A;
+	Thu, 18 Jan 2024 11:15:07 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 362BB2033B;
-	Thu, 18 Jan 2024 11:03:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B542376E
+	for <stable@vger.kernel.org>; Thu, 18 Jan 2024 11:15:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575795; cv=none; b=rQKHgTdg7gXULW0YpM0hVAi4MaMTc3gPUtAsS+foQRMkPZhCRxdnHZQbWa3OAnJBMlCaGIg5k4+NU1Ic+AWggu4Fu69x1s3xcTdGCDLq2s1qeUYs/4Vsu6nio+9jXPE6r3BfYWzZszinFusKjlZPmZmnQwESMl8Q8dZigkTeRmE=
+	t=1705576507; cv=none; b=qz0W80IqxEUtikM/2wr92XoLMslM6yypanxzIvF7tOlg++i/q0l41erQh9+mTIgYSNi4dcQKtFFEXm/4XEhoQ/DoE2fKzUrKXDx+bAk1z1OTU4sKiGdIrrufHzdLUpgN1FMfAN1WI1e2ngjFYhqnnD2LmMe82VHLGqLoq3qXweU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575795; c=relaxed/simple;
-	bh=Q/hIgyaFSPNuKHfjrKG0COy9B9jRUuBTB2Qtm5+tV6I=;
-	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
-	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=a4/Yv5wJFDNcBTP3Sy2uNF94MBbMmtDJ1c8ho/5fxgTVV1jbKsm15/U5jpHhHukUOEKb7OJ1MKuk338sldCuCRrUTORg1NhdANIYqJJOPdLiqmdYi1twfLO158Lz//sPr/0yoJO4yteyQTG4O9+dMPj/Qj1SPnkOjmHzkk+frKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=08yaSlCg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82780C433C7;
-	Thu, 18 Jan 2024 11:03:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575795;
-	bh=Q/hIgyaFSPNuKHfjrKG0COy9B9jRUuBTB2Qtm5+tV6I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=08yaSlCgJnaAV/LMWhRHfiXdLqa8h7m0Mkk+HH1UMTMcQxE2uheTomlxotSIgXQeI
-	 IXLMqpUejkvA6o/nAuLXNXF1m+s6gZQE+nRDxI/SwvmOa51rmT8mHse4W66ClzIwRK
-	 j/QiDlqrjA2044ESFo/L8TP4CEXYcsnB6QpImuFk=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Carlos Llamas <cmllamas@google.com>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Elliot Berman <quic_eberman@quicinc.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Will Deacon <will@kernel.org>,
-	John Stultz <jstultz@google.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Tom Rix <trix@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 100/100] scripts/decode_stacktrace.sh: optionally use LLVM utilities
-Date: Thu, 18 Jan 2024 11:49:48 +0100
-Message-ID: <20240118104315.173290398@linuxfoundation.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1705576507; c=relaxed/simple;
+	bh=ZOUWw6/+yRTX1HLJ3j2jZTIMiLHnk08ngluWTEwYzIY=;
+	h=Received:Received:X-Originating-IP:Date:X-CM-HeaderCharset:From:
+	 To:Cc:Subject:X-Priority:X-Mailer:In-Reply-To:References:
+	 Content-Transfer-Encoding:X-CM-CTRLDATA:Content-Type:MIME-Version:
+	 Message-ID:X-Coremail-Locale:X-CM-TRANSID:X-CM-SenderInfo:
+	 X-Coremail-Antispam; b=WS5gSdvCmonEPJEqhWMATbJ9PesSsqD3o1mbHOEWlDVItDtaQXRj1N3h+8ceJYApFwK5x+RLx6VYSU9R3SI9QPUo5TgjYOzRAupeVyru+8ueFDNRrRUGNT+xmFcoUgVL7OrGR3dynChov5Y1fa7OJa2Kz+MvTqWbPyk0WlKft20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [112.20.108.41])
+	by gateway (Coremail) with SMTP id _____8AxqvAwCKllC5wBAA--.7991S3;
+	Thu, 18 Jan 2024 19:14:56 +0800 (CST)
+Received: from chenhuacai$loongson.cn ( [112.20.108.41] ) by
+ ajax-webmail-localhost.localdomain (Coremail) ; Thu, 18 Jan 2024 19:14:52
+ +0800 (GMT+08:00)
+Date: Thu, 18 Jan 2024 19:14:52 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: =?UTF-8?B?6ZmI5Y2O5omN?= <chenhuacai@loongson.cn>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	"Stefan Wiehler" <stefan.wiehler@nokia.com>,
+	"Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+	"Sasha Levin" <sashal@kernel.org>
+Subject: Re: [PATCH 6.6 059/150] mips/smp: Call
+ rcutree_report_cpu_starting() earlier
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2023.1-cmXT6 build
+ 20230523(b0518e05) Copyright (c) 2002-2024 www.mailtech.cn loongson
+In-Reply-To: <20240118104322.716905144@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
+ <20240118104322.716905144@linuxfoundation.org>
+Content-Transfer-Encoding: base64
+X-CM-CTRLDATA: Cp/T0mZvb3Rlcl90eHQ9MzIyOTo2MTI=
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-ID: <6a59dd46.1988.18d1c47eea9.Coremail.chenhuacai@loongson.cn>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:AQAAf8BxrM4sCKllfmIIAA--.1046W
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/1tbiAQAABmWnj+AKsAAIsY
+X-Coremail-Antispam: 1Uk129KBj93XoWxWFyfJF47WF47trWDJFWxKrX_yoW5tw17pr
+	4fWanxKr4kXryDZw1IyryruFyrWan8Gw42vFW8tw1fZF1UuF1DJr1Sy3WfWFyDur9Yg3W2
+	yFn0van2kF4qyFgCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUQab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
+	xVWxJr0_GcWln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
+	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r12
+	6r1DMcIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
+	vIr41lFcxC0VAYjxAxZF0Ew4CEw7xC0wACY4xI67k04243AVC20s07MxkF7I0En4kS14v2
+	6r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14
+	v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+	17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1I6r4UMI
+	IF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVWUJVW8JwCE64xvF2
+	IEb7IF0Fy7YxBIdaVFxhVjvjDU0xZFpf9x07jYiihUUUUU=
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
-
-------------------
-
-From: Carlos Llamas <cmllamas@google.com>
-
-commit efbd6398353315b7018e6943e41fee9ec35e875f upstream.
-
-GNU's addr2line can have problems parsing a vmlinux built with LLVM,
-particularly when LTO was used.  In order to decode the traces correctly
-this patch adds the ability to switch to LLVM's utilities readelf and
-addr2line.  The same approach is followed by Will in [1].
-
-Before:
-  $ scripts/decode_stacktrace.sh vmlinux < kernel.log
-  [17716.240635] Call trace:
-  [17716.240646] skb_cow_data (??:?)
-  [17716.240654] esp6_input (ld-temp.o:?)
-  [17716.240666] xfrm_input (ld-temp.o:?)
-  [17716.240674] xfrm6_rcv (??:?)
-  [...]
-
-After:
-  $ LLVM=1 scripts/decode_stacktrace.sh vmlinux < kernel.log
-  [17716.240635] Call trace:
-  [17716.240646] skb_cow_data (include/linux/skbuff.h:2172 net/core/skbuff.c:4503)
-  [17716.240654] esp6_input (net/ipv6/esp6.c:977)
-  [17716.240666] xfrm_input (net/xfrm/xfrm_input.c:659)
-  [17716.240674] xfrm6_rcv (net/ipv6/xfrm6_input.c:172)
-  [...]
-
-Note that one could set CROSS_COMPILE=llvm- instead to hack around this
-issue.  However, doing so can break the decodecode routine as it will
-force the selection of other LLVM utilities down the line e.g.  llvm-as.
-
-[1] https://lore.kernel.org/all/20230914131225.13415-3-will@kernel.org/
-
-Link: https://lkml.kernel.org/r/20230929034836.403735-1-cmllamas@google.com
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Reviewed-by: Elliot Berman <quic_eberman@quicinc.com>
-Tested-by: Justin Stitt <justinstitt@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: John Stultz <jstultz@google.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Tom Rix <trix@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- scripts/decode_stacktrace.sh |   19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
-
---- a/scripts/decode_stacktrace.sh
-+++ b/scripts/decode_stacktrace.sh
-@@ -16,6 +16,21 @@ elif type c++filt >/dev/null 2>&1 ; then
- 	cppfilt_opts=-i
- fi
- 
-+UTIL_SUFFIX=
-+if [[ -z ${LLVM:-} ]]; then
-+	UTIL_PREFIX=${CROSS_COMPILE:-}
-+else
-+	UTIL_PREFIX=llvm-
-+	if [[ ${LLVM} == */ ]]; then
-+		UTIL_PREFIX=${LLVM}${UTIL_PREFIX}
-+	elif [[ ${LLVM} == -* ]]; then
-+		UTIL_SUFFIX=${LLVM}
-+	fi
-+fi
-+
-+READELF=${UTIL_PREFIX}readelf${UTIL_SUFFIX}
-+ADDR2LINE=${UTIL_PREFIX}addr2line${UTIL_SUFFIX}
-+
- if [[ $1 == "-r" ]] ; then
- 	vmlinux=""
- 	basepath="auto"
-@@ -75,7 +90,7 @@ find_module() {
- 
- 	if [[ "$modpath" != "" ]] ; then
- 		for fn in $(find "$modpath" -name "${module//_/[-_]}.ko*") ; do
--			if readelf -WS "$fn" | grep -qwF .debug_line ; then
-+			if ${READELF} -WS "$fn" | grep -qwF .debug_line ; then
- 				echo $fn
- 				return
- 			fi
-@@ -169,7 +184,7 @@ parse_symbol() {
- 	if [[ $aarray_support == true && "${cache[$module,$address]+isset}" == "isset" ]]; then
- 		local code=${cache[$module,$address]}
- 	else
--		local code=$(${CROSS_COMPILE}addr2line -i -e "$objfile" "$address" 2>/dev/null)
-+		local code=$(${ADDR2LINE} -i -e "$objfile" "$address" 2>/dev/null)
- 		if [[ $aarray_support == true ]]; then
- 			cache[$module,$address]=$code
- 		fi
-
+SGksIEdyZWcsCgpBcyBJIHNhaWQgYmVmb3JlLCB0aGlzIHBhdGNoIGNhbm5vdCBiZSBiYWNrcG9y
+dGVkIGJlY2F1c2UgcmN1dHJlZV9yZXBvcnRfY3B1X3N0YXJ0aW5nKCkgb25seSBleGlzdCBpbiA2
+LjcrLgoKSHVhY2FpCgoKPiAtLS0tLeWOn+Wni+mCruS7ti0tLS0tCj4g5Y+R5Lu25Lq6OiAiR3Jl
+ZyBLcm9haC1IYXJ0bWFuIiA8Z3JlZ2toQGxpbnV4Zm91bmRhdGlvbi5vcmc+Cj4g5Y+R6YCB5pe2
+6Ze0OjIwMjQtMDEtMTggMTg6NDg6MDEgKOaYn+acn+WbmykKPiDmlLbku7bkuro6IHN0YWJsZUB2
+Z2VyLmtlcm5lbC5vcmcKPiDmioTpgIE6ICJHcmVnIEtyb2FoLUhhcnRtYW4iIDxncmVna2hAbGlu
+dXhmb3VuZGF0aW9uLm9yZz4sIHBhdGNoZXNAbGlzdHMubGludXguZGV2LCAiU3RlZmFuIFdpZWhs
+ZXIiIDxzdGVmYW4ud2llaGxlckBub2tpYS5jb20+LCAiSHVhY2FpIENoZW4iIDxjaGVuaHVhY2Fp
+QGxvb25nc29uLmNuPiwgIlRob21hcyBCb2dlbmRvZXJmZXIiIDx0c2JvZ2VuZEBhbHBoYS5mcmFu
+a2VuLmRlPiwgIlNhc2hhIExldmluIiA8c2FzaGFsQGtlcm5lbC5vcmc+Cj4g5Li76aKYOiBbUEFU
+Q0ggNi42IDA1OS8xNTBdIG1pcHMvc21wOiBDYWxsIHJjdXRyZWVfcmVwb3J0X2NwdV9zdGFydGlu
+ZygpIGVhcmxpZXIKPiAKPiA2LjYtc3RhYmxlIHJldmlldyBwYXRjaC4gIElmIGFueW9uZSBoYXMg
+YW55IG9iamVjdGlvbnMsIHBsZWFzZSBsZXQgbWUga25vdy4KPiAKPiAtLS0tLS0tLS0tLS0tLS0t
+LS0KPiAKPiBGcm9tOiBTdGVmYW4gV2llaGxlciA8c3RlZmFuLndpZWhsZXJAbm9raWEuY29tPgo+
+IAo+IFsgVXBzdHJlYW0gY29tbWl0IDU1NzAyZWM5NjAzZWJlZmZiMTVlNmY3YjExMzYyM2ZlMWQ4
+ODcyZjQgXQo+IAo+IHJjdXRyZWVfcmVwb3J0X2NwdV9zdGFydGluZygpIG11c3QgYmUgY2FsbGVk
+IGJlZm9yZQo+IGNsb2NrZXZlbnRzX3JlZ2lzdGVyX2RldmljZSgpIHRvIGF2b2lkIHRoZSBmb2xs
+b3dpbmcgbG9ja2RlcCBzcGxhdCB0cmlnZ2VyZWQgYnkKPiBjYWxsaW5nIGxpc3RfYWRkKCkgd2hl
+biBDT05GSUdfUFJPVkVfUkNVX0xJU1Q9eToKPiAKPiAgIFdBUk5JTkc6IHN1c3BpY2lvdXMgUkNV
+IHVzYWdlCj4gICAuLi4KPiAgIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCj4gICBrZXJu
+ZWwvbG9ja2luZy9sb2NrZGVwLmM6MzY4MCBSQ1UtbGlzdCB0cmF2ZXJzZWQgaW4gbm9uLXJlYWRl
+ciBzZWN0aW9uISEKPiAKPiAgIG90aGVyIGluZm8gdGhhdCBtaWdodCBoZWxwIHVzIGRlYnVnIHRo
+aXM6Cj4gCj4gICBSQ1UgdXNlZCBpbGxlZ2FsbHkgZnJvbSBvZmZsaW5lIENQVSEKPiAgIHJjdV9z
+Y2hlZHVsZXJfYWN0aXZlID0gMSwgZGVidWdfbG9ja3MgPSAxCj4gICBubyBsb2NrcyBoZWxkIGJ5
+IHN3YXBwZXIvMS8wLgo+ICAgLi4uCj4gICBDYWxsIFRyYWNlOgo+ICAgWzxmZmZmZmZmZjgwMTJh
+NDM0Pl0gc2hvd19zdGFjaysweDY0LzB4MTU4Cj4gICBbPGZmZmZmZmZmODBhOTNkOTg+XSBkdW1w
+X3N0YWNrX2x2bCsweDkwLzB4YzQKPiAgIFs8ZmZmZmZmZmY4MDFjOWU5Yz5dIF9fbG9ja19hY3F1
+aXJlKzB4MTQwNC8weDI5NDAKPiAgIFs8ZmZmZmZmZmY4MDFjYmYzYz5dIGxvY2tfYWNxdWlyZSsw
+eDE0Yy8weDQ0OAo+ICAgWzxmZmZmZmZmZjgwYWE0MjYwPl0gX3Jhd19zcGluX2xvY2tfaXJxc2F2
+ZSsweDUwLzB4ODgKPiAgIFs8ZmZmZmZmZmY4MDIxZTBjOD5dIGNsb2NrZXZlbnRzX3JlZ2lzdGVy
+X2RldmljZSsweDYwLzB4MWU4Cj4gICBbPGZmZmZmZmZmODAxMzBmZjA+XSByNGtfY2xvY2tldmVu
+dF9pbml0KzB4MjIwLzB4M2EwCj4gICBbPGZmZmZmZmZmODAxMzM5ZDA+XSBzdGFydF9zZWNvbmRh
+cnkrMHg1MC8weDNiOAo+IAo+IHJhd19zbXBfcHJvY2Vzc29yX2lkKCkgaXMgcmVxdWlyZWQgaW4g
+b3JkZXIgdG8gYXZvaWQgY2FsbGluZyBpbnRvIGxvY2tkZXAKPiBiZWZvcmUgUkNVIGhhcyBkZWNs
+YXJlZCB0aGUgQ1BVIHRvIGJlIHdhdGNoZWQgZm9yIHJlYWRlcnMuCj4gCj4gU2VlIGFsc28gY29t
+bWl0IDI5MzY4ZTA5MzkyMSAoIng4Ni9zbXBib290OiAgTW92ZSByY3VfY3B1X3N0YXJ0aW5nKCkg
+ZWFybGllciIpLAo+IGNvbW1pdCBkZTVkOWRhZTE1MGMgKCJzMzkwL3NtcDogbW92ZSByY3VfY3B1
+X3N0YXJ0aW5nKCkgZWFybGllciIpIGFuZCBjb21taXQKPiA5OWYwNzBiNjIzMjIgKCJwb3dlcnBj
+L3NtcDogQ2FsbCByY3VfY3B1X3N0YXJ0aW5nKCkgZWFybGllciIpLgo+IAo+IFNpZ25lZC1vZmYt
+Ynk6IFN0ZWZhbiBXaWVobGVyIDxzdGVmYW4ud2llaGxlckBub2tpYS5jb20+Cj4gUmV2aWV3ZWQt
+Ynk6IEh1YWNhaSBDaGVuIDxjaGVuaHVhY2FpQGxvb25nc29uLmNuPgo+IFNpZ25lZC1vZmYtYnk6
+IFRob21hcyBCb2dlbmRvZXJmZXIgPHRzYm9nZW5kQGFscGhhLmZyYW5rZW4uZGU+Cj4gU2lnbmVk
+LW9mZi1ieTogU2FzaGEgTGV2aW4gPHNhc2hhbEBrZXJuZWwub3JnPgo+IC0tLQo+ICBhcmNoL21p
+cHMva2VybmVsL3NtcC5jIHwgNCArKy0tCj4gIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMo
+KyksIDIgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL2FyY2gvbWlwcy9rZXJuZWwvc21w
+LmMgYi9hcmNoL21pcHMva2VybmVsL3NtcC5jCj4gaW5kZXggOGZiZWY1MzdmYjg4Li44MmUyZTA1
+MWI0MTYgMTAwNjQ0Cj4gLS0tIGEvYXJjaC9taXBzL2tlcm5lbC9zbXAuYwo+ICsrKyBiL2FyY2gv
+bWlwcy9rZXJuZWwvc21wLmMKPiBAQCAtMzUxLDEwICszNTEsMTEgQEAgZWFybHlfaW5pdGNhbGwo
+bWlwc19zbXBfaXBpX2luaXQpOwo+ICAgKi8KPiAgYXNtbGlua2FnZSB2b2lkIHN0YXJ0X3NlY29u
+ZGFyeSh2b2lkKQo+ICB7Cj4gLQl1bnNpZ25lZCBpbnQgY3B1Owo+ICsJdW5zaWduZWQgaW50IGNw
+dSA9IHJhd19zbXBfcHJvY2Vzc29yX2lkKCk7Cj4gIAo+ICAJY3B1X3Byb2JlKCk7Cj4gIAlwZXJf
+Y3B1X3RyYXBfaW5pdChmYWxzZSk7Cj4gKwlyY3V0cmVlX3JlcG9ydF9jcHVfc3RhcnRpbmcoY3B1
+KTsKPiAgCW1pcHNfY2xvY2tldmVudF9pbml0KCk7Cj4gIAltcF9vcHMtPmluaXRfc2Vjb25kYXJ5
+KCk7Cj4gIAljcHVfcmVwb3J0KCk7Cj4gQEAgLTM2Niw3ICszNjcsNiBAQCBhc21saW5rYWdlIHZv
+aWQgc3RhcnRfc2Vjb25kYXJ5KHZvaWQpCj4gIAkgKi8KPiAgCj4gIAljYWxpYnJhdGVfZGVsYXko
+KTsKPiAtCWNwdSA9IHNtcF9wcm9jZXNzb3JfaWQoKTsKPiAgCWNwdV9kYXRhW2NwdV0udWRlbGF5
+X3ZhbCA9IGxvb3BzX3Blcl9qaWZmeTsKPiAgCj4gIAlzZXRfY3B1X3NpYmxpbmdfbWFwKGNwdSk7
+Cj4gLS0gCj4gMi40My4wCj4gCj4gCg0KDQrmnKzpgq7ku7blj4rlhbbpmYTku7blkKvmnInpvpno
+iq/kuK3np5HnmoTllYbkuJrnp5jlr4bkv6Hmga/vvIzku4XpmZDkuo7lj5HpgIHnu5nkuIrpnaLl
+nLDlnYDkuK3liJflh7rnmoTkuKrkurrmiJbnvqTnu4TjgILnpoHmraLku7vkvZXlhbbku5bkurrk
+u6Xku7vkvZXlvaLlvI/kvb/nlKjvvIjljIXmi6zkvYbkuI3pmZDkuo7lhajpg6jmiJbpg6jliIbl
+nLDms4TpnLLjgIHlpI3liLbmiJbmlaPlj5HvvInmnKzpgq7ku7blj4rlhbbpmYTku7bkuK3nmoTk
+v6Hmga/jgILlpoLmnpzmgqjplJnmlLbmnKzpgq7ku7bvvIzor7fmgqjnq4vljbPnlLXor53miJbp
+gq7ku7bpgJrnn6Xlj5Hku7bkurrlubbliKDpmaTmnKzpgq7ku7bjgIIgDQpUaGlzIGVtYWlsIGFu
+ZCBpdHMgYXR0YWNobWVudHMgY29udGFpbiBjb25maWRlbnRpYWwgaW5mb3JtYXRpb24gZnJvbSBM
+b29uZ3NvbiBUZWNobm9sb2d5ICwgd2hpY2ggaXMgaW50ZW5kZWQgb25seSBmb3IgdGhlIHBlcnNv
+biBvciBlbnRpdHkgd2hvc2UgYWRkcmVzcyBpcyBsaXN0ZWQgYWJvdmUuIEFueSB1c2Ugb2YgdGhl
+IGluZm9ybWF0aW9uIGNvbnRhaW5lZCBoZXJlaW4gaW4gYW55IHdheSAoaW5jbHVkaW5nLCBidXQg
+bm90IGxpbWl0ZWQgdG8sIHRvdGFsIG9yIHBhcnRpYWwgZGlzY2xvc3VyZSwgcmVwcm9kdWN0aW9u
+IG9yIGRpc3NlbWluYXRpb24pIGJ5IHBlcnNvbnMgb3RoZXIgdGhhbiB0aGUgaW50ZW5kZWQgcmVj
+aXBpZW50KHMpIGlzIHByb2hpYml0ZWQuIElmIHlvdSByZWNlaXZlIHRoaXMgZW1haWwgaW4gZXJy
+b3IsIHBsZWFzZSBub3RpZnkgdGhlIHNlbmRlciBieSBwaG9uZSBvciBlbWFpbCBpbW1lZGlhdGVs
+eSBhbmQgZGVsZXRlIGl0LiA=
 
 
