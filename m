@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-11985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8438283173A
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:54:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F18DF831745
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:55:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10CB6B21C02
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:54:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FB4D1C228DA
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:55:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6722922F1B;
-	Thu, 18 Jan 2024 10:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F9022F0F;
+	Thu, 18 Jan 2024 10:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aG91Rawf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kI8W4RWr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A581B96D;
-	Thu, 18 Jan 2024 10:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0507822F0B;
+	Thu, 18 Jan 2024 10:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575285; cv=none; b=kIKBKQndnePmFLD9SdWWs1kgHwcNOi2TKhuSDwfqpqeYdw2RN/zxUcDqBqg/Qel4610isK+dWpdM4mvrShDneIeSlZc3D9hqGJbwSoavPZEGkIU1J9w1RLvgSOjurc1NcMUwMUdZseIBZyBtHa0mmwdDSp5H21E8eWD+QIwqr1U=
+	t=1705575316; cv=none; b=PGXsm8pp9SgnzyrvLtEo73S6N4cj0hh6uS0ikBpsTcDfxVadpxseBDbPDFzLfmglvld6I/H3+jkeRn+25o4hNWbJzdFfCnOwevtoxfsB52XJyz6r3dlGeexbX38lppVhk5IFXMFRd7zzl/5qF012lKV/rdcLN7TNMzfSkOz1tvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575285; c=relaxed/simple;
-	bh=A3cfx0pnB4RnY+pkmSHSWeWk2HezMRniCcUhtpqdOFI=;
+	s=arc-20240116; t=1705575316; c=relaxed/simple;
+	bh=zwsNY+zle39BfDrCOGr+2+vHjjrHSmOV3hEUM+2W89w=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=aN1G6rp7gWGpUDbFuDlUvgagWhHm1q1H0f/vrT+pj2WXdk1RbEAqqhvXGER3DMa3A46qexkOi92Z1EqCAUuA7B/BwDSHXoQvlpHcq5X6ukXGqfns/VvPm0Qjga61nCdCcq/aygzjMidW5skYre9Yh2xU2P+UCNY6UxRYPcg+mKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aG91Rawf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D8A1C433F1;
-	Thu, 18 Jan 2024 10:54:44 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=DkCZ5EIsT0ID05jANUoAYtZ/nGt9Cz6EKNUhTaUISuGdsuTBVkY9BueHQ/NK+Njw7o124DO1iEZ3Gk7+hmF+DcuJbR8Pudmmo3ieFD8QpechaA+j70aEDPPnWtIehAjLXKPoykdE89ywuTX05azAMraAmjoqHWBbEIVsCEDzoZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kI8W4RWr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74CBDC433C7;
+	Thu, 18 Jan 2024 10:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575285;
-	bh=A3cfx0pnB4RnY+pkmSHSWeWk2HezMRniCcUhtpqdOFI=;
+	s=korg; t=1705575315;
+	bh=zwsNY+zle39BfDrCOGr+2+vHjjrHSmOV3hEUM+2W89w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aG91Rawfbsfhek4BFmV+EETvFR7SrT2SP5iLCfpO7gSaQRVQZA+XKA9v1TlCqSrPZ
-	 k14S6vArmNjinAk3j7UPDDSGa5x0QJL7b0PlzP+eIHFmBrRdLGL+EtpVkSF1tu97tb
-	 s6cWU9muYrcqR/8JUn+afOV11jcy+SjD1focvq6U=
+	b=kI8W4RWr/PopQwhJ3m8MU534sgIc9oN/4kXtvPDzujWekkpq2n9cytqMaZbRI86QD
+	 +xEZDptrfrB2q9BPHLmtMvmYK3AHLff72eeQti7PCrpN6jVy9WaNIcZj5uaFOH5WNL
+	 zLofwsjZJlJNRynHfb0fp8Z+dto8f7D0qV6J12fU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Sun peng Li <sunpeng.li@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Ivan Lipski <ivlipski@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 060/150] drm/amd/display: Add monitor patch for specific eDP
-Date: Thu, 18 Jan 2024 11:48:02 +0100
-Message-ID: <20240118104322.764006328@linuxfoundation.org>
+Subject: [PATCH 6.6 061/150] drm/amdgpu: Add NULL checks for function pointers
+Date: Thu, 18 Jan 2024 11:48:03 +0100
+Message-ID: <20240118104322.803334673@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
 References: <20240118104320.029537060@linuxfoundation.org>
@@ -70,46 +68,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ivan Lipski <ivlipski@amd.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 3d71a8726e05a35beb9de394e86ce896d69e563f ]
+[ Upstream commit 81577503efb49f4ad76af22f9941d72900ef4aab ]
 
-[WHY]
-Some eDP panels's ext caps don't write initial value cause the value of
-dpcd_addr(0x317) is random.  It means that sometimes the eDP will
-clarify it is OLED, miniLED...etc cause the backlight control interface
-is incorrect.
+Check if function is implemented before making the call.
 
-[HOW]
-Add a new panel patch to remove sink ext caps(HDR,OLED...etc)
-
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Reviewed-by: Sun peng Li <sunpeng.li@amd.com>
-Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Ivan Lipski <ivlipski@amd.com>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/soc15.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-index 4b230933b28e..87a1000b8572 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
-@@ -63,6 +63,12 @@ static void apply_edid_quirks(struct edid *edid, struct dc_edid_caps *edid_caps)
- 		DRM_DEBUG_DRIVER("Disabling FAMS on monitor with panel id %X\n", panel_id);
- 		edid_caps->panel_patch.disable_fams = true;
- 		break;
-+	/* Workaround for some monitors that do not clear DPCD 0x317 if FreeSync is unsupported */
-+	case drm_edid_encode_panel_id('A', 'U', 'O', 0xA7AB):
-+	case drm_edid_encode_panel_id('A', 'U', 'O', 0xE69B):
-+		DRM_DEBUG_DRIVER("Clearing DPCD 0x317 on monitor with panel id %X\n", panel_id);
-+		edid_caps->panel_patch.remove_sink_ext_caps = true;
-+		break;
- 	default:
- 		return;
+diff --git a/drivers/gpu/drm/amd/amdgpu/soc15.c b/drivers/gpu/drm/amd/amdgpu/soc15.c
+index 9abfe4c28cea..3667f9a54841 100644
+--- a/drivers/gpu/drm/amd/amdgpu/soc15.c
++++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
+@@ -1422,9 +1422,11 @@ static void soc15_common_get_clockgating_state(void *handle, u64 *flags)
+ 	if (amdgpu_sriov_vf(adev))
+ 		*flags = 0;
+ 
+-	adev->nbio.funcs->get_clockgating_state(adev, flags);
++	if (adev->nbio.funcs && adev->nbio.funcs->get_clockgating_state)
++		adev->nbio.funcs->get_clockgating_state(adev, flags);
+ 
+-	adev->hdp.funcs->get_clock_gating_state(adev, flags);
++	if (adev->hdp.funcs && adev->hdp.funcs->get_clock_gating_state)
++		adev->hdp.funcs->get_clock_gating_state(adev, flags);
+ 
+ 	if (adev->ip_versions[MP0_HWIP][0] != IP_VERSION(13, 0, 2)) {
+ 
+@@ -1440,9 +1442,11 @@ static void soc15_common_get_clockgating_state(void *handle, u64 *flags)
  	}
+ 
+ 	/* AMD_CG_SUPPORT_ROM_MGCG */
+-	adev->smuio.funcs->get_clock_gating_state(adev, flags);
++	if (adev->smuio.funcs && adev->smuio.funcs->get_clock_gating_state)
++		adev->smuio.funcs->get_clock_gating_state(adev, flags);
+ 
+-	adev->df.funcs->get_clockgating_state(adev, flags);
++	if (adev->df.funcs && adev->df.funcs->get_clockgating_state)
++		adev->df.funcs->get_clockgating_state(adev, flags);
+ }
+ 
+ static int soc15_common_set_powergating_state(void *handle,
 -- 
 2.43.0
 
