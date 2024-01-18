@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-12100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47CB68317BE
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:00:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65A208316CD
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:50:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE0801F25938
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:00:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9924A1C20AB7
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:50:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C7D249E2;
-	Thu, 18 Jan 2024 11:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6435B23741;
+	Thu, 18 Jan 2024 10:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B7s2gdL2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MdTtGTl0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057412376D;
-	Thu, 18 Jan 2024 11:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2F723760;
+	Thu, 18 Jan 2024 10:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575607; cv=none; b=LQj6F0RcE4teu33ahHN5XpTQAwTXOTWxduPswuJQU3qeN8Ws+pgMNF7ud/nx1n6II0OVBveMNBB/8h2EBiEvV+VxJdK6cukVdV28IPXui2QcOVeYUP2QcCfmuB3FF5+Ws47WBsMWkDLMuM+OIt8tDrlCwF8GdnryWW40AagjJQo=
+	t=1705575013; cv=none; b=R9ObB6owm1stsudQXS/gMLZR8+esgPGKAXOFwZxAGmo5sNxedau4H7sQCvIV+t4oeLGHwoI9HzCwgQIJIQMGmkIylQOUA9YpBWKIScRMCu4K/SIXcfYt6keJt/LiLjB4UAsfDtEa/hNlVeHLvrVB2fhkUFWs1LYsUDQrcuBKhC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575607; c=relaxed/simple;
-	bh=doFIR4smwfV9exCE+kah6+rl1XKXBMTe8eOZbqHYqF0=;
+	s=arc-20240116; t=1705575013; c=relaxed/simple;
+	bh=tD0z/bAHXoiF1Plhr6mjT4xGN/dpkGVqsKFcmXCSe7Y=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=lHe3Qi5mchOQQpggDWVmzo5ti8oIFQUZEunroeev/BOAE8hHiHB6/kbbvKNJrzWOgYvb2D1FPM7e2LNCKFva2GEk4VgsYTsYzvaxeG6XDm8lSuYSuCEeG72K1NCwcIfC2Mml9ws9BmPRerIk9EmiKXTgxk0E9YIVXXedm9mSz1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B7s2gdL2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C3F2C43394;
-	Thu, 18 Jan 2024 11:00:06 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=j/K6r/BZ9ZmeMcen/XgfLnadcY8gbaAQhKDK982K3ZQxp9RTA4IJxm17RFhhD6b/JP1CX8+BTHlK3jkxm2pSX1U9LoV9V6POxSYUdk6cAsWbaw5mSd0pTfcTS0sy2kRT8JgCZHUpqKgMhdghBSdIqrKZrxNYib1hKINUewsfdik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MdTtGTl0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E56DC433F1;
+	Thu, 18 Jan 2024 10:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575606;
-	bh=doFIR4smwfV9exCE+kah6+rl1XKXBMTe8eOZbqHYqF0=;
+	s=korg; t=1705575012;
+	bh=tD0z/bAHXoiF1Plhr6mjT4xGN/dpkGVqsKFcmXCSe7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B7s2gdL29xLYwjCXLfMSbqfrwSgoXNWWoBagxlrglvgvE9OqQv/EnGfIYQjMVRVum
-	 PXG1QdP6SVwQ3E6FgveDeHSMNo0P1QfWWOJXsbecmp6SqlT49s33KlInVTsXwqaqCU
-	 US9bWXuskTcN9GT0Y8sTHzdC4VcxYqqMgBfXGt3g=
+	b=MdTtGTl0V0kRhlb6ZMZqlmjpbrimPmO5ArTT2NIqv5iZ3kTHdXulWk+fYqBxCf3vR
+	 BgdKU3vyVSzmKZmWWUYIHx7YdTsWfZKw/FOZUf49UFmi7cd7RinpzD+3hf52OlE0y4
+	 e9S6zJH0oGiPH2CoiHzGTkzCgEIzOm37MyEh03EU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 042/100] clk: rockchip: rk3568: Add PLL rate for 292.5MHz
-Date: Thu, 18 Jan 2024 11:48:50 +0100
-Message-ID: <20240118104312.739821201@linuxfoundation.org>
+	Eric Biggers <ebiggers@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.7 01/28] f2fs: explicitly null-terminate the xattr list
+Date: Thu, 18 Jan 2024 11:48:51 +0100
+Message-ID: <20240118104301.297099258@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
+References: <20240118104301.249503558@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Morgan <macromorgan@hotmail.com>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit 1af27671f62ce919f1fb76082ed81f71cb090989 ]
+commit e26b6d39270f5eab0087453d9b544189a38c8564 upstream.
 
-Add support for a PLL rate of 292.5MHz so that the Powkiddy RGB30 panel
-can run at a requested 60hz (59.96, close enough).
+When setting an xattr, explicitly null-terminate the xattr list.  This
+eliminates the fragile assumption that the unused xattr space is always
+zeroed.
 
-I have confirmed this rate fits with all the constraints
-listed in the TRM for the VPLL (as an integer PLL) in Part 1 "Chapter
-2 Clock & Reset Unit (CRU)."
-
-Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-Link: https://lore.kernel.org/r/20231018153357.343142-2-macroalpha82@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/rockchip/clk-rk3568.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/xattr.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/clk/rockchip/clk-rk3568.c b/drivers/clk/rockchip/clk-rk3568.c
-index 2f54f630c8b6..1ffb755feea4 100644
---- a/drivers/clk/rockchip/clk-rk3568.c
-+++ b/drivers/clk/rockchip/clk-rk3568.c
-@@ -72,6 +72,7 @@ static struct rockchip_pll_rate_table rk3568_pll_rates[] = {
- 	RK3036_PLL_RATE(408000000, 1, 68, 2, 2, 1, 0),
- 	RK3036_PLL_RATE(312000000, 1, 78, 6, 1, 1, 0),
- 	RK3036_PLL_RATE(297000000, 2, 99, 4, 1, 1, 0),
-+	RK3036_PLL_RATE(292500000, 1, 195, 4, 4, 1, 0),
- 	RK3036_PLL_RATE(241500000, 2, 161, 4, 2, 1, 0),
- 	RK3036_PLL_RATE(216000000, 1, 72, 4, 2, 1, 0),
- 	RK3036_PLL_RATE(200000000, 1, 100, 3, 4, 1, 0),
--- 
-2.43.0
-
+--- a/fs/f2fs/xattr.c
++++ b/fs/f2fs/xattr.c
+@@ -754,6 +754,12 @@ retry:
+ 		memcpy(pval, value, size);
+ 		last->e_value_size = cpu_to_le16(size);
+ 		new_hsize += newsize;
++		/*
++		 * Explicitly add the null terminator.  The unused xattr space
++		 * is supposed to always be zeroed, which would make this
++		 * unnecessary, but don't depend on that.
++		 */
++		*(u32 *)((u8 *)last + newsize) = 0;
+ 	}
+ 
+ 	error = write_all_xattrs(inode, new_hsize, base_addr, ipage);
 
 
 
