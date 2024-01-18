@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-12021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9C0B83175F
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2859C8316D6
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:50:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED44B1C21848
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D40021F26023
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFC222F0B;
-	Thu, 18 Jan 2024 10:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9014223760;
+	Thu, 18 Jan 2024 10:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKRhBOZW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWiJIxvT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8AF1774B;
-	Thu, 18 Jan 2024 10:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2E9B65C;
+	Thu, 18 Jan 2024 10:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575385; cv=none; b=MJ5SJfudNGInl3cJXv6Z0CVB7fQ9iCZYeVsNsQ3HK28hF2k+P6ZTCqSIV4vXWkFpMiQE6ELXg3n4CkCgSrXNrZCaRPW3+19OXCYfYXj//m8YY+N8zobP6eyKxGTXkW7QynO+o92KhPcSs8I4DRVJaU+5B2GHtPugTeZCZD1nzmU=
+	t=1705575032; cv=none; b=seezQIrFfX65rWQ5xiw1v13yw1/mzJlQXC0FkHUdsw9fSIBTtrEEu9a0IDWso+IyilfwKpIwec+7C5YB8/sRa3C/Y0SpAWz7myuf3yDGayK+47Uo3aytqPY2L4oEN0Cs1TXXCYQjZyyIIT5yL0Z3E09IzlG69jgVqZr6k3SFY1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575385; c=relaxed/simple;
-	bh=oy28UP+Q3PgOpVELYd61L030KmbDeyhK2QvqmvDj0fY=;
+	s=arc-20240116; t=1705575032; c=relaxed/simple;
+	bh=6oLFMEAuZ8KmEHGmUHlH7cCPOUB5FESx8R2aE2xZvAg=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=R3tSJl4e6DrYttj6tIKqyYZRqUy/x1fKoGoVkmVNsL247nZow6U0kjQSATFwL5THL5iSW/QoASmJpW9Dx7QtymrtC8kNZPeCzX1XfBYRYvzjrJW3g4Js0xfw8oQ1NbtQVSSSGeltWUZ9waM5/ZWePNT8kjGfU6C/l3DXNYpOxoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKRhBOZW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EACAC433F1;
-	Thu, 18 Jan 2024 10:56:24 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=Iaduwta2NDNMLTenN1i8qA9K8IifDZuakjMJfxYXM7AY/SXvz4if69v3ukW9UFYu1MewTmQm2RKHujxxMjV5td336qtNbRtvUGjN4Ojz00ZhpIuVDoEGWmROMwYFgSDSPV/+Qrpn976hGeIU6dJWspTTEKuSy2ph9Er/pv4ksfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWiJIxvT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F37AC433C7;
+	Thu, 18 Jan 2024 10:50:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575385;
-	bh=oy28UP+Q3PgOpVELYd61L030KmbDeyhK2QvqmvDj0fY=;
+	s=korg; t=1705575031;
+	bh=6oLFMEAuZ8KmEHGmUHlH7cCPOUB5FESx8R2aE2xZvAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IKRhBOZWOkXPIVrrbvgTqNd7+jb10eKBU+HSxb/l2/F9ST0U0vjJaGBVsElKAl3rq
-	 dnXPHvgfTmiPC1SeUXC2nSrI7aLxxUNhb+IQ02zyKtLzU3sNyYndOkOCM9MrYjynJi
-	 Ak5ibPuHqVKALqex8P2PSCzVw+j2FSFjwLyLacZg=
+	b=UWiJIxvTwH9oGC0ogh4cLIo8YbkvpgDpft9EkDgo5On5rbHRAmMtYrrI9wr3ZX273
+	 uD6l+Hb91F0CPDSnVaCfM/Ep2A4n6f+V21hGs2LNsQ0dOH/4StJImSecPtT2U6sxRg
+	 JNSSE1VJd+pMTiDm3I5Qkjh7Wo+pPpbRkB7ezgR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philip Yang <Philip.Yang@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 113/150] drm/amdkfd: svm range always mapped flag not working on APU
+	Dorian Cruveiller <doriancruveiller@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.7 05/28] ALSA: hda: Add driver properties for cs35l41 for Lenovo Legion Slim 7 Gen 8 serie
 Date: Thu, 18 Jan 2024 11:48:55 +0100
-Message-ID: <20240118104325.281313270@linuxfoundation.org>
+Message-ID: <20240118104301.421587013@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
+References: <20240118104301.249503558@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philip Yang <Philip.Yang@amd.com>
+From: Dorian Cruveiller <doriancruveiller@gmail.com>
 
-[ Upstream commit ebab8c3eb6a6515dc14cd93fc29dd287709da6d3 ]
+commit ba7053b4b4a4ddcf530fa2b897e697004715d086 upstream.
 
-On gfx943 APU there is no VRAM and page migration, queue CWSR area, svm
-range with always mapped flag, is not mapped to GPU correctly. This
-works fine if retry fault on CWSR area can be recovered, but could cause
-deadlock if there is another retry fault recover waiting for CWSR to
-finish.
+Add driver properties on 4 models of this laptop serie since they don't
+have _DSD in the ACPI table
 
-Fix this by mapping svm range with always mapped flag to GPU with ACCESS
-attribute if XNACK ON.
-
-There is side effect, because all GPUs have ACCESS attribute by default
-on new svm range with XNACK on, the CWSR area will be mapped to all GPUs
-after this change. This side effect will be fixed with Thunk change to
-set CWSR svm range with ACCESS_IN_PLACE attribute on the GPU that user
-queue is created.
-
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Dorian Cruveiller <doriancruveiller@gmail.com>
+Cc: <stable@vger.kernel.org> # v6.7
+Link: https://lore.kernel.org/r/20231230114312.22118-1-doriancruveiller@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ sound/pci/hda/cs35l41_hda_property.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index 63ce30ea6891..8e368e4659fd 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -1632,18 +1632,24 @@ static int svm_range_validate_and_map(struct mm_struct *mm,
- 			if (test_bit(gpuidx, prange->bitmap_access))
- 				bitmap_set(ctx->bitmap, gpuidx, 1);
- 		}
-+
-+		/*
-+		 * If prange is already mapped or with always mapped flag,
-+		 * update mapping on GPUs with ACCESS attribute
-+		 */
-+		if (bitmap_empty(ctx->bitmap, MAX_GPU_INSTANCE)) {
-+			if (prange->mapped_to_gpu ||
-+			    prange->flags & KFD_IOCTL_SVM_FLAG_GPU_ALWAYS_MAPPED)
-+				bitmap_copy(ctx->bitmap, prange->bitmap_access, MAX_GPU_INSTANCE);
-+		}
- 	} else {
- 		bitmap_or(ctx->bitmap, prange->bitmap_access,
- 			  prange->bitmap_aip, MAX_GPU_INSTANCE);
- 	}
+--- a/sound/pci/hda/cs35l41_hda_property.c
++++ b/sound/pci/hda/cs35l41_hda_property.c
+@@ -71,6 +71,10 @@ static const struct cs35l41_config cs35l
+ 	{ "10431F12", 2, INTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 1000, 4500, 24 },
+ 	{ "10431F1F", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, -1, 0, 0, 0, 0 },
+ 	{ "10431F62", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 1, 2, 0, 0, 0, 0 },
++	{ "17AA38B4", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
++	{ "17AA38B5", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
++	{ "17AA38B6", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
++	{ "17AA38B7", 2, EXTERNAL, { CS35L41_LEFT, CS35L41_RIGHT, 0, 0 }, 0, 1, -1, 0, 0, 0 },
+ 	{}
+ };
  
- 	if (bitmap_empty(ctx->bitmap, MAX_GPU_INSTANCE)) {
--		bitmap_copy(ctx->bitmap, prange->bitmap_access, MAX_GPU_INSTANCE);
--		if (!prange->mapped_to_gpu ||
--		    bitmap_empty(ctx->bitmap, MAX_GPU_INSTANCE)) {
--			r = 0;
--			goto free_ctx;
--		}
-+		r = 0;
-+		goto free_ctx;
- 	}
+@@ -379,6 +383,10 @@ static const struct cs35l41_prop_model c
+ 	{ "CSC3551", "10431F12", generic_dsd_config },
+ 	{ "CSC3551", "10431F1F", generic_dsd_config },
+ 	{ "CSC3551", "10431F62", generic_dsd_config },
++	{ "CSC3551", "17AA38B4", generic_dsd_config },
++	{ "CSC3551", "17AA38B5", generic_dsd_config },
++	{ "CSC3551", "17AA38B6", generic_dsd_config },
++	{ "CSC3551", "17AA38B7", generic_dsd_config },
+ 	{}
+ };
  
- 	if (prange->actual_loc && !prange->ttm_res) {
--- 
-2.43.0
-
 
 
 
