@@ -1,92 +1,115 @@
-Return-Path: <stable+bounces-12182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD97883193B
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 13:38:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB8F6831A5F
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 14:18:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AB7628330A
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:38:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA6911C22CA4
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 13:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A903241FB;
-	Thu, 18 Jan 2024 12:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E83B25546;
+	Thu, 18 Jan 2024 13:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="e+VtO6pX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UzbGJE68"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8E125101;
-	Thu, 18 Jan 2024 12:37:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC23F25116;
+	Thu, 18 Jan 2024 13:17:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705581471; cv=none; b=MJsKBB6zXvM1YTFhCuVijhPlwYpoKR/LQtB7UZ5jUsaMCLTkbdOOfma9wTHqALz3EhPXBjJA51pCBJjCWOjHftEIcA3dFpVu7ZDB4pkG0R7yhTAOddfPV2viNqupkYInrIRNZzGnSkcgvt5YF6J2/PAOV/zRxmH4yLcYkx+W0Vs=
+	t=1705583869; cv=none; b=h5wRfkhNE/8lT8CwXSeV2gpeB7n0gjuCRab6M9fc8C4aa/HoJ6BJwpl0Gv+xnGNMwGT+QOpbyb+s4BEBBRD5Y9ZVfjxE1CuIFjF0Uf1gtq1oJyIhA5JfRAyjCzJyiK8cqbbwoRtVLuZWjndaFgBcf+Ad7mGPJUj6ulnvLqsG32s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705581471; c=relaxed/simple;
-	bh=5YFQLtGOw9hoUhhBssqvlRRHGqh1xTlEvXtlZs5UWYw=;
-	h=From:DKIM-Signature:To:Cc:Subject:Date:Message-Id:MIME-Version:
-	 Content-Transfer-Encoding; b=uqzRWuxO8+OJ9tvAIWtwH25bK0n+/DjWkl+l6xR3XWFh65IK6kBIUWH/xXYh57kypV+vJuupmtZ8iJiIABBpymPp88KCoYnAZAJ47TbSVCPzvnfd12iPTzj6VHfvkA0aGn7u5r82SDY1e7dTxRggf6pc3aOpK+xSuhfDk8k4lrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=e+VtO6pX; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1705581467;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kZPE9ryEyU6uy8bBTyu7cAdOqK0HdSpKBA8+uyMu3OI=;
-	b=e+VtO6pX6tMF83Cj/ndwG8AVrAe8X6hPNKzES38olv4MrX2XzUJGQn2DStUV3H2r/ztxvc
-	chnaAxV6jVNBbHtbYigEFM4bL8xfUERfSjCo92V6XG9nKyU6qz+2JedP80GoUJlNbs0foN
-	5fwAyfRGInlDKB4yzvEu97SFhbJJ9zY=
-To: Ian Abbott <abbotti@mev.co.uk>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH] comedi: drivers: ni_tio: Fix arithmetic expression overflow
-Date: Thu, 18 Jan 2024 15:37:47 +0300
-Message-Id: <20240118123747.45795-1-arefev@swemel.ru>
+	s=arc-20240116; t=1705583869; c=relaxed/simple;
+	bh=g9i2go98VUUbiB+yc/sTccAnH2UaalOetc9Dl79sWhY=;
+	h=Received:DKIM-Signature:Content-Type:MIME-Version:
+	 Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:
+	 Cc:User-Agent:Message-ID:Date; b=Z1z0kpINkoQAv88Z1IOymdNVoGoHNeBNwQfgYLH3/WA1ayIORG2hIxIoGIKnb17Bv9UsbgQIugwBTs91qfRX55i30i54EP61r5OGcUCW7fb6Qbm+5/hb8t6SyN/6C8QZjoYMKCG0kPrWzOs98pn2/GBpMOooPzvcwfJ8obRYW9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UzbGJE68; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12687C43390;
+	Thu, 18 Jan 2024 13:17:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705583869;
+	bh=g9i2go98VUUbiB+yc/sTccAnH2UaalOetc9Dl79sWhY=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=UzbGJE68Ei7MsbP9A83mwKokqnkYIIzIyBHmTlmFwft3P58TiTVEPm5lkc76+M213
+	 hpJcGjQR2jkYFXOB8mNEN9T9UDXl9ZKzdwd3YQh98zHZBM420kNBtYFfDp1QnzczeI
+	 URT48WQLi50Nflno8jMo3ZhI+DI8zauCwWINXjeqj7btjIsj4UBQP8HuYJi9+yoKcs
+	 gR/3UyzHjcocTieIweh8pNQObowxtuXShJAtioy/6R+ufVbuZD0bGD7xoTwCs5T1IC
+	 1afF2D7/RTUyLe1iIqRAd3h5vxmrVnYZkHgdnUyvQRL72nCh65Yqx1ERc7b+7RFDQO
+	 cetWh8H65oDGQ==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH V6] wifi: brcmfmac: Fix use-after-free bug in
+ brcmf_cfg80211_detach
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240107072504.392713-1-arend.vanspriel@broadcom.com>
+References: <20240107072504.392713-1-arend.vanspriel@broadcom.com>
+To: Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc: linux-wireless@vger.kernel.org, Zheng Wang <zyytlz.wz@163.com>,
+ stable@vger.kernel.org, Arend van Spriel <arend.vanspriel@broadcom.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170558386628.2924528.18082567611022970252.kvalo@kernel.org>
+Date: Thu, 18 Jan 2024 13:17:47 +0000 (UTC)
 
-The value of an arithmetic expression period_ns * 1000 is subject
-to overflow due to a failure to cast operands to a larger data
-type before performing arithmetic
+Arend van Spriel <arend.vanspriel@broadcom.com> wrote:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> From: Zheng Wang <zyytlz.wz@163.com>
+> 
+> This is the candidate patch of CVE-2023-47233 :
+> https://nvd.nist.gov/vuln/detail/CVE-2023-47233
+> 
+> In brcm80211 driver,it starts with the following invoking chain
+> to start init a timeout worker:
+> 
+> ->brcmf_usb_probe
+>   ->brcmf_usb_probe_cb
+>     ->brcmf_attach
+>       ->brcmf_bus_started
+>         ->brcmf_cfg80211_attach
+>           ->wl_init_priv
+>             ->brcmf_init_escan
+>               ->INIT_WORK(&cfg->escan_timeout_work,
+> 		  brcmf_cfg80211_escan_timeout_worker);
+> 
+> If we disconnect the USB by hotplug, it will call
+> brcmf_usb_disconnect to make cleanup. The invoking chain is :
+> 
+> brcmf_usb_disconnect
+>   ->brcmf_usb_disconnect_cb
+>     ->brcmf_detach
+>       ->brcmf_cfg80211_detach
+>         ->kfree(cfg);
+> 
+> While the timeout woker may still be running. This will cause
+> a use-after-free bug on cfg in brcmf_cfg80211_escan_timeout_worker.
+> 
+> Fix it by deleting the timer and canceling the worker in
+> brcmf_cfg80211_detach.
+> 
+> Fixes: e756af5b30b0 ("brcmfmac: add e-scan support.")
+> Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+> Cc: stable@vger.kernel.org
+> [arend.vanspriel@broadcom.com: keep timer delete as is and cancel work just before free]
+> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-Fixes: 3e90b1c7ebe9 ("staging: comedi: ni_tio: tidy up ni_tio_set_clock_src() and helpers")
-Cc: <stable@vger.kernel.org> # v5.15+ 
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
----
- drivers/comedi/drivers/ni_tio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Patch applied to wireless-next.git, thanks.
 
-diff --git a/drivers/comedi/drivers/ni_tio.c b/drivers/comedi/drivers/ni_tio.c
-index da6826d77e60..acc914903c70 100644
---- a/drivers/comedi/drivers/ni_tio.c
-+++ b/drivers/comedi/drivers/ni_tio.c
-@@ -800,7 +800,7 @@ static int ni_tio_set_clock_src(struct ni_gpct *counter,
- 				GI_PRESCALE_X2(counter_dev->variant) |
- 				GI_PRESCALE_X8(counter_dev->variant), bits);
- 	}
--	counter->clock_period_ps = period_ns * 1000;
-+	counter->clock_period_ps = period_ns * 1000UL;
- 	ni_tio_set_sync_mode(counter);
- 	return 0;
- }
+0f7352557a35 wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach
+
 -- 
-2.25.1
+https://patchwork.kernel.org/project/linux-wireless/patch/20240107072504.392713-1-arend.vanspriel@broadcom.com/
+
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
 
