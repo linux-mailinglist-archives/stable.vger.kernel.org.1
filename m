@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-11878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38BAD831651
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:59:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EBD5831687
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:16:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67F1B1C24DC5
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 09:59:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20F2D1F24249
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DD3200BD;
-	Thu, 18 Jan 2024 09:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D55620339;
+	Thu, 18 Jan 2024 10:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRfOJFZa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BweA1x00"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418FE20B10;
-	Thu, 18 Jan 2024 09:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F41DD1DFC8
+	for <stable@vger.kernel.org>; Thu, 18 Jan 2024 10:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705571923; cv=none; b=qf/gkYcMLC3qRxicAs3go4/86AxjITJ0OGz6YHwbb8YPvBdu/GcnpAldGPatggNd02zIY0AHMVFOJzoA/m6JbBaseLU2GkP6Ih2fDnE+pG+8ZfC7k+cxXo9WrFLxNegBOeZ+kH2HUy4FaxZo5i+PfORV/k0VEw9Qjqe+guTkjw0=
+	t=1705572995; cv=none; b=alFfm514JjP2HZ54n6yK6QvG+2NuDWZI3LS6nqCdFKGUHWzRzZd7rSTjuXmlNvJ/Sp7yOlDVUv4gXBBvJ0PoA1dhGoTrku+RqRWD2cfug86YDEQcaXpCEWjKKnO8l0umKd2HHexXAG5IxM6vYLFAMgMAJvoN9e9ZN6lgqgBvBeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705571923; c=relaxed/simple;
-	bh=Ali6VhBWvgEa8c3vvAdCoQmaY9kgbCr8S1JGwhC2gHI=;
+	s=arc-20240116; t=1705572995; c=relaxed/simple;
+	bh=JMbYM00ktv6N3fMPqoMMx6o808pPwvTODFKljmaBcEU=;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To; b=WfsxXdulo4su0NIRdNdm4+Qd/Is8cY0RXOvB3Ie+ScZEVPaQ/nC4mDEs+FJclnUoSSCE9CsfPwkpgx3ELkiRW+8Kl10R7tf1BlTDTnYuSOA+XMBV6XsGho9Mk9IMm/67G6SBk0+2ZoX8nlR4BprGGnA0tcx5boHtlFcP3iyKyMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRfOJFZa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D343C43390;
-	Thu, 18 Jan 2024 09:58:42 +0000 (UTC)
+	 In-Reply-To; b=Bj05CLIGPm69H/+vlzVpPKU5Sea7GYdBnudWHbZ+wF5qJFW9sr4NuAm5HeKvNAZulhjfjkt5Y+0134gSmVkNYD/Vm9sJHW5H9xZK9lnd/JmDQ9VDjgcrB7IKMFouO4+RPJDAeEnhWLKfFh+CI2MDb2biTxUHqItu3M4T4l1mWuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BweA1x00; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24747C433F1;
+	Thu, 18 Jan 2024 10:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705571922;
-	bh=Ali6VhBWvgEa8c3vvAdCoQmaY9kgbCr8S1JGwhC2gHI=;
+	s=korg; t=1705572994;
+	bh=JMbYM00ktv6N3fMPqoMMx6o808pPwvTODFKljmaBcEU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rRfOJFZatbNWICyCPcGR/P1336TSJmzcwCYLmmzjkk6+zN/tqViE0r7xIJTLrJeGu
-	 EerVcl9D2CfleTpb2RbzsXCR0hbQPCQpNXYA7vmmgHzLDToiZymej5dGGev9YLXZgk
-	 UuEpOB70DglCsjOQnvTi5PxkrC2THbgVDscKjS3g=
-Date: Thu, 18 Jan 2024 10:58:40 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jiri Olsa <jolsa@kernel.org>
-Cc: stable@vger.kernel.org, bpf@vger.kernel.org,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Alan Maguire <alan.maguire@oracle.com>
-Subject: Re: [PATCHv2 stable 6.1 0/2] btf, scripts: Update pahole options
-Message-ID: <2024011832-unsoiled-sublime-9d16@gregkh>
-References: <20240117133520.733288-1-jolsa@kernel.org>
+	b=BweA1x002vL10adzB9oGUI6jXdiHopouRWLjoTW3rQ24TZPDD+LD5KZhl9pDBb9Xi
+	 x/Z2tbfG3ke4KNsm5Te20bUeiLL0NEtWkXPHA8/2VFNZjDMqlSOQec3C6rvqtL6SY0
+	 3i/2KLm3F+Se8BGJAVhUTR1peAthVc8r0n9GLm2Q=
+Date: Thu, 18 Jan 2024 11:16:29 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Sasha Levin <sashal@kernel.org>, kernelci-results@groups.io,
+	bot@kernelci.org, stable@vger.kernel.org,
+	alsa-devel@alsa-project.org
+Subject: Re: kernelci/kernelci.org bisection:
+ baseline-nfs.bootrr.deferred-probe-empty on at91sam9g20ek
+Message-ID: <2024011816-overstate-move-4df8@gregkh>
+References: <65a6ca18.170a0220.9f7f3.fa9a@mx.google.com>
+ <845b3053-d47b-4717-9665-79b120da133b@sirena.org.uk>
+ <2024011716-undocked-external-9eae@gregkh>
+ <82cda3d4-2e46-4690-8317-855ca80fd013@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,33 +60,33 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240117133520.733288-1-jolsa@kernel.org>
+In-Reply-To: <82cda3d4-2e46-4690-8317-855ca80fd013@sirena.org.uk>
 
-On Wed, Jan 17, 2024 at 02:35:18PM +0100, Jiri Olsa wrote:
-> hi,
-> we need to be able to use latest pahole options for 6.1 kernels,
-> updating the scripts/pahole-flags.sh with that (clean backports).
+On Wed, Jan 17, 2024 at 01:52:59PM +0000, Mark Brown wrote:
+> On Wed, Jan 17, 2024 at 06:55:09AM +0100, Greg Kroah-Hartman wrote:
 > 
-> thanks,
-> jirka
+> > This is also in the following kernel releases:
+> > 	4.19.240 5.4.191 5.10.113
+> > do they also have issues?  Does 6.1 and newer work properly?
 > 
-> v2 changes:
->   - added missing SOB
+> Current kernels work well, I've not had reports generated for the older
+> kernels but it's possible they may be forthcoming (the bisection does
+> tend to send issues slowly sometimes).
 > 
-> ---
-> Alan Maguire (1):
->       bpf: Add --skip_encoding_btf_inconsistent_proto, --btf_gen_optimized to pahole flags for v1.25
+> > And wow, this is old, nice to see it reported, but for a commit that
+> > landed in April, 2022?  Does that mean that no one uses this hardware?
 > 
-> Martin Rodriguez Reboredo (1):
->       btf, scripts: Exclude Rust CUs with pahole
+> I suspect it's just me, it's in my test lab.  I don't routinely test
+> stable (just let KernelCI use it to test stable).
 > 
->  init/Kconfig            | 2 +-
->  lib/Kconfig.debug       | 9 +++++++++
->  scripts/pahole-flags.sh | 7 +++++++
->  3 files changed, 17 insertions(+), 1 deletion(-)
+> > I'll be glad to revert, but should I also revert for 4.19.y and 5.4.y
+> > and 5.10.y?
 > 
+> I'd be tempted to, though it's possible it's some other related issue so
+> it might be safest to hold off until there's an explicit report.  Up to
+> you.
 
-All now queued up, thanks.
+I'll just drop it from 5.15.y for now, thanks!
 
 greg k-h
 
