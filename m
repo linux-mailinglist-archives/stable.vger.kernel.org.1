@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-12066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B344D83178E
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:58:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98C788317D7
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69D3B1F2145D
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:58:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CADB01C21175
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D268423754;
-	Thu, 18 Jan 2024 10:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E666C24A01;
+	Thu, 18 Jan 2024 11:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6+GZVCc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGttmUZy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92F521774B;
-	Thu, 18 Jan 2024 10:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4E0A23762;
+	Thu, 18 Jan 2024 11:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575510; cv=none; b=K5FHSVHpyn0Nr1syW5kLonnGEHsmNFK0TbN+frsLsLQJHBbvZnzHlGn9/rEz33oDDyYXbM3gS96xx3m93882AtU/8cFkInoxECBSUKyfZVLFdMZJHPmtOeuOujj4dHCMg6Ui9qfVyzyC4bOUIdRX/tUkpCYRx3myf7IomAzTtvM=
+	t=1705575649; cv=none; b=OM7HHTXiCZXOWEG/SpwP2BbFhABM4OpOLa1Si1mkFii8F+uVhbYhUbjghV+Nz/bLUMHrVcArm6pZvlTZLibzGxozagkRakkUzJ/rZx9lCpR5S81k3HUL+KorEZzix/+kLJDAR3XgtJ5Um8bgtBNe6wuRJV7EqvNS0N9HpzHHc6M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575510; c=relaxed/simple;
-	bh=bwLqZkpY6hyQ/i7gV77yA5FpnoAT1MkxstAZHCGW+tU=;
+	s=arc-20240116; t=1705575649; c=relaxed/simple;
+	bh=b8vRcPpfiSfwsrrRsEbPV7mFgXBnzAQGXt9KRYQRq7w=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=Ro7pdFMbz2iNZ7OiL9kT3vVItoz+DtJCWWhDpvhWYLaiswvg6k79sTAnEfisaffFFRP7MsIzu9ozDM2y4h6txNMQjOHWAAKhbX6lklRSF4nYQlTglszlzEkDeCUEbMvS/hkthrDB90cIggj3KGgTHVJDL3CFS7XHQpIL2DA4iQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6+GZVCc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16807C433F1;
-	Thu, 18 Jan 2024 10:58:29 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding; b=LRA41CNwp2OK8iZqVhhcAILooXx9WKRodzBiC0WKRpIwmPXABOa1kQ3tniPx6bwAR2Nzrge8oFGSVsSc8/sCCXwOVjfE07r7hBshVXYssAeiRqCFJJmk9bD5rxTLrRG1WvDLUOjy1Zgy0kw+IONwdCKXiwE8+BEYqMLRuh2tbLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGttmUZy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA8ACC433C7;
+	Thu, 18 Jan 2024 11:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575510;
-	bh=bwLqZkpY6hyQ/i7gV77yA5FpnoAT1MkxstAZHCGW+tU=;
+	s=korg; t=1705575649;
+	bh=b8vRcPpfiSfwsrrRsEbPV7mFgXBnzAQGXt9KRYQRq7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K6+GZVCcy4WCo+bFfMo3nBHHGAMeIqrV28TXI30Gv2ZTWVaS8VaLJswfrQOF8bKtP
-	 v2BWFeoClSXsqDLtMDPpv+DJIveHwHKIllyFaRWRPxT2hWELTKdlmBy/bmAsRovLOu
-	 u7FrBWYNte/suOnRK4IrPQJ0V68SOxnWq2aHcn8s=
+	b=TGttmUZywBsPIZDy4bLyiqP4TPUASbdfsovv/OzlsAp1Bo3lbWNcA341I1IgdKaqO
+	 dUj97JicJt6ARIqh9X5G+1xUFXRupTm7cYdEtz8OKnmFglKaHVPlNkvgWEaGGFMHOm
+	 hU+wBlEQokrfH+fJCGBVUHwNUOhhI6ry+ls1+kbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddh Raman Pant <code@siddh.me>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Suman Ghosh <sumang@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	=?UTF-8?q?Jos=C3=A9=20Pekkarinen?= <jose.pekkarinen@foxhound.fi>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 122/150] nfc: Do not send datagram if socket state isnt LLCP_BOUND
+Subject: [PATCH 6.1 056/100] Input: psmouse - enable Synaptics InterTouch for ThinkPad L14 G1
 Date: Thu, 18 Jan 2024 11:49:04 +0100
-Message-ID: <20240118104325.707184004@linuxfoundation.org>
+Message-ID: <20240118104313.350260450@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddh Raman Pant <code@siddh.me>
+From: José Pekkarinen <jose.pekkarinen@foxhound.fi>
 
-[ Upstream commit 6ec0d7527c4287369b52df3bcefd21a0c4fb2b7c ]
+[ Upstream commit c1f342f35f820b33390571293498c3e2e9bc77ec ]
 
-As we know we cannot send the datagram (state can be set to LLCP_CLOSED
-by nfc_llcp_socket_release()), there is no need to proceed further.
+Observed on dmesg of my laptop I see the following
+output:
 
-Thus, bail out early from llcp_sock_sendmsg().
+[   19.898700] psmouse serio1: synaptics: queried max coordinates: x [..5678], y [..4694]
+[   19.936057] psmouse serio1: synaptics: queried min coordinates: x [1266..], y [1162..]
+[   19.936076] psmouse serio1: synaptics: Your touchpad (PNP: LEN0411 PNP0f13) says it can support a different bus. If i2c-hid and hid-rmi are not used, you might want to try setting psmouse.synaptics_intertouch to 1 and report this to linux-input@vger.kernel.org.
+[   20.008901] psmouse serio1: synaptics: Touchpad model: 1, fw: 10.32, id: 0x1e2a1, caps: 0xf014a3/0x940300/0x12e800/0x500000, board id: 3471, fw id: 2909640
+[   20.008925] psmouse serio1: synaptics: serio: Synaptics pass-through port at isa0060/serio1/input0
+[   20.053344] input: SynPS/2 Synaptics TouchPad as /devices/platform/i8042/serio1/input/input7
+[   20.397608] mousedev: PS/2 mouse device common for all mice
 
-Signed-off-by: Siddh Raman Pant <code@siddh.me>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Suman Ghosh <sumang@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This patch will add its pnp id to the smbus list to
+produce the setup of intertouch for the device.
+
+Signed-off-by: José Pekkarinen <jose.pekkarinen@foxhound.fi>
+Link: https://lore.kernel.org/r/20231114063607.71772-1-jose.pekkarinen@foxhound.fi
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/llcp_sock.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/input/mouse/synaptics.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/nfc/llcp_sock.c b/net/nfc/llcp_sock.c
-index 645677f84dba..819157bbb5a2 100644
---- a/net/nfc/llcp_sock.c
-+++ b/net/nfc/llcp_sock.c
-@@ -796,6 +796,11 @@ static int llcp_sock_sendmsg(struct socket *sock, struct msghdr *msg,
- 	}
- 
- 	if (sk->sk_type == SOCK_DGRAM) {
-+		if (sk->sk_state != LLCP_BOUND) {
-+			release_sock(sk);
-+			return -ENOTCONN;
-+		}
-+
- 		DECLARE_SOCKADDR(struct sockaddr_nfc_llcp *, addr,
- 				 msg->msg_name);
- 
+diff --git a/drivers/input/mouse/synaptics.c b/drivers/input/mouse/synaptics.c
+index e43e93ac2798..b6749af46262 100644
+--- a/drivers/input/mouse/synaptics.c
++++ b/drivers/input/mouse/synaptics.c
+@@ -183,6 +183,7 @@ static const char * const smbus_pnp_ids[] = {
+ 	"LEN009b", /* T580 */
+ 	"LEN0402", /* X1 Extreme Gen 2 / P1 Gen 2 */
+ 	"LEN040f", /* P1 Gen 3 */
++	"LEN0411", /* L14 Gen 1 */
+ 	"LEN200f", /* T450s */
+ 	"LEN2044", /* L470  */
+ 	"LEN2054", /* E480 */
 -- 
 2.43.0
 
