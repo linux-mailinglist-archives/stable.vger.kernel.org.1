@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-11904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F988316E0
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:51:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15FCA831806
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:03:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89FD71C2238E
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:51:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFAF41F21219
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:03:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2512A23766;
-	Thu, 18 Jan 2024 10:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA9A2376A;
+	Thu, 18 Jan 2024 11:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nZCRoKg+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XI9M5v3v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80AEB65C;
-	Thu, 18 Jan 2024 10:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAAD920B1C;
+	Thu, 18 Jan 2024 11:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575059; cv=none; b=GwTWFGQ8BbmgYX0ViY8nO+jmFeU5osSXVePAlUtAOYkhfB089Orj7JjwDOiHnaCbD4yBgyHjpNRoziCSvq5OdHNSGLdGpaWTJjJ307Sj48CciFl0Cp6RB9UQcL9eMESel3j8lTqYcQ1vQHQnZ7/phXiCPVeEuxl0clsDUjVm3xo=
+	t=1705575770; cv=none; b=ArrlidaGGzs2jzTzOmQtXn7G6GPmB4Qeue32jfAI+bTkhJy0+T/KFzN5zKy+txNSAkh9lNgN4l9YbHl99Wr3lTwzB/hCbve//ma82G1p6Ztqk61h6db59WwWs1sxA+cNJDR+Ov4Ruu9FF49NvzTlWWhZZXa8AG3Od9H9cdr8Vgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575059; c=relaxed/simple;
-	bh=GDAuswjR/OYJya90u3mMJdOirAqKRL3cZh3jHSaiL3M=;
+	s=arc-20240116; t=1705575770; c=relaxed/simple;
+	bh=8eOaWwCPJ8VAvmb9nXjr1sxY+vSC4r6olsI4ziHaqac=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=IgLNCMeuM9DtCQeiCBpeiuGjHIb4qFEz8fBZvjkPKFIYvgnXmN55Lc0HQB4Oqgn3MGZsrO/6W3uliPRQr3WwaOqvymFjljswzbFksFCslSl615jQyv90F5esGyP8OalLpcC0L45ghHTpWFJcv4/qtkVnQrKJFhvyK8FEl/I6xCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nZCRoKg+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25738C433C7;
-	Thu, 18 Jan 2024 10:50:59 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=fhGlWJUyOQYR3uXHgp+WGtpxkUZanyJre4BgIMaNNgfz73QzaRg4sUEEbNQO7BTJJlKHfWd6jWf8rTvPr8wSkTc+FcLryvXZi9AC3fT5HNXNSXV7p2kNKnEBbnWF3BXj1QFkmpluY6yVDYF1zlVDoQKNwgLxGxUBbVqvEkLIhKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XI9M5v3v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD89BC433F1;
+	Thu, 18 Jan 2024 11:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575059;
-	bh=GDAuswjR/OYJya90u3mMJdOirAqKRL3cZh3jHSaiL3M=;
+	s=korg; t=1705575770;
+	bh=8eOaWwCPJ8VAvmb9nXjr1sxY+vSC4r6olsI4ziHaqac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nZCRoKg+ZlFXnZgIfDiWf4ERSMWXQNvzu+30yvdYaS7D+DR1HMYq6IOedOxpQvsZ8
-	 4C0Jh7DKQn2BfppmA/ajYOj+fFpnluhfG+oYZoRH6kk+SNLDeFz5fBFoQJfFGeZyDk
-	 fIrhGWW6ZQNJsD891qB0SsexW0X1YvyLHrIIOtIM=
+	b=XI9M5v3vHshRZ00LWnk5+c+NwR2oDuYFk8I2IPMDbkUL6AIZqWWBAXphWVOK4DKFF
+	 yb3kz5LurVaLldPmX0L52QbWCSTLA/kDtv31kqgQS+VSz4fmpBFAYN36dr/jfg74b2
+	 lA/1GrKMp79nmWcVhVdj92f42bx6N/C6V46/Gipw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Llamas <cmllamas@google.com>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Elliot Berman <quic_eberman@quicinc.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Will Deacon <will@kernel.org>,
-	John Stultz <jstultz@google.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Tom Rix <trix@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.7 26/28] scripts/decode_stacktrace.sh: optionally use LLVM utilities
+	Hans de Goede <hdegoede@redhat.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 068/100] ASoC: Intel: bytcr_rt5640: Add new swapped-speakers quirk
 Date: Thu, 18 Jan 2024 11:49:16 +0100
-Message-ID: <20240118104302.116482720@linuxfoundation.org>
+Message-ID: <20240118104313.910850953@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
-References: <20240118104301.249503558@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,102 +64,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit efbd6398353315b7018e6943e41fee9ec35e875f upstream.
+[ Upstream commit b1b6131bca35a55a69fadc39d51577968fa2ee97 ]
 
-GNU's addr2line can have problems parsing a vmlinux built with LLVM,
-particularly when LTO was used.  In order to decode the traces correctly
-this patch adds the ability to switch to LLVM's utilities readelf and
-addr2line.  The same approach is followed by Will in [1].
+Some BYTCR x86 tablets with a rt5640 codec have the left and right channels
+of their speakers swapped.
 
-Before:
-  $ scripts/decode_stacktrace.sh vmlinux < kernel.log
-  [17716.240635] Call trace:
-  [17716.240646] skb_cow_data (??:?)
-  [17716.240654] esp6_input (ld-temp.o:?)
-  [17716.240666] xfrm_input (ld-temp.o:?)
-  [17716.240674] xfrm6_rcv (??:?)
-  [...]
+Add a new BYT_RT5640_SWAPPED_SPEAKERS quirk for this which sets
+cfg-spk:swapped in the components string to let userspace know
+about the swapping so that the UCM profile can configure the mixer
+to correct this.
 
-After:
-  $ LLVM=1 scripts/decode_stacktrace.sh vmlinux < kernel.log
-  [17716.240635] Call trace:
-  [17716.240646] skb_cow_data (include/linux/skbuff.h:2172 net/core/skbuff.c:4503)
-  [17716.240654] esp6_input (net/ipv6/esp6.c:977)
-  [17716.240666] xfrm_input (net/xfrm/xfrm_input.c:659)
-  [17716.240674] xfrm6_rcv (net/ipv6/xfrm6_input.c:172)
-  [...]
+Enable this new quirk on the Medion Lifetab S10346 which has its
+speakers swapped.
 
-Note that one could set CROSS_COMPILE=llvm- instead to hack around this
-issue.  However, doing so can break the decodecode routine as it will
-force the selection of other LLVM utilities down the line e.g.  llvm-as.
-
-[1] https://lore.kernel.org/all/20230914131225.13415-3-will@kernel.org/
-
-Link: https://lkml.kernel.org/r/20230929034836.403735-1-cmllamas@google.com
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
-Reviewed-by: Elliot Berman <quic_eberman@quicinc.com>
-Tested-by: Justin Stitt <justinstitt@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: John Stultz <jstultz@google.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Tom Rix <trix@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://msgid.link/r/20231217213221.49424-2-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/decode_stacktrace.sh |   19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ sound/soc/intel/boards/bytcr_rt5640.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
---- a/scripts/decode_stacktrace.sh
-+++ b/scripts/decode_stacktrace.sh
-@@ -16,6 +16,21 @@ elif type c++filt >/dev/null 2>&1 ; then
- 	cppfilt_opts=-i
- fi
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index b63c16c67898..797d0a48d606 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -83,6 +83,7 @@ enum {
+ #define BYT_RT5640_HSMIC2_ON_IN1	BIT(27)
+ #define BYT_RT5640_JD_HP_ELITEP_1000G2	BIT(28)
+ #define BYT_RT5640_USE_AMCR0F28		BIT(29)
++#define BYT_RT5640_SWAPPED_SPEAKERS	BIT(30)
  
-+UTIL_SUFFIX=
-+if [[ -z ${LLVM:-} ]]; then
-+	UTIL_PREFIX=${CROSS_COMPILE:-}
-+else
-+	UTIL_PREFIX=llvm-
-+	if [[ ${LLVM} == */ ]]; then
-+		UTIL_PREFIX=${LLVM}${UTIL_PREFIX}
-+	elif [[ ${LLVM} == -* ]]; then
-+		UTIL_SUFFIX=${LLVM}
-+	fi
-+fi
-+
-+READELF=${UTIL_PREFIX}readelf${UTIL_SUFFIX}
-+ADDR2LINE=${UTIL_PREFIX}addr2line${UTIL_SUFFIX}
-+
- if [[ $1 == "-r" ]] ; then
- 	vmlinux=""
- 	basepath="auto"
-@@ -75,7 +90,7 @@ find_module() {
+ #define BYTCR_INPUT_DEFAULTS				\
+ 	(BYT_RT5640_IN3_MAP |				\
+@@ -157,6 +158,8 @@ static void log_quirks(struct device *dev)
+ 		dev_info(dev, "quirk MONO_SPEAKER enabled\n");
+ 	if (byt_rt5640_quirk & BYT_RT5640_NO_SPEAKERS)
+ 		dev_info(dev, "quirk NO_SPEAKERS enabled\n");
++	if (byt_rt5640_quirk & BYT_RT5640_SWAPPED_SPEAKERS)
++		dev_info(dev, "quirk SWAPPED_SPEAKERS enabled\n");
+ 	if (byt_rt5640_quirk & BYT_RT5640_LINEOUT)
+ 		dev_info(dev, "quirk LINEOUT enabled\n");
+ 	if (byt_rt5640_quirk & BYT_RT5640_LINEOUT_AS_HP2)
+@@ -893,6 +896,7 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 			DMI_MATCH(DMI_BIOS_DATE, "10/22/2015"),
+ 		},
+ 		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
++					BYT_RT5640_SWAPPED_SPEAKERS |
+ 					BYT_RT5640_SSP0_AIF1 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
+@@ -1621,11 +1625,11 @@ static int snd_byt_rt5640_mc_probe(struct platform_device *pdev)
+ 	const char *platform_name;
+ 	struct acpi_device *adev;
+ 	struct device *codec_dev;
++	const char *cfg_spk;
+ 	bool sof_parent;
+ 	int ret_val = 0;
+ 	int dai_index = 0;
+-	int i, cfg_spk;
+-	int aif;
++	int i, aif;
  
- 	if [[ "$modpath" != "" ]] ; then
- 		for fn in $(find "$modpath" -name "${module//_/[-_]}.ko*") ; do
--			if readelf -WS "$fn" | grep -qwF .debug_line ; then
-+			if ${READELF} -WS "$fn" | grep -qwF .debug_line ; then
- 				echo $fn
- 				return
- 			fi
-@@ -169,7 +184,7 @@ parse_symbol() {
- 	if [[ $aarray_support == true && "${cache[$module,$address]+isset}" == "isset" ]]; then
- 		local code=${cache[$module,$address]}
- 	else
--		local code=$(${CROSS_COMPILE}addr2line -i -e "$objfile" "$address" 2>/dev/null)
-+		local code=$(${ADDR2LINE} -i -e "$objfile" "$address" 2>/dev/null)
- 		if [[ $aarray_support == true ]]; then
- 			cache[$module,$address]=$code
- 		fi
+ 	is_bytcr = false;
+ 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+@@ -1785,13 +1789,16 @@ static int snd_byt_rt5640_mc_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	if (byt_rt5640_quirk & BYT_RT5640_NO_SPEAKERS) {
+-		cfg_spk = 0;
++		cfg_spk = "0";
+ 		spk_type = "none";
+ 	} else if (byt_rt5640_quirk & BYT_RT5640_MONO_SPEAKER) {
+-		cfg_spk = 1;
++		cfg_spk = "1";
+ 		spk_type = "mono";
++	} else if (byt_rt5640_quirk & BYT_RT5640_SWAPPED_SPEAKERS) {
++		cfg_spk = "swapped";
++		spk_type = "swapped";
+ 	} else {
+-		cfg_spk = 2;
++		cfg_spk = "2";
+ 		spk_type = "stereo";
+ 	}
+ 
+@@ -1806,7 +1813,7 @@ static int snd_byt_rt5640_mc_probe(struct platform_device *pdev)
+ 		headset2_string = " cfg-hs2:in1";
+ 
+ 	snprintf(byt_rt5640_components, sizeof(byt_rt5640_components),
+-		 "cfg-spk:%d cfg-mic:%s aif:%d%s%s", cfg_spk,
++		 "cfg-spk:%s cfg-mic:%s aif:%d%s%s", cfg_spk,
+ 		 map_name[BYT_RT5640_MAP(byt_rt5640_quirk)], aif,
+ 		 lineout_string, headset2_string);
+ 	byt_rt5640_card.components = byt_rt5640_components;
+-- 
+2.43.0
+
 
 
 
