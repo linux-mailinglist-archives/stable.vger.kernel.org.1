@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-12011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBE9A831755
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AAC28317E1
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DCFC1F22803
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0397E28AF7A
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21DC123754;
-	Thu, 18 Jan 2024 10:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29BA24B3D;
+	Thu, 18 Jan 2024 11:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUQ3HBqG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nE89q4Vq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67D41774B;
-	Thu, 18 Jan 2024 10:55:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70E9F22F0F;
+	Thu, 18 Jan 2024 11:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575357; cv=none; b=QhX1xemhak87xk8e6hUVQ7DpygohsmXlwmzk11D58xVh4VOsN/TQsNLXYbmnjWp5uDneE4PGbodSxtJGlPRX0ZyhFFcJnXW2krSHiYkZ7qCTEJVI68oaibSvTj0MgE4i1EAN6Ltd2khiMj14TEBzSJjSvoBkZ/79S1x+NnsJ0Uc=
+	t=1705575679; cv=none; b=GRPxv9pjOSIo68+e2pxEJFpMukpf0t5aGNugBKLvim85faNW4ck7HsubvbGlqDTRXO+0S9gv5vmB2WR5Bf/j6i/5VWLLLmHJLqc85h04ByLHjFsb1JJaKJ+1r1PzdK2GW2eEwF3LLnRX6iVxBcnDIkyuVhzhDSTlk7jCrPXs+0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575357; c=relaxed/simple;
-	bh=UTvOIYlG305LorknjCX84HniwDVYdfliigTvCS81uyY=;
+	s=arc-20240116; t=1705575679; c=relaxed/simple;
+	bh=eP+U79DrjpwWWmvrqzuzs87H9FJ06irBTGvXj+UxJw8=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding; b=uT5frW/KCM2E/fDXLOBCbIxGtZ9GZ5l+yxNnyUJscMOwrT+0mDVXbv2utaGgbpKmiPNIgx0ckYQxxSpaW9+D1j+BZ1+zg9udoVIWt68d5ajeeSBf8W45xV9PUsgTNdm470LPIEDb2gzyFsMJKdfDhrsnCUeEQIzryUNFiaW/YX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUQ3HBqG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ADFDC433C7;
-	Thu, 18 Jan 2024 10:55:57 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=ObcEvs+EWKoi/WxeRwqzDGSNlJCxLViPWBWTTLPtvsUUMWeFEhE+3caIafaJ3FM7O/3glCo0lTzQWBugUsuUMeJAH6OnXtu6PnN7qLnWuD7vCtFNfVziUTXBnjAwFgwzYQTXJ3vssQaMaN7BKpwjF4R5dGXxn/3eJ8I/IQTmNy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nE89q4Vq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7AF4C433F1;
+	Thu, 18 Jan 2024 11:01:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575357;
-	bh=UTvOIYlG305LorknjCX84HniwDVYdfliigTvCS81uyY=;
+	s=korg; t=1705575679;
+	bh=eP+U79DrjpwWWmvrqzuzs87H9FJ06irBTGvXj+UxJw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bUQ3HBqGY34AhRLz3ac1ISwPdTmyLRk7omm8cL3B4RdNgdurH/bfZHvmXEAeSbxfx
-	 q5fs/Bg6LF7mye8PEjdFtnXHjDNaN9EEMAIey8TFsMFvlkkv1FldmUF2Q2BykHE/Fp
-	 V62CkXf8sXuEc9B7koh1nc4tqdrtUmUF9wyRGk6k=
+	b=nE89q4VqJnzgdItWLk/ID7Es8x1g1RSvU7xYVfd45IIwTYuU+kwYIFsRVJClVEpUJ
+	 pWds30SJGuMOlziu52Zvrd/pPnwK1ZccmKA+Hw/+7vIdAMaQD4Bdt8t+AccqygfU5V
+	 1VvLpJS81HgKz+MPQFwwpWSqQ+qMF650brdFPoH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Xiang Yang <xiangyang3@huawei.com>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 104/150] platform/x86/amd/pmc: Move keyboard wakeup disablement detection to pmc-quirks
+Subject: [PATCH 6.1 038/100] drm/exynos: fix a potential error pointer dereference
 Date: Thu, 18 Jan 2024 11:48:46 +0100
-Message-ID: <20240118104324.869171863@linuxfoundation.org>
+Message-ID: <20240118104312.571487242@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Xiang Yang <xiangyang3@huawei.com>
 
-[ Upstream commit b614a4bd73efeddc2b20d9e6deb6c2710373802b ]
+[ Upstream commit 73bf1c9ae6c054c53b8e84452c5e46f86dd28246 ]
 
-Other platforms may need to disable keyboard wakeup besides Cezanne,
-so move the detection into amd_pmc_quirks_init() where it may be applied
-to multiple platforms.
+Smatch reports the warning below:
+drivers/gpu/drm/exynos/exynos_hdmi.c:1864 hdmi_bind()
+error: 'crtc' dereferencing possible ERR_PTR()
 
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20231212045006.97581-4-mario.limonciello@amd.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+The return value of exynos_drm_crtc_get_by_type maybe ERR_PTR(-ENODEV),
+which can not be used directly. Fix this by checking the return value
+before using it.
+
+Signed-off-by: Xiang Yang <xiangyang3@huawei.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmc/pmc-quirks.c | 3 +++
- drivers/platform/x86/amd/pmc/pmc.c        | 2 +-
- drivers/platform/x86/amd/pmc/pmc.h        | 1 +
- 3 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/exynos/exynos_hdmi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-index 6bbffb081053..c32046dfa960 100644
---- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
-+++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
-@@ -235,6 +235,9 @@ void amd_pmc_quirks_init(struct amd_pmc_dev *dev)
- {
- 	const struct dmi_system_id *dmi_id;
+diff --git a/drivers/gpu/drm/exynos/exynos_hdmi.c b/drivers/gpu/drm/exynos/exynos_hdmi.c
+index b7c11bdce2c8..1a7194a653ae 100644
+--- a/drivers/gpu/drm/exynos/exynos_hdmi.c
++++ b/drivers/gpu/drm/exynos/exynos_hdmi.c
+@@ -1861,6 +1861,8 @@ static int hdmi_bind(struct device *dev, struct device *master, void *data)
+ 		return ret;
  
-+	if (dev->cpu_id == AMD_CPU_ID_CZN)
-+		dev->disable_8042_wakeup = true;
-+
- 	dmi_id = dmi_first_match(fwbug_list);
- 	if (!dmi_id)
- 		return;
-diff --git a/drivers/platform/x86/amd/pmc/pmc.c b/drivers/platform/x86/amd/pmc/pmc.c
-index f28bee6854f4..96caf2221d87 100644
---- a/drivers/platform/x86/amd/pmc/pmc.c
-+++ b/drivers/platform/x86/amd/pmc/pmc.c
-@@ -878,7 +878,7 @@ static int amd_pmc_suspend_handler(struct device *dev)
- {
- 	struct amd_pmc_dev *pdev = dev_get_drvdata(dev);
+ 	crtc = exynos_drm_crtc_get_by_type(drm_dev, EXYNOS_DISPLAY_TYPE_HDMI);
++	if (IS_ERR(crtc))
++		return PTR_ERR(crtc);
+ 	crtc->pipe_clk = &hdata->phy_clk;
  
--	if (pdev->cpu_id == AMD_CPU_ID_CZN && !disable_workarounds) {
-+	if (pdev->disable_8042_wakeup && !disable_workarounds) {
- 		int rc = amd_pmc_wa_irq1(pdev);
- 
- 		if (rc) {
-diff --git a/drivers/platform/x86/amd/pmc/pmc.h b/drivers/platform/x86/amd/pmc/pmc.h
-index a85c235247d3..b4794f118739 100644
---- a/drivers/platform/x86/amd/pmc/pmc.h
-+++ b/drivers/platform/x86/amd/pmc/pmc.h
-@@ -36,6 +36,7 @@ struct amd_pmc_dev {
- 	struct mutex lock; /* generic mutex lock */
- 	struct dentry *dbgfs_dir;
- 	struct quirk_entry *quirks;
-+	bool disable_8042_wakeup;
- };
- 
- void amd_pmc_process_restore_quirks(struct amd_pmc_dev *dev);
+ 	ret = hdmi_create_connector(encoder);
 -- 
 2.43.0
 
