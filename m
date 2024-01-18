@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-11989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18A7F83173E
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:54:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4587831794
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:58:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE00E1F26C8B
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:54:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 657FB1F2145D
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:58:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE2D323741;
-	Thu, 18 Jan 2024 10:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43EFF22F06;
+	Thu, 18 Jan 2024 10:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jjrgpiiD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+3VACd1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2311B96D;
-	Thu, 18 Jan 2024 10:54:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0108C22F0F;
+	Thu, 18 Jan 2024 10:58:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575296; cv=none; b=VLTXbH8x94HFwepRVtYcXDLvm0etCqz+a0g0/W+9u8uLB/L+VVij589Ui2ouOm8wU5bjfp8wNfEv8Od/sIIdk7lcNGzGOsjt3UMcC/QrPyYg2M7zRI160hip/A2eruRQNSElPNlcAHfDS6LBS4STpmLJUxVPDL8DRlkmH0zFImg=
+	t=1705575530; cv=none; b=YUZWvMCC+/I1DC8JNLfQPHWtWjKpFHkhCdut3szwWkNMaJ0bgNOcMRM0iXUQTWDXuNpajxWHWVVrt3BIMUlR1E9Om4JO0XwHjbU52COE/qHwVtjTHfkhpLVCh8JjmYZTZrtlaWmQz8DtrU4MgCNKAz2/lfa/cxLoqA1ukiF1mE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575296; c=relaxed/simple;
-	bh=d0IvE5PS3GnqVomaDW8D0lqQckBjSy+WJtwKNMTO0AY=;
+	s=arc-20240116; t=1705575530; c=relaxed/simple;
+	bh=P1yAgonovg0DCJhdfUTlNpH33x9qz+nY2+FCDHHsMck=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=gn8l1EvZMRIpQG87Pl0VkaWGI824KFkXREaUSer34jjvP2mMOmq3N/Wf4FoEey7jt2O2JRe6XplBWeJ4indX6zylBHpfHoMbagJDezt2Fh/g3GfSXoCXp46FlrlO49cpae2/Svp2GWsn1rZIjWAiQQBOQlRfXrJ8tsUsQV+ecUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jjrgpiiD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30517C433C7;
-	Thu, 18 Jan 2024 10:54:56 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=dVenEl0GHYFQx8Z69bgxZ/i0C+Gs8N+FZ28/10H9kR93YidKAXgxxZNJ/j5QjOHJlQN0bpLQetQZSC3YmsfvUZxhLUFAqQfuAmG1m+LynBjZV39HwS4+P7Zuf0D0ucdgU1icSecy4Z5B4/7by4s+WIpYihLqATSp5E3hSvZZQtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+3VACd1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C27C433F1;
+	Thu, 18 Jan 2024 10:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575296;
-	bh=d0IvE5PS3GnqVomaDW8D0lqQckBjSy+WJtwKNMTO0AY=;
+	s=korg; t=1705575529;
+	bh=P1yAgonovg0DCJhdfUTlNpH33x9qz+nY2+FCDHHsMck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jjrgpiiDtmaH6p9af7e/7QEKi6Qbfs2iQRRpH7dX+ZgXLSfqZhTGGq3Y/CcD6+nxY
-	 PJHG2MJLxZK3sdXm3uS2Y1e3Ys9+ZKHLXib4ds075P1oiqSFqKS5q2WBtxVuEBxmJs
-	 V1rtK536q7IUHRBAVXZmxv8958y86ne5CCu2QtfY=
+	b=t+3VACd1MLSqxYiKgS+jQdauv1ue5n5NuCjv5ifKZPZJNbspnOGAo7ZulhiYWZODA
+	 ge5NkNAQgaLAwM/VNl8qkMYiSRtf4q4oM+E1BSdy64x4sPIAkuY+H7j6XutBUM9gBz
+	 ccfEsUxPI/zqdxPNbZuHgX4DDfbLHY3noK3nvnCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Yanteng Si <siyanteng@loongson.cn>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jens Axboe <axboe@kernel.dk>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 081/150] stmmac: dwmac-loongson: drop useless check for compatible fallback
+Subject: [PATCH 6.1 015/100] nvme-core: check for too small lba shift
 Date: Thu, 18 Jan 2024 11:48:23 +0100
-Message-ID: <20240118104323.707606170@linuxfoundation.org>
+Message-ID: <20240118104311.560509254@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,46 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 31fea092c6f9f8fb2c40a08137907f5fbeae55dd ]
+[ Upstream commit 74fbc88e161424b3b96a22b23a8e3e1edab9d05c ]
 
-Device binds to proper PCI ID (LOONGSON, 0x7a03), already listed in DTS,
-so checking for some other compatible does not make sense.  It cannot be
-bound to unsupported platform.
+The block layer doesn't support logical block sizes smaller than 512
+bytes. The nvme spec doesn't support that small either, but the driver
+isn't checking to make sure the device responded with usable data.
+Failing to catch this will result in a kernel bug, either from a
+division by zero when stacking, or a zero length bio.
 
-Drop useless, incorrect (space in between) and undocumented compatible.
-
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Acked-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/nvme/host/core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-index e7701326adc6..9e40c28d453a 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-@@ -59,11 +59,6 @@ static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id
- 		return -ENODEV;
- 	}
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 67c893934c80..0c088db94470 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -1925,9 +1925,10 @@ static void nvme_update_disk_info(struct gendisk *disk,
  
--	if (!of_device_is_compatible(np, "loongson, pci-gmac")) {
--		pr_info("dwmac_loongson_pci: Incompatible OF node\n");
--		return -ENODEV;
--	}
--
- 	plat = devm_kzalloc(&pdev->dev, sizeof(*plat), GFP_KERNEL);
- 	if (!plat)
- 		return -ENOMEM;
+ 	/*
+ 	 * The block layer can't support LBA sizes larger than the page size
+-	 * yet, so catch this early and don't allow block I/O.
++	 * or smaller than a sector size yet, so catch this early and don't
++	 * allow block I/O.
+ 	 */
+-	if (ns->lba_shift > PAGE_SHIFT) {
++	if (ns->lba_shift > PAGE_SHIFT || ns->lba_shift < SECTOR_SHIFT) {
+ 		capacity = 0;
+ 		bs = (1 << 9);
+ 	}
 -- 
 2.43.0
 
