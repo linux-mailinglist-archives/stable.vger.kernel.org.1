@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-12104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B32488317C8
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:01:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 996E083175E
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86D5B28A537
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:01:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AECF1F21221
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0672377A;
-	Thu, 18 Jan 2024 11:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8292E22F0F;
+	Thu, 18 Jan 2024 10:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWlqcLm2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8pzxHn0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2742375B;
-	Thu, 18 Jan 2024 11:00:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415A51774B;
+	Thu, 18 Jan 2024 10:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575618; cv=none; b=I+ktarkEBpwNjL4X2iJt9hzuAPLayQeEiY/osJvyB+8C51xEkH+w8ekMcWEj2+r8umRThK73H8Luv8RNSPsVLkW/EszJhsLqnmr8H8yt4z+c7og78mfsWMoQ+ogyVEt79hJzn/p1L/xWED9V1w9HgWXoJPDxQHLsJhcpn7xvHi0=
+	t=1705575383; cv=none; b=E0O5hcGrsmpoQjawcaN2XuNOu8d3u0xfsfIVPJgnVO2XCUh2dthm8wqiN5mGJ39BnKF0JlL4hUQ3/+na7LByN/ypexBq+YjA3Z+niB1DxlDLnuReMM2cxVwvFDyLfwAj9EIPZTiPOKj4/ZEphHSKDWr/pFvmsuhKDWSo1Nb2SFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575618; c=relaxed/simple;
-	bh=cA63myGio3TwFy2HqvICzw5xyr51MNpS/5K08bvm6m8=;
+	s=arc-20240116; t=1705575383; c=relaxed/simple;
+	bh=gWan/ugkENzO/EXmD8xXYfnWR1nthG88EUGvGr/DtmE=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=pah9KRu5xqTqyGc4KmsftKRe7T3V5VIhMqkaRKT8soc1R6qM7iOS0N+JUr+BszmwDqBU/fGsmtWNafRHxiERLF8vYEs1SOxs2YbsEroVQnD+vxdTcatZJdaAZn/TJNQz1GJ/tu6b2hxJCrXzgSJeTA+ZJyv4uv9yWQOZMUbmpPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWlqcLm2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D47C433F1;
-	Thu, 18 Jan 2024 11:00:17 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=sJkvaDGnYAsM2EZ0cjlrE9W3Phq4eq6TvQStnOQYiI07hTenght6kP9Cxsj94qOdkjk2uhlXx6qp/9RZiVGaGH3TEn3xaGhhKutXUdvqvI5ZB+cRZWv84KLCLl0Dz5Tx8K/djCDeDHqR2RdRSpgRFyFHHnIBqeHFx+FDFMgUPAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8pzxHn0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C43C433F1;
+	Thu, 18 Jan 2024 10:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575618;
-	bh=cA63myGio3TwFy2HqvICzw5xyr51MNpS/5K08bvm6m8=;
+	s=korg; t=1705575382;
+	bh=gWan/ugkENzO/EXmD8xXYfnWR1nthG88EUGvGr/DtmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BWlqcLm2l/keRVgS0xyHNpIQxxDvymjrlMvvKJ8jknZgOchdgQdl37aUU1elRAuJj
-	 E5Fd+Mm9lJFxycn1Dvx2UAkYkndnBzFGG97AVfYXLKceCRiR5NV2ItTldFO4WAKEYg
-	 ntiG6Frh53fUA4i20zxB6Tn1Li4ZEha0nHLTlco0=
+	b=u8pzxHn0AFuV3G2tyIEWP1qlhwvX6CSf0SvrNxFHLqGirlXxbcO0D4QMY0LYyso5R
+	 iL2DozZLRcV4s+8JDEuXi+IL77E+eSodrspv7l8b7Ufct1S3Od2KFiKENuwD6M2zBP
+	 jWlFD/0DDvsXEZlMWClXSr+J/Wqp8XQ9IFB/izYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com,
-	Ziqi Zhao <astrajoan@yahoo.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Jensen Huang <jensenhuang@friendlyarm.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 046/100] drm/crtc: Fix uninit-value bug in drm_mode_setcrtc
+Subject: [PATCH 6.6 112/150] i2c: rk3x: fix potential spinlock recursion on poll
 Date: Thu, 18 Jan 2024 11:48:54 +0100
-Message-ID: <20240118104312.914325629@linuxfoundation.org>
+Message-ID: <20240118104325.248646850@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,81 +65,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziqi Zhao <astrajoan@yahoo.com>
+From: Jensen Huang <jensenhuang@friendlyarm.com>
 
-[ Upstream commit 3823119b9c2b5f9e9b760336f75bc989b805cde6 ]
+[ Upstream commit 19cde9c92b8d3b7ee555d0da3bcb0232d3a784f4 ]
 
-The connector_set contains uninitialized values when allocated with
-kmalloc_array. However, in the "out" branch, the logic assumes that any
-element in connector_set would be equal to NULL if failed to
-initialize, which causes the bug reported by Syzbot. The fix is to use
-an extra variable to keep track of how many connectors are initialized
-indeed, and use that variable to decrease any refcounts in the "out"
-branch.
+Possible deadlock scenario (on reboot):
+rk3x_i2c_xfer_common(polling)
+    -> rk3x_i2c_wait_xfer_poll()
+        -> rk3x_i2c_irq(0, i2c);
+            --> spin_lock(&i2c->lock);
+            ...
+        <rk3x i2c interrupt>
+        -> rk3x_i2c_irq(0, i2c);
+            --> spin_lock(&i2c->lock); (deadlock here)
 
-Reported-by: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
-Signed-off-by: Ziqi Zhao <astrajoan@yahoo.com>
-Reported-and-tested-by: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
-Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Link: https://lore.kernel.org/r/20230721161446.8602-1-astrajoan@yahoo.com
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Store the IRQ number and disable/enable it around the polling transfer.
+This patch has been tested on NanoPC-T4.
+
+Signed-off-by: Jensen Huang <jensenhuang@friendlyarm.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_crtc.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/i2c/busses/i2c-rk3x.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_crtc.c b/drivers/gpu/drm/drm_crtc.c
-index df9bf3c9206e..d718c17ab1e9 100644
---- a/drivers/gpu/drm/drm_crtc.c
-+++ b/drivers/gpu/drm/drm_crtc.c
-@@ -715,8 +715,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 	struct drm_mode_set set;
- 	uint32_t __user *set_connectors_ptr;
- 	struct drm_modeset_acquire_ctx ctx;
--	int ret;
--	int i;
-+	int ret, i, num_connectors;
+diff --git a/drivers/i2c/busses/i2c-rk3x.c b/drivers/i2c/busses/i2c-rk3x.c
+index a044ca0c35a1..4362db7c5789 100644
+--- a/drivers/i2c/busses/i2c-rk3x.c
++++ b/drivers/i2c/busses/i2c-rk3x.c
+@@ -178,6 +178,7 @@ struct rk3x_i2c_soc_data {
+  * @clk: function clk for rk3399 or function & Bus clks for others
+  * @pclk: Bus clk for rk3399
+  * @clk_rate_nb: i2c clk rate change notify
++ * @irq: irq number
+  * @t: I2C known timing information
+  * @lock: spinlock for the i2c bus
+  * @wait: the waitqueue to wait for i2c transfer
+@@ -200,6 +201,7 @@ struct rk3x_i2c {
+ 	struct clk *clk;
+ 	struct clk *pclk;
+ 	struct notifier_block clk_rate_nb;
++	int irq;
  
- 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
- 		return -EOPNOTSUPP;
-@@ -851,6 +850,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 			goto out;
+ 	/* Settings */
+ 	struct i2c_timings t;
+@@ -1087,13 +1089,18 @@ static int rk3x_i2c_xfer_common(struct i2c_adapter *adap,
+ 
+ 		spin_unlock_irqrestore(&i2c->lock, flags);
+ 
+-		rk3x_i2c_start(i2c);
+-
+ 		if (!polling) {
++			rk3x_i2c_start(i2c);
++
+ 			timeout = wait_event_timeout(i2c->wait, !i2c->busy,
+ 						     msecs_to_jiffies(WAIT_TIMEOUT));
+ 		} else {
++			disable_irq(i2c->irq);
++			rk3x_i2c_start(i2c);
++
+ 			timeout = rk3x_i2c_wait_xfer_poll(i2c);
++
++			enable_irq(i2c->irq);
  		}
  
-+		num_connectors = 0;
- 		for (i = 0; i < crtc_req->count_connectors; i++) {
- 			connector_set[i] = NULL;
- 			set_connectors_ptr = (uint32_t __user *)(unsigned long)crtc_req->set_connectors_ptr;
-@@ -871,6 +871,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 					connector->name);
- 
- 			connector_set[i] = connector;
-+			num_connectors++;
- 		}
+ 		spin_lock_irqsave(&i2c->lock, flags);
+@@ -1310,6 +1317,8 @@ static int rk3x_i2c_probe(struct platform_device *pdev)
+ 		return ret;
  	}
  
-@@ -879,7 +880,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 	set.y = crtc_req->y;
- 	set.mode = mode;
- 	set.connectors = connector_set;
--	set.num_connectors = crtc_req->count_connectors;
-+	set.num_connectors = num_connectors;
- 	set.fb = fb;
++	i2c->irq = irq;
++
+ 	platform_set_drvdata(pdev, i2c);
  
- 	if (drm_drv_uses_atomic_modeset(dev))
-@@ -892,7 +893,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 		drm_framebuffer_put(fb);
- 
- 	if (connector_set) {
--		for (i = 0; i < crtc_req->count_connectors; i++) {
-+		for (i = 0; i < num_connectors; i++) {
- 			if (connector_set[i])
- 				drm_connector_put(connector_set[i]);
- 		}
+ 	if (i2c->soc_data->calc_timings == rk3x_i2c_v0_calc_timings) {
 -- 
 2.43.0
 
