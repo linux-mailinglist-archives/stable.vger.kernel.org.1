@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-12018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C70B83175C
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CCEB8317C7
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:01:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C005282288
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40EBD1C22849
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:01:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9615E1774B;
-	Thu, 18 Jan 2024 10:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F07A1241E6;
+	Thu, 18 Jan 2024 11:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNXSK31v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xbMgAoVR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567791B96D;
-	Thu, 18 Jan 2024 10:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB6625544;
+	Thu, 18 Jan 2024 11:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575377; cv=none; b=QfRELG4Z+PWJrPOz6BUXoOorDYbSn9pcPYGJdjH682xyyEyeXoT9Ddya0mpYL/FSaz/0aKXIyjW5Vw3OO6pZ7ivFKACf/40X7+EyaxysZJm4stzfGAUaZUlj9j4DY7qYXUeMB4Oeyl4DyQEg3zZaaSIkaCmt0hLMDKBfIMxpCFQ=
+	t=1705575615; cv=none; b=aef1PmgmSkFiLnN4YgHOhcLiNgHZ5IpROyJJtzN2jP9gnEhYy8G15ELgDXrht0u/diRNkXenFQwhl+NCoVRD7J4eWPIaLNbjZUm06ISDrzUhIdR39INPHBCkZCFINav2+cOpdRMjGyCSLeTdqbkj0R4frimPalpsqGltgOg50MU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575377; c=relaxed/simple;
-	bh=h+c6TqKzNVW5yF545rJbQwd5cWl+bk9tVSDGlcoCgow=;
+	s=arc-20240116; t=1705575615; c=relaxed/simple;
+	bh=L582cnXpPJZzxTNZD95JGKlugZr1LclH8VfN9QuZLV0=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=k9vr/gxzLEMKAAzh/WG9uK0D8kXKL3I3Iq90p//c09wjeVauQ3AyxeVD7yQRoL6dUxWQVmjlDgcVhDKpSzkteeyBOESv0sJTW9hox3n0jjQIUURUSLWpYZCbZMdPlW+JvqkCj23KkSfDdwbKdVEkxutccyxu9Zheoensn08sG/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNXSK31v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD16BC433F1;
-	Thu, 18 Jan 2024 10:56:16 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=MRyP2pHKubCCITbsWbk9y3pAU3jIwFrch1RLxlQVJz/Tp7OGvxC641/5BWB3JpfMONGeNymYOPTLbwYGK5XlZ63eUTsL5ALhfJMhJ7U49E8XFU3zbTkvxe4eWAZnNnYtQHa+pAGuEprZIRGG77ebbL6hDDcfEWfxQm9Gce0kjiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xbMgAoVR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3346FC433F1;
+	Thu, 18 Jan 2024 11:00:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575377;
-	bh=h+c6TqKzNVW5yF545rJbQwd5cWl+bk9tVSDGlcoCgow=;
+	s=korg; t=1705575615;
+	bh=L582cnXpPJZzxTNZD95JGKlugZr1LclH8VfN9QuZLV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rNXSK31vmqDysYu7IppFMkoqNOGX3iRr7wLHYcN29ZHpb+jxr/J7BoJ6r1Hnm8UVq
-	 nRcxrvwbmzCMd9vElLDH/kGFOt/a7dyWEZ3vSOTnoF5FN8sYRJfaqtjUWPm2d8ssN/
-	 slguDcq3ufH+WrnOEAm+gqvXSubiJsT+047hAjQc=
+	b=xbMgAoVRQS4GO373OZu8JcG2SVORstlgycweMmHRE5m6T3G7YWiDbNtBU+m5DQh+n
+	 IWVL/E4HDI1PyYodLu33efTQOYup2PDNcd0pEyUhHV6W0P/M8h5vtSecdSy4Waksz1
+	 Y5hwzfGHz+nwBnQIg9TyL/zn2UPFOrqmifnxVThc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Sam Lantinga <slouken@libsdl.org>,
-	Jiri Kosina <jkosina@suse.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 110/150] HID: nintendo: Prevent divide-by-zero on code
-Date: Thu, 18 Jan 2024 11:48:52 +0100
-Message-ID: <20240118104325.143680466@linuxfoundation.org>
+Subject: [PATCH 6.1 045/100] jbd2: increase the journal IOs priority
+Date: Thu, 18 Jan 2024 11:48:53 +0100
+Message-ID: <20240118104312.868379328@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +64,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guilherme G. Piccoli <gpiccoli@igalia.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 6eb04ca8c52e3f8c8ea7102ade81d642eee87f4a ]
+[ Upstream commit 6a3afb6ac6dfab158ebdd4b87941178f58c8939f ]
 
-It was reported [0] that adding a generic joycon to the system caused
-a kernel crash on Steam Deck, with the below panic spew:
+Current jbd2 only add REQ_SYNC for descriptor block, metadata log
+buffer, commit buffer and superblock buffer, the submitted IO could be
+throttled by writeback throttle in block layer, that could lead to
+priority inversion in some cases. The log IO looks like a kind of high
+priority metadata IO, so it should not be throttled by WBT like QOS
+policies in block layer, let's add REQ_SYNC | REQ_IDLE to exempt from
+writeback throttle, and also add REQ_META together indicates it's a
+metadata IO.
 
-divide error: 0000 [#1] PREEMPT SMP NOPTI
-[...]
-Hardware name: Valve Jupiter/Jupiter, BIOS F7A0119 10/24/2023
-RIP: 0010:nintendo_hid_event+0x340/0xcc1 [hid_nintendo]
-[...]
-Call Trace:
- [...]
- ? exc_divide_error+0x38/0x50
- ? nintendo_hid_event+0x340/0xcc1 [hid_nintendo]
- ? asm_exc_divide_error+0x1a/0x20
- ? nintendo_hid_event+0x307/0xcc1 [hid_nintendo]
- hid_input_report+0x143/0x160
- hidp_session_run+0x1ce/0x700 [hidp]
-
-Since it's a divide-by-0 error, by tracking the code for potential
-denominator issues, we've spotted 2 places in which this could happen;
-so let's guard against the possibility and log in the kernel if the
-condition happens. This is specially useful since some data that
-fills some denominators are read from the joycon HW in some cases,
-increasing the potential for flaws.
-
-[0] https://github.com/ValveSoftware/SteamOS/issues/1070
-
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Tested-by: Sam Lantinga <slouken@libsdl.org>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20231129114740.2686201-2-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-nintendo.c | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
+ fs/jbd2/commit.c     |  9 +++++----
+ fs/jbd2/journal.c    | 20 +++++++++++---------
+ include/linux/jbd2.h |  3 +++
+ 3 files changed, 19 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/hid/hid-nintendo.c b/drivers/hid/hid-nintendo.c
-index 7644edee996a..4850e915a57d 100644
---- a/drivers/hid/hid-nintendo.c
-+++ b/drivers/hid/hid-nintendo.c
-@@ -896,14 +896,27 @@ static int joycon_request_calibration(struct joycon_ctlr *ctlr)
-  */
- static void joycon_calc_imu_cal_divisors(struct joycon_ctlr *ctlr)
- {
--	int i;
-+	int i, divz = 0;
+diff --git a/fs/jbd2/commit.c b/fs/jbd2/commit.c
+index f1d9db6686e3..447c6972a6d3 100644
+--- a/fs/jbd2/commit.c
++++ b/fs/jbd2/commit.c
+@@ -123,7 +123,7 @@ static int journal_submit_commit_record(journal_t *journal,
+ 	struct commit_header *tmp;
+ 	struct buffer_head *bh;
+ 	struct timespec64 now;
+-	blk_opf_t write_flags = REQ_OP_WRITE | REQ_SYNC;
++	blk_opf_t write_flags = REQ_OP_WRITE | JBD2_JOURNAL_REQ_FLAGS;
  
- 	for (i = 0; i < 3; i++) {
- 		ctlr->imu_cal_accel_divisor[i] = ctlr->accel_cal.scale[i] -
- 						ctlr->accel_cal.offset[i];
- 		ctlr->imu_cal_gyro_divisor[i] = ctlr->gyro_cal.scale[i] -
- 						ctlr->gyro_cal.offset[i];
+ 	*cbh = NULL;
+ 
+@@ -429,8 +429,7 @@ void jbd2_journal_commit_transaction(journal_t *journal)
+ 		 */
+ 		jbd2_journal_update_sb_log_tail(journal,
+ 						journal->j_tail_sequence,
+-						journal->j_tail,
+-						REQ_SYNC);
++						journal->j_tail, 0);
+ 		mutex_unlock(&journal->j_checkpoint_mutex);
+ 	} else {
+ 		jbd2_debug(3, "superblock not updated\n");
+@@ -749,6 +748,7 @@ void jbd2_journal_commit_transaction(journal_t *journal)
+ 
+ 			for (i = 0; i < bufs; i++) {
+ 				struct buffer_head *bh = wbuf[i];
 +
-+		if (ctlr->imu_cal_accel_divisor[i] == 0) {
-+			ctlr->imu_cal_accel_divisor[i] = 1;
-+			divz++;
-+		}
-+
-+		if (ctlr->imu_cal_gyro_divisor[i] == 0) {
-+			ctlr->imu_cal_gyro_divisor[i] = 1;
-+			divz++;
-+		}
+ 				/*
+ 				 * Compute checksum.
+ 				 */
+@@ -761,7 +761,8 @@ void jbd2_journal_commit_transaction(journal_t *journal)
+ 				clear_buffer_dirty(bh);
+ 				set_buffer_uptodate(bh);
+ 				bh->b_end_io = journal_end_buffer_io_sync;
+-				submit_bh(REQ_OP_WRITE | REQ_SYNC, bh);
++				submit_bh(REQ_OP_WRITE | JBD2_JOURNAL_REQ_FLAGS,
++					  bh);
+ 			}
+ 			cond_resched();
+ 
+diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+index 611337b0b5ad..3df45e4699f1 100644
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -1109,8 +1109,7 @@ int __jbd2_update_log_tail(journal_t *journal, tid_t tid, unsigned long block)
+ 	 * space and if we lose sb update during power failure we'd replay
+ 	 * old transaction with possibly newly overwritten data.
+ 	 */
+-	ret = jbd2_journal_update_sb_log_tail(journal, tid, block,
+-					      REQ_SYNC | REQ_FUA);
++	ret = jbd2_journal_update_sb_log_tail(journal, tid, block, REQ_FUA);
+ 	if (ret)
+ 		goto out;
+ 
+@@ -1597,8 +1596,7 @@ static int journal_reset(journal_t *journal)
+ 		 */
+ 		jbd2_journal_update_sb_log_tail(journal,
+ 						journal->j_tail_sequence,
+-						journal->j_tail,
+-						REQ_SYNC | REQ_FUA);
++						journal->j_tail, REQ_FUA);
+ 		mutex_unlock(&journal->j_checkpoint_mutex);
  	}
-+
-+	if (divz)
-+		hid_warn(ctlr->hdev, "inaccurate IMU divisors (%d)\n", divz);
+ 	return jbd2_journal_start_thread(journal);
+@@ -1620,6 +1618,11 @@ static int jbd2_write_superblock(journal_t *journal, blk_opf_t write_flags)
+ 		return -EIO;
+ 	}
+ 
++	/*
++	 * Always set high priority flags to exempt from block layer's
++	 * QOS policies, e.g. writeback throttle.
++	 */
++	write_flags |= JBD2_JOURNAL_REQ_FLAGS;
+ 	if (!(journal->j_flags & JBD2_BARRIER))
+ 		write_flags &= ~(REQ_FUA | REQ_PREFLUSH);
+ 
+@@ -1873,7 +1876,7 @@ void jbd2_journal_update_sb_errno(journal_t *journal)
+ 	jbd2_debug(1, "JBD2: updating superblock error (errno %d)\n", errcode);
+ 	sb->s_errno    = cpu_to_be32(errcode);
+ 
+-	jbd2_write_superblock(journal, REQ_SYNC | REQ_FUA);
++	jbd2_write_superblock(journal, REQ_FUA);
  }
+ EXPORT_SYMBOL(jbd2_journal_update_sb_errno);
  
- static const s16 DFLT_ACCEL_OFFSET /*= 0*/;
-@@ -1132,16 +1145,16 @@ static void joycon_parse_imu_report(struct joycon_ctlr *ctlr,
- 		    JC_IMU_SAMPLES_PER_DELTA_AVG) {
- 			ctlr->imu_avg_delta_ms = ctlr->imu_delta_samples_sum /
- 						 ctlr->imu_delta_samples_count;
--			/* don't ever want divide by zero shenanigans */
--			if (ctlr->imu_avg_delta_ms == 0) {
--				ctlr->imu_avg_delta_ms = 1;
--				hid_warn(ctlr->hdev,
--					 "calculated avg imu delta of 0\n");
--			}
- 			ctlr->imu_delta_samples_count = 0;
- 			ctlr->imu_delta_samples_sum = 0;
- 		}
+@@ -2178,8 +2181,7 @@ int jbd2_journal_destroy(journal_t *journal)
+ 				++journal->j_transaction_sequence;
+ 			write_unlock(&journal->j_state_lock);
  
-+		/* don't ever want divide by zero shenanigans */
-+		if (ctlr->imu_avg_delta_ms == 0) {
-+			ctlr->imu_avg_delta_ms = 1;
-+			hid_warn(ctlr->hdev, "calculated avg imu delta of 0\n");
-+		}
+-			jbd2_mark_journal_empty(journal,
+-					REQ_SYNC | REQ_PREFLUSH | REQ_FUA);
++			jbd2_mark_journal_empty(journal, REQ_PREFLUSH | REQ_FUA);
+ 			mutex_unlock(&journal->j_checkpoint_mutex);
+ 		} else
+ 			err = -EIO;
+@@ -2488,7 +2490,7 @@ int jbd2_journal_flush(journal_t *journal, unsigned int flags)
+ 	 * the magic code for a fully-recovered superblock.  Any future
+ 	 * commits of data to the journal will restore the current
+ 	 * s_start value. */
+-	jbd2_mark_journal_empty(journal, REQ_SYNC | REQ_FUA);
++	jbd2_mark_journal_empty(journal, REQ_FUA);
+ 
+ 	if (flags)
+ 		err = __jbd2_journal_erase(journal, flags);
+@@ -2538,7 +2540,7 @@ int jbd2_journal_wipe(journal_t *journal, int write)
+ 	if (write) {
+ 		/* Lock to make assertions happy... */
+ 		mutex_lock_io(&journal->j_checkpoint_mutex);
+-		jbd2_mark_journal_empty(journal, REQ_SYNC | REQ_FUA);
++		jbd2_mark_journal_empty(journal, REQ_FUA);
+ 		mutex_unlock(&journal->j_checkpoint_mutex);
+ 	}
+ 
+diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
+index ebb1608d9dcd..6611af5f1d0c 100644
+--- a/include/linux/jbd2.h
++++ b/include/linux/jbd2.h
+@@ -1374,6 +1374,9 @@ JBD2_FEATURE_INCOMPAT_FUNCS(csum2,		CSUM_V2)
+ JBD2_FEATURE_INCOMPAT_FUNCS(csum3,		CSUM_V3)
+ JBD2_FEATURE_INCOMPAT_FUNCS(fast_commit,	FAST_COMMIT)
+ 
++/* Journal high priority write IO operation flags */
++#define JBD2_JOURNAL_REQ_FLAGS		(REQ_META | REQ_SYNC | REQ_IDLE)
 +
- 		/* useful for debugging IMU sample rate */
- 		hid_dbg(ctlr->hdev,
- 			"imu_report: ms=%u last_ms=%u delta=%u avg_delta=%u\n",
+ /*
+  * Journal flag definitions
+  */
 -- 
 2.43.0
 
