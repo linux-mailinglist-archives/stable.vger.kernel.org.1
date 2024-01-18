@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-11977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05E5B831732
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:54:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 930ED8317AF
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:59:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB82228550C
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:54:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33EAC1F253A8
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF0122F0F;
-	Thu, 18 Jan 2024 10:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C600C2377A;
+	Thu, 18 Jan 2024 10:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s8xvBDZT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nweo2lAm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C1D1B96D;
-	Thu, 18 Jan 2024 10:54:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866A72375A;
+	Thu, 18 Jan 2024 10:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575262; cv=none; b=arrNsNjWLbAjW3YUoYTrfAcbZDhp9erNwXFlN/tS4WwlhXjx9C0Zi3KeO0H6C4P8bljyYkX7FY5Z96XJVCSOAEaf0fqWHQrGNTnZ4GE7Kcasfy8GlHo1t+4j5kG7Cdgif+L4jecvGmFPzxT/iWfQKSD+wxbAGyeN+brJRtaRq2w=
+	t=1705575580; cv=none; b=nrBIud5H7mgtjtjKuP8Y7lUdfFWjMxBGYVFatJLpBfHViKxoC/CiurBEseywlM7Pm934SkNMaSdXeUio0JXKJldoYEX7TN6Ezn377+1vwbVFKbNpjptkqPV0y09PQ4zZWbTJNBe2kAp2eDtt2rECdX0BJ3jWp9G0iAS+b+o3/5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575262; c=relaxed/simple;
-	bh=RhyFIglVfAEYOz+yzLMF6daThBPaEo1gff18eIofh14=;
+	s=arc-20240116; t=1705575580; c=relaxed/simple;
+	bh=xFgvBljBDWV3pTu2+gUpyJ6e/WQGHlGuTyPOJ879JrI=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=EOnRYiCfgFiUX8Md8TMGt4t/Zz9LZ4piOVbNPv9pNhaD9MnsFaZq4eF3qsnr9eo7NXvGSxknUNSeiGgmvox7zOfBJYjbAWYpcxo5I4/7bl/7P5bikdcKqmyNcVEABk5JnBq5cDeif9C7LF35M9PTQuHTEcheRT/WVTafOQ18AjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s8xvBDZT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55194C433F1;
-	Thu, 18 Jan 2024 10:54:22 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=gcuCZK7/p8bs57g9HWKTKX6Hk+oYiJVc86U6dqABXm3q5/fsWq+bhlJ21pYEo8c3+x+osyrFaxxo8b894p7EoJnNp8dq8JrhdzrM2yAwYJoD/8aQui1/JEIVM1NjUDtiSxtixMhrg/mnB/MfSZPkgIwsR2O1dcadZv1uXaDQ80Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nweo2lAm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09968C433C7;
+	Thu, 18 Jan 2024 10:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575262;
-	bh=RhyFIglVfAEYOz+yzLMF6daThBPaEo1gff18eIofh14=;
+	s=korg; t=1705575580;
+	bh=xFgvBljBDWV3pTu2+gUpyJ6e/WQGHlGuTyPOJ879JrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s8xvBDZTB+DIDOnyDdjya7TqN5DtpouKLPSk29LovIeUrmtULAQlZf/ckp4W7qEd1
-	 1Ljucm3Z4qkTzhaZJlEfJD7/0VHuWwiiRjfNARpojFUVEpk33InGQnnZacuC2lwIjo
-	 oix5uA0KBBvm7bKZWQ/JOl4H4fW2sIpvyRFikzOw=
+	b=Nweo2lAmVY4osf0bdzjVZnHiQmFcKja9XskEd1GpLXig1kz/e6icmbF/m9wGz1LmM
+	 Eq1ZEVmZ4RCwCjayEsZZHt9ddZ0jeMC9s0Hs5mmXNv8+qs19RUnltn+c8PIfMLi4ty
+	 fD8kGJP+xrwq6mRlP+SyCOkwzqURPFHdb5ZSFJX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weihao Li <cn.liweihao@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	syzbot+7e59a5bfc7a897247e18@syzkaller.appspotmail.com,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/150] clk: rockchip: rk3128: Fix HCLK_OTG gate register
-Date: Thu, 18 Jan 2024 11:48:12 +0100
-Message-ID: <20240118104323.211524427@linuxfoundation.org>
+Subject: [PATCH 6.1 005/100] wifi: cfg80211: lock wiphy mutex for rfkill poll
+Date: Thu, 18 Jan 2024 11:48:13 +0100
+Message-ID: <20240118104311.105766830@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,37 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weihao Li <cn.liweihao@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit c6c5a5580dcb6631aa6369dabe12ef3ce784d1d2 ]
+[ Upstream commit 8e2f6f2366219b3304b227bdd2f04b64c92e3e12 ]
 
-The HCLK_OTG gate control is in CRU_CLKGATE5_CON, not CRU_CLKGATE3_CON.
+We want to guarantee the mutex is held for pretty much
+all operations, so ensure that here as well.
 
-Signed-off-by: Weihao Li <cn.liweihao@gmail.com>
-Link: https://lore.kernel.org/r/20231031111816.8777-1-cn.liweihao@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Reported-by: syzbot+7e59a5bfc7a897247e18@syzkaller.appspotmail.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/rockchip/clk-rk3128.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/wireless/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/rockchip/clk-rk3128.c b/drivers/clk/rockchip/clk-rk3128.c
-index 22e752236030..75071e0cd321 100644
---- a/drivers/clk/rockchip/clk-rk3128.c
-+++ b/drivers/clk/rockchip/clk-rk3128.c
-@@ -484,7 +484,7 @@ static struct rockchip_clk_branch common_clk_branches[] __initdata = {
- 	GATE(HCLK_I2S_2CH, "hclk_i2s_2ch", "hclk_peri", 0, RK2928_CLKGATE_CON(7), 2, GFLAGS),
- 	GATE(0, "hclk_usb_peri", "hclk_peri", CLK_IGNORE_UNUSED, RK2928_CLKGATE_CON(9), 13, GFLAGS),
- 	GATE(HCLK_HOST2, "hclk_host2", "hclk_peri", 0, RK2928_CLKGATE_CON(7), 3, GFLAGS),
--	GATE(HCLK_OTG, "hclk_otg", "hclk_peri", 0, RK2928_CLKGATE_CON(3), 13, GFLAGS),
-+	GATE(HCLK_OTG, "hclk_otg", "hclk_peri", 0, RK2928_CLKGATE_CON(5), 13, GFLAGS),
- 	GATE(0, "hclk_peri_ahb", "hclk_peri", CLK_IGNORE_UNUSED, RK2928_CLKGATE_CON(9), 14, GFLAGS),
- 	GATE(HCLK_SPDIF, "hclk_spdif", "hclk_peri", 0, RK2928_CLKGATE_CON(10), 9, GFLAGS),
- 	GATE(HCLK_TSP, "hclk_tsp", "hclk_peri", 0, RK2928_CLKGATE_CON(10), 12, GFLAGS),
+diff --git a/net/wireless/core.c b/net/wireless/core.c
+index 63d75fecc2c5..8809e668ed91 100644
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -216,7 +216,9 @@ static void cfg80211_rfkill_poll(struct rfkill *rfkill, void *data)
+ {
+ 	struct cfg80211_registered_device *rdev = data;
+ 
++	wiphy_lock(&rdev->wiphy);
+ 	rdev_rfkill_poll(rdev);
++	wiphy_unlock(&rdev->wiphy);
+ }
+ 
+ void cfg80211_stop_p2p_device(struct cfg80211_registered_device *rdev,
 -- 
 2.43.0
 
