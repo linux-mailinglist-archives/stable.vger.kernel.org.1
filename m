@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-12122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9AF78317DF
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED7C831752
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F7EBB25D5C
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D0AF1F21A7B
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDEE224B2C;
-	Thu, 18 Jan 2024 11:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1AC422F18;
+	Thu, 18 Jan 2024 10:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lbgim7Wb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f6NxopNc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D10C24A10;
-	Thu, 18 Jan 2024 11:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59FD51774B;
+	Thu, 18 Jan 2024 10:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575672; cv=none; b=JgYi//gPf/92oL8L/U8pkUUMKCKfbNqBAxY0eoS5A9ph0uYo5g42JMyUFTKDsH00PP0TW1qedLdCxu9HfEEreDILuQAAOkZ5lp7A2Mt6lGlS+6ckjzmyrGfCqHtygsHobtWs8BLVbOn9qLi7kENIUlr7t4ry/vMyc5GuhT2WkeM=
+	t=1705575349; cv=none; b=mh8JKjJEW1c+FhiCx4oJoXaN6CGMdnPMS6/cSG4vSfGpt7W+uNphc7VfTrekEU0jW36yH9pPeA/LUmQLd4Q/O+o50UfqBjr6azRfNdY96FNqwIQ1jdhCqhDUHY7AN0hNWftKkJyubK7eBSRC94KpemfI2umSXEOKntg8a64IF2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575672; c=relaxed/simple;
-	bh=rzG77GgeK+wqvkjeL1aQae0f30/QdyKlukQ5RggQUiU=;
+	s=arc-20240116; t=1705575349; c=relaxed/simple;
+	bh=td8U1W6evHPKGCh80IXfhKGALcQhhHEQY1OzxqB/42o=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=plQIUBXzSxbElcSpqAPorQodi1UYOHpmfPLNf+DLe2cN0cnWq8X8Y/sJ4SWdpFE6QMAXVgkJRCH3Ed+RaTOyT1mPaXjMY8iyHgSy16fKR9AVvRhnS/4z/fbRaz5AiH9feefW+k1IFRsE+0QQ4xfZJTI4Ur+AMfjndVB0wJbkKUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lbgim7Wb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B0A6C433C7;
-	Thu, 18 Jan 2024 11:01:10 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding; b=eYZc9BQxniDFJq/JQfzHWIEaIf83rjNnqiJ0Rs3BOUEwyzo4CaHQTKaOKB5gMCSI2ve9fbQUs/AinoIIuMnLUKWY7k7jltNzRfik6rp1WuwkJiMcxuw3a6k3/8X/z4xhJX8f2OSOTqDdmiDnU3oNoFpnbA7TwfS0GhyE1zXOYm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f6NxopNc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E837C433C7;
+	Thu, 18 Jan 2024 10:55:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575671;
-	bh=rzG77GgeK+wqvkjeL1aQae0f30/QdyKlukQ5RggQUiU=;
+	s=korg; t=1705575348;
+	bh=td8U1W6evHPKGCh80IXfhKGALcQhhHEQY1OzxqB/42o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lbgim7Wb0DzLUIVjV/gWk/MyKBCt6FkELjK5Ey+zDK6XTlOUsTxqMgARvEq9heYSl
-	 bc9D89ALf6bha2CZzktxp9EgwByor+fPYEhbIZdeJ0L1XS9yn8OioyNorsmZcDNl7K
-	 4Szks3p1wixGIuKPiFtEPImPxkEVpnsrvkJtoeG8=
+	b=f6NxopNcgD2Nm3vJ9IfAfcigJF0FGMGeHAUEODT+v8Bz09J8sqFnm3DYEjjBJvRI5
+	 fpAgxDwNLCK4Ju5/FoDqE6J7qV+Q8ZOAlr04vpXgQ19Q6Eu0WMfHvqbnbeG680uQx6
+	 aRc2QulNPDnXB1TJJ7k+qeVuTssRtH63ih5AUnug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Vishnu Sankar <vishnuocv@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 035/100] arm64: dts: rockchip: Fix PCI node addresses on rk3399-gru
+Subject: [PATCH 6.6 101/150] platform/x86: thinkpad_acpi: fix for incorrect fan reporting on some ThinkPad systems
 Date: Thu, 18 Jan 2024 11:48:43 +0100
-Message-ID: <20240118104312.442383830@linuxfoundation.org>
+Message-ID: <20240118104324.728374141@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +64,253 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Vishnu Sankar <vishnuocv@gmail.com>
 
-[ Upstream commit c13c823a78b77ea0e5f1f73112d910e259911101 ]
+[ Upstream commit 66e92e23a72761f5b53f970aeb1badc5fd92fc74 ]
 
-The rk3399-gru PCI node addresses are wrong.
+Some ThinkPad systems ECFW use non-standard addresses for fan control
+and reporting. This patch adds support for such ECFW so that it can report
+the correct fan values.
+Tested on Thinkpads L13 Yoga Gen 2 and X13 Yoga Gen 2.
 
-In rk3399-gru-scarlet, the bus number in the address should be 0. This is
-because bus number assignment is dynamic and not known up front. For FDT,
-the bus number is simply ignored.
-
-In rk3399-gru-chromebook, the addresses are simply invalid. The first
-"reg" entry must be the configuration space for the device. The entry
-should be all 0s except for device/slot and function numbers. The existing
-64-bit memory space (0x83000000) entries are not valid because they must
-have the BAR address in the lower byte of the first cell.
-
-Warnings for these are enabled by adding the missing 'device_type = "pci"'
-for the root port node.
-
-Signed-off-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20231130191830.2424361-1-robh@kernel.org
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Suggested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Signed-off-by: Vishnu Sankar <vishnuocv@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20231214134702.166464-1-vishnuocv@gmail.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-gru-chromebook.dtsi  | 3 +--
- arch/arm64/boot/dts/rockchip/rk3399-gru-scarlet-dumo.dts | 4 ++--
- arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi             | 1 +
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/platform/x86/thinkpad_acpi.c | 98 ++++++++++++++++++++++++----
+ 1 file changed, 85 insertions(+), 13 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-gru-chromebook.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-gru-chromebook.dtsi
-index ee6095baba4d..7d9b8064ad2e 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-gru-chromebook.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-gru-chromebook.dtsi
-@@ -510,8 +510,7 @@ wacky_spi_audio: spi2@0 {
- &pci_rootport {
- 	mvl_wifi: wifi@0,0 {
- 		compatible = "pci1b4b,2b42";
--		reg = <0x83010000 0x0 0x00000000 0x0 0x00100000
--		       0x83010000 0x0 0x00100000 0x0 0x00100000>;
-+		reg = <0x0000 0x0 0x0 0x0 0x0>;
- 		interrupt-parent = <&gpio0>;
- 		interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
- 		pinctrl-names = "default";
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-gru-scarlet-dumo.dts b/arch/arm64/boot/dts/rockchip/rk3399-gru-scarlet-dumo.dts
-index 853e88455e75..9e4b12ed62cb 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-gru-scarlet-dumo.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-gru-scarlet-dumo.dts
-@@ -34,8 +34,8 @@ &mipi_panel {
- &pci_rootport {
- 	wifi@0,0 {
- 		compatible = "qcom,ath10k";
--		reg = <0x00010000 0x0 0x00000000 0x0 0x00000000>,
--		      <0x03010010 0x0 0x00000000 0x0 0x00200000>;
-+		reg = <0x00000000 0x0 0x00000000 0x0 0x00000000>,
-+		      <0x03000010 0x0 0x00000000 0x0 0x00200000>;
- 		qcom,ath10k-calibration-variant = "GO_DUMO";
- 	};
- };
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi
-index 23bfba86daab..7ba25315dd9a 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi
-@@ -489,6 +489,7 @@ pci_rootport: pcie@0,0 {
- 		#address-cells = <3>;
- 		#size-cells = <2>;
- 		ranges;
-+		device_type = "pci";
- 	};
+diff --git a/drivers/platform/x86/thinkpad_acpi.c b/drivers/platform/x86/thinkpad_acpi.c
+index a46fc417cb20..d73cbae4aa21 100644
+--- a/drivers/platform/x86/thinkpad_acpi.c
++++ b/drivers/platform/x86/thinkpad_acpi.c
+@@ -7948,8 +7948,19 @@ static struct ibm_struct volume_driver_data = {
+  * 	TPACPI_FAN_WR_TPEC is also available and should be used to
+  * 	command the fan.  The X31/X40/X41 seems to have 8 fan levels,
+  * 	but the ACPI tables just mention level 7.
++ *
++ * TPACPI_FAN_RD_TPEC_NS:
++ *	This mode is used for a few ThinkPads (L13 Yoga Gen2, X13 Yoga Gen2 etc.)
++ *	that are using non-standard EC locations for reporting fan speeds.
++ *	Currently these platforms only provide fan rpm reporting.
++ *
+  */
+ 
++#define FAN_RPM_CAL_CONST 491520	/* FAN RPM calculation offset for some non-standard ECFW */
++
++#define FAN_NS_CTRL_STATUS	BIT(2)		/* Bit which determines control is enabled or not */
++#define FAN_NS_CTRL		BIT(4)		/* Bit which determines control is by host or EC */
++
+ enum {					/* Fan control constants */
+ 	fan_status_offset = 0x2f,	/* EC register 0x2f */
+ 	fan_rpm_offset = 0x84,		/* EC register 0x84: LSB, 0x85 MSB (RPM)
+@@ -7957,6 +7968,11 @@ enum {					/* Fan control constants */
+ 	fan_select_offset = 0x31,	/* EC register 0x31 (Firmware 7M)
+ 					   bit 0 selects which fan is active */
+ 
++	fan_status_offset_ns = 0x93,	/* Special status/control offset for non-standard EC Fan1 */
++	fan2_status_offset_ns = 0x96,	/* Special status/control offset for non-standard EC Fan2 */
++	fan_rpm_status_ns = 0x95,	/* Special offset for Fan1 RPM status for non-standard EC */
++	fan2_rpm_status_ns = 0x98,	/* Special offset for Fan2 RPM status for non-standard EC */
++
+ 	TP_EC_FAN_FULLSPEED = 0x40,	/* EC fan mode: full speed */
+ 	TP_EC_FAN_AUTO	    = 0x80,	/* EC fan mode: auto fan control */
+ 
+@@ -7967,6 +7983,7 @@ enum fan_status_access_mode {
+ 	TPACPI_FAN_NONE = 0,		/* No fan status or control */
+ 	TPACPI_FAN_RD_ACPI_GFAN,	/* Use ACPI GFAN */
+ 	TPACPI_FAN_RD_TPEC,		/* Use ACPI EC regs 0x2f, 0x84-0x85 */
++	TPACPI_FAN_RD_TPEC_NS,		/* Use non-standard ACPI EC regs (eg: L13 Yoga gen2 etc.) */
  };
  
+ enum fan_control_access_mode {
+@@ -7994,6 +8011,8 @@ static u8 fan_control_desired_level;
+ static u8 fan_control_resume_level;
+ static int fan_watchdog_maxinterval;
+ 
++static bool fan_with_ns_addr;
++
+ static struct mutex fan_mutex;
+ 
+ static void fan_watchdog_fire(struct work_struct *ignored);
+@@ -8123,6 +8142,15 @@ static int fan_get_status(u8 *status)
+ 		}
+ 
+ 		break;
++	case TPACPI_FAN_RD_TPEC_NS:
++		/* Default mode is AUTO which means controlled by EC */
++		if (!acpi_ec_read(fan_status_offset_ns, &s))
++			return -EIO;
++
++		if (status)
++			*status = s;
++
++		break;
+ 
+ 	default:
+ 		return -ENXIO;
+@@ -8139,7 +8167,8 @@ static int fan_get_status_safe(u8 *status)
+ 	if (mutex_lock_killable(&fan_mutex))
+ 		return -ERESTARTSYS;
+ 	rc = fan_get_status(&s);
+-	if (!rc)
++	/* NS EC doesn't have register with level settings */
++	if (!rc && !fan_with_ns_addr)
+ 		fan_update_desired_level(s);
+ 	mutex_unlock(&fan_mutex);
+ 
+@@ -8166,7 +8195,13 @@ static int fan_get_speed(unsigned int *speed)
+ 
+ 		if (likely(speed))
+ 			*speed = (hi << 8) | lo;
++		break;
++	case TPACPI_FAN_RD_TPEC_NS:
++		if (!acpi_ec_read(fan_rpm_status_ns, &lo))
++			return -EIO;
+ 
++		if (speed)
++			*speed = lo ? FAN_RPM_CAL_CONST / lo : 0;
+ 		break;
+ 
+ 	default:
+@@ -8178,7 +8213,7 @@ static int fan_get_speed(unsigned int *speed)
+ 
+ static int fan2_get_speed(unsigned int *speed)
+ {
+-	u8 hi, lo;
++	u8 hi, lo, status;
+ 	bool rc;
+ 
+ 	switch (fan_status_access_mode) {
+@@ -8194,7 +8229,21 @@ static int fan2_get_speed(unsigned int *speed)
+ 
+ 		if (likely(speed))
+ 			*speed = (hi << 8) | lo;
++		break;
+ 
++	case TPACPI_FAN_RD_TPEC_NS:
++		rc = !acpi_ec_read(fan2_status_offset_ns, &status);
++		if (rc)
++			return -EIO;
++		if (!(status & FAN_NS_CTRL_STATUS)) {
++			pr_info("secondary fan control not supported\n");
++			return -EIO;
++		}
++		rc = !acpi_ec_read(fan2_rpm_status_ns, &lo);
++		if (rc)
++			return -EIO;
++		if (speed)
++			*speed = lo ? FAN_RPM_CAL_CONST / lo : 0;
+ 		break;
+ 
+ 	default:
+@@ -8697,6 +8746,7 @@ static const struct attribute_group fan_driver_attr_group = {
+ #define TPACPI_FAN_2FAN		0x0002		/* EC 0x31 bit 0 selects fan2 */
+ #define TPACPI_FAN_2CTL		0x0004		/* selects fan2 control */
+ #define TPACPI_FAN_NOFAN	0x0008		/* no fan available */
++#define TPACPI_FAN_NS		0x0010		/* For EC with non-Standard register addresses */
+ 
+ static const struct tpacpi_quirk fan_quirk_table[] __initconst = {
+ 	TPACPI_QEC_IBM('1', 'Y', TPACPI_FAN_Q1),
+@@ -8715,6 +8765,8 @@ static const struct tpacpi_quirk fan_quirk_table[] __initconst = {
+ 	TPACPI_Q_LNV3('N', '2', 'O', TPACPI_FAN_2CTL),	/* P1 / X1 Extreme (2nd gen) */
+ 	TPACPI_Q_LNV3('N', '3', '0', TPACPI_FAN_2CTL),	/* P15 (1st gen) / P15v (1st gen) */
+ 	TPACPI_Q_LNV3('N', '3', '7', TPACPI_FAN_2CTL),  /* T15g (2nd gen) */
++	TPACPI_Q_LNV3('R', '1', 'F', TPACPI_FAN_NS),	/* L13 Yoga Gen 2 */
++	TPACPI_Q_LNV3('N', '2', 'U', TPACPI_FAN_NS),	/* X13 Yoga Gen 2*/
+ 	TPACPI_Q_LNV3('N', '1', 'O', TPACPI_FAN_NOFAN),	/* X1 Tablet (2nd gen) */
+ };
+ 
+@@ -8749,18 +8801,27 @@ static int __init fan_init(struct ibm_init_struct *iibm)
+ 		return -ENODEV;
+ 	}
+ 
++	if (quirks & TPACPI_FAN_NS) {
++		pr_info("ECFW with non-standard fan reg control found\n");
++		fan_with_ns_addr = 1;
++		/* Fan ctrl support from host is undefined for now */
++		tp_features.fan_ctrl_status_undef = 1;
++	}
++
+ 	if (gfan_handle) {
+ 		/* 570, 600e/x, 770e, 770x */
+ 		fan_status_access_mode = TPACPI_FAN_RD_ACPI_GFAN;
+ 	} else {
+ 		/* all other ThinkPads: note that even old-style
+ 		 * ThinkPad ECs supports the fan control register */
+-		if (likely(acpi_ec_read(fan_status_offset,
+-					&fan_control_initial_status))) {
++		if (fan_with_ns_addr ||
++		    likely(acpi_ec_read(fan_status_offset, &fan_control_initial_status))) {
+ 			int res;
+ 			unsigned int speed;
+ 
+-			fan_status_access_mode = TPACPI_FAN_RD_TPEC;
++			fan_status_access_mode = fan_with_ns_addr ?
++				TPACPI_FAN_RD_TPEC_NS : TPACPI_FAN_RD_TPEC;
++
+ 			if (quirks & TPACPI_FAN_Q1)
+ 				fan_quirk1_setup();
+ 			/* Try and probe the 2nd fan */
+@@ -8769,7 +8830,8 @@ static int __init fan_init(struct ibm_init_struct *iibm)
+ 			if (res >= 0 && speed != FAN_NOT_PRESENT) {
+ 				/* It responded - so let's assume it's there */
+ 				tp_features.second_fan = 1;
+-				tp_features.second_fan_ctl = 1;
++				/* fan control not currently available for ns ECFW */
++				tp_features.second_fan_ctl = !fan_with_ns_addr;
+ 				pr_info("secondary fan control detected & enabled\n");
+ 			} else {
+ 				/* Fan not auto-detected */
+@@ -8944,6 +9006,7 @@ static int fan_read(struct seq_file *m)
+ 			       str_enabled_disabled(status), status);
+ 		break;
+ 
++	case TPACPI_FAN_RD_TPEC_NS:
+ 	case TPACPI_FAN_RD_TPEC:
+ 		/* all except 570, 600e/x, 770e, 770x */
+ 		rc = fan_get_status_safe(&status);
+@@ -8958,13 +9021,22 @@ static int fan_read(struct seq_file *m)
+ 
+ 		seq_printf(m, "speed:\t\t%d\n", speed);
+ 
+-		if (status & TP_EC_FAN_FULLSPEED)
+-			/* Disengaged mode takes precedence */
+-			seq_printf(m, "level:\t\tdisengaged\n");
+-		else if (status & TP_EC_FAN_AUTO)
+-			seq_printf(m, "level:\t\tauto\n");
+-		else
+-			seq_printf(m, "level:\t\t%d\n", status);
++		if (fan_status_access_mode == TPACPI_FAN_RD_TPEC_NS) {
++			/*
++			 * No full speed bit in NS EC
++			 * EC Auto mode is set by default.
++			 * No other levels settings available
++			 */
++			seq_printf(m, "level:\t\t%s\n", status & FAN_NS_CTRL ? "unknown" : "auto");
++		} else {
++			if (status & TP_EC_FAN_FULLSPEED)
++				/* Disengaged mode takes precedence */
++				seq_printf(m, "level:\t\tdisengaged\n");
++			else if (status & TP_EC_FAN_AUTO)
++				seq_printf(m, "level:\t\tauto\n");
++			else
++				seq_printf(m, "level:\t\t%d\n", status);
++		}
+ 		break;
+ 
+ 	case TPACPI_FAN_NONE:
 -- 
 2.43.0
 
