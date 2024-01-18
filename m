@@ -1,115 +1,190 @@
-Return-Path: <stable+bounces-12183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB8F6831A5F
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 14:18:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E5E5831A9A
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 14:31:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA6911C22CA4
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 13:18:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36546B21C75
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 13:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E83B25546;
-	Thu, 18 Jan 2024 13:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1872554A;
+	Thu, 18 Jan 2024 13:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UzbGJE68"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fgdWuqL3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC23F25116;
-	Thu, 18 Jan 2024 13:17:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4EE224A0C;
+	Thu, 18 Jan 2024 13:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705583869; cv=none; b=h5wRfkhNE/8lT8CwXSeV2gpeB7n0gjuCRab6M9fc8C4aa/HoJ6BJwpl0Gv+xnGNMwGT+QOpbyb+s4BEBBRD5Y9ZVfjxE1CuIFjF0Uf1gtq1oJyIhA5JfRAyjCzJyiK8cqbbwoRtVLuZWjndaFgBcf+Ad7mGPJUj6ulnvLqsG32s=
+	t=1705584664; cv=none; b=kZJrg/efGegpuI1LlSvxJcu5VQdDVAX3Cy1Wpe+5TgIrcchvQK8fCYz94/tfPq4bYSi+BbYVHx/uPXoKffGhuPt1tF8DRm17K+OGLaaS8yMq3AQSCAIboDfJl18zt193zBBIqQ4Yu3BaIaFJC2A0idO085RNcseKhm7UVLxmZqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705583869; c=relaxed/simple;
-	bh=g9i2go98VUUbiB+yc/sTccAnH2UaalOetc9Dl79sWhY=;
-	h=Received:DKIM-Signature:Content-Type:MIME-Version:
-	 Content-Transfer-Encoding:Subject:From:In-Reply-To:References:To:
-	 Cc:User-Agent:Message-ID:Date; b=Z1z0kpINkoQAv88Z1IOymdNVoGoHNeBNwQfgYLH3/WA1ayIORG2hIxIoGIKnb17Bv9UsbgQIugwBTs91qfRX55i30i54EP61r5OGcUCW7fb6Qbm+5/hb8t6SyN/6C8QZjoYMKCG0kPrWzOs98pn2/GBpMOooPzvcwfJ8obRYW9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UzbGJE68; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12687C43390;
-	Thu, 18 Jan 2024 13:17:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705583869;
-	bh=g9i2go98VUUbiB+yc/sTccAnH2UaalOetc9Dl79sWhY=;
-	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
-	b=UzbGJE68Ei7MsbP9A83mwKokqnkYIIzIyBHmTlmFwft3P58TiTVEPm5lkc76+M213
-	 hpJcGjQR2jkYFXOB8mNEN9T9UDXl9ZKzdwd3YQh98zHZBM420kNBtYFfDp1QnzczeI
-	 URT48WQLi50Nflno8jMo3ZhI+DI8zauCwWINXjeqj7btjIsj4UBQP8HuYJi9+yoKcs
-	 gR/3UyzHjcocTieIweh8pNQObowxtuXShJAtioy/6R+ufVbuZD0bGD7xoTwCs5T1IC
-	 1afF2D7/RTUyLe1iIqRAd3h5vxmrVnYZkHgdnUyvQRL72nCh65Yqx1ERc7b+7RFDQO
-	 cetWh8H65oDGQ==
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1705584664; c=relaxed/simple;
+	bh=S6IKGjBr0anylaVLj4AUB6rmm67gcCQL9sQKmbVJiGQ=;
+	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
+	 References:In-Reply-To:From:Date:Message-ID:Subject:To:Cc:
+	 Content-Type:Content-Transfer-Encoding; b=Iux2TuWKbKESNX9HifC7evtxtBMawALA8ngLewyCsH6/RzCK73R2vQd5SN+oEfxLyzuQf/oo/rG8OXh/+se90b+VL47KS6abLesU/v+llqWjRKqp0qPkRsNJk+uc9ATOO/v1eTUFEoXLw12Eq1lc7pIY/JKKlIafwwTjRw1Dlyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fgdWuqL3; arc=none smtp.client-ip=209.85.219.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-6817505b188so17093256d6.3;
+        Thu, 18 Jan 2024 05:31:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705584662; x=1706189462; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OiLgZqM8424D2bY2ed4KovAb0P+COGDlfoFeZdV6VHw=;
+        b=fgdWuqL3AwfKe75+U1r3pXd2zkPT4eh8Dl6FLBxNSeFA3e4wQ4gIUqV2N4jaXbmHZ+
+         so+cQFukyj+aifz/XhAsrpecZ6J3qK0e7mLOApdgig1mhTDUtR5jyQtIjo9bCwz4XhqB
+         ru2/Hjez8ssabPaJEbw7cYFZt5JK3GQFk57+UNKHfnEHnGesaMuNtFbG28kyMiwMaTYL
+         G2onAXn6odyQvO6pfbIQScFnvWsuxRT0AP2umCAeondnkXSxPEqnLwbgl759vsnQlx2h
+         BcnF11oVF+dqk8B749cErcm6f65yaZ37j3467+hcU2wCh6SzVz7XZsKp9+FHUO54bU5s
+         dleg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705584662; x=1706189462;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OiLgZqM8424D2bY2ed4KovAb0P+COGDlfoFeZdV6VHw=;
+        b=IYXZ8WNXalnyMXs3dYEiJL5G8BlEvmdgjb7p2mRP8dIQw1NY1kAMLfyJ6oFwmQOrCs
+         O5XH6CFx4E5N+V0LobC2Alm+3sQ5Swb/8Z6g2Ms4jKqxYGsFTBlEEkzmKmnyNdHeJ4HG
+         1IiY04AyZA4aPHZF4f8eGunt+N+1FhIt0wBoJmZKZfQf9AWIE04YMJVNdU8fzB1RsKbY
+         33cGaCR15I0eHw20mFS0VZUqY4fI3pvF75Haw9RfY7ebpeoJ4NYMg0pmsOe9HL69ImxE
+         gYngiQfiQXARlfrCnoaYotkhPifnZR9cD53EiTVDr0H61h6mzGF04JZGrbKmpz0nZKR3
+         UGTg==
+X-Gm-Message-State: AOJu0YzQS6EC46TOkEfXXWhLHhQ29WKLwz4xHPTfHzrf2egl+knKLyDi
+	RMQVvHIuvva+RqaGasxEWPBd+xDH5WTci4QM66rwifyMvfYZn2olm6BSZ5X3eNZtyaq9j7zMiq9
+	u5R6rBFG2C9YdUH+sy8FxE0+FcqR3admgVPA=
+X-Google-Smtp-Source: AGHT+IF8gjTz5nfWp3ZOOAC8PSw88fN1JQZl1r9njdQ53kJnTvI+0kkDAPo6TyQTRsrE3qu2Oysw/vMVM39hEla9DJo=
+X-Received: by 2002:a05:6214:1312:b0:681:89ec:9789 with SMTP id
+ pn18-20020a056214131200b0068189ec9789mr842575qvb.128.1705584661734; Thu, 18
+ Jan 2024 05:31:01 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: Re: [PATCH V6] wifi: brcmfmac: Fix use-after-free bug in
- brcmf_cfg80211_detach
-From: Kalle Valo <kvalo@kernel.org>
-In-Reply-To: <20240107072504.392713-1-arend.vanspriel@broadcom.com>
-References: <20240107072504.392713-1-arend.vanspriel@broadcom.com>
-To: Arend van Spriel <arend.vanspriel@broadcom.com>
-Cc: linux-wireless@vger.kernel.org, Zheng Wang <zyytlz.wz@163.com>,
- stable@vger.kernel.org, Arend van Spriel <arend.vanspriel@broadcom.com>
-User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
-Message-ID: <170558386628.2924528.18082567611022970252.kvalo@kernel.org>
-Date: Thu, 18 Jan 2024 13:17:47 +0000 (UTC)
+References: <20240118104144.465158-1-mszeredi@redhat.com> <CAOQ4uxgB3qhqtTGsvgLQ6x4taZ4m-V0MD9rXJ_zacTPrCR+bow@mail.gmail.com>
+ <CAJfpegvhWwmHXzo3dd5VYLrCjUhxAesNAha-dOB+PCP8M2rM2g@mail.gmail.com> <157a90d9b3a5469a003bc5981b0fdee17a55bc18.camel@redhat.com>
+In-Reply-To: <157a90d9b3a5469a003bc5981b0fdee17a55bc18.camel@redhat.com>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Thu, 18 Jan 2024 15:30:49 +0200
+Message-ID: <CAOQ4uxiJwXftzVUBRnOHC_Q65HNsYfpt3TKnfsCaxssyDRAc1g@mail.gmail.com>
+Subject: Re: [PATCH] ovl: require xwhiteout feature flag on layer roots
+To: Alexander Larsson <alexl@redhat.com>
+Cc: Miklos Szeredi <miklos@szeredi.hu>, Miklos Szeredi <mszeredi@redhat.com>, 
+	linux-unionfs@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Arend van Spriel <arend.vanspriel@broadcom.com> wrote:
+On Thu, Jan 18, 2024 at 2:08=E2=80=AFPM Alexander Larsson <alexl@redhat.com=
+> wrote:
+>
+> Resending with plan text.
+>
+> On Thu, 2024-01-18 at 12:39 +0100, Miklos Szeredi wrote:
+> > On Thu, 18 Jan 2024 at 12:22, Amir Goldstein <amir73il@gmail.com>
+> > wrote:
+> > >
+> > > On Thu, Jan 18, 2024 at 12:41=E2=80=AFPM Miklos Szeredi
+> > > <mszeredi@redhat.com> wrote:
+> > > >
+> > > > Add a check on each layer for the xwhiteout feature.  This
+> > > > prevents
+> > > > unnecessary checking the overlay.whiteouts xattr when reading a
+> > > > directory if this feature is not enabled, i.e. most of the time.
+> > >
+> > > Does it really have a significant cost or do you just not like the
+> > > unneeded check?
+> >
+> > It's probably insignificant.   But I don't know and it would be hard
+> > to prove.
+> >
+> > > IIRC, we anyway check for ORIGIN xattr and IMPURE xattr on
+> > > readdir.
+> >
+> > We check those on lookup, not at readdir.  Might make sense to check
+> > XWHITEOUTS at lookup regardless of this patch, just for consistency.
+> >
+> > > > --- a/fs/overlayfs/overlayfs.h
+> > > > +++ b/fs/overlayfs/overlayfs.h
+> > > > @@ -51,6 +51,7 @@ enum ovl_xattr {
+> > > >         OVL_XATTR_PROTATTR,
+> > > >         OVL_XATTR_XWHITEOUT,
+> > > >         OVL_XATTR_XWHITEOUTS,
+> > > > +       OVL_XATTR_FEATURE_XWHITEOUT,
+> > >
+> > > Can we not add a new OVL_XATTR_FEATURE_XWHITEOUT xattr.
+> > >
+> > > Setting OVL_XATTR_XWHITEOUTS on directories with xwhiteouts is
+> > > anyway the responsibility of the layer composer.
+> > >
+> > > Let's just require the layer composer to set OVL_XATTR_XWHITEOUTS
+> > > on the layer root even if it does not have any immediate xwhiteout
+> > > children as "layer may have xwhiteouts" indication. ok?
+> >
+> > Okay.
+> > >
+>
+> This will cause readdir() on the root dir to always look for whiteouts
+> even though there are none, but that is probably fine.
+>
+> It does mean we don't have to change xfstests, but I still have to
+> change mkcomposefs.
+>
+>
+> > > > @@ -1414,6 +1414,17 @@ int ovl_fill_super(struct super_block *sb,
+> > > > struct fs_context *fc)
+> > > >         if (err)
+> > > >                 goto out_free_oe;
+> > > >
+> > > > +       for (i =3D 0; i < ofs->numlayer; i++) {
+> > > > +               struct path path =3D { .mnt =3D layers[i].mnt };
+> > > > +
+> > > > +               if (path.mnt) {
+> > > > +                       path.dentry =3D path.mnt->mnt_root;
+> > > > +                       err =3D ovl_path_getxattr(ofs, &path,
+> > > > OVL_XATTR_FEATURE_XWHITEOUT, NULL, 0);
+> > > > +                       if (err >=3D 0)
+> > > > +                               layers[i].feature_xwhiteout =3D
+> > > > true;
+> > >
+> > >
+> > > Any reason not to do this in ovl_get_layers() when adding the
+> > > layer?
+> >
+> > Well, ovl_get_layers() is called form ovl_get_lowerstack() implying
+> > that it's part of the lower layer setup.
+> >
+> > Otherwise I don't see why it could not be in ovl_get_layers().
+> > Maybe
+> > some renaming can help.
+> >
+>
+> In the version I was preparing
+> (https://github.com/alexlarsson/linux/tree/ovl-xattr-whiteouts-feature)
+> it does the setup in ovl_get_layers(). The one difference this makes is
+> that it doesn't apply feature_xwhiteout on the upperdir layer. I don't
+> think we want to do xwhiteouts on the upperdir, but if we do it needs
+> to be initialized in ovl_get_upper() too.
+>
 
-> From: Zheng Wang <zyytlz.wz@163.com>
-> 
-> This is the candidate patch of CVE-2023-47233 :
-> https://nvd.nist.gov/vuln/detail/CVE-2023-47233
-> 
-> In brcm80211 driver,it starts with the following invoking chain
-> to start init a timeout worker:
-> 
-> ->brcmf_usb_probe
->   ->brcmf_usb_probe_cb
->     ->brcmf_attach
->       ->brcmf_bus_started
->         ->brcmf_cfg80211_attach
->           ->wl_init_priv
->             ->brcmf_init_escan
->               ->INIT_WORK(&cfg->escan_timeout_work,
-> 		  brcmf_cfg80211_escan_timeout_worker);
-> 
-> If we disconnect the USB by hotplug, it will call
-> brcmf_usb_disconnect to make cleanup. The invoking chain is :
-> 
-> brcmf_usb_disconnect
->   ->brcmf_usb_disconnect_cb
->     ->brcmf_detach
->       ->brcmf_cfg80211_detach
->         ->kfree(cfg);
-> 
-> While the timeout woker may still be running. This will cause
-> a use-after-free bug on cfg in brcmf_cfg80211_escan_timeout_worker.
-> 
-> Fix it by deleting the timer and canceling the worker in
-> brcmf_cfg80211_detach.
-> 
-> Fixes: e756af5b30b0 ("brcmfmac: add e-scan support.")
-> Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-> Cc: stable@vger.kernel.org
-> [arend.vanspriel@broadcom.com: keep timer delete as is and cancel work just before free]
-> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+If there is no use case for xwhiteouts support in upper then
+maybe we should not support it?
 
-Patch applied to wireless-next.git, thanks.
+Anyway, I am fine with Miklos' version or with checking xwhiteouts in
+ovl_get_upper() and ovl_get_layers() or with not supporting
+xwhiteouts on upper.
 
-0f7352557a35 wifi: brcmfmac: Fix use-after-free bug in brcmf_cfg80211_detach
-
--- 
-https://patchwork.kernel.org/project/linux-wireless/patch/20240107072504.392713-1-arend.vanspriel@broadcom.com/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-
+Thanks,
+Amir.
 
