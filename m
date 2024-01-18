@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-12088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 637248317AB
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:59:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C87BA83176B
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:57:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33455289181
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:59:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 078911C224DF
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:57:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53BD923777;
-	Thu, 18 Jan 2024 10:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2253B1B96D;
+	Thu, 18 Jan 2024 10:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e97019IJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FTNtEOk6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1179423754;
-	Thu, 18 Jan 2024 10:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D713C22323;
+	Thu, 18 Jan 2024 10:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575572; cv=none; b=bT+w+EAN33h/nzZoe1y/NztPlU5ePQA5Uouril+918Bkqs9hozWeirSMQFRxGYFHoTOuJMdPRw5+qZzY4/7NCDcIMAajDolOm8Wb2F6R1Iw75vAtXMZ68l6PfpE93L5LTo104nqJh0yCKjsS9+bIb2+CZxcGl9bhpOTkltoxgaA=
+	t=1705575418; cv=none; b=pG/kDwfLqilmVuqvQn+13m5iWl7bBVrae174Babx4sNmNySs2pAGMfpXEqHwY8Gf80CXypkHAKG1fl2zig/eksJOenJQYa50DjJ+Nv8oWWKGEpiHXFrUS+5/Bb21wM7jdd9YBMlW4VymHn7LQRw9OCZXO0ybZErJSBzqFKFxhIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575572; c=relaxed/simple;
-	bh=R8gxZrEyfTSrYk1Cr3uIgcxQ5D+uVz71ismzXOoTQE8=;
+	s=arc-20240116; t=1705575418; c=relaxed/simple;
+	bh=ygnpirTk+AdLC0aPZaTD/TeIUVbGAfgwDlZeRfRky1M=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=elXW5IbkA/3nThz8JhiFvZpBTXefFMJA8Q1QX6H5PIkyHepo6PyBpKwp28J965n4Jt7V6GoBuuwCAuImzsa3nqLWFRtgNzSZCaRN/wyRTBBPE90N0wBb5VO8edS86QHsrcqied42t6MOEz1FjiotvF6J7qosRuH4qWbtidNHGSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e97019IJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8398CC433F1;
-	Thu, 18 Jan 2024 10:59:31 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=dOGCePN4j2xfGS0OoKlA2BEDiOcU8SRRrwaMacLGPfjwd69D29Frvjuhzv3g1VWyVTqX5viWhRF+fe2NvKgyYsAsoiwlGeVlSl5Zh8Ldt86L4/B335kyMTYZoP3DO5b101zK1vj5MaavJ5BnHsojVNDJXbcrYsHczlGRlB6Z9lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FTNtEOk6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A90DC433F1;
+	Thu, 18 Jan 2024 10:56:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575571;
-	bh=R8gxZrEyfTSrYk1Cr3uIgcxQ5D+uVz71ismzXOoTQE8=;
+	s=korg; t=1705575418;
+	bh=ygnpirTk+AdLC0aPZaTD/TeIUVbGAfgwDlZeRfRky1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e97019IJwq2RDPxNX+pSTLMbmCVGeKYTcAJPJuxlPc/OGoU5FAueEm5FYuYXruPJY
-	 lk6faxCeZqoEEVJ6V11dWqOjColdrgQxcWtHIqwsBs4S8n/cXa5f/xmzoIaqy0XhaN
-	 OOX00FNlm0OamDA/0j3eDBM2U52v7gQhy+g0VUC4=
+	b=FTNtEOk6oNMbQJ7SYmBcWW2t5otZlxYrTCWJTpU26YYlHWAmsojD883oXRE6ibvkw
+	 8tzPTFk+CM361gCBaOQA2YrnNbn+2TdH7AJ//Q4uAnN+xi/CMjGm/qnaWXXfvjBDep
+	 BGFY9adufGyG2URfekyalIzEaCmpmL15W3olrK8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Avraham Stern <avraham.stern@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 029/100] ASoC: hdac_hda: Conditionally register dais for HDMI and Analog
-Date: Thu, 18 Jan 2024 11:48:37 +0100
-Message-ID: <20240118104312.187230305@linuxfoundation.org>
+Subject: [PATCH 6.6 096/150] wifi: iwlwifi: pcie: avoid a NULL pointer dereference
+Date: Thu, 18 Jan 2024 11:48:38 +0100
+Message-ID: <20240118104324.393185827@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-[ Upstream commit a0575b4add21a243cc3257e75ad913cd5377d5f2 ]
+[ Upstream commit ce038edfce43fb345f8dfdca0f7b17f535896701 ]
 
-The current driver is registering the same dais for each hdev found in the
-system which results duplicated widgets to be registered and the kernel
-log contains similar prints:
-snd_hda_codec_realtek ehdaudio0D0: ASoC: sink widget AIF1TX overwritten
-snd_hda_codec_realtek ehdaudio0D0: ASoC: source widget AIF1RX overwritten
-skl_hda_dsp_generic skl_hda_dsp_generic: ASoC: sink widget hifi3 overwritten
-skl_hda_dsp_generic skl_hda_dsp_generic: ASoC: sink widget hifi2 overwritten
-skl_hda_dsp_generic skl_hda_dsp_generic: ASoC: sink widget hifi1 overwritten
-skl_hda_dsp_generic skl_hda_dsp_generic: ASoC: source widget Codec Output Pin1 overwritten
-skl_hda_dsp_generic skl_hda_dsp_generic: ASoC: sink widget Codec Input Pin1 overwritten
-skl_hda_dsp_generic skl_hda_dsp_generic: ASoC: sink widget Analog Codec Playback overwritten
-skl_hda_dsp_generic skl_hda_dsp_generic: ASoC: sink widget Digital Codec Playback overwritten
-skl_hda_dsp_generic skl_hda_dsp_generic: ASoC: sink widget Alt Analog Codec Playback overwritten
-skl_hda_dsp_generic skl_hda_dsp_generic: ASoC: source widget Analog Codec Capture overwritten
-skl_hda_dsp_generic skl_hda_dsp_generic: ASoC: source widget Digital Codec Capture overwritten
-skl_hda_dsp_generic skl_hda_dsp_generic: ASoC: source widget Alt Analog Codec Capture overwritten
+It possible that while the rx rb is being handled, the transport has
+been stopped and re-started. In this case the tx queue pointer is not
+yet initialized, which will lead to a NULL pointer dereference.
+Fix it.
 
-To avoid such issue, split the dai array into HDMI and non HDMI array and
-register them conditionally:
-for HDMI hdev only register the dais needed for HDMI
-for non HDMI hdev do not  register the HDMI dais.
-
-Depends-on: 3d1dc8b1030d ("ASoC: Intel: skl_hda_dsp_generic: Drop HDMI routes when HDMI is not available")
-Link: https://github.com/thesofproject/linux/issues/4509
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Link: https://lore.kernel.org/r/20231128123914.3986-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20231207044813.cd0898cafd89.I0b84daae753ba9612092bf383f5c6f761446e964@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/hdac_hda.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/hdac_hda.c b/sound/soc/codecs/hdac_hda.c
-index 8af434e14bfb..21a00c86a139 100644
---- a/sound/soc/codecs/hdac_hda.c
-+++ b/sound/soc/codecs/hdac_hda.c
-@@ -124,6 +124,9 @@ static struct snd_soc_dai_driver hdac_hda_dais[] = {
- 		.sig_bits = 24,
- 	},
- },
-+};
-+
-+static struct snd_soc_dai_driver hdac_hda_hdmi_dais[] = {
- {
- 	.id = HDAC_HDMI_0_DAI_ID,
- 	.name = "intel-hdmi-hifi1",
-@@ -578,8 +581,16 @@ static const struct snd_soc_component_driver hdac_hda_codec = {
- 	.endianness		= 1,
- };
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+index a9415d333490..63091c45a576 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+@@ -1385,7 +1385,7 @@ static void iwl_pcie_rx_handle_rb(struct iwl_trans *trans,
+ 		 * if it is true then one of the handlers took the page.
+ 		 */
  
-+static const struct snd_soc_component_driver hdac_hda_hdmi_codec = {
-+	.probe			= hdac_hda_codec_probe,
-+	.remove			= hdac_hda_codec_remove,
-+	.idle_bias_on		= false,
-+	.endianness		= 1,
-+};
-+
- static int hdac_hda_dev_probe(struct hdac_device *hdev)
- {
-+	struct hdac_hda_priv *hda_pvt = dev_get_drvdata(&hdev->dev);
- 	struct hdac_ext_link *hlink;
- 	int ret;
- 
-@@ -592,9 +603,15 @@ static int hdac_hda_dev_probe(struct hdac_device *hdev)
- 	snd_hdac_ext_bus_link_get(hdev->bus, hlink);
- 
- 	/* ASoC specific initialization */
--	ret = devm_snd_soc_register_component(&hdev->dev,
--					 &hdac_hda_codec, hdac_hda_dais,
--					 ARRAY_SIZE(hdac_hda_dais));
-+	if (hda_pvt->need_display_power)
-+		ret = devm_snd_soc_register_component(&hdev->dev,
-+						&hdac_hda_hdmi_codec, hdac_hda_hdmi_dais,
-+						ARRAY_SIZE(hdac_hda_hdmi_dais));
-+	else
-+		ret = devm_snd_soc_register_component(&hdev->dev,
-+						&hdac_hda_codec, hdac_hda_dais,
-+						ARRAY_SIZE(hdac_hda_dais));
-+
- 	if (ret < 0) {
- 		dev_err(&hdev->dev, "failed to register HDA codec %d\n", ret);
- 		return ret;
+-		if (reclaim) {
++		if (reclaim && txq) {
+ 			u16 sequence = le16_to_cpu(pkt->hdr.sequence);
+ 			int index = SEQ_TO_INDEX(sequence);
+ 			int cmd_index = iwl_txq_get_cmd_index(txq, index);
 -- 
 2.43.0
 
