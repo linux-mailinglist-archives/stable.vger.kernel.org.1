@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-12053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86941831780
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:57:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DCA68317EF
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13875B2183D
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:57:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2FD31F2113E
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC9F22F0F;
-	Thu, 18 Jan 2024 10:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49009241F6;
+	Thu, 18 Jan 2024 11:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGkV4Ucm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ihs89KNp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDAC91774B;
-	Thu, 18 Jan 2024 10:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07910BE7F;
+	Thu, 18 Jan 2024 11:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575475; cv=none; b=u1bGdfQg0z6/iqFbN1HduUQyEyhmkWsER74RaFA5cH32/q+y5d53sMMX62iV7QCAgZx77iI/tOukp0YmQml6vkBlLnSRvqv8V/B8dHCmb7hsMLxLF8aJnpUbNKnZeFeNv+9nbn+nrly/5JSZCqPbgkGv60GeOtLJTccLkJbbG3Y=
+	t=1705575713; cv=none; b=Bf73SRSK9byjZCk/+ldX1tRbV6+ZJ0ugpop8OYBDZVEZ9Q5p/auRuFgwjQstVffzhefQCW/8BgVMNZJl6xyF/27BAjn/ZI64G4zvBRymq8hCa/LYCdzHCfGtA4YcMSngtfrtzMTq3tTF5FG/Q9LmghnO9pMz/fNeDWh8eR+jb+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575475; c=relaxed/simple;
-	bh=F5tpRCSCz2X7dUu55aEpXJ3cN8AE/ZoPNmk93X+zRiA=;
+	s=arc-20240116; t=1705575713; c=relaxed/simple;
+	bh=921yFkaS1u+DikEfL1yop4eZeFhS502uVLwAJ62US7U=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=U8tihVXvaAvuS7miNMrPWHiSXdg4BRo+QEgi7W3RtkN7v+tgq+XiIfgsZXqlHdPtOhucrw6I1NbbM006YeFUQcGHQ3f87IhxrCluv4ZBbLmZYPnaS6TYFu9MU0psRasZNMSywKdTHRyA0TBN4dCxi+gWlrUmrvLJoj2o7IIlPJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGkV4Ucm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12E2DC433F1;
-	Thu, 18 Jan 2024 10:57:53 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=eacTpzO5HtsXtDon3eutcPJttpYOJVfIWZXYRXaspWS+ZB3ldmkssipCsYg31ndl1hO7mNgDohML302q8QwM9IVuT6EQ9XFj61MCjrcbydkKC6gQW2A18Tk3SqtgXbJv93LhN89givQH64MJ0L9a0hx7PHiNUSquIdc/6lj6J2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ihs89KNp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77B15C433F1;
+	Thu, 18 Jan 2024 11:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575474;
-	bh=F5tpRCSCz2X7dUu55aEpXJ3cN8AE/ZoPNmk93X+zRiA=;
+	s=korg; t=1705575712;
+	bh=921yFkaS1u+DikEfL1yop4eZeFhS502uVLwAJ62US7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nGkV4Ucmu2i8hu+5sfOVQuepJJTeUANoocMeNOp3onCXq8Y4t3Z0+Ze7LojY9VVdt
-	 r+nBEgvRmBNJTS/SqrpHlbMI9VuebUWjAFS71SyjD0n1j/RXuhS4iKmF/htdftcbZB
-	 xXw8mToFNrJ+P5j9ykYhRuKdFqZIInFF8OBrVYjM=
+	b=Ihs89KNpIxLBpN+7TOWcSTQKKSBkeEWMWfbn+keAsNdT3PM9Aeauyws+Et1zgZUHD
+	 BAlRfFbjMP5EZk21ldiAMJjYTzPyDe97az/EDaCm6RyXz/orjJe6zRnw8TBm9uMqrw
+	 /7/UFVbJWh5hFSRc+juYEhMgMpbmQLRkQHNwu+vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cameron Williams <cang1@live.co.uk>,
-	Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Subject: [PATCH 6.6 145/150] parport: parport_serial: Add Brainboxes device IDs and geometry
+	Sarannya Sasikumar <quic_sarannya@quicinc.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 079/100] net: qrtr: ns: Return 0 if server port is not present
 Date: Thu, 18 Jan 2024 11:49:27 +0100
-Message-ID: <20240118104326.773726217@linuxfoundation.org>
+Message-ID: <20240118104314.335717027@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cameron Williams <cang1@live.co.uk>
+From: Sarannya S <quic_sarannya@quicinc.com>
 
-commit 6aa1fc5a8085bbc01687aa708dcf2dbe637a5ee3 upstream.
+[ Upstream commit 9bf2e9165f90dc9f416af53c902be7e33930f728 ]
 
-Add device IDs for the Brainboxes UC-203, UC-257, UC-414, UC-475,
-IS-300/IS-500 and PX-263/PX-295 and define the relevant "geometry"
-for the cards.
-This patch requires part 1 of this series.
+When a 'DEL_CLIENT' message is received from the remote, the corresponding
+server port gets deleted. A DEL_SERVER message is then announced for this
+server. As part of handling the subsequent DEL_SERVER message, the name-
+server attempts to delete the server port which results in a '-ENOENT' error.
+The return value from server_del() is then propagated back to qrtr_ns_worker,
+causing excessive error prints.
+To address this, return 0 from control_cmd_del_server() without checking the
+return value of server_del(), since the above scenario is not an error case
+and hence server_del() doesn't have any other error return value.
 
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
-Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Link: https://lore.kernel.org/r/AS4PR02MB7903A4094564BE28F1F926A6C4A6A@AS4PR02MB7903.eurprd02.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sarannya Sasikumar <quic_sarannya@quicinc.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/parport/parport_serial.c |   56 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+ net/qrtr/ns.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/parport/parport_serial.c
-+++ b/drivers/parport/parport_serial.c
-@@ -285,6 +285,38 @@ static struct pci_device_id parport_seri
- 	{ PCI_VENDOR_ID_SUNIX, PCI_DEVICE_ID_SUNIX_1999, PCI_VENDOR_ID_SUNIX,
- 	  0x0104, 0, 0, sunix_5099a },
+diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
+index 3e40a1ba48f7..4a13b9f7abb4 100644
+--- a/net/qrtr/ns.c
++++ b/net/qrtr/ns.c
+@@ -569,7 +569,9 @@ static int ctrl_cmd_del_server(struct sockaddr_qrtr *from,
+ 	if (!node)
+ 		return -ENOENT;
  
-+	/* Brainboxes UC-203 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0bc1,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0bc2,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
+-	return server_del(node, port, true);
++	server_del(node, port, true);
 +
-+	/* Brainboxes UC-257 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0861,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0862,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0863,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
-+
-+	/* Brainboxes UC-414 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0e61,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc414 },
-+
-+	/* Brainboxes UC-475 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0981,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0982,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_uc257 },
-+
-+	/* Brainboxes IS-300/IS-500 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x0da0,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_is300 },
-+
-+	/* Brainboxes PX-263/PX-295 */
-+	{ PCI_VENDOR_ID_INTASHIELD, 0x402c,
-+	  PCI_ANY_ID, PCI_ANY_ID, 0, 0, brainboxes_px263 },
-+
- 	{ 0, } /* terminate list */
- };
- MODULE_DEVICE_TABLE(pci,parport_serial_pci_tbl);
-@@ -550,6 +582,30 @@ static struct pciserial_board pci_parpor
- 		.base_baud      = 921600,
- 		.uart_offset	= 0x8,
- 	},
-+	[brainboxes_uc257] = {
-+		.flags		= FL_BASE2,
-+		.num_ports	= 2,
-+		.base_baud	= 115200,
-+		.uart_offset	= 8,
-+	},
-+	[brainboxes_is300] = {
-+		.flags		= FL_BASE2,
-+		.num_ports	= 1,
-+		.base_baud	= 115200,
-+		.uart_offset	= 8,
-+	},
-+	[brainboxes_uc414] = {
-+		.flags		= FL_BASE2,
-+		.num_ports	= 4,
-+		.base_baud	= 115200,
-+		.uart_offset	= 8,
-+	},
-+	[brainboxes_px263] = {
-+		.flags		= FL_BASE2,
-+		.num_ports	= 4,
-+		.base_baud	= 921600,
-+		.uart_offset	= 8,
-+	},
- };
++	return 0;
+ }
  
- struct parport_serial_private {
+ static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
+-- 
+2.43.0
+
 
 
 
