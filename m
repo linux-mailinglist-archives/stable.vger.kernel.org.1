@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-12124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 302A88317E0
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EBE9A831755
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5A131F21219
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DCFC1F22803
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6A62377D;
-	Thu, 18 Jan 2024 11:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21DC123754;
+	Thu, 18 Jan 2024 10:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERcbkg5S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUQ3HBqG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC70022F0F;
-	Thu, 18 Jan 2024 11:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67D41774B;
+	Thu, 18 Jan 2024 10:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575676; cv=none; b=s4Ct05ytRQ9Qr6V64hsaOxQLbzWfY4Jqo4gtnTlhxdoPLYfICOOfj+C1li1412AtyJpWAS+lwWGK7PkdKhcEV4I1K/Sdlo6i4qFKbSnW2xQi824RbfkJgTBkqLF7UfGOSQ5kFzCwcF8FSHDj/vnePv6/o1Xbt7o+NSVs6WlA988=
+	t=1705575357; cv=none; b=QhX1xemhak87xk8e6hUVQ7DpygohsmXlwmzk11D58xVh4VOsN/TQsNLXYbmnjWp5uDneE4PGbodSxtJGlPRX0ZyhFFcJnXW2krSHiYkZ7qCTEJVI68oaibSvTj0MgE4i1EAN6Ltd2khiMj14TEBzSJjSvoBkZ/79S1x+NnsJ0Uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575676; c=relaxed/simple;
-	bh=7Fs+DBRQxp6jp3YCjn3KpCvk4C1PDKGXp3M/J/HWp7M=;
+	s=arc-20240116; t=1705575357; c=relaxed/simple;
+	bh=UTvOIYlG305LorknjCX84HniwDVYdfliigTvCS81uyY=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=d2XRJfAkGHcqSTv2IVYFQIAAp0gxm1CPJr+3OvYdahP1k/u33qJw7MwoLQwzrU8PxnfNY4/b9LwYB65FLXZpitmgjAkB+EbTvumNWhSpTgEJmRL8kfQDTAEYgiEOrY0lRRiwmM2vtDIXJWkfdgKQdHFyZ4kb2YwIVAm49vloOe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERcbkg5S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EABCC433C7;
-	Thu, 18 Jan 2024 11:01:16 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding; b=uT5frW/KCM2E/fDXLOBCbIxGtZ9GZ5l+yxNnyUJscMOwrT+0mDVXbv2utaGgbpKmiPNIgx0ckYQxxSpaW9+D1j+BZ1+zg9udoVIWt68d5ajeeSBf8W45xV9PUsgTNdm470LPIEDb2gzyFsMJKdfDhrsnCUeEQIzryUNFiaW/YX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUQ3HBqG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ADFDC433C7;
+	Thu, 18 Jan 2024 10:55:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575676;
-	bh=7Fs+DBRQxp6jp3YCjn3KpCvk4C1PDKGXp3M/J/HWp7M=;
+	s=korg; t=1705575357;
+	bh=UTvOIYlG305LorknjCX84HniwDVYdfliigTvCS81uyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ERcbkg5SVb3hXG94RVLuEGq+yW3oFQlaALrhyYEDseRmEJ+h1nxHLPh3V+IO0OGo6
-	 dyfWeTA3tJnWXKmeOJgKYsBu+Wi+3P5HOPC8LXcG0ddvWKcIGxpR1/Nx5Jv4PlHTAB
-	 W0BTZKl21qr62XhLE92EugRw3fVSzdIW4imFzv8E=
+	b=bUQ3HBqGY34AhRLz3ac1ISwPdTmyLRk7omm8cL3B4RdNgdurH/bfZHvmXEAeSbxfx
+	 q5fs/Bg6LF7mye8PEjdFtnXHjDNaN9EEMAIey8TFsMFvlkkv1FldmUF2Q2BykHE/Fp
+	 V62CkXf8sXuEc9B7koh1nc4tqdrtUmUF9wyRGk6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 037/100] drm/amdgpu: Add NULL checks for function pointers
-Date: Thu, 18 Jan 2024 11:48:45 +0100
-Message-ID: <20240118104312.526904492@linuxfoundation.org>
+Subject: [PATCH 6.6 104/150] platform/x86/amd/pmc: Move keyboard wakeup disablement detection to pmc-quirks
+Date: Thu, 18 Jan 2024 11:48:46 +0100
+Message-ID: <20240118104324.869171863@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 81577503efb49f4ad76af22f9941d72900ef4aab ]
+[ Upstream commit b614a4bd73efeddc2b20d9e6deb6c2710373802b ]
 
-Check if function is implemented before making the call.
+Other platforms may need to disable keyboard wakeup besides Cezanne,
+so move the detection into amd_pmc_quirks_init() where it may be applied
+to multiple platforms.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20231212045006.97581-4-mario.limonciello@amd.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/soc15.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/platform/x86/amd/pmc/pmc-quirks.c | 3 +++
+ drivers/platform/x86/amd/pmc/pmc.c        | 2 +-
+ drivers/platform/x86/amd/pmc/pmc.h        | 1 +
+ 3 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/soc15.c b/drivers/gpu/drm/amd/amdgpu/soc15.c
-index 2eddd7f6cd41..811dd3ea6362 100644
---- a/drivers/gpu/drm/amd/amdgpu/soc15.c
-+++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
-@@ -1411,9 +1411,11 @@ static void soc15_common_get_clockgating_state(void *handle, u64 *flags)
- 	if (amdgpu_sriov_vf(adev))
- 		*flags = 0;
+diff --git a/drivers/platform/x86/amd/pmc/pmc-quirks.c b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+index 6bbffb081053..c32046dfa960 100644
+--- a/drivers/platform/x86/amd/pmc/pmc-quirks.c
++++ b/drivers/platform/x86/amd/pmc/pmc-quirks.c
+@@ -235,6 +235,9 @@ void amd_pmc_quirks_init(struct amd_pmc_dev *dev)
+ {
+ 	const struct dmi_system_id *dmi_id;
  
--	adev->nbio.funcs->get_clockgating_state(adev, flags);
-+	if (adev->nbio.funcs && adev->nbio.funcs->get_clockgating_state)
-+		adev->nbio.funcs->get_clockgating_state(adev, flags);
++	if (dev->cpu_id == AMD_CPU_ID_CZN)
++		dev->disable_8042_wakeup = true;
++
+ 	dmi_id = dmi_first_match(fwbug_list);
+ 	if (!dmi_id)
+ 		return;
+diff --git a/drivers/platform/x86/amd/pmc/pmc.c b/drivers/platform/x86/amd/pmc/pmc.c
+index f28bee6854f4..96caf2221d87 100644
+--- a/drivers/platform/x86/amd/pmc/pmc.c
++++ b/drivers/platform/x86/amd/pmc/pmc.c
+@@ -878,7 +878,7 @@ static int amd_pmc_suspend_handler(struct device *dev)
+ {
+ 	struct amd_pmc_dev *pdev = dev_get_drvdata(dev);
  
--	adev->hdp.funcs->get_clock_gating_state(adev, flags);
-+	if (adev->hdp.funcs && adev->hdp.funcs->get_clock_gating_state)
-+		adev->hdp.funcs->get_clock_gating_state(adev, flags);
+-	if (pdev->cpu_id == AMD_CPU_ID_CZN && !disable_workarounds) {
++	if (pdev->disable_8042_wakeup && !disable_workarounds) {
+ 		int rc = amd_pmc_wa_irq1(pdev);
  
- 	if (adev->ip_versions[MP0_HWIP][0] != IP_VERSION(13, 0, 2)) {
+ 		if (rc) {
+diff --git a/drivers/platform/x86/amd/pmc/pmc.h b/drivers/platform/x86/amd/pmc/pmc.h
+index a85c235247d3..b4794f118739 100644
+--- a/drivers/platform/x86/amd/pmc/pmc.h
++++ b/drivers/platform/x86/amd/pmc/pmc.h
+@@ -36,6 +36,7 @@ struct amd_pmc_dev {
+ 	struct mutex lock; /* generic mutex lock */
+ 	struct dentry *dbgfs_dir;
+ 	struct quirk_entry *quirks;
++	bool disable_8042_wakeup;
+ };
  
-@@ -1429,9 +1431,11 @@ static void soc15_common_get_clockgating_state(void *handle, u64 *flags)
- 	}
- 
- 	/* AMD_CG_SUPPORT_ROM_MGCG */
--	adev->smuio.funcs->get_clock_gating_state(adev, flags);
-+	if (adev->smuio.funcs && adev->smuio.funcs->get_clock_gating_state)
-+		adev->smuio.funcs->get_clock_gating_state(adev, flags);
- 
--	adev->df.funcs->get_clockgating_state(adev, flags);
-+	if (adev->df.funcs && adev->df.funcs->get_clockgating_state)
-+		adev->df.funcs->get_clockgating_state(adev, flags);
- }
- 
- static int soc15_common_set_powergating_state(void *handle,
+ void amd_pmc_process_restore_quirks(struct amd_pmc_dev *dev);
 -- 
 2.43.0
 
