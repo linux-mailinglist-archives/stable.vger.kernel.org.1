@@ -1,132 +1,120 @@
-Return-Path: <stable+bounces-12192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C0B831C46
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 16:22:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3F4E831D1F
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 17:01:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FF0C285D86
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 15:22:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 603EC1F22756
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 16:01:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CC628DA7;
-	Thu, 18 Jan 2024 15:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7551424B40;
+	Thu, 18 Jan 2024 16:01:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="hAT8jOyX"
+	dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b="hUEZ8kij"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+Received: from smtp70.ord1d.emailsrvr.com (smtp70.ord1d.emailsrvr.com [184.106.54.70])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123951F95F;
-	Thu, 18 Jan 2024 15:22:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06B228DC5
+	for <stable@vger.kernel.org>; Thu, 18 Jan 2024 16:01:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=184.106.54.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705591346; cv=none; b=JrsKEr5IjUZnRIsdRW8/iM4tAE3KWVL2LvwM5oP3qphPXecCmyIOqKkNNGKPaqn8wX0jsE06RraXXK4bE5NSD8GozNkOGx3QNCKiHaB4Pn+9Mwr7Qo+pwczUZPYDLin+ewLBRRIumFi3ZSn7lGHN3KxeU1t2gOdmK/qnPXqPfxI=
+	t=1705593709; cv=none; b=dXrIb0a0JgnEcNgcs64rpV1vMDLv5OBP8u1HS23d5zSsjjKnznzfUes86KWtxAIGM686UCAUdVwSOSWbwlEEiJmwIH2UdbjnebZlRt9OIkGU28nPIMiS+JeTm0mpAXrjU92w3bCwuazK0kavmvfXo3KbziikZLkoDio5UOS4BBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705591346; c=relaxed/simple;
-	bh=OTRmtMl7dbECQJ9c5+miFZBFo14eBzJtWPlhqg3L60w=;
-	h=DKIM-Signature:Received:From:To:Cc:Date:Message-Id:X-Mailer:
-	 In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:
-	 X-SA-Exim-Connect-IP:X-SA-Exim-Mail-From:X-Spam-Checker-Version:
-	 X-Spam-Level:X-Spam-Report:X-Spam-Status:Subject:X-SA-Exim-Version:
-	 X-SA-Exim-Scanned; b=hlczLFR+6GSc0yLHw++FbkvXGO4vVn/Rh4s7D34Mgiqn7RkjRomHVbOiEYdaClHH0dvM55wShLhqYYOP6Mg/6sxmbmO1y9n1Gfmcfgjn9h6s5oH4kkwcQL5ufeYz1ZIdWh9V/Ndiw5g8QHaVMV7VHD3+dtmcE4oV4iZM5FAz/J0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=hAT8jOyX; arc=none smtp.client-ip=162.243.120.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-	; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Cc:To
-	:From:subject:date:message-id:reply-to;
-	bh=P/yi0yRZzS5Rxr3pJf0/wayJja3c4ZSVATomfFCr88Q=; b=hAT8jOyXxjUaxz/FhKW16NMYrL
-	XXEInn0y1zJiFJqrnot3pkt+0na3Ag8L4k834qACva2lZ7BcZk6SQqUKOmE9NeAKgm2RIMjLNq4Pm
-	RCtUVlMaPqYzULzbVk1cQZ/DsU9TF1Mr91SUMMqI6pIj5dD69jbc35bTvYVlUKuOE16E=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:57058 helo=pettiford.lan)
-	by mail.hugovil.com with esmtpa (Exim 4.92)
-	(envelope-from <hugo@hugovil.com>)
-	id 1rQUDi-0002lf-EF; Thu, 18 Jan 2024 10:22:19 -0500
-From: Hugo Villeneuve <hugo@hugovil.com>
-To: gregkh@linuxfoundation.org,
-	jirislaby@kernel.org,
-	cosmin.tanislav@analog.com,
-	andy.shevchenko@gmail.com,
-	shc_work@mail.ru
-Cc: linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	hugo@hugovil.com,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	stable@vger.kernel.org
-Date: Thu, 18 Jan 2024 10:21:57 -0500
-Message-Id: <20240118152213.2644269-2-hugo@hugovil.com>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240118152213.2644269-1-hugo@hugovil.com>
-References: <20240118152213.2644269-1-hugo@hugovil.com>
+	s=arc-20240116; t=1705593709; c=relaxed/simple;
+	bh=781GUzTrZR4lCWVjwiN2ZImuwJhWCk5byAoPzKtiyGE=;
+	h=DKIM-Signature:X-Auth-ID:Received:Message-ID:Date:MIME-Version:
+	 User-Agent:Subject:Content-Language:To:Cc:References:From:
+	 Organization:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 X-Classification-ID; b=udRe9bfeZ/73XC3nzvEBM+zv+C7n5fcdDD5q2yDT9uTJqTPCreq6eXGdOfiTsEN1+FSnxpskWVheXWc+NvVOohGL0FS6kqY7YDkumlsscoL3jTsw70a2lVXSJV2NB8YyGHsvFXgHV0NarW3NAHzmuQX9njzLUj09AvnaGzYHAvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk; spf=pass smtp.mailfrom=mev.co.uk; dkim=pass (1024-bit key) header.d=mev.co.uk header.i=@mev.co.uk header.b=hUEZ8kij; arc=none smtp.client-ip=184.106.54.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mev.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mev.co.uk
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+	s=20221208-6x11dpa4; t=1705591432;
+	bh=781GUzTrZR4lCWVjwiN2ZImuwJhWCk5byAoPzKtiyGE=;
+	h=Date:Subject:To:From:From;
+	b=hUEZ8kijvooAGFa9qlCf3BydtAWS9IJUIAITwfdqlgCIzth6uo/EOmFlkATt0BwHV
+	 2xx+eWgYTXOlgNKTwYDGLem1K5S+YR/eF6j7U/vhFC2XKtHq/C++kSrFnA0XRieWW+
+	 QJ+zHeMoIqMT2mRhme7YFioRx9u0RZDfW5bHqUN0=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp17.relay.ord1d.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id BF753200A8;
+	Thu, 18 Jan 2024 10:23:51 -0500 (EST)
+Message-ID: <02c0b221-9d4e-43fd-9dc8-40827698e947@mev.co.uk>
+Date: Thu, 18 Jan 2024 15:23:50 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
-X-Spam-Level: 
-X-Spam-Report: 
-	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-	* -0.0 T_SCC_BODY_TEXT_LINE No description available.
-Subject: [PATCH v2 01/17] serial: max310x: fix NULL pointer dereference in I2C instantiation
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] comedi: drivers: ni_tio: Fix arithmetic expression
+ overflow
+Content-Language: en-GB
+To: David Laight <David.Laight@ACULAB.COM>,
+ 'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>,
+ Denis Arefev <arefev@swemel.ru>
+Cc: H Hartley Sweeten <hsweeten@visionengravers.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20240118123747.45795-1-arefev@swemel.ru>
+ <2024011842-groggy-badly-393c@gregkh>
+ <3f8d1a69e3434d2085aa3564357fa31d@AcuMS.aculab.com>
+From: Ian Abbott <abbotti@mev.co.uk>
+Organization: MEV Ltd.
+In-Reply-To: <3f8d1a69e3434d2085aa3564357fa31d@AcuMS.aculab.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Classification-ID: 89e0e230-a6d3-467b-8623-55334269d420-1-1
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+On 2024-01-18 14:37, David Laight wrote:
+>> -----Original Message-----
+>> From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>> Sent: 18 January 2024 14:14
+>> To: Denis Arefev <arefev@swemel.ru>
+>> Cc: Ian Abbott <abbotti@mev.co.uk>; H Hartley Sweeten <hsweeten@visionengravers.com>; linux-
+>> kernel@vger.kernel.org; lvc-project@linuxtesting.org; stable@vger.kernel.org
+>> Subject: Re: [PATCH] comedi: drivers: ni_tio: Fix arithmetic expression overflow
+>>
+>> On Thu, Jan 18, 2024 at 03:37:47PM +0300, Denis Arefev wrote:
+>>> The value of an arithmetic expression period_ns * 1000 is subject
+>>> to overflow due to a failure to cast operands to a larger data
+>>> type before performing arithmetic
+>>>
+>>> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>>>
+>>> Fixes: 3e90b1c7ebe9 ("staging: comedi: ni_tio: tidy up ni_tio_set_clock_src() and helpers")
+>>> Cc: <stable@vger.kernel.org> # v5.15+
+>>> Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+>>> Signed-off-by: Denis Arefev <arefev@swemel.ru>
+>>> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+>>> ---
+>>>   drivers/comedi/drivers/ni_tio.c | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/comedi/drivers/ni_tio.c b/drivers/comedi/drivers/ni_tio.c
+>>> index da6826d77e60..acc914903c70 100644
+>>> --- a/drivers/comedi/drivers/ni_tio.c
+>>> +++ b/drivers/comedi/drivers/ni_tio.c
+>>> @@ -800,7 +800,7 @@ static int ni_tio_set_clock_src(struct ni_gpct *counter,
+>>>   				GI_PRESCALE_X2(counter_dev->variant) |
+>>>   				GI_PRESCALE_X8(counter_dev->variant), bits);
+>>>   	}
+>>> -	counter->clock_period_ps = period_ns * 1000;
+>>> +	counter->clock_period_ps = period_ns * 1000UL;
+> 
+> What about 32bit systems...
 
-When trying to instantiate a max14830 device from userspace:
+Oh, good point.  It should be 1000ULL.
 
-    echo max14830 0x60 > /sys/bus/i2c/devices/i2c-2/new_device
-
-we get the following error:
-
-    Unable to handle kernel NULL pointer dereference at virtual address...
-    ...
-    Call trace:
-        max310x_i2c_probe+0x48/0x170 [max310x]
-        i2c_device_probe+0x150/0x2a0
-    ...
-
-Add check for validity of devtype to prevent the error, and abort probe
-with a meaningful error message.
-
-Fixes: 2e1f2d9a9bdb ("serial: max310x: implement I2C support")
-Cc: <stable@vger.kernel.org>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
----
- drivers/tty/serial/max310x.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/tty/serial/max310x.c b/drivers/tty/serial/max310x.c
-index f3a99daebdaa..4a33fd950ed2 100644
---- a/drivers/tty/serial/max310x.c
-+++ b/drivers/tty/serial/max310x.c
-@@ -1602,13 +1602,16 @@ static unsigned short max310x_i2c_slave_addr(unsigned short addr,
- 
- static int max310x_i2c_probe(struct i2c_client *client)
- {
--	const struct max310x_devtype *devtype =
--			device_get_match_data(&client->dev);
-+	const struct max310x_devtype *devtype;
- 	struct i2c_client *port_client;
- 	struct regmap *regmaps[4];
- 	unsigned int i;
- 	u8 port_addr;
- 
-+	devtype = device_get_match_data(&client->dev);
-+	if (!devtype)
-+		return dev_err_probe(&client->dev, -ENODEV, "Failed to match device\n");
-+
- 	if (client->addr < devtype->slave_addr.min ||
- 		client->addr > devtype->slave_addr.max)
- 		return dev_err_probe(&client->dev, -EINVAL,
 -- 
-2.39.2
-
+-=( Ian Abbott <abbotti@mev.co.uk> || MEV Ltd. is a company  )=-
+-=( registered in England & Wales.  Regd. number: 02862268.  )=-
+-=( Regd. addr.: S11 & 12 Building 67, Europa Business Park, )=-
+-=( Bird Hall Lane, STOCKPORT, SK3 0XA, UK. || www.mev.co.uk )=-
 
