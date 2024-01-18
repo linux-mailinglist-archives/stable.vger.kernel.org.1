@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-12010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4E90831754
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 302A88317E0
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 536F41F22E70
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5A131F21219
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE27923746;
-	Thu, 18 Jan 2024 10:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6A62377D;
+	Thu, 18 Jan 2024 11:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQHBO8GH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERcbkg5S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C34122323;
-	Thu, 18 Jan 2024 10:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC70022F0F;
+	Thu, 18 Jan 2024 11:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575354; cv=none; b=dNUI6UU13UIDBzXGUX2kloBaf9xiv/PzoaQ6yRj5MLG2RBsn3/13PoNx0lTa6wb+ckCfBAZ93AdfvTcKfA0G/SGDncSIl+Lr3z4ZNSKIgiJgw+kCX3PRhffvXDKHQsXNV+SW/R8qHxNoX8dkUHa1yWebOoQt6R7t/gXvdz2ABBI=
+	t=1705575676; cv=none; b=s4Ct05ytRQ9Qr6V64hsaOxQLbzWfY4Jqo4gtnTlhxdoPLYfICOOfj+C1li1412AtyJpWAS+lwWGK7PkdKhcEV4I1K/Sdlo6i4qFKbSnW2xQi824RbfkJgTBkqLF7UfGOSQ5kFzCwcF8FSHDj/vnePv6/o1Xbt7o+NSVs6WlA988=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575354; c=relaxed/simple;
-	bh=ft1u/8iaaphD6WpB62i8i2HIFry+EoLlyKDOmGz6NFg=;
+	s=arc-20240116; t=1705575676; c=relaxed/simple;
+	bh=7Fs+DBRQxp6jp3YCjn3KpCvk4C1PDKGXp3M/J/HWp7M=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding; b=GWcHGjhSnW6ZSNUQcijjOFjEMQ5TDTgjfDLxEYInpiLDBQG7IJPeHelm6SAcWnEaiCeUzrrhL2aGHIqYkRKainodnRGf15q34fyAFkA6jKAVQH3PrzexoQ58r+pCC01IBUit4UfujCAIAt/2NfpO8RnIV+pZZw6LK3bwcFSzuAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQHBO8GH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01904C433C7;
-	Thu, 18 Jan 2024 10:55:53 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=d2XRJfAkGHcqSTv2IVYFQIAAp0gxm1CPJr+3OvYdahP1k/u33qJw7MwoLQwzrU8PxnfNY4/b9LwYB65FLXZpitmgjAkB+EbTvumNWhSpTgEJmRL8kfQDTAEYgiEOrY0lRRiwmM2vtDIXJWkfdgKQdHFyZ4kb2YwIVAm49vloOe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERcbkg5S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EABCC433C7;
+	Thu, 18 Jan 2024 11:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575354;
-	bh=ft1u/8iaaphD6WpB62i8i2HIFry+EoLlyKDOmGz6NFg=;
+	s=korg; t=1705575676;
+	bh=7Fs+DBRQxp6jp3YCjn3KpCvk4C1PDKGXp3M/J/HWp7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQHBO8GHmTr8rSsJqUy1PRVkmMGOHX3QwBGvn8HxcQ2raeU8quS5DazkGIXLMfFwY
-	 UlzKpaFxYmS/a5woSgjBjItSaR7f0sDfjA5FQrv/7j/+02OBXfk/QzKm0XRJ+H6RDm
-	 sIXWDd3iseVXPw48DJXiM84jKZVEfvhEJVb/MVfY=
+	b=ERcbkg5SVb3hXG94RVLuEGq+yW3oFQlaALrhyYEDseRmEJ+h1nxHLPh3V+IO0OGo6
+	 dyfWeTA3tJnWXKmeOJgKYsBu+Wi+3P5HOPC8LXcG0ddvWKcIGxpR1/Nx5Jv4PlHTAB
+	 W0BTZKl21qr62XhLE92EugRw3fVSzdIW4imFzv8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 103/150] platform/x86/amd/pmc: Only run IRQ1 firmware version check on Cezanne
+Subject: [PATCH 6.1 037/100] drm/amdgpu: Add NULL checks for function pointers
 Date: Thu, 18 Jan 2024 11:48:45 +0100
-Message-ID: <20240118104324.828218759@linuxfoundation.org>
+Message-ID: <20240118104312.526904492@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 2d53c0ab61e62302d7b62d660fe76de2bff6bf45 ]
+[ Upstream commit 81577503efb49f4ad76af22f9941d72900ef4aab ]
 
-amd_pmc_wa_czn_irq1() only runs on Cezanne platforms currently but
-may be extended to other platforms in the future.  Rename the function
-and only check platform firmware version when it's called for a Cezanne
-based platform.
+Check if function is implemented before making the call.
 
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20231212045006.97581-3-mario.limonciello@amd.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmc/pmc.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/soc15.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc.c b/drivers/platform/x86/amd/pmc/pmc.c
-index 3fea32880ac8..f28bee6854f4 100644
---- a/drivers/platform/x86/amd/pmc/pmc.c
-+++ b/drivers/platform/x86/amd/pmc/pmc.c
-@@ -704,19 +704,22 @@ static int amd_pmc_get_os_hint(struct amd_pmc_dev *dev)
- 	return -EINVAL;
+diff --git a/drivers/gpu/drm/amd/amdgpu/soc15.c b/drivers/gpu/drm/amd/amdgpu/soc15.c
+index 2eddd7f6cd41..811dd3ea6362 100644
+--- a/drivers/gpu/drm/amd/amdgpu/soc15.c
++++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
+@@ -1411,9 +1411,11 @@ static void soc15_common_get_clockgating_state(void *handle, u64 *flags)
+ 	if (amdgpu_sriov_vf(adev))
+ 		*flags = 0;
+ 
+-	adev->nbio.funcs->get_clockgating_state(adev, flags);
++	if (adev->nbio.funcs && adev->nbio.funcs->get_clockgating_state)
++		adev->nbio.funcs->get_clockgating_state(adev, flags);
+ 
+-	adev->hdp.funcs->get_clock_gating_state(adev, flags);
++	if (adev->hdp.funcs && adev->hdp.funcs->get_clock_gating_state)
++		adev->hdp.funcs->get_clock_gating_state(adev, flags);
+ 
+ 	if (adev->ip_versions[MP0_HWIP][0] != IP_VERSION(13, 0, 2)) {
+ 
+@@ -1429,9 +1431,11 @@ static void soc15_common_get_clockgating_state(void *handle, u64 *flags)
+ 	}
+ 
+ 	/* AMD_CG_SUPPORT_ROM_MGCG */
+-	adev->smuio.funcs->get_clock_gating_state(adev, flags);
++	if (adev->smuio.funcs && adev->smuio.funcs->get_clock_gating_state)
++		adev->smuio.funcs->get_clock_gating_state(adev, flags);
+ 
+-	adev->df.funcs->get_clockgating_state(adev, flags);
++	if (adev->df.funcs && adev->df.funcs->get_clockgating_state)
++		adev->df.funcs->get_clockgating_state(adev, flags);
  }
  
--static int amd_pmc_czn_wa_irq1(struct amd_pmc_dev *pdev)
-+static int amd_pmc_wa_irq1(struct amd_pmc_dev *pdev)
- {
- 	struct device *d;
- 	int rc;
- 
--	if (!pdev->major) {
--		rc = amd_pmc_get_smu_version(pdev);
--		if (rc)
--			return rc;
--	}
-+	/* cezanne platform firmware has a fix in 64.66.0 */
-+	if (pdev->cpu_id == AMD_CPU_ID_CZN) {
-+		if (!pdev->major) {
-+			rc = amd_pmc_get_smu_version(pdev);
-+			if (rc)
-+				return rc;
-+		}
- 
--	if (pdev->major > 64 || (pdev->major == 64 && pdev->minor > 65))
--		return 0;
-+		if (pdev->major > 64 || (pdev->major == 64 && pdev->minor > 65))
-+			return 0;
-+	}
- 
- 	d = bus_find_device_by_name(&serio_bus, NULL, "serio0");
- 	if (!d)
-@@ -876,7 +879,7 @@ static int amd_pmc_suspend_handler(struct device *dev)
- 	struct amd_pmc_dev *pdev = dev_get_drvdata(dev);
- 
- 	if (pdev->cpu_id == AMD_CPU_ID_CZN && !disable_workarounds) {
--		int rc = amd_pmc_czn_wa_irq1(pdev);
-+		int rc = amd_pmc_wa_irq1(pdev);
- 
- 		if (rc) {
- 			dev_err(pdev->dev, "failed to adjust keyboard wakeup: %d\n", rc);
+ static int soc15_common_set_powergating_state(void *handle,
 -- 
 2.43.0
 
