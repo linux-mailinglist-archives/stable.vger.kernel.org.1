@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-12079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ADED8317A3
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:59:33 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD4A8831743
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:55:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1338BB2297D
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:59:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B1E41F26C7E
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 057E023754;
-	Thu, 18 Jan 2024 10:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A261722F18;
+	Thu, 18 Jan 2024 10:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ljNMg9hY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O70dj3CR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7584241F2;
-	Thu, 18 Jan 2024 10:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62AE322F06;
+	Thu, 18 Jan 2024 10:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575546; cv=none; b=plWlP6Q1ZGLqtjvVgmItla+VGv8kjYhgwNMUBNEf5ONSkfDsXLseyjiEPO+S8813qBd6OOTixRXc9R3R1vOhXg3KVSVrfjtOTkbbWVaBLNqn7YGs62FaCM4NWPM96USg1FssQW7c0TsuAt1g/DOFDKEAtcGQUNdRcRNgRD658LA=
+	t=1705575310; cv=none; b=AjFci+dNZON7cOOGA+ZRy3DvrM6ripdoFlTb0M/x/yC4ZbHhSvMPbXSv7ZufVW3moG2skIaU5QiuxrQXoPdPuhbdoBTRFOgGyC+lAZgUgCfVF9Z68plxe345zVsGsLTIGO/+dGPwfbI/XfJDURGLV8cqxOgosGCHAbvnSJ21BPg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575546; c=relaxed/simple;
-	bh=yK0En5GCO+CYRKwjJbJBaDXM1RN5x170OVYWTNnzV4I=;
+	s=arc-20240116; t=1705575310; c=relaxed/simple;
+	bh=L9z71P5Pe9FVPIVzKq/tkm3reREjCStqyMJWJv5g3U8=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding; b=njWk5mUTP1pUAMAtftqYAjH7TqQXx3sb13RQmb9tbdqxWTp3LhG7IsSeF0R31JHOfI6vGwwG1sbCeQHJ56L/mzqJCMcsWBpg5+HfwiriiGd6R+2t4s6ymx2TABVF8wysys/bumX7ERB20sLk6a5c+u+++GbBxyAXEC5igq1ga7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ljNMg9hY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A940C433F1;
-	Thu, 18 Jan 2024 10:59:06 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=udsCX9yZqpnEtskN2LlJkgMS/dp9FlW3r+dcc6qSAEZB5y3f7B/WF0Y7n5nXFI9BIuXnhg6K0hwRDBuHKnyvBHf1S1f0cia97eSqs7BBiaYuPQzobHXqJRdImjjRxk9a4zMTE+jw8Ei39dTjmqVf2rW08U3eg4XAtC/Wu1Qzmbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O70dj3CR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB1D5C433F1;
+	Thu, 18 Jan 2024 10:55:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575546;
-	bh=yK0En5GCO+CYRKwjJbJBaDXM1RN5x170OVYWTNnzV4I=;
+	s=korg; t=1705575310;
+	bh=L9z71P5Pe9FVPIVzKq/tkm3reREjCStqyMJWJv5g3U8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ljNMg9hYgbWXHqpkpDsSBVao7R+qQXGc8gyhgjtgdEpNuz9I2Dx3o5M7/ShMVPGvb
-	 3/Gszmx6NYGMFHM+TeU0AGW+lbgCBvKhWfAvyAIHtyoHsymmRbH8l6eDfI4NXXNoRb
-	 H1IA9uaesH3GHMyWy5Gvw4zHpmjVrkN0JFb7/Jgg=
+	b=O70dj3CRhyWH8IzlUm99xwRU2MUmpSPBUH7WXrDMfWyr5k2nChyrpedv8IhMwnZqx
+	 k8+8hru9mMR7fGVH32vavwl4fUwofCaEbU2Jje1IIEYz7f4aM1N2ACKAVvoGwlWJRx
+	 tUXfvwmFodlY9wJ4TXUcXXtV2TWc3nQMNjjDm84w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamil Duljas <kamil.duljas@gmail.com>,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 020/100] ASoC: Intel: Skylake: Fix mem leak in few functions
+Subject: [PATCH 6.6 086/150] reset: hisilicon: hi6220: fix Wvoid-pointer-to-enum-cast warning
 Date: Thu, 18 Jan 2024 11:48:28 +0100
-Message-ID: <20240118104311.797422413@linuxfoundation.org>
+Message-ID: <20240118104323.938812274@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamil Duljas <kamil.duljas@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit d5c65be34df73fa01ed05611aafb73b440d89e29 ]
+[ Upstream commit b5ec294472794ed9ecba0cb4b8208372842e7e0d ]
 
-The resources should be freed when function return error.
+'type' is an enum, thus cast of pointer on 64-bit compile test with W=1
+causes:
 
-Signed-off-by: Kamil Duljas <kamil.duljas@gmail.com>
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20231116125150.1436-1-kamil.duljas@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  hi6220_reset.c:166:9: error: cast to smaller integer type 'enum hi6220_reset_ctrl_type' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
+
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230810091300.70197-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/skylake/skl-pcm.c     | 4 +++-
- sound/soc/intel/skylake/skl-sst-ipc.c | 4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/reset/hisilicon/hi6220_reset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/skylake/skl-pcm.c b/sound/soc/intel/skylake/skl-pcm.c
-index 1015716f9336..7ef004107513 100644
---- a/sound/soc/intel/skylake/skl-pcm.c
-+++ b/sound/soc/intel/skylake/skl-pcm.c
-@@ -251,8 +251,10 @@ static int skl_pcm_open(struct snd_pcm_substream *substream,
- 	snd_pcm_set_sync(substream);
- 
- 	mconfig = skl_tplg_fe_get_cpr_module(dai, substream->stream);
--	if (!mconfig)
-+	if (!mconfig) {
-+		kfree(dma_params);
- 		return -EINVAL;
-+	}
- 
- 	skl_tplg_d0i3_get(skl, mconfig->d0i3_caps);
- 
-diff --git a/sound/soc/intel/skylake/skl-sst-ipc.c b/sound/soc/intel/skylake/skl-sst-ipc.c
-index 7a425271b08b..fd9624ad5f72 100644
---- a/sound/soc/intel/skylake/skl-sst-ipc.c
-+++ b/sound/soc/intel/skylake/skl-sst-ipc.c
-@@ -1003,8 +1003,10 @@ int skl_ipc_get_large_config(struct sst_generic_ipc *ipc,
- 
- 	reply.size = (reply.header >> 32) & IPC_DATA_OFFSET_SZ_MASK;
- 	buf = krealloc(reply.data, reply.size, GFP_KERNEL);
--	if (!buf)
-+	if (!buf) {
-+		kfree(reply.data);
+diff --git a/drivers/reset/hisilicon/hi6220_reset.c b/drivers/reset/hisilicon/hi6220_reset.c
+index 8d1fce18ded7..5c3267acd2b1 100644
+--- a/drivers/reset/hisilicon/hi6220_reset.c
++++ b/drivers/reset/hisilicon/hi6220_reset.c
+@@ -163,7 +163,7 @@ static int hi6220_reset_probe(struct platform_device *pdev)
+ 	if (!data)
  		return -ENOMEM;
-+	}
- 	*payload = buf;
- 	*bytes = reply.size;
  
+-	type = (enum hi6220_reset_ctrl_type)of_device_get_match_data(dev);
++	type = (uintptr_t)of_device_get_match_data(dev);
+ 
+ 	regmap = syscon_node_to_regmap(np);
+ 	if (IS_ERR(regmap)) {
 -- 
 2.43.0
 
