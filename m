@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-11934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D05938316FF
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:52:25 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D639683172E
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:54:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 706F41F26ABD
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:52:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E5851F26BD1
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:54:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9584B22F0B;
-	Thu, 18 Jan 2024 10:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1296923746;
+	Thu, 18 Jan 2024 10:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EXSHUy/N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTd4r2uO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549A71B96D;
-	Thu, 18 Jan 2024 10:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FBA1B96D;
+	Thu, 18 Jan 2024 10:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575143; cv=none; b=IGeNC1+tQene8vgdO7n19guZOcUjGGbCP2VHO3byhAuebcyHWu6IbZjd62NLWsOZ/fxlMIlDG+z3TLVpnMxPDzKqD0agyZrlXEkm7eZ13mxHESPqOXkYHS8N+2X6SUuSWzawF02RyVEM99lqheMeZhgmQSEEzVdf0yaWcoK+rlI=
+	t=1705575251; cv=none; b=nhJKwvDfFDoPXSTZgb+VRDodEYCMSWcsPZoPCizB/Z1fPI5JL+2IczT6Yt9HfKq1ruEKYNUSFE73HZ2yU0NMLHsfRYE2385UJgtVA5KoGmpbpxqJdILKQChwI4oW42cd6MR5kb2Rz6PQTddSsjQ6mFa8HWMg4f2rBKyi6Rk2a2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575143; c=relaxed/simple;
-	bh=99ihF+f7X521OL/4XCri4hwSthDXHrM3u2QBOBaE0Dc=;
+	s=arc-20240116; t=1705575251; c=relaxed/simple;
+	bh=8hlBKuEbsTBw8XGsS+yQ/bcKjL1YN/zPwhzjjTFIwnM=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=R/9slaivA1H1x1b/xs0P7A6uGpmil2KNd0HuNt+StCJZg5BCbxmJ7wjrah5SrTtvYXWdFu8bWVfsmgW9b0/su7fLAPcwZvlt/COwm76nBn6Sy3AkUsWO9gBUkfnd4RDbKHXMSHgBHPJ/qVPSn9oSlb/qy6aYf9dBX963AhNarko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EXSHUy/N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDAE5C433C7;
-	Thu, 18 Jan 2024 10:52:22 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=jlXbsl8WziUqY6P+oBl1Gt6HNQo8b9CpuV24LmSFfUjBdHMxE0UzlhmIDlOvzcy50JY+tb+QLuzHGUgPGgfEzFZ9P9Zxq5k9BnVQz2BMmyjUfli7b9H/ifpA6oteEcyytdr6ycT1qn4mQJQV+eeFHknvLQt2QV2rm9Jo50THFUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTd4r2uO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A72BC433C7;
+	Thu, 18 Jan 2024 10:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575143;
-	bh=99ihF+f7X521OL/4XCri4hwSthDXHrM3u2QBOBaE0Dc=;
+	s=korg; t=1705575251;
+	bh=8hlBKuEbsTBw8XGsS+yQ/bcKjL1YN/zPwhzjjTFIwnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EXSHUy/NA26GTP8P3Wbph26AKRN4umKPr4HfjyFewLW2IpQdix3k1PBU9MpBDcnCG
-	 2SH4PRJvoySHlurloYPv0yDcmkaJB+oM9zHRPyD2KXE/1l5h6vqnNrZlVzz6tHsuCP
-	 U7vuJtY40PugrBYR7cpAuSUzWIOYwk0SKbMXpZmM=
+	b=MTd4r2uOCn2IujMbWWyFac8Ke10ikPU/qmzAHKSwsWfZZ8GNGVJxmveSrUOVNeJsH
+	 WA1cwfluPTbgcE7bIVsc0PdNi9LHR6rNz/8WGs1k5ooQ9HbkFqlvPH9P8v8R+Mi6NO
+	 FXav2D61wtdLk7dzameMDmYXNeB7DecqbCCBAC2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 026/150] hwtracing: hisi_ptt: Handle the interrupt in hardirq context
-Date: Thu, 18 Jan 2024 11:47:28 +0100
-Message-ID: <20240118104321.283055369@linuxfoundation.org>
+Subject: [PATCH 6.6 027/150] hwtracing: hisi_ptt: Dont try to attach a task
+Date: Thu, 18 Jan 2024 11:47:29 +0100
+Message-ID: <20240118104321.333388412@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
 References: <20240118104320.029537060@linuxfoundation.org>
@@ -70,46 +70,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Yicong Yang <yangyicong@hisilicon.com>
 
-[ Upstream commit e0dd27ad8af00f147ac3c9de88e0687986afc3ea ]
+[ Upstream commit aff787f64ad7cbb54614b51b82c682fe06411ef3 ]
 
-Handle the trace interrupt in the hardirq context, make sure the irq
-core won't threaded it by declaring IRQF_NO_THREAD and userspace won't
-balance it by declaring IRQF_NOBALANCING. Otherwise we may violate the
-synchronization requirements of the perf core, referenced to the
-change of arm-ccn PMU
-  commit 0811ef7e2f54 ("bus: arm-ccn: fix PMU interrupt flags").
-
-In the interrupt handler we mainly doing 2 things:
-- Copy the data from the local DMA buffer to the AUX buffer
-- Commit the data in the AUX buffer
+PTT is an uncore PMU and shouldn't be attached to any task. Block
+the usage in pmu::event_init().
 
 Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
 Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ Fixed commit description to suppress checkpatch warning ]
 Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20231010084731.30450-3-yangyicong@huawei.com
+Link: https://lore.kernel.org/r/20231010084731.30450-5-yangyicong@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/ptt/hisi_ptt.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/hwtracing/ptt/hisi_ptt.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/hwtracing/ptt/hisi_ptt.c b/drivers/hwtracing/ptt/hisi_ptt.c
-index 3045d1894b81..dbed4fd4e296 100644
+index dbed4fd4e296..a991ecb7515a 100644
 --- a/drivers/hwtracing/ptt/hisi_ptt.c
 +++ b/drivers/hwtracing/ptt/hisi_ptt.c
-@@ -342,9 +342,9 @@ static int hisi_ptt_register_irq(struct hisi_ptt *hisi_ptt)
- 		return ret;
+@@ -1000,6 +1000,9 @@ static int hisi_ptt_pmu_event_init(struct perf_event *event)
+ 		return -EOPNOTSUPP;
+ 	}
  
- 	hisi_ptt->trace_irq = pci_irq_vector(pdev, HISI_PTT_TRACE_DMA_IRQ);
--	ret = devm_request_threaded_irq(&pdev->dev, hisi_ptt->trace_irq,
--					NULL, hisi_ptt_isr, 0,
--					DRV_NAME, hisi_ptt);
-+	ret = devm_request_irq(&pdev->dev, hisi_ptt->trace_irq, hisi_ptt_isr,
-+				IRQF_NOBALANCING | IRQF_NO_THREAD, DRV_NAME,
-+				hisi_ptt);
- 	if (ret) {
- 		pci_err(pdev, "failed to request irq %d, ret = %d\n",
- 			hisi_ptt->trace_irq, ret);
++	if (event->attach_state & PERF_ATTACH_TASK)
++		return -EOPNOTSUPP;
++
+ 	if (event->attr.type != hisi_ptt->hisi_ptt_pmu.type)
+ 		return -ENOENT;
+ 
 -- 
 2.43.0
 
