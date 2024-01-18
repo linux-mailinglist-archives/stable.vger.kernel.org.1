@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-12156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A420D831805
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:03:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B800B8316E1
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:51:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7627E28BE35
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:03:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 493FDB23CD3
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:51:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25E822F1B;
-	Thu, 18 Jan 2024 11:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C4223741;
+	Thu, 18 Jan 2024 10:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMIR56Ud"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQ/Qk0YU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 908B0BE7F;
-	Thu, 18 Jan 2024 11:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E357822F09;
+	Thu, 18 Jan 2024 10:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575767; cv=none; b=i4OQhYy7SVRBbTxM/7X9/j7cfWfJ8H3ZwHpxn295xPb/n5sJcW2TUL6wCPCUau5AS8AywQI202QsKhfffWDYgCWztC+4Oylucnb2rVC1lxRPqCsH+271xy3mtqECUlKDjnUN7oeq3T5YBiLeTplMh+g9WTbO0Ks+ksc0+1peBaQ=
+	t=1705575057; cv=none; b=VtIadSrw2huydeMdg7NSE7eE6xtL9shVUfDu9qIzfIjFgaCOPwsS7ZT5hQkbXySjR7FaCQPfTSQBgC1YR3duxxYJ8YD6F5NRrcnYGuqpuRsZ+OIbDVcFrbu2W+6cOjwmDrO1XPMwz1RDCGI2BS0rTO25JjiI5Vz+sInygzkKjUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575767; c=relaxed/simple;
-	bh=RKqErKffTc5CfUzc5qj9oPhacTB/8ZyQMm9sUKA4sUI=;
+	s=arc-20240116; t=1705575057; c=relaxed/simple;
+	bh=pcnawyCBl1Uw9MGTXwi2ItmlhPDsHsbl5rQiPuYcZCw=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=FFhm6LMnyEK8RoFIijgjLb5se6GcW3dWxMS0avnTKWiBRP1UjaAzFenO+F3QSOEk74vDF8tpDSym8AA5AZuNyr5lh5AERmoPpr8wFnAdAmW8XJG2CSMKfidmOA1aQZM56aImAIkwFyJZ2Vclo8x6hAGBsaoVbs9vsXq3FqKGE54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMIR56Ud; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D9D4C43390;
-	Thu, 18 Jan 2024 11:02:46 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=TM/5juG3JOtTT5IGvn4WgXYSDDd28wDgczXWKmTyhg7ZTEd19nWJZ5cBD6UPL53FTKA6vFxv/64e3EmWRVSWAgX+XapJwOaVgBwo5CjWeP3piFFv70XmVkHqNHzWb9Y9CWp6b6VOOK+LF3NJzXCekjPZ4/7Hadb7AqeD9e+qFeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQ/Qk0YU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66085C433C7;
+	Thu, 18 Jan 2024 10:50:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575767;
-	bh=RKqErKffTc5CfUzc5qj9oPhacTB/8ZyQMm9sUKA4sUI=;
+	s=korg; t=1705575056;
+	bh=pcnawyCBl1Uw9MGTXwi2ItmlhPDsHsbl5rQiPuYcZCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WMIR56UdmSc/t0uXt8RbAKjTYMh1wWwr4wZp26VioGUzNymFjFymBPBFfvLbU8p4p
-	 Gz+6OvWBNMkE0rY09hu8gzfFIeLDA47nqIxRvelfKY7Ca8/cPXE3VlKhhg5JwxsEwt
-	 A4L5ogbjpSdiOXMTyv0yEh+sNN/2acMTDRrC15as=
+	b=yQ/Qk0YUubWsJ/zaVB9hbXdjtLZ0LkZ3Q+a8ERS8bCKQBvindvWlVgDIh4oK+fPcY
+	 /dZaA/uxo5fwvPUocIfg+fQAFsTgE/Wgp/XJCvq2ovVoBJitPP85p/MlkZifrGC/yC
+	 wUZGfi4IueVeD0gbCtDjNfay+FtTNSWsWJ/8l2XU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/100] ASoC: Intel: bytcr_rt5640: Add quirk for the Medion Lifetab S10346
+	kernel test robot <lkp@intel.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: [PATCH 6.7 25/28] coresight: etm4x: Fix width of CCITMIN field
 Date: Thu, 18 Jan 2024 11:49:15 +0100
-Message-ID: <20240118104313.868802815@linuxfoundation.org>
+Message-ID: <20240118104302.081294957@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
+References: <20240118104301.249503558@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: James Clark <james.clark@arm.com>
 
-[ Upstream commit 99c7bb44f5749373bc01b73af02b50b69bcbf43d ]
+commit cc0271a339cc70cae914c3ec20edc2a8058407da upstream.
 
-Add a quirk for the Medion Lifetab S10346, this BYTCR tablet has no CHAN
-package in its ACPI tables and uses SSP0-AIF1 rather then SSP0-AIF2 which
-is the default for BYTCR devices.
+CCITMIN is a 12 bit field and doesn't fit in a u8, so extend it to u16.
+This probably wasn't an issue previously because values higher than 255
+never occurred.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://msgid.link/r/20231217213221.49424-1-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+But since commit 4aff040bcc8d ("coresight: etm: Override TRCIDR3.CCITMIN
+on errata affected cpus"), a comparison with 256 was done to enable the
+errata, generating the following W=1 build error:
+
+  coresight-etm4x-core.c:1188:24: error: result of comparison of
+  constant 256 with expression of type 'u8' (aka 'unsigned char') is
+  always false [-Werror,-Wtautological-constant-out-of-range-compare]
+
+   if (drvdata->ccitmin == 256)
+
+Cc: stable@vger.kernel.org
+Fixes: 2e1cdfe184b5 ("coresight-etm4x: Adding CoreSight ETM4x driver")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310302043.as36UFED-lkp@intel.com/
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Signed-off-by: James Clark <james.clark@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20231101115206.70810-1-james.clark@arm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/hwtracing/coresight/coresight-etm4x.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index 783c20125992..b63c16c67898 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -884,6 +884,18 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
- 					BYT_RT5640_SSP0_AIF1 |
- 					BYT_RT5640_MCLK_EN),
- 	},
-+	{
-+		/* Medion Lifetab S10346 */
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "AMI Corporation"),
-+			DMI_MATCH(DMI_BOARD_NAME, "Aptio CRB"),
-+			/* Above strings are much too generic, also match on BIOS date */
-+			DMI_MATCH(DMI_BIOS_DATE, "10/22/2015"),
-+		},
-+		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
-+					BYT_RT5640_SSP0_AIF1 |
-+					BYT_RT5640_MCLK_EN),
-+	},
- 	{	/* Mele PCG03 Mini PC */
- 		.matches = {
- 			DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "Mini PC"),
--- 
-2.43.0
-
+--- a/drivers/hwtracing/coresight/coresight-etm4x.h
++++ b/drivers/hwtracing/coresight/coresight-etm4x.h
+@@ -1036,7 +1036,7 @@ struct etmv4_drvdata {
+ 	u8				ctxid_size;
+ 	u8				vmid_size;
+ 	u8				ccsize;
+-	u8				ccitmin;
++	u16				ccitmin;
+ 	u8				s_ex_level;
+ 	u8				ns_ex_level;
+ 	u8				q_support;
 
 
 
