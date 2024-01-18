@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-11898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E3338316DA
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:50:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 099C28316CE
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:50:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10B8B287C18
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:50:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D09B0287AE6
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:50:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D63302376B;
-	Thu, 18 Jan 2024 10:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1433A23760;
+	Thu, 18 Jan 2024 10:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OWD3ZFsr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1hL1o8E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 934BB22F1B;
-	Thu, 18 Jan 2024 10:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3C4F22F06;
+	Thu, 18 Jan 2024 10:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575043; cv=none; b=TamGUoR9KNr/hhGSEmgOm+kzSxj6PSGqXFdFpVor2XLaFDO0Gr8UPic5bf4PC41MZ+hy5nDK5apdkW1exqQeiFN80cuPyKLEececSP6sjH3CfAFTB8jbEtW3jPAFS53SLnUUSpjfApJZB/Vkw3NM997agZISH71fkjRNj5/AUzg=
+	t=1705575015; cv=none; b=h+yRlwjtieUkuJdxG2Qn2zDCMG0Z7D64uIwtfpld+bWmBz2HN2KQGxlI19qaJl9sccpG5iQt2DZUMtZxEuEkrXrz+Ll7KbGamUkTMl+0LWKeMQh5HAHBXjxU761t1y8DqbMTbnrYd6uRHd0ZOuDeI7fap3km4qz244rDVxqZLk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575043; c=relaxed/simple;
-	bh=xyB15rj1o70Nzqhi4TLaEC51iRZTrg72HNsy/gVa6KY=;
+	s=arc-20240116; t=1705575015; c=relaxed/simple;
+	bh=mXvSTL/F1V1VeiHkFOuIc4QNCY3XXbyrDTQywFmz8rE=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=nwnSh9Nu+WYuCPoGSISKUoYPXQIiMKiMxSs0YAic+hWhcTNAk6vRmedMZkfXuOqfcPd7qLs8d7ucVlGDou7Zg4xk6Q/jfD+xT6uBa+ikC0QZJyOqKOJx2y/iWHFszj6M7zUSin0KRLHjgQ2OYvbx0z13FNWIkMd0K8dItZzEots=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OWD3ZFsr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C40C433F1;
-	Thu, 18 Jan 2024 10:50:42 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding; b=Cop+3lLX93wZ44rcLkq58bG8o+lh3dDaJDh03cEQYKL9pNcA2pGvsR3MV2iWVm6uM1YwBaPWcT1HpyAHWIGufVD7vvp/xPWo06IlhcYmHWwF6mR88U1KSZmwyDI2ZYvHM1/5LK1WkOy3rDKEoI6upt4nR7RZ8n989lgjOw8mu6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1hL1o8E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECBE0C433C7;
+	Thu, 18 Jan 2024 10:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575043;
-	bh=xyB15rj1o70Nzqhi4TLaEC51iRZTrg72HNsy/gVa6KY=;
+	s=korg; t=1705575015;
+	bh=mXvSTL/F1V1VeiHkFOuIc4QNCY3XXbyrDTQywFmz8rE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OWD3ZFsr8/N9K53wdWpcaH3wgHBa+TWcLSMO+m6IUciklp8ZZDVtqmXWkg2VSxvoc
-	 eTFUJV/56XOUA4bNxmGUKgS3J4BK+/fWaM4GelPnY0sVZ6zPO0MUF0yH2WMJs0jViV
-	 gzED/Yt+WdJZvA50qMpzLNfASIxCsMQJ3HOjiYcQ=
+	b=U1hL1o8EGmVoGW/zqTS4EUhG6XhF+lyygUWU/cik1ISjCutYfBOQA1OisZ3Nu4gmF
+	 6dRu2os1NfcgfHBFpictow53NZKuqF4Z7igQq4k0PSQBPwV9uTDf59ccMS8MRCoWOj
+	 OnLq+QTq0PlUGVHmlIOcYWuCvsjSLroGYlrwisvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luis Acuna <ldacuna@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.7 09/28] ACPI: resource: Add another DMI match for the TongFang GMxXGxx
-Date: Thu, 18 Jan 2024 11:48:59 +0100
-Message-ID: <20240118104301.551179383@linuxfoundation.org>
+	Sjoerd Simons <sjoerd@collabora.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>
+Subject: [PATCH 6.7 10/28] bus: moxtet: Mark the irq as shared
+Date: Thu, 18 Jan 2024 11:49:00 +0100
+Message-ID: <20240118104301.589412437@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
 References: <20240118104301.249503558@linuxfoundation.org>
@@ -61,48 +62,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Sjoerd Simons <sjoerd@collabora.com>
 
-commit df0cced74159c79e36ce7971f0bf250673296d93 upstream.
+commit e7830f5a83e96d8cb8efc0412902a03008f8fbe3 upstream.
 
-The TongFang GMxXGxx, which needs IRQ overriding for the keyboard to work,
-is also sold as the Eluktronics RP-15 which does not use the standard
-TongFang GMxXGxx DMI board_name.
+The Turris Mox shares the moxtet IRQ with various devices on the board,
+so mark the IRQ as shared in the driver as well.
 
-Add an entry for this laptop to the irq1_edge_low_force_override[] DMI
-table to make the internal keyboard functional.
+Without this loading the module will fail with:
+  genirq: Flags mismatch irq 40. 00002002 (moxtet) vs. 00002080 (mcp7940x)
 
-Reported-by: Luis Acuna <ldacuna@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sjoerd Simons <sjoerd@collabora.com>
+Cc:  <stable@vger.kernel.org> # v6.2+
+Reviewed-by: Marek Behún <kabel@kernel.org>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/resource.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/bus/moxtet.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -511,6 +511,13 @@ static const struct dmi_system_id irq1_e
- 		},
- 	},
- 	{
-+		/* TongFang GMxXGxx sold as Eluktronics Inc. RP-15 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
-+			DMI_MATCH(DMI_BOARD_NAME, "RP-15"),
-+		},
-+	},
-+	{
- 		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "GM6XGxX"),
+--- a/drivers/bus/moxtet.c
++++ b/drivers/bus/moxtet.c
+@@ -755,7 +755,7 @@ static int moxtet_irq_setup(struct moxte
+ 	moxtet->irq.masked = ~0;
+ 
+ 	ret = request_threaded_irq(moxtet->dev_irq, NULL, moxtet_irq_thread_fn,
+-				   IRQF_ONESHOT, "moxtet", moxtet);
++				   IRQF_SHARED | IRQF_ONESHOT, "moxtet", moxtet);
+ 	if (ret < 0)
+ 		goto err_free;
+ 
 
 
 
