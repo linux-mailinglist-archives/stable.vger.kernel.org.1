@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-11993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B915D831742
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:55:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30D5B83179B
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:59:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 703351F26BC9
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:55:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10E32B20EF2
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3FA11B96D;
-	Thu, 18 Jan 2024 10:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3F922F16;
+	Thu, 18 Jan 2024 10:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0AMIUK3b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYsrTKik"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A36B21774B;
-	Thu, 18 Jan 2024 10:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3751774B;
+	Thu, 18 Jan 2024 10:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575307; cv=none; b=u2TshFcLi9NQhyGZlQ+4d428iC1W/VSqng7YVEAbjFsg/Sm9dTWJHddXpjym+f6GBuiF3+lkpFG1Y6yD99B2xyuJ2DIIqRePbLv2Zn0YJgt797dByRdrAY0mGtlUdHJ/dkr0Lq6SAQ4Dnrkd//I5kTA0GZ5iSMz8I5EqdA9L7xA=
+	t=1705575541; cv=none; b=KQUvWMlQsMVCG+BH1L7iBYeK8ux+3fOnPgbYOyBNNAKmjcoUzU6QcjAFsNWWzFQ2n47F14XwT8gUS0wzMo1zz/HNijDNDmo4eJsVVN5BikwVlJNo2u/5jyhRwTWIRspqxgCc6FekPEbQ45wKOaNa+pMjVCMf8WswsUCw5c112Wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575307; c=relaxed/simple;
-	bh=nHemeRnK0/nfqo8b6NeHT1O6g7Jzv+EJLcg06iuBFaw=;
+	s=arc-20240116; t=1705575541; c=relaxed/simple;
+	bh=cENdJfhYII7A2AOZ7uRmTX6BRncBURGPMdSnfftkutw=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding; b=E4xD43bOsKcH3ay0ng1zN+zjL4TDLnXHMZ1AZ2FDnWbr7LnoVAgp9V7H7UPom496lvZP7HvZKyc+ExRRxAW6I9XCNB/XpIWdYKmq3usJhMj/0GiLt0UWsaZ6ppoanDQeKamkkO0qVhnlh5eGIcQMYO1lQFmzWio/q2eEdDmPRVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0AMIUK3b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24244C433F1;
-	Thu, 18 Jan 2024 10:55:06 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=tCp91GBMof8Zc+MWal5Lgx8hvjnLt34NH+PEhGaZuNLXjEGRhYcpoGHBQFRKunFfi0r3DmGSQqt4KKDbsd4gX/+I5oUNkQren/nSe53KcVrASmCVgmTgZpOuRdb8Yn10/b0w1cbidGo9aNyxyUry1cpF7fLvwY610qTq3nrwfyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYsrTKik; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C4A1C433F1;
+	Thu, 18 Jan 2024 10:59:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575307;
-	bh=nHemeRnK0/nfqo8b6NeHT1O6g7Jzv+EJLcg06iuBFaw=;
+	s=korg; t=1705575541;
+	bh=cENdJfhYII7A2AOZ7uRmTX6BRncBURGPMdSnfftkutw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0AMIUK3bEMYHSYumUuJUQXRbJgVJ3Cq+zjcmB8W+ncIlqsoTmEIdDNM+UQWCaG8yf
-	 t/LjxfqRCmQr1lV4bx7tAi3UnGaVTtlXzvc6PZSFHgu6XGQjl1znr+33i9lRHObuI2
-	 g0EQe8/g07K+Zk6C/MHltH5xEAGTucP+17fbjPA4=
+	b=OYsrTKikhq/tLICokG69abohXp9lo0BPD49mqVoZDP/6o6+nKqS6TS4PlnktvTqtU
+	 vLDyy30kntiJ1DTXkIklXswuEg/7XqRQtzNUdh6FlQawh3nVZweoIVfqpcg1s2YzJo
+	 28MKC3xtjieNsYJW166LVXH+iHvvSF75avJYLiN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jos=C3=A9=20Pekkarinen?= <jose.pekkarinen@foxhound.fi>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/150] Input: psmouse - enable Synaptics InterTouch for ThinkPad L14 G1
+Subject: [PATCH 6.1 019/100] arm64: dts: rockchip: fix rk356x pcie msg interrupt name
 Date: Thu, 18 Jan 2024 11:48:27 +0100
-Message-ID: <20240118104323.897778690@linuxfoundation.org>
+Message-ID: <20240118104311.748080915@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +61,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: José Pekkarinen <jose.pekkarinen@foxhound.fi>
+From: Heiko Stuebner <heiko@sntech.de>
 
-[ Upstream commit c1f342f35f820b33390571293498c3e2e9bc77ec ]
+[ Upstream commit 3cee9c635f27d1003d46f624d816f3455698b625 ]
 
-Observed on dmesg of my laptop I see the following
-output:
+The expected name by the binding at this position is "msg" and the SoC's
+manual also calls the interrupt in question "msg", so fix the rk356x dtsi
+to use the correct name.
 
-[   19.898700] psmouse serio1: synaptics: queried max coordinates: x [..5678], y [..4694]
-[   19.936057] psmouse serio1: synaptics: queried min coordinates: x [1266..], y [1162..]
-[   19.936076] psmouse serio1: synaptics: Your touchpad (PNP: LEN0411 PNP0f13) says it can support a different bus. If i2c-hid and hid-rmi are not used, you might want to try setting psmouse.synaptics_intertouch to 1 and report this to linux-input@vger.kernel.org.
-[   20.008901] psmouse serio1: synaptics: Touchpad model: 1, fw: 10.32, id: 0x1e2a1, caps: 0xf014a3/0x940300/0x12e800/0x500000, board id: 3471, fw id: 2909640
-[   20.008925] psmouse serio1: synaptics: serio: Synaptics pass-through port at isa0060/serio1/input0
-[   20.053344] input: SynPS/2 Synaptics TouchPad as /devices/platform/i8042/serio1/input/input7
-[   20.397608] mousedev: PS/2 mouse device common for all mice
-
-This patch will add its pnp id to the smbus list to
-produce the setup of intertouch for the device.
-
-Signed-off-by: José Pekkarinen <jose.pekkarinen@foxhound.fi>
-Link: https://lore.kernel.org/r/20231114063607.71772-1-jose.pekkarinen@foxhound.fi
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20231114153834.934978-1-heiko@sntech.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/mouse/synaptics.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/rockchip/rk356x.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/input/mouse/synaptics.c b/drivers/input/mouse/synaptics.c
-index 22d16d80efb9..7a303a9d6bf7 100644
---- a/drivers/input/mouse/synaptics.c
-+++ b/drivers/input/mouse/synaptics.c
-@@ -183,6 +183,7 @@ static const char * const smbus_pnp_ids[] = {
- 	"LEN009b", /* T580 */
- 	"LEN0402", /* X1 Extreme Gen 2 / P1 Gen 2 */
- 	"LEN040f", /* P1 Gen 3 */
-+	"LEN0411", /* L14 Gen 1 */
- 	"LEN200f", /* T450s */
- 	"LEN2044", /* L470  */
- 	"LEN2054", /* E480 */
+diff --git a/arch/arm64/boot/dts/rockchip/rk356x.dtsi b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
+index 234b5bbda120..f4d6dbbbddcd 100644
+--- a/arch/arm64/boot/dts/rockchip/rk356x.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
+@@ -958,7 +958,7 @@ pcie2x1: pcie@fe260000 {
+ 			     <GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH>,
+ 			     <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>,
+ 			     <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
+-		interrupt-names = "sys", "pmc", "msi", "legacy", "err";
++		interrupt-names = "sys", "pmc", "msg", "legacy", "err";
+ 		bus-range = <0x0 0xf>;
+ 		clocks = <&cru ACLK_PCIE20_MST>, <&cru ACLK_PCIE20_SLV>,
+ 			 <&cru ACLK_PCIE20_DBI>, <&cru PCLK_PCIE20>,
 -- 
 2.43.0
 
