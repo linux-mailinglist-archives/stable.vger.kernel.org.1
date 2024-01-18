@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-11965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AC2F831725
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:54:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBAB7831728
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:54:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D5401C22352
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:54:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDE951C2233E
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:54:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4468823757;
-	Thu, 18 Jan 2024 10:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCE723746;
+	Thu, 18 Jan 2024 10:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGsNZmBb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f8dW1U9J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 048A71B96D;
-	Thu, 18 Jan 2024 10:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E5B91B96D;
+	Thu, 18 Jan 2024 10:53:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575230; cv=none; b=l4QXb69OCuHtSq2Bh2x1fYkilK7RS0PJw8qA6EeYLoD6Wl/tmfVhg0TunLfVyXRYkAcihoLCoOqoOBweGbuSGtmxsJjcDa1BOzA+LiWwQ48Ccf/gUhG74+FFNdTf3/8ILXNiB3cOIhDHgtHKKZuEsBHsPqWuAYx0kIS6nXO9oiU=
+	t=1705575235; cv=none; b=Upm6NlX8ltOsUsRlaL/8WjdLV2lyLExnmeJZ7uVoLiyTQ4169Y8PFd58FzOvBobpgLqerJYSpPrwD/hnXspQnt34Yra6iKIjZ5kB09A7D481xMp3c4WsOhjiD+pitIEjGZJCSyWEB8Yga0qIV3dPJv9A++txKC2Yg8Qf0LNW/hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575230; c=relaxed/simple;
-	bh=A7QjHw/Q0bz4L+b1EZPeHXSNZTtrDzHrPzDpokXmGIo=;
+	s=arc-20240116; t=1705575235; c=relaxed/simple;
+	bh=eiy4Ce5z/fxN5zMw5Df7Vk0SHiWVVbDciIrfoAwsK3M=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=Nuo+luBK3opib7AbZxkIBV759NHU2xT2ZcRu7q5MYDcKTPsE2CqFcAFbujdR2LX5f9bRfpiy03M/wG63KYlostkzipc6s6i9tyCRy2ufpgtrpPyRRnd2X3jHVFsHV1Rmdaeo78aOYehNFhLFHqJafEHpxbl/HMTe/qv0VvdSN7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SGsNZmBb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 480AAC433F1;
-	Thu, 18 Jan 2024 10:53:49 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding; b=n7sm0F9mEz/yV0s1kt49zrcd3/xyzXr4TQ/tkbc0IHLOQ7sCHa6Y+NQ6+v5wzwwamFFsvgpvuBnmjtLTR1A8uoE1p/dISHMfKUXg8f5v4tqaYOl8wxQabQNjzgCDVQLgVNhWtDzx22rS4hegK7IUx7i3JqQh6Mu2MpPRZkjiImg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f8dW1U9J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C82E2C433F1;
+	Thu, 18 Jan 2024 10:53:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575229;
-	bh=A7QjHw/Q0bz4L+b1EZPeHXSNZTtrDzHrPzDpokXmGIo=;
+	s=korg; t=1705575235;
+	bh=eiy4Ce5z/fxN5zMw5Df7Vk0SHiWVVbDciIrfoAwsK3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SGsNZmBb13hIvCbd7w46UrMCsw3xcz4iv2Pa0UvBsg/LIsVHVr7+LDBJqAqeYOIEu
-	 6fXkVu4LptzUlFsdcJBalbVGL5jyFSiUToI/D5qUQETI9jJsaqGCqoaXu7qE6H+HHU
-	 hyNcwX6kfX/ixvgCZrZvnxMOttkXKyvkaZjKnvGE=
+	b=f8dW1U9J6x4XII7ZLm3wQqyluriuE7XMd09I3PDF2UfUQ0rmr7qcXgLT+H63+Ogtq
+	 rgbGF/BgVxJ6eI4+A2ZLxISnmNEO0r9WQe6gCIYG4RCQtL3IS/cRq4T8ek0QEkSmBx
+	 r/71cUBDtMs5cxPrxnTciTHdRgyOgjQ0qY7gUQf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Kamil Duljas <kamil.duljas@gmail.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 030/150] arm64: dts: rockchip: fix rk356x pcie msg interrupt name
-Date: Thu, 18 Jan 2024 11:47:32 +0100
-Message-ID: <20240118104321.481669553@linuxfoundation.org>
+Subject: [PATCH 6.6 031/150] ASoC: Intel: Skylake: Fix mem leak in few functions
+Date: Thu, 18 Jan 2024 11:47:33 +0100
+Message-ID: <20240118104321.530398596@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
 References: <20240118104320.029537060@linuxfoundation.org>
@@ -61,41 +63,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Kamil Duljas <kamil.duljas@gmail.com>
 
-[ Upstream commit 3cee9c635f27d1003d46f624d816f3455698b625 ]
+[ Upstream commit d5c65be34df73fa01ed05611aafb73b440d89e29 ]
 
-The expected name by the binding at this position is "msg" and the SoC's
-manual also calls the interrupt in question "msg", so fix the rk356x dtsi
-to use the correct name.
+The resources should be freed when function return error.
 
-Reviewed-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20231114153834.934978-1-heiko@sntech.de
+Signed-off-by: Kamil Duljas <kamil.duljas@gmail.com>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20231116125150.1436-1-kamil.duljas@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk356x.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/intel/skylake/skl-pcm.c     | 4 +++-
+ sound/soc/intel/skylake/skl-sst-ipc.c | 4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk356x.dtsi b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-index abee88911982..b7e2b475f070 100644
---- a/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
-@@ -970,7 +970,7 @@ pcie2x1: pcie@fe260000 {
- 			     <GIC_SPI 73 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 72 IRQ_TYPE_LEVEL_HIGH>,
- 			     <GIC_SPI 71 IRQ_TYPE_LEVEL_HIGH>;
--		interrupt-names = "sys", "pmc", "msi", "legacy", "err";
-+		interrupt-names = "sys", "pmc", "msg", "legacy", "err";
- 		bus-range = <0x0 0xf>;
- 		clocks = <&cru ACLK_PCIE20_MST>, <&cru ACLK_PCIE20_SLV>,
- 			 <&cru ACLK_PCIE20_DBI>, <&cru PCLK_PCIE20>,
+diff --git a/sound/soc/intel/skylake/skl-pcm.c b/sound/soc/intel/skylake/skl-pcm.c
+index ac3dc8c63c26..29a03ee3d7f7 100644
+--- a/sound/soc/intel/skylake/skl-pcm.c
++++ b/sound/soc/intel/skylake/skl-pcm.c
+@@ -252,8 +252,10 @@ static int skl_pcm_open(struct snd_pcm_substream *substream,
+ 	snd_pcm_set_sync(substream);
+ 
+ 	mconfig = skl_tplg_fe_get_cpr_module(dai, substream->stream);
+-	if (!mconfig)
++	if (!mconfig) {
++		kfree(dma_params);
+ 		return -EINVAL;
++	}
+ 
+ 	skl_tplg_d0i3_get(skl, mconfig->d0i3_caps);
+ 
+diff --git a/sound/soc/intel/skylake/skl-sst-ipc.c b/sound/soc/intel/skylake/skl-sst-ipc.c
+index 7a425271b08b..fd9624ad5f72 100644
+--- a/sound/soc/intel/skylake/skl-sst-ipc.c
++++ b/sound/soc/intel/skylake/skl-sst-ipc.c
+@@ -1003,8 +1003,10 @@ int skl_ipc_get_large_config(struct sst_generic_ipc *ipc,
+ 
+ 	reply.size = (reply.header >> 32) & IPC_DATA_OFFSET_SZ_MASK;
+ 	buf = krealloc(reply.data, reply.size, GFP_KERNEL);
+-	if (!buf)
++	if (!buf) {
++		kfree(reply.data);
+ 		return -ENOMEM;
++	}
+ 	*payload = buf;
+ 	*bytes = reply.size;
+ 
 -- 
 2.43.0
 
