@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-11906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD16E8316E4
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:51:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF374831775
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:57:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D839B23E99
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:51:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B380287DF3
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9CA23773;
-	Thu, 18 Jan 2024 10:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15B3522F06;
+	Thu, 18 Jan 2024 10:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V6vI4R+o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TLrOATdo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E951D55A;
-	Thu, 18 Jan 2024 10:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA99D1B96D;
+	Thu, 18 Jan 2024 10:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575065; cv=none; b=bBwdul76ImeJm1nR6CrgS7NRhywzq+UWIsFt/SWcwXqPJIbXv/udpH5FVa5LY/oPetj2vw3hWqWS1fFbRxGJmfiVYF7cUSViJ7V1LVCYpP8FU58Ouk15EiZP78h3rCZ8VOzf9TeBDzg3ddh7nGEmyFlI3T+EgI2U2CzR4sxDNwc=
+	t=1705575446; cv=none; b=k39vHatpC7yUKq6HfMNQK8Df/LSA73lIJiCIyysIbrUl7LZkfFmMQih2IaUZX6UBIGruK/dO5ZpmtMi1cEZgW7jfbEA4Lp3kI5i7HcqIfMlgMNuM/4ueul6U01nZJ3Cq2YWLizdST3HtsSMcJ2TDK8p3be3Hsz9bE/DvHZVjnLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575065; c=relaxed/simple;
-	bh=b9OJ9fAcqOKrB/GeXBHqUzA9HBk0xGoLEkT2mRNCmUA=;
+	s=arc-20240116; t=1705575446; c=relaxed/simple;
+	bh=pD3Ff4N61INp0K/CRrXl6509sxd2Pyt4Y8O69Fx5Thg=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=oupgJXYYVtZz/1G3d1nvEdEsGBS1+T1hf1rNa6y4aT+nKLRi1Pd9UrsL++PTgdgax3/Jd5z1QLd+IF1uYH+H/CFW+uJPLuAu5/8br9OM3jb2CcOEuVpaX42r2CuMfYXcaVpao2tNYz6HOl9SnojIO0xlg6VYTGOeAEutvaqoyV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V6vI4R+o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6DDBC433F1;
-	Thu, 18 Jan 2024 10:51:04 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=ERF7uJdezCkkUc/woLNwpCXquD6tN98btjB9vePXlm9+7Jfh0mVaHnesCC0YTrEvHHhEyUu7L1EQ94tSNwy3Krq+M3F3vKF22vNArExwGSLGNV+Eds+I1wlr87cow6JxlEOsYa6O2OxRfeQ3fBgxYwrnAxm3I1hLxXU5Y0t5WV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TLrOATdo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D170C433C7;
+	Thu, 18 Jan 2024 10:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575065;
-	bh=b9OJ9fAcqOKrB/GeXBHqUzA9HBk0xGoLEkT2mRNCmUA=;
+	s=korg; t=1705575446;
+	bh=pD3Ff4N61INp0K/CRrXl6509sxd2Pyt4Y8O69Fx5Thg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V6vI4R+ojzUc4QUfJ+JIPT4lEvx0DSs0BNodbtrFsQtSmnqFmYHdwpeXSQP6N5p7P
-	 tm+9iUVvGSs6GR+9rJZpQDORFnJ351Sk4vZcRnPPr9AJAQQ35BAbUG+nVYpfWndBdC
-	 WvFntWnszMhiQxFb0fnHv8vSRqPQnlWGqKFME/F8=
+	b=TLrOATdo9JKzVlkKd5DYpyQOv4lGejOfSNJ21AmTvA0FvFUkN1UXLhzLI6UdyHAXv
+	 RLFWSqiYuk/oiGjYXgT10kwWpwDjtYD593tSqytZvJRfj7WLEj4rBAwSFgq9Ybmwza
+	 XyQYSKCGmmN5WXMqDdxsEupIrX4kEyTnO+6az1Ts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumanth Korikkar <sumanthk@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	"Aneesh Kumar K.V" <aneesh.kumar@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.7 28/28] mm/memory_hotplug: fix memmap_on_memory sysfs value retrieval
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 136/150] ksmbd: dont allow O_TRUNC open on read-only share
 Date: Thu, 18 Jan 2024 11:49:18 +0100
-Message-ID: <20240118104302.177463352@linuxfoundation.org>
+Message-ID: <20240118104326.347205267@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
-References: <20240118104301.249503558@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,60 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumanth Korikkar <sumanthk@linux.ibm.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 11684134140bb708b6e6de969a060535630b1b53 upstream.
+commit d592a9158a112d419f341f035d18d02f8d232def upstream.
 
-set_memmap_mode() stores the kernel parameter memmap mode as an integer.
-However, the get_memmap_mode() function utilizes param_get_bool() to fetch
-the value as a boolean, leading to potential endianness issue.  On
-Big-endian architectures, the memmap_on_memory is consistently displayed
-as 'N' regardless of its actual status.
+When file is changed using notepad on read-only share(read_only = yes in
+ksmbd.conf), There is a problem where existing data is truncated.
+notepad in windows try to O_TRUNC open(FILE_OVERWRITE_IF) and all data
+in file is truncated. This patch don't allow  O_TRUNC open on read-only
+share and add KSMBD_TREE_CONN_FLAG_WRITABLE check in smb2_set_info().
 
-To address this endianness problem, the solution involves obtaining the
-mode as an integer.  This adjustment ensures the proper display of the
-memmap_on_memory parameter, presenting it as one of the following options:
-Force, Y, or N.
-
-Link: https://lkml.kernel.org/r/20240110140127.241451-1-sumanthk@linux.ibm.com
-Fixes: 2d1f649c7c08 ("mm/memory_hotplug: support memmap_on_memory when memmap is not aligned to pageblocks")
-Signed-off-by: Sumanth Korikkar <sumanthk@linux.ibm.com>
-Suggested-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Aneesh Kumar K.V <aneesh.kumar@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: <stable@vger.kernel.org>	[6.6+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory_hotplug.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ fs/smb/server/smb2pdu.c |   23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -101,9 +101,11 @@ static int set_memmap_mode(const char *v
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2971,7 +2971,7 @@ int smb2_open(struct ksmbd_work *work)
+ 					    &may_flags);
  
- static int get_memmap_mode(char *buffer, const struct kernel_param *kp)
+ 	if (!test_tree_conn_flag(tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
+-		if (open_flags & O_CREAT) {
++		if (open_flags & (O_CREAT | O_TRUNC)) {
+ 			ksmbd_debug(SMB,
+ 				    "User does not have write permission\n");
+ 			rc = -EACCES;
+@@ -5943,12 +5943,6 @@ static int smb2_set_info_file(struct ksm
+ 	}
+ 	case FILE_RENAME_INFORMATION:
+ 	{
+-		if (!test_tree_conn_flag(work->tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
+-			ksmbd_debug(SMB,
+-				    "User does not have write permission\n");
+-			return -EACCES;
+-		}
+-
+ 		if (buf_len < sizeof(struct smb2_file_rename_info))
+ 			return -EINVAL;
+ 
+@@ -5968,12 +5962,6 @@ static int smb2_set_info_file(struct ksm
+ 	}
+ 	case FILE_DISPOSITION_INFORMATION:
+ 	{
+-		if (!test_tree_conn_flag(work->tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
+-			ksmbd_debug(SMB,
+-				    "User does not have write permission\n");
+-			return -EACCES;
+-		}
+-
+ 		if (buf_len < sizeof(struct smb2_file_disposition_info))
+ 			return -EINVAL;
+ 
+@@ -6035,7 +6023,7 @@ int smb2_set_info(struct ksmbd_work *wor
  {
--	if (*((int *)kp->arg) == MEMMAP_ON_MEMORY_FORCE)
--		return sprintf(buffer,  "force\n");
--	return param_get_bool(buffer, kp);
-+	int mode = *((int *)kp->arg);
-+
-+	if (mode == MEMMAP_ON_MEMORY_FORCE)
-+		return sprintf(buffer, "force\n");
-+	return sprintf(buffer, "%c\n", mode ? 'Y' : 'N');
- }
+ 	struct smb2_set_info_req *req;
+ 	struct smb2_set_info_rsp *rsp;
+-	struct ksmbd_file *fp;
++	struct ksmbd_file *fp = NULL;
+ 	int rc = 0;
+ 	unsigned int id = KSMBD_NO_FID, pid = KSMBD_NO_FID;
  
- static const struct kernel_param_ops memmap_mode_ops = {
+@@ -6055,6 +6043,13 @@ int smb2_set_info(struct ksmbd_work *wor
+ 		rsp = smb2_get_msg(work->response_buf);
+ 	}
+ 
++	if (!test_tree_conn_flag(work->tcon, KSMBD_TREE_CONN_FLAG_WRITABLE)) {
++		ksmbd_debug(SMB, "User does not have write permission\n");
++		pr_err("User does not have write permission\n");
++		rc = -EACCES;
++		goto err_out;
++	}
++
+ 	if (!has_file_id(id)) {
+ 		id = req->VolatileFileId;
+ 		pid = req->PersistentFileId;
 
 
 
