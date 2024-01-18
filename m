@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-12036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED44D83176E
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:57:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F7CD8317DA
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83BBFB220C6
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:57:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C821A28AE06
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69A5A22F0F;
-	Thu, 18 Jan 2024 10:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 253A024B25;
+	Thu, 18 Jan 2024 11:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/tJXxwN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JsCsgaur"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A2C21774B;
-	Thu, 18 Jan 2024 10:57:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F5423771;
+	Thu, 18 Jan 2024 11:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575427; cv=none; b=VjuR/0pHMZCQZIAHEQFpOqt6IcfEHrufB3v8H009QiMclOiBeVqyZvMZtQURxUNIak5Qjgl1KGfxPjmQ78dj7+K+INZtN0wUYjTsQcP+LgScLoyHotUd1iFnVxsVIWQ6fZ+4Gd/3VODhYzhpGgNJFkedsbenOT1VYWkGgSzU+nQ=
+	t=1705575662; cv=none; b=AvNKc9ICLPSHX7IsPMAQId7sZGe+NJNaalm6xbPykwWzYOJksJOewZoNvon4pTz6cGCJw3elk4gHzEWjML4ZDL81bPfuTp06ZYlMdH82bhzrGgVx6bRV9WhKYClm7bf9fPI0FiBud67N9uzrhfbuvjWe7hlZo+++dQ9ki4Q7jrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575427; c=relaxed/simple;
-	bh=A+bWdW988fU2Lg07vq5WD043ijfsoCJBLYY1s804QIo=;
+	s=arc-20240116; t=1705575662; c=relaxed/simple;
+	bh=3WAhMstpWYQEUwOg+4xLzWO7nm5s1+aick5lNhmZvls=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=V6RHIOPs0OLMmIYIo7lgzNWjjX2j2HhiZh0cHDZYOjKo0zA/zrdzy0/ih2Dfgo7DGGXoXBAh5HzmFAbq2JtudW27OgACJ8Pb7HyG/foCJK4PXlJO6FaQu56ZN7SGZhMY6IfnECs1zo8yWeQ3xnfk1FYmQwvQ9GmHB+6fovi84XM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/tJXxwN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE3BC433C7;
-	Thu, 18 Jan 2024 10:57:06 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=bsT1p3YBKL69uUxC+nvpMNevdPg1p1TQltiikBojyxIwKtOo9xvKWAQbsA7CPi89zc8+oYLWC/lIHKuwdxxtTuBs2+WZgwX0w07Mty1goNFnOiu+EyYYM41s8g4C2Jc1i9Xp2x2RzmRD6j86kLBlaCiFPNgGYeAca1F9uCz7Pzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JsCsgaur; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 539DAC433C7;
+	Thu, 18 Jan 2024 11:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575427;
-	bh=A+bWdW988fU2Lg07vq5WD043ijfsoCJBLYY1s804QIo=;
+	s=korg; t=1705575662;
+	bh=3WAhMstpWYQEUwOg+4xLzWO7nm5s1+aick5lNhmZvls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P/tJXxwN46ujwA/fmY2j2Tf6bGkQumpwNYtO5biRNkKvI2STQxPqNW4wi7mtqCwif
-	 KUIiDtAwcrveZIiVcoZk9f7J8nX7m4LXQ8C1wlW9olqxNI9kDse+oL79PvwDilS3WD
-	 y0IO8Y495P0dtC32QF9DTN6QXAVSgR3Dh1kXBl2Y=
+	b=JsCsgaur2FcZiOtsSQb8YFZylBpag63xC9KxPIASg6X6rNKRTZO8S+jJracnkGFCn
+	 E3V2Tm8iB1tAq1POMEOGAWAU1Q/3SeVZdruYHbVC3aUkrhRbssDHJ6QuXgjnzQf/KX
+	 WSf0Ee8psiSupKQCdD1nZ1UqnBxQcuT32BNmUgWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ghanshyam Agrawal <ghanshyam1898@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 099/150] kselftest: alsa: fixed a print formatting warning
+Subject: [PATCH 6.1 033/100] nvme: introduce helper function to get ctrl state
 Date: Thu, 18 Jan 2024 11:48:41 +0100
-Message-ID: <20240118104324.536641492@linuxfoundation.org>
+Message-ID: <20240118104312.363761028@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 13d605e32e4cfdedcecdf3d98d21710ffe887708 ]
+[ Upstream commit 5c687c287c46fadb14644091823298875a5216aa ]
 
-A statement used %d print formatter where %s should have
-been used. The same has been fixed in this commit.
+The controller state is typically written by another CPU, so reading it
+should ensure no optimizations are taken. This is a repeated pattern in
+the driver, so start with adding a convenience function that returns the
+controller state with READ_ONCE().
 
-Signed-off-by: Ghanshyam Agrawal <ghanshyam1898@gmail.com>
-Link: 5aaf9efffc57 ("kselftest: alsa: Add simplistic test for ALSA mixer controls kselftest")
-Link: https://lore.kernel.org/r/20231217080019.1063476-1-ghanshyam1898@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/alsa/mixer-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/nvme.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/tools/testing/selftests/alsa/mixer-test.c b/tools/testing/selftests/alsa/mixer-test.c
-index 21e482b23f50..23df154fcdd7 100644
---- a/tools/testing/selftests/alsa/mixer-test.c
-+++ b/tools/testing/selftests/alsa/mixer-test.c
-@@ -138,7 +138,7 @@ static void find_controls(void)
- 			err = snd_ctl_elem_info(card_data->handle,
- 						ctl_data->info);
- 			if (err < 0) {
--				ksft_print_msg("%s getting info for %d\n",
-+				ksft_print_msg("%s getting info for %s\n",
- 					       snd_strerror(err),
- 					       ctl_data->name);
- 			}
+diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
+index 118bf08a708b..a892d679e338 100644
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -382,6 +382,11 @@ struct nvme_ctrl {
+ 	enum nvme_dctype dctype;
+ };
+ 
++static inline enum nvme_ctrl_state nvme_ctrl_state(struct nvme_ctrl *ctrl)
++{
++	return READ_ONCE(ctrl->state);
++}
++
+ enum nvme_iopolicy {
+ 	NVME_IOPOLICY_NUMA,
+ 	NVME_IOPOLICY_RR,
 -- 
 2.43.0
 
