@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-12094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F56D8317B2
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:00:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49AAD831736
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:54:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 348B9B2493D
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:59:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 022261F26BDB
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:54:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB8C2375B;
-	Thu, 18 Jan 2024 10:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40AF122F06;
+	Thu, 18 Jan 2024 10:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3w3vcm9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GanocvJh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E742033B;
-	Thu, 18 Jan 2024 10:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D401B96D;
+	Thu, 18 Jan 2024 10:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575589; cv=none; b=jDhFBJ6mDxyur2X8e9kadcW3yccyHF8AM4/zNiw/u2C3KEkgMHHGrq+5w1DYcvSQpyto4BhU9bNCyHDR+MZlnj4z1n26eTcBxNacHMulzT+FgVI/TyEIzMucQRSgtXc+PoXuC94XH6LvRFX9thlqWKMabxj7OFbEZYaijyV7Qyo=
+	t=1705575274; cv=none; b=U3PYWV2uxVVO4qkrAh/h/2A8O0SF25+wnPKfjTlCE2SsB9JlQELpszFSCIbi7rPd43afADJMI44WkYJkVbgw9vrtsud8h0LkI6SDpvCt9gMlBGAkMAEHbStANjC8DN6XCSkC87PBE5yvwgSQ+aNw9/g+oTgJ0SzVaTZsBvsYzag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575589; c=relaxed/simple;
-	bh=liWv7rr8V8TABJX64OClUP+HfQQuBhYH9XrGQUtmpN8=;
+	s=arc-20240116; t=1705575274; c=relaxed/simple;
+	bh=tM91ooD4zYKYHM0HXIi2yJ5Cdvp2a5wyeYt/Ozdl6Ao=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=Vx99yrwTqz6QJ2/StpzKRmnLYdUpzRDFBYP7EOJfWLPhjvWXjHVsFoUo2lo9TL8za1FGlBGXwJLFv/rRMau4Zyr3us5Khw4YqR+1bHkxsB6Hx5MoJ0vaEqBsvgOVTRPm5EdFjIuW1xDiojNuSKjDCvNl/G8OwYlr6MsJ2DN4TXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3w3vcm9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 758B2C433C7;
-	Thu, 18 Jan 2024 10:59:48 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=bmwC95vcxl5R9epe4ByyNAuar+071pSZAbesCRmkoCFN0O8HtP64/6ZW0skFOesu2obUmwyozODOi4Zvvs9VWm7Y690emLCJX4xx9gzoh03cduw0btUD1CNWxbHP/gSx4g3LLzNc9Plv0zyi+Fm/q6iecGIVpx/sAUEgHhyRT3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GanocvJh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778F7C43390;
+	Thu, 18 Jan 2024 10:54:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575588;
-	bh=liWv7rr8V8TABJX64OClUP+HfQQuBhYH9XrGQUtmpN8=;
+	s=korg; t=1705575273;
+	bh=tM91ooD4zYKYHM0HXIi2yJ5Cdvp2a5wyeYt/Ozdl6Ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P3w3vcm9sOJWKXD3es6SjfBRVO49/v9kKO1B3pu4NXiNUnm38zuICVFmYSlgu12VS
-	 QgZIifkzkEkA04C5tLuTjfUvJsR/l18bj0e3qIMEUHMG10oMSLqSys5oLEda8vY0S5
-	 0hwtoIfe9pcSrX+JWb3TBAtk3sgWOw5hBg0jten4=
+	b=GanocvJhaF9x1eF/AMy3i5HktB0YWyrNrruSfc1hdehL1Re6me6O8eY4jQR0aIHqs
+	 7hRofpfwWLWJ3t03U4HgbqUX2U2dY0yhLOb4mrGtyF2ZrfCer1CYrui3xzkiBRpKuK
+	 SSRw9VZcfcoWNDK62GsGk1Bz95j/V60DTsqNkmqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com,
+	Ziqi Zhao <astrajoan@yahoo.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 008/100] debugfs: fix automount d_fsdata usage
+Subject: [PATCH 6.6 074/150] drm/crtc: Fix uninit-value bug in drm_mode_setcrtc
 Date: Thu, 18 Jan 2024 11:48:16 +0100
-Message-ID: <20240118104311.240385995@linuxfoundation.org>
+Message-ID: <20240118104323.409472885@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,151 +65,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ziqi Zhao <astrajoan@yahoo.com>
 
-[ Upstream commit 0ed04a1847a10297595ac24dc7d46b35fb35f90a ]
+[ Upstream commit 3823119b9c2b5f9e9b760336f75bc989b805cde6 ]
 
-debugfs_create_automount() stores a function pointer in d_fsdata,
-but since commit 7c8d469877b1 ("debugfs: add support for more
-elaborate ->d_fsdata") debugfs_release_dentry() will free it, now
-conditionally on DEBUGFS_FSDATA_IS_REAL_FOPS_BIT, but that's not
-set for the function pointer in automount. As a result, removing
-an automount dentry would attempt to free the function pointer.
-Luckily, the only user of this (tracing) never removes it.
+The connector_set contains uninitialized values when allocated with
+kmalloc_array. However, in the "out" branch, the logic assumes that any
+element in connector_set would be equal to NULL if failed to
+initialize, which causes the bug reported by Syzbot. The fix is to use
+an extra variable to keep track of how many connectors are initialized
+indeed, and use that variable to decrease any refcounts in the "out"
+branch.
 
-Nevertheless, it's safer if we just handle the fsdata in one way,
-namely either DEBUGFS_FSDATA_IS_REAL_FOPS_BIT or allocated. Thus,
-change the automount to allocate it, and use the real_fops in the
-data to indicate whether or not automount is filled, rather than
-adding a type tag. At least for now this isn't actually needed,
-but the next changes will require it.
-
-Also check in debugfs_file_get() that it gets only called
-on regular files, just to make things clearer.
-
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reported-by: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
+Signed-off-by: Ziqi Zhao <astrajoan@yahoo.com>
+Reported-and-tested-by: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
+Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Link: https://lore.kernel.org/r/20230721161446.8602-1-astrajoan@yahoo.com
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/debugfs/file.c     |  8 ++++++++
- fs/debugfs/inode.c    | 27 ++++++++++++++++++++-------
- fs/debugfs/internal.h | 10 ++++++++--
- 3 files changed, 36 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/drm_crtc.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/fs/debugfs/file.c b/fs/debugfs/file.c
-index b54f470e0d03..b38304b44476 100644
---- a/fs/debugfs/file.c
-+++ b/fs/debugfs/file.c
-@@ -84,6 +84,14 @@ int debugfs_file_get(struct dentry *dentry)
- 	struct debugfs_fsdata *fsd;
- 	void *d_fsd;
+diff --git a/drivers/gpu/drm/drm_crtc.c b/drivers/gpu/drm/drm_crtc.c
+index df9bf3c9206e..d718c17ab1e9 100644
+--- a/drivers/gpu/drm/drm_crtc.c
++++ b/drivers/gpu/drm/drm_crtc.c
+@@ -715,8 +715,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 	struct drm_mode_set set;
+ 	uint32_t __user *set_connectors_ptr;
+ 	struct drm_modeset_acquire_ctx ctx;
+-	int ret;
+-	int i;
++	int ret, i, num_connectors;
  
-+	/*
-+	 * This could only happen if some debugfs user erroneously calls
-+	 * debugfs_file_get() on a dentry that isn't even a file, let
-+	 * them know about it.
-+	 */
-+	if (WARN_ON(!d_is_reg(dentry)))
-+		return -EINVAL;
-+
- 	d_fsd = READ_ONCE(dentry->d_fsdata);
- 	if (!((unsigned long)d_fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT)) {
- 		fsd = d_fsd;
-diff --git a/fs/debugfs/inode.c b/fs/debugfs/inode.c
-index 2e8e112b1993..08ef685167ec 100644
---- a/fs/debugfs/inode.c
-+++ b/fs/debugfs/inode.c
-@@ -237,17 +237,19 @@ static const struct super_operations debugfs_super_operations = {
+ 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
+ 		return -EOPNOTSUPP;
+@@ -851,6 +850,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 			goto out;
+ 		}
  
- static void debugfs_release_dentry(struct dentry *dentry)
- {
--	void *fsd = dentry->d_fsdata;
-+	struct debugfs_fsdata *fsd = dentry->d_fsdata;
++		num_connectors = 0;
+ 		for (i = 0; i < crtc_req->count_connectors; i++) {
+ 			connector_set[i] = NULL;
+ 			set_connectors_ptr = (uint32_t __user *)(unsigned long)crtc_req->set_connectors_ptr;
+@@ -871,6 +871,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 					connector->name);
  
--	if (!((unsigned long)fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT))
--		kfree(dentry->d_fsdata);
-+	if ((unsigned long)fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT)
-+		return;
-+
-+	kfree(fsd);
- }
- 
- static struct vfsmount *debugfs_automount(struct path *path)
- {
--	debugfs_automount_t f;
--	f = (debugfs_automount_t)path->dentry->d_fsdata;
--	return f(path->dentry, d_inode(path->dentry)->i_private);
-+	struct debugfs_fsdata *fsd = path->dentry->d_fsdata;
-+
-+	return fsd->automount(path->dentry, d_inode(path->dentry)->i_private);
- }
- 
- static const struct dentry_operations debugfs_dops = {
-@@ -635,13 +637,23 @@ struct dentry *debugfs_create_automount(const char *name,
- 					void *data)
- {
- 	struct dentry *dentry = start_creating(name, parent);
-+	struct debugfs_fsdata *fsd;
- 	struct inode *inode;
- 
- 	if (IS_ERR(dentry))
- 		return dentry;
- 
-+	fsd = kzalloc(sizeof(*fsd), GFP_KERNEL);
-+	if (!fsd) {
-+		failed_creating(dentry);
-+		return ERR_PTR(-ENOMEM);
-+	}
-+
-+	fsd->automount = f;
-+
- 	if (!(debugfs_allow & DEBUGFS_ALLOW_API)) {
- 		failed_creating(dentry);
-+		kfree(fsd);
- 		return ERR_PTR(-EPERM);
+ 			connector_set[i] = connector;
++			num_connectors++;
+ 		}
  	}
  
-@@ -649,13 +661,14 @@ struct dentry *debugfs_create_automount(const char *name,
- 	if (unlikely(!inode)) {
- 		pr_err("out of free dentries, can not create automount '%s'\n",
- 		       name);
-+		kfree(fsd);
- 		return failed_creating(dentry);
- 	}
+@@ -879,7 +880,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 	set.y = crtc_req->y;
+ 	set.mode = mode;
+ 	set.connectors = connector_set;
+-	set.num_connectors = crtc_req->count_connectors;
++	set.num_connectors = num_connectors;
+ 	set.fb = fb;
  
- 	make_empty_dir_inode(inode);
- 	inode->i_flags |= S_AUTOMOUNT;
- 	inode->i_private = data;
--	dentry->d_fsdata = (void *)f;
-+	dentry->d_fsdata = fsd;
- 	/* directory inodes start off with i_nlink == 2 (for "." entry) */
- 	inc_nlink(inode);
- 	d_instantiate(dentry, inode);
-diff --git a/fs/debugfs/internal.h b/fs/debugfs/internal.h
-index 92af8ae31313..f7c489b5a368 100644
---- a/fs/debugfs/internal.h
-+++ b/fs/debugfs/internal.h
-@@ -17,8 +17,14 @@ extern const struct file_operations debugfs_full_proxy_file_operations;
+ 	if (drm_drv_uses_atomic_modeset(dev))
+@@ -892,7 +893,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 		drm_framebuffer_put(fb);
  
- struct debugfs_fsdata {
- 	const struct file_operations *real_fops;
--	refcount_t active_users;
--	struct completion active_users_drained;
-+	union {
-+		/* automount_fn is used when real_fops is NULL */
-+		debugfs_automount_t automount;
-+		struct {
-+			refcount_t active_users;
-+			struct completion active_users_drained;
-+		};
-+	};
- };
- 
- /*
+ 	if (connector_set) {
+-		for (i = 0; i < crtc_req->count_connectors; i++) {
++		for (i = 0; i < num_connectors; i++) {
+ 			if (connector_set[i])
+ 				drm_connector_put(connector_set[i]);
+ 		}
 -- 
 2.43.0
 
