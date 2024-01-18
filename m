@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-12116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72448317D8
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43B168316E5
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:51:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15ECF1C20936
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA5531F26B66
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:51:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F0CE24A0B;
-	Thu, 18 Jan 2024 11:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D0523775;
+	Thu, 18 Jan 2024 10:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IFPNnBx0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3rAxfO0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E177423771;
-	Thu, 18 Jan 2024 11:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B3422F06;
+	Thu, 18 Jan 2024 10:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575654; cv=none; b=LRGVd7htSCp0rMgG/KIz+HUArJA0tdHxau/Apkzz4iywhlW9udSM/f7+qZeurevTxZQDskQtVXMOuhEzHTtafEO5fWHyX//fT0Nz0FLHlx/hVkPeHJgkkbjFDp9Eh+zbezkUnlNaB1Df73DLAVEkV6LUNAEe54othFKhkwiqu60=
+	t=1705575071; cv=none; b=ecgvd3Qp5s0AAI4lMRGZOUV7eVQnlYlW9nExJLgH448GP/yLR7a/xfy43/ZUsyHvxNSv0udWkhFaFy7LA0PhjrYeO4cuqfLYbIHfSvqRH+3NBw/xxZKzWEdXNiDFdX5+gQd7dxDtIN0v5c5cS5E2tn0syhOcqn8eNBtugMPicxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575654; c=relaxed/simple;
-	bh=JxYIei1PFAGeM7q2ieolSJH7sKPFh0JGil0xkVuwVsQ=;
+	s=arc-20240116; t=1705575071; c=relaxed/simple;
+	bh=FJWzcH+SICKuUkTSFs7q8uJe4FqJYwWusw/9A4qViOE=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=f2/em25njq9i9LOgSp2FqlioyzyFiAd2WS4VQPRw8lTddzkr2yCLtneUI1+bqxA5JY0go8JJXOysQLR7020OpgDo03K9buVQsu7fJVPjxXL0VwS/4vu2yKrE0Qut2bgAZbm6QF3V8lcinKFHL6t+qX0zx6PDAgx6/JeBiJouL2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IFPNnBx0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42044C433F1;
-	Thu, 18 Jan 2024 11:00:53 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=TSZxADTrqPR1KxWnUw0/kxUZLkAhlVnUz+g4dMsWkFjpHcg/w2girRcXq/x5JURWf5/FVdsFFJxdTpS57e2FHFGcqwinPxJAOOFutKhc4A7AZIhC5DKwsf9saZ0Sh/wHixczZvXpxSonzMr4uVCfUYWGEmax7NbjXa2Dexu8wt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3rAxfO0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 982FFC433F1;
+	Thu, 18 Jan 2024 10:51:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575653;
-	bh=JxYIei1PFAGeM7q2ieolSJH7sKPFh0JGil0xkVuwVsQ=;
+	s=korg; t=1705575071;
+	bh=FJWzcH+SICKuUkTSFs7q8uJe4FqJYwWusw/9A4qViOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IFPNnBx0E3rvY+YZZasvuhnCxyjFbSX/8Xb1odthF4fw+fmp3PYFV3NQtor0ztH4+
-	 vliZ61Hf9Mad2MJzpKz9BVF9oTDIW8eOYMRai74nM5VMxvAb9cCLbQtXxfJpBDCQC5
-	 PoOXba/yk/zM15ZzGhEh7y5ABL4w2pzh0siUfb88=
+	b=e3rAxfO01NGMgFEn+o/vT3xg29BbszCDpu9/p53kPE6SE8+A2I6Bto9dqnK9DSSe6
+	 9S5nTOnKMnrObyq/y7TfY5mPBE4ccDdNX2gwwANef9q2SwfwApjX6eXm5CIb61W8qp
+	 V8xoxgGxYlIldG0O0E5tNeH2Tcop23eCQm61kJ0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 057/100] reset: hisilicon: hi6220: fix Wvoid-pointer-to-enum-cast warning
-Date: Thu, 18 Jan 2024 11:49:05 +0100
-Message-ID: <20240118104313.390160721@linuxfoundation.org>
+	Eric Biggers <ebiggers@google.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 6.7 16/28] binder: use EPOLLERR from eventpoll.h
+Date: Thu, 18 Jan 2024 11:49:06 +0100
+Message-ID: <20240118104301.785323812@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
+References: <20240118104301.249503558@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit b5ec294472794ed9ecba0cb4b8208372842e7e0d ]
+commit 6ac061db9c58ca5b9270b1b3940d2464fb3ff183 upstream.
 
-'type' is an enum, thus cast of pointer on 64-bit compile test with W=1
-causes:
+Use EPOLLERR instead of POLLERR to make sure it is cast to the correct
+__poll_t type. This fixes the following sparse issue:
 
-  hi6220_reset.c:166:9: error: cast to smaller integer type 'enum hi6220_reset_ctrl_type' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
+  drivers/android/binder.c:5030:24: warning: incorrect type in return expression (different base types)
+  drivers/android/binder.c:5030:24:    expected restricted __poll_t
+  drivers/android/binder.c:5030:24:    got int
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20230810091300.70197-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f88982679f54 ("binder: check for binder_thread allocation failure in binder_poll()")
+Cc: stable@vger.kernel.org
+Cc: Eric Biggers <ebiggers@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20231201172212.1813387-2-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/reset/hisilicon/hi6220_reset.c | 2 +-
+ drivers/android/binder.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/reset/hisilicon/hi6220_reset.c b/drivers/reset/hisilicon/hi6220_reset.c
-index 5ca145b64e63..30951914afac 100644
---- a/drivers/reset/hisilicon/hi6220_reset.c
-+++ b/drivers/reset/hisilicon/hi6220_reset.c
-@@ -164,7 +164,7 @@ static int hi6220_reset_probe(struct platform_device *pdev)
- 	if (!data)
- 		return -ENOMEM;
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -5030,7 +5030,7 @@ static __poll_t binder_poll(struct file
  
--	type = (enum hi6220_reset_ctrl_type)of_device_get_match_data(dev);
-+	type = (uintptr_t)of_device_get_match_data(dev);
+ 	thread = binder_get_thread(proc);
+ 	if (!thread)
+-		return POLLERR;
++		return EPOLLERR;
  
- 	regmap = syscon_node_to_regmap(np);
- 	if (IS_ERR(regmap)) {
--- 
-2.43.0
-
+ 	binder_inner_proc_lock(thread->proc);
+ 	thread->looper |= BINDER_LOOPER_STATE_POLL;
 
 
 
