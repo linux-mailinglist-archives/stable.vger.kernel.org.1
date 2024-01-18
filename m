@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-11996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F18DF831745
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:55:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5444D831748
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:55:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FB4D1C228DA
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:55:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 871F11C20BAE
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:55:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F9022F0F;
-	Thu, 18 Jan 2024 10:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F77322F0B;
+	Thu, 18 Jan 2024 10:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kI8W4RWr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cQSf+1uu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0507822F0B;
-	Thu, 18 Jan 2024 10:55:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303951774B;
+	Thu, 18 Jan 2024 10:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575316; cv=none; b=PGXsm8pp9SgnzyrvLtEo73S6N4cj0hh6uS0ikBpsTcDfxVadpxseBDbPDFzLfmglvld6I/H3+jkeRn+25o4hNWbJzdFfCnOwevtoxfsB52XJyz6r3dlGeexbX38lppVhk5IFXMFRd7zzl/5qF012lKV/rdcLN7TNMzfSkOz1tvs=
+	t=1705575324; cv=none; b=NlJ7Af8N8/3adlpwF5lhrxZscdEsDuRgRk59gVUILtaH1KqIrNqym0UnFNIkW7riVupspP6f1ekwN26UmkG2YfLlitNs/AlUsM6vmswxTiWVlwvFRF4hlXExWJzvstLo38rlErC037FnxdXIMo5BscPU0lfyHW9js83YNC9xvV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575316; c=relaxed/simple;
-	bh=zwsNY+zle39BfDrCOGr+2+vHjjrHSmOV3hEUM+2W89w=;
+	s=arc-20240116; t=1705575324; c=relaxed/simple;
+	bh=ePDPhnBx7P+q6jP3Fu9RDcfDcSL9+0JBAj4dhYpzlMM=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=DkCZ5EIsT0ID05jANUoAYtZ/nGt9Cz6EKNUhTaUISuGdsuTBVkY9BueHQ/NK+Njw7o124DO1iEZ3Gk7+hmF+DcuJbR8Pudmmo3ieFD8QpechaA+j70aEDPPnWtIehAjLXKPoykdE89ywuTX05azAMraAmjoqHWBbEIVsCEDzoZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kI8W4RWr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74CBDC433C7;
-	Thu, 18 Jan 2024 10:55:15 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=gjh3VEihPTZd3FF7TzcCrnsYX38S7uoEMX6l9+tZFyYeaNamztYv+ifk/lVkMnqaLVcdeK0Hgqgn3VayrhbOumwZkvN0VxaOW0Th0YVJbQ9svYEK3DiPFLmmb6qDLUG98/P2nuCevj3c6/NVxeObtyERCfuwcqAwof/gAgAGkDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cQSf+1uu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8787C433C7;
+	Thu, 18 Jan 2024 10:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575315;
-	bh=zwsNY+zle39BfDrCOGr+2+vHjjrHSmOV3hEUM+2W89w=;
+	s=korg; t=1705575324;
+	bh=ePDPhnBx7P+q6jP3Fu9RDcfDcSL9+0JBAj4dhYpzlMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kI8W4RWr/PopQwhJ3m8MU534sgIc9oN/4kXtvPDzujWekkpq2n9cytqMaZbRI86QD
-	 +xEZDptrfrB2q9BPHLmtMvmYK3AHLff72eeQti7PCrpN6jVy9WaNIcZj5uaFOH5WNL
-	 zLofwsjZJlJNRynHfb0fp8Z+dto8f7D0qV6J12fU=
+	b=cQSf+1uu37TBM+CKxfjAIc7SWl1xEd7o0LWRCFl5ciZbkrLkdu09Ni+mOwxiQjMAg
+	 XTh+7OzxmHwONnBTTQx9Pc6LdzS+KK/0Mp36Q6OPhPJTKlL+onwCMcFHxH8RPebNym
+	 7R0grg0tjUcZJMKqn7Cd4trgyER15JvdT53tyS90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Xiang Yang <xiangyang3@huawei.com>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 061/150] drm/amdgpu: Add NULL checks for function pointers
-Date: Thu, 18 Jan 2024 11:48:03 +0100
-Message-ID: <20240118104322.803334673@linuxfoundation.org>
+Subject: [PATCH 6.6 062/150] drm/exynos: fix a potential error pointer dereference
+Date: Thu, 18 Jan 2024 11:48:04 +0100
+Message-ID: <20240118104322.853362117@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
 References: <20240118104320.029537060@linuxfoundation.org>
@@ -68,53 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Xiang Yang <xiangyang3@huawei.com>
 
-[ Upstream commit 81577503efb49f4ad76af22f9941d72900ef4aab ]
+[ Upstream commit 73bf1c9ae6c054c53b8e84452c5e46f86dd28246 ]
 
-Check if function is implemented before making the call.
+Smatch reports the warning below:
+drivers/gpu/drm/exynos/exynos_hdmi.c:1864 hdmi_bind()
+error: 'crtc' dereferencing possible ERR_PTR()
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The return value of exynos_drm_crtc_get_by_type maybe ERR_PTR(-ENODEV),
+which can not be used directly. Fix this by checking the return value
+before using it.
+
+Signed-off-by: Xiang Yang <xiangyang3@huawei.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/soc15.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/exynos/exynos_hdmi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/soc15.c b/drivers/gpu/drm/amd/amdgpu/soc15.c
-index 9abfe4c28cea..3667f9a54841 100644
---- a/drivers/gpu/drm/amd/amdgpu/soc15.c
-+++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
-@@ -1422,9 +1422,11 @@ static void soc15_common_get_clockgating_state(void *handle, u64 *flags)
- 	if (amdgpu_sriov_vf(adev))
- 		*flags = 0;
+diff --git a/drivers/gpu/drm/exynos/exynos_hdmi.c b/drivers/gpu/drm/exynos/exynos_hdmi.c
+index f3aaa4ea3e68..dd9903eab563 100644
+--- a/drivers/gpu/drm/exynos/exynos_hdmi.c
++++ b/drivers/gpu/drm/exynos/exynos_hdmi.c
+@@ -1861,6 +1861,8 @@ static int hdmi_bind(struct device *dev, struct device *master, void *data)
+ 		return ret;
  
--	adev->nbio.funcs->get_clockgating_state(adev, flags);
-+	if (adev->nbio.funcs && adev->nbio.funcs->get_clockgating_state)
-+		adev->nbio.funcs->get_clockgating_state(adev, flags);
+ 	crtc = exynos_drm_crtc_get_by_type(drm_dev, EXYNOS_DISPLAY_TYPE_HDMI);
++	if (IS_ERR(crtc))
++		return PTR_ERR(crtc);
+ 	crtc->pipe_clk = &hdata->phy_clk;
  
--	adev->hdp.funcs->get_clock_gating_state(adev, flags);
-+	if (adev->hdp.funcs && adev->hdp.funcs->get_clock_gating_state)
-+		adev->hdp.funcs->get_clock_gating_state(adev, flags);
- 
- 	if (adev->ip_versions[MP0_HWIP][0] != IP_VERSION(13, 0, 2)) {
- 
-@@ -1440,9 +1442,11 @@ static void soc15_common_get_clockgating_state(void *handle, u64 *flags)
- 	}
- 
- 	/* AMD_CG_SUPPORT_ROM_MGCG */
--	adev->smuio.funcs->get_clock_gating_state(adev, flags);
-+	if (adev->smuio.funcs && adev->smuio.funcs->get_clock_gating_state)
-+		adev->smuio.funcs->get_clock_gating_state(adev, flags);
- 
--	adev->df.funcs->get_clockgating_state(adev, flags);
-+	if (adev->df.funcs && adev->df.funcs->get_clockgating_state)
-+		adev->df.funcs->get_clockgating_state(adev, flags);
- }
- 
- static int soc15_common_set_powergating_state(void *handle,
+ 	ret = hdmi_create_connector(encoder);
 -- 
 2.43.0
 
