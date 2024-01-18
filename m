@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-12068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AAB0831791
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:58:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 759DD831738
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:54:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F339BB242EB
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:58:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4555E281684
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7897D23762;
-	Thu, 18 Jan 2024 10:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76F822F06;
+	Thu, 18 Jan 2024 10:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WO2mJmYK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3iuKSHh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37EF51774B;
-	Thu, 18 Jan 2024 10:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B431B96D;
+	Thu, 18 Jan 2024 10:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575516; cv=none; b=hlX/Eim5r391N0MH0/a9Vh/uqGFShoagukAcevRZBjk51V3/eYZ6EhUlqjNm2Ve95D8en7dU4L5W0JNRYIEabngiQkxPnA7ehxufeOXWNIvBuxVrBHHkWGByfOr6Ra6v64gdY2BrnEIQ30WwIzaKvsc4eo8HqazLKCW+1CtLtf0=
+	t=1705575279; cv=none; b=FlMBuEJ7JJs4t2CdY2X/RcXzO7iMdx/dnVAgG1+pLksofBn7ZiSCgiAGcFeyml9lenHF7YbuFuY6B7nr4bNkGZWX6zpsM35KP1CNqpdrAjULVn0tw5ksz5q55+N6XRJ7NVBmht7NkLj2l2rFVztRdAb5tgr7oocbqFv3wyIEm/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575516; c=relaxed/simple;
-	bh=gXgZKWPkCMuNo89Qxu+1ZpzQpDBkAtkgu7/BpF/atWQ=;
+	s=arc-20240116; t=1705575279; c=relaxed/simple;
+	bh=bBiNKpZPFcKXgZd9/aFaGUTeoZyAUCP/av4AyKZ0tcU=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=FTJJuYinD24M2ldTq3ELaoUl5Uhi4ZpUTiDEdNlmDWm1oKVz0KTK7YxUEDzfs3xL6pRYW4lTWbZiIQvZuXpFGxj9WLh4qY4mnYOg0POJtjOk4mdhawG1GhUdt5X3cvZ/a1NFmLl25mSJTHd5fiS5gOCmL6ON8w5ZwHQouvSIPe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WO2mJmYK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD3AEC433C7;
-	Thu, 18 Jan 2024 10:58:35 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding; b=ozLvPoG06EfV68D7i1E5rlGpt8rJ98R7XuwR+2wxJGe3iaz1dBQCN7vE7atQ53s6Gk2dpqkeoAXpePV2YwZcLQpyk5B473VhGX/ZizanDqdI7XTm1j6u6b9QuLfKxO6ffes0Xcjy2C6R8u2l9ydmZpil/q62XQOEc4Wblf4aS20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z3iuKSHh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD4AC433C7;
+	Thu, 18 Jan 2024 10:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575516;
-	bh=gXgZKWPkCMuNo89Qxu+1ZpzQpDBkAtkgu7/BpF/atWQ=;
+	s=korg; t=1705575279;
+	bh=bBiNKpZPFcKXgZd9/aFaGUTeoZyAUCP/av4AyKZ0tcU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WO2mJmYKP3Ol9NQAnnrgnZ5TGv+mETyEvtnCUJBvrTdrUiAl8113CGhUinjLysWAN
-	 wh0dLiyTGKTXrRIi3v9lVPqXN5XoCnMtni2p5blnqA7WLy2yiSU3U2xEvIJHIoZ+CW
-	 /nCjpLOzHoQyS6ZW5P8q3Lzr2lpm+e2QPkTyQIgE=
+	b=Z3iuKSHhU5iBoCHD80V4fft4PX30nXQ9Z0xhBvvWv3bAfh4IXK4v8RsLwyu+5RXs0
+	 OU9cI1Ohf12Wi6fylQ6p1nU0lMJzPUaO3hhj4Dzoa66L5YK6qchOkLNmUZWEyA0/5X
+	 hLzTgoZF/LI7ssa0OsoeGx+jYdPynA6KtxjSJw/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Kanchan Joshi <joshi.k@samsung.com>,
-	Keith Busch <kbusch@kernel.org>,
+	Arnold Gozum <arngozum@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 010/100] nvme-core: fix a memory leak in nvme_ns_info_from_identify()
+Subject: [PATCH 6.6 076/150] platform/x86: intel-vbtn: Fix missing tablet-mode-switch events
 Date: Thu, 18 Jan 2024 11:48:18 +0100
-Message-ID: <20240118104311.318366141@linuxfoundation.org>
+Message-ID: <20240118104323.507705745@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +64,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit e3139cef8257fcab1725441e2fd5fd0ccb5481b1 ]
+[ Upstream commit 14c200b7ca46b9a9f4af9e81d258a58274320b6f ]
 
-In case of error, free the nvme_id_ns structure that was allocated
-by nvme_identify_ns().
+2 issues have been reported on the Dell Inspiron 7352:
 
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+1. Sometimes the tablet-mode-switch stops reporting tablet-mode
+   change events.
+
+   Add a "VBDL" call to notify_handler() to work around this.
+
+2. Sometimes the tablet-mode is incorrect after suspend/resume
+
+   Add a detect_tablet_mode() to resume() to fix this.
+
+Reported-by: Arnold Gozum <arngozum@gmail.com>
+Closes: https://lore.kernel.org/platform-driver-x86/87271a74-c831-4eec-b7a4-1371d0e42471@gmail.com/
+Tested-by: Arnold Gozum <arngozum@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Link: https://lore.kernel.org/r/20231204150601.46976-1-hdegoede@redhat.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/platform/x86/intel/vbtn.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 5b906dbb1096..67c893934c80 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -1511,7 +1511,8 @@ static int nvme_ns_info_from_identify(struct nvme_ctrl *ctrl,
- 	if (id->ncap == 0) {
- 		/* namespace not allocated or attached */
- 		info->is_removed = true;
--		return -ENODEV;
-+		ret = -ENODEV;
-+		goto error;
- 	}
+diff --git a/drivers/platform/x86/intel/vbtn.c b/drivers/platform/x86/intel/vbtn.c
+index 6fa1735ad7a4..210b0a81b7ec 100644
+--- a/drivers/platform/x86/intel/vbtn.c
++++ b/drivers/platform/x86/intel/vbtn.c
+@@ -73,10 +73,10 @@ struct intel_vbtn_priv {
+ 	bool wakeup_mode;
+ };
  
- 	info->anagrpid = id->anagrpid;
-@@ -1529,8 +1530,10 @@ static int nvme_ns_info_from_identify(struct nvme_ctrl *ctrl,
- 		    !memchr_inv(ids->nguid, 0, sizeof(ids->nguid)))
- 			memcpy(ids->nguid, id->nguid, sizeof(ids->nguid));
- 	}
+-static void detect_tablet_mode(struct platform_device *device)
++static void detect_tablet_mode(struct device *dev)
+ {
+-	struct intel_vbtn_priv *priv = dev_get_drvdata(&device->dev);
+-	acpi_handle handle = ACPI_HANDLE(&device->dev);
++	struct intel_vbtn_priv *priv = dev_get_drvdata(dev);
++	acpi_handle handle = ACPI_HANDLE(dev);
+ 	unsigned long long vgbs;
+ 	acpi_status status;
+ 	int m;
+@@ -89,6 +89,8 @@ static void detect_tablet_mode(struct platform_device *device)
+ 	input_report_switch(priv->switches_dev, SW_TABLET_MODE, m);
+ 	m = (vgbs & VGBS_DOCK_MODE_FLAG) ? 1 : 0;
+ 	input_report_switch(priv->switches_dev, SW_DOCK, m);
 +
-+error:
- 	kfree(id);
--	return 0;
-+	return ret;
++	input_sync(priv->switches_dev);
  }
  
- static int nvme_ns_info_from_id_cs_indep(struct nvme_ctrl *ctrl,
+ /*
+@@ -134,7 +136,7 @@ static int intel_vbtn_input_setup(struct platform_device *device)
+ 	priv->switches_dev->id.bustype = BUS_HOST;
+ 
+ 	if (priv->has_switches) {
+-		detect_tablet_mode(device);
++		detect_tablet_mode(&device->dev);
+ 
+ 		ret = input_register_device(priv->switches_dev);
+ 		if (ret)
+@@ -198,6 +200,9 @@ static void notify_handler(acpi_handle handle, u32 event, void *context)
+ 	autorelease = val && (!ke_rel || ke_rel->type == KE_IGNORE);
+ 
+ 	sparse_keymap_report_event(input_dev, event, val, autorelease);
++
++	/* Some devices need this to report further events */
++	acpi_evaluate_object(handle, "VBDL", NULL, NULL);
+ }
+ 
+ /*
+@@ -352,7 +357,13 @@ static void intel_vbtn_pm_complete(struct device *dev)
+ 
+ static int intel_vbtn_pm_resume(struct device *dev)
+ {
++	struct intel_vbtn_priv *priv = dev_get_drvdata(dev);
++
+ 	intel_vbtn_pm_complete(dev);
++
++	if (priv->has_switches)
++		detect_tablet_mode(dev);
++
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
