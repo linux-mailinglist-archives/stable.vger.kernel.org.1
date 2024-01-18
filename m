@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-11966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5201831727
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:54:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C28583174E
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:55:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F50D2855C6
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:54:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42BB41F26CA3
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:55:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F4623754;
-	Thu, 18 Jan 2024 10:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 466E223746;
+	Thu, 18 Jan 2024 10:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KK5Gr8wj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZ2Su9UI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B4C1B96D;
-	Thu, 18 Jan 2024 10:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 058E322F06;
+	Thu, 18 Jan 2024 10:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575232; cv=none; b=H9erdKAhBH5lZeOtp/CY/3T1fnVqq6YzqlQAHyWCUfzH+EsVA8WCKOXpkSCs1fP/tnGkqrFEAQutac8b1vxtFhW7DwzTirTcU2yfxUqngnek5ywUEx7Qieicq9dycnX7qgpXx5OiSVCNLFhBNTC3GPp9Yc1qeAhYHt+IcLbHATc=
+	t=1705575341; cv=none; b=JfZ2lcW43XFvZVR92i9qFlOqy94ifihZ61RpePnuhjrHIK5WYiaqZ0Key9nAL+lrap5tuxN4O7QZFKnsHaTqZL0t9/q34cA9UzJ8EJiu24N5CxHq6OaOlax63GxP295gM9lXo9F7V/U8dMI4Ow0WhdVIK1vv2y+MPRwqnrrLnpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575232; c=relaxed/simple;
-	bh=7Wrle3jrxzV0JFli55jKQiIo9tElEd+k89iO4R6Q/EY=;
+	s=arc-20240116; t=1705575341; c=relaxed/simple;
+	bh=+stfkmM6HttMUDkn+Y2C9S7EeqMGuB+lmTNUwquavAY=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=AOwz8wJcAaOzWT0ozjGKEc7I8i3Ny4/r8dfpkx5RQNDra0HwXZAUA94SLAdaThwnSnLEwWH4j2E+WXw3c4t5gKLcdTFPJF66ZXrAm/SCeLHArCMiZr0CkD/tnNf6qmtI6Z7DW5s3Kbyvm+93ikc148bUxaFKpqikHnNFkG80FYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KK5Gr8wj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15520C43394;
-	Thu, 18 Jan 2024 10:53:51 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=VhqAQ2taiNvo7vnCEmjoRoiiZs4J0kaPepjFO/DIbAgL+jpQXgRl5YaukCx00G+l62GzQg9MHEbHrpAi0ibx3CYEZ477O7fKyh5jt72GtZDTkt8MzpWpAi/th1++jE4FcNsG0OlgYxyM3aW2XchWDCneQXWLQij8g5qdKbd0Fno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZ2Su9UI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4215DC433F1;
+	Thu, 18 Jan 2024 10:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575232;
-	bh=7Wrle3jrxzV0JFli55jKQiIo9tElEd+k89iO4R6Q/EY=;
+	s=korg; t=1705575340;
+	bh=+stfkmM6HttMUDkn+Y2C9S7EeqMGuB+lmTNUwquavAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KK5Gr8wjQuQI0HSWpk7txC8f4f+RBHVjdJBu8ukhlqWdxySNRF9eS2821DgNooPLe
-	 TPGJo/F21Tm+1yFAKBmihzyFkRcSdpomtiq1Nl/LKTw4pyNl3+Hz7G9bi2p7aEvouH
-	 uGGd0RnlSo7hSO/xcAOsrEFdpfGXvMGlY3ob/KeA=
+	b=UZ2Su9UIGZpstXoRpdCMyewKO6rCKSbQ/JH2UqN3DaWHFTKRaJ6hbjTPUFtTRdCSy
+	 SwTatV6Z6xecRDEMNq/HUhB4GPPotUfQf7Keu/3pWWP2Xx0Qwu2+qUYJSDBqBvuGQV
+	 5YPTT/lJm01NFzQnIayVECYL9XdPc5G3WOEpqcG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitao Hu <yaoma@linux.alibaba.com>,
-	Guixin Liu <kanie@linux.alibaba.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/150] nvme: fix deadlock between reset and scan
-Date: Thu, 18 Jan 2024 11:47:59 +0100
-Message-ID: <20240118104322.623475554@linuxfoundation.org>
+Subject: [PATCH 6.6 058/150] arm64: dts: rockchip: Fix PCI node addresses on rk3399-gru
+Date: Thu, 18 Jan 2024 11:48:00 +0100
+Message-ID: <20240118104322.666927591@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
 References: <20240118104320.029537060@linuxfoundation.org>
@@ -70,166 +67,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bitao Hu <yaoma@linux.alibaba.com>
+From: Rob Herring <robh@kernel.org>
 
-[ Upstream commit 839a40d1e730977d4448d141fa653517c2959a88 ]
+[ Upstream commit c13c823a78b77ea0e5f1f73112d910e259911101 ]
 
-If controller reset occurs when allocating namespace, both
-nvme_reset_work and nvme_scan_work will hang, as shown below.
+The rk3399-gru PCI node addresses are wrong.
 
-Test Scripts:
+In rk3399-gru-scarlet, the bus number in the address should be 0. This is
+because bus number assignment is dynamic and not known up front. For FDT,
+the bus number is simply ignored.
 
-    for ((t=1;t<=128;t++))
-    do
-    nsid=`nvme create-ns /dev/nvme1 -s 14537724 -c 14537724 -f 0 -m 0 \
-    -d 0 | awk -F: '{print($NF);}'`
-    nvme attach-ns /dev/nvme1 -n $nsid -c 0
-    done
-    nvme reset /dev/nvme1
+In rk3399-gru-chromebook, the addresses are simply invalid. The first
+"reg" entry must be the configuration space for the device. The entry
+should be all 0s except for device/slot and function numbers. The existing
+64-bit memory space (0x83000000) entries are not valid because they must
+have the BAR address in the lower byte of the first cell.
 
-We will find that both nvme_reset_work and nvme_scan_work hung:
+Warnings for these are enabled by adding the missing 'device_type = "pci"'
+for the root port node.
 
-    INFO: task kworker/u249:4:17848 blocked for more than 120 seconds.
-    "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this
-    message.
-    task:kworker/u249:4  state:D stack:    0 pid:17848 ppid:     2
-    flags:0x00000028
-    Workqueue: nvme-reset-wq nvme_reset_work [nvme]
-    Call trace:
-    __switch_to+0xb4/0xfc
-    __schedule+0x22c/0x670
-    schedule+0x4c/0xd0
-    blk_mq_freeze_queue_wait+0x84/0xc0
-    nvme_wait_freeze+0x40/0x64 [nvme_core]
-    nvme_reset_work+0x1c0/0x5cc [nvme]
-    process_one_work+0x1d8/0x4b0
-    worker_thread+0x230/0x440
-    kthread+0x114/0x120
-    INFO: task kworker/u249:3:22404 blocked for more than 120 seconds.
-    "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this
-    message.
-    task:kworker/u249:3  state:D stack:    0 pid:22404 ppid:     2
-    flags:0x00000028
-    Workqueue: nvme-wq nvme_scan_work [nvme_core]
-    Call trace:
-    __switch_to+0xb4/0xfc
-    __schedule+0x22c/0x670
-    schedule+0x4c/0xd0
-    rwsem_down_write_slowpath+0x32c/0x98c
-    down_write+0x70/0x80
-    nvme_alloc_ns+0x1ac/0x38c [nvme_core]
-    nvme_validate_or_alloc_ns+0xbc/0x150 [nvme_core]
-    nvme_scan_ns_list+0xe8/0x2e4 [nvme_core]
-    nvme_scan_work+0x60/0x500 [nvme_core]
-    process_one_work+0x1d8/0x4b0
-    worker_thread+0x260/0x440
-    kthread+0x114/0x120
-    INFO: task nvme:28428 blocked for more than 120 seconds.
-    "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this
-    message.
-    task:nvme            state:D stack:    0 pid:28428 ppid: 27119
-    flags:0x00000000
-    Call trace:
-    __switch_to+0xb4/0xfc
-    __schedule+0x22c/0x670
-    schedule+0x4c/0xd0
-    schedule_timeout+0x160/0x194
-    do_wait_for_common+0xac/0x1d0
-    __wait_for_common+0x78/0x100
-    wait_for_completion+0x24/0x30
-    __flush_work.isra.0+0x74/0x90
-    flush_work+0x14/0x20
-    nvme_reset_ctrl_sync+0x50/0x74 [nvme_core]
-    nvme_dev_ioctl+0x1b0/0x250 [nvme_core]
-    __arm64_sys_ioctl+0xa8/0xf0
-    el0_svc_common+0x88/0x234
-    do_el0_svc+0x7c/0x90
-    el0_svc+0x1c/0x30
-    el0_sync_handler+0xa8/0xb0
-    el0_sync+0x148/0x180
-
-The reason for the hang is that nvme_reset_work occurs while nvme_scan_work
-is still running. nvme_scan_work may add new ns into ctrl->namespaces
-list after nvme_reset_work frozen all ns->q in ctrl->namespaces list.
-The newly added ns is not frozen, so nvme_wait_freeze will wait forever.
-Unfortunately, ctrl->namespaces_rwsem is held by nvme_reset_work, so
-nvme_scan_work will also wait forever. Now we are deadlocked!
-
-PROCESS1                         PROCESS2
-==============                   ==============
-nvme_scan_work
-  ...                            nvme_reset_work
-  nvme_validate_or_alloc_ns        nvme_dev_disable
-    nvme_alloc_ns                    nvme_start_freeze
-     down_write                      ...
-     nvme_ns_add_to_ctrl_list        ...
-     up_write                      nvme_wait_freeze
-    ...                              down_read
-    nvme_alloc_ns                    blk_mq_freeze_queue_wait
-     down_write
-
-Fix by marking the ctrl with say NVME_CTRL_FROZEN flag set in
-nvme_start_freeze and cleared in nvme_unfreeze. Then the scan can check
-it before adding the new namespace (under the namespaces_rwsem).
-
-Signed-off-by: Bitao Hu <yaoma@linux.alibaba.com>
-Reviewed-by: Guixin Liu <kanie@linux.alibaba.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20231130191830.2424361-1-robh@kernel.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 10 ++++++++++
- drivers/nvme/host/nvme.h |  1 +
- 2 files changed, 11 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3399-gru-chromebook.dtsi  | 3 +--
+ arch/arm64/boot/dts/rockchip/rk3399-gru-scarlet-dumo.dts | 4 ++--
+ arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi             | 1 +
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index c38e234723ec..d4564a2517eb 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -3652,6 +3652,14 @@ static void nvme_alloc_ns(struct nvme_ctrl *ctrl, struct nvme_ns_info *info)
- 		goto out_unlink_ns;
- 
- 	down_write(&ctrl->namespaces_rwsem);
-+	/*
-+	 * Ensure that no namespaces are added to the ctrl list after the queues
-+	 * are frozen, thereby avoiding a deadlock between scan and reset.
-+	 */
-+	if (test_bit(NVME_CTRL_FROZEN, &ctrl->flags)) {
-+		up_write(&ctrl->namespaces_rwsem);
-+		goto out_unlink_ns;
-+	}
- 	nvme_ns_add_to_ctrl_list(ns);
- 	up_write(&ctrl->namespaces_rwsem);
- 	nvme_get_ctrl(ctrl);
-@@ -4562,6 +4570,7 @@ void nvme_unfreeze(struct nvme_ctrl *ctrl)
- 	list_for_each_entry(ns, &ctrl->namespaces, list)
- 		blk_mq_unfreeze_queue(ns->queue);
- 	up_read(&ctrl->namespaces_rwsem);
-+	clear_bit(NVME_CTRL_FROZEN, &ctrl->flags);
- }
- EXPORT_SYMBOL_GPL(nvme_unfreeze);
- 
-@@ -4595,6 +4604,7 @@ void nvme_start_freeze(struct nvme_ctrl *ctrl)
- {
- 	struct nvme_ns *ns;
- 
-+	set_bit(NVME_CTRL_FROZEN, &ctrl->flags);
- 	down_read(&ctrl->namespaces_rwsem);
- 	list_for_each_entry(ns, &ctrl->namespaces, list)
- 		blk_freeze_queue_start(ns->queue);
-diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
-index 13f71461f5f1..ba62d42d2a8b 100644
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -256,6 +256,7 @@ enum nvme_ctrl_flags {
- 	NVME_CTRL_STOPPED		= 3,
- 	NVME_CTRL_SKIP_ID_CNS_CS	= 4,
- 	NVME_CTRL_DIRTY_CAPABILITY	= 5,
-+	NVME_CTRL_FROZEN		= 6,
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-gru-chromebook.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-gru-chromebook.dtsi
+index 5c1929d41cc0..cacbad35cfc8 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-gru-chromebook.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-gru-chromebook.dtsi
+@@ -509,8 +509,7 @@ wacky_spi_audio: spi2@0 {
+ &pci_rootport {
+ 	mvl_wifi: wifi@0,0 {
+ 		compatible = "pci1b4b,2b42";
+-		reg = <0x83010000 0x0 0x00000000 0x0 0x00100000
+-		       0x83010000 0x0 0x00100000 0x0 0x00100000>;
++		reg = <0x0000 0x0 0x0 0x0 0x0>;
+ 		interrupt-parent = <&gpio0>;
+ 		interrupts = <8 IRQ_TYPE_LEVEL_LOW>;
+ 		pinctrl-names = "default";
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-gru-scarlet-dumo.dts b/arch/arm64/boot/dts/rockchip/rk3399-gru-scarlet-dumo.dts
+index 853e88455e75..9e4b12ed62cb 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-gru-scarlet-dumo.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-gru-scarlet-dumo.dts
+@@ -34,8 +34,8 @@ &mipi_panel {
+ &pci_rootport {
+ 	wifi@0,0 {
+ 		compatible = "qcom,ath10k";
+-		reg = <0x00010000 0x0 0x00000000 0x0 0x00000000>,
+-		      <0x03010010 0x0 0x00000000 0x0 0x00200000>;
++		reg = <0x00000000 0x0 0x00000000 0x0 0x00000000>,
++		      <0x03000010 0x0 0x00000000 0x0 0x00200000>;
+ 		qcom,ath10k-calibration-variant = "GO_DUMO";
+ 	};
+ };
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi
+index c9bf1d5c3a42..789fd0dcc88b 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-gru.dtsi
+@@ -489,6 +489,7 @@ pci_rootport: pcie@0,0 {
+ 		#address-cells = <3>;
+ 		#size-cells = <2>;
+ 		ranges;
++		device_type = "pci";
+ 	};
  };
  
- struct nvme_ctrl {
 -- 
 2.43.0
 
