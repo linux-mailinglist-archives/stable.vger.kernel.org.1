@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-12052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD3483177F
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:57:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F0D78317ED
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED3D31C2280A
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:57:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B92CD1C2421C
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B60922F06;
-	Thu, 18 Jan 2024 10:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C171241F5;
+	Thu, 18 Jan 2024 11:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BkSkZ4XF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ik5fAJ98"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA271774B;
-	Thu, 18 Jan 2024 10:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5C1BE7F;
+	Thu, 18 Jan 2024 11:01:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575471; cv=none; b=ZC5ZGhIdJZMbytcx3PCo1FGvxpiAsWUukcE8JqQdL5S9E/QK8CCV10I0xwKVDMym6m/BwIXF9Ey1CWZQVOx9rf51BSScp3/4f8keJOUrxs9gYMO7ZHPd7C+Sba9uk16v8At3O0uWRH9nJPvsgGpURLFFmj1Y6hqWnaqq5JT2qkA=
+	t=1705575710; cv=none; b=TvnbUly5BmrsimYspHLnGrPd8tQy0ODLjeR9/Us5uqUoHkA0E0z+KyfKRlmV4AmvdMcMzQbzwUJuydLYpUZIN54JffBc6kFWZtBDCilDaoFdoWoZ6wYQYFhWIM23wvECAvoI3vDy+n6vz70+5CT+dcDmdAaK2g6JujkUFu3tDO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575471; c=relaxed/simple;
-	bh=aOpzAvh9xPk1Kssbyb2JdxtQK1PIRIkUDhKE3CNKYyY=;
+	s=arc-20240116; t=1705575710; c=relaxed/simple;
+	bh=r1jyXvpinvGOnwRlIaNNsH3/c4CiUUfVyrWMtXoN/Eo=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=aVBQggd2/iXaQmuc6PkkUWBFduDl5JScqiYm+5xvkuSlY72oKap7hbcVvfkx30eyG5A2+1HR7z+udaETRKSfoZw1/XUT9v4CX4kLOaIuM7mqUfF9uyeHZu8DBG6GS9Ztasqr+Ja42QweID7m3tQTQog32vTpCwaIhpKlD/r/uj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BkSkZ4XF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4383DC433C7;
-	Thu, 18 Jan 2024 10:57:51 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding; b=WFVoh1msqcGh46475VckFOxFMIe9uUGhP60fhZ6FZVKuQcZ8DGf3LQrrYeedR6ZZSPk43G2wuaPVFEiYBVN3ily4q4C0FYmX8ugrglyX97tVWVmq6yvwLcqewacv9oWEaKHefMz4qC2SkQEmH+oCW1wf0DREwOaGws3VEdi0CEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ik5fAJ98; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A70DC433F1;
+	Thu, 18 Jan 2024 11:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575471;
-	bh=aOpzAvh9xPk1Kssbyb2JdxtQK1PIRIkUDhKE3CNKYyY=;
+	s=korg; t=1705575709;
+	bh=r1jyXvpinvGOnwRlIaNNsH3/c4CiUUfVyrWMtXoN/Eo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BkSkZ4XFBqTG1rVezlU3oK6LRAMSdUqiSwW9icyIv9oOCQaOUG6mYCDL18o+d/qGu
-	 CuNr2g7H1WGq/5O0vFd8m9Xl2eXwSlpw/LaVWWt8kmNwgci6A+RIXRKkVEElA9xK/P
-	 H6ew8132d8JRQWHy7tm8Ame2CHypSHcggWYIwLQ4=
+	b=ik5fAJ989BvriMHq/xG6kkmRM5qg9lTLSSYyyfizJHtH/KrBCTbYBFAoESUhgPfEq
+	 0Tt0OgPCg9dVDU7VLu9tH3YCWcXrfHq+pKzzzVXQGoJNRaSC+SlcjKvyxDwp37+M4F
+	 cPd74MiIFPurZRdTgj9D+woplEtQJLbzp0ghcqRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cameron Williams <cang1@live.co.uk>,
-	Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Subject: [PATCH 6.6 144/150] parport: parport_serial: Add Brainboxes BAR details
+	Suwan Kim <suwan.kim027@gmail.com>,
+	kernel test robot <lkp@intel.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 078/100] virtio_blk: fix snprintf truncation compiler warning
 Date: Thu, 18 Jan 2024 11:49:26 +0100
-Message-ID: <20240118104326.733434008@linuxfoundation.org>
+Message-ID: <20240118104314.290347083@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +64,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cameron Williams <cang1@live.co.uk>
+From: Stefan Hajnoczi <stefanha@redhat.com>
 
-commit 65fde134b0a4ffe838729f9ee11b459a2f6f2815 upstream.
+[ Upstream commit b8e0792449928943c15d1af9f63816911d139267 ]
 
-Add BAR/enum entries for Brainboxes serial/parallel cards.
+Commit 4e0400525691 ("virtio-blk: support polling I/O") triggers the
+following gcc 13 W=1 warnings:
 
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
-Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Link: https://lore.kernel.org/r/AS4PR02MB79035155C2D5C3333AE6FA52C4A6A@AS4PR02MB7903.eurprd02.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/block/virtio_blk.c: In function ‘init_vq’:
+drivers/block/virtio_blk.c:1077:68: warning: ‘%d’ directive output may be truncated writing between 1 and 11 bytes into a region of size 7 [-Wformat-truncation=]
+ 1077 |                 snprintf(vblk->vqs[i].name, VQ_NAME_LEN, "req_poll.%d", i);
+      |                                                                    ^~
+drivers/block/virtio_blk.c:1077:58: note: directive argument in the range [-2147483648, 65534]
+ 1077 |                 snprintf(vblk->vqs[i].name, VQ_NAME_LEN, "req_poll.%d", i);
+      |                                                          ^~~~~~~~~~~~~
+drivers/block/virtio_blk.c:1077:17: note: ‘snprintf’ output between 11 and 21 bytes into a destination of size 16
+ 1077 |                 snprintf(vblk->vqs[i].name, VQ_NAME_LEN, "req_poll.%d", i);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This is a false positive because the lower bound -2147483648 is
+incorrect. The true range of i is [0, num_vqs - 1] where 0 < num_vqs <
+65536.
+
+The code mixes int, unsigned short, and unsigned int types in addition
+to using "%d" for an unsigned value. Use unsigned short and "%u"
+consistently to solve the compiler warning.
+
+Cc: Suwan Kim <suwan.kim027@gmail.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202312041509.DIyvEt9h-lkp@intel.com/
+Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-Id: <20231204140743.1487843-1-stefanha@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/parport/parport_serial.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/block/virtio_blk.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/parport/parport_serial.c
-+++ b/drivers/parport/parport_serial.c
-@@ -65,6 +65,10 @@ enum parport_pc_pci_cards {
- 	sunix_5069a,
- 	sunix_5079a,
- 	sunix_5099a,
-+	brainboxes_uc257,
-+	brainboxes_is300,
-+	brainboxes_uc414,
-+	brainboxes_px263,
- };
+diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+index efa5535a8e1d..3124837aa406 100644
+--- a/drivers/block/virtio_blk.c
++++ b/drivers/block/virtio_blk.c
+@@ -609,12 +609,12 @@ static void virtblk_config_changed(struct virtio_device *vdev)
+ static int init_vq(struct virtio_blk *vblk)
+ {
+ 	int err;
+-	int i;
++	unsigned short i;
+ 	vq_callback_t **callbacks;
+ 	const char **names;
+ 	struct virtqueue **vqs;
+ 	unsigned short num_vqs;
+-	unsigned int num_poll_vqs;
++	unsigned short num_poll_vqs;
+ 	struct virtio_device *vdev = vblk->vdev;
+ 	struct irq_affinity desc = { 0, };
  
- /* each element directly indexed from enum list, above */
-@@ -158,6 +162,10 @@ static struct parport_pc_pci cards[] = {
- 	/* sunix_5069a */		{ 1, { { 1, 2 }, } },
- 	/* sunix_5079a */		{ 1, { { 1, 2 }, } },
- 	/* sunix_5099a */		{ 1, { { 1, 2 }, } },
-+	/* brainboxes_uc257 */	{ 1, { { 3, -1 }, } },
-+	/* brainboxes_is300 */	{ 1, { { 3, -1 }, } },
-+	/* brainboxes_uc414 */  { 1, { { 3, -1 }, } },
-+	/* brainboxes_px263 */	{ 1, { { 3, -1 }, } },
- };
+@@ -658,13 +658,13 @@ static int init_vq(struct virtio_blk *vblk)
  
- static struct pci_device_id parport_serial_pci_tbl[] = {
+ 	for (i = 0; i < num_vqs - num_poll_vqs; i++) {
+ 		callbacks[i] = virtblk_done;
+-		snprintf(vblk->vqs[i].name, VQ_NAME_LEN, "req.%d", i);
++		snprintf(vblk->vqs[i].name, VQ_NAME_LEN, "req.%u", i);
+ 		names[i] = vblk->vqs[i].name;
+ 	}
+ 
+ 	for (; i < num_vqs; i++) {
+ 		callbacks[i] = NULL;
+-		snprintf(vblk->vqs[i].name, VQ_NAME_LEN, "req_poll.%d", i);
++		snprintf(vblk->vqs[i].name, VQ_NAME_LEN, "req_poll.%u", i);
+ 		names[i] = vblk->vqs[i].name;
+ 	}
+ 
+-- 
+2.43.0
+
 
 
 
