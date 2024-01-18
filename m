@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-11973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D639683172E
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:54:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD71C831709
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:52:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E5851F26BD1
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:54:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 848241F26BA8
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:52:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1296923746;
-	Thu, 18 Jan 2024 10:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B687C23765;
+	Thu, 18 Jan 2024 10:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTd4r2uO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ByIUiHlR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FBA1B96D;
-	Thu, 18 Jan 2024 10:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7511523760;
+	Thu, 18 Jan 2024 10:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575251; cv=none; b=nhJKwvDfFDoPXSTZgb+VRDodEYCMSWcsPZoPCizB/Z1fPI5JL+2IczT6Yt9HfKq1ruEKYNUSFE73HZ2yU0NMLHsfRYE2385UJgtVA5KoGmpbpxqJdILKQChwI4oW42cd6MR5kb2Rz6PQTddSsjQ6mFa8HWMg4f2rBKyi6Rk2a2c=
+	t=1705575168; cv=none; b=I0UyBo4SdQQG/a1MkDakB5GaWoPzVQp/fxhGHapfaa8c4GgOM1CIgctSd4/hLAxEL8l9b8iawl7FizYnRHryc6XRwffJV6WUli0aEgf/3elhMZnfzYnI0Ys8DBxoMgcGUnnoM4YjQ6WLkq28fojKkY1zLSuYz686RCCpbEUIG7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575251; c=relaxed/simple;
-	bh=8hlBKuEbsTBw8XGsS+yQ/bcKjL1YN/zPwhzjjTFIwnM=;
+	s=arc-20240116; t=1705575168; c=relaxed/simple;
+	bh=OBB3fJ+zpoU8NcWlzmErrHwTP+cn8IYLbMJM7n2AVKc=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=jlXbsl8WziUqY6P+oBl1Gt6HNQo8b9CpuV24LmSFfUjBdHMxE0UzlhmIDlOvzcy50JY+tb+QLuzHGUgPGgfEzFZ9P9Zxq5k9BnVQz2BMmyjUfli7b9H/ifpA6oteEcyytdr6ycT1qn4mQJQV+eeFHknvLQt2QV2rm9Jo50THFUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTd4r2uO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A72BC433C7;
-	Thu, 18 Jan 2024 10:54:11 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=DJ19hBcMTqS43ddDTTAQyvEBGxltRXEvXYQPWGVugx0hIZrAjS+cM91H1dFEWE7B6P08BMJFDwAP6t6pHghH5akXZ9pdZVxPjnkcobtdzE9Uh0af3WXK5xwuGbcus2RGVFkyW/jNVHVLKxvHt4SWX8khH472w46rbvPoVoic9zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ByIUiHlR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC3E4C43390;
+	Thu, 18 Jan 2024 10:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575251;
-	bh=8hlBKuEbsTBw8XGsS+yQ/bcKjL1YN/zPwhzjjTFIwnM=;
+	s=korg; t=1705575168;
+	bh=OBB3fJ+zpoU8NcWlzmErrHwTP+cn8IYLbMJM7n2AVKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MTd4r2uOCn2IujMbWWyFac8Ke10ikPU/qmzAHKSwsWfZZ8GNGVJxmveSrUOVNeJsH
-	 WA1cwfluPTbgcE7bIVsc0PdNi9LHR6rNz/8WGs1k5ooQ9HbkFqlvPH9P8v8R+Mi6NO
-	 FXav2D61wtdLk7dzameMDmYXNeB7DecqbCCBAC2I=
+	b=ByIUiHlRo9P8d8kH6Zt28vGAkTMCJVISLWNnFgI2c4tH4sMC6nPpVjj8nv8PAxJ5n
+	 TyKne+ZBPfGzXmU2e6aDCthuh7n8wb4OWZwo70h3ioT1iE10eyrkoawKKWsDfZkBv6
+	 ygenVNwZ/9ci7EvPIhzGcJ23QTX4Vfi1u3e+8CHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Matus Malych <matus@malych.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 027/150] hwtracing: hisi_ptt: Dont try to attach a task
-Date: Thu, 18 Jan 2024 11:47:29 +0100
-Message-ID: <20240118104321.333388412@linuxfoundation.org>
+Subject: [PATCH 6.6 028/150] ASoC: amd: yc: Add HP 255 G10 into quirk table
+Date: Thu, 18 Jan 2024 11:47:30 +0100
+Message-ID: <20240118104321.384024830@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
 References: <20240118104320.029537060@linuxfoundation.org>
@@ -68,36 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+From: Matus Malych <matus@malych.org>
 
-[ Upstream commit aff787f64ad7cbb54614b51b82c682fe06411ef3 ]
+[ Upstream commit 0c6498a59fbbcbf3d0a58c282dd6f0bca0eed92a ]
 
-PTT is an uncore PMU and shouldn't be attached to any task. Block
-the usage in pmu::event_init().
+HP 255 G10's internal microphone array can be made
+to work by adding it to the quirk table.
 
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20231010084731.30450-5-yangyicong@huawei.com
+Signed-off-by: Matus Malych <matus@malych.org>
+Link: https://lore.kernel.org/r/20231112165403.3221-1-matus@malych.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/ptt/hisi_ptt.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/hwtracing/ptt/hisi_ptt.c b/drivers/hwtracing/ptt/hisi_ptt.c
-index dbed4fd4e296..a991ecb7515a 100644
---- a/drivers/hwtracing/ptt/hisi_ptt.c
-+++ b/drivers/hwtracing/ptt/hisi_ptt.c
-@@ -1000,6 +1000,9 @@ static int hisi_ptt_pmu_event_init(struct perf_event *event)
- 		return -EOPNOTSUPP;
- 	}
- 
-+	if (event->attach_state & PERF_ATTACH_TASK)
-+		return -EOPNOTSUPP;
-+
- 	if (event->attr.type != hisi_ptt->hisi_ptt_pmu.type)
- 		return -ENOENT;
- 
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index 3babb17a56bb..a3424d880019 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -374,6 +374,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "8A3E"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "HP"),
++			DMI_MATCH(DMI_BOARD_NAME, "8B2F"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.43.0
 
