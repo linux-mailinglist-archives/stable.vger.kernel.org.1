@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-12015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C96A1831759
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47CB68317BE
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:00:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A00C283F6F
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE0801F25938
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A369F22F0F;
-	Thu, 18 Jan 2024 10:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C7D249E2;
+	Thu, 18 Jan 2024 11:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6c2mwtO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B7s2gdL2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CA91774B;
-	Thu, 18 Jan 2024 10:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 057412376D;
+	Thu, 18 Jan 2024 11:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575369; cv=none; b=LIT7rq89t2nYaxL2+pxN8bFdbGh1Nob86Bd/HhEbLcdr8PHwA+hLH4FSbjG04LRwZpvEAUnbwNWdugcsdZ9tgVopYQRD+gATbYdqurEv7K4pBMjmfhiclEf0yC2cdmJK4WPTHoqQXj7dsVvi00xOlZBkOi1pgFtJKN54mzzrKzw=
+	t=1705575607; cv=none; b=LQj6F0RcE4teu33ahHN5XpTQAwTXOTWxduPswuJQU3qeN8Ws+pgMNF7ud/nx1n6II0OVBveMNBB/8h2EBiEvV+VxJdK6cukVdV28IPXui2QcOVeYUP2QcCfmuB3FF5+Ws47WBsMWkDLMuM+OIt8tDrlCwF8GdnryWW40AagjJQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575369; c=relaxed/simple;
-	bh=/RyWZCBa7BSJ1t4zWJ4CmEYL+sxOgp84+FsVPZ0JzPc=;
+	s=arc-20240116; t=1705575607; c=relaxed/simple;
+	bh=doFIR4smwfV9exCE+kah6+rl1XKXBMTe8eOZbqHYqF0=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=swiDzS3lWuQwppKE3pWPqssm0Pw313wvWasbXuygp2942BIssZ28TY9J4Ope0Q/OS2hQ+SYKvbZbKFEKyw8VT6spR7au0PQStXlW3zEvRYGi92zJ4BaoqQBbsbBW3LpfuPC2smXst4l7reuz1p9hk/r1y3qyWzishBU7ZKHPGyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y6c2mwtO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2D5C433F1;
-	Thu, 18 Jan 2024 10:56:08 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=lHe3Qi5mchOQQpggDWVmzo5ti8oIFQUZEunroeev/BOAE8hHiHB6/kbbvKNJrzWOgYvb2D1FPM7e2LNCKFva2GEk4VgsYTsYzvaxeG6XDm8lSuYSuCEeG72K1NCwcIfC2Mml9ws9BmPRerIk9EmiKXTgxk0E9YIVXXedm9mSz1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B7s2gdL2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C3F2C43394;
+	Thu, 18 Jan 2024 11:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575368;
-	bh=/RyWZCBa7BSJ1t4zWJ4CmEYL+sxOgp84+FsVPZ0JzPc=;
+	s=korg; t=1705575606;
+	bh=doFIR4smwfV9exCE+kah6+rl1XKXBMTe8eOZbqHYqF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y6c2mwtO/EPv3dFaFndL0c7ubPaGWudhMODGG2mXNWDwhdByU6t/IGA+wbsvCPH/H
-	 BgAoxQ2kcSHtRecMK62jWBhAE/EfEP7iDJluvhh3miHxHGXLP4MvpPH8+qUqBR7Sh2
-	 OY2Rn24tqOqYCP1j5XQ+GRvaoRmKaHrqhajVlXjQ=
+	b=B7s2gdL29xLYwjCXLfMSbqfrwSgoXNWWoBagxlrglvgvE9OqQv/EnGfIYQjMVRVum
+	 PXG1QdP6SVwQ3E6FgveDeHSMNo0P1QfWWOJXsbecmp6SqlT49s33KlInVTsXwqaqCU
+	 US9bWXuskTcN9GT0Y8sTHzdC4VcxYqqMgBfXGt3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 108/150] ALSA: hda/realtek: Add quirks for ASUS Zenbook 2022 Models
+Subject: [PATCH 6.1 042/100] clk: rockchip: rk3568: Add PLL rate for 292.5MHz
 Date: Thu, 18 Jan 2024 11:48:50 +0100
-Message-ID: <20240118104325.040037744@linuxfoundation.org>
+Message-ID: <20240118104312.739821201@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Chris Morgan <macromorgan@hotmail.com>
 
-[ Upstream commit 51d976079976c800ef19ed1b542602fcf63f0edb ]
+[ Upstream commit 1af27671f62ce919f1fb76082ed81f71cb090989 ]
 
-These models use 2xCS35L41amps with HDA using SPI and I2C.
-Models use internal and external boost.
-All models require DSD support to be added inside
-cs35l41_hda_property.c
+Add support for a PLL rate of 292.5MHz so that the Powkiddy RGB30 panel
+can run at a requested 60hz (59.96, close enough).
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20231218151221.388745-6-sbinding@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+I have confirmed this rate fits with all the constraints
+listed in the TRM for the VPLL (as an integer PLL) in Part 1 "Chapter
+2 Clock & Reset Unit (CRU)."
+
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Link: https://lore.kernel.org/r/20231018153357.343142-2-macroalpha82@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/clk/rockchip/clk-rk3568.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 2f367e8b399b..69b3df84e096 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9916,17 +9916,20 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1d1f, "ASUS ROG Strix G17 2023 (G713PV)", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1d42, "ASUS Zephyrus G14 2022", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1d4e, "ASUS TM420", ALC256_FIXUP_ASUS_HPE),
-+	SND_PCI_QUIRK(0x1043, 0x1da2, "ASUS UP6502ZA/ZD", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402ZA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x16a3, "ASUS UX3402VA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1f62, "ASUS UX7602ZM", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e11, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA502),
--	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM3402", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM6702RA/RC", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e51, "ASUS Zephyrus M15", ALC294_FIXUP_ASUS_GU502_PINS),
- 	SND_PCI_QUIRK(0x1043, 0x1e5e, "ASUS ROG Strix G513", ALC294_FIXUP_ASUS_G513_PINS),
- 	SND_PCI_QUIRK(0x1043, 0x1e8e, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA401),
-+	SND_PCI_QUIRK(0x1043, 0x1ee2, "ASUS UM3402", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1c52, "ASUS Zephyrus G15 2022", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1f11, "ASUS Zephyrus G14", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1f12, "ASUS UM5302", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x1043, 0x1f62, "ASUS UX7602ZM", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1f92, "ASUS ROG Flow X16", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
- 	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC245_FIXUP_CS35L41_SPI_2),
+diff --git a/drivers/clk/rockchip/clk-rk3568.c b/drivers/clk/rockchip/clk-rk3568.c
+index 2f54f630c8b6..1ffb755feea4 100644
+--- a/drivers/clk/rockchip/clk-rk3568.c
++++ b/drivers/clk/rockchip/clk-rk3568.c
+@@ -72,6 +72,7 @@ static struct rockchip_pll_rate_table rk3568_pll_rates[] = {
+ 	RK3036_PLL_RATE(408000000, 1, 68, 2, 2, 1, 0),
+ 	RK3036_PLL_RATE(312000000, 1, 78, 6, 1, 1, 0),
+ 	RK3036_PLL_RATE(297000000, 2, 99, 4, 1, 1, 0),
++	RK3036_PLL_RATE(292500000, 1, 195, 4, 4, 1, 0),
+ 	RK3036_PLL_RATE(241500000, 2, 161, 4, 2, 1, 0),
+ 	RK3036_PLL_RATE(216000000, 1, 72, 4, 2, 1, 0),
+ 	RK3036_PLL_RATE(200000000, 1, 100, 3, 4, 1, 0),
 -- 
 2.43.0
 
