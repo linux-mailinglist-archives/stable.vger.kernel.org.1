@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-11982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E19D8831737
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:54:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AAB0831791
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:58:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A81B828551C
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:54:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F339BB242EB
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A62C22F0F;
-	Thu, 18 Jan 2024 10:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7897D23762;
+	Thu, 18 Jan 2024 10:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+IN/ign"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WO2mJmYK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF87E1B96D;
-	Thu, 18 Jan 2024 10:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37EF51774B;
+	Thu, 18 Jan 2024 10:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575276; cv=none; b=QeoOGD3JzRuw4IksDkrISouK7RetaI2l46vfJVo1ZaGvGbXjBMNjW5tIuv76Dmo4XPko4YeQG/Ix8X+sKM5Zb13PV+J4SYCTpKTS0S/17F7t+g5bAZ6lNDwcnyMryJdvHG2KqIhLAIMlELQDB33Le1zFgH1vEYj2tb1PE4ZSUJo=
+	t=1705575516; cv=none; b=hlX/Eim5r391N0MH0/a9Vh/uqGFShoagukAcevRZBjk51V3/eYZ6EhUlqjNm2Ve95D8en7dU4L5W0JNRYIEabngiQkxPnA7ehxufeOXWNIvBuxVrBHHkWGByfOr6Ra6v64gdY2BrnEIQ30WwIzaKvsc4eo8HqazLKCW+1CtLtf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575276; c=relaxed/simple;
-	bh=PckjyMaVOXETQFl0M6NBcTs/q7KptsMPShrBAUbf46k=;
+	s=arc-20240116; t=1705575516; c=relaxed/simple;
+	bh=gXgZKWPkCMuNo89Qxu+1ZpzQpDBkAtkgu7/BpF/atWQ=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=jMhfVeNom3+YbL7tkwazqariBnHaMokz+kCph4yYu83WPzt2FjR1L/AqPt7fZ61j8OAYhxSbTaduxkaFiXxOILVT+/2uICXbDDGwxq7QgSE6bNm8XWpbknXKHO1JMqzpZGcrt7E+iQhedAaU49VcbQOiemvn9yX4o671Yx3QltM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+IN/ign; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42EB8C43390;
-	Thu, 18 Jan 2024 10:54:36 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=FTJJuYinD24M2ldTq3ELaoUl5Uhi4ZpUTiDEdNlmDWm1oKVz0KTK7YxUEDzfs3xL6pRYW4lTWbZiIQvZuXpFGxj9WLh4qY4mnYOg0POJtjOk4mdhawG1GhUdt5X3cvZ/a1NFmLl25mSJTHd5fiS5gOCmL6ON8w5ZwHQouvSIPe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WO2mJmYK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD3AEC433C7;
+	Thu, 18 Jan 2024 10:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575276;
-	bh=PckjyMaVOXETQFl0M6NBcTs/q7KptsMPShrBAUbf46k=;
+	s=korg; t=1705575516;
+	bh=gXgZKWPkCMuNo89Qxu+1ZpzQpDBkAtkgu7/BpF/atWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z+IN/ignL3/SGbMGGXRgyWUeFDGwQ5LA1RI/sMc3bsA16V7RsfzmdTxBfUpTxhDwj
-	 BIFmBzbmC21Hkj5tqHAXXP3Yiud/hzS/V+jztir+bx8GeBFbC2bn3ZtmDRGugH2LZv
-	 pK2StvgF5UsiIg8W7uHklptH+huGnKA4vjyBf7h0=
+	b=WO2mJmYKP3Ol9NQAnnrgnZ5TGv+mETyEvtnCUJBvrTdrUiAl8113CGhUinjLysWAN
+	 wh0dLiyTGKTXrRIi3v9lVPqXN5XoCnMtni2p5blnqA7WLy2yiSU3U2xEvIJHIoZ+CW
+	 /nCjpLOzHoQyS6ZW5P8q3Lzr2lpm+e2QPkTyQIgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Judy Hsiao <judyhsiao@chromium.org>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Kanchan Joshi <joshi.k@samsung.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 075/150] neighbour: Dont let neigh_forced_gc() disable preemption for long
-Date: Thu, 18 Jan 2024 11:48:17 +0100
-Message-ID: <20240118104323.457984868@linuxfoundation.org>
+Subject: [PATCH 6.1 010/100] nvme-core: fix a memory leak in nvme_ns_info_from_identify()
+Date: Thu, 18 Jan 2024 11:48:18 +0100
+Message-ID: <20240118104311.318366141@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,66 +65,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judy Hsiao <judyhsiao@chromium.org>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-[ Upstream commit e5dc5afff62f3e97e86c3643ec9fcad23de4f2d3 ]
+[ Upstream commit e3139cef8257fcab1725441e2fd5fd0ccb5481b1 ]
 
-We are seeing cases where neigh_cleanup_and_release() is called by
-neigh_forced_gc() many times in a row with preemption turned off.
-When running on a low powered CPU at a low CPU frequency, this has
-been measured to keep preemption off for ~10 ms. That's not great on a
-system with HZ=1000 which expects tasks to be able to schedule in
-with ~1ms latency.
+In case of error, free the nvme_id_ns structure that was allocated
+by nvme_identify_ns().
 
-Suggested-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Judy Hsiao <judyhsiao@chromium.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Kanchan Joshi <joshi.k@samsung.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/neighbour.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/nvme/host/core.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index df81c1f0a570..552719c3bbc3 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -253,9 +253,11 @@ static int neigh_forced_gc(struct neigh_table *tbl)
- {
- 	int max_clean = atomic_read(&tbl->gc_entries) -
- 			READ_ONCE(tbl->gc_thresh2);
-+	u64 tmax = ktime_get_ns() + NSEC_PER_MSEC;
- 	unsigned long tref = jiffies - 5 * HZ;
- 	struct neighbour *n, *tmp;
- 	int shrunk = 0;
-+	int loop = 0;
- 
- 	NEIGH_CACHE_STAT_INC(tbl, forced_gc_runs);
- 
-@@ -278,11 +280,16 @@ static int neigh_forced_gc(struct neigh_table *tbl)
- 				shrunk++;
- 			if (shrunk >= max_clean)
- 				break;
-+			if (++loop == 16) {
-+				if (ktime_get_ns() > tmax)
-+					goto unlock;
-+				loop = 0;
-+			}
- 		}
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 5b906dbb1096..67c893934c80 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -1511,7 +1511,8 @@ static int nvme_ns_info_from_identify(struct nvme_ctrl *ctrl,
+ 	if (id->ncap == 0) {
+ 		/* namespace not allocated or attached */
+ 		info->is_removed = true;
+-		return -ENODEV;
++		ret = -ENODEV;
++		goto error;
  	}
  
- 	WRITE_ONCE(tbl->last_flush, jiffies);
--
-+unlock:
- 	write_unlock_bh(&tbl->lock);
+ 	info->anagrpid = id->anagrpid;
+@@ -1529,8 +1530,10 @@ static int nvme_ns_info_from_identify(struct nvme_ctrl *ctrl,
+ 		    !memchr_inv(ids->nguid, 0, sizeof(ids->nguid)))
+ 			memcpy(ids->nguid, id->nguid, sizeof(ids->nguid));
+ 	}
++
++error:
+ 	kfree(id);
+-	return 0;
++	return ret;
+ }
  
- 	return shrunk;
+ static int nvme_ns_info_from_id_cs_indep(struct nvme_ctrl *ctrl,
 -- 
 2.43.0
 
