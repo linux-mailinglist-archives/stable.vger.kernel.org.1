@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-11981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49AAD831736
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:54:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF6238317B5
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:00:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 022261F26BDB
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:54:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66E78B24968
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:00:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40AF122F06;
-	Thu, 18 Jan 2024 10:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1059822F1B;
+	Thu, 18 Jan 2024 10:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GanocvJh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofTFuFJw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D401B96D;
-	Thu, 18 Jan 2024 10:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C085B22F0B;
+	Thu, 18 Jan 2024 10:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575274; cv=none; b=U3PYWV2uxVVO4qkrAh/h/2A8O0SF25+wnPKfjTlCE2SsB9JlQELpszFSCIbi7rPd43afADJMI44WkYJkVbgw9vrtsud8h0LkI6SDpvCt9gMlBGAkMAEHbStANjC8DN6XCSkC87PBE5yvwgSQ+aNw9/g+oTgJ0SzVaTZsBvsYzag=
+	t=1705575591; cv=none; b=q4DnXOiHZp6H6GoJvevEoLW3bw8XAL+GYs7AMpZwdeIWYXDtgocHZ1KnBAd2JfrEEPBe1IShrjOoeWkCF7/QMaZ/4FWTFf12W5LTl9YiagAg+69+vxSXxdEdAFE57nr0uXlVbatSe1at/yHCbkSYuCPmKan8n/BKPr8ImR7+l/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575274; c=relaxed/simple;
-	bh=tM91ooD4zYKYHM0HXIi2yJ5Cdvp2a5wyeYt/Ozdl6Ao=;
+	s=arc-20240116; t=1705575591; c=relaxed/simple;
+	bh=OWeLzaZWOZ9vnYdGfqlmY/DIIqFXOhUfzKz6+TyWYOI=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=bmwC95vcxl5R9epe4ByyNAuar+071pSZAbesCRmkoCFN0O8HtP64/6ZW0skFOesu2obUmwyozODOi4Zvvs9VWm7Y690emLCJX4xx9gzoh03cduw0btUD1CNWxbHP/gSx4g3LLzNc9Plv0zyi+Fm/q6iecGIVpx/sAUEgHhyRT3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GanocvJh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 778F7C43390;
-	Thu, 18 Jan 2024 10:54:33 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=gT0MnE3y4QUaJStOqOkTnvUyFVkq82MkiRkqWxtWCrXEi8iO9Hh+PKNAh/ICEo5/AO7FYo/wH41F0QBxPKsbIGNlpTFaqTHVohzgw2ypbX/46irHu3nTVwfxSiA4lacC1aOtlWvrD/lnP/khyRbs0ujSYiytzqu9PRk6wAm5glg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofTFuFJw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43934C433F1;
+	Thu, 18 Jan 2024 10:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575273;
-	bh=tM91ooD4zYKYHM0HXIi2yJ5Cdvp2a5wyeYt/Ozdl6Ao=;
+	s=korg; t=1705575591;
+	bh=OWeLzaZWOZ9vnYdGfqlmY/DIIqFXOhUfzKz6+TyWYOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GanocvJhaF9x1eF/AMy3i5HktB0YWyrNrruSfc1hdehL1Re6me6O8eY4jQR0aIHqs
-	 7hRofpfwWLWJ3t03U4HgbqUX2U2dY0yhLOb4mrGtyF2ZrfCer1CYrui3xzkiBRpKuK
-	 SSRw9VZcfcoWNDK62GsGk1Bz95j/V60DTsqNkmqA=
+	b=ofTFuFJwPsYg9soPi/Bi+nOLPDk4vibdpnmNTMU2lGwFuQcySvnz7h1AjC5LiyjXB
+	 fC9UOSG18DOoQbqaLaOrYRS/XlGb/gdHOAPXRBEQS4gRX89Q+2NlgPlBw1aW46kKQ3
+	 62hUBJAU70RkZNJQOxJuCLSKBrii1/ivZ4/lzAy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com,
-	Ziqi Zhao <astrajoan@yahoo.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Maxime Ripard <mripard@kernel.org>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 074/150] drm/crtc: Fix uninit-value bug in drm_mode_setcrtc
-Date: Thu, 18 Jan 2024 11:48:16 +0100
-Message-ID: <20240118104323.409472885@linuxfoundation.org>
+Subject: [PATCH 6.1 009/100] ALSA: hda: intel-nhlt: Ignore vbps when looking for DMIC 32 bps format
+Date: Thu, 18 Jan 2024 11:48:17 +0100
+Message-ID: <20240118104311.272836367@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +66,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziqi Zhao <astrajoan@yahoo.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit 3823119b9c2b5f9e9b760336f75bc989b805cde6 ]
+[ Upstream commit 7b4c93a50a2ebbbaf656cc4fa6aca74a6166d85b ]
 
-The connector_set contains uninitialized values when allocated with
-kmalloc_array. However, in the "out" branch, the logic assumes that any
-element in connector_set would be equal to NULL if failed to
-initialize, which causes the bug reported by Syzbot. The fix is to use
-an extra variable to keep track of how many connectors are initialized
-indeed, and use that variable to decrease any refcounts in the "out"
-branch.
+When looking up DMIC blob from the NHLT table and the format is 32 bits,
+ignore the vbps matching for 32 bps for DMIC since some NHLT table have
+the vbps as 24, some have it as 32.
+The DMIC hardware supports only one type of 32 bit sample size, which is
+24 bit sampling on the MSB side and bits[1:0] is used for indicating the
+channel number.
 
-Reported-by: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
-Signed-off-by: Ziqi Zhao <astrajoan@yahoo.com>
-Reported-and-tested-by: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
-Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Link: https://lore.kernel.org/r/20230721161446.8602-1-astrajoan@yahoo.com
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Link: https://lore.kernel.org/r/20231127111658.17275-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_crtc.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ sound/hda/intel-nhlt.c | 33 +++++++++++++++++++++++++++++----
+ 1 file changed, 29 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_crtc.c b/drivers/gpu/drm/drm_crtc.c
-index df9bf3c9206e..d718c17ab1e9 100644
---- a/drivers/gpu/drm/drm_crtc.c
-+++ b/drivers/gpu/drm/drm_crtc.c
-@@ -715,8 +715,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 	struct drm_mode_set set;
- 	uint32_t __user *set_connectors_ptr;
- 	struct drm_modeset_acquire_ctx ctx;
--	int ret;
--	int i;
-+	int ret, i, num_connectors;
+diff --git a/sound/hda/intel-nhlt.c b/sound/hda/intel-nhlt.c
+index 2c4dfc0b7e34..696a958d93e9 100644
+--- a/sound/hda/intel-nhlt.c
++++ b/sound/hda/intel-nhlt.c
+@@ -238,7 +238,7 @@ EXPORT_SYMBOL(intel_nhlt_ssp_mclk_mask);
  
- 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
- 		return -EOPNOTSUPP;
-@@ -851,6 +850,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 			goto out;
- 		}
+ static struct nhlt_specific_cfg *
+ nhlt_get_specific_cfg(struct device *dev, struct nhlt_fmt *fmt, u8 num_ch,
+-		      u32 rate, u8 vbps, u8 bps)
++		      u32 rate, u8 vbps, u8 bps, bool ignore_vbps)
+ {
+ 	struct nhlt_fmt_cfg *cfg = fmt->fmt_config;
+ 	struct wav_fmt *wfmt;
+@@ -255,8 +255,12 @@ nhlt_get_specific_cfg(struct device *dev, struct nhlt_fmt *fmt, u8 num_ch,
+ 		dev_dbg(dev, "Endpoint format: ch=%d fmt=%d/%d rate=%d\n",
+ 			wfmt->channels, _vbps, _bps, wfmt->samples_per_sec);
  
-+		num_connectors = 0;
- 		for (i = 0; i < crtc_req->count_connectors; i++) {
- 			connector_set[i] = NULL;
- 			set_connectors_ptr = (uint32_t __user *)(unsigned long)crtc_req->set_connectors_ptr;
-@@ -871,6 +871,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 					connector->name);
++		/*
++		 * When looking for exact match of configuration ignore the vbps
++		 * from NHLT table when ignore_vbps is true
++		 */
+ 		if (wfmt->channels == num_ch && wfmt->samples_per_sec == rate &&
+-		    vbps == _vbps && bps == _bps)
++		    (ignore_vbps || vbps == _vbps) && bps == _bps)
+ 			return &cfg->config;
  
- 			connector_set[i] = connector;
-+			num_connectors++;
- 		}
- 	}
+ 		cfg = (struct nhlt_fmt_cfg *)(cfg->config.caps + cfg->config.size);
+@@ -289,6 +293,7 @@ intel_nhlt_get_endpoint_blob(struct device *dev, struct nhlt_acpi_table *nhlt,
+ {
+ 	struct nhlt_specific_cfg *cfg;
+ 	struct nhlt_endpoint *epnt;
++	bool ignore_vbps = false;
+ 	struct nhlt_fmt *fmt;
+ 	int i;
  
-@@ -879,7 +880,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 	set.y = crtc_req->y;
- 	set.mode = mode;
- 	set.connectors = connector_set;
--	set.num_connectors = crtc_req->count_connectors;
-+	set.num_connectors = num_connectors;
- 	set.fb = fb;
+@@ -298,7 +303,26 @@ intel_nhlt_get_endpoint_blob(struct device *dev, struct nhlt_acpi_table *nhlt,
+ 	dev_dbg(dev, "Looking for configuration:\n");
+ 	dev_dbg(dev, "  vbus_id=%d link_type=%d dir=%d, dev_type=%d\n",
+ 		bus_id, link_type, dir, dev_type);
+-	dev_dbg(dev, "  ch=%d fmt=%d/%d rate=%d\n", num_ch, vbps, bps, rate);
++	if (link_type == NHLT_LINK_DMIC && bps == 32 && (vbps == 24 || vbps == 32)) {
++		/*
++		 * The DMIC hardware supports only one type of 32 bits sample
++		 * size, which is 24 bit sampling on the MSB side and bits[1:0]
++		 * are used for indicating the channel number.
++		 * It has been observed that some NHLT tables have the vbps
++		 * specified as 32 while some uses 24.
++		 * The format these variations describe are identical, the
++		 * hardware is configured and behaves the same way.
++		 * Note: when the samples assumed to be vbps=32 then the 'noise'
++		 * introduced by the lower two bits (channel number) have no
++		 * real life implication on audio quality.
++		 */
++		dev_dbg(dev,
++			"  ch=%d fmt=%d rate=%d (vbps is ignored for DMIC 32bit format)\n",
++			num_ch, bps, rate);
++		ignore_vbps = true;
++	} else {
++		dev_dbg(dev, "  ch=%d fmt=%d/%d rate=%d\n", num_ch, vbps, bps, rate);
++	}
+ 	dev_dbg(dev, "Endpoint count=%d\n", nhlt->endpoint_count);
  
- 	if (drm_drv_uses_atomic_modeset(dev))
-@@ -892,7 +893,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 		drm_framebuffer_put(fb);
+ 	epnt = (struct nhlt_endpoint *)nhlt->desc;
+@@ -307,7 +331,8 @@ intel_nhlt_get_endpoint_blob(struct device *dev, struct nhlt_acpi_table *nhlt,
+ 		if (nhlt_check_ep_match(dev, epnt, bus_id, link_type, dir, dev_type)) {
+ 			fmt = (struct nhlt_fmt *)(epnt->config.caps + epnt->config.size);
  
- 	if (connector_set) {
--		for (i = 0; i < crtc_req->count_connectors; i++) {
-+		for (i = 0; i < num_connectors; i++) {
- 			if (connector_set[i])
- 				drm_connector_put(connector_set[i]);
+-			cfg = nhlt_get_specific_cfg(dev, fmt, num_ch, rate, vbps, bps);
++			cfg = nhlt_get_specific_cfg(dev, fmt, num_ch, rate,
++						    vbps, bps, ignore_vbps);
+ 			if (cfg)
+ 				return cfg;
  		}
 -- 
 2.43.0
