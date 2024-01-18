@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-12074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8B26831797
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:58:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C318783173F
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:55:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DA7F288682
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:58:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 529C1B20C0E
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 470C023761;
-	Thu, 18 Jan 2024 10:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADEAD23757;
+	Thu, 18 Jan 2024 10:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="flL0fgAZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LANH0IPK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 043BC22F0B;
-	Thu, 18 Jan 2024 10:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E66A23754;
+	Thu, 18 Jan 2024 10:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575533; cv=none; b=IK7LkHFz8EzjOurtkdfRgUWXf6D5zHb+SO77yYwaXmS+x+VTWAb5DHJYejEaf7qyeomEZNBwLIBRJ+pKMz5hLKTHaXAx9BLF8fXUfgz6J7q7f05Hg2DAE7U3sI73MvraTeh2WVKIZ3f+BKfZYPUOqwejwhpUxDRawa5AkBu96JU=
+	t=1705575299; cv=none; b=kFdr1GfXBp8OCYnDxe55vkqcGHDnT9rNLrHTm549XDUFL1VZWJbNlSYklL+NH4qOGYlFUlVSER4vPWaLkGEfsgdnKncaM739KV7WKX2FPBzanAuHChjnIh7BKS4KmBy3lrpMnd2LePQZvtDrvVZQ0pHpeh5dYn3p/7hka/Vm71c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575533; c=relaxed/simple;
-	bh=A0A6C+JyJjnWjO8uoamZcLA+w5fRO3NLHOW73kMay7k=;
+	s=arc-20240116; t=1705575299; c=relaxed/simple;
+	bh=WRmuhbIq9+jA/OlHdfgUlV2V+Hs3lYZDx00meRnNAAU=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=BouNpe+lcP0f8+yjfrAn1AkLV2gJtOBAxi9Wz0vQuW7c137o82w7OoZeivfUSSJWcq2uS9z5PJ16bEX8zWOCLuKzi6MZwhKxPhWKH4jdnHQ7sBt/qOTP5ko7tC5OpTwo2G0a8uogxz1fhvcXIY+A4nGLyGZID4SQayhBTofHkaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=flL0fgAZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407E8C433F1;
-	Thu, 18 Jan 2024 10:58:52 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=RYH7wNxthyqzu8JYMuhRNQg4FHDEaYU0dg/f60MW9wlrE7MMvV2gLUiE/ZOK4SeVEhB4yiCE2fcHyT3H8YyKnAUSSZ4qLU7w/hLUGya/ApLBNfiGXN3QOx85IBuefzQc+Gp2KPM4F5PdG3Ok2u5L+LDPl376iFMyICFDQ5C/YvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LANH0IPK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5749C433F1;
+	Thu, 18 Jan 2024 10:54:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575532;
-	bh=A0A6C+JyJjnWjO8uoamZcLA+w5fRO3NLHOW73kMay7k=;
+	s=korg; t=1705575299;
+	bh=WRmuhbIq9+jA/OlHdfgUlV2V+Hs3lYZDx00meRnNAAU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=flL0fgAZgG34kZOlgOT9dFuOF36nlsVF9l8Kc22s4iyGeVAa/+gpWTAq33bnCnkCR
-	 ORqPhE8aU1dpQlkIqTXjO+Kvdjf0ftdLfffBiTDMz1VGb5kS38Rpwd6zG4SDFL4wZS
-	 Du1vjChcbVqtS0bfQIB/G9T9rtgnIoo0dmGSQZps=
+	b=LANH0IPKS3rQ5ezK14OioCVhLyxhU9Muq7lpcrWPZ4i/YKVnO/QU3CY7obBar84et
+	 knwyVikScfL83Zil25NPd1bXHHmNYycAGpaYaVeD43UYfPA3BrTZ3LMLPmWl+jtS1W
+	 islaKIQtehClUmgBRADdScsNAmVJhwm8r4APhHQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Yanteng Si <siyanteng@loongson.cn>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 016/100] hwtracing: hisi_ptt: Handle the interrupt in hardirq context
+Subject: [PATCH 6.6 082/150] MIPS: dts: loongson: drop incorrect dwmac fallback compatible
 Date: Thu, 18 Jan 2024 11:48:24 +0100
-Message-ID: <20240118104311.614533121@linuxfoundation.org>
+Message-ID: <20240118104323.757154256@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit e0dd27ad8af00f147ac3c9de88e0687986afc3ea ]
+[ Upstream commit 4907a3f54b12b8209864572a312cf967befcae80 ]
 
-Handle the trace interrupt in the hardirq context, make sure the irq
-core won't threaded it by declaring IRQF_NO_THREAD and userspace won't
-balance it by declaring IRQF_NOBALANCING. Otherwise we may violate the
-synchronization requirements of the perf core, referenced to the
-change of arm-ccn PMU
-  commit 0811ef7e2f54 ("bus: arm-ccn: fix PMU interrupt flags").
+Device binds to proper PCI ID (LOONGSON, 0x7a03), already listed in DTS,
+so checking for some other compatible does not make sense.  It cannot be
+bound to unsupported platform.
 
-In the interrupt handler we mainly doing 2 things:
-- Copy the data from the local DMA buffer to the AUX buffer
-- Commit the data in the AUX buffer
+Drop useless, incorrect (space in between) and undocumented compatible.
 
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-[ Fixed commit description to suppress checkpatch warning ]
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20231010084731.30450-3-yangyicong@huawei.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/ptt/hisi_ptt.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi | 3 +--
+ arch/mips/boot/dts/loongson/ls7a-pch.dtsi          | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwtracing/ptt/hisi_ptt.c b/drivers/hwtracing/ptt/hisi_ptt.c
-index 016220ba0add..11f26ef709c9 100644
---- a/drivers/hwtracing/ptt/hisi_ptt.c
-+++ b/drivers/hwtracing/ptt/hisi_ptt.c
-@@ -342,9 +342,9 @@ static int hisi_ptt_register_irq(struct hisi_ptt *hisi_ptt)
- 		return ret;
+diff --git a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
+index f878f47e4501..ee3e2153dd13 100644
+--- a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
++++ b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
+@@ -130,8 +130,7 @@ gmac@3,0 {
+ 				compatible = "pci0014,7a03.0",
+ 						   "pci0014,7a03",
+ 						   "pciclass0c0320",
+-						   "pciclass0c03",
+-						   "loongson, pci-gmac";
++						   "pciclass0c03";
  
- 	hisi_ptt->trace_irq = pci_irq_vector(pdev, HISI_PTT_TRACE_DMA_IRQ);
--	ret = devm_request_threaded_irq(&pdev->dev, hisi_ptt->trace_irq,
--					NULL, hisi_ptt_isr, 0,
--					DRV_NAME, hisi_ptt);
-+	ret = devm_request_irq(&pdev->dev, hisi_ptt->trace_irq, hisi_ptt_isr,
-+				IRQF_NOBALANCING | IRQF_NO_THREAD, DRV_NAME,
-+				hisi_ptt);
- 	if (ret) {
- 		pci_err(pdev, "failed to request irq %d, ret = %d\n",
- 			hisi_ptt->trace_irq, ret);
+ 				reg = <0x1800 0x0 0x0 0x0 0x0>;
+ 				interrupts = <12 IRQ_TYPE_LEVEL_LOW>,
+diff --git a/arch/mips/boot/dts/loongson/ls7a-pch.dtsi b/arch/mips/boot/dts/loongson/ls7a-pch.dtsi
+index 7c69e8245c2f..cce9428afc41 100644
+--- a/arch/mips/boot/dts/loongson/ls7a-pch.dtsi
++++ b/arch/mips/boot/dts/loongson/ls7a-pch.dtsi
+@@ -193,8 +193,7 @@ gmac@3,0 {
+ 				compatible = "pci0014,7a03.0",
+ 						   "pci0014,7a03",
+ 						   "pciclass020000",
+-						   "pciclass0200",
+-						   "loongson, pci-gmac";
++						   "pciclass0200";
+ 
+ 				reg = <0x1800 0x0 0x0 0x0 0x0>;
+ 				interrupts = <12 IRQ_TYPE_LEVEL_HIGH>,
 -- 
 2.43.0
 
