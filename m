@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-12064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4988B83178C
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:58:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06BED831803
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:03:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 450591C228C8
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:58:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDB2028BD0D
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D1F241E1;
-	Thu, 18 Jan 2024 10:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F68A23771;
+	Thu, 18 Jan 2024 11:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qu8fp+yB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PM3+ne+W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087B12377B;
-	Thu, 18 Jan 2024 10:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E396023765;
+	Thu, 18 Jan 2024 11:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575505; cv=none; b=LqL/aOi4X0/BZTG9Bjhfm8HBy3MRX/HYGb3+wPw3I2hHXAKKsXrIkN/l7PI9JubolUVvKwCcpzBm2XCCvSzLAvlanveF5LayxhzUpSV6EO8H8vUnYUg+TS2I/0LnRAbz1MPzBLVKzb45bMnl/MGh253vLTZJlxJI1MnWtEHk1Jk=
+	t=1705575762; cv=none; b=OJNvCAeGgJ02mrpJnXeRhTgbQHZPYVTDKPJ+ySTh6QkVjQiI9xYTcdhfyHX38eMl5BQIkEMZOTlI/ZgL9BEz5myoC1tSqVQUy0KtH2qPbHIuxTMeP8/E9lFE3PwhpiZG0VVxeGNhSAr+eCvx+9BcXbUmnvdUabSAAc0Vq2XNV+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575505; c=relaxed/simple;
-	bh=6++ZeRTK3f2yfFxNQj3GEn3PMN7i3s9lWcZYBhrf2nA=;
+	s=arc-20240116; t=1705575762; c=relaxed/simple;
+	bh=R3sJQdEP6yFMB6YxRkNMXNByQnbJOMurA3TPTgYtpBQ=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=K00Y8Q4XO6LdweVbLu+ULJcOZSMuDf3SoeLguDSxy5yMDKah2Jh3sESp5B03F1LMNzG03+PYdAqmX08Pv4yfpzJHsTpxyPmk75mRdKm1pGr4EeqRiaIbaH6chjxWCLLHOJmQqU02YLRjiNI2Kl4mJdcu9nZnUFvvgcirFfxgsBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qu8fp+yB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 812C8C433F1;
-	Thu, 18 Jan 2024 10:58:24 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=p9IthzfSRZZsWZq82hmRAU0+uELcxfrgL/w2DTUoN38Xm94k+JflxqnNj492EAatMdcJ4ryY4a6YuuvIZhtJT3VUVTo174Y1XdHcMMo5YMNnhR/sUzI6tgyyVs4qafdaun18neRhXA0f20v2cstC+/M4XDUzSfVDh/FI2xump1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PM3+ne+W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61C4EC433F1;
+	Thu, 18 Jan 2024 11:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575504;
-	bh=6++ZeRTK3f2yfFxNQj3GEn3PMN7i3s9lWcZYBhrf2nA=;
+	s=korg; t=1705575761;
+	bh=R3sJQdEP6yFMB6YxRkNMXNByQnbJOMurA3TPTgYtpBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qu8fp+yBjYVia9SUgo6EfIrhSwcn9xzSp2uo/dwEJAYN2pJ/G6t75O1c6eN0T9DF+
-	 0nYaedThnsq9rxueReuDKncJpvSldJ/L10N7IyRoQOlg6s2ZseE3Uhr0IZrzQtFMNy
-	 50WGhng6HsQmDO6Dbc3wOZyb/QfNlE9lA+OUI9zg=
+	b=PM3+ne+WuZQfSSQm1bY9cq303qtjcxD2GCsyURAycXQBzKpQVBpVB0dc4JYwl9xxA
+	 Z7zq0V13X/TCYG8iA3+Psyl+xcoC84YBA64WMk+sGu8JuugDr+/Mh7S/iQaHUx8zFl
+	 LPYhPWbS54ofJl9riG3RfNdy4L9Ve5OhHKQbFEO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Jason Schwanke <tom@catboys.cloud>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 130/150] ALSA: hda/realtek: Fix mute and mic-mute LEDs for HP Envy X360 13-ay0xxx
-Date: Thu, 18 Jan 2024 11:49:12 +0100
-Message-ID: <20240118104326.063785364@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Ryan McClelland <rymcclel@gmail.com>,
+	"Daniel J. Ogorchock" <djogorchock@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 065/100] HID: nintendo: fix initializer element is not constant error
+Date: Thu, 18 Jan 2024 11:49:13 +0100
+Message-ID: <20240118104313.763216284@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +65,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Jason Schwanke <tom@catboys.cloud>
+From: Ryan McClelland <rymcclel@gmail.com>
 
-commit 6b3d14b7f9b1acaf7303d8499836bf78ee9c470c upstream.
+[ Upstream commit 0b7dd38c1c520b650a889a81919838671b689eb9 ]
 
-This enables the mute and mic-mute LEDs on the HP Envy X360 13-ay0xxx
-convertibles.
-The quirk 'ALC245_FIXUP_HP_X360_MUTE_LEDS' already exists and is now
-enabled for this device.
+With gcc-7 builds, an error happens with the controller button values being
+defined as const. Change to a define.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=216197
-Signed-off-by: Tom Jason Schwanke <tom@catboys.cloud>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/651b26e9-e86b-45dd-aa90-3e43d6b99823@catboys.cloud
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202312141227.C2h1IzfI-lkp@intel.com/
+
+Signed-off-by: Ryan McClelland <rymcclel@gmail.com>
+Reviewed-by: Daniel J. Ogorchock <djogorchock@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-nintendo.c | 44 +++++++++++++++++++-------------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9735,6 +9735,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8735, "HP ProBook 435 G7", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8736, "HP", ALC285_FIXUP_HP_GPIO_AMP_INIT),
- 	SND_PCI_QUIRK(0x103c, 0x8760, "HP", ALC285_FIXUP_HP_MUTE_LED),
-+	SND_PCI_QUIRK(0x103c, 0x876e, "HP ENVY x360 Convertible 13-ay0xxx", ALC245_FIXUP_HP_X360_MUTE_LEDS),
- 	SND_PCI_QUIRK(0x103c, 0x877a, "HP", ALC285_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x877d, "HP", ALC236_FIXUP_HP_MUTE_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8780, "HP ZBook Fury 17 G7 Mobile Workstation",
+diff --git a/drivers/hid/hid-nintendo.c b/drivers/hid/hid-nintendo.c
+index 8a8a3dd8af0c..907c9b574e3b 100644
+--- a/drivers/hid/hid-nintendo.c
++++ b/drivers/hid/hid-nintendo.c
+@@ -325,28 +325,28 @@ struct joycon_imu_cal {
+  * All the controller's button values are stored in a u32.
+  * They can be accessed with bitwise ANDs.
+  */
+-static const u32 JC_BTN_Y	= BIT(0);
+-static const u32 JC_BTN_X	= BIT(1);
+-static const u32 JC_BTN_B	= BIT(2);
+-static const u32 JC_BTN_A	= BIT(3);
+-static const u32 JC_BTN_SR_R	= BIT(4);
+-static const u32 JC_BTN_SL_R	= BIT(5);
+-static const u32 JC_BTN_R	= BIT(6);
+-static const u32 JC_BTN_ZR	= BIT(7);
+-static const u32 JC_BTN_MINUS	= BIT(8);
+-static const u32 JC_BTN_PLUS	= BIT(9);
+-static const u32 JC_BTN_RSTICK	= BIT(10);
+-static const u32 JC_BTN_LSTICK	= BIT(11);
+-static const u32 JC_BTN_HOME	= BIT(12);
+-static const u32 JC_BTN_CAP	= BIT(13); /* capture button */
+-static const u32 JC_BTN_DOWN	= BIT(16);
+-static const u32 JC_BTN_UP	= BIT(17);
+-static const u32 JC_BTN_RIGHT	= BIT(18);
+-static const u32 JC_BTN_LEFT	= BIT(19);
+-static const u32 JC_BTN_SR_L	= BIT(20);
+-static const u32 JC_BTN_SL_L	= BIT(21);
+-static const u32 JC_BTN_L	= BIT(22);
+-static const u32 JC_BTN_ZL	= BIT(23);
++#define JC_BTN_Y	 BIT(0)
++#define JC_BTN_X	 BIT(1)
++#define JC_BTN_B	 BIT(2)
++#define JC_BTN_A	 BIT(3)
++#define JC_BTN_SR_R	 BIT(4)
++#define JC_BTN_SL_R	 BIT(5)
++#define JC_BTN_R	 BIT(6)
++#define JC_BTN_ZR	 BIT(7)
++#define JC_BTN_MINUS	 BIT(8)
++#define JC_BTN_PLUS	 BIT(9)
++#define JC_BTN_RSTICK	 BIT(10)
++#define JC_BTN_LSTICK	 BIT(11)
++#define JC_BTN_HOME	 BIT(12)
++#define JC_BTN_CAP	 BIT(13) /* capture button */
++#define JC_BTN_DOWN	 BIT(16)
++#define JC_BTN_UP	 BIT(17)
++#define JC_BTN_RIGHT	 BIT(18)
++#define JC_BTN_LEFT	 BIT(19)
++#define JC_BTN_SR_L	 BIT(20)
++#define JC_BTN_SL_L	 BIT(21)
++#define JC_BTN_L	 BIT(22)
++#define JC_BTN_ZL	 BIT(23)
+ 
+ enum joycon_msg_type {
+ 	JOYCON_MSG_TYPE_NONE,
+-- 
+2.43.0
+
 
 
 
