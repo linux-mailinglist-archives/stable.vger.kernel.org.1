@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-12076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBCF7831799
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:59:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 726D8831741
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:55:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A1101C221AC
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:59:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12D031F26CAA
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:55:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7559123754;
-	Thu, 18 Jan 2024 10:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 334EB22F18;
+	Thu, 18 Jan 2024 10:55:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JY6V21DM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aq0dZ049"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CC51774B;
-	Thu, 18 Jan 2024 10:58:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16661774B;
+	Thu, 18 Jan 2024 10:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575538; cv=none; b=YeAGrcqIK8Rjj3+F995TALzMqS9xtJijZEjjaKmVP2NBl5gaCpIMp3DjmEqaInoCZ5MUbSQteA3FRhckQQOk8bU0Ia9ktVZTTswUGjKILg3J5H+vbLuutAjsKGOHS4fZPBlG5/gHFvLwHCHb7++lOYXUcP/RJjkOXuEgkDX3/w0=
+	t=1705575305; cv=none; b=DB9p4YvMqgwyq96RlHRDJk9Zg1NfbhZjjnCOIrbSVhMD57OZiOnRZ6KnWThmAvMVaI+XL7yRgvRZn8Cr0igiDrXeycM1TbtqUXAJ42WTOiIluqBBKMfDIb7WOeeWkAHRlRlWgiwGt3yEzoZ7nF/n+LRW55mz+49OBcl/Ymw7+Ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575538; c=relaxed/simple;
-	bh=46TcRNEHL9K7ESWwRXqQfRY29xaklJbOZyqon8pjblg=;
+	s=arc-20240116; t=1705575305; c=relaxed/simple;
+	bh=sQy3sHiCI3SeWNqRE/Dl6j1vBNJ50JW21KoA1BvWmZU=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=XIQhjEKu5j7fM7K2Mi7P1dzvgQ2gY/yudTFygLGiJSgw8opTXGJLSmHEKY9Ity0gOwN2flx9eRfWbJIQMCURfmJfSAeQ8imMle918Y050/gcBAvltWT6932Ve5FXxvlRI4gxlgsnrkQ5xdp355NL0+8PHOYRoz+pp/1dG+H6Pkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JY6V21DM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B1BC433F1;
-	Thu, 18 Jan 2024 10:58:57 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=clVLDq/CWadJFMjXfJHLc+orwAEuYzuVQBsVCY/0ZcSJWEnnE8gWT7Np5IutAn+8/d1kirqIppwgVdajs5cpPMX26ckQ5nU/tlPRtmVLthvAmTAfl7rPzZ09loiSbrfI6SIG6i5fj16clIAIt4KbCShZ2hGP3MTC43vOUhqUBeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aq0dZ049; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 668CAC433C7;
+	Thu, 18 Jan 2024 10:55:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575538;
-	bh=46TcRNEHL9K7ESWwRXqQfRY29xaklJbOZyqon8pjblg=;
+	s=korg; t=1705575304;
+	bh=sQy3sHiCI3SeWNqRE/Dl6j1vBNJ50JW21KoA1BvWmZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JY6V21DMfV35N80HixPdEzPWzaV8qvfOr5pYO4OOwOodu/WSQGZ303yXFjZ2ER5bV
-	 uOgm2mHYOtonKQL8AjlIoA9H+j7v8NBbBvlT6gNuxk8rENCmPmg0RDTAhtPJD7PKfv
-	 tdNILBVaMV/7gp+HK2TYehwvBVtXZLM5To4HL8NQ=
+	b=aq0dZ049Sn7xSmPKikBFHG2Z9fqWYFq0w5xmgOikfx+2oIilZqOQZftk35HqCzxHR
+	 oemyl+rjjva46iJJU/W1VkzTcfCiTnV9MHO779Ytr1xnH+RcymLKilL8DsMMKUBUPZ
+	 kcAqENrpLAurjK0QnL3XFnKBtDSKSEErWA4Kx2g8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 018/100] ASoC: wm8974: Correct boost mixer inputs
+Subject: [PATCH 6.6 084/150] ring-buffer: Do not record in NMI if the arch does not support cmpxchg in NMI
 Date: Thu, 18 Jan 2024 11:48:26 +0100
-Message-ID: <20240118104311.708998396@linuxfoundation.org>
+Message-ID: <20240118104323.856578567@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-[ Upstream commit 37e6fd0cebf0b9f71afb38fd95b10408799d1f0b ]
+[ Upstream commit 712292308af2265cd9b126aedfa987f10f452a33 ]
 
-Bit 6 of INPPGA (INPPGAMUTE) does not control the Aux path, it controls
-the input PGA path, as can been seen from Figure 8 Input Boost Stage in
-the datasheet. Update the naming of things in the driver to match this
-and update the routing to also reflect this.
+As the ring buffer recording requires cmpxchg() to work, if the
+architecture does not support cmpxchg in NMI, then do not do any recording
+within an NMI.
 
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20231113155916.1741027-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/linux-trace-kernel/20231213175403.6fc18540@gandalf.local.home
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wm8974.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/trace/ring_buffer.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/sound/soc/codecs/wm8974.c b/sound/soc/codecs/wm8974.c
-index 010a394c705c..1becbf2c6ffa 100644
---- a/sound/soc/codecs/wm8974.c
-+++ b/sound/soc/codecs/wm8974.c
-@@ -186,7 +186,7 @@ SOC_DAPM_SINGLE("PCM Playback Switch", WM8974_MONOMIX, 0, 1, 0),
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 901a140e30fa..f232cf56fa05 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -3649,6 +3649,12 @@ rb_reserve_next_event(struct trace_buffer *buffer,
+ 	int nr_loops = 0;
+ 	int add_ts_default;
  
- /* Boost mixer */
- static const struct snd_kcontrol_new wm8974_boost_mixer[] = {
--SOC_DAPM_SINGLE("Aux Switch", WM8974_INPPGA, 6, 1, 1),
-+SOC_DAPM_SINGLE("PGA Switch", WM8974_INPPGA, 6, 1, 1),
- };
++	/* ring buffer does cmpxchg, make sure it is safe in NMI context */
++	if (!IS_ENABLED(CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG) &&
++	    (unlikely(in_nmi()))) {
++		return NULL;
++	}
++
+ 	rb_start_commit(cpu_buffer);
+ 	/* The commit page can not change after this */
  
- /* Input PGA */
-@@ -246,8 +246,8 @@ static const struct snd_soc_dapm_route wm8974_dapm_routes[] = {
- 
- 	/* Boost Mixer */
- 	{"ADC", NULL, "Boost Mixer"},
--	{"Boost Mixer", "Aux Switch", "Aux Input"},
--	{"Boost Mixer", NULL, "Input PGA"},
-+	{"Boost Mixer", NULL, "Aux Input"},
-+	{"Boost Mixer", "PGA Switch", "Input PGA"},
- 	{"Boost Mixer", NULL, "MICP"},
- 
- 	/* Input PGA */
 -- 
 2.43.0
 
