@@ -1,147 +1,147 @@
-Return-Path: <stable+bounces-12208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8998831F62
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 19:55:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B3F2C831F7A
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 20:10:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 200AA1C22F36
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 18:55:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E64361C23172
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 19:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 459382DF9E;
-	Thu, 18 Jan 2024 18:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD142E626;
+	Thu, 18 Jan 2024 19:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=friedrich.vock@gmx.de header.b="IysBx7jV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mqelJzJc"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17BBB2D629
-	for <stable@vger.kernel.org>; Thu, 18 Jan 2024 18:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDD3B2E40B;
+	Thu, 18 Jan 2024 19:10:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705604140; cv=none; b=F/0Br3cM2SYdoylQIrtjjMfDFo19TPECW4ERMxVn9/X++aplvk65m89bHGtNhQpMiXhrjHjMRPzLyRChRwiVd5XEXHx+Na0Ko4omI4mh3AcYfwhKUzCLfRLVgQwnl+8cVF1XLXo6oCW4ckdy7HV9d6TD1D1Fvl6EKRKX9DB56T4=
+	t=1705605040; cv=none; b=YnsW1llbtz+c3h5orx632px94Dpm09blYLseXwrL+ZcL2mg7LlWXzBqMuTW50HAKEL4CGcZwQfaS7crjkVIjAJExuDr1NEb5/w1R9M4X5g9wBduV/vJmlGW0y5BIcl+FcQ82cn4hPoqasdOagiPe+E13YheabVLXGIOsqHflH0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705604140; c=relaxed/simple;
-	bh=PW+rQTW5qFJXFe4U1fsbFOzTTh+1IESqMddVbOcuLzk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ls4HK9CbL6I3GGssRtorFSABICF5POO1i/SnF3A2vhm1gpKHIODcuIXS5JPmu32qI5bGa+WEFsb1cc/QnAFDrJo6k6Gk93+gVTB6l+P3UVUQwC8oLyZsUZEYXd62BHBNhaJkXJGsPgob4NjwSHHRRDkwXdKuyGb8W1h1AcyOF/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=friedrich.vock@gmx.de header.b=IysBx7jV; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-	t=1705604111; x=1706208911; i=friedrich.vock@gmx.de;
-	bh=PW+rQTW5qFJXFe4U1fsbFOzTTh+1IESqMddVbOcuLzk=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:In-Reply-To:
-	 References;
-	b=IysBx7jVQjndLeNle6ts15wwR7Q4eSFb6BPkE8UJhLbt903CXI9TdHh7fqjZo9y8
-	 vVcs/mH35n6hKwBY3G3h9zlWaDQwnOMzh/zWOTXaOVKzufXnZnn/2U76PnsdYi+pH
-	 6mO2uW53pUbhfArVtT/uMTFQSIvqzOVHCCNGRCpMfl/NQIaYBFCsS6xvKutVRO9pC
-	 9VtAANtMD6NLJ/btue1Yp9Xoihwr4/i3u2g3ZPunpiEc9kzTabG4BDciNc72VzUaw
-	 SAV0omdbgqHWQ2diG/+lnQbUoAhgtCYL5MvgH0BV3YAW6UP73K5Dr/pIDVHS4HkM1
-	 WJQNBwBchC43OMBC4g==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from arch.fritz.box ([213.152.118.80]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MgNh7-1qv2sS2GYp-00hyOH; Thu, 18
- Jan 2024 19:55:11 +0100
-From: Friedrich Vock <friedrich.vock@gmx.de>
-To: amd-gfx@lists.freedesktop.org
-Cc: Friedrich Vock <friedrich.vock@gmx.de>,
-	Joshua Ashton <joshua@froggi.es>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] drm/amdgpu: Process fences on IH overflow
-Date: Thu, 18 Jan 2024 19:54:02 +0100
-Message-ID: <20240118185402.919396-2-friedrich.vock@gmx.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118185402.919396-1-friedrich.vock@gmx.de>
-References: <20240118185402.919396-1-friedrich.vock@gmx.de>
+	s=arc-20240116; t=1705605040; c=relaxed/simple;
+	bh=QGy/gV3NdSFRk3x+356l/x+E2n1PrWJbsuTSzohNMVg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Wh1a3k2p3kDcQ4Pk8V1SkNNaOqyuhkx+INj0F6k4ZqwOtLPwCpucdwP8gko5n1iPlk/iG60wrKD3/EidcStlF1MKtLLSdWjk/YmkfR6YzFLm4hlY1HqZ7T70o96erPSI1J028Of2WjfZ5OlLkmMcLpT6FOjW1gQuzL1qdLroIHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mqelJzJc; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1d70b0e521eso6198505ad.1;
+        Thu, 18 Jan 2024 11:10:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705605038; x=1706209838; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1v/TZYvh2MJ80QgyM922C9D8jEpr9cFLhd1cuq1fI6E=;
+        b=mqelJzJc1bl3B1Bax3INUnxYfwhpd7xy2fIdI8nZga9r3lW2Tp4Xdekf/BrEZP/C79
+         bCDKs1qVPWtaRsQUHi44i9wsnjauVQJblnbqYyCL/TZInsx6kYRiJiB1FQjPAGQkYvS7
+         a/92ERBno4m4EpZqwm48UE9BQkdl90u8PLnYx3JYS93wNuWb6YJUrhHvGjWhzwu54tiQ
+         EbpmYl9qzSuodkwruRMRRJaQ2t6zy1t5Ft2xb8pNx/RPwRwfh1/NfMBbYm7toXk1fNWJ
+         KH/51nZRSZOC+/D5VX7HasUNaQKy3KPMKZu+aMPCQ1Ta+lLUPPXzQ/zYiQ2fMswHIwz0
+         PCmA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705605038; x=1706209838;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1v/TZYvh2MJ80QgyM922C9D8jEpr9cFLhd1cuq1fI6E=;
+        b=oE9LxE1V53Oz6ZA8g/ZoF6a3LHmXQBdCR9+jml8kJr+kDY/AFDBOQO8cAUkku1GOLt
+         +zJXMPTcw8fIq2iAnLYFsLiQTfg+4O7fRDfe/D2f8UNEWW/ooeR4Eaj1/h9tLxzqbtd6
+         scTHb6EZHK4QL7W7kceetnYnYH0oq1Pt1Hh72ExsuJF+SOlHCANWAITe0KOeeEc+IlUz
+         lseHjSRUsOIQmTuIS/qoPOmVEQ0Ey1MuW5LJAWU68hfm0FKedV7Ihq3vAWxIDwneylqk
+         dFQxuOnV1fIDnHPcsloRGfcuHBi0YiW7ppWtz4zy0mvcaMM2APVvJnrlkt4QzaaJAdL+
+         uleQ==
+X-Gm-Message-State: AOJu0YzOHTqNs9aaDgLK50vGgbQ5Ir6PCzWw87ZcHct5tXAvV78wshUD
+	jcqJAR8GCUFijtWD4EuoyFkhw7Qtr4StyGdxoOGIs6EJaNQyfT7/
+X-Google-Smtp-Source: AGHT+IH4Ocz9kjSah+mw055Dw5Myw+oA+YfyxXg4b3gE3cy9rSFukaLV5FVQ5ejGALvuuCDYVFztVg==
+X-Received: by 2002:a17:902:ebc5:b0:1d6:fc43:6005 with SMTP id p5-20020a170902ebc500b001d6fc436005mr1824509plg.133.1705605038093;
+        Thu, 18 Jan 2024 11:10:38 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id bi3-20020a170902bf0300b001d6fe15b563sm1704682plb.157.2024.01.18.11.10.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Jan 2024 11:10:37 -0800 (PST)
+Message-ID: <96dc2b0b-ad51-42f9-a305-744d9d97272e@gmail.com>
+Date: Thu, 18 Jan 2024 11:10:31 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:gttZm4NP4OxSMvhBVEYpItr8yHeqmhFBwVOHtPpRDgMEc345A3d
- WReA+XzejROLp390IN3rzEmQ1ZPa0TU+4pJwQWQGEFF15dFRqOZtFosbaJTr5dTl3sA77k8
- ejqt7FIb5/LKAb1sayHNjVFeRWJEYN+iQusenEQ0B0ZZJygBJM8zDuQFMp3k9xkbblY1qLp
- Z9gHHid1dO74x/TuzYLSw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:J7v24b3ZFWc=;YQZybuEywyWO37urzJLrGunLoi7
- 6gcj4FfOLfVGfAkJ1xWG3p1ooNAdQu7a6EMMWGPc3m+8vT0PIpE8ckkpY9wXAf4g0ps1TVgmX
- QPBEXXsCjaN+D8TRqJvDsVeSBmZFCCCowaakpbwzDyUeQfT2swx0sX2MVEF0Fk55NEa1M0oRL
- 9ok1O0oYKy1nieu2jS3y2+VBABUh+YYock1hF9FwvvA2vTvnV9mYXetFS+u01eizWxksJfXeG
- VeaaaBzwhobF88sar+pmwwSyurG4jvUi2UPHIao0Tj0hFm7VIJXkPRTCuELBUAVOB2WYS9n/c
- GwJgt5rBWVxg3F/+w+CedcbHgYacTE5RZE9CJBLMUoqITHxkS52rlbCjxPCQ9F7zWPy/oWp9k
- XIyO147sLq3/F4K90SJqrdrgeLIQjyrL6FlLz2BjXUDH5p7lV3Ccq06UDP+O7PaZsi/Nhht7j
- pkmeLJV9PfVZqZTkQnyu/ryJju5U2lVjo72HWJ9wrqEfZJ2XGF56VJBCw2W78FpsZCEjTwYl1
- 0x4Trnl+QNi47ULUzUuXVfmIDAGf7Rid9U4kF3t9YD7vhXf8WN2oK01Ne9m87PXPFZufOWA8I
- 1Hqexj+Qcu4LyzyO6/YMvrBkYuVoYcEibXrMBRd9x2Fx4ufuQMRpPVfG2FtAFHxUPpXcvAZDT
- 1H5IfPUg8W4zqde0uiOtgrFuBn3FDanaeixqhHeW0QUtHsVFVzS7mQzqzbTr+W8dNkemWko5r
- uKtBdU3hVUjn5NRB9VrPlnODJIaIuDTVf0PjPIajhuJG8R56t06pRzX1g96mt7hVoAGxpS4mB
- sMbD3VQL+VUrqhkJZs0SQnJn7agJqd3XLrHBvsrXJuol6wOxPmpSz46aiaMNcfb3EPABjWn/I
- iYjIkZ57tVoWGG4A8yjPNuKDXtu5VgQATqxx6/YL4BYuRSpTiGcUzc18tGVE62fYvYh0vh5Yu
- Vgm063WlzlDgu1TytLG/1p1niSM=
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 000/100] 6.1.74-rc1 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ Stefan Wiehler <stefan.wiehler@nokia.com>
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com
+References: <20240118104310.892180084@linuxfoundation.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-If the IH ring buffer overflows, it's possible that fence signal events
-were lost. Check each ring for progress to prevent job timeouts/GPU
-hangs due to the fences staying unsignaled despite the work being done.
++Stefan,
 
-Cc: Joshua Ashton <joshua@froggi.es>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Christian K=C3=B6nig <christian.koenig@amd.com>
-Cc: stable@vger.kernel.org
+On 1/18/24 02:48, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.74 release.
+> There are 100 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 20 Jan 2024 10:42:49 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.74-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Signed-off-by: Friedrich Vock <friedrich.vock@gmx.de>
-=2D--
-v2: Set ih->overflow to false after processing fences
+ARM and ARM64 builds worked fine and passed tests, however BMIPS_GENERIC 
+fails to build with:
 
- drivers/gpu/drm/amd/amdgpu/amdgpu_ih.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+arch/mips/kernel/smp.c: In function 'start_secondary':
+arch/mips/kernel/smp.c:340:2: error: implicit declaration of function 
+'rcutree_report_cpu_starting'; did you mean 'rcu_cpu_starting'? 
+[-Werror=implicit-function-declaration]
+   rcutree_report_cpu_starting(cpu);
+   ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+   rcu_cpu_starting
+cc1: all warnings being treated as errors
+host-make[5]: *** [scripts/Makefile.build:250: arch/mips/kernel/smp.o] 
+Error 1
+host-make[4]: *** [scripts/Makefile.build:500: arch/mips/kernel] Error 2
+host-make[3]: *** [scripts/Makefile.build:500: arch/mips] Error 2
+host-make[3]: *** Waiting for unfinished jobs....
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.c b/drivers/gpu/drm/amd/=
-amdgpu/amdgpu_ih.c
-index f3b0aaf3ebc6..4e061f7741d8 100644
-=2D-- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.c
-@@ -209,6 +209,7 @@ int amdgpu_ih_process(struct amdgpu_device *adev, stru=
-ct amdgpu_ih_ring *ih)
- {
- 	unsigned int count;
- 	u32 wptr;
-+	int i;
+which is caused by 7c20a4cc189eff36d5aeb586008a540d8024fbff ("mips/smp: 
+Call rcutree_report_cpu_starting() earlier").
 
- 	if (!ih->enabled || adev->shutdown)
- 		return IRQ_NONE;
-@@ -227,6 +228,21 @@ int amdgpu_ih_process(struct amdgpu_device *adev, str=
-uct amdgpu_ih_ring *ih)
- 		ih->rptr &=3D ih->ptr_mask;
- 	}
+It looks like rcutree_report_cpu_starting() has been introduced 
+448e9f34d91d1a4799fdb06a93c2c24b34b6fd9d ("rcu: Standardize explicit 
+CPU-hotplug calls") which is in v6.7.
 
-+	/* If the ring buffer overflowed, we might have lost some fence
-+	 * signal interrupts. Check if there was any activity so the signal
-+	 * doesn't get lost.
-+	 */
-+	if (ih->overflow) {
-+		for (i =3D 0; i < AMDGPU_MAX_RINGS; ++i) {
-+			struct amdgpu_ring *ring =3D adev->rings[i];
-+
-+			if (!ring || !ring->fence_drv.initialized)
-+				continue;
-+			amdgpu_fence_process(ring);
-+		}
-+		ih->overflow =3D false;
-+	}
-+
- 	amdgpu_ih_set_rptr(adev, ih);
- 	wake_up_all(&ih->wait_process);
+For MIPS, it would like an adequate fix would be to 
+'s/rcutree_report_cpu_starting/rcu_cpu_starting/' for the 6.1 and 6.6 
+branches.
 
-=2D-
-2.43.0
+Stefan, do you agree?
+-- 
+Florian
 
 
