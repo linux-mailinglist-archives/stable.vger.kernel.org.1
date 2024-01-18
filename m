@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-12098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FB698317B8
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:00:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E897D831758
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA3E6B24F10
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:00:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 895631F242EC
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA792241EA;
-	Thu, 18 Jan 2024 11:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B367A23773;
+	Thu, 18 Jan 2024 10:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qH6CkeGf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZxqtdHf9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E10200AA;
-	Thu, 18 Jan 2024 11:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0D71774B;
+	Thu, 18 Jan 2024 10:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575601; cv=none; b=PNqx6IWuTwSwWetasvVTQ9f+jU4m8FNZogTk/JQqNCvEoHZ/lPS3SXk9mMZzV+uGGEYzWXpsy/vtL3reJxNoegQ8/a2d5PxJrpfOYLELWOBs9mbqF5I+iAvvekxQHQ7RRtFj3E6ls1R3wIJeCp1cAeMkJqXgOdeD/Pj/Ore61u0=
+	t=1705575366; cv=none; b=Kl2Iognx7o1gNKDaS1ZBEc9R+KVfTREilXZ1gBpSjzV2CeICJ0QPbLpRVeLvdUUXUU/uwbhNG8WV4pwZ2dMAC6mthXP+dWupGZHfEC1MrNepbw+ul4PkDRYvoF0onJQK1PmJX+UbcyMw79s7ObxcHKG4sXH28xs3O996jUQ0NzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575601; c=relaxed/simple;
-	bh=EuBcwo+x2rrFDnOSvGv6o3Ge9SkDONTAYnOG0qfUr8E=;
+	s=arc-20240116; t=1705575366; c=relaxed/simple;
+	bh=xRprqsvBry3a3peRVukHqzItO5tvRJs/sR6BBOtjP/U=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=tRqWUgIWHn2/lbH53D+O+/QP5o1al5NQY/m9L+0UQHu+lSJoCSPrnKh2OCvhItDkImdWhhLX4NBf76oPw6qcs1VIT4fHEgcXM8aRjf1C803mrP98+KmcCTogIhZEP3q1uFiyIoSWTAe/fgmuq9W2KBi8uY4P7ZyY2KX6GMaNSE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qH6CkeGf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7547C433C7;
-	Thu, 18 Jan 2024 11:00:00 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=hWHOsBjPKd3nhgdxSrcqhzb2bLnDkmBrIIS1ySjQND6xMSxoRKiTxYhRBzuTIZyz4kFXeMOeIOJqlp9NQVdBWntyfJZT22mZvWDjvK+i/AaolyX2LwH0QnhSaRkikeh6PVGvJQuWLH9KDpBRxFLC8/gzXqvKgersyHN41sjLv/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZxqtdHf9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B26FEC433C7;
+	Thu, 18 Jan 2024 10:56:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575601;
-	bh=EuBcwo+x2rrFDnOSvGv6o3Ge9SkDONTAYnOG0qfUr8E=;
+	s=korg; t=1705575366;
+	bh=xRprqsvBry3a3peRVukHqzItO5tvRJs/sR6BBOtjP/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qH6CkeGfnXFEqffW0U0p34/KfdwTx5brHZyo0OVr58NjMDP+NPCumd/kvFHtTN/jA
-	 WcLV1bBhcleH44dboJlkwvneTa9mUVK/QdlrFz/6+GMnGMdZ1UUX5zJRh832n1oT88
-	 q5IPhliMXM+vSsZitVBzp/bpdC+qBacLynsnkUo4=
+	b=ZxqtdHf9FeOhchdg4XG3wfwEBZUnLk+e7OpEktKqBrvIa/lOQbaOgHm0t4+fIi4Bx
+	 Arh6btuATyD+9+DB4RJb2sKEcMnF4WDOVeXgJaHGk6YL5nGvThExfcApuwgfdDYbio
+	 Y+DGgyl/sBVUbBwpcJt8IbfxU46+eMQpJ2z2EJik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/100] hwmon: (corsair-psu) Fix probe when built-in
-Date: Thu, 18 Jan 2024 11:48:48 +0100
-Message-ID: <20240118104312.660074858@linuxfoundation.org>
+Subject: [PATCH 6.6 107/150] ASoC: Intel: bytcr_rt5640: Add new swapped-speakers quirk
+Date: Thu, 18 Jan 2024 11:48:49 +0100
+Message-ID: <20240118104324.997094373@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 307004e8b254ad28e150b63f299ab9caa4bc7c3e ]
+[ Upstream commit b1b6131bca35a55a69fadc39d51577968fa2ee97 ]
 
-It seems that when the driver is built-in, the HID bus is
-initialized after the driver is loaded, which whould cause
-module_hid_driver() to fail.
-Fix this by registering the driver after the HID bus using
-late_initcall() in accordance with other hwmon HID drivers.
+Some BYTCR x86 tablets with a rt5640 codec have the left and right channels
+of their speakers swapped.
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20231207210723.222552-1-W_Armin@gmx.de
-[groeck: Dropped "compile tested" comment; the patch has been tested
- but the tester did not provide a Tested-by: tag]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Add a new BYT_RT5640_SWAPPED_SPEAKERS quirk for this which sets
+cfg-spk:swapped in the components string to let userspace know
+about the swapping so that the UCM profile can configure the mixer
+to correct this.
+
+Enable this new quirk on the Medion Lifetab S10346 which has its
+speakers swapped.
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://msgid.link/r/20231217213221.49424-2-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/corsair-psu.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ sound/soc/intel/boards/bytcr_rt5640.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/hwmon/corsair-psu.c b/drivers/hwmon/corsair-psu.c
-index 2210aa62e3d0..ec7f27a6ce01 100644
---- a/drivers/hwmon/corsair-psu.c
-+++ b/drivers/hwmon/corsair-psu.c
-@@ -837,7 +837,23 @@ static struct hid_driver corsairpsu_driver = {
- 	.reset_resume	= corsairpsu_resume,
- #endif
- };
--module_hid_driver(corsairpsu_driver);
-+
-+static int __init corsair_init(void)
-+{
-+	return hid_register_driver(&corsairpsu_driver);
-+}
-+
-+static void __exit corsair_exit(void)
-+{
-+	hid_unregister_driver(&corsairpsu_driver);
-+}
-+
-+/*
-+ * With module_init() the driver would load before the HID bus when
-+ * built-in, so use late_initcall() instead.
-+ */
-+late_initcall(corsair_init);
-+module_exit(corsair_exit);
+diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
+index f184d23deaa0..6b631a608ae8 100644
+--- a/sound/soc/intel/boards/bytcr_rt5640.c
++++ b/sound/soc/intel/boards/bytcr_rt5640.c
+@@ -83,6 +83,7 @@ enum {
+ #define BYT_RT5640_HSMIC2_ON_IN1	BIT(27)
+ #define BYT_RT5640_JD_HP_ELITEP_1000G2	BIT(28)
+ #define BYT_RT5640_USE_AMCR0F28		BIT(29)
++#define BYT_RT5640_SWAPPED_SPEAKERS	BIT(30)
  
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Wilken Gottwalt <wilken.gottwalt@posteo.net>");
+ #define BYTCR_INPUT_DEFAULTS				\
+ 	(BYT_RT5640_IN3_MAP |				\
+@@ -157,6 +158,8 @@ static void log_quirks(struct device *dev)
+ 		dev_info(dev, "quirk MONO_SPEAKER enabled\n");
+ 	if (byt_rt5640_quirk & BYT_RT5640_NO_SPEAKERS)
+ 		dev_info(dev, "quirk NO_SPEAKERS enabled\n");
++	if (byt_rt5640_quirk & BYT_RT5640_SWAPPED_SPEAKERS)
++		dev_info(dev, "quirk SWAPPED_SPEAKERS enabled\n");
+ 	if (byt_rt5640_quirk & BYT_RT5640_LINEOUT)
+ 		dev_info(dev, "quirk LINEOUT enabled\n");
+ 	if (byt_rt5640_quirk & BYT_RT5640_LINEOUT_AS_HP2)
+@@ -903,6 +906,7 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
+ 			DMI_MATCH(DMI_BIOS_DATE, "10/22/2015"),
+ 		},
+ 		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
++					BYT_RT5640_SWAPPED_SPEAKERS |
+ 					BYT_RT5640_SSP0_AIF1 |
+ 					BYT_RT5640_MCLK_EN),
+ 	},
+@@ -1631,11 +1635,11 @@ static int snd_byt_rt5640_mc_probe(struct platform_device *pdev)
+ 	const char *platform_name;
+ 	struct acpi_device *adev;
+ 	struct device *codec_dev;
++	const char *cfg_spk;
+ 	bool sof_parent;
+ 	int ret_val = 0;
+ 	int dai_index = 0;
+-	int i, cfg_spk;
+-	int aif;
++	int i, aif;
+ 
+ 	is_bytcr = false;
+ 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+@@ -1795,13 +1799,16 @@ static int snd_byt_rt5640_mc_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	if (byt_rt5640_quirk & BYT_RT5640_NO_SPEAKERS) {
+-		cfg_spk = 0;
++		cfg_spk = "0";
+ 		spk_type = "none";
+ 	} else if (byt_rt5640_quirk & BYT_RT5640_MONO_SPEAKER) {
+-		cfg_spk = 1;
++		cfg_spk = "1";
+ 		spk_type = "mono";
++	} else if (byt_rt5640_quirk & BYT_RT5640_SWAPPED_SPEAKERS) {
++		cfg_spk = "swapped";
++		spk_type = "swapped";
+ 	} else {
+-		cfg_spk = 2;
++		cfg_spk = "2";
+ 		spk_type = "stereo";
+ 	}
+ 
+@@ -1816,7 +1823,7 @@ static int snd_byt_rt5640_mc_probe(struct platform_device *pdev)
+ 		headset2_string = " cfg-hs2:in1";
+ 
+ 	snprintf(byt_rt5640_components, sizeof(byt_rt5640_components),
+-		 "cfg-spk:%d cfg-mic:%s aif:%d%s%s", cfg_spk,
++		 "cfg-spk:%s cfg-mic:%s aif:%d%s%s", cfg_spk,
+ 		 map_name[BYT_RT5640_MAP(byt_rt5640_quirk)], aif,
+ 		 lineout_string, headset2_string);
+ 	byt_rt5640_card.components = byt_rt5640_components;
 -- 
 2.43.0
 
