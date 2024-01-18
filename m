@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-11983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 759DD831738
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:54:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C02831790
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:58:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4555E281684
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:54:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B6A01C228C8
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:58:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76F822F06;
-	Thu, 18 Jan 2024 10:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 425112376A;
+	Thu, 18 Jan 2024 10:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z3iuKSHh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fd5gmBvq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B431B96D;
-	Thu, 18 Jan 2024 10:54:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E2F1774B;
+	Thu, 18 Jan 2024 10:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575279; cv=none; b=FlMBuEJ7JJs4t2CdY2X/RcXzO7iMdx/dnVAgG1+pLksofBn7ZiSCgiAGcFeyml9lenHF7YbuFuY6B7nr4bNkGZWX6zpsM35KP1CNqpdrAjULVn0tw5ksz5q55+N6XRJ7NVBmht7NkLj2l2rFVztRdAb5tgr7oocbqFv3wyIEm/Y=
+	t=1705575519; cv=none; b=A4K3g2td+6LjPpVVzMbcPbgpBn7cE4WTaA7WvaDOoNvr/nILRrjMUbIiW1Hl47M2433Tv5pLZaJNwP+XH/Kp8WQZpNgpIbWttlaM7v2jYrNeRRH5Q0ei60PkNjcWjWJl7l5qZgCSgnlq4L2rJi8ASaZWIeg2qWTtq5AM+dc3rfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575279; c=relaxed/simple;
-	bh=bBiNKpZPFcKXgZd9/aFaGUTeoZyAUCP/av4AyKZ0tcU=;
+	s=arc-20240116; t=1705575519; c=relaxed/simple;
+	bh=9Oso+WsbQiZMQ3VHcHy13nSf0aERGX/q8RJixopuYzc=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding; b=ozLvPoG06EfV68D7i1E5rlGpt8rJ98R7XuwR+2wxJGe3iaz1dBQCN7vE7atQ53s6Gk2dpqkeoAXpePV2YwZcLQpyk5B473VhGX/ZizanDqdI7XTm1j6u6b9QuLfKxO6ffes0Xcjy2C6R8u2l9ydmZpil/q62XQOEc4Wblf4aS20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z3iuKSHh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD4AC433C7;
-	Thu, 18 Jan 2024 10:54:38 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=sGjGoKGTDL4WzjZezHGUm7OGrmKnuHwuLRuqDHuguFw7t5ijYEmR2AFBJMoHsm1dD9TjZYPnb3+gUel1VsgGJsyl/R7MNUumPlqs+ZSDJ68Ki8Jfdx0MK777ZysyrkxbkOS23Xr8FHH7me5cddaPcgQ6eXK4ZCC0BlL5OdjURfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fd5gmBvq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79A58C433C7;
+	Thu, 18 Jan 2024 10:58:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575279;
-	bh=bBiNKpZPFcKXgZd9/aFaGUTeoZyAUCP/av4AyKZ0tcU=;
+	s=korg; t=1705575518;
+	bh=9Oso+WsbQiZMQ3VHcHy13nSf0aERGX/q8RJixopuYzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z3iuKSHhU5iBoCHD80V4fft4PX30nXQ9Z0xhBvvWv3bAfh4IXK4v8RsLwyu+5RXs0
-	 OU9cI1Ohf12Wi6fylQ6p1nU0lMJzPUaO3hhj4Dzoa66L5YK6qchOkLNmUZWEyA0/5X
-	 hLzTgoZF/LI7ssa0OsoeGx+jYdPynA6KtxjSJw/c=
+	b=Fd5gmBvq+xAiXAoXX3Ga+qTaok1omSYLltY1PIkJs9n2Yo52rXK+ki1yJAZSjp5ya
+	 l2DSZAOxVdXSmqy4JwMJMEgg/rj1fr9KRDe9Wh2MQP4JOryIjLwOGz4+vo5D3QViGl
+	 nIkl7vNx0aA2wa3Gx8AIh6hvXE/kQQnopepoBe60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnold Gozum <arngozum@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 076/150] platform/x86: intel-vbtn: Fix missing tablet-mode-switch events
-Date: Thu, 18 Jan 2024 11:48:18 +0100
-Message-ID: <20240118104323.507705745@linuxfoundation.org>
+Subject: [PATCH 6.1 011/100] drm/amd/display: update dcn315 lpddr pstate latency
+Date: Thu, 18 Jan 2024 11:48:19 +0100
+Message-ID: <20240118104311.366737826@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +64,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
 
-[ Upstream commit 14c200b7ca46b9a9f4af9e81d258a58274320b6f ]
+[ Upstream commit c92da0403d373c03ea5c65c0260c7db6762013b0 ]
 
-2 issues have been reported on the Dell Inspiron 7352:
+[WHY/HOW]
+Increase the pstate latency to improve ac/dc transition
 
-1. Sometimes the tablet-mode-switch stops reporting tablet-mode
-   change events.
-
-   Add a "VBDL" call to notify_handler() to work around this.
-
-2. Sometimes the tablet-mode is incorrect after suspend/resume
-
-   Add a detect_tablet_mode() to resume() to fix this.
-
-Reported-by: Arnold Gozum <arngozum@gmail.com>
-Closes: https://lore.kernel.org/platform-driver-x86/87271a74-c831-4eec-b7a4-1371d0e42471@gmail.com/
-Tested-by: Arnold Gozum <arngozum@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://lore.kernel.org/r/20231204150601.46976-1-hdegoede@redhat.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Dmytro Laktyushkin <dmytro.laktyushkin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/vbtn.c | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ .../drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c    | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/intel/vbtn.c b/drivers/platform/x86/intel/vbtn.c
-index 6fa1735ad7a4..210b0a81b7ec 100644
---- a/drivers/platform/x86/intel/vbtn.c
-+++ b/drivers/platform/x86/intel/vbtn.c
-@@ -73,10 +73,10 @@ struct intel_vbtn_priv {
- 	bool wakeup_mode;
- };
- 
--static void detect_tablet_mode(struct platform_device *device)
-+static void detect_tablet_mode(struct device *dev)
- {
--	struct intel_vbtn_priv *priv = dev_get_drvdata(&device->dev);
--	acpi_handle handle = ACPI_HANDLE(&device->dev);
-+	struct intel_vbtn_priv *priv = dev_get_drvdata(dev);
-+	acpi_handle handle = ACPI_HANDLE(dev);
- 	unsigned long long vgbs;
- 	acpi_status status;
- 	int m;
-@@ -89,6 +89,8 @@ static void detect_tablet_mode(struct platform_device *device)
- 	input_report_switch(priv->switches_dev, SW_TABLET_MODE, m);
- 	m = (vgbs & VGBS_DOCK_MODE_FLAG) ? 1 : 0;
- 	input_report_switch(priv->switches_dev, SW_DOCK, m);
-+
-+	input_sync(priv->switches_dev);
- }
- 
- /*
-@@ -134,7 +136,7 @@ static int intel_vbtn_input_setup(struct platform_device *device)
- 	priv->switches_dev->id.bustype = BUS_HOST;
- 
- 	if (priv->has_switches) {
--		detect_tablet_mode(device);
-+		detect_tablet_mode(&device->dev);
- 
- 		ret = input_register_device(priv->switches_dev);
- 		if (ret)
-@@ -198,6 +200,9 @@ static void notify_handler(acpi_handle handle, u32 event, void *context)
- 	autorelease = val && (!ke_rel || ke_rel->type == KE_IGNORE);
- 
- 	sparse_keymap_report_event(input_dev, event, val, autorelease);
-+
-+	/* Some devices need this to report further events */
-+	acpi_evaluate_object(handle, "VBDL", NULL, NULL);
- }
- 
- /*
-@@ -352,7 +357,13 @@ static void intel_vbtn_pm_complete(struct device *dev)
- 
- static int intel_vbtn_pm_resume(struct device *dev)
- {
-+	struct intel_vbtn_priv *priv = dev_get_drvdata(dev);
-+
- 	intel_vbtn_pm_complete(dev);
-+
-+	if (priv->has_switches)
-+		detect_tablet_mode(dev);
-+
- 	return 0;
- }
- 
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
+index 893991a0eb97..28b83133db91 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
+@@ -324,7 +324,7 @@ static struct wm_table lpddr5_wm_table = {
+ 		{
+ 			.wm_inst = WM_A,
+ 			.wm_type = WM_TYPE_PSTATE_CHG,
+-			.pstate_latency_us = 11.65333,
++			.pstate_latency_us = 129.0,
+ 			.sr_exit_time_us = 11.5,
+ 			.sr_enter_plus_exit_time_us = 14.5,
+ 			.valid = true,
+@@ -332,7 +332,7 @@ static struct wm_table lpddr5_wm_table = {
+ 		{
+ 			.wm_inst = WM_B,
+ 			.wm_type = WM_TYPE_PSTATE_CHG,
+-			.pstate_latency_us = 11.65333,
++			.pstate_latency_us = 129.0,
+ 			.sr_exit_time_us = 11.5,
+ 			.sr_enter_plus_exit_time_us = 14.5,
+ 			.valid = true,
+@@ -340,7 +340,7 @@ static struct wm_table lpddr5_wm_table = {
+ 		{
+ 			.wm_inst = WM_C,
+ 			.wm_type = WM_TYPE_PSTATE_CHG,
+-			.pstate_latency_us = 11.65333,
++			.pstate_latency_us = 129.0,
+ 			.sr_exit_time_us = 11.5,
+ 			.sr_enter_plus_exit_time_us = 14.5,
+ 			.valid = true,
+@@ -348,7 +348,7 @@ static struct wm_table lpddr5_wm_table = {
+ 		{
+ 			.wm_inst = WM_D,
+ 			.wm_type = WM_TYPE_PSTATE_CHG,
+-			.pstate_latency_us = 11.65333,
++			.pstate_latency_us = 129.0,
+ 			.sr_exit_time_us = 11.5,
+ 			.sr_enter_plus_exit_time_us = 14.5,
+ 			.valid = true,
 -- 
 2.43.0
 
