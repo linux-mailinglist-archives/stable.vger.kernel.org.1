@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-12046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2666E831778
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:57:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 521CE8317EA
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F2CD1C2280A
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:57:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA985B246FF
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D9323741;
-	Thu, 18 Jan 2024 10:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24ED020B1C;
+	Thu, 18 Jan 2024 11:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JvvXo5RM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0cTc3UQY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2288F1B96D;
-	Thu, 18 Jan 2024 10:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D832B241E9;
+	Thu, 18 Jan 2024 11:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575455; cv=none; b=B33wTM/uKxsOmhqZxtJ+A+9mYWcvbxUfRqoMlX6B4Ofh+t+maXXgp7yflqK3ssbEzeN4jOMejayewYB+6QIkNT+SP5onMQcGfknt57tyCYGRWy5ezp5Mp/odJYq3j+UAqM/8wSUO3n7ua915TnX09ijjsfXe/s6X/HpKiWDUdN4=
+	t=1705575698; cv=none; b=ZxG8i1KmNwELxL5rJM7ZZH+XonaHdXfz+3SvctipfyIcPoNPbWHnZ6IeaErNWQO0PR9x+NH2BdEEnoDRF2D8QCZhai8oIDhntheYPEoN511P9BgyJJUNvNeBwkWXjHAU3EtOlacNs5vlyeEUIQqMDZshlfE4TVeO2134NmS2bWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575455; c=relaxed/simple;
-	bh=nCWpcWCvlMEv0dGs5fTVCoVpRIWI7h/dP8cIhqtUioM=;
+	s=arc-20240116; t=1705575698; c=relaxed/simple;
+	bh=ZJxmQz6eP68kMhjPXt5DSae2s+ul9QE29JJqBmhpogw=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=XVj/VFDBYy1fb+WqzIZwdbDTSYAHYtpc4/vb9Ba6a1iyfHa1vLt3fX8ywP18sHRjau+8nDGdrun37vI514DAjuktNnd3tiVLX/R/veh6ZBwcym/9AI0towhAoVvh9cDtMKt+FSGSKholcm1R7+IdDba+Vk7pZK86Pd+1hU30Rjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvvXo5RM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B138C433F1;
-	Thu, 18 Jan 2024 10:57:34 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=oxmGURSyUODt8xyCwQ3FXGDQsfYnnh6OBQFamNpeZXFP+yFFYNPL+Yd6232qms6ZLC6Q718frQHZZydx8kH6mAmDNdvRRBsZDhaTJ+5lslZ6CDdhRSv6ANdnkRUXBbkiCCNArmm+KhP5bkiY9XSJ0H4HHXboHTaVSpQ8lN+OU/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0cTc3UQY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59D62C433C7;
+	Thu, 18 Jan 2024 11:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575455;
-	bh=nCWpcWCvlMEv0dGs5fTVCoVpRIWI7h/dP8cIhqtUioM=;
+	s=korg; t=1705575698;
+	bh=ZJxmQz6eP68kMhjPXt5DSae2s+ul9QE29JJqBmhpogw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JvvXo5RMWSAH4gRQ941a9nmQ6EBfovDjDUm6rdFFgKcmGZCUohk2u7Ah7QmcNIYFu
-	 APzDYipUdK2InuX4sy587lLY9jnBDxJozWQzcol8ibFeJs1qyY2CteHcJEuQT/Db+4
-	 ST4Bw+zfPZZXyGnqpXqvsY2S5/ds6G9Tf6f07VUA=
+	b=0cTc3UQYDpyOED2hnd969eX+lLTqU38RqDNaZqHW94oNlINgsKqGtg/8R9uJSVC0e
+	 sV8/RFlKFco84XNqsTtkAShAS/9/nnM1AOzYKwgwT7jgg7bXNsHk3qcYh8roCwit/L
+	 Uxguh+PhSfVtGgtS6OkyB0P/pMHN4pkdMPZLA2iE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 6.6 139/150] binder: use EPOLLERR from eventpoll.h
-Date: Thu, 18 Jan 2024 11:49:21 +0100
-Message-ID: <20240118104326.488056519@linuxfoundation.org>
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 074/100] drm/amd/display: get dprefclk ss info from integration info table
+Date: Thu, 18 Jan 2024 11:49:22 +0100
+Message-ID: <20240118104314.137886157@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +66,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Charlene Liu <charlene.liu@amd.com>
 
-commit 6ac061db9c58ca5b9270b1b3940d2464fb3ff183 upstream.
+[ Upstream commit 51e7b64690776a9981355428b537af9048308a95 ]
 
-Use EPOLLERR instead of POLLERR to make sure it is cast to the correct
-__poll_t type. This fixes the following sparse issue:
+[why & how]
+we have two SSC_En:
+we get ssc_info from dce_info for MPLL_SSC_EN.
+we used to call VBIOS cmdtbl's smu_info's SS persentage for DPRECLK SS info,
+is used for DP AUDIO and VBIOS' smu_info table was from systemIntegrationInfoTable.
 
-  drivers/android/binder.c:5030:24: warning: incorrect type in return expression (different base types)
-  drivers/android/binder.c:5030:24:    expected restricted __poll_t
-  drivers/android/binder.c:5030:24:    got int
+since dcn35 VBIOS removed smu_info, driver need to use integrationInfotable directly.
 
-Fixes: f88982679f54 ("binder: check for binder_thread allocation failure in binder_poll()")
-Cc: stable@vger.kernel.org
-Cc: Eric Biggers <ebiggers@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-2-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Charlene Liu <charlene.liu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c          |   19 ++++++++----
+ drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h |    2 +
+ 2 files changed, 16 insertions(+), 5 deletions(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -5030,7 +5030,7 @@ static __poll_t binder_poll(struct file
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+@@ -1018,13 +1018,20 @@ static enum bp_result get_ss_info_v4_5(
+ 		DC_LOG_BIOS("AS_SIGNAL_TYPE_HDMI ss_percentage: %d\n", ss_info->spread_spectrum_percentage);
+ 		break;
+ 	case AS_SIGNAL_TYPE_DISPLAY_PORT:
+-		ss_info->spread_spectrum_percentage =
++		if (bp->base.integrated_info) {
++			DC_LOG_BIOS("gpuclk_ss_percentage (unit of 0.001 percent): %d\n", bp->base.integrated_info->gpuclk_ss_percentage);
++			ss_info->spread_spectrum_percentage =
++					bp->base.integrated_info->gpuclk_ss_percentage;
++			ss_info->type.CENTER_MODE =
++					bp->base.integrated_info->gpuclk_ss_type;
++		} else {
++			ss_info->spread_spectrum_percentage =
+ 				disp_cntl_tbl->dp_ss_percentage;
+-		ss_info->spread_spectrum_range =
++			ss_info->spread_spectrum_range =
+ 				disp_cntl_tbl->dp_ss_rate_10hz * 10;
+-		if (disp_cntl_tbl->dp_ss_mode & ATOM_SS_CENTRE_SPREAD_MODE)
+-			ss_info->type.CENTER_MODE = true;
+-
++			if (disp_cntl_tbl->dp_ss_mode & ATOM_SS_CENTRE_SPREAD_MODE)
++				ss_info->type.CENTER_MODE = true;
++		}
+ 		DC_LOG_BIOS("AS_SIGNAL_TYPE_DISPLAY_PORT ss_percentage: %d\n", ss_info->spread_spectrum_percentage);
+ 		break;
+ 	case AS_SIGNAL_TYPE_GPU_PLL:
+@@ -2830,6 +2837,8 @@ static enum bp_result get_integrated_inf
+ 	info->ma_channel_number = info_v2_2->umachannelnumber;
+ 	info->dp_ss_control =
+ 		le16_to_cpu(info_v2_2->reserved1);
++	info->gpuclk_ss_percentage = info_v2_2->gpuclk_ss_percentage;
++	info->gpuclk_ss_type = info_v2_2->gpuclk_ss_type;
  
- 	thread = binder_get_thread(proc);
- 	if (!thread)
--		return POLLERR;
-+		return EPOLLERR;
+ 	for (i = 0; i < NUMBER_OF_UCHAR_FOR_GUID; ++i) {
+ 		info->ext_disp_conn_info.gu_id[i] =
+--- a/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
++++ b/drivers/gpu/drm/amd/display/include/grph_object_ctrl_defs.h
+@@ -417,6 +417,8 @@ struct integrated_info {
+ 	/* V2.1 */
+ 	struct edp_info edp1_info;
+ 	struct edp_info edp2_info;
++	uint32_t gpuclk_ss_percentage;
++	uint32_t gpuclk_ss_type;
+ };
  
- 	binder_inner_proc_lock(thread->proc);
- 	thread->looper |= BINDER_LOOPER_STATE_POLL;
+ /*
 
 
 
