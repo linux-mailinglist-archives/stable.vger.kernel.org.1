@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-11926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC5C48316F7
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:52:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8BD08316F9
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:52:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B8561C222E7
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:52:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB5A2281D53
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:52:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B4E22F0F;
-	Thu, 18 Jan 2024 10:52:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FAFC22EF7;
+	Thu, 18 Jan 2024 10:52:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGPa7S1R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aeO9DZJ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408021B96D;
-	Thu, 18 Jan 2024 10:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F2E22323;
+	Thu, 18 Jan 2024 10:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575122; cv=none; b=uZqqmywEbyNZNm+Yu/KWF/Zbl4bvOo1ttpNte4srqznMbTNQaN+DXxL/OmMsBWntzjZnhIsJHSljevPz3PPYDKwJ3pzGaHrhH5vFRSw2iuZUKwP26wW57zhhV/Yghb+YKER+aSEkEvjnRb37vGLOiLAQGk2iP8zr4tZkkAu87JU=
+	t=1705575127; cv=none; b=Ty2Yqjk0LPmFmFM7MHzfyntXnKFvYQg1cReR+UA2dQEnXGWD9PH0AGqEagJYECGN74EOcGkyxQ+YkzuP8qexBb5ECR6tJHel7aYoVSiGw21bA3LI7FJdvhrP3C5Pvn7hrdwdV6vZMuqQ29+a0WkRtVJoiva5h0oi0uAKtQNPD7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575122; c=relaxed/simple;
-	bh=61F+V60pBsEzwhDNF99utPlhBlyGlUbkwEik9Z6w0zE=;
+	s=arc-20240116; t=1705575127; c=relaxed/simple;
+	bh=USPSdsFIF58fv4yqb/tEMG6SqrgFlIC3BBvb5QVnwMo=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding; b=e9hSB1BwOKeJY36B9zJlMqpRfSEwh6eGakmZQFhgfws8fDByCo4HinuzuXdY+Azsi1UlbP2UK5yV4A/rAjS/7ANsfYQTec540/uENjLDOLT1SJflpSXqY8NZMZn11Bl98BOG1mGpbkSjlKsWTasQnZnevKB+3kfdJ7LCsGdd8mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GGPa7S1R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC482C433C7;
-	Thu, 18 Jan 2024 10:52:00 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=bENwWd6nFD5uzH9GLi7TnXENGVlgCRgYnT7q9MpDqBHB+w/+z/YjN74FAi8pjCrMMBIxuczgmQbcMoMUDZyBhe8xhywlDnGTstZlF5FmGfAelcw62ANsxlBrV5KfcgfnVj+1ZcVn41RpW2WvGoNmMPdO+9leOGFmXY/RrQtjlwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aeO9DZJ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD37C433C7;
+	Thu, 18 Jan 2024 10:52:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575121;
-	bh=61F+V60pBsEzwhDNF99utPlhBlyGlUbkwEik9Z6w0zE=;
+	s=korg; t=1705575126;
+	bh=USPSdsFIF58fv4yqb/tEMG6SqrgFlIC3BBvb5QVnwMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GGPa7S1R9CsuAfmGPFNlx/rHyWvWKFLu3Z0Oik7t81CvdNaMslr5w0B3Y93oAy0UA
-	 lTNg88vI0oXcsySrgh8eZhsk5LHFk+QxyZRKhI8Hwtotx7+iAPQT6vrbTnJhY+1bOn
-	 98eH7qhWmurCIn7z0oOt2pttiB9NQLdGxjoZVmis=
+	b=aeO9DZJ4L7c4vZbMpX314YNH3AuPJeFHYCt30B+rNO9F6CdjZHmqffGX4V3UsuAGc
+	 PPpnFgHeAQR/0ymuOclR8D9YKQSsFe/0LnwtHcU7Y3Ou8B1suSmgajqRu3TarWvGdM
+	 1M/9q8JBO4M72hIFixNhEIQGjRCuybHbfysoS4IA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Lu Yao <yaolu@kylinos.cn>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	ZhenGuo Yin <zhenguo.yin@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 019/150] drm/amdgpu: Fix cat debugfs amdgpu_regs_didt causes kernel null pointer
-Date: Thu, 18 Jan 2024 11:47:21 +0100
-Message-ID: <20240118104320.937065886@linuxfoundation.org>
+Subject: [PATCH 6.6 020/150] drm/amdkfd: Free gang_ctx_bo and wptr_bo in pqm_uninit
+Date: Thu, 18 Jan 2024 11:47:22 +0100
+Message-ID: <20240118104320.986126337@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
 References: <20240118104320.029537060@linuxfoundation.org>
@@ -63,57 +62,111 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Yao <yaolu@kylinos.cn>
+From: ZhenGuo Yin <zhenguo.yin@amd.com>
 
-[ Upstream commit 2161e09cd05a50d80736fe397145340d2e8f6c05 ]
+[ Upstream commit 72838777aa38352e20301e123b97110c456cd38e ]
 
-For 'AMDGPU_FAMILY_SI' family cards, in 'si_common_early_init' func, init
-'didt_rreg' and 'didt_wreg' to 'NULL'. But in func
-'amdgpu_debugfs_regs_didt_read/write', using 'RREG32_DIDT' 'WREG32_DIDT'
-lacks of relevant judgment. And other 'amdgpu_ip_block_version' that use
-these two definitions won't be added for 'AMDGPU_FAMILY_SI'.
+[Why]
+Memory leaks of gang_ctx_bo and wptr_bo.
 
-So, add null pointer judgment before calling.
+[How]
+Free gang_ctx_bo and wptr_bo in pqm_uninit.
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Lu Yao <yaolu@kylinos.cn>
+v2: add a common function pqm_clean_queue_resource to
+free queue's resources.
+v3: reset pdd->pqd.num_gws when destorying GWS queue.
+
+Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Signed-off-by: ZhenGuo Yin <zhenguo.yin@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ .../amd/amdkfd/kfd_process_queue_manager.c    | 54 +++++++++++--------
+ 1 file changed, 33 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-index 05405da51e7a..3f2126f99923 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-@@ -638,6 +638,9 @@ static ssize_t amdgpu_debugfs_regs_didt_read(struct file *f, char __user *buf,
- 	if (size & 0x3 || *pos & 0x3)
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+index 77649392e233..77f493262e05 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+@@ -169,16 +169,43 @@ int pqm_init(struct process_queue_manager *pqm, struct kfd_process *p)
+ 	return 0;
+ }
  
-+	if (!adev->didt_rreg)
-+		return -EOPNOTSUPP;
++static void pqm_clean_queue_resource(struct process_queue_manager *pqm,
++				     struct process_queue_node *pqn)
++{
++	struct kfd_node *dev;
++	struct kfd_process_device *pdd;
 +
- 	r = pm_runtime_get_sync(adev_to_drm(adev)->dev);
- 	if (r < 0) {
- 		pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
-@@ -694,6 +697,9 @@ static ssize_t amdgpu_debugfs_regs_didt_write(struct file *f, const char __user
- 	if (size & 0x3 || *pos & 0x3)
- 		return -EINVAL;
++	dev = pqn->q->device;
++
++	pdd = kfd_get_process_device_data(dev, pqm->process);
++	if (!pdd) {
++		pr_err("Process device data doesn't exist\n");
++		return;
++	}
++
++	if (pqn->q->gws) {
++		if (KFD_GC_VERSION(pqn->q->device) != IP_VERSION(9, 4, 3) &&
++		    !dev->kfd->shared_resources.enable_mes)
++			amdgpu_amdkfd_remove_gws_from_process(
++				pqm->process->kgd_process_info, pqn->q->gws);
++		pdd->qpd.num_gws = 0;
++	}
++
++	if (dev->kfd->shared_resources.enable_mes) {
++		amdgpu_amdkfd_free_gtt_mem(dev->adev, pqn->q->gang_ctx_bo);
++		if (pqn->q->wptr_bo)
++			amdgpu_amdkfd_free_gtt_mem(dev->adev, pqn->q->wptr_bo);
++	}
++}
++
+ void pqm_uninit(struct process_queue_manager *pqm)
+ {
+ 	struct process_queue_node *pqn, *next;
  
-+	if (!adev->didt_wreg)
-+		return -EOPNOTSUPP;
+ 	list_for_each_entry_safe(pqn, next, &pqm->queues, process_queue_list) {
+-		if (pqn->q && pqn->q->gws &&
+-		    KFD_GC_VERSION(pqn->q->device) != IP_VERSION(9, 4, 3) &&
+-		    !pqn->q->device->kfd->shared_resources.enable_mes)
+-			amdgpu_amdkfd_remove_gws_from_process(pqm->process->kgd_process_info,
+-				pqn->q->gws);
++		if (pqn->q)
++			pqm_clean_queue_resource(pqm, pqn);
 +
- 	r = pm_runtime_get_sync(adev_to_drm(adev)->dev);
- 	if (r < 0) {
- 		pm_runtime_put_autosuspend(adev_to_drm(adev)->dev);
+ 		kfd_procfs_del_queue(pqn->q);
+ 		uninit_queue(pqn->q);
+ 		list_del(&pqn->process_queue_list);
+@@ -461,22 +488,7 @@ int pqm_destroy_queue(struct process_queue_manager *pqm, unsigned int qid)
+ 				goto err_destroy_queue;
+ 		}
+ 
+-		if (pqn->q->gws) {
+-			if (KFD_GC_VERSION(pqn->q->device) != IP_VERSION(9, 4, 3) &&
+-			    !dev->kfd->shared_resources.enable_mes)
+-				amdgpu_amdkfd_remove_gws_from_process(
+-						pqm->process->kgd_process_info,
+-						pqn->q->gws);
+-			pdd->qpd.num_gws = 0;
+-		}
+-
+-		if (dev->kfd->shared_resources.enable_mes) {
+-			amdgpu_amdkfd_free_gtt_mem(dev->adev,
+-						   pqn->q->gang_ctx_bo);
+-			if (pqn->q->wptr_bo)
+-				amdgpu_amdkfd_free_gtt_mem(dev->adev, pqn->q->wptr_bo);
+-
+-		}
++		pqm_clean_queue_resource(pqm, pqn);
+ 		uninit_queue(pqn->q);
+ 	}
+ 
 -- 
 2.43.0
 
