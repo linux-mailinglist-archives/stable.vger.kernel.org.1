@@ -1,144 +1,132 @@
-Return-Path: <stable+bounces-12211-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED48831F93
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 20:22:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D746D831FBC
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 20:29:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06BCD1F25CC1
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 19:22:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15FCE1C2381F
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 19:29:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB1BC2E405;
-	Thu, 18 Jan 2024 19:22:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1890A2E624;
+	Thu, 18 Jan 2024 19:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d1NkR2QN"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S3u/Av31"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FED52E3FB;
-	Thu, 18 Jan 2024 19:22:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450092E3FB
+	for <stable@vger.kernel.org>; Thu, 18 Jan 2024 19:29:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705605730; cv=none; b=IzTt5fLdm2YPQs5h8OJMFdbC+zRCxYFc1dmqCtZLpMPtMvfPDJrXbUwfLlAW4nBtUES5hUtsBd7Vje/9IMudESI7Ugl04XzgNj7hox4sbbrQlJDtJvhksgdBZks8ynMHrGrxeOapF9O0b0o2dVrS1KC3N4vdQstzXx0Nm+3NF5Q=
+	t=1705606155; cv=none; b=BvMsiot+3RT/THopZIatfjt5s7JTGlgwuFAR4xybmD0ngt8nIfxlHxmvUbZIe9pVEavq9ddxn1HRQLbO9pTAsmZqxKegsBgJMRw1KNZOFgPv/3zhBFJ5dIjf8cBSYGkiplpnEX6p3X6qKvYfgtBhOQyb+a34Xum8A+WbLcibMB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705605730; c=relaxed/simple;
-	bh=SrRbwpTDfXLX2j/Mn2Wvk81ST3LhR6HY3Tnc+uJKbl8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=m4juosE3gtxEKC6nE+HaXpxSSN1qbAwgN0erluDTkaJ0tWmCMtkM5+yoUjaKcV83kpQc5NgxMBNQw5/ORu9Qge6CxB3IZ+2l7qmqNRu+bS0Hk/LuA4uKO3BuD9UXUqNeQKVYn12/CSIRLy8Wx2wAs9ichrzdnPYEoQ8wOVItHbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d1NkR2QN; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-6daf9d5f111so70863b3a.0;
-        Thu, 18 Jan 2024 11:22:09 -0800 (PST)
+	s=arc-20240116; t=1705606155; c=relaxed/simple;
+	bh=EYGd/BtwuvtD8ZA8Nfy4r9pHo1JatfhJ33J3FjqEQrM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ct61CzO4Zjp/xF6ROKaT/yNyl+/DpgNjyWmbvC84wO9Cp8DQ3WWIQR1OJfQorlTTrqzTgM58sWkkznlqUkQDBtAKh7fTJ18tXXLxYFAE2sQdORz06MkmFyLKR8Kl36YukukGTN6zjxowp7v8JeBmTJLG2h6nWXuGVRiLhVeU8GU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S3u/Av31; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-6db9e52bbccso38608b3a.3
+        for <stable@vger.kernel.org>; Thu, 18 Jan 2024 11:29:13 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705605729; x=1706210529; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eIZHdTR71za9DIyPMIvJQ62OJfFj0JIbKk8OksEAc1U=;
-        b=d1NkR2QNeTK2mRk7w2NasNMdZqsYCLexD7KJ1nC5I9BYv6XEYsz0VjH/prZowQWNkS
-         mgMEBU5f9CpOsASZKgw+7hMyJQpa7ARE1MW3V/cjChB9wY2croZaLABOZ9lssOZpW2Qz
-         rbqW5kdJNMg1vqCUmA4fE5z9g/NqmX66+MztPw7s6w4sft7t02UpoU/QjtZa4K8EDiuD
-         24q7BWVOBjyxx0M2cFfYhGnnhaAvTvI9FJGwWkGmmxehm+ZQNCa8FC19fT9whiakWbC1
-         kf17+tN3IeDL155ebnfDNa9KWE6obLyCCYCJbaGl8WqXJjYYtIgWiPqpCU62qYG2O3md
-         XV9A==
+        d=google.com; s=20230601; t=1705606152; x=1706210952; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+iomTbXqRTjibxPrZcFIaAB8B6frVBWEtPfgQV/mc1o=;
+        b=S3u/Av314bbOChT4eb5WgE0aLJdxWthB6iKAfRqC1CA59rt1pW5unaFdmlBfnJeedP
+         cjKM1qDTXCCKEWOWQ/gpWvnQ1lF68ASBYjP29kT5H8JdTUCwFmc6VyQb2X/vmXrXMwxs
+         UJ8TaYXJmwBZZm1QPVI9I83uLnO2T05RK1mFQ5Z+KCub5WGV8YClTU0LrROXS66DJPK4
+         vOZaoZOi84i22Fc8CIFEoz+yAafYtyh2QGmJbTMtxyFbkFHqyEhSYwRSfK88d/dUS3Q7
+         BXg+rS7pRXpCypYQZy9KBWSoi2d58knqvFw0c94rEngi/mNKSBCm1cI6S9pyvHwFcXrh
+         U77g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705605729; x=1706210529;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eIZHdTR71za9DIyPMIvJQ62OJfFj0JIbKk8OksEAc1U=;
-        b=DMEoShQs2Gw/NLgPZuvE1P+5nPfuI0UiHV3Do+XfLUIrJrMQO7cKCQxilx2LCAtJxb
-         avXfbJCOXQ+aOEx78VQAzvvt2EnWgr52NDX3br01k1Isn2xEjY4woPeZu6A1tuq6do9t
-         e90dX21TyCj4dWFzsfXidTxBAutjFggkhZoHAm0gIrYoIKxt1hi7RADdMgq17IALYEsd
-         SAPhadM7drocJIi9BZ5mvOA68gHGwgZ2NlBl7y7QHZ1Gf4m/qX7VVHfZtD9RXx+ma5c8
-         2Ed5tjrr2c4zGXO1ymOhweUGMoqeP9wKZN7y4DycTtpWvBYKtEpZ1YQzu5BP+LPSs2iD
-         cDoQ==
-X-Gm-Message-State: AOJu0YzXMqk2jkKjIoRho+xrQqjnx/kDvynBM+7ZNOkRPVXnOeDTjWdn
-	24jyVTQis0ala9EUYMOH7aMSHe1BUfc+nlh5M2ztZGMmMovNV0Q9
-X-Google-Smtp-Source: AGHT+IEIR0jISgGDTiNiveync7yB2yYqyPiTmLy8ZnhSieBLfY6BPqzjwTrK+ZaiFHELMp5FPh8s/w==
-X-Received: by 2002:a05:6a00:2d25:b0:6d9:bf35:768f with SMTP id fa37-20020a056a002d2500b006d9bf35768fmr1492354pfb.46.1705605728757;
-        Thu, 18 Jan 2024 11:22:08 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id n24-20020aa78a58000000b006d95b565418sm3643211pfa.153.2024.01.18.11.22.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 18 Jan 2024 11:22:08 -0800 (PST)
-Message-ID: <ab9bef24-a07b-4930-b09a-b3c0f4e04789@gmail.com>
-Date: Thu, 18 Jan 2024 11:22:03 -0800
+        d=1e100.net; s=20230601; t=1705606152; x=1706210952;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+iomTbXqRTjibxPrZcFIaAB8B6frVBWEtPfgQV/mc1o=;
+        b=kR2WXHbCvHyY1JJSqsRb7/PE9oe4rGhz/tMo/eEZlQoyGdu4KRzKyXtGDZRbR0aMaL
+         KaTb8kK+aohxUWbRdk67Hlh9/mV2Vu9YUeZU16GMizKJ68Sj+VHrB1GpJtQJVIdZJYGC
+         W9eaIxgY7HizYvz2oPUK+uT0ZWhZf094wEV67+1oEmlWa33GYH2XYPEWG6GH/GNoEwuS
+         4mwG6XAn6l6KOsIlbIe/E+qTXc6ZF6pWerWcVVxh3dLVwlzp+y5IAQhws9x7tdIxdKz3
+         Kz+XzCzC6FfzJ+v934m16RFnCG+id1GOM5Cru4ZaGnUsM6hdWjHl366KHjDfkxyeeJ2H
+         W2bg==
+X-Gm-Message-State: AOJu0Yz70Rpv0ZB6QI2AgVmUO3nBevuqLMB5F6+YNJTldDCrvBrxzbnm
+	UQKCO3wLIUgrMl2vZSF8KSih3VIUJr+jQqL4a5vORPyzXodBk6Ut6rYXNFCGJw==
+X-Google-Smtp-Source: AGHT+IEDU0f/LZTZf0+r3K8CSuUlFt617cPqAtIUeGN2vr636LX8vCpmJ6gjqngAJppnD0SbvlrATA==
+X-Received: by 2002:a17:90a:e2c8:b0:290:45a7:3ed7 with SMTP id fr8-20020a17090ae2c800b0029045a73ed7mr158870pjb.3.1705606152436;
+        Thu, 18 Jan 2024 11:29:12 -0800 (PST)
+Received: from google.com (77.62.105.34.bc.googleusercontent.com. [34.105.62.77])
+        by smtp.gmail.com with ESMTPSA id oe15-20020a17090b394f00b002903a89ebb3sm716848pjb.31.2024.01.18.11.29.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 18 Jan 2024 11:29:11 -0800 (PST)
+Date: Thu, 18 Jan 2024 19:29:07 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Brian Swetland <swetland@google.com>
+Cc: linux-kernel@vger.kernel.org, kernel-team@android.com,
+	Alice Ryhl <aliceryhl@google.com>,
+	Greg Kroah-Hartman <gregkh@suse.de>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 03/28] binder: fix race between mmput() and do_exit()
+Message-ID: <Zal8A95q3jVl4nu5@google.com>
+References: <20231201172212.1813387-1-cmllamas@google.com>
+ <20231201172212.1813387-4-cmllamas@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 000/150] 6.6.13-rc1 review
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com
-References: <20240118104320.029537060@linuxfoundation.org>
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231201172212.1813387-4-cmllamas@google.com>
 
-On 1/18/24 02:47, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.13 release.
-> There are 150 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Fri, Dec 01, 2023 at 05:21:32PM +0000, Carlos Llamas wrote:
+> Task A calls binder_update_page_range() to allocate and insert pages on
+> a remote address space from Task B. For this, Task A pins the remote mm
+> via mmget_not_zero() first. This can race with Task B do_exit() and the
+> final mmput() refcount decrement will come from Task A.
 > 
-> Responses should be made by Sat, 20 Jan 2024 10:42:49 +0000.
-> Anything received after that time might be too late.
+>   Task A            | Task B
+>   ------------------+------------------
+>   mmget_not_zero()  |
+>                     |  do_exit()
+>                     |    exit_mm()
+>                     |      mmput()
+>   mmput()           |
+>     exit_mmap()     |
+>       remove_vma()  |
+>         fput()      |
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.13-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
+> In this case, the work of ____fput() from Task B is queued up in Task A
+> as TWA_RESUME. So in theory, Task A returns to userspace and the cleanup
+> work gets executed. However, Task A instead sleep, waiting for a reply
+> from Task B that never comes (it's dead).
 > 
-> thanks,
+> This means the binder_deferred_release() is blocked until an unrelated
+> binder event forces Task A to go back to userspace. All the associated
+> death notifications will also be delayed until then.
 > 
-> greg k-h
+> In order to fix this use mmput_async() that will schedule the work in
+> the corresponding mm->async_put_work WQ instead of Task A.
+> 
+> Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Carlos Llamas <cmllamas@google.com>
+> ---
 
-Same as with 6.1:
+Sorry, I forgot to Cc: stable@vger.kernel.org.
 
-ARM and ARM64 builds worked fine and passed tests, however BMIPS_GENERIC 
-fails to build with:
-
-arch/mips/kernel/smp.c: In function 'start_secondary':
-arch/mips/kernel/smp.c:340:2: error: implicit declaration of function 
-'rcutree_report_cpu_starting'; did you mean 'rcu_cpu_starting'? 
-[-Werror=implicit-function-declaration]
-   rcutree_report_cpu_starting(cpu);
-   ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-   rcu_cpu_starting
-cc1: all warnings being treated as errors
-host-make[5]: *** [scripts/Makefile.build:250: arch/mips/kernel/smp.o] 
-Error 1
-host-make[4]: *** [scripts/Makefile.build:500: arch/mips/kernel] Error 2
-host-make[3]: *** [scripts/Makefile.build:500: arch/mips] Error 2
-host-make[3]: *** Waiting for unfinished jobs....
-
-which is caused by 1fa03a4622bb26a31279a453aa251154f11e6c70 ("mips/smp: 
-Call rcutree_report_cpu_starting() earlier").
-
-It looks like rcutree_report_cpu_starting() has been introduced 
-448e9f34d91d1a4799fdb06a93c2c24b34b6fd9d ("rcu: Standardize explicit 
-CPU-hotplug calls") which is in v6.7.
-
-For MIPS, it would like an adequate fix would be to 
-'s/rcutree_report_cpu_starting/rcu_cpu_starting/' for the 6.1 and 6.6 
-branches.
--- 
-Florian
-
+--
+Carlos Llamas
 
