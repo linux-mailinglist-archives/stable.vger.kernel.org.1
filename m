@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-12009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0030C831753
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 295488317DE
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 335511C20EFA
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD1E21F21219
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0302D23760;
-	Thu, 18 Jan 2024 10:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7565624A10;
+	Thu, 18 Jan 2024 11:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zQnTf6PV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="twT2x21z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B714B1774B;
-	Thu, 18 Jan 2024 10:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E1B22F16;
+	Thu, 18 Jan 2024 11:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575351; cv=none; b=o9f4zig5aOFBwF31mMv4CFl4ZKrttqHE/0JLDmcV//3axN2Ck0Uu8yLUMmYnuz9rFI5ei5l603VEnqaNBXLhcimveWx0Y8OAddbI6ePMtm6oSgCkraxx9XMFAPiVNWM2Sk9/zvFYPpMd4zCv8biLqncFf8g00tMC9GofvV3pdoI=
+	t=1705575674; cv=none; b=IUKBy7EvPtym67KyNfe7gHSAJcleb/pOAijC/dpCIr1cYB49E88BKVHLa1aJ7pYS0+Mz7+caieH5xs7wLtjsB4QUaHCOy23VNpTfBJ9Yw+ZFvNHACEXl0Mtz3cyem1z9OoYgwO/XASk7XtFYysl6WXUwC7UzgcLYwH2U46faEGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575351; c=relaxed/simple;
-	bh=AaxgKve1zCQ/IA7h4INriiVv1O68vYQG25ZKQTF5ypU=;
+	s=arc-20240116; t=1705575674; c=relaxed/simple;
+	bh=TROUpB22GyDfGFBAC/QtFfG+4S+mIIIFxO/7nYY/WaI=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding; b=eeHsoC95L23Snbpe0i0DirqfwyqxM3VxUjhaBUKk10bGH5l0AMomcTciI+ObnNd1AaJevTnupRoThYBHzPayE8V62siVBQZhivYmmUCs3bR13sWKRvn8qc418XxLMpGeDWxa5kwoZx43gfRTQ7hRA4kIx71QwR8s7Y+zjJ+kKJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zQnTf6PV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF37C433F1;
-	Thu, 18 Jan 2024 10:55:51 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=TAA9UVf7OqIvJJav2mPnn0SQJvzdJloJEFj6ALAPj5mW8OO+Y/Znq9CdnLjboSwpNx2/PmDBXEysDptf29yMKY+Xgqgq/McefbU8FLNosEBUbRXP9EsWrR/1u0LUAaBuHXZBNyoWwRLLvqB0aSLz2I08URJGFdXGNgpsKquLa6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=twT2x21z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED88C43390;
+	Thu, 18 Jan 2024 11:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575351;
-	bh=AaxgKve1zCQ/IA7h4INriiVv1O68vYQG25ZKQTF5ypU=;
+	s=korg; t=1705575673;
+	bh=TROUpB22GyDfGFBAC/QtFfG+4S+mIIIFxO/7nYY/WaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zQnTf6PVwCZyvEj89sko3ZQ6TCm1I66jZmOPumNOZP+AmONMcWqZWrYlzdrzzmorB
-	 ZWsvfS3N8L8hO0TBgK2x/9PiJrXC6sIEsorBcXpI6BiZjvgtBgbCZMObaXNiGb1D77
-	 14w+mUIOeO0Jr0nwutJQ8950slClM3gY48tm6gyU=
+	b=twT2x21zRBcqr1JKtGqQV8UuXYyXZuZMqSxZpvzNeGE3hdXZGb6LihBnnbEHlXmsg
+	 NkyipHpueSn7es6hQwG7+oC+Nio+MyLy9IHXwHwBgKtig0guDebLl5tUKjoIq3Qdm6
+	 yM0k/eLmaUuYcdDfGvc7oM3wWhKoLlMBOxSavFlc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Stefan Wiehler <stefan.wiehler@nokia.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 102/150] platform/x86/amd/pmc: Move platform defines to header
+Subject: [PATCH 6.1 036/100] mips/smp: Call rcutree_report_cpu_starting() earlier
 Date: Thu, 18 Jan 2024 11:48:44 +0100
-Message-ID: <20240118104324.780470351@linuxfoundation.org>
+Message-ID: <20240118104312.487232798@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Stefan Wiehler <stefan.wiehler@nokia.com>
 
-[ Upstream commit 85980669a863514dd47761efd6c1bc4677a2ae08 ]
+[ Upstream commit 55702ec9603ebeffb15e6f7b113623fe1d8872f4 ]
 
-The platform defines will be used by the quirks in the future,
-so move them to the common header to allow use by both source
-files.
+rcutree_report_cpu_starting() must be called before
+clockevents_register_device() to avoid the following lockdep splat triggered by
+calling list_add() when CONFIG_PROVE_RCU_LIST=y:
 
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20231212045006.97581-2-mario.limonciello@amd.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+  WARNING: suspicious RCU usage
+  ...
+  -----------------------------
+  kernel/locking/lockdep.c:3680 RCU-list traversed in non-reader section!!
+
+  other info that might help us debug this:
+
+  RCU used illegally from offline CPU!
+  rcu_scheduler_active = 1, debug_locks = 1
+  no locks held by swapper/1/0.
+  ...
+  Call Trace:
+  [<ffffffff8012a434>] show_stack+0x64/0x158
+  [<ffffffff80a93d98>] dump_stack_lvl+0x90/0xc4
+  [<ffffffff801c9e9c>] __lock_acquire+0x1404/0x2940
+  [<ffffffff801cbf3c>] lock_acquire+0x14c/0x448
+  [<ffffffff80aa4260>] _raw_spin_lock_irqsave+0x50/0x88
+  [<ffffffff8021e0c8>] clockevents_register_device+0x60/0x1e8
+  [<ffffffff80130ff0>] r4k_clockevent_init+0x220/0x3a0
+  [<ffffffff801339d0>] start_secondary+0x50/0x3b8
+
+raw_smp_processor_id() is required in order to avoid calling into lockdep
+before RCU has declared the CPU to be watched for readers.
+
+See also commit 29368e093921 ("x86/smpboot:  Move rcu_cpu_starting() earlier"),
+commit de5d9dae150c ("s390/smp: move rcu_cpu_starting() earlier") and commit
+99f070b62322 ("powerpc/smp: Call rcu_cpu_starting() earlier").
+
+Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
+Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmc/pmc.c | 10 ----------
- drivers/platform/x86/amd/pmc/pmc.h | 11 +++++++++++
- 2 files changed, 11 insertions(+), 10 deletions(-)
+ arch/mips/kernel/smp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc.c b/drivers/platform/x86/amd/pmc/pmc.c
-index 212f164bc3db..3fea32880ac8 100644
---- a/drivers/platform/x86/amd/pmc/pmc.c
-+++ b/drivers/platform/x86/amd/pmc/pmc.c
-@@ -87,16 +87,6 @@
- #define SMU_MSG_LOG_RESET		0x07
- #define SMU_MSG_LOG_DUMP_DATA		0x08
- #define SMU_MSG_GET_SUP_CONSTRAINTS	0x09
--/* List of supported CPU ids */
--#define AMD_CPU_ID_RV			0x15D0
--#define AMD_CPU_ID_RN			0x1630
--#define AMD_CPU_ID_PCO			AMD_CPU_ID_RV
--#define AMD_CPU_ID_CZN			AMD_CPU_ID_RN
--#define AMD_CPU_ID_YC			0x14B5
--#define AMD_CPU_ID_CB			0x14D8
--#define AMD_CPU_ID_PS			0x14E8
--#define AMD_CPU_ID_SP			0x14A4
--#define PCI_DEVICE_ID_AMD_1AH_M20H_ROOT 0x1507
+diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
+index 1d93b85271ba..b951ce3a53ab 100644
+--- a/arch/mips/kernel/smp.c
++++ b/arch/mips/kernel/smp.c
+@@ -333,10 +333,11 @@ early_initcall(mips_smp_ipi_init);
+  */
+ asmlinkage void start_secondary(void)
+ {
+-	unsigned int cpu;
++	unsigned int cpu = raw_smp_processor_id();
  
- #define PMC_MSG_DELAY_MIN_US		50
- #define RESPONSE_REGISTER_LOOP_MAX	20000
-diff --git a/drivers/platform/x86/amd/pmc/pmc.h b/drivers/platform/x86/amd/pmc/pmc.h
-index c27bd6a5642f..a85c235247d3 100644
---- a/drivers/platform/x86/amd/pmc/pmc.h
-+++ b/drivers/platform/x86/amd/pmc/pmc.h
-@@ -41,4 +41,15 @@ struct amd_pmc_dev {
- void amd_pmc_process_restore_quirks(struct amd_pmc_dev *dev);
- void amd_pmc_quirks_init(struct amd_pmc_dev *dev);
+ 	cpu_probe();
+ 	per_cpu_trap_init(false);
++	rcutree_report_cpu_starting(cpu);
+ 	mips_clockevent_init();
+ 	mp_ops->init_secondary();
+ 	cpu_report();
+@@ -348,7 +349,6 @@ asmlinkage void start_secondary(void)
+ 	 */
  
-+/* List of supported CPU ids */
-+#define AMD_CPU_ID_RV			0x15D0
-+#define AMD_CPU_ID_RN			0x1630
-+#define AMD_CPU_ID_PCO			AMD_CPU_ID_RV
-+#define AMD_CPU_ID_CZN			AMD_CPU_ID_RN
-+#define AMD_CPU_ID_YC			0x14B5
-+#define AMD_CPU_ID_CB			0x14D8
-+#define AMD_CPU_ID_PS			0x14E8
-+#define AMD_CPU_ID_SP			0x14A4
-+#define PCI_DEVICE_ID_AMD_1AH_M20H_ROOT 0x1507
-+
- #endif /* PMC_H */
+ 	calibrate_delay();
+-	cpu = smp_processor_id();
+ 	cpu_data[cpu].udelay_val = loops_per_jiffy;
+ 
+ 	set_cpu_sibling_map(cpu);
 -- 
 2.43.0
 
