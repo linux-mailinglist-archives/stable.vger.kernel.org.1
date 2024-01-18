@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-12095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF6238317B5
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:00:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E19D8831737
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:54:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66E78B24968
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:00:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A81B828551C
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1059822F1B;
-	Thu, 18 Jan 2024 10:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A62C22F0F;
+	Thu, 18 Jan 2024 10:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofTFuFJw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+IN/ign"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C085B22F0B;
-	Thu, 18 Jan 2024 10:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF87E1B96D;
+	Thu, 18 Jan 2024 10:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575591; cv=none; b=q4DnXOiHZp6H6GoJvevEoLW3bw8XAL+GYs7AMpZwdeIWYXDtgocHZ1KnBAd2JfrEEPBe1IShrjOoeWkCF7/QMaZ/4FWTFf12W5LTl9YiagAg+69+vxSXxdEdAFE57nr0uXlVbatSe1at/yHCbkSYuCPmKan8n/BKPr8ImR7+l/Q=
+	t=1705575276; cv=none; b=QeoOGD3JzRuw4IksDkrISouK7RetaI2l46vfJVo1ZaGvGbXjBMNjW5tIuv76Dmo4XPko4YeQG/Ix8X+sKM5Zb13PV+J4SYCTpKTS0S/17F7t+g5bAZ6lNDwcnyMryJdvHG2KqIhLAIMlELQDB33Le1zFgH1vEYj2tb1PE4ZSUJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575591; c=relaxed/simple;
-	bh=OWeLzaZWOZ9vnYdGfqlmY/DIIqFXOhUfzKz6+TyWYOI=;
+	s=arc-20240116; t=1705575276; c=relaxed/simple;
+	bh=PckjyMaVOXETQFl0M6NBcTs/q7KptsMPShrBAUbf46k=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=gT0MnE3y4QUaJStOqOkTnvUyFVkq82MkiRkqWxtWCrXEi8iO9Hh+PKNAh/ICEo5/AO7FYo/wH41F0QBxPKsbIGNlpTFaqTHVohzgw2ypbX/46irHu3nTVwfxSiA4lacC1aOtlWvrD/lnP/khyRbs0ujSYiytzqu9PRk6wAm5glg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofTFuFJw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43934C433F1;
-	Thu, 18 Jan 2024 10:59:51 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=jMhfVeNom3+YbL7tkwazqariBnHaMokz+kCph4yYu83WPzt2FjR1L/AqPt7fZ61j8OAYhxSbTaduxkaFiXxOILVT+/2uICXbDDGwxq7QgSE6bNm8XWpbknXKHO1JMqzpZGcrt7E+iQhedAaU49VcbQOiemvn9yX4o671Yx3QltM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+IN/ign; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42EB8C43390;
+	Thu, 18 Jan 2024 10:54:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575591;
-	bh=OWeLzaZWOZ9vnYdGfqlmY/DIIqFXOhUfzKz6+TyWYOI=;
+	s=korg; t=1705575276;
+	bh=PckjyMaVOXETQFl0M6NBcTs/q7KptsMPShrBAUbf46k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ofTFuFJwPsYg9soPi/Bi+nOLPDk4vibdpnmNTMU2lGwFuQcySvnz7h1AjC5LiyjXB
-	 fC9UOSG18DOoQbqaLaOrYRS/XlGb/gdHOAPXRBEQS4gRX89Q+2NlgPlBw1aW46kKQ3
-	 62hUBJAU70RkZNJQOxJuCLSKBrii1/ivZ4/lzAy4=
+	b=Z+IN/ignL3/SGbMGGXRgyWUeFDGwQ5LA1RI/sMc3bsA16V7RsfzmdTxBfUpTxhDwj
+	 BIFmBzbmC21Hkj5tqHAXXP3Yiud/hzS/V+jztir+bx8GeBFbC2bn3ZtmDRGugH2LZv
+	 pK2StvgF5UsiIg8W7uHklptH+huGnKA4vjyBf7h0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Douglas Anderson <dianders@chromium.org>,
+	Judy Hsiao <judyhsiao@chromium.org>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 009/100] ALSA: hda: intel-nhlt: Ignore vbps when looking for DMIC 32 bps format
+Subject: [PATCH 6.6 075/150] neighbour: Dont let neigh_forced_gc() disable preemption for long
 Date: Thu, 18 Jan 2024 11:48:17 +0100
-Message-ID: <20240118104311.272836367@linuxfoundation.org>
+Message-ID: <20240118104323.457984868@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,105 +66,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+From: Judy Hsiao <judyhsiao@chromium.org>
 
-[ Upstream commit 7b4c93a50a2ebbbaf656cc4fa6aca74a6166d85b ]
+[ Upstream commit e5dc5afff62f3e97e86c3643ec9fcad23de4f2d3 ]
 
-When looking up DMIC blob from the NHLT table and the format is 32 bits,
-ignore the vbps matching for 32 bps for DMIC since some NHLT table have
-the vbps as 24, some have it as 32.
-The DMIC hardware supports only one type of 32 bit sample size, which is
-24 bit sampling on the MSB side and bits[1:0] is used for indicating the
-channel number.
+We are seeing cases where neigh_cleanup_and_release() is called by
+neigh_forced_gc() many times in a row with preemption turned off.
+When running on a low powered CPU at a low CPU frequency, this has
+been measured to keep preemption off for ~10 ms. That's not great on a
+system with HZ=1000 which expects tasks to be able to schedule in
+with ~1ms latency.
 
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Link: https://lore.kernel.org/r/20231127111658.17275-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Suggested-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Judy Hsiao <judyhsiao@chromium.org>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/intel-nhlt.c | 33 +++++++++++++++++++++++++++++----
- 1 file changed, 29 insertions(+), 4 deletions(-)
+ net/core/neighbour.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/sound/hda/intel-nhlt.c b/sound/hda/intel-nhlt.c
-index 2c4dfc0b7e34..696a958d93e9 100644
---- a/sound/hda/intel-nhlt.c
-+++ b/sound/hda/intel-nhlt.c
-@@ -238,7 +238,7 @@ EXPORT_SYMBOL(intel_nhlt_ssp_mclk_mask);
- 
- static struct nhlt_specific_cfg *
- nhlt_get_specific_cfg(struct device *dev, struct nhlt_fmt *fmt, u8 num_ch,
--		      u32 rate, u8 vbps, u8 bps)
-+		      u32 rate, u8 vbps, u8 bps, bool ignore_vbps)
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index df81c1f0a570..552719c3bbc3 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -253,9 +253,11 @@ static int neigh_forced_gc(struct neigh_table *tbl)
  {
- 	struct nhlt_fmt_cfg *cfg = fmt->fmt_config;
- 	struct wav_fmt *wfmt;
-@@ -255,8 +255,12 @@ nhlt_get_specific_cfg(struct device *dev, struct nhlt_fmt *fmt, u8 num_ch,
- 		dev_dbg(dev, "Endpoint format: ch=%d fmt=%d/%d rate=%d\n",
- 			wfmt->channels, _vbps, _bps, wfmt->samples_per_sec);
+ 	int max_clean = atomic_read(&tbl->gc_entries) -
+ 			READ_ONCE(tbl->gc_thresh2);
++	u64 tmax = ktime_get_ns() + NSEC_PER_MSEC;
+ 	unsigned long tref = jiffies - 5 * HZ;
+ 	struct neighbour *n, *tmp;
+ 	int shrunk = 0;
++	int loop = 0;
  
-+		/*
-+		 * When looking for exact match of configuration ignore the vbps
-+		 * from NHLT table when ignore_vbps is true
-+		 */
- 		if (wfmt->channels == num_ch && wfmt->samples_per_sec == rate &&
--		    vbps == _vbps && bps == _bps)
-+		    (ignore_vbps || vbps == _vbps) && bps == _bps)
- 			return &cfg->config;
+ 	NEIGH_CACHE_STAT_INC(tbl, forced_gc_runs);
  
- 		cfg = (struct nhlt_fmt_cfg *)(cfg->config.caps + cfg->config.size);
-@@ -289,6 +293,7 @@ intel_nhlt_get_endpoint_blob(struct device *dev, struct nhlt_acpi_table *nhlt,
- {
- 	struct nhlt_specific_cfg *cfg;
- 	struct nhlt_endpoint *epnt;
-+	bool ignore_vbps = false;
- 	struct nhlt_fmt *fmt;
- 	int i;
- 
-@@ -298,7 +303,26 @@ intel_nhlt_get_endpoint_blob(struct device *dev, struct nhlt_acpi_table *nhlt,
- 	dev_dbg(dev, "Looking for configuration:\n");
- 	dev_dbg(dev, "  vbus_id=%d link_type=%d dir=%d, dev_type=%d\n",
- 		bus_id, link_type, dir, dev_type);
--	dev_dbg(dev, "  ch=%d fmt=%d/%d rate=%d\n", num_ch, vbps, bps, rate);
-+	if (link_type == NHLT_LINK_DMIC && bps == 32 && (vbps == 24 || vbps == 32)) {
-+		/*
-+		 * The DMIC hardware supports only one type of 32 bits sample
-+		 * size, which is 24 bit sampling on the MSB side and bits[1:0]
-+		 * are used for indicating the channel number.
-+		 * It has been observed that some NHLT tables have the vbps
-+		 * specified as 32 while some uses 24.
-+		 * The format these variations describe are identical, the
-+		 * hardware is configured and behaves the same way.
-+		 * Note: when the samples assumed to be vbps=32 then the 'noise'
-+		 * introduced by the lower two bits (channel number) have no
-+		 * real life implication on audio quality.
-+		 */
-+		dev_dbg(dev,
-+			"  ch=%d fmt=%d rate=%d (vbps is ignored for DMIC 32bit format)\n",
-+			num_ch, bps, rate);
-+		ignore_vbps = true;
-+	} else {
-+		dev_dbg(dev, "  ch=%d fmt=%d/%d rate=%d\n", num_ch, vbps, bps, rate);
-+	}
- 	dev_dbg(dev, "Endpoint count=%d\n", nhlt->endpoint_count);
- 
- 	epnt = (struct nhlt_endpoint *)nhlt->desc;
-@@ -307,7 +331,8 @@ intel_nhlt_get_endpoint_blob(struct device *dev, struct nhlt_acpi_table *nhlt,
- 		if (nhlt_check_ep_match(dev, epnt, bus_id, link_type, dir, dev_type)) {
- 			fmt = (struct nhlt_fmt *)(epnt->config.caps + epnt->config.size);
- 
--			cfg = nhlt_get_specific_cfg(dev, fmt, num_ch, rate, vbps, bps);
-+			cfg = nhlt_get_specific_cfg(dev, fmt, num_ch, rate,
-+						    vbps, bps, ignore_vbps);
- 			if (cfg)
- 				return cfg;
+@@ -278,11 +280,16 @@ static int neigh_forced_gc(struct neigh_table *tbl)
+ 				shrunk++;
+ 			if (shrunk >= max_clean)
+ 				break;
++			if (++loop == 16) {
++				if (ktime_get_ns() > tmax)
++					goto unlock;
++				loop = 0;
++			}
  		}
+ 	}
+ 
+ 	WRITE_ONCE(tbl->last_flush, jiffies);
+-
++unlock:
+ 	write_unlock_bh(&tbl->lock);
+ 
+ 	return shrunk;
 -- 
 2.43.0
 
