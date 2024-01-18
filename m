@@ -1,124 +1,119 @@
-Return-Path: <stable+bounces-12214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCF02831FC9
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 20:33:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22311831FE3
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 20:51:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 660B12896AA
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 19:33:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEA3028232A
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 19:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1EF72E40E;
-	Thu, 18 Jan 2024 19:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8E72E62C;
+	Thu, 18 Jan 2024 19:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xrWtmYjx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vf5BUayt"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F352E405
-	for <stable@vger.kernel.org>; Thu, 18 Jan 2024 19:33:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B465D29438;
+	Thu, 18 Jan 2024 19:51:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705606434; cv=none; b=ZVneEO1yv7WtVp/1M6Z1i9OnLoqTgaqedChOpnju8l1JVL/7NN3K6csKWan6y8Or4uQJHLtWWVNq11ND0Mz+xODZdV2UxMw5pZS+1ccNx/tJfFUx3jFRyfLZqKOEwZXTFMbpotswa7aTB6+GqFpVNkPSZ+1MoU9YcFc4iav11tc=
+	t=1705607470; cv=none; b=Gifnecaj33Z+NOoL6XwvN0fvYjPPELcP1qMFEupD0QhxDWcmLSDgRDC4vDOtIM6CMXd2mjmCjn8nNBFcprA1FHgp0OEqMpUkqr6ZuA0o6c1AHf/t0qcKR8aBsWrU4NAq6Aa9OwtX0rlny7DCqePI/f3tcaIz686lPobjY2WIFWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705606434; c=relaxed/simple;
-	bh=r7q6DvUCmOsKy6+NbzdyWEddN1onz2OiEikraaSBQa8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WPcjxGVIT987L+MZOROXaIS5XcJ7uJ6lC/PAZo640+XYgXhrm+HEl/fCzrIV2A58HX+rvnqTrsNGZr5s4ghuqsW8L6An/16eev80YDL6hBNFHuIwvuy0CIhI5po4HPt+bToHuTO1MN5pGLN1VevQIaAjZ0yb+hwcwZQZit78rPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xrWtmYjx; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-5cf87cdc4c5so12887a12.1
-        for <stable@vger.kernel.org>; Thu, 18 Jan 2024 11:33:52 -0800 (PST)
+	s=arc-20240116; t=1705607470; c=relaxed/simple;
+	bh=zpB1vJKPFUrLosU/KAweJYdV+HjG58GHXZeRiTmNml8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pMBNYuevx1uIjfknaxC4c0oOHWM1/2gvc02Q83xGkmGPiksirZbmNbsJUIE8HvOpga71RyaCFAXCm3/uuaT75iR7WkLpVnyN65oBKsEJD93i6tKxlZpfqV5QMbp++b5oPr+fryRS4IG9kCWoT+Q6ho6OItJrCbcTp1XJZ4SgqZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vf5BUayt; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-429af318342so356601cf.0;
+        Thu, 18 Jan 2024 11:51:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1705606432; x=1706211232; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2Eimo1bLVuQLA4eG0D77yPQYKlmdquXBMxi8UiFbf2o=;
-        b=xrWtmYjxlRDgwio8cVAuZuud2MlU+7JhxUcN0Ti5h8hRFE1KRppD3jfPWJnGwPRhtf
-         qZrPkU+/9K78O1UN1eHMjLSyN5y/2ismXyRnfXodrHXErTA5pmO1KpFbNs8V0DNc3Wn1
-         I1x0tSB/oT/yjTWZwOa3CJHZgPFZt5rHs5qJEUHoqvsar/asz3Bdq/PRA5t9QND0PDpd
-         7/6P9OCVoyfwyxOc+/Y4xGHfVROp24UNV8SkhBefa8ax4gfEIvSywlMYpyMRP2Z/Jexp
-         R0l3VQQpruMTpyBxInjz66O0I6YA62hw+X37kmeRNp28Snil3A/PzGF7tLLaTbRWXy6+
-         l83g==
+        d=gmail.com; s=20230601; t=1705607468; x=1706212268; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BTvQsNfYLosp4zMJSEtUdKK37sRRAVysKUE3QZOulFY=;
+        b=Vf5BUaytpNyv8X8NJdmPAk1jwzR4pztTa9b0LqE9F5Buw6maMiNZN/V4ID4cKsbOqH
+         H1xio/zgF6AXByxnraeRhxLKibx1J/vBQpcyARnKZ2UHj6tQOk+zU/5Qy75udcAQhJBd
+         L7n4S8eyG2ppsnyqobF+MxAlDQzTcd9wsT87ik0imLO6lTVaUbu4/l6jGEAA99BcXSxy
+         6ndPr8bMM70Sm5PG8WCCLXge1Ht8oRkHI46vmSXf1VAdV17+QcTZiMNuhND9aCXHC9iV
+         dk0diyTIBdnax/8wOYZu/u9JVPQ8/dS4JOtcvgI1E56q7q7xvKKL2zNQHoh0mcNThF2Z
+         lxjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705606432; x=1706211232;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2Eimo1bLVuQLA4eG0D77yPQYKlmdquXBMxi8UiFbf2o=;
-        b=h13vfeU2NnnyOVNcAtDqwB9+/LPyH6qRJGmQQmoLrDXj50Teyd/fKdHXhuUS3HtOva
-         AKKLnum1hanO6z5AoNZtoc6yRuTEXNN+AukU6FXDAEqJ0wxpksVlLU4ZkERUvIkan9JA
-         tSH6oO+3ctiQ9J32PXygN9uLSgrbbZHCiLHt7zevpZFquwjx1VuiHNJw10kKnCw2RfOa
-         i0hu46t7SU7EbFX4ztS482jE855t0IQXdWZaizXthSTSJnFfD5nBeVWSkg8Uj4SLuhnI
-         wOTodFDOD7mz6NqkdlMMvfuYZsHzfw1GV5IqS+Xq3vHFJhRneY4azV/Ei2FMWfyL8aZ+
-         nVug==
-X-Gm-Message-State: AOJu0YxmRj1h4VMibycqbgZpkImxGWMvsrF64GA34xzTsfdxqv78ffJn
-	U8Bz4pHfWatgkDjG5kTgO4Hd07MfszJNAC5aylo/hFPtzRsPI1hz7irNvTVteA==
-X-Google-Smtp-Source: AGHT+IFm9T/UtIOxxsCVJCtWVKQaeNLEt/TFaVJP4JjyAFEswkIgviQqSjaT4nzdAULA0wxSJrb57w==
-X-Received: by 2002:a17:902:dacc:b0:1d4:69a5:edbb with SMTP id q12-20020a170902dacc00b001d469a5edbbmr1528056plx.48.1705606432321;
-        Thu, 18 Jan 2024 11:33:52 -0800 (PST)
-Received: from google.com (77.62.105.34.bc.googleusercontent.com. [34.105.62.77])
-        by smtp.gmail.com with ESMTPSA id ee6-20020a17090afc4600b002868abc0e6dsm2261384pjb.11.2024.01.18.11.33.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jan 2024 11:33:51 -0800 (PST)
-Date: Thu, 18 Jan 2024 19:33:48 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Sherry Yang <sherryy@android.com>
-Cc: linux-kernel@vger.kernel.org, kernel-team@android.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 05/28] binder: fix unused alloc->free_async_space
-Message-ID: <Zal9HFZcC3rFjogI@google.com>
-References: <20231201172212.1813387-1-cmllamas@google.com>
- <20231201172212.1813387-6-cmllamas@google.com>
+        d=1e100.net; s=20230601; t=1705607468; x=1706212268;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BTvQsNfYLosp4zMJSEtUdKK37sRRAVysKUE3QZOulFY=;
+        b=AbjfA4K7tHz7+sD96OjbQCyG+U9CPjkRgR7L5IXmxzidp+n7KKcnyYnauvzPN+H1O+
+         g8RVPF4paLx/JT91GukC3/lxVnAZGqYS3icRQChbicFo+6doXZViYU+ls5Y0onpwYt4J
+         f0p1mRqrLyz5xk4lJ1+/7shunXEgphpyfj2mDLnYeungSqfLzUE+dXl9iN6Wg46o+3SL
+         h6mej64w2ijhefOCoIuT7DejiJARRHPqFF5w58rb0FAHBnwQvLTzHQUYzJWae8XSeLFo
+         h+lGA7fZ+ah3iGeXy1Lv1zS1WN3o+Gf64+aFmBObsDfxxNwYNcsk4t8wCoshKC0ubkJh
+         16Ag==
+X-Gm-Message-State: AOJu0YwwS0Z4nkepRtBM10g7LR5yDtEd4NvA5tB0mupeGxgmI2uBwkkS
+	DFpesGFoMTk4j/7BvaDGWkMpWBV1YoM3Ttc3S4ULrodg21IGkpq2
+X-Google-Smtp-Source: AGHT+IFuzwMJ2IKpO0vPscGpujBJTJMHffiNlful/2XZ3SiEHAezwmJr9V7vyeM/KC94kkWc9UiFVQ==
+X-Received: by 2002:a05:622a:2d4:b0:42a:212d:4a30 with SMTP id a20-20020a05622a02d400b0042a212d4a30mr494962qtx.29.1705607467542;
+        Thu, 18 Jan 2024 11:51:07 -0800 (PST)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id c25-20020ac853d9000000b004283695a39bsm6944302qtq.94.2024.01.18.11.51.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Jan 2024 11:51:07 -0800 (PST)
+Message-ID: <4c0fd569-3381-421a-82de-4c85b8a4cb59@gmail.com>
+Date: Thu, 18 Jan 2024 11:51:01 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231201172212.1813387-6-cmllamas@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.7 00/28] 6.7.1-rc1 review
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com
+References: <20240118104301.249503558@linuxfoundation.org>
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Dec 01, 2023 at 05:21:34PM +0000, Carlos Llamas wrote:
-> Each transaction is associated with a 'struct binder_buffer' that stores
-> the metadata about its buffer area. Since commit 74310e06be4d ("android:
-> binder: Move buffer out of area shared with user space") this struct is
-> no longer embedded within the buffer itself but is instead allocated on
-> the heap to prevent userspace access to this driver-exclusive info.
+On 1/18/24 02:48, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.7.1 release.
+> There are 28 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Unfortunately, the space of this struct is still being accounted for in
-> the total buffer size calculation, specifically for async transactions.
-> This results in an additional 104 bytes added to every async buffer
-> request, and this area is never used.
+> Responses should be made by Sat, 20 Jan 2024 10:42:49 +0000.
+> Anything received after that time might be too late.
 > 
-> This wasted space can be substantial. If we consider the maximum mmap
-> buffer space of SZ_4M, the driver will reserve half of it for async
-> transactions, or 0x200000. This area should, in theory, accommodate up
-> to 262,144 buffers of the minimum 8-byte size. However, after adding
-> the extra 'sizeof(struct binder_buffer)', the total number of buffers
-> drops to only 18,724, which is a sad 7.14% of the actual capacity.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.7.1-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.7.y
+> and the diffstat can be found below.
 > 
-> This patch fixes the buffer size calculation to enable the utilization
-> of the entire async buffer space. This is expected to reduce the number
-> of -ENOSPC errors that are seen on the field.
+> thanks,
 > 
-> Fixes: 74310e06be4d ("android: binder: Move buffer out of area shared with user space")
-> Signed-off-by: Carlos Llamas <cmllamas@google.com>
-> ---
+> greg k-h
 
-Sorry, I forgot to Cc: stable@vger.kernel.org.
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
 
---
-Carlos Llamas
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
+
 
