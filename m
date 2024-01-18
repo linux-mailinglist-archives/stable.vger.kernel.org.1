@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-12111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57F1E8317D2
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:01:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC918316D0
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:50:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AB901C23542
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:01:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64F08B23E21
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B1624213;
-	Thu, 18 Jan 2024 11:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFDB522F1B;
+	Thu, 18 Jan 2024 10:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aKFEnO3k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Womgizwv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1837F2420D;
-	Thu, 18 Jan 2024 11:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4A222F09;
+	Thu, 18 Jan 2024 10:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575638; cv=none; b=qGahEAJhPcAufU6CctJfJGMVScoDl1nIchdSFYj3WWpzpt7BwkA6sFyiOIHsgW+krkGxljVQlrbXhXbv9b6LhccBg9mbZqRNyyHd5Fqiwggd7ZmDssV9iDw3akRMzXGbc3jQ9rO7jZe30jxlLh251GnFbhJwxjehM+xd7REzfKU=
+	t=1705575018; cv=none; b=SNYED+YmZPtAESBGc4/k/jE5+F2xpW62QZg/p0gaIqu72iICIGngWTLS7PwaGoaXFdxAWPfDLQddLndl9P393ZtWUm+33QhmQyWM69hNtW5Qs2FY0/jgaLJac54kA/3qaR9iPfHTkLZmNZJDJtUXd9JmN67Su3bWVfKEMQSext0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575638; c=relaxed/simple;
-	bh=jgZMsyHUgRjfIBeelscFeItDAnF516dxC9JqtE7rCX0=;
+	s=arc-20240116; t=1705575018; c=relaxed/simple;
+	bh=ShYEC4kgVUuSRF7Svu18ab+UDaaezVEZug9qODp4BkY=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=ajqFKgwn4tZ/IYQpXCANNfJAGcoisasSz6IDIwhmJJa1ho6E0m8CuIGG/nl69CQj8UEdxq75bXYmNUtR9dhutlJmyp1ACpxhytVJI9BdCxXzeeE8JyjieQQoEDC7cqr/lB3i1dy3SSqm7/7W8o1Mq4yVLJjVMzw3yeimU2+rYIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aKFEnO3k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFA6C433F1;
-	Thu, 18 Jan 2024 11:00:37 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding; b=cT9XIh2NU1jOvs99eemL/uGPj0/THaxhQiOl7nNpHV7afM/ZOYZDHW/0IvJcgeymE/O7hp+Rmnu/E/ItH6Dy0+vQ5wnoBoQsNuUT063zo7ICN5EqMzcpGYWkQy4ipZPhxJS2GFSLARgwoqDt4mEMaqtEoO1WuEqsy5XawNTFVd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Womgizwv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8ABFC433F1;
+	Thu, 18 Jan 2024 10:50:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575637;
-	bh=jgZMsyHUgRjfIBeelscFeItDAnF516dxC9JqtE7rCX0=;
+	s=korg; t=1705575018;
+	bh=ShYEC4kgVUuSRF7Svu18ab+UDaaezVEZug9qODp4BkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aKFEnO3kRY3L5JcfYn0fdGdnMbnrcOR8Pm0riJjErjOOlymw+SJLgIYchtsvhtzXc
-	 3c6yGsYkO42/Il2PVDTUIqg0pQ5cHITWc0jU0QzmYmGnSOTPgr7cbws5AUrOjysfDI
-	 +2cCi7tZ9We+T4yvx5YDNlBnHBQrOQgIKW7ukMcg=
+	b=WomgizwvuNFKOaCiqNjluJ68st+DMn25KRoi7Cgl2OeDYI2DSIvXVLknnWHwzYidQ
+	 g8JbaxjPSKA7iZC+QZaPoOoxj5KaqsbPI1osX/aOOeOw22TI02nxnJKONXErkvJvhB
+	 nAzpmx+4tUQ1QrbP9JiQFZu0vJe8FbL6MTu/1F3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Yanteng Si <siyanteng@loongson.cn>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/100] stmmac: dwmac-loongson: drop useless check for compatible fallback
-Date: Thu, 18 Jan 2024 11:49:00 +0100
-Message-ID: <20240118104313.172390635@linuxfoundation.org>
+	Sjoerd Simons <sjoerd@collabora.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>
+Subject: [PATCH 6.7 11/28] bus: moxtet: Add spi device table
+Date: Thu, 18 Jan 2024 11:49:01 +0100
+Message-ID: <20240118104301.630377962@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
+References: <20240118104301.249503558@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +62,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Sjoerd Simons <sjoerd@collabora.com>
 
-[ Upstream commit 31fea092c6f9f8fb2c40a08137907f5fbeae55dd ]
+commit aaafe88d5500ba18b33be72458439367ef878788 upstream.
 
-Device binds to proper PCI ID (LOONGSON, 0x7a03), already listed in DTS,
-so checking for some other compatible does not make sense.  It cannot be
-bound to unsupported platform.
+The moxtet module fails to auto-load on. Add a SPI id table to
+allow it to do so.
 
-Drop useless, incorrect (space in between) and undocumented compatible.
-
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Acked-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sjoerd Simons <sjoerd@collabora.com>
+Cc:  <stable@vger.kernel.org>
+Reviewed-by: Marek Behún <kabel@kernel.org>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/bus/moxtet.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-index 49c7aa86faaa..e129ee1020f0 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-@@ -59,11 +59,6 @@ static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id
- 		return -ENODEV;
- 	}
+--- a/drivers/bus/moxtet.c
++++ b/drivers/bus/moxtet.c
+@@ -830,6 +830,12 @@ static void moxtet_remove(struct spi_dev
+ 	mutex_destroy(&moxtet->lock);
+ }
  
--	if (!of_device_is_compatible(np, "loongson, pci-gmac")) {
--		pr_info("dwmac_loongson_pci: Incompatible OF node\n");
--		return -ENODEV;
--	}
--
- 	plat = devm_kzalloc(&pdev->dev, sizeof(*plat), GFP_KERNEL);
- 	if (!plat)
- 		return -ENOMEM;
--- 
-2.43.0
-
++static const struct spi_device_id moxtet_spi_ids[] = {
++	{ "moxtet" },
++	{ },
++};
++MODULE_DEVICE_TABLE(spi, moxtet_spi_ids);
++
+ static const struct of_device_id moxtet_dt_ids[] = {
+ 	{ .compatible = "cznic,moxtet" },
+ 	{},
+@@ -841,6 +847,7 @@ static struct spi_driver moxtet_spi_driv
+ 		.name		= "moxtet",
+ 		.of_match_table = moxtet_dt_ids,
+ 	},
++	.id_table	= moxtet_spi_ids,
+ 	.probe		= moxtet_probe,
+ 	.remove		= moxtet_remove,
+ };
 
 
 
