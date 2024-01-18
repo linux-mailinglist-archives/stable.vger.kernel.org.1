@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-11908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43B168316E5
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:51:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF45683177C
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:57:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA5531F26B66
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:51:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86BDA1F2145D
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D0523775;
-	Thu, 18 Jan 2024 10:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B531D22F1B;
+	Thu, 18 Jan 2024 10:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3rAxfO0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNyHJINv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B3422F06;
-	Thu, 18 Jan 2024 10:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7454D1774B;
+	Thu, 18 Jan 2024 10:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575071; cv=none; b=ecgvd3Qp5s0AAI4lMRGZOUV7eVQnlYlW9nExJLgH448GP/yLR7a/xfy43/ZUsyHvxNSv0udWkhFaFy7LA0PhjrYeO4cuqfLYbIHfSvqRH+3NBw/xxZKzWEdXNiDFdX5+gQd7dxDtIN0v5c5cS5E2tn0syhOcqn8eNBtugMPicxQ=
+	t=1705575463; cv=none; b=glWuvzqDumY+mJccl9NRMFc5R58GNU+oH2ay3bcU7wdsPwTN2W4LJxBCpTzDTJhJLvPAiyMXHiPeH6YnP2DDaStaMX0Z/3SjHTAMXWRM/R7T5eIqz9+61faTBnhR84bViIhY5kA2bC1aCLKF66mvg4env1qJwitcekAGTN0KOOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575071; c=relaxed/simple;
-	bh=FJWzcH+SICKuUkTSFs7q8uJe4FqJYwWusw/9A4qViOE=;
+	s=arc-20240116; t=1705575463; c=relaxed/simple;
+	bh=lkvr24GCnYnwcfX2lw4pV4bexaaGi4tRHwt9gzNk60A=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=TSZxADTrqPR1KxWnUw0/kxUZLkAhlVnUz+g4dMsWkFjpHcg/w2girRcXq/x5JURWf5/FVdsFFJxdTpS57e2FHFGcqwinPxJAOOFutKhc4A7AZIhC5DKwsf9saZ0Sh/wHixczZvXpxSonzMr4uVCfUYWGEmax7NbjXa2Dexu8wt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3rAxfO0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 982FFC433F1;
-	Thu, 18 Jan 2024 10:51:10 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=uCdu5eN/Kf6StKo0Zox7XwKwcReB6jSAKCRC+tQhxXFOSiAThe9Cdhn0WmIA3CxzjPXG7qN+SOZirJ2eVe97b2KUGcy4C8nhSY3DehNA9jToUTqkRijfEOPHg4VQAljr8c5sCd923pTkOQMk1eYPvYQAN37yovwul9N8PENP+0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNyHJINv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9622C43390;
+	Thu, 18 Jan 2024 10:57:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575071;
-	bh=FJWzcH+SICKuUkTSFs7q8uJe4FqJYwWusw/9A4qViOE=;
+	s=korg; t=1705575463;
+	bh=lkvr24GCnYnwcfX2lw4pV4bexaaGi4tRHwt9gzNk60A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e3rAxfO01NGMgFEn+o/vT3xg29BbszCDpu9/p53kPE6SE8+A2I6Bto9dqnK9DSSe6
-	 9S5nTOnKMnrObyq/y7TfY5mPBE4ccDdNX2gwwANef9q2SwfwApjX6eXm5CIb61W8qp
-	 V8xoxgGxYlIldG0O0E5tNeH2Tcop23eCQm61kJ0g=
+	b=bNyHJINv7VKoIerIm1XTOR4e6hOdw9SC8P+CqsbOp9saL4UNPgWAE1Yhm5kYCilAC
+	 EAxe128e0UJeHWAM81fHQ0Pu9oinNwMn7NQPtZXUfhlNwKYFk9XPFJzXxmH3frfNkG
+	 30FWEqFPIJtqh29EVps+qNQwXV6CZfjcWcBgFXxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 6.7 16/28] binder: use EPOLLERR from eventpoll.h
+	wangkeqi <wangkeqiwang@didiglobal.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 124/150] connector: Fix proc_event_num_listeners count not cleared
 Date: Thu, 18 Jan 2024 11:49:06 +0100
-Message-ID: <20240118104301.785323812@linuxfoundation.org>
+Message-ID: <20240118104325.783900958@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
-References: <20240118104301.249503558@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: wangkeqi <wangkeqiwang@didiglobal.com>
 
-commit 6ac061db9c58ca5b9270b1b3940d2464fb3ff183 upstream.
+[ Upstream commit c46bfba1337d301661dbb23cfd905d4cb51f27ca ]
 
-Use EPOLLERR instead of POLLERR to make sure it is cast to the correct
-__poll_t type. This fixes the following sparse issue:
+When we register a cn_proc listening event, the proc_event_num_listener
+variable will be incremented by one, but if PROC_CN_MCAST_IGNORE is
+not called, the count will not decrease.
+This will cause the proc_*_connector function to take the wrong path.
+It will reappear when the forkstat tool exits via ctrl + c.
+We solve this problem by determining whether
+there are still listeners to clear proc_event_num_listener.
 
-  drivers/android/binder.c:5030:24: warning: incorrect type in return expression (different base types)
-  drivers/android/binder.c:5030:24:    expected restricted __poll_t
-  drivers/android/binder.c:5030:24:    got int
-
-Fixes: f88982679f54 ("binder: check for binder_thread allocation failure in binder_poll()")
-Cc: stable@vger.kernel.org
-Cc: Eric Biggers <ebiggers@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-2-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: wangkeqi <wangkeqiwang@didiglobal.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/connector/cn_proc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -5030,7 +5030,7 @@ static __poll_t binder_poll(struct file
+diff --git a/drivers/connector/cn_proc.c b/drivers/connector/cn_proc.c
+index 44b19e696176..3d5e6d705fc6 100644
+--- a/drivers/connector/cn_proc.c
++++ b/drivers/connector/cn_proc.c
+@@ -108,8 +108,9 @@ static inline void send_msg(struct cn_msg *msg)
+ 		filter_data[1] = 0;
+ 	}
  
- 	thread = binder_get_thread(proc);
- 	if (!thread)
--		return POLLERR;
-+		return EPOLLERR;
+-	cn_netlink_send_mult(msg, msg->len, 0, CN_IDX_PROC, GFP_NOWAIT,
+-			     cn_filter, (void *)filter_data);
++	if (cn_netlink_send_mult(msg, msg->len, 0, CN_IDX_PROC, GFP_NOWAIT,
++			     cn_filter, (void *)filter_data) == -ESRCH)
++		atomic_set(&proc_event_num_listeners, 0);
  
- 	binder_inner_proc_lock(thread->proc);
- 	thread->looper |= BINDER_LOOPER_STATE_POLL;
+ 	local_unlock(&local_event.lock);
+ }
+-- 
+2.43.0
+
 
 
 
