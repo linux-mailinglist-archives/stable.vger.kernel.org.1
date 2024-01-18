@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-12158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-11905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBB72831807
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:03:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBBFA8316E2
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:51:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A4831C2424F
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:03:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDEFF1C22361
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5907120B1C;
-	Thu, 18 Jan 2024 11:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EAC823768;
+	Thu, 18 Jan 2024 10:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nHWUQsn2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OBxxLmQX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B34BE7F;
-	Thu, 18 Jan 2024 11:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D18D2B65C;
+	Thu, 18 Jan 2024 10:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575773; cv=none; b=sWPuWU95nYYG6IooAwpUy3fzSQeWwEeIq1ktRyhctfcXqjSBuEnn344Gk2Kht3YLJjwb9umSQ7nsdOWLYFf8Kqup6TUEetJbfOGISLEFQ8/NlcwVJKWeWaPsTkzqO4w+pwOijM651FdRN0xfSN4cCJA1QALE5aInlqsW9ge53jk=
+	t=1705575062; cv=none; b=FkmQWXNiF0OPyVqZzIQU3pRAJ8PVOIKvg0z4xMg9/Zt0o/1Kn6i0aWiAg3NXUb8gAH9okeGSf0kn1IGANnUG1yIFCOLtBbh3wKbvV0VzkBIfe0VkiTwxyH3yEFqo2sWxoiZrMj4oX7avPsLWmqjpZ0eFGKMo2JC/fRAwWjSpMOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575773; c=relaxed/simple;
-	bh=xS2AJ6lREOk6xZaNgfEFi/jjudxommn45Ita2L98fHc=;
+	s=arc-20240116; t=1705575062; c=relaxed/simple;
+	bh=bFm5Q9eYQIJNbWqSPpYSyryD1E1Rudy3gIHe3AvY7rI=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=g7Irf9qDmMe7jBadCBUXBOM77y/5V/XQN5Iv0yE4NvVvF7tYNhQyuTGMZvfeI9NYiW/STIGqmqp/BVLRnfIPg2tc9Cwa16DdSoz+CLxpGVGRhIGt0j+U/8oQ+kQIFoROS9KeJkolsdtcaWUvDi47ed5egLHVpx8BLml0164FFyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nHWUQsn2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D4DC433F1;
-	Thu, 18 Jan 2024 11:02:52 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=U6i0Gh/Fti9GLB6oSe4ZkHbQofNCfmIqGadEZ9EPvT48mVRW8/4a0RtG2tX2o9HNTCEVfF57CaLRWRpFwoMEMLDvjdkZ35kEyQW78DgtkY/3RWN/2TXgVYjRv6yB0dSLy8YXT8aOBKdwRSYJqQyjbOV0KOGm4JARuYu9sSSO3rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OBxxLmQX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B17C433C7;
+	Thu, 18 Jan 2024 10:51:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575772;
-	bh=xS2AJ6lREOk6xZaNgfEFi/jjudxommn45Ita2L98fHc=;
+	s=korg; t=1705575062;
+	bh=bFm5Q9eYQIJNbWqSPpYSyryD1E1Rudy3gIHe3AvY7rI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nHWUQsn2CEDLLN3cOeOSidWhfvuzawwH+KDR8+uUtW57TaxjBYhS0a9xh0iPGLDHD
-	 JX/C5k64YwsIC5wP5MWJwLy4a2bdALazdj+zABJbWdkFwbfnP1ZQ4JTV1orSrRRJx+
-	 2tJCa+yrplQImuYXKOFOWxJlI+jQ9O8rKHgaqnew=
+	b=OBxxLmQXuTpxp5Ay7VK1Iq7IIF5bYpltaflJRzYWy+rRK+ecNbl15ko0G2CsvBu9h
+	 vFddH33du43Bg6FvddfuPQClrKRj3Lwpol8p1c24LWQ6a0ZtNXFWNwRSu3ClVf6QVV
+	 f3HrkdIKelRJt9O1lT72cfUyLHsBtON0PiLOAxmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Binding <sbinding@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 069/100] ALSA: hda/realtek: Add quirks for ASUS Zenbook 2022 Models
+	Jani Nikula <jani.nikula@intel.com>,
+	Vegard Nossum <vegard.nossum@oracle.com>,
+	Jonathan Corbet <corbet@lwn.net>
+Subject: [PATCH 6.7 27/28] docs: kernel_feat.py: fix potential command injection
 Date: Thu, 18 Jan 2024 11:49:17 +0100
-Message-ID: <20240118104313.950531546@linuxfoundation.org>
+Message-ID: <20240118104302.147275313@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
+References: <20240118104301.249503558@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,298 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Binding <sbinding@opensource.cirrus.com>
+From: Vegard Nossum <vegard.nossum@oracle.com>
 
-[ Upstream commit 51d976079976c800ef19ed1b542602fcf63f0edb ]
+commit c48a7c44a1d02516309015b6134c9bb982e17008 upstream.
 
-These models use 2xCS35L41amps with HDA using SPI and I2C.
-Models use internal and external boost.
-All models require DSD support to be added inside
-cs35l41_hda_property.c
+The kernel-feat directive passes its argument straight to the shell.
+This is unfortunate and unnecessary.
 
-Signed-off-by: Stefan Binding <sbinding@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20231218151221.388745-6-sbinding@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Let's always use paths relative to $srctree/Documentation/ and use
+subprocess.check_call() instead of subprocess.Popen(shell=True).
+
+This also makes the code shorter.
+
+This is analogous to commit 3231dd586277 ("docs: kernel_abi.py: fix
+command injection") where we did exactly the same thing for
+kernel_abi.py, somehow I completely missed this one.
+
+Link: https://fosstodon.org/@jani/111676532203641247
+Reported-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Vegard Nossum <vegard.nossum@oracle.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jonathan Corbet <corbet@lwn.net>
+Link: https://lore.kernel.org/r/20240110174758.3680506-1-vegard.nossum@oracle.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ Documentation/admin-guide/features.rst                       |    2 
+ Documentation/arch/arc/features.rst                          |    2 
+ Documentation/arch/arm/features.rst                          |    2 
+ Documentation/arch/arm64/features.rst                        |    2 
+ Documentation/arch/loongarch/features.rst                    |    2 
+ Documentation/arch/m68k/features.rst                         |    2 
+ Documentation/arch/mips/features.rst                         |    2 
+ Documentation/arch/nios2/features.rst                        |    2 
+ Documentation/arch/openrisc/features.rst                     |    2 
+ Documentation/arch/parisc/features.rst                       |    2 
+ Documentation/arch/powerpc/features.rst                      |    2 
+ Documentation/arch/riscv/features.rst                        |    2 
+ Documentation/arch/s390/features.rst                         |    2 
+ Documentation/arch/sh/features.rst                           |    2 
+ Documentation/arch/sparc/features.rst                        |    2 
+ Documentation/arch/x86/features.rst                          |    2 
+ Documentation/arch/xtensa/features.rst                       |    2 
+ Documentation/sphinx/kernel_feat.py                          |   55 ++---------
+ Documentation/translations/zh_CN/arch/loongarch/features.rst |    2 
+ Documentation/translations/zh_CN/arch/mips/features.rst      |    2 
+ Documentation/translations/zh_TW/arch/loongarch/features.rst |    2 
+ Documentation/translations/zh_TW/arch/mips/features.rst      |    2 
+ 22 files changed, 32 insertions(+), 65 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index beefb522a85d..24f7f6d98922 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9779,17 +9779,20 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1d1f, "ASUS ROG Strix G17 2023 (G713PV)", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1d42, "ASUS Zephyrus G14 2022", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1d4e, "ASUS TM420", ALC256_FIXUP_ASUS_HPE),
-+	SND_PCI_QUIRK(0x1043, 0x1da2, "ASUS UP6502ZA/ZD", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e02, "ASUS UX3402ZA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x16a3, "ASUS UX3402VA", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1f62, "ASUS UX7602ZM", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e11, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA502),
--	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM3402", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x1043, 0x1e12, "ASUS UM6702RA/RC", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1e51, "ASUS Zephyrus M15", ALC294_FIXUP_ASUS_GU502_PINS),
- 	SND_PCI_QUIRK(0x1043, 0x1e5e, "ASUS ROG Strix G513", ALC294_FIXUP_ASUS_G513_PINS),
- 	SND_PCI_QUIRK(0x1043, 0x1e8e, "ASUS Zephyrus G15", ALC289_FIXUP_ASUS_GA401),
-+	SND_PCI_QUIRK(0x1043, 0x1ee2, "ASUS UM3402", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x1043, 0x1c52, "ASUS Zephyrus G15 2022", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1f11, "ASUS Zephyrus G14", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x1f12, "ASUS UM5302", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x1043, 0x1f62, "ASUS UX7602ZM", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1f92, "ASUS ROG Flow X16", ALC289_FIXUP_ASUS_GA401),
- 	SND_PCI_QUIRK(0x1043, 0x3030, "ASUS ZN270IE", ALC256_FIXUP_ASUS_AIO_GPIO2),
- 	SND_PCI_QUIRK(0x1043, 0x3a20, "ASUS G614JZR", ALC245_FIXUP_CS35L41_SPI_2),
--- 
-2.43.0
-
+--- a/Documentation/admin-guide/features.rst
++++ b/Documentation/admin-guide/features.rst
+@@ -1,3 +1,3 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+-.. kernel-feat:: $srctree/Documentation/features
++.. kernel-feat:: features
+--- a/Documentation/arch/arc/features.rst
++++ b/Documentation/arch/arc/features.rst
+@@ -1,3 +1,3 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+-.. kernel-feat:: $srctree/Documentation/features arc
++.. kernel-feat:: features arc
+--- a/Documentation/arch/arm/features.rst
++++ b/Documentation/arch/arm/features.rst
+@@ -1,3 +1,3 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+-.. kernel-feat:: $srctree/Documentation/features arm
++.. kernel-feat:: features arm
+--- a/Documentation/arch/arm64/features.rst
++++ b/Documentation/arch/arm64/features.rst
+@@ -1,3 +1,3 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+-.. kernel-feat:: $srctree/Documentation/features arm64
++.. kernel-feat:: features arm64
+--- a/Documentation/arch/loongarch/features.rst
++++ b/Documentation/arch/loongarch/features.rst
+@@ -1,3 +1,3 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+-.. kernel-feat:: $srctree/Documentation/features loongarch
++.. kernel-feat:: features loongarch
+--- a/Documentation/arch/m68k/features.rst
++++ b/Documentation/arch/m68k/features.rst
+@@ -1,3 +1,3 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+-.. kernel-feat:: $srctree/Documentation/features m68k
++.. kernel-feat:: features m68k
+--- a/Documentation/arch/mips/features.rst
++++ b/Documentation/arch/mips/features.rst
+@@ -1,3 +1,3 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+-.. kernel-feat:: $srctree/Documentation/features mips
++.. kernel-feat:: features mips
+--- a/Documentation/arch/nios2/features.rst
++++ b/Documentation/arch/nios2/features.rst
+@@ -1,3 +1,3 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+-.. kernel-feat:: $srctree/Documentation/features nios2
++.. kernel-feat:: features nios2
+--- a/Documentation/arch/openrisc/features.rst
++++ b/Documentation/arch/openrisc/features.rst
+@@ -1,3 +1,3 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+-.. kernel-feat:: $srctree/Documentation/features openrisc
++.. kernel-feat:: features openrisc
+--- a/Documentation/arch/parisc/features.rst
++++ b/Documentation/arch/parisc/features.rst
+@@ -1,3 +1,3 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+-.. kernel-feat:: $srctree/Documentation/features parisc
++.. kernel-feat:: features parisc
+--- a/Documentation/arch/powerpc/features.rst
++++ b/Documentation/arch/powerpc/features.rst
+@@ -1,3 +1,3 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+-.. kernel-feat:: $srctree/Documentation/features powerpc
++.. kernel-feat:: features powerpc
+--- a/Documentation/arch/riscv/features.rst
++++ b/Documentation/arch/riscv/features.rst
+@@ -1,3 +1,3 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+-.. kernel-feat:: $srctree/Documentation/features riscv
++.. kernel-feat:: features riscv
+--- a/Documentation/arch/s390/features.rst
++++ b/Documentation/arch/s390/features.rst
+@@ -1,3 +1,3 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+-.. kernel-feat:: $srctree/Documentation/features s390
++.. kernel-feat:: features s390
+--- a/Documentation/arch/sh/features.rst
++++ b/Documentation/arch/sh/features.rst
+@@ -1,3 +1,3 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+-.. kernel-feat:: $srctree/Documentation/features sh
++.. kernel-feat:: features sh
+--- a/Documentation/arch/sparc/features.rst
++++ b/Documentation/arch/sparc/features.rst
+@@ -1,3 +1,3 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+-.. kernel-feat:: $srctree/Documentation/features sparc
++.. kernel-feat:: features sparc
+--- a/Documentation/arch/x86/features.rst
++++ b/Documentation/arch/x86/features.rst
+@@ -1,3 +1,3 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+-.. kernel-feat:: $srctree/Documentation/features x86
++.. kernel-feat:: features x86
+--- a/Documentation/arch/xtensa/features.rst
++++ b/Documentation/arch/xtensa/features.rst
+@@ -1,3 +1,3 @@
+ .. SPDX-License-Identifier: GPL-2.0
+ 
+-.. kernel-feat:: $srctree/Documentation/features xtensa
++.. kernel-feat:: features xtensa
+--- a/Documentation/sphinx/kernel_feat.py
++++ b/Documentation/sphinx/kernel_feat.py
+@@ -37,8 +37,6 @@ import re
+ import subprocess
+ import sys
+ 
+-from os import path
+-
+ from docutils import nodes, statemachine
+ from docutils.statemachine import ViewList
+ from docutils.parsers.rst import directives, Directive
+@@ -76,33 +74,26 @@ class KernelFeat(Directive):
+         self.state.document.settings.env.app.warn(message, prefix="")
+ 
+     def run(self):
+-
+         doc = self.state.document
+         if not doc.settings.file_insertion_enabled:
+             raise self.warning("docutils: file insertion disabled")
+ 
+         env = doc.settings.env
+-        cwd = path.dirname(doc.current_source)
+-        cmd = "get_feat.pl rest --enable-fname --dir "
+-        cmd += self.arguments[0]
+-
+-        if len(self.arguments) > 1:
+-            cmd += " --arch " + self.arguments[1]
+ 
+-        srctree = path.abspath(os.environ["srctree"])
++        srctree = os.path.abspath(os.environ["srctree"])
+ 
+-        fname = cmd
++        args = [
++            os.path.join(srctree, 'scripts/get_feat.pl'),
++            'rest',
++            '--enable-fname',
++            '--dir',
++            os.path.join(srctree, 'Documentation', self.arguments[0]),
++        ]
+ 
+-        # extend PATH with $(srctree)/scripts
+-        path_env = os.pathsep.join([
+-            srctree + os.sep + "scripts",
+-            os.environ["PATH"]
+-        ])
+-        shell_env = os.environ.copy()
+-        shell_env["PATH"]    = path_env
+-        shell_env["srctree"] = srctree
++        if len(self.arguments) > 1:
++            args.extend(['--arch', self.arguments[1]])
+ 
+-        lines = self.runCmd(cmd, shell=True, cwd=cwd, env=shell_env)
++        lines = subprocess.check_output(args, cwd=os.path.dirname(doc.current_source)).decode('utf-8')
+ 
+         line_regex = re.compile(r"^\.\. FILE (\S+)$")
+ 
+@@ -121,30 +112,6 @@ class KernelFeat(Directive):
+         nodeList = self.nestedParse(out_lines, fname)
+         return nodeList
+ 
+-    def runCmd(self, cmd, **kwargs):
+-        u"""Run command ``cmd`` and return its stdout as unicode."""
+-
+-        try:
+-            proc = subprocess.Popen(
+-                cmd
+-                , stdout = subprocess.PIPE
+-                , stderr = subprocess.PIPE
+-                , **kwargs
+-            )
+-            out, err = proc.communicate()
+-
+-            out, err = codecs.decode(out, 'utf-8'), codecs.decode(err, 'utf-8')
+-
+-            if proc.returncode != 0:
+-                raise self.severe(
+-                    u"command '%s' failed with return code %d"
+-                    % (cmd, proc.returncode)
+-                )
+-        except OSError as exc:
+-            raise self.severe(u"problems with '%s' directive: %s."
+-                              % (self.name, ErrorString(exc)))
+-        return out
+-
+     def nestedParse(self, lines, fname):
+         content = ViewList()
+         node    = nodes.section()
+--- a/Documentation/translations/zh_CN/arch/loongarch/features.rst
++++ b/Documentation/translations/zh_CN/arch/loongarch/features.rst
+@@ -5,4 +5,4 @@
+ :Original: Documentation/arch/loongarch/features.rst
+ :Translator: Huacai Chen <chenhuacai@loongson.cn>
+ 
+-.. kernel-feat:: $srctree/Documentation/features loongarch
++.. kernel-feat:: features loongarch
+--- a/Documentation/translations/zh_CN/arch/mips/features.rst
++++ b/Documentation/translations/zh_CN/arch/mips/features.rst
+@@ -10,4 +10,4 @@
+ 
+ .. _cn_features:
+ 
+-.. kernel-feat:: $srctree/Documentation/features mips
++.. kernel-feat:: features mips
+--- a/Documentation/translations/zh_TW/arch/loongarch/features.rst
++++ b/Documentation/translations/zh_TW/arch/loongarch/features.rst
+@@ -5,5 +5,5 @@
+ :Original: Documentation/arch/loongarch/features.rst
+ :Translator: Huacai Chen <chenhuacai@loongson.cn>
+ 
+-.. kernel-feat:: $srctree/Documentation/features loongarch
++.. kernel-feat:: features loongarch
+ 
+--- a/Documentation/translations/zh_TW/arch/mips/features.rst
++++ b/Documentation/translations/zh_TW/arch/mips/features.rst
+@@ -10,5 +10,5 @@
+ 
+ .. _tw_features:
+ 
+-.. kernel-feat:: $srctree/Documentation/features mips
++.. kernel-feat:: features mips
+ 
 
 
 
