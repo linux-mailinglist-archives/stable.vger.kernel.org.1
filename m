@@ -1,124 +1,108 @@
-Return-Path: <stable+bounces-12188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8027C831B2D
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 15:14:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83258831B63
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 15:33:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20EC81F247BD
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 14:14:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B197D1C213C6
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 14:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE55625760;
-	Thu, 18 Jan 2024 14:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F5939B;
+	Thu, 18 Jan 2024 14:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AtYI9Syd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cujLm8GW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD9F25759;
-	Thu, 18 Jan 2024 14:14:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C24370
+	for <stable@vger.kernel.org>; Thu, 18 Jan 2024 14:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705587244; cv=none; b=maCeGS0LYSHC2k/Vzg+ZPxU976aO8KDtdGxwtRiHeDH/+ykZRttHJcA/8Wv1cBQ92FqqY+5fP7jh9SkqiaY1osyuE8HEPS2XZZCeJyaKu8tXnBMzih4IsCSXItSobqAUhhRxOtpDFJFCm3Myo2Uxv16qLqu9Poi1uFoLETtrFqY=
+	t=1705588402; cv=none; b=JECIdGuqYC7bTkRXGDr8HAP40yJWugHE2+319xk5VZwI/PaoYAxxBbwp35c+H3183tcYbtCGRjFDUrCg1rniB3VQ8o4mVfiKP8EBjTqjwDNqd9g9xjO8sXmfxCWSe6IMjcjKOvppWg64wG+yzQtQ0Khe774a+zaZqEkYVw5Xl1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705587244; c=relaxed/simple;
-	bh=dz63Si+AMcFRAvV73H3y1FBriMnSZcSRfeMFkdG5Xuo=;
+	s=arc-20240116; t=1705588402; c=relaxed/simple;
+	bh=MIG8l6nmrNn7lYT/nKSCX4PbrTY8Ix+7cWQ/iiL/nU0=;
 	h=Received:DKIM-Signature:Date:From:To:Cc:Subject:Message-ID:
 	 References:MIME-Version:Content-Type:Content-Disposition:
-	 In-Reply-To; b=b2MBz/PeYucrAM2MtVb2jaOS8f1/y0tG1Zds4BTXFDdg+eQVo8gcROyDSVeEmuujwh6+wRtRr5xMc/NbWJ/Jt3NOkTiR/jbBGpOnfjJzJ2ccQmvp2mKLCu0DYkeT9VZtpGtDxGO6MS4w6b7tjS+LJteSCWSMOvwrD/dolLmm4gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AtYI9Syd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C7BC433C7;
-	Thu, 18 Jan 2024 14:14:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705587244;
-	bh=dz63Si+AMcFRAvV73H3y1FBriMnSZcSRfeMFkdG5Xuo=;
+	 In-Reply-To:X-Cookie; b=PVZbT70AxK88YXl9lF+zNkyr0KLdWzdMS0SmUBHgd6CPUaUVHSO1CWNtFgMU+Ji0Nlg7Tw4m6Yg8Uu+yzhazn+hMhGCW7S9HbO/iHpkaE0N4VC20Pg+EMU9DjXsBHFY5e3ptN1f4tXfYA+SOFTEzyKZAstV+wcnYFPk3hd8vWDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cujLm8GW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19C9C433F1;
+	Thu, 18 Jan 2024 14:33:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705588402;
+	bh=MIG8l6nmrNn7lYT/nKSCX4PbrTY8Ix+7cWQ/iiL/nU0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AtYI9Syd6vP9sYWP9WmRdXJR3JLSlReeP6B1iAWde8XIMVY7NJ4/tnk4Oza+0pVtO
-	 BGcUKN+zoex0A70BGQ0cnJxjctUtZg3A170XZVe2qluxKEx/sUnhzvgMPiX2CoTl39
-	 FJUmq8tcfXmrLHGQee7dXMZxQe1lVviQjIewGAiY=
-Date: Thu, 18 Jan 2024 15:14:01 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Denis Arefev <arefev@swemel.ru>
-Cc: Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] comedi: drivers: ni_tio: Fix arithmetic expression
- overflow
-Message-ID: <2024011842-groggy-badly-393c@gregkh>
-References: <20240118123747.45795-1-arefev@swemel.ru>
+	b=cujLm8GWbnwUERBichoaOhYy4uRQRiB+9nhVdhurReCoGZJoS9Tpb1xCtT+3wa5m1
+	 KkdcnclSZIblhf5MQLw6P8/WrAaABl+dWOsOvmQ/mv3xJ93rnf/04ezaZUWp7q5+IU
+	 Z7BCCR4ZQCcvHUU10hziB8EoAJzuybTB2wkTpeYzQlCnoWaP8D2PZRculsNj+RYnL5
+	 I7sqy0Mu4QJNvYTLP5SM9ErkdFfC1m8u3Q6vFjy65vWxJPQs8zZBP2e5BHxuonYM3y
+	 qAevdOC4D+ZQW5ElqqLbM/MBokY3bxpC3igoW+yr9bFqkKOu+SUtBZQrzfh09+l+Kh
+	 WA1xmtd9PSrow==
+Date: Thu, 18 Jan 2024 14:33:17 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>, kernelci-results@groups.io,
+	bot@kernelci.org, stable@vger.kernel.org,
+	alsa-devel@alsa-project.org
+Subject: Re: kernelci/kernelci.org bisection:
+ baseline-nfs.bootrr.deferred-probe-empty on at91sam9g20ek
+Message-ID: <3c7cf19d-cd94-4d94-b4f5-1e0946fd0963@sirena.org.uk>
+References: <65a6ca18.170a0220.9f7f3.fa9a@mx.google.com>
+ <845b3053-d47b-4717-9665-79b120da133b@sirena.org.uk>
+ <2024011716-undocked-external-9eae@gregkh>
+ <82cda3d4-2e46-4690-8317-855ca80fd013@sirena.org.uk>
+ <2024011816-overstate-move-4df8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="w+U4ZqyVzO4Jtn1S"
+Content-Disposition: inline
+In-Reply-To: <2024011816-overstate-move-4df8@gregkh>
+X-Cookie: FEELINGS are cascading over me!!!
+
+
+--w+U4ZqyVzO4Jtn1S
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240118123747.45795-1-arefev@swemel.ru>
 
-On Thu, Jan 18, 2024 at 03:37:47PM +0300, Denis Arefev wrote:
-> The value of an arithmetic expression period_ns * 1000 is subject
-> to overflow due to a failure to cast operands to a larger data
-> type before performing arithmetic
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Fixes: 3e90b1c7ebe9 ("staging: comedi: ni_tio: tidy up ni_tio_set_clock_src() and helpers")
-> Cc: <stable@vger.kernel.org> # v5.15+ 
-> Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-> Signed-off-by: Denis Arefev <arefev@swemel.ru>
-> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-> ---
->  drivers/comedi/drivers/ni_tio.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/comedi/drivers/ni_tio.c b/drivers/comedi/drivers/ni_tio.c
-> index da6826d77e60..acc914903c70 100644
-> --- a/drivers/comedi/drivers/ni_tio.c
-> +++ b/drivers/comedi/drivers/ni_tio.c
-> @@ -800,7 +800,7 @@ static int ni_tio_set_clock_src(struct ni_gpct *counter,
->  				GI_PRESCALE_X2(counter_dev->variant) |
->  				GI_PRESCALE_X8(counter_dev->variant), bits);
->  	}
-> -	counter->clock_period_ps = period_ns * 1000;
-> +	counter->clock_period_ps = period_ns * 1000UL;
->  	ni_tio_set_sync_mode(counter);
->  	return 0;
->  }
-> -- 
-> 2.25.1
-> 
-> 
+On Thu, Jan 18, 2024 at 11:16:29AM +0100, Greg Kroah-Hartman wrote:
+> On Wed, Jan 17, 2024 at 01:52:59PM +0000, Mark Brown wrote:
 
-Hi,
+> > > I'll be glad to revert, but should I also revert for 4.19.y and 5.4.y
+> > > and 5.10.y?
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+> > I'd be tempted to, though it's possible it's some other related issue so
+> > it might be safest to hold off until there's an explicit report.  Up to
+> > you.
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+> I'll just drop it from 5.15.y for now, thanks!
 
-- This looks like a new version of a previously submitted patch, but you
-  did not list below the --- line any changes from the previous version.
-  Please read the section entitled "The canonical patch format" in the
-  kernel file, Documentation/process/submitting-patches.rst for what
-  needs to be done here to properly describe this.
+Thanks.  I've actually just seen that it's also failing on v4.19, and
+went looking and found that v5.4 and v5.10 look like they never passed
+which means it didn't trigger as a report there.
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
+--w+U4ZqyVzO4Jtn1S
+Content-Type: application/pgp-signature; name="signature.asc"
 
-thanks,
+-----BEGIN PGP SIGNATURE-----
 
-greg k-h's patch email bot
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWpNqwACgkQJNaLcl1U
+h9DOKQf/f+nuMbCRYaskeplgeWy/jNCrVYUGOBw9hMpfQC/+SfhKzCuKzjgBcs1f
+PwWPq8pQngN344lTqTNdskB8D2Ox0emqMQyEhE3TLNeJZaC6BfDXc6k2iTwdEvPK
+phDwjXYmkC0rnTqvyyEOQFIb9UHK5Yi+BgEVJQBG24NqWl6BB5dVh8gUfJ6AyTMg
+UC7JufAxOjHRi+iETXHk1UEivchkrIsR5bDscX21C++GmgTfWE/gxXCoh6999nYv
+249k4lp+RbkwnnrnKZFJxZ3pP8TlOMN8URBJfG+p00l9o2QPECzO94Bsdps/OqtY
+QunETQ8tTX85kI5noAkdmjR3a+Or1g==
+=5Ls8
+-----END PGP SIGNATURE-----
+
+--w+U4ZqyVzO4Jtn1S--
 
