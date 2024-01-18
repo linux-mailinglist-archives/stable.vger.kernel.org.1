@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-12105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37AAE8317CB
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:01:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9C0B83175F
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2783B25849
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:01:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED44B1C21848
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B0723746;
-	Thu, 18 Jan 2024 11:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFC222F0B;
+	Thu, 18 Jan 2024 10:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ut4fl6/6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKRhBOZW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606B92033B;
-	Thu, 18 Jan 2024 11:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8AF1774B;
+	Thu, 18 Jan 2024 10:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575621; cv=none; b=IF/RnF5Uv/VefCA9fCd0/iBjyXPWYyT4cSAaljswgeF/VpfltW9JgOjJaDRR3bpCHH85ePHBTZv8ifdYar0yrERd066zMRc6bKVxGX4AOStiqr3HZN2qAEpILecjfuwVenSdaDlX7unJA+NzCNn/PTCD/PMq9cTT7QeCi2t2kOc=
+	t=1705575385; cv=none; b=MJ5SJfudNGInl3cJXv6Z0CVB7fQ9iCZYeVsNsQ3HK28hF2k+P6ZTCqSIV4vXWkFpMiQE6ELXg3n4CkCgSrXNrZCaRPW3+19OXCYfYXj//m8YY+N8zobP6eyKxGTXkW7QynO+o92KhPcSs8I4DRVJaU+5B2GHtPugTeZCZD1nzmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575621; c=relaxed/simple;
-	bh=MNhModbmpvyRF93UHmIBR21AU2YY7ocYPHod/61IdAY=;
+	s=arc-20240116; t=1705575385; c=relaxed/simple;
+	bh=oy28UP+Q3PgOpVELYd61L030KmbDeyhK2QvqmvDj0fY=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=g20BZrRw3YDmmg7WvC0DxU5tUOFWcfTal5k7RhA6iCaz6rGoj41XMJ3/ESxAkr6DpKateHKPd8wmaXgrn/jWOtLYE2c4fcXKL7Yiw8Bv+VCg2wxw83iHWa2fNREtY9y6V061RympxvytyJpq5ruL0IPAwz0P9I1QrdNOzLRT36E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ut4fl6/6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D766FC433F1;
-	Thu, 18 Jan 2024 11:00:20 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=R3tSJl4e6DrYttj6tIKqyYZRqUy/x1fKoGoVkmVNsL247nZow6U0kjQSATFwL5THL5iSW/QoASmJpW9Dx7QtymrtC8kNZPeCzX1XfBYRYvzjrJW3g4Js0xfw8oQ1NbtQVSSSGeltWUZ9waM5/ZWePNT8kjGfU6C/l3DXNYpOxoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKRhBOZW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EACAC433F1;
+	Thu, 18 Jan 2024 10:56:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575621;
-	bh=MNhModbmpvyRF93UHmIBR21AU2YY7ocYPHod/61IdAY=;
+	s=korg; t=1705575385;
+	bh=oy28UP+Q3PgOpVELYd61L030KmbDeyhK2QvqmvDj0fY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ut4fl6/6xQipbBvyUTeJ6shN3MBmS3eLLkMVN3Zjm4ySegOPGsrqZfkXgMOeyworZ
-	 Ou2H0/RvOOUjnj1YMhnj6xKH/92Mh6dVrlEq+pnrhnEz/zrbb6rjyfzR8HhgailW6R
-	 azjSaBVEoLfVcEO4m7+XsE5bzoP2HL7DY0iChOao=
+	b=IKRhBOZWOkXPIVrrbvgTqNd7+jb10eKBU+HSxb/l2/F9ST0U0vjJaGBVsElKAl3rq
+	 dnXPHvgfTmiPC1SeUXC2nSrI7aLxxUNhb+IQ02zyKtLzU3sNyYndOkOCM9MrYjynJi
+	 Ak5ibPuHqVKALqex8P2PSCzVw+j2FSFjwLyLacZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Judy Hsiao <judyhsiao@chromium.org>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 047/100] neighbour: Dont let neigh_forced_gc() disable preemption for long
+Subject: [PATCH 6.6 113/150] drm/amdkfd: svm range always mapped flag not working on APU
 Date: Thu, 18 Jan 2024 11:48:55 +0100
-Message-ID: <20240118104312.955418313@linuxfoundation.org>
+Message-ID: <20240118104325.281313270@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,66 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judy Hsiao <judyhsiao@chromium.org>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit e5dc5afff62f3e97e86c3643ec9fcad23de4f2d3 ]
+[ Upstream commit ebab8c3eb6a6515dc14cd93fc29dd287709da6d3 ]
 
-We are seeing cases where neigh_cleanup_and_release() is called by
-neigh_forced_gc() many times in a row with preemption turned off.
-When running on a low powered CPU at a low CPU frequency, this has
-been measured to keep preemption off for ~10 ms. That's not great on a
-system with HZ=1000 which expects tasks to be able to schedule in
-with ~1ms latency.
+On gfx943 APU there is no VRAM and page migration, queue CWSR area, svm
+range with always mapped flag, is not mapped to GPU correctly. This
+works fine if retry fault on CWSR area can be recovered, but could cause
+deadlock if there is another retry fault recover waiting for CWSR to
+finish.
 
-Suggested-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Judy Hsiao <judyhsiao@chromium.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fix this by mapping svm range with always mapped flag to GPU with ACCESS
+attribute if XNACK ON.
+
+There is side effect, because all GPUs have ACCESS attribute by default
+on new svm range with XNACK on, the CWSR area will be mapped to all GPUs
+after this change. This side effect will be fixed with Thunk change to
+set CWSR svm range with ACCESS_IN_PLACE attribute on the GPU that user
+queue is created.
+
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/neighbour.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 41daa47d0393..c842f150c304 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -253,9 +253,11 @@ static int neigh_forced_gc(struct neigh_table *tbl)
- {
- 	int max_clean = atomic_read(&tbl->gc_entries) -
- 			READ_ONCE(tbl->gc_thresh2);
-+	u64 tmax = ktime_get_ns() + NSEC_PER_MSEC;
- 	unsigned long tref = jiffies - 5 * HZ;
- 	struct neighbour *n, *tmp;
- 	int shrunk = 0;
-+	int loop = 0;
- 
- 	NEIGH_CACHE_STAT_INC(tbl, forced_gc_runs);
- 
-@@ -278,11 +280,16 @@ static int neigh_forced_gc(struct neigh_table *tbl)
- 				shrunk++;
- 			if (shrunk >= max_clean)
- 				break;
-+			if (++loop == 16) {
-+				if (ktime_get_ns() > tmax)
-+					goto unlock;
-+				loop = 0;
-+			}
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+index 63ce30ea6891..8e368e4659fd 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -1632,18 +1632,24 @@ static int svm_range_validate_and_map(struct mm_struct *mm,
+ 			if (test_bit(gpuidx, prange->bitmap_access))
+ 				bitmap_set(ctx->bitmap, gpuidx, 1);
  		}
++
++		/*
++		 * If prange is already mapped or with always mapped flag,
++		 * update mapping on GPUs with ACCESS attribute
++		 */
++		if (bitmap_empty(ctx->bitmap, MAX_GPU_INSTANCE)) {
++			if (prange->mapped_to_gpu ||
++			    prange->flags & KFD_IOCTL_SVM_FLAG_GPU_ALWAYS_MAPPED)
++				bitmap_copy(ctx->bitmap, prange->bitmap_access, MAX_GPU_INSTANCE);
++		}
+ 	} else {
+ 		bitmap_or(ctx->bitmap, prange->bitmap_access,
+ 			  prange->bitmap_aip, MAX_GPU_INSTANCE);
  	}
  
- 	WRITE_ONCE(tbl->last_flush, jiffies);
--
-+unlock:
- 	write_unlock_bh(&tbl->lock);
+ 	if (bitmap_empty(ctx->bitmap, MAX_GPU_INSTANCE)) {
+-		bitmap_copy(ctx->bitmap, prange->bitmap_access, MAX_GPU_INSTANCE);
+-		if (!prange->mapped_to_gpu ||
+-		    bitmap_empty(ctx->bitmap, MAX_GPU_INSTANCE)) {
+-			r = 0;
+-			goto free_ctx;
+-		}
++		r = 0;
++		goto free_ctx;
+ 	}
  
- 	return shrunk;
+ 	if (prange->actual_loc && !prange->ttm_res) {
 -- 
 2.43.0
 
