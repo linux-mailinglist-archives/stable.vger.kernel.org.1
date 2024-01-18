@@ -1,142 +1,114 @@
-Return-Path: <stable+bounces-12198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFA40831E00
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 17:58:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D4C4831E34
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 18:13:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F5FDB2640F
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 16:58:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E7FB1C22B24
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 17:13:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49FBA2C878;
-	Thu, 18 Jan 2024 16:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092322C6AC;
+	Thu, 18 Jan 2024 17:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dNPc3o1T"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YBssr8jY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f179.google.com (mail-vk1-f179.google.com [209.85.221.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15102C6A4;
-	Thu, 18 Jan 2024 16:58:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA76E2C843;
+	Thu, 18 Jan 2024 17:12:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705597106; cv=none; b=FDDOF5RJbhX0W12N2WgDQF4nCWM3ozTz3GOv2Tt7wukHqBiXLPTzukoc/wUwW36px8rn1c8urlmlttIAnjvNoxlKczsjBl4J60rcC3VnlvfmKnFYpyF1s0Z0U+sXrXpJk5942ArB5mqQcH1dvgK9DW9xXHtCztoSmmc9InF+sYc=
+	t=1705597974; cv=none; b=SCWlpEIf63r3T6ZMpePtI1Fsz3DzD9MH82LRkBw+bTaW0EJsMTwIa/as3Rlkp+UeAVzj6hWh0yg/QYFAbnHiSsgLAt61gfRwppRJmuaH64aqOy5gDCx0yTVtqFD+hLiTM6WMGXtTxamCS5Yu6bwe9Ol9LxRwmbEhEKXFSle6wCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705597106; c=relaxed/simple;
-	bh=l7DGGpCso7bX08YQvGfXDvfIrpjxnzkTzOG8xe3VBVk=;
-	h=Received:DKIM-Signature:Received:From:To:Cc:Subject:Date:
-	 Message-ID:X-Mailer:In-Reply-To:References:MIME-Version:
-	 Content-Transfer-Encoding; b=jAAEPcZzIzoFOcEmXG087Smv3TlwtbnmPxMvKJ9nx7A+jJC2SHWId2yaLvuBUoleMJAIvYTXxEtczgpX5vghzZrDfU6sv6+v49f6Hf8OFUaQnJHfVS42nXxf3fd40Or6HOhxEPpKTGZNoFOQ3O70GXZMO4JF2E838vaGSjkhhHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dNPc3o1T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5613C433A6;
-	Thu, 18 Jan 2024 16:58:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705597105;
-	bh=l7DGGpCso7bX08YQvGfXDvfIrpjxnzkTzOG8xe3VBVk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dNPc3o1TZelTNhdGXAREgHUPw1ZrgBv+4XMHedohsa6BG6u2M1btngUjF2WxpFYrV
-	 TwdxVuD6ZG/3nvEX/N7tBahtLKwnSNb0ptKnsuAk0pbF08F3xwOU020V6NO2xAo47a
-	 uOYltEr2CRFyYd/SlLjUITRKUxoepTyk2tuKJuxR/twFK5qbHhGJkuzcVy5DPAi96U
-	 guhDlYAWyLmgXmLrlqjvkkBQE5pIdPXdgC/BGzBUk9Bwo5j8UAGxnofU+dn0jYUZr8
-	 hgGaTpUd1CTKOwg4Cs3tcngujxqYSn9eu3mV8OQS+beMZV5uGBdCdtulH07dJb7DDY
-	 4Enz5H/ieA+ww==
-Received: from johan by xi.lan with local (Exim 4.96.2)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1rQVir-0003Z4-2l;
-	Thu, 18 Jan 2024 17:58:33 +0100
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Banajit Goswami <bgoswami@quicinc.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	alsa-devel@alsa-project.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 4/5] ASoC: codecs: lpass-wsa-macro: fix compander volume hack
-Date: Thu, 18 Jan 2024 17:58:10 +0100
-Message-ID: <20240118165811.13672-5-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20240118165811.13672-1-johan+linaro@kernel.org>
-References: <20240118165811.13672-1-johan+linaro@kernel.org>
+	s=arc-20240116; t=1705597974; c=relaxed/simple;
+	bh=BBxghMMGlXNVOZyw3Q9osEVQvQYCUfuF2q+P8DaL2ag=;
+	h=Received:DKIM-Signature:X-Google-DKIM-Signature:
+	 X-Gm-Message-State:X-Google-Smtp-Source:X-Received:MIME-Version:
+	 References:In-Reply-To:From:Date:Message-ID:Subject:To:Cc:
+	 Content-Type; b=SDOaPKnhtMF+UWjpmu9t67f/pg9ouzQ0qPMWEfA8JWcjy2VJA7KiAgE0oJWqmSl3PKtSMmHDYM6/qpwePbVbzkMviPxR1Q0q7dYUEtw09MU5P8eH1lKh+JnxxIRyHaqJlYDITSE+WDK7TqlFug5RQZJzWxyGyVC4PQK2wq+F2Hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YBssr8jY; arc=none smtp.client-ip=209.85.221.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f179.google.com with SMTP id 71dfb90a1353d-4b79c5d035fso2998787e0c.0;
+        Thu, 18 Jan 2024 09:12:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705597971; x=1706202771; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=4AdGFlJ4DhT7muHzakQ8cGddPk88COkAxuUIVnIUfDc=;
+        b=YBssr8jYCMcdwWFNqnhuAcefkSNY3PAV0Diw84VWE6HNsk5GSi0X+66WnNp/TNAEvk
+         FgilCo0CWuPTTYFZRSipMTt/rJEiMst+ASRCZV8CHIF0pnuVkHZ/pNdes9jzoNGZZXbr
+         MCGGgf0iRA3gO46j1uXbwhn4vzlmRt1HitNALOWc4eLkcZPTE2B80wux32qdc5Q3qq4Y
+         fAyueJuVa/59oLrIyfxOSoR918Ano8mIAZDGwcQQi3E8Jjf3EBKutG1l8I5RuMvitqr8
+         2uNwHCadyNo0KWj9QBpGKE1Z17vrsQGf3cQiWAm7Lx91svyUts+I2JNBSCHT/WKIW4Is
+         3zXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705597971; x=1706202771;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4AdGFlJ4DhT7muHzakQ8cGddPk88COkAxuUIVnIUfDc=;
+        b=h2BZcKLWsmf8bWDjFjiZHvSDAIZ9UHdWkf/tsg3xs8IV4+Z3J0jU8Dcxc8I8QMciPS
+         Mx/hnllXKFn++wZkaRy21vqtyDHW1H3/qRH3YCt3pUuBXp50xahwZ7WuvK5km5uP53qQ
+         8HVhDkPub/zrO5M9miXGjllx5Fng4k7ch9HC6EKtf4MJ7wpTOeodzVAq9ekgyJgntdhM
+         DeFAsRt1iKZjrxHDN0tmlNFbPddXcHOH/y2nQy5tfXPbnpN5YyWPVArZ7UYWUYbNWGoO
+         Zmi4WgRNHBE43py1E7PhXJREQ7uEvugnCaQumxgg+b3If8nsGLJzFUYiexEpVFSFxjiT
+         p7hw==
+X-Gm-Message-State: AOJu0YyWerkO8KQxQCHB5tPdhji0FXREhDqkybPzjMjOiZuBjOSxYmx2
+	q0vNizrvxhJeeGz4AzZgcZdZ7XscvDj00KeJMwzLZpkek01RWw01Wq1i2ljzNW7esTL6b6LUCnZ
+	/Qp9Lj9I7EO1svQl/kMWUYjwis7A=
+X-Google-Smtp-Source: AGHT+IGmkC3B/dAyIjW4ywRmjABIZnyBByHvvtUw+LnR2JrcFmsnFYVncSqYWLeUXP3jAsxm8FeRPuWmmDC8OZcCvno=
+X-Received: by 2002:ac5:c0d9:0:b0:4b6:dce2:23c3 with SMTP id
+ b25-20020ac5c0d9000000b004b6dce223c3mr1015218vkk.26.1705597971720; Thu, 18
+ Jan 2024 09:12:51 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+From: Allen <allen.lkml@gmail.com>
+Date: Thu, 18 Jan 2024 09:12:40 -0800
+Message-ID: <CAOMdWSK13P=CoZqo-VfyPc8wMBJ0+o6SRmk+s2QDNetPkPmrDw@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/150] 6.6.13-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-The LPASS WSA macro codec driver is updating the digital gain settings
-behind the back of user space on DAPM events if companding has been
-enabled.
+> This is the start of the stable review cycle for the 6.6.13 release.
+> There are 150 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 20 Jan 2024 10:42:49 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.13-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-As compander control is exported to user space, this can result in the
-digital gain setting being incremented (or decremented) every time the
-sound server is started and the codec suspended depending on what the
-UCM configuration looks like.
+Compiled and booted on my x86_64 and ARM64 test systems. No errors or
+regressions.
 
-Soon enough playback will become distorted (or too quiet).
+Tested-by: Allen Pais <apais@linux.microsoft.com>
 
-This is specifically a problem on the Lenovo ThinkPad X13s as this
-bypasses the limit for the digital gain setting that has been set by the
-machine driver.
-
-Fix this by simply dropping the compander gain offset hack. If someone
-cares about modelling the impact of the compander setting this can
-possibly be done by exporting it as a volume control later.
-
-Note that the volume registers still need to be written after enabling
-clocks in order for any prior updates to take effect.
-
-Fixes: 2c4066e5d428 ("ASoC: codecs: lpass-wsa-macro: add dapm widgets and route")
-Cc: stable@vger.kernel.org      # 5.11
-Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- sound/soc/codecs/lpass-wsa-macro.c | 7 -------
- 1 file changed, 7 deletions(-)
-
-diff --git a/sound/soc/codecs/lpass-wsa-macro.c b/sound/soc/codecs/lpass-wsa-macro.c
-index 7e21cec3c2fb..6ce309980cd1 100644
---- a/sound/soc/codecs/lpass-wsa-macro.c
-+++ b/sound/soc/codecs/lpass-wsa-macro.c
-@@ -1584,7 +1584,6 @@ static int wsa_macro_enable_interpolator(struct snd_soc_dapm_widget *w,
- 	u16 gain_reg;
- 	u16 reg;
- 	int val;
--	int offset_val = 0;
- 	struct wsa_macro *wsa = snd_soc_component_get_drvdata(component);
- 
- 	if (w->shift == WSA_MACRO_COMP1) {
-@@ -1623,10 +1622,8 @@ static int wsa_macro_enable_interpolator(struct snd_soc_dapm_widget *w,
- 					CDC_WSA_RX1_RX_PATH_MIX_SEC0,
- 					CDC_WSA_RX_PGA_HALF_DB_MASK,
- 					CDC_WSA_RX_PGA_HALF_DB_ENABLE);
--			offset_val = -2;
- 		}
- 		val = snd_soc_component_read(component, gain_reg);
--		val += offset_val;
- 		snd_soc_component_write(component, gain_reg, val);
- 		wsa_macro_config_ear_spkr_gain(component, wsa,
- 						event, gain_reg);
-@@ -1654,10 +1651,6 @@ static int wsa_macro_enable_interpolator(struct snd_soc_dapm_widget *w,
- 					CDC_WSA_RX1_RX_PATH_MIX_SEC0,
- 					CDC_WSA_RX_PGA_HALF_DB_MASK,
- 					CDC_WSA_RX_PGA_HALF_DB_DISABLE);
--			offset_val = 2;
--			val = snd_soc_component_read(component, gain_reg);
--			val += offset_val;
--			snd_soc_component_write(component, gain_reg, val);
- 		}
- 		wsa_macro_config_ear_spkr_gain(component, wsa,
- 						event, gain_reg);
--- 
-2.41.0
-
+Thanks.
 
