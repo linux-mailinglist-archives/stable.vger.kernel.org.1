@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-12120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9448D8317DD
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:02:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E659A831809
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:03:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24D22B2461A
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:02:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 878AC1F23989
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D59BA23765;
-	Thu, 18 Jan 2024 11:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB0122377D;
+	Thu, 18 Jan 2024 11:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aWXuv5mp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dG8oUJKe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9407824B34;
-	Thu, 18 Jan 2024 11:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B1A023760;
+	Thu, 18 Jan 2024 11:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575665; cv=none; b=fOTFiJ4U52YxoA3i3i9xa48Y2vnK2Y/QZ7G2O0ClagyY7Hn8N81IwZtm2rWL9VKGAJ9qp1rGOE3R8OVYN6Eud1sUfbXKOeTaPoyl5cPFWxrgHZo77mqR8pNord2pm35HZxmXnW+sxMNnm1B+mPqq2IzFoI8XdkM8iJKtqsrB6jA=
+	t=1705575778; cv=none; b=KdoQl5S47pUiUkskrN59ufHho7Z4uLwXINWwAMgq26zh2LFfKE8OowE/iBGIVtFVqqubbZOeWh6fQGQRbPb2NhRCQI4kV7cwQVsMsIQ9IpmeK5l8wb3YRhe23Kwskyo+SSzAwKBSOVqTZWLnd4z/WL9TJT36RoOWEWabT1r5t9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575665; c=relaxed/simple;
-	bh=LrJWu2RfZSb1vnSbkefxzjxR1f1kUrnIf0owN4fQ04c=;
+	s=arc-20240116; t=1705575778; c=relaxed/simple;
+	bh=oyrLwUWAH67+bqUpTLvBGFSgpDp6dJ9TKdbqXzPQmlM=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=SkiriHuBsyFjT4C96NMHdCQJi4MJ+uw/a2xsNuhGLQsgobZIpBQIABD+4UbBbu1kvXrJjbmLTGpzFRZypBuElYxByAsPU6IgJxpjec9+Oc+kA2BciKJtreiUwwdt9l9zU2U61eURlVHmY9R/Ob42a5kAHPU+flwpTGWh+xmqA5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aWXuv5mp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C6DC43390;
-	Thu, 18 Jan 2024 11:01:04 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=moZJKU2pqdBxpgV87gt6fefudfjnZbL+YzfZa373fOKUzyRnbk1tMaU7ljjtZwbQtAQThgG8ySjcIJKmePWzM6P2TjddB/bCJQav0cTyYCp2xYr5dmwiIpPPy9crP11NwCnEKThKEFqXOHHHYNORAZVCYbclshdZtRt97M38HMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dG8oUJKe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3779C433C7;
+	Thu, 18 Jan 2024 11:02:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575665;
-	bh=LrJWu2RfZSb1vnSbkefxzjxR1f1kUrnIf0owN4fQ04c=;
+	s=korg; t=1705575778;
+	bh=oyrLwUWAH67+bqUpTLvBGFSgpDp6dJ9TKdbqXzPQmlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aWXuv5mp6xkfkubtf02MEDBTskxwHPjMJBXpJJgXWQiynvScHcMPlMjqf5f4aRvf8
-	 s9tpgyCdxYbMAprORyiGWS0V6OZ1/90hKE5wBA0H0hGqVbKBaZXWopHWf+V6CB+VWY
-	 CgJZKB+TT+99oCHhU8JunqDeyoToxO9UV1lpNah8=
+	b=dG8oUJKe8QdB5HP/ta/WER+bZnPq8zzAlSEDdu1CT6084vi+EYC6vKfK92Y/eLNM9
+	 hO8Ssj7ZxrTNRGLbXYkfzBwwdtxpmh2oyIVBoUtF70ypOTM5hS/5K/WHsQNyF4hgSA
+	 LSIwIoZzzfwRODcgauMzUtUvG0+c4BCG1JpC4Kf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vineeth Vijayan <vneethv@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	kernel test robot <lkp@intel.com>,
+	Vineet Gupta <vgupta@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 060/100] s390/scm: fix virtual vs physical address confusion
-Date: Thu, 18 Jan 2024 11:49:08 +0100
-Message-ID: <20240118104313.531662430@linuxfoundation.org>
+Subject: [PATCH 6.1 061/100] ARC: fix spare error
+Date: Thu, 18 Jan 2024 11:49:09 +0100
+Message-ID: <20240118104313.582369140@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
 References: <20240118104310.892180084@linuxfoundation.org>
@@ -68,57 +67,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vineeth Vijayan <vneethv@linux.ibm.com>
+From: Vineet Gupta <vgupta@kernel.org>
 
-[ Upstream commit b1a6a1a77f0666a5a6dc0893ab6ec8fcae46f24c ]
+[ Upstream commit aca02d933f63ba8bc84258bf35f9ffaf6b664336 ]
 
-Fix virtual vs physical address confusion (which currently are the same).
-
-Signed-off-by: Vineeth Vijayan <vneethv@linux.ibm.com>
-Reviewed-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202312082320.VDN5A9hb-lkp@intel.com/
+Signed-off-by: Vineet Gupta <vgupta@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/block/scm_blk.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/arc/kernel/signal.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/s390/block/scm_blk.c b/drivers/s390/block/scm_blk.c
-index 0c1df1d5f1ac..a165b1a59fde 100644
---- a/drivers/s390/block/scm_blk.c
-+++ b/drivers/s390/block/scm_blk.c
-@@ -17,6 +17,7 @@
- #include <linux/blk-mq.h>
- #include <linux/slab.h>
- #include <linux/list.h>
-+#include <linux/io.h>
- #include <asm/eadm.h>
- #include "scm_blk.h"
+diff --git a/arch/arc/kernel/signal.c b/arch/arc/kernel/signal.c
+index 3c1590c27fae..723abcb10c80 100644
+--- a/arch/arc/kernel/signal.c
++++ b/arch/arc/kernel/signal.c
+@@ -61,7 +61,7 @@ struct rt_sigframe {
+ 	unsigned int sigret_magic;
+ };
  
-@@ -130,7 +131,7 @@ static void scm_request_done(struct scm_request *scmrq)
+-static int save_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
++static int save_arcv2_regs(struct sigcontext __user *mctx, struct pt_regs *regs)
+ {
+ 	int err = 0;
+ #ifndef CONFIG_ISA_ARCOMPACT
+@@ -74,12 +74,12 @@ static int save_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
+ #else
+ 	v2abi.r58 = v2abi.r59 = 0;
+ #endif
+-	err = __copy_to_user(&mctx->v2abi, &v2abi, sizeof(v2abi));
++	err = __copy_to_user(&mctx->v2abi, (void const *)&v2abi, sizeof(v2abi));
+ #endif
+ 	return err;
+ }
  
- 	for (i = 0; i < nr_requests_per_io && scmrq->request[i]; i++) {
- 		msb = &scmrq->aob->msb[i];
--		aidaw = msb->data_addr;
-+		aidaw = (u64)phys_to_virt(msb->data_addr);
- 
- 		if ((msb->flags & MSB_FLAG_IDA) && aidaw &&
- 		    IS_ALIGNED(aidaw, PAGE_SIZE))
-@@ -195,12 +196,12 @@ static int scm_request_prepare(struct scm_request *scmrq)
- 	msb->scm_addr = scmdev->address + ((u64) blk_rq_pos(req) << 9);
- 	msb->oc = (rq_data_dir(req) == READ) ? MSB_OC_READ : MSB_OC_WRITE;
- 	msb->flags |= MSB_FLAG_IDA;
--	msb->data_addr = (u64) aidaw;
-+	msb->data_addr = (u64)virt_to_phys(aidaw);
- 
- 	rq_for_each_segment(bv, req, iter) {
- 		WARN_ON(bv.bv_offset);
- 		msb->blk_count += bv.bv_len >> 12;
--		aidaw->data_addr = (u64) page_address(bv.bv_page);
-+		aidaw->data_addr = virt_to_phys(page_address(bv.bv_page));
- 		aidaw++;
- 	}
- 
+-static int restore_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
++static int restore_arcv2_regs(struct sigcontext __user *mctx, struct pt_regs *regs)
+ {
+ 	int err = 0;
+ #ifndef CONFIG_ISA_ARCOMPACT
 -- 
 2.43.0
 
