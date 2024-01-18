@@ -1,97 +1,92 @@
-Return-Path: <stable+bounces-12181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E803831933
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 13:35:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD97883193B
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 13:38:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51C8D1C224D2
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:35:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AB7628330A
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:38:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC21241F6;
-	Thu, 18 Jan 2024 12:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A903241FB;
+	Thu, 18 Jan 2024 12:37:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VVec4YZc"
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="e+VtO6pX"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D562C22091
-	for <stable@vger.kernel.org>; Thu, 18 Jan 2024 12:35:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D8E125101;
+	Thu, 18 Jan 2024 12:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705581319; cv=none; b=IJxWKZOs5qNNFmM1e7BXrlKMuxRg47AxDLGWrsUI5xAdUvu05xU90E3DrOI53ao3P4LImkcPYUZBPVSIRby8/OXiQaSWMpYgnlDmxVSEhNC381+DNB4bAiqcFaNGlw+Gw1TtTRziZHqwOgeFNCdWNzhxTTBnbLWHxXbl55Fi1hc=
+	t=1705581471; cv=none; b=MJsKBB6zXvM1YTFhCuVijhPlwYpoKR/LQtB7UZ5jUsaMCLTkbdOOfma9wTHqALz3EhPXBjJA51pCBJjCWOjHftEIcA3dFpVu7ZDB4pkG0R7yhTAOddfPV2viNqupkYInrIRNZzGnSkcgvt5YF6J2/PAOV/zRxmH4yLcYkx+W0Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705581319; c=relaxed/simple;
-	bh=w+w57AEV/S0xE0T/uGeXoKyG/1xc+AjqLHJfKA6whPk=;
-	h=DKIM-Signature:X-IronPort-AV:X-IronPort-AV:Received:X-ExtLoop1:
-	 X-IronPort-AV:Received:Received:Date:From:To:Cc:Subject:Message-ID:
-	 MIME-Version:Content-Type:Content-Disposition:In-Reply-To; b=TRmK+MLiBkpj4h1WN0MRSowc1qKRuI0rigQIUdTuzwHT9XdECK1NrPoLGMzeg3LGc0og5c+RsAJKh5FXYC66H361n42YEXUlBGgXK2hfbfeBRhKN2Y/28+RTPzkw8LnazdohusDDBkzl5aofdub9NgrcsXjn6QsjX0o7Jgm7sGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VVec4YZc; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1705581318; x=1737117318;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=w+w57AEV/S0xE0T/uGeXoKyG/1xc+AjqLHJfKA6whPk=;
-  b=VVec4YZc5RB6O2tayYwmrXu2k9kDWMsz7hvDeo1zjQRocOnw8G6BKL6x
-   /XzbJHGF/QzmsFT3LA/n7R6N4Vpj/A1da2WNZIVmH+SoqVEGkDfRhbYC/
-   o0ayetMr8He9rNJNtiWoXpTfwe3Eoxe5JMRH8OzKYA5GI8q8MYaXOAfkn
-   Q6kMGg1wxL9ypRvLLpQqXYKq2DEdcTDOwFv6PiCysC56w4j9YF57sldmH
-   UboNWa473j2AiBI6KoKw2BszEFuD+XItbvl/owORUJIFGvWNbB2aD82ki
-   EwsI4rPm1VI7WyVaFatP2tkzx/EhOre7x2q2f6Q9YUR5t7Vbe/soEbRsi
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10956"; a="336992"
-X-IronPort-AV: E=Sophos;i="6.05,201,1701158400"; 
-   d="scan'208";a="336992"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jan 2024 04:35:17 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.05,201,1701158400"; 
-   d="scan'208";a="33105203"
-Received: from lkp-server01.sh.intel.com (HELO 961aaaa5b03c) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 18 Jan 2024 04:35:17 -0800
-Received: from kbuild by 961aaaa5b03c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rQRc1-0002zA-3B;
-	Thu, 18 Jan 2024 12:35:13 +0000
-Date: Thu, 18 Jan 2024 20:34:52 +0800
-From: kernel test robot <lkp@intel.com>
-To: Denis Arefev <arefev@swemel.ru>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] comedi: drivers: ni_tio: Fix arithmetic expression
- overflow
-Message-ID: <Zaka7NnU-DIn760z@016e4bab3561>
+	s=arc-20240116; t=1705581471; c=relaxed/simple;
+	bh=5YFQLtGOw9hoUhhBssqvlRRHGqh1xTlEvXtlZs5UWYw=;
+	h=From:DKIM-Signature:To:Cc:Subject:Date:Message-Id:MIME-Version:
+	 Content-Transfer-Encoding; b=uqzRWuxO8+OJ9tvAIWtwH25bK0n+/DjWkl+l6xR3XWFh65IK6kBIUWH/xXYh57kypV+vJuupmtZ8iJiIABBpymPp88KCoYnAZAJ47TbSVCPzvnfd12iPTzj6VHfvkA0aGn7u5r82SDY1e7dTxRggf6pc3aOpK+xSuhfDk8k4lrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=e+VtO6pX; arc=none smtp.client-ip=95.143.211.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
+From: Denis Arefev <arefev@swemel.ru>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
+	t=1705581467;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=kZPE9ryEyU6uy8bBTyu7cAdOqK0HdSpKBA8+uyMu3OI=;
+	b=e+VtO6pX6tMF83Cj/ndwG8AVrAe8X6hPNKzES38olv4MrX2XzUJGQn2DStUV3H2r/ztxvc
+	chnaAxV6jVNBbHtbYigEFM4bL8xfUERfSjCo92V6XG9nKyU6qz+2JedP80GoUJlNbs0foN
+	5fwAyfRGInlDKB4yzvEu97SFhbJJ9zY=
+To: Ian Abbott <abbotti@mev.co.uk>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	H Hartley Sweeten <hsweeten@visionengravers.com>,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH] comedi: drivers: ni_tio: Fix arithmetic expression overflow
+Date: Thu, 18 Jan 2024 15:37:47 +0300
+Message-Id: <20240118123747.45795-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240118123348.45690-1-arefev@swemel.ru>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+The value of an arithmetic expression period_ns * 1000 is subject
+to overflow due to a failure to cast operands to a larger data
+type before performing arithmetic
 
-Thanks for your patch.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Fixes: 3e90b1c7ebe9 ("staging: comedi: ni_tio: tidy up ni_tio_set_clock_src() and helpers")
+Cc: <stable@vger.kernel.org> # v5.15+ 
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+---
+ drivers/comedi/drivers/ni_tio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] comedi: drivers: ni_tio: Fix arithmetic expression overflow
-Link: https://lore.kernel.org/stable/20240118123348.45690-1-arefev%40swemel.ru
-
+diff --git a/drivers/comedi/drivers/ni_tio.c b/drivers/comedi/drivers/ni_tio.c
+index da6826d77e60..acc914903c70 100644
+--- a/drivers/comedi/drivers/ni_tio.c
++++ b/drivers/comedi/drivers/ni_tio.c
+@@ -800,7 +800,7 @@ static int ni_tio_set_clock_src(struct ni_gpct *counter,
+ 				GI_PRESCALE_X2(counter_dev->variant) |
+ 				GI_PRESCALE_X8(counter_dev->variant), bits);
+ 	}
+-	counter->clock_period_ps = period_ns * 1000;
++	counter->clock_period_ps = period_ns * 1000UL;
+ 	ni_tio_set_sync_mode(counter);
+ 	return 0;
+ }
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.25.1
 
 
