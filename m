@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-12014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E897D831758
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D5CC8317BC
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:00:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 895631F242EC
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE3E11F254FC
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B367A23773;
-	Thu, 18 Jan 2024 10:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A0BA2420F;
+	Thu, 18 Jan 2024 11:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZxqtdHf9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gyDPrTGd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0D71774B;
-	Thu, 18 Jan 2024 10:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3826D24202;
+	Thu, 18 Jan 2024 11:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575366; cv=none; b=Kl2Iognx7o1gNKDaS1ZBEc9R+KVfTREilXZ1gBpSjzV2CeICJ0QPbLpRVeLvdUUXUU/uwbhNG8WV4pwZ2dMAC6mthXP+dWupGZHfEC1MrNepbw+ul4PkDRYvoF0onJQK1PmJX+UbcyMw79s7ObxcHKG4sXH28xs3O996jUQ0NzQ=
+	t=1705575604; cv=none; b=ghbisrLPIeVkYgWLNtlRBQmQTVtRkUW6j3eHbl7jZ2XfKUp+CimcU4yogcg5+jiL61OVKcqxWgoG8ebbE36nzr/5+UNhC3xqIFfbO/1gjtegsBJAR+AgTkeTXjCn4QJJtKTLoXKSzeqUHm1KbNL+nYdXOmlkGIvYf/QFY+Xzbvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575366; c=relaxed/simple;
-	bh=xRprqsvBry3a3peRVukHqzItO5tvRJs/sR6BBOtjP/U=;
+	s=arc-20240116; t=1705575604; c=relaxed/simple;
+	bh=EzVPNsSPhW2MbCKPe+dmG3WAm2a+0nSNwuw8AYn6BJg=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=hWHOsBjPKd3nhgdxSrcqhzb2bLnDkmBrIIS1ySjQND6xMSxoRKiTxYhRBzuTIZyz4kFXeMOeIOJqlp9NQVdBWntyfJZT22mZvWDjvK+i/AaolyX2LwH0QnhSaRkikeh6PVGvJQuWLH9KDpBRxFLC8/gzXqvKgersyHN41sjLv/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZxqtdHf9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B26FEC433C7;
-	Thu, 18 Jan 2024 10:56:05 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=bKYhqpvMojy1olBRsV655dXuH3TCBa8Jd1Jh5AXljbitK7V7gRgLoPcZ+RZfI9z2RDxnm1vTlNWS5R6jF3sAigMFP4naHzx692Ao70qu+ArcpMYJKszhf8XY5MsJIi4YntuQQAHw74NMJ/HGyunjap8NdYPSHZj9GK5IpXM/xUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gyDPrTGd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E6BC43394;
+	Thu, 18 Jan 2024 11:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575366;
-	bh=xRprqsvBry3a3peRVukHqzItO5tvRJs/sR6BBOtjP/U=;
+	s=korg; t=1705575604;
+	bh=EzVPNsSPhW2MbCKPe+dmG3WAm2a+0nSNwuw8AYn6BJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZxqtdHf9FeOhchdg4XG3wfwEBZUnLk+e7OpEktKqBrvIa/lOQbaOgHm0t4+fIi4Bx
-	 Arh6btuATyD+9+DB4RJb2sKEcMnF4WDOVeXgJaHGk6YL5nGvThExfcApuwgfdDYbio
-	 Y+DGgyl/sBVUbBwpcJt8IbfxU46+eMQpJ2z2EJik=
+	b=gyDPrTGdzbm4kx//Y5ejQGPRrkRtHV2nMMElQf2XAORXdrelpA//BpuMpfWNmX+z7
+	 0rDYfV11lIhuTkaudfaF5gY77MIzd3ete7YVTpxr2evnNX45De2cNwywqgfBR2xBX/
+	 xRUMrIy6bscVBLUqBIFTdeCnuANCgQy/7/w6zNA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Hengqi Chen <hengqi.chen@gmail.com>,
+	Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 107/150] ASoC: Intel: bytcr_rt5640: Add new swapped-speakers quirk
+Subject: [PATCH 6.1 041/100] LoongArch: Preserve syscall nr across execve()
 Date: Thu, 18 Jan 2024 11:48:49 +0100
-Message-ID: <20240118104324.997094373@linuxfoundation.org>
+Message-ID: <20240118104312.701350430@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,106 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Hengqi Chen <hengqi.chen@gmail.com>
 
-[ Upstream commit b1b6131bca35a55a69fadc39d51577968fa2ee97 ]
+[ Upstream commit d6c5f06e46a836e6a70c7cfd95bb38a67d9252ec ]
 
-Some BYTCR x86 tablets with a rt5640 codec have the left and right channels
-of their speakers swapped.
+Currently, we store syscall nr in pt_regs::regs[11] and syscall execve()
+accidentally overrides it during its execution:
 
-Add a new BYT_RT5640_SWAPPED_SPEAKERS quirk for this which sets
-cfg-spk:swapped in the components string to let userspace know
-about the swapping so that the UCM profile can configure the mixer
-to correct this.
+    sys_execve()
+      -> do_execve()
+        -> do_execveat_common()
+          -> bprm_execve()
+            -> exec_binprm()
+              -> search_binary_handler()
+                -> load_elf_binary()
+                  -> ELF_PLAT_INIT()
 
-Enable this new quirk on the Medion Lifetab S10346 which has its
-speakers swapped.
+ELF_PLAT_INIT() reset regs[11] to 0, so in syscall_exit_to_user_mode()
+we later get a wrong syscall nr. This breaks tools like execsnoop since
+it relies on execve() tracepoints.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Acked-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://msgid.link/r/20231217213221.49424-2-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Skip pt_regs::regs[11] reset in ELF_PLAT_INIT() to fix the issue.
+
+Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcr_rt5640.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ arch/loongarch/include/asm/elf.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index f184d23deaa0..6b631a608ae8 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -83,6 +83,7 @@ enum {
- #define BYT_RT5640_HSMIC2_ON_IN1	BIT(27)
- #define BYT_RT5640_JD_HP_ELITEP_1000G2	BIT(28)
- #define BYT_RT5640_USE_AMCR0F28		BIT(29)
-+#define BYT_RT5640_SWAPPED_SPEAKERS	BIT(30)
- 
- #define BYTCR_INPUT_DEFAULTS				\
- 	(BYT_RT5640_IN3_MAP |				\
-@@ -157,6 +158,8 @@ static void log_quirks(struct device *dev)
- 		dev_info(dev, "quirk MONO_SPEAKER enabled\n");
- 	if (byt_rt5640_quirk & BYT_RT5640_NO_SPEAKERS)
- 		dev_info(dev, "quirk NO_SPEAKERS enabled\n");
-+	if (byt_rt5640_quirk & BYT_RT5640_SWAPPED_SPEAKERS)
-+		dev_info(dev, "quirk SWAPPED_SPEAKERS enabled\n");
- 	if (byt_rt5640_quirk & BYT_RT5640_LINEOUT)
- 		dev_info(dev, "quirk LINEOUT enabled\n");
- 	if (byt_rt5640_quirk & BYT_RT5640_LINEOUT_AS_HP2)
-@@ -903,6 +906,7 @@ static const struct dmi_system_id byt_rt5640_quirk_table[] = {
- 			DMI_MATCH(DMI_BIOS_DATE, "10/22/2015"),
- 		},
- 		.driver_data = (void *)(BYTCR_INPUT_DEFAULTS |
-+					BYT_RT5640_SWAPPED_SPEAKERS |
- 					BYT_RT5640_SSP0_AIF1 |
- 					BYT_RT5640_MCLK_EN),
- 	},
-@@ -1631,11 +1635,11 @@ static int snd_byt_rt5640_mc_probe(struct platform_device *pdev)
- 	const char *platform_name;
- 	struct acpi_device *adev;
- 	struct device *codec_dev;
-+	const char *cfg_spk;
- 	bool sof_parent;
- 	int ret_val = 0;
- 	int dai_index = 0;
--	int i, cfg_spk;
--	int aif;
-+	int i, aif;
- 
- 	is_bytcr = false;
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-@@ -1795,13 +1799,16 @@ static int snd_byt_rt5640_mc_probe(struct platform_device *pdev)
- 	}
- 
- 	if (byt_rt5640_quirk & BYT_RT5640_NO_SPEAKERS) {
--		cfg_spk = 0;
-+		cfg_spk = "0";
- 		spk_type = "none";
- 	} else if (byt_rt5640_quirk & BYT_RT5640_MONO_SPEAKER) {
--		cfg_spk = 1;
-+		cfg_spk = "1";
- 		spk_type = "mono";
-+	} else if (byt_rt5640_quirk & BYT_RT5640_SWAPPED_SPEAKERS) {
-+		cfg_spk = "swapped";
-+		spk_type = "swapped";
- 	} else {
--		cfg_spk = 2;
-+		cfg_spk = "2";
- 		spk_type = "stereo";
- 	}
- 
-@@ -1816,7 +1823,7 @@ static int snd_byt_rt5640_mc_probe(struct platform_device *pdev)
- 		headset2_string = " cfg-hs2:in1";
- 
- 	snprintf(byt_rt5640_components, sizeof(byt_rt5640_components),
--		 "cfg-spk:%d cfg-mic:%s aif:%d%s%s", cfg_spk,
-+		 "cfg-spk:%s cfg-mic:%s aif:%d%s%s", cfg_spk,
- 		 map_name[BYT_RT5640_MAP(byt_rt5640_quirk)], aif,
- 		 lineout_string, headset2_string);
- 	byt_rt5640_card.components = byt_rt5640_components;
+diff --git a/arch/loongarch/include/asm/elf.h b/arch/loongarch/include/asm/elf.h
+index b9a4ab54285c..9b16a3b8e706 100644
+--- a/arch/loongarch/include/asm/elf.h
++++ b/arch/loongarch/include/asm/elf.h
+@@ -293,7 +293,7 @@ extern const char *__elf_platform;
+ #define ELF_PLAT_INIT(_r, load_addr)	do { \
+ 	_r->regs[1] = _r->regs[2] = _r->regs[3] = _r->regs[4] = 0;	\
+ 	_r->regs[5] = _r->regs[6] = _r->regs[7] = _r->regs[8] = 0;	\
+-	_r->regs[9] = _r->regs[10] = _r->regs[11] = _r->regs[12] = 0;	\
++	_r->regs[9] = _r->regs[10] /* syscall n */ = _r->regs[12] = 0;	\
+ 	_r->regs[13] = _r->regs[14] = _r->regs[15] = _r->regs[16] = 0;	\
+ 	_r->regs[17] = _r->regs[18] = _r->regs[19] = _r->regs[20] = 0;	\
+ 	_r->regs[21] = _r->regs[22] = _r->regs[23] = _r->regs[24] = 0;	\
 -- 
 2.43.0
 
