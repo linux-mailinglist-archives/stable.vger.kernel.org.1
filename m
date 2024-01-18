@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-11903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B800B8316E1
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:51:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6F58831771
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:57:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 493FDB23CD3
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:51:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DF60287E0B
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C4223741;
-	Thu, 18 Jan 2024 10:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1158122F16;
+	Thu, 18 Jan 2024 10:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQ/Qk0YU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7p73kcT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E357822F09;
-	Thu, 18 Jan 2024 10:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E221774B;
+	Thu, 18 Jan 2024 10:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575057; cv=none; b=VtIadSrw2huydeMdg7NSE7eE6xtL9shVUfDu9qIzfIjFgaCOPwsS7ZT5hQkbXySjR7FaCQPfTSQBgC1YR3duxxYJ8YD6F5NRrcnYGuqpuRsZ+OIbDVcFrbu2W+6cOjwmDrO1XPMwz1RDCGI2BS0rTO25JjiI5Vz+sInygzkKjUg=
+	t=1705575438; cv=none; b=A+2O0m4M64u4lcjTrhEhdDFsIUNQ92hEAW4vOHE1tew/Xe4Rh/W7q1g2H17f/ue2peusgB5RHAiQu4sHJePOhmSBs/FlXZCrqg0fc7M/Bj5YortTzeOT73yWhyM1Ucl0fF/1j6G4HONKVv/z5veLW+DRGLwPqTmIv2oaMoeK2Es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575057; c=relaxed/simple;
-	bh=pcnawyCBl1Uw9MGTXwi2ItmlhPDsHsbl5rQiPuYcZCw=;
+	s=arc-20240116; t=1705575438; c=relaxed/simple;
+	bh=L6kYeAgTDkVHYc6cQuRb17A7Mf2i11np2WMJTB4hjsw=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=TM/5juG3JOtTT5IGvn4WgXYSDDd28wDgczXWKmTyhg7ZTEd19nWJZ5cBD6UPL53FTKA6vFxv/64e3EmWRVSWAgX+XapJwOaVgBwo5CjWeP3piFFv70XmVkHqNHzWb9Y9CWp6b6VOOK+LF3NJzXCekjPZ4/7Hadb7AqeD9e+qFeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQ/Qk0YU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66085C433C7;
-	Thu, 18 Jan 2024 10:50:56 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding; b=GClQo8LX4/TAhoVOSGe46nOhCWKNEhGTpXbIubO4a4VBCgx3Gr8jNakHeLqhT/hvIjBqLGAVNqfMW4DdgUvBT6E/XUapU1rMTZ6O3Kh143aQBsO77X9QrbEIwH3NmhqO88O+XW/dMUj+TQyxX1XfVuBWC3VGGInbUemASGcMkM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7p73kcT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0075C433F1;
+	Thu, 18 Jan 2024 10:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575056;
-	bh=pcnawyCBl1Uw9MGTXwi2ItmlhPDsHsbl5rQiPuYcZCw=;
+	s=korg; t=1705575438;
+	bh=L6kYeAgTDkVHYc6cQuRb17A7Mf2i11np2WMJTB4hjsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yQ/Qk0YUubWsJ/zaVB9hbXdjtLZ0LkZ3Q+a8ERS8bCKQBvindvWlVgDIh4oK+fPcY
-	 /dZaA/uxo5fwvPUocIfg+fQAFsTgE/Wgp/XJCvq2ovVoBJitPP85p/MlkZifrGC/yC
-	 wUZGfi4IueVeD0gbCtDjNfay+FtTNSWsWJ/8l2XU=
+	b=n7p73kcTTdMfz4/hTHXEPwD+5Ke+dvwr54ufXcqwwzdOQ0AsK9g6q7k0i5vhGwbDk
+	 23nuDXOWmGhVJ0RXH/5+F15v+R7P/uLzWAlzr9MVU6hpmVZOOY1aczYsR1JrrYCFL1
+	 sxTDkd2ASOQGlsUG33ZHciCVubReUNiyr2U4uwkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [PATCH 6.7 25/28] coresight: etm4x: Fix width of CCITMIN field
+	Sjoerd Simons <sjoerd@collabora.com>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>
+Subject: [PATCH 6.6 133/150] bus: moxtet: Add spi device table
 Date: Thu, 18 Jan 2024 11:49:15 +0100
-Message-ID: <20240118104302.081294957@linuxfoundation.org>
+Message-ID: <20240118104326.212678792@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
-References: <20240118104301.249503558@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Sjoerd Simons <sjoerd@collabora.com>
 
-commit cc0271a339cc70cae914c3ec20edc2a8058407da upstream.
+commit aaafe88d5500ba18b33be72458439367ef878788 upstream.
 
-CCITMIN is a 12 bit field and doesn't fit in a u8, so extend it to u16.
-This probably wasn't an issue previously because values higher than 255
-never occurred.
+The moxtet module fails to auto-load on. Add a SPI id table to
+allow it to do so.
 
-But since commit 4aff040bcc8d ("coresight: etm: Override TRCIDR3.CCITMIN
-on errata affected cpus"), a comparison with 256 was done to enable the
-errata, generating the following W=1 build error:
-
-  coresight-etm4x-core.c:1188:24: error: result of comparison of
-  constant 256 with expression of type 'u8' (aka 'unsigned char') is
-  always false [-Werror,-Wtautological-constant-out-of-range-compare]
-
-   if (drvdata->ccitmin == 256)
-
-Cc: stable@vger.kernel.org
-Fixes: 2e1cdfe184b5 ("coresight-etm4x: Adding CoreSight ETM4x driver")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310302043.as36UFED-lkp@intel.com/
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Signed-off-by: James Clark <james.clark@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20231101115206.70810-1-james.clark@arm.com
+Signed-off-by: Sjoerd Simons <sjoerd@collabora.com>
+Cc:  <stable@vger.kernel.org>
+Reviewed-by: Marek Behún <kabel@kernel.org>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwtracing/coresight/coresight-etm4x.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bus/moxtet.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/hwtracing/coresight/coresight-etm4x.h
-+++ b/drivers/hwtracing/coresight/coresight-etm4x.h
-@@ -1036,7 +1036,7 @@ struct etmv4_drvdata {
- 	u8				ctxid_size;
- 	u8				vmid_size;
- 	u8				ccsize;
--	u8				ccitmin;
-+	u16				ccitmin;
- 	u8				s_ex_level;
- 	u8				ns_ex_level;
- 	u8				q_support;
+--- a/drivers/bus/moxtet.c
++++ b/drivers/bus/moxtet.c
+@@ -830,6 +830,12 @@ static void moxtet_remove(struct spi_dev
+ 	mutex_destroy(&moxtet->lock);
+ }
+ 
++static const struct spi_device_id moxtet_spi_ids[] = {
++	{ "moxtet" },
++	{ },
++};
++MODULE_DEVICE_TABLE(spi, moxtet_spi_ids);
++
+ static const struct of_device_id moxtet_dt_ids[] = {
+ 	{ .compatible = "cznic,moxtet" },
+ 	{},
+@@ -841,6 +847,7 @@ static struct spi_driver moxtet_spi_driv
+ 		.name		= "moxtet",
+ 		.of_match_table = moxtet_dt_ids,
+ 	},
++	.id_table	= moxtet_spi_ids,
+ 	.probe		= moxtet_probe,
+ 	.remove		= moxtet_remove,
+ };
 
 
 
