@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-12022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55728831760
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAE7C8317C9
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:01:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 886D81C225EC
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19A811C20C6E
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:01:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A32D22F0F;
-	Thu, 18 Jan 2024 10:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74CAB241E7;
+	Thu, 18 Jan 2024 11:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4tocwk6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="umjAmAFH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58B151774B;
-	Thu, 18 Jan 2024 10:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333AD2033B;
+	Thu, 18 Jan 2024 11:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575388; cv=none; b=gsSGyz0fzi43xnzaKGavDdeOQirmiR+wQ8PF7df+dsSJVSVvD10PSBou+XTEjtxgBkHLyOdHEvC9tK1aRVaHE/HlzHhkCF3MqX4WNo+kj1Tts2nb1hE+7HVlUWeZHJVusT5gZloUwN0LOG8dYuxgfq6+JmerQeBXUlEMS4iCfUY=
+	t=1705575624; cv=none; b=FceBl5X1ChxUr5eatrdXaXgvKH5grxLOxRESe+bA51fmGSuiwhQ7hvCl9Pb3XgzfGEJF9twIEfzJQvftJ8JHdJm0L3fvo7O26BxUP9R1v8XHCDy5Jee62pIkTZCQ7cXwdPBIzujRLUPDzy0z9R2nTcd+OK0PNNGi4xDSrmf7Yq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575388; c=relaxed/simple;
-	bh=eS0tUIi1U3IBKT11h2lTnF93wWY30EZsd/nTI1gncMg=;
+	s=arc-20240116; t=1705575624; c=relaxed/simple;
+	bh=kKQ91vbk5ES18gP8pb+NZi/Hp9x8FUhQktfRt7mX/Cw=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=SaXW33HbKdSXCD6PZneyzeVioBM4QtrkxLHHJXIqf8sSuthM7z+vW9Pd9yuBJhSZP3Vs/dHDOCjDrAZh8XNff6EMfON6txE8uazHhbuKG8xVn6oEtA7NfOVxVamqubGlJxSapOrkmhX8PLSDzD+luQJoWb+T2WKBLwvqtg6LykE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4tocwk6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1E8FC433C7;
-	Thu, 18 Jan 2024 10:56:27 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding; b=FjQbWVZdLvEeuual9yT0qCJL03wMomolgAUzLwMsjLctFUoUeWHiUR1vOfLaHCmLC3BZ6nN/DtWXwZDKjctBrZ9umb7wYaMfAneyFmbmqDbBWQ0FoRYV7Q5U9Qgg8mZnU/VLPziC5lfEhaPd3MVKINhUz9NxSoTw8P7M0uo8dWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=umjAmAFH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A12B4C433C7;
+	Thu, 18 Jan 2024 11:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575388;
-	bh=eS0tUIi1U3IBKT11h2lTnF93wWY30EZsd/nTI1gncMg=;
+	s=korg; t=1705575624;
+	bh=kKQ91vbk5ES18gP8pb+NZi/Hp9x8FUhQktfRt7mX/Cw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A4tocwk62zouV2Qj9CmussfACRxN/OHufLlROKTkWFolOhoiNXTehqbkTHZuqvvbr
-	 Sitml7O+O7fD/oiTgkz3N0zODFbkwzd+k8Hez8vEeuL4bXOAV/y5LEbK6U1d9pc1Bf
-	 5MBCfcw+l8gJTnXsSt/ZkwDsKgRcVYYGB++Pey10=
+	b=umjAmAFHbjA5M9pJxCOSRYMwsW6oDYGo+fNaVQ8WE4SMDeNDacsAn7aMD+1blmL80
+	 JqrHYWhPMpCqHL/TO0EPUKfmrHvdHlQV0M5yb88EmGV10pzv8uV/AIKK50Dhpeeh4o
+	 IKwTVTlsBOKOXcIE1rcrBsOGIqrK+8zbhHZgTdcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Li <roman.li@amd.com>,
-	Jun Lei <jun.lei@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Arnold Gozum <arngozum@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/150] drm/amd/display: Add case for dcn35 to support usb4 dmub hpd event
+Subject: [PATCH 6.1 048/100] platform/x86: intel-vbtn: Fix missing tablet-mode-switch events
 Date: Thu, 18 Jan 2024 11:48:56 +0100
-Message-ID: <20240118104325.327202901@linuxfoundation.org>
+Message-ID: <20240118104312.995233846@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-References: <20240118104320.029537060@linuxfoundation.org>
+In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
+References: <20240118104310.892180084@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +64,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Lin <wayne.lin@amd.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 989824589f793120833bef13aa4e21f5a836a707 ]
+[ Upstream commit 14c200b7ca46b9a9f4af9e81d258a58274320b6f ]
 
-[Why & how]
-Refactor dc_is_dmub_outbox_supported() a bit and add case for dcn35 to
-register dmub outbox notification irq to handle usb4 relevant hpd event.
+2 issues have been reported on the Dell Inspiron 7352:
 
-Reviewed-by: Roman Li <roman.li@amd.com>
-Reviewed-by: Jun Lei <jun.lei@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+1. Sometimes the tablet-mode-switch stops reporting tablet-mode
+   change events.
+
+   Add a "VBDL" call to notify_handler() to work around this.
+
+2. Sometimes the tablet-mode is incorrect after suspend/resume
+
+   Add a detect_tablet_mode() to resume() to fix this.
+
+Reported-by: Arnold Gozum <arngozum@gmail.com>
+Closes: https://lore.kernel.org/platform-driver-x86/87271a74-c831-4eec-b7a4-1371d0e42471@gmail.com/
+Tested-by: Arnold Gozum <arngozum@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Link: https://lore.kernel.org/r/20231204150601.46976-1-hdegoede@redhat.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 26 ++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ drivers/platform/x86/intel/vbtn.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index a1be93f6385c..8cdf380bf366 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -4865,18 +4865,28 @@ void dc_mclk_switch_using_fw_based_vblank_stretch_shut_down(struct dc *dc)
-  */
- bool dc_is_dmub_outbox_supported(struct dc *dc)
+diff --git a/drivers/platform/x86/intel/vbtn.c b/drivers/platform/x86/intel/vbtn.c
+index c5e4e35c8d20..8e2b07ed2ce9 100644
+--- a/drivers/platform/x86/intel/vbtn.c
++++ b/drivers/platform/x86/intel/vbtn.c
+@@ -73,10 +73,10 @@ struct intel_vbtn_priv {
+ 	bool wakeup_mode;
+ };
+ 
+-static void detect_tablet_mode(struct platform_device *device)
++static void detect_tablet_mode(struct device *dev)
  {
--	/* DCN31 B0 USB4 DPIA needs dmub notifications for interrupts */
--	if (dc->ctx->asic_id.chip_family == FAMILY_YELLOW_CARP &&
--	    dc->ctx->asic_id.hw_internal_rev == YELLOW_CARP_B0 &&
--	    !dc->debug.dpia_debug.bits.disable_dpia)
--		return true;
-+	switch (dc->ctx->asic_id.chip_family) {
- 
--	if (dc->ctx->asic_id.chip_family == AMDGPU_FAMILY_GC_11_0_1 &&
--	    !dc->debug.dpia_debug.bits.disable_dpia)
--		return true;
-+	case FAMILY_YELLOW_CARP:
-+		/* DCN31 B0 USB4 DPIA needs dmub notifications for interrupts */
-+		if (dc->ctx->asic_id.hw_internal_rev == YELLOW_CARP_B0 &&
-+		    !dc->debug.dpia_debug.bits.disable_dpia)
-+			return true;
-+	break;
+-	struct intel_vbtn_priv *priv = dev_get_drvdata(&device->dev);
+-	acpi_handle handle = ACPI_HANDLE(&device->dev);
++	struct intel_vbtn_priv *priv = dev_get_drvdata(dev);
++	acpi_handle handle = ACPI_HANDLE(dev);
+ 	unsigned long long vgbs;
+ 	acpi_status status;
+ 	int m;
+@@ -89,6 +89,8 @@ static void detect_tablet_mode(struct platform_device *device)
+ 	input_report_switch(priv->switches_dev, SW_TABLET_MODE, m);
+ 	m = (vgbs & VGBS_DOCK_MODE_FLAG) ? 1 : 0;
+ 	input_report_switch(priv->switches_dev, SW_DOCK, m);
 +
-+	case AMDGPU_FAMILY_GC_11_0_1:
-+	case AMDGPU_FAMILY_GC_11_5_0:
-+		if (!dc->debug.dpia_debug.bits.disable_dpia)
-+			return true;
-+	break;
-+
-+	default:
-+		break;
-+	}
- 
- 	/* dmub aux needs dmub notifications to be enabled */
- 	return dc->debug.enable_dmub_aux_for_legacy_ddc;
-+
++	input_sync(priv->switches_dev);
  }
  
- /**
+ /*
+@@ -134,7 +136,7 @@ static int intel_vbtn_input_setup(struct platform_device *device)
+ 	priv->switches_dev->id.bustype = BUS_HOST;
+ 
+ 	if (priv->has_switches) {
+-		detect_tablet_mode(device);
++		detect_tablet_mode(&device->dev);
+ 
+ 		ret = input_register_device(priv->switches_dev);
+ 		if (ret)
+@@ -198,6 +200,9 @@ static void notify_handler(acpi_handle handle, u32 event, void *context)
+ 	autorelease = val && (!ke_rel || ke_rel->type == KE_IGNORE);
+ 
+ 	sparse_keymap_report_event(input_dev, event, val, autorelease);
++
++	/* Some devices need this to report further events */
++	acpi_evaluate_object(handle, "VBDL", NULL, NULL);
+ }
+ 
+ /*
+@@ -358,7 +363,13 @@ static void intel_vbtn_pm_complete(struct device *dev)
+ 
+ static int intel_vbtn_pm_resume(struct device *dev)
+ {
++	struct intel_vbtn_priv *priv = dev_get_drvdata(dev);
++
+ 	intel_vbtn_pm_complete(dev);
++
++	if (priv->has_switches)
++		detect_tablet_mode(dev);
++
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
