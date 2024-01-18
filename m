@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-12103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CCEB8317C7
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 12:01:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5F9083175D
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:56:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40EBD1C22849
-	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 11:01:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49A75B20E89
+	for <lists+stable@lfdr.de>; Thu, 18 Jan 2024 10:56:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F07A1241E6;
-	Thu, 18 Jan 2024 11:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912F422F16;
+	Thu, 18 Jan 2024 10:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xbMgAoVR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cwjy+kCE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB6625544;
-	Thu, 18 Jan 2024 11:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B8622F06;
+	Thu, 18 Jan 2024 10:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705575615; cv=none; b=aef1PmgmSkFiLnN4YgHOhcLiNgHZ5IpROyJJtzN2jP9gnEhYy8G15ELgDXrht0u/diRNkXenFQwhl+NCoVRD7J4eWPIaLNbjZUm06ISDrzUhIdR39INPHBCkZCFINav2+cOpdRMjGyCSLeTdqbkj0R4frimPalpsqGltgOg50MU=
+	t=1705575380; cv=none; b=I3lsXtNytdRqwhoN4Lv9T3LHYJtIhgpnuGTeCPcVphq4Mo/m6JYbtpqP9gDOrOVqHRNBNNPQgd6mOAPSw0V9Ap2qMiNP15aZxoJEmWV6kUHo5jrG7ZpFdys+ysiJiLbASbffo8OLHZyQquTcjepHz2c8+xNJt0HkMg17n1is+e0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705575615; c=relaxed/simple;
-	bh=L582cnXpPJZzxTNZD95JGKlugZr1LclH8VfN9QuZLV0=;
+	s=arc-20240116; t=1705575380; c=relaxed/simple;
+	bh=i4cAxWuPSjJrx90rGQjr0eIaT1bPisyxbQro40EpU1o=;
 	h=Received:DKIM-Signature:From:To:Cc:Subject:Date:Message-ID:
 	 X-Mailer:In-Reply-To:References:User-Agent:X-stable:
-	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=MRyP2pHKubCCITbsWbk9y3pAU3jIwFrch1RLxlQVJz/Tp7OGvxC641/5BWB3JpfMONGeNymYOPTLbwYGK5XlZ63eUTsL5ALhfJMhJ7U49E8XFU3zbTkvxe4eWAZnNnYtQHa+pAGuEprZIRGG77ebbL6hDDcfEWfxQm9Gce0kjiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xbMgAoVR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3346FC433F1;
-	Thu, 18 Jan 2024 11:00:15 +0000 (UTC)
+	 X-Patchwork-Hint:MIME-Version:Content-Transfer-Encoding; b=a8hXwIjr084ElJhazeuCbWyr1GIeH4kqTPnKfaCqsDoZ/l4s1tx77XoPQApfOvzi0TnRo8hYTnp46dFsCl0M47hZDOEl6qQl5EuLox8Tls+qpPsAyhetcjxJbNIhkXztRv2d8egvsk6jaGZDW3pKE/q6Xcd5PuHwpP0uYi+3Uuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cwjy+kCE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 896A8C433C7;
+	Thu, 18 Jan 2024 10:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705575615;
-	bh=L582cnXpPJZzxTNZD95JGKlugZr1LclH8VfN9QuZLV0=;
+	s=korg; t=1705575379;
+	bh=i4cAxWuPSjJrx90rGQjr0eIaT1bPisyxbQro40EpU1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xbMgAoVRQS4GO373OZu8JcG2SVORstlgycweMmHRE5m6T3G7YWiDbNtBU+m5DQh+n
-	 IWVL/E4HDI1PyYodLu33efTQOYup2PDNcd0pEyUhHV6W0P/M8h5vtSecdSy4Waksz1
-	 Y5hwzfGHz+nwBnQIg9TyL/zn2UPFOrqmifnxVThc=
+	b=Cwjy+kCEMulJzXJUubJrNYCMhUZlryu+pEL3Mr3WwKK9JisVEI79Is0tab+L4uN/p
+	 cy62FlaB/bjSh6o6bGcW9YtxvoudYFCE5hRyOv1Fnkp6UmOHvtaVUGAl1OA5s20/A+
+	 j4aFr28ypRUUG7aFs/gG4t6eAwCBnZhYTOhgYoo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	j51569436@gmail.com,
+	Paulo Alcantara <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/100] jbd2: increase the journal IOs priority
+Subject: [PATCH 6.6 111/150] smb: client: fix potential OOB in smb2_dump_detail()
 Date: Thu, 18 Jan 2024 11:48:53 +0100
-Message-ID: <20240118104312.868379328@linuxfoundation.org>
+Message-ID: <20240118104325.195278280@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-References: <20240118104310.892180084@linuxfoundation.org>
+In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
+References: <20240118104320.029537060@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,162 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 6a3afb6ac6dfab158ebdd4b87941178f58c8939f ]
+[ Upstream commit 567320c46a60a3c39b69aa1df802d753817a3f86 ]
 
-Current jbd2 only add REQ_SYNC for descriptor block, metadata log
-buffer, commit buffer and superblock buffer, the submitted IO could be
-throttled by writeback throttle in block layer, that could lead to
-priority inversion in some cases. The log IO looks like a kind of high
-priority metadata IO, so it should not be throttled by WBT like QOS
-policies in block layer, let's add REQ_SYNC | REQ_IDLE to exempt from
-writeback throttle, and also add REQ_META together indicates it's a
-metadata IO.
+Validate SMB message with ->check_message() before calling
+->calc_smb_size().
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20231129114740.2686201-2-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+This fixes CVE-2023-6610.
+
+Reported-by: j51569436@gmail.com
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218219
+Cc; stable@vger.kernel.org
+Signed-off-by: Paulo Alcantara <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/commit.c     |  9 +++++----
- fs/jbd2/journal.c    | 20 +++++++++++---------
- include/linux/jbd2.h |  3 +++
- 3 files changed, 19 insertions(+), 13 deletions(-)
+ fs/smb/client/smb2misc.c | 30 +++++++++++++++---------------
+ fs/smb/client/smb2ops.c  |  6 ++++--
+ 2 files changed, 19 insertions(+), 17 deletions(-)
 
-diff --git a/fs/jbd2/commit.c b/fs/jbd2/commit.c
-index f1d9db6686e3..447c6972a6d3 100644
---- a/fs/jbd2/commit.c
-+++ b/fs/jbd2/commit.c
-@@ -123,7 +123,7 @@ static int journal_submit_commit_record(journal_t *journal,
- 	struct commit_header *tmp;
- 	struct buffer_head *bh;
- 	struct timespec64 now;
--	blk_opf_t write_flags = REQ_OP_WRITE | REQ_SYNC;
-+	blk_opf_t write_flags = REQ_OP_WRITE | JBD2_JOURNAL_REQ_FLAGS;
+diff --git a/fs/smb/client/smb2misc.c b/fs/smb/client/smb2misc.c
+index e20b4354e703..82b84a4941dd 100644
+--- a/fs/smb/client/smb2misc.c
++++ b/fs/smb/client/smb2misc.c
+@@ -173,6 +173,21 @@ smb2_check_message(char *buf, unsigned int len, struct TCP_Server_Info *server)
+ 	}
  
- 	*cbh = NULL;
- 
-@@ -429,8 +429,7 @@ void jbd2_journal_commit_transaction(journal_t *journal)
- 		 */
- 		jbd2_journal_update_sb_log_tail(journal,
- 						journal->j_tail_sequence,
--						journal->j_tail,
--						REQ_SYNC);
-+						journal->j_tail, 0);
- 		mutex_unlock(&journal->j_checkpoint_mutex);
- 	} else {
- 		jbd2_debug(3, "superblock not updated\n");
-@@ -749,6 +748,7 @@ void jbd2_journal_commit_transaction(journal_t *journal)
- 
- 			for (i = 0; i < bufs; i++) {
- 				struct buffer_head *bh = wbuf[i];
+ 	mid = le64_to_cpu(shdr->MessageId);
++	if (check_smb2_hdr(shdr, mid))
++		return 1;
 +
- 				/*
- 				 * Compute checksum.
- 				 */
-@@ -761,7 +761,8 @@ void jbd2_journal_commit_transaction(journal_t *journal)
- 				clear_buffer_dirty(bh);
- 				set_buffer_uptodate(bh);
- 				bh->b_end_io = journal_end_buffer_io_sync;
--				submit_bh(REQ_OP_WRITE | REQ_SYNC, bh);
-+				submit_bh(REQ_OP_WRITE | JBD2_JOURNAL_REQ_FLAGS,
-+					  bh);
- 			}
- 			cond_resched();
- 
-diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
-index 611337b0b5ad..3df45e4699f1 100644
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -1109,8 +1109,7 @@ int __jbd2_update_log_tail(journal_t *journal, tid_t tid, unsigned long block)
- 	 * space and if we lose sb update during power failure we'd replay
- 	 * old transaction with possibly newly overwritten data.
- 	 */
--	ret = jbd2_journal_update_sb_log_tail(journal, tid, block,
--					      REQ_SYNC | REQ_FUA);
-+	ret = jbd2_journal_update_sb_log_tail(journal, tid, block, REQ_FUA);
- 	if (ret)
- 		goto out;
- 
-@@ -1597,8 +1596,7 @@ static int journal_reset(journal_t *journal)
- 		 */
- 		jbd2_journal_update_sb_log_tail(journal,
- 						journal->j_tail_sequence,
--						journal->j_tail,
--						REQ_SYNC | REQ_FUA);
-+						journal->j_tail, REQ_FUA);
- 		mutex_unlock(&journal->j_checkpoint_mutex);
- 	}
- 	return jbd2_journal_start_thread(journal);
-@@ -1620,6 +1618,11 @@ static int jbd2_write_superblock(journal_t *journal, blk_opf_t write_flags)
- 		return -EIO;
++	if (shdr->StructureSize != SMB2_HEADER_STRUCTURE_SIZE) {
++		cifs_dbg(VFS, "Invalid structure size %u\n",
++			 le16_to_cpu(shdr->StructureSize));
++		return 1;
++	}
++
++	command = le16_to_cpu(shdr->Command);
++	if (command >= NUMBER_OF_SMB2_COMMANDS) {
++		cifs_dbg(VFS, "Invalid SMB2 command %d\n", command);
++		return 1;
++	}
++
+ 	if (len < pdu_size) {
+ 		if ((len >= hdr_size)
+ 		    && (shdr->Status != 0)) {
+@@ -193,21 +208,6 @@ smb2_check_message(char *buf, unsigned int len, struct TCP_Server_Info *server)
+ 		return 1;
  	}
  
-+	/*
-+	 * Always set high priority flags to exempt from block layer's
-+	 * QOS policies, e.g. writeback throttle.
-+	 */
-+	write_flags |= JBD2_JOURNAL_REQ_FLAGS;
- 	if (!(journal->j_flags & JBD2_BARRIER))
- 		write_flags &= ~(REQ_FUA | REQ_PREFLUSH);
- 
-@@ -1873,7 +1876,7 @@ void jbd2_journal_update_sb_errno(journal_t *journal)
- 	jbd2_debug(1, "JBD2: updating superblock error (errno %d)\n", errcode);
- 	sb->s_errno    = cpu_to_be32(errcode);
- 
--	jbd2_write_superblock(journal, REQ_SYNC | REQ_FUA);
-+	jbd2_write_superblock(journal, REQ_FUA);
+-	if (check_smb2_hdr(shdr, mid))
+-		return 1;
+-
+-	if (shdr->StructureSize != SMB2_HEADER_STRUCTURE_SIZE) {
+-		cifs_dbg(VFS, "Invalid structure size %u\n",
+-			 le16_to_cpu(shdr->StructureSize));
+-		return 1;
+-	}
+-
+-	command = le16_to_cpu(shdr->Command);
+-	if (command >= NUMBER_OF_SMB2_COMMANDS) {
+-		cifs_dbg(VFS, "Invalid SMB2 command %d\n", command);
+-		return 1;
+-	}
+-
+ 	if (smb2_rsp_struct_sizes[command] != pdu->StructureSize2) {
+ 		if (command != SMB2_OPLOCK_BREAK_HE && (shdr->Status == 0 ||
+ 		    pdu->StructureSize2 != SMB2_ERROR_STRUCTURE_SIZE2_LE)) {
+diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
+index 94e4af4128f1..0604696f59c1 100644
+--- a/fs/smb/client/smb2ops.c
++++ b/fs/smb/client/smb2ops.c
+@@ -403,8 +403,10 @@ smb2_dump_detail(void *buf, struct TCP_Server_Info *server)
+ 	cifs_server_dbg(VFS, "Cmd: %d Err: 0x%x Flags: 0x%x Mid: %llu Pid: %d\n",
+ 		 shdr->Command, shdr->Status, shdr->Flags, shdr->MessageId,
+ 		 shdr->Id.SyncId.ProcessId);
+-	cifs_server_dbg(VFS, "smb buf %p len %u\n", buf,
+-		 server->ops->calc_smb_size(buf));
++	if (!server->ops->check_message(buf, server->total_read, server)) {
++		cifs_server_dbg(VFS, "smb buf %p len %u\n", buf,
++				server->ops->calc_smb_size(buf));
++	}
+ #endif
  }
- EXPORT_SYMBOL(jbd2_journal_update_sb_errno);
  
-@@ -2178,8 +2181,7 @@ int jbd2_journal_destroy(journal_t *journal)
- 				++journal->j_transaction_sequence;
- 			write_unlock(&journal->j_state_lock);
- 
--			jbd2_mark_journal_empty(journal,
--					REQ_SYNC | REQ_PREFLUSH | REQ_FUA);
-+			jbd2_mark_journal_empty(journal, REQ_PREFLUSH | REQ_FUA);
- 			mutex_unlock(&journal->j_checkpoint_mutex);
- 		} else
- 			err = -EIO;
-@@ -2488,7 +2490,7 @@ int jbd2_journal_flush(journal_t *journal, unsigned int flags)
- 	 * the magic code for a fully-recovered superblock.  Any future
- 	 * commits of data to the journal will restore the current
- 	 * s_start value. */
--	jbd2_mark_journal_empty(journal, REQ_SYNC | REQ_FUA);
-+	jbd2_mark_journal_empty(journal, REQ_FUA);
- 
- 	if (flags)
- 		err = __jbd2_journal_erase(journal, flags);
-@@ -2538,7 +2540,7 @@ int jbd2_journal_wipe(journal_t *journal, int write)
- 	if (write) {
- 		/* Lock to make assertions happy... */
- 		mutex_lock_io(&journal->j_checkpoint_mutex);
--		jbd2_mark_journal_empty(journal, REQ_SYNC | REQ_FUA);
-+		jbd2_mark_journal_empty(journal, REQ_FUA);
- 		mutex_unlock(&journal->j_checkpoint_mutex);
- 	}
- 
-diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
-index ebb1608d9dcd..6611af5f1d0c 100644
---- a/include/linux/jbd2.h
-+++ b/include/linux/jbd2.h
-@@ -1374,6 +1374,9 @@ JBD2_FEATURE_INCOMPAT_FUNCS(csum2,		CSUM_V2)
- JBD2_FEATURE_INCOMPAT_FUNCS(csum3,		CSUM_V3)
- JBD2_FEATURE_INCOMPAT_FUNCS(fast_commit,	FAST_COMMIT)
- 
-+/* Journal high priority write IO operation flags */
-+#define JBD2_JOURNAL_REQ_FLAGS		(REQ_META | REQ_SYNC | REQ_IDLE)
-+
- /*
-  * Journal flag definitions
-  */
 -- 
 2.43.0
 
