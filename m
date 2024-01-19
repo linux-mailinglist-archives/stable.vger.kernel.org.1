@@ -1,80 +1,80 @@
-Return-Path: <stable+bounces-12228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D0458323E1
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 04:53:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28D3B8323F2
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 05:00:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC8C21F245C8
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 03:53:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FDC6B23373
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 04:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA51C1871;
-	Fri, 19 Jan 2024 03:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ECFF210B;
+	Fri, 19 Jan 2024 03:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VBRBCLmD"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ZQ5uodvV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
+Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B750186F
-	for <stable@vger.kernel.org>; Fri, 19 Jan 2024 03:53:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA211870
+	for <stable@vger.kernel.org>; Fri, 19 Jan 2024 03:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705636383; cv=none; b=awSGRHeapI4gVX0qkif3OnLeg+yhdDuE9YFcfhv/ha3xUtzV+X/QjtMtEMSQguObgTXUs7HZWlG9/t2lUGstVVHKosuzZKeuS30vi/7nOmqFlsktqUGHZUCy/hfOP8Fi6mtkOIW5kGvd/ZzLxjtUTyCctmU8WcRGWWkZdCcnHAQ=
+	t=1705636798; cv=none; b=olJQAqXWLSoTWUZxGgsjs2l0/oR8fBj+cBbuG2Sa4Bp0UP5V/SbGGuoCNflBb1UQba6CBYoGhT222Y0tdOHPWVhqCzdMRbeKZwaqs/sxBSnQOCgI06T5wgt4+RmbfyvY8Eiy9A/OK1gAu09naNvPJtDNu1OdgJoIN7Ctg8lNEdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705636383; c=relaxed/simple;
-	bh=mo8c6Bmp42CGWSM8HU8elamRn6AuuJjgecJ+w6iel0w=;
+	s=arc-20240116; t=1705636798; c=relaxed/simple;
+	bh=5e9g7q6Oan2+OiKIu9+bnga3V9sAcKCrfBAEZwF7lOw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kPwwS0OW9xVyutbnB/YhVPwXvuG9IBaXXcZL4Ceu6NZIs9a9cN2lqrtFj0aiaESdUR+meIi9xauZjp4PFfXPo9IDzujaSx9hwEVVql5vExd3KXDuKUUQImDC385k51oHhDSy7oRBWISFJRvAKsGtrglCSUaSQeERuEGShq42/us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VBRBCLmD; arc=none smtp.client-ip=209.85.221.178
+	 To:Cc:Content-Type; b=m4akZsRnHUt8aV3Z87XR/CNUYA6oidKIIIHOZPSh0WgvYhe658oQzrbwYIHJpahJN+FyTzddMOQJROPi3VwyjS+53PlMma99n79xUrMUzuQ5Ft/Q224w3KmO7pylYz49KfC0P4cknwOgAsyRTLGLn7WeIN5UQDvpMhfnl8gBH+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ZQ5uodvV; arc=none smtp.client-ip=209.85.217.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-4b71e8790efso92697e0c.3
-        for <stable@vger.kernel.org>; Thu, 18 Jan 2024 19:53:01 -0800 (PST)
+Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-466fb253b19so839228137.1
+        for <stable@vger.kernel.org>; Thu, 18 Jan 2024 19:59:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1705636380; x=1706241180; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1705636795; x=1706241595; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=u3/2Z2xESJ2KA2jr25zZLyl5xbY/16kqULi2iZR1W8M=;
-        b=VBRBCLmD/kHvy4Fq1qRIe7+lgBHUmLlidGZLkmT+FtEprnxRsnaReLvQlyFHGrPcYQ
-         jwXzpZI+YS3aUxq4NYeuocAMNss9oqSef0hhs8K1l51fUA+Rkh9p6ffZRVnTv/Jd910w
-         lt2HsiQlQOHACH9Qp9djhHqmcZ32rP06GjbHnhIFf3dYVS+pGt9bEVhu5NPY+8P6jccI
-         k+/zJr/ddF+JXYCEESjNfRNJFGbqt0X2gI/DfypFLRoCrG1dlAXRBnfhMwIT/SlfIkyJ
-         ywGDxOFwhG0VbkdO8rOBOCDMwSUpYH5m0yRVBzPw0dkXUN+7jX8X6lYFuskEoOBxLioW
-         t35g==
+        bh=TRMPaZA6cVxoYnie+2qHsbMZkkAgDRtDwgtb7B7rVgk=;
+        b=ZQ5uodvVt4G9lZ/jCkSZwICaxSTquaenmKnwuNWl7WZTZOUVyz21nDgWGme/RRfBb6
+         QOjR3IrO1GSeSqJgLf5kmQ2b5Y4OjXEUDeXe34nU+h7/j6v8jQUn/PmSyTQ2b4u8QyVG
+         /0DEFjeD/YXQEtOqhT47GoRRJAynx1v/8BGqfGewfd0iWCGh8m/y4z8kq3CYwGFSZTfU
+         fVF5ukUpihRFsxn1cYOSoRGeV0y39fXfXRy1C7FWChMcxS0o8kMhnnQcyt21T94GTyTA
+         FIhDtsCtKUa6907h3xGrmI1CLrjd7ECCBYB1THzA5OyUGS3c7I4NvyFTpg3pQsqI8z1+
+         HGxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705636380; x=1706241180;
+        d=1e100.net; s=20230601; t=1705636795; x=1706241595;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=u3/2Z2xESJ2KA2jr25zZLyl5xbY/16kqULi2iZR1W8M=;
-        b=XenGXFpCCAT4NO+fB+MLHWxH0wL5j4OzanvpwaOGsMpc7rl9WdFTQqUOs+EuhvzGCl
-         H1ZAnXGxcNdmgFqbpHOj7I43n1eQnfuWV7RNdbxm+BK1hwXduXV2k2ZNAKCNVLjNnXAi
-         1RtZUhbnopXteKV8nQ4GUAvkJJt3jKIvXTD/r9yqSzoQAxuBz6Pmbktb/znlR01XCkmv
-         zA0Pojeei+sqSv4tJa27eh9MNtID1lKE/tnJJCMD7hKS8+boA97fqgXK2MOvj9BjEcVZ
-         HXiVXyfAhW5YD+7nmJr3yFwqTUEMoIM9P54t8z7xW1rMoGvICcyumhmeegpi6YfpsYZX
-         ef4g==
-X-Gm-Message-State: AOJu0YzDs3GvfFHJR1/skMMnsPpojh3CaQS9bJaZDnDNK5XjaIjlqMxF
-	Lhx32Kpb069MMFyPdFECLM5kMQqFNYtoGphnZhjsFDXcKhz/UOxEOQeevcYYCFemMvxEEz7axo9
-	t7KdITE8CZlcGKUpvh7wXyymM7zV9zVtuctrz1g==
-X-Google-Smtp-Source: AGHT+IFBn8+Y0RhN4QAWZqaCdFNIKah+oo28LokVMtCcQILvtRlHxw7vlb1tQmANN+LKttZN0RO9KtqOFtkXRHgAV0k=
-X-Received: by 2002:a1f:7cc7:0:b0:4b6:f254:b234 with SMTP id
- x190-20020a1f7cc7000000b004b6f254b234mr1543594vkc.32.1705636380096; Thu, 18
- Jan 2024 19:53:00 -0800 (PST)
+        bh=TRMPaZA6cVxoYnie+2qHsbMZkkAgDRtDwgtb7B7rVgk=;
+        b=iSrxItx/vkwfp6VL7YWfyiyi/FRJZz85ufcI22kMkj7eu8rVr4/1l/MVtRBkAWa0Ls
+         gC/Zg6w06WqXijnWYJyGrIzBuXplIzI+4Rh6MHV1HYgVy8ReHCztb2j4QoHXEfhqPupc
+         fyCw4TYCRJbWUPf1qluHnhI+G2R/6lz7oTlD/UyI4kJ0BalaEmku6qR8tkqD8rZ6JYUA
+         RBXWSKUFKIBwi84xNKBAPPyxY12YrTpO3k1yWkYoNLiEisbRKgQI9J7Seq4f3PnciWJT
+         nLCgQmLcp/zAB/Z/4XMZn+ly5L2ykqXzG6NSQOnsXMgAB3ZSOlzRZcXsXUJZLlA72uq4
+         2DYw==
+X-Gm-Message-State: AOJu0YzOxyxs5gIkk4wjQVbOxWDFIDCihvU8NPhrBIWDc9/9Pgo0hhG+
+	QIioO1YHIFGMWyosUOW8wJt/h04d6Yzw6kI2oc8OQfAYLVTlkqbE5UGu1kuXtmMbBSFm9tvaf5u
+	L6ndkLmKL+1eisgGe/JpKZ+ZQiBZE24z28gI6Tg==
+X-Google-Smtp-Source: AGHT+IGCG1fEx3hI5i+08dvBfYjHvAtAHA4tYqk2WlJ5JI20qJWhK4NM0fjnnykc6i/Fv8eTnpJMKke4sNcnSNQ/Sn4=
+X-Received: by 2002:a05:6102:3713:b0:469:93ac:6dd4 with SMTP id
+ s19-20020a056102371300b0046993ac6dd4mr267534vst.21.1705636795545; Thu, 18 Jan
+ 2024 19:59:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240118104310.892180084@linuxfoundation.org> <96dc2b0b-ad51-42f9-a305-744d9d97272e@gmail.com>
-In-Reply-To: <96dc2b0b-ad51-42f9-a305-744d9d97272e@gmail.com>
+References: <20240118104320.029537060@linuxfoundation.org> <ab9bef24-a07b-4930-b09a-b3c0f4e04789@gmail.com>
+In-Reply-To: <ab9bef24-a07b-4930-b09a-b3c0f4e04789@gmail.com>
 From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Fri, 19 Jan 2024 09:22:48 +0530
-Message-ID: <CA+G9fYvviOww1sOPxZDJR471TUhu+Brgv-k9YqKP_mb++Ek9GA@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/100] 6.1.74-rc1 review
+Date: Fri, 19 Jan 2024 09:29:44 +0530
+Message-ID: <CA+G9fYt3TKtjxV6=CQTwe5mDuYP7JYyFpkUb05StTEx7E4Mk3Q@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/150] 6.6.13-rc1 review
 To: Stefan Wiehler <stefan.wiehler@nokia.com>, Florian Fainelli <f.fainelli@gmail.com>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
@@ -85,13 +85,11 @@ Cc: stable@vger.kernel.org, patches@lists.linux.dev,
 	rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 19 Jan 2024 at 00:40, Florian Fainelli <f.fainelli@gmail.com> wrote:
+On Fri, 19 Jan 2024 at 00:52, Florian Fainelli <f.fainelli@gmail.com> wrote:
 >
-> +Stefan,
->
-> On 1/18/24 02:48, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 6.1.74 release.
-> > There are 100 patches in this series, all will be posted as a response
+> On 1/18/24 02:47, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.6.13 release.
+> > There are 150 patches in this series, all will be posted as a response
 > > to this one.  If anyone has any issues with these being applied, please
 > > let me know.
 > >
@@ -99,18 +97,19 @@ On Fri, 19 Jan 2024 at 00:40, Florian Fainelli <f.fainelli@gmail.com> wrote:
 > > Anything received after that time might be too late.
 > >
 > > The whole patch series can be found in one patch at:
-> >       https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.74-rc1.gz
+> >       https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.13-rc1.gz
 > > or in the git tree and branch at:
-> >       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> >       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
 > > and the diffstat can be found below.
 > >
 > > thanks,
 > >
 > > greg k-h
 >
+> Same as with 6.1:
+>
 > ARM and ARM64 builds worked fine and passed tests, however BMIPS_GENERIC
 > fails to build with:
-
 
 Following MIPS builds failed on 6.6.y and 6.1.y
 but passed 6.7.y and Linux-next and mainline builds.
@@ -130,6 +129,7 @@ mips:
 
 Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
+
 >
 > arch/mips/kernel/smp.c: In function 'start_secondary':
 > arch/mips/kernel/smp.c:340:2: error: implicit declaration of function
@@ -140,11 +140,14 @@ Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 >    rcu_cpu_starting
 > cc1: all warnings being treated as errors
 > host-make[5]: *** [scripts/Makefile.build:250: arch/mips/kernel/smp.o]
+> Error 1
+> host-make[4]: *** [scripts/Makefile.build:500: arch/mips/kernel] Error 2
+> host-make[3]: *** [scripts/Makefile.build:500: arch/mips] Error 2
+> host-make[3]: *** Waiting for unfinished jobs....
 
-same here,
+same here.
 
->
-> which is caused by 7c20a4cc189eff36d5aeb586008a540d8024fbff ("mips/smp:
+> which is caused by 1fa03a4622bb26a31279a453aa251154f11e6c70 ("mips/smp:
 > Call rcutree_report_cpu_starting() earlier").
 >
 > It looks like rcutree_report_cpu_starting() has been introduced
@@ -154,11 +157,8 @@ same here,
 > For MIPS, it would like an adequate fix would be to
 > 's/rcutree_report_cpu_starting/rcu_cpu_starting/' for the 6.1 and 6.6
 > branches.
->
-> Stefan, do you agree?
 > --
 > Florian
-
 
 --
 Linaro LKFT
