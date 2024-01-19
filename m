@@ -1,125 +1,136 @@
-Return-Path: <stable+bounces-12266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5B783296C
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 13:20:00 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68BC8832981
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 13:30:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDD761F22905
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 12:19:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BD59B23B5A
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 12:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DF14F1F7;
-	Fri, 19 Jan 2024 12:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5052151C3B;
+	Fri, 19 Jan 2024 12:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G3Gpnp77"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RPw4y9ha"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49FC4F1E9;
-	Fri, 19 Jan 2024 12:19:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCB151C31;
+	Fri, 19 Jan 2024 12:30:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705666792; cv=none; b=uq9EnKDFDQDVDnDGTLI0ClDOja15mlQwJ4uDffelMZL++wH2hBKm/VPGpiO4SeTUXtzDpeUGsaFeoHqB4k2P68eFCDzu8HHZxaNT5UUQb12uJIQdcMvMLl8Vw/IrbzJvVeI9KVusJK/ZGPqSuKsWJP9xrFwooOgsws4lQUqUA8Y=
+	t=1705667446; cv=none; b=mQekVYb6fP4bP4KZXwLBT4Oo+RVvIempOsB0NW4stT1NZXbg1TSOcaNU7zfOwW7uQvt0XfdFy0qnHI6lno/aVgRLs/D4eXoidyzLg1dCa5rm7bYHFpEHV9oe1ISow1Q5rJ1OAqbNMO6VSDQSulIQlc0QINZDRMk6M5ph+mAc6v4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705666792; c=relaxed/simple;
-	bh=i+n/61kgcWXkxPHcQA/07eg6ZlpXHzcB6n/jUClBaxI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=El5jjCBb5XILyov9XOnorg/DmQI3rx3xSDFtFKErdYbdyED3UeGpfZ21u1j4ukWIqNjQRpZre80qX+8FDFBETLrB9MQiXXbiuh1NsvmOhw92Y7uqD2B584dIhOat7Wml0Hn0JPaQeqz814SqxGOjtGke2X9GUfEzG64tgF1dH1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G3Gpnp77; arc=none smtp.client-ip=209.85.219.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6818a9fe3d4so3486266d6.0;
-        Fri, 19 Jan 2024 04:19:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705666789; x=1706271589; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FPPT+g6/vYfGybVNL7MiSin3lpq9T6t1bR8kIbX9sOA=;
-        b=G3Gpnp77o6hQIBP/kcM1/KVR0rgDQ0DpB6weUNeTeUQKLz0z/3nFxdGGqNNZRhFmaT
-         qq26TZm09bCCuC6lK+q9p1I8D/h9HPD6Dau1VaNLghgKQSSVWgJ4a+YTdD0VX4+BY1DR
-         +iRiThQ46pmihEiFmGIeFAu1601fotsmDii0FTmIUKzoswkCAoAFJQJD7AblxsIglgG7
-         j+gNHWXgng3wdJkT/ww6OMnH4CqM5FsYGKHbttarlg+nC29V6SzfA2WJv3mT7Q8DFLxu
-         yUu4BIqYorYvmQZ3GbGIzBfJAG/e40MxXAlFOZHwzqVQTe9FsfUfEE8UWQfOQwJo1+Ls
-         WHMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705666789; x=1706271589;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FPPT+g6/vYfGybVNL7MiSin3lpq9T6t1bR8kIbX9sOA=;
-        b=QSSV044kYRs1vr2L0/oou8e/tWIIejCAkZG+nOqzaZkwe0MkLZ4PxPTzGJZHbpRyc8
-         oJbvL1T+JE7o+7OxaMSKHakQufTBpZcgGY2e7J4juSOA7IpgC5VW9/q/yvm85wPLk5Zf
-         Bv/ijx3/LgPwKw+HE0K8sC+Y6qWKkgeUEZIecXHLesZpMF/jH2KiaqKjGt/bLMkoVJHs
-         CG5VMAsvL8aNkTfsoChHDmqhniDch31RD5Bya8iGgZQgnYjAr5/+vvtyJOEpRTn7kuP9
-         +CVC776I0mNEbJ0M1wQ0nRMAHNtfiW7r4A50SJ/dOpabjpTsY6VyOkuxk9TCP3yG/orV
-         pW5w==
-X-Gm-Message-State: AOJu0Yx7Zwlkt2/osr8XDlkTjlfBErpAk9sBRTZ7l8Kegd8/6PG7bDv0
-	OQjHd4lz5BIcHSXp6lUdXnJC/CtoOmSqXJN8xZ4ZNueYFFuGFhIg9mbD7V9cEETzvGMXwuRdblP
-	Am7/7EbtvK2N9qClpQO64drfITkU=
-X-Google-Smtp-Source: AGHT+IEFwpuBF1HdsF/5uYHgYZTKeoyCK3qVffO/KRZKfseiCB5bxwA/RuVC3vQ0nJZ72hZQDb1QDYYpb5VHo16JstU=
-X-Received: by 2002:a05:6214:21c4:b0:681:86ff:ebb with SMTP id
- d4-20020a05621421c400b0068186ff0ebbmr2796964qvh.9.1705666789546; Fri, 19 Jan
- 2024 04:19:49 -0800 (PST)
+	s=arc-20240116; t=1705667446; c=relaxed/simple;
+	bh=lf/x0Quh6MyKXlY1+sTXB9JkbW7K3Z8gqVYtKQnWovY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=iGF4rT4JyO4JMj6gOp8So3kpT/5q4mWfGezxEB+2ruJ3a1S6pW4B5xreRcJtjpY8L9uy2tsHpJhDT01Z9p2mnsg3Qbae4kM23twYabH1hEh8g19E9q79jqdPv75wCNiVVlr2Cq6A2uamArzomCiblcDWov+Fhc5V6cArQZcy8qA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RPw4y9ha; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27AC8C433F1;
+	Fri, 19 Jan 2024 12:30:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705667445;
+	bh=lf/x0Quh6MyKXlY1+sTXB9JkbW7K3Z8gqVYtKQnWovY=;
+	h=From:Date:Subject:To:Cc:From;
+	b=RPw4y9haj2MJnJkAI4qo+e93kxuyl5RduirN7CTQDBURa2SIqCA/aLSYrPCQtIv5z
+	 mu6Dq8R/4bK1DJl9aRJg9OsZPvMc89qttUU0VPKMerKbXSnw1S/sxEn+C1GfHSoYr7
+	 goHrVsXGiZSttzcu7uoTxD87SLLkhInwDtz7RR7uDOVeDqmB60966z0zsOSLta+i+K
+	 eoNn1aJiTf1DAj6/SwoGkqfib8um1skRnMUCeBDMCMBnKJFGunny29p22LrkNSjv33
+	 cAyuRYUYYtuGC952IlvmCrDTDcEcZA6hJy4rOKhgyHS6nPks2KfsIMmXKMg4HWgg7V
+	 m1Ic4J6otPVUA==
+From: Mark Brown <broonie@kernel.org>
+Date: Fri, 19 Jan 2024 12:29:13 +0000
+Subject: [PATCH] arm64/signal: Don't assume that TIF_SVE means we saved SVE
+ state
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240119101454.532809-1-mszeredi@redhat.com> <CAOQ4uxiWtdgCQ+kBJemAYbwNR46ogP7DhjD29cqAw0qqLvQn4A@mail.gmail.com>
- <CAJfpegteroc6yJAmjh=MaqZOO9Q7ZJfg5BgMJFN3wdHGZK6gGw@mail.gmail.com>
-In-Reply-To: <CAJfpegteroc6yJAmjh=MaqZOO9Q7ZJfg5BgMJFN3wdHGZK6gGw@mail.gmail.com>
-From: Amir Goldstein <amir73il@gmail.com>
-Date: Fri, 19 Jan 2024 14:19:38 +0200
-Message-ID: <CAOQ4uxhVwnhOLxbfAjeGkwXA2iOz=-BXZNKUtY29UN_zTDtfCg@mail.gmail.com>
-Subject: Re: [PATCH v2] ovl: require xwhiteout feature flag on layer roots
-To: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Miklos Szeredi <mszeredi@redhat.com>, linux-unionfs@vger.kernel.org, 
-	Alexander Larsson <alexl@redhat.com>, linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240119-arm64-sve-signal-regs-v1-1-b9fd61b0289a@kernel.org>
+X-B4-Tracking: v=1; b=H4sIABhrqmUC/x3MQQqEMAxA0atI1gaaUnWYq4iLYmMNOB1JQATx7
+ haXb/H/BcYqbPBtLlA+xORfKqhtYF5jyYySqsE7HxzRB6P++oB2MJrkEjdUzobdQMQukQu+g9r
+ uyouc73ec7vsBYpiLk2cAAAA=
+To: Catalin Marinas <catalin.marinas@arm.com>, 
+ Will Deacon <will@kernel.org>
+Cc: Dave Martin <dave.martin@arm.com>, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Mark Brown <broonie@kernel.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.13-dev-5c066
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2214; i=broonie@kernel.org;
+ h=from:subject:message-id; bh=lf/x0Quh6MyKXlY1+sTXB9JkbW7K3Z8gqVYtKQnWovY=;
+ b=owEBbQGS/pANAwAKASTWi3JdVIfQAcsmYgBlqmtzPBMCsko55/jXqsoxUluay7LXpo0hu0HjvHCz
+ PZyP9CSJATMEAAEKAB0WIQSt5miqZ1cYtZ/in+ok1otyXVSH0AUCZaprcwAKCRAk1otyXVSH0HPNB/
+ 9y9XJ+fJvmEyASUiIVu/UIAd2Qk4l3C66okxn9mI/S7VqLaUHEh9tLhMijFVytufDmIC4m753GfaAu
+ NSRv8819LWicnjdi4blAutRme2U0WOXNCiY6XR1jUHlzcPF61O+wd6tzc1mHf9SFFFIotsS+SuoDUh
+ QaV3za/dMkCpofz8EputuaEV4eL3hbwSsZDwGVQCL7IG7PhIZqLvQE0s55GT/BaE5QhLCiTnBPWMUG
+ wV52GMdSPH1yuGo1AiztVv3dpjz6R4fexQa18A2M1n3fgj6cgXc9n4k5+Lfs6ZxrceVU/6I8YPutCI
+ P0cyhNis9PwLTRZUlAXnX2tqRVPYHU
+X-Developer-Key: i=broonie@kernel.org; a=openpgp;
+ fpr=3F2568AAC26998F9E813A1C5C3F436CA30F5D8EB
 
-On Fri, Jan 19, 2024 at 1:20=E2=80=AFPM Miklos Szeredi <miklos@szeredi.hu> =
-wrote:
->
-> On Fri, 19 Jan 2024 at 12:08, Amir Goldstein <amir73il@gmail.com> wrote:
->
-> > > @@ -577,6 +580,8 @@ static int ovl_dir_read_impure(const struct path =
-*path,  struct list_head *list,
-> > >         INIT_LIST_HEAD(list);
-> > >         *root =3D RB_ROOT;
-> > >         ovl_path_upper(path->dentry, &realpath);
-> > > +       if (ovl_path_check_xwhiteouts_xattr(ofs, &ofs->layers[0], &re=
-alpath))
-> > > +               rdd.in_xwhiteouts_dir =3D true;
-> >
-> > Not needed since we do not support xwhiteouts on upper.
->
-> Right.
->
-> > > @@ -1079,6 +1090,8 @@ static int ovl_get_layers(struct super_block *s=
-b, struct ovl_fs *ofs,
-> > >                 l->name =3D NULL;
-> > >                 ofs->numlayer++;
-> > >                 ofs->fs[fsid].is_lower =3D true;
-> > > +
-> > > +
-> >
-> > extra spaces.
->
-> Sorry, missing self review...
->
-> > Do you want me to fix/test and send this to Linus?
->
-> Yes please, if it's not a problem four you.
->
+When we are in a syscall we will only save the FPSIMD subset even though
+the task still has access to the full register set, and on context switch
+we will only remove TIF_SVE when loading the register state. This means
+that the signal handling code should not assume that TIF_SVE means that
+the register state is stored in SVE format, it should instead check the
+format that was recorded during save.
 
-ok. queued.
+Fixes: 8c845e273104 ("arm64/sve: Leave SVE enabled on syscall if we don't context switch")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc:  <stable@vger.kernel.org>
+---
+ arch/arm64/kernel/fpsimd.c | 2 +-
+ arch/arm64/kernel/signal.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-Thanks,
-Amir.
+diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+index 1559c706d32d..80133c190136 100644
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1626,7 +1626,7 @@ void fpsimd_preserve_current_state(void)
+ void fpsimd_signal_preserve_current_state(void)
+ {
+ 	fpsimd_preserve_current_state();
+-	if (test_thread_flag(TIF_SVE))
++	if (current->thread.fp_type == FP_STATE_SVE)
+ 		sve_to_fpsimd(current);
+ }
+ 
+diff --git a/arch/arm64/kernel/signal.c b/arch/arm64/kernel/signal.c
+index 0e8beb3349ea..425b1bc17a3f 100644
+--- a/arch/arm64/kernel/signal.c
++++ b/arch/arm64/kernel/signal.c
+@@ -242,7 +242,7 @@ static int preserve_sve_context(struct sve_context __user *ctx)
+ 		vl = task_get_sme_vl(current);
+ 		vq = sve_vq_from_vl(vl);
+ 		flags |= SVE_SIG_FLAG_SM;
+-	} else if (test_thread_flag(TIF_SVE)) {
++	} else if (current->thread.fp_type == FP_STATE_SVE) {
+ 		vq = sve_vq_from_vl(vl);
+ 	}
+ 
+@@ -878,7 +878,7 @@ static int setup_sigframe_layout(struct rt_sigframe_user_layout *user,
+ 	if (system_supports_sve() || system_supports_sme()) {
+ 		unsigned int vq = 0;
+ 
+-		if (add_all || test_thread_flag(TIF_SVE) ||
++		if (add_all || current->thread.fp_type == FP_STATE_SVE ||
+ 		    thread_sm_enabled(&current->thread)) {
+ 			int vl = max(sve_max_vl(), sme_max_vl());
+ 
+
+---
+base-commit: 0dd3ee31125508cd67f7e7172247f05b7fd1753a
+change-id: 20240118-arm64-sve-signal-regs-5711e0d10425
+
+Best regards,
+-- 
+Mark Brown <broonie@kernel.org>
+
 
