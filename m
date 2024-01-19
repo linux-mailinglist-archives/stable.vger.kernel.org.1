@@ -1,101 +1,151 @@
-Return-Path: <stable+bounces-12303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B2A4832FC0
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 21:30:22 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FA0C8331C8
+	for <lists+stable@lfdr.de>; Sat, 20 Jan 2024 01:19:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3355B282F59
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 20:30:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FD661C216EA
+	for <lists+stable@lfdr.de>; Sat, 20 Jan 2024 00:19:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CAD941A9A;
-	Fri, 19 Jan 2024 20:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67F1F36A;
+	Sat, 20 Jan 2024 00:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b="VhQWwBY+"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="J0stu7Nk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2054.outbound.protection.outlook.com [40.107.244.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF9F53E3E
-	for <stable@vger.kernel.org>; Fri, 19 Jan 2024 20:30:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705696219; cv=none; b=D6izTvK0PJZKliFbTPAvStkZnvLGmQxauehKYcQMBA77HEvHzo6sMtoIH8H97uD0j0X2Akoo4CXKgS8HhY9RT23UFzNQ/g7SE0VVYKFCoE6dxXef62nQuoQMVfrWE2+0O6iTtB3zIViEbo7Xre37PPawN/VueXV8bX3y0eyCxC0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705696219; c=relaxed/simple;
-	bh=8OYZqPISIFN5KLjECVoHCt1uNlCy0BijTW360W4wa40=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SX5LA7xwepIxgsUWap+LU6JmfovtHDk48nUce5snb71bFV7rhCX5ajUQcK7RreDnfOcJidG6R9S/lu/xmQHGrbyuXPh6yLKYDMMkP8v064TFSQT7H8Z8IXNWbA8CWGfAbi5qUhZgFgdJTXIWdznNxzvA2qVLfiDjwNWVwKrFfrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu; spf=pass smtp.mailfrom=szeredi.hu; dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b=VhQWwBY+; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szeredi.hu
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a28f66dc7ffso412996466b.0
-        for <stable@vger.kernel.org>; Fri, 19 Jan 2024 12:30:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1705696211; x=1706301011; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=uDGXTncqm9MB3BL9Zt8G5ddcs+43LzaU9pS4N/bFZaw=;
-        b=VhQWwBY+pdHZlWirKg0fqls4o1bwQvRHX+CK8OX7R8Kby4h2cFtIfTPohDR/ZO1+/J
-         kv0bCHdgSLWHUMQdqG95IdOcCQJ7wx17N8vbvkIxVBgfKnzLEzelTWw1CPfskU9MiZ1C
-         V0EPi9GmWu3vvnwxCO7QQ3yBe8qNGhR8IZWNE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705696211; x=1706301011;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uDGXTncqm9MB3BL9Zt8G5ddcs+43LzaU9pS4N/bFZaw=;
-        b=HkSweNPorBIOeagyhsJNc8VancWc1al6N7vDF177OnqW7U//VOCIXgyvEsSM1JOZ+G
-         9fnOsCPT/tSBJDrSHiJSNf0rtJJY6ojDqX4vVMa3Obw7W3X0cR4q34Sj8u11tAfsy2w4
-         pyRAN4YjTWJFKl3jhNBWKfSf/nW9j3NTIhU2CDxUVys5X7gciAXbosirBGyIqL1iEt/j
-         /dEgkNjpBBSNthGj4HEjShiztFaQ0hqhJOgEiBmbqfabtsKJp6QgYKf0R6r2AmUay543
-         mPr9vk087bxM5LlDY88H1p7MJGAYvkZTLoyxrNaSPHURg9afUZiL+77nHpTQnLk1EtJi
-         T9Kg==
-X-Gm-Message-State: AOJu0YxyzUv+ozbG0/Om9yTvSQDDCu00SMOCnDLKnbV6jM6W6xgFJpxT
-	61W92J4cxKpbeDFM1GAMQsWgNnxdp0FYMuVEqoVSl376VWjvZFP0exH68aLB0AXHXSV/FdRfXvf
-	wKcw5OBO04fHukOn1Kc4utt/9q7zpiwW5x7CFqw==
-X-Google-Smtp-Source: AGHT+IEAii7Y/IUup/E21nLLKZG3h7YMWqAccABZoHNHDmiuXaqhXigJUCgpyKgYEXNLdxgQ8bTu70xR/vO2hJ2VpyM=
-X-Received: by 2002:a17:906:714f:b0:a23:62fd:e2f6 with SMTP id
- z15-20020a170906714f00b00a2362fde2f6mr445811ejj.30.1705696210888; Fri, 19 Jan
- 2024 12:30:10 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97904EA3;
+	Sat, 20 Jan 2024 00:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705709962; cv=fail; b=CNAaUFBz5R6IN3KJZYgYimFqXbx5OLF/4fc5acTzugwKpa3ozJP169ThpyRhNDPUVaNixWgM2Iu/bDtcgBPVrQ3N42QN7ZzJ69mhwsg+8G4W6hHnOHo0lSI0nwt5Vy79g081HlFbOGkmxtpH+6xwEUrT2eBdg2+1hv+kfnsvIdw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705709962; c=relaxed/simple;
+	bh=QCUZLmTe+r6yLvRbBo8F+jlQq9pH9fGtNGKoZUvUSUc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=HZrWk5uIHSD9PW434MCwMpXLTPa5cy+fo50HRuiRfx7GXkzl7tuWYJ+vs/eCNn3OhJ+MrG36KUOWhAsJRutQ0vtPzI2rGgU01gcg6lasj7NTpbKzVk2IWDVdefsuxxWKTl10Lc5W49+Lt7AVTNpnf33secTsSPm3p89SQ05C9M8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=J0stu7Nk; arc=fail smtp.client-ip=40.107.244.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OoWuLB0VlppCr1fW8dlt0C7qwXPBuJNYOECrIZnLPNLg491bnhGRWiuEKCm5uAYG/FEOw4e+5ux9o3gKOAe7f+i/WYP8CP/vrRYpFl/XnT4O9qBryn8VXxtuXCyjBc/kjJidCrpYXN4y/MO9fMF4SNHidwIXst2Gt1lnw3EyWWLWEuneLn13yktG3ckYnqKAv7fbyA0HkY4mYPXqY9236nND2Ub8G7IKsHYG6UhOL5aHWUq8YaZAt6geNGL6CHTE/aLxmwD4rQaMz9paIeFFD1pBtmRBDSbXuI0wPbblCWx7w8ChhrYIVCSeyCCx9OUrPKlO37+SKMvy7TVc/BiOdw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3cf4itouiItrbdsCsPFCWZjNS07w9tcXJHynBa3gMyo=;
+ b=OgvMuwmuWSnNenOYDG+AXUtrTuF4lm40YjOA+cbd4SiLdK1K9MRLZkWh9fv7I9F8znpl3bIxhuBlaolZ6lXue8cQvZC6RaQopqYsiueBib1UmBMpKwddpikre0SW1vGAgkjJU4kzK331JeP8VA9JAQLyI6OacIG5c3N7kvMpo72oZ9/Gt5r57ruILTKx3oV7/MewqQEFzAn+4nNRRTkoiUlD4c8lDBMe7E6ELCUaMu1Ohxjj+Q04AdWMP5TecTztax5exLbnTu7DE1XRypl2IHR2RAFXYfVry9BV1kCpsJKsCca+lHNvdw+qUZSezJWMprfiMOGjok6x+NMuNGuiTA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3cf4itouiItrbdsCsPFCWZjNS07w9tcXJHynBa3gMyo=;
+ b=J0stu7NkKFwzPd0cLnaIA1OX2arVdJA4wiskUVyMv8mqExcxtTPgfU3ucUtM0rUGiC81Pfu2aa0zNoNdCnbn5DfkCyLLHIDHS9n2noT8RwwldaIRXgwSPD4zEqc+NpdLKBmxHrAiwQFtSdwUxmhgM63z/e+AjzonU1wN/a84ZNM=
+Received: from CH0PR04CA0018.namprd04.prod.outlook.com (2603:10b6:610:76::23)
+ by PH7PR12MB6908.namprd12.prod.outlook.com (2603:10b6:510:1ba::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7181.17; Sat, 20 Jan
+ 2024 00:19:16 +0000
+Received: from DS2PEPF00003445.namprd04.prod.outlook.com
+ (2603:10b6:610:76:cafe::a5) by CH0PR04CA0018.outlook.office365.com
+ (2603:10b6:610:76::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.24 via Frontend
+ Transport; Sat, 20 Jan 2024 00:19:15 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS2PEPF00003445.mail.protection.outlook.com (10.167.17.72) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7202.16 via Frontend Transport; Sat, 20 Jan 2024 00:19:15 +0000
+Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Fri, 19 Jan
+ 2024 18:19:14 -0600
+From: Mario Limonciello <mario.limonciello@amd.com>
+To: <ray.huang@amd.com>, <rafael@kernel.org>
+CC: <viresh.kumar@linaro.org>, <linux-pm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, Mario Limonciello
+	<mario.limonciello@amd.com>, <stable@vger.kernel.org>, <wkarny@gmail.com>
+Subject: [PATCH] cpufreq/amd-pstate: Fix setting scaling max/min freq values
+Date: Fri, 19 Jan 2024 05:33:19 -0600
+Message-ID: <20240119113319.54158-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240119101454.532809-1-mszeredi@redhat.com> <CAOQ4uxiWtdgCQ+kBJemAYbwNR46ogP7DhjD29cqAw0qqLvQn4A@mail.gmail.com>
- <5ee3a210f8f4fc89cb750b3d1a378a0ff0187c9f.camel@redhat.com> <CAOQ4uxiob0t4YDpEZ4urfro=NrXF+FH_Bvt9DbD1cHbJAWf88A@mail.gmail.com>
-In-Reply-To: <CAOQ4uxiob0t4YDpEZ4urfro=NrXF+FH_Bvt9DbD1cHbJAWf88A@mail.gmail.com>
-From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Fri, 19 Jan 2024 21:29:59 +0100
-Message-ID: <CAJfpeguFY8KX9kXPBgz5imVTV4A0R+aqS_SRiwdoPXPqR_B_xg@mail.gmail.com>
-Subject: Re: [PATCH v2] ovl: require xwhiteout feature flag on layer roots
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Alexander Larsson <alexl@redhat.com>, Miklos Szeredi <mszeredi@redhat.com>, linux-unionfs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PEPF00003445:EE_|PH7PR12MB6908:EE_
+X-MS-Office365-Filtering-Correlation-Id: c6b8fd6e-e063-4cde-860e-08dc194d6f94
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	CgOOpjoxkMOQ9pv0SFlUoCEcJowrR/JOmCQq6dF5/u36f4BVzpPXknqRSONmhTWG8/W4EVmNQoyZx7u4kVdh3uHbgkynrJZS7LRrH4Hfzc+fivonEzuLOE9IV+SVve2/S1BxsxfEercvGpgzAoilC7lrK6uA0PI15Hvs7FU21xCg5XnJGQdRNhUsDwBgUy+Lml8mSUxzxuD5B2APZR+ExGRrXn9lwbyS3daWNr9ZjavO8TKjv5KI+RlYHvGlJKsdHBg11jVBnwluUki0hfnRC9M+9kPdsIVVnOroLrBac0dpRIJoeXiQ0ShmQPbB3o1NRM8s/My8E+nHO9GQeMu1m99t7+R3lvwe8p+31fSO/UEw+rL7qdw4LJQScq3wbuyfqMEFldN+cawllNTc0VdY3nh6oWHO6caQDGP0XorbbXaOjOL/WE7c2EEZoqErADh1woHMW9KHGOhgoXNC3ujBjxtMJDKm7KX/gb3vTHGgOkK87Ag4igRmMR+7P8CxmYwi0nN7/txmJBwsKkjQFzET3+kqktOw/bbTAouDGVnyusKJvLJLmmOiuP5ZV88raqR8RDjgp0jab/h3EClcKGWa94oDFFcbWj8B1LDblkVzTUKRix3yDJYcDjhTMAtDj5ayK9foPW/TDcQcSMumQlFYuUPaCBGIB44uyCLpzOQ0uFwazkVkvLfRKB4DkEEvGTYGVvrdVgsZMP+8tX/Fq19+EEDc/cfHdabsMpZylDvFJV07WX6SECABdp4/dw5QphGBq1PkEFlBGNDlSLMrR8anmybqVbnwgSfK4i4QFY7dSo0=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(346002)(136003)(396003)(376002)(230922051799003)(82310400011)(64100799003)(1800799012)(186009)(451199024)(46966006)(40470700004)(36840700001)(40460700003)(110136005)(70586007)(2616005)(26005)(316002)(54906003)(44832011)(4326008)(8676002)(7696005)(8936002)(40480700001)(1076003)(70206006)(16526019)(83380400001)(2906002)(966005)(426003)(336012)(47076005)(478600001)(5660300002)(36860700001)(82740400003)(86362001)(81166007)(41300700001)(36756003)(356005)(2101003)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jan 2024 00:19:15.4323
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c6b8fd6e-e063-4cde-860e-08dc194d6f94
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS2PEPF00003445.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6908
 
-On Fri, 19 Jan 2024 at 20:06, Amir Goldstein <amir73il@gmail.com> wrote:
+Scaling min/max freq values were being cached and lagging a setting
+each time.  Fix the ordering of the clamp call to ensure they work.
 
-> How about checking xwhiteouts xattrs along with impure and
-> origin xattrs in ovl_get_inode()?
->
-> Then there will be no overhead in readdir and no need for
-> marking the layer root?
->
-> Miklos, would that be acceptable?
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217931
+Cc: stable@vger.kernel.org
+Cc: wkarny@gmail.com
+Fixes: febab20caeba ("cpufreq/amd-pstate: Fix scaling_min_freq and scaling_max_freq update")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+---
+ drivers/cpufreq/amd-pstate.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-It's certainly a good idea, but doesn't really address my worry.  The
-minor performance impact is not what bothers me most.  It's the fact
-that in the common case the result of these calls are discarded.
-That's just plain ugly, IMO.
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index 1f6186475715..1791d37fbc53 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -1232,14 +1232,13 @@ static void amd_pstate_epp_update_limit(struct cpufreq_policy *policy)
+ 	max_limit_perf = div_u64(policy->max * cpudata->highest_perf, cpudata->max_freq);
+ 	min_limit_perf = div_u64(policy->min * cpudata->highest_perf, cpudata->max_freq);
+ 
++	WRITE_ONCE(cpudata->max_limit_perf, max_limit_perf);
++	WRITE_ONCE(cpudata->min_limit_perf, min_limit_perf);
++
+ 	max_perf = clamp_t(unsigned long, max_perf, cpudata->min_limit_perf,
+ 			cpudata->max_limit_perf);
+ 	min_perf = clamp_t(unsigned long, min_perf, cpudata->min_limit_perf,
+ 			cpudata->max_limit_perf);
+-
+-	WRITE_ONCE(cpudata->max_limit_perf, max_limit_perf);
+-	WRITE_ONCE(cpudata->min_limit_perf, min_limit_perf);
+-
+ 	value = READ_ONCE(cpudata->cppc_req_cached);
+ 
+ 	if (cpudata->policy == CPUFREQ_POLICY_PERFORMANCE)
+-- 
+2.34.1
 
-My preferred alternative would be a mount option.  Amir, Alex, would
-you both be okay with that?
-
-Thanks,
-Miklos
 
