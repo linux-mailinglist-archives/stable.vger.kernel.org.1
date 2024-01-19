@@ -1,92 +1,134 @@
-Return-Path: <stable+bounces-12251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15AE183255D
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 09:03:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2283832568
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 09:06:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48B241C23BAA
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 08:03:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71591B24601
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 08:06:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D711D53B;
-	Fri, 19 Jan 2024 08:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81E7DDAE;
+	Fri, 19 Jan 2024 08:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="RQYlo/km"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iLqIgOTb"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57E3D53E;
-	Fri, 19 Jan 2024 08:03:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB61D53E;
+	Fri, 19 Jan 2024 08:06:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705651402; cv=none; b=VrVcF8wR0x+S8EuXiLH4x4GSDG71yuiY4L6iqKyB1CX+61Gd/dtsr9VrvnoxEtNbnJhYmElcv9Xpzjq7pRLcHXn+OUaQ8qS65Xr0FjS2J3Mm5HJnZgtp9uRjgGPCXZLQhXYVqT1LkCJ5Ks1LFePOwaNJ7UiM/Hahf/VOCIaCgtw=
+	t=1705651566; cv=none; b=m/qnemyX0G2TFXauRZ4mtWBxUYp4pwqHO1Y9VBMAlhUJenfW2bIJHKvmShXnS8yCGcs2C2+knv7GJmFkz8ddvTZtp7EFHMCICXQ4iiW+cEEj23ZkCOFVXtZiZevoWOyM5RNVroUuPToAWYFfuE5L3wlpy3bvEfj/+erP4la/ZOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705651402; c=relaxed/simple;
-	bh=0oCwPoNsmKLIpr2t1p4Hjr8yVMRRpG92q4+h1zMfNek=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YwPTvwyDDvXZCj+7sV7HZeD2Vd0TXLO6zYWc9E0sLLJ+ZfvX9vkTFqvXQBKuc/KfGJCb4vvlixR4CVTohJmD2rGgj15DAMfiNh2CwZJba6NA5GL77tga81Puc7FORQV6zCFwsVOXLCjNj1VI6kf44u+P3pnq4fW7vn+8K1nhjSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=RQYlo/km; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1705651387;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kZ44b7hysLq9iTugi8rkv8vLiPXIxMp8DXNRpoizLSs=;
-	b=RQYlo/kml3d5GyVYGKodxW+a/HfGcy9bm+WodODZtCdiYzWsXq7/2kHUFl6x1uFhZTvHP7
-	ghF4lPZZUHJn0xTUBRqxWFu2QQ7XVP52iWqj46td3Cl57Jpifjswsi0Gz+KUWumhYOea9r
-	qE67bsxw838VsX6Ybf6XE1IOK6tW95o=
-To: Ian Abbott <abbotti@mev.co.uk>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2] comedi: drivers: ni_tio: Fix arithmetic expression overflow
-Date: Fri, 19 Jan 2024 11:03:07 +0300
-Message-Id: <20240119080307.48944-1-arefev@swemel.ru>
+	s=arc-20240116; t=1705651566; c=relaxed/simple;
+	bh=WPQT+tS6NSneAp94KCLXM+GXH9VM9CTH1xf/mPDf+Lo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sZhHl40aREC6CCdWoVn7avRW7ydrTNZJgCu6oUwNDkyIQyNko2BG9sbiXIVjpXbZi7Gv726jderhWsQgJoiLr4ji5By3Wx0CZdltIu5EIa/hOMeyshQ8FO4Dtui254u7jOWoKUROFxp0zR4vKfoCtO8MnHPnouNWnjVV2gb/4EE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iLqIgOTb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7EFC433C7;
+	Fri, 19 Jan 2024 08:06:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705651566;
+	bh=WPQT+tS6NSneAp94KCLXM+GXH9VM9CTH1xf/mPDf+Lo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iLqIgOTbpKObnRHe8jUnzJO4m+SsNJiE3A1ihbhfIGWonvm+wVIQRsxR2AhBKYE1P
+	 phOTnPN3oVklYuHkuUP/zNTpo0+39gUqLF9/x+Md8NW7JKBJM3aEgKbihpDm0jrydt
+	 I2wbVIJu0S8VA05wF5mX3fep8pJCCsHRSqOZjLS2rMhzmtFwyCPjmVLtiKI1xcAOK2
+	 gznz2bVWsbpFg5/PwcP3W3ncSiFx/yGLVAy9MSEGaxj03+CDQFOoeRZaCU2svbYBsO
+	 nQC2TbmJsXbsZFRh0q4ENTIaf1KdUJHL/qrQ+l8vcb7/RWwRdftF52RPsVl/7Bvmnr
+	 i/O/OsMpH8slg==
+Received: from johan by xi.lan with local (Exim 4.96.2)
+	(envelope-from <johan@kernel.org>)
+	id 1rQjtG-0004aL-2O;
+	Fri, 19 Jan 2024 09:06:14 +0100
+Date: Fri, 19 Jan 2024 09:06:14 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Cc: Johan Hovold <johan+linaro@kernel.org>, Mark Brown <broonie@kernel.org>,
+	Banajit Goswami <bgoswami@quicinc.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 3/5] ASoC: qcom: sc8280xp: limit speaker volumes
+Message-ID: <ZaotdsEutSLfbD3x@hovoldconsulting.com>
+References: <20240118165811.13672-1-johan+linaro@kernel.org>
+ <20240118165811.13672-4-johan+linaro@kernel.org>
+ <ac6eb9f9-9a5c-472d-9a57-ee509d9589f9@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ac6eb9f9-9a5c-472d-9a57-ee509d9589f9@linaro.org>
 
-The value of an arithmetic expression period_ns * 1000 is subject
-to overflow due to a failure to cast operands to a larger data
-type before performing arithmetic
+On Fri, Jan 19, 2024 at 07:37:14AM +0000, Srinivas Kandagatla wrote:
+> 
+> 
+> On 18/01/2024 16:58, Johan Hovold wrote:
+> > The UCM configuration for the Lenovo ThinkPad X13s has up until now
+> > been setting the speaker PA volume to -3 dB when enabling the speakers,
+> > but this does not prevent the user from increasing the volume further.
+> > 
+> > Limit the PA volume to -3 dB in the machine driver to reduce the risk of
+> > speaker damage until we have active speaker protection in place.
+> > 
+> > Note that this will probably need to be generalised using
+> > machine-specific limits, but a common limit should do for now.
+> > 
+> > Cc: stable@vger.kernel.org	# 6.5
+> > Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+> > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> > ---
+> >   sound/soc/qcom/sc8280xp.c | 8 +++++---
+> >   1 file changed, 5 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/sound/soc/qcom/sc8280xp.c b/sound/soc/qcom/sc8280xp.c
+> > index ed4bb551bfbb..a19bfa354af8 100644
+> > --- a/sound/soc/qcom/sc8280xp.c
+> > +++ b/sound/soc/qcom/sc8280xp.c
+> > @@ -32,12 +32,14 @@ static int sc8280xp_snd_init(struct snd_soc_pcm_runtime *rtd)
+> >   	case WSA_CODEC_DMA_RX_0:
+> >   	case WSA_CODEC_DMA_RX_1:
+> >   		/*
+> > -		 * set limit of 0dB on Digital Volume for Speakers,
+> > -		 * this can prevent damage of speakers to some extent without
+> > -		 * active speaker protection
+> > +		 * Set limit of 0 dB on Digital Volume and -3 dB on PA Volume
+> > +		 * to reduce the risk of speaker damage until we have active
+> > +		 * speaker protection in place.
+> 
+> I would prefer a 0dB here instead of -3dB, this could become issue if we 
+> are testing speakers without any pluseaudio or any software 
+> amplification. ex: console
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+I know you want that, but I'm not willing to be the one raising the
+default volume that people have been using so far and that you have
+(unknowingly) used in your tests to verify that you did not break your
+speakers.
 
-Fixes: 3e90b1c7ebe9 ("staging: comedi: ni_tio: tidy up ni_tio_set_clock_src() and helpers")
-Cc: <stable@vger.kernel.org> # v5.15+ 
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
----
- V1 -> V2: Oh, good point.  It should be 1000ULL.
- drivers/comedi/drivers/ni_tio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Once you've run some more tests we can easily raise this limit.
 
-diff --git a/drivers/comedi/drivers/ni_tio.c b/drivers/comedi/drivers/ni_tio.c
-index da6826d77e60..acc914903c70 100644
---- a/drivers/comedi/drivers/ni_tio.c
-+++ b/drivers/comedi/drivers/ni_tio.c
-@@ -800,7 +800,7 @@ static int ni_tio_set_clock_src(struct ni_gpct *counter,
- 				GI_PRESCALE_X2(counter_dev->variant) |
- 				GI_PRESCALE_X8(counter_dev->variant), bits);
- 	}
--	counter->clock_period_ps = period_ns * 1000;
-+	counter->clock_period_ps = period_ns * 1000ULL;
- 	ni_tio_set_sync_mode(counter);
- 	return 0;
- }
--- 
-2.25.1
+I just want to make sure we have something safe in place ASAP now that
+people will soon be able to change the hardware volume control more
+easily (i.e. with the fixed UCM files).
 
+> >   		 */
+> >   		snd_soc_limit_volume(card, "WSA_RX0 Digital Volume", 84);
+> >   		snd_soc_limit_volume(card, "WSA_RX1 Digital Volume", 84);
+> > +		snd_soc_limit_volume(card, "SpkrLeft PA Volume", 1);
+> > +		snd_soc_limit_volume(card, "SpkrRight PA Volume", 1)
+> 
+> It would be nice to consider using component->name_prefix here.
+
+That can possibly be done later.
+
+Johan
 
