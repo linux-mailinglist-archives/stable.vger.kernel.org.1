@@ -1,149 +1,89 @@
-Return-Path: <stable+bounces-12293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6D7F832E21
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 18:27:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9049832E31
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 18:30:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E34D28809C
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 17:27:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90525287FA2
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 17:30:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D976055E6D;
-	Fri, 19 Jan 2024 17:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AF155E66;
+	Fri, 19 Jan 2024 17:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="quGWsSGd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i3llRGYJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2821F60B
-	for <stable@vger.kernel.org>; Fri, 19 Jan 2024 17:27:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB4C55E67;
+	Fri, 19 Jan 2024 17:30:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705685245; cv=none; b=UyIn4Df6kulCaqYjimWn0f+8jViQkaTMH7f9eOO0Aqf+nEDXQ/HTHd0wfL0RMlYTVfi0PBCzs0V0NKlptYLXDk5vInmBHgXi4gTdCmCs5c2Cnxt2bTy5fdASITPK5UlG3J4DIP3XQGRfsUPE12u1OtzbTQN+jvwP8enkfWEEZ54=
+	t=1705685433; cv=none; b=ThVWP92/AIgSlag66lzJcSaZQnSQvBTcJvsRf2TbyTI4tNFiOQcX9E5e3Y8vDmcGX3ypXoHP+Zj3aurqSLXMpXXvMofGU3MKJ/3NbUJgOHCsAjlpueXj1wHEFOKnDnqndiUYn4/Be93JhpE2WhFLA+jmFpQqwVjK9vSXRHMmJ2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705685245; c=relaxed/simple;
-	bh=hQAkoZXDTSlJOPauCujJoN2NrBGM5OoV2NNA7O0qjTM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b8/6pUy1QtaUuM8AaMkHvRZdr1r9zjZG5BXV5jqPda52LgsYLqJ552KPeWXZbd/yxHu21V9dfGMARJgpy7GQJtTtQaLR5cnUW3JVkc6yvD6lg6qNWUjalYyP/Mz/vM3bnUOMUt+kf7dONpqQnKZwYvBNL1aZwOb09/VzGuVdORE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=quGWsSGd; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-6dbbcb1aff8so723350b3a.3
-        for <stable@vger.kernel.org>; Fri, 19 Jan 2024 09:27:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1705685242; x=1706290042; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=n7a9skkOJDoeDAzXAlrhaoQRm2nSLoLLiCg9+PzsFlc=;
-        b=quGWsSGdOEtcTU9ih2drDjVvCefQO4cs7BSRcO4Es0flrcpXliW1PexXT+RbsXAYEF
-         p2Epbf3X7YseqN8BVVE9nWp55HO44LKdPh1UnVrk72dvv9JHoCxPm7PwahZLLKvbEQMl
-         186aMJYA/K2dhm8KXAe3K2m3BuPATWBn5eC0mLCqVVGNLGFeCpqMxpeiyJGbHoG41CqS
-         u8j2fGGL4z1RBR2KqICyfEBKy2jN6jzbPDsjjJsxUfKinWrY5vfLE6pmn3JIlCa9awjN
-         A5qlk/LUfiMO89gmfIeAKxFw84J/DsLteTI5jJFc6nZUn+T7seFtUGzYtXTWXp1l2TQ9
-         DyKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705685242; x=1706290042;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n7a9skkOJDoeDAzXAlrhaoQRm2nSLoLLiCg9+PzsFlc=;
-        b=H0tI/bZrk2u3RhsAabu8Y4rfT+hR2F2w1IxQOKXhYCd8mYH+/RknMlCUTh0bOogu8W
-         88Ny0LExCHtylZsEizTCSTPvIHQYPIderXTechjPQIrirFVdxvARnYSokEMb2Ko9kJT4
-         1JjAh37OBHKQwrHrg362udYz9Fj19e+2xKrKZN36IZth+I2o+Mjr90pvZp04lUcQnXzD
-         azBtV4NlYGsWgPHaSdn3VEUR59hoAmzBaZOvsqqCVMPiMev8k5QXWHbjHNonGjUGdl+w
-         ErDg8zv5YmMy4G1j1vFUOEAT/SA6ABMMA3U+bRueAb4TCzNGqxrRPaZclk77XWGHCrdc
-         D//A==
-X-Gm-Message-State: AOJu0Yzt2N7hHcsvxNq50db3EhJIFcgnEc2z6ZHYm2GlA69MQqtZ7XuD
-	CnC1a18HCEes0RCxX47H6i8CR+yVb6Y1uDeJCd5hYZizFaSaCgRzUBEla2Rx9g==
-X-Google-Smtp-Source: AGHT+IHbPj5dmEcO+DPizzQGXx6W1/gkhwSh7+VkZCpN/lNtDGV1jDgPXi6RNH85CfIegjQ4SZ61pA==
-X-Received: by 2002:a05:6a20:e123:b0:19a:e66e:b155 with SMTP id kr35-20020a056a20e12300b0019ae66eb155mr155863pzb.74.1705685242498;
-        Fri, 19 Jan 2024 09:27:22 -0800 (PST)
-Received: from google.com (77.62.105.34.bc.googleusercontent.com. [34.105.62.77])
-        by smtp.gmail.com with ESMTPSA id i124-20020a62c182000000b006dadc436071sm5574807pfg.36.2024.01.19.09.27.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jan 2024 09:27:22 -0800 (PST)
-Date: Fri, 19 Jan 2024 17:27:18 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Sherry Yang <sherryy@android.com>, linux-kernel@vger.kernel.org,
-	kernel-team@android.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2 05/28] binder: fix unused alloc->free_async_space
-Message-ID: <Zaqw9k4x7IUh6ys-@google.com>
-References: <20231201172212.1813387-1-cmllamas@google.com>
- <20231201172212.1813387-6-cmllamas@google.com>
- <Zal9HFZcC3rFjogI@google.com>
- <2024011955-quotation-zone-7f20@gregkh>
+	s=arc-20240116; t=1705685433; c=relaxed/simple;
+	bh=VgqbnLFz5iPiKxaAMDABGlr1WINNQw1Q6ApgWHjIOnw=;
+	h=Content-Type:MIME-Version:Subject:From:In-Reply-To:References:To:
+	 Cc:Message-ID:Date; b=BFL+0kF9inT7UdgEOOWQf4JkUnlxSRKj1kUH5LOsQ7HYhHg93x6mjxu+7n76i19RIN5ITd874vxRGCNDi9BG/xVpY2YHmt2jRYGAiDhLyOQ0slyxye38eSv5Q9vkXs0rIP+xIsh4efUt5NhqvMigEhJJyMY73UQMj3KIeF36olw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i3llRGYJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59CE6C433F1;
+	Fri, 19 Jan 2024 17:30:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705685433;
+	bh=VgqbnLFz5iPiKxaAMDABGlr1WINNQw1Q6ApgWHjIOnw=;
+	h=Subject:From:In-Reply-To:References:To:Cc:Date:From;
+	b=i3llRGYJe0u6tJJ+J7c1Bn0zqMZ6hlqSEMGwd6Lyvveb4nXfXEwLMY9+g051NSkBc
+	 DUWI5Kcb0d54FWLGfMO9pbwKxV30PLjPjvx2bGUcwANpBIlrUuof3J/kFtdigIVGxt
+	 iDNZkw4xiVPZ/fX2AgljZ24z/JcrEBqQdTUGHPsMsmra1frZYYJwjcqEsL0NCsKeHW
+	 pmmlpr+Y6Uxh9apbbZUnsQSbsmhsoVhwV/viZHN4yXie+U8eMJCnG1qoYtCyA5BWd1
+	 L/veHJg2UwBoTX3A7SNI9CjOb2nPTFQ6wg03ihUs5w+57R1TWXlie0AZGsDDEpLr9L
+	 mBkbdC5fmGa/Q==
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024011955-quotation-zone-7f20@gregkh>
+Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH V2 1/3] wifi: brcmfmac: Demote vendor-specific
+ attach/detach
+ messages to info
+From: Kalle Valo <kvalo@kernel.org>
+In-Reply-To: <20240106103835.269149-2-arend.vanspriel@broadcom.com>
+References: <20240106103835.269149-2-arend.vanspriel@broadcom.com>
+To: Arend van Spriel <arend.vanspriel@broadcom.com>
+Cc: linux-wireless@vger.kernel.org, Hector Martin <marcan@marcan.st>,
+ stable@vger.kernel.org, Arend van Spriel <arend.vanspriel@broadcom.com>
+User-Agent: pwcli/0.1.1-git (https://github.com/kvalo/pwcli/) Python/3.11.2
+Message-ID: <170568543007.3153793.3392867392129428991.kvalo@kernel.org>
+Date: Fri, 19 Jan 2024 17:30:32 +0000 (UTC)
 
-On Fri, Jan 19, 2024 at 06:49:00AM +0100, Greg Kroah-Hartman wrote:
-> On Thu, Jan 18, 2024 at 07:33:48PM +0000, Carlos Llamas wrote:
-> > On Fri, Dec 01, 2023 at 05:21:34PM +0000, Carlos Llamas wrote:
-> > > Each transaction is associated with a 'struct binder_buffer' that stores
-> > > the metadata about its buffer area. Since commit 74310e06be4d ("android:
-> > > binder: Move buffer out of area shared with user space") this struct is
-> > > no longer embedded within the buffer itself but is instead allocated on
-> > > the heap to prevent userspace access to this driver-exclusive info.
-> > > 
-> > > Unfortunately, the space of this struct is still being accounted for in
-> > > the total buffer size calculation, specifically for async transactions.
-> > > This results in an additional 104 bytes added to every async buffer
-> > > request, and this area is never used.
-> > > 
-> > > This wasted space can be substantial. If we consider the maximum mmap
-> > > buffer space of SZ_4M, the driver will reserve half of it for async
-> > > transactions, or 0x200000. This area should, in theory, accommodate up
-> > > to 262,144 buffers of the minimum 8-byte size. However, after adding
-> > > the extra 'sizeof(struct binder_buffer)', the total number of buffers
-> > > drops to only 18,724, which is a sad 7.14% of the actual capacity.
-> > > 
-> > > This patch fixes the buffer size calculation to enable the utilization
-> > > of the entire async buffer space. This is expected to reduce the number
-> > > of -ENOSPC errors that are seen on the field.
-> > > 
-> > > Fixes: 74310e06be4d ("android: binder: Move buffer out of area shared with user space")
-> > > Signed-off-by: Carlos Llamas <cmllamas@google.com>
-> > > ---
-> > 
-> > Sorry, I forgot to Cc: stable@vger.kernel.org.
+Arend van Spriel <arend.vanspriel@broadcom.com> wrote:
+
+> From: Hector Martin <marcan@marcan.st>
 > 
+> People are getting spooked by brcmfmac errors on their boot console.
+> There's no reason for these messages to be errors.
 > 
-> <formletter>
-> 
-> This is not the correct way to submit patches for inclusion in the
-> stable kernel tree.  Please read:
->     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> for how to do this properly.
-> 
-> </formletter>
+> Cc: stable@vger.kernel.org # 6.2.x
+> Fixes: d6a5c562214f ("wifi: brcmfmac: add support for vendor-specific firmware api")
+> Signed-off-by: Hector Martin <marcan@marcan.st>
+> [arend.vanspriel@broadcom.com: remove attach/detach vendor callbacks]
+> Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-Oops, here is the complete info:
+3 patches applied to wireless-next.git, thanks.
 
-Commit ID: c6d05e0762ab276102246d24affd1e116a46aa0c
-Subject:   "binder: fix unused alloc->free_async_space"
-Reason:    Fixes an incorrect calculation of available space.
-Versions:  v4.19+
+85da8f71aaa7 wifi: brcmfmac: Demote vendor-specific attach/detach messages to info
+b822015a1f57 wifi: brcmfmac: avoid invalid list operation when vendor attach fails
+edec42821911 wifi: brcmfmac: allow per-vendor event handling
 
-Note this patch will also have trivial conflicts in v4.19 and v5.4
-kernels as commit 261e7818f06e is missing there. Please let me know and
-I can send the corresponding patches separately.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/patch/20240106103835.269149-2-arend.vanspriel@broadcom.com/
 
-Thanks,
---
-Carlos Llamas
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+
 
