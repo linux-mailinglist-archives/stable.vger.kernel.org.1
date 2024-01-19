@@ -1,212 +1,279 @@
-Return-Path: <stable+bounces-12299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4BC4832F0E
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 19:43:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15E67832FAA
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 21:15:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2A4B1C237DA
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 18:43:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83BCC1F21D80
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 20:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FAE04CE08;
-	Fri, 19 Jan 2024 18:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7CE25646F;
+	Fri, 19 Jan 2024 20:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="NVJwChyX";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="JghTTc2S"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="rgndQQsr"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2082.outbound.protection.outlook.com [40.107.223.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2AD61D53A;
-	Fri, 19 Jan 2024 18:43:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1FBB58AA2
+	for <stable@vger.kernel.org>; Fri, 19 Jan 2024 20:15:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.82
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705689791; cv=fail; b=IOuiYZHyawQFvBJnmWVi4/r5krh3oeiLdMqbmZyJdy7dtN+9OQIiYVSuicPbRVlpp/t7m2BsJo9MQFu2xZUo4VcVen6BFcI4om7isB1jgOTwlleGa4ERcXYKhohNHb1Ef7ufGFKt4c63Tq8DPLnPkRX6R617GG7cEerY58zerws=
+	t=1705695329; cv=fail; b=TvZfvs6TZQkNjmni2jPEsRGQJ6htajar+IDstepBqwmX2PuFsITD3zDWp7dxy2Q/82DEUqQQf9o3gTz5kK8IQDHHnXC6LjfctO8l/+mLQolwqBGP7vMQ6dxu1NXqx7ZmdhIol2QV1ZYrMTxiEX2aglB6VXpNHX7Rq7cmVEAqNGc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705689791; c=relaxed/simple;
-	bh=5K13aAxPo7LWLlZqhLYQ61fnP/e7rg1pb1tzcTclcm8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=RogCqOvgSUU/V0f2lwarfJ2hKTe7k8tlDKkcIfpsNPuimjzvbzyDQ6C+05mgUwxq4HhdKkCPRLqw4uR9hnqSHq3IkUAvwnJWRp30gPs4gmTo8fxeh3l33zgSaY2KB2sZ6YK2zFI3O7opaLM2zCZLD9Qw1NlmD0m8qt8IKYVKdmQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=NVJwChyX; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=JghTTc2S; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 40JGtAe9018955;
-	Fri, 19 Jan 2024 18:42:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=message-id : date :
- subject : to : cc : references : from : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=corp-2023-11-20;
- bh=UEkPQJnEZNg2Vh+RE7w8Ze9ltJnWwYAlZqH+u+cVeFY=;
- b=NVJwChyXHyUwTmn6hLsz6cM5bX7Q//de4sE5RrvEhtIYqn1oI+nXRww6KoDCRGgN8ZLH
- RmIO7Mhso2rt5cccVjjCjB0eQ3una0HBcQP2xuzUThJzIY4o1CDt+cElPGkrMLMEkT8R
- Xe4OfYk9czMh3MXWPJLLv/l+NVj0WnUOA48tHqVqXme7Wi4hEM01HQ0VxVP66701y6C6
- wCcRUI0doxc0SXbH7REjBqR0VFZGZPFL750ilyy20x8ySSNqmC7f+FzJc5qxFVFd/ySr
- wruNubk2pIePl5X5el9v5rP85KVZj8oHaF+kIxaYenQ5LxcuBQuG3Z9r61EdmHGSJ355 0g== 
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3vkjba7dsk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 19 Jan 2024 18:42:26 +0000
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 40JHseYI025823;
-	Fri, 19 Jan 2024 18:42:26 GMT
-Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2169.outbound.protection.outlook.com [104.47.56.169])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 3vkgyg7fuh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 19 Jan 2024 18:42:26 +0000
+	s=arc-20240116; t=1705695329; c=relaxed/simple;
+	bh=zWVtmo94+U4uEn1Xzj3uKM9J7sO2xNsRFKfXEKHf300=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Urr2+obWZFLsv0PIquwWdC2/yVytk9vTzt0zARS5WSiyXjPQaWH0vGO287EZP/PGj/AKJVIwe12Y3sL6w6HkOaciHSd6T3z+BR7kuPOkl3L8wLqYD22ciLqnYXuCNIDhnrcL4CxrltjyLzzOAPpSHh46zYUqU5gJot1k/JxuSeE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=rgndQQsr; arc=fail smtp.client-ip=40.107.223.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FipT3Ym7htH/mRYAIDpv2Z+n32Tql4bLiFX4vyREJmyVBSv5NE2dZF26IEj1oDl3T1kPUIQC3gBb4k2BnPd5Po2eXeMgAzRZe5u3inN4U9zySA75T+uTY08ZAM2QtZltl5JyL4npkFVQ5CU6z1zUccZQ5GC8l/vf1aGhAK87aA5HYRfccTs1IafbJ6XEOcPYlwXqDBMOqNvnA780/PIIUSre7nroiyHWvKUepLCh2kf5v5UyTVoJTburCISxCsO27KbRvWRBnmTuxHb7c03QoWNHCxCqSZZbvMjEgoUqeH43OBJSf6H0aqMGvrf3qVj8tm9IjPS1DiQ5TJ8BLUCauw==
+ b=fIs2fpCC9D5IN42Jc/dULMZz3BV2e971L2ianzqN1wrHbCnguJ1vVuorbF4doB3C6XU5bqcm6stD6JugZ0T39cBayxS/ec5YuwGqW/z6bOK+TBGNzlzxa6S7ORLGHg7QYvAJlAaLZwoopzI5/IwNe5VSW3VRyA3oJ1FNVlxHKFSM2Id40rc0mjPGCm/UA/APs6CL3vyHcZvZB0hWnGPW3TT+rgLiVZmi1Kb7OUTfJ1fJ9KjK+eM0xZLGMg7kprIVgutLiFyTrzLtAH4cBn/L2hn1tY6hrTmQuN0Q+4aDCoiWbJUaODmxphk2dpL4Cu0RN0pcjzi2Ks21gT5hsFHlWQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UEkPQJnEZNg2Vh+RE7w8Ze9ltJnWwYAlZqH+u+cVeFY=;
- b=HRD3OM25HpfXsc8D2SiMBcrgKb2PDTo0SGbynkoMXSZU9BN75XQgYvhQJLcZ9da3kHUO8RCphSYLzTwG1k4LQS813DulQDCadXSJDIm3Iqc0NeWVfX8zm5b3WXp85gu54snF+WxEvYtUXCh+olMQo/DSSawLvJRZQLKi4aH4ZVddpp3bxOvPMrc1BTTCj6bDPAX6FKCK183T3Lz3o92yYq20ejWB668b7P0rgc3rBZSteXoEyv81z+CPF8IlZ7fjizf36D6N3tbSW2MIrkP2erSIUNg6Byqf4D80OdAAHyPFREBU/OakhT1MoXnIMcTBi7GDftnE2e9kWNVtoAceKQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ bh=E5vqgMhyg64ZaYeB0P8kMmrFGXOEMS1laEAV0w/8h5w=;
+ b=LWoX8jADtuLz4QysQHS8E5c4J0n3sg2nLrVITT87g4XaFH8P5YtQ38tVvFA3yV8JhPnhNVz1hrlAfFwqm8Qyx0RA23GykJW0wSmPGyTI9oClnNs0nqNlMET5kpD12qqsgctz8tSz0qEXUo0L0Dtqz1PuCWl/mg6VnbkYFFkY8M77cKCKzJ/9FUcB/9PpOJWG8wGqNm4nbc4lRwsPkTem61RhiTrxG6gqtF/EI6zyvtIPMeMrHScAYZq+0hHd6WiwEUnCxqf6TTR3mR29+Fy5WWG/FuoKjg8R53vkX7LrLgz8zIZP4IDmXyyMT6Nnfe9NtkLwF6VftBcFiW1e9w0pEg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UEkPQJnEZNg2Vh+RE7w8Ze9ltJnWwYAlZqH+u+cVeFY=;
- b=JghTTc2S6Ohz73Bz8KUe81qdGH+nhqkSh/Tr4kk960tTMDgy+hGIURKhtAqv2gi7xxwUwkX0DAQjZj7UgwMph68w8rIBzcuxzAinf46kpNo078q5sUE2IkJ/R5tGgOqwZ44PF/DZJIC7UrMYwwDJxGfHOgcOCszsMo1GaiovIjY=
-Received: from PH8PR10MB6290.namprd10.prod.outlook.com (2603:10b6:510:1c1::7)
- by PH8PR10MB6622.namprd10.prod.outlook.com (2603:10b6:510:222::5) with
+ bh=E5vqgMhyg64ZaYeB0P8kMmrFGXOEMS1laEAV0w/8h5w=;
+ b=rgndQQsrz5qZ1eNWG6vTsmKiNse4scw80/1i/gzRTTrPdGlE8ilv5uJ+YUh0zQb8DiGH0CUgb71HRZdrj0hIT/2qNH11XPGd25hYGNsKg1hgr7Jh1Hn+wxS+trV6nEHQ8aHAhwU58rkeoqF5i2/e6cSIyE5q3yF0sOHY6CIcYeg=
+Received: from CY5PR15CA0253.namprd15.prod.outlook.com (2603:10b6:930:66::20)
+ by DM6PR12MB4563.namprd12.prod.outlook.com (2603:10b6:5:28e::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.26; Fri, 19 Jan
- 2024 18:42:23 +0000
-Received: from PH8PR10MB6290.namprd10.prod.outlook.com
- ([fe80::f41b:4111:b10e:4fa5]) by PH8PR10MB6290.namprd10.prod.outlook.com
- ([fe80::f41b:4111:b10e:4fa5%4]) with mapi id 15.20.7202.024; Fri, 19 Jan 2024
- 18:42:23 +0000
-Message-ID: <2eefe89f-3d96-431c-8dac-72c796daa65c@oracle.com>
-Date: Sat, 20 Jan 2024 00:12:11 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 000/150] 6.6.13-rc1 review
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
-        rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
-        Vegard Nossum <vegard.nossum@oracle.com>,
-        Darren Kenny <darren.kenny@oracle.com>
-References: <20240118104320.029537060@linuxfoundation.org>
-From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TYCP301CA0014.JPNP301.PROD.OUTLOOK.COM
- (2603:1096:400:386::11) To PH8PR10MB6290.namprd10.prod.outlook.com
- (2603:10b6:510:1c1::7)
+ 2024 20:15:22 +0000
+Received: from CY4PEPF0000E9D7.namprd05.prod.outlook.com
+ (2603:10b6:930:66:cafe::11) by CY5PR15CA0253.outlook.office365.com
+ (2603:10b6:930:66::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.26 via Frontend
+ Transport; Fri, 19 Jan 2024 20:15:22 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CY4PEPF0000E9D7.mail.protection.outlook.com (10.167.241.78) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7181.14 via Frontend Transport; Fri, 19 Jan 2024 20:15:21 +0000
+Received: from AUS-P9-MLIMONCI.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.34; Fri, 19 Jan
+ 2024 14:15:20 -0600
+From: Mario Limonciello <mario.limonciello@amd.com>
+To: <amd-gfx@lists.freedesktop.org>
+CC: Mario Limonciello <mario.limonciello@amd.com>, Kenneth Feng
+	<kenneth.feng@amd.com>, <stable@vger.kernel.org>
+Subject: [PATCH] Revert "drm/amd/pm: fix the high voltage and temperature issue"
+Date: Fri, 19 Jan 2024 03:16:00 -0600
+Message-ID: <20240119091600.30188-1-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR10MB6290:EE_|PH8PR10MB6622:EE_
-X-MS-Office365-Filtering-Correlation-Id: adce1275-b19d-48a1-9a6c-08dc191e6037
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D7:EE_|DM6PR12MB4563:EE_
+X-MS-Office365-Filtering-Correlation-Id: 132c29ab-2b75-4ff3-4835-08dc192b5d62
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	zbM8McRTsha41eQtoLQ1id3FbEQcvV4P83VFYjwBAZre4OZMJ6kW1/GityaGQr2/iLwcJFZRntu/g4HjF+ObHByA80P2peQmVa0mQ5821LgKoFw5QgST4Wj3z95Lb5tLaCz82nDtmM0UVmCdhbM5HyscK2m/JQFXWU/ggV9FX8DNNEYHzSlrJz1zJVgkuVrrIBb3LZ5byEmT0j4/GUWZU8fA7f1d3IXMvWwNiOee7dPAWLeRW0oPr82GPQjW5P4tM/EPFGVbJABBujfwMSOf8V6ettbR676U5tKanKUIPSzq2yPyHAcwTAxNoY0/aAtKAazCh5hfGw+bIuLoXVw1VBWFctN8CqwPGCnLPfdcRy7GGrph+Z8XHjo63uaxM7TqGOX9mMqExReLXAawvQFmGs+EQKa+Wd+uUrpn4Nm9B3q7EZeYcan0ARlPT2p+WnCweXBy8ZKennXsBcWVy6oNrgX7y1xGqpvRS1ZD97wJNGPzGC92wrRWa3gl49eC39HsjXo0ohWwzVMbLXWZbYvrhFPTFGcDa69uWXYWAjrX38DCLQFER7J1BhsM8KzXLO5OWJCvY6ZoH7fYxrNGngBdcI22qoBoGbbgi4hZAeBkmjwpNGglYB/p1RbaOaUOFdinZv7xdqrVYLg72QuUdvq0rw==
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR10MB6290.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(366004)(136003)(376002)(39860400002)(346002)(230922051799003)(186009)(451199024)(64100799003)(1800799012)(31686004)(6666004)(4326008)(5660300002)(53546011)(6486002)(8676002)(8936002)(2616005)(316002)(966005)(6512007)(6506007)(66476007)(66556008)(66946007)(478600001)(54906003)(26005)(107886003)(38100700002)(31696002)(2906002)(7416002)(4744005)(36756003)(41300700001)(86362001)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?YitvSVY1QTZxMzgyL2l3K0RBNzFSU2c5TjhQTDFhV3dDNVl5cWpQOHBsTFJj?=
- =?utf-8?B?R0RLTFF3MnE2bUhlKy9VYW9GaUtNMnNJb1lVNWtUVnhwTFU4MWlWalBGWlIx?=
- =?utf-8?B?bzlxK29na0luWElPL1BRRUtKWXRRbTErVDVBcCtwNG9aN3ZpYzVyYlhrMnpv?=
- =?utf-8?B?bmVFelJEaklIN2V0cjRzNWtyQ1FwbU8xUEFaQzlsaFhLaGNJS2k3dCswMG5t?=
- =?utf-8?B?RzQ0endkTFpGdlIzYlNzSlcycXVIbDh4eWFQT2xHbFNMbTA0V0JzU3NPTVFN?=
- =?utf-8?B?eWhlK2JKYnAydWZxc3BvME5GelFMZUpaL3Qzc3pWN0VKYWFSYm1zOW1GTGly?=
- =?utf-8?B?V1o2UHZLUWlpd2w3bC9TS2tIcjA2WmE3Mms1bmlYN3IyUHp4UUpMOTZwc01y?=
- =?utf-8?B?ZVhHd0tjR2NHbFd4anRqTE1WK1lzeGFPUzYyQTdHTjFIK1U2T0FJMmt1U0lj?=
- =?utf-8?B?R1plWitvZ0FjKzYveHZlR2dVYXJFeVhnSHZaU2dGWnVuemhNNGg4N1ArMTh3?=
- =?utf-8?B?SVlqQzduWEY0alpzbVh0aDdSM0pIdXFhbnNYUWtrR2Nxby9wQU1LQUkzaENu?=
- =?utf-8?B?VVlRK09XVzExY1NXZ3BWc3VPZGRleTJNWURFYWpYb0RTd0hvV0w5QkNLOEpi?=
- =?utf-8?B?L1l5MHQ2OXhCbExndmJHMWhSbSs5RDdpRDNaMk81ejcwQ0dhd3Q2U3RHbkhK?=
- =?utf-8?B?a0VtbWdVVUV3L2hmanNqWUxYTnRLSXl0NEcrR1pzU3ZlMmFBU1hvbFRFS1dZ?=
- =?utf-8?B?ZmFvZExEckVPbmRMS3l1V0M1RUJWWTBFZnNFVktNY2VYYm5BM25wR2JRNUhL?=
- =?utf-8?B?a1ZtK3drZGdpNEdVUXcrblJCS0JnRTFYdFBjdFI0UjJEeGVoQU9yOUFiOW90?=
- =?utf-8?B?ZDUzVk1BNnlGdmNKb2xDeWc2MGpVYStSUDcvKy9VLysxYnVKdTNNYVd4UFlh?=
- =?utf-8?B?NXRzNkQ3UGxBM3c4ZlhYeTdiQ0NRS1lTVzBBM2YyZ0hHUWFtbVlYcnBlUnNP?=
- =?utf-8?B?Z0ZEZWRDVnpxMHkrY2VIWmRURTg4TWREa3JUY1JmUlptUHB0emo1bm1JQjkw?=
- =?utf-8?B?SkFjcDVSRjlyNXljazNBcWZydUU2UlNBQURnYlJxak1UMVJWZ3RZMHVJNUNR?=
- =?utf-8?B?WmkrdHllS2x0YkxhbUtaQ2pNcWp4dE1wVjQzU1M0U3RBaTJDblFvNnkxRU1s?=
- =?utf-8?B?azdadjdQaEs2YmgybnN2WVBOeXoxNTVqYnNwMlg4aCs2c21DU2lqdWFnWnZR?=
- =?utf-8?B?ZlIrQVNaS1FVSkVaazN2aHRqMng5NEptUlFoNlMrWG1laldrQk1zbG9CVU5r?=
- =?utf-8?B?dUpYbWdoVlFLWkIwVThBNGRpZi9FWEdWcEFONEVIQWFZcXRnTmdqeFZoekZE?=
- =?utf-8?B?bUpFbmgvN1hwZmt5dkhqVXpZeGtHV29UZ3A2WFNBZGN3aWNUenBrMU45Q0F2?=
- =?utf-8?B?dUs3cjhaRkVvZGIvSldrUWRGMmUxRW01TmVlUzNDcmxYUFpmejhFOCs2b2E1?=
- =?utf-8?B?OWU5ZnNEekx5dU1YUXVRK3QyMkZ4bFVpS21SVmlMQWVkUEVhVjFReHlMMzVy?=
- =?utf-8?B?OEIrbGJPb1lKOWhmTDRpSkZOYlhDdXZsTDEvN1VERFBIU1hHT1FDOXNnWEZH?=
- =?utf-8?B?Y0tUMDNmZmVraVBSbFdrd0VBeFNvdkQ2dVZ4SkN2NG1tTW45YWlYb0R0eFFQ?=
- =?utf-8?B?U2crUFVueVlBWGNPNC80aVZYdVRUZSsraW1ITDFqNFpaa05LSXptdDNuUWJ4?=
- =?utf-8?B?QlllV0RFYVRsODhpSmorYVQ0THdHL0tuS0d4R3BvaXhJZFpwQ1Bzc3Arb2Ju?=
- =?utf-8?B?TEtYa0RCVGpIeTk1aGZOZU5IcUUyVk43ZHRMWmFPZWd3TFZ0YTRHY2g2Tmho?=
- =?utf-8?B?NStWclNrL2RDOFhjQXkyd2JvNjVETzZOb2ZjbFZDN3p1d2NaY040NnR3bWVB?=
- =?utf-8?B?MXE2OXBIL1ZBdmtObnJrRDQ3NlBUc0FTc3V4SURiWWV0Z2xwMkwxMG1lMXcz?=
- =?utf-8?B?a1NWS25LRFZRajJFanI2SndiQlpQOVdiemRmK2dxVVBpa0hoanBYMXlTbGlV?=
- =?utf-8?B?OGpFd0pZY3FTZzVTbTZaWnVPek50VEVFK0tvb1NSaUFyNmcyQVRkbmZWcXMx?=
- =?utf-8?B?bjMzR21idHlmYm9jRUFLZnRMUklCQWZhcFB1QzI3RGZnMHlyMm5KUWhoeTdK?=
- =?utf-8?Q?DSJDlAK/tddyaXW9VW42R+o=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: 
-	JaHbQxHcHPxaP2qia2/OoS++JHBLQ25BXAeQW22olof8lV9bK5jrkkcEZe3FTvWQga/OWqEMBpTCL8tjPb59RadP8gtJpI4xBSfcf47WJChQUMh1ASifZzr7OOnPvLR2IIQqWJR5kIq+Cx3Aguh3phnMRDkdqvCVk+vCtjS9l8zadCEz07odHHehJrQOb47zrnVRhNBWCbmfiHEMyArr/aM9/OnGqiuSuAjjg0w168fPfJnhbHiakpjqmplf7lIRidraZ/w3qGbTcXKJthCCwt4xuMw1wA8fA8/QX+TALuxCVwsw1HO6Qq/6/5nnZJkZeNz+OlTS876uO7bgTM24MvmeSgtWp1q8FO13siifgySXfU64hPTVUed+XuGIP9voADMaglwkXG9CWcuUBMKTnyebAPtsX6/+3hiM4qe8IGF3ui4RJB/Fi2PXSZZoQfFbtPm/+7WjcBkKls75mcJBQt89632CyX40/7bkulwYgC+BcrejTm7VD0p2BNmeY2KBRP5kP5LQUDJgkaFmcyDryey+NrhmdSHcs2Wj1za1xlcwC9ub/aVp8vBxZPRjqwpqzI8kDkRu4gXwtMhkHSWsM7boOlevyqOXowq90M/eKgo=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: adce1275-b19d-48a1-9a6c-08dc191e6037
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR10MB6290.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2024 18:42:23.5993
+X-Microsoft-Antispam-Message-Info:
+	L1t/cHng65El4Bnk2g8Bbdg57r3tVNGfqh5/0RYFbLLkzQom9TVkalCJ2psIXXDL2P9By0ZwskT0U8ELAtcjlxLONH01a+xqzV2li8lQmggjDuJB0X4HMa7y5uMBd5upUcOc1nXccDlafqBEvatQS7RD1MVowZSuHxGTyP2RlgOURQA7cILImIVAz8NXKkEn9+kxnLgu9zg6THK1H/zh4Xv/nZ1aYbT8VNe+wPMW9gObOriJzbcovYQZEhdiBvXbKw/dRVuDvWMOdUc4XWkywhjr+orQB0mjhQDvJgK44awnHkznOH5Wa0VTWJ1cGjEZ87SwYjds68wj57ykPAavV8EI1j4345EtEvQscilbETQK3THUG6+s7Kzs4JXSznCkusqOKnMuqxRz8Oy8y045abUKkcOa/owo+MdwrxU03nW7oj7h0hmxD5rASLgDOkp1jDm3cNu2ScH4sCE1wJ5+SmqSIazqezsLg0mcXnUIt4mfokJWAH9eU/rQXFVDTbmWhcXVqaFbJpsLjOEAnpM+ZCjridEU9nBvO+TJDdXCiP57q7460yuwqKsmIzgRyeBhyTxKMx92tGPzBxrIcof0RW+YlyocrNbjHv0jN3OLbu8FYfpCT9C7/t/XwSlsCwjAENTXNUBt5hRQqwg5Xq0081aKkWq+nSyRS+eTee0YlajPoqL2OUZIjIVpMgNXDCdE36RztH6KhKTaYHJri/WgmkxcpaFEGzagIXAodb8RMcdsuusu4H3f4HIqHgNBOXjfglVClxUN3ZnUlual//p7Ig==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(136003)(376002)(396003)(39860400002)(230922051799003)(1800799012)(82310400011)(186009)(451199024)(64100799003)(46966006)(36840700001)(40470700004)(40480700001)(40460700003)(426003)(8936002)(966005)(336012)(2616005)(1076003)(83380400001)(47076005)(4326008)(8676002)(5660300002)(316002)(6916009)(7696005)(6666004)(70206006)(70586007)(54906003)(478600001)(44832011)(26005)(16526019)(81166007)(356005)(82740400003)(2906002)(36756003)(86362001)(41300700001)(36860700001)(36900700001)(309714004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Jan 2024 20:15:21.9840
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QNlxcus/h8mfMvIEVOe7CbchkjX/9pz5ys/T54FP1kxLfuJswWG9oky6Q6Wzk9iQKIFVbefPS9NkmTFmRG+RSwqQBQO2HPQCG5KE7tDkI2P094bH0ta2Js18cWlfAu73
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR10MB6622
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-19_11,2024-01-19_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 phishscore=0 bulkscore=0
- malwarescore=0 spamscore=0 suspectscore=0 mlxlogscore=999 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2311290000
- definitions=main-2401190109
-X-Proofpoint-GUID: _df-ywI5jGUFm2RfEsyGJD3bVzeaMf9f
-X-Proofpoint-ORIG-GUID: _df-ywI5jGUFm2RfEsyGJD3bVzeaMf9f
+X-MS-Exchange-CrossTenant-Network-Message-Id: 132c29ab-2b75-4ff3-4835-08dc192b5d62
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000E9D7.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4563
 
-Hi Greg,
+This reverts commit 5f38ac54e60562323ea4abb1bfb37d043ee23357.
+This causes issues with rebooting and the 7800XT.
 
-On 18/01/24 4:17 pm, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.13 release.
-> There are 150 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 20 Jan 2024 10:42:49 +0000.
-> Anything received after that time might be too late.
-> 
+Cc: Kenneth Feng <kenneth.feng@amd.com>
+Cc: stable@vger.kernel.org
+Fixes: 5f38ac54e605 ("drm/amd/pm: fix the high voltage and temperature issue")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3062
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c    | 24 ++++----------
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c     | 33 ++-----------------
+ drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h |  1 -
+ .../drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c  |  8 +----
+ .../drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c  |  8 +----
+ 5 files changed, 11 insertions(+), 63 deletions(-)
 
-Built and boot tested on x86_64 and aarch64.
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index b4c19e3d0bf1..56d9dfa61290 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -4131,23 +4131,13 @@ int amdgpu_device_init(struct amdgpu_device *adev,
+ 				}
+ 			}
+ 		} else {
+-			switch (amdgpu_ip_version(adev, MP1_HWIP, 0)) {
+-			case IP_VERSION(13, 0, 0):
+-			case IP_VERSION(13, 0, 7):
+-			case IP_VERSION(13, 0, 10):
+-				r = psp_gpu_reset(adev);
+-				break;
+-			default:
+-				tmp = amdgpu_reset_method;
+-				/* It should do a default reset when loading or reloading the driver,
+-				 * regardless of the module parameter reset_method.
+-				 */
+-				amdgpu_reset_method = AMD_RESET_METHOD_NONE;
+-				r = amdgpu_asic_reset(adev);
+-				amdgpu_reset_method = tmp;
+-				break;
+-			}
+-
++			tmp = amdgpu_reset_method;
++			/* It should do a default reset when loading or reloading the driver,
++			 * regardless of the module parameter reset_method.
++			 */
++			amdgpu_reset_method = AMD_RESET_METHOD_NONE;
++			r = amdgpu_asic_reset(adev);
++			amdgpu_reset_method = tmp;
+ 			if (r) {
+ 				dev_err(adev->dev, "asic reset on init failed\n");
+ 				goto failed;
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+index c16703868e5c..961cd2aaf137 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -733,7 +733,7 @@ static int smu_early_init(void *handle)
+ 	smu->adev = adev;
+ 	smu->pm_enabled = !!amdgpu_dpm;
+ 	smu->is_apu = false;
+-	smu->smu_baco.state = SMU_BACO_STATE_NONE;
++	smu->smu_baco.state = SMU_BACO_STATE_EXIT;
+ 	smu->smu_baco.platform_support = false;
+ 	smu->user_dpm_profile.fan_mode = -1;
+ 
+@@ -1961,31 +1961,10 @@ static int smu_smc_hw_cleanup(struct smu_context *smu)
+ 	return 0;
+ }
+ 
+-static int smu_reset_mp1_state(struct smu_context *smu)
+-{
+-	struct amdgpu_device *adev = smu->adev;
+-	int ret = 0;
+-
+-	if ((!adev->in_runpm) && (!adev->in_suspend) &&
+-		(!amdgpu_in_reset(adev)))
+-		switch (amdgpu_ip_version(adev, MP1_HWIP, 0)) {
+-		case IP_VERSION(13, 0, 0):
+-		case IP_VERSION(13, 0, 7):
+-		case IP_VERSION(13, 0, 10):
+-			ret = smu_set_mp1_state(smu, PP_MP1_STATE_UNLOAD);
+-			break;
+-		default:
+-			break;
+-		}
+-
+-	return ret;
+-}
+-
+ static int smu_hw_fini(void *handle)
+ {
+ 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
+ 	struct smu_context *smu = adev->powerplay.pp_handle;
+-	int ret;
+ 
+ 	if (amdgpu_sriov_vf(adev) && !amdgpu_sriov_is_pp_one_vf(adev))
+ 		return 0;
+@@ -2003,15 +1982,7 @@ static int smu_hw_fini(void *handle)
+ 
+ 	adev->pm.dpm_enabled = false;
+ 
+-	ret = smu_smc_hw_cleanup(smu);
+-	if (ret)
+-		return ret;
+-
+-	ret = smu_reset_mp1_state(smu);
+-	if (ret)
+-		return ret;
+-
+-	return 0;
++	return smu_smc_hw_cleanup(smu);
+ }
+ 
+ static void smu_late_fini(void *handle)
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h b/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
+index 2aa4fea87314..66e84defd0b6 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
++++ b/drivers/gpu/drm/amd/pm/swsmu/inc/amdgpu_smu.h
+@@ -424,7 +424,6 @@ enum smu_reset_mode {
+ enum smu_baco_state {
+ 	SMU_BACO_STATE_ENTER = 0,
+ 	SMU_BACO_STATE_EXIT,
+-	SMU_BACO_STATE_NONE,
+ };
+ 
+ struct smu_baco_context {
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+index 231122622a9c..bc8bd67c48ac 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -2748,13 +2748,7 @@ static int smu_v13_0_0_set_mp1_state(struct smu_context *smu,
+ 
+ 	switch (mp1_state) {
+ 	case PP_MP1_STATE_UNLOAD:
+-		ret = smu_cmn_send_smc_msg_with_param(smu,
+-											  SMU_MSG_PrepareMp1ForUnload,
+-											  0x55, NULL);
+-
+-		if (!ret && smu->smu_baco.state == SMU_BACO_STATE_EXIT)
+-			ret = smu_v13_0_disable_pmfw_state(smu);
+-
++		ret = smu_cmn_set_mp1_state(smu, mp1_state);
+ 		break;
+ 	default:
+ 		/* Ignore others */
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+index 59606a19e3d2..0906221231ea 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_7_ppt.c
+@@ -2504,13 +2504,7 @@ static int smu_v13_0_7_set_mp1_state(struct smu_context *smu,
+ 
+ 	switch (mp1_state) {
+ 	case PP_MP1_STATE_UNLOAD:
+-		ret = smu_cmn_send_smc_msg_with_param(smu,
+-											  SMU_MSG_PrepareMp1ForUnload,
+-											  0x55, NULL);
+-
+-		if (!ret && smu->smu_baco.state == SMU_BACO_STATE_EXIT)
+-			ret = smu_v13_0_disable_pmfw_state(smu);
+-
++		ret = smu_cmn_set_mp1_state(smu, mp1_state);
+ 		break;
+ 	default:
+ 		/* Ignore others */
+-- 
+2.34.1
 
-Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-
-Thanks,
-Harshit
-
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.13-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
 
