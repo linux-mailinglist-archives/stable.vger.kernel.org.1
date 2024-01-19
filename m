@@ -1,138 +1,117 @@
-Return-Path: <stable+bounces-12242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B05B88324FC
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 08:19:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 401B9832510
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 08:34:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F5971F23ADD
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 07:19:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8295028631E
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 07:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA158F5B;
-	Fri, 19 Jan 2024 07:19:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64B1D29E;
+	Fri, 19 Jan 2024 07:34:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cmprS5pw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42DC06FB0
-	for <stable@vger.kernel.org>; Fri, 19 Jan 2024 07:19:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560A5944F;
+	Fri, 19 Jan 2024 07:34:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705648757; cv=none; b=lqGWtIkJDjnWfcVOXSUcpB1HP1Rmr45ws9pIVilQcxrtRQnveqxPTFSExdO26XsHrSYl2Cqtkzn8XB3HZc+5OFX7V+UKIGb4pCkpEOliYAFIg0+YDLkjBQgy8osCBU+QxGOWMMqja0Uq4c9BT6CKcbXmWXmfMY5MrdY+xGbDv1c=
+	t=1705649666; cv=none; b=qcdM4A9UVB+roVPEGhaTVZYja6OMlO4TniNehlpygZmKXbBNi9CAJ1H2FbAU4FTnMFQT7kL6xuQNZNEtfCQewi//pVv9ik4kkx2mFJjrZwKtdq86aEOfP471OSleCo1S6vV4lIyFY7SjhEK1lbfzLk8k6jEDfPljeWYxyjC9Qp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705648757; c=relaxed/simple;
-	bh=aTwua2ZjP6eM7ptBaufdfAqj8CDH2OcpybQlk6NDGzM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Hyotn83Qpztrvhsr0fhUhSIb5XGISmO57Ws/O3djEIkfe4C895W3h1+eJwLhKEumX7zdlRH9ok5QKE32Y6Qof6UOdOP5ZXPUz1Xn8xON0nB+zhYX8rgmkOhyfU34w8iSWKVfXKK5V2pHTtq3vkDKR2qknlTJ3YAa6PGXoLu9nEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.180.128.250])
-	by gateway (Coremail) with SMTP id _____8DxWPBvIqpl3f0BAA--.9582S3;
-	Fri, 19 Jan 2024 15:19:11 +0800 (CST)
-Received: from crazy.crazy.loongson.org (unknown [10.180.128.250])
-	by localhost.localdomain (Coremail) with SMTP id AQAAf8Bx7c5tIqplSmcKAA--.52075S6;
-	Fri, 19 Jan 2024 15:19:11 +0800 (CST)
-From: liweihao <liweihao@loongson.cn>
-To: kernel@openeuler.org
-Cc: liweihao@loongson.cn,
-	WANG Rui <wangrui@loongson.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH OLK-5.10 2/3] LoongArch: Fix return value underflow in exception path
-Date: Fri, 19 Jan 2024 15:19:08 +0800
-Message-Id: <20240119071909.339939-3-liweihao@loongson.cn>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240119071909.339939-1-liweihao@loongson.cn>
-References: <20240119071909.339939-1-liweihao@loongson.cn>
+	s=arc-20240116; t=1705649666; c=relaxed/simple;
+	bh=QYE7yiCJxwlmebwjTQpebpKMDD+EhMMsKm31/uR2Rac=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ri1w6qRmLkRW6xW6z28WG6DfNk42uHu/JGAcwio7xUh39VMeu2GLIpo5cUAkHkDy6Eha50EjrQtpBCoZZM/R4kDvXaP/1XPMtjVGUydZxYKfeE+Yufe3a//ZXvIQcelxpdCEj1pGw5EYJj+4n9jnbDAKmakGcZNdNo6EA37M9pI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cmprS5pw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0121C433F1;
+	Fri, 19 Jan 2024 07:34:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705649665;
+	bh=QYE7yiCJxwlmebwjTQpebpKMDD+EhMMsKm31/uR2Rac=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cmprS5pw7FkNoy135BDsZfB1tBF5CbghTkRQb4LtU5jIy9Zc+zTH11SgDvqajQVVd
+	 9Xb2kRHVgCKx2s+ojpnDl7B4sP1w4hxZnCmiJ4XEb+Wd+muQ5MDgxZYIvEIkXG5Coq
+	 4nHeMI2H0m6OKGIVK7RkMjN9OJ9Kgay0AGGtEXyFw6pPl0vaZeubVnTPsEO1NeKtA6
+	 ESxaZGl5UQ5sq6ci9bgDZ5SB5smWBj7iDZTIjv/ExT4wfK55UJvdqt18K3+b1GpYVI
+	 JXgcv4GBD/VlkPWEyAa5rOR+zs4d3/7A/dc38G4pVuc5C7wlPesYY7nnxCdNr6bhxB
+	 o81QuyyVxDrJQ==
+Received: from johan by xi.lan with local (Exim 4.96.2)
+	(envelope-from <johan@kernel.org>)
+	id 1rQjOc-0004S4-03;
+	Fri, 19 Jan 2024 08:34:34 +0100
+Date: Fri, 19 Jan 2024 08:34:34 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: Johan Hovold <johan+linaro@kernel.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Banajit Goswami <bgoswami@quicinc.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/5] ASoC: codecs: wsa883x: fix PA volume control
+Message-ID: <ZaomCpQ2ged-zpQ6@hovoldconsulting.com>
+References: <20240118165811.13672-1-johan+linaro@kernel.org>
+ <20240118165811.13672-2-johan+linaro@kernel.org>
+ <a9e1f3b8-9597-454e-b68d-4014e923ee61@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:AQAAf8Bx7c5tIqplSmcKAA--.52075S6
-X-CM-SenderInfo: 5olzvxhkdrqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Kr45CFyfWF4fKr17GF4kuFX_yoW8tF4rpr
-	y7Arn7KF48WFyfZas0vF9Yqr48XF47WwnruF4xAryrWa4DZrn5uryrGa9xXFsxX395Xr10
-	qrWrKF4rCF48JwbCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	tVWrXwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7V
-	AKI48JMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAF
-	wI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc4
-	0Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r4j6ryUMIIF0xvE2Ix0cI8IcVCY1x0267AK
-	xVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr
-	1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU8EeHDUU
-	UUU==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="KGFq/OtHqyzEakW+"
+Content-Disposition: inline
+In-Reply-To: <a9e1f3b8-9597-454e-b68d-4014e923ee61@sirena.org.uk>
 
-From: WANG Rui <wangrui@loongson.cn>
 
-LoongArch inclusion
-bugzilla: https://gitee.com/openeuler/kernel/issues/I76XQZ
+--KGFq/OtHqyzEakW+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-This patch fixes an underflow issue in the return value within the
-exception path, specifically at .Llt8 when the remaining length is less
-than 8 bytes.
+On Thu, Jan 18, 2024 at 05:24:16PM +0000, Mark Brown wrote:
+> On Thu, Jan 18, 2024 at 05:58:07PM +0100, Johan Hovold wrote:
+> > The PA gain can be set in steps of 1.5 dB from -3 dB to 18 dB, that is,
+> > in fifteen levels.
+> >=20
+> > Fix the range of the PA volume control to avoid having the first
+> > sixteen levels all map to -3 dB.
+> >=20
+> > Note that level 0 (-3 dB) does not mute the PA so the mute flag should
+> > also not be set.
+> >=20
+> > Fixes: cdb09e623143 ("ASoC: codecs: wsa883x: add control, dapm widgets =
+and map")
+> > Cc: stable@vger.kernel.org      # 6.0
+>=20
+> This will mean that any configuration saved with alsactl store will
+> change effect, it might be better to just fix the TLV description and
+> live with the unfortunate UX...
 
-Cc: stable@vger.kernel.org
-Fixes: 8941e93ca590 ("LoongArch: Optimize memory ops (memset/memcpy/memmove)")
-Reported-by: Weihao Li <liweihao@loongson.cn>
-Signed-off-by: WANG Rui <wangrui@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
- arch/loongarch/lib/clear_user.S | 3 ++-
- arch/loongarch/lib/copy_user.S  | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+Indeed, but the machine limit set by this series will make that less of
+any issue. At least for mainline, all users of this codec use the same
+machine driver so will also be limited to -3 dB.
 
-diff --git a/arch/loongarch/lib/clear_user.S b/arch/loongarch/lib/clear_user.S
-index fd1d62b244f2..9dcf71719387 100644
---- a/arch/loongarch/lib/clear_user.S
-+++ b/arch/loongarch/lib/clear_user.S
-@@ -108,6 +108,7 @@ SYM_FUNC_START(__clear_user_fast)
- 	addi.d	a3, a2, -8
- 	bgeu	a0, a3, .Llt8
- 15:	st.d	zero, a0, 0
-+	addi.d	a0, a0, 8
- 
- .Llt8:
- 16:	st.d	zero, a2, -8
-@@ -188,7 +189,7 @@ SYM_FUNC_START(__clear_user_fast)
- 	_asm_extable 13b, .L_fixup_handle_0
- 	_asm_extable 14b, .L_fixup_handle_1
- 	_asm_extable 15b, .L_fixup_handle_0
--	_asm_extable 16b, .L_fixup_handle_1
-+	_asm_extable 16b, .L_fixup_handle_0
- 	_asm_extable 17b, .L_fixup_handle_s0
- 	_asm_extable 18b, .L_fixup_handle_s0
- 	_asm_extable 19b, .L_fixup_handle_s0
-diff --git a/arch/loongarch/lib/copy_user.S b/arch/loongarch/lib/copy_user.S
-index b21f6d5d38f5..fecd08cad702 100644
---- a/arch/loongarch/lib/copy_user.S
-+++ b/arch/loongarch/lib/copy_user.S
-@@ -136,6 +136,7 @@ SYM_FUNC_START(__copy_user_fast)
- 	bgeu	a1, a4, .Llt8
- 30:	ld.d	t0, a1, 0
- 31:	st.d	t0, a0, 0
-+	addi.d	a0, a0, 8
- 
- .Llt8:
- 32:	ld.d	t0, a3, -8
-@@ -246,7 +247,7 @@ SYM_FUNC_START(__copy_user_fast)
- 	_asm_extable 30b, .L_fixup_handle_0
- 	_asm_extable 31b, .L_fixup_handle_0
- 	_asm_extable 32b, .L_fixup_handle_0
--	_asm_extable 33b, .L_fixup_handle_1
-+	_asm_extable 33b, .L_fixup_handle_0
- 	_asm_extable 34b, .L_fixup_handle_s0
- 	_asm_extable 35b, .L_fixup_handle_s0
- 	_asm_extable 36b, .L_fixup_handle_s0
--- 
-2.39.2
+Johan
 
+--KGFq/OtHqyzEakW+
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQQHbPq+cpGvN/peuzMLxc3C7H1lCAUCZaomBgAKCRALxc3C7H1l
+CGmdAPwK+i5ESpbb1IA/xZpXm46rdEOQaskthgednCfQz4yO4QD9HTPCQrWiYtnU
+7vkKlcGYrNxBK2azazVxdjYLIYW5ZA8=
+=b1Be
+-----END PGP SIGNATURE-----
+
+--KGFq/OtHqyzEakW+--
 
