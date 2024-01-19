@@ -1,135 +1,154 @@
-Return-Path: <stable+bounces-12279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1498832C7F
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 16:48:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4655F832C96
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 16:59:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E1F91F249FC
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 15:48:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2D38282D5E
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 15:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3194854BE3;
-	Fri, 19 Jan 2024 15:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7367854BEC;
+	Fri, 19 Jan 2024 15:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gZ1okhzT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W7EY+w5r"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B733C465
-	for <stable@vger.kernel.org>; Fri, 19 Jan 2024 15:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2623954BE0;
+	Fri, 19 Jan 2024 15:59:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705679326; cv=none; b=dsW1dTBiqU/2GX8tWbwCNf5AknUl2MPmrWTqxDrwfwU+reKm2Lza++4DUm+U5V/ojJtQ2z5Mj0QkCx2YU0ZB43WbWUD8mOzBzzV3HFHnTAx1bQhLny+J6+yAwrCNrC+XNXHHQLs+ngKK7VTqW86q3rzwsf5GXDre/4hH9sgxv9U=
+	t=1705679985; cv=none; b=BuPkBh8T1HXRbf7xQSYN3byr9tS89s+HtfLIG7Q4pEH9PECXT782tN5YysgwpGGgvgUb1Ln/ddFIRVIczOiieCOzG/vPM/fiXS5fXBfXL9iEnOCk7Ps8PALDcxqJSUDPtQM/ZWcEx0pEtXFfOIPDHes0WJNfK/WRHoWxDE7LmQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705679326; c=relaxed/simple;
-	bh=3KeVb8iHSTXJAHlpC+TiGoBdbDy0ujW0bVUfMh7M/IM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oc7XrGlo68snEXSyFfS1dUO7Be4+4916JqRzNn6MJwffoYw9/cL2NdJ4ow9gzsNz7BEBeXn+oka6CBV2IjT5TEuBrguKPJ0TXNphjhzXoXZhyM8uR1E4vxFFkTbwnB2LEhS4qeiAZyElie67hEQYJkE6oryKUb6yDcJy3kewQ/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gZ1okhzT; arc=none smtp.client-ip=209.85.222.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-7d2e16b552dso158670241.1
-        for <stable@vger.kernel.org>; Fri, 19 Jan 2024 07:48:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1705679322; x=1706284122; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kSbsPC/GT8f3pGBraL0I1C1S6tXlzFxSCmChfpZ5F90=;
-        b=gZ1okhzTwTKskuEKoi1ZU9FQWWqERcVvQeSzLlZG1butmD72rJJLGG4HP4+oLmWt/Z
-         M0YfIzFszhskJcHcAckeS0eegfhO/cu5Vjtj2pwKvqYgbyafeIj2ebC/8KqtT6S9ihT7
-         Z/P178hPskHehh5CNi3iNbKPJHhxQbyGFoATW4NbVaBHAO0gTUoH+RDnSNMq0E2CX2Wf
-         E7AeWn8DV5N08IU6JQxCoLw/2V3/4epwY67tWaB4BK2UWefdc0AyUjoJwxw1rtzZamLq
-         /lykS6cfYgNvlx1LZmygtSZ99MCGL0ZM/NIUP965FNl81NA0S3QdsXmkMzk46zwgSXRo
-         ACSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705679322; x=1706284122;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kSbsPC/GT8f3pGBraL0I1C1S6tXlzFxSCmChfpZ5F90=;
-        b=p2GB3urmLQGNfJSLobLepkN94MkhKuAvXWBvVKme5ZVO+iV/bHFdCooQIY5vOn/wTS
-         p4UxD+qiJqyNAOz4g9Q+zQdrKlPqt1kHNYBVbsrZr5oJv54HkRQUgaSV9NZnHRNNFfBo
-         C5yu7zbDw6ZWEZANSu6NNaNhgEtYj76F+CKyF4zXQ0DaUyECjyHCoR4H/WvP5Sui90Qm
-         wOrrEgKKN61Vdq8xOtL6w2liB1VTZ2r9cnLRTGXjN3SP0zbcbRImWwrURJYxIL1BZfK2
-         VphOODWcBjzpyFePYJ2pgpH+j3scYy8pHiDizfhUdmssn8x/l91dLw/LCoDGc7uYnLDx
-         85pQ==
-X-Gm-Message-State: AOJu0YwC8mwcHNe43WT87Cu6IzoHhaBCmML5b4PysJP2vTvdNQexQqBK
-	S+MQec5GyOyIpaZVfHfjo2SpKDISKz5qjsfAoSOth5uYUo0Mp5WBWYdIiQ5rKgbSGJN03tWg1ON
-	Ve/HsiCeHlVy/O03RQYWuNVTU7sMxaWb7WtqJbEhycdHFcDMFocY=
-X-Google-Smtp-Source: AGHT+IGLafI0xBDL15bbjTBVc+RXc9+ZzQCvlFVzHvfgKr0SoyjWZ+Sb6T/8NraCFHnMzn/9lWlD/bMD7rzeMqgfQvQ=
-X-Received: by 2002:a05:6102:3229:b0:469:9fe3:96b3 with SMTP id
- x9-20020a056102322900b004699fe396b3mr510547vsf.9.1705679320997; Fri, 19 Jan
- 2024 07:48:40 -0800 (PST)
+	s=arc-20240116; t=1705679985; c=relaxed/simple;
+	bh=gfrLkbtYzKFT46/9XEwPAniAWGb9wlDVWjw8A1etnwQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jUqdfxp4rfjaruaVoWKDxsALEpHDR02SoF5oUiKbY8YZruAG8zWgCfOQatkJYv450JPgoM7hgQlOlKwwNGzQSDpuhg/erP2mAT0JL8AKJl/nJgTBo1al0bprnNNPSLcedipHdDRuqqBzpXNmv3uPDnVJloYG2+s3C+5QKyIIDwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W7EY+w5r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE86EC433C7;
+	Fri, 19 Jan 2024 15:59:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705679984;
+	bh=gfrLkbtYzKFT46/9XEwPAniAWGb9wlDVWjw8A1etnwQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=W7EY+w5rLd3kuXBKR/USovrJ/5x/r2dnnDn3X97Oojo4GsESiMMNcGj29ChZbiWc/
+	 d89FHJFHOTxIZDMVw8ryaYK20WbLvQShYga0FW0zA5qwJ7SMxbIBrIJN0xnkKAqDcv
+	 eTsBxukaHO1r8kQ/Ce1/veZeqEuVrDaV7V6k56UXCXNtZ7JUwHcDrlPP4UGFQaoIez
+	 0r+K/4Aw7S0rPUMxny3bIxFJ4JuczSpUO/yb25D3gCUxfZKXOm/xABB7TOVHOjOtpH
+	 5U8x3Ier/jUQD7wrNs4V53nB2qAJOCDlb5FdnYiwl5LYKHAgPNek36xUmuVrQVCMf3
+	 /6SUKh1MCItqw==
+Received: from johan by xi.lan with local (Exim 4.96.2)
+	(envelope-from <johan@kernel.org>)
+	id 1rQrHd-0004jx-28;
+	Fri, 19 Jan 2024 16:59:54 +0100
+Date: Fri, 19 Jan 2024 16:59:53 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Matthias Kaehlcke <mka@chromium.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	linux-bluetooth@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Balakrishna Godavarthi <quic_bgodavar@quicinc.com>,
+	Doug Anderson <dianders@google.com>,
+	Stephen Boyd <swboyd@google.com>
+Subject: Re: [PATCH] Bluetooth: qca: fix device-address endianness
+Message-ID: <ZaqcefHE2LAnRRRz@hovoldconsulting.com>
+References: <20231227180306.6319-1-johan+linaro@kernel.org>
+ <ZZ15c1HUQIH2cY5o@google.com>
+ <ZZ1-ehpU-g6i9Qem@hovoldconsulting.com>
+ <ZZ2IOQEekFffJoHQ@google.com>
+ <ZZ5RVpL88XNbgKIy@hovoldconsulting.com>
+ <CABBYNZJ_EAuGEdeW+vZzXu20nVqLkLwiQbYQ9XzoABxQ5rAzdQ@mail.gmail.com>
+ <ZajkA6oxtMcxKY4X@hovoldconsulting.com>
+ <CABBYNZLV9o9hsYGVTGA7dPby-j1P_a35yNrDy4d9PMJq=TaRsQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240118104301.249503558@linuxfoundation.org>
-In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Fri, 19 Jan 2024 21:18:29 +0530
-Message-ID: <CA+G9fYv4PdOsuFmd2BGoq57omiXWuvnSpJJ1HuLYT0rJ_h9xEw@mail.gmail.com>
-Subject: Re: [PATCH 6.7 00/28] 6.7.1-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABBYNZLV9o9hsYGVTGA7dPby-j1P_a35yNrDy4d9PMJq=TaRsQ@mail.gmail.com>
 
-On Thu, 18 Jan 2024 at 16:20, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.7.1 release.
-> There are 28 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 20 Jan 2024 10:42:49 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.7.1-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.7.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Thu, Jan 18, 2024 at 10:30:50AM -0500, Luiz Augusto von Dentz wrote:
+> On Thu, Jan 18, 2024 at 3:40 AM Johan Hovold <johan@kernel.org> wrote:
+> > On Wed, Jan 17, 2024 at 05:49:07PM -0500, Luiz Augusto von Dentz wrote:
+> > > On Wed, Jan 10, 2024 at 3:12 AM Johan Hovold <johan@kernel.org> wrote:
+> > > > On Tue, Jan 09, 2024 at 05:54:01PM +0000, Matthias Kaehlcke wrote:
 
-Results from Linaro=E2=80=99s test farm.
-The arm allmodconfig clang-17 build failed on 6.7.y, Linux next and mainlin=
-e.
-but passed on 6.6.y.
+> > > > And any user space tool overriding the address would currently need to
+> > > > provide the address in reverse order on Qualcomm platforms like this
+> > > > one (e.g. if generating the address for privacy reasons).
+> > >
+> > > Perhaps we could attempt to resolve the address byteorder, in
+> > > userspace we use hwdb_get_company to resolve the company but since
+> > > this shall only really care about Qualcomm range(s) perhaps we can
+> > > hardcode them check in which order the address is, that said if the
+> > > device is configured with a Static Random Address then that would not
+> > > work, but that is only really possible for BLE only devices.
+> >
+> > It's not just Qualcomm ranges; The Lenovo ThinkPad X13s that I noticed
+> > this on has been assigned a Wistron OUI, for example.
+> 
+> Well we could still attempt to check if it has a valid OUI and then it
+> fail swap and check again.
 
-Links:
- - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20240117=
-/testrun/22090095/suite/build/test/clang-17-allmodconfig/details/
+So in the kernel you would parse any address coming from firmware or
+user space to try to determine if it's given in reverse order? I don't
+see how this would work as presumably some of the least significant
+bytes would occasionally match a valid OUI even if you were somehow able
+to determine that.
 
-## Build
-* kernel: 6.7.1-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.7.y
-* git commit: ef44e963b02edb00d4de5fa3528a21f3e7b33a85
-* git describe: v6.7-29-gef44e963b02e
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.7.y/build/v6.7-2=
-9-gef44e963b02e/
+> > We're still hoping to learn how to retrieve this address (from the
+> > secure world firmware) so that we can set it directly from the driver,
+> > but for now it needs to be set using btmgmt (or the local-bd-address
+> > devicetree property).
+> >
+> > As was discussed here:
+> >
+> >         https://github.com/bluez/bluez/issues/107
+> >
+> > it would be useful to teach bluetoothd to (generate and) set an address
+> > for devices that lack (accessible) persistent storage. And any such
+> > generic tool would need to work using the standard interfaces and the
+> > address endianness that those interfaces expect.
+> 
+> Yep, patches are welcome in this regard, note that we do something like this:
+> 
+> https://github.com/bluez/bluez/blob/master/src/adapter.c#L9847
+> 
+> But the first thing it checks is if the controller supports BR/EDR, so
+> if you want to extend that we need at least the OUI portion to be able
+> to allocate a valid public address, we could perhaps attempt to fetch
+> the manufacturer somehow or use the controller manufacturer
+> (adapter->manufacturer) in case there is nothing else to use.
 
+Thanks for the pointer. I'm trying nudge some of the distro folks to
+look into this.
 
---
-Linaro LKFT
-https://lkft.linaro.org
+> > And from skimming the Bluetooth spec, I was under the impression that
+> > random addresses applied also to non-BLE devices (e.g. requiring the two
+> > most-significants bits to be 1).
+> 
+> Not really, BR/EDR/classic addresses are always considered public
+> addresses, the HCI interface doesn't even have an address type to be
+> able to handle something like a random address or privacy for the same
+> reason.
+
+Ah, ok. Then generating an address is perhaps not an option, but reading
+one out from a file and setting it would still be useful for cases like
+the X13s which do have an address assigned (e.g. accessible through
+windows or written on the box the machine came in).
+
+Johan
 
