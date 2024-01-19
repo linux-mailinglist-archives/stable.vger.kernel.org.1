@@ -1,156 +1,83 @@
-Return-Path: <stable+bounces-12256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F27258326EE
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 10:49:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E66D832780
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 11:13:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2804284F49
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 09:49:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E357B1F2367B
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 10:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9C93C092;
-	Fri, 19 Jan 2024 09:48:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="QZjAvf+j"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB5D3C473;
+	Fri, 19 Jan 2024 10:13:46 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D87625772;
-	Fri, 19 Jan 2024 09:48:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6313CF4B;
+	Fri, 19 Jan 2024 10:13:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705657734; cv=none; b=l1Q5R57bmWsbf7GLWNYVqZgbob3HY4fkGYsu2VFFnz8prjJDipqXOva3k1elv/dqRu2a8fxf3IjW4LUzJqvt+oJyzqJ9/ibJJWwQ37lUcP6wkJUdu42xje/c8kF4AoyjAXBTQAKR4MhjTmEbLXfpIhiZpZzgybqt7XhNweNmUd0=
+	t=1705659226; cv=none; b=OQpsBmZrMHr983c9ZhyqxdAPm+RQuVF42Ppg4yJHVCwv6Y6QncOrk98giowHE2aezxOnFso1JF8jFiF9bZ1sqF3fSkRl5k1bWNHKFy43Q2uLgDqUjeYBOdBBlDk29ivQuIW6ELS/Hn4uSrvuTqOWrGFRW180ScY/b5jBPTUqxEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705657734; c=relaxed/simple;
-	bh=qHqcD1XjlCcztEDcxsidNeeRlVSfFXwOAuGVi+/+A+o=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=k0KklHxkIM6lmUnTGcpiaZijujBK5vz7pgo5XRNT6fOw0AQKVGy4CMyave3XfevxddNIKNHOBny5yVQGsGLXG2B6MuCdx+hwBdU404dlMjKmz5Vk2NV2Ik7JeAenTUGy5XA5QGKPa7otunEYGZtDNgyWbEz98xqDPcWbP9UqX5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=QZjAvf+j; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 40J8gi3f021328;
-	Fri, 19 Jan 2024 09:48:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	from:to:cc:subject:date:message-id:mime-version:content-type; s=
-	qcppdkim1; bh=GezNeHHYLAtAJNmL7Tj8YSoACy84Zqr//JdvOEMbiDI=; b=QZ
-	jAvf+jlL1wlwp8xin5I1smDsJF5enh9LzHO0dePRQMvVxWZhlvVgUR1soxtAzOI/
-	Yb3WdiBKz6ejr8zeixWyGsUSjymdrTdX7PV7fGQiEwgFkdPvbvywRF+uTKjb9doJ
-	9bF+7w71VfCSXIl74P+qGV7XCVqoy1de5aopbs4O4/zzuTqx9Gk0ErnEsFVVWXsm
-	eiH5vHaXB5VRvbiYS6a212BDOUr/6jfNkCwqlydm8wyauHdv50yWAkkTdB2rLuhU
-	SpA5ZO2heqVVTtCLY4lltF6QPGBD6KDfYrhvOP4iCSjgFcL6rkpQ7ECwnz+bGbT9
-	QDhrONVDXxu0GXHVxbBQ==
-Received: from nasanppmta02.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3vqn89g6f5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 19 Jan 2024 09:48:48 +0000 (GMT)
-Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
-	by NASANPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 40J9ml3G028367
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 19 Jan 2024 09:48:47 GMT
-Received: from hu-uaggarwa-hyd.qualcomm.com (10.80.80.8) by
- nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Fri, 19 Jan 2024 01:48:45 -0800
-From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
-To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>
-CC: <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
-        "Uttkarsh
- Aggarwal" <quic_uaggarwa@quicinc.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v3] usb: dwc3: gadget: Fix NULL pointer dereference in dwc3_gadget_suspend
-Date: Fri, 19 Jan 2024 15:18:25 +0530
-Message-ID: <20240119094825.26530-1-quic_uaggarwa@quicinc.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1705659226; c=relaxed/simple;
+	bh=fyaI7QjyqAD2QONVkKww5YnWgFmNlPSIUVF2RxNi8Ho=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pt5O4CDxOp0F2i4ygPJZXI/84z/+DCdgOBUgrWSQKPtMnB5Y9sDMefRJFiMBwK+oNe6kIYfGIvMkPFPkiRl/ObGbCQQ2PwO5hsD+xf7ed9L/Pc6rX4dWZsdxu4v/NAzklxT1/n8bIIVqP1ZzuhqlRZK2EFbEQTPYauKIJHyNIV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; arc=none smtp.client-ip=80.237.130.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	id 1rQlsc-0003OF-BQ; Fri, 19 Jan 2024 11:13:42 +0100
+Message-ID: <7b8841eb-eb5e-4518-b5a8-d94e163fd203@leemhuis.info>
+Date: Fri, 19 Jan 2024 11:13:42 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nasanex01a.na.qualcomm.com (10.52.223.231)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: kmENgVCmMH71Onh7VV_fAZtBusRnAycv
-X-Proofpoint-ORIG-GUID: kmENgVCmMH71Onh7VV_fAZtBusRnAycv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.997,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-01-19_04,2024-01-19_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=900 clxscore=1011
- suspectscore=0 phishscore=0 priorityscore=1501 lowpriorityscore=0
- mlxscore=0 malwarescore=0 impostorscore=0 adultscore=0 bulkscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2311290000 definitions=main-2401190042
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] After kernel upgrade 6.1.70 to 6.1.71, the computer
+ hangs during shutdown
+Content-Language: en-US, de-DE
+To: regressions@lists.linux.dev
+Cc: stable@vger.kernel.org, linux-nfs@vger.kernel.org
+References: <58ac38ae-4d64-4a53-81e0-35785961c41c.ref@yahoo.com>
+ <58ac38ae-4d64-4a53-81e0-35785961c41c@yahoo.com>
+From: "Linux regression tracking #update (Thorsten Leemhuis)"
+ <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <58ac38ae-4d64-4a53-81e0-35785961c41c@yahoo.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1705659224;35e35129;
+X-HE-SMSGID: 1rQlsc-0003OF-BQ
 
-In current scenario if Plug-out and Plug-In performed continuously
-there could be a chance while checking for dwc->gadget_driver in
-dwc3_gadget_suspend, a NULL pointer dereference may occur.
+On 11.01.24 09:20, email200202 wrote:
+> 
+> #regzbot introduced: v6.1.70..v6.1.71
+> 
+> 
+> After kernel upgrade 6.1.70 to 6.1.71, the computer hangs during shutdown.
+> 
+> The problem is related to NFS service. Stopping NFS service hangs:
+> 
+> # /etc/init.d/nfs  stop
+>  * Caching service dependencies ... [ ok ]
+>  * Stopping NFS mountd ... [ ok ]
+>  * Stopping NFS daemon ... [ ok ]
+> [...]
 
-Call Stack:
+#regzbot fix: b2c545c39877408a2fe2
+#regzbot ignore-activity
 
-	CPU1:                           CPU2:
-	gadget_unbind_driver            dwc3_suspend_common
-	dwc3_gadget_stop                dwc3_gadget_suspend
-                                        dwc3_disconnect_gadget
-
-CPU1 basically clears the variable and CPU2 checks the variable.
-Consider CPU1 is running and right before gadget_driver is cleared
-and in parallel CPU2 executes dwc3_gadget_suspend where it finds
-dwc->gadget_driver which is not NULL and resumes execution and then
-CPU1 completes execution. CPU2 executes dwc3_disconnect_gadget where
-it checks dwc->gadget_driver is already NULL because of which the
-NULL pointer deference occur.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 9772b47a4c29 ("usb: dwc3: gadget: Fix suspend/resume during device mode")
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
----
-
-changes in v3:
-Corrected fixes tag and typo mistake in commit message dw3_gadget_stop -> dwc3_gadget_stop.
-
-Link to v2:
-https://lore.kernel.org/linux-usb/CAKzKK0r8RUqgXy1o5dndU21KuTKtyZ5rn5Fb9sZqTPZqAjT_9A@mail.gmail.com/T/#t
-
-Changes in v2:
-Added cc and fixes tag missing in v1.
-
-Link to v1:
-https://lore.kernel.org/linux-usb/20240110095532.4776-1-quic_uaggarwa@quicinc.com/T/#u
-
- drivers/usb/dwc3/gadget.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 019368f8e9c4..564976b3e2b9 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4709,15 +4709,13 @@ int dwc3_gadget_suspend(struct dwc3 *dwc)
- 	unsigned long flags;
- 	int ret;
- 
--	if (!dwc->gadget_driver)
--		return 0;
--
- 	ret = dwc3_gadget_soft_disconnect(dwc);
- 	if (ret)
- 		goto err;
- 
- 	spin_lock_irqsave(&dwc->lock, flags);
--	dwc3_disconnect_gadget(dwc);
-+	if (dwc->gadget_driver)
-+		dwc3_disconnect_gadget(dwc);
- 	spin_unlock_irqrestore(&dwc->lock, flags);
- 
- 	return 0;
--- 
-2.17.1
-
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
 
