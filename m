@@ -1,132 +1,96 @@
-Return-Path: <stable+bounces-12277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 015A8832C44
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 16:24:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DCF4832C50
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 16:26:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9661F1F250A1
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 15:24:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0FD11F23D68
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 15:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E1854BC1;
-	Fri, 19 Jan 2024 15:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37CAB54746;
+	Fri, 19 Jan 2024 15:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="2gmX27eG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Smz9BHF+"
 X-Original-To: stable@vger.kernel.org
-Received: from omta38.uswest2.a.cloudfilter.net (omta38.uswest2.a.cloudfilter.net [35.89.44.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045B354F96
-	for <stable@vger.kernel.org>; Fri, 19 Jan 2024 15:23:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2AD654BC1;
+	Fri, 19 Jan 2024 15:26:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705677838; cv=none; b=RmxT+janPqhW0V809fs6GDIEtCd7AuiPWqE1S+u410VDD9DiQZfUJcoHygstt5gmQJ0rZUVkotmLNssOw1hyasoMuTV+Inq2oWg6ZLyUUgyyccTkMGhmdpJ3ZN5nEjsw/wedrymVzC5vNX1dz6L5UPDXWJiC1gBJw8Ko2qdJ4jk=
+	t=1705678012; cv=none; b=QcltcyG5TmtdfozmR6ACeC9ww0JopL0/n26FQVJ1fw5oMM0LKOACmSSTi1NRw8Y0ozwpEPetE+k9sZq05FNApbjnsaM3rUyKtmAygrePSMlk1DUqHPM6FKzw7bgYbN/KBSR+TtGZox2fJyQNMwJXeGxp1b2jW8qNWwbAvqfYZEk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705677838; c=relaxed/simple;
-	bh=e2xv8wT/zdAPPJhwgsWSMFq+000fGpNfwN0B4aBITN4=;
-	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
-	 MIME-Version:Content-Type; b=cZYVrlM50WcYSLN4NGb2Sh8pSTAIIcrFwSG8WOh1gbwYZizy/seIWJJ56hu+MPF4rLhzWyTF7GxbQsrHuQlF4xG3K1GAN0zBw+R+EpZ/gC84/iWi7PWIeyN2iwTSMkEJrDly1zLJfH1gvXUMUZJDDfgAN5atbbG+vMbsnjldKPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=2gmX27eG; arc=none smtp.client-ip=35.89.44.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6005a.ext.cloudfilter.net ([10.0.30.201])
-	by cmsmtp with ESMTPS
-	id QnYxrlEdzoMN9QqiprW1Td; Fri, 19 Jan 2024 15:23:55 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id QqinrA7mA1UTRQqinr23Q0; Fri, 19 Jan 2024 15:23:54 +0000
-X-Authority-Analysis: v=2.4 cv=ZOXEJF3b c=1 sm=1 tr=0 ts=65aa940a
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=dEuoMetlWLkA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=HUpHO/TnrX9iXhkwI1KHKR3F/ekrXMrA0ZSIqYQFN4w=; b=2gmX27eGhuMKOrUsLiKOjuyfAY
-	owdjIQLj4zBrmYXCo7OQhJYrNEsx/gtXMLGcIBixcfhJ/EDMP1nPE05US/NAPXjMqE8Y7b9tVhV8Y
-	O/eDz10eLA5l2loN0rdZslzHTEF5cXR00pHWVmBKmGf9UC+h1ihvlayCUWr5/uOBfI2ak1PF8RCti
-	FcMibtjI7uS2j+1vkQ52alod1vD36Lc+G8QB7BVvhOrFk5JtYYXtwIsY+Iyrn9gxPs6jcLivESb7F
-	oXiI2x8NfzG/s9zaixHISJTlH0AEU5x+0dfatbYSpDooTMraxWgTbhd1SAaRpA/FjC/HrhJ9Bx6ac
-	qzQMyqeQ==;
-Received: from c-98-207-139-8.hsd1.ca.comcast.net ([98.207.139.8]:35932 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1rQqil-001akm-0o;
-	Fri, 19 Jan 2024 08:23:51 -0700
-Subject: Re: [PATCH 6.6 000/150] 6.6.13-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
-References: <20240118104320.029537060@linuxfoundation.org>
-In-Reply-To: <20240118104320.029537060@linuxfoundation.org>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <02f6279e-f081-5fc8-acd1-0ad3f4ae2981@w6rz.net>
-Date: Fri, 19 Jan 2024 07:23:48 -0800
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	s=arc-20240116; t=1705678012; c=relaxed/simple;
+	bh=X/xd67Fr3PvF8lGpTMnDOMiobvUDHSVg02IBNzMqNGw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nJpEtpYTquozelyFTV6KSYvk1YcwQpZ8WAHUHQVXBN1ms4gsqa4TJmLzI2YcsrabdiGfdsNhntN9pjOrbM/2pntq7s7G8dQjaPbTC4oHuH8OGiPT4agIVlzAkDeUIb9A0YuAebvGW8eBdyLia6VVP/ZZ4478XqeMyiBSVvAqdzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Smz9BHF+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD31C43394;
+	Fri, 19 Jan 2024 15:26:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705678011;
+	bh=X/xd67Fr3PvF8lGpTMnDOMiobvUDHSVg02IBNzMqNGw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Smz9BHF+haNafasg95JGgtPJYBBHgYlY+/gV8naiOscTv4jh4wJ879u65MnftYq6a
+	 HAUOFwKH1cDjAP5MHxOW36tw5KQInht3bZQ1BFVITR9Yzm9vXVmKVdow6S4SYtSqgK
+	 5P9fluDHo1/AH/VYLojyr6pEutOZvF53QmF8Xmc9bryktDxd8fom/RgoGR4lzDD5cG
+	 FPvOP3M7jePnZwQt9kQ2nPtv/mNf/zvOtRaTKCxC8PanmTYg2fMFrtE0YKiXhr1Y2l
+	 +80VKww/UwvBAfTpHO80c6pItmi8s1lvnZOvi9cprM9bVTGTVr9tUZgiS4FYb1QGtl
+	 TxW5g3tXcywrw==
+Received: from johan by xi.lan with local (Exim 4.96.2)
+	(envelope-from <johan@kernel.org>)
+	id 1rQqlo-0004QS-00;
+	Fri, 19 Jan 2024 16:27:00 +0100
+Date: Fri, 19 Jan 2024 16:26:59 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Banajit Goswami <bgoswami@quicinc.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4 2/4] ASoC: qcom: sc8280xp: limit speaker volumes
+Message-ID: <ZaqUw-9XulJGKH7v@hovoldconsulting.com>
+References: <20240119112420.7446-1-johan+linaro@kernel.org>
+ <20240119112420.7446-3-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 98.207.139.8
-X-Source-L: No
-X-Exim-ID: 1rQqil-001akm-0o
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-98-207-139-8.hsd1.ca.comcast.net ([10.0.1.47]) [98.207.139.8]:35932
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfP1m1dYwuFR2/Q5pxJRoS6eidWwdRRXQW3/NutpGGZPMlTLXbZ3Kt0ttn+4Uf/cqyMt7tTPVvxiJ7OSk4y8tIGbHapUPGGvUd12k7bZQXIUxX7Bm/Gy8
- x4xalF26wtqW4a6amrWalNrXSNwCoLXpgAQkmLOwtVKqtYAzJIGxDmV81XX1tNxEO5mRZ3XfGMpurg==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240119112420.7446-3-johan+linaro@kernel.org>
 
-On 1/18/24 2:47 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.13 release.
-> There are 150 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 20 Jan 2024 10:42:49 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.13-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Fri, Jan 19, 2024 at 12:24:18PM +0100, Johan Hovold wrote:
+> The UCM configuration for the Lenovo ThinkPad X13s has up until now
+> been setting the speaker PA volume to the minimum -3 dB when enabling
+> the speakers, but this does not prevent the user from increasing the
+> volume further.
+> 
+> Limit the digital gain and PA volumes to a combined -3 dB in the machine
+> driver to reduce the risk of speaker damage until we have active speaker
+> protection in place (or higher safe levels have been established).
+> 
+> Note that the PA volume limit cannot be set lower than 0 dB or
+> PulseAudio gets confused when the first 16 levels all map to -3 dB.
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+I tracked the down the root cause for this, which appears to be a bug
+(feature) in pulseaudio that causes it to reject the dB range if the
+maximum is negative:
 
-Tested-by: Ron Economos <re@w6rz.net>
+	https://gitlab.freedesktop.org/pulseaudio/pulseaudio/-/merge_requests/447
 
+This happened to work with v3 which limited the PA volume to the single
+lowest setting, but would similarly break if anyone wants to set a -1.5
+dB limit.
+
+Johan
 
