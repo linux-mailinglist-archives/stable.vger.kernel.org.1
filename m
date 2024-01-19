@@ -1,96 +1,135 @@
-Return-Path: <stable+bounces-12278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DCF4832C50
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 16:26:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1498832C7F
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 16:48:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0FD11F23D68
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 15:26:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E1F91F249FC
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 15:48:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37CAB54746;
-	Fri, 19 Jan 2024 15:26:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3194854BE3;
+	Fri, 19 Jan 2024 15:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Smz9BHF+"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gZ1okhzT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2AD654BC1;
-	Fri, 19 Jan 2024 15:26:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B733C465
+	for <stable@vger.kernel.org>; Fri, 19 Jan 2024 15:48:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705678012; cv=none; b=QcltcyG5TmtdfozmR6ACeC9ww0JopL0/n26FQVJ1fw5oMM0LKOACmSSTi1NRw8Y0ozwpEPetE+k9sZq05FNApbjnsaM3rUyKtmAygrePSMlk1DUqHPM6FKzw7bgYbN/KBSR+TtGZox2fJyQNMwJXeGxp1b2jW8qNWwbAvqfYZEk=
+	t=1705679326; cv=none; b=dsW1dTBiqU/2GX8tWbwCNf5AknUl2MPmrWTqxDrwfwU+reKm2Lza++4DUm+U5V/ojJtQ2z5Mj0QkCx2YU0ZB43WbWUD8mOzBzzV3HFHnTAx1bQhLny+J6+yAwrCNrC+XNXHHQLs+ngKK7VTqW86q3rzwsf5GXDre/4hH9sgxv9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705678012; c=relaxed/simple;
-	bh=X/xd67Fr3PvF8lGpTMnDOMiobvUDHSVg02IBNzMqNGw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nJpEtpYTquozelyFTV6KSYvk1YcwQpZ8WAHUHQVXBN1ms4gsqa4TJmLzI2YcsrabdiGfdsNhntN9pjOrbM/2pntq7s7G8dQjaPbTC4oHuH8OGiPT4agIVlzAkDeUIb9A0YuAebvGW8eBdyLia6VVP/ZZ4478XqeMyiBSVvAqdzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Smz9BHF+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD31C43394;
-	Fri, 19 Jan 2024 15:26:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705678011;
-	bh=X/xd67Fr3PvF8lGpTMnDOMiobvUDHSVg02IBNzMqNGw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Smz9BHF+haNafasg95JGgtPJYBBHgYlY+/gV8naiOscTv4jh4wJ879u65MnftYq6a
-	 HAUOFwKH1cDjAP5MHxOW36tw5KQInht3bZQ1BFVITR9Yzm9vXVmKVdow6S4SYtSqgK
-	 5P9fluDHo1/AH/VYLojyr6pEutOZvF53QmF8Xmc9bryktDxd8fom/RgoGR4lzDD5cG
-	 FPvOP3M7jePnZwQt9kQ2nPtv/mNf/zvOtRaTKCxC8PanmTYg2fMFrtE0YKiXhr1Y2l
-	 +80VKww/UwvBAfTpHO80c6pItmi8s1lvnZOvi9cprM9bVTGTVr9tUZgiS4FYb1QGtl
-	 TxW5g3tXcywrw==
-Received: from johan by xi.lan with local (Exim 4.96.2)
-	(envelope-from <johan@kernel.org>)
-	id 1rQqlo-0004QS-00;
-	Fri, 19 Jan 2024 16:27:00 +0100
-Date: Fri, 19 Jan 2024 16:26:59 +0100
-From: Johan Hovold <johan@kernel.org>
-To: Johan Hovold <johan+linaro@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Banajit Goswami <bgoswami@quicinc.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
-	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4 2/4] ASoC: qcom: sc8280xp: limit speaker volumes
-Message-ID: <ZaqUw-9XulJGKH7v@hovoldconsulting.com>
-References: <20240119112420.7446-1-johan+linaro@kernel.org>
- <20240119112420.7446-3-johan+linaro@kernel.org>
+	s=arc-20240116; t=1705679326; c=relaxed/simple;
+	bh=3KeVb8iHSTXJAHlpC+TiGoBdbDy0ujW0bVUfMh7M/IM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oc7XrGlo68snEXSyFfS1dUO7Be4+4916JqRzNn6MJwffoYw9/cL2NdJ4ow9gzsNz7BEBeXn+oka6CBV2IjT5TEuBrguKPJ0TXNphjhzXoXZhyM8uR1E4vxFFkTbwnB2LEhS4qeiAZyElie67hEQYJkE6oryKUb6yDcJy3kewQ/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gZ1okhzT; arc=none smtp.client-ip=209.85.222.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-7d2e16b552dso158670241.1
+        for <stable@vger.kernel.org>; Fri, 19 Jan 2024 07:48:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1705679322; x=1706284122; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kSbsPC/GT8f3pGBraL0I1C1S6tXlzFxSCmChfpZ5F90=;
+        b=gZ1okhzTwTKskuEKoi1ZU9FQWWqERcVvQeSzLlZG1butmD72rJJLGG4HP4+oLmWt/Z
+         M0YfIzFszhskJcHcAckeS0eegfhO/cu5Vjtj2pwKvqYgbyafeIj2ebC/8KqtT6S9ihT7
+         Z/P178hPskHehh5CNi3iNbKPJHhxQbyGFoATW4NbVaBHAO0gTUoH+RDnSNMq0E2CX2Wf
+         E7AeWn8DV5N08IU6JQxCoLw/2V3/4epwY67tWaB4BK2UWefdc0AyUjoJwxw1rtzZamLq
+         /lykS6cfYgNvlx1LZmygtSZ99MCGL0ZM/NIUP965FNl81NA0S3QdsXmkMzk46zwgSXRo
+         ACSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705679322; x=1706284122;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kSbsPC/GT8f3pGBraL0I1C1S6tXlzFxSCmChfpZ5F90=;
+        b=p2GB3urmLQGNfJSLobLepkN94MkhKuAvXWBvVKme5ZVO+iV/bHFdCooQIY5vOn/wTS
+         p4UxD+qiJqyNAOz4g9Q+zQdrKlPqt1kHNYBVbsrZr5oJv54HkRQUgaSV9NZnHRNNFfBo
+         C5yu7zbDw6ZWEZANSu6NNaNhgEtYj76F+CKyF4zXQ0DaUyECjyHCoR4H/WvP5Sui90Qm
+         wOrrEgKKN61Vdq8xOtL6w2liB1VTZ2r9cnLRTGXjN3SP0zbcbRImWwrURJYxIL1BZfK2
+         VphOODWcBjzpyFePYJ2pgpH+j3scYy8pHiDizfhUdmssn8x/l91dLw/LCoDGc7uYnLDx
+         85pQ==
+X-Gm-Message-State: AOJu0YwC8mwcHNe43WT87Cu6IzoHhaBCmML5b4PysJP2vTvdNQexQqBK
+	S+MQec5GyOyIpaZVfHfjo2SpKDISKz5qjsfAoSOth5uYUo0Mp5WBWYdIiQ5rKgbSGJN03tWg1ON
+	Ve/HsiCeHlVy/O03RQYWuNVTU7sMxaWb7WtqJbEhycdHFcDMFocY=
+X-Google-Smtp-Source: AGHT+IGLafI0xBDL15bbjTBVc+RXc9+ZzQCvlFVzHvfgKr0SoyjWZ+Sb6T/8NraCFHnMzn/9lWlD/bMD7rzeMqgfQvQ=
+X-Received: by 2002:a05:6102:3229:b0:469:9fe3:96b3 with SMTP id
+ x9-20020a056102322900b004699fe396b3mr510547vsf.9.1705679320997; Fri, 19 Jan
+ 2024 07:48:40 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240119112420.7446-3-johan+linaro@kernel.org>
+References: <20240118104301.249503558@linuxfoundation.org>
+In-Reply-To: <20240118104301.249503558@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Fri, 19 Jan 2024 21:18:29 +0530
+Message-ID: <CA+G9fYv4PdOsuFmd2BGoq57omiXWuvnSpJJ1HuLYT0rJ_h9xEw@mail.gmail.com>
+Subject: Re: [PATCH 6.7 00/28] 6.7.1-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jan 19, 2024 at 12:24:18PM +0100, Johan Hovold wrote:
-> The UCM configuration for the Lenovo ThinkPad X13s has up until now
-> been setting the speaker PA volume to the minimum -3 dB when enabling
-> the speakers, but this does not prevent the user from increasing the
-> volume further.
-> 
-> Limit the digital gain and PA volumes to a combined -3 dB in the machine
-> driver to reduce the risk of speaker damage until we have active speaker
-> protection in place (or higher safe levels have been established).
-> 
-> Note that the PA volume limit cannot be set lower than 0 dB or
-> PulseAudio gets confused when the first 16 levels all map to -3 dB.
+On Thu, 18 Jan 2024 at 16:20, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.7.1 release.
+> There are 28 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 20 Jan 2024 10:42:49 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.7.1-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.7.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-I tracked the down the root cause for this, which appears to be a bug
-(feature) in pulseaudio that causes it to reject the dB range if the
-maximum is negative:
+Results from Linaro=E2=80=99s test farm.
+The arm allmodconfig clang-17 build failed on 6.7.y, Linux next and mainlin=
+e.
+but passed on 6.6.y.
 
-	https://gitlab.freedesktop.org/pulseaudio/pulseaudio/-/merge_requests/447
+Links:
+ - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20240117=
+/testrun/22090095/suite/build/test/clang-17-allmodconfig/details/
 
-This happened to work with v3 which limited the PA volume to the single
-lowest setting, but would similarly break if anyone wants to set a -1.5
-dB limit.
+## Build
+* kernel: 6.7.1-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.7.y
+* git commit: ef44e963b02edb00d4de5fa3528a21f3e7b33a85
+* git describe: v6.7-29-gef44e963b02e
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.7.y/build/v6.7-2=
+9-gef44e963b02e/
 
-Johan
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
