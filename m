@@ -1,113 +1,146 @@
-Return-Path: <stable+bounces-12297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06279832E54
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 18:48:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F98832E63
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 18:53:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A673B2334C
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 17:48:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25CB4B213B1
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 17:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3280755E52;
-	Fri, 19 Jan 2024 17:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D801B55E6D;
+	Fri, 19 Jan 2024 17:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AT1e8t+0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U3tcY5DB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2AD255C1B;
-	Fri, 19 Jan 2024 17:47:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6587554BE2;
+	Fri, 19 Jan 2024 17:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705686480; cv=none; b=emP20kqjlBoBx+RwBg1tuRMo1Z8d+KPN5HkHEVPj+fiCcnI3OB9cmDCXfbrrCaLEuQTbh1pOrK23TrZpc0MADMub/QMMznZiXZkOuT0E/tchte5G8pPbNcT0HIif+09rECTxYtx+vsKVCa3HK9yyAKQZhOjqr7i4Y8cMfqVGfAA=
+	t=1705686800; cv=none; b=Qn41F2cjwKULO5h/ttSpatZMN+naMitXNN/D3rKCWlZbPYDVqRxF7H5JScpxKdBu0GsYRc3AZa+w0N/WNCFBngZWQW7UZ7H2c9Reic1dkKpVy9M84jMxxDe0wvI0yzDB6EqztLjkVSaSuNXVkYpgsr5eV3fj4EfL69Ys5wku6kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705686480; c=relaxed/simple;
-	bh=IHTccTwRzqNIFFZ7ye2V9AMKJRjZryD1NVNDaqxcovw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HUkePAgQS7lHJcheN/KYkBkqmX5pxtm91LeYtklNEzP2UO/DkA8ZxCL0hTeDh8w4gsD/o9wzg/SoS1DAfQEzn7fyym5AlJ4wvz3cDkNsjQyIJXn96AnEwPkgtQG6rT4CgjRo5VSdjtB0khDo+NAzm9WqR0QT+Kpf+T1SHxyj9qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AT1e8t+0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B93C433F1;
-	Fri, 19 Jan 2024 17:47:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705686479;
-	bh=IHTccTwRzqNIFFZ7ye2V9AMKJRjZryD1NVNDaqxcovw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AT1e8t+0PvaMGkRhkP+p0BZ8a+0ud7vqglrmkmuOExdPbHUt4BqhlKr1vvT6FUvOr
-	 AZiQqfJb9vCkcTfPlBFo9Ls2CWSwYosc/wLQ6Rq0wWFyf33msbzowscGgksvSVAwuv
-	 V04WqX5oUDrMybrAzD+jftzFpEd0/RthrDmRr9S27T73he9gU8B/edEyncy748f81c
-	 j4bFgRsNSBaSDZlw74Tk9LzbfxEm/YewTHQLi5sUI3hHpa4Amea2quLbwbTVWFKI8E
-	 iFfa0nDksFZ4EzVQbDH8REuLce/h9mABUDsFhGLqD48BV2Pq+EW11PVWfNwjzr/h+9
-	 ody7KwVPhdF3w==
-Date: Fri, 19 Jan 2024 17:47:55 +0000
-From: Mark Brown <broonie@kernel.org>
-To: Dave Martin <Dave.Martin@arm.com>
-Cc: Catalin Marinas <Catalin.Marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] arm64/signal: Don't assume that TIF_SVE means we saved
- SVE state
-Message-ID: <Zaq1y9XpmzTsXDp8@finisterre.sirena.org.uk>
-References: <20240119-arm64-sve-signal-regs-v1-1-b9fd61b0289a@kernel.org>
- <Zaqj0V82LD8wu6g+@e133380.arm.com>
+	s=arc-20240116; t=1705686800; c=relaxed/simple;
+	bh=joZ3oqdD35mH93NqBSHyDq6L05JkQomCwHe2AIIsFH0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=l9WXDcsXwMUu1v0Uct7TuEWlTdCfeTVlahdwmoSG3qLx9PSAtPcjheQGC21XF+l2Qnu8sgSYbkW/CC9OwQV8uADWlmEPq6cMZQdYhcB7ecLxAlcGe7gdvBEj2B/1Jg6A6J0l8cb4N06uHrepn8ipUVEhZZvsEGi2zdeniNx41Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U3tcY5DB; arc=none smtp.client-ip=209.85.215.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-5ce942efda5so844531a12.2;
+        Fri, 19 Jan 2024 09:53:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705686799; x=1706291599; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bWNsVy0kTO/oiTcTQ5yfNu1I6n3cORC/fqV3uGmtSiU=;
+        b=U3tcY5DBrj9pfParHxx3K/aaLviAFHR6SyDmAJoCN7dibKl7mVmgrUCmxse7eaeKlm
+         IjxKRlsd9tcnK2i9r0dNzAWIsFG3i8saNxytGql9qg7nAYLFvUJIueGPPrFUcNetji9i
+         TkrmiHjsUo90w2WMUXSgaaYHnKIHJXYOIvOyUZ8/ScMEGAwKTWz65OphehhalYZ2BOry
+         hJk8dz25Sq0aijDIaujRFtljfTojo3KgGTs+jtMBcQAgJZS+VKI9kDGAT++9YK3L36ro
+         SxyOA6hEKrCyWhu7+Shmp4iF18SxBanMCw5cZYDOi/1M67h4HwD2yOgGaw/wAj7M2lV5
+         ojUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705686799; x=1706291599;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bWNsVy0kTO/oiTcTQ5yfNu1I6n3cORC/fqV3uGmtSiU=;
+        b=kDqIF2GL3rSQ/i1vRealFroC77OSTNiEA+sLMf7djPvAYpKQ7I6LiuoqgVI65HwrQ3
+         4q+3XpVbZJwmfZv/rPsa78M0Jq5KfbgtBAmam7o+UXGuWaVgfYU5ZUh8nCA6A3XzFxSG
+         gI2m2o/ju+dTgHeJIa2Su95pkHiV1ZsGeZVa00pSMlfmxdE/RvtrqcN9Nno/ywDjUOen
+         BBqVDbExnyY5sdQvp6vw1TSonABVWajZasAkZtYJ4DLaeA4wPhSOKYEWjYrTp1bBFZvt
+         HLv5sBkJG0035oxVQuL2kKr+53W0EXemzqYyrzyEgJBpeYCzAbx2t+Rx4vQqL9OQOliv
+         7DuQ==
+X-Gm-Message-State: AOJu0YxwFm1yGJLh0fHJkYC/yjNAWyE1/T/MMuzOYFrNL7wzIHlRPRcU
+	jnKd6vXY8oWQR3Cu0Rv8a85bel0jkWevM/vXb2NR+WNi8hHm37wRu3Aqu8p6Z9FyWFtCtNvAyAr
+	GVvwREetyBMpXoB1LlZ/4kJyUy/8=
+X-Google-Smtp-Source: AGHT+IE1CSWzpt0z9AJr2t26c2E94K4ctR8RmKK6fIyBA6fD4c56V3CCGLhkExsI0hw3aMK6GoEBsCipVS/DU2ngbCc=
+X-Received: by 2002:a17:90a:bd03:b0:28c:cec8:cfe0 with SMTP id
+ y3-20020a17090abd0300b0028ccec8cfe0mr120928pjr.94.1705686798681; Fri, 19 Jan
+ 2024 09:53:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="PdO/yksGZmL1ku6b"
-Content-Disposition: inline
-In-Reply-To: <Zaqj0V82LD8wu6g+@e133380.arm.com>
-X-Cookie: You might have mail.
+References: <20240118104301.249503558@linuxfoundation.org> <CA+G9fYv4PdOsuFmd2BGoq57omiXWuvnSpJJ1HuLYT0rJ_h9xEw@mail.gmail.com>
+In-Reply-To: <CA+G9fYv4PdOsuFmd2BGoq57omiXWuvnSpJJ1HuLYT0rJ_h9xEw@mail.gmail.com>
+From: Luna Jernberg <droidbittin@gmail.com>
+Date: Fri, 19 Jan 2024 18:53:05 +0100
+Message-ID: <CADo9pHgVDXXw6DcFTPHU+Cg10K4dusW61N4G5CFba-Qr99TS-Q@mail.gmail.com>
+Subject: Re: [PATCH 6.7 00/28] 6.7.1-rc1 review
+To: Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org, 
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	torvalds@linux-foundation.org, akpm@linux-foundation.org, linux@roeck-us.net, 
+	shuah@kernel.org, patches@kernelci.org, lkft-triage@lists.linaro.org, 
+	pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, 
+	conor@kernel.org, allen.lkml@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Works fine on my Dell Latitude 7390 laptop with model name    :
+Intel(R) Core(TM) i5-8350U CPU @ 1.70GHz
+and Crystal Linux: https://getcryst.al/site
 
---PdO/yksGZmL1ku6b
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Tested-by: Luna Jernberg <droidbittin@gmail.com>
 
-On Fri, Jan 19, 2024 at 04:31:13PM +0000, Dave Martin wrote:
-> On Fri, Jan 19, 2024 at 12:29:13PM +0000, Mark Brown wrote:
-
-> > When we are in a syscall we will only save the FPSIMD subset even though
-> > the task still has access to the full register set, and on context switch
-
-> (Pedantic nit: "A even if B" (= "A applies even in that subset of cases
-> where B"), instead of "A even though B" (= "A applies notwithstanding
-> that it is always the case that B") (?)  If the SVE trapping were
-> ripped out altogether, it would be a different and rather simpler
-> story...)
-
-I really can't follow what you're trying to say here.  I'm not sure I
-where the bit about "always" comes from here?
-
-> If the historical meanings of TIF_SVE have been split up (which seems a
-> good idea), does that resolve all of the "bare"
-> test_thread_flag(TIF_SVE) that were still there?
-
-There's a couple more, but this is all of them in the signal handling
-code - I should have one or two more patches.  Most of the usage is
-actually checking the trapping and therefore fine.
-
---PdO/yksGZmL1ku6b
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWqtcgACgkQJNaLcl1U
-h9AnUwf/cnpsqEC3KvSy0DsFTKN0rbF0fDrKRjOyNBrxsRlSeBJVuMRm82vExP1y
-55AVWYomuk5PgouebJsPlcOP8+llMA3ADhGOG4Jq1vD2HYZ7mryl9Jm8S1NJ2omK
-QeGhhBBbFefKqAhPZNtNCH0YCAWIIYENLPO9AxL8Wc318R5mpoAVq4G6yYgy/IaC
-8qxER+wemvizj6fBGClDtCe3QVza+q85fAMkP/5ut7E1MFN77QBYcbKpqL7kBfyO
-n6InpHuFhsgF1VlzlyKUC0qEhDEgoQhASDKo2RWIy5aKrBBF5ZpOaDjyHBC6I8tS
-cRIuKdmODvJk17W3Z1ODokGNBJopsg==
-=vwkD
------END PGP SIGNATURE-----
-
---PdO/yksGZmL1ku6b--
+Den fre 19 jan. 2024 kl 16:48 skrev Naresh Kamboju <naresh.kamboju@linaro.o=
+rg>:
+>
+> On Thu, 18 Jan 2024 at 16:20, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > This is the start of the stable review cycle for the 6.7.1 release.
+> > There are 28 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Sat, 20 Jan 2024 10:42:49 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patc=
+h-6.7.1-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
+le-rc.git linux-6.7.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+>
+> Results from Linaro=E2=80=99s test farm.
+> The arm allmodconfig clang-17 build failed on 6.7.y, Linux next and mainl=
+ine.
+> but passed on 6.6.y.
+>
+> Links:
+>  - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-202401=
+17/testrun/22090095/suite/build/test/clang-17-allmodconfig/details/
+>
+> ## Build
+> * kernel: 6.7.1-rc1
+> * git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+> * git branch: linux-6.7.y
+> * git commit: ef44e963b02edb00d4de5fa3528a21f3e7b33a85
+> * git describe: v6.7-29-gef44e963b02e
+> * test details:
+> https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.7.y/build/v6.7=
+-29-gef44e963b02e/
+>
+>
+> --
+> Linaro LKFT
+> https://lkft.linaro.org
+>
 
