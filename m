@@ -1,114 +1,113 @@
-Return-Path: <stable+bounces-12296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECC2B832E45
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 18:37:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06279832E54
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 18:48:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D11861C211CA
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 17:37:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A673B2334C
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 17:48:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 995AA55E7A;
-	Fri, 19 Jan 2024 17:37:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3280755E52;
+	Fri, 19 Jan 2024 17:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hglvHBT1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AT1e8t+0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370BF55E6E
-	for <stable@vger.kernel.org>; Fri, 19 Jan 2024 17:37:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2AD255C1B;
+	Fri, 19 Jan 2024 17:47:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705685848; cv=none; b=Ml9Kmf9+89W7KliHOPQ+rPC4m38Gp7KGMQZA+dBk1zT/wFJ4DajsedwQGuXCbSI7NBB1DjSi85omt0zCgZirHN7rayrFty6iDC/vriOlzsEzxkt853HgpTu6itCBbLrS/MOZfoaFlM9yZlUISQ2qckxAjbhrvwAi1/UK33hxiXU=
+	t=1705686480; cv=none; b=emP20kqjlBoBx+RwBg1tuRMo1Z8d+KPN5HkHEVPj+fiCcnI3OB9cmDCXfbrrCaLEuQTbh1pOrK23TrZpc0MADMub/QMMznZiXZkOuT0E/tchte5G8pPbNcT0HIif+09rECTxYtx+vsKVCa3HK9yyAKQZhOjqr7i4Y8cMfqVGfAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705685848; c=relaxed/simple;
-	bh=IBhAo+p4QBZS3eSqDGhhgoM0tENX26Pe9NJRy76DXQ4=;
+	s=arc-20240116; t=1705686480; c=relaxed/simple;
+	bh=IHTccTwRzqNIFFZ7ye2V9AMKJRjZryD1NVNDaqxcovw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SZXRA2wYEnRDaf+wIjZQnFDnFqvXZbJZbR87q6PuE6Lgk/260vBzY5q9QMQBo90skabUZu07HrzGvGb+3dHn3WM7rPuFTm7WTop786AvdV80YxY2LnPUerehU6yx0OhKbW8ioUq66MUAb/HjXt3+lIM0Q8NCES1hRlra1mEROO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hglvHBT1; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-5cec32dedf3so739757a12.0
-        for <stable@vger.kernel.org>; Fri, 19 Jan 2024 09:37:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1705685846; x=1706290646; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=T7tAFdEcqbuZdGMmYYdZCfxqKm3ZPSINk39pDgE/fPQ=;
-        b=hglvHBT1FlbDe0ELg8C3Lg9V0DxXId6gDwS1PNLXNKw0UcY7p7jOPIW8bbVExibKaN
-         vrQvB492eDKHT05Z+ARcPO183AQVArUhtoU0/AjdJK8UTmM5RKdVx+m8ft0Y1TxX3Gi7
-         b0o9O22TR253NHV6ooWi4nwJwh6vzK/VDEhTqWgGS4PDKk/fpSUB/zX2NkpvQvBsbAzB
-         3H1yQ7y8pgOMp7EbnuHfiitn4jFFD0+Rw5w7Nrg6VQikob9eGRCnBNjmYaMRpAq9HgZ9
-         j3OwwZN6K+93RJysyVlNJIOr0pPdAfoha+8RDFWIpSpF6rOZ6wPk06dwZS/+dpBlcR99
-         4oeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705685846; x=1706290646;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T7tAFdEcqbuZdGMmYYdZCfxqKm3ZPSINk39pDgE/fPQ=;
-        b=lCfqCQ/w8Rw5MkH7yinwk21W78z6wntf8tkBPMJUBer0TBMrPTEQFqpFvu6lhyKkrF
-         B973/S+OsYVAul5JvL9dp/k9B2ti6e8MDJOaL35sGaU/padurvNOeR04tHBSpwRKEI/d
-         0BLjSv65XOgZ94dDC8F4M+VwB0bfHp//04XhkVsFfSjklYQ8yYOBZp7/zextJfEGiOiG
-         RjGv5evG09wkXkAiYkdGA8bW6WzCn4w6b9T2lcgLgmSm5lI9P/kxbPsjN5acMnfZCxxw
-         WGBzvsGjB+Apa8MaJamwKFD1vcxyCDv8O26ZsYqHhJuSPlqUxTImDpkbvjf8CwYuQDXH
-         +2fA==
-X-Gm-Message-State: AOJu0YwxwSDKb73Ta6ek1KRdnITYnDEFSmj8qr6t6qv90vbPE/Sl42G6
-	6dcIv8Rlkz+SEMV8D8drzXajmgjgEOfuXPIWZOBJjClv4wVjjMgal+7rqr9urw==
-X-Google-Smtp-Source: AGHT+IGgMFruydOS7Ra3zGpxrBpq2uYQnrpAUcCrjC4myT4M4Cp7q7j6gRHI8G5qx8WZHC73J2u5FA==
-X-Received: by 2002:a05:6a21:185:b0:19a:6830:2334 with SMTP id le5-20020a056a21018500b0019a68302334mr222044pzb.46.1705685846389;
-        Fri, 19 Jan 2024 09:37:26 -0800 (PST)
-Received: from google.com (77.62.105.34.bc.googleusercontent.com. [34.105.62.77])
-        by smtp.gmail.com with ESMTPSA id x34-20020a056a000be200b006d9b4171b20sm5371824pfu.112.2024.01.19.09.37.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jan 2024 09:37:25 -0800 (PST)
-Date: Fri, 19 Jan 2024 17:37:22 +0000
-From: Carlos Llamas <cmllamas@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	linux-kernel@vger.kernel.org, kernel-team@android.com,
-	Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 03/28] binder: fix race between mmput() and do_exit()
-Message-ID: <ZaqzUrkfSqw0jKkG@google.com>
-References: <20231201172212.1813387-1-cmllamas@google.com>
- <20231201172212.1813387-4-cmllamas@google.com>
- <Zal8A95q3jVl4nu5@google.com>
- <2024011935-placidly-justifier-4338@gregkh>
- <ZaqsBTQ1x5lQG9Rq@google.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=HUkePAgQS7lHJcheN/KYkBkqmX5pxtm91LeYtklNEzP2UO/DkA8ZxCL0hTeDh8w4gsD/o9wzg/SoS1DAfQEzn7fyym5AlJ4wvz3cDkNsjQyIJXn96AnEwPkgtQG6rT4CgjRo5VSdjtB0khDo+NAzm9WqR0QT+Kpf+T1SHxyj9qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AT1e8t+0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B93C433F1;
+	Fri, 19 Jan 2024 17:47:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705686479;
+	bh=IHTccTwRzqNIFFZ7ye2V9AMKJRjZryD1NVNDaqxcovw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AT1e8t+0PvaMGkRhkP+p0BZ8a+0ud7vqglrmkmuOExdPbHUt4BqhlKr1vvT6FUvOr
+	 AZiQqfJb9vCkcTfPlBFo9Ls2CWSwYosc/wLQ6Rq0wWFyf33msbzowscGgksvSVAwuv
+	 V04WqX5oUDrMybrAzD+jftzFpEd0/RthrDmRr9S27T73he9gU8B/edEyncy748f81c
+	 j4bFgRsNSBaSDZlw74Tk9LzbfxEm/YewTHQLi5sUI3hHpa4Amea2quLbwbTVWFKI8E
+	 iFfa0nDksFZ4EzVQbDH8REuLce/h9mABUDsFhGLqD48BV2Pq+EW11PVWfNwjzr/h+9
+	 ody7KwVPhdF3w==
+Date: Fri, 19 Jan 2024 17:47:55 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Dave Martin <Dave.Martin@arm.com>
+Cc: Catalin Marinas <Catalin.Marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] arm64/signal: Don't assume that TIF_SVE means we saved
+ SVE state
+Message-ID: <Zaq1y9XpmzTsXDp8@finisterre.sirena.org.uk>
+References: <20240119-arm64-sve-signal-regs-v1-1-b9fd61b0289a@kernel.org>
+ <Zaqj0V82LD8wu6g+@e133380.arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="PdO/yksGZmL1ku6b"
+Content-Disposition: inline
+In-Reply-To: <Zaqj0V82LD8wu6g+@e133380.arm.com>
+X-Cookie: You might have mail.
+
+
+--PdO/yksGZmL1ku6b
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZaqsBTQ1x5lQG9Rq@google.com>
 
-On Fri, Jan 19, 2024 at 05:06:13PM +0000, Carlos Llamas wrote:
-> 
-> Oops, here is the complete info:
-> 
-> Commit ID: 9a9ab0d963621d9d12199df9817e66982582d5a5
-> Subject:   "binder: fix race between mmput() and do_exit()"
-> Reason:    Fixes a race condition in binder.
-> Versions:  v4.19+
-> 
-> Note this will have a trivial conflict in v4.19 and v5.10 kernels as
-> commit d8ed45c5dcd4 is not there. Please let me know if I should send
-> those patches separately.
-> 
-> Thanks,
-> --
-> Carlos Llamas
+On Fri, Jan 19, 2024 at 04:31:13PM +0000, Dave Martin wrote:
+> On Fri, Jan 19, 2024 at 12:29:13PM +0000, Mark Brown wrote:
 
-Sigh, I meant to type "conflict in v4.19 and v5.4". The patch applies
-cleanly in v5.10+.
+> > When we are in a syscall we will only save the FPSIMD subset even though
+> > the task still has access to the full register set, and on context switch
+
+> (Pedantic nit: "A even if B" (= "A applies even in that subset of cases
+> where B"), instead of "A even though B" (= "A applies notwithstanding
+> that it is always the case that B") (?)  If the SVE trapping were
+> ripped out altogether, it would be a different and rather simpler
+> story...)
+
+I really can't follow what you're trying to say here.  I'm not sure I
+where the bit about "always" comes from here?
+
+> If the historical meanings of TIF_SVE have been split up (which seems a
+> good idea), does that resolve all of the "bare"
+> test_thread_flag(TIF_SVE) that were still there?
+
+There's a couple more, but this is all of them in the signal handling
+code - I should have one or two more patches.  Most of the usage is
+actually checking the trapping and therefore fine.
+
+--PdO/yksGZmL1ku6b
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWqtcgACgkQJNaLcl1U
+h9AnUwf/cnpsqEC3KvSy0DsFTKN0rbF0fDrKRjOyNBrxsRlSeBJVuMRm82vExP1y
+55AVWYomuk5PgouebJsPlcOP8+llMA3ADhGOG4Jq1vD2HYZ7mryl9Jm8S1NJ2omK
+QeGhhBBbFefKqAhPZNtNCH0YCAWIIYENLPO9AxL8Wc318R5mpoAVq4G6yYgy/IaC
+8qxER+wemvizj6fBGClDtCe3QVza+q85fAMkP/5ut7E1MFN77QBYcbKpqL7kBfyO
+n6InpHuFhsgF1VlzlyKUC0qEhDEgoQhASDKo2RWIy5aKrBBF5ZpOaDjyHBC6I8tS
+cRIuKdmODvJk17W3Z1ODokGNBJopsg==
+=vwkD
+-----END PGP SIGNATURE-----
+
+--PdO/yksGZmL1ku6b--
 
