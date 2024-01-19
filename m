@@ -1,112 +1,166 @@
-Return-Path: <stable+bounces-12227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B821F8322D5
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 02:05:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D0458323E1
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 04:53:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 738392844FC
-	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 01:05:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC8C21F245C8
+	for <lists+stable@lfdr.de>; Fri, 19 Jan 2024 03:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 231CEECF;
-	Fri, 19 Jan 2024 01:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA51C1871;
+	Fri, 19 Jan 2024 03:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VGisGj/D"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VBRBCLmD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4C1A23;
-	Fri, 19 Jan 2024 01:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B750186F
+	for <stable@vger.kernel.org>; Fri, 19 Jan 2024 03:53:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705626313; cv=none; b=mW/5OFSzH4ZkcEWFPfREsthAMlHXp6v9JUAJ89lw6xEM4j6nSLGBxkJL9dZ7Zed8onxBxZeUkjBIzejEFDJdK7ITUIB6qd8QeaXppN6lxV70XeL7ihh8i/FXhPBGRgDd4vjqJrDvApuIBVvvh6bM9wdOBJ2T+qD0xoxsJHSww3c=
+	t=1705636383; cv=none; b=awSGRHeapI4gVX0qkif3OnLeg+yhdDuE9YFcfhv/ha3xUtzV+X/QjtMtEMSQguObgTXUs7HZWlG9/t2lUGstVVHKosuzZKeuS30vi/7nOmqFlsktqUGHZUCy/hfOP8Fi6mtkOIW5kGvd/ZzLxjtUTyCctmU8WcRGWWkZdCcnHAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705626313; c=relaxed/simple;
-	bh=osn/EaMYbogc4RGhbu8zSAYeMBzzRshQrCk4otxkJLo=;
+	s=arc-20240116; t=1705636383; c=relaxed/simple;
+	bh=mo8c6Bmp42CGWSM8HU8elamRn6AuuJjgecJ+w6iel0w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KNfb93YZ4HxzPaRph7qRce+LN0e/uLGBfbZSMDz02ou72wtU17w9ORtXbklaOWr9al3C7a5fJN7z2z0AzVdCexPwOdC/vZiwJ0f6QMuz4i3e3nUbodrKGDr5BPc6Y4tVJTdGZwfT4Lzr1Mm5+W5FpOLQr9an7oN5kaat0M72KbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VGisGj/D; arc=none smtp.client-ip=209.85.221.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-4b8e5d64a4bso91533e0c.3;
-        Thu, 18 Jan 2024 17:05:12 -0800 (PST)
+	 To:Cc:Content-Type; b=kPwwS0OW9xVyutbnB/YhVPwXvuG9IBaXXcZL4Ceu6NZIs9a9cN2lqrtFj0aiaESdUR+meIi9xauZjp4PFfXPo9IDzujaSx9hwEVVql5vExd3KXDuKUUQImDC385k51oHhDSy7oRBWISFJRvAKsGtrglCSUaSQeERuEGShq42/us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VBRBCLmD; arc=none smtp.client-ip=209.85.221.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-4b71e8790efso92697e0c.3
+        for <stable@vger.kernel.org>; Thu, 18 Jan 2024 19:53:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705626311; x=1706231111; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1705636380; x=1706241180; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=RsJhYuEUNNPlToTs/UNxc5vaiohzBu5MAjVEZ2pF1+A=;
-        b=VGisGj/DS4h5pZxqPFS0fCOxl/0L2L8GTiiBUBLYTGu2oCmRu5+SE1nwLJ8DNGltz5
-         oBrIO1FaTrheTnR8ud9bBXRb8JXFjbAZaua29Ez7/AQXtMxqwJXfyBKBjZ/yBnth2D/R
-         KxMB1NiJfV/GnuKSsNcsCZ5Pg1cPtTGsQBXv0+/AAy19yY+Nm1SiugAhJYFy7MGpS9Rc
-         BUUmGL5d+g3mDCZCakqLU1WxT+1r+OBBpZVZjssNgw+vxCSEo9rcsskryq/rOngHLR0S
-         khJVyVIa999rKF64OiQW4P89ISib2XGK3oDrBBWDKy2EHGzy5ihmLNoBKJ5vgqQk4Hiv
-         BchQ==
+        bh=u3/2Z2xESJ2KA2jr25zZLyl5xbY/16kqULi2iZR1W8M=;
+        b=VBRBCLmD/kHvy4Fq1qRIe7+lgBHUmLlidGZLkmT+FtEprnxRsnaReLvQlyFHGrPcYQ
+         jwXzpZI+YS3aUxq4NYeuocAMNss9oqSef0hhs8K1l51fUA+Rkh9p6ffZRVnTv/Jd910w
+         lt2HsiQlQOHACH9Qp9djhHqmcZ32rP06GjbHnhIFf3dYVS+pGt9bEVhu5NPY+8P6jccI
+         k+/zJr/ddF+JXYCEESjNfRNJFGbqt0X2gI/DfypFLRoCrG1dlAXRBnfhMwIT/SlfIkyJ
+         ywGDxOFwhG0VbkdO8rOBOCDMwSUpYH5m0yRVBzPw0dkXUN+7jX8X6lYFuskEoOBxLioW
+         t35g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705626311; x=1706231111;
+        d=1e100.net; s=20230601; t=1705636380; x=1706241180;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=RsJhYuEUNNPlToTs/UNxc5vaiohzBu5MAjVEZ2pF1+A=;
-        b=Z3Uje9+5AKHLFSt2hC4XBqy0qzzJnPZtQ3gIon9RoRYLtglLIQFE6/AVrM4pz+zCdM
-         k3c/s8xhZcR0OxppOQLALbjLGL0qzlJmU4GBJhkh9VcDYyedTPToPlpgZ2DjD1RznGeS
-         Wf71tGrxQKwzNPEJWONbV1fYzhH7NUlpuPZUEWG8xaNQHvf7qYMcf4rpikcdRGRFzios
-         zVxr+LLFREbwMf7y+0jejQco4GVRPslIEQEConrRyC59YmBqz/gd6TCJSgcH+Ob2dTkH
-         O2ZzbCc90rbgl6DId3hpHvTJ6SGope6ryI19vunXe/xkHsv/bNmKuhcU9MyaXWQ4duRo
-         VWNQ==
-X-Gm-Message-State: AOJu0Yw2kzWEBSSh0lUJckOlBAUENvqqAVVitcNu5/YEK/u0OoJ0z58v
-	7NZyBq+bP+fqb7Q9qopz14Enl4uUNTCx4ZqqqF+bxjwiMTSVBJRcdmsCLc0bySJUqW+KxuJ0YrC
-	JjGxTLZxZzeynQKJ7B/Vcad1rSgA=
-X-Google-Smtp-Source: AGHT+IFXF7x3w7Ds+w2Ht9DWqHc+79QouazVGPSlh6x5W2FOMR6SBlf01kt6rcBtM0q+5OwUdit5Ww9EyrFmTAiwpJs=
-X-Received: by 2002:a1f:ea84:0:b0:4b6:dfda:5256 with SMTP id
- i126-20020a1fea84000000b004b6dfda5256mr1375902vkh.30.1705626311414; Thu, 18
- Jan 2024 17:05:11 -0800 (PST)
+        bh=u3/2Z2xESJ2KA2jr25zZLyl5xbY/16kqULi2iZR1W8M=;
+        b=XenGXFpCCAT4NO+fB+MLHWxH0wL5j4OzanvpwaOGsMpc7rl9WdFTQqUOs+EuhvzGCl
+         H1ZAnXGxcNdmgFqbpHOj7I43n1eQnfuWV7RNdbxm+BK1hwXduXV2k2ZNAKCNVLjNnXAi
+         1RtZUhbnopXteKV8nQ4GUAvkJJt3jKIvXTD/r9yqSzoQAxuBz6Pmbktb/znlR01XCkmv
+         zA0Pojeei+sqSv4tJa27eh9MNtID1lKE/tnJJCMD7hKS8+boA97fqgXK2MOvj9BjEcVZ
+         HXiVXyfAhW5YD+7nmJr3yFwqTUEMoIM9P54t8z7xW1rMoGvICcyumhmeegpi6YfpsYZX
+         ef4g==
+X-Gm-Message-State: AOJu0YzDs3GvfFHJR1/skMMnsPpojh3CaQS9bJaZDnDNK5XjaIjlqMxF
+	Lhx32Kpb069MMFyPdFECLM5kMQqFNYtoGphnZhjsFDXcKhz/UOxEOQeevcYYCFemMvxEEz7axo9
+	t7KdITE8CZlcGKUpvh7wXyymM7zV9zVtuctrz1g==
+X-Google-Smtp-Source: AGHT+IFBn8+Y0RhN4QAWZqaCdFNIKah+oo28LokVMtCcQILvtRlHxw7vlb1tQmANN+LKttZN0RO9KtqOFtkXRHgAV0k=
+X-Received: by 2002:a1f:7cc7:0:b0:4b6:f254:b234 with SMTP id
+ x190-20020a1f7cc7000000b004b6f254b234mr1543594vkc.32.1705636380096; Thu, 18
+ Jan 2024 19:53:00 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240118104310.892180084@linuxfoundation.org>
-In-Reply-To: <20240118104310.892180084@linuxfoundation.org>
-From: Allen <allen.lkml@gmail.com>
-Date: Thu, 18 Jan 2024 17:05:00 -0800
-Message-ID: <CAOMdWSKJzNYt0AZNXFU9vViAWmi_fv_BnFFGbKv43w2H1EbBwg@mail.gmail.com>
+References: <20240118104310.892180084@linuxfoundation.org> <96dc2b0b-ad51-42f9-a305-744d9d97272e@gmail.com>
+In-Reply-To: <96dc2b0b-ad51-42f9-a305-744d9d97272e@gmail.com>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Fri, 19 Jan 2024 09:22:48 +0530
+Message-ID: <CA+G9fYvviOww1sOPxZDJR471TUhu+Brgv-k9YqKP_mb++Ek9GA@mail.gmail.com>
 Subject: Re: [PATCH 6.1 000/100] 6.1.74-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Stefan Wiehler <stefan.wiehler@nokia.com>, Florian Fainelli <f.fainelli@gmail.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
 	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
 	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
 	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+	jonathanh@nvidia.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net, 
+	rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 
-> This is the start of the stable review cycle for the 6.1.74 release.
-> There are 100 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Fri, 19 Jan 2024 at 00:40, Florian Fainelli <f.fainelli@gmail.com> wrote:
 >
-> Responses should be made by Sat, 20 Jan 2024 10:42:49 +0000.
-> Anything received after that time might be too late.
+> +Stefan,
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.74-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
+> On 1/18/24 02:48, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.1.74 release.
+> > There are 100 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Sat, 20 Jan 2024 10:42:49 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >       https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.74-rc1.gz
+> > or in the git tree and branch at:
+> >       git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
 >
-> thanks,
->
-> greg k-h
->
+> ARM and ARM64 builds worked fine and passed tests, however BMIPS_GENERIC
+> fails to build with:
 
-Compiled and booted on my x86_64 and ARM64 test systems. No errors or
-regressions.
 
-Tested-by: Allen Pais <apais@linux.microsoft.com>
+Following MIPS builds failed on 6.6.y and 6.1.y
+but passed 6.7.y and Linux-next and mainline builds.
 
-Thanks.
+mips:
+
+  * build/clang-17-defconfig
+  * build/clang-nightly-defconfig
+  * build/gcc-12-allmodconfig
+  * build/gcc-12-cavium_octeon_defconfig
+  * build/gcc-12-defconfig
+  * build/gcc-12-malta_defconfig
+  * build/gcc-8-allmodconfig
+  * build/gcc-8-cavium_octeon_defconfig
+  * build/gcc-8-defconfig
+  * build/gcc-8-malta_defconfig
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+>
+> arch/mips/kernel/smp.c: In function 'start_secondary':
+> arch/mips/kernel/smp.c:340:2: error: implicit declaration of function
+> 'rcutree_report_cpu_starting'; did you mean 'rcu_cpu_starting'?
+> [-Werror=implicit-function-declaration]
+>    rcutree_report_cpu_starting(cpu);
+>    ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+>    rcu_cpu_starting
+> cc1: all warnings being treated as errors
+> host-make[5]: *** [scripts/Makefile.build:250: arch/mips/kernel/smp.o]
+
+same here,
+
+>
+> which is caused by 7c20a4cc189eff36d5aeb586008a540d8024fbff ("mips/smp:
+> Call rcutree_report_cpu_starting() earlier").
+>
+> It looks like rcutree_report_cpu_starting() has been introduced
+> 448e9f34d91d1a4799fdb06a93c2c24b34b6fd9d ("rcu: Standardize explicit
+> CPU-hotplug calls") which is in v6.7.
+>
+> For MIPS, it would like an adequate fix would be to
+> 's/rcutree_report_cpu_starting/rcu_cpu_starting/' for the 6.1 and 6.6
+> branches.
+>
+> Stefan, do you agree?
+> --
+> Florian
+
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
