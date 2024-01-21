@@ -1,109 +1,135 @@
-Return-Path: <stable+bounces-12340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 065F08357A2
-	for <lists+stable@lfdr.de>; Sun, 21 Jan 2024 20:57:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF56B835810
+	for <lists+stable@lfdr.de>; Sun, 21 Jan 2024 23:13:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 388921C20FF2
-	for <lists+stable@lfdr.de>; Sun, 21 Jan 2024 19:57:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 63CC31F2185C
+	for <lists+stable@lfdr.de>; Sun, 21 Jan 2024 22:13:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A958383B3;
-	Sun, 21 Jan 2024 19:57:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA5938DE6;
+	Sun, 21 Jan 2024 22:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="epdDM4ab"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mrH+lyD8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4738B38381
-	for <stable@vger.kernel.org>; Sun, 21 Jan 2024 19:57:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38452383B8;
+	Sun, 21 Jan 2024 22:13:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705867048; cv=none; b=D+ly5W4sjJ0ty9b6aXYsxbOOWwn8V2M6m94rq1m4pgktp6AgXh7OTtkZVGWd0M8rkQpGV3hxAxxR1vUP26hMLrQdU7jqMXIN/Q/nixMSIOV4YlREPCj0YGLlFs/0lmvRQQ3IWzXE1hELfCT2mmer4C8XaahUV4UqD/Hcxyfi1Ow=
+	t=1705875218; cv=none; b=icF1TsdlunEJaKzds+hbcCKjneb7I1t/bTBI3vbJcTYCivHS4il5d+4mip+/q11sMLeWxcYPXJd96GFMkffyGJ1KASXNnlJPB69mh43lZPlHduATnxQAxzLCgUDqk5Ak2iiknZlvzpLg/sCXBXt6Jl3pp73i0Rd1HDqmexqfzYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705867048; c=relaxed/simple;
-	bh=JoonGw9vQNXaHQmMN+LL9oyTK5rcSC4rZUk0sfhe/Zg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m4n/5JVmOyYsffTQVhAullSyg+KdG2o8hGiFuJoKrSEf+M2HpMEpzLk6GbfXwt/bTzFFFbbOPAu45SkOwdrfhs61HmsT2zsvwFrmaNa+GH+YQO1cBIS9uf9p93URkoht2dp4/b7ZEdxThMP0LvKIRJF/v9in5KTxW0Sb3Zc1C9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=epdDM4ab; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a26fa294e56so243569366b.0
-        for <stable@vger.kernel.org>; Sun, 21 Jan 2024 11:57:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1705867045; x=1706471845; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=J0/ycZHO2LVW1a2k1bwDkHHCW1t09pgf1oyaA+mSkcw=;
-        b=epdDM4abrwA6KWJq3aWm5KQbnlF7cBXEbzDdCto3xWctJYv6xNaOgCn0WqZnH62bFc
-         uOnZDIG7fHWZzDWX3mOz490YzkiTN4LatU52ogy43B5SBd0XSxxSgylIRVt16sBRHFDe
-         O3qK6ZcwdGavVuQGgdh8PjIe94uegDUOTFBVU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705867045; x=1706471845;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=J0/ycZHO2LVW1a2k1bwDkHHCW1t09pgf1oyaA+mSkcw=;
-        b=LB/YRzjzfKhrbjYgoGMYS6MIBkAaJelDFUyLV5yu9DgYS/R79fFCV8mN4v/RTxbIxz
-         uklHtTsOMIkfPrTsutPiISLiJvRNIOIsBsNWy8iwuXQie3LQalX2wnqUKP4Vd4lPkwWq
-         1T9xqZDptXqATHhxL8YCta2/lcRdkLj3ALMpH2BAraE/xToL0LbgcijJb6moNhmZ8noZ
-         P0By+BPJGqNVUmMj2kG971Sx33fky+71TlNxnk5KNfUo6W10w1tHd+IKCBktD/QTsYq7
-         0JJDVD1/G3oeLSYJyu41WAcarBmQzfxnudPe/g0ogQRMZlZjOrVXGJhfztblTvSwBQvo
-         WV1Q==
-X-Gm-Message-State: AOJu0YxAu1Di+VTZeqXCjrGTTLFKOypLLej+5L3IDPILbIQ0E6Nz0TgI
-	/24nEuUt8Dks4kUnc3jugKYTLHUTV0JLeVG1TWqe/U7K9pj3ywjTiHerhPrZt4aK9KQdyyQ+9vn
-	kEE5UDg==
-X-Google-Smtp-Source: AGHT+IHk+FrtiG63CCfueOQtnm0SEiKK2YvN75yPdm7UUP7iQa003phmlmJYh8tPLAasYoklBFvB9g==
-X-Received: by 2002:a17:906:6a24:b0:a30:5beb:d9e8 with SMTP id qw36-20020a1709066a2400b00a305bebd9e8mr163777ejc.36.1705867045322;
-        Sun, 21 Jan 2024 11:57:25 -0800 (PST)
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com. [209.85.128.54])
-        by smtp.gmail.com with ESMTPSA id vh12-20020a170907d38c00b00a2eb648cdc5sm5849623ejc.156.2024.01.21.11.57.24
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 21 Jan 2024 11:57:24 -0800 (PST)
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-40eabe33749so6186325e9.0
-        for <stable@vger.kernel.org>; Sun, 21 Jan 2024 11:57:24 -0800 (PST)
-X-Received: by 2002:a05:600c:56c5:b0:40d:8794:8535 with SMTP id
- ju5-20020a05600c56c500b0040d87948535mr1754394wmb.160.1705867043768; Sun, 21
- Jan 2024 11:57:23 -0800 (PST)
+	s=arc-20240116; t=1705875218; c=relaxed/simple;
+	bh=PPD5jVGSQWh+IhDVPJgImKWTq2oOvO9L/Jc9kOb/B3o=;
+	h=Date:To:From:Subject:Message-Id; b=t+SIowOOkl1CXRWXihMg9R8GuvBoS6axpNLIv+PAKbHjK3ySJXQ9nEwGw3jIwDCpXiuQy+Vr3WJ0woIcedYeb/7zNdx59nH/H02moiRW3rCyZ1JYn3HGFUD9KGs8s8oOeAZga49Noxyobl01WwYO4f7oiX247lWgH27Zhd98xZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mrH+lyD8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F26AC433C7;
+	Sun, 21 Jan 2024 22:13:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1705875217;
+	bh=PPD5jVGSQWh+IhDVPJgImKWTq2oOvO9L/Jc9kOb/B3o=;
+	h=Date:To:From:Subject:From;
+	b=mrH+lyD8MKzkh6sezYVuzFFsyeEJYXWdSiBu9Wt8+C/3NqthX6MsIcHGcoaq1UYbf
+	 Rrr5AXajdBa2ClntMhacTagn4es+7RgwTgBDXg97hUFunBFdbuUoKSbscDAYHUQh+H
+	 eL/gcdKgbf/IUOQ/Vy5RYrtCtD4LgZE0qT6LZv9M=
+Date: Sun, 21 Jan 2024 14:13:34 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shuah@kernel.org,mpe@ellerman.id.au,donettom@linux.vnet.ibm.com,christophe.leroy@c-s.fr,npache@redhat.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + selftests-mm-fix-map_hugetlb-failure-on-64k-page-size-systems.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240121221337.1F26AC433C7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240113183334.1690740-1-aurelien@aurel32.net> <fd143cf8-5e3d-4d80-8b53-b05980558e45@xs4all.nl>
-In-Reply-To: <fd143cf8-5e3d-4d80-8b53-b05980558e45@xs4all.nl>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sun, 21 Jan 2024 11:57:07 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wgDh18QD_Z6V96J8_gjbSo-7CvGZb9VLRLSL-JD2F8WqQ@mail.gmail.com>
-Message-ID: <CAHk-=wgDh18QD_Z6V96J8_gjbSo-7CvGZb9VLRLSL-JD2F8WqQ@mail.gmail.com>
-Subject: Re: [PATCH] media: solo6x10: replace max(a, min(b, c)) by clamp(b, a, c)
-To: Hans Verkuil <hverkuil@xs4all.nl>
-Cc: Aurelien Jarno <aurelien@aurel32.net>, linux-kernel@vger.kernel.org, 
-	Bluecherry Maintainers <maintainers@bluecherrydvr.com>, 
-	Anton Sviridenko <anton@corp.bluecherry.net>, Andrey Utkin <andrey_utkin@fastmail.com>, 
-	Ismael Luceno <ismael@iodev.co.uk>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	"open list:SOFTLOGIC 6x10 MPEG CODEC" <linux-media@vger.kernel.org>, 
-	"Andy Shevchenko'" <andriy.shevchenko@linux.intel.com>, 
-	"Andrew Morton'" <akpm@linux-foundation.org>, Matthew Wilcox <willy@infradead.org>, 
-	"Christoph Hellwig'" <hch@infradead.org>, "Jason A . Donenfeld" <Jason@zx2c4.com>, Jiri Slaby <jirislaby@gmail.com>, 
-	stable@vger.kernel.org, David Laight <David.Laight@aculab.com>
-Content-Type: text/plain; charset="UTF-8"
 
-On Sun, 14 Jan 2024 at 03:04, Hans Verkuil <hverkuil@xs4all.nl> wrote:
->
-> I'll pick this up as a fix for v6.8.
->
-> Linus, if you prefer to pick this up directly, then that's fine as well.
 
-Bah, missed this email, and so a belated note that I picked the patch
-up as commit 31e97d7c9ae3.
+The patch titled
+     Subject: selftests: mm: fix map_hugetlb failure on 64K page size systems
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     selftests-mm-fix-map_hugetlb-failure-on-64k-page-size-systems.patch
 
-It even got your Reviewed-by thanks to b4 picking that up automatically.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-fix-map_hugetlb-failure-on-64k-page-size-systems.patch
 
-               Linus
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Nico Pache <npache@redhat.com>
+Subject: selftests: mm: fix map_hugetlb failure on 64K page size systems
+Date: Fri, 19 Jan 2024 06:14:29 -0700
+
+On systems with 64k page size and 512M huge page sizes, the allocation and
+test succeeds but errors out at the munmap.  As the comment states, munmap
+will failure if its not HUGEPAGE aligned.  This is due to the length of
+the mapping being 1/2 the size of the hugepage causing the munmap to not
+be hugepage aligned.  Fix this by making the mapping length the full
+hugepage if the hugepage is larger than the length of the mapping.
+
+Link: https://lkml.kernel.org/r/20240119131429.172448-1-npache@redhat.com
+Fixes: fa7b9a805c79 ("tools/selftest/vm: allow choosing mem size and page size in map_hugetlb")
+Signed-off-by: Nico Pache <npache@redhat.com>
+Cc: Donet Tom <donettom@linux.vnet.ibm.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ tools/testing/selftests/mm/map_hugetlb.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
+
+--- a/tools/testing/selftests/mm/map_hugetlb.c~selftests-mm-fix-map_hugetlb-failure-on-64k-page-size-systems
++++ a/tools/testing/selftests/mm/map_hugetlb.c
+@@ -15,6 +15,7 @@
+ #include <unistd.h>
+ #include <sys/mman.h>
+ #include <fcntl.h>
++#include "vm_util.h"
+ 
+ #define LENGTH (256UL*1024*1024)
+ #define PROTECTION (PROT_READ | PROT_WRITE)
+@@ -58,10 +59,16 @@ int main(int argc, char **argv)
+ {
+ 	void *addr;
+ 	int ret;
++	size_t hugepage_size;
+ 	size_t length = LENGTH;
+ 	int flags = FLAGS;
+ 	int shift = 0;
+ 
++	hugepage_size = default_huge_page_size();
++	/* munmap with fail if the length is not page aligned */
++	if (hugepage_size > length)
++		length = hugepage_size;
++
+ 	if (argc > 1)
+ 		length = atol(argv[1]) << 20;
+ 	if (argc > 2) {
+_
+
+Patches currently in -mm which might be from npache@redhat.com are
+
+selftests-mm-fix-map_hugetlb-failure-on-64k-page-size-systems.patch
+selftests-mm-perform-some-system-cleanup-before-using-hugepages.patch
+
 
