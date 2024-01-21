@@ -1,67 +1,66 @@
-Return-Path: <stable+bounces-12335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 202E6835618
-	for <lists+stable@lfdr.de>; Sun, 21 Jan 2024 15:31:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9E2835619
+	for <lists+stable@lfdr.de>; Sun, 21 Jan 2024 15:31:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78CC9B22348
-	for <lists+stable@lfdr.de>; Sun, 21 Jan 2024 14:31:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3EC71F21298
+	for <lists+stable@lfdr.de>; Sun, 21 Jan 2024 14:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D089374C9;
-	Sun, 21 Jan 2024 14:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49E99374E3;
+	Sun, 21 Jan 2024 14:31:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98DF374C2
-	for <stable@vger.kernel.org>; Sun, 21 Jan 2024 14:31:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC21D374E6
+	for <stable@vger.kernel.org>; Sun, 21 Jan 2024 14:31:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705847498; cv=none; b=eEylvHijelzZDJRs/OAnU8iOB0zrMdCBHVz9W24LJskPEl/AwH+obrGAHoEjnAWwVs3ZP3g9opR0rjKwkGL752xeyXMHew3/k+htMVhtsRdQuKBz0lM8LZY7OVxckIURs4e7gpbHpmT+3Am9outgaEQ9EWb4ZkN/7nFhDAm7X2U=
+	t=1705847501; cv=none; b=P3umVPSxAhUDcNgeFRzS/a+omOFl4HNaNOj6S0jy3uTqujtKhkJfvu8wwI//7/uFAwbWgSu0Jfg4GEqVbgY/fSnZ/sNSO4cwIpLR5BFWaozstptQoT6Dg2WVjN3Gx9j93kbpMbgRuecrL1elSCL45b3uay7b9BBfcymTjAKYUfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705847498; c=relaxed/simple;
-	bh=cGFeJLKDRX2IMF3CcpH7JxtWGJa+1XQAuC6M4ItX8UY=;
+	s=arc-20240116; t=1705847501; c=relaxed/simple;
+	bh=qAC3dx8ohmHi63R/TC8YjWox1zE/ivTj5+nBWmskpK0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=G5S2J9pxQ2OzolS0srooAs51ksr9gL7dTY+gnIiZyJgmy6BC+2xOuXZfvrxUq0NnJ59bsttTWmu1/pOuHDtnGBuaK4Un0IpKoAskZ3H5IQp+0q1D+YB7A2vXprarmT59Tr8k6CrIOAHhJo/u76+IvjQLKUk81aXB9YNWV0NJhlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.47
+	 MIME-Version; b=lvg120R37/ydNTT04ETer9qr3G6O+ceh7nrCaX/J0KtlA3B8vjvzMW/WGFniRLV+qnkoSPC1DevcyrnSSUnRhblQ61x6WfGb9UxslaTRjkom0ZiM+wUkVA6vj8SyMqIEYu+ZGvAbidrZ3Un0WOXDEGS06z4SoUMBskLe8D4rk7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-29026523507so1808454a91.0
-        for <stable@vger.kernel.org>; Sun, 21 Jan 2024 06:31:36 -0800 (PST)
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1d711d7a940so19948075ad.1
+        for <stable@vger.kernel.org>; Sun, 21 Jan 2024 06:31:39 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705847496; x=1706452296;
+        d=1e100.net; s=20230601; t=1705847499; x=1706452299;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WFOAmVaVUjoeayEc52i2BSCgIN9Ho02A0gnRSa7ryQQ=;
-        b=qAxC3ypi9KvlO4Z4w0mNCOpf6nCrGpDBfbTCSGVvQ7hFghxRBOcc58YZ0EuN1I4o4/
-         0pNhJPyw/P3vQGG2EJ6Q1WNMgvAYWLJEe13kCG1OYLAsx23UxYeLX7/IcFOtSf6rVeve
-         SGaUYQPnSuoaqHMn13kAFLFlABCyUcrm060rO2yzqjqrbCESRVtu9SZKE5Vxw5tKwoKk
-         4HgxBwo2OC/xHfKOS+bH/zyt7Ke5aoYCbZVmEkR9Zm2s4oeSKJ/0rm4CPBKO7HKat+su
-         kmOMBgzyoNT7ClcGDlCayoGlJ83uWm4DjWw7GAZXXsxu6keHLT5JnoxKCfHGw6dH+wPm
-         oOYg==
-X-Gm-Message-State: AOJu0Yx0lYN+8vfBP4yVbhi0Px6r2m2hZxVMNqglUSMRs52xUh+d3fsQ
-	V0/zk3L7ewI5qZxMbyvd0g9OexUB6rqWcWeD3ortuZuDnnalhGpe
-X-Google-Smtp-Source: AGHT+IFuO2QA+QimrVpL/+gWGjeX9SjkPOd+IIPrxvUmbwfUSk4yvIpopdKbSgAQiyjhlI6w/0hXaA==
-X-Received: by 2002:a17:90b:3547:b0:28c:4c8d:5574 with SMTP id lt7-20020a17090b354700b0028c4c8d5574mr1031921pjb.49.1705847496187;
-        Sun, 21 Jan 2024 06:31:36 -0800 (PST)
+        bh=YWqKWl5V7KyJR+laVPBjebQvgsCWsQR26+x6I1cUMfk=;
+        b=jlsbO/MIY2p+3XXrw2Ha/oilBVxcU4paOlSDz2KjmRNZmkSda24uD+iFdKxxHhNS0+
+         co+tWK8+3VBeHJcvmXKcCNnBMDCFj5HhdGPW0K1v7ACmDAlxhlqE4vraP0cE5iT7Vfh3
+         zVk6TVmiF2DEceu2cNsk0T4gyg+LQtugUbVBn25FvdOsXTAiEvocWkNCJ44oyGlM/Nse
+         RJlY6f13bCyik3AfmQghQI5BxeFm+qfNnVKYE6e5ROEN91gBSu0TcyT0HBRbslW+qvcF
+         nFWyy4wpxX+52ZM0sPTAhSTbc2eryg73h69W/4oq40CEfIdvvUgauhFpnWTdtWFzgkKU
+         +z4g==
+X-Gm-Message-State: AOJu0YwqqBS8SyMINR8Ee829kmDWdt0Q5PMID2yMfImTM02KYCnswS3Q
+	sebr1kSurv7OY5zKUx5wp58bKQYceoYyOTHLgbnvd0jWb2o/uGiDUzV/tSbG
+X-Google-Smtp-Source: AGHT+IEvd8v/81AReis1kwqOvXLv+wI0GREwwqBYdOkF9/6ymzjUkGX+vMBaILSN9+WhF5CID5H8Bw==
+X-Received: by 2002:a17:903:2450:b0:1d4:ef61:2407 with SMTP id l16-20020a170903245000b001d4ef612407mr3259267pls.74.1705847499570;
+        Sun, 21 Jan 2024 06:31:39 -0800 (PST)
 Received: from localhost.localdomain ([110.14.71.32])
-        by smtp.gmail.com with ESMTPSA id r11-20020a170903014b00b001d5dd98bf12sm5831027plc.49.2024.01.21.06.31.33
+        by smtp.gmail.com with ESMTPSA id r11-20020a170903014b00b001d5dd98bf12sm5831027plc.49.2024.01.21.06.31.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Jan 2024 06:31:35 -0800 (PST)
+        Sun, 21 Jan 2024 06:31:38 -0800 (PST)
 From: Namjae Jeon <linkinjeon@kernel.org>
 To: gregkh@linuxfoundation.org,
 	sashal@kernel.org
 Cc: stable@vger.kernel.org,
 	Namjae Jeon <linkinjeon@kernel.org>,
-	zdi-disclosures@trendmicro.com,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15.y 10/11] ksmbd: fix UAF issue in ksmbd_tcp_new_connection()
-Date: Sun, 21 Jan 2024 23:30:37 +0900
-Message-Id: <20240121143038.10589-11-linkinjeon@kernel.org>
+Subject: [PATCH 5.15.y 11/11] ksmbd: only v2 leases handle the directory
+Date: Sun, 21 Jan 2024 23:30:38 +0900
+Message-Id: <20240121143038.10589-12-linkinjeon@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240121143038.10589-1-linkinjeon@kernel.org>
 References: <20240121143038.10589-1-linkinjeon@kernel.org>
@@ -73,114 +72,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-[ Upstream commit 38d20c62903d669693a1869aa68c4dd5674e2544 ]
+[ Upstream commit 77bebd186442a7d703b796784db7495129cc3e70 ]
 
-The race is between the handling of a new TCP connection and
-its disconnection. It leads to UAF on  in
-ksmbd_tcp_new_connection() function.
+When smb2 leases is disable, ksmbd can send oplock break notification
+and cause wait oplock break ack timeout. It may appear like hang when
+accessing a directory. This patch make only v2 leases handle the
+directory.
 
 Cc: stable@vger.kernel.org
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-22991
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- fs/ksmbd/connection.c     |  6 ------
- fs/ksmbd/connection.h     |  1 -
- fs/ksmbd/transport_rdma.c | 11 ++++++-----
- fs/ksmbd/transport_tcp.c  | 13 +++++++------
- 4 files changed, 13 insertions(+), 18 deletions(-)
+ fs/ksmbd/oplock.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/ksmbd/connection.c b/fs/ksmbd/connection.c
-index f9fbde916a09..63815c4df133 100644
---- a/fs/ksmbd/connection.c
-+++ b/fs/ksmbd/connection.c
-@@ -416,13 +416,7 @@ static void stop_sessions(void)
- again:
- 	down_read(&conn_list_lock);
- 	list_for_each_entry(conn, &conn_list, conns_list) {
--		struct task_struct *task;
--
- 		t = conn->transport;
--		task = t->handler;
--		if (task)
--			ksmbd_debug(CONN, "Stop session handler %s/%d\n",
--				    task->comm, task_pid_nr(task));
- 		ksmbd_conn_set_exiting(conn);
- 		if (t->ops->shutdown) {
- 			up_read(&conn_list_lock);
-diff --git a/fs/ksmbd/connection.h b/fs/ksmbd/connection.h
-index 342f935f5770..0e04cf8b1d89 100644
---- a/fs/ksmbd/connection.h
-+++ b/fs/ksmbd/connection.h
-@@ -135,7 +135,6 @@ struct ksmbd_transport_ops {
- struct ksmbd_transport {
- 	struct ksmbd_conn		*conn;
- 	struct ksmbd_transport_ops	*ops;
--	struct task_struct		*handler;
- };
+diff --git a/fs/ksmbd/oplock.c b/fs/ksmbd/oplock.c
+index 5baabcb818f0..4e444d01a3c3 100644
+--- a/fs/ksmbd/oplock.c
++++ b/fs/ksmbd/oplock.c
+@@ -1197,6 +1197,12 @@ int smb_grant_oplock(struct ksmbd_work *work, int req_op_level, u64 pid,
+ 	bool prev_op_has_lease;
+ 	__le32 prev_op_state = 0;
  
- #define KSMBD_TCP_RECV_TIMEOUT	(7 * HZ)
-diff --git a/fs/ksmbd/transport_rdma.c b/fs/ksmbd/transport_rdma.c
-index 252a1e7afcc0..355673f2830b 100644
---- a/fs/ksmbd/transport_rdma.c
-+++ b/fs/ksmbd/transport_rdma.c
-@@ -2039,6 +2039,7 @@ static bool rdma_frwr_is_supported(struct ib_device_attr *attrs)
- static int smb_direct_handle_connect_request(struct rdma_cm_id *new_cm_id)
- {
- 	struct smb_direct_transport *t;
-+	struct task_struct *handler;
- 	int ret;
- 
- 	if (!rdma_frwr_is_supported(&new_cm_id->device->attrs)) {
-@@ -2056,11 +2057,11 @@ static int smb_direct_handle_connect_request(struct rdma_cm_id *new_cm_id)
- 	if (ret)
- 		goto out_err;
- 
--	KSMBD_TRANS(t)->handler = kthread_run(ksmbd_conn_handler_loop,
--					      KSMBD_TRANS(t)->conn, "ksmbd:r%u",
--					      smb_direct_port);
--	if (IS_ERR(KSMBD_TRANS(t)->handler)) {
--		ret = PTR_ERR(KSMBD_TRANS(t)->handler);
-+	handler = kthread_run(ksmbd_conn_handler_loop,
-+			      KSMBD_TRANS(t)->conn, "ksmbd:r%u",
-+			      smb_direct_port);
-+	if (IS_ERR(handler)) {
-+		ret = PTR_ERR(handler);
- 		pr_err("Can't start thread\n");
- 		goto out_err;
- 	}
-diff --git a/fs/ksmbd/transport_tcp.c b/fs/ksmbd/transport_tcp.c
-index eff7a1d793f0..9d4222154dcc 100644
---- a/fs/ksmbd/transport_tcp.c
-+++ b/fs/ksmbd/transport_tcp.c
-@@ -185,6 +185,7 @@ static int ksmbd_tcp_new_connection(struct socket *client_sk)
- 	struct sockaddr *csin;
- 	int rc = 0;
- 	struct tcp_transport *t;
-+	struct task_struct *handler;
- 
- 	t = alloc_transport(client_sk);
- 	if (!t) {
-@@ -199,13 +200,13 @@ static int ksmbd_tcp_new_connection(struct socket *client_sk)
- 		goto out_error;
- 	}
- 
--	KSMBD_TRANS(t)->handler = kthread_run(ksmbd_conn_handler_loop,
--					      KSMBD_TRANS(t)->conn,
--					      "ksmbd:%u",
--					      ksmbd_tcp_get_port(csin));
--	if (IS_ERR(KSMBD_TRANS(t)->handler)) {
-+	handler = kthread_run(ksmbd_conn_handler_loop,
-+			      KSMBD_TRANS(t)->conn,
-+			      "ksmbd:%u",
-+			      ksmbd_tcp_get_port(csin));
-+	if (IS_ERR(handler)) {
- 		pr_err("cannot start conn thread\n");
--		rc = PTR_ERR(KSMBD_TRANS(t)->handler);
-+		rc = PTR_ERR(handler);
- 		free_transport(t);
- 	}
- 	return rc;
++	/* Only v2 leases handle the directory */
++	if (S_ISDIR(file_inode(fp->filp)->i_mode)) {
++		if (!lctx || lctx->version != 2)
++			return 0;
++	}
++
+ 	opinfo = alloc_opinfo(work, pid, tid);
+ 	if (!opinfo)
+ 		return -ENOMEM;
 -- 
 2.25.1
 
