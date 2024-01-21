@@ -1,67 +1,66 @@
-Return-Path: <stable+bounces-12327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38098835611
-	for <lists+stable@lfdr.de>; Sun, 21 Jan 2024 15:31:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E292835610
+	for <lists+stable@lfdr.de>; Sun, 21 Jan 2024 15:31:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28296B2218B
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40BAF1C213C2
 	for <lists+stable@lfdr.de>; Sun, 21 Jan 2024 14:31:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7837F34CDE;
-	Sun, 21 Jan 2024 14:31:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20B5B36B08;
+	Sun, 21 Jan 2024 14:31:12 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2044C33CE6
-	for <stable@vger.kernel.org>; Sun, 21 Jan 2024 14:31:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A744E33CE6
+	for <stable@vger.kernel.org>; Sun, 21 Jan 2024 14:31:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705847468; cv=none; b=SrBGXIOWOE7PY9G+yW9QCOsSiXodbQrllRFq6SqrGD4t2wjBkAeOLcXRX1wpHM79cJuU5vl3pLIGJ890KS4n3rfpv1Sk48PEy5c7T+tjIju2fSato6Z1Mo4986Y7ieLdbmpa4hpfiRzoxHHGZ00/rE2/ZSlNqx6ozKRUqFFZwiI=
+	t=1705847472; cv=none; b=AMBiEDX7EDV5p8cF+ebxGoiRVGNyxqK84WWWtF8fsdRu4BnKzbdK2PzF5bQRqCFS2GP0tmWXQ2l94Cs4j1f9aI9fjr0ghD+amK2QDrXkAVQllHbPHaJzVahdvwnvcY3HNM9BLeB3fyBsKqltKE6xqYm5oPo1NlYuXZaabBNLp/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705847468; c=relaxed/simple;
-	bh=tci0/bAYJ783bV0ukcWycEQq0l1yE28T8qdbCsEOh5Y=;
+	s=arc-20240116; t=1705847472; c=relaxed/simple;
+	bh=yW2/mVKWlqylv9po2xWHeu0bQpimOxY9fNbbZgqEPaU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DsTfvXoC53uxIOmsNvBXIMGtC6pTwoCeGCYHEBGbirXzoaCQuk6v1ZOTy9IpDODm7Sn0U4n14bxkDSwOo5g0HQlWdShgFMiOEtoXlX/F5t3m/Xd4lQ+Q1PHxGSK9eGfU5hUrvHwwXL93ci+tClCHR6g0cC+RY88kLiy3IzK64qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.214.175
+	 MIME-Version; b=FLPAw+TUOBXpRSYPNjjkAP35oEoZ6bXbwGudZdL8OXl3FBS4iCkOVkkCxvn38llY4AVTydCGaEr0USOs/uOr+Ba75DoxrRrsgNbIoqWggpvCqZv1kTo1GBnqXXqFqxp0Dd1EAfwYkv5/yfvdDnU3Puiyqmswxe2g2LrTU/RT7+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.210.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1d6fbaaec91so18932815ad.3
-        for <stable@vger.kernel.org>; Sun, 21 Jan 2024 06:31:06 -0800 (PST)
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-6db9e52bbccso1046731b3a.3
+        for <stable@vger.kernel.org>; Sun, 21 Jan 2024 06:31:10 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705847466; x=1706452266;
+        d=1e100.net; s=20230601; t=1705847470; x=1706452270;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FKLCMedeLceETvCq545+M9jMOmnK/t+cONrmAyE1juk=;
-        b=vie3W/KUW9PQt9NyHKkc1/c0REYFPtx19T0asLoKRATZqPJI6H0QoqSBLT7pazh6Uz
-         E4TLByI+UAb+bkCVK7kQkEbocVj0mPhtyjgiFyQ7wpqqNYEBUC5B/s2fsbnkvny2sMD2
-         NuNeVK2tGEElhzdyfVQk9ccMYzT5Zlj66N6ym+wHZkY3v7BaNi5NqOe6fzO5lKyX6Bym
-         a4jgJjojyYtI9dnHi85ktdfrkxyWbehClEv5x5nHBK1aF/RlHu5Vq4aHsiWPVg20tFEA
-         BzUQHT9gLg4myABoyNdFhb1bNlglAKAvjJImnloYu1VNcF9WokJxVGsATGDAtGHvcUWJ
-         daWw==
-X-Gm-Message-State: AOJu0Yx8hmYHuhKvlG+dN+gJIUzyf1qxKJl4lyNI7kPrhbHfBSbQc1QE
-	bcdelasH1wPz3tilTUa5GrrB5YjwRY/o5jz6q+MNiHECWyQghr6s
-X-Google-Smtp-Source: AGHT+IHkg2c7q5wt3E4oM+34kMdsAqglft3A6FoIqITMybyvXi8pr90MPiSaNok2TvdEnk2BwjHA/w==
-X-Received: by 2002:a17:902:8bc8:b0:1d4:e070:73c with SMTP id r8-20020a1709028bc800b001d4e070073cmr3007768plo.3.1705847466381;
-        Sun, 21 Jan 2024 06:31:06 -0800 (PST)
+        bh=sUvYdJmPFPMgJVtDFnTGxvP+3Gztp8jWd8NEVzb+EXk=;
+        b=qoV8ykt94tGfTkfSaspNvdcAAeSQTBclRU1WGvwZOGkbiNT2MJiL2tLar5JHlIeYc1
+         ggsA2R7Cwjbz7NdtTexghBOsAMlIXu3GHZ0CkfEqiVJvj24gZvLJ8pZbxBHvhky2B9Ve
+         A1JVD2rLl58hGRCwpTk6bKHrjVLuveN17jeti0UI45cDa3tiqC8NPeO6P2stlzB6Exig
+         yH4ZMPfjEo4SMyn0NQNbTWeDCTzRxiO4l+cRQUlWHGfDPRXj+3LfR3XW9e6NUtZSka1h
+         NkxBkQ8i/4xmU5wAfZpSpnWIjVGayEJlbjLgOfCgkchRR9SuotgwAuRQZYZzosMMlwYj
+         /iLw==
+X-Gm-Message-State: AOJu0YzZWsjJufX8pRtwFgBl0Tn7/undmq8kB/HL4D1u4tIy0frKCfrb
+	tDPFRagmdVDYxG9LawtdFpjSeoLieedErSia2VLzZDI5zJdqInen
+X-Google-Smtp-Source: AGHT+IECdCbhhugVlZt9vgaUBClAdrP1QBjFgG4zcs0Tc3r2hipqKwx6L9c4CxQOhCDH5neRQsojeQ==
+X-Received: by 2002:a17:902:bc47:b0:1d7:3d4b:3dbb with SMTP id t7-20020a170902bc4700b001d73d4b3dbbmr356821plz.136.1705847469858;
+        Sun, 21 Jan 2024 06:31:09 -0800 (PST)
 Received: from localhost.localdomain ([110.14.71.32])
-        by smtp.gmail.com with ESMTPSA id r11-20020a170903014b00b001d5dd98bf12sm5831027plc.49.2024.01.21.06.31.03
+        by smtp.gmail.com with ESMTPSA id r11-20020a170903014b00b001d5dd98bf12sm5831027plc.49.2024.01.21.06.31.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Jan 2024 06:31:05 -0800 (PST)
+        Sun, 21 Jan 2024 06:31:09 -0800 (PST)
 From: Namjae Jeon <linkinjeon@kernel.org>
 To: gregkh@linuxfoundation.org,
 	sashal@kernel.org
 Cc: stable@vger.kernel.org,
 	Namjae Jeon <linkinjeon@kernel.org>,
-	Tom Talpey <tom@talpey.com>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.15.y 02/11] ksmbd: set v2 lease version on lease upgrade
-Date: Sun, 21 Jan 2024 23:30:29 +0900
-Message-Id: <20240121143038.10589-3-linkinjeon@kernel.org>
+Subject: [PATCH 5.15.y 03/11] ksmbd: fix potential circular locking issue in smb2_set_ea()
+Date: Sun, 21 Jan 2024 23:30:30 +0900
+Message-Id: <20240121143038.10589-4-linkinjeon@kernel.org>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240121143038.10589-1-linkinjeon@kernel.org>
 References: <20240121143038.10589-1-linkinjeon@kernel.org>
@@ -73,42 +72,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-[ Upstream commit bb05367a66a9990d2c561282f5620bb1dbe40c28 ]
+[ Upstream commit 6fc0a265e1b932e5e97a038f99e29400a93baad0 ]
 
-If file opened with v2 lease is upgraded with v1 lease, smb server
-should response v2 lease create context to client.
-This patch fix smb2.lease.v2_epoch2 test failure.
-
-This test case assumes the following scenario:
- 1. smb2 create with v2 lease(R, LEASE1 key)
- 2. smb server return smb2 create response with v2 lease context(R,
-LEASE1 key, epoch + 1)
- 3. smb2 create with v1 lease(RH, LEASE1 key)
- 4. smb server return smb2 create response with v2 lease context(RH,
-LEASE1 key, epoch + 2)
-
-i.e. If same client(same lease key) try to open a file that is being
-opened with v2 lease with v1 lease, smb server should return v2 lease.
+smb2_set_ea() can be called in parent inode lock range.
+So add get_write argument to smb2_set_ea() not to call nested
+mnt_want_write().
 
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Acked-by: Tom Talpey <tom@talpey.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 ---
- fs/ksmbd/oplock.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ksmbd/smb2pdu.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ksmbd/oplock.c b/fs/ksmbd/oplock.c
-index 2da256259722..f8a2efa2dae7 100644
---- a/fs/ksmbd/oplock.c
-+++ b/fs/ksmbd/oplock.c
-@@ -1036,6 +1036,7 @@ static void copy_lease(struct oplock_info *op1, struct oplock_info *op2)
- 	lease2->duration = lease1->duration;
- 	lease2->flags = lease1->flags;
- 	lease2->epoch = lease1->epoch++;
-+	lease2->version = lease1->version;
- }
+diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
+index 8875c04e8382..5975a2bc471f 100644
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -2311,11 +2311,12 @@ static noinline int create_smb2_pipe(struct ksmbd_work *work)
+  * @eabuf:	set info command buffer
+  * @buf_len:	set info command buffer length
+  * @path:	dentry path for get ea
++ * @get_write:	get write access to a mount
+  *
+  * Return:	0 on success, otherwise error
+  */
+ static int smb2_set_ea(struct smb2_ea_info *eabuf, unsigned int buf_len,
+-		       const struct path *path)
++		       const struct path *path, bool get_write)
+ {
+ 	struct user_namespace *user_ns = mnt_user_ns(path->mnt);
+ 	char *attr_name = NULL, *value;
+@@ -3000,7 +3001,7 @@ int smb2_open(struct ksmbd_work *work)
  
- static int add_lease_global_list(struct oplock_info *opinfo)
+ 			rc = smb2_set_ea(&ea_buf->ea,
+ 					 le32_to_cpu(ea_buf->ccontext.DataLength),
+-					 &path);
++					 &path, false);
+ 			if (rc == -EOPNOTSUPP)
+ 				rc = 0;
+ 			else if (rc)
+@@ -5994,7 +5995,7 @@ static int smb2_set_info_file(struct ksmbd_work *work, struct ksmbd_file *fp,
+ 			return -EINVAL;
+ 
+ 		return smb2_set_ea((struct smb2_ea_info *)req->Buffer,
+-				   buf_len, &fp->filp->f_path);
++				   buf_len, &fp->filp->f_path, true);
+ 	}
+ 	case FILE_POSITION_INFORMATION:
+ 	{
 -- 
 2.25.1
 
