@@ -1,106 +1,300 @@
-Return-Path: <stable+bounces-12321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A514C833701
-	for <lists+stable@lfdr.de>; Sun, 21 Jan 2024 00:08:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A351835449
+	for <lists+stable@lfdr.de>; Sun, 21 Jan 2024 04:10:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54A061F224FC
-	for <lists+stable@lfdr.de>; Sat, 20 Jan 2024 23:08:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C671C1F21F92
+	for <lists+stable@lfdr.de>; Sun, 21 Jan 2024 03:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B454514F7E;
-	Sat, 20 Jan 2024 23:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="qwh/+t6V"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5A233CD0;
+	Sun, 21 Jan 2024 03:10:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB2214ABD
-	for <stable@vger.kernel.org>; Sat, 20 Jan 2024 23:08:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F6ED26A;
+	Sun, 21 Jan 2024 03:10:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705792117; cv=none; b=NRLKQakmuOWNgkpc9DHoQGtmwN6RuaKXst+HlsEHqkzTVmvDyTJsjZzGoHLH50k1HgANWQFN9/+FbYWB/NFerZYyksoT+hhALQzAUuY3PkubUdJBldj8Rz9jH5GXJ3s1WnFQhnHt/iE3xqiaBINn4EcFEHv+qNvo3mkTVjHuchw=
+	t=1705806606; cv=none; b=sIemHJajEZQeHvpPhJsd/VyNMaFglAxs0CjLJhtEG1QKsX905sCxfopQHv/VWfiMidpsJiwbzY+eSsqZZMJ7WYi88Ct5BD6VX4kZ5VXNojErM1hRVjRosVtmjhD5L/jrDZLIdKfAx0gnTonhV9Imd2QI7Oi2IBAtsOzXXySRpLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705792117; c=relaxed/simple;
-	bh=9fF2Mzl7hsf7wLiCxhkBAlk9xFQdduBkwE9hpqZNBWc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SHcyvoH9dMjGiQ8B28btRqjx3NVmS/l1KXT2m0Fsq4OiwmEgLT0yVK7K465oZ6P0Jqw3a8Hug5Qkgojq5uw1X1X6vy6fqQ1rjDs7x6k40QRqm0QvnXvMusehT974pCl+zCiQjK9bvTB1h8y1aYEOOvcBFdJ8ky3JFaTW9W20/Ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=qwh/+t6V; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=XkaHGMGt53SwjvP38fxIGwhU3n+LAaDVWYrWt4x1lLk=; b=qwh/+t6VGbMzPwT954U9+opLGO
-	VxH6WuCucZRU5DkSfTUOMXxraAshL73pJihDm7n5wB79X1J6Ko8DqI4/k6wEvM0iwk9b/NGhTAado
-	8vac6fELjzGCvjxXl6AnygIGtmsf6eIaDp1wQKw7j4zVhiIYQQJ3ndAcqvAMEYztIYEznT/VETr6E
-	ADsrK5mqCgiMbH2JlWLqw/IMpedOP46b0icbbA9a2PKzK5i6BbeaqAW+sGB+6Op7Gmu2GoXRV/N9V
-	IFDiOHA5AWCsmNiutWSsl7cZJpFSMtzoi+SK6Ww/nTwaCm1GmFXwlfb7juL8vxqsO93yfT30XEmtf
-	nU60UYEw==;
-Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rRKRu-0000000AzVy-3QZr;
-	Sat, 20 Jan 2024 23:08:26 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: Richard Weinberger <richard@nod.at>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	linux-mtd@lists.infradead.org,
-	stable@vger.kernel.org
-Subject: [PATCH 01/15] ubifs: Set page uptodate in the correct place
-Date: Sat, 20 Jan 2024 23:08:09 +0000
-Message-ID: <20240120230824.2619716-2-willy@infradead.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240120230824.2619716-1-willy@infradead.org>
-References: <20240120230824.2619716-1-willy@infradead.org>
+	s=arc-20240116; t=1705806606; c=relaxed/simple;
+	bh=I3WwvVTdusDDUCqoz87HV7bQd0RnQzvJN1fmpiXYm7c=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Pk0/X3NJb0qrirEfyNtGCMWAj6ul+xvgl7Ef+2+XEk2V7OXxYbKTdov89heb1Qu0seIP3R0PrQRdGSjDUor0WmCta4MwRSmLSomwtg5EQX10a8tAOVruzrWH21ARidLyX5uJPGsKfKbB2nuLNBfV9VOa7NKdSkPqhvtDExHbBto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com; spf=pass smtp.mailfrom=perches.com; arc=none smtp.client-ip=216.40.44.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
+Received: from omf08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 94E6280241;
+	Sun, 21 Jan 2024 02:33:54 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf08.hostedemail.com (Postfix) with ESMTPA id B211D20025;
+	Sun, 21 Jan 2024 02:33:49 +0000 (UTC)
+Message-ID: <b28a42964abc1d67ce7d03d9660e855dc00622b4.camel@perches.com>
+Subject: Re: Patch "rtlwifi: Use ffs in <foo>_phy_calculate_bit_shift" has
+ been added to the 5.4-stable tree
+From: Joe Perches <joe@perches.com>
+To: Sasha Levin <sashal@kernel.org>, stable-commits@vger.kernel.org, 
+	"stable@vger.kernel.org"
+	 <stable@vger.kernel.org>
+Cc: Ping-Ke Shih <pkshih@realtek.com>, Kalle Valo <kvalo@kernel.org>
+Date: Sat, 20 Jan 2024 18:33:46 -0800
+In-Reply-To: <20240121014845.662779-1-sashal@kernel.org>
+References: <20240121014845.662779-1-sashal@kernel.org>
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: B211D20025
+X-Rspamd-Server: rspamout08
+X-Stat-Signature: gdwjc9unynapcwhb7ehpsm6mt1tzh73o
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX18vP7F6RQBVwFKycDeLS5jrGa2eg57mAHk=
+X-HE-Tag: 1705804429-848165
+X-HE-Meta: U2FsdGVkX1+PNpT1qhopuVXvoUfvhVcSiRpXZ44q++OUYQrwKqs+DR7ti4d59OkYJ50I7oVlhUQ/SKe7uCG+CeLJWbqdfGvdmA6moREDJiTpaK/GfscKca8YEb9Wf5kwqbxn083NyhAcYo00rMF2BIsx+qiNbUFyAsYooMEs5m2ih7UrSafiAkPDAroFhxtYtkwS/PL2DPW0Jd/dpsFH+NGR1DKZWq30eKsLZdnATpDM9FV6Bd0e1XhO2B08Px101T6z1RA84dOv6XjyHp8J5fY3ez0Kf6nrLffFbJSd9NILG7TNGig8+kF4YmqsbbkyJ9m99hUcFA0FTf/NpU7n2qB4poengTig6M5geh4YxbbtT/RBLd8cSqjG8dazdQ5OkysL5DGMx1vZIpAv5RqcrrVqT0ThiSTXBM0HDv5B50jkwXaSt3C+lGKiULr+1D3cRK9WkLC8o2XaFtbPnXr88ibkwD4UpU0o6G7Mip4GdkeQg9k2J6qbiA==
 
-Page cache reads are lockless, so setting the freshly allocated page
-uptodate before we've overwritten it with the data it's supposed to have
-in it will allow a simultaneous reader to see old data.  Move the call
-to SetPageUptodate into ubifs_write_end(), which is after we copied the
-new data into the page.
+On Sat, 2024-01-20 at 20:48 -0500, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+>=20
+>     rtlwifi: Use ffs in <foo>_phy_calculate_bit_shift
 
-Fixes: 1e51764a3c2a ("UBIFS: add new flash file system")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
----
- fs/ubifs/file.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Why?  There's no change in behavior.
+Not a candidate for stable IMO.
+Same for 4.19.
 
-diff --git a/fs/ubifs/file.c b/fs/ubifs/file.c
-index 5029eb3390a5..40a9b03ef821 100644
---- a/fs/ubifs/file.c
-+++ b/fs/ubifs/file.c
-@@ -463,9 +463,6 @@ static int ubifs_write_begin(struct file *file, struct address_space *mapping,
- 				return err;
- 			}
- 		}
--
--		SetPageUptodate(page);
--		ClearPageError(page);
- 	}
- 
- 	err = allocate_budget(c, page, ui, appending);
-@@ -569,6 +566,9 @@ static int ubifs_write_end(struct file *file, struct address_space *mapping,
- 		goto out;
- 	}
- 
-+	if (len == PAGE_SIZE)
-+		SetPageUptodate(page);
-+
- 	if (!PagePrivate(page)) {
- 		attach_page_private(page, (void *)1);
- 		atomic_long_inc(&c->dirty_pg_cnt);
--- 
-2.43.0
+>=20
+> to the 5.4-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue.g=
+it;a=3Dsummary
+>=20
+> The filename of the patch is:
+>      rtlwifi-use-ffs-in-foo-_phy_calculate_bit_shift.patch
+> and it can be found in the queue-5.4 subdirectory.
+>=20
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+>=20
+>=20
+>=20
+> commit a5dba4741aebf44a1371d4559b5c13535a440c38
+> Author: Joe Perches <joe@perches.com>
+> Date:   Fri Sep 18 23:37:47 2020 -0700
+>=20
+>     rtlwifi: Use ffs in <foo>_phy_calculate_bit_shift
+>    =20
+>     [ Upstream commit 6c1d61913570d4255548ac598cfbef6f1e3c3eee ]
+>    =20
+>     Remove the loop and use the generic ffs instead.
+>    =20
+>     Signed-off-by: Joe Perches <joe@perches.com>
+>     Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
+>     Link: https://lore.kernel.org/r/e2ab424d24b74901bc0c39f0c60f75e871adf=
+2ba.camel@perches.com
+>     Stable-dep-of: bc8263083af6 ("wifi: rtlwifi: rtl8821ae: phy: fix an u=
+ndefined bitwise shift behavior")
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+>=20
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c b/drive=
+rs/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c
+> index 96d8f25b120f..52b0fccc31f8 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c
+> @@ -16,7 +16,12 @@ static u32 _rtl88e_phy_rf_serial_read(struct ieee80211=
+_hw *hw,
+>  static void _rtl88e_phy_rf_serial_write(struct ieee80211_hw *hw,
+>  					enum radio_path rfpath, u32 offset,
+>  					u32 data);
+> -static u32 _rtl88e_phy_calculate_bit_shift(u32 bitmask);
+> +static u32 _rtl88e_phy_calculate_bit_shift(u32 bitmask)
+> +{
+> +	u32 i =3D ffs(bitmask);
+> +
+> +	return i ? i - 1 : 32;
+> +}
+>  static bool _rtl88e_phy_bb8188e_config_parafile(struct ieee80211_hw *hw)=
+;
+>  static bool _rtl88e_phy_config_mac_with_headerfile(struct ieee80211_hw *=
+hw);
+>  static bool phy_config_bb_with_headerfile(struct ieee80211_hw *hw,
+> @@ -210,17 +215,6 @@ static void _rtl88e_phy_rf_serial_write(struct ieee8=
+0211_hw *hw,
+>  		 rfpath, pphyreg->rf3wire_offset, data_and_addr);
+>  }
+> =20
+> -static u32 _rtl88e_phy_calculate_bit_shift(u32 bitmask)
+> -{
+> -	u32 i;
+> -
+> -	for (i =3D 0; i <=3D 31; i++) {
+> -		if (((bitmask >> i) & 0x1) =3D=3D 1)
+> -			break;
+> -	}
+> -	return i;
+> -}
+> -
+>  bool rtl88e_phy_mac_config(struct ieee80211_hw *hw)
+>  {
+>  	struct rtl_priv *rtlpriv =3D rtl_priv(hw);
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c b=
+/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
+> index 0efd19aa4fe5..1145cb0ca4af 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
+> @@ -145,13 +145,9 @@ EXPORT_SYMBOL(_rtl92c_phy_rf_serial_write);
+> =20
+>  u32 _rtl92c_phy_calculate_bit_shift(u32 bitmask)
+>  {
+> -	u32 i;
+> +	u32 i =3D ffs(bitmask);
+> =20
+> -	for (i =3D 0; i <=3D 31; i++) {
+> -		if (((bitmask >> i) & 0x1) =3D=3D 1)
+> -			break;
+> -	}
+> -	return i;
+> +	return i ? i - 1 : 32;
+>  }
+>  EXPORT_SYMBOL(_rtl92c_phy_calculate_bit_shift);
+> =20
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drive=
+rs/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+> index 667578087af2..db4f8fde0f17 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
+> @@ -162,14 +162,9 @@ static u32 targetchnl_2g[TARGET_CHNL_NUM_2G] =3D {
+> =20
+>  static u32 _rtl92d_phy_calculate_bit_shift(u32 bitmask)
+>  {
+> -	u32 i;
+> -
+> -	for (i =3D 0; i <=3D 31; i++) {
+> -		if (((bitmask >> i) & 0x1) =3D=3D 1)
+> -			break;
+> -	}
+> +	u32 i =3D ffs(bitmask);
+> =20
+> -	return i;
+> +	return i ? i - 1 : 32;
+>  }
+> =20
+>  u32 rtl92d_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bi=
+tmask)
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c b/drive=
+rs/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
+> index 222abc41669c..420f4984bfb9 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
+> @@ -206,13 +206,9 @@ static void _rtl92ee_phy_rf_serial_write(struct ieee=
+80211_hw *hw,
+> =20
+>  static u32 _rtl92ee_phy_calculate_bit_shift(u32 bitmask)
+>  {
+> -	u32 i;
+> +	u32 i =3D ffs(bitmask);
+> =20
+> -	for (i =3D 0; i <=3D 31; i++) {
+> -		if (((bitmask >> i) & 0x1) =3D=3D 1)
+> -			break;
+> -	}
+> -	return i;
+> +	return i ? i - 1 : 32;
+>  }
+> =20
+>  bool rtl92ee_phy_mac_config(struct ieee80211_hw *hw)
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c b/drive=
+rs/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
+> index d5c0eb462315..9696fa3a08d9 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
+> @@ -16,14 +16,9 @@
+> =20
+>  static u32 _rtl92s_phy_calculate_bit_shift(u32 bitmask)
+>  {
+> -	u32 i;
+> -
+> -	for (i =3D 0; i <=3D 31; i++) {
+> -		if (((bitmask >> i) & 0x1) =3D=3D 1)
+> -			break;
+> -	}
+> +	u32 i =3D ffs(bitmask);
+> =20
+> -	return i;
+> +	return i ? i - 1 : 32;
+>  }
+> =20
+>  u32 rtl92s_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bi=
+tmask)
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8723com/phy_common.c=
+ b/drivers/net/wireless/realtek/rtlwifi/rtl8723com/phy_common.c
+> index aae14c68bf69..964292e82636 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8723com/phy_common.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8723com/phy_common.c
+> @@ -53,13 +53,9 @@ EXPORT_SYMBOL_GPL(rtl8723_phy_set_bb_reg);
+> =20
+>  u32 rtl8723_phy_calculate_bit_shift(u32 bitmask)
+>  {
+> -	u32 i;
+> +	u32 i =3D ffs(bitmask);
+> =20
+> -	for (i =3D 0; i <=3D 31; i++) {
+> -		if (((bitmask >> i) & 0x1) =3D=3D 1)
+> -			break;
+> -	}
+> -	return i;
+> +	return i ? i - 1 : 32;
+>  }
+>  EXPORT_SYMBOL_GPL(rtl8723_phy_calculate_bit_shift);
+> =20
+> diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c b/drive=
+rs/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+> index 8647db044366..11f31d006280 100644
+> --- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+> +++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+> @@ -27,7 +27,12 @@ static u32 _rtl8821ae_phy_rf_serial_read(struct ieee80=
+211_hw *hw,
+>  static void _rtl8821ae_phy_rf_serial_write(struct ieee80211_hw *hw,
+>  					   enum radio_path rfpath, u32 offset,
+>  					   u32 data);
+> -static u32 _rtl8821ae_phy_calculate_bit_shift(u32 bitmask);
+> +static u32 _rtl8821ae_phy_calculate_bit_shift(u32 bitmask)
+> +{
+> +	u32 i =3D ffs(bitmask);
+> +
+> +	return i ? i - 1 : 32;
+> +}
+>  static bool _rtl8821ae_phy_bb8821a_config_parafile(struct ieee80211_hw *=
+hw);
+>  /*static bool _rtl8812ae_phy_config_mac_with_headerfile(struct ieee80211=
+_hw *hw);*/
+>  static bool _rtl8821ae_phy_config_mac_with_headerfile(struct ieee80211_h=
+w *hw);
+> @@ -274,17 +279,6 @@ static void _rtl8821ae_phy_rf_serial_write(struct ie=
+ee80211_hw *hw,
+>  		 rfpath, pphyreg->rf3wire_offset, data_and_addr);
+>  }
+> =20
+> -static u32 _rtl8821ae_phy_calculate_bit_shift(u32 bitmask)
+> -{
+> -	u32 i;
+> -
+> -	for (i =3D 0; i <=3D 31; i++) {
+> -		if (((bitmask >> i) & 0x1) =3D=3D 1)
+> -			break;
+> -	}
+> -	return i;
+> -}
+> -
+>  bool rtl8821ae_phy_mac_config(struct ieee80211_hw *hw)
+>  {
+>  	bool rtstatus =3D 0;
 
 
