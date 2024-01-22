@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-13371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8426A837BCE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:51 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8B82838241
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3B141C277CD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:07:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F7DA283DA7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78117154BEF;
-	Tue, 23 Jan 2024 00:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDECB59B7A;
+	Tue, 23 Jan 2024 01:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lU+1NTOq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMRfxFC+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363AC15445E;
-	Tue, 23 Jan 2024 00:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9B24EB52;
+	Tue, 23 Jan 2024 01:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969389; cv=none; b=Hwb3rz3PXr8ix4zl7F5BEi0CnzGLbLTX57ZRrY8j+lCj5hO/KlkvFIQRda6NeOYdSWgDK8cn1nKAfpRmBxm8c+THyIT+EiEgMyUFheGM56Sad/DRoQXSBeiHdySqZLP4NGuX5pU/b/8h+GSeN408X2iGcbGGlMZ0zx2MHh6nJW8=
+	t=1705974112; cv=none; b=bF720NKl4CEXcSP/xipAYIrjxbzWIir8M4uR0v+77Bhk387dnZv05YAL9744pznOgMXBkr14qcqX6FS/KeAqLnXf4/VyNrlNPBtgKx+QrEAwtSUHe6ZmWYCW+bG2XCpH5IauS09xiScBOWaH02/aU7tW3RIE4BPFCdWH8Q43wz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969389; c=relaxed/simple;
-	bh=K64sTdcl62y6k9V5I03ndE7m/OthFa0fAfQKMIKdYSY=;
+	s=arc-20240116; t=1705974112; c=relaxed/simple;
+	bh=8cimbuj8ofjgfkd6+jIACAKIzsMQo8WX+YRE6VcpHgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UXw97aGYZmwR0JVQIVXqPISvyiOMq+JSNoFkU26PQTpvAU3sGC39yao5D1ei4edcc2vjM+x4tTN9dPu2z2DUgM2PXkdacN0Hy/Dl/ueE1Y3S1iGAWrpmcSMJ39/h2bT1HtBu+st2a+DbuQFlA23SIFNnT4zWHA4nmw65oFAPT3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lU+1NTOq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1062C433A6;
-	Tue, 23 Jan 2024 00:23:08 +0000 (UTC)
+	 MIME-Version; b=QZxbAmL7BpWuwpW2NMLOXdw5xP+CItVkhu5zQ3C0cxKcNLQiHxOUAQUJzz31uDK1RVbmyepk08Sd93mZBCUJZ0PJdmw21Q2Nu/nqgYDBGq02K935zE13+Nq3461aI1EDJFOSKeEtn86X3YhygVXdAHgV6s9ujCssLn3mAdGiffU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMRfxFC+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9FE3C433C7;
+	Tue, 23 Jan 2024 01:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969389;
-	bh=K64sTdcl62y6k9V5I03ndE7m/OthFa0fAfQKMIKdYSY=;
+	s=korg; t=1705974112;
+	bh=8cimbuj8ofjgfkd6+jIACAKIzsMQo8WX+YRE6VcpHgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lU+1NTOqx248Yn+rEU2STPCGCTlCkc3+Ha+ZZBCad4eT9TseiuaEzOw/EK4bWsUjO
-	 M+z//A4YPuBNzx4LeP15h2+S+Wjm+xdaLpmQddOcYL/Hy2OkmRec5K4bMdTns8+Tm8
-	 ee5CItcZ0B/O0oXVHBtpti26XKtbD71s3fKeXQ+k=
+	b=sMRfxFC+L47+oNQ3P3AxKlIH/CQvQACwQZkIubY8HDlofXn6PE7rxnzW3V7TJons/
+	 FgVIb0QnZlJZ9AmfvWHZqjEHZuHLexgY6gm1/B/R9Q4VawC4MN5B5Wtfl3e6JJzfVV
+	 Hini09M9r74A26TAppTe4j86vJDQaNDwiFcOxSsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Chanho Park <chanho61.park@samsung.com>,
+	Jia Jie Ho <jiajie.ho@starfivetech.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 190/641] bpf: Limit the number of kprobes when attaching program to multiple kprobes
+Subject: [PATCH 6.6 043/583] crypto: jh7110 - Correct deferred probe return
 Date: Mon, 22 Jan 2024 15:51:34 -0800
-Message-ID: <20240122235823.917785608@linuxfoundation.org>
+Message-ID: <20240122235813.462205211@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Chanho Park <chanho61.park@samsung.com>
 
-[ Upstream commit d6d1e6c17cab2dcb7b8530c599f00e7de906d380 ]
+[ Upstream commit d57343022b71b9f41e731282dbe0baf0cff6ada8 ]
 
-An abnormally big cnt may also be assigned to kprobe_multi.cnt when
-attaching multiple kprobes. It will trigger the following warning in
-kvmalloc_node():
+This fixes list_add corruption error when the driver is returned
+with -EPROBE_DEFER. It is also required to roll back the previous
+probe sequences in case of deferred_probe. So, this removes
+'err_probe_defer" goto label and just use err_dma_init instead.
 
-	if (unlikely(size > INT_MAX)) {
-	    WARN_ON_ONCE(!(flags & __GFP_NOWARN));
-	    return NULL;
-	}
-
-Fix the warning by limiting the maximal number of kprobes in
-bpf_kprobe_multi_link_attach(). If the number of kprobes is greater than
-MAX_KPROBE_MULTI_CNT, the attachment will fail and return -E2BIG.
-
-Fixes: 0dcac2725406 ("bpf: Add multi kprobe link")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20231215100708.2265609-3-houtao@huaweicloud.com
+Fixes: 42ef0e944b01 ("crypto: starfive - Add crypto engine support")
+Signed-off-by: Chanho Park <chanho61.park@samsung.com>
+Reviewed-by: Jia Jie Ho <jiajie.ho@starfivetech.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/bpf_trace.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/crypto/starfive/jh7110-cryp.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index 640b08818afa..652c40a14d0d 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -42,6 +42,7 @@
- 	rcu_dereference_protected(p, lockdep_is_held(&bpf_event_mutex))
+diff --git a/drivers/crypto/starfive/jh7110-cryp.c b/drivers/crypto/starfive/jh7110-cryp.c
+index 08e974e0dd12..3a67ddc4d936 100644
+--- a/drivers/crypto/starfive/jh7110-cryp.c
++++ b/drivers/crypto/starfive/jh7110-cryp.c
+@@ -180,12 +180,8 @@ static int starfive_cryp_probe(struct platform_device *pdev)
+ 	spin_unlock(&dev_list.lock);
  
- #define MAX_UPROBE_MULTI_CNT (1U << 20)
-+#define MAX_KPROBE_MULTI_CNT (1U << 20)
+ 	ret = starfive_dma_init(cryp);
+-	if (ret) {
+-		if (ret == -EPROBE_DEFER)
+-			goto err_probe_defer;
+-		else
+-			goto err_dma_init;
+-	}
++	if (ret)
++		goto err_dma_init;
  
- #ifdef CONFIG_MODULES
- struct bpf_trace_module {
-@@ -2901,6 +2902,8 @@ int bpf_kprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
- 	cnt = attr->link_create.kprobe_multi.cnt;
- 	if (!cnt)
- 		return -EINVAL;
-+	if (cnt > MAX_KPROBE_MULTI_CNT)
-+		return -E2BIG;
+ 	/* Initialize crypto engine */
+ 	cryp->engine = crypto_engine_alloc_init(&pdev->dev, 1);
+@@ -233,7 +229,7 @@ static int starfive_cryp_probe(struct platform_device *pdev)
  
- 	size = cnt * sizeof(*addrs);
- 	addrs = kvmalloc_array(cnt, sizeof(*addrs), GFP_KERNEL);
+ 	tasklet_kill(&cryp->aes_done);
+ 	tasklet_kill(&cryp->hash_done);
+-err_probe_defer:
++
+ 	return ret;
+ }
+ 
 -- 
 2.43.0
 
