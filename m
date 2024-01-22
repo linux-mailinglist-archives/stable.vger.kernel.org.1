@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-14275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 301F7838042
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B42C1837DA8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BCF41F2CB87
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6F621C252CF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE494E1AD;
-	Tue, 23 Jan 2024 01:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7295A109;
+	Tue, 23 Jan 2024 00:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J540Ceyy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HabYbRiP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0ECD657BD;
-	Tue, 23 Jan 2024 01:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4155914C;
+	Tue, 23 Jan 2024 00:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971630; cv=none; b=n4GC78EnfsdKTpzu1BhCJh/y8M4kas00nmyDMotBMSyA7IhG/iSDJ8pmargoULZewLaGJhp0iWsbIcEPsJZDgcERkHOtuF7V4eV2D488XWOJJNzY+olPMDMd2vMFlsiOD67YBoBEweO30YkPUTFrDaR9oj3p8iFYmdx2uM5wO3g=
+	t=1705970114; cv=none; b=aErfibuvaA6spImpiwWNivh7LO2EJhl5lVBdnVALBPvainzUS4/+9MK5oSHVGNlFIgDCqnDkZmghXDaFOGN1SvBquCopXUhEWJyrI6hcyrus+oCEkwnkUYUdsMR33/cYb8LI435crJsDiuOVsSujTkub60rKE1hGTejS6AF7kQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971630; c=relaxed/simple;
-	bh=4CVdrh6Ds4c+ObQd99WwoVx5g1AlqgugZqoF+R4PcJI=;
+	s=arc-20240116; t=1705970114; c=relaxed/simple;
+	bh=T3BRsa7ZnyAi3YPmN7TXuMh6EU/LYsvM2zjCLH9GlJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JlZr1ZZ/JTP0SQsJaIuOMQCqHCTo8suqmVjDwwUtlTjkWbAP48molRkhLFmuN+mov9IVo0EnBqfflqYYcYz2zyATPtl+hsjurCu4Xwk3zgTNViII2cyHMPSYlQjh3BM1GDH70d+aVP5LSrdje0hcaiqUp+z5wmtDQaylV6g8xGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J540Ceyy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0272C433C7;
-	Tue, 23 Jan 2024 01:00:29 +0000 (UTC)
+	 MIME-Version; b=JbDrOF2TrnPHMqfuMWkZb4dv1+7RC3313awLDJdSfVJmfj0W7nBYq78xNuFodB9vewOAWx5m4gNullA0xHKM+ZQXnJH0K64q+9goR1Yb3Q6sd09Q5i0YtB8aOJHfWm3GRGUqqz16il94sUNCSEbmf77jgsGHHv5eHKDyIgbXb1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HabYbRiP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F5AC433F1;
+	Tue, 23 Jan 2024 00:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971629;
-	bh=4CVdrh6Ds4c+ObQd99WwoVx5g1AlqgugZqoF+R4PcJI=;
+	s=korg; t=1705970113;
+	bh=T3BRsa7ZnyAi3YPmN7TXuMh6EU/LYsvM2zjCLH9GlJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J540Ceyy9qZnsbcIgCG5Zr0Lr6eg5LYIACRDyZuAX7EyMfYiUecn0LMgvZb36taCa
-	 G8I8cEej8LPLiOWdEzSAuNXEDLHM/kh/ZI8sRKhVzjF3RhjVJh5j2rOI6KahLsPKSq
-	 NePfRKUWm8idqGpMCMDckmCtH5TndkQo0xoOi93k=
+	b=HabYbRiPyxMOqKZxMhmcVmBFoaFm26AvfxLQZHpJtFevBP7jLUDymxLQLQLzm6q6o
+	 Y/pO5DlRlMFRP91kJ2jDxVXdp4qR0w2KNDki2rXfRFVY0gWSCEJrA+vOO2SjxvyGlN
+	 4A1HznxfQjSyvtkP/iF1G4EW4y5BTHlARhPyvIik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Thierry Reding <thierry.reding@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Florian Westphal <fw@strlen.de>,
+	Peter Krystad <peter.krystad@linux.intel.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang.tang@linux.dev>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 189/286] pwm: stm32: Use regmap_clear_bits and regmap_set_bits where applicable
+Subject: [PATCH 6.7 591/641] mptcp: mptcp_parse_option() fix for MPTCPOPT_MP_JOIN
 Date: Mon, 22 Jan 2024 15:58:15 -0800
-Message-ID: <20240122235739.404078640@linuxfoundation.org>
+Message-ID: <20240122235836.713298691@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,151 +67,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 632ae5d7eb348b3ef88552ec0999260b6f9d6ab1 ]
+[ Upstream commit 89e23277f9c16df6f9f9c1a1a07f8f132339c15c ]
 
-Found using coccinelle and the following semantic patch:
+mptcp_parse_option() currently sets OPTIONS_MPTCP_MPJ, for the three
+possible cases handled for MPTCPOPT_MP_JOIN option.
 
-@@
-expression map, reg, bits;
-@@
+OPTIONS_MPTCP_MPJ is the combination of three flags:
+- OPTION_MPTCP_MPJ_SYN
+- OPTION_MPTCP_MPJ_SYNACK
+- OPTION_MPTCP_MPJ_ACK
 
-- regmap_update_bits(map, reg, bits, bits)
-+ regmap_set_bits(map, reg, bits)
+This is a problem, because backup, join_id, token, nonce and/or hmac fields
+could be left uninitialized in some cases.
 
-@@
-expression map, reg, bits;
-@@
+Distinguish the three cases, as following patches will need this step.
 
-- regmap_update_bits(map, reg, bits, 0)
-+ regmap_clear_bits(map, reg, bits)
-
-Tested-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Link: https://lore.kernel.org/r/20221115111347.3705732-6-u.kleine-koenig@pengutronix.de
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
-Stable-dep-of: 19f1016ea960 ("pwm: stm32: Fix enable count for clk in .probe()")
+Fixes: f296234c98a8 ("mptcp: Add handling of incoming MP_JOIN requests")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Florian Westphal <fw@strlen.de>
+Cc: Peter Krystad <peter.krystad@linux.intel.com>
+Cc: Matthieu Baerts <matttbe@kernel.org>
+Cc: Mat Martineau <martineau@kernel.org>
+Cc: Geliang Tang <geliang.tang@linux.dev>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20240111194917.4044654-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-stm32.c | 34 ++++++++++++++++------------------
- 1 file changed, 16 insertions(+), 18 deletions(-)
+ net/mptcp/options.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
-index d3be944f2ae9..945eed3ffb81 100644
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -115,14 +115,14 @@ static int stm32_pwm_raw_capture(struct stm32_pwm *priv, struct pwm_device *pwm,
- 	int ret;
+diff --git a/net/mptcp/options.c b/net/mptcp/options.c
+index c53914012d01..d2527d189a79 100644
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -123,8 +123,8 @@ static void mptcp_parse_option(const struct sk_buff *skb,
+ 		break;
  
- 	/* Ensure registers have been updated, enable counter and capture */
--	regmap_update_bits(priv->regmap, TIM_EGR, TIM_EGR_UG, TIM_EGR_UG);
--	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, TIM_CR1_CEN);
-+	regmap_set_bits(priv->regmap, TIM_EGR, TIM_EGR_UG);
-+	regmap_set_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
+ 	case MPTCPOPT_MP_JOIN:
+-		mp_opt->suboptions |= OPTIONS_MPTCP_MPJ;
+ 		if (opsize == TCPOLEN_MPTCP_MPJ_SYN) {
++			mp_opt->suboptions |= OPTION_MPTCP_MPJ_SYN;
+ 			mp_opt->backup = *ptr++ & MPTCPOPT_BACKUP;
+ 			mp_opt->join_id = *ptr++;
+ 			mp_opt->token = get_unaligned_be32(ptr);
+@@ -135,6 +135,7 @@ static void mptcp_parse_option(const struct sk_buff *skb,
+ 				 mp_opt->backup, mp_opt->join_id,
+ 				 mp_opt->token, mp_opt->nonce);
+ 		} else if (opsize == TCPOLEN_MPTCP_MPJ_SYNACK) {
++			mp_opt->suboptions |= OPTION_MPTCP_MPJ_SYNACK;
+ 			mp_opt->backup = *ptr++ & MPTCPOPT_BACKUP;
+ 			mp_opt->join_id = *ptr++;
+ 			mp_opt->thmac = get_unaligned_be64(ptr);
+@@ -145,11 +146,10 @@ static void mptcp_parse_option(const struct sk_buff *skb,
+ 				 mp_opt->backup, mp_opt->join_id,
+ 				 mp_opt->thmac, mp_opt->nonce);
+ 		} else if (opsize == TCPOLEN_MPTCP_MPJ_ACK) {
++			mp_opt->suboptions |= OPTION_MPTCP_MPJ_ACK;
+ 			ptr += 2;
+ 			memcpy(mp_opt->hmac, ptr, MPTCPOPT_HMAC_LEN);
+ 			pr_debug("MP_JOIN hmac");
+-		} else {
+-			mp_opt->suboptions &= ~OPTIONS_MPTCP_MPJ;
+ 		}
+ 		break;
  
- 	/* Use cc1 or cc3 DMA resp for PWM input channels 1 & 2 or 3 & 4 */
- 	dma_id = pwm->hwpwm < 2 ? STM32_TIMERS_DMA_CH1 : STM32_TIMERS_DMA_CH3;
- 	ccen = pwm->hwpwm < 2 ? TIM_CCER_CC12E : TIM_CCER_CC34E;
- 	ccr = pwm->hwpwm < 2 ? TIM_CCR1 : TIM_CCR3;
--	regmap_update_bits(priv->regmap, TIM_CCER, ccen, ccen);
-+	regmap_set_bits(priv->regmap, TIM_CCER, ccen);
- 
- 	/*
- 	 * Timer DMA burst mode. Request 2 registers, 2 bursts, to get both
-@@ -160,8 +160,8 @@ static int stm32_pwm_raw_capture(struct stm32_pwm *priv, struct pwm_device *pwm,
- 	}
- 
- stop:
--	regmap_update_bits(priv->regmap, TIM_CCER, ccen, 0);
--	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, 0);
-+	regmap_clear_bits(priv->regmap, TIM_CCER, ccen);
-+	regmap_clear_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
- 
- 	return ret;
- }
-@@ -359,7 +359,7 @@ static int stm32_pwm_config(struct stm32_pwm *priv, int ch,
- 
- 	regmap_write(priv->regmap, TIM_PSC, prescaler);
- 	regmap_write(priv->regmap, TIM_ARR, prd - 1);
--	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_ARPE, TIM_CR1_ARPE);
-+	regmap_set_bits(priv->regmap, TIM_CR1, TIM_CR1_ARPE);
- 
- 	/* Calculate the duty cycles */
- 	dty = prd * duty_ns;
-@@ -377,7 +377,7 @@ static int stm32_pwm_config(struct stm32_pwm *priv, int ch,
- 	else
- 		regmap_update_bits(priv->regmap, TIM_CCMR2, mask, ccmr);
- 
--	regmap_update_bits(priv->regmap, TIM_BDTR, TIM_BDTR_MOE, TIM_BDTR_MOE);
-+	regmap_set_bits(priv->regmap, TIM_BDTR, TIM_BDTR_MOE);
- 
- 	return 0;
- }
-@@ -411,13 +411,13 @@ static int stm32_pwm_enable(struct stm32_pwm *priv, int ch)
- 	if (priv->have_complementary_output)
- 		mask |= TIM_CCER_CC1NE << (ch * 4);
- 
--	regmap_update_bits(priv->regmap, TIM_CCER, mask, mask);
-+	regmap_set_bits(priv->regmap, TIM_CCER, mask);
- 
- 	/* Make sure that registers are updated */
--	regmap_update_bits(priv->regmap, TIM_EGR, TIM_EGR_UG, TIM_EGR_UG);
-+	regmap_set_bits(priv->regmap, TIM_EGR, TIM_EGR_UG);
- 
- 	/* Enable controller */
--	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, TIM_CR1_CEN);
-+	regmap_set_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
- 
- 	return 0;
- }
-@@ -431,11 +431,11 @@ static void stm32_pwm_disable(struct stm32_pwm *priv, int ch)
- 	if (priv->have_complementary_output)
- 		mask |= TIM_CCER_CC1NE << (ch * 4);
- 
--	regmap_update_bits(priv->regmap, TIM_CCER, mask, 0);
-+	regmap_clear_bits(priv->regmap, TIM_CCER, mask);
- 
- 	/* When all channels are disabled, we can disable the controller */
- 	if (!active_channels(priv))
--		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, 0);
-+		regmap_clear_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
- 
- 	clk_disable(priv->clk);
- }
-@@ -568,10 +568,9 @@ static void stm32_pwm_detect_complementary(struct stm32_pwm *priv)
- 	 * If complementary bit doesn't exist writing 1 will have no
- 	 * effect so we can detect it.
- 	 */
--	regmap_update_bits(priv->regmap,
--			   TIM_CCER, TIM_CCER_CC1NE, TIM_CCER_CC1NE);
-+	regmap_set_bits(priv->regmap, TIM_CCER, TIM_CCER_CC1NE);
- 	regmap_read(priv->regmap, TIM_CCER, &ccer);
--	regmap_update_bits(priv->regmap, TIM_CCER, TIM_CCER_CC1NE, 0);
-+	regmap_clear_bits(priv->regmap, TIM_CCER, TIM_CCER_CC1NE);
- 
- 	priv->have_complementary_output = (ccer != 0);
- }
-@@ -585,10 +584,9 @@ static int stm32_pwm_detect_channels(struct stm32_pwm *priv)
- 	 * If channels enable bits don't exist writing 1 will have no
- 	 * effect so we can detect and count them.
- 	 */
--	regmap_update_bits(priv->regmap,
--			   TIM_CCER, TIM_CCER_CCXE, TIM_CCER_CCXE);
-+	regmap_set_bits(priv->regmap, TIM_CCER, TIM_CCER_CCXE);
- 	regmap_read(priv->regmap, TIM_CCER, &ccer);
--	regmap_update_bits(priv->regmap, TIM_CCER, TIM_CCER_CCXE, 0);
-+	regmap_clear_bits(priv->regmap, TIM_CCER, TIM_CCER_CCXE);
- 
- 	if (ccer & TIM_CCER_CC1E)
- 		npwm++;
 -- 
 2.43.0
 
