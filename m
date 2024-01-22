@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-13254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49690837B1D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5E1C837B1F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03181293047
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:58:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5EA8229306C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:58:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5688714A0B3;
-	Tue, 23 Jan 2024 00:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D07C214A0B8;
+	Tue, 23 Jan 2024 00:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2zEIkZz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obVO2iC8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15684149010;
-	Tue, 23 Jan 2024 00:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9083B149010;
+	Tue, 23 Jan 2024 00:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969204; cv=none; b=TQkE5nmbZ7BCzTZuFspm9QBtT18X00fK9tF0YKvk8eXj1xnww6079rwOWeuZiHgqx21Vd+SUtilwxZ04CvYMlf7ouQQPh84xwpvfbOCdU0KtE1eBhgWLuwj+PWJNfwWcVsGCOEjEBRt3giUl16fMkJAaXRBgCSuXMzdavKCv/vw=
+	t=1705969206; cv=none; b=lo3Syy+a8jJFsAHSqbC5RLg5K9ICK9JpgTRJl8wiS0WHB7pmprFUA5lWQTg1tclHS8cx40/dO4WKBcuNwFun9bO1XcZLx9SnKH2a0H7e2A/hSvDpW/AuOfqxcVf9be1sf1k1UOsKulZUV0gN8Z2O9WtytzFTfEgIMqCcBJAQ60g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969204; c=relaxed/simple;
-	bh=rd7a+CKBDhMJNlfZTwRAKJww2MI3XH3dI45YpHUrJyU=;
+	s=arc-20240116; t=1705969206; c=relaxed/simple;
+	bh=fXx4oljLH5IRx81DSymxpBu8lIjpICKi9kTzp0HNsEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+zNqIAQqOVT2/M+40RelIpP/gWLUTMHXenLTosdk1A0a9RxnlYmKjGeLJAeBjc4pLjbeAGwQ39reSJW6DEluGnzkiQzmh6vrumIED5LRJn1C9/Xr3x2nAWIazYA42PNEoSrO/ipKJ9KN8E6l6x9S5GRImyica4CadWt7DiVC4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2zEIkZz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE472C433F1;
-	Tue, 23 Jan 2024 00:20:03 +0000 (UTC)
+	 MIME-Version; b=OPaRLAEFpQQSKFTOvKIYLOZJyCoinGShjSBlWS4hRKsgFiPokzFQUXi9MCIw3ECjM4JEz5jpzpZKdO0aBTKkeoqVPw8R/nmy9cbuYyFR+vnxxAYqCetRioafO25d4Iewj0HZJEMxNjA+dizezGzG2t0zzGOLPA0wGZMnU0fefiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obVO2iC8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50A7CC43394;
+	Tue, 23 Jan 2024 00:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969203;
-	bh=rd7a+CKBDhMJNlfZTwRAKJww2MI3XH3dI45YpHUrJyU=;
+	s=korg; t=1705969206;
+	bh=fXx4oljLH5IRx81DSymxpBu8lIjpICKi9kTzp0HNsEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u2zEIkZz8o5dhhPYvDEe3G62dGiGfsJqnOMhuRzWV0tYSgSFJytzHk+YPfsuVSVTd
-	 qG5n/DasguGwBDl/GROZReGmWVfbFGm5xV0yMYaP5d6jjr+OywfrCB4bkLOLcmU/cB
-	 IaFpkE4u4LUBGpODDZWDT+bul4peLPjH8XuTe4zk=
+	b=obVO2iC8lqWNMOQa9VXbOVxQirMw/hHg9HsQxOotBJOXP7LDYCb0agjDXKU6w3X3k
+	 B66/KgIxY+YvQCsS1FQ8FWO39FbPszSPQPAAuMXb/KEsLwM5qHHHK2M/KAqJt12Nyf
+	 kSCBCoUnmLnwGG3pR6RceP6bsKYRszWDom+0TT9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chih-Kang Chang <gary.chang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Florian Lehner <dev@der-flo.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 097/641] wifi: rtw88: fix RX filter in FIF_ALLMULTI flag
-Date: Mon, 22 Jan 2024 15:50:01 -0800
-Message-ID: <20240122235821.072542896@linuxfoundation.org>
+Subject: [PATCH 6.7 098/641] bpf, lpm: Fix check prefixlen before walking trie
+Date: Mon, 22 Jan 2024 15:50:02 -0800
+Message-ID: <20240122235821.105226182@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -67,40 +67,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chih-Kang Chang <gary.chang@realtek.com>
+From: Florian Lehner <dev@der-flo.net>
 
-[ Upstream commit 53ee0b3b99edc6a47096bffef15695f5a895386f ]
+[ Upstream commit 9b75dbeb36fcd9fc7ed51d370310d0518a387769 ]
 
-The broadcast packets will be filtered in the FIF_ALLMULTI flag in
-the original code, which causes beacon packets to be filtered out
-and disconnection. Therefore, we fix it.
+When looking up an element in LPM trie, the condition 'matchlen ==
+trie->max_prefixlen' will never return true, if key->prefixlen is larger
+than trie->max_prefixlen. Consequently all elements in the LPM trie will
+be visited and no element is returned in the end.
 
-Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
-Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20231103020851.102238-1-pkshih@realtek.com
+To resolve this, check key->prefixlen first before walking the LPM trie.
+
+Fixes: b95a5c4db09b ("bpf: add a longest prefix match trie map implementation")
+Signed-off-by: Florian Lehner <dev@der-flo.net>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20231105085801.3742-1-dev@der-flo.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/mac80211.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/bpf/lpm_trie.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
-index a99b53d44267..d8d68f16014e 100644
---- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-@@ -280,9 +280,9 @@ static void rtw_ops_configure_filter(struct ieee80211_hw *hw,
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index 17c7e7782a1f..b32be680da6c 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -231,6 +231,9 @@ static void *trie_lookup_elem(struct bpf_map *map, void *_key)
+ 	struct lpm_trie_node *node, *found = NULL;
+ 	struct bpf_lpm_trie_key *key = _key;
  
- 	if (changed_flags & FIF_ALLMULTI) {
- 		if (*new_flags & FIF_ALLMULTI)
--			rtwdev->hal.rcr |= BIT_AM | BIT_AB;
-+			rtwdev->hal.rcr |= BIT_AM;
- 		else
--			rtwdev->hal.rcr &= ~(BIT_AM | BIT_AB);
-+			rtwdev->hal.rcr &= ~(BIT_AM);
- 	}
- 	if (changed_flags & FIF_FCSFAIL) {
- 		if (*new_flags & FIF_FCSFAIL)
++	if (key->prefixlen > trie->max_prefixlen)
++		return NULL;
++
+ 	/* Start walking the trie from the root node ... */
+ 
+ 	for (node = rcu_dereference_check(trie->root, rcu_read_lock_bh_held());
 -- 
 2.43.0
 
