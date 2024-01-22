@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F9A837A34
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B50358378CE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9514D1C26F35
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E81E71C22728
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED82D12AAEF;
-	Tue, 23 Jan 2024 00:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E0D1EEE4;
+	Tue, 23 Jan 2024 00:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDnNBsIe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpMjh7xg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC9212A17F;
-	Tue, 23 Jan 2024 00:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82648EEB9;
+	Tue, 23 Jan 2024 00:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968793; cv=none; b=Kyn9dCe7AiZ7tz8XXH6Ojeg9owJH/tbaO7mMlVa2ESrnLMqa/aIHrd+u6/LLkcJWCllhrgeGNyfefw/FwaX8gFNm9tsMjF5ncyvjiT6h9viVRG9i2k7PnykOgZ9+1peoSDIAIxMRFfZ3xOMrvhPNPzCQ0qXCmQs1l4QdHRYjpxo=
+	t=1705968256; cv=none; b=VrYUtymS2lzZteZiz8n3rTqhHM+NQ0AxKZe5QpfcmU+4XUiLaYqzBPUfy1EPx8Uh894rU8Ac4+DL+c4Q2Wmnthxe9Sbflmn8zvzb/GUuqtJO4BkuOmxi/6ZB99cnl2tIqr5C8IYbCpvl+lAbtRFyjdjTpDAMFnHDPo6s1x4Eg+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968793; c=relaxed/simple;
-	bh=T9vbUkcq99ai/jvmvMIdljL6ED2kcry9zBwg6LEzaxY=;
+	s=arc-20240116; t=1705968256; c=relaxed/simple;
+	bh=BpLuFv1sUtutd208Cbadf/SRTLtJKF5RKobj052ohtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=key/VBcrb6nftzXy1wNfi0MBliD4izjH8PsDv2xNzrCRpzKod+zbPlQnskWv+2s5h+hQygpG+8zV+TwT5xDgenHz1tJSYsTJ35FcQ5/ib2Yatp92XJA3622pSGAs3KO1zGHJwJXYnfAtoKl1N2uctfS6+/TzfBf6g8+SixLnnT8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDnNBsIe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47943C433F1;
-	Tue, 23 Jan 2024 00:13:13 +0000 (UTC)
+	 MIME-Version; b=SQT5KWIMU77KeogmFzIjcRHIpxpymXeoPf+VwTYMJQFcRn8rz35vfIMqtoJJRyA8yuskq0Zt2VWaAb40jHKfnFys4gwPxaLEBOhnsxBRClAsjA4FxIAfy0D5hBGIpjWmxuss1VBVG8TsPY6hPezgtVczivTMWnFkgFMKzddFyus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpMjh7xg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBA2C433F1;
+	Tue, 23 Jan 2024 00:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968793;
-	bh=T9vbUkcq99ai/jvmvMIdljL6ED2kcry9zBwg6LEzaxY=;
+	s=korg; t=1705968256;
+	bh=BpLuFv1sUtutd208Cbadf/SRTLtJKF5RKobj052ohtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RDnNBsIeC/kZx+2y1gC6eewe3AuomfYp6NUA0wDywasnipFLcuWVHoNxD/tPxfhsr
-	 Azkfe8Ya5ORW1Mdd71x4Mk564VST+kfdiu6ah/AtSr01de7PJE3UUKOU27l+E6INV0
-	 4XBKT2hoVc/eYgxK7mLnuvz9msGfDV07bOPh7CDo=
+	b=wpMjh7xgLvfHN+YQI364Ic9EQtQlnV529gXiks/IaOcJmuat5Q1CMSBzvI7ApxyMQ
+	 aBvCPtxD+ULuSd/0mVvRNi/C+p5P8zDJ52DmaLBtjG7BzodKmtw2Dtx6FFtOYkXyhQ
+	 jqF47TthR1sRGLDHcUXK1fazyBAQ0wlBC5srsbOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Kiryushin <kiryushin@ancud.ru>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 052/194] ACPI: video: check for error while searching for backlight device parent
+	kernel test robot <lkp@intel.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>
+Subject: [PATCH 4.19 026/148] coresight: etm4x: Fix width of CCITMIN field
 Date: Mon, 22 Jan 2024 15:56:22 -0800
-Message-ID: <20240122235721.433479808@linuxfoundation.org>
+Message-ID: <20240122235713.475586882@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Kiryushin <kiryushin@ancud.ru>
+From: James Clark <james.clark@arm.com>
 
-[ Upstream commit ccd45faf4973746c4f30ea41eec864e5cf191099 ]
+commit cc0271a339cc70cae914c3ec20edc2a8058407da upstream.
 
-If acpi_get_parent() called in acpi_video_dev_register_backlight()
-fails, for example, because acpi_ut_acquire_mutex() fails inside
-acpi_get_parent), this can lead to incorrect (uninitialized)
-acpi_parent handle being passed to acpi_get_pci_dev() for detecting
-the parent pci device.
+CCITMIN is a 12 bit field and doesn't fit in a u8, so extend it to u16.
+This probably wasn't an issue previously because values higher than 255
+never occurred.
 
-Check acpi_get_parent() result and set parent device only in case of success.
+But since commit 4aff040bcc8d ("coresight: etm: Override TRCIDR3.CCITMIN
+on errata affected cpus"), a comparison with 256 was done to enable the
+errata, generating the following W=1 build error:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+  coresight-etm4x-core.c:1188:24: error: result of comparison of
+  constant 256 with expression of type 'u8' (aka 'unsigned char') is
+  always false [-Werror,-Wtautological-constant-out-of-range-compare]
 
-Fixes: 9661e92c10a9 ("acpi: tie ACPI backlight devices to PCI devices if possible")
-Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+   if (drvdata->ccitmin == 256)
+
+Cc: stable@vger.kernel.org
+Fixes: 2e1cdfe184b5 ("coresight-etm4x: Adding CoreSight ETM4x driver")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310302043.as36UFED-lkp@intel.com/
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Signed-off-by: James Clark <james.clark@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20231101115206.70810-1-james.clark@arm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpi_video.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/hwtracing/coresight/coresight-etm4x.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index bf18efd49a25..9648ec76de2b 100644
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -1784,12 +1784,12 @@ static void acpi_video_dev_register_backlight(struct acpi_video_device *device)
- 		return;
- 	count++;
- 
--	acpi_get_parent(device->dev->handle, &acpi_parent);
--
--	pdev = acpi_get_pci_dev(acpi_parent);
--	if (pdev) {
--		parent = &pdev->dev;
--		pci_dev_put(pdev);
-+	if (ACPI_SUCCESS(acpi_get_parent(device->dev->handle, &acpi_parent))) {
-+		pdev = acpi_get_pci_dev(acpi_parent);
-+		if (pdev) {
-+			parent = &pdev->dev;
-+			pci_dev_put(pdev);
-+		}
- 	}
- 
- 	memset(&props, 0, sizeof(struct backlight_properties));
--- 
-2.43.0
-
+--- a/drivers/hwtracing/coresight/coresight-etm4x.h
++++ b/drivers/hwtracing/coresight/coresight-etm4x.h
+@@ -363,7 +363,7 @@ struct etmv4_drvdata {
+ 	u8				ctxid_size;
+ 	u8				vmid_size;
+ 	u8				ccsize;
+-	u8				ccitmin;
++	u16				ccitmin;
+ 	u8				s_ex_level;
+ 	u8				ns_ex_level;
+ 	u8				q_support;
 
 
 
