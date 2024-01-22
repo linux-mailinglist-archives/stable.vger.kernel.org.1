@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-12888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C675B8378EC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6A3E837A60
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 052C71C27D5B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:26:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25C251C22CA6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7EC4400;
-	Tue, 23 Jan 2024 00:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10A2612C527;
+	Tue, 23 Jan 2024 00:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QxoYL0Lo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NTUG4WMz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC87212E5E;
-	Tue, 23 Jan 2024 00:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C5E12BF3D;
+	Tue, 23 Jan 2024 00:15:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968289; cv=none; b=uh/Ig8hjnijLNRDB5qbM02npDgymcF+84kLNOnlypv+eomup5+qOYrlfVj6vpHV3wsgMuwUgDKPKoVdZfnpa+wiSUtx1ZYZbl1o00p5mmr3ifQRgd65LevvrMFOK/oHffMxN4VZGkdMc7Z7z6vL/7HineD+HcaJavFdHU+L5D2U=
+	t=1705968920; cv=none; b=XaofsEaqi/zBo8zo3VqtHsIVCrd+H3Fl/iGPvl2GO+QMafvta36S3OtLeoB1WJTIIflwdv5ce+yd316qrJrKgYzFR69aAT4y30EX1vXxM+aoOwbEQ1PY7fmj8vV29g+MWc2ivDHmqzCXc0lI4foh5M3x728qYs5zGDK0EXtBMF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968289; c=relaxed/simple;
-	bh=8mh4aMHJzqXdCt60Y70GEktbQqhooGhBwqYBxBUIUK4=;
+	s=arc-20240116; t=1705968920; c=relaxed/simple;
+	bh=3Cfh775jY+UmIQEurMoezYCeWhf/AHgQIgjbVXBCIa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mPQFFKLYHS/4wWWDoSZLgchReMHoLOiTZT9mO4aNn/zQmLgPFi1I6AMUTaaFxaF1vzyiKhiunNu9aLkFzZoz4sjsVrfCdX9d0VmPPW5hCK9fnMRP3k5cznVnBkNhq0XRvBqX1LSaz7w+GtFuitv2EGK2fJrqKTal8k7u6QFjp6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QxoYL0Lo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE870C433F1;
-	Tue, 23 Jan 2024 00:04:48 +0000 (UTC)
+	 MIME-Version; b=EaoGWIuiVHSKBBH3mUl51LdZkdzBnkt56JDKakkIGDYkuG1s7+fhDtTSQJNe6UClqG+IalESUu4bdHro6//b+XvLkdjwLEEJk5d/8BbhVU91uD++lwhXfts+Dcw+YUXwYdDoUdJ9H/BIXlUn1ngg5//0tAaWXYcnNFugVBwZJdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NTUG4WMz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB4C3C433C7;
+	Tue, 23 Jan 2024 00:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968289;
-	bh=8mh4aMHJzqXdCt60Y70GEktbQqhooGhBwqYBxBUIUK4=;
+	s=korg; t=1705968920;
+	bh=3Cfh775jY+UmIQEurMoezYCeWhf/AHgQIgjbVXBCIa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QxoYL0Lo5SJUhA7xpmPAEcD905LpvSiFARmu02X3sb4/FI1RDmR5GtCSe5YB0Tzv+
-	 7p7DASp+DO00qVaXLyj3+GvC2xlxzfvNDuIFbvAwMrXHvOo37NvgRrv2cANF0tj2if
-	 xmh/vicVy9+Lz/o8I77HyAwbPaaXkNXWcVaZ86Go=
+	b=NTUG4WMz4Q4/47Uu9EPUjY/tqlAwTOVMubdZTWIeZXX2An5OW1pXYvCddIzOOHQec
+	 MWYcWiAxDQaIkLBJAWj39YxJjQdC9pc++sMn1k5AvKFV3s9XMhHhfBp+GH3RkkzoDj
+	 no5yRJ7swXpb5ZDL5Paj/BluO9J7yVUH7kU/dRCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Su Hui <suhui@nfschina.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 072/148] scsi: hisi_sas: Replace with standard error code return value
-Date: Mon, 22 Jan 2024 15:57:08 -0800
-Message-ID: <20240122235715.311301462@linuxfoundation.org>
+Subject: [PATCH 5.4 099/194] wifi: rtlwifi: rtl8192ce: using calculate_bit_shift()
+Date: Mon, 22 Jan 2024 15:57:09 -0800
+Message-ID: <20240122235723.486151757@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit d34ee535705eb43885bc0f561c63046f697355ad ]
+[ Upstream commit 3d03e8231031bcc65a48cd88ef9c71b6524ce70b ]
 
-In function hisi_sas_controller_prereset(), -ENOSYS (Function not
-implemented) should be returned if the driver does not support .soft_reset.
-Returns -EPERM (Operation not permitted) if HISI_SAS_RESETTING_BIT is
-already be set.
+Using calculate_bit_shift() to replace _rtl92c_phy_calculate_bit_shift().
+And fix the undefined bitwise shift behavior problem.
 
-In function _suspend_v3_hw(), returns -EPERM (Operation not permitted) if
-HISI_SAS_RESETTING_BIT is already be set.
-
-Fixes: 4522204ab218 ("scsi: hisi_sas: tidy host controller reset function a bit")
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
-Link: https://lore.kernel.org/r/1702525516-51258-3-git-send-email-chenxiang66@hisilicon.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-7-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_main.c  | 4 ++--
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c | 6 +++---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h | 1 -
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index de4f41bce8e9..076abeb11ed4 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -1381,10 +1381,10 @@ static int hisi_sas_controller_reset(struct hisi_hba *hisi_hba)
- 	int rc;
- 
- 	if (!hisi_hba->hw->soft_reset)
--		return -1;
-+		return -ENOENT;
- 
- 	if (test_and_set_bit(HISI_SAS_RESET_BIT, &hisi_hba->flags))
--		return -1;
-+		return -EPERM;
- 
- 	dev_info(dev, "controller resetting...\n");
- 	hisi_sas_controller_reset_prepare(hisi_hba);
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index 16b7ea556118..c5ffaa32bdd9 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -2546,7 +2546,7 @@ static int hisi_sas_v3_suspend(struct pci_dev *pdev, pm_message_t state)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c
+index f6574f31fa3b..e17d97550dbd 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c
+@@ -39,7 +39,7 @@ u32 rtl92c_phy_query_rf_reg(struct ieee80211_hw *hw,
+ 							       rfpath, regaddr);
  	}
  
- 	if (test_and_set_bit(HISI_SAS_RESET_BIT, &hisi_hba->flags))
--		return -1;
-+		return -EPERM;
+-	bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	readback_value = (original_value & bitmask) >> bitshift;
  
- 	scsi_block_requests(shost);
- 	set_bit(HISI_SAS_REJECT_CMD_BIT, &hisi_hba->flags);
+ 	spin_unlock(&rtlpriv->locks.rf_lock);
+@@ -110,7 +110,7 @@ void rtl92ce_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 			original_value = _rtl92c_phy_rf_serial_read(hw,
+ 								    rfpath,
+ 								    regaddr);
+-			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data =
+ 			    ((original_value & (~bitmask)) |
+ 			     (data << bitshift));
+@@ -122,7 +122,7 @@ void rtl92ce_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 			original_value = _rtl92c_phy_fw_rf_serial_read(hw,
+ 								       rfpath,
+ 								       regaddr);
+-			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data =
+ 			    ((original_value & (~bitmask)) |
+ 			     (data << bitshift));
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h
+index 7582a162bd11..c7a0d4c776f0 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h
+@@ -94,7 +94,6 @@ u32 _rtl92c_phy_rf_serial_read(struct ieee80211_hw *hw, enum radio_path rfpath,
+ 			       u32 offset);
+ u32 _rtl92c_phy_fw_rf_serial_read(struct ieee80211_hw *hw,
+ 				  enum radio_path rfpath, u32 offset);
+-u32 _rtl92c_phy_calculate_bit_shift(u32 bitmask);
+ void _rtl92c_phy_rf_serial_write(struct ieee80211_hw *hw,
+ 				 enum radio_path rfpath, u32 offset, u32 data);
+ void _rtl92c_phy_fw_rf_serial_write(struct ieee80211_hw *hw,
 -- 
 2.43.0
 
