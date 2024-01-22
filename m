@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E84098382AA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB6D0837D42
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16E18B27FAE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2DDC1C237FC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69EF057877;
-	Tue, 23 Jan 2024 01:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5F7E5476B;
+	Tue, 23 Jan 2024 00:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c42DDETr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vO3ZjwPm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2994051C44;
-	Tue, 23 Jan 2024 01:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952365380A;
+	Tue, 23 Jan 2024 00:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974052; cv=none; b=orsyCp15Jcky4Pjg8Jcqfk1mZ3xN5asUUyaY604gJgWYfSUPPUUSFADDVELAJ8jFsWZEcyUCF6ZwlGKuYX/+xpPNiJY6WhxQiienIE7V5mIllDyWNM4raOndOHY/wHg/9b0Jql8Niuah9mYIXcf6hlQGmfgbcDgeD/ZwbD+TcCA=
+	t=1705969864; cv=none; b=ppfOhNoG25lCzvHKfVWpEyAPkhBrtheFbK1qoPqpDMYAgQCSGVoQPn+ymkMye+DCNkAs1adUJIZMf5SdXJ1wRKvY5/btAnoNm0PzUaZswCo7cQVaDcWPg2fCTPfLCObfqnrL/YyBkNTHXwqAW8WolY+11vY3mNJvduLNwPAJVew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974052; c=relaxed/simple;
-	bh=m3Mq/rbEyt5zqMgFQHmTCmzwxjmfOocU2bXEfWN7INQ=;
+	s=arc-20240116; t=1705969864; c=relaxed/simple;
+	bh=UGspx9P/friGUN2Sh0gUXvQ4/oJrOvJ+qklG16qHagc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RtK1FG1Qo6XS3IoPompdV7C7zRAqcFvsHCE1g4/6L2VqjxYIb73ytBiUZjcYU++b1BqunfBxchQomywHCQt5ZqwwIdWyfyNqdoMuHDI0baEgkntR3BEdE7mZx3F9GopqARnHB/roP26sEYcdXVCEofcTXQpyvCHNw6RWxXI6Rvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c42DDETr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F63BC433C7;
-	Tue, 23 Jan 2024 01:40:51 +0000 (UTC)
+	 MIME-Version; b=VcXIXGM3X7sXtLRO49LdOPOLZURFpMhAgkfMLCxecl93DwRwYhrkQ9NfHtYWlca3uJIGfe4qvklcyHkbnkZGJP0L5xSWdmZZlranX9OLzqtx96seDb5fR5IJY45A/wJP4aM0vyn4Yy1PGmZnvexlw0KjXhtHGgDKvClK5Gb8MxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vO3ZjwPm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A15C43394;
+	Tue, 23 Jan 2024 00:31:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974051;
-	bh=m3Mq/rbEyt5zqMgFQHmTCmzwxjmfOocU2bXEfWN7INQ=;
+	s=korg; t=1705969864;
+	bh=UGspx9P/friGUN2Sh0gUXvQ4/oJrOvJ+qklG16qHagc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c42DDETrXzvXuSrF6QiVeWFlX9IDFrqF7mkZ6wBGbgYfpItMW6QNhfgj0uSwZ+1Le
-	 CjpnWZ+cC2HfsVP5LKc7KRxJ7VcHTrEqYMQWxJ269Gsz+YKxG0u3n0if4g1mUp/5Au
-	 tAmR390lgA6qBN8RdHUi5vf0IFSr8UcmlAb6lVxU=
+	b=vO3ZjwPmcJKALhyfqznQb7A1kJcFVsAMuI2PWPNPoTRkmqsaXcnTJpJad7+DYHu96
+	 jDMdoVHSfiU6ZdbddJhMSyquaeCmkA7U5EkNs28xpFdHdk1nILeD0aCsvuUH3zkRU8
+	 nSlhDZ4ETRZN8SCMXBl5fMfdz2AjA1BwpkGgo0F0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Vincent Whitchurch <vincent.whitchurch@axis.com>,
+	Richard Weinberger <richard@nod.at>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 141/374] block: Set memalloc_noio to false on device_add_disk() error path
+Subject: [PATCH 6.7 493/641] um: virt-pci: fix platform map offset
 Date: Mon, 22 Jan 2024 15:56:37 -0800
-Message-ID: <20240122235749.533080395@linuxfoundation.org>
+Message-ID: <20240122235833.502628712@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Vincent Whitchurch <vincent.whitchurch@axis.com>
 
-[ Upstream commit 5fa3d1a00c2d4ba14f1300371ad39d5456e890d7 ]
+[ Upstream commit 32253f00ac8a8073bf6db4bfe9d6511cc93c4aef ]
 
-On the error path of device_add_disk(), device's memalloc_noio flag was
-set but not cleared. As the comment of pm_runtime_set_memalloc_noio(),
-"The function should be called between device_add() and device_del()".
-Clear this flag before device_del() now.
+The offset is currently always zero so the backend can't distinguish
+between accesses to different ioremapped areas.
 
-Fixes: 25e823c8c37d ("block/genhd.c: apply pm_runtime_set_memalloc_noio on block devices")
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20231211075356.1839282-1-linan666@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 522c532c4fe7 ("virt-pci: add platform bus support")
+Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/genhd.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/um/drivers/virt-pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/block/genhd.c
-+++ b/block/genhd.c
-@@ -538,6 +538,7 @@ out_del_integrity:
- out_del_block_link:
- 	if (!sysfs_deprecated)
- 		sysfs_remove_link(block_depr, dev_name(ddev));
-+	pm_runtime_set_memalloc_noio(ddev, false);
- out_device_del:
- 	device_del(ddev);
- out_free_ext_minor:
+diff --git a/arch/um/drivers/virt-pci.c b/arch/um/drivers/virt-pci.c
+index ffe2ee8a0246..97a37c062997 100644
+--- a/arch/um/drivers/virt-pci.c
++++ b/arch/um/drivers/virt-pci.c
+@@ -971,7 +971,7 @@ static long um_pci_map_platform(unsigned long offset, size_t size,
+ 	*ops = &um_pci_device_bar_ops;
+ 	*priv = &um_pci_platform_device->resptr[0];
+ 
+-	return 0;
++	return offset;
+ }
+ 
+ static const struct logic_iomem_region_ops um_pci_platform_ops = {
+-- 
+2.43.0
+
 
 
 
