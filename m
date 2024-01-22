@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-13885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E5E837E90
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CF0E8383A0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FCBA1F293AC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0661829481F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE72B569F;
-	Tue, 23 Jan 2024 00:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01ABC634E4;
+	Tue, 23 Jan 2024 01:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6IMI5gP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R0zsFc/P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC904566F;
-	Tue, 23 Jan 2024 00:44:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66C06313F;
+	Tue, 23 Jan 2024 01:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970668; cv=none; b=ZwHONpQDsPmPq3RVYxwlVf3t2NtxPS1VMavD2xUMLq2ZeJydil7RcBggUbqMCtbyaG3Ppwm1fHK+/md2ybU8oKX2TzBm8Q29hq7x0iDCQpbGeaZYtvp4708sNlryPGI1SV4A5uAk0AYivb2+8BJAV7rmaEJ1d++ILMN+7fHvvH0=
+	t=1705975024; cv=none; b=jLuXkqmHD9nDMEyLyuQmPnN1kRKUys4xnr9gkKc3AIh9gwamE9ned3OzcSrwj4Hh8YNaoel5AJFr2KoojgBTmQw50KZ0BvqzS+rXZjkM9BABhJetGEwzbW2ydTzUJR/yQnHykXYFrfGz1zZwv5eyvnyNV9FXFty8hk1RDH2hmLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970668; c=relaxed/simple;
-	bh=5+3n8Y5E53nM5RQMJJc6FGYFlORJFzxOQMwe7CLPRRE=;
+	s=arc-20240116; t=1705975024; c=relaxed/simple;
+	bh=r61aYmHeE7ihlNAMhDk1gw/Ues/fxDSRuLKZ8MEDA4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LGNfOUD8PwsZwsM5qh0cIXJu2rhX/lPE8Tt//n96GFqhDOZILeMDWXwd2lQuHjNHMNNp+d7/S2LZt5ROJFRsMKvMvOmv5NLi+Z6xCcivaiDLx2rAlyZuUVqwPtLajCgmBz6NskwFAssNZfrEixobcQkKvs5hdWSwUDgb+okqUp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6IMI5gP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E671C433C7;
-	Tue, 23 Jan 2024 00:44:28 +0000 (UTC)
+	 MIME-Version; b=oZ1D4UTN7q7sG5Cf+INzB6RM7/nphnZiaGPFz74j6kdecBfQ88oIzXYYQJB3nhGZ7PF8joBWdxTSdybeRC6Gcz4NY0XAQQx2ukriNJs5gC2LJudq2ECRVNpBgHZ3mERIkHeLhLBsU2wPz+D0aThz7j9D1nmdHA5c0qQw3lHwy6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R0zsFc/P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C00C433A6;
+	Tue, 23 Jan 2024 01:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970668;
-	bh=5+3n8Y5E53nM5RQMJJc6FGYFlORJFzxOQMwe7CLPRRE=;
+	s=korg; t=1705975024;
+	bh=r61aYmHeE7ihlNAMhDk1gw/Ues/fxDSRuLKZ8MEDA4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M6IMI5gPKbaW49sTJ+BWTM2nti/W0b/KXncClcUdsveMbGRGSq+JMGyTVmLv1zK3z
-	 xlCHzN4jFEMCWKpMPW8NXPpdU0790vozUAvsN8B3/Gb5wl9XLCIsn/4SRYaERNnQ6x
-	 IBztAU3942l5NlJh4qm7vxzpMJi8slKXGucv14oU=
+	b=R0zsFc/P4/8NW2izsyVIXHYB8+HgZ77tVbA/KN0iiywFT1q2xu18E9HKul45/kfxy
+	 UPCupN7RVW3vWpalF+ALFxgecsdtUiu+yJ7Wv4mqs41fYtO1S3JtAf9EuXY8iDtfK2
+	 G1fAeWeks6ADuRqm3tHFNrybEcpWEW38CN4NDWeg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 084/417] ARM: dts: qcom: sdx65: correct SPMI node name
+Subject: [PATCH 6.6 201/583] wifi: iwlwifi: fix out of bound copy_from_user
 Date: Mon, 22 Jan 2024 15:54:12 -0800
-Message-ID: <20240122235754.616001166@linuxfoundation.org>
+Message-ID: <20240122235818.135692758@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
 
-[ Upstream commit a900ad783f507cb396e402827052e70c0c565ae9 ]
+[ Upstream commit cb2dfacb197bed0241fbb4f84bd0995a47f4465e ]
 
-Node names should not have vendor prefixes:
+The driver copies the userspace buffer into an internal NUL
+byte terminated buffer. While doing so, it was reading beyond
+the end of the userspace buffer, overwriting its own NUL
+termination in the process.
 
-  qcom-sdx65-mtp.dtb: qcom,spmi@c440000: $nodename:0: 'qcom,spmi@c440000' does not match '^spmi@.*
+Fix this by only copying the correct number of bytes.
 
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230924183103.49487-3-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 3f244876ef73 ("wifi: iwlwifi: make debugfs entries link specific")
+Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
+Reviewed-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20231219215605.e4913deb2ad4.Idcf6a7e909ff4b7801cd49c2f691f84a2f68eff9@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom-sdx65.dtsi | 2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/qcom-sdx65.dtsi b/arch/arm/boot/dts/qcom-sdx65.dtsi
-index ecb9171e4da5..ebb78b489e63 100644
---- a/arch/arm/boot/dts/qcom-sdx65.dtsi
-+++ b/arch/arm/boot/dts/qcom-sdx65.dtsi
-@@ -401,7 +401,7 @@ restart@c264000 {
- 			reg = <0x0c264000 0x1000>;
- 		};
- 
--		spmi_bus: qcom,spmi@c440000 {
-+		spmi_bus: spmi@c440000 {
- 			compatible = "qcom,spmi-pmic-arb";
- 			reg = <0xc440000 0xd00>,
- 				<0xc600000 0x2000000>,
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+index cf27f106d4d5..7057421e513b 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
+@@ -1673,7 +1673,7 @@ static ssize_t _iwl_dbgfs_link_sta_##name##_write(struct file *file,	\
+ 	char buf[buflen] = {};						\
+ 	size_t buf_size = min(count, sizeof(buf) -  1);			\
+ 									\
+-	if (copy_from_user(buf, user_buf, sizeof(buf)))			\
++	if (copy_from_user(buf, user_buf, buf_size))			\
+ 		return -EFAULT;						\
+ 									\
+ 	return _iwl_dbgfs_link_sta_wrap_write(iwl_dbgfs_##name##_write,	\
 -- 
 2.43.0
 
