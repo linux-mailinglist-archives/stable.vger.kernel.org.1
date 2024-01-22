@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F817837EEE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D338083819B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27C1929BCDA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56CA8B2DB67
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5798E604D7;
-	Tue, 23 Jan 2024 00:47:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F8251848;
+	Tue, 23 Jan 2024 01:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hpEXis5d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgP40wnU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1521D604D0;
-	Tue, 23 Jan 2024 00:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC3417CA;
+	Tue, 23 Jan 2024 01:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970830; cv=none; b=hgOShNu/MRKnUlSkHCNxJEAQ7pkcJA6nGzlrkc9PRTFm54KRMu6q59mj6YsyDSWGjZyTpEAmELV0Io1t3xaS7j6EfBKPg6hfu2HXXpYIVCudtsdJLlr0Rau5fHbOenbYWycke99PRewPeRCFiMg1vJ7mZ8Zlbv0M/l+ml4XpED4=
+	t=1705972148; cv=none; b=SCefGK0ewdqLizEByaLUKj1THoCsfnKvl9FSQF9nPaOYUTNWPEs9kAzmt0Y/LeMHSo8J+ZEQlFTG21i+y7NAJfU4BVPYwfTWdtGzXZmtDrvVrGizJVEZowCCgZv8qT0wCL61dPQBrMIrMDKaMduhxqN/vmfc1YrNMBV+jQko3+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970830; c=relaxed/simple;
-	bh=PAth0xL4ErX/+mrzgBEc9TZkTRDYvobqaR8/FWPFujs=;
+	s=arc-20240116; t=1705972148; c=relaxed/simple;
+	bh=8RsnXrCUwB5QLUX8cujbWxaOyoymvQKQzorZqeizLyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JQ54Y72NgEhdyDI7axVT5mlmPsm8Lgxh5Xo+O96fOYyleV98w3ZGu8us3/g9Erd5oLdC2kyuDljNkjkZficdjDByAvVXRmQ+ztvbK0pz1Qdnubazg+R8CV8E1iAKHUQCd/TGRRMxI2LPpQDLSx0FYkGgTYIX7bZkjBMei7ZvmSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hpEXis5d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED27C433C7;
-	Tue, 23 Jan 2024 00:47:09 +0000 (UTC)
+	 MIME-Version; b=jB4KCes9tB7JnKIh7rUgvkqzu9z4bvLhpSRZApn7InojHHRmB6DvHRqYgLgFVSCUdQwLiG/ZRiPB9u1tm+oCMvfRcM3DBVPZmuj0G4NumMT3spO//9UUuZ/MrdZNuVg3mpYfUnMtZ8TMXQHIdpY0d06/QXfZFu36maTIoSpiD6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgP40wnU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0851C433C7;
+	Tue, 23 Jan 2024 01:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970829;
-	bh=PAth0xL4ErX/+mrzgBEc9TZkTRDYvobqaR8/FWPFujs=;
+	s=korg; t=1705972148;
+	bh=8RsnXrCUwB5QLUX8cujbWxaOyoymvQKQzorZqeizLyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hpEXis5dENPEw1vs/aNC0P1hCj9xOTkf9dt7EcBLqOIjtMWMzAeMla5I6az7VGr2s
-	 zS0+yR9HDNi6rHJmIpKJaytshdVcfu/IOZCMpLZ8P+7jwrqGRF7dQSv9kEQARe1dDb
-	 HyWg5X/IFTA6sgDmzHI5TyWotud+jI359LvF6DeM=
+	b=SgP40wnUJjN/1HT0kKVL6DO5rKnHsAEt92MI/4iiMqJSaL5it5HgcB5JR+FH6Ob+s
+	 RQk1DfAztgukSbDEHc/Bab9L1rW7hQVhyl/DzBANOeNK/DWfY5DvWr+kApKPunOkGk
+	 YwkMufTvJWVbZiBW8Xv3TmWaHGnfAsp7Bg1LD8Lw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 026/286] tracing: Have large events show up as [LINE TOO BIG] instead of nothing
+Subject: [PATCH 5.15 076/374] powerpc/powernv: Add a null pointer check in opal_powercap_init()
 Date: Mon, 22 Jan 2024 15:55:32 -0800
-Message-ID: <20240122235733.028290756@linuxfoundation.org>
+Message-ID: <20240122235747.262852516@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit b55b0a0d7c4aa2dac3579aa7e6802d1f57445096 ]
+[ Upstream commit e123015c0ba859cf48aa7f89c5016cc6e98e018d ]
 
-If a large event was added to the ring buffer that is larger than what the
-trace_seq can handle, it just drops the output:
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure.
 
- ~# cat /sys/kernel/tracing/trace
- # tracer: nop
- #
- # entries-in-buffer/entries-written: 2/2   #P:8
- #
- #                                _-----=> irqs-off/BH-disabled
- #                               / _----=> need-resched
- #                              | / _---=> hardirq/softirq
- #                              || / _--=> preempt-depth
- #                              ||| / _-=> migrate-disable
- #                              |||| /     delay
- #           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
- #              | |         |   |||||     |         |
-            <...>-859     [001] .....   141.118951: tracing_mark_write           <...>-859     [001] .....   141.148201: tracing_mark_write: 78901234
-
-Instead, catch this case and add some context:
-
- ~# cat /sys/kernel/tracing/trace
- # tracer: nop
- #
- # entries-in-buffer/entries-written: 2/2   #P:8
- #
- #                                _-----=> irqs-off/BH-disabled
- #                               / _----=> need-resched
- #                              | / _---=> hardirq/softirq
- #                              || / _--=> preempt-depth
- #                              ||| / _-=> migrate-disable
- #                              |||| /     delay
- #           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
- #              | |         |   |||||     |         |
-            <...>-852     [001] .....   121.550551: tracing_mark_write[LINE TOO BIG]
-            <...>-852     [001] .....   121.550581: tracing_mark_write: 78901234
-
-This now emulates the same output as trace_pipe.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231209171058.78c1a026@gandalf.local.home
-
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: b9ef7b4b867f ("powerpc: Convert to using %pOFn instead of device_node.name")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231126095739.1501990-1-chentao@kylinos.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/powerpc/platforms/powernv/opal-powercap.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 0cbf833bebcc..548f694fc857 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -4339,7 +4339,11 @@ static int s_show(struct seq_file *m, void *v)
- 		iter->leftover = ret;
+diff --git a/arch/powerpc/platforms/powernv/opal-powercap.c b/arch/powerpc/platforms/powernv/opal-powercap.c
+index c16d44f6f1d1..ce9ec3962cef 100644
+--- a/arch/powerpc/platforms/powernv/opal-powercap.c
++++ b/arch/powerpc/platforms/powernv/opal-powercap.c
+@@ -196,6 +196,12 @@ void __init opal_powercap_init(void)
  
- 	} else {
--		print_trace_line(iter);
-+		ret = print_trace_line(iter);
-+		if (ret == TRACE_TYPE_PARTIAL_LINE) {
-+			iter->seq.full = 0;
-+			trace_seq_puts(&iter->seq, "[LINE TOO BIG]\n");
+ 		j = 0;
+ 		pcaps[i].pg.name = kasprintf(GFP_KERNEL, "%pOFn", node);
++		if (!pcaps[i].pg.name) {
++			kfree(pcaps[i].pattrs);
++			kfree(pcaps[i].pg.attrs);
++			goto out_pcaps_pattrs;
 +		}
- 		ret = trace_print_seq(m, &iter->seq);
- 		/*
- 		 * If we overflow the seq_file buffer, then it will
++
+ 		if (has_min) {
+ 			powercap_add_attr(min, "powercap-min",
+ 					  &pcaps[i].pattrs[j]);
 -- 
 2.43.0
 
