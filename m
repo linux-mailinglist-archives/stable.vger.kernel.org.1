@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84209838399
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F08F837E8D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7DCE1C29AC5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD00A1F28623
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:40:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1822163410;
-	Tue, 23 Jan 2024 01:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 038A560DD8;
+	Tue, 23 Jan 2024 00:44:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gmm0E8eb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDWYBdYu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8F96313F;
-	Tue, 23 Jan 2024 01:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D3660BA2;
+	Tue, 23 Jan 2024 00:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975016; cv=none; b=YdpadKHmr/3I+KKYWDfo0Xl/sIa9ihZCjWwoEuuhSBl5e++EF1rP5OZvr5gQ836yL+a6PJ0IDuQn38qKEhPyHQYGddATNtVpBZPSli8zYg9eyzRd7khXTAArhWoqLbS12AUo5xmxJGFgnUHhV6wHXCP7wQipV1vL/WcvYlLJ0Nk=
+	t=1705970662; cv=none; b=UrFTk4dO20SI3dx/6VaQq5pVtdlXRyAHAomtrcBLSOMlKwHCvbV/REcDvfGYU3k+A7WK/LKRz5dUmcPam5jSip7P1vICTw0jRK6CWI9U8s8eKjmUlqhhWOrMAE9RRZY9sLJBPTS8ewxEh/pl4j6NsMNpOT7b2e3bPTkWHHSbE6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975016; c=relaxed/simple;
-	bh=fDXl7Oyd7IIy1BURb/xYhbjFU4jC9vUFAjfCsW9FjrQ=;
+	s=arc-20240116; t=1705970662; c=relaxed/simple;
+	bh=bSRAAgiFj7LU7hybZjoJqVjHzN8vFlPvMZruz6caaHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i3pl+fyue3O/3LWGklCJiLuMJGLQ/gvCplYW5oFfiviynunuBgoXtGmb3DuhGQqATm3zAXn8mfchPxIAPWRFnGf/P9EKDznJgQChOUc2lojrTu+xn7C1ZX1GNUKIH1Txw6hn59e1JKJnjqGn6GrxiC8bqivrhiJ2NNHEq86oMl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gmm0E8eb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9222DC433F1;
-	Tue, 23 Jan 2024 01:56:56 +0000 (UTC)
+	 MIME-Version; b=pzBLbAFAcws+JihF4u51Ff5emKpiUuo4nFM9vww/9n+HN//K5UOjzm8mLWnonlYvbVYa3OMlL//t8UUGVh5KmBuWT3kbIKCWLBQrk/4kPOS1zZHL4ejy3b0Cj7qeCCe6VkPBh+mtoCLnBUArrwQqnC0da5QbRpToWwPyO5UBUuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDWYBdYu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD34C433C7;
+	Tue, 23 Jan 2024 00:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975016;
-	bh=fDXl7Oyd7IIy1BURb/xYhbjFU4jC9vUFAjfCsW9FjrQ=;
+	s=korg; t=1705970662;
+	bh=bSRAAgiFj7LU7hybZjoJqVjHzN8vFlPvMZruz6caaHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gmm0E8eb5gXYh7AVjp3bJC2wsldZzdI1jajiBL78gPfvX+VL+qrNsqX//umo1LxOV
-	 c8HFV9Ln76LFbet4kK95ph/kKqyhLNScHzZ9baYhdiDweZTPyeZBNszNgxC1o1SYPs
-	 Wr9Q2G9Ppqn1EzYbLyDx53ETYsNlhzHl+c+Dek54=
+	b=NDWYBdYu6WOwNekoS70OXqEkjVsZ69Zw2/Tg3GB33f3FOnSXga4iSpcbH6tLuigv2
+	 +YvxPobLHz+J/BCmrUhEU/WbCo119y9tIduvOLdtj4FTQxHtVBqtKHfe2Z3VXg/ESg
+	 BnTUJ4zyyXgVbLCqrCPN2+Rp6trGEM1GQd4vtdnE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 198/583] wifi: rtlwifi: rtl8192se: using calculate_bit_shift()
-Date: Mon, 22 Jan 2024 15:54:09 -0800
-Message-ID: <20240122235818.034371156@linuxfoundation.org>
+Subject: [PATCH 6.1 082/417] md: synchronize flush io with array reconfiguration
+Date: Mon, 22 Jan 2024 15:54:10 -0800
+Message-ID: <20240122235754.548853796@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit ac32b9317063b101a8ff3d3e885f76f87a280419 ]
+[ Upstream commit fa2bbff7b0b4e211fec5e5686ef96350690597b5 ]
 
-Using calculate_bit_shift() to replace _rtl92s_phy_calculate_bit_shift().
-And fix the undefined bitwise shift behavior problem.
+Currently rcu is used to protect iterating rdev from submit_flushes():
 
-Fixes: d15853163bea ("rtlwifi: rtl8192se: Merge phy routines")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-10-suhui@nfschina.com
+submit_flushes			remove_and_add_spares
+				synchronize_rcu
+				pers->hot_remove_disk()
+ rcu_read_lock()
+ rdev_for_each_rcu
+  if (rdev->raid_disk >= 0)
+				rdev->radi_disk = -1;
+   atomic_inc(&rdev->nr_pending)
+   rcu_read_unlock()
+   bi = bio_alloc_bioset()
+   bi->bi_end_io = md_end_flush
+   bi->private = rdev
+   submit_bio
+   // issue io for removed rdev
+
+Fix this problem by grabbing 'acive_io' before iterating rdev, make sure
+that remove_and_add_spares() won't concurrent with submit_flushes().
+
+Fixes: a2826aa92e2e ("md: support barrier requests on all personalities.")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20231129020234.1586910-1-yukuai1@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/realtek/rtlwifi/rtl8192se/phy.c  | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ drivers/md/md.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
-index 09591a0b5a81..d9ef7e1da1db 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
-@@ -14,13 +14,6 @@
- #include "hw.h"
- #include "table.h"
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 0c2801d77090..6120f26a7969 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -528,6 +528,9 @@ static void md_end_flush(struct bio *bio)
+ 	rdev_dec_pending(rdev, mddev);
  
--static u32 _rtl92s_phy_calculate_bit_shift(u32 bitmask)
--{
--	u32 i = ffs(bitmask);
--
--	return i ? i - 1 : 32;
--}
--
- u32 rtl92s_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
-@@ -30,7 +23,7 @@ u32 rtl92s_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- 		regaddr, bitmask);
- 
- 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
--	bitshift = _rtl92s_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	returnvalue = (originalvalue & bitmask) >> bitshift;
- 
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE, "BBR MASK=0x%x Addr[0x%x]=0x%x\n",
-@@ -52,7 +45,7 @@ void rtl92s_phy_set_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask,
- 
- 	if (bitmask != MASKDWORD) {
- 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
--		bitshift = _rtl92s_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
+ 	if (atomic_dec_and_test(&mddev->flush_pending)) {
++		/* The pair is percpu_ref_get() from md_flush_request() */
++		percpu_ref_put(&mddev->active_io);
++
+ 		/* The pre-request flush has finished */
+ 		queue_work(md_wq, &mddev->flush_work);
  	}
- 
-@@ -157,7 +150,7 @@ u32 rtl92s_phy_query_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
- 
- 	original_value = _rtl92s_phy_rf_serial_read(hw, rfpath, regaddr);
- 
--	bitshift = _rtl92s_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 
- 	spin_unlock(&rtlpriv->locks.rf_lock);
-@@ -188,7 +181,7 @@ void rtl92s_phy_set_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
- 	if (bitmask != RFREG_OFFSET_MASK) {
- 		original_value = _rtl92s_phy_rf_serial_read(hw, rfpath,
- 							    regaddr);
--		bitshift = _rtl92s_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = ((original_value & (~bitmask)) | (data << bitshift));
+@@ -547,12 +550,8 @@ static void submit_flushes(struct work_struct *ws)
+ 	rdev_for_each_rcu(rdev, mddev)
+ 		if (rdev->raid_disk >= 0 &&
+ 		    !test_bit(Faulty, &rdev->flags)) {
+-			/* Take two references, one is dropped
+-			 * when request finishes, one after
+-			 * we reclaim rcu_read_lock
+-			 */
+ 			struct bio *bi;
+-			atomic_inc(&rdev->nr_pending);
++
+ 			atomic_inc(&rdev->nr_pending);
+ 			rcu_read_unlock();
+ 			bi = bio_alloc_bioset(rdev->bdev, 0,
+@@ -563,7 +562,6 @@ static void submit_flushes(struct work_struct *ws)
+ 			atomic_inc(&mddev->flush_pending);
+ 			submit_bio(bi);
+ 			rcu_read_lock();
+-			rdev_dec_pending(rdev, mddev);
+ 		}
+ 	rcu_read_unlock();
+ 	if (atomic_dec_and_test(&mddev->flush_pending))
+@@ -616,6 +614,18 @@ bool md_flush_request(struct mddev *mddev, struct bio *bio)
+ 	/* new request after previous flush is completed */
+ 	if (ktime_after(req_start, mddev->prev_flush_start)) {
+ 		WARN_ON(mddev->flush_bio);
++		/*
++		 * Grab a reference to make sure mddev_suspend() will wait for
++		 * this flush to be done.
++		 *
++		 * md_flush_reqeust() is called under md_handle_request() and
++		 * 'active_io' is already grabbed, hence percpu_ref_is_zero()
++		 * won't pass, percpu_ref_tryget_live() can't be used because
++		 * percpu_ref_kill() can be called by mddev_suspend()
++		 * concurrently.
++		 */
++		WARN_ON(percpu_ref_is_zero(&mddev->active_io));
++		percpu_ref_get(&mddev->active_io);
+ 		mddev->flush_bio = bio;
+ 		bio = NULL;
  	}
- 
 -- 
 2.43.0
 
