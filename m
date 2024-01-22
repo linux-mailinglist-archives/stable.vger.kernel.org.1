@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A4E6837FF8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 527E1837DA0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C3061C294E6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09B321F23F59
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2806212CDBF;
-	Tue, 23 Jan 2024 00:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE7D55791;
+	Tue, 23 Jan 2024 00:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XiMnn1Tq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcLnft1J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6EB48CFD;
-	Tue, 23 Jan 2024 00:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ADC651014;
+	Tue, 23 Jan 2024 00:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971475; cv=none; b=R9ICkP+/9dwNKCVeJozszdWqPP7CQn99CuXrAmf8BwU/h0ADeE75eig19KbZIMPAlBEUg4IE2++VIxble9IXBjdt4JJv/DSPySragRR7m1Jq7lbA5M5dadsGrA9fvZuEssQ4JNzEXRQ91kiz15jmoqH5iOp6RCvy+B1qqoq1ois=
+	t=1705970085; cv=none; b=V6Ne/TFHM8QCAOR0G2V546sFS2kbcbM/AFabtYdKPkV4nHzUvnalKTdr43jzgHG4BhRoEuK3aeg1zsJLZyr2qMk5yVukkcmf8UPQazGoj9qck8vtV0OcDTQz1Rtw4Pn2P2ojbxi4DRj/IfqSt/f+wWsebnhZbTNiy2vWtWuReu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971475; c=relaxed/simple;
-	bh=tuZN3/aRluOYILGRzdLE7HXZrLtZEoWGMvp9pQXWNJc=;
+	s=arc-20240116; t=1705970085; c=relaxed/simple;
+	bh=u5VCg+latCj5iCXQkPePiaig1A2wccYi78PoiGMEsbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fD+nY6ZprmGOBF3hcNbfokjNQaeZ9Hsumm5YiAMvI7GI0Ebz09ulFawxED2fKAFupOPQG3BFlQqnaCDDTol/Kr2TUsJl+TY17q3uWXU5ZZbamWKGRyXD7yDneYuWjCgHj8+Rg7cgFmd/5cckhuI81wMgXW9OqtzSBIMTcOGsN64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XiMnn1Tq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605DBC433F1;
-	Tue, 23 Jan 2024 00:57:54 +0000 (UTC)
+	 MIME-Version; b=UUQfq713gu8t1tLOz/rQloOWL4YPa+szvmUZXfIKIOqaPDbwdf+MgP4tCv0KgvICiyjUrfVuNqTmceM4oJ6Dxe947f8qX0HbriU1q9OWhad9BxsW8RgAdX/nD69GRmZ4C1ZXNQsRbVHCHZjkLezkc7Gd2qVydgZmkoQ6IikXoJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcLnft1J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7056DC433F1;
+	Tue, 23 Jan 2024 00:34:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971475;
-	bh=tuZN3/aRluOYILGRzdLE7HXZrLtZEoWGMvp9pQXWNJc=;
+	s=korg; t=1705970084;
+	bh=u5VCg+latCj5iCXQkPePiaig1A2wccYi78PoiGMEsbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XiMnn1TqSw7liKJxDgGBRXMpy//mdfnaJ0EwTvBvfMEQjmWXMXnDIKD0WCYQ4sl6B
-	 e1nhQeU3C9u41Ok75MgfsKq8nHVazFiTvIyzq6BZIqE72Bf8/gbLI5n8QcaOnVNGED
-	 DNQ/Bn5XkXH1KSkAVpWRghPNBG7O+dCtye3AC4EY=
+	b=KcLnft1JZPK86IMToAO4azdYHWBtQ9qNG5n2S5vOtaR4cdX1x9PDHayIxgFsS68oJ
+	 1y5am7a+yuSiru+Ye5tx5SPUUmG3yAoFsaqIAH+q6NLkmABewDi12zGejWtSPSo5nV
+	 DVrFAqUGR1Tr8RMF3rfQ5yiuWHyMYPDlIO7HmC0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Jim Harris <jim.harris@samsung.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Fan Ni <fan.ni@samsung.com>,
+	Dan Williams <dan.j.williams@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 157/286] drm/msm/mdp4: flush vblank event on disable
+Subject: [PATCH 6.7 559/641] cxl/region: fix x9 interleave typo
 Date: Mon, 22 Jan 2024 15:57:43 -0800
-Message-ID: <20240122235738.218329658@linuxfoundation.org>
+Message-ID: <20240122235835.637334376@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Jim Harris <jim.harris@samsung.com>
 
-[ Upstream commit c6721b3c6423d8a348ae885a0f4c85e14f9bf85c ]
+[ Upstream commit c7ad3dc3649730af483ee1e78be5d0362da25bfe ]
 
-Flush queued events when disabling the crtc. This avoids timeouts when
-we come back and wait for dependencies (like the previous frame's
-flip_done).
+CXL supports x3, x6 and x12 - not x9.
 
-Fixes: c8afe684c95c ("drm/msm: basic KMS driver for snapdragon")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/569127/
-Link: https://lore.kernel.org/r/20231127215401.4064128-1-dmitry.baryshkov@linaro.org
+Fixes: 80d10a6cee050 ("cxl/region: Add interleave geometry attributes")
+Signed-off-by: Jim Harris <jim.harris@samsung.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Fan Ni <fan.ni@samsung.com>
+Link: https://lore.kernel.org/r/169904271254.204936.8580772404462743630.stgit@ubuntu
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/cxl/core/region.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c b/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
-index a0253297bc76..bf54b9e4fd61 100644
---- a/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
-+++ b/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
-@@ -268,6 +268,7 @@ static void mdp4_crtc_atomic_disable(struct drm_crtc *crtc,
- {
- 	struct mdp4_crtc *mdp4_crtc = to_mdp4_crtc(crtc);
- 	struct mdp4_kms *mdp4_kms = get_kms(crtc);
-+	unsigned long flags;
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index 3e817a6f94c6..76fec47a13a4 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -397,7 +397,7 @@ static ssize_t interleave_ways_store(struct device *dev,
+ 		return rc;
  
- 	DBG("%s", mdp4_crtc->name);
- 
-@@ -280,6 +281,14 @@ static void mdp4_crtc_atomic_disable(struct drm_crtc *crtc,
- 	mdp_irq_unregister(&mdp4_kms->base, &mdp4_crtc->err);
- 	mdp4_disable(mdp4_kms);
- 
-+	if (crtc->state->event && !crtc->state->active) {
-+		WARN_ON(mdp4_crtc->event);
-+		spin_lock_irqsave(&mdp4_kms->dev->event_lock, flags);
-+		drm_crtc_send_vblank_event(crtc, crtc->state->event);
-+		crtc->state->event = NULL;
-+		spin_unlock_irqrestore(&mdp4_kms->dev->event_lock, flags);
-+	}
-+
- 	mdp4_crtc->enabled = false;
- }
- 
+ 	/*
+-	 * Even for x3, x9, and x12 interleaves the region interleave must be a
++	 * Even for x3, x6, and x12 interleaves the region interleave must be a
+ 	 * power of 2 multiple of the host bridge interleave.
+ 	 */
+ 	if (!is_power_of_2(val / cxld->interleave_ways) ||
 -- 
 2.43.0
 
