@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-13902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A7E5837EA4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9415B838412
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D6E528F01D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A5271F271AE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066E050278;
-	Tue, 23 Jan 2024 00:45:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD9067729;
+	Tue, 23 Jan 2024 02:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K+H0ZWTa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFSxmuL9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D954BAA4;
-	Tue, 23 Jan 2024 00:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA8D67726;
+	Tue, 23 Jan 2024 02:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970710; cv=none; b=GSatZhqCVxb1m7rPU75Wf00Q3czb8NihjpCQNLxVH8NJaEl1VSTexsUIedQo+wiVKr2VvsBC1Dp4TnbHP0fumLmyhb/UuligY8au3uwTmIfkhqWGKe/lQFfeWNZ6lha8XRwYFVH2yZ7riN5rxahnz3gQexELMilizj62nwe7BGw=
+	t=1705975295; cv=none; b=kLy27CAi6Q5wD7C0FkjLT98QXAIAsJtQlXLGlCYwvyaQbKqCi0aXRtLHxLZ4FTKNYomWT7a48eM32RmVVeM9LT896mRU8itPmE0R+3WmFSrCxpOzjD44NFdmlHhl23ZDuc5XWBiDda9y1YpFToTOBfmgUR5Qb31/Fi11l6h8/6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970710; c=relaxed/simple;
-	bh=6OyHwIxTOmDHBYxOdbafKVxcI/DNFNw22/D+6Tp778g=;
+	s=arc-20240116; t=1705975295; c=relaxed/simple;
+	bh=xVqTIhZbLYKxRYI8LHyieqHM4S/lBtK+89CpBmkAKfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJBS6nYY82pLFq5NkSfZOl8ROLpth9ajDHgsgc8r80fVdoEDZO6tQwDOCsv/YIt/hefC/Gx0U+Kq4/Vne3EAwIpge2GD8vemjy4W9ZUKYLD97NE0VItVUEP94php27VkFAgWC/qGz6SRV7rnYXUE3GuWOQnrkloxXT9F3P0kteo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+H0ZWTa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5A0C433F1;
-	Tue, 23 Jan 2024 00:45:10 +0000 (UTC)
+	 MIME-Version; b=ZZaT0H+YP9nwd7+r7xmJP1Ob2wL6JCbcHwSNilNcZEmQe/IIMicfvKHOICFULxjuELSpkiXXJPFQx8BTlftDaIaLR6ikFhCHH/SDo9p5MfNPDPxM9IxYbw8ApCpZMBUA48wjTkMXWjjjVcptr5a3XrpFKD9svnc9DyOA0d6IdoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFSxmuL9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD221C43390;
+	Tue, 23 Jan 2024 02:01:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970710;
-	bh=6OyHwIxTOmDHBYxOdbafKVxcI/DNFNw22/D+6Tp778g=;
+	s=korg; t=1705975294;
+	bh=xVqTIhZbLYKxRYI8LHyieqHM4S/lBtK+89CpBmkAKfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K+H0ZWTaJlikqImHSrZPvExz0wz4EJpEPz7FZUH1MJa1OZJtRUq8QdL26/C9mD/jB
-	 yV0xivJvkQIrHTYw3MnipkP7fTfeJXkzL9IUUiv6aDbqD15n64Jn2+ZAcnxWp2tEog
-	 47LiHFNNOpwPsKR5yDl5d8m7D6lDaN5rdAP4GcjE=
+	b=jFSxmuL9Zr3S00iHIpsL/Fzj/EwaVwpjCC9+wo6aGP2aPIzffp24TAGG5pti3lx1o
+	 4sSBGS2CRIiwxCkpxnzOgVx4vcCgtjtQsj6lAYiPfqjqh6XSD0FWWPld5LXJiDjt42
+	 rM1fvHOVcNWPWyoASGFc2Low2wt+ou1VGram5AKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b834a6b2decad004cfa1@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Paloma Arellano <quic_parellan@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 004/286] mptcp: fix uninit-value in mptcp_incoming_options
+Subject: [PATCH 6.6 259/583] drm/msm/dpu: correct clk bit for WB2 block
 Date: Mon, 22 Jan 2024 15:55:10 -0800
-Message-ID: <20240122235732.174294954@linuxfoundation.org>
+Message-ID: <20240122235819.932421587@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,37 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 237ff253f2d4f6307b7b20434d7cbcc67693298b ]
+[ Upstream commit e843ca2f30e630675e2d2a75c96f4844f2854430 ]
 
-Added initialization use_ack to mptcp_parse_option().
+On sc7280 there are two clk bits for WB2: vbif_cli and clk_ctrl. While
+programming the VBIF params of WB, the driver should be toggling the
+former bit, while the sc7180_mdp, sc7280_mdp and sm8250_mdp structs
+list the latter one.
 
-Reported-by: syzbot+b834a6b2decad004cfa1@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Correct that to ensure proper programming sequence for WB2 on these
+platforms.
+
+Fixes: 255f056181ac ("drm/msm/dpu: sc7180: add missing WB2 clock control")
+Fixes: 3ce166380567 ("drm/msm/dpu: add writeback support for sc7280")
+Fixes: 53324b99bd7b ("drm/msm/dpu: add writeback blocks to the sm8250 DPU catalog")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Tested-by: Paloma Arellano <quic_parellan@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/570185/
+Link: https://lore.kernel.org/r/20231203002437.1291595-1-dmitry.baryshkov@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/options.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h | 2 +-
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h | 2 +-
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/mptcp/options.c b/net/mptcp/options.c
-index 64afe71e2129..c389d7e47135 100644
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -92,6 +92,7 @@ static void mptcp_parse_option(const struct sk_buff *skb,
- 			mp_opt->dss = 1;
- 			mp_opt->use_map = 1;
- 			mp_opt->mpc_map = 1;
-+			mp_opt->use_ack = 0;
- 			mp_opt->data_len = get_unaligned_be16(ptr);
- 			ptr += 2;
- 		}
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h
+index 5f9b437b82a6..ee781037ada9 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h
+@@ -32,7 +32,7 @@ static const struct dpu_mdp_cfg sm8250_mdp = {
+ 		[DPU_CLK_CTRL_DMA2] = { .reg_off = 0x2bc, .bit_off = 8 },
+ 		[DPU_CLK_CTRL_DMA3] = { .reg_off = 0x2c4, .bit_off = 8 },
+ 		[DPU_CLK_CTRL_REG_DMA] = { .reg_off = 0x2bc, .bit_off = 20 },
+-		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x3b8, .bit_off = 24 },
++		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x2bc, .bit_off = 16 },
+ 	},
+ };
+ 
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h
+index d030c08636b4..69d3f7e5e095 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h
+@@ -25,7 +25,7 @@ static const struct dpu_mdp_cfg sc7180_mdp = {
+ 		[DPU_CLK_CTRL_DMA0] = { .reg_off = 0x2ac, .bit_off = 8 },
+ 		[DPU_CLK_CTRL_DMA1] = { .reg_off = 0x2b4, .bit_off = 8 },
+ 		[DPU_CLK_CTRL_DMA2] = { .reg_off = 0x2c4, .bit_off = 8 },
+-		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x3b8, .bit_off = 24 },
++		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x2bc, .bit_off = 16 },
+ 	},
+ };
+ 
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
+index 3b5061c4402a..9195cb996f44 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
+@@ -25,7 +25,7 @@ static const struct dpu_mdp_cfg sc7280_mdp = {
+ 		[DPU_CLK_CTRL_DMA0] = { .reg_off = 0x2ac, .bit_off = 8 },
+ 		[DPU_CLK_CTRL_DMA1] = { .reg_off = 0x2b4, .bit_off = 8 },
+ 		[DPU_CLK_CTRL_DMA2] = { .reg_off = 0x2c4, .bit_off = 8 },
+-		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x3b8, .bit_off = 24 },
++		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x2bc, .bit_off = 16 },
+ 	},
+ };
+ 
 -- 
 2.43.0
 
