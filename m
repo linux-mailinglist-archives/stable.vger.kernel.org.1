@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-14265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 459BE83803A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A5AE837D74
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69BA41C2962D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31B991F270D7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D603B657B1;
-	Tue, 23 Jan 2024 01:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF8C55769;
+	Tue, 23 Jan 2024 00:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3GQ4+41"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4qYwgyY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B066281E;
-	Tue, 23 Jan 2024 01:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161084E1D8;
+	Tue, 23 Jan 2024 00:32:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971604; cv=none; b=m0s37c6LFaeZ6HT8h+2A0K0SBFoDsbla+Jt3cknFLUWugKN3pXIto1wM7nuq16BuGLqMJK0SHfCVQG7OUqG52UTbqjQBx+0MTE32SPl8VV2ybgc/2e5SGYs6L0UoQWvoQADYetdWGhH86SI/XmQLEScVFS857oDOt80nu7jkzZI=
+	t=1705969965; cv=none; b=bXIW+i7kYMd3NfOXMyU4kJ+NFmiR5DK0vj/sIzHcqbamfjym9ycBwiiBxZrEG1ZAejkaHlu+20AxTdL4u6nP1rhLFzNQiwowHZXPMFCKNvrdXY5y5lJsABPUwFmdJ3cSTpDGQCgIBHG4HUQ1iaYCS5xW55Lmpa8QVOuyNu4UgDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971604; c=relaxed/simple;
-	bh=b27axd30zMOSE/Q0XJiekndAgB92ItZjhHPMpHJSzeY=;
+	s=arc-20240116; t=1705969965; c=relaxed/simple;
+	bh=niNdSWstmUL0/jHuvKp7OFI4NYz34M9dyAOqmccWt5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oml/BXcB4he6csKNPWOTvWwUUztz98zE4naHCDGALt+YnanzMJX+kvUGJrGxQmF35nOE/MI+vwTNWWpYha19f6GdWL3p6DsbX3BnARg0al5y17fgJrrJaLF6hc+4l9hkGfer+ncA+fDVclH7mQ2gEkjNF66T0zR9yLHdddqIHQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3GQ4+41; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD392C433F1;
-	Tue, 23 Jan 2024 01:00:03 +0000 (UTC)
+	 MIME-Version; b=n0VexiJoLOSU1V/yiXQEkI9IwRULkCU6r3MuNMOD81XDtBSaxCDJmjoq2PJTWRHjc7CE2XjNo/RkK7TvQ3gfpWj09QjGxNz8WY0nVnmaU8GiW4guYYdz32MUb0b5R99VicvOm5IO7eGhNIVatXhF3JGkYxsStJL4i8aIxPyWPXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4qYwgyY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852AAC433C7;
+	Tue, 23 Jan 2024 00:32:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971604;
-	bh=b27axd30zMOSE/Q0XJiekndAgB92ItZjhHPMpHJSzeY=;
+	s=korg; t=1705969964;
+	bh=niNdSWstmUL0/jHuvKp7OFI4NYz34M9dyAOqmccWt5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E3GQ4+41vQID1h0gqhvNTX5H6UIf7r1ljbPJUxYYexTAR5kaIN9FaMjDvkNjDa+2j
-	 kI1YYyxx4mTEoZVJgZ6wEim7oleiJgGqDeGx3MqtDS/8FNaZH+gtqe6IUt6j1vzR97
-	 RVN9Xo8C3SjT6xrNTDSlsM8LGFLRn9xt48a3Qf7w=
+	b=f4qYwgyYW+dL9OUBCKMkkkPv3EGAPSNRg9sF+Bj0u0IfjsO0O2cil2FVg1/Ub3AwZ
+	 jJLy8PdBmbDt+KYckvEc5wmOoHD5ToC++SuDjB5drPwbWHYWH1hXhKTnVo20snmJvA
+	 bu4V99xy+GXRUPzrpJ88bfTpP8312Z22Smvn6Qzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zack Rusin <zackr@vmware.com>,
-	Ian Forbes <iforbes@vmware.com>,
-	Maaz Mombasawala <mombasawalam@vmware.com>,
-	Jocelyn Falempe <jfalempe@redhat.com>
-Subject: [PATCH 6.1 277/417] drm/vmwgfx: Fix possible invalid drm gem put calls
+	Oliver Neukum <oneukum@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 541/641] usb: cdc-acm: return correct error code on unsupported break
 Date: Mon, 22 Jan 2024 15:57:25 -0800
-Message-ID: <20240122235801.438762544@linuxfoundation.org>
+Message-ID: <20240122235835.056473456@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,143 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zack Rusin <zackr@vmware.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit f9e96bf1905479f18e83a3a4c314a8dfa56ede2c upstream.
+[ Upstream commit 66aad7d8d3ec5a3a8ec2023841bcec2ded5f65c9 ]
 
-vmw_bo_unreference sets the input buffer to null on exit, resulting in
-null ptr deref's on the subsequent drm gem put calls.
+In ACM support for sending breaks to devices is optional.
+If a device says that it doenot support sending breaks,
+the host must respect that.
+Given the number of optional features providing tty operations
+for each combination is not practical and errors need to be
+returned dynamically if unsupported features are requested.
 
-This went unnoticed because only very old userspace would be exercising
-those paths but it wouldn't be hard to hit on old distros with brand
-new kernels.
+In case a device does not support break, we want the tty layer
+to treat that like it treats drivers that statically cannot
+support sending a break. It ignores the inability and does nothing.
+This patch uses EOPNOTSUPP to indicate that.
 
-Introduce a new function that abstracts unrefing of user bo's to make
-the code cleaner and more explicit.
-
-Signed-off-by: Zack Rusin <zackr@vmware.com>
-Reported-by: Ian Forbes <iforbes@vmware.com>
-Fixes: 9ef8d83e8e25 ("drm/vmwgfx: Do not drop the reference to the handle too soon")
-Cc: <stable@vger.kernel.org> # v6.4+
-Reviewed-by: Maaz Mombasawala<mombasawalam@vmware.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230818041301.407636-1-zack@kde.org
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Fixes: 9e98966c7bb94 ("tty: rework break handling")
+Link: https://lore.kernel.org/r/20231207132639.18250-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_bo.c      |    6 ++----
- drivers/gpu/drm/vmwgfx/vmwgfx_drv.h     |    8 ++++++++
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c |    6 ++----
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.c     |    6 ++----
- drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c |    3 +--
- drivers/gpu/drm/vmwgfx/vmwgfx_shader.c  |    3 +--
- 6 files changed, 16 insertions(+), 16 deletions(-)
+ drivers/tty/tty_io.c        | 3 +++
+ drivers/usb/class/cdc-acm.c | 3 +++
+ 2 files changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-@@ -595,10 +595,9 @@ static int vmw_user_bo_synccpu_release(s
- 		if (!(flags & drm_vmw_synccpu_allow_cs)) {
- 			atomic_dec(&vmw_bo->cpu_writers);
- 		}
--		ttm_bo_put(&vmw_bo->base);
-+		vmw_user_bo_unref(vmw_bo);
+diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
+index 06414e43e0b5..96617f9af819 100644
+--- a/drivers/tty/tty_io.c
++++ b/drivers/tty/tty_io.c
+@@ -2489,6 +2489,9 @@ static int send_break(struct tty_struct *tty, unsigned int duration)
+ 	if (!retval) {
+ 		msleep_interruptible(duration);
+ 		retval = tty->ops->break_ctl(tty, 0);
++	} else if (retval == -EOPNOTSUPP) {
++		/* some drivers can tell only dynamically */
++		retval = 0;
  	}
+ 	tty_write_unlock(tty);
  
--	drm_gem_object_put(&vmw_bo->base.base);
- 	return ret;
- }
+diff --git a/drivers/usb/class/cdc-acm.c b/drivers/usb/class/cdc-acm.c
+index a1f4e1ead97f..0e7439dba8fe 100644
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -916,6 +916,9 @@ static int acm_tty_break_ctl(struct tty_struct *tty, int state)
+ 	struct acm *acm = tty->driver_data;
+ 	int retval;
  
-@@ -638,8 +637,7 @@ int vmw_user_bo_synccpu_ioctl(struct drm
- 			return ret;
- 
- 		ret = vmw_user_bo_synccpu_grab(vbo, arg->flags);
--		vmw_bo_unreference(&vbo);
--		drm_gem_object_put(&vbo->base.base);
-+		vmw_user_bo_unref(vbo);
- 		if (unlikely(ret != 0)) {
- 			if (ret == -ERESTARTSYS || ret == -EBUSY)
- 				return -EBUSY;
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-@@ -1600,6 +1600,14 @@ vmw_bo_reference(struct vmw_buffer_objec
- 	return buf;
- }
- 
-+static inline void vmw_user_bo_unref(struct vmw_buffer_object *vbo)
-+{
-+	if (vbo) {
-+		ttm_bo_put(&vbo->base);
-+		drm_gem_object_put(&vbo->base.base);
-+	}
-+}
++	if (!(acm->ctrl_caps & USB_CDC_CAP_BRK))
++		return -EOPNOTSUPP;
 +
- static inline void vmw_fifo_resource_inc(struct vmw_private *dev_priv)
- {
- 	atomic_inc(&dev_priv->num_fifo_resources);
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -1159,8 +1159,7 @@ static int vmw_translate_mob_ptr(struct
- 		return PTR_ERR(vmw_bo);
- 	}
- 	ret = vmw_validation_add_bo(sw_context->ctx, vmw_bo, true, false);
--	ttm_bo_put(&vmw_bo->base);
--	drm_gem_object_put(&vmw_bo->base.base);
-+	vmw_user_bo_unref(vmw_bo);
- 	if (unlikely(ret != 0))
- 		return ret;
- 
-@@ -1214,8 +1213,7 @@ static int vmw_translate_guest_ptr(struc
- 		return PTR_ERR(vmw_bo);
- 	}
- 	ret = vmw_validation_add_bo(sw_context->ctx, vmw_bo, false, false);
--	ttm_bo_put(&vmw_bo->base);
--	drm_gem_object_put(&vmw_bo->base.base);
-+	vmw_user_bo_unref(vmw_bo);
- 	if (unlikely(ret != 0))
- 		return ret;
- 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-@@ -1599,10 +1599,8 @@ static struct drm_framebuffer *vmw_kms_f
- 
- err_out:
- 	/* vmw_user_lookup_handle takes one ref so does new_fb */
--	if (bo) {
--		vmw_bo_unreference(&bo);
--		drm_gem_object_put(&bo->base.base);
--	}
-+	if (bo)
-+		vmw_user_bo_unref(bo);
- 	if (surface)
- 		vmw_surface_unreference(&surface);
- 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
-@@ -457,8 +457,7 @@ int vmw_overlay_ioctl(struct drm_device
- 
- 	ret = vmw_overlay_update_stream(dev_priv, buf, arg, true);
- 
--	vmw_bo_unreference(&buf);
--	drm_gem_object_put(&buf->base.base);
-+	vmw_user_bo_unref(buf);
- 
- out_unlock:
- 	mutex_unlock(&overlay->mutex);
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-@@ -806,8 +806,7 @@ static int vmw_shader_define(struct drm_
- 				    shader_type, num_input_sig,
- 				    num_output_sig, tfile, shader_handle);
- out_bad_arg:
--	vmw_bo_unreference(&buffer);
--	drm_gem_object_put(&buffer->base.base);
-+	vmw_user_bo_unref(buffer);
- 	return ret;
- }
- 
+ 	retval = acm_send_break(acm, state ? 0xffff : 0);
+ 	if (retval < 0)
+ 		dev_dbg(&acm->control->dev,
+-- 
+2.43.0
+
 
 
 
