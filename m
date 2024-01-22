@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C84C183812D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B1AA838519
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F106B2CFD2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CB8A1C2A47D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD3D414198F;
-	Tue, 23 Jan 2024 01:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF877E56A;
+	Tue, 23 Jan 2024 02:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A7yggkTk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yioXoJs9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A57F14198C;
-	Tue, 23 Jan 2024 01:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E3A43C0C;
+	Tue, 23 Jan 2024 02:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972041; cv=none; b=PBdSXImsMhUxC+FKUnI3E/nwS7QNsye3dz+8vqFOiVxeCzKYPMiRlugp4QmXRnpNqSbRSB1Boev5WyxnhqWBHOHFEkQ64Lz0dtaed1jo+1Bs3vk7i0Njhq23SemLxIKChLBxC+rWiYoljn0wgnDgV7iO8DmM4r5nRcWIGw0Zq1E=
+	t=1705975742; cv=none; b=Yr+Z8cZsc4FpBtCEsFKqUmrOASpakEdc4HwSEb5a1rpEdiSp7jzo9Jr0mZdt6eFXSKbP7yG95MPfy+ThB/mCNYWBhxbZa5ybdUixJvFvO26toCGW6ELxhf5akAvDoop1+VVZ4c42bCqNlTBmNk6n2VAFJNRGt/4RO/3V+Jz8Gy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972041; c=relaxed/simple;
-	bh=ubRS45iu8LiMpexXkhcH5fUu11vIhsLSDvM9AZR4Tak=;
+	s=arc-20240116; t=1705975742; c=relaxed/simple;
+	bh=1gvtui4MQpELUVhSLSMPc8uEb9La2UXrMlHAd9/kRgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ogCVMU4IgoRKq9H5n/kY5hoPePTa3r5DFqE2D7xHiEzKjHzVf1sR/FvndoNwsNFiR8/X0l5zWI6Rob64kSeq/USUWn64KPasoXUWbb6jmaE3d/uiWHImqjCPXSbFa+Z2dPOneheE2nwKN7a8oipPKWoxNsUADmFBxDyB6bGAhfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A7yggkTk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22F19C433C7;
-	Tue, 23 Jan 2024 01:07:21 +0000 (UTC)
+	 MIME-Version; b=PHrFZMX7nY1iHZQozdoWfwjgOOB35RmInTO5GPyD2aaHPQbfAeRNSMQ4OWMHTDjhEmCoXX5Da/+JwNWwqTKYd50h7SS4Tg3tUtLLl/2lICfXlDTYly1hRK6MmMPEBjndPghwbnm2+j0n4u6Ryq98itfHkLomhkMjW6hz6QXSQI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yioXoJs9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC695C43394;
+	Tue, 23 Jan 2024 02:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972041;
-	bh=ubRS45iu8LiMpexXkhcH5fUu11vIhsLSDvM9AZR4Tak=;
+	s=korg; t=1705975742;
+	bh=1gvtui4MQpELUVhSLSMPc8uEb9La2UXrMlHAd9/kRgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A7yggkTkkrHbgSgEUC86YXEkeLa2m7CJsct18Hx1pX1WFx/QcCPU+ZMGzmWqU17BF
-	 F65JGKmHv4ycnZwnb0y0cDhsysxTMJ/g5Tm9NyajWjVnfPhC7kqwKwlr/paQraFTM5
-	 C7W22B2mwU1ZdufaO6NfNr/Gc+7iAxbH2KHj1z5Y=
+	b=yioXoJs9+czgwtrL6CNwVODTW2p/hi6N4PEHHxv3hpCOItE9wYVPWZ+mR/Yafjh/c
+	 LvgwEasa348LLgGzJ8abMORFpE+HQoHv12+yMoDFLkLhNZgryr3Kd3n0VKEqZ7lg8I
+	 qBfOGZTV9r0Wh6v4afj1fV/gKAqDCEjvGztdSxb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ludvig=20P=C3=A4rsson?= <ludvig.parsson@axis.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Nithin Dabilpuram <ndabilpuram@marvell.com>,
+	Naveen Mamindlapalli <naveenm@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 409/417] ethtool: netlink: Add missing ethnl_ops_begin/complete
+Subject: [PATCH 6.6 526/583] octeontx2-af: CN10KB: Fix FIFO length calculation for RPM2
 Date: Mon, 22 Jan 2024 15:59:37 -0800
-Message-ID: <20240122235805.868320761@linuxfoundation.org>
+Message-ID: <20240122235828.189766183@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +62,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ludvig Pärsson <ludvig.parsson@axis.com>
+From: Nithin Dabilpuram <ndabilpuram@marvell.com>
 
-[ Upstream commit f1172f3ee3a98754d95b968968920a7d03fdebcc ]
+[ Upstream commit a0cb76a770083a22167659e64ba69af6425b1d9b ]
 
-Accessing an ethernet device that is powered off or clock gated might
-cause the CPU to hang. Add ethnl_ops_begin/complete in
-ethnl_set_features() to protect against this.
+RPM0 and RPM1 on the CN10KB SoC have 8 LMACs each, whereas RPM2
+has only 4 LMACs. Similarly, the RPM0 and RPM1 have 256KB FIFO,
+whereas RPM2 has 128KB FIFO. This patch fixes an issue with
+improper TX credit programming for the RPM2 link.
 
-Fixes: 0980bfcd6954 ("ethtool: set netdev features with FEATURES_SET request")
-Signed-off-by: Ludvig Pärsson <ludvig.parsson@axis.com>
-Link: https://lore.kernel.org/r/20240117-etht2-v2-1-1a96b6e8c650@axis.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: b9d0fedc6234 ("octeontx2-af: cn10kb: Add RPM_USX MAC support")
+Signed-off-by: Nithin Dabilpuram <ndabilpuram@marvell.com>
+Signed-off-by: Naveen Mamindlapalli <naveenm@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240108073036.8766-1-naveenm@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/features.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rpm.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/ethtool/features.c b/net/ethtool/features.c
-index 55d449a2d3fc..090e493f592e 100644
---- a/net/ethtool/features.c
-+++ b/net/ethtool/features.c
-@@ -234,17 +234,20 @@ int ethnl_set_features(struct sk_buff *skb, struct genl_info *info)
- 	dev = req_info.dev;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
+index 4728ba34b0e3..76218f1cb459 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
+@@ -506,6 +506,7 @@ u32 rpm2_get_lmac_fifo_len(void *rpmd, int lmac_id)
+ 	rpm_t *rpm = rpmd;
+ 	u8 num_lmacs;
+ 	u32 fifo_len;
++	u16 max_lmac;
  
- 	rtnl_lock();
-+	ret = ethnl_ops_begin(dev);
-+	if (ret < 0)
-+		goto out_rtnl;
- 	ethnl_features_to_bitmap(old_active, dev->features);
- 	ethnl_features_to_bitmap(old_wanted, dev->wanted_features);
- 	ret = ethnl_parse_bitset(req_wanted, req_mask, NETDEV_FEATURE_COUNT,
- 				 tb[ETHTOOL_A_FEATURES_WANTED],
- 				 netdev_features_strings, info->extack);
- 	if (ret < 0)
--		goto out_rtnl;
-+		goto out_ops;
- 	if (ethnl_bitmap_to_features(req_mask) & ~NETIF_F_ETHTOOL_BITS) {
- 		GENL_SET_ERR_MSG(info, "attempt to change non-ethtool features");
- 		ret = -EINVAL;
--		goto out_rtnl;
-+		goto out_ops;
- 	}
+ 	lmac_info = rpm_read(rpm, 0, RPM2_CMRX_RX_LMACS);
+ 	/* LMACs are divided into two groups and each group
+@@ -513,7 +514,11 @@ u32 rpm2_get_lmac_fifo_len(void *rpmd, int lmac_id)
+ 	 * Group0 lmac_id range {0..3}
+ 	 * Group1 lmac_id range {4..7}
+ 	 */
+-	fifo_len = rpm->mac_ops->fifo_len / 2;
++	max_lmac = (rpm_read(rpm, 0, CGX_CONST) >> 24) & 0xFF;
++	if (max_lmac > 4)
++		fifo_len = rpm->mac_ops->fifo_len / 2;
++	else
++		fifo_len = rpm->mac_ops->fifo_len;
  
- 	/* set req_wanted bits not in req_mask from old_wanted */
-@@ -281,6 +284,8 @@ int ethnl_set_features(struct sk_buff *skb, struct genl_info *info)
- 	if (mod)
- 		netdev_features_change(dev);
- 
-+out_ops:
-+	ethnl_ops_complete(dev);
- out_rtnl:
- 	rtnl_unlock();
- 	ethnl_parse_header_dev_put(&req_info);
+ 	if (lmac_id < 4) {
+ 		num_lmacs = hweight8(lmac_info & 0xF);
 -- 
 2.43.0
 
