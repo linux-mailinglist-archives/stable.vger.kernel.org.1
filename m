@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 783D7837FD8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:55:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B43C83827E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1AF01C294AD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE7391F2783D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6D812BF0D;
-	Tue, 23 Jan 2024 00:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59E7E5C611;
+	Tue, 23 Jan 2024 01:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uzWiHBOs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/fuC0H4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC354E1AD;
-	Tue, 23 Jan 2024 00:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17C1D5C605;
+	Tue, 23 Jan 2024 01:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971394; cv=none; b=UlluJ6BAix4F0K1WBKkL96MN6Bk3Oa4eZOqLM6bnFxLune94VKgpk9dYRLQr/PPUtp37u6fBmFvQajGygnZrsYre/ZuAN7hnFHySFKUs43KYmDwX9T/T0EQqSdIAH54T8wvYGpIZo5yrJmgkqO9vAi+HFIoffxknab+huZGi7p4=
+	t=1705974369; cv=none; b=Sw1qtubKjQlVZ8Y5g0+mpGWiLRgAU0YF/lXUagBgAOH7V1U+5dBMydIdDo5hLh+nJyxop1mlEfCRVuuc5Do/X9tlWT+joF95COSoguUBDibL+O96hY01kIIZzIhFmmFP4M0QtSL1q0nH91V1yzOVHkDgnabzVAdSwI9kTcFs2k4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971394; c=relaxed/simple;
-	bh=ziX9m6saqne7TO1OS//lyLipoHuJxi7/puAFRvn90Qw=;
+	s=arc-20240116; t=1705974369; c=relaxed/simple;
+	bh=AKQTbz3zbEq7jyLCvHm0PLovnPzfn9YRPb1pdV/wZL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lagfyTMUc0lWB6ByXpvjIKc9abOLhVqYZ4IaA7OEsj6S3FmEaTCsfJeKvjrFapELysA6ojplqQ0V+I1IoSyPAp+LV91oO4x21vqy3FwqAitlF8f8DaxCjRro93RTeZmOZrHKCrfD/Os1EJZQVO8WWnZYO5QXP1X7mey9hB22u5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uzWiHBOs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2641BC433C7;
-	Tue, 23 Jan 2024 00:56:34 +0000 (UTC)
+	 MIME-Version; b=NvcL7cGwBscP1IwvX/pjk4/TOtIDSnOF6UPuSgomyZC8Bifz5YuwoXCr/4tgavK5gOv4yydxBd3ejNlyQX5dBdSObHns0QL2/5ij8AM/l4RvmvaHB4jNra9ViwCEWAj96yJ6o2r+eLLi4wLcXOyx6ySsiVoetiL0If/d2oDH3KQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/fuC0H4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2CB1C43390;
+	Tue, 23 Jan 2024 01:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971394;
-	bh=ziX9m6saqne7TO1OS//lyLipoHuJxi7/puAFRvn90Qw=;
+	s=korg; t=1705974368;
+	bh=AKQTbz3zbEq7jyLCvHm0PLovnPzfn9YRPb1pdV/wZL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uzWiHBOsHr8LoPWkeVCvBY/uNIqos1oNoCoeSd+BA5ie/Z4Qs25qHCrKBYz4yoRtQ
-	 twXExwTJlSVYADom48XIfQUNKjmj7+eASpODmy2P3Tvo9OsCnHnQPRDFU4Gqg8qwkN
-	 LfeHC64u3M5e2Ks6aEu76yWTE3e3DHHy6vAqy1po=
+	b=A/fuC0H4PXJJRS3Kmo6MGgeNphJmHTGDVgz+5pU5lxaqjLqnv6Fhz7kpo2T1dceI9
+	 bPmVqRDG4+1iL5Ao8NnjAP+E7B1rAoQaEKG5qdVyHu+14tPxxxG5JuDwQFstm7jTo2
+	 MFqELvXSW/Z624WL2c9Medg9kJ7q/QdmvsW5FeNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 145/286] drm/panel-elida-kd35t133: hold panel in reset for unprepare
+Subject: [PATCH 5.15 195/374] drm/radeon: check the alloc_workqueue return value in radeon_crtc_init()
 Date: Mon, 22 Jan 2024 15:57:31 -0800
-Message-ID: <20240122235737.748151671@linuxfoundation.org>
+Message-ID: <20240122235751.391146905@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Morgan <macromorgan@hotmail.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 03c5b2a5f6c39fe4e090346536cf1c14ee18b61e ]
+[ Upstream commit 7a2464fac80d42f6f8819fed97a553e9c2f43310 ]
 
-For devices like the Anbernic RG351M and RG351P the panel is wired to
-an always on regulator. When the device suspends and wakes up, there
-are some slight artifacts on the screen that go away over time. If
-instead we hold the panel in reset status after it is unprepared,
-this does not happen.
+check the alloc_workqueue return value in radeon_crtc_init()
+to avoid null-ptr-deref.
 
-Fixes: 5b6603360c12 ("drm/panel: add panel driver for Elida KD35T133 panels")
-Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Link: https://lore.kernel.org/r/20231117194405.1386265-3-macroalpha82@gmail.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231117194405.1386265-3-macroalpha82@gmail.com
+Fixes: fa7f517cb26e ("drm/radeon: rework page flip handling v4")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-elida-kd35t133.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/radeon/radeon_display.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-elida-kd35t133.c b/drivers/gpu/drm/panel/panel-elida-kd35t133.c
-index fe5ac3ef9018..9c1591f2920c 100644
---- a/drivers/gpu/drm/panel/panel-elida-kd35t133.c
-+++ b/drivers/gpu/drm/panel/panel-elida-kd35t133.c
-@@ -111,6 +111,8 @@ static int kd35t133_unprepare(struct drm_panel *panel)
- 		return ret;
- 	}
+diff --git a/drivers/gpu/drm/radeon/radeon_display.c b/drivers/gpu/drm/radeon/radeon_display.c
+index 573154268d43..6337fad441df 100644
+--- a/drivers/gpu/drm/radeon/radeon_display.c
++++ b/drivers/gpu/drm/radeon/radeon_display.c
+@@ -681,11 +681,16 @@ static void radeon_crtc_init(struct drm_device *dev, int index)
+ 	if (radeon_crtc == NULL)
+ 		return;
  
-+	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
++	radeon_crtc->flip_queue = alloc_workqueue("radeon-crtc", WQ_HIGHPRI, 0);
++	if (!radeon_crtc->flip_queue) {
++		kfree(radeon_crtc);
++		return;
++	}
 +
- 	regulator_disable(ctx->iovcc);
- 	regulator_disable(ctx->vdd);
+ 	drm_crtc_init(dev, &radeon_crtc->base, &radeon_crtc_funcs);
  
+ 	drm_mode_crtc_set_gamma_size(&radeon_crtc->base, 256);
+ 	radeon_crtc->crtc_id = index;
+-	radeon_crtc->flip_queue = alloc_workqueue("radeon-crtc", WQ_HIGHPRI, 0);
+ 	rdev->mode_info.crtcs[index] = radeon_crtc;
+ 
+ 	if (rdev->family >= CHIP_BONAIRE) {
 -- 
 2.43.0
 
