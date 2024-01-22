@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD448382BD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90D1D837C03
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1032B1F24F0E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B36C01C27EEE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7255C5F56D;
-	Tue, 23 Jan 2024 01:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2E3A3F;
+	Tue, 23 Jan 2024 00:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bcP+5dgD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2aCquzs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F655F565;
-	Tue, 23 Jan 2024 01:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C0B372;
+	Tue, 23 Jan 2024 00:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974425; cv=none; b=C5uEwrtYp0WkomLcQiGpaT80RIMYFL1wZeZFrVhnlrXFSevD6mbpplKpKG1Jb6gBbAEeJBQmFPmlAxMLlgQXPKQNohDJVSf8AjJ4wG9PvwFNgAN4tvRv7nyLpfRI3LUndKRrMUelJanDu9BoFw/q6z3qpGTEst34K7akRRu9ouw=
+	t=1705969472; cv=none; b=qj4D+Ioo4yVyHqECgab0ZcKcY0/UAyQGRAT/ZSDPo6Qf5nck0Te0fiwWl7NIgOqobgOHNjVVF7PyqA9RgWOdXtw7EXmF89UX1Jh7l5RjOjbhTiL30N3Negd28o8DJXEaqg8wxCiJRrOJcG8ceL5HiuJBElc0fW89RrkDvjbpv70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974425; c=relaxed/simple;
-	bh=s/tOjp38lDw60i1uapWF3nQEF52xoTYr697Jfkw1WWE=;
+	s=arc-20240116; t=1705969472; c=relaxed/simple;
+	bh=DmNLIU++jsAWsCO+uA4VWnuV05AJxKv2/KESwn62ayk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rJicLUgLs0oXaReGGoFyQPSQoq0gyi/LaGIdP6wd/21c1st/3iR8MEK6BxV0ucb29lS5pOdWMaZhyCU3x/ExQIncaXeOXu0uHfOosNKyrmg3+n1XNTxgMXQS0NturCpVxKA4Vzcbq06t7NqHem12Qv3cHUy4zm9QgiIgjP6htcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bcP+5dgD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEF2C43390;
-	Tue, 23 Jan 2024 01:47:04 +0000 (UTC)
+	 MIME-Version; b=Y/6HKzLOqvKM7wIDsXhwWto1Y4cGEBFb97eYhjbBWPpsNccVd17FBjirKPt8Hh+bNi3mzdjLlwAysZs1dzP6SxZjT+3s6x2VVx2aUecrLMP4dNW/TnRmwDzH6cl8wOFQ9SqBhzSghLdnJhRTq5JNXw7/hPkTVVt/EwM9ebuAndM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2aCquzs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF09CC43390;
+	Tue, 23 Jan 2024 00:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974425;
-	bh=s/tOjp38lDw60i1uapWF3nQEF52xoTYr697Jfkw1WWE=;
+	s=korg; t=1705969472;
+	bh=DmNLIU++jsAWsCO+uA4VWnuV05AJxKv2/KESwn62ayk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bcP+5dgDns0LsJB3OdUHVTqlH5Jb5G+vUZ7Sy7xxOnv9c7fT/rmuWV5UfCPGm3BR6
-	 nqDOzGZOzq9V/DYC/tYNY4uuyN48cm+l1O3yNINocb61a1di74il8UlqaWRZ9SCt6U
-	 OrQ46wCdNh5AqKL/aLMlJys3CKjXxhI0DQ+7/xbs=
+	b=c2aCquzsGG97M8v/Llt0YqxM8Gl8pt2TnX45BlSP58VXVsPZLNVvoETsBmL2leItQ
+	 LayZu1gsw5bX+9rVWx+AfSXEqnkl2MNZvoeMOp8MpFAyDWHapKmRptqJ5Bnpe/URPS
+	 7zQS9MZiaRGOpy7wlhc2dewvd8NGWvG0OdDppDQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 096/583] wifi: rtlwifi: rtl8821ae: phy: fix an undefined bitwise shift behavior
+Subject: [PATCH 6.7 243/641] Revert "drm/omapdrm: Annotate dma-fence critical section in commit path"
 Date: Mon, 22 Jan 2024 15:52:27 -0800
-Message-ID: <20240122235815.117215495@linuxfoundation.org>
+Message-ID: <20240122235825.530060435@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,192 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit bc8263083af60e7e57c6120edbc1f75d6c909a35 ]
+[ Upstream commit 9d7c8c066916f231ca0ed4e4fce6c4b58ca3e451 ]
 
-Clang static checker warns:
+This reverts commit 250aa22920cd5d956a5d3e9c6a43d671c2bae217.
 
-drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c:184:49:
-	The result of the left shift is undefined due to shifting by '32',
-	which is greater or equal to the width of type 'u32'.
-	[core.UndefinedBinaryOperatorResult]
+The DMA-fence annotations cause a lockdep warning (see below). As per
+https://patchwork.freedesktop.org/patch/462170/ it sounds like the
+annotations don't work correctly.
 
-If the value of the right operand is negative or is greater than or
-equal to the width of the promoted left operand, the behavior is
-undefined.[1][2]
+======================================================
+WARNING: possible circular locking dependency detected
+6.5.0-rc2+ #2 Not tainted
+------------------------------------------------------
+kmstest/219 is trying to acquire lock:
+c4705838 (&hdmi->lock){+.+.}-{3:3}, at: hdmi5_bridge_mode_set+0x1c/0x50
 
-For example, when using different gcc's compilation optimization options
-(-O0 or -O2), the result of '(u32)data << 32' is different. One is 0, the
-other is old value of data. Let _rtl8821ae_phy_calculate_bit_shift()'s
-return value less than 32 to fix this problem. Warn if bitmask is zero.
+but task is already holding lock:
+c11e1128 (dma_fence_map){++++}-{0:0}, at: omap_atomic_commit_tail+0x14/0xbc
 
-[1] https://stackoverflow.com/questions/11270492/what-does-the-c-standard-say-about-bitshifting-more-bits-than-the-width-of-type
-[2] https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf
+which lock already depends on the new lock.
 
-Fixes: 21e4b0726dc6 ("rtlwifi: rtl8821ae: Move driver from staging to regular tree")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20231127013511.26694-2-suhui@nfschina.com
+the existing dependency chain (in reverse order) is:
+
+-> #2 (dma_fence_map){++++}-{0:0}:
+       __dma_fence_might_wait+0x48/0xb4
+       dma_resv_lockdep+0x1b8/0x2bc
+       do_one_initcall+0x68/0x3b0
+       kernel_init_freeable+0x260/0x34c
+       kernel_init+0x14/0x140
+       ret_from_fork+0x14/0x28
+
+-> #1 (fs_reclaim){+.+.}-{0:0}:
+       fs_reclaim_acquire+0x70/0xa8
+       __kmem_cache_alloc_node+0x3c/0x368
+       kmalloc_trace+0x28/0x58
+       _drm_do_get_edid+0x7c/0x35c
+       hdmi5_bridge_get_edid+0xc8/0x1ac
+       drm_bridge_connector_get_modes+0x64/0xc0
+       drm_helper_probe_single_connector_modes+0x170/0x528
+       drm_client_modeset_probe+0x208/0x1334
+       __drm_fb_helper_initial_config_and_unlock+0x30/0x548
+       omap_fbdev_client_hotplug+0x3c/0x6c
+       drm_client_register+0x58/0x94
+       pdev_probe+0x544/0x6b0
+       platform_probe+0x58/0xbc
+       really_probe+0xd8/0x3fc
+       __driver_probe_device+0x94/0x1f4
+       driver_probe_device+0x2c/0xc4
+       __device_attach_driver+0xa4/0x11c
+       bus_for_each_drv+0x84/0xdc
+       __device_attach+0xac/0x20c
+       bus_probe_device+0x8c/0x90
+       device_add+0x588/0x7e0
+       platform_device_add+0x110/0x24c
+       platform_device_register_full+0x108/0x15c
+       dss_bind+0x90/0xc0
+       try_to_bring_up_aggregate_device+0x1e0/0x2c8
+       __component_add+0xa4/0x174
+       hdmi5_probe+0x1c8/0x270
+       platform_probe+0x58/0xbc
+       really_probe+0xd8/0x3fc
+       __driver_probe_device+0x94/0x1f4
+       driver_probe_device+0x2c/0xc4
+       __device_attach_driver+0xa4/0x11c
+       bus_for_each_drv+0x84/0xdc
+       __device_attach+0xac/0x20c
+       bus_probe_device+0x8c/0x90
+       deferred_probe_work_func+0x8c/0xd8
+       process_one_work+0x2ac/0x6e4
+       worker_thread+0x30/0x4ec
+       kthread+0x100/0x124
+       ret_from_fork+0x14/0x28
+
+-> #0 (&hdmi->lock){+.+.}-{3:3}:
+       __lock_acquire+0x145c/0x29cc
+       lock_acquire.part.0+0xb4/0x258
+       __mutex_lock+0x90/0x950
+       mutex_lock_nested+0x1c/0x24
+       hdmi5_bridge_mode_set+0x1c/0x50
+       drm_bridge_chain_mode_set+0x48/0x5c
+       crtc_set_mode+0x188/0x1d0
+       omap_atomic_commit_tail+0x2c/0xbc
+       commit_tail+0x9c/0x188
+       drm_atomic_helper_commit+0x158/0x18c
+       drm_atomic_commit+0xa4/0xe8
+       drm_mode_atomic_ioctl+0x9a4/0xc38
+       drm_ioctl+0x210/0x4a8
+       sys_ioctl+0x138/0xf00
+       ret_fast_syscall+0x0/0x1c
+
+other info that might help us debug this:
+
+Chain exists of:
+  &hdmi->lock --> fs_reclaim --> dma_fence_map
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  rlock(dma_fence_map);
+                               lock(fs_reclaim);
+                               lock(dma_fence_map);
+  lock(&hdmi->lock);
+
+ *** DEADLOCK ***
+
+3 locks held by kmstest/219:
+ #0: f1011de4 (crtc_ww_class_acquire){+.+.}-{0:0}, at: drm_mode_atomic_ioctl+0xf0/0xc38
+ #1: c47059c8 (crtc_ww_class_mutex){+.+.}-{3:3}, at: modeset_lock+0xf8/0x230
+ #2: c11e1128 (dma_fence_map){++++}-{0:0}, at: omap_atomic_commit_tail+0x14/0xbc
+
+stack backtrace:
+CPU: 1 PID: 219 Comm: kmstest Not tainted 6.5.0-rc2+ #2
+Hardware name: Generic DRA74X (Flattened Device Tree)
+ unwind_backtrace from show_stack+0x10/0x14
+ show_stack from dump_stack_lvl+0x58/0x70
+ dump_stack_lvl from check_noncircular+0x164/0x198
+ check_noncircular from __lock_acquire+0x145c/0x29cc
+ __lock_acquire from lock_acquire.part.0+0xb4/0x258
+ lock_acquire.part.0 from __mutex_lock+0x90/0x950
+ __mutex_lock from mutex_lock_nested+0x1c/0x24
+ mutex_lock_nested from hdmi5_bridge_mode_set+0x1c/0x50
+ hdmi5_bridge_mode_set from drm_bridge_chain_mode_set+0x48/0x5c
+ drm_bridge_chain_mode_set from crtc_set_mode+0x188/0x1d0
+ crtc_set_mode from omap_atomic_commit_tail+0x2c/0xbc
+ omap_atomic_commit_tail from commit_tail+0x9c/0x188
+ commit_tail from drm_atomic_helper_commit+0x158/0x18c
+ drm_atomic_helper_commit from drm_atomic_commit+0xa4/0xe8
+ drm_atomic_commit from drm_mode_atomic_ioctl+0x9a4/0xc38
+ drm_mode_atomic_ioctl from drm_ioctl+0x210/0x4a8
+ drm_ioctl from sys_ioctl+0x138/0xf00
+ sys_ioctl from ret_fast_syscall+0x0/0x1c
+Exception stack(0xf1011fa8 to 0xf1011ff0)
+1fa0:                   00466d58 be9ab510 00000003 c03864bc be9ab510 be9ab4e0
+1fc0: 00466d58 be9ab510 c03864bc 00000036 00466ef0 00466fc0 00467020 00466f20
+1fe0: b6bc7ef4 be9ab4d0 b6bbbb00 b6cb2cc0
+
+Fixes: 250aa22920cd ("drm/omapdrm: Annotate dma-fence critical section in commit path")
+Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230920-dma-fence-annotation-revert-v1-2-7ebf6f7f5bf6@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/omapdrm/omap_drv.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-index 5323ead30db0..fa1839d8ee55 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
-@@ -29,9 +29,10 @@ static void _rtl8821ae_phy_rf_serial_write(struct ieee80211_hw *hw,
- 					   u32 data);
- static u32 _rtl8821ae_phy_calculate_bit_shift(u32 bitmask)
+diff --git a/drivers/gpu/drm/omapdrm/omap_drv.c b/drivers/gpu/drm/omapdrm/omap_drv.c
+index b2835b3ea6f5..6598c9c08ba1 100644
+--- a/drivers/gpu/drm/omapdrm/omap_drv.c
++++ b/drivers/gpu/drm/omapdrm/omap_drv.c
+@@ -69,7 +69,6 @@ static void omap_atomic_commit_tail(struct drm_atomic_state *old_state)
  {
--	u32 i = ffs(bitmask);
-+	if (WARN_ON_ONCE(!bitmask))
-+		return 0;
+ 	struct drm_device *dev = old_state->dev;
+ 	struct omap_drm_private *priv = dev->dev_private;
+-	bool fence_cookie = dma_fence_begin_signalling();
  
--	return i ? i - 1 : 32;
-+	return __ffs(bitmask);
- }
- static bool _rtl8821ae_phy_bb8821a_config_parafile(struct ieee80211_hw *hw);
- /*static bool _rtl8812ae_phy_config_mac_with_headerfile(struct ieee80211_hw *hw);*/
+ 	dispc_runtime_get(priv->dispc);
+ 
+@@ -92,6 +91,8 @@ static void omap_atomic_commit_tail(struct drm_atomic_state *old_state)
+ 		omap_atomic_wait_for_completion(dev, old_state);
+ 
+ 		drm_atomic_helper_commit_planes(dev, old_state, 0);
++
++		drm_atomic_helper_commit_hw_done(old_state);
+ 	} else {
+ 		/*
+ 		 * OMAP3 DSS seems to have issues with the work-around above,
+@@ -101,11 +102,9 @@ static void omap_atomic_commit_tail(struct drm_atomic_state *old_state)
+ 		drm_atomic_helper_commit_planes(dev, old_state, 0);
+ 
+ 		drm_atomic_helper_commit_modeset_enables(dev, old_state);
+-	}
+ 
+-	drm_atomic_helper_commit_hw_done(old_state);
+-
+-	dma_fence_end_signalling(fence_cookie);
++		drm_atomic_helper_commit_hw_done(old_state);
++	}
+ 
+ 	/*
+ 	 * Wait for completion of the page flips to ensure that old buffers
 -- 
 2.43.0
 
