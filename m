@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-13579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C35A837CBE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD04838422
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F0E81C22718
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:16:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DCD51F291BD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C37752F74;
-	Tue, 23 Jan 2024 00:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 691B467E7F;
+	Tue, 23 Jan 2024 02:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWraXx7q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSUy8Kl2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA3915704E;
-	Tue, 23 Jan 2024 00:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27A8267E67;
+	Tue, 23 Jan 2024 02:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969731; cv=none; b=elaUuAsBnpt8hctIVhp7haci3+5qhFPmk6Tv2CO4CCw1blfgxRAx3mIDthnOoDGCXttaK8AXmxOgRSIWSXHWCahBAuyXpz1Va2pnIhsknCoyZkgLo+VotbpbrsgoGN1C7o7bD2V3tE5KCfdvCXEvMWccB6P3qww236LtsvtvOqE=
+	t=1705975311; cv=none; b=sXPXPdsFtLqtNWU6NZ6CAVoy6abSRvQp6pVwqTVuwiTBEoNo0gxWnzQxTrn8Qx51yyprWnt317jphvWJR6W8qdE/oO+SYowhvI/8PO1Boiy8VO1WzolcoEHvxG9nWcVSDS/ZhW7kSfMqKUT0zCN0Pr/BSdzmi6h0NT9f0p6zmF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969731; c=relaxed/simple;
-	bh=4o1StubQ2A0cjBh7MbZjv7RQhe9sYOJ4910JPjvkdHw=;
+	s=arc-20240116; t=1705975311; c=relaxed/simple;
+	bh=1mCmWSsuPNt7/GNcA0w1xWnu2PCFHndCpJYyNRGI+0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ERA48wzyR8nkdWzRLVCQau57xRhGlfIvafO/MGENalN5oFu0SVVDLkAtizmLXNr4oaGZ2JTfJCpbab2LraNsv0gxErxSfDyANZp8JWlo5DYi/ZF3mBMWk60MBYHsoUztz74p/zPEYSncO+icfhJVtJExfC0Yi/tRBGEzSDvzQSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWraXx7q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D96ECC433C7;
-	Tue, 23 Jan 2024 00:28:50 +0000 (UTC)
+	 MIME-Version; b=USHPa0m+q92JRTJGXxjRxq/eGJGG8tRVU5YAqsQOqnnlE31UYjwIbT4p1BtweuNguI6sJpI6C6U0AFNh+1jhpffZqDvM6giRj18MNl3pXbtP/RZvBodbnViF0K7oxB/Hc358Biex/CrqcWG4xWVxtzO/1fr5KfghJ+JWoKMGCtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSUy8Kl2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFDC5C43399;
+	Tue, 23 Jan 2024 02:01:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969731;
-	bh=4o1StubQ2A0cjBh7MbZjv7RQhe9sYOJ4910JPjvkdHw=;
+	s=korg; t=1705975311;
+	bh=1mCmWSsuPNt7/GNcA0w1xWnu2PCFHndCpJYyNRGI+0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BWraXx7qniZX9VG2tNQPK78PyZGRGAOFGjs2iThMvNMHEaIqavHgVomhh8ZKgvjRD
-	 EOkMuRuwOffQlDIcPGrW9c/xkkDnMIy5cHW7UVBXrFi1kFOd1g7qpn1YaDRuXXurDX
-	 1G0g/KHmLoScUvmdS2sTCl0+DWq385BMMfW3ZJ04=
+	b=zSUy8Kl2SX3tNvzlSdwsQugmHfChPRbHmYOAbNs6Zn6P/DiwJfnObJbFfkqOEAEOs
+	 96QDmWnOpKRsXQLd0mYGyDYaLgzNiZdzolWxzhXYSTYNhI1XoZAf7PiW1enDRu35dI
+	 8brsgfnU32XkyKiZtjj2GwVkkD9OSrAcveGlT52Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wesley Cheng <quic_wcheng@quicinc.com>
-Subject: [PATCH 6.7 398/641] usb: dwc3: gadget: Queue PM runtime idle on disconnect event
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Anton Bambura <jenneron@postmarketos.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 251/583] drm/msm/dpu: Add missing safe_lut_tbl in sc8180x catalog
 Date: Mon, 22 Jan 2024 15:55:02 -0800
-Message-ID: <20240122235830.421167083@linuxfoundation.org>
+Message-ID: <20240122235819.685723606@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wesley Cheng <quic_wcheng@quicinc.com>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-commit 3c7af52c7616c3aa6dacd2336ec748d4a65df8f4 upstream.
+[ Upstream commit 7cc2621f16b644bb7af37987cb471311641a9e56 ]
 
-There is a scenario where DWC3 runtime suspend is blocked due to the
-dwc->connected flag still being true while PM usage_count is zero after
-DWC3 giveback is completed and the USB gadget session is being terminated.
-This leads to a case where nothing schedules a PM runtime idle for the
-device.
+Similar to SC8280XP, the misconfigured SAFE logic causes rather
+significant delays in __arm_smmu_tlb_sync(), resulting in poor
+performance for things such as USB.
 
-The exact condition is seen with the following sequence:
-  1.  USB bus reset is issued by the host
-  2.  Shortly after, or concurrently, a USB PD DR SWAP request is received
-      (sink->source)
-  3.  USB bus reset event handler runs and issues
-      dwc3_stop_active_transfers(), and pending transfer are stopped
-  4.  DWC3 usage_count decremented to 0, and runtime idle occurs while
-      dwc->connected == true, returns -EBUSY
-  5.  DWC3 disconnect event seen, dwc->connected set to false due to DR
-      swap handling
-  6.  No runtime idle after this point
+Introduce appropriate SAFE values for SC8180X to correct this.
 
-Address this by issuing an asynchronous PM runtime idle call after the
-disconnect event is completed, as it modifies the dwc->connected flag,
-which is what blocks the initial runtime idle.
-
-Fixes: fc8bb91bc83e ("usb: dwc3: implement runtime PM")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Link: https://lore.kernel.org/r/20240103214946.2596-1-quic_wcheng@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f3af2d6ee9ab ("drm/msm/dpu: Add SC8180x to hw catalog")
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Reported-by: Anton Bambura <jenneron@postmarketos.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/569840/
+Link: https://lore.kernel.org/r/20231130-sc8180x-dpu-safe-lut-v1-1-a8a6bbac36b8@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -3983,6 +3983,13 @@ static void dwc3_gadget_disconnect_inter
- 	usb_gadget_set_state(dwc->gadget, USB_STATE_NOTATTACHED);
- 
- 	dwc3_ep0_reset_state(dwc);
-+
-+	/*
-+	 * Request PM idle to address condition where usage count is
-+	 * already decremented to zero, but waiting for the disconnect
-+	 * interrupt to set dwc->connected to FALSE.
-+	 */
-+	pm_request_idle(dwc->dev);
- }
- 
- static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
+index f3de21025ca7..c92fbf24fbac 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
+@@ -377,6 +377,7 @@ static const struct dpu_perf_cfg sc8180x_perf_data = {
+ 	.min_llcc_ib = 800000,
+ 	.min_dram_ib = 800000,
+ 	.danger_lut_tbl = {0xf, 0xffff, 0x0},
++	.safe_lut_tbl = {0xfff0, 0xf000, 0xffff},
+ 	.qos_lut_tbl = {
+ 		{.nentry = ARRAY_SIZE(sc7180_qos_linear),
+ 		.entries = sc7180_qos_linear
+-- 
+2.43.0
+
 
 
 
