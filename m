@@ -1,56 +1,65 @@
-Return-Path: <stable+bounces-12959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E27C8379FB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51ECB837AA4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BC571C28244
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:48:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A49E2906DC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:54:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E9A2744E;
-	Tue, 23 Jan 2024 00:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398D512FF7C;
+	Tue, 23 Jan 2024 00:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CysK21aH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jdos+z03"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 732943FFE;
-	Tue, 23 Jan 2024 00:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB6212F5A7;
+	Tue, 23 Jan 2024 00:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968695; cv=none; b=BodpA0BRaz4zHezqdVr4NlEdtOFRngGFx1WcexOxSp30vRhnjAnYgdY1exAkmrzy4IddY3k8whvV1/ivcB7GB7tuDfoKpZ7j84emTbk3MV6GTdC5OpC6cuw77X0Qi6a9B1usFPHvjHBB1Te9Uxx/UfMhJSLl6PV953QL2XqXDws=
+	t=1705969031; cv=none; b=DUB1tKr/go1fy6wny2RmxYHtagGVifOM7p2yzwvCOTjmb0jfRNzjqHnBZxrHdeb5W1/hl8DWL7287hQL2qz5UJ7mG0/RsZdyZCKWJM4VDZ9m4gGx1NI5O3X/5cNJOKM1A6BSTFFLJRoeHuX2SSIPWM06EFoJH6bJv4NmbJV5y8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968695; c=relaxed/simple;
-	bh=sgTQDqZhLt9pksrZs2MP1RcoDJkJlO4X+YtUe80qDCM=;
+	s=arc-20240116; t=1705969031; c=relaxed/simple;
+	bh=uOsOF6zfyNWZOKuDLZ97N0hpt0NKT0EiXMNAk1qfY4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NfXreVbdTcZSkIrHi7R5SJPswB0m+y13Z/awlykvqjFBdp3a7M3oy7ttBOwzJJHAoiMyuf9Q+cqXpn2d4REiMwXWYrZ5SfhSDj3AtY4wbcGoWl3kh5AqImal4Ppvb9gBqkUV6xlJW+4mUp3KNy2l6yaU8NPiUGIOeUX/W4vYcAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CysK21aH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3292FC433F1;
-	Tue, 23 Jan 2024 00:11:35 +0000 (UTC)
+	 MIME-Version; b=EkbhoyJ/WCaWDhpEP4HuwgOo7eK7eWlDx+qlaMnM6EXdFMDmvUtinU1F4EJHipFXFsP07kZYaYvC3tCyxYHb0RL5uQzTRQ4EHu+8AiqBpWh4ImJjbeDU6Gu7R/2u+DNCt/ZIn2RtL8ysp00Wdn1dfhybuTORTYK1FYpw91ks+4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jdos+z03; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF19C433F1;
+	Tue, 23 Jan 2024 00:17:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968695;
-	bh=sgTQDqZhLt9pksrZs2MP1RcoDJkJlO4X+YtUe80qDCM=;
+	s=korg; t=1705969030;
+	bh=uOsOF6zfyNWZOKuDLZ97N0hpt0NKT0EiXMNAk1qfY4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CysK21aHTaNQx+WmOdDV1RUvzOixq6y58cmgwosRh3oT9J4Vi5Y0pzhOjR5c4PyRa
-	 hhz/+KrYLAtoyKukgXiXI9A3P0MlRfYEwfgCF1R92/aRSjavnVRjKSdN8dAN8jvUfF
-	 x1UUsVz0aAddvCobQXxEfxMmKb5tkyajjt8bBH68=
+	b=Jdos+z03Gm8+MOTmN8Ya5I+3eMmnXMgplKo3+VrWyGnq5xdpILOdRaXxGvfiXVL/C
+	 LS0wDuQYCS2hnG6aNW66GIsZ6/3QCo94zMS7CaE1nkhUWEvIEKIHP+mTAS5rNMLkEJ
+	 6riK+ovXwDKs6hhqiOmQtiSDWPEv1hmOd3j2YQGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Douglas Anderson <dianders@chromium.org>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Fangrui Song <maskray@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Lieven Hey <lieven.hey@kdab.com>,
+	Milian Wolff <milian.wolff@kdab.com>,
+	Pablo Galindo <pablogsal@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 144/148] kdb: Fix a potential buffer overflow in kdb_local()
+Subject: [PATCH 5.4 170/194] perf genelf: Set ELF program header addresses properly
 Date: Mon, 22 Jan 2024 15:58:20 -0800
-Message-ID: <20240122235718.442439718@linuxfoundation.org>
+Message-ID: <20240122235726.489019534@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +71,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 4f41d30cd6dc865c3cbc1a852372321eba6d4e4c ]
+[ Upstream commit 1af478903fc48c1409a8dd6b698383b62387adf1 ]
 
-When appending "[defcmd]" to 'kdb_prompt_str', the size of the string
-already in the buffer should be taken into account.
+The text section starts after the ELF headers so PHDR.p_vaddr and
+others should have the correct addresses.
 
-An option could be to switch from strncat() to strlcat() which does the
-correct test to avoid such an overflow.
-
-However, this actually looks as dead code, because 'defcmd_in_progress'
-can't be true here.
-See a more detailed explanation at [1].
-
-[1]: https://lore.kernel.org/all/CAD=FV=WSh7wKN7Yp-3wWiDgX4E3isQ8uh0LCzTmd1v9Cg9j+nQ@mail.gmail.com/
-
-Fixes: 5d5314d6795f ("kdb: core for kgdb back end (1 of 2)")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Fixes: babd04386b1df8c3 ("perf jit: Include program header in ELF files")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Fangrui Song <maskray@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Lieven Hey <lieven.hey@kdab.com>
+Cc: Milian Wolff <milian.wolff@kdab.com>
+Cc: Pablo Galindo <pablogsal@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20231212070547.612536-2-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/debug/kdb/kdb_main.c | 2 --
- 1 file changed, 2 deletions(-)
+ tools/perf/util/genelf.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/debug/kdb/kdb_main.c b/kernel/debug/kdb/kdb_main.c
-index 8f31d472384f..7f78657dfa00 100644
---- a/kernel/debug/kdb/kdb_main.c
-+++ b/kernel/debug/kdb/kdb_main.c
-@@ -1309,8 +1309,6 @@ static int kdb_local(kdb_reason_t reason, int error, struct pt_regs *regs,
- 		/* PROMPT can only be set if we have MEM_READ permission. */
- 		snprintf(kdb_prompt_str, CMD_BUFLEN, kdbgetenv("PROMPT"),
- 			 raw_smp_processor_id());
--		if (defcmd_in_progress)
--			strncat(kdb_prompt_str, "[defcmd]", CMD_BUFLEN);
- 
- 		/*
- 		 * Fetch command from keyboard
+diff --git a/tools/perf/util/genelf.c b/tools/perf/util/genelf.c
+index 69744fd5db39..04509144ff84 100644
+--- a/tools/perf/util/genelf.c
++++ b/tools/perf/util/genelf.c
+@@ -296,9 +296,9 @@ jit_write_elf(int fd, uint64_t load_addr, const char *sym,
+ 	 */
+ 	phdr = elf_newphdr(e, 1);
+ 	phdr[0].p_type = PT_LOAD;
+-	phdr[0].p_offset = 0;
+-	phdr[0].p_vaddr = 0;
+-	phdr[0].p_paddr = 0;
++	phdr[0].p_offset = GEN_ELF_TEXT_OFFSET;
++	phdr[0].p_vaddr = GEN_ELF_TEXT_OFFSET;
++	phdr[0].p_paddr = GEN_ELF_TEXT_OFFSET;
+ 	phdr[0].p_filesz = csize;
+ 	phdr[0].p_memsz = csize;
+ 	phdr[0].p_flags = PF_X | PF_R;
 -- 
 2.43.0
 
