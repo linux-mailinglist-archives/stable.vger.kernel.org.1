@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-15092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9A0E8383D8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E6C837EE0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7167D295C3E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 156ED1C283BD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0ED9657B9;
-	Tue, 23 Jan 2024 01:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEDDE539E;
+	Tue, 23 Jan 2024 00:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfdFMH96"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="alOvC3NA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D6565191;
-	Tue, 23 Jan 2024 01:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F1C05397;
+	Tue, 23 Jan 2024 00:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975077; cv=none; b=G8SKyRdUtlE/OVYmD5AT30kwwb88Iv1+TgOskQgWLwYYGPkjvq+nsRS5FmsaIDQLFnimh4zyPcPRCUKPcMrZdfCPd29mojQU3CKJmU7qc5+rGmPzXsPKaUDYbexU9KlPoUDyHwEh6DiRGBBf2uya+X4QuYiy4ZmrbJd5DBeGozE=
+	t=1705970799; cv=none; b=jQKFPs9MoxYoHfAPKWL0SkxbdXBekHbPF4iSV7KOGezgTiCJakOUJyBVG90TLluWpxgXWwjygvGNvMu1fsxTF8G8ft9uABxKftG6d5tbdH1POJlrYZ+VK4e46YuBfRm+2LFsSJHCUHtSNIkmN0X+SyM58iLpETbvUr/pvvzfZcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975077; c=relaxed/simple;
-	bh=BBXgBnAk0CqPDhUG9D24wQoy+GROAatm7K6MpCs/ZMs=;
+	s=arc-20240116; t=1705970799; c=relaxed/simple;
+	bh=6hnrx0SvnfjRkGCcyFvggChq9UWdEHRebMyRuRIso4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WL2YNG+euuzu/r3EGgFBGb9HHbxgFIKO5E+stJoXUTfaO4z19hm6E9c+GU9aDG6bNn3evxPutsAa2t3VIPXw6sepV9VwEdIHQHY31U8u1+WA6h7zfgeYWsUM12AFnnSeJZALwpjnoskzu9a2B9FMyYWNzq2mKWjgVJhTHREy0kI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfdFMH96; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AB9C433C7;
-	Tue, 23 Jan 2024 01:57:57 +0000 (UTC)
+	 MIME-Version; b=glIBsiZ6KPHOfSXXF8kExMXlcObghV4HNnYA+AkHes7QiKOq/rfK1Z8nKB2JkBUhmDZ79egv4KHpCM5aM9/KU4z94Op2vEzpL+YnymSC8wQZ2Tg/FCC0shIZCMmo/rU6O7jjWH2BsGTqtwmVFlHJGp3FXET+jG5axUZJzq+KrKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=alOvC3NA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07FD1C433F1;
+	Tue, 23 Jan 2024 00:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975077;
-	bh=BBXgBnAk0CqPDhUG9D24wQoy+GROAatm7K6MpCs/ZMs=;
+	s=korg; t=1705970799;
+	bh=6hnrx0SvnfjRkGCcyFvggChq9UWdEHRebMyRuRIso4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qfdFMH966EOBwtAIVnq/yp7FtkE0UYUFohFQ5obR7VwFpcuGWUq/cC+jGppl/1X0f
-	 yIf5vM1+zGSAkksbdSIgp7BC9oreV5Z3T0E61j468qm0VOoPqlz3UAe9DWi5r9TvaO
-	 aobwj9pbgRn47P2sd2aL9+xU9DUXbGc21VJCGGHE=
+	b=alOvC3NAK3CDOP+RuL/WlkCJstKiHE0N5EtyJ+9pYN9YXVLYWsNzywAEh/f2ltcZM
+	 V9mesOciZQPNHwt2h0KN7200RCPW4EGWomiA0N9aroXsSN0lmfCWbdzZPsij9utyWG
+	 i6+P9rhnuEbgAeYm6LM4GHWrkVmU8SY8+II1lJA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Morgan <macromorgan@hotmail.com>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 228/583] drm/panel: nv3051d: Hold panel in reset for unprepare
+Subject: [PATCH 6.1 111/417] wifi: mt76: mt7921: fix country count limitation for CLC
 Date: Mon, 22 Jan 2024 15:54:39 -0800
-Message-ID: <20240122235818.974795643@linuxfoundation.org>
+Message-ID: <20240122235755.604143170@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Morgan <macromorgan@hotmail.com>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-[ Upstream commit 697ebc319b942403a6fee894607fd2cd47cca069 ]
+[ Upstream commit fa6ad88e023ddfa6c5dcdb466d159e89f451e305 ]
 
-Improve the panel's ability to restore from suspend by holding the
-panel in suspend after unprepare.
+Due to the increase in the number of power tables for 6Ghz on CLC,
+the variable nr_country is no longer sufficient to represent the
+total quantity. Therefore, we have switched to calculating the
+length of clc buf to obtain the correct power table. Additionally,
+the version number has been incremented to 1.
 
-Fixes: b1d39f0f4264 ("drm/panel: Add NewVision NV3051D MIPI-DSI LCD panel")
-Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Link: https://lore.kernel.org/r/20231117202536.1387815-3-macroalpha82@gmail.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231117202536.1387815-3-macroalpha82@gmail.com
+Fixes: 23bdc5d8cadf ("wifi: mt76: mt7921: introduce Country Location Control support")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-newvision-nv3051d.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/panel/panel-newvision-nv3051d.c b/drivers/gpu/drm/panel/panel-newvision-nv3051d.c
-index ad98dd9322b4..227937afe257 100644
---- a/drivers/gpu/drm/panel/panel-newvision-nv3051d.c
-+++ b/drivers/gpu/drm/panel/panel-newvision-nv3051d.c
-@@ -261,6 +261,8 @@ static int panel_nv3051d_unprepare(struct drm_panel *panel)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+index 10dda1693d7d..19640ff76bdc 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
+@@ -1036,21 +1036,26 @@ int __mt7921_mcu_set_clc(struct mt7921_dev *dev, u8 *alpha2,
+ 		u8 type[2];
+ 		u8 rsvd[64];
+ 	} __packed req = {
++		.ver = 1,
+ 		.idx = idx,
+ 		.env = env_cap,
+ 	};
+ 	int ret, valid_cnt = 0;
+-	u8 i, *pos;
++	u16 buf_len = 0;
++	u8 *pos;
  
- 	usleep_range(10000, 15000);
+ 	if (!clc)
+ 		return 0;
  
-+	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
-+
- 	regulator_disable(ctx->vdd);
++	buf_len = le16_to_cpu(clc->len) - sizeof(*clc);
+ 	pos = clc->data;
+-	for (i = 0; i < clc->nr_country; i++) {
++	while (buf_len > 16) {
+ 		struct mt7921_clc_rule *rule = (struct mt7921_clc_rule *)pos;
+ 		u16 len = le16_to_cpu(rule->len);
++		u16 offset = len + sizeof(*rule);
  
- 	return 0;
+-		pos += len + sizeof(*rule);
++		pos += offset;
++		buf_len -= offset;
+ 		if (rule->alpha2[0] != alpha2[0] ||
+ 		    rule->alpha2[1] != alpha2[1])
+ 			continue;
 -- 
 2.43.0
 
