@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-14924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0938983832D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47873837C38
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BF361C2982F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AF6B1C241C3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FAD06088E;
-	Tue, 23 Jan 2024 01:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD922144621;
+	Tue, 23 Jan 2024 00:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eyaAZTYF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ivju4Hzp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FF8B5025E;
-	Tue, 23 Jan 2024 01:52:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C170EEB9;
+	Tue, 23 Jan 2024 00:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974725; cv=none; b=sVgS6m1pOEqIKjjUgBcsXcES6Ov/b/rFyuCIr0xVuVU/nRWLGPDqJU2k9ZEYvD4pV4sMcGE9TPoViLir8dLmk0+kdrsRxR/A0acKrNu/Yud5qaGb0TYdAzVTsevbRawgqzK7UQ46GIc/y7442mAe5icqbzTy8DcQxTnL3Dta0OM=
+	t=1705969541; cv=none; b=DnH3CCx9Siyew8oNg0O2IM/k1np9aCbi8lCjvelfSOnoAw7sRiFmpdeHR4aIbZUQaoCt5i8o/kuqQy2Yy886LEwo2zIKwEv6RSD+PvQxiTFcAmMANLW1tOycJ8EngjqSgmTkcfNjj4/78ZAS3bqmTJDVmr/PNseyWXCqt+NFn+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974725; c=relaxed/simple;
-	bh=ZIy0pMlgHXIvb8l9XZQ09wbLOAVdt7qMqpt4EJj2nfM=;
+	s=arc-20240116; t=1705969541; c=relaxed/simple;
+	bh=l9KH4Y8S7qNjsIYQjyYoqdHPvjUecMN610aMiwlAG9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f7svek0+lOGwv5gOVWIdvR7uJQa/s0CbX0K2kNe9UVqgYPpNCDJcF0QpNvx4uPU8WHCBiq6VlPbgnzeNDzyAeLyWrEeP+qtzuZg+Xu25VAVx4aADojmvCDQNpnoXKYNGGgOaLFUhS2vFtu8GxTxyhY8NFDvNUB7f4KFHeac3Lsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyaAZTYF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23ADEC433F1;
-	Tue, 23 Jan 2024 01:52:05 +0000 (UTC)
+	 MIME-Version; b=ctgb+t01w4PN3Y5kp0M7xYFPzxZKxOUioUtB8uTgLIiSBJPVkE/9yHiA4x2rBTdCwPFrbjmgwkqPH3aaqctWDnr1OeHO6z9v/6vpTYLdaFSkr7HvlJe5tXgNbE+2dA4jru8Cwnnz6CQ+lZ6IHxk6aaXVZwnkzEM2zXlemLWUDxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ivju4Hzp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07ADDC433F1;
+	Tue, 23 Jan 2024 00:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974725;
-	bh=ZIy0pMlgHXIvb8l9XZQ09wbLOAVdt7qMqpt4EJj2nfM=;
+	s=korg; t=1705969541;
+	bh=l9KH4Y8S7qNjsIYQjyYoqdHPvjUecMN610aMiwlAG9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eyaAZTYFYGnoc92o0WtAzeTcGPVMsTXZhlxLviZQY/liU7o3X84d/deVoBoARIefp
-	 IYN73KZ6PkivIYw95zFKOFc1n8MVBCHJJrqSxvcy3eRtbWWrYKpd9L1SKCKc2WcTL6
-	 PM3Fsn2f54+ClOvvs0KC3yW2GrigORgd2jEE0MWc=
+	b=ivju4HzpSWnJnjawkEOiq2G2/aqSMWUPxCNGgoBNT6AVBS5EZuF1qM0Irwak8azDZ
+	 10auT9mfgZNXBLXiRRTVtFcy7vfczQ0SE4LlcI5cSoSIL3SsoBwwfnMHKuTV6qCFqt
+	 FZQzd8Vh55aEtSjR+l/RoL5mETAgEpC+29JAzkj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii.nakryiko@gmail.com>,
-	Andrei Matei <andreimatei1@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 144/583] bpf: Guard stack limits against 32bit overflow
+Subject: [PATCH 6.7 291/641] drm/amd/display: Return drm_connector from find_first_crtc_matching_connector
 Date: Mon, 22 Jan 2024 15:53:15 -0800
-Message-ID: <20240122235816.507741648@linuxfoundation.org>
+Message-ID: <20240122235827.002294112@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +64,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Matei <andreimatei1@gmail.com>
+From: Harry Wentland <harry.wentland@amd.com>
 
-[ Upstream commit 1d38a9ee81570c4bd61f557832dead4d6f816760 ]
+[ Upstream commit 748b091d641638e68330b1b24195eaba9aadf997 ]
 
-This patch promotes the arithmetic around checking stack bounds to be
-done in the 64-bit domain, instead of the current 32bit. The arithmetic
-implies adding together a 64-bit register with a int offset. The
-register was checked to be below 1<<29 when it was variable, but not
-when it was fixed. The offset either comes from an instruction (in which
-case it is 16 bit), from another register (in which case the caller
-checked it to be below 1<<29 [1]), or from the size of an argument to a
-kfunc (in which case it can be a u32 [2]). Between the register being
-inconsistently checked to be below 1<<29, and the offset being up to an
-u32, it appears that we were open to overflowing the `int`s which were
-currently used for arithmetic.
+[WHY]
+We will be dealing with two types of connector: amdgpu_dm_connector
+and drm_writeback_connector.
 
-[1] https://github.com/torvalds/linux/blob/815fb87b753055df2d9e50f6cd80eb10235fe3e9/kernel/bpf/verifier.c#L7494-L7498
-[2] https://github.com/torvalds/linux/blob/815fb87b753055df2d9e50f6cd80eb10235fe3e9/kernel/bpf/verifier.c#L11904
+[HOW]
+We want to find both and then cast to the appriopriate type afterwards.
 
-Reported-by: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Signed-off-by: Andrei Matei <andreimatei1@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20231207041150.229139-4-andreimatei1@gmail.com
-Stable-dep-of: 6b4a64bafd10 ("bpf: Fix accesses to uninit stack slots")
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: dbf5d3d02987 ("drm/amd/display: Check writeback connectors in create_validate_stream_for_sink")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c         | 8 +++++---
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h         | 2 +-
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c   | 4 +++-
+ 3 files changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 76834ecc59a9..47599505cdf8 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -6371,7 +6371,7 @@ static int check_ptr_to_map_access(struct bpf_verifier_env *env,
-  * The minimum valid offset is -MAX_BPF_STACK for writes, and
-  * -state->allocated_stack for reads.
-  */
--static int check_stack_slot_within_bounds(int off,
-+static int check_stack_slot_within_bounds(s64 off,
- 					  struct bpf_func_state *state,
- 					  enum bpf_access_type t)
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index d8c967cee498..5cf919a489a1 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2660,7 +2660,7 @@ static int dm_suspend(void *handle)
+ 	return 0;
+ }
+ 
+-struct amdgpu_dm_connector *
++struct drm_connector *
+ amdgpu_dm_find_first_crtc_matching_connector(struct drm_atomic_state *state,
+ 					     struct drm_crtc *crtc)
  {
-@@ -6400,7 +6400,7 @@ static int check_stack_access_within_bounds(
- 	struct bpf_reg_state *regs = cur_regs(env);
- 	struct bpf_reg_state *reg = regs + regno;
- 	struct bpf_func_state *state = func(env, reg);
--	int min_off, max_off;
-+	s64 min_off, max_off;
- 	int err;
- 	char *err_extra;
+@@ -2673,7 +2673,7 @@ amdgpu_dm_find_first_crtc_matching_connector(struct drm_atomic_state *state,
+ 		crtc_from_state = new_con_state->crtc;
  
-@@ -6413,7 +6413,7 @@ static int check_stack_access_within_bounds(
- 		err_extra = " write to";
+ 		if (crtc_from_state == crtc)
+-			return to_amdgpu_dm_connector(connector);
++			return connector;
+ 	}
  
- 	if (tnum_is_const(reg->var_off)) {
--		min_off = reg->var_off.value + off;
-+		min_off = (s64)reg->var_off.value + off;
- 		max_off = min_off + access_size;
- 	} else {
- 		if (reg->smax_value >= BPF_MAX_VAR_OFF ||
+ 	return NULL;
+@@ -9354,6 +9354,7 @@ static int dm_update_crtc_state(struct amdgpu_display_manager *dm,
+ 	 * update changed items
+ 	 */
+ 	struct amdgpu_crtc *acrtc = NULL;
++	struct drm_connector *connector = NULL;
+ 	struct amdgpu_dm_connector *aconnector = NULL;
+ 	struct drm_connector_state *drm_new_conn_state = NULL, *drm_old_conn_state = NULL;
+ 	struct dm_connector_state *dm_new_conn_state = NULL, *dm_old_conn_state = NULL;
+@@ -9363,7 +9364,8 @@ static int dm_update_crtc_state(struct amdgpu_display_manager *dm,
+ 	dm_old_crtc_state = to_dm_crtc_state(old_crtc_state);
+ 	dm_new_crtc_state = to_dm_crtc_state(new_crtc_state);
+ 	acrtc = to_amdgpu_crtc(crtc);
+-	aconnector = amdgpu_dm_find_first_crtc_matching_connector(state, crtc);
++	connector = amdgpu_dm_find_first_crtc_matching_connector(state, crtc);
++	aconnector = to_amdgpu_dm_connector(connector);
+ 
+ 	/* TODO This hack should go away */
+ 	if (aconnector && enable) {
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+index 3d480be802cb..3710f4d0f2cb 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
+@@ -834,7 +834,7 @@ struct dc_stream_state *
+ int dm_atomic_get_state(struct drm_atomic_state *state,
+ 			struct dm_atomic_state **dm_state);
+ 
+-struct amdgpu_dm_connector *
++struct drm_connector *
+ amdgpu_dm_find_first_crtc_matching_connector(struct drm_atomic_state *state,
+ 					     struct drm_crtc *crtc);
+ 
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index 9b71643d8a89..602a2ab98abf 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -1500,14 +1500,16 @@ int pre_validate_dsc(struct drm_atomic_state *state,
+ 		int ind = find_crtc_index_in_state_by_stream(state, stream);
+ 
+ 		if (ind >= 0) {
++			struct drm_connector *connector;
+ 			struct amdgpu_dm_connector *aconnector;
+ 			struct drm_connector_state *drm_new_conn_state;
+ 			struct dm_connector_state *dm_new_conn_state;
+ 			struct dm_crtc_state *dm_old_crtc_state;
+ 
+-			aconnector =
++			connector =
+ 				amdgpu_dm_find_first_crtc_matching_connector(state,
+ 									     state->crtcs[ind].ptr);
++			aconnector = to_amdgpu_dm_connector(connector);
+ 			drm_new_conn_state =
+ 				drm_atomic_get_new_connector_state(state,
+ 								   &aconnector->base);
 -- 
 2.43.0
 
