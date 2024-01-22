@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85A27838518
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82E008381A2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:10:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AA35B2A218
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6A921C2938E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB0356A032;
-	Tue, 23 Jan 2024 02:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB4E31EEE0;
+	Tue, 23 Jan 2024 01:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8o9hecl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhmGaHYR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F446A02A;
-	Tue, 23 Jan 2024 02:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B1A437C;
+	Tue, 23 Jan 2024 01:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975327; cv=none; b=UT/NGeQmRh3v81GVe7s3Vvgju0Mkb1KVGBtY/X0Cdo/p0ZGEUBrGevqB91cEo2ZrV04DS3QyxlkD4s2mcq2piG+fRy6+Au6J96n804K9R1CvWQJxpWsHO2aoQieeFKlxX8GplIBkDLFMbQDCZKxz3TvJEvSoMuw8teXFWzcVERI=
+	t=1705972191; cv=none; b=Fy32aDSaUjr2iOs3BC3h8CcT+ymt+yfXH8vHWh+2XW1w/qy7bBxGxNEq8vFsPEUBTPWhTBbZZPQmu+gDsqy8Sbgf4XkezG22G86XafjolVamHlgikVzp3qqJDhWdQ7kEOON6a1hkuR9pzRXVZxb3bIlfhuhyEL0jeHu8KCQqRCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975327; c=relaxed/simple;
-	bh=3qf7Cl7B3g7j9AueFt8nbxcu/i59CDU2e1NtMMr10Ck=;
+	s=arc-20240116; t=1705972191; c=relaxed/simple;
+	bh=cM9ssrk/iF/w/pnwyE/ZdgKWp5r9M9pLnFydCJxno8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FnhnaimVVlzJa7xM7YmvyADFxYE4WRsWqcJZQ6FGv5mKUOZz5tAb2v+VDwuikxDN+15SMAbLlyZFY9JmeaPVZqHWjIUCMUVyKd8tntL47EBXfpz91YLLPiRRvRE/NzVgBK2Mx7SOaJAfxDZ/W5FB9t+/7kdg8ZVQ89UasJmy7vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8o9hecl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9CCC433B1;
-	Tue, 23 Jan 2024 02:02:07 +0000 (UTC)
+	 MIME-Version; b=JG7UjcQ8fp79blwKmsrN3Qi0S1T8pU4MbzEFkar7FEfFiggn8OiQnTcQf4VtpG7BTXM8E84mf521042VdfT2YrIghlhM6c07gt6nM/M49sqe6R776JEbqbtWCIjsXQb4wEJK6my9OlwAqk/U1HcVYeIAPmH6aC1wW6HjZVw8lb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhmGaHYR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29331C43390;
+	Tue, 23 Jan 2024 01:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975327;
-	bh=3qf7Cl7B3g7j9AueFt8nbxcu/i59CDU2e1NtMMr10Ck=;
+	s=korg; t=1705972191;
+	bh=cM9ssrk/iF/w/pnwyE/ZdgKWp5r9M9pLnFydCJxno8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U8o9heclzlHf9CE5Z5rY5WFO3CDMnlTnWniN1PfyliChs8lKUu9qFeQwZVrxEaD04
-	 oVBlm5rJOk0Hl/ZbnU2M7+7dJV5xnvixtOb2JSlotjJXWKZlxWIe3rHtQNLMmhhRgz
-	 LQnOohdJEXddBlIoIcG7zm3wxXdUGvjVIWhGCn9o=
+	b=RhmGaHYR8Hr20jEagIYCNGPhQiOhDP2SVic/t0wqKiWBs1pE0Co8UEE4gQ2ju8yqm
+	 y2aPrjh9bUBePXVxlRhOObC8RCiwqmX+2FapjbPWx8/+RbaL5vr7a8Ll+zjzdYVjpt
+	 G2BR+d3cqMnpssBiiv3cGnPsYY9kOz2Wgv3rciXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
+	Paul Moore <paul@paul-moore.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 291/583] gpu/drm/radeon: fix two memleaks in radeon_vm_init
+Subject: [PATCH 5.15 086/374] calipso: fix memory leak in netlbl_calipso_add_pass()
 Date: Mon, 22 Jan 2024 15:55:42 -0800
-Message-ID: <20240122235820.909981846@linuxfoundation.org>
+Message-ID: <20240122235747.607445643@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 
-[ Upstream commit c2709b2d6a537ca0fa0f1da36fdaf07e48ef447d ]
+[ Upstream commit ec4e9d630a64df500641892f4e259e8149594a99 ]
 
-When radeon_bo_create and radeon_vm_clear_bo fail, the vm->page_tables
-allocated before need to be freed. However, neither radeon_vm_init
-itself nor its caller have done such deallocation.
+If IPv6 support is disabled at boot (ipv6.disable=1),
+the calipso_init() -> netlbl_calipso_ops_register() function isn't called,
+and the netlbl_calipso_ops_get() function always returns NULL.
+In this case, the netlbl_calipso_add_pass() function allocates memory
+for the doi_def variable but doesn't free it with the calipso_doi_free().
 
-Fixes: 6d2f2944e95e ("drm/radeon: use normal BOs for the page tables v4")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+BUG: memory leak
+unreferenced object 0xffff888011d68180 (size 64):
+  comm "syz-executor.1", pid 10746, jiffies 4295410986 (age 17.928s)
+  hex dump (first 32 bytes):
+    00 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<...>] kmalloc include/linux/slab.h:552 [inline]
+    [<...>] netlbl_calipso_add_pass net/netlabel/netlabel_calipso.c:76 [inline]
+    [<...>] netlbl_calipso_add+0x22e/0x4f0 net/netlabel/netlabel_calipso.c:111
+    [<...>] genl_family_rcv_msg_doit+0x22f/0x330 net/netlink/genetlink.c:739
+    [<...>] genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
+    [<...>] genl_rcv_msg+0x341/0x5a0 net/netlink/genetlink.c:800
+    [<...>] netlink_rcv_skb+0x14d/0x440 net/netlink/af_netlink.c:2515
+    [<...>] genl_rcv+0x29/0x40 net/netlink/genetlink.c:811
+    [<...>] netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
+    [<...>] netlink_unicast+0x54b/0x800 net/netlink/af_netlink.c:1339
+    [<...>] netlink_sendmsg+0x90a/0xdf0 net/netlink/af_netlink.c:1934
+    [<...>] sock_sendmsg_nosec net/socket.c:651 [inline]
+    [<...>] sock_sendmsg+0x157/0x190 net/socket.c:671
+    [<...>] ____sys_sendmsg+0x712/0x870 net/socket.c:2342
+    [<...>] ___sys_sendmsg+0xf8/0x170 net/socket.c:2396
+    [<...>] __sys_sendmsg+0xea/0x1b0 net/socket.c:2429
+    [<...>] do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
+    [<...>] entry_SYSCALL_64_after_hwframe+0x61/0xc6
+
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with Syzkaller
+
+Fixes: cb72d38211ea ("netlabel: Initial support for the CALIPSO netlink protocol.")
+Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+[PM: merged via the LSM tree at Jakub Kicinski request]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/radeon_vm.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/netlabel/netlabel_calipso.c | 49 +++++++++++++++++----------------
+ 1 file changed, 26 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/radeon_vm.c b/drivers/gpu/drm/radeon/radeon_vm.c
-index 987cabbf1318..c38b4d5d6a14 100644
---- a/drivers/gpu/drm/radeon/radeon_vm.c
-+++ b/drivers/gpu/drm/radeon/radeon_vm.c
-@@ -1204,13 +1204,17 @@ int radeon_vm_init(struct radeon_device *rdev, struct radeon_vm *vm)
- 	r = radeon_bo_create(rdev, pd_size, align, true,
- 			     RADEON_GEM_DOMAIN_VRAM, 0, NULL,
- 			     NULL, &vm->page_directory);
--	if (r)
-+	if (r) {
-+		kfree(vm->page_tables);
-+		vm->page_tables = NULL;
- 		return r;
--
-+	}
- 	r = radeon_vm_clear_bo(rdev, vm->page_directory);
- 	if (r) {
- 		radeon_bo_unref(&vm->page_directory);
- 		vm->page_directory = NULL;
-+		kfree(vm->page_tables);
-+		vm->page_tables = NULL;
- 		return r;
- 	}
+diff --git a/net/netlabel/netlabel_calipso.c b/net/netlabel/netlabel_calipso.c
+index 91a19c3ea1a3..84ef4a29864b 100644
+--- a/net/netlabel/netlabel_calipso.c
++++ b/net/netlabel/netlabel_calipso.c
+@@ -54,6 +54,28 @@ static const struct nla_policy calipso_genl_policy[NLBL_CALIPSO_A_MAX + 1] = {
+ 	[NLBL_CALIPSO_A_MTYPE] = { .type = NLA_U32 },
+ };
  
++static const struct netlbl_calipso_ops *calipso_ops;
++
++/**
++ * netlbl_calipso_ops_register - Register the CALIPSO operations
++ * @ops: ops to register
++ *
++ * Description:
++ * Register the CALIPSO packet engine operations.
++ *
++ */
++const struct netlbl_calipso_ops *
++netlbl_calipso_ops_register(const struct netlbl_calipso_ops *ops)
++{
++	return xchg(&calipso_ops, ops);
++}
++EXPORT_SYMBOL(netlbl_calipso_ops_register);
++
++static const struct netlbl_calipso_ops *netlbl_calipso_ops_get(void)
++{
++	return READ_ONCE(calipso_ops);
++}
++
+ /* NetLabel Command Handlers
+  */
+ /**
+@@ -96,15 +118,18 @@ static int netlbl_calipso_add_pass(struct genl_info *info,
+  *
+  */
+ static int netlbl_calipso_add(struct sk_buff *skb, struct genl_info *info)
+-
+ {
+ 	int ret_val = -EINVAL;
+ 	struct netlbl_audit audit_info;
++	const struct netlbl_calipso_ops *ops = netlbl_calipso_ops_get();
+ 
+ 	if (!info->attrs[NLBL_CALIPSO_A_DOI] ||
+ 	    !info->attrs[NLBL_CALIPSO_A_MTYPE])
+ 		return -EINVAL;
+ 
++	if (!ops)
++		return -EOPNOTSUPP;
++
+ 	netlbl_netlink_auditinfo(&audit_info);
+ 	switch (nla_get_u32(info->attrs[NLBL_CALIPSO_A_MTYPE])) {
+ 	case CALIPSO_MAP_PASS:
+@@ -362,28 +387,6 @@ int __init netlbl_calipso_genl_init(void)
+ 	return genl_register_family(&netlbl_calipso_gnl_family);
+ }
+ 
+-static const struct netlbl_calipso_ops *calipso_ops;
+-
+-/**
+- * netlbl_calipso_ops_register - Register the CALIPSO operations
+- * @ops: ops to register
+- *
+- * Description:
+- * Register the CALIPSO packet engine operations.
+- *
+- */
+-const struct netlbl_calipso_ops *
+-netlbl_calipso_ops_register(const struct netlbl_calipso_ops *ops)
+-{
+-	return xchg(&calipso_ops, ops);
+-}
+-EXPORT_SYMBOL(netlbl_calipso_ops_register);
+-
+-static const struct netlbl_calipso_ops *netlbl_calipso_ops_get(void)
+-{
+-	return READ_ONCE(calipso_ops);
+-}
+-
+ /**
+  * calipso_doi_add - Add a new DOI to the CALIPSO protocol engine
+  * @doi_def: the DOI structure
 -- 
 2.43.0
 
