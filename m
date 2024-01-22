@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-15122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67CFC8383FC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F655837EF6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AFB21C29D40
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A33551C28459
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7760664BC;
-	Tue, 23 Jan 2024 01:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E20605AB;
+	Tue, 23 Jan 2024 00:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GNadlIya"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLbJI8Za"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5977664AC;
-	Tue, 23 Jan 2024 01:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168B260252;
+	Tue, 23 Jan 2024 00:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975109; cv=none; b=nJdips2xLpX8NhODTsRNR9iY6iRPnNE/1QZOCQvaRyiEK3eCnfqOHvtSHC6a/YtKmZ8GFqiAxpl8eug9epk6BrKJ8DmOcmnT1aPqHOifeT7bUrubQIvyMan0XHpEHzguSH9k8DarESJ6mVZOabjOgRmu7fpf/Wjp0fbCO+ibsck=
+	t=1705970853; cv=none; b=npqVYeRJN/SmYhhNBrsmJ6CBsnGpiXpMUXBZRoZaouVEJ0l0FWXO3155W8P7BNwxxMWg7qijqcpfU0qr6aBIi+FhjBSXb9r1KxwRM2DMgJrwxqzdELD7CMw4zFORDmYFDnQUHxYeY5nw5S2zz87o2Oo08aZV3M1FPiBxQzJ2B2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975109; c=relaxed/simple;
-	bh=AYl7/igbFHCfqeCFskm2ne5qNWDjeM6XuypPVo1bs94=;
+	s=arc-20240116; t=1705970853; c=relaxed/simple;
+	bh=ZY+lknEH/rkQPnGcWWWBLaRlII1cicnzkLOvpx01CRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XZQ27fuhhnA0RL8xGonFPVip6j/413csNFiH+pLLTHDL5GrpVIlySc1q2NbHW0NgDEjqQxQyNYqPHbdYNoKdyjM7A1gv47pspGGuflkw92k8K6JRYQZFbIdFRdCyq+iBKGZICtkd1HyCQLqThZFWSS8RBcYlJ7atcmQd6+aHA00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GNadlIya; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F5DC433C7;
-	Tue, 23 Jan 2024 01:58:29 +0000 (UTC)
+	 MIME-Version; b=MfIyWPEM4bhQpt36Ahgf7M95iwIzUCFLegKx0lJ0uw9jI9pLT27NO3H967k7G/XnjeE3PF1t4+XFCPogCC7dGcmBfo10CCRoF8I+reqsmDws9yvACv6wiVaY8EyH0fU5rFYDPQ5q49cNntAygRj0nWKCpVKuwPIiDexnihdaM9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLbJI8Za; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B56C43390;
+	Tue, 23 Jan 2024 00:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975109;
-	bh=AYl7/igbFHCfqeCFskm2ne5qNWDjeM6XuypPVo1bs94=;
+	s=korg; t=1705970852;
+	bh=ZY+lknEH/rkQPnGcWWWBLaRlII1cicnzkLOvpx01CRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GNadlIyavunFYbRLhMs4QCGMhLo2wALUUzfcazcT2kUgc6uXA0PtoEfOrdgJIA1DR
-	 QOzhbO+ZLw4f2Pr86hoA/ZTPcDUvqKoJ5Q79MwhCgafb/0KYze/Ythj9dqnMadqwdS
-	 0pCbwcyr/Ix/kHUenUu6YzmmTCFNtBVz84jXRE0c=
+	b=BLbJI8ZaVNhKj8vvc87veBQRPmHcxtp5ZvezFKigDwu/tijyjylpFEKQ7C4bKZ/pK
+	 kSf77RKSrVIdkHH8VM9g/JTQFmBR2bvstl3DMqGWwIknrz+tTCrLkyrjrIgNYTITDU
+	 ODk+O93Bht2FhgDcDoWgS1OS6s4lrogdedeAux0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 242/583] drm/radeon/r100: Fix integer overflow issues in r100_cs_track_check()
+Subject: [PATCH 6.1 125/417] arm64: dts: qcom: sm8150-hdk: fix SS USB regulators
 Date: Mon, 22 Jan 2024 15:54:53 -0800
-Message-ID: <20240122235819.400757645@linuxfoundation.org>
+Message-ID: <20240122235756.136418157@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit b5c5baa458faa5430c445acd9a17481274d77ccf ]
+[ Upstream commit a509adf05b2aac31b22781f5aa09e4768a5b6c39 ]
 
-It may be possible, albeit unlikely, to encounter integer overflow
-during the multiplication of several unsigned int variables, the
-result being assigned to a variable 'size' of wider type.
+The SM8150-HDK uses two different regulators to power up SuperSpeed USB
+PHYs. The L5A regulator is used for the second USB host, while the first
+(OTG) USB host uses different regulator, L18A. Fix the regulator for the
+usb_1 QMPPHY and (to remove possible confusion) drop the
+usb_ss_dp_core_1/_2 labels.
 
-Prevent this potential behaviour by converting one of the multiples
-to unsigned long.
-
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
-
-Fixes: 0242f74d29df ("drm/radeon: clean up CS functions in r100.c")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 0ab1b2d10afe ("arm64: dts: qcom: add sm8150 hdk dts")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20231215174152.315403-4-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/r100.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8150-hdk.dts | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/r100.c b/drivers/gpu/drm/radeon/r100.c
-index affa9e0309b2..cfeca2694d5f 100644
---- a/drivers/gpu/drm/radeon/r100.c
-+++ b/drivers/gpu/drm/radeon/r100.c
-@@ -2321,7 +2321,7 @@ int r100_cs_track_check(struct radeon_device *rdev, struct r100_cs_track *track)
- 	switch (prim_walk) {
- 	case 1:
- 		for (i = 0; i < track->num_arrays; i++) {
--			size = track->arrays[i].esize * track->max_indx * 4;
-+			size = track->arrays[i].esize * track->max_indx * 4UL;
- 			if (track->arrays[i].robj == NULL) {
- 				DRM_ERROR("(PW %u) Vertex array %u no buffer "
- 					  "bound\n", prim_walk, i);
-@@ -2340,7 +2340,7 @@ int r100_cs_track_check(struct radeon_device *rdev, struct r100_cs_track *track)
- 		break;
- 	case 2:
- 		for (i = 0; i < track->num_arrays; i++) {
--			size = track->arrays[i].esize * (nverts - 1) * 4;
-+			size = track->arrays[i].esize * (nverts - 1) * 4UL;
- 			if (track->arrays[i].robj == NULL) {
- 				DRM_ERROR("(PW %u) Vertex array %u no buffer "
- 					  "bound\n", prim_walk, i);
+diff --git a/arch/arm64/boot/dts/qcom/sm8150-hdk.dts b/arch/arm64/boot/dts/qcom/sm8150-hdk.dts
+index 3331ee957d64..368da4c7f41b 100644
+--- a/arch/arm64/boot/dts/qcom/sm8150-hdk.dts
++++ b/arch/arm64/boot/dts/qcom/sm8150-hdk.dts
+@@ -126,8 +126,6 @@ vdda_qrefs_0p875_5:
+ 		vdda_sp_sensor:
+ 		vdda_ufs_2ln_core_1:
+ 		vdda_ufs_2ln_core_2:
+-		vdda_usb_ss_dp_core_1:
+-		vdda_usb_ss_dp_core_2:
+ 		vdda_qlink_lv:
+ 		vdda_qlink_lv_ck:
+ 		vreg_l5a_0p875: ldo5 {
+@@ -209,6 +207,12 @@ vreg_l17a_3p0: ldo17 {
+ 			regulator-max-microvolt = <3008000>;
+ 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
+ 		};
++
++		vreg_l18a_0p8: ldo18 {
++			regulator-min-microvolt = <880000>;
++			regulator-max-microvolt = <880000>;
++			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
++		};
+ 	};
+ 
+ 	pm8150l-rpmh-regulators {
+@@ -439,13 +443,13 @@ &usb_2_hsphy {
+ &usb_1_qmpphy {
+ 	status = "okay";
+ 	vdda-phy-supply = <&vreg_l3c_1p2>;
+-	vdda-pll-supply = <&vdda_usb_ss_dp_core_1>;
++	vdda-pll-supply = <&vreg_l18a_0p8>;
+ };
+ 
+ &usb_2_qmpphy {
+ 	status = "okay";
+ 	vdda-phy-supply = <&vreg_l3c_1p2>;
+-	vdda-pll-supply = <&vdda_usb_ss_dp_core_1>;
++	vdda-pll-supply = <&vreg_l5a_0p875>;
+ };
+ 
+ &usb_1 {
 -- 
 2.43.0
 
