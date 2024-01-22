@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-14913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78E2F838323
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 799B1837C15
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32AE328BBED
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3368C295615
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9F660867;
-	Tue, 23 Jan 2024 01:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AEB8DDB5;
+	Tue, 23 Jan 2024 00:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixankxj9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/wWABSt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3D16025E;
-	Tue, 23 Jan 2024 01:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9801852;
+	Tue, 23 Jan 2024 00:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974713; cv=none; b=MXzVOxY1eNB9cOeFH7xOOSzVRS6yV9cuoTHxJ8bEbsQ2PiWFjsBoAJKoBfd0m2y86HMHZCe5rKXdnUEgcnSloktbinY1OpdjYHT3VzW0aO7cLH4a+r6feZY0e9ON9gG6poTAZgAq4ay+ftC5wkN7Xz7WG3Lg040n8oO/RRtk9Po=
+	t=1705969500; cv=none; b=WZHgdlQcOAd5cLJXqd+OtHYMTRCeNVjHZRWyE7ZJHAPY3zuzQ744SPGjD2KfsLNeJeUmPkjpHwyaaV/AfQhcG2UUbP1LV7VlBfyM4SwkRkmCijcBA7T/mYOdlNuPj+pz+As6Ue2D3tbRNr+EcTW38kvWbAFVk9iiQgsdPNTu0iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974713; c=relaxed/simple;
-	bh=hVRsc0xGzxjjn1RGqxpPbYpIRvFfRLPzeI19VbUIYKw=;
+	s=arc-20240116; t=1705969500; c=relaxed/simple;
+	bh=km8+TW9qOfc6d2mr5LelbTQAvcpTwCNmkCsd9oeahGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f7QBW/hBQbzw0+kMnxFKaOJ3iJdEJaxSugwFAQQNn898XwKMfSmOp/pJaMqean+42fBWiNVfqW/ZbvQAKen9j5MnDuhpekSYueCbSUSlKdhPrhdTehCpQd0lQwEN4q9na9Z+sV26ho+2cb8jlMCpeEokAQ9cTwERL29ySQaE6Es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixankxj9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 235FBC433F1;
-	Tue, 23 Jan 2024 01:51:53 +0000 (UTC)
+	 MIME-Version; b=ePEeTtNrd5TC2ODC0SpwCa3MyIlvIEq7OjjqZq4YyAQTi3KsI2vHTM4ULhm5ADEkU6mP4k2QLNZV0PRWsVMtv5mgBN8jvGpmx4CeIdwTnbd5aDmhlJ5sK47Cff1bXOOMc40812myovK8XAYJsmK2+4u9T4ruluXRb/w8NNnJgac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/wWABSt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F28EC43143;
+	Tue, 23 Jan 2024 00:25:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974713;
-	bh=hVRsc0xGzxjjn1RGqxpPbYpIRvFfRLPzeI19VbUIYKw=;
+	s=korg; t=1705969500;
+	bh=km8+TW9qOfc6d2mr5LelbTQAvcpTwCNmkCsd9oeahGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ixankxj9dZD0qjLjqswUjexYyzaCv62Y1jQVRIeNApf0OArpBm7c0fAmByRZifibe
-	 duzY7CdeFj4afZQHFi6rWEUsNqT1wuVV5VbzQAs+PeWymhWEdeZ97oe4unQ95U4Ach
-	 EgeEMByOeErUvEqo5Zey28Vho3IgLznvQtn0BmdE=
+	b=P/wWABStVE84BMwJYs63m01+37+y6nWAyHSArxgZN/kCtc6yJ7tbR8CBJ/w3NBz03
+	 a9CfSkhP/g7KfCu/9kfAWt/Xl+880lEtPacRZh5g6OB/ZtxaHdqSaNyTB2OZuvqJm+
+	 Zj/o3nBMToWWfDoXxE18KrW+5o1LykBXIh0P78xA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 139/583] wifi: mt76: mt7915: fix EEPROM offset of TSSI flag on MT7981
+Subject: [PATCH 6.7 286/641] ASoC: SOF: topology: Use partial match for disconnecting DAI link and DAI widget
 Date: Mon, 22 Jan 2024 15:53:10 -0800
-Message-ID: <20240122235816.355100594@linuxfoundation.org>
+Message-ID: <20240122235826.843538397@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-[ Upstream commit 3531c72aedb95261f4d78c47efa4b5ba7cdcddd9 ]
+[ Upstream commit 2f03970198d6438d95b96f69041254bd39aafed0 ]
 
-The offset of the TSSI flag on the EEPROM of MT7981 devices was wrong.
-Set the correct offset instead.
+We use partial match for connecting DAI link and DAI widget. We need to
+use partial match for disconnecting, too.
 
-Fixes: 6bad146d162e ("wifi: mt76: mt7915: add support for MT7981")
-Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: fe88788779fc ("ASoC: SOF: topology: Use partial match for connecting DAI link and DAI widget")
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20231204214713.208951-2-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/sof/topology.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-index f3e56817d36e..adc26a222823 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
-@@ -144,7 +144,8 @@ static inline bool
- mt7915_tssi_enabled(struct mt7915_dev *dev, enum nl80211_band band)
- {
- 	u8 *eep = dev->mt76.eeprom.data;
--	u8 val = eep[MT_EE_WIFI_CONF + 7];
-+	u8 offs = is_mt7981(&dev->mt76) ? 8 : 7;
-+	u8 val = eep[MT_EE_WIFI_CONF + offs];
+diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
+index 37ec671a2d76..7133ec13322b 100644
+--- a/sound/soc/sof/topology.c
++++ b/sound/soc/sof/topology.c
+@@ -1134,7 +1134,7 @@ static void sof_disconnect_dai_widget(struct snd_soc_component *scomp,
+ 	list_for_each_entry(rtd, &card->rtd_list, list) {
+ 		/* does stream match DAI link ? */
+ 		if (!rtd->dai_link->stream_name ||
+-		    strcmp(sname, rtd->dai_link->stream_name))
++		    !strstr(rtd->dai_link->stream_name, sname))
+ 			continue;
  
- 	if (band == NL80211_BAND_2GHZ)
- 		return val & MT_EE_WIFI_CONF7_TSSI0_2G;
+ 		for_each_rtd_cpu_dais(rtd, i, cpu_dai)
 -- 
 2.43.0
 
