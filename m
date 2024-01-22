@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-14213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29877837FFE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07F7983805D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3BCE1F22CF3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ED941F2CCBD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3FBC12DD91;
-	Tue, 23 Jan 2024 00:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFFD66B5B;
+	Tue, 23 Jan 2024 01:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IZRFhGPk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+/krGzb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F8E12DD8D;
-	Tue, 23 Jan 2024 00:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F20666B52;
+	Tue, 23 Jan 2024 01:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971487; cv=none; b=DEj6Hb4vLHWEOYBFJwnngEybt4RVGzF6n1MHuLHXeBm3tFCqzZeCSSPI8wSlbiKUi51R7Lh7JELjbGuv9QphTA2o5L3SMetHvGOPZYmLkGoNXazQKmbLwEwHu/4W3qzS4QIFgc4+miRpL0y15gxP7PoWROHOh+RdRe9yojlpNmM=
+	t=1705971683; cv=none; b=sE3Pjr7XOKvTpcM2P21pLv+votFswi7VyYh5O5uw9qCmtAeRmH/L8E6Fy3+p/4C3/gMJqmfEU80J6jCdx2UY5ZrVtgUpesvR0Oqpo5fX/0HeIlrhghAkC9IAsfLH+E4HZE0OyiQXtpmKYTofEeb6NfGPffVAV2NGobhER0b2yl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971487; c=relaxed/simple;
-	bh=GxFNJzwfkajCDi+mjtSwtqhTzXvwbCDHPoR02bHF4CI=;
+	s=arc-20240116; t=1705971683; c=relaxed/simple;
+	bh=pKqEQB3Q8Nb3ClSoVtsnQ0jW8PWxmou6vzaxWC3S07g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lNb8AhI8D5sj3em8EuQcey6p3lbHABOMlwNfWas+zoLc/gyt0H3K6ZjrKClf8029TQ5XbWUsopaqwNMv8cylJmx3It6zurom26m7c+mVbrMBKU4mk+OUQwaTNBJ3Xu2DiPknBKNy9bKIEUFq2AmjxU4IoRYuIcUArE7fPHbaAQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IZRFhGPk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D4F3C43390;
-	Tue, 23 Jan 2024 00:58:06 +0000 (UTC)
+	 MIME-Version; b=hXyd3MD7dxoZGSb408mK6WuQ7qYoZxNfK2vVpMPEspU0D5eKR0+rCBS1GII54J7wslYZ46Pdjb/LLk22Cqki9QnWo9O6vGhjyGsrmKF72CaC5Pc7/skfOyLJs7c1HwOVJIoGm7/5PwdGBQ9yFv9n+3sth9DsbsEcWJYRcHVXBVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w+/krGzb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B19C433F1;
+	Tue, 23 Jan 2024 01:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971486;
-	bh=GxFNJzwfkajCDi+mjtSwtqhTzXvwbCDHPoR02bHF4CI=;
+	s=korg; t=1705971683;
+	bh=pKqEQB3Q8Nb3ClSoVtsnQ0jW8PWxmou6vzaxWC3S07g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IZRFhGPkDCG2WA74tDrdDcoMBVco28HsLJZ38BtAQRnw21asy6BfjovQ3Qia1NBjG
-	 LSKp3NHD7YkfKLLtBVZTzmUC8w42RLlbhSZ7r1+LD3MoosEA5t5zrtAnT9rRTaToYT
-	 mrULbCmemQU7BzTx7851mz4jM4T+yrWRDHqlloYg=
+	b=w+/krGzbXyjqx3UQwwjNqNXqu3sfIQ+Trw1GkWRm2FEX+mUMQEmhmScKle3U+gz5m
+	 585GSI6yhUyAU/iFpi+2YGpC5EO/LvUcXK3LmWsNhXNirKxY8Zt47dfr8WNPqhF9rh
+	 fW73ZIhTbLa+2tZ3Lt1WR70/y29v0NsVVtia5BvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Maxime Ripard <mripard@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 159/286] drm/drv: propagate errors from drm_modeset_register_all()
+	lonial con <kongln9170@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.1 297/417] netfilter: nf_tables: check if catch-all set element is active in next generation
 Date: Mon, 22 Jan 2024 15:57:45 -0800
-Message-ID: <20240122235738.293737963@linuxfoundation.org>
+Message-ID: <20240122235802.116414638@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 5f8dec200923a76dc57187965fd59c1136f5d085 ]
+commit b1db244ffd041a49ecc9618e8feb6b5c1afcdaa7 upstream.
 
-In case the drm_modeset_register_all() function fails, its error code
-will be ignored. Instead make the drm_dev_register() bail out in case of
-such an error.
+When deactivating the catch-all set element, check the state in the next
+generation that represents this transaction.
 
-Fixes: 79190ea2658a ("drm: Add callbacks for late registering")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231202225552.1283638-1-dmitry.baryshkov@linaro.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This bug uncovered after the recent removal of the element busy mark
+a2dd0233cbc4 ("netfilter: nf_tables: remove busy mark and gc batch API").
+
+Fixes: aaa31047a6d2 ("netfilter: nftables: add catch-all set element support")
+Cc: stable@vger.kernel.org
+Reported-by: lonial con <kongln9170@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_drv.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_drv.c b/drivers/gpu/drm/drm_drv.c
-index 4ca995ce19af..10831d8d7148 100644
---- a/drivers/gpu/drm/drm_drv.c
-+++ b/drivers/gpu/drm/drm_drv.c
-@@ -892,8 +892,11 @@ int drm_dev_register(struct drm_device *dev, unsigned long flags)
- 			goto err_minors;
- 	}
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -6152,7 +6152,7 @@ static int nft_setelem_catchall_deactiva
  
--	if (drm_core_check_feature(dev, DRIVER_MODESET))
--		drm_modeset_register_all(dev);
-+	if (drm_core_check_feature(dev, DRIVER_MODESET)) {
-+		ret = drm_modeset_register_all(dev);
-+		if (ret)
-+			goto err_unload;
-+	}
+ 	list_for_each_entry(catchall, &set->catchall_list, list) {
+ 		ext = nft_set_elem_ext(set, catchall->elem);
+-		if (!nft_is_active(net, ext))
++		if (!nft_is_active_next(net, ext))
+ 			continue;
  
- 	ret = 0;
- 
-@@ -905,6 +908,9 @@ int drm_dev_register(struct drm_device *dev, unsigned long flags)
- 
- 	goto out_unlock;
- 
-+err_unload:
-+	if (dev->driver->unload)
-+		dev->driver->unload(dev);
- err_minors:
- 	remove_compat_control_link(dev);
- 	drm_minor_unregister(dev, DRM_MINOR_PRIMARY);
--- 
-2.43.0
-
+ 		kfree(elem->priv);
 
 
 
