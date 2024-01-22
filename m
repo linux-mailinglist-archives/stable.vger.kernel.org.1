@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-14320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E496283806D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C626B8380D7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B3AA2844CB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FA0228D712
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D714812DDAD;
-	Tue, 23 Jan 2024 01:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A3613474B;
+	Tue, 23 Jan 2024 01:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lfKcKiMs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c7a6yCRG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9562A64CFE;
-	Tue, 23 Jan 2024 01:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A587313473B;
+	Tue, 23 Jan 2024 01:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971710; cv=none; b=Siu3SmgbPZTUMtaociICBZKOgdwQ43uHiIy4xk4OCflVM7mRUPO0+hmv2ix1zvJ4nyLDHwAOafApCbl/kkPtZoVib0QjK6oV5Y/z4dg2VxjqOSae2z/7CFWeoF8RGr8WN2BE0aeGWSvPKeG7It0FyYTCVOPjJZQwGhWGSnDiTxE=
+	t=1705971918; cv=none; b=BWwCR4d838nSQeRmDdRGJBFf+6aPo8zhqFUesNDcVhEyFRTpJEJRBbHCQCRV8TToJazNFl0oZ8mX4jTMbhANd2U9xVxK+d0HC67MJorVkBh10bo79ZVDKZOTSeaTRVfWydsxu6/nItAD6YUV1YiiVBt3yndU5UagwyO4ku1flhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971710; c=relaxed/simple;
-	bh=DqAzCTJNdoSYtx29iaH/OZ2uE95Xp6FFehnZBA+JClQ=;
+	s=arc-20240116; t=1705971918; c=relaxed/simple;
+	bh=eNkmMTjPm4rI0rO009IFX6MEbtFFi5KlDJ8Rf0iMkrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BJdRaipcPh6sPaJkiNv8a4O142rupkKA/WDGnQTypqyiR9AeN1DF4pEI0KLdpHeSlVQ1PMSyNxOa5xa25j00jHlpmYRUnDwFOFO4s2QPR38ZKqNWCaaX69vBjvG+k6/HeNI1cxCY0k8marJw2ntyq+j4VBQw0I4EYJ0+yyuKDXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lfKcKiMs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAAFCC433F1;
-	Tue, 23 Jan 2024 01:01:49 +0000 (UTC)
+	 MIME-Version; b=Kop+2uoKzWh+FCddc3tIEfbmgE9AeINJl5teV5OKChkbAloo6RHXgeDRE9auBWEYfYDZorSuP27I5+5vo0K2BzMdPdH3XttuVRQkq4CuxwvRkv8VR0v1iC4ubpTbEONS8E8P5MC+kbpzItJRXPrMYphCFcJRv5znfSz7r5/7JwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c7a6yCRG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BAF2C433C7;
+	Tue, 23 Jan 2024 01:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971710;
-	bh=DqAzCTJNdoSYtx29iaH/OZ2uE95Xp6FFehnZBA+JClQ=;
+	s=korg; t=1705971918;
+	bh=eNkmMTjPm4rI0rO009IFX6MEbtFFi5KlDJ8Rf0iMkrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lfKcKiMs+t7wQLDUlQEaxbHfi+fxddCIDG16m9gG1j4ko+IxxBrbnHZZx1kKkQQ4V
-	 cFWKmxz/V+B9LBVmBQ1oUeBZzf195TZt9iwOFONz6qFYvomBK99TR9aDER54/E1DM5
-	 2IStRSdVuKq23GOLfu2ajukaajyUZ+mQSz3cVT7A=
+	b=c7a6yCRGhbWP1UnQ4ediNasWxPsl7mHjMcRim8izCLFmzDeULmv+WiGTcZHOiRM2D
+	 8ylRVJtzyxpK7ahF1fQFjX1RBg6jwToLip1F0UaqLVqJGR7jkTdXXLj9Vx57EgpgW3
+	 /3CYUISHFOpppo+v/Opr2ZOhwoStfcQm9YTsysUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
-Subject: [PATCH 5.10 212/286] usb: dwc: ep0: Update request status in dwc3_ep0_stall_restart
-Date: Mon, 22 Jan 2024 15:58:38 -0800
-Message-ID: <20240122235740.256870168@linuxfoundation.org>
+	David Lechner <dlechner@baylibre.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 351/417] iio: adc: ad9467: dont ignore error codes
+Date: Mon, 22 Jan 2024 15:58:39 -0800
+Message-ID: <20240122235803.956270770@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-commit e9d40b215e38480fd94c66b06d79045717a59e9c upstream.
+[ Upstream commit e072e149cfb827e0ab4cafb0547e9658e35393cd ]
 
-Current implementation blocks the running operations when Plug-out and
-Plug-In is performed continuously, process gets stuck in
-dwc3_thread_interrupt().
+Make sure functions that return errors are not ignored.
 
-Code Flow:
-
-	CPU1
-
-	->Gadget_start
-	->dwc3_interrupt
-	->dwc3_thread_interrupt
-	->dwc3_process_event_buf
-	->dwc3_process_event_entry
-	->dwc3_endpoint_interrupt
-	->dwc3_ep0_interrupt
-	->dwc3_ep0_inspect_setup
-	->dwc3_ep0_stall_and_restart
-
-By this time if pending_list is not empty, it will get the next request
-on the given list and calls dwc3_gadget_giveback which will unmap request
-and call its complete() callback to notify upper layers that it has
-completed. Currently dwc3_gadget_giveback status is set to -ECONNRESET,
-whereas it should be -ESHUTDOWN based on condition if not dwc->connected
-is true.
-
-Cc:  <stable@vger.kernel.org>
-Fixes: d742220b3577 ("usb: dwc3: ep0: giveback requests on stall_and_restart")
-Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
-Link: https://lore.kernel.org/r/20231222094704.20276-1-quic_uaggarwa@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20231207-iio-backend-prep-v2-2-a4a33bc4d70e@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/ep0.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ad9467.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
---- a/drivers/usb/dwc3/ep0.c
-+++ b/drivers/usb/dwc3/ep0.c
-@@ -236,7 +236,10 @@ static void dwc3_ep0_stall_and_restart(s
- 		struct dwc3_request	*req;
+diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+index 3e8d1e8fda07..eefd5ed7216c 100644
+--- a/drivers/iio/adc/ad9467.c
++++ b/drivers/iio/adc/ad9467.c
+@@ -162,9 +162,10 @@ static int ad9467_reg_access(struct adi_axi_adc_conv *conv, unsigned int reg,
  
- 		req = next_request(&dep->pending_list);
--		dwc3_gadget_giveback(dep, req, -ECONNRESET);
-+		if (!dwc->connected)
-+			dwc3_gadget_giveback(dep, req, -ESHUTDOWN);
-+		else
-+			dwc3_gadget_giveback(dep, req, -ECONNRESET);
+ 	if (readval == NULL) {
+ 		ret = ad9467_spi_write(spi, reg, writeval);
+-		ad9467_spi_write(spi, AN877_ADC_REG_TRANSFER,
+-				 AN877_ADC_TRANSFER_SYNC);
+-		return ret;
++		if (ret)
++			return ret;
++		return ad9467_spi_write(spi, AN877_ADC_REG_TRANSFER,
++					AN877_ADC_TRANSFER_SYNC);
  	}
  
- 	dwc->ep0state = EP0_SETUP_PHASE;
+ 	ret = ad9467_spi_read(spi, reg);
+@@ -272,10 +273,13 @@ static int ad9467_get_scale(struct adi_axi_adc_conv *conv, int *val, int *val2)
+ 	const struct ad9467_chip_info *info1 = to_ad9467_chip_info(info);
+ 	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
+ 	unsigned int i, vref_val;
++	int ret;
+ 
+-	vref_val = ad9467_spi_read(st->spi, AN877_ADC_REG_VREF);
++	ret = ad9467_spi_read(st->spi, AN877_ADC_REG_VREF);
++	if (ret < 0)
++		return ret;
+ 
+-	vref_val &= info1->vref_mask;
++	vref_val = ret & info1->vref_mask;
+ 
+ 	for (i = 0; i < info->num_scales; i++) {
+ 		if (vref_val == info->scale_table[i][1])
+@@ -296,6 +300,7 @@ static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
+ 	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
+ 	unsigned int scale_val[2];
+ 	unsigned int i;
++	int ret;
+ 
+ 	if (val != 0)
+ 		return -EINVAL;
+@@ -305,11 +310,13 @@ static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
+ 		if (scale_val[0] != val || scale_val[1] != val2)
+ 			continue;
+ 
+-		ad9467_spi_write(st->spi, AN877_ADC_REG_VREF,
+-				 info->scale_table[i][1]);
+-		ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
+-				 AN877_ADC_TRANSFER_SYNC);
+-		return 0;
++		ret = ad9467_spi_write(st->spi, AN877_ADC_REG_VREF,
++				       info->scale_table[i][1]);
++		if (ret < 0)
++			return ret;
++
++		return ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
++					AN877_ADC_TRANSFER_SYNC);
+ 	}
+ 
+ 	return -EINVAL;
+-- 
+2.43.0
+
 
 
 
