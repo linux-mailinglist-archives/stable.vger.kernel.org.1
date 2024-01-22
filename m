@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-14212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3C59837FFC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40C1B83847F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A783A28D2BE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1A981F292C0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C68212CDBD;
-	Tue, 23 Jan 2024 00:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346596EB52;
+	Tue, 23 Jan 2024 02:03:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AfA9MD77"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMippKeV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF45E12CDB7;
-	Tue, 23 Jan 2024 00:58:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F6D6DD10;
+	Tue, 23 Jan 2024 02:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971485; cv=none; b=JnubScalgK/+tbq/KM9gB3k5vGcuXOEssqV5WTzWGEVXiK5ryWD//y14lTbgjQpU5+mrUQZBhSTt3uRuXZe/jmEFr526mRLa5LsF5ZeUi5i7bMTih9KCsK9ZwMxBRNuhvyYk1w+cN15qduWRK86k7J8qLcjpAgl2HJdu7ackCZI=
+	t=1705975407; cv=none; b=JXyr0Neveqldv6EMd/8f7SEOM7IKJN4GhPCunBwtu2Udbf7rtz1+S2LnmaTVT3HVRkYAMNK4JQcKY9p4QJnGFEUfJJ/YFIgQ8x3fTn/wE2NKylv4R0RMFlk2Me2ClCHjOnAGBgq2qVaWB2Y+WaBX1G1y6LWmi9t2SIjlWRyKBIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971485; c=relaxed/simple;
-	bh=IXZat+ICceP8js8QlRcXyIRc5P48P3xXZt9V1q2Sh5A=;
+	s=arc-20240116; t=1705975407; c=relaxed/simple;
+	bh=X20E/BumwcPFD+RuWLQ+35/CaHjmYPB0NlGZ6Oc69p8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=an2v9crForUkNGslvIcwxiWukaiOnFbVMv/iiB0V6MXU5oYms6NNN1pZ6jMqSHvUAY/txrZDe8tRXOgreez232Wcc6qtJWMhlfvForqDxO1jOVUnVvKGMGHRWviXkspej3gKxavC0lrFSSrpR26dAr7YQBh8hQJvYzHD+n0mlwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AfA9MD77; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBE59C433C7;
-	Tue, 23 Jan 2024 00:58:03 +0000 (UTC)
+	 MIME-Version; b=YIE1Fy9zsMQ5i2n5mLKMLfoquVbbtNviWr29Jw6YTMfyV3kGDQAwuRA5FcJPEdaVqiFjdpn72/sgD7oRYOjrPv+mTyXG5Io3DTPPmuoamqzPitJN8Hm8HW0Iphvf3wWVDs5f7DqU5Z7inBUs/cvdDisw0Xd7N7x9sqr5VXeKUuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMippKeV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7C1C433B1;
+	Tue, 23 Jan 2024 02:03:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971484;
-	bh=IXZat+ICceP8js8QlRcXyIRc5P48P3xXZt9V1q2Sh5A=;
+	s=korg; t=1705975406;
+	bh=X20E/BumwcPFD+RuWLQ+35/CaHjmYPB0NlGZ6Oc69p8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AfA9MD77ArGqTxkofL0rBAN9WcctFv8pV3523JS4aybT0KXxpY5wF7zc2xvI7HcsD
-	 wPM8sMHSbO3v6qGC+h5r3uh4npneCuLvAcPom2qxqPOtghufCn6GEv44L2mh7/5T0p
-	 UspCWefqJklq6g4wTaZmDLZQhytQmwAszp2LSjTI=
+	b=bMippKeVn/tsfF2kcVszEAUTtjsoM9ZYv6EJzwqG17uq09jLeOThpGIC9UChQ9Qid
+	 9A+rF7q5eoydMRdxZWVCF3+mVFz+I0x/PDc6+hPELiSRyTEP/a7DVZQoG3LBldGVh0
+	 tDo6fQcDcsQmdvMrt8NmWKW+ZwsLwZNfVozynXZk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 6.1 250/417] binder: fix async space check for 0-sized buffers
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.6 367/583] usb: cdns3: Fix uvc fail when DMA cross 4k boundery since sg enabled
 Date: Mon, 22 Jan 2024 15:56:58 -0800
-Message-ID: <20240122235800.535725245@linuxfoundation.org>
+Message-ID: <20240122235823.245505318@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +60,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 3091c21d3e9322428691ce0b7a0cfa9c0b239eeb upstream.
+commit 40c304109e866a7dc123661a5c8ca72f6b5e14e0 upstream.
 
-Move the padding of 0-sized buffers to an earlier stage to account for
-this round up during the alloc->free_async_space check.
+Supposed DMA cross 4k bounder problem should be fixed at DEV_VER_V2, but
+still met problem when do ISO transfer if sg enabled.
 
-Fixes: 74310e06be4d ("android: binder: Move buffer out of area shared with user space")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-5-cmllamas@google.com
+Data pattern likes below when sg enabled, package size is 1k and mult is 2
+	[UVC Header(8B) ] [data(3k - 8)] ...
+
+The received data at offset 0xd000 will get 0xc000 data, len 0x70. Error
+happen position as below pattern:
+	0xd000: wrong
+	0xe000: wrong
+	0xf000: correct
+	0x10000: wrong
+	0x11000: wrong
+	0x12000: correct
+	...
+
+To avoid DMA cross 4k bounder at ISO transfer, reduce burst len according
+to start DMA address's alignment.
+
+Cc:  <stable@vger.kernel.org>
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20231224153816.1664687-4-Frank.Li@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/android/binder_alloc.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/usb/cdns3/cdns3-gadget.c |   32 +++++++++++++++++++++++++++++++-
+ 1 file changed, 31 insertions(+), 1 deletion(-)
 
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -407,6 +407,10 @@ static struct binder_buffer *binder_allo
- 				alloc->pid, extra_buffers_size);
- 		return ERR_PTR(-EINVAL);
- 	}
-+
-+	/* Pad 0-size buffers so they get assigned unique addresses */
-+	size = max(size, sizeof(void *));
-+
- 	if (is_async &&
- 	    alloc->free_async_space < size + sizeof(struct binder_buffer)) {
- 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
-@@ -415,9 +419,6 @@ static struct binder_buffer *binder_allo
- 		return ERR_PTR(-ENOSPC);
- 	}
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -1120,6 +1120,7 @@ static int cdns3_ep_run_transfer(struct
+ 	u32 togle_pcs = 1;
+ 	int sg_iter = 0;
+ 	int num_trb_req;
++	int trb_burst;
+ 	int num_trb;
+ 	int address;
+ 	u32 control;
+@@ -1242,7 +1243,36 @@ static int cdns3_ep_run_transfer(struct
+ 			total_tdl += DIV_ROUND_UP(length,
+ 					       priv_ep->endpoint.maxpacket);
  
--	/* Pad 0-size buffers so they get assigned unique addresses */
--	size = max(size, sizeof(void *));
--
- 	while (n) {
- 		buffer = rb_entry(n, struct binder_buffer, rb_node);
- 		BUG_ON(!buffer->free);
+-		trb->length |= cpu_to_le32(TRB_BURST_LEN(priv_ep->trb_burst_size) |
++		trb_burst = priv_ep->trb_burst_size;
++
++		/*
++		 * Supposed DMA cross 4k bounder problem should be fixed at DEV_VER_V2, but still
++		 * met problem when do ISO transfer if sg enabled.
++		 *
++		 * Data pattern likes below when sg enabled, package size is 1k and mult is 2
++		 *       [UVC Header(8B) ] [data(3k - 8)] ...
++		 *
++		 * The received data at offset 0xd000 will get 0xc000 data, len 0x70. Error happen
++		 * as below pattern:
++		 *	0xd000: wrong
++		 *	0xe000: wrong
++		 *	0xf000: correct
++		 *	0x10000: wrong
++		 *	0x11000: wrong
++		 *	0x12000: correct
++		 *	...
++		 *
++		 * But it is still unclear about why error have not happen below 0xd000, it should
++		 * cross 4k bounder. But anyway, the below code can fix this problem.
++		 *
++		 * To avoid DMA cross 4k bounder at ISO transfer, reduce burst len according to 16.
++		 */
++		if (priv_ep->type == USB_ENDPOINT_XFER_ISOC && priv_dev->dev_ver <= DEV_VER_V2)
++			if (ALIGN_DOWN(trb->buffer, SZ_4K) !=
++			    ALIGN_DOWN(trb->buffer + length, SZ_4K))
++				trb_burst = 16;
++
++		trb->length |= cpu_to_le32(TRB_BURST_LEN(trb_burst) |
+ 					TRB_LEN(length));
+ 		pcs = priv_ep->pcs ? TRB_CYCLE : 0;
+ 
 
 
 
