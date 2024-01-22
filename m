@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-13482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EC4F837C45
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0E81838453
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71B5B1C2191B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD01BB2AA0A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AA981FA3;
-	Tue, 23 Jan 2024 00:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AB762A17;
+	Tue, 23 Jan 2024 01:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I83vm6af"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AfAZHUTq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A0A623C6;
-	Tue, 23 Jan 2024 00:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401D362A0E;
+	Tue, 23 Jan 2024 01:56:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969563; cv=none; b=dNZtS805OWz44w0tWLT8d3NHvgi06wunnve5jAgaXIm4FuPMFCVnEeEcXnJPqKdz/O7DwdD8RPL0Vg5gZaZd7quIS1T8x3D1WJV3p3/TeuDLCI0bMj2wEHpfa1qxMUlQ7aDlp72UOS2Gxq7QUsP2Y33Vn43pHRWM9XOF3rTJaoM=
+	t=1705974982; cv=none; b=qT1onfZKUN7oFKh0rzzQc9v8jD8G4DgCtZodiZp2Fwlvwzd09fAyUux4N9rYMu0vP/bPfdm7HNbywcCTzYyMIAoOnyRIh6uWNvy3HAgFpodMcLKkNhk8XijQyd+M3SlY+XnW/RpQM+jd3w1thFs5R3I8gd98jecMx2Hq14i4CrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969563; c=relaxed/simple;
-	bh=91WF/WxJZebtgC8r9HfOFoPdw5QeCsLBHqCptg0N+MQ=;
+	s=arc-20240116; t=1705974982; c=relaxed/simple;
+	bh=1USQWhog3FzJ9o9Z7jdOwAg1PUsfHAAGIaDQMuSReug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pi+Qjm4u3tEoe/vNUta4WwsIDgXTpXBXZZu25W+azwQQ7C40zW2KMSnUB+iDrXh4t1CB9WpAG6OkUwhc7rvHHF+OPxEcpyYK/OYwsvRNw2kW53FJ3XnIx3A44NlJHXzWvc1/AxkNvYrvEl2HAi+u3cwjvnl4XT2MEcYWdg8detc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I83vm6af; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFAE0C433F1;
-	Tue, 23 Jan 2024 00:26:02 +0000 (UTC)
+	 MIME-Version; b=gkrYL1baQC3kgmbW0fwyND1tIyUtmWdjpRMUs0Nmc1h7rUjwyPIBVGjigPqXsDdFlBpK8WGc1KFod1Fpc1BsULsUSOZ3fYyJJgkecqk4c1QoIbodLw0y4rtyMhQkhyQqGp3uVqV0qn0kyB/L38umMQsrS7aTE684jL6+wrTVITk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AfAZHUTq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8560C43390;
+	Tue, 23 Jan 2024 01:56:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969563;
-	bh=91WF/WxJZebtgC8r9HfOFoPdw5QeCsLBHqCptg0N+MQ=;
+	s=korg; t=1705974981;
+	bh=1USQWhog3FzJ9o9Z7jdOwAg1PUsfHAAGIaDQMuSReug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I83vm6afyhYw8OiuaR6KZBmdKS3Vu9rTvnkjYHd0FfN+M0LCBvdmPdeZU5DP9N+Pd
-	 QZ/Zxv94k8/0JlEiafPBw4fhJ4cmeZ42JOHMLjJBmzN+7z2sZht8AI2UHVZSkGSSC3
-	 H9PSid+1BWJg0UPaLD2YavWTmZjRUDXdHWb77FnY=
+	b=AfAZHUTqBpjhvyhKtWRL1L/GxV4VAdefpe2lOaVHFW8qp1o7s5NLLpeVyWVWNrbLS
+	 ekwT/bIcDPYyGMlftQdrlIm5x1iffKV5rF4IM3QdhRAnPYqVF4hsLz5PG9FpfniVDO
+	 P3l9m5hCuhubdQ8eTLmCT3ygmMKDv6IJt8UsFWcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Hsiao Chien Sung <shawn.sung@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Unnathi Chalicheemala <quic_uchalich@quicinc.com>,
+	Satya Durga Srinivasu Prabhala <quic_satyap@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 325/641] drm/mediatek: Remove the redundant driver data for DPI
-Date: Mon, 22 Jan 2024 15:53:49 -0800
-Message-ID: <20240122235828.061864653@linuxfoundation.org>
+Subject: [PATCH 6.6 179/583] soc: qcom: llcc: Fix LLCC_TRP_ATTR2_CFGn offset
+Date: Mon, 22 Jan 2024 15:53:50 -0800
+Message-ID: <20240122235817.491025365@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +65,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsiao Chien Sung <shawn.sung@mediatek.com>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit 8ac6935e5689a491f0bec78fec732722b3dad094 ]
+[ Upstream commit 110cb8d861cc1a040cdab495b22ac436c49d1454 ]
 
-DPI input is in 1T2P mode on both MT8195 and MT8188.
-Remove the redundant driver data to align the settings, or
-the screen will glitch.
+According to documentation, it has increments of 4, not 8.
 
-Fixes: 2847cd7e6403 ("drm/mediatek: Add mt8188 dpi compatibles and platform data")
-
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20231214055847.4936-22-shawn.sung@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: c72ca343f911 ("soc: qcom: llcc: Add v4.1 HW version support")
+Reported-by: Unnathi Chalicheemala <quic_uchalich@quicinc.com>
+Reviewed-by: Satya Durga Srinivasu Prabhala <quic_satyap@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20231012160509.184891-1-abel.vesa@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dpi.c | 16 +---------------
- 1 file changed, 1 insertion(+), 15 deletions(-)
+ drivers/soc/qcom/llcc-qcom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
-index 4e3d9f7b4d8c..beb7d9d08e97 100644
---- a/drivers/gpu/drm/mediatek/mtk_dpi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
-@@ -966,20 +966,6 @@ static const struct mtk_dpi_conf mt8186_conf = {
- 	.csc_enable_bit = CSC_ENABLE,
- };
+diff --git a/drivers/soc/qcom/llcc-qcom.c b/drivers/soc/qcom/llcc-qcom.c
+index 309c12f2d3bb..e877aace1155 100644
+--- a/drivers/soc/qcom/llcc-qcom.c
++++ b/drivers/soc/qcom/llcc-qcom.c
+@@ -46,7 +46,7 @@
+ #define LLCC_TRP_STATUSn(n)           (4 + n * SZ_4K)
+ #define LLCC_TRP_ATTR0_CFGn(n)        (0x21000 + SZ_8 * n)
+ #define LLCC_TRP_ATTR1_CFGn(n)        (0x21004 + SZ_8 * n)
+-#define LLCC_TRP_ATTR2_CFGn(n)        (0x21100 + SZ_8 * n)
++#define LLCC_TRP_ATTR2_CFGn(n)        (0x21100 + SZ_4 * n)
  
--static const struct mtk_dpi_conf mt8188_dpintf_conf = {
--	.cal_factor = mt8195_dpintf_calculate_factor,
--	.max_clock_khz = 600000,
--	.output_fmts = mt8195_output_fmts,
--	.num_output_fmts = ARRAY_SIZE(mt8195_output_fmts),
--	.pixels_per_iter = 4,
--	.input_2pixel = false,
--	.dimension_mask = DPINTF_HPW_MASK,
--	.hvsize_mask = DPINTF_HSIZE_MASK,
--	.channel_swap_shift = DPINTF_CH_SWAP,
--	.yuv422_en_bit = DPINTF_YUV422_EN,
--	.csc_enable_bit = DPINTF_CSC_ENABLE,
--};
--
- static const struct mtk_dpi_conf mt8192_conf = {
- 	.cal_factor = mt8183_calculate_factor,
- 	.reg_h_fre_con = 0xe0,
-@@ -1103,7 +1089,7 @@ static const struct of_device_id mtk_dpi_of_ids[] = {
- 	{ .compatible = "mediatek,mt8173-dpi", .data = &mt8173_conf },
- 	{ .compatible = "mediatek,mt8183-dpi", .data = &mt8183_conf },
- 	{ .compatible = "mediatek,mt8186-dpi", .data = &mt8186_conf },
--	{ .compatible = "mediatek,mt8188-dp-intf", .data = &mt8188_dpintf_conf },
-+	{ .compatible = "mediatek,mt8188-dp-intf", .data = &mt8195_dpintf_conf },
- 	{ .compatible = "mediatek,mt8192-dpi", .data = &mt8192_conf },
- 	{ .compatible = "mediatek,mt8195-dp-intf", .data = &mt8195_dpintf_conf },
- 	{ /* sentinel */ },
+ #define LLCC_TRP_SCID_DIS_CAP_ALLOC   0x21f00
+ #define LLCC_TRP_PCB_ACT              0x21f04
 -- 
 2.43.0
 
