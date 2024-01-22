@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F5D0837FFD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0388838596
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:44:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD795B26635
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09959B2D6CB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ABE412CD86;
-	Tue, 23 Jan 2024 00:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654BA745E3;
+	Tue, 23 Jan 2024 02:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RMco6nuP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNmUhfL5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDAE56281D;
-	Tue, 23 Jan 2024 00:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E2C745D6;
+	Tue, 23 Jan 2024 02:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971447; cv=none; b=SGb5sXGslwCxAhJNxbW2A0dczHaXniYQnXFVSSK9+sqH4aB7u93BfS5edBHoFri7e0W+Oy/2f1zFLSKe+3wVbQz0DODCZitk+/juQDssrcwKbr7XpKpt5D38N3Wi2UYMCauARmjy1Sl3vTaZncO95/xNrsxcO4OlFVqO5bM2Whs=
+	t=1705975451; cv=none; b=Zmt9WgNK5pnPt6oz6FCxCpnmrbG0Xwl8Yrso6TwBuci7XJY5pW14B8pM5pvFHwOu7riVEd8nvzUx1vZInmDYx7f4hAMwUUDQRZ1Hl5mAbjgB+/a5a2ZTnIn6oWHgpkYu8QM2HkYVKpKfiQBPCffZJrRmIxsZ+oVe42NaMCsdAa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971447; c=relaxed/simple;
-	bh=3v0Yy4IJuhdJ8657qpAWhs0MM4z4BPoy1c70cJLPTAM=;
+	s=arc-20240116; t=1705975451; c=relaxed/simple;
+	bh=HG4d6VYL8mboTzAD3d7PfRGJ5csbWhf5wuyaWUVtD0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oEcO/cKSbuGaBz/u0IJc93NuL2Dr89uzJeuJNR4JZlseHdCxIGOQIlThdM9TkNOZhs9P9buX2odCR9B2pnlA7u0nqh+L6RHoKeWBHmCKF9YcbHz4MmZOtjmsKWzrjj2SYVzN9IXjupMcqL9Xst0yMfGIxiAngpF4XIItFFc3uSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RMco6nuP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9B2C433C7;
-	Tue, 23 Jan 2024 00:57:26 +0000 (UTC)
+	 MIME-Version; b=WQDmldxsJjC5bT6Eve0WzpGBlu67SkLne0w9x1m6qd3dbXmgvEqid0tQ2vKwuHxX1uiozFuIU6UcM4VLSBDSrvFdbvQTA2LJ1CfSBUx00cBkI35mp86wU0KDEkhfttaAZcQGAwDgepGQ6UUgsnady2rBfrxUUnivk8fB45ywUts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNmUhfL5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE27C433F1;
+	Tue, 23 Jan 2024 02:04:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971447;
-	bh=3v0Yy4IJuhdJ8657qpAWhs0MM4z4BPoy1c70cJLPTAM=;
+	s=korg; t=1705975451;
+	bh=HG4d6VYL8mboTzAD3d7PfRGJ5csbWhf5wuyaWUVtD0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RMco6nuPNIfWxklppWzLuLl9O3SqPjtafVgBaeRF6Vj/LiDe/y9tYa8vJs6CdUrZ4
-	 ASx0OG6zUq39LItLZj2Ap70R98WZdBiRICDkFwTJ42UdX4D6v/lIxs54VXwhDEvIYT
-	 6Rpto/uAdmOhQwtSX4iAoIH3TYs5BJP+e2c5/knY=
+	b=hNmUhfL5TWPlF3eexanbvJ29zRg8AAUxr5BqrGus5dKw6hfF3iVYgdL/UQzeZHtrV
+	 RVg4/SjF6gMR+7GjNn8WpPD0P55nlytNr8Gvm7SrEcwke/OSCBhZbWXePGhyy7JK5h
+	 iGnUxL7sZZKEJMCYtqDPV5StpGzoeNQV6BZNeox4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 152/286] drm/radeon/r600_cs: Fix possible int overflows in r600_cs_check_reg()
+	Song Liu <song@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	kernel test robot <lkp@intel.com>,
+	Bart Van Assche <bvanassche@acm.org>
+Subject: [PATCH 6.6 407/583] md/raid1: Use blk_opf_t for read and write operations
 Date: Mon, 22 Jan 2024 15:57:38 -0800
-Message-ID: <20240122235738.011286961@linuxfoundation.org>
+Message-ID: <20240122235824.432440352@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 39c960bbf9d9ea862398759e75736cfb68c3446f ]
+commit 7dab24554dedd4e6f408af8eb2d25c89997a6a1f upstream.
 
-While improbable, there may be a chance of hitting integer
-overflow when the result of radeon_get_ib_value() gets shifted
-left.
+Use the type blk_opf_t for read and write operations instead of int. This
+patch does not affect the generated code but fixes the following sparse
+warning:
 
-Avoid it by casting one of the operands to larger data type (u64).
+drivers/md/raid1.c:1993:60: sparse: sparse: incorrect type in argument 5 (different base types)
+     expected restricted blk_opf_t [usertype] opf
+     got int rw
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
-
-Fixes: 1729dd33d20b ("drm/radeon/kms: r600 CS parser fixes")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Song Liu <song@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Fixes: 3c5e514db58f ("md/raid1: Use the new blk_opf_t type")
+Cc: stable@vger.kernel.org # v6.0+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202401080657.UjFnvQgX-lkp@intel.com/
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240108001223.23835-1-bvanassche@acm.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/radeon/r600_cs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/raid1.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/r600_cs.c b/drivers/gpu/drm/radeon/r600_cs.c
-index 390a9621604a..1e6ad9daff53 100644
---- a/drivers/gpu/drm/radeon/r600_cs.c
-+++ b/drivers/gpu/drm/radeon/r600_cs.c
-@@ -1276,7 +1276,7 @@ static int r600_cs_check_reg(struct radeon_cs_parser *p, u32 reg, u32 idx)
- 			return -EINVAL;
+--- a/drivers/md/raid1.c
++++ b/drivers/md/raid1.c
+@@ -1983,12 +1983,12 @@ static void end_sync_write(struct bio *b
+ }
+ 
+ static int r1_sync_page_io(struct md_rdev *rdev, sector_t sector,
+-			   int sectors, struct page *page, int rw)
++			   int sectors, struct page *page, blk_opf_t rw)
+ {
+ 	if (sync_page_io(rdev, sector, sectors << 9, page, rw, false))
+ 		/* success */
+ 		return 1;
+-	if (rw == WRITE) {
++	if (rw == REQ_OP_WRITE) {
+ 		set_bit(WriteErrorSeen, &rdev->flags);
+ 		if (!test_and_set_bit(WantReplacement,
+ 				      &rdev->flags))
+@@ -2105,7 +2105,7 @@ static int fix_sync_read_error(struct r1
+ 			rdev = conf->mirrors[d].rdev;
+ 			if (r1_sync_page_io(rdev, sect, s,
+ 					    pages[idx],
+-					    WRITE) == 0) {
++					    REQ_OP_WRITE) == 0) {
+ 				r1_bio->bios[d]->bi_end_io = NULL;
+ 				rdev_dec_pending(rdev, mddev);
+ 			}
+@@ -2120,7 +2120,7 @@ static int fix_sync_read_error(struct r1
+ 			rdev = conf->mirrors[d].rdev;
+ 			if (r1_sync_page_io(rdev, sect, s,
+ 					    pages[idx],
+-					    READ) != 0)
++					    REQ_OP_READ) != 0)
+ 				atomic_add(s, &rdev->corrected_errors);
  		}
- 		tmp = (reg - CB_COLOR0_BASE) / 4;
--		track->cb_color_bo_offset[tmp] = radeon_get_ib_value(p, idx) << 8;
-+		track->cb_color_bo_offset[tmp] = (u64)radeon_get_ib_value(p, idx) << 8;
- 		ib[idx] += (u32)((reloc->gpu_offset >> 8) & 0xffffffff);
- 		track->cb_color_base_last[tmp] = ib[idx];
- 		track->cb_color_bo[tmp] = reloc->robj;
-@@ -1303,7 +1303,7 @@ static int r600_cs_check_reg(struct radeon_cs_parser *p, u32 reg, u32 idx)
- 					"0x%04X\n", reg);
- 			return -EINVAL;
- 		}
--		track->htile_offset = radeon_get_ib_value(p, idx) << 8;
-+		track->htile_offset = (u64)radeon_get_ib_value(p, idx) << 8;
- 		ib[idx] += (u32)((reloc->gpu_offset >> 8) & 0xffffffff);
- 		track->htile_bo = reloc->robj;
- 		track->db_dirty = true;
--- 
-2.43.0
-
+ 		sectors -= s;
+@@ -2332,7 +2332,7 @@ static void fix_read_error(struct r1conf
+ 				atomic_inc(&rdev->nr_pending);
+ 				rcu_read_unlock();
+ 				r1_sync_page_io(rdev, sect, s,
+-						conf->tmppage, WRITE);
++						conf->tmppage, REQ_OP_WRITE);
+ 				rdev_dec_pending(rdev, mddev);
+ 			} else
+ 				rcu_read_unlock();
+@@ -2349,7 +2349,7 @@ static void fix_read_error(struct r1conf
+ 				atomic_inc(&rdev->nr_pending);
+ 				rcu_read_unlock();
+ 				if (r1_sync_page_io(rdev, sect, s,
+-						    conf->tmppage, READ)) {
++						conf->tmppage, REQ_OP_READ)) {
+ 					atomic_add(s, &rdev->corrected_errors);
+ 					pr_info("md/raid1:%s: read error corrected (%d sectors at %llu on %pg)\n",
+ 						mdname(mddev), s,
 
 
 
