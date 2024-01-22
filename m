@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-14300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6E9B838059
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28463837E13
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7BCF1C2969D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD98B1F29CBF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B477566B58;
-	Tue, 23 Jan 2024 01:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6CD355C34;
+	Tue, 23 Jan 2024 00:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FihFfpOH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYkJb7FP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7484066B52;
-	Tue, 23 Jan 2024 01:01:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FE953E16;
+	Tue, 23 Jan 2024 00:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971676; cv=none; b=urLQ12sSTCf9dPSYPxfFbjiLr+3TykXv/4YyyU9ZOOQGUIHTVs67uQTRuYijAph/2kXSU00ce3BJ3rD4WSp7ivKt/xbBkpKcvn51sRxh76NJOn9UonrbpWr6JSXyEJMXBs8MoAug3jfGrvgjAOme/7U6K82DYLmY1cq4TQtd/hI=
+	t=1705970345; cv=none; b=su145MB/3BbasXWDkyN4hT2S6VNMrKdHmn2gmTq6c2mu/jpb1atQz0uZ2M0c/+5VqV8vgS/Jbvr6mrKrawsS6Io5V/A59Qidb8Ky64yxTND95T8ysVL+l94SiWKGGfezhSd/NM/f26QuOqGLjA6B72723b7I3OLIsZC/wTcrTSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971676; c=relaxed/simple;
-	bh=dUkZz05+ZX5lW6tS0AJPqeuK4XMjFSSqq58ywjKLLQA=;
+	s=arc-20240116; t=1705970345; c=relaxed/simple;
+	bh=sUrPH9xjy85NwwGk0TWQGgi/8bQ5RMY7dDdSvZ95eF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CiNdQX77gMjfZluLX5ITiu0bpxILTJWg6sbT3LPvnbzsSz+gT1D0/WMxe8KLcaRRKTEAVI9QohKOekykBhKQuDQ6/Ol0Ro3geP7Z+cZteyS+haD/VQ8ubQnMlbhX6dlQ5FZWz72iDTH8e2JDE7qPEVqGrkcM/Z+eTuHhR1JIGug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FihFfpOH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2171AC433C7;
-	Tue, 23 Jan 2024 01:01:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=d9oI5iKHF9IywjpUlxO9PgRxFxWUEvptf7tiw8q2WL2HyI4JLciXn8Irl8QQwLNdT2l/1pNEKvU7SJdfWivzt+7vf+Hpbmw/feevBH6iEjvlK3EwTI5QPt4xhq1how7Gj0PDLLsx2R17dDSjl5qUo9bin8v4lwnR+BEcjXnJHHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYkJb7FP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10CC6C433F1;
+	Tue, 23 Jan 2024 00:39:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971676;
-	bh=dUkZz05+ZX5lW6tS0AJPqeuK4XMjFSSqq58ywjKLLQA=;
+	s=korg; t=1705970345;
+	bh=sUrPH9xjy85NwwGk0TWQGgi/8bQ5RMY7dDdSvZ95eF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FihFfpOHkLBiV3J7CYWSaqB1WsEyOVyPOm4FMhC3RWF6NdX6CJF3FCpOxkC0/uARi
-	 OukKN8wWno7GI1MUFa1QsbndEkI9HbQH3c8O8yGf6rmtvOu4gIDT2T5NjpXvDPKK47
-	 gkuxqMLnBK6OuAAxZtilwmaGCRkU9lkZBox621V8=
+	b=JYkJb7FPi4CnU9Ux5YWp3pHKOcgmzgKS27QydBdBGxcX/z3ZZGVMK9iklY55PlG8y
+	 2i8/E6jjxgwhgnboSfY3UnZSur66tnyY0T0gxAnaSfAGXy16HlL2hBoM75pEwX8xK5
+	 3TjyNaK2rPbfm9vvPXcDNc6Qnb28YBeJKW6qgzbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lei he <helei.sig11@bytedance.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Gonglei <arei.gonglei@huawei.com>
-Subject: [PATCH 5.10 203/286] virtio-crypto: fix memory-leak
+	Nikita Yushchenko <nikita.yoush@cogentembedded.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 605/641] net: ravb: Fix dma_addr_t truncation in error case
 Date: Mon, 22 Jan 2024 15:58:29 -0800
-Message-ID: <20240122235739.936869557@linuxfoundation.org>
+Message-ID: <20240122235837.173414355@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,81 +63,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: lei he <helei.sig11@bytedance.com>
+From: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
 
-commit 1bedcf22c081a6e9943f09937b2da8d3ef52d20d upstream.
+[ Upstream commit e327b2372bc0f18c30433ac40be07741b59231c5 ]
 
-Fix memory-leak for virtio-crypto akcipher request, this problem is
-introduced by 59ca6c93387d3(virtio-crypto: implement RSA algorithm).
-The leak can be reproduced and tested with the following script
-inside virtual machine:
+In ravb_start_xmit(), ravb driver uses u32 variable to store result of
+dma_map_single() call. Since ravb hardware has 32-bit address fields in
+descriptors, this works properly when mapping is successful - it is
+platform's job to provide mapping addresses that fit into hardware
+limitations.
 
-#!/bin/bash
+However, in failure case dma_map_single() returns DMA_MAPPING_ERROR
+constant that is 64-bit when dma_addr_t is 64-bit. Storing this constant
+in u32 leads to truncation, and further call to dma_mapping_error()
+fails to notice the error.
 
-LOOP_TIMES=10000
+Fix that by storing result of dma_map_single() in a dma_addr_t
+variable.
 
-# required module: pkcs8_key_parser, virtio_crypto
-modprobe pkcs8_key_parser # if CONFIG_PKCS8_PRIVATE_KEY_PARSER=m
-modprobe virtio_crypto # if CONFIG_CRYPTO_DEV_VIRTIO=m
-rm -rf /tmp/data
-dd if=/dev/random of=/tmp/data count=1 bs=230
-
-# generate private key and self-signed cert
-openssl req -nodes -x509 -newkey rsa:2048 -keyout key.pem \
-		-outform der -out cert.der  \
-		-subj "/C=CN/ST=GD/L=SZ/O=vihoo/OU=dev/CN=always.com/emailAddress=yy@always.com"
-# convert private key from pem to der
-openssl pkcs8 -in key.pem -topk8 -nocrypt -outform DER -out key.der
-
-# add key
-PRIV_KEY_ID=`cat key.der | keyctl padd asymmetric test_priv_key @s`
-echo "priv key id = "$PRIV_KEY_ID
-PUB_KEY_ID=`cat cert.der | keyctl padd asymmetric test_pub_key @s`
-echo "pub key id = "$PUB_KEY_ID
-
-# query key
-keyctl pkey_query $PRIV_KEY_ID 0
-keyctl pkey_query $PUB_KEY_ID 0
-
-# here we only run pkey_encrypt becasuse it is the fastest interface
-function bench_pub() {
-	keyctl pkey_encrypt $PUB_KEY_ID 0 /tmp/data enc=pkcs1 >/tmp/enc.pub
-}
-
-# do bench_pub in loop to obtain the memory leak
-for (( i = 0; i < ${LOOP_TIMES}; ++i )); do
-	bench_pub
-done
-
-Signed-off-by: lei he <helei.sig11@bytedance.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Gonglei <arei.gonglei@huawei.com>
-Message-Id: <20220919075158.3625-1-helei.sig11@bytedance.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
+Signed-off-by: Nikita Yushchenko <nikita.yoush@cogentembedded.com>
+Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/virtio/virtio_crypto_akcipher_algs.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/renesas/ravb_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/virtio/virtio_crypto_akcipher_algs.c
-+++ b/drivers/crypto/virtio/virtio_crypto_akcipher_algs.c
-@@ -56,6 +56,10 @@ static void virtio_crypto_akcipher_final
- 	struct virtio_crypto_akcipher_request *vc_akcipher_req,
- 	struct akcipher_request *req, int err)
- {
-+	kfree(vc_akcipher_req->src_buf);
-+	kfree(vc_akcipher_req->dst_buf);
-+	vc_akcipher_req->src_buf = NULL;
-+	vc_akcipher_req->dst_buf = NULL;
- 	virtcrypto_clear_request(&vc_akcipher_req->base);
- 
- 	crypto_finalize_akcipher_request(vc_akcipher_req->base.dataq->engine, req, err);
+diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
+index 8649b3e90edb..0e3731f50fc2 100644
+--- a/drivers/net/ethernet/renesas/ravb_main.c
++++ b/drivers/net/ethernet/renesas/ravb_main.c
+@@ -1949,7 +1949,7 @@ static netdev_tx_t ravb_start_xmit(struct sk_buff *skb, struct net_device *ndev)
+ 	struct ravb_tstamp_skb *ts_skb;
+ 	struct ravb_tx_desc *desc;
+ 	unsigned long flags;
+-	u32 dma_addr;
++	dma_addr_t dma_addr;
+ 	void *buffer;
+ 	u32 entry;
+ 	u32 len;
+-- 
+2.43.0
+
 
 
 
