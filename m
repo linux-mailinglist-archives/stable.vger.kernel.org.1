@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-14791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2234838297
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95312837BDA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 037061C284D8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E0552945C3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4505D751;
-	Tue, 23 Jan 2024 01:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37CD01552E1;
+	Tue, 23 Jan 2024 00:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROg3yAEB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q6EzpsIP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74EFA5D8E1;
-	Tue, 23 Jan 2024 01:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDBC154C05;
+	Tue, 23 Jan 2024 00:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974387; cv=none; b=Jl233tEx0pzOkBdmp0FhuZh2PS/IrRaph583rjq2cDwr2VsO2QvAtOtdzWSlLII76CcgY3LR4HmyhSLM96Nep4XVWhkogY8F1cgDryXDy2awajtO/jooHFK3lw6M2oKNhZqipOsqaltpYpiwuBdgnJH+PfMlZOIys3aS98HFsas=
+	t=1705969409; cv=none; b=S+YeJakbUiiPBw10nA1wxpm5CCi0zAKMSa0UmsYW611hzG2vkduMuCh9BezYFP/RtCW/aAHjc/tNX14O6ODQgNHssF2NdtfbTcBZP5M52iTHKxr1zzF29bUZ4Tm6DBKIYzM4m1mexeOyT0SAfTYD8UUiDxiaNFbBVmh/NJ2DENk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974387; c=relaxed/simple;
-	bh=0brcSGPxs2IeSjSL6ezBrIot1BiY2E9GZzAg5AUNw7A=;
+	s=arc-20240116; t=1705969409; c=relaxed/simple;
+	bh=xXId+G/0Qmp5fIY4U1xAdUki4Z3RhXAsp4U+6WwNMQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lEFRfyeKrMdp/GQviZ3AGyhmI/ti1YbKkX3iJ30TE02rc6oOLNnOP+LxvfOE5ye4wEj2w2zp/qJV5L0YtR+ebTo0rFb/+W5ahwNDirRFtozEmvHs5kaiU6K7RbXlRDYk6RIeJtegbVgv6AWQUI+ZW4+N4M/An+gmVlNvN5DVmpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROg3yAEB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D97C433A6;
-	Tue, 23 Jan 2024 01:46:27 +0000 (UTC)
+	 MIME-Version; b=E7P0AyOWUQloWuhGfKe5TvMz98KvPWMkgPHmbF551ap6tqv2K64vIiZBE6r6z9k53B5cD+nBk1qP1fst3ICpZ9ZPvtywZPplbKVclbUYegFIiZ4K6ZFs7yk5GUiOujsQsaMKl+bX/CorPkZ5/QWmAcW5OS+XbymT6MmF/yIK+VI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q6EzpsIP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE1BC433F1;
+	Tue, 23 Jan 2024 00:23:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974387;
-	bh=0brcSGPxs2IeSjSL6ezBrIot1BiY2E9GZzAg5AUNw7A=;
+	s=korg; t=1705969408;
+	bh=xXId+G/0Qmp5fIY4U1xAdUki4Z3RhXAsp4U+6WwNMQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ROg3yAEBlQ+jNf5b/pJaVWaGb6NWvFJuhr465MXkwWSBf5bQriNBdhDACo1mYXSh6
-	 s8Pk983WkxbOaeT9CMebWWlVZVojYYNyjSIvAaWW944YO7dP9N3JZGWvyjwR/NXvrF
-	 0G5V3vl8mZL2tzTgtNuaxydVzTSa4T8clsEA56s4=
+	b=Q6EzpsIPv0ySuM9Bij+kCrOdhhIx5TkLj2Q5S6W4I1HspFGP2IhGyo9C1aQ/ADrTP
+	 Gn4RUTGkw14mhj6o8COTf/ss+seOpZLaGlkZ7jyDUXLPYm7je4sOQO4soe3ppwsNje
+	 OMgLTUvhn7JUdWTKKyAsmlGNpA4C0U3GUHCdOtHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Zhang Ning <zhangn1985@outlook.com>,
+	Andy Yan <andyshrk@163.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/583] pNFS: Fix the pnfs block drivers calculation of layoutget size
+Subject: [PATCH 6.7 227/641] arm64: dts: rockchip: Fix led pinctrl of lubancat 1
 Date: Mon, 22 Jan 2024 15:52:11 -0800
-Message-ID: <20240122235814.603024613@linuxfoundation.org>
+Message-ID: <20240122235825.039568027@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Andy Yan <andyshrk@163.com>
 
-[ Upstream commit 8a6291bf3b0eae1bf26621e6419a91682f2d6227 ]
+[ Upstream commit 8586a5d217ef7bfeee24943c600a8a7890d6f477 ]
 
-Instead of relying on the value of the 'bytes_left' field, we should
-calculate the layout size based on the offset of the request that is
-being written out.
+According to the schematics, the gpio control sys_led is GPIO0_C5.
 
-Reported-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Fixes: 954998b60caa ("NFS: Fix error handling for O_DIRECT write scheduling")
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Tested-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Fixes: 8d94da58de53 ("arm64: dts: rockchip: Add EmbedFire LubanCat 1")
+Reported-by: Zhang Ning <zhangn1985@outlook.com>
+Closes: https://lore.kernel.org/linux-rockchip/OS0P286MB06412D049D8BF7B063D41350CD95A@OS0P286MB0641.JPNP286.PROD.OUTLOOK.COM/T/#u
+Signed-off-by: Andy Yan <andyshrk@163.com>
+Link: https://lore.kernel.org/r/20231225005055.3102743-1-andyshrk@163.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/blocklayout/blocklayout.c | 5 ++---
- fs/nfs/direct.c                  | 5 +++--
- fs/nfs/internal.h                | 2 +-
- fs/nfs/pnfs.c                    | 3 ++-
- 4 files changed, 8 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/blocklayout/blocklayout.c b/fs/nfs/blocklayout/blocklayout.c
-index 1d1d7abc3205..6be13e0ec170 100644
---- a/fs/nfs/blocklayout/blocklayout.c
-+++ b/fs/nfs/blocklayout/blocklayout.c
-@@ -895,10 +895,9 @@ bl_pg_init_write(struct nfs_pageio_descriptor *pgio, struct nfs_page *req)
- 	}
+diff --git a/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts b/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts
+index 1c6d83b47cd2..6ecdf5d28339 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts
+@@ -455,7 +455,7 @@ &pcie2x1 {
+ &pinctrl {
+ 	leds {
+ 		sys_led_pin: sys-status-led-pin {
+-			rockchip,pins = <0 RK_PC7 RK_FUNC_GPIO &pcfg_pull_none>;
++			rockchip,pins = <0 RK_PC5 RK_FUNC_GPIO &pcfg_pull_none>;
+ 		};
+ 	};
  
- 	if (pgio->pg_dreq == NULL)
--		wb_size = pnfs_num_cont_bytes(pgio->pg_inode,
--					      req->wb_index);
-+		wb_size = pnfs_num_cont_bytes(pgio->pg_inode, req->wb_index);
- 	else
--		wb_size = nfs_dreq_bytes_left(pgio->pg_dreq);
-+		wb_size = nfs_dreq_bytes_left(pgio->pg_dreq, req_offset(req));
- 
- 	pnfs_generic_pg_init_write(pgio, req, wb_size);
- 
-diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
-index f6c74f424691..5918c67dae0d 100644
---- a/fs/nfs/direct.c
-+++ b/fs/nfs/direct.c
-@@ -205,9 +205,10 @@ static void nfs_direct_req_release(struct nfs_direct_req *dreq)
- 	kref_put(&dreq->kref, nfs_direct_req_free);
- }
- 
--ssize_t nfs_dreq_bytes_left(struct nfs_direct_req *dreq)
-+ssize_t nfs_dreq_bytes_left(struct nfs_direct_req *dreq, loff_t offset)
- {
--	return dreq->bytes_left;
-+	loff_t start = offset - dreq->io_start;
-+	return dreq->max_count - start;
- }
- EXPORT_SYMBOL_GPL(nfs_dreq_bytes_left);
- 
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 9c9cf764f600..b1fa81c9dff6 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -655,7 +655,7 @@ extern int nfs_sillyrename(struct inode *dir, struct dentry *dentry);
- /* direct.c */
- void nfs_init_cinfo_from_dreq(struct nfs_commit_info *cinfo,
- 			      struct nfs_direct_req *dreq);
--extern ssize_t nfs_dreq_bytes_left(struct nfs_direct_req *dreq);
-+extern ssize_t nfs_dreq_bytes_left(struct nfs_direct_req *dreq, loff_t offset);
- 
- /* nfs4proc.c */
- extern struct nfs_client *nfs4_init_client(struct nfs_client *clp,
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index 84343aefbbd6..9084f156d67b 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -2729,7 +2729,8 @@ pnfs_generic_pg_init_read(struct nfs_pageio_descriptor *pgio, struct nfs_page *r
- 		if (pgio->pg_dreq == NULL)
- 			rd_size = i_size_read(pgio->pg_inode) - req_offset(req);
- 		else
--			rd_size = nfs_dreq_bytes_left(pgio->pg_dreq);
-+			rd_size = nfs_dreq_bytes_left(pgio->pg_dreq,
-+						      req_offset(req));
- 
- 		pgio->pg_lseg =
- 			pnfs_update_layout(pgio->pg_inode, nfs_req_openctx(req),
 -- 
 2.43.0
 
