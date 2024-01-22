@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-14121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC0A8837F96
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F3AE838195
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78E15292BC1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20CA31F23AD8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330296280E;
-	Tue, 23 Jan 2024 00:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F4E107A6;
+	Tue, 23 Jan 2024 01:09:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cfDDhuAo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNLj0HaX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F8762807;
-	Tue, 23 Jan 2024 00:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53D537C;
+	Tue, 23 Jan 2024 01:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971213; cv=none; b=VSGotXjcB/bv16ZwJF+tz5ZTUGAJFxB4YcGTs5Op8NVKe4uEz3co8DsWUjD8N8a2AtWl2zi0JzIwCH+bz60I+MaSIsdBn7C3R1lllTRYrTjDXDEHbERpIQcNpUim+z5YK2F6Gsfh1KTav02UzGJXB8RbG4UY9t58dQ+h+AUgm5U=
+	t=1705972179; cv=none; b=OIIF9bb5z6H0JUK8Pm17JGNNlYMcapdzMKboAXBdxDHbS91fo3pZE90yu0kBOoM9t5FU3fO2RZHw8rIuDb8HsMQigFPK6Qat0EkAwK5qQwpnOHi5ptOB+cBCspuwkOmCz8I5K08DSeqqSv7zkxrnFwee7DMBrMSW/2pQHBE2EsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971213; c=relaxed/simple;
-	bh=YOC1xYfbhCbM2QJsbKk0BU6OP8XBr70VecR5eIqrGdk=;
+	s=arc-20240116; t=1705972179; c=relaxed/simple;
+	bh=5sPpnX0s9FzfZKOalfa+f+a3q5XKW8xG7jEtyBT/Wjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l+Md4mqsvev7st8p+bwd3orEmKUiXfpuAoSrA5vVhYKuWKp3/JXe7OAqEaQWvW8LYgSU6N/b3Lk8McTqS1DqgiO+kMYIoqsUFFz4n8E6YLm/sTphM4k0ycUgiNfK+ZruAqy9Sr1xZfLWujkpPPgbz65tdg4eCrpuiOEzBrcrdJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cfDDhuAo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C116DC433F1;
-	Tue, 23 Jan 2024 00:53:31 +0000 (UTC)
+	 MIME-Version; b=dT8ZKI/tItiMV0Y4E8984v+jvXZpiittqgrOzTRTNAjGZapPmPDibBuyU5sZIka2gahG4gebcLCZKOTHmIyT1XlZleBfRaIRb8asdbCixzAuD78f/q0RZaxI5aWW5Vu5PnGdXYf6MhEtpG+5l6rAsbqUvk43ChsxfIemIM2K2Ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNLj0HaX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D2DC43394;
+	Tue, 23 Jan 2024 01:09:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971212;
-	bh=YOC1xYfbhCbM2QJsbKk0BU6OP8XBr70VecR5eIqrGdk=;
+	s=korg; t=1705972179;
+	bh=5sPpnX0s9FzfZKOalfa+f+a3q5XKW8xG7jEtyBT/Wjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cfDDhuAooJmq0sBHSyc+Cf1wItQrzmV55pThwPrA2M+B/wiKEORB27xMRh1396DOK
-	 Phi7K3dCvu4TRmaA40O0bUsN79kVewzo3w+M4XwpPYbqv8lDad7CfHijMl73ChI/Zy
-	 qnobebNDiuxnIlpUHyEe5TFB0XoSwpEb8RwdFrqo=
+	b=fNLj0HaXGsYrQWv2Pk9CT31eidaSsqhd/wopNlCMZfZPaf+c9I3+SoyP8WK7MlXRk
+	 dASVo3rFc3pc3cBxeErEWXcqxsHHcz30duN+GL2sEe/ix+7z3+H/9hIC0DJkqngTiU
+	 FTs4eRItTW3iQIorW7VP1v69OSugXvhjOODjpwqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 192/417] RDMA/hns: Fix memory leak in free_mr_init()
+Subject: [PATCH 5.15 104/374] fs: indicate request originates from old mount API
 Date: Mon, 22 Jan 2024 15:56:00 -0800
-Message-ID: <20240122235758.574456568@linuxfoundation.org>
+Message-ID: <20240122235748.226496663@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +66,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 288f535951aa81ed674f5e5477ab11b9d9351b8c ]
+[ Upstream commit f67d922edb4e95a4a56d07d5d40a76dd4f23a85b ]
 
-When a reserved QP fails to be created, the memory of the remaining
-created reserved QPs is leaked.
+We already communicate to filesystems when a remount request comes from
+the old mount API as some filesystems choose to implement different
+behavior in the new mount API than the old mount API to e.g., take the
+chance to fix significant API bugs. Allow the same for regular mount
+requests.
 
-Fixes: 70f92521584f ("RDMA/hns: Use the reserved loopback QPs to free MR before destroying MPT")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20231207114231.2872104-6-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: b330966f79fb ("fuse: reject options on reconfigure via fsconfig(2)")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/namespace.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 280a3458bb53..58fbb1d3b7f4 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -2819,6 +2819,10 @@ static int free_mr_alloc_res(struct hns_roce_dev *hr_dev)
- 	return 0;
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 1a9df6afb90b..932986448a98 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2647,7 +2647,12 @@ static int do_remount(struct path *path, int ms_flags, int sb_flags,
+ 	if (IS_ERR(fc))
+ 		return PTR_ERR(fc);
  
- create_failed_qp:
-+	for (i--; i >= 0; i--) {
-+		hns_roce_v2_destroy_qp(&free_mr->rsv_qp[i]->ibqp, NULL);
-+		kfree(free_mr->rsv_qp[i]);
-+	}
- 	hns_roce_destroy_cq(cq, NULL);
- 	kfree(cq);
++	/*
++	 * Indicate to the filesystem that the remount request is coming
++	 * from the legacy mount system call.
++	 */
+ 	fc->oldapi = true;
++
+ 	err = parse_monolithic_mount_data(fc, data);
+ 	if (!err) {
+ 		down_write(&sb->s_umount);
+@@ -2981,6 +2986,12 @@ static int do_new_mount(struct path *path, const char *fstype, int sb_flags,
+ 	if (IS_ERR(fc))
+ 		return PTR_ERR(fc);
  
++	/*
++	 * Indicate to the filesystem that the mount request is coming
++	 * from the legacy mount system call.
++	 */
++	fc->oldapi = true;
++
+ 	if (subtype)
+ 		err = vfs_parse_fs_string(fc, "subtype",
+ 					  subtype, strlen(subtype));
 -- 
 2.43.0
 
