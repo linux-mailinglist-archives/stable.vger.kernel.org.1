@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E99C837E7C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E5CB837C50
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50B91B224DD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:39:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5794D296874
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8D013A270;
-	Tue, 23 Jan 2024 00:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3769715531B;
+	Tue, 23 Jan 2024 00:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PNlGgSoP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2u/EN9eZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D26954BD2;
-	Tue, 23 Jan 2024 00:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB959155316;
+	Tue, 23 Jan 2024 00:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970614; cv=none; b=iRSnwfoFPOD8t7sy/WF2FLzLMyem05iF6ePZKDWwDYGquJrWW4FCTzkPRtcK++vQdcdwWb2XRHy+Xqr54C0xUuNsMa7JAtGMJobliVP2JqTyZC9mwZwYtAqlOS0WldMnrKqij+ZDrujLtKVCJCrwt/6qU6QsJSfR4ETe9660FqQ=
+	t=1705969576; cv=none; b=W2YkEsiIKuZCb67M3IZKPOZD+vLldDXCVLQD8xEMmxhIiInI/uo8fwxfzAMQOqt0jGyAtZytiVKDLD+CY0lzYRhLEBv5d7rrqb4lRVfczIPXhxdZPrm7worAohs8OjQaBtsyKEybbDEQKtmw8k3fm/0eqJ4/1PEu06Zo6pIt7fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970614; c=relaxed/simple;
-	bh=qU4R3fnziwOtK6ccxH8nsBLJyK00c6IW+wFXDc3+tp0=;
+	s=arc-20240116; t=1705969576; c=relaxed/simple;
+	bh=c6uMW6n16CUKl+tgAjmnjUJzR4ZxReQ+c9ndBc+zF84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g+00DMsbqxRhwLZ2MKLK5ErswbQcBOwEF6rRvIwW6u2L8Hi+yIJWHRcGTc9F/d3aizLJNqjuowT5ULTTSklPkdNmiIEgo7jl0NEkL1etsAJndaB45cMIf6vIRgTP0P+tpCb4zP6+4eC5AA3Fyoyr5bbachh4Y+uvac4+v6vAK54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PNlGgSoP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 908CDC43390;
-	Tue, 23 Jan 2024 00:43:33 +0000 (UTC)
+	 MIME-Version; b=ZCX7IbCGul6J1vP83vFdN1Jb6Uomgk2F9jX+sKFEtQEYV/dOulOnpy3gzE973P/lILShJ39EJiW83vFg0EEtC2oq/bMPnydqAo2YJ8tLxr1fOyLwF1gSl3dyHj+xT2gibRePEKo/AYHr1dMxgf57b0kCia4rblJsUUvp6fiNY30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2u/EN9eZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0BDC433F1;
+	Tue, 23 Jan 2024 00:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970614;
-	bh=qU4R3fnziwOtK6ccxH8nsBLJyK00c6IW+wFXDc3+tp0=;
+	s=korg; t=1705969575;
+	bh=c6uMW6n16CUKl+tgAjmnjUJzR4ZxReQ+c9ndBc+zF84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PNlGgSoP3WZtWBCNgdI1FZEaTNpDJS4i8Ym1uDer9lkY1RlTupALJuwsF36uPF9dJ
-	 x3toJr6w7Nl4qAhERq4FVvmtAESG4rhHmtJb8qWYOJ2CVppc5XsuhENVSDdTVkiUaQ
-	 QvvgymE+TPTVpI19vfPAOOaNq91179Rg0dNYaw7Q=
+	b=2u/EN9eZwXJ73uYJ9tvx5U49b0Uo5X5FFpaguGHVz6Hw6r0MGFGgbe0HY+QvpUfKP
+	 2MZZGE1PSvVfOOzHCYUVpKHof+GwD2BAReI9YYAh16mITW4BVGTa1rKJnE1yBruvbb
+	 n82qWJLtRYa3/wLZd1+fZs9yzJH93TIw95BcZ9Vc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Kalle Valo <kvalo@kernel.org>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/417] wifi: plfxlc: check for allocation failure in plfxlc_usb_wreq_async()
+Subject: [PATCH 6.7 332/641] f2fs: fix to check return value of f2fs_recover_xattr_data
 Date: Mon, 22 Jan 2024 15:53:56 -0800
-Message-ID: <20240122235754.060905860@linuxfoundation.org>
+Message-ID: <20240122235828.293368156@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit 40018a8fa9aa63ca5b26e803502138158fb0ff96 ]
+[ Upstream commit 86d7d57a3f096c8349b32a0cd5f6f314e4416a6d ]
 
-Check for if the usb_alloc_urb() failed.
+Should check return value of f2fs_recover_xattr_data in
+__f2fs_setxattr rather than doing invalid retry if error happen.
 
-Fixes: 68d57a07bfe5 ("wireless: add plfxlc driver for pureLiFi X, XL, XC devices")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/e8d4a19a-f251-4101-a89b-607345e938cb@moroto.mountain
+Also just do set_page_dirty in f2fs_recover_xattr_data when
+page is changed really.
+
+Fixes: 50a472bbc79f ("f2fs: do not return EFSCORRUPTED, but try to run online repair")
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/purelifi/plfxlc/usb.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/f2fs/node.c  |  6 +++---
+ fs/f2fs/xattr.c | 11 +++++++----
+ 2 files changed, 10 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/purelifi/plfxlc/usb.c b/drivers/net/wireless/purelifi/plfxlc/usb.c
-index 76d0a778636a..311676c1ece0 100644
---- a/drivers/net/wireless/purelifi/plfxlc/usb.c
-+++ b/drivers/net/wireless/purelifi/plfxlc/usb.c
-@@ -493,9 +493,12 @@ int plfxlc_usb_wreq_async(struct plfxlc_usb *usb, const u8 *buffer,
- 			  void *context)
- {
- 	struct usb_device *udev = interface_to_usbdev(usb->ez_usb);
--	struct urb *urb = usb_alloc_urb(0, GFP_ATOMIC);
-+	struct urb *urb;
- 	int r;
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index 6c7f6a649d27..9b546fd21010 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -2751,11 +2751,11 @@ int f2fs_recover_xattr_data(struct inode *inode, struct page *page)
+ 	f2fs_update_inode_page(inode);
  
-+	urb = usb_alloc_urb(0, GFP_ATOMIC);
-+	if (!urb)
-+		return -ENOMEM;
- 	usb_fill_bulk_urb(urb, udev, usb_sndbulkpipe(udev, EP_DATA_OUT),
- 			  (void *)buffer, buffer_len, complete_fn, context);
+ 	/* 3: update and set xattr node page dirty */
+-	if (page)
++	if (page) {
+ 		memcpy(F2FS_NODE(xpage), F2FS_NODE(page),
+ 				VALID_XATTR_BLOCK_SIZE);
+-
+-	set_page_dirty(xpage);
++		set_page_dirty(xpage);
++	}
+ 	f2fs_put_page(xpage, 1);
  
+ 	return 0;
+diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
+index a8fc2cac6879..f290fe9327c4 100644
+--- a/fs/f2fs/xattr.c
++++ b/fs/f2fs/xattr.c
+@@ -660,11 +660,14 @@ static int __f2fs_setxattr(struct inode *inode, int index,
+ 	here = __find_xattr(base_addr, last_base_addr, NULL, index, len, name);
+ 	if (!here) {
+ 		if (!F2FS_I(inode)->i_xattr_nid) {
++			error = f2fs_recover_xattr_data(inode, NULL);
+ 			f2fs_notice(F2FS_I_SB(inode),
+-				"recover xattr in inode (%lu)", inode->i_ino);
+-			f2fs_recover_xattr_data(inode, NULL);
+-			kfree(base_addr);
+-			goto retry;
++				"recover xattr in inode (%lu), error(%d)",
++					inode->i_ino, error);
++			if (!error) {
++				kfree(base_addr);
++				goto retry;
++			}
+ 		}
+ 		f2fs_err(F2FS_I_SB(inode), "set inode (%lu) has corrupted xattr",
+ 								inode->i_ino);
 -- 
 2.43.0
 
