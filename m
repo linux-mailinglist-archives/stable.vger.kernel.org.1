@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-12895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01FAC8378FF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9779B837A78
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A748F284110
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:26:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB22D1C24103
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D82D32C84;
-	Tue, 23 Jan 2024 00:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC01112CDB5;
+	Tue, 23 Jan 2024 00:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UGKxdRTb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i8Wtxz4g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7C52C1A7;
-	Tue, 23 Jan 2024 00:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C65412CDB0;
+	Tue, 23 Jan 2024 00:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968317; cv=none; b=gdAhDfX8+o8FpfunYxlxXBNnrz6DX5w7d1gdeDjXJ5gbHHi84U3E9SJZixXU22V8dKJLyk6+c6Wmsn0dmorXlhF9dUtU+4mpV9xm1AUL1QpZIHdrUGJZZcmh9iKwNuHmJCr1IuL0FPbjHBxDQlTSOMafWed5+ptEYmKB9u5Yvgs=
+	t=1705968968; cv=none; b=nbNUGJZVLoNGO0sr89BqXfdU6p0VXr5sEpaQEmsYAjG5FVuVOYaYlfdbPi23I7UMzqQe2pdRjxeZLT/9JsazR+M3uE5GR1Vq/pWtCipq2Qg+CNmm0Km8RZAavi9O/YOkMjSr4mzJGJ3C1wphxHAS4+Bxob941+t9WL+tXzZRX/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968317; c=relaxed/simple;
-	bh=xYqTHrniqfLURHdPji1HIMiLr66XOIfXfWEfqPjw3C0=;
+	s=arc-20240116; t=1705968968; c=relaxed/simple;
+	bh=k0jeLEG+zxpCqtNcDHuiD7aO2P9q5Mwf7M/yhPFXRzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XY2O3BYOAzIVQ47muNkCWcroOoVXJfQT0hrbz338PMGLtIYYZ0yL24u2s0O3PoBQPbcPeep7tlRNszJMs7FuuesewXQ22PUQttuWJeL0ymi1IUggFaDsOY71CoDvAvx5UwNPoHfuhaZkETRTHPG3hcQ+WQLlW+A0eIlTQZ4/zJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UGKxdRTb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C94EBC433B1;
-	Tue, 23 Jan 2024 00:05:16 +0000 (UTC)
+	 MIME-Version; b=Bxe1rpMGHnFUjEVXcIS/4/cgNWYfSMp54IZypbcyRnxWRa3cDepVA1HCF0n4AGTgXa4G5aH2dJhRPuekxMmkmOE1WWWfO68n1h+CArLsM7Wu65Xt5I2wAwfE3tAH4GfnDtrphrdEAfOBQ/uxfJIr7T3E4YF/XGJElZh9M5iUM1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i8Wtxz4g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BB6DC43394;
+	Tue, 23 Jan 2024 00:16:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968317;
-	bh=xYqTHrniqfLURHdPji1HIMiLr66XOIfXfWEfqPjw3C0=;
+	s=korg; t=1705968968;
+	bh=k0jeLEG+zxpCqtNcDHuiD7aO2P9q5Mwf7M/yhPFXRzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UGKxdRTbVMd8uEc29Z3VlWlIJeqD86krrXhphYROQdyHMc0ehbcjw8YA4Hr2GmYAI
-	 9tbQCmY3VLFm85nHyzDJ5zKmEaIBOpHrRdXdYmfTOBi/0rl0gbb8Iln5gPWOWoOA6Z
-	 6wBsr9YRuiT7GxxG/AmnitMGnsTGpMhpG6fvZvYA=
+	b=i8Wtxz4gpW6f2oh8SAWPUxAbstVuYaU/n/PoHp9LfYhkfKecpBOD6BKO5bbydqESP
+	 2e2326JsBx2xyAOL9k1/rLCY7CoM7TDWoJK1qpb8Q+PZLatwYu1hmsGfhszLO350NI
+	 s4yXXXFBTB4Y7riFhZ3zaEMlr+Jb19x+XBKrkOAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 078/148] wifi: rtlwifi: rtl8192ce: using calculate_bit_shift()
+Subject: [PATCH 5.4 104/194] netfilter: nf_tables: mark newset as dead on transaction abort
 Date: Mon, 22 Jan 2024 15:57:14 -0800
-Message-ID: <20240122235715.562353187@linuxfoundation.org>
+Message-ID: <20240122235723.701727693@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 3d03e8231031bcc65a48cd88ef9c71b6524ce70b ]
+[ Upstream commit 08e4c8c5919fd405a4d709b4ba43d836894a26eb ]
 
-Using calculate_bit_shift() to replace _rtl92c_phy_calculate_bit_shift().
-And fix the undefined bitwise shift behavior problem.
+If a transaction is aborted, we should mark the to-be-released NEWSET dead,
+just like commit path does for DEL and DESTROYSET commands.
 
-Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-7-suhui@nfschina.com
+In both cases all remaining elements will be released via
+set->ops->destroy().
+
+The existing abort code does NOT post the actual release to the work queue.
+Also the entire __nf_tables_abort() function is wrapped in gc_seq
+begin/end pair.
+
+Therefore, async gc worker will never try to release the pending set
+elements, as gc sequence is always stale.
+
+It might be possible to speed up transaction aborts via work queue too,
+this would result in a race and a possible use-after-free.
+
+So fix this before it becomes an issue.
+
+Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c | 6 +++---
- drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h | 1 -
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ net/netfilter/nf_tables_api.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c
-index 7c6d7fc1ef9a..9f478d8af804 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c
-@@ -61,7 +61,7 @@ u32 rtl92c_phy_query_rf_reg(struct ieee80211_hw *hw,
- 							       rfpath, regaddr);
- 	}
- 
--	bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 
- 	spin_unlock(&rtlpriv->locks.rf_lock);
-@@ -132,7 +132,7 @@ void rtl92ce_phy_set_rf_reg(struct ieee80211_hw *hw,
- 			original_value = _rtl92c_phy_rf_serial_read(hw,
- 								    rfpath,
- 								    regaddr);
--			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data =
- 			    ((original_value & (~bitmask)) |
- 			     (data << bitshift));
-@@ -144,7 +144,7 @@ void rtl92ce_phy_set_rf_reg(struct ieee80211_hw *hw,
- 			original_value = _rtl92c_phy_fw_rf_serial_read(hw,
- 								       rfpath,
- 								       regaddr);
--			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data =
- 			    ((original_value & (~bitmask)) |
- 			     (data << bitshift));
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h
-index 93f3bc0197b4..e084a91e26d9 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h
-@@ -116,7 +116,6 @@ u32 _rtl92c_phy_rf_serial_read(struct ieee80211_hw *hw, enum radio_path rfpath,
- 			       u32 offset);
- u32 _rtl92c_phy_fw_rf_serial_read(struct ieee80211_hw *hw,
- 				  enum radio_path rfpath, u32 offset);
--u32 _rtl92c_phy_calculate_bit_shift(u32 bitmask);
- void _rtl92c_phy_rf_serial_write(struct ieee80211_hw *hw,
- 				 enum radio_path rfpath, u32 offset, u32 data);
- void _rtl92c_phy_fw_rf_serial_write(struct ieee80211_hw *hw,
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 915df77161e1..9bd8ed0b62f1 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -7604,6 +7604,7 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ 				nft_trans_destroy(trans);
+ 				break;
+ 			}
++			nft_trans_set(trans)->dead = 1;
+ 			list_del_rcu(&nft_trans_set(trans)->list);
+ 			break;
+ 		case NFT_MSG_DELSET:
 -- 
 2.43.0
 
