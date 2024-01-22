@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8D8F83809A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:00:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 555CD8384DB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F87C1F2CDC1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:00:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 089801F232FB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87B57130E2A;
-	Tue, 23 Jan 2024 01:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45D7277651;
+	Tue, 23 Jan 2024 02:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGB1Im9n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RMvnBx1g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45ED112FF73;
-	Tue, 23 Jan 2024 01:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0453B7763C;
+	Tue, 23 Jan 2024 02:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971814; cv=none; b=n1h0yV+tE1tszcQ5Je7kEQDfiyZWigQYLlHKLOBwIDg/eU7BiFA+lHIPk1m+u6u8jQDOllmYKWdctfeB184QideBN/UNC0oOmjD+yOkpBWWSF3lubEgi+bKIE5ZqN2MnF4DbHcTbbGGeC8QrdzrR/nPu+xY9gaNPSYwoYjCvaog=
+	t=1705975518; cv=none; b=blEjgcCnpZIWTEmDYEkobF9GD4FDq4cVKoV8600aJKW75TFyYxM42YjVo8k090qMgPjafj3QWWqXy+uuM7cxoNO0gyT3/w7tdHQeRACVE8MOsuvUxWpxOmdSDhWzZoZIpmU3nz5Slwc8pAeo6BytftV17W3e9s+/iDd7gZt/uS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971814; c=relaxed/simple;
-	bh=MBxQfqbflByCGHzmeqMLgWEUtQdsmf81oVh6Yu0POKw=;
+	s=arc-20240116; t=1705975518; c=relaxed/simple;
+	bh=NumcpoOgHH6Tq+ds25PFRjc2Lmk9VwGE0WpiSNqA27o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V0Dm5ZqGZP1HzVW2a/9u4SLGTF7jmycHTdoq8mRu6lpwcBb03Uqp1GPfq5+2X3foOpKiffM+tB9dH8J6KpMKYhaX6hkeT8VxnK13Ojg9yuVAX2gPqJMRryJwz+XrNc2eY9mAE/MORxc2kSSGHup3aU7q97D0EJRUIonsBRxchCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGB1Im9n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F5BC433F1;
-	Tue, 23 Jan 2024 01:03:33 +0000 (UTC)
+	 MIME-Version; b=W9xKDxA7S7iHVPDC9TxlamT/WZL/MavCZp6Aajl9yEZdnam5io+pVwRkRYrwPylIHHxBYTGV/f4MiPejFK9Tw4I78S5GG1BjinccRTlpW4+FBw798cEiURnnKpWa7fjIJzdVpDZFLGJY/OndIYeeGzF8H6+CfivKJpD3jQ9rsRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RMvnBx1g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8ECC433C7;
+	Tue, 23 Jan 2024 02:05:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971814;
-	bh=MBxQfqbflByCGHzmeqMLgWEUtQdsmf81oVh6Yu0POKw=;
+	s=korg; t=1705975517;
+	bh=NumcpoOgHH6Tq+ds25PFRjc2Lmk9VwGE0WpiSNqA27o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RGB1Im9naT/KLNPPLlwyV+gUqMQr5vw7BWHEjGFe6SSl07xvdsT/KTvn2V+WEEub4
-	 xpZyiqrAVhFDiIo7krfSUaOL8Rs9OFW7zHMCqGjmPyLxBU56vAdKWJ6qVu+O79aVfA
-	 sniJoP7yOlR4jTbgvigN832d2eb7ljLs/945Az9k=
+	b=RMvnBx1g+6Nl33RlQQdDfdjzuGYcSd490VLRiBdCtFy8HM6o3LqcdIMP8YT2J5KuB
+	 zB6JVkUMJR/KqKwrHXnhpUV/bDtm2QwUkNe0B8ldb5Iorb2kkUBfFmjyURA3gWRPWG
+	 +qUAmUhjeb6/s2UIjbqw5o8cq9Lp1nBLqMv3O+HM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Alex Vinarskis <alex.vinarskis@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 327/417] mips: dmi: Fix early remap on MIPS32
+Subject: [PATCH 6.6 444/583] mfd: intel-lpss: Fix the fractional clock divider flags
 Date: Mon, 22 Jan 2024 15:58:15 -0800
-Message-ID: <20240122235803.125920022@linuxfoundation.org>
+Message-ID: <20240122235825.565161679@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Serge Semin <fancer.lancer@gmail.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 0d0a3748a2cb38f9da1f08d357688ebd982eb788 ]
+[ Upstream commit 03d790f04fb2507173913cad9c213272ac983a60 ]
 
-dmi_early_remap() has been defined as ioremap_cache() which on MIPS32 gets
-to be converted to the VM-based mapping. DMI early remapping is performed
-at the setup_arch() stage with no VM available. So calling the
-dmi_early_remap() for MIPS32 causes the system to crash at the early boot
-time. Fix that by converting dmi_early_remap() to the uncached remapping
-which is always available on both 32 and 64-bits MIPS systems.
+The conversion to CLK_FRAC_DIVIDER_POWER_OF_TWO_PS uses wrong flags
+in the parameters and hence miscalculates the values in the clock
+divider. Fix this by applying the flag to the proper parameter.
 
-Note this change shall not cause any regressions on the current DMI
-support implementation because on the early boot-up stage neither MIPS32
-nor MIPS64 has the cacheable ioremapping support anyway.
-
-Fixes: be8fa1cb444c ("MIPS: Add support for Desktop Management Interface (DMI)")
-Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 82f53f9ee577 ("clk: fractional-divider: Introduce POWER_OF_TWO_PS flag")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reported-by: Alex Vinarskis <alex.vinarskis@gmail.com>
+Link: https://lore.kernel.org/r/20231211111441.3910083-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/dmi.h | 2 +-
+ drivers/mfd/intel-lpss.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/include/asm/dmi.h b/arch/mips/include/asm/dmi.h
-index 27415a288adf..dc397f630c66 100644
---- a/arch/mips/include/asm/dmi.h
-+++ b/arch/mips/include/asm/dmi.h
-@@ -5,7 +5,7 @@
- #include <linux/io.h>
- #include <linux/memblock.h>
+diff --git a/drivers/mfd/intel-lpss.c b/drivers/mfd/intel-lpss.c
+index 9591b354072a..00e7b578bb3e 100644
+--- a/drivers/mfd/intel-lpss.c
++++ b/drivers/mfd/intel-lpss.c
+@@ -301,8 +301,8 @@ static int intel_lpss_register_clock_divider(struct intel_lpss *lpss,
  
--#define dmi_early_remap(x, l)		ioremap_cache(x, l)
-+#define dmi_early_remap(x, l)		ioremap(x, l)
- #define dmi_early_unmap(x, l)		iounmap(x)
- #define dmi_remap(x, l)			ioremap_cache(x, l)
- #define dmi_unmap(x)			iounmap(x)
+ 	snprintf(name, sizeof(name), "%s-div", devname);
+ 	tmp = clk_register_fractional_divider(NULL, name, __clk_get_name(tmp),
++					      0, lpss->priv, 1, 15, 16, 15,
+ 					      CLK_FRAC_DIVIDER_POWER_OF_TWO_PS,
+-					      lpss->priv, 1, 15, 16, 15, 0,
+ 					      NULL);
+ 	if (IS_ERR(tmp))
+ 		return PTR_ERR(tmp);
 -- 
 2.43.0
 
