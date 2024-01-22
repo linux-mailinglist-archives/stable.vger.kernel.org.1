@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-13514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57227837C6B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B9AA837EE7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AEAC1C282AE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E818B29BC6E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D65C2DB;
-	Tue, 23 Jan 2024 00:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFD96026F;
+	Tue, 23 Jan 2024 00:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQWJLZs3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wj7cITB5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145E17472;
-	Tue, 23 Jan 2024 00:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E6B46026B;
+	Tue, 23 Jan 2024 00:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969611; cv=none; b=sOADxZ2L1ZIzaZqatK5eRfaom9QsemAFsuLTmnCdFLBhM99BPh0JtE6ifPTzKx8putPBsKPqyvXa/aBuUEylnGZ32nGPK7jcX0AYj7zBn0K0gHeoFYnJ3OtO1ZDX2cebW3XBVwF74HLquth+MQHKXGE/JO2XZtxt15kD8VZN3WQ=
+	t=1705970815; cv=none; b=udhvtYO4eVfQNtNRGMOauBxw43LQ/JboJV+48WSpvcrTDxhKpO4/dzgPdTEjRFC/PrQvO3+pjMAuXl3RIj0dyiNnwpAT+NsSchaYPWF+04XGzVL+Ry8fDKzlmY66k1hHIuMVu8oMP7bGaw28l05hDK9jm/sZVhEvGB7K2BWfgBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969611; c=relaxed/simple;
-	bh=VhY+IKKpABJEa4o0QkdORIaBK6GMXEkADTUlqHEfEC4=;
+	s=arc-20240116; t=1705970815; c=relaxed/simple;
+	bh=3yWYnpDIkP0sB+SfrpNR8wzkmTdOFcQqYi4jIbIzbWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gxNQZpl+Nr6vq+98gEcmNvsnxpqBZEmrIGcA3uRiugZY+NQUP99Jh3on/aV1X2VeBDK+Cd3K232NfC6V8DRlWsh2CtuOIDhaJ2Nq4E87/UZXgk0sL75WO3WjQe/ZzekTQP8CP+GJEQ5uSdUl7briUSVs92gnbfXc87Z8kVVQSkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQWJLZs3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79FBC433F1;
-	Tue, 23 Jan 2024 00:26:50 +0000 (UTC)
+	 MIME-Version; b=InGA5j/A3R+5Q+bzeIbXD9Fh97lB7oI1IOUhGLFDMkr5sof7yw1UoPhDVLW9hqWqmGakONQ5QDCQvwyLyU11TLVpuFbWba6HPaW8kV1TQt+5MeNHhGZapNkHrTD09nYxe7fEAysYWfd8b+JIjuporybKc2l/Kf8Ny8R7TFDK4iI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wj7cITB5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDFC0C433F1;
+	Tue, 23 Jan 2024 00:46:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969610;
-	bh=VhY+IKKpABJEa4o0QkdORIaBK6GMXEkADTUlqHEfEC4=;
+	s=korg; t=1705970815;
+	bh=3yWYnpDIkP0sB+SfrpNR8wzkmTdOFcQqYi4jIbIzbWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iQWJLZs383Xd9VQUuHsqLnOlSWomOkwgdkkgQpBNs50JXhCNL4LJYk4FYDfK0wd25
-	 brashLo/TyJct8sAnyd4uPQTSHeION6wgcGi1vmxU/NLqmF4x3jM5f+lIqZ38leEcE
-	 EvBB5eSdPbS2sPAlPr9jcdPz4JSGw5nEwnn1/nbM=
+	b=wj7cITB5GGAtiu/g2bPTej//N/0BtphTugHblsdnp/ejGQr1Da5yxPf11NNJxzIrU
+	 5QEFPET0eVlPVzlbnq9ldIec2HXhbemKTGLuI+RXBHSsEDly/lLIXGt6AkBMXLdA2m
+	 /78W+UxyVKTHaIO6qeXqU7RTef/8rgL/ueKCyXy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Chiu <chiu@endlessos.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Mark Brown <broonie@kernel.org>,
+	Hou Tao <houtao@huaweicloud.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 357/641] ASoC: rt5645: Drop double EF20 entry from dmi_platform_data[]
+Subject: [PATCH 6.1 093/417] rcu-tasks: Provide rcu_trace_implies_rcu_gp()
 Date: Mon, 22 Jan 2024 15:54:21 -0800
-Message-ID: <20240122235829.102991904@linuxfoundation.org>
+Message-ID: <20240122235754.917598986@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +64,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit 51add1687f39292af626ac3c2046f49241713273 ]
+[ Upstream commit e6c86c513f440bec5f1046539c7e3c6c653842da ]
 
-dmi_platform_data[] first contains a DMI entry matching:
+As an accident of implementation, an RCU Tasks Trace grace period also
+acts as an RCU grace period.  However, this could change at any time.
+This commit therefore creates an rcu_trace_implies_rcu_gp() that currently
+returns true to codify this accident.  Code relying on this accident
+must call this function to verify that this accident is still happening.
 
-   DMI_MATCH(DMI_PRODUCT_NAME, "EF20"),
-
-and then contains an identical entry except for the match being:
-
-   DMI_MATCH(DMI_PRODUCT_NAME, "EF20EA"),
-
-Since these are partial (non exact) DMI matches the first match
-will also match any board with "EF20EA" in their DMI product-name,
-drop the second, redundant, entry.
-
-Fixes: a4dae468cfdd ("ASoC: rt5645: Add ACPI-defined GPIO for ECS EF20 series")
-Cc: Chris Chiu <chiu@endlessos.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://msgid.link/r/20231126214024.300505-2-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: Hou Tao <houtao@huaweicloud.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>
+Link: https://lore.kernel.org/r/20221014113946.965131-2-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Stable-dep-of: 876673364161 ("bpf: Defer the free of inner map when necessary")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5645.c | 8 --------
- 1 file changed, 8 deletions(-)
+ include/linux/rcupdate.h | 12 ++++++++++++
+ kernel/rcu/tasks.h       |  2 ++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
-index a0d01d71d8b5..edcb85bd8ea7 100644
---- a/sound/soc/codecs/rt5645.c
-+++ b/sound/soc/codecs/rt5645.c
-@@ -3854,14 +3854,6 @@ static const struct dmi_system_id dmi_platform_data[] = {
- 		},
- 		.driver_data = (void *)&ecs_ef20_platform_data,
- 	},
--	{
--		.ident = "EF20EA",
--		.callback = cht_rt5645_ef20_quirk_cb,
--		.matches = {
--			DMI_MATCH(DMI_PRODUCT_NAME, "EF20EA"),
--		},
--		.driver_data = (void *)&ecs_ef20_platform_data,
--	},
- 	{ }
- };
+diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
+index e9e61cd27ef6..46bd9a331fd5 100644
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -242,6 +242,18 @@ static inline void exit_tasks_rcu_stop(void) { }
+ static inline void exit_tasks_rcu_finish(void) { }
+ #endif /* #else #ifdef CONFIG_TASKS_RCU_GENERIC */
  
++/**
++ * rcu_trace_implies_rcu_gp - does an RCU Tasks Trace grace period imply an RCU grace period?
++ *
++ * As an accident of implementation, an RCU Tasks Trace grace period also
++ * acts as an RCU grace period.  However, this could change at any time.
++ * Code relying on this accident must call this function to verify that
++ * this accident is still happening.
++ *
++ * You have been warned!
++ */
++static inline bool rcu_trace_implies_rcu_gp(void) { return true; }
++
+ /**
+  * cond_resched_tasks_rcu_qs - Report potential quiescent states to RCU
+  *
+diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
+index c1f18c63b9b1..b5d5b6cf093a 100644
+--- a/kernel/rcu/tasks.h
++++ b/kernel/rcu/tasks.h
+@@ -1570,6 +1570,8 @@ static void rcu_tasks_trace_postscan(struct list_head *hop)
+ {
+ 	// Wait for late-stage exiting tasks to finish exiting.
+ 	// These might have passed the call to exit_tasks_rcu_finish().
++
++	// If you remove the following line, update rcu_trace_implies_rcu_gp()!!!
+ 	synchronize_rcu();
+ 	// Any tasks that exit after this point will set
+ 	// TRC_NEED_QS_CHECKED in ->trc_reader_special.b.need_qs.
 -- 
 2.43.0
 
