@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1450D838301
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:25:44 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D713837BEE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EEA7B25F0A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29279294B0A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0005FDA5;
-	Tue, 23 Jan 2024 01:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A02D1420B3;
+	Tue, 23 Jan 2024 00:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZizWeWf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9WJf1K3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A40B3FF4;
-	Tue, 23 Jan 2024 01:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090B81420A7;
+	Tue, 23 Jan 2024 00:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974641; cv=none; b=YNmSQ/TRBqHMOx01YdW6sZ3rIcQGKq+30thSagTAAdkJCWMQ33Ath792IX9EpJcvNcQNJjFXuou/FjT15yF4VbTuSnhfMiyauBBiBa6Ifcg6jRY73ePVbMNMLGgioaQEm156p1omuzhzoZT5CiTJM9sIKi6WDfs58wbOd9n3hbg=
+	t=1705969443; cv=none; b=BzCAG+FJake8Bic8aheVf0Uq+J/SLchznGvv2pAFt8m2eDsG8sVoDAQK015EuH6gSvpJc5luz4sTWyK3ODl1TUkhuIpPOiP/jw/CsPL03IbdInvbWzwu/rSxFheRorSbq+Pl5hqWH7HKZtMFPFu1BvOHq9EnsqqNNsQZ/pcBl7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974641; c=relaxed/simple;
-	bh=0IsSvN04ExknnIrIQxjs4QV+l0CcQw2TVAPb8Eej3Uo=;
+	s=arc-20240116; t=1705969443; c=relaxed/simple;
+	bh=NWYKlE7Wf+xMY4AkbaHxa8EruIogKEaCuU7h8RI9ezE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tRYEteP14AGeUBZ32Q2EOhi7J8DHZx/QRqBchLyEkqrgvPsc4q/f+XERfpdgutYThBE3cc+ofZ8h5YTr5VusRwxTOSurWgBc71aukqkZLXg2KeHvK+rB5xMd5e9UXTTEtbivC88hAnLgHmkqrigeJlcuHfkMRZNJ7aJlWM4rVb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZizWeWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10ABC433C7;
-	Tue, 23 Jan 2024 01:50:40 +0000 (UTC)
+	 MIME-Version; b=hUk0U7iIFGIqA7VhQLwaXw2N+kd9NxBMk6jZD2kLYJYwWqN1jGhhtaFVMe77VS/jcfWtXHkoCupZ4kZm8RL/WEwI0uW1eWuC11YgGd8HvUBs6OcdaxLuDbDj8C/aijGb5/lfDFuuuZZg9eMCpldJFy5rYfBlDW6AoTbxywhLep4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9WJf1K3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60108C43390;
+	Tue, 23 Jan 2024 00:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974640;
-	bh=0IsSvN04ExknnIrIQxjs4QV+l0CcQw2TVAPb8Eej3Uo=;
+	s=korg; t=1705969442;
+	bh=NWYKlE7Wf+xMY4AkbaHxa8EruIogKEaCuU7h8RI9ezE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TZizWeWfb+PK8wY1TcaVEBw43RAX62VZMNtgZkjRzSVGJOy7aPpY21abhYLatDdY3
-	 MKPDa85M6cRg+k++NlbXQpkZQiln5mncmM/Cf6aJHgoh32LCVxrUywkvHCYJrsjdYP
-	 UGUAMCw8ob5deLjMTOBbU/EKCfZE46QxsZGTVG0k=
+	b=v9WJf1K3iSCrWTmZeeOPg/mKCX4CDB+3WENOD3Knz7ABthqxe1N/hnmf1xL8w+tNA
+	 jY+MQRt+jGwwIxU6PODrEiTKIRULhqFRlhaMCL7fBnr3aCWBOM2ohHXcEES+Zn1P/e
+	 vv/uYSYucVoTCo61ZmelkZCUDKN/+abJDn8sU6oY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeroen van Ingen Schenau <jeroen.vaningenschenau@novoserve.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Minh Le Hoang <minh.lehoang@novoserve.com>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 101/583] selftests/bpf: Fix erroneous bitmask operation
-Date: Mon, 22 Jan 2024 15:52:32 -0800
-Message-ID: <20240122235815.268935071@linuxfoundation.org>
+Subject: [PATCH 6.7 249/641] drm/panel: nv3051d: Hold panel in reset for unprepare
+Date: Mon, 22 Jan 2024 15:52:33 -0800
+Message-ID: <20240122235825.710225389@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeroen van Ingen Schenau <jeroen.vaningenschenau@novoserve.com>
+From: Chris Morgan <macromorgan@hotmail.com>
 
-[ Upstream commit b6a3451e0847d5d70fb5fa2b2a80ab9f80bf2c7b ]
+[ Upstream commit 697ebc319b942403a6fee894607fd2cd47cca069 ]
 
-xdp_synproxy_kern.c is a BPF program that generates SYN cookies on
-allowed TCP ports and sends SYNACKs to clients, accelerating synproxy
-iptables module.
+Improve the panel's ability to restore from suspend by holding the
+panel in suspend after unprepare.
 
-Fix the bitmask operation when checking the status of an existing
-conntrack entry within tcp_lookup() function. Do not AND with the bit
-position number, but with the bitmask value to check whether the entry
-found has the IPS_CONFIRMED flag set.
-
-Fixes: fb5cd0ce70d4 ("selftests/bpf: Add selftests for raw syncookie helpers")
-Signed-off-by: Jeroen van Ingen Schenau <jeroen.vaningenschenau@novoserve.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Minh Le Hoang <minh.lehoang@novoserve.com>
-Link: https://lore.kernel.org/xdp-newbies/CAAi1gX7owA+Tcxq-titC-h-KPM7Ri-6ZhTNMhrnPq5gmYYwKow@mail.gmail.com/T/#u
-Link: https://lore.kernel.org/bpf/20231130120353.3084-1-jeroen.vaningenschenau@novoserve.com
+Fixes: b1d39f0f4264 ("drm/panel: Add NewVision NV3051D MIPI-DSI LCD panel")
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Link: https://lore.kernel.org/r/20231117202536.1387815-3-macroalpha82@gmail.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231117202536.1387815-3-macroalpha82@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/panel/panel-newvision-nv3051d.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c b/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c
-index 07d786329105..04fc2c6c79e8 100644
---- a/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c
-+++ b/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c
-@@ -447,13 +447,13 @@ static __always_inline int tcp_lookup(void *ctx, struct header_pointers *hdr, bo
- 		unsigned long status = ct->status;
+diff --git a/drivers/gpu/drm/panel/panel-newvision-nv3051d.c b/drivers/gpu/drm/panel/panel-newvision-nv3051d.c
+index 79de6c886292..c44c6945662f 100644
+--- a/drivers/gpu/drm/panel/panel-newvision-nv3051d.c
++++ b/drivers/gpu/drm/panel/panel-newvision-nv3051d.c
+@@ -261,6 +261,8 @@ static int panel_nv3051d_unprepare(struct drm_panel *panel)
  
- 		bpf_ct_release(ct);
--		if (status & IPS_CONFIRMED_BIT)
-+		if (status & IPS_CONFIRMED)
- 			return XDP_PASS;
- 	} else if (ct_lookup_opts.error != -ENOENT) {
- 		return XDP_ABORTED;
- 	}
+ 	usleep_range(10000, 15000);
  
--	/* error == -ENOENT || !(status & IPS_CONFIRMED_BIT) */
-+	/* error == -ENOENT || !(status & IPS_CONFIRMED) */
- 	return XDP_TX;
- }
++	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
++
+ 	regulator_disable(ctx->vdd);
  
+ 	return 0;
 -- 
 2.43.0
 
