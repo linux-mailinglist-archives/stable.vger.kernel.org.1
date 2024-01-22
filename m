@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-13989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C2B1837F11
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9DB3837D1C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1ECB71F2B878
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 227BD1C27E36
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F7A27450;
-	Tue, 23 Jan 2024 00:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC5885787D;
+	Tue, 23 Jan 2024 00:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J16e4a4h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amdeR5JH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43F43FFE;
-	Tue, 23 Jan 2024 00:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4B256B89;
+	Tue, 23 Jan 2024 00:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970916; cv=none; b=IewLQKUnqw2BimANXrigJ4Fm+EaMsuolfwMpmNhzWdqpdGOjE4ZqvOpLHRT2GEoUVuCVSJ1uA9IlusG+V/PnFubcdujhm4U+hsMoec452TvsbWmO+LgDgtMj0OH0/M3K0LegrNqk5PyCKkWpyJuu8PUu4v44Z16eAa/V677pDhA=
+	t=1705969798; cv=none; b=Zx1qQMKTiWWtSyKWcrZ8vCEUSU7P/QwV9gFucQlqNpCCAH/9a9hYeIT/wARQqRxpErEeuNXXsCwfRpUvh3d1+gqPPlV0JfvC5W4r81xB2+P4e6b4fZChEg0cSZqXbzic2MeoU77SeYiD35/RBsSrY/Y2uKRkJLUP6w4jbA4OJVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970916; c=relaxed/simple;
-	bh=M+KS7VJowzlIicsYshdPWEGla54Ou8tM79zT35fIQhA=;
+	s=arc-20240116; t=1705969798; c=relaxed/simple;
+	bh=lUdm9mMY0vIkZsBZ06VmV3fl9AZnbFf3GYZ6i/GrBAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SWOQMRLz8B//UkmScRen+oDhjDSQhaKg8HVwWcAzpNDdUjfvVdWxRtxzltCu1JswFlTkPf2dxt2DbAvyilZZHa1R+iAiAP41xpHil+JjqSjHXLY7rmAP/zRzsoO83HcyCXMWpdwvL3B2fA07MRzE4Y5tAUx3dg985lY2vHaf8Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J16e4a4h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2A7C433C7;
-	Tue, 23 Jan 2024 00:48:36 +0000 (UTC)
+	 MIME-Version; b=aCK09bvn9us15PUMC7Cy27whiSN/Q9Vyh1BNUJrlN+gFdBTG/9N81wEccMzibTc+kbm1C7wLlMITh8x7uOcpNlKnGed7s1IPBYZDP4UvbOEc+vArXUC9+w3I1evRaYL4ljeAsvFq2WOvCxeRmbDlvIZ+cXdhhSfMbqbe3r9lJps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amdeR5JH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0262CC433F1;
+	Tue, 23 Jan 2024 00:29:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970916;
-	bh=M+KS7VJowzlIicsYshdPWEGla54Ou8tM79zT35fIQhA=;
+	s=korg; t=1705969798;
+	bh=lUdm9mMY0vIkZsBZ06VmV3fl9AZnbFf3GYZ6i/GrBAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J16e4a4hxLYFGvy941qpgGE64m0NPaGMCORvZVAmPzcRN7SfWp01+WS9u9sPoWMQ1
-	 J2nORtRI1SpsOmU/bmwzjHQ2Uge9SI+pKP8DbD2lFOuphhZJMGbyQyZzwC7tk36KYj
-	 gYshgT3IedTsw0niSjGY61lHotuWtCvxbpxaAgPo=
+	b=amdeR5JHmnxNHEituRPlbi2gb9gadJ4AkyTZoPARLoG14uWYD4PXolZ7dVA1VfV6w
+	 SChY3MxzWWBF3+43jiUD3kgdtdrff/GmJhRDzzt8XQfFtFlS5tKb9b0x+9C33OXLGP
+	 aO3UY8bORzXEuesu+4ghagi6+v7QQNKWr+F0kz9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cameron Williams <cang1@live.co.uk>,
-	Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Subject: [PATCH 5.10 045/286] parport: parport_serial: Add Brainboxes BAR details
-Date: Mon, 22 Jan 2024 15:55:51 -0800
-Message-ID: <20240122235733.763970425@linuxfoundation.org>
+	Rob Landley <rob@landley.net>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Mimi Zohar <zohar@linux.ibm.com>
+Subject: [PATCH 6.7 448/641] rootfs: Fix support for rootfstype= when root= is given
+Date: Mon, 22 Jan 2024 15:55:52 -0800
+Message-ID: <20240122235832.043974292@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cameron Williams <cang1@live.co.uk>
+From: Stefan Berger <stefanb@linux.ibm.com>
 
-commit 65fde134b0a4ffe838729f9ee11b459a2f6f2815 upstream.
+commit 21528c69a0d8483f7c6345b1a0bc8d8975e9a172 upstream.
 
-Add BAR/enum entries for Brainboxes serial/parallel cards.
+Documentation/filesystems/ramfs-rootfs-initramfs.rst states:
 
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Cameron Williams <cang1@live.co.uk>
-Acked-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Link: https://lore.kernel.org/r/AS4PR02MB79035155C2D5C3333AE6FA52C4A6A@AS4PR02MB7903.eurprd02.prod.outlook.com
+  If CONFIG_TMPFS is enabled, rootfs will use tmpfs instead of ramfs by
+  default.  To force ramfs, add "rootfstype=ramfs" to the kernel command
+  line.
+
+This currently does not work when root= is provided since then
+saved_root_name contains a string and rootfstype= is ignored. Therefore,
+ramfs is currently always chosen when root= is provided.
+
+The current behavior for rootfs's filesystem is:
+
+   root=       | rootfstype= | chosen rootfs filesystem
+   ------------+-------------+--------------------------
+   unspecified | unspecified | tmpfs
+   unspecified | tmpfs       | tmpfs
+   unspecified | ramfs       | ramfs
+    provided   | ignored     | ramfs
+
+rootfstype= should be respected regardless whether root= is given,
+as shown below:
+
+   root=       | rootfstype= | chosen rootfs filesystem
+   ------------+-------------+--------------------------
+   unspecified | unspecified | tmpfs  (as before)
+   unspecified | tmpfs       | tmpfs  (as before)
+   unspecified | ramfs       | ramfs  (as before)
+    provided   | unspecified | ramfs  (compatibility with before)
+    provided   | tmpfs       | tmpfs  (new)
+    provided   | ramfs       | ramfs  (new)
+
+This table represents the new behavior.
+
+Fixes: 6e19eded3684 ("initmpfs: use initramfs if rootfstype= or root= specified")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Rob Landley <rob@landley.net>
+Link: https://lore.kernel.org/lkml/8244c75f-445e-b15b-9dbf-266e7ca666e2@landley.net/
+Reviewed-and-Tested-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+Link: https://lore.kernel.org/r/20231120011248.396012-1-stefanb@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parport/parport_serial.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ init/do_mounts.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/parport/parport_serial.c
-+++ b/drivers/parport/parport_serial.c
-@@ -65,6 +65,10 @@ enum parport_pc_pci_cards {
- 	sunix_5069a,
- 	sunix_5079a,
- 	sunix_5099a,
-+	brainboxes_uc257,
-+	brainboxes_is300,
-+	brainboxes_uc414,
-+	brainboxes_px263,
- };
+--- a/init/do_mounts.c
++++ b/init/do_mounts.c
+@@ -510,7 +510,10 @@ struct file_system_type rootfs_fs_type =
  
- /* each element directly indexed from enum list, above */
-@@ -158,6 +162,10 @@ static struct parport_pc_pci cards[] = {
- 	/* sunix_5069a */		{ 1, { { 1, 2 }, } },
- 	/* sunix_5079a */		{ 1, { { 1, 2 }, } },
- 	/* sunix_5099a */		{ 1, { { 1, 2 }, } },
-+	/* brainboxes_uc257 */	{ 1, { { 3, -1 }, } },
-+	/* brainboxes_is300 */	{ 1, { { 3, -1 }, } },
-+	/* brainboxes_uc414 */  { 1, { { 3, -1 }, } },
-+	/* brainboxes_px263 */	{ 1, { { 3, -1 }, } },
- };
- 
- static struct pci_device_id parport_serial_pci_tbl[] = {
+ void __init init_rootfs(void)
+ {
+-	if (IS_ENABLED(CONFIG_TMPFS) && !saved_root_name[0] &&
+-		(!root_fs_names || strstr(root_fs_names, "tmpfs")))
+-		is_tmpfs = true;
++	if (IS_ENABLED(CONFIG_TMPFS)) {
++		if (!saved_root_name[0] && !root_fs_names)
++			is_tmpfs = true;
++		else if (root_fs_names && !!strstr(root_fs_names, "tmpfs"))
++			is_tmpfs = true;
++	}
+ }
 
 
 
