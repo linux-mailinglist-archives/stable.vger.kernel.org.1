@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87BF2838309
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:02 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2483F8384D2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BACDE1C264EB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D05861F26DE2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BD49604BF;
-	Tue, 23 Jan 2024 01:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3628E77624;
+	Tue, 23 Jan 2024 02:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MhiZ30c3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXfLNJqQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E99F6605B1;
-	Tue, 23 Jan 2024 01:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E92337691F;
+	Tue, 23 Jan 2024 02:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974687; cv=none; b=Eo4icwgSPDY/RmsvohLgitKIWoyAnmjpOJnqU/23slJFXylwWnJ3UZF4TATKmooTK3ibYHGmhTywWvrZx7e/CORItw6V5L8XAOW5Ljk8M0o39H/13I0bi8uzw1E+AU1OabS61IwE1S8N9kYo0RFzg1zCMmNCIVTixZbdvo+ODAc=
+	t=1705975503; cv=none; b=Ao9ujPmTpPbTYWtVaBtv8dAKxSfljeFrbsMSgVslruu9s198gAIzltBDM77LgUCP283zp0Crp02c0gTrja4YNdT/GwzqASmi0Z51fKy7iTEuwzTWtPEqAiOAletD4NxPR8tMY+0t5atAVT+ai0QjZ0BLWS3MvSodvbm/t4lF3YE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974687; c=relaxed/simple;
-	bh=DLb6ecuD19x079sNxLR7ObHY4uqI7D72FoIKox7vLlU=;
+	s=arc-20240116; t=1705975503; c=relaxed/simple;
+	bh=Jgcwjcx9U7XMCqDgSVIuAXqetSkKpzLir2uglplWXds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e4pXHqXE4mvz18O0v0VJtixJW4sExLE3sI9k6Pn629cjeNMlC8+HnT/xtJ9brND177s7fs4Q9uX/SmFjRaFlZd51dmso3ReAjYFLs4T1lMOFH35AL6Hr1dpUHhV5FSku0i4+wbgzyzDqUgcxy7J1yTcaJp+ESnz5bsvibKHyEvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MhiZ30c3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61242C43394;
-	Tue, 23 Jan 2024 01:51:26 +0000 (UTC)
+	 MIME-Version; b=ugQ4qOv0p2XzuuwSh5QAQfkVzyGdjurPNW3hR23q5nunk7iGwY64bvsWkjFlGN4kpDY1fy8K1PBXANYsCB10Z9k3hEML8mNPe2w03oXUY5dtfJbZhq9xa0MIuafijTrlCx/Kjt9ROWHMDOw+6wpD3nTpHx87/Qh7auo2ypv1Bcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXfLNJqQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4DA5C43390;
+	Tue, 23 Jan 2024 02:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974686;
-	bh=DLb6ecuD19x079sNxLR7ObHY4uqI7D72FoIKox7vLlU=;
+	s=korg; t=1705975502;
+	bh=Jgcwjcx9U7XMCqDgSVIuAXqetSkKpzLir2uglplWXds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MhiZ30c3gxPVmcT+9MBxk1X6RzZMy25LVIQrLtkPRbHnWuJpHQNI4dfTQ0ZHYQ0Ki
-	 ZiYeJBRqS+ZraC9FWNDlWFfFqAZooQZdaYSV+fn+t1g93N6RX8j/F2G7W5NiHoRuRz
-	 wWgZysTh1TOTGI94jcQelHr5F2ezGspo0bCkFosY=
+	b=xXfLNJqQCJqGn3l9LtNyjLf4pSR86AuL7n2vgIt80T2RT7E8JyDuUNTdxbbXE3L6I
+	 IQu8FfTHq/a/ycTkaNdkNFVTCegVEp6ccfAeR9SNtxEk93cX0UbhgT/ilc74cdmRri
+	 RnekKAr3EGaSmyBoZWPBhF51HKQwAq6dpgQlM7mw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Beulich <jbeulich@suse.com>,
-	Juergen Gross <jgross@suse.com>,
-	Paul Durrant <paul@xen.org>
-Subject: [PATCH 5.15 250/374] xen-netback: dont produce zero-size SKB frags
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 455/583] MIPS: Alchemy: Fix an out-of-bound access in db1550_dev_setup()
 Date: Mon, 22 Jan 2024 15:58:26 -0800
-Message-ID: <20240122235753.467014762@linuxfoundation.org>
+Message-ID: <20240122235825.894185432@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Beulich <jbeulich@suse.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit c7ec4f2d684e17d69bbdd7c4324db0ef5daac26a upstream.
+[ Upstream commit 3c1e5abcda64bed0c7bffa65af2316995f269a61 ]
 
-While frontends may submit zero-size requests (wasting a precious slot),
-core networking code as of at least 3ece782693c4b ("sock: skb_copy_ubufs
-support for compound pages") can't deal with SKBs when they have all
-zero-size fragments. Respond to empty requests right when populating
-fragments; all further processing is fragment based and hence won't
-encounter these empty requests anymore.
+When calling spi_register_board_info(),
 
-In a way this should have been that way from the beginning: When no data
-is to be transferred for a particular request, there's not even a point
-in validating the respective grant ref. That's no different from e.g.
-passing NULL into memcpy() when at the same time the size is 0.
-
-This is XSA-448 / CVE-2023-46838.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Paul Durrant <paul@xen.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f869d42e580f ("MIPS: Alchemy: Improved DB1550 support, with audio and serial busses.")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/xen-netback/netback.c |   44 ++++++++++++++++++++++++++++++++------
- 1 file changed, 38 insertions(+), 6 deletions(-)
+ arch/mips/alchemy/devboards/db1550.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/xen-netback/netback.c
-+++ b/drivers/net/xen-netback/netback.c
-@@ -463,12 +463,25 @@ static void xenvif_get_requests(struct x
- 	}
+diff --git a/arch/mips/alchemy/devboards/db1550.c b/arch/mips/alchemy/devboards/db1550.c
+index fd91d9c9a252..6c6837181f55 100644
+--- a/arch/mips/alchemy/devboards/db1550.c
++++ b/arch/mips/alchemy/devboards/db1550.c
+@@ -589,7 +589,7 @@ int __init db1550_dev_setup(void)
+ 	i2c_register_board_info(0, db1550_i2c_devs,
+ 				ARRAY_SIZE(db1550_i2c_devs));
+ 	spi_register_board_info(db1550_spi_devs,
+-				ARRAY_SIZE(db1550_i2c_devs));
++				ARRAY_SIZE(db1550_spi_devs));
  
- 	for (shinfo->nr_frags = 0; nr_slots > 0 && shinfo->nr_frags < MAX_SKB_FRAGS;
--	     shinfo->nr_frags++, gop++, nr_slots--) {
-+	     nr_slots--) {
-+		if (unlikely(!txp->size)) {
-+			unsigned long flags;
-+
-+			spin_lock_irqsave(&queue->response_lock, flags);
-+			make_tx_response(queue, txp, 0, XEN_NETIF_RSP_OKAY);
-+			push_tx_responses(queue);
-+			spin_unlock_irqrestore(&queue->response_lock, flags);
-+			++txp;
-+			continue;
-+		}
-+
- 		index = pending_index(queue->pending_cons++);
- 		pending_idx = queue->pending_ring[index];
- 		xenvif_tx_create_map_op(queue, pending_idx, txp,
- 				        txp == first ? extra_count : 0, gop);
- 		frag_set_pending_idx(&frags[shinfo->nr_frags], pending_idx);
-+		++shinfo->nr_frags;
-+		++gop;
- 
- 		if (txp == first)
- 			txp = txfrags;
-@@ -481,20 +494,39 @@ static void xenvif_get_requests(struct x
- 		shinfo = skb_shinfo(nskb);
- 		frags = shinfo->frags;
- 
--		for (shinfo->nr_frags = 0; shinfo->nr_frags < nr_slots;
--		     shinfo->nr_frags++, txp++, gop++) {
-+		for (shinfo->nr_frags = 0; shinfo->nr_frags < nr_slots; ++txp) {
-+			if (unlikely(!txp->size)) {
-+				unsigned long flags;
-+
-+				spin_lock_irqsave(&queue->response_lock, flags);
-+				make_tx_response(queue, txp, 0,
-+						 XEN_NETIF_RSP_OKAY);
-+				push_tx_responses(queue);
-+				spin_unlock_irqrestore(&queue->response_lock,
-+						       flags);
-+				continue;
-+			}
-+
- 			index = pending_index(queue->pending_cons++);
- 			pending_idx = queue->pending_ring[index];
- 			xenvif_tx_create_map_op(queue, pending_idx, txp, 0,
- 						gop);
- 			frag_set_pending_idx(&frags[shinfo->nr_frags],
- 					     pending_idx);
-+			++shinfo->nr_frags;
-+			++gop;
- 		}
- 
--		skb_shinfo(skb)->frag_list = nskb;
--	} else if (nskb) {
-+		if (shinfo->nr_frags) {
-+			skb_shinfo(skb)->frag_list = nskb;
-+			nskb = NULL;
-+		}
-+	}
-+
-+	if (nskb) {
- 		/* A frag_list skb was allocated but it is no longer needed
--		 * because enough slots were converted to copy ops above.
-+		 * because enough slots were converted to copy ops above or some
-+		 * were empty.
- 		 */
- 		kfree_skb(nskb);
- 	}
+ 	c = clk_get(NULL, "psc0_intclk");
+ 	if (!IS_ERR(c)) {
+-- 
+2.43.0
+
 
 
 
