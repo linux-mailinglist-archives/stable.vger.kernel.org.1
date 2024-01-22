@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7F22838235
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8C61837D57
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81A88289969
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B0AF1F2967D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD49859B51;
-	Tue, 23 Jan 2024 01:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD5B51C2D;
+	Tue, 23 Jan 2024 00:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bujo9TxG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDq0Me7t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2B259B54;
-	Tue, 23 Jan 2024 01:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C111252F7C;
+	Tue, 23 Jan 2024 00:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974096; cv=none; b=sNlUBiidrjisxT0F21dnElHTuLZTVGwA8xmvjxcXQlHBh30sJStfYIKHZtjrMPLSgZe94+4nmsdWUanqX+E/bBNPJbyTWO6ezgqIOoKcZTUiYOpvwaoZ/PwvoYdj4Sbjdx9cLhdRR356/3dXiH66ZYWyeoLF2deDniSYe+Nn794=
+	t=1705969897; cv=none; b=kZV3Ct30/t2wY+3xmjqycYLCngifMsRCXvoav3Xsz9O4/ZJpEPrSuo4Wng4xUsJfgIq25eun5SVMmsWll1g95R+2V5kWsxurUfTxvPUfsZXaVpa/ZbwfCgRgXs2R0Fn1420/mfbDkVyjUgiGLIn5MWDYRKGjDRAjBoEBxdIRODU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974096; c=relaxed/simple;
-	bh=SbVvp7CNv8LnYJZczApoLIhPA++7b+m7LyLhDURsQ2c=;
+	s=arc-20240116; t=1705969897; c=relaxed/simple;
+	bh=Jrq+2aKfG8JI8p7FXFJ2RiZ69d9LGrp8ZAQp/Ltgwys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oaKYsTow3buCWEBWUzW7Y2F1PsKnSaPl2t+9bhGaeaTJArHGOkdi1YZZNKEfu2fY+K9V8NDrtl7VuhyhoGl9zPKUEK3P2dTN0NzLgzpxGnK75uiJGxHxjQ0CfR7j73fN3LHdBs9o/3Z+IDiZIhUcx+bi7ChPZtVHW7HvoRSKAW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bujo9TxG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361A2C433C7;
-	Tue, 23 Jan 2024 01:41:36 +0000 (UTC)
+	 MIME-Version; b=jPB4IBQ9smdeVA4bJruwAfRtxsa0vbfTQtoq4C9Q7FzZxSNSSdLXylYs4abjDRcgbELMh7BGmojOZ3NR203X/K/fRFNQglvvkJey0RjR/1L3SlOutDS5ySqoTu8fgosZ83P0X1Piekwc2NjVcEHFG/o4TZfjWnM8o+HLWHYOSvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDq0Me7t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B2BC43390;
+	Tue, 23 Jan 2024 00:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974096;
-	bh=SbVvp7CNv8LnYJZczApoLIhPA++7b+m7LyLhDURsQ2c=;
+	s=korg; t=1705969897;
+	bh=Jrq+2aKfG8JI8p7FXFJ2RiZ69d9LGrp8ZAQp/Ltgwys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bujo9TxGNO35AcADpvwI3HDI0f5QFm//Xu1PSeJIHWJreIKdSlFT1ZVh9+fbYd/K3
-	 cnWeR0COUx9ONWuXROO3gP1nAn9bKjB5NTa4Ag1qkynmPp1LJq5dGOUnq8Uw/U3on4
-	 p95UyuJuo6K4cEDVveZyFjPT5UMm0P3D+jOj8FZM=
+	b=TDq0Me7tIjEprJdrjPz9IPUySB0y4JnMJKkGrNvPtUJs/0Dodh8pITbWX2goF1Yc+
+	 UrqxDR2BysjlqQNgtYJNvUy2oIU0LlwxndeAoaWsJ5MFTq/6cGBwPFLIwMvOAGMhAj
+	 u5tQF1H1NBKBB2GF5bkxlkJOhGDuu+lY8ozldhhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Douglas Anderson <dianders@chromium.org>,
+	Grant Grundler <grundler@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 161/374] wifi: rtlwifi: rtl8192ee: using calculate_bit_shift()
+Subject: [PATCH 6.7 513/641] r8152: Choose our USB config with choose_configuration() rather than probe()
 Date: Mon, 22 Jan 2024 15:56:57 -0800
-Message-ID: <20240122235750.215558656@linuxfoundation.org>
+Message-ID: <20240122235834.140046480@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 63526897fc0d086069bcab67c3a112caaec751cb ]
+[ Upstream commit aa4f2b3e418e8673e55145de8b8016a7a9920306 ]
 
-Using calculate_bit_shift() to replace _rtl92ee_phy_calculate_bit_shift().
-And fix the undefined bitwise shift behavior problem.
+If you deauthorize the r8152 device (by writing 0 to the "authorized"
+field in sysfs) and then reauthorize it (by writing a 1) then it no
+longer works. This is because when you do the above we lose the
+special configuration that we set in rtl8152_cfgselector_probe().
+Deauthorizing causes the config to be set to -1 and then reauthorizing
+runs the default logic for choosing the best config.
 
-Fixes: b1a3bfc97cd9 ("rtlwifi: rtl8192ee: Move driver from staging to the regular tree")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-9-suhui@nfschina.com
+I made an attempt to fix it so that the config is kept across
+deauthorizing / reauthorizing [1] but it was a bit ugly.
+
+Let's instead use the new USB core feature to override
+choose_configuration().
+
+This patch relies upon the patches ("usb: core: Don't force USB
+generic_subclass drivers to define probe()") and ("usb: core: Allow
+subclassed USB drivers to override usb_choose_configuration()")
+
+[1] https://lore.kernel.org/r/20231130154337.1.Ie00e07f07f87149c9ce0b27ae4e26991d307e14b@changeid
+
+Fixes: ec51fbd1b8a2 ("r8152: add USB device driver for config selection")
+Suggested-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Grant Grundler <grundler@chromium.org>
+Link: https://lore.kernel.org/r/20231201102946.v2.3.Ie00e07f07f87149c9ce0b27ae4e26991d307e14b@changeid
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/realtek/rtlwifi/rtl8192ee/phy.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ drivers/net/usb/r8152.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
-index cc0bcaf13e96..73ef602bfb01 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
-@@ -16,7 +16,6 @@ static u32 _rtl92ee_phy_rf_serial_read(struct ieee80211_hw *hw,
- static void _rtl92ee_phy_rf_serial_write(struct ieee80211_hw *hw,
- 					 enum radio_path rfpath, u32 offset,
- 					 u32 data);
--static u32 _rtl92ee_phy_calculate_bit_shift(u32 bitmask);
- static bool _rtl92ee_phy_bb8192ee_config_parafile(struct ieee80211_hw *hw);
- static bool _rtl92ee_phy_config_mac_with_headerfile(struct ieee80211_hw *hw);
- static bool phy_config_bb_with_hdr_file(struct ieee80211_hw *hw,
-@@ -46,7 +45,7 @@ u32 rtl92ee_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
- 		"regaddr(%#x), bitmask(%#x)\n", regaddr, bitmask);
- 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
--	bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	returnvalue = (originalvalue & bitmask) >> bitshift;
+diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
+index 9bf2140fd0a1..0d0672d2a654 100644
+--- a/drivers/net/usb/r8152.c
++++ b/drivers/net/usb/r8152.c
+@@ -10069,7 +10069,7 @@ static struct usb_driver rtl8152_driver = {
+ 	.disable_hub_initiated_lpm = 1,
+ };
  
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
-@@ -68,7 +67,7 @@ void rtl92ee_phy_set_bb_reg(struct ieee80211_hw *hw, u32 regaddr,
+-static int rtl8152_cfgselector_probe(struct usb_device *udev)
++static int rtl8152_cfgselector_choose_configuration(struct usb_device *udev)
+ {
+ 	struct usb_host_config *c;
+ 	int i, num_configs;
+@@ -10096,19 +10096,13 @@ static int rtl8152_cfgselector_probe(struct usb_device *udev)
+ 	if (i == num_configs)
+ 		return -ENODEV;
  
- 	if (bitmask != MASKDWORD) {
- 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
--		bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
- 	}
- 
-@@ -92,7 +91,7 @@ u32 rtl92ee_phy_query_rf_reg(struct ieee80211_hw *hw,
- 	spin_lock(&rtlpriv->locks.rf_lock);
- 
- 	original_value = _rtl92ee_phy_rf_serial_read(hw , rfpath, regaddr);
--	bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 
- 	spin_unlock(&rtlpriv->locks.rf_lock);
-@@ -119,7 +118,7 @@ void rtl92ee_phy_set_rf_reg(struct ieee80211_hw *hw,
- 
- 	if (bitmask != RFREG_OFFSET_MASK) {
- 		original_value = _rtl92ee_phy_rf_serial_read(hw, rfpath, addr);
--		bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = (original_value & (~bitmask)) | (data << bitshift);
- 	}
- 
-@@ -201,13 +200,6 @@ static void _rtl92ee_phy_rf_serial_write(struct ieee80211_hw *hw,
- 		pphyreg->rf3wire_offset, data_and_addr);
+-	if (usb_set_configuration(udev, c->desc.bConfigurationValue)) {
+-		dev_err(&udev->dev, "Failed to set configuration %d\n",
+-			c->desc.bConfigurationValue);
+-		return -ENODEV;
+-	}
+-
+-	return 0;
++	return c->desc.bConfigurationValue;
  }
  
--static u32 _rtl92ee_phy_calculate_bit_shift(u32 bitmask)
--{
--	u32 i = ffs(bitmask);
--
--	return i ? i - 1 : 32;
--}
--
- bool rtl92ee_phy_mac_config(struct ieee80211_hw *hw)
- {
- 	return _rtl92ee_phy_config_mac_with_headerfile(hw);
+ static struct usb_device_driver rtl8152_cfgselector_driver = {
+-	.name =		MODULENAME "-cfgselector",
+-	.probe =	rtl8152_cfgselector_probe,
+-	.id_table =	rtl8152_table,
++	.name =	MODULENAME "-cfgselector",
++	.choose_configuration = rtl8152_cfgselector_choose_configuration,
++	.id_table = rtl8152_table,
+ 	.generic_subclass = 1,
+ 	.supports_autosuspend = 1,
+ };
 -- 
 2.43.0
 
