@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-14977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50C05838368
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 256A8838111
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:05:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06845287BEF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46B901C234CC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:05:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8206281A;
-	Tue, 23 Jan 2024 01:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A5B913EFF4;
+	Tue, 23 Jan 2024 01:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBPXq0sT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lA40r1Er"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD33922060;
-	Tue, 23 Jan 2024 01:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCE1D13EFEC;
+	Tue, 23 Jan 2024 01:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974963; cv=none; b=sDNni3qoAsKyGyJpI3zlAqD+QTICSG37TZo0WB0W+53AuQtaMQfwpd/iVdF6TwJKzJpDTNxiaMJzwaFTGGXM/FbYbH/UYP3BqrzL+MHAgutwfuF097ECPfj94w3wYmWPuShkWn9gNmGGSj5MHgbe6j5rVKhaD3xdx2KW1E1o/2s=
+	t=1705972012; cv=none; b=WkmgsVl6MLVaZFoEVq3EnFLkQnzHN9c9zaKEjioAUCKY1xUTZoAc267Hre3eOlF/vzcbAdFfw4MHcmVQtYozfyfhClVz01lPzdH1XNTGcO2p8jbcRXqUcjkJPrwBYxM9xMr/QrT4eikx5HyZkYPGA9nt5fFwjdFWxLIidpQmQDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974963; c=relaxed/simple;
-	bh=kLB7FB1XPXgI9LuUwLGVHicJ1iTbR5aMotFWOiY0US8=;
+	s=arc-20240116; t=1705972012; c=relaxed/simple;
+	bh=zgp89Gx/n9qEeC85ua0NtpqJr2R2HJsFxxKcsVJM/eE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OKbJPiggZnWOP9OC9p83f7T49WbLVuXbpEOtGZn0WryCsdkXGlHsrw27fvIolLZ5GLdms4sOrICNYF6YYCvnKYiIO+v/A0ixW6TnQdQwBGSrvfehQabDP8zkWRT0Qx4WDCfJyjcC94kgzSZsMlh6Mlnurx2uo20GTklee3jzG6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lBPXq0sT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73655C433F1;
-	Tue, 23 Jan 2024 01:56:03 +0000 (UTC)
+	 MIME-Version; b=rvaQAJsTv9Yz60/wvdTmVx7M2zH7ICmVKpY+x9S87jR6++d9rTA87A8sElURijy5mRNboTVCx+FJouZmR44tDLZc6ztBs2mdq2ISIjgUBPMNJdfTGY6fOlpUm1wcBqjC+3lAAdW6aCSYFJ4mhiQVIqjGeW5PFndX2salpdIbmD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lA40r1Er; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81441C43394;
+	Tue, 23 Jan 2024 01:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974963;
-	bh=kLB7FB1XPXgI9LuUwLGVHicJ1iTbR5aMotFWOiY0US8=;
+	s=korg; t=1705972012;
+	bh=zgp89Gx/n9qEeC85ua0NtpqJr2R2HJsFxxKcsVJM/eE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lBPXq0sTFvm/mqKmjvxxfFjkfNaVrhPk35c1S9SVy0WwLieAyfp1LrOhu/eeiulLC
-	 FerIMaKGl/ntWHLsI1Ndp1fRsqnfIVRAHZXDaad0QGmsco+7CxDQ1Y/JnfY9a9M9XR
-	 kL/5jRGi9Jg9zpr5CezX1HYgnPkw2f3a59skyuao=
+	b=lA40r1Er+Wb9xclQ9NKsdKowhiyK0Fy+JTx/Grr81BSkiteGH2tX6+LnmHh3j6juJ
+	 ukAbvRWKCODwPqgeeTfNt9rBxsBMKv5q6kQUDpEoAJstuyw0jIxIuwhBlGrzv/VjW4
+	 K6vh+ue3xlLVMydsL4yU9MQ61bIPBv+Vp3qYwSMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 298/374] riscv: Fix module_alloc() that did not reset the linear mapping permissions
+Subject: [PATCH 6.1 386/417] mptcp: refine opt_mp_capable determination
 Date: Mon, 22 Jan 2024 15:59:14 -0800
-Message-ID: <20240122235755.152313531@linuxfoundation.org>
+Message-ID: <20240122235805.141145900@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +65,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 749b94b08005929bbc636df21a23322733166e35 ]
+[ Upstream commit 724b00c12957973656d312dce2a110c75ae2c680 ]
 
-After unloading a module, we must reset the linear mapping permissions,
-see the example below:
+OPTIONS_MPTCP_MPC is a combination of three flags.
 
-Before unloading a module:
+It would be better to be strict about testing what
+flag is expected, at least for code readability.
 
-0xffffaf809d65d000-0xffffaf809d6dc000    0x000000011d65d000       508K PTE .   ..     ..   D A G . . W R V
-0xffffaf809d6dc000-0xffffaf809d6dd000    0x000000011d6dc000         4K PTE .   ..     ..   D A G . . . R V
-0xffffaf809d6dd000-0xffffaf809d6e1000    0x000000011d6dd000        16K PTE .   ..     ..   D A G . . W R V
-0xffffaf809d6e1000-0xffffaf809d6e7000    0x000000011d6e1000        24K PTE .   ..     ..   D A G . X . R V
+mptcp_parse_option() already makes the distinction.
 
-After unloading a module:
+- subflow_check_req() should use OPTION_MPTCP_MPC_SYN.
 
-0xffffaf809d65d000-0xffffaf809d6e1000    0x000000011d65d000       528K PTE .   ..     ..   D A G . . W R V
-0xffffaf809d6e1000-0xffffaf809d6e7000    0x000000011d6e1000        24K PTE .   ..     ..   D A G . X W R V
+- mptcp_subflow_init_cookie_req() should use OPTION_MPTCP_MPC_ACK.
 
-The last mapping is not reset and we end up with WX mappings in the linear
-mapping.
+- subflow_finish_connect() should use OPTION_MPTCP_MPC_SYNACK
 
-So add VM_FLUSH_RESET_PERMS to our module_alloc() definition.
+- subflow_syn_recv_sock should use OPTION_MPTCP_MPC_ACK
 
-Fixes: 0cff8bff7af8 ("riscv: avoid the PIC offset of static percpu data in module beyond 2G limits")
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20231213134027.155327-2-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Fixes: 74c7dfbee3e1 ("mptcp: consolidate in_opt sub-options fields in a bitmask")
+Link: https://lore.kernel.org/r/20240111194917.4044654-6-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/module.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mptcp/subflow.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/riscv/kernel/module.c b/arch/riscv/kernel/module.c
-index 4a48287513c3..24c3883c80d0 100644
---- a/arch/riscv/kernel/module.c
-+++ b/arch/riscv/kernel/module.c
-@@ -423,7 +423,8 @@ void *module_alloc(unsigned long size)
- {
- 	return __vmalloc_node_range(size, 1, MODULES_VADDR,
- 				    MODULES_END, GFP_KERNEL,
--				    PAGE_KERNEL, 0, NUMA_NO_NODE,
-+				    PAGE_KERNEL, VM_FLUSH_RESET_PERMS,
-+				    NUMA_NO_NODE,
- 				    __builtin_return_address(0));
- }
- #endif
+diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
+index 95cd4f6d83e6..f0ebf39db6cc 100644
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -156,7 +156,7 @@ static int subflow_check_req(struct request_sock *req,
+ 
+ 	mptcp_get_options(skb, &mp_opt);
+ 
+-	opt_mp_capable = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPC);
++	opt_mp_capable = !!(mp_opt.suboptions & OPTION_MPTCP_MPC_SYN);
+ 	opt_mp_join = !!(mp_opt.suboptions & OPTION_MPTCP_MPJ_SYN);
+ 	if (opt_mp_capable) {
+ 		SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_MPCAPABLEPASSIVE);
+@@ -253,7 +253,7 @@ int mptcp_subflow_init_cookie_req(struct request_sock *req,
+ 	subflow_init_req(req, sk_listener);
+ 	mptcp_get_options(skb, &mp_opt);
+ 
+-	opt_mp_capable = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPC);
++	opt_mp_capable = !!(mp_opt.suboptions & OPTION_MPTCP_MPC_ACK);
+ 	opt_mp_join = !!(mp_opt.suboptions & OPTION_MPTCP_MPJ_ACK);
+ 	if (opt_mp_capable && opt_mp_join)
+ 		return -EINVAL;
+@@ -415,7 +415,7 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
+ 
+ 	mptcp_get_options(skb, &mp_opt);
+ 	if (subflow->request_mptcp) {
+-		if (!(mp_opt.suboptions & OPTIONS_MPTCP_MPC)) {
++		if (!(mp_opt.suboptions & OPTION_MPTCP_MPC_SYNACK)) {
+ 			MPTCP_INC_STATS(sock_net(sk),
+ 					MPTCP_MIB_MPCAPABLEACTIVEFALLBACK);
+ 			mptcp_do_fallback(sk);
+@@ -713,7 +713,7 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
+ 		 * options.
+ 		 */
+ 		mptcp_get_options(skb, &mp_opt);
+-		if (!(mp_opt.suboptions & OPTIONS_MPTCP_MPC))
++		if (!(mp_opt.suboptions & OPTION_MPTCP_MPC_ACK))
+ 			fallback = true;
+ 
+ 	} else if (subflow_req->mp_join) {
 -- 
 2.43.0
 
