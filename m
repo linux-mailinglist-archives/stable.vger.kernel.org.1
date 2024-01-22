@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-14150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B80C837FB2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC10D838475
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F6EA1C21703
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93BBB1F291DA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180A964ABE;
-	Tue, 23 Jan 2024 00:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA0BC6E2B0;
+	Tue, 23 Jan 2024 02:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ubpv3eda"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pKDYHnrz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C965164AB5;
-	Tue, 23 Jan 2024 00:54:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FAD6DD10;
+	Tue, 23 Jan 2024 02:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971294; cv=none; b=uTTz+Xoa9pNmoc4h18hIZ5mC4aPbpeBGur+e18WbpYaXx5fMuqC5gPw0vxmI38pUvIJhlVp8tG+hUSkmebVn3Pe9JZPi9nmYhFFTlV5zizXDgjvtSJf1CSd5fEYmet2XFyHvrncejkAk6XMgpnx0/bpU2fwEIWITIh5iVvoNJBA=
+	t=1705975402; cv=none; b=tD6KrPf0MpTFcHmA9PYopD6OdHjma9P7WB/lVwS+KQ7OtyjPTLdCILKJOViJ7WeRYil+cUaw25SoGlvhlkOKoo8hTkNjk4rKZYRcl/2m4DkVOLxjwyFM5uQGqb96AlCFiRQEdiABGVTGdxR/ijVL4kUm7RKIZW7zgcHZWDhSXyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971294; c=relaxed/simple;
-	bh=H09XUqlDIwBuLmKV08ZhX3Y+2i/m6oxLXrIegz3wIK0=;
+	s=arc-20240116; t=1705975402; c=relaxed/simple;
+	bh=d3K/yKOImQ36E1YGVhkcYMk7iS/P9a3IEySAfHcpSiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=speE2zpheoPdlm8dX49G0epdTVcW0pGQY/gOm4sUR9KSLJUjlqzwxhgKUjOlkZLgs6i5MPoCMQW38ZcaIr9iUml5/I3QdYdzftKQTFjiOORnsHKY8uCJyrhoetEvEchAnjnZYC+3nTnlJ5waQ0JFUiM1iAVck2gUTK/hRQb5lGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ubpv3eda; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC31C433F1;
-	Tue, 23 Jan 2024 00:54:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AQ4d7/TLUfFe+DyiIi/dxDEWWkvhFl3/41rhyjaTAjrZ54a80sskZE+9jdZWf0l5ufvG7Uswudvlq96pwH334/TSq3JLzaSc5JgzOKuyvof/rzI8TCE51Yzvx1NXSUVB9q9EGoAI9tFSt0KdMOaT+FPKDSPsteWYnKev2DTDE/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKDYHnrz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D552C43394;
+	Tue, 23 Jan 2024 02:03:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971294;
-	bh=H09XUqlDIwBuLmKV08ZhX3Y+2i/m6oxLXrIegz3wIK0=;
+	s=korg; t=1705975402;
+	bh=d3K/yKOImQ36E1YGVhkcYMk7iS/P9a3IEySAfHcpSiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ubpv3eda+rmV0vNet+7qPeLsQ4Tt+8npywD2huzPI3W3ejR4wGVLDgAGA9V9YFUD+
-	 pQAQgPEdexw/9Q+J07Q992PO3VUXCqvATjI9UdBiXHBZ9CUouNiNOXfatGctdHgdV/
-	 Jzv3d1XQjL4uneEzBtphpFraWsQoSQgqbmJxKzvA=
+	b=pKDYHnrzFif/5I6d3pFGZfqlN/5nt5DDMVUw9ZDuv/2vPEGChx794FiwBminqvB90
+	 EOZ8xFK8+Nu8epYFzLS/Y5R0H0lqeDSefh3LWYca3ObvXBVTD9rm4aP2GqaWx4Q3Yp
+	 sZfYO85d4CNr8k40SAs+WMEG+NHLEBoSDIbRLtBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-sound@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 219/417] drivers: clk: zynqmp: update divider round rate logic
+Subject: [PATCH 6.6 336/583] kselftest/alsa - conf: Stringify the printed errno in sysfs_get()
 Date: Mon, 22 Jan 2024 15:56:27 -0800
-Message-ID: <20240122235759.508732707@linuxfoundation.org>
+Message-ID: <20240122235822.316368588@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,125 +67,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
+From: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
 
-[ Upstream commit 1fe15be1fb613534ecbac5f8c3f8744f757d237d ]
+[ Upstream commit fd38dd6abda589a8771e7872e4dea28c99c6a6ef ]
 
-Currently zynqmp divider round rate is considering single parent and
-calculating rate and parent rate accordingly. But if divider clock flag
-is set to SET_RATE_PARENT then its not trying to traverse through all
-parent rate and not selecting best parent rate from that. So use common
-divider_round_rate() which is traversing through all clock parents and
-its rate and calculating proper parent rate.
+GCC 13.2.0 reported the warning of the print format specifier:
 
-Fixes: 3fde0e16d016 ("drivers: clk: Add ZynqMP clock driver")
-Signed-off-by: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
-Link: https://lore.kernel.org/r/20231129112916.23125-3-jay.buddhabhatti@amd.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+conf.c: In function ‘sysfs_get’:
+conf.c:181:72: warning: format ‘%s’ expects argument of type ‘char *’, \
+			but argument 3 has type ‘int’ [-Wformat=]
+  181 |                 ksft_exit_fail_msg("sysfs: unable to read value '%s': %s\n",
+      |                                                                       ~^
+      |                                                                        |
+      |                                                                        char *
+      |                                                                       %d
+
+The fix passes strerror(errno) as it was intended, like in the sibling error
+exit message.
+
+Fixes: aba51cd0949ae ("selftests: alsa - add PCM test")
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: linux-sound@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Acked-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240107173704.937824-5-mirsad.todorovac@alu.unizg.hr
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/zynqmp/divider.c | 66 +++---------------------------------
- 1 file changed, 5 insertions(+), 61 deletions(-)
+ tools/testing/selftests/alsa/conf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/zynqmp/divider.c b/drivers/clk/zynqmp/divider.c
-index 33a3b2a22659..5a00487ae408 100644
---- a/drivers/clk/zynqmp/divider.c
-+++ b/drivers/clk/zynqmp/divider.c
-@@ -110,52 +110,6 @@ static unsigned long zynqmp_clk_divider_recalc_rate(struct clk_hw *hw,
- 	return DIV_ROUND_UP_ULL(parent_rate, value);
- }
- 
--static void zynqmp_get_divider2_val(struct clk_hw *hw,
--				    unsigned long rate,
--				    struct zynqmp_clk_divider *divider,
--				    u32 *bestdiv)
--{
--	int div1;
--	int div2;
--	long error = LONG_MAX;
--	unsigned long div1_prate;
--	struct clk_hw *div1_parent_hw;
--	struct zynqmp_clk_divider *pdivider;
--	struct clk_hw *div2_parent_hw = clk_hw_get_parent(hw);
--
--	if (!div2_parent_hw)
--		return;
--
--	pdivider = to_zynqmp_clk_divider(div2_parent_hw);
--	if (!pdivider)
--		return;
--
--	div1_parent_hw = clk_hw_get_parent(div2_parent_hw);
--	if (!div1_parent_hw)
--		return;
--
--	div1_prate = clk_hw_get_rate(div1_parent_hw);
--	*bestdiv = 1;
--	for (div1 = 1; div1 <= pdivider->max_div;) {
--		for (div2 = 1; div2 <= divider->max_div;) {
--			long new_error = ((div1_prate / div1) / div2) - rate;
--
--			if (abs(new_error) < abs(error)) {
--				*bestdiv = div2;
--				error = new_error;
--			}
--			if (divider->flags & CLK_DIVIDER_POWER_OF_TWO)
--				div2 = div2 << 1;
--			else
--				div2++;
--		}
--		if (pdivider->flags & CLK_DIVIDER_POWER_OF_TWO)
--			div1 = div1 << 1;
--		else
--			div1++;
--	}
--}
--
- /**
-  * zynqmp_clk_divider_round_rate() - Round rate of divider clock
-  * @hw:			handle between common and hardware-specific interfaces
-@@ -174,6 +128,7 @@ static long zynqmp_clk_divider_round_rate(struct clk_hw *hw,
- 	u32 div_type = divider->div_type;
- 	u32 bestdiv;
- 	int ret;
-+	u8 width;
- 
- 	/* if read only, just return current value */
- 	if (divider->flags & CLK_DIVIDER_READ_ONLY) {
-@@ -193,23 +148,12 @@ static long zynqmp_clk_divider_round_rate(struct clk_hw *hw,
- 		return DIV_ROUND_UP_ULL((u64)*prate, bestdiv);
- 	}
- 
--	bestdiv = zynqmp_divider_get_val(*prate, rate, divider->flags);
--
--	/*
--	 * In case of two divisors, compute best divider values and return
--	 * divider2 value based on compute value. div1 will  be automatically
--	 * set to optimum based on required total divider value.
--	 */
--	if (div_type == TYPE_DIV2 &&
--	    (clk_hw_get_flags(hw) & CLK_SET_RATE_PARENT)) {
--		zynqmp_get_divider2_val(hw, rate, divider, &bestdiv);
--	}
-+	width = fls(divider->max_div);
- 
--	if ((clk_hw_get_flags(hw) & CLK_SET_RATE_PARENT) && divider->is_frac)
--		bestdiv = rate % *prate ? 1 : bestdiv;
-+	rate = divider_round_rate(hw, rate, prate, NULL, width, divider->flags);
- 
--	bestdiv = min_t(u32, bestdiv, divider->max_div);
--	*prate = rate * bestdiv;
-+	if (divider->is_frac && (clk_hw_get_flags(hw) & CLK_SET_RATE_PARENT) && (rate % *prate))
-+		*prate = rate;
- 
- 	return rate;
- }
+diff --git a/tools/testing/selftests/alsa/conf.c b/tools/testing/selftests/alsa/conf.c
+index 2f1685a3eae1..ff09038fdce6 100644
+--- a/tools/testing/selftests/alsa/conf.c
++++ b/tools/testing/selftests/alsa/conf.c
+@@ -186,7 +186,7 @@ static char *sysfs_get(const char *sysfs_root, const char *id)
+ 	close(fd);
+ 	if (len < 0)
+ 		ksft_exit_fail_msg("sysfs: unable to read value '%s': %s\n",
+-				   path, errno);
++				   path, strerror(errno));
+ 	while (len > 0 && path[len-1] == '\n')
+ 		len--;
+ 	path[len] = '\0';
 -- 
 2.43.0
 
