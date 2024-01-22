@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-14432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C27D83815D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:08:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DECF83851C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9EE47B2C78C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E4661C2A540
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA1481350EA;
-	Tue, 23 Jan 2024 01:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8A27E564;
+	Tue, 23 Jan 2024 02:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AjSFlRQY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1K4yhRyu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CAF1350CA;
-	Tue, 23 Jan 2024 01:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D71E3C0C;
+	Tue, 23 Jan 2024 02:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971947; cv=none; b=ExzOXESZQ6Ld6CxnVqO7jRmnltKvzsowv5YqCqS+Bgd9xPDj2c1daQzzNBUkcxqy7s9O2AZepNje7ntRPkR/lvTND4PJyAGuNx1Hq4sY2DoxfO3fnYmv5ezzgCZ3hS9c9aVv5sfah6w7VDiBpFcw+X8kzu1DlXVSYba9rX6jYDs=
+	t=1705975743; cv=none; b=cQE4Immy0YXnl8EEckG0lonMFZ0zNlaz0NTlsRVZ3hBchx+fovD85rVAYW9ljI5qeZGNnyX9JwofwzhSTgjG2R8nb5KfSnCWGA0pHzH3UPsqw90cn2FlIGoQegYi8QJBxEzZuVtWwA2bhvnJ/eJwGLDz+4/8kiyyae4iSESwXjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971947; c=relaxed/simple;
-	bh=y79POcjDGHVYRzDM78M6MywMhJuK2CmNlQv0YF8tj6A=;
+	s=arc-20240116; t=1705975743; c=relaxed/simple;
+	bh=xhAdCx08AEBoOy+n/EWWJk1Zx+feKwSVOVhvrj+y90U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NBc1X1oYH06XAksJRv/IeycxHhcRiBBF2bT38o/poUIAlndArN37QnzdavKqpWBD9PU5JfKdKLNN19pVnd/J8xsYso8dKojzNszO9PD+ztHMuRwoUQe0oxcIXJxLpzICS4FnXBZi5TsSYm4LjM2W4EVJiyuz/IP6cJVWfUVd5G0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AjSFlRQY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6591FC433F1;
-	Tue, 23 Jan 2024 01:05:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EG+6ctqIaok3ydZA/Fv3CVU/5AOfFT7pUR0HYPufP92ys57T402rCncMelkG+QdYdhI8TejIkgvMEeqRLBNMK1UTGh8gN8uHY4f+sQEvfXPHxWiZKXZBN4Rv2S7HdMwq5Mr71wwYPSa0IbuD8oeNdD7mECxUUqvguiLCc7XTCx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1K4yhRyu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD34EC433F1;
+	Tue, 23 Jan 2024 02:09:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971947;
-	bh=y79POcjDGHVYRzDM78M6MywMhJuK2CmNlQv0YF8tj6A=;
+	s=korg; t=1705975743;
+	bh=xhAdCx08AEBoOy+n/EWWJk1Zx+feKwSVOVhvrj+y90U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AjSFlRQYkekbV0FYCaio0ENX4HkzCLH8FDRUcfGGA26bMIamu0meAbr8ssz0tZOsL
-	 jDUn3/KyKVe5hJyJ2vzkTEog1l2PMBZHbcbLzbt7FjEo+zfn68uL8PxwXBFDSkpQ+e
-	 p73LAsE6usOQpIUM7Jeo+v86qK2xx+l3ozVIf87Y=
+	b=1K4yhRyuvPVB9gJuwgzgXFzUGShHweIEQqOJsKM/BfjsbDZLYKS/RpQNe34zpGIz2
+	 ZAPHIK+T3SQexqITvFKTbAV58GVc25VDOW0JIrj25PO0hq9LaCuJsXRe/K/wuBTOaj
+	 V7d6rbB769ERFcTplIECBHpdI+zl5EbiLgs+2Xc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 271/286] netfilter: nf_tables: do not allow mismatch field size and set key length
-Date: Mon, 22 Jan 2024 15:59:37 -0800
-Message-ID: <20240122235742.489111964@linuxfoundation.org>
+Subject: [PATCH 6.6 527/583] net: ethernet: ti: am65-cpsw: Fix max mtu to fit ethernet frames
+Date: Mon, 22 Jan 2024 15:59:38 -0800
+Message-ID: <20240122235828.225122018@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,54 +62,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Sanjuán García, Jorge <Jorge.SanjuanGarcia@duagon.com>
 
-[ Upstream commit 3ce67e3793f48c1b9635beb9bb71116ca1e51b58 ]
+[ Upstream commit 64e47d8afb5ca533b27efc006405e5bcae2c4a7b ]
 
-The set description provides the size of each field in the set whose sum
-should not mismatch the set key length, bail out otherwise.
+The value of AM65_CPSW_MAX_PACKET_SIZE represents the maximum length
+of a received frame. This value is written to the register
+AM65_CPSW_PORT_REG_RX_MAXLEN.
 
-I did not manage to crash nft_set_pipapo with mismatch fields and set key
-length so far, but this is UB which must be disallowed.
+The maximum MTU configured on the network device should then leave
+some room for the ethernet headers and frame check. Otherwise, if
+the network interface is configured to its maximum mtu possible,
+the frames will be larger than AM65_CPSW_MAX_PACKET_SIZE and will
+get dropped as oversized.
 
-Fixes: f3a2181e16f1 ("netfilter: nf_tables: Support for sets with multiple ranged fields")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+The switch supports ethernet frame sizes between 64 and 2024 bytes
+(including VLAN) as stated in the technical reference manual, so
+define AM65_CPSW_MAX_PACKET_SIZE with that maximum size.
+
+Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
+Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://lore.kernel.org/r/20240105085530.14070-2-jorge.sanjuangarcia@duagon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 6e91c743a4d4..009cb23bc972 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4302,8 +4302,8 @@ static int nft_set_desc_concat_parse(const struct nlattr *attr,
- static int nft_set_desc_concat(struct nft_set_desc *desc,
- 			       const struct nlattr *nla)
- {
-+	u32 num_regs = 0, key_num_regs = 0;
- 	struct nlattr *attr;
--	u32 num_regs = 0;
- 	int rem, err, i;
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 24120605502f..c62b0f99f2bc 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -56,7 +56,7 @@
+ #define AM65_CPSW_MAX_PORTS	8
  
- 	nla_for_each_nested(attr, nla, rem) {
-@@ -4318,6 +4318,10 @@ static int nft_set_desc_concat(struct nft_set_desc *desc,
- 	for (i = 0; i < desc->field_count; i++)
- 		num_regs += DIV_ROUND_UP(desc->field_len[i], sizeof(u32));
+ #define AM65_CPSW_MIN_PACKET_SIZE	VLAN_ETH_ZLEN
+-#define AM65_CPSW_MAX_PACKET_SIZE	(VLAN_ETH_FRAME_LEN + ETH_FCS_LEN)
++#define AM65_CPSW_MAX_PACKET_SIZE	2024
  
-+	key_num_regs = DIV_ROUND_UP(desc->klen, sizeof(u32));
-+	if (key_num_regs != num_regs)
-+		return -EINVAL;
-+
- 	if (num_regs > NFT_REG32_COUNT)
- 		return -E2BIG;
+ #define AM65_CPSW_REG_CTL		0x004
+ #define AM65_CPSW_REG_STAT_PORT_EN	0x014
+@@ -2167,7 +2167,8 @@ am65_cpsw_nuss_init_port_ndev(struct am65_cpsw_common *common, u32 port_idx)
+ 	eth_hw_addr_set(port->ndev, port->slave.mac_addr);
  
+ 	port->ndev->min_mtu = AM65_CPSW_MIN_PACKET_SIZE;
+-	port->ndev->max_mtu = AM65_CPSW_MAX_PACKET_SIZE;
++	port->ndev->max_mtu = AM65_CPSW_MAX_PACKET_SIZE -
++			      (VLAN_ETH_HLEN + ETH_FCS_LEN);
+ 	port->ndev->hw_features = NETIF_F_SG |
+ 				  NETIF_F_RXCSUM |
+ 				  NETIF_F_HW_CSUM |
 -- 
 2.43.0
 
