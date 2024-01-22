@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-15264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBEDD83848F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:46 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 891638382DC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:24:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93966299BB9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3AA6BB2B2A1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFB537316C;
-	Tue, 23 Jan 2024 02:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE24F5D72E;
+	Tue, 23 Jan 2024 01:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cM9yWVKE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EMBfGmMN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEC8D6EB67;
-	Tue, 23 Jan 2024 02:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A19F5A103;
+	Tue, 23 Jan 2024 01:46:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975422; cv=none; b=OXTfkWDnbyVsvyZh1v8xwTj07JMQXTMB6VXFZ3wW43VZvzFkT+HmErwrBWg5g9ybkiKC2jTeTEFuOVvieSr3ACd4E3NiC00Xqhr8cCSjxf5Xizxs35faecmtqkPguGJaa3Is+f27IerRUSIeel33mGu96eQUZHKgp4Rx6UU7Irk=
+	t=1705974380; cv=none; b=bdVy6vb9LvrAxZ6i86Tp6fXWwncbmIrhpC1/y6/v4oBxYMsZstH7frTRyYZNorOoyptlLg77G7JP2E+8RbBBpbJa58zwf8rIk/LWCdpNyjpQJOmIm1LpCOHaTh09yAK0QCS22z1CiPwEV26EdwaMW6Rz2t97KuYEyoCVFk4p9D8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975422; c=relaxed/simple;
-	bh=+Vq93d4ii7uphXhL+clV/Wmg0dZqhJry5JMgVIJAmKg=;
+	s=arc-20240116; t=1705974380; c=relaxed/simple;
+	bh=dVDxwCJ+p2c0OfhJLgyKsUwRPB1dZcCLurgD7qi8svY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WkmkAXgXFFU7KLlPQTFfdQkgtd92sHD+zthKaLUme1lie0/OEum2q9OtPWPFDNT9OpJbkTJMtf1yqTaFj6t7G68+MqK2xTi/hmkg/QKlC+5WfHjYmqbRK7Utx2VAGnDp2M9Cbqad6w+SuTpq0ODppdhgo0g8UhtOF+lDUfjk0I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cM9yWVKE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73185C43390;
-	Tue, 23 Jan 2024 02:03:42 +0000 (UTC)
+	 MIME-Version; b=IoFGWKi21F5QoFjcEjKhUNnN+AH9O9+INpUZlOMKG1W66sPwIcihrHL9akZNL79qCDYsjL4IG9hcioFf0XqpQOvzR3lv35fExifjaMRuaQwraUdLCRI7oY3h+svK+IErjvKn0abHNbSwZYlSioJoRbhpsTe0ilY4YTlPpenW3Pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EMBfGmMN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC70C433C7;
+	Tue, 23 Jan 2024 01:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975422;
-	bh=+Vq93d4ii7uphXhL+clV/Wmg0dZqhJry5JMgVIJAmKg=;
+	s=korg; t=1705974380;
+	bh=dVDxwCJ+p2c0OfhJLgyKsUwRPB1dZcCLurgD7qi8svY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cM9yWVKEusVat8unOFQA8ng7Uj9kNuK/RSNQRYP9AOadxqCy64mT+kyFR+dt1gfDb
-	 8SpuLN4fAnxsjXqspH9gQgArU4oS4EDepIem5XnfVot8IuzmxjsKlnNZ5v7op+ejr5
-	 mwQ8vATxDeKhBH5PhlLbpHkkBQi1ComKlFGYkel0=
+	b=EMBfGmMN18yv/jaTkevK0ezWKvBIhofhPTWRtw1Z415DoEQB+kwM8ZMoPNl/el2qh
+	 D2uB/NTuvElF9cwgrute/bWnbb/pEi3HCfO9NbJ9KHTET2aNRHS9+vRg0loCn3sja5
+	 dcby9xEW/qNBqWbEqx7zkCJCjcLErZF6TbJ026Fo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yo-Jung Lin <leo.lin@canonical.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 381/583] ALSA: hda/realtek: Enable mute/micmute LEDs and limit mic boost on HP ZBook
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 176/374] Revert "drm/tidss: Annotate dma-fence critical section in commit path"
 Date: Mon, 22 Jan 2024 15:57:12 -0800
-Message-ID: <20240122235823.660734770@linuxfoundation.org>
+Message-ID: <20240122235750.756061988@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,180 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yo-Jung Lin <leo.lin@canonical.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-commit b018cee7369896c7a15bfdbe88f168f3dbd8ba27 upstream.
+[ Upstream commit ca34d816558c3e4c3f8fe037b5a6b16c944693de ]
 
-On some HP ZBooks, the audio LEDs can be enabled by
-ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF. So use it accordingly.
+This reverts commit 4d56a4f08391857ba93465de489707b66adad114.
 
-Signed-off-by: Yo-Jung Lin <leo.lin@canonical.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240116020722.27236-1-leo.lin@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The DMA-fence annotations cause a lockdep warning (see below). As per
+https://patchwork.freedesktop.org/patch/462170/ it sounds like the
+annotations don't work correctly.
+
+======================================================
+WARNING: possible circular locking dependency detected
+6.6.0-rc2+ #1 Not tainted
+------------------------------------------------------
+kmstest/733 is trying to acquire lock:
+ffff8000819377f0 (fs_reclaim){+.+.}-{0:0}, at: __kmem_cache_alloc_node+0x58/0x2d4
+
+but task is already holding lock:
+ffff800081a06aa0 (dma_fence_map){++++}-{0:0}, at: tidss_atomic_commit_tail+0x20/0xc0 [tidss]
+
+which lock already depends on the new lock.
+
+the existing dependency chain (in reverse order) is:
+
+-> #2 (dma_fence_map){++++}-{0:0}:
+       __dma_fence_might_wait+0x5c/0xd0
+       dma_resv_lockdep+0x1a4/0x32c
+       do_one_initcall+0x84/0x2fc
+       kernel_init_freeable+0x28c/0x4c4
+       kernel_init+0x24/0x1dc
+       ret_from_fork+0x10/0x20
+
+-> #1 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}:
+       fs_reclaim_acquire+0x70/0xe4
+       __kmem_cache_alloc_node+0x58/0x2d4
+       kmalloc_trace+0x38/0x78
+       __kthread_create_worker+0x3c/0x150
+       kthread_create_worker+0x64/0x8c
+       workqueue_init+0x1e8/0x2f0
+       kernel_init_freeable+0x11c/0x4c4
+       kernel_init+0x24/0x1dc
+       ret_from_fork+0x10/0x20
+
+-> #0 (fs_reclaim){+.+.}-{0:0}:
+       __lock_acquire+0x1370/0x20d8
+       lock_acquire+0x1e8/0x308
+       fs_reclaim_acquire+0xd0/0xe4
+       __kmem_cache_alloc_node+0x58/0x2d4
+       __kmalloc_node_track_caller+0x58/0xf0
+       kmemdup+0x34/0x60
+       regmap_bulk_write+0x64/0x2c0
+       tc358768_bridge_pre_enable+0x8c/0x12d0 [tc358768]
+       drm_atomic_bridge_call_pre_enable+0x68/0x80 [drm]
+       drm_atomic_bridge_chain_pre_enable+0x50/0x158 [drm]
+       drm_atomic_helper_commit_modeset_enables+0x164/0x264 [drm_kms_helper]
+       tidss_atomic_commit_tail+0x58/0xc0 [tidss]
+       commit_tail+0xa0/0x188 [drm_kms_helper]
+       drm_atomic_helper_commit+0x1a8/0x1c0 [drm_kms_helper]
+       drm_atomic_commit+0xa8/0xe0 [drm]
+       drm_mode_atomic_ioctl+0x9ec/0xc80 [drm]
+       drm_ioctl_kernel+0xc4/0x170 [drm]
+       drm_ioctl+0x234/0x4b0 [drm]
+       drm_compat_ioctl+0x110/0x12c [drm]
+       __arm64_compat_sys_ioctl+0x128/0x150
+       invoke_syscall+0x48/0x110
+       el0_svc_common.constprop.0+0x40/0xe0
+       do_el0_svc_compat+0x1c/0x38
+       el0_svc_compat+0x48/0xb4
+       el0t_32_sync_handler+0xb0/0x138
+       el0t_32_sync+0x194/0x198
+
+other info that might help us debug this:
+
+Chain exists of:
+  fs_reclaim --> mmu_notifier_invalidate_range_start --> dma_fence_map
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  rlock(dma_fence_map);
+                               lock(mmu_notifier_invalidate_range_start);
+                               lock(dma_fence_map);
+  lock(fs_reclaim);
+
+ *** DEADLOCK ***
+
+3 locks held by kmstest/733:
+ #0: ffff800082e5bba0 (crtc_ww_class_acquire){+.+.}-{0:0}, at: drm_mode_atomic_ioctl+0x118/0xc80 [drm]
+ #1: ffff000004224c88 (crtc_ww_class_mutex){+.+.}-{3:3}, at: modeset_lock+0xdc/0x1a0 [drm]
+ #2: ffff800081a06aa0 (dma_fence_map){++++}-{0:0}, at: tidss_atomic_commit_tail+0x20/0xc0 [tidss]
+
+stack backtrace:
+CPU: 0 PID: 733 Comm: kmstest Not tainted 6.6.0-rc2+ #1
+Hardware name: Toradex Verdin AM62 on Verdin Development Board (DT)
+Call trace:
+ dump_backtrace+0x98/0x118
+ show_stack+0x18/0x24
+ dump_stack_lvl+0x60/0xac
+ dump_stack+0x18/0x24
+ print_circular_bug+0x288/0x368
+ check_noncircular+0x168/0x17c
+ __lock_acquire+0x1370/0x20d8
+ lock_acquire+0x1e8/0x308
+ fs_reclaim_acquire+0xd0/0xe4
+ __kmem_cache_alloc_node+0x58/0x2d4
+ __kmalloc_node_track_caller+0x58/0xf0
+ kmemdup+0x34/0x60
+ regmap_bulk_write+0x64/0x2c0
+ tc358768_bridge_pre_enable+0x8c/0x12d0 [tc358768]
+ drm_atomic_bridge_call_pre_enable+0x68/0x80 [drm]
+ drm_atomic_bridge_chain_pre_enable+0x50/0x158 [drm]
+ drm_atomic_helper_commit_modeset_enables+0x164/0x264 [drm_kms_helper]
+ tidss_atomic_commit_tail+0x58/0xc0 [tidss]
+ commit_tail+0xa0/0x188 [drm_kms_helper]
+ drm_atomic_helper_commit+0x1a8/0x1c0 [drm_kms_helper]
+ drm_atomic_commit+0xa8/0xe0 [drm]
+ drm_mode_atomic_ioctl+0x9ec/0xc80 [drm]
+ drm_ioctl_kernel+0xc4/0x170 [drm]
+ drm_ioctl+0x234/0x4b0 [drm]
+ drm_compat_ioctl+0x110/0x12c [drm]
+ __arm64_compat_sys_ioctl+0x128/0x150
+ invoke_syscall+0x48/0x110
+ el0_svc_common.constprop.0+0x40/0xe0
+ do_el0_svc_compat+0x1c/0x38
+ el0_svc_compat+0x48/0xb4
+ el0t_32_sync_handler+0xb0/0x138
+ el0t_32_sync+0x194/0x198
+
+Fixes: 4d56a4f08391 ("drm/tidss: Annotate dma-fence critical section in commit path")
+Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230920-dma-fence-annotation-revert-v1-1-7ebf6f7f5bf6@ideasonboard.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/tidss/tidss_kms.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9849,6 +9849,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8c71, "HP EliteBook 845 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c72, "HP EliteBook 865 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c96, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-+	SND_PCI_QUIRK(0x103c, 0x8c97, "HP ZBook", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8ca7, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8cf5, "HP ZBook Studio 16", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
+diff --git a/drivers/gpu/drm/tidss/tidss_kms.c b/drivers/gpu/drm/tidss/tidss_kms.c
+index 666e527a0acf..cb0ab224282f 100644
+--- a/drivers/gpu/drm/tidss/tidss_kms.c
++++ b/drivers/gpu/drm/tidss/tidss_kms.c
+@@ -4,8 +4,6 @@
+  * Author: Tomi Valkeinen <tomi.valkeinen@ti.com>
+  */
+ 
+-#include <linux/dma-fence.h>
+-
+ #include <drm/drm_atomic.h>
+ #include <drm/drm_atomic_helper.h>
+ #include <drm/drm_bridge.h>
+@@ -28,7 +26,6 @@ static void tidss_atomic_commit_tail(struct drm_atomic_state *old_state)
+ {
+ 	struct drm_device *ddev = old_state->dev;
+ 	struct tidss_device *tidss = to_tidss(ddev);
+-	bool fence_cookie = dma_fence_begin_signalling();
+ 
+ 	dev_dbg(ddev->dev, "%s\n", __func__);
+ 
+@@ -39,7 +36,6 @@ static void tidss_atomic_commit_tail(struct drm_atomic_state *old_state)
+ 	drm_atomic_helper_commit_modeset_enables(ddev, old_state);
+ 
+ 	drm_atomic_helper_commit_hw_done(old_state);
+-	dma_fence_end_signalling(fence_cookie);
+ 	drm_atomic_helper_wait_for_flip_done(ddev, old_state);
+ 
+ 	drm_atomic_helper_cleanup_planes(ddev, old_state);
+-- 
+2.43.0
+
 
 
 
