@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-14762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B61C838274
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D21A837FCF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4603328A8BB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D36C228E2D8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A1A5C5E8;
-	Tue, 23 Jan 2024 01:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E43912BEAD;
+	Tue, 23 Jan 2024 00:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZS8RQLbg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ag1bV1+J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7406A5BAD4;
-	Tue, 23 Jan 2024 01:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DCE212BEAA;
+	Tue, 23 Jan 2024 00:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974356; cv=none; b=IOLqYMGKZs+qunRoe5ychybIPhLmVMgmdylhC0fVeO7gk5M40spfs4TG0/uaa/6JH1cuo2+rfPyQeBLLTgn0uHNI6o37eCdPLDbTJIpifFORiD8V6VqqzdWXJ7fNHE8tFwQegHosVAYmRXnG6s8wNIXlDIRGC+AjH0jSiH0fzbo=
+	t=1705971364; cv=none; b=uCGeUPhNNvCIFpBeZWhB06afWKcZNpH1Jv25t1GD2jYmyotAE4pRpzplHoruA9FRwRPbs+MmimtwfLqoWDt7BVRIeHGN8zh9j20Ok9rGIzNTLDuuz41BvkX4dcUscdiezKqUlfbIocBnde7Gr6/wDlQcDG9DccjIJHOIUAiS/iQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974356; c=relaxed/simple;
-	bh=5wJqw6fsHvp4O9WelU3s/ixWebkH+5Q8cXzsNQzdElI=;
+	s=arc-20240116; t=1705971364; c=relaxed/simple;
+	bh=a5qCv+cpJRofx/YUTALz1Nank+/f/RHbcaE8kcd1Z6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W1opSwAOhxd2tNEzR55ZCwt2qcD4XWL7eRERnMYHDJ3DLk8sK4K7nXfAXv6KTCXAVBVcssKsfqFs9V04cwCxvEZV+KMaxW929DAPyq2fGHRbEDhFA5yJvUNhZIdtEY3mKIhHO8GoZA3MCTRtpqDZ2XNBf8433xIJECDRGJ27QUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZS8RQLbg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B99C433F1;
-	Tue, 23 Jan 2024 01:45:56 +0000 (UTC)
+	 MIME-Version; b=KLoq7trXTQ+wwFQXslnkmgzJriEB9tMjzl/J68TPbdZT3Ozp93nrJxUoiqK/x0UA+Ql61PxZWwoJ7O96bco83yTfZleyE4oogqmEqHVtwPp2WSRNVDJbN7YituKGBlvIrG3cvv1ySwkIlylkSBxhvR1SRgWDl8SzT7cUwZZG3Qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ag1bV1+J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B01DC433C7;
+	Tue, 23 Jan 2024 00:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974356;
-	bh=5wJqw6fsHvp4O9WelU3s/ixWebkH+5Q8cXzsNQzdElI=;
+	s=korg; t=1705971364;
+	bh=a5qCv+cpJRofx/YUTALz1Nank+/f/RHbcaE8kcd1Z6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZS8RQLbgid+o1X47aU/8il0Kzu0LhZ4zu+XhDruOWTJNlH1+5S3AE8cHZPb3wfu8L
-	 8KiIkyZ3wBmzheAfyzKwsfMqfxGlP5th/4O412LxmBQ02JjX4jGPSFXBT2aJq1bOOn
-	 3yRzqQ49ta3qMsjRFBJ3L5fXwQMDHfgE6txV32c4=
+	b=Ag1bV1+Jq/h9R0guaZGJOS/M/BHKcL/2A/s34maDgbl+aDE4AeT7stdb9xt9/sfPx
+	 j048YDHXlKSbDgKZU8QW0ajAyIBZeS8mgc94beB8G4UPrDtD+h5eqttzDWbWpXJZbn
+	 oFTkM6ix+BVQRazoXY3i+q/zo7F9a2cAqRX4PT3c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 190/374] ASoC: cs35l33: Fix GPIO name and drop legacy include
+Subject: [PATCH 5.10 140/286] Bluetooth: Fix bogus check for re-auth no supported with non-ssp
 Date: Mon, 22 Jan 2024 15:57:26 -0800
-Message-ID: <20240122235751.222785292@linuxfoundation.org>
+Message-ID: <20240122235737.527840189@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +61,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 50678d339d670a92658e5538ebee30447c88ccb3 ]
+[ Upstream commit d03376c185926098cb4d668d6458801eb785c0a5 ]
 
-This driver includes the legacy GPIO APIs <linux/gpio.h> and
-<linux/of_gpio.h> but does not use any symbols from any of
-them.
+This reverts 19f8def031bfa50c579149b200bfeeb919727b27
+"Bluetooth: Fix auth_complete_evt for legacy units" which seems to be
+working around a bug on a broken controller rather then any limitation
+imposed by the Bluetooth spec, in fact if there ws not possible to
+re-auth the command shall fail not succeed.
 
-Drop the includes.
-
-Further the driver is requesting "reset-gpios" rather than
-just "reset" from the GPIO framework. This is wrong because
-the gpiolib core will add "-gpios" before processing the
-request from e.g. device tree. Drop the suffix.
-
-The last problem means that the optional RESET GPIO has
-never been properly retrieved and used even if it existed,
-but nobody noticed.
-
-Fixes: 3333cb7187b9 ("ASoC: cs35l33: Initial commit of the cs35l33 CODEC driver.")
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20231201-descriptors-sound-cirrus-v2-2-ee9f9d4655eb@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 19f8def031bf ("Bluetooth: Fix auth_complete_evt for legacy units")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l33.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ include/net/bluetooth/hci_core.h |  1 -
+ net/bluetooth/hci_conn.c         |  8 +++-----
+ net/bluetooth/hci_event.c        | 11 ++---------
+ 3 files changed, 5 insertions(+), 15 deletions(-)
 
-diff --git a/sound/soc/codecs/cs35l33.c b/sound/soc/codecs/cs35l33.c
-index 2a6f5e46d031..3ea311fda98f 100644
---- a/sound/soc/codecs/cs35l33.c
-+++ b/sound/soc/codecs/cs35l33.c
-@@ -22,13 +22,11 @@
- #include <sound/soc-dapm.h>
- #include <sound/initval.h>
- #include <sound/tlv.h>
--#include <linux/gpio.h>
- #include <linux/gpio/consumer.h>
- #include <sound/cs35l33.h>
- #include <linux/pm_runtime.h>
- #include <linux/regulator/consumer.h>
- #include <linux/regulator/machine.h>
--#include <linux/of_gpio.h>
- #include <linux/of.h>
- #include <linux/of_device.h>
- #include <linux/of_irq.h>
-@@ -1169,7 +1167,7 @@ static int cs35l33_i2c_probe(struct i2c_client *i2c_client,
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index a168a64696b6..33873266b2bc 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -819,7 +819,6 @@ void hci_inquiry_cache_flush(struct hci_dev *hdev);
+ /* ----- HCI Connections ----- */
+ enum {
+ 	HCI_CONN_AUTH_PEND,
+-	HCI_CONN_REAUTH_PEND,
+ 	HCI_CONN_ENCRYPT_PEND,
+ 	HCI_CONN_RSWITCH_PEND,
+ 	HCI_CONN_MODE_CHANGE_PEND,
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index 74721c3e49b3..52e512f41da3 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -1385,12 +1385,10 @@ static int hci_conn_auth(struct hci_conn *conn, __u8 sec_level, __u8 auth_type)
+ 		hci_send_cmd(conn->hdev, HCI_OP_AUTH_REQUESTED,
+ 			     sizeof(cp), &cp);
  
- 	/* We could issue !RST or skip it based on AMP topology */
- 	cs35l33->reset_gpio = devm_gpiod_get_optional(&i2c_client->dev,
--			"reset-gpios", GPIOD_OUT_HIGH);
-+			"reset", GPIOD_OUT_HIGH);
- 	if (IS_ERR(cs35l33->reset_gpio)) {
- 		dev_err(&i2c_client->dev, "%s ERROR: Can't get reset GPIO\n",
- 			__func__);
+-		/* If we're already encrypted set the REAUTH_PEND flag,
+-		 * otherwise set the ENCRYPT_PEND.
++		/* Set the ENCRYPT_PEND to trigger encryption after
++		 * authentication.
+ 		 */
+-		if (test_bit(HCI_CONN_ENCRYPT, &conn->flags))
+-			set_bit(HCI_CONN_REAUTH_PEND, &conn->flags);
+-		else
++		if (!test_bit(HCI_CONN_ENCRYPT, &conn->flags))
+ 			set_bit(HCI_CONN_ENCRYPT_PEND, &conn->flags);
+ 	}
+ 
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index ee2c1a17366a..4027c79786fd 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -2924,14 +2924,8 @@ static void hci_auth_complete_evt(struct hci_dev *hdev, struct sk_buff *skb)
+ 
+ 	if (!ev->status) {
+ 		clear_bit(HCI_CONN_AUTH_FAILURE, &conn->flags);
+-
+-		if (!hci_conn_ssp_enabled(conn) &&
+-		    test_bit(HCI_CONN_REAUTH_PEND, &conn->flags)) {
+-			bt_dev_info(hdev, "re-auth of legacy device is not possible.");
+-		} else {
+-			set_bit(HCI_CONN_AUTH, &conn->flags);
+-			conn->sec_level = conn->pending_sec_level;
+-		}
++		set_bit(HCI_CONN_AUTH, &conn->flags);
++		conn->sec_level = conn->pending_sec_level;
+ 	} else {
+ 		if (ev->status == HCI_ERROR_PIN_OR_KEY_MISSING)
+ 			set_bit(HCI_CONN_AUTH_FAILURE, &conn->flags);
+@@ -2940,7 +2934,6 @@ static void hci_auth_complete_evt(struct hci_dev *hdev, struct sk_buff *skb)
+ 	}
+ 
+ 	clear_bit(HCI_CONN_AUTH_PEND, &conn->flags);
+-	clear_bit(HCI_CONN_REAUTH_PEND, &conn->flags);
+ 
+ 	if (conn->state == BT_CONFIG) {
+ 		if (!ev->status && hci_conn_ssp_enabled(conn)) {
 -- 
 2.43.0
 
