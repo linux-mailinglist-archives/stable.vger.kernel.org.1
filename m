@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F1A8381ED
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B1FB837F56
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA4D51C247E8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA22328CF2A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C37D54BDA;
-	Tue, 23 Jan 2024 01:40:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755CE12AAE3;
+	Tue, 23 Jan 2024 00:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ePPf9nbi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVw+hFoQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9AC850A83;
-	Tue, 23 Jan 2024 01:40:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351B812AAE0;
+	Tue, 23 Jan 2024 00:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974007; cv=none; b=i3YJsrMG6JAnzIXLqHCxuF5o4RgM3Bt6vfwbpApPy3t5i1vd0ey6wYFrDfJOdYnAEJ+LLiYso9MSBW5Ykh88B02fG2ajb0aq3Mr2/N4vcofnb9Qxs7hlXRESf2i1rdClDZuP8sZX8CZbyi2Zeu/QgPg3yo1IROd/slTUxk1ix64=
+	t=1705971071; cv=none; b=I0qtumVkq2TgZ7DgpFmMJBDk1KVacL4vpTapv1L8yqzyzGcZf95Nl09lDbMl5dfmsSuKCkwWxo/EWFZNS1nyTqXRw+k/NnfcPtvX58FRZ3OQ6IBkjbvBZohifI8hFs50QLiZ09YzdMQhER82wydyhdvs6IZRnWI5kyd44IPqnZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974007; c=relaxed/simple;
-	bh=7zPWNrbsRMkmUbdvqQPHtqGB7OzfB6UbGu324xz0g+o=;
+	s=arc-20240116; t=1705971071; c=relaxed/simple;
+	bh=SancLkbnlsFSNSBMxgSWHEBNQ6+GHi0y2pJwkZ2rOe0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WV6AvnN1/dSL3wfJQb87gDWJ8AhG3uGvSZynN0BF85xMHsCYPQ7s0o3c1hsNf6vQPDP+8aVEXe8DIlwDX5dxYteajHMr0nT3oEL40iG7OsAhExt4t9N6GlxdoW2mhXKV6AY6RxLABAZ2kyNOU6kjlcIGommSTRlXF5AIdDnr9HQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ePPf9nbi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46059C43390;
-	Tue, 23 Jan 2024 01:40:06 +0000 (UTC)
+	 MIME-Version; b=TWKxaLQaTUQdGKXAH8E3flLRnyn9OvuLxUvlXPTiJ8Yog+117QXZdbvWP4Ouc3yzBtaxMVbEdhzIdi/K+gAVuTZ3FjVdMKFBIHR8P6SDVrMEN1GHoTUTIuEyC/YlhuVKtp29/Wc22FH9m8LWcTxzZ7dszUJPmH+zINcaUDEsWD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVw+hFoQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E1FC43390;
+	Tue, 23 Jan 2024 00:51:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974006;
-	bh=7zPWNrbsRMkmUbdvqQPHtqGB7OzfB6UbGu324xz0g+o=;
+	s=korg; t=1705971071;
+	bh=SancLkbnlsFSNSBMxgSWHEBNQ6+GHi0y2pJwkZ2rOe0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ePPf9nbijWKiows34yhUG0JF4cRs3vWb+I/HyTNlY4DyUZo9yRSHNxZf+JBKTpWUB
-	 EpOnpF/AvcR21Gbd5RdKQpcWPejuo7zbk7CT03YXINPkvtDviBoooPtBtyuiLvKU0g
-	 snjG1XRaJ/SqVx8TsznxtNvAjxA5iqrRm0QyO+ok=
+	b=xVw+hFoQJHyZikpMyvOJgU9FOCDNZU1Ihl4RYtNGCxc7XSgJB3jAurmf6y2DjwKG/
+	 zvMeSIDEwjF8/hziFeEnq9pByIHjWHekRjXiHn6d+AJWfwy9nQedgvt8T1Qafohzdq
+	 zzPnWTzC5PHl1kIgO1Fkp/4Wem4Irm/KlCdh1Qi4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 087/374] efivarfs: force RO when remounting if SetVariable is not supported
+Subject: [PATCH 6.1 175/417] drm/tidss: Move reset to the end of dispc_init()
 Date: Mon, 22 Jan 2024 15:55:43 -0800
-Message-ID: <20240122235747.648684849@linuxfoundation.org>
+Message-ID: <20240122235757.929391336@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 0e8d2444168dd519fea501599d150e62718ed2fe ]
+[ Upstream commit 36d1e0852680aa038e2428d450673390111b165c ]
 
-If SetVariable at runtime is not supported by the firmware we never assign
-a callback for that function. At the same time mount the efivarfs as
-RO so no one can call that.  However, we never check the permission flags
-when someone remounts the filesystem as RW. As a result this leads to a
-crash looking like this:
+We do a DSS reset in the middle of the dispc_init(). While that happens
+to work now, we should really make sure that e..g the fclk, which is
+acquired only later in the function, is enabled when doing a reset. This
+will be handled in a later patch, but for now, let's move the
+dispc_softreset() call to the end of dispc_init(), which is a sensible
+place for it anyway.
 
-$ mount -o remount,rw /sys/firmware/efi/efivars
-$ efi-updatevar -f PK.auth PK
-
-[  303.279166] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-[  303.280482] Mem abort info:
-[  303.280854]   ESR = 0x0000000086000004
-[  303.281338]   EC = 0x21: IABT (current EL), IL = 32 bits
-[  303.282016]   SET = 0, FnV = 0
-[  303.282414]   EA = 0, S1PTW = 0
-[  303.282821]   FSC = 0x04: level 0 translation fault
-[  303.283771] user pgtable: 4k pages, 48-bit VAs, pgdp=000000004258c000
-[  303.284913] [0000000000000000] pgd=0000000000000000, p4d=0000000000000000
-[  303.286076] Internal error: Oops: 0000000086000004 [#1] PREEMPT SMP
-[  303.286936] Modules linked in: qrtr tpm_tis tpm_tis_core crct10dif_ce arm_smccc_trng rng_core drm fuse ip_tables x_tables ipv6
-[  303.288586] CPU: 1 PID: 755 Comm: efi-updatevar Not tainted 6.3.0-rc1-00108-gc7d0c4695c68 #1
-[  303.289748] Hardware name: Unknown Unknown Product/Unknown Product, BIOS 2023.04-00627-g88336918701d 04/01/2023
-[  303.291150] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[  303.292123] pc : 0x0
-[  303.292443] lr : efivar_set_variable_locked+0x74/0xec
-[  303.293156] sp : ffff800008673c10
-[  303.293619] x29: ffff800008673c10 x28: ffff0000037e8000 x27: 0000000000000000
-[  303.294592] x26: 0000000000000800 x25: ffff000002467400 x24: 0000000000000027
-[  303.295572] x23: ffffd49ea9832000 x22: ffff0000020c9800 x21: ffff000002467000
-[  303.296566] x20: 0000000000000001 x19: 00000000000007fc x18: 0000000000000000
-[  303.297531] x17: 0000000000000000 x16: 0000000000000000 x15: 0000aaaac807ab54
-[  303.298495] x14: ed37489f673633c0 x13: 71c45c606de13f80 x12: 47464259e219acf4
-[  303.299453] x11: ffff000002af7b01 x10: 0000000000000003 x9 : 0000000000000002
-[  303.300431] x8 : 0000000000000010 x7 : ffffd49ea8973230 x6 : 0000000000a85201
-[  303.301412] x5 : 0000000000000000 x4 : ffff0000020c9800 x3 : 00000000000007fc
-[  303.302370] x2 : 0000000000000027 x1 : ffff000002467400 x0 : ffff000002467000
-[  303.303341] Call trace:
-[  303.303679]  0x0
-[  303.303938]  efivar_entry_set_get_size+0x98/0x16c
-[  303.304585]  efivarfs_file_write+0xd0/0x1a4
-[  303.305148]  vfs_write+0xc4/0x2e4
-[  303.305601]  ksys_write+0x70/0x104
-[  303.306073]  __arm64_sys_write+0x1c/0x28
-[  303.306622]  invoke_syscall+0x48/0x114
-[  303.307156]  el0_svc_common.constprop.0+0x44/0xec
-[  303.307803]  do_el0_svc+0x38/0x98
-[  303.308268]  el0_svc+0x2c/0x84
-[  303.308702]  el0t_64_sync_handler+0xf4/0x120
-[  303.309293]  el0t_64_sync+0x190/0x194
-[  303.309794] Code: ???????? ???????? ???????? ???????? (????????)
-[  303.310612] ---[ end trace 0000000000000000 ]---
-
-Fix this by adding a .reconfigure() function to the fs operations which
-we can use to check the requested flags and deny anything that's not RO
-if the firmware doesn't implement SetVariable at runtime.
-
-Fixes: f88814cc2578 ("efi/efivars: Expose RT service availability via efivars abstraction")
-Signed-off-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Link: https://lore.kernel.org/r/20231109-tidss-probe-v2-4-ac91b5ea35c0@ideasonboard.com
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Stable-dep-of: bc288a927815 ("drm/tidss: Fix dss reset")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/efivarfs/super.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/gpu/drm/tidss/tidss_dispc.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 15880a68faad..3626816b174a 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -13,6 +13,7 @@
- #include <linux/ucs2_string.h>
- #include <linux/slab.h>
- #include <linux/magic.h>
-+#include <linux/printk.h>
+diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
+index 16301bdfead1..9ce452288c9e 100644
+--- a/drivers/gpu/drm/tidss/tidss_dispc.c
++++ b/drivers/gpu/drm/tidss/tidss_dispc.c
+@@ -2726,10 +2726,6 @@ int dispc_init(struct tidss_device *tidss)
+ 			return r;
+ 	}
  
- #include "internal.h"
+-	/* K2G display controller does not support soft reset */
+-	if (feat->subrev != DISPC_K2G)
+-		dispc_softreset(dispc);
+-
+ 	for (i = 0; i < dispc->feat->num_vps; i++) {
+ 		u32 gamma_size = dispc->feat->vp_feat.color.gamma_size;
+ 		u32 *gamma_table;
+@@ -2778,6 +2774,10 @@ int dispc_init(struct tidss_device *tidss)
+ 	of_property_read_u32(dispc->dev->of_node, "max-memory-bandwidth",
+ 			     &dispc->memory_bandwidth_limit);
  
-@@ -231,8 +232,19 @@ static int efivarfs_get_tree(struct fs_context *fc)
- 	return get_tree_single(fc, efivarfs_fill_super);
- }
- 
-+static int efivarfs_reconfigure(struct fs_context *fc)
-+{
-+	if (!efivar_supports_writes() && !(fc->sb_flags & SB_RDONLY)) {
-+		pr_err("Firmware does not support SetVariableRT. Can not remount with rw\n");
-+		return -EINVAL;
-+	}
++	/* K2G display controller does not support soft reset */
++	if (feat->subrev != DISPC_K2G)
++		dispc_softreset(dispc);
 +
-+	return 0;
-+}
-+
- static const struct fs_context_operations efivarfs_context_ops = {
- 	.get_tree	= efivarfs_get_tree,
-+	.reconfigure	= efivarfs_reconfigure,
- };
+ 	tidss->dispc = dispc;
  
- static int efivarfs_init_fs_context(struct fs_context *fc)
+ 	return 0;
 -- 
 2.43.0
 
