@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-15238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F0083846E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CE98837FE8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:55:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 235F3299946
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96DAD1C27287
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E130E6DCEF;
-	Tue, 23 Jan 2024 02:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D5012C535;
+	Tue, 23 Jan 2024 00:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gaETezFK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VxL39omY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDF46DCED;
-	Tue, 23 Jan 2024 02:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7125A6281D;
+	Tue, 23 Jan 2024 00:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975396; cv=none; b=AOEu42Eoq6Ql/JIXHkHcGy+EFd/XXCZK1wnA1wXOzAkU3jyR0RYZO8U/nqYigyCbme78GGZZu5MbdJDHz3pLTBU/osPIhm8kGv9inZ+/ghRJJgisNwuCS/rTtbPiCgaDzLfri/o8cQIkcNxZrld0+seMcQqDz2sPLIyhbEh8Idc=
+	t=1705971440; cv=none; b=s1e3eh47kqA37JsZKUXovqms9CLtCnqWMqTMap+J3OqQ6CQkEPejN2A0wUtu0KvvMWyXEIjlKchyVYIYGl6l2//+hsR0JvkrYOE6KWhoGfuIceLieMYQGcH5FUWsCz7hKNm4HwK9XGGoPqkOkvoBtTgzmfq2SfG6mds1OZqc8IU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975396; c=relaxed/simple;
-	bh=MudaizYSqXO1duRgE3/f7fzChF57VZe1ju8pLtbQukA=;
+	s=arc-20240116; t=1705971440; c=relaxed/simple;
+	bh=AwC00QdUqNxBKDg2FsoLDJx5J7/w6K5ykFDdKXQ2v/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CVMhxwBp/wiNcqElrsNKSH2h7HQhCDS4/Q+qiX/7yz9Y9KP35AH7rAE5/3G/cbNRreCiT8Mo37AXvAmVeL6X0bZD2BfAm/o1h9qON+8P9bnzzlgZv8UQE6rGNC0Rl3iIOtvw8j/kUALCcwvL2050NM2yAp1TDWrlItjoPOPgwn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gaETezFK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0437C43390;
-	Tue, 23 Jan 2024 02:03:15 +0000 (UTC)
+	 MIME-Version; b=ay14ByGCdTDVZOzboF4Oj2wqIIze99iRqww+yTk3m6/8q+IHLnTtP6vUlB/CHMyf5zPls58rCB6vR8r45GVnpoaqTt+ZjA/ai7Xu3siQo5KfecRa1P9zwyQS7NLw1lIU1eHEQEMw8Ex6Y/rr87n2V3ZGzgMAexSJp4CjgY6WHOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VxL39omY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD18C433F1;
+	Tue, 23 Jan 2024 00:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975396;
-	bh=MudaizYSqXO1duRgE3/f7fzChF57VZe1ju8pLtbQukA=;
+	s=korg; t=1705971440;
+	bh=AwC00QdUqNxBKDg2FsoLDJx5J7/w6K5ykFDdKXQ2v/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gaETezFKiCSImPN0ZyRqr4e2aU3R13fRTOocGjT7U+ztTsUv09mrUtxioeflgqsBP
-	 KCQkEwwaaeYhlJX3Ega67oXAI1x2liQf/uVeT/WXrmTK3MBzVa9s0ZO2lkQm+foJlD
-	 n9MGenor8QRFCCOc3cQnhG6orXL2Q+yFZ6qyDM24=
+	b=VxL39omYoxzaddES7C3DOnSXpnX1+jk32F6M0o116gexv+WGYecuqow9R4JXWyA4+
+	 i9Pbfsipqm/4Km+r1QxIJJrsxUerxymeO6XIblf3YILDQiE4/1M43aULCXKPCrH5wq
+	 T+MhBNN/Z1ipshNpqvAg9ph5GB+q+OgXVcsv/h/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Aneesh Kumar K.V (IBM)" <aneesh.kumar@kernel.org>
-Subject: [PATCH 6.6 355/583] powerpc/64s: Increase default stack size to 32KB
+	Peter Robinson <pbrobinson@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 238/417] mmc: sdhci_omap: Fix TI SoC dependencies
 Date: Mon, 22 Jan 2024 15:56:46 -0800
-Message-ID: <20240122235822.879684229@linuxfoundation.org>
+Message-ID: <20240122235800.127245155@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Peter Robinson <pbrobinson@gmail.com>
 
-commit 18f14afe281648e31ed35c9ad2fcb724c4838ad9 upstream.
+[ Upstream commit 09f164d393a6671e5ff8342ba6b3cb7fe3f20208 ]
 
-There are reports of kernels crashing due to stack overflow while
-running OpenShift (Kubernetes). The primary contributor to the stack
-usage seems to be openvswitch, which is used by OVN-Kubernetes (based on
-OVN (Open Virtual Network)), but NFS also contributes in some stack
-traces.
+The sdhci_omap is specific to  older TI SoCs, update the
+dependencies for those SoCs and compile testing. While we're
+at it update the text to reflect the wider range of
+supported TI SoCS the driver now supports.
 
-There may be some opportunities to reduce stack usage in the openvswitch
-code, but doing so potentially require tradeoffs vs performance, and
-also requires testing across architectures.
-
-Looking at stack usage across the kernel (using -fstack-usage), shows
-that ppc64le stack frames are on average 50-100% larger than the
-equivalent function built for x86-64. Which is not surprising given the
-minimum stack frame size is 32 bytes on ppc64le vs 16 bytes on x86-64.
-
-So increase the default stack size to 32KB for the modern 64-bit Book3S
-platforms, ie. pseries (virtualised) and powernv (bare metal). That
-leaves the older systems like G5s, and the AmigaOne (pasemi) with a 16KB
-stack which should be sufficient on those machines.
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
-Link: https://msgid.link/20231215124449.317597-1-mpe@ellerman.id.au
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7d326930d352 ("mmc: sdhci-omap: Add OMAP SDHCI driver")
+Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+Link: https://lore.kernel.org/r/20231220135950.433588-2-pbrobinson@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/Kconfig | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -857,6 +857,7 @@ config THREAD_SHIFT
- 	int "Thread shift" if EXPERT
- 	range 13 15
- 	default "15" if PPC_256K_PAGES
-+	default "15" if PPC_PSERIES || PPC_POWERNV
- 	default "14" if PPC64
- 	default "13"
+diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+index 5c960c1ee8f9..d84bdb69f56b 100644
+--- a/drivers/mmc/host/Kconfig
++++ b/drivers/mmc/host/Kconfig
+@@ -1061,14 +1061,15 @@ config MMC_SDHCI_XENON
+ 
+ config MMC_SDHCI_OMAP
+ 	tristate "TI SDHCI Controller Support"
++	depends on ARCH_OMAP2PLUS || ARCH_KEYSTONE || COMPILE_TEST
+ 	depends on MMC_SDHCI_PLTFM && OF
+ 	select THERMAL
+ 	imply TI_SOC_THERMAL
+ 	select MMC_SDHCI_EXTERNAL_DMA if DMA_ENGINE
  	help
+ 	  This selects the Secure Digital Host Controller Interface (SDHCI)
+-	  support present in TI's DRA7 SOCs. The controller supports
+-	  SD/MMC/SDIO devices.
++	  support present in TI's Keystone/OMAP2+/DRA7 SOCs. The controller
++	  supports SD/MMC/SDIO devices.
+ 
+ 	  If you have a controller with this interface, say Y or M here.
+ 
+-- 
+2.43.0
+
 
 
 
