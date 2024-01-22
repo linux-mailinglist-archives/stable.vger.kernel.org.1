@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-13660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C433837D4D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F27837FDD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:55:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FA471F295F7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89F4528A5BD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DDB95B1E7;
-	Tue, 23 Jan 2024 00:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3962112BF22;
+	Tue, 23 Jan 2024 00:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ksZQeF9t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1X26LqQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BAB85A114;
-	Tue, 23 Jan 2024 00:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5A612BEB9;
+	Tue, 23 Jan 2024 00:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969881; cv=none; b=iC2OMrpnpoam1Y/OMtzbWHBZugveF2eNILqhhWmleKenWCb4E4dln9uvNAEzRem8l3AJyNwTpU9hz1wsi+jtyEu1v//EZMBYUocm4eIa8LI/Wzkcm75ONzXHgFCUEZqjCBQRNF31Oh5H8RnEPDN74dSLT8dKshwbeZurd3J0ifA=
+	t=1705971418; cv=none; b=eoC723ercCFQsK49n04LBAUGwGF20JEptWPbHWwomhi0/f60n7Sw0mktFKiyv4/bF1YLDM0UoBNW/vx6k33PwdytPJK+ESXz24aCqW8Obw+zlswej8iSy+LRHuTi9R0epG1m8S3/fKjBpdaUlrPef4eQk+UH2agjUqskn5IcBOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969881; c=relaxed/simple;
-	bh=tYMzkpSF93reewwZOZ5n6oy1aZhiJyHmDqxJAhglUtw=;
+	s=arc-20240116; t=1705971418; c=relaxed/simple;
+	bh=PVaGru2tEWbaTb8PMhWfalqAuHFfnI8U7AuR1aczkR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=exV28snH2tBnIhClXj0DWWhQR36Ao1d31R90DOzSTYDUJJQBG9IEHSMDw6r/ASU8WMKgJ+k2hkaexaJFuxpl2W6PhQh0JtJGA65YdOIQAwtfC5lS/zRTqaYGofBFuznVi2D0dyqNk5ZR3nA9lB/Zrx59sdtKbYMu9UDcskkX8OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ksZQeF9t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB5E7C433C7;
-	Tue, 23 Jan 2024 00:31:20 +0000 (UTC)
+	 MIME-Version; b=KEt5yeO9X+goQibo53egglOXdClkOIXLP+vbM5uSUFDVpwzfWEWCUrnAHm1vy62Zp/BWTV+bki4PCphfRlFV9UfX6dKO0uDsFi0wtHi/qdOkICaczSYHqH0v/K7cu4SOZD1I2buQE8GgoPc/U0CLoPfbxWQqjrPRYRJhMRuw1bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1X26LqQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2896DC433F1;
+	Tue, 23 Jan 2024 00:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969881;
-	bh=tYMzkpSF93reewwZOZ5n6oy1aZhiJyHmDqxJAhglUtw=;
+	s=korg; t=1705971417;
+	bh=PVaGru2tEWbaTb8PMhWfalqAuHFfnI8U7AuR1aczkR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ksZQeF9tYfx6nNOZdTXRH/Q4eTExXc4dXVyaszgMaHHGStdebekY+5833SdsOfVT+
-	 XTc5bhYep4EzRP69o0AQ/KJNLarPR3S58ztpK/l4SGbO94zP4Cf2YQ39DUab/tVqEn
-	 fT18ov7cSKQSEk+OxptGzNJUH+K1hpzZ7qfN3itQ=
+	b=P1X26LqQFLsatAJF8TaI5gcedp8Nd7foptQ8uZnp//aEJi93zlpoJ7VkwTb8r9TkZ
+	 hHWmG4ltIv+gdfWmv7IqU4LN9ek3oRrdFtW5nL3sQU+lvI+3GZFZtofftfrcWFTOS6
+	 5rvZTLTfYSAVYOY/xXH7ZXN82KJhem5xLduBikB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.7 479/641] serial: sc16is7xx: add check for unsupported SPI modes during probe
-Date: Mon, 22 Jan 2024 15:56:23 -0800
-Message-ID: <20240122235833.045688687@linuxfoundation.org>
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 216/417] clk: qcom: videocc-sm8150: Update the videocc resets
+Date: Mon, 22 Jan 2024 15:56:24 -0800
+Message-ID: <20240122235759.404653175@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-commit 6d710b769c1f5f0d55c9ad9bb49b7dce009ec103 upstream.
+[ Upstream commit 1fd9a939db24d2f66e48f8bca3e3654add3fa205 ]
 
-The original comment is confusing because it implies that variants other
-than the SC16IS762 supports other SPI modes beside SPI_MODE_0.
+Add all the available resets for the video clock controller
+on sm8150.
 
-Extract from datasheet:
-    The SC16IS762 differs from the SC16IS752 in that it supports SPI clock
-    speeds up to 15 Mbit/s instead of the 4 Mbit/s supported by the
-    SC16IS752... In all other aspects, the SC16IS762 is functionally and
-    electrically the same as the SC16IS752.
-
-The same is also true of the SC16IS760 variant versus the SC16IS740 and
-SC16IS750 variants.
-
-For all variants, only SPI mode 0 is supported.
-
-Change comment and abort probing if the specified SPI mode is not
-SPI_MODE_0.
-
-Fixes: 2c837a8a8f9f ("sc16is7xx: spi interface is added")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-3-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5658e8cf1a8a ("clk: qcom: add video clock controller driver for SM8150")
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231201-videocc-8150-v3-2-56bec3a5e443@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/clk/qcom/videocc-sm8150.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1727,7 +1727,10 @@ static int sc16is7xx_spi_probe(struct sp
+diff --git a/drivers/clk/qcom/videocc-sm8150.c b/drivers/clk/qcom/videocc-sm8150.c
+index 1afdbe4a249d..6a5f89f53da8 100644
+--- a/drivers/clk/qcom/videocc-sm8150.c
++++ b/drivers/clk/qcom/videocc-sm8150.c
+@@ -214,6 +214,10 @@ static const struct regmap_config video_cc_sm8150_regmap_config = {
  
- 	/* Setup SPI bus */
- 	spi->bits_per_word	= 8;
--	/* only supports mode 0 on SC16IS762 */
-+	/* For all variants, only mode 0 is supported */
-+	if ((spi->mode & SPI_MODE_X_MASK) != SPI_MODE_0)
-+		return dev_err_probe(&spi->dev, -EINVAL, "Unsupported SPI mode\n");
-+
- 	spi->mode		= spi->mode ? : SPI_MODE_0;
- 	spi->max_speed_hz	= spi->max_speed_hz ? : 15000000;
- 	ret = spi_setup(spi);
+ static const struct qcom_reset_map video_cc_sm8150_resets[] = {
+ 	[VIDEO_CC_MVSC_CORE_CLK_BCR] = { 0x850, 2 },
++	[VIDEO_CC_INTERFACE_BCR] = { 0x8f0 },
++	[VIDEO_CC_MVS0_BCR] = { 0x870 },
++	[VIDEO_CC_MVS1_BCR] = { 0x8b0 },
++	[VIDEO_CC_MVSC_BCR] = { 0x810 },
+ };
+ 
+ static const struct qcom_cc_desc video_cc_sm8150_desc = {
+-- 
+2.43.0
+
 
 
 
