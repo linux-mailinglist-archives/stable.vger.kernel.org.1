@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D16D8382E6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:24:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE22837E05
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9BDA287DD1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4BE3291B06
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:34:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6445FEE4;
-	Tue, 23 Jan 2024 01:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA828524CB;
+	Tue, 23 Jan 2024 00:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JaaShOmZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tUnMWwY3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9735FDC1;
-	Tue, 23 Jan 2024 01:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999CA50A81;
+	Tue, 23 Jan 2024 00:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974656; cv=none; b=GFrqMabzpSTBrONOXHLE8owJy9QJ2PbPg0PHAHVnWhD9uF36v2OEXPSyCd3rYsvhisJOok3VCBwW80qr2L0bX9whwZFoBPbEslIbkEseyLuvMTUJD9XTedGXT3DkdolwJ/VMXL25AhpN7R+UmSnWXbccjC7bPSd/c1guUpgbqQ0=
+	t=1705970192; cv=none; b=ZSqxAON2beDijjv2xteGdR3g/Pk4inDl1iDq++eW+rm99h1ziT0Eh7/lyHxRwYNJrulPrDhd+rm5oYWjAyIZAzVCnwonQ3qoCcCJbEWGQ8Ms4tUItFq7JsVWqRiCPYFm8yQVh14X0TW8kbfKwTFfzjRvjiWA4Cg5INgsVbsFEFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974656; c=relaxed/simple;
-	bh=SoCvfap5NBBYX8wYntjujWJA7mk6N7s3QX7tr0/wqus=;
+	s=arc-20240116; t=1705970192; c=relaxed/simple;
+	bh=mAR3KR06DFXa3IdyCc4SqfCh6lm7ZVYs6xR2/RYQsYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MgkbiAfIE0Z0O/CmgSAE6QZB7Y4IYBT9h6U9lCiCAyoP1P1LZRPWoxgRxE87a0euVEcYm3C4+cGhG1u3brzBwoc6rj+2OB00dljmsMA5sz+LXY+5GddzlfHwCKVu1RYjBiHsYlSEuga0TocGT60AJOPoy6ZTJgJQV2ih4aG0+4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JaaShOmZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B12C43390;
-	Tue, 23 Jan 2024 01:50:55 +0000 (UTC)
+	 MIME-Version; b=ljdK1tVUCo8jAOUbd1mz/0XJNMiDCbhzmz61IKU8YLli8XVKuPUEOU18DVIBOOkKCobetxRLcdpV8V/5LKbfOJ6eE1RAAqKFWBgsJiRBEfA6IqUqezRH4u/csSFgOPlahuK21D2S3Oa5DxjBH8j1lHji+ngn3YuYTDHoOY99FDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tUnMWwY3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E72C433C7;
+	Tue, 23 Jan 2024 00:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974656;
-	bh=SoCvfap5NBBYX8wYntjujWJA7mk6N7s3QX7tr0/wqus=;
+	s=korg; t=1705970192;
+	bh=mAR3KR06DFXa3IdyCc4SqfCh6lm7ZVYs6xR2/RYQsYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JaaShOmZn0dmlqQXvXkdAN9cOQ4UG8NiRK9CoPDexBdMzkvXausp+GSQTG3d8RaUJ
-	 uH26NP6mlP0rxBDDZ5sN2gDSaerUMmSW9riXBnwaE5nEN/AYepSR/teFKYtDFi2eVa
-	 ZfNFa6bVfVCHhEbCrNCbe9SprnKu3S/Guxu69iXs=
+	b=tUnMWwY3V5bcqLEBnZLjH3XLSehzDdbNdYDqoJaaly06rihUOmWHBYkmXhvUxUdGp
+	 YXCrcFRyqIKeUkCatwVcOHUej5m0cWZs3EKY29o6VCdQTrlfJQfjTyWpfsVooDR2ta
+	 FqIhuzUdl5ee6UHjok1EOygYsnb8vweljg1sF6EM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Robinson <pbrobinson@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Divya Koppera <divya.koppera@microchip.com>,
+	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 236/374] mmc: sdhci_am654: Fix TI SoC dependencies
+Subject: [PATCH 6.7 588/641] net: micrel: Fix PTP frame parsing for lan8841
 Date: Mon, 22 Jan 2024 15:58:12 -0800
-Message-ID: <20240122235752.946055852@linuxfoundation.org>
+Message-ID: <20240122235836.613089348@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Robinson <pbrobinson@gmail.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit cb052da7f031b0d2309a4895ca236afb3b4bbf50 ]
+[ Upstream commit acd66c2126eb9b5da2d89ae07dbcd73b909c2111 ]
 
-The sdhci_am654 is specific to recent TI SoCs, update the
-dependencies for those SoCs and compile testing. While we're
-at it update the text to reflect the wider range of
-supported TI SoCS the driver now supports.
+The HW has the capability to check each frame if it is a PTP frame,
+which domain it is, which ptp frame type it is, different ip address in
+the frame. And if one of these checks fail then the frame is not
+timestamp. Most of these checks were disabled except checking the field
+minorVersionPTP inside the PTP header. Meaning that once a partner sends
+a frame compliant to 8021AS which has minorVersionPTP set to 1, then the
+frame was not timestamp because the HW expected by default a value of 0
+in minorVersionPTP.
+Fix this issue by removing this check so the userspace can decide on this.
 
-Fixes: 41fd4caeb00b ("mmc: sdhci_am654: Add Initial Support for AM654 SDHCI driver")
-Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
-Link: https://lore.kernel.org/r/20231220135950.433588-1-pbrobinson@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: cafc3662ee3f ("net: micrel: Add PHC support for lan8841")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Divya Koppera <divya.koppera@microchip.com>
+Reviewed-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/Kconfig | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/phy/micrel.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index a281df78d168..ef36a0095211 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -1070,14 +1070,15 @@ config MMC_SDHCI_OMAP
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 08e3915001c3..73ee81c583ef 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -3335,8 +3335,10 @@ static int lan8814_probe(struct phy_device *phydev)
+ #define LAN8841_ADC_CHANNEL_MASK		198
+ #define LAN8841_PTP_RX_PARSE_L2_ADDR_EN		370
+ #define LAN8841_PTP_RX_PARSE_IP_ADDR_EN		371
++#define LAN8841_PTP_RX_VERSION			374
+ #define LAN8841_PTP_TX_PARSE_L2_ADDR_EN		434
+ #define LAN8841_PTP_TX_PARSE_IP_ADDR_EN		435
++#define LAN8841_PTP_TX_VERSION			438
+ #define LAN8841_PTP_CMD_CTL			256
+ #define LAN8841_PTP_CMD_CTL_PTP_ENABLE		BIT(2)
+ #define LAN8841_PTP_CMD_CTL_PTP_DISABLE		BIT(1)
+@@ -3380,6 +3382,12 @@ static int lan8841_config_init(struct phy_device *phydev)
+ 	phy_write_mmd(phydev, KSZ9131RN_MMD_COMMON_CTRL_REG,
+ 		      LAN8841_PTP_RX_PARSE_IP_ADDR_EN, 0);
  
- config MMC_SDHCI_AM654
- 	tristate "Support for the SDHCI Controller in TI's AM654 SOCs"
-+	depends on ARCH_K3 || COMPILE_TEST
- 	depends on MMC_SDHCI_PLTFM && OF
- 	select MMC_SDHCI_IO_ACCESSORS
- 	select MMC_CQHCI
- 	select REGMAP_MMIO
- 	help
- 	  This selects the Secure Digital Host Controller Interface (SDHCI)
--	  support present in TI's AM654 SOCs. The controller supports
--	  SD/MMC/SDIO devices.
-+	  support present in TI's AM65x/AM64x/AM62x/J721E SOCs. The controller
-+	  supports SD/MMC/SDIO devices.
- 
- 	  If you have a controller with this interface, say Y or M here.
- 
++	/* Disable checking for minorVersionPTP field */
++	phy_write_mmd(phydev, KSZ9131RN_MMD_COMMON_CTRL_REG,
++		      LAN8841_PTP_RX_VERSION, 0xff00);
++	phy_write_mmd(phydev, KSZ9131RN_MMD_COMMON_CTRL_REG,
++		      LAN8841_PTP_TX_VERSION, 0xff00);
++
+ 	/* 100BT Clause 40 improvenent errata */
+ 	phy_write_mmd(phydev, LAN8841_MMD_ANALOG_REG,
+ 		      LAN8841_ANALOG_CONTROL_1,
 -- 
 2.43.0
 
