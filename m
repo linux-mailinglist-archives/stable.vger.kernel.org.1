@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 326638380BC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:02:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D676E837DF4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93835286C29
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:02:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 142301C28D6E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:34:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F54133438;
-	Tue, 23 Jan 2024 01:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B146524BC;
+	Tue, 23 Jan 2024 00:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPwdGPVC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xU9zZ6Hg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A36133436;
-	Tue, 23 Jan 2024 01:04:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD9850A81;
+	Tue, 23 Jan 2024 00:36:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971863; cv=none; b=Wb+42dyBrlTIZog7KWtET1BTWlDsv4WSsiCKjHU7tXsv9mnCHC0A42VpsknUEuzBYQ044oZq1dmwQ5gZQiueUEcmYlu/O4RV4HkFoVB5BPsaTKIhdy+R5NpiMvIOgKslmWjzMlk3NDSA9Xly4fxS8n6FsF6IopgEcigY6TnRhrg=
+	t=1705970196; cv=none; b=BFhN3Osg37SOyEunLypOubGzTogASbxBytXf52EWvWLyjHTY+jN2H6XXRGPJbazSbBmyD8zinT7taea17U12Voc/kxsxSJY2zOyxuv53vcF09IPis6NDjpeJ9FYhs/nVqQZaHRlU6pmU/eRDI0MpzcINEBZ/P2zavdPENZlcutw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971863; c=relaxed/simple;
-	bh=qs1u4sCvdBWlOsdUkribOUGIRJBOn9N3MARPjEx7ArA=;
+	s=arc-20240116; t=1705970196; c=relaxed/simple;
+	bh=zJDEtl5atR96EJlqVX7tPQ6CqwwK6VNkeNfb6fTozUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JthZs9ihjXK/SIIWgX6U8pbkA3xXP2/4sYNDPYOshKM//nVmxDqWbpii9Kzy51fWUR+6AHUyH6DlT0dwk5pUfVTBoH1L+Jy4w7m/E5R0m4BJy8g09pHStLV/DDCsalaIs7DUszwB72ppvqzrxIC7aUUer0XNfzOsARVf6HczUo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPwdGPVC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 477C1C433C7;
-	Tue, 23 Jan 2024 01:04:23 +0000 (UTC)
+	 MIME-Version; b=nKLZhc/QYyU8R6j40+sfcTq5xPHElQqTiUnO1g9fF+2KdJ9aSFKdGM04SymceCvubue1wtiRY3qhFjJ23N0xSIxtlUKk+T7EReOCUdVS0CrIkb1h2uiKgGI0g2KVIvDPNsfWWjQbjQMenFzelZuOPzYJf0c/RsBJeAaUmJgdqjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xU9zZ6Hg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56391C433C7;
+	Tue, 23 Jan 2024 00:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971863;
-	bh=qs1u4sCvdBWlOsdUkribOUGIRJBOn9N3MARPjEx7ArA=;
+	s=korg; t=1705970195;
+	bh=zJDEtl5atR96EJlqVX7tPQ6CqwwK6VNkeNfb6fTozUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PPwdGPVCkLnre5Wmpow9RgK8NEvfDbBAiH1wccjSuhm6YKFoyfEDaHjPkFRsVYy7p
-	 4giihaErum7ebG8ChWsnmg/UynRbNnKnwk1oNCXnB/Gh/B9iJKKexYlqL9Zrp7MEnA
-	 ADLvPSbYDfuVx00gINMEoB0+Ejzxf8ZdvzctJry4=
+	b=xU9zZ6Hg08vUUb8kfJh4JovKEi5x1/sh5X+TICN723hdTlb4tfsZg8hn+pny8Lwfx
+	 r44djA1ZE/sBpZQhdImYlYWZI/KpCWyasSTA8q6ahTWOPxmkSSQfxiHlHLbQpfgXU5
+	 z8VZsJyNzmVpKnG8KTxMDBy4Cy9OUoPtPcS2TwEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	qizhong cheng <qizhong.cheng@mediatek.com>,
-	Jianjun Wang <jianjun.wang@mediatek.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Subject: [PATCH 6.1 315/417] PCI: mediatek: Clear interrupt status before dispatching handler
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 579/641] ASoC: mediatek: sof-common: Add NULL check for normal_link string
 Date: Mon, 22 Jan 2024 15:58:03 -0800
-Message-ID: <20240122235802.727411608@linuxfoundation.org>
+Message-ID: <20240122235836.300731042@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: qizhong cheng <qizhong.cheng@mediatek.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-commit 4e11c29873a8a296a20f99b3e03095e65ebf897d upstream.
+[ Upstream commit e3b3ec967a7d93b9010a5af9a2394c8b5c8f31ed ]
 
-We found a failure when using the iperf tool during WiFi performance
-testing, where some MSIs were received while clearing the interrupt
-status, and these MSIs cannot be serviced.
+It's not granted that all entries of struct sof_conn_stream declare
+a `normal_link` (a non-SOF, direct link) string, and this is the case
+for SoCs that support only SOF paths (hence do not support both direct
+and SOF usecases).
 
-The interrupt status can be cleared even if the MSI status remains pending.
-As such, given the edge-triggered interrupt type, its status should be
-cleared before being dispatched to the handler of the underling device.
+For example, in the case of MT8188 there is no normal_link string in
+any of the sof_conn_stream entries and there will be more drivers
+doing that in the future.
 
-[kwilczynski: commit log, code comment wording]
-Link: https://lore.kernel.org/linux-pci/20231211094923.31967-1-jianjun.wang@mediatek.com
-Fixes: 43e6409db64d ("PCI: mediatek: Add MSI support for MT2712 and MT7622")
-Signed-off-by: qizhong cheng <qizhong.cheng@mediatek.com>
-Signed-off-by: Jianjun Wang <jianjun.wang@mediatek.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-[bhelgaas: rewrap comment]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To avoid possible NULL pointer KPs, add a NULL check for `normal_link`.
+
+Fixes: 0caf1120c583 ("ASoC: mediatek: mt8195: extract SOF common code")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://msgid.link/r/20240111105226.117603-1-angelogioacchino.delregno@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-mediatek.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ sound/soc/mediatek/common/mtk-dsp-sof-common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/controller/pcie-mediatek.c
-+++ b/drivers/pci/controller/pcie-mediatek.c
-@@ -617,12 +617,18 @@ static void mtk_pcie_intr_handler(struct
- 		if (status & MSI_STATUS){
- 			unsigned long imsi_status;
+diff --git a/sound/soc/mediatek/common/mtk-dsp-sof-common.c b/sound/soc/mediatek/common/mtk-dsp-sof-common.c
+index f3894010f656..7ec8965a70c0 100644
+--- a/sound/soc/mediatek/common/mtk-dsp-sof-common.c
++++ b/sound/soc/mediatek/common/mtk-dsp-sof-common.c
+@@ -24,7 +24,7 @@ int mtk_sof_dai_link_fixup(struct snd_soc_pcm_runtime *rtd,
+ 		struct snd_soc_dai_link *sof_dai_link = NULL;
+ 		const struct sof_conn_stream *conn = &sof_priv->conn_streams[i];
  
-+			/*
-+			 * The interrupt status can be cleared even if the
-+			 * MSI status remains pending. As such, given the
-+			 * edge-triggered interrupt type, its status should
-+			 * be cleared before being dispatched to the
-+			 * handler of the underlying device.
-+			 */
-+			writel(MSI_STATUS, port->base + PCIE_INT_STATUS);
- 			while ((imsi_status = readl(port->base + PCIE_IMSI_STATUS))) {
- 				for_each_set_bit(bit, &imsi_status, MTK_MSI_IRQS_NUM)
- 					generic_handle_domain_irq(port->inner_domain, bit);
- 			}
--			/* Clear MSI interrupt status */
--			writel(MSI_STATUS, port->base + PCIE_INT_STATUS);
- 		}
- 	}
+-		if (strcmp(rtd->dai_link->name, conn->normal_link))
++		if (conn->normal_link && strcmp(rtd->dai_link->name, conn->normal_link))
+ 			continue;
  
+ 		for_each_card_rtds(card, runtime) {
+-- 
+2.43.0
+
 
 
 
