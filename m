@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-14609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F3AE838195
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E888D837D33
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20CA31F23AD8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 285811C26EDA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F4E107A6;
-	Tue, 23 Jan 2024 01:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B990136B04;
+	Tue, 23 Jan 2024 00:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fNLj0HaX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qA2Db+sO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D53D537C;
-	Tue, 23 Jan 2024 01:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C2A23DB;
+	Tue, 23 Jan 2024 00:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972179; cv=none; b=OIIF9bb5z6H0JUK8Pm17JGNNlYMcapdzMKboAXBdxDHbS91fo3pZE90yu0kBOoM9t5FU3fO2RZHw8rIuDb8HsMQigFPK6Qat0EkAwK5qQwpnOHi5ptOB+cBCspuwkOmCz8I5K08DSeqqSv7zkxrnFwee7DMBrMSW/2pQHBE2EsI=
+	t=1705969838; cv=none; b=OjAqZf2UyB7XeCsIKhtbpsDmTrSCZ2UVo3+6iMkD96sOwHCqt0eDBxwv7RL9avAtyzSwhWK1DMZicKd/BGcl8hxCta8QYupdnq3CBGVA9z/qOQvPII50eoXXO9weatuE4oi/DfrDDBxCxhizVmPLoOLxymWSccOVRPkUzPB1dVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972179; c=relaxed/simple;
-	bh=5sPpnX0s9FzfZKOalfa+f+a3q5XKW8xG7jEtyBT/Wjc=;
+	s=arc-20240116; t=1705969838; c=relaxed/simple;
+	bh=Ycvu5Ct/pRmDkiV05KZOAogyWydT5Pk+YbG4z8+0HYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dT8ZKI/tItiMV0Y4E8984v+jvXZpiittqgrOzTRTNAjGZapPmPDibBuyU5sZIka2gahG4gebcLCZKOTHmIyT1XlZleBfRaIRb8asdbCixzAuD78f/q0RZaxI5aWW5Vu5PnGdXYf6MhEtpG+5l6rAsbqUvk43ChsxfIemIM2K2Ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fNLj0HaX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D2DC43394;
-	Tue, 23 Jan 2024 01:09:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Xe9ClLDBwCd1GwGWlDKm8jwyBtr46vihS386LqchysI2fhFSjwx0ZtGb95R/J/sOH+D6tpg86D+mD4FRDOFQgeGTYd8iNSDHWsBjJzvmrfsA+DngwbFx0FCFyyl8pK58TJLWeO6Ovv2f9aBB3EbVa3AzmcBBJHOp2/0Or6ryaWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qA2Db+sO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10345C433F1;
+	Tue, 23 Jan 2024 00:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972179;
-	bh=5sPpnX0s9FzfZKOalfa+f+a3q5XKW8xG7jEtyBT/Wjc=;
+	s=korg; t=1705969838;
+	bh=Ycvu5Ct/pRmDkiV05KZOAogyWydT5Pk+YbG4z8+0HYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fNLj0HaXGsYrQWv2Pk9CT31eidaSsqhd/wopNlCMZfZPaf+c9I3+SoyP8WK7MlXRk
-	 dASVo3rFc3pc3cBxeErEWXcqxsHHcz30duN+GL2sEe/ix+7z3+H/9hIC0DJkqngTiU
-	 FTs4eRItTW3iQIorW7VP1v69OSugXvhjOODjpwqo=
+	b=qA2Db+sOIjf7pTj5/wSikLfTU9pc5jLn/jUtxCTlILctrpu50M/S526nsG1TguLIl
+	 vgxELSfOprf5XMMmgC7aQxsy7CcscYPy1FWCW8iF6dM/ChcYcJHzir0m8zpPW0XYyq
+	 yDnNs8LKKpt1rZiU42jADnUEfEeMijhoXTmlopxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 104/374] fs: indicate request originates from old mount API
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.7 456/641] wifi: rtlwifi: Convert LNKCTL change to PCIe cap RMW accessors
 Date: Mon, 22 Jan 2024 15:56:00 -0800
-Message-ID: <20240122235748.226496663@linuxfoundation.org>
+Message-ID: <20240122235832.290032774@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +59,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit f67d922edb4e95a4a56d07d5d40a76dd4f23a85b ]
+commit 5894d0089cbc146063dcc0239a78ede0a8142efb upstream.
 
-We already communicate to filesystems when a remount request comes from
-the old mount API as some filesystems choose to implement different
-behavior in the new mount API than the old mount API to e.g., take the
-chance to fix significant API bugs. Allow the same for regular mount
-requests.
+The rtlwifi driver comes with custom code to write into PCIe Link
+Control register. RMW access for the Link Control register requires
+locking that is already provided by the standard PCIe capability
+accessors.
 
-Fixes: b330966f79fb ("fuse: reject options on reconfigure via fsconfig(2)")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Convert the custom RMW code writing into LNKCTL register to standard
+RMW capability accessors. The accesses are changed to cover the full
+LNKCTL register instead of touching just a single byte of the register.
+
+Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20231124084725.12738-3-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/namespace.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/net/wireless/realtek/rtlwifi/pci.c |   21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 1a9df6afb90b..932986448a98 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -2647,7 +2647,12 @@ static int do_remount(struct path *path, int ms_flags, int sb_flags,
- 	if (IS_ERR(fc))
- 		return PTR_ERR(fc);
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -164,21 +164,29 @@ static bool _rtl_pci_platform_switch_dev
+ 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+ 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
  
-+	/*
-+	 * Indicate to the filesystem that the remount request is coming
-+	 * from the legacy mount system call.
-+	 */
- 	fc->oldapi = true;
++	value &= PCI_EXP_LNKCTL_ASPMC;
 +
- 	err = parse_monolithic_mount_data(fc, data);
- 	if (!err) {
- 		down_write(&sb->s_umount);
-@@ -2981,6 +2986,12 @@ static int do_new_mount(struct path *path, const char *fstype, int sb_flags,
- 	if (IS_ERR(fc))
- 		return PTR_ERR(fc);
+ 	if (rtlhal->hw_type != HARDWARE_TYPE_RTL8192SE)
+-		value |= 0x40;
++		value |= PCI_EXP_LNKCTL_CCC;
  
-+	/*
-+	 * Indicate to the filesystem that the mount request is coming
-+	 * from the legacy mount system call.
-+	 */
-+	fc->oldapi = true;
+-	pci_write_config_byte(rtlpci->pdev, 0x80, value);
++	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
++					   PCI_EXP_LNKCTL_ASPMC | value,
++					   value);
+ 
+ 	return false;
+ }
+ 
+-/*When we set 0x01 to enable clk request. Set 0x0 to disable clk req.*/
+-static void _rtl_pci_switch_clk_req(struct ieee80211_hw *hw, u8 value)
++/* @value is PCI_EXP_LNKCTL_CLKREQ_EN or 0 to enable/disable clk request. */
++static void _rtl_pci_switch_clk_req(struct ieee80211_hw *hw, u16 value)
+ {
+ 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
+ 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+ 
+-	pci_write_config_byte(rtlpci->pdev, 0x81, value);
++	value &= PCI_EXP_LNKCTL_CLKREQ_EN;
 +
- 	if (subtype)
- 		err = vfs_parse_fs_string(fc, "subtype",
- 					  subtype, strlen(subtype));
--- 
-2.43.0
-
++	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
++					   PCI_EXP_LNKCTL_CLKREQ_EN,
++					   value);
+ 
+ 	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8192SE)
+ 		udelay(100);
+@@ -259,7 +267,8 @@ static void rtl_pci_enable_aspm(struct i
+ 
+ 	if (ppsc->reg_rfps_level & RT_RF_OFF_LEVL_CLK_REQ) {
+ 		_rtl_pci_switch_clk_req(hw, (ppsc->reg_rfps_level &
+-					     RT_RF_OFF_LEVL_CLK_REQ) ? 1 : 0);
++					     RT_RF_OFF_LEVL_CLK_REQ) ?
++					     PCI_EXP_LNKCTL_CLKREQ_EN : 0);
+ 		RT_SET_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_CLK_REQ);
+ 	}
+ 	udelay(100);
 
 
 
