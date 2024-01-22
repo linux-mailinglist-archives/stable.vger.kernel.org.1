@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-14712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9FDA83823A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 122F3837BC9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B8E11F25D2D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3E721F2A3B4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC9D59144;
-	Tue, 23 Jan 2024 01:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F16154457;
+	Tue, 23 Jan 2024 00:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="itT1Qj7n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVOwkeWg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A416121;
-	Tue, 23 Jan 2024 01:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63A1154441;
+	Tue, 23 Jan 2024 00:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974102; cv=none; b=g6RNLpeAW2a1869ycxXw+5vK2syHPTIuOq6xEoyC0Fagzll1k5yhYhcW8iu3V1h9PvozU7sTSwKgGp4OvP27R7xUZYMWdxGnL8MjOM5lEcrDXDsAbPtFy0KGbEclXV+F0ZvanIpL6+VbnyEAa55y7AWRUz8Gd5MQRT+HdyLGrSQ=
+	t=1705969384; cv=none; b=tRj8t2rNHCYpPE3DCIiIRdB7ofnsxzcp69G+OIhLcRFEv/xLBbc+LBlhcyg4KM4v30x5Ek6E2sIGoMDgIhzc9PMdwQAys+FLGButPgl40EdS7fuQUIAK8Cq38R4aiUa0X61wNOeq5iFMdJSRPIlsC2ydiFQJahtlC+akbnQZyVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974102; c=relaxed/simple;
-	bh=23zlyUyL8y3HWW5QNXf8ouQXM+6XCoEdxaDB7LrplVE=;
+	s=arc-20240116; t=1705969384; c=relaxed/simple;
+	bh=SZX2+5ZmSUOzADCvx7hRSjLTT6qLTEMaj++IWHp1Pg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Szt89N9iRTCVUBypphZjQI65u9wefmJm0Ntm2Gcyqj2RzRtKSJ9O2e5QHLgLVLW0pQcLsuhquGBamXd2ERrtPsSG1q9qefL7cZwyx9JDzybhZTr3GokWuQXkEw2Mv/wCKSmCITMqb3Sn5FaPDw8voslMzzE5FBHjsmxEjwCSdE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=itT1Qj7n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1DEC43390;
-	Tue, 23 Jan 2024 01:41:41 +0000 (UTC)
+	 MIME-Version; b=ArOQNNKljYdDilvTql5k+JHLOMrJUsgjKAW8Bl94+qL9NokNEgJG7E+mYx6VXSZWv3BFipUJTyX4CuPsQf7WTcyrl0u5EgYH0+3OFrHnSPNxi2il+NN9PB+S7B++Zo5AWH3EBSTljkfKKiMskuULdB4CBzX7MEWQUP6qQu1Qhkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVOwkeWg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6540BC433F1;
+	Tue, 23 Jan 2024 00:23:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974101;
-	bh=23zlyUyL8y3HWW5QNXf8ouQXM+6XCoEdxaDB7LrplVE=;
+	s=korg; t=1705969384;
+	bh=SZX2+5ZmSUOzADCvx7hRSjLTT6qLTEMaj++IWHp1Pg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=itT1Qj7ngN9Tr3CRGYNdOvRyylxMfdUkrM0R5ly4GU9sfpMYgghma9nnNZOsrl86y
-	 /tRGLvKC9W5m5K8FEYv/22z79u5yMICuJ7CwEBaYf420T1kvxnZY5ysZ9SxrSIej7U
-	 K26a+iuph1PR9S105DH2nCx22Af7V29xsbMRtSuI=
+	b=JVOwkeWgx45F0ApqISF5dwadXb9CepeaeL4GvrfjPYH3M8Mc01gmPwzStx8ZZi7Vt
+	 29op4VODXoCrd6HJfVFKOXsiKpL9RnptTOgQ2Nz9LLqPskgBuxao5Xhek5SLQ+b1NN
+	 AsUyp9jgDR08dbOOL7hKLNFzaXNo6wRGmFAinsRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	forza@tnonline.net,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 039/583] cpuidle: haltpoll: Do not enable interrupts when entering idle
+Subject: [PATCH 6.7 186/641] virtio/vsock: fix logic which reduces credit update messages
 Date: Mon, 22 Jan 2024 15:51:30 -0800
-Message-ID: <20240122235813.350306059@linuxfoundation.org>
+Message-ID: <20240122235823.801583342@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Arseniy Krasnov <avkrasnov@salutedevices.com>
 
-[ Upstream commit c8f5caec3df84a02b937d6d9cda1f7ffa8dc443f ]
+[ Upstream commit 93b80887668226180ea5f5349cc728ca6dc700ab ]
 
-The cpuidle drivers' ->enter() methods are supposed to be IRQ invariant:
+Add one more condition for sending credit update during dequeue from
+stream socket: when number of bytes in the rx queue is smaller than
+SO_RCVLOWAT value of the socket. This is actual for non-default value
+of SO_RCVLOWAT (e.g. not 1) - idea is to "kick" peer to continue data
+transmission, because we need at least SO_RCVLOWAT bytes in our rx
+queue to wake up user for reading data (in corner case it is also
+possible to stuck both tx and rx sides, this is why 'Fixes' is used).
 
-  5e26aa933911 ("cpuidle/poll: Ensure IRQs stay disabled after cpuidle_state::enter() calls")
-  bb7b11258561 ("cpuidle: Move IRQ state validation")
-
-Do that in the haltpoll driver too.
-
-Fixes: 5e26aa933911 ("cpuidle/poll: Ensure IRQs stay disabled after cpuidle_state::enter() calls")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218245
-Reported-by: <forza@tnonline.net>
-Tested-by: <forza@tnonline.net>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: b89d882dc9fc ("vsock/virtio: reduce credit update messages")
+Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpuidle/cpuidle-haltpoll.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ net/vmw_vsock/virtio_transport_common.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/cpuidle/cpuidle-haltpoll.c b/drivers/cpuidle/cpuidle-haltpoll.c
-index e66df22f9695..d8515d5c0853 100644
---- a/drivers/cpuidle/cpuidle-haltpoll.c
-+++ b/drivers/cpuidle/cpuidle-haltpoll.c
-@@ -25,13 +25,12 @@ MODULE_PARM_DESC(force, "Load unconditionally");
- static struct cpuidle_device __percpu *haltpoll_cpuidle_devices;
- static enum cpuhp_state haltpoll_hp_state;
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 6df246b53260..b35306dfcebe 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -557,6 +557,8 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
+ 	struct virtio_vsock_sock *vvs = vsk->trans;
+ 	size_t bytes, total = 0;
+ 	struct sk_buff *skb;
++	u32 fwd_cnt_delta;
++	bool low_rx_bytes;
+ 	int err = -EFAULT;
+ 	u32 free_space;
  
--static int default_enter_idle(struct cpuidle_device *dev,
--			      struct cpuidle_driver *drv, int index)
-+static __cpuidle int default_enter_idle(struct cpuidle_device *dev,
-+					struct cpuidle_driver *drv, int index)
- {
--	if (current_clr_polling_and_test()) {
--		local_irq_enable();
-+	if (current_clr_polling_and_test())
- 		return index;
--	}
-+
- 	arch_cpu_idle();
- 	return index;
- }
+@@ -600,7 +602,10 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
+ 		}
+ 	}
+ 
+-	free_space = vvs->buf_alloc - (vvs->fwd_cnt - vvs->last_fwd_cnt);
++	fwd_cnt_delta = vvs->fwd_cnt - vvs->last_fwd_cnt;
++	free_space = vvs->buf_alloc - fwd_cnt_delta;
++	low_rx_bytes = (vvs->rx_bytes <
++			sock_rcvlowat(sk_vsock(vsk), 0, INT_MAX));
+ 
+ 	spin_unlock_bh(&vvs->rx_lock);
+ 
+@@ -610,9 +615,11 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
+ 	 * too high causes extra messages. Too low causes transmitter
+ 	 * stalls. As stalls are in theory more expensive than extra
+ 	 * messages, we set the limit to a high value. TODO: experiment
+-	 * with different values.
++	 * with different values. Also send credit update message when
++	 * number of bytes in rx queue is not enough to wake up reader.
+ 	 */
+-	if (free_space < VIRTIO_VSOCK_MAX_PKT_BUF_SIZE)
++	if (fwd_cnt_delta &&
++	    (free_space < VIRTIO_VSOCK_MAX_PKT_BUF_SIZE || low_rx_bytes))
+ 		virtio_transport_send_credit_update(vsk);
+ 
+ 	return total;
 -- 
 2.43.0
 
