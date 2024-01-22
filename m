@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44B088382FA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:25:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E46837E34
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE2AC1F27F38
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 692CA1C26B20
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA7A604A5;
-	Tue, 23 Jan 2024 01:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0142E51036;
+	Tue, 23 Jan 2024 00:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Krmixs2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xcg37iRQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09BD26027B;
-	Tue, 23 Jan 2024 01:51:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31BD4F207;
+	Tue, 23 Jan 2024 00:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974676; cv=none; b=iu0mrnqU0C9zAqLxjWsGz458C2c3xzY44muU/SrPALUQ2Shar8q3zlSt2nrcMbFKdoviIr4P+RyIIak8kj4VP5so2qKkknjJDF6zUaKJCH8S5ZOQEE2X9eBWEzmsiRBoby0kqW/cwgKygRQG9O70DoDp7UQWThtwYWu8JJRK+3M=
+	t=1705970437; cv=none; b=AZ+hIO343JLPENO5PGfH3Pi7OyxOi2jHC7i+ZqVTuf+Wp2PvR5d+swTiq7+mhnrizkEFJYEb6R0ZSCsxrSpzQ62foWSNo2mPHn7Unq3k5I5cZ5whdPomp2BLNnsWk8w/zXVwQxFkppHiTK4P+1DqmVVsLxUBfJxwokeDxiIuo+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974676; c=relaxed/simple;
-	bh=HD74DHS4BI5CmhjeiDKjOEZA99EHgY7pegdKGl1mdi4=;
+	s=arc-20240116; t=1705970437; c=relaxed/simple;
+	bh=WWJd/GShoHhV5YJzAgSuwexsRDcJJ8TOxsyyzoRBAMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rrnOmcdXVwF5XnSMHe9SlbZusFpmFTcCAWeli4BM2GuFxfOS7OLBkE1NYYKzxe5sorFgM8T2kb+iS5rTRGimtBvku4MKKhcMCQCT5ZrUaiiYVL9bGNmbY7y3g3ScTIXPyZnIm3UCHonfm1u2irMF3tXyAXe6LEbn5CdRJzb4+GA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Krmixs2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8804CC433F1;
-	Tue, 23 Jan 2024 01:51:15 +0000 (UTC)
+	 MIME-Version; b=Te+ugtVbPuKjY+lsEJmvzSlr2rL8JpO7gkGybv4cbXIU8aFYen4S+fBST/EkjBpo7SAJn52bBDgU4C1513R/4YA8yD6pfWb6xz/vP2iT+2KjvOUFbPwuxupJqyueRjl7M15mhaYRsFBg9fh4AqHdanGI4b7ba4SdpdN+LQlLN9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xcg37iRQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCECDC433C7;
+	Tue, 23 Jan 2024 00:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974675;
-	bh=HD74DHS4BI5CmhjeiDKjOEZA99EHgY7pegdKGl1mdi4=;
+	s=korg; t=1705970437;
+	bh=WWJd/GShoHhV5YJzAgSuwexsRDcJJ8TOxsyyzoRBAMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Krmixs2Edy4nb3LFPSdBLtLyb5bw7u7ehkudC9MekjHHQYNR6hhQrn6PXWz3actO
-	 qmI3PdaA1pVbOc0uHVTpRxaMQYhDuiD+8OyAmq9WfDoYGAv1Xv5P4DiLOg2vWYpgaw
-	 ACj/yVN86QqFQJcKzvdCpii7Nq/vUUa3T/tDTsnI=
+	b=Xcg37iRQeXm7lVU/vrU6+y8QsoA6MNRgxAQcJDSQMPZ72ACV28Srovq5RyXJS+VFc
+	 h39nYluOHjd+Cx/YLnYEENyTFzE4x9idGj5NPMAVLvAXaI7qhOsDcyQBmm8a3rezfj
+	 tOPl2r6JJvbIuTRU+WLoAMQI/VKWBAjXveITOUxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Yazen Ghannam <yazen.ghannam@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/583] arm64: dts: qcom: sm6350: Make watchdog bark interrupt edge triggered
-Date: Mon, 22 Jan 2024 15:52:49 -0800
-Message-ID: <20240122235815.760481591@linuxfoundation.org>
+Subject: [PATCH 6.1 002/417] x86/mce/inject: Clear test status value
+Date: Mon, 22 Jan 2024 15:52:50 -0800
+Message-ID: <20240122235751.571079296@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-[ Upstream commit 5b84bb2b8d86595544fc8272364b0f1a34b68a4f ]
+[ Upstream commit 6175b407756b22e7fdc771181b7d832ebdedef5c ]
 
-As described in the patch ("arm64: dts: qcom: sc7180: Make watchdog
-bark interrupt edge triggered"), the Qualcomm watchdog timer's bark
-interrupt should be configured as edge triggered. Make the change.
+AMD systems generally allow MCA "simulation" where MCA registers can be
+written with valid data and the full MCA handling flow can be tested by
+software.
 
-Fixes: 5f82b9cda61e ("arm64: dts: qcom: Add SM6350 device tree")
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20231106144335.v2.8.Ic1d4402e99c70354d501ccd98105e908a902f671@changeid
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+However, the platform on Scalable MCA systems, can prevent software from
+writing data to the MCA registers. There is no architectural way to
+determine this configuration. Therefore, the MCE injection module will
+check for this behavior by writing and reading back a test status value.
+This is done during module init, and the check can run on any CPU with
+any valid MCA bank.
+
+If MCA_STATUS writes are ignored by the platform, then there are no side
+effects on the hardware state.
+
+If the writes are not ignored, then the test status value will remain in
+the hardware MCA_STATUS register. It is likely that the value will not
+be overwritten by hardware or software, since the tested CPU and bank
+are arbitrary. Therefore, the user may see a spurious, synthetic MCA
+error reported whenever MCA is polled for this CPU.
+
+Clear the test value immediately after writing it. It is very unlikely
+that a valid MCA error is logged by hardware during the test. Errors
+that cause an #MC won't be affected.
+
+Fixes: 891e465a1bd8 ("x86/mce: Check whether writes to MCA_STATUS are getting ignored")
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20231118193248.1296798-2-yazen.ghannam@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm6350.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/cpu/mce/inject.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-index 8fd6f4d03490..6464e144c228 100644
---- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
-@@ -2524,7 +2524,7 @@ watchdog@17c10000 {
- 			compatible = "qcom,apss-wdt-sm6350", "qcom,kpss-wdt";
- 			reg = <0 0x17c10000 0 0x1000>;
- 			clocks = <&sleep_clk>;
--			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupts = <GIC_SPI 0 IRQ_TYPE_EDGE_RISING>;
- 		};
+diff --git a/arch/x86/kernel/cpu/mce/inject.c b/arch/x86/kernel/cpu/mce/inject.c
+index 12cf2e7ca33c..87c15ab89651 100644
+--- a/arch/x86/kernel/cpu/mce/inject.c
++++ b/arch/x86/kernel/cpu/mce/inject.c
+@@ -747,6 +747,7 @@ static void check_hw_inj_possible(void)
  
- 		timer@17c20000 {
+ 		wrmsrl_safe(mca_msr_reg(bank, MCA_STATUS), status);
+ 		rdmsrl_safe(mca_msr_reg(bank, MCA_STATUS), &status);
++		wrmsrl_safe(mca_msr_reg(bank, MCA_STATUS), 0);
+ 
+ 		if (!status) {
+ 			hw_injection_possible = false;
 -- 
 2.43.0
 
