@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-14356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BA2838090
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE4C38380FB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9998D1C296BC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48B6E1F22800
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7C912FF7F;
-	Tue, 23 Jan 2024 01:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D53613E209;
+	Tue, 23 Jan 2024 01:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KYnEyJ3/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1oKJw2z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB97812FF73;
-	Tue, 23 Jan 2024 01:03:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BA613E204;
+	Tue, 23 Jan 2024 01:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971798; cv=none; b=cpDRJc4Su8jh98tz+SBd6d5IveHXszOdUZWeCgPShzGbn3w15KO1GGKM7EDdgkGxNSuiR6TAG1CIhh8+VZgV1ro4sD4igpVEqMQsmpwINeEKO2P2sfLe5feE6zxwfNV7LhSog9FqqQvuAJ4fsYp3JsyjF18EOWS6Qf7VV9WYSIA=
+	t=1705971984; cv=none; b=HszE0pAlPMxUK2tgobNECkM3SNghvURpIXykhHmJ+sLvBRkGLSnw8gUPEizOmhLgq2jcUtvk6xDshNrCAfksiZhT/4AWkBxJDRV4Wxhtk53+pWouQAzMkNrWpR85aDeKbQQiyLwNBMafISmWLoOp07LELd4ES68kqvxkVREz7Xg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971798; c=relaxed/simple;
-	bh=8vXtOfw4CQlwIwKxrLHPJh+IqYg561vnkN0oHEcN1N4=;
+	s=arc-20240116; t=1705971984; c=relaxed/simple;
+	bh=w2mvVWuSBwBJ9FDTnQQyEmAyIcZtx79D350Ha36CTJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aq7RL3jjQBFMfZzHIJ0LMef74KL0krwSZ6PqLXizGhd+QHLDKZyHUZptFYpxrGKkkxzMqDgzTnikRePRez5tyjjJ5+DP5PBwB51jGKuaHqsA19moR1mFXFjPNk+cKgvHC1KLS6ciXjSeQ+eZfq15bHvcOr+KsNn08nzrLSSoz9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KYnEyJ3/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A69C433F1;
-	Tue, 23 Jan 2024 01:03:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bV1ho/ViNRfgsW7KoD1XYJDyX71s5BUhNDQlhrie+SsTg9oxPlg4XquvX1T1fyJYNhDbdvtvYEzw2tez0vksioghX8LAxH/vB0wnoLc3XQkJY2bVPkSJYBSuZMXtjC1/wsNFaWOc6mcmI5hgCmlH3q7KivOhdcwENrLGsxRATIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f1oKJw2z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19C1C433F1;
+	Tue, 23 Jan 2024 01:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971797;
-	bh=8vXtOfw4CQlwIwKxrLHPJh+IqYg561vnkN0oHEcN1N4=;
+	s=korg; t=1705971983;
+	bh=w2mvVWuSBwBJ9FDTnQQyEmAyIcZtx79D350Ha36CTJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KYnEyJ3/4PS22K+wmyw1QjoXfL6D74/hnDPVX0GHmOtO5iJaEzMvNGCQizIvVtreJ
-	 WCA4+6vzWvN6ePUcFORpN5d1xu+D6q0bxQgzqp5ZlRdt+AeyJPs1Ik8TJm0lwh+GPV
-	 c4a5v8A1VC4gAbJj1/XwBDdRra9/XqSTGxVDn+pI=
+	b=f1oKJw2z2hGSYnokg3UgCLRc6j8airfPqces3dHo1UI0uOnuXnvotwXMymUGPYgVV
+	 RE5ycSDyHdj4RMRtfdFwv5PfjuNBKarQSyNjnI0WhAAVAwsD2BjwtFkraIUdakI+KD
+	 n+c5GiTQCHtNpiZ4UuLzwoTgwm2XqPut3o0jLzfA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xingwei lee <xrivendell7@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10 224/286] io_uring/rw: ensure io->bytes_done is always initialized
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Alexandre Mergnat <amergnat@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 362/417] spmi: mtk-pmif: Serialize PMIF status check and command submission
 Date: Mon, 22 Jan 2024 15:58:50 -0800
-Message-ID: <20240122235740.705716800@linuxfoundation.org>
+Message-ID: <20240122235804.363439566@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +62,152 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-commit 0a535eddbe0dc1de4386046ab849f08aeb2f8faf upstream.
+[ Upstream commit f200fff8d019f2754f91f5d715652e3e3fdf3604 ]
 
-If IOSQE_ASYNC is set and we fail importing an iovec for a readv or
-writev request, then we leave ->bytes_done uninitialized and hence the
-eventual failure CQE posted can potentially have a random res value
-rather than the expected -EINVAL.
+Before writing the read or write command to the SPMI arbiter through the
+PMIF interface, the current status of the channel is checked to ensure
+it is idle. However, since the status only changes from idle when the
+command is written, it is possible for two concurrent calls to determine
+that the channel is idle and simultaneously send their commands. At this
+point the PMIF interface hangs, with the status register no longer being
+updated, and thus causing all subsequent operations to time out.
 
-Setup ->bytes_done before potentially failing, so we have a consistent
-value if we fail the request early.
+This was observed on the mt8195-cherry-tomato-r2 machine, particularly
+after commit 46600ab142f8 ("regulator: Set PROBE_PREFER_ASYNCHRONOUS for
+drivers between 5.10 and 5.15") was applied, since then the two MT6315
+devices present on the SPMI bus would probe assynchronously and
+sometimes (during probe or at a later point) read the bus
+simultaneously, breaking the PMIF interface and consequently slowing
+down the whole system.
 
-Cc: stable@vger.kernel.org
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+To fix the issue at its root cause, introduce locking around the channel
+status check and the command write, so that both become an atomic
+operation, preventing race conditions between two (or more) SPMI bus
+read/write operations. A spinlock is used since this is a fast bus, as
+indicated by the usage of the atomic variant of readl_poll, and
+'.fast_io = true' being used in the mt6315 driver, so spinlocks are
+already used for the regmap access.
+
+Fixes: b45b3ccef8c0 ("spmi: mediatek: Add support for MT6873/8192")
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://lore.kernel.org/r/20230724154739.493724-1-nfraprado@collabora.com
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20231206231733.4031901-2-sboyd@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/spmi/spmi-mtk-pmif.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -3485,14 +3485,17 @@ static inline int io_rw_prep_async(struc
- 	struct iovec *iov = iorw->fast_iov;
+diff --git a/drivers/spmi/spmi-mtk-pmif.c b/drivers/spmi/spmi-mtk-pmif.c
+index ad511f2c3324..01e8851e639d 100644
+--- a/drivers/spmi/spmi-mtk-pmif.c
++++ b/drivers/spmi/spmi-mtk-pmif.c
+@@ -50,6 +50,7 @@ struct pmif {
+ 	struct clk_bulk_data clks[PMIF_MAX_CLKS];
+ 	size_t nclks;
+ 	const struct pmif_data *data;
++	raw_spinlock_t lock;
+ };
+ 
+ static const char * const pmif_clock_names[] = {
+@@ -314,6 +315,7 @@ static int pmif_spmi_read_cmd(struct spmi_controller *ctrl, u8 opc, u8 sid,
+ 	struct ch_reg *inf_reg;
  	int ret;
+ 	u32 data, cmd;
++	unsigned long flags;
  
-+	iorw->bytes_done = 0;
-+	iorw->free_iovec = NULL;
-+
- 	ret = io_import_iovec(rw, req, &iov, &iorw->iter, false);
- 	if (unlikely(ret < 0))
+ 	/* Check for argument validation. */
+ 	if (sid & ~0xf) {
+@@ -334,6 +336,7 @@ static int pmif_spmi_read_cmd(struct spmi_controller *ctrl, u8 opc, u8 sid,
+ 	else
+ 		return -EINVAL;
+ 
++	raw_spin_lock_irqsave(&arb->lock, flags);
+ 	/* Wait for Software Interface FSM state to be IDLE. */
+ 	inf_reg = &arb->chan;
+ 	ret = readl_poll_timeout_atomic(arb->base + arb->data->regs[inf_reg->ch_sta],
+@@ -343,6 +346,7 @@ static int pmif_spmi_read_cmd(struct spmi_controller *ctrl, u8 opc, u8 sid,
+ 		/* set channel ready if the data has transferred */
+ 		if (pmif_is_fsm_vldclr(arb))
+ 			pmif_writel(arb, 1, inf_reg->ch_rdy);
++		raw_spin_unlock_irqrestore(&arb->lock, flags);
+ 		dev_err(&ctrl->dev, "failed to wait for SWINF_IDLE\n");
  		return ret;
+ 	}
+@@ -350,6 +354,7 @@ static int pmif_spmi_read_cmd(struct spmi_controller *ctrl, u8 opc, u8 sid,
+ 	/* Send the command. */
+ 	cmd = (opc << 30) | (sid << 24) | ((len - 1) << 16) | addr;
+ 	pmif_writel(arb, cmd, inf_reg->ch_send);
++	raw_spin_unlock_irqrestore(&arb->lock, flags);
  
--	iorw->bytes_done = 0;
--	iorw->free_iovec = iov;
--	if (iov)
-+	if (iov) {
-+		iorw->free_iovec = iov;
- 		req->flags |= REQ_F_NEED_CLEANUP;
-+	}
- 	iov_iter_save_state(&iorw->iter, &iorw->iter_state);
+ 	/*
+ 	 * Wait for Software Interface FSM state to be WFVLDCLR,
+@@ -376,7 +381,8 @@ static int pmif_spmi_write_cmd(struct spmi_controller *ctrl, u8 opc, u8 sid,
+ 	struct pmif *arb = spmi_controller_get_drvdata(ctrl);
+ 	struct ch_reg *inf_reg;
+ 	int ret;
+-	u32 data, cmd;
++	u32 data, wdata, cmd;
++	unsigned long flags;
+ 
+ 	if (len > 4) {
+ 		dev_err(&ctrl->dev, "pmif supports 1..4 bytes per trans, but:%zu requested", len);
+@@ -394,6 +400,10 @@ static int pmif_spmi_write_cmd(struct spmi_controller *ctrl, u8 opc, u8 sid,
+ 	else
+ 		return -EINVAL;
+ 
++	/* Set the write data. */
++	memcpy(&wdata, buf, len);
++
++	raw_spin_lock_irqsave(&arb->lock, flags);
+ 	/* Wait for Software Interface FSM state to be IDLE. */
+ 	inf_reg = &arb->chan;
+ 	ret = readl_poll_timeout_atomic(arb->base + arb->data->regs[inf_reg->ch_sta],
+@@ -403,17 +413,17 @@ static int pmif_spmi_write_cmd(struct spmi_controller *ctrl, u8 opc, u8 sid,
+ 		/* set channel ready if the data has transferred */
+ 		if (pmif_is_fsm_vldclr(arb))
+ 			pmif_writel(arb, 1, inf_reg->ch_rdy);
++		raw_spin_unlock_irqrestore(&arb->lock, flags);
+ 		dev_err(&ctrl->dev, "failed to wait for SWINF_IDLE\n");
+ 		return ret;
+ 	}
+ 
+-	/* Set the write data. */
+-	memcpy(&data, buf, len);
+-	pmif_writel(arb, data, inf_reg->wdata);
++	pmif_writel(arb, wdata, inf_reg->wdata);
+ 
+ 	/* Send the command. */
+ 	cmd = (opc << 30) | BIT(29) | (sid << 24) | ((len - 1) << 16) | addr;
+ 	pmif_writel(arb, cmd, inf_reg->ch_send);
++	raw_spin_unlock_irqrestore(&arb->lock, flags);
+ 
  	return 0;
  }
+@@ -488,6 +498,8 @@ static int mtk_spmi_probe(struct platform_device *pdev)
+ 	arb->chan.ch_send = PMIF_SWINF_0_ACC + chan_offset;
+ 	arb->chan.ch_rdy = PMIF_SWINF_0_VLD_CLR + chan_offset;
+ 
++	raw_spin_lock_init(&arb->lock);
++
+ 	platform_set_drvdata(pdev, ctrl);
+ 
+ 	err = spmi_controller_add(ctrl);
+-- 
+2.43.0
+
 
 
 
