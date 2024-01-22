@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B5EC837FC2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 218E5837D4B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D85BAB29998
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53DBF1C20E07
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C7E63519;
-	Tue, 23 Jan 2024 00:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3CD59B6C;
+	Tue, 23 Jan 2024 00:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RDnrp5lg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CDNRTFHa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B367B634F8;
-	Tue, 23 Jan 2024 00:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A998D3A8F4;
+	Tue, 23 Jan 2024 00:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971264; cv=none; b=LA7LX5mYWyXQt4obey53rd3KTyV3Nol2Ft3GkfrRUNY2PZQ2McK+zZiU4vpheIL9PTcS2X8EFoa/GIXSCdDOs9hAN9ZgOY0qXDkODtuH2Ux/tfwOWwpnFAKyutLIi1qHTHfwEiaPOJNtgyscD8o7GxMEUpYcg+4EwxW0f6yHb9s=
+	t=1705969878; cv=none; b=d+JVTlG9sm1sMjyWgyLFMhcXP1Fk6qEZFkv2JBYs83uEDlK0MZhn2IS4XFomAlbkrDhSlXk8adLPnfWv0xxxNbfWk2NOOuIhchETCc+YMFH48/FYwdoHgb0gN2XEliKsHi/tTHuyPmcibU96Xypdu5TB8B/TSX8io8N+FMvDOIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971264; c=relaxed/simple;
-	bh=BgXCDOp0BHh272OvO3VdzwETQer4buqaOLp3mbqTBH0=;
+	s=arc-20240116; t=1705969878; c=relaxed/simple;
+	bh=r21tBSc4Bd9xAkeMVtenCXwGW8FsVrldpc308MNvA1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UwryzPgpWVkjwu2B0oOq4lBUoLrgHVB3ivSHebDZN9XZS44viC93Rfd1X0+CGNCcX15ZA/QF9SbGxvYjznzWwh0ctK8UbhFXdS7dN65Za7LU4Dc4J3SJJE4DKfadjVxZ1YlHjiVlkpfJnrdYPtYMzdgJISTu6O85i9A6IQ3RDOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RDnrp5lg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 692A1C433C7;
-	Tue, 23 Jan 2024 00:54:24 +0000 (UTC)
+	 MIME-Version; b=OK9rkpw278ZHXxC9SEnJhHiNLCzIEnPpRKVXNTwoBobxiPgOzzTSs3fzgzREVmE5tH5KuJmop/U3dXi3Rq/n3emPFIFIu7rslVAKi3VyYY6tJESd0Win3PlPMOoadojwrb1eIf9mlUVmI/ja3nmThk0rwlm4FVCulaxakxGdIiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CDNRTFHa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07B58C433F1;
+	Tue, 23 Jan 2024 00:31:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971264;
-	bh=BgXCDOp0BHh272OvO3VdzwETQer4buqaOLp3mbqTBH0=;
+	s=korg; t=1705969878;
+	bh=r21tBSc4Bd9xAkeMVtenCXwGW8FsVrldpc308MNvA1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RDnrp5lgsKZZMHHhk8n63CM0M+D2ZPU9BWKD5g/IjsRV7JCxgzON7Y4RKTYCd3LH8
-	 ijLzqFBOTX5hYuTISCgxXRXX0Ff0SEF4gHXyY3Dyw31N17jFM8fPAjDCUOh6a5uCAH
-	 eWPoeawOR0sGV3zltuAKX7i6rwnJNkKqRfFVFH6c=
+	b=CDNRTFHauhE4iO9IrtijheomaWdBqp2pZ3ixxgR1W0oD3y4n/gVm8uxFgEh5fd6aM
+	 QTyinl5IofQohvr3uWiwJDWkgyBKPCwYJajax+WN6GqSxPGu3AymtaRR4+jJeYXlq1
+	 ZGae+fjb0rVA1nspnq8F43NrE29XyxYLRierz28Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 213/417] drm/amd/pm: fix a double-free in amdgpu_parse_extended_power_table
+	Yauhen Kharuzhy <jekhor@gmail.com>,
+	Daniel Thompson <daniel.thompson@linaro.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Benjamin Tissoires <bentiss@kernel.org>
+Subject: [PATCH 6.7 477/641] HID: sensor-hub: Enable hid core report processing for all devices
 Date: Mon, 22 Jan 2024 15:56:21 -0800
-Message-ID: <20240122235759.302784018@linuxfoundation.org>
+Message-ID: <20240122235832.986335509@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,203 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Yauhen Kharuzhy <jekhor@gmail.com>
 
-[ Upstream commit a6582701178a47c4d0cb2188c965c59c0c0647c8 ]
+commit 8e2f79f41a5d1b1a4a53ec524eb7609ca89f3c65 upstream.
 
-The amdgpu_free_extended_power_table is called in every error-handling
-paths of amdgpu_parse_extended_power_table. However, after the following
-call chain of returning:
+After the commit 666cf30a589a ("HID: sensor-hub: Allow multi-function
+sensor devices") hub devices are claimed by hidraw driver in hid_connect().
+This causes stoppping of processing HID reports by hid core due to
+optimization.
 
-amdgpu_parse_extended_power_table
-  |-> kv_dpm_init / si_dpm_init
-      (the only two caller of amdgpu_parse_extended_power_table)
-        |-> kv_dpm_sw_init / si_dpm_sw_init
-            (the only caller of kv_dpm_init / si_dpm_init, accordingly)
-              |-> kv_dpm_fini / si_dpm_fini
-                  (goto dpm_failed in xx_dpm_sw_init)
-                    |-> amdgpu_free_extended_power_table
+In such case, the hid-sensor-custom driver cannot match a known custom
+sensor in hid_sensor_custom_get_known() because it try to check custom
+properties which weren't filled from the report because hid core didn't
+parsed it.
 
-As above, the amdgpu_free_extended_power_table is called twice in this
-returning chain and thus a double-free is triggered. Similarily, the
-last kfree in amdgpu_parse_extended_power_table also cause a double free
-with amdgpu_free_extended_power_table in kv_dpm_fini.
+As result, custom sensors like hinge angle sensor and LISS sensors
+don't work.
 
-Fixes: 84176663e70d ("drm/amd/pm: create a new holder for those APIs used only by legacy ASICs(si/kv)")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Mark the sensor hub devices claimed by some driver to avoid hidraw-related
+optimizations.
+
+Fixes: 666cf30a589a ("HID: sensor-hub: Allow multi-function sensor devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yauhen Kharuzhy <jekhor@gmail.com>
+Tested-by: Daniel Thompson <daniel.thompson@linaro.org>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Link: https://lore.kernel.org/r/20231219231503.1506801-1-jekhor@gmail.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c    | 52 +++++--------------
- 1 file changed, 13 insertions(+), 39 deletions(-)
+ drivers/hid/hid-sensor-hub.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c b/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c
-index d3fe149d8476..291223ea7ba7 100644
---- a/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/legacy-dpm/legacy_dpm.c
-@@ -272,10 +272,8 @@ int amdgpu_parse_extended_power_table(struct amdgpu_device *adev)
- 				 le16_to_cpu(power_info->pplib4.usVddcDependencyOnSCLKOffset));
- 			ret = amdgpu_parse_clk_voltage_dep_table(&adev->pm.dpm.dyn_state.vddc_dependency_on_sclk,
- 								 dep_table);
--			if (ret) {
--				amdgpu_free_extended_power_table(adev);
-+			if (ret)
- 				return ret;
--			}
- 		}
- 		if (power_info->pplib4.usVddciDependencyOnMCLKOffset) {
- 			dep_table = (ATOM_PPLIB_Clock_Voltage_Dependency_Table *)
-@@ -283,10 +281,8 @@ int amdgpu_parse_extended_power_table(struct amdgpu_device *adev)
- 				 le16_to_cpu(power_info->pplib4.usVddciDependencyOnMCLKOffset));
- 			ret = amdgpu_parse_clk_voltage_dep_table(&adev->pm.dpm.dyn_state.vddci_dependency_on_mclk,
- 								 dep_table);
--			if (ret) {
--				amdgpu_free_extended_power_table(adev);
-+			if (ret)
- 				return ret;
--			}
- 		}
- 		if (power_info->pplib4.usVddcDependencyOnMCLKOffset) {
- 			dep_table = (ATOM_PPLIB_Clock_Voltage_Dependency_Table *)
-@@ -294,10 +290,8 @@ int amdgpu_parse_extended_power_table(struct amdgpu_device *adev)
- 				 le16_to_cpu(power_info->pplib4.usVddcDependencyOnMCLKOffset));
- 			ret = amdgpu_parse_clk_voltage_dep_table(&adev->pm.dpm.dyn_state.vddc_dependency_on_mclk,
- 								 dep_table);
--			if (ret) {
--				amdgpu_free_extended_power_table(adev);
-+			if (ret)
- 				return ret;
--			}
- 		}
- 		if (power_info->pplib4.usMvddDependencyOnMCLKOffset) {
- 			dep_table = (ATOM_PPLIB_Clock_Voltage_Dependency_Table *)
-@@ -305,10 +299,8 @@ int amdgpu_parse_extended_power_table(struct amdgpu_device *adev)
- 				 le16_to_cpu(power_info->pplib4.usMvddDependencyOnMCLKOffset));
- 			ret = amdgpu_parse_clk_voltage_dep_table(&adev->pm.dpm.dyn_state.mvdd_dependency_on_mclk,
- 								 dep_table);
--			if (ret) {
--				amdgpu_free_extended_power_table(adev);
-+			if (ret)
- 				return ret;
--			}
- 		}
- 		if (power_info->pplib4.usMaxClockVoltageOnDCOffset) {
- 			ATOM_PPLIB_Clock_Voltage_Limit_Table *clk_v =
-@@ -339,10 +331,8 @@ int amdgpu_parse_extended_power_table(struct amdgpu_device *adev)
- 				kcalloc(psl->ucNumEntries,
- 					sizeof(struct amdgpu_phase_shedding_limits_entry),
- 					GFP_KERNEL);
--			if (!adev->pm.dpm.dyn_state.phase_shedding_limits_table.entries) {
--				amdgpu_free_extended_power_table(adev);
-+			if (!adev->pm.dpm.dyn_state.phase_shedding_limits_table.entries)
- 				return -ENOMEM;
--			}
- 
- 			entry = &psl->entries[0];
- 			for (i = 0; i < psl->ucNumEntries; i++) {
-@@ -383,10 +373,8 @@ int amdgpu_parse_extended_power_table(struct amdgpu_device *adev)
- 			ATOM_PPLIB_CAC_Leakage_Record *entry;
- 			u32 size = cac_table->ucNumEntries * sizeof(struct amdgpu_cac_leakage_table);
- 			adev->pm.dpm.dyn_state.cac_leakage_table.entries = kzalloc(size, GFP_KERNEL);
--			if (!adev->pm.dpm.dyn_state.cac_leakage_table.entries) {
--				amdgpu_free_extended_power_table(adev);
-+			if (!adev->pm.dpm.dyn_state.cac_leakage_table.entries)
- 				return -ENOMEM;
--			}
- 			entry = &cac_table->entries[0];
- 			for (i = 0; i < cac_table->ucNumEntries; i++) {
- 				if (adev->pm.dpm.platform_caps & ATOM_PP_PLATFORM_CAP_EVV) {
-@@ -438,10 +426,8 @@ int amdgpu_parse_extended_power_table(struct amdgpu_device *adev)
- 				sizeof(struct amdgpu_vce_clock_voltage_dependency_entry);
- 			adev->pm.dpm.dyn_state.vce_clock_voltage_dependency_table.entries =
- 				kzalloc(size, GFP_KERNEL);
--			if (!adev->pm.dpm.dyn_state.vce_clock_voltage_dependency_table.entries) {
--				amdgpu_free_extended_power_table(adev);
-+			if (!adev->pm.dpm.dyn_state.vce_clock_voltage_dependency_table.entries)
- 				return -ENOMEM;
--			}
- 			adev->pm.dpm.dyn_state.vce_clock_voltage_dependency_table.count =
- 				limits->numEntries;
- 			entry = &limits->entries[0];
-@@ -493,10 +479,8 @@ int amdgpu_parse_extended_power_table(struct amdgpu_device *adev)
- 				sizeof(struct amdgpu_uvd_clock_voltage_dependency_entry);
- 			adev->pm.dpm.dyn_state.uvd_clock_voltage_dependency_table.entries =
- 				kzalloc(size, GFP_KERNEL);
--			if (!adev->pm.dpm.dyn_state.uvd_clock_voltage_dependency_table.entries) {
--				amdgpu_free_extended_power_table(adev);
-+			if (!adev->pm.dpm.dyn_state.uvd_clock_voltage_dependency_table.entries)
- 				return -ENOMEM;
--			}
- 			adev->pm.dpm.dyn_state.uvd_clock_voltage_dependency_table.count =
- 				limits->numEntries;
- 			entry = &limits->entries[0];
-@@ -525,10 +509,8 @@ int amdgpu_parse_extended_power_table(struct amdgpu_device *adev)
- 				sizeof(struct amdgpu_clock_voltage_dependency_entry);
- 			adev->pm.dpm.dyn_state.samu_clock_voltage_dependency_table.entries =
- 				kzalloc(size, GFP_KERNEL);
--			if (!adev->pm.dpm.dyn_state.samu_clock_voltage_dependency_table.entries) {
--				amdgpu_free_extended_power_table(adev);
-+			if (!adev->pm.dpm.dyn_state.samu_clock_voltage_dependency_table.entries)
- 				return -ENOMEM;
--			}
- 			adev->pm.dpm.dyn_state.samu_clock_voltage_dependency_table.count =
- 				limits->numEntries;
- 			entry = &limits->entries[0];
-@@ -548,10 +530,8 @@ int amdgpu_parse_extended_power_table(struct amdgpu_device *adev)
- 				 le16_to_cpu(ext_hdr->usPPMTableOffset));
- 			adev->pm.dpm.dyn_state.ppm_table =
- 				kzalloc(sizeof(struct amdgpu_ppm_table), GFP_KERNEL);
--			if (!adev->pm.dpm.dyn_state.ppm_table) {
--				amdgpu_free_extended_power_table(adev);
-+			if (!adev->pm.dpm.dyn_state.ppm_table)
- 				return -ENOMEM;
--			}
- 			adev->pm.dpm.dyn_state.ppm_table->ppm_design = ppm->ucPpmDesign;
- 			adev->pm.dpm.dyn_state.ppm_table->cpu_core_number =
- 				le16_to_cpu(ppm->usCpuCoreNumber);
-@@ -583,10 +563,8 @@ int amdgpu_parse_extended_power_table(struct amdgpu_device *adev)
- 				sizeof(struct amdgpu_clock_voltage_dependency_entry);
- 			adev->pm.dpm.dyn_state.acp_clock_voltage_dependency_table.entries =
- 				kzalloc(size, GFP_KERNEL);
--			if (!adev->pm.dpm.dyn_state.acp_clock_voltage_dependency_table.entries) {
--				amdgpu_free_extended_power_table(adev);
-+			if (!adev->pm.dpm.dyn_state.acp_clock_voltage_dependency_table.entries)
- 				return -ENOMEM;
--			}
- 			adev->pm.dpm.dyn_state.acp_clock_voltage_dependency_table.count =
- 				limits->numEntries;
- 			entry = &limits->entries[0];
-@@ -606,10 +584,8 @@ int amdgpu_parse_extended_power_table(struct amdgpu_device *adev)
- 			ATOM_PowerTune_Table *pt;
- 			adev->pm.dpm.dyn_state.cac_tdp_table =
- 				kzalloc(sizeof(struct amdgpu_cac_tdp_table), GFP_KERNEL);
--			if (!adev->pm.dpm.dyn_state.cac_tdp_table) {
--				amdgpu_free_extended_power_table(adev);
-+			if (!adev->pm.dpm.dyn_state.cac_tdp_table)
- 				return -ENOMEM;
--			}
- 			if (rev > 0) {
- 				ATOM_PPLIB_POWERTUNE_Table_V1 *ppt = (ATOM_PPLIB_POWERTUNE_Table_V1 *)
- 					(mode_info->atom_context->bios + data_offset +
-@@ -645,10 +621,8 @@ int amdgpu_parse_extended_power_table(struct amdgpu_device *adev)
- 			ret = amdgpu_parse_clk_voltage_dep_table(
- 					&adev->pm.dpm.dyn_state.vddgfx_dependency_on_sclk,
- 					dep_table);
--			if (ret) {
--				kfree(adev->pm.dpm.dyn_state.vddgfx_dependency_on_sclk.entries);
-+			if (ret)
- 				return ret;
--			}
- 		}
+--- a/drivers/hid/hid-sensor-hub.c
++++ b/drivers/hid/hid-sensor-hub.c
+@@ -632,7 +632,7 @@ static int sensor_hub_probe(struct hid_d
  	}
+ 	INIT_LIST_HEAD(&hdev->inputs);
  
--- 
-2.43.0
-
+-	ret = hid_hw_start(hdev, HID_CONNECT_DEFAULT);
++	ret = hid_hw_start(hdev, HID_CONNECT_DEFAULT | HID_CONNECT_DRIVER);
+ 	if (ret) {
+ 		hid_err(hdev, "hw start failed\n");
+ 		return ret;
 
 
 
