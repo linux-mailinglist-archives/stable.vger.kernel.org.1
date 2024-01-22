@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-15223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7453B8384E5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E951C837FBC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0CC3B22551
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CA00286BCD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83DF6D1B9;
-	Tue, 23 Jan 2024 02:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4773112AAE4;
+	Tue, 23 Jan 2024 00:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PJCQiYAW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ba4BecPM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 851F46D1B3;
-	Tue, 23 Jan 2024 02:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045E364CDA;
+	Tue, 23 Jan 2024 00:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975379; cv=none; b=LownTp/DHS7kKnCFxhyZO9gqvvgTdHaS0I8X2vgLcrurys0/iRwOw+TK1NhVGAPuHo8Xi3FS5owJnQbKvs61PF7UAsWyyegkNi0yNijbCJIeEEPN/S29Ex5g1u8xehGQFxHDHyETg1WTlmBkfVAIXF5UwqeWfTRItzYTebALnxI=
+	t=1705971328; cv=none; b=TRPqu341s2vb7AELTM10h4d1FNA6yoxAJ18Ntxp8WH2SPG1VI+p28i3nOi5CUc+9I8/swkyJsetfjqhHFtdvZMtnqoIKnfW7OjEyLwsd4e69YZs2vUHbKHPPiEQNBFCasL9mC4wXf1R1PJisW0nfJLzD92fwyn3Y4Votph+x4pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975379; c=relaxed/simple;
-	bh=5I++2Xdk+nct1G4jbSKF9jf6ZjMJVk4iBv6grXojD34=;
+	s=arc-20240116; t=1705971328; c=relaxed/simple;
+	bh=XHifNW32YfrXfSq+bRXm2K2hAamiisOMOKw/TlTJhLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OyS5rG64+mCntdiZ2k0Ir0mUhTcTKVxKHpoejOwMI7jhu2HyjCdek7G8rYn94dotgAU50ocG/vziGcex43WGwyn6a9eZASEN19M9nGkZODayvc6Ka5ckR/Ec7ZXhq2Yb+3iw8L5JcdzrRRgiKb9yEIUSLzNjZoHqhMz36UKmva0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PJCQiYAW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ABECC433C7;
-	Tue, 23 Jan 2024 02:02:59 +0000 (UTC)
+	 MIME-Version; b=oNc8y6R7kx4e7qFy8a8I/tibqf9JfB73E3jpoQqNPLIupJACDNwIqWVKru2t33lRmCpAqxpVXuPhxKjbdS0R9QJlV3eI7rDxuAMwN1HKWWav1LthoC4fD1LzUO/tn7RxUPqvEVfsM6iE3fjkO4rxafEN94w3M8SIsvfVeHJupWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ba4BecPM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB1EC433F1;
+	Tue, 23 Jan 2024 00:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975379;
-	bh=5I++2Xdk+nct1G4jbSKF9jf6ZjMJVk4iBv6grXojD34=;
+	s=korg; t=1705971327;
+	bh=XHifNW32YfrXfSq+bRXm2K2hAamiisOMOKw/TlTJhLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PJCQiYAW9M+4QRbDrVsN7cjaraD1Cm9Ubuz/WMj/6SiV6LXyxQoeJQT52Ebcc+t2j
-	 L9WjH4BJJOB871ByZoZBSZVQ/txw86cU9mwv8CO0AHCsc9TWxzLnk/5bqOONS9p3Wy
-	 bIy9TMjKNUx0v/cTC932Ap7F9suozENwFs71kLtM=
+	b=ba4BecPM/q0XcBLjFYC8NAFy6k3HaNnp0tN0gcr4uTpiGcR53eDf1m7/towwaupTs
+	 HbP+ueMCYzrf+Y3XPlXZ2SRx/ugkeHJtL14bqbRLJGDgWTPFYepKtQcf1ApWjrSa9A
+	 UFW5ht9wzV0AoHrX33rLfzEpCHAq0LpclM8iATX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jing Xia <jing.xia@unisoc.com>,
-	Xuewen Yan <xuewen.yan@unisoc.com>
-Subject: [PATCH 6.6 341/583] class: fix use-after-free in class_register()
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Su Hui <suhui@nfschina.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 224/417] clk: si5341: fix an error code problem in si5341_output_clk_set_rate
 Date: Mon, 22 Jan 2024 15:56:32 -0800
-Message-ID: <20240122235822.460941963@linuxfoundation.org>
+Message-ID: <20240122235759.675607079@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jing Xia <jing.xia@unisoc.com>
+From: Su Hui <suhui@nfschina.com>
 
-commit 93ec4a3b76404bce01bd5c9032bef5df6feb1d62 upstream.
+[ Upstream commit 5607068ae5ab02c3ac9cabc6859d36e98004c341 ]
 
-The lock_class_key is still registered and can be found in
-lock_keys_hash hlist after subsys_private is freed in error
-handler path.A task who iterate over the lock_keys_hash
-later may cause use-after-free.So fix that up and unregister
-the lock_class_key before kfree(cp).
+regmap_bulk_write() return zero or negative error code, return the value
+of regmap_bulk_write() rather than '0'.
 
-On our platform, a driver fails to kset_register because of
-creating duplicate filename '/class/xxx'.With Kasan enabled,
-it prints a invalid-access bug report.
-
-KASAN bug report:
-
-BUG: KASAN: invalid-access in lockdep_register_key+0x19c/0x1bc
-Write of size 8 at addr 15ffff808b8c0368 by task modprobe/252
-Pointer tag: [15], memory tag: [fe]
-
-CPU: 7 PID: 252 Comm: modprobe Tainted: G        W
- 6.6.0-mainline-maybe-dirty #1
-
-Call trace:
-dump_backtrace+0x1b0/0x1e4
-show_stack+0x2c/0x40
-dump_stack_lvl+0xac/0xe0
-print_report+0x18c/0x4d8
-kasan_report+0xe8/0x148
-__hwasan_store8_noabort+0x88/0x98
-lockdep_register_key+0x19c/0x1bc
-class_register+0x94/0x1ec
-init_module+0xbc/0xf48 [rfkill]
-do_one_initcall+0x17c/0x72c
-do_init_module+0x19c/0x3f8
-...
-Memory state around the buggy address:
-ffffff808b8c0100: 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a 8a
-ffffff808b8c0200: 8a 8a 8a 8a 8a 8a 8a 8a fe fe fe fe fe fe fe fe
->ffffff808b8c0300: fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe fe
-                                     ^
-ffffff808b8c0400: 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03 03
-
-As CONFIG_KASAN_GENERIC is not set, Kasan reports invalid-access
-not use-after-free here.In this case, modprobe is manipulating
-the corrupted lock_keys_hash hlish where lock_class_key is already
-freed before.
-
-It's worth noting that this only can happen if lockdep is enabled,
-which is not true for normal system.
-
-Fixes: dcfbb67e48a2 ("driver core: class: use lock_class_key already present in struct subsys_private")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Jing Xia <jing.xia@unisoc.com>
-Signed-off-by: Xuewen Yan <xuewen.yan@unisoc.com>
-Link: https://lore.kernel.org/r/20231220024603.186078-1-jing.xia@unisoc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3044a860fd09 ("clk: Add Si5341/Si5340 driver")
+Acked-by: Mike Looijmans <mike.looijmans@topic.nl>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20231101031633.996124-1-suhui@nfschina.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/class.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/clk-si5341.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/base/class.c
-+++ b/drivers/base/class.c
-@@ -215,6 +215,7 @@ int class_register(const struct class *c
- 	return 0;
- 
- err_out:
-+	lockdep_unregister_key(key);
- 	kfree(cp);
- 	return error;
+diff --git a/drivers/clk/clk-si5341.c b/drivers/clk/clk-si5341.c
+index c7d8cbd22bac..5acb35236c58 100644
+--- a/drivers/clk/clk-si5341.c
++++ b/drivers/clk/clk-si5341.c
+@@ -892,10 +892,8 @@ static int si5341_output_clk_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	r[0] = r_div ? (r_div & 0xff) : 1;
+ 	r[1] = (r_div >> 8) & 0xff;
+ 	r[2] = (r_div >> 16) & 0xff;
+-	err = regmap_bulk_write(output->data->regmap,
++	return regmap_bulk_write(output->data->regmap,
+ 			SI5341_OUT_R_REG(output), r, 3);
+-
+-	return 0;
  }
+ 
+ static int si5341_output_reparent(struct clk_si5341_output *output, u8 index)
+-- 
+2.43.0
+
 
 
 
