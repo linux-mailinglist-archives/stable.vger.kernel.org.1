@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-15048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E46A8383AA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34323838102
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36595294B13
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFA9D1F22C5D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD9863508;
-	Tue, 23 Jan 2024 01:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3CBD13E21C;
+	Tue, 23 Jan 2024 01:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DyK6CLa8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yT6LE96Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800DA634F8;
-	Tue, 23 Jan 2024 01:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836A613DBB7;
+	Tue, 23 Jan 2024 01:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975034; cv=none; b=uNWxYCHRgvvn1GOabfFGs4ayKaHg0TPWEAYUKTTds8s42bpUUoo9LjgwIPe2+LObn+nJ+0/osWjtph9shFmdxbR9+QrBVkUg6ZcKHd/XW4PMPGmYZjE13iqXgJ8eLLsf2YhXNQeEMmhq4xIj+XVyRM03/ncGhdnVT9t47/3VLSU=
+	t=1705971992; cv=none; b=fHK/q9DRiBNPMO9faTrHcH72Lrw4sU6P1B+K90i4oSiQj3SJwOcJ0QtDyngwazzhIKyQYtR19ZgZAQxFE3XK4XuRLpBWcmwGyLzSc0pRD/s91cfBdV/4U54nSxjDhOFu61j4YTlEaW8GMXC+NP7oZ0jXJV304q8WR9rko/dOHMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975034; c=relaxed/simple;
-	bh=JIU0XhtJjoQe0nczUdSZVeG3MVr9mlahzyA5uC0EXTg=;
+	s=arc-20240116; t=1705971992; c=relaxed/simple;
+	bh=3r/VwjX90zSYCIe5IgSBj5eCWTyCzoEpkj4p9Uh125M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K8+fD3ZkrgLvWRAFb7VhK0N3AvHUgtZQK6nxHYqNQBPdfRAbwVqEbyg5UBPnILIXZsiGWS8nqGxLPlUrdKHkkm4cxLPStn0ggX/Dq7Y+Tzj6l252+KlIRvX2xYSkoHZbvfqHwI5gevATT3TeZsWfwt0zayu0Jik0S/WmaWH05dU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DyK6CLa8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05C6C433F1;
-	Tue, 23 Jan 2024 01:57:13 +0000 (UTC)
+	 MIME-Version; b=L6IiV0WamhtDFzhNNJi/2emaY6CFQu/DlQJOzk4pwZ3PxeXuVLmnWyqNMUqLFFO9DBOFiJLh+XtCaXCxzc1W7JcWRx/1mgoZu1nJopls0M2V069VX+xKfUodNJRSbtIVSsWoa0Dthj/3B7XGvRG/lxKRJFjr4zgeYq2mPWi0HR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yT6LE96Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB5FC433C7;
+	Tue, 23 Jan 2024 01:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975033;
-	bh=JIU0XhtJjoQe0nczUdSZVeG3MVr9mlahzyA5uC0EXTg=;
+	s=korg; t=1705971992;
+	bh=3r/VwjX90zSYCIe5IgSBj5eCWTyCzoEpkj4p9Uh125M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DyK6CLa8FLdUbohhNmBjh5o/ODaeVODkbPhzOVt/weXT9Z7GmQTV6Z/rUEg2QZ/6T
-	 JLx6vG4wnBfDlUUIOGnL2KL7CXUsOimcx1UXbj6jxqxZNxEYUKrxRKpLnWDHCynQqx
-	 ZrOtmDp0YN1cyBnR9oqrtKUHoEFJMC1Auedvtssc=
+	b=yT6LE96QoE51tfAYzrwgk/jn9eU7FdcHtwXKlumxBGV87qumRp4lGDNoPJhogH8SM
+	 0dhsVKXYeTCF3ymFuCcuiUiPcy54Svcc1R9z/oJ0ZPSwQX1n/DOabWnvNDdvAIDbp+
+	 jybDalgwLzMwpWMVhSYUlm+nmGqPUuulZkbKu3wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Amit Cohen <amcohen@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 333/374] net: ethernet: ti: am65-cpsw: Fix max mtu to fit ethernet frames
-Date: Mon, 22 Jan 2024 15:59:49 -0800
-Message-ID: <20240122235756.485917015@linuxfoundation.org>
+Subject: [PATCH 5.10 284/286] selftests: mlxsw: qos_pfc: Adjust the test to support 8 lanes
+Date: Mon, 22 Jan 2024 15:59:50 -0800
+Message-ID: <20240122235742.984457633@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +64,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanjuán García, Jorge <Jorge.SanjuanGarcia@duagon.com>
+From: Amit Cohen <amcohen@nvidia.com>
 
-[ Upstream commit 64e47d8afb5ca533b27efc006405e5bcae2c4a7b ]
+[ Upstream commit b34f4de6d30cbaa8fed905a5080b6eace8c84dc7 ]
 
-The value of AM65_CPSW_MAX_PACKET_SIZE represents the maximum length
-of a received frame. This value is written to the register
-AM65_CPSW_PORT_REG_RX_MAXLEN.
+'qos_pfc' test checks PFC behavior. The idea is to limit the traffic
+using a shaper somewhere in the flow of the packets. In this area, the
+buffer is smaller than the buffer at the beginning of the flow, so it fills
+up until there is no more space left. The test configures there PFC
+which is supposed to notice that the headroom is filling up and send PFC
+Xoff to indicate the transmitter to stop sending traffic for the priorities
+sharing this PG.
 
-The maximum MTU configured on the network device should then leave
-some room for the ethernet headers and frame check. Otherwise, if
-the network interface is configured to its maximum mtu possible,
-the frames will be larger than AM65_CPSW_MAX_PACKET_SIZE and will
-get dropped as oversized.
+The Xon/Xoff threshold is auto-configured and always equal to
+2*(MTU rounded up to cell size). Even after sending the PFC Xoff packet,
+traffic will keep arriving until the transmitter receives and processes
+the PFC packet. This amount of traffic is known as the PFC delay allowance.
 
-The switch supports ethernet frame sizes between 64 and 2024 bytes
-(including VLAN) as stated in the technical reference manual, so
-define AM65_CPSW_MAX_PACKET_SIZE with that maximum size.
+Currently the buffer for the delay traffic is configured as 100KB. The
+MTU in the test is 10KB, therefore the threshold for Xoff is about 20KB.
+This allows 80KB extra to be stored in this buffer.
 
-Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
-Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
-Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Link: https://lore.kernel.org/r/20240105085530.14070-2-jorge.sanjuangarcia@duagon.com
+8-lane ports use two buffers among which the configured buffer is split,
+the Xoff threshold then applies to each buffer in parallel.
+
+The test does not take into account the behavior of 8-lane ports, when the
+ports are configured to 400Gbps with 8 lanes or 800Gbps with 8 lanes,
+packets are dropped and the test fails.
+
+Check if the relevant ports use 8 lanes, in such case double the size of
+the buffer, as the headroom is split half-half.
+
+Cc: Shuah Khan <shuah@kernel.org>
+Fixes: bfa804784e32 ("selftests: mlxsw: Add a PFC test")
+Signed-off-by: Amit Cohen <amcohen@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/23ff11b7dff031eb04a41c0f5254a2b636cd8ebb.1705502064.git.petrm@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ .../selftests/drivers/net/mlxsw/qos_pfc.sh     | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index 4aa9477ac597..1fa6f0dacd2d 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -53,7 +53,7 @@
- #define AM65_CPSW_MAX_PORTS	8
+diff --git a/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh b/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh
+index 5d5622fc2758..56761de1ca3b 100755
+--- a/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh
++++ b/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh
+@@ -121,6 +121,9 @@ h2_destroy()
  
- #define AM65_CPSW_MIN_PACKET_SIZE	VLAN_ETH_ZLEN
--#define AM65_CPSW_MAX_PACKET_SIZE	(VLAN_ETH_FRAME_LEN + ETH_FCS_LEN)
-+#define AM65_CPSW_MAX_PACKET_SIZE	2024
+ switch_create()
+ {
++	local lanes_swp4
++	local pg1_size
++
+ 	# pools
+ 	# -----
  
- #define AM65_CPSW_REG_CTL		0x004
- #define AM65_CPSW_REG_STAT_PORT_EN	0x014
-@@ -1985,7 +1985,8 @@ am65_cpsw_nuss_init_port_ndev(struct am65_cpsw_common *common, u32 port_idx)
- 	eth_hw_addr_set(port->ndev, port->slave.mac_addr);
+@@ -230,7 +233,20 @@ switch_create()
+ 	dcb pfc set dev $swp4 prio-pfc all:off 1:on
+ 	# PG0 will get autoconfigured to Xoff, give PG1 arbitrarily 100K, which
+ 	# is (-2*MTU) about 80K of delay provision.
+-	dcb buffer set dev $swp4 buffer-size all:0 1:$_100KB
++	pg1_size=$_100KB
++
++	setup_wait_dev_with_timeout $swp4
++
++	lanes_swp4=$(ethtool $swp4 | grep 'Lanes:')
++	lanes_swp4=${lanes_swp4#*"Lanes: "}
++
++	# 8-lane ports use two buffers among which the configured buffer
++	# is split, so double the size to get twice (20K + 80K).
++	if [[ $lanes_swp4 -eq 8 ]]; then
++		pg1_size=$((pg1_size * 2))
++	fi
++
++	dcb buffer set dev $swp4 buffer-size all:0 1:$pg1_size
  
- 	port->ndev->min_mtu = AM65_CPSW_MIN_PACKET_SIZE;
--	port->ndev->max_mtu = AM65_CPSW_MAX_PACKET_SIZE;
-+	port->ndev->max_mtu = AM65_CPSW_MAX_PACKET_SIZE -
-+			      (VLAN_ETH_HLEN + ETH_FCS_LEN);
- 	port->ndev->hw_features = NETIF_F_SG |
- 				  NETIF_F_RXCSUM |
- 				  NETIF_F_HW_CSUM |
+ 	# bridges
+ 	# -------
 -- 
 2.43.0
 
