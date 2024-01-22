@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-15133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC6BE83840B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75A86838197
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81E111F28FF2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48895B27C99
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38DCB67721;
-	Tue, 23 Jan 2024 02:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B2214A4D3;
+	Tue, 23 Jan 2024 01:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GXEwt+45"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="te3hL8Wt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943C867727;
-	Tue, 23 Jan 2024 02:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769AD14A4CE;
+	Tue, 23 Jan 2024 01:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975286; cv=none; b=kKzU0cHbDKuLOOOZWQ8zn6qYjXoJDD0n/7IzzDJR8M9aW5Wartl/Th/j2FLK7D52o48+wAeuQiD/iiMbdhAVJiFxygbYY6p6w6tYw9V6AEo/4vtIa2OgjZI/wli5n/KPKqy8nbKLrVpbPc0ujR3njVlOOdN2d1lS+yvmoHKlwpI=
+	t=1705972107; cv=none; b=iSLiq7A3XdvkLoJ4v287qWDaOUgYdAL/7jMMPmRiRzzhPsqeFqQFk/nL3EMZRUTmHMa1LnqoDDx8kAq+29gD0IGMtS+Ghox7wo0NhBNyAAjwpSgtHRCvy2rlsoid7fVP3dvjsGntw0g3EuE2fWbGYwq528ssGYdNPSOuWtMkoVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975286; c=relaxed/simple;
-	bh=rCkw2SIp3NXDuvoCwwMF0HL2lneWALL4JzyQiS46K14=;
+	s=arc-20240116; t=1705972107; c=relaxed/simple;
+	bh=p4ZsLaD5TmqdnVMr1V2vNCwAcZHhJKJ8sD4vd+FclRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qmj3FWRzSN4flmHRyNgyN/zBBhgVgFklbTcE5sr4rU7d0ewOxm7zYcn/XhMeiaoz5B+qJv6hy1eASqJBAXRf2sif1CxnpdCD50lCL9yMtYmknsDDns3OZgB4gzoB6eQ6pr1zbylPTIXtg/JAHkuIiUUyLoyu+0KRerj12iNM0jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GXEwt+45; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D1EC43390;
-	Tue, 23 Jan 2024 02:01:26 +0000 (UTC)
+	 MIME-Version; b=q8wo35sSa60uA9vd4hDWpKBSC5FPnzW8xePz7VKC6s2w1yHnCuvPnztlycvQsSSyB2QvVtuHcCbmRpMwGNXYoN/SWL1hG4GtoJjiuLZnbqNvlK87gUxOLfF6cmcbMQfbezKkOGSisDDz7Yjk8Qq6xeYdohgiUawrzNdLgbdEaM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=te3hL8Wt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C244C433F1;
+	Tue, 23 Jan 2024 01:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975286;
-	bh=rCkw2SIp3NXDuvoCwwMF0HL2lneWALL4JzyQiS46K14=;
+	s=korg; t=1705972106;
+	bh=p4ZsLaD5TmqdnVMr1V2vNCwAcZHhJKJ8sD4vd+FclRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GXEwt+45py78MzNlK+wcby96vubjLa1rj0YmLeOUhkhInWSy58Dv4hhRQn6sEfuRF
-	 YaDFi88VJbHT/Ob8myc2PVnfUaGFydgyakv9Xvfj+X0leZrQ7IX10QzB8UPBGgUMf1
-	 SePs9VURg1RySO3jL6fNjDGbW5km9FsQ7hI+LQrY=
+	b=te3hL8WtvmYH6Mkfx0lsBzXUtXYUDJ/2KByEkmGeJDEasdnAavO9RyZBG/Wf/7+V/
+	 quOwgjAo5IHrhwhsxKtpaNV+CjXWajQ7rPPfBVRyitHAt7agLJcA9zxSeOhrs7y8nf
+	 4L3W6hU1ZtrzfqcUxcl1LWLrlW2N6O7ft8gkiNaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Avraham Stern <avraham.stern@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 247/583] drm/tidss: Fix dss reset
+Subject: [PATCH 5.15 042/374] wifi: iwlwifi: pcie: avoid a NULL pointer dereference
 Date: Mon, 22 Jan 2024 15:54:58 -0800
-Message-ID: <20240122235819.552655115@linuxfoundation.org>
+Message-ID: <20240122235746.084755054@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Avraham Stern <avraham.stern@intel.com>
 
-[ Upstream commit bc288a927815efcf9d7f4a54d4d89c5df478c635 ]
+[ Upstream commit ce038edfce43fb345f8dfdca0f7b17f535896701 ]
 
-The probe function calls dispc_softreset() before runtime PM is enabled
-and without enabling any of the DSS clocks. This happens to work by
-luck, and we need to make sure the DSS HW is active and the fclk is
-enabled.
+It possible that while the rx rb is being handled, the transport has
+been stopped and re-started. In this case the tx queue pointer is not
+yet initialized, which will lead to a NULL pointer dereference.
+Fix it.
 
-To fix the above, add a new function, dispc_init_hw(), which does:
-
-- pm_runtime_set_active()
-- clk_prepare_enable(fclk)
-- dispc_softreset().
-
-This ensures that the reset can be successfully accomplished.
-
-Note that we use pm_runtime_set_active(), not the normal
-pm_runtime_get(). The reason for this is that at this point we haven't
-enabled the runtime PM yet and also we don't want the normal resume
-callback to be called: the dispc resume callback does some initial HW
-setup, and it expects that the HW was off (no video ports are
-streaming). If the bootloader has enabled the DSS and has set up a
-boot time splash-screen, the DSS would be enabled and streaming which
-might lead to issues with the normal resume callback.
-
-Fixes: c9b2d923befd ("drm/tidss: Soft Reset DISPC on startup")
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Link: https://lore.kernel.org/r/20231109-tidss-probe-v2-8-ac91b5ea35c0@ideasonboard.com
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Avraham Stern <avraham.stern@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20231207044813.cd0898cafd89.I0b84daae753ba9612092bf383f5c6f761446e964@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_dispc.c | 45 ++++++++++++++++++++++++++++-
- 1 file changed, 44 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
-index 2af623842cfb..98efbaf3b0c2 100644
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -2724,6 +2724,49 @@ static int dispc_softreset(struct dispc_device *dispc)
- 	return 0;
- }
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+index 29be7ed76894..17e53c7eb62d 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
+@@ -1380,7 +1380,7 @@ static void iwl_pcie_rx_handle_rb(struct iwl_trans *trans,
+ 		 * if it is true then one of the handlers took the page.
+ 		 */
  
-+static int dispc_init_hw(struct dispc_device *dispc)
-+{
-+	struct device *dev = dispc->dev;
-+	int ret;
-+
-+	ret = pm_runtime_set_active(dev);
-+	if (ret) {
-+		dev_err(dev, "Failed to set DSS PM to active\n");
-+		return ret;
-+	}
-+
-+	ret = clk_prepare_enable(dispc->fclk);
-+	if (ret) {
-+		dev_err(dev, "Failed to enable DSS fclk\n");
-+		goto err_runtime_suspend;
-+	}
-+
-+	ret = dispc_softreset(dispc);
-+	if (ret)
-+		goto err_clk_disable;
-+
-+	clk_disable_unprepare(dispc->fclk);
-+	ret = pm_runtime_set_suspended(dev);
-+	if (ret) {
-+		dev_err(dev, "Failed to set DSS PM to suspended\n");
-+		return ret;
-+	}
-+
-+	return 0;
-+
-+err_clk_disable:
-+	clk_disable_unprepare(dispc->fclk);
-+
-+err_runtime_suspend:
-+	ret = pm_runtime_set_suspended(dev);
-+	if (ret) {
-+		dev_err(dev, "Failed to set DSS PM to suspended\n");
-+		return ret;
-+	}
-+
-+	return ret;
-+}
-+
- int dispc_init(struct tidss_device *tidss)
- {
- 	struct device *dev = tidss->dev;
-@@ -2833,7 +2876,7 @@ int dispc_init(struct tidss_device *tidss)
- 	of_property_read_u32(dispc->dev->of_node, "max-memory-bandwidth",
- 			     &dispc->memory_bandwidth_limit);
- 
--	r = dispc_softreset(dispc);
-+	r = dispc_init_hw(dispc);
- 	if (r)
- 		return r;
- 
+-		if (reclaim) {
++		if (reclaim && txq) {
+ 			u16 sequence = le16_to_cpu(pkt->hdr.sequence);
+ 			int index = SEQ_TO_INDEX(sequence);
+ 			int cmd_index = iwl_txq_get_cmd_index(txq, index);
 -- 
 2.43.0
 
