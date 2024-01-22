@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-14816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ED568382C1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:59 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40F8983806E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0288BB2B3A7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 734321C29722
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F3C5EE9D;
-	Tue, 23 Jan 2024 01:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CAE712DDAF;
+	Tue, 23 Jan 2024 01:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fyK96KmF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6Z0X7Pe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE7B5EE82;
-	Tue, 23 Jan 2024 01:46:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8B364CFE;
+	Tue, 23 Jan 2024 01:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974414; cv=none; b=hSwdKLYitE7kAsqUDav0C8IRt1V3WmTaDu4JEjdN0OtjL3ex1EYej/GLn84ywUyQaIlmFmuoUvsAenWigfw4Vwu6vyU+LRV8E4jfp+BjNmVP9AfrEMHWAO5FE1kcaoj/kWhljWWRNke3UMit1gTKeHvMVA1bfcmcgnAtzixM4cM=
+	t=1705971712; cv=none; b=r+cy1t5zkst5hZcQ1e4eBeusx4WcfevZFjXojFP/u492os+Jz8ORKCCyqN/abaqig5DKaYyKWKSyRu93Hy1x5zBjm0YM9CWiMjxRzYjPGff2VS6WoEc4T8aPYIZik00bSBi+uBweGgp/0N3yVlc7w1UoiXl4DWkfHD5mO3Mhsxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974414; c=relaxed/simple;
-	bh=BlcEGkVBDgRVYkeqJorkAlTA92mIMghhXCaoQoBUthc=;
+	s=arc-20240116; t=1705971712; c=relaxed/simple;
+	bh=b4dB7RdUM/d2MjwhvQ/mv4ND/jpe0geTaSApjgvDRXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S+cti1J+FHcnqpTX5D/qFWAz3aZzxTiaYC7OfLHpu6JclYdreXoZqKIMJngCMBoMZpR0xKEGl2lE6YnnBe6OHtQ/SQl5F8iwiVphvuCVfYlBqbZDDKldVLLeBrjFn42/w5AeDqGoCfx5MnilVkKXIGNVhzR8cza7YLAwjZqDhGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fyK96KmF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F7BC433C7;
-	Tue, 23 Jan 2024 01:46:53 +0000 (UTC)
+	 MIME-Version; b=W9cW6kZT6GPBB3VWkQxkc2CSCi9MxM0USQnBz7Oln/7rO/DKGSOjAchOOAPBZdVb5rGRdBV8foc70KgId4QwGAz0Z9kleEZeh/WVV7/fxfU/VK4QnYLtC+S9Ho6DzwAsd6ADexsI9nlml4tkL5RHes9NWFBuCrThPkdjrEEg9yc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6Z0X7Pe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61536C433F1;
+	Tue, 23 Jan 2024 01:01:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974413;
-	bh=BlcEGkVBDgRVYkeqJorkAlTA92mIMghhXCaoQoBUthc=;
+	s=korg; t=1705971711;
+	bh=b4dB7RdUM/d2MjwhvQ/mv4ND/jpe0geTaSApjgvDRXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fyK96KmF+QWoLriA+jzNbVL7QLrGWOeuG76fLzSr7q9KAmMyNnGYRAcd+zpQhxMHZ
-	 OdDoTERfFZgfevwg2ZNuZviq6kCxStteYGyyrPrgWUlX8u9nfuRY9JquG2780EwXLb
-	 pVHpMrSon6QlreBRs/zjzi2eIHtiiOZR+5sRQSRc=
+	b=u6Z0X7Pec8R7aTpc3030CHMi/6v14SvJNbWuqDdSMhMGgFDME4VVRt2ykEgf8mv3U
+	 7qGbdL/xtr6XJIgBsCz7FH5I1O0wYxQSGnD3SpuDFOvxsW300dxMOOXFJdGlsG/73+
+	 3BwMJhx9y+XqiyRxbZ0OuFUxSCUzonGEza6A31bc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 216/374] clk: zynqmp: make bestdiv unsigned
+	Xi Ruoyao <xry111@xry111.site>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 304/417] LoongArch: Fix and simplify fcsr initialization on execve()
 Date: Mon, 22 Jan 2024 15:57:52 -0800
-Message-ID: <20240122235752.161096242@linuxfoundation.org>
+Message-ID: <20240122235802.360673641@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
+From: Xi Ruoyao <xry111@xry111.site>
 
-[ Upstream commit d3954b51b475c4848179cd90b24ac73684cdc76b ]
+commit c2396651309eba291c15e32db8fbe44c738b5921 upstream.
 
-Divisor is always positive make it u32 *.
-Also the arguments passed are currently of u32 pointers.
+There has been a lingering bug in LoongArch Linux systems causing some
+GCC tests to intermittently fail (see Closes link).  I've made a minimal
+reproducer:
 
-Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
-Link: https://lore.kernel.org/r/20220818113153.14431-1-shubhrajyoti.datta@amd.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Stable-dep-of: 1fe15be1fb61 ("drivers: clk: zynqmp: update divider round rate logic")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    zsh% cat measure.s
+    .align 4
+    .globl _start
+    _start:
+        movfcsr2gr  $a0, $fcsr0
+        bstrpick.w  $a0, $a0, 16, 16
+        beqz        $a0, .ok
+        break       0
+    .ok:
+        li.w        $a7, 93
+        syscall     0
+    zsh% cc mesaure.s -o measure -nostdlib
+    zsh% echo $((1.0/3))
+    0.33333333333333331
+    zsh% while ./measure; do ; done
+
+This while loop should not stop as POSIX is clear that execve must set
+fenv to the default, where FCSR should be zero.  But in fact it will
+just stop after running for a while (normally less than 30 seconds).
+Note that "$((1.0/3))" is needed to reproduce this issue because it
+raises FE_INVALID and makes fcsr0 non-zero.
+
+The problem is we are currently relying on SET_PERSONALITY2() to reset
+current->thread.fpu.fcsr.  But SET_PERSONALITY2() is executed before
+start_thread which calls lose_fpu(0).  We can see if kernel preempt is
+enabled, we may switch to another thread after SET_PERSONALITY2() but
+before lose_fpu(0).  Then bad thing happens: during the thread switch
+the value of the fcsr0 register is stored into current->thread.fpu.fcsr,
+making it dirty again.
+
+The issue can be fixed by setting current->thread.fpu.fcsr after
+lose_fpu(0) because lose_fpu() clears TIF_USEDFPU, then the thread
+switch won't touch current->thread.fpu.fcsr.
+
+The only other architecture setting FCSR in SET_PERSONALITY2() is MIPS.
+I've ran a similar test on MIPS with mainline kernel and it turns out
+MIPS is buggy, too.  Anyway MIPS do this for supporting different FP
+flavors (NaN encodings, etc.) which do not exist on LoongArch.  So for
+LoongArch, we can simply remove the current->thread.fpu.fcsr setting
+from SET_PERSONALITY2() and do it in start_thread(), after lose_fpu(0).
+
+The while loop failing with the mainline kernel has survived one hour
+after this change on LoongArch.
+
+Fixes: 803b0fc5c3f2baa ("LoongArch: Add process management")
+Closes: https://github.com/loongson-community/discussions/issues/7
+Link: https://lore.kernel.org/linux-mips/7a6aa1bbdbbe2e63ae96ff163fab0349f58f1b9e.camel@xry111.site/
+Cc: stable@vger.kernel.org
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/zynqmp/divider.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/include/asm/elf.h |    5 -----
+ arch/loongarch/kernel/elf.c      |    5 -----
+ arch/loongarch/kernel/process.c  |    1 +
+ 3 files changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/drivers/clk/zynqmp/divider.c b/drivers/clk/zynqmp/divider.c
-index cb49281f9cf9..9e535d3e1c0c 100644
---- a/drivers/clk/zynqmp/divider.c
-+++ b/drivers/clk/zynqmp/divider.c
-@@ -113,7 +113,7 @@ static unsigned long zynqmp_clk_divider_recalc_rate(struct clk_hw *hw,
- static void zynqmp_get_divider2_val(struct clk_hw *hw,
- 				    unsigned long rate,
- 				    struct zynqmp_clk_divider *divider,
--				    int *bestdiv)
-+				    u32 *bestdiv)
+--- a/arch/loongarch/include/asm/elf.h
++++ b/arch/loongarch/include/asm/elf.h
+@@ -241,8 +241,6 @@ void loongarch_dump_regs64(u64 *uregs, c
+ do {									\
+ 	current->thread.vdso = &vdso_info;				\
+ 									\
+-	loongarch_set_personality_fcsr(state);				\
+-									\
+ 	if (personality(current->personality) != PER_LINUX)		\
+ 		set_personality(PER_LINUX);				\
+ } while (0)
+@@ -259,7 +257,6 @@ do {									\
+ 	clear_thread_flag(TIF_32BIT_ADDR);				\
+ 									\
+ 	current->thread.vdso = &vdso_info;				\
+-	loongarch_set_personality_fcsr(state);				\
+ 									\
+ 	p = personality(current->personality);				\
+ 	if (p != PER_LINUX32 && p != PER_LINUX)				\
+@@ -340,6 +337,4 @@ extern int arch_elf_pt_proc(void *ehdr,
+ extern int arch_check_elf(void *ehdr, bool has_interpreter, void *interp_ehdr,
+ 			  struct arch_elf_state *state);
+ 
+-extern void loongarch_set_personality_fcsr(struct arch_elf_state *state);
+-
+ #endif /* _ASM_ELF_H */
+--- a/arch/loongarch/kernel/elf.c
++++ b/arch/loongarch/kernel/elf.c
+@@ -23,8 +23,3 @@ int arch_check_elf(void *_ehdr, bool has
  {
- 	int div1;
- 	int div2;
--- 
-2.43.0
-
+ 	return 0;
+ }
+-
+-void loongarch_set_personality_fcsr(struct arch_elf_state *state)
+-{
+-	current->thread.fpu.fcsr = boot_cpu_data.fpu_csr0;
+-}
+--- a/arch/loongarch/kernel/process.c
++++ b/arch/loongarch/kernel/process.c
+@@ -82,6 +82,7 @@ void start_thread(struct pt_regs *regs,
+ 	euen = regs->csr_euen & ~(CSR_EUEN_FPEN);
+ 	regs->csr_euen = euen;
+ 	lose_fpu(0);
++	current->thread.fpu.fcsr = boot_cpu_data.fpu_csr0;
+ 
+ 	clear_thread_flag(TIF_LSX_CTX_LIVE);
+ 	clear_thread_flag(TIF_LASX_CTX_LIVE);
 
 
 
