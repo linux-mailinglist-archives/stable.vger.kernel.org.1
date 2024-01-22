@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0244C837E12
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C19DB8384EF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABDA91F29BB9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 001161C28E9C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34DA855C30;
-	Tue, 23 Jan 2024 00:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93F2177F38;
+	Tue, 23 Jan 2024 02:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CzU3CsYS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1+N86or"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E644C4F204;
-	Tue, 23 Jan 2024 00:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5416277636;
+	Tue, 23 Jan 2024 02:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970343; cv=none; b=LF3EavjceLKXcr2JrpJc6ebUevG7q+Rew1BFbs9cN+VR+pWNv0UW2IV738s08GopCQdP/h7V9mm9jLOjFwBfAfivrAC+dQ5rtAu5qGCuFyAwPOtCeV43iMCw7MWCUkMA58orGCBCa0QhkFAAnkHomg6eVM7S9XYBcIl+nx9SRPQ=
+	t=1705975539; cv=none; b=qKh/CR8UgiV+zSFThmaiFPRJ3E8MowsL8B8yRlmChvFMRtHX0W0jFeUcRuApkyQaipp663Aq6SiGIMX0xOeQPdlQDw3JXYF+/ryKOfGWjHueA5nTWfdKHh75xYNypzT93DRShUN6TmaSKBVTpI8olMlAh1mkkpZ2kiWJSgRJ0do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970343; c=relaxed/simple;
-	bh=TEaCvY7quR6hGQYdKMK8CBVDDDZh/33ldPKMNBoR6d4=;
+	s=arc-20240116; t=1705975539; c=relaxed/simple;
+	bh=dBeIJBYuSTO0RAEU7ip6Y2bANWWGZZkRuxl+XcOB60E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ib6q67q2X8jfO9edb0DrB5pFp+NL9WzzS/rY9DOntAlWbNL+A7+6WcYHdlhe/HlrAuh90ga8ai+L90yk7ta0zQeSenT0sWl8XQ+gblGXdUuLPynq/fLas5sx0hL6CIjFQ72sKNj3eoq7JK/JNJSxUsXSuqp9flSd13tvxL+KJu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CzU3CsYS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5D4C433F1;
-	Tue, 23 Jan 2024 00:39:02 +0000 (UTC)
+	 MIME-Version; b=UMFwO18Wz+AvVT29ZpXqSoQT7EpwMAY6oLq/r+M1vMqIMF5j2pcjHPEP3VhbS2eONzB+Wfr1IQBTMe99MxA1FCCSnL5a9l9X3DN7OO5zxW2DE3x/P2IeFDK8sN8zrj80Kf8R2Z1dbn+7Wo8KKnAmTWbQIE45uYo/nbp0+JmjEXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1+N86or; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ABC7C433B2;
+	Tue, 23 Jan 2024 02:05:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970342;
-	bh=TEaCvY7quR6hGQYdKMK8CBVDDDZh/33ldPKMNBoR6d4=;
+	s=korg; t=1705975539;
+	bh=dBeIJBYuSTO0RAEU7ip6Y2bANWWGZZkRuxl+XcOB60E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CzU3CsYSxCeNLpf5aaQ5IvuAFdt807FF2/4jBnSFrEa2YKqdG5sBFKS6Ylh27C5js
-	 4eogroqS2BQRaDNbqKMUvu7oRF61AnVXuefVhKPM1dzVjIOUgJ0vW+EeMsoLhOkqsv
-	 zhXeumczpEPoJQCZO9pBFmXgPw2ZvM509yk5AKTI=
+	b=t1+N86ordwj2XxP7/MC5nDb5ITUn/QZH1QCIcQjoJU/MC3HHt+qD/sVMfxJsljDvX
+	 GxiKxHHqIW223rNgIhN/2C702cGe9K0K4T3dblGmBJ/9JQKQN1SzLOb9i1ola3GMxk
+	 UY5IRuON0sRFA1gg5iZNbV2TjRobSDyPsFv/HgkA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Sun <sunhao.th@gmail.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Yonghong Song <yonghong.song@linux.dev>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 614/641] bpf: Reject variable offset alu on PTR_TO_FLOW_KEYS
+Subject: [PATCH 6.6 467/583] vfio/pds: Fix calculations in pds_vfio_dirty_sync
 Date: Mon, 22 Jan 2024 15:58:38 -0800
-Message-ID: <20240122235837.454376952@linuxfoundation.org>
+Message-ID: <20240122235826.289075290@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Sun <sunhao.th@gmail.com>
+From: Brett Creeley <brett.creeley@amd.com>
 
-[ Upstream commit 22c7fa171a02d310e3a3f6ed46a698ca8a0060ed ]
+[ Upstream commit 4004497cec3093d7b0087bc70709b45969fa07b6 ]
 
-For PTR_TO_FLOW_KEYS, check_flow_keys_access() only uses fixed off
-for validation. However, variable offset ptr alu is not prohibited
-for this ptr kind. So the variable offset is not checked.
+The incorrect check is being done for comparing the
+iova/length being requested to sync. This can cause
+the dirty sync operation to fail. Fix this by making
+sure the iova offset added to the requested sync
+length doesn't exceed the region_size.
 
-The following prog is accepted:
+Also, the region_start is assumed to always be at 0.
+This can cause dirty tracking to fail because the
+device/driver bitmap offset always starts at 0,
+however, the region_start/iova may not. Fix this by
+determining the iova offset from region_start to
+determine the bitmap offset.
 
-  func#0 @0
-  0: R1=ctx() R10=fp0
-  0: (bf) r6 = r1                       ; R1=ctx() R6_w=ctx()
-  1: (79) r7 = *(u64 *)(r6 +144)        ; R6_w=ctx() R7_w=flow_keys()
-  2: (b7) r8 = 1024                     ; R8_w=1024
-  3: (37) r8 /= 1                       ; R8_w=scalar()
-  4: (57) r8 &= 1024                    ; R8_w=scalar(smin=smin32=0,
-  smax=umax=smax32=umax32=1024,var_off=(0x0; 0x400))
-  5: (0f) r7 += r8
-  mark_precise: frame0: last_idx 5 first_idx 0 subseq_idx -1
-  mark_precise: frame0: regs=r8 stack= before 4: (57) r8 &= 1024
-  mark_precise: frame0: regs=r8 stack= before 3: (37) r8 /= 1
-  mark_precise: frame0: regs=r8 stack= before 2: (b7) r8 = 1024
-  6: R7_w=flow_keys(smin=smin32=0,smax=umax=smax32=umax32=1024,var_off
-  =(0x0; 0x400)) R8_w=scalar(smin=smin32=0,smax=umax=smax32=umax32=1024,
-  var_off=(0x0; 0x400))
-  6: (79) r0 = *(u64 *)(r7 +0)          ; R0_w=scalar()
-  7: (95) exit
-
-This prog loads flow_keys to r7, and adds the variable offset r8
-to r7, and finally causes out-of-bounds access:
-
-  BUG: unable to handle page fault for address: ffffc90014c80038
-  [...]
-  Call Trace:
-   <TASK>
-   bpf_dispatcher_nop_func include/linux/bpf.h:1231 [inline]
-   __bpf_prog_run include/linux/filter.h:651 [inline]
-   bpf_prog_run include/linux/filter.h:658 [inline]
-   bpf_prog_run_pin_on_cpu include/linux/filter.h:675 [inline]
-   bpf_flow_dissect+0x15f/0x350 net/core/flow_dissector.c:991
-   bpf_prog_test_run_flow_dissector+0x39d/0x620 net/bpf/test_run.c:1359
-   bpf_prog_test_run kernel/bpf/syscall.c:4107 [inline]
-   __sys_bpf+0xf8f/0x4560 kernel/bpf/syscall.c:5475
-   __do_sys_bpf kernel/bpf/syscall.c:5561 [inline]
-   __se_sys_bpf kernel/bpf/syscall.c:5559 [inline]
-   __x64_sys_bpf+0x73/0xb0 kernel/bpf/syscall.c:5559
-   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-   do_syscall_64+0x3f/0x110 arch/x86/entry/common.c:83
-   entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-Fix this by rejecting ptr alu with variable offset on flow_keys.
-Applying the patch rejects the program with "R7 pointer arithmetic
-on flow_keys prohibited".
-
-Fixes: d58e468b1112 ("flow_dissector: implements flow dissector BPF hook")
-Signed-off-by: Hao Sun <sunhao.th@gmail.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/bpf/20240115082028.9992-1-sunhao.th@gmail.com
+Fixes: f232836a9152 ("vfio/pds: Add support for dirty page tracking")
+Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Link: https://lore.kernel.org/r/20231117001207.2793-2-brett.creeley@amd.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/vfio/pci/pds/dirty.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 2b8fbdc1a113..e215413c79a5 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -12854,6 +12854,10 @@ static int adjust_ptr_min_max_vals(struct bpf_verifier_env *env,
+diff --git a/drivers/vfio/pci/pds/dirty.c b/drivers/vfio/pci/pds/dirty.c
+index c937aa6f3954..27607d7b9030 100644
+--- a/drivers/vfio/pci/pds/dirty.c
++++ b/drivers/vfio/pci/pds/dirty.c
+@@ -478,8 +478,7 @@ static int pds_vfio_dirty_sync(struct pds_vfio_pci_device *pds_vfio,
+ 		pds_vfio->vf_id, iova, length, pds_vfio->dirty.region_page_size,
+ 		pages, bitmap_size);
+ 
+-	if (!length || ((dirty->region_start + iova + length) >
+-			(dirty->region_start + dirty->region_size))) {
++	if (!length || ((iova - dirty->region_start + length) > dirty->region_size)) {
+ 		dev_err(dev, "Invalid iova 0x%lx and/or length 0x%lx to sync\n",
+ 			iova, length);
+ 		return -EINVAL;
+@@ -496,7 +495,8 @@ static int pds_vfio_dirty_sync(struct pds_vfio_pci_device *pds_vfio,
+ 		return -EINVAL;
  	}
  
- 	switch (base_type(ptr_reg->type)) {
-+	case PTR_TO_FLOW_KEYS:
-+		if (known)
-+			break;
-+		fallthrough;
- 	case CONST_PTR_TO_MAP:
- 		/* smin_val represents the known value */
- 		if (known && smin_val == 0 && opcode == BPF_ADD)
+-	bmp_offset = DIV_ROUND_UP(iova / dirty->region_page_size, sizeof(u64));
++	bmp_offset = DIV_ROUND_UP((iova - dirty->region_start) /
++				  dirty->region_page_size, sizeof(u64));
+ 
+ 	dev_dbg(dev,
+ 		"Syncing dirty bitmap, iova 0x%lx length 0x%lx, bmp_offset %llu bmp_bytes %llu\n",
 -- 
 2.43.0
 
