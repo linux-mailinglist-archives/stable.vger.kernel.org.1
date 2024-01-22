@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-15393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EFCC83850A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:38:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F7ED83812C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 446351F293FB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03DFF285113
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC5527C0B5;
-	Tue, 23 Jan 2024 02:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3D8F1419A9;
+	Tue, 23 Jan 2024 01:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jrg64FuO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqjcqExX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E30A7C0BE;
-	Tue, 23 Jan 2024 02:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8180F140796;
+	Tue, 23 Jan 2024 01:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975728; cv=none; b=PVU+xYuaWUSr3VcE2nt3dgyKl4kPZrlvUDID6rarXcO6Tw/dDOR/HeD7aT7ZZ2Q9HCZ28YAJAfEsBYtGFW4UTZdk37uIQy5RlSotF6fQEx7YvLAgJ6EXW/Qf/18dzUrLloUEeaZ3HWvj6ruaxLfLeTalyOzxr4zV8lJpJS5XDDg=
+	t=1705972053; cv=none; b=ljGnQyc3kJ6/D/5YQSpvEwHUUk8JImCG9eljqHKSLABLU/OkZy3ZDk2sTkawBazZDCdjSKJcSNAfoQnZVzmLHmEHuU74l/OeQyCWfm7VnlGQ4G1r/M9bZP995QSZznypM6+iqI6t4TaWoGntB+6Z1i5/+twGzShJSApHMSN2LNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975728; c=relaxed/simple;
-	bh=tp+zRZEkzvXxaTtmCpwCkNL2dDXaH90UCnFNprzlDXE=;
+	s=arc-20240116; t=1705972053; c=relaxed/simple;
+	bh=9aNwJjKAv6AQK96wNJym8C5Vj89U3kYfpYkCyqB6oQI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e2V4BNHCCiq9HzTnw3+2tPrPdfekxvrOsXUPJBWtg7LyuSi0DPqRRJoC1l6wlsFVLxVX24yVzv/46t6NgdHoyN++0IkrAzaDylujyPcdnSBxCBitxv/yKw9mvWN3SNR0G1usMbyafujbodymhKivqzVQVCATNUGRrhWBa97dMCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jrg64FuO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F65EC433F1;
-	Tue, 23 Jan 2024 02:08:48 +0000 (UTC)
+	 MIME-Version; b=Jrh2aSog3DGunpTvx4+0kTmIg07ojx4783MeaOxprhQk5mqRuWv7z5C2+Hui8X4YemLpa7c+MCI/hvk2IF6qK4rAcW22O6koe4X1q/1bhZu5VZ7SCUMEyBw7+MuE9x5fMKxtWHhJLLPzkRXSsEOLJu+tu4gsueY1uwegJD2Sdb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqjcqExX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3879CC433C7;
+	Tue, 23 Jan 2024 01:07:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975728;
-	bh=tp+zRZEkzvXxaTtmCpwCkNL2dDXaH90UCnFNprzlDXE=;
+	s=korg; t=1705972053;
+	bh=9aNwJjKAv6AQK96wNJym8C5Vj89U3kYfpYkCyqB6oQI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jrg64FuORMFfCBm4v77eKP3qOmOJFPULMWV57DIRuXVu6npbgmgRByRMAmOVDgabp
-	 fEMNewxFUrE2qGsRzoU15DTiOHaP9JdzkB+fWbmFrDa3hH1sEyX7ju3gVAedNf4R/t
-	 9qieBH9ZuqorutJWLXS+ROtQyoF3hjVAPnKPsF3g=
+	b=cqjcqExXptiFpxMQk411xGwqZk8SD1Km4kY+eoKIe6e8j+495jNADb2oRuVAQE6ew
+	 3irJBc/YYG43qgLj6tVqnvl/QvEdqNONxALcGeeaGGUGu2jTbaf6kRx1G83YROAPLY
+	 nK3lY4ohGcP75d7FIeV5Q/YorE3bDUHjhm7gPoco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	linux-serial@vger.kernel.org,
-	sparclinux@vger.kernel.org,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 512/583] serial: apbuart: fix console prompt on qemu
+Subject: [PATCH 6.1 395/417] net: dsa: vsc73xx: Add null pointer check to vsc73xx_gpio_probe
 Date: Mon, 22 Jan 2024 15:59:23 -0800
-Message-ID: <20240122235827.739885822@linuxfoundation.org>
+Message-ID: <20240122235805.433314738@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,62 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Ravnborg <sam@ravnborg.org>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit c6dcd8050fb7c2efec6946ae9c49bc186b0a7475 ]
+[ Upstream commit 776dac5a662774f07a876b650ba578d0a62d20db ]
 
-When using a leon kernel with qemu there where no console prompt.
-The root cause is the handling of the fifo size in the tx part of the
-apbuart driver.
+devm_kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure.
 
-The qemu uart driver only have a very rudimentary status handling and do
-not report the number of chars queued in the tx fifo in the status register.
-So the driver ends up with a fifo size of 1.
-
-In the tx path the fifo size is divided by 2 - resulting in a fifo
-size of zero.
-
-The original implementation would always try to send one char, but
-after the introduction of uart_port_tx_limited() the fifo size is
-respected even for the first char.
-
-There seems to be no good reason to divide the fifo size with two - so
-remove this. It looks like something copied from the original amba driver.
-
-With qemu we now have a minimum fifo size of one char, so we show
-the prompt.
-
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Fixes: d11cc8c3c4b6 ("tty: serial: use uart_port_tx_limited()")
-Cc: Andreas Larsson <andreas@gaisler.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc:  <linux-serial@vger.kernel.org>
-Cc:  <sparclinux@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231226121607.GA2622970@ravnborg.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240111072018.75971-1-chentao@kylinos.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/apbuart.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/dsa/vitesse-vsc73xx-core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/tty/serial/apbuart.c b/drivers/tty/serial/apbuart.c
-index d7658f380838..d3cb341f2c55 100644
---- a/drivers/tty/serial/apbuart.c
-+++ b/drivers/tty/serial/apbuart.c
-@@ -122,7 +122,7 @@ static void apbuart_tx_chars(struct uart_port *port)
- {
- 	u8 ch;
+diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
+index ef1a4a7c47b2..3efd55669056 100644
+--- a/drivers/net/dsa/vitesse-vsc73xx-core.c
++++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
+@@ -1119,6 +1119,8 @@ static int vsc73xx_gpio_probe(struct vsc73xx *vsc)
  
--	uart_port_tx_limited(port, ch, port->fifosize >> 1,
-+	uart_port_tx_limited(port, ch, port->fifosize,
- 		true,
- 		UART_PUT_CHAR(port, ch),
- 		({}));
+ 	vsc->gc.label = devm_kasprintf(vsc->dev, GFP_KERNEL, "VSC%04x",
+ 				       vsc->chipid);
++	if (!vsc->gc.label)
++		return -ENOMEM;
+ 	vsc->gc.ngpio = 4;
+ 	vsc->gc.owner = THIS_MODULE;
+ 	vsc->gc.parent = vsc->dev;
 -- 
 2.43.0
 
