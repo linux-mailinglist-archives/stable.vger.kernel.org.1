@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A551183823B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06E43838481
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D83D41C267E0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38AB31C2A62E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9B1C58AD2;
-	Tue, 23 Jan 2024 01:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8BF76EB58;
+	Tue, 23 Jan 2024 02:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f50ihqj2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxhWELjS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F016121;
-	Tue, 23 Jan 2024 01:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7921C6E2CB;
+	Tue, 23 Jan 2024 02:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974103; cv=none; b=Te4dRyzYxvL3NrBmbT9fIV/7rD/wptgzZQBzQGiK/DMt4O3rOJH3PHVmkfyQYOEmUdtkeiGzKDGS2l3mqztNGCfOFkRCTJjJWSil5qIxNYIyP9jf/NR123V/537lTjLT74qNZjTlOHOK5iCYGMZBriqr6b2w3qdp90SVVjvo69Y=
+	t=1705975409; cv=none; b=Q5ZT1u/YqZm5ROAJOkJcMVbpA+qPI+fQaKQA+swt2NUjTnOKzONTAz5gphTy0QjXxwP27Xm4sEAh+EXaKzBObxvhNR3w/SsY6yx14qrkbsIyrz11sax4eKxiBFzuRD8JnQOiq/bAZpYrEVl21TUvWOq7Cnx47r2DHSP5euHzDw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974103; c=relaxed/simple;
-	bh=Qgdw7wh5rZlb0tPq4YriUCT/DRUPU65nECWCAmwBEjA=;
+	s=arc-20240116; t=1705975409; c=relaxed/simple;
+	bh=gAq9B9SLFSAThartCdTipEcKtBp1CXvu3hmkosbk500=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YcsxxeltSZp+nhyoOS42YiCWQBovpUiFysYDFb0Jijw98vk+jm54C6Dnm/vM+es2mFS55+6cgm9F4VpeZ4pSO/b3Or1PU/XUnhSpDjPSUzlUfQdrscxDjkx6nBut5cZTPVFXiULxFHHJO6yhjntpmARn9x3ijBKlQo7ZK2LgHts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f50ihqj2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD54C433C7;
-	Tue, 23 Jan 2024 01:41:42 +0000 (UTC)
+	 MIME-Version; b=SV0cr1aTV+KuJ0SpWKRPJ/mOy6Z/O6J8LY8fb5hERK5lVa0Z92jszAEJXCkXXrR9OTxOVFvjeI3mUIEN5vjP/SQxCQp/3QawmY4sjeUX9AnNuRXkZ9UIbCrMnQbUiyf9sanRhWuGAEk8UuZMeORd7RtxGNGufczN3Kladf7n7q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxhWELjS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29242C433C7;
+	Tue, 23 Jan 2024 02:03:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974103;
-	bh=Qgdw7wh5rZlb0tPq4YriUCT/DRUPU65nECWCAmwBEjA=;
+	s=korg; t=1705975409;
+	bh=gAq9B9SLFSAThartCdTipEcKtBp1CXvu3hmkosbk500=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f50ihqj2GJ76Tup59cxRBiq7sClEr9wf3MQlLU/ZAROPQ32zBrdDMjWT8HZAO9jGl
-	 lbjx6ZEQCEpeciTIENhspaPdGnAyt4ldzsuO3vRYOM5k7nqBzqtOFpQUa2hpM3+Vbj
-	 viTmPr3krIHNbUrMNoYwgIEm6pWf8IXPOiOSYzV4=
+	b=fxhWELjSlvYfRCYqnCTAdcwFleDNLnMPcGJIaeA+DCJHyN7rGObZTgHkQ18GfU279
+	 srcD0SVJwXoMs4zZbn7q9ycrQqunjjH5S4cWqt1p6jDYfWwmTpYJtA2AV6r6xNXV+Z
+	 ZzVoBJooTw37TWKl0OUfc+6WMwYiuNByhEsnZCAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 164/374] wifi: iwlwifi: mvm: send TX path flush in rfkill
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	RD Babiera <rdbabiera@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.6 369/583] usb: typec: class: fix typec_altmode_put_partner to put plugs
 Date: Mon, 22 Jan 2024 15:57:00 -0800
-Message-ID: <20240122235750.314454066@linuxfoundation.org>
+Message-ID: <20240122235823.304983814@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: RD Babiera <rdbabiera@google.com>
 
-[ Upstream commit 2afc3dad39ea84a072d04ff40a417234326adc47 ]
+commit 5962ded777d689cd8bf04454273e32228d7fb71f upstream.
 
-If we want to drop packets, that's surely a good thing to
-do when we want to enter rfkill. Send this command despite
-rfkill so we can successfully clean up everything, we need
-to handle it separately since it has CMD_WANT_SKB, so it's
-not going to automatically return success when in rfkill.
+When typec_altmode_put_partner is called by a plug altmode upon release,
+the port altmode the plug belongs to will not remove its reference to the
+plug. The check to see if the altmode being released is a plug evaluates
+against the released altmode's partner instead of the calling altmode, so
+change adev in typec_altmode_put_partner to properly refer to the altmode
+being released.
 
-Fixes: d4e3a341b87b ("iwlwifi: mvm: add support for new flush queue response")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20231219215605.c528a6fa6cec.Ibe5e9560359ccc0fba60c35e01de285c376748a2@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Because typec_altmode_set_partner calls get_device() on the port altmode,
+add partner_adev that points to the port altmode in typec_put_partner to
+call put_device() on. typec_altmode_set_partner is not called for port
+altmodes, so add a check in typec_altmode_release to prevent
+typec_altmode_put_partner() calls on port altmode release.
+
+Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
+Cc:  <stable@vger.kernel.org>
+Co-developed-by: Christian A. Ehrhardt <lk@c--e.de>
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Tested-by: Christian A. Ehrhardt <lk@c--e.de>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240103181754.2492492-2-rdbabiera@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/class.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index 08dd227bad4b..266d1e9a89f5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -2054,7 +2054,7 @@ int iwl_mvm_flush_sta_tids(struct iwl_mvm *mvm, u32 sta_id, u16 tids)
- 	WARN_ON(!iwl_mvm_has_new_tx_api(mvm));
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -262,11 +262,13 @@ static void typec_altmode_put_partner(st
+ {
+ 	struct altmode *partner = altmode->partner;
+ 	struct typec_altmode *adev;
++	struct typec_altmode *partner_adev;
  
- 	if (iwl_fw_lookup_notif_ver(mvm->fw, LONG_GROUP, TXPATH_FLUSH, 0) > 0)
--		cmd.flags |= CMD_WANT_SKB;
-+		cmd.flags |= CMD_WANT_SKB | CMD_SEND_IN_RFKILL;
+ 	if (!partner)
+ 		return;
  
- 	IWL_DEBUG_TX_QUEUES(mvm, "flush for sta id %d tid mask 0x%x\n",
- 			    sta_id, tids);
--- 
-2.43.0
-
+-	adev = &partner->adev;
++	adev = &altmode->adev;
++	partner_adev = &partner->adev;
+ 
+ 	if (is_typec_plug(adev->dev.parent)) {
+ 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
+@@ -275,7 +277,7 @@ static void typec_altmode_put_partner(st
+ 	} else {
+ 		partner->partner = NULL;
+ 	}
+-	put_device(&adev->dev);
++	put_device(&partner_adev->dev);
+ }
+ 
+ /**
+@@ -496,7 +498,8 @@ static void typec_altmode_release(struct
+ {
+ 	struct altmode *alt = to_altmode(to_typec_altmode(dev));
+ 
+-	typec_altmode_put_partner(alt);
++	if (!is_typec_port(dev->parent))
++		typec_altmode_put_partner(alt);
+ 
+ 	altmode_id_remove(alt->adev.dev.parent, alt->id);
+ 	kfree(alt);
 
 
 
