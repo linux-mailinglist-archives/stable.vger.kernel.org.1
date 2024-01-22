@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-14574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89D25838174
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1327E837EE3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD4241C27C16
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1AA629BC23
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346401420D2;
-	Tue, 23 Jan 2024 01:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40B32567F;
+	Tue, 23 Jan 2024 00:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpMMvRtA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HHsEpqAK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C7D37A;
-	Tue, 23 Jan 2024 01:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EEF5397;
+	Tue, 23 Jan 2024 00:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972140; cv=none; b=vEXoH/ezBI3X4S2FZIevkd4FMZPN+85L/h+3aqw3NmK/SE9KaMfEEZ+umF7ISplOMe0z9Lo4Q46SyIQKEuXhQb5lh/PCkDi3DaZNmEt75tO4x1Xw7R2oJeYMKeTWewox8eWJ9feehggxM7TEiARm75IS/yEdFDW2W9fAOPgdPK8=
+	t=1705970807; cv=none; b=X2RsfalCmjjnErkAmnjsSGvA2iWV46G+y0m5Kr0ETKgU4vQOt6MKUEI6N6XHDpcZnCNovioeWVyzkNAe9rPvskhH4Onwe/bmd9QFpiDVd+2KPD/QEJoKFIELOcOzsV21RTakuRgsd6/Zo+ZfhpmFb9JWBHTo5Dqa+aBHiS5TPLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972140; c=relaxed/simple;
-	bh=rbA7kPCibJueKimxLasBAOPUrs+bSLBDFyJbC/V2z0w=;
+	s=arc-20240116; t=1705970807; c=relaxed/simple;
+	bh=/XVWZ64vYAdeIy3v3OE9rGSryA2GsznWjqFsUc+TEx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N4Pgm8QTCXW4y2MadQPa04ZF970p4BVf64WkgRzxxRUL8xL3PRxzkedYS0NRXJ2YfRgyQKpMb/D+sC+1cM/8dEPwfoZgZTrsmGpn5CguBTP82A1xOxliWBwI+jH+P6EC7u5sIIBDxVzt3/qAoB8miDx6esdaQhU2oNzsrMTij6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpMMvRtA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4191C433C7;
-	Tue, 23 Jan 2024 01:08:59 +0000 (UTC)
+	 MIME-Version; b=dpNlwJXsldsCmUTQ3NitBFlrF2yd1Z+F4pPCbmiUw8v4zh6XvGZXiqtzM4byPGoKMKf8hu4Ke1rthnMH3fTaFQk5UjRKw7OtEyYwaLUmEuEbDKr7L31RXELo71xgW239Zs1mf7K4Q0gDPtuq10Cor7m14sgaFByEjU4O12iakzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HHsEpqAK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB38C433F1;
+	Tue, 23 Jan 2024 00:46:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972139;
-	bh=rbA7kPCibJueKimxLasBAOPUrs+bSLBDFyJbC/V2z0w=;
+	s=korg; t=1705970806;
+	bh=/XVWZ64vYAdeIy3v3OE9rGSryA2GsznWjqFsUc+TEx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zpMMvRtAIIxIZ8QY1ws2J2C7kJ9b0lMHXp+OPCl8REj+I9hK5mRr8AAnNwOM7LD2W
-	 nAF2eGG8GDDOSZzL4gWPVuEJR7lq6HzzHtvTWW8VuXPJUhL2hsa8DeO4EsL3OUk2rV
-	 ZL0OEha9DJLoGJED5bfHsgJmQKZq71sJjBaP9KNQ=
+	b=HHsEpqAK+kpfTWEWj6tJaBfTOt56DUnrgd2dY0b2yONimfEstCp/PD3vESmgKz7Lw
+	 U/DgHibHerifnKNGnmsxNxAsRr+EpZpccJcWLPi7Ked/f5FVFYqB/uU7DPgxfiJUhK
+	 g0DX1YD1pTyciT58ls477YdvaFIOYgcOq8S7evFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Inki Dae <inki.dae@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 069/374] powerpc: remove checks for binutils older than 2.25
-Date: Mon, 22 Jan 2024 15:55:25 -0800
-Message-ID: <20240122235747.012781559@linuxfoundation.org>
+Subject: [PATCH 5.10 020/286] drm/exynos: fix a wrong error checking
+Date: Mon, 22 Jan 2024 15:55:26 -0800
+Message-ID: <20240122235732.810525663@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Inki Dae <inki.dae@samsung.com>
 
-[ Upstream commit 54a11654de163994e32b24e3aa90ef81f4a3184d ]
+[ Upstream commit 8d1b7809684c688005706125b804e1f9792d2b1b ]
 
-Commit e4412739472b ("Documentation: raise minimum supported version of
-binutils to 2.25") allows us to remove the checks for old binutils.
+Fix a wrong error checking in exynos_drm_dma.c module.
 
-There is no more user for ld-ifversion. Remove it as well.
+In the exynos_drm_register_dma function, both arm_iommu_create_mapping()
+and iommu_get_domain_for_dev() functions are expected to return NULL as
+an error.
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230119082250.151485-1-masahiroy@kernel.org
-Stable-dep-of: 1b1e38002648 ("powerpc: add crtsavres.o to always-y instead of extra-y")
+However, the error checking is performed using the statement
+if(IS_ERR(mapping)), which doesn't provide a suitable error value.
+So check if 'mapping' is NULL, and if it is, return -ENODEV.
+
+This issue[1] was reported by Dan.
+
+Changelog v1:
+- fix build warning.
+
+[1] https://lore.kernel.org/all/33e52277-1349-472b-a55b-ab5c3462bfcf@moroto.mountain/
+
+Reported-by : Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/Makefile     | 17 +----------------
- arch/powerpc/lib/Makefile |  2 +-
- scripts/Makefile.compiler |  4 ----
- 3 files changed, 2 insertions(+), 21 deletions(-)
+ drivers/gpu/drm/exynos/exynos_drm_dma.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index 41604a37b385..11a0ccb47be3 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -44,18 +44,13 @@ machine-$(CONFIG_PPC64) += 64
- machine-$(CONFIG_CPU_LITTLE_ENDIAN) += le
- UTS_MACHINE := $(subst $(space),,$(machine-y))
+diff --git a/drivers/gpu/drm/exynos/exynos_drm_dma.c b/drivers/gpu/drm/exynos/exynos_drm_dma.c
+index bf33c3084cb4..6b4d6da3b1f4 100644
+--- a/drivers/gpu/drm/exynos/exynos_drm_dma.c
++++ b/drivers/gpu/drm/exynos/exynos_drm_dma.c
+@@ -108,18 +108,16 @@ int exynos_drm_register_dma(struct drm_device *drm, struct device *dev,
+ 		return 0;
  
--# XXX This needs to be before we override LD below
--ifdef CONFIG_PPC32
--KBUILD_LDFLAGS_MODULE += arch/powerpc/lib/crtsavres.o
--else
--ifeq ($(call ld-ifversion, -ge, 22500, y),y)
-+ifeq ($(CONFIG_PPC64)$(CONFIG_LD_IS_BFD),yy)
- # Have the linker provide sfpr if possible.
- # There is a corresponding test in arch/powerpc/lib/Makefile
- KBUILD_LDFLAGS_MODULE += --save-restore-funcs
- else
- KBUILD_LDFLAGS_MODULE += arch/powerpc/lib/crtsavres.o
- endif
--endif
+ 	if (!priv->mapping) {
+-		void *mapping;
++		void *mapping = NULL;
  
- ifdef CONFIG_CPU_LITTLE_ENDIAN
- KBUILD_CFLAGS	+= -mlittle-endian
-@@ -434,17 +429,7 @@ endif # CONFIG_PPC32
- endif # CONFIG_SMP
+ 		if (IS_ENABLED(CONFIG_ARM_DMA_USE_IOMMU))
+ 			mapping = arm_iommu_create_mapping(&platform_bus_type,
+ 				EXYNOS_DEV_ADDR_START, EXYNOS_DEV_ADDR_SIZE);
+ 		else if (IS_ENABLED(CONFIG_IOMMU_DMA))
+ 			mapping = iommu_get_domain_for_dev(priv->dma_dev);
+-		else
+-			mapping = ERR_PTR(-ENODEV);
  
- PHONY += checkbin
--# Check toolchain versions:
--# - gcc-4.6 is the minimum kernel-wide version so nothing required.
- checkbin:
--	@if test "x${CONFIG_LD_IS_LLD}" != "xy" -a \
--		"x$(call ld-ifversion, -le, 22400, y)" = "xy" ; then \
--		echo -n '*** binutils 2.24 miscompiles weak symbols ' ; \
--		echo 'in some circumstances.' ; \
--		echo    '*** binutils 2.23 do not define the TOC symbol ' ; \
--		echo -n '*** Please use a different binutils version.' ; \
--		false ; \
--	fi
- 	@if test "x${CONFIG_FTRACE_MCOUNT_USE_RECORDMCOUNT}" = "xy" -a \
- 		"x${CONFIG_LD_IS_BFD}" = "xy" -a \
- 		"${CONFIG_LD_VERSION}" = "23700" ; then \
-diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-index 54be64203b2a..cb8a66743a02 100644
---- a/arch/powerpc/lib/Makefile
-+++ b/arch/powerpc/lib/Makefile
-@@ -37,7 +37,7 @@ obj-$(CONFIG_FUNCTION_ERROR_INJECTION)	+= error-inject.o
- # 64-bit linker creates .sfpr on demand for final link (vmlinux),
- # so it is only needed for modules, and only for older linkers which
- # do not support --save-restore-funcs
--ifeq ($(call ld-ifversion, -lt, 22500, y),y)
-+ifndef CONFIG_LD_IS_BFD
- extra-$(CONFIG_PPC64)	+= crtsavres.o
- endif
+-		if (IS_ERR(mapping))
+-			return PTR_ERR(mapping);
++		if (!mapping)
++			return -ENODEV;
+ 		priv->mapping = mapping;
+ 	}
  
-diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
-index 86ecd2ac874c..60ddd47bfa1b 100644
---- a/scripts/Makefile.compiler
-+++ b/scripts/Makefile.compiler
-@@ -68,7 +68,3 @@ cc-ifversion = $(shell [ $(CONFIG_GCC_VERSION)0 $(1) $(2)000 ] && echo $(3) || e
- # ld-option
- # Usage: KBUILD_LDFLAGS += $(call ld-option, -X, -Y)
- ld-option = $(call try-run, $(LD) $(KBUILD_LDFLAGS) $(1) -v,$(1),$(2),$(3))
--
--# ld-ifversion
--# Usage:  $(call ld-ifversion, -ge, 22252, y)
--ld-ifversion = $(shell [ $(CONFIG_LD_VERSION)0 $(1) $(2)0 ] && echo $(3) || echo $(4))
 -- 
 2.43.0
 
