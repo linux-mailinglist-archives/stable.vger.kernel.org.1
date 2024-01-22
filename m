@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-13782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44B9C837E01
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:01 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CDCF838149
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:07:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77D2E1C260FC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7499B2ACE8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:02:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A76537E9;
-	Tue, 23 Jan 2024 00:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA077133427;
+	Tue, 23 Jan 2024 01:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1dPirQb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YEE8OmkP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3B74E1D0;
-	Tue, 23 Jan 2024 00:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A115133416;
+	Tue, 23 Jan 2024 01:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970294; cv=none; b=nvJAkuTi8xDA02tG0sDKQRA4RDvIMIbVMdoQ9F4mPIqwd0MkuEvXzT4rmGMz24ziRJ8KZPyC8qgrGPb5V3N5pQ4+a7JIg7Oc+jFzdbga3x4JoP/+mJhF9PhX+xo9HLC7OEUzPmRPqbpwhuMl6t1exT3uIOg69FV+Rj/FOQaQ9x0=
+	t=1705971845; cv=none; b=KLsq1f8i09DEFGH3GqB9sr90u5XuYAt/tNGbUpzInpbOz1HZPzhUFgmbQ5QTy2uNBUTCnEctLc76FiPth6pf2Z6s5oFcolMFyB/RZKfax0n66aTiSELL3NmfF3A0uO592GF4R8xM08Db4Mir2jjj3/4WwM0av2WuigQdVb+qP9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970294; c=relaxed/simple;
-	bh=HNgLwruE2VUB0TxecPIfPPXyaNef6EXiYbtG+WUuz5E=;
+	s=arc-20240116; t=1705971845; c=relaxed/simple;
+	bh=lmYW1Ue6sH/H1JEak6IGz96+rwQbDunCQTAM1kvjYis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DUpwfT7rXQrtE1zURWdypq9q0XiXs5b0x952es+hQQsel04BXg9drN3/+HuZ+kz+ngPDog58v67/b1RVRFWdRqkmqmMeUckW+KsYS4ig23kfq9N1rlyFoKbVCvi3L8eMmjEvYpI9EJO8CkIgf36R9Zvo/LqT2iEJqnmMAMHPpKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1dPirQb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7275CC433F1;
-	Tue, 23 Jan 2024 00:38:13 +0000 (UTC)
+	 MIME-Version; b=H0Yp2JKV7HPHFmxIpYVXf4nQoWnk9Fgic6HI8qFHkKserg1hy1GQIpLh83q4jb1MwKdOP4WS8NVzReiNpU+4SZW3kDfbhwxnT3eLyBTC6U8K6MvKbJKy/mJOawkpbuYpr8C4MqL5pirF+yGSy86Gh2YNi0LIaj1tn73UUmD+Xuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YEE8OmkP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 371EFC433F1;
+	Tue, 23 Jan 2024 01:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970293;
-	bh=HNgLwruE2VUB0TxecPIfPPXyaNef6EXiYbtG+WUuz5E=;
+	s=korg; t=1705971845;
+	bh=lmYW1Ue6sH/H1JEak6IGz96+rwQbDunCQTAM1kvjYis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M1dPirQbkoE4b2WVSYfN44EA0kAx3iqFi0YQVrEnu3YA7ulqoa7CNgfllGrxBs541
-	 FIUZW+kHb8SRlKljsySXirrmKSTdMcms4ROgHcgo3jbvz/v4eRpxQxToEfgS6SsNVW
-	 KxulbjEbZhxPYg5wjPtFSCDFFaYT4TMl897kGdeM=
+	b=YEE8OmkPSL8FNSGQpb3mdOK99o/T92/wsaSijYZrcEY+mlvVk+nGuO5oALMeXc8zF
+	 tENp3yoqdLN0iWsr0VoaImgQLApsm4wDxc8VqiOh70NxgKZLvsJprIMhmf5Ff+aOrs
+	 +eYaHhP3guR5kIoKJrgEUdCPwkMaZU5ObxHwCcEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 626/641] netfilter: nf_tables: skip dead set elements in netlink dump
-Date: Mon, 22 Jan 2024 15:58:50 -0800
-Message-ID: <20240122235837.849021487@linuxfoundation.org>
+	Rob Landley <rob@landley.net>,
+	Stefan Berger <stefanb@linux.ibm.com>,
+	Mimi Zohar <zohar@linux.ibm.com>
+Subject: [PATCH 5.10 225/286] rootfs: Fix support for rootfstype= when root= is given
+Date: Mon, 22 Jan 2024 15:58:51 -0800
+Message-ID: <20240122235740.737997831@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Stefan Berger <stefanb@linux.ibm.com>
 
-[ Upstream commit 6b1ca88e4bb63673dc9f9c7f23c899f22c3cb17a ]
+commit 21528c69a0d8483f7c6345b1a0bc8d8975e9a172 upstream.
 
-Delete from packet path relies on the garbage collector to purge
-elements with NFT_SET_ELEM_DEAD_BIT on.
+Documentation/filesystems/ramfs-rootfs-initramfs.rst states:
 
-Skip these dead elements from nf_tables_dump_setelem() path, I very
-rarely see tests/shell/testcases/maps/typeof_maps_add_delete reports
-[DUMP FAILED] showing a mismatch in the expected output with an element
-that should not be there.
+  If CONFIG_TMPFS is enabled, rootfs will use tmpfs instead of ramfs by
+  default.  To force ramfs, add "rootfstype=ramfs" to the kernel command
+  line.
 
-If the netlink dump happens before GC worker run, it might show dead
-elements in the ruleset listing.
+This currently does not work when root= is provided since then
+saved_root_name contains a string and rootfstype= is ignored. Therefore,
+ramfs is currently always chosen when root= is provided.
 
-nft_rhash_get() already skips dead elements in nft_rhash_cmp(),
-therefore, it already does not show the element when getting a single
-element via netlink control plane.
+The current behavior for rootfs's filesystem is:
 
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+   root=       | rootfstype= | chosen rootfs filesystem
+   ------------+-------------+--------------------------
+   unspecified | unspecified | tmpfs
+   unspecified | tmpfs       | tmpfs
+   unspecified | ramfs       | ramfs
+    provided   | ignored     | ramfs
+
+rootfstype= should be respected regardless whether root= is given,
+as shown below:
+
+   root=       | rootfstype= | chosen rootfs filesystem
+   ------------+-------------+--------------------------
+   unspecified | unspecified | tmpfs  (as before)
+   unspecified | tmpfs       | tmpfs  (as before)
+   unspecified | ramfs       | ramfs  (as before)
+    provided   | unspecified | ramfs  (compatibility with before)
+    provided   | tmpfs       | tmpfs  (new)
+    provided   | ramfs       | ramfs  (new)
+
+This table represents the new behavior.
+
+Fixes: 6e19eded3684 ("initmpfs: use initramfs if rootfstype= or root= specified")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Rob Landley <rob@landley.net>
+Link: https://lore.kernel.org/lkml/8244c75f-445e-b15b-9dbf-266e7ca666e2@landley.net/
+Reviewed-and-Tested-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
+Link: https://lore.kernel.org/r/20231120011248.396012-1-stefanb@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ init/do_mounts.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 7775bf5224ac..47ffb9e4c353 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -5716,7 +5716,7 @@ static int nf_tables_dump_setelem(const struct nft_ctx *ctx,
- 	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem_priv);
- 	struct nft_set_dump_args *args;
+--- a/init/do_mounts.c
++++ b/init/do_mounts.c
+@@ -649,7 +649,10 @@ struct file_system_type rootfs_fs_type =
  
--	if (nft_set_elem_expired(ext))
-+	if (nft_set_elem_expired(ext) || nft_set_elem_is_dead(ext))
- 		return 0;
- 
- 	args = container_of(iter, struct nft_set_dump_args, iter);
--- 
-2.43.0
-
+ void __init init_rootfs(void)
+ {
+-	if (IS_ENABLED(CONFIG_TMPFS) && !saved_root_name[0] &&
+-		(!root_fs_names || strstr(root_fs_names, "tmpfs")))
+-		is_tmpfs = true;
++	if (IS_ENABLED(CONFIG_TMPFS)) {
++		if (!saved_root_name[0] && !root_fs_names)
++			is_tmpfs = true;
++		else if (root_fs_names && !!strstr(root_fs_names, "tmpfs"))
++			is_tmpfs = true;
++	}
+ }
 
 
 
