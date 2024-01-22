@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-13022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C31AE837A39
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48BFC8378A2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7BBD428A5DF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5FB828B4A3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B8B612BE83;
-	Tue, 23 Jan 2024 00:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85031420D4;
+	Tue, 23 Jan 2024 00:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/VDgDlc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1s1pt+GV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9A412A17F;
-	Tue, 23 Jan 2024 00:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 977B81420CE;
+	Tue, 23 Jan 2024 00:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968809; cv=none; b=TbW2OJSVys7zsoONECeTgVnpsBhsofXzGlnsR/32zeEntrowR8D9f6e36SMXG2PpilIVMVQrcogPQmd34JeyXML03f12kEhHZXi8ZJIvB1WhE29xQriaL1O4skQyVZt1qSOy4kCio7t4G7lvAIS8smwFKqtW6VqljN5mPG0+zE0=
+	t=1705968169; cv=none; b=dN22RgNu+50ZSVnFZQJSaoHus3Eh1E7b02bXrXvqaLg7zuy7CnHQz447VBKsitfcgkrmn/6Va5UqBNRMKaEN7fEZpz7RlDA2E3tbaklMZJi4Zm7LdQLMZW65jgUJguo/wBbgSWSgQ07zmBhrzPgqdqbiBaP7Kz3o5G6f0sjUHmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968809; c=relaxed/simple;
-	bh=VAdiwpNE2RKfuTUQ5+mUignes6MHI0OaSEYjedqAsR8=;
+	s=arc-20240116; t=1705968169; c=relaxed/simple;
+	bh=xRh1GHewGPHHCGKOyXG78oB8VzqbUPV82ZEg4mBZpMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UeG1UMHWWQtwMuAQumna3rMX5Q/N8wzxFZkDsNrJyIU++CtZ73z+oVjzts8tYfkKTI1K0LeNsBJvJWVRJYwkYzwYH8FxGabmgGws9T3Tqk8HjQ7L5+zRBrB7IAWrlaXsakhGdGOCRMKqOadSJgcDd/jA+c/Gt+xAgGiTaolm9bU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/VDgDlc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E458C433F1;
-	Tue, 23 Jan 2024 00:13:28 +0000 (UTC)
+	 MIME-Version; b=fIGB5U1hZ0+jkTOrobLm4qwJP3iwzykzwIw1fwKQL9cH8p4Y/ITgw4WRcpK3gOW/BoERwJ4htQikgEksAoUzEDTbjuKQPPbQg13vwwomT8+wOZMAYypmHezkIAQSi6Vew+wz27KDZRGjQkPEkmO2j8bU6fn6qgd//pZrsQaCTxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1s1pt+GV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25476C433C7;
+	Tue, 23 Jan 2024 00:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968808;
-	bh=VAdiwpNE2RKfuTUQ5+mUignes6MHI0OaSEYjedqAsR8=;
+	s=korg; t=1705968169;
+	bh=xRh1GHewGPHHCGKOyXG78oB8VzqbUPV82ZEg4mBZpMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N/VDgDlc9om2W4SsLJiv+RcHMNfhjo4bTwXib2B3PEbA0H6Ph83LRxPZIrF3S0+uP
-	 TrMeKvd66NsIkbuUffNP0MrDdMCyEreQGOIvq0FpfglQb0cTqco6pWeeFpJPeeWsSH
-	 ZCNy3kiF0ZP+Tge/boypEsrAcDB613lX2uc0/mcU=
+	b=1s1pt+GVGIKcpAa36qdN3Miq06n7pJqcWIxLQV14MF25xIcd+rGxmWZGCw10I/UjK
+	 Hdam35BrW+4DKmKNInE6DNDE0vSBv6Wclii+sc0Cw+RU+ASPd/23PkNcT7PHdgBoV1
+	 ZsNEuXvkIljn3zDIyJQdGJ2/d/5Dt9ySdH3HXyy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
-	Mark Brown <broonie@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	kernel test robot <lkp@intel.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 057/194] spi: sh-msiof: Enforce fixed DTDL for R-Car H3
+Subject: [PATCH 4.19 031/148] powerpc/44x: select I2C for CURRITUCK
 Date: Mon, 22 Jan 2024 15:56:27 -0800
-Message-ID: <20240122235721.645407043@linuxfoundation.org>
+Message-ID: <20240122235713.659858386@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit e5c7bcb499840551cfbe85c6df177ebc50432bf0 ]
+[ Upstream commit 4a74197b65e69c46fe6e53f7df2f4d6ce9ffe012 ]
 
-Documentation says only DTDL of 200 is allowed for this SoC.
+Fix build errors when CURRITUCK=y and I2C is not builtin (=m or is
+not set). Fixes these build errors:
 
-Fixes: 4286db8456f4 ("spi: sh-msiof: Add R-Car Gen 2 and 3 fallback bindings")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Link: https://msgid.link/r/20231212081239.14254-1-wsa+renesas@sang-engineering.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+powerpc-linux-ld: arch/powerpc/platforms/44x/ppc476.o: in function `avr_halt_system':
+ppc476.c:(.text+0x58): undefined reference to `i2c_smbus_write_byte_data'
+powerpc-linux-ld: arch/powerpc/platforms/44x/ppc476.o: in function `ppc47x_device_probe':
+ppc476.c:(.init.text+0x18): undefined reference to `i2c_register_driver'
+
+Fixes: 2a2c74b2efcb ("IBM Akebono: Add the Akebono platform")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: lore.kernel.org/r/202312010820.cmdwF5X9-lkp@intel.com
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231201055159.8371-1-rdunlap@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-sh-msiof.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ arch/powerpc/platforms/44x/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 8f134735291f..edb26b085706 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -32,12 +32,15 @@
- 
- #include <asm/unaligned.h>
- 
-+#define SH_MSIOF_FLAG_FIXED_DTDL_200	BIT(0)
-+
- struct sh_msiof_chipdata {
- 	u32 bits_per_word_mask;
- 	u16 tx_fifo_size;
- 	u16 rx_fifo_size;
- 	u16 ctlr_flags;
- 	u16 min_div_pow;
-+	u32 flags;
- };
- 
- struct sh_msiof_spi_priv {
-@@ -1072,6 +1075,16 @@ static const struct sh_msiof_chipdata rcar_gen3_data = {
- 	.min_div_pow = 1,
- };
- 
-+static const struct sh_msiof_chipdata rcar_r8a7795_data = {
-+	.bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16) |
-+			      SPI_BPW_MASK(24) | SPI_BPW_MASK(32),
-+	.tx_fifo_size = 64,
-+	.rx_fifo_size = 64,
-+	.ctlr_flags = SPI_CONTROLLER_MUST_TX,
-+	.min_div_pow = 1,
-+	.flags = SH_MSIOF_FLAG_FIXED_DTDL_200,
-+};
-+
- static const struct of_device_id sh_msiof_match[] = {
- 	{ .compatible = "renesas,sh-mobile-msiof", .data = &sh_data },
- 	{ .compatible = "renesas,msiof-r8a7743",   .data = &rcar_gen2_data },
-@@ -1082,6 +1095,7 @@ static const struct of_device_id sh_msiof_match[] = {
- 	{ .compatible = "renesas,msiof-r8a7793",   .data = &rcar_gen2_data },
- 	{ .compatible = "renesas,msiof-r8a7794",   .data = &rcar_gen2_data },
- 	{ .compatible = "renesas,rcar-gen2-msiof", .data = &rcar_gen2_data },
-+	{ .compatible = "renesas,msiof-r8a7795",   .data = &rcar_r8a7795_data },
- 	{ .compatible = "renesas,msiof-r8a7796",   .data = &rcar_gen3_data },
- 	{ .compatible = "renesas,rcar-gen3-msiof", .data = &rcar_gen3_data },
- 	{ .compatible = "renesas,sh-msiof",        .data = &sh_data }, /* Deprecated */
-@@ -1317,6 +1331,9 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
- 		return -ENXIO;
- 	}
- 
-+	if (chipdata->flags & SH_MSIOF_FLAG_FIXED_DTDL_200)
-+		info->dtdl = 200;
-+
- 	if (info->mode == MSIOF_SPI_SLAVE)
- 		ctlr = spi_alloc_slave(&pdev->dev,
- 				       sizeof(struct sh_msiof_spi_priv));
+diff --git a/arch/powerpc/platforms/44x/Kconfig b/arch/powerpc/platforms/44x/Kconfig
+index f024efd5a4c2..559577065af2 100644
+--- a/arch/powerpc/platforms/44x/Kconfig
++++ b/arch/powerpc/platforms/44x/Kconfig
+@@ -177,6 +177,7 @@ config ISS4xx
+ config CURRITUCK
+ 	bool "IBM Currituck (476fpe) Support"
+ 	depends on PPC_47x
++	select I2C
+ 	select SWIOTLB
+ 	select 476FPE
+ 	select PPC4xx_PCI_EXPRESS
 -- 
 2.43.0
 
