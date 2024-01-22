@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72E84837D75
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B61C838274
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CDCD2888BE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4603328A8BB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A21DC56B62;
-	Tue, 23 Jan 2024 00:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A1A5C5E8;
+	Tue, 23 Jan 2024 01:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXFmX2bc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZS8RQLbg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CD753E33;
-	Tue, 23 Jan 2024 00:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7406A5BAD4;
+	Tue, 23 Jan 2024 01:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969967; cv=none; b=FqHFBqAzv2lO12JvBcv9F6e0t4Ndu/rGbXahg/d+OjHAEvwEB7GrF5h40TSqDHsvhqZG9oOhF7O1oEDAGr+8AhmmH4Ao6hX8BT4sF/uNdC5VOfUmyk2eSPHiEKJWLZf0pn0TLhzTQQcqZ2zQV52yVi+K68wlapZe1Mm70QHQJCw=
+	t=1705974356; cv=none; b=IOLqYMGKZs+qunRoe5ychybIPhLmVMgmdylhC0fVeO7gk5M40spfs4TG0/uaa/6JH1cuo2+rfPyQeBLLTgn0uHNI6o37eCdPLDbTJIpifFORiD8V6VqqzdWXJ7fNHE8tFwQegHosVAYmRXnG6s8wNIXlDIRGC+AjH0jSiH0fzbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969967; c=relaxed/simple;
-	bh=6+WLQlMr9NCwfPqhqecbEWdngydCbA9gg8fj+HTtu7o=;
+	s=arc-20240116; t=1705974356; c=relaxed/simple;
+	bh=5wJqw6fsHvp4O9WelU3s/ixWebkH+5Q8cXzsNQzdElI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VuzekrcdVYy0MkMV6szk+dPTnAmsZVP3D8puclqnafh8Rv9mI+qLx9AMj+pf1s3JXdaT6ahGProJro9ktmye+JDUbvwpfKXVzp8kNNtMrp3i/2ThxsIbfJE/mdFcrnDrQtcnjVVzwvWxX3KmOPL41cbBf0q+zj5W96OkuJRzuGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXFmX2bc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B16BBC43390;
-	Tue, 23 Jan 2024 00:32:46 +0000 (UTC)
+	 MIME-Version; b=W1opSwAOhxd2tNEzR55ZCwt2qcD4XWL7eRERnMYHDJ3DLk8sK4K7nXfAXv6KTCXAVBVcssKsfqFs9V04cwCxvEZV+KMaxW929DAPyq2fGHRbEDhFA5yJvUNhZIdtEY3mKIhHO8GoZA3MCTRtpqDZ2XNBf8433xIJECDRGJ27QUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZS8RQLbg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B99C433F1;
+	Tue, 23 Jan 2024 01:45:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969967;
-	bh=6+WLQlMr9NCwfPqhqecbEWdngydCbA9gg8fj+HTtu7o=;
+	s=korg; t=1705974356;
+	bh=5wJqw6fsHvp4O9WelU3s/ixWebkH+5Q8cXzsNQzdElI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CXFmX2bcx4ittcDdWPR2tglgYOm2P1f1GwQaecJFhYQEvZzDpLeH85meIdrpuktEu
-	 fmSLQEiwHiUc53b2nVdR7hIdVfkmoZbf4EMwQcwVxzwcIydgGeaFvTqsFtrYqjYTX7
-	 i/+Ey+aWqWQxYuIgdpFj04UFuuAwP/VH41DXtMVs=
+	b=ZS8RQLbgid+o1X47aU/8il0Kzu0LhZ4zu+XhDruOWTJNlH1+5S3AE8cHZPb3wfu8L
+	 8KiIkyZ3wBmzheAfyzKwsfMqfxGlP5th/4O412LxmBQ02JjX4jGPSFXBT2aJq1bOOn
+	 3yRzqQ49ta3qMsjRFBJ3L5fXwQMDHfgE6txV32c4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 542/641] arm64: dts: qcom: qrb5165-rb5: use u16 for DP altmode svid
+Subject: [PATCH 5.15 190/374] ASoC: cs35l33: Fix GPIO name and drop legacy include
 Date: Mon, 22 Jan 2024 15:57:26 -0800
-Message-ID: <20240122235835.087874644@linuxfoundation.org>
+Message-ID: <20240122235751.222785292@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 70e6163d17dd501ef27680eeb80d78b2cf823c5e ]
+[ Upstream commit 50678d339d670a92658e5538ebee30447c88ccb3 ]
 
-Follow the bindings and use 16-bit value for AltMode SVID instead of
-using the full u32.
+This driver includes the legacy GPIO APIs <linux/gpio.h> and
+<linux/of_gpio.h> but does not use any symbols from any of
+them.
 
-Fixes: b3dea914127e ("arm64: dts: qcom: qrb5165-rb5: enable DP altmode")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20231204020303.2287338-4-dmitry.baryshkov@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Drop the includes.
+
+Further the driver is requesting "reset-gpios" rather than
+just "reset" from the GPIO framework. This is wrong because
+the gpiolib core will add "-gpios" before processing the
+request from e.g. device tree. Drop the suffix.
+
+The last problem means that the optional RESET GPIO has
+never been properly retrieved and used even if it existed,
+but nobody noticed.
+
+Fixes: 3333cb7187b9 ("ASoC: cs35l33: Initial commit of the cs35l33 CODEC driver.")
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20231201-descriptors-sound-cirrus-v2-2-ee9f9d4655eb@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/qrb5165-rb5.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/cs35l33.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-index f9464caddacc..4501c00d124b 100644
---- a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-+++ b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
-@@ -1425,7 +1425,7 @@
+diff --git a/sound/soc/codecs/cs35l33.c b/sound/soc/codecs/cs35l33.c
+index 2a6f5e46d031..3ea311fda98f 100644
+--- a/sound/soc/codecs/cs35l33.c
++++ b/sound/soc/codecs/cs35l33.c
+@@ -22,13 +22,11 @@
+ #include <sound/soc-dapm.h>
+ #include <sound/initval.h>
+ #include <sound/tlv.h>
+-#include <linux/gpio.h>
+ #include <linux/gpio/consumer.h>
+ #include <sound/cs35l33.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/regulator/machine.h>
+-#include <linux/of_gpio.h>
+ #include <linux/of.h>
+ #include <linux/of_device.h>
+ #include <linux/of_irq.h>
+@@ -1169,7 +1167,7 @@ static int cs35l33_i2c_probe(struct i2c_client *i2c_client,
  
- 		altmodes {
- 			displayport {
--				svid = <0xff01>;
-+				svid = /bits/ 16 <0xff01>;
- 				vdo = <0x00001c46>;
- 			};
- 		};
+ 	/* We could issue !RST or skip it based on AMP topology */
+ 	cs35l33->reset_gpio = devm_gpiod_get_optional(&i2c_client->dev,
+-			"reset-gpios", GPIOD_OUT_HIGH);
++			"reset", GPIOD_OUT_HIGH);
+ 	if (IS_ERR(cs35l33->reset_gpio)) {
+ 		dev_err(&i2c_client->dev, "%s ERROR: Can't get reset GPIO\n",
+ 			__func__);
 -- 
 2.43.0
 
