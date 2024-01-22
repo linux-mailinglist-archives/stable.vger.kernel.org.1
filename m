@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF085837A37
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D23D88378A0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 671331F289AD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 113A31C273E7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B6DE12AAFB;
-	Tue, 23 Jan 2024 00:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F15B1420CC;
+	Tue, 23 Jan 2024 00:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7XMOpYX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ngg7t1Y1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B31F12A17F;
-	Tue, 23 Jan 2024 00:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1381420C8;
+	Tue, 23 Jan 2024 00:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968802; cv=none; b=hwkq6XdZyBNzL+y8IK19gJABRHuQqS/uWLIxI0rvMoyGSPmIn0klO2MpgTnd4mG4dug2DXyZGPLWZWNsBDtn34Yo4ZpruN+tn3PlUr+cE9yLxRxjyG/oA7+b5qItfrQpvSIWN6XSigsnpQ6CdXXjm27uzXx3/gbjCVlIKxzHpgA=
+	t=1705968164; cv=none; b=i1b35yS+WuqY0GBHewYLbcmN7KRxWytFF+T8wFP231/aDqmkg1qUenLg2hBrL9ITEjTjMZwl9o4UYqKTjnh9UXEXTq3Vrolc76B0KhU/lkFB7dA3y67T7qMkFUvN6cCpLIyPshqImekfnfTS9iEaLzF5ss9sPl/UZLb/Pl2TGUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968802; c=relaxed/simple;
-	bh=AcHUnqmGaxK7DqkbLUuPOkaxV5uz1WvIiuSUVuNl/28=;
+	s=arc-20240116; t=1705968164; c=relaxed/simple;
+	bh=dKilVSNHS4pNFNh43DQE7yPazYh+EedEITvdAtTr8CU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hIigIswNw3JdiUEb6V0Y1b7sJ5r5VqrNqAfJuhPPsU9l1NqQXBcm6PqWJHzsXlCgwefIepTiCP8g8GFBS+wKhWC8SRIGxN9eqfprk9W55VZ+3Qz9xSi4ImBneTAp94+tZsVXVwSmQDsVWLfZlBTuBMc0r/6Mo+3Ru7qfHKuyQMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7XMOpYX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E15C433F1;
-	Tue, 23 Jan 2024 00:13:21 +0000 (UTC)
+	 MIME-Version; b=ODyr41XX8pZsEi1kdvXRCqGkrU/YhFJjxMGa4VEUI9UcsqRq6SwDHkzp/xYoOuUP+Tu/wSrAbxjjRPmxXIEssFF/fmWj/tzkAeJJolIYD8bXHAmQoPYkcP9C+sZxA36MGKAfELci8i1YmVazu740LXY+No2NslGdUWEYgihE+Gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ngg7t1Y1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 190CEC433C7;
+	Tue, 23 Jan 2024 00:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968802;
-	bh=AcHUnqmGaxK7DqkbLUuPOkaxV5uz1WvIiuSUVuNl/28=;
+	s=korg; t=1705968163;
+	bh=dKilVSNHS4pNFNh43DQE7yPazYh+EedEITvdAtTr8CU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b7XMOpYXefR32weX6fUomDfP56bMPc1P26+D3qmdYlUBeB/kgVfx7sUc9u6HBReVk
-	 0vmaOoFoHN5NoT+HIRuuCUGb1nUlVEjysQP1aBbf8IO/u+nvvBs92cHwkEh52IaYRJ
-	 CyYhi4M+qMzGOrjNjuEV/9DfcxZxc4LAJ1H1cTlA=
+	b=Ngg7t1Y1yQXxcW6N7rJucrnyRO17Zd8hUMeyy9sjlmmrg1Zk5YwjWiDNCb/roMigP
+	 G92/TKqAsmBgl3ssD6KKQL2JbOgg6YDhyB2lcu0FQrYWVdzKqW+Qt2m14yG3j9eX0L
+	 AgFaLwnnrhLmiUEdxT9FfpJuZC3Fl3UVVJ117Z44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 055/194] netlabel: remove unused parameter in netlbl_netlink_auditinfo()
+Subject: [PATCH 4.19 029/148] powerpc: add crtsavres.o to always-y instead of extra-y
 Date: Mon, 22 Jan 2024 15:56:25 -0800
-Message-ID: <20240122235721.564982617@linuxfoundation.org>
+Message-ID: <20240122235713.589766363@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,180 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit f7e0318a314f9271b0f0cdd4bfdc691976976d8c ]
+[ Upstream commit 1b1e38002648819c04773647d5242990e2824264 ]
 
-loginuid/sessionid/secid have been read from 'current' instead of struct
-netlink_skb_parms, the parameter 'skb' seems no longer needed.
+crtsavres.o is linked to modules. However, as explained in commit
+d0e628cd817f ("kbuild: doc: clarify the difference between extra-y
+and always-y"), 'make modules' does not build extra-y.
 
-Fixes: c53fa1ed92cd ("netlink: kill loginuid/sessionid/sid members from struct netlink_skb_parms")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: ec4e9d630a64 ("calipso: fix memory leak in netlbl_calipso_add_pass()")
+For example, the following command fails:
+
+  $ make ARCH=powerpc LLVM=1 KBUILD_MODPOST_WARN=1 mrproper ps3_defconfig modules
+    [snip]
+    LD [M]  arch/powerpc/platforms/cell/spufs/spufs.ko
+  ld.lld: error: cannot open arch/powerpc/lib/crtsavres.o: No such file or directory
+  make[3]: *** [scripts/Makefile.modfinal:56: arch/powerpc/platforms/cell/spufs/spufs.ko] Error 1
+  make[2]: *** [Makefile:1844: modules] Error 2
+  make[1]: *** [/home/masahiro/workspace/linux-kbuild/Makefile:350: __build_one_by_one] Error 2
+  make: *** [Makefile:234: __sub-make] Error 2
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Fixes: baa25b571a16 ("powerpc/64: Do not link crtsavres.o in vmlinux")
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231120232332.4100288-1-masahiroy@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlabel/netlabel_calipso.c   |  4 ++--
- net/netlabel/netlabel_cipso_v4.c  |  4 ++--
- net/netlabel/netlabel_mgmt.c      |  8 ++++----
- net/netlabel/netlabel_unlabeled.c | 10 +++++-----
- net/netlabel/netlabel_user.h      |  4 +---
- 5 files changed, 14 insertions(+), 16 deletions(-)
+ arch/powerpc/lib/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netlabel/netlabel_calipso.c b/net/netlabel/netlabel_calipso.c
-index 7068b4be4091..33502b1f07c0 100644
---- a/net/netlabel/netlabel_calipso.c
-+++ b/net/netlabel/netlabel_calipso.c
-@@ -105,7 +105,7 @@ static int netlbl_calipso_add(struct sk_buff *skb, struct genl_info *info)
- 	    !info->attrs[NLBL_CALIPSO_A_MTYPE])
- 		return -EINVAL;
+diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
+index 36f913084429..6f1e57182876 100644
+--- a/arch/powerpc/lib/Makefile
++++ b/arch/powerpc/lib/Makefile
+@@ -22,7 +22,7 @@ obj-$(CONFIG_PPC32)	+= div64.o copy_32.o crtsavres.o strlen_32.o
+ # so it is only needed for modules, and only for older linkers which
+ # do not support --save-restore-funcs
+ ifeq ($(call ld-ifversion, -lt, 225000000, y),y)
+-extra-$(CONFIG_PPC64)	+= crtsavres.o
++always-$(CONFIG_PPC64)	+= crtsavres.o
+ endif
  
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 	switch (nla_get_u32(info->attrs[NLBL_CALIPSO_A_MTYPE])) {
- 	case CALIPSO_MAP_PASS:
- 		ret_val = netlbl_calipso_add_pass(info, &audit_info);
-@@ -287,7 +287,7 @@ static int netlbl_calipso_remove(struct sk_buff *skb, struct genl_info *info)
- 	if (!info->attrs[NLBL_CALIPSO_A_DOI])
- 		return -EINVAL;
- 
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 	cb_arg.doi = nla_get_u32(info->attrs[NLBL_CALIPSO_A_DOI]);
- 	cb_arg.audit_info = &audit_info;
- 	ret_val = netlbl_domhsh_walk(&skip_bkt, &skip_chain,
-diff --git a/net/netlabel/netlabel_cipso_v4.c b/net/netlabel/netlabel_cipso_v4.c
-index 1778e4e8ce24..4197a9bcaa96 100644
---- a/net/netlabel/netlabel_cipso_v4.c
-+++ b/net/netlabel/netlabel_cipso_v4.c
-@@ -410,7 +410,7 @@ static int netlbl_cipsov4_add(struct sk_buff *skb, struct genl_info *info)
- 	    !info->attrs[NLBL_CIPSOV4_A_MTYPE])
- 		return -EINVAL;
- 
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 	switch (nla_get_u32(info->attrs[NLBL_CIPSOV4_A_MTYPE])) {
- 	case CIPSO_V4_MAP_TRANS:
- 		ret_val = netlbl_cipsov4_add_std(info, &audit_info);
-@@ -709,7 +709,7 @@ static int netlbl_cipsov4_remove(struct sk_buff *skb, struct genl_info *info)
- 	if (!info->attrs[NLBL_CIPSOV4_A_DOI])
- 		return -EINVAL;
- 
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 	cb_arg.doi = nla_get_u32(info->attrs[NLBL_CIPSOV4_A_DOI]);
- 	cb_arg.audit_info = &audit_info;
- 	ret_val = netlbl_domhsh_walk(&skip_bkt, &skip_chain,
-diff --git a/net/netlabel/netlabel_mgmt.c b/net/netlabel/netlabel_mgmt.c
-index a92ed37d0922..e2801210467f 100644
---- a/net/netlabel/netlabel_mgmt.c
-+++ b/net/netlabel/netlabel_mgmt.c
-@@ -435,7 +435,7 @@ static int netlbl_mgmt_add(struct sk_buff *skb, struct genl_info *info)
- 	     (info->attrs[NLBL_MGMT_A_IPV6MASK] != NULL)))
- 		return -EINVAL;
- 
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 
- 	return netlbl_mgmt_add_common(info, &audit_info);
- }
-@@ -458,7 +458,7 @@ static int netlbl_mgmt_remove(struct sk_buff *skb, struct genl_info *info)
- 	if (!info->attrs[NLBL_MGMT_A_DOMAIN])
- 		return -EINVAL;
- 
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 
- 	domain = nla_data(info->attrs[NLBL_MGMT_A_DOMAIN]);
- 	return netlbl_domhsh_remove(domain, AF_UNSPEC, &audit_info);
-@@ -558,7 +558,7 @@ static int netlbl_mgmt_adddef(struct sk_buff *skb, struct genl_info *info)
- 	     (info->attrs[NLBL_MGMT_A_IPV6MASK] != NULL)))
- 		return -EINVAL;
- 
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 
- 	return netlbl_mgmt_add_common(info, &audit_info);
- }
-@@ -577,7 +577,7 @@ static int netlbl_mgmt_removedef(struct sk_buff *skb, struct genl_info *info)
- {
- 	struct netlbl_audit audit_info;
- 
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 
- 	return netlbl_domhsh_remove_default(AF_UNSPEC, &audit_info);
- }
-diff --git a/net/netlabel/netlabel_unlabeled.c b/net/netlabel/netlabel_unlabeled.c
-index 7b62cdea6163..f4d9a5c796f8 100644
---- a/net/netlabel/netlabel_unlabeled.c
-+++ b/net/netlabel/netlabel_unlabeled.c
-@@ -813,7 +813,7 @@ static int netlbl_unlabel_accept(struct sk_buff *skb, struct genl_info *info)
- 	if (info->attrs[NLBL_UNLABEL_A_ACPTFLG]) {
- 		value = nla_get_u8(info->attrs[NLBL_UNLABEL_A_ACPTFLG]);
- 		if (value == 1 || value == 0) {
--			netlbl_netlink_auditinfo(skb, &audit_info);
-+			netlbl_netlink_auditinfo(&audit_info);
- 			netlbl_unlabel_acceptflg_set(value, &audit_info);
- 			return 0;
- 		}
-@@ -896,7 +896,7 @@ static int netlbl_unlabel_staticadd(struct sk_buff *skb,
- 	       !info->attrs[NLBL_UNLABEL_A_IPV6MASK])))
- 		return -EINVAL;
- 
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 
- 	ret_val = netlbl_unlabel_addrinfo_get(info, &addr, &mask, &addr_len);
- 	if (ret_val != 0)
-@@ -946,7 +946,7 @@ static int netlbl_unlabel_staticadddef(struct sk_buff *skb,
- 	       !info->attrs[NLBL_UNLABEL_A_IPV6MASK])))
- 		return -EINVAL;
- 
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 
- 	ret_val = netlbl_unlabel_addrinfo_get(info, &addr, &mask, &addr_len);
- 	if (ret_val != 0)
-@@ -993,7 +993,7 @@ static int netlbl_unlabel_staticremove(struct sk_buff *skb,
- 	       !info->attrs[NLBL_UNLABEL_A_IPV6MASK])))
- 		return -EINVAL;
- 
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 
- 	ret_val = netlbl_unlabel_addrinfo_get(info, &addr, &mask, &addr_len);
- 	if (ret_val != 0)
-@@ -1033,7 +1033,7 @@ static int netlbl_unlabel_staticremovedef(struct sk_buff *skb,
- 	       !info->attrs[NLBL_UNLABEL_A_IPV6MASK])))
- 		return -EINVAL;
- 
--	netlbl_netlink_auditinfo(skb, &audit_info);
-+	netlbl_netlink_auditinfo(&audit_info);
- 
- 	ret_val = netlbl_unlabel_addrinfo_get(info, &addr, &mask, &addr_len);
- 	if (ret_val != 0)
-diff --git a/net/netlabel/netlabel_user.h b/net/netlabel/netlabel_user.h
-index 3c67afce64f1..32d8f92c9a20 100644
---- a/net/netlabel/netlabel_user.h
-+++ b/net/netlabel/netlabel_user.h
-@@ -28,11 +28,9 @@
- 
- /**
-  * netlbl_netlink_auditinfo - Fetch the audit information from a NETLINK msg
-- * @skb: the packet
-  * @audit_info: NetLabel audit information
-  */
--static inline void netlbl_netlink_auditinfo(struct sk_buff *skb,
--					    struct netlbl_audit *audit_info)
-+static inline void netlbl_netlink_auditinfo(struct netlbl_audit *audit_info)
- {
- 	security_task_getsecid(current, &audit_info->secid);
- 	audit_info->loginuid = audit_get_loginuid(current);
+ obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
 -- 
 2.43.0
 
