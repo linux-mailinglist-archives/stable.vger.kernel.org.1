@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-14641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 630588381F9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BFD5837FDF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:55:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A6331F2196A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B02D1C268AC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685CA5646E;
-	Tue, 23 Jan 2024 01:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3F012BF28;
+	Tue, 23 Jan 2024 00:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rr40R0y/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wri16M7A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C5F57321;
-	Tue, 23 Jan 2024 01:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A246412BF17;
+	Tue, 23 Jan 2024 00:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974022; cv=none; b=YrbGGrnPQSS5CHPjHwFvEzbL049oGRxnFKYf174C2Uhyx+x9UpRbhukzGzQir0bsDfqgDouKaRLLyJZ0FWighD21Dm0Bz9rRkg2tOLSRduJT6UYGFV/Bu3stjLpF4/S4r8fE90rUgXLxT1Fs7zU1ozBM40q9jBhSkthuQVWy49A=
+	t=1705971427; cv=none; b=AuwccWxGzq4vS77QMoeEDx5WvjVIOm9ddmE4OCJfmVc/ZVH66egx0RQV4E41fKtGPK7cTWYQxArrlzrGdIHE8QyVD8byIiXwv7Qy2G78qe9WHTj4yJldkzZSYgJox7XS4klAuu9r49aw/VdiFJkC6D+BICd52dWZGNo5gCGZs6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974022; c=relaxed/simple;
-	bh=UiWEhw/hjN5dBOBBt7Ewx3HI4GCoTxGN3CqIu8RzwxQ=;
+	s=arc-20240116; t=1705971427; c=relaxed/simple;
+	bh=QsF8BXX3HOxnrYjT+cPGySH4j7S1YK7YNHBU5L4+XpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lxnQfaf5Ia42whjbJrgoZyXI5cAPmX+0Aa4TSSFViQ0T/fzVui6guJIilRErgYttvHcPA5NtBJVlql+Wv92NfdxxTKN53D3sPYjuGOZDkCbZuzDQYP94rZNHlwkPz1kwSy6xWk/DB978EGlKR0udn5X1tmWau7r+lDjTccUOf1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rr40R0y/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCD0C43390;
-	Tue, 23 Jan 2024 01:40:21 +0000 (UTC)
+	 MIME-Version; b=jcPpO9p9h4a7Czo6hCmH+n1zUwZJKS37rZHIUoRaje3hlEQ3HxNDn2lRUXe0rPxfKdYf5XTAuI8oRkZ1nkWt3+8DvzS8DvYv7Y93x2sckVqNeqeVp579yzJby2uPN1xgkF5RltKUbZMM+jqXJcf2py0HuWx80dpGeXilShNjypQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wri16M7A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16182C433F1;
+	Tue, 23 Jan 2024 00:57:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974021;
-	bh=UiWEhw/hjN5dBOBBt7Ewx3HI4GCoTxGN3CqIu8RzwxQ=;
+	s=korg; t=1705971427;
+	bh=QsF8BXX3HOxnrYjT+cPGySH4j7S1YK7YNHBU5L4+XpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rr40R0y/tYgpVjHx/727OSIRd5PPr0I0Od18H15p0EJwbM86rwyqjMqxvKfezqGgQ
-	 tz2aJzpU8NyVWDvo9n/eiycwjt37APmb0cED/FpY1gWUvkzJkkDH2f+2QfWpCDM7RY
-	 ETQxEtggw07/rlVw1c8s3ClrskRXYr0b0fOrLMZQ=
+	b=wri16M7AW8nc9s8RlBQDcaw24jt44tW7Z+Y06X01mCSJ3EbqcsjgO9R86HjHEa8nB
+	 3lf/05qS0DTyweqhc6nnh0Mr6rNEZ3jj747FL7v8QA5zaVSepGGoM9QXQM8hYMiptc
+	 4b5IEtzpk9d6PsR1IYmNvqQoXpZ6o5FejsfubxBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
 	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 129/374] ARM: dts: qcom: sdx65: correct SPMI node name
+Subject: [PATCH 6.1 217/417] clk: qcom: videocc-sm8150: Add missing PLL config property
 Date: Mon, 22 Jan 2024 15:56:25 -0800
-Message-ID: <20240122235749.132258136@linuxfoundation.org>
+Message-ID: <20240122235759.438781905@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-[ Upstream commit a900ad783f507cb396e402827052e70c0c565ae9 ]
+[ Upstream commit 71f130c9193f613d497f7245365ed05ffdb0a401 ]
 
-Node names should not have vendor prefixes:
+When the driver was ported upstream, PLL test_ctl_hi1 register value
+was omitted. Add it to ensure the PLLs are fully configured.
 
-  qcom-sdx65-mtp.dtb: qcom,spmi@c440000: $nodename:0: 'qcom,spmi@c440000' does not match '^spmi@.*
-
+Fixes: 5658e8cf1a8a ("clk: qcom: add video clock controller driver for SM8150")
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230924183103.49487-3-krzysztof.kozlowski@linaro.org
+Link: https://lore.kernel.org/r/20231201-videocc-8150-v3-3-56bec3a5e443@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom-sdx55.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/videocc-sm8150.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/qcom-sdx55.dtsi b/arch/arm/boot/dts/qcom-sdx55.dtsi
-index 9d62487f6c8f..73fa0ef6b69e 100644
---- a/arch/arm/boot/dts/qcom-sdx55.dtsi
-+++ b/arch/arm/boot/dts/qcom-sdx55.dtsi
-@@ -457,7 +457,7 @@ restart@c264000 {
- 			reg = <0x0c264000 0x1000>;
- 		};
- 
--		spmi_bus: qcom,spmi@c440000 {
-+		spmi_bus: spmi@c440000 {
- 			compatible = "qcom,spmi-pmic-arb";
- 			reg = <0x0c440000 0x0000d00>,
- 			      <0x0c600000 0x2000000>,
+diff --git a/drivers/clk/qcom/videocc-sm8150.c b/drivers/clk/qcom/videocc-sm8150.c
+index 6a5f89f53da8..52a9a453a143 100644
+--- a/drivers/clk/qcom/videocc-sm8150.c
++++ b/drivers/clk/qcom/videocc-sm8150.c
+@@ -33,6 +33,7 @@ static struct alpha_pll_config video_pll0_config = {
+ 	.config_ctl_val = 0x20485699,
+ 	.config_ctl_hi_val = 0x00002267,
+ 	.config_ctl_hi1_val = 0x00000024,
++	.test_ctl_hi1_val = 0x00000020,
+ 	.user_ctl_val = 0x00000000,
+ 	.user_ctl_hi_val = 0x00000805,
+ 	.user_ctl_hi1_val = 0x000000D0,
 -- 
 2.43.0
 
