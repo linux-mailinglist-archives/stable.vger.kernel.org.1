@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-13993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B70837F15
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D291838411
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C77211C283B4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45363297B05
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4CCE60878;
-	Tue, 23 Jan 2024 00:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C35667739;
+	Tue, 23 Jan 2024 02:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scbn4jaI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WaUt/hss"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7459A27456;
-	Tue, 23 Jan 2024 00:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 177066772E;
+	Tue, 23 Jan 2024 02:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970928; cv=none; b=S508pB0vWEwJm6bIBhmizhGPTqL/7+XKoJMhkhWghUfZ4EI1VPuRvj/Bntv6Qmg2Faa5Y7RfchJcMnnUmwvllWyzoX4DTmdoJ4Zi09M9Uggtk5ggfaXgpAHWvZTLJK1vX6O0I8NWdZNP9EETN9SIuawNKRfk7aJtQDOMV8dZN1g=
+	t=1705975294; cv=none; b=OEm2h+Eres2NqVKWpeP/7z3XYFsuj2CHbdNbNuQhY6DA1f4XCg4ZQEFz9L5t+KTy8OwPmuKDyzz7/2mSs3UqpChKLRxIbBmVznzPTl3hdWYnxlsgbXFknOXCf6QNmGZKW0OfX2WyVTFPugOwLRzWQ2xeLKbEy+TOag6xSRJX+uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970928; c=relaxed/simple;
-	bh=KXeJcaiJOLBgRQJHi7RoKURD2JLG6W1zp2iehEKoGgY=;
+	s=arc-20240116; t=1705975294; c=relaxed/simple;
+	bh=9z2DoBo3thwganzj2vViWnZCrTEmSTXdpq0UGHoWhC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q69qaAw79a3dmWW8IeolDtD6FoL+vwP/WqkqtijJvof8Gs+Zeb03nfs9Zz/byiEnpGAOR6rGvDzA/YiXMWFh8h5vn/Do9uatYBDJl77JA1ac3kqzBqcdJbI4oKLZwS5RDGh8rMGgAHGhrYYX6qdfnK5/o7ZTvHvfcUF7cCAs9hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scbn4jaI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06BE7C43390;
-	Tue, 23 Jan 2024 00:48:47 +0000 (UTC)
+	 MIME-Version; b=hZO5XGlAjFtFqTxQ2ahANt2t0kVPjI4nVmuPi3veU2XFAeknufUOrinICK0ISDVk3vB9loslWzywg7KlMcXPdsXhmzKJCxlvlXMJ5K1FTxtpPKF5uz2fJ2RwL8orC9zqpx61X74tFX4QLLuSOuZxxrLO4jqXNkyy2EEkFBgTnxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WaUt/hss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCBE0C433C7;
+	Tue, 23 Jan 2024 02:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970928;
-	bh=KXeJcaiJOLBgRQJHi7RoKURD2JLG6W1zp2iehEKoGgY=;
+	s=korg; t=1705975293;
+	bh=9z2DoBo3thwganzj2vViWnZCrTEmSTXdpq0UGHoWhC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=scbn4jaIhdz/oqZwRRSnVg6edEMWATpYaUHrxxoKAAYhORmTxsnUyBehSlv5zw6H4
-	 A/lmkA5ODulZOyNZP6JB7d2p8YyQ+uUWwl9uRE5Blwy+SDOo0mIVLfNPxU5TV0zeRm
-	 v24tZtoQv+3Led/LG5y4xPMjryA9r1xcZ6j7ywTw=
+	b=WaUt/hssLQMFsv9F9RxvG+u3GQGQtA4TsR7sdLWcsHNVNOcY/qgclR3t1o1aQvVw4
+	 xpr71Z8j+WXuMZ8Rcab0RA24OjoJv9CsmIIYqPNo1L6GzP40BkTiGzk9C5xKSBP44k
+	 IxWFgwQ9TyBimTdteK+6ubpgEVP1WiSBJOxBk2A8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Luciano Coelho <luciano.coelho@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Boris Brezillon <boris.brezillon@collabora.com>,
+	Steven Price <steven.price@arm.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 141/417] wifi: iwlwifi: mvm: set siso/mimo chains to 1 in FW SMPS request
+Subject: [PATCH 6.6 258/583] drm/panfrost: Ignore core_mask for poweroff and disable PWRTRANS irq
 Date: Mon, 22 Jan 2024 15:55:09 -0800
-Message-ID: <20240122235756.714962902@linuxfoundation.org>
+Message-ID: <20240122235819.899467845@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit b1a2e5c310e063560760806d2cc5d2233c596067 ]
+[ Upstream commit a4f5892914ca7709ea6d191f0edace93a5935966 ]
 
-The firmware changed their mind, don't set the chains to zero,
-instead set them to 1 as we normally would for connections to
-APs that don't use MIMO.
+Some SoCs may be equipped with a GPU containing two core groups
+and this is exactly the case of Samsung's Exynos 5422 featuring
+an ARM Mali-T628 MP6 GPU: the support for this GPU in Panfrost
+is partial, as this driver currently supports using only one
+core group and that's reflected on all parts of it, including
+the power on (and power off, previously to this patch) function.
 
-Fixes: 2a7ce54ccc23 ("iwlwifi: mvm: honour firmware SMPS requests")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20231219215605.7f031f1a127f.Idc816e0f604b07d22a9d5352bc23c445512fad14@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+The issue with this is that even though executing the soft reset
+operation should power off all cores unconditionally, on at least
+one platform we're seeing a crash that seems to be happening due
+to an interrupt firing which may be because we are calling power
+transition only on the first core group, leaving the second one
+unchanged, or because ISR execution was pending before entering
+the panfrost_gpu_power_off() function and executed after powering
+off the GPU cores, or all of the above.
+
+Finally, solve this by:
+ - Avoid to enable the power transition interrupt on reset; and
+ - Ignoring the core_mask and ask the GPU to poweroff both core groups
+
+Fixes: 22aa1a209018 ("drm/panfrost: Really power off GPU cores in panfrost_gpu_power_off()")
+Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
+Reviewed-by: Steven Price <steven.price@arm.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231204114215.54575-2-angelogioacchino.delregno@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c | 11 -----------
- 1 file changed, 11 deletions(-)
+ drivers/gpu/drm/panfrost/panfrost_gpu.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-index a3cefbc43e80..2c14188f34bb 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-@@ -99,17 +99,6 @@ static void iwl_mvm_phy_ctxt_set_rxchain(struct iwl_mvm *mvm,
- 		active_cnt = 2;
+diff --git a/drivers/gpu/drm/panfrost/panfrost_gpu.c b/drivers/gpu/drm/panfrost/panfrost_gpu.c
+index e20619169fe1..eca45b83e4e6 100644
+--- a/drivers/gpu/drm/panfrost/panfrost_gpu.c
++++ b/drivers/gpu/drm/panfrost/panfrost_gpu.c
+@@ -71,7 +71,12 @@ int panfrost_gpu_soft_reset(struct panfrost_device *pfdev)
  	}
  
--	/*
--	 * If the firmware requested it, then we know that it supports
--	 * getting zero for the values to indicate "use one, but pick
--	 * which one yourself", which means it can dynamically pick one
--	 * that e.g. has better RSSI.
--	 */
--	if (mvm->fw_static_smps_request && active_cnt == 1 && idle_cnt == 1) {
--		idle_cnt = 0;
--		active_cnt = 0;
--	}
--
- 	*rxchain_info = cpu_to_le32(iwl_mvm_get_valid_rx_ant(mvm) <<
- 					PHY_RX_CHAIN_VALID_POS);
- 	*rxchain_info |= cpu_to_le32(idle_cnt << PHY_RX_CHAIN_CNT_POS);
+ 	gpu_write(pfdev, GPU_INT_CLEAR, GPU_IRQ_MASK_ALL);
+-	gpu_write(pfdev, GPU_INT_MASK, GPU_IRQ_MASK_ALL);
++
++	/* Only enable the interrupts we care about */
++	gpu_write(pfdev, GPU_INT_MASK,
++		  GPU_IRQ_MASK_ERROR |
++		  GPU_IRQ_PERFCNT_SAMPLE_COMPLETED |
++		  GPU_IRQ_CLEAN_CACHES_COMPLETED);
+ 
+ 	return 0;
+ }
+@@ -377,11 +382,10 @@ void panfrost_gpu_power_on(struct panfrost_device *pfdev)
+ 
+ void panfrost_gpu_power_off(struct panfrost_device *pfdev)
+ {
+-	u64 core_mask = panfrost_get_core_mask(pfdev);
+ 	int ret;
+ 	u32 val;
+ 
+-	gpu_write(pfdev, SHADER_PWROFF_LO, pfdev->features.shader_present & core_mask);
++	gpu_write(pfdev, SHADER_PWROFF_LO, pfdev->features.shader_present);
+ 	ret = readl_relaxed_poll_timeout(pfdev->iomem + SHADER_PWRTRANS_LO,
+ 					 val, !val, 1, 1000);
+ 	if (ret)
+@@ -393,7 +397,7 @@ void panfrost_gpu_power_off(struct panfrost_device *pfdev)
+ 	if (ret)
+ 		dev_err(pfdev->dev, "tiler power transition timeout");
+ 
+-	gpu_write(pfdev, L2_PWROFF_LO, pfdev->features.l2_present & core_mask);
++	gpu_write(pfdev, L2_PWROFF_LO, pfdev->features.l2_present);
+ 	ret = readl_poll_timeout(pfdev->iomem + L2_PWRTRANS_LO,
+ 				 val, !val, 0, 1000);
+ 	if (ret)
 -- 
 2.43.0
 
