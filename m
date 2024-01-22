@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-15181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 218F983843C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B42578381C5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:12:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE40A298CC8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15AADB296DE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61FF66A333;
-	Tue, 23 Jan 2024 02:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4F82F2C;
+	Tue, 23 Jan 2024 01:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ij66JbXX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="We0weFmN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2205D6A03B;
-	Tue, 23 Jan 2024 02:02:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1909623D2;
+	Tue, 23 Jan 2024 01:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975337; cv=none; b=e4h+tNYYiLl0oAD7h1E42okICfzPsUIoPcKBJ1xya4iCFlOhVrKYXimkuBucRpe3m0/nriOlfLi7ddhLDiJyH5ilR0yeHIu2zpkfNFPg8nfMLMglpEL9HXl5GvCj5vpQRUM9NTreSF65sW5iA4D+YpVcWmzdsjKEmDXI2NcafgA=
+	t=1705972166; cv=none; b=CegKtwgIRJPz/VmugqFhoFkD7NIfox0svJdJPuxLuu7ywMLw7eYqQ9XcbccCRi4q+UanyTWcz2hE4r6EPKkD/O1qi0/EcTSyfLkA9OYYlpwHI3ORqWFVJ50j98rQj1Lxu9ROCasp+bqLMzCBpczgYO1Fh9Xl4iU2bE0WTEJC04U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975337; c=relaxed/simple;
-	bh=DH1R3A5mRFi3T6MFY6KR4UCynwpXjq1k3gzAKtsvk4w=;
+	s=arc-20240116; t=1705972166; c=relaxed/simple;
+	bh=wyCsG4iSq6Sc9Dt/IKXpIqnZVDkyRnfJrKW3vdK5qf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ICcI0yOHc4Q3lFY1P1SFNQ5WPh/br+143RKAEy5fNjQrMWOs35XdncyV1Id2OPjtO484iFG8oL6x5xbXHjgV5Q4QnnjR9rueDN6fRFHmYFsIEM9OQmaLbElFySGQpJxh3+Umimi6r2gcYQkhXbrPe0K+uExVwtYsb+Iie2V1SUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ij66JbXX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A16E0C43390;
-	Tue, 23 Jan 2024 02:02:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UNLinnt9sjFo9gGS8COBLiUlaU3qy7SYWWdPA1i/NlRLOMYU56RoKMIdEG/9G8HNhbTV8xanYXVGC7bo05BzT3HS53iDG4zimSw45dsu5lRxiXDrHORCNYfasSw86td65/+PI54xetoYUmjFDckRqulOPuc69r8vMO6DjXTbM8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=We0weFmN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA580C43390;
+	Tue, 23 Jan 2024 01:09:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975337;
-	bh=DH1R3A5mRFi3T6MFY6KR4UCynwpXjq1k3gzAKtsvk4w=;
+	s=korg; t=1705972165;
+	bh=wyCsG4iSq6Sc9Dt/IKXpIqnZVDkyRnfJrKW3vdK5qf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ij66JbXXTD7ejc6YOkzcWNV0yNRkPPQRuX1bWIaqoaAydWB0cNXfU9cQbwHi0/zHc
-	 mYkmN+dqPeZ6kGujrWg/2XpWyYveJqffUDRgtllBjvKbf9WiOzNhDQut3WmHRk+UuK
-	 hTslHhzWi1PKIzyqlISaOyZ21BJjNJ516ltUCwNc=
+	b=We0weFmNwgkj6rBBmpmLQf5VbIl7l47VmOz67E77tsvoaDQDw1nXaYLaYPFjCyj1b
+	 FBLJvysZIRHjwzfdt7YXHCVSyT5neeSg7/gm3c+PPc/x39c3HpF5l7gDPkRtnl2gWj
+	 xkoLua1jxbmzJcLNRjs7lTR6/19S6RdHRy+l4m9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Eric Paris <eparis@parisplace.org>,
+	Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 298/583] drivers: clk: zynqmp: calculate closest mux rate
+Subject: [PATCH 5.15 093/374] selinux: Fix error priority for bind with AF_UNSPEC on PF_INET6 socket
 Date: Mon, 22 Jan 2024 15:55:49 -0800
-Message-ID: <20240122235821.138469117@linuxfoundation.org>
+Message-ID: <20240122235747.849843148@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +64,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit b782921ddd7f84f524723090377903f399fdbbcb ]
+[ Upstream commit bbf5a1d0e5d0fb3bdf90205aa872636122692a50 ]
 
-Currently zynqmp clock driver is not calculating closest mux rate and
-because of that Linux is not setting proper frequency for CPU and
-not able to set given frequency for dynamic frequency scaling.
+The IPv6 network stack first checks the sockaddr length (-EINVAL error)
+before checking the family (-EAFNOSUPPORT error).
 
-E.g., In current logic initial acpu clock parent and frequency as below
-apll1                  0    0    0  2199999978    0     0  50000      Y
-    acpu0_mux          0    0    0  2199999978    0     0  50000      Y
-        acpu0_idiv1    0    0    0  2199999978    0     0  50000      Y
-            acpu0      0    0    0  2199999978    0     0  50000      Y
+This was discovered thanks to commit a549d055a22e ("selftests/landlock:
+Add network tests").
 
-After changing acpu frequency to 549999994 Hz using CPU freq scaling its
-selecting incorrect parent which is not closest frequency.
-rpll_to_xpd            0    0    0  1599999984    0     0  50000      Y
-    acpu0_mux          0    0    0  1599999984    0     0  50000      Y
-        acpu0_div1     0    0    0   533333328    0     0  50000      Y
-            acpu0      0    0    0   533333328    0     0  50000      Y
-
-Parent should remain same since 549999994 = 2199999978 / 4.
-
-So use __clk_mux_determine_rate_closest() generic function to calculate
-closest rate for mux clock. After this change its selecting correct
-parent and correct clock rate.
-apll1                  0    0    0  2199999978    0     0  50000      Y
-    acpu0_mux          0    0    0  2199999978    0     0  50000      Y
-        acpu0_div1     0    0    0   549999995    0     0  50000      Y
-            acpu0      0    0    0   549999995    0     0  50000      Y
-
-Fixes: 3fde0e16d016 ("drivers: clk: Add ZynqMP clock driver")
-Signed-off-by: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
-Link: https://lore.kernel.org/r/20231129112916.23125-2-jay.buddhabhatti@amd.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Cc: Eric Paris <eparis@parisplace.org>
+Cc: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+Cc: Paul Moore <paul@paul-moore.com>
+Cc: Stephen Smalley <stephen.smalley.work@gmail.com>
+Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Closes: https://lore.kernel.org/r/0584f91c-537c-4188-9e4f-04f192565667@collabora.com
+Fixes: 0f8db8cc73df ("selinux: add AF_UNSPEC and INADDR_ANY checks to selinux_socket_bind()")
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/zynqmp/clk-mux-zynqmp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/selinux/hooks.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/clk/zynqmp/clk-mux-zynqmp.c b/drivers/clk/zynqmp/clk-mux-zynqmp.c
-index 60359333f26d..9b5d3050b742 100644
---- a/drivers/clk/zynqmp/clk-mux-zynqmp.c
-+++ b/drivers/clk/zynqmp/clk-mux-zynqmp.c
-@@ -89,7 +89,7 @@ static int zynqmp_clk_mux_set_parent(struct clk_hw *hw, u8 index)
- static const struct clk_ops zynqmp_clk_mux_ops = {
- 	.get_parent = zynqmp_clk_mux_get_parent,
- 	.set_parent = zynqmp_clk_mux_set_parent,
--	.determine_rate = __clk_mux_determine_rate,
-+	.determine_rate = __clk_mux_determine_rate_closest,
- };
- 
- static const struct clk_ops zynqmp_clk_mux_ro_ops = {
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 9ce029b2f226..ec839716dbac 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -4774,6 +4774,13 @@ static int selinux_socket_bind(struct socket *sock, struct sockaddr *address, in
+ 				return -EINVAL;
+ 			addr4 = (struct sockaddr_in *)address;
+ 			if (family_sa == AF_UNSPEC) {
++				if (family == PF_INET6) {
++					/* Length check from inet6_bind_sk() */
++					if (addrlen < SIN6_LEN_RFC2133)
++						return -EINVAL;
++					/* Family check from __inet6_bind() */
++					goto err_af;
++				}
+ 				/* see __inet_bind(), we only want to allow
+ 				 * AF_UNSPEC if the address is INADDR_ANY
+ 				 */
 -- 
 2.43.0
 
