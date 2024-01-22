@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32446837D59
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BDA18382C6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:23:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B79231F29738
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A334B22076
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C191E54FBF;
-	Tue, 23 Jan 2024 00:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 999952C1BC;
+	Tue, 23 Jan 2024 01:41:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="po+xBV+J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXI/T1g3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9F852F7C;
-	Tue, 23 Jan 2024 00:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5980D2B9B7;
+	Tue, 23 Jan 2024 01:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969900; cv=none; b=iOljd2adu3qtgPvbjQrU1abCgDi+tI2Om5uSX3re4kTxwR0dMqPM4wx6mjoi4kyVyxcwwc6R05MfWhjzFUaqwYhQ0EXkwzuJYN1MMpOeltuFV3O7hDLHyRMG05CP6jI/xNdra2jWs7O4quUSwGIiMjYwZ8s/iqTEF3euOHDjntM=
+	t=1705974100; cv=none; b=Qquhdu4XEsIqtSEoja4mkmSsTNfhFH/96cwV81v8CqNcTLxKpMS9M1JcYlYfz0XHcQovH+LL8aBqKLogXyE2OmGwSD2Cs5MIaRwaPGqfQU+210SkqGgp4dYCBdRWuyHK2XGf5y0Izw7Kkz2dQVvgpaapFH4USQUhYlKO6D/T4dI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969900; c=relaxed/simple;
-	bh=ZjPVYU/dP0ox3s5ayrlljiVplTUowQjxJ9WStqwfTcU=;
+	s=arc-20240116; t=1705974100; c=relaxed/simple;
+	bh=siULYyd6sn4kxKk5ZuXEEX+KWBkpR5pIWDSQD7DWMNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=skjpguGLPJg9AtgbbzoFyZy3Z1TzZ2sdkUOGTiJEWX+Me9Ta9+Fp2cRlR6aev16XOtbJGmNReX4TW7n1TK/D/K/7CpyZtpYTp2Lq4RGQV0jhjNsmR3wi31iABv7Ks8z172BK/HObn5r7pi6a53pDLUUB0TRHjdYd1muAr0tjZSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=po+xBV+J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D1AC433F1;
-	Tue, 23 Jan 2024 00:31:39 +0000 (UTC)
+	 MIME-Version; b=Lorg1WBW2EwVYlIHqC2I6foXlVCO+tFpjLtONTAPEkJMHF1tm8tVub956ucOgYQrcfR4hsxV04eGpffPYoTQdmoJahLOc8W5pPmdmwKyb1jwktSxutbJwkhRs5GWYdskjY6zi2Hzmh8Xhlc26F2NA6zDBNQk5Alnza+rsjrPt18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXI/T1g3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACB08C433C7;
+	Tue, 23 Jan 2024 01:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969900;
-	bh=ZjPVYU/dP0ox3s5ayrlljiVplTUowQjxJ9WStqwfTcU=;
+	s=korg; t=1705974099;
+	bh=siULYyd6sn4kxKk5ZuXEEX+KWBkpR5pIWDSQD7DWMNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=po+xBV+JEygz3nYLdPjZwuDD+MQI/U/gLleZuyXD6IGIPHAvrcj2lvYw1Z/7LeDP5
-	 wgPnF2G2BLxf0glym/avS2evOhjdMK+UJ9z/rWnyuPmGGw0tJWef6kDOIE+dTlf3L1
-	 853Sf3mw8NqApZJvXVwt9/TpDq6zZOwhx8P1jcOg=
+	b=VXI/T1g3JuFPnLcnA4wcBS0X57f3+JP9U22olWcQP4CVwjPPPXMYqDDnYjMIIU+lu
+	 +ZKH1noVlRExuEPYdm3X4wXaNr7UF3kmn+jS6vjD2Bt1nTvrCqWMgTYjk2Mi/HX3aP
+	 cetnym2xq0JnTIiuy4WQo+uTM1zVDS+vFxZ3x1Dg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brett Creeley <brett.creeley@amd.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Luciano Coelho <luciano.coelho@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 515/641] vfio/pds: Fix calculations in pds_vfio_dirty_sync
+Subject: [PATCH 5.15 163/374] wifi: iwlwifi: mvm: set siso/mimo chains to 1 in FW SMPS request
 Date: Mon, 22 Jan 2024 15:56:59 -0800
-Message-ID: <20240122235834.201823743@linuxfoundation.org>
+Message-ID: <20240122235750.276192954@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brett Creeley <brett.creeley@amd.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 4004497cec3093d7b0087bc70709b45969fa07b6 ]
+[ Upstream commit b1a2e5c310e063560760806d2cc5d2233c596067 ]
 
-The incorrect check is being done for comparing the
-iova/length being requested to sync. This can cause
-the dirty sync operation to fail. Fix this by making
-sure the iova offset added to the requested sync
-length doesn't exceed the region_size.
+The firmware changed their mind, don't set the chains to zero,
+instead set them to 1 as we normally would for connections to
+APs that don't use MIMO.
 
-Also, the region_start is assumed to always be at 0.
-This can cause dirty tracking to fail because the
-device/driver bitmap offset always starts at 0,
-however, the region_start/iova may not. Fix this by
-determining the iova offset from region_start to
-determine the bitmap offset.
-
-Fixes: f232836a9152 ("vfio/pds: Add support for dirty page tracking")
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Link: https://lore.kernel.org/r/20231117001207.2793-2-brett.creeley@amd.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes: 2a7ce54ccc23 ("iwlwifi: mvm: honour firmware SMPS requests")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20231219215605.7f031f1a127f.Idc816e0f604b07d22a9d5352bc23c445512fad14@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/pci/pds/dirty.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-diff --git a/drivers/vfio/pci/pds/dirty.c b/drivers/vfio/pci/pds/dirty.c
-index c937aa6f3954..27607d7b9030 100644
---- a/drivers/vfio/pci/pds/dirty.c
-+++ b/drivers/vfio/pci/pds/dirty.c
-@@ -478,8 +478,7 @@ static int pds_vfio_dirty_sync(struct pds_vfio_pci_device *pds_vfio,
- 		pds_vfio->vf_id, iova, length, pds_vfio->dirty.region_page_size,
- 		pages, bitmap_size);
- 
--	if (!length || ((dirty->region_start + iova + length) >
--			(dirty->region_start + dirty->region_size))) {
-+	if (!length || ((iova - dirty->region_start + length) > dirty->region_size)) {
- 		dev_err(dev, "Invalid iova 0x%lx and/or length 0x%lx to sync\n",
- 			iova, length);
- 		return -EINVAL;
-@@ -496,7 +495,8 @@ static int pds_vfio_dirty_sync(struct pds_vfio_pci_device *pds_vfio,
- 		return -EINVAL;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
+index 6d82725cb87d..32ed8227d985 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
+@@ -99,17 +99,6 @@ static void iwl_mvm_phy_ctxt_set_rxchain(struct iwl_mvm *mvm,
+ 		active_cnt = 2;
  	}
  
--	bmp_offset = DIV_ROUND_UP(iova / dirty->region_page_size, sizeof(u64));
-+	bmp_offset = DIV_ROUND_UP((iova - dirty->region_start) /
-+				  dirty->region_page_size, sizeof(u64));
- 
- 	dev_dbg(dev,
- 		"Syncing dirty bitmap, iova 0x%lx length 0x%lx, bmp_offset %llu bmp_bytes %llu\n",
+-	/*
+-	 * If the firmware requested it, then we know that it supports
+-	 * getting zero for the values to indicate "use one, but pick
+-	 * which one yourself", which means it can dynamically pick one
+-	 * that e.g. has better RSSI.
+-	 */
+-	if (mvm->fw_static_smps_request && active_cnt == 1 && idle_cnt == 1) {
+-		idle_cnt = 0;
+-		active_cnt = 0;
+-	}
+-
+ 	*rxchain_info = cpu_to_le32(iwl_mvm_get_valid_rx_ant(mvm) <<
+ 					PHY_RX_CHAIN_VALID_POS);
+ 	*rxchain_info |= cpu_to_le32(idle_cnt << PHY_RX_CHAIN_CNT_POS);
 -- 
 2.43.0
 
