@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-13634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB95D837D32
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83F5D83845A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 754EC291AD3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2229C1F2923B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E8A21340;
-	Tue, 23 Jan 2024 00:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B436C6BB58;
+	Tue, 23 Jan 2024 02:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMoWvknT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzPIpQBT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F25C2137F;
-	Tue, 23 Jan 2024 00:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F016BB55;
+	Tue, 23 Jan 2024 02:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969833; cv=none; b=XwKt27W8pI5gwqMdBZXQAgchvoP7wL94u0slf96mEyAv1UE4oGYDwzk6f74GnkLo0LEBtfl5zsuL6UkjhwE92CNwhNPUA+1fsX+z+sXnknnEe/qm1bX1kSCqRF9D70lUrkUJLlJEm570az6n2NPNSvP31RprBiMB0VLGMWpTtrA=
+	t=1705975369; cv=none; b=JNqMbuVP+vLuM+NW8+K4t/UNYFS89N1z7txEBqdN7ZM5U/DoR6FKpOjCJMVzLA0O9rKd17olgTnD511xpCojAXBJ9fTOk1M3eWbSjJiw6XH269BVt0bga0rCsx2JGVQrIx8/K7b1fIqIYYoTvXa8O3bnj0nu2z18K6emWeDBTo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969833; c=relaxed/simple;
-	bh=KhMsKIkPk0UvXgfwsFtJt1XeTjIJ6T2+6m9e4zVbY+w=;
+	s=arc-20240116; t=1705975369; c=relaxed/simple;
+	bh=GmBJ25rYbLqTQ0R9pxnaOzhYh2rToaj1S/yid9jQ1pc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VA+TeUv/ssPjjpvXjZXFctlLL/CPfUJZpPxHInPkRK9sNSfj5iyE4Yh8Bp1M0/4/HeUlbkBth6WqpThNWtScPHtkNtGBEeE1l1uPfAgnwdfR+rCiWRh6fQCD9bMW+NkjSmheo3+3M6Y4naO3c5MMJNNdgEcRZzDjhPLp7pU9+ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMoWvknT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A96C433F1;
-	Tue, 23 Jan 2024 00:30:32 +0000 (UTC)
+	 MIME-Version; b=YfYhwj+uJOIvoVBapWerad5reTZvkrzTbQo+tSivK077L9wFVI8+VG43sl6PlM64X5DqMueqlA30rOB1/V0WQMfLClH4PuZT5gqbaBG9Y2OHQ7WebYeQglvpfEa4uYQ/ZHPOp7L/4f5JozMPgBQeNLwM2SmaexMO1W/Ntz6FOC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzPIpQBT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36E24C43390;
+	Tue, 23 Jan 2024 02:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969833;
-	bh=KhMsKIkPk0UvXgfwsFtJt1XeTjIJ6T2+6m9e4zVbY+w=;
+	s=korg; t=1705975369;
+	bh=GmBJ25rYbLqTQ0R9pxnaOzhYh2rToaj1S/yid9jQ1pc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OMoWvknTLmjKU7UdvqaHi+hgSFfK+4jK2d8yXfThPJFAIOFXuqbhEVrGHilEM3rJ+
-	 6KPTYHBaI/qXuYSBk6Ft+fkWZcaJiCF2EDt9Ih1Ynw5xFNminC8OBfy3hxtfJ+sUEZ
-	 GCqmp/TLMZFEUt9hlrHDTckvAWSvki7voi7AgfcE=
+	b=lzPIpQBTewTxKfyfUKbrZlm6TKEX5poRBi3gjgl8rSLXZL7Z8HmFzwNH7Yx8foM+r
+	 +q5Afeojd6jegBh6MlwafoAbrYtVCwe7B2kdrOKUdpiq0sXO2Rr0r7JxCrHgOxXbsE
+	 nqgtcE+e0v0eyNOiAuTcvZxoe08kgfWm22CblEZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Murphy <murphyt7@tcd.ie>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Saravana Kannan <saravanak@google.com>,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.7 453/641] iommu/dma: Trace bounce buffer usage when mapping buffers
+	Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
+	Emil Velikov <emil.velikov@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 306/583] ASoC: amd: vangogh: Drop conflicting ACPI-based probing
 Date: Mon, 22 Jan 2024 15:55:57 -0800
-Message-ID: <20240122235832.193371478@linuxfoundation.org>
+Message-ID: <20240122235821.390099116@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Isaac J. Manjarres <isaacmanjarres@google.com>
+From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
 
-commit a63c357b9fd56ad5fe64616f5b22835252c6a76a upstream.
+[ Upstream commit ddd1ee12a8fb6e4d6f86eddeba64c135eee56623 ]
 
-When commit 82612d66d51d ("iommu: Allow the dma-iommu api to
-use bounce buffers") was introduced, it did not add the logic
-for tracing the bounce buffer usage from iommu_dma_map_page().
+The Vangogh machine driver variant based on the MAX98388 amplifier, as
+found on Valve's Steam Deck OLED, relies on probing via an ACPI match
+table.  This worked fine until commit 197b1f7f0df1 ("ASoC: amd: Add new
+dmi entries to config entry") enabled SOF support for the target machine
+(i.e. Galileo product), causing the sound card to enter the deferred
+probe state indefinitely:
 
-All of the users of swiotlb_tbl_map_single() trace their bounce
-buffer usage, except iommu_dma_map_page(). This makes it difficult
-to track SWIOTLB usage from that function. Thus, trace bounce buffer
-usage from iommu_dma_map_page().
+$ cat /sys/kernel/debug/devices_deferred
+AMDI8821:00	acp5x_mach: Register card (acp5x-max98388) failed
 
-Fixes: 82612d66d51d ("iommu: Allow the dma-iommu api to use bounce buffers")
-Cc: stable@vger.kernel.org # v5.15+
-Cc: Tom Murphy <murphyt7@tcd.ie>
-Cc: Lu Baolu <baolu.lu@linux.intel.com>
-Cc: Saravana Kannan <saravanak@google.com>
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-Link: https://lore.kernel.org/r/20231208234141.2356157-1-isaacmanjarres@google.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The issue is related to commit e89f45edb747 ("ASoC: amd: vangogh: Add
+check for acp config flags in vangogh platform"), which tries to
+mitigate potential conflicts between SOF and generic ACP Vangogh
+drivers, due to sharing the PCI device IDs.
+
+However, the solution is effective only if the machine driver is
+directly probed by pci-acp5x through platform_device_register_full().
+
+Hence, remove the conflicting ACPI based probing and rely exclusively on
+DMI quirks for sound card setup.
+
+Fixes: dba22efd0d17 ("ASoC: amd: vangogh: Add support for NAU8821/MAX98388 variant")
+Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+Reviewed-by: Emil Velikov <emil.velikov@collabora.com>
+Link: https://msgid.link/r/20231209203229.878730-2-cristian.ciocaltea@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/dma-iommu.c |    3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/amd/vangogh/acp5x-mach.c | 35 +++++++++++-------------------
+ 1 file changed, 13 insertions(+), 22 deletions(-)
 
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -29,6 +29,7 @@
- #include <linux/spinlock.h>
- #include <linux/swiotlb.h>
- #include <linux/vmalloc.h>
-+#include <trace/events/swiotlb.h>
+diff --git a/sound/soc/amd/vangogh/acp5x-mach.c b/sound/soc/amd/vangogh/acp5x-mach.c
+index eda464545866..2ccc95d57783 100644
+--- a/sound/soc/amd/vangogh/acp5x-mach.c
++++ b/sound/soc/amd/vangogh/acp5x-mach.c
+@@ -439,7 +439,15 @@ static const struct dmi_system_id acp5x_vg_quirk_table[] = {
+ 		.matches = {
+ 			DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "Valve"),
+ 			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Jupiter"),
+-		}
++		},
++		.driver_data = (void *)&acp5x_8821_35l41_card,
++	},
++	{
++		.matches = {
++			DMI_EXACT_MATCH(DMI_BOARD_VENDOR, "Valve"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Galileo"),
++		},
++		.driver_data = (void *)&acp5x_8821_98388_card,
+ 	},
+ 	{}
+ };
+@@ -452,25 +460,15 @@ static int acp5x_probe(struct platform_device *pdev)
+ 	struct snd_soc_card *card;
+ 	int ret;
  
- #include "dma-iommu.h"
+-	card = (struct snd_soc_card *)device_get_match_data(dev);
+-	if (!card) {
+-		/*
+-		 * This is normally the result of directly probing the driver
+-		 * in pci-acp5x through platform_device_register_full(), which
+-		 * is necessary for the CS35L41 variant, as it doesn't support
+-		 * ACPI probing and relies on DMI quirks.
+-		 */
+-		dmi_id = dmi_first_match(acp5x_vg_quirk_table);
+-		if (!dmi_id)
+-			return -ENODEV;
+-
+-		card = &acp5x_8821_35l41_card;
+-	}
++	dmi_id = dmi_first_match(acp5x_vg_quirk_table);
++	if (!dmi_id || !dmi_id->driver_data)
++		return -ENODEV;
  
-@@ -1156,6 +1157,8 @@ static dma_addr_t iommu_dma_map_page(str
- 			return DMA_MAPPING_ERROR;
- 		}
+ 	machine = devm_kzalloc(dev, sizeof(*machine), GFP_KERNEL);
+ 	if (!machine)
+ 		return -ENOMEM;
  
-+		trace_swiotlb_bounced(dev, phys, size);
-+
- 		aligned_size = iova_align(iovad, size);
- 		phys = swiotlb_tbl_map_single(dev, phys, size, aligned_size,
- 					      iova_mask(iovad), dir, attrs);
++	card = dmi_id->driver_data;
+ 	card->dev = dev;
+ 	platform_set_drvdata(pdev, card);
+ 	snd_soc_card_set_drvdata(card, machine);
+@@ -482,17 +480,10 @@ static int acp5x_probe(struct platform_device *pdev)
+ 	return 0;
+ }
+ 
+-static const struct acpi_device_id acp5x_acpi_match[] = {
+-	{ "AMDI8821", (kernel_ulong_t)&acp5x_8821_98388_card },
+-	{},
+-};
+-MODULE_DEVICE_TABLE(acpi, acp5x_acpi_match);
+-
+ static struct platform_driver acp5x_mach_driver = {
+ 	.driver = {
+ 		.name = DRV_NAME,
+ 		.pm = &snd_soc_pm_ops,
+-		.acpi_match_table = acp5x_acpi_match,
+ 	},
+ 	.probe = acp5x_probe,
+ };
+-- 
+2.43.0
+
 
 
 
