@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-12877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B50358378CE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D818D837A35
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E81E71C22728
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:25:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17B451C273D8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E0D1EEE4;
-	Tue, 23 Jan 2024 00:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95AB412AAF4;
+	Tue, 23 Jan 2024 00:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpMjh7xg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OVuluGDC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82648EEB9;
-	Tue, 23 Jan 2024 00:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5649D12AAF1;
+	Tue, 23 Jan 2024 00:13:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968256; cv=none; b=VrYUtymS2lzZteZiz8n3rTqhHM+NQ0AxKZe5QpfcmU+4XUiLaYqzBPUfy1EPx8Uh894rU8Ac4+DL+c4Q2Wmnthxe9Sbflmn8zvzb/GUuqtJO4BkuOmxi/6ZB99cnl2tIqr5C8IYbCpvl+lAbtRFyjdjTpDAMFnHDPo6s1x4Eg+M=
+	t=1705968797; cv=none; b=F48tbTgIxOaPDSOsTlqAZIE7qNb1SX1gYBfQB+z5pdRZpHVmH4XqqbXuEo+L9oF6Z6MHTqZwXJxcbkwjR0hh1DeFAK99T0/imqN7gKxZobCor99Rmf2AzNcPvB/rH3WOkI029a8wAVZUDzTuv2+h7X3fhrea47QuJRUh/G+pINk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968256; c=relaxed/simple;
-	bh=BpLuFv1sUtutd208Cbadf/SRTLtJKF5RKobj052ohtg=;
+	s=arc-20240116; t=1705968797; c=relaxed/simple;
+	bh=j3iLJEQ2pSSqLqkr8ntM5eyhZ2TPpva4bYaxSp0g3Sc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SQT5KWIMU77KeogmFzIjcRHIpxpymXeoPf+VwTYMJQFcRn8rz35vfIMqtoJJRyA8yuskq0Zt2VWaAb40jHKfnFys4gwPxaLEBOhnsxBRClAsjA4FxIAfy0D5hBGIpjWmxuss1VBVG8TsPY6hPezgtVczivTMWnFkgFMKzddFyus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpMjh7xg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBA2C433F1;
-	Tue, 23 Jan 2024 00:04:15 +0000 (UTC)
+	 MIME-Version; b=Rcm4o1VnzpVUGHlTIS1fYUcERCUzxSU+UswuoK7L2qC+luGQ43zxsKo/exLZ+qVEl1PR7YW8yYfNDnpSKKvwcu99m4J4a2r5qMvu8U1J/lGR588Dq+ecQX2P2LY/O8baKcuu42k89GwxqXRBRUulKQIcu2H9Aoh1IPVTmfAdqSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVuluGDC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC56C433C7;
+	Tue, 23 Jan 2024 00:13:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968256;
-	bh=BpLuFv1sUtutd208Cbadf/SRTLtJKF5RKobj052ohtg=;
+	s=korg; t=1705968796;
+	bh=j3iLJEQ2pSSqLqkr8ntM5eyhZ2TPpva4bYaxSp0g3Sc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wpMjh7xgLvfHN+YQI364Ic9EQtQlnV529gXiks/IaOcJmuat5Q1CMSBzvI7ApxyMQ
-	 aBvCPtxD+ULuSd/0mVvRNi/C+p5P8zDJ52DmaLBtjG7BzodKmtw2Dtx6FFtOYkXyhQ
-	 jqF47TthR1sRGLDHcUXK1fazyBAQ0wlBC5srsbOU=
+	b=OVuluGDCPM8SXn6rzxN7VeM1hgU8TJG/30KrOlgBI3nRz9uxotvCblfyHbmqHdRYm
+	 DH/MS578qH0peSqkyzUQEPWHK/ZDjbaZGNNTRtGP+PvtVonjqJ6K5IecVsH1kpLaPs
+	 PsSEpwioMyvmyO40j0emvlzj9HQfy7qU4Uu8Hfe0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [PATCH 4.19 026/148] coresight: etm4x: Fix width of CCITMIN field
-Date: Mon, 22 Jan 2024 15:56:22 -0800
-Message-ID: <20240122235713.475586882@linuxfoundation.org>
+	Nikita Kiryushin <kiryushin@ancud.ru>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 053/194] ACPI: LPIT: Avoid u32 multiplication overflow
+Date: Mon, 22 Jan 2024 15:56:23 -0800
+Message-ID: <20240122235721.475127060@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Nikita Kiryushin <kiryushin@ancud.ru>
 
-commit cc0271a339cc70cae914c3ec20edc2a8058407da upstream.
+[ Upstream commit 56d2eeda87995245300836ee4dbd13b002311782 ]
 
-CCITMIN is a 12 bit field and doesn't fit in a u8, so extend it to u16.
-This probably wasn't an issue previously because values higher than 255
-never occurred.
+In lpit_update_residency() there is a possibility of overflow
+in multiplication, if tsc_khz is large enough (> UINT_MAX/1000).
 
-But since commit 4aff040bcc8d ("coresight: etm: Override TRCIDR3.CCITMIN
-on errata affected cpus"), a comparison with 256 was done to enable the
-errata, generating the following W=1 build error:
+Change multiplication to mul_u32_u32().
 
-  coresight-etm4x-core.c:1188:24: error: result of comparison of
-  constant 256 with expression of type 'u8' (aka 'unsigned char') is
-  always false [-Werror,-Wtautological-constant-out-of-range-compare]
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-   if (drvdata->ccitmin == 256)
-
-Cc: stable@vger.kernel.org
-Fixes: 2e1cdfe184b5 ("coresight-etm4x: Adding CoreSight ETM4x driver")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202310302043.as36UFED-lkp@intel.com/
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Signed-off-by: James Clark <james.clark@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20231101115206.70810-1-james.clark@arm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: eeb2d80d502a ("ACPI / LPIT: Add Low Power Idle Table (LPIT) support")
+Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm4x.h |    2 +-
+ drivers/acpi/acpi_lpit.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hwtracing/coresight/coresight-etm4x.h
-+++ b/drivers/hwtracing/coresight/coresight-etm4x.h
-@@ -363,7 +363,7 @@ struct etmv4_drvdata {
- 	u8				ctxid_size;
- 	u8				vmid_size;
- 	u8				ccsize;
--	u8				ccitmin;
-+	u16				ccitmin;
- 	u8				s_ex_level;
- 	u8				ns_ex_level;
- 	u8				q_support;
+diff --git a/drivers/acpi/acpi_lpit.c b/drivers/acpi/acpi_lpit.c
+index 433376e819bb..c79266b8029a 100644
+--- a/drivers/acpi/acpi_lpit.c
++++ b/drivers/acpi/acpi_lpit.c
+@@ -98,7 +98,7 @@ static void lpit_update_residency(struct lpit_residency_info *info,
+ 				 struct acpi_lpit_native *lpit_native)
+ {
+ 	info->frequency = lpit_native->counter_frequency ?
+-				lpit_native->counter_frequency : tsc_khz * 1000;
++				lpit_native->counter_frequency : mul_u32_u32(tsc_khz, 1000U);
+ 	if (!info->frequency)
+ 		info->frequency = 1;
+ 
+-- 
+2.43.0
+
 
 
 
