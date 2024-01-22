@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A23DE8383D4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 765BB837EDE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A569295B7E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9EE71C283DD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F0A657AA;
-	Tue, 23 Jan 2024 01:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB841538B;
+	Tue, 23 Jan 2024 00:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/slD6SZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JCCx/c3b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104FF64CF0;
-	Tue, 23 Jan 2024 01:57:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6D05384;
+	Tue, 23 Jan 2024 00:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975075; cv=none; b=UqvFhyeV7GL/rJtKCsKDQbHnyEwnYRAoBYy1i1M/wXFFwg8w/L8xUFpykiDoifIAwcwkPh8PfXtkewCrVbRERtxBMgy0oWgdFJmD+6xKGDba/UDEK10fJBRJG6NJGO0wJtfx52zrL1c1z2psXd0iKxQcwIkU1BkOF6QnjBsO7fY=
+	t=1705970793; cv=none; b=CncQGH3YgCvq1eiXwiMT2P7Y/poE5Wxhc7yjLGjS2e7OaiAxwvStiRTJQuz1Aso7ns6/JmeNCadWtpefYg7d/VvMJkBrRI4uR1XHGTL9T63/LorDzpyF9bI/SqFR6H8RX/BHwNohp051wdfd89RHnuPfQHG8bD0LZ8r73ddi0CA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975075; c=relaxed/simple;
-	bh=DbzXNpG4I9eyUQhk+0u0AvoHrEdGamo0l+WL/gaIdkI=;
+	s=arc-20240116; t=1705970793; c=relaxed/simple;
+	bh=0vF0A1SV6QjNK5pg8XLUtLG2+ZHPAlHZhKnFg4GfYX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ExMNdmfq8EMEX/4JinmYY+4U2qItiIR7TmWz/tAveQQj446UQhmCmV9pZO5IJ8cTstrpiYB5lapPVLVPuw4r2Tkq/cXMHjcdKypZRVz0za2XrzaBHz/3wNWasnHA9dP+BHERUYHLuPTz263ar95o0gQ5CQ62RyHNKvRvvEjRKfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/slD6SZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85410C433F1;
-	Tue, 23 Jan 2024 01:57:54 +0000 (UTC)
+	 MIME-Version; b=Xr0UM5HQdsud8kT9Vnv0AGnoR0t/Jap4uE+QmwJoxojvrobm5ZJYQB6C2iwV9KCt7v1P4L6M6+C2BFrLYcWkBNKhDDOcj0fqZyY4tECReh4cTSsGyDq4S79ip2IkWub275TGLV8qsoYDeqCqo5OGDDXR2cS1bh3aEHAkJcoSHkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JCCx/c3b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E8F8C433F1;
+	Tue, 23 Jan 2024 00:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975074;
-	bh=DbzXNpG4I9eyUQhk+0u0AvoHrEdGamo0l+WL/gaIdkI=;
+	s=korg; t=1705970793;
+	bh=0vF0A1SV6QjNK5pg8XLUtLG2+ZHPAlHZhKnFg4GfYX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J/slD6SZENoihL5ZRHw8M5vvNCTRePb6HFkGyulnFTC2cFLCkSZzGb+9C2CGYF4cw
-	 H7ZpWNGy7Ozj7Lp7wFTbPI6IxzwIqa9DIrClIOIpfCmdjcP3UEHZIYjcYSIptDElS4
-	 sNbSfiy8bW1xLFp6e5lLWYjy46kXtBFc8C9k4c28=
+	b=JCCx/c3bw+jvuLJ0W4FVy33YINPGDcX3UNeeSIIlVNYEwy/pPWGXeNqLOcUXaMi7d
+	 uPVz+PosR32JxX3NZO9hxR3SPM2/TBc0VmU6UuGWBzZyvdEIi44tB9J2xR1VPU0jtr
+	 70tyGR/LBF1bH/lA6IHDV2u8reaE3Ol6HzcW100A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Moudy Ho <moudy.ho@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 227/583] RDMA/hns: Fix inappropriate err code for unsupported operations
+Subject: [PATCH 6.1 110/417] arm64: dts: mediatek: mt8183: correct MDP3 DMA-related nodes
 Date: Mon, 22 Jan 2024 15:54:38 -0800
-Message-ID: <20240122235818.947435452@linuxfoundation.org>
+Message-ID: <20240122235755.562860521@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Moudy Ho <moudy.ho@mediatek.com>
 
-[ Upstream commit f45b83ad39f8033e717b1eee57e81811113d5a84 ]
+[ Upstream commit 188ffcd7fea79af3cac441268fc99f60e87f03b3 ]
 
-EOPNOTSUPP is more situable than EINVAL for allocating XRCD while XRC
-is not supported and unsupported resizing SRQ.
+In order to generalize the node names, the DMA-related nodes
+corresponding to MT8183 MDP3 need to be corrected.
 
-Fixes: 32548870d438 ("RDMA/hns: Add support for XRC on HIP09")
-Fixes: 221109e64316 ("RDMA/hns: Add interception for resizing SRQs")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20231114123449.1106162-2-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 60a2fb8d202a ("arm64: dts: mt8183: add MediaTek MDP3 nodes")
+Signed-off-by: Moudy Ho <moudy.ho@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 2 +-
- drivers/infiniband/hw/hns/hns_roce_pd.c    | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8183.dtsi | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 486d635b6e3a..84c18996517c 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -5634,7 +5634,7 @@ static int hns_roce_v2_modify_srq(struct ib_srq *ibsrq,
+diff --git a/arch/arm64/boot/dts/mediatek/mt8183.dtsi b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+index 10779a9947fe..d5d9b954c449 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
+@@ -1586,7 +1586,7 @@ mmsys: syscon@14000000 {
+ 			mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0 0x1000>;
+ 		};
  
- 	/* Resizing SRQs is not supported yet */
- 	if (srq_attr_mask & IB_SRQ_MAX_WR)
--		return -EINVAL;
-+		return -EOPNOTSUPP;
+-		mdp3-rdma0@14001000 {
++		dma-controller0@14001000 {
+ 			compatible = "mediatek,mt8183-mdp3-rdma";
+ 			reg = <0 0x14001000 0 0x1000>;
+ 			mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0x1000 0x1000>;
+@@ -1598,6 +1598,7 @@ mdp3-rdma0@14001000 {
+ 			iommus = <&iommu M4U_PORT_MDP_RDMA0>;
+ 			mboxes = <&gce 20 CMDQ_THR_PRIO_LOWEST 0>,
+ 				 <&gce 21 CMDQ_THR_PRIO_LOWEST 0>;
++			#dma-cells = <1>;
+ 		};
  
- 	if (srq_attr_mask & IB_SRQ_LIMIT) {
- 		if (srq_attr->srq_limit > srq->wqe_cnt)
-diff --git a/drivers/infiniband/hw/hns/hns_roce_pd.c b/drivers/infiniband/hw/hns/hns_roce_pd.c
-index 783e71852c50..bd1fe89ca205 100644
---- a/drivers/infiniband/hw/hns/hns_roce_pd.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_pd.c
-@@ -150,7 +150,7 @@ int hns_roce_alloc_xrcd(struct ib_xrcd *ib_xrcd, struct ib_udata *udata)
- 	int ret;
+ 		mdp3-rsz0@14003000 {
+@@ -1618,7 +1619,7 @@ mdp3-rsz1@14004000 {
+ 			clocks = <&mmsys CLK_MM_MDP_RSZ1>;
+ 		};
  
- 	if (!(hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_XRC))
--		return -EINVAL;
-+		return -EOPNOTSUPP;
+-		mdp3-wrot0@14005000 {
++		dma-controller@14005000 {
+ 			compatible = "mediatek,mt8183-mdp3-wrot";
+ 			reg = <0 0x14005000 0 0x1000>;
+ 			mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0x5000 0x1000>;
+@@ -1627,6 +1628,7 @@ mdp3-wrot0@14005000 {
+ 			power-domains = <&spm MT8183_POWER_DOMAIN_DISP>;
+ 			clocks = <&mmsys CLK_MM_MDP_WROT0>;
+ 			iommus = <&iommu M4U_PORT_MDP_WROT0>;
++			#dma-cells = <1>;
+ 		};
  
- 	ret = hns_roce_xrcd_alloc(hr_dev, &xrcd->xrcdn);
- 	if (ret)
+ 		mdp3-wdma@14006000 {
 -- 
 2.43.0
 
