@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C7B837BF5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E74DE8382B3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF9DA1F2ABB6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9717C28D726
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E2241420CB;
-	Tue, 23 Jan 2024 00:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84FD95EE88;
+	Tue, 23 Jan 2024 01:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoBqP48h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNfOha4M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8A81420A5;
-	Tue, 23 Jan 2024 00:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A6D5EE82;
+	Tue, 23 Jan 2024 01:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969453; cv=none; b=IcbXkVOK2pfh4FKP/y5pSQTGtXiBjsG3vOhShN5s5m6/EKWq+TwG5uI8g6KFQLquxsaWW3KEbcL3Ein6/PkvtvCKRkxtcNnLWdkU9mlfPMhppLWgmUqZnMr2j4ph8tiixoDIVAoTHA6Q7dgZP015JsmUPt6s/FZvwEQ3RRQH2w8=
+	t=1705974413; cv=none; b=CtbQxhgvrXOyKnBopmORBeWWxdq9cwr1mmIcXQw0jhL1wJr0CzbYy5nH1HIYnekVXoZ9foqW2KI2GzsaqViOLrpYBprz3pQUm7ZNRED5sH1mRYbz81hAMqG4jXw4YnlgArIcHwjWlXbKmrBgfqNM68PVPPpniyRHQyhBuUpjHfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969453; c=relaxed/simple;
-	bh=S2zmGTOEb/3+SDu+mH+iDuQRBE67nIHyVVWCXqgHSP8=;
+	s=arc-20240116; t=1705974413; c=relaxed/simple;
+	bh=NhCCrmzB8D0/ZnMbnL+nBNLU/obDF2enl9vDvky8EOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iDxU+TQBRgaknNcWnUZrMN8Wzo9ByLB/lsrUk6PfeM+T6nrTOVo1YSxE4wq8t7Z5crSGF9ftkZL9Vy4J9s3B1bu2vbxnac+9e6YJWtB7ONb/tuUfuVPhsXJo/+p5M2ha0vegAjiKB2G0lH7LEEeHyTHTIUhGiL0kOzIh6SwxVoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoBqP48h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1796C43390;
-	Tue, 23 Jan 2024 00:24:12 +0000 (UTC)
+	 MIME-Version; b=OCSyIUuWKadsmW5bJhV+7QOsVthV5htnUkGgjBptgp3fZhhaPZxav1SpnaxplZakPIdITSIL2NwdLQWrHoxRb7Uz9e3j/wpv3QzrUelFglVXfUxw+PoyTYCVu5Rxj3RuZlTxyJS3cYeRLw7giKSu4ZdYNlOMSe4DpV2JmU/PofI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNfOha4M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE22BC433F1;
+	Tue, 23 Jan 2024 01:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969453;
-	bh=S2zmGTOEb/3+SDu+mH+iDuQRBE67nIHyVVWCXqgHSP8=;
+	s=korg; t=1705974413;
+	bh=NhCCrmzB8D0/ZnMbnL+nBNLU/obDF2enl9vDvky8EOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CoBqP48h+HBlrGhF8S1HggGoYfErjnzN0yVIXu8k8CX+6vnen9AwLoGBloJ66oLDO
-	 /FlxmHMeT3DyCQ+7v/N5nNzqIX76AfRsSjbF9sOktOJwn2Azbv5HdUbaDYFcWWSstX
-	 fUZFF+YkLnNpuU27PRg38w2AAzNGWRKjXwtFs8cg=
+	b=VNfOha4MjPfP9pe6YyDBaCP9YOkcOI40Jd6OTjekC58vb9MTdG0u4jQrPEtjqWIhc
+	 ugq/HwKpE+XbH/a5puJdzhuYl7Wt9QP3yS5jZADgVqv2Zu6mVc5tWmVAOYi28JrQvz
+	 ORdh/Iul9yMHALogyvoCjKxDx2FN5C7k9+/QiBXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Thompson <davthompson@nvidia.com>,
-	Asmaa Mnebhi <asmaa@nvidia.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 238/641] mlxbf_gige: Enable the GigE port in mlxbf_gige_open
+Subject: [PATCH 6.6 091/583] wifi: libertas: stop selecting wext
 Date: Mon, 22 Jan 2024 15:52:22 -0800
-Message-ID: <20240122235825.378679763@linuxfoundation.org>
+Message-ID: <20240122235814.949725808@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asmaa Mnebhi <asmaa@nvidia.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit a460f4a684511e007bbf1700758a41f05d9981e6 ]
+[ Upstream commit 8170b04c2c92eee52ea50b96db4c54662197e512 ]
 
-At the moment, the GigE port is enabled in the mlxbf_gige_probe
-function. If the mlxbf_gige_open is not executed, this could cause
-pause frames to increase in the case where there is high backgroud
-traffic. This results in clogging the port.
-So move enabling the OOB port to mlxbf_gige_open.
+Libertas no longer references the iw_handler infrastructure or wext_spy,
+so neither of the 'select' statements are used any more.
 
-Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
-Reviewed-by: David Thompson <davthompson@nvidia.com>
-Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: e86dc1ca4676 ("Libertas: cfg80211 support")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20231108153409.1065286-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c   | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/wireless/marvell/libertas/Kconfig | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-index ac7f0128619c..3d09fa54598f 100644
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-+++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-@@ -130,9 +130,15 @@ static int mlxbf_gige_open(struct net_device *netdev)
- {
- 	struct mlxbf_gige *priv = netdev_priv(netdev);
- 	struct phy_device *phydev = netdev->phydev;
-+	u64 control;
- 	u64 int_en;
- 	int err;
- 
-+	/* Perform general init of GigE block */
-+	control = readq(priv->base + MLXBF_GIGE_CONTROL);
-+	control |= MLXBF_GIGE_CONTROL_PORT_EN;
-+	writeq(control, priv->base + MLXBF_GIGE_CONTROL);
-+
- 	err = mlxbf_gige_request_irqs(priv);
- 	if (err)
- 		return err;
-@@ -365,7 +371,6 @@ static int mlxbf_gige_probe(struct platform_device *pdev)
- 	void __iomem *plu_base;
- 	void __iomem *base;
- 	int addr, phy_irq;
--	u64 control;
- 	int err;
- 
- 	base = devm_platform_ioremap_resource(pdev, MLXBF_GIGE_RES_MAC);
-@@ -380,11 +385,6 @@ static int mlxbf_gige_probe(struct platform_device *pdev)
- 	if (IS_ERR(plu_base))
- 		return PTR_ERR(plu_base);
- 
--	/* Perform general init of GigE block */
--	control = readq(base + MLXBF_GIGE_CONTROL);
--	control |= MLXBF_GIGE_CONTROL_PORT_EN;
--	writeq(control, base + MLXBF_GIGE_CONTROL);
--
- 	netdev = devm_alloc_etherdev(&pdev->dev, sizeof(*priv));
- 	if (!netdev)
- 		return -ENOMEM;
+diff --git a/drivers/net/wireless/marvell/libertas/Kconfig b/drivers/net/wireless/marvell/libertas/Kconfig
+index 6d62ab49aa8d..c7d02adb3eea 100644
+--- a/drivers/net/wireless/marvell/libertas/Kconfig
++++ b/drivers/net/wireless/marvell/libertas/Kconfig
+@@ -2,8 +2,6 @@
+ config LIBERTAS
+ 	tristate "Marvell 8xxx Libertas WLAN driver support"
+ 	depends on CFG80211
+-	select WIRELESS_EXT
+-	select WEXT_SPY
+ 	select LIB80211
+ 	select FW_LOADER
+ 	help
 -- 
 2.43.0
 
