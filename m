@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4A73837E10
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68F058380D2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84C1C1F29C20
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B88A1C286F4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8BD54BDA;
-	Tue, 23 Jan 2024 00:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E183C134739;
+	Tue, 23 Jan 2024 01:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JrcyFv30"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZKFboyb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7914F204;
-	Tue, 23 Jan 2024 00:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03F4133435;
+	Tue, 23 Jan 2024 01:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970340; cv=none; b=dWZuQSCBw69EmRyYEX9w9KjMiBbptmp39tUg3jBBNwqekJ+n4IVJnKigsjTXhiLkCmHaMxpxqM68fyfXoxpSOWXcSrE76aSgznwyYdgxzTu+HBE2fXOR1L5bNvNCoggR5O6nLLoCZgAYEuKRQEQsLJbpXHQa/gpd4bQFKURT+PA=
+	t=1705971912; cv=none; b=XFUAj1OltU5TEd1xo4UvE0y5DID4/x5xrO9RdB0AiBL+Aprn3viE0HvsS2Bl46cSnpsHUTpIZgxp0PhDWIV9KxunldKtauMvK5ONRfaqV/0QSXVUd5Qm9kdjrKaOtj9FGPrE5ek/2wGpfyUmYMuwuEO2e+HjZWO5x4269zWWsJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970340; c=relaxed/simple;
-	bh=EVqTHh1y4LNt90mndjIzozjhTJnLPvBQqPVRC9Dxfck=;
+	s=arc-20240116; t=1705971912; c=relaxed/simple;
+	bh=hq+um1bShNeq/CAos+r8p4bAdROYd5fczq7BdPSsQ8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gnOYa/6XHR6dDmYNrcmMaGTaEvU4ZRRUnb79e+o3THVEhr7qf1+uwsCagAnMGRlrL85pBfOEjtlalEsK6kq08kWBptC0R5qLhs+uC/N2ElluQmsdLH3izQVkJbjQNeaMpVOs894EnC1qZECt9MADvYiVoMualhFOIU8nTeyJ7jE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JrcyFv30; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A20C433F1;
-	Tue, 23 Jan 2024 00:38:58 +0000 (UTC)
+	 MIME-Version; b=nJP1cCouPPeMeMkc89cPp7jogNQaKzEuxGaM/252r+uaHDEvR5GRbbAIE3MEmav7bj+iaqSo5Eudzpx7DrgP07YZ3UgOyCru7oyhPbJeKELq9Y9+QBvRBniF1+ZBZm6RlEoAn0f1lMZwCvtbXkv3F1pGUG900+xvgYkrF/RpRWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZKFboyb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07ED1C433C7;
+	Tue, 23 Jan 2024 01:05:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970339;
-	bh=EVqTHh1y4LNt90mndjIzozjhTJnLPvBQqPVRC9Dxfck=;
+	s=korg; t=1705971912;
+	bh=hq+um1bShNeq/CAos+r8p4bAdROYd5fczq7BdPSsQ8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JrcyFv30xLKcUZ2oulTwDjDtb3hUDki+MQdF9e7GyiLkIoB7KBvptMSq4tgHDJtN8
-	 MFOECANnbiEeW581GMOgLLtj4mhdI4Dv8UV61/RYFM8QaJeEbjz+zXNS0t6FgFx4uR
-	 zYC7EUly9JKdtob+9n+9gYU5kjl4/IQn7cvX+1s0=
+	b=EZKFboyb+BwxB5vOwZNUENSGpIVVWCx9X1ClODZR2UECcAEezhR/RrQ1L57qAYrCG
+	 0gQhUw9hh+3/AAliaNNA5tRI9tU+fYa+0ReFeYVFZJ06OjRxFzPls+ycO0CvMSusmQ
+	 GKP5XrsNp5GMR8zP650fLVbzrdRmiVx2XWtWLZvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiang Ma <maqianga@uniontech.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Zhao Mengmeng <zhaomengmeng@kylinos.cn>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 613/641] net: stmmac: ethtool: Fixed calltrace caused by unbalanced disable_irq_wake calls
+Subject: [PATCH 6.1 349/417] selftests/sgx: Skip non X86_64 platform
 Date: Mon, 22 Jan 2024 15:58:37 -0800
-Message-ID: <20240122235837.416206320@linuxfoundation.org>
+Message-ID: <20240122235803.879859062@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiang Ma <maqianga@uniontech.com>
+From: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
 
-[ Upstream commit a23aa04042187cbde16f470b49d4ad60d32e9206 ]
+[ Upstream commit 981cf568a8644161c2f15c02278ebc2834b51ba6 ]
 
-We found the following dmesg calltrace when testing the GMAC NIC notebook:
+When building whole selftests on arm64, rsync gives an erorr about sgx:
 
-[9.448656] ------------[ cut here ]------------
-[9.448658] Unbalanced IRQ 43 wake disable
-[9.448673] WARNING: CPU: 3 PID: 1083 at kernel/irq/manage.c:688 irq_set_irq_wake+0xe0/0x128
-[9.448717] CPU: 3 PID: 1083 Comm: ethtool Tainted: G           O      4.19 #1
-[9.448773]         ...
-[9.448774] Call Trace:
-[9.448781] [<9000000000209b5c>] show_stack+0x34/0x140
-[9.448788] [<9000000000d52700>] dump_stack+0x98/0xd0
-[9.448794] [<9000000000228610>] __warn+0xa8/0x120
-[9.448797] [<9000000000d2fb60>] report_bug+0x98/0x130
-[9.448800] [<900000000020a418>] do_bp+0x248/0x2f0
-[9.448805] [<90000000002035f4>] handle_bp_int+0x4c/0x78
-[9.448808] [<900000000029ea40>] irq_set_irq_wake+0xe0/0x128
-[9.448813] [<9000000000a96a7c>] stmmac_set_wol+0x134/0x150
-[9.448819] [<9000000000be6ed0>] dev_ethtool+0x1368/0x2440
-[9.448824] [<9000000000c08350>] dev_ioctl+0x1f8/0x3e0
-[9.448827] [<9000000000bb2a34>] sock_ioctl+0x2a4/0x450
-[9.448832] [<900000000046f044>] do_vfs_ioctl+0xa4/0x738
-[9.448834] [<900000000046f778>] ksys_ioctl+0xa0/0xe8
-[9.448837] [<900000000046f7d8>] sys_ioctl+0x18/0x28
-[9.448840] [<9000000000211ab4>] syscall_common+0x20/0x34
-[9.448842] ---[ end trace 40c18d9aec863c3e ]---
+rsync: [sender] link_stat "/root/linux-next/tools/testing/selftests/sgx/test_encl.elf" failed: No such file or directory (2)
+rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1327) [sender=3.2.5]
 
-Multiple disable_irq_wake() calls will keep decreasing the IRQ
-wake_depth, When wake_depth is 0, calling disable_irq_wake() again,
-will report the above calltrace.
+The root casue is sgx only used on X86_64, and shall be skipped on other
+platforms.
 
-Due to the need to appear in pairs, we cannot call disable_irq_wake()
-without calling enable_irq_wake(). Fix this by making sure there are
-no unbalanced disable_irq_wake() calls.
+Fix this by moving TEST_CUSTOM_PROGS and TEST_FILES inside the if check,
+then the build result will be "Skipping non-existent dir: sgx".
 
-Fixes: 3172d3afa998 ("stmmac: support wake up irq from external sources (v3)")
-Signed-off-by: Qiang Ma <maqianga@uniontech.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240112021249.24598-1-maqianga@uniontech.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 2adcba79e69d ("selftests/x86: Add a selftest for SGX")
+Signed-off-by: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lore.kernel.org/all/20231206025605.3965302-1-zhaomzhao%40126.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac.h         |  1 +
- drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 10 ++++++++--
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c    |  1 +
- 3 files changed, 10 insertions(+), 2 deletions(-)
+ tools/testing/selftests/sgx/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-index cd7a9768de5f..b8c93b881a65 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-@@ -255,6 +255,7 @@ struct stmmac_priv {
- 	u32 msg_enable;
- 	int wolopts;
- 	int wol_irq;
-+	bool wol_irq_disabled;
- 	int clk_csr;
- 	struct timer_list eee_ctrl_timer;
- 	int lpi_irq;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-index bfd146ad6937..67bc98f99135 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-@@ -822,10 +822,16 @@ static int stmmac_set_wol(struct net_device *dev, struct ethtool_wolinfo *wol)
- 	if (wol->wolopts) {
- 		pr_info("stmmac: wakeup enable\n");
- 		device_set_wakeup_enable(priv->device, 1);
--		enable_irq_wake(priv->wol_irq);
-+		/* Avoid unbalanced enable_irq_wake calls */
-+		if (priv->wol_irq_disabled)
-+			enable_irq_wake(priv->wol_irq);
-+		priv->wol_irq_disabled = false;
- 	} else {
- 		device_set_wakeup_enable(priv->device, 0);
--		disable_irq_wake(priv->wol_irq);
-+		/* Avoid unbalanced disable_irq_wake calls */
-+		if (!priv->wol_irq_disabled)
-+			disable_irq_wake(priv->wol_irq);
-+		priv->wol_irq_disabled = true;
- 	}
+diff --git a/tools/testing/selftests/sgx/Makefile b/tools/testing/selftests/sgx/Makefile
+index 75af864e07b6..04ee17d3d394 100644
+--- a/tools/testing/selftests/sgx/Makefile
++++ b/tools/testing/selftests/sgx/Makefile
+@@ -16,9 +16,9 @@ HOST_CFLAGS := -Wall -Werror -g $(INCLUDES) -fPIC -z noexecstack
+ ENCL_CFLAGS := -Wall -Werror -static -nostdlib -nostartfiles -fPIC \
+ 	       -fno-stack-protector -mrdrnd $(INCLUDES)
  
- 	mutex_lock(&priv->lock);
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 5b9da19743b9..49b81daf7411 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -3565,6 +3565,7 @@ static int stmmac_request_irq_multi_msi(struct net_device *dev)
- 	/* Request the Wake IRQ in case of another line
- 	 * is used for WoL
- 	 */
-+	priv->wol_irq_disabled = true;
- 	if (priv->wol_irq > 0 && priv->wol_irq != dev->irq) {
- 		int_name = priv->int_name_wol;
- 		sprintf(int_name, "%s:%s", dev->name, "wol");
++ifeq ($(CAN_BUILD_X86_64), 1)
+ TEST_CUSTOM_PROGS := $(OUTPUT)/test_sgx
+ 
+-ifeq ($(CAN_BUILD_X86_64), 1)
+ all: $(TEST_CUSTOM_PROGS) $(OUTPUT)/test_encl.elf
+ endif
+ 
 -- 
 2.43.0
 
