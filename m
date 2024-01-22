@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D32F8382A5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D98B837DA2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C01EF1F268DF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50DAF1C2488B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5525DF2C;
-	Tue, 23 Jan 2024 01:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 621035647B;
+	Tue, 23 Jan 2024 00:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxDxxn5p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQooHRGD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FD15DF19;
-	Tue, 23 Jan 2024 01:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 223AC537F7;
+	Tue, 23 Jan 2024 00:34:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974398; cv=none; b=LJIuk1xOjbyfR1ckLh2HO7y+ToOWl2smz1SbGcH4l2Ax3s6MOXWN8V+tjvBaJ2C46a3vo0cPfzOuTynoYrI/PCwKbgLrzso+ma7Ig7087+bJfHhMCf+0Q1qCfKSI71XyvtNwnYkHm3Pxevs4QstBGZCuZG/KEVSh/7Zc+CJ1kLg=
+	t=1705970092; cv=none; b=QWAaI38AKl2a8/bE+xhG3xvm9QX240tmh2GCHcVAZbC9iaZOgqD8rbbGrSWEMQu1mhgNDw0IEDRc/edTnK2YpgrcxZEOwgEHGRTQKXOD6jt6VJfym+NWrQT6WkBvfPgEholpCI0yxCOOT1r/M/gMJN1WYGklm/haGyVoa38jqhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974398; c=relaxed/simple;
-	bh=aG4LkcdEIgzUUvUSXYmcnvyeAABUnxvaR/Isq5Kacrk=;
+	s=arc-20240116; t=1705970092; c=relaxed/simple;
+	bh=1ewkJmff3McK7TC3sricY+nJPoufZ7ZSSvp6dUZNvpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RY4IU8R2PcjHuH5AA/l8cJsPWNnqLModVdIoCIf5vDhVXwl4YT4Mla8HJt4hu4/RRwm3/Lvsvh9twxE1R/G18JrCl+7grEVLDvOQb93ZBcxJ9OI8Uf7bRzO1jPsLJtNpHbyFwHntcZRitiljYf/UF385h9ajj8XVDWNMMITJADM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxDxxn5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EEFBC43390;
-	Tue, 23 Jan 2024 01:46:38 +0000 (UTC)
+	 MIME-Version; b=pGjIJASpChywx2WSU4fWW7OtFL4aeZwO3mH/JA1rlWn7bGJpXupKPyGcb/hk+j1ZWtvkLOPgep9IYKd3ZnXes0xwAyvUS2usy3IymlRmP8wMtXZ6ftOGdUiWoKNSZCrUJLgmxwMbT+RUWwt+CgxDDKHqKvQmpizqoQGzw8M1LPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQooHRGD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85E09C433C7;
+	Tue, 23 Jan 2024 00:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974398;
-	bh=aG4LkcdEIgzUUvUSXYmcnvyeAABUnxvaR/Isq5Kacrk=;
+	s=korg; t=1705970092;
+	bh=1ewkJmff3McK7TC3sricY+nJPoufZ7ZSSvp6dUZNvpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SxDxxn5pqyv6CNis/MOJRSgQEADRoKZM//dK/LrDPVpZRhdDNcMIw/FBx7WGtTETZ
-	 hxPu5VxX3fIvK5BvkSt86zDChZp6D5ZBv/GQbfwwIJr/NuoiKvqnxSbBb/bfb1zXEK
-	 srEJdCa611PumJGnLDF45FpfOxy8tN+qeFiydAs0=
+	b=lQooHRGDLLIEpOS3zbpMporMGB5Soh70qb1rPpzrJAeqmeTDJWwv4cbM/DMrq1gL8
+	 qsv2eUH8nEeX/5LQ9C6yfM3GQunjg/ROGwfECGDHaBFi3SDsapWjYK1A/VZH69zyux
+	 We4Db83Wj/C/7leOUyV6/bJfj6krxF7T/v1IrERQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 209/374] drm/amd/pm: fix a double-free in si_dpm_init
+Subject: [PATCH 6.7 561/641] apparmor: avoid crash when parsed profile name is empty
 Date: Mon, 22 Jan 2024 15:57:45 -0800
-Message-ID: <20240122235751.897288055@linuxfoundation.org>
+Message-ID: <20240122235835.707692209@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit ac16667237a82e2597e329eb9bc520d1cf9dff30 ]
+[ Upstream commit 55a8210c9e7d21ff2644809699765796d4bfb200 ]
 
-When the allocation of
-adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries fails,
-amdgpu_free_extended_power_table is called to free some fields of adev.
-However, when the control flow returns to si_dpm_sw_init, it goes to
-label dpm_failed and calls si_dpm_fini, which calls
-amdgpu_free_extended_power_table again and free those fields again. Thus
-a double-free is triggered.
+When processing a packed profile in unpack_profile() described like
 
-Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+ "profile :ns::samba-dcerpcd /usr/lib*/samba/{,samba/}samba-dcerpcd {...}"
+
+a string ":samba-dcerpcd" is unpacked as a fully-qualified name and then
+passed to aa_splitn_fqname().
+
+aa_splitn_fqname() treats ":samba-dcerpcd" as only containing a namespace.
+Thus it returns NULL for tmpname, meanwhile tmpns is non-NULL. Later
+aa_alloc_profile() crashes as the new profile name is NULL now.
+
+general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 6 PID: 1657 Comm: apparmor_parser Not tainted 6.7.0-rc2-dirty #16
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
+RIP: 0010:strlen+0x1e/0xa0
+Call Trace:
+ <TASK>
+ ? strlen+0x1e/0xa0
+ aa_policy_init+0x1bb/0x230
+ aa_alloc_profile+0xb1/0x480
+ unpack_profile+0x3bc/0x4960
+ aa_unpack+0x309/0x15e0
+ aa_replace_profiles+0x213/0x33c0
+ policy_update+0x261/0x370
+ profile_replace+0x20e/0x2a0
+ vfs_write+0x2af/0xe00
+ ksys_write+0x126/0x250
+ do_syscall_64+0x46/0xf0
+ entry_SYSCALL_64_after_hwframe+0x6e/0x76
+ </TASK>
+---[ end trace 0000000000000000 ]---
+RIP: 0010:strlen+0x1e/0xa0
+
+It seems such behaviour of aa_splitn_fqname() is expected and checked in
+other places where it is called (e.g. aa_remove_profiles). Well, there
+is an explicit comment "a ns name without a following profile is allowed"
+inside.
+
+AFAICS, nothing can prevent unpacked "name" to be in form like
+":samba-dcerpcd" - it is passed from userspace.
+
+Deny the whole profile set replacement in such case and inform user with
+EPROTO and an explaining message.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 04dc715e24d0 ("apparmor: audit policy ns specified in policy load")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/si_dpm.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ security/apparmor/policy_unpack.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/si_dpm.c b/drivers/gpu/drm/amd/pm/powerplay/si_dpm.c
-index 66fc63f1f1c1..09e78575db87 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/si_dpm.c
-@@ -7346,10 +7346,9 @@ static int si_dpm_init(struct amdgpu_device *adev)
- 		kcalloc(4,
- 			sizeof(struct amdgpu_clock_voltage_dependency_entry),
- 			GFP_KERNEL);
--	if (!adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries) {
--		amdgpu_free_extended_power_table(adev);
-+	if (!adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries)
- 		return -ENOMEM;
--	}
-+
- 	adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.count = 4;
- 	adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries[0].clk = 0;
- 	adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries[0].v = 0;
+diff --git a/security/apparmor/policy_unpack.c b/security/apparmor/policy_unpack.c
+index 9575da5fd4cb..dbf7d96257ad 100644
+--- a/security/apparmor/policy_unpack.c
++++ b/security/apparmor/policy_unpack.c
+@@ -832,6 +832,10 @@ static struct aa_profile *unpack_profile(struct aa_ext *e, char **ns_name)
+ 
+ 	tmpname = aa_splitn_fqname(name, strlen(name), &tmpns, &ns_len);
+ 	if (tmpns) {
++		if (!tmpname) {
++			info = "empty profile name";
++			goto fail;
++		}
+ 		*ns_name = kstrndup(tmpns, ns_len, GFP_KERNEL);
+ 		if (!*ns_name) {
+ 			info = "out of memory";
 -- 
 2.43.0
 
