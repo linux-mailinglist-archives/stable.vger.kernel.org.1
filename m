@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-14185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453AB838025
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CF7F837D48
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5E40B23324
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 902751C27C74
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F57112BF0F;
-	Tue, 23 Jan 2024 00:56:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916E058AA8;
+	Tue, 23 Jan 2024 00:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z9was1Om"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/wh1Ul7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31334E1AD;
-	Tue, 23 Jan 2024 00:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDBA3A8F4;
+	Tue, 23 Jan 2024 00:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971397; cv=none; b=XxVFGlRQ7JxXFpd+s7G4RgSqyZc7yWfwlPVbVudwUtw0KlIn+y9yvBvKpr9TljV6bn2TReDNqGGGcoU+EP5MDzeeCHALbENCIUbi737M2TsQ9x1Gh1pIEVdhit0c/VjgCdDPGbkKLYpCPxE8bl4YzeQ8AXKQYVZsIt4A6dSVJRE=
+	t=1705969875; cv=none; b=fT0ByYAEusVxH2xKKlTbOowo34A1mhP3TTkTrNEc8Pz4SlUB+5DY6APUCxRzZwNXJl3jqMD3hR++Spp+ZgmIX3vai9Yi7zz5aoxbYqfixpv7qFSszQsdpltmGTqL4DpsFpBekxJ527mls2gVUNcSznFQ/07n6CMdoLYJnavwBS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971397; c=relaxed/simple;
-	bh=d3WQrNnaBiTeK51nhREj9Q+0Rh2ylG22DCQeGbTDw1Q=;
+	s=arc-20240116; t=1705969875; c=relaxed/simple;
+	bh=JC405hPRvvGe7apQCTHI2CmLZox/qbyeqLlqztQ3Xy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kPy0g4jdooUFLYdEEMZ4PS8+Fk31EPtZcWWFaiHVii40qULU+BMsHwjeQ9qwJ6krdjBs5InoyflqpK9EIYqRlQ1EYBhBuca/uoeu2RpiGDEPfKnP1aKaO8ukX/AZTJzi+6Vjs0BWd++qEO03Cbsk97mdDatwtBaesWZHXiMcLQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z9was1Om; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC3BC433C7;
-	Tue, 23 Jan 2024 00:56:36 +0000 (UTC)
+	 MIME-Version; b=r+QPUi4+1kZlUBHqvTgjkL/WMoKG80OoqLQvxmhDM5CVkgJmzYkh9J9Su5Qm069mSmFT45KmBeLzFeNvAIofiRRBY6fBdRqeEOUbJJiOQMdEG4/C4fH46Sqc+IVcwD71Vy02Nr+ZWdPLX1xEtOBz6aNHXDVgEJdw1JgkPoJIaJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/wh1Ul7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E56BC43390;
+	Tue, 23 Jan 2024 00:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971396;
-	bh=d3WQrNnaBiTeK51nhREj9Q+0Rh2ylG22DCQeGbTDw1Q=;
+	s=korg; t=1705969875;
+	bh=JC405hPRvvGe7apQCTHI2CmLZox/qbyeqLlqztQ3Xy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z9was1OmMrsdkI+rF5FfDoBNpHX6pYdHfs0MR03BxaqsPzV1qPtUpbK3zcRspFXC0
-	 +BxhnJmDlKIvCBgbbtuc0quC1gxdtaxhpqN9QmsInnL+/pHeyEb+j9ij+bViVJM/v2
-	 RUiy9w9MZOAXI+TjyQHWYJSBMJEkMiB4PByPySng=
+	b=b/wh1Ul7f7I4LcxFeat+22iFgjRW1HXHYTrEdagRjnXKkL0jkIAWb7xoqzylLJL96
+	 j2rdiyUqKxGPNpWoZjaM6LsJStg+wqYTx24X5Yok2Tax4fc/v0Eq/QJOCi/7Sz8P7G
+	 vq72Vjk8aCdEl8zC6RPs2Ekm+QUr2ZLELkTv1KU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Swati Sharma <swati2.sharma@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 235/417] ALSA: scarlett2: Add missing error checks to *_ctl_get()
+Subject: [PATCH 6.7 499/641] drm/i915/dp: Fix the max DSC bpc supported by source
 Date: Mon, 22 Jan 2024 15:56:43 -0800
-Message-ID: <20240122235800.031064785@linuxfoundation.org>
+Message-ID: <20240122235833.676783547@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,358 +65,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
 
-[ Upstream commit 50603a67daef161c78c814580d57f7f0be57167e ]
+[ Upstream commit 584ebbefd12296c6bad009c8a0c9e610eb8283c8 ]
 
-The *_ctl_get() functions which call scarlett2_update_*() were not
-checking the return value. Fix to check the return value and pass to
-the caller.
+Use correct helper for getting max DSC bpc supported by the source.
 
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
-Link: https://lore.kernel.org/r/32a5fdc83b05fa74e0fcdd672fbf71d75c5f0a6d.1703001053.git.g@b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 1c56e9a39833 ("drm/i915/dp: Get optimal link config to have best compressed bpp")
+Cc: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Cc: Stanislav Lisovskiy <stanislav.lisovskiy@intel.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+
+Signed-off-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Reviewed-by: Swati Sharma <swati2.sharma@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231213091632.431557-3-ankit.k.nautiyal@intel.com
+(cherry picked from commit cd7b0b2dd3d9fecc6057c07b40e8087db2f9f71a)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_scarlett_gen2.c | 182 +++++++++++++++++++++++---------
- 1 file changed, 130 insertions(+), 52 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
-index f8a2ba479b7c..eedac43eee7d 100644
---- a/sound/usb/mixer_scarlett_gen2.c
-+++ b/sound/usb/mixer_scarlett_gen2.c
-@@ -1798,14 +1798,20 @@ static int scarlett2_sync_ctl_get(struct snd_kcontrol *kctl,
- 	struct usb_mixer_elem_info *elem = kctl->private_data;
- 	struct usb_mixer_interface *mixer = elem->head.mixer;
- 	struct scarlett2_data *private = mixer->private_data;
-+	int err = 0;
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index 62ce92772367..1710ef24c511 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -2025,7 +2025,7 @@ static int intel_dp_dsc_compute_pipe_bpp(struct intel_dp *intel_dp,
+ 		}
+ 	}
  
- 	mutex_lock(&private->data_mutex);
--	if (private->sync_updated)
--		scarlett2_update_sync(mixer);
-+
-+	if (private->sync_updated) {
-+		err = scarlett2_update_sync(mixer);
-+		if (err < 0)
-+			goto unlock;
-+	}
- 	ucontrol->value.enumerated.item[0] = private->sync;
--	mutex_unlock(&private->data_mutex);
+-	dsc_max_bpc = intel_dp_dsc_min_src_input_bpc(i915);
++	dsc_max_bpc = intel_dp_dsc_max_src_input_bpc(i915);
+ 	if (!dsc_max_bpc)
+ 		return -EINVAL;
  
--	return 0;
-+unlock:
-+	mutex_unlock(&private->data_mutex);
-+	return err;
- }
- 
- static const struct snd_kcontrol_new scarlett2_sync_ctl = {
-@@ -1888,14 +1894,20 @@ static int scarlett2_master_volume_ctl_get(struct snd_kcontrol *kctl,
- 	struct usb_mixer_elem_info *elem = kctl->private_data;
- 	struct usb_mixer_interface *mixer = elem->head.mixer;
- 	struct scarlett2_data *private = mixer->private_data;
-+	int err = 0;
- 
- 	mutex_lock(&private->data_mutex);
--	if (private->vol_updated)
--		scarlett2_update_volumes(mixer);
--	mutex_unlock(&private->data_mutex);
- 
-+	if (private->vol_updated) {
-+		err = scarlett2_update_volumes(mixer);
-+		if (err < 0)
-+			goto unlock;
-+	}
- 	ucontrol->value.integer.value[0] = private->master_vol;
--	return 0;
-+
-+unlock:
-+	mutex_unlock(&private->data_mutex);
-+	return err;
- }
- 
- static int line_out_remap(struct scarlett2_data *private, int index)
-@@ -1921,14 +1933,20 @@ static int scarlett2_volume_ctl_get(struct snd_kcontrol *kctl,
- 	struct usb_mixer_interface *mixer = elem->head.mixer;
- 	struct scarlett2_data *private = mixer->private_data;
- 	int index = line_out_remap(private, elem->control);
-+	int err = 0;
- 
- 	mutex_lock(&private->data_mutex);
--	if (private->vol_updated)
--		scarlett2_update_volumes(mixer);
--	mutex_unlock(&private->data_mutex);
- 
-+	if (private->vol_updated) {
-+		err = scarlett2_update_volumes(mixer);
-+		if (err < 0)
-+			goto unlock;
-+	}
- 	ucontrol->value.integer.value[0] = private->vol[index];
--	return 0;
-+
-+unlock:
-+	mutex_unlock(&private->data_mutex);
-+	return err;
- }
- 
- static int scarlett2_volume_ctl_put(struct snd_kcontrol *kctl,
-@@ -1995,14 +2013,20 @@ static int scarlett2_mute_ctl_get(struct snd_kcontrol *kctl,
- 	struct usb_mixer_interface *mixer = elem->head.mixer;
- 	struct scarlett2_data *private = mixer->private_data;
- 	int index = line_out_remap(private, elem->control);
-+	int err = 0;
- 
- 	mutex_lock(&private->data_mutex);
--	if (private->vol_updated)
--		scarlett2_update_volumes(mixer);
--	mutex_unlock(&private->data_mutex);
- 
-+	if (private->vol_updated) {
-+		err = scarlett2_update_volumes(mixer);
-+		if (err < 0)
-+			goto unlock;
-+	}
- 	ucontrol->value.integer.value[0] = private->mute_switch[index];
--	return 0;
-+
-+unlock:
-+	mutex_unlock(&private->data_mutex);
-+	return err;
- }
- 
- static int scarlett2_mute_ctl_put(struct snd_kcontrol *kctl,
-@@ -2248,14 +2272,20 @@ static int scarlett2_level_enum_ctl_get(struct snd_kcontrol *kctl,
- 	const struct scarlett2_device_info *info = private->info;
- 
- 	int index = elem->control + info->level_input_first;
-+	int err = 0;
- 
- 	mutex_lock(&private->data_mutex);
--	if (private->input_other_updated)
--		scarlett2_update_input_other(mixer);
-+
-+	if (private->input_other_updated) {
-+		err = scarlett2_update_input_other(mixer);
-+		if (err < 0)
-+			goto unlock;
-+	}
- 	ucontrol->value.enumerated.item[0] = private->level_switch[index];
--	mutex_unlock(&private->data_mutex);
- 
--	return 0;
-+unlock:
-+	mutex_unlock(&private->data_mutex);
-+	return err;
- }
- 
- static int scarlett2_level_enum_ctl_put(struct snd_kcontrol *kctl,
-@@ -2306,15 +2336,21 @@ static int scarlett2_pad_ctl_get(struct snd_kcontrol *kctl,
- 	struct usb_mixer_elem_info *elem = kctl->private_data;
- 	struct usb_mixer_interface *mixer = elem->head.mixer;
- 	struct scarlett2_data *private = mixer->private_data;
-+	int err = 0;
- 
- 	mutex_lock(&private->data_mutex);
--	if (private->input_other_updated)
--		scarlett2_update_input_other(mixer);
-+
-+	if (private->input_other_updated) {
-+		err = scarlett2_update_input_other(mixer);
-+		if (err < 0)
-+			goto unlock;
-+	}
- 	ucontrol->value.integer.value[0] =
- 		private->pad_switch[elem->control];
--	mutex_unlock(&private->data_mutex);
- 
--	return 0;
-+unlock:
-+	mutex_unlock(&private->data_mutex);
-+	return err;
- }
- 
- static int scarlett2_pad_ctl_put(struct snd_kcontrol *kctl,
-@@ -2364,14 +2400,20 @@ static int scarlett2_air_ctl_get(struct snd_kcontrol *kctl,
- 	struct usb_mixer_elem_info *elem = kctl->private_data;
- 	struct usb_mixer_interface *mixer = elem->head.mixer;
- 	struct scarlett2_data *private = mixer->private_data;
-+	int err = 0;
- 
- 	mutex_lock(&private->data_mutex);
--	if (private->input_other_updated)
--		scarlett2_update_input_other(mixer);
-+
-+	if (private->input_other_updated) {
-+		err = scarlett2_update_input_other(mixer);
-+		if (err < 0)
-+			goto unlock;
-+	}
- 	ucontrol->value.integer.value[0] = private->air_switch[elem->control];
--	mutex_unlock(&private->data_mutex);
- 
--	return 0;
-+unlock:
-+	mutex_unlock(&private->data_mutex);
-+	return err;
- }
- 
- static int scarlett2_air_ctl_put(struct snd_kcontrol *kctl,
-@@ -2421,15 +2463,21 @@ static int scarlett2_phantom_ctl_get(struct snd_kcontrol *kctl,
- 	struct usb_mixer_elem_info *elem = kctl->private_data;
- 	struct usb_mixer_interface *mixer = elem->head.mixer;
- 	struct scarlett2_data *private = mixer->private_data;
-+	int err = 0;
- 
- 	mutex_lock(&private->data_mutex);
--	if (private->input_other_updated)
--		scarlett2_update_input_other(mixer);
-+
-+	if (private->input_other_updated) {
-+		err = scarlett2_update_input_other(mixer);
-+		if (err < 0)
-+			goto unlock;
-+	}
- 	ucontrol->value.integer.value[0] =
- 		private->phantom_switch[elem->control];
--	mutex_unlock(&private->data_mutex);
- 
--	return 0;
-+unlock:
-+	mutex_unlock(&private->data_mutex);
-+	return err;
- }
- 
- static int scarlett2_phantom_ctl_put(struct snd_kcontrol *kctl,
-@@ -2601,14 +2649,20 @@ static int scarlett2_direct_monitor_ctl_get(
- 	struct usb_mixer_elem_info *elem = kctl->private_data;
- 	struct usb_mixer_interface *mixer = elem->head.mixer;
- 	struct scarlett2_data *private = elem->head.mixer->private_data;
-+	int err = 0;
- 
- 	mutex_lock(&private->data_mutex);
--	if (private->monitor_other_updated)
--		scarlett2_update_monitor_other(mixer);
-+
-+	if (private->monitor_other_updated) {
-+		err = scarlett2_update_monitor_other(mixer);
-+		if (err < 0)
-+			goto unlock;
-+	}
- 	ucontrol->value.enumerated.item[0] = private->direct_monitor_switch;
--	mutex_unlock(&private->data_mutex);
- 
--	return 0;
-+unlock:
-+	mutex_unlock(&private->data_mutex);
-+	return err;
- }
- 
- static int scarlett2_direct_monitor_ctl_put(
-@@ -2708,14 +2762,20 @@ static int scarlett2_speaker_switch_enum_ctl_get(
- 	struct usb_mixer_elem_info *elem = kctl->private_data;
- 	struct usb_mixer_interface *mixer = elem->head.mixer;
- 	struct scarlett2_data *private = mixer->private_data;
-+	int err = 0;
- 
- 	mutex_lock(&private->data_mutex);
--	if (private->monitor_other_updated)
--		scarlett2_update_monitor_other(mixer);
-+
-+	if (private->monitor_other_updated) {
-+		err = scarlett2_update_monitor_other(mixer);
-+		if (err < 0)
-+			goto unlock;
-+	}
- 	ucontrol->value.enumerated.item[0] = private->speaker_switching_switch;
--	mutex_unlock(&private->data_mutex);
- 
--	return 0;
-+unlock:
-+	mutex_unlock(&private->data_mutex);
-+	return err;
- }
- 
- /* when speaker switching gets enabled, switch the main/alt speakers
-@@ -2863,14 +2923,20 @@ static int scarlett2_talkback_enum_ctl_get(
- 	struct usb_mixer_elem_info *elem = kctl->private_data;
- 	struct usb_mixer_interface *mixer = elem->head.mixer;
- 	struct scarlett2_data *private = mixer->private_data;
-+	int err = 0;
- 
- 	mutex_lock(&private->data_mutex);
--	if (private->monitor_other_updated)
--		scarlett2_update_monitor_other(mixer);
-+
-+	if (private->monitor_other_updated) {
-+		err = scarlett2_update_monitor_other(mixer);
-+		if (err < 0)
-+			goto unlock;
-+	}
- 	ucontrol->value.enumerated.item[0] = private->talkback_switch;
--	mutex_unlock(&private->data_mutex);
- 
--	return 0;
-+unlock:
-+	mutex_unlock(&private->data_mutex);
-+	return err;
- }
- 
- static int scarlett2_talkback_enum_ctl_put(
-@@ -3018,14 +3084,20 @@ static int scarlett2_dim_mute_ctl_get(struct snd_kcontrol *kctl,
- 	struct usb_mixer_elem_info *elem = kctl->private_data;
- 	struct usb_mixer_interface *mixer = elem->head.mixer;
- 	struct scarlett2_data *private = mixer->private_data;
-+	int err = 0;
- 
- 	mutex_lock(&private->data_mutex);
--	if (private->vol_updated)
--		scarlett2_update_volumes(mixer);
--	mutex_unlock(&private->data_mutex);
- 
-+	if (private->vol_updated) {
-+		err = scarlett2_update_volumes(mixer);
-+		if (err < 0)
-+			goto unlock;
-+	}
- 	ucontrol->value.integer.value[0] = private->dim_mute[elem->control];
--	return 0;
-+
-+unlock:
-+	mutex_unlock(&private->data_mutex);
-+	return err;
- }
- 
- static int scarlett2_dim_mute_ctl_put(struct snd_kcontrol *kctl,
-@@ -3396,14 +3468,20 @@ static int scarlett2_mux_src_enum_ctl_get(struct snd_kcontrol *kctl,
- 	struct usb_mixer_interface *mixer = elem->head.mixer;
- 	struct scarlett2_data *private = mixer->private_data;
- 	int index = line_out_remap(private, elem->control);
-+	int err = 0;
- 
- 	mutex_lock(&private->data_mutex);
--	if (private->mux_updated)
--		scarlett2_usb_get_mux(mixer);
-+
-+	if (private->mux_updated) {
-+		err = scarlett2_usb_get_mux(mixer);
-+		if (err < 0)
-+			goto unlock;
-+	}
- 	ucontrol->value.enumerated.item[0] = private->mux[index];
--	mutex_unlock(&private->data_mutex);
- 
--	return 0;
-+unlock:
-+	mutex_unlock(&private->data_mutex);
-+	return err;
- }
- 
- static int scarlett2_mux_src_enum_ctl_put(struct snd_kcontrol *kctl,
 -- 
 2.43.0
 
