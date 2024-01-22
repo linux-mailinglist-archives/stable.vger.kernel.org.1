@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807AA837DD3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BE308383DA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1A17B28862
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:13:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BEA4D1C29530
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA51B145B1A;
-	Tue, 23 Jan 2024 00:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00D7E657AB;
+	Tue, 23 Jan 2024 01:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hn1buCKh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MP1lqL1o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC2F136658;
-	Tue, 23 Jan 2024 00:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B275B4E1AD;
+	Tue, 23 Jan 2024 01:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969681; cv=none; b=Zj85I483YjgnMvIrkX20UeyGqhd1r+J8HOUJ55FAPdMOIpi+httx/zmS9nlk9zDFra+S0+Cu8azXSKlL6yDBxIiJEneeaedHpwmWYQhj3YD+iq42Rm+3pVX8HxXlpQThdA3GlPj6rBHhBqCoYTQLaRbkYLUC63xGHnTkefh4xuU=
+	t=1705975080; cv=none; b=VS303BtAQVZY3iTT1tc3iMpbq7DbEn//zhLScHPbVs0+6Y9XIxnyR1W1hrfNJBCZfUSAOkyHjwM3h63KWc52KUj+38ReA8d6thQbmWtHWOrmwBNWrirvEBhPna821YyoW+AIuD5UBw+mWylw12EFYepDRP+WSbDehhwVKK9ccr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969681; c=relaxed/simple;
-	bh=UTROzBF8lkWcM1L6X/nvG501omNdXOGHdhihb2LDh/M=;
+	s=arc-20240116; t=1705975080; c=relaxed/simple;
+	bh=Nskk63iczY4wphG6jYoTrzd4wnOMvjI45TaybaKrrAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MqZXU7AcTAg4tIGexjJRvz1AHRj8/QmZvD2nRJrPhp3vHNN4CXspIcmIqVt3rTtdT+KfL+nJiyUZtXu5JAFRv+5pWVQDznh5MxZ3XJa9e99tZZ3tNxFrHUL3nC3efXWrM6yQI4blFASX3Y0G31OZryQWXSrUzUwrisZwx+D8mAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hn1buCKh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2051CC433C7;
-	Tue, 23 Jan 2024 00:28:01 +0000 (UTC)
+	 MIME-Version; b=dceXJtbUeK+aeZTvCAf0EM7iP1TXKP1ciXEX/Fg4j9ddz8z6OksQv8EMpDHVPxFLQaCccdR2NrvgA9bQo1OIvSC2fVkqjwa3x04FquHtOnTdePK25uZmm3t/g9soCfzg93hjhbjpgvlrYdGxtHvtOfnHN5p9mUaBQV4T9BpDvfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MP1lqL1o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD6AC433C7;
+	Tue, 23 Jan 2024 01:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969681;
-	bh=UTROzBF8lkWcM1L6X/nvG501omNdXOGHdhihb2LDh/M=;
+	s=korg; t=1705975080;
+	bh=Nskk63iczY4wphG6jYoTrzd4wnOMvjI45TaybaKrrAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hn1buCKhJzp1WlTTac6N2uhRQp4gzyU6Fw++sgnKguvyoMh8l3+uR5DOqKEnvSoMX
-	 vxPXlaMr1vthq7ahKPf40c0pa0zTVY5Zz3f1m5A96RipafU1oKWVykKYeUYM9aspDx
-	 fe4NhEWxHWJu8XAnDr5dZYnb6tTlHxG4z9gp/oh0=
+	b=MP1lqL1oMHYvDFJKoXo0P3DZ5YgKeksUbvk3hDH4R3lOvTH86USy11dx0P3VmNYym
+	 lTei/IEoe40LltUppn72mKaC+QY2Ga+ic6yqzwiuSBKXvftg9ds8Y57T7qSZwg/9N4
+	 Ik35td8T+9bfth1gMnARFRIGQf9Cbn7Hh9vQnqbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Rob Herring <robh@kernel.org>,
+	Chris Morgan <macromorgan@hotmail.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 376/641] of: unittest: Fix of_count_phandle_with_args() expected value message
+Subject: [PATCH 6.6 229/583] drm/panel-elida-kd35t133: hold panel in reset for unprepare
 Date: Mon, 22 Jan 2024 15:54:40 -0800
-Message-ID: <20240122235829.721291873@linuxfoundation.org>
+Message-ID: <20240122235819.002321503@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Chris Morgan <macromorgan@hotmail.com>
 
-[ Upstream commit 716089b417cf98d01f0dc1b39f9c47e1d7b4c965 ]
+[ Upstream commit 03c5b2a5f6c39fe4e090346536cf1c14ee18b61e ]
 
-The expected result value for the call to of_count_phandle_with_args()
-was updated from 7 to 8, but the accompanying error message was
-forgotten.
+For devices like the Anbernic RG351M and RG351P the panel is wired to
+an always on regulator. When the device suspends and wakes up, there
+are some slight artifacts on the screen that go away over time. If
+instead we hold the panel in reset status after it is unprepared,
+this does not happen.
 
-Fixes: 4dde83569832f937 ("of: Fix double free in of_parse_phandle_with_args_map")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20240111085025.2073894-1-geert+renesas@glider.be
-Signed-off-by: Rob Herring <robh@kernel.org>
+Fixes: 5b6603360c12 ("drm/panel: add panel driver for Elida KD35T133 panels")
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Link: https://lore.kernel.org/r/20231117194405.1386265-3-macroalpha82@gmail.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231117194405.1386265-3-macroalpha82@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/unittest.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/panel/panel-elida-kd35t133.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-index 45bd0d28c717..cfd60e35a899 100644
---- a/drivers/of/unittest.c
-+++ b/drivers/of/unittest.c
-@@ -574,7 +574,7 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
+diff --git a/drivers/gpu/drm/panel/panel-elida-kd35t133.c b/drivers/gpu/drm/panel/panel-elida-kd35t133.c
+index e7be15b68102..6de117232346 100644
+--- a/drivers/gpu/drm/panel/panel-elida-kd35t133.c
++++ b/drivers/gpu/drm/panel/panel-elida-kd35t133.c
+@@ -104,6 +104,8 @@ static int kd35t133_unprepare(struct drm_panel *panel)
+ 		return ret;
  	}
  
- 	rc = of_count_phandle_with_args(np, "phandle-list", "#phandle-cells");
--	unittest(rc == 8, "of_count_phandle_with_args() returned %i, expected 7\n", rc);
-+	unittest(rc == 8, "of_count_phandle_with_args() returned %i, expected 8\n", rc);
++	gpiod_set_value_cansleep(ctx->reset_gpio, 1);
++
+ 	regulator_disable(ctx->iovcc);
+ 	regulator_disable(ctx->vdd);
  
- 	for (i = 0; i < 9; i++) {
- 		bool passed = true;
 -- 
 2.43.0
 
