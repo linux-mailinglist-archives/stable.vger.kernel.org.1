@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-13569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFBE6837CA4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:13:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E80837EAA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9834D284C8C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:13:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 689DF1C266FD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716CB1468E1;
-	Tue, 23 Jan 2024 00:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96E64612CD;
+	Tue, 23 Jan 2024 00:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j48LaO0U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAtUTNTY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3168B136658;
-	Tue, 23 Jan 2024 00:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D6860EC7;
+	Tue, 23 Jan 2024 00:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969702; cv=none; b=Fu5RZ3Z75KXWKNoV8mZpSMjrOLwQ9NJI6va5tGnI+aUBx7JUhokOhAC+eu48TH+ZdY1mFY76QXegfvl8SbmjDgo8+z/9CO0ZxGBoQnQIxw10IqfM/erzc8+2IIo5MGNP1jWH26Q2Ghkm4VEzbvtKhWvwaS4ZlUQJJQKvAqfCaIM=
+	t=1705970752; cv=none; b=C2etZ/VKQL7b6szRB/b2uhfjwsr7cSMzTBlxKR1S3su4Jm9ro/SFCmaK5z8rF3zsDmkL+xO9H265nt/+x0hEj4jeygunnNtBSQl14/HBbxBVT1BrBAPVGFlSchSU2exiL9A7npbPeW6KHn5wnCmpgVhyGZGX4ta001lTriuqQaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969702; c=relaxed/simple;
-	bh=zmtznzuk1e0ckZ+ShXCQ+QkmVOq5JAFEvKVaAt2++bM=;
+	s=arc-20240116; t=1705970752; c=relaxed/simple;
+	bh=f0gexUZLGEersWFHd/9GD+McCt0b1Ul1LYzbdCYJ24c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gNaeZtldvPZhaBWev1j+OarNUlcFI9kW6SkS5Q+gJ2pb1M46iV26uKAQimKR/hntfNE1oUfc1UvSZQZ8Ak/+yVp4ei/Hg6f+xa2gvB6PpAX+X7uUeVoQKYh++SixL0hxFqGPKE1HFZzYCM6nFFHJ3hAHmjjQDoCijHsuZuFyQ8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j48LaO0U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3149C433F1;
-	Tue, 23 Jan 2024 00:28:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SJhhgeoXjpMz/4AtNUR2tRbis2yXPVChSnL3c7uGYWge/LeCY3xWaa8hjPNxK9ABBX5Af9bvC/pyR2Bu7vMgY8ueUTdwtcGrxvAmS665jR54DFmS5DkczZmEahnpjqgOVwAo/I8qNBm39aYI0bVUIxxWhVfBUUWIKeylYe22BME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AAtUTNTY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC756C433F1;
+	Tue, 23 Jan 2024 00:45:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969702;
-	bh=zmtznzuk1e0ckZ+ShXCQ+QkmVOq5JAFEvKVaAt2++bM=;
+	s=korg; t=1705970752;
+	bh=f0gexUZLGEersWFHd/9GD+McCt0b1Ul1LYzbdCYJ24c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j48LaO0UFFS5aqfgnjxz2ZZF/x7eWnu0jaD2SW9recuCNuSDhjxSU6sFU2viW4xHN
-	 LoFj4IMiE2MgVJ35tzM24a2P4nf8y+t6qQWZMGKTfLLRWCno8m6gzTwwR2HYjGo9j5
-	 5qO6JxHRJahRLT09KlJ9EiFmR+j/zZdH8FddzHwI=
+	b=AAtUTNTYioGIJ91DfPD1d94MTsOJPjvJGnOQWx+6HHdrwnF4DCqnlGW9zQ8iOq4xd
+	 MACX3YcXVsekmBBc0FTPVEdf/sUMZYakEa1Pmen1QWv4MkqfCzEVLY4bU8g2vao+Pv
+	 wszULzF+9+0AOQZtrgIgiOUz9ou0zVIcJ7WBIwUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Subject: [PATCH 6.7 412/641] serial: core: set missing supported flag for RX during TX GPIO
-Date: Mon, 22 Jan 2024 15:55:16 -0800
-Message-ID: <20240122235830.871809020@linuxfoundation.org>
+	Kamil Duljas <kamil.duljas@gmail.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 011/286] ASoC: Intel: Skylake: mem leak in skl register function
+Date: Mon, 22 Jan 2024 15:55:17 -0800
+Message-ID: <20240122235732.449596600@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,54 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Kamil Duljas <kamil.duljas@gmail.com>
 
-commit 1a33e33ca0e80d485458410f149265cdc0178cfa upstream.
+[ Upstream commit f8ba14b780273fd290ddf7ee0d7d7decb44cc365 ]
 
-If the RS485 feature RX-during-TX is supported by means of a GPIO set the
-according supported flag. Otherwise setting this feature from userspace may
-not be possible, since in uart_sanitize_serial_rs485() the passed RS485
-configuration is matched against the supported features and unsupported
-settings are thereby removed and thus take no effect.
+skl_platform_register() uses krealloc. When krealloc is fail,
+then previous memory is not freed. The leak is also when soc
+component registration failed.
 
-Cc:  <stable@vger.kernel.org>
-Fixes: 163f080eb717 ("serial: core: Add option to output RS485 RX_DURING_TX state via GPIO")
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Link: https://lore.kernel.org/r/20240103061818.564-3-l.sanfilippo@kunbus.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kamil Duljas <kamil.duljas@gmail.com>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20231116224112.2209-2-kamil.duljas@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/serial_core.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/intel/skylake/skl-pcm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -3650,6 +3650,8 @@ int uart_get_rs485_mode(struct uart_port
- 	if (IS_ERR(desc))
- 		return dev_err_probe(dev, PTR_ERR(desc), "Cannot get rs485-rx-during-tx-gpios\n");
- 	port->rs485_rx_during_tx_gpio = desc;
-+	if (port->rs485_rx_during_tx_gpio)
-+		port->rs485_supported.flags |= SER_RS485_RX_DURING_TX;
+diff --git a/sound/soc/intel/skylake/skl-pcm.c b/sound/soc/intel/skylake/skl-pcm.c
+index c7e76111f68b..935c871abdaa 100644
+--- a/sound/soc/intel/skylake/skl-pcm.c
++++ b/sound/soc/intel/skylake/skl-pcm.c
+@@ -1477,6 +1477,7 @@ int skl_platform_register(struct device *dev)
+ 		dais = krealloc(skl->dais, sizeof(skl_fe_dai) +
+ 				sizeof(skl_platform_dai), GFP_KERNEL);
+ 		if (!dais) {
++			kfree(skl->dais);
+ 			ret = -ENOMEM;
+ 			goto err;
+ 		}
+@@ -1489,8 +1490,10 @@ int skl_platform_register(struct device *dev)
  
- 	return 0;
+ 	ret = devm_snd_soc_register_component(dev, &skl_component,
+ 					 skl->dais, num_dais);
+-	if (ret)
++	if (ret) {
++		kfree(skl->dais);
+ 		dev_err(dev, "soc component registration failed %d\n", ret);
++	}
+ err:
+ 	return ret;
  }
+-- 
+2.43.0
+
 
 
 
