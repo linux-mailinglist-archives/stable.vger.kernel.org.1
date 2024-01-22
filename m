@@ -1,54 +1,60 @@
-Return-Path: <stable+bounces-13581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F16E837CC4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD6B83817E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FAA51C2525C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:17:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D292C1F23DAB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B838D157E9F;
-	Tue, 23 Jan 2024 00:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64306144601;
+	Tue, 23 Jan 2024 01:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jHdYomr1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="acd/I/4p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77BE01586F1;
-	Tue, 23 Jan 2024 00:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE3437C;
+	Tue, 23 Jan 2024 01:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969737; cv=none; b=qtEBYxB3OFBPIfCOFIR9b34o3AhL7YW0CpkLN142epoeLnsTimAO+HVYTwtlMYfNqYh+j95QzseccbCq9nnnqLUrx3rfXyeUNfTummohEw9nq4hwkyScsbSIWt3o5kWcbJtQx+czNcEUF/sKUWHNAd1toQY52VHGl96KM1VKWpQ=
+	t=1705972147; cv=none; b=L4dkAGWz+aTFkGO8hpFqnYkodfOg6jeIJWCeTuEz45PaFoSe59eyJBc6E5OQ1WdyctDaCVHeYYanNGVKgk91ropP4alQAFJrNtMi+MKljZYKEtIHa0GWe6dh+r9t00sjUgoDvMDjsHsyqfacutw7APhOrLu0v1fj9SKnbN2vR24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969737; c=relaxed/simple;
-	bh=vErsPezn2LFkpmlUhUuPO6s+jT9xKm7MFAuYjbxajZE=;
+	s=arc-20240116; t=1705972147; c=relaxed/simple;
+	bh=Vvc6bxipxAHMUEfFFsOmgQOSZwyAY5ALbP9+9IniLu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=csPyHDY6kbRLF9DDT0CQxPt8xYrObUBQKODK/gk6EKKvc5ScaLTAndi1TxTZ7l4SFwwXRNlBqdxCV72n2l9qYCPgEp/6HsXwcvCZUqi61XtFV4zDLab9SpVbH1GS0tmcyvdyzLq3l5f6yBZdUyDNh+hKNT4aU//0PhuC3xd7qdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jHdYomr1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06EFAC43399;
-	Tue, 23 Jan 2024 00:28:55 +0000 (UTC)
+	 MIME-Version; b=T8bZcokhlnx8yD+g/1zqj10fqs3IOnp4SFIfhL7/49/p7rfZozxQviygDKeJQq3sKqX4VpkLX1eVVJ8/yIZDS8Rt851ItgInwy4SwUL65b8ct35MFA98pmq+P3euls/bp/NDW1KhNiLOi011j5HiI2NdnxNqHHVH+89YX8kOy00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=acd/I/4p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A22C43399;
+	Tue, 23 Jan 2024 01:09:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969737;
-	bh=vErsPezn2LFkpmlUhUuPO6s+jT9xKm7MFAuYjbxajZE=;
+	s=korg; t=1705972147;
+	bh=Vvc6bxipxAHMUEfFFsOmgQOSZwyAY5ALbP9+9IniLu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jHdYomr1m7FhokdY2XvqflYft1xzYOoLsUF87lRAkGAofN3YNwM04Jo25vDgm25Ig
-	 Qc+mmPB/kJU0vRAqEVTJTy6f5nh25Lpr0DHRpArEgG4PA5X2kFhTCoKZsAr0xKDuXn
-	 AzvMg4tFnZVXO4/CnMOTuYNSpzMGMTNXhsn1QWUc=
+	b=acd/I/4pezRTPwo2DpKkaedObjD8ToLx1ZB5I5wT45y8HxrSndml2MycNxdjYs17n
+	 waYICaSwlFWHsVe8r1OaRcarmK1BdefvU1ffrF37peZBCYcH6AfkIiXw81kgFzX0WF
+	 g3wqLvDJivJJkRIcXQB10Q1aGYKY8P555c63WzOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.7 400/641] Revert "usb: dwc3: dont reset device side if dwc3 was configured as host-only"
-Date: Mon, 22 Jan 2024 15:55:04 -0800
-Message-ID: <20240122235830.485902647@linuxfoundation.org>
+	syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com,
+	Ziqi Zhao <astrajoan@yahoo.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 049/374] drm/crtc: fix uninitialized variable use
+Date: Mon, 22 Jan 2024 15:55:05 -0800
+Message-ID: <20240122235746.308877187@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-commit afe28cd686aeb77e8d9140d50fb1cf06a7ecb731 upstream.
+[ Upstream commit 6e455f5dcdd15fa28edf0ffb5b44d3508512dccf ]
 
-This reverts commit e835c0a4e23c38531dcee5ef77e8d1cf462658c7.
+Commit 3823119b9c2b ("drm/crtc: Fix uninit-value bug in
+drm_mode_setcrtc") was supposed to fix use of an uninitialized variable,
+but introduced another.
 
-Don't omit soft-reset. During initialization, the driver may need to
-perform a soft reset to ensure the phy is ready when the controller
-updates the GCTL.PRTCAPDIR or other settings by issuing phy soft-reset.
-Many platforms often have access to DCTL register for soft-reset despite
-being host-only. If there are actual reported issues from the platforms
-that don't expose DCTL registers, then we will need to revisit (perhaps
-to teach dwc3 to perform xhci's soft-reset USBCMD.HCRST).
+num_connectors is only initialized if crtc_req->count_connectors > 0,
+but it's used regardless. Fix it.
 
-Cc:  <stable@vger.kernel.org>
-Fixes: e835c0a4e23c ("usb: dwc3: don't reset device side if dwc3 was configured as host-only")
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/7668ab11a48f260820825274976eb41fec7f54d1.1703282469.git.Thinh.Nguyen@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3823119b9c2b ("drm/crtc: Fix uninit-value bug in drm_mode_setcrtc")
+Cc: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
+Cc: Ziqi Zhao <astrajoan@yahoo.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231208131238.2924571-1-jani.nikula@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/core.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_crtc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -277,9 +277,9 @@ int dwc3_core_soft_reset(struct dwc3 *dw
- 	/*
- 	 * We're resetting only the device side because, if we're in host mode,
- 	 * XHCI driver will reset the host block. If dwc3 was configured for
--	 * host-only mode or current role is host, then we can return early.
-+	 * host-only mode, then we can return early.
- 	 */
--	if (dwc->dr_mode == USB_DR_MODE_HOST || dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
-+	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
- 		return 0;
+diff --git a/drivers/gpu/drm/drm_crtc.c b/drivers/gpu/drm/drm_crtc.c
+index 8b50ab4c5581..c5e0c652766c 100644
+--- a/drivers/gpu/drm/drm_crtc.c
++++ b/drivers/gpu/drm/drm_crtc.c
+@@ -643,7 +643,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 	struct drm_mode_set set;
+ 	uint32_t __user *set_connectors_ptr;
+ 	struct drm_modeset_acquire_ctx ctx;
+-	int ret, i, num_connectors;
++	int ret, i, num_connectors = 0;
  
- 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
+ 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
+ 		return -EOPNOTSUPP;
+@@ -778,7 +778,6 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 			goto out;
+ 		}
+ 
+-		num_connectors = 0;
+ 		for (i = 0; i < crtc_req->count_connectors; i++) {
+ 			connector_set[i] = NULL;
+ 			set_connectors_ptr = (uint32_t __user *)(unsigned long)crtc_req->set_connectors_ptr;
+-- 
+2.43.0
+
 
 
 
