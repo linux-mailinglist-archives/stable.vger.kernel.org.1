@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 824C5838479
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFD79837E94
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA42CB2BCDA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DF181C2136E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2B26311B;
-	Tue, 23 Jan 2024 01:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5DA2B9CC;
+	Tue, 23 Jan 2024 00:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiNPfmDw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBfFWhNT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D20262A1F;
-	Tue, 23 Jan 2024 01:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC49B626;
+	Tue, 23 Jan 2024 00:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974988; cv=none; b=ob3KHfi31yCQXR9s9WLYzokzdln6CsWGwNiapVYAMOTPERECeJsUaSxF5h2HgMvW4J43I3hz0/x9G9w+DIRKljKv8y/nBr611byFbH27TAXE7xE7450mFscyKLl7IhNbeeQRogaINCUtzFOkJTRQjhR7/rJx5UyAq9LbbkqMsA4=
+	t=1705970690; cv=none; b=TndKLyXgiKlr5n6hG/toRlQ6E9yZolJ8bpLVwnMbqIBUHsvOh1LlSJmqa/PinPocBIgzjNKm68/OTTxJmXJ5MlZS3fBKr8SDUoKyCFdbj3WaOuJwftslHjKAAwciR31km9WuGlEQdeEUKVOalZ4rgikoFRkorQg73ANNGJGAW/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974988; c=relaxed/simple;
-	bh=GwcU2pSIbydwbJiU6IuHormamlt/mT09dfYLqMj4oWw=;
+	s=arc-20240116; t=1705970690; c=relaxed/simple;
+	bh=z1IkpyOGaWwSxFZaY7ncqSsKPsbeaPSxiDAzrw24ncE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=prwQ/jIg5XdHMPo7DQWoZMjZbQ3mJ8ErHhpXk/m5wx9c/mReNCpWjn0m0fs2MJ92gDLhB7FGE2s9jBZnBuw8oqeF7SywzpQcuD0Igp9GJ47nspwikyy1l0b8is2+aZ0+03ocdVwAo9KnxSGKY4WEoRtNMXE73hHuTwdD/EmlTxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiNPfmDw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5DDC433F1;
-	Tue, 23 Jan 2024 01:56:27 +0000 (UTC)
+	 MIME-Version; b=q/McbG0zRYBgwxnzcrHq+D8QHS64M1wvY2f4l5epp0Ir1nSWTVAfi3UmsJZrC3Eomd+heNuDtN6HjnYWEdVaSguNvJTGAtvSkDRQOegiAVsnq+AJDPpSLgjB3vwA7VndmP3un12JsQ8Tsd9AQy+wCka5LA2CGE1yoYZT5RfBMgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TBfFWhNT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BA40C433C7;
+	Tue, 23 Jan 2024 00:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974987;
-	bh=GwcU2pSIbydwbJiU6IuHormamlt/mT09dfYLqMj4oWw=;
+	s=korg; t=1705970689;
+	bh=z1IkpyOGaWwSxFZaY7ncqSsKPsbeaPSxiDAzrw24ncE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HiNPfmDw7U6uNQsYu3vi43mcVCMYZ/nhTYgPIgPo9sb4NudIB8+juueCfQvQoU1G7
-	 tJIkWXJuWZrMFSX6HBTP00HQ3Wz8HDFz2Wvqt2887nzijFeT26iH8vHHeN7t6dG3PO
-	 P4VDJuWHz/MXPgf4uwE8LYqCD9u1B4giFZ8wBo+0=
+	b=TBfFWhNTqZ9cy2r/d14YDFHlE/YkrODYFsBMGeZ7TqAnTEKfmrXkV2PoP5j0o4rVy
+	 kqIMrUs6zqo16IC6LPUq/mRbX4Zkj5DQ8mEdV5yz3MM91IZshYhAQ705EUIe9T+4qh
+	 uH17DKJUgdXjnqWpeqICxeYHCdoUuvlcjZSEASjI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chukun Pan <amadeus@jmu.edu.cn>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 182/583] arm64: dts: qcom: ipq6018: fix clock rates for GCC_USB0_MOCK_UTMI_CLK
+Subject: [PATCH 6.1 065/417] NFSv4.1/pnfs: Ensure we handle the error NFS4ERR_RETURNCONFLICT
 Date: Mon, 22 Jan 2024 15:53:53 -0800
-Message-ID: <20240122235817.579636443@linuxfoundation.org>
+Message-ID: <20240122235753.958385031@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chukun Pan <amadeus@jmu.edu.cn>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 5c0dbe8b058436ad5daecb19c60869f832607ea3 ]
+[ Upstream commit 037e56a22ff37f9a9c2330b66cff55d3d1ff9b90 ]
 
-The downstream QSDK kernel [1] and GCC_USB1_MOCK_UTMI_CLK are both 24MHz.
-Adjust GCC_USB0_MOCK_UTMI_CLK to 24MHz to avoid the following error:
+Once the client has processed the CB_LAYOUTRECALL, but has not yet
+successfully returned the layout, the server is supposed to switch to
+returning NFS4ERR_RETURNCONFLICT. This patch ensures that we handle
+that return value correctly.
 
-clk: couldn't set gcc_usb0_mock_utmi_clk clk rate to 20000000 (-22), current rate: 24000000
-
-1. https://git.codelinaro.org/clo/qsdk/oss/kernel/linux-ipq-5.4/-/commit/486c8485f59
-
-Fixes: 5726079cd486 ("arm64: dts: ipq6018: Use reference clock to set dwc3 period")
-Signed-off-by: Chukun Pan <amadeus@jmu.edu.cn>
-Link: https://lore.kernel.org/r/20231218150805.1228160-1-amadeus@jmu.edu.cn
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 183d9e7b112a ("pnfs: rework LAYOUTGET retry handling")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/ipq6018.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/nfs4proc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/ipq6018.dtsi b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-index 264845cecf92..fc907afe5174 100644
---- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-@@ -565,7 +565,7 @@ usb3: usb@8af8800 {
- 					  <&gcc GCC_USB0_MOCK_UTMI_CLK>;
- 			assigned-clock-rates = <133330000>,
- 					       <133330000>,
--					       <20000000>;
-+					       <24000000>;
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 85a952143e9f..ec3f0103e1a7 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -170,6 +170,7 @@ static int nfs4_map_errors(int err)
+ 	case -NFS4ERR_RESOURCE:
+ 	case -NFS4ERR_LAYOUTTRYLATER:
+ 	case -NFS4ERR_RECALLCONFLICT:
++	case -NFS4ERR_RETURNCONFLICT:
+ 		return -EREMOTEIO;
+ 	case -NFS4ERR_WRONGSEC:
+ 	case -NFS4ERR_WRONG_CRED:
+@@ -558,6 +559,7 @@ static int nfs4_do_handle_exception(struct nfs_server *server,
+ 		case -NFS4ERR_GRACE:
+ 		case -NFS4ERR_LAYOUTTRYLATER:
+ 		case -NFS4ERR_RECALLCONFLICT:
++		case -NFS4ERR_RETURNCONFLICT:
+ 			exception->delay = 1;
+ 			return 0;
  
- 			resets = <&gcc GCC_USB0_BCR>;
- 			status = "disabled";
+@@ -9667,6 +9669,7 @@ nfs4_layoutget_handle_exception(struct rpc_task *task,
+ 		status = -EBUSY;
+ 		break;
+ 	case -NFS4ERR_RECALLCONFLICT:
++	case -NFS4ERR_RETURNCONFLICT:
+ 		status = -ERECALLCONFLICT;
+ 		break;
+ 	case -NFS4ERR_DELEG_REVOKED:
 -- 
 2.43.0
 
