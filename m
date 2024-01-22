@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC35F837E4D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A7BE837C28
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A7421C27C67
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:38:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CCF01C287F0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA3352F71;
-	Tue, 23 Jan 2024 00:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D9171552FF;
+	Tue, 23 Jan 2024 00:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+7OiQ8/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K7KnhHz9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E63950A8E;
-	Tue, 23 Jan 2024 00:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B901EEE8;
+	Tue, 23 Jan 2024 00:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970508; cv=none; b=cC6bI5fbnl0112U5138NPZNns3R7CX9lvvgvMn6ftMGmwGbYajptsqVez2wc66awgiy6Fb4C7Ehq0rYEX2hEFLJslIHDTr3SZI1eMo0ESBofL/mToX/SAStSTc2RN6O6vgqPSUgtMR7HT+BgpaJ595IxidnA4xkTUj9jgbCSZN0=
+	t=1705969520; cv=none; b=on7JqsTmZkfR8P+Yt1lZXrL2U5AbdLYj9FQpF+AEZ35nYr4aORkIAVGAL2RYkBxofiPkf2lOhXKePSCP/GvTp9+QzqJ+lHGLY8twXklp2z4WzWVcGrjzzP0Y6bpel2wGFjB9x2vXY8Y4Q75+lvt6iZ8vibd2tscJItZ5+YNehPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970508; c=relaxed/simple;
-	bh=bZk/QSxnr8D5Ct4asj631uz0Yx1RTDd+aozi9VPPoQA=;
+	s=arc-20240116; t=1705969520; c=relaxed/simple;
+	bh=KmXTxCnnwHgMco5hU0CgAmGgeQyIqdUbJBUgHUjVRCw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HqTJPSxe7t+UzrNDwjA5voIJdmJ2HrI9kqZIs1JPP66DwVyNNNkGCXVEtI4a3QM7ch9f+Mj+DJ3rAzWnUlfGUHLzCDUJ+W7DWPLZfNgMDj7+lGM1WpB9p1AuHByJo8Qs2gFM7u44OF7RcrioUikpDpGb/wpSQWZjOlL9YB/bj1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+7OiQ8/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F62C433C7;
-	Tue, 23 Jan 2024 00:41:46 +0000 (UTC)
+	 MIME-Version; b=HqKtfIYa8TMYgzedU3zz6B/XguRpN4TYgu3WmdK1qmA4H5D4xeV9lKwOSgAcD+fLNjHeZ+91dGy7NeEjR4Lc8+VIPtBGBO06FyUaYLOo3wmYusRgwP4o3kMb/0PMF6hU9AvRrbrmk00fOs91vTb4O/5w/89APV1wZchLLsoSpuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K7KnhHz9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FFEC433A6;
+	Tue, 23 Jan 2024 00:25:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970507;
-	bh=bZk/QSxnr8D5Ct4asj631uz0Yx1RTDd+aozi9VPPoQA=;
+	s=korg; t=1705969520;
+	bh=KmXTxCnnwHgMco5hU0CgAmGgeQyIqdUbJBUgHUjVRCw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V+7OiQ8/be41CNnT4PFIXLKS1Gqo/SdQgM7xZpA9ahgE6GFm0MH5pyQxNzycsoMeJ
-	 H7IVn5PbhG3MfL09cAv/cZf6SS+x+NQZTEdpS4VjLwGHIAXF3obIamq9SE097jOEq2
-	 o0Jd5IvFoHcsg0F0T022QNyBkjoqbyo3Ey+zMmus=
+	b=K7KnhHz9wTwMTREWpryJPgcdYY/XY1eT4RH0rnTkNfdSbXJ9JN2OIqWInD/WtPuxf
+	 90RpfESQmyKkv2hlPXexDbaIeEcD9cwaL1kV2kG3+fsXH1lvrgVrRUgZfZYJTRcj0w
+	 ZGxmdJkp/+5lVafCWXScee5y16COdBWoK/0JAaV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Antoine Tenart <atenart@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/417] crypto: safexcel - Add error handling for dma_map_sg() calls
+Subject: [PATCH 6.7 302/641] clk: qcom: gpucc-sm8150: Update the gpu_cc_pll1 config
 Date: Mon, 22 Jan 2024 15:53:26 -0800
-Message-ID: <20240122235752.938797245@linuxfoundation.org>
+Message-ID: <20240122235827.362117385@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-[ Upstream commit 87e02063d07708cac5bfe9fd3a6a242898758ac8 ]
+[ Upstream commit 6ebd9a4f8b8d2b35cf965a04849c4ba763722f13 ]
 
-Macro dma_map_sg() may return 0 on error. This patch enables
-checks in case of the macro failure and ensures unmapping of
-previously mapped buffers with dma_unmap_sg().
+Update the test_ctl_hi_val and test_ctl_hi1_val of gpu_cc_pll1
+as per latest HW recommendation.
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
-
-Fixes: 49186a7d9e46 ("crypto: inside_secure - Avoid dma map if size is zero")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Reviewed-by: Antoine Tenart <atenart@kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 0cef71f2ccc8 ("clk: qcom: Add graphics clock controller driver for SM8150")
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231122042814.4158076-1-quic_skakitap@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../crypto/inside-secure/safexcel_cipher.c    | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ drivers/clk/qcom/gpucc-sm8150.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/inside-secure/safexcel_cipher.c b/drivers/crypto/inside-secure/safexcel_cipher.c
-index 32a37e3850c5..f59e32115268 100644
---- a/drivers/crypto/inside-secure/safexcel_cipher.c
-+++ b/drivers/crypto/inside-secure/safexcel_cipher.c
-@@ -742,9 +742,9 @@ static int safexcel_send_req(struct crypto_async_request *base, int ring,
- 				max(totlen_src, totlen_dst));
- 			return -EINVAL;
- 		}
--		if (sreq->nr_src > 0)
--			dma_map_sg(priv->dev, src, sreq->nr_src,
--				   DMA_BIDIRECTIONAL);
-+		if (sreq->nr_src > 0 &&
-+		    !dma_map_sg(priv->dev, src, sreq->nr_src, DMA_BIDIRECTIONAL))
-+			return -EIO;
- 	} else {
- 		if (unlikely(totlen_src && (sreq->nr_src <= 0))) {
- 			dev_err(priv->dev, "Source buffer not large enough (need %d bytes)!",
-@@ -752,8 +752,9 @@ static int safexcel_send_req(struct crypto_async_request *base, int ring,
- 			return -EINVAL;
- 		}
- 
--		if (sreq->nr_src > 0)
--			dma_map_sg(priv->dev, src, sreq->nr_src, DMA_TO_DEVICE);
-+		if (sreq->nr_src > 0 &&
-+		    !dma_map_sg(priv->dev, src, sreq->nr_src, DMA_TO_DEVICE))
-+			return -EIO;
- 
- 		if (unlikely(totlen_dst && (sreq->nr_dst <= 0))) {
- 			dev_err(priv->dev, "Dest buffer not large enough (need %d bytes)!",
-@@ -762,9 +763,11 @@ static int safexcel_send_req(struct crypto_async_request *base, int ring,
- 			goto unmap;
- 		}
- 
--		if (sreq->nr_dst > 0)
--			dma_map_sg(priv->dev, dst, sreq->nr_dst,
--				   DMA_FROM_DEVICE);
-+		if (sreq->nr_dst > 0 &&
-+		    !dma_map_sg(priv->dev, dst, sreq->nr_dst, DMA_FROM_DEVICE)) {
-+			ret = -EIO;
-+			goto unmap;
-+		}
- 	}
- 
- 	memcpy(ctx->base.ctxr->data, ctx->key, ctx->key_len);
+diff --git a/drivers/clk/qcom/gpucc-sm8150.c b/drivers/clk/qcom/gpucc-sm8150.c
+index 8422fd047493..c89a5b59ddb7 100644
+--- a/drivers/clk/qcom/gpucc-sm8150.c
++++ b/drivers/clk/qcom/gpucc-sm8150.c
+@@ -37,8 +37,8 @@ static struct alpha_pll_config gpu_cc_pll1_config = {
+ 	.config_ctl_hi_val = 0x00002267,
+ 	.config_ctl_hi1_val = 0x00000024,
+ 	.test_ctl_val = 0x00000000,
+-	.test_ctl_hi_val = 0x00000002,
+-	.test_ctl_hi1_val = 0x00000000,
++	.test_ctl_hi_val = 0x00000000,
++	.test_ctl_hi1_val = 0x00000020,
+ 	.user_ctl_val = 0x00000000,
+ 	.user_ctl_hi_val = 0x00000805,
+ 	.user_ctl_hi1_val = 0x000000d0,
 -- 
 2.43.0
 
