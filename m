@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-14499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 974EE838126
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86DF6838397
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F83628C011
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3EF41C29E2E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8364141995;
-	Tue, 23 Jan 2024 01:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4091563409;
+	Tue, 23 Jan 2024 01:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YseHda8V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9xnVMzA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C51141981;
-	Tue, 23 Jan 2024 01:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DD46313F;
+	Tue, 23 Jan 2024 01:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972047; cv=none; b=FVojpnKgnp50a3J895OuR0QJO3hMu3IndvUqVxO8RknYLM4oHIkBuJYpUOhORASyGSKXzxNKo/aaZxhwe1iA3Bev0UIU/iK2BkcsarIYNMdXUFvuoG2Isx16NibnN6/fe/hPmWejOq0X22FXljIKKt0dN0edCSUcefT0mI1+ZA0=
+	t=1705975016; cv=none; b=lmBFY0bdUb+usjwy0Ts8ouUffOhuT/yx2EgruUJ2fCfMoWyq6YfgZdy+NqFaBIqmhhlWDQFQL3BQ6k7Bcqu7Y9+U/agf+xfed7MujrgVWidqsSN3i7HjsHsOahwvTK4WJut/CoQz3tEfK3dJveqoJRghOPl6nZqAFeFFxjyOmUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972047; c=relaxed/simple;
-	bh=feedNJJEGr0ZPU+AX+iQQ8s4WD3cbZfiNu3W568gQK8=;
+	s=arc-20240116; t=1705975016; c=relaxed/simple;
+	bh=x6/BEGnkFmlXSvF/NAv0hjtaZg4dTl7nlBLLHnLkUB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H/MaxKgGEVKd0fLmAyDLhZHqHHa84wOtmliAo3g8o6G1kCAvKlYM84a5hhqf6Jti5nf/9giQwZFKfsdhzD9fFWX+qn2ZrUeWU2wqAgwIIUnFG1pKktYB8O45kX2KbIB7yxN0SqywJgwZXDFd2lblNmiPwf+OxPOwFYovhpQD0Pw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YseHda8V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F38DC433F1;
-	Tue, 23 Jan 2024 01:07:27 +0000 (UTC)
+	 MIME-Version; b=VmYlZ1aF0OLwplriCzytMummGqhb2fbqGLQXnJfIdsE8K0auWCa3+SiaH/JKVXuW/pIRnQ1DYkxB9nWIJ43XwHQCiOHRQgwnEwkaf4zhHXGW0VJwzVlrkXMej1PHXv5ql+ukjvLQ13GAMdat0pL42lCMw9ix+W42AS6WPu5N+H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9xnVMzA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA40C433F1;
+	Tue, 23 Jan 2024 01:56:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972047;
-	bh=feedNJJEGr0ZPU+AX+iQQ8s4WD3cbZfiNu3W568gQK8=;
+	s=korg; t=1705975015;
+	bh=x6/BEGnkFmlXSvF/NAv0hjtaZg4dTl7nlBLLHnLkUB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YseHda8V7nVYI1u/dKcH68ZtDByK2/h6ie5ubKKhTANiJ3lOHNrxmHzatboq/bxKL
-	 xODXGlv4s3g0GR0KnzdoEJks1qrbrOIc75bhq73gdro+fFhajdHU0qPRF3Rrysc0jB
-	 3hyWcmG8eGYrBEIc9GVo9I/WxFqSI5Thmgt0Ng4U=
+	b=D9xnVMzAdYb2wYHyOaPDR/2RslZJZuqica7PRMzwXapQCmhxiYtfW4bAFES3Vtsqr
+	 1S0J1NyGc1/RxTiYg+a/dFLBvToe3dOYWZeJaIrZmfVIp6PymF2cTjNr6jB20/G/Jl
+	 AVon2wN3kln7yREfMGiaMc0F98Ydq8DuNl7kosBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a9400cabb1d784e49abf@syzkaller.appspotmail.com,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Taehee Yoo <ap420073@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	John Johansen <john.johansen@canonical.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 413/417] ipv6: mcast: fix data-race in ipv6_mc_down / mld_ifc_work
+Subject: [PATCH 5.15 325/374] apparmor: avoid crash when parsed profile name is empty
 Date: Mon, 22 Jan 2024 15:59:41 -0800
-Message-ID: <20240122235805.995298290@linuxfoundation.org>
+Message-ID: <20240122235756.204439316@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,83 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 2e7ef287f07c74985f1bf2858bedc62bd9ebf155 ]
+[ Upstream commit 55a8210c9e7d21ff2644809699765796d4bfb200 ]
 
-idev->mc_ifc_count can be written over without proper locking.
+When processing a packed profile in unpack_profile() described like
 
-Originally found by syzbot [1], fix this issue by encapsulating calls
-to mld_ifc_stop_work() (and mld_gq_stop_work() for good measure) with
-mutex_lock() and mutex_unlock() accordingly as these functions
-should only be called with mc_lock per their declarations.
+ "profile :ns::samba-dcerpcd /usr/lib*/samba/{,samba/}samba-dcerpcd {...}"
 
-[1]
-BUG: KCSAN: data-race in ipv6_mc_down / mld_ifc_work
+a string ":samba-dcerpcd" is unpacked as a fully-qualified name and then
+passed to aa_splitn_fqname().
 
-write to 0xffff88813a80c832 of 1 bytes by task 3771 on cpu 0:
- mld_ifc_stop_work net/ipv6/mcast.c:1080 [inline]
- ipv6_mc_down+0x10a/0x280 net/ipv6/mcast.c:2725
- addrconf_ifdown+0xe32/0xf10 net/ipv6/addrconf.c:3949
- addrconf_notify+0x310/0x980
- notifier_call_chain kernel/notifier.c:93 [inline]
- raw_notifier_call_chain+0x6b/0x1c0 kernel/notifier.c:461
- __dev_notify_flags+0x205/0x3d0
- dev_change_flags+0xab/0xd0 net/core/dev.c:8685
- do_setlink+0x9f6/0x2430 net/core/rtnetlink.c:2916
- rtnl_group_changelink net/core/rtnetlink.c:3458 [inline]
- __rtnl_newlink net/core/rtnetlink.c:3717 [inline]
- rtnl_newlink+0xbb3/0x1670 net/core/rtnetlink.c:3754
- rtnetlink_rcv_msg+0x807/0x8c0 net/core/rtnetlink.c:6558
- netlink_rcv_skb+0x126/0x220 net/netlink/af_netlink.c:2545
- rtnetlink_rcv+0x1c/0x20 net/core/rtnetlink.c:6576
- netlink_unicast_kernel net/netlink/af_netlink.c:1342 [inline]
- netlink_unicast+0x589/0x650 net/netlink/af_netlink.c:1368
- netlink_sendmsg+0x66e/0x770 net/netlink/af_netlink.c:1910
- ...
+aa_splitn_fqname() treats ":samba-dcerpcd" as only containing a namespace.
+Thus it returns NULL for tmpname, meanwhile tmpns is non-NULL. Later
+aa_alloc_profile() crashes as the new profile name is NULL now.
 
-write to 0xffff88813a80c832 of 1 bytes by task 22 on cpu 1:
- mld_ifc_work+0x54c/0x7b0 net/ipv6/mcast.c:2653
- process_one_work kernel/workqueue.c:2627 [inline]
- process_scheduled_works+0x5b8/0xa30 kernel/workqueue.c:2700
- worker_thread+0x525/0x730 kernel/workqueue.c:2781
- ...
+general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
+CPU: 6 PID: 1657 Comm: apparmor_parser Not tainted 6.7.0-rc2-dirty #16
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
+RIP: 0010:strlen+0x1e/0xa0
+Call Trace:
+ <TASK>
+ ? strlen+0x1e/0xa0
+ aa_policy_init+0x1bb/0x230
+ aa_alloc_profile+0xb1/0x480
+ unpack_profile+0x3bc/0x4960
+ aa_unpack+0x309/0x15e0
+ aa_replace_profiles+0x213/0x33c0
+ policy_update+0x261/0x370
+ profile_replace+0x20e/0x2a0
+ vfs_write+0x2af/0xe00
+ ksys_write+0x126/0x250
+ do_syscall_64+0x46/0xf0
+ entry_SYSCALL_64_after_hwframe+0x6e/0x76
+ </TASK>
+---[ end trace 0000000000000000 ]---
+RIP: 0010:strlen+0x1e/0xa0
 
-Fixes: 2d9a93b4902b ("mld: convert from timer to delayed work")
-Reported-by: syzbot+a9400cabb1d784e49abf@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/all/000000000000994e09060ebcdffb@google.com/
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Acked-by: Taehee Yoo <ap420073@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://lore.kernel.org/r/20240117172102.12001-1-n.zhandarovich@fintech.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+It seems such behaviour of aa_splitn_fqname() is expected and checked in
+other places where it is called (e.g. aa_remove_profiles). Well, there
+is an explicit comment "a ns name without a following profile is allowed"
+inside.
+
+AFAICS, nothing can prevent unpacked "name" to be in form like
+":samba-dcerpcd" - it is passed from userspace.
+
+Deny the whole profile set replacement in such case and inform user with
+EPROTO and an explaining message.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 04dc715e24d0 ("apparmor: audit policy ns specified in policy load")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: John Johansen <john.johansen@canonical.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/mcast.c | 4 ++++
+ security/apparmor/policy_unpack.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/net/ipv6/mcast.c b/net/ipv6/mcast.c
-index 7860383295d8..566f3b7b957e 100644
---- a/net/ipv6/mcast.c
-+++ b/net/ipv6/mcast.c
-@@ -2725,8 +2725,12 @@ void ipv6_mc_down(struct inet6_dev *idev)
- 	synchronize_net();
- 	mld_query_stop_work(idev);
- 	mld_report_stop_work(idev);
-+
-+	mutex_lock(&idev->mc_lock);
- 	mld_ifc_stop_work(idev);
- 	mld_gq_stop_work(idev);
-+	mutex_unlock(&idev->mc_lock);
-+
- 	mld_dad_stop_work(idev);
- }
+diff --git a/security/apparmor/policy_unpack.c b/security/apparmor/policy_unpack.c
+index 5f758b289ace..d1a385b44d63 100644
+--- a/security/apparmor/policy_unpack.c
++++ b/security/apparmor/policy_unpack.c
+@@ -696,6 +696,10 @@ static struct aa_profile *unpack_profile(struct aa_ext *e, char **ns_name)
  
+ 	tmpname = aa_splitn_fqname(name, strlen(name), &tmpns, &ns_len);
+ 	if (tmpns) {
++		if (!tmpname) {
++			info = "empty profile name";
++			goto fail;
++		}
+ 		*ns_name = kstrndup(tmpns, ns_len, GFP_KERNEL);
+ 		if (!*ns_name) {
+ 			info = "out of memory";
 -- 
 2.43.0
 
