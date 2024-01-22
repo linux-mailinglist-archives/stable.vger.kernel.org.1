@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-12830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96892837890
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DD7C837A26
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C77C11C2734B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:23:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C88EB1F287DF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E609E134752;
-	Tue, 23 Jan 2024 00:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528E312AACB;
+	Tue, 23 Jan 2024 00:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+V76cH1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GbJUOa5p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4654134749;
-	Tue, 23 Jan 2024 00:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10FBD12AAC7;
+	Tue, 23 Jan 2024 00:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968112; cv=none; b=Nz7W2yQkpcdU7Nsy/TcYuhzPT2LNlvntFZ3A06zd/mXCJu2IacZOii4y1fsg1kgw1fNHMKDoj/9LZroPdv/J/lXoolt0VVyzm19kscn9n2InbK+8put7L7YKkqR2k289ZDAOfYUl/znVuVwiLoDMy+hn6Mk3LHouxo8B4NhW60U=
+	t=1705968769; cv=none; b=TCZB8LMy6VxQv0TsjjnMidnaMtSwCrr2F717Hhvi421QSSR+FgdW2dMu2N281s/k1nabBGnGsWrmLK+oNxb38IIaO0Ll8S1fxlKFv4gUXWaaqZC6KrmjT2Ci7RkKmfDdRoXYUsYrCDU+mwj6434iv4jv/odvYPA0K1Gza+pyJes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968112; c=relaxed/simple;
-	bh=MFQGIwWqUp6j5KK0nHh9dXPrdwdQWX40C7iy1/JeXNA=;
+	s=arc-20240116; t=1705968769; c=relaxed/simple;
+	bh=iQtLvWsQaRq+ad83Z5GVSoic7OW4JfoezdjF0pHWDBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QXJxH/bDRemhZHNDmdTXjoINCJPWzqyegUH7sMRvzoM89W685GOJGOtVQMo31KIpEHf8S8EEQ5q6CSlrs8AHIQBh7hKNZXJuAnWLgNcSt0A4PWXf+zZcv9M5xyLj+yRJl2PWop1XBChxzQBTnEQLzAzYKWaSLUMK+C1t2xxRPpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+V76cH1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B53C433F1;
-	Tue, 23 Jan 2024 00:01:52 +0000 (UTC)
+	 MIME-Version; b=Oiksa+nWjjTBo9Dq7rwySuSFc27iiFPFCUFEhUn0zdIqlz4EZuyRitJINLgVV0m20IpqIizxPToHJ5oOvI6VgUsDNJ1V8xczWAu8U0InCKPndlFTWiOLH9Etp/iQMyRAJVYAW4IPqn0/HcVwf7jZPygq00LjoZJorcBi3ezQpy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GbJUOa5p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC7DC433C7;
+	Tue, 23 Jan 2024 00:12:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968112;
-	bh=MFQGIwWqUp6j5KK0nHh9dXPrdwdQWX40C7iy1/JeXNA=;
+	s=korg; t=1705968768;
+	bh=iQtLvWsQaRq+ad83Z5GVSoic7OW4JfoezdjF0pHWDBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l+V76cH1AFzQVV23B7V82M99T3wsAe8P4e8uFaMb/cnrNDI+V+MMR3VoN+Q3KYxhV
-	 j1mkXsVkeVbgQ2X4RPbp+nvnkjNzUL/9+EGwQc6Dtidovmrvj6o/z4dAJToFk+lFBR
-	 UxHd+ccMSJ13Mbpl3TAcHf8kBP68BS+RAkRp9npE=
+	b=GbJUOa5pJ9bbOQAIfGmerUv361C8mLw6gkBY2np4epOAiEJaMaM7xrysOq/JaofM7
+	 DAKSfu+DdKe/fbuQI4FPshYE7eNmIi5ZElzklnXMPB6ZPJYeFxSugoHjbNfoZPhz83
+	 bUjWQzMvnX5bV9d8fbBJ0vxZsqOm8pieGI4QGTlQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 014/148] ring-buffer: Do not record in NMI if the arch does not support cmpxchg in NMI
+Subject: [PATCH 5.4 040/194] x86/lib: Fix overflow when counting digits
 Date: Mon, 22 Jan 2024 15:56:10 -0800
-Message-ID: <20240122235713.008763811@linuxfoundation.org>
+Message-ID: <20240122235720.936600853@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit 712292308af2265cd9b126aedfa987f10f452a33 ]
+[ Upstream commit a24d61c609813963aacc9f6ec8343f4fcaac7243 ]
 
-As the ring buffer recording requires cmpxchg() to work, if the
-architecture does not support cmpxchg in NMI, then do not do any recording
-within an NMI.
+tl;dr: The num_digits() function has a theoretical overflow issue.
+But it doesn't affect any actual in-tree users.  Fix it by using
+a larger type for one of the local variables.
 
-Link: https://lore.kernel.org/linux-trace-kernel/20231213175403.6fc18540@gandalf.local.home
+Long version:
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+There is an overflow in variable m in function num_digits when val
+is >= 1410065408 which leads to the digit calculation loop to
+iterate more times than required. This results in either more
+digits being counted or in some cases (for example where val is
+1932683193) the value of m eventually overflows to zero and the
+while loop spins forever).
+
+Currently the function num_digits is currently only being used for
+small values of val in the SMP boot stage for digit counting on the
+number of cpus and NUMA nodes, so the overflow is never encountered.
+However it is useful to fix the overflow issue in case the function
+is used for other purposes in the future. (The issue was discovered
+while investigating the digit counting performance in various
+kernel helper functions rather than any real-world use-case).
+
+The simplest fix is to make m a long long, the overhead in
+multiplication speed for a long long is very minor for small values
+of val less than 10000 on modern processors. The alternative
+fix is to replace the multiplication with a constant division
+by 10 loop (this compiles down to an multiplication and shift)
+without needing to make m a long long, but this is slightly slower
+than the fix in this commit when measured on a range of x86
+processors).
+
+[ dhansen: subject and changelog tweaks ]
+
+Fixes: 646e29a1789a ("x86: Improve the printout of the SMP bootup CPU table")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/20231102174901.2590325-1-colin.i.king%40gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/x86/lib/misc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index b627bc820540..d2903d8834fe 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -2891,6 +2891,12 @@ rb_reserve_next_event(struct ring_buffer *buffer,
- 	int nr_loops = 0;
- 	u64 diff;
+diff --git a/arch/x86/lib/misc.c b/arch/x86/lib/misc.c
+index a018ec4fba53..c97be9a1430a 100644
+--- a/arch/x86/lib/misc.c
++++ b/arch/x86/lib/misc.c
+@@ -6,7 +6,7 @@
+  */
+ int num_digits(int val)
+ {
+-	int m = 10;
++	long long m = 10;
+ 	int d = 1;
  
-+	/* ring buffer does cmpxchg, make sure it is safe in NMI context */
-+	if (!IS_ENABLED(CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG) &&
-+	    (unlikely(in_nmi()))) {
-+		return NULL;
-+	}
-+
- 	rb_start_commit(cpu_buffer);
- 
- #ifdef CONFIG_RING_BUFFER_ALLOW_SWAP
+ 	if (val < 0) {
 -- 
 2.43.0
 
