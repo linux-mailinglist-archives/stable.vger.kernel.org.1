@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D78A838160
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:08:28 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42341837CDC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:19:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 807451C276C6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 695E5B257C9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 887D81420B1;
-	Tue, 23 Jan 2024 01:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A6A135415;
+	Tue, 23 Jan 2024 00:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gd3lg3Wb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wUUKyo07"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464B21339A7;
-	Tue, 23 Jan 2024 01:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FFE13540F;
+	Tue, 23 Jan 2024 00:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972117; cv=none; b=QK5fHHR4yPWqMvfjgXfKc2FXbbqw+GcetmUVHh7mp7WhcDEy77I1VguzPSerXoyrSmCfO2CRGgiBBEEoqpkEHZmCgFd8SBjJbXAu5BK1bngiz608fBP58kHFt0TGekDQe+bSEyYGw2TmDXfkDK92Lb0buHzDaqSFdTckWEl3+Ro=
+	t=1705969645; cv=none; b=ecbwbKcVFCP34RZXfLtoTuxl//4ttuMWjYp2vSjoNT6b1ZTlCohA35lHOXJNnqfAKzukcu2d4H2XYM6XpPlMZRJ2xM9EgWtSh0uAKdcfaRSd1BY0ayj9dqwX0SQFIQODTivugSxRMk14Ajt/271wxoqBCu3YfsV4Yi5z1d4/EtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972117; c=relaxed/simple;
-	bh=oNpM4fhc5lfQ595gF7Yue7jCZUa80YdoYe1tZTd05kM=;
+	s=arc-20240116; t=1705969645; c=relaxed/simple;
+	bh=wTjy9uQmewvV+WG8z2/2/iOk0H20qEXJTgDIEVMdrmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tNe1aUrSKqNx4N7uEnaV8jaFa/DHCg821VfCethC/HfOqaIDb6bkCnviZdPoxLSWfQnE4iMXcEY8Z7a+M4cfqwfOhBa7jDeMlzqh0/+XOHUH4UxjvwArgUzNBKmG08bWqqzuoy94s5b/F6eYK6uTIbidBwIYVr03vw9XcLCN0/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gd3lg3Wb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08428C43390;
-	Tue, 23 Jan 2024 01:08:36 +0000 (UTC)
+	 MIME-Version; b=eA+XcyGtSqkmrspV5ZrGjrUNsjDmdkG3M/zf7DlkMH5cVBSEc/8bKCLkAKCqMbkPb9O1jQ9Z/Tx8ZH4HifFJH2JBlW63a7Fcd5sjDiBjXSQ+sfqT6TIGxMdhbxo2k80Hlq6FeYn7+j/u+M+r+UxPRzlOaSyXeZW7i2zRTQobCBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wUUKyo07; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D991EC433F1;
+	Tue, 23 Jan 2024 00:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972117;
-	bh=oNpM4fhc5lfQ595gF7Yue7jCZUa80YdoYe1tZTd05kM=;
+	s=korg; t=1705969645;
+	bh=wTjy9uQmewvV+WG8z2/2/iOk0H20qEXJTgDIEVMdrmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gd3lg3WbGd5/0xXFW8BAhqkeaihYq9/QEJPZQFBCDUF4n/td0wcEcRlx2A2wS6Fas
-	 Xcj6Ep/aqDeDBeeJ31VxT/08EQjhLg+ULnUZ60+fksFnPZiBpWV9xzH/RZzAaheIV1
-	 SLOX3w1pzxt16a9pS2cz8gJWZFXgiNX9LtsCsFLo=
+	b=wUUKyo07gUJq478f+i61W7wDxg2yVruFekhciWjZF2luJ57k4cmXACYBeYLYVn6kg
+	 3P6it0lsaCHNZgryHsVhekvp6vCD+29MBJnaZw194u/rWoimXw1dHIlw+xIBPDWj23
+	 yrd/pabfTP7D88WdTtxg6bm5b39IOjsMv6wDnaQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com,
-	Ziqi Zhao <astrajoan@yahoo.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 027/374] drm/crtc: Fix uninit-value bug in drm_mode_setcrtc
-Date: Mon, 22 Jan 2024 15:54:43 -0800
-Message-ID: <20240122235745.582259963@linuxfoundation.org>
+	Jordan Rome <linux@jordanrome.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Stanislav Fomichev <sdf@google.com>
+Subject: [PATCH 6.7 380/641] selftests/bpf: Add assert for user stacks in test_task_stack
+Date: Mon, 22 Jan 2024 15:54:44 -0800
+Message-ID: <20240122235829.850703996@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,84 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziqi Zhao <astrajoan@yahoo.com>
+From: Jordan Rome <linux@jordanrome.com>
 
-[ Upstream commit 3823119b9c2b5f9e9b760336f75bc989b805cde6 ]
+commit 727a92d62fd6a382b4c5972008e45667e707b0e4 upstream.
 
-The connector_set contains uninitialized values when allocated with
-kmalloc_array. However, in the "out" branch, the logic assumes that any
-element in connector_set would be equal to NULL if failed to
-initialize, which causes the bug reported by Syzbot. The fix is to use
-an extra variable to keep track of how many connectors are initialized
-indeed, and use that variable to decrease any refcounts in the "out"
-branch.
+This is a follow up to:
+commit b8e3a87a627b ("bpf: Add crosstask check to __bpf_get_stack").
 
-Reported-by: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
-Signed-off-by: Ziqi Zhao <astrajoan@yahoo.com>
-Reported-and-tested-by: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
-Tested-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Link: https://lore.kernel.org/r/20230721161446.8602-1-astrajoan@yahoo.com
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This test ensures that the task iterator only gets a single
+user stack (for the current task).
+
+Signed-off-by: Jordan Rome <linux@jordanrome.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Stanislav Fomichev <sdf@google.com>
+Link: https://lore.kernel.org/bpf/20231112023010.144675-1-linux@jordanrome.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_crtc.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/bpf_iter.c       |    2 ++
+ tools/testing/selftests/bpf/progs/bpf_iter_task_stack.c |    5 +++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_crtc.c b/drivers/gpu/drm/drm_crtc.c
-index 26a77a735905..8b50ab4c5581 100644
---- a/drivers/gpu/drm/drm_crtc.c
-+++ b/drivers/gpu/drm/drm_crtc.c
-@@ -643,8 +643,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 	struct drm_mode_set set;
- 	uint32_t __user *set_connectors_ptr;
- 	struct drm_modeset_acquire_ctx ctx;
--	int ret;
--	int i;
-+	int ret, i, num_connectors;
+--- a/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
++++ b/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
+@@ -334,6 +334,8 @@ static void test_task_stack(void)
+ 	do_dummy_read(skel->progs.dump_task_stack);
+ 	do_dummy_read(skel->progs.get_task_user_stacks);
  
- 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
- 		return -EOPNOTSUPP;
-@@ -779,6 +778,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 			goto out;
- 		}
++	ASSERT_EQ(skel->bss->num_user_stacks, 1, "num_user_stacks");
++
+ 	bpf_iter_task_stack__destroy(skel);
+ }
  
-+		num_connectors = 0;
- 		for (i = 0; i < crtc_req->count_connectors; i++) {
- 			connector_set[i] = NULL;
- 			set_connectors_ptr = (uint32_t __user *)(unsigned long)crtc_req->set_connectors_ptr;
-@@ -799,6 +799,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 					connector->name);
+--- a/tools/testing/selftests/bpf/progs/bpf_iter_task_stack.c
++++ b/tools/testing/selftests/bpf/progs/bpf_iter_task_stack.c
+@@ -35,6 +35,8 @@ int dump_task_stack(struct bpf_iter__tas
+ 	return 0;
+ }
  
- 			connector_set[i] = connector;
-+			num_connectors++;
- 		}
- 	}
++int num_user_stacks = 0;
++
+ SEC("iter/task")
+ int get_task_user_stacks(struct bpf_iter__task *ctx)
+ {
+@@ -51,6 +53,9 @@ int get_task_user_stacks(struct bpf_iter
+ 	if (res <= 0)
+ 		return 0;
  
-@@ -807,7 +808,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 	set.y = crtc_req->y;
- 	set.mode = mode;
- 	set.connectors = connector_set;
--	set.num_connectors = crtc_req->count_connectors;
-+	set.num_connectors = num_connectors;
- 	set.fb = fb;
++	/* Only one task, the current one, should succeed */
++	++num_user_stacks;
++
+ 	buf_sz += res;
  
- 	if (drm_drv_uses_atomic_modeset(dev))
-@@ -820,7 +821,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 		drm_framebuffer_put(fb);
- 
- 	if (connector_set) {
--		for (i = 0; i < crtc_req->count_connectors; i++) {
-+		for (i = 0; i < num_connectors; i++) {
- 			if (connector_set[i])
- 				drm_connector_put(connector_set[i]);
- 		}
--- 
-2.43.0
-
+ 	/* If the verifier doesn't refine bpf_get_task_stack res, and instead
 
 
 
