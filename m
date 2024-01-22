@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86DF6838397
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 781F5838520
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3EF41C29E2E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6CC01C2A4FA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4091563409;
-	Tue, 23 Jan 2024 01:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2310F2BD12;
+	Tue, 23 Jan 2024 02:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9xnVMzA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMeZcqSQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DD46313F;
-	Tue, 23 Jan 2024 01:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DA0380;
+	Tue, 23 Jan 2024 02:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975016; cv=none; b=lmBFY0bdUb+usjwy0Ts8ouUffOhuT/yx2EgruUJ2fCfMoWyq6YfgZdy+NqFaBIqmhhlWDQFQL3BQ6k7Bcqu7Y9+U/agf+xfed7MujrgVWidqsSN3i7HjsHsOahwvTK4WJut/CoQz3tEfK3dJveqoJRghOPl6nZqAFeFFxjyOmUs=
+	t=1705975746; cv=none; b=HqPZU8lhNh8dpUTisNmXgpqvlM+rTnZA2mvD9zKf4n74Ju06r7ti068fHDWZOgm7wEnfqEfvVyckof7Iwp4I3m1bhxU6EFKL9zbn+DzR+aJYHNzKSRS6LZ5HNVM7bI8/7N3f2XGXIw6cWQWBzPWIE+J/szfVWymUi8L2Q1RuISY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975016; c=relaxed/simple;
-	bh=x6/BEGnkFmlXSvF/NAv0hjtaZg4dTl7nlBLLHnLkUB0=;
+	s=arc-20240116; t=1705975746; c=relaxed/simple;
+	bh=ArVpwiEGbIO1QU0DTdTdAzxkAQ6pXZMNHNLdvG71EZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VmYlZ1aF0OLwplriCzytMummGqhb2fbqGLQXnJfIdsE8K0auWCa3+SiaH/JKVXuW/pIRnQ1DYkxB9nWIJ43XwHQCiOHRQgwnEwkaf4zhHXGW0VJwzVlrkXMej1PHXv5ql+ukjvLQ13GAMdat0pL42lCMw9ix+W42AS6WPu5N+H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9xnVMzA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA40C433F1;
-	Tue, 23 Jan 2024 01:56:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ushm4uTQmfHw8347oN48IxVDQrRmQl7+Bzs12THUAHDVKlT5wrS3vbAuBrbhzWvalXlMGv2/DtibG86ZdmDA14JbMlPm/Qf3pjgJ2/PVJ5DiE7ifw2sI4GarkJ0GK344MAyKJBPBa5QWBMyr3x7TdXn/A2Jrod1oYw4x0kbl2Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMeZcqSQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B43FC43394;
+	Tue, 23 Jan 2024 02:09:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975015;
-	bh=x6/BEGnkFmlXSvF/NAv0hjtaZg4dTl7nlBLLHnLkUB0=;
+	s=korg; t=1705975746;
+	bh=ArVpwiEGbIO1QU0DTdTdAzxkAQ6pXZMNHNLdvG71EZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9xnVMzAdYb2wYHyOaPDR/2RslZJZuqica7PRMzwXapQCmhxiYtfW4bAFES3Vtsqr
-	 1S0J1NyGc1/RxTiYg+a/dFLBvToe3dOYWZeJaIrZmfVIp6PymF2cTjNr6jB20/G/Jl
-	 AVon2wN3kln7yREfMGiaMc0F98Ydq8DuNl7kosBg=
+	b=bMeZcqSQf9qd90JGXjQGKWnObBN7DfxjbUd8Ys6+FxGGsWUJ0AfGJMXA6eBmfSNa2
+	 g3Ug+cKrgaDdKoi2nM5QyeXsn1LsiWYUlfAVcJpllqG9WDJfAB2q6u65L0jlqLz31U
+	 u/fy5Lm9+HQvMSTyaK3FTSh1a9Z8aP2e85GTpAbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	John Johansen <john.johansen@canonical.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 325/374] apparmor: avoid crash when parsed profile name is empty
-Date: Mon, 22 Jan 2024 15:59:41 -0800
-Message-ID: <20240122235756.204439316@linuxfoundation.org>
+Subject: [PATCH 6.6 531/583] ALSA: hda: Properly setup HDMI stream
+Date: Mon, 22 Jan 2024 15:59:42 -0800
+Message-ID: <20240122235828.358090234@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
 
-[ Upstream commit 55a8210c9e7d21ff2644809699765796d4bfb200 ]
+[ Upstream commit 454abb80e26ab85323a30e52aa7b0ee9aae1d38a ]
 
-When processing a packed profile in unpack_profile() described like
+Since commit 4005d1ba0a7e ("ASoC: soc-dai: don't call PCM audio ops if
+the stream is not supported") HDMI playback is broken with avs driver.
+This happens because for HDMI stream (unlike generic HDA one)
+channels_min for stream is not set when creating PCMs. Fix this by
+setting the value based on first available converter.
 
- "profile :ns::samba-dcerpcd /usr/lib*/samba/{,samba/}samba-dcerpcd {...}"
-
-a string ":samba-dcerpcd" is unpacked as a fully-qualified name and then
-passed to aa_splitn_fqname().
-
-aa_splitn_fqname() treats ":samba-dcerpcd" as only containing a namespace.
-Thus it returns NULL for tmpname, meanwhile tmpns is non-NULL. Later
-aa_alloc_profile() crashes as the new profile name is NULL now.
-
-general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 6 PID: 1657 Comm: apparmor_parser Not tainted 6.7.0-rc2-dirty #16
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-RIP: 0010:strlen+0x1e/0xa0
-Call Trace:
- <TASK>
- ? strlen+0x1e/0xa0
- aa_policy_init+0x1bb/0x230
- aa_alloc_profile+0xb1/0x480
- unpack_profile+0x3bc/0x4960
- aa_unpack+0x309/0x15e0
- aa_replace_profiles+0x213/0x33c0
- policy_update+0x261/0x370
- profile_replace+0x20e/0x2a0
- vfs_write+0x2af/0xe00
- ksys_write+0x126/0x250
- do_syscall_64+0x46/0xf0
- entry_SYSCALL_64_after_hwframe+0x6e/0x76
- </TASK>
----[ end trace 0000000000000000 ]---
-RIP: 0010:strlen+0x1e/0xa0
-
-It seems such behaviour of aa_splitn_fqname() is expected and checked in
-other places where it is called (e.g. aa_remove_profiles). Well, there
-is an explicit comment "a ns name without a following profile is allowed"
-inside.
-
-AFAICS, nothing can prevent unpacked "name" to be in form like
-":samba-dcerpcd" - it is passed from userspace.
-
-Deny the whole profile set replacement in such case and inform user with
-EPROTO and an explaining message.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 04dc715e24d0 ("apparmor: audit policy ns specified in policy load")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Fixes: 4005d1ba0a7e ("ASoC: soc-dai: don't call PCM audio ops if the stream is not supported")
+Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20240112113349.2905328-1-amadeuszx.slawinski@linux.intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/policy_unpack.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/pci/hda/patch_hdmi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/security/apparmor/policy_unpack.c b/security/apparmor/policy_unpack.c
-index 5f758b289ace..d1a385b44d63 100644
---- a/security/apparmor/policy_unpack.c
-+++ b/security/apparmor/policy_unpack.c
-@@ -696,6 +696,10 @@ static struct aa_profile *unpack_profile(struct aa_ext *e, char **ns_name)
+diff --git a/sound/pci/hda/patch_hdmi.c b/sound/pci/hda/patch_hdmi.c
+index 78cee53fee02..038db8902c9e 100644
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -2301,6 +2301,7 @@ static int generic_hdmi_build_pcms(struct hda_codec *codec)
+ 	codec_dbg(codec, "hdmi: pcm_num set to %d\n", pcm_num);
  
- 	tmpname = aa_splitn_fqname(name, strlen(name), &tmpns, &ns_len);
- 	if (tmpns) {
-+		if (!tmpname) {
-+			info = "empty profile name";
-+			goto fail;
-+		}
- 		*ns_name = kstrndup(tmpns, ns_len, GFP_KERNEL);
- 		if (!*ns_name) {
- 			info = "out of memory";
+ 	for (idx = 0; idx < pcm_num; idx++) {
++		struct hdmi_spec_per_cvt *per_cvt;
+ 		struct hda_pcm *info;
+ 		struct hda_pcm_stream *pstr;
+ 
+@@ -2316,6 +2317,11 @@ static int generic_hdmi_build_pcms(struct hda_codec *codec)
+ 		pstr = &info->stream[SNDRV_PCM_STREAM_PLAYBACK];
+ 		pstr->substreams = 1;
+ 		pstr->ops = generic_ops;
++
++		per_cvt = get_cvt(spec, 0);
++		pstr->channels_min = per_cvt->channels_min;
++		pstr->channels_max = per_cvt->channels_max;
++
+ 		/* pcm number is less than pcm_rec array size */
+ 		if (spec->pcm_used >= ARRAY_SIZE(spec->pcm_rec))
+ 			break;
 -- 
 2.43.0
 
