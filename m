@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1DB983810C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 056308380B8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:02:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC48B285083
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37DF61C2473C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C0B13E23F;
-	Tue, 23 Jan 2024 01:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1348C133429;
+	Tue, 23 Jan 2024 01:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9AhQDNV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EOjOCsPq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A6413DBB7;
-	Tue, 23 Jan 2024 01:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49B3133416;
+	Tue, 23 Jan 2024 01:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972006; cv=none; b=ZWJcKhBlwqo0wxIHaQGVuuIFDBtdAbb5rEfBqUBFQqnhr0O9jobj5ahAfUXNWl1RQ7kiX7Un4IophFENpcNHOlO1tExXIncB0g1h2krIsGOXOgts9LfK5439jN+m/L17rRKcZZgABaUSM7enMOd7ZfTpUgjMiIfeQUtNym7M0Fo=
+	t=1705971847; cv=none; b=OcxfPBEpoItnebd3mRBjut+uaQdCmUvGPs3MXdKG3qL5aguacLtyfdQGM8hi8i0b1LAwFHpX/qO+fjaogvBg98v2VXGr6ZnXo3ngA9YhcH/rmmK5qA2DFBX4gsDTMdFw0BCCyjbxDOKpN/oNHyOnp9AZSOJuEbnCKk25po6GNjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972006; c=relaxed/simple;
-	bh=mMoeSaYopG2bSRAWXTcrfhUeoZYjkkBB0tft7ZBifeM=;
+	s=arc-20240116; t=1705971847; c=relaxed/simple;
+	bh=iRr0Aynx4a42XTnyrkK6bIZXnXxKSgwUOISdeJTTh5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VljYSmk4NruQuXVeuGruc+VRCpj2buYSHQniWN8xEJlVjxWkKsqGOJqxHom9A+cCU27IZG5rlpKXJPVmVGTVu/O0g4oPLdoYS/DroZR4CStBW0rdCvLxH/laOWZFDG0EuheIjLoCtw8slXKvsriAh93Yzy58/RyeR+GH2xzl5/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9AhQDNV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A04C433F1;
-	Tue, 23 Jan 2024 01:06:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ij7ozlAhcTX2gf1K9YRGg1lPKzpjepv1QZZBZetGpZyuh89LhTM5qu/UazfsVeEcQK9EJcip2NdUIvkBhwx6ZjxfJNlYwQLxB2nNBmErgZVatdFztQScj0AtYgCYSglhz4AJXdyNI0Xn3/xJa23N4UgZcJWSnWuu39lA+GVpUNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EOjOCsPq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FAFBC433C7;
+	Tue, 23 Jan 2024 01:04:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972005;
-	bh=mMoeSaYopG2bSRAWXTcrfhUeoZYjkkBB0tft7ZBifeM=;
+	s=korg; t=1705971847;
+	bh=iRr0Aynx4a42XTnyrkK6bIZXnXxKSgwUOISdeJTTh5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F9AhQDNV0mwRipFSfUZe1rD0F/nc1hwDR8u1JCVtl6wOSzXj3DKdxy61NjtZ2nUzn
-	 bZuQtLPXPooomLKfPgUnBHxLBz0fDiNFm2YKIS6HL565Uwk+mmo9N9mNZdlLMjEi+C
-	 FNTQavb73J2CPpjda26puf277Tge9Qy7nrbDJtxc=
+	b=EOjOCsPqGWC6SZJlS+QqZ7I8RyteDSdddyDCHJ7Ye8kQwJsQ4oW0gQ30khwYxzYwb
+	 dN7UXXwH8B6H5njw7X6DyePK07ZqXkELP3vhVK+xdg8FNagXTahgeclg/vL3qqlL67
+	 a12CWYgtS22nZ/Em+UYwlt+3TZuGOug0uYRa+LFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Tony Lindgren <tony@atomide.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 381/417] net: phy: micrel: populate .soft_reset for KSZ9131
+Subject: [PATCH 5.10 243/286] serial: 8250: omap: Dont skip resource freeing if pm_runtime_resume_and_get() failed
 Date: Mon, 22 Jan 2024 15:59:09 -0800
-Message-ID: <20240122235804.972858285@linuxfoundation.org>
+Message-ID: <20240122235741.422026126@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +60,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit e398822c4751017fe401f57409488f5948d12fb5 ]
+[ Upstream commit ad90d0358bd3b4554f243a425168fc7cebe7d04e ]
 
-The RZ/G3S SMARC Module has 2 KSZ9131 PHYs. In this setup, the KSZ9131 PHY
-is used with the ravb Ethernet driver. It has been discovered that when
-bringing the Ethernet interface down/up continuously, e.g., with the
-following sh script:
+Returning an error code from .remove() makes the driver core emit the
+little helpful error message:
 
-$ while :; do ifconfig eth0 down; ifconfig eth0 up; done
+	remove callback returned a non-zero value. This will be ignored.
 
-the link speed and duplex are wrong after interrupting the bring down/up
-operation even though the Ethernet interface is up. To recover from this
-state the following configuration sequence is necessary (executed
-manually):
+and then remove the device anyhow. So all resources that were not freed
+are leaked in this case. Skipping serial8250_unregister_port() has the
+potential to keep enough of the UART around to trigger a use-after-free.
 
-$ ifconfig eth0 down
-$ ifconfig eth0 up
+So replace the error return (and with it the little helpful error
+message) by a more useful error message and continue to cleanup.
 
-The behavior has been identified also on the Microchip SAMA7G5-EK board
-which runs the macb driver and uses the same PHY.
-
-The order of PHY-related operations in ravb_open() is as follows:
-ravb_open() ->
-  ravb_phy_start() ->
-    ravb_phy_init() ->
-      of_phy_connect() ->
-        phy_connect_direct() ->
-	  phy_attach_direct() ->
-	    phy_init_hw() ->
-	      phydev->drv->soft_reset()
-	      phydev->drv->config_init()
-	      phydev->drv->config_intr()
-	    phy_resume()
-	      kszphy_resume()
-
-The order of PHY-related operations in ravb_close is as follows:
-ravb_close() ->
-  phy_stop() ->
-    phy_suspend() ->
-      kszphy_suspend() ->
-        genphy_suspend()
-	  // set BMCR_PDOWN bit in MII_BMCR
-
-In genphy_suspend() setting the BMCR_PDWN bit in MII_BMCR switches the PHY
-to Software Power-Down (SPD) mode (according to the KSZ9131 datasheet).
-Thus, when opening the interface after it has been  previously closed (via
-ravb_close()), the phydev->drv->config_init() and
-phydev->drv->config_intr() reach the KSZ9131 PHY driver via the
-ksz9131_config_init() and kszphy_config_intr() functions.
-
-KSZ9131 specifies that the MII management interface remains operational
-during SPD (Software Power-Down), but (according to manual):
-- Only access to the standard registers (0 through 31) is supported.
-- Access to MMD address spaces other than MMD address space 1 is possible
-  if the spd_clock_gate_override bit is set.
-- Access to MMD address space 1 is not possible.
-
-The spd_clock_gate_override bit is not used in the KSZ9131 driver.
-
-ksz9131_config_init() configures RGMII delay, pad skews and LEDs by
-accessesing MMD registers other than those in address space 1.
-
-The datasheet for the KSZ9131 does not specify what happens if registers
-from an unsupported address space are accessed while the PHY is in SPD.
-
-To fix the issue the .soft_reset method has been instantiated for KSZ9131,
-too. This resets the PHY to the default state before doing any
-configurations to it, thus switching it out of SPD.
-
-Fixes: bff5b4b37372 ("net: phy: micrel: add Microchip KSZ9131 initial driver")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: e3f0c638f428 ("serial: 8250: omap: Fix unpaired pm_runtime_put_sync() in omap8250_remove()")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20231110152927.70601-2-u.kleine-koenig@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/micrel.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/8250/8250_omap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 54a17b576eac..7cbcf51bae92 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -3302,6 +3302,7 @@ static struct phy_driver ksphy_driver[] = {
- 	.flags		= PHY_POLL_CABLE_TEST,
- 	.driver_data	= &ksz9021_type,
- 	.probe		= kszphy_probe,
-+	.soft_reset	= genphy_soft_reset,
- 	.config_init	= ksz9131_config_init,
- 	.config_intr	= kszphy_config_intr,
- 	.handle_interrupt = kszphy_handle_interrupt,
+diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+index bd4118f1b694..25765ebb756a 100644
+--- a/drivers/tty/serial/8250/8250_omap.c
++++ b/drivers/tty/serial/8250/8250_omap.c
+@@ -1497,7 +1497,7 @@ static int omap8250_remove(struct platform_device *pdev)
+ 
+ 	err = pm_runtime_resume_and_get(&pdev->dev);
+ 	if (err)
+-		return err;
++		dev_err(&pdev->dev, "Failed to resume hardware\n");
+ 
+ 	serial8250_unregister_port(priv->line);
+ 	priv->line = -ENODEV;
 -- 
 2.43.0
 
