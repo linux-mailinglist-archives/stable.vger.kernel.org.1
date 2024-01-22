@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-13002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EE75837A24
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 524F7837A0F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BDEBC1C24ADF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A95728345E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA9FF12AAC3;
-	Tue, 23 Jan 2024 00:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E156129A77;
+	Tue, 23 Jan 2024 00:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZ9emtIY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dRJ5hvGw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB09612A170;
-	Tue, 23 Jan 2024 00:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0793129A74;
+	Tue, 23 Jan 2024 00:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968765; cv=none; b=Fa9fpWr1HwPkYcE03Z3s555kav0x8yLwaZl8Vdo3dg1tFLXmJVpqIqmlRU6Yf6kPWnw+GSHXj7K3HU2AsmKaNHxi6bOIhF7+UvxwvCCjT1ols2lpuJR88XI2stZhp/oiVi+ngh4a03XMVzFJ3WGrIA3JJQHMVvxkS+MdJv/NJEQ=
+	t=1705968720; cv=none; b=i9MAMqQNwebtCGhjRGJXFxrCSX+DzT1Z5BnbQbf7A8jgw5dpUTSI0SgvvFGQZVMvM38nVjCzsULg9W+xbD2iGcqiVWk1SD1ItxPsQ/wTniXZDEumaAKiV3kcLIqjzLQIgTFAdsxtfMTI+Iz/8acoYFmFxy+8RclaRigmUGBPdQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968765; c=relaxed/simple;
-	bh=OMKx8WIwbwNTdxCL19wwo2d/RKfhRjj4Z7LwtmwwRyI=;
+	s=arc-20240116; t=1705968720; c=relaxed/simple;
+	bh=vI2lx9x4OVJkXh3NHMkHjxToUH2Dx+OPAF9za9PAKNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Asw6cc6mNcLl+P2hO+icyuj612fLXpHvVGURC3o/mahrvSfcTrMCETKmzmfdlGgCxXGehTBGIzi1LtsDSdN+9hBdwFLGGH/NFPyJL4tfkw2G+ljuJS3/ykfHATiOQrhrMdJhxttxTY8IASUlAqMv0wS5dbwzHGTDAOvb45ZeuzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZ9emtIY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E38AC43390;
-	Tue, 23 Jan 2024 00:12:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ube3q/uJ2USA1Qy/xCxkPHDZUNPGgPpoIRo9vUv2Knsn/i0l2v7wRF/bEnbWwtiI+DLlQo2CNNhg0Yu7bcJ7AaY25R/qFwnvMEgD6DsYnB6y7DjChU95gIKWxZ5kLq54F7h77VIIVf1V+ddByoGDyX6KyArwxy7TOEEnrkNMpCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dRJ5hvGw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F7EC433C7;
+	Tue, 23 Jan 2024 00:11:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968765;
-	bh=OMKx8WIwbwNTdxCL19wwo2d/RKfhRjj4Z7LwtmwwRyI=;
+	s=korg; t=1705968719;
+	bh=vI2lx9x4OVJkXh3NHMkHjxToUH2Dx+OPAF9za9PAKNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MZ9emtIYuRN3h6zq151a0SKV7LpAVeJvx+RAwqrqPGh4y9qkq4JsPUykSjKKyr4O8
-	 +eXEV0N+z/As3ez2syZLuTkxykdzgjn5x4/ScQP9YoRRFN/uk2q81qnTqlJu7iDKBj
-	 KEfwIAoT7jNu3GchNzhxVo4APcCPau/5PrGu4lYM=
+	b=dRJ5hvGwPEMfmv0hnlHfYnniDEC2cU9b30V3yRbfcbUCKCdPDh4FcRIu/PjnJcXEg
+	 +FXx3VaPWj5/fEkcegR6CSwvmajshu7NZBC+1QqunvnUjNDjxwcdlgot8btBWwEdQg
+	 A6PalMbQH9+n9yLqhY+gmdh8A29C2AmungrENX78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Takashi Iwai <tiwai@suse.de>,
+	Kamil Duljas <kamil.duljas@gmail.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 003/194] ALSA: hda - Fix speaker and headset mic pin config for CHUWI CoreBook XPro
-Date: Mon, 22 Jan 2024 15:55:33 -0800
-Message-ID: <20240122235719.356296708@linuxfoundation.org>
+Subject: [PATCH 5.4 004/194] ASoC: Intel: Skylake: Fix mem leak in few functions
+Date: Mon, 22 Jan 2024 15:55:34 -0800
+Message-ID: <20240122235719.398763744@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
 References: <20240122235719.206965081@linuxfoundation.org>
@@ -60,62 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Kamil Duljas <kamil.duljas@gmail.com>
 
-[ Upstream commit 7c9caa299335df94ad1c58f70a22f16a540eab60 ]
+[ Upstream commit d5c65be34df73fa01ed05611aafb73b440d89e29 ]
 
-This patch corrected the speaker and headset mic pin config to the more
-appropriate values.
+The resources should be freed when function return error.
 
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://lore.kernel.org/r/20231117170923.106822-1-kovalev@altlinux.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Kamil Duljas <kamil.duljas@gmail.com>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20231116125150.1436-1-kamil.duljas@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ sound/soc/intel/skylake/skl-pcm.c     | 4 +++-
+ sound/soc/intel/skylake/skl-sst-ipc.c | 4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index bfa66b8e3040..36293836a48c 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -6398,6 +6398,7 @@ enum {
- 	ALC290_FIXUP_SUBWOOFER_HSJACK,
- 	ALC269_FIXUP_THINKPAD_ACPI,
- 	ALC269_FIXUP_DMIC_THINKPAD_ACPI,
-+	ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO,
- 	ALC255_FIXUP_ACER_MIC_NO_PRESENCE,
- 	ALC255_FIXUP_ASUS_MIC_NO_PRESENCE,
- 	ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
-@@ -6645,6 +6646,14 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc269_fixup_pincfg_U7x7_headset_mic,
- 	},
-+	[ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x18, 0x03a19020 }, /* headset mic */
-+			{ 0x1b, 0x90170150 }, /* speaker */
-+			{ }
-+		},
-+	},
- 	[ALC269_FIXUP_AMIC] = {
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = (const struct hda_pintbl[]) {
-@@ -8481,6 +8490,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
- 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
- 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
- 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", ALC256_FIXUP_INTEL_NUC10),
+diff --git a/sound/soc/intel/skylake/skl-pcm.c b/sound/soc/intel/skylake/skl-pcm.c
+index 439dd4ba690c..19176ae27274 100644
+--- a/sound/soc/intel/skylake/skl-pcm.c
++++ b/sound/soc/intel/skylake/skl-pcm.c
+@@ -260,8 +260,10 @@ static int skl_pcm_open(struct snd_pcm_substream *substream,
+ 	snd_pcm_set_sync(substream);
+ 
+ 	mconfig = skl_tplg_fe_get_cpr_module(dai, substream->stream);
+-	if (!mconfig)
++	if (!mconfig) {
++		kfree(dma_params);
+ 		return -EINVAL;
++	}
+ 
+ 	skl_tplg_d0i3_get(skl, mconfig->d0i3_caps);
+ 
+diff --git a/sound/soc/intel/skylake/skl-sst-ipc.c b/sound/soc/intel/skylake/skl-sst-ipc.c
+index 667cdddc289f..7286cbd0c46f 100644
+--- a/sound/soc/intel/skylake/skl-sst-ipc.c
++++ b/sound/soc/intel/skylake/skl-sst-ipc.c
+@@ -1003,8 +1003,10 @@ int skl_ipc_get_large_config(struct sst_generic_ipc *ipc,
+ 
+ 	reply.size = (reply.header >> 32) & IPC_DATA_OFFSET_SZ_MASK;
+ 	buf = krealloc(reply.data, reply.size, GFP_KERNEL);
+-	if (!buf)
++	if (!buf) {
++		kfree(reply.data);
+ 		return -ENOMEM;
++	}
+ 	*payload = buf;
+ 	*bytes = reply.size;
+ 
 -- 
 2.43.0
 
