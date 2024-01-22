@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76DFD83818D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0E578384F1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3069228DD40
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 203F8B2C02F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A683D63;
-	Tue, 23 Jan 2024 01:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC6B6BB51;
+	Tue, 23 Jan 2024 02:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iL/XYSQb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TE1ov0m7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43B3524B;
-	Tue, 23 Jan 2024 01:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABB5D6A354;
+	Tue, 23 Jan 2024 02:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972172; cv=none; b=PbaHMx6XB9MPwXSFoqk9Yvyo+rBP/2ty6Om1b6cjOGcSmTDpIz0HWe13tj/hrPbHlhEqct/7oxFE2O36mvQdZeFX2vec9nw0xA42NY+jkHR6AGOaELSgFn/6WnPdK+XTrvGil0Gd6znw1nV3NmBlDqjx8UsUjabpzkGmTX39qSo=
+	t=1705975367; cv=none; b=knR8y6Vv7nHAeh6VxUzZbGlDqger2WTBiCrj1lJVR1y3EGj6QP2OJ1f/SlVAzohlDHYINvsNvXC5/8FTM5KMXcx/NcrgxoAvsuM8XlquqrNRBlssu/cSA1i7N96tsaQAzCkm1M6WR/0M7t91vtw+BlAJjRkmrboJBz82pGMwjp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972172; c=relaxed/simple;
-	bh=Zgi1H+yrree/5r7r6rt3FHSrQfAGiLU94khsd+2nYKA=;
+	s=arc-20240116; t=1705975367; c=relaxed/simple;
+	bh=64GswMfigJA4jIDg1f2RqdDlY8iF3+Fxyb8QRlkF0FA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nf/jRUs1WReVGk05vEZLKq7231IYq03x+5siqZ/ipMWFFRsT7/MuDmhR3Hgm1nCFBJh8SDtXu5DXOcgHXu24QRQZ/aEo0m5l019TYchKWLWarlFDkLiyOnOO3A1JEy7ILp+Yt/Rz+U/epLX9D9YhG4UOM52cpqiC9xGFsxNFp2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iL/XYSQb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B79AC433C7;
-	Tue, 23 Jan 2024 01:09:32 +0000 (UTC)
+	 MIME-Version; b=GU5P4SteCb0N81GnEpZXn1SDDcTmhn94hSep3jj0CGWpQwhWmyFzPiFwqhxGp7xo1anZbK5aNg5se5VQEGB0302NNFOeK2rKqYoUwkl00w6LCYOv2+nLkxL6/WqmSk5pmLq2Hfz4xBZcGrHNab2lxfLQo3PY2KJniR6Ju35f0K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TE1ov0m7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18863C433C7;
+	Tue, 23 Jan 2024 02:02:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972172;
-	bh=Zgi1H+yrree/5r7r6rt3FHSrQfAGiLU94khsd+2nYKA=;
+	s=korg; t=1705975367;
+	bh=64GswMfigJA4jIDg1f2RqdDlY8iF3+Fxyb8QRlkF0FA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iL/XYSQbiyRgxPXbGddOGBE6I+OUJFqSOQlZdj0L2sNDnPfYBwcsSli/ojigMJ+7+
-	 b8pwsYaNAswFNz6lz7arX5NnLwSb5rmuHdEEIiweQJrIF+DVuFx2gRbrkIz4NpEhLh
-	 HwWrkA5FuxqE2T+XleBce41k3mIdSz46PNEUzFSg=
+	b=TE1ov0m7Y97UXYqxflBeEUFibovBqn48bX/z1bUtATeRl4PjV3kgyUDxSAPI/JjC8
+	 Tv3XvYQlMJOMyftQaQ03uox/lfq2yraZ4pQaJko8oXCttAj+Jq0pkBATtLvHZVzmRk
+	 GhMReJWjSJpkw6u4MifqYJQZRyiV7mst/uomKLrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 098/374] crypto: sahara - remove FLAGS_NEW_KEY logic
-Date: Mon, 22 Jan 2024 15:55:54 -0800
-Message-ID: <20240122235748.009220940@linuxfoundation.org>
+Subject: [PATCH 6.6 304/583] clk: rs9: Fix DIF OEn bit placement on 9FGV0241
+Date: Mon, 22 Jan 2024 15:55:55 -0800
+Message-ID: <20240122235821.326082046@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit 8fd183435728b139248a77978ea3732039341779 ]
+[ Upstream commit 29d861b5d29b6c80a887e93ad982cbbf4af2a06b ]
 
-Remove the FLAGS_NEW_KEY logic as it has the following issues:
-- the wrong key may end up being used when there are multiple data streams:
-       t1            t2
-    setkey()
-    encrypt()
-                   setkey()
-                   encrypt()
+On 9FGV0241, the DIF OE0 is BIT(1) and DIF OE1 is BIT(2), on the other
+chips like 9FGV0441 and 9FGV0841 DIF OE0 is BIT(0) and so on. Increment
+the index in BIT() macro instead of the result of BIT() macro to shift
+the bit correctly on 9FGV0241.
 
-    encrypt() <--- key from t2 is used
-- switching between encryption and decryption with the same key is not
-  possible, as the hdr flags are only updated when a new setkey() is
-  performed
-
-With this change, the key is always sent along with the cryptdata when
-performing encryption/decryption operations.
-
-Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 603df193ec51 ("clk: rs9: Support device specific dif bit calculation")
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Link: https://lore.kernel.org/r/20231105200642.62792-1-marek.vasut+renesas@mailbox.org
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 34 +++++++++++++---------------------
- 1 file changed, 13 insertions(+), 21 deletions(-)
+ drivers/clk/clk-renesas-pcie.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index b07ae4ba165e..84a7c4de537a 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -44,7 +44,6 @@
- #define FLAGS_MODE_MASK		0x000f
- #define FLAGS_ENCRYPT		BIT(0)
- #define FLAGS_CBC		BIT(1)
--#define FLAGS_NEW_KEY		BIT(3)
+diff --git a/drivers/clk/clk-renesas-pcie.c b/drivers/clk/clk-renesas-pcie.c
+index 7d7b2cb75318..3b6ad2307a41 100644
+--- a/drivers/clk/clk-renesas-pcie.c
++++ b/drivers/clk/clk-renesas-pcie.c
+@@ -163,7 +163,7 @@ static u8 rs9_calc_dif(const struct rs9_driver_data *rs9, int idx)
+ 	enum rs9_model model = rs9->chip_info->model;
  
- #define SAHARA_HDR_BASE			0x00800000
- #define SAHARA_HDR_SKHA_ALG_AES	0
-@@ -142,8 +141,6 @@ struct sahara_hw_link {
- };
- 
- struct sahara_ctx {
--	unsigned long flags;
--
- 	/* AES-specific context */
- 	int keylen;
- 	u8 key[AES_KEYSIZE_128];
-@@ -448,26 +445,22 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
- 	int i, j;
- 	int idx = 0;
- 
--	/* Copy new key if necessary */
--	if (ctx->flags & FLAGS_NEW_KEY) {
--		memcpy(dev->key_base, ctx->key, ctx->keylen);
--		ctx->flags &= ~FLAGS_NEW_KEY;
-+	memcpy(dev->key_base, ctx->key, ctx->keylen);
- 
--		if (dev->flags & FLAGS_CBC) {
--			dev->hw_desc[idx]->len1 = AES_BLOCK_SIZE;
--			dev->hw_desc[idx]->p1 = dev->iv_phys_base;
--		} else {
--			dev->hw_desc[idx]->len1 = 0;
--			dev->hw_desc[idx]->p1 = 0;
--		}
--		dev->hw_desc[idx]->len2 = ctx->keylen;
--		dev->hw_desc[idx]->p2 = dev->key_phys_base;
--		dev->hw_desc[idx]->next = dev->hw_phys_desc[1];
-+	if (dev->flags & FLAGS_CBC) {
-+		dev->hw_desc[idx]->len1 = AES_BLOCK_SIZE;
-+		dev->hw_desc[idx]->p1 = dev->iv_phys_base;
-+	} else {
-+		dev->hw_desc[idx]->len1 = 0;
-+		dev->hw_desc[idx]->p1 = 0;
-+	}
-+	dev->hw_desc[idx]->len2 = ctx->keylen;
-+	dev->hw_desc[idx]->p2 = dev->key_phys_base;
-+	dev->hw_desc[idx]->next = dev->hw_phys_desc[1];
-+	dev->hw_desc[idx]->hdr = sahara_aes_key_hdr(dev);
- 
--		dev->hw_desc[idx]->hdr = sahara_aes_key_hdr(dev);
-+	idx++;
- 
--		idx++;
--	}
- 
- 	dev->nb_in_sg = sg_nents_for_len(dev->in_sg, dev->total);
- 	if (dev->nb_in_sg < 0) {
-@@ -609,7 +602,6 @@ static int sahara_aes_setkey(struct crypto_skcipher *tfm, const u8 *key,
- 	/* SAHARA only supports 128bit keys */
- 	if (keylen == AES_KEYSIZE_128) {
- 		memcpy(ctx->key, key, keylen);
--		ctx->flags |= FLAGS_NEW_KEY;
- 		return 0;
- 	}
+ 	if (model == RENESAS_9FGV0241)
+-		return BIT(idx) + 1;
++		return BIT(idx + 1);
+ 	else if (model == RENESAS_9FGV0441)
+ 		return BIT(idx);
  
 -- 
 2.43.0
