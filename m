@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-14471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E0C7838122
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8CEA838364
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCDB7B2C23A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:05:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9ECC11F27631
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0866013EFE7;
-	Tue, 23 Jan 2024 01:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E36A62808;
+	Tue, 23 Jan 2024 01:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRbZLFU5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6atLUkl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9AE13E236;
-	Tue, 23 Jan 2024 01:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB74627EB;
+	Tue, 23 Jan 2024 01:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972008; cv=none; b=Mw22f1qr1pJD4UFnP9BTleiu+LITx34IppGpW3LprZz2KRSaNhG98j3NuI3k5bGWZMBSuUNnrrQYYZQ11wppf6bUg0MejRLYnspRSfRucXSyJOIMw5d/Q66BRDBRU24O1eH33rDhi+fL3hwclR29ULEgjTwsPMaXnB5IYUV9YPc=
+	t=1705974956; cv=none; b=aPwd4GEoJKKuiy1WchVyFa0I7/qHaH+70FHhqr9fQDbD/nxedA3pHKqoFkFN3s5aPZ5v5Isd/SIyUaFQKBSAXr/uaZEJKk4kxiLiqNavdbrTWldHgDwL1wvpm6nCN7PMEHKH89EernZXAXMaNsIMTy+TYnUEJHm+n9SvaTK3PLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972008; c=relaxed/simple;
-	bh=NaPnc82OTViF1j4+VDqO8MY/JtKJDTmfUjGhfHgbdyQ=;
+	s=arc-20240116; t=1705974956; c=relaxed/simple;
+	bh=5dC63xg5skpxfFm1oUtqzTpZj7bbWponPypZl8YJ/XU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZW1EswcmHT3WZzkghi3sl1nrfCiyRAjsYshGJZ7q+TyWezqyTiRARni9FnBkfNbC25BApJlk7W4Ej33YYTjgqmjYMom/rQt9bZUpSFnPGED+3JCL3ZQNloPVJxSn1NEIox1ur7aa+WAA2tys7wQgHs8RoIjxtcs7Aw1baxTyn4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRbZLFU5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790FAC433C7;
-	Tue, 23 Jan 2024 01:06:48 +0000 (UTC)
+	 MIME-Version; b=VO2ohU+iufcKU3SPc29nA+1xsjhBgvvJpim6zs4Yi7e+s+F6mqI/jJbivvGVBZTWuVFl9UzStDpfQn47IG7GNoWRiW2cUU6LXePynNlajHNCURUyT6HvFGXHpLvQ0acZMg/4yuygpkEiyJ0mkbv4BryR+bOp9bZ07QdKs8vCWcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6atLUkl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA41C433B2;
+	Tue, 23 Jan 2024 01:55:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972008;
-	bh=NaPnc82OTViF1j4+VDqO8MY/JtKJDTmfUjGhfHgbdyQ=;
+	s=korg; t=1705974955;
+	bh=5dC63xg5skpxfFm1oUtqzTpZj7bbWponPypZl8YJ/XU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZRbZLFU5N3C768jovo+Tv4XQj8rTSMCuGNgZUHw/sHfFNtnxCHqHIPHXueTGevtnV
-	 LmmKkCQt4UlqLs9S6F8+1poXtAJTXbwSTxCZJJyYsbjW1vdYRI5AcA+aQ+zUuHC0T8
-	 JV+LTAe7fZHnLRPVWLdQjo/QsEOkSEu/DmDYD8cY=
+	b=t6atLUkl9rz6hRKfluELlg02pXQy2wxMaqrl1bbhMeLJbPCK2AC+CkNQNGR2YKlRF
+	 R7mcoIypQh1R59JedBzTJBgnVAD2L9j4gv0ktpKwSRVufRbbZzYbqLbf//vzX5kVm5
+	 BzOF1soBqlx7bqwqUnrHfmfKSyGymLnwnFikKjtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Florian Westphal <fw@strlen.de>,
-	Peter Krystad <peter.krystad@linux.intel.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang.tang@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 383/417] mptcp: strict validation before using mp_opt->hmac
+Subject: [PATCH 5.15 295/374] mips: dmi: Fix early remap on MIPS32
 Date: Mon, 22 Jan 2024 15:59:11 -0800
-Message-ID: <20240122235805.038354718@linuxfoundation.org>
+Message-ID: <20240122235755.044482226@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,49 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Serge Semin <fancer.lancer@gmail.com>
 
-[ Upstream commit c1665273bdc7c201766c65e561c06711f2e050dc ]
+[ Upstream commit 0d0a3748a2cb38f9da1f08d357688ebd982eb788 ]
 
-mp_opt->hmac contains uninitialized data unless OPTION_MPTCP_MPJ_ACK
-was set in mptcp_parse_option().
+dmi_early_remap() has been defined as ioremap_cache() which on MIPS32 gets
+to be converted to the VM-based mapping. DMI early remapping is performed
+at the setup_arch() stage with no VM available. So calling the
+dmi_early_remap() for MIPS32 causes the system to crash at the early boot
+time. Fix that by converting dmi_early_remap() to the uncached remapping
+which is always available on both 32 and 64-bits MIPS systems.
 
-We must refine the condition before we call subflow_hmac_valid().
+Note this change shall not cause any regressions on the current DMI
+support implementation because on the early boot-up stage neither MIPS32
+nor MIPS64 has the cacheable ioremapping support anyway.
 
-Fixes: f296234c98a8 ("mptcp: Add handling of incoming MP_JOIN requests")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Florian Westphal <fw@strlen.de>
-Cc: Peter Krystad <peter.krystad@linux.intel.com>
-Cc: Matthieu Baerts <matttbe@kernel.org>
-Cc: Mat Martineau <martineau@kernel.org>
-Cc: Geliang Tang <geliang.tang@linux.dev>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20240111194917.4044654-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: be8fa1cb444c ("MIPS: Add support for Desktop Management Interface (DMI)")
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/subflow.c | 2 +-
+ arch/mips/include/asm/dmi.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 8ed7769cae83..a7090922480e 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -718,7 +718,7 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
+diff --git a/arch/mips/include/asm/dmi.h b/arch/mips/include/asm/dmi.h
+index 27415a288adf..dc397f630c66 100644
+--- a/arch/mips/include/asm/dmi.h
++++ b/arch/mips/include/asm/dmi.h
+@@ -5,7 +5,7 @@
+ #include <linux/io.h>
+ #include <linux/memblock.h>
  
- 	} else if (subflow_req->mp_join) {
- 		mptcp_get_options(skb, &mp_opt);
--		if (!(mp_opt.suboptions & OPTIONS_MPTCP_MPJ) ||
-+		if (!(mp_opt.suboptions & OPTION_MPTCP_MPJ_ACK) ||
- 		    !subflow_hmac_valid(req, &mp_opt) ||
- 		    !mptcp_can_accept_new_subflow(subflow_req->msk)) {
- 			SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINACKMAC);
+-#define dmi_early_remap(x, l)		ioremap_cache(x, l)
++#define dmi_early_remap(x, l)		ioremap(x, l)
+ #define dmi_early_unmap(x, l)		iounmap(x)
+ #define dmi_remap(x, l)			ioremap_cache(x, l)
+ #define dmi_unmap(x)			iounmap(x)
 -- 
 2.43.0
 
