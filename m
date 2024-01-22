@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-12837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F57F837896
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70C69837A25
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18D7328CA09
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:23:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2904F1F28948
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECFB413BEA7;
-	Tue, 23 Jan 2024 00:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A35512A17E;
+	Tue, 23 Jan 2024 00:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x3pye5Xs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lIISWgRB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93DD13BE9F;
-	Tue, 23 Jan 2024 00:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5904312A170;
+	Tue, 23 Jan 2024 00:12:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968135; cv=none; b=ZeX0bPJz4hDJl8/8K+Cnj+XMd6amBMzr/V4BmLB1PYBzYpQOTYKaV96rwORDimX8jn0l8WSnruiUPY1Bg9Ja/J8Rr20WaihNsAxe7UA4dYvRdVQmEAQwZ9tJDqCz0vghI77bAFnwNp0OwsH+4yASyb2do6vPfIEWS3vls0vcHsE=
+	t=1705968767; cv=none; b=gmOv9rp8p3Vj8fHzeJG/xADj2Rul9tNYtJwp8JRACoeo7wizx1izDjR1sqLfYw9WvoYKrsxngpiGQF39mijlNw2NhbMYX5U3vxdJ+5jKF+ZjjSjWLvXtZFUkznFC4k665Rf+kcrqswisI4/PY1UJyKyc5Ak97BqE0sruilz1FAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968135; c=relaxed/simple;
-	bh=9C4BHFFK8M3vledS6/sAYw09Xw+KjAGsM/HmF4WXNVY=;
+	s=arc-20240116; t=1705968767; c=relaxed/simple;
+	bh=QQ6BOkGb4f93k/NzJMamDnfzCQI8oZgAwmLSKX3mOdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l+NbIwL0bh4MQeRYCAM7p5h8D1SUgY7bSnd2Ab5PU+HB/a+Wl2VnQnc5keFy7YohM6iteB4FAJp9THaUPnwSpc4v277Cd8qxBRQ0qwSGPymApAOw0+bhD3tP4GiagAfN7NilbdmRjFNu/wIw3xVv7KnzxfVlidFUGEdynu/skiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x3pye5Xs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A5AC433C7;
-	Tue, 23 Jan 2024 00:02:15 +0000 (UTC)
+	 MIME-Version; b=Tqxr3FfsB6oro0FukNDzb8MhBpNZUHgbR7beEkC6OJ4rAZHA4JJLNZbqS+pAu68GzM9u+r7507eMdatIotgRR7D0mFmriOvnAWXMaD9lVWaN/hfbkdqs2cSkINmmMQfge06E+o++2XQoG4gfOY7MlFJtM1wJbWedVIclhQpWAoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lIISWgRB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD199C433F1;
+	Tue, 23 Jan 2024 00:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968135;
-	bh=9C4BHFFK8M3vledS6/sAYw09Xw+KjAGsM/HmF4WXNVY=;
+	s=korg; t=1705968766;
+	bh=QQ6BOkGb4f93k/NzJMamDnfzCQI8oZgAwmLSKX3mOdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x3pye5XsTP2pCwpvrv0PuxE0AJ1qTY1JWJeNdmirSzuvjFQQBa0C8yzqP8npVnNHR
-	 AAcYo4ChC+rzmwsQzb/1Tlk9aFIvxpXNuHGRXAmpXWiFrkOp+Kg3kG91pMpBWdBuk4
-	 NbkzftTCjUe5pZ8DcJV/vY6wXdnH+XZ0Qr28H+mc=
+	b=lIISWgRBT50PXYRnVWpgbTNEO/F6ZS1vFhhuNhp0gIImcNYRc1Awn9xB3BZJpJ6Rc
+	 /tGOJ9mvr2eipwdCbEHxGmuFUrlZfhxWOk1WJK29+jyNvdox0XPh6Nexy+Tw2o5GMg
+	 7j6V6bXifOSQvBXk6YNaXoUixM6L71/lFbeoYWS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Strozek <mstrozek@opensource.cirrus.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com,
+	Ziqi Zhao <astrajoan@yahoo.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Jani Nikula <jani.nikula@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 004/148] ASoC: cs43130: Fix incorrect frame delay configuration
-Date: Mon, 22 Jan 2024 15:56:00 -0800
-Message-ID: <20240122235712.612413847@linuxfoundation.org>
+Subject: [PATCH 5.4 031/194] drm/crtc: fix uninitialized variable use
+Date: Mon, 22 Jan 2024 15:56:01 -0800
+Message-ID: <20240122235720.543601257@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,36 +66,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Strozek <mstrozek@opensource.cirrus.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit aa7e8e5e4011571022dc06e4d7a2f108feb53d1a ]
+[ Upstream commit 6e455f5dcdd15fa28edf0ffb5b44d3508512dccf ]
 
-Signed-off-by: Maciej Strozek <mstrozek@opensource.cirrus.com>
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20231117141344.64320-3-mstrozek@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Commit 3823119b9c2b ("drm/crtc: Fix uninit-value bug in
+drm_mode_setcrtc") was supposed to fix use of an uninitialized variable,
+but introduced another.
+
+num_connectors is only initialized if crtc_req->count_connectors > 0,
+but it's used regardless. Fix it.
+
+Fixes: 3823119b9c2b ("drm/crtc: Fix uninit-value bug in drm_mode_setcrtc")
+Cc: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
+Cc: Ziqi Zhao <astrajoan@yahoo.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231208131238.2924571-1-jani.nikula@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs43130.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/drm_crtc.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/sound/soc/codecs/cs43130.c b/sound/soc/codecs/cs43130.c
-index 95060ae7dbb4..0ffd93564555 100644
---- a/sound/soc/codecs/cs43130.c
-+++ b/sound/soc/codecs/cs43130.c
-@@ -581,7 +581,7 @@ static int cs43130_set_sp_fmt(int dai_id, unsigned int bitwidth_sclk,
- 		break;
- 	case SND_SOC_DAIFMT_LEFT_J:
- 		hi_size = bitwidth_sclk;
--		frm_delay = 2;
-+		frm_delay = 0;
- 		frm_phase = 1;
- 		break;
- 	case SND_SOC_DAIFMT_DSP_A:
+diff --git a/drivers/gpu/drm/drm_crtc.c b/drivers/gpu/drm/drm_crtc.c
+index 38ce608648b0..85d85a0ba85f 100644
+--- a/drivers/gpu/drm/drm_crtc.c
++++ b/drivers/gpu/drm/drm_crtc.c
+@@ -535,7 +535,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 	struct drm_mode_set set;
+ 	uint32_t __user *set_connectors_ptr;
+ 	struct drm_modeset_acquire_ctx ctx;
+-	int ret, i, num_connectors;
++	int ret, i, num_connectors = 0;
+ 
+ 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
+ 		return -EOPNOTSUPP;
+@@ -673,7 +673,6 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
+ 			goto out;
+ 		}
+ 
+-		num_connectors = 0;
+ 		for (i = 0; i < crtc_req->count_connectors; i++) {
+ 			connector_set[i] = NULL;
+ 			set_connectors_ptr = (uint32_t __user *)(unsigned long)crtc_req->set_connectors_ptr;
 -- 
 2.43.0
 
