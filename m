@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-15414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1C0B83859E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:45:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA058380F8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9ED8B2C094
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1026B1F22244
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C87C2386;
-	Tue, 23 Jan 2024 02:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D5B013DBAA;
+	Tue, 23 Jan 2024 01:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lm5HDt1J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I4cUqrpR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869C7380;
-	Tue, 23 Jan 2024 02:09:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D067113DBA6;
+	Tue, 23 Jan 2024 01:06:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975749; cv=none; b=ugc5uujdShq3N0Iy7ZBE9b5eZmQ8LaD0WmLLcT1eZQ5jC/ZZ5jql8B0DPZeOhOgqknb/S+6c0B6dMKKeda7cpxLq0Y/fLXdp+z2I183yteEWuy0+MdzCZ7xZKqpo7d3agTQC51u5myVanmrfVMAKQSCGeQNt2gj+5Nuuw+zd6Ls=
+	t=1705971977; cv=none; b=nJFI7pt6FoWHedu1zLG4WVeZRuLCDuMVTrdf/QmQjJTCPKzmCtWdL9tZyqHpUqCSPWGVz+qmtpGxsvwQzr1CtrdLE0iKhzrKLXiGngvynHPl0u8g9DNo7s9naW6u3qLQusvydBFZZGN7sR2NC3IaLAmOHTlD98VY+q7qXktbes0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975749; c=relaxed/simple;
-	bh=IxlL/Bcx2TLJNtxavQHWoxs9K22qsTWlkIFm1xX1gPw=;
+	s=arc-20240116; t=1705971977; c=relaxed/simple;
+	bh=erUucxvAv+wtq62Ec0VKgKULTKMtW0d80XZhCAnrv/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HtkLaxKh6HZP7E5GiWRqVlaQbEdZYwV6S/5RdyjKjCPKRJI7hR0ue3NOePxYEHMH0ukBpUW9uMDl/Wnzg5he6Ij10I17A0INiZ16zSWAfRE3p8il6ab2NhY/5K2EzyEq6Q6pfs9KC1iXsVba2OfWOp9Ltyus4dxgV50+tiL00b8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lm5HDt1J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE6AC43394;
-	Tue, 23 Jan 2024 02:09:09 +0000 (UTC)
+	 MIME-Version; b=bHnOLuoiab6x18msmgqTkxlhTSJ60giLRgWGBGWYeN4VDnrG8WDPvWLBJjEIJwWI0TZLVHxLN+FNdw5STOFNVdnsvcevQ/s//+nfPhLmISDTqghb+PHLI4wynpRAaqM62WJ3E35K1DYA/XfrfY5lsIcq4yqu/mdgz0zJU1+TrJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I4cUqrpR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC33C433F1;
+	Tue, 23 Jan 2024 01:06:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975749;
-	bh=IxlL/Bcx2TLJNtxavQHWoxs9K22qsTWlkIFm1xX1gPw=;
+	s=korg; t=1705971977;
+	bh=erUucxvAv+wtq62Ec0VKgKULTKMtW0d80XZhCAnrv/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lm5HDt1JeiGtCeb1Lik6ndwWbt4Y8/GmUAtdMbtV/4a/p1PZDwDQPsDbSvXoCAHfo
-	 hfyIKCpMzBsQRICrOFtmTZ+YlAHAuZPzG+DZ5ZdwcCRwaIVvsn/4uEXFTGSPlOmL+/
-	 9ntjzA0kYW4h4eGD02bFBIsskHfi8FzY3Rq7fQbE=
+	b=I4cUqrpRzStNf34miKVadTAo+GyWkFmuyiXU6wp4kepMMOwySZB/3/NzGtt7n3QiJ
+	 pnXetwbh9Ijap113R+qglc1yZyoZGpWUAp8kJMDLOWdFCoRo7AiR3iLVGCTjtSbBDh
+	 rEarxo+cWTnDNA7wY0VK65E0FgJl6XW7Ve2O6/yc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Florian Westphal <fw@strlen.de>,
-	Peter Krystad <peter.krystad@linux.intel.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang.tang@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 534/583] mptcp: use OPTION_MPTCP_MPJ_SYNACK in subflow_finish_connect()
+Subject: [PATCH 5.10 279/286] mlxsw: spectrum_acl_tcam: Add missing mutex_destroy()
 Date: Mon, 22 Jan 2024 15:59:45 -0800
-Message-ID: <20240122235828.463224221@linuxfoundation.org>
+Message-ID: <20240122235742.811007111@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,48 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit be1d9d9d38da922bd4beeec5b6dd821ff5a1dfeb ]
+[ Upstream commit 65823e07b1e4055b6278725fd92f4d7e6f8d53fd ]
 
-subflow_finish_connect() uses four fields (backup, join_id, thmac, none)
-that may contain garbage unless OPTION_MPTCP_MPJ_SYNACK has been set
-in mptcp_parse_option()
+Pair mutex_init() with a mutex_destroy() in the error path. Found during
+code review. No functional changes.
 
-Fixes: f296234c98a8 ("mptcp: Add handling of incoming MP_JOIN requests")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Florian Westphal <fw@strlen.de>
-Cc: Peter Krystad <peter.krystad@linux.intel.com>
-Cc: Matthieu Baerts <matttbe@kernel.org>
-Cc: Mat Martineau <martineau@kernel.org>
-Cc: Geliang Tang <geliang.tang@linux.dev>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20240111194917.4044654-4-edumazet@google.com
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 483ae90d8f97 ("mlxsw: spectrum_acl_tcam: Fix stack corruption")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/subflow.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index d6ee0e52ea41..5b37fee2a85a 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -506,7 +506,7 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
- 	} else if (subflow->request_join) {
- 		u8 hmac[SHA256_DIGEST_SIZE];
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index 31f7f4c3acc3..c8d9f523242e 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -52,8 +52,10 @@ int mlxsw_sp_acl_tcam_init(struct mlxsw_sp *mlxsw_sp,
+ 		max_regions = max_tcam_regions;
  
--		if (!(mp_opt.suboptions & OPTIONS_MPTCP_MPJ)) {
-+		if (!(mp_opt.suboptions & OPTION_MPTCP_MPJ_SYNACK)) {
- 			subflow->reset_reason = MPTCP_RST_EMPTCP;
- 			goto do_reset;
- 		}
+ 	tcam->used_regions = bitmap_zalloc(max_regions, GFP_KERNEL);
+-	if (!tcam->used_regions)
+-		return -ENOMEM;
++	if (!tcam->used_regions) {
++		err = -ENOMEM;
++		goto err_alloc_used_regions;
++	}
+ 	tcam->max_regions = max_regions;
+ 
+ 	max_groups = MLXSW_CORE_RES_GET(mlxsw_sp->core, ACL_MAX_GROUPS);
+@@ -76,6 +78,8 @@ int mlxsw_sp_acl_tcam_init(struct mlxsw_sp *mlxsw_sp,
+ 	bitmap_free(tcam->used_groups);
+ err_alloc_used_groups:
+ 	bitmap_free(tcam->used_regions);
++err_alloc_used_regions:
++	mutex_destroy(&tcam->lock);
+ 	return err;
+ }
+ 
 -- 
 2.43.0
 
