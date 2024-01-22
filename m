@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-13138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C97FA837AA7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA989837A09
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B3831F2466F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:54:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28E6F1C281F6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ACDE12FF8D;
-	Tue, 23 Jan 2024 00:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60845129A69;
+	Tue, 23 Jan 2024 00:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9b66mSj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="COKJxDo3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5939912F5A7;
-	Tue, 23 Jan 2024 00:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB0B129A66;
+	Tue, 23 Jan 2024 00:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969039; cv=none; b=Z4R3NnuBBAc7BiWl+SR/CnacRyFgt7UQz6sEojOWzfahR39w0zukYUsM+GL3nzx4+DMdxQlvRJqq4Jzjc1a4fLJ7o76Q92iCy2nQz2UdwlpdZe8ASAB9q3C78c7LIm/zrBR599D55LfhsdFrO2HdOIk8hRpJzOZdHWyif3+Z6WU=
+	t=1705968713; cv=none; b=paJ9tasIY4lO4w5cTHKel6NsBMS/+avvWuqDjHJBA+KwwrVvE2jg8BuPbgjgmMKLyPJgNR/pnyq/KT9LMsVnJb2t74R4gFoWd2YIjW2BleUykMCyhmSDKf50vDXLwCHwWi8GiuIMxFqNS+u6e+OSyNr1jFJNVy/d/7f+SLRu2jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969039; c=relaxed/simple;
-	bh=gdkABEbIH5WjtOodNZogc3jvZaQ/ZYF93jYWJe2c61U=;
+	s=arc-20240116; t=1705968713; c=relaxed/simple;
+	bh=OaBWlNqnSoniHy7kiJFTPq15FBpghwi9xBIeqTqKBLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jmg8UdLnKLYpSRZRWEWlv5RtzevoTFKTMkhSEDjghYfCpTVEnBz0wf0s6AQS5qdAk2FwbdLmr14ZTFhnvr2bsUTStuU5gK2Lmj2r5C8bZ50Qfu6wSGjzxe16QFlEHV54Mzp6rPHjglvCya/BQHkZHmBEWLWMxtXdEr5XcR9ePKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9b66mSj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04ECBC433C7;
-	Tue, 23 Jan 2024 00:17:18 +0000 (UTC)
+	 MIME-Version; b=b5w+N35PzD+FfsTiW/Y/5YIsKOHUa+tKLSQRbm3FrwWIneOX9YOamPqP180dKip78ki9LmStk/UctlsxKFRER8At6W+j0JgMJQ5aDitIpNSh4Pp8fQe5y1LjEWgGyhaPFUe9uHtsg3+y9aq54UpjqeBLfAC3K+xpvOrbK2y4pVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=COKJxDo3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B43C433F1;
+	Tue, 23 Jan 2024 00:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969039;
-	bh=gdkABEbIH5WjtOodNZogc3jvZaQ/ZYF93jYWJe2c61U=;
+	s=korg; t=1705968713;
+	bh=OaBWlNqnSoniHy7kiJFTPq15FBpghwi9xBIeqTqKBLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W9b66mSjWI8a5Rtx9GsUp2Ot6y1waG1IzFd0ppBZN3QEfOxwRU3cnZXN2uRzfZFjJ
-	 FC9cOkwOul3OtQgtHNcZRjeFFgT3jKvUd5LVhd63/XeFe/kvZVTYYaTAr6s2LsNBvu
-	 RCJ/goRpHoIThCCajL+i+MrUUR5jEjgMBaC/UMiM=
+	b=COKJxDo3L9Bx853UHZcAuogjyQqKVXN/Kh0Px4Py2lnM/SB0b1k/BE7B1Jhk7bztk
+	 Hx/MP5Kw5qMcaYFeBpu/q+ALBDRwlmoJZ/MzN6ijoxRgTRtN76HsuOdGHUTCiRK5uq
+	 VV8KIWaxrE/L9wdjUh0sZxbWKeI3E70UjhqXWceA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Landley <rob@landley.net>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Mimi Zohar <zohar@linux.ibm.com>
-Subject: [PATCH 5.4 157/194] rootfs: Fix support for rootfstype= when root= is given
+	David Lin <yu-hao.lin@nxp.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>,
+	Rafael Beims <rafael.beims@toradex.com>
+Subject: [PATCH 4.19 131/148] wifi: mwifiex: configure BSSID consistently when starting AP
 Date: Mon, 22 Jan 2024 15:58:07 -0800
-Message-ID: <20240122235725.919215332@linuxfoundation.org>
+Message-ID: <20240122235717.845394343@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Berger <stefanb@linux.ibm.com>
+From: David Lin <yu-hao.lin@nxp.com>
 
-commit 21528c69a0d8483f7c6345b1a0bc8d8975e9a172 upstream.
+commit f0dd488e11e71ac095df7638d892209c629d9af2 upstream.
 
-Documentation/filesystems/ramfs-rootfs-initramfs.rst states:
+AP BSSID configuration is missing at AP start.  Without this fix, FW returns
+STA interface MAC address after first init.  When hostapd restarts, it gets MAC
+address from netdev before driver sets STA MAC to netdev again. Now MAC address
+between hostapd and net interface are different causes STA cannot connect to
+AP.  After that MAC address of uap0 mlan0 become the same. And issue disappears
+after following hostapd restart (another issue is AP/STA MAC address become the
+same).
 
-  If CONFIG_TMPFS is enabled, rootfs will use tmpfs instead of ramfs by
-  default.  To force ramfs, add "rootfstype=ramfs" to the kernel command
-  line.
+This patch fixes the issue cleanly.
 
-This currently does not work when root= is provided since then
-saved_root_name contains a string and rootfstype= is ignored. Therefore,
-ramfs is currently always chosen when root= is provided.
-
-The current behavior for rootfs's filesystem is:
-
-   root=       | rootfstype= | chosen rootfs filesystem
-   ------------+-------------+--------------------------
-   unspecified | unspecified | tmpfs
-   unspecified | tmpfs       | tmpfs
-   unspecified | ramfs       | ramfs
-    provided   | ignored     | ramfs
-
-rootfstype= should be respected regardless whether root= is given,
-as shown below:
-
-   root=       | rootfstype= | chosen rootfs filesystem
-   ------------+-------------+--------------------------
-   unspecified | unspecified | tmpfs  (as before)
-   unspecified | tmpfs       | tmpfs  (as before)
-   unspecified | ramfs       | ramfs  (as before)
-    provided   | unspecified | ramfs  (compatibility with before)
-    provided   | tmpfs       | tmpfs  (new)
-    provided   | ramfs       | ramfs  (new)
-
-This table represents the new behavior.
-
-Fixes: 6e19eded3684 ("initmpfs: use initramfs if rootfstype= or root= specified")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Rob Landley <rob@landley.net>
-Link: https://lore.kernel.org/lkml/8244c75f-445e-b15b-9dbf-266e7ca666e2@landley.net/
-Reviewed-and-Tested-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-Link: https://lore.kernel.org/r/20231120011248.396012-1-stefanb@linux.ibm.com
+Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+Fixes: 12190c5d80bd ("mwifiex: add cfg80211 start_ap and stop_ap handlers")
+Cc: stable@vger.kernel.org
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Tested-by: Rafael Beims <rafael.beims@toradex.com> # Verdin iMX8MP/SD8997 SD
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231215005118.17031-1-yu-hao.lin@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- init/do_mounts.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c |    2 ++
+ drivers/net/wireless/marvell/mwifiex/fw.h       |    1 +
+ drivers/net/wireless/marvell/mwifiex/ioctl.h    |    1 +
+ drivers/net/wireless/marvell/mwifiex/uap_cmd.c  |    8 ++++++++
+ 4 files changed, 12 insertions(+)
 
---- a/init/do_mounts.c
-+++ b/init/do_mounts.c
-@@ -643,7 +643,10 @@ struct file_system_type rootfs_fs_type =
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -1957,6 +1957,8 @@ static int mwifiex_cfg80211_start_ap(str
  
- void __init init_rootfs(void)
+ 	mwifiex_set_sys_config_invalid_data(bss_cfg);
+ 
++	memcpy(bss_cfg->mac_addr, priv->curr_addr, ETH_ALEN);
++
+ 	if (params->beacon_interval)
+ 		bss_cfg->beacon_period = params->beacon_interval;
+ 	if (params->dtim_period)
+--- a/drivers/net/wireless/marvell/mwifiex/fw.h
++++ b/drivers/net/wireless/marvell/mwifiex/fw.h
+@@ -177,6 +177,7 @@ enum MWIFIEX_802_11_PRIVACY_FILTER {
+ #define TLV_TYPE_STA_MAC_ADDR       (PROPRIETARY_TLV_BASE_ID + 32)
+ #define TLV_TYPE_BSSID              (PROPRIETARY_TLV_BASE_ID + 35)
+ #define TLV_TYPE_CHANNELBANDLIST    (PROPRIETARY_TLV_BASE_ID + 42)
++#define TLV_TYPE_UAP_MAC_ADDRESS    (PROPRIETARY_TLV_BASE_ID + 43)
+ #define TLV_TYPE_UAP_BEACON_PERIOD  (PROPRIETARY_TLV_BASE_ID + 44)
+ #define TLV_TYPE_UAP_DTIM_PERIOD    (PROPRIETARY_TLV_BASE_ID + 45)
+ #define TLV_TYPE_UAP_BCAST_SSID     (PROPRIETARY_TLV_BASE_ID + 48)
+--- a/drivers/net/wireless/marvell/mwifiex/ioctl.h
++++ b/drivers/net/wireless/marvell/mwifiex/ioctl.h
+@@ -119,6 +119,7 @@ struct mwifiex_uap_bss_param {
+ 	u8 qos_info;
+ 	u8 power_constraint;
+ 	struct mwifiex_types_wmm_info wmm_info;
++	u8 mac_addr[ETH_ALEN];
+ };
+ 
+ enum {
+--- a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
++++ b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+@@ -479,6 +479,7 @@ void mwifiex_config_uap_11d(struct mwifi
+ static int
+ mwifiex_uap_bss_param_prepare(u8 *tlv, void *cmd_buf, u16 *param_size)
  {
--	if (IS_ENABLED(CONFIG_TMPFS) && !saved_root_name[0] &&
--		(!root_fs_names || strstr(root_fs_names, "tmpfs")))
--		is_tmpfs = true;
-+	if (IS_ENABLED(CONFIG_TMPFS)) {
-+		if (!saved_root_name[0] && !root_fs_names)
-+			is_tmpfs = true;
-+		else if (root_fs_names && !!strstr(root_fs_names, "tmpfs"))
-+			is_tmpfs = true;
-+	}
- }
++	struct host_cmd_tlv_mac_addr *mac_tlv;
+ 	struct host_cmd_tlv_dtim_period *dtim_period;
+ 	struct host_cmd_tlv_beacon_period *beacon_period;
+ 	struct host_cmd_tlv_ssid *ssid;
+@@ -498,6 +499,13 @@ mwifiex_uap_bss_param_prepare(u8 *tlv, v
+ 	int i;
+ 	u16 cmd_size = *param_size;
+ 
++	mac_tlv = (struct host_cmd_tlv_mac_addr *)tlv;
++	mac_tlv->header.type = cpu_to_le16(TLV_TYPE_UAP_MAC_ADDRESS);
++	mac_tlv->header.len = cpu_to_le16(ETH_ALEN);
++	memcpy(mac_tlv->mac_addr, bss_cfg->mac_addr, ETH_ALEN);
++	cmd_size += sizeof(struct host_cmd_tlv_mac_addr);
++	tlv += sizeof(struct host_cmd_tlv_mac_addr);
++
+ 	if (bss_cfg->ssid.ssid_len) {
+ 		ssid = (struct host_cmd_tlv_ssid *)tlv;
+ 		ssid->header.type = cpu_to_le16(TLV_TYPE_UAP_SSID);
 
 
 
