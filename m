@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E80CB8383DC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:52 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1564A83815E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:08:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2517295D7C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA0721F21426
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633AF657C3;
-	Tue, 23 Jan 2024 01:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B45C51420AA;
+	Tue, 23 Jan 2024 01:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UG/y9Dzj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e5xVX1qB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234DD657AE;
-	Tue, 23 Jan 2024 01:58:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CA3135A6D;
+	Tue, 23 Jan 2024 01:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975083; cv=none; b=Dwc12waX7b10rof7yTxu55ZUg/xWChPfV6YB1+RA2dR8H29jvlNOXy+oukxm5sxRIXnFoYNmGav4NBeIGduTB8H8olSurXkvONEEIUKbgBC/Q+YCuFstd3fYgzCJCBILHJkG7oHzQrs20X4nmOwAlKIiNOkot5Qt0sOvNQbOvxU=
+	t=1705972115; cv=none; b=g5p7A2jUbeCAnb6NSPFTqoXG3NeBFgMMx/nXzyKW3sFphAsT8G4XTis4XeXUT3gWP8ZRD2SPSZTAOYeDkbPUV8ru32sw3TGnBknWdVGcm1E9QPfXOrC5SK8NVqPWr7tDXHok9apK5S5cTXotUU3Mt9ZnNaYExk0Z9RkcYhygNW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975083; c=relaxed/simple;
-	bh=Z75RowVjMb5RPe+9UqGMCl7uYb0x2GGd/KE/+RWKZYk=;
+	s=arc-20240116; t=1705972115; c=relaxed/simple;
+	bh=E34jJn8u7/y3Mi+mgsePfNtxSU4stTWpg7sb10npjTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ru0KTyF9n0nkAr+YzncpyhD7+CwbaKMaKDfI1WH+XzpAfsHXBwF2amBW7PQXjBxFhDXoE105X0rNH+c8UOQfY1zHkWrUqH1HB1+lxh8dhTghmVhaJHFFXw0fetizNd6DcoHQMd1se3bkEl8Z0sTlK9BugGLh+rDD1vUbAz6eckA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UG/y9Dzj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D93FCC433A6;
-	Tue, 23 Jan 2024 01:58:02 +0000 (UTC)
+	 MIME-Version; b=hcZE97OFXNj7lxlZasTWrO7S/u3S+PeHKZNLpDyNLxjz9q+HHV+UIIPGohaJzYTmlSaXy28FJhte7Xm3WrQ4o8WNq0aYJeJXxY6RmqNc/OuMSN5mSeOuMlq/uSOG/4C9VQ/JJXT4LQZiv21gUOJf64WtdR9wLxY5IIg7kF8JrAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e5xVX1qB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD47C433C7;
+	Tue, 23 Jan 2024 01:08:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975083;
-	bh=Z75RowVjMb5RPe+9UqGMCl7uYb0x2GGd/KE/+RWKZYk=;
+	s=korg; t=1705972115;
+	bh=E34jJn8u7/y3Mi+mgsePfNtxSU4stTWpg7sb10npjTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UG/y9DzjnU0ZAnKMCd4T4f6k1/xBr3035RsJLJddBIJB1KI89RGhXzySt1Ng2CM4C
-	 Uq+Gp4WC5uZvlSff8sdygLFxP9WKINv+vwYkB5kh/FLGvFxyg5XY6udNjqsFeSK+mA
-	 haJBv0N8h5X4ndwttGhKRewbFNd1cjD+cXa/pt3A=
+	b=e5xVX1qB4x8Bb79Am8uLMP+aty2Sr5sUBgUvVyLv/MsBObNrp7lkoW9NR6icGfqsM
+	 u88AjYT7woaWDumJInSI5bsLY+MW4ke5V1zWc0Ytp0EFoce1ybvu7biiDWOq7l/kbH
+	 IicDD1BAI8LRNGpl6ch/0JdCsXMxizRUqkF6a4Vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhinav Singh <singhabhinav9051571833@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>,
+	Weihao Li <cn.liweihao@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 230/583] drm/nouveau/fence:: fix warning directly dereferencing a rcu pointer
+Subject: [PATCH 5.15 025/374] clk: rockchip: rk3128: Fix HCLK_OTG gate register
 Date: Mon, 22 Jan 2024 15:54:41 -0800
-Message-ID: <20240122235819.033039898@linuxfoundation.org>
+Message-ID: <20240122235745.510637854@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Singh <singhabhinav9051571833@gmail.com>
+From: Weihao Li <cn.liweihao@gmail.com>
 
-[ Upstream commit 5f35a624c1e30b5bae5023b3c256e94e0ad4f806 ]
+[ Upstream commit c6c5a5580dcb6631aa6369dabe12ef3ce784d1d2 ]
 
-Fix a sparse warning with this message
-"warning:dereference of noderef expression". In this context it means we
-are dereferencing a __rcu tagged pointer directly.
+The HCLK_OTG gate control is in CRU_CLKGATE5_CON, not CRU_CLKGATE3_CON.
 
-We should not be directly dereferencing a rcu pointer. To get a normal
-(non __rcu tagged pointer) from a __rcu tagged pointer we are using the
-function unrcu_pointer(...). The non __rcu tagged pointer then can be
-dereferenced just like a normal pointer.
-
-I tested with qemu with this command
-qemu-system-x86_64 \
-	-m 2G \
-	-smp 2 \
-	-kernel bzImage \
-	-append "console=ttyS0 root=/dev/sda earlyprintk=serial net.ifnames=0" \
-	-drive file=bullseye.img,format=raw \
-	-net user,host=10.0.2.10,hostfwd=tcp:127.0.0.1:10021-:22 \
-	-net nic,model=e1000 \
-	-enable-kvm \
-	-nographic \
-	-pidfile vm.pid \
-	2>&1 | tee vm.log
-with lockdep enabled.
-
-Fixes: 0ec5f02f0e2c ("drm/nouveau: prevent stale fence->channel pointers, and protect with rcu")
-Signed-off-by: Abhinav Singh <singhabhinav9051571833@gmail.com>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231113191303.3277733-1-singhabhinav9051571833@gmail.com
+Signed-off-by: Weihao Li <cn.liweihao@gmail.com>
+Link: https://lore.kernel.org/r/20231031111816.8777-1-cn.liweihao@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nv04_fence.c | 2 +-
+ drivers/clk/rockchip/clk-rk3128.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nv04_fence.c b/drivers/gpu/drm/nouveau/nv04_fence.c
-index 5b71a5a5cd85..cdbc75e3d1f6 100644
---- a/drivers/gpu/drm/nouveau/nv04_fence.c
-+++ b/drivers/gpu/drm/nouveau/nv04_fence.c
-@@ -39,7 +39,7 @@ struct nv04_fence_priv {
- static int
- nv04_fence_emit(struct nouveau_fence *fence)
- {
--	struct nvif_push *push = fence->channel->chan.push;
-+	struct nvif_push *push = unrcu_pointer(fence->channel)->chan.push;
- 	int ret = PUSH_WAIT(push, 2);
- 	if (ret == 0) {
- 		PUSH_NVSQ(push, NV_SW, 0x0150, fence->base.seqno);
+diff --git a/drivers/clk/rockchip/clk-rk3128.c b/drivers/clk/rockchip/clk-rk3128.c
+index aa53797dbfc1..7782785a86e6 100644
+--- a/drivers/clk/rockchip/clk-rk3128.c
++++ b/drivers/clk/rockchip/clk-rk3128.c
+@@ -490,7 +490,7 @@ static struct rockchip_clk_branch common_clk_branches[] __initdata = {
+ 	GATE(HCLK_I2S_2CH, "hclk_i2s_2ch", "hclk_peri", 0, RK2928_CLKGATE_CON(7), 2, GFLAGS),
+ 	GATE(0, "hclk_usb_peri", "hclk_peri", CLK_IGNORE_UNUSED, RK2928_CLKGATE_CON(9), 13, GFLAGS),
+ 	GATE(HCLK_HOST2, "hclk_host2", "hclk_peri", 0, RK2928_CLKGATE_CON(7), 3, GFLAGS),
+-	GATE(HCLK_OTG, "hclk_otg", "hclk_peri", 0, RK2928_CLKGATE_CON(3), 13, GFLAGS),
++	GATE(HCLK_OTG, "hclk_otg", "hclk_peri", 0, RK2928_CLKGATE_CON(5), 13, GFLAGS),
+ 	GATE(0, "hclk_peri_ahb", "hclk_peri", CLK_IGNORE_UNUSED, RK2928_CLKGATE_CON(9), 14, GFLAGS),
+ 	GATE(HCLK_SPDIF, "hclk_spdif", "hclk_peri", 0, RK2928_CLKGATE_CON(10), 9, GFLAGS),
+ 	GATE(HCLK_TSP, "hclk_tsp", "hclk_peri", 0, RK2928_CLKGATE_CON(10), 12, GFLAGS),
 -- 
 2.43.0
 
