@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-14769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC9B83827B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F534838041
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24974284CE0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8312E1C283B2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32E1D5C5FE;
-	Tue, 23 Jan 2024 01:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018BD65BA2;
+	Tue, 23 Jan 2024 01:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jh2trWfx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIhEpaAH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6BD55C5FB;
-	Tue, 23 Jan 2024 01:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48DC657BD;
+	Tue, 23 Jan 2024 01:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974365; cv=none; b=fjVPJWO27FqzV8DfAF9kEhwU6BF2J45qyEKNRsx2HHkZNCd/NEQIxNcdm6oO0cEClOmtzLByAfvv/QCS4OqzUdDB6mRdTN2huDpQnVL6LSN/2kcXizT7lmFBGHs2/iyfsaRC/yil8k8z03z9XTqjWGx/x9A7t6BJJIOiVkXdKmY=
+	t=1705971628; cv=none; b=NtPsiB3dXAneobYpD50zg7U7jtC3T+pNCnOSD7t60rEw5COPiCjJpwRBHQTQoO+iu3eMmI+fQ6B7+XYbrUmYN7gMGNCFTiaGUg2Csb0sKg1aHBd5KUDLPQtelYqCfAfGVaiWuZCgF820HJi9eEBMVR/tUXCwu/gd5PsYYIaFbU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974365; c=relaxed/simple;
-	bh=Ns19Snfd63YksiOtcr+W9l1iw2RCXe8iGYm0bY7+zqc=;
+	s=arc-20240116; t=1705971628; c=relaxed/simple;
+	bh=qFZVtGIpI2vOrd+6MmIGVm3L5m8b320V5W7u7fXg0tM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T+2060B4wkWzy3cqLHSNxbFBw2ZNJTlroO2zOnynvusOEjyi1W6KlSSvIXJCifXrcThwBqk+7cBh5OJes578+EPWXMzcOuBTkB1zfgIXTS1kMznhg8lxGcqR1l4IN0IkDFry3X77laAUWVmAyOXTvDLt4YaQ7d8gk6v6vGyqH3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jh2trWfx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E0AC43394;
-	Tue, 23 Jan 2024 01:46:04 +0000 (UTC)
+	 MIME-Version; b=PzvcfDRz1s0dxfMkfyTkEvtBFG7coa+w7WvUyc7sWi4Hm+CS1lGxg1BGvqQQeCFEOfS6eJwjeDgI+4lGsI2ypu96ADAncD/O9uyKncd6/7b2tJN0OdCrJqp5ufo8WFgICRpG3M1oFq8cne3EIQow1hKD36TDDqEEGuV3DOCoBIY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YIhEpaAH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61B35C433C7;
+	Tue, 23 Jan 2024 01:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974364;
-	bh=Ns19Snfd63YksiOtcr+W9l1iw2RCXe8iGYm0bY7+zqc=;
+	s=korg; t=1705971628;
+	bh=qFZVtGIpI2vOrd+6MmIGVm3L5m8b320V5W7u7fXg0tM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jh2trWfx99zuzG1rx8Wwb+OZesAtO19IT+Dt6sV7E58leG2zemAJYEI0ji1Jo3LHK
-	 JhUVKsoMD01gxrZisq24K6nYAel1ni2ttpkw3nIlB/U1/Tz8N3pMtt2pqAFPvoKICw
-	 YvhrZHlSH2WhwzBfyWGWqDeZxSZHzzV3CgGNAJC4=
+	b=YIhEpaAHk70RdDQ3wfVpMzmpV0N+ZO9zP6EsVqngPCJSgmCRi93oHGt1iSzNOaQcg
+	 9z4NZAwswwKNq624CyfsEU2jSUTDSnSpGqkVfdxPYlcOmC8+kt2+7vEF4T6yyqi1Ck
+	 cLO+NdoDiyeQX6UkuyxbcspVU4dy6wxj6bUxO7PI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 193/374] drm/msm/dsi: Use pm_runtime_resume_and_get to prevent refcnt leaks
+	Yo-Jung Lin <leo.lin@canonical.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 281/417] ALSA: hda/realtek: Enable mute/micmute LEDs and limit mic boost on HP ZBook
 Date: Mon, 22 Jan 2024 15:57:29 -0800
-Message-ID: <20240122235751.331172300@linuxfoundation.org>
+Message-ID: <20240122235801.572902023@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Yo-Jung Lin <leo.lin@canonical.com>
 
-[ Upstream commit 3d07a411b4faaf2b498760ccf12888f8de529de0 ]
+commit b018cee7369896c7a15bfdbe88f168f3dbd8ba27 upstream.
 
-This helper has been introduced to avoid programmer errors (missing
-_put calls leading to dangling refcnt) when using pm_runtime_get, use it.
+On some HP ZBooks, the audio LEDs can be enabled by
+ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF. So use it accordingly.
 
-While at it, start checking the return value.
-
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Fixes: 5c8290284402 ("drm/msm/dsi: Split PHY drivers to separate files")
-Patchwork: https://patchwork.freedesktop.org/patch/543350/
-Link: https://lore.kernel.org/r/20230620-topic-dsiphy_rpm-v2-1-a11a751f34f0@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Yo-Jung Lin <leo.lin@canonical.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240116020722.27236-1-leo.lin@canonical.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/dsi/phy/dsi_phy.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
-index 6a917fe69a83..4b5b0a4b051b 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy.c
-@@ -588,7 +588,9 @@ static int dsi_phy_enable_resource(struct msm_dsi_phy *phy)
- 	struct device *dev = &phy->pdev->dev;
- 	int ret;
- 
--	pm_runtime_get_sync(dev);
-+	ret = pm_runtime_resume_and_get(dev);
-+	if (ret)
-+		return ret;
- 
- 	ret = clk_prepare_enable(phy->ahb_clk);
- 	if (ret) {
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9721,6 +9721,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8c71, "HP EliteBook 845 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c72, "HP EliteBook 865 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c96, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8c97, "HP ZBook", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8ca7, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8cf5, "HP ZBook Studio 16", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
 
 
 
