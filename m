@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-14339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9B188380E5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F4EF837DB4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 512B7B2AFE3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4B561F26405
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BFDF12F5AA;
-	Tue, 23 Jan 2024 01:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D4854654;
+	Tue, 23 Jan 2024 00:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jluBLaig"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZnmKJDZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC19912F59C;
-	Tue, 23 Jan 2024 01:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39EFC376E6;
+	Tue, 23 Jan 2024 00:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971765; cv=none; b=KG+DXPLDV6SApY63hJRlHIQ865++3vTeafSm/+558QoAj4XauaRx4yeYawGbo6HdkjiC3UnutLWErPXUxrNQuiT32tLciYdv8W6HxQJ68YaqYohPf3qmMQjT5g1lxXGHclOj+UKdeqkb6W3yOjm5SImFyb6fSf9RiqChtMHitBg=
+	t=1705970155; cv=none; b=gpcP5LeC/xrRb/0xKNIFEViDd+pWT4o5MwVs1LufMHeHxbTrMuG22lZNs0txMTQat3r4fuKGwIZCNybWfVABMmNXR/FuPDsd/qqUs3ZEBCZIM1zF4qGG7Uq9dumoUVPegHZPOmXrCgEfO5Z8z2MqFTiWsBftONjQVOI0HopaINU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971765; c=relaxed/simple;
-	bh=5xKjPx/qzWNDCFNjPgn4gERkiJho0x6ZhrNJ1v3FOR0=;
+	s=arc-20240116; t=1705970155; c=relaxed/simple;
+	bh=WyilkSIOkKCiWJg3+ZN558xKboj2CTZ+BDTju1h2dgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qdhrYRZhk++o75daDLkN702jytRHFn2fgW/hhHlYdIYSQonB/TM034rumczQ+oNfE6/p0aA7Rg5alXFyXkiQSxuV2rUBr1MS8xG1b3XCbG39INNBGoWwF1JkOHFkt2YyPv0eWPzjos6Te5dqVcZumgmJwCHBtG02WMFRmGAeMjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jluBLaig; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE25C433F1;
-	Tue, 23 Jan 2024 01:02:44 +0000 (UTC)
+	 MIME-Version; b=Gl4OtGjTii+ZtjNJtfdrAV9spTw2JffyF3Nf/zMA698HpRSnZfDERAufK2n6diNPFeGvprJqU2MQZwEKiHmuQEdRgG3+e00RMgOu1FE5MmPXu2dFoqhn+fLwILuyYHHZ2jmanEfNm5YFSMJaMfHfulBoh/sTP7SZE94/hQ9q4Js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZnmKJDZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0091DC433F1;
+	Tue, 23 Jan 2024 00:35:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971764;
-	bh=5xKjPx/qzWNDCFNjPgn4gERkiJho0x6ZhrNJ1v3FOR0=;
+	s=korg; t=1705970154;
+	bh=WyilkSIOkKCiWJg3+ZN558xKboj2CTZ+BDTju1h2dgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jluBLaigA7t1T8cDIihCm8cKl/ktvCX/8gx7Tzk76B8+B1wrP8dBBai+sxi5cxxtx
-	 q6f6fGesndRtXsnWuR9rBlQvAiQLLE6+Nn2kEH0kHjmoPANIKaRn6DxpxCrNsxtt3+
-	 AUwDX166+vWpox1IDSuq1f4cPnchGatEgu0ImFss=
+	b=ZnmKJDZTx11i73wLq2YrtEBcckMMzndattI1KxiI/hNbSK341UwsfXoARIIZ3roib
+	 +kqpmHwbbW91NP0N+UNlsb7n/LlbwZku38tCdIkAKfBDXJiZ7tuPftiVnBgeIcTA/x
+	 NJZhihllhQQ/BlglNNfZclbSqRj8kI/DSMerCjgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Llamas <cmllamas@google.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH 5.10 199/286] binder: fix unused alloc->free_async_space
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 601/641] net: netdev_queue: netdev_txq_completed_mb(): fix wake condition
 Date: Mon, 22 Jan 2024 15:58:25 -0800
-Message-ID: <20240122235739.776654735@linuxfoundation.org>
+Message-ID: <20240122235837.030045635@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-commit c6d05e0762ab276102246d24affd1e116a46aa0c upstream.
+[ Upstream commit 894d7508316e7ad722df597d68b4b1797a9eee11 ]
 
-Each transaction is associated with a 'struct binder_buffer' that stores
-the metadata about its buffer area. Since commit 74310e06be4d ("android:
-binder: Move buffer out of area shared with user space") this struct is
-no longer embedded within the buffer itself but is instead allocated on
-the heap to prevent userspace access to this driver-exclusive info.
+netif_txq_try_stop() uses "get_desc >= start_thrs" as the check for
+the call to netif_tx_start_queue().
 
-Unfortunately, the space of this struct is still being accounted for in
-the total buffer size calculation, specifically for async transactions.
-This results in an additional 104 bytes added to every async buffer
-request, and this area is never used.
+Use ">=" i netdev_txq_completed_mb(), too.
 
-This wasted space can be substantial. If we consider the maximum mmap
-buffer space of SZ_4M, the driver will reserve half of it for async
-transactions, or 0x200000. This area should, in theory, accommodate up
-to 262,144 buffers of the minimum 8-byte size. However, after adding
-the extra 'sizeof(struct binder_buffer)', the total number of buffers
-drops to only 18,724, which is a sad 7.14% of the actual capacity.
-
-This patch fixes the buffer size calculation to enable the utilization
-of the entire async buffer space. This is expected to reduce the number
-of -ENOSPC errors that are seen on the field.
-
-Fixes: 74310e06be4d ("android: binder: Move buffer out of area shared with user space")
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-6-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c91c46de6bbc ("net: provide macros for commonly copied lockless queue stop/wake code")
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder_alloc.c |   11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ include/net/netdev_queues.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -359,8 +359,7 @@ static void debug_low_async_space_locked
- 			continue;
- 		if (!buffer->async_transaction)
- 			continue;
--		total_alloc_size += binder_alloc_buffer_size(alloc, buffer)
--			+ sizeof(struct binder_buffer);
-+		total_alloc_size += binder_alloc_buffer_size(alloc, buffer);
- 		num_buffers++;
- 	}
- 
-@@ -419,8 +418,7 @@ static struct binder_buffer *binder_allo
- 	/* Pad 0-size buffers so they get assigned unique addresses */
- 	size = max(size, sizeof(void *));
- 
--	if (is_async &&
--	    alloc->free_async_space < size + sizeof(struct binder_buffer)) {
-+	if (is_async && alloc->free_async_space < size) {
- 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
- 			     "%d: binder_alloc_buf size %zd failed, no async space left\n",
- 			      alloc->pid, size);
-@@ -527,7 +525,7 @@ static struct binder_buffer *binder_allo
- 	buffer->extra_buffers_size = extra_buffers_size;
- 	buffer->pid = pid;
- 	if (is_async) {
--		alloc->free_async_space -= size + sizeof(struct binder_buffer);
-+		alloc->free_async_space -= size;
- 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC_ASYNC,
- 			     "%d: binder_alloc_buf size %zd async free %zd\n",
- 			      alloc->pid, size, alloc->free_async_space);
-@@ -663,8 +661,7 @@ static void binder_free_buf_locked(struc
- 	BUG_ON(buffer->user_data > alloc->buffer + alloc->buffer_size);
- 
- 	if (buffer->async_transaction) {
--		alloc->free_async_space += buffer_size + sizeof(struct binder_buffer);
--
-+		alloc->free_async_space += buffer_size;
- 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC_ASYNC,
- 			     "%d: binder_free_buf size %zd async free %zd\n",
- 			      alloc->pid, size, alloc->free_async_space);
+diff --git a/include/net/netdev_queues.h b/include/net/netdev_queues.h
+index d68b0a483431..8b8ed4e13d74 100644
+--- a/include/net/netdev_queues.h
++++ b/include/net/netdev_queues.h
+@@ -128,7 +128,7 @@ netdev_txq_completed_mb(struct netdev_queue *dev_queue,
+ 		netdev_txq_completed_mb(txq, pkts, bytes);		\
+ 									\
+ 		_res = -1;						\
+-		if (pkts && likely(get_desc > start_thrs)) {		\
++		if (pkts && likely(get_desc >= start_thrs)) {		\
+ 			_res = 1;					\
+ 			if (unlikely(netif_tx_queue_stopped(txq)) &&	\
+ 			    !(down_cond)) {				\
+-- 
+2.43.0
+
 
 
 
