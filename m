@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-13576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 955F4837CB2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:14:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF4D5837EDA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D82028CA97
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:14:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95FF729BBED
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC59F14830D;
-	Tue, 23 Jan 2024 00:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D944C60251;
+	Tue, 23 Jan 2024 00:46:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8SXY8oJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYty6Fh3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811C8155A4F;
-	Tue, 23 Jan 2024 00:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D216024F;
+	Tue, 23 Jan 2024 00:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969723; cv=none; b=msez9r7zkgeGP6sommJm0YBec8HubY5MupFRghBV/V4Sx9OSRpyValRtsWa4Xb4OxflAOHqG59YAVNJOLME2W6cxxkYPtuJjX+Cit4ytJTJt+qWdSpLvFcRdo8DA4lZDTaJl/VrTEINpLxIq78kA+r84qzWdlqaYlsdkC7PndTQ=
+	t=1705970784; cv=none; b=DMVuj6GhhNoDwTLdY5t4JlVU1WqkBU9lcFj+Jud+qHhov3wAPMtZWYS6hblYOpDm65KVoIFzUKsv15kgP++QbGjyK8VVs1MLngqZhXL05UgNTRGGhpZLO5G3v21OXRWx93Y3xA3i3RrZYf1J4ItGcrJ4iYY9ilDZwPePN+Y7NGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969723; c=relaxed/simple;
-	bh=u9ljyTHM5Q6b+LIOVwyCEUQry0C9NdhtMJZV8T1INuc=;
+	s=arc-20240116; t=1705970784; c=relaxed/simple;
+	bh=kJsqIo7zQbb40na+suNhl3zV0IRbdTpqohIXYPXZGP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XNzi9bDaY1RPmw/+XDsTkwwYw7ObKS3q22xF7ubXUzpsfNy3eo0X/IwNDmu/CpJ4yqn9B+x5c2jRVURozzQwcQTDJeZBLoGddkJeRa2CYNLji2CQoLGsp+iHLyEn2XmBDQXoMDnqb4NSHB5EugMhePfWkNMCX+os9OYKrfVsd4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8SXY8oJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7927AC433C7;
-	Tue, 23 Jan 2024 00:28:42 +0000 (UTC)
+	 MIME-Version; b=l20nk/5QkAhvcKDCqxi/J+IchJXze4w8KYP9jzpHcYV32oK+xi6+5TjblWuhVDRGhW09Czts7HhXYWzrvlDLRj1mx86fF5O9E4lLW/kMIKY8XK6aDn45FjnfCpJoJVp/rzuNhq/ghgTtBT5RkjtGd7ufwrcr60L9vba+LCKPSTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYty6Fh3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBF0C433C7;
+	Tue, 23 Jan 2024 00:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969723;
-	bh=u9ljyTHM5Q6b+LIOVwyCEUQry0C9NdhtMJZV8T1INuc=;
+	s=korg; t=1705970783;
+	bh=kJsqIo7zQbb40na+suNhl3zV0IRbdTpqohIXYPXZGP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8SXY8oJ/WqLux/dJ9JFgqhVI6EjKvcg5r37FDgMhThPQTXAxLMBmLplzNOhs0Wn0
-	 9OH8PBxGwFbVrPkyJcVo5WSi/Guq0ogVMoT27DCNuKqGigA73WTSjhrVu9yqn4apTH
-	 zGW1ARxvvOHVqi/9qWUgOdvZ/zN2imvpcO5glIao=
+	b=uYty6Fh3Cn4v0x1zZBxH0Syt1NzGY1Ia8bfGiBwUtR7vdGqmLcLZnjAC5CsDIo21r
+	 LzhXscuq3niN8WZ2u2lzK3o5gmL46ceJtrbd0CV2d915Jrl9f+IS5dJ795w7wEAWmt
+	 D+mWf1HpSbG2t0stz5mduyd/rlggbuupy/LIzQ1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.7 418/641] ALSA: oxygen: Fix right channel of capture volume mixer
+	Thinh Tran <thinhtr@linux.vnet.ibm.com>,
+	Venkata Sai Duggi <venkata.sai.duggi@ibm.com>,
+	David Christensen <drc@linux.vnet.ibm.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 016/286] net/tg3: fix race condition in tg3_reset_task()
 Date: Mon, 22 Jan 2024 15:55:22 -0800
-Message-ID: <20240122235831.067319298@linuxfoundation.org>
+Message-ID: <20240122235732.640402797@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +65,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Thinh Tran <thinhtr@linux.vnet.ibm.com>
 
-commit a03cfad512ac24a35184d7d87ec0d5489e1cb763 upstream.
+[ Upstream commit 16b55b1f2269962fb6b5154b8bf43f37c9a96637 ]
 
-There was a typo in oxygen mixer code that didn't update the right
-channel value properly for the capture volume.  Let's fix it.
+When an EEH error is encountered by a PCI adapter, the EEH driver
+modifies the PCI channel's state as shown below:
 
-This trivial fix was originally reported on Bugzilla.
+   enum {
+      /* I/O channel is in normal state */
+      pci_channel_io_normal = (__force pci_channel_state_t) 1,
 
-Fixes: a3601560496d ("[ALSA] oxygen: add front panel controls")
-Cc: <stable@vger.kernel.org>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=156561
-Link: https://lore.kernel.org/r/20240112111023.6208-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+      /* I/O to channel is blocked */
+      pci_channel_io_frozen = (__force pci_channel_state_t) 2,
+
+      /* PCI card is dead */
+      pci_channel_io_perm_failure = (__force pci_channel_state_t) 3,
+   };
+
+If the same EEH error then causes the tg3 driver's transmit timeout
+logic to execute, the tg3_tx_timeout() function schedules a reset
+task via tg3_reset_task_schedule(), which may cause a race condition
+between the tg3 and EEH driver as both attempt to recover the HW via
+a reset action.
+
+EEH driver gets error event
+--> eeh_set_channel_state()
+    and set device to one of
+    error state above           scheduler: tg3_reset_task() get
+                                returned error from tg3_init_hw()
+                             --> dev_close() shuts down the interface
+tg3_io_slot_reset() and
+tg3_io_resume() fail to
+reset/resume the device
+
+To resolve this issue, we avoid the race condition by checking the PCI
+channel state in the tg3_reset_task() function and skip the tg3 driver
+initiated reset when the PCI channel is not in the normal state.  (The
+driver has no access to tg3 device registers at this point and cannot
+even complete the reset task successfully without external assistance.)
+We'll leave the reset procedure to be managed by the EEH driver which
+calls the tg3_io_error_detected(), tg3_io_slot_reset() and
+tg3_io_resume() functions as appropriate.
+
+Adding the same checking in tg3_dump_state() to avoid dumping all
+device registers when the PCI channel is not in the normal state.
+
+Signed-off-by: Thinh Tran <thinhtr@linux.vnet.ibm.com>
+Tested-by: Venkata Sai Duggi <venkata.sai.duggi@ibm.com>
+Reviewed-by: David Christensen <drc@linux.vnet.ibm.com>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://lore.kernel.org/r/20231201001911.656-1-thinhtr@linux.vnet.ibm.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/oxygen/oxygen_mixer.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/tg3.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/sound/pci/oxygen/oxygen_mixer.c
-+++ b/sound/pci/oxygen/oxygen_mixer.c
-@@ -718,7 +718,7 @@ static int ac97_fp_rec_volume_put(struct
- 	oldreg = oxygen_read_ac97(chip, 1, AC97_REC_GAIN);
- 	newreg = oldreg & ~0x0707;
- 	newreg = newreg | (value->value.integer.value[0] & 7);
--	newreg = newreg | ((value->value.integer.value[0] & 7) << 8);
-+	newreg = newreg | ((value->value.integer.value[1] & 7) << 8);
- 	change = newreg != oldreg;
- 	if (change)
- 		oxygen_write_ac97(chip, 1, AC97_REC_GAIN, newreg);
+diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
+index b010f28b0abf..fe2c9b110e60 100644
+--- a/drivers/net/ethernet/broadcom/tg3.c
++++ b/drivers/net/ethernet/broadcom/tg3.c
+@@ -6454,6 +6454,14 @@ static void tg3_dump_state(struct tg3 *tp)
+ 	int i;
+ 	u32 *regs;
+ 
++	/* If it is a PCI error, all registers will be 0xffff,
++	 * we don't dump them out, just report the error and return
++	 */
++	if (tp->pdev->error_state != pci_channel_io_normal) {
++		netdev_err(tp->dev, "PCI channel ERROR!\n");
++		return;
++	}
++
+ 	regs = kzalloc(TG3_REG_BLK_SIZE, GFP_ATOMIC);
+ 	if (!regs)
+ 		return;
+@@ -11195,7 +11203,8 @@ static void tg3_reset_task(struct work_struct *work)
+ 	rtnl_lock();
+ 	tg3_full_lock(tp, 0);
+ 
+-	if (tp->pcierr_recovery || !netif_running(tp->dev)) {
++	if (tp->pcierr_recovery || !netif_running(tp->dev) ||
++	    tp->pdev->error_state != pci_channel_io_normal) {
+ 		tg3_flag_clear(tp, RESET_TASK_PENDING);
+ 		tg3_full_unlock(tp);
+ 		rtnl_unlock();
+-- 
+2.43.0
+
 
 
 
