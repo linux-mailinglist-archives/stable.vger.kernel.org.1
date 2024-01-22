@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-14736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 606E983825A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:19:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE8CF83803E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 198C4286D39
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:19:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D0311C295E9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C32B05B5B9;
-	Tue, 23 Jan 2024 01:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D862A64CF0;
+	Tue, 23 Jan 2024 01:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHJhpXGI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W1hj01uq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCFD5B5A0;
-	Tue, 23 Jan 2024 01:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988034E1AD;
+	Tue, 23 Jan 2024 01:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974332; cv=none; b=uUp/wn7IeVUDVYhlh80BKsEQgVCP3Kwb7AnJ0lbq16134E+7AtI8HNBlyu6wpaFIlSOqosC2dF+Jg/4k7SWe/FQqWwmUPZn3yO2XqYSRZlwHc3uzhFvRwuASUIrLsB2ojsLgUaWbLz8ys8tRInU9ujoBnpUg+rFZltZ8VkAcuSs=
+	t=1705971618; cv=none; b=Rm//EFaFwLOisYcOG4nz3BKpAxQj6FEuc3kaCh/xXwtgE3p4915uyYcxLbgig0zHpOl02aRJO80oeqJkbSeyeUUaArlBOUS1eizVPdsm5ixrXlmHDaQ48iIZf8lG8obUuKyOMTzjxFsrV/hejQQPaGrFZJe29qDLCIA0wCV2xes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974332; c=relaxed/simple;
-	bh=dooU8+5FhSJVpyTYNGykAl/ZWR6G9uPRZxmdOxGtxIM=;
+	s=arc-20240116; t=1705971618; c=relaxed/simple;
+	bh=laF12l0+J5Um/+L+czPVenIfraqZQFsOsq9fo2k7sF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j7g3DViHazfpjI5blpMBKn6O7PPf91RCcjtdAWVbFThAsRHk+DxJGUJwvgB74aUFhk/YyRUQC/3peoZc62WfntKlswpW4Wf2WTmb7CMSrosV/8TWX0YlWnOiaBcsuKcOQ1Fqa+ir2KsqrTGLIHBqPmgFm9H2GTLR6xIopnrRiE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AHJhpXGI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 769E3C433F1;
-	Tue, 23 Jan 2024 01:45:31 +0000 (UTC)
+	 MIME-Version; b=OTZN5btPHMq1adlZg2s4KA/IYNAePvOVQiSy4O8X8YyQ2ijiifd1zIwsxAJM99gFKll5Vsc3g0Gkn9yBYHHzsBFORzpKluYjWemqGxfRK4pPIbQwyrb15Kb6sCPsplMdX9UxNha52TGXg51N1/FozHSia3I9xCl2vUAfhphUtWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W1hj01uq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40321C433C7;
+	Tue, 23 Jan 2024 01:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974331;
-	bh=dooU8+5FhSJVpyTYNGykAl/ZWR6G9uPRZxmdOxGtxIM=;
+	s=korg; t=1705971618;
+	bh=laF12l0+J5Um/+L+czPVenIfraqZQFsOsq9fo2k7sF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AHJhpXGIjRHSY+3CQQN6ffnReTvzFp53OdxGJKx+bBLMCQIaXluCw9zG692GPlFlR
-	 Kws16jLGdrD7JbKWHoA1CjaIwcE/cqKSBrbR+6kY95hTTzvbW/fVrKmFB0cKcMiz+H
-	 Xsme/ZZI0qtnMf3WehwwDdUJfgXJ8koECSPoKt0c=
+	b=W1hj01uqKpwmbLYtu6UmpJrPvIMjZMtcZ0QnNI3IoBvtdk9dYjjBPPIT8b5J44HUS
+	 awCC8CQW9bNwWXgKg+1giq+3SI4L/lFHrY6uruB7/jmp6KbyWtH3GE/R9INydGp/Co
+	 aONyUeeGWhLRR/y07RAP1/NPgaC+K0VZOJurdPAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 178/374] RDMA/usnic: Silence uninitialized symbol smatch warnings
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.1 266/417] usb: cdns3: Fix uvc fail when DMA cross 4k boundery since sg enabled
 Date: Mon, 22 Jan 2024 15:57:14 -0800
-Message-ID: <20240122235750.829259926@linuxfoundation.org>
+Message-ID: <20240122235801.078553326@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +60,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit b9a85e5eec126d6ae6c362f94b447c223e8fe6e4 ]
+commit 40c304109e866a7dc123661a5c8ca72f6b5e14e0 upstream.
 
-The patch 1da177e4c3f4: "Linux-2.6.12-rc2" from Apr 16, 2005
-(linux-next), leads to the following Smatch static checker warning:
+Supposed DMA cross 4k bounder problem should be fixed at DEV_VER_V2, but
+still met problem when do ISO transfer if sg enabled.
 
-        drivers/infiniband/hw/mthca/mthca_cmd.c:644 mthca_SYS_EN()
-        error: uninitialized symbol 'out'.
+Data pattern likes below when sg enabled, package size is 1k and mult is 2
+	[UVC Header(8B) ] [data(3k - 8)] ...
 
-drivers/infiniband/hw/mthca/mthca_cmd.c
-    636 int mthca_SYS_EN(struct mthca_dev *dev)
-    637 {
-    638         u64 out;
-    639         int ret;
-    640
-    641         ret = mthca_cmd_imm(dev, 0, &out, 0, 0, CMD_SYS_EN, CMD_TIME_CLASS_D);
+The received data at offset 0xd000 will get 0xc000 data, len 0x70. Error
+happen position as below pattern:
+	0xd000: wrong
+	0xe000: wrong
+	0xf000: correct
+	0x10000: wrong
+	0x11000: wrong
+	0x12000: correct
+	...
 
-We pass out here and it gets used without being initialized.
+To avoid DMA cross 4k bounder at ISO transfer, reduce burst len according
+to start DMA address's alignment.
 
-        err = mthca_cmd_post(dev, in_param,
-                             out_param ? *out_param : 0,
-                                         ^^^^^^^^^^
-                             in_modifier, op_modifier,
-                             op, context->token, 1);
-
-It's the same in mthca_cmd_wait() and mthca_cmd_poll().
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/533bc3df-8078-4397-b93d-d1f6cec9b636@moroto.mountain
-Link: https://lore.kernel.org/r/c559cb7113158c02d75401ac162652072ef1b5f0.1699867650.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc:  <stable@vger.kernel.org>
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20231224153816.1664687-4-Frank.Li@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mthca/mthca_cmd.c  | 4 ++--
- drivers/infiniband/hw/mthca/mthca_main.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/cdns3/cdns3-gadget.c |   32 +++++++++++++++++++++++++++++++-
+ 1 file changed, 31 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/mthca/mthca_cmd.c b/drivers/infiniband/hw/mthca/mthca_cmd.c
-index bdf5ed38de22..0307c45aa6d3 100644
---- a/drivers/infiniband/hw/mthca/mthca_cmd.c
-+++ b/drivers/infiniband/hw/mthca/mthca_cmd.c
-@@ -635,7 +635,7 @@ void mthca_free_mailbox(struct mthca_dev *dev, struct mthca_mailbox *mailbox)
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -1118,6 +1118,7 @@ static int cdns3_ep_run_transfer(struct
+ 	u32 togle_pcs = 1;
+ 	int sg_iter = 0;
+ 	int num_trb_req;
++	int trb_burst;
+ 	int num_trb;
+ 	int address;
+ 	u32 control;
+@@ -1240,7 +1241,36 @@ static int cdns3_ep_run_transfer(struct
+ 			total_tdl += DIV_ROUND_UP(length,
+ 					       priv_ep->endpoint.maxpacket);
  
- int mthca_SYS_EN(struct mthca_dev *dev)
- {
--	u64 out;
-+	u64 out = 0;
- 	int ret;
+-		trb->length |= cpu_to_le32(TRB_BURST_LEN(priv_ep->trb_burst_size) |
++		trb_burst = priv_ep->trb_burst_size;
++
++		/*
++		 * Supposed DMA cross 4k bounder problem should be fixed at DEV_VER_V2, but still
++		 * met problem when do ISO transfer if sg enabled.
++		 *
++		 * Data pattern likes below when sg enabled, package size is 1k and mult is 2
++		 *       [UVC Header(8B) ] [data(3k - 8)] ...
++		 *
++		 * The received data at offset 0xd000 will get 0xc000 data, len 0x70. Error happen
++		 * as below pattern:
++		 *	0xd000: wrong
++		 *	0xe000: wrong
++		 *	0xf000: correct
++		 *	0x10000: wrong
++		 *	0x11000: wrong
++		 *	0x12000: correct
++		 *	...
++		 *
++		 * But it is still unclear about why error have not happen below 0xd000, it should
++		 * cross 4k bounder. But anyway, the below code can fix this problem.
++		 *
++		 * To avoid DMA cross 4k bounder at ISO transfer, reduce burst len according to 16.
++		 */
++		if (priv_ep->type == USB_ENDPOINT_XFER_ISOC && priv_dev->dev_ver <= DEV_VER_V2)
++			if (ALIGN_DOWN(trb->buffer, SZ_4K) !=
++			    ALIGN_DOWN(trb->buffer + length, SZ_4K))
++				trb_burst = 16;
++
++		trb->length |= cpu_to_le32(TRB_BURST_LEN(trb_burst) |
+ 					TRB_LEN(length));
+ 		pcs = priv_ep->pcs ? TRB_CYCLE : 0;
  
- 	ret = mthca_cmd_imm(dev, 0, &out, 0, 0, CMD_SYS_EN, CMD_TIME_CLASS_D);
-@@ -1955,7 +1955,7 @@ int mthca_WRITE_MGM(struct mthca_dev *dev, int index,
- int mthca_MGID_HASH(struct mthca_dev *dev, struct mthca_mailbox *mailbox,
- 		    u16 *hash)
- {
--	u64 imm;
-+	u64 imm = 0;
- 	int err;
- 
- 	err = mthca_cmd_imm(dev, mailbox->dma, &imm, 0, 0, CMD_MGID_HASH,
-diff --git a/drivers/infiniband/hw/mthca/mthca_main.c b/drivers/infiniband/hw/mthca/mthca_main.c
-index f507c4cd46d3..f77c48b317f2 100644
---- a/drivers/infiniband/hw/mthca/mthca_main.c
-+++ b/drivers/infiniband/hw/mthca/mthca_main.c
-@@ -382,7 +382,7 @@ static int mthca_init_icm(struct mthca_dev *mdev,
- 			  struct mthca_init_hca_param *init_hca,
- 			  u64 icm_size)
- {
--	u64 aux_pages;
-+	u64 aux_pages = 0;
- 	int err;
- 
- 	err = mthca_SET_ICM_SIZE(mdev, icm_size, &aux_pages);
--- 
-2.43.0
-
 
 
 
