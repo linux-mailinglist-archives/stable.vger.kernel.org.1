@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-14223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5154F838008
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18BAD837F9E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 850801C2954B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B1DB1C2920E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E31A657C7;
-	Tue, 23 Jan 2024 00:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E623F634FB;
+	Tue, 23 Jan 2024 00:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLeai0ed"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlKPx1/1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12876519C;
-	Tue, 23 Jan 2024 00:58:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60E8634F7;
+	Tue, 23 Jan 2024 00:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971509; cv=none; b=sjh3Ntdc/AUk+lXu5K90lAITzfSTMcb6tm4dyjlsNlaShOJ+/tOiHB2zNUuyPmVrXFe1V1jMYW0xYQZZgKzpTEEOUe7fvPowjpxch3rnrKU/5BCDd1HmgOWchK6gL5+p2dMx2/yGsnQWvn8+FJkSV5NRgRwPnsJDdUzema6yQmc=
+	t=1705971242; cv=none; b=e0iaoRH9GimTuesGlY3j3lSLMHEAMnJ4WYsUwqyEWBQ+wxtwHHpoZCnCuPL7mEV4Ecu5AX39eX2rO5CInQX+2viKmgtjtUutV0gHtZHPMPNyz3nuo0qkkRmmBdKmQTCI/oNs0sH4ECuy3OY6mNOMtHDfz9hdsgULMZQc8pewizk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971509; c=relaxed/simple;
-	bh=X6YuYrzIvK55VAX6UvJ8SxB/7YiOOaySxEcLG6PjyR0=;
+	s=arc-20240116; t=1705971242; c=relaxed/simple;
+	bh=ZMCSA2ICz09hGS69XkKIAZodHsobBlETofQ/OYhQCYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=esg5Bw6CpS/f8QjnwkjfiOK5XkYK68SONuzpbY+MBzY5pTrz+tV61nOSIjd0oEq+xWIO5fL2AV8qRD5yMq4Pe+ZgaM0AHXVObR6xKFwji1XfmgBgIeHorrf4NuWpLMj24L/s2bPH1v1oIvmsywR62nr0S66l7kmf6iLNMdb5Hhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLeai0ed; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A07FC433F1;
-	Tue, 23 Jan 2024 00:58:29 +0000 (UTC)
+	 MIME-Version; b=Z/kF9jKq5/GmiLWxsvX2Owmlcxe5RqtrH3F2FRBtxyx1tmkDYrUPI1or1yHMdGXiFeerFuWDcunxKcpiOtlSzCGhvoncqN7XzPSvXmPQ1jRYzTea8cMDi3qTxaVyPdcg5sAg+yRFaeDfhUUlEiBwnGcT2eYfQ5V3lqEV3/3sfVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlKPx1/1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA1DC433F1;
+	Tue, 23 Jan 2024 00:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971509;
-	bh=X6YuYrzIvK55VAX6UvJ8SxB/7YiOOaySxEcLG6PjyR0=;
+	s=korg; t=1705971242;
+	bh=ZMCSA2ICz09hGS69XkKIAZodHsobBlETofQ/OYhQCYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sLeai0edV8KjLW58HkmwrQcgDnLDbl77N7dgnOEZm2J1CcFjcvdonC4Jms4QgSiTj
-	 mbMfnKXYDU9dWWQlqQS6gTuiAermAGMfAaLfbLLyKrdN4R9gLBRHI9TlvkEfDvI5A4
-	 2Grv6h+e83LL2bzzeWv8UXDOoYbn8eqrN24cUN7k=
+	b=mlKPx1/1MrVGcFkqbJ7ugLaD41Av5PxCgr88iUw0vpitrtWyM+I7qF0XzWFBAQ4Ph
+	 SyYqxWmQ0jG23NZRQQ3Rq3h3X74zFIMQIqZN9YytoiuTcWxY8vUHJmBBdwOriEkguh
+	 S9AyuUZvEVsdMMN4uPjZAW8LJWfL0FFrTT/1yydo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 6.1 255/417] binder: fix race between mmput() and do_exit()
+	Dmitry Rokosov <ddrokosov@sberdevices.ru>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 117/286] firmware: meson_sm: populate platform devices from sm device tree data
 Date: Mon, 22 Jan 2024 15:57:03 -0800
-Message-ID: <20240122235800.714061816@linuxfoundation.org>
+Message-ID: <20240122235736.621267633@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Dmitry Rokosov <ddrokosov@sberdevices.ru>
 
-commit 9a9ab0d963621d9d12199df9817e66982582d5a5 upstream.
+[ Upstream commit e45f243409db98d610248c843b25435e7fb0baf3 ]
 
-Task A calls binder_update_page_range() to allocate and insert pages on
-a remote address space from Task B. For this, Task A pins the remote mm
-via mmget_not_zero() first. This can race with Task B do_exit() and the
-final mmput() refcount decrement will come from Task A.
+In some meson boards, secure monitor device has children, for example,
+power secure controller. By default, secure monitor isn't the bus in terms
+of device tree subsystem, so the of_platform initialization code doesn't
+populate its device tree data. As a result, secure monitor's children
+aren't probed at all.
 
-  Task A            | Task B
-  ------------------+------------------
-  mmget_not_zero()  |
-                    |  do_exit()
-                    |    exit_mm()
-                    |      mmput()
-  mmput()           |
-    exit_mmap()     |
-      remove_vma()  |
-        fput()      |
+Run the 'of_platform_populate()' routine manually to resolve such issues.
 
-In this case, the work of ____fput() from Task B is queued up in Task A
-as TWA_RESUME. So in theory, Task A returns to userspace and the cleanup
-work gets executed. However, Task A instead sleep, waiting for a reply
-from Task B that never comes (it's dead).
-
-This means the binder_deferred_release() is blocked until an unrelated
-binder event forces Task A to go back to userspace. All the associated
-death notifications will also be delayed until then.
-
-In order to fix this use mmput_async() that will schedule the work in
-the corresponding mm->async_put_work WQ instead of Task A.
-
-Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-4-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
+Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20230324145557.27797-1-ddrokosov@sberdevices.ru
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Stable-dep-of: d8385d7433f9 ("firmware: meson-sm: unmap out_base shmem in error path")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder_alloc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/firmware/meson/meson_sm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -271,7 +271,7 @@ static int binder_update_page_range(stru
- 	}
- 	if (mm) {
- 		mmap_write_unlock(mm);
--		mmput(mm);
-+		mmput_async(mm);
- 	}
+diff --git a/drivers/firmware/meson/meson_sm.c b/drivers/firmware/meson/meson_sm.c
+index ed27ff2e503e..7dff8833132d 100644
+--- a/drivers/firmware/meson/meson_sm.c
++++ b/drivers/firmware/meson/meson_sm.c
+@@ -313,11 +313,14 @@ static int __init meson_sm_probe(struct platform_device *pdev)
+ 
+ 	platform_set_drvdata(pdev, fw);
+ 
+-	pr_info("secure-monitor enabled\n");
++	if (devm_of_platform_populate(dev))
++		goto out_in_base;
+ 
+ 	if (sysfs_create_group(&pdev->dev.kobj, &meson_sm_sysfs_attr_group))
+ 		goto out_in_base;
+ 
++	pr_info("secure-monitor enabled\n");
++
  	return 0;
  
-@@ -304,7 +304,7 @@ err_page_ptr_cleared:
- err_no_vma:
- 	if (mm) {
- 		mmap_write_unlock(mm);
--		mmput(mm);
-+		mmput_async(mm);
- 	}
- 	return vma ? -ENOMEM : -ESRCH;
- }
+ out_in_base:
+-- 
+2.43.0
+
 
 
 
