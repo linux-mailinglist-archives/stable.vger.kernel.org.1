@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-12878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38F788378D0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B135837A36
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E55EF280FC4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:25:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A050A1F2894A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDEF31EEEB;
-	Tue, 23 Jan 2024 00:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C0A12AAF9;
+	Tue, 23 Jan 2024 00:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qf5+J5vQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/WgXfZh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2FA14010;
-	Tue, 23 Jan 2024 00:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA75212A17F;
+	Tue, 23 Jan 2024 00:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968258; cv=none; b=Gbp2JzjADhJA1gH+VOdl+PY7M2LyaIILTDJj87hcDuRCJ3ziQ+So2EPRe318PwfitO8tfFtMYJmXQ3MzNPreTBgq0vVUQwcix7VyavnVw4nWYkY0YbYjXrEwI0A8IXudq77ZGHWxZH7+h0LC/Bis+4LC+E3OzixslHRGJ2bFwbk=
+	t=1705968798; cv=none; b=UJq7KAKj7msm0fC3IvsGqaUaURkRJ9q5G+CxIxHDBMSC1uXtWlvBDh0b1skILXwFrG7DFo/Aee2wArI3o5qSrhLOstPxkR38sYprVpFe8YZ/oHy5GSht8xGvqTHZa2bSGYCclDNvb/hyEF7Sypl0+sd8P+9X3reBecbjmaeW8+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968258; c=relaxed/simple;
-	bh=ADpL+Of5mkNa8NmULMnfqNRmeVZ8VPmm1tefyXcLTys=;
+	s=arc-20240116; t=1705968798; c=relaxed/simple;
+	bh=Xzpiy7mMEN0UQXCXiymoUWcuzDOLyJCuaeG7XvzD7wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jETcMuEtLqkHyl17VqIGRYTmkkAGy6IC23Db5GwxXxDJSOujD4+vO0Q5u9pD2lIbyyygGGejsnPNRw4F9oRogmyjWKSQNpZQ6QLEgG1RQtVrJFOGMJ8oNsZJeTNZ7VALkoy/yanXEMCfHHPyjA4wgrOhU8cW6KuQ1kQHdtbHZ3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qf5+J5vQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECDB2C433F1;
-	Tue, 23 Jan 2024 00:04:17 +0000 (UTC)
+	 MIME-Version; b=GHoe22RTOmrWg+HN8m0XWa6M3LztBiRsCs2qII395xkmKg6OAI6IbsUwE150TkfvQ1/TkVL6/jGxt2R5ZAS5eB9JxC1iNrAiPXkC1ZYOsLTdoRzdzCSWfRc7bDgz5l+DuuuhcVD3oP9zKrwFPKLkCQcXzq+AKXuu3FuJsl+LnaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/WgXfZh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D0B8C43390;
+	Tue, 23 Jan 2024 00:13:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968258;
-	bh=ADpL+Of5mkNa8NmULMnfqNRmeVZ8VPmm1tefyXcLTys=;
+	s=korg; t=1705968798;
+	bh=Xzpiy7mMEN0UQXCXiymoUWcuzDOLyJCuaeG7XvzD7wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qf5+J5vQYyX3srhzGQ3JApvWQMbv0Kmo6thDTX+MvbePrTPk3ebwU30yMYrInXdNi
-	 rTbGE04yxpZg66NrTNrqSKJ+1fmsMo6qjVQaEZy9k7/cegDk1KnTyrKP8KFVQe/a/P
-	 tecNMvN+8zPcx/IYWGoL6ukt3kws8TFj9ImlzjzM=
+	b=1/WgXfZhsvPYh0CC28y5WwWgairBiLtB1QNK4O+s+pVxb4n5GpB6TO6ZdhT257Wa5
+	 KwrSMbmWlBnkMFkOokC1X47B+Olbx49/cM7YVdO4DnkpOCBUz6iDMyzeSia8vqd+XJ
+	 +1fK9EWmHpNgE1bCiv5wZcSnsQlvIANxQszMP8c4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.i.king@gmail.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paul Moore <paul@paul-moore.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 027/148] x86/lib: Fix overflow when counting digits
-Date: Mon, 22 Jan 2024 15:56:23 -0800
-Message-ID: <20240122235713.508799482@linuxfoundation.org>
+Subject: [PATCH 5.4 054/194] net: netlabel: Fix kerneldoc warnings
+Date: Mon, 22 Jan 2024 15:56:24 -0800
+Message-ID: <20240122235721.518576296@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Andrew Lunn <andrew@lunn.ch>
 
-[ Upstream commit a24d61c609813963aacc9f6ec8343f4fcaac7243 ]
+[ Upstream commit 294ea29113104487a905d0f81c00dfd64121b3d9 ]
 
-tl;dr: The num_digits() function has a theoretical overflow issue.
-But it doesn't affect any actual in-tree users.  Fix it by using
-a larger type for one of the local variables.
+net/netlabel/netlabel_calipso.c:376: warning: Function parameter or member 'ops' not described in 'netlbl_calipso_ops_register'
 
-Long version:
-
-There is an overflow in variable m in function num_digits when val
-is >= 1410065408 which leads to the digit calculation loop to
-iterate more times than required. This results in either more
-digits being counted or in some cases (for example where val is
-1932683193) the value of m eventually overflows to zero and the
-while loop spins forever).
-
-Currently the function num_digits is currently only being used for
-small values of val in the SMP boot stage for digit counting on the
-number of cpus and NUMA nodes, so the overflow is never encountered.
-However it is useful to fix the overflow issue in case the function
-is used for other purposes in the future. (The issue was discovered
-while investigating the digit counting performance in various
-kernel helper functions rather than any real-world use-case).
-
-The simplest fix is to make m a long long, the overhead in
-multiplication speed for a long long is very minor for small values
-of val less than 10000 on modern processors. The alternative
-fix is to replace the multiplication with a constant division
-by 10 loop (this compiles down to an multiplication and shift)
-without needing to make m a long long, but this is slightly slower
-than the fix in this commit when measured on a range of x86
-processors).
-
-[ dhansen: subject and changelog tweaks ]
-
-Fixes: 646e29a1789a ("x86: Improve the printout of the SMP bootup CPU table")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Link: https://lore.kernel.org/all/20231102174901.2590325-1-colin.i.king%40gmail.com
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Acked-by: Paul Moore <paul@paul-moore.com>
+Link: https://lore.kernel.org/r/20201028005350.930299-1-andrew@lunn.ch
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: ec4e9d630a64 ("calipso: fix memory leak in netlbl_calipso_add_pass()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/lib/misc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netlabel/netlabel_calipso.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/lib/misc.c b/arch/x86/lib/misc.c
-index a018ec4fba53..c97be9a1430a 100644
---- a/arch/x86/lib/misc.c
-+++ b/arch/x86/lib/misc.c
-@@ -6,7 +6,7 @@
-  */
- int num_digits(int val)
- {
--	int m = 10;
-+	long long m = 10;
- 	int d = 1;
+diff --git a/net/netlabel/netlabel_calipso.c b/net/netlabel/netlabel_calipso.c
+index 249da67d50a2..7068b4be4091 100644
+--- a/net/netlabel/netlabel_calipso.c
++++ b/net/netlabel/netlabel_calipso.c
+@@ -366,6 +366,7 @@ static const struct netlbl_calipso_ops *calipso_ops;
  
- 	if (val < 0) {
+ /**
+  * netlbl_calipso_ops_register - Register the CALIPSO operations
++ * @ops: ops to register
+  *
+  * Description:
+  * Register the CALIPSO packet engine operations.
 -- 
 2.43.0
 
