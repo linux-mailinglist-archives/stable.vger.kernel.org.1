@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAEFB837D9C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E6EA8382DD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:24:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6788C285078
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2BE21F27B8F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76E1537F0;
-	Tue, 23 Jan 2024 00:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E5B5FDB0;
+	Tue, 23 Jan 2024 01:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlvHiZTW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PL5QAwht"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F2E524A3;
-	Tue, 23 Jan 2024 00:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2082B5FDAB;
+	Tue, 23 Jan 2024 01:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970071; cv=none; b=LoiLbE9Fo75CbXdA+PMLLIqTFuxHTk0/U/cBQMEuWXE1jjWZX9SdDRxHMTvUq4o8Yn+z4vY3uyw2K47hmT3Y4wO71UeljffW28G+DNhXnEEYk/wbzF6jRq2s9DcsFYPl8PiDrP54Q5ON6NEYw7qeUep2TJkBUIgYcTTSK4f0Z9Y=
+	t=1705974642; cv=none; b=PFaGBZp0f5J+NrpVlpi5baG8WGMDtU5RRdufRq3G/N9btctAPkSzzBnZG5bRKfvzYZpC61KI6Rmft+GmQqtL8xwPLJwwmDzl4rIghcEw1wKw9GcEAJ8Ak8fZBHYoq1h7cdEUzKsTN+koAAPL0Gv51JVq1ZzCxEhJWcZ/7oUPxvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970071; c=relaxed/simple;
-	bh=qCJmQjeOhxh7fuOVfUb9OCjYQCXTnBj8CoC0OjdBPkw=;
+	s=arc-20240116; t=1705974642; c=relaxed/simple;
+	bh=1TYCCYOnwqU63Zq02rdGoGwhZSeUB8JEd47No2RQ/NQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Wnh7TSSYjnsLfS3nQmE6JsBF7cThaZF8tmheaF2cLIKGaKwqAPTF7E9y2Q9JP9foOeyQr3kqwo352rtokBN5pJYqK9CIKclgtKbb/eThHDg/yzoAHq4fyda09PIezpRB2YkJJrCO2/lydSm7mdOZg09lbVBuSOQxmYDcYKsluOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlvHiZTW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4346CC433F1;
-	Tue, 23 Jan 2024 00:34:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kggawyh78mBItd8rOWMuCDWmf2SM/x3GdCNRb2WCNg6h6R3clOn85Foao4I6xPf3IGL3ziL2tgW1VIeexuhEC/FFyMBSLYnQrrofppk6wLKgvEFD7QPRngO1qf6mHIkL9TwREA6wS/rQCPOo3xJbjyKsh7qBE3ApUm4RD59qENw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PL5QAwht; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D50DC43399;
+	Tue, 23 Jan 2024 01:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970071;
-	bh=qCJmQjeOhxh7fuOVfUb9OCjYQCXTnBj8CoC0OjdBPkw=;
+	s=korg; t=1705974641;
+	bh=1TYCCYOnwqU63Zq02rdGoGwhZSeUB8JEd47No2RQ/NQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UlvHiZTWAzPA8ZPoyC54NrTJejVU9QR6KRhaodIRAIK5AWX99+fkehEUgWMc0th+W
-	 iMZCSlZdW9YzyQhTkH+tDciZz2waF9w4fJ+ZMWRuIwqGxEzVxZkcakDBDEvDODiX0w
-	 qR7QqeNMjHQaDz/64WD2BROh4zUogjnkd/+O6Qj0=
+	b=PL5QAwhtY+CimX5XdGU6AzxkLimMEH1D82+Xtkv/oZmrJdfPuUYO/erifyZ+aX2yJ
+	 JFLt4sm+wfzefzH5tP7ahPOwth3xXLy5oYC2b0QoJmZFZdc0XHGWrNPyug3/IdLQ8o
+	 YHLcycqLcYskm3KynPJg6ve2NYbgVvvyFj01tX0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianjun Wang <jianjun.wang@mediatek.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 578/641] PCI: mediatek-gen3: Fix translation window size calculation
+Subject: [PATCH 5.15 226/374] clk: fixed-rate: fix clk_hw_register_fixed_rate_with_accuracy_parent_hw
 Date: Mon, 22 Jan 2024 15:58:02 -0800
-Message-ID: <20240122235836.264674849@linuxfoundation.org>
+Message-ID: <20240122235752.558025862@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,156 +63,41 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianjun Wang <jianjun.wang@mediatek.com>
+From: Théo Lebrun <theo.lebrun@bootlin.com>
 
-[ Upstream commit 9ccc1318cf4bd90601f221268e42c3374703d681 ]
+[ Upstream commit ee0cf5e07f44a10fce8f1bfa9db226c0b5ecf880 ]
 
-When using the fls() helper, the translation table should be a power of
-two; otherwise, the resulting value will not be correct.
+Add missing comma and remove extraneous NULL argument. The macro is
+currently used by no one which explains why the typo slipped by.
 
-For example, given fls(0x3e00000) - 1 = 25, the PCIe translation window
-size will be set to 0x2000000 instead of the expected size 0x3e00000.
-
-Fix the translation window by splitting the MMIO space into multiple tables
-if its size is not a power of two.
-
-[kwilczynski: commit log]
-Link: https://lore.kernel.org/linux-pci/20231023081423.18559-1-jianjun.wang@mediatek.com
-Fixes: d3bf75b579b9 ("PCI: mediatek-gen3: Add MediaTek Gen3 driver for MT8192")
-Signed-off-by: Jianjun Wang <jianjun.wang@mediatek.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: 2d34f09e79c9 ("clk: fixed-rate: Add support for specifying parents via DT/pointers")
+Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Link: https://lore.kernel.org/r/20231218-mbly-clk-v1-1-44ce54108f06@bootlin.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-mediatek-gen3.c | 85 ++++++++++++---------
- 1 file changed, 50 insertions(+), 35 deletions(-)
+ include/linux/clk-provider.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/controller/pcie-mediatek-gen3.c b/drivers/pci/controller/pcie-mediatek-gen3.c
-index e0e27645fdf4..975b3024fb08 100644
---- a/drivers/pci/controller/pcie-mediatek-gen3.c
-+++ b/drivers/pci/controller/pcie-mediatek-gen3.c
-@@ -245,35 +245,60 @@ static int mtk_pcie_set_trans_table(struct mtk_gen3_pcie *pcie,
- 				    resource_size_t cpu_addr,
- 				    resource_size_t pci_addr,
- 				    resource_size_t size,
--				    unsigned long type, int num)
-+				    unsigned long type, int *num)
- {
-+	resource_size_t remaining = size;
-+	resource_size_t table_size;
-+	resource_size_t addr_align;
-+	const char *range_type;
- 	void __iomem *table;
- 	u32 val;
- 
--	if (num >= PCIE_MAX_TRANS_TABLES) {
--		dev_err(pcie->dev, "not enough translate table for addr: %#llx, limited to [%d]\n",
--			(unsigned long long)cpu_addr, PCIE_MAX_TRANS_TABLES);
--		return -ENODEV;
--	}
-+	while (remaining && (*num < PCIE_MAX_TRANS_TABLES)) {
-+		/* Table size needs to be a power of 2 */
-+		table_size = BIT(fls(remaining) - 1);
-+
-+		if (cpu_addr > 0) {
-+			addr_align = BIT(ffs(cpu_addr) - 1);
-+			table_size = min(table_size, addr_align);
-+		}
-+
-+		/* Minimum size of translate table is 4KiB */
-+		if (table_size < 0x1000) {
-+			dev_err(pcie->dev, "illegal table size %#llx\n",
-+				(unsigned long long)table_size);
-+			return -EINVAL;
-+		}
- 
--	table = pcie->base + PCIE_TRANS_TABLE_BASE_REG +
--		num * PCIE_ATR_TLB_SET_OFFSET;
-+		table = pcie->base + PCIE_TRANS_TABLE_BASE_REG + *num * PCIE_ATR_TLB_SET_OFFSET;
-+		writel_relaxed(lower_32_bits(cpu_addr) | PCIE_ATR_SIZE(fls(table_size) - 1), table);
-+		writel_relaxed(upper_32_bits(cpu_addr), table + PCIE_ATR_SRC_ADDR_MSB_OFFSET);
-+		writel_relaxed(lower_32_bits(pci_addr), table + PCIE_ATR_TRSL_ADDR_LSB_OFFSET);
-+		writel_relaxed(upper_32_bits(pci_addr), table + PCIE_ATR_TRSL_ADDR_MSB_OFFSET);
- 
--	writel_relaxed(lower_32_bits(cpu_addr) | PCIE_ATR_SIZE(fls(size) - 1),
--		       table);
--	writel_relaxed(upper_32_bits(cpu_addr),
--		       table + PCIE_ATR_SRC_ADDR_MSB_OFFSET);
--	writel_relaxed(lower_32_bits(pci_addr),
--		       table + PCIE_ATR_TRSL_ADDR_LSB_OFFSET);
--	writel_relaxed(upper_32_bits(pci_addr),
--		       table + PCIE_ATR_TRSL_ADDR_MSB_OFFSET);
-+		if (type == IORESOURCE_IO) {
-+			val = PCIE_ATR_TYPE_IO | PCIE_ATR_TLP_TYPE_IO;
-+			range_type = "IO";
-+		} else {
-+			val = PCIE_ATR_TYPE_MEM | PCIE_ATR_TLP_TYPE_MEM;
-+			range_type = "MEM";
-+		}
- 
--	if (type == IORESOURCE_IO)
--		val = PCIE_ATR_TYPE_IO | PCIE_ATR_TLP_TYPE_IO;
--	else
--		val = PCIE_ATR_TYPE_MEM | PCIE_ATR_TLP_TYPE_MEM;
-+		writel_relaxed(val, table + PCIE_ATR_TRSL_PARAM_OFFSET);
- 
--	writel_relaxed(val, table + PCIE_ATR_TRSL_PARAM_OFFSET);
-+		dev_dbg(pcie->dev, "set %s trans window[%d]: cpu_addr = %#llx, pci_addr = %#llx, size = %#llx\n",
-+			range_type, *num, (unsigned long long)cpu_addr,
-+			(unsigned long long)pci_addr, (unsigned long long)table_size);
-+
-+		cpu_addr += table_size;
-+		pci_addr += table_size;
-+		remaining -= table_size;
-+		(*num)++;
-+	}
-+
-+	if (remaining)
-+		dev_warn(pcie->dev, "not enough translate table for addr: %#llx, limited to [%d]\n",
-+			 (unsigned long long)cpu_addr, PCIE_MAX_TRANS_TABLES);
- 
- 	return 0;
- }
-@@ -380,30 +405,20 @@ static int mtk_pcie_startup_port(struct mtk_gen3_pcie *pcie)
- 		resource_size_t cpu_addr;
- 		resource_size_t pci_addr;
- 		resource_size_t size;
--		const char *range_type;
- 
--		if (type == IORESOURCE_IO) {
-+		if (type == IORESOURCE_IO)
- 			cpu_addr = pci_pio_to_address(res->start);
--			range_type = "IO";
--		} else if (type == IORESOURCE_MEM) {
-+		else if (type == IORESOURCE_MEM)
- 			cpu_addr = res->start;
--			range_type = "MEM";
--		} else {
-+		else
- 			continue;
--		}
- 
- 		pci_addr = res->start - entry->offset;
- 		size = resource_size(res);
- 		err = mtk_pcie_set_trans_table(pcie, cpu_addr, pci_addr, size,
--					       type, table_index);
-+					       type, &table_index);
- 		if (err)
- 			return err;
--
--		dev_dbg(pcie->dev, "set %s trans window[%d]: cpu_addr = %#llx, pci_addr = %#llx, size = %#llx\n",
--			range_type, table_index, (unsigned long long)cpu_addr,
--			(unsigned long long)pci_addr, (unsigned long long)size);
--
--		table_index++;
- 	}
- 
- 	return 0;
+diff --git a/include/linux/clk-provider.h b/include/linux/clk-provider.h
+index 43e177b3a4d3..6cace09ba63d 100644
+--- a/include/linux/clk-provider.h
++++ b/include/linux/clk-provider.h
+@@ -434,8 +434,8 @@ struct clk *clk_register_fixed_rate(struct device *dev, const char *name,
+  */
+ #define clk_hw_register_fixed_rate_with_accuracy_parent_hw(dev, name,	      \
+ 		parent_hw, flags, fixed_rate, fixed_accuracy)		      \
+-	__clk_hw_register_fixed_rate((dev), NULL, (name), NULL, (parent_hw)   \
+-				     NULL, NULL, (flags), (fixed_rate),	      \
++	__clk_hw_register_fixed_rate((dev), NULL, (name), NULL, (parent_hw),  \
++				     NULL, (flags), (fixed_rate),	      \
+ 				     (fixed_accuracy), 0, false)
+ /**
+  * clk_hw_register_fixed_rate_with_accuracy_parent_data - register fixed-rate
 -- 
 2.43.0
 
