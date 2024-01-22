@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-12909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24569837914
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:28:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E3EC837AC1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78276B25BE0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:28:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9DBBDB2D582
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:52:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C271145334;
-	Tue, 23 Jan 2024 00:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12FE12C55A;
+	Tue, 23 Jan 2024 00:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jrX6iZQy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iDwCfIOh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2BF1474AF;
-	Tue, 23 Jan 2024 00:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB7412BF3D;
+	Tue, 23 Jan 2024 00:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968382; cv=none; b=uCMReCDSR0YlyybBnol9BnxGTNhAW6kxlLI7rfN8s71ay0Kcv8SdA1yJGh4OaTNIM7tWv22yH5L39OI1UZ6/eOl6pCWoVeokjArQUUozUPz30m8DTEU/Y4PnwyQvdPDYs4KXTbcN6Fv7nT8MtuHDsNRLKSoRu+VNkSOQ9n+DYKo=
+	t=1705968948; cv=none; b=EkF3blidQ/3ulfoChpQ6SiNo2sJn5yWF1WanghhQbIKC3JqlVDmFvDppGxkuZfdVskacYIr6vP056c/GDxaRkWTVToV04vSuuYCe7ZlYEMN+eo81mJQplW9wPKjJU2OROiJg9v5aMyAjK2meeHmarqHla0EnqjTc6a6rsqk6Sz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968382; c=relaxed/simple;
-	bh=GHcJ/GGZg5QdbstZW1GPzlFySJFbt01MkoNqTN4cZ4c=;
+	s=arc-20240116; t=1705968948; c=relaxed/simple;
+	bh=wMaecmZnTxaeRVJHs83Uy7MW1pHcClbH0tfnTzESMtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PHWkN0+Fns4xuD81V/huVRv+nn8sVw4+klX4q9LmrKruJmPOcW4qOmGf0beJYBXCDppd3nVRTlR4BmXytaUy1A74IQC2hLE64C/qw2n/rP+pI2ehE91WNbXWImNHae1EjOFuwIy2ul5SWIudbsGUO0F8MnawN9OCxbWDKu11plw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jrX6iZQy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68EE6C433F1;
-	Tue, 23 Jan 2024 00:06:21 +0000 (UTC)
+	 MIME-Version; b=ujDADQPgu2AvP8aEDcwmq80KLlaPJ53bBhqrfl/fQU8nkCuE2aze38DofJ+ex8wlrmwVb/NnpG4j2BXZmom01jBguvBeFUYu6IVs90I70BC72T+g+26UtaoQBCAsNZszYM0VRnOG0H2A6Gdnll6T/td4ihuzyTKHfNleGF0Yk44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iDwCfIOh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A94C433F1;
+	Tue, 23 Jan 2024 00:15:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968381;
-	bh=GHcJ/GGZg5QdbstZW1GPzlFySJFbt01MkoNqTN4cZ4c=;
+	s=korg; t=1705968948;
+	bh=wMaecmZnTxaeRVJHs83Uy7MW1pHcClbH0tfnTzESMtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jrX6iZQyvHqBvZlKNaTju3+fIdnmWIZPdTTt+AM9jbCL0fnUF/CSGEzXt2bbNA8nv
-	 t16z/y7EbxXuUDb/JrDPqk2qpgrbQxdffgdqv5w966ve8+sIAXDCIE+nVdptIvKIt1
-	 B2rjN0+SPR3ol9iQbaulIAJATkXApk+uHFZP1qLU=
+	b=iDwCfIOh/e3HcPGwwDpXrNIaI3ahN1A67ll0+s8X7mwEc5hQ+yBFdGHxlhRHoeqdf
+	 W3jQ9WNhB7pbDfqB3m/8py55BVw5UfFV+KesFYzg/YiJlZKNxkaonEdfPQoFj/dupZ
+	 2FVueqeumeBM0Kpkhai9VpyfXU+2P25mk7GnUnL8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 091/148] drm/radeon/r100: Fix integer overflow issues in r100_cs_track_check()
+Subject: [PATCH 5.4 117/194] ASoC: cs35l34: Fix GPIO name and drop legacy include
 Date: Mon, 22 Jan 2024 15:57:27 -0800
-Message-ID: <20240122235716.059428335@linuxfoundation.org>
+Message-ID: <20240122235724.254139017@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit b5c5baa458faa5430c445acd9a17481274d77ccf ]
+[ Upstream commit a6122b0b4211d132934ef99e7b737910e6d54d2f ]
 
-It may be possible, albeit unlikely, to encounter integer overflow
-during the multiplication of several unsigned int variables, the
-result being assigned to a variable 'size' of wider type.
+This driver includes the legacy GPIO APIs <linux/gpio.h> and
+<linux/of_gpio.h> but does not use any symbols from any of
+them.
 
-Prevent this potential behaviour by converting one of the multiples
-to unsigned long.
+Drop the includes.
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+Further the driver is requesting "reset-gpios" rather than
+just "reset" from the GPIO framework. This is wrong because
+the gpiolib core will add "-gpios" before processing the
+request from e.g. device tree. Drop the suffix.
 
-Fixes: 0242f74d29df ("drm/radeon: clean up CS functions in r100.c")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The last problem means that the optional RESET GPIO has
+never been properly retrieved and used even if it existed,
+but nobody noticed.
+
+Fixes: c1124c09e103 ("ASoC: cs35l34: Initial commit of the cs35l34 CODEC driver.")
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20231201-descriptors-sound-cirrus-v2-3-ee9f9d4655eb@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/r100.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/codecs/cs35l34.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/r100.c b/drivers/gpu/drm/radeon/r100.c
-index b24401f21e93..15241b80e9d2 100644
---- a/drivers/gpu/drm/radeon/r100.c
-+++ b/drivers/gpu/drm/radeon/r100.c
-@@ -2307,7 +2307,7 @@ int r100_cs_track_check(struct radeon_device *rdev, struct r100_cs_track *track)
- 	switch (prim_walk) {
- 	case 1:
- 		for (i = 0; i < track->num_arrays; i++) {
--			size = track->arrays[i].esize * track->max_indx * 4;
-+			size = track->arrays[i].esize * track->max_indx * 4UL;
- 			if (track->arrays[i].robj == NULL) {
- 				DRM_ERROR("(PW %u) Vertex array %u no buffer "
- 					  "bound\n", prim_walk, i);
-@@ -2326,7 +2326,7 @@ int r100_cs_track_check(struct radeon_device *rdev, struct r100_cs_track *track)
- 		break;
- 	case 2:
- 		for (i = 0; i < track->num_arrays; i++) {
--			size = track->arrays[i].esize * (nverts - 1) * 4;
-+			size = track->arrays[i].esize * (nverts - 1) * 4UL;
- 			if (track->arrays[i].robj == NULL) {
- 				DRM_ERROR("(PW %u) Vertex array %u no buffer "
- 					  "bound\n", prim_walk, i);
+diff --git a/sound/soc/codecs/cs35l34.c b/sound/soc/codecs/cs35l34.c
+index b792c006e530..d9f975b52b21 100644
+--- a/sound/soc/codecs/cs35l34.c
++++ b/sound/soc/codecs/cs35l34.c
+@@ -20,14 +20,12 @@
+ #include <linux/regulator/machine.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/of_device.h>
+-#include <linux/of_gpio.h>
+ #include <linux/of_irq.h>
+ #include <sound/core.h>
+ #include <sound/pcm.h>
+ #include <sound/pcm_params.h>
+ #include <sound/soc.h>
+ #include <sound/soc-dapm.h>
+-#include <linux/gpio.h>
+ #include <linux/gpio/consumer.h>
+ #include <sound/initval.h>
+ #include <sound/tlv.h>
+@@ -1058,7 +1056,7 @@ static int cs35l34_i2c_probe(struct i2c_client *i2c_client,
+ 		dev_err(&i2c_client->dev, "Failed to request IRQ: %d\n", ret);
+ 
+ 	cs35l34->reset_gpio = devm_gpiod_get_optional(&i2c_client->dev,
+-				"reset-gpios", GPIOD_OUT_LOW);
++				"reset", GPIOD_OUT_LOW);
+ 	if (IS_ERR(cs35l34->reset_gpio))
+ 		return PTR_ERR(cs35l34->reset_gpio);
+ 
 -- 
 2.43.0
 
