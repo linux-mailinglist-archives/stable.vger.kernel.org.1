@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE1A8837C21
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F037F837E57
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E9A41F2B293
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BC2A2834C6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:38:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BD41EEE4;
-	Tue, 23 Jan 2024 00:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83CAF58202;
+	Tue, 23 Jan 2024 00:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="veJs0PBK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X79Q7GzV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39438EEBB;
-	Tue, 23 Jan 2024 00:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435AB56773;
+	Tue, 23 Jan 2024 00:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969515; cv=none; b=sOqhTFTXs8MFjjLDkH6OcoezitjmjKOlgEIZvWmZKBnUx3GNxnh48O18NOKHxpnLu0MzccX94RcbvYkE7caNK0Mxd08BDWvTSYHdIFn0fkNxkuwWZSHm+CLW/DTE24soiZKWDTnMzdeTCQ+I3iCsLYTKV5tsT3U9zUlF4xibtwk=
+	t=1705970524; cv=none; b=nqNbDW2QSsGZbv+J9xEVjK/4HT5z4+GMpnsMHj3gmvEcOX+qgJKf26tUraKT/qGq8Kio9FGdOWw6D7TioJN42OMiTZieVi3cmHRl3uetNr+hWmz4xyN04ArxcvLRPb00eaeFJZpctEdWNKk7Ln80huAsEvY+FsvcySgO4K8bhmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969515; c=relaxed/simple;
-	bh=UiDPsrmtV7xq38V/wJ2OaCVzdtYcgOFDQiSb8J4DB4Y=;
+	s=arc-20240116; t=1705970524; c=relaxed/simple;
+	bh=pJ7UocyB/xp37waoHFFYz6+lPm6kEOGPRMZa1agf1Lc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cyk9tJRfcw2qU9tYiz5ffGclUtUUhg9s8IeIRYfcNpteGR6yrjGNZsgU0o51Io2X7/Scg3Pqvr/ePWL56MommNaxcuda/6kVCor7o1BY2L6yFGA+YZXv1J3fa2+NDdUmZyTt4TN08aBFSv/1lGWqmRbCBWdyuj8otybjNx3HR6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=veJs0PBK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB2D4C43141;
-	Tue, 23 Jan 2024 00:25:14 +0000 (UTC)
+	 MIME-Version; b=pVeK9LhEwCEd3WMOFcG3yu3LdEfZSJdhsasXT7hu4GTBmO1Knz+7JZzMViB1uSXSCDMYic0k+JYzpvwKIu6m4lA0CZxOgtNWDFuDZ7VZTKRZKRO07kJqg8UFETxhrCW3gxTDT+7Pi92hVbEHuGS4r+auKLeEijKIjJoXGKu6nnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X79Q7GzV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C73C43390;
+	Tue, 23 Jan 2024 00:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969514;
-	bh=UiDPsrmtV7xq38V/wJ2OaCVzdtYcgOFDQiSb8J4DB4Y=;
+	s=korg; t=1705970524;
+	bh=pJ7UocyB/xp37waoHFFYz6+lPm6kEOGPRMZa1agf1Lc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=veJs0PBKPNBmgSqAAAObrlyooLAL8SOfyJDBD4OMrQ0iBqJW2taxgIER1nyKTrTeD
-	 EajJibkgS7OOvWtHaPnag2maxPF3E8FF5352lTmf5cEM2Aq0rDYHdpuw6CSbnszS4f
-	 Mt2BKbpn06BPobT+UKog5aZxxgrw9E65j1y9gfLY=
+	b=X79Q7GzVQ/70fHPG8HzsaurtqAget4Bj2Fe5Ezefr0LfaCW0U+pfN/RCAMfwRU8pA
+	 jaU36rYcYbBRdklkA67TBQzzfv7SYzvXNin1waOwpQXBVyjqBl5Uvd132nApz55kXR
+	 plfHCwewsaWM0kWrS2hyh4HlUpDnOQip1pHf/cwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Brezillon <boris.brezillon@collabora.com>,
-	Steven Price <steven.price@arm.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
+	Paul Moore <paul@paul-moore.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 289/641] drm/panfrost: Ignore core_mask for poweroff and disable PWRTRANS irq
+Subject: [PATCH 6.1 025/417] calipso: fix memory leak in netlbl_calipso_add_pass()
 Date: Mon, 22 Jan 2024 15:53:13 -0800
-Message-ID: <20240122235826.937111956@linuxfoundation.org>
+Message-ID: <20240122235752.432343558@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +62,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 
-[ Upstream commit a4f5892914ca7709ea6d191f0edace93a5935966 ]
+[ Upstream commit ec4e9d630a64df500641892f4e259e8149594a99 ]
 
-Some SoCs may be equipped with a GPU containing two core groups
-and this is exactly the case of Samsung's Exynos 5422 featuring
-an ARM Mali-T628 MP6 GPU: the support for this GPU in Panfrost
-is partial, as this driver currently supports using only one
-core group and that's reflected on all parts of it, including
-the power on (and power off, previously to this patch) function.
+If IPv6 support is disabled at boot (ipv6.disable=1),
+the calipso_init() -> netlbl_calipso_ops_register() function isn't called,
+and the netlbl_calipso_ops_get() function always returns NULL.
+In this case, the netlbl_calipso_add_pass() function allocates memory
+for the doi_def variable but doesn't free it with the calipso_doi_free().
 
-The issue with this is that even though executing the soft reset
-operation should power off all cores unconditionally, on at least
-one platform we're seeing a crash that seems to be happening due
-to an interrupt firing which may be because we are calling power
-transition only on the first core group, leaving the second one
-unchanged, or because ISR execution was pending before entering
-the panfrost_gpu_power_off() function and executed after powering
-off the GPU cores, or all of the above.
+BUG: memory leak
+unreferenced object 0xffff888011d68180 (size 64):
+  comm "syz-executor.1", pid 10746, jiffies 4295410986 (age 17.928s)
+  hex dump (first 32 bytes):
+    00 00 00 00 02 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<...>] kmalloc include/linux/slab.h:552 [inline]
+    [<...>] netlbl_calipso_add_pass net/netlabel/netlabel_calipso.c:76 [inline]
+    [<...>] netlbl_calipso_add+0x22e/0x4f0 net/netlabel/netlabel_calipso.c:111
+    [<...>] genl_family_rcv_msg_doit+0x22f/0x330 net/netlink/genetlink.c:739
+    [<...>] genl_family_rcv_msg net/netlink/genetlink.c:783 [inline]
+    [<...>] genl_rcv_msg+0x341/0x5a0 net/netlink/genetlink.c:800
+    [<...>] netlink_rcv_skb+0x14d/0x440 net/netlink/af_netlink.c:2515
+    [<...>] genl_rcv+0x29/0x40 net/netlink/genetlink.c:811
+    [<...>] netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
+    [<...>] netlink_unicast+0x54b/0x800 net/netlink/af_netlink.c:1339
+    [<...>] netlink_sendmsg+0x90a/0xdf0 net/netlink/af_netlink.c:1934
+    [<...>] sock_sendmsg_nosec net/socket.c:651 [inline]
+    [<...>] sock_sendmsg+0x157/0x190 net/socket.c:671
+    [<...>] ____sys_sendmsg+0x712/0x870 net/socket.c:2342
+    [<...>] ___sys_sendmsg+0xf8/0x170 net/socket.c:2396
+    [<...>] __sys_sendmsg+0xea/0x1b0 net/socket.c:2429
+    [<...>] do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
+    [<...>] entry_SYSCALL_64_after_hwframe+0x61/0xc6
 
-Finally, solve this by:
- - Avoid to enable the power transition interrupt on reset; and
- - Ignoring the core_mask and ask the GPU to poweroff both core groups
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with Syzkaller
 
-Fixes: 22aa1a209018 ("drm/panfrost: Really power off GPU cores in panfrost_gpu_power_off()")
-Reviewed-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Steven Price <steven.price@arm.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Tested-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231204114215.54575-2-angelogioacchino.delregno@collabora.com
+Fixes: cb72d38211ea ("netlabel: Initial support for the CALIPSO netlink protocol.")
+Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+[PM: merged via the LSM tree at Jakub Kicinski request]
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panfrost/panfrost_gpu.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ net/netlabel/netlabel_calipso.c | 49 +++++++++++++++++----------------
+ 1 file changed, 26 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/gpu/drm/panfrost/panfrost_gpu.c b/drivers/gpu/drm/panfrost/panfrost_gpu.c
-index 97f097ee5c1d..311cf4525e1e 100644
---- a/drivers/gpu/drm/panfrost/panfrost_gpu.c
-+++ b/drivers/gpu/drm/panfrost/panfrost_gpu.c
-@@ -71,7 +71,12 @@ int panfrost_gpu_soft_reset(struct panfrost_device *pfdev)
- 	}
+diff --git a/net/netlabel/netlabel_calipso.c b/net/netlabel/netlabel_calipso.c
+index f1d5b8465217..a07c2216d28b 100644
+--- a/net/netlabel/netlabel_calipso.c
++++ b/net/netlabel/netlabel_calipso.c
+@@ -54,6 +54,28 @@ static const struct nla_policy calipso_genl_policy[NLBL_CALIPSO_A_MAX + 1] = {
+ 	[NLBL_CALIPSO_A_MTYPE] = { .type = NLA_U32 },
+ };
  
- 	gpu_write(pfdev, GPU_INT_CLEAR, GPU_IRQ_MASK_ALL);
--	gpu_write(pfdev, GPU_INT_MASK, GPU_IRQ_MASK_ALL);
++static const struct netlbl_calipso_ops *calipso_ops;
 +
-+	/* Only enable the interrupts we care about */
-+	gpu_write(pfdev, GPU_INT_MASK,
-+		  GPU_IRQ_MASK_ERROR |
-+		  GPU_IRQ_PERFCNT_SAMPLE_COMPLETED |
-+		  GPU_IRQ_CLEAN_CACHES_COMPLETED);
- 
- 	/*
- 	 * All in-flight jobs should have released their cycle
-@@ -418,11 +423,10 @@ void panfrost_gpu_power_on(struct panfrost_device *pfdev)
- 
- void panfrost_gpu_power_off(struct panfrost_device *pfdev)
++/**
++ * netlbl_calipso_ops_register - Register the CALIPSO operations
++ * @ops: ops to register
++ *
++ * Description:
++ * Register the CALIPSO packet engine operations.
++ *
++ */
++const struct netlbl_calipso_ops *
++netlbl_calipso_ops_register(const struct netlbl_calipso_ops *ops)
++{
++	return xchg(&calipso_ops, ops);
++}
++EXPORT_SYMBOL(netlbl_calipso_ops_register);
++
++static const struct netlbl_calipso_ops *netlbl_calipso_ops_get(void)
++{
++	return READ_ONCE(calipso_ops);
++}
++
+ /* NetLabel Command Handlers
+  */
+ /**
+@@ -96,15 +118,18 @@ static int netlbl_calipso_add_pass(struct genl_info *info,
+  *
+  */
+ static int netlbl_calipso_add(struct sk_buff *skb, struct genl_info *info)
+-
  {
--	u64 core_mask = panfrost_get_core_mask(pfdev);
- 	int ret;
- 	u32 val;
+ 	int ret_val = -EINVAL;
+ 	struct netlbl_audit audit_info;
++	const struct netlbl_calipso_ops *ops = netlbl_calipso_ops_get();
  
--	gpu_write(pfdev, SHADER_PWROFF_LO, pfdev->features.shader_present & core_mask);
-+	gpu_write(pfdev, SHADER_PWROFF_LO, pfdev->features.shader_present);
- 	ret = readl_relaxed_poll_timeout(pfdev->iomem + SHADER_PWRTRANS_LO,
- 					 val, !val, 1, 1000);
- 	if (ret)
-@@ -434,7 +438,7 @@ void panfrost_gpu_power_off(struct panfrost_device *pfdev)
- 	if (ret)
- 		dev_err(pfdev->dev, "tiler power transition timeout");
+ 	if (!info->attrs[NLBL_CALIPSO_A_DOI] ||
+ 	    !info->attrs[NLBL_CALIPSO_A_MTYPE])
+ 		return -EINVAL;
  
--	gpu_write(pfdev, L2_PWROFF_LO, pfdev->features.l2_present & core_mask);
-+	gpu_write(pfdev, L2_PWROFF_LO, pfdev->features.l2_present);
- 	ret = readl_poll_timeout(pfdev->iomem + L2_PWRTRANS_LO,
- 				 val, !val, 0, 1000);
- 	if (ret)
++	if (!ops)
++		return -EOPNOTSUPP;
++
+ 	netlbl_netlink_auditinfo(&audit_info);
+ 	switch (nla_get_u32(info->attrs[NLBL_CALIPSO_A_MTYPE])) {
+ 	case CALIPSO_MAP_PASS:
+@@ -363,28 +388,6 @@ int __init netlbl_calipso_genl_init(void)
+ 	return genl_register_family(&netlbl_calipso_gnl_family);
+ }
+ 
+-static const struct netlbl_calipso_ops *calipso_ops;
+-
+-/**
+- * netlbl_calipso_ops_register - Register the CALIPSO operations
+- * @ops: ops to register
+- *
+- * Description:
+- * Register the CALIPSO packet engine operations.
+- *
+- */
+-const struct netlbl_calipso_ops *
+-netlbl_calipso_ops_register(const struct netlbl_calipso_ops *ops)
+-{
+-	return xchg(&calipso_ops, ops);
+-}
+-EXPORT_SYMBOL(netlbl_calipso_ops_register);
+-
+-static const struct netlbl_calipso_ops *netlbl_calipso_ops_get(void)
+-{
+-	return READ_ONCE(calipso_ops);
+-}
+-
+ /**
+  * calipso_doi_add - Add a new DOI to the CALIPSO protocol engine
+  * @doi_def: the DOI structure
 -- 
 2.43.0
 
