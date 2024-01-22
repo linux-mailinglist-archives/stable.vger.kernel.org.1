@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-14006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C8B6837F20
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB482837FAA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4499929BE9C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EC52293797
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336A460DDF;
-	Tue, 23 Jan 2024 00:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F5864A99;
+	Tue, 23 Jan 2024 00:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WBwSf9zK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vGjBvSS0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77023FFE;
-	Tue, 23 Jan 2024 00:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016AE627F3;
+	Tue, 23 Jan 2024 00:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970955; cv=none; b=JsGsVIU8amn09wB+KPrx/N7dacFYhZU4baU0i9wrxy/bKN0h91WHE0wb8V3FdX6wCv7N3UN9dtqvb2nYRUqdlbbOGTP6dBMarmsOCRBkx0BH1+AgXHOTFw3gNDmcmymyOE34D32qjEhxfeeloVVuTTQE7tRw9tkniddQFxX2KGA=
+	t=1705971276; cv=none; b=ENcj2r2C9BdvHaeXBgqxL6uj8alLgq6qEQ9Q/PnuKCJalN1aA4lAP4e0smHl0fCAn8exVEq5/lEe4qjKTBMx2v8TEZy8AFgyG7n9yFcUVJ8KAp+GxcLw0h+fTs5Hx8snlpCFS0nnfHYBUdm+6lli/FVamlN89hdcgGsTySE7hbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970955; c=relaxed/simple;
-	bh=jZQBgdBvJNUgVMcBp9O5Bf6+4tKw66UJzfld0SRjGRI=;
+	s=arc-20240116; t=1705971276; c=relaxed/simple;
+	bh=lv9dVNU+qwDf56pLV6KT4C0l3PGAClVeoK7MOucHg0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e9rPz90ami3VaqqrDRvDLynPWecaJo4iiulUJeA3bFDmADTsuoGB4ptHlrTlJE6yOithlh4BTnsLB+I9PK394/DzOYE/POKaBIq5GdhB7H4uvC7LX+Vuqa3sJCbpyx8ih2j8CZoCefznD9ilaJFvx8TTqBEQthlvtZpj1U/joqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WBwSf9zK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9009BC43390;
-	Tue, 23 Jan 2024 00:49:14 +0000 (UTC)
+	 MIME-Version; b=R3AwzMzSe84EVpe8EmLRgahQGDxGkjMch/yAzkF5RX6cIsPPWJWuFMsAJKDh5wnT2enYKJVYgt5Dq1Q5sNZzvCYdUn2IOUk8Vml4raKoSuzRfsE9R4HHVQE+8crq3mGrOr8Doi5ida/NuKlvV1oJfCoZzQpCTrH1pIHJjg3L/kU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vGjBvSS0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D4FC433F1;
+	Tue, 23 Jan 2024 00:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970954;
-	bh=jZQBgdBvJNUgVMcBp9O5Bf6+4tKw66UJzfld0SRjGRI=;
+	s=korg; t=1705971275;
+	bh=lv9dVNU+qwDf56pLV6KT4C0l3PGAClVeoK7MOucHg0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WBwSf9zKRSBSOXQSxqQ655iu4J7djrXwsGcdoVfaamAWXjf5/XJJNr+619qL71UBW
-	 qSCncLGyBoXQEGzA5DsEQjjFg0ffuPNBJz4US8yGzXl4YAaej4fRcbFe1UoOEcn1Gy
-	 ggtHKQS5wabOGEuzDyN+WKwGHmHAt8pni4PS8Ing=
+	b=vGjBvSS01QqY2+ELr39CtJUN/55uxB8tSKukmpl4FapzDKLJykUc7i9Ffn1xrXOMi
+	 EKqm4r6AOaptSFA2q0+cRMRo08ILJGLlg1fwNRZW+lItkk5RRsBzVYoWCRbukWoIQ/
+	 iTZqWR/c5XH0ipUKvng5GWPYX7HD0oiJFTaMFbF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 056/286] selftests/powerpc: Fix error handling in FPU/VMX preemption tests
+Subject: [PATCH 6.1 194/417] media: imx-mipi-csis: Fix clock handling in remove()
 Date: Mon, 22 Jan 2024 15:56:02 -0800
-Message-ID: <20240122235734.187985643@linuxfoundation.org>
+Message-ID: <20240122235758.653727936@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 9dbd5927408c4a0707de73ae9dd9306b184e8fee ]
+[ Upstream commit 5705b0e0eb550ff834125a46a4ef99b62093d83d ]
 
-The FPU & VMX preemption tests do not check for errors returned by the
-low-level asm routines, preempt_fpu() / preempt_vsx() respectively.
-That means any register corruption detected by the asm routines does not
-result in a test failure.
+The driver always calls mipi_csis_runtime_suspend() and
+mipi_csis_clk_disable() in remove(). This causes multiple WARNs from the
+kernel, as the clocks get disabled too many times.
 
-Fix it by returning the return value of the asm routines from the
-pthread child routines.
+Fix the remove() to call mipi_csis_runtime_suspend() and
+mipi_csis_clk_disable() in a way that reverses what is done in probe().
 
-Fixes: e5ab8be68e44 ("selftests/powerpc: Test preservation of FPU and VMX regs across preemption")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231128132748.1990179-1-mpe@ellerman.id.au
+Link: https://lore.kernel.org/r/20231122-imx-csis-v2-1-e44b8dc4cb66@ideasonboard.com
+
+Fixes: 7807063b862b ("media: staging/imx7: add MIPI CSI-2 receiver subdev for i.MX7")
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/powerpc/math/fpu_preempt.c |  9 +++++----
- tools/testing/selftests/powerpc/math/vmx_preempt.c | 10 ++++++----
- 2 files changed, 11 insertions(+), 8 deletions(-)
+ drivers/media/platform/nxp/imx-mipi-csis.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/powerpc/math/fpu_preempt.c b/tools/testing/selftests/powerpc/math/fpu_preempt.c
-index 5235bdc8c0b1..3e5b5663d244 100644
---- a/tools/testing/selftests/powerpc/math/fpu_preempt.c
-+++ b/tools/testing/selftests/powerpc/math/fpu_preempt.c
-@@ -37,19 +37,20 @@ __thread double darray[] = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0,
- int threads_starting;
- int running;
+diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
+index 905072871ed2..196f2bba419f 100644
+--- a/drivers/media/platform/nxp/imx-mipi-csis.c
++++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+@@ -1553,8 +1553,10 @@ static int mipi_csis_remove(struct platform_device *pdev)
+ 	v4l2_async_nf_cleanup(&csis->notifier);
+ 	v4l2_async_unregister_subdev(&csis->sd);
  
--extern void preempt_fpu(double *darray, int *threads_starting, int *running);
-+extern int preempt_fpu(double *darray, int *threads_starting, int *running);
- 
- void *preempt_fpu_c(void *p)
- {
-+	long rc;
- 	int i;
++	if (!pm_runtime_enabled(&pdev->dev))
++		mipi_csis_runtime_suspend(&pdev->dev);
 +
- 	srand(pthread_self());
- 	for (i = 0; i < 21; i++)
- 		darray[i] = rand();
- 
--	/* Test failed if it ever returns */
--	preempt_fpu(darray, &threads_starting, &running);
-+	rc = preempt_fpu(darray, &threads_starting, &running);
- 
--	return p;
-+	return (void *)rc;
- }
- 
- int test_preempt_fpu(void)
-diff --git a/tools/testing/selftests/powerpc/math/vmx_preempt.c b/tools/testing/selftests/powerpc/math/vmx_preempt.c
-index 6761d6ce30ec..6f7cf400c687 100644
---- a/tools/testing/selftests/powerpc/math/vmx_preempt.c
-+++ b/tools/testing/selftests/powerpc/math/vmx_preempt.c
-@@ -37,19 +37,21 @@ __thread vector int varray[] = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10,11,12},
- int threads_starting;
- int running;
- 
--extern void preempt_vmx(vector int *varray, int *threads_starting, int *running);
-+extern int preempt_vmx(vector int *varray, int *threads_starting, int *running);
- 
- void *preempt_vmx_c(void *p)
- {
- 	int i, j;
-+	long rc;
-+
- 	srand(pthread_self());
- 	for (i = 0; i < 12; i++)
- 		for (j = 0; j < 4; j++)
- 			varray[i][j] = rand();
- 
--	/* Test fails if it ever returns */
--	preempt_vmx(varray, &threads_starting, &running);
--	return p;
-+	rc = preempt_vmx(varray, &threads_starting, &running);
-+
-+	return (void *)rc;
- }
- 
- int test_preempt_vmx(void)
+ 	pm_runtime_disable(&pdev->dev);
+-	mipi_csis_runtime_suspend(&pdev->dev);
+ 	mipi_csis_clk_disable(csis);
+ 	media_entity_cleanup(&csis->sd.entity);
+ 	fwnode_handle_put(csis->sd.fwnode);
 -- 
 2.43.0
 
