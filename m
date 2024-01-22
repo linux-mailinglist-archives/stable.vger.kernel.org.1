@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BFE1837BEC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1450D838301
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:25:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 239381F2AA77
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EEA7B25F0A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6F81420B0;
-	Tue, 23 Jan 2024 00:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0005FDA5;
+	Tue, 23 Jan 2024 01:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0wI0h5w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZizWeWf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69DE2137C53;
-	Tue, 23 Jan 2024 00:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A40B3FF4;
+	Tue, 23 Jan 2024 01:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969441; cv=none; b=fNaxUQWDyjEX7Rd0A8eMctq7KyoOT5CEbm6uKMQd9VJ26tA1TF5qYOdbQuKI2X4JiTU6zg0/F5HvrPGjhV0bpcJMg/VRwOTDk2LoZf8bVg1gg9TyeFXhiLO53goQzo2NPr/ZkEXIp4p661MPdxFU0w6c+85LaTpYYLBT7bSUjqg=
+	t=1705974641; cv=none; b=YNmSQ/TRBqHMOx01YdW6sZ3rIcQGKq+30thSagTAAdkJCWMQ33Ath792IX9EpJcvNcQNJjFXuou/FjT15yF4VbTuSnhfMiyauBBiBa6Ifcg6jRY73ePVbMNMLGgioaQEm156p1omuzhzoZT5CiTJM9sIKi6WDfs58wbOd9n3hbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969441; c=relaxed/simple;
-	bh=AONIZ6D8iB523CKL4qzd6cIgdNxzsCTyogf9ZnZj0/A=;
+	s=arc-20240116; t=1705974641; c=relaxed/simple;
+	bh=0IsSvN04ExknnIrIQxjs4QV+l0CcQw2TVAPb8Eej3Uo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oAsXkYpv6WK/48VVmVIcxrJEfixwLBzADDepocjnBjaVy3HmqKYj46QD4U0YB1fi0sjScM3yE90RKjnmN7iUR/iOdd/wzFoef/llsB5nF20f/MAUbsx/1OI77gP+OvlTKL3WeZCydCmL878p9fD9yJVqfSEteTE1Bqhq6WNEN6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0wI0h5w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E84C433F1;
-	Tue, 23 Jan 2024 00:24:01 +0000 (UTC)
+	 MIME-Version; b=tRYEteP14AGeUBZ32Q2EOhi7J8DHZx/QRqBchLyEkqrgvPsc4q/f+XERfpdgutYThBE3cc+ofZ8h5YTr5VusRwxTOSurWgBc71aukqkZLXg2KeHvK+rB5xMd5e9UXTTEtbivC88hAnLgHmkqrigeJlcuHfkMRZNJ7aJlWM4rVb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZizWeWf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C10ABC433C7;
+	Tue, 23 Jan 2024 01:50:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969441;
-	bh=AONIZ6D8iB523CKL4qzd6cIgdNxzsCTyogf9ZnZj0/A=;
+	s=korg; t=1705974640;
+	bh=0IsSvN04ExknnIrIQxjs4QV+l0CcQw2TVAPb8Eej3Uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U0wI0h5w8hZE+OQek0WsIC1oAi5is2Pvp7KrvOtlNh8Syd+K9wGUxKqtSx/ai4wrT
-	 fv5CftUYpfVOGwVnge0IytiG2TgT5noSIB4y8g6g7/kcK/LXfK3zpF46dO6qlRXv3h
-	 OiGeNvWMuKcUMUPWk5a5cNWQMT0jLKga0wR/jVHA=
+	b=TZizWeWfb+PK8wY1TcaVEBw43RAX62VZMNtgZkjRzSVGJOy7aPpY21abhYLatDdY3
+	 MKPDa85M6cRg+k++NlbXQpkZQiln5mncmM/Cf6aJHgoh32LCVxrUywkvHCYJrsjdYP
+	 UGUAMCw8ob5deLjMTOBbU/EKCfZE46QxsZGTVG0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Jeroen van Ingen Schenau <jeroen.vaningenschenau@novoserve.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Minh Le Hoang <minh.lehoang@novoserve.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 248/641] RDMA/hns: Fix inappropriate err code for unsupported operations
+Subject: [PATCH 6.6 101/583] selftests/bpf: Fix erroneous bitmask operation
 Date: Mon, 22 Jan 2024 15:52:32 -0800
-Message-ID: <20240122235825.679435863@linuxfoundation.org>
+Message-ID: <20240122235815.268935071@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Jeroen van Ingen Schenau <jeroen.vaningenschenau@novoserve.com>
 
-[ Upstream commit f45b83ad39f8033e717b1eee57e81811113d5a84 ]
+[ Upstream commit b6a3451e0847d5d70fb5fa2b2a80ab9f80bf2c7b ]
 
-EOPNOTSUPP is more situable than EINVAL for allocating XRCD while XRC
-is not supported and unsupported resizing SRQ.
+xdp_synproxy_kern.c is a BPF program that generates SYN cookies on
+allowed TCP ports and sends SYNACKs to clients, accelerating synproxy
+iptables module.
 
-Fixes: 32548870d438 ("RDMA/hns: Add support for XRC on HIP09")
-Fixes: 221109e64316 ("RDMA/hns: Add interception for resizing SRQs")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20231114123449.1106162-2-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fix the bitmask operation when checking the status of an existing
+conntrack entry within tcp_lookup() function. Do not AND with the bit
+position number, but with the bitmask value to check whether the entry
+found has the IPS_CONFIRMED flag set.
+
+Fixes: fb5cd0ce70d4 ("selftests/bpf: Add selftests for raw syncookie helpers")
+Signed-off-by: Jeroen van Ingen Schenau <jeroen.vaningenschenau@novoserve.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: Minh Le Hoang <minh.lehoang@novoserve.com>
+Link: https://lore.kernel.org/xdp-newbies/CAAi1gX7owA+Tcxq-titC-h-KPM7Ri-6ZhTNMhrnPq5gmYYwKow@mail.gmail.com/T/#u
+Link: https://lore.kernel.org/bpf/20231130120353.3084-1-jeroen.vaningenschenau@novoserve.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 2 +-
- drivers/infiniband/hw/hns/hns_roce_pd.c    | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 2bca9560f32d..e4753c802942 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -5671,7 +5671,7 @@ static int hns_roce_v2_modify_srq(struct ib_srq *ibsrq,
+diff --git a/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c b/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c
+index 07d786329105..04fc2c6c79e8 100644
+--- a/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c
++++ b/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c
+@@ -447,13 +447,13 @@ static __always_inline int tcp_lookup(void *ctx, struct header_pointers *hdr, bo
+ 		unsigned long status = ct->status;
  
- 	/* Resizing SRQs is not supported yet */
- 	if (srq_attr_mask & IB_SRQ_MAX_WR)
--		return -EINVAL;
-+		return -EOPNOTSUPP;
+ 		bpf_ct_release(ct);
+-		if (status & IPS_CONFIRMED_BIT)
++		if (status & IPS_CONFIRMED)
+ 			return XDP_PASS;
+ 	} else if (ct_lookup_opts.error != -ENOENT) {
+ 		return XDP_ABORTED;
+ 	}
  
- 	if (srq_attr_mask & IB_SRQ_LIMIT) {
- 		if (srq_attr->srq_limit > srq->wqe_cnt)
-diff --git a/drivers/infiniband/hw/hns/hns_roce_pd.c b/drivers/infiniband/hw/hns/hns_roce_pd.c
-index 783e71852c50..bd1fe89ca205 100644
---- a/drivers/infiniband/hw/hns/hns_roce_pd.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_pd.c
-@@ -150,7 +150,7 @@ int hns_roce_alloc_xrcd(struct ib_xrcd *ib_xrcd, struct ib_udata *udata)
- 	int ret;
+-	/* error == -ENOENT || !(status & IPS_CONFIRMED_BIT) */
++	/* error == -ENOENT || !(status & IPS_CONFIRMED) */
+ 	return XDP_TX;
+ }
  
- 	if (!(hr_dev->caps.flags & HNS_ROCE_CAP_FLAG_XRC))
--		return -EINVAL;
-+		return -EOPNOTSUPP;
- 
- 	ret = hns_roce_xrcd_alloc(hr_dev, &xrcd->xrcdn);
- 	if (ret)
 -- 
 2.43.0
 
