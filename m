@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2A25837F8A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96989837FEC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:55:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 015FB1C2914F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C40D51C277DA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFA163410;
-	Tue, 23 Jan 2024 00:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02D812CD99;
+	Tue, 23 Jan 2024 00:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="atjOCxc8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/JRrwPR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A508629F6;
-	Tue, 23 Jan 2024 00:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D88212C55F;
+	Tue, 23 Jan 2024 00:57:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971182; cv=none; b=gUZ8dnUJk3hZ6rIJ5gEOxO45u/Eu1mfl5VTTvlO23bkFyogWv7ivvKKj+gfEjfOoOx20Kkm1QQpeBgMo5OKosXiVCNb5ZSC+z/dK6sjtLSJQ3H/a1caizqCa3qU1gYcMUPE76QHGUUJPFHccBad23Gw6el0MCYMjKkEZbOPciQ0=
+	t=1705971451; cv=none; b=hbdlAb4nRNLITEcuzOGGkHbsNNzIZdZR6QC2+vuYH8CLjvP7Dc0zCVPTDrxHjc/rd2O6/iw/Vh8ler20T0oGZqLTklJ2XZXAF5Yy4Qtz70qRqsg9OvtcDitKjw2q+lkf0qIU5UqqsttQmoXolfFT7FqUPcmnWW0UMFpP7WuFmh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971182; c=relaxed/simple;
-	bh=XgvkJb5T1bMj7e8Qnwg7+jkLvFIWJb51e8cWkdV5MXY=;
+	s=arc-20240116; t=1705971451; c=relaxed/simple;
+	bh=BIeocN7SSVO5H5+uf0nd4FKptYL9aPhW4b9uTKN3KMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DXszJ+5JmvS4Fu+ZHi6pfUfiKxxTJFUQEWuTk3CFGiKC2VxXAUizXGIhPtR7JWnIksjOHhCpxWi7jkjbN6k6Si1DDXu1TybV8MjER9n1lviC70M4kNu7KLKO1J3oP+aNIuIDwuqYZHXvvvZaLVBdIKJMJxPhr9hvuSl6vGRHntM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=atjOCxc8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 069ADC43390;
-	Tue, 23 Jan 2024 00:53:01 +0000 (UTC)
+	 MIME-Version; b=I0qnxpDWRrEsrmeNRVJ9Jtralu5K3vlSABcTxQTXKmZ3adyc1swi/w/UKcRE57veKzF9jo27QkwGuyudyRK9+KuD2TaKDguXWDtLeYp+3Mqb8yz0UbkktRZSsANKTvAt0cEF7MwcnR7dV3lxssSpKiyIczkg9baAgDJv8K5m4dE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/JRrwPR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53108C433F1;
+	Tue, 23 Jan 2024 00:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971182;
-	bh=XgvkJb5T1bMj7e8Qnwg7+jkLvFIWJb51e8cWkdV5MXY=;
+	s=korg; t=1705971450;
+	bh=BIeocN7SSVO5H5+uf0nd4FKptYL9aPhW4b9uTKN3KMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=atjOCxc8bX410Riv79UQFcK6KX64FIduSBOGrRWkWmcJjOPadYd/DlTxXdnQnSN7x
-	 ngr/fQ+6122D16de/SD/ZyjE5xRVFJdIm5vNhfkz/YahfNZkmHFBxXFr1R118TYN/A
-	 1EEODZhG+0urAsE+OcM2/yp0B/Ll5S+SSpEIS16g=
+	b=y/JRrwPRDfAHPR1Z6Om4aaQHCEjvzDXWSo2wwzlZmj+icp6Sl3LbQ1Sr/mq6VNza4
+	 uD3MXmqo5nxvqVCMzf6BQnusRhuqgkwf18zTE5eB11OyTEKNpGWVVZAfhJYBKK1h3+
+	 oq0V9L+5cLY3RkmnqI+HWlIqi8/vgBhEmsLwYqJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Li Nan <linan122@huawei.com>,
+	Tom Talpey <tom@talpey.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 106/286] blocklayoutdriver: Fix reference leak of pnfs_device_node
+Subject: [PATCH 6.1 244/417] ksmbd: validate the zero field of packet header
 Date: Mon, 22 Jan 2024 15:56:52 -0800
-Message-ID: <20240122235736.181276149@linuxfoundation.org>
+Message-ID: <20240122235800.334105216@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit 1530827b90025cdf80c9b0d07a166d045a0a7b81 ]
+[ Upstream commit 516b3eb8c8065f7465f87608d37a7ed08298c7a5 ]
 
-The error path for blocklayout's device lookup is missing a reference drop
-for the case where a lookup finds the device, but the device is marked with
-NFS_DEVICEID_UNAVAILABLE.
+The SMB2 Protocol requires that "The first byte of the Direct TCP
+transport packet header MUST be zero (0x00)"[1]. Commit 1c1bcf2d3ea0
+("ksmbd: validate smb request protocol id") removed the validation of
+this 1-byte zero. Add the validation back now.
 
-Fixes: b3dce6a2f060 ("pnfs/blocklayout: handle transient devices")
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+[1]: [MS-SMB2] - v20230227, page 30.
+https://winprotocoldoc.blob.core.windows.net/productionwindowsarchives/MS-SMB2/%5bMS-SMB2%5d-230227.pdf
+
+Fixes: 1c1bcf2d3ea0 ("ksmbd: validate smb request protocol id")
+Signed-off-by: Li Nan <linan122@huawei.com>
+Acked-by: Tom Talpey <tom@talpey.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/blocklayout/blocklayout.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/server/smb_common.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/blocklayout/blocklayout.c b/fs/nfs/blocklayout/blocklayout.c
-index 08108b6d2fa1..73000aa2d220 100644
---- a/fs/nfs/blocklayout/blocklayout.c
-+++ b/fs/nfs/blocklayout/blocklayout.c
-@@ -604,6 +604,8 @@ bl_find_get_deviceid(struct nfs_server *server,
- 		nfs4_delete_deviceid(node->ld, node->nfs_client, id);
- 		goto retry;
- 	}
-+
-+	nfs4_put_deviceid_node(node);
- 	return ERR_PTR(-ENODEV);
- }
+diff --git a/fs/smb/server/smb_common.c b/fs/smb/server/smb_common.c
+index d160363c09eb..e90a1e8c1951 100644
+--- a/fs/smb/server/smb_common.c
++++ b/fs/smb/server/smb_common.c
+@@ -158,8 +158,12 @@ int ksmbd_verify_smb_message(struct ksmbd_work *work)
+  */
+ bool ksmbd_smb_request(struct ksmbd_conn *conn)
+ {
+-	__le32 *proto = (__le32 *)smb2_get_msg(conn->request_buf);
++	__le32 *proto;
  
++	if (conn->request_buf[0] != 0)
++		return false;
++
++	proto = (__le32 *)smb2_get_msg(conn->request_buf);
+ 	if (*proto == SMB2_COMPRESSION_TRANSFORM_ID) {
+ 		pr_err_ratelimited("smb2 compression not support yet");
+ 		return false;
 -- 
 2.43.0
 
