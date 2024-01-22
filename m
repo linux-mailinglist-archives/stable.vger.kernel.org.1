@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-15319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D9FA838534
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D8B8838032
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BC7EB29371
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7F271F2C7C7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08045768E7;
-	Tue, 23 Jan 2024 02:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB11467742;
+	Tue, 23 Jan 2024 00:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K9DjNNfk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbOHNYK+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9BDD73176;
-	Tue, 23 Jan 2024 02:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEE564CEB;
+	Tue, 23 Jan 2024 00:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975481; cv=none; b=rA7++ZYrWTk1P3jacsFF8IE8oj7LCYcWde+5K3IWZj1qTC4S65QUIJLT2cJvTXjR7vzfVHbPUbZB59aW1fT7D1SyIF5QZ6H64NROQErYQLlDY3jmHf6kWn4IhlVxPpkhg6LSvalLiP8ZZTxR3GYRi9yXsB6B2KqpWhCVcP/vB40=
+	t=1705971582; cv=none; b=qHh2sQgcaOUpzq2inhTMbee3GcB6UhBwX/ByRR2s4+S/sUv0kC2iCtJXeaMlyGeDQsWRTpX79J4CxAn9r19MqGxobuIB+aPHcSwsK1ocVLNI/QniHpnHCd7PHqEy/fwPcS2F7QFey6DNMK9BTAByVTtW8LJrnGcKq1fOV9xWenI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975481; c=relaxed/simple;
-	bh=UM/7y/E8xtraaL/XMbr703yOQnRmAYiRvC7wqJzRaR4=;
+	s=arc-20240116; t=1705971582; c=relaxed/simple;
+	bh=aDWgdRsg4ZbcNSykNndQAyQT8acCbVoMpd0bDAMA3bk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sPfv/xx2QGFDS9uPI9Rw5TlCm3KqDUKQYx6omAdUONSE/M8d1MOBpTL3LDNIGZktEXmqjAFlBc1rrId0Z/gxDttNCvQB5//aY8y+KDdbWqW0N/TqFBHB6fgfichcOvOnSbEhRKVAtuXbzU02Ijvr8et+vjTg6vfHavVOERi+t/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K9DjNNfk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81892C433C7;
-	Tue, 23 Jan 2024 02:04:41 +0000 (UTC)
+	 MIME-Version; b=LBv4lQeulCtwaX33YJKAl2/3891J2OlE4t4FeLy1gVPcTgRV6tjW8h3Kssnx9qM+psnyxhm/ADfiJPncaP4phfqcM9o1yIhETfF5o0sFHsYAyLkflpX9LFPZW51XoDG119RE17iGLxvkSWHe9w27Q/4CcDVt1HG1AtlszRKiDqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbOHNYK+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405B5C433C7;
+	Tue, 23 Jan 2024 00:59:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975481;
-	bh=UM/7y/E8xtraaL/XMbr703yOQnRmAYiRvC7wqJzRaR4=;
+	s=korg; t=1705971582;
+	bh=aDWgdRsg4ZbcNSykNndQAyQT8acCbVoMpd0bDAMA3bk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K9DjNNfkOuyf0ClGkmUxwrgB4PPymkUCbi5Wuy+YQ2Co13FFBG0lI7hQod3Hdh1NP
-	 vDa+s8/OsTZYls71dTEx4e06uwU+hE4CmqpRB8WUJxTmxRJiuBBtlrZgCH6RJzx7Z2
-	 gMYrbx7p81Y9z3lsYx8cCJbXZLsZGoRaxXOaCGIM=
+	b=RbOHNYK+x6rDBk40mYYzEi/UvogPuQZYZRJGj8a12cHO6x2YFvSXAQl64X+gKnMoA
+	 AyjilEnx5tFsRLPam2BzIcgOLd+VTfU4EP9YXr5Fg41vGOyxYSJ2KMd8AOGfbg7KSD
+	 LOyT4NrRZ/CpI9bLUnWdHmu879rUMg6c/fMUZC5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.6 436/583] serial: sc16is7xx: set safe default SPI clock frequency
+	Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 181/286] drivers: clk: zynqmp: update divider round rate logic
 Date: Mon, 22 Jan 2024 15:58:07 -0800
-Message-ID: <20240122235825.323534800@linuxfoundation.org>
+Message-ID: <20240122235739.117169063@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +62,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
 
-commit 3ef79cd1412236d884ab0c46b4d1921380807b48 upstream.
+[ Upstream commit 1fe15be1fb613534ecbac5f8c3f8744f757d237d ]
 
-15 MHz is supported only by 76x variants.
+Currently zynqmp divider round rate is considering single parent and
+calculating rate and parent rate accordingly. But if divider clock flag
+is set to SET_RATE_PARENT then its not trying to traverse through all
+parent rate and not selecting best parent rate from that. So use common
+divider_round_rate() which is traversing through all clock parents and
+its rate and calculating proper parent rate.
 
-If the SPI clock frequency is not specified, use a safe default clock value
-of 4 MHz that is supported by all variants.
-
-Also use HZ_PER_MHZ macro to improve readability.
-
-Fixes: 2c837a8a8f9f ("sc16is7xx: spi interface is added")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-4-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3fde0e16d016 ("drivers: clk: Add ZynqMP clock driver")
+Signed-off-by: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
+Link: https://lore.kernel.org/r/20231129112916.23125-3-jay.buddhabhatti@amd.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sc16is7xx.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/clk/zynqmp/divider.c | 66 +++---------------------------------
+ 1 file changed, 5 insertions(+), 61 deletions(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -24,6 +24,7 @@
- #include <linux/tty_flip.h>
- #include <linux/spi/spi.h>
- #include <linux/uaccess.h>
-+#include <linux/units.h>
- #include <uapi/linux/sched/types.h>
+diff --git a/drivers/clk/zynqmp/divider.c b/drivers/clk/zynqmp/divider.c
+index acdd5e48e147..acfd4878cce2 100644
+--- a/drivers/clk/zynqmp/divider.c
++++ b/drivers/clk/zynqmp/divider.c
+@@ -109,52 +109,6 @@ static unsigned long zynqmp_clk_divider_recalc_rate(struct clk_hw *hw,
+ 	return DIV_ROUND_UP_ULL(parent_rate, value);
+ }
  
- #define SC16IS7XX_NAME			"sc16is7xx"
-@@ -1719,7 +1720,7 @@ static int sc16is7xx_spi_probe(struct sp
- 		return dev_err_probe(&spi->dev, -EINVAL, "Unsupported SPI mode\n");
+-static void zynqmp_get_divider2_val(struct clk_hw *hw,
+-				    unsigned long rate,
+-				    struct zynqmp_clk_divider *divider,
+-				    u32 *bestdiv)
+-{
+-	int div1;
+-	int div2;
+-	long error = LONG_MAX;
+-	unsigned long div1_prate;
+-	struct clk_hw *div1_parent_hw;
+-	struct zynqmp_clk_divider *pdivider;
+-	struct clk_hw *div2_parent_hw = clk_hw_get_parent(hw);
+-
+-	if (!div2_parent_hw)
+-		return;
+-
+-	pdivider = to_zynqmp_clk_divider(div2_parent_hw);
+-	if (!pdivider)
+-		return;
+-
+-	div1_parent_hw = clk_hw_get_parent(div2_parent_hw);
+-	if (!div1_parent_hw)
+-		return;
+-
+-	div1_prate = clk_hw_get_rate(div1_parent_hw);
+-	*bestdiv = 1;
+-	for (div1 = 1; div1 <= pdivider->max_div;) {
+-		for (div2 = 1; div2 <= divider->max_div;) {
+-			long new_error = ((div1_prate / div1) / div2) - rate;
+-
+-			if (abs(new_error) < abs(error)) {
+-				*bestdiv = div2;
+-				error = new_error;
+-			}
+-			if (divider->flags & CLK_DIVIDER_POWER_OF_TWO)
+-				div2 = div2 << 1;
+-			else
+-				div2++;
+-		}
+-		if (pdivider->flags & CLK_DIVIDER_POWER_OF_TWO)
+-			div1 = div1 << 1;
+-		else
+-			div1++;
+-	}
+-}
+-
+ /**
+  * zynqmp_clk_divider_round_rate() - Round rate of divider clock
+  * @hw:			handle between common and hardware-specific interfaces
+@@ -173,6 +127,7 @@ static long zynqmp_clk_divider_round_rate(struct clk_hw *hw,
+ 	u32 div_type = divider->div_type;
+ 	u32 bestdiv;
+ 	int ret;
++	u8 width;
  
- 	spi->mode		= spi->mode ? : SPI_MODE_0;
--	spi->max_speed_hz	= spi->max_speed_hz ? : 15000000;
-+	spi->max_speed_hz	= spi->max_speed_hz ? : 4 * HZ_PER_MHZ;
- 	ret = spi_setup(spi);
- 	if (ret)
- 		return ret;
+ 	/* if read only, just return current value */
+ 	if (divider->flags & CLK_DIVIDER_READ_ONLY) {
+@@ -192,23 +147,12 @@ static long zynqmp_clk_divider_round_rate(struct clk_hw *hw,
+ 		return DIV_ROUND_UP_ULL((u64)*prate, bestdiv);
+ 	}
+ 
+-	bestdiv = zynqmp_divider_get_val(*prate, rate, divider->flags);
+-
+-	/*
+-	 * In case of two divisors, compute best divider values and return
+-	 * divider2 value based on compute value. div1 will  be automatically
+-	 * set to optimum based on required total divider value.
+-	 */
+-	if (div_type == TYPE_DIV2 &&
+-	    (clk_hw_get_flags(hw) & CLK_SET_RATE_PARENT)) {
+-		zynqmp_get_divider2_val(hw, rate, divider, &bestdiv);
+-	}
++	width = fls(divider->max_div);
+ 
+-	if ((clk_hw_get_flags(hw) & CLK_SET_RATE_PARENT) && divider->is_frac)
+-		bestdiv = rate % *prate ? 1 : bestdiv;
++	rate = divider_round_rate(hw, rate, prate, NULL, width, divider->flags);
+ 
+-	bestdiv = min_t(u32, bestdiv, divider->max_div);
+-	*prate = rate * bestdiv;
++	if (divider->is_frac && (clk_hw_get_flags(hw) & CLK_SET_RATE_PARENT) && (rate % *prate))
++		*prate = rate;
+ 
+ 	return rate;
+ }
+-- 
+2.43.0
+
 
 
 
