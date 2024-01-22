@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-14667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F68783820F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:17:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1E61837D41
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B11FB2880A4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98EE31F2955D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E19557870;
-	Tue, 23 Jan 2024 01:40:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A23C35380E;
+	Tue, 23 Jan 2024 00:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5g9REZR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2prFEuL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06CC56742;
-	Tue, 23 Jan 2024 01:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 626C7524B5;
+	Tue, 23 Jan 2024 00:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974050; cv=none; b=ZpUypG4CdyvkQkcXIUfCe11xSadTCWVJlP1tcY4LyVyHaVSO0Q4UQCtTcbQs10Sebma/ZoRqkikKyCXGyFR/YvxoLoly8pxgRkSNr0xuuU+2tTJjM4+KNlxA5OXtlF2pYNcVYhyt5bSKJnyAKHHJFa1FF4LlRPTneRbbc5lXHls=
+	t=1705969863; cv=none; b=qe+EnewbwN+i39Rtdxi42e2nHhjS0IJrJkBPgN7Akz2MJJDQUTebJ4EeclqYWCbxiftSyKvov8Ug3vZUyoYhtaKU1DbE0Bv8xLh8hxgHx3FA0TQ6fTIQR68nrWj9KqNO/H+IplLzQvftodh1u1pKZh3t2DuM2KB7+lyjEUVfMkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974050; c=relaxed/simple;
-	bh=fb7EEa6WhIlPojt6vbpB/exOFCSucvfSefy9Vol1Myg=;
+	s=arc-20240116; t=1705969863; c=relaxed/simple;
+	bh=JJnK69n7y/3WI5vLn1OfvvlHC5zbcfm3Iv7hLvVTc74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s2dStBN/ghwOIvcKBJAD/K8aJlD6DkYAyd6/9RpdEOB8bLRaWz+0C5Ne5xFXer6czDk0vZ9FCkYF6zPv3SQSW0b9a8iEHE9ucsEb2qQrot4yX0yIdL5bna3vjnVc59kJbqMo/T0OD/PiSZ2kWCzuC9gIheHOLS3WpRFdNJezGK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5g9REZR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45762C43390;
-	Tue, 23 Jan 2024 01:40:50 +0000 (UTC)
+	 MIME-Version; b=sFK3GiSIdIu+DyfklPklgnmxCM6lxpNwApBnKIXYBwD2od+hqy9ZpMuX2VYZH4F4+zLCJSI42HyX6JkuUDDaOgSTkEtGfKrc+5rUbD+miMzROxPIRtsSvAp8FcwgZIh1ti1QXmNOKOkyp+r4V9yIPi0J03BQRQ5Yh7zeWqkloPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2prFEuL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 220BFC433C7;
+	Tue, 23 Jan 2024 00:31:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974050;
-	bh=fb7EEa6WhIlPojt6vbpB/exOFCSucvfSefy9Vol1Myg=;
+	s=korg; t=1705969863;
+	bh=JJnK69n7y/3WI5vLn1OfvvlHC5zbcfm3Iv7hLvVTc74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R5g9REZRSIBxEI3ZdtDqOkQr3L+T6EzeXY3KhZKFxa9T73/5YDyiPAub9e2LutuwC
-	 sZ0xHBNvGUdD4pCG03d7CYjCvDFKZKl0glB4E+FGlSFmtkwEthDc8t7Ou6QhAOFJt2
-	 8SV4gNpVrwx9mQjv6x7U4PPyVUNyA9DV8sGrHmXs=
+	b=U2prFEuLK8rXwYxk7v1fpJNd7Vi/bT0xJPHnWzYLEgpqCN4BaQ1tADcBHM7/oVnhi
+	 VlOomFyI6/yAq2ApJXOz7htlQP68XNJXhIam81bFcIDX7n7MNw5hHd2qknBXDTYIpz
+	 qin5NGzXC0Jb/x1DyEMTQFOuQoSxePLPGCAkI6AU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Delevoryas <peter@pjd.dev>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 123/374] net/ncsi: Fix netlink major/minor version numbers
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.7 475/641] KVM: x86/pmu: Reset the PMU, i.e. stop counters, before refreshing
 Date: Mon, 22 Jan 2024 15:56:19 -0800
-Message-ID: <20240122235748.923991412@linuxfoundation.org>
+Message-ID: <20240122235832.923376288@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,207 +61,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Delevoryas <peter@pjd.dev>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 3084b58bfd0b9e4b5e034f31f31b42977db35f12 ]
+commit 1647b52757d59131fe30cf73fa36fac834d4367f upstream.
 
-The netlink interface for major and minor version numbers doesn't actually
-return the major and minor version numbers.
+Stop all counters and release all perf events before refreshing the vPMU,
+i.e. before reconfiguring the vPMU to respond to changes in the vCPU
+model.
 
-It reports a u32 that contains the (major, minor, update, alpha1)
-components as the major version number, and then alpha2 as the minor
-version number.
+Clear need_cleanup in kvm_pmu_reset() as well so that KVM doesn't
+prematurely stop counters, e.g. if KVM enters the guest and enables
+counters before the vCPU is scheduled out.
 
-For whatever reason, the u32 byte order was reversed (ntohl): maybe it was
-assumed that the encoded value was a single big-endian u32, and alpha2 was
-the minor version.
-
-The correct way to get the supported NC-SI version from the network
-controller is to parse the Get Version ID response as described in 8.4.44
-of the NC-SI spec[1].
-
-    Get Version ID Response Packet Format
-
-              Bits
-            +--------+--------+--------+--------+
-     Bytes  | 31..24 | 23..16 | 15..8  | 7..0   |
-    +-------+--------+--------+--------+--------+
-    | 0..15 | NC-SI Header                      |
-    +-------+--------+--------+--------+--------+
-    | 16..19| Response code   | Reason code     |
-    +-------+--------+--------+--------+--------+
-    |20..23 | Major  | Minor  | Update | Alpha1 |
-    +-------+--------+--------+--------+--------+
-    |24..27 |         reserved         | Alpha2 |
-    +-------+--------+--------+--------+--------+
-    |            .... other stuff ....          |
-
-The major, minor, and update fields are all binary-coded decimal (BCD)
-encoded [2]. The spec provides examples below the Get Version ID response
-format in section 8.4.44.1, but for practical purposes, this is an example
-from a live network card:
-
-    root@bmc:~# ncsi-util 0x15
-    NC-SI Command Response:
-    cmd: GET_VERSION_ID(0x15)
-    Response: COMMAND_COMPLETED(0x0000)  Reason: NO_ERROR(0x0000)
-    Payload length = 40
-
-    20: 0xf1 0xf1 0xf0 0x00 <<<<<<<<< (major, minor, update, alpha1)
-    24: 0x00 0x00 0x00 0x00 <<<<<<<<< (_, _, _, alpha2)
-
-    28: 0x6d 0x6c 0x78 0x30
-    32: 0x2e 0x31 0x00 0x00
-    36: 0x00 0x00 0x00 0x00
-    40: 0x16 0x1d 0x07 0xd2
-    44: 0x10 0x1d 0x15 0xb3
-    48: 0x00 0x17 0x15 0xb3
-    52: 0x00 0x00 0x81 0x19
-
-This should be parsed as "1.1.0".
-
-"f" in the upper-nibble means to ignore it, contributing zero.
-
-If both nibbles are "f", I think the whole field is supposed to be ignored.
-Major and minor are "required", meaning they're not supposed to be "ff",
-but the update field is "optional" so I think it can be ff. I think the
-simplest thing to do is just set the major and minor to zero instead of
-juggling some conditional logic or something.
-
-bcd2bin() from "include/linux/bcd.h" seems to assume both nibbles are 0-9,
-so I've provided a custom BCD decoding function.
-
-Alpha1 and alpha2 are ISO/IEC 8859-1 encoded, which just means ASCII
-characters as far as I can tell, although the full encoding table for
-non-alphabetic characters is slightly different (I think).
-
-I imagine the alpha fields are just supposed to be alphabetic characters,
-but I haven't seen any network cards actually report a non-zero value for
-either.
-
-If people wrote software against this netlink behavior, and were parsing
-the major and minor versions themselves from the u32, then this would
-definitely break their code.
-
-[1] https://www.dmtf.org/sites/default/files/standards/documents/DSP0222_1.0.0.pdf
-[2] https://en.wikipedia.org/wiki/Binary-coded_decimal
-[2] https://en.wikipedia.org/wiki/ISO/IEC_8859-1
-
-Signed-off-by: Peter Delevoryas <peter@pjd.dev>
-Fixes: 138635cc27c9 ("net/ncsi: NCSI response packet handler")
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Link: https://lore.kernel.org/r/20231103230541.352265-3-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ncsi/internal.h     |  7 +++++--
- net/ncsi/ncsi-netlink.c |  4 ++--
- net/ncsi/ncsi-pkt.h     |  7 +++++--
- net/ncsi/ncsi-rsp.c     | 26 ++++++++++++++++++++++++--
- 4 files changed, 36 insertions(+), 8 deletions(-)
+ arch/x86/kvm/pmu.c |   35 ++++++++++++++++++++++-------------
+ 1 file changed, 22 insertions(+), 13 deletions(-)
 
-diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
-index 03757e76bb6b..374412ed780b 100644
---- a/net/ncsi/internal.h
-+++ b/net/ncsi/internal.h
-@@ -105,8 +105,11 @@ enum {
+--- a/arch/x86/kvm/pmu.c
++++ b/arch/x86/kvm/pmu.c
+@@ -657,25 +657,14 @@ int kvm_pmu_set_msr(struct kvm_vcpu *vcp
+ 	return 0;
+ }
  
+-/* refresh PMU settings. This function generally is called when underlying
+- * settings are changed (such as changes of PMU CPUID by guest VMs), which
+- * should rarely happen.
+- */
+-void kvm_pmu_refresh(struct kvm_vcpu *vcpu)
+-{
+-	if (KVM_BUG_ON(kvm_vcpu_has_run(vcpu), vcpu->kvm))
+-		return;
+-
+-	bitmap_zero(vcpu_to_pmu(vcpu)->all_valid_pmc_idx, X86_PMC_IDX_MAX);
+-	static_call(kvm_x86_pmu_refresh)(vcpu);
+-}
+-
+ void kvm_pmu_reset(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+ 	struct kvm_pmc *pmc;
+ 	int i;
  
- struct ncsi_channel_version {
--	u32 version;		/* Supported BCD encoded NCSI version */
--	u32 alpha2;		/* Supported BCD encoded NCSI version */
-+	u8   major;		/* NCSI version major */
-+	u8   minor;		/* NCSI version minor */
-+	u8   update;		/* NCSI version update */
-+	char alpha1;		/* NCSI version alpha1 */
-+	char alpha2;		/* NCSI version alpha2 */
- 	u8  fw_name[12];	/* Firmware name string                */
- 	u32 fw_version;		/* Firmware version                   */
- 	u16 pci_ids[4];		/* PCI identification                 */
-diff --git a/net/ncsi/ncsi-netlink.c b/net/ncsi/ncsi-netlink.c
-index c189b4c8a182..db350b8f5d88 100644
---- a/net/ncsi/ncsi-netlink.c
-+++ b/net/ncsi/ncsi-netlink.c
-@@ -71,8 +71,8 @@ static int ncsi_write_channel_info(struct sk_buff *skb,
- 	if (nc == nc->package->preferred_channel)
- 		nla_put_flag(skb, NCSI_CHANNEL_ATTR_FORCED);
- 
--	nla_put_u32(skb, NCSI_CHANNEL_ATTR_VERSION_MAJOR, nc->version.version);
--	nla_put_u32(skb, NCSI_CHANNEL_ATTR_VERSION_MINOR, nc->version.alpha2);
-+	nla_put_u32(skb, NCSI_CHANNEL_ATTR_VERSION_MAJOR, nc->version.major);
-+	nla_put_u32(skb, NCSI_CHANNEL_ATTR_VERSION_MINOR, nc->version.minor);
- 	nla_put_string(skb, NCSI_CHANNEL_ATTR_VERSION_STR, nc->version.fw_name);
- 
- 	vid_nest = nla_nest_start_noflag(skb, NCSI_CHANNEL_ATTR_VLAN_LIST);
-diff --git a/net/ncsi/ncsi-pkt.h b/net/ncsi/ncsi-pkt.h
-index ba66c7dc3a21..c9d1da34dc4d 100644
---- a/net/ncsi/ncsi-pkt.h
-+++ b/net/ncsi/ncsi-pkt.h
-@@ -197,9 +197,12 @@ struct ncsi_rsp_gls_pkt {
- /* Get Version ID */
- struct ncsi_rsp_gvi_pkt {
- 	struct ncsi_rsp_pkt_hdr rsp;          /* Response header */
--	__be32                  ncsi_version; /* NCSI version    */
-+	unsigned char           major;        /* NCSI version major */
-+	unsigned char           minor;        /* NCSI version minor */
-+	unsigned char           update;       /* NCSI version update */
-+	unsigned char           alpha1;       /* NCSI version alpha1 */
- 	unsigned char           reserved[3];  /* Reserved        */
--	unsigned char           alpha2;       /* NCSI version    */
-+	unsigned char           alpha2;       /* NCSI version alpha2 */
- 	unsigned char           fw_name[12];  /* f/w name string */
- 	__be32                  fw_version;   /* f/w version     */
- 	__be16                  pci_ids[4];   /* PCI IDs         */
-diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
-index 069c2659074b..480e80e3c283 100644
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -19,6 +19,19 @@
- #include "ncsi-pkt.h"
- #include "ncsi-netlink.h"
- 
-+/* Nibbles within [0xA, 0xF] add zero "0" to the returned value.
-+ * Optional fields (encoded as 0xFF) will default to zero.
-+ */
-+static u8 decode_bcd_u8(u8 x)
-+{
-+	int lo = x & 0xF;
-+	int hi = x >> 4;
++	pmu->need_cleanup = false;
 +
-+	lo = lo < 0xA ? lo : 0;
-+	hi = hi < 0xA ? hi : 0;
-+	return lo + hi * 10;
+ 	bitmap_zero(pmu->reprogram_pmi, X86_PMC_IDX_MAX);
+ 
+ 	for_each_set_bit(i, pmu->all_valid_pmc_idx, X86_PMC_IDX_MAX) {
+@@ -695,6 +684,26 @@ void kvm_pmu_reset(struct kvm_vcpu *vcpu
+ 	static_call_cond(kvm_x86_pmu_reset)(vcpu);
+ }
+ 
++
++/*
++ * Refresh the PMU configuration for the vCPU, e.g. if userspace changes CPUID
++ * and/or PERF_CAPABILITIES.
++ */
++void kvm_pmu_refresh(struct kvm_vcpu *vcpu)
++{
++	if (KVM_BUG_ON(kvm_vcpu_has_run(vcpu), vcpu->kvm))
++		return;
++
++	/*
++	 * Stop/release all existing counters/events before realizing the new
++	 * vPMU model.
++	 */
++	kvm_pmu_reset(vcpu);
++
++	bitmap_zero(vcpu_to_pmu(vcpu)->all_valid_pmc_idx, X86_PMC_IDX_MAX);
++	static_call(kvm_x86_pmu_refresh)(vcpu);
 +}
 +
- static int ncsi_validate_rsp_pkt(struct ncsi_request *nr,
- 				 unsigned short payload)
+ void kvm_pmu_init(struct kvm_vcpu *vcpu)
  {
-@@ -755,9 +768,18 @@ static int ncsi_rsp_handler_gvi(struct ncsi_request *nr)
- 	if (!nc)
- 		return -ENODEV;
- 
--	/* Update to channel's version info */
-+	/* Update channel's version info
-+	 *
-+	 * Major, minor, and update fields are supposed to be
-+	 * unsigned integers encoded as packed BCD.
-+	 *
-+	 * Alpha1 and alpha2 are ISO/IEC 8859-1 characters.
-+	 */
- 	ncv = &nc->version;
--	ncv->version = ntohl(rsp->ncsi_version);
-+	ncv->major = decode_bcd_u8(rsp->major);
-+	ncv->minor = decode_bcd_u8(rsp->minor);
-+	ncv->update = decode_bcd_u8(rsp->update);
-+	ncv->alpha1 = rsp->alpha1;
- 	ncv->alpha2 = rsp->alpha2;
- 	memcpy(ncv->fw_name, rsp->fw_name, 12);
- 	ncv->fw_version = ntohl(rsp->fw_version);
--- 
-2.43.0
-
+ 	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
 
 
 
