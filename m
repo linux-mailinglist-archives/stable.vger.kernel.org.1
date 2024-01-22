@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97853838276
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17EB4837BE3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7F331C21D6A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43E131C283FE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795A55C5F2;
-	Tue, 23 Jan 2024 01:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A21C7135A66;
+	Tue, 23 Jan 2024 00:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyfkqKp8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DyU7xHbD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396F55BAFD;
-	Tue, 23 Jan 2024 01:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624B0132C17;
+	Tue, 23 Jan 2024 00:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974360; cv=none; b=D4t05X1m28tSpXxXuHW38oW/Up7VCvPxp7a5Guz5ZjMuWcv7/tok5G3StRv3vv41ehbiOPwXJZZoXGjp4WzeNukPWI7iTtA5inakSqItomVwSCsud49fGoA7J9NtC32nEhWWCmcmtqhhGk3vpK30XEFDBme+HIefRQl6P/FQa5Q=
+	t=1705969426; cv=none; b=kG0OQgGp2ahhxipqJaznVNnllrGkdMN1+a6I4CYUDTMKZJEIoEbdn743IeIPWrG8FKbJn+d7TO8y67goJwgniRt+iGycH2vlo0NBztQl7fDfFUve4bSJdQYgf2oYP/lWDgXasQvgCuWf9pghQbY5+O7lTY1admsKU65HVZplWkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974360; c=relaxed/simple;
-	bh=2A0aLUdlR/AuExWmldWGIUtP+6GgxcC/H8DhqZYjPVs=;
+	s=arc-20240116; t=1705969426; c=relaxed/simple;
+	bh=NTZbiWjJNyi/rPP/YZMfrARK45Kb7o+qnRWoaIz0GUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BomAxLKGe4nZJiAIdMNGSDSEcC0kWKKDRx10+Lmo/7Q19RL/YIQnC9659433Rnsdzpg1EGDfSeAQPgxf86zfGl8MgjvmQAcg0yGYCx7ajzzKn1suGloN98eQLRXECqf19trryeqxknoornp0h9FPBZ8ZdmIKH7CspQ7Emnz7NVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyfkqKp8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8454C433C7;
-	Tue, 23 Jan 2024 01:45:59 +0000 (UTC)
+	 MIME-Version; b=sWg83WQ7XBX6hT+RFe4hG1eOFAcS6BDwwG7dmXDkbkxK1QVJjP2G6ozbPValOOPMUdBxTrA4FbO8UMMHAG0Kf+vFX+suSl6ilu3bTpHX/Z6s88oL9lLT+M8UQQNqsgbJc7uO288BQEPW2UD5Xm95/gBrfvJ8xRtLBY8Lqd0jVDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DyU7xHbD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B755C433F1;
+	Tue, 23 Jan 2024 00:23:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974360;
-	bh=2A0aLUdlR/AuExWmldWGIUtP+6GgxcC/H8DhqZYjPVs=;
+	s=korg; t=1705969426;
+	bh=NTZbiWjJNyi/rPP/YZMfrARK45Kb7o+qnRWoaIz0GUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dyfkqKp8z3X1tJjkf0dF2CuF6F+QsuHeh0/E44K8FYVjTRb2g+3rhqLXSV1dKO3W6
-	 IihJY4QccTjj/NHNi8LlCRtjIIyah5UAjeEx0nKIDg3HWz6i3aZlzJ/grYuxGRSvFe
-	 dOxvi96S9aNIgcCtOyf0R78u+4MbZ8T0kD4gco8o=
+	b=DyU7xHbD8nOHc1oHxk9PIxcLiS3Vvz3Huc4RxUetQ3ky366MfgmmKaf4Vj0b7kNcM
+	 wTAjdo8PTTfbP9IeTDHch4MpkZgXUTjzUk6YZnssm4XODv161WSrpgZEmHt6oc/NSM
+	 Wf/t7Dxos/3YqpPYqHGxBraqgq4SDcnWWMkZehiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Aring <aahringo@redhat.com>,
-	David Teigland <teigland@redhat.com>,
+	Su Hui <suhui@nfschina.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 065/583] dlm: fix format seq ops type 4
-Date: Mon, 22 Jan 2024 15:51:56 -0800
-Message-ID: <20240122235814.129242476@linuxfoundation.org>
+Subject: [PATCH 6.7 213/641] wifi: rtlwifi: rtl8192ee: using calculate_bit_shift()
+Date: Mon, 22 Jan 2024 15:51:57 -0800
+Message-ID: <20240122235824.606876074@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 367e753d5c54a414d82610eb709fe71fda6cf1c3 ]
+[ Upstream commit 63526897fc0d086069bcab67c3a112caaec751cb ]
 
-This patch fixes to set the type 4 format ops in case of table_open4().
-It got accidentially changed by commit 541adb0d4d10 ("fs: dlm: debugfs
-for queued callbacks") and since them toss debug dumps the same format
-as format 5 that are the queued ast callbacks for lkbs.
+Using calculate_bit_shift() to replace _rtl92ee_phy_calculate_bit_shift().
+And fix the undefined bitwise shift behavior problem.
 
-Fixes: 541adb0d4d10 ("fs: dlm: debugfs for queued callbacks")
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
+Fixes: b1a3bfc97cd9 ("rtlwifi: rtl8192ee: Move driver from staging to the regular tree")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-9-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/debug_fs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/wireless/realtek/rtlwifi/rtl8192ee/phy.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/fs/dlm/debug_fs.c b/fs/dlm/debug_fs.c
-index c93359ceaae6..d2c035387595 100644
---- a/fs/dlm/debug_fs.c
-+++ b/fs/dlm/debug_fs.c
-@@ -748,7 +748,7 @@ static int table_open4(struct inode *inode, struct file *file)
- 	struct seq_file *seq;
- 	int ret;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
+index cc0bcaf13e96..73ef602bfb01 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
+@@ -16,7 +16,6 @@ static u32 _rtl92ee_phy_rf_serial_read(struct ieee80211_hw *hw,
+ static void _rtl92ee_phy_rf_serial_write(struct ieee80211_hw *hw,
+ 					 enum radio_path rfpath, u32 offset,
+ 					 u32 data);
+-static u32 _rtl92ee_phy_calculate_bit_shift(u32 bitmask);
+ static bool _rtl92ee_phy_bb8192ee_config_parafile(struct ieee80211_hw *hw);
+ static bool _rtl92ee_phy_config_mac_with_headerfile(struct ieee80211_hw *hw);
+ static bool phy_config_bb_with_hdr_file(struct ieee80211_hw *hw,
+@@ -46,7 +45,7 @@ u32 rtl92ee_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+ 		"regaddr(%#x), bitmask(%#x)\n", regaddr, bitmask);
+ 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-	bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	returnvalue = (originalvalue & bitmask) >> bitshift;
  
--	ret = seq_open(file, &format5_seq_ops);
-+	ret = seq_open(file, &format4_seq_ops);
- 	if (ret)
- 		return ret;
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+@@ -68,7 +67,7 @@ void rtl92ee_phy_set_bb_reg(struct ieee80211_hw *hw, u32 regaddr,
  
+ 	if (bitmask != MASKDWORD) {
+ 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-		bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
++		bitshift = calculate_bit_shift(bitmask);
+ 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
+ 	}
+ 
+@@ -92,7 +91,7 @@ u32 rtl92ee_phy_query_rf_reg(struct ieee80211_hw *hw,
+ 	spin_lock(&rtlpriv->locks.rf_lock);
+ 
+ 	original_value = _rtl92ee_phy_rf_serial_read(hw , rfpath, regaddr);
+-	bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	readback_value = (original_value & bitmask) >> bitshift;
+ 
+ 	spin_unlock(&rtlpriv->locks.rf_lock);
+@@ -119,7 +118,7 @@ void rtl92ee_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 
+ 	if (bitmask != RFREG_OFFSET_MASK) {
+ 		original_value = _rtl92ee_phy_rf_serial_read(hw, rfpath, addr);
+-		bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
++		bitshift = calculate_bit_shift(bitmask);
+ 		data = (original_value & (~bitmask)) | (data << bitshift);
+ 	}
+ 
+@@ -201,13 +200,6 @@ static void _rtl92ee_phy_rf_serial_write(struct ieee80211_hw *hw,
+ 		pphyreg->rf3wire_offset, data_and_addr);
+ }
+ 
+-static u32 _rtl92ee_phy_calculate_bit_shift(u32 bitmask)
+-{
+-	u32 i = ffs(bitmask);
+-
+-	return i ? i - 1 : 32;
+-}
+-
+ bool rtl92ee_phy_mac_config(struct ieee80211_hw *hw)
+ {
+ 	return _rtl92ee_phy_config_mac_with_headerfile(hw);
 -- 
 2.43.0
 
