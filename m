@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-12962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BC378379FF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CA38837ABE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D68302898B2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:48:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EEF56B2680F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:54:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C68112838A;
-	Tue, 23 Jan 2024 00:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CAEB12FF7F;
+	Tue, 23 Jan 2024 00:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjZSqHdD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TdshVh+K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BECE27456;
-	Tue, 23 Jan 2024 00:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE1512F5A7;
+	Tue, 23 Jan 2024 00:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968699; cv=none; b=MSGQ7mq6DuM4a0ZE8Njr26lWna3ozT7Ff74D15GjOISQ+GkxpNUaAM0sJfnQCvVk3ZC6MYXmOVR2g5ms5yQc8p1x7/yFzNTTUBG+yZcpWV1ZMEHm7QxVSBxPlKLZLgI2DDSfQnuJhfJpxd0JY1m1fgIFKcaKghQKIISFf5nkIYE=
+	t=1705969037; cv=none; b=YcWCmer/Fq8RmbCgRIUd2lcq6Utw5U0z89T1G2ebYD6KKQiKvAo56g/lu9I5jdm5OQT9yWT/vpQAMvpMTBAwLDvpwDs2KDDiYE7gDEO5zXvHHTY+FFk11kE/VhCz9P5MsMK1xKAQt2hmqixx8UQUCAmyEWiJcytrFuRix4RUBiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968699; c=relaxed/simple;
-	bh=idw9WfoLTV3OIkXyHE729vXzSOAIauu9BvKa6k92JhY=;
+	s=arc-20240116; t=1705969037; c=relaxed/simple;
+	bh=gR9zfSbwt9R6QZ22rLBA+swck9t4OIdZxfgvRz2FE9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DVTUA5hqBUHKkdXVTNsrmyZ3HhzxqGzn2syrsCTJzDnddD/e9d/gMdvn5MNK4It7wURGZPPGW8fr9TiGKUexnPy6ADFMJQhLYdClEeXsR81B2oGrpikFmOFEfd0ZuH/jWQKAIqk9KoCMhZ5OiTy143HNvEWMdB1p+FMVJXsyvcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjZSqHdD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE53C43390;
-	Tue, 23 Jan 2024 00:11:38 +0000 (UTC)
+	 MIME-Version; b=G+6jkvtZzQwxhbzMKOWMlmFZv72Ctz69jcWVfa3i1/c/plBv16VSQuGjbHpa1UQUBUGXJqC1+7pCXfXTtAHL37JWo2eyuutqx0Iv3tCVCZEFK2Xh4GLcsh1yRB2Q7w9yc8v7eHv1d8dBHRVakT20tH3ow6Qru/kVVAhH4AjrtKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TdshVh+K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF68C433C7;
+	Tue, 23 Jan 2024 00:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968698;
-	bh=idw9WfoLTV3OIkXyHE729vXzSOAIauu9BvKa6k92JhY=;
+	s=korg; t=1705969036;
+	bh=gR9zfSbwt9R6QZ22rLBA+swck9t4OIdZxfgvRz2FE9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cjZSqHdDoRO9K1ov7d5qPy3+gQwwgqPRuntgOWrD/3cTYiUAr2nr4qW7ROgYtB8CX
-	 mlY7NrCrGlavJqh4UYaKYAZ5nxsoOBlQcdOZwLZok1DnAhd7DawZngw6NC5QQ17GXM
-	 ZVC2GJvOIp320gWnJmnES8rvl4erwLgLM8GkcuQk=
+	b=TdshVh+KhvpUyutdv+RLCeZ0pcMKU7Q3Yj3XoM50tZJ3QPA87i6aJfFJzrEcTAXd2
+	 1sf2HSR0tMyZ+r2fNA4BI4yiR82yAkFp8m03nuBayjFDumAjwXJeERB0+JldcmIrbQ
+	 p1qlhbHHBlFn1yEgbZaFtmaXsa1SJ4FE98ZEQFTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Neil Brown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>
-Subject: [PATCH 4.19 147/148] Revert "NFSD: Fix possible sleep during nfsd4_release_lockowner()"
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Alexey Budankov <alexey.budankov@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Joe Mario <jmario@redhat.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Michael Petlan <mpetlan@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <a.p.zijlstra@chello.nl>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 173/194] perf env: Add perf_env__numa_node()
 Date: Mon, 22 Jan 2024 15:58:23 -0800
-Message-ID: <20240122235718.570230333@linuxfoundation.org>
+Message-ID: <20240122235726.632008692@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +70,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Jiri Olsa <jolsa@kernel.org>
 
-This reverts commit ef481b262bba4f454351eec43f024fec942c2d4c which is
-commit ce3c4ad7f4ce5db7b4f08a1e237d8dd94b39180b upstream.
+[ Upstream commit 389799a7a1e86c55f38897e679762efadcc9dedd ]
 
-The maintainers ask it to be removed in this branch.
+To speed up cpu to node lookup, add perf_env__numa_node(), that creates
+cpu array on the first lookup, that holds numa nodes for each stored
+cpu.
 
-Cc: Dai Ngo <dai.ngo@oracle.com>
-Cc: Chuck Lever <chuck.lever@oracle.com>
-Cc: Neil Brown <neilb@suse.de>
-Cc: Jeff Layton <jlayton@kernel.org>
-Link: https://lore.kernel.org/linux-nfs/3162C5BC-8E7C-4A9A-815C-09297B56FA17@oracle.com/T/#t
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Alexey Budankov <alexey.budankov@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Joe Mario <jmario@redhat.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Michael Petlan <mpetlan@redhat.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <a.p.zijlstra@chello.nl>
+Link: http://lkml.kernel.org/r/20190904073415.723-3-jolsa@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Stable-dep-of: 9c51f8788b5d ("perf env: Avoid recursively taking env->bpf_progs.lock")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ tools/perf/util/env.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ tools/perf/util/env.h |  6 ++++++
+ 2 files changed, 46 insertions(+)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -6392,12 +6392,16 @@ nfsd4_release_lockowner(struct svc_rqst
- 		if (sop->so_is_open_owner || !same_owner_str(sop, owner))
- 			continue;
+diff --git a/tools/perf/util/env.c b/tools/perf/util/env.c
+index ef64e197bc8d..2d517f377053 100644
+--- a/tools/perf/util/env.c
++++ b/tools/perf/util/env.c
+@@ -183,6 +183,7 @@ void perf_env__exit(struct perf_env *env)
+ 	zfree(&env->sibling_threads);
+ 	zfree(&env->pmu_mappings);
+ 	zfree(&env->cpu);
++	zfree(&env->numa_map);
  
--		if (atomic_read(&sop->so_count) != 1) {
--			spin_unlock(&clp->cl_lock);
--			return nfserr_locks_held;
-+		/* see if there are still any locks associated with it */
-+		lo = lockowner(sop);
-+		list_for_each_entry(stp, &sop->so_stateids, st_perstateowner) {
-+			if (check_for_locks(stp->st_stid.sc_file, lo)) {
-+				status = nfserr_locks_held;
-+				spin_unlock(&clp->cl_lock);
-+				return status;
-+			}
- 		}
+ 	for (i = 0; i < env->nr_numa_nodes; i++)
+ 		perf_cpu_map__put(env->numa_nodes[i].map);
+@@ -342,3 +343,42 @@ const char *perf_env__arch(struct perf_env *env)
  
--		lo = lockowner(sop);
- 		nfs4_get_stateowner(sop);
- 		break;
- 	}
+ 	return normalize_arch(arch_name);
+ }
++
++
++int perf_env__numa_node(struct perf_env *env, int cpu)
++{
++	if (!env->nr_numa_map) {
++		struct numa_node *nn;
++		int i, nr = 0;
++
++		for (i = 0; i < env->nr_numa_nodes; i++) {
++			nn = &env->numa_nodes[i];
++			nr = max(nr, perf_cpu_map__max(nn->map));
++		}
++
++		nr++;
++
++		/*
++		 * We initialize the numa_map array to prepare
++		 * it for missing cpus, which return node -1
++		 */
++		env->numa_map = malloc(nr * sizeof(int));
++		if (!env->numa_map)
++			return -1;
++
++		for (i = 0; i < nr; i++)
++			env->numa_map[i] = -1;
++
++		env->nr_numa_map = nr;
++
++		for (i = 0; i < env->nr_numa_nodes; i++) {
++			int tmp, j;
++
++			nn = &env->numa_nodes[i];
++			perf_cpu_map__for_each_cpu(j, tmp, nn->map)
++				env->numa_map[j] = i;
++		}
++	}
++
++	return cpu >= 0 && cpu < env->nr_numa_map ? env->numa_map[cpu] : -1;
++}
+diff --git a/tools/perf/util/env.h b/tools/perf/util/env.h
+index 37028215d4a5..ceddddace5cc 100644
+--- a/tools/perf/util/env.h
++++ b/tools/perf/util/env.h
+@@ -87,6 +87,10 @@ struct perf_env {
+ 		struct rb_root		btfs;
+ 		u32			btfs_cnt;
+ 	} bpf_progs;
++
++	/* For fast cpu to numa node lookup via perf_env__numa_node */
++	int			*numa_map;
++	int			 nr_numa_map;
+ };
+ 
+ enum perf_compress_type {
+@@ -119,4 +123,6 @@ struct bpf_prog_info_node *perf_env__find_bpf_prog_info(struct perf_env *env,
+ 							__u32 prog_id);
+ bool perf_env__insert_btf(struct perf_env *env, struct btf_node *btf_node);
+ struct btf_node *perf_env__find_btf(struct perf_env *env, __u32 btf_id);
++
++int perf_env__numa_node(struct perf_env *env, int cpu);
+ #endif /* __PERF_ENV_H */
+-- 
+2.43.0
+
 
 
 
