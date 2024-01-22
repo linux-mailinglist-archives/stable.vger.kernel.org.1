@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD17837B9A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDECF837904
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1D89B2761A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:52:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F07211C27D03
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:27:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4578A12CDBC;
-	Tue, 23 Jan 2024 00:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C778145B06;
+	Tue, 23 Jan 2024 00:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0FNU8hE9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpxKG8W5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0514512CDB0;
-	Tue, 23 Jan 2024 00:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C774E56B;
+	Tue, 23 Jan 2024 00:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968972; cv=none; b=kIYuZpFpxjjs0rliun/izFr+p+oqbmZuqm32fF5iOVWJVr7kRPmymmVvVSUD2sN8ElIKROoI0HIphBc31wjbnjxTxBCwkwj6zKyuofzwAAasgjNR8Nn/q+ONc9KzBmYWu11VkF4a0tYjmLpb6/yz4+f570G1mQ44bOuICgF7lCo=
+	t=1705968334; cv=none; b=Z6qHIxWNc+dPwRQv9gg56kjxxUVl2OO1FF1gE4J5ZeHCV5WzXPhD3QhXrTME4BPNpgG34iytRNt93PA+S6kkOwCI0RKEz35SKaBC9Oa0MrytyROESRaMkb/XYlFp7Z+GgBIRG0Cp/O4LhirI178DHJELaMcxdhVQz9lORqm8vvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968972; c=relaxed/simple;
-	bh=T/oxLGwwrC1ozeFbKBP0Apar2Mx/tw1U2LP1/muZMkM=;
+	s=arc-20240116; t=1705968334; c=relaxed/simple;
+	bh=5pDAicGktSineutPuEG2WEzvhtxuuX1TWT8+jA6syac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P5yQHpWjcGbIb9R+JVZ3mRAlvuptLCp5x4JJv4MQQDu9wNh6jKJXrUOighvWyBMVve55klD4NWkWbiEAaQmDJ6jrFoSKWuh8eIxO77EPbRKKCBW3iTT7HyXDlZjOOf7/I+MwDQNNPCmjJ4svdzpRleZkQMuXfnsde14Hg6PEvdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0FNU8hE9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2430EC433C7;
-	Tue, 23 Jan 2024 00:16:11 +0000 (UTC)
+	 MIME-Version; b=RVIawq2Mv3BLG6AH/UdyOtMWieT4bN+xVYSg3M1AouHAJrHyMUmAJ63BbimQ8WDHTYWurormK8MbQTMbJVO7wAWE8/5CgIWOIzp37AZHRzE1aH3DcSC5btZslSfohNxAhyau4OBapF9htq/RONBljvdUAT/Pw+QUr/Isy6nGm9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpxKG8W5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E5DC433F1;
+	Tue, 23 Jan 2024 00:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968971;
-	bh=T/oxLGwwrC1ozeFbKBP0Apar2Mx/tw1U2LP1/muZMkM=;
+	s=korg; t=1705968334;
+	bh=5pDAicGktSineutPuEG2WEzvhtxuuX1TWT8+jA6syac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0FNU8hE9Wrtm8XC2uQsYXr9Ypx6aGU9KlkO8IY0Rn17bvNU1eYzgzymTVEU53zQyW
-	 xIJ2gPXjuZvpd4fEGs0sEyU3LDRG7HZDOyXwrXBWkwvr5XfAgpvxjVK7TIIsnwT7Tv
-	 LYvDJsakNxXXOxSHbBuQMdXAiNoeBTa3S0iGTacU=
+	b=xpxKG8W57FsD1AxtzFD15TPDHAfaKex2PtpRCZQebNj/7cE3qN4CA6CSFj+owM0g1
+	 7yKIVoVMK4aTOTVH7k3x4vipi+9SFxxtUHpW1vkW/LUzDl6i3RyVyMyO2/+449x96q
+	 ABI349cYevsF0/Y4U9EWeY/jryxE3TqnYwxEqZJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Su Hui <suhui@nfschina.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 106/194] Bluetooth: btmtkuart: fix recv_buf() return value
-Date: Mon, 22 Jan 2024 15:57:16 -0800
-Message-ID: <20240122235723.794369437@linuxfoundation.org>
+Subject: [PATCH 4.19 081/148] wifi: rtlwifi: rtl8192ee: using calculate_bit_shift()
+Date: Mon, 22 Jan 2024 15:57:17 -0800
+Message-ID: <20240122235715.684394197@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 64057f051f20c2a2184b9db7f8037d928d68a4f4 ]
+[ Upstream commit 63526897fc0d086069bcab67c3a112caaec751cb ]
 
-Serdev recv_buf() callback is supposed to return the amount of bytes
-consumed, therefore an int in between 0 and count.
+Using calculate_bit_shift() to replace _rtl92ee_phy_calculate_bit_shift().
+And fix the undefined bitwise shift behavior problem.
 
-Do not return negative number in case of issue, just print an error and
-return count. This fixes a WARN in ttyport_receive_buf().
-
-Link: https://lore.kernel.org/all/087be419-ec6b-47ad-851a-5e1e3ea5cfcc@kernel.org/
-Fixes: 7237c4c9ec92 ("Bluetooth: mediatek: Add protocol support for MediaTek serial devices")
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: b1a3bfc97cd9 ("rtlwifi: rtl8192ee: Move driver from staging to the regular tree")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-9-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btmtkuart.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ .../net/wireless/realtek/rtlwifi/rtl8192ee/phy.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/bluetooth/btmtkuart.c b/drivers/bluetooth/btmtkuart.c
-index 2beb2321825e..e7e3c8e0ed0e 100644
---- a/drivers/bluetooth/btmtkuart.c
-+++ b/drivers/bluetooth/btmtkuart.c
-@@ -471,7 +471,7 @@ mtk_stp_split(struct btmtkuart_dev *bdev, const unsigned char *data, int count,
- 	return data;
- }
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
+index 7aeff442bd06..9a3e88d6a570 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
+@@ -38,7 +38,6 @@ static u32 _rtl92ee_phy_rf_serial_read(struct ieee80211_hw *hw,
+ static void _rtl92ee_phy_rf_serial_write(struct ieee80211_hw *hw,
+ 					 enum radio_path rfpath, u32 offset,
+ 					 u32 data);
+-static u32 _rtl92ee_phy_calculate_bit_shift(u32 bitmask);
+ static bool _rtl92ee_phy_bb8192ee_config_parafile(struct ieee80211_hw *hw);
+ static bool _rtl92ee_phy_config_mac_with_headerfile(struct ieee80211_hw *hw);
+ static bool phy_config_bb_with_hdr_file(struct ieee80211_hw *hw,
+@@ -68,7 +67,7 @@ u32 rtl92ee_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
+ 	RT_TRACE(rtlpriv, COMP_RF, DBG_TRACE,
+ 		 "regaddr(%#x), bitmask(%#x)\n", regaddr, bitmask);
+ 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-	bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	returnvalue = (originalvalue & bitmask) >> bitshift;
  
--static int btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
-+static void btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
- {
- 	struct btmtkuart_dev *bdev = hci_get_drvdata(hdev);
- 	const unsigned char *p_left = data, *p_h4;
-@@ -510,25 +510,20 @@ static int btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
- 			bt_dev_err(bdev->hdev,
- 				   "Frame reassembly failed (%d)", err);
- 			bdev->rx_skb = NULL;
--			return err;
-+			return;
- 		}
+ 	RT_TRACE(rtlpriv, COMP_RF, DBG_TRACE,
+@@ -90,7 +89,7 @@ void rtl92ee_phy_set_bb_reg(struct ieee80211_hw *hw, u32 regaddr,
  
- 		sz_left -= sz_h4;
- 		p_left += sz_h4;
+ 	if (bitmask != MASKDWORD) {
+ 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-		bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
++		bitshift = calculate_bit_shift(bitmask);
+ 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
  	}
--
--	return 0;
+ 
+@@ -115,7 +114,7 @@ u32 rtl92ee_phy_query_rf_reg(struct ieee80211_hw *hw,
+ 	spin_lock_irqsave(&rtlpriv->locks.rf_lock, flags);
+ 
+ 	original_value = _rtl92ee_phy_rf_serial_read(hw , rfpath, regaddr);
+-	bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	readback_value = (original_value & bitmask) >> bitshift;
+ 
+ 	spin_unlock_irqrestore(&rtlpriv->locks.rf_lock, flags);
+@@ -143,7 +142,7 @@ void rtl92ee_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 
+ 	if (bitmask != RFREG_OFFSET_MASK) {
+ 		original_value = _rtl92ee_phy_rf_serial_read(hw, rfpath, addr);
+-		bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
++		bitshift = calculate_bit_shift(bitmask);
+ 		data = (original_value & (~bitmask)) | (data << bitshift);
+ 	}
+ 
+@@ -226,13 +225,6 @@ static void _rtl92ee_phy_rf_serial_write(struct ieee80211_hw *hw,
+ 		 pphyreg->rf3wire_offset, data_and_addr);
  }
  
- static int btmtkuart_receive_buf(struct serdev_device *serdev, const u8 *data,
- 				 size_t count)
+-static u32 _rtl92ee_phy_calculate_bit_shift(u32 bitmask)
+-{
+-	u32 i = ffs(bitmask);
+-
+-	return i ? i - 1 : 32;
+-}
+-
+ bool rtl92ee_phy_mac_config(struct ieee80211_hw *hw)
  {
- 	struct btmtkuart_dev *bdev = serdev_device_get_drvdata(serdev);
--	int err;
- 
--	err = btmtkuart_recv(bdev->hdev, data, count);
--	if (err < 0)
--		return err;
-+	btmtkuart_recv(bdev->hdev, data, count);
- 
- 	bdev->hdev->stat.byte_rx += count;
- 
+ 	return _rtl92ee_phy_config_mac_with_headerfile(hw);
 -- 
 2.43.0
 
