@@ -1,58 +1,69 @@
-Return-Path: <stable+bounces-15409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39BA183851E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E2C838395
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CF691C2A557
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A1002944FB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2527E562;
-	Tue, 23 Jan 2024 02:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C155B63402;
+	Tue, 23 Jan 2024 01:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSpMslKc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="13ukVHEj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C86145009;
-	Tue, 23 Jan 2024 02:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811C063127;
+	Tue, 23 Jan 2024 01:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975745; cv=none; b=i53Nr6yr5eOxJFfDfdpfhwV4i/bdiODbpPoj0zW64vRDUMIvuE4IUIMG9cLzJkprNl2ftBwv6FKDwp2MSjqUArVtbuGQfIECyBVhNpSnATlAghQEssj0SoiGXBJo5X9e6c2u7gSQsvKGvEQLcTZcXLA6rQl0tpI9+nNRyBN86mk=
+	t=1705975014; cv=none; b=O6F6SX1m9fsnSSUW77qi1tMoeh+da85WbSlkuYR4OtT12ot5IZE/1RyuP4CeKqWNsk4iPEweEuQ0cVazJz4TbDqjTLl6qIAGfRqwbkp/NaptcVd9Yb1y2S+E7vthicomkL4kNIwaNeMs01ZYr4CmQvmosOLon04sNtgVDkywsTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975745; c=relaxed/simple;
-	bh=F6bfMXTEUDtYJ/LxVsfNSADiAh2UqrfLs9EFbZN135E=;
+	s=arc-20240116; t=1705975014; c=relaxed/simple;
+	bh=I0i/uIMvdt2e63Bjau/DNCFINomAOQmaDQ++h1x/xko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=itKy2DgMv25BK6qZB3DitmHS47mGwxqsKYGNDor1oB3ToWEX+YSzf3SMADH+wco+uzDF+jpV+uewvKKKnUE9aGne8rbjWDU37IQwPIScy4W3oprJLtiLDu0+Jfkm/+DfPt2OnM9hvyn/UrL/9md8EbODf+luuF45gk+pIkqnw6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSpMslKc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5384C433F1;
-	Tue, 23 Jan 2024 02:09:04 +0000 (UTC)
+	 MIME-Version; b=mVYUJX+udpIqmna6R0HZTHNoxzd4Q5f2/oJwxqr3Sf8MJnf9RGsCxRGVSm3F64RB7662+q/WDcHtjPexB6qhkfuBKJr1ZnsoW1+5/LOG1ycgvAr6MMAsQbJgQ9mQE6/6oY/gIDLxCrJBTVF82ZgTNvlFE2AuiPU3+7JU8b2NUM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=13ukVHEj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA46FC43390;
+	Tue, 23 Jan 2024 01:56:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975744;
-	bh=F6bfMXTEUDtYJ/LxVsfNSADiAh2UqrfLs9EFbZN135E=;
+	s=korg; t=1705975014;
+	bh=I0i/uIMvdt2e63Bjau/DNCFINomAOQmaDQ++h1x/xko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DSpMslKc4FJommTXTeFBOz1ihxacPU5TaHSSTV92cdIpJcm3qDOoSKSCU+gwg4A1A
-	 QSh1SNzKWGhXvS9KfGca+d2xBGwBJTQ6aE8Hwd+FCg8anSkU3Ct4+Ko44UV7EGnKVa
-	 79dRPh7xJQVePgj54BwX1+askSZ1T7chzY4WlBig=
+	b=13ukVHEjiKut+LOhHtLNQ5VRX/LDkFqqchLxJAgSfadIRMoMVAzuWYsA7SpAYeB9A
+	 LHPbHNn/RQ8XtD6Mo138c/OqSxw41dgxrbOme+S9bidGEVOg9bxGTc+yLVQRh2369L
+	 WcMh/LwI6HvqzwUvoTzDNSCFpXe+AOHyguPbMAy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Divya Koppera <divya.koppera@microchip.com>,
-	Rahul Rameshbabu <rrameshbabu@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Song Liu <song@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	K Prateek Nayak <kprateek.nayak@amd.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ming Wang <wangming01@loongson.cn>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ravi Bangoria <ravi.bangoria@amd.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 529/583] net: micrel: Fix PTP frame parsing for lan8841
+Subject: [PATCH 5.15 324/374] perf env: Avoid recursively taking env->bpf_progs.lock
 Date: Mon, 22 Jan 2024 15:59:40 -0800
-Message-ID: <20240122235828.291867165@linuxfoundation.org>
+Message-ID: <20240122235756.169702304@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +75,278 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit acd66c2126eb9b5da2d89ae07dbcd73b909c2111 ]
+[ Upstream commit 9c51f8788b5d4e9f46afbcf563255cfd355690b3 ]
 
-The HW has the capability to check each frame if it is a PTP frame,
-which domain it is, which ptp frame type it is, different ip address in
-the frame. And if one of these checks fail then the frame is not
-timestamp. Most of these checks were disabled except checking the field
-minorVersionPTP inside the PTP header. Meaning that once a partner sends
-a frame compliant to 8021AS which has minorVersionPTP set to 1, then the
-frame was not timestamp because the HW expected by default a value of 0
-in minorVersionPTP.
-Fix this issue by removing this check so the userspace can decide on this.
+Add variants of perf_env__insert_bpf_prog_info(), perf_env__insert_btf()
+and perf_env__find_btf prefixed with __ to indicate the
+env->bpf_progs.lock is assumed held.
 
-Fixes: cafc3662ee3f ("net: micrel: Add PHC support for lan8841")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Divya Koppera <divya.koppera@microchip.com>
-Reviewed-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Call these variants when the lock is held to avoid recursively taking it
+and potentially having a thread deadlock with itself.
+
+Fixes: f8dfeae009effc0b ("perf bpf: Show more BPF program info in print_bpf_prog_info()")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Song Liu <song@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: K Prateek Nayak <kprateek.nayak@amd.com>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Ming Wang <wangming01@loongson.cn>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>
+Link: https://lore.kernel.org/r/20231207014655.1252484-1-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/micrel.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/perf/util/bpf-event.c |  8 +++---
+ tools/perf/util/bpf-event.h | 12 ++++-----
+ tools/perf/util/env.c       | 50 ++++++++++++++++++++++++-------------
+ tools/perf/util/env.h       |  4 +++
+ tools/perf/util/header.c    |  8 +++---
+ 5 files changed, 50 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 927d3d54658e..a345d02a9edf 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -3313,8 +3313,10 @@ static int lan8814_probe(struct phy_device *phydev)
- #define LAN8841_ADC_CHANNEL_MASK		198
- #define LAN8841_PTP_RX_PARSE_L2_ADDR_EN		370
- #define LAN8841_PTP_RX_PARSE_IP_ADDR_EN		371
-+#define LAN8841_PTP_RX_VERSION			374
- #define LAN8841_PTP_TX_PARSE_L2_ADDR_EN		434
- #define LAN8841_PTP_TX_PARSE_IP_ADDR_EN		435
-+#define LAN8841_PTP_TX_VERSION			438
- #define LAN8841_PTP_CMD_CTL			256
- #define LAN8841_PTP_CMD_CTL_PTP_ENABLE		BIT(2)
- #define LAN8841_PTP_CMD_CTL_PTP_DISABLE		BIT(1)
-@@ -3358,6 +3360,12 @@ static int lan8841_config_init(struct phy_device *phydev)
- 	phy_write_mmd(phydev, KSZ9131RN_MMD_COMMON_CTRL_REG,
- 		      LAN8841_PTP_RX_PARSE_IP_ADDR_EN, 0);
+diff --git a/tools/perf/util/bpf-event.c b/tools/perf/util/bpf-event.c
+index cf1b9f6ec0db..ce74bc367e9c 100644
+--- a/tools/perf/util/bpf-event.c
++++ b/tools/perf/util/bpf-event.c
+@@ -554,9 +554,9 @@ int evlist__add_bpf_sb_event(struct evlist *evlist, struct perf_env *env)
+ 	return evlist__add_sb_event(evlist, &attr, bpf_event__sb_cb, env);
+ }
  
-+	/* Disable checking for minorVersionPTP field */
-+	phy_write_mmd(phydev, KSZ9131RN_MMD_COMMON_CTRL_REG,
-+		      LAN8841_PTP_RX_VERSION, 0xff00);
-+	phy_write_mmd(phydev, KSZ9131RN_MMD_COMMON_CTRL_REG,
-+		      LAN8841_PTP_TX_VERSION, 0xff00);
+-void bpf_event__print_bpf_prog_info(struct bpf_prog_info *info,
+-				    struct perf_env *env,
+-				    FILE *fp)
++void __bpf_event__print_bpf_prog_info(struct bpf_prog_info *info,
++				      struct perf_env *env,
++				      FILE *fp)
+ {
+ 	__u32 *prog_lens = (__u32 *)(uintptr_t)(info->jited_func_lens);
+ 	__u64 *prog_addrs = (__u64 *)(uintptr_t)(info->jited_ksyms);
+@@ -572,7 +572,7 @@ void bpf_event__print_bpf_prog_info(struct bpf_prog_info *info,
+ 	if (info->btf_id) {
+ 		struct btf_node *node;
+ 
+-		node = perf_env__find_btf(env, info->btf_id);
++		node = __perf_env__find_btf(env, info->btf_id);
+ 		if (node)
+ 			btf = btf__new((__u8 *)(node->data),
+ 				       node->data_size);
+diff --git a/tools/perf/util/bpf-event.h b/tools/perf/util/bpf-event.h
+index 68f315c3df5b..50f7412464df 100644
+--- a/tools/perf/util/bpf-event.h
++++ b/tools/perf/util/bpf-event.h
+@@ -34,9 +34,9 @@ struct btf_node {
+ int machine__process_bpf(struct machine *machine, union perf_event *event,
+ 			 struct perf_sample *sample);
+ int evlist__add_bpf_sb_event(struct evlist *evlist, struct perf_env *env);
+-void bpf_event__print_bpf_prog_info(struct bpf_prog_info *info,
+-				    struct perf_env *env,
+-				    FILE *fp);
++void __bpf_event__print_bpf_prog_info(struct bpf_prog_info *info,
++				      struct perf_env *env,
++				      FILE *fp);
+ #else
+ static inline int machine__process_bpf(struct machine *machine __maybe_unused,
+ 				       union perf_event *event __maybe_unused,
+@@ -51,9 +51,9 @@ static inline int evlist__add_bpf_sb_event(struct evlist *evlist __maybe_unused,
+ 	return 0;
+ }
+ 
+-static inline void bpf_event__print_bpf_prog_info(struct bpf_prog_info *info __maybe_unused,
+-						  struct perf_env *env __maybe_unused,
+-						  FILE *fp __maybe_unused)
++static inline void __bpf_event__print_bpf_prog_info(struct bpf_prog_info *info __maybe_unused,
++						    struct perf_env *env __maybe_unused,
++						    FILE *fp __maybe_unused)
+ {
+ 
+ }
+diff --git a/tools/perf/util/env.c b/tools/perf/util/env.c
+index 5b24eb010336..d3d67ce70f55 100644
+--- a/tools/perf/util/env.c
++++ b/tools/perf/util/env.c
+@@ -20,13 +20,19 @@ struct perf_env perf_env;
+ 
+ void perf_env__insert_bpf_prog_info(struct perf_env *env,
+ 				    struct bpf_prog_info_node *info_node)
++{
++	down_write(&env->bpf_progs.lock);
++	__perf_env__insert_bpf_prog_info(env, info_node);
++	up_write(&env->bpf_progs.lock);
++}
 +
- 	/* 100BT Clause 40 improvenent errata */
- 	phy_write_mmd(phydev, LAN8841_MMD_ANALOG_REG,
- 		      LAN8841_ANALOG_CONTROL_1,
++void __perf_env__insert_bpf_prog_info(struct perf_env *env, struct bpf_prog_info_node *info_node)
+ {
+ 	__u32 prog_id = info_node->info_linear->info.id;
+ 	struct bpf_prog_info_node *node;
+ 	struct rb_node *parent = NULL;
+ 	struct rb_node **p;
+ 
+-	down_write(&env->bpf_progs.lock);
+ 	p = &env->bpf_progs.infos.rb_node;
+ 
+ 	while (*p != NULL) {
+@@ -38,15 +44,13 @@ void perf_env__insert_bpf_prog_info(struct perf_env *env,
+ 			p = &(*p)->rb_right;
+ 		} else {
+ 			pr_debug("duplicated bpf prog info %u\n", prog_id);
+-			goto out;
++			return;
+ 		}
+ 	}
+ 
+ 	rb_link_node(&info_node->rb_node, parent, p);
+ 	rb_insert_color(&info_node->rb_node, &env->bpf_progs.infos);
+ 	env->bpf_progs.infos_cnt++;
+-out:
+-	up_write(&env->bpf_progs.lock);
+ }
+ 
+ struct bpf_prog_info_node *perf_env__find_bpf_prog_info(struct perf_env *env,
+@@ -75,14 +79,22 @@ struct bpf_prog_info_node *perf_env__find_bpf_prog_info(struct perf_env *env,
+ }
+ 
+ bool perf_env__insert_btf(struct perf_env *env, struct btf_node *btf_node)
++{
++	bool ret;
++
++	down_write(&env->bpf_progs.lock);
++	ret = __perf_env__insert_btf(env, btf_node);
++	up_write(&env->bpf_progs.lock);
++	return ret;
++}
++
++bool __perf_env__insert_btf(struct perf_env *env, struct btf_node *btf_node)
+ {
+ 	struct rb_node *parent = NULL;
+ 	__u32 btf_id = btf_node->id;
+ 	struct btf_node *node;
+ 	struct rb_node **p;
+-	bool ret = true;
+ 
+-	down_write(&env->bpf_progs.lock);
+ 	p = &env->bpf_progs.btfs.rb_node;
+ 
+ 	while (*p != NULL) {
+@@ -94,25 +106,31 @@ bool perf_env__insert_btf(struct perf_env *env, struct btf_node *btf_node)
+ 			p = &(*p)->rb_right;
+ 		} else {
+ 			pr_debug("duplicated btf %u\n", btf_id);
+-			ret = false;
+-			goto out;
++			return false;
+ 		}
+ 	}
+ 
+ 	rb_link_node(&btf_node->rb_node, parent, p);
+ 	rb_insert_color(&btf_node->rb_node, &env->bpf_progs.btfs);
+ 	env->bpf_progs.btfs_cnt++;
+-out:
+-	up_write(&env->bpf_progs.lock);
+-	return ret;
++	return true;
+ }
+ 
+ struct btf_node *perf_env__find_btf(struct perf_env *env, __u32 btf_id)
++{
++	struct btf_node *res;
++
++	down_read(&env->bpf_progs.lock);
++	res = __perf_env__find_btf(env, btf_id);
++	up_read(&env->bpf_progs.lock);
++	return res;
++}
++
++struct btf_node *__perf_env__find_btf(struct perf_env *env, __u32 btf_id)
+ {
+ 	struct btf_node *node = NULL;
+ 	struct rb_node *n;
+ 
+-	down_read(&env->bpf_progs.lock);
+ 	n = env->bpf_progs.btfs.rb_node;
+ 
+ 	while (n) {
+@@ -122,13 +140,9 @@ struct btf_node *perf_env__find_btf(struct perf_env *env, __u32 btf_id)
+ 		else if (btf_id > node->id)
+ 			n = n->rb_right;
+ 		else
+-			goto out;
++			return node;
+ 	}
+-	node = NULL;
+-
+-out:
+-	up_read(&env->bpf_progs.lock);
+-	return node;
++	return NULL;
+ }
+ 
+ /* purge data in bpf_progs.infos tree */
+diff --git a/tools/perf/util/env.h b/tools/perf/util/env.h
+index 163e5ec503a2..192318054e12 100644
+--- a/tools/perf/util/env.h
++++ b/tools/perf/util/env.h
+@@ -163,12 +163,16 @@ const char *perf_env__raw_arch(struct perf_env *env);
+ int perf_env__nr_cpus_avail(struct perf_env *env);
+ 
+ void perf_env__init(struct perf_env *env);
++void __perf_env__insert_bpf_prog_info(struct perf_env *env,
++				      struct bpf_prog_info_node *info_node);
+ void perf_env__insert_bpf_prog_info(struct perf_env *env,
+ 				    struct bpf_prog_info_node *info_node);
+ struct bpf_prog_info_node *perf_env__find_bpf_prog_info(struct perf_env *env,
+ 							__u32 prog_id);
+ bool perf_env__insert_btf(struct perf_env *env, struct btf_node *btf_node);
++bool __perf_env__insert_btf(struct perf_env *env, struct btf_node *btf_node);
+ struct btf_node *perf_env__find_btf(struct perf_env *env, __u32 btf_id);
++struct btf_node *__perf_env__find_btf(struct perf_env *env, __u32 btf_id);
+ 
+ int perf_env__numa_node(struct perf_env *env, int cpu);
+ #endif /* __PERF_ENV_H */
+diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
+index 25947d013603..8b0a8ac7afef 100644
+--- a/tools/perf/util/header.c
++++ b/tools/perf/util/header.c
+@@ -1735,8 +1735,8 @@ static void print_bpf_prog_info(struct feat_fd *ff, FILE *fp)
+ 		node = rb_entry(next, struct bpf_prog_info_node, rb_node);
+ 		next = rb_next(&node->rb_node);
+ 
+-		bpf_event__print_bpf_prog_info(&node->info_linear->info,
+-					       env, fp);
++		__bpf_event__print_bpf_prog_info(&node->info_linear->info,
++						 env, fp);
+ 	}
+ 
+ 	up_read(&env->bpf_progs.lock);
+@@ -3073,7 +3073,7 @@ static int process_bpf_prog_info(struct feat_fd *ff, void *data __maybe_unused)
+ 		/* after reading from file, translate offset to address */
+ 		bpf_program__bpil_offs_to_addr(info_linear);
+ 		info_node->info_linear = info_linear;
+-		perf_env__insert_bpf_prog_info(env, info_node);
++		__perf_env__insert_bpf_prog_info(env, info_node);
+ 	}
+ 
+ 	up_write(&env->bpf_progs.lock);
+@@ -3120,7 +3120,7 @@ static int process_bpf_btf(struct feat_fd *ff, void *data __maybe_unused)
+ 		if (__do_read(ff, node->data, data_size))
+ 			goto out;
+ 
+-		perf_env__insert_btf(env, node);
++		__perf_env__insert_btf(env, node);
+ 		node = NULL;
+ 	}
+ 
 -- 
 2.43.0
 
