@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C70A838075
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:13 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F5D0837FFD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FA771C29699
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD795B26635
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D9312F58C;
-	Tue, 23 Jan 2024 01:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ABE412CD86;
+	Tue, 23 Jan 2024 00:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ETTrFKVy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RMco6nuP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9357412DDBC;
-	Tue, 23 Jan 2024 01:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDAE56281D;
+	Tue, 23 Jan 2024 00:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971734; cv=none; b=QxBdHtCSfQrBPQv5ruFbGnSSfK/1+MvjdxbiWTf5I4gu/DpKWwfw/I2RpwMgJF0H9dmWsXrx1Ogk4r2Qly5LlKMQAjLvaos03uNLL6SYKlHv7PCm1iR8rnzqU1TUzo59Rnrr2K9vl2nZH2+PlFxyenZpD3Gehwi/KGv/l1pdidY=
+	t=1705971447; cv=none; b=SGb5sXGslwCxAhJNxbW2A0dczHaXniYQnXFVSSK9+sqH4aB7u93BfS5edBHoFri7e0W+Oy/2f1zFLSKe+3wVbQz0DODCZitk+/juQDssrcwKbr7XpKpt5D38N3Wi2UYMCauARmjy1Sl3vTaZncO95/xNrsxcO4OlFVqO5bM2Whs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971734; c=relaxed/simple;
-	bh=FHLXCkYJG86N7i+xnhXeaZrbk2hoPKxlNfDibv7km6U=;
+	s=arc-20240116; t=1705971447; c=relaxed/simple;
+	bh=3v0Yy4IJuhdJ8657qpAWhs0MM4z4BPoy1c70cJLPTAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GGxaw0tXQP0Q2RD6aZ3N61kclu6viUWUDdbKOZI//cyqngvPUPBpXzXzbW5X/5YqcYzKO2l4YQcBRGNBlG7lvoCoXjtRvCUnPq1vEOF20v7Nr1JRBFFlw9/fb04AVjILXpG8YvSyzqOy05e3tjYtP+diO1K63Cs3DabXPUqbg2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ETTrFKVy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FBABC433C7;
-	Tue, 23 Jan 2024 01:02:13 +0000 (UTC)
+	 MIME-Version; b=oEcO/cKSbuGaBz/u0IJc93NuL2Dr89uzJeuJNR4JZlseHdCxIGOQIlThdM9TkNOZhs9P9buX2odCR9B2pnlA7u0nqh+L6RHoKeWBHmCKF9YcbHz4MmZOtjmsKWzrjj2SYVzN9IXjupMcqL9Xst0yMfGIxiAngpF4XIItFFc3uSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RMco6nuP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D9B2C433C7;
+	Tue, 23 Jan 2024 00:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971734;
-	bh=FHLXCkYJG86N7i+xnhXeaZrbk2hoPKxlNfDibv7km6U=;
+	s=korg; t=1705971447;
+	bh=3v0Yy4IJuhdJ8657qpAWhs0MM4z4BPoy1c70cJLPTAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ETTrFKVyu0ZPFIRDhdi6JydUx5zLqZvKgH6J6brHOD4K74QkcFlTXa+RrvaBppkdR
-	 SIqjDken/AvqTGlJyTFV0I0usfOLjU+Xhr6xyCGvHA6V9zOCJBPy+EMMRFs5AHUrjD
-	 dlgg1mv6mLnCIe6dP/dAxizL8tCeLZzRIbfFstww=
+	b=RMco6nuPNIfWxklppWzLuLl9O3SqPjtafVgBaeRF6Vj/LiDe/y9tYa8vJs6CdUrZ4
+	 ASx0OG6zUq39LItLZj2Ap70R98WZdBiRICDkFwTJ42UdX4D6v/lIxs54VXwhDEvIYT
+	 6Rpto/uAdmOhQwtSX4iAoIH3TYs5BJP+e2c5/knY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Amir Goldstein <amir73il@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.1 290/417] scsi: target: core: add missing file_{start,end}_write()
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 152/286] drm/radeon/r600_cs: Fix possible int overflows in r600_cs_check_reg()
 Date: Mon, 22 Jan 2024 15:57:38 -0800
-Message-ID: <20240122235801.875755162@linuxfoundation.org>
+Message-ID: <20240122235738.011286961@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit 0db1d53937fafa8bb96e077375691e16902f4899 upstream.
+[ Upstream commit 39c960bbf9d9ea862398759e75736cfb68c3446f ]
 
-The callers of vfs_iter_write() are required to hold file_start_write().
-file_start_write() is a no-op for the S_ISBLK() case, but it is really
-needed when the backing file is a regular file.
+While improbable, there may be a chance of hitting integer
+overflow when the result of radeon_get_ib_value() gets shifted
+left.
 
-We are going to move file_{start,end}_write() into vfs_iter_write(), but
-we need to fix this first, so that the fix could be backported to stable
-kernels.
+Avoid it by casting one of the operands to larger data type (u64).
 
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/ZV8ETIpM+wZa33B5@infradead.org/
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Link: https://lore.kernel.org/r/20231123092000.2665902-1-amir73il@gmail.com
-Acked-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: 1729dd33d20b ("drm/radeon/kms: r600 CS parser fixes")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_file.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/radeon/r600_cs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/target/target_core_file.c
-+++ b/drivers/target/target_core_file.c
-@@ -338,11 +338,13 @@ static int fd_do_rw(struct se_cmd *cmd,
- 	}
- 
- 	iov_iter_bvec(&iter, is_write, bvec, sgl_nents, len);
--	if (is_write)
-+	if (is_write) {
-+		file_start_write(fd);
- 		ret = vfs_iter_write(fd, &iter, &pos, 0);
--	else
-+		file_end_write(fd);
-+	} else {
- 		ret = vfs_iter_read(fd, &iter, &pos, 0);
--
-+	}
- 	if (is_write) {
- 		if (ret < 0 || ret != data_length) {
- 			pr_err("%s() write returned %d\n", __func__, ret);
-@@ -474,7 +476,9 @@ fd_execute_write_same(struct se_cmd *cmd
- 	}
- 
- 	iov_iter_bvec(&iter, ITER_SOURCE, bvec, nolb, len);
-+	file_start_write(fd_dev->fd_file);
- 	ret = vfs_iter_write(fd_dev->fd_file, &iter, &pos, 0);
-+	file_end_write(fd_dev->fd_file);
- 
- 	kfree(bvec);
- 	if (ret < 0 || ret != len) {
+diff --git a/drivers/gpu/drm/radeon/r600_cs.c b/drivers/gpu/drm/radeon/r600_cs.c
+index 390a9621604a..1e6ad9daff53 100644
+--- a/drivers/gpu/drm/radeon/r600_cs.c
++++ b/drivers/gpu/drm/radeon/r600_cs.c
+@@ -1276,7 +1276,7 @@ static int r600_cs_check_reg(struct radeon_cs_parser *p, u32 reg, u32 idx)
+ 			return -EINVAL;
+ 		}
+ 		tmp = (reg - CB_COLOR0_BASE) / 4;
+-		track->cb_color_bo_offset[tmp] = radeon_get_ib_value(p, idx) << 8;
++		track->cb_color_bo_offset[tmp] = (u64)radeon_get_ib_value(p, idx) << 8;
+ 		ib[idx] += (u32)((reloc->gpu_offset >> 8) & 0xffffffff);
+ 		track->cb_color_base_last[tmp] = ib[idx];
+ 		track->cb_color_bo[tmp] = reloc->robj;
+@@ -1303,7 +1303,7 @@ static int r600_cs_check_reg(struct radeon_cs_parser *p, u32 reg, u32 idx)
+ 					"0x%04X\n", reg);
+ 			return -EINVAL;
+ 		}
+-		track->htile_offset = radeon_get_ib_value(p, idx) << 8;
++		track->htile_offset = (u64)radeon_get_ib_value(p, idx) << 8;
+ 		ib[idx] += (u32)((reloc->gpu_offset >> 8) & 0xffffffff);
+ 		track->htile_bo = reloc->robj;
+ 		track->db_dirty = true;
+-- 
+2.43.0
+
 
 
 
