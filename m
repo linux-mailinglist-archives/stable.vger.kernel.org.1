@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA8EA837FAD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A18F0837D6E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFF5F1C2916E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B937286E0F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF0664AA5;
-	Tue, 23 Jan 2024 00:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61CD50A61;
+	Tue, 23 Jan 2024 00:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+6eHK/w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQUFMycp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A06A634F8;
-	Tue, 23 Jan 2024 00:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06885A78D;
+	Tue, 23 Jan 2024 00:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971282; cv=none; b=GQmOWR3BVXpgHN8GcgCCpQlfyrlY40jsWN2PN2eldW6pyqErqwnfwEGqi9JnPZ+Sx5AHK0fwFt5Y/6/+RZfIbrxGeMuWeZORWxk7tdEfWFusPEn+k39h0IrPJq/4oxIoY5jFna1SvvHhlWjsrPklKawrINiwshXK9yi2oDlk+ag=
+	t=1705969946; cv=none; b=AIx2hoqXPxqLUpC47zF6aJ7XPxOA0/NyJ0zAu95RyQZl8QlUhMMI+kyqoVMuGpz1Z7xXDHZUaPvt5RENgYqoty135gy1r01kBgm7hUyUunZRneL7+L/eyu7l2qcdE/bkCvKjBCkxiHnD4fsvB5FDc4BM2rrKNyBjor0nUZwJt8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971282; c=relaxed/simple;
-	bh=zZbNnhP3FYDEEgNy5NzVibh8DtPiFmUTf20fmCFo7GU=;
+	s=arc-20240116; t=1705969946; c=relaxed/simple;
+	bh=8hf6LQiUNPzVAkwWIjcNAtITBITW2Tz7x7cL62mbUJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bk475mliomav8Fxm8dbnoxSUgVFVy2deNq5ox/GQi1wCscxdxjz6YIp/6cXjRx+CAUkR+a6QGgXM10QGOloNCheyKSTF7mVUG9B7/gfqp73uVYsjX3JufMpfSAQKUsqXNHjx0QZ/+ayBplPUaXFUqBtBDvl5MqtWQBETY2mIElM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+6eHK/w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9876AC433C7;
-	Tue, 23 Jan 2024 00:54:41 +0000 (UTC)
+	 MIME-Version; b=PZQzobJuDOYvTgYFFQA6r2eOzVsuC79yKgbXeeRoHTyRzbvOjoC1uoBvRKKnO9IL+TMXH5uvamuTMofu1L1SuQrWBaSyUB8EkUtRrTEJZD3SMgM/V81VZnRpizdus7MBs+CPztPCpawasGHuQw11N1SffVEZV8MHlvDRNoVmCv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQUFMycp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C72AC433C7;
+	Tue, 23 Jan 2024 00:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971282;
-	bh=zZbNnhP3FYDEEgNy5NzVibh8DtPiFmUTf20fmCFo7GU=;
+	s=korg; t=1705969946;
+	bh=8hf6LQiUNPzVAkwWIjcNAtITBITW2Tz7x7cL62mbUJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O+6eHK/wlCm+E1M/rfd9PT3SpFz9d4kFUWf+qtemxOT4E+y3nWABjMBPkClgKXdL1
-	 cWGy351hzNk/bwGyR4JbSgXFv6vqoBozQXeboiks3Ex8+tx5vhGgbn+hggMi/l/Q+e
-	 8t53IgNY8uxfeOV0mlrJchHL7atbF9+Nvicy2Tg4=
+	b=hQUFMycpX0NxJk2+6KMwXKUTXsMG9vHoZSPojdhLzDsAG/86AJmshKqlJcmcpHZmf
+	 Kk09CxtWnFxlVp+Q3EhzPm0+j/xyqEfoflDVC/8pff9XHDaPVSTgOoUzyp/1/58pov
+	 HjVt/2icbAiu/vBxXo0JvKuzNYgwGEkesmlm9PEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 098/286] crypto: sahara - avoid skcipher fallback code duplication
+Subject: [PATCH 6.7 500/641] MIPS: Alchemy: Fix an out-of-bound access in db1200_dev_setup()
 Date: Mon, 22 Jan 2024 15:56:44 -0800
-Message-ID: <20240122235735.846139559@linuxfoundation.org>
+Message-ID: <20240122235833.711597560@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,150 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 01d70a4bbff20ea05cadb4c208841985a7cc6596 ]
+[ Upstream commit 89c4b588d11e9acf01d604de4b0c715884f59213 ]
 
-Factor out duplicated skcipher fallback handling code to a helper function
-sahara_aes_fallback(). Also, keep a single check if fallback is required in
-sahara_aes_crypt().
+When calling spi_register_board_info(), we should pass the number of
+elements in 'db1200_spi_devs', not 'db1200_i2c_devs'.
 
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: d1d6351e37aa ("crypto: sahara - handle zero-length aes requests")
+Fixes: 63323ec54a7e ("MIPS: Alchemy: Extended DB1200 board support.")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 85 ++++++++++++-----------------------------
- 1 file changed, 25 insertions(+), 60 deletions(-)
+ arch/mips/alchemy/devboards/db1200.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 3cd872d282b4..b584dd086989 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -648,12 +648,37 @@ static int sahara_aes_setkey(struct crypto_skcipher *tfm, const u8 *key,
- 	return crypto_skcipher_setkey(ctx->fallback, key, keylen);
- }
+diff --git a/arch/mips/alchemy/devboards/db1200.c b/arch/mips/alchemy/devboards/db1200.c
+index f521874ebb07..67f067706af2 100644
+--- a/arch/mips/alchemy/devboards/db1200.c
++++ b/arch/mips/alchemy/devboards/db1200.c
+@@ -847,7 +847,7 @@ int __init db1200_dev_setup(void)
+ 	i2c_register_board_info(0, db1200_i2c_devs,
+ 				ARRAY_SIZE(db1200_i2c_devs));
+ 	spi_register_board_info(db1200_spi_devs,
+-				ARRAY_SIZE(db1200_i2c_devs));
++				ARRAY_SIZE(db1200_spi_devs));
  
-+static int sahara_aes_fallback(struct skcipher_request *req, unsigned long mode)
-+{
-+	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
-+	struct sahara_ctx *ctx = crypto_skcipher_ctx(
-+		crypto_skcipher_reqtfm(req));
-+
-+	skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
-+	skcipher_request_set_callback(&rctx->fallback_req,
-+				      req->base.flags,
-+				      req->base.complete,
-+				      req->base.data);
-+	skcipher_request_set_crypt(&rctx->fallback_req, req->src,
-+				   req->dst, req->cryptlen, req->iv);
-+
-+	if (mode & FLAGS_ENCRYPT)
-+		return crypto_skcipher_encrypt(&rctx->fallback_req);
-+
-+	return crypto_skcipher_decrypt(&rctx->fallback_req);
-+}
-+
- static int sahara_aes_crypt(struct skcipher_request *req, unsigned long mode)
- {
- 	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
-+	struct sahara_ctx *ctx = crypto_skcipher_ctx(
-+		crypto_skcipher_reqtfm(req));
- 	struct sahara_dev *dev = dev_ptr;
- 	int err = 0;
- 
-+	if (unlikely(ctx->keylen != AES_KEYSIZE_128))
-+		return sahara_aes_fallback(req, mode);
-+
- 	dev_dbg(dev->device, "nbytes: %d, enc: %d, cbc: %d\n",
- 		req->cryptlen, !!(mode & FLAGS_ENCRYPT), !!(mode & FLAGS_CBC));
- 
-@@ -676,81 +701,21 @@ static int sahara_aes_crypt(struct skcipher_request *req, unsigned long mode)
- 
- static int sahara_aes_ecb_encrypt(struct skcipher_request *req)
- {
--	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
--	struct sahara_ctx *ctx = crypto_skcipher_ctx(
--		crypto_skcipher_reqtfm(req));
--
--	if (unlikely(ctx->keylen != AES_KEYSIZE_128)) {
--		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
--		skcipher_request_set_callback(&rctx->fallback_req,
--					      req->base.flags,
--					      req->base.complete,
--					      req->base.data);
--		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
--					   req->dst, req->cryptlen, req->iv);
--		return crypto_skcipher_encrypt(&rctx->fallback_req);
--	}
--
- 	return sahara_aes_crypt(req, FLAGS_ENCRYPT);
- }
- 
- static int sahara_aes_ecb_decrypt(struct skcipher_request *req)
- {
--	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
--	struct sahara_ctx *ctx = crypto_skcipher_ctx(
--		crypto_skcipher_reqtfm(req));
--
--	if (unlikely(ctx->keylen != AES_KEYSIZE_128)) {
--		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
--		skcipher_request_set_callback(&rctx->fallback_req,
--					      req->base.flags,
--					      req->base.complete,
--					      req->base.data);
--		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
--					   req->dst, req->cryptlen, req->iv);
--		return crypto_skcipher_decrypt(&rctx->fallback_req);
--	}
--
- 	return sahara_aes_crypt(req, 0);
- }
- 
- static int sahara_aes_cbc_encrypt(struct skcipher_request *req)
- {
--	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
--	struct sahara_ctx *ctx = crypto_skcipher_ctx(
--		crypto_skcipher_reqtfm(req));
--
--	if (unlikely(ctx->keylen != AES_KEYSIZE_128)) {
--		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
--		skcipher_request_set_callback(&rctx->fallback_req,
--					      req->base.flags,
--					      req->base.complete,
--					      req->base.data);
--		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
--					   req->dst, req->cryptlen, req->iv);
--		return crypto_skcipher_encrypt(&rctx->fallback_req);
--	}
--
- 	return sahara_aes_crypt(req, FLAGS_ENCRYPT | FLAGS_CBC);
- }
- 
- static int sahara_aes_cbc_decrypt(struct skcipher_request *req)
- {
--	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
--	struct sahara_ctx *ctx = crypto_skcipher_ctx(
--		crypto_skcipher_reqtfm(req));
--
--	if (unlikely(ctx->keylen != AES_KEYSIZE_128)) {
--		skcipher_request_set_tfm(&rctx->fallback_req, ctx->fallback);
--		skcipher_request_set_callback(&rctx->fallback_req,
--					      req->base.flags,
--					      req->base.complete,
--					      req->base.data);
--		skcipher_request_set_crypt(&rctx->fallback_req, req->src,
--					   req->dst, req->cryptlen, req->iv);
--		return crypto_skcipher_decrypt(&rctx->fallback_req);
--	}
--
- 	return sahara_aes_crypt(req, FLAGS_CBC);
- }
- 
+ 	/* SWITCHES:	S6.8 I2C/SPI selector  (OFF=I2C	 ON=SPI)
+ 	 *		S6.7 AC97/I2S selector (OFF=AC97 ON=I2S)
 -- 
 2.43.0
 
