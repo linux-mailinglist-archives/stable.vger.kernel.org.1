@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-13719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78838837D8D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:01 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 720668384C5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F7961F2340C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 260D828B25B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED47556B65;
-	Tue, 23 Jan 2024 00:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C076173176;
+	Tue, 23 Jan 2024 02:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hD5KGhzq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjuEqzNs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1F24E1D8;
-	Tue, 23 Jan 2024 00:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE6074E23;
+	Tue, 23 Jan 2024 02:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970017; cv=none; b=UphmCtZ1RmzFv5NqU0JzYxyhHVfRurzA6r4Dsau4qSpym1pHl41iszHn91VZL1RGFrezBU4WngW74uGL+ot/Ad/jIHdF9eS1ycNKmC8ZuyDODuEpjWTDW4IdY/haUwMDF87CwtLNxHwrMa4avoJDxjHCSVQiMHmTpFzXaYLZIYw=
+	t=1705975488; cv=none; b=SctSSuXfWOnAO4eF//Qm2CZ6kQOQH3DH9sKB0TbCs0hXwTXqsts/JYOnicqjpzyz1oOWc09BVpF7YZe9aqRSYACsGK/tCHulnDOAjhzLrzpBTKvy8e46NqXRgxg6FH9JUJ3CFnLxi2+0wgyjxlFrMLTOYKqFuRD2/fip0yfJi/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970017; c=relaxed/simple;
-	bh=S/53sIyORfbtW3JOS2dHshgCOdYsZ3OWICKBCDBYBJw=;
+	s=arc-20240116; t=1705975488; c=relaxed/simple;
+	bh=gdrs9+eutF8FrbZNlexN2rnLRKKapAOLlcZDfYtMfZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tHcDxTz8+8xnTRn8s43smFFF6U/Jz+CImBfyH4eQzvjsxLEBsoP/Ubb71o8rwlcdhRNaGhxB3OKEgAAqGLibS0Z+M7+W5kFB90o36bOO3wgOBkdsPHYNn/gFLTE3cjXnSGFYgK2yBV35Qze3a4PErfnkzRBmrfN952/VOuW8URU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hD5KGhzq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34279C433C7;
-	Tue, 23 Jan 2024 00:33:37 +0000 (UTC)
+	 MIME-Version; b=C6XRHY4sMOdAWZcHPWP+5fCf2SNgG1yH5ApXJDbmn9uHcnTFvGd41azkRzYdnFLdA4JevrYt4P/4GjuMWk7VPkO3aQnGlzX98u+viszVBuarYj1hOO+Ij7CBnZBo1BVijZwr5H/aVyQGpegv+u7tTg+jI+tM/K3jgak9Szj+lLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RjuEqzNs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C07C433F1;
+	Tue, 23 Jan 2024 02:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970017;
-	bh=S/53sIyORfbtW3JOS2dHshgCOdYsZ3OWICKBCDBYBJw=;
+	s=korg; t=1705975488;
+	bh=gdrs9+eutF8FrbZNlexN2rnLRKKapAOLlcZDfYtMfZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hD5KGhzqqppk5P/oKIrouzfVu+Osph+hQoA3nD9JeDUdcg/Dc14KXH/Lxb/EHMkjV
-	 WTT1huYA0zOuf1mcZ0hOznmcDH2xbPnoufsFGCzRZYnjKHiL63Ivz7WZpISJzQjLIQ
-	 7lKfgK1VCgDpZ+vjQw6xTjdK+tK8rlKdPYUO9dsw=
+	b=RjuEqzNsdz4sxrz1NLUCVFpdTojL5vvhCIH/8tkqv52k+ra1RLxEScBfd2kCgtUbW
+	 KceTMf+7QZfG9SHqDArhppKuZ5Hi6BZOPwkdzI3891QAYfWTihdyqNO4Tdg3Xyv0Pu
+	 zyWGHPPb6EIrpYH8YnJPsKNt7gpZXo8NwOC9c9PU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	linux-serial@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 564/641] serial: apbuart: fix console prompt on qemu
+	David Lin <yu-hao.lin@nxp.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>,
+	Rafael Beims <rafael.beims@toradex.com>
+Subject: [PATCH 6.6 417/583] wifi: mwifiex: configure BSSID consistently when starting AP
 Date: Mon, 22 Jan 2024 15:57:48 -0800
-Message-ID: <20240122235835.807377892@linuxfoundation.org>
+Message-ID: <20240122235824.726507363@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Ravnborg <sam@ravnborg.org>
+From: David Lin <yu-hao.lin@nxp.com>
 
-[ Upstream commit c6dcd8050fb7c2efec6946ae9c49bc186b0a7475 ]
+commit f0dd488e11e71ac095df7638d892209c629d9af2 upstream.
 
-When using a leon kernel with qemu there where no console prompt.
-The root cause is the handling of the fifo size in the tx part of the
-apbuart driver.
+AP BSSID configuration is missing at AP start.  Without this fix, FW returns
+STA interface MAC address after first init.  When hostapd restarts, it gets MAC
+address from netdev before driver sets STA MAC to netdev again. Now MAC address
+between hostapd and net interface are different causes STA cannot connect to
+AP.  After that MAC address of uap0 mlan0 become the same. And issue disappears
+after following hostapd restart (another issue is AP/STA MAC address become the
+same).
 
-The qemu uart driver only have a very rudimentary status handling and do
-not report the number of chars queued in the tx fifo in the status register.
-So the driver ends up with a fifo size of 1.
+This patch fixes the issue cleanly.
 
-In the tx path the fifo size is divided by 2 - resulting in a fifo
-size of zero.
-
-The original implementation would always try to send one char, but
-after the introduction of uart_port_tx_limited() the fifo size is
-respected even for the first char.
-
-There seems to be no good reason to divide the fifo size with two - so
-remove this. It looks like something copied from the original amba driver.
-
-With qemu we now have a minimum fifo size of one char, so we show
-the prompt.
-
-Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
-Fixes: d11cc8c3c4b6 ("tty: serial: use uart_port_tx_limited()")
-Cc: Andreas Larsson <andreas@gaisler.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc:  <linux-serial@vger.kernel.org>
-Cc:  <sparclinux@vger.kernel.org>
-Link: https://lore.kernel.org/r/20231226121607.GA2622970@ravnborg.org
+Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+Fixes: 12190c5d80bd ("mwifiex: add cfg80211 start_ap and stop_ap handlers")
+Cc: stable@vger.kernel.org
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Tested-by: Rafael Beims <rafael.beims@toradex.com> # Verdin iMX8MP/SD8997 SD
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231215005118.17031-1-yu-hao.lin@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/apbuart.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c |    2 ++
+ drivers/net/wireless/marvell/mwifiex/fw.h       |    1 +
+ drivers/net/wireless/marvell/mwifiex/ioctl.h    |    1 +
+ drivers/net/wireless/marvell/mwifiex/uap_cmd.c  |    8 ++++++++
+ 4 files changed, 12 insertions(+)
 
-diff --git a/drivers/tty/serial/apbuart.c b/drivers/tty/serial/apbuart.c
-index 716cb014c028..364599f256db 100644
---- a/drivers/tty/serial/apbuart.c
-+++ b/drivers/tty/serial/apbuart.c
-@@ -122,7 +122,7 @@ static void apbuart_tx_chars(struct uart_port *port)
- {
- 	u8 ch;
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -2046,6 +2046,8 @@ static int mwifiex_cfg80211_start_ap(str
  
--	uart_port_tx_limited(port, ch, port->fifosize >> 1,
-+	uart_port_tx_limited(port, ch, port->fifosize,
- 		true,
- 		UART_PUT_CHAR(port, ch),
- 		({}));
--- 
-2.43.0
-
+ 	mwifiex_set_sys_config_invalid_data(bss_cfg);
+ 
++	memcpy(bss_cfg->mac_addr, priv->curr_addr, ETH_ALEN);
++
+ 	if (params->beacon_interval)
+ 		bss_cfg->beacon_period = params->beacon_interval;
+ 	if (params->dtim_period)
+--- a/drivers/net/wireless/marvell/mwifiex/fw.h
++++ b/drivers/net/wireless/marvell/mwifiex/fw.h
+@@ -165,6 +165,7 @@ enum MWIFIEX_802_11_PRIVACY_FILTER {
+ #define TLV_TYPE_STA_MAC_ADDR       (PROPRIETARY_TLV_BASE_ID + 32)
+ #define TLV_TYPE_BSSID              (PROPRIETARY_TLV_BASE_ID + 35)
+ #define TLV_TYPE_CHANNELBANDLIST    (PROPRIETARY_TLV_BASE_ID + 42)
++#define TLV_TYPE_UAP_MAC_ADDRESS    (PROPRIETARY_TLV_BASE_ID + 43)
+ #define TLV_TYPE_UAP_BEACON_PERIOD  (PROPRIETARY_TLV_BASE_ID + 44)
+ #define TLV_TYPE_UAP_DTIM_PERIOD    (PROPRIETARY_TLV_BASE_ID + 45)
+ #define TLV_TYPE_UAP_BCAST_SSID     (PROPRIETARY_TLV_BASE_ID + 48)
+--- a/drivers/net/wireless/marvell/mwifiex/ioctl.h
++++ b/drivers/net/wireless/marvell/mwifiex/ioctl.h
+@@ -107,6 +107,7 @@ struct mwifiex_uap_bss_param {
+ 	u8 qos_info;
+ 	u8 power_constraint;
+ 	struct mwifiex_types_wmm_info wmm_info;
++	u8 mac_addr[ETH_ALEN];
+ };
+ 
+ enum {
+--- a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
++++ b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+@@ -468,6 +468,7 @@ void mwifiex_config_uap_11d(struct mwifi
+ static int
+ mwifiex_uap_bss_param_prepare(u8 *tlv, void *cmd_buf, u16 *param_size)
+ {
++	struct host_cmd_tlv_mac_addr *mac_tlv;
+ 	struct host_cmd_tlv_dtim_period *dtim_period;
+ 	struct host_cmd_tlv_beacon_period *beacon_period;
+ 	struct host_cmd_tlv_ssid *ssid;
+@@ -487,6 +488,13 @@ mwifiex_uap_bss_param_prepare(u8 *tlv, v
+ 	int i;
+ 	u16 cmd_size = *param_size;
+ 
++	mac_tlv = (struct host_cmd_tlv_mac_addr *)tlv;
++	mac_tlv->header.type = cpu_to_le16(TLV_TYPE_UAP_MAC_ADDRESS);
++	mac_tlv->header.len = cpu_to_le16(ETH_ALEN);
++	memcpy(mac_tlv->mac_addr, bss_cfg->mac_addr, ETH_ALEN);
++	cmd_size += sizeof(struct host_cmd_tlv_mac_addr);
++	tlv += sizeof(struct host_cmd_tlv_mac_addr);
++
+ 	if (bss_cfg->ssid.ssid_len) {
+ 		ssid = (struct host_cmd_tlv_ssid *)tlv;
+ 		ssid->header.type = cpu_to_le16(TLV_TYPE_UAP_SSID);
 
 
 
