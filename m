@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-15260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 020EB83851B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFA5D838016
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CD0BB2D17F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60D021F2BF80
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4A66EB7F;
-	Tue, 23 Jan 2024 02:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD25664A0;
+	Tue, 23 Jan 2024 00:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dPTov8kN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ate4jK/k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39F46EB67;
-	Tue, 23 Jan 2024 02:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF1D65BDD;
+	Tue, 23 Jan 2024 00:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975419; cv=none; b=L5uQQWHgscuHkBGrCw2AKtaO2yf5weHzndOgv7YyNg3EsvNcKyWLwDIX0EgwdB6YmhL9IjUx4Vs3gMm1nCSJhLhpu5/1+QRt7QP0KXFclGxeZfHVL2jkjHiENjnW87/X/m/8nB+JtLjEjCt4OF66yUOKLb/oB7AxzgfAoomnwpk=
+	t=1705971538; cv=none; b=MlrBl9u0T6BY0gVn1Smy3wC3k5KHeK1TgTF4XPZKMWajG/wTxvInx5j8t6q1EahruUNp/NR4X2bHzRr4cHGWV8Oh4k8ZOw9g6XJzduG2uOi843i2kiUUbL3JvO6qZR/ByMOpCcNYVrMSmsZW+SFUxgOG6yIMhxS5vQToSDfZjGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975419; c=relaxed/simple;
-	bh=5FM8tlKliZty0KiH9FjWz0KmwKOCz27HnRdNWe7xF1w=;
+	s=arc-20240116; t=1705971538; c=relaxed/simple;
+	bh=W/2ZMJZtdSFxpOIuiwciYtQ7bs4HpIktNSTpkpZREU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ee0busPoAjAcS5AjayRb6MFnfBQrYqaqvKqdSna67nGo/2y1qIRJMJsAaFbjoV/yerAtzF53QcEBMCGtF+Q6gaghl3825ZmspUgtbKLkjHMnjrKTXsIVNwncOmPrLcxyh/+KlMWW9umNK3voYFoShYQ0SOYE1DzdNOiF2zwMeDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dPTov8kN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80FDC43601;
-	Tue, 23 Jan 2024 02:03:38 +0000 (UTC)
+	 MIME-Version; b=B2dWELibsienByKcdLNSI1nCSWpN9LuV0HPaZurmdBarOQDQWk1brL3zgnnmIQdpfbdZrBJp1wiIPr5NTd5BSZwqwk0Axod0zV7p6e+zpV1JMyDlBoZ0qziq55lg6HYofOUybMlzgG7h8w5+01XkIbLVlYMAAgdIY5GijcNF+N8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ate4jK/k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB9EC433F1;
+	Tue, 23 Jan 2024 00:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975418;
-	bh=5FM8tlKliZty0KiH9FjWz0KmwKOCz27HnRdNWe7xF1w=;
+	s=korg; t=1705971538;
+	bh=W/2ZMJZtdSFxpOIuiwciYtQ7bs4HpIktNSTpkpZREU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dPTov8kNrncUgGM989LscWMyUYN85ziE9npUNLzukXdD/f3ZrKnf0EeDjiu4evcuz
-	 AMwxkQ6GFEyOLRiVpHWNtTK56C3kYlC+IAE3i6qC2p6lPoyZnwDjXLWQ40Cgj2W8C5
-	 hNEFBHtOouem3pLF0ysS1NK6DJjLr1Fi4oO3dMY0=
+	b=Ate4jK/k+9+TgMcNm+NCDtXnM4vWxRfRpTtpLX040BxJLHEscm9dhBN1/Oq9ePQlH
+	 sEHPqggozQBOZrCB8TEplOUDUH7OFoxUuj9oXIq0ZiLmAB4iaFX4A4Hob/ImtQcxmT
+	 n1MCZkk+Gtje+/fwJPYC8fGlJuaHLR3mukbyjKug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Subject: [PATCH 6.6 377/583] serial: 8250_exar: Set missing rs485_supported flag
+	Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Subject: [PATCH 6.1 260/417] usb: dwc: ep0: Update request status in dwc3_ep0_stall_restart
 Date: Mon, 22 Jan 2024 15:57:08 -0800
-Message-ID: <20240122235823.553500226@linuxfoundation.org>
+Message-ID: <20240122235800.871876726@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,58 +58,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
 
-commit 0c2a5f471ce58bca8f8ab5fcb911aff91eaaa5eb upstream.
+commit e9d40b215e38480fd94c66b06d79045717a59e9c upstream.
 
-The UART supports an auto-RTS mode in which the RTS pin is automatically
-activated during transmission. So mark this mode as being supported even
-if RTS is not controlled by the driver but the UART.
+Current implementation blocks the running operations when Plug-out and
+Plug-In is performed continuously, process gets stuck in
+dwc3_thread_interrupt().
 
-Also the serial core expects now at least one of both modes rts-on-send or
-rts-after-send to be supported. This is since during sanitization
-unsupported flags are deleted from a RS485 configuration set by userspace.
-However if the configuration ends up with both flags unset, the core prints
-a warning since it considers such a configuration invalid (see
-uart_sanitize_serial_rs485()).
+Code Flow:
+
+	CPU1
+
+	->Gadget_start
+	->dwc3_interrupt
+	->dwc3_thread_interrupt
+	->dwc3_process_event_buf
+	->dwc3_process_event_entry
+	->dwc3_endpoint_interrupt
+	->dwc3_ep0_interrupt
+	->dwc3_ep0_inspect_setup
+	->dwc3_ep0_stall_and_restart
+
+By this time if pending_list is not empty, it will get the next request
+on the given list and calls dwc3_gadget_giveback which will unmap request
+and call its complete() callback to notify upper layers that it has
+completed. Currently dwc3_gadget_giveback status is set to -ECONNRESET,
+whereas it should be -ESHUTDOWN based on condition if not dwc->connected
+is true.
 
 Cc:  <stable@vger.kernel.org>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Link: https://lore.kernel.org/r/20240103061818.564-8-l.sanfilippo@kunbus.com
+Fixes: d742220b3577 ("usb: dwc3: ep0: giveback requests on stall_and_restart")
+Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Link: https://lore.kernel.org/r/20231222094704.20276-1-quic_uaggarwa@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/8250/8250_exar.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/ep0.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/tty/serial/8250/8250_exar.c
-+++ b/drivers/tty/serial/8250/8250_exar.c
-@@ -446,7 +446,7 @@ static int generic_rs485_config(struct u
- }
+--- a/drivers/usb/dwc3/ep0.c
++++ b/drivers/usb/dwc3/ep0.c
+@@ -236,7 +236,10 @@ void dwc3_ep0_stall_and_restart(struct d
+ 		struct dwc3_request	*req;
  
- static const struct serial_rs485 generic_rs485_supported = {
--	.flags = SER_RS485_ENABLED,
-+	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND,
- };
+ 		req = next_request(&dep->pending_list);
+-		dwc3_gadget_giveback(dep, req, -ECONNRESET);
++		if (!dwc->connected)
++			dwc3_gadget_giveback(dep, req, -ESHUTDOWN);
++		else
++			dwc3_gadget_giveback(dep, req, -ECONNRESET);
+ 	}
  
- static const struct exar8250_platform exar8250_default_platform = {
-@@ -490,7 +490,8 @@ static int iot2040_rs485_config(struct u
- }
- 
- static const struct serial_rs485 iot2040_rs485_supported = {
--	.flags = SER_RS485_ENABLED | SER_RS485_RX_DURING_TX | SER_RS485_TERMINATE_BUS,
-+	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND |
-+		 SER_RS485_RX_DURING_TX | SER_RS485_TERMINATE_BUS,
- };
- 
- static const struct property_entry iot2040_gpio_properties[] = {
+ 	dwc->eps[0]->trb_enqueue = 0;
 
 
 
