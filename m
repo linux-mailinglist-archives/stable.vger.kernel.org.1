@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-15101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC9D28383E2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 285F9838163
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:08:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9569E295DFC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D8FDB24AEE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6EA657CD;
-	Tue, 23 Jan 2024 01:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4112E1487C0;
+	Tue, 23 Jan 2024 01:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C614+0v3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PDeJEmrv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C22B4E1AD;
-	Tue, 23 Jan 2024 01:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D59141981;
+	Tue, 23 Jan 2024 01:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975087; cv=none; b=FAWq1fkH1C3Tc/2dNoXqRcr8kfCNH1DPDHQcGQBZzKHxs+1w6Jc0LpmTFfaQGL7Si/DLCqTYOgXU35Q740tXaYn+S1ZmXRGihIVvcSTCncKxHYRQeEaDInH6FHtPCXB5kZa81RRS17Ixn9VZDjb20Ia07rnIPjsEZoO3LhT2ob8=
+	t=1705972071; cv=none; b=avssFSxdrsfc+Cl3B8pP3iixNjIu1om7fQeLgruUr0cze3h120sXUe2+z0z2GqZo6Fyz/aDuZH5Zs+Czwc1OsvMhWW4J7GcoH7Dcx2cRFm+XCqnc3dDjM+zJ0+gQrZt+QZbr8LnzWXjKIOWrIUCKfB9Yh/Ygj3EgHmH+qLVNr84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975087; c=relaxed/simple;
-	bh=iVY1TzcuO4Cyuf0UOnawI7Amn1utTnfZG4w20lJDqCQ=;
+	s=arc-20240116; t=1705972071; c=relaxed/simple;
+	bh=HN8JyC5G2tIaSjGdLX1eWNDMjsJgz3JXRMof6Zmp9+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bBoTpsZnyJVKTyfNEuxqm7g3u8KUm9Z9XB2DUOw06JnxwXbd2SRKyTNT13wH3nepmHhJcsykd8sRX+Md9BXzogVrWI/SVYywppUfUqEQ5BsGuLI6fNnElymGsqplKTrCEiySmUU/IWBU1tWPYXkksoFzz/BgFuMKRcykP677Cps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C614+0v3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40936C433F1;
-	Tue, 23 Jan 2024 01:58:07 +0000 (UTC)
+	 MIME-Version; b=L6ysVxwgIi1amNpcZVXnM5rjp68XdREVNUmrO8jXifI1NxK6WjM6VHjcEupzzniHIliwYgxqx39GP07SafcMWuU/DktiV5Cpam3mMEae983Ud43Bf7BQtdX2tSYJwGWx2EzdTzvU5aCiBoZiGu2sYFMqBNJlYAbF6tQsQsmME1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PDeJEmrv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B375C43390;
+	Tue, 23 Jan 2024 01:07:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975087;
-	bh=iVY1TzcuO4Cyuf0UOnawI7Amn1utTnfZG4w20lJDqCQ=;
+	s=korg; t=1705972070;
+	bh=HN8JyC5G2tIaSjGdLX1eWNDMjsJgz3JXRMof6Zmp9+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C614+0v3WSdV1nrICY3FRvadL3bhw/qo/lsiDveM32KwtnaBbQ11vizxJdz3/CoUY
-	 Lgpy9tNGW8kSG5Eawe7iJQ1i0PhzQSrcVpaK7lMfusXfi87t2Dpk3NcoBnA4e6XhEp
-	 14apqUhpu2ha35ZylztS60vTvlaYvuioBIZ6wNI4=
+	b=PDeJEmrvXZFw0yPAwlQwLi+nzVYIIdxXcCvUgvbUOSyjTWuiRW+ZD6XRuoanQnECa
+	 zF8Ojg7GTyU4jOodvpfnP4cnz/7mzGwPvT8aVRp+PftcC+cqJpnN+1ZmxGeUj3TbjX
+	 /a2cD1e48PBsv/D6PPqIg96Wv9uzR9K3h7kOcs58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Dionne <marc.dionne@auristor.com>,
-	David Howells <dhowells@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org,
+	Maciej Strozek <mstrozek@opensource.cirrus.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 219/583] rxrpc: Fix skbuff cleanup of calls recvmsg_queue and rx_oos_queue
+Subject: [PATCH 5.15 014/374] ASoC: cs43130: Fix incorrect frame delay configuration
 Date: Mon, 22 Jan 2024 15:54:30 -0800
-Message-ID: <20240122235818.703132870@linuxfoundation.org>
+Message-ID: <20240122235745.122008406@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,50 +63,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Maciej Strozek <mstrozek@opensource.cirrus.com>
 
-[ Upstream commit 4fc68c4c1a114ba597b4f3b082f04622dfa0e0f6 ]
+[ Upstream commit aa7e8e5e4011571022dc06e4d7a2f108feb53d1a ]
 
-Fix rxrpc_cleanup_ring() to use rxrpc_purge_queue() rather than
-skb_queue_purge() so that the count of outstanding skbuffs is correctly
-updated when a failed call is cleaned up.
-
-Without this rmmod may hang waiting for rxrpc_n_rx_skbs to become zero.
-
-Fixes: 5d7edbc9231e ("rxrpc: Get rid of the Rx ring")
-Reported-by: Marc Dionne <marc.dionne@auristor.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Maciej Strozek <mstrozek@opensource.cirrus.com>
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20231117141344.64320-3-mstrozek@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/call_object.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/codecs/cs43130.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rxrpc/call_object.c b/net/rxrpc/call_object.c
-index 773eecd1e979..f10b37c14772 100644
---- a/net/rxrpc/call_object.c
-+++ b/net/rxrpc/call_object.c
-@@ -545,8 +545,8 @@ void rxrpc_get_call(struct rxrpc_call *call, enum rxrpc_call_trace why)
-  */
- static void rxrpc_cleanup_ring(struct rxrpc_call *call)
- {
--	skb_queue_purge(&call->recvmsg_queue);
--	skb_queue_purge(&call->rx_oos_queue);
-+	rxrpc_purge_queue(&call->recvmsg_queue);
-+	rxrpc_purge_queue(&call->rx_oos_queue);
- }
- 
- /*
+diff --git a/sound/soc/codecs/cs43130.c b/sound/soc/codecs/cs43130.c
+index 0e2cb54ae192..d3edc5796d66 100644
+--- a/sound/soc/codecs/cs43130.c
++++ b/sound/soc/codecs/cs43130.c
+@@ -579,7 +579,7 @@ static int cs43130_set_sp_fmt(int dai_id, unsigned int bitwidth_sclk,
+ 		break;
+ 	case SND_SOC_DAIFMT_LEFT_J:
+ 		hi_size = bitwidth_sclk;
+-		frm_delay = 2;
++		frm_delay = 0;
+ 		frm_phase = 1;
+ 		break;
+ 	case SND_SOC_DAIFMT_DSP_A:
 -- 
 2.43.0
 
