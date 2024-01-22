@@ -1,189 +1,131 @@
-Return-Path: <stable+bounces-12771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A82278372C5
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:40:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E2AC8372D6
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:43:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6C21B235B4
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:38:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12C51B23959
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:28:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 728533EA97;
-	Mon, 22 Jan 2024 19:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0FF3DBB7;
+	Mon, 22 Jan 2024 19:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="Hx2le8ba"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHG7ET5C"
 X-Original-To: stable@vger.kernel.org
-Received: from xry111.site (xry111.site [89.208.246.23])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5910B3E49E
-	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 19:38:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD2C3D553
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 19:28:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705952294; cv=none; b=kX6CrMBDr0vZHNHqPCiHkkZUu/hEo6CjBE1y0HMFi/wXhzn94iKP3/khVI63U8HoSm5vHI4qsGVOmN3uz9vCijZsGZA3X3h1K8W/53PMfFS+oCwVOGlJS4kNxG/y1NoQte/72n65VawBOCY8bHQmU8Ucccingml5pT0i8aHIB+Y=
+	t=1705951730; cv=none; b=Q7oXODi4b2ZAKAuRMQfDL0wxElDIfACtzgD6f6R5bXaf6MML+onCpFTy3wt6vpiCjM8W4bt5YOZNVeOjKbEBRgkQoA7UNdeCf+OdJHZEXVXmBWQ8aVpairLk/LGPL+a4lqfATvE58el+BU6HtvpxYncXIcRGyUWQ8Ldk7vAyKhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705952294; c=relaxed/simple;
-	bh=zehFHNJcTdxBJALWkLTYFsLt43naLh//xklrUVq/C34=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EtdsICcjK799JkBg0zvJ4b2T3wMtPoutv/bbIadpilKtbCtzWqO/ZtlfJm15eVu8hNFVoM6xE1H7ia6R/KjA9qZe1Wsf9c9kp92uJG/53daq1qR+xKYt/rYWlRHlXeiyrqKWgoCfZfSQLMV6as5edJjSzLHd/5/Mwedqyanz2z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=Hx2le8ba; arc=none smtp.client-ip=89.208.246.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xry111.site;
-	s=default; t=1705951776;
-	bh=zehFHNJcTdxBJALWkLTYFsLt43naLh//xklrUVq/C34=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hx2le8baW+9bBZjcEtsCBnNvC0xiKOL0F+I8O6xDZbVzmAr4XRGi92GukWvS78zRL
-	 jARaUBO9GTjwVYb2rVmqzh6gLNkGP5sS2GENyXH5RIlgt414FKcs85Wd6g86uAFDih
-	 NZGXCR9mV+P4A4kwZHhVe8QCQyY/RYGzb9RECXoc=
-Received: from stargazer.. (unknown [IPv6:240e:358:119a:ce00:dc73:854d:832e:2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-384) server-digest SHA384)
-	(Client did not present a certificate)
-	(Authenticated sender: xry111@xry111.site)
-	by xry111.site (Postfix) with ESMTPSA id 25C3466F42;
-	Mon, 22 Jan 2024 14:29:33 -0500 (EST)
-From: Xi Ruoyao <xry111@xry111.site>
-To: stable@vger.kernel.org
-Cc: WANG Xuerui <kernel@xen0n.name>,
-	Xi Ruoyao <xry111@xry111.site>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1.y] LoongArch: Fix and simplify fcsr initialization on execve()
-Date: Tue, 23 Jan 2024 03:28:04 +0800
-Message-ID: <20240122192803.2731419-2-xry111@xry111.site>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2024012237-handed-control-646a@gregkh>
-References: <2024012237-handed-control-646a@gregkh>
+	s=arc-20240116; t=1705951730; c=relaxed/simple;
+	bh=6JPqKDkvDl/mijpvTG6BUrgTgGIF6wr3FgMoOU+NO10=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lA1Nwbl7Vf1wBT7Hb05BTcBCOKBGUeXUwnMtJTSecn5tEQilivvTvwf2Ua+mktyWkUB0bXQKdGL3nJzDv8nIVdS3fJ8G5iRf2EnLRb94Wyq9etRxobNaQwzX1drk5geGv+G8qkw0Hu+xUoApfjQj3ntrRTBFcsX+HH7snXKizhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KHG7ET5C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B421C433F1;
+	Mon, 22 Jan 2024 19:28:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1705951729;
+	bh=6JPqKDkvDl/mijpvTG6BUrgTgGIF6wr3FgMoOU+NO10=;
+	h=Subject:To:Cc:From:Date:From;
+	b=KHG7ET5CRtuf735xU4uI17nz6WGZEzwHmkDMWhpBQoDv4wwt/I5X8pz0+dvMrUYaD
+	 Z5gRG2o89lHPurma+dTuv35IIVHSL1y5LBuhYxP3oiFjndnUt99pG8NZ+0s9JSmWbM
+	 jwd/5mEhgM2HHOVV3HBFrIL0/dXHqLOXvtjC66bo=
+Subject: FAILED: patch "[PATCH] fbdev: flush deferred IO before closing" failed to apply to 5.15-stable tree
+To: namcao@linutronix.de,bigeasy@linutronix.de,deller@gmx.de
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 22 Jan 2024 11:28:46 -0800
+Message-ID: <2024012246-snowdrop-antelope-7598@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-There has been a lingering bug in LoongArch Linux systems causing some
-GCC tests to intermittently fail (see Closes link).  I've made a minimal
-reproducer:
 
-    zsh% cat measure.s
-    .align 4
-    .globl _start
-    _start:
-        movfcsr2gr  $a0, $fcsr0
-        bstrpick.w  $a0, $a0, 16, 16
-        beqz        $a0, .ok
-        break       0
-    .ok:
-        li.w        $a7, 93
-        syscall     0
-    zsh% cc mesaure.s -o measure -nostdlib
-    zsh% echo $((1.0/3))
-    0.33333333333333331
-    zsh% while ./measure; do ; done
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-This while loop should not stop as POSIX is clear that execve must set
-fenv to the default, where FCSR should be zero.  But in fact it will
-just stop after running for a while (normally less than 30 seconds).
-Note that "$((1.0/3))" is needed to reproduce this issue because it
-raises FE_INVALID and makes fcsr0 non-zero.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-The problem is we are currently relying on SET_PERSONALITY2() to reset
-current->thread.fpu.fcsr.  But SET_PERSONALITY2() is executed before
-start_thread which calls lose_fpu(0).  We can see if kernel preempt is
-enabled, we may switch to another thread after SET_PERSONALITY2() but
-before lose_fpu(0).  Then bad thing happens: during the thread switch
-the value of the fcsr0 register is stored into current->thread.fpu.fcsr,
-making it dirty again.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 33cd6ea9c0673517cdb06ad5c915c6f22e9615fc
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012246-snowdrop-antelope-7598@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-The issue can be fixed by setting current->thread.fpu.fcsr after
-lose_fpu(0) because lose_fpu() clears TIF_USEDFPU, then the thread
-switch won't touch current->thread.fpu.fcsr.
+Possible dependencies:
 
-The only other architecture setting FCSR in SET_PERSONALITY2() is MIPS.
-I've ran a similar test on MIPS with mainline kernel and it turns out
-MIPS is buggy, too.  Anyway MIPS do this for supporting different FP
-flavors (NaN encodings, etc.) which do not exist on LoongArch.  So for
-LoongArch, we can simply remove the current->thread.fpu.fcsr setting
-from SET_PERSONALITY2() and do it in start_thread(), after lose_fpu(0).
+33cd6ea9c067 ("fbdev: flush deferred IO before closing")
+fe9ae05cfbe5 ("fbdev: Fix incorrect page mapping clearance at fb_deferred_io_release()")
+3efc61d95259 ("fbdev: Fix invalid page access after closing deferred I/O devices")
+e80eec1b871a ("fbdev: Rename pagelist to pagereflist for deferred I/O")
+56c134f7f1b5 ("fbdev: Track deferred-I/O pages in pageref struct")
+856082f021a2 ("fbdev: defio: fix the pagelist corruption")
+8c30e2d81bfd ("fbdev: Don't sort deferred-I/O pages by default")
+105a940416fc ("fbdev/defio: Early-out if page is already enlisted")
+67b723f5b742 ("drm/fb-helper: Calculate damaged area in separate helper")
+aa15c677cc34 ("drm/fb-helper: Fix vertical damage clipping")
+a3c286dcef7f ("drm/fb-helper: Fix clip rectangle height")
 
-The while loop failing with the mainline kernel has survived one hour
-after this change on LoongArch.
+thanks,
 
-Fixes: 803b0fc5c3f2baa ("LoongArch: Add process management")
-Closes: https://github.com/loongson-community/discussions/issues/7
-Link: https://lore.kernel.org/linux-mips/7a6aa1bbdbbe2e63ae96ff163fab0349f58f1b9e.camel@xry111.site/
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 33cd6ea9c0673517cdb06ad5c915c6f22e9615fc Mon Sep 17 00:00:00 2001
+From: Nam Cao <namcao@linutronix.de>
+Date: Mon, 18 Dec 2023 10:57:31 +0100
+Subject: [PATCH] fbdev: flush deferred IO before closing
+
+When framebuffer gets closed, the queued deferred IO gets cancelled. This
+can cause some last display data to vanish. This is problematic for users
+who send a still image to the framebuffer, then close the file: the image
+may never appear.
+
+To ensure none of display data get lost, flush the queued deferred IO
+first before closing.
+
+Another possible solution is to delete the cancel_delayed_work_sync()
+instead. The difference is that the display may appear some time after
+closing. However, the clearing of page mapping after this needs to be
+removed too, because the page mapping is used by the deferred work. It is
+not completely obvious whether it is okay to not clear the page mapping.
+For a patch intended for stable trees, go with the simple and obvious
+solution.
+
+Fixes: 60b59beafba8 ("fbdev: mm: Deferred IO support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-(cherry picked from commit c2396651309eba291c15e32db8fbe44c738b5921)
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
----
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
 
-The conflict is because 6.1.y does not have LBT support, thus there is
-no lose_lbt() line.  Resolved manually.
-
- arch/loongarch/include/asm/elf.h | 5 -----
- arch/loongarch/kernel/elf.c      | 5 -----
- arch/loongarch/kernel/process.c  | 1 +
- 3 files changed, 1 insertion(+), 10 deletions(-)
-
-diff --git a/arch/loongarch/include/asm/elf.h b/arch/loongarch/include/asm/elf.h
-index 9b16a3b8e706..f16bd42456e4 100644
---- a/arch/loongarch/include/asm/elf.h
-+++ b/arch/loongarch/include/asm/elf.h
-@@ -241,8 +241,6 @@ void loongarch_dump_regs64(u64 *uregs, const struct pt_regs *regs);
- do {									\
- 	current->thread.vdso = &vdso_info;				\
- 									\
--	loongarch_set_personality_fcsr(state);				\
--									\
- 	if (personality(current->personality) != PER_LINUX)		\
- 		set_personality(PER_LINUX);				\
- } while (0)
-@@ -259,7 +257,6 @@ do {									\
- 	clear_thread_flag(TIF_32BIT_ADDR);				\
- 									\
- 	current->thread.vdso = &vdso_info;				\
--	loongarch_set_personality_fcsr(state);				\
- 									\
- 	p = personality(current->personality);				\
- 	if (p != PER_LINUX32 && p != PER_LINUX)				\
-@@ -340,6 +337,4 @@ extern int arch_elf_pt_proc(void *ehdr, void *phdr, struct file *elf,
- extern int arch_check_elf(void *ehdr, bool has_interpreter, void *interp_ehdr,
- 			  struct arch_elf_state *state);
+diff --git a/drivers/video/fbdev/core/fb_defio.c b/drivers/video/fbdev/core/fb_defio.c
+index 6c8b81c452f0..1ae1d35a5942 100644
+--- a/drivers/video/fbdev/core/fb_defio.c
++++ b/drivers/video/fbdev/core/fb_defio.c
+@@ -313,7 +313,7 @@ static void fb_deferred_io_lastclose(struct fb_info *info)
+ 	struct page *page;
+ 	int i;
  
--extern void loongarch_set_personality_fcsr(struct arch_elf_state *state);
--
- #endif /* _ASM_ELF_H */
-diff --git a/arch/loongarch/kernel/elf.c b/arch/loongarch/kernel/elf.c
-index 183e94fc9c69..0fa81ced28dc 100644
---- a/arch/loongarch/kernel/elf.c
-+++ b/arch/loongarch/kernel/elf.c
-@@ -23,8 +23,3 @@ int arch_check_elf(void *_ehdr, bool has_interpreter, void *_interp_ehdr,
- {
- 	return 0;
- }
--
--void loongarch_set_personality_fcsr(struct arch_elf_state *state)
--{
--	current->thread.fpu.fcsr = boot_cpu_data.fpu_csr0;
--}
-diff --git a/arch/loongarch/kernel/process.c b/arch/loongarch/kernel/process.c
-index 90a5de746332..1259bc312979 100644
---- a/arch/loongarch/kernel/process.c
-+++ b/arch/loongarch/kernel/process.c
-@@ -82,6 +82,7 @@ void start_thread(struct pt_regs *regs, unsigned long pc, unsigned long sp)
- 	euen = regs->csr_euen & ~(CSR_EUEN_FPEN);
- 	regs->csr_euen = euen;
- 	lose_fpu(0);
-+	current->thread.fpu.fcsr = boot_cpu_data.fpu_csr0;
+-	cancel_delayed_work_sync(&info->deferred_work);
++	flush_delayed_work(&info->deferred_work);
  
- 	clear_thread_flag(TIF_LSX_CTX_LIVE);
- 	clear_thread_flag(TIF_LASX_CTX_LIVE);
--- 
-2.43.0
+ 	/* clear out the mapping that we setup */
+ 	for (i = 0 ; i < info->fix.smem_len; i += PAGE_SIZE) {
 
 
