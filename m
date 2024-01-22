@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-14197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3BB837FEA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:55:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F94883822A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D5E9B1C214D3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBAE22894D6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26C2412C544;
-	Tue, 23 Jan 2024 00:57:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4CFE59178;
+	Tue, 23 Jan 2024 01:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z819cun3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxmY9zsG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFF66281D;
-	Tue, 23 Jan 2024 00:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7706121;
+	Tue, 23 Jan 2024 01:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971443; cv=none; b=DFyO9ZdoYEf8jnf7tUaEPBQqRhRFy/cA0BE0JBzfhug6HM2EKPjsDD/7PBPwmzu/zusOZM6B2DFRjIZzb/S1KJAJqExdPZ8CZOLw0otPALZa0ySXYAcc4Wwcm27A48suQ5gzvKB9TaVKlgCTkmQLGrL5L2omc744HDe51Hszukk=
+	t=1705974081; cv=none; b=UoeI2XDmb0UxA/G/vmJVz5fhVkDb9+HL81sG/iYdQDqqNW+H3WNe8+yB+p2HYq6iAuQZCLDKW8GczaZZ5wS7laIy/XlyQOKTTvjpsO74pa5oy/RXswxr6cL2gguN5ZfuHfmmCYDt6tby+HuZ9xqkqQksT2Z3RAAuTmxABhYniCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971443; c=relaxed/simple;
-	bh=wGuN975V07rpQPfbn8kxmTghtVRXyNhe6OvU9yJ+a88=;
+	s=arc-20240116; t=1705974081; c=relaxed/simple;
+	bh=ILQo4Ku2ySJdM45pb7NYipOw0+w3TRRYg0JYlQ/NQKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zl4H77qFOyZ6TzNKxcrSz23DNx4tM16aS5OEW50mzI7TAco2+yYt4UYv2C4DSMurmM6JpDXQ/JQcnBcSCeLSJz+2kbz1+OmEw4emvKKQkH8SxAIE8fx3Xs8DAAazIBX9H2MPlV4ukkN2FqDnwis7+lwawRwVqAOqjhC00p+7llo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z819cun3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BD55C433F1;
-	Tue, 23 Jan 2024 00:57:23 +0000 (UTC)
+	 MIME-Version; b=qxO9fK7XZLPGFVUgMmBoxYyT6WbVBszOEkdXcgQ526zSqDhLgpr/q1HNn+MlLBiK/UnYCkjxuzyCkalk8eKvFDttIhVL+Pl9KGwynjoN2X1JkAQ/IOwo5wiDKChY9Ob9yhVFhC4wwnFdb8quKhLMTSt2yX2eXQpDkPYSocnoabA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxmY9zsG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31B2C43394;
+	Tue, 23 Jan 2024 01:41:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971443;
-	bh=wGuN975V07rpQPfbn8kxmTghtVRXyNhe6OvU9yJ+a88=;
+	s=korg; t=1705974080;
+	bh=ILQo4Ku2ySJdM45pb7NYipOw0+w3TRRYg0JYlQ/NQKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z819cun3WtHtacJYyZrJ/nz3QDFeVzvw3wbG/5Go9gTxD/n7qoDRtKYOKOH4mY08A
-	 JbRjgcq+HB3Sxk7wKSMa0iWUk0gL1xdX08Exh7wj6TBPVp5E3AJYIdY2mBySLoluPo
-	 uLqBlV8rGn0pd8kwStlrRMpQrs/DJNpg1bJl0cDw=
+	b=yxmY9zsG5whqRTK9EpRAi314+3Jdt723BBYh0ai/pHxKWG3dc1Wfq1OppWsyZ9zaQ
+	 TipgHiRLUS73PWU41WSyETK4zlfklRBZ9vPCmL++BFACyL/f5FYibk57ZPxUQOixZ8
+	 pgpqrpB5Z0LVxdPVoXLUUuaQ4WvJqdRVk7NQsxRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-sound@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-	Takashi Iwai <tiwai@suse.de>,
+	Su Hui <suhui@nfschina.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 243/417] kselftest/alsa - mixer-test: Fix the print format specifier warning
+Subject: [PATCH 5.15 155/374] wifi: rtlwifi: add calculate_bit_shift()
 Date: Mon, 22 Jan 2024 15:56:51 -0800
-Message-ID: <20240122235800.296862359@linuxfoundation.org>
+Message-ID: <20240122235750.006541978@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,66 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 3f47c1ebe5ca9c5883e596c7888dec4bec0176d8 ]
+[ Upstream commit 52221dfddbbfb5b4e029bb2efe9bb7da33ec1e46 ]
 
-The GCC 13.2.0 compiler issued the following warning:
+There are many same functions like _rtl88e_phy_calculate_bit_shift(),
+_rtl92c_phy_calculate_bit_shift() and so on. And these functions can
+cause undefined bitwise shift behavior. Add calculate_bit_shift() to
+replace them and fix undefined behavior in subsequent patches.
 
-mixer-test.c: In function ‘ctl_value_index_valid’:
-mixer-test.c:322:79: warning: format ‘%lld’ expects argument of type ‘long long int’, \
-			      but argument 5 has type ‘long int’ [-Wformat=]
-  322 |                         ksft_print_msg("%s.%d value %lld more than maximum %lld\n",
-      |                                                                            ~~~^
-      |                                                                               |
-      |                                                                               long long int
-      |                                                                            %ld
-  323 |                                        ctl->name, index, int64_val,
-  324 |                                        snd_ctl_elem_info_get_max(ctl->info));
-      |                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |                                        |
-      |                                        long int
-
-Fixing the format specifier as advised by the compiler suggestion removes the
-warning.
-
-Fixes: 3f48b137d88e7 ("kselftest: alsa: Factor out check that values meet constraints")
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: linux-sound@vger.kernel.org
-Cc: linux-kselftest@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Acked-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240107173704.937824-3-mirsad.todorovac@alu.unizg.hr
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-2-suhui@nfschina.com
+Stable-dep-of: 969bc926f04b ("wifi: rtlwifi: rtl8188ee: phy: using calculate_bit_shift()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/alsa/mixer-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/wifi.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tools/testing/selftests/alsa/mixer-test.c b/tools/testing/selftests/alsa/mixer-test.c
-index d59910658c8c..9ad39db32d14 100644
---- a/tools/testing/selftests/alsa/mixer-test.c
-+++ b/tools/testing/selftests/alsa/mixer-test.c
-@@ -358,7 +358,7 @@ static bool ctl_value_index_valid(struct ctl_data *ctl,
- 		}
+diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+index aa07856411b1..a1f223c8848b 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
++++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
+@@ -3106,4 +3106,11 @@ static inline struct ieee80211_sta *rtl_find_sta(struct ieee80211_hw *hw,
+ 	return ieee80211_find_sta(mac->vif, mac_addr);
+ }
  
- 		if (int64_val > snd_ctl_elem_info_get_max64(ctl->info)) {
--			ksft_print_msg("%s.%d value %lld more than maximum %lld\n",
-+			ksft_print_msg("%s.%d value %lld more than maximum %ld\n",
- 				       ctl->name, index, int64_val,
- 				       snd_ctl_elem_info_get_max(ctl->info));
- 			return false;
++static inline u32 calculate_bit_shift(u32 bitmask)
++{
++	if (WARN_ON_ONCE(!bitmask))
++		return 0;
++
++	return __ffs(bitmask);
++}
+ #endif
 -- 
 2.43.0
 
