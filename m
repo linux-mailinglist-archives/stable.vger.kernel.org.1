@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 216D3837A4F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 498198378AB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6BE41F243BF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D0531C2746E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927F912BF12;
-	Tue, 23 Jan 2024 00:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A14BC37C;
+	Tue, 23 Jan 2024 00:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F03GG4as"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qoRN4oCA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5232612A17F;
-	Tue, 23 Jan 2024 00:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F702371;
+	Tue, 23 Jan 2024 00:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968892; cv=none; b=Zt+JRqIxrfenEQW/rKGCIPgjn2XmOpGu6JCsEwLw2+eTgCUPX9bahAaDQPEJwVARtlKVBzbH5FLlkfjpDWCDcoutrPW0Q54hbWTOGq+wUeNJb/xgHnMXjqK0V/Q6tBH8OCKuyYGcmoSecy50wHQDQ/eTTdKJuDB6M4Mtu9ApHkQ=
+	t=1705968195; cv=none; b=C45bns/bQ6bouhwOhoUQZ/Y9yd/uOYR9ilBa/IjoVqqVgCteO71zzmhDjwSKFaYSM6YdeQkh10xhwLW/QEe56BmnlGFGsEKY1cgB66teTYxIAOv3Z83i4uvsjD0L5Q5lhvYw+Tz8SYz3w/Qb5h+jt2WPClw5rl9TALAdu8COJFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968892; c=relaxed/simple;
-	bh=YLvg66x/ICkxjXinu8DR0Sjao/gspXQ2vyuQFKx5zrI=;
+	s=arc-20240116; t=1705968195; c=relaxed/simple;
+	bh=rRi9vNZ3QsGLLIqGCjYYJzIj8trGWgxOacGZM1W3bHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IH/eBPnnVxcNnlfCQk+ZYNcARCnETzQVOHUyYfOUAIszPda9DjBksk+X9Pdd48LOdZEtyaW3LiMHZcBNsuew5YZQxyyKzWfFRUiIkuL+PpdMF7yMIEt7h8zAZxGNHr+Zd3/DUrOhGOq7aAmu/l28EMOet6kaa5WgY8BDGt/AYrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F03GG4as; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9849C43390;
-	Tue, 23 Jan 2024 00:14:51 +0000 (UTC)
+	 MIME-Version; b=nEWeaS3nm6//yn6MXZ+/1JIc1T9hTo49ccAHAwOTfBDZJPq5Q1Cf4+x/1fKYk4w4f6wW4UIymORbcDhRV+Q8m6gFQFSkOHTc91G4chiBJRQy7E0oq1KtquX66cl9y0egcqoxYMGmwHhxNqycPATflSBuXVu89QvUXFBwyklKfZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qoRN4oCA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11701C433C7;
+	Tue, 23 Jan 2024 00:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968892;
-	bh=YLvg66x/ICkxjXinu8DR0Sjao/gspXQ2vyuQFKx5zrI=;
+	s=korg; t=1705968195;
+	bh=rRi9vNZ3QsGLLIqGCjYYJzIj8trGWgxOacGZM1W3bHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F03GG4as9OAKAaH2xMoAPJ05+oMAvsup3ez/+LJMCEhrfblB+c8lCn21BRQ1aA5yY
-	 tSZTOB1oCAs5IVfzAmBOM0GeYe3taW8aCx3YOoN0AJWLvL93zLWtIJfJiDvsboMK4G
-	 f8LSPGU/FFPMEsHcvSQRwcAGfkzY1gLUlXiG3bU0=
+	b=qoRN4oCA5sMPLFisGwEgJysb0BzMSoXYmhdTgXi5pg5CYl11HHdW7yU2w8HncF9/z
+	 x4dY1EIi5vT5cZ/29kOvuY5TA1vyl0SWQ+IYjH5NlO4XcvseG5YE9jRTlg0gtfV8by
+	 Nt5VXDovaK271fo+2YIZfXkQV1qNjKDFDsknLocw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paul Moore <paul@paul-moore.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 066/194] crypto: sahara - fix ahash selftest failure
+Subject: [PATCH 4.19 040/148] net: netlabel: Fix kerneldoc warnings
 Date: Mon, 22 Jan 2024 15:56:36 -0800
-Message-ID: <20240122235722.035271045@linuxfoundation.org>
+Message-ID: <20240122235714.036043807@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Andrew Lunn <andrew@lunn.ch>
 
-[ Upstream commit afffcf3db98b9495114b79d5381f8cc3f69476fb ]
+[ Upstream commit 294ea29113104487a905d0f81c00dfd64121b3d9 ]
 
-update() calls should not modify the result buffer, so add an additional
-check for "rctx->last" to make sure that only the final hash value is
-copied into the buffer.
+net/netlabel/netlabel_calipso.c:376: warning: Function parameter or member 'ops' not described in 'netlbl_calipso_ops_register'
 
-Fixes the following selftest failure:
-alg: ahash: sahara-sha256 update() used result buffer on test vector 3,
-cfg="init+update+final aligned buffer"
-
-Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Acked-by: Paul Moore <paul@paul-moore.com>
+Link: https://lore.kernel.org/r/20201028005350.930299-1-andrew@lunn.ch
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: ec4e9d630a64 ("calipso: fix memory leak in netlbl_calipso_add_pass()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netlabel/netlabel_calipso.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index e44dd34f8559..b48f92c8cd0f 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -1031,7 +1031,7 @@ static int sahara_sha_process(struct ahash_request *req)
+diff --git a/net/netlabel/netlabel_calipso.c b/net/netlabel/netlabel_calipso.c
+index 4d748975117d..5ae9b0f18a7e 100644
+--- a/net/netlabel/netlabel_calipso.c
++++ b/net/netlabel/netlabel_calipso.c
+@@ -379,6 +379,7 @@ static const struct netlbl_calipso_ops *calipso_ops;
  
- 	memcpy(rctx->context, dev->context_base, rctx->context_size);
- 
--	if (req->result)
-+	if (req->result && rctx->last)
- 		memcpy(req->result, rctx->context, rctx->digest_size);
- 
- 	return 0;
+ /**
+  * netlbl_calipso_ops_register - Register the CALIPSO operations
++ * @ops: ops to register
+  *
+  * Description:
+  * Register the CALIPSO packet engine operations.
 -- 
 2.43.0
 
