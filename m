@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-14703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71CE8838232
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4001838234
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 10CC51F25E4F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56F2A1F23F41
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FB072B9CE;
-	Tue, 23 Jan 2024 01:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7917158AD8;
+	Tue, 23 Jan 2024 01:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FbBVNrdp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJVON5Yt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B2250278;
-	Tue, 23 Jan 2024 01:41:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A535025A;
+	Tue, 23 Jan 2024 01:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974093; cv=none; b=iPPCM7cVj4HWrX6pNptxrczgdqRty0f6cmliUp0EXIPsQ28+Tc2IEBB1K/ob/Xemvc7J8Gk60+wSv3WyLrjvhOYew7UsTHNN2gym20Qn++0wWLSGCZIIWfe8OLBh8ATQoz6vZEuLJI+k4mBUYxzxj4ip5oacBGM8SWzZPDc31Oc=
+	t=1705974096; cv=none; b=maJ4bUaGa5gveQathWPKy3+rmCpA/DIkYshIU4SiFsu1c1neCadzTa4wArT26kXBHGL+TdVOmuDggSUdrEsdQ7uROMHKb59o+ITh9XOSL/alY1t7Wp8wgc0/8+0BF2qn9F89rURwtWCmUFaPjnX1DqHaJ/OveVevCUl86f53dNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974093; c=relaxed/simple;
-	bh=JAhp0lXK5r6OapOOtPN5UC894HqEZOQQ4lJpHYi206s=;
+	s=arc-20240116; t=1705974096; c=relaxed/simple;
+	bh=EEDIW6NmsJXnJQPSX/ruCxNTTFEz2diwZpuhnYgRffA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a3dLVYZ45YgHux3IRSsZt+Nx1ylxpzFkIfTejGTgxt86gZBQFmz3/kd8Xmoujh5Bv8MrtgWVgTGRzZ76OM8QurzU+b2GfzfQaPkiHs9PNvxu7OkGmvMe5w/5g2G7YTt1KIgEs7ckNBhHqASE7uWR9qOVlcV/AhyqqyG6N9upWeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FbBVNrdp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0824FC43390;
-	Tue, 23 Jan 2024 01:41:32 +0000 (UTC)
+	 MIME-Version; b=ajeWiGOaVMEciiemxAzibxMzWyDCuzipsH3VCW8y7rUos+qv3iemf5Za7jn+Ot6fy3OtLWyxejO8j7j9ZdOUOuesFPMkFIdW6dgvq6sb0lUyloatAtUyQkkBim+8ciylFmY+RX2ZUewPLSJrKEXYwI4XM2wv9b2Nf69mZtSMnnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJVON5Yt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42ADFC43390;
+	Tue, 23 Jan 2024 01:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974093;
-	bh=JAhp0lXK5r6OapOOtPN5UC894HqEZOQQ4lJpHYi206s=;
+	s=korg; t=1705974095;
+	bh=EEDIW6NmsJXnJQPSX/ruCxNTTFEz2diwZpuhnYgRffA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FbBVNrdpkpamGJByYGAL7LhyyW2I5V83o9seoUwRCtqjAAwTTDjFtwsupWSFT0x37
-	 q92bUBAKpnvK9LYTXHUOjJiKELYJNzVG5/PBN4K7Q53kEjKBDqdyx7SNRpncNmhTmy
-	 3lSoPPFG83og69lNsy2JRZ4l30KwUb608hq2lBBE=
+	b=HJVON5Yt0umqkLVHyl2doorTu7PS2h+GD08GvaPbkBxF4/17JCffQAO7AhdGOtGsO
+	 gDtHVPMpBSw6yT3RxynU+tyW3BY8UVuDpU4onx3joSYBTXT0UFRHl/T0Ddi60aSkKT
+	 ID2tbnb/JqOpjjx4dRfWNcEjDHy+T129pFBELLnY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erwin Tsaur <erwin.tsaur@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Lukasz Luba <lukasz.luba@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 035/583] ACPI: extlog: Clear Extended Error Log status when RAS_CEC handled the error
-Date: Mon, 22 Jan 2024 15:51:26 -0800
-Message-ID: <20240122235813.236919452@linuxfoundation.org>
+Subject: [PATCH 6.6 036/583] thermal: core: Fix NULL pointer dereference in zone registration error path
+Date: Mon, 22 Jan 2024 15:51:27 -0800
+Message-ID: <20240122235813.264995853@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
 References: <20240122235812.238724226@linuxfoundation.org>
@@ -67,45 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tony Luck <tony.luck@intel.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 38c872a9e96f72f2947affc0526cc05659367d3d ]
+[ Upstream commit 04e6ccfc93c5a1aa1d75a537cf27e418895e20ea ]
 
-When both CONFIG_RAS_CEC and CONFIG_ACPI_EXTLOG are enabled, Linux does
-not clear the status word of the BIOS supplied error record for corrected
-errors. This may prevent logging of subsequent uncorrected errors.
+If device_register() in thermal_zone_device_register_with_trips()
+returns an error, the tz variable is set to NULL and subsequently
+dereferenced in kfree(tz->tzp).
 
-Fix by clearing the status.
+Commit adc8749b150c ("thermal/drivers/core: Use put_device() if
+device_register() fails") added the tz = NULL assignment in question to
+avoid a possible double-free after dropping the reference to the zone
+device.  However, after commit 4649620d9404 ("thermal: core: Make
+thermal_zone_device_unregister() return after freeing the zone"), that
+assignment has become redundant, because dropping the reference to the
+zone device does not cause the zone object to be freed any more.
 
-Fixes: 23ba710a0864 ("x86/mce: Fix all mce notifiers to update the mce->kflags bitmask")
-Reported-by: Erwin Tsaur <erwin.tsaur@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
+Drop it to address the NULL pointer dereference.
+
+Fixes: 3d439b1a2ad3 ("thermal/core: Alloc-copy-free the thermal zone parameters structure")
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_extlog.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/thermal/thermal_core.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-index e120a96e1eae..71e8d4e7a36c 100644
---- a/drivers/acpi/acpi_extlog.c
-+++ b/drivers/acpi/acpi_extlog.c
-@@ -145,9 +145,14 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
- 	static u32 err_seq;
- 
- 	estatus = extlog_elog_entry_check(cpu, bank);
--	if (estatus == NULL || (mce->kflags & MCE_HANDLED_CEC))
-+	if (!estatus)
- 		return NOTIFY_DONE;
- 
-+	if (mce->kflags & MCE_HANDLED_CEC) {
-+		estatus->block_status = 0;
-+		return NOTIFY_DONE;
-+	}
-+
- 	memcpy(elog_buf, (void *)estatus, ELOG_ENTRY_LEN);
- 	/* clear record status to enable BIOS to update it again */
- 	estatus->block_status = 0;
+diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
+index e6f3166a9208..2de524fb7be5 100644
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -1382,7 +1382,6 @@ thermal_zone_device_register_with_trips(const char *type, struct thermal_trip *t
+ 	device_del(&tz->device);
+ release_device:
+ 	put_device(&tz->device);
+-	tz = NULL;
+ remove_id:
+ 	ida_free(&thermal_tz_ida, id);
+ free_tzp:
 -- 
 2.43.0
 
