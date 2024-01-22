@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6A9E8381DF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:15:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 428D2837EFD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE232B29563
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75B081C28931
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFBA33D8;
-	Tue, 23 Jan 2024 01:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F5E604B5;
+	Tue, 23 Jan 2024 00:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h3E8Z/YL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s0KOI35R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9781B2599;
-	Tue, 23 Jan 2024 01:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3388960252;
+	Tue, 23 Jan 2024 00:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972164; cv=none; b=MTTH8bQ4I5IDpL7H27Nit7bG5cbzDHZ30NLNPMTlE8iskiIQ09WonXSsKHpFdSi9E+A8cV0lj45PWnAt+rKO44hOSx3CraaLmWhJXG0S/gFkns4ehuMs7wpeIVVoueWZcWBDXlLyW11EogkvRT2UdSknpMaygnKAeW45+0Ra8V8=
+	t=1705970866; cv=none; b=mAx+/OuFrQUjBIHRmKrbgLPmWiww89G7fMQwQ5XqJ9L5mDHojevtmsC7wXBj9KcvM6Nue4z7jWkUVBNDvdPPNOXUIGw+bC5KHBiwpfLc3E3dPL4t9HTGnrS+zsmgbdtfO2l908eHavnvK+nr+T6GZ3HQcCQeLGXTJEKB+1EdSoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972164; c=relaxed/simple;
-	bh=flY1VMV0hVaG2pRbYPp1xJ+7UBUja+dYvenOkIbRLo8=;
+	s=arc-20240116; t=1705970866; c=relaxed/simple;
+	bh=flscZ/plt75/6tg0sDtyhpmPISXlp8527Yj5S0UP4Xc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GraBMMoF+p6r+ugg+DeQyr6Wo1rvFGjZR686LEh/hsJGFu0D6ZQgEA6weevGhYfLB0JpE+0K7vnNcBchvN01jhIqpYt+fEJod1mPUolYmlepTkgsi9w0QAzIRx3vOVSEgOX9FJlvyU/CvIjpOXTpw0tnKVlOXO6Qfz+wPNm1ly8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h3E8Z/YL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D74C43390;
-	Tue, 23 Jan 2024 01:09:24 +0000 (UTC)
+	 MIME-Version; b=iE1W8nNdoEqstdf9S1ZHPs77pqnIbDXUSk6XMNe0NzxsWNI5scFNxqAgnWC+ZeJiMNeBTmFP4Ug2zaDwCi/9f6EivFNxNdRAVNMbXj2JfGTWyMdh6HgBeu1+a1HCEMCAtoPciyvBP7C316FbcP70FEhIIcwPv2g9m/p7wW1G4dM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s0KOI35R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD6BFC433C7;
+	Tue, 23 Jan 2024 00:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972164;
-	bh=flY1VMV0hVaG2pRbYPp1xJ+7UBUja+dYvenOkIbRLo8=;
+	s=korg; t=1705970866;
+	bh=flscZ/plt75/6tg0sDtyhpmPISXlp8527Yj5S0UP4Xc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h3E8Z/YLgutNg6zGo2hU0tjTYvOcUDtjve4WY42x2t+KT5HQEC4e81r3aGO7OZtgw
-	 GPUleqmQEF9fyodcmwnrv3ZxAGaPDiNd1i5uQXjllGjNnGxY5RpvGSB3Scgun89pif
-	 cCwCsE8RS8QKcjbyE49hAaP3J2QPOBPK671OGQLQ=
+	b=s0KOI35R0Ci/o+miPqofW6HIX2WEHD1HvNAyAqaWGkAkavw7bvoaNvDiAeme/qk9t
+	 0+uP25luG63Okk4V5kaB86HHKMZO08HZVSnknrVS7e5PFIycHxRbffCfhaYaOGSzW5
+	 kTfI7wSp05ZNJtVFmPeUNml9oWOYJtHMgE7bvjtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Luca Weiss <luca@z3ntu.xyz>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 084/374] cpufreq: Use of_property_present() for testing DT property presence
+Subject: [PATCH 5.10 034/286] Input: xpad - add Razer Wolverine V2 support
 Date: Mon, 22 Jan 2024 15:55:40 -0800
-Message-ID: <20240122235747.538651205@linuxfoundation.org>
+Message-ID: <20240122235733.334468490@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +62,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Luca Weiss <luca@z3ntu.xyz>
 
-[ Upstream commit b8f3a396a7ee43e6079176cc0fb8de2b95a23681 ]
+[ Upstream commit c3d1610345b79cbe29ef6ca04a4780eff0d360c7 ]
 
-It is preferred to use typed property access functions (i.e.
-of_property_read_<type> functions) rather than low-level
-of_get_property/of_find_property functions for reading properties. As
-part of this, convert of_get_property/of_find_property calls to the
-recently added of_property_present() helper when we just want to test
-for presence of a property and nothing more.
+Add the VID and PID of Razer Wolverine V2 to xpad_device.
 
-Signed-off-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Stable-dep-of: c4a5118a3ae1 ("cpufreq: scmi: process the result of devm_of_clk_add_hw_provider()")
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Link: https://lore.kernel.org/r/20231125-razer-wolverine-v2-v1-1-979fe9f9288e@z3ntu.xyz
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq-dt-platdev.c | 2 +-
- drivers/cpufreq/imx-cpufreq-dt.c     | 2 +-
- drivers/cpufreq/imx6q-cpufreq.c      | 4 ++--
- drivers/cpufreq/scmi-cpufreq.c       | 2 +-
- drivers/cpufreq/tegra20-cpufreq.c    | 2 +-
- 5 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/input/joystick/xpad.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/cpufreq/cpufreq-dt-platdev.c b/drivers/cpufreq/cpufreq-dt-platdev.c
-index e1b5975c7daa..48ca7189a73b 100644
---- a/drivers/cpufreq/cpufreq-dt-platdev.c
-+++ b/drivers/cpufreq/cpufreq-dt-platdev.c
-@@ -171,7 +171,7 @@ static bool __init cpu0_node_has_opp_v2_prop(void)
- 	struct device_node *np = of_cpu_device_node_get(0);
- 	bool ret = false;
- 
--	if (of_get_property(np, "operating-points-v2", NULL))
-+	if (of_property_present(np, "operating-points-v2"))
- 		ret = true;
- 
- 	of_node_put(np);
-diff --git a/drivers/cpufreq/imx-cpufreq-dt.c b/drivers/cpufreq/imx-cpufreq-dt.c
-index 3fe9125156b4..0942498b348c 100644
---- a/drivers/cpufreq/imx-cpufreq-dt.c
-+++ b/drivers/cpufreq/imx-cpufreq-dt.c
-@@ -89,7 +89,7 @@ static int imx_cpufreq_dt_probe(struct platform_device *pdev)
- 
- 	cpu_dev = get_cpu_device(0);
- 
--	if (!of_find_property(cpu_dev->of_node, "cpu-supply", NULL))
-+	if (!of_property_present(cpu_dev->of_node, "cpu-supply"))
- 		return -ENODEV;
- 
- 	if (of_machine_is_compatible("fsl,imx7ulp")) {
-diff --git a/drivers/cpufreq/imx6q-cpufreq.c b/drivers/cpufreq/imx6q-cpufreq.c
-index 67f98a083d22..ae9ef99f7d86 100644
---- a/drivers/cpufreq/imx6q-cpufreq.c
-+++ b/drivers/cpufreq/imx6q-cpufreq.c
-@@ -230,7 +230,7 @@ static int imx6q_opp_check_speed_grading(struct device *dev)
- 	u32 val;
- 	int ret;
- 
--	if (of_find_property(dev->of_node, "nvmem-cells", NULL)) {
-+	if (of_property_present(dev->of_node, "nvmem-cells")) {
- 		ret = nvmem_cell_read_u32(dev, "speed_grade", &val);
- 		if (ret)
- 			return ret;
-@@ -285,7 +285,7 @@ static int imx6ul_opp_check_speed_grading(struct device *dev)
- 	u32 val;
- 	int ret = 0;
- 
--	if (of_find_property(dev->of_node, "nvmem-cells", NULL)) {
-+	if (of_property_present(dev->of_node, "nvmem-cells")) {
- 		ret = nvmem_cell_read_u32(dev, "speed_grade", &val);
- 		if (ret)
- 			return ret;
-diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
-index 1e0cd4d165f0..82e588c3c57b 100644
---- a/drivers/cpufreq/scmi-cpufreq.c
-+++ b/drivers/cpufreq/scmi-cpufreq.c
-@@ -299,7 +299,7 @@ static int scmi_cpufreq_probe(struct scmi_device *sdev)
- 
- #ifdef CONFIG_COMMON_CLK
- 	/* dummy clock provider as needed by OPP if clocks property is used */
--	if (of_find_property(dev->of_node, "#clock-cells", NULL))
-+	if (of_property_present(dev->of_node, "#clock-cells"))
- 		devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, NULL);
- #endif
- 
-diff --git a/drivers/cpufreq/tegra20-cpufreq.c b/drivers/cpufreq/tegra20-cpufreq.c
-index e8db3d75be25..72b9c2d5f375 100644
---- a/drivers/cpufreq/tegra20-cpufreq.c
-+++ b/drivers/cpufreq/tegra20-cpufreq.c
-@@ -25,7 +25,7 @@ static bool cpu0_node_has_opp_v2_prop(void)
- 	struct device_node *np = of_cpu_device_node_get(0);
- 	bool ret = false;
- 
--	if (of_get_property(np, "operating-points-v2", NULL))
-+	if (of_property_present(np, "operating-points-v2"))
- 		ret = true;
- 
- 	of_node_put(np);
+diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
+index beedad0fe09a..239471cf7e4c 100644
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -266,6 +266,7 @@ static const struct xpad_device {
+ 	{ 0x146b, 0x0604, "Bigben Interactive DAIJA Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
+ 	{ 0x1532, 0x0a00, "Razer Atrox Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOXONE },
+ 	{ 0x1532, 0x0a03, "Razer Wildcat", 0, XTYPE_XBOXONE },
++	{ 0x1532, 0x0a29, "Razer Wolverine V2", 0, XTYPE_XBOXONE },
+ 	{ 0x15e4, 0x3f00, "Power A Mini Pro Elite", 0, XTYPE_XBOX360 },
+ 	{ 0x15e4, 0x3f0a, "Xbox Airflo wired controller", 0, XTYPE_XBOX360 },
+ 	{ 0x15e4, 0x3f10, "Batarang Xbox 360 controller", 0, XTYPE_XBOX360 },
 -- 
 2.43.0
 
