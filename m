@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E1E8381C6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:13:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80240837E97
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC04CB282F7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD4201C213D4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB212107;
-	Tue, 23 Jan 2024 01:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CFD842A8D;
+	Tue, 23 Jan 2024 00:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7Q4lUoH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJtYcbzR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB5A1FBF;
-	Tue, 23 Jan 2024 01:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB052B9B7;
+	Tue, 23 Jan 2024 00:45:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972160; cv=none; b=TUCKNf3nspU/OfEIypp47+jRyIDE0u21b8fYNclxoVtvkPfWkeWlm6u3Ae3t+rgO1nJX6uzJ7bspyBX0kniZOwM4QeoL4yPl1oLmoB6GEj+7ZW4tEXWOlzSHP41Wzf8QrtuLYe0GUSHInnwj2IIkiAnm36N6wLRwvnT/9KE4jzA=
+	t=1705970705; cv=none; b=mg4kp8M5KjYeFknU0FnF4V937I63yYQP0mXEln6VJt8EiTlpm5eslhE96SZJwnSb8dXbJF0q5F+iU3lK0LOlBMUCTYjGSEsgECy89S0sTAnlLauiwDxbvx4lZmYk0OGvorZ41eFzDCSvpU4W3unAT8KqP1Aa83N4uMooBkQN9vU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972160; c=relaxed/simple;
-	bh=gIhuVS1TjYikEiSNocD8pZ3G1ITzq7kFVNaNayNmZdo=;
+	s=arc-20240116; t=1705970705; c=relaxed/simple;
+	bh=eIha0vcb5o0T3kMLxzGc846GKBP6x3mhZfuahUHx21E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kD9tQkJOYkDWc5Z/RPDFj90xg4Q4A6gfOAdM7HjHwg4/84ToIyxfAJg1xvCNK0iOZ9rpZ8SNSQdh/Rw4LiXfOusiLplgtigiMwxKeYguozLdd17ppsZNA9zHszRxLYagjHk0OfxCe2u6Vqs8MRSDtIHOrCUnNi7Fin0J1DFjxl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7Q4lUoH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01027C43390;
-	Tue, 23 Jan 2024 01:09:19 +0000 (UTC)
+	 MIME-Version; b=Xu0V2Gywc+Oc1V/+Mv1txw5EsJ/df/wRFeahZy+GEgafsw3gzhdK+GgFaDgf7Za0pcoI7v2mLutajYJqP21VycRj88nvU8qBpXn8Xi/7NZGkPiKCMvtC0v2NH+S9K8bJof1BoXnUhS6nLd1YvTT/4POVwpDv4/EFhXhelqaXjgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJtYcbzR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B872C433F1;
+	Tue, 23 Jan 2024 00:45:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972160;
-	bh=gIhuVS1TjYikEiSNocD8pZ3G1ITzq7kFVNaNayNmZdo=;
+	s=korg; t=1705970704;
+	bh=eIha0vcb5o0T3kMLxzGc846GKBP6x3mhZfuahUHx21E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n7Q4lUoHvExsvny9UhdKSRNcWA5X9jQzlz+PlsEYRJ6dHnp/tUrY27G+ydeerpAwD
-	 1fmaJnaZfVUEvY5IsMJKqxecpdsBMtaImHY49ZpI6Csxrh9C8gEcN3NCdqqMJewyCS
-	 JWo2XP0tMBN0jyu9MQDHHIwworoo14p+mfkpItik=
+	b=gJtYcbzRnoQvvhYYWeMRp0b83hQBpbBp2Xsw/DbqNewZKyPSj+yoOFHVT+SBqNnXV
+	 vp5VvKvBaWSFvdXSX7adE2V6lZTEiAYidzk+9sIcNPRLp1s8X7rm9G9lWxT5DzSWqd
+	 oK4YmJvd/vJV8Fsr6anI7Np9hJmmujhV+BLIZRZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengfei Xu <pengfei.xu@intel.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Fedor Pchelkin <pchelkin@ispras.ru>
-Subject: [PATCH 5.15 053/374] kprobes: Fix to handle forcibly unoptimized kprobes on freeing_list
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 003/286] ALSA: hda - Fix speaker and headset mic pin config for CHUWI CoreBook XPro
 Date: Mon, 22 Jan 2024 15:55:09 -0800
-Message-ID: <20240122235746.447726038@linuxfoundation.org>
+Message-ID: <20240122235732.135624183@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-commit 4fbd2f83fda0ca44a2ec6421ca3508b355b31858 upstream.
+[ Upstream commit 7c9caa299335df94ad1c58f70a22f16a540eab60 ]
 
-Since forcibly unoptimized kprobes will be put on the freeing_list directly
-in the unoptimize_kprobe(), do_unoptimize_kprobes() must continue to check
-the freeing_list even if unoptimizing_list is empty.
+This patch corrected the speaker and headset mic pin config to the more
+appropriate values.
 
-This bug can happen if a kprobe is put in an instruction which is in the
-middle of the jump-replaced instruction sequence of an optprobe, *and* the
-optprobe is recently unregistered and queued on unoptimizing_list.
-In this case, the optprobe will be unoptimized forcibly (means immediately)
-and put it into the freeing_list, expecting the optprobe will be handled in
-do_unoptimize_kprobe().
-But if there is no other optprobes on the unoptimizing_list, current code
-returns from the do_unoptimize_kprobe() soon and does not handle the
-optprobe which is on the freeing_list. Then the optprobe will hit the
-WARN_ON_ONCE() in the do_free_cleaned_kprobes(), because it is not handled
-in the latter loop of the do_unoptimize_kprobe().
-
-To solve this issue, do not return from do_unoptimize_kprobes() immediately
-even if unoptimizing_list is empty.
-
-Moreover, this change affects another case. kill_optimized_kprobes() expects
-kprobe_optimizer() will just free the optprobe on freeing_list.
-So I changed it to just do list_move() to freeing_list if optprobes are on
-unoptimizing list. And the do_unoptimize_kprobe() will skip
-arch_disarm_kprobe() if the probe on freeing_list has gone flag.
-
-Link: https://lore.kernel.org/all/Y8URdIfVr3pq2X8w@xpf.sh.intel.com/
-Link: https://lore.kernel.org/all/167448024501.3253718.13037333683110512967.stgit@devnote3/
-
-Fixes: e4add247789e ("kprobes: Fix optimize_kprobe()/unoptimize_kprobe() cancellation logic")
-Reported-by: Pengfei Xu <pengfei.xu@intel.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: stable@vger.kernel.org
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-[fp: adjust comment conflict regarding commit 223a76b268c9 ("kprobes: Fix
- coding style issues")]
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Link: https://lore.kernel.org/r/20231117170923.106822-1-kovalev@altlinux.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kprobes.c |   23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ sound/pci/hda/patch_realtek.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -549,17 +549,15 @@ static void do_unoptimize_kprobes(void)
- 	/* See comment in do_optimize_kprobes() */
- 	lockdep_assert_cpus_held();
- 
--	/* Unoptimization must be done anytime */
--	if (list_empty(&unoptimizing_list))
--		return;
-+	if (!list_empty(&unoptimizing_list))
-+		arch_unoptimize_kprobes(&unoptimizing_list, &freeing_list);
- 
--	arch_unoptimize_kprobes(&unoptimizing_list, &freeing_list);
--	/* Loop free_list for disarming */
-+	/* Loop on 'freeing_list' for disarming and removing from kprobe hash list */
- 	list_for_each_entry_safe(op, tmp, &freeing_list, list) {
- 		/* Switching from detour code to origin */
- 		op->kp.flags &= ~KPROBE_FLAG_OPTIMIZED;
--		/* Disarm probes if marked disabled */
--		if (kprobe_disabled(&op->kp))
-+		/* Disarm probes if marked disabled and not gone */
-+		if (kprobe_disabled(&op->kp) && !kprobe_gone(&op->kp))
- 			arch_disarm_kprobe(&op->kp);
- 		if (kprobe_unused(&op->kp)) {
- 			/*
-@@ -788,14 +786,13 @@ static void kill_optimized_kprobe(struct
- 	op->kp.flags &= ~KPROBE_FLAG_OPTIMIZED;
- 
- 	if (kprobe_unused(p)) {
--		/* Enqueue if it is unused */
--		list_add(&op->list, &freeing_list);
- 		/*
--		 * Remove unused probes from the hash list. After waiting
--		 * for synchronization, this probe is reclaimed.
--		 * (reclaiming is done by do_free_cleaned_kprobes().)
-+		 * Unused kprobe is on unoptimizing or freeing list. We move it
-+		 * to freeing_list and let the kprobe_optimizer() remove it from
-+		 * the kprobe hash list and free it.
- 		 */
--		hlist_del_rcu(&op->kp.hlist);
-+		if (optprobe_queued_unopt(op))
-+			list_move(&op->list, &freeing_list);
- 	}
- 
- 	/* Don't touch the code, because it is already freed. */
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 99ba89723cd3..c7e76bfad84d 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -6797,6 +6797,7 @@ enum {
+ 	ALC290_FIXUP_SUBWOOFER_HSJACK,
+ 	ALC269_FIXUP_THINKPAD_ACPI,
+ 	ALC269_FIXUP_DMIC_THINKPAD_ACPI,
++	ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO,
+ 	ALC255_FIXUP_ACER_MIC_NO_PRESENCE,
+ 	ALC255_FIXUP_ASUS_MIC_NO_PRESENCE,
+ 	ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
+@@ -7094,6 +7095,14 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc269_fixup_pincfg_U7x7_headset_mic,
+ 	},
++	[ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x18, 0x03a19020 }, /* headset mic */
++			{ 0x1b, 0x90170150 }, /* speaker */
++			{ }
++		},
++	},
+ 	[ALC269_FIXUP_AMIC] = {
+ 		.type = HDA_FIXUP_PINS,
+ 		.v.pins = (const struct hda_pintbl[]) {
+@@ -9320,6 +9329,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
++	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
+ 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
+ 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
+ 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", ALC256_FIXUP_INTEL_NUC10),
+-- 
+2.43.0
+
 
 
 
