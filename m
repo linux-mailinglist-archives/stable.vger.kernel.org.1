@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-13691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A18F0837D6E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:11 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2C7B83846C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B937286E0F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01FBE1C2A346
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61CD50A61;
-	Tue, 23 Jan 2024 00:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085C36DCE5;
+	Tue, 23 Jan 2024 02:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hQUFMycp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGJ0iFfU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06885A78D;
-	Tue, 23 Jan 2024 00:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2616D1D7;
+	Tue, 23 Jan 2024 02:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969946; cv=none; b=AIx2hoqXPxqLUpC47zF6aJ7XPxOA0/NyJ0zAu95RyQZl8QlUhMMI+kyqoVMuGpz1Z7xXDHZUaPvt5RENgYqoty135gy1r01kBgm7hUyUunZRneL7+L/eyu7l2qcdE/bkCvKjBCkxiHnD4fsvB5FDc4BM2rrKNyBjor0nUZwJt8M=
+	t=1705975392; cv=none; b=dRJWjQAw/NaNZqmPQM0GM0s3vJR7SBWaHWKRHstSvQOIti156RjCvuOUI8D443dfLJMWpEpqUhaANdxOyK1t0Ea7RqklOawDq6/StIfSE9TGYwU6Ipz2w3rTG320iDfmreeb5lSuEZOIwbeQ2tfy4lEJb77vC87M/7QlTHYM2Uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969946; c=relaxed/simple;
-	bh=8hf6LQiUNPzVAkwWIjcNAtITBITW2Tz7x7cL62mbUJw=;
+	s=arc-20240116; t=1705975392; c=relaxed/simple;
+	bh=3SdE4aOUqdyewTKbQK3zlH7SCmp9Clbq//rDLIoYYQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZQzobJuDOYvTgYFFQA6r2eOzVsuC79yKgbXeeRoHTyRzbvOjoC1uoBvRKKnO9IL+TMXH5uvamuTMofu1L1SuQrWBaSyUB8EkUtRrTEJZD3SMgM/V81VZnRpizdus7MBs+CPztPCpawasGHuQw11N1SffVEZV8MHlvDRNoVmCv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hQUFMycp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C72AC433C7;
-	Tue, 23 Jan 2024 00:32:25 +0000 (UTC)
+	 MIME-Version; b=KC93oka6Jpe3xQzT5RKa/Nnseri9qxBveIyZ8WRJ15FdzjaSON4T4MEbDMUdqOX9Ea7PveU7kZML5mJXN0D/DUVFjM6kZPdx+xQydY+4mf5u345No+ng7HpSWHlO1Ol9ISojzziNyCmzWUI2ziy0NiEdSIt8rLH1DY2MLltmryc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGJ0iFfU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84009C43394;
+	Tue, 23 Jan 2024 02:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969946;
-	bh=8hf6LQiUNPzVAkwWIjcNAtITBITW2Tz7x7cL62mbUJw=;
+	s=korg; t=1705975392;
+	bh=3SdE4aOUqdyewTKbQK3zlH7SCmp9Clbq//rDLIoYYQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hQUFMycpX0NxJk2+6KMwXKUTXsMG9vHoZSPojdhLzDsAG/86AJmshKqlJcmcpHZmf
-	 Kk09CxtWnFxlVp+Q3EhzPm0+j/xyqEfoflDVC/8pff9XHDaPVSTgOoUzyp/1/58pov
-	 HjVt/2icbAiu/vBxXo0JvKuzNYgwGEkesmlm9PEU=
+	b=TGJ0iFfU+PyTgGGPIgzpebFwl+YW/ZF8VXv6r5Twb/a8txw9WMKa4Xhgj+TnOJxFZ
+	 77grnhq+ziew/r+3vfS0KdWZXe4laMHPxP2duxkwdkc+Qk9Ex/2t9RGHLZYjGSoCr7
+	 QQ1iDos/VAw5bD1P8DUnfYwdGSgsxg8BEtZzbPGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 500/641] MIPS: Alchemy: Fix an out-of-bound access in db1200_dev_setup()
+	Alice Ryhl <aliceryhl@google.com>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 6.6 353/583] binder: fix race between mmput() and do_exit()
 Date: Mon, 22 Jan 2024 15:56:44 -0800
-Message-ID: <20240122235833.711597560@linuxfoundation.org>
+Message-ID: <20240122235822.821515325@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit 89c4b588d11e9acf01d604de4b0c715884f59213 ]
+commit 9a9ab0d963621d9d12199df9817e66982582d5a5 upstream.
 
-When calling spi_register_board_info(), we should pass the number of
-elements in 'db1200_spi_devs', not 'db1200_i2c_devs'.
+Task A calls binder_update_page_range() to allocate and insert pages on
+a remote address space from Task B. For this, Task A pins the remote mm
+via mmget_not_zero() first. This can race with Task B do_exit() and the
+final mmput() refcount decrement will come from Task A.
 
-Fixes: 63323ec54a7e ("MIPS: Alchemy: Extended DB1200 board support.")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  Task A            | Task B
+  ------------------+------------------
+  mmget_not_zero()  |
+                    |  do_exit()
+                    |    exit_mm()
+                    |      mmput()
+  mmput()           |
+    exit_mmap()     |
+      remove_vma()  |
+        fput()      |
+
+In this case, the work of ____fput() from Task B is queued up in Task A
+as TWA_RESUME. So in theory, Task A returns to userspace and the cleanup
+work gets executed. However, Task A instead sleep, waiting for a reply
+from Task B that never comes (it's dead).
+
+This means the binder_deferred_release() is blocked until an unrelated
+binder event forces Task A to go back to userspace. All the associated
+death notifications will also be delayed until then.
+
+In order to fix this use mmput_async() that will schedule the work in
+the corresponding mm->async_put_work WQ instead of Task A.
+
+Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20231201172212.1813387-4-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/alchemy/devboards/db1200.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/android/binder_alloc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/alchemy/devboards/db1200.c b/arch/mips/alchemy/devboards/db1200.c
-index f521874ebb07..67f067706af2 100644
---- a/arch/mips/alchemy/devboards/db1200.c
-+++ b/arch/mips/alchemy/devboards/db1200.c
-@@ -847,7 +847,7 @@ int __init db1200_dev_setup(void)
- 	i2c_register_board_info(0, db1200_i2c_devs,
- 				ARRAY_SIZE(db1200_i2c_devs));
- 	spi_register_board_info(db1200_spi_devs,
--				ARRAY_SIZE(db1200_i2c_devs));
-+				ARRAY_SIZE(db1200_spi_devs));
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -271,7 +271,7 @@ static int binder_update_page_range(stru
+ 	}
+ 	if (mm) {
+ 		mmap_write_unlock(mm);
+-		mmput(mm);
++		mmput_async(mm);
+ 	}
+ 	return 0;
  
- 	/* SWITCHES:	S6.8 I2C/SPI selector  (OFF=I2C	 ON=SPI)
- 	 *		S6.7 AC97/I2S selector (OFF=AC97 ON=I2S)
--- 
-2.43.0
-
+@@ -304,7 +304,7 @@ err_page_ptr_cleared:
+ err_no_vma:
+ 	if (mm) {
+ 		mmap_write_unlock(mm);
+-		mmput(mm);
++		mmput_async(mm);
+ 	}
+ 	return vma ? -ENOMEM : -ESRCH;
+ }
 
 
 
