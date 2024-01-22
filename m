@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-13839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82C88837E50
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96B6E83836A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 203B528D17F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:38:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 395581F28C94
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC17755E5A;
-	Tue, 23 Jan 2024 00:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51B6629E6;
+	Tue, 23 Jan 2024 01:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0CDejbGn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJvGqfNT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2B83984D;
-	Tue, 23 Jan 2024 00:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721F6629E1;
+	Tue, 23 Jan 2024 01:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970518; cv=none; b=gqbt3js7hSlW9j8bq+4A67JeaWPp6DSvmIXddLSWdUxhLdvSjdwSGMg55bPD+2+iE/zxb8B8DN9Dnh0waCnGjc0KAnklxlPW4KJGzPYNU+bIk1vXimOSMsFh8ufbtMsdWwXoQN1KFdBR6HFM/kiZx0J5FniahEE1wpyZ/M/uqO8=
+	t=1705974966; cv=none; b=WS6achaWuSxGQ/vs1fjqQMCqcfLnlnM/2gW32PZd+A6SjkUNADKBNSnPKldvqpuqXdc5iVrkuvLqouDD5J7oDua8C6sLKI894AW+IRwx5qn9Wdq21uWNTAVyw0i6jOeDNbQnf+/o3zzSig8XkizVoOAvtZsNdUIXVixZp80HPzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970518; c=relaxed/simple;
-	bh=SDORy2u3CAHHUKgTbtK/z/rwWoHs5y6xpGL+hXZDnRs=;
+	s=arc-20240116; t=1705974966; c=relaxed/simple;
+	bh=50O3UWUy4GRFE+bwCgIqF01X9kkekzOClc5O+QZrLdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pzRIi2TwLj3f6X619fxkTpJPVVAeMsYlF7+c63GfXqR3l8TbmO0qUyyPOtCYSWxJ08IqJ4hEZm4lsC1G8lB8ZTqzemGCcReFRlyJLSXxfAVMQ5lfMTpD7QSrnmtPiajDp17/EEMlWtZoEG3a60jOSLQAQDTUFotl7pr861TrLpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0CDejbGn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F89C43390;
-	Tue, 23 Jan 2024 00:41:57 +0000 (UTC)
+	 MIME-Version; b=iLi6D40f4eB8XYzZuFLmIUkovwHEbxCNUAn/9gOzuHL9UzC4L7iTfdFV92fIUJt53YbZJiFGnihzSJeTuSLqSlptxK6CpqMzVP8dYsAnUKMS5HOcTuKMNHBEeL6978TkKRTf0UAReC+oGDjxKNM/wX2KkUmEYLhBNwMooxiMDCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJvGqfNT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E75C433F1;
+	Tue, 23 Jan 2024 01:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970518;
-	bh=SDORy2u3CAHHUKgTbtK/z/rwWoHs5y6xpGL+hXZDnRs=;
+	s=korg; t=1705974966;
+	bh=50O3UWUy4GRFE+bwCgIqF01X9kkekzOClc5O+QZrLdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0CDejbGname9lOLB8lSnF99sx6YNvYYd5Yl9p60NokSTgqO+VL2f7JqhjbW5NmeB/
-	 N139hAqylvqkRFEj5V/3DJohJ6d/oS2EE4rqS1BjjoweMjWtRWUiXlF9PxwdZC+gp+
-	 VUqculJLRdLVtRGlhbJrqm/3GmugYkydlFBBguSo=
+	b=TJvGqfNT7hiUEgJJ8iTCMvGK9lGE8L9SmM+PDno6PCfgPQKDYNNwllMTAs2sAIElr
+	 dJJJtu3NPD45TaeZs6qIgUUYMu+mqNXPoU5J+a23L2QShZ9mBHNPv5madzyHvqZDbm
+	 lX1xDADVj7u7LMOQD7JAVmXm/OniIwz8C2zXRMVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/417] crypto: sahara - fix ahash selftest failure
+	Abel Vesa <abel.vesa@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Andrew Halaney <ahalaney@redhat.com>
+Subject: [PATCH 6.6 158/583] scsi: ufs: qcom: Fix the return value of ufs_qcom_ice_program_key()
 Date: Mon, 22 Jan 2024 15:53:29 -0800
-Message-ID: <20240122235753.061708674@linuxfoundation.org>
+Message-ID: <20240122235816.884473966@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit afffcf3db98b9495114b79d5381f8cc3f69476fb ]
+[ Upstream commit 3bf7ab4ac30c03beecf57c052e87d5a38fb8aed6 ]
 
-update() calls should not modify the result buffer, so add an additional
-check for "rctx->last" to make sure that only the final hash value is
-copied into the buffer.
+Currently, the function returns -EINVAL if algorithm other than AES-256-XTS
+is requested. But the correct error code is -EOPNOTSUPP. Fix it!
 
-Fixes the following selftest failure:
-alg: ahash: sahara-sha256 update() used result buffer on test vector 3,
-cfg="init+update+final aligned buffer"
-
-Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Abel Vesa <abel.vesa@linaro.org>
+Fixes: 56541c7c4468 ("scsi: ufs: ufs-qcom: Switch to the new ICE API")
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20231208065902.11006-3-manivannan.sadhasivam@linaro.org
+Tested-by: Andrew Halaney <ahalaney@redhat.com> # sa8775p-ride
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 2 +-
+ drivers/ufs/host/ufs-qcom.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index aa9c45ff0f5a..5e0b26f36319 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -1048,7 +1048,7 @@ static int sahara_sha_process(struct ahash_request *req)
+diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
+index fc40726e13c2..fc0fa1065a30 100644
+--- a/drivers/ufs/host/ufs-qcom.c
++++ b/drivers/ufs/host/ufs-qcom.c
+@@ -159,7 +159,7 @@ static int ufs_qcom_ice_program_key(struct ufs_hba *hba,
+ 	cap = hba->crypto_cap_array[cfg->crypto_cap_idx];
+ 	if (cap.algorithm_id != UFS_CRYPTO_ALG_AES_XTS ||
+ 	    cap.key_size != UFS_CRYPTO_KEY_SIZE_256)
+-		return -EINVAL;
++		return -EOPNOTSUPP;
  
- 	memcpy(rctx->context, dev->context_base, rctx->context_size);
- 
--	if (req->result)
-+	if (req->result && rctx->last)
- 		memcpy(req->result, rctx->context, rctx->digest_size);
- 
- 	return 0;
+ 	if (config_enable)
+ 		return qcom_ice_program_key(host->ice,
 -- 
 2.43.0
 
