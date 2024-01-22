@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-12866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BA1D8378B8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4096E8378C8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D797D28BD0E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C92AEB23563
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A9FB187A;
-	Tue, 23 Jan 2024 00:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8DA5662;
+	Tue, 23 Jan 2024 00:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IApNRtzy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JqhhPdv/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AAB31869;
-	Tue, 23 Jan 2024 00:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEA33205;
+	Tue, 23 Jan 2024 00:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968219; cv=none; b=VhTGpxwEdgb8Mh+2br6LP7iaXuH02Lh/tQe9vt6RGNpjjaRDLcKphRf2XDhmbAkhwEFLtuXS416QP4bBLYC8ezGCbaf/WseqrmuYn9/f8wbZTW8IhwNcYeG+w91utRFAqDxs32d3ZXy5Jxsb7KDDDVHyXLBR1AmgcauaqDPA9f4=
+	t=1705968247; cv=none; b=r1gtRVwcdGmrJfIn5hxQ4KqRp0Ckr8oDxgu7BHFvgS+ipX+S0v5O+vha836ncXiYWF2KnJ4WqwDkW//qcJrPUDbwS46/S6qzJUhMfLBnjN2zFL1emttIoNNjCPeKZSZ1wxWld05RuOFahMabGiRHw1EZ96kaGvqKubu+EqueVbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968219; c=relaxed/simple;
-	bh=fZ11druE/PQzYoSj8y0eBQ87l88mrgWtRVHFNV5DQAw=;
+	s=arc-20240116; t=1705968247; c=relaxed/simple;
+	bh=VccSRJGDjsoiNrVXuORq4aOmdhwBYINX5Qy4HZmB3Jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nnylJKtOM/LKwY/uRahZjqMvDiOPfhtqZcANf19uQU3dKfu4/OvQlwDLZyd/97kECG2MnbfpjcW01rOQyw1MXn5xxoAs3FBbEq/xwQSgFmwBubHK0LmlKFHVzgwwYSRsVMbsu7642hKiGEllTIuGlemBrR0QsuA/SU0m+1XSbJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IApNRtzy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75933C433F1;
-	Tue, 23 Jan 2024 00:03:37 +0000 (UTC)
+	 MIME-Version; b=qYTBEWKl2zcBeE9SNJ7mMGUjfoEIdBtIs0qrL9xRtYpTOhA0tSD3cN0jRHYIpzizu2ltjysb2TAjT3E3ofSSnpmNNpEN6IHs/n7zaP+QLIk9Nu7MsBqLZAM7MYKsX3lXicleIlNZ6aQkpVPaGBJL1rXnvderWL9DrUu7Dql0Gjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JqhhPdv/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45D26C433F1;
+	Tue, 23 Jan 2024 00:04:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968218;
-	bh=fZ11druE/PQzYoSj8y0eBQ87l88mrgWtRVHFNV5DQAw=;
+	s=korg; t=1705968246;
+	bh=VccSRJGDjsoiNrVXuORq4aOmdhwBYINX5Qy4HZmB3Jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IApNRtzyqzEzRKSE7Wl01Rw0AdgjURNhho/FM+0zkF+0wWDaL8hVF6xQHqIRL76Zz
-	 jZ5ecV6eRxsl0k9MVdogPhoX+HwxvbwBSbweCLcIGKD2doJnsWgfvP/ix+CR1TVvLP
-	 YfOohbIkKxoeqgVCUrVtWcP6jsZJbXQmzw4otzBc=
+	b=JqhhPdv/njv+TyZ2fpHsRHJlbEYQj93Vc2p0q+n18p3iaasM/HuC4j4+eyTTGRoK1
+	 hPEv39TZDQ5E+AUyFzLFSpV+BMoi3kqmxdQ8pdoPaCWDlny/gi59/HtwGi0nXO8W3W
+	 gQ9xzYGx28B6o3Fanq2hb9pe8dKVIzLhFDmJz86U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com,
-	Ziqi Zhao <astrajoan@yahoo.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 022/148] drm/crtc: fix uninitialized variable use
-Date: Mon, 22 Jan 2024 15:56:18 -0800
-Message-ID: <20240122235713.328891909@linuxfoundation.org>
+	Eric Biggers <ebiggers@google.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 4.19 023/148] binder: use EPOLLERR from eventpoll.h
+Date: Mon, 22 Jan 2024 15:56:19 -0800
+Message-ID: <20240122235713.366562646@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
 References: <20240122235712.442097787@linuxfoundation.org>
@@ -70,50 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit 6e455f5dcdd15fa28edf0ffb5b44d3508512dccf ]
+commit 6ac061db9c58ca5b9270b1b3940d2464fb3ff183 upstream.
 
-Commit 3823119b9c2b ("drm/crtc: Fix uninit-value bug in
-drm_mode_setcrtc") was supposed to fix use of an uninitialized variable,
-but introduced another.
+Use EPOLLERR instead of POLLERR to make sure it is cast to the correct
+__poll_t type. This fixes the following sparse issue:
 
-num_connectors is only initialized if crtc_req->count_connectors > 0,
-but it's used regardless. Fix it.
+  drivers/android/binder.c:5030:24: warning: incorrect type in return expression (different base types)
+  drivers/android/binder.c:5030:24:    expected restricted __poll_t
+  drivers/android/binder.c:5030:24:    got int
 
-Fixes: 3823119b9c2b ("drm/crtc: Fix uninit-value bug in drm_mode_setcrtc")
-Cc: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
-Cc: Ziqi Zhao <astrajoan@yahoo.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231208131238.2924571-1-jani.nikula@intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f88982679f54 ("binder: check for binder_thread allocation failure in binder_poll()")
+Cc: stable@vger.kernel.org
+Cc: Eric Biggers <ebiggers@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20231201172212.1813387-2-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_crtc.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/android/binder.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/drm_crtc.c
-+++ b/drivers/gpu/drm/drm_crtc.c
-@@ -573,7 +573,7 @@ int drm_mode_setcrtc(struct drm_device *
- 	struct drm_mode_set set;
- 	uint32_t __user *set_connectors_ptr;
- 	struct drm_modeset_acquire_ctx ctx;
--	int ret, i, num_connectors;
-+	int ret, i, num_connectors = 0;
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -4462,7 +4462,7 @@ static __poll_t binder_poll(struct file
  
- 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
- 		return -EINVAL;
-@@ -718,7 +718,6 @@ retry:
- 			goto out;
- 		}
+ 	thread = binder_get_thread(proc);
+ 	if (!thread)
+-		return POLLERR;
++		return EPOLLERR;
  
--		num_connectors = 0;
- 		for (i = 0; i < crtc_req->count_connectors; i++) {
- 			connector_set[i] = NULL;
- 			set_connectors_ptr = (uint32_t __user *)(unsigned long)crtc_req->set_connectors_ptr;
+ 	binder_inner_proc_lock(thread->proc);
+ 	thread->looper |= BINDER_LOOPER_STATE_POLL;
 
 
 
