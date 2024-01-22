@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31EF3837E80
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB3D783838B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9618AB22759
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:39:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B3B31F289A7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD685EE69;
-	Tue, 23 Jan 2024 00:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8FD46313B;
+	Tue, 23 Jan 2024 01:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O0wHgbvy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCph7Zot"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAA854BD2;
-	Tue, 23 Jan 2024 00:43:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 683A96313D;
+	Tue, 23 Jan 2024 01:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970624; cv=none; b=K52IQzFF5XVuaEG4Aa8ID9Ym4RdTYCJ9aO68ByTjSxsz9tPYnKNxoXSBBcevx03rQh2LxCA0adK9p+92FrQdUnE6rvuFypxYABIxVH84HJSKx7o7lU+55uJ828chE76femJdQZcg6MH/jnbP+F0USUArzRs8IAG+6R027o7cwsY=
+	t=1705975001; cv=none; b=e4CGofPLJBbzIDbi+Y5Eq773NiyRjHK0rTZrTiQTC/CyJLIKolSQSk8u4xRsa8SZ1OKdJfTXAug/cPxvBHUUcyIoL8ykpwfCnU1ZUHEoQ9LoeshY/jgSGkqqAKzetBjm7gq5TdFmVhokbvjxcMwPKY2MH78uEzamll1qjiYMht8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970624; c=relaxed/simple;
-	bh=/+HLT+z55Gie5yg1oUaenkzXqa4OkEIP2fsaDIz6WK0=;
+	s=arc-20240116; t=1705975001; c=relaxed/simple;
+	bh=f0G1mbs0hgNlCA2OidbjAm2fHt7vWuiYaauok2dBo7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XhNeb7L3y4BpDve0ubUGQx+fzh2rX0S9V8RFijGt6oNm1oKoNxgEwdVWr7LMuZMT4bNwTjydH3xsbmUt7sQLqnoePnLTvtuBV/IqsgJ6Znq/2QDpyQ4et+S1TNGF13euSfw2PTGXpBpMMDGgiyabtQAlS12p8GFB0d8+wFqtluA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O0wHgbvy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CA3C433C7;
-	Tue, 23 Jan 2024 00:43:43 +0000 (UTC)
+	 MIME-Version; b=svLNt9p2tacM0t4hAbESA1WzQ7jYkt0c01C37gOtYhRw0Gkv916aELpGnk+n9aF8BX4mFVnLp3O88y45Rdlb5ToMF6Ozmrzi6oCu53ZLEo+ObtBjPcdjJNSj0kRPVGHfnpkK86Z/fOwYmBA/vv0PdfM05xH3aT9WyDZvzucDdec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCph7Zot; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F62BC433A6;
+	Tue, 23 Jan 2024 01:56:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970624;
-	bh=/+HLT+z55Gie5yg1oUaenkzXqa4OkEIP2fsaDIz6WK0=;
+	s=korg; t=1705975001;
+	bh=f0G1mbs0hgNlCA2OidbjAm2fHt7vWuiYaauok2dBo7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O0wHgbvyn0yclQ6aUEKk5AmHuZHkKHj+nG3IRKbpnC5w8R32kNAfnwu8tUloljtwv
-	 B9KtfofHAs/BjnxnRJVekxxGgMd76yz+Fwhxad87TbRS6vauNJ9qjXwYm0c/jmghMC
-	 hmMNmlgGPFnfPWfetYBJCOsEx0Rjh/MXNoalwVRE=
+	b=BCph7Zot5a744/ObzVXZs2E7wWhieP7j5vioOaqSb/XeLroG1FKPXLq7gU0YWsN5Y
+	 seZj53zid/ko8gi/3bUvDxVu5+gxAkx9JPJZ6e9qcdPMURYtScQIex7dTYZ543I8T4
+	 On+glS73I2F3JjFgfY0DaPYKjjluRq4z/e45jrBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordan Rome <jordalgo@meta.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 071/417] bpf: Add crosstask check to __bpf_get_stack
+Subject: [PATCH 6.6 188/583] bpf: Re-enable unit_size checking for global per-cpu allocator
 Date: Mon, 22 Jan 2024 15:53:59 -0800
-Message-ID: <20240122235754.169144896@linuxfoundation.org>
+Message-ID: <20240122235817.746666802@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,123 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordan Rome <jordalgo@meta.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit b8e3a87a627b575896e448021e5c2f8a3bc19931 ]
+[ Upstream commit baa8fdecd87bb8751237b45e3bcb5a179e5a12ca ]
 
-Currently get_perf_callchain only supports user stack walking for
-the current task. Passing the correct *crosstask* param will return
-0 frames if the task passed to __bpf_get_stack isn't the current
-one instead of a single incorrect frame/address. This change
-passes the correct *crosstask* param but also does a preemptive
-check in __bpf_get_stack if the task is current and returns
--EOPNOTSUPP if it is not.
+With pcpu_alloc_size() in place, check whether or not the size of
+the dynamic per-cpu area is matched with unit_size.
 
-This issue was found using bpf_get_task_stack inside a BPF
-iterator ("iter/task"), which iterates over all tasks.
-bpf_get_task_stack works fine for fetching kernel stacks
-but because get_perf_callchain relies on the caller to know
-if the requested *task* is the current one (via *crosstask*)
-it was failing in a confusing way.
-
-It might be possible to get user stacks for all tasks utilizing
-something like access_process_vm but that requires the bpf
-program calling bpf_get_task_stack to be sleepable and would
-therefore be a breaking change.
-
-Fixes: fa28dcb82a38 ("bpf: Introduce helper bpf_get_task_stack()")
-Signed-off-by: Jordan Rome <jordalgo@meta.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20231108112334.3433136-1-jordalgo@meta.com
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20231020133202.4043247-4-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Stable-dep-of: 7ac5c53e0073 ("bpf: Use c->unit_size to select target cache during free")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/bpf.h       |  3 +++
- kernel/bpf/stackmap.c          | 11 ++++++++++-
- tools/include/uapi/linux/bpf.h |  3 +++
- 3 files changed, 16 insertions(+), 1 deletion(-)
+ kernel/bpf/memalloc.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index 92dbe89dafbf..201dc77ebbd7 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -4353,6 +4353,8 @@ union bpf_attr {
-  * long bpf_get_task_stack(struct task_struct *task, void *buf, u32 size, u64 flags)
-  *	Description
-  *		Return a user or a kernel stack in bpf program provided buffer.
-+ *		Note: the user stack will only be populated if the *task* is
-+ *		the current task; all other tasks will return -EOPNOTSUPP.
-  *		To achieve this, the helper needs *task*, which is a valid
-  *		pointer to **struct task_struct**. To store the stacktrace, the
-  *		bpf program provides *buf* with a nonnegative *size*.
-@@ -4364,6 +4366,7 @@ union bpf_attr {
-  *
-  *		**BPF_F_USER_STACK**
-  *			Collect a user space stack instead of a kernel stack.
-+ *			The *task* must be the current task.
-  *		**BPF_F_USER_BUILD_ID**
-  *			Collect buildid+offset instead of ips for user stack,
-  *			only valid if **BPF_F_USER_STACK** is also specified.
-diff --git a/kernel/bpf/stackmap.c b/kernel/bpf/stackmap.c
-index aecea7451b61..f86db3cf7212 100644
---- a/kernel/bpf/stackmap.c
-+++ b/kernel/bpf/stackmap.c
-@@ -391,6 +391,7 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
+diff --git a/kernel/bpf/memalloc.c b/kernel/bpf/memalloc.c
+index 956f80ee6f5c..9657d5951d78 100644
+--- a/kernel/bpf/memalloc.c
++++ b/kernel/bpf/memalloc.c
+@@ -491,21 +491,17 @@ static int check_obj_size(struct bpf_mem_cache *c, unsigned int idx)
+ 	struct llist_node *first;
+ 	unsigned int obj_size;
+ 
+-	/* For per-cpu allocator, the size of free objects in free list doesn't
+-	 * match with unit_size and now there is no way to get the size of
+-	 * per-cpu pointer saved in free object, so just skip the checking.
+-	 */
+-	if (c->percpu_size)
+-		return 0;
+-
+ 	first = c->free_llist.first;
+ 	if (!first)
+ 		return 0;
+ 
+-	obj_size = ksize(first);
++	if (c->percpu_size)
++		obj_size = pcpu_alloc_size(((void **)first)[1]);
++	else
++		obj_size = ksize(first);
+ 	if (obj_size != c->unit_size) {
+-		WARN_ONCE(1, "bpf_mem_cache[%u]: unexpected object size %u, expect %u\n",
+-			  idx, obj_size, c->unit_size);
++		WARN_ONCE(1, "bpf_mem_cache[%u]: percpu %d, unexpected object size %u, expect %u\n",
++			  idx, c->percpu_size, obj_size, c->unit_size);
+ 		return -EINVAL;
+ 	}
+ 	return 0;
+@@ -967,6 +963,12 @@ void notrace *bpf_mem_cache_alloc_flags(struct bpf_mem_alloc *ma, gfp_t flags)
+ 	return !ret ? NULL : ret + LLIST_NODE_SZ;
+ }
+ 
++/* The alignment of dynamic per-cpu area is 8, so c->unit_size and the
++ * actual size of dynamic per-cpu area will always be matched and there is
++ * no need to adjust size_index for per-cpu allocation. However for the
++ * simplicity of the implementation, use an unified size_index for both
++ * kmalloc and per-cpu allocation.
++ */
+ static __init int bpf_mem_cache_adjust_size(void)
  {
- 	u32 trace_nr, copy_len, elem_size, num_elem, max_depth;
- 	bool user_build_id = flags & BPF_F_USER_BUILD_ID;
-+	bool crosstask = task && task != current;
- 	u32 skip = flags & BPF_F_SKIP_FIELD_MASK;
- 	bool user = flags & BPF_F_USER_STACK;
- 	struct perf_callchain_entry *trace;
-@@ -413,6 +414,14 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
- 	if (task && user && !user_mode(regs))
- 		goto err_fault;
- 
-+	/* get_perf_callchain does not support crosstask user stack walking
-+	 * but returns an empty stack instead of NULL.
-+	 */
-+	if (crosstask && user) {
-+		err = -EOPNOTSUPP;
-+		goto clear;
-+	}
-+
- 	num_elem = size / elem_size;
- 	max_depth = num_elem + skip;
- 	if (sysctl_perf_event_max_stack < max_depth)
-@@ -424,7 +433,7 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
- 		trace = get_callchain_entry_for_task(task, max_depth);
- 	else
- 		trace = get_perf_callchain(regs, 0, kernel, user, max_depth,
--					   false, false);
-+					   crosstask, false);
- 	if (unlikely(!trace))
- 		goto err_fault;
- 
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index 92dbe89dafbf..201dc77ebbd7 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -4353,6 +4353,8 @@ union bpf_attr {
-  * long bpf_get_task_stack(struct task_struct *task, void *buf, u32 size, u64 flags)
-  *	Description
-  *		Return a user or a kernel stack in bpf program provided buffer.
-+ *		Note: the user stack will only be populated if the *task* is
-+ *		the current task; all other tasks will return -EOPNOTSUPP.
-  *		To achieve this, the helper needs *task*, which is a valid
-  *		pointer to **struct task_struct**. To store the stacktrace, the
-  *		bpf program provides *buf* with a nonnegative *size*.
-@@ -4364,6 +4366,7 @@ union bpf_attr {
-  *
-  *		**BPF_F_USER_STACK**
-  *			Collect a user space stack instead of a kernel stack.
-+ *			The *task* must be the current task.
-  *		**BPF_F_USER_BUILD_ID**
-  *			Collect buildid+offset instead of ips for user stack,
-  *			only valid if **BPF_F_USER_STACK** is also specified.
+ 	unsigned int size;
 -- 
 2.43.0
 
