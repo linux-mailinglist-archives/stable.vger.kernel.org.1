@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-13117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D87DE837A93
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A5C5837A83
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9273C29026F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:53:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAE63B2B11C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E49912F5A9;
-	Tue, 23 Jan 2024 00:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7761272C3;
+	Tue, 23 Jan 2024 00:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZ57iDbw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FdAvkHzm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC5E12F5A7;
-	Tue, 23 Jan 2024 00:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2DF350272;
+	Tue, 23 Jan 2024 00:08:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969002; cv=none; b=DivcPY/wzd0+Wtm8Yi6pdfd64Da3hwcv8QwogjTs+EAtyV+1w3NqLrrlw6ekOpwWccj8elpQKABeKs9Xc5ommGWMi1fWeP/78TfyPlXjC8x4JfYq3njmrPcrYrIuy5kIE8sMaiS9va07A5qD7XP6fXe1N3fJ/iON85EcrEV0yt0=
+	t=1705968506; cv=none; b=l6QIMyWuwn+KFbn6FOfsURkozi5p77hwGR/ovV/tZTNKIDCCTVfgwx/WegYu/SElPLVohUBwLr+a8znMYpH3VNoyO76gFFEG2XfL2rUHHRz+dgn5CQWzXz8tV2x1P+nZp7/MT2tkexhwUTBOJHDfgvsU+rLchQLfg9ynypYlhvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969002; c=relaxed/simple;
-	bh=nTVAINED/tulDlH0zITGhJP6qIUdAjceDiPkl2pYAd4=;
+	s=arc-20240116; t=1705968506; c=relaxed/simple;
+	bh=n6qFvWMRGRYRdQ7EGNy6hN3U60KDgMgmY6MTeBlMy0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZUD/OefgvNSvzXT2nVV0sht8OKrOJCIbg+VCe9BWMlKjjTd4kbG++vIsDh1hwdlKQz6Q69g/FEQpsb8utl2sLdfang4ZFGwyLvtoMVTJfGX6ok3t3QlFuJ++B5fPawpAfI4m1RY6Tz7NO7SgJV1EAMl5k5yFMBAgVlnvcTxe9AI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZ57iDbw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C717BC43394;
-	Tue, 23 Jan 2024 00:16:41 +0000 (UTC)
+	 MIME-Version; b=R5hkqfG9qAHJZVeMKKNWEjSebtYdKPSxfwy3hGa5LfoXAMSsFvAJP6W9SJxUraMz/vhAS215oHJk7IQbGBft4oj8nA2PWZzCAV+8AZAPQTlxEeCtknaC0VMVZyR1ex2YYUswVVSi3VQXcrq0lSpfqnVaZUlF+1ZvVJ6DGWiEy5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FdAvkHzm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7CFBC433F1;
+	Tue, 23 Jan 2024 00:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969002;
-	bh=nTVAINED/tulDlH0zITGhJP6qIUdAjceDiPkl2pYAd4=;
+	s=korg; t=1705968506;
+	bh=n6qFvWMRGRYRdQ7EGNy6hN3U60KDgMgmY6MTeBlMy0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eZ57iDbwBEgBez8+0JjJ6mBhmp7IvLxSpES7iXOa2gITzragzzA9vT/tRTeQX6zI5
-	 zXLb2AvWEW0vGTuri9cAbCuqWYbMbPNOjXWCnEEN0lFGW0xLR1533yj9/lGRe1kWYn
-	 VrU1kyoR0pJny5/TvzcYQMCLT1yHSgDcGJV9W5wM=
+	b=FdAvkHzmmP1D1X0sIIUv6YO5i3DaQY0DKlap8/msws7bFMTz8tFEV7I2+q0hm5bjc
+	 7SJa+kTB6QrArrLgmCSJr2TCa0zPfqLspvO6xdGK+rRa9lgFKXC0kTHPITJzcaZhgS
+	 o/arStFb9prbRoVoWo0BML384AYfM8SCj7d5I+rE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	RD Babiera <rdbabiera@google.com>,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.4 152/194] Revert "usb: typec: class: fix typec_altmode_put_partner to put plugs"
+	Gui-Dong Han <2045gemini@gmail.com>
+Subject: [PATCH 4.19 126/148] usb: mon: Fix atomicity violation in mon_bin_vma_fault
 Date: Mon, 22 Jan 2024 15:58:02 -0800
-Message-ID: <20240122235725.714246500@linuxfoundation.org>
+Message-ID: <20240122235717.624116259@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +60,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+From: Gui-Dong Han <2045gemini@gmail.com>
 
-commit 9c6b789e954fae73c548f39332bcc56bdf0d4373 upstream.
+commit 2dd23cc4d0e6aa55cf9fb3b05f2f4165b01de81c upstream.
 
-This reverts commit b17b7fe6dd5c6ff74b38b0758ca799cdbb79e26e.
+In mon_bin_vma_fault():
+    offset = vmf->pgoff << PAGE_SHIFT;
+    if (offset >= rp->b_size)
+        return VM_FAULT_SIGBUS;
+    chunk_idx = offset / CHUNK_SIZE;
+    pageptr = rp->b_vec[chunk_idx].pg;
+The code is executed without holding any lock.
 
-That commit messed up the reference counting, so it needs to
-be rethought.
+In mon_bin_vma_close():
+    spin_lock_irqsave(&rp->b_lock, flags);
+    rp->mmap_active--;
+    spin_unlock_irqrestore(&rp->b_lock, flags);
 
-Fixes: b17b7fe6dd5c ("usb: typec: class: fix typec_altmode_put_partner to put plugs")
+In mon_bin_ioctl():
+    spin_lock_irqsave(&rp->b_lock, flags);
+    if (rp->mmap_active) {
+        ...
+    } else {
+        ...
+        kfree(rp->b_vec);
+        rp->b_vec  = vec;
+        rp->b_size = size;
+        ...
+    }
+    spin_unlock_irqrestore(&rp->b_lock, flags);
+
+Concurrent execution of mon_bin_vma_fault() with mon_bin_vma_close() and
+mon_bin_ioctl() could lead to atomicity violations. mon_bin_vma_fault()
+accesses rp->b_size and rp->b_vec without locking, risking array
+out-of-bounds access or use-after-free bugs due to possible modifications
+in mon_bin_ioctl().
+
+This possible bug is found by an experimental static analysis tool
+developed by our team, BassCheck[1]. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations. The above
+possible bug is reported when our tool analyzes the source code of
+Linux 6.2.
+
+To address this issue, it is proposed to add a spin lock pair in
+mon_bin_vma_fault() to ensure atomicity. With this patch applied, our tool
+never reports the possible bug, with the kernel configuration allyesconfig
+for x86_64. Due to the lack of associated hardware, we cannot test the
+patch in runtime testing, and just verify it according to the code logic.
+
+[1] https://sites.google.com/view/basscheck/
+
+Fixes: 19e6317d24c2 ("usb: mon: Fix a deadlock in usbmon between ...")
 Cc:  <stable@vger.kernel.org>
-Cc: RD Babiera <rdbabiera@google.com>
-Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Closes: https://lore.kernel.org/lkml/CAP-bSRb3SXpgo_BEdqZB-p1K5625fMegRZ17ZkPE1J8ZYgEHDg@mail.gmail.com/
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240102091142.2136472-1-heikki.krogerus@linux.intel.com
+Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
+Link: https://lore.kernel.org/r/20240105052412.9377-1-2045gemini@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/class.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/usb/mon/mon_bin.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -193,7 +193,7 @@ static void typec_altmode_put_partner(st
- 	if (!partner)
- 		return;
+--- a/drivers/usb/mon/mon_bin.c
++++ b/drivers/usb/mon/mon_bin.c
+@@ -1247,14 +1247,19 @@ static vm_fault_t mon_bin_vma_fault(stru
+ 	struct mon_reader_bin *rp = vmf->vma->vm_private_data;
+ 	unsigned long offset, chunk_idx;
+ 	struct page *pageptr;
++	unsigned long flags;
  
--	adev = &altmode->adev;
-+	adev = &partner->adev;
++	spin_lock_irqsave(&rp->b_lock, flags);
+ 	offset = vmf->pgoff << PAGE_SHIFT;
+-	if (offset >= rp->b_size)
++	if (offset >= rp->b_size) {
++		spin_unlock_irqrestore(&rp->b_lock, flags);
+ 		return VM_FAULT_SIGBUS;
++	}
+ 	chunk_idx = offset / CHUNK_SIZE;
+ 	pageptr = rp->b_vec[chunk_idx].pg;
+ 	get_page(pageptr);
+ 	vmf->page = pageptr;
++	spin_unlock_irqrestore(&rp->b_lock, flags);
+ 	return 0;
+ }
  
- 	if (is_typec_plug(adev->dev.parent)) {
- 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
-@@ -465,8 +465,7 @@ static void typec_altmode_release(struct
- {
- 	struct altmode *alt = to_altmode(to_typec_altmode(dev));
- 
--	if (!is_typec_port(dev->parent))
--		typec_altmode_put_partner(alt);
-+	typec_altmode_put_partner(alt);
- 
- 	altmode_id_remove(alt->adev.dev.parent, alt->id);
- 	kfree(alt);
 
 
 
