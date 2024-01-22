@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 533A3837FD7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:55:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D1D183846A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A5FA1C2945D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF8B61C2A355
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8AB112BF0A;
-	Tue, 23 Jan 2024 00:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E32B6D1DC;
+	Tue, 23 Jan 2024 02:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fiUUQ5A4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXnuU6NV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781294E1AD;
-	Tue, 23 Jan 2024 00:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E146BB56;
+	Tue, 23 Jan 2024 02:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971392; cv=none; b=Ls/HooEo8u5IArFYKIlDD2NrhBjcht1TCRiZ68Yigzzro3MxerghRBvJ0UsIMBN2eYe0r4GTihhi8X7fcNBM+Ho8lNxak1h0/BJc/kf5NhxNa/2ZlWJgVJqSrfLuxNlAmyQ3ofObifIydt2IRQxXR7RgHEFE137KoU5/KKM41E8=
+	t=1705975391; cv=none; b=GXxVlKcKFI+h1OgFzdo/+d3/WFCVjzoT6mLPc8QsLrVAPqLG2u0iOu+RTt7tFIWW+9UUFICwpXd5ossopU9gqlF3tzyV3OXX6UxDDI57VkIqbhb5Ofaffv7hsgblime5jfHKnIKUhT/v0ZJvVBCb5DqUsf0P9bYyX7Fs1uQOqmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971392; c=relaxed/simple;
-	bh=SH4cigonEG/g2Pc4QUaUHkWoB+R5xQ/hzty1Q7GI9ag=;
+	s=arc-20240116; t=1705975391; c=relaxed/simple;
+	bh=3gSlDXo+f3JnD0JXd+zsJZ7Obl547L4QKXVbZxy1PSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h0v7Ri7XK5H8pOGlFP/IKMfDJFPhsiy4bIBkyoYwTtc2Ole+4tP3kk5LxwfaFqcy6efKFNbKciu5vT6TMJ85h0cg48qG75+c5F8f8T1GTxc70DFl73KVsQ64c6Ybwgq9kZ3uoGZ3Uo/15lDcW8/rD7Ds8jD05/3JsZ5anFxq1V0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fiUUQ5A4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC48C43390;
-	Tue, 23 Jan 2024 00:56:32 +0000 (UTC)
+	 MIME-Version; b=ax7u0J42hp/HehJt41haxjgmfzVrd4Z5M0YhPHXOUAenZQKG2MrD1RZMbswn+EYl3+qbaoWjTpaW9sGyC47k71PJe0y2f6VBfwUaf+87cqMT5X4AJfElYP7A353U2ntyA22bzc0tIJ14ZoAvkVMscgMYfs+onl3OZMsUp+tDlFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXnuU6NV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB461C433C7;
+	Tue, 23 Jan 2024 02:03:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971392;
-	bh=SH4cigonEG/g2Pc4QUaUHkWoB+R5xQ/hzty1Q7GI9ag=;
+	s=korg; t=1705975390;
+	bh=3gSlDXo+f3JnD0JXd+zsJZ7Obl547L4QKXVbZxy1PSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fiUUQ5A4JP5/Ci4IO7MxtSRMI2HGD83jIDAEar5NU6FCyqVjlywrWsCRh9B+mXahV
-	 +/HQZf7hTR9zNxDzlICHgwnpIeW741odS/dsBWq3uW3NUAhOoZOJiUiHfRRw/m6coJ
-	 6NEo9J+WL7K7VYc0NRemaHjwWDXjOueat9u9zolo=
+	b=bXnuU6NVWncVUreSdY6hOEa59IhxSP7ddszUMmhduF2u4dyp4D0URN/pzsZrw577C
+	 KNU6biAlP8bQPSdLNPVyKqtlgcFuFZy9PgVKPmWTdqHgKJqxRUlT1frArFNZkkYrbj
+	 vpgnQNWwc8UFhR0peWNwOyqU2YW9tua6CogSLIl8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 234/417] ALSA: scarlett2: Allow passing any output to line_out_remap()
+	Jay Cornwall <jay.cornwall@amd.com>,
+	Kaibo Ma <ent3rm4n@gmail.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 351/583] Revert "drm/amdkfd: Relocate TBA/TMA to opposite side of VM hole"
 Date: Mon, 22 Jan 2024 15:56:42 -0800
-Message-ID: <20240122235759.991324689@linuxfoundation.org>
+Message-ID: <20240122235822.760979587@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Kaibo Ma <ent3rm4n@gmail.com>
 
-[ Upstream commit 2190b9aea4eb92ccf3176e35c17c959e40f1a81b ]
+commit 0f35b0a7b8fa402adbffa2565047cdcc4c480153 upstream.
 
-Line outputs 3 & 4 on the Gen 3 18i8 are internally the analogue 7 and
-8 outputs, and this renumbering is hidden from the user by
-line_out_remap(). By allowing higher values (representing non-analogue
-outputs) to be passed to line_out_remap(), repeated code from
-scarlett2_mux_src_enum_ctl_get() and scarlett2_mux_src_enum_ctl_put()
-can be removed.
+That commit causes NULL pointer dereferences in dmesgs when
+running applications using ROCm, including clinfo, blender,
+and PyTorch, since v6.6.1. Revert it to fix blender again.
 
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Link: https://lore.kernel.org/r/3b70267931f5994628ab27306c73cddd17b93c8f.1698342632.git.g@b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Stable-dep-of: 50603a67daef ("ALSA: scarlett2: Add missing error checks to *_ctl_get()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This reverts commit 96c211f1f9ef82183493f4ceed4e347b52849149.
+
+Closes: https://github.com/ROCm/ROCm/issues/2596
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2991
+Reviewed-by: Jay Cornwall <jay.cornwall@amd.com>
+Signed-off-by: Kaibo Ma <ent3rm4n@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_scarlett_gen2.c | 25 +++++++++----------------
- 1 file changed, 9 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c |   26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
-index 94704581865b..f8a2ba479b7c 100644
---- a/sound/usb/mixer_scarlett_gen2.c
-+++ b/sound/usb/mixer_scarlett_gen2.c
-@@ -1901,9 +1901,16 @@ static int scarlett2_master_volume_ctl_get(struct snd_kcontrol *kctl,
- static int line_out_remap(struct scarlett2_data *private, int index)
- {
- 	const struct scarlett2_device_info *info = private->info;
-+	const int (*port_count)[SCARLETT2_PORT_DIRNS] = info->port_count;
-+	int line_out_count =
-+		port_count[SCARLETT2_PORT_TYPE_ANALOGUE][SCARLETT2_PORT_OUT];
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c
+@@ -330,12 +330,6 @@ static void kfd_init_apertures_vi(struct
+ 	pdd->gpuvm_limit =
+ 		pdd->dev->kfd->shared_resources.gpuvm_size - 1;
  
- 	if (!info->line_out_remap_enable)
- 		return index;
-+
-+	if (index >= line_out_count)
-+		return index;
-+
- 	return info->line_out_remap[index];
+-	/* dGPUs: the reserved space for kernel
+-	 * before SVM
+-	 */
+-	pdd->qpd.cwsr_base = SVM_CWSR_BASE;
+-	pdd->qpd.ib_base = SVM_IB_BASE;
+-
+ 	pdd->scratch_base = MAKE_SCRATCH_APP_BASE_VI();
+ 	pdd->scratch_limit = MAKE_SCRATCH_APP_LIMIT(pdd->scratch_base);
+ }
+@@ -345,18 +339,18 @@ static void kfd_init_apertures_v9(struct
+ 	pdd->lds_base = MAKE_LDS_APP_BASE_V9();
+ 	pdd->lds_limit = MAKE_LDS_APP_LIMIT(pdd->lds_base);
+ 
+-	pdd->gpuvm_base = PAGE_SIZE;
++        /* Raven needs SVM to support graphic handle, etc. Leave the small
++         * reserved space before SVM on Raven as well, even though we don't
++         * have to.
++         * Set gpuvm_base and gpuvm_limit to CANONICAL addresses so that they
++         * are used in Thunk to reserve SVM.
++         */
++        pdd->gpuvm_base = SVM_USER_BASE;
+ 	pdd->gpuvm_limit =
+ 		pdd->dev->kfd->shared_resources.gpuvm_size - 1;
+ 
+ 	pdd->scratch_base = MAKE_SCRATCH_APP_BASE_V9();
+ 	pdd->scratch_limit = MAKE_SCRATCH_APP_LIMIT(pdd->scratch_base);
+-
+-	/*
+-	 * Place TBA/TMA on opposite side of VM hole to prevent
+-	 * stray faults from triggering SVM on these pages.
+-	 */
+-	pdd->qpd.cwsr_base = pdd->dev->kfd->shared_resources.gpuvm_size;
  }
  
-@@ -3388,14 +3395,7 @@ static int scarlett2_mux_src_enum_ctl_get(struct snd_kcontrol *kctl,
- 	struct usb_mixer_elem_info *elem = kctl->private_data;
- 	struct usb_mixer_interface *mixer = elem->head.mixer;
- 	struct scarlett2_data *private = mixer->private_data;
--	const struct scarlett2_device_info *info = private->info;
--	const int (*port_count)[SCARLETT2_PORT_DIRNS] = info->port_count;
--	int line_out_count =
--		port_count[SCARLETT2_PORT_TYPE_ANALOGUE][SCARLETT2_PORT_OUT];
--	int index = elem->control;
--
--	if (index < line_out_count)
--		index = line_out_remap(private, index);
-+	int index = line_out_remap(private, elem->control);
+ int kfd_init_apertures(struct kfd_process *process)
+@@ -413,6 +407,12 @@ int kfd_init_apertures(struct kfd_proces
+ 					return -EINVAL;
+ 				}
+ 			}
++
++                        /* dGPUs: the reserved space for kernel
++                         * before SVM
++                         */
++                        pdd->qpd.cwsr_base = SVM_CWSR_BASE;
++                        pdd->qpd.ib_base = SVM_IB_BASE;
+ 		}
  
- 	mutex_lock(&private->data_mutex);
- 	if (private->mux_updated)
-@@ -3412,16 +3412,9 @@ static int scarlett2_mux_src_enum_ctl_put(struct snd_kcontrol *kctl,
- 	struct usb_mixer_elem_info *elem = kctl->private_data;
- 	struct usb_mixer_interface *mixer = elem->head.mixer;
- 	struct scarlett2_data *private = mixer->private_data;
--	const struct scarlett2_device_info *info = private->info;
--	const int (*port_count)[SCARLETT2_PORT_DIRNS] = info->port_count;
--	int line_out_count =
--		port_count[SCARLETT2_PORT_TYPE_ANALOGUE][SCARLETT2_PORT_OUT];
--	int index = elem->control;
-+	int index = line_out_remap(private, elem->control);
- 	int oval, val, err = 0;
- 
--	if (index < line_out_count)
--		index = line_out_remap(private, index);
--
- 	mutex_lock(&private->data_mutex);
- 
- 	oval = private->mux[index];
--- 
-2.43.0
-
+ 		dev_dbg(kfd_device, "node id %u\n", id);
 
 
 
