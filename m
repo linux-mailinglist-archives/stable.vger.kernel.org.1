@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-13735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 033D6837D9D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA34838537
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98C5A1F250C2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D43CB2D72D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4EB537F5;
-	Tue, 23 Jan 2024 00:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5830A745E4;
+	Tue, 23 Jan 2024 02:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H4zq0NDD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nwXLHOi/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AE851014;
-	Tue, 23 Jan 2024 00:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18557745E1;
+	Tue, 23 Jan 2024 02:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970075; cv=none; b=NnNooqHbTy+ea/IGgC1xiczY7j+QctsJXe6ZVkfLGNXSG9KwfozbX8PpmbzVe9kF91DshYpZ7WScw3Xhz5tPhvdWJAlY57AOZhmrI/gBNeSB22VEs7Vbqd/DEwE8/64F1BOKOwBjlaIrBkvFVTHkURHXIoJLDCeRUppc1yIpIRU=
+	t=1705975453; cv=none; b=A7ttXukhcOsgDDoKLnE3yswQIFHFAClBosGHKBVxTrxtgQcgatJGFWmuJCZFOsVIY43scB8P4up0WHPKhJlVZMHFyeeKPdUmehqrtSysK7CVy1qYryrYZjnphmVN1aoio59uIQbhgAvLenpdnxsIhpAiALar9ZzSrMqWQsDVlIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970075; c=relaxed/simple;
-	bh=nnV+sKR/7HGxbfai+Y64ZU6EhUsMQjTsyy8n23zDZDo=;
+	s=arc-20240116; t=1705975453; c=relaxed/simple;
+	bh=5LR//FK2dFJP9PDJacFAXBGQle6PngcfrCgFk8yg5BQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tshtWCNnoFQZI4ch8g5tc8iHh1f6kPMD9L2P4ljWdHWW3tyXHb8/TUX5JAPUQ4tfDN5LSZU6fEKeQw+Vy8n7s1HCw5lkQTz1LUh4RgbIYEGPdBTby5urctHSxWTnFiGLVFAHAGZna0+Mr/RgY1wUmQsVM4KfDOTZktAf6Rxk1XI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H4zq0NDD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04B8CC433F1;
-	Tue, 23 Jan 2024 00:34:33 +0000 (UTC)
+	 MIME-Version; b=YK+e51kSpy659pq5EvukFzyQbSnoiXbscMvlSn7Km/p6LhGWlmvEDuLSmZDIXGcoVPZxiM4DhslVeoaz8zjHRYcxCkYkOO2tPzOQZjWcuHhn2EJptnGsRuGlcgiHLBn6JuvRC3AaIQTTC3J6Y/ImP/e9BSHH47iss1r6YyF2vkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nwXLHOi/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2FDFC43390;
+	Tue, 23 Jan 2024 02:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970074;
-	bh=nnV+sKR/7HGxbfai+Y64ZU6EhUsMQjTsyy8n23zDZDo=;
+	s=korg; t=1705975452;
+	bh=5LR//FK2dFJP9PDJacFAXBGQle6PngcfrCgFk8yg5BQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H4zq0NDDevOAojoprlyQeE0PpNuGaN8RqJ+a9iQTfw4OylrBuItE65E7e3mXVjnSh
-	 IFY213g9w664X72iK7b9Y7d9VDtam0oho5genYTO2RBgHsdTQRBJ+PlsuX/2cEofph
-	 I9jmycGfkKAp8wTd2EgL6J2lpH5SZ71BgjL5WJHw=
+	b=nwXLHOi/YdCCufalPIAzA8zuRo0cnRQmxsVnvM88gXykgMIIA6ZNVSYximISNuPky
+	 Lwi7z0RB3rxCes6TGtoVA+nlpPl/xchoZIQ+f1fY18xYqInMMSdljvpvPbEKfOrTiE
+	 KNK4DTRro0dV8yQF89QhLfZr8TmtdUXl22/b8zy8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	John Johansen <john.johansen@canonical.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 556/641] apparmor: free the allocated pdb objects
+	Gui-Dong Han <2045gemini@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 409/583] Bluetooth: Fix atomicity violation in {min,max}_key_size_set
 Date: Mon, 22 Jan 2024 15:57:40 -0800
-Message-ID: <20240122235835.545930628@linuxfoundation.org>
+Message-ID: <20240122235824.488513957@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Gui-Dong Han <2045gemini@gmail.com>
 
-[ Upstream commit 1af5aa82c976753e93eb52b72784e586a7d2844b ]
+commit da9065caa594d19b26e1a030fd0cc27bd365d685 upstream.
 
-policy_db objects are allocated with kzalloc() inside aa_alloc_pdb() and
-are not cleared in the corresponding aa_free_pdb() function causing leak:
+In min_key_size_set():
+    if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE)
+        return -EINVAL;
+    hci_dev_lock(hdev);
+    hdev->le_min_key_size = val;
+    hci_dev_unlock(hdev);
 
-unreferenced object 0xffff88801f0a1400 (size 192):
-  comm "apparmor_parser", pid 1247, jiffies 4295122827 (age 2306.399s)
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffffffff81ddc612>] __kmem_cache_alloc_node+0x1e2/0x2d0
-    [<ffffffff81c47c55>] kmalloc_trace+0x25/0xc0
-    [<ffffffff83eb9a12>] aa_alloc_pdb+0x82/0x140
-    [<ffffffff83ec4077>] unpack_pdb+0xc7/0x2700
-    [<ffffffff83ec6b10>] unpack_profile+0x450/0x4960
-    [<ffffffff83ecc129>] aa_unpack+0x309/0x15e0
-    [<ffffffff83ebdb23>] aa_replace_profiles+0x213/0x33c0
-    [<ffffffff83e8d341>] policy_update+0x261/0x370
-    [<ffffffff83e8d66e>] profile_replace+0x20e/0x2a0
-    [<ffffffff81eadfaf>] vfs_write+0x2af/0xe00
-    [<ffffffff81eaf4c6>] ksys_write+0x126/0x250
-    [<ffffffff890fa0b6>] do_syscall_64+0x46/0xf0
-    [<ffffffff892000ea>] entry_SYSCALL_64_after_hwframe+0x6e/0x76
+In max_key_size_set():
+    if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size)
+        return -EINVAL;
+    hci_dev_lock(hdev);
+    hdev->le_max_key_size = val;
+    hci_dev_unlock(hdev);
 
-Free the pdbs inside aa_free_pdb(). While at it, rename the variable
-representing an aa_policydb object to make the function more unified with
-aa_pdb_free_kref() and aa_alloc_pdb().
+The atomicity violation occurs due to concurrent execution of set_min and
+set_max funcs.Consider a scenario where setmin writes a new, valid 'min'
+value, and concurrently, setmax writes a value that is greater than the
+old 'min' but smaller than the new 'min'. In this case, setmax might check
+against the old 'min' value (before acquiring the lock) but write its
+value after the 'min' has been updated by setmin. This leads to a
+situation where the 'max' value ends up being smaller than the 'min'
+value, which is an inconsistency.
 
-Found by Linux Verification Center (linuxtesting.org).
+This possible bug is found by an experimental static analysis tool
+developed by our team, BassCheck[1]. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations. The above
+possible bug is reported when our tool analyzes the source code of
+Linux 5.17.
 
-Fixes: 98b824ff8984 ("apparmor: refcount the pdb")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To resolve this issue, it is suggested to encompass the validity checks
+within the locked sections in both set_min and set_max funcs. The
+modification ensures that the validation of 'val' against the
+current min/max values is atomic, thus maintaining the integrity of the
+settings. With this patch applied, our tool no longer reports the bug,
+with the kernel configuration allyesconfig for x86_64. Due to the lack of
+associated hardware, we cannot test the patch in runtime testing, and just
+verify it according to the code logic.
+
+[1] https://sites.google.com/view/basscheck/
+
+Fixes: 18f81241b74f ("Bluetooth: Move {min,max}_key_size debugfs ...")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/apparmor/policy.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ net/bluetooth/hci_debugfs.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/security/apparmor/policy.c b/security/apparmor/policy.c
-index ed4c9803c8fa..957654d253dd 100644
---- a/security/apparmor/policy.c
-+++ b/security/apparmor/policy.c
-@@ -99,13 +99,14 @@ const char *const aa_profile_mode_names[] = {
- };
- 
- 
--static void aa_free_pdb(struct aa_policydb *policy)
-+static void aa_free_pdb(struct aa_policydb *pdb)
+--- a/net/bluetooth/hci_debugfs.c
++++ b/net/bluetooth/hci_debugfs.c
+@@ -1046,10 +1046,12 @@ static int min_key_size_set(void *data,
  {
--	if (policy) {
--		aa_put_dfa(policy->dfa);
--		if (policy->perms)
--			kvfree(policy->perms);
--		aa_free_str_table(&policy->trans);
-+	if (pdb) {
-+		aa_put_dfa(pdb->dfa);
-+		if (pdb->perms)
-+			kvfree(pdb->perms);
-+		aa_free_str_table(&pdb->trans);
-+		kfree(pdb);
- 	}
- }
+ 	struct hci_dev *hdev = data;
  
--- 
-2.43.0
-
+-	if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE)
++	hci_dev_lock(hdev);
++	if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE) {
++		hci_dev_unlock(hdev);
+ 		return -EINVAL;
++	}
+ 
+-	hci_dev_lock(hdev);
+ 	hdev->le_min_key_size = val;
+ 	hci_dev_unlock(hdev);
+ 
+@@ -1074,10 +1076,12 @@ static int max_key_size_set(void *data,
+ {
+ 	struct hci_dev *hdev = data;
+ 
+-	if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size)
++	hci_dev_lock(hdev);
++	if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size) {
++		hci_dev_unlock(hdev);
+ 		return -EINVAL;
++	}
+ 
+-	hci_dev_lock(hdev);
+ 	hdev->le_max_key_size = val;
+ 	hci_dev_unlock(hdev);
+ 
 
 
 
