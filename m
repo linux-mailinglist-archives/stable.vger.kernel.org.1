@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-14995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F798838377
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EFCC83850A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:38:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B56821F28989
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 446351F293FB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C153863102;
-	Tue, 23 Jan 2024 01:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC5527C0B5;
+	Tue, 23 Jan 2024 02:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HmfMS821"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jrg64FuO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B7162A0B;
-	Tue, 23 Jan 2024 01:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E30A7C0BE;
+	Tue, 23 Jan 2024 02:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974981; cv=none; b=cb3gq6D3p1IcxFkwEGyriWQ8gKToqWWwI1iFZkd7zpemLRm6lETMQAJLiWU85X7FJ+QSawg+p5vAEkmSav5KS/v3MISWDdgWap7QNwBwS4B8osTkbB0XK6tO2tB5kItXic5o9DjIvS7OAFmTQ1k8WrVGe7E1YVVJzZWOSvx7EWc=
+	t=1705975728; cv=none; b=PVU+xYuaWUSr3VcE2nt3dgyKl4kPZrlvUDID6rarXcO6Tw/dDOR/HeD7aT7ZZ2Q9HCZ28YAJAfEsBYtGFW4UTZdk37uIQy5RlSotF6fQEx7YvLAgJ6EXW/Qf/18dzUrLloUEeaZ3HWvj6ruaxLfLeTalyOzxr4zV8lJpJS5XDDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974981; c=relaxed/simple;
-	bh=4CZMEQUDC+tbQbSXuSBcOqfEuJWeI5hhJDUbSYi8apI=;
+	s=arc-20240116; t=1705975728; c=relaxed/simple;
+	bh=tp+zRZEkzvXxaTtmCpwCkNL2dDXaH90UCnFNprzlDXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YDOQkJcivK//ZB6yQoppeuZ30dfDQSH+9z2aLc8ycwxHbE4E3bB6/MUEqOfuKkFg755g4oRukUMlfABSDddO3HDFXaYtgZrihk8aKNJ9Mp0K2kiUiSQFo87VF9GecQTSEIlQuQRtwlkBmCHeI8kD3eh4o3xMRZCjcMGTTeRiBAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HmfMS821; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF551C433C7;
-	Tue, 23 Jan 2024 01:56:20 +0000 (UTC)
+	 MIME-Version; b=e2V4BNHCCiq9HzTnw3+2tPrPdfekxvrOsXUPJBWtg7LyuSi0DPqRRJoC1l6wlsFVLxVX24yVzv/46t6NgdHoyN++0IkrAzaDylujyPcdnSBxCBitxv/yKw9mvWN3SNR0G1usMbyafujbodymhKivqzVQVCATNUGRrhWBa97dMCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jrg64FuO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F65EC433F1;
+	Tue, 23 Jan 2024 02:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974981;
-	bh=4CZMEQUDC+tbQbSXuSBcOqfEuJWeI5hhJDUbSYi8apI=;
+	s=korg; t=1705975728;
+	bh=tp+zRZEkzvXxaTtmCpwCkNL2dDXaH90UCnFNprzlDXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HmfMS821TDxXbpFFLgP6tQ7kcUB7KO0BMIlEcIPhhnf80VRC5tbt4ewdWcLsXBf3K
-	 4wrJCe//1gN10bwYr2D5I5QiUDMrjQZmQV24gR3dcQtBoNxMUgDNyYNU4rdHyZBJ21
-	 D2tPMlYQcDeJ4btuO1wbEuJp9nKpSSRa4abRoRfc=
+	b=jrg64FuORMFfCBm4v77eKP3qOmOJFPULMWV57DIRuXVu6npbgmgRByRMAmOVDgabp
+	 fEMNewxFUrE2qGsRzoU15DTiOHaP9JdzkB+fWbmFrDa3hH1sEyX7ju3gVAedNf4R/t
+	 9qieBH9ZuqorutJWLXS+ROtQyoF3hjVAPnKPsF3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Douglas Anderson <dianders@chromium.org>,
-	Grant Grundler <grundler@chromium.org>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	linux-serial@vger.kernel.org,
+	sparclinux@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 306/374] r8152: Choose our USB config with choose_configuration() rather than probe()
-Date: Mon, 22 Jan 2024 15:59:22 -0800
-Message-ID: <20240122235755.485557629@linuxfoundation.org>
+Subject: [PATCH 6.6 512/583] serial: apbuart: fix console prompt on qemu
+Date: Mon, 22 Jan 2024 15:59:23 -0800
+Message-ID: <20240122235827.739885822@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Sam Ravnborg <sam@ravnborg.org>
 
-[ Upstream commit aa4f2b3e418e8673e55145de8b8016a7a9920306 ]
+[ Upstream commit c6dcd8050fb7c2efec6946ae9c49bc186b0a7475 ]
 
-If you deauthorize the r8152 device (by writing 0 to the "authorized"
-field in sysfs) and then reauthorize it (by writing a 1) then it no
-longer works. This is because when you do the above we lose the
-special configuration that we set in rtl8152_cfgselector_probe().
-Deauthorizing causes the config to be set to -1 and then reauthorizing
-runs the default logic for choosing the best config.
+When using a leon kernel with qemu there where no console prompt.
+The root cause is the handling of the fifo size in the tx part of the
+apbuart driver.
 
-I made an attempt to fix it so that the config is kept across
-deauthorizing / reauthorizing [1] but it was a bit ugly.
+The qemu uart driver only have a very rudimentary status handling and do
+not report the number of chars queued in the tx fifo in the status register.
+So the driver ends up with a fifo size of 1.
 
-Let's instead use the new USB core feature to override
-choose_configuration().
+In the tx path the fifo size is divided by 2 - resulting in a fifo
+size of zero.
 
-This patch relies upon the patches ("usb: core: Don't force USB
-generic_subclass drivers to define probe()") and ("usb: core: Allow
-subclassed USB drivers to override usb_choose_configuration()")
+The original implementation would always try to send one char, but
+after the introduction of uart_port_tx_limited() the fifo size is
+respected even for the first char.
 
-[1] https://lore.kernel.org/r/20231130154337.1.Ie00e07f07f87149c9ce0b27ae4e26991d307e14b@changeid
+There seems to be no good reason to divide the fifo size with two - so
+remove this. It looks like something copied from the original amba driver.
 
-Fixes: ec51fbd1b8a2 ("r8152: add USB device driver for config selection")
-Suggested-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Grant Grundler <grundler@chromium.org>
-Link: https://lore.kernel.org/r/20231201102946.v2.3.Ie00e07f07f87149c9ce0b27ae4e26991d307e14b@changeid
+With qemu we now have a minimum fifo size of one char, so we show
+the prompt.
+
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Fixes: d11cc8c3c4b6 ("tty: serial: use uart_port_tx_limited()")
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>
+Cc:  <linux-serial@vger.kernel.org>
+Cc:  <sparclinux@vger.kernel.org>
+Link: https://lore.kernel.org/r/20231226121607.GA2622970@ravnborg.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c | 16 +++++-----------
- 1 file changed, 5 insertions(+), 11 deletions(-)
+ drivers/tty/serial/apbuart.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index e8fd743a1509..85b98fd06ba2 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -9872,7 +9872,7 @@ static struct usb_driver rtl8152_driver = {
- 	.disable_hub_initiated_lpm = 1,
- };
- 
--static int rtl8152_cfgselector_probe(struct usb_device *udev)
-+static int rtl8152_cfgselector_choose_configuration(struct usb_device *udev)
+diff --git a/drivers/tty/serial/apbuart.c b/drivers/tty/serial/apbuart.c
+index d7658f380838..d3cb341f2c55 100644
+--- a/drivers/tty/serial/apbuart.c
++++ b/drivers/tty/serial/apbuart.c
+@@ -122,7 +122,7 @@ static void apbuart_tx_chars(struct uart_port *port)
  {
- 	struct usb_host_config *c;
- 	int i, num_configs;
-@@ -9899,19 +9899,13 @@ static int rtl8152_cfgselector_probe(struct usb_device *udev)
- 	if (i == num_configs)
- 		return -ENODEV;
+ 	u8 ch;
  
--	if (usb_set_configuration(udev, c->desc.bConfigurationValue)) {
--		dev_err(&udev->dev, "Failed to set configuration %d\n",
--			c->desc.bConfigurationValue);
--		return -ENODEV;
--	}
--
--	return 0;
-+	return c->desc.bConfigurationValue;
- }
- 
- static struct usb_device_driver rtl8152_cfgselector_driver = {
--	.name =		MODULENAME "-cfgselector",
--	.probe =	rtl8152_cfgselector_probe,
--	.id_table =	rtl8152_table,
-+	.name =	MODULENAME "-cfgselector",
-+	.choose_configuration = rtl8152_cfgselector_choose_configuration,
-+	.id_table = rtl8152_table,
- 	.generic_subclass = 1,
- 	.supports_autosuspend = 1,
- };
+-	uart_port_tx_limited(port, ch, port->fifosize >> 1,
++	uart_port_tx_limited(port, ch, port->fifosize,
+ 		true,
+ 		UART_PUT_CHAR(port, ch),
+ 		({}));
 -- 
 2.43.0
 
