@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-14697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FF5083822D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B4CA837D6A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBD391F239E2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 778C51C20F99
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5D26FB3;
-	Tue, 23 Jan 2024 01:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E0144EB21;
+	Tue, 23 Jan 2024 00:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cd8G6zLS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSk659f8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DEEB59B54;
-	Tue, 23 Jan 2024 01:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E464E1D7;
+	Tue, 23 Jan 2024 00:32:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974085; cv=none; b=A0bbj4FX1o0y2ZQ8Gy/LZWVt4ZIQORUdAZNiPjq0VF3gFgyCgiYzVoU9W3NTt0e0xtt5Q8Kn0njqSVGm0gcFHV3aV1IdAkwqbhH/RsGQMB5N9IiI0yEsl+n8BACLWOThTIKszia0KNKu/uP7ur6uHFLLgB4uPK1cQ7205srPds8=
+	t=1705969944; cv=none; b=dJLLijQoydX+Y1p4YnrcVng9zG9TC1d74bLqAVIX59JUOmkWqFBvEIkAzNyr8B1LaSGdWumaru2VgngR86hkRmwMDOUq1dCemA6vjS4ivUs5mC1ALjscmxw0Zwx2VVvEPj9xRfJc+5xuDLdZNvzEc1hNMBcRxZK2lG86iEgynL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974085; c=relaxed/simple;
-	bh=qRrnlelJpGREqqo/v55oFyZpFwiKfsn0hDd8zlAoAPI=;
+	s=arc-20240116; t=1705969944; c=relaxed/simple;
+	bh=DIOghlFQ5/9LVrejV/h2ZzO2qf3p+qqfjR/j2w6L/m4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OFxQmQhmVvKl+mLi+XZWFG/nsfM6pTIkZinOpQzDsH4dboOR5B7JzBhUZzV7cNWt4/BhFdeI1abZSLC5PiBR7tIW1v7T7g0gjKaUbya2tfI7MDxCm7/uCMWbmFg8AnZQ/5YYGGLVv+rnbxaVp8Sd5brOA+0hR/wEvBDQ2ME7qAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cd8G6zLS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BFC8C433C7;
-	Tue, 23 Jan 2024 01:41:24 +0000 (UTC)
+	 MIME-Version; b=E1wcBkoLAbnVSfvkCAVdInUgax+EFmEsOLBZc9ZLN7Y0JXk5elXdYLoV3iHrDYwv/sa0VIr9WTbDbcbTUsxMbaVx0+UxfWAAOvCXNMcAnzusIr1QKgAwFSa45231I3pQsIX20/tkpKWxzdKCoboILChvstWoZlztIH44jzeDKMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WSk659f8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3F63C43390;
+	Tue, 23 Jan 2024 00:32:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974084;
-	bh=qRrnlelJpGREqqo/v55oFyZpFwiKfsn0hDd8zlAoAPI=;
+	s=korg; t=1705969943;
+	bh=DIOghlFQ5/9LVrejV/h2ZzO2qf3p+qqfjR/j2w6L/m4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cd8G6zLS5ZGGqKyZMV4dQVRL+LEKKhvWRE5jtboI3BJ0++OXaS7iqr5RH47AYKNQN
-	 BllEGotiS5ghBab1fdZDLzwWg8z2q7nitoi363VdDZNe8f3uKvTZAM6bRHw/os+24r
-	 koe21gi3SpcYiu7t7YZLPOD53Fq/jOg4+UHk54Ik=
+	b=WSk659f8eqKwGhW7Sr74H4mi+DCTPN5uCz82lLEKNE1x/70XKzgxdva4+vXIhy7lK
+	 8DXy6DjOxLbTPfA90cDQr/e6EEZcSFIr/IouZ3lXA/rn+xUVzYwzvBAKeazHh6lko3
+	 FlFOMe6CxQaOeH8kM1wk4v9wnFHxnlYJJvFKqhgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 157/374] wifi: rtlwifi: rtl8192c: using calculate_bit_shift()
+Subject: [PATCH 6.7 509/641] libapi: Add missing linux/types.h header to get the __u64 type on io.h
 Date: Mon, 22 Jan 2024 15:56:53 -0800
-Message-ID: <20240122235750.073649984@linuxfoundation.org>
+Message-ID: <20240122235834.003977802@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +65,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 1dedc3a6699d827d345019e921b8d8f37f694333 ]
+[ Upstream commit af76b2dec0984a079d8497bfa37d29a9b55932e1 ]
 
-Using calculate_bit_shift() to replace _rtl92c_phy_calculate_bit_shift().
-And fix the undefined bitwise shift behavior problem.
+There are functions using __u64, so we need to have the linux/types.h
+header otherwise we'll break when its not included before api/io.h.
 
-Fixes: 4295cd254af3 ("rtlwifi: Move common parts of rtl8192ce/phy.c")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-5-suhui@nfschina.com
+Fixes: e95770af4c4a280f ("tools api: Add a lightweight buffered reading api")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/lkml/ZWjDPL+IzPPsuC3X@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/realtek/rtlwifi/rtl8192c/phy_common.c   | 12 ++----------
- .../wireless/realtek/rtlwifi/rtl8192c/phy_common.h   |  1 -
- 2 files changed, 2 insertions(+), 11 deletions(-)
+ tools/lib/api/io.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
-index 3d29c8dbb255..144ee780e1b6 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
-@@ -17,7 +17,7 @@ u32 rtl92c_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE, "regaddr(%#x), bitmask(%#x)\n",
- 		regaddr, bitmask);
- 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
--	bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	returnvalue = (originalvalue & bitmask) >> bitshift;
+diff --git a/tools/lib/api/io.h b/tools/lib/api/io.h
+index a77b74c5fb65..2a7fe9758813 100644
+--- a/tools/lib/api/io.h
++++ b/tools/lib/api/io.h
+@@ -12,6 +12,7 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <unistd.h>
++#include <linux/types.h>
  
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
-@@ -40,7 +40,7 @@ void rtl92c_phy_set_bb_reg(struct ieee80211_hw *hw,
- 
- 	if (bitmask != MASKDWORD) {
- 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
--		bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
- 	}
- 
-@@ -143,14 +143,6 @@ void _rtl92c_phy_rf_serial_write(struct ieee80211_hw *hw,
- }
- EXPORT_SYMBOL(_rtl92c_phy_rf_serial_write);
- 
--u32 _rtl92c_phy_calculate_bit_shift(u32 bitmask)
--{
--	u32 i = ffs(bitmask);
--
--	return i ? i - 1 : 32;
--}
--EXPORT_SYMBOL(_rtl92c_phy_calculate_bit_shift);
--
- static void _rtl92c_phy_bb_config_1t(struct ieee80211_hw *hw)
- {
- 	rtl_set_bbreg(hw, RFPGA0_TXINFO, 0x3, 0x2);
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.h
-index 75afa6253ad0..e64d377dfe9e 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.h
-@@ -196,7 +196,6 @@ bool rtl92c_phy_set_rf_power_state(struct ieee80211_hw *hw,
- void rtl92ce_phy_set_rf_on(struct ieee80211_hw *hw);
- void rtl92c_phy_set_io(struct ieee80211_hw *hw);
- void rtl92c_bb_block_on(struct ieee80211_hw *hw);
--u32 _rtl92c_phy_calculate_bit_shift(u32 bitmask);
- long _rtl92c_phy_txpwr_idx_to_dbm(struct ieee80211_hw *hw,
- 				  enum wireless_mode wirelessmode,
- 				  u8 txpwridx);
+ struct io {
+ 	/* File descriptor being read/ */
 -- 
 2.43.0
 
