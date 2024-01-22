@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D676E837DF4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D9EB838585
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:43:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 142301C28D6E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:34:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 497F6B29C27
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B146524BC;
-	Tue, 23 Jan 2024 00:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F34C74E09;
+	Tue, 23 Jan 2024 02:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xU9zZ6Hg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NkZmiYki"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD9850A81;
-	Tue, 23 Jan 2024 00:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7F274E23;
+	Tue, 23 Jan 2024 02:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970196; cv=none; b=BFhN3Osg37SOyEunLypOubGzTogASbxBytXf52EWvWLyjHTY+jN2H6XXRGPJbazSbBmyD8zinT7taea17U12Voc/kxsxSJY2zOyxuv53vcF09IPis6NDjpeJ9FYhs/nVqQZaHRlU6pmU/eRDI0MpzcINEBZ/P2zavdPENZlcutw=
+	t=1705975478; cv=none; b=qE0fE37k2cw6MiRlX9QIaUGnVXpjW14aW+BaKqQe3NKeCZddEkRUNZ6p1ATV6CSMkJfslzx1dxOgNSlP5SsI+FXES21mfE3Fxaia74lItpnkH/vCcYhZPZiRaPO010l//+B92FxBAs+CyYM9tfLqCT6HEeDxx+p5bcnrQB2pzQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970196; c=relaxed/simple;
-	bh=zJDEtl5atR96EJlqVX7tPQ6CqwwK6VNkeNfb6fTozUQ=;
+	s=arc-20240116; t=1705975478; c=relaxed/simple;
+	bh=EzJvmnUSW2KaOFRALLEoPZfvdI4qJTIIbFokJR8yLmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nKLZhc/QYyU8R6j40+sfcTq5xPHElQqTiUnO1g9fF+2KdJ9aSFKdGM04SymceCvubue1wtiRY3qhFjJ23N0xSIxtlUKk+T7EReOCUdVS0CrIkb1h2uiKgGI0g2KVIvDPNsfWWjQbjQMenFzelZuOPzYJf0c/RsBJeAaUmJgdqjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xU9zZ6Hg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56391C433C7;
-	Tue, 23 Jan 2024 00:36:35 +0000 (UTC)
+	 MIME-Version; b=gDeYRplsLEYWy7fHAjl091v+ufEmLKyt4NNl5Mk4QSnUtlsCWAXeOlejOS+rPCSAULVMPCPEGwxV5z060rVdmOgbHd+0X2WM53sJh3X9NIeyQq1ZTgmMQAbTgUheWzp45xF7uD1NUtA/gUMwRM44vn0uQHzriuav5dJ3aTAk00U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NkZmiYki; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E968BC43390;
+	Tue, 23 Jan 2024 02:04:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970195;
-	bh=zJDEtl5atR96EJlqVX7tPQ6CqwwK6VNkeNfb6fTozUQ=;
+	s=korg; t=1705975478;
+	bh=EzJvmnUSW2KaOFRALLEoPZfvdI4qJTIIbFokJR8yLmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xU9zZ6Hg08vUUb8kfJh4JovKEi5x1/sh5X+TICN723hdTlb4tfsZg8hn+pny8Lwfx
-	 r44djA1ZE/sBpZQhdImYlYWZI/KpCWyasSTA8q6ahTWOPxmkSSQfxiHlHLbQpfgXU5
-	 z8VZsJyNzmVpKnG8KTxMDBy4Cy9OUoPtPcS2TwEY=
+	b=NkZmiYkixQ8Ha5NtDXqaAPieifrVkv3tOdpfhOTuTJDiWe2Q5PYoh3Mdga4Tzqnb9
+	 CXvK4IPwDDpQC5V3M6kq8bKkQEZjs+HzBrbA4OSbOS2BtYZMMcdTEhYG7UKP1p+PXn
+	 Vr5Vws2cLyqsLQT2tgYmXTN8TkPHzw6Z2XNPbEYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 579/641] ASoC: mediatek: sof-common: Add NULL check for normal_link string
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 432/583] iio: adc: ad7091r: Pass iio_dev to event handler
 Date: Mon, 22 Jan 2024 15:58:03 -0800
-Message-ID: <20240122235836.300731042@linuxfoundation.org>
+Message-ID: <20240122235825.202428577@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
 
-[ Upstream commit e3b3ec967a7d93b9010a5af9a2394c8b5c8f31ed ]
+commit a25a7df518fc71b1ba981d691e9322e645d2689c upstream.
 
-It's not granted that all entries of struct sof_conn_stream declare
-a `normal_link` (a non-SOF, direct link) string, and this is the case
-for SoCs that support only SOF paths (hence do not support both direct
-and SOF usecases).
+Previous version of ad7091r event handler received the ADC state pointer
+and retrieved the iio device from driver data field with dev_get_drvdata().
+However, no driver data have ever been set, which led to null pointer
+dereference when running the event handler.
 
-For example, in the case of MT8188 there is no normal_link string in
-any of the sof_conn_stream entries and there will be more drivers
-doing that in the future.
+Pass the iio device to the event handler and retrieve the ADC state struct
+from it so we avoid the null pointer dereference and save the driver from
+filling the driver data field.
 
-To avoid possible NULL pointer KPs, add a NULL check for `normal_link`.
-
-Fixes: 0caf1120c583 ("ASoC: mediatek: mt8195: extract SOF common code")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://msgid.link/r/20240111105226.117603-1-angelogioacchino.delregno@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ca69300173b6 ("iio: adc: Add support for AD7091R5 ADC")
+Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Link: https://lore.kernel.org/r/5024b764107463de9578d5b3b0a3d5678e307b1a.1702746240.git.marcelo.schmitt1@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/mediatek/common/mtk-dsp-sof-common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/ad7091r-base.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/mediatek/common/mtk-dsp-sof-common.c b/sound/soc/mediatek/common/mtk-dsp-sof-common.c
-index f3894010f656..7ec8965a70c0 100644
---- a/sound/soc/mediatek/common/mtk-dsp-sof-common.c
-+++ b/sound/soc/mediatek/common/mtk-dsp-sof-common.c
-@@ -24,7 +24,7 @@ int mtk_sof_dai_link_fixup(struct snd_soc_pcm_runtime *rtd,
- 		struct snd_soc_dai_link *sof_dai_link = NULL;
- 		const struct sof_conn_stream *conn = &sof_priv->conn_streams[i];
+--- a/drivers/iio/adc/ad7091r-base.c
++++ b/drivers/iio/adc/ad7091r-base.c
+@@ -174,8 +174,8 @@ static const struct iio_info ad7091r_inf
  
--		if (strcmp(rtd->dai_link->name, conn->normal_link))
-+		if (conn->normal_link && strcmp(rtd->dai_link->name, conn->normal_link))
- 			continue;
- 
- 		for_each_card_rtds(card, runtime) {
--- 
-2.43.0
-
+ static irqreturn_t ad7091r_event_handler(int irq, void *private)
+ {
+-	struct ad7091r_state *st = (struct ad7091r_state *) private;
+-	struct iio_dev *iio_dev = dev_get_drvdata(st->dev);
++	struct iio_dev *iio_dev = private;
++	struct ad7091r_state *st = iio_priv(iio_dev);
+ 	unsigned int i, read_val;
+ 	int ret;
+ 	s64 timestamp = iio_get_time_ns(iio_dev);
+@@ -234,7 +234,7 @@ int ad7091r_probe(struct device *dev, co
+ 	if (irq) {
+ 		ret = devm_request_threaded_irq(dev, irq, NULL,
+ 				ad7091r_event_handler,
+-				IRQF_TRIGGER_FALLING | IRQF_ONESHOT, name, st);
++				IRQF_TRIGGER_FALLING | IRQF_ONESHOT, name, iio_dev);
+ 		if (ret)
+ 			return ret;
+ 	}
 
 
 
