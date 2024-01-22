@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-13781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C4FD837E0F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65BA2838090
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00BF0292100
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:34:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9998D1C296BC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E0851C5F;
-	Tue, 23 Jan 2024 00:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7C912FF7F;
+	Tue, 23 Jan 2024 01:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bD3hYjPJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KYnEyJ3/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610214E1D0;
-	Tue, 23 Jan 2024 00:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB97812FF73;
+	Tue, 23 Jan 2024 01:03:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970284; cv=none; b=QV+Uzk3OT5yNnHJSPRggZAoy+GnpHcbJCGO1/+K7Si0wQssA53f/7/nZJmsl1yqgtchIBQZGmM2j6CA1geerTS8PvwWakllC7faS7Kw/TmDLnyLAZ1Hsv4CRhqwmpCR8ldkiAmBMBl0QdEyVK1geXYknBlpmW6r10ZK6Ko5IkCM=
+	t=1705971798; cv=none; b=cpDRJc4Su8jh98tz+SBd6d5IveHXszOdUZWeCgPShzGbn3w15KO1GGKM7EDdgkGxNSuiR6TAG1CIhh8+VZgV1ro4sD4igpVEqMQsmpwINeEKO2P2sfLe5feE6zxwfNV7LhSog9FqqQvuAJ4fsYp3JsyjF18EOWS6Qf7VV9WYSIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970284; c=relaxed/simple;
-	bh=zm8SsCVnvVGFOIXSNCpP+L9KV3CMiJ/IOgNFYNihoU4=;
+	s=arc-20240116; t=1705971798; c=relaxed/simple;
+	bh=8vXtOfw4CQlwIwKxrLHPJh+IqYg561vnkN0oHEcN1N4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FRg34enxYtSv/e3ngPCuab25ENyOLSlf6mFHOCbDfMqv19raG6S7Eh//ovju/FsuRjmTVNx1d6NL4qVdtsh2BBp9faqqfkQ2Ts/XwUHjqGt8xqK5VGly6p7yb5z8QpSw7M0jTmMM1bIOTJMnksCPIKbx4gNBsbwJ6eIiPIpOZy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bD3hYjPJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAEE4C433C7;
-	Tue, 23 Jan 2024 00:38:03 +0000 (UTC)
+	 MIME-Version; b=Aq7RL3jjQBFMfZzHIJ0LMef74KL0krwSZ6PqLXizGhd+QHLDKZyHUZptFYpxrGKkkxzMqDgzTnikRePRez5tyjjJ5+DP5PBwB51jGKuaHqsA19moR1mFXFjPNk+cKgvHC1KLS6ciXjSeQ+eZfq15bHvcOr+KsNn08nzrLSSoz9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KYnEyJ3/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A69C433F1;
+	Tue, 23 Jan 2024 01:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970284;
-	bh=zm8SsCVnvVGFOIXSNCpP+L9KV3CMiJ/IOgNFYNihoU4=;
+	s=korg; t=1705971797;
+	bh=8vXtOfw4CQlwIwKxrLHPJh+IqYg561vnkN0oHEcN1N4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bD3hYjPJFSiXHErmxMR3+So1yWmOeLTkXD4Qu7pdKKIoVMIh+Tj5hZnnyTGPw2+gO
-	 4hKbryojiH7DcNXOvRKEJ4/91D5vAnLvAOewPtlfM6OElTUrXnD0Ib3px75OgQmajl
-	 M9qrhhDiHT0ZahBPn+ZzoSKPLMHIu5Sb/SP1V27k=
+	b=KYnEyJ3/4PS22K+wmyw1QjoXfL6D74/hnDPVX0GHmOtO5iJaEzMvNGCQizIvVtreJ
+	 WCA4+6vzWvN6ePUcFORpN5d1xu+D6q0bxQgzqp5ZlRdt+AeyJPs1Ik8TJm0lwh+GPV
+	 c4a5v8A1VC4gAbJj1/XwBDdRra9/XqSTGxVDn+pI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 625/641] netfilter: nf_tables: do not allow mismatch field size and set key length
-Date: Mon, 22 Jan 2024 15:58:49 -0800
-Message-ID: <20240122235837.815517188@linuxfoundation.org>
+	xingwei lee <xrivendell7@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.10 224/286] io_uring/rw: ensure io->bytes_done is always initialized
+Date: Mon, 22 Jan 2024 15:58:50 -0800
+Message-ID: <20240122235740.705716800@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 3ce67e3793f48c1b9635beb9bb71116ca1e51b58 ]
+commit 0a535eddbe0dc1de4386046ab849f08aeb2f8faf upstream.
 
-The set description provides the size of each field in the set whose sum
-should not mismatch the set key length, bail out otherwise.
+If IOSQE_ASYNC is set and we fail importing an iovec for a readv or
+writev request, then we leave ->bytes_done uninitialized and hence the
+eventual failure CQE posted can potentially have a random res value
+rather than the expected -EINVAL.
 
-I did not manage to crash nft_set_pipapo with mismatch fields and set key
-length so far, but this is UB which must be disallowed.
+Setup ->bytes_done before potentially failing, so we have a consistent
+value if we fail the request early.
 
-Fixes: f3a2181e16f1 ("netfilter: nf_tables: Support for sets with multiple ranged fields")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: xingwei lee <xrivendell7@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ io_uring/io_uring.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 3912a133324c..7775bf5224ac 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4811,8 +4811,8 @@ static int nft_set_desc_concat_parse(const struct nlattr *attr,
- static int nft_set_desc_concat(struct nft_set_desc *desc,
- 			       const struct nlattr *nla)
- {
-+	u32 num_regs = 0, key_num_regs = 0;
- 	struct nlattr *attr;
--	u32 num_regs = 0;
- 	int rem, err, i;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -3485,14 +3485,17 @@ static inline int io_rw_prep_async(struc
+ 	struct iovec *iov = iorw->fast_iov;
+ 	int ret;
  
- 	nla_for_each_nested(attr, nla, rem) {
-@@ -4827,6 +4827,10 @@ static int nft_set_desc_concat(struct nft_set_desc *desc,
- 	for (i = 0; i < desc->field_count; i++)
- 		num_regs += DIV_ROUND_UP(desc->field_len[i], sizeof(u32));
- 
-+	key_num_regs = DIV_ROUND_UP(desc->klen, sizeof(u32));
-+	if (key_num_regs != num_regs)
-+		return -EINVAL;
++	iorw->bytes_done = 0;
++	iorw->free_iovec = NULL;
 +
- 	if (num_regs > NFT_REG32_COUNT)
- 		return -E2BIG;
+ 	ret = io_import_iovec(rw, req, &iov, &iorw->iter, false);
+ 	if (unlikely(ret < 0))
+ 		return ret;
  
--- 
-2.43.0
-
+-	iorw->bytes_done = 0;
+-	iorw->free_iovec = iov;
+-	if (iov)
++	if (iov) {
++		iorw->free_iovec = iov;
+ 		req->flags |= REQ_F_NEED_CLEANUP;
++	}
+ 	iov_iter_save_state(&iorw->iter, &iorw->iter_state);
+ 	return 0;
+ }
 
 
 
