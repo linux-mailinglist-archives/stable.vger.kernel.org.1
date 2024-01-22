@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-14584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCF54838180
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:20 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28634837CE6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 956D62838E3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE5B31F29119
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:20:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 813F9185A;
-	Tue, 23 Jan 2024 01:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5722E15B305;
+	Tue, 23 Jan 2024 00:29:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hm81xtbi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pbGvK2Yq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41141374;
-	Tue, 23 Jan 2024 01:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D5715B2FC;
+	Tue, 23 Jan 2024 00:29:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972150; cv=none; b=YCRrrYws9tXGNe92SyCdJ5yEynD33+Rkd5fAAKGx8ptlvCk7+k4Dhj6sjD/108zyCHalm652F68h8rcC6YnRW7VEk49ZoUk2VV77AldFG265v+gm8ciG8HkiSmywepcDoB/6NHkU7+5BG87hLkbcqsfN99ds3f5PRgQKjRemF+E=
+	t=1705969754; cv=none; b=Wnr5UCqrckSqqjS5Qf7zxqfN0mJwds/aRA/7wD67eoMv7JWH/9m+iCSeNLjijiCKBitEogf9KBdExNnu98GaplVyX5fJVQAB7SQStoWKc8a4eXF67yWzL2Go2evnbdDnSY9VmCZgCn+mBSpK3khX8Xl+F7nZPEGgKwnVwY2tCGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972150; c=relaxed/simple;
-	bh=NAzoZ4zmIqT7EuMjwmq7dvd82Jatgh5Ud3MfE4W9wKQ=;
+	s=arc-20240116; t=1705969754; c=relaxed/simple;
+	bh=w/C3Ok5GtOJo1O/K7TNZuJ+B652PmuByUb2cW6UzHi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sA2ciJTbDdliNXDvGNedYhVcgKm5x1uUHf0veQERMqhj723GqB7ihaPZYdBAmnfryd/X5ybKXi4+dN6sCSfXEpbb0G96yV+yZdZpy4UlWLkYoIci7hC/Z2dKK4nsvMtQILYWCpe8zXS0B/AMMGgIklr24/v6g9RLLHAKqzV4JsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hm81xtbi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD26BC433C7;
-	Tue, 23 Jan 2024 01:09:09 +0000 (UTC)
+	 MIME-Version; b=evk3FMLSWU4DAngAkkKscJ8+RdyRHTREEMROn3JCdrET8GBamjVqRO+sb7mwzKKuERkMcEunt6zauYjotYBaY9Ryfum1Opdj0+CS6459rY7Ud/7G1PfsoEZkMAD6k2/2otfACIqD0ea8Hrcj+LodOLdlhFc5MXfQHOIJ9qPg3nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pbGvK2Yq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244EFC433C7;
+	Tue, 23 Jan 2024 00:29:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972150;
-	bh=NAzoZ4zmIqT7EuMjwmq7dvd82Jatgh5Ud3MfE4W9wKQ=;
+	s=korg; t=1705969753;
+	bh=w/C3Ok5GtOJo1O/K7TNZuJ+B652PmuByUb2cW6UzHi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hm81xtbig6HZ/z6Gwm7k3DVrGeJjZ+sCYj2jpOkyY25zkD3FzQrHbErudQCCf5OAx
-	 +I4123fTBUYWejX3nwnE4bV1NdaZYxy1ey3aQ4RxPRhBqGZkXZmGnQ1AeJAkyDTcs8
-	 nfSRruPkSFBV8wZxbm5lVvKaEUyzsg4UlYIkIHOE=
+	b=pbGvK2Yqpxn0nB72Gmdr3M0WCoeM/g3tNPqHeS43oieIO89XtuZeeZbDDZ/QUiIi0
+	 ZaZOK+SdGxAW0vmsDVHnbq2hp9PjYc4iQudBWduunXahQfEUB0PVh0MMk8TRf87Ycx
+	 fUy8kZT55h/k8EyEHr/EryZRId4Iuwcdc3e4IX34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 078/374] spi: spi-zynqmp-gqspi: fix driver kconfig dependencies
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Helge Deller <deller@gmx.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 6.7 430/641] fbdev/acornfb: Fix name of fb_ops initializer macro
 Date: Mon, 22 Jan 2024 15:55:34 -0800
-Message-ID: <20240122235747.330198493@linuxfoundation.org>
+Message-ID: <20240122235831.446298369@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 424a8166764e462258fdccaaefbdeb07517c8b21 ]
+commit b48807788e7a2bd93044fe84cfe8ff64b85ec15e upstream.
 
-ZynqMP GQSPI driver no longer uses spi-master framework. It had been
-converted to use spi-mem framework. So remove driver dependency from
-spi-master and replace it with spi-mem.
+Fix build by using the correct name for the initializer macro
+for struct fb_ops.
 
-Fixes: 1c26372e5aa9 ("spi: spi-zynqmp-gqspi: Update driver to use spi-mem framework")
-Signed-off-by: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Link: https://lore.kernel.org/r/1699282435-884917-1-git-send-email-radhey.shyam.pandey@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 9037afde8b9d ("fbdev/acornfb: Use fbdev I/O helpers")
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: <stable@vger.kernel.org> # v6.6+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231127131655.4020-2-tzimmermann@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/acornfb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 123689e457d1..412154732c46 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -984,9 +984,10 @@ config SPI_ZYNQ_QSPI
+--- a/drivers/video/fbdev/acornfb.c
++++ b/drivers/video/fbdev/acornfb.c
+@@ -605,7 +605,7 @@ acornfb_pan_display(struct fb_var_screen
  
- config SPI_ZYNQMP_GQSPI
- 	tristate "Xilinx ZynqMP GQSPI controller"
--	depends on (SPI_MASTER && HAS_DMA) || COMPILE_TEST
-+	depends on (SPI_MEM && HAS_DMA) || COMPILE_TEST
- 	help
- 	  Enables Xilinx GQSPI controller driver for Zynq UltraScale+ MPSoC.
-+	  This controller only supports SPI memory interface.
- 
- config SPI_AMD
- 	tristate "AMD SPI controller"
--- 
-2.43.0
-
+ static const struct fb_ops acornfb_ops = {
+ 	.owner		= THIS_MODULE,
+-	FB_IOMEM_DEFAULT_OPS,
++	FB_DEFAULT_IOMEM_OPS,
+ 	.fb_check_var	= acornfb_check_var,
+ 	.fb_set_par	= acornfb_set_par,
+ 	.fb_setcolreg	= acornfb_setcolreg,
 
 
 
