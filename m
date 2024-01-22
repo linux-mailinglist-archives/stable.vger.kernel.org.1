@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-14864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C3F88382F0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:25:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCFEE838575
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:42:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3ECBF289C0C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08912B272F2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2F2B6024B;
-	Tue, 23 Jan 2024 01:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DBDE77653;
+	Tue, 23 Jan 2024 02:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="boyV0A0i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5WTEpaD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917045FF16;
-	Tue, 23 Jan 2024 01:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8A077636;
+	Tue, 23 Jan 2024 02:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974665; cv=none; b=Hz1OCJyrtk6tCw8/Z1n9WaB2ABMtuaGCJT7puroRbYS8q+JQt+ZoRBFK5JZDwr0WVFfPIhNfy2tiijw6g6OoEw0IkRsmugfeIhnXxeUlrersBVsys0FYDfJJew9at8alVmlQGCxZIH7tRUaptlqwkgBfsZJ6eNY85/rpqrUARsQ=
+	t=1705975519; cv=none; b=mHg6CEueZnIGbVxhOG5Y8C6zAp0f/cR2wzRqnvfn25hOwaZcOv5Y7P/vID1BSH+vLzevAOGFFQHwkccWXKcxRMogBEebLFSJ/DKP97A+7QrKTJO1dSIWA3+bOLYQa43BJE2dw/qj+w+1tPufhbu+cyDTRWU7VfOq6Yu2WvVOYzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974665; c=relaxed/simple;
-	bh=Cya7ry4BDZE3ghC3UL5rbgWdt9RBlXcVkAixhc3ZS9I=;
+	s=arc-20240116; t=1705975519; c=relaxed/simple;
+	bh=bVs6zFNNFdx23bi7LawmFzDlMC81TXfQg81xkW4xP9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fHWUD1vfVGDQd+ufCol0CIOAgLz2yPMVEsKuTTmiAzjgiiE+53hbvjXw/dG2EvV4F+WK51OXG8n1K/iy+8XOK34ZiUUK3B4l1ls0J7qgVLLPPjYGjNeOity5N4QEXZ1Ywgf9CEeRvZxtmzpePUAz/boRqqgbO1GE0TvukhaB9aE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=boyV0A0i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54CF6C43394;
-	Tue, 23 Jan 2024 01:51:05 +0000 (UTC)
+	 MIME-Version; b=p9bGJKNPr8D8/dfRFs8DJx8L98x7OCkGUDFQY32WMuGeeT7F7pIPylzET91hUYXyVLQ3bYz7zz4RDNOsLmUrybidGm2tvmc96fdLd7QgjOx/sVRhebl6Tk7cPFp1ic0LdAOMh2FYKuZ8eyNpySZfpmymCEG3KlrLaFUjxcWk6n4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5WTEpaD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3CCEC433A6;
+	Tue, 23 Jan 2024 02:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974665;
-	bh=Cya7ry4BDZE3ghC3UL5rbgWdt9RBlXcVkAixhc3ZS9I=;
+	s=korg; t=1705975518;
+	bh=bVs6zFNNFdx23bi7LawmFzDlMC81TXfQg81xkW4xP9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=boyV0A0i/6ZHv0SNkhww+Fox8rk8tW9uf1BYvzh4w07MIfPqb/LOv/hB6Bk6EFbyV
-	 HZLQR9+esNYJIJgMguEmJkRcEmmXd9cJuTaqba1+9LtKzC1CJaWNzSyJYJTTI6IdAo
-	 xFMV0SsOXWI2p/qRBdgeR+t3xWd3NTyjSlXfpkLc=
+	b=Z5WTEpaDz+PjV3QQUhhr8mfrGXug8dXvbQATir9uN/ZMY+KAcv8CeIlELZ4yKwvUy
+	 3VUx+DQPuatckMgVJXw1kexzZY5WQND7gnqLyESaWLh4OlNkNMq7SNzr+Y7kcwpk36
+	 nsfKGw7XMcmoiZ6E+L2CZS81M9JffxX+mkrTb4IU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Tom Talpey <tom@talpey.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	"Neeraj Upadhyay (AMD)" <neeraj.iitr10@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 240/374] ksmbd: validate the zero field of packet header
+Subject: [PATCH 6.6 445/583] srcu: Use try-lock lockdep annotation for NMI-safe access.
 Date: Mon, 22 Jan 2024 15:58:16 -0800
-Message-ID: <20240122235753.084913459@linuxfoundation.org>
+Message-ID: <20240122235825.592044639@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 516b3eb8c8065f7465f87608d37a7ed08298c7a5 ]
+[ Upstream commit 3c6b0c1c28184038d90dffe8eb542bedcb8ccf98 ]
 
-The SMB2 Protocol requires that "The first byte of the Direct TCP
-transport packet header MUST be zero (0x00)"[1]. Commit 1c1bcf2d3ea0
-("ksmbd: validate smb request protocol id") removed the validation of
-this 1-byte zero. Add the validation back now.
+It is claimed that srcu_read_lock_nmisafe() NMI-safe. However it
+triggers a lockdep if used from NMI because lockdep expects a deadlock
+since nothing disables NMIs while the lock is acquired.
 
-[1]: [MS-SMB2] - v20230227, page 30.
-https://winprotocoldoc.blob.core.windows.net/productionwindowsarchives/MS-SMB2/%5bMS-SMB2%5d-230227.pdf
+This is because commit f0f44752f5f61 ("rcu: Annotate SRCU's update-side
+lockdep dependencies") annotates synchronize_srcu() as a write lock
+usage. This helps to detect a deadlocks such as
+	srcu_read_lock();
+	synchronize_srcu();
+	srcu_read_unlock();
 
-Fixes: 1c1bcf2d3ea0 ("ksmbd: validate smb request protocol id")
-Signed-off-by: Li Nan <linan122@huawei.com>
-Acked-by: Tom Talpey <tom@talpey.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+The side effect is that the lock srcu_struct now has a USED usage in normal
+contexts, so it conflicts with a USED_READ usage in NMI. But this shouldn't
+cause a real deadlock because the write lock usage from synchronize_srcu()
+is a fake one and only used for read/write deadlock detection.
+
+Use a try-lock annotation for srcu_read_lock_nmisafe() to avoid lockdep
+complains if used from NMI.
+
+Fixes: f0f44752f5f6 ("rcu: Annotate SRCU's update-side lockdep dependencies")
+Link: https://lore.kernel.org/r/20230927160231.XRCDDSK4@linutronix.de
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Neeraj Upadhyay (AMD) <neeraj.iitr10@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ksmbd/smb_common.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ include/linux/rcupdate.h | 6 ++++++
+ include/linux/srcu.h     | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ksmbd/smb_common.c b/fs/ksmbd/smb_common.c
-index d160363c09eb..e90a1e8c1951 100644
---- a/fs/ksmbd/smb_common.c
-+++ b/fs/ksmbd/smb_common.c
-@@ -158,8 +158,12 @@ int ksmbd_verify_smb_message(struct ksmbd_work *work)
-  */
- bool ksmbd_smb_request(struct ksmbd_conn *conn)
- {
--	__le32 *proto = (__le32 *)smb2_get_msg(conn->request_buf);
-+	__le32 *proto;
+diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
+index 5e5f920ade90..44aab5c0bd2c 100644
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -303,6 +303,11 @@ static inline void rcu_lock_acquire(struct lockdep_map *map)
+ 	lock_acquire(map, 0, 0, 2, 0, NULL, _THIS_IP_);
+ }
  
-+	if (conn->request_buf[0] != 0)
-+		return false;
++static inline void rcu_try_lock_acquire(struct lockdep_map *map)
++{
++	lock_acquire(map, 0, 1, 2, 0, NULL, _THIS_IP_);
++}
 +
-+	proto = (__le32 *)smb2_get_msg(conn->request_buf);
- 	if (*proto == SMB2_COMPRESSION_TRANSFORM_ID) {
- 		pr_err_ratelimited("smb2 compression not support yet");
- 		return false;
+ static inline void rcu_lock_release(struct lockdep_map *map)
+ {
+ 	lock_release(map, _THIS_IP_);
+@@ -317,6 +322,7 @@ int rcu_read_lock_any_held(void);
+ #else /* #ifdef CONFIG_DEBUG_LOCK_ALLOC */
+ 
+ # define rcu_lock_acquire(a)		do { } while (0)
++# define rcu_try_lock_acquire(a)	do { } while (0)
+ # define rcu_lock_release(a)		do { } while (0)
+ 
+ static inline int rcu_read_lock_held(void)
+diff --git a/include/linux/srcu.h b/include/linux/srcu.h
+index 127ef3b2e607..236610e4a8fa 100644
+--- a/include/linux/srcu.h
++++ b/include/linux/srcu.h
+@@ -229,7 +229,7 @@ static inline int srcu_read_lock_nmisafe(struct srcu_struct *ssp) __acquires(ssp
+ 
+ 	srcu_check_nmi_safety(ssp, true);
+ 	retval = __srcu_read_lock_nmisafe(ssp);
+-	rcu_lock_acquire(&ssp->dep_map);
++	rcu_try_lock_acquire(&ssp->dep_map);
+ 	return retval;
+ }
+ 
 -- 
 2.43.0
 
