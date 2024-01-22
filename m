@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-15215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B35783845C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41C7A837F4C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:51:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C4DC29969B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F97D1C283AA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863D86D1A0;
-	Tue, 23 Jan 2024 02:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5C412AAC1;
+	Tue, 23 Jan 2024 00:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+i43I2F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6goiCSI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4460F6BB53;
-	Tue, 23 Jan 2024 02:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4770A129A86;
+	Tue, 23 Jan 2024 00:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975371; cv=none; b=GoCanoAYyvv0soSdr1kAkJ3lF6zbjwxdZWr8EaKFYZdgLaHWzj9k9m0WHqrTzeVCT8M92AtPPK9aProEjt7ihtkfPA7tHw/1xFoJPT2S/Y7CLvcy2YfHViw6oTML5QM/9Z5DzWYcNLrB9yjd3cT3BLTWOFyb/+Q8zqDP06TA6e4=
+	t=1705971049; cv=none; b=RjjK1jLQ69NrrrdQty98SxM+DDLOEPYGtdEPKGjtUeOqjdmi8ynmlflpEqICPRhGvtPlaMQcAZrMw2/4yQQHIaQkcRvm8JsAJ1+r7DZR6E7Wl697GZ14oxULJqXrS/S8s4Bjs4Q9/utwsT1b+/SuknLrRwgOPCSzuVghw2X/snQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975371; c=relaxed/simple;
-	bh=F+VTA57fpzlko79M7ubzpnh5Z3J8GD5FiIkEw3GdtYs=;
+	s=arc-20240116; t=1705971049; c=relaxed/simple;
+	bh=2KZ1YydOHFggzT7omPdVSeq6KeRGaq/o4qjuOBwJU8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O+HUZ9H+tItX3kSO04oDUk4RYfVKXYtJ031LXs9XOT/j8UBqcwJaSNda2wkV613eL0RewtOO/d94tJLKq2KpYZPhyxSkc875c91noUrCt7+eNyTiwmQ9li+AMLs/QCUv3/oSYS8B5XHOFm5AsCPIm7nK6g5rFegiR9fL6k/ZxUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+i43I2F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A337C43394;
-	Tue, 23 Jan 2024 02:02:51 +0000 (UTC)
+	 MIME-Version; b=SE2i9F6hVsVgGAETnkl3tyRHDGXbUvKgePX5rU8LKqEx3N9vkQUBR/VFAZpoMJKUmu1WxjNS771qFTMQp8jM4HGJF2xxjyaze0kkJxkDQYOOWvAEYAcRMXY29O9ytMmpSsATSEKQlixddfG1u+UthOEAcjQBHrO6JU/tyAexv+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6goiCSI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA7EC43394;
+	Tue, 23 Jan 2024 00:50:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975371;
-	bh=F+VTA57fpzlko79M7ubzpnh5Z3J8GD5FiIkEw3GdtYs=;
+	s=korg; t=1705971049;
+	bh=2KZ1YydOHFggzT7omPdVSeq6KeRGaq/o4qjuOBwJU8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y+i43I2FjS2bOXJVXz/8X+35ibOBub2Kfk2NptcjIYrvtx+qfoVh5yDSQ7K6u8hWG
-	 VTMt951KZU2+/xLPytUr+WIZnjdf1YYjPXPzi9RnUYbf/QnqoFRjTeblaokB2hLS0+
-	 +6xxqWwzgNoGv9J00p0HJAyIcaNIfae4oT+ATpx8=
+	b=y6goiCSIxf5sF7IfxpwpwXQzqNGMhuO+DROoa2m8DQ33BnaJdDjJRPhmctSdO+sLO
+	 YyPIpyUg0XZaryvhlQIExkPjWv4oWl5DRrVvKGFMssOAcxI1NlZfA2iKtQ3etgaU8P
+	 EYC715GwgZx50iJGJo/7UxSnvcPvCAvYc91S5x/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Guillaume Ranquet <granquet@baylibre.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	kernel test robot <lkp@intel.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 308/583] drm/mediatek: dp: Add phy_mtk_dp module as pre-dependency
+Subject: [PATCH 5.10 053/286] powerpc/44x: select I2C for CURRITUCK
 Date: Mon, 22 Jan 2024 15:55:59 -0800
-Message-ID: <20240122235821.456320592@linuxfoundation.org>
+Message-ID: <20240122235734.075462409@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit c8048dd0b07df68724805254b9e994d99e9a7af4 ]
+[ Upstream commit 4a74197b65e69c46fe6e53f7df2f4d6ce9ffe012 ]
 
-The mtk_dp driver registers a phy device which is handled by the
-phy_mtk_dp driver and assumes that the phy probe will complete
-synchronously, proceeding to make use of functionality exposed by that
-driver right away. This assumption however is false when the phy driver
-is built as a module, causing the mtk_dp driver to fail probe in this
-case.
+Fix build errors when CURRITUCK=y and I2C is not builtin (=m or is
+not set). Fixes these build errors:
 
-Add the phy_mtk_dp module as a pre-dependency to the mtk_dp module to
-ensure the phy module has been loaded before the dp, so that the phy
-probe happens synchrounously and the mtk_dp driver can probe
-successfully even with the phy driver built as a module.
+powerpc-linux-ld: arch/powerpc/platforms/44x/ppc476.o: in function `avr_halt_system':
+ppc476.c:(.text+0x58): undefined reference to `i2c_smbus_write_byte_data'
+powerpc-linux-ld: arch/powerpc/platforms/44x/ppc476.o: in function `ppc47x_device_probe':
+ppc476.c:(.init.text+0x18): undefined reference to `i2c_register_driver'
 
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Guillaume Ranquet <granquet@baylibre.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20231121142938.460846-1-nfraprado@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: 2a2c74b2efcb ("IBM Akebono: Add the Akebono platform")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: lore.kernel.org/r/202312010820.cmdwF5X9-lkp@intel.com
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231201055159.8371-1-rdunlap@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dp.c | 1 +
+ arch/powerpc/platforms/44x/Kconfig | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
-index 0e285df6577e..4052a3133b57 100644
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -2784,3 +2784,4 @@ MODULE_AUTHOR("Markus Schneider-Pargmann <msp@baylibre.com>");
- MODULE_AUTHOR("Bo-Chen Chen <rex-bc.chen@mediatek.com>");
- MODULE_DESCRIPTION("MediaTek DisplayPort Driver");
- MODULE_LICENSE("GPL");
-+MODULE_SOFTDEP("pre: phy_mtk_dp");
+diff --git a/arch/powerpc/platforms/44x/Kconfig b/arch/powerpc/platforms/44x/Kconfig
+index 78ac6d67a935..9bc852c7e92f 100644
+--- a/arch/powerpc/platforms/44x/Kconfig
++++ b/arch/powerpc/platforms/44x/Kconfig
+@@ -177,6 +177,7 @@ config ISS4xx
+ config CURRITUCK
+ 	bool "IBM Currituck (476fpe) Support"
+ 	depends on PPC_47x
++	select I2C
+ 	select SWIOTLB
+ 	select 476FPE
+ 	select FORCE_PCI
 -- 
 2.43.0
 
