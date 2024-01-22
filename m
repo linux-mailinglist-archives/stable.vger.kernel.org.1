@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-15356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E5C838588
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:43:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6191283835C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB14DB2E0AC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7179FB24AA3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FDA877F06;
-	Tue, 23 Jan 2024 02:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E5846089B;
+	Tue, 23 Jan 2024 01:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JxyTAJ96"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J9aup4Z/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6042677F00;
-	Tue, 23 Jan 2024 02:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F00D4E1CC;
+	Tue, 23 Jan 2024 01:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975523; cv=none; b=q+79o6Lbb5Fwl2xUzEWQDj0fpF/c1HyRnZKyd4YEUtChmqkfhCu80Q9jkuTaz8pq1o0GEsqBEIKd5BxxE13Skz53N/75SvinC+Nx3QiwRmObod7QuFF716d9OvD0VPvcWDGptAlFNSg+ODE1FAWYOMG942FPBWt6A/fc22nnyco=
+	t=1705974728; cv=none; b=pkKjKCRtnzRWmQCQUSYnwaTSfkEGop1ETDaaRD5XNjWXJVvjmy7fS2PagJiwJVFL5TXfSrzucSZsaK/pxxNujlrtaKPCAHIOjmLJ5VZN6q8KjzQEoF4nNinB7Mvb5o/nrJpbDAhZtnRgI52vSGOqG3U75VNpuy0n1W6ix4YtNFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975523; c=relaxed/simple;
-	bh=SIJjYOiSw4MN//RZSZq5DIuoZ0mzIFHjs+3AGI/8VlI=;
+	s=arc-20240116; t=1705974728; c=relaxed/simple;
+	bh=Ky5jjM0BezW6cZVGdc4i7VhbN2Rj5TwjsoFpr9cYoEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TsURYyyVKbgt19FONOC/fqjXmgd8mh8J7UKAHSkziy7QwpzU+W2XikkgH0IEtjFT6naLRP0kWnIzC5eo1bDSZ/Dhe79vL930N3UECxMvmJFPvFb/U0ZiCjBLpM02lkBGvwAu24bHja/xy5N6IMdu77qZFUVII///MwYr3FoWmjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JxyTAJ96; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26CA6C433C7;
-	Tue, 23 Jan 2024 02:05:23 +0000 (UTC)
+	 MIME-Version; b=FlNqqyryH5z51doFQiZlqtG1BEoptHuv1uRJtitwabtFyWto+D9i40AMnXxZopFBdTCnA9nDyyDOuePFT1QtSz6oF5O5WRpVDYAvZ3NPAEsmAKBgXdwLLe0qxmO87e+wUcPUAv40Vn1PgiQXsfCoziBbqRbETIZsxbrghYVWDBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J9aup4Z/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 157DFC433F1;
+	Tue, 23 Jan 2024 01:52:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975523;
-	bh=SIJjYOiSw4MN//RZSZq5DIuoZ0mzIFHjs+3AGI/8VlI=;
+	s=korg; t=1705974728;
+	bh=Ky5jjM0BezW6cZVGdc4i7VhbN2Rj5TwjsoFpr9cYoEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JxyTAJ96ICZWfaTEyU2nirRn77G91qrCb4B3JKFDkDTIYGtF1JirfNDe5WQ/oUD/R
-	 +r4WaXnOrclknvX3lnLXNRaKzPSduSBzCPLw6i8aYobUeKDn1I+Vy1UGHhxeW6vjPY
-	 VNgRw0SW8O7ztbdcutiPqVX0bq/3RTav3x9hvKWY=
+	b=J9aup4Z/X3eE0+RjLUi5Hv8gDWZiXaTCKGD3YqcCSyMB4wFISv3WzsXpsiVidyQuv
+	 vtiD9WEYOsIpx6IXaXPuluLWPDa1UeRwfEzTYZ5Tr88k+EhBTFrLSQ5++R4VjMFT3S
+	 TDJwULEvoW5sIOQVDgY8oCShpSTGT9gNBEeKMUWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	Kai Huang <kai.huang@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 475/583] selftests/sgx: Fix uninitialized pointer dereference in error path
+	lonial con <kongln9170@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.15 270/374] netfilter: nf_tables: check if catch-all set element is active in next generation
 Date: Mon, 22 Jan 2024 15:58:46 -0800
-Message-ID: <20240122235826.519543444@linuxfoundation.org>
+Message-ID: <20240122235754.163956903@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 79eba8c924f7decfa71ddf187d38cb9f5f2cd7b3 ]
+commit b1db244ffd041a49ecc9618e8feb6b5c1afcdaa7 upstream.
 
-Ensure ctx is zero-initialized, such that the encl_measure function will
-not call EVP_MD_CTX_destroy with an uninitialized ctx pointer in case of an
-early error during key generation.
+When deactivating the catch-all set element, check the state in the next
+generation that represents this transaction.
 
-Fixes: 2adcba79e69d ("selftests/x86: Add a selftest for SGX")
-Signed-off-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Acked-by: Kai Huang <kai.huang@intel.com>
-Link: https://lore.kernel.org/all/20231005153854.25566-2-jo.vanbulck%40cs.kuleuven.be
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This bug uncovered after the recent removal of the element busy mark
+a2dd0233cbc4 ("netfilter: nf_tables: remove busy mark and gc batch API").
+
+Fixes: aaa31047a6d2 ("netfilter: nftables: add catch-all set element support")
+Cc: stable@vger.kernel.org
+Reported-by: lonial con <kongln9170@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/sgx/sigstruct.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/sgx/sigstruct.c b/tools/testing/selftests/sgx/sigstruct.c
-index a07896a46364..d73b29becf5b 100644
---- a/tools/testing/selftests/sgx/sigstruct.c
-+++ b/tools/testing/selftests/sgx/sigstruct.c
-@@ -318,9 +318,9 @@ bool encl_measure(struct encl *encl)
- 	struct sgx_sigstruct *sigstruct = &encl->sigstruct;
- 	struct sgx_sigstruct_payload payload;
- 	uint8_t digest[SHA256_DIGEST_LENGTH];
-+	EVP_MD_CTX *ctx = NULL;
- 	unsigned int siglen;
- 	RSA *key = NULL;
--	EVP_MD_CTX *ctx;
- 	int i;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -6034,7 +6034,7 @@ static int nft_setelem_catchall_deactiva
  
- 	memset(sigstruct, 0, sizeof(*sigstruct));
-@@ -384,7 +384,8 @@ bool encl_measure(struct encl *encl)
- 	return true;
+ 	list_for_each_entry(catchall, &set->catchall_list, list) {
+ 		ext = nft_set_elem_ext(set, catchall->elem);
+-		if (!nft_is_active(net, ext))
++		if (!nft_is_active_next(net, ext))
+ 			continue;
  
- err:
--	EVP_MD_CTX_destroy(ctx);
-+	if (ctx)
-+		EVP_MD_CTX_destroy(ctx);
- 	RSA_free(key);
- 	return false;
- }
--- 
-2.43.0
-
+ 		kfree(elem->priv);
 
 
 
