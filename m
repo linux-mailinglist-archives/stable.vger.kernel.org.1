@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-13341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA561837B7C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:01:33 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A4A837B7D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:01:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9431029319A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:01:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BB731C28AA2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04E91350DB;
-	Tue, 23 Jan 2024 00:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35C41350EF;
+	Tue, 23 Jan 2024 00:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DODRLdbF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xf/dM7zo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ECA01350D6;
-	Tue, 23 Jan 2024 00:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B21301350E0;
+	Tue, 23 Jan 2024 00:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969342; cv=none; b=DI7NhbHv3mZgMJyRAkkR7J4IxyOGTC/njUa7Ei1kYybWk8Ie1m5tIKV9Bf8czRURCgGWZXSPLn+kX+R7PD21frPMs/Hm9kV9srIiXi0zu8j9S17M3hp9PguQACwgB4WZifP8QT+hrJL0L09mBQhSt+rI96C8dxOc5sBFGQC4ZJA=
+	t=1705969349; cv=none; b=a8EoSJ6+4aBevshw//AzzcQr0J3afuIHA4ia0GDKmqRdzjohkWD0cc/WchRe4rrDcFmYLBmvjD7LqFzmcLNkwmzFsQvtpaP2QFKzZ5d6q7kf+4BZWSlXnjkPPvrmo9J4vzBpepxBMmwGANzTmZtSzHCz0wL0NUDMD8+I9AXZaQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969342; c=relaxed/simple;
-	bh=dE9vsgGpsC3kHTuJ0mCYMZTmeJkXf/i9+FFpTyvsjK0=;
+	s=arc-20240116; t=1705969349; c=relaxed/simple;
+	bh=qgt/k2dNHKDzNWRbEH29rgyocngf2v/WXgL5N9MCk4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WvLXEZrfdb7RaUWxfGCjphZA08FLzztyFd6oClbVlB6CiXbjnrASBDQuXFm0zOYPWLcKyYzGYEQ4yykTFC4qE6vABhDnjW/0wkJNEInl7qT8Z8h5sODXlE9JDWiPnnazhViIBloOor7YoSFXlmuCxUFbOwb7IbEz2Q3fDkN8Nj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DODRLdbF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EB26C433C7;
-	Tue, 23 Jan 2024 00:22:22 +0000 (UTC)
+	 MIME-Version; b=X2zE8LoUw4tMxcB1xXYcAXue4CDsIH2U0OTUq7HdSRJ2fcovRScHV+N46OFl4WmRhXWrm0L2FWxxALYUOCBlvavYTG4m7ZOzbcoVAswaEeSwyIakCOJiZO2L/QUktb+H9SuGwOOYa+5Sav6nxmu0+NEhiBdi0QjxHOuqSsLpWNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xf/dM7zo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4745CC433F1;
+	Tue, 23 Jan 2024 00:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969342;
-	bh=dE9vsgGpsC3kHTuJ0mCYMZTmeJkXf/i9+FFpTyvsjK0=;
+	s=korg; t=1705969349;
+	bh=qgt/k2dNHKDzNWRbEH29rgyocngf2v/WXgL5N9MCk4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DODRLdbFbjedRQ4j3QwSHopWaBM0OFRYXkH1GG81HT+7UHy/T3dh8u/2k4mDQ+gjO
-	 NOcvkBrDrGOtgwRKnewwMzKkBwN2bU9kEcGJgwi1SD1wHQOzNvWw4fmEyoX9TRmfMX
-	 9zCRep7TvoDUIlvfkkiCHVgPMSJn0dt54ea6iQr4=
+	b=Xf/dM7zoxxenIspLJU/Rcicwqz+qykx4R8+r41MAjPgJ6ZPmkbrgeRQun8MSopcXy
+	 LCq+6KScVJJ19cMBNy6unaCtNgVxiYLi7/jErUwGbI+0iGF/kONVMuXDKu8Dat6ZiN
+	 pC8QE0D6BY0UcYDlJ4sK8vZ0ic7WskbWHkBqDcGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 160/641] test_bpf: Rename second ALU64_SMOD_X to ALU64_SMOD_K
-Date: Mon, 22 Jan 2024 15:51:04 -0800
-Message-ID: <20240122235823.042728220@linuxfoundation.org>
+Subject: [PATCH 6.7 164/641] arm64: dts: mediatek: mt8186: Fix alias prefix for ovl_2l0
+Date: Mon, 22 Jan 2024 15:51:08 -0800
+Message-ID: <20240122235823.152534949@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -67,46 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 5181dc08f79583c6dead80208137a97e68ff07b0 ]
+[ Upstream commit 6ed159e499bc2ebedf94c9086244220824e71672 ]
 
-Currently, there are two test cases with same name
-"ALU64_SMOD_X: -7 % 2 = -1", the first one is right,
-the second one should be ALU64_SMOD_K because its
-code is BPF_ALU64 | BPF_MOD | BPF_K.
+The alias prefix for ovl_2l (2 layer overlay) is "ovl-2l", not "ovl_2l".
 
-Before:
-test_bpf: #170 ALU64_SMOD_X: -7 % 2 = -1 jited:1 4 PASS
-test_bpf: #171 ALU64_SMOD_X: -7 % 2 = -1 jited:1 4 PASS
+Fix this.
 
-After:
-test_bpf: #170 ALU64_SMOD_X: -7 % 2 = -1 jited:1 4 PASS
-test_bpf: #171 ALU64_SMOD_K: -7 % 2 = -1 jited:1 4 PASS
-
-Fixes: daabb2b098e0 ("bpf/tests: add tests for cpuv4 instructions")
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20231207040851.19730-1-yangtiezhu@loongson.cn
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 7e07d3322de2 ("arm64: dts: mediatek: mt8186: Add display nodes")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20231130074032.913511-4-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/test_bpf.c | 2 +-
+ arch/arm64/boot/dts/mediatek/mt8186.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/test_bpf.c b/lib/test_bpf.c
-index 7916503e6a6a..3c5a1ca06219 100644
---- a/lib/test_bpf.c
-+++ b/lib/test_bpf.c
-@@ -6293,7 +6293,7 @@ static struct bpf_test tests[] = {
- 	},
- 	/* BPF_ALU64 | BPF_MOD | BPF_K off=1 (SMOD64) */
- 	{
--		"ALU64_SMOD_X: -7 % 2 = -1",
-+		"ALU64_SMOD_K: -7 % 2 = -1",
- 		.u.insns_int = {
- 			BPF_LD_IMM64(R0, -7),
- 			BPF_ALU64_IMM_OFF(BPF_MOD, R0, 2, 1),
+diff --git a/arch/arm64/boot/dts/mediatek/mt8186.dtsi b/arch/arm64/boot/dts/mediatek/mt8186.dtsi
+index df0c04f2ba1d..021397671099 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8186.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8186.dtsi
+@@ -22,7 +22,7 @@ / {
+ 
+ 	aliases {
+ 		ovl0 = &ovl0;
+-		ovl_2l0 = &ovl_2l0;
++		ovl-2l0 = &ovl_2l0;
+ 		rdma0 = &rdma0;
+ 		rdma1 = &rdma1;
+ 	};
 -- 
 2.43.0
 
