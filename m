@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 804BC838182
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF274837F79
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37F7F28C773
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5457C28D8CC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63628187A;
-	Tue, 23 Jan 2024 01:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E657633E7;
+	Tue, 23 Jan 2024 00:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yIJEMh15"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/ry4Edq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E859184;
-	Tue, 23 Jan 2024 01:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA6E6280A;
+	Tue, 23 Jan 2024 00:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972155; cv=none; b=Ng9DXsZKoVq8Mq1J1FjEYDr2MUy/YgIXwL5VF3RBpzclWEmQOrpwVR16tXGw1K8gvO3OkPrgsEo/pZYknIRUxO5ZOFnPe/ovl1rKtb2n9qnJ0nlrNQ6dXqQma5dbuKdNTvQOdPaa3LzzMK1MU/EsS0hfJkv1GNzFq5jHUuyBmT0=
+	t=1705971150; cv=none; b=iq1cNm05drC8lMhdSWai2uW02LowUOi72PSKgyGUQqpiShnycqOYiowr6ac+Day9RPXOAmQApPRibHzk7BqsLlMUkoYcr1IZQJkdXXE72bXYODb7TtyR6ikezoaR+OO8j6MfTx/2drRhVFLH9FTX0iOxncxIQUvtEKiKlV+0m60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972155; c=relaxed/simple;
-	bh=c6FFbEgbwMb9HlaoMUI0jg6MndlA8zcpwmvX0jXCWDg=;
+	s=arc-20240116; t=1705971150; c=relaxed/simple;
+	bh=E/nZ7JmzcMPElpGJkbg+2oq0V8h2igmN8w0OZDSdyYU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zc3sFNfSFshd7A8kvPx6Sou4olMZlaPRpjuM16G/SWmxiKcGsgFSdlaAT2bzujCFYaq/KQsVEnewKOaVf58ThvoMME5SO9B6cgPcpC0k7052ZIU9yYq8t9ereMGFindMXFrfeaXHKoJBYdgF3CAOuClGD/0BKEUJIk/y0E287sA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yIJEMh15; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D607DC433C7;
-	Tue, 23 Jan 2024 01:09:14 +0000 (UTC)
+	 MIME-Version; b=UPHfXP851OG88lViHEX5mTKfK+rKy0uAC0a6imSkkz33/ggBCllM2rcwLqGEaPbnvTGT41exPg7HIQSGbm3HVOgk8elJ1kfJGY2F/UYKZ93nOCxCDm3RXBkBou7P3rvJ1hGpQJ4uHBJE6orhFmJu8nbQQEjCKJ9dKdofUfOFkSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/ry4Edq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B03DEC433F1;
+	Tue, 23 Jan 2024 00:52:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972155;
-	bh=c6FFbEgbwMb9HlaoMUI0jg6MndlA8zcpwmvX0jXCWDg=;
+	s=korg; t=1705971150;
+	bh=E/nZ7JmzcMPElpGJkbg+2oq0V8h2igmN8w0OZDSdyYU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yIJEMh15eRfdPpK2L6RzYbPeZRAOaYPlZKNaPjsRJyltv0OrrazYTD2F7MGvmVez+
-	 IP5UJ2H9hW9mpUftXo3LR7EeU/dXzUpIM6F2JPkgY3GOMY2QKFddoZFGS98CnFIM3u
-	 7b6Dhzw2O05hmUrIVd7oYTe2KCOScqvrF+0L0QKY=
+	b=P/ry4EdqMgUS09jOimY1PbQvXb64cTPd8+NIftOmaGLypfjodZDC1gxeTuxZAeFcL
+	 qnQegwvkfVaOgdjP/RyD5mtPTlZuFnau/wOY9/+KLTDSnCvLWqRQDWwjiuXUhiq/fQ
+	 kjivMiHy1kpG7ArDpJtQPALc8Lbh0DWszHfJqrkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Kiryushin <kiryushin@ancud.ru>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 081/374] ACPI: LPIT: Avoid u32 multiplication overflow
-Date: Mon, 22 Jan 2024 15:55:37 -0800
-Message-ID: <20240122235747.443826869@linuxfoundation.org>
+Subject: [PATCH 6.1 170/417] drm/bridge: Fix typo in post_disable() description
+Date: Mon, 22 Jan 2024 15:55:38 -0800
+Message-ID: <20240122235757.752118299@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Kiryushin <kiryushin@ancud.ru>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-[ Upstream commit 56d2eeda87995245300836ee4dbd13b002311782 ]
+[ Upstream commit 288b039db225676e0c520c981a1b5a2562d893a3 ]
 
-In lpit_update_residency() there is a possibility of overflow
-in multiplication, if tsc_khz is large enough (> UINT_MAX/1000).
+s/singals/signals/
 
-Change multiplication to mul_u32_u32().
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: eeb2d80d502a ("ACPI / LPIT: Add Low Power Idle Table (LPIT) support")
-Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 199e4e967af4 ("drm: Extract drm_bridge.h")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231124094253.658064-1-dario.binacchi@amarulasolutions.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_lpit.c | 2 +-
+ include/drm/drm_bridge.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpi_lpit.c b/drivers/acpi/acpi_lpit.c
-index 48e5059d67ca..7de59730030c 100644
---- a/drivers/acpi/acpi_lpit.c
-+++ b/drivers/acpi/acpi_lpit.c
-@@ -98,7 +98,7 @@ static void lpit_update_residency(struct lpit_residency_info *info,
- 				 struct acpi_lpit_native *lpit_native)
- {
- 	info->frequency = lpit_native->counter_frequency ?
--				lpit_native->counter_frequency : tsc_khz * 1000;
-+				lpit_native->counter_frequency : mul_u32_u32(tsc_khz, 1000U);
- 	if (!info->frequency)
- 		info->frequency = 1;
- 
+diff --git a/include/drm/drm_bridge.h b/include/drm/drm_bridge.h
+index 6b656ea23b96..a76f4103d48b 100644
+--- a/include/drm/drm_bridge.h
++++ b/include/drm/drm_bridge.h
+@@ -191,7 +191,7 @@ struct drm_bridge_funcs {
+ 	 * or &drm_encoder_helper_funcs.dpms hook.
+ 	 *
+ 	 * The bridge must assume that the display pipe (i.e. clocks and timing
+-	 * singals) feeding it is no longer running when this callback is
++	 * signals) feeding it is no longer running when this callback is
+ 	 * called.
+ 	 *
+ 	 * The @post_disable callback is optional.
 -- 
 2.43.0
 
