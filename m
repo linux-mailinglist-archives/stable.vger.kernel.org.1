@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-13537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42341837CDC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:19:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 177ED8381D8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:14:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 695E5B257C9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0356B2D981
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A6A135415;
-	Tue, 23 Jan 2024 00:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B731420B2;
+	Tue, 23 Jan 2024 01:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wUUKyo07"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9JZDF+q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85FFE13540F;
-	Tue, 23 Jan 2024 00:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909711420A7;
+	Tue, 23 Jan 2024 01:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969645; cv=none; b=ecbwbKcVFCP34RZXfLtoTuxl//4ttuMWjYp2vSjoNT6b1ZTlCohA35lHOXJNnqfAKzukcu2d4H2XYM6XpPlMZRJ2xM9EgWtSh0uAKdcfaRSd1BY0ayj9dqwX0SQFIQODTivugSxRMk14Ajt/271wxoqBCu3YfsV4Yi5z1d4/EtI=
+	t=1705972118; cv=none; b=TUGECm3Bbo06kVPiaV/5lP3VEp+kjEYg7Ov5aEDUYb2sqZB9ol7guE5+U/xqtXhljHrm4Bv76pK7zqqAzpCnNdEZD6/VAfWABD0R/77kydrx8T/WE31a9GZZf8tuw6gwS24rsCZ+b2Wf/Hhb5gV16Bsc84L/gcF3Aw/K6UwO7Qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969645; c=relaxed/simple;
-	bh=wTjy9uQmewvV+WG8z2/2/iOk0H20qEXJTgDIEVMdrmQ=;
+	s=arc-20240116; t=1705972118; c=relaxed/simple;
+	bh=7jq9Bj0J01V3NWPNk46+xBdaahRC76FA3UjPFsZzOyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eA+XcyGtSqkmrspV5ZrGjrUNsjDmdkG3M/zf7DlkMH5cVBSEc/8bKCLkAKCqMbkPb9O1jQ9Z/Tx8ZH4HifFJH2JBlW63a7Fcd5sjDiBjXSQ+sfqT6TIGxMdhbxo2k80Hlq6FeYn7+j/u+M+r+UxPRzlOaSyXeZW7i2zRTQobCBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wUUKyo07; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D991EC433F1;
-	Tue, 23 Jan 2024 00:27:24 +0000 (UTC)
+	 MIME-Version; b=MlTCR6zFByp1a57rq+iyq0PWwVZrYJPaDTe3iY2btGoDVLFjrI1Ha4js0WmSXWp69s56qaAoIRJmosi6DU1DO6XEG2vNO5/L1fAOE1elFdKbjsrrdvxhX3ourncrdQBcr22sNDlZYPQc+jafK+6YovsgnMX1Kr0uTbf2pToAG28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9JZDF+q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F05EC43399;
+	Tue, 23 Jan 2024 01:08:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969645;
-	bh=wTjy9uQmewvV+WG8z2/2/iOk0H20qEXJTgDIEVMdrmQ=;
+	s=korg; t=1705972118;
+	bh=7jq9Bj0J01V3NWPNk46+xBdaahRC76FA3UjPFsZzOyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wUUKyo07gUJq478f+i61W7wDxg2yVruFekhciWjZF2luJ57k4cmXACYBeYLYVn6kg
-	 3P6it0lsaCHNZgryHsVhekvp6vCD+29MBJnaZw194u/rWoimXw1dHIlw+xIBPDWj23
-	 yrd/pabfTP7D88WdTtxg6bm5b39IOjsMv6wDnaQg=
+	b=D9JZDF+q3KuMORncsNDuxJOzo+CHd7FrqF4QD9v5jTLkG7RfignzH0uc64nxUxoSL
+	 y0R1vsI4nwh78swPVvyg2Il7ITnGK3sT7ecFhOPd7HZetgD+hAVISBbZW+Em5Vj6qd
+	 AaqzOjZ5vUEmL5Snq/n5w/LjRnoTrS9F7tt+yFf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jordan Rome <linux@jordanrome.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Stanislav Fomichev <sdf@google.com>
-Subject: [PATCH 6.7 380/641] selftests/bpf: Add assert for user stacks in test_task_stack
+	Douglas Anderson <dianders@chromium.org>,
+	Judy Hsiao <judyhsiao@chromium.org>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 028/374] neighbour: Dont let neigh_forced_gc() disable preemption for long
 Date: Mon, 22 Jan 2024 15:54:44 -0800
-Message-ID: <20240122235829.850703996@linuxfoundation.org>
+Message-ID: <20240122235745.616749539@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +65,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jordan Rome <linux@jordanrome.com>
+From: Judy Hsiao <judyhsiao@chromium.org>
 
-commit 727a92d62fd6a382b4c5972008e45667e707b0e4 upstream.
+[ Upstream commit e5dc5afff62f3e97e86c3643ec9fcad23de4f2d3 ]
 
-This is a follow up to:
-commit b8e3a87a627b ("bpf: Add crosstask check to __bpf_get_stack").
+We are seeing cases where neigh_cleanup_and_release() is called by
+neigh_forced_gc() many times in a row with preemption turned off.
+When running on a low powered CPU at a low CPU frequency, this has
+been measured to keep preemption off for ~10 ms. That's not great on a
+system with HZ=1000 which expects tasks to be able to schedule in
+with ~1ms latency.
 
-This test ensures that the task iterator only gets a single
-user stack (for the current task).
-
-Signed-off-by: Jordan Rome <linux@jordanrome.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Stanislav Fomichev <sdf@google.com>
-Link: https://lore.kernel.org/bpf/20231112023010.144675-1-linux@jordanrome.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Judy Hsiao <judyhsiao@chromium.org>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/bpf_iter.c       |    2 ++
- tools/testing/selftests/bpf/progs/bpf_iter_task_stack.c |    5 +++++
- 2 files changed, 7 insertions(+)
+ net/core/neighbour.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
-+++ b/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
-@@ -334,6 +334,8 @@ static void test_task_stack(void)
- 	do_dummy_read(skel->progs.dump_task_stack);
- 	do_dummy_read(skel->progs.get_task_user_stacks);
- 
-+	ASSERT_EQ(skel->bss->num_user_stacks, 1, "num_user_stacks");
-+
- 	bpf_iter_task_stack__destroy(skel);
- }
- 
---- a/tools/testing/selftests/bpf/progs/bpf_iter_task_stack.c
-+++ b/tools/testing/selftests/bpf/progs/bpf_iter_task_stack.c
-@@ -35,6 +35,8 @@ int dump_task_stack(struct bpf_iter__tas
- 	return 0;
- }
- 
-+int num_user_stacks = 0;
-+
- SEC("iter/task")
- int get_task_user_stacks(struct bpf_iter__task *ctx)
+diff --git a/net/core/neighbour.c b/net/core/neighbour.c
+index 927c4db2703f..5829477efbba 100644
+--- a/net/core/neighbour.c
++++ b/net/core/neighbour.c
+@@ -225,9 +225,11 @@ static int neigh_forced_gc(struct neigh_table *tbl)
  {
-@@ -51,6 +53,9 @@ int get_task_user_stacks(struct bpf_iter
- 	if (res <= 0)
- 		return 0;
+ 	int max_clean = atomic_read(&tbl->gc_entries) -
+ 			READ_ONCE(tbl->gc_thresh2);
++	u64 tmax = ktime_get_ns() + NSEC_PER_MSEC;
+ 	unsigned long tref = jiffies - 5 * HZ;
+ 	struct neighbour *n, *tmp;
+ 	int shrunk = 0;
++	int loop = 0;
  
-+	/* Only one task, the current one, should succeed */
-+	++num_user_stacks;
-+
- 	buf_sz += res;
+ 	NEIGH_CACHE_STAT_INC(tbl, forced_gc_runs);
  
- 	/* If the verifier doesn't refine bpf_get_task_stack res, and instead
+@@ -250,11 +252,16 @@ static int neigh_forced_gc(struct neigh_table *tbl)
+ 				shrunk++;
+ 			if (shrunk >= max_clean)
+ 				break;
++			if (++loop == 16) {
++				if (ktime_get_ns() > tmax)
++					goto unlock;
++				loop = 0;
++			}
+ 		}
+ 	}
+ 
+ 	WRITE_ONCE(tbl->last_flush, jiffies);
+-
++unlock:
+ 	write_unlock_bh(&tbl->lock);
+ 
+ 	return shrunk;
+-- 
+2.43.0
+
 
 
 
