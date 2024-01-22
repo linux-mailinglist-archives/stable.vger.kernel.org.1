@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66B60838146
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:07:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE7FD837F1A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A7521C276C4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E48429BE10
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336F1149015;
-	Tue, 23 Jan 2024 01:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49BE260886;
+	Tue, 23 Jan 2024 00:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LUW1Rlw6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjBYLv1x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E87149013;
-	Tue, 23 Jan 2024 01:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0869527456;
+	Tue, 23 Jan 2024 00:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972091; cv=none; b=k6RqUGovDtsqSNfQOVIdU5G4JbbvoCP96LU/2CcvN4q0cj+5f/Qvhrq9opkvxayLytbrZt3Pyqo7oUom02lWF0Hdjd4JtJ1WYeoibrkbGJ4Y4U+PCNDVSW038LxRgpSGuWyXRISAA/bfzF53RcGuj9sF7tX0XgoHpjvqm1ReZIM=
+	t=1705970940; cv=none; b=XMf+T0Ni8T2zntQrpAAhYf9cm2FwOL6sZNJaiNi8RaMhvt2m8Ilj7wJ6NoCY9OsH9FijkMcl2vwPK43oO1e+D2laJm8G7VbP7HJ4XdYugkXrjLCFYhA3YCLkDdt3Ez8LfxkcjUDUoxa2Q70Jg4INCELeWcp22dllBqFMyHqOAIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972091; c=relaxed/simple;
-	bh=OseBUT3CBeWThPaDWxfHBR+dzzmp8JJSPUxDXjLZ2mE=;
+	s=arc-20240116; t=1705970940; c=relaxed/simple;
+	bh=kDm11rET1fT4c/QP1nHEm3oBT+dqRyEwwj27dmxbuM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QSrxMryjAqrlU1Ri4SA9LUJ2xNfBbbTyOQiVGApaNvgROkq6k3PRPH5OutXxDmRflRWJlE5xglukHIWbq/xc4NlPi15NDW0khzLSB1A205l+It2L5yB2WTm78Muo/79ApX12eBKpcnIuxRmH5ajh+dId5tEPxI7cspci5LZYo4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LUW1Rlw6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EA2FC433C7;
-	Tue, 23 Jan 2024 01:08:10 +0000 (UTC)
+	 MIME-Version; b=g94foDsoPeiaS82BK0gXhL9RmJePx/Pfg9471BZSk93Vle1zQAcIFjcHKSxP2LdyO8SlLHLmuCRREMP8auT9zcv6g1UQBLYWofg8dBzas9bBsh/IThkyNVq6cr8S10bSIIrMF9FufzASJW5r0mRIIyDgyfnfNX2oOqNA3EGmQ9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjBYLv1x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C459C433C7;
+	Tue, 23 Jan 2024 00:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972090;
-	bh=OseBUT3CBeWThPaDWxfHBR+dzzmp8JJSPUxDXjLZ2mE=;
+	s=korg; t=1705970939;
+	bh=kDm11rET1fT4c/QP1nHEm3oBT+dqRyEwwj27dmxbuM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LUW1Rlw6tbBvbbtA/doIpsNQd+oFpDh12sWhwgGQRQgzC0B5+M2f0G8NJOT3whwHU
-	 qKH9pkRfomDbSzDHHYBISzjjiMDvK6wFiPKALe8A935u0VFYa0Fg3F6hdh5Za/Waqk
-	 XF33/2irOu7cdTuAOlyXjGwTqBWDXtqzqxtbdD2E=
+	b=JjBYLv1x/0Uy00APLh0NcnZKlIP2mJwmpbi4bZnsg6bqA+WE4GLZfnQdtyqnVsICR
+	 OaeLsY04c84ZA3qaXfzv4NFx4FJXYhKZPG39ztJc/wc3nYQ8CCzeqUiXasqNTzI+k1
+	 SGr05LvHKg+pAGp6JPOJUPKawJzZxx4EcljdnSYY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 031/374] tracing: Have large events show up as [LINE TOO BIG] instead of nothing
+Subject: [PATCH 6.1 119/417] ARM: dts: stm32: dont mix SCMI and non-SCMI board compatibles
 Date: Mon, 22 Jan 2024 15:54:47 -0800
-Message-ID: <20240122235745.723960496@linuxfoundation.org>
+Message-ID: <20240122235755.908402624@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-[ Upstream commit b55b0a0d7c4aa2dac3579aa7e6802d1f57445096 ]
+[ Upstream commit bfc3c6743de0ecb169026c36cbdbc0d12d22a528 ]
 
-If a large event was added to the ring buffer that is larger than what the
-trace_seq can handle, it just drops the output:
+The binding erroneously decreed that the SCMI variants of the ST
+evaluation kits are compatible with the non-SCMI variants.
 
- ~# cat /sys/kernel/tracing/trace
- # tracer: nop
- #
- # entries-in-buffer/entries-written: 2/2   #P:8
- #
- #                                _-----=> irqs-off/BH-disabled
- #                               / _----=> need-resched
- #                              | / _---=> hardirq/softirq
- #                              || / _--=> preempt-depth
- #                              ||| / _-=> migrate-disable
- #                              |||| /     delay
- #           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
- #              | |         |   |||||     |         |
-            <...>-859     [001] .....   141.118951: tracing_mark_write           <...>-859     [001] .....   141.148201: tracing_mark_write: 78901234
+This is not correct, as a kernel or bootloader compatible with the non-SCMI
+variant is not necessarily able to function, when direct access
+to resources is replaced by having to talk SCMI to the secure monitor.
 
-Instead, catch this case and add some context:
+The binding has been adjusted to reflect thus, so synchronize the device
+trees now.
 
- ~# cat /sys/kernel/tracing/trace
- # tracer: nop
- #
- # entries-in-buffer/entries-written: 2/2   #P:8
- #
- #                                _-----=> irqs-off/BH-disabled
- #                               / _----=> need-resched
- #                              | / _---=> hardirq/softirq
- #                              || / _--=> preempt-depth
- #                              ||| / _-=> migrate-disable
- #                              |||| /     delay
- #           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
- #              | |         |   |||||     |         |
-            <...>-852     [001] .....   121.550551: tracing_mark_write[LINE TOO BIG]
-            <...>-852     [001] .....   121.550581: tracing_mark_write: 78901234
-
-This now emulates the same output as trace_pipe.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20231209171058.78c1a026@gandalf.local.home
-
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 5b7e58313a77 ("ARM: dts: stm32: Add SCMI version of STM32 boards (DK1/DK2/ED1/EV1)")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/stm32mp157a-dk1-scmi.dts | 2 +-
+ arch/arm/boot/dts/stm32mp157c-dk2-scmi.dts | 2 +-
+ arch/arm/boot/dts/stm32mp157c-ed1-scmi.dts | 2 +-
+ arch/arm/boot/dts/stm32mp157c-ev1-scmi.dts | 3 +--
+ 4 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 91ff118138c8..66322196b256 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -4667,7 +4667,11 @@ static int s_show(struct seq_file *m, void *v)
- 		iter->leftover = ret;
+diff --git a/arch/arm/boot/dts/stm32mp157a-dk1-scmi.dts b/arch/arm/boot/dts/stm32mp157a-dk1-scmi.dts
+index e539cc80bef8..942a6ca38d97 100644
+--- a/arch/arm/boot/dts/stm32mp157a-dk1-scmi.dts
++++ b/arch/arm/boot/dts/stm32mp157a-dk1-scmi.dts
+@@ -11,7 +11,7 @@
  
- 	} else {
--		print_trace_line(iter);
-+		ret = print_trace_line(iter);
-+		if (ret == TRACE_TYPE_PARTIAL_LINE) {
-+			iter->seq.full = 0;
-+			trace_seq_puts(&iter->seq, "[LINE TOO BIG]\n");
-+		}
- 		ret = trace_print_seq(m, &iter->seq);
- 		/*
- 		 * If we overflow the seq_file buffer, then it will
+ / {
+ 	model = "STMicroelectronics STM32MP157A-DK1 SCMI Discovery Board";
+-	compatible = "st,stm32mp157a-dk1-scmi", "st,stm32mp157a-dk1", "st,stm32mp157";
++	compatible = "st,stm32mp157a-dk1-scmi", "st,stm32mp157";
+ 
+ 	reserved-memory {
+ 		optee@de000000 {
+diff --git a/arch/arm/boot/dts/stm32mp157c-dk2-scmi.dts b/arch/arm/boot/dts/stm32mp157c-dk2-scmi.dts
+index 97e4f94b0a24..99c4ff1f5c21 100644
+--- a/arch/arm/boot/dts/stm32mp157c-dk2-scmi.dts
++++ b/arch/arm/boot/dts/stm32mp157c-dk2-scmi.dts
+@@ -11,7 +11,7 @@
+ 
+ / {
+ 	model = "STMicroelectronics STM32MP157C-DK2 SCMI Discovery Board";
+-	compatible = "st,stm32mp157c-dk2-scmi", "st,stm32mp157c-dk2", "st,stm32mp157";
++	compatible = "st,stm32mp157c-dk2-scmi", "st,stm32mp157";
+ 
+ 	reserved-memory {
+ 		optee@de000000 {
+diff --git a/arch/arm/boot/dts/stm32mp157c-ed1-scmi.dts b/arch/arm/boot/dts/stm32mp157c-ed1-scmi.dts
+index 9cf0a44d2f47..21010458b36f 100644
+--- a/arch/arm/boot/dts/stm32mp157c-ed1-scmi.dts
++++ b/arch/arm/boot/dts/stm32mp157c-ed1-scmi.dts
+@@ -11,7 +11,7 @@
+ 
+ / {
+ 	model = "STMicroelectronics STM32MP157C-ED1 SCMI eval daughter";
+-	compatible = "st,stm32mp157c-ed1-scmi", "st,stm32mp157c-ed1", "st,stm32mp157";
++	compatible = "st,stm32mp157c-ed1-scmi", "st,stm32mp157";
+ 
+ 	reserved-memory {
+ 		optee@fe000000 {
+diff --git a/arch/arm/boot/dts/stm32mp157c-ev1-scmi.dts b/arch/arm/boot/dts/stm32mp157c-ev1-scmi.dts
+index 3b9dd6f4ccc9..d37637149919 100644
+--- a/arch/arm/boot/dts/stm32mp157c-ev1-scmi.dts
++++ b/arch/arm/boot/dts/stm32mp157c-ev1-scmi.dts
+@@ -11,8 +11,7 @@
+ 
+ / {
+ 	model = "STMicroelectronics STM32MP157C-EV1 SCMI eval daughter on eval mother";
+-	compatible = "st,stm32mp157c-ev1-scmi", "st,stm32mp157c-ev1", "st,stm32mp157c-ed1",
+-		     "st,stm32mp157";
++	compatible = "st,stm32mp157c-ev1-scmi", "st,stm32mp157c-ed1", "st,stm32mp157";
+ 
+ 	reserved-memory {
+ 		optee@fe000000 {
 -- 
 2.43.0
 
