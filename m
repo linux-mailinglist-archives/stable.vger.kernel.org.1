@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-14870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 524308382F6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:25:30 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51C4583830E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 854341C298C1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F214328B087
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2914B6026C;
-	Tue, 23 Jan 2024 01:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1CC760275;
+	Tue, 23 Jan 2024 01:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBkVJd8+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GhokNfb7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBAB460266;
-	Tue, 23 Jan 2024 01:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0DC65FF0E;
+	Tue, 23 Jan 2024 01:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974671; cv=none; b=QeXELFu3GIBwzhm+6eHsZmxiYgICGdfYJzaa1plnPqXy0uPzDDVByo1LW5sscmluXL4TfYP3fLHJI4winTr9C4OZoN9CofrlMIfzb2z3bl0Jm/rpIx1MXd64G415ihiG1EN4QyLtbIvv5dOgEt2fTLrri6KQeK8r+hBoac62ue0=
+	t=1705974693; cv=none; b=D4HJZZkzu5T3oCis67GfQ2M2FjW6UcjJOlxWCIpAJh5uJOVfO4JN5gf5q31r3dD9MGLgsSc56GL3xNZwc7KH8g8TrCmDl3pQsgmrdR8vR0KJeJMyPDAWnZH5cXuqwneC5BYwE4Q0qVnitt2gb4OPAVtVoJ0gVwip/rSRzN8I/sQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974671; c=relaxed/simple;
-	bh=EaCkgWEwg3IRk1B98bx2L+xCc4sSo59GpXcAuMalEl4=;
+	s=arc-20240116; t=1705974693; c=relaxed/simple;
+	bh=+nWwzuBqr5XdUY8hOrQ3Z7RMcq5uUhHwsEYqfkFfbto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=co6uihzrRlwzHrx2YZFc5bhOy1sfVM0rLqy8/+jVbUJ1wXof/pc2XSx/POp4ilskULzMqzUIa3BCLsUU6URsgUBc+I5Ajy7golyxvdUQgyN9W7W7L5HL5Phocwvg/3883HMIDAvirXTcmfSMT8HlrgRTR/Z/qulik4+lAYe0OaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBkVJd8+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A041BC433C7;
-	Tue, 23 Jan 2024 01:51:10 +0000 (UTC)
+	 MIME-Version; b=EzKAqc8E3XR+nRVC06jfIH52q2SXW6oNe6rKLjoRDGBO+GWynWXzZ9l884zk7AFFKhC9TGWSM1E8ua4RKY1sTmozztWpzDyBLooFQ9Bc4ShNFOyCAyuTLkoi7LUBjqIRS2hgEL8pBLV47HuTw39gPirLVhc6pbrTXadSkfHBZ5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GhokNfb7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A93C43394;
+	Tue, 23 Jan 2024 01:51:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974670;
-	bh=EaCkgWEwg3IRk1B98bx2L+xCc4sSo59GpXcAuMalEl4=;
+	s=korg; t=1705974693;
+	bh=+nWwzuBqr5XdUY8hOrQ3Z7RMcq5uUhHwsEYqfkFfbto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tBkVJd8+TEhGMIqONvIK+eTUvG6LrSrW3ZVyJ7Znzd45woKDLHpG0wlQ0zo4lkAro
-	 PNpBqLRcGV3O4nRnWwCbFPYzCEZngjoNFzt/HBxcSt1dN2W0dDPVNpfQ1Ka65/zffi
-	 JtY6N0CTYGIGZ70jMOKKOSC9YM9ZE4AJI1W6SM2Q=
+	b=GhokNfb7YKRKFZ/th1TGwqxL6P5VW+OV+AmaU7AOzHpYeICM2RWuEcBF4qMR8HCWZ
+	 SJ1iudo7YF2mUJEyzqET8TtVsVxtOCkpiDgOVVwQl0WesX4NAYVG43vgcfqq4asKXt
+	 8gRWHskhKL+QoNoO0OagMMyafjpXQQbcGA/kwiMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 103/583] bpf: enforce precision of R0 on callback return
-Date: Mon, 22 Jan 2024 15:52:34 -0800
-Message-ID: <20240122235815.323688313@linuxfoundation.org>
+Subject: [PATCH 6.6 104/583] ARM: dts: qcom: sdx65: correct PCIe EP phy-names
+Date: Mon, 22 Jan 2024 15:52:35 -0800
+Message-ID: <20240122235815.349658810@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
 References: <20240122235812.238724226@linuxfoundation.org>
@@ -68,44 +69,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 0acd03a5bd188b0c501d285d938439618bd855c4 ]
+[ Upstream commit 94da379dba88c4cdd562bad21c9ba5656e5ed5df ]
 
-Given verifier checks actual value, r0 has to be precise, so we need to
-propagate precision properly. r0 also has to be marked as read,
-otherwise subsequent state comparisons will ignore such register as
-unimportant and precision won't really help here.
+Qualcomm PCIe endpoint bindings expect phy-names to be "pciephy":
 
-Fixes: 69c087ba6225 ("bpf: Add bpf_for_each_map_elem() helper")
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Acked-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20231202175705.885270-4-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+  arch/arm/boot/dts/qcom/qcom-sdx65-mtp.dtb: pcie-ep@1c00000: phy-names:0: 'pciephy' was expected
+
+Fixes: 9c0bb38414a4 ("ARM: dts: qcom: sdx65: Add support for PCIe EP")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230924183103.49487-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm/boot/dts/qcom/qcom-sdx65.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 824531d4c262..2deae0db03e8 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -9284,6 +9284,13 @@ static int prepare_func_exit(struct bpf_verifier_env *env, int *insn_idx)
- 			verbose(env, "R0 not a scalar value\n");
- 			return -EACCES;
- 		}
-+
-+		/* we are going to rely on register's precise value */
-+		err = mark_reg_read(env, r0, r0->parent, REG_LIVE_READ64);
-+		err = err ?: mark_chain_precision(env, BPF_REG_0);
-+		if (err)
-+			return err;
-+
- 		if (!tnum_in(range, r0->var_off)) {
- 			verbose_invalid_scalar(env, r0, &range, "callback return", "R0");
- 			return -EINVAL;
+diff --git a/arch/arm/boot/dts/qcom/qcom-sdx65.dtsi b/arch/arm/boot/dts/qcom/qcom-sdx65.dtsi
+index 1a3583029a64..35a887176b3c 100644
+--- a/arch/arm/boot/dts/qcom/qcom-sdx65.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-sdx65.dtsi
+@@ -338,7 +338,7 @@ pcie_ep: pcie-ep@1c00000 {
+ 			power-domains = <&gcc PCIE_GDSC>;
+ 
+ 			phys = <&pcie_phy>;
+-			phy-names = "pcie-phy";
++			phy-names = "pciephy";
+ 
+ 			max-link-speed = <3>;
+ 			num-lanes = <2>;
 -- 
 2.43.0
 
