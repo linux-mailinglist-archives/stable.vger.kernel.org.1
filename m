@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1E3A83828E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:22 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81E79837CBD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B3EB28C3E5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AED9B29252
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:07:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292275D752;
-	Tue, 23 Jan 2024 01:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5483915445E;
+	Tue, 23 Jan 2024 00:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ul+8AZda"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWXwJh1N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F8F5C8FC;
-	Tue, 23 Jan 2024 01:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13618154C05;
+	Tue, 23 Jan 2024 00:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974378; cv=none; b=gNHlQT5Dnbv/BG9jrtgWmr22+S0Q35TYvDi0/e+6qa14ClQ+/F9EAIIblZM4khKySjvxyOgJ74qAOQkyHmkPjHfg7Vrx6V7R2rqLABxIe5JRQdNVuVxH7lhScQfbeCxrJw+aypsyp1UV3eRydkv+HRQsK9f2TFoYR/Gplo80KXU=
+	t=1705969399; cv=none; b=p4mAJp2EvV0dkEYPXpX2OcmVKp4oJ2UmuWCnQc9ru/h7T/iqQxqjObGJwJirqY06hTlDFb5DliSxCjK6kX90N6fK94xs59uf0UpglbV/6hQn3QoOgkodIMSUQj8MUqHGSwuXSui9YBK/Na1wGtnUHRr5xpVt60fzok22qjlF3MI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974378; c=relaxed/simple;
-	bh=zF6zwedgcHaBN1+aFzcwh/pOqmVXZmxksmYWNFV5CeU=;
+	s=arc-20240116; t=1705969399; c=relaxed/simple;
+	bh=zt6tEt9dr9uStX2a1XFZvKwbnk0n0kfWZqGmXyLPHZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XUfgTYxgeNm+bKj5fsvgtMbeBRG7ijVeUupgWuOPsiNHMgET7YBFj0ZekeBm8QvcTmcMoLAeO9HnkTFdn2DZIRIfaIpwW0HRVqFAFqwSC3l9eXalTuJzn+v4zh9O9D0pBmztOacKocXUIF8zBmt9b87dtGoSP1MHUXFHbt95Xkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ul+8AZda; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891D3C43390;
-	Tue, 23 Jan 2024 01:46:18 +0000 (UTC)
+	 MIME-Version; b=rf1nK/30ATZC3IbM2KSWpthrcE0J550Ul1ZGNYMEn/r0RpPtDw2aetU8dpCtm4rk8/OWufUt87eLABGHAXuYLkkQrXRzxLmGn83MHQ/Z9DJaEIgaEDJuji9FPnuz/8rLSI9DvLj/jTobjjCzlB+IR9ku0I3N9VWz5ZE/HHUyVOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWXwJh1N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73835C43399;
+	Tue, 23 Jan 2024 00:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974378;
-	bh=zF6zwedgcHaBN1+aFzcwh/pOqmVXZmxksmYWNFV5CeU=;
+	s=korg; t=1705969398;
+	bh=zt6tEt9dr9uStX2a1XFZvKwbnk0n0kfWZqGmXyLPHZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ul+8AZdaczkYLjCiyQBuI4ySSfyjvy2hHR4GkoMLCQZdbTNvRxvdiw6GXpyDIySbr
-	 Jo+dAMAWrf3FslGTrYW4sCWXdeKT2tWCSjCq0yO6ZWwjR26vsUrfs9fsWe/ffa+5Hc
-	 oT43OWLaydsKrNJDy9huOpQwvPBBufJ56gs9VE5M=
+	b=jWXwJh1NBcaPspPJmZyURhdIBRLWYLNn/6rTF9JR3KmNG09KNDbWDZQf5v2SE1xWW
+	 xTBvtd5Vl663DwHvFDlK1mJNPNUe4l+QXtGaS8Zz7DO8adflDkTHcBB2PJ4wTqdSCz
+	 qjOVt3/kBcxooU9/B+hpkX3tWDAD1BSTVGnDOBcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 072/583] crypto: sahara - fix processing hash requests with req->nbytes < sg->length
-Date: Mon, 22 Jan 2024 15:52:03 -0800
-Message-ID: <20240122235814.357309253@linuxfoundation.org>
+Subject: [PATCH 6.7 220/641] wifi: iwlwifi: assign phy_ctxt before eSR activation
+Date: Mon, 22 Jan 2024 15:52:04 -0800
+Message-ID: <20240122235824.831619915@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit 7bafa74d1ba35dcc173e1ce915e983d65905f77e ]
+[ Upstream commit 9b6614e5ead5d19a71893bcca3f1a6569ca0c456 ]
 
-It's not always the case that the entire sg entry needs to be processed.
-Currently, when nbytes is less than sg->length, "Descriptor length" errors
-are encountered.
+eSR is activated when a chanctx is assigned to more than one link.
+During eSR activation we should disable RLC for both phys, and configure
+the FW with a special phy command for both phys.
+Currently we assign the phy_ctxt to the link only after eSR activation,
+so RLC is not disabled for the new phy_ctxt, and a cmd is not sent to FW.
+Fix this by first assigning the new phy_ctxt to the link and then
+doing the eSR activation.
 
-To fix this, take the actual request size into account when populating the
-hw links.
-
-Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 12bacfc2c065 ("wifi: iwlwifi: handle eSR transitions")
+Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://msgid.link/20231219215605.3d94507f5d9a.I537fcd73aedf94c7348c03157e486f24301fef14@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 117aa4296c2a..477b4d8b450d 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -776,6 +776,7 @@ static int sahara_sha_hw_links_create(struct sahara_dev *dev,
- 				       int start)
- {
- 	struct scatterlist *sg;
-+	unsigned int len;
- 	unsigned int i;
- 	int ret;
- 
-@@ -797,12 +798,14 @@ static int sahara_sha_hw_links_create(struct sahara_dev *dev,
- 	if (!ret)
- 		return -EFAULT;
- 
-+	len = rctx->total;
- 	for (i = start; i < dev->nb_in_sg + start; i++) {
--		dev->hw_link[i]->len = sg->length;
-+		dev->hw_link[i]->len = min(len, sg->length);
- 		dev->hw_link[i]->p = sg->dma_address;
- 		if (i == (dev->nb_in_sg + start - 1)) {
- 			dev->hw_link[i]->next = 0;
- 		} else {
-+			len -= min(len, sg->length);
- 			dev->hw_link[i]->next = dev->hw_phys_link[i + 1];
- 			sg = sg_next(sg);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+index 8e263acbc763..61170173f917 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
+@@ -271,17 +271,17 @@ __iwl_mvm_mld_assign_vif_chanctx(struct iwl_mvm *mvm,
  		}
+ 	}
+ 
++	mvmvif->link[link_id]->phy_ctxt = phy_ctxt;
++
+ 	if (iwl_mvm_is_esr_supported(mvm->fwrt.trans) && n_active > 1) {
+ 		mvmvif->link[link_id]->listen_lmac = true;
+ 		ret = iwl_mvm_esr_mode_active(mvm, vif);
+ 		if (ret) {
+ 			IWL_ERR(mvm, "failed to activate ESR mode (%d)\n", ret);
+-			return ret;
++			goto out;
+ 		}
+ 	}
+ 
+-	mvmvif->link[link_id]->phy_ctxt = phy_ctxt;
+-
+ 	if (switching_chanctx) {
+ 		/* reactivate if we turned this off during channel switch */
+ 		if (vif->type == NL80211_IFTYPE_AP)
 -- 
 2.43.0
 
