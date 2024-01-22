@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-14386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EBA18380F4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 030E18384E6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A907B2BE9D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:02:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A79F02843FD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6841133980;
-	Tue, 23 Jan 2024 01:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0525F77F17;
+	Tue, 23 Jan 2024 02:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p+SxS0OM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EO5e7m/q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A609A12F59D;
-	Tue, 23 Jan 2024 01:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B968077F12;
+	Tue, 23 Jan 2024 02:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971866; cv=none; b=tbDWa76QITuCaZT4xVcs27bqGOKskShIWjWlAA9mQPFOV5NXZmSRq17unpacAtbqNYDc2sK6ImV5nMVC54cLHgQkUryAtVMa37n4EO4YZL4Z5XZsfVN7qG3U9+x8p8ZP7nf/sYXIiKqV83smAICOVj/pAycEgGg58vinfE6qhME=
+	t=1705975530; cv=none; b=UBXKcVLOHCPEX8cYm8HatJWc3xAfLFd9M6fjQdyqMT+uxmAthl4g7iram+UTGEncAAypeAcZjr1xKmEGlOlvQWyZtOQuOQriiaaj6onvNrshRiqCsW5slaceJ09it7sggh9Zf1r9ySFTQ1W/ZZ8tnlBGi+zUdfWYTULrKfViUS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971866; c=relaxed/simple;
-	bh=f0BZp4oN7ev7CVgyYc5KRj3ta6tmZbFBGhteKh13rVw=;
+	s=arc-20240116; t=1705975530; c=relaxed/simple;
+	bh=n1bBdfemB8UkvPZtgAlewjLtT23VOBZDrt4NjLPhbr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g0z/W14Am4jVSA4VR+raa5tvwS9PkXOjdNphKgEPGIhKegeTvUkafZPrd81cDDHaAbXb+EFBunH6CXyNyMQjWbPSQ2LOI/UwOr26O7ZG0oaX1NKXpZQ9jjUEdOg+hH0CCzle1RDWxcl/zl0mXNBTzCgnOaieD3eUVJZhHssBicw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p+SxS0OM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19CA2C433C7;
-	Tue, 23 Jan 2024 01:04:25 +0000 (UTC)
+	 MIME-Version; b=g2Ycoc9h8GWiHal/OJX7ZF/NPa15KskM7IYvzfS6CAOc1x5lMIS6rsAZvFa5Sk1ll7dLCQbwZqiRjMcZKlhrNqW0uk+b+4axV5SPFHQcHW/Z8i0hNIc46e7qalPZ/VlcmLL5pwsPK/3DLq4kEDgzrsnQAN4gYH5OMeeE+TLcuWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EO5e7m/q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F3FC433F1;
+	Tue, 23 Jan 2024 02:05:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971866;
-	bh=f0BZp4oN7ev7CVgyYc5KRj3ta6tmZbFBGhteKh13rVw=;
+	s=korg; t=1705975530;
+	bh=n1bBdfemB8UkvPZtgAlewjLtT23VOBZDrt4NjLPhbr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p+SxS0OMpW8SCC2j3Yss6O7sMsI5UE4JucCjdIr8JHLZ4Yimkt0djdDclHvNPjBQV
-	 vg+xRd8oqIQ2niDwRGRF0o6tV2Ih5Z0dnhHoyWO10yAzwBj7wz4J35d3rNiIiC3h0x
-	 SljWqvMkv8UQR9+FaYMGEShwB3h0btxIWYDGkvZY=
+	b=EO5e7m/qO5qDem2o7Xo3E3Vzd4VTB+r7DkFqnCKbds9FJ3t/xya1juapdHa5f8d1y
+	 cCls+SiwbgD2Cd6wsUFeKznKZjy2C7DYV9RzNDglyL5EiUALhcnjr2O1bpSGuNcqlT
+	 3DArP+BTRtSNr7bF3zjaws5/vn1wm/tgM+j021jQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <2045gemini@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.10 226/286] Bluetooth: Fix atomicity violation in {min,max}_key_size_set
-Date: Mon, 22 Jan 2024 15:58:52 -0800
-Message-ID: <20240122235740.776998754@linuxfoundation.org>
+	Nuno Sa <nuno.sa@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 482/583] iio: adc: ad9467: fix scale setting
+Date: Mon, 22 Jan 2024 15:58:53 -0800
+Message-ID: <20240122235826.743428572@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +63,260 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <2045gemini@gmail.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-commit da9065caa594d19b26e1a030fd0cc27bd365d685 upstream.
+[ Upstream commit b73f08bb7fe5a0901646ca5ceaa1e7a2d5ee6293 ]
 
-In min_key_size_set():
-    if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE)
-        return -EINVAL;
-    hci_dev_lock(hdev);
-    hdev->le_min_key_size = val;
-    hci_dev_unlock(hdev);
+When reading in_voltage_scale we can get something like:
 
-In max_key_size_set():
-    if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size)
-        return -EINVAL;
-    hci_dev_lock(hdev);
-    hdev->le_max_key_size = val;
-    hci_dev_unlock(hdev);
+root@analog:/sys/bus/iio/devices/iio:device2# cat in_voltage_scale
+0.038146
 
-The atomicity violation occurs due to concurrent execution of set_min and
-set_max funcs.Consider a scenario where setmin writes a new, valid 'min'
-value, and concurrently, setmax writes a value that is greater than the
-old 'min' but smaller than the new 'min'. In this case, setmax might check
-against the old 'min' value (before acquiring the lock) but write its
-value after the 'min' has been updated by setmin. This leads to a
-situation where the 'max' value ends up being smaller than the 'min'
-value, which is an inconsistency.
+However, when reading the available options:
 
-This possible bug is found by an experimental static analysis tool
-developed by our team, BassCheck[1]. This tool analyzes the locking APIs
-to extract function pairs that can be concurrently executed, and then
-analyzes the instructions in the paired functions to identify possible
-concurrency bugs including data races and atomicity violations. The above
-possible bug is reported when our tool analyzes the source code of
-Linux 5.17.
+root@analog:/sys/bus/iio/devices/iio:device2# cat
+in_voltage_scale_available
+2000.000000 2100.000006 2200.000007 2300.000008 2400.000009 2500.000010
 
-To resolve this issue, it is suggested to encompass the validity checks
-within the locked sections in both set_min and set_max funcs. The
-modification ensures that the validation of 'val' against the
-current min/max values is atomic, thus maintaining the integrity of the
-settings. With this patch applied, our tool no longer reports the bug,
-with the kernel configuration allyesconfig for x86_64. Due to the lack of
-associated hardware, we cannot test the patch in runtime testing, and just
-verify it according to the code logic.
+which does not make sense. Moreover, when trying to set a new scale we
+get an error because there's no call to __ad9467_get_scale() to give us
+values as given when reading in_voltage_scale. Fix it by computing the
+available scales during probe and properly pass the list when
+.read_available() is called.
 
-[1] https://sites.google.com/view/basscheck/
+While at it, change to use .read_available() from iio_info. Also note
+that to properly fix this, adi-axi-adc.c has to be changed accordingly.
 
-Fixes: 18f81241b74f ("Bluetooth: Move {min,max}_key_size debugfs ...")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://lore.kernel.org/r/20231207-iio-backend-prep-v2-4-a4a33bc4d70e@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_debugfs.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/iio/adc/ad9467.c            | 47 ++++++++++++++++++
+ drivers/iio/adc/adi-axi-adc.c       | 74 ++++++-----------------------
+ include/linux/iio/adc/adi-axi-adc.h |  4 ++
+ 3 files changed, 66 insertions(+), 59 deletions(-)
 
---- a/net/bluetooth/hci_debugfs.c
-+++ b/net/bluetooth/hci_debugfs.c
-@@ -994,10 +994,12 @@ static int min_key_size_set(void *data,
- {
- 	struct hci_dev *hdev = data;
+diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+index 104c6d394a3e..f668313730cb 100644
+--- a/drivers/iio/adc/ad9467.c
++++ b/drivers/iio/adc/ad9467.c
+@@ -120,6 +120,7 @@ struct ad9467_state {
+ 	struct spi_device		*spi;
+ 	struct clk			*clk;
+ 	unsigned int			output_mode;
++	unsigned int                    (*scales)[2];
  
--	if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE)
-+	hci_dev_lock(hdev);
-+	if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
+ 	struct gpio_desc		*pwrdown_gpio;
+ 	/* ensure consistent state obtained on multiple related accesses */
+@@ -216,6 +217,7 @@ static void __ad9467_get_scale(struct adi_axi_adc_conv *conv, int index,
+ 	.channel = _chan,						\
+ 	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
+ 		BIT(IIO_CHAN_INFO_SAMP_FREQ),				\
++	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE), \
+ 	.scan_index = _si,						\
+ 	.scan_type = {							\
+ 		.sign = _sign,						\
+@@ -370,6 +372,26 @@ static int ad9467_write_raw(struct adi_axi_adc_conv *conv,
+ 	}
+ }
+ 
++static int ad9467_read_avail(struct adi_axi_adc_conv *conv,
++			     struct iio_chan_spec const *chan,
++			     const int **vals, int *type, int *length,
++			     long mask)
++{
++	const struct adi_axi_adc_chip_info *info = conv->chip_info;
++	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
++
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		*vals = (const int *)st->scales;
++		*type = IIO_VAL_INT_PLUS_MICRO;
++		/* Values are stored in a 2D matrix */
++		*length = info->num_scales * 2;
++		return IIO_AVAIL_LIST;
++	default:
++		return -EINVAL;
 +	}
- 
--	hci_dev_lock(hdev);
- 	hdev->le_min_key_size = val;
- 	hci_dev_unlock(hdev);
- 
-@@ -1022,10 +1024,12 @@ static int max_key_size_set(void *data,
++}
++
+ static int ad9467_outputmode_set(struct spi_device *spi, unsigned int mode)
  {
- 	struct hci_dev *hdev = data;
+ 	int ret;
+@@ -382,6 +404,26 @@ static int ad9467_outputmode_set(struct spi_device *spi, unsigned int mode)
+ 				AN877_ADC_TRANSFER_SYNC);
+ }
  
--	if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size)
-+	hci_dev_lock(hdev);
-+	if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
++static int ad9467_scale_fill(struct adi_axi_adc_conv *conv)
++{
++	const struct adi_axi_adc_chip_info *info = conv->chip_info;
++	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
++	unsigned int i, val1, val2;
++
++	st->scales = devm_kmalloc_array(&st->spi->dev, info->num_scales,
++					sizeof(*st->scales), GFP_KERNEL);
++	if (!st->scales)
++		return -ENOMEM;
++
++	for (i = 0; i < info->num_scales; i++) {
++		__ad9467_get_scale(conv, i, &val1, &val2);
++		st->scales[i][0] = val1;
++		st->scales[i][1] = val2;
 +	}
++
++	return 0;
++}
++
+ static int ad9467_preenable_setup(struct adi_axi_adc_conv *conv)
+ {
+ 	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
+@@ -440,6 +482,10 @@ static int ad9467_probe(struct spi_device *spi)
  
--	hci_dev_lock(hdev);
- 	hdev->le_max_key_size = val;
- 	hci_dev_unlock(hdev);
+ 	conv->chip_info = &info->axi_adc_info;
  
++	ret = ad9467_scale_fill(conv);
++	if (ret)
++		return ret;
++
+ 	id = ad9467_spi_read(spi, AN877_ADC_REG_CHIP_ID);
+ 	if (id != conv->chip_info->id) {
+ 		dev_err(&spi->dev, "Mismatch CHIP_ID, got 0x%X, expected 0x%X\n",
+@@ -450,6 +496,7 @@ static int ad9467_probe(struct spi_device *spi)
+ 	conv->reg_access = ad9467_reg_access;
+ 	conv->write_raw = ad9467_write_raw;
+ 	conv->read_raw = ad9467_read_raw;
++	conv->read_avail = ad9467_read_avail;
+ 	conv->preenable_setup = ad9467_preenable_setup;
+ 
+ 	st->output_mode = info->default_output_mode |
+diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+index aff0532a974a..ae83ada7f9f2 100644
+--- a/drivers/iio/adc/adi-axi-adc.c
++++ b/drivers/iio/adc/adi-axi-adc.c
+@@ -144,6 +144,20 @@ static int adi_axi_adc_write_raw(struct iio_dev *indio_dev,
+ 	return conv->write_raw(conv, chan, val, val2, mask);
+ }
+ 
++static int adi_axi_adc_read_avail(struct iio_dev *indio_dev,
++				  struct iio_chan_spec const *chan,
++				  const int **vals, int *type, int *length,
++				  long mask)
++{
++	struct adi_axi_adc_state *st = iio_priv(indio_dev);
++	struct adi_axi_adc_conv *conv = &st->client->conv;
++
++	if (!conv->read_avail)
++		return -EOPNOTSUPP;
++
++	return conv->read_avail(conv, chan, vals, type, length, mask);
++}
++
+ static int adi_axi_adc_update_scan_mode(struct iio_dev *indio_dev,
+ 					const unsigned long *scan_mask)
+ {
+@@ -228,69 +242,11 @@ struct adi_axi_adc_conv *devm_adi_axi_adc_conv_register(struct device *dev,
+ }
+ EXPORT_SYMBOL_NS_GPL(devm_adi_axi_adc_conv_register, IIO_ADI_AXI);
+ 
+-static ssize_t in_voltage_scale_available_show(struct device *dev,
+-					       struct device_attribute *attr,
+-					       char *buf)
+-{
+-	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+-	struct adi_axi_adc_state *st = iio_priv(indio_dev);
+-	struct adi_axi_adc_conv *conv = &st->client->conv;
+-	size_t len = 0;
+-	int i;
+-
+-	for (i = 0; i < conv->chip_info->num_scales; i++) {
+-		const unsigned int *s = conv->chip_info->scale_table[i];
+-
+-		len += scnprintf(buf + len, PAGE_SIZE - len,
+-				 "%u.%06u ", s[0], s[1]);
+-	}
+-	buf[len - 1] = '\n';
+-
+-	return len;
+-}
+-
+-static IIO_DEVICE_ATTR_RO(in_voltage_scale_available, 0);
+-
+-enum {
+-	ADI_AXI_ATTR_SCALE_AVAIL,
+-};
+-
+-#define ADI_AXI_ATTR(_en_, _file_)			\
+-	[ADI_AXI_ATTR_##_en_] = &iio_dev_attr_##_file_.dev_attr.attr
+-
+-static struct attribute *adi_axi_adc_attributes[] = {
+-	ADI_AXI_ATTR(SCALE_AVAIL, in_voltage_scale_available),
+-	NULL
+-};
+-
+-static umode_t axi_adc_attr_is_visible(struct kobject *kobj,
+-				       struct attribute *attr, int n)
+-{
+-	struct device *dev = kobj_to_dev(kobj);
+-	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+-	struct adi_axi_adc_state *st = iio_priv(indio_dev);
+-	struct adi_axi_adc_conv *conv = &st->client->conv;
+-
+-	switch (n) {
+-	case ADI_AXI_ATTR_SCALE_AVAIL:
+-		if (!conv->chip_info->num_scales)
+-			return 0;
+-		return attr->mode;
+-	default:
+-		return attr->mode;
+-	}
+-}
+-
+-static const struct attribute_group adi_axi_adc_attribute_group = {
+-	.attrs = adi_axi_adc_attributes,
+-	.is_visible = axi_adc_attr_is_visible,
+-};
+-
+ static const struct iio_info adi_axi_adc_info = {
+ 	.read_raw = &adi_axi_adc_read_raw,
+ 	.write_raw = &adi_axi_adc_write_raw,
+-	.attrs = &adi_axi_adc_attribute_group,
+ 	.update_scan_mode = &adi_axi_adc_update_scan_mode,
++	.read_avail = &adi_axi_adc_read_avail,
+ };
+ 
+ static const struct adi_axi_adc_core_info adi_axi_adc_10_0_a_info = {
+diff --git a/include/linux/iio/adc/adi-axi-adc.h b/include/linux/iio/adc/adi-axi-adc.h
+index 52620e5b8052..b7904992d561 100644
+--- a/include/linux/iio/adc/adi-axi-adc.h
++++ b/include/linux/iio/adc/adi-axi-adc.h
+@@ -41,6 +41,7 @@ struct adi_axi_adc_chip_info {
+  * @reg_access		IIO debugfs_reg_access hook for the client ADC
+  * @read_raw		IIO read_raw hook for the client ADC
+  * @write_raw		IIO write_raw hook for the client ADC
++ * @read_avail		IIO read_avail hook for the client ADC
+  */
+ struct adi_axi_adc_conv {
+ 	const struct adi_axi_adc_chip_info		*chip_info;
+@@ -54,6 +55,9 @@ struct adi_axi_adc_conv {
+ 	int (*write_raw)(struct adi_axi_adc_conv *conv,
+ 			 struct iio_chan_spec const *chan,
+ 			 int val, int val2, long mask);
++	int (*read_avail)(struct adi_axi_adc_conv *conv,
++			  struct iio_chan_spec const *chan,
++			  const int **val, int *type, int *length, long mask);
+ };
+ 
+ struct adi_axi_adc_conv *devm_adi_axi_adc_conv_register(struct device *dev,
+-- 
+2.43.0
+
 
 
 
