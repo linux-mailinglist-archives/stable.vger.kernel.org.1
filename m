@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-14996-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E81838453
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6A1A837E98
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD01BB2AA0A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC94C28B485
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94AB762A17;
-	Tue, 23 Jan 2024 01:56:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60DFE6ABB;
+	Tue, 23 Jan 2024 00:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AfAZHUTq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pnnp7jmS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401D362A0E;
-	Tue, 23 Jan 2024 01:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC9763C3;
+	Tue, 23 Jan 2024 00:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974982; cv=none; b=qT1onfZKUN7oFKh0rzzQc9v8jD8G4DgCtZodiZp2Fwlvwzd09fAyUux4N9rYMu0vP/bPfdm7HNbywcCTzYyMIAoOnyRIh6uWNvy3HAgFpodMcLKkNhk8XijQyd+M3SlY+XnW/RpQM+jd3w1thFs5R3I8gd98jecMx2Hq14i4CrU=
+	t=1705970683; cv=none; b=nO4N4MjGOykjp84DSZYD+DJz0f8SpJ0XYk9f3tQ09NbgjkO136xE5WkNfpuftJTEYZ+7iDLMWgRnd4t4nT5o3BN0BaVNiSgJIHGDpwoHb1O9uBusVp7KHkVrI2mys3t++9i+RMWSN8FFbIHS6iV2QyId09D2AJJr/qTcIUNAhVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974982; c=relaxed/simple;
-	bh=1USQWhog3FzJ9o9Z7jdOwAg1PUsfHAAGIaDQMuSReug=;
+	s=arc-20240116; t=1705970683; c=relaxed/simple;
+	bh=mtoTqddyqKcc+54UlHUYU/mxFoctsYjJahMeaHvkn20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gkrYL1baQC3kgmbW0fwyND1tIyUtmWdjpRMUs0Nmc1h7rUjwyPIBVGjigPqXsDdFlBpK8WGc1KFod1Fpc1BsULsUSOZ3fYyJJgkecqk4c1QoIbodLw0y4rtyMhQkhyQqGp3uVqV0qn0kyB/L38umMQsrS7aTE684jL6+wrTVITk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AfAZHUTq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8560C43390;
-	Tue, 23 Jan 2024 01:56:21 +0000 (UTC)
+	 MIME-Version; b=NpiRtPa7sMCFwxpIcSDowpFmtiSKfjiIMc4I8HVYIX8CAyNdtffWOTP7uIoL0+TgpGMLtDi56ZsWMbTxwgdMEr/mL5Nn9M/KSDRPItbeDhWoi0Ri3JowwY1tpRuNv47nk4qEShcRLMprnJKvebDCDMX0M27gTCqJ9ReF6rhZgGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pnnp7jmS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C14AC433C7;
+	Tue, 23 Jan 2024 00:44:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974981;
-	bh=1USQWhog3FzJ9o9Z7jdOwAg1PUsfHAAGIaDQMuSReug=;
+	s=korg; t=1705970683;
+	bh=mtoTqddyqKcc+54UlHUYU/mxFoctsYjJahMeaHvkn20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AfAZHUTqBpjhvyhKtWRL1L/GxV4VAdefpe2lOaVHFW8qp1o7s5NLLpeVyWVWNrbLS
-	 ekwT/bIcDPYyGMlftQdrlIm5x1iffKV5rF4IM3QdhRAnPYqVF4hsLz5PG9FpfniVDO
-	 P3l9m5hCuhubdQ8eTLmCT3ygmMKDv6IJt8UsFWcQ=
+	b=pnnp7jmSZwqbAXB8ySjOSaysEcxmW7U8W1XKIfhtJOvttr19CKXUimUu/2AcFYKod
+	 N9lUG5IHrXVisK/tfMaTsYMusD4GDNbMxy/8WrvHNXf4Kdvkp6INpJNK0KA9aS/OFj
+	 Vrr8NrBWKGZe2xf7svwxdWS8IpWPShENyekZ6lRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Unnathi Chalicheemala <quic_uchalich@quicinc.com>,
-	Satya Durga Srinivasu Prabhala <quic_satyap@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	syzbot+3eff5e51bf1db122a16e@syzkaller.appspotmail.com,
+	Chengming Zhou <zhouchengming@bytedance.com>,
+	Barry Song <v-songbaohua@oppo.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 179/583] soc: qcom: llcc: Fix LLCC_TRP_ATTR2_CFGn offset
+Subject: [PATCH 6.1 062/417] crypto: scomp - fix req->dst buffer overflow
 Date: Mon, 22 Jan 2024 15:53:50 -0800
-Message-ID: <20240122235817.491025365@linuxfoundation.org>
+Message-ID: <20240122235753.863400948@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,41 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Chengming Zhou <zhouchengming@bytedance.com>
 
-[ Upstream commit 110cb8d861cc1a040cdab495b22ac436c49d1454 ]
+[ Upstream commit 744e1885922a9943458954cfea917b31064b4131 ]
 
-According to documentation, it has increments of 4, not 8.
+The req->dst buffer size should be checked before copying from the
+scomp_scratch->dst to avoid req->dst buffer overflow problem.
 
-Fixes: c72ca343f911 ("soc: qcom: llcc: Add v4.1 HW version support")
-Reported-by: Unnathi Chalicheemala <quic_uchalich@quicinc.com>
-Reviewed-by: Satya Durga Srinivasu Prabhala <quic_satyap@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20231012160509.184891-1-abel.vesa@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 1ab53a77b772 ("crypto: acomp - add driver-side scomp interface")
+Reported-by: syzbot+3eff5e51bf1db122a16e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/0000000000000b05cd060d6b5511@google.com/
+Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
+Reviewed-by: Barry Song <v-songbaohua@oppo.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/llcc-qcom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ crypto/scompress.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/soc/qcom/llcc-qcom.c b/drivers/soc/qcom/llcc-qcom.c
-index 309c12f2d3bb..e877aace1155 100644
---- a/drivers/soc/qcom/llcc-qcom.c
-+++ b/drivers/soc/qcom/llcc-qcom.c
-@@ -46,7 +46,7 @@
- #define LLCC_TRP_STATUSn(n)           (4 + n * SZ_4K)
- #define LLCC_TRP_ATTR0_CFGn(n)        (0x21000 + SZ_8 * n)
- #define LLCC_TRP_ATTR1_CFGn(n)        (0x21004 + SZ_8 * n)
--#define LLCC_TRP_ATTR2_CFGn(n)        (0x21100 + SZ_8 * n)
-+#define LLCC_TRP_ATTR2_CFGn(n)        (0x21100 + SZ_4 * n)
+diff --git a/crypto/scompress.c b/crypto/scompress.c
+index 738f4f8f0f41..4d6366a44400 100644
+--- a/crypto/scompress.c
++++ b/crypto/scompress.c
+@@ -124,6 +124,7 @@ static int scomp_acomp_comp_decomp(struct acomp_req *req, int dir)
+ 	struct crypto_scomp *scomp = *tfm_ctx;
+ 	void **ctx = acomp_request_ctx(req);
+ 	struct scomp_scratch *scratch;
++	unsigned int dlen;
+ 	int ret;
  
- #define LLCC_TRP_SCID_DIS_CAP_ALLOC   0x21f00
- #define LLCC_TRP_PCB_ACT              0x21f04
+ 	if (!req->src || !req->slen || req->slen > SCOMP_SCRATCH_SIZE)
+@@ -135,6 +136,8 @@ static int scomp_acomp_comp_decomp(struct acomp_req *req, int dir)
+ 	if (!req->dlen || req->dlen > SCOMP_SCRATCH_SIZE)
+ 		req->dlen = SCOMP_SCRATCH_SIZE;
+ 
++	dlen = req->dlen;
++
+ 	scratch = raw_cpu_ptr(&scomp_scratch);
+ 	spin_lock(&scratch->lock);
+ 
+@@ -152,6 +155,9 @@ static int scomp_acomp_comp_decomp(struct acomp_req *req, int dir)
+ 				ret = -ENOMEM;
+ 				goto out;
+ 			}
++		} else if (req->dlen > dlen) {
++			ret = -ENOSPC;
++			goto out;
+ 		}
+ 		scatterwalk_map_and_copy(scratch->dst, req->dst, 0, req->dlen,
+ 					 1);
 -- 
 2.43.0
 
