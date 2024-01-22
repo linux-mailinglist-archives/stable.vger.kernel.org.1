@@ -1,64 +1,54 @@
-Return-Path: <stable+bounces-15343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BBA98384D7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52376838316
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D26D11F252AF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1E7C1F27404
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970307762F;
-	Tue, 23 Jan 2024 02:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 215A3605C7;
+	Tue, 23 Jan 2024 01:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="djDASYkM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JKy3T/aC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B0777638;
-	Tue, 23 Jan 2024 02:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5169605B2;
+	Tue, 23 Jan 2024 01:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975509; cv=none; b=VaOTWcXb7EMREJ/I4rwNn1bcxWx3BZnKmypvE1lMA2GiY1xfBXvJikW74REmg3t8UJAIi3v4RLE9Ffl+M3UBFM2QA0MN+nJkEAlkGt7GkjFNLe+9z45H/bm/I5uLXHS358vP0M2twmGXK3s9DdAuvsMmZGv4aG1MJ0b8LRkM/0A=
+	t=1705974699; cv=none; b=eQ4i5F/uRjsFCnm6R0/AUOn7frQOLzFZB66DASvKqOxpHwFhPQVDN/UoVsfJ0Fu1+Yz5jq3dWSwb4bLdqqltOt/5Oj1rhaQxQqCTAL1vdPeCDQ2jeXC4aqYooYcpL2aaHnTrohN5tViXkJiYqlFSsQsHZnjtnhaWpHh88SNdpvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975509; c=relaxed/simple;
-	bh=h5Mh53tUsD/Z5D97V5FuaSeFpOzVnzYTuxAYa4pZxg8=;
+	s=arc-20240116; t=1705974699; c=relaxed/simple;
+	bh=z6w9k4b79OK9djofMfbWAYytJpd+tV+gVMk92dACY1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YCdEQ6iHuSQtSnbHip8a1OWjqZJ+0zMS+Dk+4uIJQmf483+qnWOjvnbevkCw2I+pv3e+NjP2HliqxUXLtwtTQaYfaVJZRjLQ2StvCWY9uIcJp3LSSuLqIgRkrFJTexIi6W1INf0sOW6Cg+oBTg+DBSPB2B4ye7ZNF44C81Pmu24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=djDASYkM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11E63C433A6;
-	Tue, 23 Jan 2024 02:05:09 +0000 (UTC)
+	 MIME-Version; b=cGW5pn3VAaQOHlzgbKHwd+66FA9mGhTmrebqYCRMPWy9ZFLt1YYVFV9X2kc8fCz4cwysLe7Dtdwj2MVxRr94PI8VVloAiQuzE/VzW1A17Ua10sIhTKDQvj8j7VHAURxvrzInJBnHKXodUi+7sHr4l+Wb6nIRJNcThwRforfjlYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JKy3T/aC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99693C433F1;
+	Tue, 23 Jan 2024 01:51:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975509;
-	bh=h5Mh53tUsD/Z5D97V5FuaSeFpOzVnzYTuxAYa4pZxg8=;
+	s=korg; t=1705974699;
+	bh=z6w9k4b79OK9djofMfbWAYytJpd+tV+gVMk92dACY1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=djDASYkMferUGs8as9RQy+/E227oRqMu8ZqCv677tF0sL2W8wkA0pLsF/Swh9oC5X
-	 aklBNT6diRPm+K39VKlgO4KA2X34Hike2rfl5QDdMfKOqbVolbTVAhQ8NTPlPDlk8I
-	 VBJl7FqvKjo6fefaC7Gfue/zvDXNxVBcPLViLA+o=
+	b=JKy3T/aCjfmOp7ob20jFconoe7SepO2YbhSvdPGVgdHsbyLxHy8+6Ve76VzFZRt4+
+	 RmaGqzT2p9X7Wg9LpINfiMoLFcKIZa7phCLT1oOvLuFHLsUDGMYe9fuV+kBfqhS0fs
+	 oJEnyDcePhMeGBktUPrzxQpZCKv3QOdwYgACZOMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@arm.com>,
-	Nick Forrington <nick.forrington@arm.com>,
-	Leo Yan <leo.yan@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 461/583] perf test: Remove atomics from test_loop to avoid test failures
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.15 256/374] Revert "usb: dwc3: dont reset device side if dwc3 was configured as host-only"
 Date: Mon, 22 Jan 2024 15:58:32 -0800
-Message-ID: <20240122235826.086107854@linuxfoundation.org>
+Message-ID: <20240122235753.677436641@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,63 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Forrington <nick.forrington@arm.com>
+From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 
-[ Upstream commit 72b4ca7e993e94f09bcf6d19fc385a2e8060c71f ]
+commit afe28cd686aeb77e8d9140d50fb1cf06a7ecb731 upstream.
 
-The current use of atomics can lead to test failures, as tests (such as
-tests/shell/record.sh) search for samples with "test_loop" as the
-top-most stack frame, but find frames related to the atomic operation
-(e.g. __aarch64_ldadd4_relax).
+This reverts commit e835c0a4e23c38531dcee5ef77e8d1cf462658c7.
 
-This change simply removes the "count" variable, as it is not necessary.
+Don't omit soft-reset. During initialization, the driver may need to
+perform a soft reset to ensure the phy is ready when the controller
+updates the GCTL.PRTCAPDIR or other settings by issuing phy soft-reset.
+Many platforms often have access to DCTL register for soft-reset despite
+being host-only. If there are actual reported issues from the platforms
+that don't expose DCTL registers, then we will need to revisit (perhaps
+to teach dwc3 to perform xhci's soft-reset USBCMD.HCRST).
 
-Fixes: 1962ab6f6e0b39e4 ("perf test workload thloop: Make count increments atomic")
-Reviewed-by: James Clark <james.clark@arm.com>
-Signed-off-by: Nick Forrington <nick.forrington@arm.com>
-Acked-by: Leo Yan <leo.yan@linaro.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20231102162225.50028-1-nick.forrington@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc:  <stable@vger.kernel.org>
+Fixes: e835c0a4e23c ("usb: dwc3: don't reset device side if dwc3 was configured as host-only")
+Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/7668ab11a48f260820825274976eb41fec7f54d1.1703282469.git.Thinh.Nguyen@synopsys.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/tests/workloads/thloop.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/usb/dwc3/core.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/tests/workloads/thloop.c b/tools/perf/tests/workloads/thloop.c
-index af05269c2eb8..457b29f91c3e 100644
---- a/tools/perf/tests/workloads/thloop.c
-+++ b/tools/perf/tests/workloads/thloop.c
-@@ -7,7 +7,6 @@
- #include "../tests.h"
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -275,9 +275,9 @@ int dwc3_core_soft_reset(struct dwc3 *dw
+ 	/*
+ 	 * We're resetting only the device side because, if we're in host mode,
+ 	 * XHCI driver will reset the host block. If dwc3 was configured for
+-	 * host-only mode or current role is host, then we can return early.
++	 * host-only mode, then we can return early.
+ 	 */
+-	if (dwc->dr_mode == USB_DR_MODE_HOST || dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
++	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
+ 		return 0;
  
- static volatile sig_atomic_t done;
--static volatile unsigned count;
- 
- /* We want to check this symbol in perf report */
- noinline void test_loop(void);
-@@ -19,8 +18,7 @@ static void sighandler(int sig __maybe_unused)
- 
- noinline void test_loop(void)
- {
--	while (!done)
--		__atomic_fetch_add(&count, 1, __ATOMIC_RELAXED);
-+	while (!done);
- }
- 
- static void *thfunc(void *arg)
--- 
-2.43.0
-
+ 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
 
 
 
