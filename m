@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44A1D837D04
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:23:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D03838193
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA2EA1F2939D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B78B61C286E3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 137B115E275;
-	Tue, 23 Jan 2024 00:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C5B24F613;
+	Tue, 23 Jan 2024 01:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ngHZ98nf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tE5jaN2A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74195D909;
-	Tue, 23 Jan 2024 00:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF95937C;
+	Tue, 23 Jan 2024 01:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969766; cv=none; b=P1sT4L7DBNkBV1ASrpThrPyk5X3+x92bE8GerlEBePOzjedE+Ypj5yEWGEtizgohvnG+bOoa0zUAycU0Bm4jk2q2V82n4XY64URESGUGI0uNaeR+3/G0JfSMn8WbQbMcPQn8ErIKKb4JovP3eRqROFNk2WL38U5iX8u2mgvvdig=
+	t=1705972177; cv=none; b=DhIhQR8hXW7OVRTyBq4GrBUKhVluFBusouFBAd5wG+uyT5YIZH5fgq3akdS4WLGSSy96RgJvt7iS2w0/mkVgx/ddhWuqIVgIJjgxgGtzj8q4TLTkbdJurDd+nYapGtMRyGG63708NDMRwQqefzVRvVQo7pIb+yHqO1i/5suz62A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969766; c=relaxed/simple;
-	bh=6JMaMJ5LKzmatSmTLrYFXf+fxmWKGs87uaXsMu63bNY=;
+	s=arc-20240116; t=1705972177; c=relaxed/simple;
+	bh=b+/ad4Cf26qPk7IawLoKEWSSJY3ooSw+xvBBbaqKLAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MAmr8aF86jxH2J9ZYi60VNxWngyXIQcH4vNhm47kiSvwDQBZ6CTPS7tf44gjJwFYkiMDeVQoVp1ryu01LjD+RABkYrQgefp2RRH9i5rxwuhAwOfzm2sB8ay9+mBwMEyPgaNH54/qS5JMGh6uxXR18/9grlDYPx6HG7KoJqsZZwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ngHZ98nf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEBA2C433F1;
-	Tue, 23 Jan 2024 00:29:25 +0000 (UTC)
+	 MIME-Version; b=gPU3MqNoaZp3kL8vservSkKddBD1Ey2TEvv0f3jTOpJTlSn7IS//i+jfPLsFX8D65gkhdnDI34RkOqi+VvjOU4YCpYiB9w83uCkSNEsV2uMbYJSkJ6scFxs5wBWO7qqQ6Lh9OckPbi2FLr1JlSFaRr8xlEiqI3vadbNIbeY4Pak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tE5jaN2A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C5CC43399;
+	Tue, 23 Jan 2024 01:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969766;
-	bh=6JMaMJ5LKzmatSmTLrYFXf+fxmWKGs87uaXsMu63bNY=;
+	s=korg; t=1705972177;
+	bh=b+/ad4Cf26qPk7IawLoKEWSSJY3ooSw+xvBBbaqKLAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ngHZ98nfWfB3surYVM+hF2IIFAyl95GmJbCimjBesgQ/VzRotCQ9p1KxbGw+1nQSJ
-	 QzK5HTRREYsixrDn0PaBzeAvyITDOz77c95iYIlHtqN53vFnn1n+86dwTRI+efGgNj
-	 DVUWeTlP5PC9CCFKv1E8ITwhouZ5tzuh9LGubWME=
+	b=tE5jaN2A3ff3SkuhXXiQrZkp6Qr0N5cjAwD7ZngaeNxq0nVfUhkBOEq9rvU2paLto
+	 +dRRoLKKDKiEk5n2AkM3+hRJQzGbOzIuzCwIZu8vVteGBo8hHxC+MwJO2aKz5VCdwU
+	 yx8mgAFVjT8G5tGtaOby+zFhvZ6GPZz+liqwaRis=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathya Prakash <sathya.prakash@broadcom.com>,
-	Chandrakanth patil <chandrakanth.patil@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.7 437/641] scsi: mpi3mr: Block PEL Enable Command on Controller Reset and Unrecoverable State
+	Alexandra Diupina <adiupina@astralinux.ru>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 085/374] cpufreq: scmi: process the result of devm_of_clk_add_hw_provider()
 Date: Mon, 22 Jan 2024 15:55:41 -0800
-Message-ID: <20240122235831.678510456@linuxfoundation.org>
+Message-ID: <20240122235747.573338492@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chandrakanth patil <chandrakanth.patil@broadcom.com>
+From: Alexandra Diupina <adiupina@astralinux.ru>
 
-commit f8fb3f39148e8010479e4b2003ba4728818ec661 upstream.
+[ Upstream commit c4a5118a3ae1eadc687d84eef9431f9e13eb015c ]
 
-If a controller reset is underway or the controller is in an unrecoverable
-state, the PEL enable management command will be returned as EAGAIN or
-EFAULT.
+devm_of_clk_add_hw_provider() may return an errno, so
+add a return value check
 
-Cc: <stable@vger.kernel.org> # v6.1+
-Co-developed-by: Sathya Prakash <sathya.prakash@broadcom.com>
-Signed-off-by: Sathya Prakash <sathya.prakash@broadcom.com>
-Signed-off-by: Chandrakanth patil <chandrakanth.patil@broadcom.com>
-Link: https://lore.kernel.org/r/20231126053134.10133-4-chandrakanth.patil@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 8410e7f3b31e ("cpufreq: scmi: Fix OPP addition failure with a dummy clock provider")
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_app.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/cpufreq/scmi-cpufreq.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/scsi/mpi3mr/mpi3mr_app.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_app.c
-@@ -223,6 +223,22 @@ static long mpi3mr_bsg_pel_enable(struct
- 		return rval;
- 	}
+diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
+index 82e588c3c57b..c24e6373d341 100644
+--- a/drivers/cpufreq/scmi-cpufreq.c
++++ b/drivers/cpufreq/scmi-cpufreq.c
+@@ -299,8 +299,11 @@ static int scmi_cpufreq_probe(struct scmi_device *sdev)
  
-+	if (mrioc->unrecoverable) {
-+		dprint_bsg_err(mrioc, "%s: unrecoverable controller\n",
-+			       __func__);
-+		return -EFAULT;
+ #ifdef CONFIG_COMMON_CLK
+ 	/* dummy clock provider as needed by OPP if clocks property is used */
+-	if (of_property_present(dev->of_node, "#clock-cells"))
+-		devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, NULL);
++	if (of_property_present(dev->of_node, "#clock-cells")) {
++		ret = devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, NULL);
++		if (ret)
++			return dev_err_probe(dev, ret, "%s: registering clock provider failed\n", __func__);
 +	}
-+
-+	if (mrioc->reset_in_progress) {
-+		dprint_bsg_err(mrioc, "%s: reset in progress\n", __func__);
-+		return -EAGAIN;
-+	}
-+
-+	if (mrioc->stop_bsgs) {
-+		dprint_bsg_err(mrioc, "%s: bsgs are blocked\n", __func__);
-+		return -EAGAIN;
-+	}
-+
- 	sg_copy_to_buffer(job->request_payload.sg_list,
- 			  job->request_payload.sg_cnt,
- 			  &pel_enable, sizeof(pel_enable));
+ #endif
+ 
+ 	ret = cpufreq_register_driver(&scmi_cpufreq_driver);
+-- 
+2.43.0
+
 
 
 
