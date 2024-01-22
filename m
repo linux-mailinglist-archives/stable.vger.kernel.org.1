@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-14463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A987838187
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BA19838117
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:05:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3073B24BF8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C91D1F23D66
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43D4E13DBB2;
-	Tue, 23 Jan 2024 01:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CDC814077C;
+	Tue, 23 Jan 2024 01:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNZuFIq6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXua9zh8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F1013E224;
-	Tue, 23 Jan 2024 01:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7D2140778;
+	Tue, 23 Jan 2024 01:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971998; cv=none; b=Yn3m/gapdV9ZMoNMn9yVKlTJWXGddxusETjtNJJbyyZroSpUW/P/UnRlL1BB4tBJ9ttIVeXM/zjZq5NzF7d/Yzsud/sBK+m2JLrRydR896vfhTG76W8xQhreJK0XnPh3hnj5dEMzhbcxswBpgx5W4JCEmL2wLPA9ehuu/fX9oLw=
+	t=1705972021; cv=none; b=USVEYzjs/1c4t5bfHyj+qYXv5TRiMstc/QdDTVX+4MUbfQUeFKIJE3K21EzCGhPh6pUBH8o+J3QW0u0tVB5MdUIsftEGsCW/3HfcPn3T1x0BUq49qLMTZ/fnsv79fUGO83prreN/vcVrTi/fYPBS34zDcnPhZqMFhyq0FWUlhZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971998; c=relaxed/simple;
-	bh=9qUwHSu+ptr9WUP1vPD1vchIwkPzJFhYnm/wpJXoMbs=;
+	s=arc-20240116; t=1705972021; c=relaxed/simple;
+	bh=MzbIJw0wNavkHuXlzR5guxSQ0gf6VJPi1EkZR1CBC5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dvl6Oy6FFI9xhKidFiXYSp9ApYOJ4i6btPcnSkbAo33scSxH5iS+HeF0cEXnVLTO7RRKTT2mszBNZ3noFz1YXgLZ8mvS3PaCh0qjRXGC28KcAUrMS9v1yvHALWRld20b68zlOCfGHgvganlWX0qhEwQQQGE+IBPQf1KxfOq9k5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNZuFIq6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C1BC433C7;
-	Tue, 23 Jan 2024 01:06:37 +0000 (UTC)
+	 MIME-Version; b=PZ/xx8VFhOfmdSF7eWqyMC5lEuHJ40EP9LDDn6h4XVw3wRcV1arRcnAzPramck732+1wXTiEx83UShb92odew/z4KH6zawcLHtTpkJBkuBMKkVRHcRzo8QE7NWH6j9cb4kgk2TqWs7F0uFzmN7hI/stlDKSbIEC03yGPFiyC2Ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXua9zh8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D439C43390;
+	Tue, 23 Jan 2024 01:07:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971997;
-	bh=9qUwHSu+ptr9WUP1vPD1vchIwkPzJFhYnm/wpJXoMbs=;
+	s=korg; t=1705972021;
+	bh=MzbIJw0wNavkHuXlzR5guxSQ0gf6VJPi1EkZR1CBC5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LNZuFIq6Bvt5YcRtOOrlTTQ4DUZLCooPrQtxIoHTPTfN0NVrDBsd+YTYE4+stNddd
-	 5spCs9ZLkjD6uY7Fma7T14ThlS+FOc2+RSUwh0a0WImY1XpQ5u+X6gc7PwDyBpkXog
-	 cKDDSMVrgEjR8h9bDtO4CLF/8GvMiC8W00U40bD8=
+	b=nXua9zh8oZ+SXXOiOiFRAy6nRtAlxes6LKCn0Gt53Sy5CvzyCyU9I9PAMC7t3LaOK
+	 SKx7Rklvt0HE+0379u/Nizwhrjci20bKzO0QtJ4UcldIIv3UdH3uBgfv+tHyugaH6O
+	 ZTH4XuXdVKo9p0O4WkDvlsl4Fs1VEbeAtscJDiHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Julian Anastasov <ja@ssi.bg>,
+	Simon Horman <horms@kernel.org>,
 	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 273/286] netfilter: nf_tables: reject NFT_SET_CONCAT with not field length description
-Date: Mon, 22 Jan 2024 15:59:39 -0800
-Message-ID: <20240122235742.564882086@linuxfoundation.org>
+Subject: [PATCH 5.10 274/286] ipvs: avoid stat macros calls from preemptible context
+Date: Mon, 22 Jan 2024 15:59:40 -0800
+Message-ID: <20240122235742.596534534@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
 References: <20240122235732.009174833@linuxfoundation.org>
@@ -65,38 +68,81 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 113661e07460a6604aacc8ae1b23695a89e7d4b3 ]
+[ Upstream commit d6938c1c76c64f42363d0d1f051e1b4641c2ad40 ]
 
-It is still possible to set on the NFT_SET_CONCAT flag by specifying a
-set size and no field description, report EINVAL in such case.
+Inside decrement_ttl() upon discovering that the packet ttl has exceeded,
+__IP_INC_STATS and __IP6_INC_STATS macros can be called from preemptible
+context having the following backtrace:
 
-Fixes: 1b6345d4160e ("netfilter: nf_tables: check NFT_SET_CONCAT flag if field_count is specified")
+check_preemption_disabled: 48 callbacks suppressed
+BUG: using __this_cpu_add() in preemptible [00000000] code: curl/1177
+caller is decrement_ttl+0x217/0x830
+CPU: 5 PID: 1177 Comm: curl Not tainted 6.7.0+ #34
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xbd/0xe0
+ check_preemption_disabled+0xd1/0xe0
+ decrement_ttl+0x217/0x830
+ __ip_vs_get_out_rt+0x4e0/0x1ef0
+ ip_vs_nat_xmit+0x205/0xcd0
+ ip_vs_in_hook+0x9b1/0x26a0
+ nf_hook_slow+0xc2/0x210
+ nf_hook+0x1fb/0x770
+ __ip_local_out+0x33b/0x640
+ ip_local_out+0x2a/0x490
+ __ip_queue_xmit+0x990/0x1d10
+ __tcp_transmit_skb+0x288b/0x3d10
+ tcp_connect+0x3466/0x5180
+ tcp_v4_connect+0x1535/0x1bb0
+ __inet_stream_connect+0x40d/0x1040
+ inet_stream_connect+0x57/0xa0
+ __sys_connect_file+0x162/0x1a0
+ __sys_connect+0x137/0x160
+ __x64_sys_connect+0x72/0xb0
+ do_syscall_64+0x6f/0x140
+ entry_SYSCALL_64_after_hwframe+0x6e/0x76
+RIP: 0033:0x7fe6dbbc34e0
+
+Use the corresponding preemption-aware variants: IP_INC_STATS and
+IP6_INC_STATS.
+
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 8d8e20e2d7bb ("ipvs: Decrement ttl")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Acked-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/netfilter/ipvs/ip_vs_xmit.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 7a1a21cde760..fca8f9a36063 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4466,8 +4466,12 @@ static int nf_tables_newset(struct net *net, struct sock *nlsk,
- 		if (err < 0)
- 			return err;
+diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
+index cd2130e98836..c87dbc897002 100644
+--- a/net/netfilter/ipvs/ip_vs_xmit.c
++++ b/net/netfilter/ipvs/ip_vs_xmit.c
+@@ -271,7 +271,7 @@ static inline bool decrement_ttl(struct netns_ipvs *ipvs,
+ 			skb->dev = dst->dev;
+ 			icmpv6_send(skb, ICMPV6_TIME_EXCEED,
+ 				    ICMPV6_EXC_HOPLIMIT, 0);
+-			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
++			IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
  
--		if (desc.field_count > 1 && !(flags & NFT_SET_CONCAT))
-+		if (desc.field_count > 1) {
-+			if (!(flags & NFT_SET_CONCAT))
-+				return -EINVAL;
-+		} else if (flags & NFT_SET_CONCAT) {
- 			return -EINVAL;
-+		}
- 	} else if (flags & NFT_SET_CONCAT) {
- 		return -EINVAL;
- 	}
+ 			return false;
+ 		}
+@@ -286,7 +286,7 @@ static inline bool decrement_ttl(struct netns_ipvs *ipvs,
+ 	{
+ 		if (ip_hdr(skb)->ttl <= 1) {
+ 			/* Tell the sender its packet died... */
+-			__IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
++			IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
+ 			icmp_send(skb, ICMP_TIME_EXCEEDED, ICMP_EXC_TTL, 0);
+ 			return false;
+ 		}
 -- 
 2.43.0
 
