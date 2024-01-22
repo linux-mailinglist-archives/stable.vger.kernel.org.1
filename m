@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-13784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DAF5837E07
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B75283833B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:27:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C0AA71F29BCA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1408328F7D2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1D759B75;
-	Tue, 23 Jan 2024 00:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D0660BA4;
+	Tue, 23 Jan 2024 01:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NY4Pzmuo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHYtOoG3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB5C59B5E;
-	Tue, 23 Jan 2024 00:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E48E429403;
+	Tue, 23 Jan 2024 01:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970300; cv=none; b=gx+f7q5caI8fK7Stmc5RRfnOKOxM5ZhnFH1nhQmwEn67fSRBKSPLNqU8L7RKczdIyCbDxSVSaPkrTJ5B/xwF33TlbciUSbcdTYIfYLiDvUkpcvX+fiezhOGRVb5SOg9F0zLmwOtEjgMS3X4z6PCNqP7NdcuX8B1nKniWakpVlKc=
+	t=1705974742; cv=none; b=BjZh/Rxwz3FFl5jEhJRdQ+pZB5u3VYJg0MQzciorei+34AE8GxNfo3ZDVQ/X+rLO/h3o3F2uPETFt1JTKKJLZUfkDAonrnwtn2z3ZQqMLkQFw1w5u9pnQcF2xqCKENvz/3YHHkQffXt/5c9Zg/61lChtTRWLpKYSb6x3oIhwrEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970300; c=relaxed/simple;
-	bh=oFm6v9X3qRS38QYaXg3/V4hPeK7cZU/0UP6tdAco91g=;
+	s=arc-20240116; t=1705974742; c=relaxed/simple;
+	bh=qCx2JOvjUP3Nr16p8wN6OM1PVokLPcptMok1We+RYIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+M9ltfMwXQW25M/fSn3MQnvhGRLrnc04klUSW6kkpV4BCTaFASL9ic3Rsgc5E1w2Lj7QI92vVUDF0cVrZlIuoBejaJRS7FEBtx7LPhKztx1vpLCL0t9V8v8SZxzcrsynN4xR7TCfsTO1uwDycdgrvz4O/+kS2D5rb7uj+/HjF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NY4Pzmuo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9831FC433C7;
-	Tue, 23 Jan 2024 00:38:19 +0000 (UTC)
+	 MIME-Version; b=tsCQNnXYu0OJt1nb5f21MBvi1DJ7QUBD9Z3WKmmnZxMvwhSt2XMrCVqJJblu4tKaFr7XoZffSC+iLwKRIOAOGsLHaTB3oU9GdFl3eEjF3AShP5rebemMn7uIbkaDauZNbbXJick4v1o2HY7w6utMbL1iqdw5veLsIeX5l7jgsmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iHYtOoG3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A95DBC43394;
+	Tue, 23 Jan 2024 01:52:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970300;
-	bh=oFm6v9X3qRS38QYaXg3/V4hPeK7cZU/0UP6tdAco91g=;
+	s=korg; t=1705974741;
+	bh=qCx2JOvjUP3Nr16p8wN6OM1PVokLPcptMok1We+RYIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NY4PzmuoPuiAls4OoyJ8EoPcUg7SX//ejyxrAe80vjHZkHPK4SV0p/EDhplhOIXV9
-	 FFuR8ErCm5rk8Ivyvfz174AB/RAwqHW4Ys+g5qtjwv8mJIsOK6u/DOaXizksv5AirM
-	 6wbD0U8AV73LzuJRC/XAzb233QG6x2Qqj8SmKjbk=
+	b=iHYtOoG3mKrxuIKGJQtzQZ+Ho8BRPg4GINkwE+4m5aZXUMVCKovlPTtMlM39SCU9S
+	 JYCO2khN+R51n2Zx/EsSXEsmg1XrVP40f9Rf5K2Gn8aD4VbyskUt6lA17GkAk8gIbB
+	 3MceH6asEqajiU2YK3dINCG53PAJhtBZFarK/1ZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Julian Anastasov <ja@ssi.bg>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 628/641] ipvs: avoid stat macros calls from preemptible context
+	Rob Clark <robdclark@chromium.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 5.15 276/374] iommu/arm-smmu-qcom: Add missing GMU entry to match table
 Date: Mon, 22 Jan 2024 15:58:52 -0800
-Message-ID: <20240122235837.916729251@linuxfoundation.org>
+Message-ID: <20240122235754.374657615@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit d6938c1c76c64f42363d0d1f051e1b4641c2ad40 ]
+commit afc95681c3068956fed1241a1ff1612c066c75ac upstream.
 
-Inside decrement_ttl() upon discovering that the packet ttl has exceeded,
-__IP_INC_STATS and __IP6_INC_STATS macros can be called from preemptible
-context having the following backtrace:
+In some cases the firmware expects cbndx 1 to be assigned to the GMU,
+so we also want the default domain for the GMU to be an identy domain.
+This way it does not get a context bank assigned.  Without this, both
+of_dma_configure() and drm/msm's iommu_domain_attach() will trigger
+allocating and configuring a context bank.  So GMU ends up attached to
+both cbndx 1 and later cbndx 2.  This arrangement seemingly confounds
+and surprises the firmware if the GPU later triggers a translation
+fault, resulting (on sc8280xp / lenovo x13s, at least) in the SMMU
+getting wedged and the GPU stuck without memory access.
 
-check_preemption_disabled: 48 callbacks suppressed
-BUG: using __this_cpu_add() in preemptible [00000000] code: curl/1177
-caller is decrement_ttl+0x217/0x830
-CPU: 5 PID: 1177 Comm: curl Not tainted 6.7.0+ #34
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0xbd/0xe0
- check_preemption_disabled+0xd1/0xe0
- decrement_ttl+0x217/0x830
- __ip_vs_get_out_rt+0x4e0/0x1ef0
- ip_vs_nat_xmit+0x205/0xcd0
- ip_vs_in_hook+0x9b1/0x26a0
- nf_hook_slow+0xc2/0x210
- nf_hook+0x1fb/0x770
- __ip_local_out+0x33b/0x640
- ip_local_out+0x2a/0x490
- __ip_queue_xmit+0x990/0x1d10
- __tcp_transmit_skb+0x288b/0x3d10
- tcp_connect+0x3466/0x5180
- tcp_v4_connect+0x1535/0x1bb0
- __inet_stream_connect+0x40d/0x1040
- inet_stream_connect+0x57/0xa0
- __sys_connect_file+0x162/0x1a0
- __sys_connect+0x137/0x160
- __x64_sys_connect+0x72/0xb0
- do_syscall_64+0x6f/0x140
- entry_SYSCALL_64_after_hwframe+0x6e/0x76
-RIP: 0033:0x7fe6dbbc34e0
-
-Use the corresponding preemption-aware variants: IP_INC_STATS and
-IP6_INC_STATS.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 8d8e20e2d7bb ("ipvs: Decrement ttl")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Acked-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/20231210180655.75542-1-robdclark@gmail.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipvs/ip_vs_xmit.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
-index 9193e109e6b3..65e0259178da 100644
---- a/net/netfilter/ipvs/ip_vs_xmit.c
-+++ b/net/netfilter/ipvs/ip_vs_xmit.c
-@@ -271,7 +271,7 @@ static inline bool decrement_ttl(struct netns_ipvs *ipvs,
- 			skb->dev = dst->dev;
- 			icmpv6_send(skb, ICMPV6_TIME_EXCEED,
- 				    ICMPV6_EXC_HOPLIMIT, 0);
--			__IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
-+			IP6_INC_STATS(net, idev, IPSTATS_MIB_INHDRERRORS);
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+@@ -226,6 +226,7 @@ static int qcom_adreno_smmu_init_context
  
- 			return false;
- 		}
-@@ -286,7 +286,7 @@ static inline bool decrement_ttl(struct netns_ipvs *ipvs,
- 	{
- 		if (ip_hdr(skb)->ttl <= 1) {
- 			/* Tell the sender its packet died... */
--			__IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
-+			IP_INC_STATS(net, IPSTATS_MIB_INHDRERRORS);
- 			icmp_send(skb, ICMP_TIME_EXCEEDED, ICMP_EXC_TTL, 0);
- 			return false;
- 		}
--- 
-2.43.0
-
+ static const struct of_device_id qcom_smmu_client_of_match[] __maybe_unused = {
+ 	{ .compatible = "qcom,adreno" },
++	{ .compatible = "qcom,adreno-gmu" },
+ 	{ .compatible = "qcom,mdp4" },
+ 	{ .compatible = "qcom,mdss" },
+ 	{ .compatible = "qcom,sc7180-mdss" },
 
 
 
