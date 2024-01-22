@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-13586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0D58837CDD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:19:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15E15837EE1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B57228C3BB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:19:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 498051C28417
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E861015AAC9;
-	Tue, 23 Jan 2024 00:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C63E53AC;
+	Tue, 23 Jan 2024 00:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hh4N06JL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqsSDPou"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60F715AABE;
-	Tue, 23 Jan 2024 00:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA3F53A1;
+	Tue, 23 Jan 2024 00:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969749; cv=none; b=MQxnA2SZWn00YGHC0Qe3cf9jd7ilmEwW8FkHWcbbZ99BrN3uhTHiugRBRzQ4SkX6i0vBDfS9KvmggqQc3wlQatF+JebTCUapJEg6zkUifnrVxeb6O99UXfDQmOkT0mJjrmnp8kz9H4TY6AxYV6EPueWVQqLqL4gwEgfxeyYZwsg=
+	t=1705970802; cv=none; b=HgeHGMWw7JUDfl5bWqH30oUSjCpO1qgUtDpVKPoYrtAdgGhl6fx/HMRkMabmhu/HQkD9J17Wvpk98mG70ik05JAhSs0Lusbm53FpK09a2WIT184YQnmpR/mav/T46pBPoahksUVXtO/dhpV2NWgxk3It6QvfFb7XudnuEuM0Un4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969749; c=relaxed/simple;
-	bh=EbP13ZLD06Bmbi83NjiRq/A8K+O6AU41IQtL1Cgaap8=;
+	s=arc-20240116; t=1705970802; c=relaxed/simple;
+	bh=WzjlJLwpwRC/LlUXZ6pzsBhDeTo5RY5giUXilNHTM1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uDJQsjjiduVul6XIdQl/gcVc13+0K+TwlLiLzf9RYLxWY9srvY4MWFWaM7jac9cro/MBBHFZhOQUzdJUcuRj5gU/B3xbyA8eIZaIDq9j42yu2TBCGEpO3hkScxUHcG91OkDEb8qDKr/WZCd1l9nXFRCDbsFGnsJS07rvDeaGsKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hh4N06JL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2222CC433F1;
-	Tue, 23 Jan 2024 00:29:08 +0000 (UTC)
+	 MIME-Version; b=U5oUaAo+m9THmawAmfGur9+aFQA5vNnDimG3MjWj4C0DQAkYcK6MaLQYi3TTryIJF9YyXsrYbjIk4pGn94g23x+TVvJ+Osg4Zn+8dssy6gv160V+ueh+S6e8wgNlCcnLKBwuKH8AOY4eBNudmVp7OPXzuZTMDI3GGhfJZJWQUIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqsSDPou; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F443C433F1;
+	Tue, 23 Jan 2024 00:46:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969749;
-	bh=EbP13ZLD06Bmbi83NjiRq/A8K+O6AU41IQtL1Cgaap8=;
+	s=korg; t=1705970802;
+	bh=WzjlJLwpwRC/LlUXZ6pzsBhDeTo5RY5giUXilNHTM1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hh4N06JLsjPNJzQamWcz/AQaba1EsIv7jjA0eBdGGx4lvFja4Pk5YnqYgdboXksMN
-	 GVb2bBFRT9JlmsK9He52uunFSjX65HqPxDzQ07cVrensnmZ/cj7ZDW2TSO48mf9X2p
-	 yixGoFyuu4+8DeAWQ9R8SbDBXGRcSl/fxjcbHIhU=
+	b=VqsSDPouxj2PIVSbbcjNLmDtffl2uvyPnkNwFRpGJX0Q0EDMa23uXfTd26xsV1Klj
+	 /HXbCURF7hYoxYvf0L71C9xvPI9q//dKkRUrBQQ1FH2TLk2+UbvXfQFXh44YfefNOB
+	 UYUrH6nmpE5ZjCKidpFhbKLLVhR8/hHd5SXCxYBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bin Li <bin.li@canonical.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.7 421/641] ALSA: hda/realtek: Enable headset mic on Lenovo M70 Gen5
+	Xiang Yang <xiangyang3@huawei.com>,
+	Inki Dae <inki.dae@samsung.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 019/286] drm/exynos: fix a potential error pointer dereference
 Date: Mon, 22 Jan 2024 15:55:25 -0800
-Message-ID: <20240122235831.171058406@linuxfoundation.org>
+Message-ID: <20240122235732.771641654@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bin Li <bin.li@canonical.com>
+From: Xiang Yang <xiangyang3@huawei.com>
 
-commit fb3c007fde80d9d3b4207943e74c150c9116cead upstream.
+[ Upstream commit 73bf1c9ae6c054c53b8e84452c5e46f86dd28246 ]
 
-Lenovo M70 Gen5 is equipped with ALC623, and it needs
-ALC283_FIXUP_HEADSET_MIC quirk to make its headset mic work.
+Smatch reports the warning below:
+drivers/gpu/drm/exynos/exynos_hdmi.c:1864 hdmi_bind()
+error: 'crtc' dereferencing possible ERR_PTR()
 
-Signed-off-by: Bin Li <bin.li@canonical.com>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240117154123.21578-1-bin.li@canonical.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The return value of exynos_drm_crtc_get_by_type maybe ERR_PTR(-ENODEV),
+which can not be used directly. Fix this by checking the return value
+before using it.
+
+Signed-off-by: Xiang Yang <xiangyang3@huawei.com>
+Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/exynos/exynos_hdmi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10220,6 +10220,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x17aa, 0x3176, "ThinkCentre Station", ALC283_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x17aa, 0x3178, "ThinkCentre Station", ALC283_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x17aa, 0x31af, "ThinkCentre Station", ALC623_FIXUP_LENOVO_THINKSTATION_P340),
-+	SND_PCI_QUIRK(0x17aa, 0x334b, "Lenovo ThinkCentre M70 Gen5", ALC283_FIXUP_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x17aa, 0x3801, "Lenovo Yoga9 14IAP7", ALC287_FIXUP_YOGA9_14IAP7_BASS_SPK_PIN),
- 	SND_PCI_QUIRK(0x17aa, 0x3802, "Lenovo Yoga DuetITL 2021", ALC287_FIXUP_YOGA7_14ITL_SPEAKERS),
- 	SND_PCI_QUIRK(0x17aa, 0x3813, "Legion 7i 15IMHG05", ALC287_FIXUP_LEGION_15IMHG05_SPEAKERS),
+diff --git a/drivers/gpu/drm/exynos/exynos_hdmi.c b/drivers/gpu/drm/exynos/exynos_hdmi.c
+index dc01c188c0e0..981bffacda24 100644
+--- a/drivers/gpu/drm/exynos/exynos_hdmi.c
++++ b/drivers/gpu/drm/exynos/exynos_hdmi.c
+@@ -1849,6 +1849,8 @@ static int hdmi_bind(struct device *dev, struct device *master, void *data)
+ 		return ret;
+ 
+ 	crtc = exynos_drm_crtc_get_by_type(drm_dev, EXYNOS_DISPLAY_TYPE_HDMI);
++	if (IS_ERR(crtc))
++		return PTR_ERR(crtc);
+ 	crtc->pipe_clk = &hdata->phy_clk;
+ 
+ 	ret = hdmi_create_connector(encoder);
+-- 
+2.43.0
+
 
 
 
