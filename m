@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-15240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F155B838568
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:41:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 241038381F5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78E85B23FFA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1B3C2876DB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04F276DCF3;
-	Tue, 23 Jan 2024 02:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8EC5675F;
+	Tue, 23 Jan 2024 01:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbdF+RcO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqU529bt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8EB36BB56;
-	Tue, 23 Jan 2024 02:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940D956468;
+	Tue, 23 Jan 2024 01:40:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975398; cv=none; b=LugVWrPl7YwPS4E9FWeNFz32h0N9t9T/6Nspg8Vu9DHx/RbAfg3rE0m2MZaEkUmkJiKgMxSPViafkfZ5oVoLGe1iHGIW6Rffa4RH76tCAJRI/Lb1rLBaNVR+yTxifJi0HIUhcJfVcG8jBAkV83yCFD4CRoaZQDCoRy5PiGAFKd8=
+	t=1705974018; cv=none; b=fupqqjYcB7SrnaAl4Ap0DXMo6M34E9zpl0yVdgt5gHIoOJg6vyceZQnRNTHzUi54H696vG9HyLTdqGOUd1/OcsjcxYQNtjfUkATMCh5sDl4bWLjaprAWY7Ptt8TMGf/gi0kotDO9WEpR9zHo3Aqb3j2HzEa6a8nkgjrVo+gEVZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975398; c=relaxed/simple;
-	bh=fnQUxwwWySV1v7fjR5tFNfMpKyjFr44qvAW5kvezLNs=;
+	s=arc-20240116; t=1705974018; c=relaxed/simple;
+	bh=goDER4i0VgZxh8LJbhLV7LGNXZt3bZronhLQR5qnsGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=evVhndACF3SVV9vwmTvScMCkcZ5RWNnyPEMAS70+axXfQ80QNgB5Gvj0cBnRldnrZXd55/PJ9hXymI2+pi3kjztL+3nu3QtOoX1fsJHXw4AbanME9R9/5l56u1zFQJUlivUsh0a0DXESLxbQ37VEt7xoLmgF52y04sgJWYAAdIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbdF+RcO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72D4BC433C7;
-	Tue, 23 Jan 2024 02:03:18 +0000 (UTC)
+	 MIME-Version; b=CFFCl9pusNXRRQswLadLzW+JAHD0fKkBETqF0MTCSIpeuBtstXz7okHRm640TL4EoRXQrEGkNhlEbg8eIfrcNdNIhgH+gLiNPJrSCgP+t0GhgyXQwqrOxsiXszjtKfXr5PC6CsdNtoXQU/Wh84E2rwmpV3r/YtIzdNAr7oTXbxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqU529bt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5BEC43399;
+	Tue, 23 Jan 2024 01:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975398;
-	bh=fnQUxwwWySV1v7fjR5tFNfMpKyjFr44qvAW5kvezLNs=;
+	s=korg; t=1705974018;
+	bh=goDER4i0VgZxh8LJbhLV7LGNXZt3bZronhLQR5qnsGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dbdF+RcOBn1oJ3IOEN81dDwzJs2MD+06nQQ9pOKKs3N19tioCfYri630JRqOfBA/C
-	 tgF+rKkmGtJ+RnGX6s8VSgjECSvpzqt9G0DL6GxLn+H0fnj8GeUCi4kai80POP84t3
-	 Y3obosLCIg8HeS81jSOnw8mxo9qv2ZCOV/4h8/7Q=
+	b=oqU529btEjbO1jF5P9h2Qvt+elY0JhHxaYbW9gGB/7a/mMsDVy2INQF1Dzw7mhfXn
+	 hADvan9zYoSWw1TMMiz/+ktrMwf0WE9NP9piHMaObneDkNe6WX/zedM9YjfuUciy96
+	 r8+YU7OhaCg4qyy3bu0T5yZZuPDQ2JkOZMS1fYg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 332/583] drm/amd/pm/smu7: fix a memleak in smu7_hwmgr_backend_init
+Subject: [PATCH 5.15 127/374] arm64: dts: ti: k3-am65-main: Fix DSS irq trigger type
 Date: Mon, 22 Jan 2024 15:56:23 -0800
-Message-ID: <20240122235822.204749867@linuxfoundation.org>
+Message-ID: <20240122235749.056444297@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 2f3be3ca779b11c332441b10e00443a2510f4d7b ]
+[ Upstream commit b57160859263c083c49482b0d083a586b1517f78 ]
 
-The hwmgr->backend, (i.e. data) allocated by kzalloc is not freed in
-the error-handling paths of smu7_get_evv_voltages and
-smu7_update_edc_leakage_table. However, it did be freed in the
-error-handling of phm_initializa_dynamic_state_adjustment_rule_settings,
-by smu7_hwmgr_backend_fini. So the lack of free in smu7_get_evv_voltages
-and smu7_update_edc_leakage_table is considered a memleak in this patch.
+DSS irq trigger type is set to IRQ_TYPE_EDGE_RISING in the DT file, but
+the TRM says it is level triggered.
 
-Fixes: 599a7e9fe1b6 ("drm/amd/powerplay: implement smu7 hwmgr to manager asics with smu ip version 7.")
-Fixes: 8f0804c6b7d0 ("drm/amd/pm: add edc leakage controller setting")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+For some reason triggering on rising edge results in double the amount
+of expected interrupts, e.g. for normal page flipping test the number of
+interrupts per second is 2 * fps. It is as if the IRQ triggers on both
+edges. There are no other side effects to this issue than slightly
+increased CPU & power consumption due to the extra interrupt.
+
+Switching to IRQ_TYPE_LEVEL_HIGH is correct and fixes the issue, so
+let's do that.
+
+Fixes: fc539b90eda2 ("arm64: dts: ti: am654: Add DSS node")
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Link: https://lore.kernel.org/r/20231106-am65-dss-clk-edge-v1-1-4a959fec0e1e@ideasonboard.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-am65-main.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index 11372fcc59c8..b1a8799e2dee 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -2974,6 +2974,8 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
- 		result = smu7_get_evv_voltages(hwmgr);
- 		if (result) {
- 			pr_info("Get EVV Voltage Failed.  Abort Driver loading!\n");
-+			kfree(hwmgr->backend);
-+			hwmgr->backend = NULL;
- 			return -EINVAL;
- 		}
- 	} else {
-@@ -3019,8 +3021,10 @@ static int smu7_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
- 	}
+diff --git a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
+index 4f232f575ab2..b729d2dee209 100644
+--- a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
+@@ -855,7 +855,7 @@ dss: dss@4a00000 {
+ 		assigned-clocks = <&k3_clks 67 2>;
+ 		assigned-clock-parents = <&k3_clks 67 5>;
  
- 	result = smu7_update_edc_leakage_table(hwmgr);
--	if (result)
-+	if (result) {
-+		smu7_hwmgr_backend_fini(hwmgr);
- 		return result;
-+	}
+-		interrupts = <GIC_SPI 166 IRQ_TYPE_EDGE_RISING>;
++		interrupts = <GIC_SPI 166 IRQ_TYPE_LEVEL_HIGH>;
  
- 	return 0;
- }
+ 		dma-coherent;
+ 
 -- 
 2.43.0
 
