@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-15148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD738838419
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C874837EBC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:42:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9085D297D97
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A51001C26E65
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:42:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D2967E60;
-	Tue, 23 Jan 2024 02:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 857661272BD;
+	Tue, 23 Jan 2024 00:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g7EYq6gt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpiyPgvS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F7F6775D;
-	Tue, 23 Jan 2024 02:01:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417BC1272AB;
+	Tue, 23 Jan 2024 00:45:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975301; cv=none; b=kt8SNrW8cPdQQqMj6luPDrc+r91ytiqyBnwjM4ifI+vqn+aN0Tkwb44w6IKyQEx5xDEqFonSU1/8UweIJ7U8nW3+bRqix/gRqcPowTPaLr8NPj9C8tFBj82hTggQZ9kDWLRk7gBeVPicwT2w3LGIH6LfwiQ4u55MWaQjBTz0trs=
+	t=1705970760; cv=none; b=C4HzeQ2NC0bDYjrTFD1HoeTLFCv8GHyegpOpIPLxHMTJAOEf55CotS75Swd5ImwBqbCcfZJoP8Vcd9pbzfPJ+uhSQ7tyPB5Deg2Y1OVxKZIt8ZNcGhWuxBiLHLcWynkoy9n8uq5jc6u7FogB7CM+U1m0WJZlV6CZ/9PJP5QoLt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975301; c=relaxed/simple;
-	bh=VTkywE93UERfk17CmE+ihLfexeVOcqIgWtgrBq3YSC4=;
+	s=arc-20240116; t=1705970760; c=relaxed/simple;
+	bh=rn45UU08KQ/o5O1JThDKVndVWfrSaG0WMY7pYIe7P60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pUK+C9JuqKqYcCglLbSexxpdZ8tMQA74eTUHJTZWgdVJz/6fybM9d2UYWFTZE5G69/Wwg9llaAFeE6u6qUNQCrluqBzzLxmbGYk/L68vc505ib4qfdL1qmDUfWFXIPxhzhY1pvwO+FeWuDeJ8LY9aFsGgjagGrrN11PGayNY/5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g7EYq6gt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25AA4C433B1;
-	Tue, 23 Jan 2024 02:01:41 +0000 (UTC)
+	 MIME-Version; b=GO9FPLVQzEjTvRagfol1QoQQ62010D5i2YIDFry5IiDa+7R9FFckMzezf5Ref3vZ8khpM6UBxYD4UgPXsuPPFjxHKDidGFYfN40mXeq1IbH/dSjUKOUGcJ5iUPINgkyc0hx5/Tr+hOScMuzkFoY1b3Mb2FsAwOECEvAE5UjQ4TU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpiyPgvS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D509C433B2;
+	Tue, 23 Jan 2024 00:45:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975301;
-	bh=VTkywE93UERfk17CmE+ihLfexeVOcqIgWtgrBq3YSC4=;
+	s=korg; t=1705970759;
+	bh=rn45UU08KQ/o5O1JThDKVndVWfrSaG0WMY7pYIe7P60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g7EYq6gtCEZqEe+EtzEvzGVITPNCxpHnAxOXEVF+O/Pz2rxzhm7X4g8uU98kiWhkF
-	 0fx8sh3s8uXOuQ5JzYsJ+FCXO5gZWkUfyMCHg/M6hIcziBmMyKP6h9vvYwrrja1VgJ
-	 pSn7ytUEY3OXLgVsGRO8Mmmmzijo95YgijT/QufY=
+	b=SpiyPgvSqxWMoyVTkFMraLS9WQ+bpFBSPR/9BbMPLQSvGbv41H3eoAP4DMLJBljiA
+	 Gj4wx5vDiAGFXEWn/VgF6v3vGr7fKZGZzww5/qP+xCWgbSK+laiCe29a0V3NStgeYj
+	 kwWcCg3MlPte2uSUlX2GmMUfozF4hSekXtcyF9+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengchang Tang <tangchengchang@huawei.com>,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Maciej Strozek <mstrozek@opensource.cirrus.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 266/583] RDMA/hns: Fix memory leak in free_mr_init()
-Date: Mon, 22 Jan 2024 15:55:17 -0800
-Message-ID: <20240122235820.144952754@linuxfoundation.org>
+Subject: [PATCH 5.10 012/286] ASoC: cs43130: Fix the position of const qualifier
+Date: Mon, 22 Jan 2024 15:55:18 -0800
+Message-ID: <20240122235732.488782450@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Maciej Strozek <mstrozek@opensource.cirrus.com>
 
-[ Upstream commit 288f535951aa81ed674f5e5477ab11b9d9351b8c ]
+[ Upstream commit e7f289a59e76a5890a57bc27b198f69f175f75d9 ]
 
-When a reserved QP fails to be created, the memory of the remaining
-created reserved QPs is leaked.
-
-Fixes: 70f92521584f ("RDMA/hns: Use the reserved loopback QPs to free MR before destroying MPT")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20231207114231.2872104-6-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Maciej Strozek <mstrozek@opensource.cirrus.com>
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20231117141344.64320-2-mstrozek@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/soc/codecs/cs43130.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 84c18996517c..3c62a0042da4 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -2693,6 +2693,10 @@ static int free_mr_alloc_res(struct hns_roce_dev *hr_dev)
- 	return 0;
+diff --git a/sound/soc/codecs/cs43130.c b/sound/soc/codecs/cs43130.c
+index 8f70dee95878..285806868c40 100644
+--- a/sound/soc/codecs/cs43130.c
++++ b/sound/soc/codecs/cs43130.c
+@@ -1683,7 +1683,7 @@ static ssize_t cs43130_show_dc_r(struct device *dev,
+ 	return cs43130_show_dc(dev, buf, HP_RIGHT);
+ }
  
- create_failed_qp:
-+	for (i--; i >= 0; i--) {
-+		hns_roce_v2_destroy_qp(&free_mr->rsv_qp[i]->ibqp, NULL);
-+		kfree(free_mr->rsv_qp[i]);
-+	}
- 	hns_roce_destroy_cq(cq, NULL);
- 	kfree(cq);
+-static u16 const cs43130_ac_freq[CS43130_AC_FREQ] = {
++static const u16 cs43130_ac_freq[CS43130_AC_FREQ] = {
+ 	24,
+ 	43,
+ 	93,
+@@ -2364,7 +2364,7 @@ static const struct regmap_config cs43130_regmap = {
+ 	.use_single_write	= true,
+ };
  
+-static u16 const cs43130_dc_threshold[CS43130_DC_THRESHOLD] = {
++static const u16 cs43130_dc_threshold[CS43130_DC_THRESHOLD] = {
+ 	50,
+ 	120,
+ };
 -- 
 2.43.0
 
