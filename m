@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-14287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1116C83804D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:14 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84D70838055
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B29071F2CC87
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CD85B2269A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01FDD664A9;
-	Tue, 23 Jan 2024 01:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E77657D6;
+	Tue, 23 Jan 2024 00:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2LtyC4YD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mLUAMwDx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B52C56518A;
-	Tue, 23 Jan 2024 01:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374B064CF2;
+	Tue, 23 Jan 2024 00:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971652; cv=none; b=CE7ukvQ4Kz+B4y+d2pRyvr68MKCDonvG8L0f/QcbvUXFYUUTpUupRGGSfRUdkiFNfF0v60nrira3cTnUDNVUn8LrZ2pU2wjKAfyz1orbVPHi/3vAX40g1I4MwniBVI6iZw5zYLJ0nG4X0NT+IOUbOqhI/XIu6FhgUw0dyU8pG4w=
+	t=1705971549; cv=none; b=rzP62XInwqIe0k0sN/pwLD7yJy+tmljumf9uvbqoGFuI6MITVWRqh7PW78PJBsJCxww1BuUsV4d2vr/cmvBBLF3s2gkLFyradpr7pVIlIXA7F3ZAT2bhDKOp8T0NVGsHuWh/F49vybXIDuzNCBNnvyTLhVPy9s0Ot0KVYejMMD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971652; c=relaxed/simple;
-	bh=aKIPzVrYLRrd/i1KiGSdpbXLLClowGtm+hO3UHQtSpA=;
+	s=arc-20240116; t=1705971549; c=relaxed/simple;
+	bh=a6ynv1b3YfFSraeqxdHIuW1DNKWKqi80Z/sQAoEt2JU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qZnZQparPdMjHyGDU+aJfuKd9nCSx0H+3wt2pfO+9qT8HwWTS1z0YZo92soNr6/0+aWpR02J+c1xFY3WEKBd3FFfDLOeyoX0qZJuVF7Gr1O+Mz/6vgyRSzJel/0A7Zck4dXZTNMfwsk8EFABBkgzd7DVSrJaGLwygnSNPztMdYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2LtyC4YD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9C2C433F1;
-	Tue, 23 Jan 2024 01:00:52 +0000 (UTC)
+	 MIME-Version; b=DYWj2488DsuQILtFTZmgK34oSe6NlCgSca+zhukMqlxqzn+yiQQ6tBC0jJEsJXMLv/LymlR6VW0L1KjXki3mvr28ldutf+MuERy2+J/HwwHPZ+nRkuKHv80zFMlKEexi0dB6YhlIHOysOJ1xioXkNKfdjKTTqcCSYxoFduPFOWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mLUAMwDx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE3DC433F1;
+	Tue, 23 Jan 2024 00:59:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971652;
-	bh=aKIPzVrYLRrd/i1KiGSdpbXLLClowGtm+hO3UHQtSpA=;
+	s=korg; t=1705971548;
+	bh=a6ynv1b3YfFSraeqxdHIuW1DNKWKqi80Z/sQAoEt2JU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2LtyC4YD22nU7f7Sx9r5nocUNyJVs06awyIakfgZIIRbr0SKSp0CZXCg593oGGKCn
-	 KRC0ssiYRpdaTZG9tznrz74ZSEIyhRabKAIKs1NGawrLIp+/M/n4vLDGWef64VBzmF
-	 tw/BUruGQIix9bGpMgW4DCM/H1OvqSBEXOL9hTa8=
+	b=mLUAMwDxlz0XiWUuWyoIxXg+/+v3VSco+zFOydXmG8uVaO3a9Pt2UAPqhMcxF4QzH
+	 8zBie3Tg1edq+X3Bbn6NgDpJkXmBNuRFQNvPjk1BOdRXkxAci7uMBEYTh25y7CZpTL
+	 AU1ZGNzKIIQjSOhJN9owIOKbyUdnh5SDXceU0ovI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.1 287/417] fbdev: flush deferred work in fb_deferred_io_fsync()
+	"Ricardo B. Marliere" <ricardo@marliere.net>,
+	Mike Isely <isely@pobox.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+621409285c4156a009b3@syzkaller.appspotmail.com
+Subject: [PATCH 5.10 149/286] media: pvrusb2: fix use after free on context disconnection
 Date: Mon, 22 Jan 2024 15:57:35 -0800
-Message-ID: <20240122235801.778716103@linuxfoundation.org>
+Message-ID: <20240122235737.891895428@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Ricardo B. Marliere <ricardo@marliere.net>
 
-commit 15e4c1f462279b4e128f27de48133e0debe9e0df upstream.
+[ Upstream commit ded85b0c0edd8f45fec88783d7555a5b982449c1 ]
 
-The driver's fsync() is supposed to flush any pending operation to
-hardware. It is implemented in this driver by cancelling the queued
-deferred IO first, then schedule it for "immediate execution" by calling
-schedule_delayed_work() again with delay=0. However, setting delay=0
-only means the work is scheduled immediately, it does not mean the work
-is executed immediately. There is no guarantee that the work is finished
-after schedule_delayed_work() returns. After this driver's fsync()
-returns, there can still be pending work. Furthermore, if close() is
-called by users immediately after fsync(), the pending work gets
-cancelled and fsync() may do nothing.
+Upon module load, a kthread is created targeting the
+pvr2_context_thread_func function, which may call pvr2_context_destroy
+and thus call kfree() on the context object. However, that might happen
+before the usb hub_event handler is able to notify the driver. This
+patch adds a sanity check before the invalid read reported by syzbot,
+within the context disconnection call stack.
 
-To ensure that the deferred IO completes, use flush_delayed_work()
-instead. Write operations to this driver either write to the device
-directly, or invoke schedule_delayed_work(); so by flushing the
-workqueue, it can be guaranteed that all previous writes make it to the
-device.
+Reported-and-tested-by: syzbot+621409285c4156a009b3@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000a02a4205fff8eb92@google.com/
 
-Fixes: 5e841b88d23d ("fb: fsync() method for deferred I/O flush.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e5be15c63804 ("V4L/DVB (7711): pvrusb2: Fix race on module unload")
+Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
+Acked-by: Mike Isely <isely@pobox.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fb_defio.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/media/usb/pvrusb2/pvrusb2-context.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/video/fbdev/core/fb_defio.c
-+++ b/drivers/video/fbdev/core/fb_defio.c
-@@ -132,11 +132,7 @@ int fb_deferred_io_fsync(struct file *fi
- 		return 0;
+diff --git a/drivers/media/usb/pvrusb2/pvrusb2-context.c b/drivers/media/usb/pvrusb2/pvrusb2-context.c
+index 14170a5d72b3..1764674de98b 100644
+--- a/drivers/media/usb/pvrusb2/pvrusb2-context.c
++++ b/drivers/media/usb/pvrusb2/pvrusb2-context.c
+@@ -268,7 +268,8 @@ void pvr2_context_disconnect(struct pvr2_context *mp)
+ {
+ 	pvr2_hdw_disconnect(mp->hdw);
+ 	mp->disconnect_flag = !0;
+-	pvr2_context_notify(mp);
++	if (!pvr2_context_shutok())
++		pvr2_context_notify(mp);
+ }
  
- 	inode_lock(inode);
--	/* Kill off the delayed work */
--	cancel_delayed_work_sync(&info->deferred_work);
--
--	/* Run it immediately */
--	schedule_delayed_work(&info->deferred_work, 0);
-+	flush_delayed_work(&info->deferred_work);
- 	inode_unlock(inode);
  
- 	return 0;
+-- 
+2.43.0
+
 
 
 
