@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-14034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9814837F37
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB95D837D32
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1AB029BF7D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 754EC291AD3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45396129A77;
-	Tue, 23 Jan 2024 00:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E8A21340;
+	Tue, 23 Jan 2024 00:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ox/BE0iU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OMoWvknT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A10129A73;
-	Tue, 23 Jan 2024 00:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F25C2137F;
+	Tue, 23 Jan 2024 00:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971006; cv=none; b=j1bKmfEc0aIiIKbyjGTOAlwrB0JF18HtVflUHyfpHCpy5fhgNhuJH0JvXFjn3iWt2KcC0gcA/LxY1kz5GltTBTZCvnFnvX70YegmgtH4EpFQ2Zv0Ox6+x/G6bazh6mKory93hxqZ44zBeS74opB50el266gN6EV/qCqT1ykeH2E=
+	t=1705969833; cv=none; b=XwKt27W8pI5gwqMdBZXQAgchvoP7wL94u0slf96mEyAv1UE4oGYDwzk6f74GnkLo0LEBtfl5zsuL6UkjhwE92CNwhNPUA+1fsX+z+sXnknnEe/qm1bX1kSCqRF9D70lUrkUJLlJEm570az6n2NPNSvP31RprBiMB0VLGMWpTtrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971006; c=relaxed/simple;
-	bh=JplukBa+PsSMnq9Xa6ba5EsGTzc9CnB+dZ1torIFjEc=;
+	s=arc-20240116; t=1705969833; c=relaxed/simple;
+	bh=KhMsKIkPk0UvXgfwsFtJt1XeTjIJ6T2+6m9e4zVbY+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r28ZpszCs+PlSEVMueygEYtnGRQPmbBuBOXd9FsFG4V2Do2KSnNIBXmPQEoQP6qYRRhHinVgopP+wl6y6mQ7Vx3LDDjaU2rUlrtZUgORr8TYOJ8X2KoeU984et1OqHwS6s9uSJdMw8nDC8WnJm5hvjMrQaa47TFSXmObi/PNROs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ox/BE0iU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B687DC43390;
-	Tue, 23 Jan 2024 00:50:05 +0000 (UTC)
+	 MIME-Version; b=VA+TeUv/ssPjjpvXjZXFctlLL/CPfUJZpPxHInPkRK9sNSfj5iyE4Yh8Bp1M0/4/HeUlbkBth6WqpThNWtScPHtkNtGBEeE1l1uPfAgnwdfR+rCiWRh6fQCD9bMW+NkjSmheo3+3M6Y4naO3c5MMJNNdgEcRZzDjhPLp7pU9+ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OMoWvknT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A96C433F1;
+	Tue, 23 Jan 2024 00:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971005;
-	bh=JplukBa+PsSMnq9Xa6ba5EsGTzc9CnB+dZ1torIFjEc=;
+	s=korg; t=1705969833;
+	bh=KhMsKIkPk0UvXgfwsFtJt1XeTjIJ6T2+6m9e4zVbY+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ox/BE0iUTtqOftxvZIp+MHdRhHBwVPpjvPkD68mLMWE++s/hNBMOyiAgT4FrmMJ47
-	 30DOMaAseSKJ3JbisNfLg3x9RUutpHzaAITXRRo5qKzjqeELmpGqhyXg+wrnvbrEM6
-	 2rEiUWl2MEB1SsJD9SOuFQa8V/8DH3uep7y9WxCA=
+	b=OMoWvknTLmjKU7UdvqaHi+hgSFfK+4jK2d8yXfThPJFAIOFXuqbhEVrGHilEM3rJ+
+	 6KPTYHBaI/qXuYSBk6Ft+fkWZcaJiCF2EDt9Ih1Ynw5xFNminC8OBfy3hxtfJ+sUEZ
+	 GCqmp/TLMZFEUt9hlrHDTckvAWSvki7voi7AgfcE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 051/286] powerpc: add crtsavres.o to always-y instead of extra-y
+	Tom Murphy <murphyt7@tcd.ie>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Saravana Kannan <saravanak@google.com>,
+	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 6.7 453/641] iommu/dma: Trace bounce buffer usage when mapping buffers
 Date: Mon, 22 Jan 2024 15:55:57 -0800
-Message-ID: <20240122235733.998653498@linuxfoundation.org>
+Message-ID: <20240122235832.193371478@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Isaac J. Manjarres <isaacmanjarres@google.com>
 
-[ Upstream commit 1b1e38002648819c04773647d5242990e2824264 ]
+commit a63c357b9fd56ad5fe64616f5b22835252c6a76a upstream.
 
-crtsavres.o is linked to modules. However, as explained in commit
-d0e628cd817f ("kbuild: doc: clarify the difference between extra-y
-and always-y"), 'make modules' does not build extra-y.
+When commit 82612d66d51d ("iommu: Allow the dma-iommu api to
+use bounce buffers") was introduced, it did not add the logic
+for tracing the bounce buffer usage from iommu_dma_map_page().
 
-For example, the following command fails:
+All of the users of swiotlb_tbl_map_single() trace their bounce
+buffer usage, except iommu_dma_map_page(). This makes it difficult
+to track SWIOTLB usage from that function. Thus, trace bounce buffer
+usage from iommu_dma_map_page().
 
-  $ make ARCH=powerpc LLVM=1 KBUILD_MODPOST_WARN=1 mrproper ps3_defconfig modules
-    [snip]
-    LD [M]  arch/powerpc/platforms/cell/spufs/spufs.ko
-  ld.lld: error: cannot open arch/powerpc/lib/crtsavres.o: No such file or directory
-  make[3]: *** [scripts/Makefile.modfinal:56: arch/powerpc/platforms/cell/spufs/spufs.ko] Error 1
-  make[2]: *** [Makefile:1844: modules] Error 2
-  make[1]: *** [/home/masahiro/workspace/linux-kbuild/Makefile:350: __build_one_by_one] Error 2
-  make: *** [Makefile:234: __sub-make] Error 2
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Fixes: baa25b571a16 ("powerpc/64: Do not link crtsavres.o in vmlinux")
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231120232332.4100288-1-masahiroy@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 82612d66d51d ("iommu: Allow the dma-iommu api to use bounce buffers")
+Cc: stable@vger.kernel.org # v5.15+
+Cc: Tom Murphy <murphyt7@tcd.ie>
+Cc: Lu Baolu <baolu.lu@linux.intel.com>
+Cc: Saravana Kannan <saravanak@google.com>
+Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+Link: https://lore.kernel.org/r/20231208234141.2356157-1-isaacmanjarres@google.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/lib/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/dma-iommu.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-index 0697a0e014ae..321cab5c3ea0 100644
---- a/arch/powerpc/lib/Makefile
-+++ b/arch/powerpc/lib/Makefile
-@@ -38,7 +38,7 @@ obj-$(CONFIG_FUNCTION_ERROR_INJECTION)	+= error-inject.o
- # so it is only needed for modules, and only for older linkers which
- # do not support --save-restore-funcs
- ifeq ($(call ld-ifversion, -lt, 225000000, y),y)
--extra-$(CONFIG_PPC64)	+= crtsavres.o
-+always-$(CONFIG_PPC64)	+= crtsavres.o
- endif
+--- a/drivers/iommu/dma-iommu.c
++++ b/drivers/iommu/dma-iommu.c
+@@ -29,6 +29,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/swiotlb.h>
+ #include <linux/vmalloc.h>
++#include <trace/events/swiotlb.h>
  
- obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
--- 
-2.43.0
-
+ #include "dma-iommu.h"
+ 
+@@ -1156,6 +1157,8 @@ static dma_addr_t iommu_dma_map_page(str
+ 			return DMA_MAPPING_ERROR;
+ 		}
+ 
++		trace_swiotlb_bounced(dev, phys, size);
++
+ 		aligned_size = iova_align(iovad, size);
+ 		phys = swiotlb_tbl_map_single(dev, phys, size, aligned_size,
+ 					      iova_mask(iovad), dir, attrs);
 
 
 
