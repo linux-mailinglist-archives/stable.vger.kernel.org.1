@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-13003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C69837A25
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 606FF837897
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2904F1F28948
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1985028C93E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A35512A17E;
-	Tue, 23 Jan 2024 00:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C7B813D511;
+	Tue, 23 Jan 2024 00:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lIISWgRB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHmuQUq2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5904312A170;
-	Tue, 23 Jan 2024 00:12:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE93113D50F;
+	Tue, 23 Jan 2024 00:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968767; cv=none; b=gmOv9rp8p3Vj8fHzeJG/xADj2Rul9tNYtJwp8JRACoeo7wizx1izDjR1sqLfYw9WvoYKrsxngpiGQF39mijlNw2NhbMYX5U3vxdJ+5jKF+ZjjSjWLvXtZFUkznFC4k665Rf+kcrqswisI4/PY1UJyKyc5Ak97BqE0sruilz1FAY=
+	t=1705968138; cv=none; b=sp/7e9JgcAJtC9XInBaTBLRDccJ9ZuHYC+6PbTEWEIf6qe7QUM7YzjytXtNC+IoizwEzIDoz8MpI5ifHy8VFcQaZkEcWkxv91CwVg/93K6rnfSJ1bEFZDoA/BaFva4Zq9FerUjZPP/WNRwfAMl44Wl4MywrRfMmlvTnRrNU+BK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968767; c=relaxed/simple;
-	bh=QQ6BOkGb4f93k/NzJMamDnfzCQI8oZgAwmLSKX3mOdQ=;
+	s=arc-20240116; t=1705968138; c=relaxed/simple;
+	bh=L9mEqYY2ZHy2FoGMIDV+g+DhxE2QRW6+E+sWCPjoVbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tqxr3FfsB6oro0FukNDzb8MhBpNZUHgbR7beEkC6OJ4rAZHA4JJLNZbqS+pAu68GzM9u+r7507eMdatIotgRR7D0mFmriOvnAWXMaD9lVWaN/hfbkdqs2cSkINmmMQfge06E+o++2XQoG4gfOY7MlFJtM1wJbWedVIclhQpWAoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lIISWgRB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD199C433F1;
-	Tue, 23 Jan 2024 00:12:46 +0000 (UTC)
+	 MIME-Version; b=Ks+GR5IJkWxzM2ajTY8J7x6zFZ0UYxDvuhYJCcVyX9vVJpV3NAOS4om+d5rSAWn946fUpIWiMPhE+qKWzqYka5MtYscHCZBmvsl0utQ2y6cwNwF+Hc4qA3N57AYmz7ncFhq9FgFnaOXF5KcCIaLOpjyO3GjQnUMppZj4v8hTW18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHmuQUq2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A9CC433C7;
+	Tue, 23 Jan 2024 00:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968766;
-	bh=QQ6BOkGb4f93k/NzJMamDnfzCQI8oZgAwmLSKX3mOdQ=;
+	s=korg; t=1705968138;
+	bh=L9mEqYY2ZHy2FoGMIDV+g+DhxE2QRW6+E+sWCPjoVbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lIISWgRBT50PXYRnVWpgbTNEO/F6ZS1vFhhuNhp0gIImcNYRc1Awn9xB3BZJpJ6Rc
-	 /tGOJ9mvr2eipwdCbEHxGmuFUrlZfhxWOk1WJK29+jyNvdox0XPh6Nexy+Tw2o5GMg
-	 7j6V6bXifOSQvBXk6YNaXoUixM6L71/lFbeoYWS8=
+	b=NHmuQUq2TOo0EmmbMuhUQnmtky7zq1k+qBEM1x6LenKKT9pnLsy9MK67+spR0RTd/
+	 VoUaYInt/SjqQR2WnCDNxiyou/Tu+bOnltJl1979iYMe29EhrJLLuEreyvZcapN5We
+	 7kPOqxsf1xRWstLqcwRsTA95FLi6yXkgUZIEkkHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com,
-	Ziqi Zhao <astrajoan@yahoo.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Shuming Fan <shumingf@realtek.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 031/194] drm/crtc: fix uninitialized variable use
+Subject: [PATCH 4.19 005/148] ASoC: rt5650: add mutex to avoid the jack detection failure
 Date: Mon, 22 Jan 2024 15:56:01 -0800
-Message-ID: <20240122235720.543601257@linuxfoundation.org>
+Message-ID: <20240122235712.651384703@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,56 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Shuming Fan <shumingf@realtek.com>
 
-[ Upstream commit 6e455f5dcdd15fa28edf0ffb5b44d3508512dccf ]
+[ Upstream commit cdba4301adda7c60a2064bf808e48fccd352aaa9 ]
 
-Commit 3823119b9c2b ("drm/crtc: Fix uninit-value bug in
-drm_mode_setcrtc") was supposed to fix use of an uninitialized variable,
-but introduced another.
+This patch adds the jd_mutex to protect the jack detection control flow.
+And only the headset type could check the button status.
 
-num_connectors is only initialized if crtc_req->count_connectors > 0,
-but it's used regardless. Fix it.
-
-Fixes: 3823119b9c2b ("drm/crtc: Fix uninit-value bug in drm_mode_setcrtc")
-Cc: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
-Cc: Ziqi Zhao <astrajoan@yahoo.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231208131238.2924571-1-jani.nikula@intel.com
+Signed-off-by: Shuming Fan <shumingf@realtek.com>
+Link: https://lore.kernel.org/r/20231122100123.2831753-1-shumingf@realtek.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_crtc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ sound/soc/codecs/rt5645.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_crtc.c b/drivers/gpu/drm/drm_crtc.c
-index 38ce608648b0..85d85a0ba85f 100644
---- a/drivers/gpu/drm/drm_crtc.c
-+++ b/drivers/gpu/drm/drm_crtc.c
-@@ -535,7 +535,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 	struct drm_mode_set set;
- 	uint32_t __user *set_connectors_ptr;
- 	struct drm_modeset_acquire_ctx ctx;
--	int ret, i, num_connectors;
-+	int ret, i, num_connectors = 0;
+diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
+index a713e9649b56..37ad3bee66a4 100644
+--- a/sound/soc/codecs/rt5645.c
++++ b/sound/soc/codecs/rt5645.c
+@@ -419,6 +419,7 @@ struct rt5645_priv {
+ 	struct regulator_bulk_data supplies[ARRAY_SIZE(rt5645_supply_names)];
+ 	struct rt5645_eq_param_s *eq_param;
+ 	struct timer_list btn_check_timer;
++	struct mutex jd_mutex;
  
- 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
- 		return -EOPNOTSUPP;
-@@ -673,7 +673,6 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 			goto out;
- 		}
+ 	int codec_type;
+ 	int sysclk;
+@@ -3216,6 +3217,8 @@ static int rt5645_jack_detect(struct snd_soc_component *component, int jack_inse
+ 				rt5645_enable_push_button_irq(component, true);
+ 			}
+ 		} else {
++			if (rt5645->en_button_func)
++				rt5645_enable_push_button_irq(component, false);
+ 			snd_soc_dapm_disable_pin(dapm, "Mic Det Power");
+ 			snd_soc_dapm_sync(dapm);
+ 			rt5645->jack_type = SND_JACK_HEADPHONE;
+@@ -3296,6 +3299,8 @@ static void rt5645_jack_detect_work(struct work_struct *work)
+ 	if (!rt5645->component)
+ 		return;
  
--		num_connectors = 0;
- 		for (i = 0; i < crtc_req->count_connectors; i++) {
- 			connector_set[i] = NULL;
- 			set_connectors_ptr = (uint32_t __user *)(unsigned long)crtc_req->set_connectors_ptr;
++	mutex_lock(&rt5645->jd_mutex);
++
+ 	switch (rt5645->pdata.jd_mode) {
+ 	case 0: /* Not using rt5645 JD */
+ 		if (rt5645->gpiod_hp_det) {
+@@ -3320,7 +3325,7 @@ static void rt5645_jack_detect_work(struct work_struct *work)
+ 
+ 	if (!val && (rt5645->jack_type == 0)) { /* jack in */
+ 		report = rt5645_jack_detect(rt5645->component, 1);
+-	} else if (!val && rt5645->jack_type != 0) {
++	} else if (!val && rt5645->jack_type == SND_JACK_HEADSET) {
+ 		/* for push button and jack out */
+ 		btn_type = 0;
+ 		if (snd_soc_component_read32(rt5645->component, RT5645_INT_IRQ_ST) & 0x4) {
+@@ -3376,6 +3381,8 @@ static void rt5645_jack_detect_work(struct work_struct *work)
+ 		rt5645_jack_detect(rt5645->component, 0);
+ 	}
+ 
++	mutex_unlock(&rt5645->jd_mutex);
++
+ 	snd_soc_jack_report(rt5645->hp_jack, report, SND_JACK_HEADPHONE);
+ 	snd_soc_jack_report(rt5645->mic_jack, report, SND_JACK_MICROPHONE);
+ 	if (rt5645->en_button_func)
+@@ -4072,6 +4079,7 @@ static int rt5645_i2c_probe(struct i2c_client *i2c,
+ 	}
+ 	timer_setup(&rt5645->btn_check_timer, rt5645_btn_check_callback, 0);
+ 
++	mutex_init(&rt5645->jd_mutex);
+ 	INIT_DELAYED_WORK(&rt5645->jack_detect_work, rt5645_jack_detect_work);
+ 	INIT_DELAYED_WORK(&rt5645->rcclock_work, rt5645_rcclock_work);
+ 
 -- 
 2.43.0
 
