@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-13956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5227C837EF4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15F43838523
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0177029BCA4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 295C2B24364
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A7BE60255;
-	Tue, 23 Jan 2024 00:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 609B26A026;
+	Tue, 23 Jan 2024 02:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2JgeUoPL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zh4JVp95"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D7E60252;
-	Tue, 23 Jan 2024 00:47:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDC366B3C;
+	Tue, 23 Jan 2024 02:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970848; cv=none; b=RacqrLCCoEs5775JFcht1TcebElLfDBfqeUBE4u02HPFHGyRTyAdrYNmLxGyFwLlh4RudZkBnxSMuWX1KPnIu+U6gHN+r6uHrUWg6ITJZKzmyVL8Gci31t/1JIpskGK+RjY1GnW85zfi5vSiJ0OtJMm4b+q9uVAft8pJyZC895k=
+	t=1705975323; cv=none; b=gMA3RIsVVYTDyHP1OKxroQvfQYLkIXO6Jnps/jgfTR/NNIo/9puiOgTaN4Z4nkZ2XvqErSSisLSiPXfQs64utaGPrYjuFfvjRhsyOKjv/M8hdLtj8YX/C5HXbVqLoFLGSb6dOQEpmXku1J2dxus+Z7p9HifnG0z5hsJ5g+h1Ujo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970848; c=relaxed/simple;
-	bh=SZs9jTofHpo/V6V4sd2omHS36xnuTz/szzBF3sjyocg=;
+	s=arc-20240116; t=1705975323; c=relaxed/simple;
+	bh=Qbgne7BT6uT5aUIU584P0HrFU80ueunn+DumU2/x5Ho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bTcqmsnslnHln/jdSLyEVhd2SDW1JaT3u28ZBu2zPBf1Ng7rydVuZK9pj3gXafg69kDzmUzeuaJM4R42DI/5XECmlgfApvS3r5Y/d7sGbkPO5n7f+lx1vqqfrgpDdvpVpP4hBBK0Y/ao9q5fCqFLDy116/K246UI7J61HAXTBd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2JgeUoPL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC74C43390;
-	Tue, 23 Jan 2024 00:47:27 +0000 (UTC)
+	 MIME-Version; b=ksVAV+NYoks/p8ZPW/OZn2oju1sBgWoaYv1H+kCcBsrPtNCC9XlnaVPuiy9Pc4nJmdbMBq+4W+6NI9P0dTHlfAhKinFvM+MADc7pEshaQBMDfUyqbXdywYRk8qiAgksE6gm0jBUtQA7l1Tfq3y7gGTJDdJ93V+OGbu9smJACAvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zh4JVp95; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2355C433C7;
+	Tue, 23 Jan 2024 02:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970848;
-	bh=SZs9jTofHpo/V6V4sd2omHS36xnuTz/szzBF3sjyocg=;
+	s=korg; t=1705975323;
+	bh=Qbgne7BT6uT5aUIU584P0HrFU80ueunn+DumU2/x5Ho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2JgeUoPLLc29Bu6spcDVYcjDuOBwf1eTtisY2fjkZZL/Al1WM0RztEiFH6OPYa/E4
-	 b/kveAaqc+1D+CsRUs8MY3+ZspDUj2IKewVKqKKP8lCB9xUsuXlpimFcQyYF+FizPv
-	 VdK2+h7pcSIRD/P0vDhTwWjhzam39lXhyxZSWTtw=
+	b=Zh4JVp95IcXJMW3kyGd7rYnNoZhkho9xR+cUXyw3gp8bz+inSpZnskchHjohm27wN
+	 vZA/DWdNmzLtIL9sBcQlJOLm8TBP5vmqKuETjF2hUPI7e564oG23IuI9AtFWE7fLsb
+	 lmfnVXesfvgP2P21Xenx1xNafOBHtbdu4RClHm0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shang Ye <yesh25@mail2.sysu.edu.cn>,
-	gurevitch <mail@gurevit.ch>,
-	Egor Ignatov <egori@altlinux.org>,
-	Anton Zhilyaev <anton@cpp.in>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Hsiao Chien Sung <shawn.sung@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 030/286] Input: atkbd - skip ATKBD_CMD_GETID in translated mode
-Date: Mon, 22 Jan 2024 15:55:36 -0800
-Message-ID: <20240122235733.186857062@linuxfoundation.org>
+Subject: [PATCH 6.6 286/583] drm/mediatek: Remove the redundant driver data for DPI
+Date: Mon, 22 Jan 2024 15:55:37 -0800
+Message-ID: <20240122235820.757411585@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,128 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Hsiao Chien Sung <shawn.sung@mediatek.com>
 
-[ Upstream commit 936e4d49ecbc8c404790504386e1422b599dec39 ]
+[ Upstream commit 8ac6935e5689a491f0bec78fec732722b3dad094 ]
 
-There have been multiple reports of keyboard issues on recent laptop models
-which can be worked around by setting i8042.dumbkbd, with the downside
-being this breaks the capslock LED.
+DPI input is in 1T2P mode on both MT8195 and MT8188.
+Remove the redundant driver data to align the settings, or
+the screen will glitch.
 
-It seems that these issues are caused by recent laptops getting confused by
-ATKBD_CMD_GETID. Rather then adding and endless growing list of quirks for
-this, just skip ATKBD_CMD_GETID alltogether on laptops in translated mode.
+Fixes: 2847cd7e6403 ("drm/mediatek: Add mt8188 dpi compatibles and platform data")
 
-The main goal of sending ATKBD_CMD_GETID is to skip binding to ps/2
-mice/touchpads and those are never used in translated mode.
-
-Examples of laptop models which benefit from skipping ATKBD_CMD_GETID:
-
-* "HP Laptop 15s-fq2xxx", "HP laptop 15s-fq4xxx" and "HP Laptop 15-dy2xxx"
-  models the kbd stops working for the first 2 - 5 minutes after boot
-  (waiting for EC watchdog reset?)
-
-* On "HP Spectre x360 13-aw2xxx" atkbd fails to probe the keyboard
-
-* At least 9 different Lenovo models have issues with ATKBD_CMD_GETID, see:
-  https://github.com/yescallop/atkbd-nogetid
-
-This has been tested on:
-
-1. A MSI B550M PRO-VDH WIFI desktop, where the i8042 controller is not
-   in translated mode when no keyboard is plugged in and with a ps/2 kbd
-   a "AT Translated Set 2 keyboard" /dev/input/event# node shows up
-
-2. A Lenovo ThinkPad X1 Yoga gen 8 (always has a translated set 2 keyboard)
-
-Reported-by: Shang Ye <yesh25@mail2.sysu.edu.cn>
-Closes: https://lore.kernel.org/linux-input/886D6167733841AE+20231017135318.11142-1-yesh25@mail2.sysu.edu.cn/
-Closes: https://github.com/yescallop/atkbd-nogetid
-Reported-by: gurevitch <mail@gurevit.ch>
-Closes: https://lore.kernel.org/linux-input/2iAJTwqZV6lQs26cTb38RNYqxvsink6SRmrZ5h0cBUSuf9NT0tZTsf9fEAbbto2maavHJEOP8GA1evlKa6xjKOsaskDhtJWxjcnrgPigzVo=@gurevit.ch/
-Reported-by: Egor Ignatov <egori@altlinux.org>
-Closes: https://lore.kernel.org/all/20210609073333.8425-1-egori@altlinux.org/
-Reported-by: Anton Zhilyaev <anton@cpp.in>
-Closes: https://lore.kernel.org/linux-input/20210201160336.16008-1-anton@cpp.in/
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2086156
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20231115174625.7462-1-hdegoede@redhat.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20231214055847.4936-22-shawn.sung@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/keyboard/atkbd.c | 46 +++++++++++++++++++++++++++++++---
- 1 file changed, 42 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_dpi.c | 16 +---------------
+ 1 file changed, 1 insertion(+), 15 deletions(-)
 
-diff --git a/drivers/input/keyboard/atkbd.c b/drivers/input/keyboard/atkbd.c
-index edc613efc158..90dd3caa4612 100644
---- a/drivers/input/keyboard/atkbd.c
-+++ b/drivers/input/keyboard/atkbd.c
-@@ -756,6 +756,44 @@ static void atkbd_deactivate(struct atkbd *atkbd)
- 			ps2dev->serio->phys);
- }
+diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
+index 2f931e4e2b60..bc073a6b367e 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dpi.c
++++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
+@@ -957,20 +957,6 @@ static const struct mtk_dpi_conf mt8186_conf = {
+ 	.csc_enable_bit = CSC_ENABLE,
+ };
  
-+#ifdef CONFIG_X86
-+static bool atkbd_is_portable_device(void)
-+{
-+	static const char * const chassis_types[] = {
-+		"8",	/* Portable */
-+		"9",	/* Laptop */
-+		"10",	/* Notebook */
-+		"14",	/* Sub-Notebook */
-+		"31",	/* Convertible */
-+		"32",	/* Detachable */
-+	};
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(chassis_types); i++)
-+		if (dmi_match(DMI_CHASSIS_TYPE, chassis_types[i]))
-+			return true;
-+
-+	return false;
-+}
-+
-+/*
-+ * On many modern laptops ATKBD_CMD_GETID may cause problems, on these laptops
-+ * the controller is always in translated mode. In this mode mice/touchpads will
-+ * not work. So in this case simply assume a keyboard is connected to avoid
-+ * confusing some laptop keyboards.
-+ *
-+ * Skipping ATKBD_CMD_GETID ends up using a fake keyboard id. Using a fake id is
-+ * ok in translated mode, only atkbd_select_set() checks atkbd->id and in
-+ * translated mode that is a no-op.
-+ */
-+static bool atkbd_skip_getid(struct atkbd *atkbd)
-+{
-+	return atkbd->translated && atkbd_is_portable_device();
-+}
-+#else
-+static inline bool atkbd_skip_getid(struct atkbd *atkbd) { return false; }
-+#endif
-+
- /*
-  * atkbd_probe() probes for an AT keyboard on a serio port.
-  */
-@@ -785,12 +823,12 @@ static int atkbd_probe(struct atkbd *atkbd)
-  */
- 
- 	param[0] = param[1] = 0xa5;	/* initialize with invalid values */
--	if (ps2_command(ps2dev, param, ATKBD_CMD_GETID)) {
-+	if (atkbd_skip_getid(atkbd) || ps2_command(ps2dev, param, ATKBD_CMD_GETID)) {
- 
- /*
-- * If the get ID command failed, we check if we can at least set the LEDs on
-- * the keyboard. This should work on every keyboard out there. It also turns
-- * the LEDs off, which we want anyway.
-+ * If the get ID command was skipped or failed, we check if we can at least set
-+ * the LEDs on the keyboard. This should work on every keyboard out there.
-+ * It also turns the LEDs off, which we want anyway.
-  */
- 		param[0] = 0;
- 		if (ps2_command(ps2dev, param, ATKBD_CMD_SETLEDS))
+-static const struct mtk_dpi_conf mt8188_dpintf_conf = {
+-	.cal_factor = mt8195_dpintf_calculate_factor,
+-	.max_clock_khz = 600000,
+-	.output_fmts = mt8195_output_fmts,
+-	.num_output_fmts = ARRAY_SIZE(mt8195_output_fmts),
+-	.pixels_per_iter = 4,
+-	.input_2pixel = false,
+-	.dimension_mask = DPINTF_HPW_MASK,
+-	.hvsize_mask = DPINTF_HSIZE_MASK,
+-	.channel_swap_shift = DPINTF_CH_SWAP,
+-	.yuv422_en_bit = DPINTF_YUV422_EN,
+-	.csc_enable_bit = DPINTF_CSC_ENABLE,
+-};
+-
+ static const struct mtk_dpi_conf mt8192_conf = {
+ 	.cal_factor = mt8183_calculate_factor,
+ 	.reg_h_fre_con = 0xe0,
+@@ -1094,7 +1080,7 @@ static const struct of_device_id mtk_dpi_of_ids[] = {
+ 	{ .compatible = "mediatek,mt8173-dpi", .data = &mt8173_conf },
+ 	{ .compatible = "mediatek,mt8183-dpi", .data = &mt8183_conf },
+ 	{ .compatible = "mediatek,mt8186-dpi", .data = &mt8186_conf },
+-	{ .compatible = "mediatek,mt8188-dp-intf", .data = &mt8188_dpintf_conf },
++	{ .compatible = "mediatek,mt8188-dp-intf", .data = &mt8195_dpintf_conf },
+ 	{ .compatible = "mediatek,mt8192-dpi", .data = &mt8192_conf },
+ 	{ .compatible = "mediatek,mt8195-dp-intf", .data = &mt8195_dpintf_conf },
+ 	{ /* sentinel */ },
 -- 
 2.43.0
 
