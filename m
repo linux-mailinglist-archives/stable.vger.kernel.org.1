@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-13121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EC60837A96
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBB1D8379B2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:44:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A60E1F21C4A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:53:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF0041C26FC6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE94512F5B5;
-	Tue, 23 Jan 2024 00:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927262B9B1;
+	Tue, 23 Jan 2024 00:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dl83stve"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uFDi8n5y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE5F12F5A7;
-	Tue, 23 Jan 2024 00:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7E16FB3;
+	Tue, 23 Jan 2024 00:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969008; cv=none; b=YshIp6OXHOvLSc4ZWzSlbzhwak4RQ6mb0IPRQWLYpdl6m+C71K7AI9UvjEAEBGAL+X8Fr8ZPBiP+5Cgc707ZYrCFeztiiduzyj2urzcb6RG/tcaAf/kFqsH8AA0PyqH84WKsK3Wqe3/5+k/vuAkx5xDSbAn41Mce/IC2OUlL/4A=
+	t=1705968430; cv=none; b=TNnYJILrjI/0CieDlLOAsJkljK+A7QFyG5YOrLhI+w9lwTNm4gFA1L7VOjd3qeoBuYeK5GCGPVju4RVrxwagp/3HHmWUXZQitVzv8no72Eckx3yi7rPKSFJKE5J4PiAiLX9DRZBAsz2uAw5xlkVgvPVsoS8515UQnMPYWdBYCYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969008; c=relaxed/simple;
-	bh=PS3Nks3T0kECLI2LXnK9sUSvQ0IZIFG/s5YsmJw4Cro=;
+	s=arc-20240116; t=1705968430; c=relaxed/simple;
+	bh=ivUr3jsT6RJDdR94k5DXslhE/PFRkbBELcQq/hrXBxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AOEhrFLia76NhO1Ca+nxKJqPSxwGIZuKpYnemIHgUORGm4lUBxZ3volGWbxKu5JTZlEeRqNv47hfFUmQajOnWMZhFltYv2I6bZLHBTqiNDhBAaojcKICR9RaGB9Fd6ltbAln9V5PR4gyTqN46F2yKM0lr9lPQQCoR51QHVIrIaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dl83stve; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6737C433F1;
-	Tue, 23 Jan 2024 00:16:47 +0000 (UTC)
+	 MIME-Version; b=h0hCoGXkwETlUsG811mMQ8yaOzW20kPU839NhY9Fd5qXTaBA736tYK+388BUwnGy0dPGjGgsVkrsxQbgkZevLx8XPLi7lXVqBOpR7ZokK16wfC/Uxma/mXgQ+DE43cSXPTssVIGiObRjMQMgZoVWM2ljCvcJwJA94nvD5MxqcBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uFDi8n5y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCE36C433F1;
+	Tue, 23 Jan 2024 00:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969007;
-	bh=PS3Nks3T0kECLI2LXnK9sUSvQ0IZIFG/s5YsmJw4Cro=;
+	s=korg; t=1705968430;
+	bh=ivUr3jsT6RJDdR94k5DXslhE/PFRkbBELcQq/hrXBxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dl83stvecx9sWGhcTdpYex7bOvJsjgn1WuUiwc3Y/IYmQAmZjdmnClvhPLlljGuFZ
-	 nzpIveR0rk9mFl1dJ+Bos6yCidZOzmWuh5rE4r6mtiYf/mGIeaMSQLtLMLP1FakOKZ
-	 JT3+kufMKMkQzULFIsKT07+ENLFeZXZhI4l62gJ0=
+	b=uFDi8n5y0L87wLqPYqyIzAJjR7hdqJRbk1kRSw3VFG30ZBgp9pCLHH46kgScLTx6w
+	 kOh5LO8Uwn6bXDr34riAMfWaYoJaIBdFpmVt/AeizlR/qV2p4xm/877j8SWRWTScAN
+	 JaippCXj8cR3Oy32LOv4CPhdRD+4C1H/JLSz8V2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Guenter Roeck <linux@roeck-us.net>,
 	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 132/194] watchdog: set cdev owner before adding
+Subject: [PATCH 4.19 106/148] watchdog: set cdev owner before adding
 Date: Mon, 22 Jan 2024 15:57:42 -0800
-Message-ID: <20240122235724.890352577@linuxfoundation.org>
+Message-ID: <20240122235716.723160356@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -100,10 +100,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/drivers/watchdog/watchdog_dev.c b/drivers/watchdog/watchdog_dev.c
-index c670d13ab3d9..6fb860542c86 100644
+index 808896c9e1c2..686c9f0f3d63 100644
 --- a/drivers/watchdog/watchdog_dev.c
 +++ b/drivers/watchdog/watchdog_dev.c
-@@ -1007,6 +1007,7 @@ static int watchdog_cdev_register(struct watchdog_device *wdd)
+@@ -980,6 +980,7 @@ static int watchdog_cdev_register(struct watchdog_device *wdd)
  
  	/* Fill in the data structures */
  	cdev_init(&wd_data->cdev, &watchdog_fops);
@@ -111,7 +111,7 @@ index c670d13ab3d9..6fb860542c86 100644
  
  	/* Add the device */
  	err = cdev_device_add(&wd_data->cdev, &wd_data->dev);
-@@ -1021,8 +1022,6 @@ static int watchdog_cdev_register(struct watchdog_device *wdd)
+@@ -994,8 +995,6 @@ static int watchdog_cdev_register(struct watchdog_device *wdd)
  		return err;
  	}
  
@@ -119,7 +119,7 @@ index c670d13ab3d9..6fb860542c86 100644
 -
  	/* Record time of most recent heartbeat as 'just before now'. */
  	wd_data->last_hw_keepalive = ktime_sub(ktime_get(), 1);
- 	watchdog_set_open_deadline(wd_data);
+ 
 -- 
 2.43.0
 
