@@ -1,150 +1,161 @@
-Return-Path: <stable+bounces-12722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CE9A836FDD
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:27:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F5388371AB
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:02:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B33BE1F2535F
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 18:27:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AFEAB2B649
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 18:27:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7622E50A8B;
-	Mon, 22 Jan 2024 17:57:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A795BAD4;
+	Mon, 22 Jan 2024 17:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NghnwhR7"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GYAmYN+r"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C0D50A77
-	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 17:57:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20ED85BAD1
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 17:57:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705946277; cv=none; b=rLkg8fFl4e7oucSml37snNtKDyW9jTClYxgwVbjmOJCJzxbAIbeKsKPzb0P95xPWVEGbWSEHoLslJCva8manXx0uoU0xfWGEtJEO7HQIVCWsOnfJZBFldEc41NIrviw/k9V0XO70I4EmLDQ5LP2hHjpsEkiGTlY02jZA1G5XlMI=
+	t=1705946280; cv=none; b=cchPunjy/tngl4MdnBds0VwWMkJHDpPcPMLtHTIFiv6yXcrRJ1kNxWsX855D0QLIk3eCX7hpm7MAwP9VBOncdJw7v79C6P2/70+hEl5VAOuTv0ft877u37X5zzqLsZvxzg//3hw6fRaKsEJ2cK8Yp2IWTgppqDBwEziS3DP7B2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705946277; c=relaxed/simple;
-	bh=U5+97DemS43JKszALXFmtzwUOeP3DesFIJ8rwcAjs8g=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=qJ2eqe+fdblXSZcsGjTFZjsj2ocW9LdHhaS9XYBlEanZ9qm9x/sm/cQVvOg1YUiggHRDEuaeRKWJpLDY54J47lj0WQFA5FNBjniuHdfhfvTyj4xGW7jXxMJNXctkqywoZn0c1FYkNNRzjUh2G3A0kckpiNYnbdEGn3sXuoeyrII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NghnwhR7; arc=none smtp.client-ip=209.85.128.202
+	s=arc-20240116; t=1705946280; c=relaxed/simple;
+	bh=2EYcuDmI/1mBostzDpnjHbfPqOwfmru4H9Bd7iZiR1Q=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=aca5Zyc9qYY+OlUTPAYbQQBMuENR9HBUNjc2HL8ZTRu0sbO6lYLtUJOHSi0BFtOQfTSAcq7yzTFZNKwHJsfGyzqDRerYv6lQm1wIbiGB+6un//BEpN4QTLAhsJ/+2Wm1eIiosqX0HU0iz4QTKEZySXeBkrlVRO9f/esenZLjmY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GYAmYN+r; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-5eba564eb3fso54830707b3.1
-        for <stable@vger.kernel.org>; Mon, 22 Jan 2024 09:57:55 -0800 (PST)
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-5cf35636346so1647888a12.3
+        for <stable@vger.kernel.org>; Mon, 22 Jan 2024 09:57:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1705946275; x=1706551075; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=tB67ZYlsefMkFYw///200y2aHKd0ZHowVf426/MdPcE=;
-        b=NghnwhR79vkhdMhMDpMvq0cbETa+ixvU1vC8waVZhl6KEfogl6xxu3AsmwJvbfqkRA
-         k7m8NODuqnxyKyq88yRPhLgq9eS5BD86QAFEp7rlh9OPS50aDr4SfdvijyLJ+V6oikX4
-         0gBqvoR5TCDXtZ2PumrN7qfWUTAF6Y7xkJLVb5mGsashoW6RsOSfnbOzR+pcficO28kC
-         QqTFc6yQD/IbRI8R/etV+7laiUqE33Ule6MGHdmsDmYikVfgIadM1RHnehMy8PYCmvtV
-         CSe9jZ64EAi+tco1Hzn4m4ZSLRXUMs59srKon03uDOOTJmk0uei608+Q8byk3KXaU+Fw
-         CfGA==
+        d=google.com; s=20230601; t=1705946278; x=1706551078; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=k8/bNY9180u9oEcf2QmzJng2EAH1JQHl4RHoj7uc6BM=;
+        b=GYAmYN+r0fEvieehzFdywEujwEX8SBkoS6FIDdOOuKSG6AQ2Wt54yZ63LZsVvjo0Tm
+         D3v8UUUU4v6/EZisD5NkX0IeiREvybLf2RFoLbGUkR2yQGIAH/zaE4xjBwbIGzuCgDUI
+         cLufrpjBvNn/PVr5WyIogJUmTOOavkcEte/1X8qRGUtEc9ByNA3yBJY+KOe0qZ8vhM2d
+         tKB87XKbcmm60KD2Z1W3249lgo4tT7o144+ceGNPBadbfxQB/VDh2qEl9GpdeVZRhMAH
+         yoauphaR1BY6RX3dbL4Eheb6Dsvay0I4vOyho/eUj1O2+U+wzfCddS0wW0cLzMTqlo22
+         qw+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705946275; x=1706551075;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tB67ZYlsefMkFYw///200y2aHKd0ZHowVf426/MdPcE=;
-        b=HyJT4Saf/GA+1m+Qhki3RggjvuUPpLdEBb6u2DKqsUJAS+jJUu123zCkQBmrKxez1k
-         59esxlmssaoBgNF74x+b6fQG068pKPqduvX/woc45Yt9l3LLwblBEuw53KAAtl+UR+a+
-         pP1Roqz6HynpO8gM7h+Perbp0ABC1mrt8RtdT1Ud6oOB5wYPJDszpUgSDpcrR5Y1CxEu
-         TqKQo2A9mUlkYem51vW5xyncC3oPYXYZJeGD2GcTgvLXdGjr4/sM7HZo4TFChpOOGR4M
-         4+y9ix5hJ6x5LwZ2KCmEcV9+bVt2JCOOr17v/oWvces89DBdpxiB6mt/BqR6GulzTzeL
-         B4vg==
-X-Gm-Message-State: AOJu0YzmB+gP16rVG5yo9fXjN1hT/2kqKZ9JOLA97TPYkXdiNMujEp/G
-	9xwIjAIYSkamg/IceZPg/OLUJMAUbfeqmUYYzBn6lFM9tElC1gYN45fAMk84QeefnaMSc98ULF4
-	2MNO0IM3okHPYI1Rr3Es/zwxeL42jmH93P0IO5aLPrdLfsJ0XxwvqK0By0+RULePsPwuyDkvo4A
-	ePnttkNavcZsWvmRGe7YFL/tHQVJQU5SjS5z0Gi9w/b0w=
-X-Google-Smtp-Source: AGHT+IEolfh7DHvobbaC2YQXa5IWDFMJm4RsjRRmbHCYEkSFJqVolp324aXcdUyzcYFB0/OqNhswoTbn2Sb+6w==
+        d=1e100.net; s=20230601; t=1705946278; x=1706551078;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=k8/bNY9180u9oEcf2QmzJng2EAH1JQHl4RHoj7uc6BM=;
+        b=eLFWcOHgvSi3r2NCBJBc2hV5MmwV9sG5p4kA++FETcCkUn1XqUE6NpHV7NJsF1ISzw
+         bkLLfl1FQXyhcOpTBUUhemNH+HDZDDGmlejHdoKjd3/8Tot+Es5lgH3EEkDdpv+0J+jb
+         IW9wIZs3MLtWpMXLbCfZv4ImXq7lDxAgoS2/x4rrGgg8jRitkVzEYT/GJf86TchHLW3/
+         QBiQbPpJqunYfOx0mY3O8Ai2jVSh4JtHvmmVtLX+qVqzuHz8Zy14a4zUNLV1VMZikT4C
+         1AfMCfwISeh+RvfK6RMZhB2G61YKWOqs1zCV4/rc6c0D8fLyv8OG27Bg63HcDPpwuXaz
+         9f/A==
+X-Gm-Message-State: AOJu0YynU+M4pid4U83KJXZodvkGz2M98R04aVsDM+0nSfSgEN2mNTjr
+	a+e+Odvo8U4qCQpUt/tBOUNubB0/YVkgvnBqVpMdwS3qJ00LTvR7cOo2AakcQ29mDICQi0Mx6L5
+	cLlqqFpH/qWjQW9PHpFNGE9G0S0XXzBXtZJTMvXNr0vzc/YJP8nZYIaVY9lntYovffg4H6sQmHO
+	MM6/SkbdVJpzZkZR8K00af2Q0Ag6IzHNqyvE3k6TLZzb4=
+X-Google-Smtp-Source: AGHT+IHwUeuY5ob+b2CcCyW1/FUCPagrD7vCqXU3CTmKvwxuktigtYcBoibjIZGlrvicehXg7rVlqdQBG/r3Uw==
 X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
- (user=cmllamas job=sendgmr) by 2002:a05:6902:b16:b0:dc2:5510:4a55 with SMTP
- id ch22-20020a0569020b1600b00dc255104a55mr2046636ybb.11.1705946274806; Mon,
- 22 Jan 2024 09:57:54 -0800 (PST)
-Date: Mon, 22 Jan 2024 17:57:50 +0000
+ (user=cmllamas job=sendgmr) by 2002:a63:3ecd:0:b0:5cd:8355:66de with SMTP id
+ l196-20020a633ecd000000b005cd835566demr25423pga.10.1705946278368; Mon, 22 Jan
+ 2024 09:57:58 -0800 (PST)
+Date: Mon, 22 Jan 2024 17:57:51 +0000
+In-Reply-To: <20240122175751.2214176-1-cmllamas@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20240122175751.2214176-1-cmllamas@google.com>
 X-Mailer: git-send-email 2.43.0.429.g432eaa2c6b-goog
-Message-ID: <20240122175751.2214176-1-cmllamas@google.com>
-Subject: [PATCH 5.4.y 1/2] binder: fix race between mmput() and do_exit()
+Message-ID: <20240122175751.2214176-2-cmllamas@google.com>
+Subject: [PATCH 5.4.y 2/2] binder: fix unused alloc->free_async_space
 From: Carlos Llamas <cmllamas@google.com>
 To: stable@vger.kernel.org
 Cc: Carlos Llamas <cmllamas@google.com>, Alice Ryhl <aliceryhl@google.com>, 
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"
 
-commit 9a9ab0d963621d9d12199df9817e66982582d5a5 upstream.
+commit c6d05e0762ab276102246d24affd1e116a46aa0c upstream.
 
-Task A calls binder_update_page_range() to allocate and insert pages on
-a remote address space from Task B. For this, Task A pins the remote mm
-via mmget_not_zero() first. This can race with Task B do_exit() and the
-final mmput() refcount decrement will come from Task A.
+Each transaction is associated with a 'struct binder_buffer' that stores
+the metadata about its buffer area. Since commit 74310e06be4d ("android:
+binder: Move buffer out of area shared with user space") this struct is
+no longer embedded within the buffer itself but is instead allocated on
+the heap to prevent userspace access to this driver-exclusive info.
 
-  Task A            | Task B
-  ------------------+------------------
-  mmget_not_zero()  |
-                    |  do_exit()
-                    |    exit_mm()
-                    |      mmput()
-  mmput()           |
-    exit_mmap()     |
-      remove_vma()  |
-        fput()      |
+Unfortunately, the space of this struct is still being accounted for in
+the total buffer size calculation, specifically for async transactions.
+This results in an additional 104 bytes added to every async buffer
+request, and this area is never used.
 
-In this case, the work of ____fput() from Task B is queued up in Task A
-as TWA_RESUME. So in theory, Task A returns to userspace and the cleanup
-work gets executed. However, Task A instead sleep, waiting for a reply
-from Task B that never comes (it's dead).
+This wasted space can be substantial. If we consider the maximum mmap
+buffer space of SZ_4M, the driver will reserve half of it for async
+transactions, or 0x200000. This area should, in theory, accommodate up
+to 262,144 buffers of the minimum 8-byte size. However, after adding
+the extra 'sizeof(struct binder_buffer)', the total number of buffers
+drops to only 18,724, which is a sad 7.14% of the actual capacity.
 
-This means the binder_deferred_release() is blocked until an unrelated
-binder event forces Task A to go back to userspace. All the associated
-death notifications will also be delayed until then.
+This patch fixes the buffer size calculation to enable the utilization
+of the entire async buffer space. This is expected to reduce the number
+of -ENOSPC errors that are seen on the field.
 
-In order to fix this use mmput_async() that will schedule the work in
-the corresponding mm->async_put_work WQ instead of Task A.
-
-Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Fixes: 74310e06be4d ("android: binder: Move buffer out of area shared with user space")
 Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-4-cmllamas@google.com
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20231201172212.1813387-6-cmllamas@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[cmllamas: fix trivial conflict with missing d8ed45c5dcd4.]
+[cmllamas: fix trivial conflict with missing 261e7818f06e.]
 Signed-off-by: Carlos Llamas <cmllamas@google.com>
 ---
- drivers/android/binder_alloc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+
+Notes:
+    This patch depends on commit 3091c21d3e93 ("binder: fix async space
+    check for 0-sized buffers") to apply cleanly which is currently queued
+    up for stable trees.
+
+ drivers/android/binder_alloc.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/android/binder_alloc.c b/drivers/android/binder_alloc.c
-index d0d422b5e243..d2c887d96d33 100644
+index d2c887d96d33..1f29931724ce 100644
 --- a/drivers/android/binder_alloc.c
 +++ b/drivers/android/binder_alloc.c
-@@ -272,7 +272,7 @@ static int binder_update_page_range(struct binder_alloc *alloc, int allocate,
- 	}
- 	if (mm) {
- 		up_write(&mm->mmap_sem);
--		mmput(mm);
-+		mmput_async(mm);
- 	}
- 	return 0;
+@@ -382,8 +382,7 @@ static struct binder_buffer *binder_alloc_new_buf_locked(
+ 	/* Pad 0-size buffers so they get assigned unique addresses */
+ 	size = max(size, sizeof(void *));
  
-@@ -305,7 +305,7 @@ static int binder_update_page_range(struct binder_alloc *alloc, int allocate,
- err_no_vma:
- 	if (mm) {
- 		up_write(&mm->mmap_sem);
--		mmput(mm);
-+		mmput_async(mm);
- 	}
- 	return vma ? -ENOMEM : -ESRCH;
- }
-
-base-commit: 9153fc9664959aa6bb35915b2bbd8fbc4c762962
-prerequisite-patch-id: 040c7991c3b5fb63a9d12350a1400c91a057f7d5
+-	if (is_async &&
+-	    alloc->free_async_space < size + sizeof(struct binder_buffer)) {
++	if (is_async && alloc->free_async_space < size) {
+ 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
+ 			     "%d: binder_alloc_buf size %zd failed, no async space left\n",
+ 			      alloc->pid, size);
+@@ -489,7 +488,7 @@ static struct binder_buffer *binder_alloc_new_buf_locked(
+ 	buffer->async_transaction = is_async;
+ 	buffer->extra_buffers_size = extra_buffers_size;
+ 	if (is_async) {
+-		alloc->free_async_space -= size + sizeof(struct binder_buffer);
++		alloc->free_async_space -= size;
+ 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC_ASYNC,
+ 			     "%d: binder_alloc_buf size %zd async free %zd\n",
+ 			      alloc->pid, size, alloc->free_async_space);
+@@ -614,8 +613,7 @@ static void binder_free_buf_locked(struct binder_alloc *alloc,
+ 	BUG_ON(buffer->user_data > alloc->buffer + alloc->buffer_size);
+ 
+ 	if (buffer->async_transaction) {
+-		alloc->free_async_space += buffer_size + sizeof(struct binder_buffer);
+-
++		alloc->free_async_space += buffer_size;
+ 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC_ASYNC,
+ 			     "%d: binder_free_buf size %zd async free %zd\n",
+ 			      alloc->pid, size, alloc->free_async_space);
 -- 
 2.43.0.429.g432eaa2c6b-goog
 
