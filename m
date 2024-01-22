@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 781F5838520
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7635483814C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:07:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6CC01C2A4FA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BDFAB2CE72
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:05:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2310F2BD12;
-	Tue, 23 Jan 2024 02:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0183914078C;
+	Tue, 23 Jan 2024 01:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMeZcqSQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e74LYRjh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DA0380;
-	Tue, 23 Jan 2024 02:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B322913EFF3;
+	Tue, 23 Jan 2024 01:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975746; cv=none; b=HqPZU8lhNh8dpUTisNmXgpqvlM+rTnZA2mvD9zKf4n74Ju06r7ti068fHDWZOgm7wEnfqEfvVyckof7Iwp4I3m1bhxU6EFKL9zbn+DzR+aJYHNzKSRS6LZ5HNVM7bI8/7N3f2XGXIw6cWQWBzPWIE+J/szfVWymUi8L2Q1RuISY=
+	t=1705972027; cv=none; b=KrrpqE6nDcJYbz9wLcrHQWO4pJzeqiKKvc9Sdg6kTp8ro3Wr3CYFy6JUAzhz5VRZ+8AaW3GrfAY3b39df/JzRPbGOhH3cVe0037rWdCEH9nYGX/Q89LGrsaKkyC5WWigsERSmPlDv8VHvVLS5J2JwJ/MNvt6vkyQRE/zjGEl9YQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975746; c=relaxed/simple;
-	bh=ArVpwiEGbIO1QU0DTdTdAzxkAQ6pXZMNHNLdvG71EZU=;
+	s=arc-20240116; t=1705972027; c=relaxed/simple;
+	bh=nwJ64hJfzOcc/eiy8q2jy3tobS1sbfZxEPNsHvuVN6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ushm4uTQmfHw8347oN48IxVDQrRmQl7+Bzs12THUAHDVKlT5wrS3vbAuBrbhzWvalXlMGv2/DtibG86ZdmDA14JbMlPm/Qf3pjgJ2/PVJ5DiE7ifw2sI4GarkJ0GK344MAyKJBPBa5QWBMyr3x7TdXn/A2Jrod1oYw4x0kbl2Fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMeZcqSQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B43FC43394;
-	Tue, 23 Jan 2024 02:09:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RIMksJ2DCtZghm5tN8ImK622nfjmlZ9Wo3y3I0Dm/vBn0VgH8VRs0JAe+cYw1Lboup6BgEbwJ1q5znM8laG5t7qxgmWPGpsOcSJPspcLSp5XqflGLez2hvdnq033WFg/FKRobyXdXYbyGbQjM8j/Xsq79Nh26b1RV0ilOFOFglE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e74LYRjh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E73C433F1;
+	Tue, 23 Jan 2024 01:07:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975746;
-	bh=ArVpwiEGbIO1QU0DTdTdAzxkAQ6pXZMNHNLdvG71EZU=;
+	s=korg; t=1705972027;
+	bh=nwJ64hJfzOcc/eiy8q2jy3tobS1sbfZxEPNsHvuVN6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bMeZcqSQf9qd90JGXjQGKWnObBN7DfxjbUd8Ys6+FxGGsWUJ0AfGJMXA6eBmfSNa2
-	 g3Ug+cKrgaDdKoi2nM5QyeXsn1LsiWYUlfAVcJpllqG9WDJfAB2q6u65L0jlqLz31U
-	 u/fy5Lm9+HQvMSTyaK3FTSh1a9Z8aP2e85GTpAbo=
+	b=e74LYRjhgSUcdqXtkqbIu4RS3oqimEYgpS3ex+DQZqYo7vrnV0t9I2qV1UeJe0vIJ
+	 BpnIjGOPQI8uhNHuqOxPOHitNA1+PP4EjXWaMs9SxBtNIIyBRyy34nt4Kc/C0XwDdH
+	 YBuCUGh4Z+sqEQenz8xB2+3qMYrrcCtSEmzY+5V8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	=?UTF-8?q?Ludvig=20P=C3=A4rsson?= <ludvig.parsson@axis.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 531/583] ALSA: hda: Properly setup HDMI stream
+Subject: [PATCH 5.10 276/286] ethtool: netlink: Add missing ethnl_ops_begin/complete
 Date: Mon, 22 Jan 2024 15:59:42 -0800
-Message-ID: <20240122235828.358090234@linuxfoundation.org>
+Message-ID: <20240122235742.682494261@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,63 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+From: Ludvig Pärsson <ludvig.parsson@axis.com>
 
-[ Upstream commit 454abb80e26ab85323a30e52aa7b0ee9aae1d38a ]
+[ Upstream commit f1172f3ee3a98754d95b968968920a7d03fdebcc ]
 
-Since commit 4005d1ba0a7e ("ASoC: soc-dai: don't call PCM audio ops if
-the stream is not supported") HDMI playback is broken with avs driver.
-This happens because for HDMI stream (unlike generic HDA one)
-channels_min for stream is not set when creating PCMs. Fix this by
-setting the value based on first available converter.
+Accessing an ethernet device that is powered off or clock gated might
+cause the CPU to hang. Add ethnl_ops_begin/complete in
+ethnl_set_features() to protect against this.
 
-Fixes: 4005d1ba0a7e ("ASoC: soc-dai: don't call PCM audio ops if the stream is not supported")
-Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20240112113349.2905328-1-amadeuszx.slawinski@linux.intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 0980bfcd6954 ("ethtool: set netdev features with FEATURES_SET request")
+Signed-off-by: Ludvig Pärsson <ludvig.parsson@axis.com>
+Link: https://lore.kernel.org/r/20240117-etht2-v2-1-1a96b6e8c650@axis.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_hdmi.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/ethtool/features.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_hdmi.c b/sound/pci/hda/patch_hdmi.c
-index 78cee53fee02..038db8902c9e 100644
---- a/sound/pci/hda/patch_hdmi.c
-+++ b/sound/pci/hda/patch_hdmi.c
-@@ -2301,6 +2301,7 @@ static int generic_hdmi_build_pcms(struct hda_codec *codec)
- 	codec_dbg(codec, "hdmi: pcm_num set to %d\n", pcm_num);
+diff --git a/net/ethtool/features.c b/net/ethtool/features.c
+index 1c9f4df273bd..faccab84d865 100644
+--- a/net/ethtool/features.c
++++ b/net/ethtool/features.c
+@@ -235,17 +235,20 @@ int ethnl_set_features(struct sk_buff *skb, struct genl_info *info)
+ 	dev = req_info.dev;
  
- 	for (idx = 0; idx < pcm_num; idx++) {
-+		struct hdmi_spec_per_cvt *per_cvt;
- 		struct hda_pcm *info;
- 		struct hda_pcm_stream *pstr;
+ 	rtnl_lock();
++	ret = ethnl_ops_begin(dev);
++	if (ret < 0)
++		goto out_rtnl;
+ 	ethnl_features_to_bitmap(old_active, dev->features);
+ 	ethnl_features_to_bitmap(old_wanted, dev->wanted_features);
+ 	ret = ethnl_parse_bitset(req_wanted, req_mask, NETDEV_FEATURE_COUNT,
+ 				 tb[ETHTOOL_A_FEATURES_WANTED],
+ 				 netdev_features_strings, info->extack);
+ 	if (ret < 0)
+-		goto out_rtnl;
++		goto out_ops;
+ 	if (ethnl_bitmap_to_features(req_mask) & ~NETIF_F_ETHTOOL_BITS) {
+ 		GENL_SET_ERR_MSG(info, "attempt to change non-ethtool features");
+ 		ret = -EINVAL;
+-		goto out_rtnl;
++		goto out_ops;
+ 	}
  
-@@ -2316,6 +2317,11 @@ static int generic_hdmi_build_pcms(struct hda_codec *codec)
- 		pstr = &info->stream[SNDRV_PCM_STREAM_PLAYBACK];
- 		pstr->substreams = 1;
- 		pstr->ops = generic_ops;
-+
-+		per_cvt = get_cvt(spec, 0);
-+		pstr->channels_min = per_cvt->channels_min;
-+		pstr->channels_max = per_cvt->channels_max;
-+
- 		/* pcm number is less than pcm_rec array size */
- 		if (spec->pcm_used >= ARRAY_SIZE(spec->pcm_rec))
- 			break;
+ 	/* set req_wanted bits not in req_mask from old_wanted */
+@@ -282,6 +285,8 @@ int ethnl_set_features(struct sk_buff *skb, struct genl_info *info)
+ 	if (mod)
+ 		netdev_features_change(dev);
+ 
++out_ops:
++	ethnl_ops_complete(dev);
+ out_rtnl:
+ 	rtnl_unlock();
+ 	dev_put(dev);
 -- 
 2.43.0
 
