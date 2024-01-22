@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B33583815C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:08:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 807AA837DD3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52FF728577B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1A17B28862
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC8EC1420A6;
-	Tue, 23 Jan 2024 01:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA51B145B1A;
+	Tue, 23 Jan 2024 00:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tjX0uu7X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hn1buCKh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C277135A6D;
-	Tue, 23 Jan 2024 01:08:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC2F136658;
+	Tue, 23 Jan 2024 00:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972114; cv=none; b=r08ev9Iv4G1gXOze0ysjCFgjLXDt09YWIhMDORmn1ylZZfGuKCsltXhYdooJuVS2r3CIOL2phaAZ1VZDUhpG4Kw17w/nDNYV7AIitBACCg84S5DOkbYwHfLvoYQgneLK82oHx6ZHqdRnCrsf4QQcBgOP+0OKN4de/Uk7taUmvs8=
+	t=1705969681; cv=none; b=Zj85I483YjgnMvIrkX20UeyGqhd1r+J8HOUJ55FAPdMOIpi+httx/zmS9nlk9zDFra+S0+Cu8azXSKlL6yDBxIiJEneeaedHpwmWYQhj3YD+iq42Rm+3pVX8HxXlpQThdA3GlPj6rBHhBqCoYTQLaRbkYLUC63xGHnTkefh4xuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972114; c=relaxed/simple;
-	bh=Bk6GrOuF/zE7yB626ZMNBjLbGql1YPM6akWzWA1OkL0=;
+	s=arc-20240116; t=1705969681; c=relaxed/simple;
+	bh=UTROzBF8lkWcM1L6X/nvG501omNdXOGHdhihb2LDh/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Or7zM4sbhjA+iU6b0GDWB6djCurDPgHD+3cINRsQ3m/JpVNEaXnox8LWGFHBHgrlUjEukQUamTKMvBOa1fnY8hwg2LQ55ylm0nmUhI9bh+Aq8hafqjq5d5z28ZUFHu53rJp3kwz7t6PCWlYsYKDYn74eANgDkaTW4HQ2dyyBd6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tjX0uu7X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC99DC43390;
-	Tue, 23 Jan 2024 01:08:33 +0000 (UTC)
+	 MIME-Version; b=MqZXU7AcTAg4tIGexjJRvz1AHRj8/QmZvD2nRJrPhp3vHNN4CXspIcmIqVt3rTtdT+KfL+nJiyUZtXu5JAFRv+5pWVQDznh5MxZ3XJa9e99tZZ3tNxFrHUL3nC3efXWrM6yQI4blFASX3Y0G31OZryQWXSrUzUwrisZwx+D8mAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hn1buCKh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2051CC433C7;
+	Tue, 23 Jan 2024 00:28:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972114;
-	bh=Bk6GrOuF/zE7yB626ZMNBjLbGql1YPM6akWzWA1OkL0=;
+	s=korg; t=1705969681;
+	bh=UTROzBF8lkWcM1L6X/nvG501omNdXOGHdhihb2LDh/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tjX0uu7XBaIWjkFLLiSe9lBl833PdILsSyE9WFkLzJl0it06F92bjakDZqQw8qV5e
-	 PrgOpQbxWDBKDRhQ4ojrcc3fEjovwlGr8onIqLyz0JjTJapvyfbRtTOJhfhiBQcCfi
-	 9kaAGtD8gyO0tlwFEvHFkcEtNwm+Gk4Xp3pH0cuI=
+	b=Hn1buCKhJzp1WlTTac6N2uhRQp4gzyU6Fw++sgnKguvyoMh8l3+uR5DOqKEnvSoMX
+	 vxPXlaMr1vthq7ahKPf40c0pa0zTVY5Zz3f1m5A96RipafU1oKWVykKYeUYM9aspDx
+	 fe4NhEWxHWJu8XAnDr5dZYnb6tTlHxG4z9gp/oh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Rob Herring <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 024/374] hwmon: (corsair-psu) Fix probe when built-in
+Subject: [PATCH 6.7 376/641] of: unittest: Fix of_count_phandle_with_args() expected value message
 Date: Mon, 22 Jan 2024 15:54:40 -0800
-Message-ID: <20240122235745.476034975@linuxfoundation.org>
+Message-ID: <20240122235829.721291873@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 307004e8b254ad28e150b63f299ab9caa4bc7c3e ]
+[ Upstream commit 716089b417cf98d01f0dc1b39f9c47e1d7b4c965 ]
 
-It seems that when the driver is built-in, the HID bus is
-initialized after the driver is loaded, which whould cause
-module_hid_driver() to fail.
-Fix this by registering the driver after the HID bus using
-late_initcall() in accordance with other hwmon HID drivers.
+The expected result value for the call to of_count_phandle_with_args()
+was updated from 7 to 8, but the accompanying error message was
+forgotten.
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://lore.kernel.org/r/20231207210723.222552-1-W_Armin@gmx.de
-[groeck: Dropped "compile tested" comment; the patch has been tested
- but the tester did not provide a Tested-by: tag]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 4dde83569832f937 ("of: Fix double free in of_parse_phandle_with_args_map")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20240111085025.2073894-1-geert+renesas@glider.be
+Signed-off-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/corsair-psu.c | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/of/unittest.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/corsair-psu.c b/drivers/hwmon/corsair-psu.c
-index 14389fd7afb8..ae983e715110 100644
---- a/drivers/hwmon/corsair-psu.c
-+++ b/drivers/hwmon/corsair-psu.c
-@@ -808,7 +808,23 @@ static struct hid_driver corsairpsu_driver = {
- 	.reset_resume	= corsairpsu_resume,
- #endif
- };
--module_hid_driver(corsairpsu_driver);
-+
-+static int __init corsair_init(void)
-+{
-+	return hid_register_driver(&corsairpsu_driver);
-+}
-+
-+static void __exit corsair_exit(void)
-+{
-+	hid_unregister_driver(&corsairpsu_driver);
-+}
-+
-+/*
-+ * With module_init() the driver would load before the HID bus when
-+ * built-in, so use late_initcall() instead.
-+ */
-+late_initcall(corsair_init);
-+module_exit(corsair_exit);
+diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
+index 45bd0d28c717..cfd60e35a899 100644
+--- a/drivers/of/unittest.c
++++ b/drivers/of/unittest.c
+@@ -574,7 +574,7 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
+ 	}
  
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Wilken Gottwalt <wilken.gottwalt@posteo.net>");
+ 	rc = of_count_phandle_with_args(np, "phandle-list", "#phandle-cells");
+-	unittest(rc == 8, "of_count_phandle_with_args() returned %i, expected 7\n", rc);
++	unittest(rc == 8, "of_count_phandle_with_args() returned %i, expected 8\n", rc);
+ 
+ 	for (i = 0; i < 9; i++) {
+ 		bool passed = true;
 -- 
 2.43.0
 
