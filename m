@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A66EE838345
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:27:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A587E83806F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B5E2B23F01
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51582287910
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA635EE9B;
-	Tue, 23 Jan 2024 01:46:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E9F12DDBB;
+	Tue, 23 Jan 2024 01:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DKN0LxnN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/HkLQOi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08815DF01;
-	Tue, 23 Jan 2024 01:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A2012DDB5;
+	Tue, 23 Jan 2024 01:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974415; cv=none; b=nQtDex3JaXv8CrHRa6MefDcSrrIjEyNOq9Ca8JollioUC07dHCpln0QL6ILxGGd0P920z6FB42XDgETU/cCDNoJpIsXk2RLFe0k075J2t3ZLZvQjuYp+hEeZMaHlKen6I523CBsA0guHC/mwcrSzZibBHkrbAeaKcmxggZLZ0FA=
+	t=1705971718; cv=none; b=oP6H23HIkqFfJCu8XYUieypq4RWKPACb3aKXMdHwi4ET/+CqjdYNcTX5CetaL0QZTdOYYUlgJa/dww447H73sADY8sQn+3GdA3McCK3Yarbl5JWjV6raLnAPwtFnp10whSp/amyM4khP+PgTaPujL1wIteDt1UAl0v9Zsq3X0KI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974415; c=relaxed/simple;
-	bh=j39wvLsL7XSAANaYI+4ILaVvLPFKuSuNYgZsTB0Up+s=;
+	s=arc-20240116; t=1705971718; c=relaxed/simple;
+	bh=5D28+W9GOH06mkQSe57NRZuVKsZUt7pIKucYx0eMBmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dk4VTin6GYN4SiOwlue4oTrP0rvCX12csDYq7LArpcbJQuCS+ak0+534QSuw+iFcwczgtMaPAeLYin/yqQfuHL+foKpJWTA841HeFuSi24mUBENFk3yV5Ia5RmtrRHdP2h5/6IyyqGn8dbc2vJGCOixrhKLBpQEDBIkq8HFs7Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DKN0LxnN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95604C433F1;
-	Tue, 23 Jan 2024 01:46:55 +0000 (UTC)
+	 MIME-Version; b=T+lVmij4HQnFdFuk4hZva/8QIo8CTK5KRCZRkAIbtVTN0YtBbWGo+6ayf2szxP7Y/0tZJT9r9xSukLurhVF0Cph2GJIEYcirnW1Yw4DPwzdvjhgBgbozb5CaBSeyoNsGi7UTZAjhmFg3AjJPFP904gkWOPjgAgIUvXWEQHPZMK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/HkLQOi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99CF4C43390;
+	Tue, 23 Jan 2024 01:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974415;
-	bh=j39wvLsL7XSAANaYI+4ILaVvLPFKuSuNYgZsTB0Up+s=;
+	s=korg; t=1705971718;
+	bh=5D28+W9GOH06mkQSe57NRZuVKsZUt7pIKucYx0eMBmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DKN0LxnNuKv/opblHIlWtPi/d40+OCXF5cugc/fxEgXskNqjgfEE6+L9f/A64iJpT
-	 HNwXi5g7/tOj3nSgAQjn83SSwUySKIHdMZu2o6zOHzpiOwMjCY8R8nrHGDdHXJGXlZ
-	 yJDAKKmycYgmi6fWsMdvFhUh+lqqgmbcsdA04ToA=
+	b=F/HkLQOiQ4eu9mPrV9E9TRn6ejp4AfLvbeVtx9q+ouWo+NaLp8MBDFedpb5vShSFi
+	 36L/vtIfVO2B3BwRCESacgKEenjdL2nrrsaD1Sf3P2Ah+wf1eBSJIzgNsQ5oWUouQj
+	 rji0k4gK3AZ5dJcUxV9Ed1cySphAqgxLKNBo/W/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 217/374] clk: zynqmp: Add a check for NULL pointer
+	Rob Clark <robdclark@chromium.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.1 305/417] iommu/arm-smmu-qcom: Add missing GMU entry to match table
 Date: Mon, 22 Jan 2024 15:57:53 -0800
-Message-ID: <20240122235752.204829520@linuxfoundation.org>
+Message-ID: <20240122235802.395795060@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit 6ab9810cfe6c8f3d8b8750c827d7870abd3751b9 ]
+commit afc95681c3068956fed1241a1ff1612c066c75ac upstream.
 
-Add a NULL pointer check as clk_hw_get_parent can return NULL.
+In some cases the firmware expects cbndx 1 to be assigned to the GMU,
+so we also want the default domain for the GMU to be an identy domain.
+This way it does not get a context bank assigned.  Without this, both
+of_dma_configure() and drm/msm's iommu_domain_attach() will trigger
+allocating and configuring a context bank.  So GMU ends up attached to
+both cbndx 1 and later cbndx 2.  This arrangement seemingly confounds
+and surprises the firmware if the GPU later triggers a translation
+fault, resulting (on sc8280xp / lenovo x13s, at least) in the SMMU
+getting wedged and the GPU stuck without memory access.
 
-Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>
-Link: https://lore.kernel.org/r/20220518055314.2486-1-shubhrajyoti.datta@xilinx.com
-Acked-by: Michal Simek <michal.simek@amd.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Stable-dep-of: 1fe15be1fb61 ("drivers: clk: zynqmp: update divider round rate logic")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/20231210180655.75542-1-robdclark@gmail.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/zynqmp/divider.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/zynqmp/divider.c b/drivers/clk/zynqmp/divider.c
-index 9e535d3e1c0c..47a199346ddf 100644
---- a/drivers/clk/zynqmp/divider.c
-+++ b/drivers/clk/zynqmp/divider.c
-@@ -120,10 +120,13 @@ static void zynqmp_get_divider2_val(struct clk_hw *hw,
- 	long error = LONG_MAX;
- 	unsigned long div1_prate;
- 	struct clk_hw *div1_parent_hw;
-+	struct zynqmp_clk_divider *pdivider;
- 	struct clk_hw *div2_parent_hw = clk_hw_get_parent(hw);
--	struct zynqmp_clk_divider *pdivider =
--				to_zynqmp_clk_divider(div2_parent_hw);
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+@@ -243,6 +243,7 @@ static int qcom_adreno_smmu_init_context
  
-+	if (!div2_parent_hw)
-+		return;
-+
-+	pdivider = to_zynqmp_clk_divider(div2_parent_hw);
- 	if (!pdivider)
- 		return;
- 
--- 
-2.43.0
-
+ static const struct of_device_id qcom_smmu_client_of_match[] __maybe_unused = {
+ 	{ .compatible = "qcom,adreno" },
++	{ .compatible = "qcom,adreno-gmu" },
+ 	{ .compatible = "qcom,mdp4" },
+ 	{ .compatible = "qcom,mdss" },
+ 	{ .compatible = "qcom,sc7180-mdss" },
 
 
 
