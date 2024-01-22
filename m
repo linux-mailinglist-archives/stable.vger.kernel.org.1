@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-13979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ED1C837F09
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEFD8837F18
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD33429BDC6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 509DA1F2B922
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1533F605B9;
-	Tue, 23 Jan 2024 00:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3701160880;
+	Tue, 23 Jan 2024 00:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rfjJUUzx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bGxglaPh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60D560261;
-	Tue, 23 Jan 2024 00:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74A53FFE;
+	Tue, 23 Jan 2024 00:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970896; cv=none; b=r1bfHWLp1x6U5OIRRX/Q/Wo0y6nqlyyGAGOjB8gzOMFDBgxEyIUpHV/GOgEF2mH/9CtvmLTLXFkvZPhQVEqBhxaEA+ltT0jQT0vb+9qnkvFuim51jRNS7/Z6PZOc5aInmuJkx3OQVHN4W1HUTH4rqmlzhu+Mk5Ts97qjrgTm7fk=
+	t=1705970935; cv=none; b=sjDk1M2rDnZtKnojcRmdDoyINNM1fM975Z3TW6inmskwhem4BdhgGpMjPsn/zbEEZpCAVhOw1fDTbOIpedtj9gApXV6DUfZik0c2h5jkVKue2hKwv6g48VoA/YYWliUABbVDCoRSSWb9ul5rAUjjXwAOqIE5JNSkzaWC9vNzM4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970896; c=relaxed/simple;
-	bh=SRha3E4JDEaq5CM0UWosQoFBR9YGPKldaoxUf+QAy94=;
+	s=arc-20240116; t=1705970935; c=relaxed/simple;
+	bh=XYqmdawO6i/WPkMOjAdu1uF/KrrY32LgtKobrKwv6wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uoNMxamfpUQlHFSbtwCN/X10WlKF/nbBkr2l7vFWU46YlJppq/tAq9/TlI4WZqhpKbB9w48fiuDHTn5axhoP2mx4sdbeuXYBR9RZmfAIR71Mr7JAuL9EfvL1Lhv5XmkDAsRgT1F9DIK10XAbPCNsDq7TpS3HKB1QkXyr7fiNb9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rfjJUUzx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C0BDC43390;
-	Tue, 23 Jan 2024 00:48:16 +0000 (UTC)
+	 MIME-Version; b=Ii9hmH7SlTY/AZln4HqgaXM5rWNBIdJMlRCf208BHp3zag3gYGroWCCUwoOZnJKNEgqkL6PhZbFNSCtcgKFajUivDueN2RT5ATDPcbBfrIdIIJpZSyDzkZO9o/Tdfqsu4EhqOzUw23egJ2oxT4FIEOmX5d1tBGZE3QR+6JxgcwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bGxglaPh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95BB8C43390;
+	Tue, 23 Jan 2024 00:48:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970896;
-	bh=SRha3E4JDEaq5CM0UWosQoFBR9YGPKldaoxUf+QAy94=;
+	s=korg; t=1705970934;
+	bh=XYqmdawO6i/WPkMOjAdu1uF/KrrY32LgtKobrKwv6wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rfjJUUzxFAWRNuc8VeyjabVRNWYVgcpMyKxV4rkG8ta983GKPs4w0I/eObJOTy3YJ
-	 TI6P60yQvbv66Gnb6YMGPbDOTgGUmmulJTXS4Qur3HCNmNeLOAmclBZDOhPDmyLqPq
-	 sHSqx0/35EWlUUxx0RNUzSUmHrRKb4PQpOySeyS8=
+	b=bGxglaPhTcbrxRmEbGXz4nwChD/Ngc+KiYtFG9KKhSCFDUXEHv/MBu8ojxWxgmvQN
+	 qvNQR6a+eDwAXMOuGfsaUlER+uCQ3EA3v+rgdYgyjTBAu0O4q0/maqvAo46yL2sE7V
+	 v4PbUw3stozgBDvZfaM8FF8wWCRvfy7ZX0gzWx8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Xiang Chen <chenxiang66@hisilicon.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 117/417] scsi: hisi_sas: Rollback some operations if FLR failed
-Date: Mon, 22 Jan 2024 15:54:45 -0800
-Message-ID: <20240122235755.833011436@linuxfoundation.org>
+Subject: [PATCH 6.1 118/417] scsi: hisi_sas: Correct the number of global debugfs registers
+Date: Mon, 22 Jan 2024 15:54:46 -0800
+Message-ID: <20240122235755.869069536@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
 References: <20240122235751.480367507@linuxfoundation.org>
@@ -69,50 +69,37 @@ Content-Transfer-Encoding: 8bit
 
 From: Yihang Li <liyihang9@huawei.com>
 
-[ Upstream commit 7ea3e7763c50b20a8bd25cf524ea0c6463de69be ]
+[ Upstream commit 73e33f969ef05328766b23a99b2c07bfff765009 ]
 
-We obtain the semaphore and set HISI_SAS_RESETTING_BIT in
-hisi_sas_reset_prepare_v3_hw(), block the scsi host and set
-HISI_SAS_REJECT_CMD_BIT in hisi_sas_controller_reset_prepare(), released
-them in hisi_sas_controller_reset_done(). However, if the HW reset failure
-in FLR results in early return, the semaphore and flag bits will not be
-release.
+In function debugfs_debugfs_snapshot_global_reg_v3_hw() it uses
+debugfs_axi_reg.count (which is the number of axi debugfs registers) to
+acquire the number of global debugfs registers.
 
-Rollback some operations including clearing flags / releasing semaphore
-when FLR is failed.
+Use debugfs_global_reg.count to acquire the number of global debugfs
+registers instead.
 
-Fixes: e5ea48014adc ("scsi: hisi_sas: Implement handlers of PCIe FLR for v3 hw")
+Fixes: 623a4b6d5c2a ("scsi: hisi_sas: Move debugfs code to v3 hw driver")
 Signed-off-by: Yihang Li <liyihang9@huawei.com>
 Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
-Link: https://lore.kernel.org/r/1702525516-51258-5-git-send-email-chenxiang66@hisilicon.com
+Link: https://lore.kernel.org/r/1702525516-51258-6-git-send-email-chenxiang66@hisilicon.com
 Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index 4f816b2cfa49..ee2065e83f9b 100644
+index ee2065e83f9b..0c80ff9affa3 100644
 --- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
 +++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -4946,6 +4946,7 @@ static void hisi_sas_reset_done_v3_hw(struct pci_dev *pdev)
- {
- 	struct sas_ha_struct *sha = pci_get_drvdata(pdev);
- 	struct hisi_hba *hisi_hba = sha->lldd_ha;
-+	struct Scsi_Host *shost = hisi_hba->shost;
- 	struct device *dev = hisi_hba->dev;
- 	int rc;
+@@ -3330,7 +3330,7 @@ static void debugfs_snapshot_global_reg_v3_hw(struct hisi_hba *hisi_hba)
+ 	u32 *databuf = hisi_hba->debugfs_regs[dump_index][DEBUGFS_GLOBAL].data;
+ 	int i;
  
-@@ -4954,6 +4955,10 @@ static void hisi_sas_reset_done_v3_hw(struct pci_dev *pdev)
- 	rc = hw_init_v3_hw(hisi_hba);
- 	if (rc) {
- 		dev_err(dev, "FLR: hw init failed rc=%d\n", rc);
-+		clear_bit(HISI_SAS_REJECT_CMD_BIT, &hisi_hba->flags);
-+		scsi_unblock_requests(shost);
-+		clear_bit(HISI_SAS_RESETTING_BIT, &hisi_hba->flags);
-+		up(&hisi_hba->sem);
- 		return;
- 	}
+-	for (i = 0; i < debugfs_axi_reg.count; i++, databuf++)
++	for (i = 0; i < debugfs_global_reg.count; i++, databuf++)
+ 		*databuf = hisi_sas_read32(hisi_hba, 4 * i);
+ }
  
 -- 
 2.43.0
