@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-14946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4BDF83841A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EA288380F1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E99AB2389F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA1F6289EC6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E841A60BB9;
-	Tue, 23 Jan 2024 01:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B99E13AA2D;
+	Tue, 23 Jan 2024 01:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpVI+keU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uW+ODIlG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79B060BB7;
-	Tue, 23 Jan 2024 01:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02ED1350CA;
+	Tue, 23 Jan 2024 01:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974747; cv=none; b=KS/xTaMHyzQrPXzxnUsCejFHh94MvwCjFvd5i14xg6Qgpn+iSf/2zK4AvCa98qKBdFGAbvnH3d0tdrdro8PDiNtJ5Dfh6/GsGA6iA5yPVD53cGanH20QOPgRHHnlA92Mt2qZ/W3P2TovbVXiq3m+emBbQFM7zcDzDUYmyezO4HE=
+	t=1705971972; cv=none; b=XqOq0HXbOSd4eXku1dyIYxEvWj63WKlFMp8haubp5K5cDNFatsuGUI6b4XYIBMHCJWUS59Q68eJUizwARuMDhZSLdV8rQ/pubf+RNBL44ZQXS5HRACPeVekVjA8PvcOEpWGM9CFt7jfkJTAZLR0mDciBeFgvnuETYSWpI952cWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974747; c=relaxed/simple;
-	bh=L5jvRi9ohVeXroUwspnKRxLWa8egxhvVXGN8gjAA6h8=;
+	s=arc-20240116; t=1705971972; c=relaxed/simple;
+	bh=Nqcwc2vJDbf7boSZmSCQ9jzXxhKJThbcj2iBXy6LCYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GBIbUfMhRCeWyxqpJS+cDwoN8E60/gVUatmlqPQTouH3nJSabcIgt4n/LD5P8PQTdJGtNBaR7ZIydXX2lMwmuE/yZGRBVolSLTQnE2fmeCaYQsS08TfkagnBblWrV2E0cZgI08+2zSTevoMcfVtNpM6RsL0kF2sts27Gyd1ndjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpVI+keU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69B5EC433A6;
-	Tue, 23 Jan 2024 01:52:27 +0000 (UTC)
+	 MIME-Version; b=gvWgFG5iToie71O1U/GWWtZZ4Unyy1zYp23GzCE7AggkGRRjmErpIiDrmUa7Ljxzp4Y2jh58+XY3tzoINfCCg3LXyri6FhS6iS748bJCVdJf6CbTGEPdnVd4f6oBLiDXjzm9gSGF8FEBL+/ud27HiSLJy/Q9AkxwxpP3xd455EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uW+ODIlG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60EADC433C7;
+	Tue, 23 Jan 2024 01:06:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974747;
-	bh=L5jvRi9ohVeXroUwspnKRxLWa8egxhvVXGN8gjAA6h8=;
+	s=korg; t=1705971972;
+	bh=Nqcwc2vJDbf7boSZmSCQ9jzXxhKJThbcj2iBXy6LCYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xpVI+keUKoLbjRWQPMULgSgUyiRK71/vHAPhZJ0uhhJ6rrB95aOt0WcWViBE/8Vke
-	 L0Ikqeca5/yAqwFSzalIdVraBkQZ5SzOk7654jyHzBa95+6iq7wfd0vtzMF7XcSTz3
-	 OLU7CdLOlh6aQRcqkt1cZxIPbuGFGwOiM+f7TL5w=
+	b=uW+ODIlGsMlvr0CzSvLOjZCv7FhdqcvHIFhX/2ATUJC8bra++juKlL3HFTtptuaZB
+	 X0LSWorr9LjZya2ka/BV+8cDzrBy6PKAulcWHwCIYNReQa7F9mDW86uIp8Jvk34qX8
+	 /Xg+PHRfVZrhejoljZVE+iwp96u3B4N7TgY90Ah0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 5.15 279/374] wifi: rtlwifi: Convert LNKCTL change to PCIe cap RMW accessors
+	Jim Harris <jim.harris@samsung.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Fan Ni <fan.ni@samsung.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 367/417] cxl/region: fix x9 interleave typo
 Date: Mon, 22 Jan 2024 15:58:55 -0800
-Message-ID: <20240122235754.475379392@linuxfoundation.org>
+Message-ID: <20240122235804.531553215@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,83 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Jim Harris <jim.harris@samsung.com>
 
-commit 5894d0089cbc146063dcc0239a78ede0a8142efb upstream.
+[ Upstream commit c7ad3dc3649730af483ee1e78be5d0362da25bfe ]
 
-The rtlwifi driver comes with custom code to write into PCIe Link
-Control register. RMW access for the Link Control register requires
-locking that is already provided by the standard PCIe capability
-accessors.
+CXL supports x3, x6 and x12 - not x9.
 
-Convert the custom RMW code writing into LNKCTL register to standard
-RMW capability accessors. The accesses are changed to cover the full
-LNKCTL register instead of touching just a single byte of the register.
-
-Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20231124084725.12738-3-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 80d10a6cee050 ("cxl/region: Add interleave geometry attributes")
+Signed-off-by: Jim Harris <jim.harris@samsung.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Fan Ni <fan.ni@samsung.com>
+Link: https://lore.kernel.org/r/169904271254.204936.8580772404462743630.stgit@ubuntu
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/pci.c |   21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/cxl/core/region.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -164,21 +164,29 @@ static bool _rtl_pci_platform_switch_dev
- 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
- 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+index ebc1b028555c..2f7187dbfa2d 100644
+--- a/drivers/cxl/core/region.c
++++ b/drivers/cxl/core/region.c
+@@ -331,7 +331,7 @@ static ssize_t interleave_ways_store(struct device *dev,
+ 		return rc;
  
-+	value &= PCI_EXP_LNKCTL_ASPMC;
-+
- 	if (rtlhal->hw_type != HARDWARE_TYPE_RTL8192SE)
--		value |= 0x40;
-+		value |= PCI_EXP_LNKCTL_CCC;
- 
--	pci_write_config_byte(rtlpci->pdev, 0x80, value);
-+	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
-+					   PCI_EXP_LNKCTL_ASPMC | value,
-+					   value);
- 
- 	return false;
- }
- 
--/*When we set 0x01 to enable clk request. Set 0x0 to disable clk req.*/
--static void _rtl_pci_switch_clk_req(struct ieee80211_hw *hw, u8 value)
-+/* @value is PCI_EXP_LNKCTL_CLKREQ_EN or 0 to enable/disable clk request. */
-+static void _rtl_pci_switch_clk_req(struct ieee80211_hw *hw, u16 value)
- {
- 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
- 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
- 
--	pci_write_config_byte(rtlpci->pdev, 0x81, value);
-+	value &= PCI_EXP_LNKCTL_CLKREQ_EN;
-+
-+	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
-+					   PCI_EXP_LNKCTL_CLKREQ_EN,
-+					   value);
- 
- 	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8192SE)
- 		udelay(100);
-@@ -259,7 +267,8 @@ static void rtl_pci_enable_aspm(struct i
- 
- 	if (ppsc->reg_rfps_level & RT_RF_OFF_LEVL_CLK_REQ) {
- 		_rtl_pci_switch_clk_req(hw, (ppsc->reg_rfps_level &
--					     RT_RF_OFF_LEVL_CLK_REQ) ? 1 : 0);
-+					     RT_RF_OFF_LEVL_CLK_REQ) ?
-+					     PCI_EXP_LNKCTL_CLKREQ_EN : 0);
- 		RT_SET_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_CLK_REQ);
- 	}
- 	udelay(100);
+ 	/*
+-	 * Even for x3, x9, and x12 interleaves the region interleave must be a
++	 * Even for x3, x6, and x12 interleaves the region interleave must be a
+ 	 * power of 2 multiple of the host bridge interleave.
+ 	 */
+ 	if (!is_power_of_2(val / cxld->interleave_ways) ||
+-- 
+2.43.0
+
 
 
 
