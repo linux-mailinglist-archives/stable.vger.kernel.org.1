@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-14340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3724383807F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:29 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E772838508
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:38:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E21891F2CD38
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9D3CB27DAB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F19E012F5AC;
-	Tue, 23 Jan 2024 01:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97A7474E32;
+	Tue, 23 Jan 2024 02:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BPDVf/v/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F232/zkh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF948657B3;
-	Tue, 23 Jan 2024 01:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5684F745D6;
+	Tue, 23 Jan 2024 02:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971766; cv=none; b=Jqu51rZdaL8+JNNosOkcHxxZ1BffVjBfr7Sb02kYVXXroRWWKGPJvFlCNBqB/KiZC3BMURtnuoUHvYSmkMf8jA5LxQ0+56z00Ay/fqM9CElls4lVXYikQKQFfb0VpXDyMkq5Etiac8bzxwntQAuPDYNaktrgxHbnFGam4uUrib4=
+	t=1705975476; cv=none; b=K2Mlys/8TbImmsxrapeQEoahLTFeWofZgVLaESN+XmqlJ2fmrPwGWv/qNfJiUYReh1zJ2rRqY88o/3n1+0/Iawe1tlOkei67vVzFTmK12SeP2XXnyDqFl/GtSuHbEXNNG/8qetfueOmYSg9NZRozsG+LyWc/c+abWaYW2UQ2ABs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971766; c=relaxed/simple;
-	bh=hCbzzWCpJjXT6YTMh99l0jBo6fx3ztVIaplCgMplzyM=;
+	s=arc-20240116; t=1705975476; c=relaxed/simple;
+	bh=EL0N+klAh58/0OxPDBEho5SFKh3TMnWBX6C1XP19nQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W3+FwgKiYLy8Fa0zGK4PiQiOXTwmKjUJNQrnCd260ym5q0VnvUxnqCnFXe8RXOJOFOwo7wtaKpQoStHjuqhSwjNQnAkrmu3M7Op79xUAdfWSkV5zm6YC5DfoZOdMuRwCergdvFMNWUkydIIoFbrJ29GDU5z4Eg+KSciLVHnTsSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BPDVf/v/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C787C43390;
-	Tue, 23 Jan 2024 01:02:45 +0000 (UTC)
+	 MIME-Version; b=d0gz9mPp8OBVP2uIOjdSv3zcYu3n78VX7OMcF74SKPbM0mVbGegSX1Yno7Ac07/+sLS45O3B48C9cd0dFwhmj7jKctUHCQBzeqi+Q3OeDpk0jAOJP5du2PEWoG3TXvF7/9PcdNWqhvLqGU42jMKwcyseQpa4NxJ2mQFO/DSyRGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F232/zkh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BC9EC433C7;
+	Tue, 23 Jan 2024 02:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971766;
-	bh=hCbzzWCpJjXT6YTMh99l0jBo6fx3ztVIaplCgMplzyM=;
+	s=korg; t=1705975476;
+	bh=EL0N+klAh58/0OxPDBEho5SFKh3TMnWBX6C1XP19nQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BPDVf/v/QueX1f+prpvyyw85UCV3BQmqY8krwlaJl5FK65C9ZBpMZW7OVjzh+gHoz
-	 9kSDBPEAdmy0lBhzhklnmKewbrvCt1XMzIQ5WEESNNmXOVIdj4MV+WoutO32wlzdKz
-	 ch6WVMkFlAo02P9TRsunSWVlU5kRueBMLsp3RecU=
+	b=F232/zkhl0pM0JD1UgUziMP85923WWC/4dxEvLpzAqsF2twzDlFWdy1Y8G6xxDxeX
+	 hp5cjTYXq/9LphURGkRXwRaKkBpVtirP+ZxrGMY4PcsSnNk4I7I4BuQjIBDR74K7oK
+	 FRxnTg1OIl/DRdNHa+8ABMRFaT8RL5wRWF8ePaD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tadeusz Struk <tstruk@gigaio.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	stable@kernel.org
-Subject: [PATCH 6.1 313/417] PCI/P2PDMA: Remove reference to pci_p2pdma_map_sg()
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 430/583] KVM: x86/pmu: Move PMU reset logic to common x86 code
 Date: Mon, 22 Jan 2024 15:58:01 -0800
-Message-ID: <20240122235802.657387808@linuxfoundation.org>
+Message-ID: <20240122235825.140346015@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +61,199 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tadeusz Struk <tstruk@gigaio.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 9a000a72af75886e5de13f4edef7f0d788622e7d upstream.
+commit cbb359d81a2695bb5e63ec9de06fcbef28518891 upstream.
 
-Update Documentation/driver-api/pci/p2pdma.rst doc and remove references to
-obsolete p2pdma mapping functions.
+Move the common (or at least "ignored") aspects of resetting the vPMU to
+common x86 code, along with the stop/release helpers that are no used only
+by the common pmu.c.
 
-Fixes: 0d06132fc84b ("PCI/P2PDMA: Remove pci_p2pdma_[un]map_sg()")
-Link: https://lore.kernel.org/r/20231113180325.444692-1-tstruk@gmail.com
-Signed-off-by: Tadeusz Struk <tstruk@gigaio.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Cc: stable@kernel.org
+There is no need to manually handle fixed counters as all_valid_pmc_idx
+tracks both fixed and general purpose counters, and resetting the vPMU is
+far from a hot path, i.e. the extra bit of overhead to the PMC from the
+index is a non-issue.
+
+Zero fixed_ctr_ctrl in common code even though it's Intel specific.
+Ensuring it's zero doesn't harm AMD/SVM in any way, and stopping the fixed
+counters via all_valid_pmc_idx, but not clearing the associated control
+bits, would be odd/confusing.
+
+Make the .reset() hook optional as SVM no longer needs vendor specific
+handling.
+
+Cc: stable@vger.kernel.org
+Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
+Link: https://lore.kernel.org/r/20231103230541.352265-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/driver-api/pci/p2pdma.rst | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ arch/x86/include/asm/kvm-x86-pmu-ops.h |    2 -
+ arch/x86/kvm/pmu.c                     |   40 ++++++++++++++++++++++++++++++++-
+ arch/x86/kvm/pmu.h                     |   18 --------------
+ arch/x86/kvm/svm/pmu.c                 |   16 -------------
+ arch/x86/kvm/vmx/pmu_intel.c           |   20 ----------------
+ 5 files changed, 40 insertions(+), 56 deletions(-)
 
-diff --git a/Documentation/driver-api/pci/p2pdma.rst b/Documentation/driver-api/pci/p2pdma.rst
-index 44deb52beeb4..d0b241628cf1 100644
---- a/Documentation/driver-api/pci/p2pdma.rst
-+++ b/Documentation/driver-api/pci/p2pdma.rst
-@@ -83,19 +83,9 @@ this to include other types of resources like doorbells.
- Client Drivers
- --------------
+--- a/arch/x86/include/asm/kvm-x86-pmu-ops.h
++++ b/arch/x86/include/asm/kvm-x86-pmu-ops.h
+@@ -22,7 +22,7 @@ KVM_X86_PMU_OP(get_msr)
+ KVM_X86_PMU_OP(set_msr)
+ KVM_X86_PMU_OP(refresh)
+ KVM_X86_PMU_OP(init)
+-KVM_X86_PMU_OP(reset)
++KVM_X86_PMU_OP_OPTIONAL(reset)
+ KVM_X86_PMU_OP_OPTIONAL(deliver_pmi)
+ KVM_X86_PMU_OP_OPTIONAL(cleanup)
  
--A client driver typically only has to conditionally change its DMA map
--routine to use the mapping function :c:func:`pci_p2pdma_map_sg()` instead
--of the usual :c:func:`dma_map_sg()` function. Memory mapped in this
--way does not need to be unmapped.
+--- a/arch/x86/kvm/pmu.c
++++ b/arch/x86/kvm/pmu.c
+@@ -250,6 +250,24 @@ static bool pmc_resume_counter(struct kv
+ 	return true;
+ }
+ 
++static void pmc_release_perf_event(struct kvm_pmc *pmc)
++{
++	if (pmc->perf_event) {
++		perf_event_release_kernel(pmc->perf_event);
++		pmc->perf_event = NULL;
++		pmc->current_config = 0;
++		pmc_to_pmu(pmc)->event_count--;
++	}
++}
++
++static void pmc_stop_counter(struct kvm_pmc *pmc)
++{
++	if (pmc->perf_event) {
++		pmc->counter = pmc_read_counter(pmc);
++		pmc_release_perf_event(pmc);
++	}
++}
++
+ static int filter_cmp(const void *pa, const void *pb, u64 mask)
+ {
+ 	u64 a = *(u64 *)pa & mask;
+@@ -654,7 +672,27 @@ void kvm_pmu_refresh(struct kvm_vcpu *vc
+ 
+ void kvm_pmu_reset(struct kvm_vcpu *vcpu)
+ {
+-	static_call(kvm_x86_pmu_reset)(vcpu);
++	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
++	struct kvm_pmc *pmc;
++	int i;
++
++	bitmap_zero(pmu->reprogram_pmi, X86_PMC_IDX_MAX);
++
++	for_each_set_bit(i, pmu->all_valid_pmc_idx, X86_PMC_IDX_MAX) {
++		pmc = static_call(kvm_x86_pmu_pmc_idx_to_pmc)(pmu, i);
++		if (!pmc)
++			continue;
++
++		pmc_stop_counter(pmc);
++		pmc->counter = 0;
++
++		if (pmc_is_gp(pmc))
++			pmc->eventsel = 0;
++	}
++
++	pmu->fixed_ctr_ctrl = pmu->global_ctrl = pmu->global_status = 0;
++
++	static_call_cond(kvm_x86_pmu_reset)(vcpu);
+ }
+ 
+ void kvm_pmu_init(struct kvm_vcpu *vcpu)
+--- a/arch/x86/kvm/pmu.h
++++ b/arch/x86/kvm/pmu.h
+@@ -80,24 +80,6 @@ static inline void pmc_write_counter(str
+ 	pmc->counter &= pmc_bitmask(pmc);
+ }
+ 
+-static inline void pmc_release_perf_event(struct kvm_pmc *pmc)
+-{
+-	if (pmc->perf_event) {
+-		perf_event_release_kernel(pmc->perf_event);
+-		pmc->perf_event = NULL;
+-		pmc->current_config = 0;
+-		pmc_to_pmu(pmc)->event_count--;
+-	}
+-}
 -
--The client may also, optionally, make use of
--:c:func:`is_pci_p2pdma_page()` to determine when to use the P2P mapping
--functions and when to use the regular mapping functions. In some
--situations, it may be more appropriate to use a flag to indicate a
--given request is P2P memory and map appropriately. It is important to
--ensure that struct pages that back P2P memory stay out of code that
--does not have support for them as other code may treat the pages as
--regular memory which may not be appropriate.
-+A client driver only has to use the mapping API :c:func:`dma_map_sg()`
-+and :c:func:`dma_unmap_sg()` functions as usual, and the implementation
-+will do the right thing for the P2P capable memory.
+-static inline void pmc_stop_counter(struct kvm_pmc *pmc)
+-{
+-	if (pmc->perf_event) {
+-		pmc->counter = pmc_read_counter(pmc);
+-		pmc_release_perf_event(pmc);
+-	}
+-}
+-
+ static inline bool pmc_is_gp(struct kvm_pmc *pmc)
+ {
+ 	return pmc->type == KVM_PMC_GP;
+--- a/arch/x86/kvm/svm/pmu.c
++++ b/arch/x86/kvm/svm/pmu.c
+@@ -233,21 +233,6 @@ static void amd_pmu_init(struct kvm_vcpu
+ 	}
+ }
  
+-static void amd_pmu_reset(struct kvm_vcpu *vcpu)
+-{
+-	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+-	int i;
+-
+-	for (i = 0; i < KVM_AMD_PMC_MAX_GENERIC; i++) {
+-		struct kvm_pmc *pmc = &pmu->gp_counters[i];
+-
+-		pmc_stop_counter(pmc);
+-		pmc->counter = pmc->prev_counter = pmc->eventsel = 0;
+-	}
+-
+-	pmu->global_ctrl = pmu->global_status = 0;
+-}
+-
+ struct kvm_pmu_ops amd_pmu_ops __initdata = {
+ 	.hw_event_available = amd_hw_event_available,
+ 	.pmc_idx_to_pmc = amd_pmc_idx_to_pmc,
+@@ -259,7 +244,6 @@ struct kvm_pmu_ops amd_pmu_ops __initdat
+ 	.set_msr = amd_pmu_set_msr,
+ 	.refresh = amd_pmu_refresh,
+ 	.init = amd_pmu_init,
+-	.reset = amd_pmu_reset,
+ 	.EVENTSEL_EVENT = AMD64_EVENTSEL_EVENT,
+ 	.MAX_NR_GP_COUNTERS = KVM_AMD_PMC_MAX_GENERIC,
+ 	.MIN_NR_GP_COUNTERS = AMD64_NUM_COUNTERS,
+--- a/arch/x86/kvm/vmx/pmu_intel.c
++++ b/arch/x86/kvm/vmx/pmu_intel.c
+@@ -632,26 +632,6 @@ static void intel_pmu_init(struct kvm_vc
  
- Orchestrator Drivers
--- 
-2.43.0
-
+ static void intel_pmu_reset(struct kvm_vcpu *vcpu)
+ {
+-	struct kvm_pmu *pmu = vcpu_to_pmu(vcpu);
+-	struct kvm_pmc *pmc = NULL;
+-	int i;
+-
+-	for (i = 0; i < KVM_INTEL_PMC_MAX_GENERIC; i++) {
+-		pmc = &pmu->gp_counters[i];
+-
+-		pmc_stop_counter(pmc);
+-		pmc->counter = pmc->prev_counter = pmc->eventsel = 0;
+-	}
+-
+-	for (i = 0; i < KVM_PMC_MAX_FIXED; i++) {
+-		pmc = &pmu->fixed_counters[i];
+-
+-		pmc_stop_counter(pmc);
+-		pmc->counter = pmc->prev_counter = 0;
+-	}
+-
+-	pmu->fixed_ctr_ctrl = pmu->global_ctrl = pmu->global_status = 0;
+-
+ 	intel_pmu_release_guest_lbr_event(vcpu);
+ }
+ 
 
 
 
