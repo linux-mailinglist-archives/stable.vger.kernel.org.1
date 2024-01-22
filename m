@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B2AC838363
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A3CC837E62
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E2851C29B48
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFCF328A323
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:38:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A3B627F5;
-	Tue, 23 Jan 2024 01:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1927E5F55E;
+	Tue, 23 Jan 2024 00:42:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uf182zbE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="np2+wlKy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3253D22060;
-	Tue, 23 Jan 2024 01:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC41D5DF15;
+	Tue, 23 Jan 2024 00:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974955; cv=none; b=uzTQHFxrwtCUB5YZKItNah+NP9MldUhuUILBEJcy3wY8s//Q2pknR0O6JYEh1VL70ffxC3v5bgZtfZ/u2kcjsgfsZapfgTd2c1NkEW1NwSFwZNok6GoD1BXdVDghSo1EL6PjNhUHuEfrTEIxcZ7vAs4yVYRlMj6ZGbOOkFdmHA4=
+	t=1705970550; cv=none; b=Iw8i+/RyY2m249NwfWdN6+3TQZOi0TElfsmh3/W95amYd2LF70GocYzHSzXLgL+eluaIZZ0qsrwU5Q2hf/BYnxmPyKgQhazWHXyU10dO6n7pomxPuXpzr+NYTQ5NG3PuQukitfiOv+QS2lkwqfrqEsVFLEvMjBlmM1wIUVpSeLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974955; c=relaxed/simple;
-	bh=KcArF0fmfrUwrK4aeRs59x+yzu6O/hRkwxzNlgGthVA=;
+	s=arc-20240116; t=1705970550; c=relaxed/simple;
+	bh=FqB7oBTPbaRNupxG9Tn/3zKd6AMg9H1uuBekyVcPKQo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ETjSeuFqDL7Dro9xqdy9QHqx28rnGSkrtFUdFupAxL9JJc51z0G73nNHq4TfG7iIfDxLSvCQ6ejUeOXLPRRXuXnSgE9eLhJDy+1o8syY2ZXUucwJmmAq34GBkq9oEntPXUNLBCtj/WECCENnEQhhO8U6BZ6gzHegtsTHs+Zsu1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uf182zbE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9011C43390;
-	Tue, 23 Jan 2024 01:55:54 +0000 (UTC)
+	 MIME-Version; b=NJvlrjVzybq9qGc57s4JJDWJEDL/NPMBqsz1VM9xd9gBR5mhAhp9hGtW/5nA7u054WikrMh4487NweuyOC9KwzZlOeU/iq6AtJD7UlmtTQhnFardMD4SV7RENK5o8R4Fhtv+I7yuENgePjhxaY5+6e3PDD2XqaD7pUTlgYocIzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=np2+wlKy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE16C433F1;
+	Tue, 23 Jan 2024 00:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974955;
-	bh=KcArF0fmfrUwrK4aeRs59x+yzu6O/hRkwxzNlgGthVA=;
+	s=korg; t=1705970550;
+	bh=FqB7oBTPbaRNupxG9Tn/3zKd6AMg9H1uuBekyVcPKQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uf182zbE6J0oMLbZbRwcF9RruuI+h/q3iwgFOeG6ADOcWfsGqvFeXJklKksavXC2L
-	 JFSv9f7a3KoAgQx8mxn/xvsMKfBF80zlMF9hn02pKE7u9uX952FGOMzrIQyW8OKvXP
-	 lTFauqtctnQ4fwrIpShBGA45IOWJ48iYzGPqR8B4=
+	b=np2+wlKyXfLNVttuUUeKORo+tzeeCUQ8D0KcLYnI4TWyXPVtzvGU8/Ipy/9pdWo+I
+	 P2nMax2KvyoH58t1uoBzbiMfQLvwC/HnVVv+Tu9oAb34prD7sWg3qJ3ZRxNASlktAb
+	 uWJq6z+pR5vTeSG/KUSbU17sdVHbKBLoh1IYLcWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leone Fernando <leone4fernando@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Kees Cook <keescook@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 167/583] ipmr: support IP_PKTINFO on cache report IGMP msg
+Subject: [PATCH 6.1 050/417] pstore: ram_core: fix possible overflow in persistent_ram_init_ecc()
 Date: Mon, 22 Jan 2024 15:53:38 -0800
-Message-ID: <20240122235817.149563932@linuxfoundation.org>
+Message-ID: <20240122235753.406590061@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leone Fernando <leone4fernando@gmail.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-[ Upstream commit bb7403655b3c3eb245d0ee330047cd3e20b3c4af ]
+[ Upstream commit 86222a8fc16ec517de8da2604d904c9df3a08e5d ]
 
-In order to support IP_PKTINFO on those packets, we need to call
-ipv4_pktinfo_prepare.
+In persistent_ram_init_ecc(), on 64-bit arches DIV_ROUND_UP() will return
+64-bit value since persistent_ram_zone::buffer_size has type size_t which
+is derived from the 64-bit *unsigned long*, while the ecc_blocks variable
+this value gets assigned to has (always 32-bit) *int* type.  Even if that
+value fits into *int* type, an overflow is still possible when calculating
+the size_t typed ecc_total variable further below since there's no cast to
+any 64-bit type before multiplication.  Declaring the ecc_blocks variable
+as *size_t* should fix this mess...
 
-When sending mrouted/pimd daemons a cache report IGMP msg, it is
-unnecessary to set dst on the newly created skb.
-It used to be necessary on older versions until
-commit d826eb14ecef ("ipv4: PKTINFO doesnt need dst reference") which
-changed the way IP_PKTINFO struct is been retrieved.
+Found by Linux Verification Center (linuxtesting.org) with the SVACE static
+analysis tool.
 
-Changes from v1:
-1. Undo changes in ipv4_pktinfo_prepare function. use it directly
-   and copy the control block.
-
-Fixes: d826eb14ecef ("ipv4: PKTINFO doesnt need dst reference")
-Signed-off-by: Leone Fernando <leone4fernando@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 9cc05ad97c57 ("staging: android: persistent_ram: refactor ecc support")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20231105202936.25694-1-s.shtylyov@omp.ru
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ipmr.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ fs/pstore/ram_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/ipmr.c b/net/ipv4/ipmr.c
-index 9e222a57bc2b..0063a237253b 100644
---- a/net/ipv4/ipmr.c
-+++ b/net/ipv4/ipmr.c
-@@ -1025,6 +1025,10 @@ static int ipmr_cache_report(const struct mr_table *mrt,
- 	struct sk_buff *skb;
- 	int ret;
+diff --git a/fs/pstore/ram_core.c b/fs/pstore/ram_core.c
+index 1e755d093d92..f479e0755a24 100644
+--- a/fs/pstore/ram_core.c
++++ b/fs/pstore/ram_core.c
+@@ -190,7 +190,7 @@ static int persistent_ram_init_ecc(struct persistent_ram_zone *prz,
+ {
+ 	int numerr;
+ 	struct persistent_ram_buffer *buffer = prz->buffer;
+-	int ecc_blocks;
++	size_t ecc_blocks;
+ 	size_t ecc_total;
  
-+	mroute_sk = rcu_dereference(mrt->mroute_sk);
-+	if (!mroute_sk)
-+		return -EINVAL;
-+
- 	if (assert == IGMPMSG_WHOLEPKT || assert == IGMPMSG_WRVIFWHOLE)
- 		skb = skb_realloc_headroom(pkt, sizeof(struct iphdr));
- 	else
-@@ -1069,7 +1073,8 @@ static int ipmr_cache_report(const struct mr_table *mrt,
- 		msg = (struct igmpmsg *)skb_network_header(skb);
- 		msg->im_vif = vifi;
- 		msg->im_vif_hi = vifi >> 8;
--		skb_dst_set(skb, dst_clone(skb_dst(pkt)));
-+		ipv4_pktinfo_prepare(mroute_sk, pkt);
-+		memcpy(skb->cb, pkt->cb, sizeof(skb->cb));
- 		/* Add our header */
- 		igmp = skb_put(skb, sizeof(struct igmphdr));
- 		igmp->type = assert;
-@@ -1079,12 +1084,6 @@ static int ipmr_cache_report(const struct mr_table *mrt,
- 		skb->transport_header = skb->network_header;
- 	}
- 
--	mroute_sk = rcu_dereference(mrt->mroute_sk);
--	if (!mroute_sk) {
--		kfree_skb(skb);
--		return -EINVAL;
--	}
--
- 	igmpmsg_netlink_event(mrt, skb);
- 
- 	/* Deliver to mrouted */
+ 	if (!ecc_info || !ecc_info->ecc_size)
 -- 
 2.43.0
 
