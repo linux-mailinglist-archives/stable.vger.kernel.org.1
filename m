@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 099F9837E63
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72784837C52
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B086D28DD74
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:38:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E0291F20CC8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5CB85FB96;
-	Tue, 23 Jan 2024 00:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC11145358;
+	Tue, 23 Jan 2024 00:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixZpiW44"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A7GXKHJq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8280B5DF15;
-	Tue, 23 Jan 2024 00:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42DE14532F;
+	Tue, 23 Jan 2024 00:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970554; cv=none; b=i3lP09I59DFKZxV+TgceWgs947w8KGY8le4GtZVgL+vClg6IhxdmIUufmVWocD8LGWkPZSqZrlrBqOKGp9B+4G2m0ORxfvspVb8m+XBLW2Nfe3nZajpEqx2VsxrroDWtiKIyAtEdVyJ17rh7aJ5NrJoZuh1EBB8DIZwMNe5TOQU=
+	t=1705969578; cv=none; b=UNe7AMVcRnlIxNrnCXzhlO0oobZg5geJ+KVl7nP0bIIWpvJ8r5zIpH3pIvq4I7jPEatb5QInaLsr2Jx+52/uQ+s3SwU7spx7v3jyfNUPB+OBE0hXaDO5o38DgSPxkQCIZBxwgRP4YG+iW2Sc2Rad8DhYjtNjkDzAiU7JlfoqOnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970554; c=relaxed/simple;
-	bh=GJv42Ns44PvxrP/8BqO033q8AAFL+lXhPwuoRPUZ1dU=;
+	s=arc-20240116; t=1705969578; c=relaxed/simple;
+	bh=pYZ9ZboC5YtmzCtpdKRkUJLohhuvzELMugMr5HnyoAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQ7Hcj6J3BtDxJl4bAmmxwJMjLqF54uPUqaZTP2EY9bVTXgcQtOLdWNN75Mqf5gr1Ds6pdMzkMywnAnvnxG2tmkayAxRSrasSc2SRghD2M4ak0mackecTPSBWEExvH1Z0vbGBLbLesTaWa5uhKLDofpMrhlBiKYnm8U1lfRGBGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixZpiW44; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9024C43390;
-	Tue, 23 Jan 2024 00:42:33 +0000 (UTC)
+	 MIME-Version; b=eC4HLX6e3uBVImHSssxyYkWEAynUA60cp6jVBlMdTKh1xUm9yk6r+FG/M/Pl6UunSW3fwUYg8FyESdzGKEgAKKmTpi4FGhpEbP/oWO8KD4opfy9YVC9ZcIv6iGW+4fUIgojkXnCAQYUV0KVj9+fYF1okgEGm8eQ9NyMlmDzkMo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A7GXKHJq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81740C43390;
+	Tue, 23 Jan 2024 00:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970554;
-	bh=GJv42Ns44PvxrP/8BqO033q8AAFL+lXhPwuoRPUZ1dU=;
+	s=korg; t=1705969578;
+	bh=pYZ9ZboC5YtmzCtpdKRkUJLohhuvzELMugMr5HnyoAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ixZpiW44hr31UwryXGWgKD5RMU+SnSWSc/cZvl7iufPkjWjW+p5TeN8SVLdL90XM5
-	 RAhNquK3CnlijiY6L34h41YmxAcQXNOLaq8PXq21FVqb80UTwikewOOTy7PquTJsxv
-	 nfzAHKT+7M0g+XiOi1OvDUmmILuKs+QVrsqojTqY=
+	b=A7GXKHJqmImDIR2Hg4eH2TFJwX9jzRagcd6GGvKEm8Pk8QHtF5uQRV7gHeAKFbi5U
+	 fxmO/EB69X7N1yruJehs4zjO8fYsAYgR9KFYoX0jKhniQDPtsA3RzpDM9Dy6/i2ghR
+	 nViuOuyJ+k/aGfc+0SHVjpVw5k2zK6JsX8nhq6Lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Hu <huyue2@coolpad.com>,
 	Chao Yu <chao@kernel.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 051/417] erofs: fix memory leak on short-lived bounced pages
-Date: Mon, 22 Jan 2024 15:53:39 -0800
-Message-ID: <20240122235753.443183583@linuxfoundation.org>
+Subject: [PATCH 6.7 316/641] f2fs: fix to update iostat correctly in f2fs_filemap_fault()
+Date: Mon, 22 Jan 2024 15:53:40 -0800
+Message-ID: <20240122235827.774736620@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 93d6fda7f926451a0fa1121b9558d75ca47e861e ]
+[ Upstream commit bb34cc6ca87ff78f9fb5913d7619dc1389554da6 ]
 
-Both MicroLZMA and DEFLATE algorithms can use short-lived pages on
-demand for the overlapped inplace I/O decompression.
+In f2fs_filemap_fault(), it fixes to update iostat info only if
+VM_FAULT_LOCKED is tagged in return value of filemap_fault().
 
-However, those short-lived pages are actually added to
-`be->compressed_pages`.  Thus, it should be checked instead of
-`pcl->compressed_bvecs`.
-
-The LZ4 algorithm doesn't work like this, so it won't be impacted.
-
-Fixes: 67139e36d970 ("erofs: introduce `z_erofs_parse_in_bvecs'")
-Reviewed-by: Yue Hu <huyue2@coolpad.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20231128180431.4116991-1-hsiangkao@linux.alibaba.com
+Fixes: 8b83ac81f428 ("f2fs: support read iostat")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zdata.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ fs/f2fs/file.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index 1b91ac5be961..cf9a2fa7f55d 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -1192,12 +1192,11 @@ static int z_erofs_decompress_pcluster(struct z_erofs_decompress_backend *be,
- 		put_page(page);
- 	} else {
- 		for (i = 0; i < pclusterpages; ++i) {
--			page = pcl->compressed_bvecs[i].page;
-+			/* consider shortlived pages added when decompressing */
-+			page = be->compressed_pages[i];
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 37917c634e22..8912511980ae 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -42,7 +42,7 @@ static vm_fault_t f2fs_filemap_fault(struct vm_fault *vmf)
+ 	vm_fault_t ret;
  
- 			if (erofs_page_is_managed(sbi, page))
- 				continue;
--
--			/* recycle all individual short-lived pages */
- 			(void)z_erofs_put_shortlivedpage(be->pagepool, page);
- 			WRITE_ONCE(pcl->compressed_bvecs[i].page, NULL);
- 		}
+ 	ret = filemap_fault(vmf);
+-	if (!ret)
++	if (ret & VM_FAULT_LOCKED)
+ 		f2fs_update_iostat(F2FS_I_SB(inode), inode,
+ 					APP_MAPPED_READ_IO, F2FS_BLKSIZE);
+ 
 -- 
 2.43.0
 
