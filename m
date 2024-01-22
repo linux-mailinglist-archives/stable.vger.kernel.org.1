@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8FAD837F1E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2CE0837CA2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:13:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FA861F2B8D1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79DC61F28FDC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3332260BA5;
-	Tue, 23 Jan 2024 00:49:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F8C1468E2;
+	Tue, 23 Jan 2024 00:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJjpuKiu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eHZPDxXW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59DC3FFE;
-	Tue, 23 Jan 2024 00:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3026C145B30;
+	Tue, 23 Jan 2024 00:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970949; cv=none; b=Qaj81ngHY8G3xwrflLTEVVcSrKQnTYegd7efGcHWIta1Nuk1PY3i8gm187MOu1BN893JikU7rvAGJ52i4godD846cyKf8lQBClQKTJ8SlsEtZOfajS2hoKUPc2j11fNjDL0noc9AQ+jzEn8ah+0UGWuwD5SDBTkvt5MeiPvvW/c=
+	t=1705969700; cv=none; b=ThcAFRp0Bj7jnqwqwvqvVFUfjKTHgf6t7ByKFbf/wKiG0+azqnzgidHIqX5MkVyM4GTcDmNx50NQmdQ7PnXhOKU6iJk4RYQ4ZYHAqCsxe2r/cG9qjNBRl8zGjC5OEKTh17+Hk39+U0VEGD5iw0A8v3t8ZaKbxVlUGDhY5XyZkA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970949; c=relaxed/simple;
-	bh=I46OSm5RdYSZwdkRvwvwDQPHu7CTB/mTlXRxHmEgNls=;
+	s=arc-20240116; t=1705969700; c=relaxed/simple;
+	bh=ZBEt6Y58HhS+t2MpWWN8nxi6M4RjRpdrYZ9O9XgbFYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C+sMXkHFPrYlnp9vTUQg5+V/Jd5L3R7/8eg4y1EG0a7AzxAq6ru5nxZDMFQqbFOrPhtXdKKVoBJlhx7yxlFlx38+lPCYYVmjYJ59yShSq/h391yRq4Lu0cp8etr/JJPSf6x1hHTo4qZeNVMc6iTndu0Y72WzS4iFVd9wlkGjN7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJjpuKiu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D11C43390;
-	Tue, 23 Jan 2024 00:49:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=okJV92O/FXzwOPJlAEJZ3ZVK6E48mrzqHq8lKZLY+b6RVVngjMUdma5enq/oXyQzQnNxigAInLXXWZ8jG3nM1v7OOpBIvQ11U0TD1UTdXPUWWcluCIKkjr8MZ/Nbg/2Gh12pgnwqTGXxo2rBfYcvckE7mmZGI//mOGpDCBuGm5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eHZPDxXW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5396C433C7;
+	Tue, 23 Jan 2024 00:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970948;
-	bh=I46OSm5RdYSZwdkRvwvwDQPHu7CTB/mTlXRxHmEgNls=;
+	s=korg; t=1705969700;
+	bh=ZBEt6Y58HhS+t2MpWWN8nxi6M4RjRpdrYZ9O9XgbFYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AJjpuKiu/uuXXSNewJrYm9Oh3xuGnKiRWHDIzQDcyzZCFTjBHsrB6BTkXoLFH9xtJ
-	 YeYiMfN3T3/lCYbpCzdGmyiLTuel7xNG0rUJRzQtLsOif8zU5sEFhJ/g/oi2Ppqz16
-	 bm8Uvwv4GoY+FM6ODPW93Qh7b1rxF4YrsVgOPB9k=
+	b=eHZPDxXWJq76A6ISrf6grr4SDlZwxN+6ztnCG6IN+usBkBbIKlpu+OYpMmeJspzHs
+	 AJx8L4HJNCIKfjZAk1Y6faH+YIUIZFU64ktG9cqBjy0iHBm+uL14Yc1G6bvWrNX79A
+	 3StCbd7mmOkhT/ApVNBW9+iG/uf04ny4wEgZEt4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 147/417] null_blk: dont cap max_hw_sectors to BLK_DEF_MAX_SECTORS
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Subject: [PATCH 6.7 411/641] serial: core: make sure RS485 cannot be enabled when it is not supported
 Date: Mon, 22 Jan 2024 15:55:15 -0800
-Message-ID: <20240122235756.918714721@linuxfoundation.org>
+Message-ID: <20240122235830.842776316@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 
-[ Upstream commit 9a9525de865410047fa962867b4fcd33943b206f ]
+commit c73986913fa47e71e0b1ad7f039f6444915e8810 upstream.
 
-null_blk has some rather odd capping of the max_hw_sectors value to
-BLK_DEF_MAX_SECTORS, which doesn't make sense - max_hw_sector is the
-hardware limit, and BLK_DEF_MAX_SECTORS despite the confusing name is the
-default cap for the max_sectors field used for normal file system I/O.
+Some uart drivers specify a rs485_config() function and then decide later
+to disable RS485 support for some reason (e.g. imx and ar933).
 
-Remove all the capping, and simply leave it to the block layer or
-user to take up or not all of that for file system I/O.
+In these cases userspace may be able to activate RS485 via TIOCSRS485
+nevertheless, since in uart_set_rs485_config() an existing rs485_config()
+function indicates that RS485 is supported.
 
-Fixes: ea17fd354ca8 ("null_blk: Allow controlling max_hw_sectors limit")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20231227092305.279567-2-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Make sure that this is not longer possible by checking the uarts
+rs485_supported.flags instead and bailing out if SER_RS485_ENABLED is not
+set.
+
+Furthermore instead of returning an empty structure return -ENOTTY if the
+RS485 configuration is requested via TIOCGRS485 but RS485 is not supported.
+This has a small impact on userspace visibility but it is consistent with
+the -ENOTTY error for TIOCGRS485.
+
+Fixes: e849145e1fdd ("serial: ar933x: Fill in rs485_supported")
+Fixes: 55e18c6b6d42 ("serial: imx: Remove serial_rs485 sanitization")
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc:  <stable@vger.kernel.org>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Link: https://lore.kernel.org/r/20240103061818.564-5-l.sanfilippo@kunbus.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/null_blk/main.c | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+ drivers/tty/serial/serial_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index d921653b096b..959952e8ede3 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -2114,10 +2114,8 @@ static int null_add_dev(struct nullb_device *dev)
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -1469,7 +1469,7 @@ static int uart_set_rs485_config(struct
+ 	int ret;
+ 	unsigned long flags;
  
- 	blk_queue_logical_block_size(nullb->q, dev->blocksize);
- 	blk_queue_physical_block_size(nullb->q, dev->blocksize);
--	if (!dev->max_sectors)
--		dev->max_sectors = queue_max_hw_sectors(nullb->q);
--	dev->max_sectors = min(dev->max_sectors, BLK_DEF_MAX_SECTORS);
--	blk_queue_max_hw_sectors(nullb->q, dev->max_sectors);
-+	if (dev->max_sectors)
-+		blk_queue_max_hw_sectors(nullb->q, dev->max_sectors);
+-	if (!port->rs485_config)
++	if (!(port->rs485_supported.flags & SER_RS485_ENABLED))
+ 		return -ENOTTY;
  
- 	if (dev->virt_boundary)
- 		blk_queue_virt_boundary(nullb->q, PAGE_SIZE - 1);
-@@ -2217,12 +2215,6 @@ static int __init null_init(void)
- 		g_bs = PAGE_SIZE;
- 	}
- 
--	if (g_max_sectors > BLK_DEF_MAX_SECTORS) {
--		pr_warn("invalid max sectors\n");
--		pr_warn("defaults max sectors to %u\n", BLK_DEF_MAX_SECTORS);
--		g_max_sectors = BLK_DEF_MAX_SECTORS;
--	}
--
- 	if (g_home_node != NUMA_NO_NODE && g_home_node >= nr_online_nodes) {
- 		pr_err("invalid home_node value\n");
- 		g_home_node = NUMA_NO_NODE;
--- 
-2.43.0
-
+ 	if (copy_from_user(&rs485, rs485_user, sizeof(*rs485_user)))
 
 
 
