@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-15325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7477B8384C7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D4D6837D8F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A18AD1C27ADF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FC8C1C2488B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C7F9768FE;
-	Tue, 23 Jan 2024 02:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD3975811F;
+	Tue, 23 Jan 2024 00:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpuVfL6x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9mYgvLD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD46768F9;
-	Tue, 23 Jan 2024 02:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4A656B68;
+	Tue, 23 Jan 2024 00:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975490; cv=none; b=WRYXcJTGsn0GKAz2N94fMuJ/sjpK4j1Kj5Z/Jql/htksWTfZb2eGG0j2SGHI05CxnqPImS7RQble0HIo+RmuRJNdrvmfjfpOoWVWJJA/vLY4f2SAPx30HXQBMriW3FZc5FOslzRucFOtsrAOtCd6Zy+sbZgiy5XXCS+OafHbupE=
+	t=1705970023; cv=none; b=gS9pnYq0vDIOtTD5z/FkvUd83TFYrcvMpeXGoCs5YcW8yfr4KLpsfy6vc/fD2v4cGGBCmqVJHlYaXLWC5ABnP3CoofFeJImfLZ7rVgs07KDBVvQx2Fn6hU+sRDCXgXFGyzc9dEbw1IZD8SUFcsyWrd2c5nM7bmIsIUiZaRUMzp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975490; c=relaxed/simple;
-	bh=LXUn4yf+G+di8j/j8wRWUmuZFuVCEVubRh1L2xbiGCw=;
+	s=arc-20240116; t=1705970023; c=relaxed/simple;
+	bh=MGFNuJiwz/kSfgt9kjrTOZTKUMW8dQI1YnTfeGIdyA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nzKS2V6dPw0b35NKrVtz5Pr3XrN+84l4fkgQ2nHxSxsN7Bm33e4FIXvqh3zQnoKtcOL/JW82PziEqSGgxvDRmJ0IuBzWPeHCc4TUxFF2YnGN4YHAs6FHNavMELPR4WeuPSs8c9WWuGPu3nb/6xhD8ifMOp+w2p80qYHgQrZygeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpuVfL6x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F4AFC433F1;
-	Tue, 23 Jan 2024 02:04:50 +0000 (UTC)
+	 MIME-Version; b=B4YcdR9K+lKkigoBjIo72RlT54HSm6gfvdGz169BDVDI4VJ1GE5sdQb956FnuwHU4xLNTdJds1lGwpkwV1JZAtrTDKJ0lnsgTOkK2JaIpj1rr3LqZZX3wr/pg13twNj0inSqYMTP8odChlN5QjbtKWpU0s0aGBRd9Wbd0DW1nbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9mYgvLD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 279BFC433F1;
+	Tue, 23 Jan 2024 00:33:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975490;
-	bh=LXUn4yf+G+di8j/j8wRWUmuZFuVCEVubRh1L2xbiGCw=;
+	s=korg; t=1705970023;
+	bh=MGFNuJiwz/kSfgt9kjrTOZTKUMW8dQI1YnTfeGIdyA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DpuVfL6xhHQR7a48c5PQxpGU59MJPk5mpbBiVSTc+6+lyUe3GUoRZYvl7Aqg5nX9u
-	 KDbv6YuKSyjE5ve4AcPV5Hw+oH1gaRKtiPQbEWj+OcwP3BDPJZLzZlTRxPS/1zlDZX
-	 uA+TtTycMx8Xx/kK9KCQiF2u2ZU/0o5wMMsHcaNE=
+	b=m9mYgvLDxq2QgpIFtXJjXTviXkZxrfe6OyYvt1+xTzQ/MY8wD+uVILqJMk86OJfLV
+	 nEc9cmWbLR9rBjRl0rZ8cJmn+ShOyAQ9HB5tux1FsZkH4zQqrlFCRvUUdg+DK5wH9R
+	 J25K8+OqtknSmMl2mooMwagD1xRXGNFCIajW5H2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Tesarik <petr@tesarici.cz>,
-	Jisheng Zhang <jszhang@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 419/583] net: stmmac: fix ethtool per-queue statistics
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Abhijit Gangurde <abhijit.gangurde@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 566/641] cdx: Unlock on error path in rescan_store()
 Date: Mon, 22 Jan 2024 15:57:50 -0800
-Message-ID: <20240122235824.788229303@linuxfoundation.org>
+Message-ID: <20240122235835.872971768@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Tesarik <petr@tesarici.cz>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 61921bdaa132b580b6db6858e6d7dcdb870df5fe upstream.
+[ Upstream commit 1960932eef9183e2dab662fe75126f7fa46e0e6d ]
 
-Fix per-queue statistics for devices with more than one queue.
+We added locking to this function but these two error paths were
+accidentally overlooked.
 
-The output data pointer is currently reset in each loop iteration,
-effectively summing all queue statistics in the first four u64 values.
-
-The summary values are not even labeled correctly. For example, if eth0 has
-2 queues, ethtool -S eth0 shows:
-
-     q0_tx_pkt_n: 374 (actually tx_pkt_n over all queues)
-     q0_tx_irq_n: 23  (actually tx_normal_irq_n over all queues)
-     q1_tx_pkt_n: 462 (actually rx_pkt_n over all queues)
-     q1_tx_irq_n: 446 (actually rx_normal_irq_n over all queues)
-     q0_rx_pkt_n: 0
-     q0_rx_irq_n: 0
-     q1_rx_pkt_n: 0
-     q1_rx_irq_n: 0
-
-Fixes: 133466c3bbe1 ("net: stmmac: use per-queue 64 bit statistics where necessary")
-Cc: stable@vger.kernel.org
-Signed-off-by: Petr Tesarik <petr@tesarici.cz>
-Reviewed-by: Jisheng Zhang <jszhang@kernel.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: f0af81683466 ("cdx: Introduce lock to protect controller ops")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Abhijit Gangurde <abhijit.gangurde@amd.com>
+Link: https://lore.kernel.org/r/a7994b47-6f78-4e2c-a30a-ee5995d428ec@moroto.mountain
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c |    9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/cdx/cdx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
-@@ -543,15 +543,12 @@ static void stmmac_get_per_qstats(struct
- 	u32 rx_cnt = priv->plat->rx_queues_to_use;
- 	unsigned int start;
- 	int q, stat;
--	u64 *pos;
- 	char *p;
- 
--	pos = data;
- 	for (q = 0; q < tx_cnt; q++) {
- 		struct stmmac_txq_stats *txq_stats = &priv->xstats.txq_stats[q];
- 		struct stmmac_txq_stats snapshot;
- 
--		data = pos;
- 		do {
- 			start = u64_stats_fetch_begin(&txq_stats->syncp);
- 			snapshot = *txq_stats;
-@@ -559,17 +556,15 @@ static void stmmac_get_per_qstats(struct
- 
- 		p = (char *)&snapshot + offsetof(struct stmmac_txq_stats, tx_pkt_n);
- 		for (stat = 0; stat < STMMAC_TXQ_STATS; stat++) {
--			*data++ += (*(u64 *)p);
-+			*data++ = (*(u64 *)p);
- 			p += sizeof(u64);
+diff --git a/drivers/cdx/cdx.c b/drivers/cdx/cdx.c
+index 40035dd2e299..7c1c1f82a326 100644
+--- a/drivers/cdx/cdx.c
++++ b/drivers/cdx/cdx.c
+@@ -575,7 +575,8 @@ static ssize_t rescan_store(const struct bus_type *bus,
+ 		pd = of_find_device_by_node(np);
+ 		if (!pd) {
+ 			of_node_put(np);
+-			return -EINVAL;
++			count = -EINVAL;
++			goto unlock;
  		}
+ 
+ 		cdx = platform_get_drvdata(pd);
+@@ -585,6 +586,7 @@ static ssize_t rescan_store(const struct bus_type *bus,
+ 		put_device(&pd->dev);
  	}
  
--	pos = data;
- 	for (q = 0; q < rx_cnt; q++) {
- 		struct stmmac_rxq_stats *rxq_stats = &priv->xstats.rxq_stats[q];
- 		struct stmmac_rxq_stats snapshot;
++unlock:
+ 	mutex_unlock(&cdx_controller_lock);
  
--		data = pos;
- 		do {
- 			start = u64_stats_fetch_begin(&rxq_stats->syncp);
- 			snapshot = *rxq_stats;
-@@ -577,7 +572,7 @@ static void stmmac_get_per_qstats(struct
- 
- 		p = (char *)&snapshot + offsetof(struct stmmac_rxq_stats, rx_pkt_n);
- 		for (stat = 0; stat < STMMAC_RXQ_STATS; stat++) {
--			*data++ += (*(u64 *)p);
-+			*data++ = (*(u64 *)p);
- 			p += sizeof(u64);
- 		}
- 	}
+ 	return count;
+-- 
+2.43.0
+
 
 
 
