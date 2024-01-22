@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-14318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7393683806A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02FF88380D3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 102E61F2CD07
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B068828D414
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2CD966B52;
-	Tue, 23 Jan 2024 01:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5D013473C;
+	Tue, 23 Jan 2024 01:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GA+HuP9e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3gnJdYC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E47612DDAA;
-	Tue, 23 Jan 2024 01:01:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9BF133435;
+	Tue, 23 Jan 2024 01:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971707; cv=none; b=CgFotmyXaW/pmsM8U9JuUKEhcYmnAB3566j/y0eVpd9jr3Gn2TdG0Si6WOXhra7ASCJj7UJG0ctIQq3zDgbSls/TD8iNFmztn4ZSMUQytaFnGK16dGUZjCirARoUTOrlNrQe4Nkp3+vw8bAjYJRT4vaDUSnA+Vw7o7GB/eF/ZRA=
+	t=1705971914; cv=none; b=U3pWcAT8TWdOz1495+Oz0FYpWlpyCa/JsBh3cEWS0vYTG9JbLYpWpNdmUyx5gLVYGRSZs7EA6eyRDlc6gWPGnciT0MmF+ZOPYpGxwNt1BHg2CRU8JIMz0rqx4u526kSy3QDZUXOkNu7XQSU8OSRL6jaRSD+OEpAoHkN9ypnNTZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971707; c=relaxed/simple;
-	bh=hGp7eyFscusuLwGSpVM0qH8ciEtoPbBQF+iFe6Ij/Gc=;
+	s=arc-20240116; t=1705971914; c=relaxed/simple;
+	bh=//mPx3NEZtBtuYfMw1gm8HpziCrMEqvhBKLooMBKJOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jGvtBHQcvjIH9tmxfEBlpPkoZmoWZrmsfFc1JazjCWiu01e21VpwiPtMvns+w0Qw/rUgnSlwkpsTsI216hTZarvsVOQvZ+cGfH7NUpUOSPylhsVb+tzXN1x/e+OenKNWUPQoVO5JzGkwBOtwiI7isbWFLnTaJQxvcK+Hv/jyB5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GA+HuP9e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0456C433C7;
-	Tue, 23 Jan 2024 01:01:46 +0000 (UTC)
+	 MIME-Version; b=YdV+4vjmxLnRYj2JmO7XBNHjGj9tDkPypryPaDl4pXwWqUShi3fJx0H9xP+0ObetsRlEpaQJ6AjngHbRyKJYAsRGcwnrqJn0P/fUec9+XmKHneaoj7WT9o2pI669BHuYn/u9LntXJPs4vwqCCKzkjLivnoF8PkF+oxfXNjZtEbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S3gnJdYC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A10B0C433F1;
+	Tue, 23 Jan 2024 01:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971707;
-	bh=hGp7eyFscusuLwGSpVM0qH8ciEtoPbBQF+iFe6Ij/Gc=;
+	s=korg; t=1705971913;
+	bh=//mPx3NEZtBtuYfMw1gm8HpziCrMEqvhBKLooMBKJOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GA+HuP9eYK+yG0MYCwi+5ZOWQOTomBfW3IhgwU8Kiwp5+Efg2E0GGFADLZV2BXNFH
-	 Iop9c7cJ35bJLaHe88wOBCpIqmr2keBdESRkqkXqK99Hu4BmEFVOXr62rkfDRiY9X7
-	 UbI9OyORzGKgzVrsFLpP/6CKlaFuDm5eGbJpeAYE=
+	b=S3gnJdYCJHRdImh35HJrT3I23UOEs8SZk5GEX9LrSl4Ax0IeQJYCvTc9Wc++XWaMT
+	 5PX8WKwlKC1kyDd7sxVAWIGYAkE7W3trzuOQDXhmnm0NgXpgvdmOIjUK9ZrwzRCdQU
+	 SPuYIzS8qPKMZJEA3E2UwPc1a2HJkXE/H/xwXvYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 5.10 198/286] binder: fix async space check for 0-sized buffers
+	Jan Palus <jpalus@fastmail.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 336/417] power: supply: cw2015: correct time_to_empty units in sysfs
 Date: Mon, 22 Jan 2024 15:58:24 -0800
-Message-ID: <20240122235739.741638894@linuxfoundation.org>
+Message-ID: <20240122235803.421239095@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Jan Palus <jpalus@fastmail.com>
 
-commit 3091c21d3e9322428691ce0b7a0cfa9c0b239eeb upstream.
+[ Upstream commit f37669119423ca852ca855b24732f25c0737aa57 ]
 
-Move the padding of 0-sized buffers to an earlier stage to account for
-this round up during the alloc->free_async_space check.
+RRT_ALRT register holds remaining battery time in minutes therefore it
+needs to be scaled accordingly when exposing TIME_TO_EMPTY via sysfs
+expressed in seconds
 
-Fixes: 74310e06be4d ("android: binder: Move buffer out of area shared with user space")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-5-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b4c7715c10c1 ("power: supply: add CellWise cw2015 fuel gauge driver")
+Signed-off-by: Jan Palus <jpalus@fastmail.com>
+Link: https://lore.kernel.org/r/20231111221704.5579-1-jpalus@fastmail.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder_alloc.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/power/supply/cw2015_battery.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -415,6 +415,10 @@ static struct binder_buffer *binder_allo
- 				alloc->pid, extra_buffers_size);
- 		return ERR_PTR(-EINVAL);
- 	}
-+
-+	/* Pad 0-size buffers so they get assigned unique addresses */
-+	size = max(size, sizeof(void *));
-+
- 	if (is_async &&
- 	    alloc->free_async_space < size + sizeof(struct binder_buffer)) {
- 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
-@@ -423,9 +427,6 @@ static struct binder_buffer *binder_allo
- 		return ERR_PTR(-ENOSPC);
- 	}
+diff --git a/drivers/power/supply/cw2015_battery.c b/drivers/power/supply/cw2015_battery.c
+index 473522b4326a..9d957cf8edf0 100644
+--- a/drivers/power/supply/cw2015_battery.c
++++ b/drivers/power/supply/cw2015_battery.c
+@@ -491,7 +491,7 @@ static int cw_battery_get_property(struct power_supply *psy,
  
--	/* Pad 0-size buffers so they get assigned unique addresses */
--	size = max(size, sizeof(void *));
--
- 	while (n) {
- 		buffer = rb_entry(n, struct binder_buffer, rb_node);
- 		BUG_ON(!buffer->free);
+ 	case POWER_SUPPLY_PROP_TIME_TO_EMPTY_NOW:
+ 		if (cw_battery_valid_time_to_empty(cw_bat))
+-			val->intval = cw_bat->time_to_empty;
++			val->intval = cw_bat->time_to_empty * 60;
+ 		else
+ 			val->intval = 0;
+ 		break;
+-- 
+2.43.0
+
 
 
 
