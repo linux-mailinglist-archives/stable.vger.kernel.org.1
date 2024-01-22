@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-15177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB2CB838439
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5AD6837F5B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 834F3298BA3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 244A31C2896A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 989FD6A023;
-	Tue, 23 Jan 2024 02:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065606312D;
+	Tue, 23 Jan 2024 00:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V77X7gFh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7V4Aenp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551BE6A03B;
-	Tue, 23 Jan 2024 02:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA0376312A;
+	Tue, 23 Jan 2024 00:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975331; cv=none; b=n3TbPeGlufGUYz8qBYTM+mLRvBtj05cW2+G6Ewyy5cTA6gS/O6Qi23O/Xk9+uPCwwVUF9wsf2iLOKuOOBJB2vWtM3pClxCVcefL9r6waXM25le2YtP9bTSh7wMHvrvdF9IAWeGIbWSWmoomfM5Bmlkg3SJJVHV6ndIuHJc9JWBI=
+	t=1705971083; cv=none; b=lE3fb4LkEztymYL7XJ1IW6OvctKsVCKldTU4Oh3lnvztAs66EY0eaBaG5Lsy08esLaeh3CS7HYYuvzrYjoL2CPQsR+QBjo16+57WXf8Rm1dvrccE+P9HeaUS7o3UhHni83vd4Qe2pcE5paOAXBLuhzRiQbrJB18wkIZ6yNQVi2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975331; c=relaxed/simple;
-	bh=YR5rpRPsa7zqZMJvazJAfbqyu09rqQI3/vyhSr92dzU=;
+	s=arc-20240116; t=1705971083; c=relaxed/simple;
+	bh=HZYyiNi5L5UF7uhJW+Zits+TCcSK/J6bSHdwpG2mU64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WePxZfI1SD9goVYAiIzZvdHKmYvvbV4hd9wsxf04hJeBMtngXBDcRaiOSpDnU39Z/7sIXdAmWljq+3QKxR72nEazasFnMWxikIEmOeWlsyfs5OxN+DY4My60FKlJf/5E45N8XHc5DIStli6ovggmP6NMRI59zXk9NdnPQkU8DQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V77X7gFh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16DECC43394;
-	Tue, 23 Jan 2024 02:02:11 +0000 (UTC)
+	 MIME-Version; b=taZOYAxuQlbzw5yEk2m4oZdzamFR6xfn+/Y1zneA5XAWoDdBKgHKjHa/glOswOJMTscGnrUytQXrAozLCyCH6sUTQ8REz9DXQAGI1wDskpr1VsWN1L9b/glYmTH/KIlpAcr5eG2+MKhGs5ZuarQXeryhgQo6FTsAyDAPx1WI0u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7V4Aenp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BF4C43390;
+	Tue, 23 Jan 2024 00:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975331;
-	bh=YR5rpRPsa7zqZMJvazJAfbqyu09rqQI3/vyhSr92dzU=;
+	s=korg; t=1705971083;
+	bh=HZYyiNi5L5UF7uhJW+Zits+TCcSK/J6bSHdwpG2mU64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V77X7gFh+VWjZQ3NQPad7E1UoO7HEVsgzyltjTe5xehfAIJWQMG4f+hPn5r1n2NYF
-	 CwTAmiFVoUnB2SpDETggBqk7nae6A1QMySQ5hRNcE/MAC53zxgIk5sEG2bM/xOLPm+
-	 9vshumRkM0VFM99VNR3QIRSX87JxXPAijXcgJneo=
+	b=F7V4AenpDEOhb4rdro6gIb2gGjtfhlmGiPbnqviKpAu8HP9zNqRUXE43q5/WqzZNo
+	 ECUjbILmutfxsHXOV3zpN/ndQJu4h/X2mP3MYSa7nZ99NeSVLYkSNqx50EgfW2MAKS
+	 2goGb5RJivhxW6cLW3OIbwcAXwqxg430nBH/rvwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 294/583] dt-bindings: clock: Update the videocc resets for sm8150
+Subject: [PATCH 6.1 177/417] drm/tidss: Check for K2G in in dispc_softreset()
 Date: Mon, 22 Jan 2024 15:55:45 -0800
-Message-ID: <20240122235821.010007775@linuxfoundation.org>
+Message-ID: <20240122235757.997622296@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 3185f96968eedd117ec72ee7b87ead44b6d1bbbd ]
+[ Upstream commit 151825150cf9c2e9fb90763d35b9dff3783628ac ]
 
-Add all the available resets for the video clock controller
-on sm8150.
+K2G doesn't have softreset feature. Instead of having every caller of
+dispc_softreset() check for K2G, move the check into dispc_softreset(),
+and make dispc_softreset() return 0 in case of K2G.
 
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20231201-videocc-8150-v3-1-56bec3a5e443@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 1fd9a939db24 ("clk: qcom: videocc-sm8150: Update the videocc resets")
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Link: https://lore.kernel.org/r/20231109-tidss-probe-v2-6-ac91b5ea35c0@ideasonboard.com
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Stable-dep-of: bc288a927815 ("drm/tidss: Fix dss reset")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/dt-bindings/clock/qcom,videocc-sm8150.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/tidss/tidss_dispc.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/include/dt-bindings/clock/qcom,videocc-sm8150.h b/include/dt-bindings/clock/qcom,videocc-sm8150.h
-index e24ee840cfdb..c557b78dc572 100644
---- a/include/dt-bindings/clock/qcom,videocc-sm8150.h
-+++ b/include/dt-bindings/clock/qcom,videocc-sm8150.h
-@@ -16,6 +16,10 @@
+diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
+index 591f0606f7f8..4bdd4c7b4991 100644
+--- a/drivers/gpu/drm/tidss/tidss_dispc.c
++++ b/drivers/gpu/drm/tidss/tidss_dispc.c
+@@ -2658,6 +2658,10 @@ static int dispc_softreset(struct dispc_device *dispc)
+ 	u32 val;
+ 	int ret = 0;
  
- /* VIDEO_CC Resets */
- #define VIDEO_CC_MVSC_CORE_CLK_BCR	0
-+#define VIDEO_CC_INTERFACE_BCR		1
-+#define VIDEO_CC_MVS0_BCR		2
-+#define VIDEO_CC_MVS1_BCR		3
-+#define VIDEO_CC_MVSC_BCR		4
++	/* K2G display controller does not support soft reset */
++	if (dispc->feat->subrev == DISPC_K2G)
++		return 0;
++
+ 	/* Soft reset */
+ 	REG_FLD_MOD(dispc, DSS_SYSCONFIG, 1, 1, 1);
+ 	/* Wait for reset to complete */
+@@ -2778,12 +2782,9 @@ int dispc_init(struct tidss_device *tidss)
+ 	of_property_read_u32(dispc->dev->of_node, "max-memory-bandwidth",
+ 			     &dispc->memory_bandwidth_limit);
  
- /* VIDEO_CC GDSCRs */
- #define VENUS_GDSC			0
+-	/* K2G display controller does not support soft reset */
+-	if (feat->subrev != DISPC_K2G) {
+-		r = dispc_softreset(dispc);
+-		if (r)
+-			return r;
+-	}
++	r = dispc_softreset(dispc);
++	if (r)
++		return r;
+ 
+ 	tidss->dispc = dispc;
+ 
 -- 
 2.43.0
 
