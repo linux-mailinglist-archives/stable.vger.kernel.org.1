@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043BC837F75
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:42 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B702C838254
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:19:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 378B01C290A2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EC832861A3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:19:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB13629E7;
-	Tue, 23 Jan 2024 00:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA1595B1FB;
+	Tue, 23 Jan 2024 01:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSsREJHo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aSsszSma"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33620629E2;
-	Tue, 23 Jan 2024 00:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1745B213;
+	Tue, 23 Jan 2024 01:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971144; cv=none; b=XEe9c1DSXHQuaK75BwKj3SHpLAhNLmLeo93fYp0v6QdEVGpk1JK5FZgzjXLBmINNQSl9HDMFfcUqRgrB7WhUU4aQitIk2SM2gDSR/CZ9O8WrwklFHznLzR9gxjzzUI7Nc6Xbp9s2AN4ZhTivEOAKS1IOqwA/mFtSWmxlYpG7t+k=
+	t=1705974326; cv=none; b=P6iomX5piDvnl0WveUbwzBkVbcO41eXQmTwfvgQZBm+olCmLJeyJyHvOV7kBYVAaTB6/EaUXPQdSGNXjjNsxGH+Wi1puctHJYopxqJHU7NNHc9kH9rzEogsluX9eKxM3qzZ2p1DSDmHAA9yepJulycV+bp2cwhUN8uuW8p4ZM9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971144; c=relaxed/simple;
-	bh=yMqOdIrFgOWqtR1n2DtCnG817Vsb2mj+M6pfEydbC0I=;
+	s=arc-20240116; t=1705974326; c=relaxed/simple;
+	bh=WZVQa+4PwMgsGByaeTOJkoHC/0vPz7Z2VOQJ6/Wu6uY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RfNDEwRNHg/zRBT2rJriZVmKvz+mf2M2VYNrd0X0YyH9/i8ZNFXwiFFt8jDWX6ONqyPPK3IQpjt6PZLATM/WVfgunR5UA+YXNxHLsP39w35eWT6riOw+gATmcOFlJjeUQxIEcow0MN4kWYKVY1DiRCJMztYy8tNt4GOCiITlavE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSsREJHo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DEAAC43390;
-	Tue, 23 Jan 2024 00:52:21 +0000 (UTC)
+	 MIME-Version; b=AkVpENevdfGHZ+qxHzEexUI4QfkepDOXL+pMJRXvKQRDy4HE3xLMjyOxyygAKV9E8P7Yikz1OHfJUMZhcHISHoAQi1FdV7QPK8QT64bD6MkMKVqUWZlsRMTTSvIzksKF9nrUlC4EcaJf+jvFUDVeDhMAvxAbWbQmOS/13FqV6cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aSsszSma; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F5D9C433F1;
+	Tue, 23 Jan 2024 01:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971142;
-	bh=yMqOdIrFgOWqtR1n2DtCnG817Vsb2mj+M6pfEydbC0I=;
+	s=korg; t=1705974325;
+	bh=WZVQa+4PwMgsGByaeTOJkoHC/0vPz7Z2VOQJ6/Wu6uY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hSsREJHoy3RF6BYml8tOWRHAAUibEIbgzltFO5DAwGFI4JXLVQG/vsuyaccb4lgvr
-	 4Z8Zcv5THVPLwvhYigLrLGD2quCLr/HNoU9Z8t2QQK80/p5jFNcfVg6txIYuNBLK0C
-	 1Tfh1I8OnWcU3GTWW12ZcbfUYtSh7tp+5LICLBYI=
+	b=aSsszSmaOMR/EvqtESd+RPy10gp/SA25/5z8yXQtQtGduni+2ugPJMBJ1rdhxbxhS
+	 TkiIBX06XtPeMDfqsqT06URLGkKVYVnQuvpnTm3YOxXhFoPzGf2MJtmuvyx2F7zFxc
+	 Gw53u2XX+7IAn2kUHQIMIig7ixk5ROtDHHidkqhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangyangxin <wangyangxin1@huawei.com>,
-	Gonglei <arei.gonglei@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 097/286] crypto: virtio - Wait for tasklet to complete on device remove
+Subject: [PATCH 5.15 147/374] selftests/net: fix grep checking for fib_nexthop_multiprefix
 Date: Mon, 22 Jan 2024 15:56:43 -0800
-Message-ID: <20240122235735.804963582@linuxfoundation.org>
+Message-ID: <20240122235749.747500688@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangyangxin <wangyangxin1@huawei.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 67cc511e8d436456cc98033e6d4ba83ebfc8e672 ]
+[ Upstream commit a33e9da3470499e9ff476138f271fb52d6bfe767 ]
 
-The scheduled tasklet needs to be executed on device remove.
+When running fib_nexthop_multiprefix test I saw all IPv6 test failed.
+e.g.
 
-Fixes: fed93fb62e05 ("crypto: virtio - Handle dataq logic with tasklet")
-Signed-off-by: wangyangxin <wangyangxin1@huawei.com>
-Signed-off-by: Gonglei <arei.gonglei@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+ ]# ./fib_nexthop_multiprefix.sh
+ TEST: IPv4: host 0 to host 1, mtu 1300                              [ OK ]
+ TEST: IPv6: host 0 to host 1, mtu 1300                              [FAIL]
+
+ With -v it shows
+
+ COMMAND: ip netns exec h0 /usr/sbin/ping6 -s 1350 -c5 -w5 2001:db8:101::1
+ PING 2001:db8:101::1(2001:db8:101::1) 1350 data bytes
+ From 2001:db8:100::64 icmp_seq=1 Packet too big: mtu=1300
+
+ --- 2001:db8:101::1 ping statistics ---
+ 1 packets transmitted, 0 received, +1 errors, 100% packet loss, time 0ms
+
+ Route get
+ 2001:db8:101::1 via 2001:db8:100::64 dev eth0 src 2001:db8:100::1 metric 1024 expires 599sec mtu 1300 pref medium
+ Searching for:
+     2001:db8:101::1 from :: via 2001:db8:100::64 dev eth0 src 2001:db8:100::1 .* mtu 1300
+
+The reason is when CONFIG_IPV6_SUBTREES is not enabled, rt6_fill_node() will
+not put RTA_SRC info. After fix:
+
+]# ./fib_nexthop_multiprefix.sh
+TEST: IPv4: host 0 to host 1, mtu 1300                              [ OK ]
+TEST: IPv6: host 0 to host 1, mtu 1300                              [ OK ]
+
+Fixes: 735ab2f65dce ("selftests: Add test with multiple prefixes using single nexthop")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://lore.kernel.org/r/20231213060856.4030084-7-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/virtio/virtio_crypto_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/net/fib_nexthop_multiprefix.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/virtio/virtio_crypto_core.c b/drivers/crypto/virtio/virtio_crypto_core.c
-index 630af33929ef..3da956145892 100644
---- a/drivers/crypto/virtio/virtio_crypto_core.c
-+++ b/drivers/crypto/virtio/virtio_crypto_core.c
-@@ -488,11 +488,14 @@ static void virtcrypto_free_unused_reqs(struct virtio_crypto *vcrypto)
- static void virtcrypto_remove(struct virtio_device *vdev)
- {
- 	struct virtio_crypto *vcrypto = vdev->priv;
-+	int i;
+diff --git a/tools/testing/selftests/net/fib_nexthop_multiprefix.sh b/tools/testing/selftests/net/fib_nexthop_multiprefix.sh
+index 51df5e305855..b52d59547fc5 100755
+--- a/tools/testing/selftests/net/fib_nexthop_multiprefix.sh
++++ b/tools/testing/selftests/net/fib_nexthop_multiprefix.sh
+@@ -209,12 +209,12 @@ validate_v6_exception()
+ 		echo "Route get"
+ 		ip -netns h0 -6 ro get ${dst}
+ 		echo "Searching for:"
+-		echo "    ${dst} from :: via ${r1} dev eth0 src ${h0} .* mtu ${mtu}"
++		echo "    ${dst}.* via ${r1} dev eth0 src ${h0} .* mtu ${mtu}"
+ 		echo
+ 	fi
  
- 	dev_info(&vdev->dev, "Start virtcrypto_remove.\n");
+ 	ip -netns h0 -6 ro get ${dst} | \
+-	grep -q "${dst} from :: via ${r1} dev eth0 src ${h0} .* mtu ${mtu}"
++	grep -q "${dst}.* via ${r1} dev eth0 src ${h0} .* mtu ${mtu}"
+ 	rc=$?
  
- 	if (virtcrypto_dev_started(vcrypto))
- 		virtcrypto_dev_stop(vcrypto);
-+	for (i = 0; i < vcrypto->max_data_queues; i++)
-+		tasklet_kill(&vcrypto->data_vq[i].done_task);
- 	vdev->config->reset(vdev);
- 	virtcrypto_free_unused_reqs(vcrypto);
- 	virtcrypto_clear_crypto_engines(vcrypto);
+ 	log_test $rc 0 "IPv6: host 0 to host ${i}, mtu ${mtu}"
 -- 
 2.43.0
 
