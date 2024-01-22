@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDCF1838134
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE3FF837EA1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F02A81C26CD5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9392C1F2509C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4C71487C7;
-	Tue, 23 Jan 2024 01:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D2760BA4;
+	Tue, 23 Jan 2024 00:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aDRXGLd9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yr5Mozjo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8783E1419B4;
-	Tue, 23 Jan 2024 01:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434E14BAA4;
+	Tue, 23 Jan 2024 00:45:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972065; cv=none; b=pKZtYXAW9ezXoRNRFQixhF9HFlmsZjlmuFhkR8IJuBn1IM6BnWkMoiiU6F84cS4BS0OJtTz4ryyOI426BcgaivBStiEhGa+tQUZu2JGyR26uMZ/GOKLs1NOoZ7RX/TIkPt7t1TxDUpMXoNMnXlKJjwY7+6BHXyjw0PAu7bkzLh4=
+	t=1705970724; cv=none; b=ITCWKhrS1V29B2xXHbqJyK6TTnHf05E2E6C2Kitt83ZSyjrl0NYRTdq9fnERD9/DYmnCNlkMIo3arJeOGuz+1Y87TvCC9rWOFBEmySoc2zC2DD5mW/T9KvoHN4bdTtk2og5M78i63zNG60+2i0BjAiMOTCa+RefKN1ZKmRrdGEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972065; c=relaxed/simple;
-	bh=IveJ2pMouNksD4/gJSReYhs5QZWUsqAY9CzlmA299hw=;
+	s=arc-20240116; t=1705970724; c=relaxed/simple;
+	bh=MoDMa0Zlrq58ZLq6tcvOnC8Lhc8E66GOW1nTWEGdo4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cVfKT9zQeDmOJC+TuJ0BwtNcQFELe3qwnzqAsweGPUCEUon4xJun+jgNQMQTxIG63K7L3B7AfvzSb4C9Q4v8rbysdVGBXZtreTksYcspZB0gs0dfeIglfWJPju0Y/7/LY+TGuup4Cth4anCIQEd1BoUsSlwo3z9Fb0iOOUO6f1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aDRXGLd9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4478AC433F1;
-	Tue, 23 Jan 2024 01:07:45 +0000 (UTC)
+	 MIME-Version; b=fBjpFJJwI86obMO/chrcyKnmNGWJ+UeKcLylJM4fhhmxXTikqWusNVAKU6tE4RIzAnCxkDY2A2DB4HNL65/FJ/ZcauCk47O2j6cRevbNR4pcYNGiIH0o8gr7lgiNxrG8n8lgZeFSfwbtAqqZX88xZXRMfreqSr9DYo9o+QgwjHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yr5Mozjo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 038A7C433C7;
+	Tue, 23 Jan 2024 00:45:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972065;
-	bh=IveJ2pMouNksD4/gJSReYhs5QZWUsqAY9CzlmA299hw=;
+	s=korg; t=1705970724;
+	bh=MoDMa0Zlrq58ZLq6tcvOnC8Lhc8E66GOW1nTWEGdo4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aDRXGLd9RLRCAOmkCmg6xweCjFxJ4pyMViefF0DDoY8P73hbqyFxdSXqVd5uVTYLX
-	 bdjuQrz18b/YUL6qd+eQAfM0t71M/WZyhurjRhp+W7kac2Lf2GG7bykxanR4HQu0dW
-	 2Tgs4MRJXx3JfUPjKUR8BAB7nZ0HF3Dc+B5Idd/w=
+	b=yr5MozjoGJZroB8Pb6VaYVaSMz07OicEI5VyTyhrfj9IHIZRujk2X6n1nKVgc6S/S
+	 yUX4kHXHQkSRa5m40uuig7dV+YXjHbLisutbQX130qIgeTDg9LPR3P7bY233aPJP3v
+	 ilCpPJS/diTuaTpYddPL55aNoAutNJzStiW/axXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 5.15 001/374] f2fs: explicitly null-terminate the xattr list
+	Guenter Roeck <linux@roeck-us.net>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 089/417] arm64: dts: qcom: sm8150: Make watchdog bark interrupt edge triggered
 Date: Mon, 22 Jan 2024 15:54:17 -0800
-Message-ID: <20240122235744.658311870@linuxfoundation.org>
+Message-ID: <20240122235754.780058152@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@google.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-commit e26b6d39270f5eab0087453d9b544189a38c8564 upstream.
+[ Upstream commit 9204e9a4099212c850e1703c374ef4538080825b ]
 
-When setting an xattr, explicitly null-terminate the xattr list.  This
-eliminates the fragile assumption that the unused xattr space is always
-zeroed.
+As described in the patch ("arm64: dts: qcom: sc7180: Make watchdog
+bark interrupt edge triggered"), the Qualcomm watchdog timer's bark
+interrupt should be configured as edge triggered. Make the change.
 
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b094c8f8dd2a ("arm64: dts: qcom: sm8150: Add watchdog bark interrupt")
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20231106144335.v2.4.I23d0aa6c8f1fec5c26ad9b3c610df6f4c5392850@changeid
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/xattr.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm64/boot/dts/qcom/sm8150.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/f2fs/xattr.c
-+++ b/fs/f2fs/xattr.c
-@@ -745,6 +745,12 @@ static int __f2fs_setxattr(struct inode
- 		memcpy(pval, value, size);
- 		last->e_value_size = cpu_to_le16(size);
- 		new_hsize += newsize;
-+		/*
-+		 * Explicitly add the null terminator.  The unused xattr space
-+		 * is supposed to always be zeroed, which would make this
-+		 * unnecessary, but don't depend on that.
-+		 */
-+		*(u32 *)((u8 *)last + newsize) = 0;
- 	}
+diff --git a/arch/arm64/boot/dts/qcom/sm8150.dtsi b/arch/arm64/boot/dts/qcom/sm8150.dtsi
+index c586378fc6bc..c3c12b0cd416 100644
+--- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
+@@ -3940,7 +3940,7 @@ watchdog@17c10000 {
+ 			compatible = "qcom,apss-wdt-sm8150", "qcom,kpss-wdt";
+ 			reg = <0 0x17c10000 0 0x1000>;
+ 			clocks = <&sleep_clk>;
+-			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_SPI 0 IRQ_TYPE_EDGE_RISING>;
+ 		};
  
- 	error = write_all_xattrs(inode, new_hsize, base_addr, ipage);
+ 		timer@17c20000 {
+-- 
+2.43.0
+
 
 
 
