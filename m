@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC198838339
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9133837E2F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF34B1C298A4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CC2B1F277FC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667E360B9F;
-	Tue, 23 Jan 2024 01:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDA95C8E5;
+	Tue, 23 Jan 2024 00:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MorrnOXH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPT4eRIL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2427260B99;
-	Tue, 23 Jan 2024 01:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2C7EAE8;
+	Tue, 23 Jan 2024 00:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974740; cv=none; b=SlJtndfLTRAs+9yNIx6gYLZeoWFIfrVJQWMZn3HmVHRANSkhX6q5oOa+GRNxGD1OYEkzuLOQt8DZx7y9N9FX4s8kydVjzSsk1kiVbZ41IRjjdFExFjsuUZi69Q3HUvWV8KvYztj1GraGKMQ1wTyL2OmM4LzOUxLlghv7uSFOzyA=
+	t=1705970422; cv=none; b=aU9OTeohsLE+36g4D4DsLkZjychKNok1on9AW1pRG3Hk5MDrXpS4KBFgLwGZ8zxm8h3L1KJFPS+/qtLp4L9BwT+iPWrcIxXc/h0cfpJhovgS0ml4iS+Tc/4UwjP4rw0nfJT/H+alHngtRWv3hhiKLQQs08F0d4+QB3oxMqM3ZYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974740; c=relaxed/simple;
-	bh=ou3pOO4qFxBfxNdXuG1Wq5Y4IoRJ0EPTNe9SAeETZ/E=;
+	s=arc-20240116; t=1705970422; c=relaxed/simple;
+	bh=YIgznOFsPImxZcK4QacEACSw5o01yBUcfUOHOVx5xRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hq+45nca3C9VT25fWXHAP5vR8sZDCbmNMM6N2fi+QDxPoT4bRSsFB7lrp0Y0ABqavgWK3EIDQAQ7QwNzXN8zQJzt3IywiwmXQSE3fp7k37Ag1wstobr3lSYW5ZTKCktti635sak+N2MMT/mi1rHwWLAhB1gwXHQ+8wOebzcr2AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MorrnOXH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED55C43390;
-	Tue, 23 Jan 2024 01:52:19 +0000 (UTC)
+	 MIME-Version; b=bRyv15JsIhQrz0shnilHJ+Z+C/NHKAAkK8/UViT1C0wP3holv7nZKVH26lJwKPtX1IlEqiSfatk5v9DcswwEToqZBlg4AgEAs3AXVz4VVsOKCGIP8myTEY6z3UlyDwFqs2qfeH3kOoUAMW8Xc7wepGs6pW4st2hDcZw/sxWPlys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPT4eRIL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29977C43394;
+	Tue, 23 Jan 2024 00:40:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974740;
-	bh=ou3pOO4qFxBfxNdXuG1Wq5Y4IoRJ0EPTNe9SAeETZ/E=;
+	s=korg; t=1705970421;
+	bh=YIgznOFsPImxZcK4QacEACSw5o01yBUcfUOHOVx5xRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MorrnOXHHFRuhXyIfhhiI9a5hakNfEjnTwTienmW8LhmzmCp/FgNnpt9vCADQ9bvq
-	 teX1/pwBKTkLq/XKXigF0dBfTpnbl3hNzbU2MpgRN8MDtvGKUxeVihzzoli3/t8c6k
-	 NsgfJ+rwAKCxRLBFZVMSz02Bg74lOy7JJAkFcVi0=
+	b=gPT4eRILCGUR2q0zFljkDLF8576Kcjhi94J5hc/3T1CY9x6hhdhUUfct9S+ura72q
+	 oVqHlGKUgdsNIoFlhn4aQ0u1ArG+YeoIIG1siSTPy0IzYDidrrdlPxO6lidMrMLhwx
+	 Ln1a4N+rdgFwGW1cC0qy5f0Ck8DjHTm1vO28att8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Nikita Kiryushin <kiryushin@ancud.ru>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 133/583] arm64: dts: qcom: sc7280: fix usb_2 wakeup interrupt types
+Subject: [PATCH 6.1 016/417] ACPI: LPIT: Avoid u32 multiplication overflow
 Date: Mon, 22 Jan 2024 15:53:04 -0800
-Message-ID: <20240122235816.193361260@linuxfoundation.org>
+Message-ID: <20240122235752.087435482@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Nikita Kiryushin <kiryushin@ancud.ru>
 
-[ Upstream commit 24f8aba9a7c77c7e9d814a5754798e8346c7dd28 ]
+[ Upstream commit 56d2eeda87995245300836ee4dbd13b002311782 ]
 
-The DP/DM wakeup interrupts are edge triggered and which edge to trigger
-on depends on use-case and whether a Low speed or Full/High speed device
-is connected.
+In lpit_update_residency() there is a possibility of overflow
+in multiplication, if tsc_khz is large enough (> UINT_MAX/1000).
 
-Note that only triggering on rising edges can be used to detect resume
-events but not disconnect events.
+Change multiplication to mul_u32_u32().
 
-Fixes: bb9efa59c665 ("arm64: dts: qcom: sc7280: Add USB related nodes")
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20231120164331.8116-6-johan+linaro@kernel.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: eeb2d80d502a ("ACPI / LPIT: Add Low Power Idle Table (LPIT) support")
+Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc7280.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/acpi_lpit.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-index 1fa1a615109a..e6798447b29a 100644
---- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-@@ -3411,8 +3411,8 @@ usb_2: usb@8cf8800 {
- 			assigned-clock-rates = <19200000>, <200000000>;
+diff --git a/drivers/acpi/acpi_lpit.c b/drivers/acpi/acpi_lpit.c
+index 50540d4d4948..2c015ecf7185 100644
+--- a/drivers/acpi/acpi_lpit.c
++++ b/drivers/acpi/acpi_lpit.c
+@@ -98,7 +98,7 @@ static void lpit_update_residency(struct lpit_residency_info *info,
+ 				 struct acpi_lpit_native *lpit_native)
+ {
+ 	info->frequency = lpit_native->counter_frequency ?
+-				lpit_native->counter_frequency : tsc_khz * 1000;
++				lpit_native->counter_frequency : mul_u32_u32(tsc_khz, 1000U);
+ 	if (!info->frequency)
+ 		info->frequency = 1;
  
- 			interrupts-extended = <&intc GIC_SPI 240 IRQ_TYPE_LEVEL_HIGH>,
--					      <&pdc 12 IRQ_TYPE_EDGE_RISING>,
--					      <&pdc 13 IRQ_TYPE_EDGE_RISING>;
-+					      <&pdc 12 IRQ_TYPE_EDGE_BOTH>,
-+					      <&pdc 13 IRQ_TYPE_EDGE_BOTH>;
- 			interrupt-names = "hs_phy_irq",
- 					  "dp_hs_phy_irq",
- 					  "dm_hs_phy_irq";
 -- 
 2.43.0
 
