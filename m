@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-13338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCCAA837B79
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:01:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6505837B7A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:01:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 729B61F2402C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:01:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4851B1F20F98
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:01:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D840B1350D1;
-	Tue, 23 Jan 2024 00:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F201350DC;
+	Tue, 23 Jan 2024 00:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2FgaForo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MvAElJAx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9779113475F;
-	Tue, 23 Jan 2024 00:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45CEE1350D6;
+	Tue, 23 Jan 2024 00:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969338; cv=none; b=lQfpiHc6wGkrrMkSjVBZlehdF5FWDXF5EX8rrTX+huzLNOthnanGfOTrhITRqWqg/UJymAnxXszKxywLQsJISPTfHHUfGYYyoylqtVRItwLMmmis1i0uUPC5/NXvbFYko9/0A2fn8/RZPM517yy09j/gyLOkh0Tuwt2Iy2hJ99w=
+	t=1705969341; cv=none; b=Ck8lwkFDGDyPhHavPlp2l5CjpojxUhgqVMdylOGDBO+VequNEQOYYah67wdQpRwv1Fep13ooYE/iZiIAUkxRRBMItv5+hHbFXkcWLxTFHbhpDlc52GQMUvmUvXo5i4XoVtoTFOsJ9cfxGf/HGHFbBmUflbLy0U7sTi3Q25RqyCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969338; c=relaxed/simple;
-	bh=dKkDl2F7Zfi6lpcEhNcuSa9lCkAsLakewLwRQSlQx6Q=;
+	s=arc-20240116; t=1705969341; c=relaxed/simple;
+	bh=my5W7COMaksGhTlVElxoJgjLzPQHAwOogxqlb+R6wtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KlOLJxJkcRqkNkr/0Ch0I8u/WHR+DZjFo1DgpDz1nF6ytgW6P+tQiaFDKZQFyXpE+QxEZ8WKQ8y5WAjx2KzgjvabU3D5E7ObxFMTdy9lrtNQv5liot+e1OQ1LdjfiGS/4biwpnhKOkPvzuVrR96ZlfAa/S6a38Fc0RJzV8Etji8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2FgaForo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26559C433B1;
-	Tue, 23 Jan 2024 00:22:18 +0000 (UTC)
+	 MIME-Version; b=nwkaxXw5AAPk+YyR7cj5XpEtzAHJEGe86Len7/HNJugk36iSMyUt5SWFEcufkfv68T0Wo3o0GuOX3FUv16u7Ds759W6eRCKeBYfru3HQpNbFdYh2Ar6u7aaGqJe4ZSv3OLiFUDLypxcMDVD+IvSUq257bCoMFAS/hig9OeB2MBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MvAElJAx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9934C433C7;
+	Tue, 23 Jan 2024 00:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969338;
-	bh=dKkDl2F7Zfi6lpcEhNcuSa9lCkAsLakewLwRQSlQx6Q=;
+	s=korg; t=1705969341;
+	bh=my5W7COMaksGhTlVElxoJgjLzPQHAwOogxqlb+R6wtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2FgaForo4IKGlWHKKLU8qS3stAE3S4qd/D4s7RWWKnmO4nBeUZOMVy/BhYldPoy2t
-	 gCAUXFPt97vPq6lT/mK/AwPRLjSQ9E+UoyHqcSUv+2owFHzd15Phkvt3YDeloe9aDE
-	 9ew1BviHilt62Otk2WfxpyoljOsC7uWtgKXW9wnI=
+	b=MvAElJAxzMTC2IxBCcxS9IGd4YJhlQyVUJ1una1atEL844/s3MSWdy2H5qCyoltEc
+	 bAw6krpNTmKeIlwzmEeMas3ONfAprD1SMxPFu5si8UUxUtgf4ODpgHVfEN/NT2Dpck
+	 PewWYlA0ankVvsDka3DyvVl89PX0tW5lOKEDb7GM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 180/641] scsi: hisi_sas: Correct the number of global debugfs registers
-Date: Mon, 22 Jan 2024 15:51:24 -0800
-Message-ID: <20240122235823.628786696@linuxfoundation.org>
+Subject: [PATCH 6.7 182/641] ARM: dts: stm32: dont mix SCMI and non-SCMI board compatibles
+Date: Mon, 22 Jan 2024 15:51:26 -0800
+Message-ID: <20240122235823.690316902@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -67,40 +66,84 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-[ Upstream commit 73e33f969ef05328766b23a99b2c07bfff765009 ]
+[ Upstream commit bfc3c6743de0ecb169026c36cbdbc0d12d22a528 ]
 
-In function debugfs_debugfs_snapshot_global_reg_v3_hw() it uses
-debugfs_axi_reg.count (which is the number of axi debugfs registers) to
-acquire the number of global debugfs registers.
+The binding erroneously decreed that the SCMI variants of the ST
+evaluation kits are compatible with the non-SCMI variants.
 
-Use debugfs_global_reg.count to acquire the number of global debugfs
-registers instead.
+This is not correct, as a kernel or bootloader compatible with the non-SCMI
+variant is not necessarily able to function, when direct access
+to resources is replaced by having to talk SCMI to the secure monitor.
 
-Fixes: 623a4b6d5c2a ("scsi: hisi_sas: Move debugfs code to v3 hw driver")
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
-Link: https://lore.kernel.org/r/1702525516-51258-6-git-send-email-chenxiang66@hisilicon.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+The binding has been adjusted to reflect thus, so synchronize the device
+trees now.
+
+Fixes: 5b7e58313a77 ("ARM: dts: stm32: Add SCMI version of STM32 boards (DK1/DK2/ED1/EV1)")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/st/stm32mp157a-dk1-scmi.dts | 2 +-
+ arch/arm/boot/dts/st/stm32mp157c-dk2-scmi.dts | 2 +-
+ arch/arm/boot/dts/st/stm32mp157c-ed1-scmi.dts | 2 +-
+ arch/arm/boot/dts/st/stm32mp157c-ev1-scmi.dts | 3 +--
+ 4 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index 704bd65f373d..6d8577423d32 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -3476,7 +3476,7 @@ static void debugfs_snapshot_global_reg_v3_hw(struct hisi_hba *hisi_hba)
- 	u32 *databuf = hisi_hba->debugfs_regs[dump_index][DEBUGFS_GLOBAL].data;
- 	int i;
+diff --git a/arch/arm/boot/dts/st/stm32mp157a-dk1-scmi.dts b/arch/arm/boot/dts/st/stm32mp157a-dk1-scmi.dts
+index afcd6285890c..c27963898b5e 100644
+--- a/arch/arm/boot/dts/st/stm32mp157a-dk1-scmi.dts
++++ b/arch/arm/boot/dts/st/stm32mp157a-dk1-scmi.dts
+@@ -11,7 +11,7 @@
  
--	for (i = 0; i < debugfs_axi_reg.count; i++, databuf++)
-+	for (i = 0; i < debugfs_global_reg.count; i++, databuf++)
- 		*databuf = hisi_sas_read32(hisi_hba, 4 * i);
- }
+ / {
+ 	model = "STMicroelectronics STM32MP157A-DK1 SCMI Discovery Board";
+-	compatible = "st,stm32mp157a-dk1-scmi", "st,stm32mp157a-dk1", "st,stm32mp157";
++	compatible = "st,stm32mp157a-dk1-scmi", "st,stm32mp157";
  
+ 	reserved-memory {
+ 		optee@de000000 {
+diff --git a/arch/arm/boot/dts/st/stm32mp157c-dk2-scmi.dts b/arch/arm/boot/dts/st/stm32mp157c-dk2-scmi.dts
+index 39358d902000..622618943134 100644
+--- a/arch/arm/boot/dts/st/stm32mp157c-dk2-scmi.dts
++++ b/arch/arm/boot/dts/st/stm32mp157c-dk2-scmi.dts
+@@ -11,7 +11,7 @@
+ 
+ / {
+ 	model = "STMicroelectronics STM32MP157C-DK2 SCMI Discovery Board";
+-	compatible = "st,stm32mp157c-dk2-scmi", "st,stm32mp157c-dk2", "st,stm32mp157";
++	compatible = "st,stm32mp157c-dk2-scmi", "st,stm32mp157";
+ 
+ 	reserved-memory {
+ 		optee@de000000 {
+diff --git a/arch/arm/boot/dts/st/stm32mp157c-ed1-scmi.dts b/arch/arm/boot/dts/st/stm32mp157c-ed1-scmi.dts
+index 07ea765a4553..c7c4d7e89d61 100644
+--- a/arch/arm/boot/dts/st/stm32mp157c-ed1-scmi.dts
++++ b/arch/arm/boot/dts/st/stm32mp157c-ed1-scmi.dts
+@@ -11,7 +11,7 @@
+ 
+ / {
+ 	model = "STMicroelectronics STM32MP157C-ED1 SCMI eval daughter";
+-	compatible = "st,stm32mp157c-ed1-scmi", "st,stm32mp157c-ed1", "st,stm32mp157";
++	compatible = "st,stm32mp157c-ed1-scmi", "st,stm32mp157";
+ 
+ 	reserved-memory {
+ 		optee@fe000000 {
+diff --git a/arch/arm/boot/dts/st/stm32mp157c-ev1-scmi.dts b/arch/arm/boot/dts/st/stm32mp157c-ev1-scmi.dts
+index 813086ec2489..2ab77e64f1bb 100644
+--- a/arch/arm/boot/dts/st/stm32mp157c-ev1-scmi.dts
++++ b/arch/arm/boot/dts/st/stm32mp157c-ev1-scmi.dts
+@@ -11,8 +11,7 @@
+ 
+ / {
+ 	model = "STMicroelectronics STM32MP157C-EV1 SCMI eval daughter on eval mother";
+-	compatible = "st,stm32mp157c-ev1-scmi", "st,stm32mp157c-ev1", "st,stm32mp157c-ed1",
+-		     "st,stm32mp157";
++	compatible = "st,stm32mp157c-ev1-scmi", "st,stm32mp157c-ed1", "st,stm32mp157";
+ 
+ 	reserved-memory {
+ 		optee@fe000000 {
 -- 
 2.43.0
 
