@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-13877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A800F837E83
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9271837C61
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AE2C28EC36
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:40:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC4AB1C28849
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BAEE60B81;
-	Tue, 23 Jan 2024 00:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071174C6C;
+	Tue, 23 Jan 2024 00:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lVBJV6Fa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2RcRqdF7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED5912E56;
-	Tue, 23 Jan 2024 00:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA57B2581;
+	Tue, 23 Jan 2024 00:26:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970644; cv=none; b=OawUqfIz1JGGi2jxbOpMKOO0iQ105TEQwkFPAUEHHHrGnf4oPOZcGTU4nz5iH7RN78bhFTvVEUQFYXRZUMj5wwgEUKyKKp67SAbqzR1rZ5Z99Qd5/8hvhML5kX54SdyVXZQK0pMaoHTQ2tDzG6Bv8IW/ctaSC0SEmrNEYAySMMo=
+	t=1705969596; cv=none; b=J07shCu9veTdbp7S5qPZXtRj9KErVXpUwv9pQKx7f2actvreamkBbscf5R4nW64RnS46LNfuAFa62i5+mxfPhcw69zg3tuYypREwgl3pqcQSM4SEVdchoDdsG+fdUGgcTdfDzzwCUZoxH4S7lYp7bvwt80g0SGAvhUagSIzZ/CY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970644; c=relaxed/simple;
-	bh=ey5lNtK6eCYFDE+aiqGEk3roiPR71ZyjDRUUp0ANSfk=;
+	s=arc-20240116; t=1705969596; c=relaxed/simple;
+	bh=oQAc6/xZuERuMnDysxF/DdSO8T1WxuAVlowAI7tOOSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g2YWiU+/1zv41oUyNVFRVAxk2GAhTPGbvaaP5MZ2Rz7520/3K00LDlVrsktueJF7PKhSDYLRVUwdwfpyOqsUau/icC3bchRT2S1igI6QxoD9rPlY99HgS8vnCcxrswLUoEcSGerm9SFjYkrnHl6EHXWHX1P8nOh47Fo+iMnpseg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lVBJV6Fa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD73AC433F1;
-	Tue, 23 Jan 2024 00:44:02 +0000 (UTC)
+	 MIME-Version; b=f/aQsZynkJGK9/XkE+TqoKDlRiWv8Kb2/Rot+3VEhrZEZyUX/TnMtF9eJll+BeSYIubzJS2EfmUjkIXfXhWgY23tudpaSDTCnkO3feUGay9jX/S5Npulbn/UjG83FbEn7bAz/0/+Fb5I659QCEclvek7cBREa5V0qne6R7vDxNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2RcRqdF7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E880C43390;
+	Tue, 23 Jan 2024 00:26:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970643;
-	bh=ey5lNtK6eCYFDE+aiqGEk3roiPR71ZyjDRUUp0ANSfk=;
+	s=korg; t=1705969596;
+	bh=oQAc6/xZuERuMnDysxF/DdSO8T1WxuAVlowAI7tOOSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lVBJV6FaP/oR6N9wTtzjMYU7uZexwTY8EmpVaN1AwCvnNMkJc8x6F37WWd0NouSMG
-	 17FfhGsFCQykjBXa9jfKvf3fz3cie5jCZEWAplzOtIC9oDF5sVIM6ERbQl/uluJAV2
-	 rzW8GUMRuVRPeNwwOIpBFkvfKLnsvlI3tVEaHSU4=
+	b=2RcRqdF7wzosO83AKbwq6Aem2WN81SdCpxmEjtd+hTuxrIsUJOqUvnYuHdhG+LjeJ
+	 J7n048lJN6swNwC9YlO2qC32W37Q/yOGpSbjANbgMzB7HCPuhp+C6B6nvvIaVPqVWG
+	 kITj0r3mV6beZWEPRAVQwVXmk6KrHZOSQ2xUEXmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 059/417] crypto: sahara - improve error handling in sahara_sha_process()
+Subject: [PATCH 6.7 323/641] media: i2c: mt9m114: use fsleep() in place of udelay()
 Date: Mon, 22 Jan 2024 15:53:47 -0800
-Message-ID: <20240122235753.752719523@linuxfoundation.org>
+Message-ID: <20240122235828.001224639@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +65,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 5deff027fca49a1eb3b20359333cf2ae562a2343 ]
+[ Upstream commit 02d4e62ae2452c83e4a3e279b8e4cb4dcbad4b31 ]
 
-sahara_sha_hw_data_descriptor_create() returns negative error codes on
-failure, so make sure the errors are correctly handled / propagated.
+With clang-16, building without COMMON_CLK triggers a range check on
+udelay() because of a constant division-by-zero calculation:
 
-Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+ld.lld: error: undefined symbol: __bad_udelay
+>>> referenced by mt9m114.c
+>>>               drivers/media/i2c/mt9m114.o:(mt9m114_power_on) in archive vmlinux.a
+
+In this configuration, the driver already fails to probe, before
+this function gets called, so it's enough to suppress the assertion.
+
+Do this by using fsleep(), which turns long delays into sleep() calls
+in place of the link failure.
+
+This is probably a good idea regardless to avoid overly long dynamic
+udelay() calls on a slow clock.
+
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>
+Fixes: 24d756e914fc ("media: i2c: Add driver for onsemi MT9M114 camera sensor")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/media/i2c/mt9m114.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index e2b1880ddeb0..6e112e41a0c7 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -988,7 +988,10 @@ static int sahara_sha_process(struct ahash_request *req)
- 		return ret;
+diff --git a/drivers/media/i2c/mt9m114.c b/drivers/media/i2c/mt9m114.c
+index ac19078ceda3..1a535c098ded 100644
+--- a/drivers/media/i2c/mt9m114.c
++++ b/drivers/media/i2c/mt9m114.c
+@@ -2112,7 +2112,7 @@ static int mt9m114_power_on(struct mt9m114 *sensor)
+ 		duration = DIV_ROUND_UP(2 * 50 * 1000000, freq);
  
- 	if (rctx->first) {
--		sahara_sha_hw_data_descriptor_create(dev, rctx, req, 0);
-+		ret = sahara_sha_hw_data_descriptor_create(dev, rctx, req, 0);
-+		if (ret)
-+			return ret;
-+
- 		dev->hw_desc[0]->next = 0;
- 		rctx->first = 0;
+ 		gpiod_set_value(sensor->reset, 1);
+-		udelay(duration);
++		fsleep(duration);
+ 		gpiod_set_value(sensor->reset, 0);
  	} else {
-@@ -996,7 +999,10 @@ static int sahara_sha_process(struct ahash_request *req)
- 
- 		sahara_sha_hw_context_descriptor_create(dev, rctx, req, 0);
- 		dev->hw_desc[0]->next = dev->hw_phys_desc[1];
--		sahara_sha_hw_data_descriptor_create(dev, rctx, req, 1);
-+		ret = sahara_sha_hw_data_descriptor_create(dev, rctx, req, 1);
-+		if (ret)
-+			return ret;
-+
- 		dev->hw_desc[1]->next = 0;
- 	}
- 
+ 		/*
 -- 
 2.43.0
 
