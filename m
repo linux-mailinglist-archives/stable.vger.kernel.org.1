@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 646EB83844C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB67E837F2F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A13F299182
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A41ED29BF09
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40C7F6BB34;
-	Tue, 23 Jan 2024 02:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B08461292F7;
+	Tue, 23 Jan 2024 00:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IQYtV553"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SdtbAedm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C8B1427B;
-	Tue, 23 Jan 2024 02:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C7E1292F4;
+	Tue, 23 Jan 2024 00:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975357; cv=none; b=BPbPJbgSVdF96Ix+tamtp1gwlkpXCZtUcR9ADg0+qz+P9rup2C+ePqngfp1bUnsumuuQDtRtsT170DdFau+EED6V49McG5/FM76XEkao6jfjD6iqwq2Ri/FXrN+jXM/XRWVcBE/2uNYtWO0YRpJ7xJfF0JqKG88NMvGUue9AidM=
+	t=1705970989; cv=none; b=mK0BOEXvPMr42oJL2jmfsTzIyzptN64cxuUOxHfImbU5XrUrzBJwPMf74P8gK7vPT56nNimWP0ZOiDN0oS0YT0VNAP9KSH3+Ys6kWdZjO+StYbtOQiqzx5fJZEpEBgIcmhWBJR6oImnlBNrkMhGfwMnLBbAxVi5cPU2BYdi+xmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975357; c=relaxed/simple;
-	bh=el/2wFp4Xh1eD/UjfCZLlb3l/fLHiaB5K6fG6v9t4Mc=;
+	s=arc-20240116; t=1705970989; c=relaxed/simple;
+	bh=AHTLAjB39P2cA/Ikqw+TnTcSOW+TKoOgOVIUPKPgEAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rld2JPUP29ZP6IlIAuQF3c+2i/8iDhs9h9js+IvUEWwfD7MMcdCWvr5u7kZ9gN18enJDIyUj0NuiLs2rg7WgmKjA5qMaoAUjf8xTfeEfM47rw8rWQq3HybHd8ghtxBBBk4Q3A8OAgFmCDB5cvhHWuF1U+2lvAY5thrjXPaGwgc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IQYtV553; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3661C43399;
-	Tue, 23 Jan 2024 02:02:36 +0000 (UTC)
+	 MIME-Version; b=NH9QNjIxp9ErHn/KcB1+yBD1jQWneFQeIPF5J3Yq68PtUWkE/ugP+hslIIvyxvrIFW+xoYSci0EbJTP74W8o37ZPLOB4xq0mzvsbK/UAvjz0Ju+u9Fi7PmqExkOBLRQzkq5fq7FwGr2gWI/n99I9r9M4k+65oPsoeBE0SMZvFnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SdtbAedm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36CCAC43390;
+	Tue, 23 Jan 2024 00:49:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975356;
-	bh=el/2wFp4Xh1eD/UjfCZLlb3l/fLHiaB5K6fG6v9t4Mc=;
+	s=korg; t=1705970989;
+	bh=AHTLAjB39P2cA/Ikqw+TnTcSOW+TKoOgOVIUPKPgEAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IQYtV5534jEMaBofc2/NuMyugv0g0xzSghMNNywdau2QCBXmfgBKDeeLiCppo+ZgX
-	 DfUvfZNexNEzVbUKKJuFClsMJJw8y0zw5ObAaNBDVKk1oNU9XSxqq30+G16jX/upTP
-	 BW+cdhvuLo0pAp5MFsF0Rf1rlralUUQx3k+z3le0=
+	b=SdtbAedmzqYiqgw9PxjMWe29gqFv8JL5sAp/VsKXV3tIXkq7myuIpsEbhnZwy+Te2
+	 qdOycx2S69MKIHHExjoLNh0QHn7Jz30HUzE2twH9tMgEETxe+a4c7vumoNtht31LM0
+	 6wdcmwKy/ctOsPPW5tNvJkzUWLp8kUiw6d4qvC/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
+	Nikita Kiryushin <kiryushin@ancud.ru>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 319/583] ALSA: scarlett2: Add missing error check to scarlett2_config_save()
+Subject: [PATCH 5.10 064/286] ACPI: LPIT: Avoid u32 multiplication overflow
 Date: Mon, 22 Jan 2024 15:56:10 -0800
-Message-ID: <20240122235821.807760070@linuxfoundation.org>
+Message-ID: <20240122235734.487731038@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Nikita Kiryushin <kiryushin@ancud.ru>
 
-[ Upstream commit 5f6ff6931a1c0065a55448108940371e1ac8075f ]
+[ Upstream commit 56d2eeda87995245300836ee4dbd13b002311782 ]
 
-scarlett2_config_save() was ignoring the return value from
-scarlett2_usb(). As this function is not called from user-space we
-can't return the error, so call usb_audio_err() instead.
+In lpit_update_residency() there is a possibility of overflow
+in multiplication, if tsc_khz is large enough (> UINT_MAX/1000).
 
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
-Link: https://lore.kernel.org/r/bf0a15332d852d7825fa6da87d2a0d9c0b702053.1703001053.git.g@b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Change multiplication to mul_u32_u32().
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: eeb2d80d502a ("ACPI / LPIT: Add Low Power Idle Table (LPIT) support")
+Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_scarlett_gen2.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/acpi/acpi_lpit.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
-index d260be8cb6bc..64cfe2d6045e 100644
---- a/sound/usb/mixer_scarlett_gen2.c
-+++ b/sound/usb/mixer_scarlett_gen2.c
-@@ -1337,9 +1337,11 @@ static void scarlett2_config_save(struct usb_mixer_interface *mixer)
+diff --git a/drivers/acpi/acpi_lpit.c b/drivers/acpi/acpi_lpit.c
+index 48e5059d67ca..7de59730030c 100644
+--- a/drivers/acpi/acpi_lpit.c
++++ b/drivers/acpi/acpi_lpit.c
+@@ -98,7 +98,7 @@ static void lpit_update_residency(struct lpit_residency_info *info,
+ 				 struct acpi_lpit_native *lpit_native)
  {
- 	__le32 req = cpu_to_le32(SCARLETT2_USB_CONFIG_SAVE);
+ 	info->frequency = lpit_native->counter_frequency ?
+-				lpit_native->counter_frequency : tsc_khz * 1000;
++				lpit_native->counter_frequency : mul_u32_u32(tsc_khz, 1000U);
+ 	if (!info->frequency)
+ 		info->frequency = 1;
  
--	scarlett2_usb(mixer, SCARLETT2_USB_DATA_CMD,
--		      &req, sizeof(u32),
--		      NULL, 0);
-+	int err = scarlett2_usb(mixer, SCARLETT2_USB_DATA_CMD,
-+				&req, sizeof(u32),
-+				NULL, 0);
-+	if (err < 0)
-+		usb_audio_err(mixer->chip, "config save failed: %d\n", err);
- }
- 
- /* Delayed work to save config */
 -- 
 2.43.0
 
