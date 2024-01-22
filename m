@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FE9A8381C2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:12:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39940837FE1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:55:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44A80B23B40
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 790E0B29DE0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9302A1FD1;
-	Tue, 23 Jan 2024 01:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EACB1292EF;
+	Tue, 23 Jan 2024 00:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pxz3LGH9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="swsgEUaJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B3023BC;
-	Tue, 23 Jan 2024 01:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12301292DF;
+	Tue, 23 Jan 2024 00:49:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972162; cv=none; b=T7qMCKaa62fomYx5hhFz2jBC02+uT84wbRRfRMUaxALdB5Mof7C3g8Zw133+i0oTKu9BHVOnUGHCQpZj4y3Vn/RN7919tUgck8DBPRQhhjN1E8WeSV8TXjbp7im1lIkddK0KbG/vK/OfN3ZpAHMSCAv5LXDC7UUhuX9W2RKPnOs=
+	t=1705970987; cv=none; b=imQVhXibjimBhDedxZPI2pEcToXTq9BfiIL9aDBqGMG78ZZe0PQ9PldiQ8xfyXk4iCXNbFj2t4MolBCRXpbPneHDNffv0NsW7J6HBS4S45cqbSa/rhC8TnD2dZyeo4ExbqZtkcHl4ocwh8OXOJrLJ+5NK9+4jmevBK4KYz8h95Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972162; c=relaxed/simple;
-	bh=7X0mcwtiYK+/v9vTXZClEi1RSYZEM9YNydLotktvJ74=;
+	s=arc-20240116; t=1705970987; c=relaxed/simple;
+	bh=WKPHLUj4ruepIQWI9pGntahS7rF6cey2iLITZS/DL5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rR8JmKU4rjls2NZPNqx+hsuAswC1OZ3HIjd9XhlnPAeMdcCL0p3VL+Tg6b9plUnYwTTJP5BYbt1/2/lMeo1EV/aIOxtFsTjlv6EywyDyxyAVkFDUd9UvqAKLMh2uDn5NMw1MfkbjIY444KNiTv3qwAwX8+eOuUSINB99TX/EQSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pxz3LGH9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1692FC43390;
-	Tue, 23 Jan 2024 01:09:22 +0000 (UTC)
+	 MIME-Version; b=cHSnz6F4LN8OKEes6jsrLGOKIiXCpd15gocdgILuDIdNx5a5aUZQSy7Sor6nsUVeNmFNwD6NVoxeLT9Yh77eSie06C+SddXtW3vI0lO9i5glAFO3VpCLC6A5HrSB9j2ZQ4aN0xsdQWBem0Dp77cHwRAGbtDJN3MWfPR0sVCqHas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=swsgEUaJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92560C43390;
+	Tue, 23 Jan 2024 00:49:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972162;
-	bh=7X0mcwtiYK+/v9vTXZClEi1RSYZEM9YNydLotktvJ74=;
+	s=korg; t=1705970987;
+	bh=WKPHLUj4ruepIQWI9pGntahS7rF6cey2iLITZS/DL5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pxz3LGH9OpKG5H9kZxzNjMrP6GsefTX1Iwrx4kVMjTef+xPbbQ9ZgQ/R/Rat20F7d
-	 vY/t2xbwfGAKYbojodZ1PaQ4VZU/SVd0Vr8TBYkaHzM150EAvfr1iDXmrErSeEPEcQ
-	 aJuSE7VvGGQbqQx125GJMgmrgb7svt/FzFfFep9s=
+	b=swsgEUaJJV/Z5QF6izGT7Ct5EoiTV8FSqyR7sUEVKRHZ9oestrUOllmSfQv3Uw/qq
+	 AWRGmwMsi30jX+hmRmHHk5tN5jicZm+vdFJ2v2sg4RRuunXFcTO1hAHPUQIPuVcyGM
+	 km2vD3PzE/VwTSEb2uKF5+ffcnFi9jVxiAHPKdTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@google.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 5.15 055/374] binder: use EPOLLERR from eventpoll.h
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 143/417] netfilter: nf_tables: mark newset as dead on transaction abort
 Date: Mon, 22 Jan 2024 15:55:11 -0800
-Message-ID: <20240122235746.522072018@linuxfoundation.org>
+Message-ID: <20240122235756.790809358@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Florian Westphal <fw@strlen.de>
 
-commit 6ac061db9c58ca5b9270b1b3940d2464fb3ff183 upstream.
+[ Upstream commit 08e4c8c5919fd405a4d709b4ba43d836894a26eb ]
 
-Use EPOLLERR instead of POLLERR to make sure it is cast to the correct
-__poll_t type. This fixes the following sparse issue:
+If a transaction is aborted, we should mark the to-be-released NEWSET dead,
+just like commit path does for DEL and DESTROYSET commands.
 
-  drivers/android/binder.c:5030:24: warning: incorrect type in return expression (different base types)
-  drivers/android/binder.c:5030:24:    expected restricted __poll_t
-  drivers/android/binder.c:5030:24:    got int
+In both cases all remaining elements will be released via
+set->ops->destroy().
 
-Fixes: f88982679f54 ("binder: check for binder_thread allocation failure in binder_poll()")
-Cc: stable@vger.kernel.org
-Cc: Eric Biggers <ebiggers@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-2-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The existing abort code does NOT post the actual release to the work queue.
+Also the entire __nf_tables_abort() function is wrapped in gc_seq
+begin/end pair.
+
+Therefore, async gc worker will never try to release the pending set
+elements, as gc sequence is always stale.
+
+It might be possible to speed up transaction aborts via work queue too,
+this would result in a race and a possible use-after-free.
+
+So fix this before it becomes an issue.
+
+Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -4836,7 +4836,7 @@ static __poll_t binder_poll(struct file
- 
- 	thread = binder_get_thread(proc);
- 	if (!thread)
--		return POLLERR;
-+		return EPOLLERR;
- 
- 	binder_inner_proc_lock(thread->proc);
- 	thread->looper |= BINDER_LOOPER_STATE_POLL;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 3d6ebb9877a4..db987388cb5d 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -9937,6 +9937,7 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ 				nft_trans_destroy(trans);
+ 				break;
+ 			}
++			nft_trans_set(trans)->dead = 1;
+ 			list_del_rcu(&nft_trans_set(trans)->list);
+ 			break;
+ 		case NFT_MSG_DELSET:
+-- 
+2.43.0
+
 
 
 
