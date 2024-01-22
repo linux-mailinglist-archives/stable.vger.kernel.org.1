@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-13650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB6D0837D42
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE9A838465
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2DDC1C237FC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F8F81F29293
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5F7E5476B;
-	Tue, 23 Jan 2024 00:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B96416D1C7;
+	Tue, 23 Jan 2024 02:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vO3ZjwPm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBQGmOiA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 952365380A;
-	Tue, 23 Jan 2024 00:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7928F6A354;
+	Tue, 23 Jan 2024 02:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969864; cv=none; b=ppfOhNoG25lCzvHKfVWpEyAPkhBrtheFbK1qoPqpDMYAgQCSGVoQPn+ymkMye+DCNkAs1adUJIZMf5SdXJ1wRKvY5/btAnoNm0PzUaZswCo7cQVaDcWPg2fCTPfLCObfqnrL/YyBkNTHXwqAW8WolY+11vY3mNJvduLNwPAJVew=
+	t=1705975385; cv=none; b=g4zM+OZhQ7vVTd9K+UkWSVY9h/UxI7akDLiTI+R92RCM41n1PQIDoCNNw8xoiu6Kc/A2yD6MEWOa0GMMVWR8uaAJdX/zavJ2Am+ekRVpp92DseEztDjfLa+zg8PwhaHGEysmPC64e0eaxTMYdGupjQ3i4vcuvoqAcBmBJ6xhdPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969864; c=relaxed/simple;
-	bh=UGspx9P/friGUN2Sh0gUXvQ4/oJrOvJ+qklG16qHagc=;
+	s=arc-20240116; t=1705975385; c=relaxed/simple;
+	bh=pw41zEtSEEZULeQUDgzspkVp6S9RbozzGVDAdBGFo1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VcXIXGM3X7sXtLRO49LdOPOLZURFpMhAgkfMLCxecl93DwRwYhrkQ9NfHtYWlca3uJIGfe4qvklcyHkbnkZGJP0L5xSWdmZZlranX9OLzqtx96seDb5fR5IJY45A/wJP4aM0vyn4Yy1PGmZnvexlw0KjXhtHGgDKvClK5Gb8MxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vO3ZjwPm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A15C43394;
-	Tue, 23 Jan 2024 00:31:04 +0000 (UTC)
+	 MIME-Version; b=KZCfPHWX2vRcUTZm7BhhlfoMLZ0yomTIXOf7bco8T3keB6etaGzM4ueHmAQJ8uxXaXbY8A6lP6UytcxUpT/XWK1zFT2Z6JJyR7N41imtN/l/sl7DptsTqxSjAG9xctISw9fVF4qR6fd+yg3f0bJPn9IWvk8Q5DiE8uZ7JFXrIOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBQGmOiA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E6C0C43390;
+	Tue, 23 Jan 2024 02:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969864;
-	bh=UGspx9P/friGUN2Sh0gUXvQ4/oJrOvJ+qklG16qHagc=;
+	s=korg; t=1705975385;
+	bh=pw41zEtSEEZULeQUDgzspkVp6S9RbozzGVDAdBGFo1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vO3ZjwPmcJKALhyfqznQb7A1kJcFVsAMuI2PWPNPoTRkmqsaXcnTJpJad7+DYHu96
-	 jDMdoVHSfiU6ZdbddJhMSyquaeCmkA7U5EkNs28xpFdHdk1nILeD0aCsvuUH3zkRU8
-	 nSlhDZ4ETRZN8SCMXBl5fMfdz2AjA1BwpkGgo0F0=
+	b=IBQGmOiADiFMaQvTEkyNm2ptZPwj0OEx53c6MHGt4uKPbnHMbQS35AdPe48ii5u01
+	 36Ssz3dh3vGxpzo5hd1hqBhar52d67UZiEBnfTXfFdkKmXq/XKzHLelTan4D8u2rQx
+	 e7NzZyqFCBYAzuPPSmwxSthrByTN9R+yfwriWhLE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vincent Whitchurch <vincent.whitchurch@axis.com>,
-	Richard Weinberger <richard@nod.at>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 493/641] um: virt-pci: fix platform map offset
+	Alice Ryhl <aliceryhl@google.com>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 6.6 346/583] binder: fix async space check for 0-sized buffers
 Date: Mon, 22 Jan 2024 15:56:37 -0800
-Message-ID: <20240122235833.502628712@linuxfoundation.org>
+Message-ID: <20240122235822.609890187@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Whitchurch <vincent.whitchurch@axis.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit 32253f00ac8a8073bf6db4bfe9d6511cc93c4aef ]
+commit 3091c21d3e9322428691ce0b7a0cfa9c0b239eeb upstream.
 
-The offset is currently always zero so the backend can't distinguish
-between accesses to different ioremapped areas.
+Move the padding of 0-sized buffers to an earlier stage to account for
+this round up during the alloc->free_async_space check.
 
-Fixes: 522c532c4fe7 ("virt-pci: add platform bus support")
-Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 74310e06be4d ("android: binder: Move buffer out of area shared with user space")
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20231201172212.1813387-5-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/um/drivers/virt-pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/android/binder_alloc.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/um/drivers/virt-pci.c b/arch/um/drivers/virt-pci.c
-index ffe2ee8a0246..97a37c062997 100644
---- a/arch/um/drivers/virt-pci.c
-+++ b/arch/um/drivers/virt-pci.c
-@@ -971,7 +971,7 @@ static long um_pci_map_platform(unsigned long offset, size_t size,
- 	*ops = &um_pci_device_bar_ops;
- 	*priv = &um_pci_platform_device->resptr[0];
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -407,6 +407,10 @@ static struct binder_buffer *binder_allo
+ 				alloc->pid, extra_buffers_size);
+ 		return ERR_PTR(-EINVAL);
+ 	}
++
++	/* Pad 0-size buffers so they get assigned unique addresses */
++	size = max(size, sizeof(void *));
++
+ 	if (is_async &&
+ 	    alloc->free_async_space < size + sizeof(struct binder_buffer)) {
+ 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
+@@ -415,9 +419,6 @@ static struct binder_buffer *binder_allo
+ 		return ERR_PTR(-ENOSPC);
+ 	}
  
--	return 0;
-+	return offset;
- }
- 
- static const struct logic_iomem_region_ops um_pci_platform_ops = {
--- 
-2.43.0
-
+-	/* Pad 0-size buffers so they get assigned unique addresses */
+-	size = max(size, sizeof(void *));
+-
+ 	while (n) {
+ 		buffer = rb_entry(n, struct binder_buffer, rb_node);
+ 		BUG_ON(!buffer->free);
 
 
 
