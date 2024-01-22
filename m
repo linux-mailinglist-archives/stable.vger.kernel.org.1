@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-12986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 208A7837A17
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 458CA837A19
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 537CF1C28506
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:49:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7863B1C28405
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4225612A151;
-	Tue, 23 Jan 2024 00:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFCAD12A155;
+	Tue, 23 Jan 2024 00:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VAwxLeL7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0PNUXPfU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0293C12A14D;
-	Tue, 23 Jan 2024 00:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE80129A63;
+	Tue, 23 Jan 2024 00:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968737; cv=none; b=NpGaFx+cGT8JkH1dIjSO7J0hL7ozIt3LoZpCm+woH3IsQw9fOWrAxtxcDfwJ03sgEF42Sep8CzpA7nrF/R7UTK8d4oZMY3I06fT4USb2g6vXEaI47nG4drYa8g4184rxXNBONL9ifJpJfpfwh143620L6FX4HtYy4kEibAZqa/w=
+	t=1705968739; cv=none; b=X6GGYRYPAKJGbxpjY9pW8Wn1CCxpbftxAnwBZH2X/WvB4Ck7pxa88fUqw+6TUxzhkf6DwEknQkomCHGk5WEykAVsyXDoBUF/bpzCpktEURBGmB2y3GUU3qG+pQOE0uMs71wV6CuofEubvFV/SjH1UF/sseDNpYMkBYpHWEoyeh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968737; c=relaxed/simple;
-	bh=b/2Ycj//bWZk+XsmXV836jef0UT9YkbmpPdk0GSxmTY=;
+	s=arc-20240116; t=1705968739; c=relaxed/simple;
+	bh=iMFLlhV2Cp5R4hiwxrQ+Q+n+anmXrK8+rDE9ECbtvD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eLhbzOdYqpvkTdYLQmJ/Ud/DCCPjqg/rpRT3BjyL5FmTeEqKOiD/75Ocjx0aB/lg6SP5qAbKpNbEOIrMxh+msCV1yFhInKZ53BY5tidyOne241zLGmGY5Zf7bdqEqJx5Q/zEA9czyZVMOdom989Uu02nAZYJE9NNo0/iKz6nuCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VAwxLeL7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D68C43399;
-	Tue, 23 Jan 2024 00:12:16 +0000 (UTC)
+	 MIME-Version; b=iTjUSitH9yFuurXsWRPSgVtv/pLg5k/qq2+pRi2va4HiKZyPa5GAwTBIrJbAQzKV3v8rGb1RNWvEjdfPlIhjEX1BCJWGfYX95psErelY8Gu6VL3NfgpdoE9aojk9kxyfOmeuzpXmNn2zVHP8SmmWyYEvGzqoO1PYF5l3V4nekiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0PNUXPfU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C56C43390;
+	Tue, 23 Jan 2024 00:12:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968736;
-	bh=b/2Ycj//bWZk+XsmXV836jef0UT9YkbmpPdk0GSxmTY=;
+	s=korg; t=1705968739;
+	bh=iMFLlhV2Cp5R4hiwxrQ+Q+n+anmXrK8+rDE9ECbtvD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VAwxLeL7td2g90+BWSeVKrOWL1Htp22+fBvUbhSht7PG42QIaiZuvy9Dp9zxxGZe5
-	 jkyL/UCxQWMfQk8k9E8vh5b36xAswNVhBpXMjBQnTk7RSzp0blolgWfvyUPICtxp/M
-	 ALZByHEFrLUN9jWb5d6cBJvjRRMKJ+J3TsnkOSnU=
+	b=0PNUXPfU3xRN2OkiHXqiqCHdU6799ZVVmh2Gk31eC4attoO1TksXwSX+iyMOg+CfC
+	 O3iV9GcSqNgLLNWAkoYtKjJZqLGkrojxyxlmjEvUeDsgIKIvoLp/9es7hvor21MLYp
+	 l10KGE2ETd43MmJlYizcGXmEJvKBVE99ztv05JDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 022/194] ring-buffer: Do not record in NMI if the arch does not support cmpxchg in NMI
-Date: Mon, 22 Jan 2024 15:55:52 -0800
-Message-ID: <20240122235720.178239115@linuxfoundation.org>
+Subject: [PATCH 5.4 023/194] reset: hisilicon: hi6220: fix Wvoid-pointer-to-enum-cast warning
+Date: Mon, 22 Jan 2024 15:55:53 -0800
+Message-ID: <20240122235720.221468715@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
 References: <20240122235719.206965081@linuxfoundation.org>
@@ -68,42 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 712292308af2265cd9b126aedfa987f10f452a33 ]
+[ Upstream commit b5ec294472794ed9ecba0cb4b8208372842e7e0d ]
 
-As the ring buffer recording requires cmpxchg() to work, if the
-architecture does not support cmpxchg in NMI, then do not do any recording
-within an NMI.
+'type' is an enum, thus cast of pointer on 64-bit compile test with W=1
+causes:
 
-Link: https://lore.kernel.org/linux-trace-kernel/20231213175403.6fc18540@gandalf.local.home
+  hi6220_reset.c:166:9: error: cast to smaller integer type 'enum hi6220_reset_ctrl_type' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230810091300.70197-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/reset/hisilicon/hi6220_reset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 4a03eac43aaf..0c0ca21d807d 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -2976,6 +2976,12 @@ rb_reserve_next_event(struct ring_buffer *buffer,
- 	int nr_loops = 0;
- 	u64 diff;
+diff --git a/drivers/reset/hisilicon/hi6220_reset.c b/drivers/reset/hisilicon/hi6220_reset.c
+index 24e6d420b26b..84e761f454b6 100644
+--- a/drivers/reset/hisilicon/hi6220_reset.c
++++ b/drivers/reset/hisilicon/hi6220_reset.c
+@@ -104,7 +104,7 @@ static int hi6220_reset_probe(struct platform_device *pdev)
+ 	if (!data)
+ 		return -ENOMEM;
  
-+	/* ring buffer does cmpxchg, make sure it is safe in NMI context */
-+	if (!IS_ENABLED(CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG) &&
-+	    (unlikely(in_nmi()))) {
-+		return NULL;
-+	}
-+
- 	rb_start_commit(cpu_buffer);
+-	type = (enum hi6220_reset_ctrl_type)of_device_get_match_data(dev);
++	type = (uintptr_t)of_device_get_match_data(dev);
  
- #ifdef CONFIG_RING_BUFFER_ALLOW_SWAP
+ 	regmap = syscon_node_to_regmap(np);
+ 	if (IS_ERR(regmap)) {
 -- 
 2.43.0
 
