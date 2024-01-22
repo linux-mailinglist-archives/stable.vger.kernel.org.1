@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-14140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F9FC837FA7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 390CC837F66
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52AE31C29165
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8D7F28E698
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD9FC64A82;
-	Tue, 23 Jan 2024 00:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DBC26310A;
+	Tue, 23 Jan 2024 00:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0LFkqht"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wsgiuf/B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C84F634F8;
-	Tue, 23 Jan 2024 00:54:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E84F2940A;
+	Tue, 23 Jan 2024 00:51:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971269; cv=none; b=kAfeKVbG1ayJWu6XU+19+MjwEPCtUsJDVGx/KdLUnAIvaPaZQ26WB2ZIdWrEP8n2o6goMkuYESCsyl+lQPMB5wxEqx5yq3iI0RO9grOW9LY8TxlYGqyKxyjv+AZPcbexxwTFe0MLGWRNBU+QZ5oW+hCQYbVy6LZE8t6CS9I9K7k=
+	t=1705971108; cv=none; b=Ag7vn4xEVzmqj2yuQJ1NVx2PhyZb99Fmb83zJcJFQVSyI9cyGIdYaetw1KFvNe1na1ZXYhGIDjXYcTZuN+JkxERxOyCYuUdeohGi8Ra3+kOAwynia2IJignh5zDD91HqaYiN4/d1MR4gcNgJrIPbsGyr+k02PqsOR+fOY9o6Wr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971269; c=relaxed/simple;
-	bh=RkmlUiHot1vJbPao7lpcpK7e3uEGLbQWMJWj4m9n8S4=;
+	s=arc-20240116; t=1705971108; c=relaxed/simple;
+	bh=h7gH4j1NT9pEQ6GQ4RO5QyWzfOiZE5rRniS188hBjE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RB1+kf3ZeprGtTPPYIbt7cYwCCNmk3prEDmEbJ1CgLbHwEsEvkzv+JCy+62g3DF4LRVc0uJO59eW0cvZAa2unpoViH73BI43/uXRc9EVl6sZOKQSBWiXU3iKUOIzCkOPznzbBwL3t3nLTn9XSpewekxmarBnNyqENtfCXjg6z9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0LFkqht; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB47C433F1;
-	Tue, 23 Jan 2024 00:54:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WSGdMo2f3+KUC0TXmmNtDO2iPut3cTl7XOfdcwSe+bp3m1wJr3b3aD4P2xnlqCyU49MbZGq0wvNmcrOXU60i+0EQxqLCkqf1MOZ2lVqAcebzPMubPB+yhW68Au2oUmyGDAf3CIhsDM9z9hRrLAsOyc/z0sFMxNZcEuRNDfx72SA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wsgiuf/B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6738C43390;
+	Tue, 23 Jan 2024 00:51:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971269;
-	bh=RkmlUiHot1vJbPao7lpcpK7e3uEGLbQWMJWj4m9n8S4=;
+	s=korg; t=1705971108;
+	bh=h7gH4j1NT9pEQ6GQ4RO5QyWzfOiZE5rRniS188hBjE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c0LFkqhtXGl3Ob76T8vu5VGT1G1PtbF7N6yoLcXK30NZc0bIOo7VGdJDX95hlmnUi
-	 qHoZAVfXx/8Mg2eD9UVVIpL0fL3An667++XVJpBPibh3oZ0/GKGmLkCWa2/uTt4QJG
-	 0AqADGSB6QWHnJS8A7QBTxxZc6lHChwEchS1ZciI=
+	b=wsgiuf/BKmNenaG2+blhv1p/1cbyji7s7udvYIiWvCs7q/WXcQ45gSyojmwzDD21J
+	 b9Asv1tJy7/rYyxn8dgMiIEjJ7UapL1355xqfKU4+1ra65svN7ZA266WTeP/s2hwnJ
+	 E44qAQKWevNPG5aHv3xK7ycruuccil09C7Yp+r+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Eric Paris <eparis@parisplace.org>,
+	Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 214/417] f2fs: fix to check return value of f2fs_recover_xattr_data
+Subject: [PATCH 5.10 076/286] selinux: Fix error priority for bind with AF_UNSPEC on PF_INET6 socket
 Date: Mon, 22 Jan 2024 15:56:22 -0800
-Message-ID: <20240122235759.334407942@linuxfoundation.org>
+Message-ID: <20240122235734.966728702@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +64,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit 86d7d57a3f096c8349b32a0cd5f6f314e4416a6d ]
+[ Upstream commit bbf5a1d0e5d0fb3bdf90205aa872636122692a50 ]
 
-Should check return value of f2fs_recover_xattr_data in
-__f2fs_setxattr rather than doing invalid retry if error happen.
+The IPv6 network stack first checks the sockaddr length (-EINVAL error)
+before checking the family (-EAFNOSUPPORT error).
 
-Also just do set_page_dirty in f2fs_recover_xattr_data when
-page is changed really.
+This was discovered thanks to commit a549d055a22e ("selftests/landlock:
+Add network tests").
 
-Fixes: 50a472bbc79f ("f2fs: do not return EFSCORRUPTED, but try to run online repair")
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: Eric Paris <eparis@parisplace.org>
+Cc: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+Cc: Paul Moore <paul@paul-moore.com>
+Cc: Stephen Smalley <stephen.smalley.work@gmail.com>
+Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Closes: https://lore.kernel.org/r/0584f91c-537c-4188-9e4f-04f192565667@collabora.com
+Fixes: 0f8db8cc73df ("selinux: add AF_UNSPEC and INADDR_ANY checks to selinux_socket_bind()")
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/node.c  |  6 +++---
- fs/f2fs/xattr.c | 11 +++++++----
- 2 files changed, 10 insertions(+), 7 deletions(-)
+ security/selinux/hooks.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index 6efccd7ccfe1..c6d0e0709632 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -2738,11 +2738,11 @@ int f2fs_recover_xattr_data(struct inode *inode, struct page *page)
- 	f2fs_update_inode_page(inode);
- 
- 	/* 3: update and set xattr node page dirty */
--	if (page)
-+	if (page) {
- 		memcpy(F2FS_NODE(xpage), F2FS_NODE(page),
- 				VALID_XATTR_BLOCK_SIZE);
--
--	set_page_dirty(xpage);
-+		set_page_dirty(xpage);
-+	}
- 	f2fs_put_page(xpage, 1);
- 
- 	return 0;
-diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
-index 8816e13ca7c9..0631b383e21f 100644
---- a/fs/f2fs/xattr.c
-+++ b/fs/f2fs/xattr.c
-@@ -660,11 +660,14 @@ static int __f2fs_setxattr(struct inode *inode, int index,
- 	here = __find_xattr(base_addr, last_base_addr, NULL, index, len, name);
- 	if (!here) {
- 		if (!F2FS_I(inode)->i_xattr_nid) {
-+			error = f2fs_recover_xattr_data(inode, NULL);
- 			f2fs_notice(F2FS_I_SB(inode),
--				"recover xattr in inode (%lu)", inode->i_ino);
--			f2fs_recover_xattr_data(inode, NULL);
--			kfree(base_addr);
--			goto retry;
-+				"recover xattr in inode (%lu), error(%d)",
-+					inode->i_ino, error);
-+			if (!error) {
-+				kfree(base_addr);
-+				goto retry;
-+			}
- 		}
- 		f2fs_err(F2FS_I_SB(inode), "set inode (%lu) has corrupted xattr",
- 								inode->i_ino);
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index ee37ce2e2619..f545321d96dc 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -4620,6 +4620,13 @@ static int selinux_socket_bind(struct socket *sock, struct sockaddr *address, in
+ 				return -EINVAL;
+ 			addr4 = (struct sockaddr_in *)address;
+ 			if (family_sa == AF_UNSPEC) {
++				if (family == PF_INET6) {
++					/* Length check from inet6_bind_sk() */
++					if (addrlen < SIN6_LEN_RFC2133)
++						return -EINVAL;
++					/* Family check from __inet6_bind() */
++					goto err_af;
++				}
+ 				/* see __inet_bind(), we only want to allow
+ 				 * AF_UNSPEC if the address is INADDR_ANY
+ 				 */
 -- 
 2.43.0
 
