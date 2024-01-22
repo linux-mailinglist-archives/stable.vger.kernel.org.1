@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-13487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC683837C4B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DEC02837E79
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 754D0296A22
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EED8028E8A5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9B0145341;
-	Tue, 23 Jan 2024 00:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4E313A26E;
+	Tue, 23 Jan 2024 00:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yANhtUKn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSNu6vMe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF68145338;
-	Tue, 23 Jan 2024 00:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0956F54BD2;
+	Tue, 23 Jan 2024 00:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969573; cv=none; b=roxeQKskFPTx48CoQbd6/uAyZskMq6H6oTC8FHpBnPscDXwT8vPUKXg5V83xBab9fzcCMIYnynXv8s9k75iB51AcRzKO4G8APmtKJ+Vuo8RQZLI4Nes2s89a4vc4DtAB/dlebnTJsnYc/0WPxK4wNSCk9M9N6Y52M7gbKeqRQQw=
+	t=1705970611; cv=none; b=d/7TuUFVQCc8fUbeWakVS2eJU72tGPKNpKomXURrC/JFkfYS0sLy08/44MGSsYqVt9c+o/XzovWHrBZ868B48MWSYun3PrpBzxwIk05EWRCc9h8pyaP1x8KFgoLD0snbvdPJ1vxbHxUH7GKUBZakGeIlZ9dOag565IzAtwfK6Vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969573; c=relaxed/simple;
-	bh=8FSu8sGthVfwCoUyG8acwJGBq5iF/3VrwKosFSzh3Ao=;
+	s=arc-20240116; t=1705970611; c=relaxed/simple;
+	bh=pOhraDwCzhL4PE70rWbgCxJiPLdY8JaQmuVQ6mfRd9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=alnhBjv+hVn2qbgwlaUs8fBbgPELyTySeyCTXowb7Nafgu6oAtRs//37jjMRTGsjHybhEYB8fqRHbR1r0KlWf1F2DkCYb8OLPrNbzsXql451gN7FjwiwISXgWoNFLqSBF2TqOjI6091kxGXUvQhmG9z+fS9e5IkgDcYm6YnPBBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yANhtUKn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29AB9C43399;
-	Tue, 23 Jan 2024 00:26:12 +0000 (UTC)
+	 MIME-Version; b=P4c7CYIdTMke5jL4MW/gGw87D2Gp+Ytc6H1VGtlFey6KaEY4tzRlUAicN+UgC+RM2/ipWn+6GpGvLQk51xKvplayd4Z+zYBJ31vXW3WXks66O+i9kWdjKDyABiQ7B64OoDyxlXZpl+EhOWOqojUf9DU5GIRbm22hfHpSyl4F0xQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSNu6vMe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC28C433C7;
+	Tue, 23 Jan 2024 00:43:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969572;
-	bh=8FSu8sGthVfwCoUyG8acwJGBq5iF/3VrwKosFSzh3Ao=;
+	s=korg; t=1705970610;
+	bh=pOhraDwCzhL4PE70rWbgCxJiPLdY8JaQmuVQ6mfRd9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yANhtUKnmGsgo3nL7cuEnUHYi9gUDvXZN0YVR7w0B0cmzN6pgUX+aFMRUNTMdNGdv
-	 eyk3epGBz6SYwSAtfAYbO/CVkTao9ZiQAbe7Ffjua7MUMXiu/sTs1rRo4YMxzKFtgX
-	 EtXhwMcrj5JJuYvc0yXqNYSoohY9m3Yks7AzbJ3k=
+	b=hSNu6vMerKSlgH/TMszB+2ZL0DgUDnQ6/EWEujaunPXPyyHbd0znaA/WHX3uk6UfD
+	 UyvtX6TDNOUAAkDoAk8ejSVj48W7m7oXovApJoi9bbm3TNP8p4lP3tkJUHeAR4EmFQ
+	 p2TJ0PUPP/2d21cFr3uPaOJHG8i8YActfTnTpEpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 330/641] gpu/drm/radeon: fix two memleaks in radeon_vm_init
-Date: Mon, 22 Jan 2024 15:53:54 -0800
-Message-ID: <20240122235828.226182227@linuxfoundation.org>
+Subject: [PATCH 6.1 067/417] pNFS: Fix the pnfs block drivers calculation of layoutget size
+Date: Mon, 22 Jan 2024 15:53:55 -0800
+Message-ID: <20240122235754.031354977@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit c2709b2d6a537ca0fa0f1da36fdaf07e48ef447d ]
+[ Upstream commit 8a6291bf3b0eae1bf26621e6419a91682f2d6227 ]
 
-When radeon_bo_create and radeon_vm_clear_bo fail, the vm->page_tables
-allocated before need to be freed. However, neither radeon_vm_init
-itself nor its caller have done such deallocation.
+Instead of relying on the value of the 'bytes_left' field, we should
+calculate the layout size based on the offset of the request that is
+being written out.
 
-Fixes: 6d2f2944e95e ("drm/radeon: use normal BOs for the page tables v4")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reported-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 954998b60caa ("NFS: Fix error handling for O_DIRECT write scheduling")
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Tested-by: Benjamin Coddington <bcodding@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/radeon_vm.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/nfs/blocklayout/blocklayout.c | 5 ++---
+ fs/nfs/direct.c                  | 5 +++--
+ fs/nfs/internal.h                | 2 +-
+ fs/nfs/pnfs.c                    | 3 ++-
+ 4 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/radeon_vm.c b/drivers/gpu/drm/radeon/radeon_vm.c
-index 987cabbf1318..c38b4d5d6a14 100644
---- a/drivers/gpu/drm/radeon/radeon_vm.c
-+++ b/drivers/gpu/drm/radeon/radeon_vm.c
-@@ -1204,13 +1204,17 @@ int radeon_vm_init(struct radeon_device *rdev, struct radeon_vm *vm)
- 	r = radeon_bo_create(rdev, pd_size, align, true,
- 			     RADEON_GEM_DOMAIN_VRAM, 0, NULL,
- 			     NULL, &vm->page_directory);
--	if (r)
-+	if (r) {
-+		kfree(vm->page_tables);
-+		vm->page_tables = NULL;
- 		return r;
--
-+	}
- 	r = radeon_vm_clear_bo(rdev, vm->page_directory);
- 	if (r) {
- 		radeon_bo_unref(&vm->page_directory);
- 		vm->page_directory = NULL;
-+		kfree(vm->page_tables);
-+		vm->page_tables = NULL;
- 		return r;
+diff --git a/fs/nfs/blocklayout/blocklayout.c b/fs/nfs/blocklayout/blocklayout.c
+index 1d1d7abc3205..6be13e0ec170 100644
+--- a/fs/nfs/blocklayout/blocklayout.c
++++ b/fs/nfs/blocklayout/blocklayout.c
+@@ -895,10 +895,9 @@ bl_pg_init_write(struct nfs_pageio_descriptor *pgio, struct nfs_page *req)
  	}
  
+ 	if (pgio->pg_dreq == NULL)
+-		wb_size = pnfs_num_cont_bytes(pgio->pg_inode,
+-					      req->wb_index);
++		wb_size = pnfs_num_cont_bytes(pgio->pg_inode, req->wb_index);
+ 	else
+-		wb_size = nfs_dreq_bytes_left(pgio->pg_dreq);
++		wb_size = nfs_dreq_bytes_left(pgio->pg_dreq, req_offset(req));
+ 
+ 	pnfs_generic_pg_init_write(pgio, req, wb_size);
+ 
+diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
+index 3bb530d4bb5c..8fdb65e1b14a 100644
+--- a/fs/nfs/direct.c
++++ b/fs/nfs/direct.c
+@@ -195,9 +195,10 @@ static void nfs_direct_req_release(struct nfs_direct_req *dreq)
+ 	kref_put(&dreq->kref, nfs_direct_req_free);
+ }
+ 
+-ssize_t nfs_dreq_bytes_left(struct nfs_direct_req *dreq)
++ssize_t nfs_dreq_bytes_left(struct nfs_direct_req *dreq, loff_t offset)
+ {
+-	return dreq->bytes_left;
++	loff_t start = offset - dreq->io_start;
++	return dreq->max_count - start;
+ }
+ EXPORT_SYMBOL_GPL(nfs_dreq_bytes_left);
+ 
+diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
+index 4b07a0508f9d..35a8ae46b6c3 100644
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -640,7 +640,7 @@ extern int nfs_sillyrename(struct inode *dir, struct dentry *dentry);
+ /* direct.c */
+ void nfs_init_cinfo_from_dreq(struct nfs_commit_info *cinfo,
+ 			      struct nfs_direct_req *dreq);
+-extern ssize_t nfs_dreq_bytes_left(struct nfs_direct_req *dreq);
++extern ssize_t nfs_dreq_bytes_left(struct nfs_direct_req *dreq, loff_t offset);
+ 
+ /* nfs4proc.c */
+ extern struct nfs_client *nfs4_init_client(struct nfs_client *clp,
+diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
+index 1ffb1068216b..4448ff829cbb 100644
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -2729,7 +2729,8 @@ pnfs_generic_pg_init_read(struct nfs_pageio_descriptor *pgio, struct nfs_page *r
+ 		if (pgio->pg_dreq == NULL)
+ 			rd_size = i_size_read(pgio->pg_inode) - req_offset(req);
+ 		else
+-			rd_size = nfs_dreq_bytes_left(pgio->pg_dreq);
++			rd_size = nfs_dreq_bytes_left(pgio->pg_dreq,
++						      req_offset(req));
+ 
+ 		pgio->pg_lseg =
+ 			pnfs_update_layout(pgio->pg_inode, nfs_req_openctx(req),
 -- 
 2.43.0
 
