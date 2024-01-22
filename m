@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC72838331
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9630E837E74
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C41AA2863F8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCC261C28F23
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:39:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0374D60B82;
-	Tue, 23 Jan 2024 01:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5FA713A263;
+	Tue, 23 Jan 2024 00:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVSlEzQB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0oqxMag"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FAB5025C;
-	Tue, 23 Jan 2024 01:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7325E54BD2;
+	Tue, 23 Jan 2024 00:43:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974731; cv=none; b=qVbkaOqyUdSek0WcVf2qasqNaHeg0lERiOybMArHBkUBWvkRT6wdxVuWXlBRbMy1D+orAoynVKSLEGQwyJBzcvoIIEdgzmCWmje2cXyIb+ppkHLS72KzjLWIjswifJT4ZW8HUVeTcMhKYqb0qrS0HlejQJ9HVEEfYMgPWm7vCnU=
+	t=1705970596; cv=none; b=h5+fZHmcVYejYek2IeuVEfV5XeJmB2OI86JPlRPz/pvcv+ONqkTiz4q7Jr3hK1cGVhF7iRm8iWCdq7aSZbd+C/tD7y9uTyGdL0gm34amH5dM0pQyjyvjLTxahDeBnPGoUOcIYvTzWZz5qza94o+QLEjMd8nq+wfR2B3W67va0iE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974731; c=relaxed/simple;
-	bh=01v0D7wxcdhCmbZnBdVqN0fuIAMpxF6zB6CjxdfxRP4=;
+	s=arc-20240116; t=1705970596; c=relaxed/simple;
+	bh=AU6dsrJE8sc+pnzP3lEEGtx7nwpjyAsWyOVVyz/gFdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ok/XZqyeqlYw9+CXgi7PBc7ItyetrA9iM7qaud2YkazIDQGz/Ya8f9aqSDRczz+JhqAlZ10pq1+u9YBfKSeJjsE7grGJGvR8GOdImSR9mWpiA46rS+KOnr8tnGAPQf9c/0gB0ftyJ69qugxOd9f4z6VWkOyLHX699v3fiyVOKSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVSlEzQB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DF87C433F1;
-	Tue, 23 Jan 2024 01:52:11 +0000 (UTC)
+	 MIME-Version; b=BsFIAl4g4RM8MFYSrb4P4JRJhp9AVpot09iQEqKrPq8VT/qPU0LRbkudLoYy94qzWeULnTVIEk1IuJCBcnXJu68ipJy8vdBcoYVUc6NSVe4ShdITPiUAQJw0ZVlAB9bhxsbm4780tVtGijmdEbX8608f/FoJgo2jxtKfpBKOHXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0oqxMag; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48D5C433C7;
+	Tue, 23 Jan 2024 00:43:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974731;
-	bh=01v0D7wxcdhCmbZnBdVqN0fuIAMpxF6zB6CjxdfxRP4=;
+	s=korg; t=1705970596;
+	bh=AU6dsrJE8sc+pnzP3lEEGtx7nwpjyAsWyOVVyz/gFdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yVSlEzQBvK+3XwwE4LywNBI4SlFlbIgebNCeHpwCjubTxnAZxPyOGd0dbXE49UOqE
-	 9kpG22D2mqhDMD/XIs61Pwhn2mLc1MvrIY6CQGpsOpHWWf5UcazsEpeg0y6yKm3fV+
-	 IK4ZfQLfjOQdMwhNb3KQbWXWWKBlvZHty67OuVXw=
+	b=C0oqxMagaFJTC64cH2Q1uabZkiYlPobgRS6qsaoUO+SM/eaF9A6/raRKvDvX81Lb7
+	 Sjm7v96q7T1fwKctgqYtFqf+Qm9QfzM4+5E3eiWsiFgf/SM34Jy/YrIuAswE/DzyVX
+	 ML3uyrzPoHwz27ePyy+xrE7e6EclVKHNwG2KapzQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moudy Ho <moudy.ho@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Rae Moar <rmoar@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 147/583] arm64: dts: mediatek: mt8183: correct MDP3 DMA-related nodes
-Date: Mon, 22 Jan 2024 15:53:18 -0800
-Message-ID: <20240122235816.586097105@linuxfoundation.org>
+Subject: [PATCH 6.1 031/417] kunit: debugfs: Fix unchecked dereference in debugfs_print_results()
+Date: Mon, 22 Jan 2024 15:53:19 -0800
+Message-ID: <20240122235752.670994222@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moudy Ho <moudy.ho@mediatek.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 188ffcd7fea79af3cac441268fc99f60e87f03b3 ]
+[ Upstream commit 34dfd5bb2e5507e69d9b6d6c90f546600c7a4977 ]
 
-In order to generalize the node names, the DMA-related nodes
-corresponding to MT8183 MDP3 need to be corrected.
+Move the call to kunit_suite_has_succeeded() after the check that
+the kunit_suite pointer is valid.
 
-Fixes: 60a2fb8d202a ("arm64: dts: mt8183: add MediaTek MDP3 nodes")
-Signed-off-by: Moudy Ho <moudy.ho@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+This was found by smatch:
+
+ lib/kunit/debugfs.c:66 debugfs_print_results() warn: variable
+ dereferenced before check 'suite' (see line 63)
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: 38289a26e1b8 ("kunit: fix debugfs code to use enum kunit_status, not bool")
+Reviewed-by: Rae Moar <rmoar@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/mediatek/mt8183.dtsi | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ lib/kunit/debugfs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/mediatek/mt8183.dtsi b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-index 976dc968b3ca..df6e9990cd5f 100644
---- a/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-+++ b/arch/arm64/boot/dts/mediatek/mt8183.dtsi
-@@ -1660,7 +1660,7 @@ mmsys: syscon@14000000 {
- 			mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0 0x1000>;
- 		};
+diff --git a/lib/kunit/debugfs.c b/lib/kunit/debugfs.c
+index b08bb1fba106..de5e71458358 100644
+--- a/lib/kunit/debugfs.c
++++ b/lib/kunit/debugfs.c
+@@ -52,12 +52,14 @@ static void debugfs_print_result(struct seq_file *seq,
+ static int debugfs_print_results(struct seq_file *seq, void *v)
+ {
+ 	struct kunit_suite *suite = (struct kunit_suite *)seq->private;
+-	enum kunit_status success = kunit_suite_has_succeeded(suite);
++	enum kunit_status success;
+ 	struct kunit_case *test_case;
  
--		mdp3-rdma0@14001000 {
-+		dma-controller0@14001000 {
- 			compatible = "mediatek,mt8183-mdp3-rdma";
- 			reg = <0 0x14001000 0 0x1000>;
- 			mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0x1000 0x1000>;
-@@ -1672,6 +1672,7 @@ mdp3-rdma0@14001000 {
- 			iommus = <&iommu M4U_PORT_MDP_RDMA0>;
- 			mboxes = <&gce 20 CMDQ_THR_PRIO_LOWEST 0>,
- 				 <&gce 21 CMDQ_THR_PRIO_LOWEST 0>;
-+			#dma-cells = <1>;
- 		};
+ 	if (!suite)
+ 		return 0;
  
- 		mdp3-rsz0@14003000 {
-@@ -1692,7 +1693,7 @@ mdp3-rsz1@14004000 {
- 			clocks = <&mmsys CLK_MM_MDP_RSZ1>;
- 		};
- 
--		mdp3-wrot0@14005000 {
-+		dma-controller@14005000 {
- 			compatible = "mediatek,mt8183-mdp3-wrot";
- 			reg = <0 0x14005000 0 0x1000>;
- 			mediatek,gce-client-reg = <&gce SUBSYS_1400XXXX 0x5000 0x1000>;
-@@ -1701,6 +1702,7 @@ mdp3-wrot0@14005000 {
- 			power-domains = <&spm MT8183_POWER_DOMAIN_DISP>;
- 			clocks = <&mmsys CLK_MM_MDP_WROT0>;
- 			iommus = <&iommu M4U_PORT_MDP_WROT0>;
-+			#dma-cells = <1>;
- 		};
- 
- 		mdp3-wdma@14006000 {
++	success = kunit_suite_has_succeeded(suite);
++
+ 	/* Print KTAP header so the debugfs log can be parsed as valid KTAP. */
+ 	seq_puts(seq, "KTAP version 1\n");
+ 	seq_puts(seq, "1..1\n");
 -- 
 2.43.0
 
