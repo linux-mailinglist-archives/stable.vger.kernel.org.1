@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E80837EAA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:51 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99750837DBC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 689DF1C266FD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD800B2CD1F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:13:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96E64612CD;
-	Tue, 23 Jan 2024 00:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01DA21468E6;
+	Tue, 23 Jan 2024 00:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAtUTNTY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pwjOOs66"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D6860EC7;
-	Tue, 23 Jan 2024 00:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66ED136658;
+	Tue, 23 Jan 2024 00:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970752; cv=none; b=C2etZ/VKQL7b6szRB/b2uhfjwsr7cSMzTBlxKR1S3su4Jm9ro/SFCmaK5z8rF3zsDmkL+xO9H265nt/+x0hEj4jeygunnNtBSQl14/HBbxBVT1BrBAPVGFlSchSU2exiL9A7npbPeW6KHn5wnCmpgVhyGZGX4ta001lTriuqQaY=
+	t=1705969703; cv=none; b=iar0wiBNpHP0OBrc0ireldY7lEVasqlzTsA5dnXkwf4RfZ+N+SyA8IreI06eeZX1whQ+oQRCU9L1wVBR21yc7ONgOUI2GLmZWokc4liBokD83qCT6tNSTJlqY/LeGbd6sWrXenCiTCyspgYN5/O4ZIalV4tg9Wi6SxcHkDa/AVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970752; c=relaxed/simple;
-	bh=f0gexUZLGEersWFHd/9GD+McCt0b1Ul1LYzbdCYJ24c=;
+	s=arc-20240116; t=1705969703; c=relaxed/simple;
+	bh=5pIdF8HLwHJEDYqBPAWc8X+NuY31VWW6j+0HPZPTWMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SJhhgeoXjpMz/4AtNUR2tRbis2yXPVChSnL3c7uGYWge/LeCY3xWaa8hjPNxK9ABBX5Af9bvC/pyR2Bu7vMgY8ueUTdwtcGrxvAmS665jR54DFmS5DkczZmEahnpjqgOVwAo/I8qNBm39aYI0bVUIxxWhVfBUUWIKeylYe22BME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AAtUTNTY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC756C433F1;
-	Tue, 23 Jan 2024 00:45:51 +0000 (UTC)
+	 MIME-Version; b=Yzm+3Hsq3b8cBwbKL3hpZ7vIGkEiYFoR8zlrkfyj1tTiEi86o6E8gzE7aCJnDk4ycWNMq8sIgV9MqQvLvwPi5ZpyVrmKyDgih7dDEjqobZqpL0D4Qll9pLCGMSfjW82wfgFpuLHXZP+fDGoW44UBXiUf7hHoC7khXoYZaSwQag4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pwjOOs66; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4070FC433F1;
+	Tue, 23 Jan 2024 00:28:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970752;
-	bh=f0gexUZLGEersWFHd/9GD+McCt0b1Ul1LYzbdCYJ24c=;
+	s=korg; t=1705969703;
+	bh=5pIdF8HLwHJEDYqBPAWc8X+NuY31VWW6j+0HPZPTWMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AAtUTNTYioGIJ91DfPD1d94MTsOJPjvJGnOQWx+6HHdrwnF4DCqnlGW9zQ8iOq4xd
-	 MACX3YcXVsekmBBc0FTPVEdf/sUMZYakEa1Pmen1QWv4MkqfCzEVLY4bU8g2vao+Pv
-	 wszULzF+9+0AOQZtrgIgiOUz9ou0zVIcJ7WBIwUk=
+	b=pwjOOs66vqI7kCs1o3KX45yL7hZcIcKW9ArmHARF46BSRFBUHp1EljjAiS8vVQkjO
+	 amxnw7AanSLqLf0odViccOhh4A5Fzix+rwSWWOJ2OPBlT1L9aA6s9FtxOQnJokGfxs
+	 R6bUjc5vUnq977FunflXYlfSle9I2n7mEsj2TQRI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamil Duljas <kamil.duljas@gmail.com>,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 011/286] ASoC: Intel: Skylake: mem leak in skl register function
+	stable <stable@kernel.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: [PATCH 6.7 413/641] serial: 8250_bcm2835aux: Restore clock error handling
 Date: Mon, 22 Jan 2024 15:55:17 -0800
-Message-ID: <20240122235732.449596600@linuxfoundation.org>
+Message-ID: <20240122235830.898809657@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamil Duljas <kamil.duljas@gmail.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit f8ba14b780273fd290ddf7ee0d7d7decb44cc365 ]
+commit 83e571f054cd742eb9a46d46ef05193904adf53f upstream.
 
-skl_platform_register() uses krealloc. When krealloc is fail,
-then previous memory is not freed. The leak is also when soc
-component registration failed.
+The commit fcc446c8aa63 ("serial: 8250_bcm2835aux: Add ACPI support")
+dropped the error handling for clock acquiring. But even an optional
+clock needs this.
 
-Signed-off-by: Kamil Duljas <kamil.duljas@gmail.com>
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20231116224112.2209-2-kamil.duljas@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fcc446c8aa63 ("serial: 8250_bcm2835aux: Add ACPI support")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20231220114334.4712-1-wahrenst@gmx.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/skylake/skl-pcm.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_bcm2835aux.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/intel/skylake/skl-pcm.c b/sound/soc/intel/skylake/skl-pcm.c
-index c7e76111f68b..935c871abdaa 100644
---- a/sound/soc/intel/skylake/skl-pcm.c
-+++ b/sound/soc/intel/skylake/skl-pcm.c
-@@ -1477,6 +1477,7 @@ int skl_platform_register(struct device *dev)
- 		dais = krealloc(skl->dais, sizeof(skl_fe_dai) +
- 				sizeof(skl_platform_dai), GFP_KERNEL);
- 		if (!dais) {
-+			kfree(skl->dais);
- 			ret = -ENOMEM;
- 			goto err;
- 		}
-@@ -1489,8 +1490,10 @@ int skl_platform_register(struct device *dev)
+--- a/drivers/tty/serial/8250/8250_bcm2835aux.c
++++ b/drivers/tty/serial/8250/8250_bcm2835aux.c
+@@ -119,6 +119,8 @@ static int bcm2835aux_serial_probe(struc
  
- 	ret = devm_snd_soc_register_component(dev, &skl_component,
- 					 skl->dais, num_dais);
--	if (ret)
-+	if (ret) {
-+		kfree(skl->dais);
- 		dev_err(dev, "soc component registration failed %d\n", ret);
-+	}
- err:
- 	return ret;
- }
--- 
-2.43.0
-
+ 	/* get the clock - this also enables the HW */
+ 	data->clk = devm_clk_get_optional(&pdev->dev, NULL);
++	if (IS_ERR(data->clk))
++		return dev_err_probe(&pdev->dev, PTR_ERR(data->clk), "could not get clk\n");
+ 
+ 	/* get the interrupt */
+ 	ret = platform_get_irq(pdev, 0);
 
 
 
