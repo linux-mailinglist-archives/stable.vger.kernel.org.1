@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-12948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FBEF8379D5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:46:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9396B837B3D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08FBF285C74
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:46:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0918B2D5AF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:52:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8EB128386;
-	Tue, 23 Jan 2024 00:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82AA912CDA7;
+	Tue, 23 Jan 2024 00:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHsbZ81Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gExWwxfw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02C7482ED;
-	Tue, 23 Jan 2024 00:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4249712CDA3;
+	Tue, 23 Jan 2024 00:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968675; cv=none; b=r6wAk4ieBDotjP7mFQ3ezK5CWTzoSfzgQbx3tRWIiHLbKJu5z005QIkrMuZuSHdIncL/X/lq3LS3Hsl2fcakqHJTjQVd2jmTiC74MfXq16XjmvLkvu7zBbkFtCxDdQ4Aqk4eB6/P2c7UW0z7RMLFrVjFdeuQtlANTpCQj+NIh20=
+	t=1705968962; cv=none; b=OgUoQAqBi3pEVzVqsPaU7MpiEOqdb53ln6n02sHpJIf230usMsKWou8M2i8m0GHksjUR4eS8AuMn4WFyjC3aq7+YC9jaohvhCxK8S5BEpVbmcJmkE9UtAboLcuz2lH9ezkZp0CQ/1IPtGy6Vsm3cTagx225TrxD6F5S+FVwcrZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968675; c=relaxed/simple;
-	bh=C9z6Ur/AU2sPVItJlZwrZo/V3t8BpkgSrGTsH1jmx88=;
+	s=arc-20240116; t=1705968962; c=relaxed/simple;
+	bh=kSuf6m6gQz5IDHApD7370nNmPGPaYFolgHVk2V3lKhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SEf2FkUt0Eb0vgiQXjqLqPUjx5JEJyJZbTh58vWHCdY5t4YdBNKz4zN3f+6mkH/sVDBKhdGP7j/hic2jbEpyB6Y/wujHTo/1Ghb+U9DSFmRo5bkzzj+3pMcuN9wmo2ACK7EWDHXTKR6u1EtatmrdNu1ff2v1pPZXwsZtPMJi4x4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHsbZ81Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C4BC4AF5E;
-	Tue, 23 Jan 2024 00:11:14 +0000 (UTC)
+	 MIME-Version; b=jc/q5FkPJqp64JxJrj4dcm4WGLx4BmS8SbEE9gfJkzN9F9vzkbwdJhhx4fJafdRnK8kJeBK/GLHTMcFesCrunxIVAWHbbu739T0L7Ln7+vZ96AhOTxGS7qQsu7WLYVs1vU6y8KG4wmYF5TLQgzSmk7SJTJkezvfQxP2Z/T86zsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gExWwxfw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4373C433C7;
+	Tue, 23 Jan 2024 00:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968675;
-	bh=C9z6Ur/AU2sPVItJlZwrZo/V3t8BpkgSrGTsH1jmx88=;
+	s=korg; t=1705968962;
+	bh=kSuf6m6gQz5IDHApD7370nNmPGPaYFolgHVk2V3lKhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JHsbZ81ZsM0ByFz0oHaZC7mBcj6E+3PeyxFgRQkGyIHZL+ONHpBkfMSzCeHrnBtnC
-	 Iz58n1hSwPGrBW/UiKCvxOp+Sh1F/VGh/WKL2aqOlkRPS57WsarTiThYpSe8A1K9sY
-	 VNP1gcKsi6htQ7rS0U2GShVyxXq3bpvJxqI44/bo=
+	b=gExWwxfwgNJoQ7qs7ZokL+kNNIYJn7o0TaslnVdQJo0IPPSQXLYS229t7nbv8GIVn
+	 +4+PesFcwHyXFlKaGXUjgcced9oLhrPWjH5xrWeWxMgUCleJnHGno1xN3GrLXSfM0M
+	 OuC6RtSYpnw1DZy50u6lt2KF0UlqJEj1mygQgcPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 098/148] drm/radeon/dpm: fix a memleak in sumo_parse_power_table
+Subject: [PATCH 5.4 124/194] drm/bridge: tc358767: Fix return value on error case
 Date: Mon, 22 Jan 2024 15:57:34 -0800
-Message-ID: <20240122235716.359247322@linuxfoundation.org>
+Message-ID: <20240122235724.552333723@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 0737df9ed0997f5b8addd6e2b9699a8c6edba2e4 ]
+[ Upstream commit 32bd29b619638256c5b75fb021d6d9f12fc4a984 ]
 
-The rdev->pm.dpm.ps allocated by kcalloc should be freed in every
-following error-handling path. However, in the error-handling of
-rdev->pm.power_state[i].clock_info the rdev->pm.dpm.ps is not freed,
-resulting in a memleak in this function.
+If the hpd_pin is invalid, the driver returns 'ret'. But 'ret' contains
+0, instead of an error value.
 
-Fixes: 80ea2c129c76 ("drm/radeon/kms: add dpm support for sumo asics (v2)")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Return -EINVAL instead.
+
+Fixes: f25ee5017e4f ("drm/bridge: tc358767: add IRQ and HPD support")
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231103-uninit-fixes-v2-4-c22b2444f5f5@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/sumo_dpm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/tc358767.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/radeon/sumo_dpm.c b/drivers/gpu/drm/radeon/sumo_dpm.c
-index 1e4975f3374c..b9dc3805d7fb 100644
---- a/drivers/gpu/drm/radeon/sumo_dpm.c
-+++ b/drivers/gpu/drm/radeon/sumo_dpm.c
-@@ -1494,8 +1494,10 @@ static int sumo_parse_power_table(struct radeon_device *rdev)
- 		non_clock_array_index = power_state->v2.nonClockInfoIndex;
- 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
- 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
--		if (!rdev->pm.power_state[i].clock_info)
-+		if (!rdev->pm.power_state[i].clock_info) {
-+			kfree(rdev->pm.dpm.ps);
- 			return -EINVAL;
-+		}
- 		ps = kzalloc(sizeof(struct sumo_ps), GFP_KERNEL);
- 		if (ps == NULL) {
- 			kfree(rdev->pm.dpm.ps);
+diff --git a/drivers/gpu/drm/bridge/tc358767.c b/drivers/gpu/drm/bridge/tc358767.c
+index 0454675a44cb..a58943115241 100644
+--- a/drivers/gpu/drm/bridge/tc358767.c
++++ b/drivers/gpu/drm/bridge/tc358767.c
+@@ -1574,7 +1574,7 @@ static int tc_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 	} else {
+ 		if (tc->hpd_pin < 0 || tc->hpd_pin > 1) {
+ 			dev_err(dev, "failed to parse HPD number\n");
+-			return ret;
++			return -EINVAL;
+ 		}
+ 	}
+ 
 -- 
 2.43.0
 
