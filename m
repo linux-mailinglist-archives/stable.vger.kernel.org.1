@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCAE8837C6E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46EC3838393
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 872192967FD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 007002943F6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A65E2554B;
-	Tue, 23 Jan 2024 00:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D4E633FF;
+	Tue, 23 Jan 2024 01:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWU8BL6P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6OV7S1f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280892581;
-	Tue, 23 Jan 2024 00:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41070633E6;
+	Tue, 23 Jan 2024 01:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969615; cv=none; b=WbQP/4J7XBL1v9pRiPgab58v/+oRgLqZdroSbvC6no4WxPy8+jDaMZxK8cCilvh2xJtG6Emlt+GIHd4uhL4WmSQ+eoe3BTcHm5bUH+VQSXEpVMRjDtGIjIPhf62dC59YUgYRYXygBe5XSlu+BlqJxFBzyD6eTATpipfEg9pvc2M=
+	t=1705975011; cv=none; b=OGNTqZ+1thTbnLXpSlEGjmEvtFQaHz0op6eOP6WnZrvYV0tYYS2ERoZnZ2V67qwRJ0E4MlXnwr+jv28cEnW7F4WEQBWJNISNKIwuvmJUxtL+xoRifq5vkZQ8quUf9GC59e4h2daxRTPFdpc6Na2t8paCA+DSLPHwJpGfxCyowwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969615; c=relaxed/simple;
-	bh=i417x3Ry8wDLvOhRDm/0GjUdHlkmr0M5wHRLy4O7mN0=;
+	s=arc-20240116; t=1705975011; c=relaxed/simple;
+	bh=HbVg50eD6gZIW+B92+Wjq7hGQnL0mjHenK7xoEvB9hY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tTjiuV74OrWzlb1gHL7pgrQJx7Pghbn46X97VqzVdT+vGpsvujl6HKlzWaEXZoHhxlUkv/G798w5PUMk1ppNm4BxkaZp4YyQXbM1cWUiWXu2OMSu/JiHxMyuFOAMoTaqdImm3o2IoYjfwGXoTPQUeLRf0C6olZFpUbqFcdRMtF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWU8BL6P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E49EC433F1;
-	Tue, 23 Jan 2024 00:26:54 +0000 (UTC)
+	 MIME-Version; b=aN74uovzukYcRX56Z4Uq5JZLnxsSCC8RYwqAbREybGXV2abrd2HR0XPsBXhffL4nb7VJ2lfUa3PP+yMpU8ciCy5ajwiZIjqH7QEtFXCVCvLaQAUajQiovX1FjeUxxpNX2oNyJjQIJdQGZi7/H9nXA23rgu6dz64xP80pLq36G6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6OV7S1f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0975BC433C7;
+	Tue, 23 Jan 2024 01:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969614;
-	bh=i417x3Ry8wDLvOhRDm/0GjUdHlkmr0M5wHRLy4O7mN0=;
+	s=korg; t=1705975011;
+	bh=HbVg50eD6gZIW+B92+Wjq7hGQnL0mjHenK7xoEvB9hY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DWU8BL6POudosQ8fXZgo7wDalaOVEeGpJpVZvM3YJ8QVWnbstfk9lJmfOQ4eOiuOZ
-	 qjONItavSJ1/HNT+i12U2Q63l7vDIjV6M5eh2Bv1J1lHV6ZJCFwg29SvPOjMQcrkHB
-	 66a/JkUppOzOAtrLJpoJJO3jUhpdQjWtMD+9rZic=
+	b=i6OV7S1f11Bo/VfWklnNQ+8QxAy9khXMpC3Iy9iMIvJHYR0dmazqKMf3r9PKSRRsD
+	 CQ6312Dh/HnENurjurda3Vjg+0ayj4mbxmneCB6TYT875BgAmJuDgXzM0oL+YGrfwU
+	 IBDkMDhubML9NunjdPcRgqbI8pZgxM3ZjC3PG5JQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Looijmans <mike.looijmans@topic.nl>,
 	Su Hui <suhui@nfschina.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 342/641] clk: si5341: fix an error code problem in si5341_output_clk_set_rate
+Subject: [PATCH 6.6 195/583] wifi: rtlwifi: rtl8192ce: using calculate_bit_shift()
 Date: Mon, 22 Jan 2024 15:54:06 -0800
-Message-ID: <20240122235828.619944997@linuxfoundation.org>
+Message-ID: <20240122235817.951575238@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 5607068ae5ab02c3ac9cabc6859d36e98004c341 ]
+[ Upstream commit 3d03e8231031bcc65a48cd88ef9c71b6524ce70b ]
 
-regmap_bulk_write() return zero or negative error code, return the value
-of regmap_bulk_write() rather than '0'.
+Using calculate_bit_shift() to replace _rtl92c_phy_calculate_bit_shift().
+And fix the undefined bitwise shift behavior problem.
 
-Fixes: 3044a860fd09 ("clk: Add Si5341/Si5340 driver")
-Acked-by: Mike Looijmans <mike.looijmans@topic.nl>
+Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
 Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20231101031633.996124-1-suhui@nfschina.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-7-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-si5341.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c | 6 +++---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h | 1 -
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/clk/clk-si5341.c b/drivers/clk/clk-si5341.c
-index 845b451511d2..6e8dd7387cfd 100644
---- a/drivers/clk/clk-si5341.c
-+++ b/drivers/clk/clk-si5341.c
-@@ -895,10 +895,8 @@ static int si5341_output_clk_set_rate(struct clk_hw *hw, unsigned long rate,
- 	r[0] = r_div ? (r_div & 0xff) : 1;
- 	r[1] = (r_div >> 8) & 0xff;
- 	r[2] = (r_div >> 16) & 0xff;
--	err = regmap_bulk_write(output->data->regmap,
-+	return regmap_bulk_write(output->data->regmap,
- 			SI5341_OUT_R_REG(output), r, 3);
--
--	return 0;
- }
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c
+index da54e51badd3..fa70a7d5539f 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c
+@@ -39,7 +39,7 @@ u32 rtl92c_phy_query_rf_reg(struct ieee80211_hw *hw,
+ 							       rfpath, regaddr);
+ 	}
  
- static int si5341_output_reparent(struct clk_si5341_output *output, u8 index)
+-	bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	readback_value = (original_value & bitmask) >> bitshift;
+ 
+ 	spin_unlock(&rtlpriv->locks.rf_lock);
+@@ -110,7 +110,7 @@ void rtl92ce_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 			original_value = _rtl92c_phy_rf_serial_read(hw,
+ 								    rfpath,
+ 								    regaddr);
+-			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data =
+ 			    ((original_value & (~bitmask)) |
+ 			     (data << bitshift));
+@@ -122,7 +122,7 @@ void rtl92ce_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 			original_value = _rtl92c_phy_fw_rf_serial_read(hw,
+ 								       rfpath,
+ 								       regaddr);
+-			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data =
+ 			    ((original_value & (~bitmask)) |
+ 			     (data << bitshift));
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h
+index 7582a162bd11..c7a0d4c776f0 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h
+@@ -94,7 +94,6 @@ u32 _rtl92c_phy_rf_serial_read(struct ieee80211_hw *hw, enum radio_path rfpath,
+ 			       u32 offset);
+ u32 _rtl92c_phy_fw_rf_serial_read(struct ieee80211_hw *hw,
+ 				  enum radio_path rfpath, u32 offset);
+-u32 _rtl92c_phy_calculate_bit_shift(u32 bitmask);
+ void _rtl92c_phy_rf_serial_write(struct ieee80211_hw *hw,
+ 				 enum radio_path rfpath, u32 offset, u32 data);
+ void _rtl92c_phy_fw_rf_serial_write(struct ieee80211_hw *hw,
 -- 
 2.43.0
 
