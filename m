@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-13987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3BA8837FD3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F40B837D13
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE769B2B03C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C5C71F2924A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D03605D1;
-	Tue, 23 Jan 2024 00:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF3EC15E29B;
+	Tue, 23 Jan 2024 00:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBAyVo4j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6rFwGMS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906BA26ACB;
-	Tue, 23 Jan 2024 00:48:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F73715E296;
+	Tue, 23 Jan 2024 00:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970912; cv=none; b=ct4y2VvIqErBELki3fM0jzwh3miPBuHVxYSWoB3KjaIY2kYz66rorHx+GyNEloVXSaL5aKjkC+IxG20uD+fDDg3YGBjkodAXUdJ6qqCOAN6UYhufTyYUoPIUvymOCwV858fLD6Qnzb9ytgFwOvg4IIPIH0MluiMaq88DGRX9cSw=
+	t=1705969784; cv=none; b=M6ENjzeaGj+3UTRKI5MztbVJsctIh9+nmK8zy8RH2iehHgpekqIa4/1Dpk0f5VBuA4/V7o79PWEK0xlmAWlTKDzUx/uqdqa2gl9l+v4fbFZJilApBXpwZFeUD8PV4tE+CflX/VmSUf31PR7tnOd6FXqhOzMBuYdLNB8LhfwdYMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970912; c=relaxed/simple;
-	bh=BY4EV9zbkAT6Ei4xhcckM2EnKI0bf4UKPUHEeRxGMRI=;
+	s=arc-20240116; t=1705969784; c=relaxed/simple;
+	bh=8djTW4HbNtPPXgPgI9OQIxBT6aMX/pOPcyfNqYdbUlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ASVCNtC8NIHtoco1AzE00Zq0oayUewtVzrfWxIy2UuUmuHyIALG/9jhvQaNRf4WevcE9y0SCz+JK3ZuS0Oxti/3qqGUl3J8B9hKH6QqDEJbMx5rPXLjwIY146zcjeJEmmEX4gHqzpiOYkN1D5IFpJml2UmeQuqj9tEOjx0nhbro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBAyVo4j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AAB1C433C7;
-	Tue, 23 Jan 2024 00:48:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eV0cIgiXUOq0I5/J1sBcljpWQb4AQhgr2gV+O5voYSuLouAOlkK6EGzpxNuykM4UvOWJOT0MbkURPIqLLRBYOr4Jwubh/tixdTdaif1y5cB5Zb88RagMtpFLaaMwQEcqMXWLLtPnMtGKVHMiFyMUKA86yqkSvKE+rSrpBmEGoKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6rFwGMS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A23C433C7;
+	Tue, 23 Jan 2024 00:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970912;
-	bh=BY4EV9zbkAT6Ei4xhcckM2EnKI0bf4UKPUHEeRxGMRI=;
+	s=korg; t=1705969784;
+	bh=8djTW4HbNtPPXgPgI9OQIxBT6aMX/pOPcyfNqYdbUlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dBAyVo4jxSi6FKmnEjU9iq0fijrSmh6CByP7LSvA7u7YlZGKu0mRDhclTGuQXsFKg
-	 xB842rMPIaWfIwwjlVnaWNg57xNcnkp0XCydmc60aDzW1sXCC9d1RTCZO138rq15Tb
-	 o4n0TVGRUsS3xMiXjgH+vf4S4rBspZuGhBoJnP9I=
+	b=z6rFwGMSWiDg/jzBOUZTwnHsEKPm6S0lF4pbjV33BdSJRyqjjp81GVAKNmzkprp2T
+	 UxpUYD+PjnLyt02TOuAAq+7L/u2AF0zxavDPoWsMv6vj7BFKe+21TajhcHLyK6Dzrx
+	 j45QTPO3PFx7YZ+7TPCXlTieeXmrUvMg1JzvRyQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Guanghui Feng <guanghuifeng@linux.alibaba.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Subject: [PATCH 5.10 044/286] uio: Fix use-after-free in uio_open
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 6.7 446/641] pwm: Fix out-of-bounds access in of_pwm_single_xlate()
 Date: Mon, 22 Jan 2024 15:55:50 -0800
-Message-ID: <20240122235733.724536121@linuxfoundation.org>
+Message-ID: <20240122235831.975185466@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,81 +58,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit 0c9ae0b8605078eafc3bea053cc78791e97ba2e2 upstream.
+commit a297d07b9a1e4fb8cda25a4a2363a507d294b7c9 upstream.
 
-core-1				core-2
--------------------------------------------------------
-uio_unregister_device		uio_open
-				idev = idr_find()
-device_unregister(&idev->dev)
-put_device(&idev->dev)
-uio_device_release
-				get_device(&idev->dev)
-kfree(idev)
-uio_free_minor(minor)
-				uio_release
-				put_device(&idev->dev)
-				kfree(idev)
--------------------------------------------------------
+With args->args_count == 2 args->args[2] is not defined. Actually the
+flags are contained in args->args[1].
 
-In the core-1 uio_unregister_device(), the device_unregister will kfree
-idev when the idev->dev kobject ref is 1. But after core-1
-device_unregister, put_device and before doing kfree, the core-2 may
-get_device. Then:
-1. After core-1 kfree idev, the core-2 will do use-after-free for idev.
-2. When core-2 do uio_release and put_device, the idev will be double
-   freed.
-
-To address this issue, we can get idev atomic & inc idev reference with
-minor_lock.
-
-Fixes: 57c5f4df0a5a ("uio: fix crash after the device is unregistered")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Link: https://lore.kernel.org/r/1703152663-59949-1-git-send-email-guanghuifeng@linux.alibaba.com
+Fixes: 3ab7b6ac5d82 ("pwm: Introduce single-PWM of_xlate function")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/243908750d306e018a3d4bf2eb745d53ab50f663.1704835845.git.u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/uio/uio.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/pwm/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/uio/uio.c
-+++ b/drivers/uio/uio.c
-@@ -464,13 +464,13 @@ static int uio_open(struct inode *inode,
+--- a/drivers/pwm/core.c
++++ b/drivers/pwm/core.c
+@@ -176,7 +176,7 @@ of_pwm_single_xlate(struct pwm_chip *chi
+ 	pwm->args.period = args->args[0];
+ 	pwm->args.polarity = PWM_POLARITY_NORMAL;
  
- 	mutex_lock(&minor_lock);
- 	idev = idr_find(&uio_idr, iminor(inode));
--	mutex_unlock(&minor_lock);
- 	if (!idev) {
- 		ret = -ENODEV;
-+		mutex_unlock(&minor_lock);
- 		goto out;
- 	}
--
- 	get_device(&idev->dev);
-+	mutex_unlock(&minor_lock);
+-	if (args->args_count == 2 && args->args[2] & PWM_POLARITY_INVERTED)
++	if (args->args_count == 2 && args->args[1] & PWM_POLARITY_INVERTED)
+ 		pwm->args.polarity = PWM_POLARITY_INVERSED;
  
- 	if (!try_module_get(idev->owner)) {
- 		ret = -ENODEV;
-@@ -1062,9 +1062,8 @@ void uio_unregister_device(struct uio_in
- 	wake_up_interruptible(&idev->wait);
- 	kill_fasync(&idev->async_queue, SIGIO, POLL_HUP);
- 
--	device_unregister(&idev->dev);
--
- 	uio_free_minor(minor);
-+	device_unregister(&idev->dev);
- 
- 	return;
- }
+ 	return pwm;
 
 
 
