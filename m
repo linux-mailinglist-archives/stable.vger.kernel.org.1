@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-13513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5875837C6A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3DF8383B3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FADC296AC7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14FB01F28DDD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8C8BA42;
-	Tue, 23 Jan 2024 00:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E2464AA8;
+	Tue, 23 Jan 2024 01:57:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/933Eab"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+sZWQGf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CD07472;
-	Tue, 23 Jan 2024 00:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AC764AA7;
+	Tue, 23 Jan 2024 01:57:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969609; cv=none; b=r+YkKM7V5Mx59zJvQYAgmMEff6Jyt29OFAIjAZOSFafZfT9m7Emia4b6nt/d8r3txQbqADM3/yDpF4s/JeK5boZBt91sI0V0D6H3s17leuBNl8yNznQh1u3PNjA+lhqb3vWNGBE5g/HuMoEwPObYi6pFQYpsY9RMdVG2D8Qltmo=
+	t=1705975041; cv=none; b=AQTVAgAgISy18tYl8u56FG6L8YomU8JbXRXdW8UYT0Jejmtvfyq8+IfWl3MrZlLukrz2mTyoIG09KoVCF0DEjmoH+I7LyUKE2P0jD1VYQ1whnMwuzxVGmHErlMs5AaFkgn6pSom8fzj6N7Z4KgnG0w0oO3ES1TkOqPL0NZa3bW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969609; c=relaxed/simple;
-	bh=1NhWBYP/E5S90L/4EVIseuVeZy84RuhbLj3RMPrgvfs=;
+	s=arc-20240116; t=1705975041; c=relaxed/simple;
+	bh=OZRHMFFn5fqDOuDGytNI52TjZk22rvOOJQM/CFNOXSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nC9t42DAwfSECDsrFjIzG2HSfQ6tKy8Y+ny/wuYR05BvwriiAAh2V9Io69Vh9apLb0Vdt4nbsbBNy/g0Ir6lF6TNUhS5BliFBNgpMpzaFcIxYzdCrvbD7UvgtCnUEmIUDsXYIZXD7LIqg23Z7tinJWj2cSFZGN+jGsfJEufVjyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/933Eab; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 436D8C433C7;
-	Tue, 23 Jan 2024 00:26:49 +0000 (UTC)
+	 MIME-Version; b=Cw0uGvkzEG5QU/brbbCm6U7UtTU4Syw3E65nUInlIsIzwI0DovFSj6Jep5BcpBY+LBb8RwAftTd849GqeejUnmcMb672K5DKf9S7VK1ZkeeNVivBawJ8WJm1ckb00COyfAmLzBGHsk5/6c/GmOaO8HHooISC+6vuSsr44tapZqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+sZWQGf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9927BC43394;
+	Tue, 23 Jan 2024 01:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969609;
-	bh=1NhWBYP/E5S90L/4EVIseuVeZy84RuhbLj3RMPrgvfs=;
+	s=korg; t=1705975041;
+	bh=OZRHMFFn5fqDOuDGytNI52TjZk22rvOOJQM/CFNOXSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g/933Eabs8/tGaA5oxWsG6sQqSqP5plzeJCcXUDEzqh9cHurXXvRhL7DzeIjATHIG
-	 J88C3vkbp60bBwSM4NU8bnGX3P101LRmWmzWiS+ghCMBQGzqJEoBmQrA5wyzEITZJi
-	 96rRcQZlEFxjlPrL+1PNbYWirPD+VoQWC+J62mxA=
+	b=A+sZWQGfIIYuB5U8oyHCrjQT8k/pKMSrKhF4llg3IuDgjNRgeb91Q27dhDugim3v/
+	 cLw6Z+frz4jVYKVl7Ze6aH4VDI4Ua/vNRflF+4ttsUqmuKs8i25h+ZhhEnZaRwxVo1
+	 ZgvBIkQTH+dZK0+5waHC7eVcE2wA8MGvMFs1zmdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Thierry Reding <thierry.reding@gmail.com>,
+	Zhang Ning <zhangn1985@outlook.com>,
+	Andy Yan <andyshrk@163.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 356/641] pwm: stm32: Fix enable count for clk in .probe()
+Subject: [PATCH 6.6 209/583] arm64: dts: rockchip: Fix led pinctrl of lubancat 1
 Date: Mon, 22 Jan 2024 15:54:20 -0800
-Message-ID: <20240122235829.073004850@linuxfoundation.org>
+Message-ID: <20240122235818.402045259@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Zabel <p.zabel@pengutronix.de>
+From: Andy Yan <andyshrk@163.com>
 
-[ Upstream commit 19f1016ea9600ed89bc24247c36ff5934ad94fbb ]
+[ Upstream commit 8586a5d217ef7bfeee24943c600a8a7890d6f477 ]
 
-Make the driver take over hardware state without disabling in .probe()
-and enable the clock for each enabled channel.
+According to the schematics, the gpio control sys_led is GPIO0_C5.
 
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-[ukleinek: split off from a patch that also implemented .get_state()]
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Fixes: 7edf7369205b ("pwm: Add driver for STM32 plaftorm")
-Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Fixes: 8d94da58de53 ("arm64: dts: rockchip: Add EmbedFire LubanCat 1")
+Reported-by: Zhang Ning <zhangn1985@outlook.com>
+Closes: https://lore.kernel.org/linux-rockchip/OS0P286MB06412D049D8BF7B063D41350CD95A@OS0P286MB0641.JPNP286.PROD.OUTLOOK.COM/T/#u
+Signed-off-by: Andy Yan <andyshrk@163.com>
+Link: https://lore.kernel.org/r/20231225005055.3102743-1-andyshrk@163.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-stm32.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
-index ffdfd81c0613..58ece15ef6c3 100644
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -578,17 +578,21 @@ static void stm32_pwm_detect_complementary(struct stm32_pwm *priv)
- 	priv->have_complementary_output = (ccer != 0);
- }
+diff --git a/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts b/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts
+index 1c6d83b47cd2..6ecdf5d28339 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts
+@@ -455,7 +455,7 @@ &pcie2x1 {
+ &pinctrl {
+ 	leds {
+ 		sys_led_pin: sys-status-led-pin {
+-			rockchip,pins = <0 RK_PC7 RK_FUNC_GPIO &pcfg_pull_none>;
++			rockchip,pins = <0 RK_PC5 RK_FUNC_GPIO &pcfg_pull_none>;
+ 		};
+ 	};
  
--static unsigned int stm32_pwm_detect_channels(struct stm32_pwm *priv)
-+static unsigned int stm32_pwm_detect_channels(struct stm32_pwm *priv,
-+					      unsigned int *num_enabled)
- {
--	u32 ccer;
-+	u32 ccer, ccer_backup;
- 
- 	/*
- 	 * If channels enable bits don't exist writing 1 will have no
- 	 * effect so we can detect and count them.
- 	 */
-+	regmap_read(priv->regmap, TIM_CCER, &ccer_backup);
- 	regmap_set_bits(priv->regmap, TIM_CCER, TIM_CCER_CCXE);
- 	regmap_read(priv->regmap, TIM_CCER, &ccer);
--	regmap_clear_bits(priv->regmap, TIM_CCER, TIM_CCER_CCXE);
-+	regmap_write(priv->regmap, TIM_CCER, ccer_backup);
-+
-+	*num_enabled = hweight32(ccer_backup & TIM_CCER_CCXE);
- 
- 	return hweight32(ccer & TIM_CCER_CCXE);
- }
-@@ -599,6 +603,8 @@ static int stm32_pwm_probe(struct platform_device *pdev)
- 	struct device_node *np = dev->of_node;
- 	struct stm32_timers *ddata = dev_get_drvdata(pdev->dev.parent);
- 	struct stm32_pwm *priv;
-+	unsigned int num_enabled;
-+	unsigned int i;
- 	int ret;
- 
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-@@ -621,7 +627,11 @@ static int stm32_pwm_probe(struct platform_device *pdev)
- 
- 	priv->chip.dev = dev;
- 	priv->chip.ops = &stm32pwm_ops;
--	priv->chip.npwm = stm32_pwm_detect_channels(priv);
-+	priv->chip.npwm = stm32_pwm_detect_channels(priv, &num_enabled);
-+
-+	/* Initialize clock refcount to number of enabled PWM channels. */
-+	for (i = 0; i < num_enabled; i++)
-+		clk_enable(priv->clk);
- 
- 	ret = devm_pwmchip_add(dev, &priv->chip);
- 	if (ret < 0)
 -- 
 2.43.0
 
