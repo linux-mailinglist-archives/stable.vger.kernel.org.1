@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-14232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6442B838014
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66175837FA6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18294288624
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 071141F2A0AA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC08565BBC;
-	Tue, 23 Jan 2024 00:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9AF66351E;
+	Tue, 23 Jan 2024 00:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUgZkg6v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nc4xY4pm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC29164CF2;
-	Tue, 23 Jan 2024 00:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 990EF627F3;
+	Tue, 23 Jan 2024 00:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971532; cv=none; b=D60XYY4e5DMXugAm3XrKKgjPIRF96WTVBEs73lPan2u3lmes/kbkH1wH3HwnT6LkIoat3AjAF5vrfOnSOJxGBevlw/CUpmdwYPP9cXjj4BCeCOPu36cBQUNKFUWt+kbehdaMqtqHeoN+ILMLXIp8M5TkMLX6oh++TEEt2Mvqzuk=
+	t=1705971267; cv=none; b=BQKJ6TUK6a6DVzmpD28Bj4ftG1geMfUdliD3v4ECOhhDGLD29FUGaEjzYT7OQ72eGbtjTJFLgLMdP8NV3nxUI2gd3l04yRONe7vJQDBEhJg2m7F/5J+68l2VKgFRPs34vK/iG3WWDzZ9/34ZFITS9yrGpYN0kdn2PoEoCsuSoxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971532; c=relaxed/simple;
-	bh=sFRf00EGCTlSiCmKpi5YYDRkTkundZuV79ljF7TTRQU=;
+	s=arc-20240116; t=1705971267; c=relaxed/simple;
+	bh=WPLQ98KP8e4+NcfMjIsnztcUj01n2IAt9j4sYH9+6v0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pLEmWqyQVxh6dFIgHOyPtrqAHccRYylM1FHZmn2gWGwXNnRooY5GaYPLiiUcAw5yY34ZhYTGJMvKdW0chO76m/EGp4ZaQjXiYZbSz88q2rtv0i+vF53WCq4LW3Eh5s+/oVsThIhK79g7e4P/MtSfbrieS3ig/BX3Mbc1SlUUmow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUgZkg6v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61665C433C7;
-	Tue, 23 Jan 2024 00:58:52 +0000 (UTC)
+	 MIME-Version; b=exhVHiQVIylTEvorLD/bqyOD1qTYZ/f68G8wt8/jfS2etGki4jSlQVMgTi89dCorNHSz+YqfrLxkMlHEGpNPx2Bb8v0n3kxVU8S05MC0Uc1saaKeVRVl+MQwYa88Q0/8x3Jn8hHcZQjMBqDqQii+sEu8tOBBEq2XIGL0Dod31o8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nc4xY4pm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71C5C433F1;
+	Tue, 23 Jan 2024 00:54:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971532;
-	bh=sFRf00EGCTlSiCmKpi5YYDRkTkundZuV79ljF7TTRQU=;
+	s=korg; t=1705971267;
+	bh=WPLQ98KP8e4+NcfMjIsnztcUj01n2IAt9j4sYH9+6v0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mUgZkg6vHFc61M34k8cqV86zDSlQ6aLWmE3+IOzwci88LorcVGsf5r8vRr0/6Ds77
-	 XluZb/nEdCysrjtWrgkxjvDl1SJcJcQonV7v7WUILtxB/d5mYp/q3BbnpWDfLpUiCd
-	 C1JiEsHgv2eDOHsWLgaB34M4jOe6bZSWyixNLSvs=
+	b=nc4xY4pmzigsk9NzUGc7lLecspqjpoLpCvBqJovNyeRizMHCXZTmPR0/1iXPx99DA
+	 Op/f5daKXBltgmvUsvKBsP2ySSArIB4p9gwfcZFthKs9kITcq0J+iesTOzxqeU92I4
+	 B4GGKoDDT44pLkaqxvPg1FNWwlwGhBwKRcl4+Io8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chen <peter.chen@kernel.org>,
-	Xu Yang <xu.yang_2@nxp.com>
-Subject: [PATCH 6.1 259/417] usb: phy: mxs: remove CONFIG_USB_OTG condition for mxs_phy_is_otg_host()
+	Artem Chernyshev <artem.chernyshev@red-soft.ru>,
+	Karan Tilak Kumar <kartilak@cisco.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 121/286] scsi: fnic: Return error if vmalloc() failed
 Date: Mon, 22 Jan 2024 15:57:07 -0800
-Message-ID: <20240122235800.840282442@linuxfoundation.org>
+Message-ID: <20240122235736.796850784@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
 
-commit ff2b89de471da942a4d853443688113a44fd35ed upstream.
+[ Upstream commit f5f27a332a14f43463aa0075efa3a0c662c0f4a8 ]
 
-When CONFIG_USB_OTG is not set, mxs_phy_is_otg_host() will always return
-false. This behaviour is wrong. Since phy.last_event will always be set
-for either host or device mode. Therefore, CONFIG_USB_OTG condition
-can be removed.
+In fnic_init_module() exists redundant check for return value from
+fnic_debugfs_init(), because at moment it only can return zero. It make
+sense to process theoretical vmalloc() failure.
 
-Fixes: 5eda42aebb76 ("usb: phy: mxs: fix getting wrong state with mxs_phy_is_otg_host()")
-cc:  <stable@vger.kernel.org>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://lore.kernel.org/r/20231228110753.1755756-3-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 9730ddfb123d ("scsi: fnic: remove redundant assignment of variable rc")
+Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+Link: https://lore.kernel.org/r/20231128111008.2280507-1-artem.chernyshev@red-soft.ru
+Reviewed-by: Karan Tilak Kumar <kartilak@cisco.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/phy/phy-mxs-usb.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/scsi/fnic/fnic_debugfs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/phy/phy-mxs-usb.c
-+++ b/drivers/usb/phy/phy-mxs-usb.c
-@@ -388,8 +388,7 @@ static void __mxs_phy_disconnect_line(st
+diff --git a/drivers/scsi/fnic/fnic_debugfs.c b/drivers/scsi/fnic/fnic_debugfs.c
+index 6c049360f136..56d52efc7314 100644
+--- a/drivers/scsi/fnic/fnic_debugfs.c
++++ b/drivers/scsi/fnic/fnic_debugfs.c
+@@ -67,9 +67,10 @@ int fnic_debugfs_init(void)
+ 		fc_trc_flag->fnic_trace = 2;
+ 		fc_trc_flag->fc_trace = 3;
+ 		fc_trc_flag->fc_clear = 4;
++		return 0;
+ 	}
  
- static bool mxs_phy_is_otg_host(struct mxs_phy *mxs_phy)
- {
--	return IS_ENABLED(CONFIG_USB_OTG) &&
--		mxs_phy->phy.last_event == USB_EVENT_ID;
-+	return mxs_phy->phy.last_event == USB_EVENT_ID;
+-	return 0;
++	return -ENOMEM;
  }
  
- static void mxs_phy_disconnect_line(struct mxs_phy *mxs_phy, bool on)
+ /*
+-- 
+2.43.0
+
 
 
 
