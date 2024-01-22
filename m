@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-15161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53705838426
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BC17837EE8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 844891C2A1B1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EDD71C282EE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA62B67E79;
-	Tue, 23 Jan 2024 02:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B04FC604BF;
+	Tue, 23 Jan 2024 00:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fcv5cDaL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7PugRyM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95DB67E81;
-	Tue, 23 Jan 2024 02:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4A75BAC9;
+	Tue, 23 Jan 2024 00:46:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975314; cv=none; b=F7SC5cT6LJ+CYfOR0uwWkcIw0Eht3P6Pln1WgT1EOebzuVStbPEeuXdkbg8w8Ty1DtvgLxjxNF8ii4kZpZ7zf+AiQk7+lwY//UBI5zA2KQaNeR1R9j9ljXozx7J5BblAytdCY/yZ3V2OjxueyM4CjlG/kPMMl71/On3ieohKpuI=
+	t=1705970819; cv=none; b=nlYFSDrGwE24gzVnAYq3KirS3aD8Cn9dPpwGQSLapMKAzCscaqnCEAuCaMY/kpQxsGZgMHnKbqJQw148tUFAhZbpgp5O4KV/+A0jYrNFnnnDNBCW90ShYB6mSA199rxGkI5EdkZr0EOf+LTe0JzcUslmv0GuelRo6w5fcUv44kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975314; c=relaxed/simple;
-	bh=CAVaCXjzW35KLT7iEfKhL0YoszXa/9JE7pEUIKSxDGo=;
+	s=arc-20240116; t=1705970819; c=relaxed/simple;
+	bh=DIp90eRzznl3IuZcjHdVWDEjfK38SGGMX83KfNg+CUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DFDpZWrR0XFU2xZQACH6oZgeL/9CtojeN+VLHkojdtmiFq1TmRqOiIdW/EXfFoN8pa8xksICt3r10xGCLplmGPgmAOzLFzgdLGINqS6hZKfxoMB19/dMyGPjwosw2oL8AdWhTyw45l6sv3Ve8RUy8tPeCpMEXBHeC8VyOG7wArg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fcv5cDaL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ACA6C433C7;
-	Tue, 23 Jan 2024 02:01:54 +0000 (UTC)
+	 MIME-Version; b=V4TheaJzVVWR21PgoyDN29sH9eXCOenltZ7pj6UYVlgfScUsCSWP/sH83XuBmw4Yzg86QpfrJa0F/abzT3f2qIAxjgRePTkHsSjMuIc/rdYpbaw3Xhjh5KVQhnZ6F0pslsClcKjKmOvSCRUxQTj+r1r9xCygUs3WCtT9+fsTUcA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7PugRyM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11AC3C433C7;
+	Tue, 23 Jan 2024 00:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975314;
-	bh=CAVaCXjzW35KLT7iEfKhL0YoszXa/9JE7pEUIKSxDGo=;
+	s=korg; t=1705970819;
+	bh=DIp90eRzznl3IuZcjHdVWDEjfK38SGGMX83KfNg+CUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fcv5cDaLnoTnQ+iCu0CypU9wXpAxoYSXdBd1L9MKpHkgakv7NVf5ogI8rh8CYQCPd
-	 S+uEq3aCzmq1BWckQ53l1GS50U+2DHEoLvbaA2wF2YjFswythqIxNjN8SSRbR9BLDd
-	 mEyIgVaM4FgPYakf3OW6SA7HJ5XC5H8j/uYiBJow=
+	b=M7PugRyMSABITQNwdH6YbqLuOMU16HBVAYlwVXJRuREeVkms1taezcr6oBU6atL/z
+	 +wnzUdryuSsgAgFiWmON3DbonaIWuYX3BJ0PfCcM4rejggizzx/tg4aWhQLTU83abU
+	 ZrVuLYPFYFuJUpjlxkb0N5xxGSNEk525aU61U6uY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Curtis Malainey <cujomalainey@chromium.org>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Brent Lu <brent.lu@intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 255/583] ASoC: Intel: glk_rt5682_max98357a: fix board id mismatch
-Date: Mon, 22 Jan 2024 15:55:06 -0800
-Message-ID: <20240122235819.809851574@linuxfoundation.org>
+	Eric Biggers <ebiggers@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 5.10 001/286] f2fs: explicitly null-terminate the xattr list
+Date: Mon, 22 Jan 2024 15:55:07 -0800
+Message-ID: <20240122235732.056543308@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,72 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brent Lu <brent.lu@intel.com>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit 486ede0df82dd74472c6f5651e38ff48f7f766c1 ]
+commit e26b6d39270f5eab0087453d9b544189a38c8564 upstream.
 
-The drv_name in enumeration table for ALC5682I-VS codec does not match
-the board id string in machine driver. Modify the entry of "10EC5682"
-to enumerate "RTL5682" as well and remove invalid entry.
+When setting an xattr, explicitly null-terminate the xattr list.  This
+eliminates the fragile assumption that the unused xattr space is always
+zeroed.
 
-Fixes: 88b4d77d6035 ("ASoC: Intel: glk_rt5682_max98357a: support ALC5682I-VS codec")
-Reported-by: Curtis Malainey <cujomalainey@chromium.org>
-Reviewed-by: Curtis Malainey <cujomalainey@chromium.org>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Signed-off-by: Brent Lu <brent.lu@intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20231204214200.203100-4-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/intel/common/soc-acpi-intel-glk-match.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ fs/f2fs/xattr.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/sound/soc/intel/common/soc-acpi-intel-glk-match.c b/sound/soc/intel/common/soc-acpi-intel-glk-match.c
-index 387e73100884..8911c90bbaf6 100644
---- a/sound/soc/intel/common/soc-acpi-intel-glk-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-glk-match.c
-@@ -19,6 +19,11 @@ static const struct snd_soc_acpi_codecs glk_codecs = {
- 	.codecs = {"MX98357A"}
- };
+--- a/fs/f2fs/xattr.c
++++ b/fs/f2fs/xattr.c
+@@ -741,6 +741,12 @@ static int __f2fs_setxattr(struct inode
+ 		memcpy(pval, value, size);
+ 		last->e_value_size = cpu_to_le16(size);
+ 		new_hsize += newsize;
++		/*
++		 * Explicitly add the null terminator.  The unused xattr space
++		 * is supposed to always be zeroed, which would make this
++		 * unnecessary, but don't depend on that.
++		 */
++		*(u32 *)((u8 *)last + newsize) = 0;
+ 	}
  
-+static const struct snd_soc_acpi_codecs glk_rt5682_rt5682s_hp = {
-+	.num_codecs = 2,
-+	.codecs = {"10EC5682", "RTL5682"},
-+};
-+
- struct snd_soc_acpi_mach snd_soc_acpi_intel_glk_machines[] = {
- 	{
- 		.id = "INT343A",
-@@ -35,20 +40,13 @@ struct snd_soc_acpi_mach snd_soc_acpi_intel_glk_machines[] = {
- 		.sof_tplg_filename = "sof-glk-da7219.tplg",
- 	},
- 	{
--		.id = "10EC5682",
-+		.comp_ids = &glk_rt5682_rt5682s_hp,
- 		.drv_name = "glk_rt5682_mx98357a",
- 		.fw_filename = "intel/dsp_fw_glk.bin",
- 		.machine_quirk = snd_soc_acpi_codec_list,
- 		.quirk_data = &glk_codecs,
- 		.sof_tplg_filename = "sof-glk-rt5682.tplg",
- 	},
--	{
--		.id = "RTL5682",
--		.drv_name = "glk_rt5682_max98357a",
--		.machine_quirk = snd_soc_acpi_codec_list,
--		.quirk_data = &glk_codecs,
--		.sof_tplg_filename = "sof-glk-rt5682.tplg",
--	},
- 	{
- 		.id = "10134242",
- 		.drv_name = "glk_cs4242_mx98357a",
--- 
-2.43.0
-
+ 	error = write_all_xattrs(inode, new_hsize, base_addr, ipage);
 
 
 
