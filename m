@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0FAF838486
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:37 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75080838245
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3ED01C2A722
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E136287487
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA2A6EB71;
-	Tue, 23 Jan 2024 02:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717745A0ED;
+	Tue, 23 Jan 2024 01:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l68/HmNd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekGWhSBC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3826EB61;
-	Tue, 23 Jan 2024 02:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302C02B9B7;
+	Tue, 23 Jan 2024 01:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975415; cv=none; b=ZjjtG4+Ma9XQM6MO7S+uhZZhAN0c3uS1LVxfgQbkilDbgZTkRmeCazdvIQqZzTXPfUKp8SP+qQjsxLczFzK2247+nRi6lR/pBwwM/czdiFOlYUvzW8vanQty/S8gOIfz0FYzAhk8SOp0O+zg4HETrrMUB823luc+D5j/jO7SUEc=
+	t=1705974116; cv=none; b=bvPJUmUYbRpeNBticqmNuoxXP9iD0N8O/mxXUDuzk7yb/YS4vco4G2l31VOGESE4LIEWFyJGVdgBWuRN+Hhf2hMVBf23h+cDXp6fB2gctHhaPFVY+14p2ECYrLxMP0IvnoTjHSCMZ7M42IaThe7MjMksjjvnN/2lINJpPbFXdbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975415; c=relaxed/simple;
-	bh=bYRbOENQmGngJbpJMuXm4hTkMIskLdM4iooO9a+6fPA=;
+	s=arc-20240116; t=1705974116; c=relaxed/simple;
+	bh=yE87BagCmzeNk7EFF94eBs1/2h2Ir3iYmREoFr9CtbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zyh1flnEQ6/kcme+HdjsXUzNBhjahC7zryb4pfxOIUq33ONB4NXy+gZJNImdxHSh+g6RMJ07TbgQrLF3jVf7DlF8mIt5OXF8wgHPCMs8FL8iTeVE6QJiJQRbrYOROmykTXOpzMPu8LfdGFroNO1C3+4lrzyhoFUMFRj1sZ/+KKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l68/HmNd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3634C43399;
-	Tue, 23 Jan 2024 02:03:34 +0000 (UTC)
+	 MIME-Version; b=EhcSrcOmzUfe90QgoSwFKho0m7GO0qwpd+X9MDv75txcCJIP3ABEoGdQAeQsF3ddNYQSf0L84CJNtDYf+f+OYEpqti6dqS6a35B692dVvykCQsqt+XH4YGDFcrbk8jrBH9BxMKqDsX6UVLCnrW0yK6GMg/cEw3ZXYXc+UkIIJA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekGWhSBC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C3AC433C7;
+	Tue, 23 Jan 2024 01:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975415;
-	bh=bYRbOENQmGngJbpJMuXm4hTkMIskLdM4iooO9a+6fPA=;
+	s=korg; t=1705974115;
+	bh=yE87BagCmzeNk7EFF94eBs1/2h2Ir3iYmREoFr9CtbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l68/HmNd0jKWOG27bC7LbY7ngGFQbkaSKR3NKmz4xomNCmvbHnDwwxyUc1Q74ejnv
-	 YKRma9bxagp0Br2P7WAEX4UGpTrZ/wTQVrON3oXvqbE58oFPWvsAMoeYA4IQ4JAk2E
-	 xdbAArGFIN6QtGt2oE0njl1QqT2MaOrXGxYHiHRw=
+	b=ekGWhSBCG+XIsXZ/TvQgvNPfaZRvsPbV2Q0V3fAShwrwQAuy0YSWoxeaOEag0cfJl
+	 YCCusnYco39vPZW/3ZavuWnPbda8/R5SXVUEECVbfma3C0ZFMnU3NPM05UGzBt/tjh
+	 LjHBTIq6GmB2dSochVZ0OmPH4Dqh/h0yhaJNg608=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Florian Fainelli <florian.fainelli@broadcom.com>
-Subject: [PATCH 6.6 374/583] serial: 8250_bcm2835aux: Restore clock error handling
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 169/374] null_blk: dont cap max_hw_sectors to BLK_DEF_MAX_SECTORS
 Date: Mon, 22 Jan 2024 15:57:05 -0800
-Message-ID: <20240122235823.455221411@linuxfoundation.org>
+Message-ID: <20240122235750.514244465@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 83e571f054cd742eb9a46d46ef05193904adf53f upstream.
+[ Upstream commit 9a9525de865410047fa962867b4fcd33943b206f ]
 
-The commit fcc446c8aa63 ("serial: 8250_bcm2835aux: Add ACPI support")
-dropped the error handling for clock acquiring. But even an optional
-clock needs this.
+null_blk has some rather odd capping of the max_hw_sectors value to
+BLK_DEF_MAX_SECTORS, which doesn't make sense - max_hw_sector is the
+hardware limit, and BLK_DEF_MAX_SECTORS despite the confusing name is the
+default cap for the max_sectors field used for normal file system I/O.
 
-Fixes: fcc446c8aa63 ("serial: 8250_bcm2835aux: Add ACPI support")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20231220114334.4712-1-wahrenst@gmx.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Remove all the capping, and simply leave it to the block layer or
+user to take up or not all of that for file system I/O.
+
+Fixes: ea17fd354ca8 ("null_blk: Allow controlling max_hw_sectors limit")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20231227092305.279567-2-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_bcm2835aux.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/block/null_blk/main.c | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_bcm2835aux.c
-+++ b/drivers/tty/serial/8250/8250_bcm2835aux.c
-@@ -119,6 +119,8 @@ static int bcm2835aux_serial_probe(struc
+diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
+index 4a867233b14a..87791265e09b 100644
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -1900,10 +1900,8 @@ static int null_add_dev(struct nullb_device *dev)
  
- 	/* get the clock - this also enables the HW */
- 	data->clk = devm_clk_get_optional(&pdev->dev, NULL);
-+	if (IS_ERR(data->clk))
-+		return dev_err_probe(&pdev->dev, PTR_ERR(data->clk), "could not get clk\n");
+ 	blk_queue_logical_block_size(nullb->q, dev->blocksize);
+ 	blk_queue_physical_block_size(nullb->q, dev->blocksize);
+-	if (!dev->max_sectors)
+-		dev->max_sectors = queue_max_hw_sectors(nullb->q);
+-	dev->max_sectors = min(dev->max_sectors, BLK_DEF_MAX_SECTORS);
+-	blk_queue_max_hw_sectors(nullb->q, dev->max_sectors);
++	if (dev->max_sectors)
++		blk_queue_max_hw_sectors(nullb->q, dev->max_sectors);
  
- 	/* get the interrupt */
- 	ret = platform_get_irq(pdev, 0);
+ 	if (dev->virt_boundary)
+ 		blk_queue_virt_boundary(nullb->q, PAGE_SIZE - 1);
+@@ -1953,12 +1951,6 @@ static int __init null_init(void)
+ 		g_bs = PAGE_SIZE;
+ 	}
+ 
+-	if (g_max_sectors > BLK_DEF_MAX_SECTORS) {
+-		pr_warn("invalid max sectors\n");
+-		pr_warn("defaults max sectors to %u\n", BLK_DEF_MAX_SECTORS);
+-		g_max_sectors = BLK_DEF_MAX_SECTORS;
+-	}
+-
+ 	if (g_home_node != NUMA_NO_NODE && g_home_node >= nr_online_nodes) {
+ 		pr_err("invalid home_node value\n");
+ 		g_home_node = NUMA_NO_NODE;
+-- 
+2.43.0
+
 
 
 
