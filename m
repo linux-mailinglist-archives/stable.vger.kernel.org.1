@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-15402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E55FF838514
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77B4783810E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:05:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9516C285B01
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B1B5285365
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E787CF3D;
-	Tue, 23 Jan 2024 02:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 917BA13EFE4;
+	Tue, 23 Jan 2024 01:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eh0l4Rdh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+OCEmUi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A90FE7CF3C;
-	Tue, 23 Jan 2024 02:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AC213EFE1;
+	Tue, 23 Jan 2024 01:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975736; cv=none; b=oyOCw9wYyGCStOBfjXj90KxBSRNi0YcUFtG+oPfY4FWz5AuyDY0lSOl7K+pFYkdC0jVkayHY4PUMgZsuKEB3QzKgtbwrCN3YID45l6p0bJM2PDuIXTO6gLFnXr7wKS7jliWvXOuzvQyIn+39pnfySqsxey6gKhwJHXgFIiQfmmg=
+	t=1705972007; cv=none; b=KlMWXhrkVC+1+SuPzFfDKu7STGWTpyBiZaL0KLyH6Jg9woTK8hs0uETRsuLTJWxuUbBpjhwwdaAxCXh62/pniA0mdKhdKSSmcuxB28aJcKguDgjWLfnbiduU+4G87Ms6wWocObXG/uwGeYwsvQqFm5w3JCh/Q3p2fj874lLSth0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975736; c=relaxed/simple;
-	bh=nb3SksZa/THaKzznZKKWyj5hmfjlM3xYAfQNBl/31M8=;
+	s=arc-20240116; t=1705972007; c=relaxed/simple;
+	bh=9JYWAXzCNuBMhvZIbsEdt7U+7o5LaWP7qhB+cL1fjsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AIdGZHyq2fCh3LwSHu2+k45nH84mUqCxTFIB9tQ3H6vZvA4u9KCaPJzDc47shsBAMGiwnCK0VpAxTqQbc7R+XiBjRqEM2wIT/80vLkuor3xaHz+IsySP/2+YTzCHy3rKFL49ciRzqc51D46ydkHqXRGxcfeYuqeJ092GyDMqHxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eh0l4Rdh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F1DC433C7;
-	Tue, 23 Jan 2024 02:08:56 +0000 (UTC)
+	 MIME-Version; b=SNJLXDlc6pY0wCqivFavFUYGYZNGVRMZaWQhIHp0zbowkbh19BhThV8oZL3DEsLRZZi4gBsNG6qE3KRSmwqbleUeiOXzcOe7Bp6eN8WFSfPNcdU7j0o0XJa+YDsjRN3nr7WiBE/FpCsj84GRxXJZY6T5y1fjMoQ5ZvTlw58dneI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+OCEmUi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6C99C433C7;
+	Tue, 23 Jan 2024 01:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975736;
-	bh=nb3SksZa/THaKzznZKKWyj5hmfjlM3xYAfQNBl/31M8=;
+	s=korg; t=1705972007;
+	bh=9JYWAXzCNuBMhvZIbsEdt7U+7o5LaWP7qhB+cL1fjsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eh0l4RdhhnLRENn0L0oBZKQoLUH4DElybp32+ZXrAKoEhl2w0Llufdfv5+BFushM6
-	 52dW8Edvn9dVfwWin52RIai449mVU3q3MV8TrK2Fbw6MQVkkimdNpXOUaq4Byk054o
-	 1j7fCVsB7q4mqAJcnCUAiEktnvtqKHUcnQpEvQmU=
+	b=f+OCEmUidMx/1IaqTIok7LysPMzqSUyVQ/FcxuofHZXOilhDTTe+FAiTSBd1PTK6k
+	 lQy8xo9gygSykomH94OSXQYLlxxzyum3rmBv56pJ78ydCo5AqOsnAEDeixsQz6ze9W
+	 e0CH4UcOq7sNDBgIeqO6nQIYNFf0M5h8g57eNjCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Florian Westphal <fw@strlen.de>,
+	Peter Krystad <peter.krystad@linux.intel.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang.tang@linux.dev>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 498/583] usb: gadget: webcam: Make g_webcam loadable again
-Date: Mon, 22 Jan 2024 15:59:09 -0800
-Message-ID: <20240122235827.268403811@linuxfoundation.org>
+Subject: [PATCH 6.1 382/417] mptcp: mptcp_parse_option() fix for MPTCPOPT_MP_JOIN
+Date: Mon, 22 Jan 2024 15:59:10 -0800
+Message-ID: <20240122235805.008793275@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,555 +69,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit f1fd91a0924b6bff91ca1287461fb8e3b3b61d92 ]
+[ Upstream commit 89e23277f9c16df6f9f9c1a1a07f8f132339c15c ]
 
-commit 588b9e85609b ("usb: gadget: uvc: add v4l2 enumeration api calls")
-has rendered the precomposed (aka legacy) webcam gadget unloadable.
+mptcp_parse_option() currently sets OPTIONS_MPTCP_MPJ, for the three
+possible cases handled for MPTCPOPT_MP_JOIN option.
 
-uvc_alloc() since then has depended on certain config groups being
-available in configfs tree related to the UVC function. However, legacy
-gadgets do not create anything in configfs, so uvc_alloc() must fail
-with -ENOENT no matter what.
+OPTIONS_MPTCP_MPJ is the combination of three flags:
+- OPTION_MPTCP_MPJ_SYN
+- OPTION_MPTCP_MPJ_SYNACK
+- OPTION_MPTCP_MPJ_ACK
 
-This patch mimics the required configfs hierarchy to satisfy the code which
-inspects formats and frames found in uvcg_streaming_header.
+This is a problem, because backup, join_id, token, nonce and/or hmac fields
+could be left uninitialized in some cases.
 
-This has been tested with guvcview on the host side, using vivid as a
-source of video stream on the device side and using the userspace program
-found at https://gitlab.freedesktop.org/camera/uvc-gadget.git.
+Distinguish the three cases, as following patches will need this step.
 
-Signed-off-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-Fixes: 588b9e85609b ("usb: gadget: uvc: add v4l2 enumeration api calls")
-Link: https://lore.kernel.org/r/20231215131614.29132-1-andrzej.p@collabora.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f296234c98a8 ("mptcp: Add handling of incoming MP_JOIN requests")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Florian Westphal <fw@strlen.de>
+Cc: Peter Krystad <peter.krystad@linux.intel.com>
+Cc: Matthieu Baerts <matttbe@kernel.org>
+Cc: Mat Martineau <martineau@kernel.org>
+Cc: Geliang Tang <geliang.tang@linux.dev>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Link: https://lore.kernel.org/r/20240111194917.4044654-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_uvc.c |  45 ++--
- drivers/usb/gadget/function/u_uvc.h |   6 +
- drivers/usb/gadget/legacy/webcam.c  | 333 +++++++++++++++++++++-------
- 3 files changed, 284 insertions(+), 100 deletions(-)
+ net/mptcp/options.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/f_uvc.c b/drivers/usb/gadget/function/f_uvc.c
-index 3d5c03e1361e..2e6bafb2a554 100644
---- a/drivers/usb/gadget/function/f_uvc.c
-+++ b/drivers/usb/gadget/function/f_uvc.c
-@@ -966,7 +966,8 @@ static void uvc_free(struct usb_function *f)
- 	struct uvc_device *uvc = to_uvc(f);
- 	struct f_uvc_opts *opts = container_of(f->fi, struct f_uvc_opts,
- 					       func_inst);
--	config_item_put(&uvc->header->item);
-+	if (!opts->header)
-+		config_item_put(&uvc->header->item);
- 	--opts->refcnt;
- 	kfree(uvc);
- }
-@@ -1058,25 +1059,29 @@ static struct usb_function *uvc_alloc(struct usb_function_instance *fi)
- 	uvc->desc.hs_streaming = opts->hs_streaming;
- 	uvc->desc.ss_streaming = opts->ss_streaming;
+diff --git a/net/mptcp/options.c b/net/mptcp/options.c
+index 74027bb5b429..a718ebcb5bc6 100644
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -118,8 +118,8 @@ static void mptcp_parse_option(const struct sk_buff *skb,
+ 		break;
  
--	streaming = config_group_find_item(&opts->func_inst.group, "streaming");
--	if (!streaming)
--		goto err_config;
--
--	header = config_group_find_item(to_config_group(streaming), "header");
--	config_item_put(streaming);
--	if (!header)
--		goto err_config;
--
--	h = config_group_find_item(to_config_group(header), "h");
--	config_item_put(header);
--	if (!h)
--		goto err_config;
--
--	uvc->header = to_uvcg_streaming_header(h);
--	if (!uvc->header->linked) {
--		mutex_unlock(&opts->lock);
--		kfree(uvc);
--		return ERR_PTR(-EBUSY);
-+	if (opts->header) {
-+		uvc->header = opts->header;
-+	} else {
-+		streaming = config_group_find_item(&opts->func_inst.group, "streaming");
-+		if (!streaming)
-+			goto err_config;
-+
-+		header = config_group_find_item(to_config_group(streaming), "header");
-+		config_item_put(streaming);
-+		if (!header)
-+			goto err_config;
-+
-+		h = config_group_find_item(to_config_group(header), "h");
-+		config_item_put(header);
-+		if (!h)
-+			goto err_config;
-+
-+		uvc->header = to_uvcg_streaming_header(h);
-+		if (!uvc->header->linked) {
-+			mutex_unlock(&opts->lock);
-+			kfree(uvc);
-+			return ERR_PTR(-EBUSY);
-+		}
- 	}
+ 	case MPTCPOPT_MP_JOIN:
+-		mp_opt->suboptions |= OPTIONS_MPTCP_MPJ;
+ 		if (opsize == TCPOLEN_MPTCP_MPJ_SYN) {
++			mp_opt->suboptions |= OPTION_MPTCP_MPJ_SYN;
+ 			mp_opt->backup = *ptr++ & MPTCPOPT_BACKUP;
+ 			mp_opt->join_id = *ptr++;
+ 			mp_opt->token = get_unaligned_be32(ptr);
+@@ -130,6 +130,7 @@ static void mptcp_parse_option(const struct sk_buff *skb,
+ 				 mp_opt->backup, mp_opt->join_id,
+ 				 mp_opt->token, mp_opt->nonce);
+ 		} else if (opsize == TCPOLEN_MPTCP_MPJ_SYNACK) {
++			mp_opt->suboptions |= OPTION_MPTCP_MPJ_SYNACK;
+ 			mp_opt->backup = *ptr++ & MPTCPOPT_BACKUP;
+ 			mp_opt->join_id = *ptr++;
+ 			mp_opt->thmac = get_unaligned_be64(ptr);
+@@ -140,11 +141,10 @@ static void mptcp_parse_option(const struct sk_buff *skb,
+ 				 mp_opt->backup, mp_opt->join_id,
+ 				 mp_opt->thmac, mp_opt->nonce);
+ 		} else if (opsize == TCPOLEN_MPTCP_MPJ_ACK) {
++			mp_opt->suboptions |= OPTION_MPTCP_MPJ_ACK;
+ 			ptr += 2;
+ 			memcpy(mp_opt->hmac, ptr, MPTCPOPT_HMAC_LEN);
+ 			pr_debug("MP_JOIN hmac");
+-		} else {
+-			mp_opt->suboptions &= ~OPTIONS_MPTCP_MPJ;
+ 		}
+ 		break;
  
- 	uvc->desc.extension_units = &opts->extension_units;
-diff --git a/drivers/usb/gadget/function/u_uvc.h b/drivers/usb/gadget/function/u_uvc.h
-index 1ce58f61253c..3ac392cbb779 100644
---- a/drivers/usb/gadget/function/u_uvc.h
-+++ b/drivers/usb/gadget/function/u_uvc.h
-@@ -98,6 +98,12 @@ struct f_uvc_opts {
- 	 */
- 	struct mutex			lock;
- 	int				refcnt;
-+
-+	/*
-+	 * Only for legacy gadget. Shall be NULL for configfs-composed gadgets,
-+	 * which is guaranteed by alloc_inst implementation of f_uvc doing kzalloc.
-+	 */
-+	struct uvcg_streaming_header	*header;
- };
- 
- #endif /* U_UVC_H */
-diff --git a/drivers/usb/gadget/legacy/webcam.c b/drivers/usb/gadget/legacy/webcam.c
-index c06dd1af7a0c..c395438d3978 100644
---- a/drivers/usb/gadget/legacy/webcam.c
-+++ b/drivers/usb/gadget/legacy/webcam.c
-@@ -12,6 +12,7 @@
- #include <linux/usb/video.h>
- 
- #include "u_uvc.h"
-+#include "uvc_configfs.h"
- 
- USB_GADGET_COMPOSITE_OPTIONS();
- 
-@@ -84,8 +85,6 @@ static struct usb_device_descriptor webcam_device_descriptor = {
- 	.bNumConfigurations	= 0, /* dynamic */
- };
- 
--DECLARE_UVC_HEADER_DESCRIPTOR(1);
--
- static const struct UVC_HEADER_DESCRIPTOR(1) uvc_control_header = {
- 	.bLength		= UVC_DT_HEADER_SIZE(1),
- 	.bDescriptorType	= USB_DT_CS_INTERFACE,
-@@ -158,43 +157,112 @@ static const struct UVC_INPUT_HEADER_DESCRIPTOR(1, 2) uvc_input_header = {
- 	.bmaControls[1][0]	= 4,
- };
- 
--static const struct uvc_format_uncompressed uvc_format_yuv = {
--	.bLength		= UVC_DT_FORMAT_UNCOMPRESSED_SIZE,
--	.bDescriptorType	= USB_DT_CS_INTERFACE,
--	.bDescriptorSubType	= UVC_VS_FORMAT_UNCOMPRESSED,
--	.bFormatIndex		= 1,
--	.bNumFrameDescriptors	= 2,
--	.guidFormat		=
--		{ 'Y',  'U',  'Y',  '2', 0x00, 0x00, 0x10, 0x00,
--		 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71},
--	.bBitsPerPixel		= 16,
--	.bDefaultFrameIndex	= 1,
--	.bAspectRatioX		= 0,
--	.bAspectRatioY		= 0,
--	.bmInterlaceFlags	= 0,
--	.bCopyProtect		= 0,
-+static const struct uvcg_color_matching uvcg_color_matching = {
-+	.desc = {
-+		.bLength		= UVC_DT_COLOR_MATCHING_SIZE,
-+		.bDescriptorType	= USB_DT_CS_INTERFACE,
-+		.bDescriptorSubType	= UVC_VS_COLORFORMAT,
-+		.bColorPrimaries	= 1,
-+		.bTransferCharacteristics	= 1,
-+		.bMatrixCoefficients	= 4,
-+	},
-+};
-+
-+static struct uvcg_uncompressed uvcg_format_yuv = {
-+	.fmt = {
-+		.type			= UVCG_UNCOMPRESSED,
-+		/* add to .frames and fill .num_frames at runtime */
-+		.color_matching		= (struct uvcg_color_matching *)&uvcg_color_matching,
-+	},
-+	.desc = {
-+		.bLength		= UVC_DT_FORMAT_UNCOMPRESSED_SIZE,
-+		.bDescriptorType	= USB_DT_CS_INTERFACE,
-+		.bDescriptorSubType	= UVC_VS_FORMAT_UNCOMPRESSED,
-+		.bFormatIndex		= 1,
-+		.bNumFrameDescriptors	= 2,
-+		.guidFormat		= {
-+			'Y',  'U',  'Y',  '2', 0x00, 0x00, 0x10, 0x00,
-+			 0x80, 0x00, 0x00, 0xaa, 0x00, 0x38, 0x9b, 0x71
-+		},
-+		.bBitsPerPixel		= 16,
-+		.bDefaultFrameIndex	= 1,
-+		.bAspectRatioX		= 0,
-+		.bAspectRatioY		= 0,
-+		.bmInterlaceFlags	= 0,
-+		.bCopyProtect		= 0,
-+	},
-+};
-+
-+static struct uvcg_format_ptr uvcg_format_ptr_yuv = {
-+	.fmt = &uvcg_format_yuv.fmt,
- };
- 
- DECLARE_UVC_FRAME_UNCOMPRESSED(1);
- DECLARE_UVC_FRAME_UNCOMPRESSED(3);
- 
-+#define UVCG_WIDTH_360P			640
-+#define UVCG_HEIGHT_360P		360
-+#define UVCG_MIN_BITRATE_360P		18432000
-+#define UVCG_MAX_BITRATE_360P		55296000
-+#define UVCG_MAX_VIDEO_FB_SZ_360P	460800
-+#define UVCG_FRM_INTERV_0_360P		666666
-+#define UVCG_FRM_INTERV_1_360P		1000000
-+#define UVCG_FRM_INTERV_2_360P		5000000
-+#define UVCG_DEFAULT_FRM_INTERV_360P	UVCG_FRM_INTERV_0_360P
-+
- static const struct UVC_FRAME_UNCOMPRESSED(3) uvc_frame_yuv_360p = {
- 	.bLength		= UVC_DT_FRAME_UNCOMPRESSED_SIZE(3),
- 	.bDescriptorType	= USB_DT_CS_INTERFACE,
- 	.bDescriptorSubType	= UVC_VS_FRAME_UNCOMPRESSED,
- 	.bFrameIndex		= 1,
- 	.bmCapabilities		= 0,
--	.wWidth			= cpu_to_le16(640),
--	.wHeight		= cpu_to_le16(360),
--	.dwMinBitRate		= cpu_to_le32(18432000),
--	.dwMaxBitRate		= cpu_to_le32(55296000),
--	.dwMaxVideoFrameBufferSize	= cpu_to_le32(460800),
--	.dwDefaultFrameInterval	= cpu_to_le32(666666),
-+	.wWidth			= cpu_to_le16(UVCG_WIDTH_360P),
-+	.wHeight		= cpu_to_le16(UVCG_HEIGHT_360P),
-+	.dwMinBitRate		= cpu_to_le32(UVCG_MIN_BITRATE_360P),
-+	.dwMaxBitRate		= cpu_to_le32(UVCG_MAX_BITRATE_360P),
-+	.dwMaxVideoFrameBufferSize	= cpu_to_le32(UVCG_MAX_VIDEO_FB_SZ_360P),
-+	.dwDefaultFrameInterval	= cpu_to_le32(UVCG_DEFAULT_FRM_INTERV_360P),
- 	.bFrameIntervalType	= 3,
--	.dwFrameInterval[0]	= cpu_to_le32(666666),
--	.dwFrameInterval[1]	= cpu_to_le32(1000000),
--	.dwFrameInterval[2]	= cpu_to_le32(5000000),
-+	.dwFrameInterval[0]	= cpu_to_le32(UVCG_FRM_INTERV_0_360P),
-+	.dwFrameInterval[1]	= cpu_to_le32(UVCG_FRM_INTERV_1_360P),
-+	.dwFrameInterval[2]	= cpu_to_le32(UVCG_FRM_INTERV_2_360P),
-+};
-+
-+static u32 uvcg_frame_yuv_360p_dw_frame_interval[] = {
-+	[0] = UVCG_FRM_INTERV_0_360P,
-+	[1] = UVCG_FRM_INTERV_1_360P,
-+	[2] = UVCG_FRM_INTERV_2_360P,
-+};
-+
-+static const struct uvcg_frame uvcg_frame_yuv_360p = {
-+	.fmt_type		= UVCG_UNCOMPRESSED,
-+	.frame = {
-+		.b_length			= UVC_DT_FRAME_UNCOMPRESSED_SIZE(3),
-+		.b_descriptor_type		= USB_DT_CS_INTERFACE,
-+		.b_descriptor_subtype		= UVC_VS_FRAME_UNCOMPRESSED,
-+		.b_frame_index			= 1,
-+		.bm_capabilities		= 0,
-+		.w_width			= UVCG_WIDTH_360P,
-+		.w_height			= UVCG_HEIGHT_360P,
-+		.dw_min_bit_rate		= UVCG_MIN_BITRATE_360P,
-+		.dw_max_bit_rate		= UVCG_MAX_BITRATE_360P,
-+		.dw_max_video_frame_buffer_size	= UVCG_MAX_VIDEO_FB_SZ_360P,
-+		.dw_default_frame_interval	= UVCG_DEFAULT_FRM_INTERV_360P,
-+		.b_frame_interval_type		= 3,
-+	},
-+	.dw_frame_interval	= uvcg_frame_yuv_360p_dw_frame_interval,
-+};
-+
-+static struct uvcg_frame_ptr uvcg_frame_ptr_yuv_360p = {
-+	.frm = (struct uvcg_frame *)&uvcg_frame_yuv_360p,
- };
-+#define UVCG_WIDTH_720P			1280
-+#define UVCG_HEIGHT_720P		720
-+#define UVCG_MIN_BITRATE_720P		29491200
-+#define UVCG_MAX_BITRATE_720P		29491200
-+#define UVCG_MAX_VIDEO_FB_SZ_720P	1843200
-+#define UVCG_FRM_INTERV_0_720P		5000000
-+#define UVCG_DEFAULT_FRM_INTERV_720P	UVCG_FRM_INTERV_0_720P
- 
- static const struct UVC_FRAME_UNCOMPRESSED(1) uvc_frame_yuv_720p = {
- 	.bLength		= UVC_DT_FRAME_UNCOMPRESSED_SIZE(1),
-@@ -202,28 +270,66 @@ static const struct UVC_FRAME_UNCOMPRESSED(1) uvc_frame_yuv_720p = {
- 	.bDescriptorSubType	= UVC_VS_FRAME_UNCOMPRESSED,
- 	.bFrameIndex		= 2,
- 	.bmCapabilities		= 0,
--	.wWidth			= cpu_to_le16(1280),
--	.wHeight		= cpu_to_le16(720),
--	.dwMinBitRate		= cpu_to_le32(29491200),
--	.dwMaxBitRate		= cpu_to_le32(29491200),
--	.dwMaxVideoFrameBufferSize	= cpu_to_le32(1843200),
--	.dwDefaultFrameInterval	= cpu_to_le32(5000000),
-+	.wWidth			= cpu_to_le16(UVCG_WIDTH_720P),
-+	.wHeight		= cpu_to_le16(UVCG_HEIGHT_720P),
-+	.dwMinBitRate		= cpu_to_le32(UVCG_MIN_BITRATE_720P),
-+	.dwMaxBitRate		= cpu_to_le32(UVCG_MAX_BITRATE_720P),
-+	.dwMaxVideoFrameBufferSize	= cpu_to_le32(UVCG_MAX_VIDEO_FB_SZ_720P),
-+	.dwDefaultFrameInterval	= cpu_to_le32(UVCG_DEFAULT_FRM_INTERV_720P),
- 	.bFrameIntervalType	= 1,
--	.dwFrameInterval[0]	= cpu_to_le32(5000000),
-+	.dwFrameInterval[0]	= cpu_to_le32(UVCG_FRM_INTERV_0_720P),
- };
- 
--static const struct uvc_format_mjpeg uvc_format_mjpg = {
--	.bLength		= UVC_DT_FORMAT_MJPEG_SIZE,
--	.bDescriptorType	= USB_DT_CS_INTERFACE,
--	.bDescriptorSubType	= UVC_VS_FORMAT_MJPEG,
--	.bFormatIndex		= 2,
--	.bNumFrameDescriptors	= 2,
--	.bmFlags		= 0,
--	.bDefaultFrameIndex	= 1,
--	.bAspectRatioX		= 0,
--	.bAspectRatioY		= 0,
--	.bmInterlaceFlags	= 0,
--	.bCopyProtect		= 0,
-+static u32 uvcg_frame_yuv_720p_dw_frame_interval[] = {
-+	[0] = UVCG_FRM_INTERV_0_720P,
-+};
-+
-+static const struct uvcg_frame uvcg_frame_yuv_720p = {
-+	.fmt_type		= UVCG_UNCOMPRESSED,
-+	.frame = {
-+		.b_length			= UVC_DT_FRAME_UNCOMPRESSED_SIZE(1),
-+		.b_descriptor_type		= USB_DT_CS_INTERFACE,
-+		.b_descriptor_subtype		= UVC_VS_FRAME_UNCOMPRESSED,
-+		.b_frame_index			= 2,
-+		.bm_capabilities		= 0,
-+		.w_width			= UVCG_WIDTH_720P,
-+		.w_height			= UVCG_HEIGHT_720P,
-+		.dw_min_bit_rate		= UVCG_MIN_BITRATE_720P,
-+		.dw_max_bit_rate		= UVCG_MAX_BITRATE_720P,
-+		.dw_max_video_frame_buffer_size	= UVCG_MAX_VIDEO_FB_SZ_720P,
-+		.dw_default_frame_interval	= UVCG_DEFAULT_FRM_INTERV_720P,
-+		.b_frame_interval_type		= 1,
-+	},
-+	.dw_frame_interval	= uvcg_frame_yuv_720p_dw_frame_interval,
-+};
-+
-+static struct uvcg_frame_ptr uvcg_frame_ptr_yuv_720p = {
-+	.frm = (struct uvcg_frame *)&uvcg_frame_yuv_720p,
-+};
-+
-+static struct uvcg_mjpeg uvcg_format_mjpeg = {
-+	.fmt = {
-+		.type			= UVCG_MJPEG,
-+		/* add to .frames and fill .num_frames at runtime */
-+		.color_matching		= (struct uvcg_color_matching *)&uvcg_color_matching,
-+	},
-+	.desc = {
-+		.bLength		= UVC_DT_FORMAT_MJPEG_SIZE,
-+		.bDescriptorType	= USB_DT_CS_INTERFACE,
-+		.bDescriptorSubType	= UVC_VS_FORMAT_MJPEG,
-+		.bFormatIndex		= 2,
-+		.bNumFrameDescriptors	= 2,
-+		.bmFlags		= 0,
-+		.bDefaultFrameIndex	= 1,
-+		.bAspectRatioX		= 0,
-+		.bAspectRatioY		= 0,
-+		.bmInterlaceFlags	= 0,
-+		.bCopyProtect		= 0,
-+	},
-+};
-+
-+static struct uvcg_format_ptr uvcg_format_ptr_mjpeg = {
-+	.fmt = &uvcg_format_mjpeg.fmt,
- };
- 
- DECLARE_UVC_FRAME_MJPEG(1);
-@@ -235,16 +341,45 @@ static const struct UVC_FRAME_MJPEG(3) uvc_frame_mjpg_360p = {
- 	.bDescriptorSubType	= UVC_VS_FRAME_MJPEG,
- 	.bFrameIndex		= 1,
- 	.bmCapabilities		= 0,
--	.wWidth			= cpu_to_le16(640),
--	.wHeight		= cpu_to_le16(360),
--	.dwMinBitRate		= cpu_to_le32(18432000),
--	.dwMaxBitRate		= cpu_to_le32(55296000),
--	.dwMaxVideoFrameBufferSize	= cpu_to_le32(460800),
--	.dwDefaultFrameInterval	= cpu_to_le32(666666),
-+	.wWidth			= cpu_to_le16(UVCG_WIDTH_360P),
-+	.wHeight		= cpu_to_le16(UVCG_HEIGHT_360P),
-+	.dwMinBitRate		= cpu_to_le32(UVCG_MIN_BITRATE_360P),
-+	.dwMaxBitRate		= cpu_to_le32(UVCG_MAX_BITRATE_360P),
-+	.dwMaxVideoFrameBufferSize	= cpu_to_le32(UVCG_MAX_VIDEO_FB_SZ_360P),
-+	.dwDefaultFrameInterval	= cpu_to_le32(UVCG_DEFAULT_FRM_INTERV_360P),
- 	.bFrameIntervalType	= 3,
--	.dwFrameInterval[0]	= cpu_to_le32(666666),
--	.dwFrameInterval[1]	= cpu_to_le32(1000000),
--	.dwFrameInterval[2]	= cpu_to_le32(5000000),
-+	.dwFrameInterval[0]	= cpu_to_le32(UVCG_FRM_INTERV_0_360P),
-+	.dwFrameInterval[1]	= cpu_to_le32(UVCG_FRM_INTERV_1_360P),
-+	.dwFrameInterval[2]	= cpu_to_le32(UVCG_FRM_INTERV_2_360P),
-+};
-+
-+static u32 uvcg_frame_mjpeg_360p_dw_frame_interval[] = {
-+	[0] = UVCG_FRM_INTERV_0_360P,
-+	[1] = UVCG_FRM_INTERV_1_360P,
-+	[2] = UVCG_FRM_INTERV_2_360P,
-+};
-+
-+static const struct uvcg_frame uvcg_frame_mjpeg_360p = {
-+	.fmt_type		= UVCG_MJPEG,
-+	.frame = {
-+		.b_length			= UVC_DT_FRAME_MJPEG_SIZE(3),
-+		.b_descriptor_type		= USB_DT_CS_INTERFACE,
-+		.b_descriptor_subtype		= UVC_VS_FRAME_MJPEG,
-+		.b_frame_index			= 1,
-+		.bm_capabilities		= 0,
-+		.w_width			= UVCG_WIDTH_360P,
-+		.w_height			= UVCG_HEIGHT_360P,
-+		.dw_min_bit_rate		= UVCG_MIN_BITRATE_360P,
-+		.dw_max_bit_rate		= UVCG_MAX_BITRATE_360P,
-+		.dw_max_video_frame_buffer_size	= UVCG_MAX_VIDEO_FB_SZ_360P,
-+		.dw_default_frame_interval	= UVCG_DEFAULT_FRM_INTERV_360P,
-+		.b_frame_interval_type		= 3,
-+	},
-+	.dw_frame_interval	= uvcg_frame_mjpeg_360p_dw_frame_interval,
-+};
-+
-+static struct uvcg_frame_ptr uvcg_frame_ptr_mjpeg_360p = {
-+	.frm = (struct uvcg_frame *)&uvcg_frame_mjpeg_360p,
- };
- 
- static const struct UVC_FRAME_MJPEG(1) uvc_frame_mjpg_720p = {
-@@ -253,23 +388,44 @@ static const struct UVC_FRAME_MJPEG(1) uvc_frame_mjpg_720p = {
- 	.bDescriptorSubType	= UVC_VS_FRAME_MJPEG,
- 	.bFrameIndex		= 2,
- 	.bmCapabilities		= 0,
--	.wWidth			= cpu_to_le16(1280),
--	.wHeight		= cpu_to_le16(720),
--	.dwMinBitRate		= cpu_to_le32(29491200),
--	.dwMaxBitRate		= cpu_to_le32(29491200),
--	.dwMaxVideoFrameBufferSize	= cpu_to_le32(1843200),
--	.dwDefaultFrameInterval	= cpu_to_le32(5000000),
-+	.wWidth			= cpu_to_le16(UVCG_WIDTH_720P),
-+	.wHeight		= cpu_to_le16(UVCG_HEIGHT_720P),
-+	.dwMinBitRate		= cpu_to_le32(UVCG_MIN_BITRATE_720P),
-+	.dwMaxBitRate		= cpu_to_le32(UVCG_MAX_BITRATE_720P),
-+	.dwMaxVideoFrameBufferSize	= cpu_to_le32(UVCG_MAX_VIDEO_FB_SZ_720P),
-+	.dwDefaultFrameInterval	= cpu_to_le32(UVCG_DEFAULT_FRM_INTERV_720P),
- 	.bFrameIntervalType	= 1,
--	.dwFrameInterval[0]	= cpu_to_le32(5000000),
-+	.dwFrameInterval[0]	= cpu_to_le32(UVCG_FRM_INTERV_0_720P),
- };
- 
--static const struct uvc_color_matching_descriptor uvc_color_matching = {
--	.bLength		= UVC_DT_COLOR_MATCHING_SIZE,
--	.bDescriptorType	= USB_DT_CS_INTERFACE,
--	.bDescriptorSubType	= UVC_VS_COLORFORMAT,
--	.bColorPrimaries	= 1,
--	.bTransferCharacteristics	= 1,
--	.bMatrixCoefficients	= 4,
-+static u32 uvcg_frame_mjpeg_720p_dw_frame_interval[] = {
-+	[0] = UVCG_FRM_INTERV_0_720P,
-+};
-+
-+static const struct uvcg_frame uvcg_frame_mjpeg_720p = {
-+	.fmt_type		= UVCG_MJPEG,
-+	.frame = {
-+		.b_length			= UVC_DT_FRAME_MJPEG_SIZE(1),
-+		.b_descriptor_type		= USB_DT_CS_INTERFACE,
-+		.b_descriptor_subtype		= UVC_VS_FRAME_MJPEG,
-+		.b_frame_index			= 2,
-+		.bm_capabilities		= 0,
-+		.w_width			= UVCG_WIDTH_720P,
-+		.w_height			= UVCG_HEIGHT_720P,
-+		.dw_min_bit_rate		= UVCG_MIN_BITRATE_720P,
-+		.dw_max_bit_rate		= UVCG_MAX_BITRATE_720P,
-+		.dw_max_video_frame_buffer_size	= UVCG_MAX_VIDEO_FB_SZ_720P,
-+		.dw_default_frame_interval	= UVCG_DEFAULT_FRM_INTERV_720P,
-+		.b_frame_interval_type		= 1,
-+	},
-+	.dw_frame_interval	= uvcg_frame_mjpeg_720p_dw_frame_interval,
-+};
-+
-+static struct uvcg_frame_ptr uvcg_frame_ptr_mjpeg_720p = {
-+	.frm = (struct uvcg_frame *)&uvcg_frame_mjpeg_720p,
-+};
-+
-+static struct uvcg_streaming_header uvcg_streaming_header = {
- };
- 
- static const struct uvc_descriptor_header * const uvc_fs_control_cls[] = {
-@@ -290,40 +446,40 @@ static const struct uvc_descriptor_header * const uvc_ss_control_cls[] = {
- 
- static const struct uvc_descriptor_header * const uvc_fs_streaming_cls[] = {
- 	(const struct uvc_descriptor_header *) &uvc_input_header,
--	(const struct uvc_descriptor_header *) &uvc_format_yuv,
-+	(const struct uvc_descriptor_header *) &uvcg_format_yuv.desc,
- 	(const struct uvc_descriptor_header *) &uvc_frame_yuv_360p,
- 	(const struct uvc_descriptor_header *) &uvc_frame_yuv_720p,
--	(const struct uvc_descriptor_header *) &uvc_color_matching,
--	(const struct uvc_descriptor_header *) &uvc_format_mjpg,
-+	(const struct uvc_descriptor_header *) &uvcg_color_matching.desc,
-+	(const struct uvc_descriptor_header *) &uvcg_format_mjpeg.desc,
- 	(const struct uvc_descriptor_header *) &uvc_frame_mjpg_360p,
- 	(const struct uvc_descriptor_header *) &uvc_frame_mjpg_720p,
--	(const struct uvc_descriptor_header *) &uvc_color_matching,
-+	(const struct uvc_descriptor_header *) &uvcg_color_matching.desc,
- 	NULL,
- };
- 
- static const struct uvc_descriptor_header * const uvc_hs_streaming_cls[] = {
- 	(const struct uvc_descriptor_header *) &uvc_input_header,
--	(const struct uvc_descriptor_header *) &uvc_format_yuv,
-+	(const struct uvc_descriptor_header *) &uvcg_format_yuv.desc,
- 	(const struct uvc_descriptor_header *) &uvc_frame_yuv_360p,
- 	(const struct uvc_descriptor_header *) &uvc_frame_yuv_720p,
--	(const struct uvc_descriptor_header *) &uvc_color_matching,
--	(const struct uvc_descriptor_header *) &uvc_format_mjpg,
-+	(const struct uvc_descriptor_header *) &uvcg_color_matching.desc,
-+	(const struct uvc_descriptor_header *) &uvcg_format_mjpeg.desc,
- 	(const struct uvc_descriptor_header *) &uvc_frame_mjpg_360p,
- 	(const struct uvc_descriptor_header *) &uvc_frame_mjpg_720p,
--	(const struct uvc_descriptor_header *) &uvc_color_matching,
-+	(const struct uvc_descriptor_header *) &uvcg_color_matching.desc,
- 	NULL,
- };
- 
- static const struct uvc_descriptor_header * const uvc_ss_streaming_cls[] = {
- 	(const struct uvc_descriptor_header *) &uvc_input_header,
--	(const struct uvc_descriptor_header *) &uvc_format_yuv,
-+	(const struct uvc_descriptor_header *) &uvcg_format_yuv.desc,
- 	(const struct uvc_descriptor_header *) &uvc_frame_yuv_360p,
- 	(const struct uvc_descriptor_header *) &uvc_frame_yuv_720p,
--	(const struct uvc_descriptor_header *) &uvc_color_matching,
--	(const struct uvc_descriptor_header *) &uvc_format_mjpg,
-+	(const struct uvc_descriptor_header *) &uvcg_color_matching.desc,
-+	(const struct uvc_descriptor_header *) &uvcg_format_mjpeg.desc,
- 	(const struct uvc_descriptor_header *) &uvc_frame_mjpg_360p,
- 	(const struct uvc_descriptor_header *) &uvc_frame_mjpg_720p,
--	(const struct uvc_descriptor_header *) &uvc_color_matching,
-+	(const struct uvc_descriptor_header *) &uvcg_color_matching.desc,
- 	NULL,
- };
- 
-@@ -387,6 +543,23 @@ webcam_bind(struct usb_composite_dev *cdev)
- 	uvc_opts->hs_streaming = uvc_hs_streaming_cls;
- 	uvc_opts->ss_streaming = uvc_ss_streaming_cls;
- 
-+	INIT_LIST_HEAD(&uvcg_format_yuv.fmt.frames);
-+	list_add_tail(&uvcg_frame_ptr_yuv_360p.entry, &uvcg_format_yuv.fmt.frames);
-+	list_add_tail(&uvcg_frame_ptr_yuv_720p.entry, &uvcg_format_yuv.fmt.frames);
-+	uvcg_format_yuv.fmt.num_frames = 2;
-+
-+	INIT_LIST_HEAD(&uvcg_format_mjpeg.fmt.frames);
-+	list_add_tail(&uvcg_frame_ptr_mjpeg_360p.entry, &uvcg_format_mjpeg.fmt.frames);
-+	list_add_tail(&uvcg_frame_ptr_mjpeg_720p.entry, &uvcg_format_mjpeg.fmt.frames);
-+	uvcg_format_mjpeg.fmt.num_frames = 2;
-+
-+	INIT_LIST_HEAD(&uvcg_streaming_header.formats);
-+	list_add_tail(&uvcg_format_ptr_yuv.entry, &uvcg_streaming_header.formats);
-+	list_add_tail(&uvcg_format_ptr_mjpeg.entry, &uvcg_streaming_header.formats);
-+	uvcg_streaming_header.num_fmt = 2;
-+
-+	uvc_opts->header = &uvcg_streaming_header;
-+
- 	/* Allocate string descriptor numbers ... note that string contents
- 	 * can be overridden by the composite_dev glue.
- 	 */
 -- 
 2.43.0
 
