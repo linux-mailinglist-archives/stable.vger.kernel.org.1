@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DFE7837A4A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:08 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 842778378BF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50D6C1C242B8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C90D1F258E2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E2612BEBF;
-	Tue, 23 Jan 2024 00:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCA523B9;
+	Tue, 23 Jan 2024 00:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D0xoAxfM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CavrUtqH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1379012A17F;
-	Tue, 23 Jan 2024 00:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C256420EE;
+	Tue, 23 Jan 2024 00:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968874; cv=none; b=jQmIspqTbSqC6P9cuq4Q4fiN8ouA13BIJWBKTlaQwk5HXLgAW5Iaqf8y8paQifr0N8nlO3BuKr2nJCGUpuCB1VUkwX7ITkDL2A00dAHw54fSUvcJpYKQECzkSe8LPLFQuDvmg3oau8DSsXj/1LhYGXswpQtOqlhOxBYsBqSFhWc=
+	t=1705968236; cv=none; b=RerZdh90wWLDTKqubIhAMSwakZKzw5nFw/deb6yozQRS0oyBQWsBWNgQUWZEHZGPpaak2dgsbUc93vQ0kEYd2hOwy00gMRBEixK9omVXdtpVjDx2F4795vCEg9zrGG2teZCH2Mcsclxw+1Z/TQuSL+3y8/Or4uF6GtKTwCjjP/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968874; c=relaxed/simple;
-	bh=kfN7LWDKMOd2Vpcb8xoCRBwSrib7uiVQweklGawwzg8=;
+	s=arc-20240116; t=1705968236; c=relaxed/simple;
+	bh=WeCPLbTLUZbTUFDHHOFk+iCUmOm7rEz6pqXac4Y7TeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NGXWtlFQb2O3PlnHBpP9K7o7gVsQdek7ybi+cVpshISiNhj28zi4olsdGPbwZ1pgqoTpJETMy/hp9UxFMXXGpI1kzm6Zii37bFDQswfTT2ioDHmBSDPW9+ntdND+SYSPNC8hfGPZpGNa1guYEbSWCpkpRLB7xYv9AF36l3O3JXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D0xoAxfM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B949DC433C7;
-	Tue, 23 Jan 2024 00:14:33 +0000 (UTC)
+	 MIME-Version; b=TXTOmkGC1EoBNQjap1Luep0Y1g7s9LBLFl2ZHrFUBQ3G0j7vUHljrXXXmsUGHNOvaS7egIubvCyqWshix6QcY9lVfP0w1N10H/P5s7vcEKsAvQkyAEmRXeUTngBF4CA1BorCjUFKSP1/m1y7ccnqiqeLu+qHkrup41y/TdP4j7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CavrUtqH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 007F8C433C7;
+	Tue, 23 Jan 2024 00:03:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968873;
-	bh=kfN7LWDKMOd2Vpcb8xoCRBwSrib7uiVQweklGawwzg8=;
+	s=korg; t=1705968236;
+	bh=WeCPLbTLUZbTUFDHHOFk+iCUmOm7rEz6pqXac4Y7TeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D0xoAxfM+zDIHKds09729UNbhmI4MjQdkv64e8Y65/w+pnVsi8VeSx/V7pHqH3r1+
-	 ifOsLgllpPG+N5j47f37xRWiIh4iZoSC18b8GW+cRs0rjiAlwI/0ru8s9xySzxfsmc
-	 4hUf6VkecI217TEuCKx2I4p3dLhdwhJvAX5m5Npg=
+	b=CavrUtqHsLYBQtg+sm3PoKBdPzg9gfdDnLm1ueTuUqOMW+/wsdhGbjJpTfYKSI5N8
+	 vNrjCnlwjFr/AEZNdsaW0eFWZB6kucbphL7hccV9FhBFqrug4FSyz1RueUsPUSesKF
+	 rbORBOsjrwMBItjb1A74XpEYqXqv5a8Ln4LgbZrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3eff5e51bf1db122a16e@syzkaller.appspotmail.com,
-	Chengming Zhou <zhouchengming@bytedance.com>,
-	Barry Song <v-songbaohua@oppo.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Kees Cook <keescook@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 077/194] crypto: scomp - fix req->dst buffer overflow
-Date: Mon, 22 Jan 2024 15:56:47 -0800
-Message-ID: <20240122235722.531360549@linuxfoundation.org>
+Subject: [PATCH 4.19 052/148] pstore: ram_core: fix possible overflow in persistent_ram_init_ecc()
+Date: Mon, 22 Jan 2024 15:56:48 -0800
+Message-ID: <20240122235714.526907705@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengming Zhou <zhouchengming@bytedance.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-[ Upstream commit 744e1885922a9943458954cfea917b31064b4131 ]
+[ Upstream commit 86222a8fc16ec517de8da2604d904c9df3a08e5d ]
 
-The req->dst buffer size should be checked before copying from the
-scomp_scratch->dst to avoid req->dst buffer overflow problem.
+In persistent_ram_init_ecc(), on 64-bit arches DIV_ROUND_UP() will return
+64-bit value since persistent_ram_zone::buffer_size has type size_t which
+is derived from the 64-bit *unsigned long*, while the ecc_blocks variable
+this value gets assigned to has (always 32-bit) *int* type.  Even if that
+value fits into *int* type, an overflow is still possible when calculating
+the size_t typed ecc_total variable further below since there's no cast to
+any 64-bit type before multiplication.  Declaring the ecc_blocks variable
+as *size_t* should fix this mess...
 
-Fixes: 1ab53a77b772 ("crypto: acomp - add driver-side scomp interface")
-Reported-by: syzbot+3eff5e51bf1db122a16e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/0000000000000b05cd060d6b5511@google.com/
-Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
-Reviewed-by: Barry Song <v-songbaohua@oppo.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Found by Linux Verification Center (linuxtesting.org) with the SVACE static
+analysis tool.
+
+Fixes: 9cc05ad97c57 ("staging: android: persistent_ram: refactor ecc support")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20231105202936.25694-1-s.shtylyov@omp.ru
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/scompress.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/pstore/ram_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/crypto/scompress.c b/crypto/scompress.c
-index 4d50750d01c6..ec849790f728 100644
---- a/crypto/scompress.c
-+++ b/crypto/scompress.c
-@@ -124,6 +124,7 @@ static int scomp_acomp_comp_decomp(struct acomp_req *req, int dir)
- 	struct crypto_scomp *scomp = *tfm_ctx;
- 	void **ctx = acomp_request_ctx(req);
- 	struct scomp_scratch *scratch;
-+	unsigned int dlen;
- 	int ret;
+diff --git a/fs/pstore/ram_core.c b/fs/pstore/ram_core.c
+index efb765b8466f..a6e5022469ab 100644
+--- a/fs/pstore/ram_core.c
++++ b/fs/pstore/ram_core.c
+@@ -189,7 +189,7 @@ static int persistent_ram_init_ecc(struct persistent_ram_zone *prz,
+ {
+ 	int numerr;
+ 	struct persistent_ram_buffer *buffer = prz->buffer;
+-	int ecc_blocks;
++	size_t ecc_blocks;
+ 	size_t ecc_total;
  
- 	if (!req->src || !req->slen || req->slen > SCOMP_SCRATCH_SIZE)
-@@ -135,6 +136,8 @@ static int scomp_acomp_comp_decomp(struct acomp_req *req, int dir)
- 	if (!req->dlen || req->dlen > SCOMP_SCRATCH_SIZE)
- 		req->dlen = SCOMP_SCRATCH_SIZE;
- 
-+	dlen = req->dlen;
-+
- 	scratch = raw_cpu_ptr(&scomp_scratch);
- 	spin_lock(&scratch->lock);
- 
-@@ -152,6 +155,9 @@ static int scomp_acomp_comp_decomp(struct acomp_req *req, int dir)
- 				ret = -ENOMEM;
- 				goto out;
- 			}
-+		} else if (req->dlen > dlen) {
-+			ret = -ENOSPC;
-+			goto out;
- 		}
- 		scatterwalk_map_and_copy(scratch->dst, req->dst, 0, req->dlen,
- 					 1);
+ 	if (!ecc_info || !ecc_info->ecc_size)
 -- 
 2.43.0
 
