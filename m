@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-15407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DECF83851C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25A078380E8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E4661C2A540
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1A9A1F2531C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8A27E564;
-	Tue, 23 Jan 2024 02:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCC11350F2;
+	Tue, 23 Jan 2024 01:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1K4yhRyu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qu5yT/by"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D71E3C0C;
-	Tue, 23 Jan 2024 02:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E70D1350CA;
+	Tue, 23 Jan 2024 01:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975743; cv=none; b=cQE4Immy0YXnl8EEckG0lonMFZ0zNlaz0NTlsRVZ3hBchx+fovD85rVAYW9ljI5qeZGNnyX9JwofwzhSTgjG2R8nb5KfSnCWGA0pHzH3UPsqw90cn2FlIGoQegYi8QJBxEzZuVtWwA2bhvnJ/eJwGLDz+4/8kiyyae4iSESwXjA=
+	t=1705971954; cv=none; b=Vr4Iwup0X6wVQ0xz4Iw0aIw6v6JyIZEyuG/3U+uxDjkI+Ho5fGNQdN8qdG6WYBvQ+XeEfPXx19OUsyJcLzMmhRCVBP2bAxRD8NNCwcV5OOpMyCcnfIvqYwcNbx27DAiEyzO1JO8B01vT8d2xhqiKm6WSeY+oAT3awwbd3B/v+T4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975743; c=relaxed/simple;
-	bh=xhAdCx08AEBoOy+n/EWWJk1Zx+feKwSVOVhvrj+y90U=;
+	s=arc-20240116; t=1705971954; c=relaxed/simple;
+	bh=DTyE1XY4mkeB3NXi/NgpwY8T/HlDs8yvQ9xLFs0GbB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EG+6ctqIaok3ydZA/Fv3CVU/5AOfFT7pUR0HYPufP92ys57T402rCncMelkG+QdYdhI8TejIkgvMEeqRLBNMK1UTGh8gN8uHY4f+sQEvfXPHxWiZKXZBN4Rv2S7HdMwq5Mr71wwYPSa0IbuD8oeNdD7mECxUUqvguiLCc7XTCx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1K4yhRyu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD34EC433F1;
-	Tue, 23 Jan 2024 02:09:02 +0000 (UTC)
+	 MIME-Version; b=YgHNYx14b2+rCoy+GZ/kl/OHnQBjpk2f1nltbHFZ/hgyDHvBaEi+I6aLBapWJzAU+1UHXI8+Qd7f0ligUoMQD41qsdprixye9Kc3nTmI5qNru1Fdj4hzGx5jDxsHc27seJU8Fl/I8f1F1h+hnsfHC5KMpiGtLfAhWrOaWXYe72Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qu5yT/by; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47405C433C7;
+	Tue, 23 Jan 2024 01:05:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975743;
-	bh=xhAdCx08AEBoOy+n/EWWJk1Zx+feKwSVOVhvrj+y90U=;
+	s=korg; t=1705971954;
+	bh=DTyE1XY4mkeB3NXi/NgpwY8T/HlDs8yvQ9xLFs0GbB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1K4yhRyuvPVB9gJuwgzgXFzUGShHweIEQqOJsKM/BfjsbDZLYKS/RpQNe34zpGIz2
-	 ZAPHIK+T3SQexqITvFKTbAV58GVc25VDOW0JIrj25PO0hq9LaCuJsXRe/K/wuBTOaj
-	 V7d6rbB769ERFcTplIECBHpdI+zl5EbiLgs+2Xc0=
+	b=Qu5yT/byp2mB6QofB8jM6f1QzWNJJRNuxTJP1bN0hmP53ysnvcK/txBK5ysDq4XcG
+	 1DrPZ6r4JK6FMIwjzZwvqW1fmABPUvtSg83AoRxRvZnLXyx3iO8uQIO9nlX9V0GoEq
+	 0P63IM5tqyn8qJxwbOsC5zurAbUHIJkvn3WFQdm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 527/583] net: ethernet: ti: am65-cpsw: Fix max mtu to fit ethernet frames
+Subject: [PATCH 5.10 272/286] netfilter: nf_tables: skip dead set elements in netlink dump
 Date: Mon, 22 Jan 2024 15:59:38 -0800
-Message-ID: <20240122235828.225122018@linuxfoundation.org>
+Message-ID: <20240122235742.528649861@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +59,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sanjuán García, Jorge <Jorge.SanjuanGarcia@duagon.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 64e47d8afb5ca533b27efc006405e5bcae2c4a7b ]
+[ Upstream commit 6b1ca88e4bb63673dc9f9c7f23c899f22c3cb17a ]
 
-The value of AM65_CPSW_MAX_PACKET_SIZE represents the maximum length
-of a received frame. This value is written to the register
-AM65_CPSW_PORT_REG_RX_MAXLEN.
+Delete from packet path relies on the garbage collector to purge
+elements with NFT_SET_ELEM_DEAD_BIT on.
 
-The maximum MTU configured on the network device should then leave
-some room for the ethernet headers and frame check. Otherwise, if
-the network interface is configured to its maximum mtu possible,
-the frames will be larger than AM65_CPSW_MAX_PACKET_SIZE and will
-get dropped as oversized.
+Skip these dead elements from nf_tables_dump_setelem() path, I very
+rarely see tests/shell/testcases/maps/typeof_maps_add_delete reports
+[DUMP FAILED] showing a mismatch in the expected output with an element
+that should not be there.
 
-The switch supports ethernet frame sizes between 64 and 2024 bytes
-(including VLAN) as stated in the technical reference manual, so
-define AM65_CPSW_MAX_PACKET_SIZE with that maximum size.
+If the netlink dump happens before GC worker run, it might show dead
+elements in the ruleset listing.
 
-Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
-Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
-Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Link: https://lore.kernel.org/r/20240105085530.14070-2-jorge.sanjuangarcia@duagon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+nft_rhash_get() already skips dead elements in nft_rhash_cmp(),
+therefore, it already does not show the element when getting a single
+element via netlink control plane.
+
+Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index 24120605502f..c62b0f99f2bc 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -56,7 +56,7 @@
- #define AM65_CPSW_MAX_PORTS	8
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 009cb23bc972..7a1a21cde760 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -5011,7 +5011,7 @@ static int nf_tables_dump_setelem(const struct nft_ctx *ctx,
+ 	const struct nft_set_ext *ext = nft_set_elem_ext(set, elem->priv);
+ 	struct nft_set_dump_args *args;
  
- #define AM65_CPSW_MIN_PACKET_SIZE	VLAN_ETH_ZLEN
--#define AM65_CPSW_MAX_PACKET_SIZE	(VLAN_ETH_FRAME_LEN + ETH_FCS_LEN)
-+#define AM65_CPSW_MAX_PACKET_SIZE	2024
+-	if (nft_set_elem_expired(ext))
++	if (nft_set_elem_expired(ext) || nft_set_elem_is_dead(ext))
+ 		return 0;
  
- #define AM65_CPSW_REG_CTL		0x004
- #define AM65_CPSW_REG_STAT_PORT_EN	0x014
-@@ -2167,7 +2167,8 @@ am65_cpsw_nuss_init_port_ndev(struct am65_cpsw_common *common, u32 port_idx)
- 	eth_hw_addr_set(port->ndev, port->slave.mac_addr);
- 
- 	port->ndev->min_mtu = AM65_CPSW_MIN_PACKET_SIZE;
--	port->ndev->max_mtu = AM65_CPSW_MAX_PACKET_SIZE;
-+	port->ndev->max_mtu = AM65_CPSW_MAX_PACKET_SIZE -
-+			      (VLAN_ETH_HLEN + ETH_FCS_LEN);
- 	port->ndev->hw_features = NETIF_F_SG |
- 				  NETIF_F_RXCSUM |
- 				  NETIF_F_HW_CSUM |
+ 	args = container_of(iter, struct nft_set_dump_args, iter);
 -- 
 2.43.0
 
