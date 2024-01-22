@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-13944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9545837EE9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:53 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21DA5838168
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:08:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2D6929BC0B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8E77B2B4E3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C338C604DF;
-	Tue, 23 Jan 2024 00:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54EFD1487F4;
+	Tue, 23 Jan 2024 01:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rfqn3mIB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWjjrLug"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA2E604C5;
-	Tue, 23 Jan 2024 00:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B991487EA;
+	Tue, 23 Jan 2024 01:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970821; cv=none; b=tpKWj6WsP5UpWycAnMHANiUCxykTvveqVIQEiDSEPwpX7uVWZyRMWt+nL7Pejt4snxbfNalrO8uKK3JfDN2eiOq6NVoI1AWGPFGTpacfNF2uMYevWmr7Yve8NZN0x41j5WDw5AoPBJy6hEG/jUvkNndBWsDs19UI7BDtJ47L8v4=
+	t=1705972082; cv=none; b=RwDED+tRLl9YmpPRRmtOhkTUKtOfbGfNW0jtMqNQ63HYFMAVgAWkpVRPOio9HyC9UQP3rpBarVpyjOsf0N70k8FBetmqCvgWmjuhWdOMj4s+sdfHh0/LRrbthpuiX2GY7U1BIz/zvAL1ld9yiXZqqVSiNemk3ifSXiinFEhCg/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970821; c=relaxed/simple;
-	bh=nwIRKbaxOTeu792JI4Pb4kyTZVgFb/O2ndCG44cNMiE=;
+	s=arc-20240116; t=1705972082; c=relaxed/simple;
+	bh=bJbid+rd9vrP9AXncu/tl+9gK85nbedBJsSC6e/o2Nw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qupi/TA2wgggN6fdEUmP2E4Zn4bvMFh5GxBazTRC47nXMSMjMQ28me+D/UXQfCu/Q6l4RwCUZKiqcOG0mkhY4FXy6xlyZNu42kKxB+nLpruSMSRDaVNOZpI47eKkZbKarI+4w6X5SeppnxdLBOqOkiSZbV9qarrNmi/djn8j7q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rfqn3mIB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24D75C433F1;
-	Tue, 23 Jan 2024 00:47:01 +0000 (UTC)
+	 MIME-Version; b=XNNlzkNwLOzpWvWue3Kp+Eg1xGaWDqRYmovQk2vFrGd/LfXXDFAJQJrhthI2rsij+vpGDyw9Ji7wdB+t9jmI/u/LIwHT5k+vUyfTuC+3mIMNxOVN0GW5LwoGunMetnD4wUc1e9pklJNOti2AUUuw23DarG3tj6l/Y3MO8M9dZws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWjjrLug; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7910C43390;
+	Tue, 23 Jan 2024 01:08:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970821;
-	bh=nwIRKbaxOTeu792JI4Pb4kyTZVgFb/O2ndCG44cNMiE=;
+	s=korg; t=1705972081;
+	bh=bJbid+rd9vrP9AXncu/tl+9gK85nbedBJsSC6e/o2Nw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rfqn3mIBG7nW5/RQ1maYd+hjnK/XQOX/+iHK+pEyR3PIHaWzchx98LcsX16bvVh9i
-	 F4g8/LadLT9XHbytNIRfko0PgIhncUFSf1jwmhb9IX48OcoF+Kqobpr2jM+0mzbcdO
-	 EcDZYFFNePEXuFKY3HYMsvacBpwXIzpf07px0p9w=
+	b=DWjjrLug0RDOlV3oDVCFQVl6W7KzJBd2g9Lp4j8bYM3nbMahXSDcUYDVGOkdpaxw+
+	 kjgBrApkGLxCKUInKChdJEugxgY/OkJOysO1ul1DTupRRkFP1QT+ejpjOPPBLcuphy
+	 MEXuEdCRe6YL9An0pm9qaRtiP66GxLK9pYWq2zio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Protopopov <aspsk@isovalent.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 094/417] bpf: add percpu stats for bpf_map elements insertions/deletions
+Subject: [PATCH 5.15 006/374] debugfs: fix automount d_fsdata usage
 Date: Mon, 22 Jan 2024 15:54:22 -0800
-Message-ID: <20240122235754.948596489@linuxfoundation.org>
+Message-ID: <20240122235744.846569148@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +61,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Protopopov <aspsk@isovalent.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 25954730461af01f66afa9e17036b051986b007e ]
+[ Upstream commit 0ed04a1847a10297595ac24dc7d46b35fb35f90a ]
 
-Add a generic percpu stats for bpf_map elements insertions/deletions in order
-to keep track of both, the current (approximate) number of elements in a map
-and per-cpu statistics on update/delete operations.
+debugfs_create_automount() stores a function pointer in d_fsdata,
+but since commit 7c8d469877b1 ("debugfs: add support for more
+elaborate ->d_fsdata") debugfs_release_dentry() will free it, now
+conditionally on DEBUGFS_FSDATA_IS_REAL_FOPS_BIT, but that's not
+set for the function pointer in automount. As a result, removing
+an automount dentry would attempt to free the function pointer.
+Luckily, the only user of this (tracing) never removes it.
 
-To expose these stats a particular map implementation should initialize the
-counter and adjust it as needed using the 'bpf_map_*_elem_count' helpers
-provided by this commit.
+Nevertheless, it's safer if we just handle the fsdata in one way,
+namely either DEBUGFS_FSDATA_IS_REAL_FOPS_BIT or allocated. Thus,
+change the automount to allocate it, and use the real_fops in the
+data to indicate whether or not automount is filled, rather than
+adding a type tag. At least for now this isn't actually needed,
+but the next changes will require it.
 
-Signed-off-by: Anton Protopopov <aspsk@isovalent.com>
-Link: https://lore.kernel.org/r/20230706133932.45883-2-aspsk@isovalent.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: 876673364161 ("bpf: Defer the free of inner map when necessary")
+Also check in debugfs_file_get() that it gets only called
+on regular files, just to make things clearer.
+
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ fs/debugfs/file.c     |  8 ++++++++
+ fs/debugfs/inode.c    | 27 ++++++++++++++++++++-------
+ fs/debugfs/internal.h | 10 ++++++++--
+ 3 files changed, 36 insertions(+), 9 deletions(-)
 
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index ba22cf4f5fc0..21b192ce018a 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -249,6 +249,7 @@ struct bpf_map {
- 	} owner;
- 	bool bypass_spec_v1;
- 	bool frozen; /* write-once; write-protected by freeze_mutex */
-+	s64 __percpu *elem_count;
+diff --git a/fs/debugfs/file.c b/fs/debugfs/file.c
+index 38930d9b0bb7..df5c2162e729 100644
+--- a/fs/debugfs/file.c
++++ b/fs/debugfs/file.c
+@@ -84,6 +84,14 @@ int debugfs_file_get(struct dentry *dentry)
+ 	struct debugfs_fsdata *fsd;
+ 	void *d_fsd;
+ 
++	/*
++	 * This could only happen if some debugfs user erroneously calls
++	 * debugfs_file_get() on a dentry that isn't even a file, let
++	 * them know about it.
++	 */
++	if (WARN_ON(!d_is_reg(dentry)))
++		return -EINVAL;
++
+ 	d_fsd = READ_ONCE(dentry->d_fsdata);
+ 	if (!((unsigned long)d_fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT)) {
+ 		fsd = d_fsd;
+diff --git a/fs/debugfs/inode.c b/fs/debugfs/inode.c
+index 26f9cd328291..5290a721a703 100644
+--- a/fs/debugfs/inode.c
++++ b/fs/debugfs/inode.c
+@@ -214,17 +214,19 @@ static const struct super_operations debugfs_super_operations = {
+ 
+ static void debugfs_release_dentry(struct dentry *dentry)
+ {
+-	void *fsd = dentry->d_fsdata;
++	struct debugfs_fsdata *fsd = dentry->d_fsdata;
+ 
+-	if (!((unsigned long)fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT))
+-		kfree(dentry->d_fsdata);
++	if ((unsigned long)fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT)
++		return;
++
++	kfree(fsd);
+ }
+ 
+ static struct vfsmount *debugfs_automount(struct path *path)
+ {
+-	debugfs_automount_t f;
+-	f = (debugfs_automount_t)path->dentry->d_fsdata;
+-	return f(path->dentry, d_inode(path->dentry)->i_private);
++	struct debugfs_fsdata *fsd = path->dentry->d_fsdata;
++
++	return fsd->automount(path->dentry, d_inode(path->dentry)->i_private);
+ }
+ 
+ static const struct dentry_operations debugfs_dops = {
+@@ -602,13 +604,23 @@ struct dentry *debugfs_create_automount(const char *name,
+ 					void *data)
+ {
+ 	struct dentry *dentry = start_creating(name, parent);
++	struct debugfs_fsdata *fsd;
+ 	struct inode *inode;
+ 
+ 	if (IS_ERR(dentry))
+ 		return dentry;
+ 
++	fsd = kzalloc(sizeof(*fsd), GFP_KERNEL);
++	if (!fsd) {
++		failed_creating(dentry);
++		return ERR_PTR(-ENOMEM);
++	}
++
++	fsd->automount = f;
++
+ 	if (!(debugfs_allow & DEBUGFS_ALLOW_API)) {
+ 		failed_creating(dentry);
++		kfree(fsd);
+ 		return ERR_PTR(-EPERM);
+ 	}
+ 
+@@ -616,13 +628,14 @@ struct dentry *debugfs_create_automount(const char *name,
+ 	if (unlikely(!inode)) {
+ 		pr_err("out of free dentries, can not create automount '%s'\n",
+ 		       name);
++		kfree(fsd);
+ 		return failed_creating(dentry);
+ 	}
+ 
+ 	make_empty_dir_inode(inode);
+ 	inode->i_flags |= S_AUTOMOUNT;
+ 	inode->i_private = data;
+-	dentry->d_fsdata = (void *)f;
++	dentry->d_fsdata = fsd;
+ 	/* directory inodes start off with i_nlink == 2 (for "." entry) */
+ 	inc_nlink(inode);
+ 	d_instantiate(dentry, inode);
+diff --git a/fs/debugfs/internal.h b/fs/debugfs/internal.h
+index 92af8ae31313..f7c489b5a368 100644
+--- a/fs/debugfs/internal.h
++++ b/fs/debugfs/internal.h
+@@ -17,8 +17,14 @@ extern const struct file_operations debugfs_full_proxy_file_operations;
+ 
+ struct debugfs_fsdata {
+ 	const struct file_operations *real_fops;
+-	refcount_t active_users;
+-	struct completion active_users_drained;
++	union {
++		/* automount_fn is used when real_fops is NULL */
++		debugfs_automount_t automount;
++		struct {
++			refcount_t active_users;
++			struct completion active_users_drained;
++		};
++	};
  };
  
- static inline bool map_value_has_spin_lock(const struct bpf_map *map)
-@@ -1791,6 +1792,35 @@ bpf_map_alloc_percpu(const struct bpf_map *map, size_t size, size_t align,
- }
- #endif
- 
-+static inline int
-+bpf_map_init_elem_count(struct bpf_map *map)
-+{
-+	size_t size = sizeof(*map->elem_count), align = size;
-+	gfp_t flags = GFP_USER | __GFP_NOWARN;
-+
-+	map->elem_count = bpf_map_alloc_percpu(map, size, align, flags);
-+	if (!map->elem_count)
-+		return -ENOMEM;
-+
-+	return 0;
-+}
-+
-+static inline void
-+bpf_map_free_elem_count(struct bpf_map *map)
-+{
-+	free_percpu(map->elem_count);
-+}
-+
-+static inline void bpf_map_inc_elem_count(struct bpf_map *map)
-+{
-+	this_cpu_inc(*map->elem_count);
-+}
-+
-+static inline void bpf_map_dec_elem_count(struct bpf_map *map)
-+{
-+	this_cpu_dec(*map->elem_count);
-+}
-+
- extern int sysctl_unprivileged_bpf_disabled;
- 
- static inline bool bpf_allow_ptr_leaks(void)
+ /*
 -- 
 2.43.0
 
