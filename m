@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-14278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2FAF838045
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27FFD837D7B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6D321C294D2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C4241C21DBF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC575657AE;
-	Tue, 23 Jan 2024 01:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320BF5B1F9;
+	Tue, 23 Jan 2024 00:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z73zokxa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ypXFWMLY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F6165196;
-	Tue, 23 Jan 2024 01:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A244E1D8;
+	Tue, 23 Jan 2024 00:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971635; cv=none; b=DQaGoJf6OUEJ7VY6uDRBJZDK8VO92tISgxe2DhWDjX1xRNQYe+9nsbHaEsbrtv6swsb9Gi1LLZc6WNrFttceq2LY2nrIMiqMZpeR8YjMnbj44IoFZVSUi5Sgv1Brrsv+wT7pxNwUYv+PeDGTrF1T4g1dldDTmVeFD5j8ESXOcYM=
+	t=1705969978; cv=none; b=NCYOx+g6OqH2rehFCX1glY4cVP9l2uf5i/CStnuqQVUlvhhaVvQ9nh1xT8+utC2tnQ1bOgjTs9Gd7a/7uZvGQlFIZLsif1WLuLjmTm18L0AM8WdbVZiPnIxK9x9rDeIUP1dv1/ytr6UrXP8mkpYm3n2vBj0SE0al04z5nMHWM74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971635; c=relaxed/simple;
-	bh=o7spntYLXdQh+TakOeRE3ihTogUBQHYbL6DxGLHDYhQ=;
+	s=arc-20240116; t=1705969978; c=relaxed/simple;
+	bh=U/m1Mgsi94hP6LGvWYMQsqhe9yq/hYl0BIWK9vb6iOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CVK+8VdtoC2cT7IG9rOiuZbHqpAnARv7ARHa4jxIE31V9f1S9lvLdyN7PmkytvaD3WrwzQR7luBntuI3QwwNWdfoX9MCBeRHRo/pmk3ORJKem4nTsv18MzNYTsrLkvxgo1Hp+EIK1nzg0TsZ5AjJAsAsSkAXkiVRYfMDuasUEbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z73zokxa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58B3C433F1;
-	Tue, 23 Jan 2024 01:00:34 +0000 (UTC)
+	 MIME-Version; b=szaIxFP0A8TCKbWNcAM8brDoaIKGaaQo5MKVTYZwthqzUVYh9bgkwzr2w6nzu2PBO3UIZbYbBcgY/AYld/nSTvvoCSPMVTncZT/W8ZL7TBVx0aLfvpTzTSZPWRUbAV2oeAdZz3TdEHtdTuCwOJc/MTuhm1BXCOA5BtAS5Wywsd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ypXFWMLY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50BAAC433C7;
+	Tue, 23 Jan 2024 00:32:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971635;
-	bh=o7spntYLXdQh+TakOeRE3ihTogUBQHYbL6DxGLHDYhQ=;
+	s=korg; t=1705969977;
+	bh=U/m1Mgsi94hP6LGvWYMQsqhe9yq/hYl0BIWK9vb6iOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z73zokxaMI7796Sr2VHuaxFrb00l6W00wZ3D2WYYm1RuM7X1dQb/5Rv9wR03ZV7oI
-	 Qbj/LbtcTQs17UU+/uP0z7jfGiC2rzfMhfv8RBHXWLyIwMEZacRbK72F9BW5WSldPj
-	 ek94eaB2AR1Fz9bdUBnU22BMM/q17onH6qrnWm1M=
+	b=ypXFWMLYP4i4QujpYGpyD96VEsVzw2M+HI22xSYspXk6otqlsSugUpj07NR/LDwtU
+	 QOYZhQVRet04tPbHPGvqD5wGTv47oLUduUcPdYfao+MVV6e3sUTG/G6W0nIIcAzFWj
+	 VTFi4RQSXuJZwr1wWsXXKII5qUPSNqslfkbYq8ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	zdi-disclosures@trendmicro.com
-Subject: [PATCH 6.1 283/417] ksmbd: validate mech token in session setup
+	Ayush Singh <ayushdevel1325@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 547/641] greybus: gb-beagleplay: Remove use of pad bytes
 Date: Mon, 22 Jan 2024 15:57:31 -0800
-Message-ID: <20240122235801.644341066@linuxfoundation.org>
+Message-ID: <20240122235835.254998345@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +61,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Ayush Singh <ayushdevel1325@gmail.com>
 
-commit 92e470163d96df8db6c4fa0f484e4a229edb903d upstream.
+[ Upstream commit 08b3485540d9e94ed8335f82e5fc491fc02f8423 ]
 
-If client send invalid mech token in session setup request, ksmbd
-validate and make the error if it is invalid.
+Make gb-beagleplay greybus spec compliant by moving cport information to
+transport layer instead of using `header->pad` bytes.
 
-Cc: stable@vger.kernel.org
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-22890
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Greybus HDLC frame now has the following payload:
+1. le16 cport
+2. gb_operation_msg_hdr msg_header
+3. u8 *msg_payload
+
+Fixes: ec558bbfea67 ("greybus: Add BeaglePlay Linux Driver")
+Signed-off-by: Ayush Singh <ayushdevel1325@gmail.com>
+Link: https://lore.kernel.org/r/20231217121133.74703-2-ayushdevel1325@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/asn1.c       |    5 +++++
- fs/smb/server/connection.h |    1 +
- fs/smb/server/smb2pdu.c    |   22 +++++++++++++++++-----
- 3 files changed, 23 insertions(+), 5 deletions(-)
+ drivers/greybus/gb-beagleplay.c | 58 ++++++++++++++++++++++++---------
+ 1 file changed, 43 insertions(+), 15 deletions(-)
 
---- a/fs/smb/server/asn1.c
-+++ b/fs/smb/server/asn1.c
-@@ -214,10 +214,15 @@ static int ksmbd_neg_token_alloc(void *c
+diff --git a/drivers/greybus/gb-beagleplay.c b/drivers/greybus/gb-beagleplay.c
+index 43318c1993ba..7d98ae1a8263 100644
+--- a/drivers/greybus/gb-beagleplay.c
++++ b/drivers/greybus/gb-beagleplay.c
+@@ -85,17 +85,31 @@ struct hdlc_payload {
+ 	void *buf;
+ };
+ 
++/**
++ * struct hdlc_greybus_frame - Structure to represent greybus HDLC frame payload
++ *
++ * @cport: cport id
++ * @hdr: greybus operation header
++ * @payload: greybus message payload
++ *
++ * The HDLC payload sent over UART for greybus address has cport preappended to greybus message
++ */
++struct hdlc_greybus_frame {
++	__le16 cport;
++	struct gb_operation_msg_hdr hdr;
++	u8 payload[];
++} __packed;
++
+ static void hdlc_rx_greybus_frame(struct gb_beagleplay *bg, u8 *buf, u16 len)
  {
- 	struct ksmbd_conn *conn = context;
+-	u16 cport_id;
+-	struct gb_operation_msg_hdr *hdr = (struct gb_operation_msg_hdr *)buf;
+-
+-	memcpy(&cport_id, hdr->pad, sizeof(cport_id));
++	struct hdlc_greybus_frame *gb_frame = (struct hdlc_greybus_frame *)buf;
++	u16 cport_id = le16_to_cpu(gb_frame->cport);
++	u16 gb_msg_len = le16_to_cpu(gb_frame->hdr.size);
  
-+	if (!vlen)
-+		return -EINVAL;
-+
- 	conn->mechToken = kmemdup_nul(value, vlen, GFP_KERNEL);
- 	if (!conn->mechToken)
- 		return -ENOMEM;
+ 	dev_dbg(&bg->sd->dev, "Greybus Operation %u type %X cport %u status %u received",
+-		hdr->operation_id, hdr->type, cport_id, hdr->result);
++		gb_frame->hdr.operation_id, gb_frame->hdr.type, cport_id, gb_frame->hdr.result);
  
-+	conn->mechTokenLen = (unsigned int)vlen;
-+
- 	return 0;
+-	greybus_data_rcvd(bg->gb_hd, cport_id, buf, len);
++	greybus_data_rcvd(bg->gb_hd, cport_id, (u8 *)&gb_frame->hdr, gb_msg_len);
  }
  
---- a/fs/smb/server/connection.h
-+++ b/fs/smb/server/connection.h
-@@ -88,6 +88,7 @@ struct ksmbd_conn {
- 	__u16				dialect;
+ static void hdlc_rx_dbg_frame(const struct gb_beagleplay *bg, const char *buf, u16 len)
+@@ -336,25 +350,39 @@ static struct serdev_device_ops gb_beagleplay_ops = {
+ 	.write_wakeup = gb_tty_wakeup,
+ };
  
- 	char				*mechToken;
-+	unsigned int			mechTokenLen;
++/**
++ * gb_message_send() - Send greybus message using HDLC over UART
++ *
++ * @hd: pointer to greybus host device
++ * @cport: AP cport where message originates
++ * @msg: greybus message to send
++ * @mask: gfp mask
++ *
++ * Greybus HDLC frame has the following payload:
++ * 1. le16 cport
++ * 2. gb_operation_msg_hdr msg_header
++ * 3. u8 *msg_payload
++ */
+ static int gb_message_send(struct gb_host_device *hd, u16 cport, struct gb_message *msg, gfp_t mask)
+ {
+ 	struct gb_beagleplay *bg = dev_get_drvdata(&hd->dev);
+-	struct hdlc_payload payloads[2];
++	struct hdlc_payload payloads[3];
++	__le16 cport_id = cpu_to_le16(cport);
  
- 	struct ksmbd_conn_ops	*conn_ops;
+ 	dev_dbg(&hd->dev, "Sending greybus message with Operation %u, Type: %X on Cport %u",
+ 		msg->header->operation_id, msg->header->type, cport);
  
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1412,7 +1412,10 @@ static struct ksmbd_user *session_user(s
- 	char *name;
- 	unsigned int name_off, name_len, secbuf_len;
+-	if (msg->header->size > RX_HDLC_PAYLOAD)
++	if (le16_to_cpu(msg->header->size) > RX_HDLC_PAYLOAD)
+ 		return dev_err_probe(&hd->dev, -E2BIG, "Greybus message too big");
  
--	secbuf_len = le16_to_cpu(req->SecurityBufferLength);
-+	if (conn->use_spnego && conn->mechToken)
-+		secbuf_len = conn->mechTokenLen;
-+	else
-+		secbuf_len = le16_to_cpu(req->SecurityBufferLength);
- 	if (secbuf_len < sizeof(struct authenticate_message)) {
- 		ksmbd_debug(SMB, "blob len %d too small\n", secbuf_len);
- 		return NULL;
-@@ -1503,7 +1506,10 @@ static int ntlm_authenticate(struct ksmb
- 		struct authenticate_message *authblob;
+-	memcpy(msg->header->pad, &cport, sizeof(cport));
+-
+-	payloads[0].buf = msg->header;
+-	payloads[0].len = sizeof(*msg->header);
+-	payloads[1].buf = msg->payload;
+-	payloads[1].len = msg->payload_size;
++	payloads[0].buf = &cport_id;
++	payloads[0].len = sizeof(cport_id);
++	payloads[1].buf = msg->header;
++	payloads[1].len = sizeof(*msg->header);
++	payloads[2].buf = msg->payload;
++	payloads[2].len = msg->payload_size;
  
- 		authblob = user_authblob(conn, req);
--		sz = le16_to_cpu(req->SecurityBufferLength);
-+		if (conn->use_spnego && conn->mechToken)
-+			sz = conn->mechTokenLen;
-+		else
-+			sz = le16_to_cpu(req->SecurityBufferLength);
- 		rc = ksmbd_decode_ntlmssp_auth_blob(authblob, sz, conn, sess);
- 		if (rc) {
- 			set_user_flag(sess->user, KSMBD_USER_FLAG_BAD_PASSWORD);
-@@ -1776,8 +1782,7 @@ int smb2_sess_setup(struct ksmbd_work *w
+-	hdlc_tx_frames(bg, ADDRESS_GREYBUS, 0x03, payloads, 2);
++	hdlc_tx_frames(bg, ADDRESS_GREYBUS, 0x03, payloads, 3);
+ 	greybus_message_sent(bg->gb_hd, msg, 0);
  
- 	negblob_off = le16_to_cpu(req->SecurityBufferOffset);
- 	negblob_len = le16_to_cpu(req->SecurityBufferLength);
--	if (negblob_off < offsetof(struct smb2_sess_setup_req, Buffer) ||
--	    negblob_len < offsetof(struct negotiate_message, NegotiateFlags)) {
-+	if (negblob_off < offsetof(struct smb2_sess_setup_req, Buffer)) {
- 		rc = -EINVAL;
- 		goto out_err;
- 	}
-@@ -1786,8 +1791,15 @@ int smb2_sess_setup(struct ksmbd_work *w
- 			negblob_off);
- 
- 	if (decode_negotiation_token(conn, negblob, negblob_len) == 0) {
--		if (conn->mechToken)
-+		if (conn->mechToken) {
- 			negblob = (struct negotiate_message *)conn->mechToken;
-+			negblob_len = conn->mechTokenLen;
-+		}
-+	}
-+
-+	if (negblob_len < offsetof(struct negotiate_message, NegotiateFlags)) {
-+		rc = -EINVAL;
-+		goto out_err;
- 	}
- 
- 	if (server_conf.auth_mechs & conn->auth_mechs) {
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
