@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-15529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04C4F838EC7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 13:50:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03E78838EC9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 13:50:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B292328A25E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 12:50:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B04882888EB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 12:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B385DF2E;
-	Tue, 23 Jan 2024 12:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4D395EE7F;
+	Tue, 23 Jan 2024 12:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BHSFQbKF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aw25DT83"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B691DFEF;
-	Tue, 23 Jan 2024 12:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9013D1DFEF;
+	Tue, 23 Jan 2024 12:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1706014219; cv=none; b=BTwr3ZjxGK4ZMy5MEK4FTwyPrZGgtnOupI2d3iC3aYS4FlwOxyTN3/Y2PI8zAc8KT6jeTSE0VsjIsAXiaugtpU3IEKn4qv3aKeJL3orKg3P/4TSRHwmoTowzj3lsaiOkgZgIwKcS0dlq0eZ3NSXroti5v+f8+UDoQLEDFpycbrc=
+	t=1706014221; cv=none; b=OOj3IXBezixBO/E+cA0PHpCLWz8J5QHTgrRsdeESZMo1wSJfOiFe7sgk99tfxskygS+8gvf+GsbUcTDkyZOUeRP0ianP/SJ3JjzH9UZvAA0tx9CR6JINcl/dEg+0hQDozHySb1sQawxO+dm70mJ/NclKfdpU+odh0Eu3KZFy1Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1706014219; c=relaxed/simple;
-	bh=xbj1QbbQa6Ov7mSf2EyCNGNmPTpu/2y0qTLH7AXiPo8=;
+	s=arc-20240116; t=1706014221; c=relaxed/simple;
+	bh=8f1daPt7FWmvH/ATiZWvebzSPvqyu4VaNCysA//CCOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bJLvN6QQKAFYSUfi9TMqnvSymMMUK9iBZjqg/8M459ThzCncMUjoWN1haMWZdFm0g1y6p1bHKpWEvk+bG1UNvnKC97+zhDS1Dacdbn4i2hIBW9RLQmzXUo0XzPSR/Wwxvm2zI970uszbUBegF1tDNmQzt1npm9I8rXrSuQKBmqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BHSFQbKF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC67C433C7;
-	Tue, 23 Jan 2024 12:50:18 +0000 (UTC)
+	 MIME-Version; b=mDFyB1e61oR9f58OTZdTrAjAjMVo3sAZXmRnJtBYZuSnXqhPMTuH+ibzMwmAk9ijh5QYqMlUuj8/Cf20NoeCvvSmTmvioH9xwGi64ds3ejABDYewtPin/cobvMiAzJdSwuJ5Q5Sfhjdk9GXVgRIBQm2tzVg4ep3XJ1jqi/iYJpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aw25DT83; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17BCAC433B2;
+	Tue, 23 Jan 2024 12:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1706014218;
-	bh=xbj1QbbQa6Ov7mSf2EyCNGNmPTpu/2y0qTLH7AXiPo8=;
+	s=korg; t=1706014221;
+	bh=8f1daPt7FWmvH/ATiZWvebzSPvqyu4VaNCysA//CCOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BHSFQbKFfb1Fwi9TTkIE5peQEVFtw8D5sAbi08J6uNtwp6525WP5ZRSo2c/jyn2lq
-	 shqrxJFTYqJSUt3aNGUWtuIReh7mYP7O61xHh+NwSUJS2WvifzQMzFKcJosD8CSNq3
-	 0tYLZ6fqwQnOHbiI/KwIaI5mxZR2tQkeA37SeMzY=
+	b=Aw25DT83X1XoNX3Iuuvzv7FbdmO1wfJbT91ZBvvZQpxqTHo+xJSJQqr/7aXv4y/Ts
+	 9pYzZTGKGOjlRqFTb5Crns5IUg7DoNCj3WNrEf6MLmyuWyJdFe0evTFvdq8C9CtVbw
+	 ej2WCqR2JjWKC7dLKI82I7qhgZmM7jDd6u6D598Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Maurizio Lombardi <mlombard@redhat.com>,
 	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 172/194] nvmet-tcp: fix a crash in nvmet_req_complete()
-Date: Mon, 22 Jan 2024 15:58:22 -0800
-Message-ID: <20240122235726.581177997@linuxfoundation.org>
+Subject: [PATCH 6.1 365/417] nvmet-tcp: fix a crash in nvmet_req_complete()
+Date: Mon, 22 Jan 2024 15:58:53 -0800
+Message-ID: <20240122235804.467988214@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -91,10 +91,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 1747d3c4fa32..1f584a74b17f 100644
+index 7310f65af849..6d46143bcfe8 100644
 --- a/drivers/nvme/target/tcp.c
 +++ b/drivers/nvme/target/tcp.c
-@@ -886,8 +886,7 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
+@@ -934,8 +934,7 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
  			data->ttag, le32_to_cpu(data->data_offset),
  			cmd->rbytes_done);
  		/* FIXME: use path and transport errors */
