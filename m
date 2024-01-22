@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-13366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFB4F837BC8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A790838271
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FE311F2A366
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:07:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 001A91F27BC8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34A915445D;
-	Tue, 23 Jan 2024 00:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0485BAFA;
+	Tue, 23 Jan 2024 01:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qOL8tgh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RE0UhB+r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6201E154441;
-	Tue, 23 Jan 2024 00:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5AD5BAD4;
+	Tue, 23 Jan 2024 01:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969383; cv=none; b=ExM0V+ywuZpXS71JkChfYacUU33EZFCph/epKUzoRI2r4iok47C9pn86n0jvZ/+qgAlaoJ2O6cAMs86dhcDUlE5Y46sBZtOiEuziizYJtc0Vb5zd3N6wxLV4ykl74jYm2jr7zgjwIwU8dHEWFQ/qjncS/axIpIBVn7cc2xavE1s=
+	t=1705974354; cv=none; b=G9u2XVgKaYmW5jQisNzuDXJsONEfwyiXKtwCBYGi9OnKs/RjQtmxKj8zF1eJBUaRiTMa9v4ZI5C4KAygChQ/BaK8d7Gs65OI5PyOfb+ztHrHYG+E//nUq7V1BNnjj2RMTvP7OSaW3SuXKCDOobt7umiJPytDkacj7/8txfKPS3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969383; c=relaxed/simple;
-	bh=QTttser246UF5wyHiZ8BgPJfWJDd8l72j/MqVWBOozI=;
+	s=arc-20240116; t=1705974354; c=relaxed/simple;
+	bh=v3IeE+8rmDxty5o8oE0Cvuz+/Q/BIdzODwZrLqCn8Us=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z2hqLS02/kqbb/+Yr4/5vqQ87k+Iu8NkL6OACXMec+2TXeYPR/ui7z1C/4KEaybDgoZ9vXYnStcNzCovbuNY2UZdT1oLupG4zDjnDmUwQ1yAfb/0EM0rHrq0iYE8wSqO8xlex1LGPaWZjWKhD5CMy231/sCsSQLbH349+XMPlOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2qOL8tgh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B43C43399;
-	Tue, 23 Jan 2024 00:23:03 +0000 (UTC)
+	 MIME-Version; b=ETkTGIIydGpVyTgQ8eelzhvoktAIzTepK4QqVcnfVAHOxmivvhLo1KU5B94lythdD75SOxkz8sm4xS4lWqCrKww/RRP+XRbn6xAW3oGgaweHcOVBfn6P7ikOgmptjx9/xbVHPemnEmsUq7NgkZ8n1wsIS5eJg/02tnpsEcaIcEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RE0UhB+r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7EF7C433F1;
+	Tue, 23 Jan 2024 01:45:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969383;
-	bh=QTttser246UF5wyHiZ8BgPJfWJDd8l72j/MqVWBOozI=;
+	s=korg; t=1705974353;
+	bh=v3IeE+8rmDxty5o8oE0Cvuz+/Q/BIdzODwZrLqCn8Us=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2qOL8tghokU35ORqLmy1r8Cwafj6CvQX3hl+nGxzd0gVOKpRRoiZVqmkPocierqzS
-	 mObyX0Wh3dS+QIAZwyUjhYHWsx0CFKTi0tc8/R3dxM2wY3NrLUOf695ovY5vAB2LV9
-	 kkhb4xNnkdlEA0JqZ7WRHe6vOYJY0nR+rokzKDdg=
+	b=RE0UhB+rJ333u/zgL22avvAVzl+Ss+YljXnCzTWtLvn8vw8y7TY7Ha8bZ45uiAfMi
+	 ljZBGnWzn22jNsRlBDawi6TmqIOnbbC4TZn/WEsm+jl65wTTm1xC5IbK6ieVJ969K5
+	 l8TIw1CgH2Nf6c4xA6p5gJlUrSMrYpQR4Ety7NQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 208/641] wifi: rtlwifi: rtl8188ee: phy: using calculate_bit_shift()
-Date: Mon, 22 Jan 2024 15:51:52 -0800
-Message-ID: <20240122235824.458826199@linuxfoundation.org>
+Subject: [PATCH 6.6 062/583] fs: indicate request originates from old mount API
+Date: Mon, 22 Jan 2024 15:51:53 -0800
+Message-ID: <20240122235814.025508898@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +66,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit 969bc926f04b438676768aeffffffb050e480b62 ]
+[ Upstream commit f67d922edb4e95a4a56d07d5d40a76dd4f23a85b ]
 
-Using calculate_bit_shift() to replace _rtl88e_phy_calculate_bit_shift().
-And fix the undefined bitwise shift behavior problem.
+We already communicate to filesystems when a remount request comes from
+the old mount API as some filesystems choose to implement different
+behavior in the new mount API than the old mount API to e.g., take the
+chance to fix significant API bugs. Allow the same for regular mount
+requests.
 
-Fixes: f0eb856e0b6c ("rtlwifi: rtl8188ee: Add new driver")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-4-suhui@nfschina.com
+Fixes: b330966f79fb ("fuse: reject options on reconfigure via fsconfig(2)")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/realtek/rtlwifi/rtl8188ee/phy.c   | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ fs/namespace.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c
-index 12d0b3a87af7..0fab3a0c7d49 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c
-@@ -16,12 +16,6 @@ static u32 _rtl88e_phy_rf_serial_read(struct ieee80211_hw *hw,
- static void _rtl88e_phy_rf_serial_write(struct ieee80211_hw *hw,
- 					enum radio_path rfpath, u32 offset,
- 					u32 data);
--static u32 _rtl88e_phy_calculate_bit_shift(u32 bitmask)
--{
--	u32 i = ffs(bitmask);
--
--	return i ? i - 1 : 32;
--}
- static bool _rtl88e_phy_bb8188e_config_parafile(struct ieee80211_hw *hw);
- static bool _rtl88e_phy_config_mac_with_headerfile(struct ieee80211_hw *hw);
- static bool phy_config_bb_with_headerfile(struct ieee80211_hw *hw,
-@@ -51,7 +45,7 @@ u32 rtl88e_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
- 		"regaddr(%#x), bitmask(%#x)\n", regaddr, bitmask);
- 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
--	bitshift = _rtl88e_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	returnvalue = (originalvalue & bitmask) >> bitshift;
+diff --git a/fs/namespace.c b/fs/namespace.c
+index e157efc54023..bfc5cff0e196 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2873,7 +2873,12 @@ static int do_remount(struct path *path, int ms_flags, int sb_flags,
+ 	if (IS_ERR(fc))
+ 		return PTR_ERR(fc);
  
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
-@@ -74,7 +68,7 @@ void rtl88e_phy_set_bb_reg(struct ieee80211_hw *hw,
++	/*
++	 * Indicate to the filesystem that the remount request is coming
++	 * from the legacy mount system call.
++	 */
+ 	fc->oldapi = true;
++
+ 	err = parse_monolithic_mount_data(fc, data);
+ 	if (!err) {
+ 		down_write(&sb->s_umount);
+@@ -3322,6 +3327,12 @@ static int do_new_mount(struct path *path, const char *fstype, int sb_flags,
+ 	if (IS_ERR(fc))
+ 		return PTR_ERR(fc);
  
- 	if (bitmask != MASKDWORD) {
- 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
--		bitshift = _rtl88e_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
- 	}
- 
-@@ -99,7 +93,7 @@ u32 rtl88e_phy_query_rf_reg(struct ieee80211_hw *hw,
- 
- 
- 	original_value = _rtl88e_phy_rf_serial_read(hw, rfpath, regaddr);
--	bitshift = _rtl88e_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 
- 	spin_unlock(&rtlpriv->locks.rf_lock);
-@@ -127,7 +121,7 @@ void rtl88e_phy_set_rf_reg(struct ieee80211_hw *hw,
- 			original_value = _rtl88e_phy_rf_serial_read(hw,
- 								    rfpath,
- 								    regaddr);
--			bitshift = _rtl88e_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data =
- 			    ((original_value & (~bitmask)) |
- 			     (data << bitshift));
++	/*
++	 * Indicate to the filesystem that the mount request is coming
++	 * from the legacy mount system call.
++	 */
++	fc->oldapi = true;
++
+ 	if (subtype)
+ 		err = vfs_parse_fs_string(fc, "subtype",
+ 					  subtype, strlen(subtype));
 -- 
 2.43.0
 
