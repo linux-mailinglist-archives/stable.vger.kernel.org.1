@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-15318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C5B68384C0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF7FF83808A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEBCC1F26E7A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E8A31C29792
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3524A768E0;
-	Tue, 23 Jan 2024 02:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF1212FF68;
+	Tue, 23 Jan 2024 01:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2l6cms2C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gkrBSh/T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E913873176;
-	Tue, 23 Jan 2024 02:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBABC657B3;
+	Tue, 23 Jan 2024 01:03:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975481; cv=none; b=fonp9z03vyH4Y8lNcD2tblbeRsQ2hXH3K5I/6i7ZFEs4fF3i32mveFgnek/r4ZDXQOFcqQ+lmHsddMcAUr2tRUGPL7Lhu4sOWZnFT3Zbz0neJEb7h36Zrk9VrimXMYywMqF/S0t66CWBgPb14d+/3juq1Par01SkQaeZ6K40NS4=
+	t=1705971783; cv=none; b=QSNy479f9qP5xDK2Y1YjHOBnv7y0TCjM/fshnxsV+XPs9p6HT6OTPkVkvcN6s54IWWnHApEh96J6ZI3UIx8kvdqtgvjUGF7nRPMMsDan8vJJgtK1RZ8cBGls1jFkYCVtv10TWxruu16T7UAfPZcfe3tJxoT/ve2n6pCFUIrtXGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975481; c=relaxed/simple;
-	bh=B7YZYQKyC5+0kmomc1V9W4HxOkbkDCE7AJi6hr5gxyM=;
+	s=arc-20240116; t=1705971783; c=relaxed/simple;
+	bh=7zs+r3xLG3SQjK33dRK/wftUr7LIMcADoYCZKgJPtvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LhBdCAuTMUgNIY8OIE/lJLJSjHrmOd4C+6mkMIvt0w9eIn4PByr6HTUEoyOzywv2W40gIxdSOoMUMCYDFN6TRJkD7pVQwxT6suwSUVu2xfFhwF+VP5ub7LWFhPKM2OrMODF7Zo6ExIXOELJGeMV20QElMh7FiYXO9/y8UrnFojI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2l6cms2C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE8BC433C7;
-	Tue, 23 Jan 2024 02:04:40 +0000 (UTC)
+	 MIME-Version; b=ffj7GPUcWCUh+7l42Atov4FDd2nvpSeKbnpgQ61cwMYj7LFlcesd7BnDYAUKWVYASq5YKFMMqlfGKqEf9w2eiUutGV0bCVRXguI+E/PgPh6/mw/aLJug73YAquJ7lFDNf/EPkjoGc5SJqxofScgOEbxYsusxVq0vYKkBBgJvPns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gkrBSh/T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 578F8C433F1;
+	Tue, 23 Jan 2024 01:03:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975480;
-	bh=B7YZYQKyC5+0kmomc1V9W4HxOkbkDCE7AJi6hr5gxyM=;
+	s=korg; t=1705971782;
+	bh=7zs+r3xLG3SQjK33dRK/wftUr7LIMcADoYCZKgJPtvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2l6cms2CTA625igmzcebBNpFVHwBGYqhlho+Sg9uxxSCqyck3iIj8RsPsLvP6BoHM
-	 m16FL4ILffW7tOM48bOZ+slpzldPpvBeydrSXEqdem8YzKc4F4SCJ8C/iek4OEMjpS
-	 DL6gunKMNOFGwIsycoNQ9oI3H3FWe1C0/u3vHBcs=
+	b=gkrBSh/TB3RRjOXjIlMTgZ+or5Zh4QbYRSQX1dyg+7LYjUbl6SzbG0CcQ+ZHBD0O8
+	 j3p52EuoIYBDX2OEfGbyXUr8M6o3IoHDm82K+/sO8gplIecob8ghJusXl2XHONmWIR
+	 8iYztmW3sB0E7QYp7vP7J7zSfwmnDqrykb/S6IU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Subject: [PATCH 6.6 435/583] serial: sc16is7xx: add check for unsupported SPI modes during probe
-Date: Mon, 22 Jan 2024 15:58:06 -0800
-Message-ID: <20240122235825.293065879@linuxfoundation.org>
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 319/417] iio: adc: ad7091r: Pass iio_dev to event handler
+Date: Mon, 22 Jan 2024 15:58:07 -0800
+Message-ID: <20240122235802.864187277@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
 
-commit 6d710b769c1f5f0d55c9ad9bb49b7dce009ec103 upstream.
+commit a25a7df518fc71b1ba981d691e9322e645d2689c upstream.
 
-The original comment is confusing because it implies that variants other
-than the SC16IS762 supports other SPI modes beside SPI_MODE_0.
+Previous version of ad7091r event handler received the ADC state pointer
+and retrieved the iio device from driver data field with dev_get_drvdata().
+However, no driver data have ever been set, which led to null pointer
+dereference when running the event handler.
 
-Extract from datasheet:
-    The SC16IS762 differs from the SC16IS752 in that it supports SPI clock
-    speeds up to 15 Mbit/s instead of the 4 Mbit/s supported by the
-    SC16IS752... In all other aspects, the SC16IS762 is functionally and
-    electrically the same as the SC16IS752.
+Pass the iio device to the event handler and retrieve the ADC state struct
+from it so we avoid the null pointer dereference and save the driver from
+filling the driver data field.
 
-The same is also true of the SC16IS760 variant versus the SC16IS740 and
-SC16IS750 variants.
-
-For all variants, only SPI mode 0 is supported.
-
-Change comment and abort probing if the specified SPI mode is not
-SPI_MODE_0.
-
-Fixes: 2c837a8a8f9f ("sc16is7xx: spi interface is added")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Link: https://lore.kernel.org/r/20231221231823.2327894-3-hugo@hugovil.com
+Fixes: ca69300173b6 ("iio: adc: Add support for AD7091R5 ADC")
+Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Link: https://lore.kernel.org/r/5024b764107463de9578d5b3b0a3d5678e307b1a.1702746240.git.marcelo.schmitt1@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ad7091r-base.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1714,7 +1714,10 @@ static int sc16is7xx_spi_probe(struct sp
+--- a/drivers/iio/adc/ad7091r-base.c
++++ b/drivers/iio/adc/ad7091r-base.c
+@@ -174,8 +174,8 @@ static const struct iio_info ad7091r_inf
  
- 	/* Setup SPI bus */
- 	spi->bits_per_word	= 8;
--	/* only supports mode 0 on SC16IS762 */
-+	/* For all variants, only mode 0 is supported */
-+	if ((spi->mode & SPI_MODE_X_MASK) != SPI_MODE_0)
-+		return dev_err_probe(&spi->dev, -EINVAL, "Unsupported SPI mode\n");
-+
- 	spi->mode		= spi->mode ? : SPI_MODE_0;
- 	spi->max_speed_hz	= spi->max_speed_hz ? : 15000000;
- 	ret = spi_setup(spi);
+ static irqreturn_t ad7091r_event_handler(int irq, void *private)
+ {
+-	struct ad7091r_state *st = (struct ad7091r_state *) private;
+-	struct iio_dev *iio_dev = dev_get_drvdata(st->dev);
++	struct iio_dev *iio_dev = private;
++	struct ad7091r_state *st = iio_priv(iio_dev);
+ 	unsigned int i, read_val;
+ 	int ret;
+ 	s64 timestamp = iio_get_time_ns(iio_dev);
+@@ -234,7 +234,7 @@ int ad7091r_probe(struct device *dev, co
+ 	if (irq) {
+ 		ret = devm_request_threaded_irq(dev, irq, NULL,
+ 				ad7091r_event_handler,
+-				IRQF_TRIGGER_FALLING | IRQF_ONESHOT, name, st);
++				IRQF_TRIGGER_FALLING | IRQF_ONESHOT, name, iio_dev);
+ 		if (ret)
+ 			return ret;
+ 	}
 
 
 
