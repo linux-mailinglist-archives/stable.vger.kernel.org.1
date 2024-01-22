@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C03F838023
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F031838483
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 004B3B20946
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62CDC1C2A6B5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A4F66B23;
-	Tue, 23 Jan 2024 00:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9F66DD10;
+	Tue, 23 Jan 2024 02:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XLPMOYrH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bsESXM3o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B464A657C2;
-	Tue, 23 Jan 2024 00:58:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9936EB61;
+	Tue, 23 Jan 2024 02:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971505; cv=none; b=Endv7Dat/38ZntC+7PWhhUwowNEcKp9Fb+EfWLuoHE6Cb1idvY8jnQp81VqOPRgPLkXhTkZpkbOw+u5A3mSTc5Avy6covEJ6od1VBbUEAWG/KWkUdCx7rhmUr6K20BtaJZdaZQMAd7w4PNHjQACE5cpQZ2uDP3OAHk3T/pfEPNQ=
+	t=1705975412; cv=none; b=WHM4T7toZmscswZQtYcVHJGj6vtY4NZnrupNXiKFtaB2LVIKnpXQO9rmY0DFCjiCkebYeuaCAVf8fNYt5kJR7/61xNCemsISVq5TGU91x5OZZ/W0VVyNngOwR2aMmZ7g59CBkEeDVZA05v9VeR8+PADRwT1ptR9wBvYGGPgvcIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971505; c=relaxed/simple;
-	bh=1xRXmbNaPOBAGdgMhodF1NhuSwFSD+c429zklcq6ZqU=;
+	s=arc-20240116; t=1705975412; c=relaxed/simple;
+	bh=mjqMEibQVMT0DS3eHAsiBQOrjwX+DQSW75jhtsrYUK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D133NLe6VLmFnF4dH3nJpv4lPAMlobnD4zHB5MqtM5Y8f+sdVlIXWUGRxBc6yNgNEj7Zc4T1SJDS7TNdFwVu/B1ZVRLAYKwCGsI7w5jdZqrXOss0cNwvo6GeQFUju8tSpcbO7DOM2FlHgmr1p211ls7mwYKFmG15f1j5MP7wBEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XLPMOYrH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44261C433F1;
-	Tue, 23 Jan 2024 00:58:25 +0000 (UTC)
+	 MIME-Version; b=Z1kuvzoO83jQQSNEmNr/i0Mm5KvQRn2sRB4LZA4u7cbyhbBGVnwIpX7Sol3dZJ22+sdFdax0i3P8zWtfITm31As74+DkAJp+xkx27Awt+1Isvg8qw+31f2LPynbDTbnAmbjXtltUbx/aeJ+ojJ+DEQb8BLBuAZHhLEbVPTa3KAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bsESXM3o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269B0C43390;
+	Tue, 23 Jan 2024 02:03:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971505;
-	bh=1xRXmbNaPOBAGdgMhodF1NhuSwFSD+c429zklcq6ZqU=;
+	s=korg; t=1705975412;
+	bh=mjqMEibQVMT0DS3eHAsiBQOrjwX+DQSW75jhtsrYUK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XLPMOYrH69qvvseLbqUjxj0u3XOjxOFk4Qif1Nx7lRdi2fv6NYLGL3l6KGK6OwBwy
-	 Vx0Itr94fMGDJlU4VvGsE4yvod8fMAUdQ1fL4qwN6LUKr9fpOruqoAGZ+ba+KJBSnB
-	 I8mUxg8nWAimuF4OQdgHMFn/cmTOUVzSQeWwMi3s=
+	b=bsESXM3oHVm2uU1nd/ceuPcY7CSIFIJKTtov1nYDZhTzp/h2A1JZWJNFB0EBt/Ij2
+	 1LO5PAoMf0O00npyD9XM1Ex8N5WwAJy+eV+P3vztxqoR4yPgte1cn+02FznlMd/wtm
+	 Y+ikkXd9uVd6bZ9KrXvtz1KR3p1P+6FnFyrTuXZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Beulich <jbeulich@suse.com>,
-	Juergen Gross <jgross@suse.com>,
-	Paul Durrant <paul@xen.org>
-Subject: [PATCH 6.1 254/417] xen-netback: dont produce zero-size SKB frags
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 371/583] dt-bindings: phy: qcom,sc8280xp-qmp-usb43dp-phy: fix path to header
 Date: Mon, 22 Jan 2024 15:57:02 -0800
-Message-ID: <20240122235800.681385812@linuxfoundation.org>
+Message-ID: <20240122235823.361348029@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Beulich <jbeulich@suse.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit c7ec4f2d684e17d69bbdd7c4324db0ef5daac26a upstream.
+commit 21a1d02579ae75fd45555b84d20ba55632a14a19 upstream.
 
-While frontends may submit zero-size requests (wasting a precious slot),
-core networking code as of at least 3ece782693c4b ("sock: skb_copy_ubufs
-support for compound pages") can't deal with SKBs when they have all
-zero-size fragments. Respond to empty requests right when populating
-fragments; all further processing is fragment based and hence won't
-encounter these empty requests anymore.
+Fix the path to bindings header in description.
 
-In a way this should have been that way from the beginning: When no data
-is to be transferred for a particular request, there's not even a point
-in validating the respective grant ref. That's no different from e.g.
-passing NULL into memcpy() when at the same time the size is 0.
-
-This is XSA-448 / CVE-2023-46838.
-
+Fixes: e1c4c5436b4a ("dt-bindings: phy: qcom,qmp-usb3-dp: fix sc8280xp binding")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Paul Durrant <paul@xen.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Rob Herring <robh@kernel.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20231218130553.45893-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/xen-netback/netback.c |   44 ++++++++++++++++++++++++++++++++------
- 1 file changed, 38 insertions(+), 6 deletions(-)
+ Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/xen-netback/netback.c
-+++ b/drivers/net/xen-netback/netback.c
-@@ -463,12 +463,25 @@ static void xenvif_get_requests(struct x
- 	}
+--- a/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml
++++ b/Documentation/devicetree/bindings/phy/qcom,sc8280xp-qmp-usb43dp-phy.yaml
+@@ -62,12 +62,12 @@ properties:
+   "#clock-cells":
+     const: 1
+     description:
+-      See include/dt-bindings/dt-bindings/phy/phy-qcom-qmp.h
++      See include/dt-bindings/phy/phy-qcom-qmp.h
  
- 	for (shinfo->nr_frags = 0; nr_slots > 0 && shinfo->nr_frags < MAX_SKB_FRAGS;
--	     shinfo->nr_frags++, gop++, nr_slots--) {
-+	     nr_slots--) {
-+		if (unlikely(!txp->size)) {
-+			unsigned long flags;
-+
-+			spin_lock_irqsave(&queue->response_lock, flags);
-+			make_tx_response(queue, txp, 0, XEN_NETIF_RSP_OKAY);
-+			push_tx_responses(queue);
-+			spin_unlock_irqrestore(&queue->response_lock, flags);
-+			++txp;
-+			continue;
-+		}
-+
- 		index = pending_index(queue->pending_cons++);
- 		pending_idx = queue->pending_ring[index];
- 		xenvif_tx_create_map_op(queue, pending_idx, txp,
- 				        txp == first ? extra_count : 0, gop);
- 		frag_set_pending_idx(&frags[shinfo->nr_frags], pending_idx);
-+		++shinfo->nr_frags;
-+		++gop;
+   "#phy-cells":
+     const: 1
+     description:
+-      See include/dt-bindings/dt-bindings/phy/phy-qcom-qmp.h
++      See include/dt-bindings/phy/phy-qcom-qmp.h
  
- 		if (txp == first)
- 			txp = txfrags;
-@@ -481,20 +494,39 @@ static void xenvif_get_requests(struct x
- 		shinfo = skb_shinfo(nskb);
- 		frags = shinfo->frags;
- 
--		for (shinfo->nr_frags = 0; shinfo->nr_frags < nr_slots;
--		     shinfo->nr_frags++, txp++, gop++) {
-+		for (shinfo->nr_frags = 0; shinfo->nr_frags < nr_slots; ++txp) {
-+			if (unlikely(!txp->size)) {
-+				unsigned long flags;
-+
-+				spin_lock_irqsave(&queue->response_lock, flags);
-+				make_tx_response(queue, txp, 0,
-+						 XEN_NETIF_RSP_OKAY);
-+				push_tx_responses(queue);
-+				spin_unlock_irqrestore(&queue->response_lock,
-+						       flags);
-+				continue;
-+			}
-+
- 			index = pending_index(queue->pending_cons++);
- 			pending_idx = queue->pending_ring[index];
- 			xenvif_tx_create_map_op(queue, pending_idx, txp, 0,
- 						gop);
- 			frag_set_pending_idx(&frags[shinfo->nr_frags],
- 					     pending_idx);
-+			++shinfo->nr_frags;
-+			++gop;
- 		}
- 
--		skb_shinfo(skb)->frag_list = nskb;
--	} else if (nskb) {
-+		if (shinfo->nr_frags) {
-+			skb_shinfo(skb)->frag_list = nskb;
-+			nskb = NULL;
-+		}
-+	}
-+
-+	if (nskb) {
- 		/* A frag_list skb was allocated but it is no longer needed
--		 * because enough slots were converted to copy ops above.
-+		 * because enough slots were converted to copy ops above or some
-+		 * were empty.
- 		 */
- 		kfree_skb(nskb);
- 	}
+   orientation-switch:
+     description:
 
 
 
