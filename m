@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FEB6837F2D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11BEC83844B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 382BD29BEF3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43E971C2A063
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDD441292EB;
-	Tue, 23 Jan 2024 00:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472416BB30;
+	Tue, 23 Jan 2024 02:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KK4jXnJT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vpo+R3Lf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2C67C0A5;
-	Tue, 23 Jan 2024 00:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053146A354;
+	Tue, 23 Jan 2024 02:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970984; cv=none; b=QiMQADoHh+ArZl/NVXXWpVYrU21py/FQFiF5nwVEQ5UC7uW8GqEP2nNUftuSMA0DY1lZ81sA7zrwVCeyHMaY0M4ieGk1tXVABbrIEmQdyoJjbUn2bh/rfOXKwdSCa57KFA3F9ELTJhNeeUYys9pjV8lo8I/QOxacOyN+X7QaIYs=
+	t=1705975356; cv=none; b=LCF5W8+xji76KVT7rmptBqnVmgXBzNZpF4J1R/CmnIJXsUFtRtCnWtPg76K5z7K3kaVx1X3qdgnbCG7+tOJ2DIy06YeT9YxvqYYECwu7ncG8LBSe6FhOpIauPvk920DCkgRv99b8oDazMU9vIYozPr9aMNQwgeonbo3/uzwRCGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970984; c=relaxed/simple;
-	bh=Z1e+5UNXgWhB5YLDb6homE/qGAby4SfPHRTv4yFD8/w=;
+	s=arc-20240116; t=1705975356; c=relaxed/simple;
+	bh=ZPb9mf9KBkRMHOOKCLqj/hOYkxSkj5hgjoqDN2oShhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O8dLn00hmJ1qCehFxg7e+eQCdU1EA0XrFSjMQimbTNKBC/FDgaLS6p7mVPbe4AHuHRxalnrBfdGWgUKcdc8dylXc40sp2bb+BR+/qg+gigDSOCnaoRvtSo5WXx5GpvMgq2rAvJUkZtS5ye1QR2/QbGUGq0jmzde2p3KK9ZkVOYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KK4jXnJT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D10AC433C7;
-	Tue, 23 Jan 2024 00:49:44 +0000 (UTC)
+	 MIME-Version; b=BDiBnuxKpgbLnv+0U8J5Vk6nlo1pdSBlKy1Hi4Bq951sUBsFCX9R5bVQoY1ItXM0pp8i+SEd7O781XOgKTh6iG9DMKhaajJFdCWGRx4B0BpQaQkwAc7wVlzBQBoS+fldE5lmP0KPLd3nem9zrliBMC7vX0LCFMMtOBTSV2gcMBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vpo+R3Lf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB537C433B1;
+	Tue, 23 Jan 2024 02:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970984;
-	bh=Z1e+5UNXgWhB5YLDb6homE/qGAby4SfPHRTv4yFD8/w=;
+	s=korg; t=1705975355;
+	bh=ZPb9mf9KBkRMHOOKCLqj/hOYkxSkj5hgjoqDN2oShhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KK4jXnJTkiO3Dzb7l/Di5wsL9Re8LaXE9G0sNfSNzsZaUHM8KFqiDpp1WEHyO1EM1
-	 2IIbxbThMyqbCTzRwhmoIBAG0jsddw84+MgiCb3YM0AQ7rZ15vmHoi7iovgG7spKGX
-	 e9VwQ5jUjxBUp5OlzzljW2MIC+BKB6ja7/gt3n58=
+	b=Vpo+R3LfDB8FGVQAH1AjU+yJXkOcafsUZuLswqWFn7FcSBAYvJPg34zedwJQrrfbk
+	 In7op9//sKQGbAC6Z/4Vs2CLcqJu+RV6YPVnOMNjpOQBVROzjw6NdFJNRxxv/kIn5J
+	 Z5uZwP6FJ5RSRE5/WAYBtkAjpFuj38GZHEhKROE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Kiryushin <kiryushin@ancud.ru>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Chris Chiu <chiu@endlessos.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 063/286] ACPI: video: check for error while searching for backlight device parent
+Subject: [PATCH 6.6 318/583] ASoC: rt5645: Drop double EF20 entry from dmi_platform_data[]
 Date: Mon, 22 Jan 2024 15:56:09 -0800
-Message-ID: <20240122235734.454549166@linuxfoundation.org>
+Message-ID: <20240122235821.770897720@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Kiryushin <kiryushin@ancud.ru>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit ccd45faf4973746c4f30ea41eec864e5cf191099 ]
+[ Upstream commit 51add1687f39292af626ac3c2046f49241713273 ]
 
-If acpi_get_parent() called in acpi_video_dev_register_backlight()
-fails, for example, because acpi_ut_acquire_mutex() fails inside
-acpi_get_parent), this can lead to incorrect (uninitialized)
-acpi_parent handle being passed to acpi_get_pci_dev() for detecting
-the parent pci device.
+dmi_platform_data[] first contains a DMI entry matching:
 
-Check acpi_get_parent() result and set parent device only in case of success.
+   DMI_MATCH(DMI_PRODUCT_NAME, "EF20"),
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+and then contains an identical entry except for the match being:
 
-Fixes: 9661e92c10a9 ("acpi: tie ACPI backlight devices to PCI devices if possible")
-Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+   DMI_MATCH(DMI_PRODUCT_NAME, "EF20EA"),
+
+Since these are partial (non exact) DMI matches the first match
+will also match any board with "EF20EA" in their DMI product-name,
+drop the second, redundant, entry.
+
+Fixes: a4dae468cfdd ("ASoC: rt5645: Add ACPI-defined GPIO for ECS EF20 series")
+Cc: Chris Chiu <chiu@endlessos.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://msgid.link/r/20231126214024.300505-2-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_video.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ sound/soc/codecs/rt5645.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index cf6c9ffe04a2..9d384656323a 100644
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -1788,12 +1788,12 @@ static void acpi_video_dev_register_backlight(struct acpi_video_device *device)
- 		return;
- 	count++;
+diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
+index a0d01d71d8b5..edcb85bd8ea7 100644
+--- a/sound/soc/codecs/rt5645.c
++++ b/sound/soc/codecs/rt5645.c
+@@ -3854,14 +3854,6 @@ static const struct dmi_system_id dmi_platform_data[] = {
+ 		},
+ 		.driver_data = (void *)&ecs_ef20_platform_data,
+ 	},
+-	{
+-		.ident = "EF20EA",
+-		.callback = cht_rt5645_ef20_quirk_cb,
+-		.matches = {
+-			DMI_MATCH(DMI_PRODUCT_NAME, "EF20EA"),
+-		},
+-		.driver_data = (void *)&ecs_ef20_platform_data,
+-	},
+ 	{ }
+ };
  
--	acpi_get_parent(device->dev->handle, &acpi_parent);
--
--	pdev = acpi_get_pci_dev(acpi_parent);
--	if (pdev) {
--		parent = &pdev->dev;
--		pci_dev_put(pdev);
-+	if (ACPI_SUCCESS(acpi_get_parent(device->dev->handle, &acpi_parent))) {
-+		pdev = acpi_get_pci_dev(acpi_parent);
-+		if (pdev) {
-+			parent = &pdev->dev;
-+			pci_dev_put(pdev);
-+		}
- 	}
- 
- 	memset(&props, 0, sizeof(struct backlight_properties));
 -- 
 2.43.0
 
