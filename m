@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-13621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE40E837D24
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50AF183844A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96379291B90
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 037572990D6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762275B5A1;
-	Tue, 23 Jan 2024 00:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543DC6BB2D;
+	Tue, 23 Jan 2024 02:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWCGwHy0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x90JDowZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3604559B6F;
-	Tue, 23 Jan 2024 00:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C5D6A354;
+	Tue, 23 Jan 2024 02:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969810; cv=none; b=RE09Rlll+UombjeYHNINPGegqA+Qe/zNxNSvZnyibRVE5O2irzSWqGU+yu5LYhXKYQIPx724hgk13DkNTxNDWGy/ejX0H4DkeIv5fLBXBLwBliZtKbkjjwh17WxcSfflbQ4vsbyR4rh2/qT7ZTfPerJXY0faK203Ih+prebTLyI=
+	t=1705975355; cv=none; b=F46vILv4lNVrezzADoCQ57CPNaD8Ops6PxPM+fPJetSOuK26+Opm1rqaj4D0/IWszTnnuzqT64JqZ8zcM8SnLGexqY1jwpxYdqw4GlIq0A382NBNcZVgdngDP2Ej6xYg2whI7C7dDAw3bvCJWh2Ck6Habcal1Cxq/5a9JhQ9jMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969810; c=relaxed/simple;
-	bh=97WQ2EJ4EncoWnKQHmTXYH+2VnwlAFIUIM38aGB7ji4=;
+	s=arc-20240116; t=1705975355; c=relaxed/simple;
+	bh=et0oL1IOcslLAEbQs0YlCWqn85zSzII0E/nusRw08jQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BjrFtV+hOjCh701rNmfV5wxoq7+tqCHYqHhF8MZjyRzIpkBqYonTfiGP0oGWwSlVpERnGqRDCFNQ3NCNneFaWi3bH+eOUF/STxOmJtud4Ld3dKOoTgJkWCZOD/H6Ej92FyDkRgGrXno5dClF4G8MYxaL8bjrTt8Tzqq4UI7MPRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWCGwHy0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF1AC43390;
-	Tue, 23 Jan 2024 00:30:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ejDt8MEDseJ/EtB1WKHSeP3LdUgeq07HAyYaUArg6R7Bqn6Cp9IklgTKoIuijx+k4yvrQn2vnPIywYRBMtuJj4GgvVVozUPQ3vO/DcKHUGtemcxbLUD/buTftmNWDQ/pdOa3B6gF+WMgUnIRj01scsA1vVo+25R7FBmXdy7wOPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x90JDowZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E7DC43394;
+	Tue, 23 Jan 2024 02:02:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969810;
-	bh=97WQ2EJ4EncoWnKQHmTXYH+2VnwlAFIUIM38aGB7ji4=;
+	s=korg; t=1705975354;
+	bh=et0oL1IOcslLAEbQs0YlCWqn85zSzII0E/nusRw08jQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pWCGwHy0VcilxXCPMIGs07karzMEoMO8TtI03s90CYq6SRdjJd7/VPlabgojOUBzo
-	 0p0HFep87wGbvCbHwOOs7R28/IoZzIrsgphJP1LyuqZASXpcf4pBab7A34FwMpNj0W
-	 Qq8ESuwGnxDbGVL9n+tZZNEt/xmfWyvKG7Qp0FpI=
+	b=x90JDowZwmJ/Co13VWvArY6yovXEfEuHdt4mfHzqiAWSqKC6bvcV7o2v/STNByy5d
+	 DTIKHROizfTqilHm7kfu33Wj7EPAwdhkx8Jp+x70NrNwS6dawaMXXtBmxeRBnEgWs2
+	 btzKlZ2MdWfnFvKkSGypF3U+KKIvnFSyYFNzenEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.7 464/641] drm/amdgpu: revert "Adjust removal control flow for smu v13_0_2"
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 317/583] pwm: stm32: Fix enable count for clk in .probe()
 Date: Mon, 22 Jan 2024 15:56:08 -0800
-Message-ID: <20240122235832.563225671@linuxfoundation.org>
+Message-ID: <20240122235821.740433530@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,191 +65,82 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian König <christian.koenig@amd.com>
+From: Philipp Zabel <p.zabel@pengutronix.de>
 
-commit fb1c93c2e9604a884467a773790016199f78ca08 upstream.
+[ Upstream commit 19f1016ea9600ed89bc24247c36ff5934ad94fbb ]
 
-Calling amdgpu_device_ip_resume_phase1() during shutdown leaves the
-HW in an active state and is an unbalanced use of the IP callbacks.
+Make the driver take over hardware state without disabling in .probe()
+and enable the clock for each enabled channel.
 
-Using the IP callbacks like this can lead to memory leaks, double
-free and imbalanced reference counters.
-
-Leaving the HW in an active state can lead to DMA accesses to memory now
-freed by the driver.
-
-Both is a complete no-go for driver unload so completely revert the
-workaround for now.
-
-This reverts commit f5c7e7797060255dbc8160734ccc5ad6183c5e04.
-
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+[ukleinek: split off from a patch that also implemented .get_state()]
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Fixes: 7edf7369205b ("pwm: Add driver for STM32 plaftorm")
+Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |   32 -----------------------------
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c    |   32 -----------------------------
- drivers/gpu/drm/amd/amdgpu/amdgpu_reset.h  |    1 
- drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.h   |    1 
- 4 files changed, 1 insertion(+), 65 deletions(-)
+ drivers/pwm/pwm-stm32.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -5172,7 +5172,6 @@ int amdgpu_do_asic_reset(struct list_hea
- 	struct amdgpu_device *tmp_adev = NULL;
- 	bool need_full_reset, skip_hw_reset, vram_lost = false;
- 	int r = 0;
--	bool gpu_reset_for_dev_remove = 0;
+diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
+index 0c7781f17805..dd2ee5d9ca06 100644
+--- a/drivers/pwm/pwm-stm32.c
++++ b/drivers/pwm/pwm-stm32.c
+@@ -579,17 +579,21 @@ static void stm32_pwm_detect_complementary(struct stm32_pwm *priv)
+ 	priv->have_complementary_output = (ccer != 0);
+ }
  
- 	/* Try reset handler method first */
- 	tmp_adev = list_first_entry(device_list_handle, struct amdgpu_device,
-@@ -5192,10 +5191,6 @@ int amdgpu_do_asic_reset(struct list_hea
- 		test_bit(AMDGPU_NEED_FULL_RESET, &reset_context->flags);
- 	skip_hw_reset = test_bit(AMDGPU_SKIP_HW_RESET, &reset_context->flags);
- 
--	gpu_reset_for_dev_remove =
--		test_bit(AMDGPU_RESET_FOR_DEVICE_REMOVE, &reset_context->flags) &&
--			test_bit(AMDGPU_NEED_FULL_RESET, &reset_context->flags);
--
- 	/*
- 	 * ASIC reset has to be done on all XGMI hive nodes ASAP
- 	 * to allow proper links negotiation in FW (within 1 sec)
-@@ -5238,18 +5233,6 @@ int amdgpu_do_asic_reset(struct list_hea
- 		amdgpu_ras_intr_cleared();
- 	}
- 
--	/* Since the mode1 reset affects base ip blocks, the
--	 * phase1 ip blocks need to be resumed. Otherwise there
--	 * will be a BIOS signature error and the psp bootloader
--	 * can't load kdb on the next amdgpu install.
--	 */
--	if (gpu_reset_for_dev_remove) {
--		list_for_each_entry(tmp_adev, device_list_handle, reset_list)
--			amdgpu_device_ip_resume_phase1(tmp_adev);
--
--		goto end;
--	}
--
- 	list_for_each_entry(tmp_adev, device_list_handle, reset_list) {
- 		if (need_full_reset) {
- 			/* post card */
-@@ -5486,11 +5469,6 @@ int amdgpu_device_gpu_recover(struct amd
- 	int i, r = 0;
- 	bool need_emergency_restart = false;
- 	bool audio_suspended = false;
--	bool gpu_reset_for_dev_remove = false;
--
--	gpu_reset_for_dev_remove =
--			test_bit(AMDGPU_RESET_FOR_DEVICE_REMOVE, &reset_context->flags) &&
--				test_bit(AMDGPU_NEED_FULL_RESET, &reset_context->flags);
+-static unsigned int stm32_pwm_detect_channels(struct stm32_pwm *priv)
++static unsigned int stm32_pwm_detect_channels(struct stm32_pwm *priv,
++					      unsigned int *num_enabled)
+ {
+-	u32 ccer;
++	u32 ccer, ccer_backup;
  
  	/*
- 	 * Special case: RAS triggered and full reset isn't supported
-@@ -5528,7 +5506,7 @@ int amdgpu_device_gpu_recover(struct amd
- 	if (!amdgpu_sriov_vf(adev) && (adev->gmc.xgmi.num_physical_nodes > 1)) {
- 		list_for_each_entry(tmp_adev, &hive->device_list, gmc.xgmi.head) {
- 			list_add_tail(&tmp_adev->reset_list, &device_list);
--			if (gpu_reset_for_dev_remove && adev->shutdown)
-+			if (adev->shutdown)
- 				tmp_adev->shutdown = true;
- 		}
- 		if (!list_is_first(&adev->reset_list, &device_list))
-@@ -5613,10 +5591,6 @@ int amdgpu_device_gpu_recover(struct amd
+ 	 * If channels enable bits don't exist writing 1 will have no
+ 	 * effect so we can detect and count them.
+ 	 */
++	regmap_read(priv->regmap, TIM_CCER, &ccer_backup);
+ 	regmap_set_bits(priv->regmap, TIM_CCER, TIM_CCER_CCXE);
+ 	regmap_read(priv->regmap, TIM_CCER, &ccer);
+-	regmap_clear_bits(priv->regmap, TIM_CCER, TIM_CCER_CCXE);
++	regmap_write(priv->regmap, TIM_CCER, ccer_backup);
++
++	*num_enabled = hweight32(ccer_backup & TIM_CCER_CCXE);
  
- retry:	/* Rest of adevs pre asic reset from XGMI hive. */
- 	list_for_each_entry(tmp_adev, device_list_handle, reset_list) {
--		if (gpu_reset_for_dev_remove) {
--			/* Workaroud for ASICs need to disable SMC first */
--			amdgpu_device_smu_fini_early(tmp_adev);
--		}
- 		r = amdgpu_device_pre_asic_reset(tmp_adev, reset_context);
- 		/*TODO Should we stop ?*/
- 		if (r) {
-@@ -5648,9 +5622,6 @@ retry:	/* Rest of adevs pre asic reset f
- 		r = amdgpu_do_asic_reset(device_list_handle, reset_context);
- 		if (r && r == -EAGAIN)
- 			goto retry;
--
--		if (!r && gpu_reset_for_dev_remove)
--			goto recover_end;
- 	}
+ 	return hweight32(ccer & TIM_CCER_CCXE);
+ }
+@@ -600,6 +604,8 @@ static int stm32_pwm_probe(struct platform_device *pdev)
+ 	struct device_node *np = dev->of_node;
+ 	struct stm32_timers *ddata = dev_get_drvdata(pdev->dev.parent);
+ 	struct stm32_pwm *priv;
++	unsigned int num_enabled;
++	unsigned int i;
+ 	int ret;
  
- skip_hw_reset:
-@@ -5706,7 +5677,6 @@ skip_sched_resume:
- 		amdgpu_ras_set_error_query_ready(tmp_adev, true);
- 	}
+ 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+@@ -622,7 +628,11 @@ static int stm32_pwm_probe(struct platform_device *pdev)
  
--recover_end:
- 	tmp_adev = list_first_entry(device_list_handle, struct amdgpu_device,
- 					    reset_list);
- 	amdgpu_device_unlock_reset_domain(tmp_adev->reset_domain);
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -2315,38 +2315,6 @@ amdgpu_pci_remove(struct pci_dev *pdev)
- 		pm_runtime_forbid(dev->dev);
- 	}
+ 	priv->chip.dev = dev;
+ 	priv->chip.ops = &stm32pwm_ops;
+-	priv->chip.npwm = stm32_pwm_detect_channels(priv);
++	priv->chip.npwm = stm32_pwm_detect_channels(priv, &num_enabled);
++
++	/* Initialize clock refcount to number of enabled PWM channels. */
++	for (i = 0; i < num_enabled; i++)
++		clk_enable(priv->clk);
  
--	if (amdgpu_ip_version(adev, MP1_HWIP, 0) == IP_VERSION(13, 0, 2) &&
--	    !amdgpu_sriov_vf(adev)) {
--		bool need_to_reset_gpu = false;
--
--		if (adev->gmc.xgmi.num_physical_nodes > 1) {
--			struct amdgpu_hive_info *hive;
--
--			hive = amdgpu_get_xgmi_hive(adev);
--			if (hive->device_remove_count == 0)
--				need_to_reset_gpu = true;
--			hive->device_remove_count++;
--			amdgpu_put_xgmi_hive(hive);
--		} else {
--			need_to_reset_gpu = true;
--		}
--
--		/* Workaround for ASICs need to reset SMU.
--		 * Called only when the first device is removed.
--		 */
--		if (need_to_reset_gpu) {
--			struct amdgpu_reset_context reset_context;
--
--			adev->shutdown = true;
--			memset(&reset_context, 0, sizeof(reset_context));
--			reset_context.method = AMD_RESET_METHOD_NONE;
--			reset_context.reset_req_dev = adev;
--			set_bit(AMDGPU_NEED_FULL_RESET, &reset_context.flags);
--			set_bit(AMDGPU_RESET_FOR_DEVICE_REMOVE, &reset_context.flags);
--			amdgpu_device_gpu_recover(adev, NULL, &reset_context);
--		}
--	}
--
- 	amdgpu_driver_unload_kms(dev);
- 
- 	/*
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_reset.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_reset.h
-@@ -32,7 +32,6 @@ enum AMDGPU_RESET_FLAGS {
- 
- 	AMDGPU_NEED_FULL_RESET = 0,
- 	AMDGPU_SKIP_HW_RESET = 1,
--	AMDGPU_RESET_FOR_DEVICE_REMOVE = 2,
- };
- 
- struct amdgpu_reset_context {
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_xgmi.h
-@@ -43,7 +43,6 @@ struct amdgpu_hive_info {
- 	} pstate;
- 
- 	struct amdgpu_reset_domain *reset_domain;
--	uint32_t device_remove_count;
- 	atomic_t ras_recovery;
- };
- 
+ 	ret = devm_pwmchip_add(dev, &priv->chip);
+ 	if (ret < 0)
+-- 
+2.43.0
+
 
 
 
