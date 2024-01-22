@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E0A837C14
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F979837E38
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64F091C2863E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A28B31C274EA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC6DC8DD;
-	Tue, 23 Jan 2024 00:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F0154BE6;
+	Tue, 23 Jan 2024 00:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPDYhldN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQ5NTSJW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488C25662;
-	Tue, 23 Jan 2024 00:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52774F207;
+	Tue, 23 Jan 2024 00:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969499; cv=none; b=OORzscuUm7F+IcKct7adB4JV+REBoqauYfH+CQeZNV9sHXqzo13BeagHU2I6DUW4ELkYJG4piNDmiUMsEJU3HD44sjOW5ieLVRLmOqQzQv1MmaFuZZc7+O6LAftRGW93IYbAu4YIxiS9ixTXZiOLaXNbFADIC4HOQ5YxPZH4lT4=
+	t=1705970449; cv=none; b=Yy0ZiujJELVY6uGdiip+Px8Zv4P5LPlUD9mJYSbl6XlaoZ/F6Z1ykzu+6A7elb2kS8noW1DJVM3ljGEco+nR8pL2aIDAod/6Fy6lJI+UE5coWfTOAE3/K+M/My6ZGgnCeSaVRuDl4uvPhmNzeqoS3F7RLZk+HrryldnIetLFjhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969499; c=relaxed/simple;
-	bh=hFatx0c08Wa63R1h887QiFpT/uIRS9Wae8LisAriOc4=;
+	s=arc-20240116; t=1705970449; c=relaxed/simple;
+	bh=+e2kY6NGnm6FtR9+/Zq5Ypu0aZgSjGbEqND1WYNLeWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tiacjhlhRB8zRLCK7y7JWwCU/HrmlFdFvpd8a98kSV9fflv0nJHtPNh/jGbcIgAuL+sxCg3meWZtx0x9KReCWMronLgVylAAm9ja2baV0txwY1S9gVqbJf3rJfKUF/842XzTg5X1nH5rEDNPFXByJGopMKsHvd2eRGhtUZFxnPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPDYhldN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3EB2C43390;
-	Tue, 23 Jan 2024 00:24:58 +0000 (UTC)
+	 MIME-Version; b=T3ppW8A89ilOMvLxZg3mO55wuQ+puz+SLz9duHoTyYJ7xIdisJXPkYkZ3D619HVytDSAEHGfKtic5I6g28HyE2SuZo414splU7AotjUz591X786XpTlsf8qN0KRYO6nam/bUVZRSoleYpooszKYPNeZpVcp2IJRVqP90QEO5Sqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQ5NTSJW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05FEEC433C7;
+	Tue, 23 Jan 2024 00:40:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969499;
-	bh=hFatx0c08Wa63R1h887QiFpT/uIRS9Wae8LisAriOc4=;
+	s=korg; t=1705970449;
+	bh=+e2kY6NGnm6FtR9+/Zq5Ypu0aZgSjGbEqND1WYNLeWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EPDYhldNjEYiZOq87L9hoTgSytpoiMJ7xCoFPI8NBJ4v0LwFe2VCURRW7/t/oqfAr
-	 j4R3NEWFH3S9beojcAZ7B94Hk0jkWJWa130/HpXk1SyokzkaHJA7ssfkd6LSQ6T3Vj
-	 UMo78ueoDLYPhbOesK1BuTurQhEAU6EDRGMAw6cE=
+	b=AQ5NTSJW9SfA36r73aZPGMFMjwYF3yKqKxcggTC2vVmeZVk2gundHMhImC1CAfOoP
+	 gP6FDPZyXym4KKh31YvB9J96k1KXcXzVy5rMdOE1Wj3LKfNn9slW7G1HoiohR1t+bi
+	 mY4aXpjRK4FVVezzsMijNOkEHGX+N6U/xwOqzF+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Rob Herring <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 285/641] ASoC: Intel: sof_sdw_rt_sdca_jack_common: ctx->headset_codec_dev = NULL
-Date: Mon, 22 Jan 2024 15:53:09 -0800
-Message-ID: <20240122235826.811020198@linuxfoundation.org>
+Subject: [PATCH 6.1 022/417] of: Add of_property_present() helper
+Date: Mon, 22 Jan 2024 15:53:10 -0800
+Message-ID: <20240122235752.315685505@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +60,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Rob Herring <robh@kernel.org>
 
-[ Upstream commit e38e252dbceeef7d2f848017132efd68e9ae1416 ]
+[ Upstream commit 9cbad37ce8122de32a1529e394b468bc101c9e7f ]
 
-sof_sdw_rt_sdca_jack_exit() are used by different codecs, and some of
-them use the same dai name.
-For example, rt712 and rt713 both use "rt712-sdca-aif1" and
-sof_sdw_rt_sdca_jack_exit().
-As a result, sof_sdw_rt_sdca_jack_exit() will be called twice by
-mc_dailink_exit_loop(). Set ctx->headset_codec_dev = NULL; after
-put_device(ctx->headset_codec_dev); to avoid ctx->headset_codec_dev
-being put twice.
+Add an of_property_present() function similar to
+fwnode_property_present(). of_property_read_bool() could be used
+directly, but it is cleaner to not use it on non-boolean properties.
 
-Fixes: 5360c6704638 ("ASoC: Intel: sof_sdw: add rt712 support")
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20231204214200.203100-5-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Frank Rowand <frowand.list@gmail.com>
+Tested-by: Frank Rowand <frowand.list@gmail.com>
+Link: https://lore.kernel.org/all/20230215215547.691573-1-robh@kernel.org/
+Signed-off-by: Rob Herring <robh@kernel.org>
+Stable-dep-of: c4a5118a3ae1 ("cpufreq: scmi: process the result of devm_of_clk_add_hw_provider()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/sof_sdw_rt_sdca_jack_common.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/of.h | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/boards/sof_sdw_rt_sdca_jack_common.c b/sound/soc/intel/boards/sof_sdw_rt_sdca_jack_common.c
-index 65bbcee88d6d..49a513399dc4 100644
---- a/sound/soc/intel/boards/sof_sdw_rt_sdca_jack_common.c
-+++ b/sound/soc/intel/boards/sof_sdw_rt_sdca_jack_common.c
-@@ -168,6 +168,7 @@ int sof_sdw_rt_sdca_jack_exit(struct snd_soc_card *card, struct snd_soc_dai_link
- 
- 	device_remove_software_node(ctx->headset_codec_dev);
- 	put_device(ctx->headset_codec_dev);
-+	ctx->headset_codec_dev = NULL;
- 
- 	return 0;
+diff --git a/include/linux/of.h b/include/linux/of.h
+index 6b79ef9a6541..1c5301e10442 100644
+--- a/include/linux/of.h
++++ b/include/linux/of.h
+@@ -1155,7 +1155,8 @@ static inline int of_property_read_string_index(const struct device_node *np,
+  * @np:		device node from which the property value is to be read.
+  * @propname:	name of the property to be searched.
+  *
+- * Search for a property in a device node.
++ * Search for a boolean property in a device node. Usage on non-boolean
++ * property types is deprecated.
+  *
+  * Return: true if the property exists false otherwise.
+  */
+@@ -1167,6 +1168,20 @@ static inline bool of_property_read_bool(const struct device_node *np,
+ 	return prop ? true : false;
  }
+ 
++/**
++ * of_property_present - Test if a property is present in a node
++ * @np:		device node to search for the property.
++ * @propname:	name of the property to be searched.
++ *
++ * Test for a property present in a device node.
++ *
++ * Return: true if the property exists false otherwise.
++ */
++static inline bool of_property_present(const struct device_node *np, const char *propname)
++{
++	return of_property_read_bool(np, propname);
++}
++
+ /**
+  * of_property_read_u8_array - Find and read an array of u8 from a property.
+  *
 -- 
 2.43.0
 
