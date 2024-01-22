@@ -1,104 +1,135 @@
-Return-Path: <stable+bounces-12350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC304835D7F
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 10:00:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 975CC835DA0
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 10:06:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 731611F2651E
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 09:00:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C96631C22E2D
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 09:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB1436AEF;
-	Mon, 22 Jan 2024 09:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB8F38F94;
+	Mon, 22 Jan 2024 09:06:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="FqAtyt4T"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CBC639FD1;
-	Mon, 22 Jan 2024 08:59:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0734A3717F
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 09:06:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705914001; cv=none; b=LGfkHPLpnBjN1JLCQPxu/oKgBx4O+ciFJ85kFL3xhz/0RHr1eec5Tf45Ycn7sFRoJLkSUQJuGMtCLsHp100Ldj2hSUZECPA243nKI9xproz+WrIFcgOSiMQD8MYZJ5C777DAQMjkg7pYOEPzE4RaFLnv8IxTRHbIL6u3LFUx6fA=
+	t=1705914383; cv=none; b=AoHtiHFTi5OhxgD//Xn4xm9JRScxn26wbTvFinot3EHSk7tTzCxLAnu1HygBmf4TZYnpTJzaoQDeV6Oib3rF58yvs4lN59os3/wUQoB7wInqOn6fUFHJsPa9vUvoAu3947cfG9BIebJWga+ycuHMtOJE/v8p6ORF6+ZIphONeo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705914001; c=relaxed/simple;
-	bh=Z2QO+ZNbexrvCNmBOmbx82ARDt5b9Gh1U8R95xFIBzk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nOpKENIod5Liynu41q3CGz/QtfuKU+P04yLdWuzWxdz1wbDPUkGqEXSh/fG9MTrxZgXvj64wB+faOSnS4J3CbBMr03QfZsxpB00khiY2yp+g5E7dXnNNnvhshxfXYmLKo7OVPs1zAiy76dy8Ctw5aVltM0RtpFBcJGjaLVvwLk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn; spf=pass smtp.mailfrom=shingroup.cn; arc=none smtp.client-ip=15.184.224.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shingroup.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shingroup.cn
-X-QQ-mid: bizesmtp69t1705913968t4x91ja8
-X-QQ-Originating-IP: gUy0qjJACJmrxRTWjfX/xlWmCxQVo4qzhx3gV7F419E=
-Received: from localhost ( [183.209.108.228])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 22 Jan 2024 16:59:26 +0800 (CST)
-X-QQ-SSF: 01400000000000504000000A0000000
-X-QQ-FEAT: IcCSTr/hHjNrGNwJGBhoO6iQm9TbZEJVmwOVI/u90M+u6dL3vPHrcIcOGVpYE
-	3xnlu/yVMyOGkIJ66R4R6neq8C/BM94XzIVAWppJE1t5/EBTlH16aGVL2ZG2Cuq7ti6EHEl
-	dICnf+4WHwFK2FYyeN5SAYUWxzfnnyd+Y4EdNv/RTyv4+OwaNrW5RuUvfC6oPlrh6jOAj9g
-	Jjv0kMj4f2l6sbW8lZtbreylbZqv4IS/lw4sRpztsh+MVPGhtuBoaJdGFTIH8IYChJnPA+I
-	Uc0R9vTKFF4jdMVoEjWkQYeAHzWOAoP2dWvlvtCtRlQFgdM62WGIZ0CiL1H/D39d3hcp37b
-	2vO55zzySM78h8yB8PZ6DQ34ZuhIanlAE9x6s82ulILRUbuhe0MPtyJk47ESPwippLBb2of
-	wwXoP/E3Xepk6H1MgSGFig==
-X-QQ-GoodBg: 2
-X-BIZMAIL-ID: 16519766725060776921
-From: Dawei Li <dawei.li@shingroup.cn>
-To: tglx@linutronix.de,
-	maz@kernel.org
-Cc: sdonthineni@nvidia.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	dawei.li@shingroup.cn,
-	set_pte_at@outlook.com,
-	stable@vger.kernel.org
-Subject: [PATCH v2 4/5] genirq: Initialize resend_node hlist for all irq_desc
-Date: Mon, 22 Jan 2024 16:57:15 +0800
-Message-Id: <20240122085716.2999875-5-dawei.li@shingroup.cn>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20240122085716.2999875-1-dawei.li@shingroup.cn>
-References: <20240122085716.2999875-1-dawei.li@shingroup.cn>
+	s=arc-20240116; t=1705914383; c=relaxed/simple;
+	bh=Ohy0ZGwqVFZ2Ynmb7PAYjwQ1AwA+GNIglKipPv38KOo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gTYFl0PnBxsmk6KIh0JFZqDJLTGK8hbrElZtZbfH/Eys0rtkNsZtAyv4NcsEmoGnTS1yNpqDv53pIBxbTL+qkpdpLTpRhQju+zCQfxWmRN2fwWIs6M3YPVRCEK9TYnCt7hoFQVOPj9Irz5VbsaQ3OUShaYu7odUqsTsjrGYnhXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=FqAtyt4T; arc=none smtp.client-ip=209.85.217.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-466fb1cbfe9so622975137.0
+        for <stable@vger.kernel.org>; Mon, 22 Jan 2024 01:06:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1705914381; x=1706519181; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gp5tgkDSgj11h88t3e/z7UEfT/WURUMZNCx4eihIQpI=;
+        b=FqAtyt4T5z2R4h3yKIT8Q8g+SIEah/KSfX4E3GL29mSUBgH7KlL3jDyU/FMDBUNVJG
+         Q+p99BTjC2Wz2G4XJCQvUJZSwR7K2PflT3SFRaDhQNR3iZr2QcTJYQJI9u59vX6YPm+m
+         OL00+6Qd0w6VwS3LwcsbHKHjX0kW1eMSDAb1OQfGNN8QRBg0xT/UaszAO7PZ04AIzLRW
+         8A/2Fss21nwRpIOnVtjHV2iXkatseMBi0LkXsnAu38DgeomRb6LcIN57Zi0yugjw9gWh
+         t2v8BjcdQWAyitzXnBiLzZEvHIO6zBz443+QWhIcfX9+C1nB2Hj+ssj255k0VkPVLR0Z
+         UYQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705914381; x=1706519181;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gp5tgkDSgj11h88t3e/z7UEfT/WURUMZNCx4eihIQpI=;
+        b=R13OLsHEm1cQIMd4fQbFB8IOrGKcjgxevzBgB7SeNGnFE4LdIgHFEGffyq8E4/ixSc
+         sW3Xf9Gw3IWnjs0F1CZE6bswx06G8MKYrhfxCgrBtfFkzcCJQaRXO8wFGQtolrue7/Od
+         nXJNGGAV/3M8OzlIv1iq6Hx/wbEszbU0JlYUbpcvqLNX/irhb/jgoVcOcKumaCzL5nQG
+         iTG+6OIxxeVV/8617nWfuSaPGw83e7+uGvbLaJ+aS8gc5QBH7idu839t8TCWy3RjnWQr
+         guk4W6yYG2LAzQLj+9Zs/8xHKyj5EusImn33lca7c+7JgW/DtJgO+cQy7q7tlRsVklw/
+         T22w==
+X-Gm-Message-State: AOJu0YzwKyPs32/oZ5qX4i6gn/KSOiveHr/LKdDb2Y5s4nl20DSSr9ct
+	UXJuzsndM8lB2xukDUQAaTc2OswxtIfagrVFlIOvYttSTK3U4gdAAT6qEGDTOVFZxtKvccEMw7l
+	kSZRjXGGwUlKEDm3SWqzGtmr4CEtYPUJg3N1LRopVn5L+KLF4
+X-Google-Smtp-Source: AGHT+IFfrOIr9bAUFkITg4Xb0WVWPc4vGtm9WQHIVP2Np7ndI6gmd4BUBnYr0dkPWJxnfhMP9tfiz9rZimSYJWdhN5M=
+X-Received: by 2002:a05:6102:419e:b0:469:b52c:cdac with SMTP id
+ cd30-20020a056102419e00b00469b52ccdacmr398531vsb.5.1705914381000; Mon, 22 Jan
+ 2024 01:06:21 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:shingroup.cn:qybglogicsvrgz:qybglogicsvrgz5a-1
+References: <20240117142942.5924-1-mario.limonciello@amd.com>
+In-Reply-To: <20240117142942.5924-1-mario.limonciello@amd.com>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Mon, 22 Jan 2024 10:06:10 +0100
+Message-ID: <CAMRc=MeUr6UYdWUudsF+6RvoCXsYxBDtw+2k2oJANvpNsBHPAg@mail.gmail.com>
+Subject: Re: [PATCH] gpiolib: acpi: Ignore touchpad wakeup on GPD G1619-04
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, 
+	"open list:PIN CONTROL SUBSYSTEM" <linux-gpio@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>, 
+	linux-acpi@vger.kernel.org, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, stable@vger.kernel.org, 
+	George Melikov <mail@gmelikov.ru>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-For !CONFIG_SPARSE_IRQ kernel, early_irq_init() is supposed to
-initialize all the desc entries in system, desc->resend_node
-included.
+On Wed, Jan 17, 2024 at 3:29=E2=80=AFPM Mario Limonciello
+<mario.limonciello@amd.com> wrote:
+>
+> Spurious wakeups are reported on the GPD G1619-04 which
+> can be absolved by programming the GPIO to ignore wakeups.
+>
+> Cc: stable@vger.kernel.org
+> Reported-and-tested-by: George Melikov <mail@gmelikov.ru>
+> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3073
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+>  drivers/gpio/gpiolib-acpi.c | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+>
+> diff --git a/drivers/gpio/gpiolib-acpi.c b/drivers/gpio/gpiolib-acpi.c
+> index 88066826d8e5..cd3e9657cc36 100644
+> --- a/drivers/gpio/gpiolib-acpi.c
+> +++ b/drivers/gpio/gpiolib-acpi.c
+> @@ -1651,6 +1651,20 @@ static const struct dmi_system_id gpiolib_acpi_qui=
+rks[] __initconst =3D {
+>                         .ignore_interrupt =3D "INT33FC:00@3",
+>                 },
+>         },
+> +       {
+> +               /*
+> +                * Spurious wakeups from TP_ATTN# pin
+> +                * Found in BIOS 0.35
+> +                * https://gitlab.freedesktop.org/drm/amd/-/issues/3073
+> +                */
+> +               .matches =3D {
+> +                       DMI_MATCH(DMI_SYS_VENDOR, "GPD"),
+> +                       DMI_MATCH(DMI_PRODUCT_NAME, "G1619-04"),
+> +               },
+> +               .driver_data =3D &(struct acpi_gpiolib_dmi_quirk) {
+> +                       .ignore_wake =3D "PNP0C50:00@8",
+> +               },
+> +       },
+>         {} /* Terminating entry */
+>  };
+>
+> --
+> 2.34.1
+>
 
-Thus, initialize desc->resend_node for all irq_desc entries, rather
-than irq_desc[0] only, which is the current implementation is about.
+Queued for fixes, thanks!
 
-Fixes: bc06a9e08742 ("genirq: Use hlist for managing resend handlers")
-Cc: stable@vger.kernel.org
-
-Acked-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Dawei Li <dawei.li@shingroup.cn>
----
- kernel/irq/irqdesc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/kernel/irq/irqdesc.c b/kernel/irq/irqdesc.c
-index 27ca1c866f29..371eb1711d34 100644
---- a/kernel/irq/irqdesc.c
-+++ b/kernel/irq/irqdesc.c
-@@ -600,7 +600,7 @@ int __init early_irq_init(void)
- 		mutex_init(&desc[i].request_mutex);
- 		init_waitqueue_head(&desc[i].wait_for_threads);
- 		desc_set_defaults(i, &desc[i], node, NULL, NULL);
--		irq_resend_init(desc);
-+		irq_resend_init(&desc[i]);
- 	}
- 	return arch_early_irq_init();
- }
--- 
-2.27.0
-
+Bart
 
