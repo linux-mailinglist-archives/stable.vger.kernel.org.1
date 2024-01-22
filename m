@@ -1,95 +1,55 @@
-Return-Path: <stable+bounces-12718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D40E4836F92
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:18:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5711836F97
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:19:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C5D81C2763B
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 18:18:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 12EB61C23BD7
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 18:19:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 384F7481BF;
-	Mon, 22 Jan 2024 17:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 635F3482DC;
+	Mon, 22 Jan 2024 17:47:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="f4rbwtZe";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SVlk+b9A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVG2mqUi"
 X-Original-To: stable@vger.kernel.org
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B1F3E49E;
-	Mon, 22 Jan 2024 17:46:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.111.4.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CE5481DE;
+	Mon, 22 Jan 2024 17:47:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705945609; cv=none; b=mrkQliJizcp5BrtoP95A/WWW8AyS+kY+GZpt7z3cx7pLNAxmgaLwFIyPFfg6Gha2u3BGVuGwDmV9BrBtI0oClxzCb300bRBiYNKyN1osvcBWlL3HxhW8ozKfC9zQ/2ZJbfE037qPt7kmauHZNn4k7ICnkSEm9JyhMSrW6GAkPhI=
+	t=1705945655; cv=none; b=nu3TntiUsLi8XKL3zpkdsLDlcrdMzgjECErbFNPxX6dmetcWLAYmpw3uG5WyTPCavJSmaG/veB6F4lE6CljPLNbXJ0DED+htaHXVX8JzXhuX/Uns/lDNr5NRfakTo49MWG5dklknl/PIAaSGDB+ZtH7kFFW9nyjOU6hjyZaqRco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705945609; c=relaxed/simple;
-	bh=Zemc84as28Qt/EvYBnMgtVCnIYBIanKlk2SL4PcSVis=;
+	s=arc-20240116; t=1705945655; c=relaxed/simple;
+	bh=z12o7RQes1O6L0VjQgUTb29206GAnD7Za+zHeRVZVaU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fbs/cwG4e58NDrooIXTvppHMz2HBmG8t7VWKnI9GGh0fSkGvxnSil5WW5TPR7SMdH+dPuNavY0x8gLhtPkhBrfvq5JYFSPR6G20iikcohaNzGPvaidWXYmLMhgMqwnX5DCGqIbo7Hd9biF4N3gL0uSI3JKQNNM6S4KwMaThxtGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=f4rbwtZe; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SVlk+b9A; arc=none smtp.client-ip=66.111.4.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailout.nyi.internal (Postfix) with ESMTP id C7DFD5C0189;
-	Mon, 22 Jan 2024 12:46:46 -0500 (EST)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Mon, 22 Jan 2024 12:46:46 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1705945606; x=1706032006; bh=e9LVoKSgLL
-	tbY+Vvka55V3OHOtxAH3+B7CLqY3bumM4=; b=f4rbwtZelSM+qvHoGWCNMmvEnK
-	sizHZ5dnwQ8Po8zDy+9/BXyW3+Mj1ywTIDYRUpUnDObQ6NvdEHqysurPUP7nbR+E
-	HCG29BkEz5lLYx/1Ax7a7D9WDhT2YTfJoZkj5898IoZJg46jj9YIYiHU7Wl7Tpbu
-	uPOVg8/gblD/D2FYr1xTHcFUh6SvYGyx2VZSYL52EoHZjmssJGfYVphbleYIG7Hs
-	0832jTVicFnQbkffvNXTh0HPeA8Bkn/ac+jnKolaKyMDaNRFyrUFsEe5eUvguEZw
-	OJz/vPdX6BkSwGXrKa7KhcgGcnJgGU2HUSGaGhDtfK58RkWImBsL14X9V9Vg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1705945606; x=1706032006; bh=e9LVoKSgLLtbY+Vvka55V3OHOtxA
-	H3+B7CLqY3bumM4=; b=SVlk+b9AObVBqLv3lHt5Tw5HIRgJTbKryBX3Fz2K/KrG
-	kAhoXTEXHJtRBCLmtBMKuAVrAwAoYBoulmfR9R6jPxR+gxvXLzIk1ZT9UD2+LyIa
-	YttQvkNOwfDUfWnD7LSdKd1Io4Z0i6EWLMI5ZJjn0dqj6PjkkXVcyh6WxQhzOHQS
-	80JxNMxqrC5Sp8FO8iqxJvWDBb6KcO9gFx+NmLcFw7WRlU/Xp37g4nkkVm8D+Zke
-	fX7Th3ww9W9BLXTbml2iJI4zwupVKlgrGeDG7S9j7CsacdC7CLApGj/TyZubin8m
-	+OdvkxaX8KqJH7MDb7y1BkhfxkdisYig/tt7V4wk1Q==
-X-ME-Sender: <xms:BqquZSOJhvlCu3PlfsoXhLQuj6i1TttI3CKg4_NM1I-9fJ_9DtL62A>
-    <xme:BqquZQ_ytysYDjdcu0dW9gUDor1cpB2v3STFBMsj1KTSiQwceiweM7MPl0aHq4lnT
-    etX_ZZnsBYUIA>
-X-ME-Received: <xmr:BqquZZTi__8FGjSfaYRy5iCcTs2ahit9v2dDJlrz8YvJJzynmiqI6ABtQUjF>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvkedrvdekiedguddtfecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgv
-    ghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeeghe
-    euhefgtdeluddtleekfeegjeetgeeikeehfeduieffvddufeefleevtddtvdenucffohhm
-    rghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
-X-ME-Proxy: <xmx:BqquZSvd12I0nn1SNyKR2o5g_a9ccUbTdCRLUiFUTqvbi85pqb5dXg>
-    <xmx:BqquZaeRhXDGcO2xKF8Cr8NtNmkZxJVJhU0mPFIwRKkE7UEcM9kTRA>
-    <xmx:BqquZW2qlYKxStj-w_923AuVPddhjBj2OX8YfusEn24Z4oF9DO-N7Q>
-    <xmx:BqquZbXbH80wBjOC4rMeAqKjyz4507K-TW-4RwaIKSpTsRcgqdQ3dQ>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 22 Jan 2024 12:46:46 -0500 (EST)
-Date: Mon, 22 Jan 2024 09:46:36 -0800
-From: Greg KH <greg@kroah.com>
-To: Jiri Olsa <jolsa@kernel.org>
-Cc: stable@vger.kernel.org, bpf@vger.kernel.org,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: Re: [PATCH stable 5.15] bpf: Add
- --skip_encoding_btf_inconsistent_proto, --btf_gen_optimized to pahole flags
- for v1.25
-Message-ID: <2024012228-styling-gaffe-f4de@gregkh>
-References: <20240122080329.856574-1-jolsa@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=jxweJojrGdVD/7Lv3RecN0FFxBe5ngIBQmrCN8JYscAm/3YegCJ6tJPdgaKwoVTmpFKfxqEAqQwruCq41BhLSRx+0viLYy6TxlVi4EFGMsG06fM+n390mwwlpn2rBcjK7h4lDUAuwL2sRE+ks2Da+Zk0yIIUBnA3QeIwL7Flrbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVG2mqUi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C0B8C433F1;
+	Mon, 22 Jan 2024 17:47:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1705945654;
+	bh=z12o7RQes1O6L0VjQgUTb29206GAnD7Za+zHeRVZVaU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BVG2mqUijYFmXj/u+GtcZDAD/0Vak6pF9RCtZNgdN2zYg4AJsSX+8goJhDSGLqRN3
+	 hGQogNaXI5L+DhnEP8rMI8d8/Sf6K7CZjD6TUk9ro6NyfKt0wXqrTuqaWxYTrMEPQM
+	 lbWoIjFUgTcQ3l+AaRr4LI25aU9bqeksIwW6lQB8=
+Date: Mon, 22 Jan 2024 09:47:33 -0800
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Fedor Pchelkin <pchelkin@ispras.ru>
+Cc: stable@vger.kernel.org, Masami Hiramatsu <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
+	Pengfei Xu <pengfei.xu@intel.com>
+Subject: Re: [PATCH 5.10/5.15 1/1] kprobes: Fix to handle forcibly
+ unoptimized kprobes on freeing_list
+Message-ID: <2024012224-clatter-siren-ac3d@gregkh>
+References: <20240122113031.301202-1-pchelkin@ispras.ru>
+ <20240122113031.301202-2-pchelkin@ispras.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -98,38 +58,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240122080329.856574-1-jolsa@kernel.org>
+In-Reply-To: <20240122113031.301202-2-pchelkin@ispras.ru>
 
-On Mon, Jan 22, 2024 at 09:03:29AM +0100, Jiri Olsa wrote:
-> From: Alan Maguire <alan.maguire@oracle.com>
+On Mon, Jan 22, 2024 at 02:30:31PM +0300, Fedor Pchelkin wrote:
+> From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
 > 
-> commit 7b99f75942da332e3f4f865e55a10fec95a30d4f upstream.
+> commit 4fbd2f83fda0ca44a2ec6421ca3508b355b31858 upstream.
 > 
-> [ small context conflict because of not backported --lang_exclude=rust
-> option, which is not needed in 5.15 ]
+> Since forcibly unoptimized kprobes will be put on the freeing_list directly
+> in the unoptimize_kprobe(), do_unoptimize_kprobes() must continue to check
+> the freeing_list even if unoptimizing_list is empty.
 > 
-> v1.25 of pahole supports filtering out functions with multiple inconsistent
-> function prototypes or optimized-out parameters from the BTF representation.
-> These present problems because there is no additional info in BTF saying which
-> inconsistent prototype matches which function instance to help guide attachment,
-> and functions with optimized-out parameters can lead to incorrect assumptions
-> about register contents.
+> This bug can happen if a kprobe is put in an instruction which is in the
+> middle of the jump-replaced instruction sequence of an optprobe, *and* the
+> optprobe is recently unregistered and queued on unoptimizing_list.
+> In this case, the optprobe will be unoptimized forcibly (means immediately)
+> and put it into the freeing_list, expecting the optprobe will be handled in
+> do_unoptimize_kprobe().
+> But if there is no other optprobes on the unoptimizing_list, current code
+> returns from the do_unoptimize_kprobe() soon and does not handle the
+> optprobe which is on the freeing_list. Then the optprobe will hit the
+> WARN_ON_ONCE() in the do_free_cleaned_kprobes(), because it is not handled
+> in the latter loop of the do_unoptimize_kprobe().
 > 
-> So for now, filter out such functions while adding BTF representations for
-> functions that have "."-suffixes (foo.isra.0) but not optimized-out parameters.
-> This patch assumes that below linked changes land in pahole for v1.25.
+> To solve this issue, do not return from do_unoptimize_kprobes() immediately
+> even if unoptimizing_list is empty.
 > 
-> Issues with pahole filtering being too aggressive in removing functions
-> appear to be resolved now, but CI and further testing will confirm.
+> Moreover, this change affects another case. kill_optimized_kprobes() expects
+> kprobe_optimizer() will just free the optprobe on freeing_list.
+> So I changed it to just do list_move() to freeing_list if optprobes are on
+> unoptimizing list. And the do_unoptimize_kprobe() will skip
+> arch_disarm_kprobe() if the probe on freeing_list has gone flag.
 > 
-> Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
-> Acked-by: Jiri Olsa <jolsa@kernel.org>
-> Link: https://lore.kernel.org/r/20230510130241.1696561-1-alan.maguire@oracle.com
-> Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+> Link: https://lore.kernel.org/all/Y8URdIfVr3pq2X8w@xpf.sh.intel.com/
+> Link: https://lore.kernel.org/all/167448024501.3253718.13037333683110512967.stgit@devnote3/
+> 
+> Fixes: e4add247789e ("kprobes: Fix optimize_kprobe()/unoptimize_kprobe() cancellation logic")
+> Reported-by: Pengfei Xu <pengfei.xu@intel.com>
+> Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+> Cc: stable@vger.kernel.org
+> Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+> [fp: adjust comment conflict regarding commit 223a76b268c9 ("kprobes: Fix
+>  coding style issues")]
+> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 > ---
->  scripts/pahole-flags.sh | 3 +++
->  1 file changed, 3 insertions(+)
+>  kernel/kprobes.c | 23 ++++++++++-------------
+>  1 file changed, 10 insertions(+), 13 deletions(-)
 
 Now queued up, thanks.
 
