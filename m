@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D579838491
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DD11837E5E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B97A0B2D46B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A10EE1F276FF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A95627E7;
-	Tue, 23 Jan 2024 01:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 595D45C903;
+	Tue, 23 Jan 2024 00:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbpnBQrk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1JotyhyN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2788D61673;
-	Tue, 23 Jan 2024 01:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE655BAC5;
+	Tue, 23 Jan 2024 00:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974949; cv=none; b=i7ETXvvb1uaMvPDUxEdJybdFtd/eJZxr0V3W3t3xNO+IGYAZUo0R9x4ebxEoo4PdoFVJaaUZaoFZqddW/pjCG+OiRwyov7dP3plAoQ5EdQSZyfkPA9TWQ+MlCOjciIh9WGBFhFYLU88AJ/4hVTe4fN82BQYh4NNwGfnecOjuXEs=
+	t=1705970539; cv=none; b=UtVRo+YJCsOo7Wt61GHAsd0JiwesG7t9xFCPa6BDCAEWj/i6o3kOhDbUSqvD7yFTqk6SvTQLmbTNlBUyvLBk9KsO4kj8DfSXuz7VL51wDQfruLX7bcy0pHC0Xn61W9LPhpSTcEtKpVBBlM9wm7InI+gO7r2Fp05Q8NRwfYn4TJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974949; c=relaxed/simple;
-	bh=zAgzVDtNQACi70vH/sA+fi7pZFgXpbI+g2653CjfWTo=;
+	s=arc-20240116; t=1705970539; c=relaxed/simple;
+	bh=u/XFrYXs/zuQIIAPcOfwWirp1jbcUmVd//un7jtDH8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B/2kINUhlKfmtPNZeaxNydHrY/KpKE3gC8Ch/QiDo6+mu5aYD+FZnaaUFJPI4FzOGS8h0c81MSMBMCcjgO/ybXUsCqHpjivb7gYl5iOUEjPzFv7cjNDDuT2VbbYmdKBNb3rAi1KNOpxkuW1fmlInvgKy5vaWUe3I8obKPQiFfmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbpnBQrk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE7FC433F1;
-	Tue, 23 Jan 2024 01:55:48 +0000 (UTC)
+	 MIME-Version; b=qyXF+bVzmoPre4HOpLPUpOFGsiVfYEFmr2p8+NuntmGteNYf9xgEQJKY6ov2A1ZCfgRy6k2HIeB/O1LuOj3Pu1P/ubTi7k1ouQNdn1osJ3Dluy95huqJaaubLPcHUh0E6XKbcx89mvn/GzcCNMSEKoh4ONFMVjmy9QsTdPPJx0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1JotyhyN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47193C433F1;
+	Tue, 23 Jan 2024 00:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974949;
-	bh=zAgzVDtNQACi70vH/sA+fi7pZFgXpbI+g2653CjfWTo=;
+	s=korg; t=1705970538;
+	bh=u/XFrYXs/zuQIIAPcOfwWirp1jbcUmVd//un7jtDH8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XbpnBQrkMJzcJyfRNElbq5uoO3R/qDY05OuntW3EKqTdM8OO1BTJCjAEkro5yubYW
-	 T4t6+zn/aP5y1Jg72s2IpRe8/Pddas+Ibn3xxRbh1AFOWOH0mkUVFB4Slntg50O2SI
-	 PhO2RREAZzP2a5HJutsRNPfvfYnqTsTT06VxXtM4=
+	b=1JotyhyNoBQzvgSYcQOvgtk2BCtYKC0u07zM5XUuLyXfEdmMa4sTexHcVbpj2jOPK
+	 dSO4EAH+0WDRmH59RR1jsUDY3kwb7a+LMt9EVhuNdJNHttQWNJDkBLBFUUgyavRqyR
+	 yJF8YSpPAQAhALTbLlDx08D99MRHn/rNCmeVXroM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Zhiqi Song <songzhiqi1@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 164/583] ARM: dts: stm32: dont mix SCMI and non-SCMI board compatibles
+Subject: [PATCH 6.1 047/417] crypto: hisilicon/hpre - save capability registers in probe process
 Date: Mon, 22 Jan 2024 15:53:35 -0800
-Message-ID: <20240122235817.059440068@linuxfoundation.org>
+Message-ID: <20240122235753.294375108@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +62,213 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+From: Zhiqi Song <songzhiqi1@huawei.com>
 
-[ Upstream commit bfc3c6743de0ecb169026c36cbdbc0d12d22a528 ]
+[ Upstream commit cf8b5156bbc8c9376f699e8d35e9464b739e33ff ]
 
-The binding erroneously decreed that the SCMI variants of the ST
-evaluation kits are compatible with the non-SCMI variants.
+Pre-store the valid value of hpre alg support related capability
+register in hpre_qm_init(), which will be called by hpre_probe().
+It can reduce the number of capability register queries and avoid
+obtaining incorrect values in abnormal scenarios, such as reset
+failed and the memory space disabled.
 
-This is not correct, as a kernel or bootloader compatible with the non-SCMI
-variant is not necessarily able to function, when direct access
-to resources is replaced by having to talk SCMI to the secure monitor.
-
-The binding has been adjusted to reflect thus, so synchronize the device
-trees now.
-
-Fixes: 5b7e58313a77 ("ARM: dts: stm32: Add SCMI version of STM32 boards (DK1/DK2/ED1/EV1)")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Fixes: f214d59a0603 ("crypto: hisilicon/hpre - support hpre capability")
+Signed-off-by: Zhiqi Song <songzhiqi1@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/st/stm32mp157a-dk1-scmi.dts | 2 +-
- arch/arm/boot/dts/st/stm32mp157c-dk2-scmi.dts | 2 +-
- arch/arm/boot/dts/st/stm32mp157c-ed1-scmi.dts | 2 +-
- arch/arm/boot/dts/st/stm32mp157c-ev1-scmi.dts | 3 +--
- 4 files changed, 4 insertions(+), 5 deletions(-)
+ drivers/crypto/hisilicon/hpre/hpre_main.c | 82 ++++++++++++++++++-----
+ 1 file changed, 64 insertions(+), 18 deletions(-)
 
-diff --git a/arch/arm/boot/dts/st/stm32mp157a-dk1-scmi.dts b/arch/arm/boot/dts/st/stm32mp157a-dk1-scmi.dts
-index afcd6285890c..c27963898b5e 100644
---- a/arch/arm/boot/dts/st/stm32mp157a-dk1-scmi.dts
-+++ b/arch/arm/boot/dts/st/stm32mp157a-dk1-scmi.dts
-@@ -11,7 +11,7 @@
+diff --git a/drivers/crypto/hisilicon/hpre/hpre_main.c b/drivers/crypto/hisilicon/hpre/hpre_main.c
+index cf02c9cde85a..269df4ec148b 100644
+--- a/drivers/crypto/hisilicon/hpre/hpre_main.c
++++ b/drivers/crypto/hisilicon/hpre/hpre_main.c
+@@ -226,6 +226,20 @@ static const struct hisi_qm_cap_info hpre_basic_info[] = {
+ 	{HPRE_CORE10_ALG_BITMAP_CAP, 0x3170, 0, GENMASK(31, 0), 0x0, 0x10, 0x10}
+ };
  
- / {
- 	model = "STMicroelectronics STM32MP157A-DK1 SCMI Discovery Board";
--	compatible = "st,stm32mp157a-dk1-scmi", "st,stm32mp157a-dk1", "st,stm32mp157";
-+	compatible = "st,stm32mp157a-dk1-scmi", "st,stm32mp157";
++enum hpre_pre_store_cap_idx {
++	HPRE_CLUSTER_NUM_CAP_IDX = 0x0,
++	HPRE_CORE_ENABLE_BITMAP_CAP_IDX,
++	HPRE_DRV_ALG_BITMAP_CAP_IDX,
++	HPRE_DEV_ALG_BITMAP_CAP_IDX,
++};
++
++static const u32 hpre_pre_store_caps[] = {
++	HPRE_CLUSTER_NUM_CAP,
++	HPRE_CORE_ENABLE_BITMAP_CAP,
++	HPRE_DRV_ALG_BITMAP_CAP,
++	HPRE_DEV_ALG_BITMAP_CAP,
++};
++
+ static const struct hpre_hw_error hpre_hw_errors[] = {
+ 	{
+ 		.int_msk = BIT(0),
+@@ -345,7 +359,7 @@ bool hpre_check_alg_support(struct hisi_qm *qm, u32 alg)
+ {
+ 	u32 cap_val;
  
- 	reserved-memory {
- 		optee@de000000 {
-diff --git a/arch/arm/boot/dts/st/stm32mp157c-dk2-scmi.dts b/arch/arm/boot/dts/st/stm32mp157c-dk2-scmi.dts
-index 39358d902000..622618943134 100644
---- a/arch/arm/boot/dts/st/stm32mp157c-dk2-scmi.dts
-+++ b/arch/arm/boot/dts/st/stm32mp157c-dk2-scmi.dts
-@@ -11,7 +11,7 @@
+-	cap_val = hisi_qm_get_hw_info(qm, hpre_basic_info, HPRE_DRV_ALG_BITMAP_CAP, qm->cap_ver);
++	cap_val = qm->cap_tables.dev_cap_table[HPRE_DRV_ALG_BITMAP_CAP_IDX].cap_val;
+ 	if (alg & cap_val)
+ 		return true;
  
- / {
- 	model = "STMicroelectronics STM32MP157C-DK2 SCMI Discovery Board";
--	compatible = "st,stm32mp157c-dk2-scmi", "st,stm32mp157c-dk2", "st,stm32mp157";
-+	compatible = "st,stm32mp157c-dk2-scmi", "st,stm32mp157";
+@@ -421,16 +435,6 @@ static u32 vfs_num;
+ module_param_cb(vfs_num, &vfs_num_ops, &vfs_num, 0444);
+ MODULE_PARM_DESC(vfs_num, "Number of VFs to enable(1-63), 0(default)");
  
- 	reserved-memory {
- 		optee@de000000 {
-diff --git a/arch/arm/boot/dts/st/stm32mp157c-ed1-scmi.dts b/arch/arm/boot/dts/st/stm32mp157c-ed1-scmi.dts
-index 07ea765a4553..c7c4d7e89d61 100644
---- a/arch/arm/boot/dts/st/stm32mp157c-ed1-scmi.dts
-+++ b/arch/arm/boot/dts/st/stm32mp157c-ed1-scmi.dts
-@@ -11,7 +11,7 @@
+-static inline int hpre_cluster_num(struct hisi_qm *qm)
+-{
+-	return hisi_qm_get_hw_info(qm, hpre_basic_info, HPRE_CLUSTER_NUM_CAP, qm->cap_ver);
+-}
+-
+-static inline int hpre_cluster_core_mask(struct hisi_qm *qm)
+-{
+-	return hisi_qm_get_hw_info(qm, hpre_basic_info, HPRE_CORE_ENABLE_BITMAP_CAP, qm->cap_ver);
+-}
+-
+ struct hisi_qp *hpre_create_qp(u8 type)
+ {
+ 	int node = cpu_to_node(smp_processor_id());
+@@ -497,13 +501,15 @@ static int hpre_cfg_by_dsm(struct hisi_qm *qm)
  
- / {
- 	model = "STMicroelectronics STM32MP157C-ED1 SCMI eval daughter";
--	compatible = "st,stm32mp157c-ed1-scmi", "st,stm32mp157c-ed1", "st,stm32mp157";
-+	compatible = "st,stm32mp157c-ed1-scmi", "st,stm32mp157";
+ static int hpre_set_cluster(struct hisi_qm *qm)
+ {
+-	u32 cluster_core_mask = hpre_cluster_core_mask(qm);
+-	u8 clusters_num = hpre_cluster_num(qm);
+ 	struct device *dev = &qm->pdev->dev;
+ 	unsigned long offset;
++	u32 cluster_core_mask;
++	u8 clusters_num;
+ 	u32 val = 0;
+ 	int ret, i;
  
- 	reserved-memory {
- 		optee@fe000000 {
-diff --git a/arch/arm/boot/dts/st/stm32mp157c-ev1-scmi.dts b/arch/arm/boot/dts/st/stm32mp157c-ev1-scmi.dts
-index 813086ec2489..2ab77e64f1bb 100644
---- a/arch/arm/boot/dts/st/stm32mp157c-ev1-scmi.dts
-+++ b/arch/arm/boot/dts/st/stm32mp157c-ev1-scmi.dts
-@@ -11,8 +11,7 @@
++	cluster_core_mask = qm->cap_tables.dev_cap_table[HPRE_CORE_ENABLE_BITMAP_CAP_IDX].cap_val;
++	clusters_num = qm->cap_tables.dev_cap_table[HPRE_CLUSTER_NUM_CAP_IDX].cap_val;
+ 	for (i = 0; i < clusters_num; i++) {
+ 		offset = i * HPRE_CLSTR_ADDR_INTRVL;
  
- / {
- 	model = "STMicroelectronics STM32MP157C-EV1 SCMI eval daughter on eval mother";
--	compatible = "st,stm32mp157c-ev1-scmi", "st,stm32mp157c-ev1", "st,stm32mp157c-ed1",
--		     "st,stm32mp157";
-+	compatible = "st,stm32mp157c-ev1-scmi", "st,stm32mp157c-ed1", "st,stm32mp157";
+@@ -698,11 +704,12 @@ static int hpre_set_user_domain_and_cache(struct hisi_qm *qm)
  
- 	reserved-memory {
- 		optee@fe000000 {
+ static void hpre_cnt_regs_clear(struct hisi_qm *qm)
+ {
+-	u8 clusters_num = hpre_cluster_num(qm);
+ 	unsigned long offset;
++	u8 clusters_num;
+ 	int i;
+ 
+ 	/* clear clusterX/cluster_ctrl */
++	clusters_num = qm->cap_tables.dev_cap_table[HPRE_CLUSTER_NUM_CAP_IDX].cap_val;
+ 	for (i = 0; i < clusters_num; i++) {
+ 		offset = HPRE_CLSTR_BASE + i * HPRE_CLSTR_ADDR_INTRVL;
+ 		writel(0x0, qm->io_base + offset + HPRE_CLUSTER_INQURY);
+@@ -989,13 +996,14 @@ static int hpre_pf_comm_regs_debugfs_init(struct hisi_qm *qm)
+ 
+ static int hpre_cluster_debugfs_init(struct hisi_qm *qm)
+ {
+-	u8 clusters_num = hpre_cluster_num(qm);
+ 	struct device *dev = &qm->pdev->dev;
+ 	char buf[HPRE_DBGFS_VAL_MAX_LEN];
+ 	struct debugfs_regset32 *regset;
+ 	struct dentry *tmp_d;
++	u8 clusters_num;
+ 	int i, ret;
+ 
++	clusters_num = qm->cap_tables.dev_cap_table[HPRE_CLUSTER_NUM_CAP_IDX].cap_val;
+ 	for (i = 0; i < clusters_num; i++) {
+ 		ret = snprintf(buf, HPRE_DBGFS_VAL_MAX_LEN, "cluster%d", i);
+ 		if (ret >= HPRE_DBGFS_VAL_MAX_LEN)
+@@ -1100,6 +1108,34 @@ static void hpre_debugfs_exit(struct hisi_qm *qm)
+ 	debugfs_remove_recursive(qm->debug.debug_root);
+ }
+ 
++static int hpre_pre_store_cap_reg(struct hisi_qm *qm)
++{
++	struct hisi_qm_cap_record *hpre_cap;
++	struct device *dev = &qm->pdev->dev;
++	size_t i, size;
++
++	size = ARRAY_SIZE(hpre_pre_store_caps);
++	hpre_cap = devm_kzalloc(dev, sizeof(*hpre_cap) * size, GFP_KERNEL);
++	if (!hpre_cap)
++		return -ENOMEM;
++
++	for (i = 0; i < size; i++) {
++		hpre_cap[i].type = hpre_pre_store_caps[i];
++		hpre_cap[i].cap_val = hisi_qm_get_hw_info(qm, hpre_basic_info,
++				      hpre_pre_store_caps[i], qm->cap_ver);
++	}
++
++	if (hpre_cap[HPRE_CLUSTER_NUM_CAP_IDX].cap_val > HPRE_CLUSTERS_NUM_MAX) {
++		dev_err(dev, "Device cluster num %u is out of range for driver supports %d!\n",
++			hpre_cap[HPRE_CLUSTER_NUM_CAP_IDX].cap_val, HPRE_CLUSTERS_NUM_MAX);
++		return -EINVAL;
++	}
++
++	qm->cap_tables.dev_cap_table = hpre_cap;
++
++	return 0;
++}
++
+ static int hpre_qm_init(struct hisi_qm *qm, struct pci_dev *pdev)
+ {
+ 	u64 alg_msk;
+@@ -1133,7 +1169,15 @@ static int hpre_qm_init(struct hisi_qm *qm, struct pci_dev *pdev)
+ 		return ret;
+ 	}
+ 
+-	alg_msk = hisi_qm_get_hw_info(qm, hpre_basic_info, HPRE_DEV_ALG_BITMAP_CAP, qm->cap_ver);
++	/* Fetch and save the value of capability registers */
++	ret = hpre_pre_store_cap_reg(qm);
++	if (ret) {
++		pci_err(pdev, "Failed to pre-store capability registers!\n");
++		hisi_qm_uninit(qm);
++		return ret;
++	}
++
++	alg_msk = qm->cap_tables.dev_cap_table[HPRE_DEV_ALG_BITMAP_CAP_IDX].cap_val;
+ 	ret = hisi_qm_set_algs(qm, alg_msk, hpre_dev_algs, ARRAY_SIZE(hpre_dev_algs));
+ 	if (ret) {
+ 		pci_err(pdev, "Failed to set hpre algs!\n");
+@@ -1147,11 +1191,12 @@ static int hpre_show_last_regs_init(struct hisi_qm *qm)
+ {
+ 	int cluster_dfx_regs_num =  ARRAY_SIZE(hpre_cluster_dfx_regs);
+ 	int com_dfx_regs_num = ARRAY_SIZE(hpre_com_dfx_regs);
+-	u8 clusters_num = hpre_cluster_num(qm);
+ 	struct qm_debug *debug = &qm->debug;
+ 	void __iomem *io_base;
++	u8 clusters_num;
+ 	int i, j, idx;
+ 
++	clusters_num = qm->cap_tables.dev_cap_table[HPRE_CLUSTER_NUM_CAP_IDX].cap_val;
+ 	debug->last_words = kcalloc(cluster_dfx_regs_num * clusters_num +
+ 			com_dfx_regs_num, sizeof(unsigned int), GFP_KERNEL);
+ 	if (!debug->last_words)
+@@ -1188,10 +1233,10 @@ static void hpre_show_last_dfx_regs(struct hisi_qm *qm)
+ {
+ 	int cluster_dfx_regs_num =  ARRAY_SIZE(hpre_cluster_dfx_regs);
+ 	int com_dfx_regs_num = ARRAY_SIZE(hpre_com_dfx_regs);
+-	u8 clusters_num = hpre_cluster_num(qm);
+ 	struct qm_debug *debug = &qm->debug;
+ 	struct pci_dev *pdev = qm->pdev;
+ 	void __iomem *io_base;
++	u8 clusters_num;
+ 	int i, j, idx;
+ 	u32 val;
+ 
+@@ -1206,6 +1251,7 @@ static void hpre_show_last_dfx_regs(struct hisi_qm *qm)
+ 			  hpre_com_dfx_regs[i].name, debug->last_words[i], val);
+ 	}
+ 
++	clusters_num = qm->cap_tables.dev_cap_table[HPRE_CLUSTER_NUM_CAP_IDX].cap_val;
+ 	for (i = 0; i < clusters_num; i++) {
+ 		io_base = qm->io_base + hpre_cluster_offsets[i];
+ 		for (j = 0; j <  cluster_dfx_regs_num; j++) {
 -- 
 2.43.0
 
