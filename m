@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-14793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD49838299
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE2F683834A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:27:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 236B328CC4B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1752B2B43B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5E45D903;
-	Tue, 23 Jan 2024 01:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A125D75C;
+	Tue, 23 Jan 2024 01:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQ6d9Dmg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mUU9CaS0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474AA5D8F9;
-	Tue, 23 Jan 2024 01:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051B15D724;
+	Tue, 23 Jan 2024 01:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974391; cv=none; b=KNB+fOiyu+u5icCSLeVt9ZtPfGZNam6oXSrBSD9x+rq0aeIKu1MThSGoSr1cY/nqWQ5i3cDjjA1EFBi0Ywj3x5aA09JvlPasxVcWYXAnc/4TcEp10txA+rQi5usB4uFbuRJT8lxO/BFGJO+T8qt/NIukEGaPKXjcUNn/n9hZTqw=
+	t=1705974393; cv=none; b=YjJdjFCZze8RNY+lXG0bUsunMzonDZQMajlSOWA6E6tGXxuB8PyOKtPGL15N7tu0iqPni75Jjklyunju9nkySirQp7X/bjDESZgdpw2sK/hbjX5UeGpSZxtpdZcN4Aq9mkPlXuzH7HF9q4epM0KvTslFtlWhfG+9Hg5f6nwp6jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974391; c=relaxed/simple;
-	bh=FPA65sa25pXIEJ1GT9KuHhIK4ZwWFBvQmAkHq6+9e44=;
+	s=arc-20240116; t=1705974393; c=relaxed/simple;
+	bh=roWcD+6M1hd2pKkMXTiVZvdN6lss9Z1Eg30+9iWeO58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UHR0chMDuXCpFJUkdpdkaN6OOWN0g1DU9WcreZXpwXqbsR0xxeRTGOF1QCXDSmRIc0mtBXOzT683Qz+ZfiqxE5WtqHR27tffsRcu8KMO9ZV+SNeBFH+Yho9yeO9gOfl5hG3AOKyVblGEGH/cDsNLpVsaU9EFVREcWtpBM2I6RjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQ6d9Dmg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11876C433C7;
-	Tue, 23 Jan 2024 01:46:30 +0000 (UTC)
+	 MIME-Version; b=qM0jWsN286iF4RUwlZutyoI3iOu5KLrulWK7kfNOmBjqHTiEhXy91bd3IT9En7/iNJlQgLXooperz4MlPi97aPibe9uO0yED6yPxn+xQCj5WU6fkar21TpjuD7qqEXfrpBrYe/0TPQu613L4cE5T9pSeauVIInrWt49iItnwCDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mUU9CaS0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA403C433F1;
+	Tue, 23 Jan 2024 01:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974390;
-	bh=FPA65sa25pXIEJ1GT9KuHhIK4ZwWFBvQmAkHq6+9e44=;
+	s=korg; t=1705974392;
+	bh=roWcD+6M1hd2pKkMXTiVZvdN6lss9Z1Eg30+9iWeO58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yQ6d9Dmga5gVes18z8Vm2h/+MGDkVbYp7EF1ay5hlXHiyAf74eSx2BGZvarkmE/0G
-	 RTSOl78nfBj547RPkW+xvOWR9r9WrHJ8mOPvKUMg3HpIoJn3IB66Pj8uH++mqpzrN+
-	 FYU14a6jgZt6lPNodHYhiHSqaYVirDuIb/lB8OpM=
+	b=mUU9CaS07wVMQCrQPOiIqJU5kSg4bBLN/2aynuQaRuXDdHqOKp7cRsxlkQ72/CbLy
+	 baa2osfd5dcLjWzAeBEVl/mHGxIZn4pM6kzTF8/onn6VnsN8pKObLPhbVgJUk/qiXW
+	 8vqa8JlZJdnygwOCMFSWt6JGSMv8TY2ghqJQiTik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David McKay <david.mckay@codasip.com>,
-	Stuart Menefy <stuart.menefy@codasip.com>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 081/583] asm-generic: Fix 32 bit __generic_cmpxchg_local
-Date: Mon, 22 Jan 2024 15:52:12 -0800
-Message-ID: <20240122235814.632397807@linuxfoundation.org>
+Subject: [PATCH 6.6 082/583] arm64: dts: qcom: qrb4210-rb2: dont force usb peripheral mode
+Date: Mon, 22 Jan 2024 15:52:13 -0800
+Message-ID: <20240122235814.667433725@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
 References: <20240122235812.238724226@linuxfoundation.org>
@@ -67,37 +69,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David McKay <david.mckay@codasip.com>
+From: Caleb Connolly <caleb.connolly@linaro.org>
 
-[ Upstream commit d93cca2f3109f88c94a32d3322ec8b2854a9c339 ]
+[ Upstream commit 27c2ca90e2f34cd3c4849af996e1a96a69e700d3 ]
 
-Commit 656e9007ef58 ("asm-generic: avoid __generic_cmpxchg_local
-warnings") introduced a typo that means the code is incorrect for 32 bit
-values. It will work fine for postive numbers, but will fail for
-negative numbers on a system where longs are 64 bit.
+The rb2 only has a single USB controller, it can be switched between a
+type-c port and an internal USB hub via a DIP switch. Until dynamic
+role switching is available it's preferable to put the USB controller
+in host mode so that the type-A ports and ethernet are available.
 
-Fixes: 656e9007ef58 ("asm-generic: avoid __generic_cmpxchg_local warnings")
-Signed-off-by: David McKay <david.mckay@codasip.com>
-Signed-off-by: Stuart Menefy <stuart.menefy@codasip.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+Reviewed-by: Vladimir Zapolskiy <vladimir.zapolskiy@linaro.org>
+Fixes: eaa53a85748d ("arm64: dts: qcom: qrb4210-rb2: Enable USB node")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Link: https://lore.kernel.org/r/20231010-caleb-rb2-host-mode-v1-1-b057d443cd62@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/asm-generic/cmpxchg-local.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/qrb4210-rb2.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/asm-generic/cmpxchg-local.h b/include/asm-generic/cmpxchg-local.h
-index 3df9f59a544e..f27d66fdc00a 100644
---- a/include/asm-generic/cmpxchg-local.h
-+++ b/include/asm-generic/cmpxchg-local.h
-@@ -34,7 +34,7 @@ static inline unsigned long __generic_cmpxchg_local(volatile void *ptr,
- 			*(u16 *)ptr = (new & 0xffffu);
- 		break;
- 	case 4: prev = *(u32 *)ptr;
--		if (prev == (old & 0xffffffffffu))
-+		if (prev == (old & 0xffffffffu))
- 			*(u32 *)ptr = (new & 0xffffffffu);
- 		break;
- 	case 8: prev = *(u64 *)ptr;
+diff --git a/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts b/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
+index a7278a9472ed..9738c0dacd58 100644
+--- a/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
++++ b/arch/arm64/boot/dts/qcom/qrb4210-rb2.dts
+@@ -518,7 +518,6 @@ &usb {
+ 
+ &usb_dwc3 {
+ 	maximum-speed = "super-speed";
+-	dr_mode = "peripheral";
+ };
+ 
+ &usb_hsphy {
 -- 
 2.43.0
 
