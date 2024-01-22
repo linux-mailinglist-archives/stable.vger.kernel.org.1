@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC65837F0E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAA14837CCB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F3B21F2B86C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29A0E1C25318
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:17:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AED4604B3;
-	Tue, 23 Jan 2024 00:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18313158D88;
+	Tue, 23 Jan 2024 00:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RWSFJAxI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Moi64dVR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28BD13FE1;
-	Tue, 23 Jan 2024 00:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC417158D80;
+	Tue, 23 Jan 2024 00:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970907; cv=none; b=cSOgOcGlSvkMc8LVo6Vjig00xn1C0iXuy/YtzOG8ifFdr7bW45OTBt+D1PzyN9rkEpEGkZDq+/B36RB4X09rco1y0V46PSwmGE5615HurbAlTSMZ1nxXwtH0EXskdwkfksnDa5dGK8UTXH6yYj2ByIuW0TDfwDewYGX/f9ywAHE=
+	t=1705969740; cv=none; b=PPWcSHJiPgdhkgiYtUlvFhGxT57LbbeWyIgwehgrjgLs+upgatbThXElOMoJxnJdzv6cSimVEs39lV46r6W8DAJtNsZ/Y0vw7M0cHnopclUg7L9CfcytzewbWL1iR9jwZZPcZmJRNPqnl0EME48P9DtSIPtyvlFhjrilixOsPa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970907; c=relaxed/simple;
-	bh=JaUUiGC8d7TWOsmuzVI407b7pxYyOPolE+cQK3sjovw=;
+	s=arc-20240116; t=1705969740; c=relaxed/simple;
+	bh=7x6FOCtCntJEgjMDJxKm9lho0t0CO3HFLCxcbEeUGUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p/HWyQr3HKgxCgu6UdhaJFjUESncDIqM5c0a302l7kOrYZG0CT2logUPi6MRhzKfYtT9pil0peedcr6MSHMWhiVhtK1trncVCQIX3cFQlDt58ama4i0hdj2Dj28Sni116Liiyr49goCoVH/WY8s9LBWlSs8oWg/riNJczYqRJXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RWSFJAxI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6383EC43390;
-	Tue, 23 Jan 2024 00:48:25 +0000 (UTC)
+	 MIME-Version; b=m4sxe5T7ZaEuMpORa9Ai5+QVcCfVixYPLSYdSWGHoBMO4U+jedNQaGQkbGVKNZW3Zzwk7dDTuitgUSLtv4p183lLH0U9RbbIgEPgBFb1Oj+XPGd9TX+EBSz5OmwusOZbLvA5M8gSEt0TzZdqxRQ19o6AsYmudIEBA9wZy0/chHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Moi64dVR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F17EDC433F1;
+	Tue, 23 Jan 2024 00:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970905;
-	bh=JaUUiGC8d7TWOsmuzVI407b7pxYyOPolE+cQK3sjovw=;
+	s=korg; t=1705969740;
+	bh=7x6FOCtCntJEgjMDJxKm9lho0t0CO3HFLCxcbEeUGUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RWSFJAxIstyL0EA1l3HzRYVfHqU3rc00oaNg77BBh9Zwgyzmnl0+vHkjT54zpzane
-	 6LA9ttZPjR3/8z9U+DpGhnVsIW7gNLAx4gseOzSy/rzVzWfixab8/tsNcZs1dcS9xT
-	 9Kz75mKbyqHz8GRkIsZaK6Ch7BcEu6jpmRNfOlvQ=
+	b=Moi64dVRQQDmLiqgor4fhxlimiJ7EhkVqwXwG/RXQQnP9qo6mkOxsFNYq8WUT3/BE
+	 tzFXPRdsjBnybHRb0Wqtq6slIYJv2R/Ucaaw6W6Z0M9+lh/uU9nGBiVou5MP4/U60f
+	 QcVFt3UOQt8xrNWcEvpc14ECUctRU4QJE8jMgArE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/417] wifi: rtlwifi: rtl8192ce: using calculate_bit_shift()
+	Peter Chen <peter.chen@kernel.org>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Li Jun <jun.li@nxp.com>
+Subject: [PATCH 6.7 401/641] usb: chipidea: wait controller resume finished for wakeup irq
 Date: Mon, 22 Jan 2024 15:55:05 -0800
-Message-ID: <20240122235756.577154234@linuxfoundation.org>
+Message-ID: <20240122235830.520880708@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 3d03e8231031bcc65a48cd88ef9c71b6524ce70b ]
+commit 128d849074d05545becf86e713715ce7676fc074 upstream.
 
-Using calculate_bit_shift() to replace _rtl92c_phy_calculate_bit_shift().
-And fix the undefined bitwise shift behavior problem.
+After the chipidea driver introduce extcon for id and vbus, it's able
+to wakeup from another irq source, in case the system with extcon ID
+cable, wakeup from usb ID cable and device removal, the usb device
+disconnect irq may come firstly before the extcon notifier while system
+resume, so we will get 2 "wakeup" irq, one for usb device disconnect;
+and one for extcon ID cable change(real wakeup event), current driver
+treat them as 2 successive wakeup irq so can't handle it correctly, then
+finally the usb irq can't be enabled. This patch adds a check to bypass
+further usb events before controller resume finished to fix it.
 
-Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-7-suhui@nfschina.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1f874edcb731 ("usb: chipidea: add runtime power management support")
+cc:  <stable@vger.kernel.org>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Signed-off-by: Li Jun <jun.li@nxp.com>
+Link: https://lore.kernel.org/r/20231228110753.1755756-2-xu.yang_2@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c | 6 +++---
- drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h | 1 -
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ drivers/usb/chipidea/core.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c
-index da54e51badd3..fa70a7d5539f 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.c
-@@ -39,7 +39,7 @@ u32 rtl92c_phy_query_rf_reg(struct ieee80211_hw *hw,
- 							       rfpath, regaddr);
- 	}
+--- a/drivers/usb/chipidea/core.c
++++ b/drivers/usb/chipidea/core.c
+@@ -523,6 +523,13 @@ static irqreturn_t ci_irq_handler(int ir
+ 	u32 otgsc = 0;
  
--	bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 
- 	spin_unlock(&rtlpriv->locks.rf_lock);
-@@ -110,7 +110,7 @@ void rtl92ce_phy_set_rf_reg(struct ieee80211_hw *hw,
- 			original_value = _rtl92c_phy_rf_serial_read(hw,
- 								    rfpath,
- 								    regaddr);
--			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data =
- 			    ((original_value & (~bitmask)) |
- 			     (data << bitshift));
-@@ -122,7 +122,7 @@ void rtl92ce_phy_set_rf_reg(struct ieee80211_hw *hw,
- 			original_value = _rtl92c_phy_fw_rf_serial_read(hw,
- 								       rfpath,
- 								       regaddr);
--			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data =
- 			    ((original_value & (~bitmask)) |
- 			     (data << bitshift));
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h
-index 7582a162bd11..c7a0d4c776f0 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ce/phy.h
-@@ -94,7 +94,6 @@ u32 _rtl92c_phy_rf_serial_read(struct ieee80211_hw *hw, enum radio_path rfpath,
- 			       u32 offset);
- u32 _rtl92c_phy_fw_rf_serial_read(struct ieee80211_hw *hw,
- 				  enum radio_path rfpath, u32 offset);
--u32 _rtl92c_phy_calculate_bit_shift(u32 bitmask);
- void _rtl92c_phy_rf_serial_write(struct ieee80211_hw *hw,
- 				 enum radio_path rfpath, u32 offset, u32 data);
- void _rtl92c_phy_fw_rf_serial_write(struct ieee80211_hw *hw,
--- 
-2.43.0
-
+ 	if (ci->in_lpm) {
++		/*
++		 * If we already have a wakeup irq pending there,
++		 * let's just return to wait resume finished firstly.
++		 */
++		if (ci->wakeup_int)
++			return IRQ_HANDLED;
++
+ 		disable_irq_nosync(irq);
+ 		ci->wakeup_int = true;
+ 		pm_runtime_get(ci->dev);
 
 
 
