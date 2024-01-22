@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-12924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B878379B5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:44:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 203BF837A97
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71BA91F27C69
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:44:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA1C7290368
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A2A2B9CC;
-	Tue, 23 Jan 2024 00:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B51CA12F5BC;
+	Tue, 23 Jan 2024 00:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u37wg9HQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tjlt+iAX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5D36FB3;
-	Tue, 23 Jan 2024 00:07:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7318C12F5A7;
+	Tue, 23 Jan 2024 00:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968435; cv=none; b=tGWiksINmaf/WbPB7vqEAN7HT/ypRng+cN40rUaeXFnnuBdEJhUndwQkEnUG2y7rV0UVdjvkVIs7lyMdrC9RXoChN+SvAcdRROGfiVfqcBGFfrgXjutzGtV9RgQv+68b/B8v1UW/dSEoQIXssMJSVWhYNKyX6oLJYMMd0G7A8LY=
+	t=1705969011; cv=none; b=O2Ms49LEkdmHBOflAWnm3rNf1LsQo7pRUmQXMHNbwDziGdSo0ZsnyuGAvFRXAhOjkz9TQRtKYHJ/BR7pCQv3iUw5RbtOloDmXDPf96SMLa/MSX7ToRglfZacH4DBsyHykWKODTs34xLDfjKU4BBAii8QcL+KfOL+r3RS8Gg/YCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968435; c=relaxed/simple;
-	bh=VVEUFL5Z/gnsOYYGTE2stq6GJ8fWLWoJ+3XPc/2N0e4=;
+	s=arc-20240116; t=1705969011; c=relaxed/simple;
+	bh=sbYt+R2aLNIXfwhfFzczrXmuhQNllbGFAG80K9rAH5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PRLRhmzKxmGspxBDHIa73RLVtoyT2k/Viujn5tS85M5nIi2/vTFLa5OPHctba+ehUrAn5ZHvygSCHWmyxTA3cjQfbnFwiIOvwjdQCGukcvBYG2vQTrxraQEaPn4zYILU9CziYIqdODsbhjWJs8c7qwRzLeEUxh/FNY/QoerRHx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u37wg9HQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A914C433C7;
-	Tue, 23 Jan 2024 00:07:15 +0000 (UTC)
+	 MIME-Version; b=UhSO/hPG1yncxzZDwsw1WL0zVWuI5tKcchCl/pduOSQsChkGXoX2VTeSK2/6e7nl+Afuw9fbKAXKRTvwMktMgAPXzMhzvibGvbh6YH4tDxmUn2d9NydB70NRxh4iRuYNuuhliqay5Lw9uiIGTRPA5TbC2hMCulpjgY2nrOhacJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tjlt+iAX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 210C2C433F1;
+	Tue, 23 Jan 2024 00:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968435;
-	bh=VVEUFL5Z/gnsOYYGTE2stq6GJ8fWLWoJ+3XPc/2N0e4=;
+	s=korg; t=1705969011;
+	bh=sbYt+R2aLNIXfwhfFzczrXmuhQNllbGFAG80K9rAH5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u37wg9HQ9YpJ4AaYj62vtRtS7QRyVnOQ7HXdI89qgH1pPuDfkWo18lKzojzQwFxr4
-	 olkl3Kv0dGm6LNE5F/KnUqHPjXvEJFQWIqT222Oqpu1UC/mFzswK6OtP1s/84rHTPS
-	 eWgkb/qGp8rg45p4Aj5ZBtm2XDvwmi9DLFaErrhI=
+	b=tjlt+iAXVwo0wRycItUpbg9zlCcUywcD3P0XiDcDBcxPplHYOrDTbxnz9Y4sKV7F/
+	 E2kQwIwFza3t1134tf1+h4PP4oZ6uDiS9TrHKY5Rt16WlClPnZ5CDP2VQqZb4/faXG
+	 7cxNkjA457P7zJU/TRBNyzqK3WWWDct9dEyz6Iws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Guenter Roeck <linux@roeck-us.net>,
 	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 108/148] watchdog: bcm2835_wdt: Fix WDIOC_SETTIMEOUT handling
+Subject: [PATCH 5.4 134/194] watchdog: bcm2835_wdt: Fix WDIOC_SETTIMEOUT handling
 Date: Mon, 22 Jan 2024 15:57:44 -0800
-Message-ID: <20240122235716.802063306@linuxfoundation.org>
+Message-ID: <20240122235724.974747973@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -97,10 +97,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/watchdog/bcm2835_wdt.c b/drivers/watchdog/bcm2835_wdt.c
-index e6c27b71b136..35389562177b 100644
+index dec6ca019bea..3a8dec05b591 100644
 --- a/drivers/watchdog/bcm2835_wdt.c
 +++ b/drivers/watchdog/bcm2835_wdt.c
-@@ -41,6 +41,7 @@
+@@ -42,6 +42,7 @@
  
  #define SECS_TO_WDOG_TICKS(x) ((x) << 16)
  #define WDOG_TICKS_TO_SECS(x) ((x) >> 16)
@@ -108,7 +108,7 @@ index e6c27b71b136..35389562177b 100644
  
  struct bcm2835_wdt {
  	void __iomem		*base;
-@@ -137,7 +138,7 @@ static struct watchdog_device bcm2835_wdt_wdd = {
+@@ -140,7 +141,7 @@ static struct watchdog_device bcm2835_wdt_wdd = {
  	.info =		&bcm2835_wdt_info,
  	.ops =		&bcm2835_wdt_ops,
  	.min_timeout =	1,
