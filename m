@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78905837F1F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EF1B838418
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F5CC1F2B93A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1E591C2A116
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A842560DD7;
-	Tue, 23 Jan 2024 00:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FCF67A1D;
+	Tue, 23 Jan 2024 02:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uJLzmtZa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0AJTe3gF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66FEA60B9D;
-	Tue, 23 Jan 2024 00:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776946775D;
+	Tue, 23 Jan 2024 02:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970953; cv=none; b=KylxltmQ0Zyt/vD0pn209jwwb1FEMQdeuYxfqJGz3NliKpO9n9NE+uK1tHZBbzG4DFU9ajhO7duKLdwKu8Ia8sDWyU+t/7Hra4Ed3UP5SiV2lCgU7Zt+dAQSWwZuyt8P6TnUhseQg0VxLJkH8dYZ0JcXyN0KrimuM0HhtPKYEs0=
+	t=1705975300; cv=none; b=GdH0CHOAYWK3spwoAJ+IRq0uTXw1JxIey6z0sCPJKBQkc6bWCexHHu0QFivjGhVsXAA87V1g1lNNjW0s6y077QVVXeNCurqzZcp7T3XIX5AP0aL4UwrZJoVoKO0RNQ2Ho96HJXevMX0uttD2PjoxyCsBve2gkMQA2CDeF5vkMDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970953; c=relaxed/simple;
-	bh=hkxCdW6ZfvIfNoGgOdip71PAn3Nw9zVMJAY09xJj+qI=;
+	s=arc-20240116; t=1705975300; c=relaxed/simple;
+	bh=iRuu3dLbitdsXGXFYH5CkpObuGRbYI5DcEDkcdnBgkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BVbjGcgx1l2pAq4PYjQww7Wag5FuUmaID5iZK+YSD20j4qDnmofkKOtu+h972la2aKalHt5lOo3Il+4I6y7O2S4ZiB9tBHpIz/WnLiuCCOagEqZ7l7ZWKFMhU2uRCi9ubob6sgXs0tHX6FG9I5pyrPI637piHGfbzKP4OVbPO2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uJLzmtZa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B9D7C433C7;
-	Tue, 23 Jan 2024 00:49:13 +0000 (UTC)
+	 MIME-Version; b=haPAQ0nuFzi/4DgkJY/YicXlpFr4N9bek4GyP0BmKI1UZymXj+lOH5f1CwI0wQeSpQnoXnq6/H8JL7YXUvZlzjPulvufQB4eqgqqzNJUqWwNcDxI1JWvhHkOvtS22X3KdeZ0VJbLOOdHQNTFuu+ljKV4bl2GcFSR2sgxvqf7CAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0AJTe3gF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AE99C433C7;
+	Tue, 23 Jan 2024 02:01:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970953;
-	bh=hkxCdW6ZfvIfNoGgOdip71PAn3Nw9zVMJAY09xJj+qI=;
+	s=korg; t=1705975300;
+	bh=iRuu3dLbitdsXGXFYH5CkpObuGRbYI5DcEDkcdnBgkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uJLzmtZaUzb76JinKD5arkUDjAINdXdgo+EmxbN95m6BcnyUNcyGRhjl2pHxLwoNa
-	 XM7XeitbbSjtfpp/+cKKCSHyEgBtyp4LSQNLFUxlv7wxk9ivavzqK/Te/Rp/pjlo8r
-	 XwarRvz7Kt4kjEewOJKz90ZKoiC/bn1w3WyjvKp8=
+	b=0AJTe3gF1L5iELc/JaKnHC1Uvpe0gELGt4Of4Gst+CMRpiUI0ykIu2iIBsnWIagAA
+	 TfVwlYZmBxEfNhOy8j6T02fJWyu76RRGqvHrolOIfRsKxtazNa43iLzFTI5M25bthU
+	 ddiMLs5ZqjLx3lembki8IbuK41aU4fcMYXivU4zI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingwei Lee <xrivendell7@gmail.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 148/417] bpf: sockmap, fix proto update hook to avoid dup calls
+Subject: [PATCH 6.6 265/583] media: cx231xx: fix a memleak in cx231xx_init_isoc
 Date: Mon, 22 Jan 2024 15:55:16 -0800
-Message-ID: <20240122235756.955976065@linuxfoundation.org>
+Message-ID: <20240122235820.113448950@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Fastabend <john.fastabend@gmail.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 16b2f264983dc264c1560cc0170e760dec1bf54f ]
+[ Upstream commit 5d3c8990e2bbf929cb211563dadd70708f42e4e6 ]
 
-When sockets are added to a sockmap or sockhash we allocate and init a
-psock. Then update the proto ops with sock_map_init_proto the flow is
+The dma_q->p_left_data alloced by kzalloc should be freed in all the
+following error handling paths. However, it hasn't been freed in the
+allocation error paths of dev->video_mode.isoc_ctl.urb and
+dev->video_mode.isoc_ctl.transfer_buffer.
 
-  sock_hash_update_common
-    sock_map_link
-      psock = sock_map_psock_get_checked() <-returns existing psock
-      sock_map_init_proto(sk, psock)       <- updates sk_proto
+On the other hand, the dma_q->p_left_data did be freed in the
+error-handling paths after that of dev->video_mode.isoc_ctl.urb and
+dev->video_mode.isoc_ctl.transfer_buffer, by calling
+cx231xx_uninit_isoc(dev). So the same free operation should be done in
+error-handling paths of those two allocation.
 
-If the socket is already in a map this results in the sock_map_init_proto
-being called multiple times on the same socket. We do this because when
-a socket is added to multiple maps this might result in a new set of BPF
-programs being attached to the socket requiring an updated ops struct.
-
-This creates a rule where it must be safe to call psock_update_sk_prot
-multiple times. When we added a fix for UAF through unix sockets in patch
-4dd9a38a753fc we broke this rule by adding a sock_hold in that path
-to ensure the sock is not released. The result is if a af_unix stream sock
-is placed in multiple maps it results in a memory leak because we call
-sock_hold multiple times with only a single sock_put on it.
-
-Fixes: 8866730aed51 ("bpf, sockmap: af_unix stream sockets need to hold ref for pair sock")
-Reported-by: Xingwei Lee <xrivendell7@gmail.com>
-Signed-off-by: John Fastabend <john.fastabend@gmail.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Link: https://lore.kernel.org/r/20231221232327.43678-2-john.fastabend@gmail.com
+Fixes: 64fbf4445526 ("[media] cx231xx: Added support for Carraera, Shelby, RDx_253S and VIDEO_GRABBER")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/unix_bpf.c | 21 ++++++++++++++++++---
- 1 file changed, 18 insertions(+), 3 deletions(-)
+ drivers/media/usb/cx231xx/cx231xx-core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/unix/unix_bpf.c b/net/unix/unix_bpf.c
-index 7ea7c3a0d0d0..bd84785bf8d6 100644
---- a/net/unix/unix_bpf.c
-+++ b/net/unix/unix_bpf.c
-@@ -161,15 +161,30 @@ int unix_stream_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool r
- {
- 	struct sock *sk_pair;
- 
-+	/* Restore does not decrement the sk_pair reference yet because we must
-+	 * keep the a reference to the socket until after an RCU grace period
-+	 * and any pending sends have completed.
-+	 */
- 	if (restore) {
- 		sk->sk_write_space = psock->saved_write_space;
- 		sock_replace_proto(sk, psock->sk_proto);
- 		return 0;
+diff --git a/drivers/media/usb/cx231xx/cx231xx-core.c b/drivers/media/usb/cx231xx/cx231xx-core.c
+index 727e6268567f..f1feccc28bf0 100644
+--- a/drivers/media/usb/cx231xx/cx231xx-core.c
++++ b/drivers/media/usb/cx231xx/cx231xx-core.c
+@@ -1024,6 +1024,7 @@ int cx231xx_init_isoc(struct cx231xx *dev, int max_packets,
+ 	if (!dev->video_mode.isoc_ctl.urb) {
+ 		dev_err(dev->dev,
+ 			"cannot alloc memory for usb buffers\n");
++		kfree(dma_q->p_left_data);
+ 		return -ENOMEM;
  	}
  
--	sk_pair = unix_peer(sk);
--	sock_hold(sk_pair);
--	psock->sk_pair = sk_pair;
-+	/* psock_update_sk_prot can be called multiple times if psock is
-+	 * added to multiple maps and/or slots in the same map. There is
-+	 * also an edge case where replacing a psock with itself can trigger
-+	 * an extra psock_update_sk_prot during the insert process. So it
-+	 * must be safe to do multiple calls. Here we need to ensure we don't
-+	 * increment the refcnt through sock_hold many times. There will only
-+	 * be a single matching destroy operation.
-+	 */
-+	if (!psock->sk_pair) {
-+		sk_pair = unix_peer(sk);
-+		sock_hold(sk_pair);
-+		psock->sk_pair = sk_pair;
-+	}
-+
- 	unix_stream_bpf_check_needs_rebuild(psock->sk_proto);
- 	sock_replace_proto(sk, &unix_stream_bpf_prot);
- 	return 0;
+@@ -1033,6 +1034,7 @@ int cx231xx_init_isoc(struct cx231xx *dev, int max_packets,
+ 		dev_err(dev->dev,
+ 			"cannot allocate memory for usbtransfer\n");
+ 		kfree(dev->video_mode.isoc_ctl.urb);
++		kfree(dma_q->p_left_data);
+ 		return -ENOMEM;
+ 	}
+ 
 -- 
 2.43.0
 
