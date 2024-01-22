@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94AAA837E40
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:07 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D5C7837C09
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7B891C272FF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:37:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23DC2295109
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D57815BAFD;
-	Tue, 23 Jan 2024 00:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C52372;
+	Tue, 23 Jan 2024 00:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6dCZwtf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jbnLvxQa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 955794F207;
-	Tue, 23 Jan 2024 00:41:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9357186B;
+	Tue, 23 Jan 2024 00:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970474; cv=none; b=NlKOh6bCkCmaUS8K0mD/s0buNPK7CsJdUXyERi5YoxmHBf4loaBJsDRHz74JO/DU+DX/kpQHoIMxjalNdxYThooNR1fE11v9XWiSNGT0Dh1R6Qem8rmFsNo402qLCA4mnq0s8rRtkGtx6QFKdIk82pY7nvo9KlFCgWFIGyxCCAM=
+	t=1705969478; cv=none; b=GK4wLf9nissXQOkv8MU6SpZm6hqVaVnJeXmXjcqBZgRi6YZLb6S4L6jz/jVqJHrxIaQr33AkaVzZCZttjD3EhXJvAe9hkjybruiQKIjyH0qPhcKyEi6EzgJPtyS/lB+SUm3IBEWbtNVAcGZaCR1b6JWu0KnMvwdcu76KQMd7CHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970474; c=relaxed/simple;
-	bh=L4RUCyaF19iV+KuwN4rQXOBlqvTpV4rZn6bswK6beO4=;
+	s=arc-20240116; t=1705969478; c=relaxed/simple;
+	bh=AJydT7JHr0oBQw1ZoHDEIjKrLJQGxhzj2Nx7gDgPnks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bxHuo+ZG+gzCXjDdvCGDiRsfiwpbKE0u5bpbjKgKdQgdRRMua0KTUx22PJ3HdxUWxGt59xjzxzZs9USoEgqnv0IBhEaNgytzP82cvBcyeKlGv0cIjilxTczmq3acX5kVgwzELVLYNcg2sItOtKzA04BbC0iTGYsg2kMewyCJVvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6dCZwtf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7265C433C7;
-	Tue, 23 Jan 2024 00:41:13 +0000 (UTC)
+	 MIME-Version; b=frbjtz6j9iAKe3Yynio/uNevgHvGH7dvodPMA2RTQ8ATiOj+7BWVnymxKi1KxAwc77kwPMRyTyNVSp/PaavyMzABzWhLFn10XB6wcT8rmDACl++crpCIrqVDcRyh6KiVm0Ht6bbH+yQPvmDx91M5DDepshvJPh5yWMtSH3siND0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jbnLvxQa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72803C43394;
+	Tue, 23 Jan 2024 00:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970474;
-	bh=L4RUCyaF19iV+KuwN4rQXOBlqvTpV4rZn6bswK6beO4=;
+	s=korg; t=1705969478;
+	bh=AJydT7JHr0oBQw1ZoHDEIjKrLJQGxhzj2Nx7gDgPnks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z6dCZwtf92w0Cc0qvnwMkaexLNvMla181A+GFWgNMhN9m8jpklTcNs1rTQgW5RYNX
-	 cpJ+ABjIyKN53l1gZ+cgLddJEpAV4qNq/zuZo7eP59WdhjQM6fIxWdh+I2dk205Cm8
-	 vycFO1YZOwkD7PfiL9W+ts7RjE9nYUvKsH4sueOI=
+	b=jbnLvxQa3tYtAqbYxRVU+XKP6WwwAMDwDaATq9QElo1uawJU1MKnAm9uZJ1VFkzFv
+	 EnKl8KxFeMff+ZgZAFypfTavXc1P1kNJlDJwKo71ttBKw/wjrXWxS02CllrrYezyPO
+	 377FP02Sw3agHdf2Xpij93mU2EFJ0bhDwxdu8ULM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Lynch <nathanl@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 007/417] powerpc/pseries/memhp: Fix access beyond end of drmem array
-Date: Mon, 22 Jan 2024 15:52:55 -0800
-Message-ID: <20240122235751.744510799@linuxfoundation.org>
+Subject: [PATCH 6.7 272/641] drm/tidss: Return error value from from softreset
+Date: Mon, 22 Jan 2024 15:52:56 -0800
+Message-ID: <20240122235826.433110269@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,103 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit bd68ffce69f6cf8ddd3a3c32549d1d2275e49fc5 ]
+[ Upstream commit aceafbb5035c4bfc75a321863ed1e393d644d2d2 ]
 
-dlpar_memory_remove_by_index() may access beyond the bounds of the
-drmem lmb array when the LMB lookup fails to match an entry with the
-given DRC index. When the search fails, the cursor is left pointing to
-&drmem_info->lmbs[drmem_info->n_lmbs], which is one element past the
-last valid entry in the array. The debug message at the end of the
-function then dereferences this pointer:
+Return an error value from dispc_softreset() so that the caller can
+handle the errors.
 
-        pr_debug("Failed to hot-remove memory at %llx\n",
-                 lmb->base_addr);
-
-This was found by inspection and confirmed with KASAN:
-
-  pseries-hotplug-mem: Attempting to hot-remove LMB, drc index 1234
-  ==================================================================
-  BUG: KASAN: slab-out-of-bounds in dlpar_memory+0x298/0x1658
-  Read of size 8 at addr c000000364e97fd0 by task bash/949
-
-  dump_stack_lvl+0xa4/0xfc (unreliable)
-  print_report+0x214/0x63c
-  kasan_report+0x140/0x2e0
-  __asan_load8+0xa8/0xe0
-  dlpar_memory+0x298/0x1658
-  handle_dlpar_errorlog+0x130/0x1d0
-  dlpar_store+0x18c/0x3e0
-  kobj_attr_store+0x68/0xa0
-  sysfs_kf_write+0xc4/0x110
-  kernfs_fop_write_iter+0x26c/0x390
-  vfs_write+0x2d4/0x4e0
-  ksys_write+0xac/0x1a0
-  system_call_exception+0x268/0x530
-  system_call_vectored_common+0x15c/0x2ec
-
-  Allocated by task 1:
-   kasan_save_stack+0x48/0x80
-   kasan_set_track+0x34/0x50
-   kasan_save_alloc_info+0x34/0x50
-   __kasan_kmalloc+0xd0/0x120
-   __kmalloc+0x8c/0x320
-   kmalloc_array.constprop.0+0x48/0x5c
-   drmem_init+0x2a0/0x41c
-   do_one_initcall+0xe0/0x5c0
-   kernel_init_freeable+0x4ec/0x5a0
-   kernel_init+0x30/0x1e0
-   ret_from_kernel_user_thread+0x14/0x1c
-
-  The buggy address belongs to the object at c000000364e80000
-   which belongs to the cache kmalloc-128k of size 131072
-  The buggy address is located 0 bytes to the right of
-   allocated 98256-byte region [c000000364e80000, c000000364e97fd0)
-
-  ==================================================================
-  pseries-hotplug-mem: Failed to hot-remove memory at 0
-
-Log failed lookups with a separate message and dereference the
-cursor only when it points to a valid entry.
-
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Fixes: 51925fb3c5c9 ("powerpc/pseries: Implement memory hotplug remove in the kernel")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231114-pseries-memhp-fixes-v1-1-fb8f2bb7c557@linux.ibm.com
+Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Link: https://lore.kernel.org/r/20231109-tidss-probe-v2-5-ac91b5ea35c0@ideasonboard.com
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Stable-dep-of: bc288a927815 ("drm/tidss: Fix dss reset")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/hotplug-memory.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/tidss/tidss_dispc.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-index 2e3a317722a8..051a777ba1b2 100644
---- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -500,14 +500,15 @@ static int dlpar_memory_remove_by_index(u32 drc_index)
- 		}
+diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
+index 8d822372bf94..9a29f5fa8453 100644
+--- a/drivers/gpu/drm/tidss/tidss_dispc.c
++++ b/drivers/gpu/drm/tidss/tidss_dispc.c
+@@ -2702,7 +2702,7 @@ static void dispc_init_errata(struct dispc_device *dispc)
  	}
+ }
  
--	if (!lmb_found)
-+	if (!lmb_found) {
-+		pr_debug("Failed to look up LMB for drc index %x\n", drc_index);
- 		rc = -EINVAL;
--
--	if (rc)
-+	} else if (rc) {
- 		pr_debug("Failed to hot-remove memory at %llx\n",
- 			 lmb->base_addr);
--	else
-+	} else {
- 		pr_debug("Memory at %llx was hot-removed\n", lmb->base_addr);
+-static void dispc_softreset(struct dispc_device *dispc)
++static int dispc_softreset(struct dispc_device *dispc)
+ {
+ 	u32 val;
+ 	int ret = 0;
+@@ -2712,8 +2712,12 @@ static void dispc_softreset(struct dispc_device *dispc)
+ 	/* Wait for reset to complete */
+ 	ret = readl_poll_timeout(dispc->base_common + DSS_SYSSTATUS,
+ 				 val, val & 1, 100, 5000);
+-	if (ret)
+-		dev_warn(dispc->dev, "failed to reset dispc\n");
++	if (ret) {
++		dev_err(dispc->dev, "failed to reset dispc\n");
++		return ret;
++	}
++
++	return 0;
+ }
+ 
+ int dispc_init(struct tidss_device *tidss)
+@@ -2826,8 +2830,11 @@ int dispc_init(struct tidss_device *tidss)
+ 			     &dispc->memory_bandwidth_limit);
+ 
+ 	/* K2G display controller does not support soft reset */
+-	if (feat->subrev != DISPC_K2G)
+-		dispc_softreset(dispc);
++	if (feat->subrev != DISPC_K2G) {
++		r = dispc_softreset(dispc);
++		if (r)
++			return r;
 +	}
  
- 	return rc;
- }
+ 	tidss->dispc = dispc;
+ 
 -- 
 2.43.0
 
