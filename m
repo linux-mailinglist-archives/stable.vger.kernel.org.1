@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-12919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A855A8379AF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:44:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 296D08379BB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:44:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB2541C272F0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:44:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C0671C274B6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC2863CB;
-	Tue, 23 Jan 2024 00:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65C8150271;
+	Tue, 23 Jan 2024 00:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XB6vOQrF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZZeOKAY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE9F63AF;
-	Tue, 23 Jan 2024 00:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24EFB42A8D;
+	Tue, 23 Jan 2024 00:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968421; cv=none; b=lz0NwNVdpbcuUz9rac0jFTKpdy4OKDM97mf3TcoB3z/gNmlB5VX7wlpgzLmhpiIeIWuNiulhRPJ6TFNAyMo0TlM8v5VRRQFx5pURT+M0pN0f9mGJ0yHjiKxZIQl42Nnsfm0OmwjUaOu7IFIUg0CQzoXzi/sDxWZlT7XKaIg2LjY=
+	t=1705968454; cv=none; b=G2ngHrPiW+DPxQs+cJbC12Iy3fLnlmvg7SvjKsOlvvbVJfVOu0LOpdygUKi8JBPjtdn9luMYbpWxls+9AvQKNDKQbuN1ro6DoYTeZEqP3Ee3MNTSNPt/rRsm1XRQ3MdXI8Xrog5EmKZtm3MB0ThzFZkaH1QTLVdWZD6dsFjy0+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968421; c=relaxed/simple;
-	bh=qGBxV9x+c8mdWkG50pCVV2WICYYm81mNTbdC0yMjTvs=;
+	s=arc-20240116; t=1705968454; c=relaxed/simple;
+	bh=ImMqXOAmep9+3UdKkatyqWnuoDoeCYTHgGatAH5o5BU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hL6/gts3aWrRnCfeYvDqNcfNC6/8QeEkPWoaLQ4e8Q3kMIP82txVSrJnkB+9dyTAgvmHEO1pw8Bn1TGjjWz2nlr54um14O6STRk1NuhLPNNXFU7Mduxpo4s5IEW24pWUj3nqT3RCDgCGMGZETHuTBt5q8L+ZjM5Kz/WtO00mngc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XB6vOQrF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD71BC433F1;
-	Tue, 23 Jan 2024 00:07:00 +0000 (UTC)
+	 MIME-Version; b=TJdj6jHBcjE6c3ZLWDrSbJCfXrO8jQDd1Y1DdoBvf/s8RQ2O3QyYbWKrbL104x6MYnGGd8p9nsCzaoJk0fnGLfd12BMftaZNpLnBiNKbBrS/QtQXU6vxWnI/J2EqVvfLGoCZLCDCwitwaMsWa7Uvt7uV4zVRU0CpOjrtak5GwFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZZeOKAY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90DCBC43390;
+	Tue, 23 Jan 2024 00:07:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968421;
-	bh=qGBxV9x+c8mdWkG50pCVV2WICYYm81mNTbdC0yMjTvs=;
+	s=korg; t=1705968454;
+	bh=ImMqXOAmep9+3UdKkatyqWnuoDoeCYTHgGatAH5o5BU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XB6vOQrF2Arkq/DqnJRJjsCsoH80NdAacXINexdDWfnU7flsMDiIy48dnUjKEFxDA
-	 1iQSTuqALrd388hBXum/jTn3ZqNI9lhAAHl3ZIKFDIs1fTvN/F6jM1NzWhS/e/OFiB
-	 obkS5crZp4c095yjpdGNGuKoRkrrcQMhCKLtHFRU=
+	b=lZZeOKAYjfr7qJRcv6hAGD65K6Um31aibhvpK7OJLnofRN/DP9cQ215xZKN2Gj214
+	 BpVVlxlOJ6ovHLNsixZG+ZVNd/oWF3OYfa52pi6+cM/6Zx6X2slwWqOophK//jSV23
+	 NseXaGRpaETRbD/Y5M6Th48HfQEKdzNC0E9TCLHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 095/148] drm/msm/mdp4: flush vblank event on disable
-Date: Mon, 22 Jan 2024 15:57:31 -0800
-Message-ID: <20240122235716.224486633@linuxfoundation.org>
+Subject: [PATCH 4.19 096/148] drm/drv: propagate errors from drm_modeset_register_all()
+Date: Mon, 22 Jan 2024 15:57:32 -0800
+Message-ID: <20240122235716.270624063@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
 References: <20240122235712.442097787@linuxfoundation.org>
@@ -68,49 +69,50 @@ Content-Transfer-Encoding: 8bit
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit c6721b3c6423d8a348ae885a0f4c85e14f9bf85c ]
+[ Upstream commit 5f8dec200923a76dc57187965fd59c1136f5d085 ]
 
-Flush queued events when disabling the crtc. This avoids timeouts when
-we come back and wait for dependencies (like the previous frame's
-flip_done).
+In case the drm_modeset_register_all() function fails, its error code
+will be ignored. Instead make the drm_dev_register() bail out in case of
+such an error.
 
-Fixes: c8afe684c95c ("drm/msm: basic KMS driver for snapdragon")
+Fixes: 79190ea2658a ("drm: Add callbacks for late registering")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/569127/
-Link: https://lore.kernel.org/r/20231127215401.4064128-1-dmitry.baryshkov@linaro.org
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231202225552.1283638-1-dmitry.baryshkov@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/drm_drv.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c b/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
-index 457c29dba4a1..6d3074db8975 100644
---- a/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
-+++ b/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
-@@ -284,6 +284,7 @@ static void mdp4_crtc_atomic_disable(struct drm_crtc *crtc,
- {
- 	struct mdp4_crtc *mdp4_crtc = to_mdp4_crtc(crtc);
- 	struct mdp4_kms *mdp4_kms = get_kms(crtc);
-+	unsigned long flags;
+diff --git a/drivers/gpu/drm/drm_drv.c b/drivers/gpu/drm/drm_drv.c
+index d8ae4ca129c7..e0c54de615fd 100644
+--- a/drivers/gpu/drm/drm_drv.c
++++ b/drivers/gpu/drm/drm_drv.c
+@@ -818,8 +818,11 @@ int drm_dev_register(struct drm_device *dev, unsigned long flags)
+ 			goto err_minors;
+ 	}
  
- 	DBG("%s", mdp4_crtc->name);
- 
-@@ -296,6 +297,14 @@ static void mdp4_crtc_atomic_disable(struct drm_crtc *crtc,
- 	mdp_irq_unregister(&mdp4_kms->base, &mdp4_crtc->err);
- 	mdp4_disable(mdp4_kms);
- 
-+	if (crtc->state->event && !crtc->state->active) {
-+		WARN_ON(mdp4_crtc->event);
-+		spin_lock_irqsave(&mdp4_kms->dev->event_lock, flags);
-+		drm_crtc_send_vblank_event(crtc, crtc->state->event);
-+		crtc->state->event = NULL;
-+		spin_unlock_irqrestore(&mdp4_kms->dev->event_lock, flags);
+-	if (drm_core_check_feature(dev, DRIVER_MODESET))
+-		drm_modeset_register_all(dev);
++	if (drm_core_check_feature(dev, DRIVER_MODESET)) {
++		ret = drm_modeset_register_all(dev);
++		if (ret)
++			goto err_unload;
 +	}
-+
- 	mdp4_crtc->enabled = false;
- }
  
+ 	ret = 0;
+ 
+@@ -831,6 +834,9 @@ int drm_dev_register(struct drm_device *dev, unsigned long flags)
+ 
+ 	goto out_unlock;
+ 
++err_unload:
++	if (dev->driver->unload)
++		dev->driver->unload(dev);
+ err_minors:
+ 	remove_compat_control_link(dev);
+ 	drm_minor_unregister(dev, DRM_MINOR_PRIMARY);
 -- 
 2.43.0
 
