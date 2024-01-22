@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-13988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEA3A837F10
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0443838429
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1FBA1C28EF0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7887E2982C2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B393FE0;
-	Tue, 23 Jan 2024 00:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C528A67E8E;
+	Tue, 23 Jan 2024 02:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hchLSS5w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qUkPARVc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB2B3FFE;
-	Tue, 23 Jan 2024 00:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838E667E8F;
+	Tue, 23 Jan 2024 02:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970915; cv=none; b=FNBxMpgYsiLJKJrbpPSG8jK1nV7gZi3VSVh+nRgMq3xDuwYgLoIPocL1v7e15Mw8ag6eA9QL/14K/8JkzrsNdFltyRJwIisr6Lf08bPjruLrUK5KJ4OWCUVEk0sJ9uVtgrLp+5SzrSsQOz7/ZnWo51D4+aR0A/R+A7DyWPNRbuM=
+	t=1705975316; cv=none; b=DFN0NcTrm9uqomLzyhLFF8yXRep+wR23zKPgZwlEUXruTwkEqTKxnHT6T4q+P+70zLJquL/hwaGt4FWKLbB5aUF6UPnLWzrIeH+5g+1cghL2DVtNlpvptttqZuEZxtY6xdhgpf5p9GBj/8LN18dOh26MMiN8dcpg2ReawWny+XE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970915; c=relaxed/simple;
-	bh=m1TjGWJXrhvFt6Uc0eB+dJp4seZ6LVebtM8IIR7BNgo=;
+	s=arc-20240116; t=1705975316; c=relaxed/simple;
+	bh=3VG1jWRolnm1RHX6fDs1mQ3+g8/cm8grpUwSBd0VssI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZBB0dmrxjFHdBTyaHEaJyidKD46GqqJnPH0JnIicUvwPB7dRG0a2wv54beTEcnHD6m+4uBwJanvCXlJfl26OTzQP5ENiSXJiQ1tEYPdaPDyDjv+Pa/2ir9LoMPUIzWTLUg0vKhbD7GWLar54nDijuRCbAr1I5+enTUcPmaBHtf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hchLSS5w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6ACC433C7;
-	Tue, 23 Jan 2024 00:48:34 +0000 (UTC)
+	 MIME-Version; b=iJ0xwFiqCMB9yRDPFYIPTaj22/AERmr1X0BkywuW4I6sqLhIA7/0ugPNbSqHa+2nQ5R5DENNEwU3FV2vUJglqLU+HaoIqoDc+AAPlKEb+gN61XcqJbX+3orErKP5QD900EwkeaxMO9fKmTPPz/RQ3lwgNBpII3ynHAcM64nxIyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qUkPARVc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4651CC433C7;
+	Tue, 23 Jan 2024 02:01:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970915;
-	bh=m1TjGWJXrhvFt6Uc0eB+dJp4seZ6LVebtM8IIR7BNgo=;
+	s=korg; t=1705975316;
+	bh=3VG1jWRolnm1RHX6fDs1mQ3+g8/cm8grpUwSBd0VssI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hchLSS5wUf1i6CQa2EGp6OLX18ziZqr0vQ9o48uyrUhTPZxUq3nApGZgbmsXeWON0
-	 VT4GkVsvHmAjb21wiE3xcSphvTe5Gixj5AN8zaUgZxcR5VPbEZlPvP2OK/cdXRkxq+
-	 ig7Q2kkkBMukrBUz+MUYq9Qb8tXPP2PX5/V4E8mI=
+	b=qUkPARVc/OTpeYnoifr5r1oQBhQ6INh8PDGLOLBdKmE2zOt+d9/BcJgRoBOkT70dz
+	 FVvoo9SG3uW6+gpFFmi4OEUvq4PAEt9Dm4UkY+6W9r7lkw9rKgUyq2uzkUEnVAkQgN
+	 6+fMknsL6b4ovAVk/1fN3AzCAVAzj8Wbmda30MUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 139/417] wifi: rtlwifi: rtl8192ee: using calculate_bit_shift()
-Date: Mon, 22 Jan 2024 15:55:07 -0800
-Message-ID: <20240122235756.638432527@linuxfoundation.org>
+Subject: [PATCH 6.6 257/583] ASoC: SOF: topology: Use partial match for disconnecting DAI link and DAI widget
+Date: Mon, 22 Jan 2024 15:55:08 -0800
+Message-ID: <20240122235819.874155323@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-[ Upstream commit 63526897fc0d086069bcab67c3a112caaec751cb ]
+[ Upstream commit 2f03970198d6438d95b96f69041254bd39aafed0 ]
 
-Using calculate_bit_shift() to replace _rtl92ee_phy_calculate_bit_shift().
-And fix the undefined bitwise shift behavior problem.
+We use partial match for connecting DAI link and DAI widget. We need to
+use partial match for disconnecting, too.
 
-Fixes: b1a3bfc97cd9 ("rtlwifi: rtl8192ee: Move driver from staging to the regular tree")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-9-suhui@nfschina.com
+Fixes: fe88788779fc ("ASoC: SOF: topology: Use partial match for connecting DAI link and DAI widget")
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20231204214713.208951-2-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/realtek/rtlwifi/rtl8192ee/phy.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ sound/soc/sof/topology.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
-index cc0bcaf13e96..73ef602bfb01 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
-@@ -16,7 +16,6 @@ static u32 _rtl92ee_phy_rf_serial_read(struct ieee80211_hw *hw,
- static void _rtl92ee_phy_rf_serial_write(struct ieee80211_hw *hw,
- 					 enum radio_path rfpath, u32 offset,
- 					 u32 data);
--static u32 _rtl92ee_phy_calculate_bit_shift(u32 bitmask);
- static bool _rtl92ee_phy_bb8192ee_config_parafile(struct ieee80211_hw *hw);
- static bool _rtl92ee_phy_config_mac_with_headerfile(struct ieee80211_hw *hw);
- static bool phy_config_bb_with_hdr_file(struct ieee80211_hw *hw,
-@@ -46,7 +45,7 @@ u32 rtl92ee_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
- 		"regaddr(%#x), bitmask(%#x)\n", regaddr, bitmask);
- 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
--	bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	returnvalue = (originalvalue & bitmask) >> bitshift;
+diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
+index 37ec671a2d76..7133ec13322b 100644
+--- a/sound/soc/sof/topology.c
++++ b/sound/soc/sof/topology.c
+@@ -1134,7 +1134,7 @@ static void sof_disconnect_dai_widget(struct snd_soc_component *scomp,
+ 	list_for_each_entry(rtd, &card->rtd_list, list) {
+ 		/* does stream match DAI link ? */
+ 		if (!rtd->dai_link->stream_name ||
+-		    strcmp(sname, rtd->dai_link->stream_name))
++		    !strstr(rtd->dai_link->stream_name, sname))
+ 			continue;
  
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
-@@ -68,7 +67,7 @@ void rtl92ee_phy_set_bb_reg(struct ieee80211_hw *hw, u32 regaddr,
- 
- 	if (bitmask != MASKDWORD) {
- 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
--		bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
- 	}
- 
-@@ -92,7 +91,7 @@ u32 rtl92ee_phy_query_rf_reg(struct ieee80211_hw *hw,
- 	spin_lock(&rtlpriv->locks.rf_lock);
- 
- 	original_value = _rtl92ee_phy_rf_serial_read(hw , rfpath, regaddr);
--	bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 
- 	spin_unlock(&rtlpriv->locks.rf_lock);
-@@ -119,7 +118,7 @@ void rtl92ee_phy_set_rf_reg(struct ieee80211_hw *hw,
- 
- 	if (bitmask != RFREG_OFFSET_MASK) {
- 		original_value = _rtl92ee_phy_rf_serial_read(hw, rfpath, addr);
--		bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = (original_value & (~bitmask)) | (data << bitshift);
- 	}
- 
-@@ -201,13 +200,6 @@ static void _rtl92ee_phy_rf_serial_write(struct ieee80211_hw *hw,
- 		pphyreg->rf3wire_offset, data_and_addr);
- }
- 
--static u32 _rtl92ee_phy_calculate_bit_shift(u32 bitmask)
--{
--	u32 i = ffs(bitmask);
--
--	return i ? i - 1 : 32;
--}
--
- bool rtl92ee_phy_mac_config(struct ieee80211_hw *hw)
- {
- 	return _rtl92ee_phy_config_mac_with_headerfile(hw);
+ 		for_each_rtd_cpu_dais(rtd, i, cpu_dai)
 -- 
 2.43.0
 
