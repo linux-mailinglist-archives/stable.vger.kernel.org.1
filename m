@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F979837E38
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78E2F838323
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A28B31C274EA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:36:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32AE328BBED
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F0154BE6;
-	Tue, 23 Jan 2024 00:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9F660867;
+	Tue, 23 Jan 2024 01:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQ5NTSJW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ixankxj9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52774F207;
-	Tue, 23 Jan 2024 00:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3D16025E;
+	Tue, 23 Jan 2024 01:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970449; cv=none; b=Yy0ZiujJELVY6uGdiip+Px8Zv4P5LPlUD9mJYSbl6XlaoZ/F6Z1ykzu+6A7elb2kS8noW1DJVM3ljGEco+nR8pL2aIDAod/6Fy6lJI+UE5coWfTOAE3/K+M/My6ZGgnCeSaVRuDl4uvPhmNzeqoS3F7RLZk+HrryldnIetLFjhM=
+	t=1705974713; cv=none; b=MXzVOxY1eNB9cOeFH7xOOSzVRS6yV9cuoTHxJ8bEbsQ2PiWFjsBoAJKoBfd0m2y86HMHZCe5rKXdnUEgcnSloktbinY1OpdjYHT3VzW0aO7cLH4a+r6feZY0e9ON9gG6poTAZgAq4ay+ftC5wkN7Xz7WG3Lg040n8oO/RRtk9Po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970449; c=relaxed/simple;
-	bh=+e2kY6NGnm6FtR9+/Zq5Ypu0aZgSjGbEqND1WYNLeWk=;
+	s=arc-20240116; t=1705974713; c=relaxed/simple;
+	bh=hVRsc0xGzxjjn1RGqxpPbYpIRvFfRLPzeI19VbUIYKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3ppW8A89ilOMvLxZg3mO55wuQ+puz+SLz9duHoTyYJ7xIdisJXPkYkZ3D619HVytDSAEHGfKtic5I6g28HyE2SuZo414splU7AotjUz591X786XpTlsf8qN0KRYO6nam/bUVZRSoleYpooszKYPNeZpVcp2IJRVqP90QEO5Sqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQ5NTSJW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05FEEC433C7;
-	Tue, 23 Jan 2024 00:40:48 +0000 (UTC)
+	 MIME-Version; b=f7QBW/hBQbzw0+kMnxFKaOJ3iJdEJaxSugwFAQQNn898XwKMfSmOp/pJaMqean+42fBWiNVfqW/ZbvQAKen9j5MnDuhpekSYueCbSUSlKdhPrhdTehCpQd0lQwEN4q9na9Z+sV26ho+2cb8jlMCpeEokAQ9cTwERL29ySQaE6Es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ixankxj9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 235FBC433F1;
+	Tue, 23 Jan 2024 01:51:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970449;
-	bh=+e2kY6NGnm6FtR9+/Zq5Ypu0aZgSjGbEqND1WYNLeWk=;
+	s=korg; t=1705974713;
+	bh=hVRsc0xGzxjjn1RGqxpPbYpIRvFfRLPzeI19VbUIYKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AQ5NTSJW9SfA36r73aZPGMFMjwYF3yKqKxcggTC2vVmeZVk2gundHMhImC1CAfOoP
-	 gP6FDPZyXym4KKh31YvB9J96k1KXcXzVy5rMdOE1Wj3LKfNn9slW7G1HoiohR1t+bi
-	 mY4aXpjRK4FVVezzsMijNOkEHGX+N6U/xwOqzF+w=
+	b=ixankxj9dZD0qjLjqswUjexYyzaCv62Y1jQVRIeNApf0OArpBm7c0fAmByRZifibe
+	 duzY7CdeFj4afZQHFi6rWEUsNqT1wuVV5VbzQAs+PeWymhWEdeZ97oe4unQ95U4Ach
+	 EgeEMByOeErUvEqo5Zey28Vho3IgLznvQtn0BmdE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Rowand <frowand.list@gmail.com>,
-	Rob Herring <robh@kernel.org>,
+	StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 022/417] of: Add of_property_present() helper
+Subject: [PATCH 6.6 139/583] wifi: mt76: mt7915: fix EEPROM offset of TSSI flag on MT7981
 Date: Mon, 22 Jan 2024 15:53:10 -0800
-Message-ID: <20240122235752.315685505@linuxfoundation.org>
+Message-ID: <20240122235816.355100594@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
 
-[ Upstream commit 9cbad37ce8122de32a1529e394b468bc101c9e7f ]
+[ Upstream commit 3531c72aedb95261f4d78c47efa4b5ba7cdcddd9 ]
 
-Add an of_property_present() function similar to
-fwnode_property_present(). of_property_read_bool() could be used
-directly, but it is cleaner to not use it on non-boolean properties.
+The offset of the TSSI flag on the EEPROM of MT7981 devices was wrong.
+Set the correct offset instead.
 
-Reviewed-by: Frank Rowand <frowand.list@gmail.com>
-Tested-by: Frank Rowand <frowand.list@gmail.com>
-Link: https://lore.kernel.org/all/20230215215547.691573-1-robh@kernel.org/
-Signed-off-by: Rob Herring <robh@kernel.org>
-Stable-dep-of: c4a5118a3ae1 ("cpufreq: scmi: process the result of devm_of_clk_add_hw_provider()")
+Fixes: 6bad146d162e ("wifi: mt76: mt7915: add support for MT7981")
+Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/of.h | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/of.h b/include/linux/of.h
-index 6b79ef9a6541..1c5301e10442 100644
---- a/include/linux/of.h
-+++ b/include/linux/of.h
-@@ -1155,7 +1155,8 @@ static inline int of_property_read_string_index(const struct device_node *np,
-  * @np:		device node from which the property value is to be read.
-  * @propname:	name of the property to be searched.
-  *
-- * Search for a property in a device node.
-+ * Search for a boolean property in a device node. Usage on non-boolean
-+ * property types is deprecated.
-  *
-  * Return: true if the property exists false otherwise.
-  */
-@@ -1167,6 +1168,20 @@ static inline bool of_property_read_bool(const struct device_node *np,
- 	return prop ? true : false;
- }
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
+index f3e56817d36e..adc26a222823 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/eeprom.h
+@@ -144,7 +144,8 @@ static inline bool
+ mt7915_tssi_enabled(struct mt7915_dev *dev, enum nl80211_band band)
+ {
+ 	u8 *eep = dev->mt76.eeprom.data;
+-	u8 val = eep[MT_EE_WIFI_CONF + 7];
++	u8 offs = is_mt7981(&dev->mt76) ? 8 : 7;
++	u8 val = eep[MT_EE_WIFI_CONF + offs];
  
-+/**
-+ * of_property_present - Test if a property is present in a node
-+ * @np:		device node to search for the property.
-+ * @propname:	name of the property to be searched.
-+ *
-+ * Test for a property present in a device node.
-+ *
-+ * Return: true if the property exists false otherwise.
-+ */
-+static inline bool of_property_present(const struct device_node *np, const char *propname)
-+{
-+	return of_property_read_bool(np, propname);
-+}
-+
- /**
-  * of_property_read_u8_array - Find and read an array of u8 from a property.
-  *
+ 	if (band == NL80211_BAND_2GHZ)
+ 		return val & MT_EE_WIFI_CONF7_TSSI0_2G;
 -- 
 2.43.0
 
