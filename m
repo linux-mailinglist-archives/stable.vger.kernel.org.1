@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-13481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5498C837C44
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1C47838374
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EA9A296893
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77FC2283771
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6DD2109;
-	Tue, 23 Jan 2024 00:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FDC762A1E;
+	Tue, 23 Jan 2024 01:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O8nN4PTR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JnjHgFVd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C02A23C6;
-	Tue, 23 Jan 2024 00:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84D95D8FD;
+	Tue, 23 Jan 2024 01:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969561; cv=none; b=qfqyNyCXRkuTIU2sxcCBXy9efZ8loIvRoPIwrlzWqTE9SrhRSXBkbxap5tb+RHYchDujlPLA7wGoOaZVvbSuZNC41G+mJgjY9K+GRRdvGxFC1c+lFnJhPF9novHefkmoE6p7+KbMWxuzGwSNJM7cRfNKZidIxsYLe/ao8kdXRXA=
+	t=1705974978; cv=none; b=gdUWnpX77RKMGVT94l51XTH3xcZvdLoPRJ/aHgXL8BWixhaTSXnWoOSqDsAoWT58mYLd3G71BbYsiNtYdesqDDu22SHrYuIQs2wzBfW1ryr1uCdazCQG0PQBktxdbF4iT2KAtMk8wd6FLGjnsjeimDoFMpUWRd+d+XJEivJHsLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969561; c=relaxed/simple;
-	bh=XFv+t7vurEQ5Iv9FmWwinapf42Sf4alI3Tw1ma4hYxo=;
+	s=arc-20240116; t=1705974978; c=relaxed/simple;
+	bh=8xa1o9Q1H7wqKDLTveOXzEB53uo/Wcq53fTdxupHNkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d9hbkYNU2ooTuJNfcoobY1iTg8BgbttxEkereD1mSxiNLfjkiwJbcC0hyHphDfnJEhTG/QBede0+vc2TwjqZI3KzZLVHIMxYlGcKFqBPA9hdcj8aGuA6yeLUbFZYzQ3jeMmaSA3IfSZ2wlbINEJNnRO95Jkz8cK+eUb4818sIB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O8nN4PTR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EEFFC43390;
-	Tue, 23 Jan 2024 00:26:00 +0000 (UTC)
+	 MIME-Version; b=fRtMyG/9eH88Z2weVPXhnZ/F17+l4ICCW1lI2jYg9C5FF3ooI+fsTr15Vy/xknij0482ucY4VL6trzYS3M1zWM2C/ma6FTx+s21KPeoHZBI94Ag1WXejMvp2L93ZZqHHOGBsBV/NKsaKEs1aulFKaSRZkRLv097wF+Sh0ZZ9nJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JnjHgFVd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D264C433F1;
+	Tue, 23 Jan 2024 01:56:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969561;
-	bh=XFv+t7vurEQ5Iv9FmWwinapf42Sf4alI3Tw1ma4hYxo=;
+	s=korg; t=1705974978;
+	bh=8xa1o9Q1H7wqKDLTveOXzEB53uo/Wcq53fTdxupHNkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O8nN4PTRLK6x0lgrLYhvmYAsYZzzt8Uha28p0h4Tka/IXB776LBzQH/QoKfq7GFki
-	 jpzHNEBrQSkoBsIdFosuQnQXe24FH6BzHAbVj4F+8SmDZ7E2yzz1z7vdppW4yi2bv4
-	 c3Bdffv0jOmWjEOWUcS+wevrMn6zoma3/253K3Y0=
+	b=JnjHgFVd0ze9e5798lpGlMSmjvUnigHMsy9a7bfKzcbWym+qkYN+Y9FDmrMWTSBwe
+	 edTmOXiAnCX9XvOGm6Pw4r1x23ClVBqyQ89iW1+VYpBxdJjY0jDkWifUtHFeH0B9AH
+	 1f/ALlDe3Fcq6kw8C0wXqgmUk0oVJvLJVixVY1xw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Hsiao Chien Sung <shawn.sung@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 324/641] drm/mediatek: Return error if MDP RDMA failed to enable the clock
+Subject: [PATCH 6.6 177/583] arm64: dts: qcom: sm8150: make dispcc cast minimal vote on MMCX
 Date: Mon, 22 Jan 2024 15:53:48 -0800
-Message-ID: <20240122235828.029705499@linuxfoundation.org>
+Message-ID: <20240122235817.433119639@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsiao Chien Sung <shawn.sung@mediatek.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 21b287146adf39304193e4c49198021e06a28ded ]
+[ Upstream commit 617de4ce7b1c4b41c1316e493d4717cd2f208def ]
 
-Return the result of clk_prepare_enable() instead of
-always returns 0.
+Add required-opps property to the display clock controller. This makes
+it cast minimal vote on the MMCX lane and prevents further 'clock stuck'
+errors when enabling the display.
 
-Fixes: f8946e2b6bb2 ("drm/mediatek: Add display MDP RDMA support for MT8195")
-
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20231214055847.4936-21-shawn.sung@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: 2ef3bb17c45c ("arm64: dts: qcom: sm8150: Add DISPCC node")
+Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20231215174152.315403-2-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_mdp_rdma.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8150.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_mdp_rdma.c b/drivers/gpu/drm/mediatek/mtk_mdp_rdma.c
-index c3adaeefd551..c7233d0ac210 100644
---- a/drivers/gpu/drm/mediatek/mtk_mdp_rdma.c
-+++ b/drivers/gpu/drm/mediatek/mtk_mdp_rdma.c
-@@ -246,8 +246,7 @@ int mtk_mdp_rdma_clk_enable(struct device *dev)
- {
- 	struct mtk_mdp_rdma *rdma = dev_get_drvdata(dev);
- 
--	clk_prepare_enable(rdma->clk);
--	return 0;
-+	return clk_prepare_enable(rdma->clk);
- }
- 
- void mtk_mdp_rdma_clk_disable(struct device *dev)
+diff --git a/arch/arm64/boot/dts/qcom/sm8150.dtsi b/arch/arm64/boot/dts/qcom/sm8150.dtsi
+index d7a2c3567532..32045fb48157 100644
+--- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
+@@ -3959,6 +3959,7 @@ dispcc: clock-controller@af00000 {
+ 				      "dp_phy_pll_link_clk",
+ 				      "dp_phy_pll_vco_div_clk";
+ 			power-domains = <&rpmhpd SM8150_MMCX>;
++			required-opps = <&rpmhpd_opp_low_svs>;
+ 			#clock-cells = <1>;
+ 			#reset-cells = <1>;
+ 			#power-domain-cells = <1>;
 -- 
 2.43.0
 
