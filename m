@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C78D838115
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:05:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0C358384E3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02B84B2C016
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:05:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 778571F279B0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD5613EFEF;
-	Tue, 23 Jan 2024 01:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C071777F14;
+	Tue, 23 Jan 2024 02:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v7XSVXkv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAJkFmtw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB446774B;
-	Tue, 23 Jan 2024 01:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8021D77636;
+	Tue, 23 Jan 2024 02:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972011; cv=none; b=tr8jCYBD/Os6J+hq2B2Y8b7sE9DqS4WGY0CSO9s0lE+bnhbH9mE5QG14vazW9Ib2trioAsdHqMiX93r/1OT7hilDiZZRc7Z5ZSFIMgA+63bOJ8cTNyjzrTZkIZ0lkBIV8fiKirFjIh+Vop4ocn2cIvn5OlXg5bQZU84A0CziLW0=
+	t=1705975527; cv=none; b=A1J4YXeiF+zpEh7z5fK5oAalRU2edMTVoGVlaQ/ZyNpG4bTkM4Nh0ajLLUS6jgMYd6oG7DxERNaV2gwtHG/Ag+30dasj1oYrZp48rm9ZOFyuywXce0c1xQJzAZOTq113iLi9IIugML4ClRVOrMEhAdnyqQexcP5JjSl5mwpw+ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972011; c=relaxed/simple;
-	bh=sYFJ2ZIVR9xUd3EGIHvslFwflmTwIO/Dep16ey9Mf2U=;
+	s=arc-20240116; t=1705975527; c=relaxed/simple;
+	bh=n95/7V5xNhi8VHqLv/yuEQfvegv3Da00SVrIpI+Ucbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tAw0meDwbquAUbpTXVDgAZ4AjUVJxgp0QIhwL3rUCQkHg1fPobVSSZSJANYAw4l9jqK7qMJg5wI84CqmBvzaTyAq2voMEISG12lZ+t5a4UEsDKuoBzPISk7K7/vRacbBV7XfqsxSwYLIbPBmTXU6Uzd3/6GQPqN8syPxTLTVYXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v7XSVXkv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90FBFC43394;
-	Tue, 23 Jan 2024 01:06:51 +0000 (UTC)
+	 MIME-Version; b=g7HWH350vvET09N8q/qMeR6B0TfFNs+7fFX9430cgTJ368vtPa012IhrzTc/FpuoZ6K0PvQxF9CbqLh/AWnUb0c+IsmzcYQgzvQ/r6mE4VgTaswd9p4vIhQsDunKuq69rnSUrGWOxP+dyZ2AQmTimBNetTJ01Mj9y+fdOGFyn2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AAJkFmtw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 422A4C433F1;
+	Tue, 23 Jan 2024 02:05:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972011;
-	bh=sYFJ2ZIVR9xUd3EGIHvslFwflmTwIO/Dep16ey9Mf2U=;
+	s=korg; t=1705975527;
+	bh=n95/7V5xNhi8VHqLv/yuEQfvegv3Da00SVrIpI+Ucbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v7XSVXkvxZqbPNvsrbFsZ4dLcjyzSHE2hlZ54QcAaYhEmTTXz+imJ2yzSL+8X/y/6
-	 W1f+kj+7Qqz9zynK8fxvqag2wM2+Qn1O7q4t5p/Q+p7ULGOhsCR4x0omhc/Lz9BYsA
-	 iwN2B/FZqMM5evUq48e4bhJbdm0xNYWts/4Ko5qg=
+	b=AAJkFmtwbF+Wu9GOxbqED2wULGQaoK/cdI/hPehegC8DaQFrg1C+yVyXaDcEgd0MJ
+	 UsleS5IPqF0T2RM2Asp6G2QyJjZjBA8hMy9tXHufSsFc2qoGHnehcK9cP4qm4TuFaF
+	 BtNtLHpe+qGUodFvEQYf8KdyjtPcZLJcFLjxAAAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 363/417] vdpa: Fix an error handling path in eni_vdpa_probe()
+Subject: [PATCH 6.6 480/583] iio: adc: ad9467: dont ignore error codes
 Date: Mon, 22 Jan 2024 15:58:51 -0800
-Message-ID: <20240122235804.398274649@linuxfoundation.org>
+Message-ID: <20240122235826.678049500@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Nuno Sa <nuno.sa@analog.com>
 
-[ Upstream commit c1b9f2c66eed3261db76cccd8a22a9affae8dcbf ]
+[ Upstream commit e072e149cfb827e0ab4cafb0547e9658e35393cd ]
 
-After a successful vp_legacy_probe() call, vp_legacy_remove() should be
-called in the error handling path, as already done in the remove function.
+Make sure functions that return errors are not ignored.
 
-Add the missing call.
-
-Fixes: e85087beedca ("eni_vdpa: add vDPA driver for Alibaba ENI")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-Id: <a7b0ef1eabd081f1c7c894e9b11de01678e85dee.1666293559.git.christophe.jaillet@wanadoo.fr>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20231207-iio-backend-prep-v2-2-a4a33bc4d70e@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vdpa/alibaba/eni_vdpa.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ad9467.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/vdpa/alibaba/eni_vdpa.c b/drivers/vdpa/alibaba/eni_vdpa.c
-index 5a09a09cca70..cce3d1837104 100644
---- a/drivers/vdpa/alibaba/eni_vdpa.c
-+++ b/drivers/vdpa/alibaba/eni_vdpa.c
-@@ -497,7 +497,7 @@ static int eni_vdpa_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	if (!eni_vdpa->vring) {
- 		ret = -ENOMEM;
- 		ENI_ERR(pdev, "failed to allocate virtqueues\n");
--		goto err;
-+		goto err_remove_vp_legacy;
+diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+index 4fb9e48dc782..d3c98c4eccd3 100644
+--- a/drivers/iio/adc/ad9467.c
++++ b/drivers/iio/adc/ad9467.c
+@@ -162,9 +162,10 @@ static int ad9467_reg_access(struct adi_axi_adc_conv *conv, unsigned int reg,
+ 
+ 	if (readval == NULL) {
+ 		ret = ad9467_spi_write(spi, reg, writeval);
+-		ad9467_spi_write(spi, AN877_ADC_REG_TRANSFER,
+-				 AN877_ADC_TRANSFER_SYNC);
+-		return ret;
++		if (ret)
++			return ret;
++		return ad9467_spi_write(spi, AN877_ADC_REG_TRANSFER,
++					AN877_ADC_TRANSFER_SYNC);
  	}
  
- 	for (i = 0; i < eni_vdpa->queues; i++) {
-@@ -509,11 +509,13 @@ static int eni_vdpa_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	ret = vdpa_register_device(&eni_vdpa->vdpa, eni_vdpa->queues);
- 	if (ret) {
- 		ENI_ERR(pdev, "failed to register to vdpa bus\n");
--		goto err;
-+		goto err_remove_vp_legacy;
+ 	ret = ad9467_spi_read(spi, reg);
+@@ -272,10 +273,13 @@ static int ad9467_get_scale(struct adi_axi_adc_conv *conv, int *val, int *val2)
+ 	const struct ad9467_chip_info *info1 = to_ad9467_chip_info(info);
+ 	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
+ 	unsigned int i, vref_val;
++	int ret;
+ 
+-	vref_val = ad9467_spi_read(st->spi, AN877_ADC_REG_VREF);
++	ret = ad9467_spi_read(st->spi, AN877_ADC_REG_VREF);
++	if (ret < 0)
++		return ret;
+ 
+-	vref_val &= info1->vref_mask;
++	vref_val = ret & info1->vref_mask;
+ 
+ 	for (i = 0; i < info->num_scales; i++) {
+ 		if (vref_val == info->scale_table[i][1])
+@@ -296,6 +300,7 @@ static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
+ 	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
+ 	unsigned int scale_val[2];
+ 	unsigned int i;
++	int ret;
+ 
+ 	if (val != 0)
+ 		return -EINVAL;
+@@ -305,11 +310,13 @@ static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
+ 		if (scale_val[0] != val || scale_val[1] != val2)
+ 			continue;
+ 
+-		ad9467_spi_write(st->spi, AN877_ADC_REG_VREF,
+-				 info->scale_table[i][1]);
+-		ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
+-				 AN877_ADC_TRANSFER_SYNC);
+-		return 0;
++		ret = ad9467_spi_write(st->spi, AN877_ADC_REG_VREF,
++				       info->scale_table[i][1]);
++		if (ret < 0)
++			return ret;
++
++		return ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
++					AN877_ADC_TRANSFER_SYNC);
  	}
  
- 	return 0;
- 
-+err_remove_vp_legacy:
-+	vp_legacy_remove(&eni_vdpa->ldev);
- err:
- 	put_device(&eni_vdpa->vdpa.dev);
- 	return ret;
+ 	return -EINVAL;
 -- 
 2.43.0
 
