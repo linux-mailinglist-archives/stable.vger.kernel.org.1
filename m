@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-13654-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AAD0837D46
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7757C837F71
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C68BA1F2966C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA3A41C28FF3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220E65674E;
-	Tue, 23 Jan 2024 00:31:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D83362A13;
+	Tue, 23 Jan 2024 00:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fs6yt8gR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n3QkEzZI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6DFD3A8F4;
-	Tue, 23 Jan 2024 00:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8BC6280A;
+	Tue, 23 Jan 2024 00:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969870; cv=none; b=Xkzt6ndpoWkWSx4gS6zQ5TGZrx7c0EQXw55vcn5tGOacWmE3cOrcIEJAZdUCkyYQpMLpmobBcrqTej9mtqDnEBAUEOzNcMWFlP5as/X1eelv/g83p3CFHvsN6d5OPt2JztPjk4VKT7C6uLB4Tq/OhN2wL1f+v0po+50uQzukzXw=
+	t=1705971135; cv=none; b=Fv4pivdJz1YSnKoUhv2I5K60dZglqZggnG3nb7NX+hMp0w29dvtL9QLDDMkTnriS3EDPSZSVvh2oZUYNn4mGdZHhu8/b+YFQ+UQ1ePO0yWPoCRWhptuW7Kfrul4emne4yfufa+0kM2x1Hl5aAF/gqHebUMfmyroB5BpHJQ7iS8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969870; c=relaxed/simple;
-	bh=21tyZEPijBbq5A9B6w06fnm6aDPrF+SEVsfzMx+MdRg=;
+	s=arc-20240116; t=1705971135; c=relaxed/simple;
+	bh=7/YlYZ7N63GABDQGNZ64ghdsnm8d5z28dxTYt/PtHp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JvB25ykeeNTk1rAE+lATGBcYRnowAZ1F8LE3eBn11fHsN8vGAoJUH5EDtNDOrht3LNOSzyVwdM6IMr4mLNkOmS3k7jdGP2RHIapmno02scGJ36nXGB8u0CsYnJFKC77ePQI0NV+3cCPRmDzJI0TFc36Ltk6LfOG0j0heu7XianM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fs6yt8gR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB59C433F1;
-	Tue, 23 Jan 2024 00:31:10 +0000 (UTC)
+	 MIME-Version; b=MRguw++3LNti/YU56k9MwmRWAByf3z0CFcpzy2DIRLSoxlvdyqPpaquT1/pqKmNAVizjHRgvWJavud4AZLBwCZssi+BCfXOgWDigmB0xj2DcBVkt+ipq3yApJUoIu7wWKNb/f/qan876pPaA8UeRvTP/n3emnXzO24iUpzDnrUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n3QkEzZI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADBFBC433F1;
+	Tue, 23 Jan 2024 00:52:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969870;
-	bh=21tyZEPijBbq5A9B6w06fnm6aDPrF+SEVsfzMx+MdRg=;
+	s=korg; t=1705971134;
+	bh=7/YlYZ7N63GABDQGNZ64ghdsnm8d5z28dxTYt/PtHp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fs6yt8gRbp5M1Ed672h/fZfb8H3BcAMyTHHDBushdAuoAS/m/N1RX5DISS1fI7qRw
-	 Lmh7U0/XPjMS1+/q7k29yNOfJClpeop34/u43nNXu0J6Ll2/+VSO68Jp79QQTVB21n
-	 38pE2ihi34Uq4D+VJCK1mV/HUca+AI215toIeSjI=
+	b=n3QkEzZIunibsQGs3vzPmT+fKNnfHRgp0N2e04pYWa+INUhOxBIxssVY0aDquyRX9
+	 ROrDkGB3VfLVFl6f+fjBWVfzZXYZ4EHidXuzfSIDdjn3RZE2Uf5dPSgO9sH6EuCHeM
+	 qocGMfh+sCMnxX3xeyhIHoPi+/H23Pnb/66q3ra0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 497/641] riscv: Fix set_direct_map_default_noflush() to reset _PAGE_EXEC
+Subject: [PATCH 5.10 095/286] gfs2: Also reflect single-block allocations in rgd->rd_extfail_pt
 Date: Mon, 22 Jan 2024 15:56:41 -0800
-Message-ID: <20240122235833.615885340@linuxfoundation.org>
+Message-ID: <20240122235735.722228258@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit b8b2711336f03ece539de61479d6ffc44fb603d3 ]
+[ Upstream commit f38e998fbbb5da6a097ecd4b2700ba95eabab0c9 ]
 
-When resetting the linear mapping permissions, we must make sure that we
-clear the X bit so that do not end up with WX mappings (since we set
-PAGE_KERNEL).
+Pass a non-NULL minext to gfs2_rbm_find even for single-block allocations.  In
+gfs2_rbm_find, also set rgd->rd_extfail_pt when a single-block allocation
+fails in a resource group: there is no reason for treating that case
+differently.  In gfs2_reservation_check_and_update, only check how many free
+blocks we have if more than one block is requested; we already know there's at
+least one free block.
 
-Fixes: 395a21ff859c ("riscv: add ARCH_HAS_SET_DIRECT_MAP support")
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20231213134027.155327-3-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+In addition, when allocating N blocks fails in gfs2_rbm_find, we need to set
+rd_extfail_pt to N - 1 rather than N:  rd_extfail_pt defines the biggest
+allocation that might still succeed.
+
+Finally, reset rd_extfail_pt when updating the resource group statistics in
+update_rgrp_lvb, as we already do in gfs2_rgrp_bh_get.
+
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Stable-dep-of: 8877243beafa ("gfs2: Fix kernel NULL pointer dereference in gfs2_rgrp_dump")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/pageattr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/rgrp.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/arch/riscv/mm/pageattr.c b/arch/riscv/mm/pageattr.c
-index 96cbda683936..01398fee5cf8 100644
---- a/arch/riscv/mm/pageattr.c
-+++ b/arch/riscv/mm/pageattr.c
-@@ -383,7 +383,7 @@ int set_direct_map_invalid_noflush(struct page *page)
- int set_direct_map_default_noflush(struct page *page)
- {
- 	return __set_memory((unsigned long)page_address(page), 1,
--			    PAGE_KERNEL, __pgprot(0));
-+			    PAGE_KERNEL, __pgprot(_PAGE_EXEC));
- }
+diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
+index e05c01d5b9e6..ac0715aafa8e 100644
+--- a/fs/gfs2/rgrp.c
++++ b/fs/gfs2/rgrp.c
+@@ -1247,6 +1247,8 @@ static int update_rgrp_lvb(struct gfs2_rgrpd *rgd)
+ 		rgd->rd_flags &= ~GFS2_RDF_CHECK;
+ 	rgd->rd_free = be32_to_cpu(rgd->rd_rgl->rl_free);
+ 	rgd->rd_free_clone = rgd->rd_free;
++	/* max out the rgrp allocation failure point */
++	rgd->rd_extfail_pt = rgd->rd_free;
+ 	rgd->rd_dinodes = be32_to_cpu(rgd->rd_rgl->rl_dinodes);
+ 	rgd->rd_igeneration = be64_to_cpu(rgd->rd_rgl->rl_igeneration);
+ 	return 0;
+@@ -1648,7 +1650,7 @@ static int gfs2_reservation_check_and_update(struct gfs2_rbm *rbm,
+ 	 * If we have a minimum extent length, then skip over any extent
+ 	 * which is less than the min extent length in size.
+ 	 */
+-	if (minext) {
++	if (minext > 1) {
+ 		extlen = gfs2_free_extlen(rbm, minext);
+ 		if (extlen <= maxext->len)
+ 			goto fail;
+@@ -1680,7 +1682,7 @@ static int gfs2_reservation_check_and_update(struct gfs2_rbm *rbm,
+  * gfs2_rbm_find - Look for blocks of a particular state
+  * @rbm: Value/result starting position and final position
+  * @state: The state which we want to find
+- * @minext: Pointer to the requested extent length (NULL for a single block)
++ * @minext: Pointer to the requested extent length
+  *          This is updated to be the actual reservation size.
+  * @ip: If set, check for reservations
+  * @nowrap: Stop looking at the end of the rgrp, rather than wrapping
+@@ -1736,8 +1738,7 @@ static int gfs2_rbm_find(struct gfs2_rbm *rbm, u8 state, u32 *minext,
+ 		if (ip == NULL)
+ 			return 0;
  
- #ifdef CONFIG_DEBUG_PAGEALLOC
+-		ret = gfs2_reservation_check_and_update(rbm, ip,
+-							minext ? *minext : 0,
++		ret = gfs2_reservation_check_and_update(rbm, ip, *minext,
+ 							&maxext);
+ 		if (ret == 0)
+ 			return 0;
+@@ -1769,7 +1770,7 @@ static int gfs2_rbm_find(struct gfs2_rbm *rbm, u8 state, u32 *minext,
+ 			break;
+ 	}
+ 
+-	if (minext == NULL || state != GFS2_BLKST_FREE)
++	if (state != GFS2_BLKST_FREE)
+ 		return -ENOSPC;
+ 
+ 	/* If the extent was too small, and it's smaller than the smallest
+@@ -1777,7 +1778,7 @@ static int gfs2_rbm_find(struct gfs2_rbm *rbm, u8 state, u32 *minext,
+ 	   useless to search this rgrp again for this amount or more. */
+ 	if (wrapped && (scan_from_start || rbm->bii > last_bii) &&
+ 	    *minext < rbm->rgd->rd_extfail_pt)
+-		rbm->rgd->rd_extfail_pt = *minext;
++		rbm->rgd->rd_extfail_pt = *minext - 1;
+ 
+ 	/* If the maximum extent we found is big enough to fulfill the
+ 	   minimum requirements, use it anyway. */
+@@ -2351,14 +2352,15 @@ int gfs2_alloc_blocks(struct gfs2_inode *ip, u64 *bn, unsigned int *nblocks,
+ 	struct gfs2_rbm rbm = { .rgd = ip->i_res.rs_rbm.rgd, };
+ 	unsigned int ndata;
+ 	u64 block; /* block, within the file system scope */
++	u32 minext = 1;
+ 	int error;
+ 
+ 	gfs2_set_alloc_start(&rbm, ip, dinode);
+-	error = gfs2_rbm_find(&rbm, GFS2_BLKST_FREE, NULL, ip, false);
++	error = gfs2_rbm_find(&rbm, GFS2_BLKST_FREE, &minext, ip, false);
+ 
+ 	if (error == -ENOSPC) {
+ 		gfs2_set_alloc_start(&rbm, ip, dinode);
+-		error = gfs2_rbm_find(&rbm, GFS2_BLKST_FREE, NULL, NULL, false);
++		error = gfs2_rbm_find(&rbm, GFS2_BLKST_FREE, &minext, NULL, false);
+ 	}
+ 
+ 	/* Since all blocks are reserved in advance, this shouldn't happen */
 -- 
 2.43.0
 
