@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-15009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94B3A838383
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 583B5837C51
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C3881F28D23
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E5701F239E8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A326563107;
-	Tue, 23 Jan 2024 01:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0B815531F;
+	Tue, 23 Jan 2024 00:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XguwHM6/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQXYTCWo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632E462A0B;
-	Tue, 23 Jan 2024 01:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B8DE23C6;
+	Tue, 23 Jan 2024 00:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974995; cv=none; b=SAqTE2q7grs+l+6HvAdZ38v9Req1gCTt56ES0nFXhQoOGPdb75V8zNznFhjIheTnSLQeDxzOJZrGLnE7ui3WVByIjaWkEfiyCk3oT3znm5O9HcJMCP5Mw3mmgGy2DwlRBp0z9NMrOc5mXu7W6aRWd2SRIBjQhZIC3m3EYNDZEvs=
+	t=1705969577; cv=none; b=E6eHjn2cQ9algIB06frM864fIHWRc/RvIxgtCw+A5y9ZSMFD4N6KTs0iRzzD+J85W1ut7dQ00yaIyhs97RYwZu5LNjm9S9G5eIDMqWVf7BXZ+85temaA25fcu6UmeQEPEeDqO4eGmrLkFHtRKMksMesSHnoqoJ4IEnFfN1E6n3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974995; c=relaxed/simple;
-	bh=+KrHzyFrJ9aJBebAWvLeIx9Bmn1N6fgQK2+9dYxxf9Q=;
+	s=arc-20240116; t=1705969577; c=relaxed/simple;
+	bh=MCeVCTpc3KW3W+ARZWsQcRFP3bHHnMfnz4GOOglM3so=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WYMZYBF5am+XnRb7JlGX3FtSzm+Tmypw6NYtV9WzQigVpVzCNxLe5VIkvNQeV34giEUZyeZytpRWT+J8Dw5k+PyNxYd0Y0yhrbFe6wbRs7NqM2FMnr6E/b2UzO7HcXbTWxvWXYoW2CvyLj1k885uXsUq1Ak92hEcZXoOsJd6uj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XguwHM6/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B45C433F1;
-	Tue, 23 Jan 2024 01:56:34 +0000 (UTC)
+	 MIME-Version; b=YYHASUfglqqSDMpM0f8GKhL/gp8zLLzpYqC5zcdGiGM06r649vYAEYr2fHnyiiDBf/AB/9VAV1TApyCgPk6PgZpzOCIG5V0sVeEt9CY42m2rJpUY5ndGKKzii+8BDzSPaR8Dk1mb9yyIX8J7sdBNNO7/DDF70SeJ4X1DJK7LGfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQXYTCWo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1D8C43390;
+	Tue, 23 Jan 2024 00:26:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974994;
-	bh=+KrHzyFrJ9aJBebAWvLeIx9Bmn1N6fgQK2+9dYxxf9Q=;
+	s=korg; t=1705969577;
+	bh=MCeVCTpc3KW3W+ARZWsQcRFP3bHHnMfnz4GOOglM3so=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XguwHM6/+/isPm6iZL4gbLvzzuKhwHz/xZZhN6S+TyrWLK2qwJ+pQd+Bo3UKA4Jm6
-	 MTL6yIQ7KrOL7nF7m7HqeLKN2RGPvKRDLwhiKYJCEkdxpFjtN5qBlsc2HiyNS/OcCL
-	 k+hclzAEJkh5aGkiU0KVPgvJuGIJnSlZ8Bo9G5oU=
+	b=lQXYTCWoL5okEg/jUleBOjIuUHsUAuvVNTqyPSnyeBBwcysRtaYF5+J1Z9nOry6mT
+	 LWlOGfnqS9XmBL3MXIBm8VyPAHiNWGHJ99ynmvLHXvyp1j4KVxpeB5rNjJ/KVBamZj
+	 7Q43zHgB3r42AUCF5gvOjG2MH0Qra20AKLObAVVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
 	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 185/583] arm64: dts: qcom: sc8180x: Mark PCIe hosts cache-coherent
-Date: Mon, 22 Jan 2024 15:53:56 -0800
-Message-ID: <20240122235817.662141608@linuxfoundation.org>
+Subject: [PATCH 6.7 333/641] clk: qcom: videocc-sm8150: Add missing PLL config property
+Date: Mon, 22 Jan 2024 15:53:57 -0800
+Message-ID: <20240122235828.323896805@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-[ Upstream commit 45e8c72712345263208f7c94f334fa718634f557 ]
+[ Upstream commit 71f130c9193f613d497f7245365ed05ffdb0a401 ]
 
-The PCIe controllers on 8180 are cache-coherent. Mark them as such.
+When the driver was ported upstream, PLL test_ctl_hi1 register value
+was omitted. Add it to ensure the PLLs are fully configured.
 
-Fixes: d20b6c84f56a ("arm64: dts: qcom: sc8180x: Add PCIe instances")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231219-topic-8180_pcie_dmac-v1-1-5d00fc1b23fd@linaro.org
+Fixes: 5658e8cf1a8a ("clk: qcom: add video clock controller driver for SM8150")
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231201-videocc-8150-v3-3-56bec3a5e443@quicinc.com
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8180x.dtsi | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/clk/qcom/videocc-sm8150.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8180x.dtsi b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-index 486f7ffef43b..0d85bdec5a82 100644
---- a/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-@@ -1751,6 +1751,7 @@ pcie0: pci@1c00000 {
- 
- 			phys = <&pcie0_lane>;
- 			phy-names = "pciephy";
-+			dma-coherent;
- 
- 			status = "disabled";
- 		};
-@@ -1858,6 +1859,7 @@ pcie3: pci@1c08000 {
- 
- 			phys = <&pcie3_lane>;
- 			phy-names = "pciephy";
-+			dma-coherent;
- 
- 			status = "disabled";
- 		};
-@@ -1965,6 +1967,7 @@ pcie1: pci@1c10000 {
- 
- 			phys = <&pcie1_lane>;
- 			phy-names = "pciephy";
-+			dma-coherent;
- 
- 			status = "disabled";
- 		};
-@@ -2072,6 +2075,7 @@ pcie2: pci@1c18000 {
- 
- 			phys = <&pcie2_lane>;
- 			phy-names = "pciephy";
-+			dma-coherent;
- 
- 			status = "disabled";
- 		};
+diff --git a/drivers/clk/qcom/videocc-sm8150.c b/drivers/clk/qcom/videocc-sm8150.c
+index 1afdbe4a249d..5579463f7e46 100644
+--- a/drivers/clk/qcom/videocc-sm8150.c
++++ b/drivers/clk/qcom/videocc-sm8150.c
+@@ -33,6 +33,7 @@ static struct alpha_pll_config video_pll0_config = {
+ 	.config_ctl_val = 0x20485699,
+ 	.config_ctl_hi_val = 0x00002267,
+ 	.config_ctl_hi1_val = 0x00000024,
++	.test_ctl_hi1_val = 0x00000020,
+ 	.user_ctl_val = 0x00000000,
+ 	.user_ctl_hi_val = 0x00000805,
+ 	.user_ctl_hi1_val = 0x000000D0,
 -- 
 2.43.0
 
