@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-14606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89212838191
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C61BF837DF0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 411421F246D8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E66E7B21B47
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 269A2EAEF;
-	Tue, 23 Jan 2024 01:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05751EB5A;
+	Tue, 23 Jan 2024 00:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbCUqFua"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fybc+leR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F492114;
-	Tue, 23 Jan 2024 01:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2E223DB;
+	Tue, 23 Jan 2024 00:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972176; cv=none; b=UjPTArYg1POZzBNqq08Prfs6skQeTFlRCYFoi9AAPbphoFIgWrQa1twdgme+GicxXCooJ/qBdJUsOfIAfqiK03adGE6M6qQnElKPRihgY/hQErfgNZOZ2YDzaT53qnVrnAQ6B80YPWfDlLyCLjLdE+QbeHeOOIQ2a7EFzDivAsE=
+	t=1705969834; cv=none; b=tK4kPuKZjTFWea3ceUTjShV9W1diV9iIC6MKKnYhPN/gNeGieag1sawZbFuzc3AoDhh0Zgt8ha5NHSlWh05864BRCuBNrm+Qdh6wAx2+i8iFw0NKHCeNemfXfWGUfRHnmZ5i1KFUN3zuB6+umlrbHlX11VuNVRGaerCIceKXHKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972176; c=relaxed/simple;
-	bh=9OLn2RkMCZEK6j/mct6RhcEkKYPk058mgdSscuyNaoY=;
+	s=arc-20240116; t=1705969834; c=relaxed/simple;
+	bh=p9VUfPB1xpUta4XqLnV59M4Ip6+hup/SA2NnvFUp4GA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UyPuSIIzt5Fi9jw0Wc+vzvI7622stTfkq7akvPGIp8XRbJvz/RE+mCh6SZ6sfOPngHQv2AiHs3y8RL0UBpPP7mHoh2p9o3AiVatNUNUfnX2zcyNGKA8Wfcjb5f3wOf/+j3ktJPsq9b42tAdUp3fomMzpSNpA8rMBJDCiow6LvFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JbCUqFua; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9643AC43399;
-	Tue, 23 Jan 2024 01:09:36 +0000 (UTC)
+	 MIME-Version; b=PFFyZcCJ6dOv6VNNo1K6uRClFEVubMKsZQUK9A+4skKdmFh3RE+dGv7YT6FtTwV+XVXoC2OU69gc/lBAmtN75ydzR2kgrq0C1xmVqxXK41les9AI3A77xnGBnsCZH+4pHnit4U/mMnEDfCfRhaXPBxTnPdRftERZQfHrXTPETdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fybc+leR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30204C433F1;
+	Tue, 23 Jan 2024 00:30:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972176;
-	bh=9OLn2RkMCZEK6j/mct6RhcEkKYPk058mgdSscuyNaoY=;
+	s=korg; t=1705969834;
+	bh=p9VUfPB1xpUta4XqLnV59M4Ip6+hup/SA2NnvFUp4GA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JbCUqFuaoSg7EvtMqOOAnG/eXNs2Av08bhi9Si3b7unNXZDvOH9gU7SWb/ooz9tG9
-	 qXQyMjx2aKA8WVJ36mVr5anyw2dFDcORcoo+Rbnbe9FY4R4ZOdSyALKoSR9FcajlBV
-	 hXKeWbWfC7hM1QBxMr2lLF9Z6pJAW1XV2hU+eqYY=
+	b=fybc+leRCWsPk2Szz/S331GvWhoS2H9OFgZ2pa5qQNKNUnmSaEzKDfnm+9XbtN3Ty
+	 1/yMxbblY8jmDTfSZljWylYTNZq7D5zfDhhV9OsdYc3b+Ep8B3R0SBBvZrUxw26k9t
+	 ECDQ9vaHfBRHIO9Fap7jc946aij97xMfrz4CN4rE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 102/374] crypto: sahara - fix error handling in sahara_hw_descriptor_create()
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.7 454/641] wifi: mt76: fix broken precal loading from MTD for mt7915
 Date: Mon, 22 Jan 2024 15:55:58 -0800
-Message-ID: <20240122235748.156651722@linuxfoundation.org>
+Message-ID: <20240122235832.223855572@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Christian Marangi <ansuelsmth@gmail.com>
 
-[ Upstream commit ee6e6f0a7f5b39d50a5ef5fcc006f4f693db18a7 ]
+commit e874a79250b39447765ac13272b67ac36ccf2a75 upstream.
 
-Do not call dma_unmap_sg() for scatterlists that were not mapped
-successfully.
+Commit 495184ac91bb ("mt76: mt7915: add support for applying
+pre-calibration data") was fundamentally broken and never worked.
 
-Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The idea (before NVMEM support) was to expand the MTD function and pass
+an additional offset. For normal EEPROM load the offset would always be
+0. For the purpose of precal loading, an offset was passed that was
+internally the size of EEPROM, since precal data is right after the
+EEPROM.
+
+Problem is that the offset value passed is never handled and is actually
+overwrite by
+
+	offset = be32_to_cpup(list);
+	ret = mtd_read(mtd, offset, len, &retlen, eep);
+
+resulting in the passed offset value always ingnored. (and even passing
+garbage data as precal as the start of the EEPROM is getting read)
+
+Fix this by adding to the current offset value, the offset from DT to
+correctly read the piece of data at the requested location.
+
+Cc: stable@vger.kernel.org
+Fixes: 495184ac91bb ("mt76: mt7915: add support for applying pre-calibration data")
+Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/sahara.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/net/wireless/mediatek/mt76/eeprom.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index caa54d5312e9..f9fd64178a59 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -484,13 +484,14 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
- 			 DMA_TO_DEVICE);
- 	if (ret != dev->nb_in_sg) {
- 		dev_err(dev->device, "couldn't map in sg\n");
--		goto unmap_in;
-+		return -EINVAL;
- 	}
-+
- 	ret = dma_map_sg(dev->device, dev->out_sg, dev->nb_out_sg,
- 			 DMA_FROM_DEVICE);
- 	if (ret != dev->nb_out_sg) {
- 		dev_err(dev->device, "couldn't map out sg\n");
--		goto unmap_out;
-+		goto unmap_in;
+--- a/drivers/net/wireless/mediatek/mt76/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
+@@ -67,7 +67,7 @@ static int mt76_get_of_epprom_from_mtd(s
+ 		goto out_put_node;
  	}
  
- 	/* Create input links */
-@@ -538,9 +539,6 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
- 
- 	return 0;
- 
--unmap_out:
--	dma_unmap_sg(dev->device, dev->out_sg, dev->nb_out_sg,
--		DMA_FROM_DEVICE);
- unmap_in:
- 	dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
- 		DMA_TO_DEVICE);
--- 
-2.43.0
-
+-	offset = be32_to_cpup(list);
++	offset += be32_to_cpup(list);
+ 	ret = mtd_read(mtd, offset, len, &retlen, eep);
+ 	put_mtd_device(mtd);
+ 	if (mtd_is_bitflip(ret))
 
 
 
