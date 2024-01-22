@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-14520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AABF483813B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD1483840E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63C362889B0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2A661C2A001
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FED61487D7;
-	Tue, 23 Jan 2024 01:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A522A67756;
+	Tue, 23 Jan 2024 02:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G4rYjMQ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gdQPwcWC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18D51487D2;
-	Tue, 23 Jan 2024 01:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC0D67734;
+	Tue, 23 Jan 2024 02:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972073; cv=none; b=WwNQIzatzEF3b73wV4dRmqKZCqECn5JF8EQLl8Np7iEWTPiuR8sWa1IJONJAUKHZBWzG4J8uOuXI3uCsPnC7Zurxd44T/II61Ry913vb/w4to3xoJu93b3IcmwMjMF0Gu54Dt8XGAwQbBWwLEPV+NXXWuKC1cDH1BCkUu2Xn/tQ=
+	t=1705975291; cv=none; b=klWI/orC61KevXjxAKpsE4BKiVjwi/DhlgtLu6tQhlR9Re738tIa+xueJItb48k93WOraAQHfLtpxWq99gFyb+RJgJTsr5LX5OtehniQsIbfsZvb+aVJdeGqeG4OENmcDY3OA0PA3M/9QLV6cdn4SRizAWZ6hk6VtrIN240ZEZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972073; c=relaxed/simple;
-	bh=/jsssZ0eRJCnOHQZl6Z5FPkGfEyVwYvvSRJkLHv+Y/k=;
+	s=arc-20240116; t=1705975291; c=relaxed/simple;
+	bh=fqgU4+8ooqteAdiXC8/5qwSO2Ue0xZq7QJss1/zWYXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DoD2uUEUWw1NymtcJpLWvR6Ku0ft7lfQN4hpLV7V7Ur4acrPFpGuUrS8Wyq5HtdJkgBSM7YqQRJqeicyYGcypx9LsRL9ss7TwGf0VKSOMjisclp3sanatjIzl3OgSEnrsrqic18Ht88ynXvkf7GIDPPAO4QxpOWUHtYt8dDx9Fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G4rYjMQ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D025C43394;
-	Tue, 23 Jan 2024 01:07:53 +0000 (UTC)
+	 MIME-Version; b=YpIsMGON3JGcLRqjGz0Dv7hA3VIchvZtAxHQv15O/UMgLgq4SX62xcxxrMtIEcu/X26BK5d4uiGbnBH3EIm4ZPDoWmWCcDp37Ddej8PgerIV+gQv1sDqz7aUmfWjCqExzvktdCKzuptqCtgoKZ+3xvQLq5iGVErpteT43O7UB+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gdQPwcWC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB46C43390;
+	Tue, 23 Jan 2024 02:01:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972073;
-	bh=/jsssZ0eRJCnOHQZl6Z5FPkGfEyVwYvvSRJkLHv+Y/k=;
+	s=korg; t=1705975291;
+	bh=fqgU4+8ooqteAdiXC8/5qwSO2Ue0xZq7QJss1/zWYXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G4rYjMQ+xvRpRoySJvZaQ9VlSzh51lIcUDKGm0b7fKFLy0Em/IpH7pR7zFZHWIOdy
-	 d9Z3e/4/vpJ7HcUjXYjwbpG2bnr4z4ifXx7WIYG4ywRr03uvfopMVtSOYcN90mNtky
-	 gOcKZxOBBVhZGkCpzt4gnN4MqrC8PGYfnYSvaIgg=
+	b=gdQPwcWCw6Zeu0dZLI58VruvDTQLVeOvHioliNeXR160mtHoHki+sCZ7lSdYWbqmv
+	 gvoqSu39kCIGWRl53/L7yYfG/pMmNM2fLBB0QoY0UslGK3me53UvDq052UQkdLUlxH
+	 d03mC6Tc+EIhsdKWOTpZguCn4iswfyTGdTbeSgwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Tran <thinhtr@linux.vnet.ibm.com>,
-	Venkata Sai Duggi <venkata.sai.duggi@ibm.com>,
-	David Christensen <drc@linux.vnet.ibm.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 017/374] net/tg3: fix race condition in tg3_reset_task()
+Subject: [PATCH 6.6 222/583] Revert "drm/tidss: Annotate dma-fence critical section in commit path"
 Date: Mon, 22 Jan 2024 15:54:33 -0800
-Message-ID: <20240122235745.230930208@linuxfoundation.org>
+Message-ID: <20240122235818.794134154@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,96 +62,177 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Tran <thinhtr@linux.vnet.ibm.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 16b55b1f2269962fb6b5154b8bf43f37c9a96637 ]
+[ Upstream commit ca34d816558c3e4c3f8fe037b5a6b16c944693de ]
 
-When an EEH error is encountered by a PCI adapter, the EEH driver
-modifies the PCI channel's state as shown below:
+This reverts commit 4d56a4f08391857ba93465de489707b66adad114.
 
-   enum {
-      /* I/O channel is in normal state */
-      pci_channel_io_normal = (__force pci_channel_state_t) 1,
+The DMA-fence annotations cause a lockdep warning (see below). As per
+https://patchwork.freedesktop.org/patch/462170/ it sounds like the
+annotations don't work correctly.
 
-      /* I/O to channel is blocked */
-      pci_channel_io_frozen = (__force pci_channel_state_t) 2,
+======================================================
+WARNING: possible circular locking dependency detected
+6.6.0-rc2+ #1 Not tainted
+------------------------------------------------------
+kmstest/733 is trying to acquire lock:
+ffff8000819377f0 (fs_reclaim){+.+.}-{0:0}, at: __kmem_cache_alloc_node+0x58/0x2d4
 
-      /* PCI card is dead */
-      pci_channel_io_perm_failure = (__force pci_channel_state_t) 3,
-   };
+but task is already holding lock:
+ffff800081a06aa0 (dma_fence_map){++++}-{0:0}, at: tidss_atomic_commit_tail+0x20/0xc0 [tidss]
 
-If the same EEH error then causes the tg3 driver's transmit timeout
-logic to execute, the tg3_tx_timeout() function schedules a reset
-task via tg3_reset_task_schedule(), which may cause a race condition
-between the tg3 and EEH driver as both attempt to recover the HW via
-a reset action.
+which lock already depends on the new lock.
 
-EEH driver gets error event
---> eeh_set_channel_state()
-    and set device to one of
-    error state above           scheduler: tg3_reset_task() get
-                                returned error from tg3_init_hw()
-                             --> dev_close() shuts down the interface
-tg3_io_slot_reset() and
-tg3_io_resume() fail to
-reset/resume the device
+the existing dependency chain (in reverse order) is:
 
-To resolve this issue, we avoid the race condition by checking the PCI
-channel state in the tg3_reset_task() function and skip the tg3 driver
-initiated reset when the PCI channel is not in the normal state.  (The
-driver has no access to tg3 device registers at this point and cannot
-even complete the reset task successfully without external assistance.)
-We'll leave the reset procedure to be managed by the EEH driver which
-calls the tg3_io_error_detected(), tg3_io_slot_reset() and
-tg3_io_resume() functions as appropriate.
+-> #2 (dma_fence_map){++++}-{0:0}:
+       __dma_fence_might_wait+0x5c/0xd0
+       dma_resv_lockdep+0x1a4/0x32c
+       do_one_initcall+0x84/0x2fc
+       kernel_init_freeable+0x28c/0x4c4
+       kernel_init+0x24/0x1dc
+       ret_from_fork+0x10/0x20
 
-Adding the same checking in tg3_dump_state() to avoid dumping all
-device registers when the PCI channel is not in the normal state.
+-> #1 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}:
+       fs_reclaim_acquire+0x70/0xe4
+       __kmem_cache_alloc_node+0x58/0x2d4
+       kmalloc_trace+0x38/0x78
+       __kthread_create_worker+0x3c/0x150
+       kthread_create_worker+0x64/0x8c
+       workqueue_init+0x1e8/0x2f0
+       kernel_init_freeable+0x11c/0x4c4
+       kernel_init+0x24/0x1dc
+       ret_from_fork+0x10/0x20
 
-Signed-off-by: Thinh Tran <thinhtr@linux.vnet.ibm.com>
-Tested-by: Venkata Sai Duggi <venkata.sai.duggi@ibm.com>
-Reviewed-by: David Christensen <drc@linux.vnet.ibm.com>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://lore.kernel.org/r/20231201001911.656-1-thinhtr@linux.vnet.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+-> #0 (fs_reclaim){+.+.}-{0:0}:
+       __lock_acquire+0x1370/0x20d8
+       lock_acquire+0x1e8/0x308
+       fs_reclaim_acquire+0xd0/0xe4
+       __kmem_cache_alloc_node+0x58/0x2d4
+       __kmalloc_node_track_caller+0x58/0xf0
+       kmemdup+0x34/0x60
+       regmap_bulk_write+0x64/0x2c0
+       tc358768_bridge_pre_enable+0x8c/0x12d0 [tc358768]
+       drm_atomic_bridge_call_pre_enable+0x68/0x80 [drm]
+       drm_atomic_bridge_chain_pre_enable+0x50/0x158 [drm]
+       drm_atomic_helper_commit_modeset_enables+0x164/0x264 [drm_kms_helper]
+       tidss_atomic_commit_tail+0x58/0xc0 [tidss]
+       commit_tail+0xa0/0x188 [drm_kms_helper]
+       drm_atomic_helper_commit+0x1a8/0x1c0 [drm_kms_helper]
+       drm_atomic_commit+0xa8/0xe0 [drm]
+       drm_mode_atomic_ioctl+0x9ec/0xc80 [drm]
+       drm_ioctl_kernel+0xc4/0x170 [drm]
+       drm_ioctl+0x234/0x4b0 [drm]
+       drm_compat_ioctl+0x110/0x12c [drm]
+       __arm64_compat_sys_ioctl+0x128/0x150
+       invoke_syscall+0x48/0x110
+       el0_svc_common.constprop.0+0x40/0xe0
+       do_el0_svc_compat+0x1c/0x38
+       el0_svc_compat+0x48/0xb4
+       el0t_32_sync_handler+0xb0/0x138
+       el0t_32_sync+0x194/0x198
+
+other info that might help us debug this:
+
+Chain exists of:
+  fs_reclaim --> mmu_notifier_invalidate_range_start --> dma_fence_map
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  rlock(dma_fence_map);
+                               lock(mmu_notifier_invalidate_range_start);
+                               lock(dma_fence_map);
+  lock(fs_reclaim);
+
+ *** DEADLOCK ***
+
+3 locks held by kmstest/733:
+ #0: ffff800082e5bba0 (crtc_ww_class_acquire){+.+.}-{0:0}, at: drm_mode_atomic_ioctl+0x118/0xc80 [drm]
+ #1: ffff000004224c88 (crtc_ww_class_mutex){+.+.}-{3:3}, at: modeset_lock+0xdc/0x1a0 [drm]
+ #2: ffff800081a06aa0 (dma_fence_map){++++}-{0:0}, at: tidss_atomic_commit_tail+0x20/0xc0 [tidss]
+
+stack backtrace:
+CPU: 0 PID: 733 Comm: kmstest Not tainted 6.6.0-rc2+ #1
+Hardware name: Toradex Verdin AM62 on Verdin Development Board (DT)
+Call trace:
+ dump_backtrace+0x98/0x118
+ show_stack+0x18/0x24
+ dump_stack_lvl+0x60/0xac
+ dump_stack+0x18/0x24
+ print_circular_bug+0x288/0x368
+ check_noncircular+0x168/0x17c
+ __lock_acquire+0x1370/0x20d8
+ lock_acquire+0x1e8/0x308
+ fs_reclaim_acquire+0xd0/0xe4
+ __kmem_cache_alloc_node+0x58/0x2d4
+ __kmalloc_node_track_caller+0x58/0xf0
+ kmemdup+0x34/0x60
+ regmap_bulk_write+0x64/0x2c0
+ tc358768_bridge_pre_enable+0x8c/0x12d0 [tc358768]
+ drm_atomic_bridge_call_pre_enable+0x68/0x80 [drm]
+ drm_atomic_bridge_chain_pre_enable+0x50/0x158 [drm]
+ drm_atomic_helper_commit_modeset_enables+0x164/0x264 [drm_kms_helper]
+ tidss_atomic_commit_tail+0x58/0xc0 [tidss]
+ commit_tail+0xa0/0x188 [drm_kms_helper]
+ drm_atomic_helper_commit+0x1a8/0x1c0 [drm_kms_helper]
+ drm_atomic_commit+0xa8/0xe0 [drm]
+ drm_mode_atomic_ioctl+0x9ec/0xc80 [drm]
+ drm_ioctl_kernel+0xc4/0x170 [drm]
+ drm_ioctl+0x234/0x4b0 [drm]
+ drm_compat_ioctl+0x110/0x12c [drm]
+ __arm64_compat_sys_ioctl+0x128/0x150
+ invoke_syscall+0x48/0x110
+ el0_svc_common.constprop.0+0x40/0xe0
+ do_el0_svc_compat+0x1c/0x38
+ el0_svc_compat+0x48/0xb4
+ el0t_32_sync_handler+0xb0/0x138
+ el0t_32_sync+0x194/0x198
+
+Fixes: 4d56a4f08391 ("drm/tidss: Annotate dma-fence critical section in commit path")
+Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230920-dma-fence-annotation-revert-v1-1-7ebf6f7f5bf6@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/tidss/tidss_kms.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index fc487a6f050a..757138c33b75 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -6448,6 +6448,14 @@ static void tg3_dump_state(struct tg3 *tp)
- 	int i;
- 	u32 *regs;
+diff --git a/drivers/gpu/drm/tidss/tidss_kms.c b/drivers/gpu/drm/tidss/tidss_kms.c
+index c979ad1af236..d096d8d2bc8f 100644
+--- a/drivers/gpu/drm/tidss/tidss_kms.c
++++ b/drivers/gpu/drm/tidss/tidss_kms.c
+@@ -4,8 +4,6 @@
+  * Author: Tomi Valkeinen <tomi.valkeinen@ti.com>
+  */
  
-+	/* If it is a PCI error, all registers will be 0xffff,
-+	 * we don't dump them out, just report the error and return
-+	 */
-+	if (tp->pdev->error_state != pci_channel_io_normal) {
-+		netdev_err(tp->dev, "PCI channel ERROR!\n");
-+		return;
-+	}
-+
- 	regs = kzalloc(TG3_REG_BLK_SIZE, GFP_ATOMIC);
- 	if (!regs)
- 		return;
-@@ -11186,7 +11194,8 @@ static void tg3_reset_task(struct work_struct *work)
- 	rtnl_lock();
- 	tg3_full_lock(tp, 0);
+-#include <linux/dma-fence.h>
+-
+ #include <drm/drm_atomic.h>
+ #include <drm/drm_atomic_helper.h>
+ #include <drm/drm_bridge.h>
+@@ -25,7 +23,6 @@ static void tidss_atomic_commit_tail(struct drm_atomic_state *old_state)
+ {
+ 	struct drm_device *ddev = old_state->dev;
+ 	struct tidss_device *tidss = to_tidss(ddev);
+-	bool fence_cookie = dma_fence_begin_signalling();
  
--	if (tp->pcierr_recovery || !netif_running(tp->dev)) {
-+	if (tp->pcierr_recovery || !netif_running(tp->dev) ||
-+	    tp->pdev->error_state != pci_channel_io_normal) {
- 		tg3_flag_clear(tp, RESET_TASK_PENDING);
- 		tg3_full_unlock(tp);
- 		rtnl_unlock();
+ 	dev_dbg(ddev->dev, "%s\n", __func__);
+ 
+@@ -36,7 +33,6 @@ static void tidss_atomic_commit_tail(struct drm_atomic_state *old_state)
+ 	drm_atomic_helper_commit_modeset_enables(ddev, old_state);
+ 
+ 	drm_atomic_helper_commit_hw_done(old_state);
+-	dma_fence_end_signalling(fence_cookie);
+ 	drm_atomic_helper_wait_for_flip_done(ddev, old_state);
+ 
+ 	drm_atomic_helper_cleanup_planes(ddev, old_state);
 -- 
 2.43.0
 
