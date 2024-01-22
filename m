@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-12842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 831C483789C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDEDB837A42
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2639B1F223C4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:23:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D41B1C28756
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 305601420A8;
-	Tue, 23 Jan 2024 00:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5254512BE9C;
+	Tue, 23 Jan 2024 00:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="juK3db6k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lvsNwZBK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E27B81420A5;
-	Tue, 23 Jan 2024 00:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1254C12A17F;
+	Tue, 23 Jan 2024 00:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968154; cv=none; b=Xt2ELR6YBXVIBz9KVYb8CvVEwHF9u5xPVRonrzxdiHfF8Ou+DzlAHK/CAruASzayjtGutt3/EDnYq0lZNxooRgcJQPmey3SbRdRp5GHYIt4bvz8vtIgEl0qbg38Ab3yFHYLz+AsPxhOEgL7tVQdGoWLqNaV56w3C1x9hucTpJT0=
+	t=1705968840; cv=none; b=DkFTJd2fOQ6g+BIt7WuPhsyqzoUBDQH45ychw3mlh6qZQKN3tc4UAPO0n1HMcZ9AWkXOV7xgxDtXAkFp2ns81ZsH/RWp8nKs7GjpQv7IhmM4LfWpTZuUldoXfYgqQ34kir9XGsJux4sVW1Rm0fP3Y9yANuIlDDerx8HT88g3Fy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968154; c=relaxed/simple;
-	bh=N+CN+77EJ7BpRyXCxlGqsYfM71qHHuoKGBFqPHFjXxs=;
+	s=arc-20240116; t=1705968840; c=relaxed/simple;
+	bh=EVJLfZHDQe36mFWrcGNCfrjn3zKcTzYG2WZihhU3X64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QFY7ytnOOPPtPOcf3oBXr98n0Ge8VThA98jR/XIQbqCXGEHGpoRTFVohH/f0jQ/j90xWsuV9w3ZszFV+viWj7AUYbjxK0fE6cuw7kf7eVC7yiflr7BLq05Y0pc9wl8+6sSWsqTN757eoIIDBkFlLGX/BbkOZwZQqseEwh1gPm5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=juK3db6k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4B4C433C7;
-	Tue, 23 Jan 2024 00:02:33 +0000 (UTC)
+	 MIME-Version; b=CXrbOZFlIw0F6Q5thlTHDhbnqCzI2Hr5t4ej1gfXNjvXC+BxCZ+Z9Ie5nSQrT2qO/A4y7BQin2if6r5Qe9u5CpVGKJkrxEJoVyJCDcZocAR2fbXhxCWvFMHyRoWD0DyT6g0LKlAMDuCSJq5F36Wb2Ox0O8evV+g1yeMWL8sQyFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lvsNwZBK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A49C43390;
+	Tue, 23 Jan 2024 00:13:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968153;
-	bh=N+CN+77EJ7BpRyXCxlGqsYfM71qHHuoKGBFqPHFjXxs=;
+	s=korg; t=1705968839;
+	bh=EVJLfZHDQe36mFWrcGNCfrjn3zKcTzYG2WZihhU3X64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=juK3db6kXBBYvUFOA+2BKO/3DlXT09TijiRWKzEXKYOC7xknU+/CjLI3s9XVJvUTl
-	 Y7IFYl4cSDHl6esE2cYARk09aUy9lxK/kSBOScvsmUugizpa9EuGMNTbwYzkZhBBbH
-	 l5z1aYy5BXGoLrK+a2oPcoqR50zBzPFmGt8hkXas=
+	b=lvsNwZBKHPGetAF8n+GNA0mqMxnG3a2hcR5hVAQp8BRsGeyz7firbRmxtOjllsa76
+	 QEHyeYnQ7WuUlzbwEqIuR1FxNdhhWbGkHc9fAKNekVrWrKpb8Hqc02K7R0hsjB53Eg
+	 6LufxI2IutKBPNNVgXsIwaiHG8YxH2LLKE0TFG08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weihao Li <cn.liweihao@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 009/148] clk: rockchip: rk3128: Fix HCLK_OTG gate register
+	Alice Ryhl <aliceryhl@google.com>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 5.4 035/194] binder: fix comment on binder_alloc_new_buf() return value
 Date: Mon, 22 Jan 2024 15:56:05 -0800
-Message-ID: <20240122235712.807807117@linuxfoundation.org>
+Message-ID: <20240122235720.712262193@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weihao Li <cn.liweihao@gmail.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit c6c5a5580dcb6631aa6369dabe12ef3ce784d1d2 ]
+commit e1090371e02b601cbfcea175c2a6cc7c955fa830 upstream.
 
-The HCLK_OTG gate control is in CRU_CLKGATE5_CON, not CRU_CLKGATE3_CON.
+Update the comments of binder_alloc_new_buf() to reflect that the return
+value of the function is now ERR_PTR(-errno) on failure.
 
-Signed-off-by: Weihao Li <cn.liweihao@gmail.com>
-Link: https://lore.kernel.org/r/20231031111816.8777-1-cn.liweihao@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+No functional changes in this patch.
+
+Cc: stable@vger.kernel.org
+Fixes: 57ada2fb2250 ("binder: add log information for binder transaction failures")
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20231201172212.1813387-8-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/rockchip/clk-rk3128.c | 2 +-
+ drivers/android/binder_alloc.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/rockchip/clk-rk3128.c b/drivers/clk/rockchip/clk-rk3128.c
-index 5970a50671b9..83c7eb18321f 100644
---- a/drivers/clk/rockchip/clk-rk3128.c
-+++ b/drivers/clk/rockchip/clk-rk3128.c
-@@ -497,7 +497,7 @@ static struct rockchip_clk_branch common_clk_branches[] __initdata = {
- 	GATE(HCLK_I2S_2CH, "hclk_i2s_2ch", "hclk_peri", 0, RK2928_CLKGATE_CON(7), 2, GFLAGS),
- 	GATE(0, "hclk_usb_peri", "hclk_peri", CLK_IGNORE_UNUSED, RK2928_CLKGATE_CON(9), 13, GFLAGS),
- 	GATE(HCLK_HOST2, "hclk_host2", "hclk_peri", 0, RK2928_CLKGATE_CON(7), 3, GFLAGS),
--	GATE(HCLK_OTG, "hclk_otg", "hclk_peri", 0, RK2928_CLKGATE_CON(3), 13, GFLAGS),
-+	GATE(HCLK_OTG, "hclk_otg", "hclk_peri", 0, RK2928_CLKGATE_CON(5), 13, GFLAGS),
- 	GATE(0, "hclk_peri_ahb", "hclk_peri", CLK_IGNORE_UNUSED, RK2928_CLKGATE_CON(9), 14, GFLAGS),
- 	GATE(HCLK_SPDIF, "hclk_spdif", "hclk_peri", 0, RK2928_CLKGATE_CON(10), 9, GFLAGS),
- 	GATE(HCLK_TSP, "hclk_tsp", "hclk_peri", 0, RK2928_CLKGATE_CON(10), 12, GFLAGS),
--- 
-2.43.0
-
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -515,7 +515,7 @@ err_alloc_buf_struct_failed:
+  * is the sum of the three given sizes (each rounded up to
+  * pointer-sized boundary)
+  *
+- * Return:	The allocated buffer or %NULL if error
++ * Return:	The allocated buffer or %ERR_PTR(-errno) if error
+  */
+ struct binder_buffer *binder_alloc_new_buf(struct binder_alloc *alloc,
+ 					   size_t data_size,
 
 
 
