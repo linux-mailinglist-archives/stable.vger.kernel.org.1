@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-12374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F15383666D
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 16:02:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0791F836680
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 16:03:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 253BE1F21C73
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 15:02:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B441E289054
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 15:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1670246557;
-	Mon, 22 Jan 2024 14:56:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 984394779D;
+	Mon, 22 Jan 2024 14:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JSJ4KGLP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TlKtlGuJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2C7046548;
-	Mon, 22 Jan 2024 14:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDA847789;
+	Mon, 22 Jan 2024 14:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705935378; cv=none; b=JTLzIHIoygMvaqwknuG5U25zUPDCygmWB2f9yvFmRCXRRBpiahlkMc+47hv1c3+Au2eHN5lyGSxfyg+uD73frcxuMnOEvyCe4QUfhp8BKuhI/yXQ071QLNnO1ZJHnKmGJI9py90z7NW+3Mj5P/ou2fIFFzhRjezz1enOfkOtDrE=
+	t=1705935380; cv=none; b=O7/c4mDJFwtSboqAPropO/Wr29lTNNqQdg6j9kBwY6BOHvLYJlmlK9byxGR6+Q4qd7iEnb5/zb7ZvgxlwHoPdcXb3fQ5nBSEHWJIldvVr5T13oCiEBKNi3gvOLFoJfCp31JAxf3JqebfBFEzdrPCm6MVcPjV/chXMTAVs7DoPe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705935378; c=relaxed/simple;
-	bh=vmyO24YHFKdgEbGviAcUxNuIr0zWNNtVYbmIoc339XA=;
+	s=arc-20240116; t=1705935380; c=relaxed/simple;
+	bh=Qz4otPY30jDGvMvYYzPpGOAzqIWzJPvaWEZt9Oj/X98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UGNuZd/Rtg0IlBSvl81bG3ShMMtQWpiFcAEdHE6zy7K0Zj7fijqfig4XdqBi0u6HZlhVlaORHDEDqu3OMElo203JFKul1now0hLtAB4JparuZsC5P3xGcCquOsaVSiCXbiCr5gggZjB2QrM9V7RWx5cZTjG64OP8kcx6cIsqRgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JSJ4KGLP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A6A0C433F1;
-	Mon, 22 Jan 2024 14:56:17 +0000 (UTC)
+	 MIME-Version; b=MGaxj0c+z/KFft6/KuLN7wbj+N2AN8gTsYsIckuAAALZethzTZCG9gH0gMPzbN+nvIN0cmXCnz3s3iiLiJvSU3hoXq+UqPLQGl7RNeISBzYa+RtayhIuXh+wo+ule6VllNMWelwYISHxxftUPecYkYbaHr6inCZeyzAKpzAnOsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TlKtlGuJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D01C433F1;
+	Mon, 22 Jan 2024 14:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1705935378;
-	bh=vmyO24YHFKdgEbGviAcUxNuIr0zWNNtVYbmIoc339XA=;
+	s=k20201202; t=1705935380;
+	bh=Qz4otPY30jDGvMvYYzPpGOAzqIWzJPvaWEZt9Oj/X98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JSJ4KGLPkwE0W8vT2uQm7MqtQyz7xPnVArPEbNZHwrsP8DwQ001e2gi4EAAhU8dHC
-	 hHEt3ywqgP7G+mQspmPWGtT3mXbF6LHqD7J+Qwa9da1j7hMs6oTiKqIbAyd/8V7iTX
-	 e+adXGjBGtR3Xp+ygpJgMNzjQoh/VgjrRRgrHB4ZDxDRXlzTMtFFHT8AUQLInVvHrA
-	 WKluYVymcNhWeys9cXfFNkcaZyYXM/lXCpm4tmg67NWFkzMEVqLT8gBy4+tMTDamtB
-	 yBZbWZhkl1GGc4i93XxxM7T7FAL0FHhTjq1erQXQjOR0NBFj69bzkHuFhI2cKIMd6x
-	 aahk0MIHsp0/A==
+	b=TlKtlGuJcbpOHxACPcj/IKOMxQ7X6LudBWmlZ2lxNIL8PxFZbFtcNIFysUIFTMf2g
+	 0np7A/F9+5YzFJ1fRy1Xq6LVgpCCdr5ncCdQAc4tXCpiMd5S+WL/s4qjpZ84cq6+TL
+	 fD0cyEWPnzOJGsyKpJ5NVbsi9+hr73eLXUxtg67DMYZPO40sHwTzhGBgCZYWk/Ruom
+	 sXrnP7BfJi2Z+sVoneTM3kHF/vpll9TUJ0P3FLDmE/SP0LBnGIwVjm6A9+12kaQM52
+	 lHwwiqw7W2cUhPXr2M+AOv+HxDK7h+KEE5jZOBcR1JvwbKGpnNznxBB1TlnuAEuR11
+	 jKP+lIdn/ac6w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
+Cc: Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	maarten.lankhorst@linux.intel.com,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.7 04/88] drm: Fix color LUT rounding
-Date: Mon, 22 Jan 2024 09:50:37 -0500
-Message-ID: <20240122145608.990137-4-sashal@kernel.org>
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.7 05/88] fast_dput(): handle underflows gracefully
+Date: Mon, 22 Jan 2024 09:50:38 -0500
+Message-ID: <20240122145608.990137-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122145608.990137-1-sashal@kernel.org>
 References: <20240122145608.990137-1-sashal@kernel.org>
@@ -66,101 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.7.1
 Content-Transfer-Encoding: 8bit
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit c6fbb6bca10838485b820e8a26c23996f77ce580 ]
+[ Upstream commit 504e08cebe1d4e1efe25f915234f646e74a364a8 ]
 
-The current implementation of drm_color_lut_extract()
-generates weird results. Eg. if we go through all the
-values for 16->8bpc conversion we see the following pattern:
+If refcount is less than 1, we should just warn, unlock dentry and
+return true, so that the caller doesn't try to do anything else.
 
-in            out (count)
-   0 -   7f ->  0 (128)
-  80 -  17f ->  1 (256)
- 180 -  27f ->  2 (256)
- 280 -  37f ->  3 (256)
-...
-fb80 - fc7f -> fc (256)
-fc80 - fd7f -> fd (256)
-fd80 - fe7f -> fe (256)
-fe80 - ffff -> ff (384)
+Taking care of that leaves the rest of "lockref_put_return() has
+failed" case equivalent to "decrement refcount and rejoin the
+normal slow path after the point where we grab ->d_lock".
 
-So less values map to 0 and more values map 0xff, which
-doesn't seem particularly great.
+NOTE: lockref_put_return() is strictly a fastpath thing - unlike
+the rest of lockref primitives, it does not contain a fallback.
+Caller (and it looks like fast_dput() is the only legitimate one
+in the entire kernel) has to do that itself.  Reasons for
+lockref_put_return() failures:
+	* ->d_lock held by somebody
+	* refcount <= 0
+	* ... or an architecture not supporting lockref use of
+cmpxchg - sparc, anything non-SMP, config with spinlock debugging...
 
-To get just the same number of input values to map to
-the same output values we'd just need to drop the rounding
-entrirely. But perhaps a better idea would be to follow the
-OpenGL int<->float conversion rules, in which case we get
-the following results:
+We could add a fallback, but it would be a clumsy API - we'd have
+to distinguish between:
+	(1) refcount > 1 - decremented, lock not held on return
+	(2) refcount < 1 - left alone, probably no sense to hold the lock
+	(3) refcount is 1, no cmphxcg - decremented, lock held on return
+	(4) refcount is 1, cmphxcg supported - decremented, lock *NOT* held
+	    on return.
+We want to return with no lock held in case (4); that's the whole point of that
+thing.  We very much do not want to have the fallback in case (3) return without
+a lock, since the caller might have to retake it in that case.
+So it wouldn't be more convenient than doing the fallback in the caller and
+it would be very easy to screw up, especially since the test coverage would
+suck - no way to test (3) and (4) on the same kernel build.
 
-in            out (count)
-   0 -   80 ->  0 (129)
-  81 -  181 ->  1 (257)
- 182 -  282 ->  2 (257)
- 283 -  383 ->  3 (257)
-...
-fc7c - fd7c -> fc (257)
-fd7d - fe7d -> fd (257)
-fe7e - ff7e -> fe (257)
-ff7f - ffff -> ff (129)
-
-Note that since the divisor is constant the compiler
-is able to optimize away the integer division in most
-cases. The only exception is the _ULL() case on 32bit
-architectures since that gets emitted as inline asm
-via do_div() and thus the compiler doesn't get to
-optimize it.
-
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231013131402.24072-2-ville.syrjala@linux.intel.com
-Reviewed-by: Chaitanya Kumar Borah <chaitanya.kumar.borah@intel.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Acked-by: Maxime Ripard <mripard@kernel.org>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/drm/drm_color_mgmt.h | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ fs/dcache.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/include/drm/drm_color_mgmt.h b/include/drm/drm_color_mgmt.h
-index 81c298488b0c..54b2b2467bfd 100644
---- a/include/drm/drm_color_mgmt.h
-+++ b/include/drm/drm_color_mgmt.h
-@@ -36,20 +36,17 @@ struct drm_plane;
-  *
-  * Extract a degamma/gamma LUT value provided by user (in the form of
-  * &drm_color_lut entries) and round it to the precision supported by the
-- * hardware.
-+ * hardware, following OpenGL int<->float conversion rules
-+ * (see eg. OpenGL 4.6 specification - 2.3.5 Fixed-Point Data Conversions).
-  */
- static inline u32 drm_color_lut_extract(u32 user_input, int bit_precision)
- {
--	u32 val = user_input;
--	u32 max = 0xffff >> (16 - bit_precision);
--
--	/* Round only if we're not using full precision. */
--	if (bit_precision < 16) {
--		val += 1UL << (16 - bit_precision - 1);
--		val >>= 16 - bit_precision;
--	}
--
--	return clamp_val(val, 0, max);
-+	if (bit_precision > 16)
-+		return DIV_ROUND_CLOSEST_ULL(mul_u32_u32(user_input, (1 << bit_precision) - 1),
-+					     (1 << 16) - 1);
-+	else
-+		return DIV_ROUND_CLOSEST(user_input * ((1 << bit_precision) - 1),
-+					 (1 << 16) - 1);
- }
+diff --git a/fs/dcache.c b/fs/dcache.c
+index c82ae731df9a..d1ab857a69ca 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -787,12 +787,12 @@ static inline bool fast_dput(struct dentry *dentry)
+ 	 */
+ 	if (unlikely(ret < 0)) {
+ 		spin_lock(&dentry->d_lock);
+-		if (dentry->d_lockref.count > 1) {
+-			dentry->d_lockref.count--;
++		if (WARN_ON_ONCE(dentry->d_lockref.count <= 0)) {
+ 			spin_unlock(&dentry->d_lock);
+ 			return true;
+ 		}
+-		return false;
++		dentry->d_lockref.count--;
++		goto locked;
+ 	}
  
- u64 drm_color_ctm_s31_32_to_qm_n(u64 user_input, u32 m, u32 n);
+ 	/*
+@@ -850,6 +850,7 @@ static inline bool fast_dput(struct dentry *dentry)
+ 	 * else could have killed it and marked it dead. Either way, we
+ 	 * don't need to do anything else.
+ 	 */
++locked:
+ 	if (dentry->d_lockref.count) {
+ 		spin_unlock(&dentry->d_lock);
+ 		return true;
 -- 
 2.43.0
 
