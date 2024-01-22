@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-15335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B398B8384D1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67236837DBB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E52D81C235F9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99EC11C27B70
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0AC777622;
-	Tue, 23 Jan 2024 02:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539D25C919;
+	Tue, 23 Jan 2024 00:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WXyK/vCS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJhAwYc/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603217691F;
-	Tue, 23 Jan 2024 02:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113DE5C5F0;
+	Tue, 23 Jan 2024 00:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975501; cv=none; b=fy+Ko583x5bgRCE79I/ZO7vAn12pBj2u/G1kDr68SiFGedLPck8jA1GQjC16dNOW/60f1anLY9k87K1I0qfs1d//OdzPYk4/zkt74S5Egv3q5/JWifKdlfnNNNd29+3bdtEMNS+SooUNc1xjrd0YVAW2MhftLwLjRq0kkHUa964=
+	t=1705970160; cv=none; b=eZaS3ceB12Wtisz8zu8M3AsM/bUTUUMcBDMPayGke4i5SthaIjQepm2dqZABWwQ377ZBI0mZdnZqOhCH20KgWmMNR6BL6SOjsmw0+kZT7rYiMeOMpFj1FwN/mtlk8O8jdMoYy/QyHY7FCk2slTSJklWcHAWaWoNjAcP7g7cWQwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975501; c=relaxed/simple;
-	bh=KLwb2cyEbI1+bHtUBJMl+gjNXPufeCGCMMPCUwIVu9k=;
+	s=arc-20240116; t=1705970160; c=relaxed/simple;
+	bh=nm/NWsphtB32NWl7m6jJhE2I/lpUdQ4fuTtXnQkNG2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YEJ6kSAYqiozho7bsbuhcy8E3H988v30Bet6clo1Xl1a98XxUHW3CedMmBkMJZEKdv60kH0n/6qCbYXCWdeYofwnwFO+4/9+fPubefMbqrPtuE7fE1AhrSfXtqVhRnF/5W1Dpoiph2Hx325g4UeXEuUhM36Krg2bq//+A/KwQUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WXyK/vCS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBA4C433F1;
-	Tue, 23 Jan 2024 02:05:00 +0000 (UTC)
+	 MIME-Version; b=UTZC2MPqQ2VeJsHp7s+RAZr9zvOecTJbS1dkFHZFHzDMKvDu53s3230AdkJxF5+T6i65ff0R9lgFl+3T0Eu5ftmyIUBf2eeEDmyGTU3FptHoC4eISjayXqUr5OPv52BqbHS/lCzCChkbCuoLyAfLVyiCV/SvsaTa0bsak/0JYmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJhAwYc/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E25DC43394;
+	Tue, 23 Jan 2024 00:35:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975501;
-	bh=KLwb2cyEbI1+bHtUBJMl+gjNXPufeCGCMMPCUwIVu9k=;
+	s=korg; t=1705970159;
+	bh=nm/NWsphtB32NWl7m6jJhE2I/lpUdQ4fuTtXnQkNG2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WXyK/vCSsZMejwdZAwAUZRDbp/shcqLks23ZD7atdcQQiDZXcKwfWGknJShRypD6/
-	 DG+IvjaYa3Z/VsBClCriOHatVQJf7PvRQLokKcEMWvdlHuVSwCu8XxbGXdbD9GQcGc
-	 Jezh+dSEN3PkoBIkKej0CzWX65dcadA64ZotNngo=
+	b=kJhAwYc/K0Tn8XIW3dQKusGsxB2zof+tsWv2ZkRRorwZPAYbJvL4kVJXuJU8/gqwq
+	 tVSr3ac05iBaQ8YmZvzTViyQ8t45+g5/vq/FKTwbst2g4xKdZqran/JRxns+ISUpOw
+	 nDErVRNswSof3+zqr97R4ZpFU7rxPf6zWeKcb+3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Aditi Ghag <aditi.ghag@isovalent.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 454/583] MIPS: Alchemy: Fix an out-of-bound access in db1200_dev_setup()
-Date: Mon, 22 Jan 2024 15:58:25 -0800
-Message-ID: <20240122235825.868396080@linuxfoundation.org>
+Subject: [PATCH 6.7 602/641] bpf: iter_udp: Retry with a larger batch size without going back to the previous bucket
+Date: Mon, 22 Jan 2024 15:58:26 -0800
+Message-ID: <20240122235837.063695825@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Martin KaFai Lau <martin.lau@kernel.org>
 
-[ Upstream commit 89c4b588d11e9acf01d604de4b0c715884f59213 ]
+[ Upstream commit 19ca0823f6eaad01d18f664a00550abe912c034c ]
 
-When calling spi_register_board_info(), we should pass the number of
-elements in 'db1200_spi_devs', not 'db1200_i2c_devs'.
+The current logic is to use a default size 16 to batch the whole bucket.
+If it is too small, it will retry with a larger batch size.
 
-Fixes: 63323ec54a7e ("MIPS: Alchemy: Extended DB1200 board support.")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+The current code accidentally does a state->bucket-- before retrying.
+This goes back to retry with the previous bucket which has already
+been done. This patch fixed it.
+
+It is hard to create a selftest. I added a WARN_ON(state->bucket < 0),
+forced a particular port to be hashed to the first bucket,
+created >16 sockets, and observed the for-loop went back
+to the "-1" bucket.
+
+Cc: Aditi Ghag <aditi.ghag@isovalent.com>
+Fixes: c96dac8d369f ("bpf: udp: Implement batching for sockets iterator")
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: Aditi Ghag <aditi.ghag@isovalent.com>
+Link: https://lore.kernel.org/r/20240112190530.3751661-2-martin.lau@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/alchemy/devboards/db1200.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/udp.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/mips/alchemy/devboards/db1200.c b/arch/mips/alchemy/devboards/db1200.c
-index f521874ebb07..67f067706af2 100644
---- a/arch/mips/alchemy/devboards/db1200.c
-+++ b/arch/mips/alchemy/devboards/db1200.c
-@@ -847,7 +847,7 @@ int __init db1200_dev_setup(void)
- 	i2c_register_board_info(0, db1200_i2c_devs,
- 				ARRAY_SIZE(db1200_i2c_devs));
- 	spi_register_board_info(db1200_spi_devs,
--				ARRAY_SIZE(db1200_i2c_devs));
-+				ARRAY_SIZE(db1200_spi_devs));
- 
- 	/* SWITCHES:	S6.8 I2C/SPI selector  (OFF=I2C	 ON=SPI)
- 	 *		S6.7 AC97/I2S selector (OFF=AC97 ON=I2S)
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index 5f742d0b9e07..79050d83e736 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -3213,7 +3213,6 @@ static struct sock *bpf_iter_udp_batch(struct seq_file *seq)
+ 		/* After allocating a larger batch, retry one more time to grab
+ 		 * the whole bucket.
+ 		 */
+-		state->bucket--;
+ 		goto again;
+ 	}
+ done:
 -- 
 2.43.0
 
