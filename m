@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-13599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E564837D0B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:23:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB2CB838439
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 349202913F6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 834F3298BA3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A760015E284;
-	Tue, 23 Jan 2024 00:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 989FD6A023;
+	Tue, 23 Jan 2024 02:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VMMVVT+F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V77X7gFh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DB64E1D5;
-	Tue, 23 Jan 2024 00:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551BE6A03B;
+	Tue, 23 Jan 2024 02:02:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969775; cv=none; b=W0RdpQud4jEvXx4XQZ+NAo3Y1LCt5k0HmGSbG+xMeszaMX10miWQPKmQXFyaO8oojJjRWDElTBnNtQG+z9+Z0Y0Txq148uITnlLPzLOLq7ZrYSumPELjJ+3kJifEGnLgPVBbwC68GY6qYUvPcTfleZ+PbYQdDMINNfwhbj45/dE=
+	t=1705975331; cv=none; b=n3TbPeGlufGUYz8qBYTM+mLRvBtj05cW2+G6Ewyy5cTA6gS/O6Qi23O/Xk9+uPCwwVUF9wsf2iLOKuOOBJB2vWtM3pClxCVcefL9r6waXM25le2YtP9bTSh7wMHvrvdF9IAWeGIbWSWmoomfM5Bmlkg3SJJVHV6ndIuHJc9JWBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969775; c=relaxed/simple;
-	bh=/+lGWXsnEP5E45/aTVr1JVy/fcPXLeo1fyo74oiEBys=;
+	s=arc-20240116; t=1705975331; c=relaxed/simple;
+	bh=YR5rpRPsa7zqZMJvazJAfbqyu09rqQI3/vyhSr92dzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r9+nr1jVQX7ecAmdd5TYBhsmDZdDNwFWfs0Y/cLaBbw7nKj8GLcv15btJdF+jH9i3k18AohuwACj3jcxbupC88KMu6sLZKsqbH85z0GzZQn12y8IODRugBknAM84AOVIhNjQ1uZ6raHYdAppxjgzPFIDE6K/Gmi8AhydBY0/O24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VMMVVT+F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24302C433C7;
-	Tue, 23 Jan 2024 00:29:35 +0000 (UTC)
+	 MIME-Version; b=WePxZfI1SD9goVYAiIzZvdHKmYvvbV4hd9wsxf04hJeBMtngXBDcRaiOSpDnU39Z/7sIXdAmWljq+3QKxR72nEazasFnMWxikIEmOeWlsyfs5OxN+DY4My60FKlJf/5E45N8XHc5DIStli6ovggmP6NMRI59zXk9NdnPQkU8DQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V77X7gFh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16DECC43394;
+	Tue, 23 Jan 2024 02:02:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969775;
-	bh=/+lGWXsnEP5E45/aTVr1JVy/fcPXLeo1fyo74oiEBys=;
+	s=korg; t=1705975331;
+	bh=YR5rpRPsa7zqZMJvazJAfbqyu09rqQI3/vyhSr92dzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VMMVVT+FOccG+wQQ1MwvaUs3d/JQ6FS2NnwpIF3IdTxF0lPOxVfi9DCUqsHjACNlI
-	 rH8eklXiqcsqsZ9BQccIbEqZzRMJMMtAbc1YyzPaj358Tx0M/qtS83qNumyum9a19q
-	 PRCCIfpMjS6HyV0MIvGLtiRvcFWffbqPxACtXu7U=
+	b=V77X7gFh+VWjZQ3NQPad7E1UoO7HEVsgzyltjTe5xehfAIJWQMG4f+hPn5r1n2NYF
+	 CwTAmiFVoUnB2SpDETggBqk7nae6A1QMySQ5hRNcE/MAC53zxgIk5sEG2bM/xOLPm+
+	 9vshumRkM0VFM99VNR3QIRSX87JxXPAijXcgJneo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Min Li <min15.li@samsung.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.7 441/641] block: add check that partition length needs to be aligned with block size
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 294/583] dt-bindings: clock: Update the videocc resets for sm8150
 Date: Mon, 22 Jan 2024 15:55:45 -0800
-Message-ID: <20240122235831.819654417@linuxfoundation.org>
+Message-ID: <20240122235821.010007775@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Min Li <min15.li@samsung.com>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-commit 6f64f866aa1ae6975c95d805ed51d7e9433a0016 upstream.
+[ Upstream commit 3185f96968eedd117ec72ee7b87ead44b6d1bbbd ]
 
-Before calling add partition or resize partition, there is no check
-on whether the length is aligned with the logical block size.
-If the logical block size of the disk is larger than 512 bytes,
-then the partition size maybe not the multiple of the logical block size,
-and when the last sector is read, bio_truncate() will adjust the bio size,
-resulting in an IO error if the size of the read command is smaller than
-the logical block size.If integrity data is supported, this will also
-result in a null pointer dereference when calling bio_integrity_free.
+Add all the available resets for the video clock controller
+on sm8150.
 
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Min Li <min15.li@samsung.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230629142517.121241-1-min15.li@samsung.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20231201-videocc-8150-v3-1-56bec3a5e443@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: 1fd9a939db24 ("clk: qcom: videocc-sm8150: Update the videocc resets")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/ioctl.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ include/dt-bindings/clock/qcom,videocc-sm8150.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -18,7 +18,7 @@ static int blkpg_do_ioctl(struct block_d
- {
- 	struct gendisk *disk = bdev->bd_disk;
- 	struct blkpg_partition p;
--	long long start, length;
-+	sector_t start, length;
+diff --git a/include/dt-bindings/clock/qcom,videocc-sm8150.h b/include/dt-bindings/clock/qcom,videocc-sm8150.h
+index e24ee840cfdb..c557b78dc572 100644
+--- a/include/dt-bindings/clock/qcom,videocc-sm8150.h
++++ b/include/dt-bindings/clock/qcom,videocc-sm8150.h
+@@ -16,6 +16,10 @@
  
- 	if (disk->flags & GENHD_FL_NO_PART)
- 		return -EINVAL;
-@@ -35,14 +35,17 @@ static int blkpg_do_ioctl(struct block_d
- 	if (op == BLKPG_DEL_PARTITION)
- 		return bdev_del_partition(disk, p.pno);
+ /* VIDEO_CC Resets */
+ #define VIDEO_CC_MVSC_CORE_CLK_BCR	0
++#define VIDEO_CC_INTERFACE_BCR		1
++#define VIDEO_CC_MVS0_BCR		2
++#define VIDEO_CC_MVS1_BCR		3
++#define VIDEO_CC_MVSC_BCR		4
  
-+	if (p.start < 0 || p.length <= 0 || p.start + p.length < 0)
-+		return -EINVAL;
-+	/* Check that the partition is aligned to the block size */
-+	if (!IS_ALIGNED(p.start | p.length, bdev_logical_block_size(bdev)))
-+		return -EINVAL;
-+
- 	start = p.start >> SECTOR_SHIFT;
- 	length = p.length >> SECTOR_SHIFT;
- 
- 	switch (op) {
- 	case BLKPG_ADD_PARTITION:
--		/* check if partition is aligned to blocksize */
--		if (p.start & (bdev_logical_block_size(bdev) - 1))
--			return -EINVAL;
- 		return bdev_add_partition(disk, p.pno, start, length);
- 	case BLKPG_RESIZE_PARTITION:
- 		return bdev_resize_partition(disk, p.pno, start, length);
+ /* VIDEO_CC GDSCRs */
+ #define VENUS_GDSC			0
+-- 
+2.43.0
+
 
 
 
