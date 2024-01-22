@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-15257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1643838487
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:38 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F135837FA5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3A1D1C2A690
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB2411F2A015
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE946EB75;
-	Tue, 23 Jan 2024 02:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3925963511;
+	Tue, 23 Jan 2024 00:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8ErKbte"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P64VGROx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A8426EB61;
-	Tue, 23 Jan 2024 02:03:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0BE634F8;
+	Tue, 23 Jan 2024 00:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975416; cv=none; b=FxW0MA912rnk2tWs+MdILxFcx71uJBCrmOg+URJ8F6VW5ngiGch9WoBi7iD5ILF+aNNkVVljMUIJkfFaG77mN98Y788XtzNdN0YFsLXt7FtNXYCc3SDBk8xNRA5T8CaZNB4y+UZL1b1/ecyWWft946s2kUfLEx5yNucfpuXn0Iw=
+	t=1705971262; cv=none; b=F9XnyY7LUsdZB9HFL7oPTnwI3qH6YXVjT9FFF7sX/C6qz+Tq651VaJKW3BPxbQU2u2CPgcr1pbg3CYh7o/iQC0OcTlTTMH1uoeoqZUr2m5FheKmYmsRaAIoqpquU2GOWp/hBMxQODD5DW3uzxr2h33wINCysn0dpPWCbdNLFpgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975416; c=relaxed/simple;
-	bh=gOGQ2AoleU8kApo8eYXgK8muZ1uzf0XoYFTP/bnV298=;
+	s=arc-20240116; t=1705971262; c=relaxed/simple;
+	bh=7F7EouEGhJtKZCMCPtmnN9eKkHm7zvO07RxMgrPMti4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fN8HpVqtFw3fE8CAAvQJQVNlYmacCgbPROApMwOpivzG3s8b+a2fwwSEQRefQAw18RcLgJwSSSddHSpwiJsCfaPwJ3OsFxc/p7siTSO6ZRWiWkXBKRIZeSrGQu6QQkTcvyHG1GyqkVOeSO2ko287uT4qB/yA+lMauQ/2w0HYnmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8ErKbte; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3BBCC43390;
-	Tue, 23 Jan 2024 02:03:35 +0000 (UTC)
+	 MIME-Version; b=BFxibD/fUOV7Ia0+YeidHlQAmLZbskBv4urT+LxSBP2l7RVCGCoEpTi/Xh5ID6bntgJqu/dZ+Y0HM964erYG7+W/Y+Rf5a0cfqDXcvKNFgrpvZpd76i1dfD9LFkP1SAY3Yg9sEiaLIEi/7cDL6ZtYpfVzXuHbG3XZSasrO+7E5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P64VGROx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73AD6C433F1;
+	Tue, 23 Jan 2024 00:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975416;
-	bh=gOGQ2AoleU8kApo8eYXgK8muZ1uzf0XoYFTP/bnV298=;
+	s=korg; t=1705971261;
+	bh=7F7EouEGhJtKZCMCPtmnN9eKkHm7zvO07RxMgrPMti4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e8ErKbteKeSnTVdP62T7lU6PlilziRT+RH8nesKPXv2KNtbTWiEQER2dYpNsBdkht
-	 fiGUkxAcm3eUl6i0H1XrsuoiRCsbC9XV9j0f2vv7F9l9uX000AZlrRtzkImz4ywnrr
-	 euetvNsSLPd6eydZlULMfT+BofAUq4Rbha658m1U=
+	b=P64VGROx3pupNOJQ/NyVzCK6WvZ8ROBHTFfIK8EfDC9w+pumofblnmBUlmilFYhVC
+	 tJ8SA6ZmANPTzEArSzyMB2Lvu+7KinSUBbXcM3/E2yhcXh99kDJ56KclKPQt6AcE81
+	 Rbcf6ba0mlVyCD/MWwLoBGBxUExO4c2b6Fwek/U4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.6 375/583] serial: core, imx: do not set RS485 enabled if it is not supported
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 120/286] bpf: fix check for attempt to corrupt spilled pointer
 Date: Mon, 22 Jan 2024 15:57:06 -0800
-Message-ID: <20240122235823.489756343@linuxfoundation.org>
+Message-ID: <20240122235736.753139278@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-commit 74eab89b26ac433ad857292f4707b43c1a8f0209 upstream.
+[ Upstream commit ab125ed3ec1c10ccc36bc98c7a4256ad114a3dae ]
 
-If the imx driver cannot support RS485 it nullifies the ports
-rs485_supported structure. But it still calls uart_get_rs485_mode() which
-may set the RS485_ENABLED flag nevertheless.
+When register is spilled onto a stack as a 1/2/4-byte register, we set
+slot_type[BPF_REG_SIZE - 1] (plus potentially few more below it,
+depending on actual spill size). So to check if some stack slot has
+spilled register we need to consult slot_type[7], not slot_type[0].
 
-This may lead to an attempt to configure RS485 even if it is not supported
-when the flag is evaluated in uart_configure_port() at port startup.
+To avoid the need to remember and double-check this in the future, just
+use is_spilled_reg() helper.
 
-Avoid this by bailing out of uart_get_rs485_mode() if the RS485_ENABLED
-flag is not supported by the caller.
-
-With this fix a check for RTS availability is now obsolete in the imx
-driver, since it can not evaluate to true any more. So remove this check.
-
-Furthermore the explicit nullifcation of rs485_supported is not needed,
-since the memory has already been set to zeros at allocation. So remove
-this, too.
-
-Fixes: 00d7a00e2a6f ("serial: imx: Fill in rs485_supported")
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc:  <stable@vger.kernel.org>
-Suggested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/20240103061818.564-6-l.sanfilippo@kunbus.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 27113c59b6d0 ("bpf: Check the other end of slot_type for STACK_SPILL")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20231205184248.1502704-4-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/imx.c         |    7 -------
- drivers/tty/serial/serial_core.c |    3 +++
- 2 files changed, 3 insertions(+), 7 deletions(-)
+ kernel/bpf/verifier.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -2214,7 +2214,6 @@ static enum hrtimer_restart imx_trigger_
- 	return HRTIMER_NORESTART;
- }
- 
--static const struct serial_rs485 imx_no_rs485 = {};	/* No RS485 if no RTS */
- static const struct serial_rs485 imx_rs485_supported = {
- 	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RTS_AFTER_SEND |
- 		 SER_RS485_RX_DURING_TX,
-@@ -2298,8 +2297,6 @@ static int imx_uart_probe(struct platfor
- 	/* RTS is required to control the RS485 transmitter */
- 	if (sport->have_rtscts || sport->have_rtsgpio)
- 		sport->port.rs485_supported = imx_rs485_supported;
--	else
--		sport->port.rs485_supported = imx_no_rs485;
- 	sport->port.flags = UPF_BOOT_AUTOCONF;
- 	timer_setup(&sport->timer, imx_uart_timeout, 0);
- 
-@@ -2336,10 +2333,6 @@ static int imx_uart_probe(struct platfor
- 		return ret;
- 	}
- 
--	if (sport->port.rs485.flags & SER_RS485_ENABLED &&
--	    (!sport->have_rtscts && !sport->have_rtsgpio))
--		dev_err(&pdev->dev, "no RTS control, disabling rs485\n");
--
- 	/*
- 	 * If using the i.MX UART RTS/CTS control then the RTS (CTS_B)
- 	 * signal cannot be set low during transmission in case the
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -3576,6 +3576,9 @@ int uart_get_rs485_mode(struct uart_port
- 	int ret;
- 	int rx_during_tx_gpio_flag;
- 
-+	if (!(port->rs485_supported.flags & SER_RS485_ENABLED))
-+		return 0;
-+
- 	ret = device_property_read_u32_array(dev, "rs485-rts-delay",
- 					     rs485_delay, 2);
- 	if (!ret) {
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 45c50ee9b037..ddfd33703f4d 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -2493,7 +2493,7 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
+ 	 * so it's aligned access and [off, off + size) are within stack limits
+ 	 */
+ 	if (!env->allow_ptr_leaks &&
+-	    state->stack[spi].slot_type[0] == STACK_SPILL &&
++	    is_spilled_reg(&state->stack[spi]) &&
+ 	    size != BPF_REG_SIZE) {
+ 		verbose(env, "attempt to corrupt spilled pointer on stack\n");
+ 		return -EACCES;
+-- 
+2.43.0
+
 
 
 
