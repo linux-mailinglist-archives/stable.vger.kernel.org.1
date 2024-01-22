@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-14555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DCA583815F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:08:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10C60837F1C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 254AD1F23480
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C5491C27486
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B86514199E;
-	Tue, 23 Jan 2024 01:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA68160884;
+	Tue, 23 Jan 2024 00:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzruWbVo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmsoNDyD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47AFD135A6D;
-	Tue, 23 Jan 2024 01:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6828760887;
+	Tue, 23 Jan 2024 00:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972116; cv=none; b=auzcMCWG0hcKrad4F0DQhDEMiT7O/kJs6P1DIpe1+iJ8diJUpcDFSCoa0l2LKisBg36wXPegXXGc3o0oNwjGCg/a1PpMlG9RO+JGQxTE+HzcTDkp8DDVsxQrerFs3n/3d+Mof+g4MrDSI8ZsHenBI/KkPg7xRTMqkX1aDeX1+Bk=
+	t=1705970944; cv=none; b=B/Oak9PFN6Tj4Y+4/r9vRzy0Ux+XnBfkKcfACJp89cMjgCsvjqauXLdYwW63dH3sRna+1DDjiSRC0JsZ/Ja0WJ81UW/Pj6v+UxfNRQTDZ7HH6h5GHrbyGbSnq0WKWb5M+7AO1hVia/F5YcBo+jdws1wvGa7Re78CJgaps3SdX/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972116; c=relaxed/simple;
-	bh=+v/yGSuGCAuTWo1/YpyhOmhgo1BMtyNAr/NecI4Ld2w=;
+	s=arc-20240116; t=1705970944; c=relaxed/simple;
+	bh=mVw0bpTvq/x/ZrG8rNKoQx3B1IuYcc+3mgWwJqc0Iuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FeYOQCMBY3AIVmiPa3NEiGT5D/zRIdKuBr6R2v6SjdT4lqLTj2ut1/kE7sJSZ5QYpJXseCFoqgqIJWoWxh2VPoVYsC0RedirEGDWpCRCeTRLT64oA77OBcZr9+BYAsl8aeIp5j89m65lQjNMvGxGU2UFuH3Le0l4S8gi17hWg7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzruWbVo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F04F3C43399;
-	Tue, 23 Jan 2024 01:08:35 +0000 (UTC)
+	 MIME-Version; b=R7CIuoIhhyEq1Y6kVgVXrK68ZerDWGf6IRG8ag9vpaqTnc9MVB2XCLxB6HrPrVt/TxzM5n8xw/mzbZeTdX4HmropwQKTu76Cdgc+/2isW6vc8tjB3xqcU5pD72cgS6ROdpcVaHF8/HI/snuxyI2k6yFsvHFtRalEHkpLqXHFl0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmsoNDyD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A232C43390;
+	Tue, 23 Jan 2024 00:49:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972116;
-	bh=+v/yGSuGCAuTWo1/YpyhOmhgo1BMtyNAr/NecI4Ld2w=;
+	s=korg; t=1705970944;
+	bh=mVw0bpTvq/x/ZrG8rNKoQx3B1IuYcc+3mgWwJqc0Iuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jzruWbVoe/n9saGzPsWPm7PyzkNpfEV0TqcmvSn5jCCslOn4FKJEflxpS68fAr7un
-	 Glh8BYT25mERxRIwuxSN6+St9py5VEICuD5lpTKdO33/JIILuDYn29QKUapMEkPVYc
-	 oWtr7mPs8o605yGKg6czVeenIQqR8vVPD+f0svPU=
+	b=kmsoNDyD2uQI/iX/P0tbX3TwX1JLcjHPFrb5+0kyhfb2GYEV8ZyExzP8awf+6wYlK
+	 jWnfBUCSdRr23qJx6VgSxQsMYTF48UDHXSdDt45FMUrSoHf7pQwsPG/L+ch4X0GkVF
+	 HZA+jEuxtOQjAY3pOafABzksWLdHeMP9y49h5dTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 026/374] jbd2: correct the printing of write_flags in jbd2_write_superblock()
+Subject: [PATCH 6.1 114/417] arm64: dts: renesas: white-hawk-cpu: Fix missing serial console pin control
 Date: Mon, 22 Jan 2024 15:54:42 -0800
-Message-ID: <20240122235745.545191398@linuxfoundation.org>
+Message-ID: <20240122235755.717511677@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 85559227211020b270728104c3b89918f7af27ac ]
+[ Upstream commit fc67495680f60e88bb8ca43421c1dd628928d581 ]
 
-The write_flags print in the trace of jbd2_write_superblock() is not
-real, so move the modification before the trace.
+The pin control description for the serial console was added, but not
+enabled, due to missing pinctrl properties in the serial port device
+node.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20231129114740.2686201-1-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 7a8d590de8132853 ("arm64: dts: renesas: white-hawk-cpu: Add serial port pin control")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/8a51516581cd71ecbfa174af9c7cebad1fc83c5b.1702459865.git.geert+renesas@glider.be
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/journal.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-cpu.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
-index 11fbc9b6ec5c..b7af1727a016 100644
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -1616,9 +1616,11 @@ static int jbd2_write_superblock(journal_t *journal, int write_flags)
- 		return -EIO;
- 	}
+diff --git a/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-cpu.dtsi b/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-cpu.dtsi
+index 895f0bd9f754..541b1e73b65e 100644
+--- a/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-cpu.dtsi
++++ b/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-cpu.dtsi
+@@ -125,6 +125,9 @@ &extalr_clk {
+ };
  
--	trace_jbd2_write_superblock(journal, write_flags);
- 	if (!(journal->j_flags & JBD2_BARRIER))
- 		write_flags &= ~(REQ_FUA | REQ_PREFLUSH);
+ &hscif0 {
++	pinctrl-0 = <&hscif0_pins>;
++	pinctrl-names = "default";
 +
-+	trace_jbd2_write_superblock(journal, write_flags);
-+
- 	if (buffer_write_io_error(bh)) {
- 		/*
- 		 * Oh, dear.  A previous attempt to write the journal
+ 	status = "okay";
+ };
+ 
 -- 
 2.43.0
 
