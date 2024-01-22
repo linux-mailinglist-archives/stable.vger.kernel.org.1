@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-14747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D83838265
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 507F8837D85
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAEF21C27EAF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 827E61C223C0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C96F05BAD0;
-	Tue, 23 Jan 2024 01:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776DD51C41;
+	Tue, 23 Jan 2024 00:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZzMRqkO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWOsvl8N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880BC5A7B8;
-	Tue, 23 Jan 2024 01:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 376424E1D8;
+	Tue, 23 Jan 2024 00:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974341; cv=none; b=St9SfEjvsRZp4LiWOPULYmVw0vFO9N0tKOqPXUO56W/0lOl/QPmGzbaIUtr+Rzb+N9D5SAIYpNOqsdX6NLmMJw9acVbSm6OEmypBIe9/JnvXWD8/s3Wz4PVw687pFMdvLMj08le89a6HchV1M2eVFarXHct9eRhwdTOsvzQC+UQ=
+	t=1705970001; cv=none; b=NI/HMzswDwrxi2u3cO6RLzMh057pSFrallXPvD9bEAUSwpqFIUdsrGD6eeFEG/bxk7kCAZhslWHNrht9au1OlLkUsX+n3TAkKztK3jGOvgUdne7hhtyLsTC93mfTViMIjPEe9Es0Bm7huBBguqQqH02CMMFiHDRlUPLLIp1XoNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974341; c=relaxed/simple;
-	bh=IouHy77Gizj3sU4uRru1AfoZzh6r7idgawc50D60vog=;
+	s=arc-20240116; t=1705970001; c=relaxed/simple;
+	bh=fM+0rAppxCazbbbrGk5uzgNbGDVtzgXL/zED+mfE/k8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aUMWiTW/FeusVQ95EjrOpnnDgYXu/fkF6uq4dUGCtItE1e5nWIif1EDxWIprCCMKsTz/R1IsUdThh7V3zBuvcOcA+F0J955Y+wb2GFGNitN8uN2BowqPFhKiGt6hC+TQkS6MAx1/xDYmcDQhkKX9gPPvGbHbploeWuDCSgkCBFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ZzMRqkO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D808C43390;
-	Tue, 23 Jan 2024 01:45:41 +0000 (UTC)
+	 MIME-Version; b=utyArusJknsT8RyJght8a4jLqE48j1RSrHLODvUpOLnrVDaku+ee7aEbz8oQH+Oqvc6QVtw8mZaJYXdN+YARN7jLy4OjTd3rk2ekkxhzY0csuS7MzbDzYqNOay0vIAJQaHw5v9s7SOn5llOhPmSfN6JgTePOjMjqfUoOf3vYmP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWOsvl8N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB5EC433C7;
+	Tue, 23 Jan 2024 00:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974341;
-	bh=IouHy77Gizj3sU4uRru1AfoZzh6r7idgawc50D60vog=;
+	s=korg; t=1705970001;
+	bh=fM+0rAppxCazbbbrGk5uzgNbGDVtzgXL/zED+mfE/k8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ZzMRqkOqEjfarwSJKUYiaCLDlroprqES4Cuqw+yAe69pLERMVV62K6cXO774nLPC
-	 NUl5DKM7r2+EGswLhTo/lX7jDgPigzHRgbwG+scPr/AIj8PtRmTkP4rt3VUxLFBUUU
-	 gyy88lK6wOpTkHn5eBo4oYbGa2lz/ZVdiK8umTFI=
+	b=oWOsvl8NjMH7BjaMtpKXrdqxrrdDEy7kUL2R8LWA3Ard6Dd0w8Rvke5anY/NV65Zu
+	 5/0ardrmyVoRbWlKqTyQC0Wzdl4+wR1+tIO+lyJBRxvam5rS0/yxs5SjWeRVlclrbM
+	 sKy9wuJpB3g0KwylE7UbWppQpLdOxoaFl2ofsVtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Fangrui Song <maskray@google.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Milian Wolff <milian.wolff@kdab.com>,
+	Pablo Galindo <pablogsal@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 183/374] drm/tilcdc: Fix irq free on unload
+Subject: [PATCH 6.7 535/641] perf unwind-libdw: Handle JIT-generated DSOs properly
 Date: Mon, 22 Jan 2024 15:57:19 -0800
-Message-ID: <20240122235750.996378314@linuxfoundation.org>
+Message-ID: <20240122235834.858701388@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +70,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit 38360bf96d816e175bc602c4ee76953cd303b71d ]
+[ Upstream commit c966d23a351a33f8a977fd7efbb6f467132f7383 ]
 
-The driver only frees the reserved irq if priv->irq_enabled is set to
-true. However, the driver mistakenly sets priv->irq_enabled to false,
-instead of true, in tilcdc_irq_install(), and thus the driver never
-frees the irq, causing issues on loading the driver a second time.
+Usually DSOs are mapped from the beginning of the file, so the base
+address of the DSO can be calculated by map->start - map->pgoff.
 
-Fixes: b6366814fa77 ("drm/tilcdc: Convert to Linux IRQ interfaces")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230919-lcdc-v1-1-ba60da7421e1@ideasonboard.com
+However, JIT DSOs which are generated by `perf inject -j`, are mapped
+only the code segment.  This makes unwind-libdw code confusing and
+rejects processing unwinds in the JIT DSOs.  It should use the map
+start address as base for them to fix the confusion.
+
+Fixes: 1fe627da30331024 ("perf unwind: Take pgoff into account when reporting elf to libdwfl")
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Fangrui Song <maskray@google.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Milian Wolff <milian.wolff@kdab.com>
+Cc: Pablo Galindo <pablogsal@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20231212070547.612536-3-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tilcdc/tilcdc_drv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/unwind-libdw.c | 21 +++++++++++++++++----
+ 1 file changed, 17 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/tilcdc/tilcdc_drv.c b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-index 6b03f89a98d4..6924488274dd 100644
---- a/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-@@ -140,7 +140,7 @@ static int tilcdc_irq_install(struct drm_device *dev, unsigned int irq)
- 	if (ret)
- 		return ret;
+diff --git a/tools/perf/util/unwind-libdw.c b/tools/perf/util/unwind-libdw.c
+index 8554db3fc0d7..6013335a8dae 100644
+--- a/tools/perf/util/unwind-libdw.c
++++ b/tools/perf/util/unwind-libdw.c
+@@ -46,6 +46,7 @@ static int __report_module(struct addr_location *al, u64 ip,
+ {
+ 	Dwfl_Module *mod;
+ 	struct dso *dso = NULL;
++	Dwarf_Addr base;
+ 	/*
+ 	 * Some callers will use al->sym, so we can't just use the
+ 	 * cheaper thread__find_map() here.
+@@ -58,13 +59,25 @@ static int __report_module(struct addr_location *al, u64 ip,
+ 	if (!dso)
+ 		return 0;
  
--	priv->irq_enabled = false;
-+	priv->irq_enabled = true;
++	/*
++	 * The generated JIT DSO files only map the code segment without
++	 * ELF headers.  Since JIT codes used to be packed in a memory
++	 * segment, calculating the base address using pgoff falls into
++	 * a different code in another DSO.  So just use the map->start
++	 * directly to pick the correct one.
++	 */
++	if (!strncmp(dso->long_name, "/tmp/jitted-", 12))
++		base = map__start(al->map);
++	else
++		base = map__start(al->map) - map__pgoff(al->map);
++
+ 	mod = dwfl_addrmodule(ui->dwfl, ip);
+ 	if (mod) {
+ 		Dwarf_Addr s;
  
- 	return 0;
- }
+ 		dwfl_module_info(mod, NULL, &s, NULL, NULL, NULL, NULL, NULL);
+-		if (s != map__start(al->map) - map__pgoff(al->map))
+-			mod = 0;
++		if (s != base)
++			mod = NULL;
+ 	}
+ 
+ 	if (!mod) {
+@@ -72,14 +85,14 @@ static int __report_module(struct addr_location *al, u64 ip,
+ 
+ 		__symbol__join_symfs(filename, sizeof(filename), dso->long_name);
+ 		mod = dwfl_report_elf(ui->dwfl, dso->short_name, filename, -1,
+-				      map__start(al->map) - map__pgoff(al->map), false);
++				      base, false);
+ 	}
+ 	if (!mod) {
+ 		char filename[PATH_MAX];
+ 
+ 		if (dso__build_id_filename(dso, filename, sizeof(filename), false))
+ 			mod = dwfl_report_elf(ui->dwfl, dso->short_name, filename, -1,
+-					      map__start(al->map) - map__pgoff(al->map), false);
++					      base, false);
+ 	}
+ 
+ 	if (mod) {
 -- 
 2.43.0
 
