@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-13983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D9C7837F0D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69443837F62
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8A5B29BDE4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0480728C2EF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0197B605AF;
-	Tue, 23 Jan 2024 00:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B041D29434;
+	Tue, 23 Jan 2024 00:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfhGwypI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F43MQKqB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B643B60257;
-	Tue, 23 Jan 2024 00:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705FB22062;
+	Tue, 23 Jan 2024 00:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970903; cv=none; b=Ny7NGbqKtdwY2KSbRhL0foxBgRuYqMhr1CVXS6m9MdYXxJAVNWz2QYD+4JxC3owM/lldvlmBdmzXnU9NVu0+o4WAs8c8OEuyidVESyyzQ2ihPdPS7Bx3eNJQ/cjRd7HhPLN+ZA/8LdMHNEzrexhFDtKJk3riEHApCmZAOISQ2yI=
+	t=1705971098; cv=none; b=hFMBJFmmEIHPDPpxFVEUorgTEVNV/fwx60YXTRQ1ZADZgXNRHLCAD0Xn1JZBd7syAkVqY28U50RjCLxSrh7fsO50YDK+xzR8uiUyxP7Z0pPk0gEQ62RhoB+iUwQmoacjQx/0MLe3ArjmUstg5WO9ik9DPpfNNwBw9Ilp1KcrUwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970903; c=relaxed/simple;
-	bh=G3j12jLVap1Up/ldGp14ZP7mzPOcTSxYCnmCdzly5lc=;
+	s=arc-20240116; t=1705971098; c=relaxed/simple;
+	bh=I0tBsHX1GsjDSqg3RmZuVBfP2z4A99aSyAdWGpl5d64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cgXH+j8yZgbQK7oEuKMinipZoE2Dfqtn0wJmd1RcEUG2r990dyiDG9v+cc0Y48rnBvZHjyvOXQfxygvj/K3nfSJ8AclHrz8WpAHKZe5jVCJEAtzB4YbykLkrEsSKnlHTbVIRqwJs4wJV5xTMoVEueyjuJAyKALw4d7CbJwkn73c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UfhGwypI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C5CEC43390;
-	Tue, 23 Jan 2024 00:48:23 +0000 (UTC)
+	 MIME-Version; b=o/K/idUGCw0zoImmTOu++FBZd5hBYwXqAqzr9xwjkT40me25L5VHl8sSB4LnlU+sAiiIuywCyzFR/dals7E8/cSETalX87JbYpuZaP6vU9lYArSQDVkNXPK5kPVJQOBn7SWvB6mXO2v5Lza7XXlvsTqWGMdNkE2LQ8Y5ESsiljY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F43MQKqB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8671C433F1;
+	Tue, 23 Jan 2024 00:51:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970903;
-	bh=G3j12jLVap1Up/ldGp14ZP7mzPOcTSxYCnmCdzly5lc=;
+	s=korg; t=1705971098;
+	bh=I0tBsHX1GsjDSqg3RmZuVBfP2z4A99aSyAdWGpl5d64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UfhGwypIcm7mu0p1eRwgpVdLqRIdYH6XSlytY9TGMoFRH04twWpryAOR2PKVkV6LY
-	 jy0yay0iJrIsxRO4H7sb+Ycx+B70Hpj/l6AJF7vm5rG8mL4EBWnOY+ToCWySBN0xqT
-	 nwUiI82aa/BZ9aA/EYipwYKuLs2uJUoiYZd+00I8=
+	b=F43MQKqBeErK1n31i+5yU8YWihc8PC5wnLL4qc/P/J3ltAsMCkUT2zI7z2do4sanB
+	 7AFcKW7mCwQdkP5Mv/AShQu6Sx76o36UDxNzJQOGMcFfbvfA9wjH26klozVQ59lqng
+	 zXg8kTC33J8USRnh9Ikjv3PLUN9KGBdlXJcuhOSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 5.10 042/286] binder: fix trivial typo of binder_free_buf_locked()
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 180/417] ASoC: cs35l34: Fix GPIO name and drop legacy include
 Date: Mon, 22 Jan 2024 15:55:48 -0800
-Message-ID: <20240122235733.639204593@linuxfoundation.org>
+Message-ID: <20240122235758.096450607@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-commit 122a3c1cb0ff304c2b8934584fcfea4edb2fe5e3 upstream.
+[ Upstream commit a6122b0b4211d132934ef99e7b737910e6d54d2f ]
 
-Fix minor misspelling of the function in the comment section.
+This driver includes the legacy GPIO APIs <linux/gpio.h> and
+<linux/of_gpio.h> but does not use any symbols from any of
+them.
 
-No functional changes in this patch.
+Drop the includes.
 
-Cc: stable@vger.kernel.org
-Fixes: 0f966cba95c7 ("binder: add flag to clear buffer on txn complete")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-7-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Further the driver is requesting "reset-gpios" rather than
+just "reset" from the GPIO framework. This is wrong because
+the gpiolib core will add "-gpios" before processing the
+request from e.g. device tree. Drop the suffix.
+
+The last problem means that the optional RESET GPIO has
+never been properly retrieved and used even if it existed,
+but nobody noticed.
+
+Fixes: c1124c09e103 ("ASoC: cs35l34: Initial commit of the cs35l34 CODEC driver.")
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20231201-descriptors-sound-cirrus-v2-3-ee9f9d4655eb@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder_alloc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/codecs/cs35l34.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -711,7 +711,7 @@ void binder_alloc_free_buf(struct binder
- 	/*
- 	 * We could eliminate the call to binder_alloc_clear_buf()
- 	 * from binder_alloc_deferred_release() by moving this to
--	 * binder_alloc_free_buf_locked(). However, that could
-+	 * binder_free_buf_locked(). However, that could
- 	 * increase contention for the alloc mutex if clear_on_free
- 	 * is used frequently for large buffers. The mutex is not
- 	 * needed for correctness here.
+diff --git a/sound/soc/codecs/cs35l34.c b/sound/soc/codecs/cs35l34.c
+index b3f98023e6a7..57d125c03fad 100644
+--- a/sound/soc/codecs/cs35l34.c
++++ b/sound/soc/codecs/cs35l34.c
+@@ -20,14 +20,12 @@
+ #include <linux/regulator/machine.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/of_device.h>
+-#include <linux/of_gpio.h>
+ #include <linux/of_irq.h>
+ #include <sound/core.h>
+ #include <sound/pcm.h>
+ #include <sound/pcm_params.h>
+ #include <sound/soc.h>
+ #include <sound/soc-dapm.h>
+-#include <linux/gpio.h>
+ #include <linux/gpio/consumer.h>
+ #include <sound/initval.h>
+ #include <sound/tlv.h>
+@@ -1061,7 +1059,7 @@ static int cs35l34_i2c_probe(struct i2c_client *i2c_client)
+ 		dev_err(&i2c_client->dev, "Failed to request IRQ: %d\n", ret);
+ 
+ 	cs35l34->reset_gpio = devm_gpiod_get_optional(&i2c_client->dev,
+-				"reset-gpios", GPIOD_OUT_LOW);
++				"reset", GPIOD_OUT_LOW);
+ 	if (IS_ERR(cs35l34->reset_gpio)) {
+ 		ret = PTR_ERR(cs35l34->reset_gpio);
+ 		goto err_regulator;
+-- 
+2.43.0
+
 
 
 
