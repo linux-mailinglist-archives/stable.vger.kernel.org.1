@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-14536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2562838148
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:07:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08F2C837C86
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72A371F2207C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FBD01F28C39
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 021C914A086;
-	Tue, 23 Jan 2024 01:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9EEA135A46;
+	Tue, 23 Jan 2024 00:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bZesSJyZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bfIrZzXp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B514F14A081;
-	Tue, 23 Jan 2024 01:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680DB33097;
+	Tue, 23 Jan 2024 00:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972094; cv=none; b=Mk4wNgLU0tS6QUT3Z3a5c0Tc7SNWACgWwgnSotDtHYWVppIlgDfELLG7fqbvY3LDOHNzrO2aavafMNL330Z5jZfM14tEHDWdIC3eIMBwQJIdCaqlOQKD86oSw++8+j9VdYYAOlahy5oE42YtSoV/aO4NhN2hXdr0zNHzoDs0Krk=
+	t=1705969654; cv=none; b=TljnXBjZd7WY/wq4mp+PPi5AfFnSdagOxfoq6hU4Pi5nKiacKlLdBuuqBIzVmN5cKhc7ed2Pl+7686RwCwGsphMVcsSJ74vTruRMKqjnZHD4FdMTMG0/ngZnozmyddmOlxXvgeAyLpiYxJdNAWkPFoId1VNahRytgGSp3CzR+IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972094; c=relaxed/simple;
-	bh=vv/9t2JFDqO05oCGvKTkh53DqMzY0dLZOxRU+YukSng=;
+	s=arc-20240116; t=1705969654; c=relaxed/simple;
+	bh=cAGzozd6N2ik3uyuhJcqUL9KMJZckAOCuHQgclyo3AU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iZn7EXE7VZJD/fLM6UC75vvOS+YOVn9+KjffSmqK+Q1l+RQfPZjh4yWCzgVjrsBTwKMUmQuVTr1Xx9ddkiSQ4xpTHfsMkqRt5iwfDMACOaTaL8yylpGAdAvZTJT28K6ZSGwhvP1MjRHMnTbzTvtaAKFQvA0SUuGO9szspAo3pe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bZesSJyZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17428C433B1;
-	Tue, 23 Jan 2024 01:08:14 +0000 (UTC)
+	 MIME-Version; b=b6Mys5Ufl/zEqi5twqFGdF1F4VEyHFV5wnarYwgMp3uNyfXzPrDy5ImDXhUdF50vjSQajMj4Wzb+fLXUl7mmPok/R0norwgxO5/83/egJyY0ZAgSNScp0umU6mNM4Laa/b5vhurJcwT5X5Z3rVghtAAUfIOgclsibjVyLnU5RsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bfIrZzXp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080CCC433C7;
+	Tue, 23 Jan 2024 00:27:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972094;
-	bh=vv/9t2JFDqO05oCGvKTkh53DqMzY0dLZOxRU+YukSng=;
+	s=korg; t=1705969654;
+	bh=cAGzozd6N2ik3uyuhJcqUL9KMJZckAOCuHQgclyo3AU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bZesSJyZ6CK92TB0ZJF5N5xIYyK7pogXL36MgOL0Y5wqvJcVVSQ7+heXrhDeuB638
-	 oU2K49gk23s+V646O2L2TJzJRaRz905NsJvYu17xa0s77tCA4HeoSI6odMHIeoGf+Z
-	 SBbJzPDAMJ+gY/0DaBD5qb7z/WL6QquqrdNo16us=
+	b=bfIrZzXp38RJevvzmBvr1uMrl7S3DUFUaqx1Vz72BoZhmMlhOr8reI/Ze6nzPu4Ww
+	 YUKfR9FCOJRuvK8Ie1aIxoJNZfZpu8GFa+A2Mp8xtyOLMp/DNMazc5CnvEDbE1kpx6
+	 +NqaFM7vNYh2AXFK4/fsfXthDt+vbaSgy8QwuUT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Yanteng Si <siyanteng@loongson.cn>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 033/374] stmmac: dwmac-loongson: drop useless check for compatible fallback
-Date: Mon, 22 Jan 2024 15:54:49 -0800
-Message-ID: <20240122235745.798169956@linuxfoundation.org>
+	Jan Beulich <jbeulich@suse.com>,
+	Juergen Gross <jgross@suse.com>,
+	Paul Durrant <paul@xen.org>
+Subject: [PATCH 6.7 386/641] xen-netback: dont produce zero-size SKB frags
+Date: Mon, 22 Jan 2024 15:54:50 -0800
+Message-ID: <20240122235830.035125369@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Jan Beulich <jbeulich@suse.com>
 
-[ Upstream commit 31fea092c6f9f8fb2c40a08137907f5fbeae55dd ]
+commit c7ec4f2d684e17d69bbdd7c4324db0ef5daac26a upstream.
 
-Device binds to proper PCI ID (LOONGSON, 0x7a03), already listed in DTS,
-so checking for some other compatible does not make sense.  It cannot be
-bound to unsupported platform.
+While frontends may submit zero-size requests (wasting a precious slot),
+core networking code as of at least 3ece782693c4b ("sock: skb_copy_ubufs
+support for compound pages") can't deal with SKBs when they have all
+zero-size fragments. Respond to empty requests right when populating
+fragments; all further processing is fragment based and hence won't
+encounter these empty requests anymore.
 
-Drop useless, incorrect (space in between) and undocumented compatible.
+In a way this should have been that way from the beginning: When no data
+is to be transferred for a particular request, there's not even a point
+in validating the respective grant ref. That's no different from e.g.
+passing NULL into memcpy() when at the same time the size is 0.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Acked-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is XSA-448 / CVE-2023-46838.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Jan Beulich <jbeulich@suse.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Reviewed-by: Paul Durrant <paul@xen.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/net/xen-netback/netback.c |   44 ++++++++++++++++++++++++++++++++------
+ 1 file changed, 38 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-index cef9734ef259..da7b5d26a589 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-@@ -59,11 +59,6 @@ static int loongson_dwmac_probe(struct pci_dev *pdev, const struct pci_device_id
- 		return -ENODEV;
+--- a/drivers/net/xen-netback/netback.c
++++ b/drivers/net/xen-netback/netback.c
+@@ -463,12 +463,25 @@ static void xenvif_get_requests(struct x
  	}
  
--	if (!of_device_is_compatible(np, "loongson, pci-gmac")) {
--		pr_info("dwmac_loongson_pci: Incompatible OF node\n");
--		return -ENODEV;
--	}
--
- 	plat = devm_kzalloc(&pdev->dev, sizeof(*plat), GFP_KERNEL);
- 	if (!plat)
- 		return -ENOMEM;
--- 
-2.43.0
-
+ 	for (shinfo->nr_frags = 0; nr_slots > 0 && shinfo->nr_frags < MAX_SKB_FRAGS;
+-	     shinfo->nr_frags++, gop++, nr_slots--) {
++	     nr_slots--) {
++		if (unlikely(!txp->size)) {
++			unsigned long flags;
++
++			spin_lock_irqsave(&queue->response_lock, flags);
++			make_tx_response(queue, txp, 0, XEN_NETIF_RSP_OKAY);
++			push_tx_responses(queue);
++			spin_unlock_irqrestore(&queue->response_lock, flags);
++			++txp;
++			continue;
++		}
++
+ 		index = pending_index(queue->pending_cons++);
+ 		pending_idx = queue->pending_ring[index];
+ 		xenvif_tx_create_map_op(queue, pending_idx, txp,
+ 				        txp == first ? extra_count : 0, gop);
+ 		frag_set_pending_idx(&frags[shinfo->nr_frags], pending_idx);
++		++shinfo->nr_frags;
++		++gop;
+ 
+ 		if (txp == first)
+ 			txp = txfrags;
+@@ -481,20 +494,39 @@ static void xenvif_get_requests(struct x
+ 		shinfo = skb_shinfo(nskb);
+ 		frags = shinfo->frags;
+ 
+-		for (shinfo->nr_frags = 0; shinfo->nr_frags < nr_slots;
+-		     shinfo->nr_frags++, txp++, gop++) {
++		for (shinfo->nr_frags = 0; shinfo->nr_frags < nr_slots; ++txp) {
++			if (unlikely(!txp->size)) {
++				unsigned long flags;
++
++				spin_lock_irqsave(&queue->response_lock, flags);
++				make_tx_response(queue, txp, 0,
++						 XEN_NETIF_RSP_OKAY);
++				push_tx_responses(queue);
++				spin_unlock_irqrestore(&queue->response_lock,
++						       flags);
++				continue;
++			}
++
+ 			index = pending_index(queue->pending_cons++);
+ 			pending_idx = queue->pending_ring[index];
+ 			xenvif_tx_create_map_op(queue, pending_idx, txp, 0,
+ 						gop);
+ 			frag_set_pending_idx(&frags[shinfo->nr_frags],
+ 					     pending_idx);
++			++shinfo->nr_frags;
++			++gop;
+ 		}
+ 
+-		skb_shinfo(skb)->frag_list = nskb;
+-	} else if (nskb) {
++		if (shinfo->nr_frags) {
++			skb_shinfo(skb)->frag_list = nskb;
++			nskb = NULL;
++		}
++	}
++
++	if (nskb) {
+ 		/* A frag_list skb was allocated but it is no longer needed
+-		 * because enough slots were converted to copy ops above.
++		 * because enough slots were converted to copy ops above or some
++		 * were empty.
+ 		 */
+ 		kfree_skb(nskb);
+ 	}
 
 
 
