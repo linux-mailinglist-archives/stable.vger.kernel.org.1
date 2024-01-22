@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5B8B838325
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFCB6837E76
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BB3828C56A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4387028E7A3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:39:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78EAD60878;
-	Tue, 23 Jan 2024 01:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB865B5AA;
+	Tue, 23 Jan 2024 00:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZGXaLZo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yk+7VmCq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394936086A;
-	Tue, 23 Jan 2024 01:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09DE54BD2;
+	Tue, 23 Jan 2024 00:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974715; cv=none; b=L+24qQ87CATV+srhhqYlJEU0ROxOkm30aUl++Wrn+m6CxV3rjSK1wjoAKoev0vHKVNVRAS9jlYgClanBQE0eFJre0FjQi8N38KsUzkdDKOfN04FASlNn2PSeaFjyL5jg1GYD8aYyZSgj01T6xsLpwbeD9TMv48J8HLmI8a5Cxh0=
+	t=1705970603; cv=none; b=hL8Ie6vio31in1EXtUBOjpfBA30Vutd6BGjDxbBTAVPYQgNYrSiYlgqHp65KeW6qsRySzhwVYHYzonCIePasvFfBblZqso9QraEeb4valr4PWdKLQVucU0nJ79cLi+PkdSIC4rYSqlYYCrjXzU9yDxeePRz4lqSN0q8PMfN1Upw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974715; c=relaxed/simple;
-	bh=1LvaeeoNVCHncp+ZMMuiksgx9DpZbxGz/BXH9l+QJSo=;
+	s=arc-20240116; t=1705970603; c=relaxed/simple;
+	bh=CEB+IXgRmSQml8soF/rVAxH0bRiA4IhT4kWqF6aQq7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LeKUEn5GrFlP3JQuhtStK3wJU/vKHcCNpBi2bV2LAgdgLVDfpjZe1n60rg7+1lqAf2d7fcWnLeTCbyLQ3jhRdipQOeCiaxYRmrbxchbS13IWr8mujbi6BLWQRPykaqWi8UOZZHUuX0qD6gT2+Y8Q46tWSyKJiR9YUvzbHaGhrEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZGXaLZo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2CBFC43394;
-	Tue, 23 Jan 2024 01:51:54 +0000 (UTC)
+	 MIME-Version; b=fMa2ZncVmmsIKxzBKIVyfF+hJeXHUtTyn7/V7mSAyzD4lOTCxk4eyJqIMaC5A48gjIp7mWFgwEW/fTHke3bZ9QqJjxM8ptKi0ZBLrdxMvQe9ijruzNM9xYTXFvgOP1TL7NoO5D72LF7JhGHrozyE1GiyFfdH3TUZVI32vvx8wwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yk+7VmCq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A25CEC433F1;
+	Tue, 23 Jan 2024 00:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974715;
-	bh=1LvaeeoNVCHncp+ZMMuiksgx9DpZbxGz/BXH9l+QJSo=;
+	s=korg; t=1705970603;
+	bh=CEB+IXgRmSQml8soF/rVAxH0bRiA4IhT4kWqF6aQq7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VZGXaLZoSENXmnx1t5hUcOBULQCO6KhQaEEN+TdUOPL2nP8DssPC9pG+VOni4Jmvz
-	 HCGTIA2BBdqCmA+1cu/ugjEMMPHX7R9a67IQmi3KpTU3dgD26O+xElDKRwFQC4xBYr
-	 HsLbeT9ze1vcHrq7ogWVhhWyxR2nwLvtAJykebl8=
+	b=yk+7VmCqQemdyFI5/iv4CUxQjCJHhPn58g07LuM7k0GGFJ/GlrAfufcKdTqeNvTIU
+	 72XdTZqp9fwmS9SIoZdi1a3qLtjc1UPdEJWpn+n8uw1O9KQEkJBXl0vpP9PzlO5YIK
+	 seZJ9oA05lbaIGBKIAXArrTx1ZR48276gsg1Tnbk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Rob Herring <robh@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 140/583] wifi: mt76: mt7915: also MT7981 is 3T3R but nss2 on 5 GHz band
+Subject: [PATCH 6.1 023/417] cpufreq: Use of_property_present() for testing DT property presence
 Date: Mon, 22 Jan 2024 15:53:11 -0800
-Message-ID: <20240122235816.383287140@linuxfoundation.org>
+Message-ID: <20240122235752.348195454@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+From: Rob Herring <robh@kernel.org>
 
-[ Upstream commit ff434cc129d6907e6dbc89dd0ebc59fd3646d4c2 ]
+[ Upstream commit b8f3a396a7ee43e6079176cc0fb8de2b95a23681 ]
 
-Just like MT7916 also MT7981 can handle 3T3R DBDC frontend and should
-hence be included in the corresponding conditional expression in the
-driver. Add it.
+It is preferred to use typed property access functions (i.e.
+of_property_read_<type> functions) rather than low-level
+of_get_property/of_find_property functions for reading properties. As
+part of this, convert of_get_property/of_find_property calls to the
+recently added of_property_present() helper when we just want to test
+for presence of a property and nothing more.
 
-Fixes: 6bad146d162e ("wifi: mt76: mt7915: add support for MT7981")
-Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Stable-dep-of: c4a5118a3ae1 ("cpufreq: scmi: process the result of devm_of_clk_add_hw_provider()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/cpufreq/cpufreq-dt-platdev.c | 2 +-
+ drivers/cpufreq/imx-cpufreq-dt.c     | 2 +-
+ drivers/cpufreq/imx6q-cpufreq.c      | 4 ++--
+ drivers/cpufreq/scmi-cpufreq.c       | 2 +-
+ drivers/cpufreq/tegra20-cpufreq.c    | 2 +-
+ 5 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index d85105a43d70..3196f56cdf4a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -1047,8 +1047,9 @@ mt7915_set_antenna(struct ieee80211_hw *hw, u32 tx_ant, u32 rx_ant)
+diff --git a/drivers/cpufreq/cpufreq-dt-platdev.c b/drivers/cpufreq/cpufreq-dt-platdev.c
+index 69a8742c0a7a..8514bb62dd10 100644
+--- a/drivers/cpufreq/cpufreq-dt-platdev.c
++++ b/drivers/cpufreq/cpufreq-dt-platdev.c
+@@ -176,7 +176,7 @@ static bool __init cpu0_node_has_opp_v2_prop(void)
+ 	struct device_node *np = of_cpu_device_node_get(0);
+ 	bool ret = false;
  
- 	phy->mt76->antenna_mask = tx_ant;
+-	if (of_get_property(np, "operating-points-v2", NULL))
++	if (of_property_present(np, "operating-points-v2"))
+ 		ret = true;
  
--	/* handle a variant of mt7916 which has 3T3R but nss2 on 5 GHz band */
--	if (is_mt7916(&dev->mt76) && band && hweight8(tx_ant) == max_nss)
-+	/* handle a variant of mt7916/mt7981 which has 3T3R but nss2 on 5 GHz band */
-+	if ((is_mt7916(&dev->mt76) || is_mt7981(&dev->mt76)) &&
-+	    band && hweight8(tx_ant) == max_nss)
- 		phy->mt76->chainmask = (dev->chainmask >> chainshift) << chainshift;
- 	else
- 		phy->mt76->chainmask = tx_ant << (chainshift * band);
+ 	of_node_put(np);
+diff --git a/drivers/cpufreq/imx-cpufreq-dt.c b/drivers/cpufreq/imx-cpufreq-dt.c
+index 76e553af2071..535867a7dfdd 100644
+--- a/drivers/cpufreq/imx-cpufreq-dt.c
++++ b/drivers/cpufreq/imx-cpufreq-dt.c
+@@ -89,7 +89,7 @@ static int imx_cpufreq_dt_probe(struct platform_device *pdev)
+ 
+ 	cpu_dev = get_cpu_device(0);
+ 
+-	if (!of_find_property(cpu_dev->of_node, "cpu-supply", NULL))
++	if (!of_property_present(cpu_dev->of_node, "cpu-supply"))
+ 		return -ENODEV;
+ 
+ 	if (of_machine_is_compatible("fsl,imx7ulp")) {
+diff --git a/drivers/cpufreq/imx6q-cpufreq.c b/drivers/cpufreq/imx6q-cpufreq.c
+index 925fc17eaacb..39b0362a3b9a 100644
+--- a/drivers/cpufreq/imx6q-cpufreq.c
++++ b/drivers/cpufreq/imx6q-cpufreq.c
+@@ -230,7 +230,7 @@ static int imx6q_opp_check_speed_grading(struct device *dev)
+ 	u32 val;
+ 	int ret;
+ 
+-	if (of_find_property(dev->of_node, "nvmem-cells", NULL)) {
++	if (of_property_present(dev->of_node, "nvmem-cells")) {
+ 		ret = nvmem_cell_read_u32(dev, "speed_grade", &val);
+ 		if (ret)
+ 			return ret;
+@@ -285,7 +285,7 @@ static int imx6ul_opp_check_speed_grading(struct device *dev)
+ 	u32 val;
+ 	int ret = 0;
+ 
+-	if (of_find_property(dev->of_node, "nvmem-cells", NULL)) {
++	if (of_property_present(dev->of_node, "nvmem-cells")) {
+ 		ret = nvmem_cell_read_u32(dev, "speed_grade", &val);
+ 		if (ret)
+ 			return ret;
+diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
+index 513a071845c2..f34e6382a4c5 100644
+--- a/drivers/cpufreq/scmi-cpufreq.c
++++ b/drivers/cpufreq/scmi-cpufreq.c
+@@ -310,7 +310,7 @@ static int scmi_cpufreq_probe(struct scmi_device *sdev)
+ 
+ #ifdef CONFIG_COMMON_CLK
+ 	/* dummy clock provider as needed by OPP if clocks property is used */
+-	if (of_find_property(dev->of_node, "#clock-cells", NULL))
++	if (of_property_present(dev->of_node, "#clock-cells"))
+ 		devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, NULL);
+ #endif
+ 
+diff --git a/drivers/cpufreq/tegra20-cpufreq.c b/drivers/cpufreq/tegra20-cpufreq.c
+index ab7ac7df9e62..dfd2de4f8e07 100644
+--- a/drivers/cpufreq/tegra20-cpufreq.c
++++ b/drivers/cpufreq/tegra20-cpufreq.c
+@@ -25,7 +25,7 @@ static bool cpu0_node_has_opp_v2_prop(void)
+ 	struct device_node *np = of_cpu_device_node_get(0);
+ 	bool ret = false;
+ 
+-	if (of_get_property(np, "operating-points-v2", NULL))
++	if (of_property_present(np, "operating-points-v2"))
+ 		ret = true;
+ 
+ 	of_node_put(np);
 -- 
 2.43.0
 
