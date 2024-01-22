@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-13311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC368837B5E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:00:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A0A1837B5F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:00:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E8851F288BB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:00:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C757C293126
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61061339A0;
-	Tue, 23 Jan 2024 00:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD5D31339B0;
+	Tue, 23 Jan 2024 00:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rR6wvW4e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IdFJ31V/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8619E13398C;
-	Tue, 23 Jan 2024 00:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BE5513398C;
+	Tue, 23 Jan 2024 00:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969296; cv=none; b=kIUKYiYsFJ7lJzx312jG4PFCRVWORnzPEOY9uI9EJEdNLP/5EvVC7YWGYEh/ePcKqg3+mSEsr2KoEIKTfZeoHGGrsPy4+c+k+nczg94PoLKQ3ZcV4658B41l15xAvXt7DvWEqaKiIFi74dkq6yJcDgYKa1bnGDMXXHTcoOjAjEY=
+	t=1705969299; cv=none; b=jplylO3TAEWJ1WF7jj83fqf+eNxYNHg2s9KwWASD078RbSU7cO70iv/sZACEgvdremF/WxLk/tuSMvUXzDY/+WzoHfiEa/TXQpcgFdh1DCMYZJnfidCmWYS2fY3JRzepQfYbPACoXyfomEojB4v2ztvKFmykyGTh7VL8eUzQKSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969296; c=relaxed/simple;
-	bh=BaWiGXo036Gn9iamq47EAT+tysA/4ln6fv67DwZDtF8=;
+	s=arc-20240116; t=1705969299; c=relaxed/simple;
+	bh=4ei17ryHzC7a/igYaQQ3rJJyy+n0pulGaEtFrJZjo4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kju4Tlp5eZ0rvjbkikGpyNW9dax70fFatc5WHDDseRnDf5VssVDsdjyB8OLgdhGFvNoN4DiHejn+wH80zDc1dq/alfOApanNF7ihnutMnICa8KxdwHTBymrd6YV1PImIUkz8hEeeKX0nZKqpAyeeCr+cNK2VvwcxN8J0xowB1cA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rR6wvW4e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A4DEC43399;
-	Tue, 23 Jan 2024 00:21:35 +0000 (UTC)
+	 MIME-Version; b=cThepvfHbFErAwwGE+mrm1aMcqpjk9Rz0HxFfvGPcNWOfFQp6xA8M/6FbP/wPKVJLffPkMIoB+oregk8Ww6cGyO+zGNxylfWHM9B3IZVMsthKfQLzvEbLw1c0wCM16XCxBaHR6HI2pcBtPVSo2YsKrQPp20JYz+A0OGwW6fOI0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IdFJ31V/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA95C433C7;
+	Tue, 23 Jan 2024 00:21:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969296;
-	bh=BaWiGXo036Gn9iamq47EAT+tysA/4ln6fv67DwZDtF8=;
+	s=korg; t=1705969299;
+	bh=4ei17ryHzC7a/igYaQQ3rJJyy+n0pulGaEtFrJZjo4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rR6wvW4eA6ISh1KwJmgdqVc0+fbkK3ARAvvhMSgQBMmpye/1vVSxS98pbKedyCrA3
-	 8XX8g3sezJqVXSLzlc08d0Kmau0Hfp3Q2g5m/Rt2MCSyscgINZkEHsRwvH8e/wcnbp
-	 hePnKDmMKSiI45ytU3pjqHTktBHE3X8fMpCHTHdU=
+	b=IdFJ31V/+FBCmOeaVr26/Nf6F5m3LhkIIdPjyp0m4CQYrO9Hnjpi3HjeOK0pkQWBB
+	 daKLas+/RXJ9ImQcYrvYnTqYs0O2Hj4VzLfkv5m4T6Boz+zGxoaaX6rtA1yLny8lyy
+	 Vzz4qw1nWSCyL0S4Eiwe1TxCJ7CawTgvPX1ljwGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Felix Fietkau <nbd@nbd.name>,
+	Hao Sun <sunhao.th@gmail.com>,
+	Andrei Matei <andreimatei1@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 153/641] wifi: mt76: mt7915: also MT7981 is 3T3R but nss2 on 5 GHz band
-Date: Mon, 22 Jan 2024 15:50:57 -0800
-Message-ID: <20240122235822.821076757@linuxfoundation.org>
+Subject: [PATCH 6.7 156/641] bpf: Fix verification of indirect var-off stack access
+Date: Mon, 22 Jan 2024 15:51:00 -0800
+Message-ID: <20240122235822.911721456@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -67,39 +68,81 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+From: Andrei Matei <andreimatei1@gmail.com>
 
-[ Upstream commit ff434cc129d6907e6dbc89dd0ebc59fd3646d4c2 ]
+[ Upstream commit a833a17aeac73b33f79433d7cee68d5cafd71e4f ]
 
-Just like MT7916 also MT7981 can handle 3T3R DBDC frontend and should
-hence be included in the corresponding conditional expression in the
-driver. Add it.
+This patch fixes a bug around the verification of possibly-zero-sized
+stack accesses. When the access was done through a var-offset stack
+pointer, check_stack_access_within_bounds was incorrectly computing the
+maximum-offset of a zero-sized read to be the same as the register's min
+offset. Instead, we have to take in account the register's maximum
+possible value. The patch also simplifies how the max offset is checked;
+the check is now simpler than for min offset.
 
-Fixes: 6bad146d162e ("wifi: mt76: mt7915: add support for MT7981")
-Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+The bug was allowing accesses to erroneously pass the
+check_stack_access_within_bounds() checks, only to later crash in
+check_stack_range_initialized() when all the possibly-affected stack
+slots are iterated (this time with a correct max offset).
+check_stack_range_initialized() is relying on
+check_stack_access_within_bounds() for its accesses to the
+stack-tracking vector to be within bounds; in the case of zero-sized
+accesses, we were essentially only verifying that the lowest possible
+slot was within bounds. We would crash when the max-offset of the stack
+pointer was >= 0 (which shouldn't pass verification, and hopefully is
+not something anyone's code attempts to do in practice).
+
+Thanks Hao for reporting!
+
+Fixes: 01f810ace9ed3 ("bpf: Allow variable-offset stack access")
+Reported-by: Hao Sun <sunhao.th@gmail.com>
+Signed-off-by: Andrei Matei <andreimatei1@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20231207041150.229139-2-andreimatei1@gmail.com
+
+Closes: https://lore.kernel.org/bpf/CACkBjsZGEUaRCHsmaX=h-efVogsRfK1FPxmkgb0Os_frnHiNdw@mail.gmail.com/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ kernel/bpf/verifier.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-index a3fd54cc1911..9d747eb8ab82 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
-@@ -1059,8 +1059,9 @@ mt7915_set_antenna(struct ieee80211_hw *hw, u32 tx_ant, u32 rx_ant)
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index c4fbfe499475..acc1f3b7b183 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -6804,10 +6804,7 @@ static int check_stack_access_within_bounds(
  
- 	phy->mt76->antenna_mask = tx_ant;
+ 	if (tnum_is_const(reg->var_off)) {
+ 		min_off = reg->var_off.value + off;
+-		if (access_size > 0)
+-			max_off = min_off + access_size - 1;
+-		else
+-			max_off = min_off;
++		max_off = min_off + access_size;
+ 	} else {
+ 		if (reg->smax_value >= BPF_MAX_VAR_OFF ||
+ 		    reg->smin_value <= -BPF_MAX_VAR_OFF) {
+@@ -6816,15 +6813,12 @@ static int check_stack_access_within_bounds(
+ 			return -EACCES;
+ 		}
+ 		min_off = reg->smin_value + off;
+-		if (access_size > 0)
+-			max_off = reg->smax_value + off + access_size - 1;
+-		else
+-			max_off = min_off;
++		max_off = reg->smax_value + off + access_size;
+ 	}
  
--	/* handle a variant of mt7916 which has 3T3R but nss2 on 5 GHz band */
--	if (is_mt7916(&dev->mt76) && band && hweight8(tx_ant) == max_nss)
-+	/* handle a variant of mt7916/mt7981 which has 3T3R but nss2 on 5 GHz band */
-+	if ((is_mt7916(&dev->mt76) || is_mt7981(&dev->mt76)) &&
-+	    band && hweight8(tx_ant) == max_nss)
- 		phy->mt76->chainmask = (dev->chainmask >> chainshift) << chainshift;
- 	else
- 		phy->mt76->chainmask = tx_ant << (chainshift * band);
+ 	err = check_stack_slot_within_bounds(min_off, state, type);
+-	if (!err)
+-		err = check_stack_slot_within_bounds(max_off, state, type);
++	if (!err && max_off > 0)
++		err = -EINVAL; /* out of stack access into non-negative offsets */
+ 
+ 	if (err) {
+ 		if (tnum_is_const(reg->var_off)) {
 -- 
 2.43.0
 
