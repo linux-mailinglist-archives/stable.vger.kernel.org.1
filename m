@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F191183828D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D684837D7E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A82801F22560
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80BBB1C21F6F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A3D5D720;
-	Tue, 23 Jan 2024 01:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7935C61A;
+	Tue, 23 Jan 2024 00:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwhzwyLV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHOogEKN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F8C5C915;
-	Tue, 23 Jan 2024 01:46:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6594E1D8;
+	Tue, 23 Jan 2024 00:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974377; cv=none; b=BrBXHywHF439LjVO/AiV92sMzYlx8BZzEFwxSIgSAhelayImfzgnqtsLTyCXHSCDgOAvbphcYhLSWmiCnj9j5KIOij4DjJ0k9yd54S9c2xAXPyc5DEXFNhto0jkPUcE9q/OQ24lnsC5kFYIbkUHI1vcDQTAEYB0vT8e51vQDmRc=
+	t=1705969983; cv=none; b=m2a4n2axaWaZfY2TUkdoak150qwQkid/438uIW1mo8otSfuq3d2hG94+Kx5wnSl2z5TbhMA80S+UKp4RRwrfNN1kbeLP62fsbG92RAf46pHu/MwcYRJkrjwOfc8psLsNXXXHOzsOrxwg9hB7CEVfKplje6RUrzWtVjjHaj9SFVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974377; c=relaxed/simple;
-	bh=TXWxnDqzeOUYSFDfrW/v9QEnwfJjC0r9KG3lL9jpZX4=;
+	s=arc-20240116; t=1705969983; c=relaxed/simple;
+	bh=77zxqxUR5h65KVON6jw943z8wZUnKoWNVRo7i9pP2Ms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uWG9KK8BhxHpHB5/Ec0JPxTYRRnPt2XQdwR1zMiFsevrWE8EgK1ih4c+KGO4ns+wINX17w2TP+FZl0NK2+//HJGh4c9hwzEKeiO02DsiXbdcdAkdMHQCIC8+WS+OmcFYyvBjFnjIgOH5oazsDdzZgomyBAjFxdWT1LyqZBG7SWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwhzwyLV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C117C433F1;
-	Tue, 23 Jan 2024 01:46:17 +0000 (UTC)
+	 MIME-Version; b=fY3c/TFZ5ljtPwlWNHP0Qlw6+LUPYHxJr1lUyPe1wF2r7fMqHZjGYoKWpIFABzHX+Be2v3Vro/L2aUKKZWizwZGBv8e63D68pj5bXr2HxAz8cqzXuyIjB5nI0+w+OcOvTZ5eiIMSgC0hhiiLPNicuM2afERCZZudTAIW/lne/bc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AHOogEKN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC066C433C7;
+	Tue, 23 Jan 2024 00:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974377;
-	bh=TXWxnDqzeOUYSFDfrW/v9QEnwfJjC0r9KG3lL9jpZX4=;
+	s=korg; t=1705969982;
+	bh=77zxqxUR5h65KVON6jw943z8wZUnKoWNVRo7i9pP2Ms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lwhzwyLVnEjS2UoXB1RK1uAuXqagjiFWAe3I9iXe2sRhz8e9kjsJDVRl5vwzs2xuT
-	 tOhS7YxnoOhJtSmX6hzf+1nfd4xFZVmcO0SW3ATEnjlRN9kQvtWm85Cdw1T1bmWYox
-	 btG30/+FZgbxGmPu6zQGHAojHRn5BjyZ77KE0yq0=
+	b=AHOogEKNzjCHe7P1WZ6li9eKEy1lPL2c7ncgsjkn4YUaK6RGpIrGej6JgFTQlggeQ
+	 6Yya2Dk7EmMpolbp2bJD26wtnW5ag546yp/jJRezc5iT2fvxrdnZsKcO821cc0lUof
+	 +niyrZ8FiEBAwcPnUG2ULknyJci8EEkGOTFIxsn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 198/374] drm/bridge: cdns-mhdp8546: Fix use of uninitialized variable
+Subject: [PATCH 6.7 550/641] power: supply: Fix null pointer dereference in smb2_probe
 Date: Mon, 22 Jan 2024 15:57:34 -0800
-Message-ID: <20240122235751.493934917@linuxfoundation.org>
+Message-ID: <20240122235835.356136298@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 155d6fb61270dd297f128731cd155080deee8f3a ]
+[ Upstream commit 88f04bc3e737155e13caddf0ba8ed19db87f0212 ]
 
-'ret' could be uninitialized at the end of the function, although it's
-not clear if that can happen in practice.
+devm_kasprintf and devm_kzalloc return a pointer to dynamically
+allocated memory which can be NULL upon failure.
 
-Fixes: 6a3608eae6d3 ("drm: bridge: cdns-mhdp8546: Enable HDCP")
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231103-uninit-fixes-v2-3-c22b2444f5f5@ideasonboard.com
+Fixes: 8648aeb5d7b7 ("power: supply: add Qualcomm PMI8998 SMB2 Charger driver")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Link: https://lore.kernel.org/r/20231124075021.1335289-1-chentao@kylinos.cn
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/power/supply/qcom_pmi8998_charger.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c
-index fccd6fbcc257..29c04012b701 100644
---- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c
-+++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c
-@@ -403,7 +403,8 @@ static int _cdns_mhdp_hdcp_disable(struct cdns_mhdp_device *mhdp)
+diff --git a/drivers/power/supply/qcom_pmi8998_charger.c b/drivers/power/supply/qcom_pmi8998_charger.c
+index 8acf63ee6897..9bb777406013 100644
+--- a/drivers/power/supply/qcom_pmi8998_charger.c
++++ b/drivers/power/supply/qcom_pmi8998_charger.c
+@@ -972,10 +972,14 @@ static int smb2_probe(struct platform_device *pdev)
+ 	supply_config.of_node = pdev->dev.of_node;
  
- static int _cdns_mhdp_hdcp_enable(struct cdns_mhdp_device *mhdp, u8 content_type)
- {
--	int ret, tries = 3;
-+	int ret = -EINVAL;
-+	int tries = 3;
- 	u32 i;
+ 	desc = devm_kzalloc(chip->dev, sizeof(smb2_psy_desc), GFP_KERNEL);
++	if (!desc)
++		return -ENOMEM;
+ 	memcpy(desc, &smb2_psy_desc, sizeof(smb2_psy_desc));
+ 	desc->name =
+ 		devm_kasprintf(chip->dev, GFP_KERNEL, "%s-charger",
+ 			       (const char *)device_get_match_data(chip->dev));
++	if (!desc->name)
++		return -ENOMEM;
  
- 	for (i = 0; i < tries; i++) {
+ 	chip->chg_psy =
+ 		devm_power_supply_register(chip->dev, desc, &supply_config);
 -- 
 2.43.0
 
