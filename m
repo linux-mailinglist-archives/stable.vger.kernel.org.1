@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75080838245
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62D28837D60
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E136287487
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 968AC1C286C2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 717745A0ED;
-	Tue, 23 Jan 2024 01:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4ED5731F;
+	Tue, 23 Jan 2024 00:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekGWhSBC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7Xu/WXC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 302C02B9B7;
-	Tue, 23 Jan 2024 01:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0DA452F7C;
+	Tue, 23 Jan 2024 00:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974116; cv=none; b=bvPJUmUYbRpeNBticqmNuoxXP9iD0N8O/mxXUDuzk7yb/YS4vco4G2l31VOGESE4LIEWFyJGVdgBWuRN+Hhf2hMVBf23h+cDXp6fB2gctHhaPFVY+14p2ECYrLxMP0IvnoTjHSCMZ7M42IaThe7MjMksjjvnN/2lINJpPbFXdbo=
+	t=1705969913; cv=none; b=P9Qrytv+ExKD1nB40w/V4R3upGfMjp4zu9jptYzk/nYe02DiBHBtT3CkSZURdr0s2h4VXqaDQGSV/j4/Fl/wIleH5MarYt4WuRx33WTSfgsMMLmGJLS7EgYCBNlDK236sdKY3deTYI78i+jJtYyQ/Hm3ffOdzVwAAtMJ/4mFhyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974116; c=relaxed/simple;
-	bh=yE87BagCmzeNk7EFF94eBs1/2h2Ir3iYmREoFr9CtbM=;
+	s=arc-20240116; t=1705969913; c=relaxed/simple;
+	bh=Q6Jlgmsl01peV84VohgMUQR+zCJcBCh6jwGXvFQeRvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EhcSrcOmzUfe90QgoSwFKho0m7GO0qwpd+X9MDv75txcCJIP3ABEoGdQAeQsF3ddNYQSf0L84CJNtDYf+f+OYEpqti6dqS6a35B692dVvykCQsqt+XH4YGDFcrbk8jrBH9BxMKqDsX6UVLCnrW0yK6GMg/cEw3ZXYXc+UkIIJA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekGWhSBC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C3AC433C7;
-	Tue, 23 Jan 2024 01:41:55 +0000 (UTC)
+	 MIME-Version; b=ON0jWIni7tA5Sk/j+Xtr3dEN7W7Dj+6r8TlUKsQ1kv0X5QZxRDWVj+2suvFCInPF0rk2X8wpKYj00eij8EfvHDGTkg6JkWjfSZC9kQSTbEd4Bv5iYnFq0iGe6KxNbM8NbUMUqPY10WX/xHJ95czxv3+aYxCRWQz6UILsQmlLKLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7Xu/WXC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94CE0C433F1;
+	Tue, 23 Jan 2024 00:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974115;
-	bh=yE87BagCmzeNk7EFF94eBs1/2h2Ir3iYmREoFr9CtbM=;
+	s=korg; t=1705969912;
+	bh=Q6Jlgmsl01peV84VohgMUQR+zCJcBCh6jwGXvFQeRvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ekGWhSBCG+XIsXZ/TvQgvNPfaZRvsPbV2Q0V3fAShwrwQAuy0YSWoxeaOEag0cfJl
-	 YCCusnYco39vPZW/3ZavuWnPbda8/R5SXVUEECVbfma3C0ZFMnU3NPM05UGzBt/tjh
-	 LjHBTIq6GmB2dSochVZ0OmPH4Dqh/h0yhaJNg608=
+	b=x7Xu/WXCyW5z5Q+tmxDB61kQn9YwTDJD+c4tuS6D/A9u5cJeRTmwmEFzcFLbBCMqo
+	 Z5RxAHe1NlvbEXFcVNX6qz6lc1tlNNAuBPkbRmR9QGIT1Rh9/tG/jijhCoQMZjO4cY
+	 RBd/b8VkTtP47LcAtd4741KqJOqgP6DTY+iXgwy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 169/374] null_blk: dont cap max_hw_sectors to BLK_DEF_MAX_SECTORS
+Subject: [PATCH 6.7 521/641] acpi: property: Let args be NULL in __acpi_node_get_property_reference
 Date: Mon, 22 Jan 2024 15:57:05 -0800
-Message-ID: <20240122235750.514244465@linuxfoundation.org>
+Message-ID: <20240122235834.396804296@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 9a9525de865410047fa962867b4fcd33943b206f ]
+[ Upstream commit bef52aa0f3de1b7d8c258c13b16e577361dabf3a ]
 
-null_blk has some rather odd capping of the max_hw_sectors value to
-BLK_DEF_MAX_SECTORS, which doesn't make sense - max_hw_sector is the
-hardware limit, and BLK_DEF_MAX_SECTORS despite the confusing name is the
-default cap for the max_sectors field used for normal file system I/O.
+fwnode_get_property_reference_args() may not be called with args argument
+NULL on ACPI, OF already supports this. Add the missing NULL checks and
+document this.
 
-Remove all the capping, and simply leave it to the block layer or
-user to take up or not all of that for file system I/O.
+The purpose is to be able to count the references.
 
-Fixes: ea17fd354ca8 ("null_blk: Allow controlling max_hw_sectors limit")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20231227092305.279567-2-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 977d5ad39f3e ("ACPI: Convert ACPI reference args to generic fwnode reference args")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20231109101010.1329587-2-sakari.ailus@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/null_blk/main.c | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+ drivers/acpi/property.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index 4a867233b14a..87791265e09b 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -1900,10 +1900,8 @@ static int null_add_dev(struct nullb_device *dev)
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 6979a3f9f90a..4d042673d57b 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -852,6 +852,7 @@ static int acpi_get_ref_args(struct fwnode_reference_args *args,
+  * @index: Index of the reference to return
+  * @num_args: Maximum number of arguments after each reference
+  * @args: Location to store the returned reference with optional arguments
++ *	  (may be NULL)
+  *
+  * Find property with @name, verifify that it is a package containing at least
+  * one object reference and if so, store the ACPI device object pointer to the
+@@ -908,6 +909,9 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
+ 		if (!device)
+ 			return -EINVAL;
  
- 	blk_queue_logical_block_size(nullb->q, dev->blocksize);
- 	blk_queue_physical_block_size(nullb->q, dev->blocksize);
--	if (!dev->max_sectors)
--		dev->max_sectors = queue_max_hw_sectors(nullb->q);
--	dev->max_sectors = min(dev->max_sectors, BLK_DEF_MAX_SECTORS);
--	blk_queue_max_hw_sectors(nullb->q, dev->max_sectors);
-+	if (dev->max_sectors)
-+		blk_queue_max_hw_sectors(nullb->q, dev->max_sectors);
- 
- 	if (dev->virt_boundary)
- 		blk_queue_virt_boundary(nullb->q, PAGE_SIZE - 1);
-@@ -1953,12 +1951,6 @@ static int __init null_init(void)
- 		g_bs = PAGE_SIZE;
- 	}
- 
--	if (g_max_sectors > BLK_DEF_MAX_SECTORS) {
--		pr_warn("invalid max sectors\n");
--		pr_warn("defaults max sectors to %u\n", BLK_DEF_MAX_SECTORS);
--		g_max_sectors = BLK_DEF_MAX_SECTORS;
--	}
--
- 	if (g_home_node != NUMA_NO_NODE && g_home_node >= nr_online_nodes) {
- 		pr_err("invalid home_node value\n");
- 		g_home_node = NUMA_NO_NODE;
++		if (!args)
++			return 0;
++
+ 		args->fwnode = acpi_fwnode_handle(device);
+ 		args->nargs = 0;
+ 		return 0;
 -- 
 2.43.0
 
