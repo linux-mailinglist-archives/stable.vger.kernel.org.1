@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-14294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32055838052
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0107838260
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 656DC1C2969C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2BA61C27ADC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD64664D9;
-	Tue, 23 Jan 2024 01:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4545B5DE;
+	Tue, 23 Jan 2024 01:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwA7kvSb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Ocfq8Xg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC6C664B7;
-	Tue, 23 Jan 2024 01:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CC95B5D9;
+	Tue, 23 Jan 2024 01:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971665; cv=none; b=ZUpEm2S2k6xHWuSbiR6I5oWJIcRlzoZtA1uULxXpAJMkDUOYJAPoguW4b7SXU+Q0PmCYKlGwGaBRUolgtOgdb7yYQXgsH6LJtHegk/BxLDMpaEQ2Oa4/s9KUjEkqUd8qG7K/oxw1KioLWrAjwsKLiXrmbkwhPPPY03AOCNpAEUc=
+	t=1705974337; cv=none; b=nK7AcZ/TQGoXsYlVn6S+VjGGAVzR7Hr3cDvWyb+H8I0rzYSXaKK2630f63VZqyANjYoSUKoIoxuG0D5YkPaQHKLYKCxwk3qh74TOWuP4OHbCi5beijh3MGbD9/bHO8vaSh5GA7MWXgbGMkOcx8iD84AUViCE3SxK9f/A+gZd1P0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971665; c=relaxed/simple;
-	bh=HV+KeWzecZmL5uGY+3ts5ft21dUgcMqF6LMpzJPahms=;
+	s=arc-20240116; t=1705974337; c=relaxed/simple;
+	bh=f9LDGnXbHvXCJY/v0wh7HlN5ZZIseY/uTFtbWY7rKQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KrIZyPWzo3Xs6uq4stw7x5I8hmcRd1JOBnit2Wh8A3qBYu6kBmP6DH5E1T2dYXn4ubDZdnm2KFZL8cdH2/6JxzTKo+4zKSTgv1j1coqULR2XQ8tgl8lDsYCnEskjQbvLhAhnQIecZ/Fn29VEtFPyl85gLhaKNvbfCdrUo13HJ6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NwA7kvSb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53780C433F1;
-	Tue, 23 Jan 2024 01:01:05 +0000 (UTC)
+	 MIME-Version; b=RH8QgjhTuRleLvAST9gLGhKXGja8ouLIYJK/dvsMHrCtfjbK4baEjhRDfBz+SpJGTSoUpOLMMQZFDfvMSdK3K8rOSClRC6mwlCizyGiJJ1CJ1PVS9n+09bURPXoO8paRpjQaTCa7uPAGmYnumvV1Gk+uGursFdo0hEXur//Yf0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Ocfq8Xg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF5FC433F1;
+	Tue, 23 Jan 2024 01:45:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971665;
-	bh=HV+KeWzecZmL5uGY+3ts5ft21dUgcMqF6LMpzJPahms=;
+	s=korg; t=1705974337;
+	bh=f9LDGnXbHvXCJY/v0wh7HlN5ZZIseY/uTFtbWY7rKQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NwA7kvSbALeZa6kTPpb+AVVnm9PrglBEOGe0jwijl/uOAtfQE6/MJtAC/KbNfQhlp
-	 CGyR6QNQ3lH8JmPYak1TPlVxW12T9mKPuzYi7KVmDJOzbSR8LmibEKrR23nxpILwy0
-	 9DIiRozmtTgrYOkmIUaeT4fdGSOER3T1lysbkNnk=
+	b=1Ocfq8Xgn7Xi9JliBwgBr2fSAHXDb0PT1SwI5gtdn2KMFDVPcNE2XZdMcLCPuK3bU
+	 DCRMXNA4YSLQX+uyjTca1oWnr71fWMzBfb9hQmV+6G6m/BgUc6hI+YV89o4EKdNM43
+	 lPS+8CTgY33X5X3vRmBbPiB7vWipj3OLqGgVEmPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <2045gemini@gmail.com>
-Subject: [PATCH 6.1 269/417] usb: mon: Fix atomicity violation in mon_bin_vma_fault
+	Abhinav Singh <singhabhinav9051571833@gmail.com>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 181/374] drm/nouveau/fence:: fix warning directly dereferencing a rcu pointer
 Date: Mon, 22 Jan 2024 15:57:17 -0800
-Message-ID: <20240122235801.175303302@linuxfoundation.org>
+Message-ID: <20240122235750.934821470@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,95 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <2045gemini@gmail.com>
+From: Abhinav Singh <singhabhinav9051571833@gmail.com>
 
-commit 2dd23cc4d0e6aa55cf9fb3b05f2f4165b01de81c upstream.
+[ Upstream commit 5f35a624c1e30b5bae5023b3c256e94e0ad4f806 ]
 
-In mon_bin_vma_fault():
-    offset = vmf->pgoff << PAGE_SHIFT;
-    if (offset >= rp->b_size)
-        return VM_FAULT_SIGBUS;
-    chunk_idx = offset / CHUNK_SIZE;
-    pageptr = rp->b_vec[chunk_idx].pg;
-The code is executed without holding any lock.
+Fix a sparse warning with this message
+"warning:dereference of noderef expression". In this context it means we
+are dereferencing a __rcu tagged pointer directly.
 
-In mon_bin_vma_close():
-    spin_lock_irqsave(&rp->b_lock, flags);
-    rp->mmap_active--;
-    spin_unlock_irqrestore(&rp->b_lock, flags);
+We should not be directly dereferencing a rcu pointer. To get a normal
+(non __rcu tagged pointer) from a __rcu tagged pointer we are using the
+function unrcu_pointer(...). The non __rcu tagged pointer then can be
+dereferenced just like a normal pointer.
 
-In mon_bin_ioctl():
-    spin_lock_irqsave(&rp->b_lock, flags);
-    if (rp->mmap_active) {
-        ...
-    } else {
-        ...
-        kfree(rp->b_vec);
-        rp->b_vec  = vec;
-        rp->b_size = size;
-        ...
-    }
-    spin_unlock_irqrestore(&rp->b_lock, flags);
+I tested with qemu with this command
+qemu-system-x86_64 \
+	-m 2G \
+	-smp 2 \
+	-kernel bzImage \
+	-append "console=ttyS0 root=/dev/sda earlyprintk=serial net.ifnames=0" \
+	-drive file=bullseye.img,format=raw \
+	-net user,host=10.0.2.10,hostfwd=tcp:127.0.0.1:10021-:22 \
+	-net nic,model=e1000 \
+	-enable-kvm \
+	-nographic \
+	-pidfile vm.pid \
+	2>&1 | tee vm.log
+with lockdep enabled.
 
-Concurrent execution of mon_bin_vma_fault() with mon_bin_vma_close() and
-mon_bin_ioctl() could lead to atomicity violations. mon_bin_vma_fault()
-accesses rp->b_size and rp->b_vec without locking, risking array
-out-of-bounds access or use-after-free bugs due to possible modifications
-in mon_bin_ioctl().
-
-This possible bug is found by an experimental static analysis tool
-developed by our team, BassCheck[1]. This tool analyzes the locking APIs
-to extract function pairs that can be concurrently executed, and then
-analyzes the instructions in the paired functions to identify possible
-concurrency bugs including data races and atomicity violations. The above
-possible bug is reported when our tool analyzes the source code of
-Linux 6.2.
-
-To address this issue, it is proposed to add a spin lock pair in
-mon_bin_vma_fault() to ensure atomicity. With this patch applied, our tool
-never reports the possible bug, with the kernel configuration allyesconfig
-for x86_64. Due to the lack of associated hardware, we cannot test the
-patch in runtime testing, and just verify it according to the code logic.
-
-[1] https://sites.google.com/view/basscheck/
-
-Fixes: 19e6317d24c2 ("usb: mon: Fix a deadlock in usbmon between ...")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
-Link: https://lore.kernel.org/r/20240105052412.9377-1-2045gemini@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0ec5f02f0e2c ("drm/nouveau: prevent stale fence->channel pointers, and protect with rcu")
+Signed-off-by: Abhinav Singh <singhabhinav9051571833@gmail.com>
+Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231113191303.3277733-1-singhabhinav9051571833@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/mon/mon_bin.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nv04_fence.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/mon/mon_bin.c
-+++ b/drivers/usb/mon/mon_bin.c
-@@ -1247,14 +1247,19 @@ static vm_fault_t mon_bin_vma_fault(stru
- 	struct mon_reader_bin *rp = vmf->vma->vm_private_data;
- 	unsigned long offset, chunk_idx;
- 	struct page *pageptr;
-+	unsigned long flags;
- 
-+	spin_lock_irqsave(&rp->b_lock, flags);
- 	offset = vmf->pgoff << PAGE_SHIFT;
--	if (offset >= rp->b_size)
-+	if (offset >= rp->b_size) {
-+		spin_unlock_irqrestore(&rp->b_lock, flags);
- 		return VM_FAULT_SIGBUS;
-+	}
- 	chunk_idx = offset / CHUNK_SIZE;
- 	pageptr = rp->b_vec[chunk_idx].pg;
- 	get_page(pageptr);
- 	vmf->page = pageptr;
-+	spin_unlock_irqrestore(&rp->b_lock, flags);
- 	return 0;
- }
- 
+diff --git a/drivers/gpu/drm/nouveau/nv04_fence.c b/drivers/gpu/drm/nouveau/nv04_fence.c
+index 5b71a5a5cd85..cdbc75e3d1f6 100644
+--- a/drivers/gpu/drm/nouveau/nv04_fence.c
++++ b/drivers/gpu/drm/nouveau/nv04_fence.c
+@@ -39,7 +39,7 @@ struct nv04_fence_priv {
+ static int
+ nv04_fence_emit(struct nouveau_fence *fence)
+ {
+-	struct nvif_push *push = fence->channel->chan.push;
++	struct nvif_push *push = unrcu_pointer(fence->channel)->chan.push;
+ 	int ret = PUSH_WAIT(push, 2);
+ 	if (ret == 0) {
+ 		PUSH_NVSQ(push, NV_SW, 0x0150, fence->base.seqno);
+-- 
+2.43.0
+
 
 
 
