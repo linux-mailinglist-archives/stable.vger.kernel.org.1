@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-12848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41F388378A3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CEB6837A3A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0216F28C583
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 252B31F289B9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A781420D8;
-	Tue, 23 Jan 2024 00:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A915712BE85;
+	Tue, 23 Jan 2024 00:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="158mIcbS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZvS025N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828101420CE;
-	Tue, 23 Jan 2024 00:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692DE12A17F;
+	Tue, 23 Jan 2024 00:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968171; cv=none; b=gVCAz6FIVEDwhxi+RdaMV5++2BBZ+U5b28pwBoSyzawkceicyRj5F43sNdAMO+shWg0hJ6FpmXtFrTe9TNg0UYchBuqqPoYeWECzLUMTQHPgqmfG1ZWHzGg7VNZPtG6gRpzw4rqskwXfXyk5REBwaDS9dJkYLyGvUqvwZEq21NE=
+	t=1705968812; cv=none; b=IzqlnDtByFS4h1/QCtpDXFFNylPvVnViCru5YbB6CYXZAtvlcE30jh/k1sswzTH9nS8bYQ9zHflmx4YvIPHXix/fuSqgtcmXH6V7asNVn/bi47KqW6ICLT/nlk6ffkxDc4ofAZuLnTCHgG8CFa7lQ1id5XQi0RTxYY3pZbKPOas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968171; c=relaxed/simple;
-	bh=MWuU5PdmXnBTCocb+hU7QzKvZOaQfN61LVYeehTirPE=;
+	s=arc-20240116; t=1705968812; c=relaxed/simple;
+	bh=r5c5mSmYD9S3nF6jnK0qViHsSbjyDT2oNoadyT7SBDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EjmCyFvu2ucaFiqUBOxJNJDpkHnjyy6N9iJdLY616d1glHorc/YqYZQXwdZZiyjKxnlhoeZYLhKCr1AnJGLfImpREVfSRyjCMhF/HkVAP+77Zu8uai25l0VJrkvhoKs9Q1J4ZtfhWizz0ZXRmqxkwMIUQNJp+im/Dyit6awmgyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=158mIcbS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03FE2C433F1;
-	Tue, 23 Jan 2024 00:02:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MbNEQe6gR+y/8+T7uoB3Q8On1mzOpAs31co/918lwn3GsKF7nW6Fw0OiXNwdlZO79MboFeYTfX9iW8V3frzPWSZD1HqEtL3dV5ru9mwkMyJRLM5e/lhEHDSXRs4rKXWT3aeJgc3m6I7a8wXcaTcOoHPL22Wq0b81jyOvcv0molg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZvS025N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E2DC433C7;
+	Tue, 23 Jan 2024 00:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968171;
-	bh=MWuU5PdmXnBTCocb+hU7QzKvZOaQfN61LVYeehTirPE=;
+	s=korg; t=1705968812;
+	bh=r5c5mSmYD9S3nF6jnK0qViHsSbjyDT2oNoadyT7SBDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=158mIcbSJLzsCciFLShu31p5KEHwxVps5GsdYeDo10KQbVPLXUhvdV780hw5AQsAh
-	 zD/QnbPk0rcyCns4x2wIsvgTc1O0LYBb6LjR71ZqEc0QIiGB+CVLaADJm+xWevSLpj
-	 GxWo31Jm4QCu9RXjKCPlbBI+fMiQ+4lqa9hrlpac=
+	b=yZvS025NdpqK70jYeOz3sP5x+cE5arIzt7ySqlrl+TbSyBeFLwXkV17/KEFOux7dZ
+	 L04n27B30QSnCfHuFDZQur3P8S6jaj4Xt7JVvz/RMOrSG1O42MRu29eGS3J8DW69eo
+	 JvpWBCsVJEUOsC+EiaoAEDjNFAFC8/aqTQHqZMIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Dufour <ldufour@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	ZhaoLong Wang <wangzhaolong1@huawei.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 032/148] powerpc/pseries/memhotplug: Quieten some DLPAR operations
+Subject: [PATCH 5.4 058/194] mtd: Fix gluebi NULL pointer dereference caused by ftl notifier
 Date: Mon, 22 Jan 2024 15:56:28 -0800
-Message-ID: <20240122235713.699482651@linuxfoundation.org>
+Message-ID: <20240122235721.687806578@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,99 +62,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Dufour <ldufour@linux.ibm.com>
+From: ZhaoLong Wang <wangzhaolong1@huawei.com>
 
-[ Upstream commit 20e9de85edae3a5866f29b6cce87c9ec66d62a1b ]
+[ Upstream commit a43bdc376deab5fff1ceb93dca55bcab8dbdc1d6 ]
 
-When attempting to remove by index a set of LMBs a lot of messages are
-displayed on the console, even when everything goes fine:
+If both ftl.ko and gluebi.ko are loaded, the notifier of ftl
+triggers NULL pointer dereference when trying to access
+‘gluebi->desc’ in gluebi_read().
 
-  pseries-hotplug-mem: Attempting to hot-remove LMB, drc index 8000002d
-  Offlined Pages 4096
-  pseries-hotplug-mem: Memory at 2d0000000 was hot-removed
+ubi_gluebi_init
+  ubi_register_volume_notifier
+    ubi_enumerate_volumes
+      ubi_notify_all
+        gluebi_notify    nb->notifier_call()
+          gluebi_create
+            mtd_device_register
+              mtd_device_parse_register
+                add_mtd_device
+                  blktrans_notify_add   not->add()
+                    ftl_add_mtd         tr->add_mtd()
+                      scan_header
+                        mtd_read
+                          mtd_read_oob
+                            mtd_read_oob_std
+                              gluebi_read   mtd->read()
+                                gluebi->desc - NULL
 
-The 2 messages prefixed by "pseries-hotplug-mem" are not really
-helpful for the end user, they should be debug outputs.
+Detailed reproduction information available at the Link [1],
 
-In case of error, because some of the LMB's pages couldn't be
-offlined, the following is displayed on the console:
+In the normal case, obtain gluebi->desc in the gluebi_get_device(),
+and access gluebi->desc in the gluebi_read(). However,
+gluebi_get_device() is not executed in advance in the
+ftl_add_mtd() process, which leads to NULL pointer dereference.
 
-  pseries-hotplug-mem: Attempting to hot-remove LMB, drc index 8000003e
-  pseries-hotplug-mem: Failed to hot-remove memory at 3e0000000
-  dlpar: Could not handle DLPAR request "memory remove index 0x8000003e"
+The solution for the gluebi module is to run jffs2 on the UBI
+volume without considering working with ftl or mtdblock [2].
+Therefore, this problem can be avoided by preventing gluebi from
+creating the mtdblock device after creating mtd partition of the
+type MTD_UBIVOLUME.
 
-Again, the 2 messages prefixed by "pseries-hotplug-mem" are useless,
-and the generic DLPAR prefixed message should be enough.
-
-These 2 first changes are mainly triggered by the changes introduced
-in drmgr:
-  https://groups.google.com/g/powerpc-utils-devel/c/Y6ef4NB3EzM/m/9cu5JHRxAQAJ
-
-Also, when adding a bunch of LMBs, a message is displayed in the console per LMB
-like these ones:
-  pseries-hotplug-mem: Memory at 7e0000000 (drc index 8000007e) was hot-added
-  pseries-hotplug-mem: Memory at 7f0000000 (drc index 8000007f) was hot-added
-  pseries-hotplug-mem: Memory at 800000000 (drc index 80000080) was hot-added
-  pseries-hotplug-mem: Memory at 810000000 (drc index 80000081) was hot-added
-
-When adding 1TB of memory and LMB size is 256MB, this leads to 4096
-messages to be displayed on the console. These messages are not really
-helpful for the end user, so moving them to the DEBUG level.
-
-Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
-[mpe: Tweak change log wording]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://lore.kernel.org/r/20201211145954.90143-1-ldufour@linux.ibm.com
-Stable-dep-of: bd68ffce69f6 ("powerpc/pseries/memhp: Fix access beyond end of drmem array")
+Fixes: 2ba3d76a1e29 ("UBI: make gluebi a separate module")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217992 [1]
+Link: https://lore.kernel.org/lkml/441107100.23734.1697904580252.JavaMail.zimbra@nod.at/ [2]
+Signed-off-by: ZhaoLong Wang <wangzhaolong1@huawei.com>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Acked-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20231220024619.2138625-1-wangzhaolong1@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/hotplug-memory.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/mtd/mtd_blkdevs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-index afabe6918619..93675a0b853b 100644
---- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -487,7 +487,7 @@ static int dlpar_memory_remove_by_index(u32 drc_index)
- 	int lmb_found;
- 	int rc;
+diff --git a/drivers/mtd/mtd_blkdevs.c b/drivers/mtd/mtd_blkdevs.c
+index 0c05f77f9b21..dd0d0bf5f57f 100644
+--- a/drivers/mtd/mtd_blkdevs.c
++++ b/drivers/mtd/mtd_blkdevs.c
+@@ -533,7 +533,7 @@ static void blktrans_notify_add(struct mtd_info *mtd)
+ {
+ 	struct mtd_blktrans_ops *tr;
  
--	pr_info("Attempting to hot-remove LMB, drc index %x\n", drc_index);
-+	pr_debug("Attempting to hot-remove LMB, drc index %x\n", drc_index);
+-	if (mtd->type == MTD_ABSENT)
++	if (mtd->type == MTD_ABSENT || mtd->type == MTD_UBIVOLUME)
+ 		return;
  
- 	lmb_found = 0;
- 	for_each_drmem_lmb(lmb) {
-@@ -505,10 +505,10 @@ static int dlpar_memory_remove_by_index(u32 drc_index)
- 		rc = -EINVAL;
+ 	list_for_each_entry(tr, &blktrans_majors, list)
+@@ -576,7 +576,7 @@ int register_mtd_blktrans(struct mtd_blktrans_ops *tr)
+ 	list_add(&tr->list, &blktrans_majors);
  
- 	if (rc)
--		pr_info("Failed to hot-remove memory at %llx\n",
--			lmb->base_addr);
-+		pr_debug("Failed to hot-remove memory at %llx\n",
-+			 lmb->base_addr);
- 	else
--		pr_info("Memory at %llx was hot-removed\n", lmb->base_addr);
-+		pr_debug("Memory at %llx was hot-removed\n", lmb->base_addr);
+ 	mtd_for_each_device(mtd)
+-		if (mtd->type != MTD_ABSENT)
++		if (mtd->type != MTD_ABSENT && mtd->type != MTD_UBIVOLUME)
+ 			tr->add_mtd(tr, mtd);
  
- 	return rc;
- }
-@@ -761,8 +761,8 @@ static int dlpar_memory_add_by_count(u32 lmbs_to_add)
- 			if (!drmem_lmb_reserved(lmb))
- 				continue;
- 
--			pr_info("Memory at %llx (drc index %x) was hot-added\n",
--				lmb->base_addr, lmb->drc_index);
-+			pr_debug("Memory at %llx (drc index %x) was hot-added\n",
-+				 lmb->base_addr, lmb->drc_index);
- 			drmem_remove_lmb_reservation(lmb);
- 		}
- 		rc = 0;
+ 	mutex_unlock(&mtd_table_mutex);
 -- 
 2.43.0
 
