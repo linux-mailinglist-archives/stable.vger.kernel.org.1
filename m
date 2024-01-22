@@ -1,387 +1,245 @@
-Return-Path: <stable+bounces-12353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90C6B835E4F
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 10:34:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 035DA835EE9
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 11:01:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 080011F21F92
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 09:34:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 881991F23380
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 10:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2AB239ACF;
-	Mon, 22 Jan 2024 09:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D7739FD8;
+	Mon, 22 Jan 2024 10:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="priTPpCe"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z+hFOTlK"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2067.outbound.protection.outlook.com [40.107.93.67])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6DC39ACC
-	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 09:34:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.67
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705916073; cv=fail; b=LbOgxNDuuLEtuKs4ukcTa0p28Oisv0NNwissQi+bjH8LAH4qRoc7dptmfo4pqNffjgDPQoxNplCY7XXqO/4UMs86vy0XajX39jMoQsYxZXShtQMxewInX7VHg9hA7F6FqlChwAcVkdkMsITR4UNaVn1ZSL9BVveXTU0jDXXGvWo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705916073; c=relaxed/simple;
-	bh=pm98BML9BDs0hs7C4w7LYQCTkhrykoQmZCbDD0ePj8Y=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=tckq1lFITXvQYWoCHMG0J7JXPpC5G7y7+5oqPixB7EAPwmKQdFI7sz9hgaFv9/OFibAXQyaPRnnKFhTb8ZeGj8ScqJGYx3wZE32t/vqeesDUG2AA1AAj8ono4ttkOES/4rjzNO1ycq9py3kV7nJdFMvqE10WvPLadx0BvV/mrnM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=priTPpCe; arc=fail smtp.client-ip=40.107.93.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k/fQlN1N4oPD2yUQ2u8HKkKUtPYhqXcWZiJarUft+WPAnLD3S8GFu96Jg95lHEHgPJmOIdWslWIgFCkwoh101ZlRmjsdrsqId473UewsHRcYr3bxAmowooibnDse2Ysnp8Y3HPNzySYZz5MRjH8aEWWU9gjjmPx1tEza0w9Ue1P0Ug4CUfwoXFk9ea5hwyh9LMnb8udm0AuxmdA13EzRTvVp7FPPK7WFXEL3nYUzQbBDC9UL+Uzxvtp00rf6Vdw3+1kvNY4kAzuw8uS4WLdE41UnW80ykaXkKyYar+SM6D7cwUvtqlaDIHUzUfjmfFvi01COaHOdH+UyRJA+bVO8yw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ldI2rlenWE7pwzxmFW31i4lRvivOBJXk33dg4aj1hGM=;
- b=RBv78RmqgSRADF+a0K6lHfSmcDpT4NkVHlg4HFxPPtkJ0Sorw5N8x+Fx+AKJCETM9Y0IqMdLHV4jX2PTVMiedALu6BQKidDdyIqpQyFqQOYARhjNetVBdDh0ZjwEfzvLa1Is+erhjVEtNpta47lME0kzQsuChCnpJdyiFERKE6/Z7C6B7qfNdWUHvGDg+P93U7s6RXyYvapTWA+Nvu1YPJkd1wgM/XnsCaZ7Y3J8cnIMaHnvMLvlyPZofHR+R2jnYwWJyhjmBLKuZ0E6JoglBigmniC3+PWFo90VxdgxYm5aMXMQeSM5ics+RhlkJ6pk0OU1ayXWJJLPpWQphJVcBA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ldI2rlenWE7pwzxmFW31i4lRvivOBJXk33dg4aj1hGM=;
- b=priTPpCef22IGuQYwJSLwODhPT/uqdIwy+rpwWjx2EH+6mmf8fy6xth3sGL2fC+x2ToMtgYxLMXsA02PBYI8pbi1orBV02hbHBU2mkRY0OqR2FZsPD+exn4IQRn/Y2e9+P84X6lNwtCIUZLA5eueQ64z+BYGz7R4l8hCT8JK9Dc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by SJ2PR12MB8035.namprd12.prod.outlook.com (2603:10b6:a03:4d3::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7202.27; Mon, 22 Jan
- 2024 09:34:26 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::e1fb:4123:48b1:653]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::e1fb:4123:48b1:653%4]) with mapi id 15.20.7202.031; Mon, 22 Jan 2024
- 09:34:26 +0000
-Message-ID: <d142f9f2-29a9-40a9-8ed9-9b0e6df84a80@amd.com>
-Date: Mon, 22 Jan 2024 10:34:20 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] drm/amdgpu: Reset IH OVERFLOW_CLEAR bit
-Content-Language: en-US
-To: Alex Deucher <alexdeucher@gmail.com>
-Cc: Friedrich Vock <friedrich.vock@gmx.de>, amd-gfx@lists.freedesktop.org,
- Alex Deucher <alexander.deucher@amd.com>, stable@vger.kernel.org,
- Joshua Ashton <joshua@froggi.es>
-References: <20240118185402.919396-1-friedrich.vock@gmx.de>
- <c3d81197-a2a6-4884-832c-d0b8459340aa@amd.com>
- <CADnq5_O6U8DSGJOUk9_sfL2bEUGgLej-nLsVH_ep-2BKZL_Bng@mail.gmail.com>
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <CADnq5_O6U8DSGJOUk9_sfL2bEUGgLej-nLsVH_ep-2BKZL_Bng@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR3P281CA0192.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a4::16) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE7C39FEA
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 10:01:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1705917678; cv=none; b=XQ4V1uzs1J4qT561UYOPATDC5t+O922+Yz17Db0Db6WGRtkxele6S3hVMtcyyHptBVOX6hlLS6kDvaBVh/39MqYs49OIooQFNYdYnD2W6m38UuM1WbbZD7VV9icI73ynWz2C2ytG46Pf4RJzkivNJ3NNfew9OyEh0RV33yLv3OQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1705917678; c=relaxed/simple;
+	bh=jf4yKSzlqqbyUEc6YGETM2QKbR10sPDe2DBRx+D5MRg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=P0NxFlNfhOZPZxviVnT77RA8/JLhq4+bPBYeWo5FfKMY2/LCAP1hVT3aSYr4b43+v44LoRCtJx9wu9qvoDso6VCRZ08+5uegQjJ7H3KWBtfL/PTDy96MUGQtocmYP3KqN6rZt5t6aeKFwurILfqReLhNzwTy51MTvEPzg1HcFwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z+hFOTlK; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1705917675;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=jYyhFaRmFtpWxmu2ZytE1Jd2nh2JmIcnia5u3w5cavE=;
+	b=Z+hFOTlKMbw6LsvslWLsHL/2hCWHjZXALy4xdc+7V3sTBEFOlTsj+SzHrE0x+PWMRuqCE9
+	ODl6WzijWxZDYHU1Yl4slcwYcdcUL8cYThP2FG8/1nafd077uvGo6sPSVCC6aUITh1XepZ
+	/gbw0BRNUkQny3MZVuXPtfpSZO0ThnU=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-354-Pyqc1TfDPNC56qCyjzcO3A-1; Mon, 22 Jan 2024 05:01:12 -0500
+X-MC-Unique: Pyqc1TfDPNC56qCyjzcO3A-1
+Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-50e73a71c8aso1576144e87.3
+        for <stable@vger.kernel.org>; Mon, 22 Jan 2024 02:01:12 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705917671; x=1706522471;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:cc:to:from:subject:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=jYyhFaRmFtpWxmu2ZytE1Jd2nh2JmIcnia5u3w5cavE=;
+        b=kBgyqkBVt7YmwokkjczmE70EjCOZ+varYaHrkCoMujnEJsJ+PPX3eUm/Pb4IuzhK8s
+         1TUAnonCBz4q3o576qYZso8/X71SPZLtnHIf1BQ0rliENws2ornz+gxHVBxR5FysTV12
+         U6e70VGgtSYkPbemy4TIKkv2Uq2pL/YuXVrymbeil3AVg3Fq0bhAdycq/pJORuzDtMHa
+         QssZzNuprF4uQWbuCErg8J2k5nJ4g3kjA5heRBIc4XKC+0soSHY2WC6t8V80pAq2M6G9
+         /+c+wENuot+J1sX7Yh7jbWBmjA4H1sAzYouWblbu/q2ACOFdGdFSskgc0Bv7tB05jXtm
+         JHDw==
+X-Gm-Message-State: AOJu0Yz2fSJvdaYgK2OKePPRBUIghdr0XODGen7kh25MnYqOlWhjmTcI
+	uvFP5CT85Wzc4Ovg6tlGfXpJXXqg0zlxz7O3bbCwLh7caxBuFYL5z9RqEPdxrdB3YtC82oMNGrC
+	6VA8MzMNbnDIfSAAmlznZm8bbJt1vWpIGOhCy0biwpLzY2HT2wYiT4w==
+X-Received: by 2002:a2e:9f44:0:b0:2cd:f896:fb0d with SMTP id v4-20020a2e9f44000000b002cdf896fb0dmr784361ljk.33.1705917670617;
+        Mon, 22 Jan 2024 02:01:10 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEMcOQaGW+jKYJE4kpzjr0tA1+2WlJYdfFWcNTFIW3o21pi7ekxsqSJRcxOTu5efaPgtRwvcQ==
+X-Received: by 2002:a2e:9f44:0:b0:2cd:f896:fb0d with SMTP id v4-20020a2e9f44000000b002cdf896fb0dmr784356ljk.33.1705917670235;
+        Mon, 22 Jan 2024 02:01:10 -0800 (PST)
+Received: from [172.31.0.10] (c-e6a5e255.022-110-73746f36.bbcust.telenor.se. [85.226.165.230])
+        by smtp.gmail.com with ESMTPSA id x7-20020a2e8387000000b002ce0198f8ecsm967144ljg.17.2024.01.22.02.01.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 22 Jan 2024 02:01:09 -0800 (PST)
+Message-ID: <ce5d443e5cd2088e00d433780302cce9623d738c.camel@redhat.com>
+Subject: Re: [PATCH v2] ovl: require xwhiteout feature flag on layer roots
+From: Alexander Larsson <alexl@redhat.com>
+To: Amir Goldstein <amir73il@gmail.com>, Miklos Szeredi <miklos@szeredi.hu>
+Cc: Miklos Szeredi <mszeredi@redhat.com>, linux-unionfs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Date: Mon, 22 Jan 2024 11:01:09 +0100
+In-Reply-To: <CAOQ4uxgBuhx_ae=+R1LrEkkSctf9MdyZzW=WWsHD6J2ZKSJgww@mail.gmail.com>
+References: <20240119101454.532809-1-mszeredi@redhat.com>
+	 <CAOQ4uxiWtdgCQ+kBJemAYbwNR46ogP7DhjD29cqAw0qqLvQn4A@mail.gmail.com>
+	 <5ee3a210f8f4fc89cb750b3d1a378a0ff0187c9f.camel@redhat.com>
+	 <CAOQ4uxiob0t4YDpEZ4urfro=NrXF+FH_Bvt9DbD1cHbJAWf88A@mail.gmail.com>
+	 <CAJfpeguFY8KX9kXPBgz5imVTV4A0R+aqS_SRiwdoPXPqR_B_xg@mail.gmail.com>
+	 <CAOQ4uxgBuhx_ae=+R1LrEkkSctf9MdyZzW=WWsHD6J2ZKSJgww@mail.gmail.com>
+Autocrypt: addr=alexl@redhat.com; prefer-encrypt=mutual; keydata=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
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|SJ2PR12MB8035:EE_
-X-MS-Office365-Filtering-Correlation-Id: 99b3a9e4-3bd5-4350-f351-08dc1b2d52fb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	xy5zt3qKZMK/pCpW6owKd9SIqxKigMovXyNuDIwLRhBeBaUJKMiTlF4wO2Q4cP4hjoZ+6ZaCosnRrhbZAryZs8JBafkxeQ/O9JC/xNri8O1vws6p2rQ3P2NdqrCPN/PJWs+jTH072nxfira/4hNzPJdbbJeA8JXkNe7hKggm4VQgj7gxXWJMnac+P7UrmZPt+vIuyFwjk42pwTlSvW71iglbA9vuP1Pc48bltWSIVnx1evPbfIQx4oNPiwOdxIl+Tklu1chppNiJzxOejgfMsVGeZtSUA/jwS0H3lm80P28UqOx5xOeSa4R1f5uJApQQTQBIK8k0RfGvaSRwZ2j+EpZ6Ukr8rPUML+/vlqe3exuQrN91IQ0UDt84/B8ecNRvt8WqJ/IqXGbL6ceLUPev7IcVWi6KUOJt3Zm0sWQsN8i3MD8gnjGQ28oCi3WVC74QVLNJdLOCJfYmQ8WV++i5qH1/g5fDEg/d5BSjZVs6Uih0xlHj7mx1MtsvcS2t9WuJaDyt1yt8L6REHVyLmfe7/F/CxMftORd9nZTQBtVOExWtNYd45cBqxtP1G+ew5q/2ma1UMIaFI9yHU+kPb5FH6tywfFX9bA6WOczKfpxzdO+eCO2eIipG+V+CQbhtGWU8ertCSqJeVeCpUuxRYQY4Fg==
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(39860400002)(136003)(366004)(376002)(346002)(230922051799003)(451199024)(186009)(64100799003)(1800799012)(6512007)(54906003)(6506007)(6916009)(478600001)(53546011)(66476007)(66946007)(66556008)(8676002)(8936002)(316002)(6666004)(6486002)(26005)(2616005)(66574015)(83380400001)(5660300002)(4326008)(41300700001)(2906002)(36756003)(38100700002)(31696002)(86362001)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cjRvaHQ3S1dWRzNVM1MvVGFPZDBaaVJUV3FiaDZDKzExVG9CU2ZNcnNuQ3k0?=
- =?utf-8?B?ZUcyeGxLaUJObldWbGFLN0p5UHdYY2ZUa2ZsM3VkWTVmRUsvT3NCSkttYWFo?=
- =?utf-8?B?NUxhT3NoSnZicGFiT0gvNlVJbnpCVms1RU5VZEl5dGVvVG5PTXhyZVQvRjM2?=
- =?utf-8?B?WjEvOGRha0k4a3FGNHhGQ0NqV3M1cFB3Ky9TeUV4ZStxNGpVclJ4dWoxMndE?=
- =?utf-8?B?Wkk5VUFEbTNQVHpGTmRxOXlqbzRIWFZpbElIRWU3VTJoeDdUVlBudnBSTHNj?=
- =?utf-8?B?Tjd3Y21IOUlGTlFLQUZJNFJ3U3Qzd3h3Q25HMVRMSE9ITG9mOXdhVjRTWkFj?=
- =?utf-8?B?RExOODZzS3FGNXZleFdBTVA3aXdVOXZCUzVlNGdqVWJGVUJBL0lsNm1WSDhV?=
- =?utf-8?B?MmNYZlFwVXd1VU1TV05OcWpHVVplRGh0UnJDZklzYlMzVEFkMFB3U2pJSHNk?=
- =?utf-8?B?TmZvNTJrYVRrUXhEWEtUQmxZczNsd2czdVl4b3hMclJpbjUxU2NjWDJML1ow?=
- =?utf-8?B?elBCOUQ0bitPRHZ2OUFCZDdWbTZROTFuZHc3aWxObUg1a0VrbmJEMUVlU243?=
- =?utf-8?B?WVhjMitURzJjM3VtMDNsakZyTDdvaWFwOHF4WEpGZGFiRDBtU2dkNEQzZnR3?=
- =?utf-8?B?NkhsS1RoNmRlZ1NvVFBRRyt6TkMzMFFmN2lEc2dtcWJhNDM1UWEveExreUph?=
- =?utf-8?B?TEtMWUIxcnhDWGZVa216L1FOaVBMaVJwR3NQMzBhV09VMGhTdVdGYnhXbE5T?=
- =?utf-8?B?TXk3c0drNVVrb0ZnVE1DR2szR3dpSjNwZER4a2tUN1pwMGdBZnhGR1hCN1Yx?=
- =?utf-8?B?SERBdVZ6MzRoQ1ByTHlURXB6ZVF4bVNhWmVOOWV4d0NuS0lMOWQxK3drSkE0?=
- =?utf-8?B?UWhlaGc2SGlPOHJzRkQ0U3JDN2Y1TklWQmZ6MVZiRWQzWTFObFJhTy9TUVZx?=
- =?utf-8?B?Ty9DYzJ6OVZWR01JVjVSVzVHZlFMRjlRNTg2UW9KNVY4K29JNm1xUHp3ZDRh?=
- =?utf-8?B?SmNPM1FmWHJpWk5ENkpvQzlEeXJyVlM1UE1KSHV6UnN3VGF2TldtVzZTbDlj?=
- =?utf-8?B?Rk42SDFmOVFKRDZrVFhVbi8zQ2dhK1NOZEo5S0Q4dUx0MTdZN0c3QWdLbEhK?=
- =?utf-8?B?L0h5ZS94VkhmazFFcVpIYWFBQTFlWWl4NVBnS3owaVVJNWszYU9iaU00TXI4?=
- =?utf-8?B?YjMybHNmelhNMVFHV1luMnVKWVZiNXU4WVF0NkZ5RHd3ckhQZVFxTCt5aGtC?=
- =?utf-8?B?MEQvdjgzWHY1SXBRZmJWbVRoSnlvY2NOWFQyRDZJSFJkOEYxdWNGLzlrQ1RZ?=
- =?utf-8?B?ckhwMVFOTGlGczhNVDQwOHRGUXdCbGpGTVpmNmNObjEvWE9WTXFVZmJGenJo?=
- =?utf-8?B?RHdLNW9rblhlS0I4Zk9xVEVjTXRYY0FnUnZ3QUd6N1NEWjk3TitMd1JERDc2?=
- =?utf-8?B?RzI0SjhhdjRFaDJpQVlpcjJsWjVpUFA4QnY4WDZSRW5Td0ZkS2QxdHRZYnFR?=
- =?utf-8?B?MVY2bko5amY4ZGJKTnBrcmRxaDhUYVpoc2dFU2VTWGlwbHFldTVscEhrbHVm?=
- =?utf-8?B?anZEVGZiRC9RK3Awajg2a091T3ZyWk9QeXp6dXRKcHFuUGttQUlQZGxlL09n?=
- =?utf-8?B?MllLb3NoVWhZem9tbVhvSUVrd0htTUgyU2psZjQrN001aEdsZDl5Y3hWWklK?=
- =?utf-8?B?NUl6c0FTakVmZVRyQW54V0ZBQWdrb3daa21lYXdpOEVnRHpzMnp1S0RXNzdQ?=
- =?utf-8?B?ZGlPaTlPMjFHTk56VHpsTUk0WS9TNW5jWE13NmdVcjVwK3VhbjJ0STNRcTVL?=
- =?utf-8?B?SjlRdEFlZ1pETkNIYU1JN2hiZDB6RWJBeldzbDdRMzlqamtOZFl2KzNmQUJj?=
- =?utf-8?B?N1c1Y0UyalQ0Tm5mSTRxVGdiM21BaytIWndGRm8rb0YrSlJWNkI1REd3MWRH?=
- =?utf-8?B?OG53Y25qekdOWm1Gd2xoSTdJWHlqQnlPYnpwcmh2dDMxNi8xbXJZeG4vcklZ?=
- =?utf-8?B?R3VuY0xyNUlwejFvdTVVdllHcFZVUmkwVURvS2JkZ09IMHdpMXdiSGJUNnow?=
- =?utf-8?B?a1MvcE9HKzJuUUQ4di9uUGlnSnQ1c1RSTTl4WFhiMEdEUU1sZzhEZllzSTdS?=
- =?utf-8?Q?b7fDsEhl0TKXHe3sR4IlIQvqF?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 99b3a9e4-3bd5-4350-f351-08dc1b2d52fb
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Jan 2024 09:34:26.2065
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aOGEUR3Z+QO03Ikp40BQFNvDT6aWYz1FJYRgj24sn4Flm8VRZjZdwM0isMD60ocq
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8035
 
-Am 19.01.24 um 15:38 schrieb Alex Deucher:
-> On Fri, Jan 19, 2024 at 3:11 AM Christian König
-> <christian.koenig@amd.com> wrote:
->>
->>
->> Am 18.01.24 um 19:54 schrieb Friedrich Vock:
->>> Allows us to detect subsequent IH ring buffer overflows as well.
->>>
->>> Cc: Joshua Ashton <joshua@froggi.es>
->>> Cc: Alex Deucher <alexander.deucher@amd.com>
->>> Cc: Christian König <christian.koenig@amd.com>
->>> Cc: stable@vger.kernel.org
->>>
->>> Signed-off-by: Friedrich Vock <friedrich.vock@gmx.de>
->>> ---
->>> v2: Reset CLEAR_OVERFLOW bit immediately after setting it
->>>
->>>    drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h  | 2 ++
->>>    drivers/gpu/drm/amd/amdgpu/cik_ih.c     | 7 +++++++
->>>    drivers/gpu/drm/amd/amdgpu/cz_ih.c      | 6 ++++++
->>>    drivers/gpu/drm/amd/amdgpu/iceland_ih.c | 6 ++++++
->>>    drivers/gpu/drm/amd/amdgpu/ih_v6_0.c    | 7 +++++++
->>>    drivers/gpu/drm/amd/amdgpu/ih_v6_1.c    | 8 ++++++++
->>>    drivers/gpu/drm/amd/amdgpu/navi10_ih.c  | 7 +++++++
->>>    drivers/gpu/drm/amd/amdgpu/si_ih.c      | 7 +++++++
->>>    drivers/gpu/drm/amd/amdgpu/tonga_ih.c   | 7 +++++++
->>>    drivers/gpu/drm/amd/amdgpu/vega10_ih.c  | 7 +++++++
->>>    drivers/gpu/drm/amd/amdgpu/vega20_ih.c  | 7 +++++++
->>>    11 files changed, 71 insertions(+)
->>>
->>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h
->>> index 508f02eb0cf8..6041ec727f06 100644
->>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h
->>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ih.h
->>> @@ -69,6 +69,8 @@ struct amdgpu_ih_ring {
->>>        unsigned                rptr;
->>>        struct amdgpu_ih_regs   ih_regs;
->>>
->>> +     bool overflow;
->>> +
->> That flag isn't needed any more in this patch as far as I can see.
-> It's used in patch 2.
+On Sat, 2024-01-20 at 12:32 +0200, Amir Goldstein wrote:
+> On Fri, Jan 19, 2024 at 10:30=E2=80=AFPM Miklos Szeredi <miklos@szeredi.h=
+u>
+> wrote:
+> >=20
+> > On Fri, 19 Jan 2024 at 20:06, Amir Goldstein <amir73il@gmail.com>
+> > wrote:
+> >=20
+> > > How about checking xwhiteouts xattrs along with impure and
+> > > origin xattrs in ovl_get_inode()?
+> > >=20
+>=20
+> That was not a very good suggestion on my part.
+> ovl_get_inode() only checks impure xattr on upper dir and origin
+> xattr
+> on non-merge non-multi lower dir.
+>=20
+> If we change the location of xwhiteout xattr check, it should be in
+> ovl_lookup_single() next to checking opaque xattr, which makes
+> me think - hey, why don't we overload opaque xattr, just like we
+> did with metacopy xattr?
+>=20
+> An overlay.opaque xattr with empty string means "may have xwhiteouts"
+> and that is backward compatible, because ovl_is_opaquedir() checks
+> for xattr of length 1.
+>=20
+> The only extra getxattr() needed would be for the d->last case...
+>=20
+> > > Then there will be no overhead in readdir and no need for
+> > > marking the layer root?
+> > >=20
+> > > Miklos, would that be acceptable?
+> >=20
+> > It's certainly a good idea, but doesn't really address my worry.=C2=A0
+> > The
+> > minor performance impact is not what bothers me most.=C2=A0 It's the
+> > fact
+> > that in the common case the result of these calls are discarded.
+> > That's just plain ugly, IMO.
+>=20
+> ...so the question boils down to, whether you find it too ugly
+> to always getxattr(opaque) on lookup of the last lower layer and
+> whether you find the overloading of opaque xattr too hacky?
+>=20
+> As a precedent, we *always* check metacopy xattr in last lower layer
+> to check for error conditions, even if user did not opt-in to
+> metacopy
+> at all, while we could just as easily have ignored it.
+>=20
+> >=20
+> > My preferred alternative would be a mount option.=C2=A0 Amir, Alex,
+> > would
+> > you both be okay with that?
+> >=20
+>=20
+> I think I had suggested that escaped private xattrs would also
+> require
+> an opt-in mount option, but Alex explained that the users mounting
+> the
+> overlay are not always aware of the fact that the layers were
+> composed
+> this way, but I admit that I do not remember all the exact details.
+>=20
+> Alex, do I remember correctly that the overlay instance where
+> xwhiteouts
+> needs to be checked does NOT necessarily have a lowerdata layers?
+> The composefs instance with lowerdata layers is the one exposing the
+> (escaped) xwhiteout entries as xwhiteouts. Is that correct?
+>=20
+> Is there even a use case for xwhiteouts NOT inside another lower
+> overlayfs?
 
-Yeah, but patch 2 is just a rather ugly hack to process the fences after 
-an IH overflow.
+No. Strictly speaking regular whiteouts are always preferable to
+xwhiteouts (as they work for both user and system ovl mounts and are
+supported by older kernels and existing software, etc). The only place
+where xwhiteouts are useful is when we need to escape them to put
+inside an overlayfs mount.
 
-I have absolutely no intention to apply it. So this here doesn't make 
-much sense either.
+The best way to think about the composefs usecase is:=C2=A0
 
-Christian.
+  Suppose you had a pre-existing system image that someone installed a
+multi layer container image in. This means that somewhere inside this
+image is a set of lowerdirs, and one of them may have a traditional
+whiteout. Now we want to create an overlayfs mount that when used,
+works just like the above image would work, including when you mount
+the sub-overlayfs mounts from the container image lowerdirs.=C2=A0
 
->
-> Alex
->
->> Regards,
->> Christian.
->>
->>>        /* For waiting on IH processing at checkpoint. */
->>>        wait_queue_head_t wait_process;
->>>        uint64_t                processed_timestamp;
->>> diff --git a/drivers/gpu/drm/amd/amdgpu/cik_ih.c b/drivers/gpu/drm/amd/amdgpu/cik_ih.c
->>> index 6f7c031dd197..bbadf2e530b8 100644
->>> --- a/drivers/gpu/drm/amd/amdgpu/cik_ih.c
->>> +++ b/drivers/gpu/drm/amd/amdgpu/cik_ih.c
->>> @@ -204,6 +204,13 @@ static u32 cik_ih_get_wptr(struct amdgpu_device *adev,
->>>                tmp = RREG32(mmIH_RB_CNTL);
->>>                tmp |= IH_RB_CNTL__WPTR_OVERFLOW_CLEAR_MASK;
->>>                WREG32(mmIH_RB_CNTL, tmp);
->>> +
->>> +             /* Unset the CLEAR_OVERFLOW bit immediately so new overflows
->>> +              * can be detected.
->>> +              */
->>> +             tmp &= ~IH_RB_CNTL__WPTR_OVERFLOW_CLEAR_MASK;
->>> +             WREG32(mmIH_RB_CNTL, tmp);
->>> +             ih->overflow = true;
->>>        }
->>>        return (wptr & ih->ptr_mask);
->>>    }
->>> diff --git a/drivers/gpu/drm/amd/amdgpu/cz_ih.c b/drivers/gpu/drm/amd/amdgpu/cz_ih.c
->>> index b8c47e0cf37a..e5c4ed44bad9 100644
->>> --- a/drivers/gpu/drm/amd/amdgpu/cz_ih.c
->>> +++ b/drivers/gpu/drm/amd/amdgpu/cz_ih.c
->>> @@ -216,6 +216,12 @@ static u32 cz_ih_get_wptr(struct amdgpu_device *adev,
->>>        tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
->>>        WREG32(mmIH_RB_CNTL, tmp);
->>>
->>> +     /* Unset the CLEAR_OVERFLOW bit immediately so new overflows
->>> +      * can be detected.
->>> +      */
->>> +     tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
->>> +     WREG32(mmIH_RB_CNTL, tmp);
->>> +     ih->overflow = true;
->>>
->>>    out:
->>>        return (wptr & ih->ptr_mask);
->>> diff --git a/drivers/gpu/drm/amd/amdgpu/iceland_ih.c b/drivers/gpu/drm/amd/amdgpu/iceland_ih.c
->>> index aecad530b10a..075e5c1a5549 100644
->>> --- a/drivers/gpu/drm/amd/amdgpu/iceland_ih.c
->>> +++ b/drivers/gpu/drm/amd/amdgpu/iceland_ih.c
->>> @@ -215,6 +215,12 @@ static u32 iceland_ih_get_wptr(struct amdgpu_device *adev,
->>>        tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
->>>        WREG32(mmIH_RB_CNTL, tmp);
->>>
->>> +     /* Unset the CLEAR_OVERFLOW bit immediately so new overflows
->>> +      * can be detected.
->>> +      */
->>> +     tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
->>> +     WREG32(mmIH_RB_CNTL, tmp);
->>> +     ih->overflow = true;
->>>
->>>    out:
->>>        return (wptr & ih->ptr_mask);
->>> diff --git a/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c b/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c
->>> index d9ed7332d805..d0a5a08edd55 100644
->>> --- a/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c
->>> +++ b/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c
->>> @@ -418,6 +418,13 @@ static u32 ih_v6_0_get_wptr(struct amdgpu_device *adev,
->>>        tmp = RREG32_NO_KIQ(ih_regs->ih_rb_cntl);
->>>        tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
->>>        WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
->>> +
->>> +     /* Unset the CLEAR_OVERFLOW bit immediately so new overflows
->>> +      * can be detected.
->>> +      */
->>> +     tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
->>> +     WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
->>> +     ih->overflow = true;
->>>    out:
->>>        return (wptr & ih->ptr_mask);
->>>    }
->>> diff --git a/drivers/gpu/drm/amd/amdgpu/ih_v6_1.c b/drivers/gpu/drm/amd/amdgpu/ih_v6_1.c
->>> index 8fb05eae340a..6bf4f210ef74 100644
->>> --- a/drivers/gpu/drm/amd/amdgpu/ih_v6_1.c
->>> +++ b/drivers/gpu/drm/amd/amdgpu/ih_v6_1.c
->>> @@ -418,6 +418,14 @@ static u32 ih_v6_1_get_wptr(struct amdgpu_device *adev,
->>>        tmp = RREG32_NO_KIQ(ih_regs->ih_rb_cntl);
->>>        tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
->>>        WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
->>> +
->>> +     /* Unset the CLEAR_OVERFLOW bit immediately so new overflows
->>> +      * can be detected.
->>> +      */
->>> +     tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
->>> +     WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
->>> +     ih->overflow = true;
->>> +
->>>    out:
->>>        return (wptr & ih->ptr_mask);
->>>    }
->>> diff --git a/drivers/gpu/drm/amd/amdgpu/navi10_ih.c b/drivers/gpu/drm/amd/amdgpu/navi10_ih.c
->>> index e64b33115848..cdbe7d01490e 100644
->>> --- a/drivers/gpu/drm/amd/amdgpu/navi10_ih.c
->>> +++ b/drivers/gpu/drm/amd/amdgpu/navi10_ih.c
->>> @@ -442,6 +442,13 @@ static u32 navi10_ih_get_wptr(struct amdgpu_device *adev,
->>>        tmp = RREG32_NO_KIQ(ih_regs->ih_rb_cntl);
->>>        tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
->>>        WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
->>> +
->>> +     /* Unset the CLEAR_OVERFLOW bit immediately so new overflows
->>> +      * can be detected.
->>> +      */
->>> +     tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
->>> +     WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
->>> +     ih->overflow = true;
->>>    out:
->>>        return (wptr & ih->ptr_mask);
->>>    }
->>> diff --git a/drivers/gpu/drm/amd/amdgpu/si_ih.c b/drivers/gpu/drm/amd/amdgpu/si_ih.c
->>> index 9a24f17a5750..398fbc296cac 100644
->>> --- a/drivers/gpu/drm/amd/amdgpu/si_ih.c
->>> +++ b/drivers/gpu/drm/amd/amdgpu/si_ih.c
->>> @@ -119,6 +119,13 @@ static u32 si_ih_get_wptr(struct amdgpu_device *adev,
->>>                tmp = RREG32(IH_RB_CNTL);
->>>                tmp |= IH_RB_CNTL__WPTR_OVERFLOW_CLEAR_MASK;
->>>                WREG32(IH_RB_CNTL, tmp);
->>> +
->>> +             /* Unset the CLEAR_OVERFLOW bit immediately so new overflows
->>> +              * can be detected.
->>> +              */
->>> +             tmp &= ~IH_RB_CNTL__WPTR_OVERFLOW_CLEAR_MASK;
->>> +             WREG32(IH_RB_CNTL, tmp);
->>> +             ih->overflow = true;
->>>        }
->>>        return (wptr & ih->ptr_mask);
->>>    }
->>> diff --git a/drivers/gpu/drm/amd/amdgpu/tonga_ih.c b/drivers/gpu/drm/amd/amdgpu/tonga_ih.c
->>> index 917707bba7f3..1d1e064be7d8 100644
->>> --- a/drivers/gpu/drm/amd/amdgpu/tonga_ih.c
->>> +++ b/drivers/gpu/drm/amd/amdgpu/tonga_ih.c
->>> @@ -219,6 +219,13 @@ static u32 tonga_ih_get_wptr(struct amdgpu_device *adev,
->>>        tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
->>>        WREG32(mmIH_RB_CNTL, tmp);
->>>
->>> +     /* Unset the CLEAR_OVERFLOW bit immediately so new overflows
->>> +      * can be detected.
->>> +      */
->>> +     tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
->>> +     WREG32(mmIH_RB_CNTL, tmp);
->>> +     ih->overflow = true;
->>> +
->>>    out:
->>>        return (wptr & ih->ptr_mask);
->>>    }
->>> diff --git a/drivers/gpu/drm/amd/amdgpu/vega10_ih.c b/drivers/gpu/drm/amd/amdgpu/vega10_ih.c
->>> index d364c6dd152c..619087a4c4ae 100644
->>> --- a/drivers/gpu/drm/amd/amdgpu/vega10_ih.c
->>> +++ b/drivers/gpu/drm/amd/amdgpu/vega10_ih.c
->>> @@ -373,6 +373,13 @@ static u32 vega10_ih_get_wptr(struct amdgpu_device *adev,
->>>        tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
->>>        WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
->>>
->>> +     /* Unset the CLEAR_OVERFLOW bit immediately so new overflows
->>> +      * can be detected.
->>> +      */
->>> +     tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
->>> +     WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
->>> +     ih->overflow = true;
->>> +
->>>    out:
->>>        return (wptr & ih->ptr_mask);
->>>    }
->>> diff --git a/drivers/gpu/drm/amd/amdgpu/vega20_ih.c b/drivers/gpu/drm/amd/amdgpu/vega20_ih.c
->>> index ddfc6941f9d5..f42f8e5dbe23 100644
->>> --- a/drivers/gpu/drm/amd/amdgpu/vega20_ih.c
->>> +++ b/drivers/gpu/drm/amd/amdgpu/vega20_ih.c
->>> @@ -421,6 +421,13 @@ static u32 vega20_ih_get_wptr(struct amdgpu_device *adev,
->>>        tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
->>>        WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
->>>
->>> +     /* Unset the CLEAR_OVERFLOW bit immediately so new overflows
->>> +      * can be detected.
->>> +      */
->>> +     tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
->>> +     WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
->>> +     ih->overflow = true;
->>> +
->>>    out:
->>>        return (wptr & ih->ptr_mask);
->>>    }
->>> --
->>> 2.43.0
->>>
+
+Fallout of this:
+
+The composefs overlay lowerdir will need to contain escaped xwhiteouts,
+so that the mount will have unescaped xwhiteouts. These escaped
+whiteouts can be anywhere, even in a "single layer" overlayfs. But the
+unescaped xwhiteouts will never be in a lowermost lowerdir.
+
+In the composefs case we will be using lowerdata for the outer
+overlayfs, but the actual unescaped xwhiteouts in the container image
+lowerdirs don't need to have a lowerdata involved at all.
+
+The container mount will be done by pre-existing software (say docker)
+that isn't aware that we converted the regular whiteouts to xwhiteouts,
+so having to use a mount option is not ideal (would require docker
+changes).
+
+> If we limit the check for xwhiteouts only to nested overlayfs, then
+> maybe
+> Miklos will care less about an extra getxattr on lookup?
+>=20
+> Attached patch implements both xwhiteout and opaque checks during
+> lookup - we can later choose only one of them to keep.
+
+Seems like you attached the wrong patch, but I will comment on the
+other patch you sent to the list.
+
+> Note that is changes the optimization to per-dentry, not per-layer,
+> so in the common case (no layers have xwhiteouts) xwhiteouts will not
+> be checked, but if xwhiteouts exist in any lower layer in the stack,
+> then
+> xwhiteouts will be checked in all the layers of the merged dir (*).
+>=20
+> (*) still need to optimize away lookup of xwhiteouts in upperdir.
+>=20
+> Let me know what you think.
+>=20
+> Thanks,
+> Amir.
+
+--=20
+=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D=
+-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+=3D-=3D-=3D
+ Alexander Larsson                                            Red Hat,
+Inc=20
+       alexl@redhat.com            alexander.larsson@gmail.com=20
+He's a benighted bohemian waffle chef on the wrong side of the law.
+She's=20
+an enchanted junkie safe cracker from the wrong side of the tracks.
+They=20
+fight crime!=20
 
 
