@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-12936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 733C38379C3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:45:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01478837A8A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C7532854A7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:45:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9389F1F2104F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:53:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E34831272A8;
-	Tue, 23 Jan 2024 00:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5A512F58F;
+	Tue, 23 Jan 2024 00:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AfbMcXwe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DDhfua/c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A128B50272;
-	Tue, 23 Jan 2024 00:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E29C12CDB0;
+	Tue, 23 Jan 2024 00:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968479; cv=none; b=ue1k+iMRvkBo/vNjvmcCEBy+vLUurcMwa7qaxZcWnek6hRk0LTB9ADji4OT/1+95lGn6gm6a5iK6G+RRJmaPvETyiLXm4kS7BzsWxZ2LiOdAeQa0s9CPa0yMRUSr/IYtPRAZhNuFo8pzNOl6u854wEoqPI9H109BphYyGgOji5E=
+	t=1705968990; cv=none; b=p+1nbtg/9Dtfr8LRiqtB/Th3QFBtOVYQuibL0XtWcHochdBxWAMbXK1aE0F4atyT67kn7JFktXEJ9Puy5DCwgZFcBFd9XigJdE9FbR/S/CZKs0nBFM8hxQEgjkGDRv30UHG4pxYdP3toUeTWwh4E7fIy9ZSxsECi1Tfk+rWGbgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968479; c=relaxed/simple;
-	bh=t1ftGofY2uzc1xa/oonOtwv8QNX30ZTDIr1uvtPdELk=;
+	s=arc-20240116; t=1705968990; c=relaxed/simple;
+	bh=xUICHjfPCATftUiSjeCsUte35LI0SEMvLEOo0KGhidI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NeKNOsyv7WnpUI7Gq0f3Kei0hWFpY9HIulFRI/nld9EX+TowkvOU3PM2KjiZHcWpcpA0IEBElRJKnSFhliU4SQfYPJfHqGDQzg9gyFgRKAfdVDfFeigJmQC/cTyJcr1mDGEEZ/RKJWcE6sAFc+VmS23t0U/qnch6YpdzUJHzQKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AfbMcXwe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 159D9C433F1;
-	Tue, 23 Jan 2024 00:07:58 +0000 (UTC)
+	 MIME-Version; b=Xw2f2GUo9onjamJib/qm0uXzia/Hhiit6Ufa4HlCvtxwxoIifFwckCcHN8/CXYebiKlK98EWrt2HfMuqwxGzc8ksDB1nqk6zKO21Djsm8WT8WFBmQ5pDPll5TIBaqyaAAkfA2Zp2sOfq+K0lK6TmwX8Hi6NUrH6+2kpiK8EKShU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DDhfua/c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F09B2C43394;
+	Tue, 23 Jan 2024 00:16:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968479;
-	bh=t1ftGofY2uzc1xa/oonOtwv8QNX30ZTDIr1uvtPdELk=;
+	s=korg; t=1705968990;
+	bh=xUICHjfPCATftUiSjeCsUte35LI0SEMvLEOo0KGhidI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AfbMcXwe4/AaqOEyIVMyd9AEeD7yVxgSFsxCT4JmaK7KJRRaJvoK5Qb7TNj+iC8TL
-	 xm9cadbm1yOXHjl3rN/uazxJvFgKo+7CFUR83lVkLbrYX/xmIs4vKeeXgFn64JbNvC
-	 3PoXEua2nVOgsrG1o9haNXvx1N5hpOt3QGtQuHfY=
+	b=DDhfua/cLgnLdDmWjxAttWAdEDpn5EcS3OVogWsio/TOZ4ledlSRiIA0vyRb51ndd
+	 6OIr/DO+cyFhDq82sKOMNXNpxfEfP+xQTHJALYatVjCKtr4e8xjtNjW4b+mxDM5ED4
+	 cMEKBjyGqeuxLqvwdXqg2yIsvryHgo4Cs9hsm52s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chen <peter.chen@kernel.org>,
-	Xu Yang <xu.yang_2@nxp.com>
-Subject: [PATCH 4.19 119/148] usb: phy: mxs: remove CONFIG_USB_OTG condition for mxs_phy_is_otg_host()
+	Carlos Llamas <cmllamas@google.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: [PATCH 5.4 145/194] binder: fix unused alloc->free_async_space
 Date: Mon, 22 Jan 2024 15:57:55 -0800
-Message-ID: <20240122235717.310848331@linuxfoundation.org>
+Message-ID: <20240122235725.449688589@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-commit ff2b89de471da942a4d853443688113a44fd35ed upstream.
+commit c6d05e0762ab276102246d24affd1e116a46aa0c upstream.
 
-When CONFIG_USB_OTG is not set, mxs_phy_is_otg_host() will always return
-false. This behaviour is wrong. Since phy.last_event will always be set
-for either host or device mode. Therefore, CONFIG_USB_OTG condition
-can be removed.
+Each transaction is associated with a 'struct binder_buffer' that stores
+the metadata about its buffer area. Since commit 74310e06be4d ("android:
+binder: Move buffer out of area shared with user space") this struct is
+no longer embedded within the buffer itself but is instead allocated on
+the heap to prevent userspace access to this driver-exclusive info.
 
-Fixes: 5eda42aebb76 ("usb: phy: mxs: fix getting wrong state with mxs_phy_is_otg_host()")
-cc:  <stable@vger.kernel.org>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Link: https://lore.kernel.org/r/20231228110753.1755756-3-xu.yang_2@nxp.com
+Unfortunately, the space of this struct is still being accounted for in
+the total buffer size calculation, specifically for async transactions.
+This results in an additional 104 bytes added to every async buffer
+request, and this area is never used.
+
+This wasted space can be substantial. If we consider the maximum mmap
+buffer space of SZ_4M, the driver will reserve half of it for async
+transactions, or 0x200000. This area should, in theory, accommodate up
+to 262,144 buffers of the minimum 8-byte size. However, after adding
+the extra 'sizeof(struct binder_buffer)', the total number of buffers
+drops to only 18,724, which is a sad 7.14% of the actual capacity.
+
+This patch fixes the buffer size calculation to enable the utilization
+of the entire async buffer space. This is expected to reduce the number
+of -ENOSPC errors that are seen on the field.
+
+Fixes: 74310e06be4d ("android: binder: Move buffer out of area shared with user space")
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20231201172212.1813387-6-cmllamas@google.com
+[cmllamas: fix trivial conflict with missing 261e7818f06e.]
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/phy/phy-mxs-usb.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/android/binder_alloc.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
---- a/drivers/usb/phy/phy-mxs-usb.c
-+++ b/drivers/usb/phy/phy-mxs-usb.c
-@@ -312,8 +312,7 @@ static void __mxs_phy_disconnect_line(st
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -382,8 +382,7 @@ static struct binder_buffer *binder_allo
+ 	/* Pad 0-size buffers so they get assigned unique addresses */
+ 	size = max(size, sizeof(void *));
  
- static bool mxs_phy_is_otg_host(struct mxs_phy *mxs_phy)
- {
--	return IS_ENABLED(CONFIG_USB_OTG) &&
--		mxs_phy->phy.last_event == USB_EVENT_ID;
-+	return mxs_phy->phy.last_event == USB_EVENT_ID;
- }
+-	if (is_async &&
+-	    alloc->free_async_space < size + sizeof(struct binder_buffer)) {
++	if (is_async && alloc->free_async_space < size) {
+ 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
+ 			     "%d: binder_alloc_buf size %zd failed, no async space left\n",
+ 			      alloc->pid, size);
+@@ -489,7 +488,7 @@ static struct binder_buffer *binder_allo
+ 	buffer->async_transaction = is_async;
+ 	buffer->extra_buffers_size = extra_buffers_size;
+ 	if (is_async) {
+-		alloc->free_async_space -= size + sizeof(struct binder_buffer);
++		alloc->free_async_space -= size;
+ 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC_ASYNC,
+ 			     "%d: binder_alloc_buf size %zd async free %zd\n",
+ 			      alloc->pid, size, alloc->free_async_space);
+@@ -614,8 +613,7 @@ static void binder_free_buf_locked(struc
+ 	BUG_ON(buffer->user_data > alloc->buffer + alloc->buffer_size);
  
- static void mxs_phy_disconnect_line(struct mxs_phy *mxs_phy, bool on)
+ 	if (buffer->async_transaction) {
+-		alloc->free_async_space += buffer_size + sizeof(struct binder_buffer);
+-
++		alloc->free_async_space += buffer_size;
+ 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC_ASYNC,
+ 			     "%d: binder_free_buf size %zd async free %zd\n",
+ 			      alloc->pid, size, alloc->free_async_space);
 
 
 
