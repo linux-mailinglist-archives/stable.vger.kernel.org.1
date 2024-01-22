@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-14156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D41837FB7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61090837D3B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE5EF1C29197
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17600292118
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2545D64CD4;
-	Tue, 23 Jan 2024 00:55:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6009123DB;
+	Tue, 23 Jan 2024 00:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPDEoPQ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HA45cvq1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8A6F64CC5;
-	Tue, 23 Jan 2024 00:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC4048CDD;
+	Tue, 23 Jan 2024 00:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971312; cv=none; b=TDRAQSd70C//Ou+U1eu+6ybgLYIBw6MZVhFePB7FEyYgDHPfUx4uaCLWe8CLAy7idWjlwPw57g8aUrV7sx8I8iegscP+jvyMhvJoOr2dZisKdlMQ/+f0z9TqbBSRmB+9n5ZyqJK9aEngcJZAzxzq4jtCom6Vpb0HfaZZz6QtZPo=
+	t=1705969853; cv=none; b=Ds421/NgsUaxGTWoR7dh0cGDz4bDXWufrnuu1Tztd7LrLIElYS3pJZGZ/bhJSSqUx5x+18BHDVNxCa+NZIySlePU3wopWchqRidiXiKTYMBjcVcagILZQWCIMedezkMUeLcd6gNXla5fuy2pBoSUEOPMhU+pmlcTZeGKJCzssqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971312; c=relaxed/simple;
-	bh=vgejRGLo9RFOcygaK/aogRD/1r2rOBSnRn+7k3sy4NE=;
+	s=arc-20240116; t=1705969853; c=relaxed/simple;
+	bh=Yjx6dfb4oW3axsOCN5iwNE/fLNeTsC+6bAXpVFKk92Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=joUPOeDIVCuKwf886Jy9FModyyZV8fQyM0jgXEMLlCgArfFlCcOq6u5Fe6yJ3tnsaMmsRssL+ttn+gqAwJsZv0CxZ45Kv3MClk4VvgLJX92syKsWhfKAS0+y9dyNFw8gZ7R1DQv2nCGoogsHguz+w69EdxtpURLrHWpQnJAktdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPDEoPQ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2557AC433F1;
-	Tue, 23 Jan 2024 00:55:11 +0000 (UTC)
+	 MIME-Version; b=RDHjTFzZc0CJvsM8TZrynZvX4BjORmu5gdO3RFdlYcruZZ/oK8IfwFCdONMxsOyOsZ7XGSC+zdBYBOBzUy3wyzqvOMJBG2UlztlsEyethmmRA78db1RrGJj5m62kQvA3+BLZGzDU4huguLQFIm7xaIxMdULSpXUvRhATPcwYj64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HA45cvq1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C546DC433C7;
+	Tue, 23 Jan 2024 00:30:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971312;
-	bh=vgejRGLo9RFOcygaK/aogRD/1r2rOBSnRn+7k3sy4NE=;
+	s=korg; t=1705969853;
+	bh=Yjx6dfb4oW3axsOCN5iwNE/fLNeTsC+6bAXpVFKk92Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tPDEoPQ45IBsEsniplETslwnw4e9cjnnKSoeMeTdLTGbuY0GHnNOg6yrpC+mXn9TL
-	 xkUyULnAU+xeVHG77APjPNWZTNC5+P/EUSIwrmT6Al0rbCZuKSsQU5lOZfDnxZcN0V
-	 7eA+JYgAmQkxHOqVuCeM9RLLl0jZ7+xGtjJrmJ0A=
+	b=HA45cvq12VQAIiaCUPEUVUYISeKTUhHBSVRZsdAfx4ejFd1GPx7diaEiFQaO1jARE
+	 9OD81RiTuL+s8N5aMBlZRyiWGBZqVZxFH6GK0l6j8wBtrZedBDvumHrKPaIoC0dNWJ
+	 pwaH7hDvPVyQBJaKdINnMBomrrelIKOd8e/tJLUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Martin Kurbanov <mmkurbanov@salutedevices.com>,
+	Dmitry Rokosov <ddrokosov@salutedevices.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 222/417] watchdog: bcm2835_wdt: Fix WDIOC_SETTIMEOUT handling
-Date: Mon, 22 Jan 2024 15:56:30 -0800
-Message-ID: <20240122235759.606795821@linuxfoundation.org>
+Subject: [PATCH 6.7 487/641] leds: aw200xx: Fix write to DIM parameter
+Date: Mon, 22 Jan 2024 15:56:31 -0800
+Message-ID: <20240122235833.325168548@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Martin Kurbanov <mmkurbanov@salutedevices.com>
 
-[ Upstream commit f33f5b1fd1be5f5106d16f831309648cb0f1c31d ]
+[ Upstream commit adfd4621b78d0c02da91335da2b9ad847cb7b39e ]
 
-Users report about the unexpected behavior for setting timeouts above
-15 sec on Raspberry Pi. According to watchdog-api.rst the ioctl
-WDIOC_SETTIMEOUT shouldn't fail because of hardware limitations.
-But looking at the code shows that max_timeout based on the
-register value PM_WDOG_TIME_SET, which is the maximum.
+If write only DIM value to the page 4, LED brightness will not be
+updated, as both DIM and FADE need to be written to the page 4.
+Therefore, write DIM to the page 1.
 
-Since 664a39236e71 ("watchdog: Introduce hardware maximum heartbeat
-in watchdog core") the watchdog core is able to handle this problem.
-
-This fix has been tested with watchdog-test from selftests.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217374
-Fixes: 664a39236e71 ("watchdog: Introduce hardware maximum heartbeat in watchdog core")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20231112173251.4827-1-wahrenst@gmx.net
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Fixes: 36a87f371b7a ("leds: Add AW20xx driver")
+Signed-off-by: Martin Kurbanov <mmkurbanov@salutedevices.com>
+Signed-off-by: Dmitry Rokosov <ddrokosov@salutedevices.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Link: https://lore.kernel.org/r/20231125200519.1750-2-ddrokosov@salutedevices.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/bcm2835_wdt.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/leds/leds-aw200xx.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/bcm2835_wdt.c b/drivers/watchdog/bcm2835_wdt.c
-index 94907176a0e4..55c0f7b0e8fb 100644
---- a/drivers/watchdog/bcm2835_wdt.c
-+++ b/drivers/watchdog/bcm2835_wdt.c
-@@ -42,6 +42,7 @@
+diff --git a/drivers/leds/leds-aw200xx.c b/drivers/leds/leds-aw200xx.c
+index 14ca236ce29e..f3bed4f05b34 100644
+--- a/drivers/leds/leds-aw200xx.c
++++ b/drivers/leds/leds-aw200xx.c
+@@ -74,6 +74,10 @@
+ #define AW200XX_LED2REG(x, columns) \
+ 	((x) + (((x) / (columns)) * (AW200XX_DSIZE_COLUMNS_MAX - (columns))))
  
- #define SECS_TO_WDOG_TICKS(x) ((x) << 16)
- #define WDOG_TICKS_TO_SECS(x) ((x) >> 16)
-+#define WDOG_TICKS_TO_MSECS(x) ((x) * 1000 >> 16)
++/* DIM current configuration register on page 1 */
++#define AW200XX_REG_DIM_PAGE1(x, columns) \
++	AW200XX_REG(AW200XX_PAGE1, AW200XX_LED2REG(x, columns))
++
+ /*
+  * DIM current configuration register (page 4).
+  * The even address for current DIM configuration.
+@@ -153,7 +157,8 @@ static ssize_t dim_store(struct device *dev, struct device_attribute *devattr,
  
- struct bcm2835_wdt {
- 	void __iomem		*base;
-@@ -140,7 +141,7 @@ static struct watchdog_device bcm2835_wdt_wdd = {
- 	.info =		&bcm2835_wdt_info,
- 	.ops =		&bcm2835_wdt_ops,
- 	.min_timeout =	1,
--	.max_timeout =	WDOG_TICKS_TO_SECS(PM_WDOG_TIME_SET),
-+	.max_hw_heartbeat_ms =	WDOG_TICKS_TO_MSECS(PM_WDOG_TIME_SET),
- 	.timeout =	WDOG_TICKS_TO_SECS(PM_WDOG_TIME_SET),
- };
- 
+ 	if (dim >= 0) {
+ 		ret = regmap_write(chip->regmap,
+-				   AW200XX_REG_DIM(led->num, columns), dim);
++				   AW200XX_REG_DIM_PAGE1(led->num, columns),
++				   dim);
+ 		if (ret)
+ 			goto out_unlock;
+ 	}
 -- 
 2.43.0
 
