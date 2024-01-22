@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7632C837C78
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84209838399
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A633F1C288B7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7DCE1C29AC5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC22F1353F5;
-	Tue, 23 Jan 2024 00:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1822163410;
+	Tue, 23 Jan 2024 01:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfyvEZKe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gmm0E8eb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FC22581;
-	Tue, 23 Jan 2024 00:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA8F96313F;
+	Tue, 23 Jan 2024 01:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969629; cv=none; b=IvCH6KVz15LUwknCkAoX8vweTEsS2NvrXZK4BTF0hy4CwRndMHIx+oP6fhtYpRgv//khyjXJ1a0XurB60blP6AF5lcyVsDFrOgnZuhLDB8ydgsherb3MEvAz2wLeCBKIGyALLQ0KM3YIfjDdvx5CIdRmFEPEUX5OmtvBdGBAwms=
+	t=1705975016; cv=none; b=YdpadKHmr/3I+KKYWDfo0Xl/sIa9ihZCjWwoEuuhSBl5e++EF1rP5OZvr5gQ836yL+a6PJ0IDuQn38qKEhPyHQYGddATNtVpBZPSli8zYg9eyzRd7khXTAArhWoqLbS12AUo5xmxJGFgnUHhV6wHXCP7wQipV1vL/WcvYlLJ0Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969629; c=relaxed/simple;
-	bh=q5Hj4yTXIuyYQY2sZ2YExLrx9QOjbH6vxZyyK2CG2aM=;
+	s=arc-20240116; t=1705975016; c=relaxed/simple;
+	bh=fDXl7Oyd7IIy1BURb/xYhbjFU4jC9vUFAjfCsW9FjrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Tf1SBAAf8a48PGQ/HbWa2fMMu+vyJ0nToL7/jCXPEHBs2S+qUjdcVAYmA8xIHitGhq0h6APllsRT/zfKUuNTBIg03B7afiWkQqv1nudoec9plM58cyf8qQH8+MkCfhdSDOAZIl7lvxhL88sCIh8oELiEueK6Zstw0T6T8yd3lws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfyvEZKe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E94FC433F1;
-	Tue, 23 Jan 2024 00:27:09 +0000 (UTC)
+	 MIME-Version; b=i3pl+fyue3O/3LWGklCJiLuMJGLQ/gvCplYW5oFfiviynunuBgoXtGmb3DuhGQqATm3zAXn8mfchPxIAPWRFnGf/P9EKDznJgQChOUc2lojrTu+xn7C1ZX1GNUKIH1Txw6hn59e1JKJnjqGn6GrxiC8bqivrhiJ2NNHEq86oMl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gmm0E8eb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9222DC433F1;
+	Tue, 23 Jan 2024 01:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969629;
-	bh=q5Hj4yTXIuyYQY2sZ2YExLrx9QOjbH6vxZyyK2CG2aM=;
+	s=korg; t=1705975016;
+	bh=fDXl7Oyd7IIy1BURb/xYhbjFU4jC9vUFAjfCsW9FjrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IfyvEZKeQJGG5h+I+tjCkZYub79wJegbcX0AGk+AKt3WIRqeOzDz9UNS8sACY5Ib3
-	 Fq1mGLpjnpJsbPwAV0nT75WasM6o2cMs+1blXMxrBq9Ly7zY6a7KwuJOJsbFYjNLG3
-	 gXzqXaajSij3ve6bCPHUt7ZtG1rgDgnhbzxuUotc=
+	b=Gmm0E8eb5gXYh7AVjp3bJC2wsldZzdI1jajiBL78gPfvX+VL+qrNsqX//umo1LxOV
+	 c8HFV9Ln76LFbet4kK95ph/kKqyhLNScHzZ9baYhdiDweZTPyeZBNszNgxC1o1SYPs
+	 Wr9Q2G9Ppqn1EzYbLyDx53ETYsNlhzHl+c+Dek54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Guillaume Ranquet <granquet@baylibre.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Su Hui <suhui@nfschina.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 345/641] drm/mediatek: dp: Add phy_mtk_dp module as pre-dependency
+Subject: [PATCH 6.6 198/583] wifi: rtlwifi: rtl8192se: using calculate_bit_shift()
 Date: Mon, 22 Jan 2024 15:54:09 -0800
-Message-ID: <20240122235828.721520989@linuxfoundation.org>
+Message-ID: <20240122235818.034371156@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +60,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit c8048dd0b07df68724805254b9e994d99e9a7af4 ]
+[ Upstream commit ac32b9317063b101a8ff3d3e885f76f87a280419 ]
 
-The mtk_dp driver registers a phy device which is handled by the
-phy_mtk_dp driver and assumes that the phy probe will complete
-synchronously, proceeding to make use of functionality exposed by that
-driver right away. This assumption however is false when the phy driver
-is built as a module, causing the mtk_dp driver to fail probe in this
-case.
+Using calculate_bit_shift() to replace _rtl92s_phy_calculate_bit_shift().
+And fix the undefined bitwise shift behavior problem.
 
-Add the phy_mtk_dp module as a pre-dependency to the mtk_dp module to
-ensure the phy module has been loaded before the dp, so that the phy
-probe happens synchrounously and the mtk_dp driver can probe
-successfully even with the phy driver built as a module.
-
-Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Guillaume Ranquet <granquet@baylibre.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20231121142938.460846-1-nfraprado@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: d15853163bea ("rtlwifi: rtl8192se: Merge phy routines")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-10-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dp.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../net/wireless/realtek/rtlwifi/rtl8192se/phy.c  | 15 ++++-----------
+ 1 file changed, 4 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
-index e4c16ba9902d..2136a596efa1 100644
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -2818,3 +2818,4 @@ MODULE_AUTHOR("Markus Schneider-Pargmann <msp@baylibre.com>");
- MODULE_AUTHOR("Bo-Chen Chen <rex-bc.chen@mediatek.com>");
- MODULE_DESCRIPTION("MediaTek DisplayPort Driver");
- MODULE_LICENSE("GPL");
-+MODULE_SOFTDEP("pre: phy_mtk_dp");
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
+index 09591a0b5a81..d9ef7e1da1db 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
+@@ -14,13 +14,6 @@
+ #include "hw.h"
+ #include "table.h"
+ 
+-static u32 _rtl92s_phy_calculate_bit_shift(u32 bitmask)
+-{
+-	u32 i = ffs(bitmask);
+-
+-	return i ? i - 1 : 32;
+-}
+-
+ u32 rtl92s_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
+ {
+ 	struct rtl_priv *rtlpriv = rtl_priv(hw);
+@@ -30,7 +23,7 @@ u32 rtl92s_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
+ 		regaddr, bitmask);
+ 
+ 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-	bitshift = _rtl92s_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	returnvalue = (originalvalue & bitmask) >> bitshift;
+ 
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE, "BBR MASK=0x%x Addr[0x%x]=0x%x\n",
+@@ -52,7 +45,7 @@ void rtl92s_phy_set_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask,
+ 
+ 	if (bitmask != MASKDWORD) {
+ 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-		bitshift = _rtl92s_phy_calculate_bit_shift(bitmask);
++		bitshift = calculate_bit_shift(bitmask);
+ 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
+ 	}
+ 
+@@ -157,7 +150,7 @@ u32 rtl92s_phy_query_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
+ 
+ 	original_value = _rtl92s_phy_rf_serial_read(hw, rfpath, regaddr);
+ 
+-	bitshift = _rtl92s_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	readback_value = (original_value & bitmask) >> bitshift;
+ 
+ 	spin_unlock(&rtlpriv->locks.rf_lock);
+@@ -188,7 +181,7 @@ void rtl92s_phy_set_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
+ 	if (bitmask != RFREG_OFFSET_MASK) {
+ 		original_value = _rtl92s_phy_rf_serial_read(hw, rfpath,
+ 							    regaddr);
+-		bitshift = _rtl92s_phy_calculate_bit_shift(bitmask);
++		bitshift = calculate_bit_shift(bitmask);
+ 		data = ((original_value & (~bitmask)) | (data << bitshift));
+ 	}
+ 
 -- 
 2.43.0
 
