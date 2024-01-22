@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-13216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE174837AFE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84133837AE1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0B9B1C26AD8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:57:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF95F2922DE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53A2A1487D9;
-	Tue, 23 Jan 2024 00:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90F10133400;
+	Tue, 23 Jan 2024 00:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2v6hJCD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCVkj8j2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1288A1487CA;
-	Tue, 23 Jan 2024 00:19:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6C2132C35;
+	Tue, 23 Jan 2024 00:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969155; cv=none; b=pb9Vis+g8XJWxz5Cr4YkRWxgul9Inbv+XRK8UFhhx2Jjum5YcLrEvE8ZjYk8aq2+yXVxPaLQQSrG5Su9hJLkCL/NBYOlK/T5yYExDkozLrVAwK0vIS79/1rnGnGJEM3Qwf7vwFFQwjCqyHvsZA1PRa/ayJg473USXOuqB/kTymg=
+	t=1705969125; cv=none; b=gBdsSPORzazfVC/d/9a2GEfngayI2aUU+/FHHZuZi/L3tkViqSQ0NB+s1Rzct4IHinusuSMh7TRvptflnjsj5kjnhQgFhZ88kdLBekZt2CuxG5MXOC4a9JtzUdy1dgZer2zNBSRCNCpQyJjMUJ5uBIBHVYmTpNKw5+TnBgDul1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969155; c=relaxed/simple;
-	bh=eOoiuF+QrOvPWcaRIp3Iq+3tRoR7r8GYPDEF/eaM4j8=;
+	s=arc-20240116; t=1705969125; c=relaxed/simple;
+	bh=tvz/2t1FZDK6VLnjZbbs3KHcjsDXFpdlKpvK8bPa92I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GEZhs7i77l9nJ6TeBkCagRkOPzDN2YK4yGw6AQd3lLOdkdg6HesS7OcxrcN6r2WVzSDtsJi8oatnPJQ69pdpkrLaTdB9gIziwo6gtsr7knAzIYFnJOD1a2xGCnU2+sl+j5VrTSg1R1LVoW9eFXGUrJRaMVN7GaFOG3r22Y9evOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2v6hJCD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC020C43394;
-	Tue, 23 Jan 2024 00:19:14 +0000 (UTC)
+	 MIME-Version; b=HfJpGTjqJ4uPcNljhaBaBgLWFghaRE7YOeZj2EgtwuUX/E4tKtJn4sILdCZMRt+fgko51jLoaKeImbh+/ZE9m0QmjSkqCKqKFIISy+BTlRlqvpc5wotGreRPfMZDoMkQyRwNCWutY2VkkCeoD98FwSDVxKSeo3ELQS4LXxqkusQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCVkj8j2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F2ACC433C7;
+	Tue, 23 Jan 2024 00:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969154;
-	bh=eOoiuF+QrOvPWcaRIp3Iq+3tRoR7r8GYPDEF/eaM4j8=;
+	s=korg; t=1705969125;
+	bh=tvz/2t1FZDK6VLnjZbbs3KHcjsDXFpdlKpvK8bPa92I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W2v6hJCD/0bieLMts2MvlQio/n7w65utowagwDjgRDx1TBk04BbazIkofFJpjqEol
-	 SSETEanF+grO3dyx89V+FpkY0C9/ibfgehaSnLUtMNXu+SWWTdxpPE0XapJcaAzYWp
-	 14rEa2qQK1heC+bMQ73sfyD08+yris/RtZLwUEOE=
+	b=UCVkj8j28jkpnM9DQykzda/vx/Z85UyVuhg75yw3fWOaXEQy5bDNiG4VCe6oJnkhC
+	 nDLWiFSPjDrFIeoXfrA4T7Mrb5STInvV7LLiqSosaN+2KwTuRe5asHySpd7JQzwyfp
+	 tiGnzuBGym/HCMx61/yZaYzHmK5+fqELa7fuJ3BM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erwin Tsaur <erwin.tsaur@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Rae Moar <rmoar@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 035/641] ACPI: extlog: Clear Extended Error Log status when RAS_CEC handled the error
-Date: Mon, 22 Jan 2024 15:48:59 -0800
-Message-ID: <20240122235819.177989392@linuxfoundation.org>
+Subject: [PATCH 6.7 037/641] kunit: debugfs: Fix unchecked dereference in debugfs_print_results()
+Date: Mon, 22 Jan 2024 15:49:01 -0800
+Message-ID: <20240122235819.244034250@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -67,45 +68,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tony Luck <tony.luck@intel.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 38c872a9e96f72f2947affc0526cc05659367d3d ]
+[ Upstream commit 34dfd5bb2e5507e69d9b6d6c90f546600c7a4977 ]
 
-When both CONFIG_RAS_CEC and CONFIG_ACPI_EXTLOG are enabled, Linux does
-not clear the status word of the BIOS supplied error record for corrected
-errors. This may prevent logging of subsequent uncorrected errors.
+Move the call to kunit_suite_has_succeeded() after the check that
+the kunit_suite pointer is valid.
 
-Fix by clearing the status.
+This was found by smatch:
 
-Fixes: 23ba710a0864 ("x86/mce: Fix all mce notifiers to update the mce->kflags bitmask")
-Reported-by: Erwin Tsaur <erwin.tsaur@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+ lib/kunit/debugfs.c:66 debugfs_print_results() warn: variable
+ dereferenced before check 'suite' (see line 63)
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Fixes: 38289a26e1b8 ("kunit: fix debugfs code to use enum kunit_status, not bool")
+Reviewed-by: Rae Moar <rmoar@google.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_extlog.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ lib/kunit/debugfs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-index e120a96e1eae..71e8d4e7a36c 100644
---- a/drivers/acpi/acpi_extlog.c
-+++ b/drivers/acpi/acpi_extlog.c
-@@ -145,9 +145,14 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
- 	static u32 err_seq;
+diff --git a/lib/kunit/debugfs.c b/lib/kunit/debugfs.c
+index 270d185737e6..5bfc18ad5fff 100644
+--- a/lib/kunit/debugfs.c
++++ b/lib/kunit/debugfs.c
+@@ -60,12 +60,14 @@ static void debugfs_print_result(struct seq_file *seq, struct string_stream *log
+ static int debugfs_print_results(struct seq_file *seq, void *v)
+ {
+ 	struct kunit_suite *suite = (struct kunit_suite *)seq->private;
+-	enum kunit_status success = kunit_suite_has_succeeded(suite);
++	enum kunit_status success;
+ 	struct kunit_case *test_case;
  
- 	estatus = extlog_elog_entry_check(cpu, bank);
--	if (estatus == NULL || (mce->kflags & MCE_HANDLED_CEC))
-+	if (!estatus)
- 		return NOTIFY_DONE;
+ 	if (!suite)
+ 		return 0;
  
-+	if (mce->kflags & MCE_HANDLED_CEC) {
-+		estatus->block_status = 0;
-+		return NOTIFY_DONE;
-+	}
++	success = kunit_suite_has_succeeded(suite);
 +
- 	memcpy(elog_buf, (void *)estatus, ELOG_ENTRY_LEN);
- 	/* clear record status to enable BIOS to update it again */
- 	estatus->block_status = 0;
+ 	/* Print KTAP header so the debugfs log can be parsed as valid KTAP. */
+ 	seq_puts(seq, "KTAP version 1\n");
+ 	seq_puts(seq, "1..1\n");
 -- 
 2.43.0
 
