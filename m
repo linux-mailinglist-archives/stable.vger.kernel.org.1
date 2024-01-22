@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-14452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE4C38380FB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D0A838336
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48B6E1F22800
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99D331C298C5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D53613E209;
-	Tue, 23 Jan 2024 01:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB2260B95;
+	Tue, 23 Jan 2024 01:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1oKJw2z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e5uTDjuI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BA613E204;
-	Tue, 23 Jan 2024 01:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4F029403;
+	Tue, 23 Jan 2024 01:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971984; cv=none; b=HszE0pAlPMxUK2tgobNECkM3SNghvURpIXykhHmJ+sLvBRkGLSnw8gUPEizOmhLgq2jcUtvk6xDshNrCAfksiZhT/4AWkBxJDRV4Wxhtk53+pWouQAzMkNrWpR85aDeKbQQiyLwNBMafISmWLoOp07LELd4ES68kqvxkVREz7Xg=
+	t=1705974737; cv=none; b=EhKbwkNTgXWSX16xpK8WBhtnAA+rQIoW240Ai7w8bdRICy/9V8fOXDDKIraykMoH65Lf9idaDerVbnELYQK4GKcaXRRm0zrWw/K5UwDH6qnpIWAyHbFAc33Y15fgFhEgSddSALeoRb3tOn/WyzOLcV6WmuuijwHSxsd0BtPpxzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971984; c=relaxed/simple;
-	bh=w2mvVWuSBwBJ9FDTnQQyEmAyIcZtx79D350Ha36CTJc=;
+	s=arc-20240116; t=1705974737; c=relaxed/simple;
+	bh=eLN5z31J0xxJ7Gf6S5zhRtZCSXzulzZmOEGYOSXwMUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bV1ho/ViNRfgsW7KoD1XYJDyX71s5BUhNDQlhrie+SsTg9oxPlg4XquvX1T1fyJYNhDbdvtvYEzw2tez0vksioghX8LAxH/vB0wnoLc3XQkJY2bVPkSJYBSuZMXtjC1/wsNFaWOc6mcmI5hgCmlH3q7KivOhdcwENrLGsxRATIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f1oKJw2z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A19C1C433F1;
-	Tue, 23 Jan 2024 01:06:23 +0000 (UTC)
+	 MIME-Version; b=VzbrgP6pCreDCfNsC/xOTOM2jAfMsORsAvvLo8Kbc25JFGYz4O9D0dTwylOfhAFp0EnTyH/zTQxim/4IigVPKjVMOPjeST2mhmOqmo1Q8RNPC1nb1TFOgHG3ggjp5BLOZ5AmfsgWmDdRZYSI9Un0GIrR0ngQ9w7KvPnBxEYA6Og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e5uTDjuI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41BCCC433C7;
+	Tue, 23 Jan 2024 01:52:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971983;
-	bh=w2mvVWuSBwBJ9FDTnQQyEmAyIcZtx79D350Ha36CTJc=;
+	s=korg; t=1705974737;
+	bh=eLN5z31J0xxJ7Gf6S5zhRtZCSXzulzZmOEGYOSXwMUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f1oKJw2z2hGSYnokg3UgCLRc6j8airfPqces3dHo1UI0uOnuXnvotwXMymUGPYgVV
-	 RE5ycSDyHdj4RMRtfdFwv5PfjuNBKarQSyNjnI0WhAAVAwsD2BjwtFkraIUdakI+KD
-	 n+c5GiTQCHtNpiZ4UuLzwoTgwm2XqPut3o0jLzfA=
+	b=e5uTDjuIsxBrp/70R8A0oobl7J9G2qi+Jcx2OHe2E1zedAz27I+5nOKtyxR5TN25B
+	 i8LWewBlSS7UNMvfCc0ggryE7c1MxK3ysAHSw/Oh2rDp/BGbhbWfczd7phfcFnvXLO
+	 b/SKYkBXjm0pYn2MRTP/FMmhzl6OftGfSFEB+Y8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Alexandre Mergnat <amergnat@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 362/417] spmi: mtk-pmif: Serialize PMIF status check and command submission
+	Gui-Dong Han <2045gemini@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.15 274/374] Bluetooth: Fix atomicity violation in {min,max}_key_size_set
 Date: Mon, 22 Jan 2024 15:58:50 -0800
-Message-ID: <20240122235804.363439566@linuxfoundation.org>
+Message-ID: <20240122235754.306285010@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,152 +59,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Gui-Dong Han <2045gemini@gmail.com>
 
-[ Upstream commit f200fff8d019f2754f91f5d715652e3e3fdf3604 ]
+commit da9065caa594d19b26e1a030fd0cc27bd365d685 upstream.
 
-Before writing the read or write command to the SPMI arbiter through the
-PMIF interface, the current status of the channel is checked to ensure
-it is idle. However, since the status only changes from idle when the
-command is written, it is possible for two concurrent calls to determine
-that the channel is idle and simultaneously send their commands. At this
-point the PMIF interface hangs, with the status register no longer being
-updated, and thus causing all subsequent operations to time out.
+In min_key_size_set():
+    if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE)
+        return -EINVAL;
+    hci_dev_lock(hdev);
+    hdev->le_min_key_size = val;
+    hci_dev_unlock(hdev);
 
-This was observed on the mt8195-cherry-tomato-r2 machine, particularly
-after commit 46600ab142f8 ("regulator: Set PROBE_PREFER_ASYNCHRONOUS for
-drivers between 5.10 and 5.15") was applied, since then the two MT6315
-devices present on the SPMI bus would probe assynchronously and
-sometimes (during probe or at a later point) read the bus
-simultaneously, breaking the PMIF interface and consequently slowing
-down the whole system.
+In max_key_size_set():
+    if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size)
+        return -EINVAL;
+    hci_dev_lock(hdev);
+    hdev->le_max_key_size = val;
+    hci_dev_unlock(hdev);
 
-To fix the issue at its root cause, introduce locking around the channel
-status check and the command write, so that both become an atomic
-operation, preventing race conditions between two (or more) SPMI bus
-read/write operations. A spinlock is used since this is a fast bus, as
-indicated by the usage of the atomic variant of readl_poll, and
-'.fast_io = true' being used in the mt6315 driver, so spinlocks are
-already used for the regmap access.
+The atomicity violation occurs due to concurrent execution of set_min and
+set_max funcs.Consider a scenario where setmin writes a new, valid 'min'
+value, and concurrently, setmax writes a value that is greater than the
+old 'min' but smaller than the new 'min'. In this case, setmax might check
+against the old 'min' value (before acquiring the lock) but write its
+value after the 'min' has been updated by setmin. This leads to a
+situation where the 'max' value ends up being smaller than the 'min'
+value, which is an inconsistency.
 
-Fixes: b45b3ccef8c0 ("spmi: mediatek: Add support for MT6873/8192")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Link: https://lore.kernel.org/r/20230724154739.493724-1-nfraprado@collabora.com
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Link: https://lore.kernel.org/r/20231206231733.4031901-2-sboyd@kernel.org
+This possible bug is found by an experimental static analysis tool
+developed by our team, BassCheck[1]. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations. The above
+possible bug is reported when our tool analyzes the source code of
+Linux 5.17.
+
+To resolve this issue, it is suggested to encompass the validity checks
+within the locked sections in both set_min and set_max funcs. The
+modification ensures that the validation of 'val' against the
+current min/max values is atomic, thus maintaining the integrity of the
+settings. With this patch applied, our tool no longer reports the bug,
+with the kernel configuration allyesconfig for x86_64. Due to the lack of
+associated hardware, we cannot test the patch in runtime testing, and just
+verify it according to the code logic.
+
+[1] https://sites.google.com/view/basscheck/
+
+Fixes: 18f81241b74f ("Bluetooth: Move {min,max}_key_size debugfs ...")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spmi/spmi-mtk-pmif.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ net/bluetooth/hci_debugfs.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/spmi/spmi-mtk-pmif.c b/drivers/spmi/spmi-mtk-pmif.c
-index ad511f2c3324..01e8851e639d 100644
---- a/drivers/spmi/spmi-mtk-pmif.c
-+++ b/drivers/spmi/spmi-mtk-pmif.c
-@@ -50,6 +50,7 @@ struct pmif {
- 	struct clk_bulk_data clks[PMIF_MAX_CLKS];
- 	size_t nclks;
- 	const struct pmif_data *data;
-+	raw_spinlock_t lock;
- };
+--- a/net/bluetooth/hci_debugfs.c
++++ b/net/bluetooth/hci_debugfs.c
+@@ -1044,10 +1044,12 @@ static int min_key_size_set(void *data,
+ {
+ 	struct hci_dev *hdev = data;
  
- static const char * const pmif_clock_names[] = {
-@@ -314,6 +315,7 @@ static int pmif_spmi_read_cmd(struct spmi_controller *ctrl, u8 opc, u8 sid,
- 	struct ch_reg *inf_reg;
- 	int ret;
- 	u32 data, cmd;
-+	unsigned long flags;
- 
- 	/* Check for argument validation. */
- 	if (sid & ~0xf) {
-@@ -334,6 +336,7 @@ static int pmif_spmi_read_cmd(struct spmi_controller *ctrl, u8 opc, u8 sid,
- 	else
+-	if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE)
++	hci_dev_lock(hdev);
++	if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE) {
++		hci_dev_unlock(hdev);
  		return -EINVAL;
++	}
  
-+	raw_spin_lock_irqsave(&arb->lock, flags);
- 	/* Wait for Software Interface FSM state to be IDLE. */
- 	inf_reg = &arb->chan;
- 	ret = readl_poll_timeout_atomic(arb->base + arb->data->regs[inf_reg->ch_sta],
-@@ -343,6 +346,7 @@ static int pmif_spmi_read_cmd(struct spmi_controller *ctrl, u8 opc, u8 sid,
- 		/* set channel ready if the data has transferred */
- 		if (pmif_is_fsm_vldclr(arb))
- 			pmif_writel(arb, 1, inf_reg->ch_rdy);
-+		raw_spin_unlock_irqrestore(&arb->lock, flags);
- 		dev_err(&ctrl->dev, "failed to wait for SWINF_IDLE\n");
- 		return ret;
- 	}
-@@ -350,6 +354,7 @@ static int pmif_spmi_read_cmd(struct spmi_controller *ctrl, u8 opc, u8 sid,
- 	/* Send the command. */
- 	cmd = (opc << 30) | (sid << 24) | ((len - 1) << 16) | addr;
- 	pmif_writel(arb, cmd, inf_reg->ch_send);
-+	raw_spin_unlock_irqrestore(&arb->lock, flags);
+-	hci_dev_lock(hdev);
+ 	hdev->le_min_key_size = val;
+ 	hci_dev_unlock(hdev);
  
- 	/*
- 	 * Wait for Software Interface FSM state to be WFVLDCLR,
-@@ -376,7 +381,8 @@ static int pmif_spmi_write_cmd(struct spmi_controller *ctrl, u8 opc, u8 sid,
- 	struct pmif *arb = spmi_controller_get_drvdata(ctrl);
- 	struct ch_reg *inf_reg;
- 	int ret;
--	u32 data, cmd;
-+	u32 data, wdata, cmd;
-+	unsigned long flags;
+@@ -1072,10 +1074,12 @@ static int max_key_size_set(void *data,
+ {
+ 	struct hci_dev *hdev = data;
  
- 	if (len > 4) {
- 		dev_err(&ctrl->dev, "pmif supports 1..4 bytes per trans, but:%zu requested", len);
-@@ -394,6 +400,10 @@ static int pmif_spmi_write_cmd(struct spmi_controller *ctrl, u8 opc, u8 sid,
- 	else
+-	if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size)
++	hci_dev_lock(hdev);
++	if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size) {
++		hci_dev_unlock(hdev);
  		return -EINVAL;
++	}
  
-+	/* Set the write data. */
-+	memcpy(&wdata, buf, len);
-+
-+	raw_spin_lock_irqsave(&arb->lock, flags);
- 	/* Wait for Software Interface FSM state to be IDLE. */
- 	inf_reg = &arb->chan;
- 	ret = readl_poll_timeout_atomic(arb->base + arb->data->regs[inf_reg->ch_sta],
-@@ -403,17 +413,17 @@ static int pmif_spmi_write_cmd(struct spmi_controller *ctrl, u8 opc, u8 sid,
- 		/* set channel ready if the data has transferred */
- 		if (pmif_is_fsm_vldclr(arb))
- 			pmif_writel(arb, 1, inf_reg->ch_rdy);
-+		raw_spin_unlock_irqrestore(&arb->lock, flags);
- 		dev_err(&ctrl->dev, "failed to wait for SWINF_IDLE\n");
- 		return ret;
- 	}
+-	hci_dev_lock(hdev);
+ 	hdev->le_max_key_size = val;
+ 	hci_dev_unlock(hdev);
  
--	/* Set the write data. */
--	memcpy(&data, buf, len);
--	pmif_writel(arb, data, inf_reg->wdata);
-+	pmif_writel(arb, wdata, inf_reg->wdata);
- 
- 	/* Send the command. */
- 	cmd = (opc << 30) | BIT(29) | (sid << 24) | ((len - 1) << 16) | addr;
- 	pmif_writel(arb, cmd, inf_reg->ch_send);
-+	raw_spin_unlock_irqrestore(&arb->lock, flags);
- 
- 	return 0;
- }
-@@ -488,6 +498,8 @@ static int mtk_spmi_probe(struct platform_device *pdev)
- 	arb->chan.ch_send = PMIF_SWINF_0_ACC + chan_offset;
- 	arb->chan.ch_rdy = PMIF_SWINF_0_VLD_CLR + chan_offset;
- 
-+	raw_spin_lock_init(&arb->lock);
-+
- 	platform_set_drvdata(pdev, ctrl);
- 
- 	err = spmi_controller_add(ctrl);
--- 
-2.43.0
-
 
 
 
