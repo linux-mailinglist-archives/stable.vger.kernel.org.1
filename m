@@ -1,80 +1,129 @@
-Return-Path: <stable+bounces-12370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EAA38365AC
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 15:42:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD647836632
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 16:00:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C322E1F20C9E
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 14:42:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BF821C21327
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 15:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926BE3D55C;
-	Mon, 22 Jan 2024 14:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD01940C00;
+	Mon, 22 Jan 2024 14:56:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GMAvz396"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A381A3CF6D;
-	Mon, 22 Jan 2024 14:41:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9058940BF0;
+	Mon, 22 Jan 2024 14:56:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705934520; cv=none; b=jCAQQYirVF0LfsAgQP8x13Rcv6yQEIECdIUPOymZ14wKdAddLK2I/6NjML8aemwcW0dGeLdCnwMrekVCTqREa7NGPLi/5awI/O/mgchq1AhN3IiGwIOKmSjjGe8PaIUJVYfEp00nEo+sAlUmQukjv80ON3TXYmGEeYmEVQ/E5Mg=
+	t=1705935372; cv=none; b=HkmKG4OF4Q3EueomDLJyIEB5KgQP9xGvNSkvjJbNUWVJ9dubZDpFiNT1ZEmzep2TWI2N/jPOXz94JKEkaXx4ty0d/KEQty0F1wiwyfID8n/Eh0V/FRvEWcc928R0j/ZpIhvkObQrC7x+2r3e6mmptiOMKVff9+HHka1YDrok4JU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705934520; c=relaxed/simple;
-	bh=JvnshlR0gFiI2tKo5823WoQz/LUZa7lQ4DVNorByMPE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZEEcj8ecGTtYOesZJnAhX1530pgOLSPp+9qujq47P3bFchhlpmVaT9wD1oLajMycg4izLQHPAU4PTbcDeNxuWzzoFWxx+n8wE3y92HeDagaRJ7bYCiWKBGVPdpUXda3Mu2Qcn5dj2747jihstKoJKEJL6RYvLoHah6uxhq/SSKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 186E31FB;
-	Mon, 22 Jan 2024 06:42:44 -0800 (PST)
-Received: from usa.arm.com (e103737-lin.cambridge.arm.com [10.1.197.49])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id F21053F73F;
-	Mon, 22 Jan 2024 06:41:56 -0800 (PST)
-From: Sudeep Holla <sudeep.holla@arm.com>
+	s=arc-20240116; t=1705935372; c=relaxed/simple;
+	bh=5aC+nKOs0GKiXSpHw8goFRw1kFLdMGqnZlrxfkFtfGg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HVG4dKLeCTnvZMlgrlfROJQ3X1P/gZxa9uEIIfaJK9dJodTixBU0EtrlmDxnzwtWxnuUAtlEHKKWahSwzL6zK72AZDKeDoZmtQsmrVqlrmtzZt1jtLTWHGtAbwtXylQBic0do/jni60JsGNEfDxChW6aOy9noCb2O3j3wPd4E/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GMAvz396; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3334FC43394;
+	Mon, 22 Jan 2024 14:56:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705935372;
+	bh=5aC+nKOs0GKiXSpHw8goFRw1kFLdMGqnZlrxfkFtfGg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GMAvz396rabWS2yx7WzoDh5TzDMUrStOmRZiprdW9HUWZLyaWf9s85Nch7TMno/cj
+	 YumfIP0/lotl/uyU5hxokT53ck5m7nYjaEyMPMFB8ZTkbUp554eQJsQbW3iTO0tUoM
+	 PMc1IgVzfYGFI4FgKM8wsMbsWVc9n/aj3OLawphLatbWjA5eyad1iHzjgGNbEISatm
+	 0hJfT9ZncUriB7FMdaLGutGca47mYbyTJ3QM+TBgeL3G1z2gA7LYvdWM5KU75dF8IC
+	 Boqqbu8GBq8ul/RntzvC6HqlXAji4qIbkEUw1MrObXAjfMyOUIrjx8rAS6MueD6egH
+	 lRgQ9oTMNxqKg==
+From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Cristian Marussi <cristian.marussi@arm.com>
-Cc: Sudeep Holla <sudeep.holla@arm.com>,
-	vincent.guittot@linaro.org,
-	Xinglong Yang <xinglong.yang@cixtech.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] firmware: arm_scmi: Check Mailbox/SMT channel for consistency
-Date: Mon, 22 Jan 2024 14:41:50 +0000
-Message-ID: <170592361006.3509502.11519593066787083768.b4-ty@arm.com>
+Cc: Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-f2fs-devel@lists.sourceforge.net
+Subject: [PATCH AUTOSEL 6.7 01/88] f2fs: fix to check return value of f2fs_reserve_new_block()
+Date: Mon, 22 Jan 2024 09:50:34 -0500
+Message-ID: <20240122145608.990137-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20231220172112.763539-1-cristian.marussi@arm.com>
-References: <20231220172112.763539-1-cristian.marussi@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.7.1
 Content-Transfer-Encoding: 8bit
 
-On Wed, 20 Dec 2023 17:21:12 +0000, Cristian Marussi wrote:
-> On reception of a completion interrupt the SMT memory area is accessed to
-> retrieve the message header at first and then, if the message sequence
-> number identifies a transaction which is still pending, the related
-> payload is fetched too.
->
-> When an SCMI command times out the channel ownership remains with the
-> platform until eventually a late reply is received and, as a consequence,
-> any further transmission attempt remains pending, waiting for the channel
-> to be relinquished by the platform.
->
-> [...]
+From: Chao Yu <chao@kernel.org>
 
-Applied to sudeep.holla/linux (for-next/scmi/fixes), thanks!
+[ Upstream commit 956fa1ddc132e028f3b7d4cf17e6bfc8cb36c7fd ]
 
-[1/1] firmware: arm_scmi: Check Mailbox/SMT channel for consistency
-      https://git.kernel.org/sudeep.holla/c/437a310b2224
---
-Regards,
-Sudeep
+Let's check return value of f2fs_reserve_new_block() in do_recover_data()
+rather than letting it fails silently.
+
+Also refactoring check condition on return value of f2fs_reserve_new_block()
+as below:
+- trigger f2fs_bug_on() only for ENOSPC case;
+- use do-while statement to avoid redundant codes;
+
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/f2fs/recovery.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
+
+diff --git a/fs/f2fs/recovery.c b/fs/f2fs/recovery.c
+index b56d0f1078a7..16415c770b45 100644
+--- a/fs/f2fs/recovery.c
++++ b/fs/f2fs/recovery.c
+@@ -712,7 +712,16 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
+ 		 */
+ 		if (dest == NEW_ADDR) {
+ 			f2fs_truncate_data_blocks_range(&dn, 1);
+-			f2fs_reserve_new_block(&dn);
++			do {
++				err = f2fs_reserve_new_block(&dn);
++				if (err == -ENOSPC) {
++					f2fs_bug_on(sbi, 1);
++					break;
++				}
++			} while (err &&
++				IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION));
++			if (err)
++				goto err;
+ 			continue;
+ 		}
+ 
+@@ -720,12 +729,14 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
+ 		if (f2fs_is_valid_blkaddr(sbi, dest, META_POR)) {
+ 
+ 			if (src == NULL_ADDR) {
+-				err = f2fs_reserve_new_block(&dn);
+-				while (err &&
+-				       IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION))
++				do {
+ 					err = f2fs_reserve_new_block(&dn);
+-				/* We should not get -ENOSPC */
+-				f2fs_bug_on(sbi, err);
++					if (err == -ENOSPC) {
++						f2fs_bug_on(sbi, 1);
++						break;
++					}
++				} while (err &&
++					IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION));
+ 				if (err)
+ 					goto err;
+ 			}
+-- 
+2.43.0
 
 
