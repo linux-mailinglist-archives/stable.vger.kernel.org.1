@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ECEE837C68
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED8F83813D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3890D296AF3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FA8D1F2547A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FBC15231;
-	Tue, 23 Jan 2024 00:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7B481487E3;
+	Tue, 23 Jan 2024 01:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3ZFz394"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3zKXPqt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2C17472;
-	Tue, 23 Jan 2024 00:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61522141981;
+	Tue, 23 Jan 2024 01:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969607; cv=none; b=EhTIzqFcyjP0J/QsBg38mlWSwMSTpAB1ULrdymNGDoAHWWyj9cGDlW/D2YRxmO/rupx5CPQ/wyCMk6WhjROmnZhFa7OcISznQXZsZw5BlXV2kRE5g/hKx4EKAgnWktHznB7hHsWxtVJCSMZgXHaM55Hhum/ATAbITUq7J72qc7Q=
+	t=1705972078; cv=none; b=kD+NPAqtdC0PV7eXEAJiIbduRKo3cR4uI2niivVVwO3fS4VR3gA96ebD9LUvzafIhSWNAXQtyT/rdVCSDPe0P8iI4hfYfgOM+zDUfW5mN0NTIxtklNMZU0kOBQ31BYyPpZKsFqST5DP4LQozCCZ8aa8CMJB9a2Vh/MuvkAKrZvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969607; c=relaxed/simple;
-	bh=KNQ9yhSUh7+djwL34eDu7gsasqHCy0HSSZHoiX8Cx38=;
+	s=arc-20240116; t=1705972078; c=relaxed/simple;
+	bh=YiLG6rPcWEv16S42ZRoS+HjQ+B4t5ZvXpAUJE2tsLqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PfqVhNowvubODgy8l8n5JcconetacJv0Na3yKn8SJa4axbb/T31IYr0mCNPoRyprGlt5PXNwrSZaZHRFDmO085Eo6Xkv3fV2SORIEOM0BpS+/NWvzHgzzfvFPQnR3FQgxxS7f1rsSE97XMRB7SLgtl0H2w9jl78WDYZUVUOrCIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3ZFz394; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C30C433C7;
-	Tue, 23 Jan 2024 00:26:47 +0000 (UTC)
+	 MIME-Version; b=ssZd7nvNM+jcsnRsB+oDlfJ9GG2VGv3ZLIv7rAcevtf6cwJrzWKQXZkDwvh1Lx5uDeDlCDBPfhubwYiKee51oAZ0bz4YxAzV2bbywof7qIyE0go9NxM9JkDkuUaJbJNzo5KQD1RbtXRDrcIo2p5ctnugHh1jbfBDq8tg9IWmMag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3zKXPqt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9DEC43390;
+	Tue, 23 Jan 2024 01:07:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969607;
-	bh=KNQ9yhSUh7+djwL34eDu7gsasqHCy0HSSZHoiX8Cx38=;
+	s=korg; t=1705972078;
+	bh=YiLG6rPcWEv16S42ZRoS+HjQ+B4t5ZvXpAUJE2tsLqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B3ZFz394Ivq+V2S7i6Th6EPJTmNYKAaIkmxEvBVW4kRqdJtmEnonz1/4HC7plgNRH
-	 SSoMkJhide9DzEf1n/RnvZMuapLyvTyiPDmXL5BAwhjFeTLxwKkq/W7QJ6votjlsmN
-	 6DfaVoJRmgHdNPEst0f8Zo61lOXgkJ6zNYu9gQ8U=
+	b=W3zKXPqtCEbISCCMNrL7SiNuNq9LB48SwOKeC+MzgTng1w0kjMZBK7xlVdjGjUo0S
+	 VVWYM7Hy+8s9ElXH/0KGsh5CCNCDGgtWVxuKespOIbHqyUAUNW6YJheqIbZRgKkZwf
+	 Gnqx0uQdDhm6XLUEG31jxXvKKRlHW9vAAOmWDmeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Vasiliy Kovalev <kovalev@altlinux.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 354/641] clk: fixed-rate: fix clk_hw_register_fixed_rate_with_accuracy_parent_hw
-Date: Mon, 22 Jan 2024 15:54:18 -0800
-Message-ID: <20240122235829.009671509@linuxfoundation.org>
+Subject: [PATCH 5.15 003/374] ALSA: hda - Fix speaker and headset mic pin config for CHUWI CoreBook XPro
+Date: Mon, 22 Jan 2024 15:54:19 -0800
+Message-ID: <20240122235744.736481592@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Théo Lebrun <theo.lebrun@bootlin.com>
+From: Vasiliy Kovalev <kovalev@altlinux.org>
 
-[ Upstream commit ee0cf5e07f44a10fce8f1bfa9db226c0b5ecf880 ]
+[ Upstream commit 7c9caa299335df94ad1c58f70a22f16a540eab60 ]
 
-Add missing comma and remove extraneous NULL argument. The macro is
-currently used by no one which explains why the typo slipped by.
+This patch corrected the speaker and headset mic pin config to the more
+appropriate values.
 
-Fixes: 2d34f09e79c9 ("clk: fixed-rate: Add support for specifying parents via DT/pointers")
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Link: https://lore.kernel.org/r/20231218-mbly-clk-v1-1-44ce54108f06@bootlin.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
+Link: https://lore.kernel.org/r/20231117170923.106822-1-kovalev@altlinux.org
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/clk-provider.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/include/linux/clk-provider.h b/include/linux/clk-provider.h
-index ace3a4ce2fc9..1293c38ddb7f 100644
---- a/include/linux/clk-provider.h
-+++ b/include/linux/clk-provider.h
-@@ -448,8 +448,8 @@ struct clk *clk_register_fixed_rate(struct device *dev, const char *name,
-  */
- #define clk_hw_register_fixed_rate_with_accuracy_parent_hw(dev, name,	      \
- 		parent_hw, flags, fixed_rate, fixed_accuracy)		      \
--	__clk_hw_register_fixed_rate((dev), NULL, (name), NULL, (parent_hw)   \
--				     NULL, NULL, (flags), (fixed_rate),	      \
-+	__clk_hw_register_fixed_rate((dev), NULL, (name), NULL, (parent_hw),  \
-+				     NULL, (flags), (fixed_rate),	      \
- 				     (fixed_accuracy), 0, false)
- /**
-  * clk_hw_register_fixed_rate_with_accuracy_parent_data - register fixed-rate
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 5e0e19c4b509..87de2cbd7f3e 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -6854,6 +6854,7 @@ enum {
+ 	ALC290_FIXUP_SUBWOOFER_HSJACK,
+ 	ALC269_FIXUP_THINKPAD_ACPI,
+ 	ALC269_FIXUP_DMIC_THINKPAD_ACPI,
++	ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO,
+ 	ALC255_FIXUP_ACER_MIC_NO_PRESENCE,
+ 	ALC255_FIXUP_ASUS_MIC_NO_PRESENCE,
+ 	ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
+@@ -7152,6 +7153,14 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc269_fixup_pincfg_U7x7_headset_mic,
+ 	},
++	[ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO] = {
++		.type = HDA_FIXUP_PINS,
++		.v.pins = (const struct hda_pintbl[]) {
++			{ 0x18, 0x03a19020 }, /* headset mic */
++			{ 0x1b, 0x90170150 }, /* speaker */
++			{ }
++		},
++	},
+ 	[ALC269_FIXUP_AMIC] = {
+ 		.type = HDA_FIXUP_PINS,
+ 		.v.pins = (const struct hda_pintbl[]) {
+@@ -9402,6 +9411,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
++	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
+ 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
+ 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
+ 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", ALC256_FIXUP_INTEL_NUC10),
 -- 
 2.43.0
 
