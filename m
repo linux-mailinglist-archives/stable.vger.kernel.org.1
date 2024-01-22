@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98C3E8383F0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6413C837E95
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3F48B2B3B5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1B211F28D50
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62CBE629F7;
-	Tue, 23 Jan 2024 01:56:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9A6860DD3;
+	Tue, 23 Jan 2024 00:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCmQtkld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZeB/K8JS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209AC629E1;
-	Tue, 23 Jan 2024 01:56:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B082B9D2;
+	Tue, 23 Jan 2024 00:44:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974971; cv=none; b=aCh219EeFSgCY27iekJYmjsTJMOsFbEieEfJ6H18PHaURdj9mAlk1iUEkLuyhq9s1aCZfFuzR4TpYVskFV3UtxojglbZYZr67J4rGJ/q8a8nV3Qd4bWzCp50ZNHOsEGSKSEkzfKyjnf3c2/TrNC5MXzuF+Vcg8Xd6S6sn3xFLA0=
+	t=1705970693; cv=none; b=HwSoJ58qASVLsn8Rtybc6RdjHD71AyVxlu1E/rEApLo7gAP4rKG53SivRmYCyu85wcInyRQNkOzXjIn7uctIChZkOsR/KsOCh0qCWP4CXIFsa8670UkzbccNKbHrr8QA1TiIdNkjGkpy6MkT9pHVxfUPjAI7DNwMjUhGKwddIe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974971; c=relaxed/simple;
-	bh=nIPOcWsZa79hAyEtrhQ7CYgWweLHAR+1TADf+wZMuyU=;
+	s=arc-20240116; t=1705970693; c=relaxed/simple;
+	bh=P+faAJQBajYwoFFcq83PJyjfi6kb2DhnVtok9YXDmsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lmEgHGDIs4Qny4+kMpVGde/uYGc/RQ312mvjayiFXX7DVU/OcfMXkN6rv4pg1kpyrGpSzeZlKtaJ8bfjkj2MYYGD584uuSxhSf474TVGKJBrfHyoiKOQ+B2a003f3ooaPC/NsRE4YTgRmen68Y6HpJsWjJQWUxPuh2vyxmna9N4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCmQtkld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92394C433F1;
-	Tue, 23 Jan 2024 01:56:10 +0000 (UTC)
+	 MIME-Version; b=gWCcHvV7NzOBY7/OloUII1hDdWH0lS4VhOWnfa4MP+TooCqWy0BjJ9Ki3ApKbg/vU7wXR7xrm69Sw8npTdjmfDYWK2kX8GpogzyFdsKKGEH9Zbyfd9XTIb0zr70skw10LrUtlMIIIFd8tQ+5HtTUYZkhH1nGlPu9d3dep7AJsiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZeB/K8JS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB6FC433F1;
+	Tue, 23 Jan 2024 00:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974970;
-	bh=nIPOcWsZa79hAyEtrhQ7CYgWweLHAR+1TADf+wZMuyU=;
+	s=korg; t=1705970693;
+	bh=P+faAJQBajYwoFFcq83PJyjfi6kb2DhnVtok9YXDmsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PCmQtkldiJhQFtjsWxrpxTgxqdfLR+W8C7zMISLKtugB9iURgO/eQzlvRQznIBChD
-	 ssgcikJnfOQOGjPpK+jhzx7F4Hblb6guwc2N7clJTCFEHrRkdGBEkpKQ0qSqqRJe+t
-	 cS7JlV4RVTZEwYR6JKP6lSiek2kfb+f2OQrlcDvA=
+	b=ZeB/K8JS03ej4VpOBPjX9HegcLoTKmjD079oBhSXk9L3DrHw5KUj3V+aE5NGNdcYL
+	 9FlrhiMGnjK/DGG9eRbfMZsNevP6LYgC0/v7CwwAna1NZW96HWn0qWIqPC+T2JAmrJ
+	 LZMm4vwNQJMnd3LNMf1DBFQjRGcoW+xXCjjfqhRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Atul Dhudase <quic_adhudase@quicinc.com>,
-	Mukesh Ojha <quic_mojha@quicinc.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 174/583] soc: qcom: llcc: Fix dis_cap_alloc and retain_on_pc configuration
+Subject: [PATCH 6.1 057/417] crypto: sahara - fix ahash reqsize
 Date: Mon, 22 Jan 2024 15:53:45 -0800
-Message-ID: <20240122235817.351782138@linuxfoundation.org>
+Message-ID: <20240122235753.672506710@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Atul Dhudase <quic_adhudase@quicinc.com>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit eed6e57e9f3e2beac37563eb6a0129549daa330e ]
+[ Upstream commit efcb50f41740ac55e6ccc4986c1a7740e21c62b4 ]
 
-Commit c14e64b46944 ("soc: qcom: llcc: Support chipsets that can
- write to llcc") add the support for chipset where capacity based
-allocation and retention through power collapse can be programmed
-based on content of SCT table mentioned in the llcc driver where
-the target like sdm845 where the entire programming related to it
-is controlled in firmware. However, the commit introduces a bug
-where capacity/retention register get overwritten each time it
-gets programmed for each slice and that results in misconfiguration
-of the register based on SCT table and that is not expected
-behaviour instead it should be read modify write to retain the
-configuration of other slices.
+Set the reqsize for sha algorithms to sizeof(struct sahara_sha_reqctx), the
+extra space is not needed.
 
-This issue is totally caught from code review and programming test
-and not through any power/perf numbers so, it is not known what
-impact this could make if we don't have this change however,
-this feature are for these targets and they should have been
-programmed accordingly as per their configuration mentioned in
-SCT table like others bits information.
-
-This change brings one difference where it keeps capacity/retention
-bits of the slices that are not mentioned in SCT table in unknown
-state where as earlier it was initialized to zero.
-
-Fixes: c14e64b46944 ("soc: qcom: llcc: Support chipsets that can write to llcc")
-Signed-off-by: Atul Dhudase <quic_adhudase@quicinc.com>
-Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/1701876771-10695-1-git-send-email-quic_mojha@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/llcc-qcom.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/crypto/sahara.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/soc/qcom/llcc-qcom.c b/drivers/soc/qcom/llcc-qcom.c
-index c61848595da0..309c12f2d3bb 100644
---- a/drivers/soc/qcom/llcc-qcom.c
-+++ b/drivers/soc/qcom/llcc-qcom.c
-@@ -785,15 +785,15 @@ static int _qcom_llcc_cfg_program(const struct llcc_slice_config *config,
- 		u32 disable_cap_alloc, retain_pc;
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index 4b32e96e197d..6e87b108df19 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -1163,8 +1163,7 @@ static int sahara_sha_import(struct ahash_request *req, const void *in)
+ static int sahara_sha_cra_init(struct crypto_tfm *tfm)
+ {
+ 	crypto_ahash_set_reqsize(__crypto_ahash_cast(tfm),
+-				 sizeof(struct sahara_sha_reqctx) +
+-				 SHA_BUFFER_LEN + SHA256_BLOCK_SIZE);
++				 sizeof(struct sahara_sha_reqctx));
  
- 		disable_cap_alloc = config->dis_cap_alloc << config->slice_id;
--		ret = regmap_write(drv_data->bcast_regmap,
--				LLCC_TRP_SCID_DIS_CAP_ALLOC, disable_cap_alloc);
-+		ret = regmap_update_bits(drv_data->bcast_regmap, LLCC_TRP_SCID_DIS_CAP_ALLOC,
-+					 BIT(config->slice_id), disable_cap_alloc);
- 		if (ret)
- 			return ret;
- 
- 		if (drv_data->version < LLCC_VERSION_4_1_0_0) {
- 			retain_pc = config->retain_on_pc << config->slice_id;
--			ret = regmap_write(drv_data->bcast_regmap,
--					LLCC_TRP_PCB_ACT, retain_pc);
-+			ret = regmap_update_bits(drv_data->bcast_regmap, LLCC_TRP_PCB_ACT,
-+						 BIT(config->slice_id), retain_pc);
- 			if (ret)
- 				return ret;
- 		}
+ 	return 0;
+ }
 -- 
 2.43.0
 
