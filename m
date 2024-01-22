@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-15288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E62C838573
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:42:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97AD78382AE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE2C7B2CB4B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B20821C28ACB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1FF5745DB;
-	Tue, 23 Jan 2024 02:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F290B5EE61;
+	Tue, 23 Jan 2024 01:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ld2lySJ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khSMNu81"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FE1745D6;
-	Tue, 23 Jan 2024 02:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D3D5EE62;
+	Tue, 23 Jan 2024 01:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975449; cv=none; b=Vy3vqTBHTlk+CFOCX2HhBSdvt1jUxmzmv5pX8GiAeNdzO3xB0CmFy5dbNLDeGhvtaTHn525XTBAIgdmHzk0YztM3iEFTqqvVRiAagpCfWW0smJv0znkGHPY28mXE8yk2bCGoN+ICpuwNvRA2b7y1ZB8qqrUCDs5G9IRtxHGe6CM=
+	t=1705974408; cv=none; b=DuvHLDfOZCqnDQ9F1N8QWpJ+2bmJu0EqF0IHgzDAMXZxcy6NEahf6KVmAltcq/KwP2S1qrJivJ6AecoGGxdGxbDePw1MXCQ+kAYD8ifkoGk6d5hcXZ1IM0UlSMhashDqbCBFMa/ZJbjIAtBuAmQvyKC9cuUiDGDjicxL32YURnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975449; c=relaxed/simple;
-	bh=2/gvAl3UEdzOPzk4WWVliygXXOZiW19hFI08S2xRjTA=;
+	s=arc-20240116; t=1705974408; c=relaxed/simple;
+	bh=LmNO5LriQ5gWG3retdQNtdmup/A9yrGK2tGJ4WAxO0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EmdDubRUL0QtMVrkB0nlbPSqkvYjEUgaeHYHqVdkAIcbuEFHuCVdYlmWplWhwM3+Cr+421+QQVPMSULOXld50v9zqrGcWU9oY3ZtmIeDYvAju2RTDSB9sQA7FgJttND+kX7IycTuvFGRUjVobPOj8qiTNeEtlP5/XLZjPk50rgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ld2lySJ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2595CC433F1;
-	Tue, 23 Jan 2024 02:04:09 +0000 (UTC)
+	 MIME-Version; b=E1d6HHilenGMJ7gIeHM8eLrGd+y8kiHb9CdiNZFcHwEuozNUkOldDX+gZiwUSLGz0M0ypVglrefCgGzTi9Yz9+NSxihnpHQ3U9WWk3knEx12pbDEdBwufE+S6CGX/d23hFyk14zun6ArKMUmNDAQ/3xIqqrU3U1Fy94CVulgG5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khSMNu81; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 702AEC433C7;
+	Tue, 23 Jan 2024 01:46:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975449;
-	bh=2/gvAl3UEdzOPzk4WWVliygXXOZiW19hFI08S2xRjTA=;
+	s=korg; t=1705974408;
+	bh=LmNO5LriQ5gWG3retdQNtdmup/A9yrGK2tGJ4WAxO0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ld2lySJ0qx/pzIPMGvLPQXhJ9oY4nv10KPWSLPmfAc9n/NTtH6Cfb1oG1a21wBiml
-	 5n3mnCLoJXdbkNXMWHD7dPrXcPO6OPeV6Ek6Xm92cVmbPHQrwE/VIQ2JHqnmQJL5+9
-	 01efVcpbPAWKfalHme6+fv4UUdCN6zLt8vbq/5jY=
+	b=khSMNu81Otq60XhPwbgU5GKEF01QTo8Q0OOU5Z1h5E9OLLuW05L05jXtqP4Vyi93s
+	 UdkYKIIkAY8zTPBmMfzEU0AxHZ9owZtUFHQuMurqwk30j7lBrPTmWlF3jI/RzPqFHa
+	 U1njgsJiGO+MtIsndjRuXEUIttJEhfyesnkxAtRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: [PATCH 6.6 405/583] pwm: jz4740: Dont use dev_err_probe() in .request()
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 200/374] media: cx231xx: fix a memleak in cx231xx_init_isoc
 Date: Mon, 22 Jan 2024 15:57:36 -0800
-Message-ID: <20240122235824.373882644@linuxfoundation.org>
+Message-ID: <20240122235751.558964329@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,52 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-commit 9320fc509b87b4d795fb37112931e2f4f8b5c55f upstream.
+[ Upstream commit 5d3c8990e2bbf929cb211563dadd70708f42e4e6 ]
 
-dev_err_probe() is only supposed to be used in probe functions. While it
-probably doesn't hurt, both the EPROBE_DEFER handling and calling
-device_set_deferred_probe_reason() are conceptually wrong in the request
-callback. So replace the call by dev_err() and a separate return
-statement.
+The dma_q->p_left_data alloced by kzalloc should be freed in all the
+following error handling paths. However, it hasn't been freed in the
+allocation error paths of dev->video_mode.isoc_ctl.urb and
+dev->video_mode.isoc_ctl.transfer_buffer.
 
-This effectively reverts commit c0bfe9606e03 ("pwm: jz4740: Simplify
-with dev_err_probe()").
+On the other hand, the dma_q->p_left_data did be freed in the
+error-handling paths after that of dev->video_mode.isoc_ctl.urb and
+dev->video_mode.isoc_ctl.transfer_buffer, by calling
+cx231xx_uninit_isoc(dev). So the same free operation should be done in
+error-handling paths of those two allocation.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240106141302.1253365-2-u.kleine-koenig@pengutronix.de
-Fixes: c0bfe9606e03 ("pwm: jz4740: Simplify with dev_err_probe()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 64fbf4445526 ("[media] cx231xx: Added support for Carraera, Shelby, RDx_253S and VIDEO_GRABBER")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-jz4740.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/media/usb/cx231xx/cx231xx-core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/pwm/pwm-jz4740.c
-+++ b/drivers/pwm/pwm-jz4740.c
-@@ -60,9 +60,10 @@ static int jz4740_pwm_request(struct pwm
- 	snprintf(name, sizeof(name), "timer%u", pwm->hwpwm);
+diff --git a/drivers/media/usb/cx231xx/cx231xx-core.c b/drivers/media/usb/cx231xx/cx231xx-core.c
+index 727e6268567f..f1feccc28bf0 100644
+--- a/drivers/media/usb/cx231xx/cx231xx-core.c
++++ b/drivers/media/usb/cx231xx/cx231xx-core.c
+@@ -1024,6 +1024,7 @@ int cx231xx_init_isoc(struct cx231xx *dev, int max_packets,
+ 	if (!dev->video_mode.isoc_ctl.urb) {
+ 		dev_err(dev->dev,
+ 			"cannot alloc memory for usb buffers\n");
++		kfree(dma_q->p_left_data);
+ 		return -ENOMEM;
+ 	}
  
- 	clk = clk_get(chip->dev, name);
--	if (IS_ERR(clk))
--		return dev_err_probe(chip->dev, PTR_ERR(clk),
--				     "Failed to get clock\n");
-+	if (IS_ERR(clk)) {
-+		dev_err(chip->dev, "error %pe: Failed to get clock\n", clk);
-+		return PTR_ERR(clk);
-+	}
+@@ -1033,6 +1034,7 @@ int cx231xx_init_isoc(struct cx231xx *dev, int max_packets,
+ 		dev_err(dev->dev,
+ 			"cannot allocate memory for usbtransfer\n");
+ 		kfree(dev->video_mode.isoc_ctl.urb);
++		kfree(dma_q->p_left_data);
+ 		return -ENOMEM;
+ 	}
  
- 	err = clk_prepare_enable(clk);
- 	if (err < 0) {
+-- 
+2.43.0
+
 
 
 
