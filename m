@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-13170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71AB0837BD9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 08DF5837C1C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E676CB26DE5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:54:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47576B2E7C2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:57:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97C6131744;
-	Tue, 23 Jan 2024 00:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E7E2132C19;
+	Tue, 23 Jan 2024 00:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HczHGr9+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZIgbzF4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7855313173A;
-	Tue, 23 Jan 2024 00:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22C014831F;
+	Tue, 23 Jan 2024 00:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969086; cv=none; b=GIDl0nDqhlyLBOi3Z5fZsrCjTE6KfMqnDoiZZLU8He3aHcef8AgK3JbVoUan1rRS3bw4uRz0j7CL/u3Q+biWx2q0j/IalLLGECT9iOb/1rU1m40z35hO1L2loy4CSq59PfbQdpZSnJ3O/P5kJlbXNfzhWwaL93snEeG+EkKA38A=
+	t=1705969149; cv=none; b=mztnn7z69h7Izo3+6GzZ3EQW11WjugA8H/K3YcHZLDwiEIEBwXk8IOSq1zVumlHL9IugttoeUHdmWo6LsPQnfGPI6Iubbet6x3tSxsz1hxNsHx6nX6NfFNsgb1yBdavPP0x4dZLHuJba44cUv5VHg1YZSg+Zs5oIqeut5aoFSDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969086; c=relaxed/simple;
-	bh=ymhm9ePzqMpsA7CqH2bjO5QV+rrv1Sqlufi2ySSs0pM=;
+	s=arc-20240116; t=1705969149; c=relaxed/simple;
+	bh=hRAnO4Z2d7+ckJNpTQ7AUtlt2Avl4MQKbMPXOZTND1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YQAtx7iGZrVaCUXrVvtgIPYndsK9RB9ZhtHDr35po4jnZjDY7e9swF6bkCVkKlwhXj90edYsFHShRQ4PJ3wWHYtYtGzj4pSmyscit4Bg/MENv+YHNHr9xWgTk8mSaQV9tvVmXmAmjYN90SRB95l990Do5ffsb3zteZRRI+H6JQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HczHGr9+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AE0BC433C7;
-	Tue, 23 Jan 2024 00:18:06 +0000 (UTC)
+	 MIME-Version; b=GNUeVhTe6BD3mkzlD7FF7xpdP6TVhn85orEzHnp7vjlhVTcCcCDSd0I8bjHS0DbUUj9vKlwOmeNoqMsiTme9Iey9bdi0Mb0Kn9uBqrHV0Eu6GZXcSjzwJGUBhSqK1gLUaoCZEQ8AZl988cdyiYRwkKMPTiyYys/qEYV484IyEWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZIgbzF4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C4CC43390;
+	Tue, 23 Jan 2024 00:19:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969086;
-	bh=ymhm9ePzqMpsA7CqH2bjO5QV+rrv1Sqlufi2ySSs0pM=;
+	s=korg; t=1705969148;
+	bh=hRAnO4Z2d7+ckJNpTQ7AUtlt2Avl4MQKbMPXOZTND1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HczHGr9+q0uuRDCE+TvRpCOqTq3TPRS19wQ4j2XZK7tTnJi1hpXGK/P7Kfo8Rin6r
-	 X3v3TCOXlAOuF9lMpHxLhRuL+o2VMlg+kH+Zb0S0KaumKOikiS2Te/VS/Alw3oYvk6
-	 pxRQnLffe2rGZYQm3eMfxC7Zz8ZbteCukBSk2wmY=
+	b=xZIgbzF4Xxf0dNVp1euXzAEP2Sczx6WGPf83t9yIn+Sz33lL2PqEIkNiPNfmRdzLo
+	 p97i/3n87F2MsA+ux8bxGeAAm3rtLPcZ+Tt9ewKK+udLEW6Zuu3vs4vucAg9IUwkTV
+	 1LhEx2mQQPhMVAB438+PSSgLVqrwPYhGTC/ODSjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 013/641] selftests/powerpc: Fix error handling in FPU/VMX preemption tests
-Date: Mon, 22 Jan 2024 15:48:37 -0800
-Message-ID: <20240122235818.527166174@linuxfoundation.org>
+Subject: [PATCH 6.7 031/641] efivarfs: force RO when remounting if SetVariable is not supported
+Date: Mon, 22 Jan 2024 15:48:55 -0800
+Message-ID: <20240122235819.059397826@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -65,86 +66,107 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
 
-[ Upstream commit 9dbd5927408c4a0707de73ae9dd9306b184e8fee ]
+[ Upstream commit 0e8d2444168dd519fea501599d150e62718ed2fe ]
 
-The FPU & VMX preemption tests do not check for errors returned by the
-low-level asm routines, preempt_fpu() / preempt_vsx() respectively.
-That means any register corruption detected by the asm routines does not
-result in a test failure.
+If SetVariable at runtime is not supported by the firmware we never assign
+a callback for that function. At the same time mount the efivarfs as
+RO so no one can call that.  However, we never check the permission flags
+when someone remounts the filesystem as RW. As a result this leads to a
+crash looking like this:
 
-Fix it by returning the return value of the asm routines from the
-pthread child routines.
+$ mount -o remount,rw /sys/firmware/efi/efivars
+$ efi-updatevar -f PK.auth PK
 
-Fixes: e5ab8be68e44 ("selftests/powerpc: Test preservation of FPU and VMX regs across preemption")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231128132748.1990179-1-mpe@ellerman.id.au
+[  303.279166] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+[  303.280482] Mem abort info:
+[  303.280854]   ESR = 0x0000000086000004
+[  303.281338]   EC = 0x21: IABT (current EL), IL = 32 bits
+[  303.282016]   SET = 0, FnV = 0
+[  303.282414]   EA = 0, S1PTW = 0
+[  303.282821]   FSC = 0x04: level 0 translation fault
+[  303.283771] user pgtable: 4k pages, 48-bit VAs, pgdp=000000004258c000
+[  303.284913] [0000000000000000] pgd=0000000000000000, p4d=0000000000000000
+[  303.286076] Internal error: Oops: 0000000086000004 [#1] PREEMPT SMP
+[  303.286936] Modules linked in: qrtr tpm_tis tpm_tis_core crct10dif_ce arm_smccc_trng rng_core drm fuse ip_tables x_tables ipv6
+[  303.288586] CPU: 1 PID: 755 Comm: efi-updatevar Not tainted 6.3.0-rc1-00108-gc7d0c4695c68 #1
+[  303.289748] Hardware name: Unknown Unknown Product/Unknown Product, BIOS 2023.04-00627-g88336918701d 04/01/2023
+[  303.291150] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  303.292123] pc : 0x0
+[  303.292443] lr : efivar_set_variable_locked+0x74/0xec
+[  303.293156] sp : ffff800008673c10
+[  303.293619] x29: ffff800008673c10 x28: ffff0000037e8000 x27: 0000000000000000
+[  303.294592] x26: 0000000000000800 x25: ffff000002467400 x24: 0000000000000027
+[  303.295572] x23: ffffd49ea9832000 x22: ffff0000020c9800 x21: ffff000002467000
+[  303.296566] x20: 0000000000000001 x19: 00000000000007fc x18: 0000000000000000
+[  303.297531] x17: 0000000000000000 x16: 0000000000000000 x15: 0000aaaac807ab54
+[  303.298495] x14: ed37489f673633c0 x13: 71c45c606de13f80 x12: 47464259e219acf4
+[  303.299453] x11: ffff000002af7b01 x10: 0000000000000003 x9 : 0000000000000002
+[  303.300431] x8 : 0000000000000010 x7 : ffffd49ea8973230 x6 : 0000000000a85201
+[  303.301412] x5 : 0000000000000000 x4 : ffff0000020c9800 x3 : 00000000000007fc
+[  303.302370] x2 : 0000000000000027 x1 : ffff000002467400 x0 : ffff000002467000
+[  303.303341] Call trace:
+[  303.303679]  0x0
+[  303.303938]  efivar_entry_set_get_size+0x98/0x16c
+[  303.304585]  efivarfs_file_write+0xd0/0x1a4
+[  303.305148]  vfs_write+0xc4/0x2e4
+[  303.305601]  ksys_write+0x70/0x104
+[  303.306073]  __arm64_sys_write+0x1c/0x28
+[  303.306622]  invoke_syscall+0x48/0x114
+[  303.307156]  el0_svc_common.constprop.0+0x44/0xec
+[  303.307803]  do_el0_svc+0x38/0x98
+[  303.308268]  el0_svc+0x2c/0x84
+[  303.308702]  el0t_64_sync_handler+0xf4/0x120
+[  303.309293]  el0t_64_sync+0x190/0x194
+[  303.309794] Code: ???????? ???????? ???????? ???????? (????????)
+[  303.310612] ---[ end trace 0000000000000000 ]---
+
+Fix this by adding a .reconfigure() function to the fs operations which
+we can use to check the requested flags and deny anything that's not RO
+if the firmware doesn't implement SetVariable at runtime.
+
+Fixes: f88814cc2578 ("efi/efivars: Expose RT service availability via efivars abstraction")
+Signed-off-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/powerpc/math/fpu_preempt.c |  9 +++++----
- tools/testing/selftests/powerpc/math/vmx_preempt.c | 10 ++++++----
- 2 files changed, 11 insertions(+), 8 deletions(-)
+ fs/efivarfs/super.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/tools/testing/selftests/powerpc/math/fpu_preempt.c b/tools/testing/selftests/powerpc/math/fpu_preempt.c
-index 5235bdc8c0b1..3e5b5663d244 100644
---- a/tools/testing/selftests/powerpc/math/fpu_preempt.c
-+++ b/tools/testing/selftests/powerpc/math/fpu_preempt.c
-@@ -37,19 +37,20 @@ __thread double darray[] = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0,
- int threads_starting;
- int running;
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index 77240953a92e..869537f1a550 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -15,6 +15,7 @@
+ #include <linux/slab.h>
+ #include <linux/magic.h>
+ #include <linux/statfs.h>
++#include <linux/printk.h>
  
--extern void preempt_fpu(double *darray, int *threads_starting, int *running);
-+extern int preempt_fpu(double *darray, int *threads_starting, int *running);
+ #include "internal.h"
  
- void *preempt_fpu_c(void *p)
- {
-+	long rc;
- 	int i;
-+
- 	srand(pthread_self());
- 	for (i = 0; i < 21; i++)
- 		darray[i] = rand();
- 
--	/* Test failed if it ever returns */
--	preempt_fpu(darray, &threads_starting, &running);
-+	rc = preempt_fpu(darray, &threads_starting, &running);
- 
--	return p;
-+	return (void *)rc;
+@@ -333,9 +334,20 @@ static int efivarfs_get_tree(struct fs_context *fc)
+ 	return get_tree_single(fc, efivarfs_fill_super);
  }
  
- int test_preempt_fpu(void)
-diff --git a/tools/testing/selftests/powerpc/math/vmx_preempt.c b/tools/testing/selftests/powerpc/math/vmx_preempt.c
-index 6761d6ce30ec..6f7cf400c687 100644
---- a/tools/testing/selftests/powerpc/math/vmx_preempt.c
-+++ b/tools/testing/selftests/powerpc/math/vmx_preempt.c
-@@ -37,19 +37,21 @@ __thread vector int varray[] = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10,11,12},
- int threads_starting;
- int running;
- 
--extern void preempt_vmx(vector int *varray, int *threads_starting, int *running);
-+extern int preempt_vmx(vector int *varray, int *threads_starting, int *running);
- 
- void *preempt_vmx_c(void *p)
- {
- 	int i, j;
-+	long rc;
++static int efivarfs_reconfigure(struct fs_context *fc)
++{
++	if (!efivar_supports_writes() && !(fc->sb_flags & SB_RDONLY)) {
++		pr_err("Firmware does not support SetVariableRT. Can not remount with rw\n");
++		return -EINVAL;
++	}
 +
- 	srand(pthread_self());
- 	for (i = 0; i < 12; i++)
- 		for (j = 0; j < 4; j++)
- 			varray[i][j] = rand();
- 
--	/* Test fails if it ever returns */
--	preempt_vmx(varray, &threads_starting, &running);
--	return p;
-+	rc = preempt_vmx(varray, &threads_starting, &running);
++	return 0;
++}
 +
-+	return (void *)rc;
- }
+ static const struct fs_context_operations efivarfs_context_ops = {
+ 	.get_tree	= efivarfs_get_tree,
+ 	.parse_param	= efivarfs_parse_param,
++	.reconfigure	= efivarfs_reconfigure,
+ };
  
- int test_preempt_vmx(void)
+ static int efivarfs_init_fs_context(struct fs_context *fc)
 -- 
 2.43.0
 
