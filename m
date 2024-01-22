@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-15141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9415B838412
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6742838186
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A5271F271AE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 058CC1C2414A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD9067729;
-	Tue, 23 Jan 2024 02:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36281C02;
+	Tue, 23 Jan 2024 01:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFSxmuL9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2KuRgU4G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA8D67726;
-	Tue, 23 Jan 2024 02:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3AC1C3E;
+	Tue, 23 Jan 2024 01:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975295; cv=none; b=kLy27CAi6Q5wD7C0FkjLT98QXAIAsJtQlXLGlCYwvyaQbKqCi0aXRtLHxLZ4FTKNYomWT7a48eM32RmVVeM9LT896mRU8itPmE0R+3WmFSrCxpOzjD44NFdmlHhl23ZDuc5XWBiDda9y1YpFToTOBfmgUR5Qb31/Fi11l6h8/6U=
+	t=1705972161; cv=none; b=q2K+9Gu+9rfjgcuecAduGB63235f79AKQEV75kBCDUlaCCT9Bzmgg2z9/tayPSR22591XJefZCKShAxkE53YSgJFOXMw+eHwdztfhSdDtVkNG7WgEgmeuQH4/6SQ0nWGBhbwxk2Pyh9VEck2sONRSdzQpFneh/OGODez80UcR08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975295; c=relaxed/simple;
-	bh=xVqTIhZbLYKxRYI8LHyieqHM4S/lBtK+89CpBmkAKfE=;
+	s=arc-20240116; t=1705972161; c=relaxed/simple;
+	bh=KeNmkEz2Ft96mrh9I+zLY0MrxVT2JiSkf1ibrNIVkfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZZaT0H+YP9nwd7+r7xmJP1Ob2wL6JCbcHwSNilNcZEmQe/IIMicfvKHOICFULxjuELSpkiXXJPFQx8BTlftDaIaLR6ikFhCHH/SDo9p5MfNPDPxM9IxYbw8ApCpZMBUA48wjTkMXWjjjVcptr5a3XrpFKD9svnc9DyOA0d6IdoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFSxmuL9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD221C43390;
-	Tue, 23 Jan 2024 02:01:34 +0000 (UTC)
+	 MIME-Version; b=rulpTGLaiTPmX1VRAK67Kv+j9q4fpuxVUWrIJA4sNVd5KnyWcg2JHDf6yXlMjCGL2COekbtGsxAOwT2zDUNy6EdZGFCn+953iuCUxY2Hitd12qVT4B459biHufA7R0//57DFJlYiifH/voW66k40RXlxRyhhj1JdvqNYIpvPJJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2KuRgU4G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C9CC43394;
+	Tue, 23 Jan 2024 01:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975294;
-	bh=xVqTIhZbLYKxRYI8LHyieqHM4S/lBtK+89CpBmkAKfE=;
+	s=korg; t=1705972161;
+	bh=KeNmkEz2Ft96mrh9I+zLY0MrxVT2JiSkf1ibrNIVkfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jFSxmuL9Zr3S00iHIpsL/Fzj/EwaVwpjCC9+wo6aGP2aPIzffp24TAGG5pti3lx1o
-	 4sSBGS2CRIiwxCkpxnzOgVx4vcCgtjtQsj6lAYiPfqjqh6XSD0FWWPld5LXJiDjt42
-	 rM1fvHOVcNWPWyoASGFc2Low2wt+ou1VGram5AKg=
+	b=2KuRgU4Gqoz/A0phwjM25QLmqLLU7giTUwJsGdNTdfnw3QuXI06mVLYnmvCuf5IgM
+	 woDvAmM/F1ToVZbATBcHF0NFnBD62ZaFcCJ8kPtsgWlgJFbFmmse/TlbFvvxLuVHZc
+	 Kcv9fpPhv4l3ZFUReeunt3Sl2JNo8XuKLy/CVQW4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Paloma Arellano <quic_parellan@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 259/583] drm/msm/dpu: correct clk bit for WB2 block
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>
+Subject: [PATCH 5.15 054/374] Revert "md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d"
 Date: Mon, 22 Jan 2024 15:55:10 -0800
-Message-ID: <20240122235819.932421587@linuxfoundation.org>
+Message-ID: <20240122235746.485418799@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Junxiao Bi <junxiao.bi@oracle.com>
 
-[ Upstream commit e843ca2f30e630675e2d2a75c96f4844f2854430 ]
+commit bed9e27baf52a09b7ba2a3714f1e24e17ced386d upstream.
 
-On sc7280 there are two clk bits for WB2: vbif_cli and clk_ctrl. While
-programming the VBIF params of WB, the driver should be toggling the
-former bit, while the sc7180_mdp, sc7280_mdp and sm8250_mdp structs
-list the latter one.
+This reverts commit 5e2cf333b7bd5d3e62595a44d598a254c697cd74.
 
-Correct that to ensure proper programming sequence for WB2 on these
-platforms.
+That commit introduced the following race and can cause system hung.
 
-Fixes: 255f056181ac ("drm/msm/dpu: sc7180: add missing WB2 clock control")
-Fixes: 3ce166380567 ("drm/msm/dpu: add writeback support for sc7280")
-Fixes: 53324b99bd7b ("drm/msm/dpu: add writeback blocks to the sm8250 DPU catalog")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Tested-by: Paloma Arellano <quic_parellan@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/570185/
-Link: https://lore.kernel.org/r/20231203002437.1291595-1-dmitry.baryshkov@linaro.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ md_write_start:             raid5d:
+ // mddev->in_sync == 1
+ set "MD_SB_CHANGE_PENDING"
+                            // running before md_write_start wakeup it
+                             waiting "MD_SB_CHANGE_PENDING" cleared
+                             >>>>>>>>> hung
+ wakeup mddev->thread
+ ...
+ waiting "MD_SB_CHANGE_PENDING" cleared
+ >>>> hung, raid5d should clear this flag
+ but get hung by same flag.
+
+The issue reverted commit fixing is fixed by last patch in a new way.
+
+Fixes: 5e2cf333b7bd ("md/raid5: Wait for MD_SB_CHANGE_PENDING in raid5d")
+Cc: stable@vger.kernel.org # v5.19+
+Signed-off-by: Junxiao Bi <junxiao.bi@oracle.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20231108182216.73611-2-junxiao.bi@oracle.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h | 2 +-
- drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h | 2 +-
- drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/md/raid5.c |   12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h
-index 5f9b437b82a6..ee781037ada9 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h
-@@ -32,7 +32,7 @@ static const struct dpu_mdp_cfg sm8250_mdp = {
- 		[DPU_CLK_CTRL_DMA2] = { .reg_off = 0x2bc, .bit_off = 8 },
- 		[DPU_CLK_CTRL_DMA3] = { .reg_off = 0x2c4, .bit_off = 8 },
- 		[DPU_CLK_CTRL_REG_DMA] = { .reg_off = 0x2bc, .bit_off = 20 },
--		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x3b8, .bit_off = 24 },
-+		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x2bc, .bit_off = 16 },
- 	},
- };
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -36,7 +36,6 @@
+  */
  
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h
-index d030c08636b4..69d3f7e5e095 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h
-@@ -25,7 +25,7 @@ static const struct dpu_mdp_cfg sc7180_mdp = {
- 		[DPU_CLK_CTRL_DMA0] = { .reg_off = 0x2ac, .bit_off = 8 },
- 		[DPU_CLK_CTRL_DMA1] = { .reg_off = 0x2b4, .bit_off = 8 },
- 		[DPU_CLK_CTRL_DMA2] = { .reg_off = 0x2c4, .bit_off = 8 },
--		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x3b8, .bit_off = 24 },
-+		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x2bc, .bit_off = 16 },
- 	},
- };
+ #include <linux/blkdev.h>
+-#include <linux/delay.h>
+ #include <linux/kthread.h>
+ #include <linux/raid/pq.h>
+ #include <linux/async_tx.h>
+@@ -6522,18 +6521,7 @@ static void raid5d(struct md_thread *thr
+ 			spin_unlock_irq(&conf->device_lock);
+ 			md_check_recovery(mddev);
+ 			spin_lock_irq(&conf->device_lock);
+-
+-			/*
+-			 * Waiting on MD_SB_CHANGE_PENDING below may deadlock
+-			 * seeing md_check_recovery() is needed to clear
+-			 * the flag when using mdmon.
+-			 */
+-			continue;
+ 		}
+-
+-		wait_event_lock_irq(mddev->sb_wait,
+-			!test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags),
+-			conf->device_lock);
+ 	}
+ 	pr_debug("%d stripes handled\n", handled);
  
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
-index 3b5061c4402a..9195cb996f44 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
-@@ -25,7 +25,7 @@ static const struct dpu_mdp_cfg sc7280_mdp = {
- 		[DPU_CLK_CTRL_DMA0] = { .reg_off = 0x2ac, .bit_off = 8 },
- 		[DPU_CLK_CTRL_DMA1] = { .reg_off = 0x2b4, .bit_off = 8 },
- 		[DPU_CLK_CTRL_DMA2] = { .reg_off = 0x2c4, .bit_off = 8 },
--		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x3b8, .bit_off = 24 },
-+		[DPU_CLK_CTRL_WB2] = { .reg_off = 0x2bc, .bit_off = 16 },
- 	},
- };
- 
--- 
-2.43.0
-
 
 
 
