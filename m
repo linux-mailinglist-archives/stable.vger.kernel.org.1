@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-15290-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0388838596
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:44:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E678382DF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:24:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09959B2D6CB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81CC71C29627
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 654BA745E3;
-	Tue, 23 Jan 2024 02:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65CD75FDB4;
+	Tue, 23 Jan 2024 01:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hNmUhfL5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Je/ytrso"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24E2C745D6;
-	Tue, 23 Jan 2024 02:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2492D4F8B0;
+	Tue, 23 Jan 2024 01:50:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975451; cv=none; b=Zmt9WgNK5pnPt6oz6FCxCpnmrbG0Xwl8Yrso6TwBuci7XJY5pW14B8pM5pvFHwOu7riVEd8nvzUx1vZInmDYx7f4hAMwUUDQRZ1Hl5mAbjgB+/a5a2ZTnIn6oWHgpkYu8QM2HkYVKpKfiQBPCffZJrRmIxsZ+oVe42NaMCsdAa0=
+	t=1705974646; cv=none; b=KAn5xznfQZRoAfR3Bms5Irx22JsmLHEk3SD7JVY5Un4JAKJ9G9BBFrXKL0uIPLWFXFpD9wPaQDZXgTQspqNyOfGxKe8Jx9ueem1ELJrM5JRnCG/ahtLK4dZBOA3ZCL2yBhGPVDdhqdBJfYFOO9U+A/1FYSgLwjaVhsGfy2R+z40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975451; c=relaxed/simple;
-	bh=HG4d6VYL8mboTzAD3d7PfRGJ5csbWhf5wuyaWUVtD0k=;
+	s=arc-20240116; t=1705974646; c=relaxed/simple;
+	bh=NOkA7fBsd+JxJxR1Bc4/8RKdXvBkbtIlIt9qqWP8ey0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WQDmldxsJjC5bT6Eve0WzpGBlu67SkLne0w9x1m6qd3dbXmgvEqid0tQ2vKwuHxX1uiozFuIU6UcM4VLSBDSrvFdbvQTA2LJ1CfSBUx00cBkI35mp86wU0KDEkhfttaAZcQGAwDgepGQ6UUgsnady2rBfrxUUnivk8fB45ywUts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hNmUhfL5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE27C433F1;
-	Tue, 23 Jan 2024 02:04:10 +0000 (UTC)
+	 MIME-Version; b=WXwGQwO9DGNY0j0/R28Yp1hvlHgzu3rCZdm7/mMYh5WjoQZXwrfmFH32YQqzSYi0u0DpUZECEvsBbhFFq4hepR2sFur9wmnS3oo0TTqFFw1duOoHQPoYw/pbgmrFfUr2Hvv9XAwfuDYuE6EFzUv4x1sOMZg1fNvqztaG2N/ruGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Je/ytrso; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B3BC433F1;
+	Tue, 23 Jan 2024 01:50:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975451;
-	bh=HG4d6VYL8mboTzAD3d7PfRGJ5csbWhf5wuyaWUVtD0k=;
+	s=korg; t=1705974646;
+	bh=NOkA7fBsd+JxJxR1Bc4/8RKdXvBkbtIlIt9qqWP8ey0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hNmUhfL5TWPlF3eexanbvJ29zRg8AAUxr5BqrGus5dKw6hfF3iVYgdL/UQzeZHtrV
-	 RVg4/SjF6gMR+7GjNn8WpPD0P55nlytNr8Gvm7SrEcwke/OSCBhZbWXePGhyy7JK5h
-	 iGnUxL7sZZKEJMCYtqDPV5StpGzoeNQV6BZNeox4=
+	b=Je/ytrso36xfG0l0NVVeIIqCEdUO8Fl+a0ZpOLvwsyYRH1HgS5vYHNfU6zOz8H0kD
+	 OIl85M45OP9sveimfalfFG4IAkXvIi688/aTAXwLToBg4nu7ZIgXCKb7jaXd3vDW95
+	 Cfg9HS8eDlP+NzCDbFR18n5nOUsmeFV8fOfG5cmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Song Liu <song@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	kernel test robot <lkp@intel.com>,
-	Bart Van Assche <bvanassche@acm.org>
-Subject: [PATCH 6.6 407/583] md/raid1: Use blk_opf_t for read and write operations
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Dafna Hirschfeld <dafna@fastmail.com>,
+	Paul Elder <paul.elder@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 202/374] media: rkisp1: Disable runtime PM in probe error path
 Date: Mon, 22 Jan 2024 15:57:38 -0800
-Message-ID: <20240122235824.432440352@linuxfoundation.org>
+Message-ID: <20240122235751.635683985@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-commit 7dab24554dedd4e6f408af8eb2d25c89997a6a1f upstream.
+[ Upstream commit 13c9810281f8b24af9b7712cd84a1fce61843e93 ]
 
-Use the type blk_opf_t for read and write operations instead of int. This
-patch does not affect the generated code but fixes the following sparse
-warning:
+If the v4l2_device_register() call fails, runtime PM is left enabled.
+Fix it.
 
-drivers/md/raid1.c:1993:60: sparse: sparse: incorrect type in argument 5 (different base types)
-     expected restricted blk_opf_t [usertype] opf
-     got int rw
-
-Cc: Song Liu <song@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>
-Fixes: 3c5e514db58f ("md/raid1: Use the new blk_opf_t type")
-Cc: stable@vger.kernel.org # v6.0+
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202401080657.UjFnvQgX-lkp@intel.com/
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240108001223.23835-1-bvanassche@acm.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Dafna Hirschfeld <dafna@fastmail.com>
+Reviewed-by: Paul Elder <paul.elder@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Stable-dep-of: 452f604a4683 ("media: rkisp1: Fix media device memory leak")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid1.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -1983,12 +1983,12 @@ static void end_sync_write(struct bio *b
- }
+diff --git a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
+index 560f928c3752..79cfa99f2a64 100644
+--- a/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
++++ b/drivers/media/platform/rockchip/rkisp1/rkisp1-dev.c
+@@ -514,7 +514,7 @@ static int rkisp1_probe(struct platform_device *pdev)
  
- static int r1_sync_page_io(struct md_rdev *rdev, sector_t sector,
--			   int sectors, struct page *page, int rw)
-+			   int sectors, struct page *page, blk_opf_t rw)
- {
- 	if (sync_page_io(rdev, sector, sectors << 9, page, rw, false))
- 		/* success */
- 		return 1;
--	if (rw == WRITE) {
-+	if (rw == REQ_OP_WRITE) {
- 		set_bit(WriteErrorSeen, &rdev->flags);
- 		if (!test_and_set_bit(WantReplacement,
- 				      &rdev->flags))
-@@ -2105,7 +2105,7 @@ static int fix_sync_read_error(struct r1
- 			rdev = conf->mirrors[d].rdev;
- 			if (r1_sync_page_io(rdev, sect, s,
- 					    pages[idx],
--					    WRITE) == 0) {
-+					    REQ_OP_WRITE) == 0) {
- 				r1_bio->bios[d]->bi_end_io = NULL;
- 				rdev_dec_pending(rdev, mddev);
- 			}
-@@ -2120,7 +2120,7 @@ static int fix_sync_read_error(struct r1
- 			rdev = conf->mirrors[d].rdev;
- 			if (r1_sync_page_io(rdev, sect, s,
- 					    pages[idx],
--					    READ) != 0)
-+					    REQ_OP_READ) != 0)
- 				atomic_add(s, &rdev->corrected_errors);
- 		}
- 		sectors -= s;
-@@ -2332,7 +2332,7 @@ static void fix_read_error(struct r1conf
- 				atomic_inc(&rdev->nr_pending);
- 				rcu_read_unlock();
- 				r1_sync_page_io(rdev, sect, s,
--						conf->tmppage, WRITE);
-+						conf->tmppage, REQ_OP_WRITE);
- 				rdev_dec_pending(rdev, mddev);
- 			} else
- 				rcu_read_unlock();
-@@ -2349,7 +2349,7 @@ static void fix_read_error(struct r1conf
- 				atomic_inc(&rdev->nr_pending);
- 				rcu_read_unlock();
- 				if (r1_sync_page_io(rdev, sect, s,
--						    conf->tmppage, READ)) {
-+						conf->tmppage, REQ_OP_READ)) {
- 					atomic_add(s, &rdev->corrected_errors);
- 					pr_info("md/raid1:%s: read error corrected (%d sectors at %llu on %pg)\n",
- 						mdname(mddev), s,
+ 	ret = v4l2_device_register(rkisp1->dev, &rkisp1->v4l2_dev);
+ 	if (ret)
+-		return ret;
++		goto err_pm_runtime_disable;
+ 
+ 	ret = media_device_register(&rkisp1->media_dev);
+ 	if (ret) {
+@@ -534,6 +534,7 @@ static int rkisp1_probe(struct platform_device *pdev)
+ 	media_device_unregister(&rkisp1->media_dev);
+ err_unreg_v4l2_dev:
+ 	v4l2_device_unregister(&rkisp1->v4l2_dev);
++err_pm_runtime_disable:
+ 	pm_runtime_disable(&pdev->dev);
+ 	return ret;
+ }
+-- 
+2.43.0
+
 
 
 
