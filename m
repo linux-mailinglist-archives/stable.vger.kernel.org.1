@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 797D6837F8D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FEB6837F2D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28CAE1F292A7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 382BD29BEF3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17598629F5;
-	Tue, 23 Jan 2024 00:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDD441292EB;
+	Tue, 23 Jan 2024 00:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bA75d6N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KK4jXnJT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB69C627E3;
-	Tue, 23 Jan 2024 00:53:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2C67C0A5;
+	Tue, 23 Jan 2024 00:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971186; cv=none; b=sT8TajWcztALTEL/v4VktLuVEJF/gDrT63eqJBsFjsvXQSBid8PKvKqYTK8iLC25CeZEUBSN8ix8we4JRewVsfTR890bXI+NquaAAhB1XLu9b/zHfbXVKFrbqgiveKaQ5xQVlp2mTlNugkQBVkMMXXovdJvFwyjdQGL5iO0EjdY=
+	t=1705970984; cv=none; b=QiMQADoHh+ArZl/NVXXWpVYrU21py/FQFiF5nwVEQ5UC7uW8GqEP2nNUftuSMA0DY1lZ81sA7zrwVCeyHMaY0M4ieGk1tXVABbrIEmQdyoJjbUn2bh/rfOXKwdSCa57KFA3F9ELTJhNeeUYys9pjV8lo8I/QOxacOyN+X7QaIYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971186; c=relaxed/simple;
-	bh=Gh4kLQs15xIFjoA+pGkvkFgnY6XdacilJpG4VwXndIk=;
+	s=arc-20240116; t=1705970984; c=relaxed/simple;
+	bh=Z1e+5UNXgWhB5YLDb6homE/qGAby4SfPHRTv4yFD8/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hrrviUqF3mGahPPbeN8lIj6+hnVcYYZs0fPbf3XKmVC1lsnYGICHdYth47Rfk/B6UuN53fRf5HUhxNNPtgzXZgmBLPdUySfMNB0yfH53SqpeUa2Q5pZzEaUDovoHErRshrAJr3Dr3iugr4Z93DiWPcjwfySJh21eEx0rzGJUMSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bA75d6N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB1EC433F1;
-	Tue, 23 Jan 2024 00:53:06 +0000 (UTC)
+	 MIME-Version; b=O8dLn00hmJ1qCehFxg7e+eQCdU1EA0XrFSjMQimbTNKBC/FDgaLS6p7mVPbe4AHuHRxalnrBfdGWgUKcdc8dylXc40sp2bb+BR+/qg+gigDSOCnaoRvtSo5WXx5GpvMgq2rAvJUkZtS5ye1QR2/QbGUGq0jmzde2p3KK9ZkVOYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KK4jXnJT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D10AC433C7;
+	Tue, 23 Jan 2024 00:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971186;
-	bh=Gh4kLQs15xIFjoA+pGkvkFgnY6XdacilJpG4VwXndIk=;
+	s=korg; t=1705970984;
+	bh=Z1e+5UNXgWhB5YLDb6homE/qGAby4SfPHRTv4yFD8/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0bA75d6NzhXjdr2UU11DBhkQtrBP7cbPurVJeTv1DIUU5xUzo6Lkl2egDT6oUXNcP
-	 +48AVmwfeJO9MkZryLHu6D8mLbfTbpIjfVwI4M26shEDQerJdbanSjLmQfldVT1nPr
-	 GV60mkl1FjBShppXWdUqkqOg2Scut5LTRaZGfNHg=
+	b=KK4jXnJTkiO3Dzb7l/Di5wsL9Re8LaXE9G0sNfSNzsZaUHM8KFqiDpp1WEHyO1EM1
+	 2IIbxbThMyqbCTzRwhmoIBAG0jsddw84+MgiCb3YM0AQ7rZ15vmHoi7iovgG7spKGX
+	 e9VwQ5jUjxBUp5OlzzljW2MIC+BKB6ja7/gt3n58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Nikita Kiryushin <kiryushin@ancud.ru>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 200/417] f2fs: fix to update iostat correctly in f2fs_filemap_fault()
-Date: Mon, 22 Jan 2024 15:56:08 -0800
-Message-ID: <20240122235758.861062614@linuxfoundation.org>
+Subject: [PATCH 5.10 063/286] ACPI: video: check for error while searching for backlight device parent
+Date: Mon, 22 Jan 2024 15:56:09 -0800
+Message-ID: <20240122235734.454549166@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Nikita Kiryushin <kiryushin@ancud.ru>
 
-[ Upstream commit bb34cc6ca87ff78f9fb5913d7619dc1389554da6 ]
+[ Upstream commit ccd45faf4973746c4f30ea41eec864e5cf191099 ]
 
-In f2fs_filemap_fault(), it fixes to update iostat info only if
-VM_FAULT_LOCKED is tagged in return value of filemap_fault().
+If acpi_get_parent() called in acpi_video_dev_register_backlight()
+fails, for example, because acpi_ut_acquire_mutex() fails inside
+acpi_get_parent), this can lead to incorrect (uninitialized)
+acpi_parent handle being passed to acpi_get_pci_dev() for detecting
+the parent pci device.
 
-Fixes: 8b83ac81f428 ("f2fs: support read iostat")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Check acpi_get_parent() result and set parent device only in case of success.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 9661e92c10a9 ("acpi: tie ACPI backlight devices to PCI devices if possible")
+Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpi_video.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 3f2c55b9aa8a..fd22854dbeae 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -42,7 +42,7 @@ static vm_fault_t f2fs_filemap_fault(struct vm_fault *vmf)
- 	vm_fault_t ret;
+diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+index cf6c9ffe04a2..9d384656323a 100644
+--- a/drivers/acpi/acpi_video.c
++++ b/drivers/acpi/acpi_video.c
+@@ -1788,12 +1788,12 @@ static void acpi_video_dev_register_backlight(struct acpi_video_device *device)
+ 		return;
+ 	count++;
  
- 	ret = filemap_fault(vmf);
--	if (!ret)
-+	if (ret & VM_FAULT_LOCKED)
- 		f2fs_update_iostat(F2FS_I_SB(inode), inode,
- 					APP_MAPPED_READ_IO, F2FS_BLKSIZE);
+-	acpi_get_parent(device->dev->handle, &acpi_parent);
+-
+-	pdev = acpi_get_pci_dev(acpi_parent);
+-	if (pdev) {
+-		parent = &pdev->dev;
+-		pci_dev_put(pdev);
++	if (ACPI_SUCCESS(acpi_get_parent(device->dev->handle, &acpi_parent))) {
++		pdev = acpi_get_pci_dev(acpi_parent);
++		if (pdev) {
++			parent = &pdev->dev;
++			pci_dev_put(pdev);
++		}
+ 	}
  
+ 	memset(&props, 0, sizeof(struct backlight_properties));
 -- 
 2.43.0
 
