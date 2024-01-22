@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-14911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F401838321
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:29 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E0A837C14
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB9D61F2173C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64F091C2863E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5571160869;
-	Tue, 23 Jan 2024 01:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC6DC8DD;
+	Tue, 23 Jan 2024 00:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STZlfjz+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPDYhldN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15BB66025E;
-	Tue, 23 Jan 2024 01:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 488C25662;
+	Tue, 23 Jan 2024 00:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974712; cv=none; b=i1LT1ZQ1Qfqys8cNt8LZT/9p27bH7lIWoiGNdZKAXP3zeBAtlfRw/xBufR/9H1roc7tEeBhdc5m47WfKzZpTiHPa8NEQudoq4gKfNwypCTOIIcHu9pUGJoeJjpCPovJoEzjn0fXEv/Po2JKgO1oj6KEEHfFWqTOPdOf2R3VQsFQ=
+	t=1705969499; cv=none; b=OORzscuUm7F+IcKct7adB4JV+REBoqauYfH+CQeZNV9sHXqzo13BeagHU2I6DUW4ELkYJG4piNDmiUMsEJU3HD44sjOW5ieLVRLmOqQzQv1MmaFuZZc7+O6LAftRGW93IYbAu4YIxiS9ixTXZiOLaXNbFADIC4HOQ5YxPZH4lT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974712; c=relaxed/simple;
-	bh=GRrsjM3sMakmoJoP3GhzZxTZ7H7YKDY5g0XJinlJ4/w=;
+	s=arc-20240116; t=1705969499; c=relaxed/simple;
+	bh=hFatx0c08Wa63R1h887QiFpT/uIRS9Wae8LisAriOc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JdIMU9xxujVo97vUkrPIK2oWimVgCnNu84x3ADllZEZvLtIkOEcVZv03fO5SUIrZhm6ijhlo7viw3MLia1NWMhXUF/gEHKEDXhX3Vnb4ytUB/+wDZT/xVSeeJ2ORttdfqnA9U3v5NNl9xIE2PLfzxOgzdUaYzV1AgsFi/6md7+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STZlfjz+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77400C433C7;
-	Tue, 23 Jan 2024 01:51:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tiacjhlhRB8zRLCK7y7JWwCU/HrmlFdFvpd8a98kSV9fflv0nJHtPNh/jGbcIgAuL+sxCg3meWZtx0x9KReCWMronLgVylAAm9ja2baV0txwY1S9gVqbJf3rJfKUF/842XzTg5X1nH5rEDNPFXByJGopMKsHvd2eRGhtUZFxnPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPDYhldN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3EB2C43390;
+	Tue, 23 Jan 2024 00:24:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974711;
-	bh=GRrsjM3sMakmoJoP3GhzZxTZ7H7YKDY5g0XJinlJ4/w=;
+	s=korg; t=1705969499;
+	bh=hFatx0c08Wa63R1h887QiFpT/uIRS9Wae8LisAriOc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=STZlfjz+c648G/QMycIty0/cP59dVnGDRBTrjlRYSbO5IpkLAsXTPWFmzRimjrmQN
-	 v0HO7hkKwzOb0dDWsqDrfYjjkNr5Yerj2FmMsZ9T527gHV2VOoEXVfb8u4vB9XP7Tj
-	 hZdkP+t/4cM2n/HutebYu3AjBnS2Wn8zhNO4Fl4M=
+	b=EPDYhldNjEYiZOq87L9hoTgSytpoiMJ7xCoFPI8NBJ4v0LwFe2VCURRW7/t/oqfAr
+	 j4R3NEWFH3S9beojcAZ7B94Hk0jkWJWa130/HpXk1SyokzkaHJA7ssfkd6LSQ6T3Vj
+	 UMo78ueoDLYPhbOesK1BuTurQhEAU6EDRGMAw6cE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	MeiChia Chiu <meichia.chiu@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 138/583] wifi: mt76: mt7996: fix rate usage of inband discovery frames
+Subject: [PATCH 6.7 285/641] ASoC: Intel: sof_sdw_rt_sdca_jack_common: ctx->headset_codec_dev = NULL
 Date: Mon, 22 Jan 2024 15:53:09 -0800
-Message-ID: <20240122235816.329971340@linuxfoundation.org>
+Message-ID: <20240122235826.811020198@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: MeiChia Chiu <meichia.chiu@mediatek.com>
+From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-[ Upstream commit 1e3f387736c744e73b5398a147b90412f82f54da ]
+[ Upstream commit e38e252dbceeef7d2f848017132efd68e9ae1416 ]
 
-For UBPR and FILS frames, the BSS_CHANGED_BEACON flag will also be set,
-which causes those frames to use the beacon rate in TX descriptors.
-Adjust the statement to fix this issue.
+sof_sdw_rt_sdca_jack_exit() are used by different codecs, and some of
+them use the same dai name.
+For example, rt712 and rt713 both use "rt712-sdca-aif1" and
+sof_sdw_rt_sdca_jack_exit().
+As a result, sof_sdw_rt_sdca_jack_exit() will be called twice by
+mc_dailink_exit_loop(). Set ctx->headset_codec_dev = NULL; after
+put_device(ctx->headset_codec_dev); to avoid ctx->headset_codec_dev
+being put twice.
 
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Signed-off-by: MeiChia Chiu <meichia.chiu@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 5360c6704638 ("ASoC: Intel: sof_sdw: add rt712 support")
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20231204214200.203100-5-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/intel/boards/sof_sdw_rt_sdca_jack_common.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index c43839a20508..26d5675202ba 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -840,10 +840,10 @@ void mt7996_mac_write_txwi(struct mt7996_dev *dev, __le32 *txwi,
- 	struct mt76_vif *mvif;
- 	u16 tx_count = 15;
- 	u32 val;
--	bool beacon = !!(changed & (BSS_CHANGED_BEACON |
--				    BSS_CHANGED_BEACON_ENABLED));
- 	bool inband_disc = !!(changed & (BSS_CHANGED_UNSOL_BCAST_PROBE_RESP |
- 					 BSS_CHANGED_FILS_DISCOVERY));
-+	bool beacon = !!(changed & (BSS_CHANGED_BEACON |
-+				    BSS_CHANGED_BEACON_ENABLED)) && (!inband_disc);
+diff --git a/sound/soc/intel/boards/sof_sdw_rt_sdca_jack_common.c b/sound/soc/intel/boards/sof_sdw_rt_sdca_jack_common.c
+index 65bbcee88d6d..49a513399dc4 100644
+--- a/sound/soc/intel/boards/sof_sdw_rt_sdca_jack_common.c
++++ b/sound/soc/intel/boards/sof_sdw_rt_sdca_jack_common.c
+@@ -168,6 +168,7 @@ int sof_sdw_rt_sdca_jack_exit(struct snd_soc_card *card, struct snd_soc_dai_link
  
- 	mvif = vif ? (struct mt76_vif *)vif->drv_priv : NULL;
- 	if (mvif) {
+ 	device_remove_software_node(ctx->headset_codec_dev);
+ 	put_device(ctx->headset_codec_dev);
++	ctx->headset_codec_dev = NULL;
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
