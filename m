@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-15294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F6DF8384AD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E83D837FB8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2B3F1C23A5C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D73B71F29B35
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3A51745EC;
-	Tue, 23 Jan 2024 02:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91FEE64CD7;
+	Tue, 23 Jan 2024 00:55:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/6tlpds"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ooz7gq8J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84170745E1;
-	Tue, 23 Jan 2024 02:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F54964A80;
+	Tue, 23 Jan 2024 00:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975456; cv=none; b=iZA7KElQU+pHRYF7UjlVgsHu9C7NV+vZj1+cEBQciNVW3S28y4CPGirVQQpbLW457LNJUp39XISGtwUJdIw6FMXW1YmfCC9OmELAqG5PzywBJqU6zjyFJMOA/rJ01TJcaOoGujNF23LevNXVuUiU7kdKntUUqpadJAOvSBLzs2U=
+	t=1705971316; cv=none; b=RdqljySWLIZH9uuAE5PuvqcL37XolheCvsVzmbAomco/oMskrAVvlBCSg5Nex5W2g1iJhG3n62re3EHpPumI+/gxDqtkjs7B15gowZi1Vq5UC4JUxT5E97GV3gw8p2YeERU+8Lb398Uu0mna2jbvhgK5cTnprWhsjUE7mE2Ht4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975456; c=relaxed/simple;
-	bh=M4oDbmg97T14C2cjrqb/BirNF3JBnT3AVMlOXdwK7B4=;
+	s=arc-20240116; t=1705971316; c=relaxed/simple;
+	bh=ceLJMPnsUWIUOsFyUapN82k2ESwpZT2hWyp6cG+SdDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qRl2f1fowmRMZztvLfjvRbaF2T2437MeGSLrdmQUqVu067XaHIrLRx5szBAE2AmvWYqn/m8rUibBntXr+8ztdlFpEJCwhRYYm6SQsqAiiD3LBHkEL1ch82ecM9PQRentEZ0Se2QrHokvDDM6I3AmFDfmHqdx06G2696/2StDEuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/6tlpds; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D915C433F1;
-	Tue, 23 Jan 2024 02:04:16 +0000 (UTC)
+	 MIME-Version; b=IGeF+krSCNqU4N+epHTwWd6O/hemEYCSyLeGc4bzGP4AbPTNdE3OMk2NKAsakikuDtjeQXSExBS2+Ri1e52Y/m0f232gHkdAT73k5+JBvPqUi7roc8/VJF0Q3aJpiaUjMvKcYKWaaU2GQxG3ynussHimGJzJeuCLZ9IfCrwY8XI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ooz7gq8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5495CC433F1;
+	Tue, 23 Jan 2024 00:55:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975456;
-	bh=M4oDbmg97T14C2cjrqb/BirNF3JBnT3AVMlOXdwK7B4=;
+	s=korg; t=1705971315;
+	bh=ceLJMPnsUWIUOsFyUapN82k2ESwpZT2hWyp6cG+SdDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w/6tlpdssUdBQJ4pd/Rq06SGOqvBYP6SDhqgiRv7mMTCMMqy93CF5HD/vldXnv2Pt
-	 7ELBhi21ajMUWX48pOKoZQkXNy99dS2X9aIb3a+A5rVbHR8sTG+H7tDtzVCqc6bvI3
-	 Hst7JreHmxGgTBBSg7j+IUSNb9zBoDAr8NNTUldk=
+	b=Ooz7gq8JZDSXCA9841+k5X+qE9TNb4ffKYtKaQLyR9TlNxKebD70HIboizt6HaYBX
+	 ddEI4DPcCz+74mYJKrw4GkeiC1++a9Ih7pyew4VnjGWsfHSq5iHu6HEy9h2a25CtQ6
+	 +k77dVLbDVIhfQd486M2gBR8RguC03sIuaAiGmWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 388/583] io_uring: dont check iopoll if request completes
+	Su Hui <suhui@nfschina.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 133/286] wifi: rtlwifi: rtl8192cu: using calculate_bit_shift()
 Date: Mon, 22 Jan 2024 15:57:19 -0800
-Message-ID: <20240122235823.863631824@linuxfoundation.org>
+Message-ID: <20240122235737.268807121@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Su Hui <suhui@nfschina.com>
 
-commit 9b43ef3d52532a0175ed6654618f7db61d390d2e upstream.
+[ Upstream commit f4088c8fcbabadad9dd17d17ae9ba24e9e3221ec ]
 
-IOPOLL request should never return IOU_OK, so the following iopoll
-queueing check in io_issue_sqe() after getting IOU_OK doesn't make any
-sense as would never turn true. Let's optimise on that and return a bit
-earlier. It's also much more resilient to potential bugs from
-mischieving iopoll implementations.
+Using calculate_bit_shift() to replace _rtl92c_phy_calculate_bit_shift().
+And fix an undefined bitwise shift behavior problem.
 
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/2f8690e2fa5213a2ff292fac29a7143c036cdd60.1701390926.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f0a39ae738d6 ("rtlwifi: rtl8192cu: Add routine phy")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-6-suhui@nfschina.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1891,7 +1891,11 @@ static int io_issue_sqe(struct io_kiocb
- 			io_req_complete_defer(req);
- 		else
- 			io_req_complete_post(req, issue_flags);
--	} else if (ret != IOU_ISSUE_SKIP_COMPLETE)
-+
-+		return 0;
-+	}
-+
-+	if (ret != IOU_ISSUE_SKIP_COMPLETE)
- 		return ret;
- 
- 	/* If the op doesn't have a file, we're not polling for it */
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c
+index a8d9fe269f31..0b8cb7e61fd8 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c
+@@ -32,7 +32,7 @@ u32 rtl92cu_phy_query_rf_reg(struct ieee80211_hw *hw,
+ 		original_value = _rtl92c_phy_fw_rf_serial_read(hw,
+ 							       rfpath, regaddr);
+ 	}
+-	bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	readback_value = (original_value & bitmask) >> bitshift;
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+ 		"regaddr(%#x), rfpath(%#x), bitmask(%#x), original_value(%#x)\n",
+@@ -56,7 +56,7 @@ void rtl92cu_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 			original_value = _rtl92c_phy_rf_serial_read(hw,
+ 								    rfpath,
+ 								    regaddr);
+-			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data =
+ 			    ((original_value & (~bitmask)) |
+ 			     (data << bitshift));
+@@ -67,7 +67,7 @@ void rtl92cu_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 			original_value = _rtl92c_phy_fw_rf_serial_read(hw,
+ 								       rfpath,
+ 								       regaddr);
+-			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data =
+ 			    ((original_value & (~bitmask)) |
+ 			     (data << bitshift));
+-- 
+2.43.0
+
 
 
 
