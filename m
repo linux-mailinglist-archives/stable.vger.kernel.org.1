@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 467BA838061
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9793A8380CD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E633B2834BC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB1BB1C286F6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C8A67756;
-	Tue, 23 Jan 2024 01:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A0113472D;
+	Tue, 23 Jan 2024 01:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ShzZPrB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYSYOkeE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51B3D66B52;
-	Tue, 23 Jan 2024 01:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244491339A8;
+	Tue, 23 Jan 2024 01:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971694; cv=none; b=L1x9YKRjILYnZZ4Z52VekDeN4ffhw8AtWk0Bf0SsA/FtS7mAfv+yfGj7vojk/IQjTMMDFDIQO8ppWkL1iXPxdGeR2zd3BYfrA/MsJiK1nT8hjo0CB0UpCtwaV9F86w3JlZQO2oStWnOS5/Mcm0avJUUtuGf/TLWEtkIiw0ijLcE=
+	t=1705971906; cv=none; b=lnFRnpureJF/vj1vZNVVhOmqWQD6c1bVN9V0Fata5JImtuhWm6LTR0Hun2gyxalZfIuqu0Ua0ZC0DYtnWwdMFNqbMjrgeaDcokEfyn5/ptMkg1O7XS5oMDSYA7SWwy96qdJ5I+sdaemZXF25cJaeQqga1WJfREaEgyib/c5iMWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971694; c=relaxed/simple;
-	bh=MzDjHC1Wne30Ps335lrYQ3y6pzhAX1WdRmdO+nnsdFc=;
+	s=arc-20240116; t=1705971906; c=relaxed/simple;
+	bh=jMV+V8hMvJB4zRrQEAEo9Z1PGnjXLwh1K4tfbKJQTLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BFUpY0WB++FvTxgamFX3AUzNrJ3Rierc4A3MayspSLmIvVYsroZWwyhWfcu/gvkQDpIsaJ8MAvi6VGG7svYMo09bMsD/r36gDX9nR4wUxSk0qmFvMqr8smVM0xPqDW63hg2ZIHkZC/xRY/Pw8nnnTcM+Qan7AiWt0N/bdRxlMQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ShzZPrB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A775FC43390;
-	Tue, 23 Jan 2024 01:01:33 +0000 (UTC)
+	 MIME-Version; b=lid8DL5J3wI82sEZUE1AEcVMDk1vRcmmaQoER5Pb/TUWfa1B4h7IYrM7xv62xUhaC8JBSupvq31W5+BBuilOw+AK9ZaqfQfMld31Cyw2YXferTN0hcLWroxwM6vCP+fuhp5m4gyKrCgnSJE2OONLvRuqeTiO9qk/z+PAzBrwxbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYSYOkeE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D76B2C433C7;
+	Tue, 23 Jan 2024 01:05:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971694;
-	bh=MzDjHC1Wne30Ps335lrYQ3y6pzhAX1WdRmdO+nnsdFc=;
+	s=korg; t=1705971906;
+	bh=jMV+V8hMvJB4zRrQEAEo9Z1PGnjXLwh1K4tfbKJQTLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ShzZPrBUhWNXv1YbNYJlyGh+n5Fxbxcne/Xq7MJaM/3YezOiD67TWJ1r1SstGfsv
-	 Kj60+UaEcUthewSvziY2t79U1JrJok2+bf0v0XSNLceA+pyUrdqCpZSv9ZIffD4T4j
-	 yeMKkkMRqJAyMHLyPwC9m6eHRsSngcyjL4CF/bdI=
+	b=zYSYOkeEYRLXRIo2uyHsREkiKtKPp8ag9TnYkl/qAfZnXikaZK0DnOtI1/KXON2v4
+	 WRoEn1WHdS8PHSXAluZt6ICO7NAW31Bxnql6cAXlx6ak8LmRIWYZn4AkY35sZRiGt7
+	 TYAGqq1mXWT8V6TwxjWCKR9ALQt0o7pgVmqDGhwc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Beulich <jbeulich@suse.com>,
-	Juergen Gross <jgross@suse.com>,
-	Paul Durrant <paul@xen.org>
-Subject: [PATCH 5.10 208/286] xen-netback: dont produce zero-size SKB frags
-Date: Mon, 22 Jan 2024 15:58:34 -0800
-Message-ID: <20240122235740.115709016@linuxfoundation.org>
+	Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 347/417] selftests/sgx: Fix uninitialized pointer dereferences in encl_get_entry
+Date: Mon, 22 Jan 2024 15:58:35 -0800
+Message-ID: <20240122235803.803893506@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Beulich <jbeulich@suse.com>
+From: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
 
-commit c7ec4f2d684e17d69bbdd7c4324db0ef5daac26a upstream.
+[ Upstream commit b84fc2e0139ba4b23b8039bd7cfd242894fe8f8b ]
 
-While frontends may submit zero-size requests (wasting a precious slot),
-core networking code as of at least 3ece782693c4b ("sock: skb_copy_ubufs
-support for compound pages") can't deal with SKBs when they have all
-zero-size fragments. Respond to empty requests right when populating
-fragments; all further processing is fragment based and hence won't
-encounter these empty requests anymore.
+Ensure sym_tab and sym_names are zero-initialized and add an early-out
+condition in the unlikely (erroneous) case that the enclave ELF file would
+not contain a symbol table.
 
-In a way this should have been that way from the beginning: When no data
-is to be transferred for a particular request, there's not even a point
-in validating the respective grant ref. That's no different from e.g.
-passing NULL into memcpy() when at the same time the size is 0.
+This addresses -Werror=maybe-uninitialized compiler warnings for gcc -O2.
 
-This is XSA-448 / CVE-2023-46838.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Jan Beulich <jbeulich@suse.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Paul Durrant <paul@xen.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 33c5aac3bf32 ("selftests/sgx: Test complete changing of page type flow")
+Signed-off-by: Jo Van Bulck <jo.vanbulck@cs.kuleuven.be>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lore.kernel.org/all/20231005153854.25566-3-jo.vanbulck%40cs.kuleuven.be
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/xen-netback/netback.c |   44 ++++++++++++++++++++++++++++++++------
- 1 file changed, 38 insertions(+), 6 deletions(-)
+ tools/testing/selftests/sgx/load.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/net/xen-netback/netback.c
-+++ b/drivers/net/xen-netback/netback.c
-@@ -463,12 +463,25 @@ static void xenvif_get_requests(struct x
- 	}
+diff --git a/tools/testing/selftests/sgx/load.c b/tools/testing/selftests/sgx/load.c
+index 94bdeac1cf04..c9f658e44de6 100644
+--- a/tools/testing/selftests/sgx/load.c
++++ b/tools/testing/selftests/sgx/load.c
+@@ -136,11 +136,11 @@ static bool encl_ioc_add_pages(struct encl *encl, struct encl_segment *seg)
+  */
+ uint64_t encl_get_entry(struct encl *encl, const char *symbol)
+ {
++	Elf64_Sym *symtab = NULL;
++	char *sym_names = NULL;
+ 	Elf64_Shdr *sections;
+-	Elf64_Sym *symtab;
+ 	Elf64_Ehdr *ehdr;
+-	char *sym_names;
+-	int num_sym;
++	int num_sym = 0;
+ 	int i;
  
- 	for (shinfo->nr_frags = 0; nr_slots > 0 && shinfo->nr_frags < MAX_SKB_FRAGS;
--	     shinfo->nr_frags++, gop++, nr_slots--) {
-+	     nr_slots--) {
-+		if (unlikely(!txp->size)) {
-+			unsigned long flags;
-+
-+			spin_lock_irqsave(&queue->response_lock, flags);
-+			make_tx_response(queue, txp, 0, XEN_NETIF_RSP_OKAY);
-+			push_tx_responses(queue);
-+			spin_unlock_irqrestore(&queue->response_lock, flags);
-+			++txp;
-+			continue;
-+		}
-+
- 		index = pending_index(queue->pending_cons++);
- 		pending_idx = queue->pending_ring[index];
- 		xenvif_tx_create_map_op(queue, pending_idx, txp,
- 				        txp == first ? extra_count : 0, gop);
- 		frag_set_pending_idx(&frags[shinfo->nr_frags], pending_idx);
-+		++shinfo->nr_frags;
-+		++gop;
- 
- 		if (txp == first)
- 			txp = txfrags;
-@@ -481,20 +494,39 @@ static void xenvif_get_requests(struct x
- 		shinfo = skb_shinfo(nskb);
- 		frags = shinfo->frags;
- 
--		for (shinfo->nr_frags = 0; shinfo->nr_frags < nr_slots;
--		     shinfo->nr_frags++, txp++, gop++) {
-+		for (shinfo->nr_frags = 0; shinfo->nr_frags < nr_slots; ++txp) {
-+			if (unlikely(!txp->size)) {
-+				unsigned long flags;
-+
-+				spin_lock_irqsave(&queue->response_lock, flags);
-+				make_tx_response(queue, txp, 0,
-+						 XEN_NETIF_RSP_OKAY);
-+				push_tx_responses(queue);
-+				spin_unlock_irqrestore(&queue->response_lock,
-+						       flags);
-+				continue;
-+			}
-+
- 			index = pending_index(queue->pending_cons++);
- 			pending_idx = queue->pending_ring[index];
- 			xenvif_tx_create_map_op(queue, pending_idx, txp, 0,
- 						gop);
- 			frag_set_pending_idx(&frags[shinfo->nr_frags],
- 					     pending_idx);
-+			++shinfo->nr_frags;
-+			++gop;
+ 	ehdr = encl->bin;
+@@ -161,6 +161,9 @@ uint64_t encl_get_entry(struct encl *encl, const char *symbol)
  		}
- 
--		skb_shinfo(skb)->frag_list = nskb;
--	} else if (nskb) {
-+		if (shinfo->nr_frags) {
-+			skb_shinfo(skb)->frag_list = nskb;
-+			nskb = NULL;
-+		}
-+	}
-+
-+	if (nskb) {
- 		/* A frag_list skb was allocated but it is no longer needed
--		 * because enough slots were converted to copy ops above.
-+		 * because enough slots were converted to copy ops above or some
-+		 * were empty.
- 		 */
- 		kfree_skb(nskb);
  	}
+ 
++	if (!symtab || !sym_names)
++		return 0;
++
+ 	for (i = 0; i < num_sym; i++) {
+ 		Elf64_Sym *sym = &symtab[i];
+ 
+-- 
+2.43.0
+
 
 
 
