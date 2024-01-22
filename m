@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-15268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8F80838492
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:51 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D52E837D6C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59FEC299C18
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B7141F23A92
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EBDA73179;
-	Tue, 23 Jan 2024 02:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10645C5E5;
+	Tue, 23 Jan 2024 00:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mJkCqCH8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlNY1O1Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2C66EB61;
-	Tue, 23 Jan 2024 02:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAAF52F7C;
+	Tue, 23 Jan 2024 00:32:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975428; cv=none; b=EqHZZdA3n6h16+hDIsdl0FsZRQRVOXdSqKUIcBYUJP67mbISk5D9jXZ8tKHa0+kzxMCF+8p+AA5XvRD6C7WBIDgzxsMxGbyhevA77qXRPkFEmqVMJHcZmI1SvzkNzYWrdcWWNCMJ4SB35b0YCL5W7VIdO0mxs0HCHzO+1LjSeS4=
+	t=1705969938; cv=none; b=qYMqsEP/FSL9bio155uNU/+i2p/Fx0H/bgkdYO+RYw5yEVpB+T9+BKVqy0bH7shv+G3RA8ednSLi6lM6tP+elufL8a7WD7hr0Pgta8/5aAXa1yiUxVrkHv/BgUDYpcY7ub3fja3A+89ydlC8WOcXwpUIJJhY2QpJzMsEKkJdEOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975428; c=relaxed/simple;
-	bh=i5//6djdP2awJ3gRjKNfmsRdSPJ/Ot5onaia6K1b1bc=;
+	s=arc-20240116; t=1705969938; c=relaxed/simple;
+	bh=RGbJ14mPK3fOA56Ar21PRf3IwBEi9s84Vjit/FazBfg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UMflMMCdt2WNMipeOKA8vpVOjoL1MpwZHwhNWOtRiFogGb4ozamDdSjaEHLeBw6WUzb8w3ylzmkb04b+fNKPMdXjOEGFzyR2vtaKO+PNfB68PsNoNKsQWI2AWwnVmulJekjnLVr3irlDUCWLxR/SJlKzpsypdM1rzSS3HZP/YME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mJkCqCH8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E14C43390;
-	Tue, 23 Jan 2024 02:03:47 +0000 (UTC)
+	 MIME-Version; b=qJ50tTehBsH/KDpfuY8HyN33iXwMO6tIxeLZtPxTd/N0dv8whxNRu0kSVidrbgqz2LrbReSJFMGfesRxL2r9D3Nk0gg8mx8fgC1xZDhMRbvssavchpOptOOS5jAgGw4RPDDfIcKI0RixQBiZGLhlI2vHb7/S4TzEso6PJG3Togo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlNY1O1Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E2ECC433C7;
+	Tue, 23 Jan 2024 00:32:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975428;
-	bh=i5//6djdP2awJ3gRjKNfmsRdSPJ/Ot5onaia6K1b1bc=;
+	s=korg; t=1705969938;
+	bh=RGbJ14mPK3fOA56Ar21PRf3IwBEi9s84Vjit/FazBfg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mJkCqCH8+GMi5Oe21Nck+16Xgwr0lM3mJwZM/YES2Aa3dWQeafq9q7QgP4xrUuHDT
-	 aCi4nQXXAgTblgEC1An3PPmj3T2BQg41dSDzItTgeWLoWsoW7SklxGhujcNNR27A1e
-	 rHDtQOB6pr1hqsq/sIu3b3snlpfK5cayfLN/q890=
+	b=WlNY1O1Ybxcv5o/1YvDYYjHdZi1l6T3wXscTAv5YJNFdFfYzeEdpTNTGWhisRnf4Z
+	 rd6v7FaDdmPd+hBP4YgJN67aoho419jVnO14GCIC5OVplIS4VxpvtmFwKxuBURMwvq
+	 nLdGDg6jz2QXkhz4uoBmwfPHhk7A6pVoANrC85to=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Wesley Cheng <quic_wcheng@quicinc.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.6 360/583] usb: dwc3: gadget: Handle EP0 request dequeuing properly
+	James Clark <james.clark@arm.com>,
+	Nick Forrington <nick.forrington@arm.com>,
+	Leo Yan <leo.yan@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 507/641] perf test: Remove atomics from test_loop to avoid test failures
 Date: Mon, 22 Jan 2024 15:56:51 -0800
-Message-ID: <20240122235823.037608321@linuxfoundation.org>
+Message-ID: <20240122235833.935898924@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +70,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wesley Cheng <quic_wcheng@quicinc.com>
+From: Nick Forrington <nick.forrington@arm.com>
 
-commit 730e12fbec53ab59dd807d981a204258a4cfb29a upstream.
+[ Upstream commit 72b4ca7e993e94f09bcf6d19fc385a2e8060c71f ]
 
-Current EP0 dequeue path will share the same as other EPs.  However, there
-are some special considerations that need to be made for EP0 transfers:
+The current use of atomics can lead to test failures, as tests (such as
+tests/shell/record.sh) search for samples with "test_loop" as the
+top-most stack frame, but find frames related to the atomic operation
+(e.g. __aarch64_ldadd4_relax).
 
-  - EP0 transfers never transition into the started_list
-  - EP0 only has one active request at a time
+This change simply removes the "count" variable, as it is not necessary.
 
-In case there is a vendor specific control message for a function over USB
-FFS, then there is no guarantee on the timeline which the DATA/STATUS stage
-is responded to.  While this occurs, any attempt to end transfers on
-non-control EPs will end up having the DWC3_EP_DELAY_STOP flag set, and
-defer issuing of the end transfer command.  If the USB FFS application
-decides to timeout the control transfer, or if USB FFS AIO path exits, the
-USB FFS driver will issue a call to usb_ep_dequeue() for the ep0 request.
-
-In case of the AIO exit path, the AIO FS blocks until all pending USB
-requests utilizing the AIO path is completed.  However, since the dequeue
-of ep0 req does not happen properly, all non-control EPs with the
-DWC3_EP_DELAY_STOP flag set will not be handled, and the AIO exit path will
-be stuck waiting for the USB FFS data endpoints to receive a completion
-callback.
-
-Fix is to utilize dwc3_ep0_reset_state() in the dequeue API to ensure EP0
-is brought back to the SETUP state, and ensures that any deferred end
-transfer commands are handled.  This also will end any active transfers
-on EP0, compared to the previous implementation which directly called
-giveback only.
-
-Fixes: fcd2def66392 ("usb: dwc3: gadget: Refactor dwc3_gadget_ep_dequeue")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20231206201814.32664-1-quic_wcheng@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1962ab6f6e0b39e4 ("perf test workload thloop: Make count increments atomic")
+Reviewed-by: James Clark <james.clark@arm.com>
+Signed-off-by: Nick Forrington <nick.forrington@arm.com>
+Acked-by: Leo Yan <leo.yan@linaro.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20231102162225.50028-1-nick.forrington@arm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/gadget.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ tools/perf/tests/workloads/thloop.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -2103,7 +2103,17 @@ static int dwc3_gadget_ep_dequeue(struct
+diff --git a/tools/perf/tests/workloads/thloop.c b/tools/perf/tests/workloads/thloop.c
+index af05269c2eb8..457b29f91c3e 100644
+--- a/tools/perf/tests/workloads/thloop.c
++++ b/tools/perf/tests/workloads/thloop.c
+@@ -7,7 +7,6 @@
+ #include "../tests.h"
  
- 	list_for_each_entry(r, &dep->pending_list, list) {
- 		if (r == req) {
--			dwc3_gadget_giveback(dep, req, -ECONNRESET);
-+			/*
-+			 * Explicitly check for EP0/1 as dequeue for those
-+			 * EPs need to be handled differently.  Control EP
-+			 * only deals with one USB req, and giveback will
-+			 * occur during dwc3_ep0_stall_and_restart().  EP0
-+			 * requests are never added to started_list.
-+			 */
-+			if (dep->number > 1)
-+				dwc3_gadget_giveback(dep, req, -ECONNRESET);
-+			else
-+				dwc3_ep0_reset_state(dwc);
- 			goto out;
- 		}
- 	}
+ static volatile sig_atomic_t done;
+-static volatile unsigned count;
+ 
+ /* We want to check this symbol in perf report */
+ noinline void test_loop(void);
+@@ -19,8 +18,7 @@ static void sighandler(int sig __maybe_unused)
+ 
+ noinline void test_loop(void)
+ {
+-	while (!done)
+-		__atomic_fetch_add(&count, 1, __ATOMIC_RELAXED);
++	while (!done);
+ }
+ 
+ static void *thfunc(void *arg)
+-- 
+2.43.0
+
 
 
 
