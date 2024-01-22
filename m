@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-12790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A9A3837397
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 21:15:48 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F7648373AF
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 21:26:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 414171C273D3
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:15:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0152A1F22905
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:26:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB952405EC;
-	Mon, 22 Jan 2024 20:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95824123B;
+	Mon, 22 Jan 2024 20:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yfNG5bAP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cxavHk8f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CABC3DB86
-	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 20:15:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68F6B41743
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 20:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705954542; cv=none; b=jQlOT7LY2K/3A7WfuN2sZNiHbvKxl+SGEAIihIBS8u7DnoTEsUq06yal9SRWGHhoWBE4vqmoe/cwzj3cIPo7hERjja3kY7zSodYuBybtaKVyZgHdiWY9KE01UEd9MjTng/pX9hLE068r5FOqU8hBAmTemJrQDjqpTiCNiwXU44c=
+	t=1705955175; cv=none; b=Fj37GVXUz/W2RRdYWVtVnJ4efhybVV4yHKY6Qhaoajih0AQat20U97lTRTLhEFDnjW6lgNkOqlGu4cXlRK+5IrJMfUJC84C6cRYEjpKax5fWHL9pXwLHBECkMWeFYhK2NEzGAF6DETnQ6vIIXJ042Dh1UP9pDibpB77pXDGnPtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705954542; c=relaxed/simple;
-	bh=Jz30tTp1oa/1r07va0eSNZu31xZ9q54ZHwDtkzyYbgE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AqMv7WTafxghiRf4CBUfZsXQTnllPRx//Z19fl8aw+7EfcQa1d0rwcy/ATNLdU04s1SKTEJPslhv06PvKDTh1WCc4JQsINauXKaMCmO3gjBtDVVL1Ch12XXdFTlcpLAuE/LxqWygynXswQbQ6GrNNj+IR1iC72sM5Z0NPC6OMrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yfNG5bAP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC63EC43390;
-	Mon, 22 Jan 2024 20:15:41 +0000 (UTC)
+	s=arc-20240116; t=1705955175; c=relaxed/simple;
+	bh=FSpJMJyj0ZHp3+Vadr3O2C79ZGSDfI+G++mbRZYEdrE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KKmem5xsFMzkCLIJvL5xP06CoPOhY8O/yMjGqm/TvX++ARU1W0nnPIG/Vv8hUwAHHSQfKxazy3fKIFro5Hug+KX2K9ZWsavH9Tns58kzhm+0MdptJ0g7Z97uVzYnsL8kcvvzyE6ZIZV7jaeKQva9psK7KaPnXy0i6ZQ50UiU6AU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cxavHk8f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2951DC433C7;
+	Mon, 22 Jan 2024 20:26:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705954542;
-	bh=Jz30tTp1oa/1r07va0eSNZu31xZ9q54ZHwDtkzyYbgE=;
+	s=korg; t=1705955175;
+	bh=FSpJMJyj0ZHp3+Vadr3O2C79ZGSDfI+G++mbRZYEdrE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=yfNG5bAPez6xAU1J7FkQFVITBClCo+gOPFHoXQ0N/sk8/7EoffDWB1CkCLWisZ03b
-	 fhdfiMk/4MgK2YaJY349HW5jfrJpZVQ/lamQvAjQk+QPuyI65yCIPo2D36+PS4pHxU
-	 pvW/sZ+yWPk2izlfdAXYkWgmWFs+FqXLH7OIg5W0=
-Subject: FAILED: patch "[PATCH] ARM: dts: qcom: sdx55: Fix the base address of PCIe PHY" failed to apply to 6.6-stable tree
-To: manivannan.sadhasivam@linaro.org,andersson@kernel.org,dmitry.baryshkov@linaro.org,konrad.dybcio@linaro.org
+	b=cxavHk8f8yaweYTA8LuRcxjvAkByaaNy7oOeJ3kiq480DrO+59xRvFG1UIq6kggup
+	 xjp2fnEBynqGCHitNhtH6EjsmYcXpXtw/7nyn61F5aEqRmHO3cFwIABQXLtK3C8X1f
+	 XjTSAN8i/Qxi2G2l7Jcz19T1O0soz+RvoCnFExb0=
+Subject: FAILED: patch "[PATCH] soundwire: fix initializing sysfs for same devices on" failed to apply to 6.6-stable tree
+To: krzysztof.kozlowski@linaro.org,Vijendar.Mukunda@amd.com,broonie@kernel.org,pierre-louis.bossart@linux.intel.com,srinivas.kandagatla@linaro.org,vkoul@kernel.org,yung-chuan.liao@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 22 Jan 2024 12:15:39 -0800
-Message-ID: <2024012239-monstrous-fridge-7c31@gregkh>
+Date: Mon, 22 Jan 2024 12:26:06 -0800
+Message-ID: <2024012206-halogen-scarcity-a223@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,15 +62,14 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x cc6fc55c7ae04ab19b3972f78d3a8b1be32bf533
+git cherry-pick -x 8a8a9ac8a4972ee69d3dd3d1ae43963ae39cee18
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012239-monstrous-fridge-7c31@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012206-halogen-scarcity-a223@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-cc6fc55c7ae0 ("ARM: dts: qcom: sdx55: Fix the base address of PCIe PHY")
-bb56cff4ac03 ("ARM: dts: qcom-sdx55: switch PCIe QMP PHY to new style of bindings")
+8a8a9ac8a497 ("soundwire: fix initializing sysfs for same devices on different buses")
 
 thanks,
 
@@ -78,40 +77,83 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From cc6fc55c7ae04ab19b3972f78d3a8b1be32bf533 Mon Sep 17 00:00:00 2001
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Date: Mon, 11 Dec 2023 22:54:11 +0530
-Subject: [PATCH] ARM: dts: qcom: sdx55: Fix the base address of PCIe PHY
+From 8a8a9ac8a4972ee69d3dd3d1ae43963ae39cee18 Mon Sep 17 00:00:00 2001
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Date: Tue, 17 Oct 2023 11:09:33 -0500
+Subject: [PATCH] soundwire: fix initializing sysfs for same devices on
+ different buses
 
-While convering the binding to new format, serdes address specified in the
-old binding was used as the base address. This causes a boot hang as the
-driver tries to access memory region outside of the specified address. Fix
-it!
+If same devices with same device IDs are present on different soundwire
+buses, the probe fails due to conflicting device names and sysfs
+entries:
 
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: stable@vger.kernel.org # 6.6
-Fixes: bb56cff4ac03 ("ARM: dts: qcom-sdx55: switch PCIe QMP PHY to new style of bindings")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20231211172411.141289-1-manivannan.sadhasivam@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+  sysfs: cannot create duplicate filename '/bus/soundwire/devices/sdw:0:0217:0204:00:0'
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi b/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
-index e233233c74ce..2045fc779f88 100644
---- a/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
-@@ -431,9 +431,9 @@ pcie_ep: pcie-ep@1c00000 {
- 			status = "disabled";
- 		};
+The link ID is 0 for both devices, so they should be differentiated by
+the controller ID. Add the controller ID so, the device names and sysfs entries look
+like:
+
+  sdw:1:0:0217:0204:00:0 -> ../../../devices/platform/soc@0/6ab0000.soundwire-controller/sdw-master-1-0/sdw:1:0:0217:0204:00:0
+  sdw:3:0:0217:0204:00:0 -> ../../../devices/platform/soc@0/6b10000.soundwire-controller/sdw-master-3-0/sdw:3:0:0217:0204:00:0
+
+[PLB changes: use bus->controller_id instead of bus->id]
+
+Fixes: 7c3cd189b86d ("soundwire: Add Master registration")
+Cc: stable@vger.kernel.org
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Co-developed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Acked-by: Mark Brown <broonie@kernel.org>
+Tested-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20231017160933.12624-3-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+
+diff --git a/drivers/soundwire/slave.c b/drivers/soundwire/slave.c
+index c1c1a2ac293a..060c2982e26b 100644
+--- a/drivers/soundwire/slave.c
++++ b/drivers/soundwire/slave.c
+@@ -39,14 +39,14 @@ int sdw_slave_add(struct sdw_bus *bus,
+ 	slave->dev.fwnode = fwnode;
  
--		pcie_phy: phy@1c07000 {
-+		pcie_phy: phy@1c06000 {
- 			compatible = "qcom,sdx55-qmp-pcie-phy";
--			reg = <0x01c07000 0x2000>;
-+			reg = <0x01c06000 0x2000>;
- 			#address-cells = <1>;
- 			#size-cells = <1>;
- 			ranges;
+ 	if (id->unique_id == SDW_IGNORED_UNIQUE_ID) {
+-		/* name shall be sdw:link:mfg:part:class */
+-		dev_set_name(&slave->dev, "sdw:%01x:%04x:%04x:%02x",
+-			     bus->link_id, id->mfg_id, id->part_id,
++		/* name shall be sdw:ctrl:link:mfg:part:class */
++		dev_set_name(&slave->dev, "sdw:%01x:%01x:%04x:%04x:%02x",
++			     bus->controller_id, bus->link_id, id->mfg_id, id->part_id,
+ 			     id->class_id);
+ 	} else {
+-		/* name shall be sdw:link:mfg:part:class:unique */
+-		dev_set_name(&slave->dev, "sdw:%01x:%04x:%04x:%02x:%01x",
+-			     bus->link_id, id->mfg_id, id->part_id,
++		/* name shall be sdw:ctrl:link:mfg:part:class:unique */
++		dev_set_name(&slave->dev, "sdw:%01x:%01x:%04x:%04x:%02x:%01x",
++			     bus->controller_id, bus->link_id, id->mfg_id, id->part_id,
+ 			     id->class_id, id->unique_id);
+ 	}
+ 
+diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
+index 3312ad8a563b..690c279bbb88 100644
+--- a/sound/soc/intel/boards/sof_sdw.c
++++ b/sound/soc/intel/boards/sof_sdw.c
+@@ -1232,11 +1232,11 @@ static int fill_sdw_codec_dlc(struct device *dev,
+ 	else if (is_unique_device(adr_link, sdw_version, mfg_id, part_id,
+ 				  class_id, adr_index))
+ 		codec->name = devm_kasprintf(dev, GFP_KERNEL,
+-					     "sdw:%01x:%04x:%04x:%02x", link_id,
++					     "sdw:0:%01x:%04x:%04x:%02x", link_id,
+ 					     mfg_id, part_id, class_id);
+ 	else
+ 		codec->name = devm_kasprintf(dev, GFP_KERNEL,
+-					     "sdw:%01x:%04x:%04x:%02x:%01x", link_id,
++					     "sdw:0:%01x:%04x:%04x:%02x:%01x", link_id,
+ 					     mfg_id, part_id, class_id, unique_id);
+ 
+ 	if (!codec->name)
 
 
