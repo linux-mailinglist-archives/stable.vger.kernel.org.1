@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC483837C0B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B24C837E2A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04F5D1C27E74
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8C2A289FC8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C30C41FBF;
-	Tue, 23 Jan 2024 00:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 135D459B69;
+	Tue, 23 Jan 2024 00:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oA8eXZxP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TmJZnNhl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830391C02;
-	Tue, 23 Jan 2024 00:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C513650A75;
+	Tue, 23 Jan 2024 00:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969484; cv=none; b=oPguMtPfWFenLwcZLfXqW8iudAHPAvPff13AYSKP3D8kEHPU0sywqGO4sKYPR5nN+KfJQapunnjg7Yg/ZmWaLCtBVcR6fn4fWPGvpA8JM6ZzFnv+R6pr6LFQow3Gky1NrAybdh4rSjO7H+GcQ7tnJaY8ldCN7r/QjHZxmyqaaV0=
+	t=1705970404; cv=none; b=iyQjUQsW4hfP2b3cl7+KTEMo2KI0Rs/NIWuDRZYhK4MmZW+/+NKb/ZI/htmzaRp2COmhNFm2bSXeYCBef51A96gBtCfC1GYpAH179co/u0FoBwUERW4e0eHHYOJP4jbnpGMR2Bug6D3jqDDzqG/3EAarJ8+hN/uoBqO/PxdbrNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969484; c=relaxed/simple;
-	bh=vR9Ps+A2UXaeqNrbdwRuIW2M1xcK8td7RL0xDYb4cKU=;
+	s=arc-20240116; t=1705970404; c=relaxed/simple;
+	bh=t5qsxvzJvAn+Y5rE888nHzmxy3YrKKhR2Ck2X0X9bko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cCFMZqCicfT/W4j2c4xBOS11lDGiEyGhHb5sAtpUk0OtU4MwnkJasIZOwWzEiVLZTJZQTPT8wQWlrfkiS7cnGHJMSptcjbjTXId1wMqcenkkST9zLdEWlC0DvU90DvcXQVh5shu1XVqTceFnSn2S7CTZPzWag0G5Pq1bRLr/r6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oA8eXZxP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD47C433F1;
-	Tue, 23 Jan 2024 00:24:44 +0000 (UTC)
+	 MIME-Version; b=K3b+6NMom6AhER21WxabEqE3byDk/a8in5PKsa09EHEhTeqR56AoCgpotSL9wDWXvbUzCtPbCUUH9SV1B4KZFKOxjF6fzYTXedKlmvZ6jozVySK2mtUaJdDgGPToeRSIGTqRiSv8ImaSfs00fAOB5ACxYYeoUeif1Uv5WGRLP30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TmJZnNhl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C400C433F1;
+	Tue, 23 Jan 2024 00:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969484;
-	bh=vR9Ps+A2UXaeqNrbdwRuIW2M1xcK8td7RL0xDYb4cKU=;
+	s=korg; t=1705970404;
+	bh=t5qsxvzJvAn+Y5rE888nHzmxy3YrKKhR2Ck2X0X9bko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oA8eXZxPSpgHWtx1mEc8R45YUMQAfJHBefB+fo7cqx3nLYTtVfkCcpaSs7R2NMwI2
-	 s875qIt751GdGe2BQYOCcmDEL8sRtxapoqtzO9LEguS9U3wJL5QXa6Gm1narcj1W8E
-	 AzrFNv3jeCuyAQvv3OgbALx3fOI06ESvzgGOdITM=
+	b=TmJZnNhl2t/04ANTmRdRYFtQ4QA/ps49Mog1SRvE+jCETOFde5aLh3GpZK07AQCij
+	 4bbflAofWx8oOJIrTBSU1I3jhM9ECOWqsjiy+QiWzYw27lbuG2DEarC/aDBQzHK7sd
+	 Adk2pJ3iEyPLa2dOEYVGoIHyKrMnCGt0X7nhLxhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Philipp Zabel <philipp.zabel@gmail.com>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 275/641] drm/imx/lcdc: Fix double-free of driver data
+Subject: [PATCH 6.1 011/417] powerpc/powernv: Add a null pointer check in opal_powercap_init()
 Date: Mon, 22 Jan 2024 15:52:59 -0800
-Message-ID: <20240122235826.522388184@linuxfoundation.org>
+Message-ID: <20240122235751.897241289@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit ff3670877e7c73d06c2a835d9abb62efcae0145c ]
+[ Upstream commit e123015c0ba859cf48aa7f89c5016cc6e98e018d ]
 
-The struct imx_lcdc driver data is allocated using devm_drm_dev_alloc()
-so it must not be explicitly kfree()d.
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure.
 
-Also drm_kms_helper_poll_fini() should not be called as there is no
-matching drm_kms_helper_poll_init(). So drop the release function
-completely.
-
-Fixes: c87e859cdeb5 ("drm/imx/lcdc: Implement DRM driver for imx25")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Philipp Zabel <philipp.zabel@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230706092731.2630232-1-u.kleine-koenig@pengutronix.de
+Fixes: b9ef7b4b867f ("powerpc: Convert to using %pOFn instead of device_node.name")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231126095739.1501990-1-chentao@kylinos.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/imx/lcdc/imx-lcdc.c | 9 ---------
- 1 file changed, 9 deletions(-)
+ arch/powerpc/platforms/powernv/opal-powercap.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
-index 22b65f4a0e30..4beb3b4bd694 100644
---- a/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
-+++ b/drivers/gpu/drm/imx/lcdc/imx-lcdc.c
-@@ -342,21 +342,12 @@ static const struct drm_mode_config_helper_funcs imx_lcdc_mode_config_helpers =
- 	.atomic_commit_tail = drm_atomic_helper_commit_tail_rpm,
- };
+diff --git a/arch/powerpc/platforms/powernv/opal-powercap.c b/arch/powerpc/platforms/powernv/opal-powercap.c
+index 7bfe4cbeb35a..ea917266aa17 100644
+--- a/arch/powerpc/platforms/powernv/opal-powercap.c
++++ b/arch/powerpc/platforms/powernv/opal-powercap.c
+@@ -196,6 +196,12 @@ void __init opal_powercap_init(void)
  
--static void imx_lcdc_release(struct drm_device *drm)
--{
--	struct imx_lcdc *lcdc = imx_lcdc_from_drmdev(drm);
--
--	drm_kms_helper_poll_fini(drm);
--	kfree(lcdc);
--}
--
- DEFINE_DRM_GEM_DMA_FOPS(imx_lcdc_drm_fops);
- 
- static struct drm_driver imx_lcdc_drm_driver = {
- 	.driver_features = DRIVER_GEM | DRIVER_MODESET | DRIVER_ATOMIC,
- 	.fops = &imx_lcdc_drm_fops,
- 	DRM_GEM_DMA_DRIVER_OPS_VMAP,
--	.release = imx_lcdc_release,
- 	.name = "imx-lcdc",
- 	.desc = "i.MX LCDC driver",
- 	.date = "20200716",
+ 		j = 0;
+ 		pcaps[i].pg.name = kasprintf(GFP_KERNEL, "%pOFn", node);
++		if (!pcaps[i].pg.name) {
++			kfree(pcaps[i].pattrs);
++			kfree(pcaps[i].pg.attrs);
++			goto out_pcaps_pattrs;
++		}
++
+ 		if (has_min) {
+ 			powercap_add_attr(min, "powercap-min",
+ 					  &pcaps[i].pattrs[j]);
 -- 
 2.43.0
 
