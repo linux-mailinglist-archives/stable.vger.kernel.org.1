@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-13538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0CB9837C82
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 003968383E5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59B8E2875DB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3147F1C29F52
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CD813541A;
-	Tue, 23 Jan 2024 00:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FFBF657DE;
+	Tue, 23 Jan 2024 01:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZsayEKVf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVvs2exf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C5C33097;
-	Tue, 23 Jan 2024 00:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBC2651AC;
+	Tue, 23 Jan 2024 01:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969648; cv=none; b=eBlI/Xb6A6ll7Mrc5Bv+n+6ymqnURK0x6FScCS6wrD9MK8UewmipCDbWA9QTNvkGuIh+VJJx7sGRkzBStJfDhOt+M7gsQf66HEIXmXl+CK1vX9RMKE2+gpyinPj3ZrW+Kqc0rQmWi0d0v1eRPGUr86TfTnyixCQ0VXccAOJSp8o=
+	t=1705975091; cv=none; b=AlZkQFiOnJWVgKsINK2euc8Jy5Bhz8nwJwKqYkmlWAxQIC8RukXu6Si9nO5Vap6iJM5N3MHEyWLOjBt527PKXSvGwM0C0Vha5T6vPJL5LCiwwuN2Bgx86NC+pifCCI/KfNf0ywyknGnGTzixMlNNZwfl3lPafEjF1wPInazDK/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969648; c=relaxed/simple;
-	bh=caD1ugqz5KYX3v+Ki7zLPscwtL9dJ4kF/zAeXa4UYgc=;
+	s=arc-20240116; t=1705975091; c=relaxed/simple;
+	bh=YYUCxkBuEo0s1Cc73CCx1PRVLPlHyjEFX7t2jDhVGII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UKhfsGo+DRibjh4f0sbAvcnI2WolEZ0S8kDvbZqoxXBbXvGrZOelW2t2nv21Vb4gPkoamTvTkiHnXkOhdLV5JMWDXJGbGM8NmYKCco9qxNuvQYTaaQG3p6HkWdjphuVv4BFBFupZG1rg+AWEXe59wQGfPHi6uFVGk0gjS66rk8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZsayEKVf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53974C433F1;
-	Tue, 23 Jan 2024 00:27:27 +0000 (UTC)
+	 MIME-Version; b=H+XS0x0D0Jrd3V1Zv6vo1pSmHJ2RUXln8cis5E9TEPwvrfYYmhEC5FU1fXmTsRXy0r8JKGcl+5D/cqmqtaYjxGpIaECM2hFKty6wjpTNGl9okR2E2W29/XSn/FEM0bp7l0xsDxWwXb8kbO6nT9UM75ofaSmLZRl0+P6U0jod+ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVvs2exf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F60C433C7;
+	Tue, 23 Jan 2024 01:58:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969647;
-	bh=caD1ugqz5KYX3v+Ki7zLPscwtL9dJ4kF/zAeXa4UYgc=;
+	s=korg; t=1705975091;
+	bh=YYUCxkBuEo0s1Cc73CCx1PRVLPlHyjEFX7t2jDhVGII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZsayEKVfB8Mm4kNZ66AQs8h7FaApxq2rrSzfocuPcoygO2bZ9An9rqXrPFcpQFs9X
-	 F7n0gG8nx0byV2nFZrkeVdWYbiYY112soTjWfe4UMBciJYFCs/4FKaEgPYcEz3vn2C
-	 LfKHDLzyu1BOB3o49fatn3q9sUOvNF6XdNBK8d9I=
+	b=VVvs2exfMgbIeEI/Ymfaod65NTfdS8uaaHrT8kXqUcmNDFpBPviIDM6Bq0qcDI399
+	 XWk1s9Heb6pvMCru+9FLFRuGb4xqugC2of23o7cBySKRseuaft23iAwuz6glpqL/Ge
+	 /MuQvGbpDuhCQ2owNRhlD1ix+0fJDCFwAWuqLdUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 6.7 381/641] binder: fix async space check for 0-sized buffers
+	Zheng Wang <zyytlz.wz@163.com>,
+	Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 234/583] media: mtk-jpeg: Remove cancel worker in mtk_jpeg_remove to avoid the crash of multi-core JPEG devices
 Date: Mon, 22 Jan 2024 15:54:45 -0800
-Message-ID: <20240122235829.882700601@linuxfoundation.org>
+Message-ID: <20240122235819.146432333@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Zheng Wang <zyytlz.wz@163.com>
 
-commit 3091c21d3e9322428691ce0b7a0cfa9c0b239eeb upstream.
+[ Upstream commit d8212c5c87c143ca01b78f6bf61244af07e0058e ]
 
-Move the padding of 0-sized buffers to an earlier stage to account for
-this round up during the alloc->free_async_space check.
+This patch reverts commit c677d7ae8314
+("media: mtk-jpeg: Fix use after free bug due to uncanceled work").
+The job_timeout_work is initialized only for
+the single-core JPEG device so it will cause the crash for multi-core
+JPEG devices.
 
-Fixes: 74310e06be4d ("android: binder: Move buffer out of area shared with user space")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-5-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix it by removing the cancel_delayed_work_sync function.
+
+Fixes: c677d7ae8314 ("media: mtk-jpeg: Fix use after free bug due to uncanceled work")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder_alloc.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -407,6 +407,10 @@ static struct binder_buffer *binder_allo
- 				alloc->pid, extra_buffers_size);
- 		return ERR_PTR(-EINVAL);
- 	}
-+
-+	/* Pad 0-size buffers so they get assigned unique addresses */
-+	size = max(size, sizeof(void *));
-+
- 	if (is_async &&
- 	    alloc->free_async_space < size + sizeof(struct binder_buffer)) {
- 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
-@@ -415,9 +419,6 @@ static struct binder_buffer *binder_allo
- 		return ERR_PTR(-ENOSPC);
- 	}
+diff --git a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
+index 7194f88edc0f..60425c99a2b8 100644
+--- a/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
++++ b/drivers/media/platform/mediatek/jpeg/mtk_jpeg_core.c
+@@ -1403,7 +1403,6 @@ static void mtk_jpeg_remove(struct platform_device *pdev)
+ {
+ 	struct mtk_jpeg_dev *jpeg = platform_get_drvdata(pdev);
  
--	/* Pad 0-size buffers so they get assigned unique addresses */
--	size = max(size, sizeof(void *));
--
- 	while (n) {
- 		buffer = rb_entry(n, struct binder_buffer, rb_node);
- 		BUG_ON(!buffer->free);
+-	cancel_delayed_work_sync(&jpeg->job_timeout_work);
+ 	pm_runtime_disable(&pdev->dev);
+ 	video_unregister_device(jpeg->vdev);
+ 	v4l2_m2m_release(jpeg->m2m_dev);
+-- 
+2.43.0
+
 
 
 
