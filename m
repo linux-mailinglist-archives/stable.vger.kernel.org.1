@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-15274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14207-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9539D838496
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:58 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7509837FF6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DA80299BF7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E2611F2BB90
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D71577317E;
-	Tue, 23 Jan 2024 02:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DE6212CDB3;
+	Tue, 23 Jan 2024 00:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZLsW5aU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGGv/MI4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954967317B;
-	Tue, 23 Jan 2024 02:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D07E12CDA3;
+	Tue, 23 Jan 2024 00:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975433; cv=none; b=hlrpK5Le/oOvd7JFf+n+BYS7iBejoCigxFThUGqJXU1b0mLHhzKZYxLCqu0B6u3DuzsxGd5NEd5oja3RD9zmVE3qDgHHrcaVqvO6+WWpR7s9RBeiDFbjC5ashNAdiohYMd65NtZuPQgcWYvWgy+1QsywxChA2HVTMDb0GKednIA=
+	t=1705971472; cv=none; b=UxsMf2GQcjrB3Rk8mzPIPl2ywbBG8nYgIonX1DpNJByP488KIyIiuGlg3/QI+rVEHwwF8m1pqE/YJmz+Ynjb23aCe+JTcE7MzDiroBZxIGhkGb7Mdd4eUQwz1KHoh2f5iUr4EqhI1kGbIm//otAmPYF4KvnpyuGEBB8/J68WpXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975433; c=relaxed/simple;
-	bh=EAh7XTPn/A9qUVIr9bJ8UUDLOILnxkTssEQvZsmHFjY=;
+	s=arc-20240116; t=1705971472; c=relaxed/simple;
+	bh=qxuJ8sha6iM9b3cBrndKxVyejxKCj6JOkDnAE4MYqZ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RK6NKP0oBjIgtbF0Wxx17BDBEA3FIEGZH54d67vpdQ/M8OViYTA3tFxNNbPAMreeNCUKSQGJITsSyWJLAoUzQnqVj4KRHOV7v328pCVX/oBxEzS9HMoNFF4JTwFh9smpLzHiB4zkR66WGRvC1xJJ9CR0Vpa+20aIji2x6eebXQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZLsW5aU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B60AC43390;
-	Tue, 23 Jan 2024 02:03:53 +0000 (UTC)
+	 MIME-Version; b=pL99+D8lZB2xiZtKLisRVWtOwBDNp/iroMZlX7BDDjuxs7LtmN2qTZlhmYWeB2yUpBgLc7aQgGMSPy/NLPHMv/sQbKMwwbnnl0td7IxZNh06rJzJthQeqzvihvt2XQ64WXc+2e/TlesWwGUrviJKhvPZUU1rwaTybvfejbccweQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGGv/MI4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9290EC433F1;
+	Tue, 23 Jan 2024 00:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975433;
-	bh=EAh7XTPn/A9qUVIr9bJ8UUDLOILnxkTssEQvZsmHFjY=;
+	s=korg; t=1705971471;
+	bh=qxuJ8sha6iM9b3cBrndKxVyejxKCj6JOkDnAE4MYqZ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SZLsW5aU51zWdrLxAWgUq6Nm3Z2j35JIlxdSmfheuL9BVzPashNkiZTxbwlOcstcj
-	 xgexh+lEa26EEXeuGkK7csRJ2l4tJ1K4FIut/jxkMZ3ViKlry77pMbKsl7xHjUAUxu
-	 Rt29xGlIQInXBuo8ciYSbN2UR7qqDqu850PnUtSQ=
+	b=RGGv/MI4JHECZrYsUPvSXzVR98F1RVXrBXWbDl+At5HK0FjIBVAOKrwBa8MnVucxL
+	 RgY5OzeG6YgjaJRv+77p7Taxk8XEhf4PcyEo3/ruec00p59X9UQV65mdB+VrlzZHhg
+	 XNx8nz64vMGI0L4FUtEJ/fvMTuzdQGN67+pxLTNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>
-Subject: [PATCH 6.6 356/583] tick-sched: Fix idle and iowait sleeptime accounting vs CPU hotplug
+	Max Gurtovoy <mgurtovoy@nvidia.com>,
+	Sergey Gorenko <sergeygo@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 239/417] IB/iser: Prevent invalidating wrong MR
 Date: Mon, 22 Jan 2024 15:56:47 -0800
-Message-ID: <20240122235822.915595846@linuxfoundation.org>
+Message-ID: <20240122235800.164453182@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Sergey Gorenko <sergeygo@nvidia.com>
 
-commit 71fee48fb772ac4f6cfa63dbebc5629de8b4cc09 upstream.
+[ Upstream commit 2f1888281e67205bd80d3e8f54dbd519a9653f26 ]
 
-When offlining and onlining CPUs the overall reported idle and iowait
-times as reported by /proc/stat jump backward and forward:
+The iser_reg_resources structure has two pointers to MR but only one
+mr_valid field. The implementation assumes that we use only *sig_mr when
+pi_enable is true. Otherwise, we use only *mr. However, it is only
+sometimes correct. Read commands without protection information occur even
+when pi_enble is true. For example, the following SCSI commands have a
+Data-In buffer but never have protection information: READ CAPACITY (16),
+INQUIRY, MODE SENSE(6), MAINTENANCE IN. So, we use
+*sig_mr for some SCSI commands and *mr for the other SCSI commands.
 
-cpu  132 0 176 225249 47 6 6 21 0 0
-cpu0 80 0 115 112575 33 3 4 18 0 0
-cpu1 52 0 60 112673 13 3 1 2 0 0
+In most cases, it works fine because the remote invalidation is applied.
+However, there are two cases when the remote invalidation is not
+applicable.
+ 1. Small write commands when all data is sent as an immediate.
+ 2. The target does not support the remote invalidation feature.
 
-cpu  133 0 177 226681 47 6 6 21 0 0
-cpu0 80 0 116 113387 33 3 4 18 0 0
+The lazy invalidation is used if the remote invalidation is impossible.
+Since, at the lazy invalidation, we always invalidate the MR we want to
+use, the wrong MR may be invalidated.
 
-cpu  133 0 178 114431 33 6 6 21 0 0 <---- jump backward
-cpu0 80 0 116 114247 33 3 4 18 0 0
-cpu1 52 0 61 183 0 3 1 2 0 0        <---- idle + iowait start with 0
+To fix the issue, we need a field per MR that indicates the MR needs
+invalidation. Since the ib_mr structure already has such a field, let's
+use ib_mr.need_inval instead of iser_reg_resources.mr_valid.
 
-cpu  133 0 178 228956 47 6 6 21 0 0 <---- jump forward
-cpu0 81 0 117 114929 33 3 4 18 0 0
-
-Reason for this is that get_idle_time() in fs/proc/stat.c has different
-sources for both values depending on if a CPU is online or offline:
-
-- if a CPU is online the values may be taken from its per cpu
-  tick_cpu_sched structure
-
-- if a CPU is offline the values are taken from its per cpu cpustat
-  structure
-
-The problem is that the per cpu tick_cpu_sched structure is set to zero on
-CPU offline. See tick_cancel_sched_timer() in kernel/time/tick-sched.c.
-
-Therefore when a CPU is brought offline and online afterwards both its idle
-and iowait sleeptime will be zero, causing a jump backward in total system
-idle and iowait sleeptime. In a similar way if a CPU is then brought
-offline again the total idle and iowait sleeptimes will jump forward.
-
-It looks like this behavior was introduced with commit 4b0c0f294f60
-("tick: Cleanup NOHZ per cpu data on cpu down").
-
-This was only noticed now on s390, since we switched to generic idle time
-reporting with commit be76ea614460 ("s390/idle: remove arch_cpu_idle_time()
-and corresponding code").
-
-Fix this by preserving the values of idle_sleeptime and iowait_sleeptime
-members of the per-cpu tick_sched structure on CPU hotplug.
-
-Fixes: 4b0c0f294f60 ("tick: Cleanup NOHZ per cpu data on cpu down")
-Reported-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20240115163555.1004144-1-hca@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b76a439982f8 ("IB/iser: Use IB_WR_REG_MR_INTEGRITY for PI handover")
+Link: https://lore.kernel.org/r/20231219072311.40989-1-sergeygo@nvidia.com
+Acked-by: Max Gurtovoy <mgurtovoy@nvidia.com>
+Signed-off-by: Sergey Gorenko <sergeygo@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-sched.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/infiniband/ulp/iser/iscsi_iser.h     | 2 --
+ drivers/infiniband/ulp/iser/iser_initiator.c | 5 ++++-
+ drivers/infiniband/ulp/iser/iser_memory.c    | 8 ++++----
+ drivers/infiniband/ulp/iser/iser_verbs.c     | 1 -
+ 4 files changed, 8 insertions(+), 8 deletions(-)
 
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -1547,13 +1547,18 @@ void tick_setup_sched_timer(void)
- void tick_cancel_sched_timer(int cpu)
- {
- 	struct tick_sched *ts = &per_cpu(tick_cpu_sched, cpu);
-+	ktime_t idle_sleeptime, iowait_sleeptime;
+diff --git a/drivers/infiniband/ulp/iser/iscsi_iser.h b/drivers/infiniband/ulp/iser/iscsi_iser.h
+index dee8c97ff056..d967d5532459 100644
+--- a/drivers/infiniband/ulp/iser/iscsi_iser.h
++++ b/drivers/infiniband/ulp/iser/iscsi_iser.h
+@@ -317,12 +317,10 @@ struct iser_device {
+  *
+  * @mr:         memory region
+  * @sig_mr:     signature memory region
+- * @mr_valid:   is mr valid indicator
+  */
+ struct iser_reg_resources {
+ 	struct ib_mr                     *mr;
+ 	struct ib_mr                     *sig_mr;
+-	u8				  mr_valid:1;
+ };
  
- # ifdef CONFIG_HIGH_RES_TIMERS
- 	if (ts->sched_timer.base)
- 		hrtimer_cancel(&ts->sched_timer);
- # endif
+ /**
+diff --git a/drivers/infiniband/ulp/iser/iser_initiator.c b/drivers/infiniband/ulp/iser/iser_initiator.c
+index 7b83f48f60c5..8ec470c519e8 100644
+--- a/drivers/infiniband/ulp/iser/iser_initiator.c
++++ b/drivers/infiniband/ulp/iser/iser_initiator.c
+@@ -580,7 +580,10 @@ static inline int iser_inv_desc(struct iser_fr_desc *desc, u32 rkey)
+ 		return -EINVAL;
+ 	}
  
-+	idle_sleeptime = ts->idle_sleeptime;
-+	iowait_sleeptime = ts->iowait_sleeptime;
- 	memset(ts, 0, sizeof(*ts));
-+	ts->idle_sleeptime = idle_sleeptime;
-+	ts->iowait_sleeptime = iowait_sleeptime;
+-	desc->rsc.mr_valid = 0;
++	if (desc->sig_protected)
++		desc->rsc.sig_mr->need_inval = false;
++	else
++		desc->rsc.mr->need_inval = false;
+ 
+ 	return 0;
  }
- #endif
+diff --git a/drivers/infiniband/ulp/iser/iser_memory.c b/drivers/infiniband/ulp/iser/iser_memory.c
+index 29ae2c6a250a..6efcb79c8efe 100644
+--- a/drivers/infiniband/ulp/iser/iser_memory.c
++++ b/drivers/infiniband/ulp/iser/iser_memory.c
+@@ -264,7 +264,7 @@ static int iser_reg_sig_mr(struct iscsi_iser_task *iser_task,
  
+ 	iser_set_prot_checks(iser_task->sc, &sig_attrs->check_mask);
+ 
+-	if (rsc->mr_valid)
++	if (rsc->sig_mr->need_inval)
+ 		iser_inv_rkey(&tx_desc->inv_wr, mr, cqe, &wr->wr);
+ 
+ 	ib_update_fast_reg_key(mr, ib_inc_rkey(mr->rkey));
+@@ -288,7 +288,7 @@ static int iser_reg_sig_mr(struct iscsi_iser_task *iser_task,
+ 	wr->access = IB_ACCESS_LOCAL_WRITE |
+ 		     IB_ACCESS_REMOTE_READ |
+ 		     IB_ACCESS_REMOTE_WRITE;
+-	rsc->mr_valid = 1;
++	rsc->sig_mr->need_inval = true;
+ 
+ 	sig_reg->sge.lkey = mr->lkey;
+ 	sig_reg->rkey = mr->rkey;
+@@ -313,7 +313,7 @@ static int iser_fast_reg_mr(struct iscsi_iser_task *iser_task,
+ 	struct ib_reg_wr *wr = &tx_desc->reg_wr;
+ 	int n;
+ 
+-	if (rsc->mr_valid)
++	if (rsc->mr->need_inval)
+ 		iser_inv_rkey(&tx_desc->inv_wr, mr, cqe, &wr->wr);
+ 
+ 	ib_update_fast_reg_key(mr, ib_inc_rkey(mr->rkey));
+@@ -336,7 +336,7 @@ static int iser_fast_reg_mr(struct iscsi_iser_task *iser_task,
+ 		     IB_ACCESS_REMOTE_WRITE |
+ 		     IB_ACCESS_REMOTE_READ;
+ 
+-	rsc->mr_valid = 1;
++	rsc->mr->need_inval = true;
+ 
+ 	reg->sge.lkey = mr->lkey;
+ 	reg->rkey = mr->rkey;
+diff --git a/drivers/infiniband/ulp/iser/iser_verbs.c b/drivers/infiniband/ulp/iser/iser_verbs.c
+index a00ca117303a..057e69164e6d 100644
+--- a/drivers/infiniband/ulp/iser/iser_verbs.c
++++ b/drivers/infiniband/ulp/iser/iser_verbs.c
+@@ -135,7 +135,6 @@ iser_create_fastreg_desc(struct iser_device *device,
+ 			goto err_alloc_mr_integrity;
+ 		}
+ 	}
+-	desc->rsc.mr_valid = 0;
+ 
+ 	return desc;
+ 
+-- 
+2.43.0
+
 
 
 
