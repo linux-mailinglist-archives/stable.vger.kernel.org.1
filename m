@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-12992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B99CB837A1B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F9FE837895
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED7FB1C28589
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:49:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBB7528C609
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:23:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CF0112A163;
-	Tue, 23 Jan 2024 00:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D648513AA21;
+	Tue, 23 Jan 2024 00:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1fvUnlwE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpYgLeeY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B89B129A63;
-	Tue, 23 Jan 2024 00:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9336013A27C;
+	Tue, 23 Jan 2024 00:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968745; cv=none; b=q1D1FF95EVuLTJ4O2Re0XjL2fJMeT7hDtVMe+egfYQahcoVd2VS9YlpDdKOoWdg1kZHct8QEgkk8/mO/jKNa0CcL0MO8SITAdYCIjNKNIcn2JjD57+vfhKHndYlJ2AQUzusX8g1M9fezuN/WBtFqEYpoUhJF6rhJEb+vatffyFY=
+	t=1705968129; cv=none; b=Ig4K7fgyRpn+Eva+De9vGrvCio5HAmNp3TlP/uJTW4sf9FW7z8kPfkthpugMCP0n9XJpamfnK7XtP9QdLQOqTPVGcC4b7PUZYkP32Ss4pGUIXVmjAUdkmzWtlPbVmjvkmS3P8HVsb6zV9RT5hyZiM+qHX55N+xLMS7CvfDIp3dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968745; c=relaxed/simple;
-	bh=k2mgAJKZFk2qFilPh9p0ufAESElJ5MHnMiziPfrUPpk=;
+	s=arc-20240116; t=1705968129; c=relaxed/simple;
+	bh=0i0P8BXc1L3jwCpxgv6GfbRKSswJ11UGBLMlSGd4AVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iKEMo6sPZyHPNMjSLQhKxVu5nNAxFDhD/jU2+FXv7ATMDoAz/+BsMy8OSJhijd3Hhf9DI30x1pig8nODZFWMcf8GjauCUcpOti94K+RJp86iEmaECnpvGG5+VqWArAsTxGHtJ+Qnc7njexmy6gbe9zW8NwZvI7DEM3+KiDm20Lw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1fvUnlwE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFCFFC43390;
-	Tue, 23 Jan 2024 00:12:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=K/KXPtfMGseXvkKy3L0ZU1DjT7CrvfskzTWBFa9fO98+ah4wfyDmhTrI+48u74NY4VUgq/9v3IYT2zlIeR+1LZFhhis6CcwcO034LKuZCTQ6kex4WVVd1wXq4LaI3K6CRoSMo/5qUiJtK6dk9qVm3leDMCnFHlXKoDiWOE5sy3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpYgLeeY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD301C433C7;
+	Tue, 23 Jan 2024 00:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968744;
-	bh=k2mgAJKZFk2qFilPh9p0ufAESElJ5MHnMiziPfrUPpk=;
+	s=korg; t=1705968129;
+	bh=0i0P8BXc1L3jwCpxgv6GfbRKSswJ11UGBLMlSGd4AVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1fvUnlwEufutLdOFHr7Sh0C6XBvjmbw2NxqNnLeO2M44qkfB9oSREhz09AbEE/dWm
-	 hLBX0gW61uOeALBTz81K4nZS2vYZMO/9GHejc/jRhEz7czw/cHvv1vCGjUVQUhNw/y
-	 jW5jkXXZtZkZ5SWY2o7zVIIjg9EwOp+W/Sh9wRJc=
+	b=RpYgLeeYdxOaVmr4GwnAtnI449+VsXi+UOTEVV0auBEuj1EEgfZeBMNDw9hmkOaFP
+	 cj+oojvhSlhOyVdyOV7t2pzWUo6GGI2PV6hXRWLM/uKde48DioalpZNNNjdbsD2R4m
+	 rdwRwGaOu/J+vx0QW/Wvz5IDWXhQl0LycSRhG4l0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Vineet Gupta <vgupta@kernel.org>,
+	Kamil Duljas <kamil.duljas@gmail.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 027/194] ARC: fix spare error
-Date: Mon, 22 Jan 2024 15:55:57 -0800
-Message-ID: <20240122235720.378976418@linuxfoundation.org>
+Subject: [PATCH 4.19 002/148] ASoC: Intel: Skylake: mem leak in skl register function
+Date: Mon, 22 Jan 2024 15:55:58 -0800
+Message-ID: <20240122235712.539495426@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vineet Gupta <vgupta@kernel.org>
+From: Kamil Duljas <kamil.duljas@gmail.com>
 
-[ Upstream commit aca02d933f63ba8bc84258bf35f9ffaf6b664336 ]
+[ Upstream commit f8ba14b780273fd290ddf7ee0d7d7decb44cc365 ]
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202312082320.VDN5A9hb-lkp@intel.com/
-Signed-off-by: Vineet Gupta <vgupta@kernel.org>
+skl_platform_register() uses krealloc. When krealloc is fail,
+then previous memory is not freed. The leak is also when soc
+component registration failed.
+
+Signed-off-by: Kamil Duljas <kamil.duljas@gmail.com>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20231116224112.2209-2-kamil.duljas@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arc/kernel/signal.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/soc/intel/skylake/skl-pcm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arc/kernel/signal.c b/arch/arc/kernel/signal.c
-index 8877de0dfe6c..2759d49a2f3a 100644
---- a/arch/arc/kernel/signal.c
-+++ b/arch/arc/kernel/signal.c
-@@ -61,7 +61,7 @@ struct rt_sigframe {
- 	unsigned int sigret_magic;
- };
+diff --git a/sound/soc/intel/skylake/skl-pcm.c b/sound/soc/intel/skylake/skl-pcm.c
+index 6b2c8c6e7a00..5195e012dc6d 100644
+--- a/sound/soc/intel/skylake/skl-pcm.c
++++ b/sound/soc/intel/skylake/skl-pcm.c
+@@ -1450,6 +1450,7 @@ int skl_platform_register(struct device *dev)
+ 		dais = krealloc(skl->dais, sizeof(skl_fe_dai) +
+ 				sizeof(skl_platform_dai), GFP_KERNEL);
+ 		if (!dais) {
++			kfree(skl->dais);
+ 			ret = -ENOMEM;
+ 			goto err;
+ 		}
+@@ -1462,8 +1463,10 @@ int skl_platform_register(struct device *dev)
  
--static int save_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
-+static int save_arcv2_regs(struct sigcontext __user *mctx, struct pt_regs *regs)
- {
- 	int err = 0;
- #ifndef CONFIG_ISA_ARCOMPACT
-@@ -74,12 +74,12 @@ static int save_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
- #else
- 	v2abi.r58 = v2abi.r59 = 0;
- #endif
--	err = __copy_to_user(&mctx->v2abi, &v2abi, sizeof(v2abi));
-+	err = __copy_to_user(&mctx->v2abi, (void const *)&v2abi, sizeof(v2abi));
- #endif
- 	return err;
+ 	ret = devm_snd_soc_register_component(dev, &skl_component,
+ 					 skl->dais, num_dais);
+-	if (ret)
++	if (ret) {
++		kfree(skl->dais);
+ 		dev_err(dev, "soc component registration failed %d\n", ret);
++	}
+ err:
+ 	return ret;
  }
- 
--static int restore_arcv2_regs(struct sigcontext *mctx, struct pt_regs *regs)
-+static int restore_arcv2_regs(struct sigcontext __user *mctx, struct pt_regs *regs)
- {
- 	int err = 0;
- #ifndef CONFIG_ISA_ARCOMPACT
 -- 
 2.43.0
 
