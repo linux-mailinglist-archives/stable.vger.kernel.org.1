@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-14742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0107838260
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C6783802C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2BA61C27ADC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3290F28E3AB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4545B5DE;
-	Tue, 23 Jan 2024 01:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF2AA64CEC;
+	Tue, 23 Jan 2024 00:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Ocfq8Xg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MuqSYHNT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CC95B5D9;
-	Tue, 23 Jan 2024 01:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B44C651B3;
+	Tue, 23 Jan 2024 00:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974337; cv=none; b=nK7AcZ/TQGoXsYlVn6S+VjGGAVzR7Hr3cDvWyb+H8I0rzYSXaKK2630f63VZqyANjYoSUKoIoxuG0D5YkPaQHKLYKCxwk3qh74TOWuP4OHbCi5beijh3MGbD9/bHO8vaSh5GA7MWXgbGMkOcx8iD84AUViCE3SxK9f/A+gZd1P0=
+	t=1705971570; cv=none; b=InUKi0gW9xcpfHogAXSFrPp3+HnTM9S30vDVWXBjQmVoNJutyHgvUcUqP51ZHMAP4JOazcYKG4JynRybmCBthfo6aAHENhQXNvBSSFy2enNk/P50je3Ix29xuDg/v6eFkxrFiwGJZcfYKQMg96hGKnkOOmfmawRYH8pedIkbr5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974337; c=relaxed/simple;
-	bh=f9LDGnXbHvXCJY/v0wh7HlN5ZZIseY/uTFtbWY7rKQ0=;
+	s=arc-20240116; t=1705971570; c=relaxed/simple;
+	bh=xCJbNeqg/40B0MN/xR4oyY3EYnZd7nsKGFdmVO4PGCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RH8QgjhTuRleLvAST9gLGhKXGja8ouLIYJK/dvsMHrCtfjbK4baEjhRDfBz+SpJGTSoUpOLMMQZFDfvMSdK3K8rOSClRC6mwlCizyGiJJ1CJ1PVS9n+09bURPXoO8paRpjQaTCa7uPAGmYnumvV1Gk+uGursFdo0hEXur//Yf0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Ocfq8Xg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF5FC433F1;
-	Tue, 23 Jan 2024 01:45:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nVzXP3zhOEQlZDkxGMIV8O7A31GJ1eRu6ATOsLY3DpHAu5xbccEy/fV+F85XHqFHx1DSdbmDiVwmYSknpySGZIH0TQMPcjbYm90YkfnATSShUUe8qQKgW2AIC+jdrA9trWcccK+ApP53jJDCHBNdonWuXglYbzANFf5T+A9d9Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MuqSYHNT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC67C433C7;
+	Tue, 23 Jan 2024 00:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974337;
-	bh=f9LDGnXbHvXCJY/v0wh7HlN5ZZIseY/uTFtbWY7rKQ0=;
+	s=korg; t=1705971570;
+	bh=xCJbNeqg/40B0MN/xR4oyY3EYnZd7nsKGFdmVO4PGCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Ocfq8Xgn7Xi9JliBwgBr2fSAHXDb0PT1SwI5gtdn2KMFDVPcNE2XZdMcLCPuK3bU
-	 DCRMXNA4YSLQX+uyjTca1oWnr71fWMzBfb9hQmV+6G6m/BgUc6hI+YV89o4EKdNM43
-	 lPS+8CTgY33X5X3vRmBbPiB7vWipj3OLqGgVEmPU=
+	b=MuqSYHNTBL8WyYuIDNVYs0KQVyUCTiBHzMxFnB7/BeW+zauCnuf5+d13LvscgDYHz
+	 jNUbQEPLfVPVERNHoFmB0X1zI5NUvCIFmbagzOgRR3m6D9tKw/zrkP3cSjTjh9B8uU
+	 nIHct5QwkNyszN+EMhU34heDdBQEfIFhI4QW1YRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abhinav Singh <singhabhinav9051571833@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 181/374] drm/nouveau/fence:: fix warning directly dereferencing a rcu pointer
-Date: Mon, 22 Jan 2024 15:57:17 -0800
-Message-ID: <20240122235750.934821470@linuxfoundation.org>
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Subject: [PATCH 6.1 270/417] serial: core: fix sanitizing check for RTS settings
+Date: Mon, 22 Jan 2024 15:57:18 -0800
+Message-ID: <20240122235801.205865967@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +59,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Singh <singhabhinav9051571833@gmail.com>
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 
-[ Upstream commit 5f35a624c1e30b5bae5023b3c256e94e0ad4f806 ]
+commit 4afeced55baa391490b61ed9164867e2927353ed upstream.
 
-Fix a sparse warning with this message
-"warning:dereference of noderef expression". In this context it means we
-are dereferencing a __rcu tagged pointer directly.
+Among other things uart_sanitize_serial_rs485() tests the sanity of the RTS
+settings in a RS485 configuration that has been passed by userspace.
+If RTS-on-send and RTS-after-send are both set or unset the configuration
+is adjusted and RTS-after-send is disabled and RTS-on-send enabled.
 
-We should not be directly dereferencing a rcu pointer. To get a normal
-(non __rcu tagged pointer) from a __rcu tagged pointer we are using the
-function unrcu_pointer(...). The non __rcu tagged pointer then can be
-dereferenced just like a normal pointer.
+This however makes only sense if both RTS modes are actually supported by
+the driver.
 
-I tested with qemu with this command
-qemu-system-x86_64 \
-	-m 2G \
-	-smp 2 \
-	-kernel bzImage \
-	-append "console=ttyS0 root=/dev/sda earlyprintk=serial net.ifnames=0" \
-	-drive file=bullseye.img,format=raw \
-	-net user,host=10.0.2.10,hostfwd=tcp:127.0.0.1:10021-:22 \
-	-net nic,model=e1000 \
-	-enable-kvm \
-	-nographic \
-	-pidfile vm.pid \
-	2>&1 | tee vm.log
-with lockdep enabled.
+With commit be2e2cb1d281 ("serial: Sanitize rs485_struct") the code does
+take the driver support into account but only checks if one of both RTS
+modes are supported. This may lead to the errorneous result of RTS-on-send
+being set even if only RTS-after-send is supported.
 
-Fixes: 0ec5f02f0e2c ("drm/nouveau: prevent stale fence->channel pointers, and protect with rcu")
-Signed-off-by: Abhinav Singh <singhabhinav9051571833@gmail.com>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231113191303.3277733-1-singhabhinav9051571833@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by changing the implemented logic: First clear all unsupported
+flags in the RS485 configuration, then adjust an invalid RTS setting by
+taking into account which RTS mode is supported.
+
+Cc:  <stable@vger.kernel.org>
+Fixes: be2e2cb1d281 ("serial: Sanitize rs485_struct")
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Link: https://lore.kernel.org/r/20240103061818.564-4-l.sanfilippo@kunbus.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nv04_fence.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/serial_core.c |   28 ++++++++++++++++++----------
+ 1 file changed, 18 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nv04_fence.c b/drivers/gpu/drm/nouveau/nv04_fence.c
-index 5b71a5a5cd85..cdbc75e3d1f6 100644
---- a/drivers/gpu/drm/nouveau/nv04_fence.c
-+++ b/drivers/gpu/drm/nouveau/nv04_fence.c
-@@ -39,7 +39,7 @@ struct nv04_fence_priv {
- static int
- nv04_fence_emit(struct nouveau_fence *fence)
- {
--	struct nvif_push *push = fence->channel->chan.push;
-+	struct nvif_push *push = unrcu_pointer(fence->channel)->chan.push;
- 	int ret = PUSH_WAIT(push, 2);
- 	if (ret == 0) {
- 		PUSH_NVSQ(push, NV_SW, 0x0150, fence->base.seqno);
--- 
-2.43.0
-
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -1353,19 +1353,27 @@ static void uart_sanitize_serial_rs485(s
+ 		return;
+ 	}
+ 
++	rs485->flags &= supported_flags;
++
+ 	/* Pick sane settings if the user hasn't */
+-	if ((supported_flags & (SER_RS485_RTS_ON_SEND|SER_RS485_RTS_AFTER_SEND)) &&
+-	    !(rs485->flags & SER_RS485_RTS_ON_SEND) ==
++	if (!(rs485->flags & SER_RS485_RTS_ON_SEND) ==
+ 	    !(rs485->flags & SER_RS485_RTS_AFTER_SEND)) {
+-		dev_warn_ratelimited(port->dev,
+-			"%s (%d): invalid RTS setting, using RTS_ON_SEND instead\n",
+-			port->name, port->line);
+-		rs485->flags |= SER_RS485_RTS_ON_SEND;
+-		rs485->flags &= ~SER_RS485_RTS_AFTER_SEND;
+-		supported_flags |= SER_RS485_RTS_ON_SEND|SER_RS485_RTS_AFTER_SEND;
+-	}
++		if (supported_flags & SER_RS485_RTS_ON_SEND) {
++			rs485->flags |= SER_RS485_RTS_ON_SEND;
++			rs485->flags &= ~SER_RS485_RTS_AFTER_SEND;
+ 
+-	rs485->flags &= supported_flags;
++			dev_warn_ratelimited(port->dev,
++				"%s (%d): invalid RTS setting, using RTS_ON_SEND instead\n",
++				port->name, port->line);
++		} else {
++			rs485->flags |= SER_RS485_RTS_AFTER_SEND;
++			rs485->flags &= ~SER_RS485_RTS_ON_SEND;
++
++			dev_warn_ratelimited(port->dev,
++				"%s (%d): invalid RTS setting, using RTS_AFTER_SEND instead\n",
++				port->name, port->line);
++		}
++	}
+ 
+ 	uart_sanitize_serial_rs485_delays(port, rs485);
+ 
 
 
 
