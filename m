@@ -1,66 +1,56 @@
-Return-Path: <stable+bounces-13673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47C21837D5B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7F3183823D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F34191F295B8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 172FE1C24D6A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5844A55E62;
-	Tue, 23 Jan 2024 00:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6D059B69;
+	Tue, 23 Jan 2024 01:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDIrg2hM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+0L2H2D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D2C52F7C;
-	Tue, 23 Jan 2024 00:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09EB72B9B7;
+	Tue, 23 Jan 2024 01:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969904; cv=none; b=ln3Uk3rGOcBeEul77K2OkTlyCzmRvlrrnxoiOA735X1PhHgAXj48f4hXcyqCivu85rnQ3V9ak5hrJcSVZLaF6fG/wDVb8wSLsKnvWyToOoy/AyE9R7c+YrannUrDoKr4DfavVIs7km4ZynP4CdCbW68oMzPS8z0TfrFK95duZks=
+	t=1705974107; cv=none; b=Zn7YtyvrX4jRwi7dtzAw8RcGDCQ8iTtf2OJvV3GnPPPl24iV6gatHjgFSw+L5KFtH1NeEw+45wPi3ue9x0BA1UleEMHrGgiyc30tssQ7M2W833z5xvwhvzdYjazp5X7iBzrj1pWEL6OhDSdXAeKYOhfZEVvTRVklZsYIaNMR/fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969904; c=relaxed/simple;
-	bh=/VFijyGUyqLRqtlhxMy5svCwoF1Y6febeOHzpKCwrKU=;
+	s=arc-20240116; t=1705974107; c=relaxed/simple;
+	bh=cIV4q8AV5yKBAgQTDjqAlxNiTgicoAw5GugKO6Qhojc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RK3IQqAhfH6PJdaYwrHN59hqYv7WSKF4FjTceBVuf8qWmE5302Brxh78IL+0iUUXGkS1uTv4TA55vInVOWCz8Mssvi+IYcJE0S9+mwu8HNN9AUPOn8kGMEODAqe6V/PWwq4BcspFDP9jSCwxl6MVqarWLAqnik8S12RJ0PuCC9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDIrg2hM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F79FC433C7;
-	Tue, 23 Jan 2024 00:31:43 +0000 (UTC)
+	 MIME-Version; b=eASCpjtnz3Wwj2GevLurjg6FZPLakF/xQxryXOkbAq6qDIdTv7i07V3KXKuzVcSwdfrji3qUeRDCS4FP8Im0jlpKB3oNwfjp7HPWKsLX0uvsbiUbuXNS455aJpdwh2mjozyrqIpLZet/5Q/7WBdFUQtHLfgJsbTtuOdwdd7nrMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+0L2H2D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DB3C43394;
+	Tue, 23 Jan 2024 01:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969903;
-	bh=/VFijyGUyqLRqtlhxMy5svCwoF1Y6febeOHzpKCwrKU=;
+	s=korg; t=1705974106;
+	bh=cIV4q8AV5yKBAgQTDjqAlxNiTgicoAw5GugKO6Qhojc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kDIrg2hMnxpOGmtPW0GWWYHrCsyq9AXN7XpE9D0PLpUR23azQhemFJtpL/OEBWFF/
-	 GrkD92mjwC/sZhBIIuVfAjuRbxrBfqvrpJcWkT3vKlyKf5B3t2cGQLX32GpiB6tXaS
-	 D/Uv1CacADLXRSalP2awwcFNdHRZGgzb5PRgDqxk=
+	b=J+0L2H2DG9wJe8MDhmfAMNFIDvR87vBABaUDfOMOo70XvwVaIj+DibOcBejrSTMXa
+	 BkPW9Y22VRI2adMOPROai7sKuCgw6yIkG9EoNUWxKgfMeYbzvWAuP8LrzeFhixt1yY
+	 JqIxQPNxiO8Rvy3pKUkBkq5mrdwJke77BVgoF6ms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Athira Jajeev <atrajeev@linux.vnet.ibm.com>,
-	Disha Goel <disgoel@linux.ibm.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Disha Goel <disgoel@linux.vnet.ibm.com>,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@arm.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kajol Jain <kjain@linux.ibm.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 517/641] perf vendor events powerpc: Update datasource event name to fix duplicate events
+Subject: [PATCH 5.15 165/374] netfilter: nf_tables: mark newset as dead on transaction abort
 Date: Mon, 22 Jan 2024 15:57:01 -0800
-Message-ID: <20240122235834.268643936@linuxfoundation.org>
+Message-ID: <20240122235750.351477557@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,115 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 9eef41014fe01287dae79fe208b9b433b13040bb ]
+[ Upstream commit 08e4c8c5919fd405a4d709b4ba43d836894a26eb ]
 
-Running "perf list" on powerpc fails with segfault as below:
+If a transaction is aborted, we should mark the to-be-released NEWSET dead,
+just like commit path does for DEL and DESTROYSET commands.
 
-   $ ./perf list
-   Segmentation fault (core dumped)
-   $
+In both cases all remaining elements will be released via
+set->ops->destroy().
 
-This happens because of duplicate events in the JSON list.  The powerpc
-JSON event list contains some event with same event name, but different
-event code. They are:
+The existing abort code does NOT post the actual release to the work queue.
+Also the entire __nf_tables_abort() function is wrapped in gc_seq
+begin/end pair.
 
-- PM_INST_FROM_L3MISS (Present in datasource and frontend)
-- PM_MRK_DATA_FROM_L2MISS (Present in datasource and marked)
-- PM_MRK_INST_FROM_L3MISS (Present in datasource and marked)
-- PM_MRK_DATA_FROM_L3MISS (Present in datasource and marked)
+Therefore, async gc worker will never try to release the pending set
+elements, as gc sequence is always stale.
 
-pmu_events_table__num_events() uses the value from table_pmu->num_entries
-which includes duplicate events as well. This causes issue during "perf
-list" and results in a segmentation fault.
+It might be possible to speed up transaction aborts via work queue too,
+this would result in a race and a possible use-after-free.
 
-Since both event codes are valid, append _DSRC to the Data Source events
-(datasource.json), so that they would have a unique name.
+So fix this before it becomes an issue.
 
-Also add PM_DATA_FROM_L2MISS_DSRC and PM_DATA_FROM_L3MISS_DSRC events.
-
-With the fix, 'perf list' works as expected.
-
-Fixes: fc143580753348c6 ("perf vendor events power10: Update JSON/events")
-Signed-off-by: Athira Jajeev <atrajeev@linux.vnet.ibm.com>
-Tested-by: Disha Goel <disgoel@linux.ibm.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Disha Goel <disgoel@linux.vnet.ibm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kajol Jain <kjain@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20231123160110.94090-1-atrajeev@linux.vnet.ibm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../arch/powerpc/power10/datasource.json       | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ net/netfilter/nf_tables_api.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/pmu-events/arch/powerpc/power10/datasource.json b/tools/perf/pmu-events/arch/powerpc/power10/datasource.json
-index 6b0356f2d301..0eeaaf1a95b8 100644
---- a/tools/perf/pmu-events/arch/powerpc/power10/datasource.json
-+++ b/tools/perf/pmu-events/arch/powerpc/power10/datasource.json
-@@ -99,6 +99,11 @@
-     "EventName": "PM_INST_FROM_L2MISS",
-     "BriefDescription": "The processor's instruction cache was reloaded from a source beyond the local core's L2 due to a demand miss."
-   },
-+  {
-+    "EventCode": "0x0003C0000000C040",
-+    "EventName": "PM_DATA_FROM_L2MISS_DSRC",
-+    "BriefDescription": "The processor's L1 data cache was reloaded from a source beyond the local core's L2 due to a demand miss."
-+  },
-   {
-     "EventCode": "0x000380000010C040",
-     "EventName": "PM_INST_FROM_L2MISS_ALL",
-@@ -161,9 +166,14 @@
-   },
-   {
-     "EventCode": "0x000780000000C040",
--    "EventName": "PM_INST_FROM_L3MISS",
-+    "EventName": "PM_INST_FROM_L3MISS_DSRC",
-     "BriefDescription": "The processor's instruction cache was reloaded from beyond the local core's L3 due to a demand miss."
-   },
-+  {
-+    "EventCode": "0x0007C0000000C040",
-+    "EventName": "PM_DATA_FROM_L3MISS_DSRC",
-+    "BriefDescription": "The processor's L1 data cache was reloaded from beyond the local core's L3 due to a demand miss."
-+  },
-   {
-     "EventCode": "0x000780000010C040",
-     "EventName": "PM_INST_FROM_L3MISS_ALL",
-@@ -981,7 +991,7 @@
-   },
-   {
-     "EventCode": "0x0003C0000000C142",
--    "EventName": "PM_MRK_DATA_FROM_L2MISS",
-+    "EventName": "PM_MRK_DATA_FROM_L2MISS_DSRC",
-     "BriefDescription": "The processor's L1 data cache was reloaded from a source beyond the local core's L2 due to a demand miss for a marked instruction."
-   },
-   {
-@@ -1046,12 +1056,12 @@
-   },
-   {
-     "EventCode": "0x000780000000C142",
--    "EventName": "PM_MRK_INST_FROM_L3MISS",
-+    "EventName": "PM_MRK_INST_FROM_L3MISS_DSRC",
-     "BriefDescription": "The processor's instruction cache was reloaded from beyond the local core's L3 due to a demand miss for a marked instruction."
-   },
-   {
-     "EventCode": "0x0007C0000000C142",
--    "EventName": "PM_MRK_DATA_FROM_L3MISS",
-+    "EventName": "PM_MRK_DATA_FROM_L3MISS_DSRC",
-     "BriefDescription": "The processor's L1 data cache was reloaded from beyond the local core's L3 due to a demand miss for a marked instruction."
-   },
-   {
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 3556818c7162..5fb8c7f0ad02 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -9740,6 +9740,7 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ 				nft_trans_destroy(trans);
+ 				break;
+ 			}
++			nft_trans_set(trans)->dead = 1;
+ 			list_del_rcu(&nft_trans_set(trans)->list);
+ 			break;
+ 		case NFT_MSG_DELSET:
 -- 
 2.43.0
 
