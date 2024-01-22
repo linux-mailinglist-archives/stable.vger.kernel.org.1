@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-13667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 540E2837D54
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB1C2837F90
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87C5B1C21C65
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 740F61F296AD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 321B650A96;
-	Tue, 23 Jan 2024 00:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8160863126;
+	Tue, 23 Jan 2024 00:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yW3w31Ei"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZI6+4s9w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61A44F5E9;
-	Tue, 23 Jan 2024 00:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FCAB63122;
+	Tue, 23 Jan 2024 00:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969895; cv=none; b=EwX7Y2nB3mWVg6hxS5f4lElGE2PmKA8tKP83PrPm3Dgd2Qu/uBGMSJiCrobNZmUhUQBYDgRsQtlQie9ZptX21UtL8LIf/IwtGXpe7lS6dt0B+OTH90FjaSwvELJkGU0jM/albuxrFIRuPw98rvb8wTFki9TwnDMytKBDJYMh9JQ=
+	t=1705971196; cv=none; b=Cy1xEAmcqRcyfB4JaF+WWGA7oY39ZdS4uZc0/Prm+WA0OKpclvunMpdRkmSP204oe1dn+W0lVXzgnrL4ucXn42X6CG7HC8JJ0Jd1Vd6tIwmU8vayq5rWxruIRTvc5ZrDUEu6i/ltMe+o+lBjYsq2L4nP/qf7l6AdjndJfLHKjUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969895; c=relaxed/simple;
-	bh=cFv3EbDLwiDbWZyZNj+KtnvO7wAIcFgT49xdwhJC8Wk=;
+	s=arc-20240116; t=1705971196; c=relaxed/simple;
+	bh=LGCayZVx0jy7CCG16T7QOxHHBzEmbKzTYgatr874bo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQewU/0WzavUEekjkmAE4/Mdld4p7tvF9YnfmhEBJVWoce7gBI/S4VQcS7l27HDWpaq1Wfijk+446eFjeWDXNTqSyFdz6iE/aAN+u89NbrWosCTpEoSIZDEq6pXk/Uk8+gZGRaxklK6xkExdFr+W6JCXMrSIk3dBXX1f1QwJjMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yW3w31Ei; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B455C433F1;
-	Tue, 23 Jan 2024 00:31:34 +0000 (UTC)
+	 MIME-Version; b=QnXlwPmIfD/MS5JLXT135VQX7Jh19QlE7aDTkG152MdEIcHZL0tNQ8QTalX7xkDd/UBdXdTp8Iuh13MXIjwXWAaSHDRpHLo53XYUMF6vr3I0ypiJNxoLYgEmUtQ1OFG9OzruxJikkBSqeOxDLrTaTPVUTUxb9hwa/b5dEvQ+dX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZI6+4s9w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E74DBC43390;
+	Tue, 23 Jan 2024 00:53:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969894;
-	bh=cFv3EbDLwiDbWZyZNj+KtnvO7wAIcFgT49xdwhJC8Wk=;
+	s=korg; t=1705971196;
+	bh=LGCayZVx0jy7CCG16T7QOxHHBzEmbKzTYgatr874bo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yW3w31Ei79pZJXnPNi36MPPN8SQ5DIqM/Z0/43h5LE4BWuKkZngbLCIv29p24A680
-	 Fm/3ac0enPEmkppfgFZm9GnspZ2ohJBH5tc8StasiEjZz8Dp8PuAtHVZpexJlA3n8o
-	 phBkdpTvq+WlAmbuRsYDGIPoZoVrTX0FUdjZlzoQ=
+	b=ZI6+4s9wwTLlMYkuNEIej3WHPHXX7stxgl3Kb5UlDxRUy6QwaItp9kdkENm8gB6SL
+	 bJ6q/n7Ef0oMPikRxgELxTRk4TjSLUObXIOVJGtyuN0iCkLpjYxijN1rUBCV0tucNu
+	 xD/jvh2FsES6vnFxtryYVwQS9CYNPjaEV5WSdoV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Umang Jain <umang.jain@ideasonboard.com>,
+	Florian Lehner <dev@der-flo.net>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 511/641] staging: vc04_services: Do not pass NULL to vchiq_log_error()
+Subject: [PATCH 5.10 109/286] bpf, lpm: Fix check prefixlen before walking trie
 Date: Mon, 22 Jan 2024 15:56:55 -0800
-Message-ID: <20240122235834.075595925@linuxfoundation.org>
+Message-ID: <20240122235736.292838354@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Umang Jain <umang.jain@ideasonboard.com>
+From: Florian Lehner <dev@der-flo.net>
 
-[ Upstream commit 149261d378d0ca441b16de6c1a250a350df66598 ]
+[ Upstream commit 9b75dbeb36fcd9fc7ed51d370310d0518a387769 ]
 
-vchiq_add_connected_callback() logs using vchiq_log_error() macro,
-but passes NULL instead of a struct device pointer. Fix it.
+When looking up an element in LPM trie, the condition 'matchlen ==
+trie->max_prefixlen' will never return true, if key->prefixlen is larger
+than trie->max_prefixlen. Consequently all elements in the LPM trie will
+be visited and no element is returned in the end.
 
-vchiq_add_connected_callback() is not used anywhere in the vc04_services
-as of now. It will be used when we add new drivers(VC shared memory and
-bcm2835-isp), hence it kept as it is for now.
+To resolve this, check key->prefixlen first before walking the LPM trie.
 
-Fixes: 1d8915cf8899 ("staging: vc04: Convert vchiq_log_error() to use dynamic debug")
-Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
-Link: https://lore.kernel.org/r/20231128201926.489269-2-umang.jain@ideasonboard.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b95a5c4db09b ("bpf: add a longest prefix match trie map implementation")
+Signed-off-by: Florian Lehner <dev@der-flo.net>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20231105085801.3742-1-dev@der-flo.net
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../vc04_services/interface/vchiq_arm/vchiq_connected.c       | 4 ++--
- .../vc04_services/interface/vchiq_arm/vchiq_connected.h       | 4 +++-
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ kernel/bpf/lpm_trie.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_connected.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_connected.c
-index b3928bd8c9c6..21f9fa1a1713 100644
---- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_connected.c
-+++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_connected.c
-@@ -27,7 +27,7 @@ static void connected_init(void)
-  * be made immediately, otherwise it will be deferred until
-  * vchiq_call_connected_callbacks is called.
-  */
--void vchiq_add_connected_callback(void (*callback)(void))
-+void vchiq_add_connected_callback(struct vchiq_device *device, void (*callback)(void))
- {
- 	connected_init();
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index 00e32f2ec3e6..3c2d8722d45b 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -230,6 +230,9 @@ static void *trie_lookup_elem(struct bpf_map *map, void *_key)
+ 	struct lpm_trie_node *node, *found = NULL;
+ 	struct bpf_lpm_trie_key *key = _key;
  
-@@ -39,7 +39,7 @@ void vchiq_add_connected_callback(void (*callback)(void))
- 		callback();
- 	} else {
- 		if (g_num_deferred_callbacks >= MAX_CALLBACKS) {
--			vchiq_log_error(NULL, VCHIQ_CORE,
-+			vchiq_log_error(&device->dev, VCHIQ_CORE,
- 					"There already %d callback registered - please increase MAX_CALLBACKS",
- 					g_num_deferred_callbacks);
- 		} else {
-diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_connected.h b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_connected.h
-index 4caf5e30099d..e4ed56446f8a 100644
---- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_connected.h
-+++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_connected.h
-@@ -1,10 +1,12 @@
- /* SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause */
- /* Copyright (c) 2010-2012 Broadcom. All rights reserved. */
- 
-+#include "vchiq_bus.h"
++	if (key->prefixlen > trie->max_prefixlen)
++		return NULL;
 +
- #ifndef VCHIQ_CONNECTED_H
- #define VCHIQ_CONNECTED_H
+ 	/* Start walking the trie from the root node ... */
  
--void vchiq_add_connected_callback(void (*callback)(void));
-+void vchiq_add_connected_callback(struct vchiq_device *device, void (*callback)(void));
- void vchiq_call_connected_callbacks(void);
- 
- #endif /* VCHIQ_CONNECTED_H */
+ 	for (node = rcu_dereference(trie->root); node;) {
 -- 
 2.43.0
 
