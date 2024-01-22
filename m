@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-13026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D292837A3E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 50DEB8378A5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F4184281884
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A11428D18F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BDF12BE8E;
-	Tue, 23 Jan 2024 00:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCA81420DF;
+	Tue, 23 Jan 2024 00:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TcYCQRTN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UCQwHera"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EAD512A17F;
-	Tue, 23 Jan 2024 00:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8D41420D6;
+	Tue, 23 Jan 2024 00:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968822; cv=none; b=RK4yEVGtHO/38H7d2v6gK+RHaEBZMc2DXqUBxPICMDyisldNPee0FAxUIT2a5vFJbUSvIpvf9scjAFD1yZGs2/lkglJKFLab+AzBxf18mz1kEjK5flPHLRrkF/l+jMqkjuqAaWbgjaT2IZi3iVNTj87a2PUi4X5907qoYbZYEEQ=
+	t=1705968175; cv=none; b=VtZSzqUz5D4uKlzDUMjg6YlcFqppZ3M4U1L2BbyZ8z4R3TyTWxdfOvenaNx9jWczygG9Q8Mr1eltqiKHEEcNnpm6+gwyDkeMtvlmEZw77vjaF6g+S3EeiDmbt8hCVK8oOA4NiuVXFpCYW82nJtNakxggGGG9wu6g+tAtWt4Q8tQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968822; c=relaxed/simple;
-	bh=DJwdlOy7XvVz057TZWfYYf1HRX7tQuw73MsZSJKN1R8=;
+	s=arc-20240116; t=1705968175; c=relaxed/simple;
+	bh=r1Qpgt761OkXeGTbM3eMKocIgL3X1GZmnMLNTCZbvT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R82xhD8EHgEWf0RPKs86PYmO3EfIOLz1SOCxufqNuXUjXWPL+I77el6G5Veg298rLMeSof2lRb+b8TC3wFl3yeo3wZmcnH3eRFkVJf6nI/m7D9k8gaYo4bAz5D5DIZkuX7fBsTW6NgVNmwUatSNbA53SUNuTrpTfEhiLetu8Tq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TcYCQRTN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 857ACC433F1;
-	Tue, 23 Jan 2024 00:13:40 +0000 (UTC)
+	 MIME-Version; b=utULUImBt7vNNDUrY8s32zlB9RWZzyKh01eAfNuFdcbF8sJvSSunLm35QjXKtSKhOnclPdRm2uV5B9GVs87REEpBhdrLr8zaXiE0+4e1osMHi7upBMKUZ6eo8RJLQ4bj+cz9jTIT50+2uoykYC91+fmpbutVm9nBM8/3S99gGtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UCQwHera; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FFFC433F1;
+	Tue, 23 Jan 2024 00:02:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968822;
-	bh=DJwdlOy7XvVz057TZWfYYf1HRX7tQuw73MsZSJKN1R8=;
+	s=korg; t=1705968174;
+	bh=r1Qpgt761OkXeGTbM3eMKocIgL3X1GZmnMLNTCZbvT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TcYCQRTNxL8y0O7HdIpeS/Q//5JKMv8jx8AlmwuixxKfStpNJyhrfVCdMZUUnjbS2
-	 1LPLdiB2h0HxKyD3kLXvgeTgcamJFblS2OOiaEeK/yx2T98Y1BrfxCzSxMX/S/2rTF
-	 oi1XeXhUfyxPFCZ6Mwb1h0pGmr/VC7rSuXEbG3rQ=
+	b=UCQwHeraG/3KjiMVulr03+My44XkkMdqQ1Y31z4hJsOWmn9VNDHGnTIF3xE+0UJWG
+	 TKPdmYFYF1uSiQhx1tkDHo9nm7rDg0CPUlfHWi3lrPu8RCC43cy+t5qehyUMTz62BC
+	 VOj5clsl4YmNBg+jmDb/ewWryu0Kdud/DckrG0jw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Halil Pasic <pasic@linux.ibm.com>,
-	wangyangxin <wangyangxin1@huawei.com>,
-	Gonglei <arei.gonglei@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 060/194] crypto: virtio - Handle dataq logic with tasklet
+Subject: [PATCH 4.19 034/148] selftests/powerpc: Fix error handling in FPU/VMX preemption tests
 Date: Mon, 22 Jan 2024 15:56:30 -0800
-Message-ID: <20240122235721.777696171@linuxfoundation.org>
+Message-ID: <20240122235713.784189387@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +61,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gonglei (Arei) <arei.gonglei@huawei.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit fed93fb62e05c38152b0fc1dc9609639e63eed76 ]
+[ Upstream commit 9dbd5927408c4a0707de73ae9dd9306b184e8fee ]
 
-Doing ipsec produces a spinlock recursion warning.
-This is due to crypto_finalize_request() being called in the upper half.
-Move virtual data queue processing of virtio-crypto driver to tasklet.
+The FPU & VMX preemption tests do not check for errors returned by the
+low-level asm routines, preempt_fpu() / preempt_vsx() respectively.
+That means any register corruption detected by the asm routines does not
+result in a test failure.
 
-Fixes: dbaf0624ffa57 ("crypto: add virtio-crypto driver")
-Reported-by: Halil Pasic <pasic@linux.ibm.com>
-Signed-off-by: wangyangxin <wangyangxin1@huawei.com>
-Signed-off-by: Gonglei <arei.gonglei@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fix it by returning the return value of the asm routines from the
+pthread child routines.
+
+Fixes: e5ab8be68e44 ("selftests/powerpc: Test preservation of FPU and VMX regs across preemption")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231128132748.1990179-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/virtio/virtio_crypto_common.h |  2 ++
- drivers/crypto/virtio/virtio_crypto_core.c   | 23 +++++++++++---------
- 2 files changed, 15 insertions(+), 10 deletions(-)
+ tools/testing/selftests/powerpc/math/fpu_preempt.c |  9 +++++----
+ tools/testing/selftests/powerpc/math/vmx_preempt.c | 10 ++++++----
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/crypto/virtio/virtio_crypto_common.h b/drivers/crypto/virtio/virtio_crypto_common.h
-index 1c6e00da5a29..947a6e01d93f 100644
---- a/drivers/crypto/virtio/virtio_crypto_common.h
-+++ b/drivers/crypto/virtio/virtio_crypto_common.h
-@@ -10,6 +10,7 @@
- #include <linux/virtio.h>
- #include <linux/crypto.h>
- #include <linux/spinlock.h>
-+#include <linux/interrupt.h>
- #include <crypto/aead.h>
- #include <crypto/aes.h>
- #include <crypto/engine.h>
-@@ -27,6 +28,7 @@ struct data_queue {
- 	char name[32];
+diff --git a/tools/testing/selftests/powerpc/math/fpu_preempt.c b/tools/testing/selftests/powerpc/math/fpu_preempt.c
+index 0f85b79d883d..c91f3b36e884 100644
+--- a/tools/testing/selftests/powerpc/math/fpu_preempt.c
++++ b/tools/testing/selftests/powerpc/math/fpu_preempt.c
+@@ -41,19 +41,20 @@ __thread double darray[] = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0,
+ int threads_starting;
+ int running;
  
- 	struct crypto_engine *engine;
-+	struct tasklet_struct done_task;
- };
+-extern void preempt_fpu(double *darray, int *threads_starting, int *running);
++extern int preempt_fpu(double *darray, int *threads_starting, int *running);
  
- struct virtio_crypto {
-diff --git a/drivers/crypto/virtio/virtio_crypto_core.c b/drivers/crypto/virtio/virtio_crypto_core.c
-index c8a962c62663..7c64862f1194 100644
---- a/drivers/crypto/virtio/virtio_crypto_core.c
-+++ b/drivers/crypto/virtio/virtio_crypto_core.c
-@@ -22,27 +22,28 @@ virtcrypto_clear_request(struct virtio_crypto_request *vc_req)
- 	}
- }
- 
--static void virtcrypto_dataq_callback(struct virtqueue *vq)
-+static void virtcrypto_done_task(unsigned long data)
+ void *preempt_fpu_c(void *p)
  {
--	struct virtio_crypto *vcrypto = vq->vdev->priv;
-+	struct data_queue *data_vq = (struct data_queue *)data;
-+	struct virtqueue *vq = data_vq->vq;
- 	struct virtio_crypto_request *vc_req;
--	unsigned long flags;
- 	unsigned int len;
--	unsigned int qid = vq->index;
++	long rc;
+ 	int i;
++
+ 	srand(pthread_self());
+ 	for (i = 0; i < 21; i++)
+ 		darray[i] = rand();
  
--	spin_lock_irqsave(&vcrypto->data_vq[qid].lock, flags);
- 	do {
- 		virtqueue_disable_cb(vq);
- 		while ((vc_req = virtqueue_get_buf(vq, &len)) != NULL) {
--			spin_unlock_irqrestore(
--				&vcrypto->data_vq[qid].lock, flags);
- 			if (vc_req->alg_cb)
- 				vc_req->alg_cb(vc_req, len);
--			spin_lock_irqsave(
--				&vcrypto->data_vq[qid].lock, flags);
- 		}
- 	} while (!virtqueue_enable_cb(vq));
--	spin_unlock_irqrestore(&vcrypto->data_vq[qid].lock, flags);
-+}
-+
-+static void virtcrypto_dataq_callback(struct virtqueue *vq)
-+{
-+	struct virtio_crypto *vcrypto = vq->vdev->priv;
-+	struct data_queue *dq = &vcrypto->data_vq[vq->index];
-+
-+	tasklet_schedule(&dq->done_task);
+-	/* Test failed if it ever returns */
+-	preempt_fpu(darray, &threads_starting, &running);
++	rc = preempt_fpu(darray, &threads_starting, &running);
+ 
+-	return p;
++	return (void *)rc;
  }
  
- static int virtcrypto_find_vqs(struct virtio_crypto *vi)
-@@ -99,6 +100,8 @@ static int virtcrypto_find_vqs(struct virtio_crypto *vi)
- 			ret = -ENOMEM;
- 			goto err_engine;
- 		}
-+		tasklet_init(&vi->data_vq[i].done_task, virtcrypto_done_task,
-+				(unsigned long)&vi->data_vq[i]);
- 	}
+ int test_preempt_fpu(void)
+diff --git a/tools/testing/selftests/powerpc/math/vmx_preempt.c b/tools/testing/selftests/powerpc/math/vmx_preempt.c
+index 9ef376c55b13..7ba95ceaaa50 100644
+--- a/tools/testing/selftests/powerpc/math/vmx_preempt.c
++++ b/tools/testing/selftests/powerpc/math/vmx_preempt.c
+@@ -41,19 +41,21 @@ __thread vector int varray[] = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10,11,12},
+ int threads_starting;
+ int running;
  
- 	kfree(names);
+-extern void preempt_vmx(vector int *varray, int *threads_starting, int *running);
++extern int preempt_vmx(vector int *varray, int *threads_starting, int *running);
+ 
+ void *preempt_vmx_c(void *p)
+ {
+ 	int i, j;
++	long rc;
++
+ 	srand(pthread_self());
+ 	for (i = 0; i < 12; i++)
+ 		for (j = 0; j < 4; j++)
+ 			varray[i][j] = rand();
+ 
+-	/* Test fails if it ever returns */
+-	preempt_vmx(varray, &threads_starting, &running);
+-	return p;
++	rc = preempt_vmx(varray, &threads_starting, &running);
++
++	return (void *)rc;
+ }
+ 
+ int test_preempt_vmx(void)
 -- 
 2.43.0
 
