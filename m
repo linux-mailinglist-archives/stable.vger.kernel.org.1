@@ -1,66 +1,55 @@
-Return-Path: <stable+bounces-13737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21015837D9F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6186838057
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6C9D28A44A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 564C11F2CB19
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BCD3537FA;
-	Tue, 23 Jan 2024 00:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5232D66B54;
+	Tue, 23 Jan 2024 01:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XJh4CCJY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7afDQMX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B68551014;
-	Tue, 23 Jan 2024 00:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F85E664CD;
+	Tue, 23 Jan 2024 01:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970082; cv=none; b=uymmHf3xNMa+4ib52hK9WC24dle3cgaik1Fua5AnuScDQ+DHPtNp+AIPt1UWEdtQ3382FmRrlZJY/IRwwJYMOESY3lnQQcJo1bMYXzEokUuZIGp9BjbVztcIwdoo51mKfTw2ZuWNJbZiW/ao6cqfnGH4WVPIdb7/lo0MmFIyURo=
+	t=1705971675; cv=none; b=plnH/7m4B1Oop4QLauuSs7Sc6Gh2H6SbkA4IGuXMmk6gtro/vav5/QjbWlBsnrFR+Wlvt2HFu+U87oPerjhE0LXehlSKBGaf2cyTANq9VFsuvjWdeUVfvlIzsvUgFyXX48NHI3pk4INv4yf5s5ye+/s9fq1gWl4uuZu1Qw3HL04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970082; c=relaxed/simple;
-	bh=EQVnnqxHvt+6QFwvcQzkjSzo3s2EaK2BuIhtORPC5X4=;
+	s=arc-20240116; t=1705971675; c=relaxed/simple;
+	bh=ccHr1y8rsEEK8fsyaYjmrsnjx1JRrgSfVBM+cjKaGo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6AbuiYmoVMJMrnSxDbwhxIP51/jCE3RQ0CPRZp/UQaOfvGvN/58BM9P2cmyx3XU69zUsr86LVGfGp0o+VAhK/OxLFoSmiqxSg5d0wXgkWaEmp5l0R1GcLhIH8irScYHatJZeaYYc+wcCPf8PURW/GfQaTDLpc//6SPvPRxIXOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XJh4CCJY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8C8C433C7;
-	Tue, 23 Jan 2024 00:34:40 +0000 (UTC)
+	 MIME-Version; b=IxRiNI3ol7YY0yI+FaWc0wMF762V2E4yICTYs+PvF/lai0CgwceqnilRP1YH5wMf+tsm2KLT0G5M/JOiEYi9z1OpEPoL8TZr4cX8ts+2EJW/yYRFBhDUzMAMfu3X7W2s1NDqr/bMezziflIzPb4FQIvvy6k2lVtTeivQ6xfkZVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7afDQMX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D01C433C7;
+	Tue, 23 Jan 2024 01:01:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970081;
-	bh=EQVnnqxHvt+6QFwvcQzkjSzo3s2EaK2BuIhtORPC5X4=;
+	s=korg; t=1705971674;
+	bh=ccHr1y8rsEEK8fsyaYjmrsnjx1JRrgSfVBM+cjKaGo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XJh4CCJY1meg21abhPh+ROyvbk0PWkoZ7JFaHPd0gK37d1pgsLTlKOcwpGErJgCjn
-	 OXdEEF7dN7me8hdYKg1J5/dVJ009MxaaNN4VMhPjVG0WXcphbTn41oPZH9VpVcmlVh
-	 VYaNVCULanluC+L48wX6MgDTeqE62LRU9nExss50=
+	b=h7afDQMXt+eRaghN+sgnVTMGmQHRMT1QhDytkcyVT2PmpC/us+9MMSN6nTs/tXr7D
+	 CNC88ud63GNCfe+R1SsS/MKCUi5+e4pqqmYHA+hLcS9EurCCPLxIBoui4jhR1luISw
+	 cpC00FQTC5a8QYUMJOq5JNAoZED2QT16T/d7e56Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Endignoux <guillaumee@google.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 558/641] perf stat: Fix hard coded LL miss units
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 294/417] drm/amd: Enable PCIe PME from D3
 Date: Mon, 22 Jan 2024 15:57:42 -0800
-Message-ID: <20240122235835.605765224@linuxfoundation.org>
+Message-ID: <20240122235802.013917484@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,52 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit f2567e12a090f0eb22553a4468d4c4fe04aad906 ]
+commit bd1f6a31e7762ebc99b97f3eda5e5ea3708fa792 upstream.
 
-Copy-paste error where LL cache misses are reported as l1i.
+When dGPU is put into BOCO it may be in D3cold but still able send
+PME on display hotplug event. For this to work it must be enabled
+as wake source from D3.
 
-Fixes: 0a57b910807ad163 ("perf stat: Use counts rather than saved_value")
-Suggested-by: Guillaume Endignoux <guillaumee@google.com>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20231211181242.1721059-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When runpm is enabled use pci_wake_from_d3() to mark wakeup as
+enabled by default.
+
+Cc: stable@vger.kernel.org # 6.1+
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/stat-shadow.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/perf/util/stat-shadow.c b/tools/perf/util/stat-shadow.c
-index 1c5c3eeba4cf..e31426167852 100644
---- a/tools/perf/util/stat-shadow.c
-+++ b/tools/perf/util/stat-shadow.c
-@@ -264,7 +264,7 @@ static void print_ll_miss(struct perf_stat_config *config,
- 	static const double color_ratios[3] = {20.0, 10.0, 5.0};
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2202,6 +2202,8 @@ retry_init:
  
- 	print_ratio(config, evsel, aggr_idx, misses, out, STAT_LL_CACHE, color_ratios,
--		    "of all L1-icache accesses");
-+		    "of all LL-cache accesses");
- }
+ 		pci_wake_from_d3(pdev, TRUE);
  
- static void print_dtlb_miss(struct perf_stat_config *config,
--- 
-2.43.0
-
++		pci_wake_from_d3(pdev, TRUE);
++
+ 		/*
+ 		 * For runpm implemented via BACO, PMFW will handle the
+ 		 * timing for BACO in and out:
 
 
 
