@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-14328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22D40838074
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82E758380DE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC7C71F2CCC9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A9AD28DBCD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A024D12F586;
-	Tue, 23 Jan 2024 01:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C483613475E;
+	Tue, 23 Jan 2024 01:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MoeYyVnX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="viOAiX6f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6FB12DDB0;
-	Tue, 23 Jan 2024 01:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E7513474E;
+	Tue, 23 Jan 2024 01:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971731; cv=none; b=N/d+CCPT7p3MTHBSjyNPITcGl5RytfyHLf5v2d35nbRP6A9+HS+v2ZkUP244aGE/dybcntSixAMwj0SPM4YrKA2KZ2GEv2S6ZLEZD5+FVBbDRIaoGOpSg0FtvSWSDCyobXf+SAGzK2/65LahHAGDfJTC3qS/doSaEWfvnxeniQQ=
+	t=1705971929; cv=none; b=pZ61sD326u+ocF+/nmvjb+/U2wZNyIq6Qh0bCiJ2lCcWaibL9I9vprJ3g+CGyZDtkAiSWZYnoKKcSzhd4ZntSIX+OMt9LqCDZwPAFdAkntv6jnrySDAQ50x9AvVoa8qTyspg+hEU4WtPrYb6OFr2zL3XM/4S9XAAw9jf4ZeyS+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971731; c=relaxed/simple;
-	bh=4O/R8J0QZY68JMkE9x0ZcJLIhYYnyASdU48ciF+Orlo=;
+	s=arc-20240116; t=1705971929; c=relaxed/simple;
+	bh=pH9YZwNCIgsfgcvEeq0joIHvFLIcY+vwekZ3xrGCPS0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rtp2JOskY7VIlBsaZMdokob0lsEomVMETQqhwQXvM5fDKLiZvy6mo0ulU9P7/T5nzsvBHLh0am8YL5TrV7f7kOGStJomC4mvZ3BWirHNz0SVe6Uv0PkjufbtdOTi0MYIZcEam2/WOyJh+p0yPpjkVpuXr0JUHjRzzct6HgEVkH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MoeYyVnX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8890EC433F1;
-	Tue, 23 Jan 2024 01:02:10 +0000 (UTC)
+	 MIME-Version; b=fqhe8nIwF6I6KalwQha7oUH6rRco49vdP1uOz4Jhs3RKwJwGs3ohzNnS7I3adQ8H69J4euaPxxKglX0iUkE2qF51Ri84ul541pNZ8L0x3/6CzdywDpGLrs+jZGimC7FxmKXMHOTHKLFIaJ4yQo3mkMAaKm+dsMYJ/CekupG9pN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=viOAiX6f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9F6C433F1;
+	Tue, 23 Jan 2024 01:05:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971730;
-	bh=4O/R8J0QZY68JMkE9x0ZcJLIhYYnyASdU48ciF+Orlo=;
+	s=korg; t=1705971929;
+	bh=pH9YZwNCIgsfgcvEeq0joIHvFLIcY+vwekZ3xrGCPS0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MoeYyVnXdSFzk3AdUtG03vH0m/i2HviH843MxK+IWFw1qBIaCZmy+DfX6BjprN2Em
-	 XZ3hShruXfh9HY2hk88LdCgei7rlTO9UkQOJnq2LCm5+Y50vhH/J8TqKoMNdLsZ0Y5
-	 CuMAw8dWBIAb1FtYwercELnNI+G2UutbnaXsubYI=
+	b=viOAiX6fagkly3di26QHBps1JCM36nZWbUcfi3zv7Pu6/UJhbcM16Y2Q7o8xKkJPg
+	 H2VQVbmeiX6S2NEQJD5VFciALSLWLYODrb2xU9Mt0gduYlhQ1MLK2FgrzqO1m7ut20
+	 N6Lzk7h3qxOYpIuOIwvT9TXEP27ZJAlMDff/7DV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	RD Babiera <rdbabiera@google.com>,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.10 216/286] Revert "usb: typec: class: fix typec_altmode_put_partner to put plugs"
+	Ian Rogers <irogers@google.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Namhyung Kim <Namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Junhao He <hejunhao3@huawei.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Qi Liu <liuqi115@huawei.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 354/417] perf hisi-ptt: Fix one memory leakage in hisi_ptt_process_auxtrace_event()
 Date: Mon, 22 Jan 2024 15:58:42 -0800
-Message-ID: <20240122235740.406258536@linuxfoundation.org>
+Message-ID: <20240122235804.057925163@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +73,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+From: Yicong Yang <yangyicong@hisilicon.com>
 
-commit 9c6b789e954fae73c548f39332bcc56bdf0d4373 upstream.
+[ Upstream commit 1bc479d665bc25a9a4e8168d5b400a47491511f9 ]
 
-This reverts commit b17b7fe6dd5c6ff74b38b0758ca799cdbb79e26e.
+ASan complains a memory leakage in hisi_ptt_process_auxtrace_event()
+that the data buffer is not freed. Since currently we only support the
+raw dump trace mode, the data buffer is used only within this function.
+So fix this by freeing the data buffer before going out.
 
-That commit messed up the reference counting, so it needs to
-be rethought.
-
-Fixes: b17b7fe6dd5c ("usb: typec: class: fix typec_altmode_put_partner to put plugs")
-Cc:  <stable@vger.kernel.org>
-Cc: RD Babiera <rdbabiera@google.com>
-Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Closes: https://lore.kernel.org/lkml/CAP-bSRb3SXpgo_BEdqZB-p1K5625fMegRZ17ZkPE1J8ZYgEHDg@mail.gmail.com/
-Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240102091142.2136472-1-heikki.krogerus@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5e91e57e68090c0e ("perf auxtrace arm64: Add support for parsing HiSilicon PCIe Trace packet")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+Acked-by: Namhyung Kim <Namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Junhao He <hejunhao3@huawei.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Qi Liu <liuqi115@huawei.com>
+Link: https://lore.kernel.org/r/20231207081635.8427-3-yangyicong@huawei.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/class.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ tools/perf/util/hisi-ptt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -194,7 +194,7 @@ static void typec_altmode_put_partner(st
- 	if (!partner)
- 		return;
+diff --git a/tools/perf/util/hisi-ptt.c b/tools/perf/util/hisi-ptt.c
+index 45b614bb73bf..764d660d30e2 100644
+--- a/tools/perf/util/hisi-ptt.c
++++ b/tools/perf/util/hisi-ptt.c
+@@ -121,6 +121,7 @@ static int hisi_ptt_process_auxtrace_event(struct perf_session *session,
+ 	if (dump_trace)
+ 		hisi_ptt_dump_event(ptt, data, size);
  
--	adev = &altmode->adev;
-+	adev = &partner->adev;
++	free(data);
+ 	return 0;
+ }
  
- 	if (is_typec_plug(adev->dev.parent)) {
- 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
-@@ -424,8 +424,7 @@ static void typec_altmode_release(struct
- {
- 	struct altmode *alt = to_altmode(to_typec_altmode(dev));
- 
--	if (!is_typec_port(dev->parent))
--		typec_altmode_put_partner(alt);
-+	typec_altmode_put_partner(alt);
- 
- 	altmode_id_remove(alt->adev.dev.parent, alt->id);
- 	kfree(alt);
+-- 
+2.43.0
+
 
 
 
