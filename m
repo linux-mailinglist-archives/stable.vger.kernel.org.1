@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-14336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3913E83807B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93BA3837DFB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E013D28C02A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33FBD1F29C16
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7FE12BF34;
-	Tue, 23 Jan 2024 01:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF80C50A6E;
+	Tue, 23 Jan 2024 00:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m04GrtfM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzbS7QsX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2A112F59C;
-	Tue, 23 Jan 2024 01:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2C24E1D0;
+	Tue, 23 Jan 2024 00:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971758; cv=none; b=Ed1iRZHRL/ysmRzOKyNFevf6QyUXuAPo0J4nkDOv2kwm6zGftKqRMbkyskN1bxa+ouKgIVEWdYMRwNBiJ1RWNxTJPif7iK1VuMVFEOBPqdZYh/fq+wcGNqbzRUuQnqRLXgPkioNpT0UgUg1Ih3nwS+zpLb21t3kWp6NreSP5tQM=
+	t=1705970262; cv=none; b=J8GQWs8w/bwJQ5Y2vt6cDP+UKlDZ/xWvm+8ZXON6AOySnZW12ncY8sCnsAyjZz7+siC7x3G+KlLMTo8K8tbfWj0/+Y7tsF0j4HD2apeoN6ih7kDsh4DBLFETXemE7YSB4rDWBMTw4/oZ4N58IXMoqg1jMz+x+3HtmvZXO63y+Zs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971758; c=relaxed/simple;
-	bh=a8AzFp5d5/5w8NaD93HmPyzhUjZpkVWNId3QZLCyHFU=;
+	s=arc-20240116; t=1705970262; c=relaxed/simple;
+	bh=rZNLVV1kC+EcnF+A9r927mwcXMwonbMfhqkDgGl+dcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uvC+iKcz0LTrNEN5RbzD0FS30ZUzboQnmifpbYG6G5r8y5nytMv2QVAiTYVitYJVkPxZozstO3edTmrzfsT8DdxqVxmOEqHMcdoIMrGImSgQz8iHtzCll6zEAI/yaHDu5h31TSQvdhpKkhR/Si4w51Nf2D6+1zfxI1cjydEJmcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m04GrtfM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A650FC433C7;
-	Tue, 23 Jan 2024 01:02:37 +0000 (UTC)
+	 MIME-Version; b=PtOI8VA9o1DMW8byBWEByktlOtT418VWTvNVHsEHzNKqv1+INteePw/S02oa4CpuJB5d1DDUhiLRXvj5AXwmUgMvsknl+bmuwlSqMQ0qhMZ5yXNshnXcnbY8TwaZWDNRR00qg0YHzF/OKeRYyQBfa5UxRUW7vSrIhRZZ/5deVWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzbS7QsX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76544C43394;
+	Tue, 23 Jan 2024 00:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971757;
-	bh=a8AzFp5d5/5w8NaD93HmPyzhUjZpkVWNId3QZLCyHFU=;
+	s=korg; t=1705970262;
+	bh=rZNLVV1kC+EcnF+A9r927mwcXMwonbMfhqkDgGl+dcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m04GrtfMau33PrlM8KG9OEAGQTrxgMUstqiF9TkNwFw/eNZwbKwNeZ/IQr3YB0fUb
-	 iZd6kxf5bEXEXyzM/xVzhy11JqKZ+bowSagEwlNxuc5bpb1oGJxFUJ4vffI5yrYqlm
-	 CJ0bUOguPLbyM1fE1COJ5Ik4774UnlWWVDw5nDUQ=
+	b=jzbS7QsXL2ZHI+blx8KMdqHUWW4vNSTgtgZOjcyVAeXLa0bPRlkr4iMS/FRcFHic2
+	 yKRDYztw34xeE0Os17a67HYbqFnYY02rsqaMFKuOM0F9h0rwTsNN5o6s+UtS0vr0BV
+	 urE8Hbi0MfXaS3JQDAk/eeVQb8z/2AV6x+9Jv0pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 220/286] ALSA: oxygen: Fix right channel of capture volume mixer
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 622/641] netfilter: nf_queue: remove excess nf_bridge variable
 Date: Mon, 22 Jan 2024 15:58:46 -0800
-Message-ID: <20240122235740.544557991@linuxfoundation.org>
+Message-ID: <20240122235837.720150187@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
 
-commit a03cfad512ac24a35184d7d87ec0d5489e1cb763 upstream.
+[ Upstream commit aeaa44075f8e49e2e0ad4507d925e690b7950145 ]
 
-There was a typo in oxygen mixer code that didn't update the right
-channel value properly for the capture volume.  Let's fix it.
+We don't really need nf_bridge variable here. And nf_bridge_info_exists
+is better replacement for nf_bridge_info_get in case we are only
+checking for existence.
 
-This trivial fix was originally reported on Bugzilla.
-
-Fixes: a3601560496d ("[ALSA] oxygen: add front panel controls")
-Cc: <stable@vger.kernel.org>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=156561
-Link: https://lore.kernel.org/r/20240112111023.6208-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 9874808878d9 ("netfilter: bridge: replace physindev with physinif in nf_bridge_info")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/oxygen/oxygen_mixer.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_queue.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/sound/pci/oxygen/oxygen_mixer.c
-+++ b/sound/pci/oxygen/oxygen_mixer.c
-@@ -718,7 +718,7 @@ static int ac97_fp_rec_volume_put(struct
- 	oldreg = oxygen_read_ac97(chip, 1, AC97_REC_GAIN);
- 	newreg = oldreg & ~0x0707;
- 	newreg = newreg | (value->value.integer.value[0] & 7);
--	newreg = newreg | ((value->value.integer.value[0] & 7) << 8);
-+	newreg = newreg | ((value->value.integer.value[1] & 7) << 8);
- 	change = newreg != oldreg;
- 	if (change)
- 		oxygen_write_ac97(chip, 1, AC97_REC_GAIN, newreg);
+diff --git a/net/netfilter/nf_queue.c b/net/netfilter/nf_queue.c
+index 63d1516816b1..3dfcb3ac5cb4 100644
+--- a/net/netfilter/nf_queue.c
++++ b/net/netfilter/nf_queue.c
+@@ -82,10 +82,8 @@ static void __nf_queue_entry_init_physdevs(struct nf_queue_entry *entry)
+ {
+ #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
+ 	const struct sk_buff *skb = entry->skb;
+-	struct nf_bridge_info *nf_bridge;
+ 
+-	nf_bridge = nf_bridge_info_get(skb);
+-	if (nf_bridge) {
++	if (nf_bridge_info_exists(skb)) {
+ 		entry->physin = nf_bridge_get_physindev(skb);
+ 		entry->physout = nf_bridge_get_physoutdev(skb);
+ 	} else {
+-- 
+2.43.0
+
 
 
 
