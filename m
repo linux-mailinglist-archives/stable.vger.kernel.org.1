@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-15277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1194483849A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72E84837D75
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCD9F299C52
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CDCD2888BE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939307317B;
-	Tue, 23 Jan 2024 02:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A21DC56B62;
+	Tue, 23 Jan 2024 00:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDpBAaZB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXFmX2bc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D0073178;
-	Tue, 23 Jan 2024 02:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CD753E33;
+	Tue, 23 Jan 2024 00:32:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975436; cv=none; b=t6FjZ7YoN5Teavp6ndc/Q5HpY2L805NDLNx+eOwoUTDX0rLgC13Nx4OOUBDGAWIQLPUiuXKWf7pCOSFMWz3i4QtpEIhLQEZoqH5EuNo+JDQRQ7KSsV1wmLDSevbdCw7j4G0uNWheMnpDAHzhn2SRs3ijf5pNfgf1pQeuT/Pr6J0=
+	t=1705969967; cv=none; b=FqHFBqAzv2lO12JvBcv9F6e0t4Ndu/rGbXahg/d+OjHAEvwEB7GrF5h40TSqDHsvhqZG9oOhF7O1oEDAGr+8AhmmH4Ao6hX8BT4sF/uNdC5VOfUmyk2eSPHiEKJWLZf0pn0TLhzTQQcqZ2zQV52yVi+K68wlapZe1Mm70QHQJCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975436; c=relaxed/simple;
-	bh=eg9/4ukqphh6o1+WKlaNbs4t+S7ByDmPg3ldDNu/qTs=;
+	s=arc-20240116; t=1705969967; c=relaxed/simple;
+	bh=6+WLQlMr9NCwfPqhqecbEWdngydCbA9gg8fj+HTtu7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HUg20/MwWXS8yG19tbiMQQ8I4C3r4cpGfyxu/mE9UeOMDHPfQPbl/hlZ86WRC0aRsPIL6C/NZj6Q8lvXinxBGrECb/16AhOMIeJpr1TB/x7kQcPeMwzT2yIpvOgYTvXjbVGdTWRdQKcGc+4sH5ic4fyoIoWXp4NFt7tmJMbOLfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDpBAaZB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19EC1C433C7;
-	Tue, 23 Jan 2024 02:03:56 +0000 (UTC)
+	 MIME-Version; b=VuzekrcdVYy0MkMV6szk+dPTnAmsZVP3D8puclqnafh8Rv9mI+qLx9AMj+pf1s3JXdaT6ahGProJro9ktmye+JDUbvwpfKXVzp8kNNtMrp3i/2ThxsIbfJE/mdFcrnDrQtcnjVVzwvWxX3KmOPL41cbBf0q+zj5W96OkuJRzuGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXFmX2bc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B16BBC43390;
+	Tue, 23 Jan 2024 00:32:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975436;
-	bh=eg9/4ukqphh6o1+WKlaNbs4t+S7ByDmPg3ldDNu/qTs=;
+	s=korg; t=1705969967;
+	bh=6+WLQlMr9NCwfPqhqecbEWdngydCbA9gg8fj+HTtu7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WDpBAaZB9erRuouxekfnOijRTqQSOgpGEQnARYWLZLFcmDcAgPJ+2pMZ7kfbnyETv
-	 WYYTLDOVxmCn/rzOPSWctxd05TQmsKKFt8bdXD3230piYVcbSvBlGHt8F0ME8CCJiW
-	 bBN5V97plm47hZLZ6tfhNRMltbCxmo2xjev/nNyk=
+	b=CXFmX2bcx4ittcDdWPR2tglgYOm2P1f1GwQaecJFhYQEvZzDpLeH85meIdrpuktEu
+	 fmSLQEiwHiUc53b2nVdR7hIdVfkmoZbf4EMwQcwVxzwcIydgGeaFvTqsFtrYqjYTX7
+	 i/+Ey+aWqWQxYuIgdpFj04UFuuAwP/VH41DXtMVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Amir Goldstein <amir73il@gmail.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.6 395/583] scsi: target: core: add missing file_{start,end}_write()
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 542/641] arm64: dts: qcom: qrb5165-rb5: use u16 for DP altmode svid
 Date: Mon, 22 Jan 2024 15:57:26 -0800
-Message-ID: <20240122235824.071173632@linuxfoundation.org>
+Message-ID: <20240122235835.087874644@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit 0db1d53937fafa8bb96e077375691e16902f4899 upstream.
+[ Upstream commit 70e6163d17dd501ef27680eeb80d78b2cf823c5e ]
 
-The callers of vfs_iter_write() are required to hold file_start_write().
-file_start_write() is a no-op for the S_ISBLK() case, but it is really
-needed when the backing file is a regular file.
+Follow the bindings and use 16-bit value for AltMode SVID instead of
+using the full u32.
 
-We are going to move file_{start,end}_write() into vfs_iter_write(), but
-we need to fix this first, so that the fix could be backported to stable
-kernels.
-
-Suggested-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/ZV8ETIpM+wZa33B5@infradead.org/
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Link: https://lore.kernel.org/r/20231123092000.2665902-1-amir73il@gmail.com
-Acked-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: b3dea914127e ("arm64: dts: qcom: qrb5165-rb5: enable DP altmode")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20231204020303.2287338-4-dmitry.baryshkov@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/target/target_core_file.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/qcom/qrb5165-rb5.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/target/target_core_file.c
-+++ b/drivers/target/target_core_file.c
-@@ -332,11 +332,13 @@ static int fd_do_rw(struct se_cmd *cmd,
- 	}
+diff --git a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
+index f9464caddacc..4501c00d124b 100644
+--- a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
++++ b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
+@@ -1425,7 +1425,7 @@
  
- 	iov_iter_bvec(&iter, is_write, bvec, sgl_nents, len);
--	if (is_write)
-+	if (is_write) {
-+		file_start_write(fd);
- 		ret = vfs_iter_write(fd, &iter, &pos, 0);
--	else
-+		file_end_write(fd);
-+	} else {
- 		ret = vfs_iter_read(fd, &iter, &pos, 0);
--
-+	}
- 	if (is_write) {
- 		if (ret < 0 || ret != data_length) {
- 			pr_err("%s() write returned %d\n", __func__, ret);
-@@ -467,7 +469,9 @@ fd_execute_write_same(struct se_cmd *cmd
- 	}
- 
- 	iov_iter_bvec(&iter, ITER_SOURCE, bvec, nolb, len);
-+	file_start_write(fd_dev->fd_file);
- 	ret = vfs_iter_write(fd_dev->fd_file, &iter, &pos, 0);
-+	file_end_write(fd_dev->fd_file);
- 
- 	kfree(bvec);
- 	if (ret < 0 || ret != len) {
+ 		altmodes {
+ 			displayport {
+-				svid = <0xff01>;
++				svid = /bits/ 16 <0xff01>;
+ 				vdo = <0x00001c46>;
+ 			};
+ 		};
+-- 
+2.43.0
+
 
 
 
