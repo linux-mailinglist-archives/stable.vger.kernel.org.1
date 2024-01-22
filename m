@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-13957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9656837EF5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:17 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7CB18383E4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 692911F2B7E3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 162C81C29EF8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF683604B0;
-	Tue, 23 Jan 2024 00:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A887D64CFF;
+	Tue, 23 Jan 2024 01:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BeBGYVfH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nqJkKq7l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F32E60254;
-	Tue, 23 Jan 2024 00:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68D234E1AD;
+	Tue, 23 Jan 2024 01:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970850; cv=none; b=lE3x0PgvFaK5Efo4cX+tLAs+Bq/A0vdoqjUH3h/YjPfvzpORnBtrsLbOJfDp3e9dNuNIdVhcHgLWkxR+MHBuH0D0CV+CMqW66Cb32//eiIBQ7sINhVfsO3BDN1yoh5dj7mbeFR36kYPYnZOxbpvEyZBRFCT6Y5GlchXpbD0QFyk=
+	t=1705975089; cv=none; b=g0vNMJA/cvsSSlKQTC5KlGBN8uNrOho6LJrIMpdyCterVVUy28qWFvmruoI+6zP46w+SjE8BhM5F0s42Gv7UV+I2Epltwk2C6lVSePkJqdNvEedq1+DFviaoVnhPRHh3GD+CPXWdJEii+sWc+d59mc5UB+jc2AgowDeEiPe/uZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970850; c=relaxed/simple;
-	bh=kbQLxoovu+uEZNhJaQqfnbza66Q7zMBCU4oJosMpeEE=;
+	s=arc-20240116; t=1705975089; c=relaxed/simple;
+	bh=owmShYNwcaWJ462hD2bfGkLszbpbPG7EOaGx+2excMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sOftRUN6k/qtmEw1DY0p4/jPZWzrgjyHCaAozzETxLvTIl/yWLsVQCnkVnYoiTZQfYkjCaNxcdaR1VSQSHQaIFLz891+Oc0M/Tg78whmf1Z9HbS+7cYsektE8DyB0TRlaGPIybSeKIhBKfJ3MD21bOCay17gV2Zj7JFW3KebG7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BeBGYVfH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E253CC43390;
-	Tue, 23 Jan 2024 00:47:29 +0000 (UTC)
+	 MIME-Version; b=NRDtpE51+lx4DSNICAd2FoDEQ6uZICQPFuptamYbvexEn2vodGGbcD1N2XG9RKhffqV2eKkvsg7vSjYULmA661/OiltAFPvmHzsuvvJJyMwqnYg7ZoYA1qP2wuvvPO5Pz3oXxYEon76BB10Vq44F7p/IV2vQwM9P+vMBQ7XXj0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nqJkKq7l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF1EC433C7;
+	Tue, 23 Jan 2024 01:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970850;
-	bh=kbQLxoovu+uEZNhJaQqfnbza66Q7zMBCU4oJosMpeEE=;
+	s=korg; t=1705975089;
+	bh=owmShYNwcaWJ462hD2bfGkLszbpbPG7EOaGx+2excMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BeBGYVfH1Lr2GTbdDbqqLaGMnp4R3EjmAllXKXGgUByp+LvXnADdrpVy+lGOa9tF0
-	 kDrDdsYsIMahy0w3J3ZfFKHPrnc++4chZWKqICdBtMWNxlYr88Z+OzPXCMtPCmHaFr
-	 UDU2DQIPibt3/w5QOdulsW4n0ZElggLNHrIMejeI=
+	b=nqJkKq7lYrR4ryU6pUluBxbTuKPPG4dzNs5zsevvHgn8HKNJaIQ3NTqAh4vWFMxje
+	 pVNXoRqXuQdTJi9H8OPYvQyrPN5vZEYVESWMe3PCd4gsWeSsog2wlhqN9c+4B/4YrV
+	 2RYMzqsybXx49qGabACe7WohLA56mNW4aSDAcF1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 116/417] scsi: hisi_sas: Replace with standard error code return value
+	"Ricardo B. Marliere" <ricardo@marliere.net>,
+	Mike Isely <isely@pobox.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+621409285c4156a009b3@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 233/583] media: pvrusb2: fix use after free on context disconnection
 Date: Mon, 22 Jan 2024 15:54:44 -0800
-Message-ID: <20240122235755.795689242@linuxfoundation.org>
+Message-ID: <20240122235819.117359027@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Ricardo B. Marliere <ricardo@marliere.net>
 
-[ Upstream commit d34ee535705eb43885bc0f561c63046f697355ad ]
+[ Upstream commit ded85b0c0edd8f45fec88783d7555a5b982449c1 ]
 
-In function hisi_sas_controller_prereset(), -ENOSYS (Function not
-implemented) should be returned if the driver does not support .soft_reset.
-Returns -EPERM (Operation not permitted) if HISI_SAS_RESETTING_BIT is
-already be set.
+Upon module load, a kthread is created targeting the
+pvr2_context_thread_func function, which may call pvr2_context_destroy
+and thus call kfree() on the context object. However, that might happen
+before the usb hub_event handler is able to notify the driver. This
+patch adds a sanity check before the invalid read reported by syzbot,
+within the context disconnection call stack.
 
-In function _suspend_v3_hw(), returns -EPERM (Operation not permitted) if
-HISI_SAS_RESETTING_BIT is already be set.
+Reported-and-tested-by: syzbot+621409285c4156a009b3@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000a02a4205fff8eb92@google.com/
 
-Fixes: 4522204ab218 ("scsi: hisi_sas: tidy host controller reset function a bit")
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
-Link: https://lore.kernel.org/r/1702525516-51258-3-git-send-email-chenxiang66@hisilicon.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: e5be15c63804 ("V4L/DVB (7711): pvrusb2: Fix race on module unload")
+Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
+Acked-by: Mike Isely <isely@pobox.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_main.c  | 4 ++--
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/media/usb/pvrusb2/pvrusb2-context.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index a8142e2b9643..450a8578157c 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -1502,12 +1502,12 @@ EXPORT_SYMBOL_GPL(hisi_sas_controller_reset_done);
- static int hisi_sas_controller_prereset(struct hisi_hba *hisi_hba)
+diff --git a/drivers/media/usb/pvrusb2/pvrusb2-context.c b/drivers/media/usb/pvrusb2/pvrusb2-context.c
+index 14170a5d72b3..1764674de98b 100644
+--- a/drivers/media/usb/pvrusb2/pvrusb2-context.c
++++ b/drivers/media/usb/pvrusb2/pvrusb2-context.c
+@@ -268,7 +268,8 @@ void pvr2_context_disconnect(struct pvr2_context *mp)
  {
- 	if (!hisi_hba->hw->soft_reset)
--		return -1;
-+		return -ENOENT;
+ 	pvr2_hdw_disconnect(mp->hdw);
+ 	mp->disconnect_flag = !0;
+-	pvr2_context_notify(mp);
++	if (!pvr2_context_shutok())
++		pvr2_context_notify(mp);
+ }
  
- 	down(&hisi_hba->sem);
- 	if (test_and_set_bit(HISI_SAS_RESETTING_BIT, &hisi_hba->flags)) {
- 		up(&hisi_hba->sem);
--		return -1;
-+		return -EPERM;
- 	}
- 
- 	if (hisi_sas_debugfs_enable && hisi_hba->debugfs_itct[0].itct)
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index c4305ec38ebf..4f816b2cfa49 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -4981,7 +4981,7 @@ static int _suspend_v3_hw(struct device *device)
- 	}
- 
- 	if (test_and_set_bit(HISI_SAS_RESETTING_BIT, &hisi_hba->flags))
--		return -1;
-+		return -EPERM;
- 
- 	dev_warn(dev, "entering suspend state\n");
  
 -- 
 2.43.0
