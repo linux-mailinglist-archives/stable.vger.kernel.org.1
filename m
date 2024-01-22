@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FF9D837D2D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C83C838219
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:17:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 366BC291E03
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD4DB1F24FA4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A4E056B89;
-	Tue, 23 Jan 2024 00:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CCC62F4A;
+	Tue, 23 Jan 2024 01:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2IWrGjI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VuE9OOTU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BAB51C33;
-	Tue, 23 Jan 2024 00:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE96C58126;
+	Tue, 23 Jan 2024 01:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969824; cv=none; b=jFcBnzRgnt83H106h6QUlNFA7bjIjyEaIbPkaw91FQg4A8tkRQOQFtM232CF1gMBKGkFMLwgENZODC/c0QQ0CFDK6STaN1pkNaidffPTWdpe0Z6Z9Mxr3yCAmyAJ7o1LoZlgcIC1tCubOChP7FbSLkJ2H+9MOQpwAkBA2kkZRY8=
+	t=1705974062; cv=none; b=Fr03k+cOj4i8GbKSGH54pRnj3FOZPBIM2Wk2PnogijkFgcNlT+aRXDKHG7G1puVVbhAGsltO2Rk6/6hFMS2WubUys4qX6N+wJkKP5I9AoZUqRK5tZwBczelwGg4vQufM8/1zRST7mztuoKziQjJzvDD+527eXvXVD/XMqJ1tQiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969824; c=relaxed/simple;
-	bh=qm1uJP0qoq4lxx66ZjLqZ2n6Y5el3da+s5IsvpIjCDU=;
+	s=arc-20240116; t=1705974062; c=relaxed/simple;
+	bh=9xhHdMLITR2ISLinQmnIf0Sh1HyTHPuMccNLvxZpKvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GN2+iYCJ+LmyoSd5ni0QI/IuJsABR5997ayc9Ze/iPSXfbiUMiGA75kyupPdjcSKpnaxvb70tglL1o0r1dvNZQEawvXu7prjWB0artHphTNtCrfrfVtvchfXqvQd+QQsUXBsPeMEa/rUKJtz4Asj9sNvIr/XtRLXuztBE6KXwE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2IWrGjI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA89AC433F1;
-	Tue, 23 Jan 2024 00:30:23 +0000 (UTC)
+	 MIME-Version; b=p0jQwsLaiZgNM4CVD0XPqOzEiyJLN5/uTdlOe3y81mIZasCw16b2wMgbPRnOsyQ99Xh/owZf2JoBq7+5ex/MqQoVqN7xVatZNo49xQCUVNb1Il0dnz6OmLZL/fNx6qWByC+FKJ87qAGJJ6EUKadw8E1jNRxwcf+rCSI2nc5UV5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VuE9OOTU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D33C43394;
+	Tue, 23 Jan 2024 01:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969824;
-	bh=qm1uJP0qoq4lxx66ZjLqZ2n6Y5el3da+s5IsvpIjCDU=;
+	s=korg; t=1705974062;
+	bh=9xhHdMLITR2ISLinQmnIf0Sh1HyTHPuMccNLvxZpKvQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a2IWrGjIp4LH3lGvXvGy7Xdo488qiC+7WCr2ghlGid9S9QxguSdNm0wnC/nU764QH
-	 lHf6CfLx9issRFRp1yPq0T6dGPjgyMJCR3qd+UA26KSglh9HDDu6p/I+rXaYhmwJlN
-	 lTUmC14u8w0e8YObCGmECVsM8CFR1RqwU7fYgMEM=
+	b=VuE9OOTUcV/XcszV1/RHYiJq6AZOBHX0H9O36UEMeIo9osf/vDJqDQYEgZ2JOCTyM
+	 DhhRKjH85BEpgJI6opJMYZ9JwbhnRFjCwhfYAaHwtPCfA2KFfN+ZOULWqHz63mNP/L
+	 L3Yk0fqXqAGDOzF969RG6G0j90rvd+kQ7K41jqYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>
-Subject: [PATCH 6.7 471/641] x86/kvm: Do not try to disable kvmclock if it was not enabled
+	Jordan Rome <jordalgo@meta.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 119/374] bpf: Add crosstask check to __bpf_get_stack
 Date: Mon, 22 Jan 2024 15:56:15 -0800
-Message-ID: <20240122235832.790648690@linuxfoundation.org>
+Message-ID: <20240122235748.772476061@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +62,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: Jordan Rome <jordalgo@meta.com>
 
-commit 1c6d984f523f67ecfad1083bb04c55d91977bb15 upstream.
+[ Upstream commit b8e3a87a627b575896e448021e5c2f8a3bc19931 ]
 
-kvm_guest_cpu_offline() tries to disable kvmclock regardless if it is
-present in the VM. It leads to write to a MSR that doesn't exist on some
-configurations, namely in TDX guest:
+Currently get_perf_callchain only supports user stack walking for
+the current task. Passing the correct *crosstask* param will return
+0 frames if the task passed to __bpf_get_stack isn't the current
+one instead of a single incorrect frame/address. This change
+passes the correct *crosstask* param but also does a preemptive
+check in __bpf_get_stack if the task is current and returns
+-EOPNOTSUPP if it is not.
 
-	unchecked MSR access error: WRMSR to 0x12 (tried to write 0x0000000000000000)
-	at rIP: 0xffffffff8110687c (kvmclock_disable+0x1c/0x30)
+This issue was found using bpf_get_task_stack inside a BPF
+iterator ("iter/task"), which iterates over all tasks.
+bpf_get_task_stack works fine for fetching kernel stacks
+but because get_perf_callchain relies on the caller to know
+if the requested *task* is the current one (via *crosstask*)
+it was failing in a confusing way.
 
-kvmclock enabling is gated by CLOCKSOURCE and CLOCKSOURCE2 KVM paravirt
-features.
+It might be possible to get user stacks for all tasks utilizing
+something like access_process_vm but that requires the bpf
+program calling bpf_get_task_stack to be sleepable and would
+therefore be a breaking change.
 
-Do not disable kvmclock if it was not enabled.
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Fixes: c02027b5742b ("x86/kvm: Disable kvmclock on all CPUs on shutdown")
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Wanpeng Li <wanpengli@tencent.com>
-Cc: stable@vger.kernel.org
-Message-Id: <20231205004510.27164-6-kirill.shutemov@linux.intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fa28dcb82a38 ("bpf: Introduce helper bpf_get_task_stack()")
+Signed-off-by: Jordan Rome <jordalgo@meta.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20231108112334.3433136-1-jordalgo@meta.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/kvmclock.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ include/uapi/linux/bpf.h       |  3 +++
+ kernel/bpf/stackmap.c          | 11 ++++++++++-
+ tools/include/uapi/linux/bpf.h |  3 +++
+ 3 files changed, 16 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kernel/kvmclock.c
-+++ b/arch/x86/kernel/kvmclock.c
-@@ -24,8 +24,8 @@
- 
- static int kvmclock __initdata = 1;
- static int kvmclock_vsyscall __initdata = 1;
--static int msr_kvm_system_time __ro_after_init = MSR_KVM_SYSTEM_TIME;
--static int msr_kvm_wall_clock __ro_after_init = MSR_KVM_WALL_CLOCK;
-+static int msr_kvm_system_time __ro_after_init;
-+static int msr_kvm_wall_clock __ro_after_init;
- static u64 kvm_sched_clock_offset __ro_after_init;
- 
- static int __init parse_no_kvmclock(char *arg)
-@@ -195,7 +195,8 @@ static void kvm_setup_secondary_clock(vo
- 
- void kvmclock_disable(void)
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index 9fb06a511250..1da082a8c4ec 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -4245,6 +4245,8 @@ union bpf_attr {
+  * long bpf_get_task_stack(struct task_struct *task, void *buf, u32 size, u64 flags)
+  *	Description
+  *		Return a user or a kernel stack in bpf program provided buffer.
++ *		Note: the user stack will only be populated if the *task* is
++ *		the current task; all other tasks will return -EOPNOTSUPP.
+  *		To achieve this, the helper needs *task*, which is a valid
+  *		pointer to **struct task_struct**. To store the stacktrace, the
+  *		bpf program provides *buf* with a nonnegative *size*.
+@@ -4256,6 +4258,7 @@ union bpf_attr {
+  *
+  *		**BPF_F_USER_STACK**
+  *			Collect a user space stack instead of a kernel stack.
++ *			The *task* must be the current task.
+  *		**BPF_F_USER_BUILD_ID**
+  *			Collect buildid+offset instead of ips for user stack,
+  *			only valid if **BPF_F_USER_STACK** is also specified.
+diff --git a/kernel/bpf/stackmap.c b/kernel/bpf/stackmap.c
+index 7efae3af6201..f8587abef73c 100644
+--- a/kernel/bpf/stackmap.c
++++ b/kernel/bpf/stackmap.c
+@@ -435,6 +435,7 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
  {
--	native_write_msr(msr_kvm_system_time, 0, 0);
-+	if (msr_kvm_system_time)
-+		native_write_msr(msr_kvm_system_time, 0, 0);
- }
+ 	u32 trace_nr, copy_len, elem_size, num_elem, max_depth;
+ 	bool user_build_id = flags & BPF_F_USER_BUILD_ID;
++	bool crosstask = task && task != current;
+ 	u32 skip = flags & BPF_F_SKIP_FIELD_MASK;
+ 	bool user = flags & BPF_F_USER_STACK;
+ 	struct perf_callchain_entry *trace;
+@@ -457,6 +458,14 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
+ 	if (task && user && !user_mode(regs))
+ 		goto err_fault;
  
- static void __init kvmclock_init_mem(void)
-@@ -294,7 +295,10 @@ void __init kvmclock_init(void)
- 	if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE2)) {
- 		msr_kvm_system_time = MSR_KVM_SYSTEM_TIME_NEW;
- 		msr_kvm_wall_clock = MSR_KVM_WALL_CLOCK_NEW;
--	} else if (!kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE)) {
-+	} else if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE)) {
-+		msr_kvm_system_time = MSR_KVM_SYSTEM_TIME;
-+		msr_kvm_wall_clock = MSR_KVM_WALL_CLOCK;
-+	} else {
- 		return;
- 	}
++	/* get_perf_callchain does not support crosstask user stack walking
++	 * but returns an empty stack instead of NULL.
++	 */
++	if (crosstask && user) {
++		err = -EOPNOTSUPP;
++		goto clear;
++	}
++
+ 	num_elem = size / elem_size;
+ 	max_depth = num_elem + skip;
+ 	if (sysctl_perf_event_max_stack < max_depth)
+@@ -468,7 +477,7 @@ static long __bpf_get_stack(struct pt_regs *regs, struct task_struct *task,
+ 		trace = get_callchain_entry_for_task(task, max_depth);
+ 	else
+ 		trace = get_perf_callchain(regs, 0, kernel, user, max_depth,
+-					   false, false);
++					   crosstask, false);
+ 	if (unlikely(!trace))
+ 		goto err_fault;
  
+diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
+index 1e3e3f16eabc..d83eaa35c581 100644
+--- a/tools/include/uapi/linux/bpf.h
++++ b/tools/include/uapi/linux/bpf.h
+@@ -4245,6 +4245,8 @@ union bpf_attr {
+  * long bpf_get_task_stack(struct task_struct *task, void *buf, u32 size, u64 flags)
+  *	Description
+  *		Return a user or a kernel stack in bpf program provided buffer.
++ *		Note: the user stack will only be populated if the *task* is
++ *		the current task; all other tasks will return -EOPNOTSUPP.
+  *		To achieve this, the helper needs *task*, which is a valid
+  *		pointer to **struct task_struct**. To store the stacktrace, the
+  *		bpf program provides *buf* with a nonnegative *size*.
+@@ -4256,6 +4258,7 @@ union bpf_attr {
+  *
+  *		**BPF_F_USER_STACK**
+  *			Collect a user space stack instead of a kernel stack.
++ *			The *task* must be the current task.
+  *		**BPF_F_USER_BUILD_ID**
+  *			Collect buildid+offset instead of ips for user stack,
+  *			only valid if **BPF_F_USER_STACK** is also specified.
+-- 
+2.43.0
+
 
 
 
