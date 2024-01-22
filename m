@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83A04838348
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:27:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 210BC837FED
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:55:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01EC4B2DF9F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA91728A926
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED9B5FDC3;
-	Tue, 23 Jan 2024 01:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A87F12CDA9;
+	Tue, 23 Jan 2024 00:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nKUb9Wt4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLMwhl1S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1225FDC0;
-	Tue, 23 Jan 2024 01:50:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1159712CDA5;
+	Tue, 23 Jan 2024 00:57:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974648; cv=none; b=Jl6H/ovS3eXEvqSWjq/XJ8oa6gZwY9FRGslBXJXj69qSM+Y2n0QQHPwpO8Taiox8+iVES5HR+cBp9vOC9OviiU2wEuLqRfBsQC/9QXh6KZvfeTwKm8c6HWnO8zWsfDWDJdHIxYWPc1iLx6AGGgU32GNKtdDdOWZc2PohF3oGc1M=
+	t=1705971454; cv=none; b=C3adfzljUQnX3t/svTORLBbjjK3C67blhYSczDrK4fYDHUrMCpsO8WCBvd7RQ/RRa49lzMXH6kJZJamh+01d9dHYHyvEn6SsAW6+8iZkozuTEir1ZcU5zxYR+OZFwvDAeYa4X+NImUzDEG9OBjB4MEXPpEhOTLAc88VcK6OkIdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974648; c=relaxed/simple;
-	bh=3t7VvC+JCMdgIRuh6nxUy9lDPX9TnnHhGk5nI/bokac=;
+	s=arc-20240116; t=1705971454; c=relaxed/simple;
+	bh=s/90pfQYsEXmbfAULhUq+oIbRFwG0RMcDpc5pheEAEk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pVAS45wwAlBWZGrLbJnuEAIdeOCxXkl/OZ+vOteGxHVi4sHNBa+sRK2sPxNyqrd0HPdTECQQLfNL8URUWaGyP4P0iPj4Qj61+gzMG/BBp6ndNb6Ur+x25STE45qUJo7Zw8K3Q4GtZG1sFryJMN5YWryfnTGYDkl3iPauuBnUe+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nKUb9Wt4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1535DC433F1;
-	Tue, 23 Jan 2024 01:50:48 +0000 (UTC)
+	 MIME-Version; b=r1jE/av14DwmohfIGASO4qS/lICe9B3jVeranB6a80IyQo2Ji2vWfa22/JYkwODxS6aPc5F3s9HhCNtei0vVqkpww2cEEpGz/PwxAwpM7CES4c39PhI6Uy120BnIoK8VVAtElA/DhXQGmfeRKkVvTgvZgTk8tqDn3jd89Tk9EXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLMwhl1S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A801FC433F1;
+	Tue, 23 Jan 2024 00:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974648;
-	bh=3t7VvC+JCMdgIRuh6nxUy9lDPX9TnnHhGk5nI/bokac=;
+	s=korg; t=1705971453;
+	bh=s/90pfQYsEXmbfAULhUq+oIbRFwG0RMcDpc5pheEAEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nKUb9Wt4kEycugMDYOgkvG/ZIgE6zEgdDwWkisAROub0IfpSzhRJfGQp0pqUnzja4
-	 e6wiMrHPCeZuqKlZ4gu4c5QR2CCsdEwDigVxhrWxe6dmEapFkFsc+u+dhGl5xLjZtI
-	 gvgfBsjYG7CBdBTFAxo9xvCbHjawLWrZwru8Rrac=
+	b=jLMwhl1SsfQJDhdlXb3u3Qr2+ypEQHA8NpBNY2Qq3f9YRwLd3lyAVo7wZ8MbB//f/
+	 JCqGvivLTzMasrPNblLgNgbseqjUOyqqHiyH8aTcryjF8aGNvtNq1lwj02nkMpUHkF
+	 dL70KnjmhW3OPtbvohFxjPjDlMky+GqKir8w7Clc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 203/374] f2fs: fix to check compress file in f2fs_move_file_range()
+Subject: [PATCH 5.10 153/286] drm/radeon/r100: Fix integer overflow issues in r100_cs_track_check()
 Date: Mon, 22 Jan 2024 15:57:39 -0800
-Message-ID: <20240122235751.675329600@linuxfoundation.org>
+Message-ID: <20240122235738.056276559@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit fb9b65340c818875ea86464faf3c744bdce0055c ]
+[ Upstream commit b5c5baa458faa5430c445acd9a17481274d77ccf ]
 
-f2fs_move_file_range() doesn't support migrating compressed cluster
-data, let's add the missing check condition and return -EOPNOTSUPP
-for the case until we support it.
+It may be possible, albeit unlikely, to encounter integer overflow
+during the multiplication of several unsigned int variables, the
+result being assigned to a variable 'size' of wider type.
 
-Fixes: 4c8ff7095bef ("f2fs: support data compression")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Prevent this potential behaviour by converting one of the multiples
+to unsigned long.
+
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: 0242f74d29df ("drm/radeon: clean up CS functions in r100.c")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/radeon/r100.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 58fd32db025d..0669ac4c0f12 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -2780,6 +2780,11 @@ static int f2fs_move_file_range(struct file *file_in, loff_t pos_in,
- 			goto out;
- 	}
- 
-+	if (f2fs_compressed_file(src) || f2fs_compressed_file(dst)) {
-+		ret = -EOPNOTSUPP;
-+		goto out_unlock;
-+	}
-+
- 	ret = -EINVAL;
- 	if (pos_in + len > src->i_size || pos_in + len < pos_in)
- 		goto out_unlock;
+diff --git a/drivers/gpu/drm/radeon/r100.c b/drivers/gpu/drm/radeon/r100.c
+index 24c8db673931..6e4600c21697 100644
+--- a/drivers/gpu/drm/radeon/r100.c
++++ b/drivers/gpu/drm/radeon/r100.c
+@@ -2313,7 +2313,7 @@ int r100_cs_track_check(struct radeon_device *rdev, struct r100_cs_track *track)
+ 	switch (prim_walk) {
+ 	case 1:
+ 		for (i = 0; i < track->num_arrays; i++) {
+-			size = track->arrays[i].esize * track->max_indx * 4;
++			size = track->arrays[i].esize * track->max_indx * 4UL;
+ 			if (track->arrays[i].robj == NULL) {
+ 				DRM_ERROR("(PW %u) Vertex array %u no buffer "
+ 					  "bound\n", prim_walk, i);
+@@ -2332,7 +2332,7 @@ int r100_cs_track_check(struct radeon_device *rdev, struct r100_cs_track *track)
+ 		break;
+ 	case 2:
+ 		for (i = 0; i < track->num_arrays; i++) {
+-			size = track->arrays[i].esize * (nverts - 1) * 4;
++			size = track->arrays[i].esize * (nverts - 1) * 4UL;
+ 			if (track->arrays[i].robj == NULL) {
+ 				DRM_ERROR("(PW %u) Vertex array %u no buffer "
+ 					  "bound\n", prim_walk, i);
 -- 
 2.43.0
 
