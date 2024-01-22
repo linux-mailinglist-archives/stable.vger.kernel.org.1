@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-14683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED01B83821F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:00 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F0083846E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3B221F256A9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 235F3299946
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AAE76127;
-	Tue, 23 Jan 2024 01:41:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E130E6DCEF;
+	Tue, 23 Jan 2024 02:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DciVqi45"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gaETezFK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AE8258AAC;
-	Tue, 23 Jan 2024 01:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FDF46DCED;
+	Tue, 23 Jan 2024 02:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974070; cv=none; b=HqO50xX43F/jX6Zv0XsB8MGjaGHkK5Lf6hC5h2A2qQIVuyTOGSt77xyolOKPyZQ/ihmAV/BT3EAMqUuzMwrlSsiQb8KUtFjhw/QF1uWSbnM3GYoEJEYYCoLv8LaSAe+C8J8ixlhWQTb2to9/g2aHzOob+4d39u9ZEaz5Js/cWXs=
+	t=1705975396; cv=none; b=AOEu42Eoq6Ql/JIXHkHcGy+EFd/XXCZK1wnA1wXOzAkU3jyR0RYZO8U/nqYigyCbme78GGZZu5MbdJDHz3pLTBU/osPIhm8kGv9inZ+/ghRJJgisNwuCS/rTtbPiCgaDzLfri/o8cQIkcNxZrld0+seMcQqDz2sPLIyhbEh8Idc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974070; c=relaxed/simple;
-	bh=FfzmUb4cz1d/OhVGbzVaJ98VcFG9XoVaI+yh7lU4iU8=;
+	s=arc-20240116; t=1705975396; c=relaxed/simple;
+	bh=MudaizYSqXO1duRgE3/f7fzChF57VZe1ju8pLtbQukA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VkT43CkCsDIMZAhgWc5trPywSv9brnUk8t/1TUgEr3E3ZDoaxWSGmaIssxZ+roSet82vj4gb7BZUMcmuaSCCYetbK7TFUKDPZ3NflNhVmPyi2D5jmcjKqSI47laegK2cOvRs6dA370uQULWzoxldICBI2WTLhNkRqm1VUpwCmvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DciVqi45; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B2EC43399;
-	Tue, 23 Jan 2024 01:41:08 +0000 (UTC)
+	 MIME-Version; b=CVMhxwBp/wiNcqElrsNKSH2h7HQhCDS4/Q+qiX/7yz9Y9KP35AH7rAE5/3G/cbNRreCiT8Mo37AXvAmVeL6X0bZD2BfAm/o1h9qON+8P9bnzzlgZv8UQE6rGNC0Rl3iIOtvw8j/kUALCcwvL2050NM2yAp1TDWrlItjoPOPgwn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gaETezFK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0437C43390;
+	Tue, 23 Jan 2024 02:03:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974068;
-	bh=FfzmUb4cz1d/OhVGbzVaJ98VcFG9XoVaI+yh7lU4iU8=;
+	s=korg; t=1705975396;
+	bh=MudaizYSqXO1duRgE3/f7fzChF57VZe1ju8pLtbQukA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DciVqi45l721egKBdlo3hjZ2PCvZlSrqn0TEWHqaawhQgbf9l0WAL1OQAYnQsb3YY
-	 n0Y54tCKbvW+uWKFREr7uRyil4tJRzLqbInILqeV7nN0tVbgKE3fWl0YuZnj8oEEDk
-	 vzEB0exQzqALhOf80gaRDVPvX52CAyWQaCguU588=
+	b=gaETezFKiCSImPN0ZyRqr4e2aU3R13fRTOocGjT7U+ztTsUv09mrUtxioeflgqsBP
+	 KCQkEwwaaeYhlJX3Ega67oXAI1x2liQf/uVeT/WXrmTK3MBzVa9s0ZO2lkQm+foJlD
+	 n9MGenor8QRFCCOc3cQnhG6orXL2Q+yFZ6qyDM24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joakim Zhang <joakim.zhang@cixtech.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 150/374] dma-mapping: clear dev->dma_mem to NULL after freeing it
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Aneesh Kumar K.V (IBM)" <aneesh.kumar@kernel.org>
+Subject: [PATCH 6.6 355/583] powerpc/64s: Increase default stack size to 32KB
 Date: Mon, 22 Jan 2024 15:56:46 -0800
-Message-ID: <20240122235749.846045273@linuxfoundation.org>
+Message-ID: <20240122235822.879684229@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joakim Zhang <joakim.zhang@cixtech.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit b07bc2347672cc8c7293c64499f1488278c5ca3d ]
+commit 18f14afe281648e31ed35c9ad2fcb724c4838ad9 upstream.
 
-Reproduced with below sequence:
-dma_declare_coherent_memory()->dma_release_coherent_memory()
-->dma_declare_coherent_memory()->"return -EBUSY" error
+There are reports of kernels crashing due to stack overflow while
+running OpenShift (Kubernetes). The primary contributor to the stack
+usage seems to be openvswitch, which is used by OVN-Kubernetes (based on
+OVN (Open Virtual Network)), but NFS also contributes in some stack
+traces.
 
-It will return -EBUSY from the dma_assign_coherent_memory()
-in dma_declare_coherent_memory(), the reason is that dev->dma_mem
-pointer has not been set to NULL after it's freed.
+There may be some opportunities to reduce stack usage in the openvswitch
+code, but doing so potentially require tradeoffs vs performance, and
+also requires testing across architectures.
 
-Fixes: cf65a0f6f6ff ("dma-mapping: move all DMA mapping code to kernel/dma")
-Signed-off-by: Joakim Zhang <joakim.zhang@cixtech.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Looking at stack usage across the kernel (using -fstack-usage), shows
+that ppc64le stack frames are on average 50-100% larger than the
+equivalent function built for x86-64. Which is not surprising given the
+minimum stack frame size is 32 bytes on ppc64le vs 16 bytes on x86-64.
+
+So increase the default stack size to 32KB for the modern 64-bit Book3S
+platforms, ie. pseries (virtualised) and powernv (bare metal). That
+leaves the older systems like G5s, and the AmigaOne (pasemi) with a 16KB
+stack which should be sufficient on those machines.
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
+Link: https://msgid.link/20231215124449.317597-1-mpe@ellerman.id.au
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/dma/coherent.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/dma/coherent.c b/kernel/dma/coherent.c
-index ca05989d9901..2df824fa40ef 100644
---- a/kernel/dma/coherent.c
-+++ b/kernel/dma/coherent.c
-@@ -133,8 +133,10 @@ int dma_declare_coherent_memory(struct device *dev, phys_addr_t phys_addr,
- 
- void dma_release_coherent_memory(struct device *dev)
- {
--	if (dev)
-+	if (dev) {
- 		_dma_release_coherent_memory(dev->dma_mem);
-+		dev->dma_mem = NULL;
-+	}
- }
- 
- static void *__dma_alloc_from_coherent(struct device *dev,
--- 
-2.43.0
-
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -857,6 +857,7 @@ config THREAD_SHIFT
+ 	int "Thread shift" if EXPERT
+ 	range 13 15
+ 	default "15" if PPC_256K_PAGES
++	default "15" if PPC_PSERIES || PPC_POWERNV
+ 	default "14" if PPC64
+ 	default "13"
+ 	help
 
 
 
