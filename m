@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-14457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7227383812A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D64837E18
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A57EB254A7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8699D1F29CD7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F2913E217;
-	Tue, 23 Jan 2024 01:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F0E358AC0;
+	Tue, 23 Jan 2024 00:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oPi6KV00"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7TbWE0V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACBD13DBB7;
-	Tue, 23 Jan 2024 01:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B0C4E1A0;
+	Tue, 23 Jan 2024 00:39:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971991; cv=none; b=GPqqsHjCXVy2E2rm8I5VOl3iUQba4XxiclJ5fHOUXVbznlGf+NNiD4hCY73/8F7gGhrz32LDIOn5jJvHnxrrAfThdWDXyds0noBr0pjaommmqWPvZ09MpwAiZTbrSnbyasUFALVz+FjpfZmB8CNISOU2KBt1LXJD0QDW3N4Cs+M=
+	t=1705970372; cv=none; b=n+xWYHItlLL7iLG4cNNxD0eyir/6sYl7qgF3JaaffMbwWCyJjFfcIqUmrkP/IokS2ZdHALudyfpKO+B2yqZMUo+c/ThMTP0GGv3aQ+g7og4rbh2hEeSoCppwjYpw2GDZwH10aWrqBAXXQXSAERKue3TrmVyAGsf1/QacHPFR91k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971991; c=relaxed/simple;
-	bh=uKa1UWUHB5p8RuxiQUXvF0EWdJJeDk68iSqQBrhbGMs=;
+	s=arc-20240116; t=1705970372; c=relaxed/simple;
+	bh=hru6hZ+xnabQvevarUvi00kw0jOtZwU49IYPk8p3mXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cwVB3jaX/0IOeythoJj2JoqY0Sb7LYwDtFP266QEuVwaR0ySn9fvg9HbHa4yZuKEozikWbPBDHD35ODiwXaaY9pazMT0TxmjNoRQGlRO8bLkBEuUQTIoMRF2acdzvQglA2K3pGepYVgHwctAkBOAri+Fejl85hTg7vve6lpBAcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oPi6KV00; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B411C433C7;
-	Tue, 23 Jan 2024 01:06:31 +0000 (UTC)
+	 MIME-Version; b=K9IniyWL/sRjglQcWdV2pUpNZw1xDnwXq9THEXSafXeHIirAllXnduPMGCn9957m5N+JJsk71Ivc/btZXTEPd0n9/hbD7d9VxvES1+w9FsnIzprcIegRrLnASTBsNk0+Hf8bBirNnck15HUGRn6lANgs20XcnXlzkxLk5DwAlHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7TbWE0V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9133AC433C7;
+	Tue, 23 Jan 2024 00:39:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971991;
-	bh=uKa1UWUHB5p8RuxiQUXvF0EWdJJeDk68iSqQBrhbGMs=;
+	s=korg; t=1705970371;
+	bh=hru6hZ+xnabQvevarUvi00kw0jOtZwU49IYPk8p3mXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oPi6KV00hOYYdryEjLZRAAb11IUOgDDKuRjOtae7C8zpYuXaIOo3ooHcOh+zhwfmi
-	 vNNuxZfb3xL34ryZXkPrlAxGxoSaLODKkOGGElKlwBoRkV3Os4llSA08AXWwxd+z8Q
-	 4IM5h/Ab2F8Xk5ck0gtMk6oq9ehlV9oB8e2O2WPQ=
+	b=T7TbWE0VR7hn7vXF+dugGZks0AOM4EBnV8Nr0ApcgiI97zfoo16WB+4LCyqwHD0H8
+	 7Nt9CjpjNbOHHq3DzQaS9KBZIJvo6SRkcsTGiOWIq0ciytsbdQ6tbUP5Cy3YAiTvAG
+	 OZGDI3toGXc6fjHNg2Fjx6wMmnCgl300A4eofJeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Amit Cohen <amcohen@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 373/417] nvmet-tcp: Fix the H2C expected PDU len calculation
-Date: Mon, 22 Jan 2024 15:59:01 -0800
-Message-ID: <20240122235804.731158798@linuxfoundation.org>
+Subject: [PATCH 6.7 638/641] selftests: mlxsw: qos_pfc: Adjust the test to support 8 lanes
+Date: Mon, 22 Jan 2024 15:59:02 -0800
+Message-ID: <20240122235838.239591501@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +66,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Amit Cohen <amcohen@nvidia.com>
 
-[ Upstream commit 9a1abc24850eb759e36a2f8869161c3b7254c904 ]
+[ Upstream commit b34f4de6d30cbaa8fed905a5080b6eace8c84dc7 ]
 
-The nvmet_tcp_handle_h2c_data_pdu() function should take into
-consideration the possibility that the header digest and/or the data
-digests are enabled when calculating the expected PDU length, before
-comparing it to the value stored in cmd->pdu_len.
+'qos_pfc' test checks PFC behavior. The idea is to limit the traffic
+using a shaper somewhere in the flow of the packets. In this area, the
+buffer is smaller than the buffer at the beginning of the flow, so it fills
+up until there is no more space left. The test configures there PFC
+which is supposed to notice that the headroom is filling up and send PFC
+Xoff to indicate the transmitter to stop sending traffic for the priorities
+sharing this PG.
 
-Fixes: efa56305908b ("nvmet-tcp: Fix a kernel panic when host sends an invalid H2C PDU length")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+The Xon/Xoff threshold is auto-configured and always equal to
+2*(MTU rounded up to cell size). Even after sending the PFC Xoff packet,
+traffic will keep arriving until the transmitter receives and processes
+the PFC packet. This amount of traffic is known as the PFC delay allowance.
+
+Currently the buffer for the delay traffic is configured as 100KB. The
+MTU in the test is 10KB, therefore the threshold for Xoff is about 20KB.
+This allows 80KB extra to be stored in this buffer.
+
+8-lane ports use two buffers among which the configured buffer is split,
+the Xoff threshold then applies to each buffer in parallel.
+
+The test does not take into account the behavior of 8-lane ports, when the
+ports are configured to 400Gbps with 8 lanes or 800Gbps with 8 lanes,
+packets are dropped and the test fails.
+
+Check if the relevant ports use 8 lanes, in such case double the size of
+the buffer, as the headroom is split half-half.
+
+Cc: Shuah Khan <shuah@kernel.org>
+Fixes: bfa804784e32 ("selftests: mlxsw: Add a PFC test")
+Signed-off-by: Amit Cohen <amcohen@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://lore.kernel.org/r/23ff11b7dff031eb04a41c0f5254a2b636cd8ebb.1705502064.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/tcp.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ .../selftests/drivers/net/mlxsw/qos_pfc.sh     | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 6d46143bcfe8..ce42afe8f64e 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -915,7 +915,7 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
+diff --git a/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh b/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh
+index 42ce602d8d49..e71d811656bb 100755
+--- a/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh
++++ b/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh
+@@ -120,6 +120,9 @@ h2_destroy()
+ 
+ switch_create()
  {
- 	struct nvme_tcp_data_pdu *data = &queue->pdu.data;
- 	struct nvmet_tcp_cmd *cmd;
--	unsigned int plen;
-+	unsigned int exp_data_len;
- 
- 	if (likely(queue->nr_cmds)) {
- 		if (unlikely(data->ttag >= queue->nr_cmds)) {
-@@ -938,9 +938,13 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- 		return -EPROTO;
- 	}
- 
--	plen = le32_to_cpu(data->hdr.plen);
-+	exp_data_len = le32_to_cpu(data->hdr.plen) -
-+			nvmet_tcp_hdgst_len(queue) -
-+			nvmet_tcp_ddgst_len(queue) -
-+			sizeof(*data);
++	local lanes_swp4
++	local pg1_size
 +
- 	cmd->pdu_len = le32_to_cpu(data->data_length);
--	if (unlikely(cmd->pdu_len != (plen - sizeof(*data)) ||
-+	if (unlikely(cmd->pdu_len != exp_data_len ||
- 		     cmd->pdu_len == 0 ||
- 		     cmd->pdu_len > NVMET_TCP_MAXH2CDATA)) {
- 		pr_err("H2CData PDU len %u is invalid\n", cmd->pdu_len);
+ 	# pools
+ 	# -----
+ 
+@@ -229,7 +232,20 @@ switch_create()
+ 	dcb pfc set dev $swp4 prio-pfc all:off 1:on
+ 	# PG0 will get autoconfigured to Xoff, give PG1 arbitrarily 100K, which
+ 	# is (-2*MTU) about 80K of delay provision.
+-	dcb buffer set dev $swp4 buffer-size all:0 1:$_100KB
++	pg1_size=$_100KB
++
++	setup_wait_dev_with_timeout $swp4
++
++	lanes_swp4=$(ethtool $swp4 | grep 'Lanes:')
++	lanes_swp4=${lanes_swp4#*"Lanes: "}
++
++	# 8-lane ports use two buffers among which the configured buffer
++	# is split, so double the size to get twice (20K + 80K).
++	if [[ $lanes_swp4 -eq 8 ]]; then
++		pg1_size=$((pg1_size * 2))
++	fi
++
++	dcb buffer set dev $swp4 buffer-size all:0 1:$pg1_size
+ 
+ 	# bridges
+ 	# -------
 -- 
 2.43.0
 
