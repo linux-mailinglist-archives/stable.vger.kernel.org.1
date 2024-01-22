@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-12901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FF76837908
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6A27837A68
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 429871C27DDA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:27:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F5011F28D1B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:52:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77EF0145B10;
-	Tue, 23 Jan 2024 00:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF2B12C543;
+	Tue, 23 Jan 2024 00:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xUZ4TFNN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZ33vsUQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313ECE56B;
-	Tue, 23 Jan 2024 00:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291F312C52C;
+	Tue, 23 Jan 2024 00:15:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968350; cv=none; b=NtwWK7shJulQay7q6RuVwU4uQgoXs/ReegaLaEVy8JfADA07Qi49yfDsbJYDedUegAmVjHCIR2AyrAS2IfyilK/8mOOCaZRSF7AuERR14fIOAhWSITNscG7Se+XZ0/bUs2XkQC9E9xxJrE+l1YPXV/IAevCSZzz9caCodixN4P0=
+	t=1705968937; cv=none; b=NOSkX86Caz2SYpPfbiRPmQ5HUKa4Ke6jn8ZdRzqzP7gmn7GO0656KHTgsrlIVSYFsv2a7l4WjBn4Jo8UdIx0cgS9GEfB2YBxcp2ckyNdCy+DsoLwhkTOIupYuV6If2f/YBEx6fCFtXfxWPeJ7kseBrD+d4ysKogGkd4beGzeskI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968350; c=relaxed/simple;
-	bh=LbqwV+Vv3goBq1rWZhajr0IWqL/ygeKGaYAKOYRo5/M=;
+	s=arc-20240116; t=1705968937; c=relaxed/simple;
+	bh=AdvQvEoFsEe9+8WmQ6K84hdHcgRplZmuq5RUjTayJOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qt2ljtBp9HcrCSWflOoFlkDJGih79qROJSUqqVWXm6Aqob0+7DqIfZng4ib7jwNIFVaiFpzomv6Ki80noteV9XZjsU4BnIJ7DZJzmeoqxNJHWRT1m1sKVI1bmiICSkGvA9W3HLGaoqcNq+Jwdr0rfXNFjSDY6Gr2ZHKxjDfWIzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xUZ4TFNN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D40FC43390;
-	Tue, 23 Jan 2024 00:05:49 +0000 (UTC)
+	 MIME-Version; b=QiBwgcoiipgJ61JAZC/lfcupN8z00ato3cwx1MNH6wpGrc03iLImD0zmvbO5Xp4W073R4DNPLrRFP2/goGbcFeAi2hNVcax1yPWH3NUm9HmqkPSnOjViVeDTCXD2TZW5JGu4GlNeBtpnC1tYR8IPAfkMVMw2L5q9viAtdD5AIrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZ33vsUQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70DBFC43390;
+	Tue, 23 Jan 2024 00:15:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968350;
-	bh=LbqwV+Vv3goBq1rWZhajr0IWqL/ygeKGaYAKOYRo5/M=;
+	s=korg; t=1705968936;
+	bh=AdvQvEoFsEe9+8WmQ6K84hdHcgRplZmuq5RUjTayJOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xUZ4TFNNrw7R28sh+QtBV0qicHhGdoFjYNPDKFwTKEOKdW7ezlgvg/lNDCeKU8Kwi
-	 okFawNgFzobGm33/YEe5Ke551yf03m4KbOqy8gm8gWnbStq0ZKf0+XZFCTZPuGLe2d
-	 VfuBzTKc3mr3/sp1tw0wGgVRjYA6PBNUDFHDS+AI=
+	b=hZ33vsUQcbqsrNsgUrFUHOUcRrFsGLvZ4F3yIZSh6lmadI1PdNIhqiUOq8lRwa41R
+	 8UOUCViJsVRxvhj1K+m6uFjUiVAVnNuPg0F8ImTRsW4PHnNL8pGP4nRqeKBHC1bRLR
+	 kblnSH5OfKjbPbKUIqcXtgFDwRVjXa6tpzISrkP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 084/148] Bluetooth: btmtkuart: fix recv_buf() return value
+	"Ricardo B. Marliere" <ricardo@marliere.net>,
+	Mike Isely <isely@pobox.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+621409285c4156a009b3@syzkaller.appspotmail.com
+Subject: [PATCH 5.4 110/194] media: pvrusb2: fix use after free on context disconnection
 Date: Mon, 22 Jan 2024 15:57:20 -0800
-Message-ID: <20240122235715.805781444@linuxfoundation.org>
+Message-ID: <20240122235723.950780333@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Ricardo B. Marliere <ricardo@marliere.net>
 
-[ Upstream commit 64057f051f20c2a2184b9db7f8037d928d68a4f4 ]
+[ Upstream commit ded85b0c0edd8f45fec88783d7555a5b982449c1 ]
 
-Serdev recv_buf() callback is supposed to return the amount of bytes
-consumed, therefore an int in between 0 and count.
+Upon module load, a kthread is created targeting the
+pvr2_context_thread_func function, which may call pvr2_context_destroy
+and thus call kfree() on the context object. However, that might happen
+before the usb hub_event handler is able to notify the driver. This
+patch adds a sanity check before the invalid read reported by syzbot,
+within the context disconnection call stack.
 
-Do not return negative number in case of issue, just print an error and
-return count. This fixes a WARN in ttyport_receive_buf().
+Reported-and-tested-by: syzbot+621409285c4156a009b3@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000a02a4205fff8eb92@google.com/
 
-Link: https://lore.kernel.org/all/087be419-ec6b-47ad-851a-5e1e3ea5cfcc@kernel.org/
-Fixes: 7237c4c9ec92 ("Bluetooth: mediatek: Add protocol support for MediaTek serial devices")
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: e5be15c63804 ("V4L/DVB (7711): pvrusb2: Fix race on module unload")
+Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
+Acked-by: Mike Isely <isely@pobox.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btmtkuart.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/media/usb/pvrusb2/pvrusb2-context.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btmtkuart.c b/drivers/bluetooth/btmtkuart.c
-index 19eecf198321..cda13194b131 100644
---- a/drivers/bluetooth/btmtkuart.c
-+++ b/drivers/bluetooth/btmtkuart.c
-@@ -317,7 +317,7 @@ mtk_stp_split(struct btmtkuart_dev *bdev, const unsigned char *data, int count,
- 	return data;
+diff --git a/drivers/media/usb/pvrusb2/pvrusb2-context.c b/drivers/media/usb/pvrusb2/pvrusb2-context.c
+index 14170a5d72b3..1764674de98b 100644
+--- a/drivers/media/usb/pvrusb2/pvrusb2-context.c
++++ b/drivers/media/usb/pvrusb2/pvrusb2-context.c
+@@ -268,7 +268,8 @@ void pvr2_context_disconnect(struct pvr2_context *mp)
+ {
+ 	pvr2_hdw_disconnect(mp->hdw);
+ 	mp->disconnect_flag = !0;
+-	pvr2_context_notify(mp);
++	if (!pvr2_context_shutok())
++		pvr2_context_notify(mp);
  }
  
--static int btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
-+static void btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
- {
- 	struct btmtkuart_dev *bdev = hci_get_drvdata(hdev);
- 	const unsigned char *p_left = data, *p_h4;
-@@ -356,25 +356,20 @@ static int btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
- 			bt_dev_err(bdev->hdev,
- 				   "Frame reassembly failed (%d)", err);
- 			bdev->rx_skb = NULL;
--			return err;
-+			return;
- 		}
- 
- 		sz_left -= sz_h4;
- 		p_left += sz_h4;
- 	}
--
--	return 0;
- }
- 
- static int btmtkuart_receive_buf(struct serdev_device *serdev, const u8 *data,
- 				 size_t count)
- {
- 	struct btmtkuart_dev *bdev = serdev_device_get_drvdata(serdev);
--	int err;
- 
--	err = btmtkuart_recv(bdev->hdev, data, count);
--	if (err < 0)
--		return err;
-+	btmtkuart_recv(bdev->hdev, data, count);
- 
- 	bdev->hdev->stat.byte_rx += count;
  
 -- 
 2.43.0
