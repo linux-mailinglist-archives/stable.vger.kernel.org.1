@@ -1,144 +1,189 @@
-Return-Path: <stable+bounces-12758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1C7A837283
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:27:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A82278372C5
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:40:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7667F1F25355
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:27:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6C21B235B4
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697C83DBBB;
-	Mon, 22 Jan 2024 19:27:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 728533EA97;
+	Mon, 22 Jan 2024 19:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BGMEl9nS"
+	dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b="Hx2le8ba"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from xry111.site (xry111.site [89.208.246.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1903B790
-	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 19:27:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5910B3E49E
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 19:38:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.208.246.23
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705951641; cv=none; b=k45/WrhHFJAA3J4Ld+cgltALrpHLP7Ir0zndEa4dtolbbowNAhTA9CANXEyKgaygO3bW2E7ko2fRuleC5TIc4RdEfS4rEX/rdZeG5HkL/kbS552gc30+FOLJ7sBI/vX2GxfuKa0uP8hYEfLSlgPTXHT3dT7hA2bXy+Uu5Vdnbbs=
+	t=1705952294; cv=none; b=kX6CrMBDr0vZHNHqPCiHkkZUu/hEo6CjBE1y0HMFi/wXhzn94iKP3/khVI63U8HoSm5vHI4qsGVOmN3uz9vCijZsGZA3X3h1K8W/53PMfFS+oCwVOGlJS4kNxG/y1NoQte/72n65VawBOCY8bHQmU8Ucccingml5pT0i8aHIB+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705951641; c=relaxed/simple;
-	bh=wOKf2tEWE1qMY2oXnUaudAFrrON4GD8yi/FU5MdGF0g=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hru1mdxKa+CiHoMfPrMzbND5N6fd65AK1Fby1UC6gvf99k1AdYXx/OY1RsENZlZ7pfXXG3auOe+SbdJAR67u/xOZNi2GHmS6On0XqQVW5nii69iiwsJNDJssb7h/5bL88aFbjfjv7kwd1ekFw7HlxUa2L0XYkacIjzDBDLtXwBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BGMEl9nS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BA70C43390;
-	Mon, 22 Jan 2024 19:27:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705951639;
-	bh=wOKf2tEWE1qMY2oXnUaudAFrrON4GD8yi/FU5MdGF0g=;
-	h=Subject:To:Cc:From:Date:From;
-	b=BGMEl9nSMcCI9vxRZV+Q3u27v7FzUMbUiFIwXycrcCLbS8Ea0REjNK2brr0EuZwNQ
-	 nyOg//wDE74OQvBf9rzmaUGpcDIfD21mbm8o8Q0k3mPD8nDfm9iilgdkuXycN/xa3Z
-	 ESjO+3WNhv68JHp50EDZoR3sxjpvFULpNW6l3kr0=
-Subject: FAILED: patch "[PATCH] io_uring/rw: ensure io->bytes_done is always initialized" failed to apply to 5.15-stable tree
-To: axboe@kernel.dk,xrivendell7@gmail.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 22 Jan 2024 11:27:16 -0800
-Message-ID: <2024012216-depth-bartender-bc38@gregkh>
+	s=arc-20240116; t=1705952294; c=relaxed/simple;
+	bh=zehFHNJcTdxBJALWkLTYFsLt43naLh//xklrUVq/C34=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EtdsICcjK799JkBg0zvJ4b2T3wMtPoutv/bbIadpilKtbCtzWqO/ZtlfJm15eVu8hNFVoM6xE1H7ia6R/KjA9qZe1Wsf9c9kp92uJG/53daq1qR+xKYt/rYWlRHlXeiyrqKWgoCfZfSQLMV6as5edJjSzLHd/5/Mwedqyanz2z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; spf=pass smtp.mailfrom=xry111.site; dkim=pass (1024-bit key) header.d=xry111.site header.i=@xry111.site header.b=Hx2le8ba; arc=none smtp.client-ip=89.208.246.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xry111.site
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xry111.site;
+	s=default; t=1705951776;
+	bh=zehFHNJcTdxBJALWkLTYFsLt43naLh//xklrUVq/C34=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Hx2le8baW+9bBZjcEtsCBnNvC0xiKOL0F+I8O6xDZbVzmAr4XRGi92GukWvS78zRL
+	 jARaUBO9GTjwVYb2rVmqzh6gLNkGP5sS2GENyXH5RIlgt414FKcs85Wd6g86uAFDih
+	 NZGXCR9mV+P4A4kwZHhVe8QCQyY/RYGzb9RECXoc=
+Received: from stargazer.. (unknown [IPv6:240e:358:119a:ce00:dc73:854d:832e:2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature ECDSA (P-384) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id 25C3466F42;
+	Mon, 22 Jan 2024 14:29:33 -0500 (EST)
+From: Xi Ruoyao <xry111@xry111.site>
+To: stable@vger.kernel.org
+Cc: WANG Xuerui <kernel@xen0n.name>,
+	Xi Ruoyao <xry111@xry111.site>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1.y] LoongArch: Fix and simplify fcsr initialization on execve()
+Date: Tue, 23 Jan 2024 03:28:04 +0800
+Message-ID: <20240122192803.2731419-2-xry111@xry111.site>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2024012237-handed-control-646a@gregkh>
+References: <2024012237-handed-control-646a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
+There has been a lingering bug in LoongArch Linux systems causing some
+GCC tests to intermittently fail (see Closes link).  I've made a minimal
+reproducer:
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+    zsh% cat measure.s
+    .align 4
+    .globl _start
+    _start:
+        movfcsr2gr  $a0, $fcsr0
+        bstrpick.w  $a0, $a0, 16, 16
+        beqz        $a0, .ok
+        break       0
+    .ok:
+        li.w        $a7, 93
+        syscall     0
+    zsh% cc mesaure.s -o measure -nostdlib
+    zsh% echo $((1.0/3))
+    0.33333333333333331
+    zsh% while ./measure; do ; done
 
-To reproduce the conflict and resubmit, you may use the following commands:
+This while loop should not stop as POSIX is clear that execve must set
+fenv to the default, where FCSR should be zero.  But in fact it will
+just stop after running for a while (normally less than 30 seconds).
+Note that "$((1.0/3))" is needed to reproduce this issue because it
+raises FE_INVALID and makes fcsr0 non-zero.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 0a535eddbe0dc1de4386046ab849f08aeb2f8faf
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012216-depth-bartender-bc38@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+The problem is we are currently relying on SET_PERSONALITY2() to reset
+current->thread.fpu.fcsr.  But SET_PERSONALITY2() is executed before
+start_thread which calls lose_fpu(0).  We can see if kernel preempt is
+enabled, we may switch to another thread after SET_PERSONALITY2() but
+before lose_fpu(0).  Then bad thing happens: during the thread switch
+the value of the fcsr0 register is stored into current->thread.fpu.fcsr,
+making it dirty again.
 
-Possible dependencies:
+The issue can be fixed by setting current->thread.fpu.fcsr after
+lose_fpu(0) because lose_fpu() clears TIF_USEDFPU, then the thread
+switch won't touch current->thread.fpu.fcsr.
 
-0a535eddbe0d ("io_uring/rw: ensure io->bytes_done is always initialized")
-f3b44f92e59a ("io_uring: move read/write related opcodes to its own file")
-c98817e6cd44 ("io_uring: move remaining file table manipulation to filetable.c")
-735729844819 ("io_uring: move rsrc related data, core, and commands")
-3b77495a9723 ("io_uring: split provided buffers handling into its own file")
-7aaff708a768 ("io_uring: move cancelation into its own file")
-329061d3e2f9 ("io_uring: move poll handling into its own file")
-cfd22e6b3319 ("io_uring: add opcode name to io_op_defs")
-92ac8beaea1f ("io_uring: include and forward-declaration sanitation")
-c9f06aa7de15 ("io_uring: move io_uring_task (tctx) helpers into its own file")
-a4ad4f748ea9 ("io_uring: move fdinfo helpers to its own file")
-e5550a1447bf ("io_uring: use io_is_uring_fops() consistently")
-17437f311490 ("io_uring: move SQPOLL related handling into its own file")
-59915143e89f ("io_uring: move timeout opcodes and handling into its own file")
-e418bbc97bff ("io_uring: move our reference counting into a header")
-36404b09aa60 ("io_uring: move msg_ring into its own file")
-f9ead18c1058 ("io_uring: split network related opcodes into its own file")
-e0da14def1ee ("io_uring: move statx handling to its own file")
-a9c210cebe13 ("io_uring: move epoll handler to its own file")
-4cf90495281b ("io_uring: add a dummy -EOPNOTSUPP prep handler")
+The only other architecture setting FCSR in SET_PERSONALITY2() is MIPS.
+I've ran a similar test on MIPS with mainline kernel and it turns out
+MIPS is buggy, too.  Anyway MIPS do this for supporting different FP
+flavors (NaN encodings, etc.) which do not exist on LoongArch.  So for
+LoongArch, we can simply remove the current->thread.fpu.fcsr setting
+from SET_PERSONALITY2() and do it in start_thread(), after lose_fpu(0).
 
-thanks,
+The while loop failing with the mainline kernel has survived one hour
+after this change on LoongArch.
 
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 0a535eddbe0dc1de4386046ab849f08aeb2f8faf Mon Sep 17 00:00:00 2001
-From: Jens Axboe <axboe@kernel.dk>
-Date: Thu, 21 Dec 2023 08:49:18 -0700
-Subject: [PATCH] io_uring/rw: ensure io->bytes_done is always initialized
-
-If IOSQE_ASYNC is set and we fail importing an iovec for a readv or
-writev request, then we leave ->bytes_done uninitialized and hence the
-eventual failure CQE posted can potentially have a random res value
-rather than the expected -EINVAL.
-
-Setup ->bytes_done before potentially failing, so we have a consistent
-value if we fail the request early.
-
+Fixes: 803b0fc5c3f2baa ("LoongArch: Add process management")
+Closes: https://github.com/loongson-community/discussions/issues/7
+Link: https://lore.kernel.org/linux-mips/7a6aa1bbdbbe2e63ae96ff163fab0349f58f1b9e.camel@xry111.site/
 Cc: stable@vger.kernel.org
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+(cherry picked from commit c2396651309eba291c15e32db8fbe44c738b5921)
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+---
 
-diff --git a/io_uring/rw.c b/io_uring/rw.c
-index 4943d683508b..0c856726b15d 100644
---- a/io_uring/rw.c
-+++ b/io_uring/rw.c
-@@ -589,15 +589,19 @@ static inline int io_rw_prep_async(struct io_kiocb *req, int rw)
- 	struct iovec *iov;
- 	int ret;
+The conflict is because 6.1.y does not have LBT support, thus there is
+no lose_lbt() line.  Resolved manually.
+
+ arch/loongarch/include/asm/elf.h | 5 -----
+ arch/loongarch/kernel/elf.c      | 5 -----
+ arch/loongarch/kernel/process.c  | 1 +
+ 3 files changed, 1 insertion(+), 10 deletions(-)
+
+diff --git a/arch/loongarch/include/asm/elf.h b/arch/loongarch/include/asm/elf.h
+index 9b16a3b8e706..f16bd42456e4 100644
+--- a/arch/loongarch/include/asm/elf.h
++++ b/arch/loongarch/include/asm/elf.h
+@@ -241,8 +241,6 @@ void loongarch_dump_regs64(u64 *uregs, const struct pt_regs *regs);
+ do {									\
+ 	current->thread.vdso = &vdso_info;				\
+ 									\
+-	loongarch_set_personality_fcsr(state);				\
+-									\
+ 	if (personality(current->personality) != PER_LINUX)		\
+ 		set_personality(PER_LINUX);				\
+ } while (0)
+@@ -259,7 +257,6 @@ do {									\
+ 	clear_thread_flag(TIF_32BIT_ADDR);				\
+ 									\
+ 	current->thread.vdso = &vdso_info;				\
+-	loongarch_set_personality_fcsr(state);				\
+ 									\
+ 	p = personality(current->personality);				\
+ 	if (p != PER_LINUX32 && p != PER_LINUX)				\
+@@ -340,6 +337,4 @@ extern int arch_elf_pt_proc(void *ehdr, void *phdr, struct file *elf,
+ extern int arch_check_elf(void *ehdr, bool has_interpreter, void *interp_ehdr,
+ 			  struct arch_elf_state *state);
  
-+	iorw->bytes_done = 0;
-+	iorw->free_iovec = NULL;
-+
- 	/* submission path, ->uring_lock should already be taken */
- 	ret = io_import_iovec(rw, req, &iov, &iorw->s, 0);
- 	if (unlikely(ret < 0))
- 		return ret;
- 
--	iorw->bytes_done = 0;
--	iorw->free_iovec = iov;
--	if (iov)
-+	if (iov) {
-+		iorw->free_iovec = iov;
- 		req->flags |= REQ_F_NEED_CLEANUP;
-+	}
-+
+-extern void loongarch_set_personality_fcsr(struct arch_elf_state *state);
+-
+ #endif /* _ASM_ELF_H */
+diff --git a/arch/loongarch/kernel/elf.c b/arch/loongarch/kernel/elf.c
+index 183e94fc9c69..0fa81ced28dc 100644
+--- a/arch/loongarch/kernel/elf.c
++++ b/arch/loongarch/kernel/elf.c
+@@ -23,8 +23,3 @@ int arch_check_elf(void *_ehdr, bool has_interpreter, void *_interp_ehdr,
+ {
  	return 0;
  }
+-
+-void loongarch_set_personality_fcsr(struct arch_elf_state *state)
+-{
+-	current->thread.fpu.fcsr = boot_cpu_data.fpu_csr0;
+-}
+diff --git a/arch/loongarch/kernel/process.c b/arch/loongarch/kernel/process.c
+index 90a5de746332..1259bc312979 100644
+--- a/arch/loongarch/kernel/process.c
++++ b/arch/loongarch/kernel/process.c
+@@ -82,6 +82,7 @@ void start_thread(struct pt_regs *regs, unsigned long pc, unsigned long sp)
+ 	euen = regs->csr_euen & ~(CSR_EUEN_FPEN);
+ 	regs->csr_euen = euen;
+ 	lose_fpu(0);
++	current->thread.fpu.fcsr = boot_cpu_data.fpu_csr0;
  
+ 	clear_thread_flag(TIF_LSX_CTX_LIVE);
+ 	clear_thread_flag(TIF_LASX_CTX_LIVE);
+-- 
+2.43.0
 
 
