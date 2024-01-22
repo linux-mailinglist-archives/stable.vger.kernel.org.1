@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-12966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B94CC837A7B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 946B7837B71
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:01:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 619DBB2BE87
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:48:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BD6B9B26AA1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:54:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF801292DF;
-	Tue, 23 Jan 2024 00:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 616E5130E37;
+	Tue, 23 Jan 2024 00:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2a0aI42O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGqd9E/w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12B727456;
-	Tue, 23 Jan 2024 00:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FF3412FF86;
+	Tue, 23 Jan 2024 00:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968705; cv=none; b=m8h6iohstJ4RMX7oNn2YHlxmlBiTS9sWYBWAStjbLtHITxBA3Mev/uik2M1dRZ+qJFhVpQWptWM84SsqDLNP1IGTJo52OY3/Qy8Yx5LUQsumN87PK0MjHTJmPRglmMX5NQGtzB0w3xUBEta1rrgttEJBTscQ3uAIxC1FP9SuWxo=
+	t=1705969056; cv=none; b=BnEVQvDL584snRpvmCK78XJ9AoCdCsFAqJmlFT/GHPjHTgUJVMzJneHhgdlxSmJmUM6X0jqLIn8KT/YTmy79Bx0ht0uoFxi3zyLNlOCL5KOolHJKZVy3GKGKYrh9czpjPl2LrRJCI/DosAMNOtNsbHmJtFm4aEhdvlvXmvBM3vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968705; c=relaxed/simple;
-	bh=IA3QQaB3WxWIb1aiQDw5mA3Y8zh/GId6J+wsO9ZMMQA=;
+	s=arc-20240116; t=1705969056; c=relaxed/simple;
+	bh=iTa+kTdTN4CE5B8k64qIDCzjpOi5E1GuR9obp7pwmdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M4SpoCef+qcowMVoI4kpufoHpu2T9T/g4nsdIlMEN6HxrSXMWHLufFh4j20Eo5T32DL9bIDh9cNOOfXhnGjfRUSDduSU6zz9FlctDIycFYnKLOkh2Dsl4HXdR+LPjSok7rkUoV2wH6cEQhoTlAJA8KTE+bAt1x3yTj8qsZqPpuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2a0aI42O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACB21C433C7;
-	Tue, 23 Jan 2024 00:11:44 +0000 (UTC)
+	 MIME-Version; b=tO77qXYCYU0SyOL0hWwFYwTEnXbuID9mS+mJhWRg/KxjeNZ3l/8/+7jnF9q1FGkbfYizvD+p0SZUWBCckKVyZkeTx5+1An0GhD1DsIOCntgLlpJ89/v8iqSqoQRREgGptbrWdsOICbBFp1BvT/fVBr2sSEg/rB4ZN2Igc8lalX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGqd9E/w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7664C433C7;
+	Tue, 23 Jan 2024 00:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968704;
-	bh=IA3QQaB3WxWIb1aiQDw5mA3Y8zh/GId6J+wsO9ZMMQA=;
+	s=korg; t=1705969056;
+	bh=iTa+kTdTN4CE5B8k64qIDCzjpOi5E1GuR9obp7pwmdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2a0aI42OrtVbh9Et4ZDR2VxrLE0JqzAheZ/JFD92eD+F8oWKl3q+TM/w+Ah2TAyO0
-	 ojGttgWmB8y3YqoAyqKHUhIcVejf8ksR9Rhas3UnyqpmqsB73rXOjJp0IlGJxPPCW0
-	 /MKsAHlc3kbIfC9ErrE/rZ2Hvr9EuflmnxRly/48=
+	b=RGqd9E/wVAIc0dsl4x1xJnyjaszeKXTq3I//7u3V658yUMH70aDNIpM1ZahT9Qp9O
+	 IpzSbGW7gJFDncSXQ9ANtbAzSQ1MGKPxeTPE9Yg0zqQQa2ePHa6Brj1j7jwFIaFpSD
+	 KGOfRk+ZxGRXrEkYO7QGaRAxK6t67sJ+ntMLo4vw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 135/148] acpi: property: Let args be NULL in __acpi_node_get_property_reference
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Wanpeng Li <wanpengli@tencent.com>
+Subject: [PATCH 5.4 161/194] x86/kvm: Do not try to disable kvmclock if it was not enabled
 Date: Mon, 22 Jan 2024 15:58:11 -0800
-Message-ID: <20240122235718.024199921@linuxfoundation.org>
+Message-ID: <20240122235726.098769158@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
 
-[ Upstream commit bef52aa0f3de1b7d8c258c13b16e577361dabf3a ]
+commit 1c6d984f523f67ecfad1083bb04c55d91977bb15 upstream.
 
-fwnode_get_property_reference_args() may not be called with args argument
-NULL on ACPI, OF already supports this. Add the missing NULL checks and
-document this.
+kvm_guest_cpu_offline() tries to disable kvmclock regardless if it is
+present in the VM. It leads to write to a MSR that doesn't exist on some
+configurations, namely in TDX guest:
 
-The purpose is to be able to count the references.
+	unchecked MSR access error: WRMSR to 0x12 (tried to write 0x0000000000000000)
+	at rIP: 0xffffffff8110687c (kvmclock_disable+0x1c/0x30)
 
-Fixes: 977d5ad39f3e ("ACPI: Convert ACPI reference args to generic fwnode reference args")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20231109101010.1329587-2-sakari.ailus@linux.intel.com
+kvmclock enabling is gated by CLOCKSOURCE and CLOCKSOURCE2 KVM paravirt
+features.
+
+Do not disable kvmclock if it was not enabled.
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Fixes: c02027b5742b ("x86/kvm: Disable kvmclock on all CPUs on shutdown")
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Wanpeng Li <wanpengli@tencent.com>
+Cc: stable@vger.kernel.org
+Message-Id: <20231205004510.27164-6-kirill.shutemov@linux.intel.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/property.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/kernel/kvmclock.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index c59235038bf2..cfee286ee5c5 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -566,6 +566,7 @@ acpi_fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
-  * @index: Index of the reference to return
-  * @num_args: Maximum number of arguments after each reference
-  * @args: Location to store the returned reference with optional arguments
-+ *	  (may be NULL)
-  *
-  * Find property with @name, verifify that it is a package containing at least
-  * one object reference and if so, store the ACPI device object pointer to the
-@@ -624,6 +625,9 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
- 		if (ret)
- 			return ret == -ENODEV ? -EINVAL : ret;
+--- a/arch/x86/kernel/kvmclock.c
++++ b/arch/x86/kernel/kvmclock.c
+@@ -24,8 +24,8 @@
  
-+		if (!args)
-+			return 0;
-+
- 		args->fwnode = acpi_fwnode_handle(device);
- 		args->nargs = 0;
- 		return 0;
--- 
-2.43.0
-
+ static int kvmclock __initdata = 1;
+ static int kvmclock_vsyscall __initdata = 1;
+-static int msr_kvm_system_time __ro_after_init = MSR_KVM_SYSTEM_TIME;
+-static int msr_kvm_wall_clock __ro_after_init = MSR_KVM_WALL_CLOCK;
++static int msr_kvm_system_time __ro_after_init;
++static int msr_kvm_wall_clock __ro_after_init;
+ static u64 kvm_sched_clock_offset __ro_after_init;
+ 
+ static int __init parse_no_kvmclock(char *arg)
+@@ -189,7 +189,8 @@ static void kvm_setup_secondary_clock(vo
+ 
+ void kvmclock_disable(void)
+ {
+-	native_write_msr(msr_kvm_system_time, 0, 0);
++	if (msr_kvm_system_time)
++		native_write_msr(msr_kvm_system_time, 0, 0);
+ }
+ 
+ static void __init kvmclock_init_mem(void)
+@@ -286,7 +287,10 @@ void __init kvmclock_init(void)
+ 	if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE2)) {
+ 		msr_kvm_system_time = MSR_KVM_SYSTEM_TIME_NEW;
+ 		msr_kvm_wall_clock = MSR_KVM_WALL_CLOCK_NEW;
+-	} else if (!kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE)) {
++	} else if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE)) {
++		msr_kvm_system_time = MSR_KVM_SYSTEM_TIME;
++		msr_kvm_wall_clock = MSR_KVM_WALL_CLOCK;
++	} else {
+ 		return;
+ 	}
+ 
 
 
 
