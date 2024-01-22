@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-14498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE708838125
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE9A83851F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 032D51C217A8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64636289964
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30C4C14199C;
-	Tue, 23 Jan 2024 01:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3928E7E571;
+	Tue, 23 Jan 2024 02:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LJB1J0Yy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rikJ3d/t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44F6141981;
-	Tue, 23 Jan 2024 01:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F3C380;
+	Tue, 23 Jan 2024 02:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972046; cv=none; b=f1D+3js1OEiG6qctD4A1KDKqN+k03Rz5Zh809McA973M8JZbD8rRLcH3t/ipNbVjLXZr54s9kFfehSUe7Vee1fQ5e6cP4zjMguS8PkkpTyCCSVlWtkZs/dLu6GGzI2298gW4EpqhsLBmOB/fJQLW6l+ozgpgLmE7ESeCzZeUGq4=
+	t=1705975746; cv=none; b=E8zYq+alBHXGd5LfzZU4EkgvTDRrr0mu4cQws4hk3cxkCzB10vFxigKHt8TFFHfMEEuvgtVrPb8dPUEC07DSSgXl149PsWvvKvyFeHJENsmZzcAMffi2FFjxG8yWNhtDp3qE3cWmYcYHTsm1vlQmuF6MzXyc/V/N1nMLHUu7F6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972046; c=relaxed/simple;
-	bh=eDPU7fAu5Bhm1Qz68PTYNZWb+1jFt7nMeK9elVjOe2U=;
+	s=arc-20240116; t=1705975746; c=relaxed/simple;
+	bh=/HYFP9X7k5o6mLQbJIPaTVbB0rMJcM13ce+aOObWLzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HAZBF1MaxDtnIm5KCMFUeigU2oRIvY90cQBW6zYLXsTAHHF8jAmQI/qrSoSoGDzXsMBrR8PV8a2A+PEdghsyfe3UCiUD2j9IpqCro9pHEU5Bkf4qSIGiWjaUBXUpZFvyJn9sEKv6ES5k2IoYcmoPslHYz1G+T8Foj24NVenYI2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LJB1J0Yy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A77C433C7;
-	Tue, 23 Jan 2024 01:07:25 +0000 (UTC)
+	 MIME-Version; b=Tr31tKZOhBI7q9uOyV/RqBoJ9Sat5HGZuxyQoI6cTW76eA5krSk845+REelaNY2bmT+R7T1j+zKgSR8q8f6wNE7kn8tZai25ygXJptTda/Rhr0Gqk63xQ+bcu9nsGdM4K8ao0qcrgzWTOsUBmzcqWuaTinIUAaOCa/15pl5bCyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rikJ3d/t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42E9C433C7;
+	Tue, 23 Jan 2024 02:09:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972045;
-	bh=eDPU7fAu5Bhm1Qz68PTYNZWb+1jFt7nMeK9elVjOe2U=;
+	s=korg; t=1705975745;
+	bh=/HYFP9X7k5o6mLQbJIPaTVbB0rMJcM13ce+aOObWLzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LJB1J0Yyr9wIMXs0fPKIgYFnLz1Cyjk6rjYrRqKb3uTMFyEBIX0qWUJ0SmhTZHYEU
-	 RrThdzSukcQ5nwQ+yaIdzaheDZQ08m79tdqq4NPZT4zHBonzSFn3ObiVx+5wecBWHf
-	 PwZVFNToZtq7QXwjliWXfw9ULzVGViE035suxD6M=
+	b=rikJ3d/tf4nDvxo88suzCdXICc3Ki0eoRWgwl0sDsdkhEPtyCSjXFV7SFbkzYxQvR
+	 TNJdO1FHo1UP8qCkWTJwVcWK33jtyeMa1QsLYZn7PttwukTKJUvhCimq8lpNarokMw
+	 CtXywCv62evEZyyTFtrSi8azqEnYlJLUni40S3tc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuah Khan <shuah@kernel.org>,
-	Amit Cohen <amcohen@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 412/417] selftests: mlxsw: qos_pfc: Adjust the test to support 8 lanes
-Date: Mon, 22 Jan 2024 15:59:40 -0800
-Message-ID: <20240122235805.961008261@linuxfoundation.org>
+Subject: [PATCH 6.6 530/583] net: phy: micrel: populate .soft_reset for KSZ9131
+Date: Mon, 22 Jan 2024 15:59:41 -0800
+Message-ID: <20240122235828.326910828@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,90 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Cohen <amcohen@nvidia.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit b34f4de6d30cbaa8fed905a5080b6eace8c84dc7 ]
+[ Upstream commit e398822c4751017fe401f57409488f5948d12fb5 ]
 
-'qos_pfc' test checks PFC behavior. The idea is to limit the traffic
-using a shaper somewhere in the flow of the packets. In this area, the
-buffer is smaller than the buffer at the beginning of the flow, so it fills
-up until there is no more space left. The test configures there PFC
-which is supposed to notice that the headroom is filling up and send PFC
-Xoff to indicate the transmitter to stop sending traffic for the priorities
-sharing this PG.
+The RZ/G3S SMARC Module has 2 KSZ9131 PHYs. In this setup, the KSZ9131 PHY
+is used with the ravb Ethernet driver. It has been discovered that when
+bringing the Ethernet interface down/up continuously, e.g., with the
+following sh script:
 
-The Xon/Xoff threshold is auto-configured and always equal to
-2*(MTU rounded up to cell size). Even after sending the PFC Xoff packet,
-traffic will keep arriving until the transmitter receives and processes
-the PFC packet. This amount of traffic is known as the PFC delay allowance.
+$ while :; do ifconfig eth0 down; ifconfig eth0 up; done
 
-Currently the buffer for the delay traffic is configured as 100KB. The
-MTU in the test is 10KB, therefore the threshold for Xoff is about 20KB.
-This allows 80KB extra to be stored in this buffer.
+the link speed and duplex are wrong after interrupting the bring down/up
+operation even though the Ethernet interface is up. To recover from this
+state the following configuration sequence is necessary (executed
+manually):
 
-8-lane ports use two buffers among which the configured buffer is split,
-the Xoff threshold then applies to each buffer in parallel.
+$ ifconfig eth0 down
+$ ifconfig eth0 up
 
-The test does not take into account the behavior of 8-lane ports, when the
-ports are configured to 400Gbps with 8 lanes or 800Gbps with 8 lanes,
-packets are dropped and the test fails.
+The behavior has been identified also on the Microchip SAMA7G5-EK board
+which runs the macb driver and uses the same PHY.
 
-Check if the relevant ports use 8 lanes, in such case double the size of
-the buffer, as the headroom is split half-half.
+The order of PHY-related operations in ravb_open() is as follows:
+ravb_open() ->
+  ravb_phy_start() ->
+    ravb_phy_init() ->
+      of_phy_connect() ->
+        phy_connect_direct() ->
+	  phy_attach_direct() ->
+	    phy_init_hw() ->
+	      phydev->drv->soft_reset()
+	      phydev->drv->config_init()
+	      phydev->drv->config_intr()
+	    phy_resume()
+	      kszphy_resume()
 
-Cc: Shuah Khan <shuah@kernel.org>
-Fixes: bfa804784e32 ("selftests: mlxsw: Add a PFC test")
-Signed-off-by: Amit Cohen <amcohen@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/23ff11b7dff031eb04a41c0f5254a2b636cd8ebb.1705502064.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The order of PHY-related operations in ravb_close is as follows:
+ravb_close() ->
+  phy_stop() ->
+    phy_suspend() ->
+      kszphy_suspend() ->
+        genphy_suspend()
+	  // set BMCR_PDOWN bit in MII_BMCR
+
+In genphy_suspend() setting the BMCR_PDWN bit in MII_BMCR switches the PHY
+to Software Power-Down (SPD) mode (according to the KSZ9131 datasheet).
+Thus, when opening the interface after it has been  previously closed (via
+ravb_close()), the phydev->drv->config_init() and
+phydev->drv->config_intr() reach the KSZ9131 PHY driver via the
+ksz9131_config_init() and kszphy_config_intr() functions.
+
+KSZ9131 specifies that the MII management interface remains operational
+during SPD (Software Power-Down), but (according to manual):
+- Only access to the standard registers (0 through 31) is supported.
+- Access to MMD address spaces other than MMD address space 1 is possible
+  if the spd_clock_gate_override bit is set.
+- Access to MMD address space 1 is not possible.
+
+The spd_clock_gate_override bit is not used in the KSZ9131 driver.
+
+ksz9131_config_init() configures RGMII delay, pad skews and LEDs by
+accessesing MMD registers other than those in address space 1.
+
+The datasheet for the KSZ9131 does not specify what happens if registers
+from an unsupported address space are accessed while the PHY is in SPD.
+
+To fix the issue the .soft_reset method has been instantiated for KSZ9131,
+too. This resets the PHY to the default state before doing any
+configurations to it, thus switching it out of SPD.
+
+Fixes: bff5b4b37372 ("net: phy: micrel: add Microchip KSZ9131 initial driver")
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/drivers/net/mlxsw/qos_pfc.sh     | 18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/net/phy/micrel.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh b/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh
-index f9858e221996..6a3002fbcf43 100755
---- a/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh
-+++ b/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh
-@@ -121,6 +121,9 @@ h2_destroy()
- 
- switch_create()
- {
-+	local lanes_swp4
-+	local pg1_size
-+
- 	# pools
- 	# -----
- 
-@@ -230,7 +233,20 @@ switch_create()
- 	dcb pfc set dev $swp4 prio-pfc all:off 1:on
- 	# PG0 will get autoconfigured to Xoff, give PG1 arbitrarily 100K, which
- 	# is (-2*MTU) about 80K of delay provision.
--	dcb buffer set dev $swp4 buffer-size all:0 1:$_100KB
-+	pg1_size=$_100KB
-+
-+	setup_wait_dev_with_timeout $swp4
-+
-+	lanes_swp4=$(ethtool $swp4 | grep 'Lanes:')
-+	lanes_swp4=${lanes_swp4#*"Lanes: "}
-+
-+	# 8-lane ports use two buffers among which the configured buffer
-+	# is split, so double the size to get twice (20K + 80K).
-+	if [[ $lanes_swp4 -eq 8 ]]; then
-+		pg1_size=$((pg1_size * 2))
-+	fi
-+
-+	dcb buffer set dev $swp4 buffer-size all:0 1:$pg1_size
- 
- 	# bridges
- 	# -------
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index a345d02a9edf..dfd5f8e78e29 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -4828,6 +4828,7 @@ static struct phy_driver ksphy_driver[] = {
+ 	.flags		= PHY_POLL_CABLE_TEST,
+ 	.driver_data	= &ksz9131_type,
+ 	.probe		= kszphy_probe,
++	.soft_reset	= genphy_soft_reset,
+ 	.config_init	= ksz9131_config_init,
+ 	.config_intr	= kszphy_config_intr,
+ 	.config_aneg	= ksz9131_config_aneg,
 -- 
 2.43.0
 
