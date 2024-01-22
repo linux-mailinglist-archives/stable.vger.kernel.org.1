@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-13677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5652C837D5F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F77E838242
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88CCB1C283BB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1D611F2439B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE9F5731D;
-	Tue, 23 Jan 2024 00:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA815A0EB;
+	Tue, 23 Jan 2024 01:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uF7gz5pV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gsnIbdA6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF4B52F7C;
-	Tue, 23 Jan 2024 00:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3772B9B7;
+	Tue, 23 Jan 2024 01:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969911; cv=none; b=izELV0DArMDErI/wuDR2SaYSYp1ipdjFijfGwz7HANdhSyyFWPFsen9AbFayqTfNSVM91stCnfmjIZr0TQojnUF5T/UdupK9VOaKmvIQe4PzCtT5SF1ditsGDepNQM7NhhjlBclf+Y+bPvtodyfu1ETh+VPkGDpfCeIY+tuHFO4=
+	t=1705974113; cv=none; b=ivJJ+onGkMdHAxSq4aE69HxyE5K3XBRcmo9YiiClr/5stN1ppA6slV1IjaRE5UtXwx7z0NVs1ZwvKDqDFJug3ybX0FN1SFH6uSvHqjr4e++wUCKsR3lU5dAwdtEZvvE2ZMVSQO7wsGkcy7lhj7FEHbH6+WdngUFoCyQM6FQ+tQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969911; c=relaxed/simple;
-	bh=hhN7vgVbCdZWrtbZ8yY/7xcW9CRuOhmEvpg/NDK84+g=;
+	s=arc-20240116; t=1705974113; c=relaxed/simple;
+	bh=BDj7xWi/bbAZjDDZ4RADsvOx2cZ+237xd8qfqbxYtHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I2xtTAjqbr5GgPUHZJ9faygRN5SngMGknw/VjBJYQ/jvGZCh45gO851Wb8XijKXkfJ6sl1XD/PnoCQjovBQObegpJrB4hhhhSWh1FRrFI+9SfDkx3zFnd/OZ+6+cyjSQSr55SVWNDQ8NUy9E7qMeFJDT8tTNl86Qn7S8ENpmDeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uF7gz5pV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96305C433C7;
-	Tue, 23 Jan 2024 00:31:50 +0000 (UTC)
+	 MIME-Version; b=HnwLbCgbRk8T6Fy4GfdDg0P6K1xu0YH+oR2C/erP6R6TnlFJewxIk0U9oejKtyKnxdCrWCLbWLbXAXa529nDirQLX+/ScySmQG90Z0WxkMsFMj1M0MOxv4v/x2aKskNePhZSHGAZBq88rvHV4k+e4T4tnx7i2vH3LjJCrRYnl+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gsnIbdA6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D647AC43399;
+	Tue, 23 Jan 2024 01:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969911;
-	bh=hhN7vgVbCdZWrtbZ8yY/7xcW9CRuOhmEvpg/NDK84+g=;
+	s=korg; t=1705974113;
+	bh=BDj7xWi/bbAZjDDZ4RADsvOx2cZ+237xd8qfqbxYtHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uF7gz5pVp8CmaEoKx0phV4822BIb79qCnf46dwNdcuz3gn4kGIvXmi9ntQGBqSthb
-	 efzBo44yLISZuJGTJNNqfZluHoh+8EVrM7+wOpTU1knkoMsS456b7lxhZiq0LtFAVv
-	 5N9oVJ594N6PFju4NXJcnYicR8d/cGJKKKat/xls=
+	b=gsnIbdA6Ir3iCqjp8/trNxr0RpjV1RVSlKFbfGoYth7o8G/grCVFgDaeTGK8G2Q/9
+	 kO+nySx7Q+tBNs/WYY/E9cGzO5IdDpMpLe1vWZPRDEfIuuPGX0CPyTUIjE/sCZzoM8
+	 8lTG3nfUOoIPyBPyifEim1eVrtfEnjsgUaBEDwkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory Price <gregory.price@memverge.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 520/641] base/node.c: initialize the accessor list before registering
+Subject: [PATCH 5.15 168/374] block: make BLK_DEF_MAX_SECTORS unsigned
 Date: Mon, 22 Jan 2024 15:57:04 -0800
-Message-ID: <20240122235834.366536743@linuxfoundation.org>
+Message-ID: <20240122235750.473062285@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +65,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregory Price <gourry.memverge@gmail.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 48b5928e18dc27e05cab3dc4c78cd8a15baaf1e5 ]
+[ Upstream commit 0a26f327e46c203229e72c823dfec71a2b405ec5 ]
 
-The current code registers the node as available in the node array
-before initializing the accessor list.  This makes it so that
-anything which might access the accessor list as a result of
-allocations will cause an undefined memory access.
+This is used as an unsigned value, so define it that way to avoid
+having to cast it.
 
-In one example, an extension to access hmat data during interleave
-caused this undefined access as a result of a bulk allocation
-that occurs during node initialization but before the accessor
-list is initialized.
-
-Initialize the accessor list before making the node generally
-available to the global system.
-
-Fixes: 08d9dbe72b1f ("node: Link memory nodes to their compute nodes")
-Signed-off-by: Gregory Price <gregory.price@memverge.com>
-Link: https://lore.kernel.org/r/20231030044239.971756-1-gregory.price@memverge.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lore.kernel.org/r/20230105205146.3610282-2-kbusch@meta.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 9a9525de8654 ("null_blk: don't cap max_hw_sectors to BLK_DEF_MAX_SECTORS")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/node.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ block/blk-settings.c          | 2 +-
+ drivers/block/null_blk/main.c | 3 +--
+ include/linux/blkdev.h        | 3 ++-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index 493d533f8375..4d588f4658c8 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -868,11 +868,15 @@ int __register_one_node(int nid)
- {
- 	int error;
- 	int cpu;
-+	struct node *node;
+diff --git a/block/blk-settings.c b/block/blk-settings.c
+index 73a80895e3ae..959b5c1e6d3b 100644
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -136,7 +136,7 @@ void blk_queue_max_hw_sectors(struct request_queue *q, unsigned int max_hw_secto
+ 	limits->max_hw_sectors = max_hw_sectors;
  
--	node_devices[nid] = kzalloc(sizeof(struct node), GFP_KERNEL);
--	if (!node_devices[nid])
-+	node = kzalloc(sizeof(struct node), GFP_KERNEL);
-+	if (!node)
- 		return -ENOMEM;
+ 	max_sectors = min_not_zero(max_hw_sectors, limits->max_dev_sectors);
+-	max_sectors = min_t(unsigned int, max_sectors, BLK_DEF_MAX_SECTORS);
++	max_sectors = min(max_sectors, BLK_DEF_MAX_SECTORS);
+ 	max_sectors = round_down(max_sectors,
+ 				 limits->logical_block_size >> SECTOR_SHIFT);
+ 	limits->max_sectors = max_sectors;
+diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
+index 686ec6bcdef3..4a867233b14a 100644
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -1902,8 +1902,7 @@ static int null_add_dev(struct nullb_device *dev)
+ 	blk_queue_physical_block_size(nullb->q, dev->blocksize);
+ 	if (!dev->max_sectors)
+ 		dev->max_sectors = queue_max_hw_sectors(nullb->q);
+-	dev->max_sectors = min_t(unsigned int, dev->max_sectors,
+-				 BLK_DEF_MAX_SECTORS);
++	dev->max_sectors = min(dev->max_sectors, BLK_DEF_MAX_SECTORS);
+ 	blk_queue_max_hw_sectors(nullb->q, dev->max_sectors);
  
-+	INIT_LIST_HEAD(&node->access_list);
-+	node_devices[nid] = node;
+ 	if (dev->virt_boundary)
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index 67344dfe07a7..905844172cfd 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -1334,11 +1334,12 @@ static inline bool bdev_is_partition(struct block_device *bdev)
+ enum blk_default_limits {
+ 	BLK_MAX_SEGMENTS	= 128,
+ 	BLK_SAFE_MAX_SECTORS	= 255,
+-	BLK_DEF_MAX_SECTORS	= 2560,
+ 	BLK_MAX_SEGMENT_SIZE	= 65536,
+ 	BLK_SEG_BOUNDARY_MASK	= 0xFFFFFFFFUL,
+ };
+ 
++#define BLK_DEF_MAX_SECTORS 2560u
 +
- 	error = register_node(node_devices[nid], nid);
- 
- 	/* link cpu under this node */
-@@ -881,7 +885,6 @@ int __register_one_node(int nid)
- 			register_cpu_under_node(cpu, nid);
- 	}
- 
--	INIT_LIST_HEAD(&node_devices[nid]->access_list);
- 	node_init_caches(nid);
- 
- 	return error;
+ static inline unsigned long queue_segment_boundary(const struct request_queue *q)
+ {
+ 	return q->limits.seg_boundary_mask;
 -- 
 2.43.0
 
