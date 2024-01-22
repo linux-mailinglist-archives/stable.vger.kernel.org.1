@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-15010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77DD1838384
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 629778381B1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:11:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3185928936D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A30BAB2D1A1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2607562A0F;
-	Tue, 23 Jan 2024 01:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F2FF1420A2;
+	Tue, 23 Jan 2024 01:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kvLIBz/W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GNphNe58"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E9F62A13;
-	Tue, 23 Jan 2024 01:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2D6140761;
+	Tue, 23 Jan 2024 01:07:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974995; cv=none; b=YcRITLh141uDpQKsJrPOUNU/v9jaNNCADBgjwmUsU8I8oiwsCpx6ObYMxuu8ihXucWkBzj9GMCuUNnMugtDzLZ9hGs4rxP8fa4v6WfZEAJ35aWuHcRceuqQ6hzAYVGw6uFSSDm++b5MpNQDPDXXRGUG737ZZxSJTZVDPa69Kg2g=
+	t=1705972061; cv=none; b=YvOmZx2tT0FejMY7vx3hTxmZkGZub/dOoe2mTxPpcOV0WuWRb+b+1zeOWaF9uZ7CF+uzhJo71rcE/V8m5YoRcEjOtHkLrsd5M9Lk3lZz0TGbRtJlze774NcMKsx2fZWHSYJ+7gERm5WiWejoNT8sB4UaC2LQ2z0C2atHdDKRW68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974995; c=relaxed/simple;
-	bh=TaHfLp9Ic5qjfFdUXjr1+qEbBmaKel28jGayV3RuBBE=;
+	s=arc-20240116; t=1705972061; c=relaxed/simple;
+	bh=0mOqVWRaRuUAMT1xYi0TlMj+oQSIfPpDSH3dLt8aasA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rqn+5dKZh9AT704zmy+zchZ21naa01wvJ3Ngc/NbjHUGnBMy+SzUHrbSfMxSBN5AoH9+ahGQD/nEkvt8GNQ8e6+zY/jhrKtXENOEDL23BbJAfuvygV2Z+umWdV8HXO2Lz6ifLDZNjmIR1COI4hOlXmD105/h+DogcK98X06Hz4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kvLIBz/W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0BB9C433F1;
-	Tue, 23 Jan 2024 01:56:35 +0000 (UTC)
+	 MIME-Version; b=WeEEDRTz5f0hGWj+wT1dTx2nKVtZpiQeolVEn4hAd31gq3anpsXpB4Nq4dmcnzy2CZbm+oiDDqElCFx1OR/lmpsWqmnuf/oLByg3eO7Vw5n8dG4Uz0QOw1aI76pUA4K+2cj6/9mRegU82fhgNbmJ+eMpY4haAssT2z0YaYi74Dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GNphNe58; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BF81C433C7;
+	Tue, 23 Jan 2024 01:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974995;
-	bh=TaHfLp9Ic5qjfFdUXjr1+qEbBmaKel28jGayV3RuBBE=;
+	s=korg; t=1705972060;
+	bh=0mOqVWRaRuUAMT1xYi0TlMj+oQSIfPpDSH3dLt8aasA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kvLIBz/WW+FfANZBzWZxf+BFD7zNuO6IURRf0f0tt6G5tvkkR0w+SklKi+E5E03PD
-	 M9G0WG2e5isRKKcw1W7ak4KH0sT88PfZou2RvODwu/dXtuPSTwhW6DPoTjRWcGOcnE
-	 nPgfSrCMIgcdjKeDcsMaxxUpCdzWQtVpbjf5mtpk=
+	b=GNphNe58oy4JiIw0QS/MdzkpHPnQeFAO7sZY4sN6cNgr2khitpGaCxBr3KDqjjHhc
+	 dkHa/j5nFkE/F8f548701risHpi2VwAiBSIwB57j+4u5bDONYBW4fhquBYBR8AoJp9
+	 aLbk+qfWvKMG9clMzCXrdhO+rTjOr/c54IjXRigo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 313/374] iio: adc: ad9467: dont ignore error codes
+Subject: [PATCH 6.1 401/417] netfilter: nf_queue: remove excess nf_bridge variable
 Date: Mon, 22 Jan 2024 15:59:29 -0800
-Message-ID: <20240122235755.762777865@linuxfoundation.org>
+Message-ID: <20240122235805.620257943@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
 
-[ Upstream commit e072e149cfb827e0ab4cafb0547e9658e35393cd ]
+[ Upstream commit aeaa44075f8e49e2e0ad4507d925e690b7950145 ]
 
-Make sure functions that return errors are not ignored.
+We don't really need nf_bridge variable here. And nf_bridge_info_exists
+is better replacement for nf_bridge_info_get in case we are only
+checking for existence.
 
-Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://lore.kernel.org/r/20231207-iio-backend-prep-v2-2-a4a33bc4d70e@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 9874808878d9 ("netfilter: bridge: replace physindev with physinif in nf_bridge_info")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad9467.c | 27 +++++++++++++++++----------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ net/netfilter/nf_queue.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-index 46c85748a07e..09ff5b27cee5 100644
---- a/drivers/iio/adc/ad9467.c
-+++ b/drivers/iio/adc/ad9467.c
-@@ -162,9 +162,10 @@ static int ad9467_reg_access(struct adi_axi_adc_conv *conv, unsigned int reg,
+diff --git a/net/netfilter/nf_queue.c b/net/netfilter/nf_queue.c
+index 63d1516816b1..3dfcb3ac5cb4 100644
+--- a/net/netfilter/nf_queue.c
++++ b/net/netfilter/nf_queue.c
+@@ -82,10 +82,8 @@ static void __nf_queue_entry_init_physdevs(struct nf_queue_entry *entry)
+ {
+ #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
+ 	const struct sk_buff *skb = entry->skb;
+-	struct nf_bridge_info *nf_bridge;
  
- 	if (readval == NULL) {
- 		ret = ad9467_spi_write(spi, reg, writeval);
--		ad9467_spi_write(spi, AN877_ADC_REG_TRANSFER,
--				 AN877_ADC_TRANSFER_SYNC);
--		return ret;
-+		if (ret)
-+			return ret;
-+		return ad9467_spi_write(spi, AN877_ADC_REG_TRANSFER,
-+					AN877_ADC_TRANSFER_SYNC);
- 	}
- 
- 	ret = ad9467_spi_read(spi, reg);
-@@ -272,10 +273,13 @@ static int ad9467_get_scale(struct adi_axi_adc_conv *conv, int *val, int *val2)
- 	const struct ad9467_chip_info *info1 = to_ad9467_chip_info(info);
- 	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
- 	unsigned int i, vref_val;
-+	int ret;
- 
--	vref_val = ad9467_spi_read(st->spi, AN877_ADC_REG_VREF);
-+	ret = ad9467_spi_read(st->spi, AN877_ADC_REG_VREF);
-+	if (ret < 0)
-+		return ret;
- 
--	vref_val &= info1->vref_mask;
-+	vref_val = ret & info1->vref_mask;
- 
- 	for (i = 0; i < info->num_scales; i++) {
- 		if (vref_val == info->scale_table[i][1])
-@@ -296,6 +300,7 @@ static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
- 	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
- 	unsigned int scale_val[2];
- 	unsigned int i;
-+	int ret;
- 
- 	if (val != 0)
- 		return -EINVAL;
-@@ -305,11 +310,13 @@ static int ad9467_set_scale(struct adi_axi_adc_conv *conv, int val, int val2)
- 		if (scale_val[0] != val || scale_val[1] != val2)
- 			continue;
- 
--		ad9467_spi_write(st->spi, AN877_ADC_REG_VREF,
--				 info->scale_table[i][1]);
--		ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
--				 AN877_ADC_TRANSFER_SYNC);
--		return 0;
-+		ret = ad9467_spi_write(st->spi, AN877_ADC_REG_VREF,
-+				       info->scale_table[i][1]);
-+		if (ret < 0)
-+			return ret;
-+
-+		return ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
-+					AN877_ADC_TRANSFER_SYNC);
- 	}
- 
- 	return -EINVAL;
+-	nf_bridge = nf_bridge_info_get(skb);
+-	if (nf_bridge) {
++	if (nf_bridge_info_exists(skb)) {
+ 		entry->physin = nf_bridge_get_physindev(skb);
+ 		entry->physout = nf_bridge_get_physoutdev(skb);
+ 	} else {
 -- 
 2.43.0
 
