@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-15285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ED308384A5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F191183828D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 428D11C241B2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A82801F22560
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E300745CB;
-	Tue, 23 Jan 2024 02:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A3D5D720;
+	Tue, 23 Jan 2024 01:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoJDVQ+5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwhzwyLV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B9A6A024;
-	Tue, 23 Jan 2024 02:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F8C5C915;
+	Tue, 23 Jan 2024 01:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975446; cv=none; b=qDFALPHumfGB58Egg+3OkAtSVb1OhTU4RdH672e8CLi/5pO6A3oqm5/JsqZ2VzZfTAGn5aKToLf9+H32AenZYUfOa5o94WVLQFCwq9DB6S9szdGx35YIs+XOuig5esrHI9LFZoPU02qzyQm3vIAOQN4w4oMFVRoLF/y3EAqot18=
+	t=1705974377; cv=none; b=BrBXHywHF439LjVO/AiV92sMzYlx8BZzEFwxSIgSAhelayImfzgnqtsLTyCXHSCDgOAvbphcYhLSWmiCnj9j5KIOij4DjJ0k9yd54S9c2xAXPyc5DEXFNhto0jkPUcE9q/OQ24lnsC5kFYIbkUHI1vcDQTAEYB0vT8e51vQDmRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975446; c=relaxed/simple;
-	bh=EKTMnDVybyCKS31nQfpaKx5ddb/EGbcOyytN9/CyQVQ=;
+	s=arc-20240116; t=1705974377; c=relaxed/simple;
+	bh=TXWxnDqzeOUYSFDfrW/v9QEnwfJjC0r9KG3lL9jpZX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H+rpt9Wmfp4/usrMi9u2ubkONQeooz8OztFu1SuHp7hq/16tc40T1qTpq3S7c+weEweUltlMG7mQ4TgxGCrewwh5HZs/+DCKGLl9gsInYIubzYpjrOroSoz2XKqwkdYy1oPXpcv6KNle3Yg2lT6JvjNNJKpyGIc4zmz3xWbTY6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoJDVQ+5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A160C43399;
-	Tue, 23 Jan 2024 02:04:06 +0000 (UTC)
+	 MIME-Version; b=uWG9KK8BhxHpHB5/Ec0JPxTYRRnPt2XQdwR1zMiFsevrWE8EgK1ih4c+KGO4ns+wINX17w2TP+FZl0NK2+//HJGh4c9hwzEKeiO02DsiXbdcdAkdMHQCIC8+WS+OmcFYyvBjFnjIgOH5oazsDdzZgomyBAjFxdWT1LyqZBG7SWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwhzwyLV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C117C433F1;
+	Tue, 23 Jan 2024 01:46:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975446;
-	bh=EKTMnDVybyCKS31nQfpaKx5ddb/EGbcOyytN9/CyQVQ=;
+	s=korg; t=1705974377;
+	bh=TXWxnDqzeOUYSFDfrW/v9QEnwfJjC0r9KG3lL9jpZX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HoJDVQ+5RkqH/1YjvqyEPXwogw9BWnXPktamvSsPV+1lUDJlDN/eD/fJt5pM/sdiU
-	 Q5i+nbybvoesSs5VC5DABz80J2mLyYvFddyVjz8kbzYPUGPGol2A96aYSZxp3oaicg
-	 rliR/KxWRDww2k6UHXa4gKBXX+I8Mu8Y6ahamo3M=
+	b=lwhzwyLVnEjS2UoXB1RK1uAuXqagjiFWAe3I9iXe2sRhz8e9kjsJDVRl5vwzs2xuT
+	 tOhS7YxnoOhJtSmX6hzf+1nfd4xFZVmcO0SW3ATEnjlRN9kQvtWm85Cdw1T1bmWYox
+	 btG30/+FZgbxGmPu6zQGHAojHRn5BjyZ77KE0yq0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8b23309d5788a79d3eea@syzkaller.appspotmail.com,
-	syzbot+004c1e0fced2b4bc3dcc@syzkaller.appspotmail.com,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 403/583] block: Fix iterating over an empty bio with bio_for_each_folio_all
+	Maxime Ripard <mripard@kernel.org>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 198/374] drm/bridge: cdns-mhdp8546: Fix use of uninitialized variable
 Date: Mon, 22 Jan 2024 15:57:34 -0800
-Message-ID: <20240122235824.315022136@linuxfoundation.org>
+Message-ID: <20240122235751.493934917@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-commit 7bed6f3d08b7af27b7015da8dc3acf2b9c1f21d7 upstream.
+[ Upstream commit 155d6fb61270dd297f128731cd155080deee8f3a ]
 
-If the bio contains no data, bio_first_folio() calls page_folio() on a
-NULL pointer and oopses.  Move the test that we've reached the end of
-the bio from bio_next_folio() to bio_first_folio().
+'ret' could be uninitialized at the end of the function, although it's
+not clear if that can happen in practice.
 
-Reported-by: syzbot+8b23309d5788a79d3eea@syzkaller.appspotmail.com
-Reported-by: syzbot+004c1e0fced2b4bc3dcc@syzkaller.appspotmail.com
-Fixes: 640d1930bef4 ("block: Add bio_for_each_folio_all()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Link: https://lore.kernel.org/r/20240116212959.3413014-1-willy@infradead.org
-[axboe: add unlikely() to error case]
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6a3608eae6d3 ("drm: bridge: cdns-mhdp8546: Enable HDCP")
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231103-uninit-fixes-v2-3-c22b2444f5f5@ideasonboard.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bio.h |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/include/linux/bio.h
-+++ b/include/linux/bio.h
-@@ -286,6 +286,11 @@ static inline void bio_first_folio(struc
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c
+index fccd6fbcc257..29c04012b701 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c
+@@ -403,7 +403,8 @@ static int _cdns_mhdp_hdcp_disable(struct cdns_mhdp_device *mhdp)
+ 
+ static int _cdns_mhdp_hdcp_enable(struct cdns_mhdp_device *mhdp, u8 content_type)
  {
- 	struct bio_vec *bvec = bio_first_bvec_all(bio) + i;
+-	int ret, tries = 3;
++	int ret = -EINVAL;
++	int tries = 3;
+ 	u32 i;
  
-+	if (unlikely(i >= bio->bi_vcnt)) {
-+		fi->folio = NULL;
-+		return;
-+	}
-+
- 	fi->folio = page_folio(bvec->bv_page);
- 	fi->offset = bvec->bv_offset +
- 			PAGE_SIZE * (bvec->bv_page - &fi->folio->page);
-@@ -303,10 +308,8 @@ static inline void bio_next_folio(struct
- 		fi->offset = 0;
- 		fi->length = min(folio_size(fi->folio), fi->_seg_count);
- 		fi->_next = folio_next(fi->folio);
--	} else if (fi->_i + 1 < bio->bi_vcnt) {
--		bio_first_folio(fi, bio, fi->_i + 1);
- 	} else {
--		fi->folio = NULL;
-+		bio_first_folio(fi, bio, fi->_i + 1);
- 	}
- }
- 
+ 	for (i = 0; i < tries; i++) {
+-- 
+2.43.0
+
 
 
 
