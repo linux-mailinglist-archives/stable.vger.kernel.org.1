@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FEA983801C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AFA1837D98
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02E59288301
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B8A128A3A9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3E94664A1;
-	Tue, 23 Jan 2024 00:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 257E24F216;
+	Tue, 23 Jan 2024 00:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5MQZVIi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UhNH/dSU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F9A651A1;
-	Tue, 23 Jan 2024 00:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F764EB24;
+	Tue, 23 Jan 2024 00:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971554; cv=none; b=mI5uBs+eiQDhE/KUYELGI9YKWdEWIi2Lv6MOu7uYCF1j5WBUPsh7GQLuPnZ3L4S4MmJEiTf9IwtFCLoCBzZ+2He9dWdeJSD//xV1KcF769SSKopPvP8z4TzmTNCncaGry5y35/GjweBcRaI6VViJuiQ0u23jFZdhU+lEcJGUBSI=
+	t=1705970056; cv=none; b=jzqf/XT/AIg/aslpTKSfCBhEqIe6AWlM/xLKS8pmM+FhBrJ82hddfs02fDaazGvhfpovxfk16gCxiWmNM1Cg7f28R1QYViYiJ6Pt8ga4Wabfq93LI+sCctPK3bEQBAHZUHT3EFhFDgICzZ7ryyl1nSho5RDpvcOewBZxXkm1g7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971554; c=relaxed/simple;
-	bh=mMOyQomBlqu/VYgddwV515FyJ7v48h/CrDWMqCLwmj0=;
+	s=arc-20240116; t=1705970056; c=relaxed/simple;
+	bh=DQCvZVPkgwnJ5LZkAEx+N7Wue1M6Lu5GIExTlvEMUGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BrLZwKU7zebm1EbJxLgANRXVx9ta8d0pLRFv127DwAyBp5ezRepM1YfFGtSTlbWI2C4mnqsJDjBnR+3No6Bhzg2OSk8wsF5lc+iGMCIwh7v+oUyV5uVcPmkZLFumgw70bPg3MtV1z36ewFAvoBM9T8dB7D65nWXrH5iy+7Ar4U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5MQZVIi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19227C433C7;
-	Tue, 23 Jan 2024 00:59:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=F8g5nPd4zWgazN7MD41HuU0OgK9W+26QDDqqjZOGuHMHtzNwYOHbJn/XgyKpWQbLH9T2mo0KHXFufWJ+nC6cTouGAJEVPc1Knbk4GHukp+WGRqtgLizcu8TWmja/YIGVJoVQamR/E0n1LGHJUupsbOveyEpee1vXmvvAE4/opA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UhNH/dSU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39E8C433C7;
+	Tue, 23 Jan 2024 00:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971554;
-	bh=mMOyQomBlqu/VYgddwV515FyJ7v48h/CrDWMqCLwmj0=;
+	s=korg; t=1705970056;
+	bh=DQCvZVPkgwnJ5LZkAEx+N7Wue1M6Lu5GIExTlvEMUGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F5MQZVIicgr3jbhlUAmynJSoCuVbyAxklSFRdaSxP2txh94oACKmxAbZuc/fvFzmM
-	 RLuX5RIgJnzkp2gL/nuY9hdmk/mu1vOEKO9MiFktQJ5uPPvrB8NDmussGV/je+Xz/h
-	 fULeSSI4XYC25ODmhYRe1x0uJuhgM2n54ZWwgnhQ=
+	b=UhNH/dSUJZ2bUMy2f1mTsvit4YRc5QBP9Yfki7p6m/qKoUiNadeijZ4wajn+HzT6a
+	 O8pPpMZ/uHaAbNat6cObrQy05sdrHKTVtN5k4PJahh0eqDWa8rrmzSvWzwqizt3YD2
+	 4/ECFs05vBpguBeQX3EPmVSXhwUnPv0bkOU27TN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 172/286] drm/amd/pm: fix a double-free in si_dpm_init
+Subject: [PATCH 6.7 574/641] PCI: xilinx-xdma: Fix error code in xilinx_pl_dma_pcie_init_irq_domain()
 Date: Mon, 22 Jan 2024 15:57:58 -0800
-Message-ID: <20240122235738.796848771@linuxfoundation.org>
+Message-ID: <20240122235836.114093072@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 
-[ Upstream commit ac16667237a82e2597e329eb9bc520d1cf9dff30 ]
+[ Upstream commit 2324be17b5e05ac682e7c81fcbfc7b36a9b1becb ]
 
-When the allocation of
-adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries fails,
-amdgpu_free_extended_power_table is called to free some fields of adev.
-However, when the control flow returns to si_dpm_sw_init, it goes to
-label dpm_failed and calls si_dpm_fini, which calls
-amdgpu_free_extended_power_table again and free those fields again. Thus
-a double-free is triggered.
+Currently, if the function irq_domain_add_linear() fails to allocate
+a new IRQ domain and returns NULL, we would then still return a success
+from the xilinx_pl_dma_pcie_init_irq_domain() function regardless, as
+the PTR_ERR(NULL) would return a value of zero.  This is not a desirable
+outcome.
 
-Fixes: 841686df9f7d ("drm/amdgpu: add SI DPM support (v4)")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Thus, fix the incorrect error code and return the -ENOMEM error code if
+the irq_domain_add_linear() fails to allocate a new IRQ domain.
+
+[kwilczynski: commit log]
+Link: https://lore.kernel.org/linux-pci/20231030072757.3236546-1-harshit.m.mogalapalli@oracle.com
+Fixes: 8d786149d78c ("PCI: xilinx-xdma: Add Xilinx XDMA Root Port driver")
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/si_dpm.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/pci/controller/pcie-xilinx-dma-pl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/si_dpm.c b/drivers/gpu/drm/amd/pm/powerplay/si_dpm.c
-index d6544a6dabc7..6f0653c81f8f 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/si_dpm.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/si_dpm.c
-@@ -7349,10 +7349,9 @@ static int si_dpm_init(struct amdgpu_device *adev)
- 		kcalloc(4,
- 			sizeof(struct amdgpu_clock_voltage_dependency_entry),
- 			GFP_KERNEL);
--	if (!adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries) {
--		amdgpu_free_extended_power_table(adev);
-+	if (!adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries)
- 		return -ENOMEM;
--	}
-+
- 	adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.count = 4;
- 	adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries[0].clk = 0;
- 	adev->pm.dpm.dyn_state.vddc_dependency_on_dispclk.entries[0].v = 0;
+diff --git a/drivers/pci/controller/pcie-xilinx-dma-pl.c b/drivers/pci/controller/pcie-xilinx-dma-pl.c
+index 96aedc85802a..3d7f280edade 100644
+--- a/drivers/pci/controller/pcie-xilinx-dma-pl.c
++++ b/drivers/pci/controller/pcie-xilinx-dma-pl.c
+@@ -576,7 +576,7 @@ static int xilinx_pl_dma_pcie_init_irq_domain(struct pl_dma_pcie *port)
+ 						  &intx_domain_ops, port);
+ 	if (!port->intx_domain) {
+ 		dev_err(dev, "Failed to get a INTx IRQ domain\n");
+-		return PTR_ERR(port->intx_domain);
++		return -ENOMEM;
+ 	}
+ 
+ 	irq_domain_update_bus_token(port->intx_domain, DOMAIN_BUS_WIRED);
 -- 
 2.43.0
 
