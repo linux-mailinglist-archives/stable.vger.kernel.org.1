@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-15220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 718A5838461
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BD20837FB5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 973DA1C2A2D2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 680891C2921D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21B6B6D1B1;
-	Tue, 23 Jan 2024 02:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E4F64CCD;
+	Tue, 23 Jan 2024 00:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jP62I/54"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2aZnqYO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A716BB56;
-	Tue, 23 Jan 2024 02:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C8E64CC5;
+	Tue, 23 Jan 2024 00:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975375; cv=none; b=B9unlskg+seRtFvdpCpEEYflPRKFZTTKmZZFL8La7dAIvV2fTY/B/cZSZrgI1LXPhSA+3bETQKUGgwH+HTuXhl3hBrA1Nu7H0Md4DCqrsQCxJJlqPbjGg+4BQwqf7JvMcOFRCbWA/uNMjWyPPFSmgbqHwOSbvjbIhQ/yrI2dwsU=
+	t=1705971308; cv=none; b=XsIVDd8zBXzjj+FNyUCvIEJzrVQ2zDKcUvu73g9C6D3WrT0ILTkhrXTU0B6JuvhCNbkx6PjpnQEfXYNNnzTc3ZSDmYKtKLN1oRYhV6f3o/K+5002taDj4OmoDY8DiAwJ9fqJwfbMtKXXy17NHkoremaNMKUOi8fF+Oi2vsrTisM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975375; c=relaxed/simple;
-	bh=c9OJkjFaidb38QdJuPI2vzsIWYFU2xc7M09H9f1gKBQ=;
+	s=arc-20240116; t=1705971308; c=relaxed/simple;
+	bh=PzoXdWF3xmz4vpVNmGbOkzTaa8e1+MRvYfkW8tjIggM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gpebe5SQ5ld+J3rmw2Mm/G7u5Lqz9+vLI8H4GB6tCHq1XjQQ82OaZ3p2QmCnm39HXl50OTBBC8FPwazn9wqqx0OCgq0zSgrHRsKuQzEPojpmrPKFkGk/KF9vJO7iPwUcb4NaoYRivIBieuAhuCI9cb8UKJph3pMrkXnW3IIz7EY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jP62I/54; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E5DC43390;
-	Tue, 23 Jan 2024 02:02:55 +0000 (UTC)
+	 MIME-Version; b=opXyw5GLCbJ0s/vhnMD6rjBSzTHm5ncXO8QvIFNFTjOPt0jNan30tP3u4bMbMGcVohYbQ1JR9HnRE5wGJC23LbEYuZyAT4jifMSuihkkDmBD22Wll/f7MPNqQ8Sn3IHjrf1fTpgJY0o1FzbMQwPr0ZwKiWkEf1dhQ3ykOmxaQPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2aZnqYO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0603BC43390;
+	Tue, 23 Jan 2024 00:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975375;
-	bh=c9OJkjFaidb38QdJuPI2vzsIWYFU2xc7M09H9f1gKBQ=;
+	s=korg; t=1705971307;
+	bh=PzoXdWF3xmz4vpVNmGbOkzTaa8e1+MRvYfkW8tjIggM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jP62I/54uIGFI3qUMCN5cJlaFy9kzHJsAAzphqnFgZ0pV4rECdNW7bAO0AxwKnyV1
-	 Cm3MvuS7/lFpvZX8gwEK20Pxa6BJmL+oBwTj6S6fVlmn9Mh2a/5EgodWlXiHmqLeMp
-	 hCKn+DseOSOpbTBIvItLWQaLlTG+LzLeakLI0lyI=
+	b=t2aZnqYOzX3uqfKUdW6r7gwMpY80Ah+5vVAbMr/HRLjzVELRR6+HfA5P2++Pjal2v
+	 1PKuaBrSbnCkwYSoaMLZA8vv4S5C1isu3dDb1SCvEI1Flr4Jfmazdvm04JZU84NnPi
+	 ELUsVy+JvibTIel23IMZWuJhTfjeekv0S9gRZipY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Boyd <stephen.boyd@linaro.org>,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	Rob Herring <robh@kernel.org>,
+	Jerry Hoemann <jerry.hoemann@hpe.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 338/583] of: Fix double free in of_parse_phandle_with_args_map
+Subject: [PATCH 6.1 221/417] watchdog/hpwdt: Only claim UNKNOWN NMI if from iLO
 Date: Mon, 22 Jan 2024 15:56:29 -0800
-Message-ID: <20240122235822.369828605@linuxfoundation.org>
+Message-ID: <20240122235759.575299125@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,233 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian A. Ehrhardt <lk@c--e.de>
+From: Jerry Hoemann <jerry.hoemann@hpe.com>
 
-[ Upstream commit 4dde83569832f9377362e50f7748463340c5db6b ]
+[ Upstream commit dced0b3e51dd2af3730efe14dd86b5e3173f0a65 ]
 
-In of_parse_phandle_with_args_map() the inner loop that
-iterates through the map entries calls of_node_put(new)
-to free the reference acquired by the previous iteration
-of the inner loop. This assumes that the value of "new" is
-NULL on the first iteration of the inner loop.
+Avoid unnecessary crashes by claiming only NMIs that are due to
+ERROR signalling or generated by the hpwdt hardware device.
 
-Make sure that this is true in all iterations of the outer
-loop by setting "new" to NULL after its value is assigned to "cur".
+The code does this, but only for iLO5.
 
-Extend the unittest to detect the double free and add an additional
-test case that actually triggers this path.
+The intent was to preserve legacy, Gen9 and earlier, semantics of
+using hpwdt for error containtment as hardware/firmware would signal
+fatal IO errors as an NMI with the expectation of hpwdt crashing
+the system.  Howerver, these IO errors should be received by hpwdt
+as an NMI_IO_CHECK.  So the test is overly permissive and should
+not be limited to only ilo5.
 
-Fixes: bd6f2fd5a1 ("of: Support parsing phandle argument lists through a nexus node")
-Cc: Stephen Boyd <stephen.boyd@linaro.org>
-Signed-off-by: "Christian A. Ehrhardt" <lk@c--e.de>
-Link: https://lore.kernel.org/r/20231229105411.1603434-1-lk@c--e.de
-Signed-off-by: Rob Herring <robh@kernel.org>
+We need to enable this protection for future iLOs not matching the
+current PCI IDs.
+
+Fixes: 62290a5c194b ("watchdog: hpwdt: Claim NMIs generated by iLO5")
+Signed-off-by: Jerry Hoemann <jerry.hoemann@hpe.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20231213215340.495734-2-jerry.hoemann@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/base.c                           |  1 +
- drivers/of/unittest-data/tests-phandle.dtsi | 10 ++-
- drivers/of/unittest.c                       | 74 ++++++++++++---------
- 3 files changed, 53 insertions(+), 32 deletions(-)
+ drivers/watchdog/hpwdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 8d93cb6ea9cd..b0ad8fc06e80 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -1464,6 +1464,7 @@ int of_parse_phandle_with_args_map(const struct device_node *np,
- 		out_args->np = new;
- 		of_node_put(cur);
- 		cur = new;
-+		new = NULL;
- 	}
- put:
- 	of_node_put(cur);
-diff --git a/drivers/of/unittest-data/tests-phandle.dtsi b/drivers/of/unittest-data/tests-phandle.dtsi
-index d01f92f0f0db..554a996b2ef1 100644
---- a/drivers/of/unittest-data/tests-phandle.dtsi
-+++ b/drivers/of/unittest-data/tests-phandle.dtsi
-@@ -40,6 +40,13 @@ provider4: provider4 {
- 				phandle-map-pass-thru = <0x0 0xf0>;
- 			};
+diff --git a/drivers/watchdog/hpwdt.c b/drivers/watchdog/hpwdt.c
+index f79f932bca14..79ed1626d8ea 100644
+--- a/drivers/watchdog/hpwdt.c
++++ b/drivers/watchdog/hpwdt.c
+@@ -178,7 +178,7 @@ static int hpwdt_pretimeout(unsigned int ulReason, struct pt_regs *regs)
+ 		"3. OA Forward Progress Log\n"
+ 		"4. iLO Event Log";
  
-+			provider5: provider5 {
-+				#phandle-cells = <2>;
-+				phandle-map = <2 7 &provider4 2 3>;
-+				phandle-map-mask = <0xff 0xf>;
-+				phandle-map-pass-thru = <0x0 0xf0>;
-+			};
-+
- 			consumer-a {
- 				phandle-list =	<&provider1 1>,
- 						<&provider2 2 0>,
-@@ -66,7 +73,8 @@ consumer-b {
- 						<&provider4 4 0x100>,
- 						<&provider4 0 0x61>,
- 						<&provider0>,
--						<&provider4 19 0x20>;
-+						<&provider4 19 0x20>,
-+						<&provider5 2 7>;
- 				phandle-list-bad-phandle = <12345678 0 0>;
- 				phandle-list-bad-args = <&provider2 1 0>,
- 							<&provider4 0>;
-diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-index ad2b7879cc67..c63f5963751b 100644
---- a/drivers/of/unittest.c
-+++ b/drivers/of/unittest.c
-@@ -456,6 +456,9 @@ static void __init of_unittest_parse_phandle_with_args(void)
+-	if (ilo5 && ulReason == NMI_UNKNOWN && !mynmi)
++	if (ulReason == NMI_UNKNOWN && !mynmi)
+ 		return NMI_DONE;
  
- 		unittest(passed, "index %i - data error on node %pOF rc=%i\n",
- 			 i, args.np, rc);
-+
-+		if (rc == 0)
-+			of_node_put(args.np);
- 	}
- 
- 	/* Check for missing list property */
-@@ -545,8 +548,9 @@ static void __init of_unittest_parse_phandle_with_args(void)
- 
- static void __init of_unittest_parse_phandle_with_args_map(void)
- {
--	struct device_node *np, *p0, *p1, *p2, *p3;
-+	struct device_node *np, *p[6] = {};
- 	struct of_phandle_args args;
-+	unsigned int prefs[6];
- 	int i, rc;
- 
- 	np = of_find_node_by_path("/testcase-data/phandle-tests/consumer-b");
-@@ -555,34 +559,24 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
- 		return;
- 	}
- 
--	p0 = of_find_node_by_path("/testcase-data/phandle-tests/provider0");
--	if (!p0) {
--		pr_err("missing testcase data\n");
--		return;
--	}
--
--	p1 = of_find_node_by_path("/testcase-data/phandle-tests/provider1");
--	if (!p1) {
--		pr_err("missing testcase data\n");
--		return;
--	}
--
--	p2 = of_find_node_by_path("/testcase-data/phandle-tests/provider2");
--	if (!p2) {
--		pr_err("missing testcase data\n");
--		return;
--	}
--
--	p3 = of_find_node_by_path("/testcase-data/phandle-tests/provider3");
--	if (!p3) {
--		pr_err("missing testcase data\n");
--		return;
-+	p[0] = of_find_node_by_path("/testcase-data/phandle-tests/provider0");
-+	p[1] = of_find_node_by_path("/testcase-data/phandle-tests/provider1");
-+	p[2] = of_find_node_by_path("/testcase-data/phandle-tests/provider2");
-+	p[3] = of_find_node_by_path("/testcase-data/phandle-tests/provider3");
-+	p[4] = of_find_node_by_path("/testcase-data/phandle-tests/provider4");
-+	p[5] = of_find_node_by_path("/testcase-data/phandle-tests/provider5");
-+	for (i = 0; i < ARRAY_SIZE(p); ++i) {
-+		if (!p[i]) {
-+			pr_err("missing testcase data\n");
-+			return;
-+		}
-+		prefs[i] = kref_read(&p[i]->kobj.kref);
- 	}
- 
- 	rc = of_count_phandle_with_args(np, "phandle-list", "#phandle-cells");
--	unittest(rc == 7, "of_count_phandle_with_args() returned %i, expected 7\n", rc);
-+	unittest(rc == 8, "of_count_phandle_with_args() returned %i, expected 7\n", rc);
- 
--	for (i = 0; i < 8; i++) {
-+	for (i = 0; i < 9; i++) {
- 		bool passed = true;
- 
- 		memset(&args, 0, sizeof(args));
-@@ -593,13 +587,13 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
- 		switch (i) {
- 		case 0:
- 			passed &= !rc;
--			passed &= (args.np == p1);
-+			passed &= (args.np == p[1]);
- 			passed &= (args.args_count == 1);
- 			passed &= (args.args[0] == 1);
- 			break;
- 		case 1:
- 			passed &= !rc;
--			passed &= (args.np == p3);
-+			passed &= (args.np == p[3]);
- 			passed &= (args.args_count == 3);
- 			passed &= (args.args[0] == 2);
- 			passed &= (args.args[1] == 5);
-@@ -610,28 +604,36 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
- 			break;
- 		case 3:
- 			passed &= !rc;
--			passed &= (args.np == p0);
-+			passed &= (args.np == p[0]);
- 			passed &= (args.args_count == 0);
- 			break;
- 		case 4:
- 			passed &= !rc;
--			passed &= (args.np == p1);
-+			passed &= (args.np == p[1]);
- 			passed &= (args.args_count == 1);
- 			passed &= (args.args[0] == 3);
- 			break;
- 		case 5:
- 			passed &= !rc;
--			passed &= (args.np == p0);
-+			passed &= (args.np == p[0]);
- 			passed &= (args.args_count == 0);
- 			break;
- 		case 6:
- 			passed &= !rc;
--			passed &= (args.np == p2);
-+			passed &= (args.np == p[2]);
- 			passed &= (args.args_count == 2);
- 			passed &= (args.args[0] == 15);
- 			passed &= (args.args[1] == 0x20);
- 			break;
- 		case 7:
-+			passed &= !rc;
-+			passed &= (args.np == p[3]);
-+			passed &= (args.args_count == 3);
-+			passed &= (args.args[0] == 2);
-+			passed &= (args.args[1] == 5);
-+			passed &= (args.args[2] == 3);
-+			break;
-+		case 8:
- 			passed &= (rc == -ENOENT);
- 			break;
- 		default:
-@@ -640,6 +642,9 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
- 
- 		unittest(passed, "index %i - data error on node %s rc=%i\n",
- 			 i, args.np->full_name, rc);
-+
-+		if (rc == 0)
-+			of_node_put(args.np);
- 	}
- 
- 	/* Check for missing list property */
-@@ -686,6 +691,13 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
- 		   "OF: /testcase-data/phandle-tests/consumer-b: #phandle-cells = 2 found 1");
- 
- 	unittest(rc == -EINVAL, "expected:%i got:%i\n", -EINVAL, rc);
-+
-+	for (i = 0; i < ARRAY_SIZE(p); ++i) {
-+		unittest(prefs[i] == kref_read(&p[i]->kobj.kref),
-+			 "provider%d: expected:%d got:%d\n",
-+			 i, prefs[i], kref_read(&p[i]->kobj.kref));
-+		of_node_put(p[i]);
-+	}
- }
- 
- static void __init of_unittest_property_string(void)
+ 	if (ilo5 && !pretimeout && !mynmi)
 -- 
 2.43.0
 
