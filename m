@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15280-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD1EA837FD4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:57 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3389F838591
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:44:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90F521F2AB9E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56A19B29E53
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1AC712BEBD;
-	Tue, 23 Jan 2024 00:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79B2E745C1;
+	Tue, 23 Jan 2024 02:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1qlWz/77"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="He0ZIDNN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AED6A4E1AD;
-	Tue, 23 Jan 2024 00:56:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38ED87318E;
+	Tue, 23 Jan 2024 02:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971381; cv=none; b=JlE462NHb0uOuteGsf0CQKdyHR2H5BekxzE5G2+PGmPvAeQiwMPD1cEHM76LODlO9UVv5uYZLSryI2n+USzQYuSWO+nwl7hxtjiAu0w2TvXKiOPV6rR8FCJHeS3gj9WeSCZwJ2VKXDRiWd9/Ny3cvQBkCftrs48UVYD8jWrgP4E=
+	t=1705975440; cv=none; b=m2FIvhkKoWjlAbUvDbPH5u7Ljf4jxBjfZS8TgmZ1UY/OnabK4MFTt+6ftPfxaBDH5u4IfM7mobpUYjJxNkeWLOJwq0uX2vOZ7wZFcyZ4XSZ2HsYwrE1w1fgAzhGEu+ZKSQysPpj+HYYy5XGfrvd1NFz0aF6YCaB6uqBTLL52sWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971381; c=relaxed/simple;
-	bh=fVsgDIvomxgnv0axbnbIOWUPNtCTpw9xbEPIc9tJLy8=;
+	s=arc-20240116; t=1705975440; c=relaxed/simple;
+	bh=LetyzKnkv85dJs0nAxbhwzCI1IMxMt1igl8ctua4Kh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TySwD7zyMCDG9C6XIbYVccML5aN9lbvSDhU4dp8h7qAeGfaSc5t/93MN/0dKWcEg8Lg5xli5dpQ5SqHOBh/pZ6xw0fYHHKGEMOx4NEECwo8Bg5T854poiPEwMlcpvwFkJlObxPM8uk2GbOv5VYqepR70+oZdpIw0L6a6XiXZKh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1qlWz/77; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E818FC433C7;
-	Tue, 23 Jan 2024 00:56:20 +0000 (UTC)
+	 MIME-Version; b=udY9ZWEvtfJqiSsn72KGIs6pMBfJGEK2LHaFRrHP5lMZytLml9HbD2A0/WSeTTWkXeFQQngj0Z6t+JQKLwJDjrb2gyowZMA+hK61yfqrmqkThp2noSY+yeW2qro492HPNHp7Y3gfYFwGvddlLJW9UYj/llPriLG5WArffDLwWJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=He0ZIDNN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B0DC43390;
+	Tue, 23 Jan 2024 02:03:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971381;
-	bh=fVsgDIvomxgnv0axbnbIOWUPNtCTpw9xbEPIc9tJLy8=;
+	s=korg; t=1705975440;
+	bh=LetyzKnkv85dJs0nAxbhwzCI1IMxMt1igl8ctua4Kh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1qlWz/77MhDhjXUZmtUboGbE6yH1eo57IqDDaJ06O3LxAaCRZH701fGQ3tb1SmbQK
-	 px4GFffHTj4rQAjqOpd3v+pGs1VMdjGQ/RnNQ4MBmK0ugoJajkKi/kbc9MRgHV/QFP
-	 lNElU+96JUmjTZO2AiJUqiH74X8A9fJfxTlRkPBQ=
+	b=He0ZIDNN0r/aJSdrCWriz76QAbACBI5PZ8w0M5Fl2qpIIF/vOXjpD1DY1MDlfyfjy
+	 kgeAizJyAYjRA3cGpGBSSq47yPNyO7pTKr94dThUhReoWNaykakMFDXp/CgwhZWKqt
+	 9yxRJaH/oG76APbHmnqh4bLf0BsEG/124Ggx3PkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 143/286] ARM: davinci: always select CONFIG_CPU_ARM926T
+	Sathya Prakash <sathya.prakash@broadcom.com>,
+	Chandrakanth patil <chandrakanth.patil@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 398/583] scsi: mpi3mr: Block PEL Enable Command on Controller Reset and Unrecoverable State
 Date: Mon, 22 Jan 2024 15:57:29 -0800
-Message-ID: <20240122235737.654796340@linuxfoundation.org>
+Message-ID: <20240122235824.162058737@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Chandrakanth patil <chandrakanth.patil@broadcom.com>
 
-[ Upstream commit 40974ee421b4d1fc74ac733d86899ce1b83d8f65 ]
+commit f8fb3f39148e8010479e4b2003ba4728818ec661 upstream.
 
-The select was lost by accident during the multiplatform conversion.
-Any davinci-only
+If a controller reset is underway or the controller is in an unrecoverable
+state, the PEL enable management command will be returned as EAGAIN or
+EFAULT.
 
-arm-linux-gnueabi-ld: arch/arm/mach-davinci/sleep.o: in function `CACHE_FLUSH':
-(.text+0x168): undefined reference to `arm926_flush_kern_cache_all'
-
-Fixes: f962396ce292 ("ARM: davinci: support multiplatform build for ARM v5")
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://lore.kernel.org/r/20240108110055.1531153-1-arnd@kernel.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org> # v6.1+
+Co-developed-by: Sathya Prakash <sathya.prakash@broadcom.com>
+Signed-off-by: Sathya Prakash <sathya.prakash@broadcom.com>
+Signed-off-by: Chandrakanth patil <chandrakanth.patil@broadcom.com>
+Link: https://lore.kernel.org/r/20231126053134.10133-4-chandrakanth.patil@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-davinci/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/mpi3mr/mpi3mr_app.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/arch/arm/mach-davinci/Kconfig b/arch/arm/mach-davinci/Kconfig
-index de11030748d0..b30221f7dfa4 100644
---- a/arch/arm/mach-davinci/Kconfig
-+++ b/arch/arm/mach-davinci/Kconfig
-@@ -3,6 +3,7 @@
- menuconfig ARCH_DAVINCI
- 	bool "TI DaVinci"
- 	depends on ARCH_MULTI_V5
-+	select CPU_ARM926T
- 	select DAVINCI_TIMER
- 	select ZONE_DMA
- 	select PM_GENERIC_DOMAINS if PM
--- 
-2.43.0
-
+--- a/drivers/scsi/mpi3mr/mpi3mr_app.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_app.c
+@@ -223,6 +223,22 @@ static long mpi3mr_bsg_pel_enable(struct
+ 		return rval;
+ 	}
+ 
++	if (mrioc->unrecoverable) {
++		dprint_bsg_err(mrioc, "%s: unrecoverable controller\n",
++			       __func__);
++		return -EFAULT;
++	}
++
++	if (mrioc->reset_in_progress) {
++		dprint_bsg_err(mrioc, "%s: reset in progress\n", __func__);
++		return -EAGAIN;
++	}
++
++	if (mrioc->stop_bsgs) {
++		dprint_bsg_err(mrioc, "%s: bsgs are blocked\n", __func__);
++		return -EAGAIN;
++	}
++
+ 	sg_copy_to_buffer(job->request_payload.sg_list,
+ 			  job->request_payload.sg_cnt,
+ 			  &pel_enable, sizeof(pel_enable));
 
 
 
