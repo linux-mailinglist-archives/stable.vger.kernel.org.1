@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEC02837E79
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CA80838381
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EED8028E8A5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:39:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A3881F28B92
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4E313A26E;
-	Tue, 23 Jan 2024 00:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988646310D;
+	Tue, 23 Jan 2024 01:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hSNu6vMe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LJnWwRkx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0956F54BD2;
-	Tue, 23 Jan 2024 00:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B2962A12;
+	Tue, 23 Jan 2024 01:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970611; cv=none; b=d/7TuUFVQCc8fUbeWakVS2eJU72tGPKNpKomXURrC/JFkfYS0sLy08/44MGSsYqVt9c+o/XzovWHrBZ868B48MWSYun3PrpBzxwIk05EWRCc9h8pyaP1x8KFgoLD0snbvdPJ1vxbHxUH7GKUBZakGeIlZ9dOag565IzAtwfK6Vc=
+	t=1705974992; cv=none; b=owDpWfJCjlaYBmKmzpDY0pvZCel/h6trz4nzDIlev9gVGF7urfE9MnrFo948QJQdGmZGYEhnTdwxmJncyNdIwDZPXKVu5aca0054zV7AGvdywpqnvkuG6xO1ONtGUNedJ0jWoh3wNBhksZ3rVi5jaVjAojZ2KGk8lYCTFTpiRtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970611; c=relaxed/simple;
-	bh=pOhraDwCzhL4PE70rWbgCxJiPLdY8JaQmuVQ6mfRd9I=;
+	s=arc-20240116; t=1705974992; c=relaxed/simple;
+	bh=rlmEbisXTRme8IXNTqH/GIKH/zgH9XP3IrYp0UsVn7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P4c7CYIdTMke5jL4MW/gGw87D2Gp+Ytc6H1VGtlFey6KaEY4tzRlUAicN+UgC+RM2/ipWn+6GpGvLQk51xKvplayd4Z+zYBJ31vXW3WXks66O+i9kWdjKDyABiQ7B64OoDyxlXZpl+EhOWOqojUf9DU5GIRbm22hfHpSyl4F0xQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hSNu6vMe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC28C433C7;
-	Tue, 23 Jan 2024 00:43:30 +0000 (UTC)
+	 MIME-Version; b=i0Y+CQ3MWZQPalxXGC+PXfNcKghZzgS5whjKqM+1eirus1uAb/C0KLN3y1m+Mq0HiE/qgQ7W25hyZ+erBT0KWIse6pLT2t8Je4YmdkeDpB+ct0SYx4SacnTX+y55QFKYt60/nobro7HMVakBi4ObtvSkrwIl1+b6rE755jECukI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LJnWwRkx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A58CC433C7;
+	Tue, 23 Jan 2024 01:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970610;
-	bh=pOhraDwCzhL4PE70rWbgCxJiPLdY8JaQmuVQ6mfRd9I=;
+	s=korg; t=1705974992;
+	bh=rlmEbisXTRme8IXNTqH/GIKH/zgH9XP3IrYp0UsVn7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hSNu6vMerKSlgH/TMszB+2ZL0DgUDnQ6/EWEujaunPXPyyHbd0znaA/WHX3uk6UfD
-	 UyvtX6TDNOUAAkDoAk8ejSVj48W7m7oXovApJoi9bbm3TNP8p4lP3tkJUHeAR4EmFQ
-	 p2TJ0PUPP/2d21cFr3uPaOJHG8i8YActfTnTpEpo=
+	b=LJnWwRkxHJgNLmCJSngJzZA17quRuNpooR4n9vrbmtFHnSsarQoWkO0pg7fR3SqT0
+	 5T4ggHkXRyt+vUEbT1KZj0ycsvBGpw+H+nxbe1YXKLBvdMPPCA97AHjfHIeSXC7DlJ
+	 8D/o7oye760FjiDZyO/a/GxXSTopKWZXDaVneN0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/417] pNFS: Fix the pnfs block drivers calculation of layoutget size
+Subject: [PATCH 6.6 184/583] arm64: dts: qcom: sm8550: Update idle state time requirements
 Date: Mon, 22 Jan 2024 15:53:55 -0800
-Message-ID: <20240122235754.031354977@linuxfoundation.org>
+Message-ID: <20240122235817.633474500@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,94 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 8a6291bf3b0eae1bf26621e6419a91682f2d6227 ]
+[ Upstream commit ad6556fb45d4ab91ad786a2025cbe2b0f2e6cf77 ]
 
-Instead of relying on the value of the 'bytes_left' field, we should
-calculate the layout size based on the offset of the request that is
-being written out.
+The idle state entry/exit/residency times differ from what shipped on
+production devices, mostly being overly optimistic in entry times and
+overly pessimistic in minimal residency times. Align them with
+downstream sources.
 
-Reported-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Fixes: 954998b60caa ("NFS: Fix error handling for O_DIRECT write scheduling")
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Tested-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Fixes: ffc50b2d3828 ("arm64: dts: qcom: Add base SM8550 dtsi")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231218-topic-8550_fixes-v1-12-ce1272d77540@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/blocklayout/blocklayout.c | 5 ++---
- fs/nfs/direct.c                  | 5 +++--
- fs/nfs/internal.h                | 2 +-
- fs/nfs/pnfs.c                    | 3 ++-
- 4 files changed, 8 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8550.dtsi | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/fs/nfs/blocklayout/blocklayout.c b/fs/nfs/blocklayout/blocklayout.c
-index 1d1d7abc3205..6be13e0ec170 100644
---- a/fs/nfs/blocklayout/blocklayout.c
-+++ b/fs/nfs/blocklayout/blocklayout.c
-@@ -895,10 +895,9 @@ bl_pg_init_write(struct nfs_pageio_descriptor *pgio, struct nfs_page *req)
- 	}
+diff --git a/arch/arm64/boot/dts/qcom/sm8550.dtsi b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+index 15d91ace8703..3a228d4f0c14 100644
+--- a/arch/arm64/boot/dts/qcom/sm8550.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8550.dtsi
+@@ -283,9 +283,9 @@ LITTLE_CPU_SLEEP_0: cpu-sleep-0-0 {
+ 				compatible = "arm,idle-state";
+ 				idle-state-name = "silver-rail-power-collapse";
+ 				arm,psci-suspend-param = <0x40000004>;
+-				entry-latency-us = <800>;
++				entry-latency-us = <550>;
+ 				exit-latency-us = <750>;
+-				min-residency-us = <4090>;
++				min-residency-us = <6700>;
+ 				local-timer-stop;
+ 			};
  
- 	if (pgio->pg_dreq == NULL)
--		wb_size = pnfs_num_cont_bytes(pgio->pg_inode,
--					      req->wb_index);
-+		wb_size = pnfs_num_cont_bytes(pgio->pg_inode, req->wb_index);
- 	else
--		wb_size = nfs_dreq_bytes_left(pgio->pg_dreq);
-+		wb_size = nfs_dreq_bytes_left(pgio->pg_dreq, req_offset(req));
+@@ -294,8 +294,8 @@ BIG_CPU_SLEEP_0: cpu-sleep-1-0 {
+ 				idle-state-name = "gold-rail-power-collapse";
+ 				arm,psci-suspend-param = <0x40000004>;
+ 				entry-latency-us = <600>;
+-				exit-latency-us = <1550>;
+-				min-residency-us = <4791>;
++				exit-latency-us = <1300>;
++				min-residency-us = <8136>;
+ 				local-timer-stop;
+ 			};
  
- 	pnfs_generic_pg_init_write(pgio, req, wb_size);
+@@ -314,17 +314,17 @@ domain-idle-states {
+ 			CLUSTER_SLEEP_0: cluster-sleep-0 {
+ 				compatible = "domain-idle-state";
+ 				arm,psci-suspend-param = <0x41000044>;
+-				entry-latency-us = <1050>;
+-				exit-latency-us = <2500>;
+-				min-residency-us = <5309>;
++				entry-latency-us = <750>;
++				exit-latency-us = <2350>;
++				min-residency-us = <9144>;
+ 			};
  
-diff --git a/fs/nfs/direct.c b/fs/nfs/direct.c
-index 3bb530d4bb5c..8fdb65e1b14a 100644
---- a/fs/nfs/direct.c
-+++ b/fs/nfs/direct.c
-@@ -195,9 +195,10 @@ static void nfs_direct_req_release(struct nfs_direct_req *dreq)
- 	kref_put(&dreq->kref, nfs_direct_req_free);
- }
- 
--ssize_t nfs_dreq_bytes_left(struct nfs_direct_req *dreq)
-+ssize_t nfs_dreq_bytes_left(struct nfs_direct_req *dreq, loff_t offset)
- {
--	return dreq->bytes_left;
-+	loff_t start = offset - dreq->io_start;
-+	return dreq->max_count - start;
- }
- EXPORT_SYMBOL_GPL(nfs_dreq_bytes_left);
- 
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 4b07a0508f9d..35a8ae46b6c3 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -640,7 +640,7 @@ extern int nfs_sillyrename(struct inode *dir, struct dentry *dentry);
- /* direct.c */
- void nfs_init_cinfo_from_dreq(struct nfs_commit_info *cinfo,
- 			      struct nfs_direct_req *dreq);
--extern ssize_t nfs_dreq_bytes_left(struct nfs_direct_req *dreq);
-+extern ssize_t nfs_dreq_bytes_left(struct nfs_direct_req *dreq, loff_t offset);
- 
- /* nfs4proc.c */
- extern struct nfs_client *nfs4_init_client(struct nfs_client *clp,
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index 1ffb1068216b..4448ff829cbb 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -2729,7 +2729,8 @@ pnfs_generic_pg_init_read(struct nfs_pageio_descriptor *pgio, struct nfs_page *r
- 		if (pgio->pg_dreq == NULL)
- 			rd_size = i_size_read(pgio->pg_inode) - req_offset(req);
- 		else
--			rd_size = nfs_dreq_bytes_left(pgio->pg_dreq);
-+			rd_size = nfs_dreq_bytes_left(pgio->pg_dreq,
-+						      req_offset(req));
- 
- 		pgio->pg_lseg =
- 			pnfs_update_layout(pgio->pg_inode, nfs_req_openctx(req),
+ 			CLUSTER_SLEEP_1: cluster-sleep-1 {
+ 				compatible = "domain-idle-state";
+ 				arm,psci-suspend-param = <0x4100c344>;
+-				entry-latency-us = <2700>;
+-				exit-latency-us = <3500>;
+-				min-residency-us = <13959>;
++				entry-latency-us = <2800>;
++				exit-latency-us = <4400>;
++				min-residency-us = <10150>;
+ 			};
+ 		};
+ 	};
 -- 
 2.43.0
 
