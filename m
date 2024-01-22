@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-13235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16FBC837B0F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE5DF837B34
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C18E42830D4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:57:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DE291C26F3F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CEC7149001;
-	Tue, 23 Jan 2024 00:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F6814A4F0;
+	Tue, 23 Jan 2024 00:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/XBfATM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T2uBR3D0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1108148FE6;
-	Tue, 23 Jan 2024 00:19:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027CD14A4CF;
+	Tue, 23 Jan 2024 00:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969179; cv=none; b=NginWitfWMInpF6/ATWw/9Eg5jOF/M6AjwqNuRVXQmtpoG5Upc7n25wbnre3Oq6NERiMP43PKRESChC1upnWuidsQ6Z2MBBK37/ZyMe78rSux/lFfQ0AL8HnaVDi6SO/kHekZLUznMrtS/PsGmxTCPl8oCGPPSMJBgpFxcWvzrI=
+	t=1705969229; cv=none; b=PAKodAf1/ZppvNvnLVCNtoGN+lMJrvOk5lBmKVc20J45THibDLQ7pc2SsmF44iQ/zYTHkcHWuhLbQk6VzlctTLw0uxOxp62Ij+1rAT3krN2Oft61JMBvy/T1TwKHTLwDZG+7I+5R2ZiIg1caeB//jhwIFh4UDGBePA4iN3FDAjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969179; c=relaxed/simple;
-	bh=TbNR9RrOtND68mfh58j+mBNw/uZ3cW/vDGJqlZasK5E=;
+	s=arc-20240116; t=1705969229; c=relaxed/simple;
+	bh=EJhMUQFAfxA6imdWC0thriRMmex2pI2NIcN4+fH62ok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mJSa+0XxLRhUyw/TAaTAbsMIxMSBrHe9gffTikQU9kfvLwdsU5gpCeoZW2y/Tt5MPoEbils4NoVlMTvLj6zRPws39AOte85UvVaoxQ9q3v5jl7AhDd4gnbQDRC4w8ETSGvG5Phn3H52v69Hy62IH6OPqYb7kf91U3jXr+3miGsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/XBfATM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50055C433B1;
-	Tue, 23 Jan 2024 00:19:38 +0000 (UTC)
+	 MIME-Version; b=HlRustMhTyWgUKt6kFNe3p60rFmXPgyqX83ZTmPlq4JEjjJqK6uXvQ0MMtlC7QjYmDlELoNWD0EhUd9rnf7ZAO9nMYHwWp6SIqFqfDMSmjBCRvrD2O+Q62rrHHz+im4ihgOSYLSE5a+g8dTvZiUNM8SHJ02rPhoe2QkCHWXo95I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T2uBR3D0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD0D2C433C7;
+	Tue, 23 Jan 2024 00:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969178;
-	bh=TbNR9RrOtND68mfh58j+mBNw/uZ3cW/vDGJqlZasK5E=;
+	s=korg; t=1705969228;
+	bh=EJhMUQFAfxA6imdWC0thriRMmex2pI2NIcN4+fH62ok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D/XBfATMpiUIZUxnXuiHHZMyr0TpCE+iz//mOCXdhpjcxqAIXE8nsDQ+T65uyN9Zr
-	 02BUCyjEzWGeTHnIR8t1EAhMCljuqcpgNonXTYn0SEK4dBSHNvirQAnzQB4ZZWlbfO
-	 3JUTanARp1VKdqN2OUk/Xt5bxSCb65rR/OEhazC4=
+	b=T2uBR3D0bPHKJFnzpE1W26tLOusUtcMyPNPfIWMJgWgKhvkflbVT2rLwI4CX36H1J
+	 goUdIUTg6sANDnCd2jUGdwncNWe/UELy+7JMuQE5+mAjXv9lqxOZSkHAWcqUxW19vr
+	 pz/jaMUI4sGCUmEBqUNaBvcBC/PX9JqnijZ3suVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ovidiu Panait <ovidiu.panait@windriver.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 077/641] crypto: sahara - fix ahash reqsize
-Date: Mon, 22 Jan 2024 15:49:41 -0800
-Message-ID: <20240122235820.444027665@linuxfoundation.org>
+Subject: [PATCH 6.7 078/641] crypto: sahara - fix wait_for_completion_timeout() error handling
+Date: Mon, 22 Jan 2024 15:49:42 -0800
+Message-ID: <20240122235820.476573075@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -68,33 +68,66 @@ Content-Transfer-Encoding: 8bit
 
 From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit efcb50f41740ac55e6ccc4986c1a7740e21c62b4 ]
+[ Upstream commit 2dba8e1d1a7957dcbe7888846268538847b471d1 ]
 
-Set the reqsize for sha algorithms to sizeof(struct sahara_sha_reqctx), the
-extra space is not needed.
+The sg lists are not unmapped in case of timeout errors. Fix this.
 
 Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
+Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
 Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/crypto/sahara.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 78666b82ac80..31973e6ce520 100644
+index 31973e6ce520..3661f02d131a 100644
 --- a/drivers/crypto/sahara.c
 +++ b/drivers/crypto/sahara.c
-@@ -1162,8 +1162,7 @@ static int sahara_sha_import(struct ahash_request *req, const void *in)
- static int sahara_sha_cra_init(struct crypto_tfm *tfm)
- {
- 	crypto_ahash_set_reqsize(__crypto_ahash_cast(tfm),
--				 sizeof(struct sahara_sha_reqctx) +
--				 SHA_BUFFER_LEN + SHA256_BLOCK_SIZE);
-+				 sizeof(struct sahara_sha_reqctx));
+@@ -607,16 +607,17 @@ static int sahara_aes_process(struct skcipher_request *req)
  
- 	return 0;
- }
+ 	timeout = wait_for_completion_timeout(&dev->dma_completion,
+ 				msecs_to_jiffies(SAHARA_TIMEOUT_MS));
+-	if (!timeout) {
+-		dev_err(dev->device, "AES timeout\n");
+-		return -ETIMEDOUT;
+-	}
+ 
+ 	dma_unmap_sg(dev->device, dev->out_sg, dev->nb_out_sg,
+ 		DMA_FROM_DEVICE);
+ 	dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
+ 		DMA_TO_DEVICE);
+ 
++	if (!timeout) {
++		dev_err(dev->device, "AES timeout\n");
++		return -ETIMEDOUT;
++	}
++
+ 	if ((dev->flags & FLAGS_CBC) && req->iv)
+ 		sahara_aes_cbc_update_iv(req);
+ 
+@@ -1007,15 +1008,16 @@ static int sahara_sha_process(struct ahash_request *req)
+ 
+ 	timeout = wait_for_completion_timeout(&dev->dma_completion,
+ 				msecs_to_jiffies(SAHARA_TIMEOUT_MS));
+-	if (!timeout) {
+-		dev_err(dev->device, "SHA timeout\n");
+-		return -ETIMEDOUT;
+-	}
+ 
+ 	if (rctx->sg_in_idx)
+ 		dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
+ 			     DMA_TO_DEVICE);
+ 
++	if (!timeout) {
++		dev_err(dev->device, "SHA timeout\n");
++		return -ETIMEDOUT;
++	}
++
+ 	memcpy(rctx->context, dev->context_base, rctx->context_size);
+ 
+ 	if (req->result && rctx->last)
 -- 
 2.43.0
 
