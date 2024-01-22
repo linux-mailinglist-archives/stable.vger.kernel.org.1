@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-13778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F856837DFD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC27F83807E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64A3F1C28D5B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:34:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B9111C29792
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E27E55100B;
-	Tue, 23 Jan 2024 00:37:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96AB012F5A7;
+	Tue, 23 Jan 2024 01:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vL+H5qpe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jyGlLa7K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A088C4E1D0;
-	Tue, 23 Jan 2024 00:37:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D4612F59C;
+	Tue, 23 Jan 2024 01:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970266; cv=none; b=Dp1E/aqSC5NDq0lKav1DxEAppzvtMvdAMDcWDmgZ9tU5kQxmbZRrzg/mIsNb0jrTODj87/kIYXeICXPxr9S3sflHRNuOqrekSKN4ETM26PMtdZBNHdp66yb5ecAMAsdDjUv8xJgvha+DfUzohFvGHfCcL/I5a5ZfyZUNr9UNTSQ=
+	t=1705971763; cv=none; b=DaeWWOeiBSHBhHi6OXbKywImOhEW+CuxD9efs4YRgMvEcvOBV6WYI2BatwcHHbKS2CYPX55/38lYkgBGurHd5Uxu5q7SN8FUGM/9QIgf+XFV5Y6CWe0IX5AaJMaCIg4u3BXf8I3ZGD00kXdNE+h97FMrvAYpJounB9FXboLOoG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970266; c=relaxed/simple;
-	bh=mQlChY3N5gnooNj3rIzwvjujXMbOfggAI+gSlkmOAiU=;
+	s=arc-20240116; t=1705971763; c=relaxed/simple;
+	bh=PWoxXgIq8WkWCVmYh7CYBmcxvsc4Xo+JF0V//Q6MmSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cmtuhQgKi9K1eITTKNzxu9UUwHe2IhqUECDwJ8RqBj0iCqzEU69EelpsP9WpHsivDpKDfJQ7lsCJOa4Zmxv9Zqu2jxEmRGsVb96xUrFmdXfVRTXMDplzqIlOvm/ZA8Fj1xlPXKKyJWNJr4nFfytjTiAfA/WpptH74s727x5sSxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vL+H5qpe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E806C433C7;
-	Tue, 23 Jan 2024 00:37:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S+XkkMbBlo/jcDogAnft+XTmuXwdeSuYe78hI4HW3rRNWwYovPx8dc6mmVJHyP6uHAUeuouvpBALPRdIZWjZ+79A5Q9t9/cwvkd7o/s0mfIIWfhRs8GqYCHH684+qG/lyncsdbh6TQriS+/Z/kJv5kT2ohrs1FE4iBSVAiLmoR4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jyGlLa7K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B70C433C7;
+	Tue, 23 Jan 2024 01:02:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970266;
-	bh=mQlChY3N5gnooNj3rIzwvjujXMbOfggAI+gSlkmOAiU=;
+	s=korg; t=1705971763;
+	bh=PWoxXgIq8WkWCVmYh7CYBmcxvsc4Xo+JF0V//Q6MmSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vL+H5qpe3tXGg4xLC/p8Y736n6VE5R1meETg8oni3RTbbC32h1AgcXpXmjs4YLrXF
-	 r361XjkHpTFLlsiBq7giAMTz2VBKpZQJE9E4Gmkv/To+Cln4t57Pn5oPIS51Cb8EcL
-	 0C4kem7DK8gQwoblKJdEL1rB/7cdKcuvdtEuccJI=
+	b=jyGlLa7K24oepkF4357H6FsYFDdgmjNgoIJCeKxAeNKaBOWbetHcEZOFvytAEkXGe
+	 BDiX4N+lFN4+CzEDUqgKSIRGc3weeOlO2zK1cfXeTSnI1YMClWvdJMKip+oZeWqyOV
+	 9B6lYtHr+tAvE9ho6vtuLyAwcGbyZQE5cJuW0tC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 623/641] netfilter: propagate net to nf_bridge_get_physindev
+	=?UTF-8?q?=C3=87a=C4=9Fhan=20Demir?= <caghandemir@marun.edu.tr>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 221/286] ALSA: hda/relatek: Enable Mute LED on HP Laptop 15s-fq2xxx
 Date: Mon, 22 Jan 2024 15:58:47 -0800
-Message-ID: <20240122235837.747213432@linuxfoundation.org>
+Message-ID: <20240122235740.583415823@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,196 +59,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+From: Çağhan Demir <caghandemir@marun.edu.tr>
 
-[ Upstream commit a54e72197037d2c9bfcd70dddaac8c8ccb5b41ba ]
+commit bc7863d18677df66b2c7a0e172c91296ff380f11 upstream.
 
-This is a preparation patch for replacing physindev with physinif on
-nf_bridge_info structure. We will use dev_get_by_index_rcu to resolve
-device, when needed, and it requires net to be available.
+This HP Laptop uses ALC236 codec with COEF 0x07 idx 1 controlling
+the mute LED. This patch enables the already existing quirk for
+this device.
 
-Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 9874808878d9 ("netfilter: bridge: replace physindev with physinif in nf_bridge_info")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Çağhan Demir <caghandemir@marun.edu.tr>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240115172303.4718-1-caghandemir@marun.edu.tr
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/netfilter_bridge.h           |  2 +-
- net/ipv4/netfilter/nf_reject_ipv4.c        |  2 +-
- net/ipv6/netfilter/nf_reject_ipv6.c        |  2 +-
- net/netfilter/ipset/ip_set_hash_netiface.c |  8 ++++----
- net/netfilter/nf_log_syslog.c              | 13 +++++++------
- net/netfilter/nf_queue.c                   |  2 +-
- net/netfilter/xt_physdev.c                 |  2 +-
- 7 files changed, 16 insertions(+), 15 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/netfilter_bridge.h b/include/linux/netfilter_bridge.h
-index f980edfdd278..e927b9a15a55 100644
---- a/include/linux/netfilter_bridge.h
-+++ b/include/linux/netfilter_bridge.h
-@@ -56,7 +56,7 @@ static inline int nf_bridge_get_physoutif(const struct sk_buff *skb)
- }
- 
- static inline struct net_device *
--nf_bridge_get_physindev(const struct sk_buff *skb)
-+nf_bridge_get_physindev(const struct sk_buff *skb, struct net *net)
- {
- 	const struct nf_bridge_info *nf_bridge = nf_bridge_info_get(skb);
- 
-diff --git a/net/ipv4/netfilter/nf_reject_ipv4.c b/net/ipv4/netfilter/nf_reject_ipv4.c
-index f01b038fc1cd..86e7d390671a 100644
---- a/net/ipv4/netfilter/nf_reject_ipv4.c
-+++ b/net/ipv4/netfilter/nf_reject_ipv4.c
-@@ -289,7 +289,7 @@ void nf_send_reset(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	 * build the eth header using the original destination's MAC as the
- 	 * source, and send the RST packet directly.
- 	 */
--	br_indev = nf_bridge_get_physindev(oldskb);
-+	br_indev = nf_bridge_get_physindev(oldskb, net);
- 	if (br_indev) {
- 		struct ethhdr *oeth = eth_hdr(oldskb);
- 
-diff --git a/net/ipv6/netfilter/nf_reject_ipv6.c b/net/ipv6/netfilter/nf_reject_ipv6.c
-index d45bc54b7ea5..27b2164f4c43 100644
---- a/net/ipv6/netfilter/nf_reject_ipv6.c
-+++ b/net/ipv6/netfilter/nf_reject_ipv6.c
-@@ -354,7 +354,7 @@ void nf_send_reset6(struct net *net, struct sock *sk, struct sk_buff *oldskb,
- 	 * build the eth header using the original destination's MAC as the
- 	 * source, and send the RST packet directly.
- 	 */
--	br_indev = nf_bridge_get_physindev(oldskb);
-+	br_indev = nf_bridge_get_physindev(oldskb, net);
- 	if (br_indev) {
- 		struct ethhdr *oeth = eth_hdr(oldskb);
- 
-diff --git a/net/netfilter/ipset/ip_set_hash_netiface.c b/net/netfilter/ipset/ip_set_hash_netiface.c
-index 95aeb31c60e0..30a655e5c4fd 100644
---- a/net/netfilter/ipset/ip_set_hash_netiface.c
-+++ b/net/netfilter/ipset/ip_set_hash_netiface.c
-@@ -138,9 +138,9 @@ hash_netiface4_data_next(struct hash_netiface4_elem *next,
- #include "ip_set_hash_gen.h"
- 
- #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
--static const char *get_physindev_name(const struct sk_buff *skb)
-+static const char *get_physindev_name(const struct sk_buff *skb, struct net *net)
- {
--	struct net_device *dev = nf_bridge_get_physindev(skb);
-+	struct net_device *dev = nf_bridge_get_physindev(skb, net);
- 
- 	return dev ? dev->name : NULL;
- }
-@@ -177,7 +177,7 @@ hash_netiface4_kadt(struct ip_set *set, const struct sk_buff *skb,
- 
- 	if (opt->cmdflags & IPSET_FLAG_PHYSDEV) {
- #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
--		const char *eiface = SRCDIR ? get_physindev_name(skb) :
-+		const char *eiface = SRCDIR ? get_physindev_name(skb, xt_net(par)) :
- 					      get_physoutdev_name(skb);
- 
- 		if (!eiface)
-@@ -395,7 +395,7 @@ hash_netiface6_kadt(struct ip_set *set, const struct sk_buff *skb,
- 
- 	if (opt->cmdflags & IPSET_FLAG_PHYSDEV) {
- #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
--		const char *eiface = SRCDIR ? get_physindev_name(skb) :
-+		const char *eiface = SRCDIR ? get_physindev_name(skb, xt_net(par)) :
- 					      get_physoutdev_name(skb);
- 
- 		if (!eiface)
-diff --git a/net/netfilter/nf_log_syslog.c b/net/netfilter/nf_log_syslog.c
-index c66689ad2b49..58402226045e 100644
---- a/net/netfilter/nf_log_syslog.c
-+++ b/net/netfilter/nf_log_syslog.c
-@@ -111,7 +111,8 @@ nf_log_dump_packet_common(struct nf_log_buf *m, u8 pf,
- 			  unsigned int hooknum, const struct sk_buff *skb,
- 			  const struct net_device *in,
- 			  const struct net_device *out,
--			  const struct nf_loginfo *loginfo, const char *prefix)
-+			  const struct nf_loginfo *loginfo, const char *prefix,
-+			  struct net *net)
- {
- 	const struct net_device *physoutdev __maybe_unused;
- 	const struct net_device *physindev __maybe_unused;
-@@ -121,7 +122,7 @@ nf_log_dump_packet_common(struct nf_log_buf *m, u8 pf,
- 			in ? in->name : "",
- 			out ? out->name : "");
- #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
--	physindev = nf_bridge_get_physindev(skb);
-+	physindev = nf_bridge_get_physindev(skb, net);
- 	if (physindev && in != physindev)
- 		nf_log_buf_add(m, "PHYSIN=%s ", physindev->name);
- 	physoutdev = nf_bridge_get_physoutdev(skb);
-@@ -148,7 +149,7 @@ static void nf_log_arp_packet(struct net *net, u_int8_t pf,
- 		loginfo = &default_loginfo;
- 
- 	nf_log_dump_packet_common(m, pf, hooknum, skb, in, out, loginfo,
--				  prefix);
-+				  prefix, net);
- 	dump_arp_packet(m, loginfo, skb, skb_network_offset(skb));
- 
- 	nf_log_buf_close(m);
-@@ -845,7 +846,7 @@ static void nf_log_ip_packet(struct net *net, u_int8_t pf,
- 		loginfo = &default_loginfo;
- 
- 	nf_log_dump_packet_common(m, pf, hooknum, skb, in,
--				  out, loginfo, prefix);
-+				  out, loginfo, prefix, net);
- 
- 	if (in)
- 		dump_mac_header(m, loginfo, skb);
-@@ -880,7 +881,7 @@ static void nf_log_ip6_packet(struct net *net, u_int8_t pf,
- 		loginfo = &default_loginfo;
- 
- 	nf_log_dump_packet_common(m, pf, hooknum, skb, in, out,
--				  loginfo, prefix);
-+				  loginfo, prefix, net);
- 
- 	if (in)
- 		dump_mac_header(m, loginfo, skb);
-@@ -916,7 +917,7 @@ static void nf_log_unknown_packet(struct net *net, u_int8_t pf,
- 		loginfo = &default_loginfo;
- 
- 	nf_log_dump_packet_common(m, pf, hooknum, skb, in, out, loginfo,
--				  prefix);
-+				  prefix, net);
- 
- 	dump_mac_header(m, loginfo, skb);
- 
-diff --git a/net/netfilter/nf_queue.c b/net/netfilter/nf_queue.c
-index 3dfcb3ac5cb4..e2f334f70281 100644
---- a/net/netfilter/nf_queue.c
-+++ b/net/netfilter/nf_queue.c
-@@ -84,7 +84,7 @@ static void __nf_queue_entry_init_physdevs(struct nf_queue_entry *entry)
- 	const struct sk_buff *skb = entry->skb;
- 
- 	if (nf_bridge_info_exists(skb)) {
--		entry->physin = nf_bridge_get_physindev(skb);
-+		entry->physin = nf_bridge_get_physindev(skb, entry->state.net);
- 		entry->physout = nf_bridge_get_physoutdev(skb);
- 	} else {
- 		entry->physin = NULL;
-diff --git a/net/netfilter/xt_physdev.c b/net/netfilter/xt_physdev.c
-index ec6ed6fda96c..343e65f377d4 100644
---- a/net/netfilter/xt_physdev.c
-+++ b/net/netfilter/xt_physdev.c
-@@ -59,7 +59,7 @@ physdev_mt(const struct sk_buff *skb, struct xt_action_param *par)
- 	    (!!outdev ^ !(info->invert & XT_PHYSDEV_OP_BRIDGED)))
- 		return false;
- 
--	physdev = nf_bridge_get_physindev(skb);
-+	physdev = nf_bridge_get_physindev(skb, xt_net(par));
- 	indev = physdev ? physdev->name : NULL;
- 
- 	if ((info->bitmask & XT_PHYSDEV_OP_ISIN &&
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9034,6 +9034,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x87f5, "HP", ALC287_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87f6, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
+ 	SND_PCI_QUIRK(0x103c, 0x87f7, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
++	SND_PCI_QUIRK(0x103c, 0x87fe, "HP Laptop 15s-fq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x8805, "HP ProBook 650 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x880d, "HP EliteBook 830 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8811, "HP Spectre x360 15-eb1xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
 
 
 
