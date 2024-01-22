@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B6E5837EAE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD65837C66
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6976B23A72
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D07B1C28856
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9EF6FB3;
-	Tue, 23 Jan 2024 00:44:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10BDE522C;
+	Tue, 23 Jan 2024 00:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vzx/d/cy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXRA5pzw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C14F4BAA4;
-	Tue, 23 Jan 2024 00:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D483C2D;
+	Tue, 23 Jan 2024 00:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970698; cv=none; b=da3/n5qpI/ZgVzbLiDCG5aW+E3HytJ1x8BvDlktcJzPq6E8dfAUe7RH3LTwI2vSjrXbMTDOl4qtx07KOg8WXvaOnIFjgSwQG0286lhC3Pz2NWmZDlkDcnIRy0OQhOQiJH5iYMs9FJ2ust1N/wMiam4+ZGoXKzvIRaAoXb+ode8c=
+	t=1705969604; cv=none; b=OfLEKW8nQsgIraTs7K82dJNgLmVktp7I4a2OFsEPkCnoJ4eGLcuEyXSXLWt2ASE/n3fh8J34nRrXjbeSrDqW70+lW4bF/Oi+HJ7ed4Myv2qFuPSAwO0OQ/lT/BNf+AHNsLz6bX7zJ4qodGV+hdh2UvAgsS49+LqZmL5/AWPO/mQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970698; c=relaxed/simple;
-	bh=Iq16Xh9kUMMM678SEWYpuFGsR70AqLcq3yxJI2hHMu0=;
+	s=arc-20240116; t=1705969604; c=relaxed/simple;
+	bh=J0BnqyAEPsMC+wGJkii85BZ4EBr6ujxBQKZ8Jylt5SM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k3w2nQLzn6IeGHWkDMPmu3iMrTWdvyg3r5yJW0RQ8aoWr8WmJ//Cj/83Ybukt/rTuQt/74txDWUc037gmDDTCqv13vRt2z6QF476pZPn4EnLc+WGzgUU0Ske026bz1eHRQ4sRVQeG+doOsF7LoGgwLqdx0lTzDG5IqizFVx3xyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vzx/d/cy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89EDCC43390;
-	Tue, 23 Jan 2024 00:44:56 +0000 (UTC)
+	 MIME-Version; b=gr2c5+ap38CsVH5rhl2lQJksDDCzIme+yi7Wi+Va9wN+1JzVvTIAUDP+kvpqZxUNmSbD6uPShTnjIlkcDoGS6n6RWDl/jVS3hadSwrEL4DnPJw/M8Rd1BnacGPX57N+b0kYNhdrh1gd0rxZbsjWoonCUPsh+udcqFM0r5ZyIV38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXRA5pzw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63383C433C7;
+	Tue, 23 Jan 2024 00:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970696;
-	bh=Iq16Xh9kUMMM678SEWYpuFGsR70AqLcq3yxJI2hHMu0=;
+	s=korg; t=1705969604;
+	bh=J0BnqyAEPsMC+wGJkii85BZ4EBr6ujxBQKZ8Jylt5SM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vzx/d/cy9QKuxLX9bEamggxSUKji+xa13EirETIDMFZfhwQQoLha5p1/4427LSnZU
-	 cj7ZURlpaXRwhCczrMM2fQB3msk9B+LtanRw95nMsEdkTd2kNvOCJGri4BIi0/U4b3
-	 rtUb6cUebAGtTVmUOXZ0Mb40KCbHlUdodIir9x44=
+	b=jXRA5pzwxkVLvvQ5U/Pa9r4QrtuRYUHDwawmMbXRCYUDLnVcARgpfv9KFNO5NpjwJ
+	 4UsOUkb/t2EHdJk5sFgNTiGmi79lrSCUEJdRzCAO2nYbwu+OGKFg6rU1P52Er+9c4i
+	 MMHA007akOrV9wDh5HYJP8KI0hRcfCJuUl0V2PTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 088/417] arm64: dts: qcom: sdm845: Make watchdog bark interrupt edge triggered
+Subject: [PATCH 6.7 352/641] clk: qcom: dispcc-sm8550: Update disp PLL settings
 Date: Mon, 22 Jan 2024 15:54:16 -0800
-Message-ID: <20240122235754.748283740@linuxfoundation.org>
+Message-ID: <20240122235828.939820870@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 263b348499454f38d36b9442c3cf9279c571bb54 ]
+[ Upstream commit febd251d8775c4fb6e4acd6b5d7b0ed707f4611f ]
 
-As described in the patch ("arm64: dts: qcom: sc7180: Make watchdog
-bark interrupt edge triggered"), the Qualcomm watchdog timer's bark
-interrupt should be configured as edge triggered. Make the change.
+The settings in the driver seem to have been taken from an older
+release. Update them to match the latest values.
 
-Fixes: 36c436b03c58 ("arm64: dts: qcom: sdm845: Add watchdog bark interrupt")
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20231106144335.v2.3.I16675ebe5517c68453a1bd7f4334ff885f806c03@changeid
+Fixes: 90114ca11476 ("clk: qcom: add SM8550 DISPCC driver")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231218-topic-8550_fixes-v1-8-ce1272d77540@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/dispcc-sm8550.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-index 52c9f5639f8a..1e6841902900 100644
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -5019,7 +5019,7 @@ watchdog@17980000 {
- 			compatible = "qcom,apss-wdt-sdm845", "qcom,kpss-wdt";
- 			reg = <0 0x17980000 0 0x1000>;
- 			clocks = <&sleep_clk>;
--			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupts = <GIC_SPI 0 IRQ_TYPE_EDGE_RISING>;
- 		};
- 
- 		apss_shared: mailbox@17990000 {
+diff --git a/drivers/clk/qcom/dispcc-sm8550.c b/drivers/clk/qcom/dispcc-sm8550.c
+index aefa19f3c2c5..0b8f0904b339 100644
+--- a/drivers/clk/qcom/dispcc-sm8550.c
++++ b/drivers/clk/qcom/dispcc-sm8550.c
+@@ -81,6 +81,10 @@ static const struct alpha_pll_config disp_cc_pll0_config = {
+ 	.config_ctl_val = 0x20485699,
+ 	.config_ctl_hi_val = 0x00182261,
+ 	.config_ctl_hi1_val = 0x82aa299c,
++	.test_ctl_val = 0x00000000,
++	.test_ctl_hi_val = 0x00000003,
++	.test_ctl_hi1_val = 0x00009000,
++	.test_ctl_hi2_val = 0x00000034,
+ 	.user_ctl_val = 0x00000000,
+ 	.user_ctl_hi_val = 0x00000005,
+ };
+@@ -108,6 +112,10 @@ static const struct alpha_pll_config disp_cc_pll1_config = {
+ 	.config_ctl_val = 0x20485699,
+ 	.config_ctl_hi_val = 0x00182261,
+ 	.config_ctl_hi1_val = 0x82aa299c,
++	.test_ctl_val = 0x00000000,
++	.test_ctl_hi_val = 0x00000003,
++	.test_ctl_hi1_val = 0x00009000,
++	.test_ctl_hi2_val = 0x00000034,
+ 	.user_ctl_val = 0x00000000,
+ 	.user_ctl_hi_val = 0x00000005,
+ };
 -- 
 2.43.0
 
