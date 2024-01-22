@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-14426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C60D4838107
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0F3A83842E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D58A0B2B828
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4EB8B236A8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1301B1350C7;
-	Tue, 23 Jan 2024 01:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB6764A9F;
+	Tue, 23 Jan 2024 01:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RxzfhqLC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgHcX1ci"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C66E71350CA;
-	Tue, 23 Jan 2024 01:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B847634F8;
+	Tue, 23 Jan 2024 01:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971936; cv=none; b=YrG6vuxEGSKxvyWjinea3Ll2LknbRhN9ym0TDv6JLVxv6CvPu9N/EcXafrqwgMqpZmB7DyvwhkoNBrrRSViebxPTpShIzc0OCdXU7oqPgAbBUfwLDCH6BZRDHJWwRKnEg2Dv0xbEUqhF9+8kP4DQg6RCSs86rIJ2W7OXhIJ17oA=
+	t=1705975040; cv=none; b=JGYCDSN8ZwE+noD+ATRu5OraV17F8MEuwlYFLQxCFhByHIM9wP2DP5btRc6m8ZaHlNPPQ7Kutk74456fkzhcRlbfspratnGGwUO/m8DN1KJIbf6nKUCCyHaeLQaKZZbItubIxFAoKHmWNjVtL+CYBEhj5GeBjLzjUEaO1WPII2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971936; c=relaxed/simple;
-	bh=/Th/w+wVvlmVjOuefWUvKUjAP0N24V9gWMU39lWdupY=;
+	s=arc-20240116; t=1705975040; c=relaxed/simple;
+	bh=NDu/FtKrRFRNR/rX0bFt77sI8nB6bH7+cHDzYE+tEzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h3x7eHglvhpJhpjBfGQi3XFcdmTfAsdu+Dek1T1q240NdGSk/PS/nRk82qWFQoxkcn4yPa5E6HZ5ZRWgfQDKW58YlJ7wR6mt16q3FpxVHoZmtjXDoxDqlG/otn3SAxoYX6ODeslqtyhVZzk1IxG1oWJMO8o4hQAsIHar/dcorZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RxzfhqLC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C0FC433C7;
-	Tue, 23 Jan 2024 01:05:36 +0000 (UTC)
+	 MIME-Version; b=FwmB69DHqelRd9KTmrGLXBihKXlkBT6ihVa9A0vcmDM+SRqpzODxYJLQP4C2mqSKLWwN8uOpVL4LlQ/bD105A1JJqihMt6h6UZmOoVcMwcfA/1oW6rdNHtAdX2eZ/uLKpSQInf67fnHWVqwMKi55P+Mw0gZ3Ooc4NMCOrRysTMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgHcX1ci; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E734AC43394;
+	Tue, 23 Jan 2024 01:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971936;
-	bh=/Th/w+wVvlmVjOuefWUvKUjAP0N24V9gWMU39lWdupY=;
+	s=korg; t=1705975040;
+	bh=NDu/FtKrRFRNR/rX0bFt77sI8nB6bH7+cHDzYE+tEzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RxzfhqLCWI2lzIMO1Hh0Gvfy4everq9XAmgzGwDDY2zmdITg9mQJBHS9FcvI9k9OF
-	 4y+3uix3HMloJZfk1du93p0S53J3HQ94rRfXwmHWMO2o6JBZ8U0MbvtUX7gdlZUqn9
-	 pmIHmBwS9ET6kkZLjvnt9O4f9s9tHC9Qgtp+I9RY=
+	b=wgHcX1ciHsITa8ry8Vb2mGeUGuntZAozI4PiXJjxq0eWrkOYv0ksuH8sxdl6nbKqr
+	 PcUVwHS/29iYjC4Ag5h2bSQTeQOw3Qs7Yh+LCxlOoFvpmMFztPAO1ASiUGwluIQAxZ
+	 7Y4sAA/dtRzv2oFNdHf58D92jMQaaTRxshmQ6g40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 268/286] net: phy: micrel: populate .soft_reset for KSZ9131
+Subject: [PATCH 5.15 318/374] tty: dont check for signal_pending() in send_break()
 Date: Mon, 22 Jan 2024 15:59:34 -0800
-Message-ID: <20240122235742.364953102@linuxfoundation.org>
+Message-ID: <20240122235755.947218695@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit e398822c4751017fe401f57409488f5948d12fb5 ]
+[ Upstream commit fd99392b643b824813df2edbaebe26a2136d31e6 ]
 
-The RZ/G3S SMARC Module has 2 KSZ9131 PHYs. In this setup, the KSZ9131 PHY
-is used with the ravb Ethernet driver. It has been discovered that when
-bringing the Ethernet interface down/up continuously, e.g., with the
-following sh script:
+msleep_interruptible() will check on its own. So no need to do the check
+in send_break() before calling the above.
 
-$ while :; do ifconfig eth0 down; ifconfig eth0 up; done
-
-the link speed and duplex are wrong after interrupting the bring down/up
-operation even though the Ethernet interface is up. To recover from this
-state the following configuration sequence is necessary (executed
-manually):
-
-$ ifconfig eth0 down
-$ ifconfig eth0 up
-
-The behavior has been identified also on the Microchip SAMA7G5-EK board
-which runs the macb driver and uses the same PHY.
-
-The order of PHY-related operations in ravb_open() is as follows:
-ravb_open() ->
-  ravb_phy_start() ->
-    ravb_phy_init() ->
-      of_phy_connect() ->
-        phy_connect_direct() ->
-	  phy_attach_direct() ->
-	    phy_init_hw() ->
-	      phydev->drv->soft_reset()
-	      phydev->drv->config_init()
-	      phydev->drv->config_intr()
-	    phy_resume()
-	      kszphy_resume()
-
-The order of PHY-related operations in ravb_close is as follows:
-ravb_close() ->
-  phy_stop() ->
-    phy_suspend() ->
-      kszphy_suspend() ->
-        genphy_suspend()
-	  // set BMCR_PDOWN bit in MII_BMCR
-
-In genphy_suspend() setting the BMCR_PDWN bit in MII_BMCR switches the PHY
-to Software Power-Down (SPD) mode (according to the KSZ9131 datasheet).
-Thus, when opening the interface after it has been  previously closed (via
-ravb_close()), the phydev->drv->config_init() and
-phydev->drv->config_intr() reach the KSZ9131 PHY driver via the
-ksz9131_config_init() and kszphy_config_intr() functions.
-
-KSZ9131 specifies that the MII management interface remains operational
-during SPD (Software Power-Down), but (according to manual):
-- Only access to the standard registers (0 through 31) is supported.
-- Access to MMD address spaces other than MMD address space 1 is possible
-  if the spd_clock_gate_override bit is set.
-- Access to MMD address space 1 is not possible.
-
-The spd_clock_gate_override bit is not used in the KSZ9131 driver.
-
-ksz9131_config_init() configures RGMII delay, pad skews and LEDs by
-accessesing MMD registers other than those in address space 1.
-
-The datasheet for the KSZ9131 does not specify what happens if registers
-from an unsupported address space are accessed while the PHY is in SPD.
-
-To fix the issue the .soft_reset method has been instantiated for KSZ9131,
-too. This resets the PHY to the default state before doing any
-configurations to it, thus switching it out of SPD.
-
-Fixes: bff5b4b37372 ("net: phy: micrel: add Microchip KSZ9131 initial driver")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20230919085156.1578-15-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 66aad7d8d3ec ("usb: cdc-acm: return correct error code on unsupported break")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/micrel.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/tty_io.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index bbbe198f83e8..2b7616f161d6 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -1345,6 +1345,7 @@ static struct phy_driver ksphy_driver[] = {
- 	/* PHY_GBIT_FEATURES */
- 	.driver_data	= &ksz9021_type,
- 	.probe		= kszphy_probe,
-+	.soft_reset	= genphy_soft_reset,
- 	.config_init	= ksz9131_config_init,
- 	.read_status	= genphy_read_status,
- 	.ack_interrupt	= kszphy_ack_interrupt,
+diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
+index a18138ce67b2..cdbf05e76bc7 100644
+--- a/drivers/tty/tty_io.c
++++ b/drivers/tty/tty_io.c
+@@ -2513,8 +2513,7 @@ static int send_break(struct tty_struct *tty, unsigned int duration)
+ 	retval = tty->ops->break_ctl(tty, -1);
+ 	if (retval)
+ 		goto out;
+-	if (!signal_pending(current))
+-		msleep_interruptible(duration);
++	msleep_interruptible(duration);
+ 	retval = tty->ops->break_ctl(tty, 0);
+ out:
+ 	tty_write_unlock(tty);
 -- 
 2.43.0
 
