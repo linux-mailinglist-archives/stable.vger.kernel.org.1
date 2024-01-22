@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCDA1837D76
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A75ED838275
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF5331C20F6E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7BD81C2258E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01EF957322;
-	Tue, 23 Jan 2024 00:32:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5415C5ED;
+	Tue, 23 Jan 2024 01:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOqJiXag"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/0W8131"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CCB4E1D7;
-	Tue, 23 Jan 2024 00:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC885BAD4;
+	Tue, 23 Jan 2024 01:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969968; cv=none; b=Z7SIXjK4PbZTzwvppI1c/fKEH87Nzl1DYdiKWeanDHJD/4z10x/5Nhm+Qen3sqrOqVTvtG5pIeeVPeyVFjn3PiVR4+QSx98K57W8XFjKg4qln/91PqKI5NmrzvGKwDffi2Ym5qLk5a3mYszp4YSo8PoFLxsh9TDwLANmRM4ccvs=
+	t=1705974358; cv=none; b=saURySaommWMVKHqIC5Kh7rNHaLADUH3uu4lXSI3e4mEYchbKoJk2MRAAhO4TluysUZDi60opGovuUiyeDk6noTtNayTuTHzB5V5Herhjm24uExJ4bKnVjhoOx8UktiqEXRiBhVc/2UJ9Swq9MtLjPH/RaveRcuVm11C++LDJIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969968; c=relaxed/simple;
-	bh=YZIe/uJ+7/dGBSJLwtujx8m/A3S4ofK8rQJLW0Xt/hU=;
+	s=arc-20240116; t=1705974358; c=relaxed/simple;
+	bh=Gz6BBOF19zRyfEZRh5o7xZt7HkhIZKRjRTuLU0MzuSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VcbC5ZkeF3Y9Yo4mkJQTEWrBH4U2ZLtWldlewrok9SP+qvxC6EC1nb9kq1miH/zW4+FSLzxRr1mpuTTA28Y5X6CNa5gOn6KAI9IJAH6GNSSZIu4uySF2fIzhC/2QFkYgye271liSEzkPW4uj3ZWEJOV316+q0KAykL3LUqBYVA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOqJiXag; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706B8C433F1;
-	Tue, 23 Jan 2024 00:32:48 +0000 (UTC)
+	 MIME-Version; b=s0nXZlYPLD700RjFDwO7GlOJaDcciHAex6SLX2dReFifTWLreqwrLpxLLsGXqGBYoknSJojYXZNbyHRmFZjwsQq5dWXMNGVCp9YAaY9/g/ktWsgxLLLlCG+INYrmjYvvOOp9uRE5eMNw/n+PPEUgu3PGvZiVJU+LInjQE7L2UuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/0W8131; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DDEFC433F1;
+	Tue, 23 Jan 2024 01:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969968;
-	bh=YZIe/uJ+7/dGBSJLwtujx8m/A3S4ofK8rQJLW0Xt/hU=;
+	s=korg; t=1705974358;
+	bh=Gz6BBOF19zRyfEZRh5o7xZt7HkhIZKRjRTuLU0MzuSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eOqJiXagQoBXsYcKckMhaVoqp9w+eoALzxOhXdXChM+2SkizRAkv1GFDJc1jT6hUX
-	 nAF/M27pPMQpBspngPPQ100s5qdUTAGcC6CEgSwrn7vADN3y6i/AdC7hiu46dZEoJ/
-	 3v5MnoK1bcbQs/9lAKdc7dM7kFsmjnbBd0gf8Wz0=
+	b=u/0W8131OMhOubOrT9qq0dbXpqAywu64mbqOV7nsk+lzQl3x03bK9WiyEBFt1UFVQ
+	 ptlaBgS3I47K7igs0IGXfUpHldxxgwEbglBCJbta5eDoTDgL3mmPw4j2+0ZYZMsXuM
+	 OTZ3XW3sDQmzFmwFEUztvdZMAa8L0/c9RcrJEA2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Douglas Anderson <dianders@chromium.org>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 543/641] usb: core: Fix crash w/ usb_choose_configuration() if no driver
+Subject: [PATCH 5.15 191/374] ASoC: cs35l34: Fix GPIO name and drop legacy include
 Date: Mon, 22 Jan 2024 15:57:27 -0800
-Message-ID: <20240122235835.128782937@linuxfoundation.org>
+Message-ID: <20240122235751.254891050@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Linus Walleij <linus.walleij@linaro.org>
 
-[ Upstream commit 44995e6f07028f798efd0c3c11a1efc78330f600 ]
+[ Upstream commit a6122b0b4211d132934ef99e7b737910e6d54d2f ]
 
-It's possible that usb_choose_configuration() can get called when a
-USB device has no driver. In this case the recent commit a87b8e3be926
-("usb: core: Allow subclassed USB drivers to override
-usb_choose_configuration()") can cause a crash since it dereferenced
-the driver structure without checking for NULL. Let's add a check.
+This driver includes the legacy GPIO APIs <linux/gpio.h> and
+<linux/of_gpio.h> but does not use any symbols from any of
+them.
 
-A USB device with no driver is an anomaly, so make
-usb_choose_configuration() return immediately if there is no driver.
+Drop the includes.
 
-This was seen in the real world when usbguard got ahold of a r8152
-device at the wrong time. It can also be simulated via this on a
-computer with one r8152-based USB Ethernet adapter:
-  cd /sys/bus/usb/drivers/r8152-cfgselector
-  to_unbind="$(ls -d *-*)"
-  real_dir="$(readlink -f "${to_unbind}")"
-  echo "${to_unbind}" > unbind
-  cd "${real_dir}"
-  echo 0 > authorized
-  echo 1 > authorized
+Further the driver is requesting "reset-gpios" rather than
+just "reset" from the GPIO framework. This is wrong because
+the gpiolib core will add "-gpios" before processing the
+request from e.g. device tree. Drop the suffix.
 
-Fixes: a87b8e3be926 ("usb: core: Allow subclassed USB drivers to override usb_choose_configuration()")
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20231211073237.v3.1.If27eb3bf7812f91ab83810f232292f032f4203e0@changeid
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The last problem means that the optional RESET GPIO has
+never been properly retrieved and used even if it existed,
+but nobody noticed.
+
+Fixes: c1124c09e103 ("ASoC: cs35l34: Initial commit of the cs35l34 CODEC driver.")
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20231201-descriptors-sound-cirrus-v2-3-ee9f9d4655eb@linaro.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/generic.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ sound/soc/codecs/cs35l34.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/usb/core/generic.c b/drivers/usb/core/generic.c
-index dcb897158228..b134bff5c3fe 100644
---- a/drivers/usb/core/generic.c
-+++ b/drivers/usb/core/generic.c
-@@ -59,7 +59,16 @@ int usb_choose_configuration(struct usb_device *udev)
- 	int num_configs;
- 	int insufficient_power = 0;
- 	struct usb_host_config *c, *best;
--	struct usb_device_driver *udriver = to_usb_device_driver(udev->dev.driver);
-+	struct usb_device_driver *udriver;
-+
-+	/*
-+	 * If a USB device (not an interface) doesn't have a driver then the
-+	 * kernel has no business trying to select or install a configuration
-+	 * for it.
-+	 */
-+	if (!udev->dev.driver)
-+		return -1;
-+	udriver = to_usb_device_driver(udev->dev.driver);
+diff --git a/sound/soc/codecs/cs35l34.c b/sound/soc/codecs/cs35l34.c
+index ed678241c22b..be0edeebddfe 100644
+--- a/sound/soc/codecs/cs35l34.c
++++ b/sound/soc/codecs/cs35l34.c
+@@ -20,14 +20,12 @@
+ #include <linux/regulator/machine.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/of_device.h>
+-#include <linux/of_gpio.h>
+ #include <linux/of_irq.h>
+ #include <sound/core.h>
+ #include <sound/pcm.h>
+ #include <sound/pcm_params.h>
+ #include <sound/soc.h>
+ #include <sound/soc-dapm.h>
+-#include <linux/gpio.h>
+ #include <linux/gpio/consumer.h>
+ #include <sound/initval.h>
+ #include <sound/tlv.h>
+@@ -1063,7 +1061,7 @@ static int cs35l34_i2c_probe(struct i2c_client *i2c_client,
+ 		dev_err(&i2c_client->dev, "Failed to request IRQ: %d\n", ret);
  
- 	if (usb_device_is_owned(udev))
- 		return 0;
+ 	cs35l34->reset_gpio = devm_gpiod_get_optional(&i2c_client->dev,
+-				"reset-gpios", GPIOD_OUT_LOW);
++				"reset", GPIOD_OUT_LOW);
+ 	if (IS_ERR(cs35l34->reset_gpio)) {
+ 		ret = PTR_ERR(cs35l34->reset_gpio);
+ 		goto err_regulator;
 -- 
 2.43.0
 
