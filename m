@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 478E383816A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:08:55 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93B4F837EB1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:42:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F40DE28A21A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A93B7B254AB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB8C813DBB7;
-	Tue, 23 Jan 2024 01:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B1E760EF2;
+	Tue, 23 Jan 2024 00:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/EWiSZV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvslG4PT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3E3137C55;
-	Tue, 23 Jan 2024 01:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B60660ED9;
+	Tue, 23 Jan 2024 00:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972126; cv=none; b=egqJQzUz62/EV12nQag7C0or3CbZeYBevLxWwE90cs78j7CQ5bzTC/IgnlMrXxeltrb0R1W2vvN95H7KP4XpHT5bj/+FmNFTzcguynurw7AMNvqO/2t7znTbJWVfYrLJ7kUJBVTYAdPXFJjhRmygX093PKi5dmYFkB7xVCMV5JM=
+	t=1705970746; cv=none; b=oG9tjX9yLqN4GybG4UvBxyyIHlM7F3X8ANMKOuheYlNJj/0/jjcrdDPNpBfK+7T902EqQ6MNEGUeZBZAiEP7ctC+Ct2BiKw+XuMDcsgysm1i35aG5YJfEWkU9MOWlKCdFIBwtNU2X2fbeDpw3HR1Qr2Bcq6ubGjFa6AvWz1z/MQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972126; c=relaxed/simple;
-	bh=n1XuVIRJ4k11X2S/jyUIryA7lFcXEVOpX0L5ARNRy7A=;
+	s=arc-20240116; t=1705970746; c=relaxed/simple;
+	bh=XmPB4HG6oBN3R0PwfTisJtZeEjqUwmW4WJcfYmJr9M0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R1bssV7LIb9eP79rzxro0DL9sWBgm8VM2YLu2AZ/GrvMX3CWS1Zat0Pa7cPrFtCZb8NU1Pm+TZ94gCzblKXU66NPfQbqCJdGK9lv2hNaFfXfYMdf2THFGinVUa76WKmqql+7nOpzxN0ZeHwm2xsmJ4QbOAqdnXe0+xY21d13Z8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/EWiSZV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BEDDC43399;
-	Tue, 23 Jan 2024 01:08:46 +0000 (UTC)
+	 MIME-Version; b=mmNLWz2pbUrdHEanlfLqvGoxqmeVQbdfBVqYRHIMiLz+nwDLKgOQP0M/DN22mOYBCl9uCd0fIZ8bI9bN/nkrqL8a5rCd0uX1D1QGr0lJ9JwoYjAlm2H8rOgb0Ne2ClryNKNkBfcF6t8QDm6RQ8gRo6xHk1JXRymISkDjvvAs7ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvslG4PT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2CA2C433C7;
+	Tue, 23 Jan 2024 00:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972126;
-	bh=n1XuVIRJ4k11X2S/jyUIryA7lFcXEVOpX0L5ARNRy7A=;
+	s=korg; t=1705970746;
+	bh=XmPB4HG6oBN3R0PwfTisJtZeEjqUwmW4WJcfYmJr9M0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C/EWiSZVG2rEhT06b5ISAlq8BZkZ71Fq0Io4x6kHkICnwIZBKcVRXcQ1p+HPwS0KH
-	 fRR6oGHLN36j3dDUtNsWN7b5cEgH4w7M24+dbjbpbomATsw8/W9wnQIzNEe4u8h57i
-	 LwY6ad5QjnmUnBzF47yk1CpQWFcLWM/VMpCxYZPs=
+	b=fvslG4PTHVt36fikStrJaElnrtzxSwTGSx3PRwIVcVtz/UNRsLvbnTJQcDLo5gGak
+	 4SfysCdFzz1sNLInL7+WMiIV3UlmfPABaDiaBoWsMTV/2sQ4fr4ADkL1SJpm6Tb+gG
+	 eZqmrrHSBPcMHw4Oy1Gp/fPilmyJeFXuKRuM1jTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Guanghui Feng <guanghuifeng@linux.alibaba.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>
-Subject: [PATCH 5.15 059/374] uio: Fix use-after-free in uio_open
-Date: Mon, 22 Jan 2024 15:55:15 -0800
-Message-ID: <20240122235746.658160536@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	David Lin <CTLIN0@nuvoton.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 010/286] ASoC: nau8822: Fix incorrect type in assignment and cast to restricted __be16
+Date: Mon, 22 Jan 2024 15:55:16 -0800
+Message-ID: <20240122235732.409482296@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guanghui Feng <guanghuifeng@linux.alibaba.com>
+From: David Lin <CTLIN0@nuvoton.com>
 
-commit 0c9ae0b8605078eafc3bea053cc78791e97ba2e2 upstream.
+[ Upstream commit c1501f2597dd08601acd42256a4b0a0fc36bf302 ]
 
-core-1				core-2
--------------------------------------------------------
-uio_unregister_device		uio_open
-				idev = idr_find()
-device_unregister(&idev->dev)
-put_device(&idev->dev)
-uio_device_release
-				get_device(&idev->dev)
-kfree(idev)
-uio_free_minor(minor)
-				uio_release
-				put_device(&idev->dev)
-				kfree(idev)
--------------------------------------------------------
+This issue is reproduced when W=1 build in compiler gcc-12.
+The following are sparse warnings:
 
-In the core-1 uio_unregister_device(), the device_unregister will kfree
-idev when the idev->dev kobject ref is 1. But after core-1
-device_unregister, put_device and before doing kfree, the core-2 may
-get_device. Then:
-1. After core-1 kfree idev, the core-2 will do use-after-free for idev.
-2. When core-2 do uio_release and put_device, the idev will be double
-   freed.
+sound/soc/codecs/nau8822.c:199:25: sparse: sparse: incorrect type in assignment
+sound/soc/codecs/nau8822.c:199:25: sparse: expected unsigned short
+sound/soc/codecs/nau8822.c:199:25: sparse: got restricted __be16
+sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
+sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
+sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
+sound/soc/codecs/nau8822.c:235:25: sparse: sparse: cast to restricted __be16
 
-To address this issue, we can get idev atomic & inc idev reference with
-minor_lock.
-
-Fixes: 57c5f4df0a5a ("uio: fix crash after the device is unregistered")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Guanghui Feng <guanghuifeng@linux.alibaba.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Link: https://lore.kernel.org/r/1703152663-59949-1-git-send-email-guanghuifeng@linux.alibaba.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311122320.T1opZVkP-lkp@intel.com/
+Signed-off-by: David Lin <CTLIN0@nuvoton.com>
+Link: https://lore.kernel.org/r/20231117043011.1747594-1-CTLIN0@nuvoton.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/uio/uio.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ sound/soc/codecs/nau8822.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/uio/uio.c
-+++ b/drivers/uio/uio.c
-@@ -464,13 +464,13 @@ static int uio_open(struct inode *inode,
+diff --git a/sound/soc/codecs/nau8822.c b/sound/soc/codecs/nau8822.c
+index d831959d8ff7..4ce15cd9ed02 100644
+--- a/sound/soc/codecs/nau8822.c
++++ b/sound/soc/codecs/nau8822.c
+@@ -184,6 +184,7 @@ static int nau8822_eq_get(struct snd_kcontrol *kcontrol,
+ 	struct soc_bytes_ext *params = (void *)kcontrol->private_value;
+ 	int i, reg;
+ 	u16 reg_val, *val;
++	__be16 tmp;
  
- 	mutex_lock(&minor_lock);
- 	idev = idr_find(&uio_idr, iminor(inode));
--	mutex_unlock(&minor_lock);
- 	if (!idev) {
- 		ret = -ENODEV;
-+		mutex_unlock(&minor_lock);
- 		goto out;
+ 	val = (u16 *)ucontrol->value.bytes.data;
+ 	reg = NAU8822_REG_EQ1;
+@@ -192,8 +193,8 @@ static int nau8822_eq_get(struct snd_kcontrol *kcontrol,
+ 		/* conversion of 16-bit integers between native CPU format
+ 		 * and big endian format
+ 		 */
+-		reg_val = cpu_to_be16(reg_val);
+-		memcpy(val + i, &reg_val, sizeof(reg_val));
++		tmp = cpu_to_be16(reg_val);
++		memcpy(val + i, &tmp, sizeof(tmp));
  	}
--
- 	get_device(&idev->dev);
-+	mutex_unlock(&minor_lock);
  
- 	if (!try_module_get(idev->owner)) {
- 		ret = -ENODEV;
-@@ -1062,9 +1062,8 @@ void uio_unregister_device(struct uio_in
- 	wake_up_interruptible(&idev->wait);
- 	kill_fasync(&idev->async_queue, SIGIO, POLL_HUP);
+ 	return 0;
+@@ -216,6 +217,7 @@ static int nau8822_eq_put(struct snd_kcontrol *kcontrol,
+ 	void *data;
+ 	u16 *val, value;
+ 	int i, reg, ret;
++	__be16 *tmp;
  
--	device_unregister(&idev->dev);
--
- 	uio_free_minor(minor);
-+	device_unregister(&idev->dev);
- 
- 	return;
- }
+ 	data = kmemdup(ucontrol->value.bytes.data,
+ 		params->max, GFP_KERNEL | GFP_DMA);
+@@ -228,7 +230,8 @@ static int nau8822_eq_put(struct snd_kcontrol *kcontrol,
+ 		/* conversion of 16-bit integers between native CPU format
+ 		 * and big endian format
+ 		 */
+-		value = be16_to_cpu(*(val + i));
++		tmp = (__be16 *)(val + i);
++		value = be16_to_cpup(tmp);
+ 		ret = snd_soc_component_write(component, reg + i, value);
+ 		if (ret) {
+ 			dev_err(component->dev,
+-- 
+2.43.0
+
 
 
 
