@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-15382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54932838504
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:38:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2C158380FA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65A28B230AA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3919EB2B86E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2C17A717;
-	Tue, 23 Jan 2024 02:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F821353E2;
+	Tue, 23 Jan 2024 01:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="05GKGveu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkeMJJ4G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6EB77F2F;
-	Tue, 23 Jan 2024 02:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429861350CA;
+	Tue, 23 Jan 2024 01:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975550; cv=none; b=gQRmGpNECCC4ZUPuU+6IbQ7AQi5NuKSn5bnig4V0WfqvEOChi7XVnBe+tOIWv1IiyBHPe7CJljS+hqLGSUGE2sVi5kkppq/EPKEGqdrokBeeIzFJL0zSc1qfTrZ8kraaBxbwE4f4teY9NDDlzBmXx5j46ZrwdBQblisFs/B8b4w=
+	t=1705971965; cv=none; b=ILi/vwe8OZYZEPIB9pdBTVkf+7UQvcOE8TCCeWu9p+DqJRXZ8PqDOlCBdCI7kkqx+hCEbrRQpOsGcxrB8zyCZg6sc7uMA783pvJEzbOo+9XmV3MxmV4DGmCMHQxVXOfkm/WrvdjyF8mNh8pgLdUFjc7C/mfxqmhnTOr+8Rz63Cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975550; c=relaxed/simple;
-	bh=e+g0t/ecXvpNp1wtslf7PyYOvhwRqeS9zLQFEpdr+S8=;
+	s=arc-20240116; t=1705971965; c=relaxed/simple;
+	bh=LW7l1vK+jkH+uViXMkVxG1vglDlSkHKPHy3nanluptY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=seQFd75J9cMWnerygXW636hTKOqtQK5r1U2tujjcuPIEQpJY8OL7uBfqpbpHaEoOnmPF+qF86Vj612AQEZd8CWJrNITrX/lJDXaz9yekK+JLuynHLLdYI3Npeg2KYE+U6WHDeYDJmY6zQwDOT2LGyelCim6V5NQMIYYwiNmFScM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=05GKGveu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5F48C433F1;
-	Tue, 23 Jan 2024 02:05:49 +0000 (UTC)
+	 MIME-Version; b=YMoHIPzZllAxplhFETg/p3/lvWOYBTmhgEciOQHV5/e1uNmNQMxy+0JGlz7M8iGI00Pi8CgDuc4jmGG774ZFVovwk+159ZIZTFnIMO2WJU1Ku58U+7gXh8bFKdqPNSqGZJr+ZiS4/N2H0EJOlkIQDlulxpvZNFPJ9aQqMqtadqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkeMJJ4G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B394BC433F1;
+	Tue, 23 Jan 2024 01:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975549;
-	bh=e+g0t/ecXvpNp1wtslf7PyYOvhwRqeS9zLQFEpdr+S8=;
+	s=korg; t=1705971965;
+	bh=LW7l1vK+jkH+uViXMkVxG1vglDlSkHKPHy3nanluptY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=05GKGveutuObhUcK0cQ6NR4khOrt39+HyyLnYEVW3RVH41e8WXFvFNQWiQqWqE47X
-	 oR71otM5b8EtdS4Ue9e8TM/2JtXZCBEz+hKnTxsat7KoHC+GPBeRVRBOxFw7V4apgj
-	 xGNqzA6CSECD6rKaxqvebgVvBtf5PaE6PH4Maavc=
+	b=mkeMJJ4G8Z7wDKkS+475gumrc2+o+c4xmbmS9ZA6fFlXMrYO0a04UdlVPKoxWHSPN
+	 wy6ieEkK/ZQHU/qc2BEtCs6AABW1ZlAOwKcTZ3wwZyhI0vXoRCT3CjVS7Q+zd9EehS
+	 +tMkzWXFf6SD+kOBammfBuNGvVTjQvzMyFgdIebU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 501/583] vdpa: Fix an error handling path in eni_vdpa_probe()
+Subject: [PATCH 5.10 246/286] software node: Let args be NULL in software_node_get_reference_args
 Date: Mon, 22 Jan 2024 15:59:12 -0800
-Message-ID: <20240122235827.370194618@linuxfoundation.org>
+Message-ID: <20240122235741.534867479@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit c1b9f2c66eed3261db76cccd8a22a9affae8dcbf ]
+[ Upstream commit 1eaea4b3604eb9ca7d9a1e73d88fc121bb4061f5 ]
 
-After a successful vp_legacy_probe() call, vp_legacy_remove() should be
-called in the error handling path, as already done in the remove function.
+fwnode_get_property_reference_args() may not be called with args argument
+NULL and while OF already supports this. Add the missing NULL check.
 
-Add the missing call.
+The purpose is to be able to count the references.
 
-Fixes: e85087beedca ("eni_vdpa: add vDPA driver for Alibaba ENI")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Message-Id: <a7b0ef1eabd081f1c7c894e9b11de01678e85dee.1666293559.git.christophe.jaillet@wanadoo.fr>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
+Fixes: b06184acf751 ("software node: Add software_node_get_reference_args()")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20231109101010.1329587-3-sakari.ailus@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vdpa/alibaba/eni_vdpa.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/base/swnode.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/vdpa/alibaba/eni_vdpa.c b/drivers/vdpa/alibaba/eni_vdpa.c
-index 5a09a09cca70..cce3d1837104 100644
---- a/drivers/vdpa/alibaba/eni_vdpa.c
-+++ b/drivers/vdpa/alibaba/eni_vdpa.c
-@@ -497,7 +497,7 @@ static int eni_vdpa_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	if (!eni_vdpa->vring) {
- 		ret = -ENOMEM;
- 		ENI_ERR(pdev, "failed to allocate virtqueues\n");
--		goto err;
-+		goto err_remove_vp_legacy;
- 	}
+diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+index d2fb3eb5816c..b664c36388e2 100644
+--- a/drivers/base/swnode.c
++++ b/drivers/base/swnode.c
+@@ -531,6 +531,9 @@ software_node_get_reference_args(const struct fwnode_handle *fwnode,
+ 	if (nargs > NR_FWNODE_REFERENCE_ARGS)
+ 		return -EINVAL;
  
- 	for (i = 0; i < eni_vdpa->queues; i++) {
-@@ -509,11 +509,13 @@ static int eni_vdpa_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 	ret = vdpa_register_device(&eni_vdpa->vdpa, eni_vdpa->queues);
- 	if (ret) {
- 		ENI_ERR(pdev, "failed to register to vdpa bus\n");
--		goto err;
-+		goto err_remove_vp_legacy;
- 	}
++	if (!args)
++		return 0;
++
+ 	args->fwnode = software_node_get(refnode);
+ 	args->nargs = nargs;
  
- 	return 0;
- 
-+err_remove_vp_legacy:
-+	vp_legacy_remove(&eni_vdpa->ldev);
- err:
- 	put_device(&eni_vdpa->vdpa.dev);
- 	return ret;
 -- 
 2.43.0
 
