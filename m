@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-13722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 273EC837D90
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EF148384B5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A70A1C251F8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 423CF1C223D8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5873858223;
-	Tue, 23 Jan 2024 00:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88FD74E07;
+	Tue, 23 Jan 2024 02:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BDdOI1oI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1tYCmIs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1795956B68;
-	Tue, 23 Jan 2024 00:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78BAF745D6;
+	Tue, 23 Jan 2024 02:04:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970026; cv=none; b=rXwd1ec3z5Y7SAKq/1RD+NlfEhKzHMqTNMRzqdB+4mWlJONgnL1xrbV6bwzq7MKJaEzeE03aWhZ5d+kkiIA/GuuyPew8VSdamBUqF9ATzABGj++sLCXXjdAA1FOq1IZHdvYwbVTPdeZVkgFiRRkYYfZJBq4vlUlvMID/f9PItEo=
+	t=1705975464; cv=none; b=KHUz6eHcuus+Ik/cMK0Sp2aWlJUmKzUEli9Uo7X53Segi2WXMoDglZpVILTVcKNgTYcqoWsnmc3j2cEgiY8tpC5+59Bxt7tMKUVsv4qB5mTezElPpkFx9pHUfdw/Ck5sW6BsBDvYF8ZmaSJgwedTmpDooHhuCEESVQeaR+PlmaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970026; c=relaxed/simple;
-	bh=B8PlIyshybOGtQb2oOTKlPPjUe6sKUAOQqgHTEp2+EU=;
+	s=arc-20240116; t=1705975464; c=relaxed/simple;
+	bh=CE7oYr4bX7QGhO04/9OVKNNPDJTjVyThyr87DMMBU68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lck+j1+EdH32cTaIjo7YRuG9LWvm8KExWDufy3cFAT9ZVbdDaHBk4gJnOzpiAghgJ7oEDhAhp5T/pG14FhXE6+mydSqBKEXYJb2wRO5RB1nuyH9VtihX5veKIEuXyBU6ICoQp8gBolkvilE45U0DFCRK7kbm0PvOOCyzWXiLkUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BDdOI1oI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774E8C433C7;
-	Tue, 23 Jan 2024 00:33:45 +0000 (UTC)
+	 MIME-Version; b=scMnjzKIDWidjLcq0Vl53oxdfNMymqg963YzGAyki4vJoGbNVE9QxIrxjQ38vcqqRcZn7pNgeMQz9MXWreUOQsTXcZ0V2oc4r+lPok3bp5d/ph/8qrrDvb8/CfpFR2X7pVQgL5hMmRFTPFwlMlzbyI9WfIe+4gfRADw4dl3GMeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1tYCmIs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39943C433C7;
+	Tue, 23 Jan 2024 02:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970025;
-	bh=B8PlIyshybOGtQb2oOTKlPPjUe6sKUAOQqgHTEp2+EU=;
+	s=korg; t=1705975464;
+	bh=CE7oYr4bX7QGhO04/9OVKNNPDJTjVyThyr87DMMBU68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BDdOI1oISCG2s18SdPTXFa4g//84vZlN2mqkmwtaW2YBXze1OIuDNd8EBdua1uRup
-	 cJsVDReigc7TIYPfmirQqUFQlZSTB9PLzF3X6vfZ87OokWSMY8HLhMZ3f3CogMoCCq
-	 03kAn4mzxlq9uzyRWguIBVyztOzy4d0jnAgG9c+0=
+	b=P1tYCmIsnmoiiO7XCNTFTStG4lyH2gXfDuQ1kPi/rMOiuL/nDWJsVb+5lW+D+3t5l
+	 zkfsiR6hRHCyHYiMJcuE9bfAQWmXBNHRn79R4V8qpG5LYu+++c+GvZZ2KGcRBSkTGQ
+	 Wdzvltf+ieJCs0WfAGDLTPBlkPhkCQ1As6f1R5L0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Gainey <ben.gainey@arm.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 567/641] perf db-export: Fix missing reference count get in call_path_from_sample()
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 420/583] Revert "net: rtnetlink: Enslave device before bringing it up"
 Date: Mon, 22 Jan 2024 15:57:51 -0800
-Message-ID: <20240122235835.901731855@linuxfoundation.org>
+Message-ID: <20240122235824.820883582@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,78 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Gainey <ben.gainey@arm.com>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 
-[ Upstream commit 1e24ce402c97dc3c0ab050593f1d5f6fde524564 ]
+commit ec4ffd100ffb396eca13ebe7d18938ea80f399c3 upstream.
 
-The addr_location map and maps fields in the inner loop were missing
-calls to map__get()/maps__get(). The subsequent addr_location__exit()
-call in each loop puts the map/maps fields causing use-after-free
-aborts.
+This reverts commit a4abfa627c3865c37e036bccb681619a50d3d93c.
 
-This issue reproduces on at least arm64 and x86_64 with something
-simple like `perf record -g ls` followed by `perf script -s script.py`
-with the following script:
+The patch broke:
+> ip link set dummy0 up
+> ip link set dummy0 master bond0 down
 
-    perf_db_export_mode = True
-    perf_db_export_calls = False
-    perf_db_export_callchains = True
+This last command is useful to be able to enslave an interface with only
+one netlink message.
 
-    def sample_table(*args):
-        print(f'sample_table({args})')
+After discussion, there is no good reason to support:
+> ip link set dummy0 down
+> ip link set dummy0 master bond0 up
+because the bond interface already set the slave up when it is up.
 
-    def call_path_table(*args):
-        print(f'call_path_table({args}')
-
-Committer testing:
-
-This test, just introduced by Ian Rogers, now passes, not segfaulting
-anymore:
-
-  # perf test "perf script tests"
-   95: perf script tests                                               : Ok
-  #
-
-Fixes: 0dd5041c9a0eaf8c ("perf addr_location: Add init/exit/copy functions")
-Signed-off-by: Ben Gainey <ben.gainey@arm.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Tested-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20231207140911.3240408-1-ben.gainey@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: a4abfa627c38 ("net: rtnetlink: Enslave device before bringing it up")
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://lore.kernel.org/r/20240108094103.2001224-2-nicolas.dichtel@6wind.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/db-export.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/rtnetlink.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/tools/perf/util/db-export.c b/tools/perf/util/db-export.c
-index b9fb71ab7a73..106429155c2e 100644
---- a/tools/perf/util/db-export.c
-+++ b/tools/perf/util/db-export.c
-@@ -253,8 +253,8 @@ static struct call_path *call_path_from_sample(struct db_export *dbe,
- 		 */
- 		addr_location__init(&al);
- 		al.sym = node->ms.sym;
--		al.map = node->ms.map;
--		al.maps = thread__maps(thread);
-+		al.map = map__get(node->ms.map);
-+		al.maps = maps__get(thread__maps(thread));
- 		al.addr = node->ip;
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -2869,13 +2869,6 @@ static int do_setlink(const struct sk_bu
+ 		call_netdevice_notifiers(NETDEV_CHANGEADDR, dev);
+ 	}
  
- 		if (al.map && !al.sym)
--- 
-2.43.0
-
+-	if (tb[IFLA_MASTER]) {
+-		err = do_set_master(dev, nla_get_u32(tb[IFLA_MASTER]), extack);
+-		if (err)
+-			goto errout;
+-		status |= DO_SETLINK_MODIFIED;
+-	}
+-
+ 	if (ifm->ifi_flags || ifm->ifi_change) {
+ 		err = dev_change_flags(dev, rtnl_dev_combine_flags(dev, ifm),
+ 				       extack);
+@@ -2883,6 +2876,13 @@ static int do_setlink(const struct sk_bu
+ 			goto errout;
+ 	}
+ 
++	if (tb[IFLA_MASTER]) {
++		err = do_set_master(dev, nla_get_u32(tb[IFLA_MASTER]), extack);
++		if (err)
++			goto errout;
++		status |= DO_SETLINK_MODIFIED;
++	}
++
+ 	if (tb[IFLA_CARRIER]) {
+ 		err = dev_change_carrier(dev, nla_get_u8(tb[IFLA_CARRIER]));
+ 		if (err)
 
 
 
