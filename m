@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-14649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7C9A838200
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE307838226
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAD981C24BEF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 576F8B279A5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A5E4E1D3;
-	Tue, 23 Jan 2024 01:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B534E1CD;
+	Tue, 23 Jan 2024 01:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RXzoQRo8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WN2vllEk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30023984D;
-	Tue, 23 Jan 2024 01:40:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72D95675B;
+	Tue, 23 Jan 2024 01:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974031; cv=none; b=BZyNACn5m1MURZKo6HHeUg/Dq3uoF6p3dplpVnCU1WcXJChVohRUvNsrxqbvoSGgcik19eR9lfq+YuKq8EAfQ1vFM2BJiLjyi2zz31Smkhlyw6NhH0kH9ecrkseN42W3zHKH/IbOdIfQAFhj4kFK16RKh68dL3PGtAUsS5wdNP0=
+	t=1705974033; cv=none; b=S5w7i5FaJvWFrE2SwqhD/W6yd8ObFC9+2z2gOZAMbwHX+Ojf/708rTJfJ80ziOtaAz6quzRl0GwwMkXOjysDEZal/P6gWps+PEwj9eQIfJtPMhoxn34M5t2RI9d0K+aW1NbPCmrUFSL62cPZ2EenMRnrPNOqosganvWJOo88GPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974031; c=relaxed/simple;
-	bh=YjT7TvmZNE1CPwzZ3/fWWzI6Hc+WTIivg32V/cZ6vD0=;
+	s=arc-20240116; t=1705974033; c=relaxed/simple;
+	bh=t4zfV8rx8GAJSZxWxsOczko//nXQQB8Kb/rXHlRSITY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=evCWEpBWTD/OkV00WFhC6lQaTqF0Gk4ziWpI0qk04lHLbW0PQvvoL7koxigpOovzWiLB0ZbnYkfrUuEOZgV1PhBVWxc+U20dCJN9bISYyOy/eVFxvTB8DxQzWSUNtrExD+nS/eigIbfCLr+kyu6rfsMfkG3/peDhuLKoNmhPCEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RXzoQRo8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA3CC433C7;
-	Tue, 23 Jan 2024 01:40:30 +0000 (UTC)
+	 MIME-Version; b=QjhOTGwDeKS7xNoW+ELcH8l55NglNK080HQKRrx9pE1EMHyHB2/8cxqFHfMZyz/AKwbhcpZlaDdXCr74MQw3CDgxxRvko+TKMD9QIS3dyrwpZJaN/CxL44bmBy7ma+hYiqibDKcjS3v8BTQWMFv6EiAdDZZ9bUR3HfXnKmjg6J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WN2vllEk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02AA1C43394;
+	Tue, 23 Jan 2024 01:40:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974031;
-	bh=YjT7TvmZNE1CPwzZ3/fWWzI6Hc+WTIivg32V/cZ6vD0=;
+	s=korg; t=1705974033;
+	bh=t4zfV8rx8GAJSZxWxsOczko//nXQQB8Kb/rXHlRSITY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RXzoQRo8fvdSuzmqKLh/QqRJcVVcTdVNFYwX7TfjJusxa9rP/Qu57AyiFvO0/jQ9Y
-	 tRRuMS0B0pygAczc2k1J/1gYfucRGFratnf5+QIaoY6IDVQsN1NjyGNQKVqC43ldap
-	 JGABAVttk0jUi79+3eQRQ6u28kJHsxF+LTOOtX7I=
+	b=WN2vllEkQ6YJwv5VdsYCg6MMK7egtEXIEnZSUdRVQckuNlJW7IyRCtlHC2/2o+nWz
+	 2m+lCL0mWvbKF3oWG4SwcKcXYaJFFn0xjhE7tUqNWVFaGARcT1XiQieY1lJStr8QCQ
+	 e77Gp9aFIlFSNO7vKxBKoFyVDrV5wRCDq4mqaTfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junhao He <hejunhao3@huawei.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Will Deacon <will@kernel.org>,
+	Jordan Niethe <jniethe5@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 009/583] drivers/perf: hisi: Fix some event id for HiSilicon UC pmu
-Date: Mon, 22 Jan 2024 15:51:00 -0800
-Message-ID: <20240122235812.521504258@linuxfoundation.org>
+Subject: [PATCH 6.6 010/583] KVM: PPC: Book3S HV: Use accessors for VCPU registers
+Date: Mon, 22 Jan 2024 15:51:01 -0800
+Message-ID: <20240122235812.553136884@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
 References: <20240122235812.238724226@linuxfoundation.org>
@@ -67,37 +66,526 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Junhao He <hejunhao3@huawei.com>
+From: Jordan Niethe <jniethe5@gmail.com>
 
-[ Upstream commit 38bbef7240b8c5f2dc4493eec356e2efbf2da5f4 ]
+[ Upstream commit ebc88ea7a6ad0ea349df9c765357d3aa4e662aa9 ]
 
-Some event id of HiSilicon uncore UC PMU driver is incorrect, fix them.
+Introduce accessor generator macros for Book3S HV VCPU registers. Use
+the accessor functions to replace direct accesses to this registers.
 
-Fixes: 312eca95e28d ("drivers/perf: hisi: Add support for HiSilicon UC PMU driver")
-Signed-off-by: Junhao He <hejunhao3@huawei.com>
-Reviewed-by: Yicong Yang <yangyicong@hisilicon.com>
-Link: https://lore.kernel.org/r/20231204110425.20354-1-hejunhao3@huawei.com
-Signed-off-by: Will Deacon <will@kernel.org>
+This will be important later for Nested APIv2 support which requires
+additional functionality for accessing and modifying VCPU state.
+
+Signed-off-by: Jordan Niethe <jniethe5@gmail.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230914030600.16993-7-jniethe5@gmail.com
+Stable-dep-of: ecd10702baae ("KVM: PPC: Book3S HV: Handle pending exceptions on guest entry with MSR_EE")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/hisilicon/hisi_uncore_uc_pmu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/kvm/book3s_64_mmu_radix.c |   5 +-
+ arch/powerpc/kvm/book3s_hv.c           | 148 +++++++++++++------------
+ arch/powerpc/kvm/book3s_hv.h           |  58 ++++++++++
+ 3 files changed, 139 insertions(+), 72 deletions(-)
 
-diff --git a/drivers/perf/hisilicon/hisi_uncore_uc_pmu.c b/drivers/perf/hisilicon/hisi_uncore_uc_pmu.c
-index 63da05e5831c..636fb79647c8 100644
---- a/drivers/perf/hisilicon/hisi_uncore_uc_pmu.c
-+++ b/drivers/perf/hisilicon/hisi_uncore_uc_pmu.c
-@@ -383,8 +383,8 @@ static struct attribute *hisi_uc_pmu_events_attr[] = {
- 	HISI_PMU_EVENT_ATTR(cpu_rd,		0x10),
- 	HISI_PMU_EVENT_ATTR(cpu_rd64,		0x17),
- 	HISI_PMU_EVENT_ATTR(cpu_rs64,		0x19),
--	HISI_PMU_EVENT_ATTR(cpu_mru,		0x1a),
--	HISI_PMU_EVENT_ATTR(cycles,		0x9c),
-+	HISI_PMU_EVENT_ATTR(cpu_mru,		0x1c),
-+	HISI_PMU_EVENT_ATTR(cycles,		0x95),
- 	HISI_PMU_EVENT_ATTR(spipe_hit,		0xb3),
- 	HISI_PMU_EVENT_ATTR(hpipe_hit,		0xdb),
- 	HISI_PMU_EVENT_ATTR(cring_rxdat_cnt,	0xfa),
+diff --git a/arch/powerpc/kvm/book3s_64_mmu_radix.c b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+index 572707858d65..10aacbf92466 100644
+--- a/arch/powerpc/kvm/book3s_64_mmu_radix.c
++++ b/arch/powerpc/kvm/book3s_64_mmu_radix.c
+@@ -15,6 +15,7 @@
+ 
+ #include <asm/kvm_ppc.h>
+ #include <asm/kvm_book3s.h>
++#include "book3s_hv.h"
+ #include <asm/page.h>
+ #include <asm/mmu.h>
+ #include <asm/pgalloc.h>
+@@ -294,9 +295,9 @@ int kvmppc_mmu_radix_xlate(struct kvm_vcpu *vcpu, gva_t eaddr,
+ 	} else {
+ 		if (!(pte & _PAGE_PRIVILEGED)) {
+ 			/* Check AMR/IAMR to see if strict mode is in force */
+-			if (vcpu->arch.amr & (1ul << 62))
++			if (kvmppc_get_amr_hv(vcpu) & (1ul << 62))
+ 				gpte->may_read = 0;
+-			if (vcpu->arch.amr & (1ul << 63))
++			if (kvmppc_get_amr_hv(vcpu) & (1ul << 63))
+ 				gpte->may_write = 0;
+ 			if (vcpu->arch.iamr & (1ul << 62))
+ 				gpte->may_execute = 0;
+diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+index 130bafdb1430..7fa7fcebe8da 100644
+--- a/arch/powerpc/kvm/book3s_hv.c
++++ b/arch/powerpc/kvm/book3s_hv.c
+@@ -868,7 +868,7 @@ static int kvmppc_h_set_mode(struct kvm_vcpu *vcpu, unsigned long mflags,
+ 		/* Guests can't breakpoint the hypervisor */
+ 		if ((value1 & CIABR_PRIV) == CIABR_PRIV_HYPER)
+ 			return H_P3;
+-		vcpu->arch.ciabr  = value1;
++		kvmppc_set_ciabr_hv(vcpu, value1);
+ 		return H_SUCCESS;
+ 	case H_SET_MODE_RESOURCE_SET_DAWR0:
+ 		if (!kvmppc_power8_compatible(vcpu))
+@@ -879,8 +879,8 @@ static int kvmppc_h_set_mode(struct kvm_vcpu *vcpu, unsigned long mflags,
+ 			return H_UNSUPPORTED_FLAG_START;
+ 		if (value2 & DABRX_HYP)
+ 			return H_P4;
+-		vcpu->arch.dawr0  = value1;
+-		vcpu->arch.dawrx0 = value2;
++		kvmppc_set_dawr0_hv(vcpu, value1);
++		kvmppc_set_dawrx0_hv(vcpu, value2);
+ 		return H_SUCCESS;
+ 	case H_SET_MODE_RESOURCE_SET_DAWR1:
+ 		if (!kvmppc_power8_compatible(vcpu))
+@@ -895,8 +895,8 @@ static int kvmppc_h_set_mode(struct kvm_vcpu *vcpu, unsigned long mflags,
+ 			return H_UNSUPPORTED_FLAG_START;
+ 		if (value2 & DABRX_HYP)
+ 			return H_P4;
+-		vcpu->arch.dawr1  = value1;
+-		vcpu->arch.dawrx1 = value2;
++		kvmppc_set_dawr1_hv(vcpu, value1);
++		kvmppc_set_dawrx1_hv(vcpu, value2);
+ 		return H_SUCCESS;
+ 	case H_SET_MODE_RESOURCE_ADDR_TRANS_MODE:
+ 		/*
+@@ -1544,7 +1544,7 @@ static int kvmppc_pmu_unavailable(struct kvm_vcpu *vcpu)
+ 	if (!(vcpu->arch.hfscr_permitted & HFSCR_PM))
+ 		return EMULATE_FAIL;
+ 
+-	vcpu->arch.hfscr |= HFSCR_PM;
++	kvmppc_set_hfscr_hv(vcpu, kvmppc_get_hfscr_hv(vcpu) | HFSCR_PM);
+ 
+ 	return RESUME_GUEST;
+ }
+@@ -1554,7 +1554,7 @@ static int kvmppc_ebb_unavailable(struct kvm_vcpu *vcpu)
+ 	if (!(vcpu->arch.hfscr_permitted & HFSCR_EBB))
+ 		return EMULATE_FAIL;
+ 
+-	vcpu->arch.hfscr |= HFSCR_EBB;
++	kvmppc_set_hfscr_hv(vcpu, kvmppc_get_hfscr_hv(vcpu) | HFSCR_EBB);
+ 
+ 	return RESUME_GUEST;
+ }
+@@ -1564,7 +1564,7 @@ static int kvmppc_tm_unavailable(struct kvm_vcpu *vcpu)
+ 	if (!(vcpu->arch.hfscr_permitted & HFSCR_TM))
+ 		return EMULATE_FAIL;
+ 
+-	vcpu->arch.hfscr |= HFSCR_TM;
++	kvmppc_set_hfscr_hv(vcpu, kvmppc_get_hfscr_hv(vcpu) | HFSCR_TM);
+ 
+ 	return RESUME_GUEST;
+ }
+@@ -1863,7 +1863,7 @@ static int kvmppc_handle_exit_hv(struct kvm_vcpu *vcpu,
+ 	 * Otherwise, we just generate a program interrupt to the guest.
+ 	 */
+ 	case BOOK3S_INTERRUPT_H_FAC_UNAVAIL: {
+-		u64 cause = vcpu->arch.hfscr >> 56;
++		u64 cause = kvmppc_get_hfscr_hv(vcpu) >> 56;
+ 
+ 		r = EMULATE_FAIL;
+ 		if (cpu_has_feature(CPU_FTR_ARCH_300)) {
+@@ -2207,64 +2207,64 @@ static int kvmppc_get_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
+ 		*val = get_reg_val(id, vcpu->arch.dabrx);
+ 		break;
+ 	case KVM_REG_PPC_DSCR:
+-		*val = get_reg_val(id, vcpu->arch.dscr);
++		*val = get_reg_val(id, kvmppc_get_dscr_hv(vcpu));
+ 		break;
+ 	case KVM_REG_PPC_PURR:
+-		*val = get_reg_val(id, vcpu->arch.purr);
++		*val = get_reg_val(id, kvmppc_get_purr_hv(vcpu));
+ 		break;
+ 	case KVM_REG_PPC_SPURR:
+-		*val = get_reg_val(id, vcpu->arch.spurr);
++		*val = get_reg_val(id, kvmppc_get_spurr_hv(vcpu));
+ 		break;
+ 	case KVM_REG_PPC_AMR:
+-		*val = get_reg_val(id, vcpu->arch.amr);
++		*val = get_reg_val(id, kvmppc_get_amr_hv(vcpu));
+ 		break;
+ 	case KVM_REG_PPC_UAMOR:
+-		*val = get_reg_val(id, vcpu->arch.uamor);
++		*val = get_reg_val(id, kvmppc_get_uamor_hv(vcpu));
+ 		break;
+ 	case KVM_REG_PPC_MMCR0 ... KVM_REG_PPC_MMCR1:
+ 		i = id - KVM_REG_PPC_MMCR0;
+-		*val = get_reg_val(id, vcpu->arch.mmcr[i]);
++		*val = get_reg_val(id, kvmppc_get_mmcr_hv(vcpu, i));
+ 		break;
+ 	case KVM_REG_PPC_MMCR2:
+-		*val = get_reg_val(id, vcpu->arch.mmcr[2]);
++		*val = get_reg_val(id, kvmppc_get_mmcr_hv(vcpu, 2));
+ 		break;
+ 	case KVM_REG_PPC_MMCRA:
+-		*val = get_reg_val(id, vcpu->arch.mmcra);
++		*val = get_reg_val(id, kvmppc_get_mmcra_hv(vcpu));
+ 		break;
+ 	case KVM_REG_PPC_MMCRS:
+ 		*val = get_reg_val(id, vcpu->arch.mmcrs);
+ 		break;
+ 	case KVM_REG_PPC_MMCR3:
+-		*val = get_reg_val(id, vcpu->arch.mmcr[3]);
++		*val = get_reg_val(id, kvmppc_get_mmcr_hv(vcpu, 3));
+ 		break;
+ 	case KVM_REG_PPC_PMC1 ... KVM_REG_PPC_PMC8:
+ 		i = id - KVM_REG_PPC_PMC1;
+-		*val = get_reg_val(id, vcpu->arch.pmc[i]);
++		*val = get_reg_val(id, kvmppc_get_pmc_hv(vcpu, i));
+ 		break;
+ 	case KVM_REG_PPC_SPMC1 ... KVM_REG_PPC_SPMC2:
+ 		i = id - KVM_REG_PPC_SPMC1;
+ 		*val = get_reg_val(id, vcpu->arch.spmc[i]);
+ 		break;
+ 	case KVM_REG_PPC_SIAR:
+-		*val = get_reg_val(id, vcpu->arch.siar);
++		*val = get_reg_val(id, kvmppc_get_siar_hv(vcpu));
+ 		break;
+ 	case KVM_REG_PPC_SDAR:
+-		*val = get_reg_val(id, vcpu->arch.sdar);
++		*val = get_reg_val(id, kvmppc_get_siar_hv(vcpu));
+ 		break;
+ 	case KVM_REG_PPC_SIER:
+-		*val = get_reg_val(id, vcpu->arch.sier[0]);
++		*val = get_reg_val(id, kvmppc_get_sier_hv(vcpu, 0));
+ 		break;
+ 	case KVM_REG_PPC_SIER2:
+-		*val = get_reg_val(id, vcpu->arch.sier[1]);
++		*val = get_reg_val(id, kvmppc_get_sier_hv(vcpu, 1));
+ 		break;
+ 	case KVM_REG_PPC_SIER3:
+-		*val = get_reg_val(id, vcpu->arch.sier[2]);
++		*val = get_reg_val(id, kvmppc_get_sier_hv(vcpu, 2));
+ 		break;
+ 	case KVM_REG_PPC_IAMR:
+-		*val = get_reg_val(id, vcpu->arch.iamr);
++		*val = get_reg_val(id, kvmppc_get_iamr_hv(vcpu));
+ 		break;
+ 	case KVM_REG_PPC_PSPB:
+-		*val = get_reg_val(id, vcpu->arch.pspb);
++		*val = get_reg_val(id, kvmppc_get_pspb_hv(vcpu));
+ 		break;
+ 	case KVM_REG_PPC_DPDES:
+ 		/*
+@@ -2282,19 +2282,19 @@ static int kvmppc_get_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
+ 		*val = get_reg_val(id, vcpu->arch.vcore->vtb);
+ 		break;
+ 	case KVM_REG_PPC_DAWR:
+-		*val = get_reg_val(id, vcpu->arch.dawr0);
++		*val = get_reg_val(id, kvmppc_get_dawr0_hv(vcpu));
+ 		break;
+ 	case KVM_REG_PPC_DAWRX:
+-		*val = get_reg_val(id, vcpu->arch.dawrx0);
++		*val = get_reg_val(id, kvmppc_get_dawrx0_hv(vcpu));
+ 		break;
+ 	case KVM_REG_PPC_DAWR1:
+-		*val = get_reg_val(id, vcpu->arch.dawr1);
++		*val = get_reg_val(id, kvmppc_get_dawr1_hv(vcpu));
+ 		break;
+ 	case KVM_REG_PPC_DAWRX1:
+-		*val = get_reg_val(id, vcpu->arch.dawrx1);
++		*val = get_reg_val(id, kvmppc_get_dawrx1_hv(vcpu));
+ 		break;
+ 	case KVM_REG_PPC_CIABR:
+-		*val = get_reg_val(id, vcpu->arch.ciabr);
++		*val = get_reg_val(id, kvmppc_get_ciabr_hv(vcpu));
+ 		break;
+ 	case KVM_REG_PPC_CSIGR:
+ 		*val = get_reg_val(id, vcpu->arch.csigr);
+@@ -2312,7 +2312,7 @@ static int kvmppc_get_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
+ 		*val = get_reg_val(id, vcpu->arch.acop);
+ 		break;
+ 	case KVM_REG_PPC_WORT:
+-		*val = get_reg_val(id, vcpu->arch.wort);
++		*val = get_reg_val(id, kvmppc_get_wort_hv(vcpu));
+ 		break;
+ 	case KVM_REG_PPC_TIDR:
+ 		*val = get_reg_val(id, vcpu->arch.tid);
+@@ -2345,7 +2345,7 @@ static int kvmppc_get_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
+ 		*val = get_reg_val(id, vcpu->arch.vcore->lpcr);
+ 		break;
+ 	case KVM_REG_PPC_PPR:
+-		*val = get_reg_val(id, vcpu->arch.ppr);
++		*val = get_reg_val(id, kvmppc_get_ppr_hv(vcpu));
+ 		break;
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ 	case KVM_REG_PPC_TFHAR:
+@@ -2425,6 +2425,9 @@ static int kvmppc_get_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
+ 	case KVM_REG_PPC_PTCR:
+ 		*val = get_reg_val(id, vcpu->kvm->arch.l1_ptcr);
+ 		break;
++	case KVM_REG_PPC_FSCR:
++		*val = get_reg_val(id, kvmppc_get_fscr_hv(vcpu));
++		break;
+ 	default:
+ 		r = -EINVAL;
+ 		break;
+@@ -2453,29 +2456,29 @@ static int kvmppc_set_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
+ 		vcpu->arch.dabrx = set_reg_val(id, *val) & ~DABRX_HYP;
+ 		break;
+ 	case KVM_REG_PPC_DSCR:
+-		vcpu->arch.dscr = set_reg_val(id, *val);
++		kvmppc_set_dscr_hv(vcpu, set_reg_val(id, *val));
+ 		break;
+ 	case KVM_REG_PPC_PURR:
+-		vcpu->arch.purr = set_reg_val(id, *val);
++		kvmppc_set_purr_hv(vcpu, set_reg_val(id, *val));
+ 		break;
+ 	case KVM_REG_PPC_SPURR:
+-		vcpu->arch.spurr = set_reg_val(id, *val);
++		kvmppc_set_spurr_hv(vcpu, set_reg_val(id, *val));
+ 		break;
+ 	case KVM_REG_PPC_AMR:
+-		vcpu->arch.amr = set_reg_val(id, *val);
++		kvmppc_set_amr_hv(vcpu, set_reg_val(id, *val));
+ 		break;
+ 	case KVM_REG_PPC_UAMOR:
+-		vcpu->arch.uamor = set_reg_val(id, *val);
++		kvmppc_set_uamor_hv(vcpu, set_reg_val(id, *val));
+ 		break;
+ 	case KVM_REG_PPC_MMCR0 ... KVM_REG_PPC_MMCR1:
+ 		i = id - KVM_REG_PPC_MMCR0;
+-		vcpu->arch.mmcr[i] = set_reg_val(id, *val);
++		kvmppc_set_mmcr_hv(vcpu, i, set_reg_val(id, *val));
+ 		break;
+ 	case KVM_REG_PPC_MMCR2:
+-		vcpu->arch.mmcr[2] = set_reg_val(id, *val);
++		kvmppc_set_mmcr_hv(vcpu, 2, set_reg_val(id, *val));
+ 		break;
+ 	case KVM_REG_PPC_MMCRA:
+-		vcpu->arch.mmcra = set_reg_val(id, *val);
++		kvmppc_set_mmcra_hv(vcpu, set_reg_val(id, *val));
+ 		break;
+ 	case KVM_REG_PPC_MMCRS:
+ 		vcpu->arch.mmcrs = set_reg_val(id, *val);
+@@ -2485,32 +2488,32 @@ static int kvmppc_set_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
+ 		break;
+ 	case KVM_REG_PPC_PMC1 ... KVM_REG_PPC_PMC8:
+ 		i = id - KVM_REG_PPC_PMC1;
+-		vcpu->arch.pmc[i] = set_reg_val(id, *val);
++		kvmppc_set_pmc_hv(vcpu, i, set_reg_val(id, *val));
+ 		break;
+ 	case KVM_REG_PPC_SPMC1 ... KVM_REG_PPC_SPMC2:
+ 		i = id - KVM_REG_PPC_SPMC1;
+ 		vcpu->arch.spmc[i] = set_reg_val(id, *val);
+ 		break;
+ 	case KVM_REG_PPC_SIAR:
+-		vcpu->arch.siar = set_reg_val(id, *val);
++		kvmppc_set_siar_hv(vcpu, set_reg_val(id, *val));
+ 		break;
+ 	case KVM_REG_PPC_SDAR:
+-		vcpu->arch.sdar = set_reg_val(id, *val);
++		kvmppc_set_sdar_hv(vcpu, set_reg_val(id, *val));
+ 		break;
+ 	case KVM_REG_PPC_SIER:
+-		vcpu->arch.sier[0] = set_reg_val(id, *val);
++		kvmppc_set_sier_hv(vcpu, 0, set_reg_val(id, *val));
+ 		break;
+ 	case KVM_REG_PPC_SIER2:
+-		vcpu->arch.sier[1] = set_reg_val(id, *val);
++		kvmppc_set_sier_hv(vcpu, 1, set_reg_val(id, *val));
+ 		break;
+ 	case KVM_REG_PPC_SIER3:
+-		vcpu->arch.sier[2] = set_reg_val(id, *val);
++		kvmppc_set_sier_hv(vcpu, 2, set_reg_val(id, *val));
+ 		break;
+ 	case KVM_REG_PPC_IAMR:
+-		vcpu->arch.iamr = set_reg_val(id, *val);
++		kvmppc_set_iamr_hv(vcpu, set_reg_val(id, *val));
+ 		break;
+ 	case KVM_REG_PPC_PSPB:
+-		vcpu->arch.pspb = set_reg_val(id, *val);
++		kvmppc_set_pspb_hv(vcpu, set_reg_val(id, *val));
+ 		break;
+ 	case KVM_REG_PPC_DPDES:
+ 		if (cpu_has_feature(CPU_FTR_ARCH_300))
+@@ -2522,22 +2525,22 @@ static int kvmppc_set_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
+ 		vcpu->arch.vcore->vtb = set_reg_val(id, *val);
+ 		break;
+ 	case KVM_REG_PPC_DAWR:
+-		vcpu->arch.dawr0 = set_reg_val(id, *val);
++		kvmppc_set_dawr0_hv(vcpu, set_reg_val(id, *val));
+ 		break;
+ 	case KVM_REG_PPC_DAWRX:
+-		vcpu->arch.dawrx0 = set_reg_val(id, *val) & ~DAWRX_HYP;
++		kvmppc_set_dawrx0_hv(vcpu, set_reg_val(id, *val) & ~DAWRX_HYP);
+ 		break;
+ 	case KVM_REG_PPC_DAWR1:
+-		vcpu->arch.dawr1 = set_reg_val(id, *val);
++		kvmppc_set_dawr1_hv(vcpu, set_reg_val(id, *val));
+ 		break;
+ 	case KVM_REG_PPC_DAWRX1:
+-		vcpu->arch.dawrx1 = set_reg_val(id, *val) & ~DAWRX_HYP;
++		kvmppc_set_dawrx1_hv(vcpu, set_reg_val(id, *val) & ~DAWRX_HYP);
+ 		break;
+ 	case KVM_REG_PPC_CIABR:
+-		vcpu->arch.ciabr = set_reg_val(id, *val);
++		kvmppc_set_ciabr_hv(vcpu, set_reg_val(id, *val));
+ 		/* Don't allow setting breakpoints in hypervisor code */
+-		if ((vcpu->arch.ciabr & CIABR_PRIV) == CIABR_PRIV_HYPER)
+-			vcpu->arch.ciabr &= ~CIABR_PRIV;	/* disable */
++		if ((kvmppc_get_ciabr_hv(vcpu) & CIABR_PRIV) == CIABR_PRIV_HYPER)
++			kvmppc_set_ciabr_hv(vcpu, kvmppc_get_ciabr_hv(vcpu) & ~CIABR_PRIV);
+ 		break;
+ 	case KVM_REG_PPC_CSIGR:
+ 		vcpu->arch.csigr = set_reg_val(id, *val);
+@@ -2555,7 +2558,7 @@ static int kvmppc_set_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
+ 		vcpu->arch.acop = set_reg_val(id, *val);
+ 		break;
+ 	case KVM_REG_PPC_WORT:
+-		vcpu->arch.wort = set_reg_val(id, *val);
++		kvmppc_set_wort_hv(vcpu, set_reg_val(id, *val));
+ 		break;
+ 	case KVM_REG_PPC_TIDR:
+ 		vcpu->arch.tid = set_reg_val(id, *val);
+@@ -2615,7 +2618,7 @@ static int kvmppc_set_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
+ 		kvmppc_set_lpcr(vcpu, set_reg_val(id, *val), false);
+ 		break;
+ 	case KVM_REG_PPC_PPR:
+-		vcpu->arch.ppr = set_reg_val(id, *val);
++		kvmppc_set_ppr_hv(vcpu, set_reg_val(id, *val));
+ 		break;
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ 	case KVM_REG_PPC_TFHAR:
+@@ -2699,6 +2702,9 @@ static int kvmppc_set_one_reg_hv(struct kvm_vcpu *vcpu, u64 id,
+ 	case KVM_REG_PPC_PTCR:
+ 		vcpu->kvm->arch.l1_ptcr = set_reg_val(id, *val);
+ 		break;
++	case KVM_REG_PPC_FSCR:
++		kvmppc_set_fscr_hv(vcpu, set_reg_val(id, *val));
++		break;
+ 	default:
+ 		r = -EINVAL;
+ 		break;
+@@ -2916,13 +2922,14 @@ static int kvmppc_core_vcpu_create_hv(struct kvm_vcpu *vcpu)
+ 	vcpu->arch.shared_big_endian = false;
+ #endif
+ #endif
+-	vcpu->arch.mmcr[0] = MMCR0_FC;
++	kvmppc_set_mmcr_hv(vcpu, 0, MMCR0_FC);
++
+ 	if (cpu_has_feature(CPU_FTR_ARCH_31)) {
+-		vcpu->arch.mmcr[0] |= MMCR0_PMCCEXT;
+-		vcpu->arch.mmcra = MMCRA_BHRB_DISABLE;
++		kvmppc_set_mmcr_hv(vcpu, 0, kvmppc_get_mmcr_hv(vcpu, 0) | MMCR0_PMCCEXT);
++		kvmppc_set_mmcra_hv(vcpu, MMCRA_BHRB_DISABLE);
+ 	}
+ 
+-	vcpu->arch.ctrl = CTRL_RUNLATCH;
++	kvmppc_set_ctrl_hv(vcpu, CTRL_RUNLATCH);
+ 	/* default to host PVR, since we can't spoof it */
+ 	kvmppc_set_pvr_hv(vcpu, mfspr(SPRN_PVR));
+ 	spin_lock_init(&vcpu->arch.vpa_update_lock);
+@@ -2938,29 +2945,30 @@ static int kvmppc_core_vcpu_create_hv(struct kvm_vcpu *vcpu)
+ 	 * don't set the HFSCR_MSGP bit, and that causes those instructions
+ 	 * to trap and then we emulate them.
+ 	 */
+-	vcpu->arch.hfscr = HFSCR_TAR | HFSCR_EBB | HFSCR_PM | HFSCR_BHRB |
+-		HFSCR_DSCR | HFSCR_VECVSX | HFSCR_FP;
++	kvmppc_set_hfscr_hv(vcpu, HFSCR_TAR | HFSCR_EBB | HFSCR_PM | HFSCR_BHRB |
++			    HFSCR_DSCR | HFSCR_VECVSX | HFSCR_FP);
+ 
+ 	/* On POWER10 and later, allow prefixed instructions */
+ 	if (cpu_has_feature(CPU_FTR_ARCH_31))
+-		vcpu->arch.hfscr |= HFSCR_PREFIX;
++		kvmppc_set_hfscr_hv(vcpu, kvmppc_get_hfscr_hv(vcpu) | HFSCR_PREFIX);
+ 
+ 	if (cpu_has_feature(CPU_FTR_HVMODE)) {
+-		vcpu->arch.hfscr &= mfspr(SPRN_HFSCR);
++		kvmppc_set_hfscr_hv(vcpu, kvmppc_get_hfscr_hv(vcpu) & mfspr(SPRN_HFSCR));
++
+ #ifdef CONFIG_PPC_TRANSACTIONAL_MEM
+ 		if (cpu_has_feature(CPU_FTR_P9_TM_HV_ASSIST))
+-			vcpu->arch.hfscr |= HFSCR_TM;
++			kvmppc_set_hfscr_hv(vcpu, kvmppc_get_hfscr_hv(vcpu) | HFSCR_TM);
+ #endif
+ 	}
+ 	if (cpu_has_feature(CPU_FTR_TM_COMP))
+ 		vcpu->arch.hfscr |= HFSCR_TM;
+ 
+-	vcpu->arch.hfscr_permitted = vcpu->arch.hfscr;
++	vcpu->arch.hfscr_permitted = kvmppc_get_hfscr_hv(vcpu);
+ 
+ 	/*
+ 	 * PM, EBB, TM are demand-faulted so start with it clear.
+ 	 */
+-	vcpu->arch.hfscr &= ~(HFSCR_PM | HFSCR_EBB | HFSCR_TM);
++	kvmppc_set_hfscr_hv(vcpu, kvmppc_get_hfscr_hv(vcpu) & ~(HFSCR_PM | HFSCR_EBB | HFSCR_TM));
+ 
+ 	kvmppc_mmu_book3s_hv_init(vcpu);
+ 
+@@ -4844,7 +4852,7 @@ static int kvmppc_vcpu_run_hv(struct kvm_vcpu *vcpu)
+ 		msr |= MSR_VSX;
+ 	if ((cpu_has_feature(CPU_FTR_TM) ||
+ 	    cpu_has_feature(CPU_FTR_P9_TM_HV_ASSIST)) &&
+-			(vcpu->arch.hfscr & HFSCR_TM))
++			(kvmppc_get_hfscr_hv(vcpu) & HFSCR_TM))
+ 		msr |= MSR_TM;
+ 	msr = msr_check_and_set(msr);
+ 
+diff --git a/arch/powerpc/kvm/book3s_hv.h b/arch/powerpc/kvm/book3s_hv.h
+index 2f2e59d7d433..acd9a7a95bbf 100644
+--- a/arch/powerpc/kvm/book3s_hv.h
++++ b/arch/powerpc/kvm/book3s_hv.h
+@@ -50,3 +50,61 @@ void accumulate_time(struct kvm_vcpu *vcpu, struct kvmhv_tb_accumulator *next);
+ #define start_timing(vcpu, next) do {} while (0)
+ #define end_timing(vcpu) do {} while (0)
+ #endif
++
++#define KVMPPC_BOOK3S_HV_VCPU_ACCESSOR_SET(reg, size)			\
++static inline void kvmppc_set_##reg ##_hv(struct kvm_vcpu *vcpu, u##size val)	\
++{									\
++	vcpu->arch.reg = val;						\
++}
++
++#define KVMPPC_BOOK3S_HV_VCPU_ACCESSOR_GET(reg, size)			\
++static inline u##size kvmppc_get_##reg ##_hv(struct kvm_vcpu *vcpu)	\
++{									\
++	return vcpu->arch.reg;						\
++}
++
++#define KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(reg, size)			\
++	KVMPPC_BOOK3S_HV_VCPU_ACCESSOR_SET(reg, size)			\
++	KVMPPC_BOOK3S_HV_VCPU_ACCESSOR_GET(reg, size)			\
++
++#define KVMPPC_BOOK3S_HV_VCPU_ARRAY_ACCESSOR_SET(reg, size)		\
++static inline void kvmppc_set_##reg ##_hv(struct kvm_vcpu *vcpu, int i, u##size val)	\
++{									\
++	vcpu->arch.reg[i] = val;					\
++}
++
++#define KVMPPC_BOOK3S_HV_VCPU_ARRAY_ACCESSOR_GET(reg, size)		\
++static inline u##size kvmppc_get_##reg ##_hv(struct kvm_vcpu *vcpu, int i)	\
++{									\
++	return vcpu->arch.reg[i];					\
++}
++
++#define KVMPPC_BOOK3S_HV_VCPU_ARRAY_ACCESSOR(reg, size)			\
++	KVMPPC_BOOK3S_HV_VCPU_ARRAY_ACCESSOR_SET(reg, size)		\
++	KVMPPC_BOOK3S_HV_VCPU_ARRAY_ACCESSOR_GET(reg, size)		\
++
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(mmcra, 64)
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(hfscr, 64)
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(fscr, 64)
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(dscr, 64)
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(purr, 64)
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(spurr, 64)
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(amr, 64)
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(uamor, 64)
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(siar, 64)
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(sdar, 64)
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(iamr, 64)
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(dawr0, 64)
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(dawr1, 64)
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(dawrx0, 64)
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(dawrx1, 64)
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(ciabr, 64)
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(wort, 64)
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(ppr, 64)
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(ctrl, 64)
++
++KVMPPC_BOOK3S_HV_VCPU_ARRAY_ACCESSOR(mmcr, 64)
++KVMPPC_BOOK3S_HV_VCPU_ARRAY_ACCESSOR(sier, 64)
++KVMPPC_BOOK3S_HV_VCPU_ARRAY_ACCESSOR(pmc, 32)
++
++KVMPPC_BOOK3S_HV_VCPU_ACCESSOR(pspb, 32)
 -- 
 2.43.0
 
