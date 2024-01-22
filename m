@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-13994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37E12837F16
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06F79838444
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDF6C1F2B905
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAA05298F79
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 140DC6087B;
-	Tue, 23 Jan 2024 00:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC3F6A355;
+	Tue, 23 Jan 2024 02:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqxzOkMO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0j9m1ee"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B3727456;
-	Tue, 23 Jan 2024 00:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6FF6A320;
+	Tue, 23 Jan 2024 02:02:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970930; cv=none; b=FzDUBLEB63FyHPzG6NhUVaOcHt07mJ6kS52+s7WImHQOuHNszW5IMoBhpuOW81tqtuvP0KxJ7G+s+iNf/rxEKXHtTQZnrXhM2G1JmNAs+F4uPXzG0TCNJToxVT0DIqj4iRvnpwz9Dydla47wOAZqz1PCQ30rpwjJnY1aIJwpQUs=
+	t=1705975347; cv=none; b=WR3fzKjjwgbRQmaBAGswsRIEEUGeqsGa1lB5ER9okrZZlonMXJfgUBPSxycnNFlrrzLcK0SUPqi1qBb027YfOgfHpHRMw2F+BTflkRADb1rvjppM8mzQjv0T01DqmGHkxedJLtgjGK/JkXhaPs6z20LdX7VvisFQcC9BwhPxhI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970930; c=relaxed/simple;
-	bh=+jVcwGuHz14pQQU0toJHiKkx/+JlAKyVuq1MOp7jWGU=;
+	s=arc-20240116; t=1705975347; c=relaxed/simple;
+	bh=JEZdAveXQvZIrfbl1eW4eI4EqtVM3lZLvkmqCdRdVNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IXvml+hLvFUIShKpeYsII5wH1LgDlteHZj2dhSXkhozXt5sf8ppIPT7lEBZTLNR5IioybltLZWsuxkgzqY5Vw0TtP0S2WcByHzawELX6JzbauKhr8QyXnJJPYonx2eKi7Hev7acg0fd4uqIRMrjhOHe+Z3WOBOYptdmM4byNOnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqxzOkMO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A44F5C43390;
-	Tue, 23 Jan 2024 00:48:49 +0000 (UTC)
+	 MIME-Version; b=tWxstLh5RDyYhLq1lko169MC3VNOwg/wTzLq/ElCTKwrC5nVg5FSjfM7AFnrcgQhA+pcBwATTS7gYCIL2QYVf0o/KdVe905/kbdj/Lqfef155ovrjd4AHBFFnu+z1ehXGHMvGruT1gkJZEE4YlfFG1iPsGvJOusjed3rM7gFxaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0j9m1ee; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A36DC433C7;
+	Tue, 23 Jan 2024 02:02:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970930;
-	bh=+jVcwGuHz14pQQU0toJHiKkx/+JlAKyVuq1MOp7jWGU=;
+	s=korg; t=1705975347;
+	bh=JEZdAveXQvZIrfbl1eW4eI4EqtVM3lZLvkmqCdRdVNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fqxzOkMOd6kLeHXucsz+2QtfgyN5kLdbo0G3mtzV1VvG2PEMD3NZkMYR8bs3hApsB
-	 NdSBWA6U6Mt8tTboLJYWvs/sY+UK7E7YJeKyAhnL4gqRR+gbr8ypcyYNzzhfpxWtNM
-	 0pLxmnAwRGTp+o6p/Do3obRvftnFTNBrWrK3MxdI=
+	b=F0j9m1eeKP5n03uoPec2BQM8fxCuIkm+BJY3/dxXffgEaMRJGtT9T0tMZRQLe7PE1
+	 q9fjgsvy50Ck4+BZIB8Sxisx1pMYOx4ahtR8cbKJ8m9wQvBCr2YsOfXnuISElkUp4D
+	 xFqr8b+w2+2EGyDh7DNgALgfIyQkN9h/OFAWmqfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	LeoLiuoc <LeoLiu-oc@zhaoxin.com>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 5.10 047/286] PCI: Add ACS quirk for more Zhaoxin Root Ports
+	Stefan Wahren <wahrenst@gmx.net>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 302/583] watchdog: bcm2835_wdt: Fix WDIOC_SETTIMEOUT handling
 Date: Mon, 22 Jan 2024 15:55:53 -0800
-Message-ID: <20240122235733.844348143@linuxfoundation.org>
+Message-ID: <20240122235821.261132452@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-commit e367e3c765f5477b2e79da0f1399aed49e2d1e37 upstream.
+[ Upstream commit f33f5b1fd1be5f5106d16f831309648cb0f1c31d ]
 
-Add more Root Port Device IDs to pci_quirk_zhaoxin_pcie_ports_acs() for
-some new Zhaoxin platforms.
+Users report about the unexpected behavior for setting timeouts above
+15 sec on Raspberry Pi. According to watchdog-api.rst the ioctl
+WDIOC_SETTIMEOUT shouldn't fail because of hardware limitations.
+But looking at the code shows that max_timeout based on the
+register value PM_WDOG_TIME_SET, which is the maximum.
 
-Fixes: 299bd044a6f3 ("PCI: Add ACS quirk for Zhaoxin Root/Downstream Ports")
-Link: https://lore.kernel.org/r/20231211091543.735903-1-LeoLiu-oc@zhaoxin.com
-Signed-off-by: LeoLiuoc <LeoLiu-oc@zhaoxin.com>
-[bhelgaas: update subject, drop changelog, add Fixes, add stable tag, fix
-whitespace, wrap code comment]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: <stable@vger.kernel.org>	# 5.7
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since 664a39236e71 ("watchdog: Introduce hardware maximum heartbeat
+in watchdog core") the watchdog core is able to handle this problem.
+
+This fix has been tested with watchdog-test from selftests.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217374
+Fixes: 664a39236e71 ("watchdog: Introduce hardware maximum heartbeat in watchdog core")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20231112173251.4827-1-wahrenst@gmx.net
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/watchdog/bcm2835_wdt.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -4551,17 +4551,21 @@ static int pci_quirk_xgene_acs(struct pc
-  * But the implementation could block peer-to-peer transactions between them
-  * and provide ACS-like functionality.
-  */
--static int  pci_quirk_zhaoxin_pcie_ports_acs(struct pci_dev *dev, u16 acs_flags)
-+static int pci_quirk_zhaoxin_pcie_ports_acs(struct pci_dev *dev, u16 acs_flags)
- {
- 	if (!pci_is_pcie(dev) ||
- 	    ((pci_pcie_type(dev) != PCI_EXP_TYPE_ROOT_PORT) &&
- 	     (pci_pcie_type(dev) != PCI_EXP_TYPE_DOWNSTREAM)))
- 		return -ENOTTY;
+diff --git a/drivers/watchdog/bcm2835_wdt.c b/drivers/watchdog/bcm2835_wdt.c
+index 7a855289ff5e..bb001c5d7f17 100644
+--- a/drivers/watchdog/bcm2835_wdt.c
++++ b/drivers/watchdog/bcm2835_wdt.c
+@@ -42,6 +42,7 @@
  
-+	/*
-+	 * Future Zhaoxin Root Ports and Switch Downstream Ports will
-+	 * implement ACS capability in accordance with the PCIe Spec.
-+	 */
- 	switch (dev->device) {
- 	case 0x0710 ... 0x071e:
- 	case 0x0721:
--	case 0x0723 ... 0x0732:
-+	case 0x0723 ... 0x0752:
- 		return pci_acs_ctrl_enabled(acs_flags,
- 			PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
- 	}
+ #define SECS_TO_WDOG_TICKS(x) ((x) << 16)
+ #define WDOG_TICKS_TO_SECS(x) ((x) >> 16)
++#define WDOG_TICKS_TO_MSECS(x) ((x) * 1000 >> 16)
+ 
+ struct bcm2835_wdt {
+ 	void __iomem		*base;
+@@ -140,7 +141,7 @@ static struct watchdog_device bcm2835_wdt_wdd = {
+ 	.info =		&bcm2835_wdt_info,
+ 	.ops =		&bcm2835_wdt_ops,
+ 	.min_timeout =	1,
+-	.max_timeout =	WDOG_TICKS_TO_SECS(PM_WDOG_TIME_SET),
++	.max_hw_heartbeat_ms =	WDOG_TICKS_TO_MSECS(PM_WDOG_TIME_SET),
+ 	.timeout =	WDOG_TICKS_TO_SECS(PM_WDOG_TIME_SET),
+ };
+ 
+-- 
+2.43.0
+
 
 
 
