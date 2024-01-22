@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 705CE837E24
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF89283809D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:00:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92284286821
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A65B81F2CDD7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:00:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03AA5A11B;
-	Tue, 23 Jan 2024 00:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50C0130E34;
+	Tue, 23 Jan 2024 01:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8+Qy7H1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQ09HbRx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3D050A77;
-	Tue, 23 Jan 2024 00:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6282212FF73;
+	Tue, 23 Jan 2024 01:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970379; cv=none; b=bqo1DLnAV0iNWOhCqoXHHzHE7sCA23pWawaEnZRsUxfutCUf73I3cLL3L6pAyskWQ5FC5pBN9utf5/xkDuGOFeaJjBNwo/stJx0jTrVsgpLiPf8yhSPTLt+iFVZDXN2x7PvCQ9Zx+wYcQccF9gtcKCTib/9ACq/NvjCmoOLrOf8=
+	t=1705971817; cv=none; b=hArwbPm0OsaqCTgqTd+5Y+tlQP4b0K/wPL8xOBCllZbXc280GyMJNksgWCW+dmEaHWhEo+iSs3dtfNahg9DMIhl3es231JdTqnsXDaJuf3ay5WbeLxNX7ROcvTCx6YoBsa2nro2HFojFG0og/A4bvzEAGsEzadeD0BtChWtSBXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970379; c=relaxed/simple;
-	bh=RS/x/BOVIRZ8kzoRzmHvbAOJjtyAEzwHr1i0kQC3eCI=;
+	s=arc-20240116; t=1705971817; c=relaxed/simple;
+	bh=y4xs/9rpqvUI/wrooiq5VNIh3TOglH7agERzct7oxDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kal7cvzrTWrpw87iGA2RxHVwa5u/abIRwfey+tJYWT9PSQzqxLMbptPVk1kvNQsi7GGBDgTw4P2cAEYtQx55dQH88zIwfYxxRKm3Tn+fSyUuBLFPNF6g/an1XLWzc/SOqARpZgtFa9A/EqZD4hG6ebOqpAZjFbQ5tVKoSUVZWUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8+Qy7H1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3DB8C433F1;
-	Tue, 23 Jan 2024 00:39:38 +0000 (UTC)
+	 MIME-Version; b=CKcsuJZ4mzekf2azA5C6ObdPyFoBUEOmAVHLlF61KGirvGvTr7eAUelQFg8p7s8Fd35dNndMx4BYOJMQlKtrR0B+zmmVD5+8YSt3LlZixQWIAV2mdKxAF3jnURn4ixvGvXlxME7Q7AvPCn2MEo6N2jz8tX7ZNKFeFR41Vl+h96o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQ09HbRx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18BA0C433C7;
+	Tue, 23 Jan 2024 01:03:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970379;
-	bh=RS/x/BOVIRZ8kzoRzmHvbAOJjtyAEzwHr1i0kQC3eCI=;
+	s=korg; t=1705971817;
+	bh=y4xs/9rpqvUI/wrooiq5VNIh3TOglH7agERzct7oxDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y8+Qy7H1qdoAXWHunB+eioZ20zYtxYD9fqVBbebr7aGswCBfZpx35di2+YkRCdIQH
-	 W7hE5jXkvwEMmBWcNXXHtO5dya+UjLh7zOHj3C4dNiWEaz0HQvKBeMayszbda44gfN
-	 X7WZHAYewNXJ1MIftsEiTB1yjQQHmB5x5/wqBz7w=
+	b=aQ09HbRxhMPzgzUoRARYmLTuo5py41TJu/j4AUhL3ZbXYlnWukCQE9LyrLmfrqk0P
+	 IZlbTc/I89kPWCmVVsOH778xjeIKl8JBwVLuH2gBFIRtkSe7qXUVWxN0Lful2Wy4zh
+	 RKtgke84Lo0LFzUGRPBjYv+U7mSyMIR4t0gk/WhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Chanho Park <chanho61.park@samsung.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa@kernel.org>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 640/641] i2c: s3c24xx: fix read transfers in polling mode
+Subject: [PATCH 5.10 238/286] mips: dmi: Fix early remap on MIPS32
 Date: Mon, 22 Jan 2024 15:59:04 -0800
-Message-ID: <20240122235838.306631307@linuxfoundation.org>
+Message-ID: <20240122235741.232249758@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Serge Semin <fancer.lancer@gmail.com>
 
-[ Upstream commit 0d9cf23ed55d7ba3ab26d617a3ae507863674c8f ]
+[ Upstream commit 0d0a3748a2cb38f9da1f08d357688ebd982eb788 ]
 
-To properly handle read transfers in polling mode, no waiting for the ACK
-state is needed as it will never come. Just wait a bit to ensure start
-state is on the bus and continue processing next bytes.
+dmi_early_remap() has been defined as ioremap_cache() which on MIPS32 gets
+to be converted to the VM-based mapping. DMI early remapping is performed
+at the setup_arch() stage with no VM available. So calling the
+dmi_early_remap() for MIPS32 causes the system to crash at the early boot
+time. Fix that by converting dmi_early_remap() to the uncached remapping
+which is always available on both 32 and 64-bits MIPS systems.
 
-Fixes: 117053f77a5a ("i2c: s3c2410: Add polling mode support")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Chanho Park <chanho61.park@samsung.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Note this change shall not cause any regressions on the current DMI
+support implementation because on the early boot-up stage neither MIPS32
+nor MIPS64 has the cacheable ioremapping support anyway.
+
+Fixes: be8fa1cb444c ("MIPS: Add support for Desktop Management Interface (DMI)")
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-s3c2410.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ arch/mips/include/asm/dmi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-s3c2410.c b/drivers/i2c/busses/i2c-s3c2410.c
-index c56886af724e..bf9a5670ef33 100644
---- a/drivers/i2c/busses/i2c-s3c2410.c
-+++ b/drivers/i2c/busses/i2c-s3c2410.c
-@@ -216,8 +216,17 @@ static bool is_ack(struct s3c24xx_i2c *i2c)
- 	int tries;
+diff --git a/arch/mips/include/asm/dmi.h b/arch/mips/include/asm/dmi.h
+index 27415a288adf..dc397f630c66 100644
+--- a/arch/mips/include/asm/dmi.h
++++ b/arch/mips/include/asm/dmi.h
+@@ -5,7 +5,7 @@
+ #include <linux/io.h>
+ #include <linux/memblock.h>
  
- 	for (tries = 50; tries; --tries) {
--		if (readl(i2c->regs + S3C2410_IICCON)
--			& S3C2410_IICCON_IRQPEND) {
-+		unsigned long tmp = readl(i2c->regs + S3C2410_IICCON);
-+
-+		if (!(tmp & S3C2410_IICCON_ACKEN)) {
-+			/*
-+			 * Wait a bit for the bus to stabilize,
-+			 * delay estimated experimentally.
-+			 */
-+			usleep_range(100, 200);
-+			return true;
-+		}
-+		if (tmp & S3C2410_IICCON_IRQPEND) {
- 			if (!(readl(i2c->regs + S3C2410_IICSTAT)
- 				& S3C2410_IICSTAT_LASTBIT))
- 				return true;
+-#define dmi_early_remap(x, l)		ioremap_cache(x, l)
++#define dmi_early_remap(x, l)		ioremap(x, l)
+ #define dmi_early_unmap(x, l)		iounmap(x)
+ #define dmi_remap(x, l)			ioremap_cache(x, l)
+ #define dmi_unmap(x)			iounmap(x)
 -- 
 2.43.0
 
