@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-13378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D49FD837BD3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 943EF838294
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D16A29437B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:07:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C49828C9C7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C594154C0A;
-	Tue, 23 Jan 2024 00:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5995D8F3;
+	Tue, 23 Jan 2024 01:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbxiKW3j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BW/CJXSI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AF6B154C05;
-	Tue, 23 Jan 2024 00:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D01F5C8F6;
+	Tue, 23 Jan 2024 01:46:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969400; cv=none; b=N6Dm0GdOQlP3kIcsrXXTxRyIGym+pdJooK6zWVuhTDQOZ/Ycs9a9HufmveS1aWoKQqaOw40XU3x5CDxCW557XWioKhS0CoKJ4yDP+FPyV+i2pDIdaszyX+QHuObRABM22/fJPrMBd8HRqSXMTSy+IuDYlHSsyk0X+cdovExeBmE=
+	t=1705974385; cv=none; b=A/sTIeocblJrADR8gdYs62QhmO7KACQO2DuQZXa9i4puaSmcoVhv/lzXTpnHYgcwx0qe/aFneDMvfl6XrpR5KaB/mTbDbb0KZEhg/J8rhqCVEFORn1perMQ0vkUznzp88kA0iC/QB5c++RKZRFITlyxYdX1hjm/goQalBl4YrVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969400; c=relaxed/simple;
-	bh=kOhOY8KJqGM+w7yXvKBe3SFRA8x1BzFKCmoHfmiXWek=;
+	s=arc-20240116; t=1705974385; c=relaxed/simple;
+	bh=SP24KkxQactEd0iMR+gLYShFecb502b8S8KNTCN9a9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rohshSfNww4Qp269ijLpzeppLdc+xpBjd9ldrLINw2TpXTxrjm+2FTKGaesqU7Ksmd7QvsttWp2xw0scqGk16ZmPodnIPU2hvxxIqT3ZkhHi+vhsdzLPMHIbuh8jU0E7QNVs95mfbmTpTEj3sKznpwsQ0ShRrueKWMwxTOiHAuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbxiKW3j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC47BC43394;
-	Tue, 23 Jan 2024 00:23:19 +0000 (UTC)
+	 MIME-Version; b=e7awdQXhGCkPcXcYkq5xXGoYqXkrF0l56d0kwvg0TQXsYLK066zSHEZK13mEVm1ExlmZTH0GpyUH9vmrqa2WdY6oM5A9xZ9bmHYWoGjWx6zXfdgFjfVqRIV9pPIaW8U5rPLjfITJVZpGjYXTRaKY8AS+g2wDD0vAzbYvnLT6M3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BW/CJXSI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93358C433C7;
+	Tue, 23 Jan 2024 01:46:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969400;
-	bh=kOhOY8KJqGM+w7yXvKBe3SFRA8x1BzFKCmoHfmiXWek=;
+	s=korg; t=1705974384;
+	bh=SP24KkxQactEd0iMR+gLYShFecb502b8S8KNTCN9a9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NbxiKW3jMHkBvwkhzGGuWzd0UsPmI/0fg3UaP+TKpknQsJ75Ij9MMaBpwLBZUBbep
-	 fE3FDt8C1FnBtxxnEZZQ2MJHTQRZ2A0fZ6mNID366klrauazzb+R4028Fp3EIZzHG5
-	 nKFQeWhxmFumTmM16UfmDTHeeOv1/u5kexKtsfLU=
+	b=BW/CJXSI66oQ45ZBJ/vgJkN9Lb8W1c3+oMxsTQ/UGfGppx7Mw9d458n1xrMt/1MPh
+	 GJPz1wIhF3IHL6L3TMZBPPM/M0QQxNJ1r82BV1Y2ll/fGJ7Pa7X5iusWQZsbcrV789
+	 SOgUOey3hokQZ80XrjNEANwtjuFa64R3ApkM2wfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	syzbot+3eff5e51bf1db122a16e@syzkaller.appspotmail.com,
+	Chengming Zhou <zhouchengming@bytedance.com>,
+	Barry Song <v-songbaohua@oppo.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 221/641] netfilter: nf_tables: mark newset as dead on transaction abort
+Subject: [PATCH 6.6 074/583] crypto: scomp - fix req->dst buffer overflow
 Date: Mon, 22 Jan 2024 15:52:05 -0800
-Message-ID: <20240122235824.857558492@linuxfoundation.org>
+Message-ID: <20240122235814.423025681@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Chengming Zhou <zhouchengming@bytedance.com>
 
-[ Upstream commit 08e4c8c5919fd405a4d709b4ba43d836894a26eb ]
+[ Upstream commit 744e1885922a9943458954cfea917b31064b4131 ]
 
-If a transaction is aborted, we should mark the to-be-released NEWSET dead,
-just like commit path does for DEL and DESTROYSET commands.
+The req->dst buffer size should be checked before copying from the
+scomp_scratch->dst to avoid req->dst buffer overflow problem.
 
-In both cases all remaining elements will be released via
-set->ops->destroy().
-
-The existing abort code does NOT post the actual release to the work queue.
-Also the entire __nf_tables_abort() function is wrapped in gc_seq
-begin/end pair.
-
-Therefore, async gc worker will never try to release the pending set
-elements, as gc sequence is always stale.
-
-It might be possible to speed up transaction aborts via work queue too,
-this would result in a race and a possible use-after-free.
-
-So fix this before it becomes an issue.
-
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 1ab53a77b772 ("crypto: acomp - add driver-side scomp interface")
+Reported-by: syzbot+3eff5e51bf1db122a16e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/0000000000000b05cd060d6b5511@google.com/
+Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
+Reviewed-by: Barry Song <v-songbaohua@oppo.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 1 +
- 1 file changed, 1 insertion(+)
+ crypto/scompress.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index be04af433988..bbb8d8533f77 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -10383,6 +10383,7 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
- 				nft_trans_destroy(trans);
- 				break;
+diff --git a/crypto/scompress.c b/crypto/scompress.c
+index 442a82c9de7d..b108a30a7600 100644
+--- a/crypto/scompress.c
++++ b/crypto/scompress.c
+@@ -117,6 +117,7 @@ static int scomp_acomp_comp_decomp(struct acomp_req *req, int dir)
+ 	struct crypto_scomp *scomp = *tfm_ctx;
+ 	void **ctx = acomp_request_ctx(req);
+ 	struct scomp_scratch *scratch;
++	unsigned int dlen;
+ 	int ret;
+ 
+ 	if (!req->src || !req->slen || req->slen > SCOMP_SCRATCH_SIZE)
+@@ -128,6 +129,8 @@ static int scomp_acomp_comp_decomp(struct acomp_req *req, int dir)
+ 	if (!req->dlen || req->dlen > SCOMP_SCRATCH_SIZE)
+ 		req->dlen = SCOMP_SCRATCH_SIZE;
+ 
++	dlen = req->dlen;
++
+ 	scratch = raw_cpu_ptr(&scomp_scratch);
+ 	spin_lock(&scratch->lock);
+ 
+@@ -145,6 +148,9 @@ static int scomp_acomp_comp_decomp(struct acomp_req *req, int dir)
+ 				ret = -ENOMEM;
+ 				goto out;
  			}
-+			nft_trans_set(trans)->dead = 1;
- 			list_del_rcu(&nft_trans_set(trans)->list);
- 			break;
- 		case NFT_MSG_DELSET:
++		} else if (req->dlen > dlen) {
++			ret = -ENOSPC;
++			goto out;
+ 		}
+ 		scatterwalk_map_and_copy(scratch->dst, req->dst, 0, req->dlen,
+ 					 1);
 -- 
 2.43.0
 
