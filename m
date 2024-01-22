@@ -1,97 +1,108 @@
-Return-Path: <stable+bounces-12701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68793836C81
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 18:07:52 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 835AC836D7F
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 18:33:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 212C828703C
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 17:07:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B4D2B34507
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 17:16:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 507DA4B5AA;
-	Mon, 22 Jan 2024 15:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD15564A9A;
+	Mon, 22 Jan 2024 16:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VjBj6HWP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HaE233g5"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20673DB9A
-	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 15:53:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 714834D594;
+	Mon, 22 Jan 2024 16:05:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705938808; cv=none; b=uwbJhf0rZDPqNKTH3foWhs2Qb2yeMlVP4IKBVyYeTF0NmadXViRd8Nktn21OK+suXVZDw1eWx8M+6EkYFX18DOvFbBn3yWmZ3YrxtvwkUEWfuRsitQwPeJcS3aJwU18gCqaqbkxat0JBHOLGEt0nNuCPuXf43oQZAMJ+M7Xbztc=
+	t=1705939543; cv=none; b=fMXX+gc8wN7hkOTqQ6o8hZWmtOUF5sdodctIPfyvk4nBv7IIiMq0IhBcCQu8+eP0lTnAl90XtZjD3k0Gd5VZvJs9ldupIiAEqoY3Pk4XhNa8h/0veL+EJd4CB2EFkwEi0exoW8qs7BPY6yDmveLydHIW7fJovLru97tfm1zs7lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705938808; c=relaxed/simple;
-	bh=z9ec84LTNQxrzMH3mbPk9MiChnTFnB/bKKQmPAxhz7c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aO/TyT+Kw77jQOwKypD5zwKchGyQRH6+H2rin2Ke6iseq9aN0qReQDjy30Lff0pMCFOCxVJDFdr5zIblaz/yi0YBBETMnvuuia/UcvhfNUdMsQtvoAbH+tR+QKbB5A3nrLcC7uYmNlp54cBU/MNSLFaXyV9MoBeeTLKk6OHRf8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VjBj6HWP; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1705938805;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=z9ec84LTNQxrzMH3mbPk9MiChnTFnB/bKKQmPAxhz7c=;
-	b=VjBj6HWPIqmCslhO5WwYx2eehEwcXKGktuilfTYiStrklvMnUinNZOeAa56szrCe73zqpv
-	xEBZtjJo+G+HNa0C7LTV7LgvJDZC0Ayywccv+HzXPNLWy6zXqFRFC7YAiUlAN9p2S/Tgyd
-	9hor6yEA4KKjxd81QKDAWX+8Z2aWmxc=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-599-JWOpoJGAP6W7FtoNqXo_0Q-1; Mon, 22 Jan 2024 10:53:22 -0500
-X-MC-Unique: JWOpoJGAP6W7FtoNqXo_0Q-1
-Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id C5C5186D4D4;
-	Mon, 22 Jan 2024 15:53:21 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.39.192.175])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id 52EC85012;
-	Mon, 22 Jan 2024 15:53:19 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: masahiroy@kernel.org
-Cc: dcavalca@meta.com,
-	jtornosm@redhat.com,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	nathan@kernel.org,
-	ndesaulniers@google.com,
-	nicolas@fjasle.eu,
-	stable@vger.kernel.org
-Subject: Re: [PATCH V5 2/2] rpm-pkg: avoid install/remove the running kernel
-Date: Mon, 22 Jan 2024 16:53:15 +0100
-Message-ID: <20240122155318.13848-1-jtornosm@redhat.com>
-In-Reply-To: <CAK7LNARNgp_oYWf69tw4+y0SMp=Hi2rixAt5h8R5=GaMkQLQYA@mail.gmail.com>
-References: <CAK7LNARNgp_oYWf69tw4+y0SMp=Hi2rixAt5h8R5=GaMkQLQYA@mail.gmail.com>
+	s=arc-20240116; t=1705939543; c=relaxed/simple;
+	bh=1eEXVVdWTxV8z4waWaHTl3I6KXQypu95DXHvSvRdIHs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uZNlLMjf2XjI5fUptP2wEQbkqsBIGPX5FMHx+veqWCLqojMkiOwWfaV0GOmK7P0VJ9BI/wkRemAX6PmYLQRyOJVl8LWBnFP/7A9VVNmAU9rf8av4pxDj76RJ55zy8iDp4bQTRJuCVnmV0nfeRKL2wadLhFWoJvuPCRLAGpp1XHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HaE233g5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9638CC433C7;
+	Mon, 22 Jan 2024 16:05:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705939542;
+	bh=1eEXVVdWTxV8z4waWaHTl3I6KXQypu95DXHvSvRdIHs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HaE233g598PTRgikgKOs0OlamkpWc2K8+qqvyMr5yECHnFkRXLHBVd8n1YLmmP9Tf
+	 ISU6bGw0CwPUbfzi3h0Jzvfb8UzIcTuVaJTnRYO47UCDLIIYyHC6xP/HGwpCc5b7DV
+	 dZ+t7u9n93sPwykg6VBtD+lepTKcek9ZrBHV0EylXMaS6maq/v3qezUSWWaGew031B
+	 4ZwX7ykVqUD5LIrz7ZNbEE4gARFKbKFlyekx5JHVdSdyRcJhYYXNUW8ao8UtCS52s3
+	 DcchBjDXtJ1iE0DBabpPfSSKqzxCIBQiAJVKZHvIYAzqnqGf+qkHeodKZTH1zjZp/Q
+	 N543OSbMlzpsQ==
+Date: Mon, 22 Jan 2024 16:05:37 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: Johan Hovold <johan+linaro@kernel.org>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Banajit Goswami <bgoswami@quicinc.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4 2/4] ASoC: qcom: sc8280xp: limit speaker volumes
+Message-ID: <aca2b125-acf8-4791-a3eb-ea19826d3ee4@sirena.org.uk>
+References: <20240119112420.7446-1-johan+linaro@kernel.org>
+ <20240119112420.7446-3-johan+linaro@kernel.org>
+ <d54d3640-49bf-4a2f-903b-4beeb0ebd56c@sirena.org.uk>
+ <Za4cR90XoAaATq8X@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.5
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="pJm5Y4ijPdHAqAYt"
+Content-Disposition: inline
+In-Reply-To: <Za4cR90XoAaATq8X@hovoldconsulting.com>
+X-Cookie: Nice guys don't finish nice.
 
-> You can proceed with 'rpm -i --force', but
-> that is the user's responsibility if something bad happens.
 
-> No, not OK.
-Ok, understood and maybe it is interesting for the user.
-Indeed, zypper tool from openSUSE can be configured to protect the running
-kernel as dnf.
-I drop this patch.
+--pJm5Y4ijPdHAqAYt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thanks
+On Mon, Jan 22, 2024 at 08:41:59AM +0100, Johan Hovold wrote:
+> On Mon, Jan 22, 2024 at 12:03:55AM +0000, Mark Brown wrote:
 
-Best regards
-José Ignacio
+> > This doesn't apply against current code, please check and resend.
 
+> These patches are based on Linus's tree after merging the sound updates
+> and I just verified that they apply cleanly to 6.8-rc1.
+
+> I couldn't find anything related in either linux-next or your ASoC tree
+> that should interfere.
+
+> Could you please try again or let me know which branch to rebase on?
+
+I was applying it against v6.8-rc1.
+
+--pJm5Y4ijPdHAqAYt
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmWuklAACgkQJNaLcl1U
+h9AfJwf/VeyDwDQeh8AWh4NRdjUo5Pk5BLZ6jqdmO7SqBALZpLh5xFy5FGfLXf8N
+UwJ6NHQih/rY3GI/hGT89cfC2I4UYOezJpjgdFxT9BG69bBIPHBoLcyMWFXXcMXz
+47xHUGVsLK6ouYeyZpupNV7RuMeR6AyuPwltxzzcKwC6/wx9dC+hDM5AMmG6XCb/
+yYOFjXRigXNlCVJVPMfwszrp0YhsRcIOR/mpEAazDmgNQGLnWuwAFMsDHt8HRT9b
+tJhHaJpT8qdb9uS77JM/1Z7Fah2bh0g95qKTBT0TC3sr37ciK84kmUGP9bDVShxi
+ba/11nuFNGeE381eTYk1OqblnnGwZw==
+=it3K
+-----END PGP SIGNATURE-----
+
+--pJm5Y4ijPdHAqAYt--
 
