@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-15426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32C92838530
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E991F83839A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DFFC128AE97
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C1551F28A80
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB83E15C6;
-	Tue, 23 Jan 2024 02:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39AFD63412;
+	Tue, 23 Jan 2024 01:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AiNWABpS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obPCGzW/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B56185A;
-	Tue, 23 Jan 2024 02:09:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC4286313F;
+	Tue, 23 Jan 2024 01:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975762; cv=none; b=T4yO9C6t1dMEyi9iNrpxUgakKXyAlgaeBRaEYef+TNEHHUND/kLpFg/VRRHZsKnwvMwZ4cW2j1YTU1wangve42YyOWxoG0X8+eeAMzidZz+fGx8brunerIcf8hE2mMmGdyN74DgHiFQh3KSaeuGGQ0dJk+aQr0oEOSwOqyqkuSQ=
+	t=1705975018; cv=none; b=JymU4dsnmXRbJFZIW67+3cYqy9YePRGOarDMFdRvNrKUPrK7d6S1gbtINsRDEiN+Lpn4/MgRfl1xdSq+bRa+HsahB3B1RCKOPo5wUtwc/T2zndCsjL2yLi3QuCQX+ez0DYpYg4wq4Q/GiZFAlIGpQuyCvZLEoWF3xMp+JrWKN/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975762; c=relaxed/simple;
-	bh=Ipd66XPjTc+swLzNY+xkd/N+CsoD+Mwo9cvqWvbU5eI=;
+	s=arc-20240116; t=1705975018; c=relaxed/simple;
+	bh=ghEQhmhZPdqjYl8DW2op/ZZOR6fyKEl0lFbBjMPiTmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=glJc9xdJopCid+EXUoPrd4DZV3o5tDTKSctVWGCfiUTMaYApxdwWriQnS2fQrbEmOfPhfLpteHQz/lk92ONkuUBK30F4lCN9PTxfoA0d8iZuR9HXZhGtOm5WhPpKq9xUlrQixWs4rMZJAf+CJyJHYr6cEoaliDTlyl3v+k6iAGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AiNWABpS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DAF7C433C7;
-	Tue, 23 Jan 2024 02:09:22 +0000 (UTC)
+	 MIME-Version; b=OsgwBd6ghO/ARVCNcRemv5xjHJFdL6/UQz1LMoupjrvN3stm+SDwJ2uL7vrm74nScDqVpTNrw7CYTNowAIu7lNyr01W6lT9kOe46hwVahK4AK3fvVm1lGzUZXV7ROFlQWTIt4bQssOQeGZJ2Zgf8q1gE0WK/ja4wlsJHjmVCDgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obPCGzW/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63EBCC433C7;
+	Tue, 23 Jan 2024 01:56:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975762;
-	bh=Ipd66XPjTc+swLzNY+xkd/N+CsoD+Mwo9cvqWvbU5eI=;
+	s=korg; t=1705975017;
+	bh=ghEQhmhZPdqjYl8DW2op/ZZOR6fyKEl0lFbBjMPiTmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AiNWABpSjaM/qbA6mdgsd0EKk0XcRVFYWar9hAykoyy+QuMjxgRvDvtbwirBmclvw
-	 LVkLYU7FfKgoHnPcBKj0RLuDTwdOGIjOGg6jlppfhWJx28D87yWcip8C+03qP5Rn1G
-	 BmzMpgmfn3SVUzLlzN4BiLBlDDhamzLM4A4vvsc4=
+	b=obPCGzW/AaoSnh6+7awHjHaZBUTOkyjeLYMRs/+rw/LABkWLKCZzu03W154C795xD
+	 Yh5TOlRlE+brwq3gMhxPMr9zJ9+FiPMt7aRJEPSkNsPVI1q/So3S5SpgciMDPG6Bdu
+	 QMbzujBzR7t/R9hXP2zn+HhrE7cYFuTPhl1W8CL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 522/583] ASoC: mediatek: sof-common: Add NULL check for normal_link string
+Subject: [PATCH 5.15 317/374] tty: early return from send_break() on TTY_DRIVER_HARDWARE_BREAK
 Date: Mon, 22 Jan 2024 15:59:33 -0800
-Message-ID: <20240122235828.047455300@linuxfoundation.org>
+Message-ID: <20240122235755.904100414@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit e3b3ec967a7d93b9010a5af9a2394c8b5c8f31ed ]
+[ Upstream commit 66619686d187b4a6395316b7f39881e945dce4bc ]
 
-It's not granted that all entries of struct sof_conn_stream declare
-a `normal_link` (a non-SOF, direct link) string, and this is the case
-for SoCs that support only SOF paths (hence do not support both direct
-and SOF usecases).
+If the driver sets TTY_DRIVER_HARDWARE_BREAK, we leave ops->break_ctl()
+to the driver and return from send_break(). But we do it using a local
+variable and keep the code flowing through the end of the function.
+Instead, do 'return' immediately with the ops->break_ctl()'s return
+value.
 
-For example, in the case of MT8188 there is no normal_link string in
-any of the sof_conn_stream entries and there will be more drivers
-doing that in the future.
+This way, we don't have to stuff the 'else' branch of the 'if' with the
+software break handling. And we can re-indent the function too.
 
-To avoid possible NULL pointer KPs, add a NULL check for `normal_link`.
-
-Fixes: 0caf1120c583 ("ASoC: mediatek: mt8195: extract SOF common code")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://msgid.link/r/20240111105226.117603-1-angelogioacchino.delregno@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20230919085156.1578-14-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 66aad7d8d3ec ("usb: cdc-acm: return correct error code on unsupported break")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/common/mtk-dsp-sof-common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/tty_io.c | 32 +++++++++++++++++---------------
+ 1 file changed, 17 insertions(+), 15 deletions(-)
 
-diff --git a/sound/soc/mediatek/common/mtk-dsp-sof-common.c b/sound/soc/mediatek/common/mtk-dsp-sof-common.c
-index 6fef16306f74..21a9403b7e92 100644
---- a/sound/soc/mediatek/common/mtk-dsp-sof-common.c
-+++ b/sound/soc/mediatek/common/mtk-dsp-sof-common.c
-@@ -24,7 +24,7 @@ int mtk_sof_dai_link_fixup(struct snd_soc_pcm_runtime *rtd,
- 		struct snd_soc_dai_link *sof_dai_link = NULL;
- 		const struct sof_conn_stream *conn = &sof_priv->conn_streams[i];
+diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
+index 12f6ef8d0f45..a18138ce67b2 100644
+--- a/drivers/tty/tty_io.c
++++ b/drivers/tty/tty_io.c
+@@ -2504,22 +2504,24 @@ static int send_break(struct tty_struct *tty, unsigned int duration)
+ 		return 0;
  
--		if (strcmp(rtd->dai_link->name, conn->normal_link))
-+		if (conn->normal_link && strcmp(rtd->dai_link->name, conn->normal_link))
- 			continue;
+ 	if (tty->driver->flags & TTY_DRIVER_HARDWARE_BREAK)
+-		retval = tty->ops->break_ctl(tty, duration);
+-	else {
+-		/* Do the work ourselves */
+-		if (tty_write_lock(tty, false) < 0)
+-			return -EINTR;
+-		retval = tty->ops->break_ctl(tty, -1);
+-		if (retval)
+-			goto out;
+-		if (!signal_pending(current))
+-			msleep_interruptible(duration);
+-		retval = tty->ops->break_ctl(tty, 0);
++		return tty->ops->break_ctl(tty, duration);
++
++	/* Do the work ourselves */
++	if (tty_write_lock(tty, false) < 0)
++		return -EINTR;
++
++	retval = tty->ops->break_ctl(tty, -1);
++	if (retval)
++		goto out;
++	if (!signal_pending(current))
++		msleep_interruptible(duration);
++	retval = tty->ops->break_ctl(tty, 0);
+ out:
+-		tty_write_unlock(tty);
+-		if (signal_pending(current))
+-			retval = -EINTR;
+-	}
++	tty_write_unlock(tty);
++
++	if (signal_pending(current))
++		retval = -EINTR;
++
+ 	return retval;
+ }
  
- 		for_each_card_rtds(card, runtime) {
 -- 
 2.43.0
 
