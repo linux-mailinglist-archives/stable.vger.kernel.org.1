@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15E15837EE1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28D1B838549
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:40:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 498051C28417
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB9E9B29B7D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C63E53AC;
-	Tue, 23 Jan 2024 00:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23476A353;
+	Tue, 23 Jan 2024 02:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqsSDPou"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rEOj2M/e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA3F53A1;
-	Tue, 23 Jan 2024 00:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9259A6A320;
+	Tue, 23 Jan 2024 02:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970802; cv=none; b=HgeHGMWw7JUDfl5bWqH30oUSjCpO1qgUtDpVKPoYrtAdgGhl6fx/HMRkMabmhu/HQkD9J17Wvpk98mG70ik05JAhSs0Lusbm53FpK09a2WIT184YQnmpR/mav/T46pBPoahksUVXtO/dhpV2NWgxk3It6QvfFb7XudnuEuM0Un4=
+	t=1705975346; cv=none; b=dAm3aHvErfHds9rgmQdDMA/T9aLw56AipEmP0yXwke7+uUjK5uin6NunL5J/Vt0JIEgRyYv31euK7aeFCwxCvdxX2744morGz+Yn9/jOvgI1f/NMk2FDludAksE7mfW+x30bMFn4ln6XyLOUJWT3l0sGTo9FoSehpySzJx1KU2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970802; c=relaxed/simple;
-	bh=WzjlJLwpwRC/LlUXZ6pzsBhDeTo5RY5giUXilNHTM1w=;
+	s=arc-20240116; t=1705975346; c=relaxed/simple;
+	bh=yEh8BocRSLNUolOQ+NTCKozpHCuFBzqjMBM3/YIs+iU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U5oUaAo+m9THmawAmfGur9+aFQA5vNnDimG3MjWj4C0DQAkYcK6MaLQYi3TTryIJF9YyXsrYbjIk4pGn94g23x+TVvJ+Osg4Zn+8dssy6gv160V+ueh+S6e8wgNlCcnLKBwuKH8AOY4eBNudmVp7OPXzuZTMDI3GGhfJZJWQUIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqsSDPou; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F443C433F1;
-	Tue, 23 Jan 2024 00:46:41 +0000 (UTC)
+	 MIME-Version; b=XG1eqRudBFYBSQvWmQnVzAV7g7AMezX+998qpJgAvKdobDCwITN5L6WYYtRTLzOGMHvMUXtbINzCESolHa2VzJeL/Yq1Tw0QZnmsT1Aig8wQxkvH8IFfboenWGsPFC7crLk5E5P+lCxp9961ZOyHYHLRNnTPeiYp+SRqhduMMe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rEOj2M/e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57818C43399;
+	Tue, 23 Jan 2024 02:02:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970802;
-	bh=WzjlJLwpwRC/LlUXZ6pzsBhDeTo5RY5giUXilNHTM1w=;
+	s=korg; t=1705975346;
+	bh=yEh8BocRSLNUolOQ+NTCKozpHCuFBzqjMBM3/YIs+iU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VqsSDPouxj2PIVSbbcjNLmDtffl2uvyPnkNwFRpGJX0Q0EDMa23uXfTd26xsV1Klj
-	 /HXbCURF7hYoxYvf0L71C9xvPI9q//dKkRUrBQQ1FH2TLk2+UbvXfQFXh44YfefNOB
-	 UYUrH6nmpE5ZjCKidpFhbKLLVhR8/hHd5SXCxYBA=
+	b=rEOj2M/eFprzXra6hzJR19Cxsdm3geY5Asvgx474suUYwyZAKgaXEGeuPFUEFEQv0
+	 ZrB+uUgx108fuKHrcOueJZi1ycybMM+Jo/NhPHcGmzp7YvrLXRKVvOWwY//RThnuUL
+	 dw4bsEv1b2zCFQTtcAsJjHeuBbvGxtJD0XcZ9pCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Yang <xiangyang3@huawei.com>,
-	Inki Dae <inki.dae@samsung.com>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 019/286] drm/exynos: fix a potential error pointer dereference
+Subject: [PATCH 6.6 274/583] drm/msm/adreno: Fix A680 chip id
 Date: Mon, 22 Jan 2024 15:55:25 -0800
-Message-ID: <20240122235732.771641654@linuxfoundation.org>
+Message-ID: <20240122235820.382846946@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Yang <xiangyang3@huawei.com>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-[ Upstream commit 73bf1c9ae6c054c53b8e84452c5e46f86dd28246 ]
+[ Upstream commit 3e6688fd96966b6c275e95c39aa367bc0a490ccd ]
 
-Smatch reports the warning below:
-drivers/gpu/drm/exynos/exynos_hdmi.c:1864 hdmi_bind()
-error: 'crtc' dereferencing possible ERR_PTR()
+The only A680 referenced from DeviceTree is patch level 1, which since
+commit '90b593ce1c9e ("drm/msm/adreno: Switch to chip-id for identifying
+GPU")' isn't a known chip id.
 
-The return value of exynos_drm_crtc_get_by_type maybe ERR_PTR(-ENODEV),
-which can not be used directly. Fix this by checking the return value
-before using it.
+Correct the chip id to allow the A680 to be recognized again.
 
-Signed-off-by: Xiang Yang <xiangyang3@huawei.com>
-Signed-off-by: Inki Dae <inki.dae@samsung.com>
+Fixes: 90b593ce1c9e ("drm/msm/adreno: Switch to chip-id for identifying GPU")
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/569839/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/exynos/exynos_hdmi.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/msm/adreno/adreno_device.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/exynos/exynos_hdmi.c b/drivers/gpu/drm/exynos/exynos_hdmi.c
-index dc01c188c0e0..981bffacda24 100644
---- a/drivers/gpu/drm/exynos/exynos_hdmi.c
-+++ b/drivers/gpu/drm/exynos/exynos_hdmi.c
-@@ -1849,6 +1849,8 @@ static int hdmi_bind(struct device *dev, struct device *master, void *data)
- 		return ret;
- 
- 	crtc = exynos_drm_crtc_get_by_type(drm_dev, EXYNOS_DISPLAY_TYPE_HDMI);
-+	if (IS_ERR(crtc))
-+		return PTR_ERR(crtc);
- 	crtc->pipe_clk = &hdata->phy_clk;
- 
- 	ret = hdmi_create_connector(encoder);
+diff --git a/drivers/gpu/drm/msm/adreno/adreno_device.c b/drivers/gpu/drm/msm/adreno/adreno_device.c
+index f2d9d34ed50f..b7b527e21dac 100644
+--- a/drivers/gpu/drm/msm/adreno/adreno_device.c
++++ b/drivers/gpu/drm/msm/adreno/adreno_device.c
+@@ -462,7 +462,7 @@ static const struct adreno_info gpulist[] = {
+ 			{ 190, 1 },
+ 		),
+ 	}, {
+-		.chip_ids = ADRENO_CHIP_IDS(0x06080000),
++		.chip_ids = ADRENO_CHIP_IDS(0x06080001),
+ 		.family = ADRENO_6XX_GEN2,
+ 		.revn = 680,
+ 		.fw = {
 -- 
 2.43.0
 
