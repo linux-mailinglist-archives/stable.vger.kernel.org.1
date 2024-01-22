@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-12915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F5188379AB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:44:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64438837A56
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F8A81F27B95
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:44:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9761C1C22CCF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECAD5CBE;
-	Tue, 23 Jan 2024 00:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79EE712BF22;
+	Tue, 23 Jan 2024 00:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lOr1KETT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kd3JB3Dc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA135CAF;
-	Tue, 23 Jan 2024 00:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A00612BF15;
+	Tue, 23 Jan 2024 00:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968408; cv=none; b=T//tOU9I7a/yPg2OXe/sMxMpAYDRojA2paLt4VMk/yNUKt7fh9uEfZQxJRvQvVSDnLpeBUvldP0Z/Ai3KWwD1XU48uQtyz4CUsmo8/8Dm4Bmg0NvI0aT4eGg09bzW1DJIgOf/QLr0n9yHKrhU2anZNWwjyx4wa+uDgrrgzsAlEA=
+	t=1705968901; cv=none; b=RGiyCVJm4vM7ik83+lJUFUX0aZBYPTS3iFAIGKu+YfGdTqoDIN8IuWfW2rf/nempeaHwDTG+c68KAqPtF/i60JYUOJed+1KbxQg9546f3PioC1jVl5H2WZOpGG7kekqDvshhsIM6D5jUS7T4ayGwhwaLpsABYZT3SKUu4vud2JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968408; c=relaxed/simple;
-	bh=5yRZC5lPfnzbPSrGlK2Eu5IFtqpv/L8tbtG/utTK2WU=;
+	s=arc-20240116; t=1705968901; c=relaxed/simple;
+	bh=K8caADRfhvwWdlaOEidDdOhYT5KlMEvErnFk3hmFRCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hwYylz8hk3PuLL9unQkyUExWHUYh9BRRJ4c0ywMHLR7l+5tYnexNovLa+OfR+kE2EIhncv+QfBa2lH0/gx1V2dwmnEcMw7kCvYVpgPQ+b0y7EqInrnETFuY+B0hO82NWBvnI9CoozClU/hjjPR52WVaGthfUCZeJaVvsjvEQHPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lOr1KETT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDBBCC43390;
-	Tue, 23 Jan 2024 00:06:47 +0000 (UTC)
+	 MIME-Version; b=f98XvfCTQoaf+kkGv1TShK9GS42ULtN0R6ElUvYUX3VEtSfRchT5nZ7khPwR7FfHKXJ/dFAwQW+wSKy6T5D7a2s486h/1CMqmeaPM2BY3eznA5uokE9RXHyrPWNnM46wpEaJSjxC4HFdwyK0JMQJOBDUUpsPypvXMQPQdFaUStw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kd3JB3Dc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E2DC43390;
+	Tue, 23 Jan 2024 00:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968408;
-	bh=5yRZC5lPfnzbPSrGlK2Eu5IFtqpv/L8tbtG/utTK2WU=;
+	s=korg; t=1705968901;
+	bh=K8caADRfhvwWdlaOEidDdOhYT5KlMEvErnFk3hmFRCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lOr1KETTxDPlilIbNc3dP1LhqN+FIJikPEzAdA+dyDZ95AYLVAe6p7srqbGe/2mBt
-	 EPJRUCoxTEaAA7TkV+4tPSaqnGqJ4G99XT6cIlUV2uQLN3LQ86H1M/37Jf3w8TsPPD
-	 iU7LcCJRV9BNVOXn03x7bQ9FfaSQWlbcFgDOHkaM=
+	b=Kd3JB3DcMUVAlM+WlHzc5uYwodsHClubikmdrXMDdMiH414tBEAHa8h80PNzeweqT
+	 /qjsatuXj+lmxHnjD2KvxSzxy0OH/q9T2iJeON7VafREj8wu6xkXmTOQoyQ0o8Y+d8
+	 2lMiz+Q83zcQF7kGEugkH4yxlwtdHyZmIMYF24Ac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Artem Chernyshev <artem.chernyshev@red-soft.ru>,
+	Karan Tilak Kumar <kartilak@cisco.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 063/148] NFSv4.1/pnfs: Ensure we handle the error NFS4ERR_RETURNCONFLICT
+Subject: [PATCH 5.4 089/194] scsi: fnic: Return error if vmalloc() failed
 Date: Mon, 22 Jan 2024 15:56:59 -0800
-Message-ID: <20240122235714.947701138@linuxfoundation.org>
+Message-ID: <20240122235723.067989948@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
 
-[ Upstream commit 037e56a22ff37f9a9c2330b66cff55d3d1ff9b90 ]
+[ Upstream commit f5f27a332a14f43463aa0075efa3a0c662c0f4a8 ]
 
-Once the client has processed the CB_LAYOUTRECALL, but has not yet
-successfully returned the layout, the server is supposed to switch to
-returning NFS4ERR_RETURNCONFLICT. This patch ensures that we handle
-that return value correctly.
+In fnic_init_module() exists redundant check for return value from
+fnic_debugfs_init(), because at moment it only can return zero. It make
+sense to process theoretical vmalloc() failure.
 
-Fixes: 183d9e7b112a ("pnfs: rework LAYOUTGET retry handling")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 9730ddfb123d ("scsi: fnic: remove redundant assignment of variable rc")
+Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+Link: https://lore.kernel.org/r/20231128111008.2280507-1-artem.chernyshev@red-soft.ru
+Reviewed-by: Karan Tilak Kumar <kartilak@cisco.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/fnic/fnic_debugfs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index c44efead1a32..c9db9a0fc733 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -163,6 +163,7 @@ static int nfs4_map_errors(int err)
- 	case -NFS4ERR_RESOURCE:
- 	case -NFS4ERR_LAYOUTTRYLATER:
- 	case -NFS4ERR_RECALLCONFLICT:
-+	case -NFS4ERR_RETURNCONFLICT:
- 		return -EREMOTEIO;
- 	case -NFS4ERR_WRONGSEC:
- 	case -NFS4ERR_WRONG_CRED:
-@@ -509,6 +510,7 @@ static int nfs4_do_handle_exception(struct nfs_server *server,
- 		case -NFS4ERR_GRACE:
- 		case -NFS4ERR_LAYOUTTRYLATER:
- 		case -NFS4ERR_RECALLCONFLICT:
-+		case -NFS4ERR_RETURNCONFLICT:
- 			exception->delay = 1;
- 			return 0;
+diff --git a/drivers/scsi/fnic/fnic_debugfs.c b/drivers/scsi/fnic/fnic_debugfs.c
+index 13f7d88d6e57..3f2e164b5068 100644
+--- a/drivers/scsi/fnic/fnic_debugfs.c
++++ b/drivers/scsi/fnic/fnic_debugfs.c
+@@ -67,9 +67,10 @@ int fnic_debugfs_init(void)
+ 		fc_trc_flag->fnic_trace = 2;
+ 		fc_trc_flag->fc_trace = 3;
+ 		fc_trc_flag->fc_clear = 4;
++		return 0;
+ 	}
  
-@@ -8876,6 +8878,7 @@ nfs4_layoutget_handle_exception(struct rpc_task *task,
- 		status = -EBUSY;
- 		break;
- 	case -NFS4ERR_RECALLCONFLICT:
-+	case -NFS4ERR_RETURNCONFLICT:
- 		status = -ERECALLCONFLICT;
- 		break;
- 	case -NFS4ERR_DELEG_REVOKED:
+-	return 0;
++	return -ENOMEM;
+ }
+ 
+ /*
 -- 
 2.43.0
 
