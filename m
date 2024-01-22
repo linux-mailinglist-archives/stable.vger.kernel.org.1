@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ED8F83813D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:48 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52F5C8383C2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FA8D1F2547A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC2BAB23FD8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7B481487E3;
-	Tue, 23 Jan 2024 01:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C6764A9C;
+	Tue, 23 Jan 2024 01:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3zKXPqt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exxDCN3S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61522141981;
-	Tue, 23 Jan 2024 01:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454B8634F8;
+	Tue, 23 Jan 2024 01:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972078; cv=none; b=kD+NPAqtdC0PV7eXEAJiIbduRKo3cR4uI2niivVVwO3fS4VR3gA96ebD9LUvzafIhSWNAXQtyT/rdVCSDPe0P8iI4hfYfgOM+zDUfW5mN0NTIxtklNMZU0kOBQ31BYyPpZKsFqST5DP4LQozCCZ8aa8CMJB9a2Vh/MuvkAKrZvo=
+	t=1705975039; cv=none; b=jZXn53Ev7UnP42prGsjpuX0NUK5lTbmTNBTZybvPgboxl/ja4ItluuN/5IBzgHkdwqLLXFb7tPPChASbW20RX4pM4ku0tI7oVpCUZy9IQvOFm0SZd/lmnfwCnrFk4hyZ/wYC5w36ZOE7g0f5HBCnlWfQV4Kdlvobcuvipo2dtXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972078; c=relaxed/simple;
-	bh=YiLG6rPcWEv16S42ZRoS+HjQ+B4t5ZvXpAUJE2tsLqs=;
+	s=arc-20240116; t=1705975039; c=relaxed/simple;
+	bh=IUQbc8KRp9ncLTB1OaML8tadG6cnzja3ymSec1uYmpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ssZd7nvNM+jcsnRsB+oDlfJ9GG2VGv3ZLIv7rAcevtf6cwJrzWKQXZkDwvh1Lx5uDeDlCDBPfhubwYiKee51oAZ0bz4YxAzV2bbywof7qIyE0go9NxM9JkDkuUaJbJNzo5KQD1RbtXRDrcIo2p5ctnugHh1jbfBDq8tg9IWmMag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3zKXPqt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9DEC43390;
-	Tue, 23 Jan 2024 01:07:58 +0000 (UTC)
+	 MIME-Version; b=F3BJ19ueLMNkbFALb8D/lEhLCBSKk1jmivvZ/BDveQrIJyISo7eXVUhSieFJmx1HGiHWcZyMcg0an19AgkgEaK3sYGiAettraOhxeXkMD32jAaGI2U4MTVcUHVPajEesOpb09pXrOllX7epPJl/kgc/q/koflX0q5XP7SEhSHao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exxDCN3S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B8C2C43394;
+	Tue, 23 Jan 2024 01:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972078;
-	bh=YiLG6rPcWEv16S42ZRoS+HjQ+B4t5ZvXpAUJE2tsLqs=;
+	s=korg; t=1705975039;
+	bh=IUQbc8KRp9ncLTB1OaML8tadG6cnzja3ymSec1uYmpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W3zKXPqtCEbISCCMNrL7SiNuNq9LB48SwOKeC+MzgTng1w0kjMZBK7xlVdjGjUo0S
-	 VVWYM7Hy+8s9ElXH/0KGsh5CCNCDGgtWVxuKespOIbHqyUAUNW6YJheqIbZRgKkZwf
-	 Gnqx0uQdDhm6XLUEG31jxXvKKRlHW9vAAOmWDmeM=
+	b=exxDCN3Ss54GbwYLS3w2BcrBxfLa+2QY7EUKc4FE6LH2E8wXvwid4sokCR4UZh0iB
+	 6vkriSoEzHduIT93FXGKjxf/wbkrdanuGRwJPx3BJHfZKZL4vLmjNfBG2bz/kAQDPg
+	 F1FdekuBkfjy7174MFsa/+mX4YN0iN4WBcWSg39o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vasiliy Kovalev <kovalev@altlinux.org>,
-	Takashi Iwai <tiwai@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 003/374] ALSA: hda - Fix speaker and headset mic pin config for CHUWI CoreBook XPro
+Subject: [PATCH 6.6 208/583] null_blk: dont cap max_hw_sectors to BLK_DEF_MAX_SECTORS
 Date: Mon, 22 Jan 2024 15:54:19 -0800
-Message-ID: <20240122235744.736481592@linuxfoundation.org>
+Message-ID: <20240122235818.368128881@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vasiliy Kovalev <kovalev@altlinux.org>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 7c9caa299335df94ad1c58f70a22f16a540eab60 ]
+[ Upstream commit 9a9525de865410047fa962867b4fcd33943b206f ]
 
-This patch corrected the speaker and headset mic pin config to the more
-appropriate values.
+null_blk has some rather odd capping of the max_hw_sectors value to
+BLK_DEF_MAX_SECTORS, which doesn't make sense - max_hw_sector is the
+hardware limit, and BLK_DEF_MAX_SECTORS despite the confusing name is the
+default cap for the max_sectors field used for normal file system I/O.
 
-Signed-off-by: Vasiliy Kovalev <kovalev@altlinux.org>
-Link: https://lore.kernel.org/r/20231117170923.106822-1-kovalev@altlinux.org
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Remove all the capping, and simply leave it to the block layer or
+user to take up or not all of that for file system I/O.
+
+Fixes: ea17fd354ca8 ("null_blk: Allow controlling max_hw_sectors limit")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20231227092305.279567-2-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/block/null_blk/main.c | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 5e0e19c4b509..87de2cbd7f3e 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -6854,6 +6854,7 @@ enum {
- 	ALC290_FIXUP_SUBWOOFER_HSJACK,
- 	ALC269_FIXUP_THINKPAD_ACPI,
- 	ALC269_FIXUP_DMIC_THINKPAD_ACPI,
-+	ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO,
- 	ALC255_FIXUP_ACER_MIC_NO_PRESENCE,
- 	ALC255_FIXUP_ASUS_MIC_NO_PRESENCE,
- 	ALC255_FIXUP_DELL1_MIC_NO_PRESENCE,
-@@ -7152,6 +7153,14 @@ static const struct hda_fixup alc269_fixups[] = {
- 		.type = HDA_FIXUP_FUNC,
- 		.v.func = alc269_fixup_pincfg_U7x7_headset_mic,
- 	},
-+	[ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x18, 0x03a19020 }, /* headset mic */
-+			{ 0x1b, 0x90170150 }, /* speaker */
-+			{ }
-+		},
-+	},
- 	[ALC269_FIXUP_AMIC] = {
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = (const struct hda_pintbl[]) {
-@@ -9402,6 +9411,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1d72, 0x1901, "RedmiBook 14", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1945, "Redmi G", ALC256_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1d72, 0x1947, "RedmiBook Air", ALC255_FIXUP_XIAOMI_HEADSET_MIC),
-+	SND_PCI_QUIRK(0x2782, 0x0232, "CHUWI CoreBook XPro", ALC269VB_FIXUP_CHUWI_COREBOOK_XPRO),
- 	SND_PCI_QUIRK(0x8086, 0x2074, "Intel NUC 8", ALC233_FIXUP_INTEL_NUC8_DMIC),
- 	SND_PCI_QUIRK(0x8086, 0x2080, "Intel NUC 8 Rugged", ALC256_FIXUP_INTEL_NUC8_RUGGED),
- 	SND_PCI_QUIRK(0x8086, 0x2081, "Intel NUC 10", ALC256_FIXUP_INTEL_NUC10),
+diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
+index 968090935eb2..9544746de168 100644
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -2165,10 +2165,8 @@ static int null_add_dev(struct nullb_device *dev)
+ 
+ 	blk_queue_logical_block_size(nullb->q, dev->blocksize);
+ 	blk_queue_physical_block_size(nullb->q, dev->blocksize);
+-	if (!dev->max_sectors)
+-		dev->max_sectors = queue_max_hw_sectors(nullb->q);
+-	dev->max_sectors = min(dev->max_sectors, BLK_DEF_MAX_SECTORS);
+-	blk_queue_max_hw_sectors(nullb->q, dev->max_sectors);
++	if (dev->max_sectors)
++		blk_queue_max_hw_sectors(nullb->q, dev->max_sectors);
+ 
+ 	if (dev->virt_boundary)
+ 		blk_queue_virt_boundary(nullb->q, PAGE_SIZE - 1);
+@@ -2268,12 +2266,6 @@ static int __init null_init(void)
+ 		g_bs = PAGE_SIZE;
+ 	}
+ 
+-	if (g_max_sectors > BLK_DEF_MAX_SECTORS) {
+-		pr_warn("invalid max sectors\n");
+-		pr_warn("defaults max sectors to %u\n", BLK_DEF_MAX_SECTORS);
+-		g_max_sectors = BLK_DEF_MAX_SECTORS;
+-	}
+-
+ 	if (g_home_node != NUMA_NO_NODE && g_home_node >= nr_online_nodes) {
+ 		pr_err("invalid home_node value\n");
+ 		g_home_node = NUMA_NO_NODE;
 -- 
 2.43.0
 
