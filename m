@@ -1,63 +1,67 @@
-Return-Path: <stable+bounces-15375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E9C18384F3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D6348380DC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7282E1C2A38D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 809641C286F8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4585A77F3F;
-	Tue, 23 Jan 2024 02:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8219813475C;
+	Tue, 23 Jan 2024 01:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b2Hu3o+t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBWSVTYG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0686177636;
-	Tue, 23 Jan 2024 02:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C1813474E;
+	Tue, 23 Jan 2024 01:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975542; cv=none; b=ZwzFH+mb8znNRCNdzlu+BR53Tpvqss3hwz7gUwhhHkLWYrxnfT/z3m/XmlhaAQhSxfXa1c8DvVxTgkuD9B53Nqy4WV0dL39kjdzbMfhnEMRr0t69cgx8w1IzHqcXzxfDaxbVkxv16PBxp6L4QbQqEkPKCmszznNP+HbR29lfW+w=
+	t=1705971924; cv=none; b=Q1tgLKqxjPYA3oTDo1De9rxkpURDy4IXeNdC897hxCXRV1HXYfwkg6gxtlQXv/evmruxkhkGkXyLyfA89JJRj8f0IYIcOm4mfDCiHPNrzwsNA9u7wwhTdSR8x2XiD7xNK+a72zlbqTP9yKjt3J7V9258x11GKFu7gX/O0cn8/AU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975542; c=relaxed/simple;
-	bh=xWoi+k8gPXN7cxDjgknw9yTOsgQ8bp/7mJ8MBnNzV+A=;
+	s=arc-20240116; t=1705971924; c=relaxed/simple;
+	bh=Yt5qdZiLIBRoCjPkgVNWqDCZcw2dgVV4xYLP+ivJgtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IrxuNKye+vCMoHVH7qQGxPnbIX19p8NtW1zLkHu5Kbt3+lvPRP/s4bH+89+p1370/K8EMgLUSSJFouD1E8QJVmkFGhKVm7aHYJZYc1ywiX15ox7nRlDLqoBAjwGqWfS1OCBwhbhxaHtLie356fHlxQOnwYFJ9k0RQp2H+RTIUxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b2Hu3o+t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B61AEC43399;
-	Tue, 23 Jan 2024 02:05:41 +0000 (UTC)
+	 MIME-Version; b=WFRSUdZMDzB3iuJ1tjR6vNUyBq/NKwqzoWIxNxOXV66NP9IvoNn/jKNo1qN0juN1iF6apAHG+wh+l4iD7z6SB10gBu8jEIY5yTiFFQxcLzwJ0CBF5hf63SUCrqRB54EGGqDI0y3nip1Rx49qZ0W9hOt/tiNWTBZqYeXGbheKmGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBWSVTYG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D65C433F1;
+	Tue, 23 Jan 2024 01:05:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975541;
-	bh=xWoi+k8gPXN7cxDjgknw9yTOsgQ8bp/7mJ8MBnNzV+A=;
+	s=korg; t=1705971924;
+	bh=Yt5qdZiLIBRoCjPkgVNWqDCZcw2dgVV4xYLP+ivJgtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b2Hu3o+tSFFYaIcVP4L8dm1XyEFWCqHyAntRSTjkMpYHImguuBTU+l1G16pwNn8cP
-	 lOtetswlQA5zXeKpahbPqo/ObPplqUMSaFjciT3JRvWgyEGQaRkeguECQ+aZ20L+Vm
-	 DINNaFNc/FMzwa893oWkkr/0WuENIYv7jvM0gmks=
+	b=uBWSVTYGrv1ufOpXl91gQqdeFvoGT+tAE0jySBlE6m5cxL6t1bvKkGB8SUU4Q2GP4
+	 avPWaYt2goqLV5LfPlteEFsZLtbr04Vn4dR8sbVdBqTBuh199At0ravjER67n1hXJU
+	 +td6qZswm/09Epu1Da88SRg080iqJpqHzvspz1As=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Ian Rogers <irogers@google.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Adrian Hunter <adrian.hunter@intel.com>,
 	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
 	Ingo Molnar <mingo@redhat.com>,
 	Jiri Olsa <jolsa@kernel.org>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Junhao He <hejunhao3@huawei.com>,
 	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
+	linuxarm@huawei.com,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 470/583] perf stat: Exit perf stat if parse groups fails
+Subject: [PATCH 6.1 353/417] perf header: Fix one memory leakage in perf_event__fprintf_event_update()
 Date: Mon, 22 Jan 2024 15:58:41 -0800
-Message-ID: <20240122235826.374185151@linuxfoundation.org>
+Message-ID: <20240122235804.028433232@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,74 +73,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Yicong Yang <yangyicong@hisilicon.com>
 
-[ Upstream commit 0713ab3bd169da82c35eefd012b07b715e4ebcf7 ]
+[ Upstream commit 813900d19b923fc1b241c1ce292472f68066092b ]
 
-Metrics were added by a callback but commit a4b8cfcabb1d90ec ("perf
-stat: Delay metric parsing") postponed this to allow optimizations based
-on the CPU configuration.
+When dump the raw trace by `perf report -D` ASan reports a memory
+leakage in perf_event__fprintf_event_update().
 
-In doing so it stopped errors in metric parsing from causing 'perf stat'
-termination.
+It shows that we allocated a temporary cpumap for dumping the CPUs but
+doesn't release it and it's not used elsewhere. Fix this by free the
+cpumap after the dumping.
 
-This change adds the termination for bad metric names back in.
-
-Fixes: a4b8cfcabb1d90ec ("perf stat: Delay metric parsing")
-Reported-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Tested-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: c853f9394b7bc189 ("perf tools: Add perf_event__fprintf_event_update function")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
 Cc: Ingo Molnar <mingo@redhat.com>
 Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Junhao He <hejunhao3@huawei.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
 Cc: Peter Zijlstra <peterz@infradead.org>
-Closes: https://lore.kernel.org/lkml/ZXByT1K6enTh2EHT@kernel.org/
-Link: https://lore.kernel.org/r/20231206183533.972028-1-irogers@google.com
+Cc: linuxarm@huawei.com
+Link: https://lore.kernel.org/r/20231207081635.8427-2-yangyicong@huawei.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-stat.c | 18 +++++++++++-------
- 1 file changed, 11 insertions(+), 7 deletions(-)
+ tools/perf/util/header.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/builtin-stat.c b/tools/perf/builtin-stat.c
-index a3af805a1d57..78c104922181 100644
---- a/tools/perf/builtin-stat.c
-+++ b/tools/perf/builtin-stat.c
-@@ -2695,15 +2695,19 @@ int cmd_stat(int argc, const char **argv)
- 	 */
- 	if (metrics) {
- 		const char *pmu = parse_events_option_args.pmu_filter ?: "all";
-+		int ret = metricgroup__parse_groups(evsel_list, pmu, metrics,
-+						stat_config.metric_no_group,
-+						stat_config.metric_no_merge,
-+						stat_config.metric_no_threshold,
-+						stat_config.user_requested_cpu_list,
-+						stat_config.system_wide,
-+						&stat_config.metric_events);
+diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
+index 9e2dce70b130..eaeeba8d65ec 100644
+--- a/tools/perf/util/header.c
++++ b/tools/perf/util/header.c
+@@ -4314,9 +4314,10 @@ size_t perf_event__fprintf_event_update(union perf_event *event, FILE *fp)
+ 		ret += fprintf(fp, "... ");
  
--		metricgroup__parse_groups(evsel_list, pmu, metrics,
--					stat_config.metric_no_group,
--					stat_config.metric_no_merge,
--					stat_config.metric_no_threshold,
--					stat_config.user_requested_cpu_list,
--					stat_config.system_wide,
--					&stat_config.metric_events);
- 		zfree(&metrics);
-+		if (ret) {
-+			status = ret;
-+			goto out;
-+		}
- 	}
- 
- 	if (add_default_attributes())
+ 		map = cpu_map__new_data(&ev->cpus.cpus);
+-		if (map)
++		if (map) {
+ 			ret += cpu_map__fprintf(map, fp);
+-		else
++			perf_cpu_map__put(map);
++		} else
+ 			ret += fprintf(fp, "failed to get cpus\n");
+ 		break;
+ 	default:
 -- 
 2.43.0
 
