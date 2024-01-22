@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-14292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A8D2838050
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB8D5837D82
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F1521C26BC5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25F4E1C21008
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 197ED664D3;
-	Tue, 23 Jan 2024 01:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5FF5A795;
+	Tue, 23 Jan 2024 00:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYclWEvQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvszTyWd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF10664B6;
-	Tue, 23 Jan 2024 01:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3C84E1D8;
+	Tue, 23 Jan 2024 00:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971662; cv=none; b=OitWBYVDlBtSktgTYV6pkznlzhuLWIPG/j0fGe0VSzfI4s7Dm9Fod12aUxGUI5iEya2EtQS2dNusymL+eEAWbSN+0GM7Te4t0+/WNRjFF17ZEEgg/cRGqk2Q66/JuM4SKye8GcQRo1Q+AluvtBt2GM4vJ3GMlNsrgXZww1S19iA=
+	t=1705969996; cv=none; b=c468dUwl6sP78cOXMfm4xFFhgjJQc4yR88MpAAZ4Rc5dKFUUZ85F0PDzbYaKkmcKtsx2rPAGAMtUqlKSMvHtciLIhcyTZEZM5LOFztUeASwDa3VQLuT6VuocrkE33a8aWsM1+sOoM7xlZ1zl7EbEbXUVhQdL/YWtbTT+VpQMgE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971662; c=relaxed/simple;
-	bh=K4gTiJnRUatIJjYoVpuSt9VigozGH/XQ70zPESvIbJs=;
+	s=arc-20240116; t=1705969996; c=relaxed/simple;
+	bh=LhBTIdOaoHcUmGE2oP0sOAZWUpr7AXiEuVWlN9tqvRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=htbkRl73meylvlbCD/A8nq6+jb8pz5c/S199s1qzoY2n0TSMs7SCzk+Kw56Rlal530qdwpuhlGYZM1IOHG9fzstnujD5PQOlv1umWHROUNeuTHohoKwzgCCYIPsb49R8yjMpVhmUB3yi/8LQYMyE1BrowrrKbxfxxWHfV00FyOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYclWEvQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E56C433F1;
-	Tue, 23 Jan 2024 01:01:02 +0000 (UTC)
+	 MIME-Version; b=fjx/O/D11jqFOM70z/TbboVXin2Ho0lSAW5egHARdvod8UNjjEjCR7VX/dyWzCcGgcxTysHgSuY+TXhZRt5sLH1YQ2yf450XrK8MoOEwPm7/m/tg0A9gvYIor6X+mw8uVitOiSEXD/MBHoMepRblq7wwPvY2N+umToKw//FjqpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PvszTyWd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132E6C433C7;
+	Tue, 23 Jan 2024 00:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971662;
-	bh=K4gTiJnRUatIJjYoVpuSt9VigozGH/XQ70zPESvIbJs=;
+	s=korg; t=1705969995;
+	bh=LhBTIdOaoHcUmGE2oP0sOAZWUpr7AXiEuVWlN9tqvRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cYclWEvQ2m1+fKBBv0iPkLzxYMn5CyFa01ZWutYnFbEp22kqmJQTQWGzU5HuqsmK7
-	 prXgfo50DAHL1OdJnkcmIa6rUF3DqrIVJUGJ8uJJSsdMwwusQzZVrlPt1pHzPDpiiQ
-	 0GiGS3QY+13+LIyd9prXlsFPVmktytMb139HCH0k=
+	b=PvszTyWd6Hz6ZgfOOeS5IUfjp7dLbv8hHmaNxej4G781ox0OIOuO/8txyvQG2PIoP
+	 RcEuCvZVJDBdkboqJJF4UdTffzP88Qep/1rR+1J+TWp06mFLSGxlnRwZI0D+RxPMZJ
+	 qEcfQ9QGrcBFVu7czUAsLB8yDHQ8TgirZa/yVlLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Christian A. Ehrhardt" <lk@c--e.de>,
-	RD Babiera <rdbabiera@google.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.1 268/417] usb: typec: class: fix typec_altmode_put_partner to put plugs
+	Ian Rogers <irogers@google.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Junhao He <hejunhao3@huawei.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	linuxarm@huawei.com,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 532/641] perf header: Fix one memory leakage in perf_event__fprintf_event_update()
 Date: Mon, 22 Jan 2024 15:57:16 -0800
-Message-ID: <20240122235801.145747627@linuxfoundation.org>
+Message-ID: <20240122235834.759834372@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +73,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: RD Babiera <rdbabiera@google.com>
+From: Yicong Yang <yangyicong@hisilicon.com>
 
-commit 5962ded777d689cd8bf04454273e32228d7fb71f upstream.
+[ Upstream commit 813900d19b923fc1b241c1ce292472f68066092b ]
 
-When typec_altmode_put_partner is called by a plug altmode upon release,
-the port altmode the plug belongs to will not remove its reference to the
-plug. The check to see if the altmode being released is a plug evaluates
-against the released altmode's partner instead of the calling altmode, so
-change adev in typec_altmode_put_partner to properly refer to the altmode
-being released.
+When dump the raw trace by `perf report -D` ASan reports a memory
+leakage in perf_event__fprintf_event_update().
 
-Because typec_altmode_set_partner calls get_device() on the port altmode,
-add partner_adev that points to the port altmode in typec_put_partner to
-call put_device() on. typec_altmode_set_partner is not called for port
-altmodes, so add a check in typec_altmode_release to prevent
-typec_altmode_put_partner() calls on port altmode release.
+It shows that we allocated a temporary cpumap for dumping the CPUs but
+doesn't release it and it's not used elsewhere. Fix this by free the
+cpumap after the dumping.
 
-Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
-Cc:  <stable@vger.kernel.org>
-Co-developed-by: Christian A. Ehrhardt <lk@c--e.de>
-Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Tested-by: Christian A. Ehrhardt <lk@c--e.de>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240103181754.2492492-2-rdbabiera@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c853f9394b7bc189 ("perf tools: Add perf_event__fprintf_event_update function")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Junhao He <hejunhao3@huawei.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: linuxarm@huawei.com
+Link: https://lore.kernel.org/r/20231207081635.8427-2-yangyicong@huawei.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/class.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ tools/perf/util/header.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/class.c
-+++ b/drivers/usb/typec/class.c
-@@ -263,11 +263,13 @@ static void typec_altmode_put_partner(st
- {
- 	struct altmode *partner = altmode->partner;
- 	struct typec_altmode *adev;
-+	struct typec_altmode *partner_adev;
+diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
+index 7609b4d468dc..b39b3e4cec8a 100644
+--- a/tools/perf/util/header.c
++++ b/tools/perf/util/header.c
+@@ -4371,9 +4371,10 @@ size_t perf_event__fprintf_event_update(union perf_event *event, FILE *fp)
+ 		ret += fprintf(fp, "... ");
  
- 	if (!partner)
- 		return;
- 
--	adev = &partner->adev;
-+	adev = &altmode->adev;
-+	partner_adev = &partner->adev;
- 
- 	if (is_typec_plug(adev->dev.parent)) {
- 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
-@@ -276,7 +278,7 @@ static void typec_altmode_put_partner(st
- 	} else {
- 		partner->partner = NULL;
- 	}
--	put_device(&adev->dev);
-+	put_device(&partner_adev->dev);
- }
- 
- /**
-@@ -497,7 +499,8 @@ static void typec_altmode_release(struct
- {
- 	struct altmode *alt = to_altmode(to_typec_altmode(dev));
- 
--	typec_altmode_put_partner(alt);
-+	if (!is_typec_port(dev->parent))
-+		typec_altmode_put_partner(alt);
- 
- 	altmode_id_remove(alt->adev.dev.parent, alt->id);
- 	kfree(alt);
+ 		map = cpu_map__new_data(&ev->cpus.cpus);
+-		if (map)
++		if (map) {
+ 			ret += cpu_map__fprintf(map, fp);
+-		else
++			perf_cpu_map__put(map);
++		} else
+ 			ret += fprintf(fp, "failed to get cpus\n");
+ 		break;
+ 	default:
+-- 
+2.43.0
+
 
 
 
