@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ED2E837FBA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66A34838204
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F0522869F1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 196482859F3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4779E1292D5;
-	Tue, 23 Jan 2024 00:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B63055C3E;
+	Tue, 23 Jan 2024 01:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZqaSDZd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylJmEc8G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083EC64CDA;
-	Tue, 23 Jan 2024 00:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D3B3984D;
+	Tue, 23 Jan 2024 01:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971322; cv=none; b=pXKeuJNXCstL30lCNwHtTe5XEwZzpm/82Dy+6GZ+Jxj2e8DXNYYL59HaWzF/9IFuBbdpCrtwmJl1K1JVEJhLACvznihTxSksgHJ4kZQeQzViBYNrWXq5Fo/kryGawQSwQFtkWfchsfPZrB9Xdb6cmGvBwpVpDwcIraa/mOvfeFc=
+	t=1705974036; cv=none; b=OPKBy4EzyM6fGxQij1yGE5xfqYkskxmoPCdTQUBKH+qUHjM3jKSFyf7fTDteRitifsUtWDxKzyOQCyJ4mwf46zRHwG7AeAj14akd/KsRp3/r4pAPV1D46J576zI0J+WCSzCf2jPcxsIq+XrsIr/e7l1sQr9YWPubN130itlFrKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971322; c=relaxed/simple;
-	bh=PY7Bh2i5rQQmkGrPalTjXnshcsSNiFagHDF0hn1Y2R8=;
+	s=arc-20240116; t=1705974036; c=relaxed/simple;
+	bh=W6nbazslT8SQi88BdXr8f7BaSLzrm2pKJTW6gVZ9/oU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qL4jjJbU3eYsb6rVPKbqjL2ZBwOdTlEHEL3E8TYtGB8+2NKRoc0afxwzNxzD0xO6HY015XeWCB8R2QuDm31v9yO0om7B/LPySPT05fLNi1BAg2P1DyOrrEI1sYj25uB1PU2T4bbxHBGCdVSJKD3AKDAQlYK3MIrJeJHKdaJG4Hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZqaSDZd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C45C43390;
-	Tue, 23 Jan 2024 00:55:20 +0000 (UTC)
+	 MIME-Version; b=FbeP3QcHxPUh1IFCJfcATzwK9uCu6Xct+KsVAhAxKAmcbrDP9Gb8mQUc5YUbTsY7/HEQdUtz7YRBgZgr5/vo7/uITPOOKaHvJvG4BUegVXvAbquIEgH2HplvacZ2nu3N50LbSlEBSmV0elS3MEOWkTFFF8ZlHLTigMtkmV9ksBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylJmEc8G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D03C43390;
+	Tue, 23 Jan 2024 01:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971320;
-	bh=PY7Bh2i5rQQmkGrPalTjXnshcsSNiFagHDF0hn1Y2R8=;
+	s=korg; t=1705974035;
+	bh=W6nbazslT8SQi88BdXr8f7BaSLzrm2pKJTW6gVZ9/oU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hZqaSDZdEQbWrf0dr91mLmU1GMOVr5dDpZQTEv7Y70rXpMOmUcOaWcZlwsmG0Tw9o
-	 Ga5rG3OcKjaH8ixGh3KscqmpHxLsFuXYEKmXIm8Pi/SahYnFz2dn/MdbuXFej+boSB
-	 Au8pCCmUYzh0ti+ek0MPEeVouaOcAnIipWBmVoVc=
+	b=ylJmEc8GJDmgJeKHXS0x1HnSPuWy7P7HJzV0oB8fmucDA3j7sdtjofUH8ddn0JjOR
+	 spSCx31JeB7+CzR7OWn/dwrXZwqhaiIlNzHD5mumb5ySEdDW0Xx3E7Lbmb3CJmxU+b
+	 scwhZAovLwZidIl71mS6mVJwHFshWLi4uhaQPe2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Manorit Chawdhry <m-chawdhry@ti.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 223/417] watchdog: rti_wdt: Drop runtime pm reference count when watchdog is unused
+Subject: [PATCH 5.15 135/374] bpf: fix check for attempt to corrupt spilled pointer
 Date: Mon, 22 Jan 2024 15:56:31 -0800
-Message-ID: <20240122235759.640901125@linuxfoundation.org>
+Message-ID: <20240122235749.338916210@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vignesh Raghavendra <vigneshr@ti.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit c1a6edf3b541e44e78f10bc6024df779715723f1 ]
+[ Upstream commit ab125ed3ec1c10ccc36bc98c7a4256ad114a3dae ]
 
-Call runtime_pm_put*() if watchdog is not already started during probe and re
-enable it in watchdog start as required.
+When register is spilled onto a stack as a 1/2/4-byte register, we set
+slot_type[BPF_REG_SIZE - 1] (plus potentially few more below it,
+depending on actual spill size). So to check if some stack slot has
+spilled register we need to consult slot_type[7], not slot_type[0].
 
-On K3 SoCs, watchdogs and their corresponding CPUs are under same
-power-domain, so if the reference count of unused watchdogs aren't
-dropped, it will lead to CPU hotplug failures as Device Management
-firmware won't allow to turn off the power-domain due to dangling
-reference count.
+To avoid the need to remember and double-check this in the future, just
+use is_spilled_reg() helper.
 
-Fixes: 2d63908bdbfb ("watchdog: Add K3 RTI watchdog support")
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Tested-by: Manorit Chawdhry <m-chawdhry@ti.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20231213140110.938129-1-vigneshr@ti.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Fixes: 27113c59b6d0 ("bpf: Check the other end of slot_type for STACK_SPILL")
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20231205184248.1502704-4-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/rti_wdt.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ kernel/bpf/verifier.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/rti_wdt.c b/drivers/watchdog/rti_wdt.c
-index 6e9253761fc1..ea617c0f9747 100644
---- a/drivers/watchdog/rti_wdt.c
-+++ b/drivers/watchdog/rti_wdt.c
-@@ -70,6 +70,11 @@ static int rti_wdt_start(struct watchdog_device *wdd)
- {
- 	u32 timer_margin;
- 	struct rti_wdt_device *wdt = watchdog_get_drvdata(wdd);
-+	int ret;
-+
-+	ret = pm_runtime_resume_and_get(wdd->parent);
-+	if (ret)
-+		return ret;
- 
- 	/* set timeout period */
- 	timer_margin = (u64)wdd->timeout * wdt->freq;
-@@ -295,6 +300,9 @@ static int rti_wdt_probe(struct platform_device *pdev)
- 	if (last_ping)
- 		watchdog_set_last_hw_keepalive(wdd, last_ping);
- 
-+	if (!watchdog_hw_running(wdd))
-+		pm_runtime_put_sync(&pdev->dev);
-+
- 	return 0;
- 
- err_iomap:
-@@ -309,7 +317,10 @@ static int rti_wdt_remove(struct platform_device *pdev)
- 	struct rti_wdt_device *wdt = platform_get_drvdata(pdev);
- 
- 	watchdog_unregister_device(&wdt->wdd);
--	pm_runtime_put(&pdev->dev);
-+
-+	if (!pm_runtime_suspended(&pdev->dev))
-+		pm_runtime_put(&pdev->dev);
-+
- 	pm_runtime_disable(&pdev->dev);
- 
- 	return 0;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 7318a5d44859..cc284371eea0 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -2844,7 +2844,7 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
+ 	 * so it's aligned access and [off, off + size) are within stack limits
+ 	 */
+ 	if (!env->allow_ptr_leaks &&
+-	    state->stack[spi].slot_type[0] == STACK_SPILL &&
++	    is_spilled_reg(&state->stack[spi]) &&
+ 	    size != BPF_REG_SIZE) {
+ 		verbose(env, "attempt to corrupt spilled pointer on stack\n");
+ 		return -EACCES;
 -- 
 2.43.0
 
