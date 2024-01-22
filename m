@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-15056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E3DF8383B3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5428C83813E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14FB01F28DDD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 877AC1C26F05
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E2464AA8;
-	Tue, 23 Jan 2024 01:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51671487E6;
+	Tue, 23 Jan 2024 01:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+sZWQGf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elo+XmVm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5AC764AA7;
-	Tue, 23 Jan 2024 01:57:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929E51487D4;
+	Tue, 23 Jan 2024 01:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975041; cv=none; b=AQTVAgAgISy18tYl8u56FG6L8YomU8JbXRXdW8UYT0Jejmtvfyq8+IfWl3MrZlLukrz2mTyoIG09KoVCF0DEjmoH+I7LyUKE2P0jD1VYQ1whnMwuzxVGmHErlMs5AaFkgn6pSom8fzj6N7Z4KgnG0w0oO3ES1TkOqPL0NZa3bW0=
+	t=1705972079; cv=none; b=u8oijnqY81R5Du9GFu4NilsPpe5d9vwwqn7kW+IXSt8A1DpRYcNvYbZfZAcY5UNb9BRdTIBkZiHJHT202IlplWBGjTuI8eVEudhLk0W/iVwSD9YnhNa7MWBc/5RMeYZ90LU7Z+UDT2mVIN9OK36PiYTt3N8afSXIyq8yOsvsPVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975041; c=relaxed/simple;
-	bh=OZRHMFFn5fqDOuDGytNI52TjZk22rvOOJQM/CFNOXSY=;
+	s=arc-20240116; t=1705972079; c=relaxed/simple;
+	bh=O5yPergo4AQa1Tx1k119NWlAkAlRhzzcaY2+TqWfjCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cw0uGvkzEG5QU/brbbCm6U7UtTU4Syw3E65nUInlIsIzwI0DovFSj6Jep5BcpBY+LBb8RwAftTd849GqeejUnmcMb672K5DKf9S7VK1ZkeeNVivBawJ8WJm1ckb00COyfAmLzBGHsk5/6c/GmOaO8HHooISC+6vuSsr44tapZqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+sZWQGf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9927BC43394;
-	Tue, 23 Jan 2024 01:57:21 +0000 (UTC)
+	 MIME-Version; b=fKg/Z96p68Uucz24uYNZLLC4ENFZ2QPfHv/8OvyX+w4zXFkXVDvNt5QNU0Yo8SxvzBnpgir8f32vuaaQ1znQ3bn8Z5Ic9ci+ZMS8l488YAzpBE4ZA/9fA7hrT+Mm2Yamgy5Rb14Xmgl5YjpsbYz9PAzNK0ZLEzSOekENCHplJas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elo+XmVm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DCBDC43330;
+	Tue, 23 Jan 2024 01:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975041;
-	bh=OZRHMFFn5fqDOuDGytNI52TjZk22rvOOJQM/CFNOXSY=;
+	s=korg; t=1705972079;
+	bh=O5yPergo4AQa1Tx1k119NWlAkAlRhzzcaY2+TqWfjCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A+sZWQGfIIYuB5U8oyHCrjQT8k/pKMSrKhF4llg3IuDgjNRgeb91Q27dhDugim3v/
-	 cLw6Z+frz4jVYKVl7Ze6aH4VDI4Ua/vNRflF+4ttsUqmuKs8i25h+ZhhEnZaRwxVo1
-	 ZgvBIkQTH+dZK0+5waHC7eVcE2wA8MGvMFs1zmdo=
+	b=elo+XmVmnE/yMeqlECHLiqNjvAxxa7zHl8+qP8Ug9xEXRM3QNT5NWUgEIYRTgjkTw
+	 lfxIkFIPHduA2qAywk2weuByyPDCqlR+AktRhqMBaVRmL2qYWL99Tk+x7kUpt2ZI3C
+	 hb+o7qiCjL2kbSn/tIOc06Dz8X2eEP+wg3eMph04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Ning <zhangn1985@outlook.com>,
-	Andy Yan <andyshrk@163.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	syzbot+b834a6b2decad004cfa1@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 209/583] arm64: dts: rockchip: Fix led pinctrl of lubancat 1
+Subject: [PATCH 5.15 004/374] mptcp: fix uninit-value in mptcp_incoming_options
 Date: Mon, 22 Jan 2024 15:54:20 -0800
-Message-ID: <20240122235818.402045259@linuxfoundation.org>
+Message-ID: <20240122235744.777885366@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +64,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Yan <andyshrk@163.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 8586a5d217ef7bfeee24943c600a8a7890d6f477 ]
+[ Upstream commit 237ff253f2d4f6307b7b20434d7cbcc67693298b ]
 
-According to the schematics, the gpio control sys_led is GPIO0_C5.
+Added initialization use_ack to mptcp_parse_option().
 
-Fixes: 8d94da58de53 ("arm64: dts: rockchip: Add EmbedFire LubanCat 1")
-Reported-by: Zhang Ning <zhangn1985@outlook.com>
-Closes: https://lore.kernel.org/linux-rockchip/OS0P286MB06412D049D8BF7B063D41350CD95A@OS0P286MB0641.JPNP286.PROD.OUTLOOK.COM/T/#u
-Signed-off-by: Andy Yan <andyshrk@163.com>
-Link: https://lore.kernel.org/r/20231225005055.3102743-1-andyshrk@163.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Reported-by: syzbot+b834a6b2decad004cfa1@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/options.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts b/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts
-index 1c6d83b47cd2..6ecdf5d28339 100644
---- a/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3566-lubancat-1.dts
-@@ -455,7 +455,7 @@ &pcie2x1 {
- &pinctrl {
- 	leds {
- 		sys_led_pin: sys-status-led-pin {
--			rockchip,pins = <0 RK_PC7 RK_FUNC_GPIO &pcfg_pull_none>;
-+			rockchip,pins = <0 RK_PC5 RK_FUNC_GPIO &pcfg_pull_none>;
- 		};
- 	};
- 
+diff --git a/net/mptcp/options.c b/net/mptcp/options.c
+index aa4b0cf7c638..012e0e352276 100644
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -103,6 +103,7 @@ static void mptcp_parse_option(const struct sk_buff *skb,
+ 			mp_opt->suboptions |= OPTION_MPTCP_DSS;
+ 			mp_opt->use_map = 1;
+ 			mp_opt->mpc_map = 1;
++			mp_opt->use_ack = 0;
+ 			mp_opt->data_len = get_unaligned_be16(ptr);
+ 			ptr += 2;
+ 		}
 -- 
 2.43.0
 
