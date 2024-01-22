@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-13962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE1F7837EFA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:23 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A9E9837C8B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86BEC29BD02
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37E031F28B48
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8392605DC;
-	Tue, 23 Jan 2024 00:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA91135A5B;
+	Tue, 23 Jan 2024 00:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DbbEv+15"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0YnZOVq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A761360252;
-	Tue, 23 Jan 2024 00:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3F433097;
+	Tue, 23 Jan 2024 00:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970860; cv=none; b=rTp4QBm8aMEfJ6ZF03VdwYT29l6aTNUo4lkWB+ARJQ36mS1wenLjb3xYIKjSQR3NOGGmyqrjiBpfSlw7zXpoxEhNYH/MT2Rg3gxlC57sDyP1CRr2bIcVknscu5SVTsyq627SLDT3zh/hw16cYxf4NL9nW0/1zYPgSZMXi6oMr8M=
+	t=1705969664; cv=none; b=Y2LpzLSu0MqVCpZncq5I0K8NSjcND1Z/O0FiDxQW5oqJrsSPEDoHI9qIRCCQrrGzoxx4f/m09/D3uUHf1h0cLLBkQ2AV/sduWqvEGX4sNXu71BAxDvpoNXgs2yydS2Xq8Ekrb1qAaWCs6jXrlYkA48JfInrLSt9q8czIqt+dnEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970860; c=relaxed/simple;
-	bh=U8ZXkWxBZA4wKpKbuKm+YjOHiq61Lh18Qh345EZ828Y=;
+	s=arc-20240116; t=1705969664; c=relaxed/simple;
+	bh=LIhKsIEPMYh0Dsya1G0UyxzeSyuz6vgb817Zehf854E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FrIfe6ifKt8bN5+oF2XkiQH85PGLt4S+A9WnNSUxtmbcc2SRSQeju55LYtiok83cm8w6WmtRoPouGAy4I1XhYJZDH86eHdqvX+mBQe8hCIHu6gNjd16w4eJ7Vjt3iSOJVxsEZD7A3kBI+6PL2bIj3PhG9S2jZ6DpGnqn7SMSoww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DbbEv+15; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26953C433C7;
-	Tue, 23 Jan 2024 00:47:39 +0000 (UTC)
+	 MIME-Version; b=TTG0hufFzq9tZaqeE8/NY5knkhPIDOIFtSqlCWEqXKYmhhsB4jrNWrBGJWhKOCG46bXqoh2OOlTl2K8v+fnQjRG0BahR+XzKuBLhFt0D50uXL5firZxsjSrI4basht0oiNZPWVARKg36O6wMA3nQ36HG5fzLM887VzxSbolp9kI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0YnZOVq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5048DC433C7;
+	Tue, 23 Jan 2024 00:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970860;
-	bh=U8ZXkWxBZA4wKpKbuKm+YjOHiq61Lh18Qh345EZ828Y=;
+	s=korg; t=1705969664;
+	bh=LIhKsIEPMYh0Dsya1G0UyxzeSyuz6vgb817Zehf854E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DbbEv+15esNiVEwFS+VuqbKWwbsjVPgvp9wpWdlHLWmYWDrJb05FR6B/qnylAvOjP
-	 NoM2ZZK6FzczBOq15U1YGM9OepA6yR6PLg7hR9xDjFtkz5BL8HKook4hMfB7IbnPPU
-	 zogv51AERgfbekep+n0iWhbnL2nUGUWzHCHsDLQQ=
+	b=C0YnZOVq6LFSTFJ9n8Wq4Jul50P1rhHXZXij5sy9xwTqoFtKJG/U77/d4NtU46FNL
+	 eliXQO8wimPa9FHDn5TuCN5+TbrZAWBhDjcQQFTfSOtVn6DF9lbgI2IdrD0KlG3kHB
+	 Znn/+tAgrKkU29Qh0V9Sg/+9Ids8qOBNJb8jp+DU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/417] arm64: dts: qcom: sc7280: Mark SDHCI hosts as cache-coherent
+	Michael Ellerman <mpe@ellerman.id.au>,
+	"Aneesh Kumar K.V (IBM)" <aneesh.kumar@kernel.org>
+Subject: [PATCH 6.7 391/641] powerpc/64s: Increase default stack size to 32KB
 Date: Mon, 22 Jan 2024 15:54:55 -0800
-Message-ID: <20240122235756.204138750@linuxfoundation.org>
+Message-ID: <20240122235830.184819507@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 827f5fc8d912203c1f971e47d61130b13c6820ba ]
+commit 18f14afe281648e31ed35c9ad2fcb724c4838ad9 upstream.
 
-The SDHCI hosts on SC7280 are cache-coherent, just like on most fairly
-recent Qualcomm SoCs. Mark them as such.
+There are reports of kernels crashing due to stack overflow while
+running OpenShift (Kubernetes). The primary contributor to the stack
+usage seems to be openvswitch, which is used by OVN-Kubernetes (based on
+OVN (Open Virtual Network)), but NFS also contributes in some stack
+traces.
 
-Fixes: 298c81a7d44f ("arm64: dts: qcom: sc7280: Add nodes for eMMC and SD card")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231218-topic-7280_dmac_sdhci-v1-1-97af7efd64a1@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+There may be some opportunities to reduce stack usage in the openvswitch
+code, but doing so potentially require tradeoffs vs performance, and
+also requires testing across architectures.
+
+Looking at stack usage across the kernel (using -fstack-usage), shows
+that ppc64le stack frames are on average 50-100% larger than the
+equivalent function built for x86-64. Which is not surprising given the
+minimum stack frame size is 32 bytes on ppc64le vs 16 bytes on x86-64.
+
+So increase the default stack size to 32KB for the modern 64-bit Book3S
+platforms, ie. pseries (virtualised) and powernv (bare metal). That
+leaves the older systems like G5s, and the AmigaOne (pasemi) with a 16KB
+stack which should be sufficient on those machines.
+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Aneesh Kumar K.V (IBM) <aneesh.kumar@kernel.org>
+Link: https://msgid.link/20231215124449.317597-1-mpe@ellerman.id.au
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sc7280.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-index 8a23250d5951..7fc8c2045022 100644
---- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-@@ -888,6 +888,7 @@ sdhc_1: mmc@7c4000 {
- 
- 			bus-width = <8>;
- 			supports-cqe;
-+			dma-coherent;
- 
- 			qcom,dll-config = <0x0007642c>;
- 			qcom,ddr-config = <0x80040868>;
-@@ -3271,6 +3272,7 @@ sdhc_2: mmc@8804000 {
- 			operating-points-v2 = <&sdhc2_opp_table>;
- 
- 			bus-width = <4>;
-+			dma-coherent;
- 
- 			qcom,dll-config = <0x0007642c>;
- 
--- 
-2.43.0
-
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -858,6 +858,7 @@ config THREAD_SHIFT
+ 	int "Thread shift" if EXPERT
+ 	range 13 15
+ 	default "15" if PPC_256K_PAGES
++	default "15" if PPC_PSERIES || PPC_POWERNV
+ 	default "14" if PPC64
+ 	default "13"
+ 	help
 
 
 
