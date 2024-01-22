@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-14052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AB7F837F4F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:51:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 493FB838217
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:17:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 041A62897DA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AF3B1C251A7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FB2012AACC;
-	Tue, 23 Jan 2024 00:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF7E5811C;
+	Tue, 23 Jan 2024 01:41:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYF4B7Cj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1eZAftRg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E23312A167;
-	Tue, 23 Jan 2024 00:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28135569F;
+	Tue, 23 Jan 2024 01:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971055; cv=none; b=dAUTzCaU/BE6G7N4r6FZhZQ655TY4JT08qHRJlqh9YLPwprW9UkrE5mDNjX8lHDG+EfCJExqYMPnJ8hYVDCh05UfPwTB+YXxZN270t0dt6Z9iVpviLsZzg2aUsWVqhOgRDOtW7poPBO5Q3cE3zuR2vZ0usuIIv+x+KgXMp+0PYo=
+	t=1705974062; cv=none; b=TBBFDjSAiZmn+gFNv6Fv/wXYlyqWb7WXcvmoQh7rp6/ZDpfHyyvllgjiUlKMRWV6f9vHV8Zaet9ZpmcNmxy7K/QOrarsHM6xMX/6Fs11okOJt8nTEmtxtSQxdCBz2XkdcsxhanxIZEwO/oMRI72JXu1EeoKa4Y8HhlYn4q1xA3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971055; c=relaxed/simple;
-	bh=CVLbk9Cb0ZQHuP8d1moc+00l4Gxl4rHFNiybJK/daxA=;
+	s=arc-20240116; t=1705974062; c=relaxed/simple;
+	bh=rxwu8+Dh1uVSUwGm6gGU50B6fB3elpC9njPzIV30CyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q3zHV2jrv0RdNd+MkAGQ3b6sRxW11ysJPdKARVxreClUA5PKEUjknGwjyJ1Nguhft9x9L9Pa3k3ZAPM9zU60qGAzIB3qUY+L9fSe2Nm8a/+EGYTs95spAY7bCLz9BdosQZY3Cek2AbhIhOQit510JiIfxQyW3p26M3+D3Z2j7cM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYF4B7Cj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B333FC43394;
-	Tue, 23 Jan 2024 00:50:54 +0000 (UTC)
+	 MIME-Version; b=DPwW0J84Y2HAwEQIZEpD0ndLa2/W/9wjhS6AMiSvNndNjV7ECWMjLYxKaxjrma7tqNoZBnAYP7//qsYZJZDIDGE83lWSVNrFcSojLqp97U3kGLd07k2i6OjZWiq+fFlWfsXmev//5QpmsV5knO34002VERnNJFAjEDtiJX0LcL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1eZAftRg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 733E2C43394;
+	Tue, 23 Jan 2024 01:41:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971055;
-	bh=CVLbk9Cb0ZQHuP8d1moc+00l4Gxl4rHFNiybJK/daxA=;
+	s=korg; t=1705974060;
+	bh=rxwu8+Dh1uVSUwGm6gGU50B6fB3elpC9njPzIV30CyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OYF4B7Cjcw3zT21uh7JAncG0fgjceqOM5lBF+9WoAGYAVikyXX/LYeF0LWxVmD9dI
-	 eOzmGoj1VYJnPnSfMd5Bd0WHGupfrwTeNJBqilU9NV5xkVTe5lWVucpDDoXpb8wucF
-	 TCJGQxyoFOaFHBaIqolYvq7wbeTPCKhBQloTQtKU=
+	b=1eZAftRgFxjSJCvTQRfIg5pRc874Ho0FupB6w1DLyzHcJAf9KwbdLs7FvviQJUAsP
+	 y4YvizAV9KUiKoEtlkFxRrPMJNvdWnsfkv1PKxo28QtemX4WlmQTUIO1UTTcKxvNdY
+	 d0JLueTNoitqU8PWCS+SplvsmlesageZqGQGR4P4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZhaoLong Wang <wangzhaolong1@huawei.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Dmitry Rokosov <ddrokosov@sberdevices.ru>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 075/286] mtd: Fix gluebi NULL pointer dereference caused by ftl notifier
+Subject: [PATCH 5.15 125/374] firmware: meson_sm: populate platform devices from sm device tree data
 Date: Mon, 22 Jan 2024 15:56:21 -0800
-Message-ID: <20240122235734.927804626@linuxfoundation.org>
+Message-ID: <20240122235748.989267842@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhaoLong Wang <wangzhaolong1@huawei.com>
+From: Dmitry Rokosov <ddrokosov@sberdevices.ru>
 
-[ Upstream commit a43bdc376deab5fff1ceb93dca55bcab8dbdc1d6 ]
+[ Upstream commit e45f243409db98d610248c843b25435e7fb0baf3 ]
 
-If both ftl.ko and gluebi.ko are loaded, the notifier of ftl
-triggers NULL pointer dereference when trying to access
-‘gluebi->desc’ in gluebi_read().
+In some meson boards, secure monitor device has children, for example,
+power secure controller. By default, secure monitor isn't the bus in terms
+of device tree subsystem, so the of_platform initialization code doesn't
+populate its device tree data. As a result, secure monitor's children
+aren't probed at all.
 
-ubi_gluebi_init
-  ubi_register_volume_notifier
-    ubi_enumerate_volumes
-      ubi_notify_all
-        gluebi_notify    nb->notifier_call()
-          gluebi_create
-            mtd_device_register
-              mtd_device_parse_register
-                add_mtd_device
-                  blktrans_notify_add   not->add()
-                    ftl_add_mtd         tr->add_mtd()
-                      scan_header
-                        mtd_read
-                          mtd_read_oob
-                            mtd_read_oob_std
-                              gluebi_read   mtd->read()
-                                gluebi->desc - NULL
+Run the 'of_platform_populate()' routine manually to resolve such issues.
 
-Detailed reproduction information available at the Link [1],
-
-In the normal case, obtain gluebi->desc in the gluebi_get_device(),
-and access gluebi->desc in the gluebi_read(). However,
-gluebi_get_device() is not executed in advance in the
-ftl_add_mtd() process, which leads to NULL pointer dereference.
-
-The solution for the gluebi module is to run jffs2 on the UBI
-volume without considering working with ftl or mtdblock [2].
-Therefore, this problem can be avoided by preventing gluebi from
-creating the mtdblock device after creating mtd partition of the
-type MTD_UBIVOLUME.
-
-Fixes: 2ba3d76a1e29 ("UBI: make gluebi a separate module")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217992 [1]
-Link: https://lore.kernel.org/lkml/441107100.23734.1697904580252.JavaMail.zimbra@nod.at/ [2]
-Signed-off-by: ZhaoLong Wang <wangzhaolong1@huawei.com>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Acked-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20231220024619.2138625-1-wangzhaolong1@huawei.com
+Signed-off-by: Dmitry Rokosov <ddrokosov@sberdevices.ru>
+Acked-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20230324145557.27797-1-ddrokosov@sberdevices.ru
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Stable-dep-of: d8385d7433f9 ("firmware: meson-sm: unmap out_base shmem in error path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/mtd_blkdevs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/firmware/meson/meson_sm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/mtd_blkdevs.c b/drivers/mtd/mtd_blkdevs.c
-index 0c05f77f9b21..dd0d0bf5f57f 100644
---- a/drivers/mtd/mtd_blkdevs.c
-+++ b/drivers/mtd/mtd_blkdevs.c
-@@ -533,7 +533,7 @@ static void blktrans_notify_add(struct mtd_info *mtd)
- {
- 	struct mtd_blktrans_ops *tr;
+diff --git a/drivers/firmware/meson/meson_sm.c b/drivers/firmware/meson/meson_sm.c
+index d081a6312627..bf19dd66c213 100644
+--- a/drivers/firmware/meson/meson_sm.c
++++ b/drivers/firmware/meson/meson_sm.c
+@@ -313,11 +313,14 @@ static int __init meson_sm_probe(struct platform_device *pdev)
  
--	if (mtd->type == MTD_ABSENT)
-+	if (mtd->type == MTD_ABSENT || mtd->type == MTD_UBIVOLUME)
- 		return;
+ 	platform_set_drvdata(pdev, fw);
  
- 	list_for_each_entry(tr, &blktrans_majors, list)
-@@ -576,7 +576,7 @@ int register_mtd_blktrans(struct mtd_blktrans_ops *tr)
- 	list_add(&tr->list, &blktrans_majors);
+-	pr_info("secure-monitor enabled\n");
++	if (devm_of_platform_populate(dev))
++		goto out_in_base;
  
- 	mtd_for_each_device(mtd)
--		if (mtd->type != MTD_ABSENT)
-+		if (mtd->type != MTD_ABSENT && mtd->type != MTD_UBIVOLUME)
- 			tr->add_mtd(tr, mtd);
+ 	if (sysfs_create_group(&pdev->dev.kobj, &meson_sm_sysfs_attr_group))
+ 		goto out_in_base;
  
- 	mutex_unlock(&mtd_table_mutex);
++	pr_info("secure-monitor enabled\n");
++
+ 	return 0;
+ 
+ out_in_base:
 -- 
 2.43.0
 
