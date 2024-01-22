@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-13541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B68837C84
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE817838147
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:07:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EC0B287BB8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F30FA1C276C6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F8D135A44;
-	Tue, 23 Jan 2024 00:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8B414901F;
+	Tue, 23 Jan 2024 01:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGh+v0oo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KUAfjoTL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1909A13541C;
-	Tue, 23 Jan 2024 00:27:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A45149005;
+	Tue, 23 Jan 2024 01:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969652; cv=none; b=C17soy37ermYrBUzdx6k2q0OqqiIZs9naDSL8k9tDKShUrWPqVivw53GOLzSm7LqF4TSTD4bbnT0BrMmlW2IWA7EvYR8cfMp1O6bln6kAinJu53n/d27YFPHA+WTtE1uDBR4A4gkBOrtzAtyW50pERaxR/siVzL5nacziWw5Mec=
+	t=1705972093; cv=none; b=tIrNUvesMo2r61ln8RSO+zv9IsLv7si0mElZOPDnQ4ZWsZEeBhXcCHqABF+QbYJDWHmg/YzZnLkeQVNsAHxuURXziiRdxT4ujHiWvkPmQe1BUjlIeD6DW8SwcROGIvGbiwZlH6vwxcpL60M2J/1tk2+ZB/WXWVQl0tq9pLvLX08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969652; c=relaxed/simple;
-	bh=UVj/X4Ef3VwNvMXFR6VMRdzAR/EEsON8HbK06X2TILo=;
+	s=arc-20240116; t=1705972093; c=relaxed/simple;
+	bh=/KHCViP1NOwRhK4fnWf6h91otcwUrTEQYOYfppkPW6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FqH+02sSZBaqAU30OQ2ahiShyplZrVy3pftzvNyu3noF3X2/y2EJ0Nh0o0anbUm+V1AtsI36sBdps8CkVF9WCMgwMbJAj5y3JlPGnRRqJabEXcYbNmsQEXD0/uwEzfnYc7jzDBCaLzPhRsDeKc7h0df8+JW7g7c2SSuif4b3nis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGh+v0oo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4516C433F1;
-	Tue, 23 Jan 2024 00:27:31 +0000 (UTC)
+	 MIME-Version; b=GqP3pd8CCvYbL9mOl3kuYRWe4XrIf0Hkwp921HjrH5Xe3aL6B5EZmW1l8v9shb5EakRgTHrb5Ejsbsjc3c9om+PiZt884igdCNnD2Yizv21qzBR4w2PLjOu3YyLb/sPd/OZa7buP2gnmAG8j0mUUt2n9a8et/2JWogoTLFmBiAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KUAfjoTL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3090C433F1;
+	Tue, 23 Jan 2024 01:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969651;
-	bh=UVj/X4Ef3VwNvMXFR6VMRdzAR/EEsON8HbK06X2TILo=;
+	s=korg; t=1705972093;
+	bh=/KHCViP1NOwRhK4fnWf6h91otcwUrTEQYOYfppkPW6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DGh+v0ooQo+t5Aa8J61kWOICGBVYdIjaG0p23dEn0pVZOG3h5MOQPlTSsbQamPCJE
-	 /fvsCfVAAn30EA8vxN6r+asLs/qhuzew9+TXl0MN38W5kNj0QhdLf0FAhljEf0HlrO
-	 NeJBtF6SBhoziciwLfEkbR88i7OewtRLM3rSBh5o=
+	b=KUAfjoTL+eGx3/HJE/FsRW87H5xky8vxE2PXmTww4eAz5+fnUra/QhMIhHQNTQESo
+	 l5AjaW21l4G0BdZ4M2NqPgb5BMwWgx4JnCuELMwaTmtVNGUS5Hu004cakESmPB4K96
+	 4GEOmNPd9WGirnyW7jPqT2rPG6ZwW2HeHw6pUTU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Maurer <mmaurer@google.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.7 384/641] rust: Ignore preserve-most functions
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 032/374] tracing: Add size check when printing trace_marker output
 Date: Mon, 22 Jan 2024 15:54:48 -0800
-Message-ID: <20240122235829.968546534@linuxfoundation.org>
+Message-ID: <20240122235745.761418229@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Maurer <mmaurer@google.com>
+From: Steven Rostedt (Google) <rostedt@goodmis.org>
 
-commit bad098d76835c1379e1cf6afc935f8a7e050f83c upstream.
+[ Upstream commit 60be76eeabb3d83858cc6577fc65c7d0f36ffd42 ]
 
-Neither bindgen nor Rust know about the preserve-most calling
-convention, and Clang describes it as unstable. Since we aren't using
-functions with this calling convention from Rust, blocklist them.
+If for some reason the trace_marker write does not have a nul byte for the
+string, it will overflow the print:
 
-These functions are only added to the build when list hardening is
-enabled, which is likely why others didn't notice this yet.
+  trace_seq_printf(s, ": %s", field->buf);
 
-Signed-off-by: Matthew Maurer <mmaurer@google.com>
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20231031201945.1412345-1-mmaurer@google.com
-[ Used Markdown for consistency with the other comments in the file. ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The field->buf could be missing the nul byte. To prevent overflow, add the
+max size that the buf can be by using the event size and the field
+location.
+
+  int max = iter->ent_size - offsetof(struct print_entry, buf);
+
+  trace_seq_printf(s, ": %*.s", max, field->buf);
+
+Link: https://lore.kernel.org/linux-trace-kernel/20231212084444.4619b8ce@gandalf.local.home
+
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/bindgen_parameters |    4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/trace/trace_output.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/rust/bindgen_parameters
-+++ b/rust/bindgen_parameters
-@@ -20,3 +20,7 @@
+diff --git a/kernel/trace/trace_output.c b/kernel/trace/trace_output.c
+index 6b4d3f3abdae..4c4b84e507f7 100644
+--- a/kernel/trace/trace_output.c
++++ b/kernel/trace/trace_output.c
+@@ -1446,11 +1446,12 @@ static enum print_line_t trace_print_print(struct trace_iterator *iter,
+ {
+ 	struct print_entry *field;
+ 	struct trace_seq *s = &iter->seq;
++	int max = iter->ent_size - offsetof(struct print_entry, buf);
  
- # `seccomp`'s comment gets understood as a doctest
- --no-doc-comments
-+
-+# These functions use the `__preserve_most` calling convention, which neither bindgen
-+# nor Rust currently understand, and which Clang currently declares to be unstable.
-+--blocklist-function __list_.*_report
+ 	trace_assign_type(field, iter->ent);
+ 
+ 	seq_print_ip_sym(s, field->ip, flags);
+-	trace_seq_printf(s, ": %s", field->buf);
++	trace_seq_printf(s, ": %.*s", max, field->buf);
+ 
+ 	return trace_handle_return(s);
+ }
+@@ -1459,10 +1460,11 @@ static enum print_line_t trace_print_raw(struct trace_iterator *iter, int flags,
+ 					 struct trace_event *event)
+ {
+ 	struct print_entry *field;
++	int max = iter->ent_size - offsetof(struct print_entry, buf);
+ 
+ 	trace_assign_type(field, iter->ent);
+ 
+-	trace_seq_printf(&iter->seq, "# %lx %s", field->ip, field->buf);
++	trace_seq_printf(&iter->seq, "# %lx %.*s", field->ip, max, field->buf);
+ 
+ 	return trace_handle_return(&iter->seq);
+ }
+-- 
+2.43.0
+
 
 
 
