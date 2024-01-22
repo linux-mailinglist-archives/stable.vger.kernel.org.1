@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-14679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3114683821C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:17:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5731E83821E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:17:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C21CC1F23086
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89EAA1C25044
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCDA25822F;
-	Tue, 23 Jan 2024 01:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88ECE4F8BF;
+	Tue, 23 Jan 2024 01:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mIG9tXln"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCEqkCPt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B67B610E;
-	Tue, 23 Jan 2024 01:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B635CAF;
+	Tue, 23 Jan 2024 01:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974065; cv=none; b=tzvhd0fgJw/lNDgzidaFFwoOygr0KAheG0HcX2k7c0mP2RFSYyH5ULbv5t4aHmO4iOmkfWpyY28IirzYSd6mnGZmNV8fgTn30ByOTxBJ1zGI7flWLKWoqTB3urbT9MNvLleqdny4x0BZfJbDiSQt9s6ZRVNApmSu/HySNzdz5Qo=
+	t=1705974068; cv=none; b=Tf/W+UDr7N/xONg3A1LvPM+htpLRQiwBY0vVSJ/DhmCRNBGPjEh/pO2/jft0Aw+OpbVObWHrWRjEcSP+fa+YtXzzm4LfpxOcTH/19XZFZVLzFtA0QpNAVv0KqEvAokixvoj0v2/aFhOXWwcubu1VbPePRvGcHBAxlj7W7Su83DM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974065; c=relaxed/simple;
-	bh=bB8etuSfJOHJ8ANnRcX0mfmSwFeUGFf942wtyMiNyf4=;
+	s=arc-20240116; t=1705974068; c=relaxed/simple;
+	bh=k3V6F24Xdy2IjnnyDjYUeOLRbqNx7Ujr/xCI//0ktSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E3CIEgabiYLFlsGggoS3xw4sA9QPk88T9rTTFrYEFEcIG1BKhA+rK3i/jfD0nI6KZRVn0ELN4P/d6mHFigOW2nLOigudE2kTO7TugHlNLxd3msnAIPPIX5Km8DvGEnW9lFImkTToSrsmcC79s1Wrf768U4/AbWj7YSV6CrryVJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mIG9tXln; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F48C43390;
-	Tue, 23 Jan 2024 01:41:05 +0000 (UTC)
+	 MIME-Version; b=CANelLpBgwrwcTl6w191E7Ec98Az2jXOYtGll0fLADVuMK9I6i2SrNdOfpUC+8wOO8wKJu9kb8ViqcJdWC1dNiBCrE/L8eD7ZxWQBsEVMK4pLWEzw9DWh/zouhvZQ3UBjYo4S56CRqI1vE2TiYERMiU41W+HHdZsfuOybjN4s7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCEqkCPt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 975A6C43390;
+	Tue, 23 Jan 2024 01:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974065;
-	bh=bB8etuSfJOHJ8ANnRcX0mfmSwFeUGFf942wtyMiNyf4=;
+	s=korg; t=1705974067;
+	bh=k3V6F24Xdy2IjnnyDjYUeOLRbqNx7Ujr/xCI//0ktSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mIG9tXlnD8aK2J5ZrjKzjqqAFjwxo+i5BM0Saq0mS6SDDRV8zrXg8PduRP/Jr37q4
-	 SffoEa2KkjWnzh3laS6UKV6e5oxSaS8g6Ei1fXqmf+zyDqJaEJ03vluTpU9TD907Zc
-	 ISuE8fcA9FBWL866xGdNvSn6/jvYgSjFhgm/f62w=
+	b=dCEqkCPtiAAG09tHlhdW9RFCAgYzXpOfrtxonC/+8Sn/lYJEku1ZIBFosh8GZD9ve
+	 uEupzdKfhWf4/6CUxdKtjJCIAWCQkC54wRJh9SJzm1qtTAmxHym2lZjzp+wO7PnOJF
+	 B6NIYShcOCxnzow9u5bO0Qx/U8t7WLJmB3gNcbpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Nikita Kiryushin <kiryushin@ancud.ru>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 024/583] ACPI: video: check for error while searching for backlight device parent
-Date: Mon, 22 Jan 2024 15:51:15 -0800
-Message-ID: <20240122235812.939684951@linuxfoundation.org>
+Subject: [PATCH 6.6 025/583] ACPI: LPIT: Avoid u32 multiplication overflow
+Date: Mon, 22 Jan 2024 15:51:16 -0800
+Message-ID: <20240122235812.971168101@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
 References: <20240122235812.238724226@linuxfoundation.org>
@@ -68,49 +68,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Nikita Kiryushin <kiryushin@ancud.ru>
 
-[ Upstream commit ccd45faf4973746c4f30ea41eec864e5cf191099 ]
+[ Upstream commit 56d2eeda87995245300836ee4dbd13b002311782 ]
 
-If acpi_get_parent() called in acpi_video_dev_register_backlight()
-fails, for example, because acpi_ut_acquire_mutex() fails inside
-acpi_get_parent), this can lead to incorrect (uninitialized)
-acpi_parent handle being passed to acpi_get_pci_dev() for detecting
-the parent pci device.
+In lpit_update_residency() there is a possibility of overflow
+in multiplication, if tsc_khz is large enough (> UINT_MAX/1000).
 
-Check acpi_get_parent() result and set parent device only in case of success.
+Change multiplication to mul_u32_u32().
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 9661e92c10a9 ("acpi: tie ACPI backlight devices to PCI devices if possible")
+Fixes: eeb2d80d502a ("ACPI / LPIT: Add Low Power Idle Table (LPIT) support")
 Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_video.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/acpi/acpi_lpit.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
-index 35f071ad9532..27a6ae89f13a 100644
---- a/drivers/acpi/acpi_video.c
-+++ b/drivers/acpi/acpi_video.c
-@@ -1713,12 +1713,12 @@ static void acpi_video_dev_register_backlight(struct acpi_video_device *device)
+diff --git a/drivers/acpi/acpi_lpit.c b/drivers/acpi/acpi_lpit.c
+index c5598b6d5db8..794962c5c88e 100644
+--- a/drivers/acpi/acpi_lpit.c
++++ b/drivers/acpi/acpi_lpit.c
+@@ -105,7 +105,7 @@ static void lpit_update_residency(struct lpit_residency_info *info,
  		return;
- 	count++;
  
--	acpi_get_parent(device->dev->handle, &acpi_parent);
--
--	pdev = acpi_get_pci_dev(acpi_parent);
--	if (pdev) {
--		parent = &pdev->dev;
--		pci_dev_put(pdev);
-+	if (ACPI_SUCCESS(acpi_get_parent(device->dev->handle, &acpi_parent))) {
-+		pdev = acpi_get_pci_dev(acpi_parent);
-+		if (pdev) {
-+			parent = &pdev->dev;
-+			pci_dev_put(pdev);
-+		}
- 	}
+ 	info->frequency = lpit_native->counter_frequency ?
+-				lpit_native->counter_frequency : tsc_khz * 1000;
++				lpit_native->counter_frequency : mul_u32_u32(tsc_khz, 1000U);
+ 	if (!info->frequency)
+ 		info->frequency = 1;
  
- 	memset(&props, 0, sizeof(struct backlight_properties));
 -- 
 2.43.0
 
