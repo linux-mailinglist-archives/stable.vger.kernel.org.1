@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 021FE837FB1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:07 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 923528380AC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:01:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34B291C291E9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBC6AB27F1B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66F7464AB0;
-	Tue, 23 Jan 2024 00:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E6D664BA;
+	Tue, 23 Jan 2024 01:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HF1dTJRC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NT+5NTzU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261D3627F3;
-	Tue, 23 Jan 2024 00:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93E6664B6;
+	Tue, 23 Jan 2024 01:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971291; cv=none; b=k7FGuQKF9wY3u21x9I8fE9ULzpqXdTPl3kSAEGc5mlxZ1yw2vLniUnZbXm/sZfAJzihfS6V+142gE1UBcCqOjfBPJWef+21WoOvgfL+yxaIrnFJSfTjUvkZJj1/oPJRgua4hC/3svrfjtrTU1KB7C4eTL2675EsEd9cmM56suuk=
+	t=1705971659; cv=none; b=DAzHet8rHV5r1fR6/A7mreQSS5zc0k/Bm8WJk/NDiGjlvSnP1E06u9+u6agZNckPZ8vqxtNRmSLs4AeJ5dWRDilvZgdX9wVrYrj0jqTUFsz6gY8iyds+i84tWumF6ZDn4Th/O3qCa+U3CC+Vg0cWjACiFAsebG0/vMke41NhczQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971291; c=relaxed/simple;
-	bh=iO9XmUNc0SdKjLptv89TAkS+DPXcbVWDt0yhTtYabuE=;
+	s=arc-20240116; t=1705971659; c=relaxed/simple;
+	bh=yO5LkWCbm50B7hY5B770zd5Vxqh2nBFV3H8s23o6rm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XDM7FmZARt59FWGyJKvKImlXbVl3lTtg3FaI7XVUEv7PFBu/4kyMpzgp4dSmmmB25eLrb0m2ILC88ejVIm6+WvkggJry7oQBSNz51dmhPNzL8JaERzIBTAOFUVfwRB7y134HoqqIbmds/uh+GNHBCl8YXJs3r6LzlXs6VoIkE1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HF1dTJRC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D83EC433F1;
-	Tue, 23 Jan 2024 00:54:50 +0000 (UTC)
+	 MIME-Version; b=IJQ69l5mf6rzcSB4nJ4ETU7kfv2AUK4Lcn204Zd+DZ6uUJ+wCNA8ft4sKMziknUd7uALXBVTqf9CDDte2CeflF9NRsnOjEpMtWrbwqusF64N+Wss54LoPc7dmgmqbrFov/HbluxcnzKHxmMlUeFFUxw/WfYr+GKDXIRv6RT4NQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NT+5NTzU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60751C433C7;
+	Tue, 23 Jan 2024 01:00:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971291;
-	bh=iO9XmUNc0SdKjLptv89TAkS+DPXcbVWDt0yhTtYabuE=;
+	s=korg; t=1705971659;
+	bh=yO5LkWCbm50B7hY5B770zd5Vxqh2nBFV3H8s23o6rm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HF1dTJRCw0yANXFtyeKuZi8CXOuVq0JLz3b+8oDpPm5l9TVHH6KWnyRenxWa4LJxt
-	 Wb1HdyuCagc0gEQJqajFVkaQ0y2+hCbqU6YYoSAt/0ugQ1Sn0uJ4oD5TFYyWRLWv63
-	 fCKCFj8Np9tHm308Ac9f4lEKnqND4UD5jhXeT64M=
+	b=NT+5NTzUMBi58zLboCTw4puq8EHc3uO/t7oUqLhPsEeT2FPn126PUyKeBAmOmjuoZ
+	 oU0qXqaT1jmW/NYNaCZ3K44nS6S6gkxGmkfUJX1J0n34xOdwVp6scudF9ChQiUc4Sa
+	 181v8sttJZLPrXjw0XQeS31B80oqenLlYhmyjquo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joakim Zhang <joakim.zhang@cixtech.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 129/286] dma-mapping: clear dev->dma_mem to NULL after freeing it
+	RD Babiera <rdbabiera@google.com>,
+	Chris Bainbridge <chris.bainbridge@gmail.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.1 267/417] Revert "usb: typec: class: fix typec_altmode_put_partner to put plugs"
 Date: Mon, 22 Jan 2024 15:57:15 -0800
-Message-ID: <20240122235737.105248612@linuxfoundation.org>
+Message-ID: <20240122235801.112484118@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joakim Zhang <joakim.zhang@cixtech.com>
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-[ Upstream commit b07bc2347672cc8c7293c64499f1488278c5ca3d ]
+commit 9c6b789e954fae73c548f39332bcc56bdf0d4373 upstream.
 
-Reproduced with below sequence:
-dma_declare_coherent_memory()->dma_release_coherent_memory()
-->dma_declare_coherent_memory()->"return -EBUSY" error
+This reverts commit b17b7fe6dd5c6ff74b38b0758ca799cdbb79e26e.
 
-It will return -EBUSY from the dma_assign_coherent_memory()
-in dma_declare_coherent_memory(), the reason is that dev->dma_mem
-pointer has not been set to NULL after it's freed.
+That commit messed up the reference counting, so it needs to
+be rethought.
 
-Fixes: cf65a0f6f6ff ("dma-mapping: move all DMA mapping code to kernel/dma")
-Signed-off-by: Joakim Zhang <joakim.zhang@cixtech.com>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b17b7fe6dd5c ("usb: typec: class: fix typec_altmode_put_partner to put plugs")
+Cc:  <stable@vger.kernel.org>
+Cc: RD Babiera <rdbabiera@google.com>
+Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Closes: https://lore.kernel.org/lkml/CAP-bSRb3SXpgo_BEdqZB-p1K5625fMegRZ17ZkPE1J8ZYgEHDg@mail.gmail.com/
+Signed-off-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240102091142.2136472-1-heikki.krogerus@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/dma/coherent.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/typec/class.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/dma/coherent.c b/kernel/dma/coherent.c
-index b79d8d0433dd..49aaad3936f1 100644
---- a/kernel/dma/coherent.c
-+++ b/kernel/dma/coherent.c
-@@ -142,8 +142,10 @@ int dma_declare_coherent_memory(struct device *dev, phys_addr_t phys_addr,
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -267,7 +267,7 @@ static void typec_altmode_put_partner(st
+ 	if (!partner)
+ 		return;
  
- void dma_release_coherent_memory(struct device *dev)
+-	adev = &altmode->adev;
++	adev = &partner->adev;
+ 
+ 	if (is_typec_plug(adev->dev.parent)) {
+ 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
+@@ -497,8 +497,7 @@ static void typec_altmode_release(struct
  {
--	if (dev)
-+	if (dev) {
- 		_dma_release_coherent_memory(dev->dma_mem);
-+		dev->dma_mem = NULL;
-+	}
- }
+ 	struct altmode *alt = to_altmode(to_typec_altmode(dev));
  
- static void *__dma_alloc_from_coherent(struct device *dev,
--- 
-2.43.0
-
+-	if (!is_typec_port(dev->parent))
+-		typec_altmode_put_partner(alt);
++	typec_altmode_put_partner(alt);
+ 
+ 	altmode_id_remove(alt->adev.dev.parent, alt->id);
+ 	kfree(alt);
 
 
 
