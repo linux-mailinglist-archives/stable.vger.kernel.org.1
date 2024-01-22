@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE90838013
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:38 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F186838071
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E095628F0E7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 62B801C29666
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C129E65BB1;
-	Tue, 23 Jan 2024 00:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 105F512DDBE;
+	Tue, 23 Jan 2024 01:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2jcHbffb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CWUm2rMX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8155464CF2;
-	Tue, 23 Jan 2024 00:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D1C12DDB0;
+	Tue, 23 Jan 2024 01:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971531; cv=none; b=G+8/parhrpK2yLxKtq7v4ZzJGU6b5eovK5jj1CbNLLGSIsLEAdO8rG+/LKMAysjrPApZzUDcQr3zG96rg4N25iq4mdorG+23aDxGUy52k13Z4FxG9p80pf1bwOq9oCh4YUc+yNL2ABQ+lTZc57LfKlv2+xV9j4HankiS0JH9i7o=
+	t=1705971723; cv=none; b=TjGUCj1NU3PKF6DRXSNkvvvpotvwKeXNk1s8P4I46ovkf3MOdchucA/5hk7ZORI0xgDrBiGjGEPP4j5tZaZTKPSvdySlj4CG8Vqv3knfUCtOl3VVSXocGh9TiTfjOjOj2aqSl06D40fl8qWFQpNOzVw3z0b/MyoYuW8CKJMcElg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971531; c=relaxed/simple;
-	bh=rkVM3kS7wo3koKAtgz/jyoXPpnMMf7nCEhci2SeoV/A=;
+	s=arc-20240116; t=1705971723; c=relaxed/simple;
+	bh=UZFkgmRUCU42uplYt0tP1JGM/YSIwi7bZAaVviB0m8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OCoJsz1AlvPLc5U6BoS6b+O9oio8gz1yzlK1oOP0y2FYZmpGKMk4xOXaV7tq8/PJ+3HrGKQcz54Xw1xxYGbHHHRhAFbhVLNLA8+iCgXJ6zcTbq+w6gTuOxlAl2JZIbaNjnTJQDkDP76w5bmO5auk8LhcCcAV5TNNlMF3/foUhOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2jcHbffb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 427FAC433C7;
-	Tue, 23 Jan 2024 00:58:51 +0000 (UTC)
+	 MIME-Version; b=jaAg+njWicnCSsBawWs2Q+U/qJvJdVc77QXhReQvjSwSe+16Twx8YdH69nXGqyQeC8hkjRRwX7t6T1xk5U50tSfkJp6eqNa+13HyXBfpkySQtRtCXQUB8aGDmZ+moUL/zm5Y3aScd9PJegt9HUFKeQJpbZvjbGMmiFEodutP/rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CWUm2rMX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE08C433C7;
+	Tue, 23 Jan 2024 01:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971531;
-	bh=rkVM3kS7wo3koKAtgz/jyoXPpnMMf7nCEhci2SeoV/A=;
+	s=korg; t=1705971723;
+	bh=UZFkgmRUCU42uplYt0tP1JGM/YSIwi7bZAaVviB0m8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2jcHbffbSjI9zrFvwCgPHs/9Pf768atCdT3EX94IqUWATc+zaOs/DxvnfVlg25Oil
-	 /Pax0QKH0cmXztjiQXmSJgCRSXPykwa1ZHXaIvPykb4RGlu/zi24W48n89uUPY17sh
-	 GOcNOWvPqSnDAIOfSDq8IdYmCm6dvPwKfx75ZcYM=
+	b=CWUm2rMXlbhusa/pJXABnPNuo0ngswLuDMWCHLvtQRGM9h8bpuXWduKJf5MBqEmkM
+	 BD7y8xMIgDv4pA56mrnWOsmWBPM/txOH8DtYV8Zg/pRsn6VVEbM3c4AwNFkS/4na2+
+	 OzLzf61F9bpMcqB0VvJyo4Oiwt3zB+vRCbqwo8S0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 167/286] f2fs: fix to check compress file in f2fs_move_file_range()
-Date: Mon, 22 Jan 2024 15:57:53 -0800
-Message-ID: <20240122235738.607069693@linuxfoundation.org>
+	Tom Murphy <murphyt7@tcd.ie>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Saravana Kannan <saravanak@google.com>,
+	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 6.1 306/417] iommu/dma: Trace bounce buffer usage when mapping buffers
+Date: Mon, 22 Jan 2024 15:57:54 -0800
+Message-ID: <20240122235802.425334565@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Isaac J. Manjarres <isaacmanjarres@google.com>
 
-[ Upstream commit fb9b65340c818875ea86464faf3c744bdce0055c ]
+commit a63c357b9fd56ad5fe64616f5b22835252c6a76a upstream.
 
-f2fs_move_file_range() doesn't support migrating compressed cluster
-data, let's add the missing check condition and return -EOPNOTSUPP
-for the case until we support it.
+When commit 82612d66d51d ("iommu: Allow the dma-iommu api to
+use bounce buffers") was introduced, it did not add the logic
+for tracing the bounce buffer usage from iommu_dma_map_page().
 
-Fixes: 4c8ff7095bef ("f2fs: support data compression")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+All of the users of swiotlb_tbl_map_single() trace their bounce
+buffer usage, except iommu_dma_map_page(). This makes it difficult
+to track SWIOTLB usage from that function. Thus, trace bounce buffer
+usage from iommu_dma_map_page().
+
+Fixes: 82612d66d51d ("iommu: Allow the dma-iommu api to use bounce buffers")
+Cc: stable@vger.kernel.org # v5.15+
+Cc: Tom Murphy <murphyt7@tcd.ie>
+Cc: Lu Baolu <baolu.lu@linux.intel.com>
+Cc: Saravana Kannan <saravanak@google.com>
+Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+Link: https://lore.kernel.org/r/20231208234141.2356157-1-isaacmanjarres@google.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/file.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/iommu/dma-iommu.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 4e6b93f16758..98960c8d72c0 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -2816,6 +2816,11 @@ static int f2fs_move_file_range(struct file *file_in, loff_t pos_in,
- 			goto out;
- 	}
+--- a/drivers/iommu/dma-iommu.c
++++ b/drivers/iommu/dma-iommu.c
+@@ -28,6 +28,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/swiotlb.h>
+ #include <linux/vmalloc.h>
++#include <trace/events/swiotlb.h>
  
-+	if (f2fs_compressed_file(src) || f2fs_compressed_file(dst)) {
-+		ret = -EOPNOTSUPP;
-+		goto out_unlock;
-+	}
+ #include "dma-iommu.h"
+ 
+@@ -999,6 +1000,8 @@ static dma_addr_t iommu_dma_map_page(str
+ 			return DMA_MAPPING_ERROR;
+ 		}
+ 
++		trace_swiotlb_bounced(dev, phys, size);
 +
- 	ret = -EINVAL;
- 	if (pos_in + len > src->i_size || pos_in + len < pos_in)
- 		goto out_unlock;
--- 
-2.43.0
-
+ 		aligned_size = iova_align(iovad, size);
+ 		phys = swiotlb_tbl_map_single(dev, phys, size, aligned_size,
+ 					      iova_mask(iovad), dir, attrs);
 
 
 
