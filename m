@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32B6A837CB8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:15:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3DD837E43
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 593F8B2372D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAFC01F22554
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C474E187A;
-	Tue, 23 Jan 2024 00:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8EB05D74C;
+	Tue, 23 Jan 2024 00:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B8Oo2GUo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NI6yjK8n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8494F1852;
-	Tue, 23 Jan 2024 00:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969E45BADC;
+	Tue, 23 Jan 2024 00:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969480; cv=none; b=OEJ64APD2OIRwGj/e6Wet6OkdkO79HbXuhY5t4nZuwKkDGRZBQC4SAHN25SGIsghWVRgzCADN7MzgXMpZJv1R54tzeeSFnyq3Klm746Yzuj4HWs7cJ4HroGOdln6cE2bJHhMLfn29g76H5VvmYYAh8Ou6+VZnFA/LyAhSpMyr74=
+	t=1705970481; cv=none; b=aIvCMlOQUqpAM9ZxK3z8Mb6Jm4BVhRWVSua1Vfp+gQtJFlcibukBMXzGSdTdkKoWCja22k2afip7Ff6zZugdSr6P5u+qpj8aGOJnkEYkdLxO5EaKMhlTCcEwyuqVtYp935udjoqskEdEV9HfeoWWDD5MfJgwOkQEWqeFyxYMp0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969480; c=relaxed/simple;
-	bh=e/jKJ+mZsqtO5SFEb4LoUjQIiLf6CQgvsdhpnhghDLk=;
+	s=arc-20240116; t=1705970481; c=relaxed/simple;
+	bh=j15tt0mqxuUYt3rmnsktuc3h5c2s4ZsATRzk1DH0Yuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n4kNiiJU6NNJwfQrzIHEAR3KeTjqV8YDx2+QM3MQItTKFoBGpKRgpkcJsYVSW7IYEyT2xfqCn58lcF1m+YbJo8nqxc8lK0Ujw5mV1RAspSzymneazapL61TSeHoaljXbmgwulInVsZiUCkW3luH4jyuQkldRntaV7FwPNoQAZBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B8Oo2GUo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF1C3C43390;
-	Tue, 23 Jan 2024 00:24:39 +0000 (UTC)
+	 MIME-Version; b=Nv7fLw1gR69QNJOrbSOiTNE86/ankrUga+Pq7rrPLhbCWPvhAIrlnCuPTKeNl210WfGF6c0ZJQzETNb5Kr18A84hFwExbEqZvegGMSh9JLk3sqaO8PiNaScWv2ANIvqCHEpOMPBmag3FPBIJwRvdelNvIQB6KQJ/f9yge0e6qD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NI6yjK8n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6484C433C7;
+	Tue, 23 Jan 2024 00:41:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969480;
-	bh=e/jKJ+mZsqtO5SFEb4LoUjQIiLf6CQgvsdhpnhghDLk=;
+	s=korg; t=1705970481;
+	bh=j15tt0mqxuUYt3rmnsktuc3h5c2s4ZsATRzk1DH0Yuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B8Oo2GUo+NXh65K7OOyUjoWW65PouCdVi+f6A9JIOoD+tYfleVlN+8fsb4td/jXjL
-	 474JfmZAzu6pBYqeb9myotYOsR5oFq8uTuwO4PVtxMTMY/se2YNQJVBlKYWW+3VhyZ
-	 MoG4g91JK9rfwn9ghry7Ca+8Q87eVC7exsZO0e5k=
+	b=NI6yjK8n5+NT00o4rP7j/rCxRLMKJ6zb/deZ+fVy1hf1Y6TB9wtfCVtBZVZHIzQE1
+	 dHj5p05fRm3STE/uevj0ZC2Huvy6rvAghf3J0sxvhD9r2QaK3jY46ccu1CrecOzXXp
+	 JSybbdSxlnFb8TJi9/feKv9SJ9b4FKADgqrKzxqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 273/641] drm/tidss: Check for K2G in in dispc_softreset()
+Subject: [PATCH 6.1 009/417] powerpc/powernv: Add a null pointer check to scom_debug_init_one()
 Date: Mon, 22 Jan 2024 15:52:57 -0800
-Message-ID: <20240122235826.460668248@linuxfoundation.org>
+Message-ID: <20240122235751.823552010@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 151825150cf9c2e9fb90763d35b9dff3783628ac ]
+[ Upstream commit 9a260f2dd827bbc82cc60eb4f4d8c22707d80742 ]
 
-K2G doesn't have softreset feature. Instead of having every caller of
-dispc_softreset() check for K2G, move the check into dispc_softreset(),
-and make dispc_softreset() return 0 in case of K2G.
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure.
+Add a null pointer check, and release 'ent' to avoid memory leaks.
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Link: https://lore.kernel.org/r/20231109-tidss-probe-v2-6-ac91b5ea35c0@ideasonboard.com
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Stable-dep-of: bc288a927815 ("drm/tidss: Fix dss reset")
+Fixes: bfd2f0d49aef ("powerpc/powernv: Get rid of old scom_controller abstraction")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231208085937.107210-1-chentao@kylinos.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_dispc.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ arch/powerpc/platforms/powernv/opal-xscom.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
-index 9a29f5fa8453..2af623842cfb 100644
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -2707,6 +2707,10 @@ static int dispc_softreset(struct dispc_device *dispc)
- 	u32 val;
- 	int ret = 0;
- 
-+	/* K2G display controller does not support soft reset */
-+	if (dispc->feat->subrev == DISPC_K2G)
-+		return 0;
+diff --git a/arch/powerpc/platforms/powernv/opal-xscom.c b/arch/powerpc/platforms/powernv/opal-xscom.c
+index 6b4eed2ef4fa..f67235d1ba2c 100644
+--- a/arch/powerpc/platforms/powernv/opal-xscom.c
++++ b/arch/powerpc/platforms/powernv/opal-xscom.c
+@@ -165,6 +165,11 @@ static int scom_debug_init_one(struct dentry *root, struct device_node *dn,
+ 	ent->chip = chip;
+ 	snprintf(ent->name, 16, "%08x", chip);
+ 	ent->path.data = (void *)kasprintf(GFP_KERNEL, "%pOF", dn);
++	if (!ent->path.data) {
++		kfree(ent);
++		return -ENOMEM;
++	}
 +
- 	/* Soft reset */
- 	REG_FLD_MOD(dispc, DSS_SYSCONFIG, 1, 1, 1);
- 	/* Wait for reset to complete */
-@@ -2829,12 +2833,9 @@ int dispc_init(struct tidss_device *tidss)
- 	of_property_read_u32(dispc->dev->of_node, "max-memory-bandwidth",
- 			     &dispc->memory_bandwidth_limit);
+ 	ent->path.size = strlen((char *)ent->path.data);
  
--	/* K2G display controller does not support soft reset */
--	if (feat->subrev != DISPC_K2G) {
--		r = dispc_softreset(dispc);
--		if (r)
--			return r;
--	}
-+	r = dispc_softreset(dispc);
-+	if (r)
-+		return r;
- 
- 	tidss->dispc = dispc;
- 
+ 	dir = debugfs_create_dir(ent->name, root);
 -- 
 2.43.0
 
