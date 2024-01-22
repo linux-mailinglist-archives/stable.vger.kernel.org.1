@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75A86838197
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 694A8837DC3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48895B27C99
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F61BB3131E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:19:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B2214A4D3;
-	Tue, 23 Jan 2024 01:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51B3A15A4B3;
+	Tue, 23 Jan 2024 00:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="te3hL8Wt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOUGw7TV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769AD14A4CE;
-	Tue, 23 Jan 2024 01:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB1E15A4A9;
+	Tue, 23 Jan 2024 00:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972107; cv=none; b=iSLiq7A3XdvkLoJ4v287qWDaOUgYdAL/7jMMPmRiRzzhPsqeFqQFk/nL3EMZRUTmHMa1LnqoDDx8kAq+29gD0IGMtS+Ghox7wo0NhBNyAAjwpSgtHRCvy2rlsoid7fVP3dvjsGntw0g3EuE2fWbGYwq528ssGYdNPSOuWtMkoVk=
+	t=1705969747; cv=none; b=E/v0pEXa41xm/P7d3A3H2Rv9JhOBigrOz6V1xMVHmkJ0Tu7X+qhHieb4YhUIEukhcM6F2dKaeNkKcoJilReFCo25NiNAnHkGvENmtKpFlI2gHo7U2FdnREE45SGZIh9xg1dKR8F7XBnFV2nvu+ESgQccj4iXLKYSX0ZDzva/2Ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972107; c=relaxed/simple;
-	bh=p4ZsLaD5TmqdnVMr1V2vNCwAcZHhJKJ8sD4vd+FclRU=;
+	s=arc-20240116; t=1705969747; c=relaxed/simple;
+	bh=KeSrit1J9rEMH6pDaCBkSqQ5qlb8RgZSXDCvr1usmPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q8wo35sSa60uA9vd4hDWpKBSC5FPnzW8xePz7VKC6s2w1yHnCuvPnztlycvQsSSyB2QvVtuHcCbmRpMwGNXYoN/SWL1hG4GtoJjiuLZnbqNvlK87gUxOLfF6cmcbMQfbezKkOGSisDDz7Yjk8Qq6xeYdohgiUawrzNdLgbdEaM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=te3hL8Wt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C244C433F1;
-	Tue, 23 Jan 2024 01:08:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dMZc4gOxR6t3wz7XDCPOG2QrIFJIyH47+KImIyGExSQShoAFa827IvNwayDwLzGmQZLQyUtCJudDb03atTmbQ1h/HgK3XZtl0XcDF+WtfsbpakSjFFUDyVxNkkevzmIt5qkyCZzfOIaXnkhoS+7nU5CrQvFgsb13kKhNG/Yt0MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOUGw7TV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 700B5C43399;
+	Tue, 23 Jan 2024 00:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972106;
-	bh=p4ZsLaD5TmqdnVMr1V2vNCwAcZHhJKJ8sD4vd+FclRU=;
+	s=korg; t=1705969746;
+	bh=KeSrit1J9rEMH6pDaCBkSqQ5qlb8RgZSXDCvr1usmPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=te3hL8WtvmYH6Mkfx0lsBzXUtXYUDJ/2KByEkmGeJDEasdnAavO9RyZBG/Wf/7+V/
-	 quOwgjAo5IHrhwhsxKtpaNV+CjXWajQ7rPPfBVRyitHAt7agLJcA9zxSeOhrs7y8nf
-	 4L3W6hU1ZtrzfqcUxcl1LWLrlW2N6O7ft8gkiNaw=
+	b=rOUGw7TVxcSbP50HoygN+VncO0lv6yf7apKRze+W7ffKUl4bbfOU7Y91WIpJ7tOLu
+	 NeqaY3DAdRp/jtZjvnC+N1IYVWtOT3Ls6xMUsJBW96JEDcIOPGQJLU/xKRk2NldM7M
+	 KR2DMUD+2atLOFF47Sh64ogad21L4+EbxTghYh/E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avraham Stern <avraham.stern@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 042/374] wifi: iwlwifi: pcie: avoid a NULL pointer dereference
+	stable <stable@kernel.org>,
+	Richard Acayan <mailingradian@gmail.com>,
+	Luca Weiss <luca@z3ntu.xyz>,
+	=?UTF-8?q?Duje=20Mihanovi=C4=87?= <duje.mihanovic@skole.hr>
+Subject: [PATCH 6.7 394/641] usb: gadget: u_ether: Re-attach netif device to mirror detachment
 Date: Mon, 22 Jan 2024 15:54:58 -0800
-Message-ID: <20240122235746.084755054@linuxfoundation.org>
+Message-ID: <20240122235830.290967202@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avraham Stern <avraham.stern@intel.com>
+From: Richard Acayan <mailingradian@gmail.com>
 
-[ Upstream commit ce038edfce43fb345f8dfdca0f7b17f535896701 ]
+commit 76c945730cdffb572c7767073cc6515fd3f646b4 upstream.
 
-It possible that while the rx rb is being handled, the transport has
-been stopped and re-started. In this case the tx queue pointer is not
-yet initialized, which will lead to a NULL pointer dereference.
-Fix it.
+In 6.7-rc1, there was a netif_device_detach call added to the
+gether_disconnect function. This clears the __LINK_STATE_PRESENT bit of
+the netif device and suppresses pings (ICMP messages) and TCP connection
+requests from the connected host. If userspace temporarily disconnects
+the gadget, such as by temporarily removing configuration in the gadget
+configfs interface, network activity should continue to be processed
+when the gadget is re-connected. Mirror the netif_device_detach call
+with a netif_device_attach call in gether_connect to fix re-connecting
+gadgets.
 
-Signed-off-by: Avraham Stern <avraham.stern@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20231207044813.cd0898cafd89.I0b84daae753ba9612092bf383f5c6f761446e964@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://gitlab.com/postmarketOS/pmaports/-/tree/6002e51b7090aeeb42947e0ca7ec22278d7227d0/main/postmarketos-base-ui/rootfs-usr-lib-NetworkManager-dispatcher.d-50-tethering.sh
+Cc: stable <stable@kernel.org>
+Fixes: f49449fbc21e ("usb: gadget: u_ether: Replace netif_stop_queue with netif_device_detach")
+Signed-off-by: Richard Acayan <mailingradian@gmail.com>
+Tested-by: Luca Weiss <luca@z3ntu.xyz>
+Tested-by: Duje Mihanović <duje.mihanovic@skole.hr>
+Link: https://lore.kernel.org/r/20231218164532.411125-2-mailingradian@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/rx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/function/u_ether.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-index 29be7ed76894..17e53c7eb62d 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/rx.c
-@@ -1380,7 +1380,7 @@ static void iwl_pcie_rx_handle_rb(struct iwl_trans *trans,
- 		 * if it is true then one of the handlers took the page.
- 		 */
+diff --git a/drivers/usb/gadget/function/u_ether.c b/drivers/usb/gadget/function/u_ether.c
+index 9d1c40c152d8..3c5a6f6ac341 100644
+--- a/drivers/usb/gadget/function/u_ether.c
++++ b/drivers/usb/gadget/function/u_ether.c
+@@ -1163,6 +1163,8 @@ struct net_device *gether_connect(struct gether *link)
+ 		if (netif_running(dev->net))
+ 			eth_start(dev, GFP_ATOMIC);
  
--		if (reclaim) {
-+		if (reclaim && txq) {
- 			u16 sequence = le16_to_cpu(pkt->hdr.sequence);
- 			int index = SEQ_TO_INDEX(sequence);
- 			int cmd_index = iwl_txq_get_cmd_index(txq, index);
++		netif_device_attach(dev->net);
++
+ 	/* on error, disable any endpoints  */
+ 	} else {
+ 		(void) usb_ep_disable(link->out_ep);
 -- 
 2.43.0
 
