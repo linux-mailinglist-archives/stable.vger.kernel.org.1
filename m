@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-15267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41F2E83856F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:41:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C49C1837D6B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56497B27DEA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B9F41F22FB8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6735F73175;
-	Tue, 23 Jan 2024 02:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 045885C5E6;
+	Tue, 23 Jan 2024 00:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjHHWZkQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dlaLH+db"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271CD6EB67;
-	Tue, 23 Jan 2024 02:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B86D552F7C;
+	Tue, 23 Jan 2024 00:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975427; cv=none; b=N0UlNByfL4r7rK04Cb4hOKbAMNXZesGKl16LE736rh3YyIpCibc4KJYPALQImEsIhBO/T8gtC9/DbfvMzwmJ4L3KFcwqykWyWRNKAu1DAbVsEH6MjzQAgdxtTIEm8qn1+pjDKt+rfF+JclTn1g2ealF35FcfIIhvc81rwiefQs4=
+	t=1705969935; cv=none; b=IaohGYrlybpl5IecJNRjaRpb12LgHEaKGlxUvFHzgKmGzh1kw9oe15wP09NwLONhs+GZK+J84fOPthvrJKMwrSRkwD31EN6eX4RVBc8mOt30JHFJtkk3c030fEtLS0gmVQWfIhCQLfvkS4Ya4mOJV6870Yx6MDpplYZdCyMuRew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975427; c=relaxed/simple;
-	bh=lnyEXu7POPAXdrQqSZmGSPMfRwjPI8ddA8bAdwREXOo=;
+	s=arc-20240116; t=1705969935; c=relaxed/simple;
+	bh=0f+fNcUNF2wpEhC2AyMLwF7POsSjBgfw3hJ1zjnNrZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W2ZOUJp9sdLFZpZe0s0enrdWTSexh/mrRYTA/I/RBoVkNwMLlIJvgpM1H3m3pplWkQI0vAJDWDbYROk7MLZprbgeKd5LKb2XQfC5/ZxRlHH1wZ+QZbmTzpEb9k1XvOmdOZthhVgiU+npw/vUeI2umO3TrTsNYt5hQtR4ZzjEYWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjHHWZkQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB742C433C7;
-	Tue, 23 Jan 2024 02:03:46 +0000 (UTC)
+	 MIME-Version; b=G+A+dSP+g1qDocE3UJ0dJpURCf26VovF1rNrWWSMDKLGwKictAchKWmKLdsBQO+EhQTc8d7I3ZgFY1ggjLT+loAI98bqfveGvV8FJrBRvoYask2nP6vKJOjy1flGyDBi6h+zwthdBYMSef8zFnOFtAYWromjTH28Ny1fi3zvmYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dlaLH+db; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62885C433F1;
+	Tue, 23 Jan 2024 00:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975427;
-	bh=lnyEXu7POPAXdrQqSZmGSPMfRwjPI8ddA8bAdwREXOo=;
+	s=korg; t=1705969935;
+	bh=0f+fNcUNF2wpEhC2AyMLwF7POsSjBgfw3hJ1zjnNrZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mjHHWZkQJ6kJlCVSj61Bg0b6LsdLe/NcU7UaotUMbOueu1OwJxM1Wtiw0Kp595DU6
-	 dWYwp6cWLrvstylPo2GkMF/ZIWG17jlhpzuUEDh0U8oX4Cg6B4cgpsn36YVEYASZe1
-	 T5qPOQCkHy4qAbSaiaos3O+XCCaISSb/OsODqHCk=
+	b=dlaLH+dbo9aFy0D/UkrA3+5Rm3Eeb+KJWfL5kv4G0WCRdk0vGhemvGZ/l3ucR+eRW
+	 2hkdPw+ZaV6z0bnxWBsSM5atYN3/x8dw9wCazbwm8PNN1UBpqQMbkz/+dPlRm3adUT
+	 Xu7gvkEv5Y679vaNLPBtssC2yx+eaoZDHWrbKSuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
-Subject: [PATCH 6.6 359/583] usb: dwc: ep0: Update request status in dwc3_ep0_stall_restart
+	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 506/641] iommu: Map reserved memory as cacheable if device is coherent
 Date: Mon, 22 Jan 2024 15:56:50 -0800
-Message-ID: <20240122235823.007633462@linuxfoundation.org>
+Message-ID: <20240122235833.902172301@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,62 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
 
-commit e9d40b215e38480fd94c66b06d79045717a59e9c upstream.
+[ Upstream commit f1aad9df93f39267e890836a28d22511f23474e1 ]
 
-Current implementation blocks the running operations when Plug-out and
-Plug-In is performed continuously, process gets stuck in
-dwc3_thread_interrupt().
+Check if the device is marked as DMA coherent in the DT and if so,
+map its reserved memory as cacheable in the IOMMU.
+This fixes the recently added IOMMU reserved memory support which
+uses IOMMU_RESV_DIRECT without properly building the PROT for the
+mapping.
 
-Code Flow:
-
-	CPU1
-
-	->Gadget_start
-	->dwc3_interrupt
-	->dwc3_thread_interrupt
-	->dwc3_process_event_buf
-	->dwc3_process_event_entry
-	->dwc3_endpoint_interrupt
-	->dwc3_ep0_interrupt
-	->dwc3_ep0_inspect_setup
-	->dwc3_ep0_stall_and_restart
-
-By this time if pending_list is not empty, it will get the next request
-on the given list and calls dwc3_gadget_giveback which will unmap request
-and call its complete() callback to notify upper layers that it has
-completed. Currently dwc3_gadget_giveback status is set to -ECONNRESET,
-whereas it should be -ESHUTDOWN based on condition if not dwc->connected
-is true.
-
-Cc:  <stable@vger.kernel.org>
-Fixes: d742220b3577 ("usb: dwc3: ep0: giveback requests on stall_and_restart")
-Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
-Link: https://lore.kernel.org/r/20231222094704.20276-1-quic_uaggarwa@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a5bf3cfce8cb ("iommu: Implement of_iommu_get_resv_regions()")
+Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20230926152600.8749-1-laurentiu.tudor@nxp.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/ep0.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/iommu/of_iommu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/dwc3/ep0.c
-+++ b/drivers/usb/dwc3/ep0.c
-@@ -238,7 +238,10 @@ void dwc3_ep0_stall_and_restart(struct d
- 		struct dwc3_request	*req;
+diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
+index 35ba090f3b5e..47302b637cc0 100644
+--- a/drivers/iommu/of_iommu.c
++++ b/drivers/iommu/of_iommu.c
+@@ -260,6 +260,9 @@ void of_iommu_get_resv_regions(struct device *dev, struct list_head *list)
+ 				phys_addr_t iova;
+ 				size_t length;
  
- 		req = next_request(&dep->pending_list);
--		dwc3_gadget_giveback(dep, req, -ECONNRESET);
-+		if (!dwc->connected)
-+			dwc3_gadget_giveback(dep, req, -ESHUTDOWN);
-+		else
-+			dwc3_gadget_giveback(dep, req, -ECONNRESET);
- 	}
++				if (of_dma_is_coherent(dev->of_node))
++					prot |= IOMMU_CACHE;
++
+ 				maps = of_translate_dma_region(np, maps, &iova, &length);
+ 				type = iommu_resv_region_get_type(dev, &phys, iova, length);
  
- 	dwc->eps[0]->trb_enqueue = 0;
+-- 
+2.43.0
+
 
 
 
