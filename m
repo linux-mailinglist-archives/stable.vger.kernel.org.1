@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-13057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AA0A837A59
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 861EF8378DA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7EAD28AB7C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CD4B28395A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:25:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66F812BF2F;
-	Tue, 23 Jan 2024 00:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B38144605;
+	Tue, 23 Jan 2024 00:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Li3qukx+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v88zGrZp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C9312BF15;
-	Tue, 23 Jan 2024 00:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51F13C29;
+	Tue, 23 Jan 2024 00:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968906; cv=none; b=O7dOcLfoKAchrMP/CuNStMpLzXKCa4aBsav+pU1qdzm26u54CAUKY/O9XyMSizM7vFvUsnY6nTmWfOi6xFloWpmcmq6mlMf5NnrUyUkrPGn6QgsS0NvzIX4YVUojyyfRJeWnGWwzRZLlYJgoriZENd7RGtNvNoAVvcMa2c1yf6I=
+	t=1705968271; cv=none; b=cm03eMOmJV39o/ZM+lTqKdNhT7hUfkoLRkHGhc7iWsTWQINtS1/ST2K+R2Dwpd197SIiOfVE4Y0VP8A6CeR53uFpVrLQV4Ve/XVrNCIh9VIpWXddaWn3SevMTQaVBnY3affJx5YwZcyCEusB70OkVkIlOUQWFLZAgdYvon95chw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968906; c=relaxed/simple;
-	bh=VwnhC8k8NQbdFdMTawoiQDa1l4YvEzm97IiyEs7Gwkg=;
+	s=arc-20240116; t=1705968271; c=relaxed/simple;
+	bh=CEKFs8uuDoyaIC58iuQUCDa22cCukhQJ4MTy7HpPW9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VMcsz0xVrtgWCkj+ouVkQjvMlepOhONFtSmKbx6+MtAIpN3gs4DwUU98WViqzvdsVoOUX1jN7GOx671kKHI9uKMVCwode0rPVXfHp/nxsYDygNbtVEQer7IFSJjvHyQDTtsngahbi6e7ZDSuhkCzaj4nZFBLh4VdavjdvFhHxAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Li3qukx+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F39C5C43390;
-	Tue, 23 Jan 2024 00:15:05 +0000 (UTC)
+	 MIME-Version; b=aMtEgfkfDFwfyKhXovAZS7BqSckhqmPC3E4Dd4BxGMj8gPeVW3uPp7hT7Q5fjljOYLOfE0Ljd2dhQYNhVTcBsoRAeYE8TiFiCnLLVGM8e81HIS+WjskwOv0M17+QChkIoFWbYOGjgLe9h+/pXGgEddOimw7vI253lEsZOa7eizQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v88zGrZp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7331BC433C7;
+	Tue, 23 Jan 2024 00:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968906;
-	bh=VwnhC8k8NQbdFdMTawoiQDa1l4YvEzm97IiyEs7Gwkg=;
+	s=korg; t=1705968271;
+	bh=CEKFs8uuDoyaIC58iuQUCDa22cCukhQJ4MTy7HpPW9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Li3qukx+iGsI/xGaTChDmlo/bwKk+db2VdDyLnEM4FNg2h5iMYEHBeyG9PEhM0UHS
-	 93wfxpzrseTSRwO1gS9W+z8euf26yFJVDrPlEwrzsASpF+8b65/5Y75mXBmiXRltoJ
-	 OdFngMr8QVM0SR7gj6Ygeqb097ny46CHRW9VdGT4=
+	b=v88zGrZpc+q4n8Q/7j0weC5aZv2zXq5bkDkwfAWOhrc0fGR84/4nw9wf5JQUS36ey
+	 KZg25awYSLX9JD6LkfaKRx/+5E3u6uAoMdzHSUWBcnmPtmUSwblbBMYywpOplM3sPE
+	 CSyEenl1Eu0+eOesiLlKeQ5my3vVDzYvOQi4y10A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 092/194] selftests/net: fix grep checking for fib_nexthop_multiprefix
+Subject: [PATCH 4.19 066/148] ARM: dts: qcom: apq8064: correct XOADC register address
 Date: Mon, 22 Jan 2024 15:57:02 -0800
-Message-ID: <20240122235723.191454698@linuxfoundation.org>
+Message-ID: <20240122235715.052096872@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit a33e9da3470499e9ff476138f271fb52d6bfe767 ]
+[ Upstream commit 554557542e709e190eff8a598f0cde02647d533a ]
 
-When running fib_nexthop_multiprefix test I saw all IPv6 test failed.
-e.g.
+The XOADC is present at the address 0x197 rather than just 197. It
+doesn't change a lot (since the driver hardcodes all register
+addresses), but the DT should present correct address anyway.
 
- ]# ./fib_nexthop_multiprefix.sh
- TEST: IPv4: host 0 to host 1, mtu 1300                              [ OK ]
- TEST: IPv6: host 0 to host 1, mtu 1300                              [FAIL]
-
- With -v it shows
-
- COMMAND: ip netns exec h0 /usr/sbin/ping6 -s 1350 -c5 -w5 2001:db8:101::1
- PING 2001:db8:101::1(2001:db8:101::1) 1350 data bytes
- From 2001:db8:100::64 icmp_seq=1 Packet too big: mtu=1300
-
- --- 2001:db8:101::1 ping statistics ---
- 1 packets transmitted, 0 received, +1 errors, 100% packet loss, time 0ms
-
- Route get
- 2001:db8:101::1 via 2001:db8:100::64 dev eth0 src 2001:db8:100::1 metric 1024 expires 599sec mtu 1300 pref medium
- Searching for:
-     2001:db8:101::1 from :: via 2001:db8:100::64 dev eth0 src 2001:db8:100::1 .* mtu 1300
-
-The reason is when CONFIG_IPV6_SUBTREES is not enabled, rt6_fill_node() will
-not put RTA_SRC info. After fix:
-
-]# ./fib_nexthop_multiprefix.sh
-TEST: IPv4: host 0 to host 1, mtu 1300                              [ OK ]
-TEST: IPv6: host 0 to host 1, mtu 1300                              [ OK ]
-
-Fixes: 735ab2f65dce ("selftests: Add test with multiple prefixes using single nexthop")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://lore.kernel.org/r/20231213060856.4030084-7-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c4b70883ee33 ("ARM: dts: add XOADC and IIO HWMON to APQ8064")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230928110309.1212221-3-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/fib_nexthop_multiprefix.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/qcom-apq8064.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/fib_nexthop_multiprefix.sh b/tools/testing/selftests/net/fib_nexthop_multiprefix.sh
-index 51df5e305855..b52d59547fc5 100755
---- a/tools/testing/selftests/net/fib_nexthop_multiprefix.sh
-+++ b/tools/testing/selftests/net/fib_nexthop_multiprefix.sh
-@@ -209,12 +209,12 @@ validate_v6_exception()
- 		echo "Route get"
- 		ip -netns h0 -6 ro get ${dst}
- 		echo "Searching for:"
--		echo "    ${dst} from :: via ${r1} dev eth0 src ${h0} .* mtu ${mtu}"
-+		echo "    ${dst}.* via ${r1} dev eth0 src ${h0} .* mtu ${mtu}"
- 		echo
- 	fi
+diff --git a/arch/arm/boot/dts/qcom-apq8064.dtsi b/arch/arm/boot/dts/qcom-apq8064.dtsi
+index 3b9d70eadeb9..38c4a0c80063 100644
+--- a/arch/arm/boot/dts/qcom-apq8064.dtsi
++++ b/arch/arm/boot/dts/qcom-apq8064.dtsi
+@@ -794,7 +794,7 @@ pwrkey@1c {
  
- 	ip -netns h0 -6 ro get ${dst} | \
--	grep -q "${dst} from :: via ${r1} dev eth0 src ${h0} .* mtu ${mtu}"
-+	grep -q "${dst}.* via ${r1} dev eth0 src ${h0} .* mtu ${mtu}"
- 	rc=$?
- 
- 	log_test $rc 0 "IPv6: host 0 to host ${i}, mtu ${mtu}"
+ 				xoadc: xoadc@197 {
+ 					compatible = "qcom,pm8921-adc";
+-					reg = <197>;
++					reg = <0x197>;
+ 					interrupts-extended = <&pmicintc 78 IRQ_TYPE_EDGE_RISING>;
+ 					#address-cells = <2>;
+ 					#size-cells = <0>;
 -- 
 2.43.0
 
