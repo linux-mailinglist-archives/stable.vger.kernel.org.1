@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-15384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62A428384F8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:38:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C05838368
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95C301C2A326
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06845287BEF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13E67A71E;
-	Tue, 23 Jan 2024 02:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B8206281A;
+	Tue, 23 Jan 2024 01:56:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JovGGGzp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lBPXq0sT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FC277F2F;
-	Tue, 23 Jan 2024 02:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD33922060;
+	Tue, 23 Jan 2024 01:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975551; cv=none; b=iIolYWHthWTBWe5VnBUB5JQI5Q2ZzlVZp310aMVk9AT62Jg2fHEDh/LpcomwppoZE0GUW0PF+2lItkD+k3YkGMbkmPMI7sxFsFlNy999bLQ43X3g+Me5TH+i1b7Cfrxpi48KTwh1S5xUNUEeLBIKbKNds+Mtc2u8M2Wul2Ditls=
+	t=1705974963; cv=none; b=sDNni3qoAsKyGyJpI3zlAqD+QTICSG37TZo0WB0W+53AuQtaMQfwpd/iVdF6TwJKzJpDTNxiaMJzwaFTGGXM/FbYbH/UYP3BqrzL+MHAgutwfuF097ECPfj94w3wYmWPuShkWn9gNmGGSj5MHgbe6j5rVKhaD3xdx2KW1E1o/2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975551; c=relaxed/simple;
-	bh=GNeQuQFDiN+vWi3PC1ubZEg8eLZ01zwFWJha4Bjezus=;
+	s=arc-20240116; t=1705974963; c=relaxed/simple;
+	bh=kLB7FB1XPXgI9LuUwLGVHicJ1iTbR5aMotFWOiY0US8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t4HPjvHDyO/OamcF033REmvGikR9tkPwuf0x0Z+DRhL6os4384CgSpwiUqQXS2ib17wD5DAHrtViBVq5AupE2rV89tdkf/NUPXujK+VS3hzB7AVTjxdiTRCdwuEPHCzg6rnIH6SOOYcn9Xh6CZRoWIFk7aHTRaugCcUfbCDWr1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JovGGGzp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77615C43399;
-	Tue, 23 Jan 2024 02:05:51 +0000 (UTC)
+	 MIME-Version; b=OKbJPiggZnWOP9OC9p83f7T49WbLVuXbpEOtGZn0WryCsdkXGlHsrw27fvIolLZ5GLdms4sOrICNYF6YYCvnKYiIO+v/A0ixW6TnQdQwBGSrvfehQabDP8zkWRT0Qx4WDCfJyjcC94kgzSZsMlh6Mlnurx2uo20GTklee3jzG6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lBPXq0sT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73655C433F1;
+	Tue, 23 Jan 2024 01:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975551;
-	bh=GNeQuQFDiN+vWi3PC1ubZEg8eLZ01zwFWJha4Bjezus=;
+	s=korg; t=1705974963;
+	bh=kLB7FB1XPXgI9LuUwLGVHicJ1iTbR5aMotFWOiY0US8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JovGGGzpn+2qky4INS2tCjbIr5Gsdm/PVjtBwgmmU3EJKQh94bxAv4+M0iv/6wcVI
-	 gE9goNeDeiMEHASksYffq1sw+gRveHZSOtCzfGDGBpRan9c8Xwk4r6x2I222I2UbhP
-	 noe7O5uWflwqTuUAuF18WLG4WrBctmlWoO35Euwk=
+	b=lBPXq0sTFvm/mqKmjvxxfFjkfNaVrhPk35c1S9SVy0WwLieAyfp1LrOhu/eeiulLC
+	 FerIMaKGl/ntWHLsI1Ndp1fRsqnfIVRAHZXDaad0QGmsco+7CxDQ1Y/JnfY9a9M9XR
+	 kL/5jRGi9Jg9zpr5CezX1HYgnPkw2f3a59skyuao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 503/583] nvmet-tcp: Fix a kernel panic when host sends an invalid H2C PDU length
+Subject: [PATCH 5.15 298/374] riscv: Fix module_alloc() that did not reset the linear mapping permissions
 Date: Mon, 22 Jan 2024 15:59:14 -0800
-Message-ID: <20240122235827.436137040@linuxfoundation.org>
+Message-ID: <20240122235755.152313531@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit efa56305908ba20de2104f1b8508c6a7401833be ]
+[ Upstream commit 749b94b08005929bbc636df21a23322733166e35 ]
 
-If the host sends an H2CData command with an invalid DATAL,
-the kernel may crash in nvmet_tcp_build_pdu_iovec().
+After unloading a module, we must reset the linear mapping permissions,
+see the example below:
 
-Unable to handle kernel NULL pointer dereference at
-virtual address 0000000000000000
-lr : nvmet_tcp_io_work+0x6ac/0x718 [nvmet_tcp]
-Call trace:
-  process_one_work+0x174/0x3c8
-  worker_thread+0x2d0/0x3e8
-  kthread+0x104/0x110
+Before unloading a module:
 
-Fix the bug by raising a fatal error if DATAL isn't coherent
-with the packet size.
-Also, the PDU length should never exceed the MAXH2CDATA parameter which
-has been communicated to the host in nvmet_tcp_handle_icreq().
+0xffffaf809d65d000-0xffffaf809d6dc000    0x000000011d65d000       508K PTE .   ..     ..   D A G . . W R V
+0xffffaf809d6dc000-0xffffaf809d6dd000    0x000000011d6dc000         4K PTE .   ..     ..   D A G . . . R V
+0xffffaf809d6dd000-0xffffaf809d6e1000    0x000000011d6dd000        16K PTE .   ..     ..   D A G . . W R V
+0xffffaf809d6e1000-0xffffaf809d6e7000    0x000000011d6e1000        24K PTE .   ..     ..   D A G . X . R V
 
-Fixes: 872d26a391da ("nvmet-tcp: add NVMe over TCP target driver")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+After unloading a module:
+
+0xffffaf809d65d000-0xffffaf809d6e1000    0x000000011d65d000       528K PTE .   ..     ..   D A G . . W R V
+0xffffaf809d6e1000-0xffffaf809d6e7000    0x000000011d6e1000        24K PTE .   ..     ..   D A G . X W R V
+
+The last mapping is not reset and we end up with WX mappings in the linear
+mapping.
+
+So add VM_FLUSH_RESET_PERMS to our module_alloc() definition.
+
+Fixes: 0cff8bff7af8 ("riscv: avoid the PIC offset of static percpu data in module beyond 2G limits")
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20231213134027.155327-2-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/tcp.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ arch/riscv/kernel/module.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 197fc2ecb164..3d171061cc0f 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -19,6 +19,7 @@
- #include "nvmet.h"
- 
- #define NVMET_TCP_DEF_INLINE_DATA_SIZE	(4 * PAGE_SIZE)
-+#define NVMET_TCP_MAXH2CDATA		0x400000 /* 16M arbitrary limit */
- 
- static int param_store_val(const char *str, int *val, int min, int max)
+diff --git a/arch/riscv/kernel/module.c b/arch/riscv/kernel/module.c
+index 4a48287513c3..24c3883c80d0 100644
+--- a/arch/riscv/kernel/module.c
++++ b/arch/riscv/kernel/module.c
+@@ -423,7 +423,8 @@ void *module_alloc(unsigned long size)
  {
-@@ -900,7 +901,7 @@ static int nvmet_tcp_handle_icreq(struct nvmet_tcp_queue *queue)
- 	icresp->hdr.pdo = 0;
- 	icresp->hdr.plen = cpu_to_le32(icresp->hdr.hlen);
- 	icresp->pfv = cpu_to_le16(NVME_TCP_PFV_1_0);
--	icresp->maxdata = cpu_to_le32(0x400000); /* 16M arbitrary limit */
-+	icresp->maxdata = cpu_to_le32(NVMET_TCP_MAXH2CDATA);
- 	icresp->cpda = 0;
- 	if (queue->hdr_digest)
- 		icresp->digest |= NVME_TCP_HDR_DIGEST_ENABLE;
-@@ -953,6 +954,7 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- {
- 	struct nvme_tcp_data_pdu *data = &queue->pdu.data;
- 	struct nvmet_tcp_cmd *cmd;
-+	unsigned int plen;
- 
- 	if (likely(queue->nr_cmds)) {
- 		if (unlikely(data->ttag >= queue->nr_cmds)) {
-@@ -976,7 +978,16 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- 		return -EPROTO;
- 	}
- 
-+	plen = le32_to_cpu(data->hdr.plen);
- 	cmd->pdu_len = le32_to_cpu(data->data_length);
-+	if (unlikely(cmd->pdu_len != (plen - sizeof(*data)) ||
-+		     cmd->pdu_len == 0 ||
-+		     cmd->pdu_len > NVMET_TCP_MAXH2CDATA)) {
-+		pr_err("H2CData PDU len %u is invalid\n", cmd->pdu_len);
-+		/* FIXME: use proper transport errors */
-+		nvmet_tcp_fatal_error(queue);
-+		return -EPROTO;
-+	}
- 	cmd->pdu_recv = 0;
- 	nvmet_tcp_build_pdu_iovec(cmd);
- 	queue->cmd = cmd;
+ 	return __vmalloc_node_range(size, 1, MODULES_VADDR,
+ 				    MODULES_END, GFP_KERNEL,
+-				    PAGE_KERNEL, 0, NUMA_NO_NODE,
++				    PAGE_KERNEL, VM_FLUSH_RESET_PERMS,
++				    NUMA_NO_NODE,
+ 				    __builtin_return_address(0));
+ }
+ #endif
 -- 
 2.43.0
 
