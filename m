@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-14958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 942DD838488
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:40 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFAEE838091
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1E2ACB2CE11
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F276B1C296BC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ECCE61693;
-	Tue, 23 Jan 2024 01:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BDA12FF81;
+	Tue, 23 Jan 2024 01:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E41Rk1sL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4BwoXto"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35CD6167F;
-	Tue, 23 Jan 2024 01:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4277F657B3;
+	Tue, 23 Jan 2024 01:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974943; cv=none; b=NmDxsRZIwRS9IUK6rrDBzgYm/HQsK9JyQFIlfgCeHff699XKlsrxLuRhbQwNJSaase48d0SmYW2MJTwAPvitW0VNxvfWBJgG2u75lFPp31iBhCDKIrYXEQuU2IwhC1vevAbPTXt2uWHVRgH4E6azK/TqpFDJhJ0dvVTjc7c/WPM=
+	t=1705971799; cv=none; b=cbEzE+LX8Ih9dDZuyiXEZHeslguLMKtDnYAxfX7gNR5PRJtRZfasv6kCTBkh8sablDqaR/n5UmogJxR9Yd8XLEg6xi4XLUdtSWCXXiEHk4aD6U3AD60N+oSn3k1TH4ZptbPOYIs95cCegwgA5D9tP/p4dNT6N4RDp2/3OuC/Xmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974943; c=relaxed/simple;
-	bh=iTH2ioNYMKSO7qO7MB8ay8OqSZEqnPlW6lysGI4rgyE=;
+	s=arc-20240116; t=1705971799; c=relaxed/simple;
+	bh=sd6nSTg5yErosQZVyVtHV0bsTpItzEtIh8O0Z/+2T38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NiZ8t2Sv+ZgH1FVT3bW0xNM6boI87ERK+PZplh+L3orhUDc7AXNaDro5mai9G27d5TM4rKZH3DBDgwzT7HWVTDZZwBStYiXrblBSeKB8FtHo5KWvFqoRLOb+AXSgJIYhcecze11KyRqOB9jm26vmXdJSlIYwVgN74Dxtx+qbVhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E41Rk1sL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92153C43394;
-	Tue, 23 Jan 2024 01:55:42 +0000 (UTC)
+	 MIME-Version; b=WOpR38xuqY0sTmPfMkn9qSFL7Sam9Mb6CUBfcjYHySK0aPx65rJD971VlJUmRnZGVp+7juvRrGNT+25GqjMAO3wwyEm0CYaP5bwUrXOt1+cnHGDrpLytCfYqdSQnS5I9e/YcTxw2PubMTgP5mKHjzxNwl2tdwIQlMFVdulrXcg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4BwoXto; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6114C43394;
+	Tue, 23 Jan 2024 01:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974942;
-	bh=iTH2ioNYMKSO7qO7MB8ay8OqSZEqnPlW6lysGI4rgyE=;
+	s=korg; t=1705971799;
+	bh=sd6nSTg5yErosQZVyVtHV0bsTpItzEtIh8O0Z/+2T38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E41Rk1sLsQXzL+ajM6Rw9NTEyu7sPvTold/9S5Mbj9LDj/HcIhNq+tOH7XwdvFlCg
-	 1aDivva1mykLYuD6+nw5pftdPnNDW4YWlxWu4YWvZ22OpcPXHiU1EKqQ4a1bpKegSd
-	 L5QiXE3hWBmyUPn5zmhGT9LAHW2S1+nk1Lf+2FR4=
+	b=v4BwoXtou4SMW7wobpCQF6X7VrVK8fUe9r3oLMbp010GSaOhcWVbDiXKRmMiVg8fs
+	 zrJpswLkmUftLgwdRo9ilhixPbvBuAD3E7RJwDBznfOGXU6SE2JWLhUA7cB7m143Hn
+	 3phYlrHUVfEMw8o8UKOq1f5jkt+wR+CqotELxy1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Wanpeng Li <wanpengli@tencent.com>
-Subject: [PATCH 5.15 283/374] x86/kvm: Do not try to disable kvmclock if it was not enabled
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 5.10 233/286] KVM: arm64: vgic-its: Avoid potential UAF in LPI translation cache
 Date: Mon, 22 Jan 2024 15:58:59 -0800
-Message-ID: <20240122235754.608330305@linuxfoundation.org>
+Message-ID: <20240122235741.040987905@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-commit 1c6d984f523f67ecfad1083bb04c55d91977bb15 upstream.
+commit ad362fe07fecf0aba839ff2cc59a3617bd42c33f upstream.
 
-kvm_guest_cpu_offline() tries to disable kvmclock regardless if it is
-present in the VM. It leads to write to a MSR that doesn't exist on some
-configurations, namely in TDX guest:
+There is a potential UAF scenario in the case of an LPI translation
+cache hit racing with an operation that invalidates the cache, such
+as a DISCARD ITS command. The root of the problem is that
+vgic_its_check_cache() does not elevate the refcount on the vgic_irq
+before dropping the lock that serializes refcount changes.
 
-	unchecked MSR access error: WRMSR to 0x12 (tried to write 0x0000000000000000)
-	at rIP: 0xffffffff8110687c (kvmclock_disable+0x1c/0x30)
+Have vgic_its_check_cache() raise the refcount on the returned vgic_irq
+and add the corresponding decrement after queueing the interrupt.
 
-kvmclock enabling is gated by CLOCKSOURCE and CLOCKSOURCE2 KVM paravirt
-features.
-
-Do not disable kvmclock if it was not enabled.
-
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Fixes: c02027b5742b ("x86/kvm: Disable kvmclock on all CPUs on shutdown")
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Wanpeng Li <wanpengli@tencent.com>
 Cc: stable@vger.kernel.org
-Message-Id: <20231205004510.27164-6-kirill.shutemov@linux.intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20240104183233.3560639-1-oliver.upton@linux.dev
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/kvmclock.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ arch/arm64/kvm/vgic/vgic-its.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/arch/x86/kernel/kvmclock.c
-+++ b/arch/x86/kernel/kvmclock.c
-@@ -24,8 +24,8 @@
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -584,7 +584,11 @@ static struct vgic_irq *vgic_its_check_c
+ 	unsigned long flags;
  
- static int kvmclock __initdata = 1;
- static int kvmclock_vsyscall __initdata = 1;
--static int msr_kvm_system_time __ro_after_init = MSR_KVM_SYSTEM_TIME;
--static int msr_kvm_wall_clock __ro_after_init = MSR_KVM_WALL_CLOCK;
-+static int msr_kvm_system_time __ro_after_init;
-+static int msr_kvm_wall_clock __ro_after_init;
- static u64 kvm_sched_clock_offset __ro_after_init;
+ 	raw_spin_lock_irqsave(&dist->lpi_list_lock, flags);
++
+ 	irq = __vgic_its_check_cache(dist, db, devid, eventid);
++	if (irq)
++		vgic_get_irq_kref(irq);
++
+ 	raw_spin_unlock_irqrestore(&dist->lpi_list_lock, flags);
  
- static int __init parse_no_kvmclock(char *arg)
-@@ -195,7 +195,8 @@ static void kvm_setup_secondary_clock(vo
+ 	return irq;
+@@ -763,6 +767,7 @@ int vgic_its_inject_cached_translation(s
+ 	raw_spin_lock_irqsave(&irq->irq_lock, flags);
+ 	irq->pending_latch = true;
+ 	vgic_queue_irq_unlock(kvm, irq, flags);
++	vgic_put_irq(kvm, irq);
  
- void kvmclock_disable(void)
- {
--	native_write_msr(msr_kvm_system_time, 0, 0);
-+	if (msr_kvm_system_time)
-+		native_write_msr(msr_kvm_system_time, 0, 0);
+ 	return 0;
  }
- 
- static void __init kvmclock_init_mem(void)
-@@ -291,7 +292,10 @@ void __init kvmclock_init(void)
- 	if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE2)) {
- 		msr_kvm_system_time = MSR_KVM_SYSTEM_TIME_NEW;
- 		msr_kvm_wall_clock = MSR_KVM_WALL_CLOCK_NEW;
--	} else if (!kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE)) {
-+	} else if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE)) {
-+		msr_kvm_system_time = MSR_KVM_SYSTEM_TIME;
-+		msr_kvm_wall_clock = MSR_KVM_WALL_CLOCK;
-+	} else {
- 		return;
- 	}
- 
 
 
 
