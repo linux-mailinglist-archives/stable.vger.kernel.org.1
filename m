@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C632A83848B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B72F837E5C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2AB59B2B54E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7033E1C27956
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:38:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE3E61698;
-	Tue, 23 Jan 2024 01:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C78F5FEF2;
+	Tue, 23 Jan 2024 00:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tgd9/+U3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q/gXsPi5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB21E6168A;
-	Tue, 23 Jan 2024 01:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28C285FDDF;
+	Tue, 23 Jan 2024 00:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974945; cv=none; b=ozHUh2AkRYk6O8MrSSLIxLy0iOvl19OC76tHGEniXJMytHFeUUo86SvOvx/ij1jlCk0obnjyO+gjn4yWW5w6pSOPcX+tZQ7FFTIdoULq/oqO7gJ5soiyFy3BgaA4jzQqNYbsoXF1lUnG7Et4lziXPqWO6sBjxKICVrMQG+z8UY4=
+	t=1705970533; cv=none; b=KahZFxW4DdOf2I3keuet0I4F3RLNB2k4J4le9uzgbY24m5qs0y7OUjkQM+gREwbvwbgRJenYCyKwUyqwN7ITMiZwA53s243vZ9kdihdaWmhSNFsTEbu+ov0kwGL3R/jZVi5g74lxzeN/por/HiMLcrHP+4lp0D/YycDc6/3g/JM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974945; c=relaxed/simple;
-	bh=nTzWqHn2STCqN2Td9mHisQPxHUw5dOESestZvFR4lhs=;
+	s=arc-20240116; t=1705970533; c=relaxed/simple;
+	bh=Jn7oto7w1aG2MX+YbD8rklEHJC8eQKBbT3/IevpKJ2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aLplthHSJ+GCr1g8qZyc0auIZwEPGyWthbUPoLcXlIU3VD2qTmF+u2Sq6xoWlWw/pknx3cMpKk+GiT9/2XOzFV6Uhl4GVHp+J6pipQNCUpb0IJ5gc/iO87KSXWhns23wolbSltwx2aGc3dpZFMANJoQ0uv19nYnG8A4oRzy40U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tgd9/+U3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2B4C433F1;
-	Tue, 23 Jan 2024 01:55:44 +0000 (UTC)
+	 MIME-Version; b=ExcqatvFrxppoKAVyYSe1IRk2sN13SM/1szPJBErCd976mG7jFtxxtviTIRWCqvbhw08Fo5qvwRx2zOJSlHr5d4/UqXHcQsEGni/tfHfnTToiWSXUOCsRClTACGI3Z2LYcCgTqncFRNH8BJJGYngthpBfUkvvV9l7xEVw5SNNAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q/gXsPi5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 427F5C43394;
+	Tue, 23 Jan 2024 00:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974944;
-	bh=nTzWqHn2STCqN2Td9mHisQPxHUw5dOESestZvFR4lhs=;
+	s=korg; t=1705970532;
+	bh=Jn7oto7w1aG2MX+YbD8rklEHJC8eQKBbT3/IevpKJ2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tgd9/+U3rElgNt50pPD19T9YcYv5guO6JKLXyRyMuHUmbgicGeir8lOqWMlMCsNX5
-	 OTxz8edQ9S9p3VJCdgRn1G5U7V38quNvFhaiDVEuMir8h/oOXcEOg5pIHa6/5ISD+C
-	 fFGbP004EbgdWMb16gQoa07W6hADPC/K+M8dmfx0=
+	b=Q/gXsPi5CO54uqt56nTbrfbDjvfMioI27ag9Jrvu9tEIOQodYtOGbqSoUYnJ3CrYi
+	 e/EWE8vWDK96X8uckZztnjCVNXULUCZ9Ut2fK+EwT8mIRKKbewPwY0c/NIKtD3/iBB
+	 GcqJ4nIUozm78vpLjEayKKkTYXKCVDGRFhNGh8f4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Chenghai Huang <huangchenghai2@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 162/583] scsi: hisi_sas: Rollback some operations if FLR failed
+Subject: [PATCH 6.1 045/417] crypto: hisilicon/zip - add zip comp high perf mode configuration
 Date: Mon, 22 Jan 2024 15:53:33 -0800
-Message-ID: <20240122235817.001579156@linuxfoundation.org>
+Message-ID: <20240122235753.225692031@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Chenghai Huang <huangchenghai2@huawei.com>
 
-[ Upstream commit 7ea3e7763c50b20a8bd25cf524ea0c6463de69be ]
+[ Upstream commit a9864bae1806499ebf3757a9e71dddde5b9c48c6 ]
 
-We obtain the semaphore and set HISI_SAS_RESETTING_BIT in
-hisi_sas_reset_prepare_v3_hw(), block the scsi host and set
-HISI_SAS_REJECT_CMD_BIT in hisi_sas_controller_reset_prepare(), released
-them in hisi_sas_controller_reset_done(). However, if the HW reset failure
-in FLR results in early return, the semaphore and flag bits will not be
-release.
+To meet specific application scenarios, the function of switching between
+the high performance mode and the high compression mode is added.
 
-Rollback some operations including clearing flags / releasing semaphore
-when FLR is failed.
+Use the perf_mode=0/1 configuration to set the compression high perf mode,
+0(default, high compression mode), 1(high performance mode). These two
+modes only apply to the compression direction and are compatible with
+software algorithm in both directions.
 
-Fixes: e5ea48014adc ("scsi: hisi_sas: Implement handlers of PCIe FLR for v3 hw")
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
-Link: https://lore.kernel.org/r/1702525516-51258-5-git-send-email-chenxiang66@hisilicon.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Chenghai Huang <huangchenghai2@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Stable-dep-of: cf8b5156bbc8 ("crypto: hisilicon/hpre - save capability registers in probe process")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/crypto/hisilicon/zip/zip_main.c | 65 +++++++++++++++++++++++++
+ 1 file changed, 65 insertions(+)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index 568bd8052639..53c955c4f080 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -5098,6 +5098,7 @@ static void hisi_sas_reset_done_v3_hw(struct pci_dev *pdev)
+diff --git a/drivers/crypto/hisilicon/zip/zip_main.c b/drivers/crypto/hisilicon/zip/zip_main.c
+index 190b4fecfc74..2c5e805ffdc3 100644
+--- a/drivers/crypto/hisilicon/zip/zip_main.c
++++ b/drivers/crypto/hisilicon/zip/zip_main.c
+@@ -107,6 +107,14 @@
+ #define HZIP_CLOCK_GATED_EN		(HZIP_CORE_GATED_EN | \
+ 					 HZIP_CORE_GATED_OOO_EN)
+ 
++/* zip comp high performance */
++#define HZIP_HIGH_PERF_OFFSET		0x301208
++
++enum {
++	HZIP_HIGH_COMP_RATE,
++	HZIP_HIGH_COMP_PERF,
++};
++
+ static const char hisi_zip_name[] = "hisi_zip";
+ static struct dentry *hzip_debugfs_root;
+ 
+@@ -352,6 +360,37 @@ static int hzip_diff_regs_show(struct seq_file *s, void *unused)
+ 	return 0;
+ }
+ DEFINE_SHOW_ATTRIBUTE(hzip_diff_regs);
++
++static int perf_mode_set(const char *val, const struct kernel_param *kp)
++{
++	int ret;
++	u32 n;
++
++	if (!val)
++		return -EINVAL;
++
++	ret = kstrtou32(val, 10, &n);
++	if (ret != 0 || (n != HZIP_HIGH_COMP_PERF &&
++			 n != HZIP_HIGH_COMP_RATE))
++		return -EINVAL;
++
++	return param_set_int(val, kp);
++}
++
++static const struct kernel_param_ops zip_com_perf_ops = {
++	.set = perf_mode_set,
++	.get = param_get_int,
++};
++
++/*
++ * perf_mode = 0 means enable high compression rate mode,
++ * perf_mode = 1 means enable high compression performance mode.
++ * These two modes only apply to the compression direction.
++ */
++static u32 perf_mode = HZIP_HIGH_COMP_RATE;
++module_param_cb(perf_mode, &zip_com_perf_ops, &perf_mode, 0444);
++MODULE_PARM_DESC(perf_mode, "ZIP high perf mode 0(default), 1(enable)");
++
+ static const struct kernel_param_ops zip_uacce_mode_ops = {
+ 	.set = uacce_mode_set,
+ 	.get = param_get_int,
+@@ -417,6 +456,28 @@ bool hisi_zip_alg_support(struct hisi_qm *qm, u32 alg)
+ 	return false;
+ }
+ 
++static int hisi_zip_set_high_perf(struct hisi_qm *qm)
++{
++	u32 val;
++	int ret;
++
++	val = readl_relaxed(qm->io_base + HZIP_HIGH_PERF_OFFSET);
++	if (perf_mode == HZIP_HIGH_COMP_PERF)
++		val |= HZIP_HIGH_COMP_PERF;
++	else
++		val &= ~HZIP_HIGH_COMP_PERF;
++
++	/* Set perf mode */
++	writel(val, qm->io_base + HZIP_HIGH_PERF_OFFSET);
++	ret = readl_relaxed_poll_timeout(qm->io_base + HZIP_HIGH_PERF_OFFSET,
++					 val, val == perf_mode, HZIP_DELAY_1_US,
++					 HZIP_POLL_TIMEOUT_US);
++	if (ret)
++		pci_err(qm->pdev, "failed to set perf mode\n");
++
++	return ret;
++}
++
+ static int hisi_zip_set_qm_algs(struct hisi_qm *qm)
  {
- 	struct sas_ha_struct *sha = pci_get_drvdata(pdev);
- 	struct hisi_hba *hisi_hba = sha->lldd_ha;
-+	struct Scsi_Host *shost = hisi_hba->shost;
- 	struct device *dev = hisi_hba->dev;
- 	int rc;
+ 	struct device *dev = &qm->pdev->dev;
+@@ -1115,6 +1176,10 @@ static int hisi_zip_pf_probe_init(struct hisi_zip *hisi_zip)
+ 	if (ret)
+ 		return ret;
  
-@@ -5106,6 +5107,10 @@ static void hisi_sas_reset_done_v3_hw(struct pci_dev *pdev)
- 	rc = hw_init_v3_hw(hisi_hba);
- 	if (rc) {
- 		dev_err(dev, "FLR: hw init failed rc=%d\n", rc);
-+		clear_bit(HISI_SAS_REJECT_CMD_BIT, &hisi_hba->flags);
-+		scsi_unblock_requests(shost);
-+		clear_bit(HISI_SAS_RESETTING_BIT, &hisi_hba->flags);
-+		up(&hisi_hba->sem);
- 		return;
- 	}
- 
++	ret = hisi_zip_set_high_perf(qm);
++	if (ret)
++		return ret;
++
+ 	hisi_zip_open_sva_prefetch(qm);
+ 	hisi_qm_dev_err_init(qm);
+ 	hisi_zip_debug_regs_clear(qm);
 -- 
 2.43.0
 
