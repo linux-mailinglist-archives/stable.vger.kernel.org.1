@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9CDD83819A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42535838459
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6601B2BB49
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E53AD299604
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23ABEEEC2;
-	Tue, 23 Jan 2024 01:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0106BB54;
+	Tue, 23 Jan 2024 02:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpKNrjGO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZlQk2gvv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77EF2CA2;
-	Tue, 23 Jan 2024 01:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0036A354;
+	Tue, 23 Jan 2024 02:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972174; cv=none; b=Wa6KIu6/llYIDoQJevZerbYjevVo+RB3FS6zV/XEuR5WRDUVtTP+gN095VC4w6TkPM+MfMRaDN+DQBVJX4Sw1Usje/Q3Q01HmP/B7F52XCPvdo2FBaXyM8wCV2aD+HFgDXZpsDetvb9KM3tvf/hkLkaTHXOJX23XiN0+MwdGtFI=
+	t=1705975368; cv=none; b=oeDB+zOB6e8H52gxmUyMApvKCoTdKGYljkr2dcD6fJ2BCOY60OJunG5chuQLK5Q5uc3/yKnQO54/KsCY7W3eKtDp+AMC246HXnRdwo/fFFiATXy02YYX4TMLG8qV7Jkit+9U/Lknr8MEcTYFvOZXP78+h3fpzYXtZvGhpfM5J4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972174; c=relaxed/simple;
-	bh=+8i7QxRLihdHxk6waVs/xovbOIBJXb0a/u/mP1raGkE=;
+	s=arc-20240116; t=1705975368; c=relaxed/simple;
+	bh=DEvTQC0gKGWHLSTymDSg+yplk7T4Zj/w/zievL2wPSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HucuEO14AuGDAvvkazOytfkfQdMr5x7zo3O/6tNRYABwclPpani/YiPrhSppT+5a4BYxLxIjJ7VyxnPBRcfUUU4ptc23UQLrb+JQT4l4xHb1yGHS4azF67ROLJSYeogwq7fKz8K0Dybxn0OLN0Nb3bzlpT5smRLV8J3TeCi7bMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpKNrjGO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E811C43390;
-	Tue, 23 Jan 2024 01:09:34 +0000 (UTC)
+	 MIME-Version; b=NtZBk764+uD1Qpbb0dUxgp9z0DIja/7N6XksI5hkh4dfqnMSR38iQO19gjF3P85IwTDb7zVA2Wjk+RdhsZrtZjVtQQaQr58Es49RS6qxC+JfwrBp2SI2SzfKVE5ShNN3oyPjOeqrc854Q7dotGLHKoYYkTnNR2mlkCcDiDwyYtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZlQk2gvv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3788C43390;
+	Tue, 23 Jan 2024 02:02:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972174;
-	bh=+8i7QxRLihdHxk6waVs/xovbOIBJXb0a/u/mP1raGkE=;
+	s=korg; t=1705975368;
+	bh=DEvTQC0gKGWHLSTymDSg+yplk7T4Zj/w/zievL2wPSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SpKNrjGOXiJoVkzW6z/nvBXsh96moHHEKd1eHdNUCSOcibujopmL7LQc7JOybJWc5
-	 dCe5Ps5WNkbi61NkG9rShkJanOHu1MJeJtQ/51H9JvpEIR7E+o2c/KxOkxySqiccT1
-	 grqliHDwIs4n/cKbbegqfr9nqJDTfkokFewbleVo=
+	b=ZlQk2gvvgxXTKw6ldHWXPdrFb8DFredSKCayq/mEKCJlCJk/cgUjAMd6/MDAYbI7u
+	 NvnVSvCm/9pEbgsYQA9eH3MJatyzx6WsO4IcjThl2+kiD6vDLgD4/F1czkphvAHZz+
+	 ZgRx3OKJYcKJL5hvAoB7GS04f0GczXJcZAfTAMtg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Su Hui <suhui@nfschina.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 100/374] crypto: sahara - fix ahash selftest failure
+Subject: [PATCH 6.6 305/583] clk: si5341: fix an error code problem in si5341_output_clk_set_rate
 Date: Mon, 22 Jan 2024 15:55:56 -0800
-Message-ID: <20240122235748.080829920@linuxfoundation.org>
+Message-ID: <20240122235821.361732844@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit afffcf3db98b9495114b79d5381f8cc3f69476fb ]
+[ Upstream commit 5607068ae5ab02c3ac9cabc6859d36e98004c341 ]
 
-update() calls should not modify the result buffer, so add an additional
-check for "rctx->last" to make sure that only the final hash value is
-copied into the buffer.
+regmap_bulk_write() return zero or negative error code, return the value
+of regmap_bulk_write() rather than '0'.
 
-Fixes the following selftest failure:
-alg: ahash: sahara-sha256 update() used result buffer on test vector 3,
-cfg="init+update+final aligned buffer"
-
-Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 3044a860fd09 ("clk: Add Si5341/Si5340 driver")
+Acked-by: Mike Looijmans <mike.looijmans@topic.nl>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20231101031633.996124-1-suhui@nfschina.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/clk-si5341.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 1f41c8eeb8fc..2b20d1767ef9 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -1048,7 +1048,7 @@ static int sahara_sha_process(struct ahash_request *req)
+diff --git a/drivers/clk/clk-si5341.c b/drivers/clk/clk-si5341.c
+index 9599857842c7..2920fe2e5e8b 100644
+--- a/drivers/clk/clk-si5341.c
++++ b/drivers/clk/clk-si5341.c
+@@ -895,10 +895,8 @@ static int si5341_output_clk_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	r[0] = r_div ? (r_div & 0xff) : 1;
+ 	r[1] = (r_div >> 8) & 0xff;
+ 	r[2] = (r_div >> 16) & 0xff;
+-	err = regmap_bulk_write(output->data->regmap,
++	return regmap_bulk_write(output->data->regmap,
+ 			SI5341_OUT_R_REG(output), r, 3);
+-
+-	return 0;
+ }
  
- 	memcpy(rctx->context, dev->context_base, rctx->context_size);
- 
--	if (req->result)
-+	if (req->result && rctx->last)
- 		memcpy(req->result, rctx->context, rctx->digest_size);
- 
- 	return 0;
+ static int si5341_output_reparent(struct clk_si5341_output *output, u8 index)
 -- 
 2.43.0
 
