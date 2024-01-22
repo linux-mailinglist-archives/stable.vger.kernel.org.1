@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2CE0837CA2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:13:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34320837EAC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 79DC61F28FDC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:13:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01FAD29021B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F8C1468E2;
-	Tue, 23 Jan 2024 00:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4327660EC9;
+	Tue, 23 Jan 2024 00:45:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eHZPDxXW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q1Tj867i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3026C145B30;
-	Tue, 23 Jan 2024 00:28:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024DC60DF0;
+	Tue, 23 Jan 2024 00:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969700; cv=none; b=ThcAFRp0Bj7jnqwqwvqvVFUfjKTHgf6t7ByKFbf/wKiG0+azqnzgidHIqX5MkVyM4GTcDmNx50NQmdQ7PnXhOKU6iJk4RYQ4ZYHAqCsxe2r/cG9qjNBRl8zGjC5OEKTh17+Hk39+U0VEGD5iw0A8v3t8ZaKbxVlUGDhY5XyZkA4=
+	t=1705970740; cv=none; b=Yyko1BJuOkjqaL2BGl80nQD/6k6T+O9/H0tyNelFzvEkLxLKJaHdtSwWmdj9TAugbkY5IoPUJHn9sTjY0lVkl98Sp4aTa/wrSz20iYvYBkuiWt3mSFk/OT0rUR40h5dHGkxja1sk+dmV5wVUl4H7dRiJ2rzwIo+NBbqeeRgAdwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969700; c=relaxed/simple;
-	bh=ZBEt6Y58HhS+t2MpWWN8nxi6M4RjRpdrYZ9O9XgbFYQ=;
+	s=arc-20240116; t=1705970740; c=relaxed/simple;
+	bh=ZVwpz2qMN/Bw6EhrboiH9PA+iF4yGu/rgalXI0X5VlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=okJV92O/FXzwOPJlAEJZ3ZVK6E48mrzqHq8lKZLY+b6RVVngjMUdma5enq/oXyQzQnNxigAInLXXWZ8jG3nM1v7OOpBIvQ11U0TD1UTdXPUWWcluCIKkjr8MZ/Nbg/2Gh12pgnwqTGXxo2rBfYcvckE7mmZGI//mOGpDCBuGm5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eHZPDxXW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5396C433C7;
-	Tue, 23 Jan 2024 00:28:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uJz/Y3xpqKeB3fQSiSLVLFIYUF+5xbADIPPEKZPTyLHO5qCOlOg6fSl1Bj48cpRdE0sZlxKiCqFV4js1N3nazcFAkn2MboLTbCKAOtYuIrgIFRc4Gve9Fd69Y81JgsZ+2on/Y39PT/cV8EDkRXMuOxrUwxKM2NC0I70F+VBsaSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q1Tj867i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A2A4C433F1;
+	Tue, 23 Jan 2024 00:45:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969700;
-	bh=ZBEt6Y58HhS+t2MpWWN8nxi6M4RjRpdrYZ9O9XgbFYQ=;
+	s=korg; t=1705970739;
+	bh=ZVwpz2qMN/Bw6EhrboiH9PA+iF4yGu/rgalXI0X5VlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eHZPDxXWJq76A6ISrf6grr4SDlZwxN+6ztnCG6IN+usBkBbIKlpu+OYpMmeJspzHs
-	 AJx8L4HJNCIKfjZAk1Y6faH+YIUIZFU64ktG9cqBjy0iHBm+uL14Yc1G6bvWrNX79A
-	 3StCbd7mmOkhT/ApVNBW9+iG/uf04ny4wEgZEt4E=
+	b=q1Tj867i3PuiKYPWslvfV92DDCv+jB7KrsR+63+XJS3sZCt7z7idwvzaiZIxwecE/
+	 pA/z7ksr9I8xydHYZLKr9le40nyU9H+LB++nu5tYoI2rJ7ADrZlC6AZEjyEwmorhQe
+	 gA7guDUenUZ73eGz5/haBGpOx4YbSLv7rYtb7Ypo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Subject: [PATCH 6.7 411/641] serial: core: make sure RS485 cannot be enabled when it is not supported
+	Kamil Duljas <kamil.duljas@gmail.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 009/286] ASoC: Intel: Skylake: Fix mem leak in few functions
 Date: Mon, 22 Jan 2024 15:55:15 -0800
-Message-ID: <20240122235830.842776316@linuxfoundation.org>
+Message-ID: <20240122235732.365343408@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +64,61 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Kamil Duljas <kamil.duljas@gmail.com>
 
-commit c73986913fa47e71e0b1ad7f039f6444915e8810 upstream.
+[ Upstream commit d5c65be34df73fa01ed05611aafb73b440d89e29 ]
 
-Some uart drivers specify a rs485_config() function and then decide later
-to disable RS485 support for some reason (e.g. imx and ar933).
+The resources should be freed when function return error.
 
-In these cases userspace may be able to activate RS485 via TIOCSRS485
-nevertheless, since in uart_set_rs485_config() an existing rs485_config()
-function indicates that RS485 is supported.
-
-Make sure that this is not longer possible by checking the uarts
-rs485_supported.flags instead and bailing out if SER_RS485_ENABLED is not
-set.
-
-Furthermore instead of returning an empty structure return -ENOTTY if the
-RS485 configuration is requested via TIOCGRS485 but RS485 is not supported.
-This has a small impact on userspace visibility but it is consistent with
-the -ENOTTY error for TIOCGRS485.
-
-Fixes: e849145e1fdd ("serial: ar933x: Fill in rs485_supported")
-Fixes: 55e18c6b6d42 ("serial: imx: Remove serial_rs485 sanitization")
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc:  <stable@vger.kernel.org>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Link: https://lore.kernel.org/r/20240103061818.564-5-l.sanfilippo@kunbus.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kamil Duljas <kamil.duljas@gmail.com>
+Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20231116125150.1436-1-kamil.duljas@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/serial_core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/intel/skylake/skl-pcm.c     | 4 +++-
+ sound/soc/intel/skylake/skl-sst-ipc.c | 4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -1469,7 +1469,7 @@ static int uart_set_rs485_config(struct
- 	int ret;
- 	unsigned long flags;
+diff --git a/sound/soc/intel/skylake/skl-pcm.c b/sound/soc/intel/skylake/skl-pcm.c
+index b531d9dfc2d6..c7e76111f68b 100644
+--- a/sound/soc/intel/skylake/skl-pcm.c
++++ b/sound/soc/intel/skylake/skl-pcm.c
+@@ -251,8 +251,10 @@ static int skl_pcm_open(struct snd_pcm_substream *substream,
+ 	snd_pcm_set_sync(substream);
  
--	if (!port->rs485_config)
-+	if (!(port->rs485_supported.flags & SER_RS485_ENABLED))
- 		return -ENOTTY;
+ 	mconfig = skl_tplg_fe_get_cpr_module(dai, substream->stream);
+-	if (!mconfig)
++	if (!mconfig) {
++		kfree(dma_params);
+ 		return -EINVAL;
++	}
  
- 	if (copy_from_user(&rs485, rs485_user, sizeof(*rs485_user)))
+ 	skl_tplg_d0i3_get(skl, mconfig->d0i3_caps);
+ 
+diff --git a/sound/soc/intel/skylake/skl-sst-ipc.c b/sound/soc/intel/skylake/skl-sst-ipc.c
+index 7a425271b08b..fd9624ad5f72 100644
+--- a/sound/soc/intel/skylake/skl-sst-ipc.c
++++ b/sound/soc/intel/skylake/skl-sst-ipc.c
+@@ -1003,8 +1003,10 @@ int skl_ipc_get_large_config(struct sst_generic_ipc *ipc,
+ 
+ 	reply.size = (reply.header >> 32) & IPC_DATA_OFFSET_SZ_MASK;
+ 	buf = krealloc(reply.data, reply.size, GFP_KERNEL);
+-	if (!buf)
++	if (!buf) {
++		kfree(reply.data);
+ 		return -ENOMEM;
++	}
+ 	*payload = buf;
+ 	*bytes = reply.size;
+ 
+-- 
+2.43.0
+
 
 
 
