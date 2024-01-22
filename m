@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-13552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4296A837C8F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E44C9837ED0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:46:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75E711C28309
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94AD629A31B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:46:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392F1135A6F;
-	Tue, 23 Jan 2024 00:27:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1C2164190;
+	Tue, 23 Jan 2024 00:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MrTokDvr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSpQd8ea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18F4135A5D;
-	Tue, 23 Jan 2024 00:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1F2164188;
+	Tue, 23 Jan 2024 00:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969672; cv=none; b=ezbpEaU5Ig9k9rBxbJBlxLt9QhaD4lSBGjqJCrbjvwfie6bU8m4lwPQ0/7mBqgKtPvrGQi5/hnGEaq6cMSXAubZQ+3GHaY3uUyJk3cZRnbzVz/4RtA6m7Sf+J13eFVmMbrZW6xU1ts24EOyCFXICghsHlclx7Vd0rxCkrohCH34=
+	t=1705970770; cv=none; b=HJSf8eR6PpuoDY7sieqmTZuvWZLmwq7+FhKmq+YGVCrFYf1Wq8eb6qMBR8eZBnf/QiHtlYgvCQtzwfAVrt8yb53DQef2omPt9s3a+ZhA5tT+wkNVYjgAJoDXd0kD8L72QhWbaU/3V8Gi5Kbf0RYQy4SJce+NlxH2eMbQ6rxpo/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969672; c=relaxed/simple;
-	bh=VrDnV4sKkCbfB7rSu6GqqmN+jeteq48KPxaAT8t8XtQ=;
+	s=arc-20240116; t=1705970770; c=relaxed/simple;
+	bh=y3NcRCd/j7eYM6Kv6pF9CZSWzVTpb+TBG2BmAaPJoEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ij6pjGCg48LznPyIT/MPQROZsOMUo1LpNQ/giQMDQN1Y6RC6tlHyPMehBHv6TbkKr8NoM0GQ5uNQiBUuu6llZLU5ZjflJcikRFcWYkIkqtImYJlBmW1xt6Jcg3ERYq1JFRGi9pllR5bN8fpltIsVXgByXn7tBQ9sdS2x0g4HI6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MrTokDvr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96353C433F1;
-	Tue, 23 Jan 2024 00:27:51 +0000 (UTC)
+	 MIME-Version; b=fucANiWAP1ohDB43G7tJq8wdz/SyX5eTx6dEO6BgIJaQBOkXYlZKA2VSH+i0N27pnlUh2po8u5+2znaEXeCcnqs9qEIzNHxUUKqrRiwwLqdiMvomeUQgj3wztP7mNG5QqYBvBtNf4mWjavrPnmB9r8QCaxV09+z+eWdQT2M7Yfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSpQd8ea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC829C43609;
+	Tue, 23 Jan 2024 00:46:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969671;
-	bh=VrDnV4sKkCbfB7rSu6GqqmN+jeteq48KPxaAT8t8XtQ=;
+	s=korg; t=1705970769;
+	bh=y3NcRCd/j7eYM6Kv6pF9CZSWzVTpb+TBG2BmAaPJoEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MrTokDvrby0oluEFs8umIAQrf53qIWFa0QZOnhGlWHWi9mUb8U3rHHeCGHGfL6MX3
-	 Nx1SUBCwHm0n+NObaeM7bOSw9Gb1KD/4NavvM4tj32AKYU6X4y2jqkvAWQFLSdaUvh
-	 ayzymtrfjKPZ+jPDDpwxgqE6OTNByARyUd2EjTwc=
+	b=fSpQd8ear5KiF4x/7dqjTJYI6ty77JQYasBL2Gs5sOxu6ectA2nksTzC8ohgCrKMU
+	 KCt/j4D+57PwfxNMNdmA9pYxALBxF94S4Dy6o99/ziSlxR7CUI4Mqv56LsWRlaxpJz
+	 R0dOe4xfODenWRXq6e1oOsxFr4eJzoHmwiAx1ASY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-sound@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-	Takashi Iwai <tiwai@suse.de>,
+	Wang Zhao <wang.zhao@mediatek.com>,
+	Deren Wu <deren.wu@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 370/641] kselftest/alsa - mixer-test: fix the number of parameters to ksft_exit_fail_msg()
+Subject: [PATCH 6.1 106/417] wifi: mt76: mt7921s: fix workqueue problem causes STA association fail
 Date: Mon, 22 Jan 2024 15:54:34 -0800
-Message-ID: <20240122235829.531554436@linuxfoundation.org>
+Message-ID: <20240122235755.385882515@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,59 +61,183 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+From: Wang Zhao <wang.zhao@mediatek.com>
 
-[ Upstream commit 8c51c13dc63d46e754c44215eabc0890a8bd9bfb ]
+[ Upstream commit 92184eae1d5ad804884e2c6e289d885b9e3194d1 ]
 
-Minor fix in the number of arguments to error reporting function in the
-test program as reported by GCC 13.2.0 warning.
+The ieee80211_queue_work function queues work into the mac80211
+local->workqueue, which is widely used for mac80211 internal
+work processes. In the mt76 driver, both the mt76-sido-status and
+mt76-sdio-net threads enqueue workers to the workqueue with this
+function. However, in some cases, when two workers are enqueued
+to the workqueue almost simultaneously, the second worker may not
+be scheduled immediately and may get stuck for a while.
+This can cause timing issues. To avoid these timing
+conflicts caused by worker scheduling, replace the worker
+with an independent thread.
 
-mixer-test.c: In function ‘find_controls’:
-mixer-test.c:169:44: warning: too many arguments for format [-Wformat-extra-args]
-  169 |                         ksft_exit_fail_msg("snd_ctl_poll_descriptors() failed for %d\n",
-      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The number of arguments in call to ksft_exit_fail_msg() doesn't correspond
-to the format specifiers, so this is adjusted resembling the sibling calls
-to the error function.
-
-Fixes: b1446bda56456 ("kselftest: alsa: Check for event generation when we write to controls")
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: linux-sound@vger.kernel.org
-Cc: linux-kselftest@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Acked-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20240107173704.937824-2-mirsad.todorovac@alu.unizg.hr
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 48fab5bbef40 ("mt76: mt7921: introduce mt7921s support")
+Signed-off-by: Wang Zhao <wang.zhao@mediatek.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/alsa/mixer-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt76.h      |  3 +--
+ .../net/wireless/mediatek/mt76/mt7615/sdio.c   |  2 +-
+ .../net/wireless/mediatek/mt76/mt7921/sdio.c   |  4 +++-
+ .../wireless/mediatek/mt76/mt7921/sdio_mac.c   |  3 ++-
+ drivers/net/wireless/mediatek/mt76/sdio.c      | 18 +++++++++++-------
+ 5 files changed, 18 insertions(+), 12 deletions(-)
 
-diff --git a/tools/testing/selftests/alsa/mixer-test.c b/tools/testing/selftests/alsa/mixer-test.c
-index 23df154fcdd7..208c2170c074 100644
---- a/tools/testing/selftests/alsa/mixer-test.c
-+++ b/tools/testing/selftests/alsa/mixer-test.c
-@@ -166,7 +166,7 @@ static void find_controls(void)
- 		err = snd_ctl_poll_descriptors(card_data->handle,
- 					       &card_data->pollfd, 1);
- 		if (err != 1) {
--			ksft_exit_fail_msg("snd_ctl_poll_descriptors() failed for %d\n",
-+			ksft_exit_fail_msg("snd_ctl_poll_descriptors() failed for card %d: %d\n",
- 				       card, err);
- 		}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76.h b/drivers/net/wireless/mediatek/mt76/mt76.h
+index 9c753c6aabef..60c9f9c56a4f 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76.h
++++ b/drivers/net/wireless/mediatek/mt76/mt76.h
+@@ -564,8 +564,7 @@ struct mt76_sdio {
+ 	struct mt76_worker txrx_worker;
+ 	struct mt76_worker status_worker;
+ 	struct mt76_worker net_worker;
+-
+-	struct work_struct stat_work;
++	struct mt76_worker stat_worker;
  
+ 	u8 *xmit_buf;
+ 	u32 xmit_buf_sz;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+index 304212f5f8da..d742b22428f0 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/sdio.c
+@@ -205,8 +205,8 @@ static int mt7663s_suspend(struct device *dev)
+ 	mt76_worker_disable(&mdev->mt76.sdio.txrx_worker);
+ 	mt76_worker_disable(&mdev->mt76.sdio.status_worker);
+ 	mt76_worker_disable(&mdev->mt76.sdio.net_worker);
++	mt76_worker_disable(&mdev->mt76.sdio.stat_worker);
+ 
+-	cancel_work_sync(&mdev->mt76.sdio.stat_work);
+ 	clear_bit(MT76_READING_STATS, &mdev->mphy.state);
+ 
+ 	mt76_tx_status_check(&mdev->mt76, true);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+index 3b25a06fd946..8898ba69b8e9 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio.c
+@@ -222,7 +222,7 @@ static int mt7921s_suspend(struct device *__dev)
+ 	mt76_txq_schedule_all(&dev->mphy);
+ 	mt76_worker_disable(&mdev->tx_worker);
+ 	mt76_worker_disable(&mdev->sdio.status_worker);
+-	cancel_work_sync(&mdev->sdio.stat_work);
++	mt76_worker_disable(&mdev->sdio.stat_worker);
+ 	clear_bit(MT76_READING_STATS, &dev->mphy.state);
+ 	mt76_tx_status_check(mdev, true);
+ 
+@@ -254,6 +254,7 @@ static int mt7921s_suspend(struct device *__dev)
+ restore_worker:
+ 	mt76_worker_enable(&mdev->tx_worker);
+ 	mt76_worker_enable(&mdev->sdio.status_worker);
++	mt76_worker_enable(&mdev->sdio.stat_worker);
+ 
+ 	if (!pm->ds_enable)
+ 		mt76_connac_mcu_set_deep_sleep(mdev, false);
+@@ -286,6 +287,7 @@ static int mt7921s_resume(struct device *__dev)
+ 	mt76_worker_enable(&mdev->sdio.txrx_worker);
+ 	mt76_worker_enable(&mdev->sdio.status_worker);
+ 	mt76_worker_enable(&mdev->sdio.net_worker);
++	mt76_worker_enable(&mdev->sdio.stat_worker);
+ 
+ 	/* restore previous ds setting */
+ 	if (!pm->ds_enable)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
+index 1b3adb3d91e8..fd07b6623392 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/sdio_mac.c
+@@ -107,7 +107,7 @@ int mt7921s_mac_reset(struct mt7921_dev *dev)
+ 	mt76_worker_disable(&dev->mt76.sdio.txrx_worker);
+ 	mt76_worker_disable(&dev->mt76.sdio.status_worker);
+ 	mt76_worker_disable(&dev->mt76.sdio.net_worker);
+-	cancel_work_sync(&dev->mt76.sdio.stat_work);
++	mt76_worker_disable(&dev->mt76.sdio.stat_worker);
+ 
+ 	mt7921s_disable_irq(&dev->mt76);
+ 	mt7921s_wfsys_reset(dev);
+@@ -115,6 +115,7 @@ int mt7921s_mac_reset(struct mt7921_dev *dev)
+ 	mt76_worker_enable(&dev->mt76.sdio.txrx_worker);
+ 	mt76_worker_enable(&dev->mt76.sdio.status_worker);
+ 	mt76_worker_enable(&dev->mt76.sdio.net_worker);
++	mt76_worker_enable(&dev->mt76.sdio.stat_worker);
+ 
+ 	dev->fw_assert = false;
+ 	clear_bit(MT76_MCU_RESET, &dev->mphy.state);
+diff --git a/drivers/net/wireless/mediatek/mt76/sdio.c b/drivers/net/wireless/mediatek/mt76/sdio.c
+index 176207f3177c..fc4fb9463564 100644
+--- a/drivers/net/wireless/mediatek/mt76/sdio.c
++++ b/drivers/net/wireless/mediatek/mt76/sdio.c
+@@ -481,21 +481,21 @@ static void mt76s_status_worker(struct mt76_worker *w)
+ 		if (dev->drv->tx_status_data && ndata_frames > 0 &&
+ 		    !test_and_set_bit(MT76_READING_STATS, &dev->phy.state) &&
+ 		    !test_bit(MT76_STATE_SUSPEND, &dev->phy.state))
+-			ieee80211_queue_work(dev->hw, &dev->sdio.stat_work);
++			mt76_worker_schedule(&sdio->stat_worker);
+ 	} while (nframes > 0);
+ 
+ 	if (resched)
+ 		mt76_worker_schedule(&dev->tx_worker);
+ }
+ 
+-static void mt76s_tx_status_data(struct work_struct *work)
++static void mt76s_tx_status_data(struct mt76_worker *worker)
+ {
+ 	struct mt76_sdio *sdio;
+ 	struct mt76_dev *dev;
+ 	u8 update = 1;
+ 	u16 count = 0;
+ 
+-	sdio = container_of(work, struct mt76_sdio, stat_work);
++	sdio = container_of(worker, struct mt76_sdio, stat_worker);
+ 	dev = container_of(sdio, struct mt76_dev, sdio);
+ 
+ 	while (true) {
+@@ -508,7 +508,7 @@ static void mt76s_tx_status_data(struct work_struct *work)
+ 	}
+ 
+ 	if (count && test_bit(MT76_STATE_RUNNING, &dev->phy.state))
+-		ieee80211_queue_work(dev->hw, &sdio->stat_work);
++		mt76_worker_schedule(&sdio->status_worker);
+ 	else
+ 		clear_bit(MT76_READING_STATS, &dev->phy.state);
+ }
+@@ -600,8 +600,8 @@ void mt76s_deinit(struct mt76_dev *dev)
+ 	mt76_worker_teardown(&sdio->txrx_worker);
+ 	mt76_worker_teardown(&sdio->status_worker);
+ 	mt76_worker_teardown(&sdio->net_worker);
++	mt76_worker_teardown(&sdio->stat_worker);
+ 
+-	cancel_work_sync(&sdio->stat_work);
+ 	clear_bit(MT76_READING_STATS, &dev->phy.state);
+ 
+ 	mt76_tx_status_check(dev, true);
+@@ -644,10 +644,14 @@ int mt76s_init(struct mt76_dev *dev, struct sdio_func *func,
+ 	if (err)
+ 		return err;
+ 
++	err = mt76_worker_setup(dev->hw, &sdio->stat_worker, mt76s_tx_status_data,
++				"sdio-sta");
++	if (err)
++		return err;
++
+ 	sched_set_fifo_low(sdio->status_worker.task);
+ 	sched_set_fifo_low(sdio->net_worker.task);
+-
+-	INIT_WORK(&sdio->stat_work, mt76s_tx_status_data);
++	sched_set_fifo_low(sdio->stat_worker.task);
+ 
+ 	dev->queue_ops = &sdio_queue_ops;
+ 	dev->bus = bus_ops;
 -- 
 2.43.0
 
