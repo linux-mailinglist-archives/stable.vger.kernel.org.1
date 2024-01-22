@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-14331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 203F9838077
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 214F48382CE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:24:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB33928B6E6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5533B1C2952A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5DA12F590;
-	Tue, 23 Jan 2024 01:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6F4C27452;
+	Tue, 23 Jan 2024 01:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FDHfXj3a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0y3jfhkm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58FDF12BF34;
-	Tue, 23 Jan 2024 01:02:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEBD2B9C7;
+	Tue, 23 Jan 2024 01:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971745; cv=none; b=G7tJ/4uKkE5uzT/xjsyr90Q6zzl1DFrAZ6mI2Ca4abvoxs4pCk8WSrShyEIxJMcsAn4oOgxTCJYGptW5AK+yI5IDbhlltkzjshlOa/RaChW/GnSfY2zofzcQcnNeq4i4YXxgbIHixWVPkj/VfiHCYduw41zbB5i0RrSKqJN6hE8=
+	t=1705974630; cv=none; b=rpkiQiROmmL5ssast7zJsDvBgatrBfxNYSF2kEGMF5rAn2oBYvBCDu6k0t/Qh3SHBPREqc578t5xXymrTJ8DFOZ9HSeu1sagD7iQUPGYptMkAqhruF+WhgZBdc8Mry9Zo9JUfzFt5MBair9aawIkhGdeBiMN2zBQjIuYif/Hkac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971745; c=relaxed/simple;
-	bh=nXiyZHfhELF5DJefnBs0PD7269uh69RP1wItCPEtd2Y=;
+	s=arc-20240116; t=1705974630; c=relaxed/simple;
+	bh=MTGkow184q6lEoKxtUcFK3zI5RTx+ftsVA/F+0JLtRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=satJtpNK7wt2lTslIZYW38QlTbh1OdQrqU3xzk3/C7xHFzjJD0ZV29LzOYYubg59mKAWoE+GyANaMSYhb9Ngw6a53srRsgl9LfdomLCK3tVxBskUX8Fqdjj8fo3yPpAehc0vDXdqtkeU8RQ8cVGklnONnyUYwXM+eb2yisUCzyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FDHfXj3a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942DAC433C7;
-	Tue, 23 Jan 2024 01:02:24 +0000 (UTC)
+	 MIME-Version; b=B0zCT7A21ED8WKjZLyHv0r4MkPrgzr6YYwKqsTRJencF7+D04KIrlJQe/DrnzizQap6e8vx3ueOOMLRH0O8XUiaPsT/8H9sJKy88xjcikJcJfzm9o+1ctn16jVv0Jr1HYoPxYbC5eZclEn70qAETrtuLwzDG23VtnZXcWD+0tac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0y3jfhkm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB189C433C7;
+	Tue, 23 Jan 2024 01:50:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971744;
-	bh=nXiyZHfhELF5DJefnBs0PD7269uh69RP1wItCPEtd2Y=;
+	s=korg; t=1705974630;
+	bh=MTGkow184q6lEoKxtUcFK3zI5RTx+ftsVA/F+0JLtRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FDHfXj3as26KdBaqt0olWIt9oDXc1FYChjgscrZS5VOkIFlCUZjGe/6UK30+BYfW0
-	 V/MfOpyd8NbIuyUE5gR9pvVFLxCzjVx+SoULggHE36+tWzx0kLx9Nq1L9gF2c5WkHf
-	 KW58jq+a9ZtdcdOm6g3Brhn6l+UOGYU/CRnXslC0=
+	b=0y3jfhkmWpTnmYvcaaBWmIW7rXbhxGK9LmjxO/BvbXk08NSDf84bgrBwBSw/h/GP6
+	 voeFi4knScs1AUdd32NFePa7Le71yT8+wQgeUTY41JNu3gXTjS4Rg3Szv8D0MUi8NE
+	 xvZ4mg4+5iVbC5u6MGIW8Uz+P68wquXoGHEMnA7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.1 309/417] wifi: rtlwifi: Convert LNKCTL change to PCIe cap RMW accessors
+	Stefan Wahren <wahrenst@gmx.net>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 221/374] watchdog: bcm2835_wdt: Fix WDIOC_SETTIMEOUT handling
 Date: Mon, 22 Jan 2024 15:57:57 -0800
-Message-ID: <20240122235802.534142092@linuxfoundation.org>
+Message-ID: <20240122235752.350925568@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,83 +62,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-commit 5894d0089cbc146063dcc0239a78ede0a8142efb upstream.
+[ Upstream commit f33f5b1fd1be5f5106d16f831309648cb0f1c31d ]
 
-The rtlwifi driver comes with custom code to write into PCIe Link
-Control register. RMW access for the Link Control register requires
-locking that is already provided by the standard PCIe capability
-accessors.
+Users report about the unexpected behavior for setting timeouts above
+15 sec on Raspberry Pi. According to watchdog-api.rst the ioctl
+WDIOC_SETTIMEOUT shouldn't fail because of hardware limitations.
+But looking at the code shows that max_timeout based on the
+register value PM_WDOG_TIME_SET, which is the maximum.
 
-Convert the custom RMW code writing into LNKCTL register to standard
-RMW capability accessors. The accesses are changed to cover the full
-LNKCTL register instead of touching just a single byte of the register.
+Since 664a39236e71 ("watchdog: Introduce hardware maximum heartbeat
+in watchdog core") the watchdog core is able to handle this problem.
 
-Fixes: 0c8173385e54 ("rtl8192ce: Add new driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20231124084725.12738-3-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This fix has been tested with watchdog-test from selftests.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217374
+Fixes: 664a39236e71 ("watchdog: Introduce hardware maximum heartbeat in watchdog core")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20231112173251.4827-1-wahrenst@gmx.net
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/pci.c |   21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ drivers/watchdog/bcm2835_wdt.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -164,21 +164,29 @@ static bool _rtl_pci_platform_switch_dev
- 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
- 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
+diff --git a/drivers/watchdog/bcm2835_wdt.c b/drivers/watchdog/bcm2835_wdt.c
+index 94907176a0e4..55c0f7b0e8fb 100644
+--- a/drivers/watchdog/bcm2835_wdt.c
++++ b/drivers/watchdog/bcm2835_wdt.c
+@@ -42,6 +42,7 @@
  
-+	value &= PCI_EXP_LNKCTL_ASPMC;
-+
- 	if (rtlhal->hw_type != HARDWARE_TYPE_RTL8192SE)
--		value |= 0x40;
-+		value |= PCI_EXP_LNKCTL_CCC;
+ #define SECS_TO_WDOG_TICKS(x) ((x) << 16)
+ #define WDOG_TICKS_TO_SECS(x) ((x) >> 16)
++#define WDOG_TICKS_TO_MSECS(x) ((x) * 1000 >> 16)
  
--	pci_write_config_byte(rtlpci->pdev, 0x80, value);
-+	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
-+					   PCI_EXP_LNKCTL_ASPMC | value,
-+					   value);
+ struct bcm2835_wdt {
+ 	void __iomem		*base;
+@@ -140,7 +141,7 @@ static struct watchdog_device bcm2835_wdt_wdd = {
+ 	.info =		&bcm2835_wdt_info,
+ 	.ops =		&bcm2835_wdt_ops,
+ 	.min_timeout =	1,
+-	.max_timeout =	WDOG_TICKS_TO_SECS(PM_WDOG_TIME_SET),
++	.max_hw_heartbeat_ms =	WDOG_TICKS_TO_MSECS(PM_WDOG_TIME_SET),
+ 	.timeout =	WDOG_TICKS_TO_SECS(PM_WDOG_TIME_SET),
+ };
  
- 	return false;
- }
- 
--/*When we set 0x01 to enable clk request. Set 0x0 to disable clk req.*/
--static void _rtl_pci_switch_clk_req(struct ieee80211_hw *hw, u8 value)
-+/* @value is PCI_EXP_LNKCTL_CLKREQ_EN or 0 to enable/disable clk request. */
-+static void _rtl_pci_switch_clk_req(struct ieee80211_hw *hw, u16 value)
- {
- 	struct rtl_pci *rtlpci = rtl_pcidev(rtl_pcipriv(hw));
- 	struct rtl_hal *rtlhal = rtl_hal(rtl_priv(hw));
- 
--	pci_write_config_byte(rtlpci->pdev, 0x81, value);
-+	value &= PCI_EXP_LNKCTL_CLKREQ_EN;
-+
-+	pcie_capability_clear_and_set_word(rtlpci->pdev, PCI_EXP_LNKCTL,
-+					   PCI_EXP_LNKCTL_CLKREQ_EN,
-+					   value);
- 
- 	if (rtlhal->hw_type == HARDWARE_TYPE_RTL8192SE)
- 		udelay(100);
-@@ -259,7 +267,8 @@ static void rtl_pci_enable_aspm(struct i
- 
- 	if (ppsc->reg_rfps_level & RT_RF_OFF_LEVL_CLK_REQ) {
- 		_rtl_pci_switch_clk_req(hw, (ppsc->reg_rfps_level &
--					     RT_RF_OFF_LEVL_CLK_REQ) ? 1 : 0);
-+					     RT_RF_OFF_LEVL_CLK_REQ) ?
-+					     PCI_EXP_LNKCTL_CLKREQ_EN : 0);
- 		RT_SET_PS_LEVEL(ppsc, RT_RF_OFF_LEVL_CLK_REQ);
- 	}
- 	udelay(100);
+-- 
+2.43.0
+
 
 
 
