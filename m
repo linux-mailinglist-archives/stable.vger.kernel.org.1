@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-15342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C565D83857D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:42:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B51D8380C8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C76BDB275AD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E1401F2A34D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABDDA7762B;
-	Tue, 23 Jan 2024 02:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43ED21339B8;
+	Tue, 23 Jan 2024 01:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V32LajgI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FdmxGk0k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C50177636;
-	Tue, 23 Jan 2024 02:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 024941339B4;
+	Tue, 23 Jan 2024 01:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975508; cv=none; b=dFNZ/51x8DJNyU+qi598FKlUORRF5bFFWy9FEwyHVIrr5Aci72GpY/m2uvDPyVKOIzEAfY/xk0I+9+d7Lk8EfZhVuLR/pgVA9PkPGmVtjHKsLUPhYiiAWBc+ihSsOakvJWXZ7wX+N9IYJekQfWdp6yzS7GCDRIMIEW06Cx47tzc=
+	t=1705971894; cv=none; b=LBnA+xs7RWdmi/P3zx3+IvJIUjx4di58jewlVvUu9t2hija0uVQaZYABOQ498GSe+DK3lDwKEPpu88naHWWHHIOq1d6pPHM+ScyzXyX2QMhkPZvmFoF1Tdg0sZRZ8tc4Q7gVQdkTl1pm3FOw4Gyo1hMW6CakLuaJ9TcATmctrZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975508; c=relaxed/simple;
-	bh=NkQ6rsxyJgyWrVu5rIQ09PtfpS24h+fPdbiGZJvRruc=;
+	s=arc-20240116; t=1705971894; c=relaxed/simple;
+	bh=9WAaShs0zB7YOEv1wn77yxF3V09uDwYRMqWq0bu/0Yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nhpSQLWZHgKlZ0RiC9RYNJQ1w4jydSjTuwh9Jkr7CRI0wLMNpo9OCMDZV5HC6ktKyogInv+unlDVS84JnPRaJ8vw0Ir7lxkoH36huZvLVh19SWh8inlk7jEFA3TSIL+NZa4qfSUvolSzP1x/LCZ1m/HxvSewOCjgJnjKI0pxFDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V32LajgI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30A86C433C7;
-	Tue, 23 Jan 2024 02:05:08 +0000 (UTC)
+	 MIME-Version; b=uvo+X4Nre+OlNQWjdAdmwAjdXCpMaO8ofC5JYbHzrLZX70odznjrKTH4kDNZktrDNPbv/F1krHPAXXoAnXQ3PHqfjMeiZeL87XcW1y9Lg91uqSdVff84hwoLeRBVPJlaeJfgWARbidPbJvHvibC4RrTEKT7bsnLpNuYtgItJswo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FdmxGk0k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E64C433F1;
+	Tue, 23 Jan 2024 01:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975508;
-	bh=NkQ6rsxyJgyWrVu5rIQ09PtfpS24h+fPdbiGZJvRruc=;
+	s=korg; t=1705971893;
+	bh=9WAaShs0zB7YOEv1wn77yxF3V09uDwYRMqWq0bu/0Yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V32LajgIpfPIfk4zkxFzLXm3JRFK9AyLJNoNMYpi1fVhNDj2hf08ophEhro0ZNwPS
-	 dC+j6L3Ewm/m0UJr8ymizl4tfSElU1OMYV5HDkyIsPOKEHEHsv6twqfUsJnZbBMINc
-	 FXc0FVt30Ihr0KfNtInm/qz7D85GfynYAAfL6NkA=
+	b=FdmxGk0k2nQRL5W/AaM0g/Y4R5QIi6uIdLD3rnoDlhsGML2M6Toif/3rxS+cO9lr1
+	 kiny5JL3RjQdYShGNPgF8+FTUbWQ1sCvaR0Cy2qjdshMxb5WmBXhkSoTgjELgnIh2N
+	 /U4nqzL2t5vAVP+mSHQDudjg2ipqdpAFBOuBtCmc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 460/583] iommu: Map reserved memory as cacheable if device is coherent
-Date: Mon, 22 Jan 2024 15:58:31 -0800
-Message-ID: <20240122235826.055093138@linuxfoundation.org>
+Subject: [PATCH 6.1 344/417] software node: Let args be NULL in software_node_get_reference_args
+Date: Mon, 22 Jan 2024 15:58:32 -0800
+Message-ID: <20240122235803.710193708@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit f1aad9df93f39267e890836a28d22511f23474e1 ]
+[ Upstream commit 1eaea4b3604eb9ca7d9a1e73d88fc121bb4061f5 ]
 
-Check if the device is marked as DMA coherent in the DT and if so,
-map its reserved memory as cacheable in the IOMMU.
-This fixes the recently added IOMMU reserved memory support which
-uses IOMMU_RESV_DIRECT without properly building the PROT for the
-mapping.
+fwnode_get_property_reference_args() may not be called with args argument
+NULL and while OF already supports this. Add the missing NULL check.
 
-Fixes: a5bf3cfce8cb ("iommu: Implement of_iommu_get_resv_regions()")
-Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20230926152600.8749-1-laurentiu.tudor@nxp.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+The purpose is to be able to count the references.
+
+Fixes: b06184acf751 ("software node: Add software_node_get_reference_args()")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20231109101010.1329587-3-sakari.ailus@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/of_iommu.c | 3 +++
+ drivers/base/swnode.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
-index 35ba090f3b5e..47302b637cc0 100644
---- a/drivers/iommu/of_iommu.c
-+++ b/drivers/iommu/of_iommu.c
-@@ -260,6 +260,9 @@ void of_iommu_get_resv_regions(struct device *dev, struct list_head *list)
- 				phys_addr_t iova;
- 				size_t length;
+diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+index 0a482212c7e8..44153caa893a 100644
+--- a/drivers/base/swnode.c
++++ b/drivers/base/swnode.c
+@@ -541,6 +541,9 @@ software_node_get_reference_args(const struct fwnode_handle *fwnode,
+ 	if (nargs > NR_FWNODE_REFERENCE_ARGS)
+ 		return -EINVAL;
  
-+				if (of_dma_is_coherent(dev->of_node))
-+					prot |= IOMMU_CACHE;
++	if (!args)
++		return 0;
 +
- 				maps = of_translate_dma_region(np, maps, &iova, &length);
- 				type = iommu_resv_region_get_type(dev, &phys, iova, length);
+ 	args->fwnode = software_node_get(refnode);
+ 	args->nargs = nargs;
  
 -- 
 2.43.0
