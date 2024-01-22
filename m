@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-13618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A201837D21
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7B3A83819C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CC6B1C28527
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EA821F24620
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1AC359B74;
-	Tue, 23 Jan 2024 00:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475C8627E4;
+	Tue, 23 Jan 2024 01:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tbPih8nj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qqv3akea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DFA239AE5;
-	Tue, 23 Jan 2024 00:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03AA323BD;
+	Tue, 23 Jan 2024 01:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969806; cv=none; b=Qabnljo5VgKCvwj4PAULpW7F1sqJE6DVlNjtATi6yevKCi30pFbaVV7fKdMBkN1xFi3O+3GIJqv/nA4qXfvZkvDlCzIhuc2QetXPKEwHsQ0gqGKoiQKyaxfZDyL8Hmz6fjwaDIA8x3eINc+XxI0wxA/GXrNCpjg1cID6izndkA8=
+	t=1705972187; cv=none; b=qPh23m1Oz0G5X1xz4oQ3ouJKzwVa77/U63ENasSeIMaHfztMjQdsiaNXYBfZRKj3nH65G39w5Y3Qax/YFs5MxkLaUAgTsz0SMjK/Fu//+RTD5bLmJUhw23Ii4MKagA+Arat18bM//Qj11fNasSXLbi5w4dmPIY9CXblTOj5iKMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969806; c=relaxed/simple;
-	bh=TFHrkzHJm0kGbQ6CzlKdUSs3yGObr6K3LqyE98rTn8s=;
+	s=arc-20240116; t=1705972187; c=relaxed/simple;
+	bh=LljUtltOBkx5qO9TJa7+rhRGDCHLOB73xeP5UIMp2+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rWI1w+jSg+Au59wBikU27nXcPG1ERO++8XvJ2gHa29/Lcc1Ep6Aq0HgMXMaUVgVGvNe5srHyxaRPefP8ejgrzv56NzkwRTZJSWv5F8wSMMEGwCnfhl8tO9KcwhcIysHgTIA7F2uNqJkbl+nTpDU1wtNNqAcwuNf/qugt0w9vZ+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tbPih8nj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E8BC433F1;
-	Tue, 23 Jan 2024 00:30:06 +0000 (UTC)
+	 MIME-Version; b=l7fONPiRkO6ykw4HS2Z/pLgzGhFJXVprizSfwgaZ/PuOsTydFL9/5VeoTHcLxP51et/rtXuhMgkQxxNq/TBt/DmqSscT+82EvJS/a+oCciwcT8o6GJl4N5Qqrfo7KsryckQem5rZerqBfNigL6HciI4Q+i3+VdfjhF3J3qCr5kY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qqv3akea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB21CC43394;
+	Tue, 23 Jan 2024 01:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969806;
-	bh=TFHrkzHJm0kGbQ6CzlKdUSs3yGObr6K3LqyE98rTn8s=;
+	s=korg; t=1705972186;
+	bh=LljUtltOBkx5qO9TJa7+rhRGDCHLOB73xeP5UIMp2+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tbPih8nj4My6Z2ipkbBlWIU9PXwrGQ5+4Hk19stokmX+jh8gN6oUZDLnNeoX5GycH
-	 fdtmoACfKPIPWGV0iItAoBH+IPTq5chp5JLPoiYujPOZOB/BqQ5n6OtX6JV4JVKcwv
-	 JC5V2GuHkz7sX45NAC34hXSXuWrWms6f/7mR1/fk=
+	b=Qqv3akeaolUFWvCekI1CZp9oTkAQDFKKwXTxk8lNDhePrDZ3GKcRvGYNDPlGbbNTb
+	 2L8JJ7F/3UrNrzbgOEiGZRIcoIiZjmfgL2fmSKWAIOK3ggPeZxQtoUHi/qOJ5XCZSz
+	 /ba9jRVljPVv3wNJVPFgFmultdBLiGo0dLh8ZAaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Tresidder <rtresidd@electromag.com.au>,
-	Romain Gantois <romain.gantois@bootlin.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.7 461/641] net: stmmac: Prevent DSA tags from breaking COE
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 109/374] crypto: sahara - fix ahash reqsize
 Date: Mon, 22 Jan 2024 15:56:05 -0800
-Message-ID: <20240122235832.467197448@linuxfoundation.org>
+Message-ID: <20240122235748.410418764@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,106 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Romain Gantois <romain.gantois@bootlin.com>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-commit c2945c435c999c63e47f337bc7c13c98c21d0bcc upstream.
+[ Upstream commit efcb50f41740ac55e6ccc4986c1a7740e21c62b4 ]
 
-Some DSA tagging protocols change the EtherType field in the MAC header
-e.g.  DSA_TAG_PROTO_(DSA/EDSA/BRCM/MTK/RTL4C_A/SJA1105). On TX these tagged
-frames are ignored by the checksum offload engine and IP header checker of
-some stmmac cores.
+Set the reqsize for sha algorithms to sizeof(struct sahara_sha_reqctx), the
+extra space is not needed.
 
-On RX, the stmmac driver wrongly assumes that checksums have been computed
-for these tagged packets, and sets CHECKSUM_UNNECESSARY.
-
-Add an additional check in the stmmac TX and RX hotpaths so that COE is
-deactivated for packets with ethertypes that will not trigger the COE and
-IP header checks.
-
-Fixes: 6b2c6e4a938f ("net: stmmac: propagate feature flags to vlan")
-Cc:  <stable@vger.kernel.org>
-Reported-by: Richard Tresidder <rtresidd@electromag.com.au>
-Link: https://lore.kernel.org/netdev/e5c6c75f-2dfa-4e50-a1fb-6bf4cdb617c2@electromag.com.au/
-Reported-by: Romain Gantois <romain.gantois@bootlin.com>
-Link: https://lore.kernel.org/netdev/c57283ed-6b9b-b0e6-ee12-5655c1c54495@bootlin.com/
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Romain Gantois <romain.gantois@bootlin.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c |   32 +++++++++++++++++++---
- 1 file changed, 29 insertions(+), 3 deletions(-)
+ drivers/crypto/sahara.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4372,6 +4372,28 @@ dma_map_err:
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index 3229dd180d0c..d31ccaffebb8 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -1163,8 +1163,7 @@ static int sahara_sha_import(struct ahash_request *req, const void *in)
+ static int sahara_sha_cra_init(struct crypto_tfm *tfm)
+ {
+ 	crypto_ahash_set_reqsize(__crypto_ahash_cast(tfm),
+-				 sizeof(struct sahara_sha_reqctx) +
+-				 SHA_BUFFER_LEN + SHA256_BLOCK_SIZE);
++				 sizeof(struct sahara_sha_reqctx));
+ 
+ 	return 0;
  }
- 
- /**
-+ * stmmac_has_ip_ethertype() - Check if packet has IP ethertype
-+ * @skb: socket buffer to check
-+ *
-+ * Check if a packet has an ethertype that will trigger the IP header checks
-+ * and IP/TCP checksum engine of the stmmac core.
-+ *
-+ * Return: true if the ethertype can trigger the checksum engine, false
-+ * otherwise
-+ */
-+static bool stmmac_has_ip_ethertype(struct sk_buff *skb)
-+{
-+	int depth = 0;
-+	__be16 proto;
-+
-+	proto = __vlan_get_protocol(skb, eth_header_parse_protocol(skb),
-+				    &depth);
-+
-+	return (depth <= ETH_HLEN) &&
-+		(proto == htons(ETH_P_IP) || proto == htons(ETH_P_IPV6));
-+}
-+
-+/**
-  *  stmmac_xmit - Tx entry point of the driver
-  *  @skb : the socket buffer
-  *  @dev : device pointer
-@@ -4435,9 +4457,13 @@ static netdev_tx_t stmmac_xmit(struct sk
- 	/* DWMAC IPs can be synthesized to support tx coe only for a few tx
- 	 * queues. In that case, checksum offloading for those queues that don't
- 	 * support tx coe needs to fallback to software checksum calculation.
-+	 *
-+	 * Packets that won't trigger the COE e.g. most DSA-tagged packets will
-+	 * also have to be checksummed in software.
- 	 */
- 	if (csum_insertion &&
--	    priv->plat->tx_queues_cfg[queue].coe_unsupported) {
-+	    (priv->plat->tx_queues_cfg[queue].coe_unsupported ||
-+	     !stmmac_has_ip_ethertype(skb))) {
- 		if (unlikely(skb_checksum_help(skb)))
- 			goto dma_map_err;
- 		csum_insertion = !csum_insertion;
-@@ -4997,7 +5023,7 @@ static void stmmac_dispatch_skb_zc(struc
- 	stmmac_rx_vlan(priv->dev, skb);
- 	skb->protocol = eth_type_trans(skb, priv->dev);
- 
--	if (unlikely(!coe))
-+	if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb))
- 		skb_checksum_none_assert(skb);
- 	else
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
-@@ -5513,7 +5539,7 @@ drain_data:
- 		stmmac_rx_vlan(priv->dev, skb);
- 		skb->protocol = eth_type_trans(skb, priv->dev);
- 
--		if (unlikely(!coe))
-+		if (unlikely(!coe) || !stmmac_has_ip_ethertype(skb))
- 			skb_checksum_none_assert(skb);
- 		else
- 			skb->ip_summed = CHECKSUM_UNNECESSARY;
+-- 
+2.43.0
+
 
 
 
