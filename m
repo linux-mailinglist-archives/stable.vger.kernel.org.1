@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-13282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 439E6837B3F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34C1F837B48
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 777CE1C276DB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:59:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E149C293111
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:59:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA61514AD21;
-	Tue, 23 Jan 2024 00:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2669014C583;
+	Tue, 23 Jan 2024 00:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GRHjtoEb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VU2ixWkf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA54114A4FA;
-	Tue, 23 Jan 2024 00:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADE014AD2B;
+	Tue, 23 Jan 2024 00:21:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969250; cv=none; b=YHRIMIyhHCc5iUlaya38+9KaLvmK2Cokrccq8Vexsgxz9r2V3xS854AGFZSApRIbb6DcVhYlCWT1fn73oFOeQfuy3iSvQMjpmObJu2+QIuiBOgmRJdTGZgSkAd6lrEdsckeh8zFPh4BDiF3WYjwWnz19RVkwoyO3IPkeLGL8IWc=
+	t=1705969266; cv=none; b=MoyY5ct6USqKo8ctorPGlclPT16DYFfN9IdxBhCzYdtPKdygIx/yCOGzCXgUj1ppv/8LqgDBx7V9uLmrrPe7fP1fqVvkhDZXwfVQFr56m4pcjijj58SzWEHmgg71roGn3mjDvATEoIjT3/q0YlUEQ1XoTbmgwoYjXK/v5tuJnOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969250; c=relaxed/simple;
-	bh=R7xwelLNxbv0rF12r1jDsf02sH6yIFH+5AiX3dsCo1M=;
+	s=arc-20240116; t=1705969266; c=relaxed/simple;
+	bh=vGDosuZ3DcrV5eE5V6lsJIrPoPjTLMBTaW/AuIypB7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KxSxAUjaKtXGPNt2osVtCooE12uPaW7+4v+3d00DSL72zbhHmfZU6oNjiPhVC9gssp9BGUSRHcB41MvQfmcU+OXxKwE5/eD/QLS/RgGGTb04iLScEwGjUNkHRSlhQMNxcAlC6r9F+6hpFpoq1KCG9wCn4STxmraYvvT8XmTOR3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GRHjtoEb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 340A0C433F1;
-	Tue, 23 Jan 2024 00:20:49 +0000 (UTC)
+	 MIME-Version; b=I/Uj35tp/vHYtJbbr3VJWos2jET8uI3c9KdC/t1VRO/l474M1MbqgeJMHKCoCznlO3KjXNDIq70ao2Xa2IApSPFSdtDaNwXjTq6Q2eW3Jx+3QqH6BSPc5Ap2S9SG5VWfB1DlypYZQVugsOick9UFdF/OOzlf8joKb+m+so6QHLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VU2ixWkf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F9DCC43394;
+	Tue, 23 Jan 2024 00:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969250;
-	bh=R7xwelLNxbv0rF12r1jDsf02sH6yIFH+5AiX3dsCo1M=;
+	s=korg; t=1705969266;
+	bh=vGDosuZ3DcrV5eE5V6lsJIrPoPjTLMBTaW/AuIypB7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GRHjtoEbNcDN/wf7TQEtUBVdFZrKP3VK95AGj68hLsciD3z6J5i+adHHIqPJj4I/5
-	 mjgejHa1C4kQvC/a7uef/ldPAyp0NEOkPWkYhj/2WV34LgCqyqzY3Un6wvGCQnx0Os
-	 peDkrZsOoz9IkPglO8aq3jdFSBmJmmbHgfEjYmh4=
+	b=VU2ixWkf8OoL76W4SzQ6Uh1vWqnm9spZ7jw8veLon8u6ALSv/1kesfcnCBPk+hubp
+	 /19oKHtTcK586lJscSELumnvKF7s3S8CS0FaqcbB4kT9Y89AYBIBwIPOjs/01oV7xr
+	 v9q3PV2DdllQ/hIFnS5CqB/8flyb+Aj7klebanoQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 107/641] scsi: bfa: Use the proper data type for BLIST flags
-Date: Mon, 22 Jan 2024 15:50:11 -0800
-Message-ID: <20240122235821.388609950@linuxfoundation.org>
+Subject: [PATCH 6.7 108/641] wifi: ath12k: fix the error handler of rfkill config
+Date: Mon, 22 Jan 2024 15:50:12 -0800
+Message-ID: <20240122235821.422737545@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -67,38 +67,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 
-[ Upstream commit 0349be31e4ffc79723e46e2e373569567b06347b ]
+[ Upstream commit 898d8b3e1414cd900492ee6a0b582f8095ba4a1a ]
 
-Fix the following sparse warning:
+When the core rfkill config throws error, it should free the
+allocated resources. Currently it is not freeing the core pdev
+create resources. Avoid this issue by calling the core pdev
+destroy in the error handler of core rfkill config.
 
-drivers/scsi/bfa/bfad_bsg.c:2553:50: sparse: sparse: incorrect type in initializer (different base types)
+Found this issue in the code review and it is compile tested only.
 
-Fixes: 2e5a6c3baccd ("scsi: bfa: Convert bfad_reset_sdev_bflags() from a macro into a function")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311031255.lmSPisIk-lkp@intel.com/
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20231115193338.2261972-1-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 004ccbc0dd49 ("wifi: ath12k: add support for hardware rfkill for WCN7850")
+Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20231111040107.18708-1-quic_periyasa@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/bfa/bfad_bsg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/core.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/bfa/bfad_bsg.c b/drivers/scsi/bfa/bfad_bsg.c
-index 520f9152f3bf..d4ceca2d435e 100644
---- a/drivers/scsi/bfa/bfad_bsg.c
-+++ b/drivers/scsi/bfa/bfad_bsg.c
-@@ -2550,7 +2550,7 @@ bfad_iocmd_vf_clr_stats(struct bfad_s *bfad, void *cmd)
- static void bfad_reset_sdev_bflags(struct bfad_im_port_s *im_port,
- 				   int lunmask_cfg)
- {
--	const u32 scan_flags = BLIST_NOREPORTLUN | BLIST_SPARSELUN;
-+	const blist_flags_t scan_flags = BLIST_NOREPORTLUN | BLIST_SPARSELUN;
- 	struct bfad_itnim_s *itnim;
- 	struct scsi_device *sdev;
- 	unsigned long flags;
+diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+index b936760b5140..6c01b282fcd3 100644
+--- a/drivers/net/wireless/ath/ath12k/core.c
++++ b/drivers/net/wireless/ath/ath12k/core.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2022 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2023 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ 
+ #include <linux/module.h>
+@@ -698,13 +698,15 @@ int ath12k_core_qmi_firmware_ready(struct ath12k_base *ab)
+ 	ret = ath12k_core_rfkill_config(ab);
+ 	if (ret && ret != -EOPNOTSUPP) {
+ 		ath12k_err(ab, "failed to config rfkill: %d\n", ret);
+-		goto err_core_stop;
++		goto err_core_pdev_destroy;
+ 	}
+ 
+ 	mutex_unlock(&ab->core_lock);
+ 
+ 	return 0;
+ 
++err_core_pdev_destroy:
++	ath12k_core_pdev_destroy(ab);
+ err_core_stop:
+ 	ath12k_core_stop(ab);
+ 	ath12k_mac_destroy(ab);
 -- 
 2.43.0
 
