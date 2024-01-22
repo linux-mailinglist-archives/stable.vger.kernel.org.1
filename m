@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8918C837CAF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:14:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8019837E2E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBE02B29975
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7591D1F2743A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:36:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B7B23B9;
-	Tue, 23 Jan 2024 00:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 540485C60B;
+	Tue, 23 Jan 2024 00:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="akSR4Alh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A6q702bz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE27B2113;
-	Tue, 23 Jan 2024 00:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A2E5B5DA;
+	Tue, 23 Jan 2024 00:40:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969489; cv=none; b=UnWAUUkhvmYzmOWnA4Zsz7TZZmdsIyYl0zWRDNlbU0EJtxC+e7Spw/fi+fq5yIyAMOcgAnw+nP4vNET1w++xL88iEE6FK3lr1ygwQivVnjaGESZ4EQ+OuC9wmaUxTstwxGE6E49oH99LLJ3WY1IsMT3w1z30YBMmsmSdojUEjJI=
+	t=1705970419; cv=none; b=aCdHLutLxvPknvggYjPzY6r6mJPbhWe9vW0tBPddi29dnwEgVMzGFicOjocIIOHRk4ofxwJXbwlZJRGlBsomRLhXJhq9tybuDJSqU+tueyiy25+uv5ssR5C6+ZK5/t+JLu40236XQlc0ZTFKmd8zUrEyjwxL8YT/46IG2MCV5QI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969489; c=relaxed/simple;
-	bh=X0c6wRlP1fpqDXU+ge+dyn+dQTo5PeKLlAwTEgq1++M=;
+	s=arc-20240116; t=1705970419; c=relaxed/simple;
+	bh=PDxiIiL5dOhn0XAeREUrVO1jaePyZpOdeNQ23I5xqpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M+90ljz8UVr/0FrV+1VYL8gk82c3EKASzkMP+rCCjSXW299BpO//Gs97KCoEBPaF7isU9NfQcfE6ewl18vKMJ70LiaUNFuE7qqYYO7Ycq7J/gMt8glPLvGOfSy4Pa5kUEml0hfk14C+vwv4dMFaPTYoZe7/71oazXHOFDxGPAzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=akSR4Alh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AC78C43390;
-	Tue, 23 Jan 2024 00:24:49 +0000 (UTC)
+	 MIME-Version; b=e2jObs9zzYA+XJHXLnBQI5mzfbuEXfuCxJx3cB28Kl5adVGxMaXwacrDLpRYsyFBRVgoA0vnuleWOYPsfsPFFxIP5p2/SpsOgcaSv2tCFHGiUWUEhQl6fu2po16AWsphU02mnb682dd6CvBf7S+AhatsfK2TQ7QUiEOssanObss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A6q702bz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B486DC433C7;
+	Tue, 23 Jan 2024 00:40:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969489;
-	bh=X0c6wRlP1fpqDXU+ge+dyn+dQTo5PeKLlAwTEgq1++M=;
+	s=korg; t=1705970418;
+	bh=PDxiIiL5dOhn0XAeREUrVO1jaePyZpOdeNQ23I5xqpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=akSR4AlhwWLZoccd+A4I2paCmQLzA8Rku9yCciVu1Ch9A9vhwqxXNplo9/dFiD29M
-	 rxrkEnS2/co9zhqEayHzV0fCK75irjwaVyuy7nsWPvtKCMAjn7xrtDmLdgaluC/VYm
-	 bWvYRfShLnWfE0o5GzWhYjUuIrzNhE2ui+Pq9PNM=
+	b=A6q702bz0TdMfSU/nLzSt9r5AAVVJVkYZyKr8FjHlGVRIndNuBzo5bE4MD5ddtqJi
+	 q1X7jNSkt14BbvHR1L/G3c/NYaZze1Q/FzI5q2uaWSa50dRxAjwE9Q+2jJCOJ1noAR
+	 Y8jxZ7CqtZ3vrKFWxF3iZLhYw1LR1HarYnbUyD1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Nikita Kiryushin <kiryushin@ancud.ru>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 279/641] drm/msm/mdp4: flush vblank event on disable
+Subject: [PATCH 6.1 015/417] ACPI: video: check for error while searching for backlight device parent
 Date: Mon, 22 Jan 2024 15:53:03 -0800
-Message-ID: <20240122235826.640794240@linuxfoundation.org>
+Message-ID: <20240122235752.042294174@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Nikita Kiryushin <kiryushin@ancud.ru>
 
-[ Upstream commit c6721b3c6423d8a348ae885a0f4c85e14f9bf85c ]
+[ Upstream commit ccd45faf4973746c4f30ea41eec864e5cf191099 ]
 
-Flush queued events when disabling the crtc. This avoids timeouts when
-we come back and wait for dependencies (like the previous frame's
-flip_done).
+If acpi_get_parent() called in acpi_video_dev_register_backlight()
+fails, for example, because acpi_ut_acquire_mutex() fails inside
+acpi_get_parent), this can lead to incorrect (uninitialized)
+acpi_parent handle being passed to acpi_get_pci_dev() for detecting
+the parent pci device.
 
-Fixes: c8afe684c95c ("drm/msm: basic KMS driver for snapdragon")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/569127/
-Link: https://lore.kernel.org/r/20231127215401.4064128-1-dmitry.baryshkov@linaro.org
+Check acpi_get_parent() result and set parent device only in case of success.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 9661e92c10a9 ("acpi: tie ACPI backlight devices to PCI devices if possible")
+Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/acpi/acpi_video.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c b/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
-index 169f9de4a12a..3100957225a7 100644
---- a/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
-+++ b/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
-@@ -269,6 +269,7 @@ static void mdp4_crtc_atomic_disable(struct drm_crtc *crtc,
- {
- 	struct mdp4_crtc *mdp4_crtc = to_mdp4_crtc(crtc);
- 	struct mdp4_kms *mdp4_kms = get_kms(crtc);
-+	unsigned long flags;
+diff --git a/drivers/acpi/acpi_video.c b/drivers/acpi/acpi_video.c
+index ed318485eb19..f7852fb75ab3 100644
+--- a/drivers/acpi/acpi_video.c
++++ b/drivers/acpi/acpi_video.c
+@@ -1726,12 +1726,12 @@ static void acpi_video_dev_register_backlight(struct acpi_video_device *device)
+ 		return;
+ 	count++;
  
- 	DBG("%s", mdp4_crtc->name);
+-	acpi_get_parent(device->dev->handle, &acpi_parent);
+-
+-	pdev = acpi_get_pci_dev(acpi_parent);
+-	if (pdev) {
+-		parent = &pdev->dev;
+-		pci_dev_put(pdev);
++	if (ACPI_SUCCESS(acpi_get_parent(device->dev->handle, &acpi_parent))) {
++		pdev = acpi_get_pci_dev(acpi_parent);
++		if (pdev) {
++			parent = &pdev->dev;
++			pci_dev_put(pdev);
++		}
+ 	}
  
-@@ -281,6 +282,14 @@ static void mdp4_crtc_atomic_disable(struct drm_crtc *crtc,
- 	mdp_irq_unregister(&mdp4_kms->base, &mdp4_crtc->err);
- 	mdp4_disable(mdp4_kms);
- 
-+	if (crtc->state->event && !crtc->state->active) {
-+		WARN_ON(mdp4_crtc->event);
-+		spin_lock_irqsave(&mdp4_kms->dev->event_lock, flags);
-+		drm_crtc_send_vblank_event(crtc, crtc->state->event);
-+		crtc->state->event = NULL;
-+		spin_unlock_irqrestore(&mdp4_kms->dev->event_lock, flags);
-+	}
-+
- 	mdp4_crtc->enabled = false;
- }
- 
+ 	memset(&props, 0, sizeof(struct backlight_properties));
 -- 
 2.43.0
 
