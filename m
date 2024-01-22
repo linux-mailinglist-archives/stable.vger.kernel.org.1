@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-12835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F9FE837895
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:46 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C9AA837A1C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBB7528C609
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:23:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 909A31C28557
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D648513AA21;
-	Tue, 23 Jan 2024 00:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91A912A165;
+	Tue, 23 Jan 2024 00:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpYgLeeY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zv+uiDI0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9336013A27C;
-	Tue, 23 Jan 2024 00:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CB3129A63;
+	Tue, 23 Jan 2024 00:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968129; cv=none; b=Ig4K7fgyRpn+Eva+De9vGrvCio5HAmNp3TlP/uJTW4sf9FW7z8kPfkthpugMCP0n9XJpamfnK7XtP9QdLQOqTPVGcC4b7PUZYkP32Ss4pGUIXVmjAUdkmzWtlPbVmjvkmS3P8HVsb6zV9RT5hyZiM+qHX55N+xLMS7CvfDIp3dk=
+	t=1705968747; cv=none; b=ch3kruvgSPXm6Fc6KtTfnRozfSIdYa1jRqSqG9e71VE2XO6nWi7xYHxSbJ71DoE11iGAIKYHe2XkHaGF0dI3ZyX+oJmdYU+2chiHuQ/TTH4Jawoy1xCROkhs6sCZUjnQfaNiC1V1ZCjIZQXIlcVKWIav8qzyROkEIbZXzDO/b3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968129; c=relaxed/simple;
-	bh=0i0P8BXc1L3jwCpxgv6GfbRKSswJ11UGBLMlSGd4AVk=;
+	s=arc-20240116; t=1705968747; c=relaxed/simple;
+	bh=vzEDZx95EHBgh1Q0CPzRzpDtOU/23hDm6I+ufPcINMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K/KXPtfMGseXvkKy3L0ZU1DjT7CrvfskzTWBFa9fO98+ah4wfyDmhTrI+48u74NY4VUgq/9v3IYT2zlIeR+1LZFhhis6CcwcO034LKuZCTQ6kex4WVVd1wXq4LaI3K6CRoSMo/5qUiJtK6dk9qVm3leDMCnFHlXKoDiWOE5sy3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpYgLeeY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD301C433C7;
-	Tue, 23 Jan 2024 00:02:08 +0000 (UTC)
+	 MIME-Version; b=EHf49dSkKWLglKIuPE3fwWNtHFGM9PJ5FSB+V8L62+IIoSG1m01/3OWISWQh2/r1D5AGVu/XXyjFJQRdyr9P/pG9mdz8+n0wdJy1gPFxM4nkmEXzBPeP2kW/+A6RkdbTN6/KHlVPjUgER8oCfxA7aQ3hMFH1Hmj50n68zFnxGOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zv+uiDI0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 051DBC433F1;
+	Tue, 23 Jan 2024 00:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968129;
-	bh=0i0P8BXc1L3jwCpxgv6GfbRKSswJ11UGBLMlSGd4AVk=;
+	s=korg; t=1705968747;
+	bh=vzEDZx95EHBgh1Q0CPzRzpDtOU/23hDm6I+ufPcINMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RpYgLeeYdxOaVmr4GwnAtnI449+VsXi+UOTEVV0auBEuj1EEgfZeBMNDw9hmkOaFP
-	 cj+oojvhSlhOyVdyOV7t2pzWUo6GGI2PV6hXRWLM/uKde48DioalpZNNNjdbsD2R4m
-	 rdwRwGaOu/J+vx0QW/Wvz5IDWXhQl0LycSRhG4l0=
+	b=Zv+uiDI0Fnu9XwS/DKX48q/pk/eCySn8bHoh8cgo9DDoIZNkIkwp1DiRR3qyPSk7T
+	 04bfGft0YuCFPAGp7/YgbBinwts9h6MHROJTr9UenGiXDuUsH5/xtiGVmoVLvxDnq/
+	 KMEgd9CIfdYY5Hr9mwwozXpJeYQaX2IRfAJNmQrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamil Duljas <kamil.duljas@gmail.com>,
-	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Luca Weiss <luca@z3ntu.xyz>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 002/148] ASoC: Intel: Skylake: mem leak in skl register function
+Subject: [PATCH 5.4 028/194] Input: xpad - add Razer Wolverine V2 support
 Date: Mon, 22 Jan 2024 15:55:58 -0800
-Message-ID: <20240122235712.539495426@linuxfoundation.org>
+Message-ID: <20240122235720.423161417@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamil Duljas <kamil.duljas@gmail.com>
+From: Luca Weiss <luca@z3ntu.xyz>
 
-[ Upstream commit f8ba14b780273fd290ddf7ee0d7d7decb44cc365 ]
+[ Upstream commit c3d1610345b79cbe29ef6ca04a4780eff0d360c7 ]
 
-skl_platform_register() uses krealloc. When krealloc is fail,
-then previous memory is not freed. The leak is also when soc
-component registration failed.
+Add the VID and PID of Razer Wolverine V2 to xpad_device.
 
-Signed-off-by: Kamil Duljas <kamil.duljas@gmail.com>
-Reviewed-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
-Link: https://lore.kernel.org/r/20231116224112.2209-2-kamil.duljas@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Link: https://lore.kernel.org/r/20231125-razer-wolverine-v2-v1-1-979fe9f9288e@z3ntu.xyz
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/skylake/skl-pcm.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/input/joystick/xpad.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/intel/skylake/skl-pcm.c b/sound/soc/intel/skylake/skl-pcm.c
-index 6b2c8c6e7a00..5195e012dc6d 100644
---- a/sound/soc/intel/skylake/skl-pcm.c
-+++ b/sound/soc/intel/skylake/skl-pcm.c
-@@ -1450,6 +1450,7 @@ int skl_platform_register(struct device *dev)
- 		dais = krealloc(skl->dais, sizeof(skl_fe_dai) +
- 				sizeof(skl_platform_dai), GFP_KERNEL);
- 		if (!dais) {
-+			kfree(skl->dais);
- 			ret = -ENOMEM;
- 			goto err;
- 		}
-@@ -1462,8 +1463,10 @@ int skl_platform_register(struct device *dev)
- 
- 	ret = devm_snd_soc_register_component(dev, &skl_component,
- 					 skl->dais, num_dais);
--	if (ret)
-+	if (ret) {
-+		kfree(skl->dais);
- 		dev_err(dev, "soc component registration failed %d\n", ret);
-+	}
- err:
- 	return ret;
- }
+diff --git a/drivers/input/joystick/xpad.c b/drivers/input/joystick/xpad.c
+index beedad0fe09a..239471cf7e4c 100644
+--- a/drivers/input/joystick/xpad.c
++++ b/drivers/input/joystick/xpad.c
+@@ -266,6 +266,7 @@ static const struct xpad_device {
+ 	{ 0x146b, 0x0604, "Bigben Interactive DAIJA Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
+ 	{ 0x1532, 0x0a00, "Razer Atrox Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOXONE },
+ 	{ 0x1532, 0x0a03, "Razer Wildcat", 0, XTYPE_XBOXONE },
++	{ 0x1532, 0x0a29, "Razer Wolverine V2", 0, XTYPE_XBOXONE },
+ 	{ 0x15e4, 0x3f00, "Power A Mini Pro Elite", 0, XTYPE_XBOX360 },
+ 	{ 0x15e4, 0x3f0a, "Xbox Airflo wired controller", 0, XTYPE_XBOX360 },
+ 	{ 0x15e4, 0x3f10, "Batarang Xbox 360 controller", 0, XTYPE_XBOX360 },
 -- 
 2.43.0
 
