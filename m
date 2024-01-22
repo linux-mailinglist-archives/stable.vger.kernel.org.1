@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9151E8380F5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2169C837E1D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A95428D9C3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6D5E1F29A6A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2160D13DB9C;
-	Tue, 23 Jan 2024 01:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9E65101A;
+	Tue, 23 Jan 2024 00:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/p38qcn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ELF7YSp1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D594013DB90;
-	Tue, 23 Jan 2024 01:06:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6853150A75;
+	Tue, 23 Jan 2024 00:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971975; cv=none; b=TLiZ4IIoogCxPLcfcbetMZEyJx8ksWr2/eCLjz9UKRbOZbWHGwIy0/S5shvlUDO7Vz5AB/AwYOG50FDgtyEnupHteNi2YfFEqQ+2qe3J7XrVpyLyWIKmfxjIW5jz/YemVfYHnKgL5YX2gCbguWhzNARMsS4GhfOM/p+OEL41lAI=
+	t=1705970389; cv=none; b=ljMH1lvXl2p0xChEiv5VWcjCdaqBzULsrJJGmRt0rnzHeMVa0MOUo9vfVMbb4h6Ev+2ndSZG0ccZjKOiMZn9WxETyjOk8j69lIQsLp+UMqqqjVTFmfQNDGUnHxmlGNlAy5JhWiOd7td6NVp8UvNBQm/4ci6C2nbjaOOIzaOEvCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971975; c=relaxed/simple;
-	bh=0m8aTbyLaPQ1BgOS4I2QFAwA0umQvCK0XdzswC59DXM=;
+	s=arc-20240116; t=1705970389; c=relaxed/simple;
+	bh=qt06AEzndtFWNw/11YLickqloyK+Z7K4H33TyO2uU98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pk0d+soiuXYWkhNeBog1tNrVycPE4vdg0dbv7o3mKM6Iv3nyn5hcsGoE3Eaybe4iJ+mJdFphXQk9cSKgT87GRZ5L6fgbGj/g+l5NRzhdnmSSMyjus4m+mLROp1J2BNLC/Z0dAF8kMOQC2bwdEi0Z5pSRPL1K34MjTPzmZ2NZ//8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/p38qcn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E667C433C7;
-	Tue, 23 Jan 2024 01:06:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qYeO+B5nMq99+/VPE7zYj9eqD5ykft7X0A3afd8RLb0IgyZf7t4amyjt5k6R7Vs2xp2lHpp9fz/ddJ9wTpBxeWxMIKlWktzk4ei21uKatJqFnmnB9Ke1vUW5WZLI0XfX2Qm3VDX8GRRu+H7IByS7X15DcpvRFp7nribwAOM8muU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ELF7YSp1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C005BC433F1;
+	Tue, 23 Jan 2024 00:39:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971975;
-	bh=0m8aTbyLaPQ1BgOS4I2QFAwA0umQvCK0XdzswC59DXM=;
+	s=korg; t=1705970389;
+	bh=qt06AEzndtFWNw/11YLickqloyK+Z7K4H33TyO2uU98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M/p38qcnJfEqLuNn5Plmz5F6bifUnUkxYet+vWyYioCgqJZkJ9abGdAWvTRPdutvu
-	 fkXaqykBXNInQkkFmBDCO32Wk2waOt9JnKmBQIi/n2v6wRV1X2TQKFQV/lYpHwyn3v
-	 suTMEwZUa4uLHgFqCYfGoPZTf+OBWQKCEKrHsA3w=
+	b=ELF7YSp18SPIXigfdNWnk2dPY8ZdkILFKNL+uvdsG3I5DkShrVM5d/n/i0Mi35PiA
+	 4zIxnf+tSbqIsUp2lyGloHwdVNKdSgT2Z0csWvBNozPQ3EyKpDn5fKjIxN6poJz4VY
+	 fRDbTdEBbp5MzhSqYoH06iuOIxHENVxv1c1VT1Jw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	John Johansen <john.johansen@canonical.com>,
+	=?UTF-8?q?Ludvig=20P=C3=A4rsson?= <ludvig.parsson@axis.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 368/417] apparmor: avoid crash when parsed profile name is empty
+Subject: [PATCH 6.7 632/641] ethtool: netlink: Add missing ethnl_ops_begin/complete
 Date: Mon, 22 Jan 2024 15:58:56 -0800
-Message-ID: <20240122235804.564653454@linuxfoundation.org>
+Message-ID: <20240122235838.051842301@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +60,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Ludvig Pärsson <ludvig.parsson@axis.com>
 
-[ Upstream commit 55a8210c9e7d21ff2644809699765796d4bfb200 ]
+[ Upstream commit f1172f3ee3a98754d95b968968920a7d03fdebcc ]
 
-When processing a packed profile in unpack_profile() described like
+Accessing an ethernet device that is powered off or clock gated might
+cause the CPU to hang. Add ethnl_ops_begin/complete in
+ethnl_set_features() to protect against this.
 
- "profile :ns::samba-dcerpcd /usr/lib*/samba/{,samba/}samba-dcerpcd {...}"
-
-a string ":samba-dcerpcd" is unpacked as a fully-qualified name and then
-passed to aa_splitn_fqname().
-
-aa_splitn_fqname() treats ":samba-dcerpcd" as only containing a namespace.
-Thus it returns NULL for tmpname, meanwhile tmpns is non-NULL. Later
-aa_alloc_profile() crashes as the new profile name is NULL now.
-
-general protection fault, probably for non-canonical address 0xdffffc0000000000: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000000-0x0000000000000007]
-CPU: 6 PID: 1657 Comm: apparmor_parser Not tainted 6.7.0-rc2-dirty #16
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-RIP: 0010:strlen+0x1e/0xa0
-Call Trace:
- <TASK>
- ? strlen+0x1e/0xa0
- aa_policy_init+0x1bb/0x230
- aa_alloc_profile+0xb1/0x480
- unpack_profile+0x3bc/0x4960
- aa_unpack+0x309/0x15e0
- aa_replace_profiles+0x213/0x33c0
- policy_update+0x261/0x370
- profile_replace+0x20e/0x2a0
- vfs_write+0x2af/0xe00
- ksys_write+0x126/0x250
- do_syscall_64+0x46/0xf0
- entry_SYSCALL_64_after_hwframe+0x6e/0x76
- </TASK>
----[ end trace 0000000000000000 ]---
-RIP: 0010:strlen+0x1e/0xa0
-
-It seems such behaviour of aa_splitn_fqname() is expected and checked in
-other places where it is called (e.g. aa_remove_profiles). Well, there
-is an explicit comment "a ns name without a following profile is allowed"
-inside.
-
-AFAICS, nothing can prevent unpacked "name" to be in form like
-":samba-dcerpcd" - it is passed from userspace.
-
-Deny the whole profile set replacement in such case and inform user with
-EPROTO and an explaining message.
-
-Found by Linux Verification Center (linuxtesting.org).
-
-Fixes: 04dc715e24d0 ("apparmor: audit policy ns specified in policy load")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: John Johansen <john.johansen@canonical.com>
+Fixes: 0980bfcd6954 ("ethtool: set netdev features with FEATURES_SET request")
+Signed-off-by: Ludvig Pärsson <ludvig.parsson@axis.com>
+Link: https://lore.kernel.org/r/20240117-etht2-v2-1-1a96b6e8c650@axis.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/policy_unpack.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/ethtool/features.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/security/apparmor/policy_unpack.c b/security/apparmor/policy_unpack.c
-index 7012fd82f1bb..633e778ec369 100644
---- a/security/apparmor/policy_unpack.c
-+++ b/security/apparmor/policy_unpack.c
-@@ -674,6 +674,10 @@ static struct aa_profile *unpack_profile(struct aa_ext *e, char **ns_name)
+diff --git a/net/ethtool/features.c b/net/ethtool/features.c
+index a79af8c25a07..b6cb101d7f19 100644
+--- a/net/ethtool/features.c
++++ b/net/ethtool/features.c
+@@ -234,17 +234,20 @@ int ethnl_set_features(struct sk_buff *skb, struct genl_info *info)
+ 	dev = req_info.dev;
  
- 	tmpname = aa_splitn_fqname(name, strlen(name), &tmpns, &ns_len);
- 	if (tmpns) {
-+		if (!tmpname) {
-+			info = "empty profile name";
-+			goto fail;
-+		}
- 		*ns_name = kstrndup(tmpns, ns_len, GFP_KERNEL);
- 		if (!*ns_name) {
- 			info = "out of memory";
+ 	rtnl_lock();
++	ret = ethnl_ops_begin(dev);
++	if (ret < 0)
++		goto out_rtnl;
+ 	ethnl_features_to_bitmap(old_active, dev->features);
+ 	ethnl_features_to_bitmap(old_wanted, dev->wanted_features);
+ 	ret = ethnl_parse_bitset(req_wanted, req_mask, NETDEV_FEATURE_COUNT,
+ 				 tb[ETHTOOL_A_FEATURES_WANTED],
+ 				 netdev_features_strings, info->extack);
+ 	if (ret < 0)
+-		goto out_rtnl;
++		goto out_ops;
+ 	if (ethnl_bitmap_to_features(req_mask) & ~NETIF_F_ETHTOOL_BITS) {
+ 		GENL_SET_ERR_MSG(info, "attempt to change non-ethtool features");
+ 		ret = -EINVAL;
+-		goto out_rtnl;
++		goto out_ops;
+ 	}
+ 
+ 	/* set req_wanted bits not in req_mask from old_wanted */
+@@ -281,6 +284,8 @@ int ethnl_set_features(struct sk_buff *skb, struct genl_info *info)
+ 	if (mod)
+ 		netdev_features_change(dev);
+ 
++out_ops:
++	ethnl_ops_complete(dev);
+ out_rtnl:
+ 	rtnl_unlock();
+ 	ethnl_parse_header_dev_put(&req_info);
 -- 
 2.43.0
 
