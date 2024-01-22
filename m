@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3DD837E43
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83774838310
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAFC01F22554
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:37:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D2FC28A875
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8EB05D74C;
-	Tue, 23 Jan 2024 00:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4101604C6;
+	Tue, 23 Jan 2024 01:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NI6yjK8n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+wNX5pI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969E45BADC;
-	Tue, 23 Jan 2024 00:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742C150267;
+	Tue, 23 Jan 2024 01:51:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970481; cv=none; b=aIvCMlOQUqpAM9ZxK3z8Mb6Jm4BVhRWVSua1Vfp+gQtJFlcibukBMXzGSdTdkKoWCja22k2afip7Ff6zZugdSr6P5u+qpj8aGOJnkEYkdLxO5EaKMhlTCcEwyuqVtYp935udjoqskEdEV9HfeoWWDD5MfJgwOkQEWqeFyxYMp0M=
+	t=1705974695; cv=none; b=LbP0oCFZQ9B+omyBEK8fv52uJBlJSrBmccbO6WPBGwnucGuOKZ+vbtfuhD7F1W7Lyj2Jvizkdaa5ENH11+pNmr12bqH7XcbNi8FWt6jq246fqADRuo0jVILae3cD55TwNK6HWpIx8jHqw+vtODYJnQoOhp7rcTR/XeQ+Q3Kg7qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970481; c=relaxed/simple;
-	bh=j15tt0mqxuUYt3rmnsktuc3h5c2s4ZsATRzk1DH0Yuw=;
+	s=arc-20240116; t=1705974695; c=relaxed/simple;
+	bh=XG9Ss97eAV/IvhZacd40AoQRv1W9vDN8bQkDoKVP0fc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nv7fLw1gR69QNJOrbSOiTNE86/ankrUga+Pq7rrPLhbCWPvhAIrlnCuPTKeNl210WfGF6c0ZJQzETNb5Kr18A84hFwExbEqZvegGMSh9JLk3sqaO8PiNaScWv2ANIvqCHEpOMPBmag3FPBIJwRvdelNvIQB6KQJ/f9yge0e6qD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NI6yjK8n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6484C433C7;
-	Tue, 23 Jan 2024 00:41:20 +0000 (UTC)
+	 MIME-Version; b=uye2axUMkxj/4pPaEmHqtJGijD99xxZmMJLbnDrrI8JkTIwtR0RGUbmUEPSXtBHXFMbapV28IGyFWK0e9EsxvRHm2mlCZkNvxmqEbYWOHj5bmATr1jbdp2ZGk1JiedDzBtfrDdsDBnX+7XHalulB8l8XhyepcUqEVZ8oEAH3qh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+wNX5pI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AEBAC433F1;
+	Tue, 23 Jan 2024 01:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970481;
-	bh=j15tt0mqxuUYt3rmnsktuc3h5c2s4ZsATRzk1DH0Yuw=;
+	s=korg; t=1705974695;
+	bh=XG9Ss97eAV/IvhZacd40AoQRv1W9vDN8bQkDoKVP0fc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NI6yjK8n5+NT00o4rP7j/rCxRLMKJ6zb/deZ+fVy1hf1Y6TB9wtfCVtBZVZHIzQE1
-	 dHj5p05fRm3STE/uevj0ZC2Huvy6rvAghf3J0sxvhD9r2QaK3jY46ccu1CrecOzXXp
-	 JSybbdSxlnFb8TJi9/feKv9SJ9b4FKADgqrKzxqM=
+	b=Y+wNX5pImqB79AQmRSJRyMuaOiGiTs8bDRmvpo6sBrQvvSKYnjbZRtSImAl2+vama
+	 UKjMgRurnxkO6UDMnrAUL7Jx6WO4E2X4Qrgx9K3MyL4rBiBIqaE5XilLEgMWzl0lP6
+	 2dFxcp7AX//CW4rMSu3KQzRKqgyjUkCBmfzT9Ml4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 009/417] powerpc/powernv: Add a null pointer check to scom_debug_init_one()
-Date: Mon, 22 Jan 2024 15:52:57 -0800
-Message-ID: <20240122235751.823552010@linuxfoundation.org>
+Subject: [PATCH 6.6 127/583] arm64: dts: qcom: sdm845-db845c: correct LED panic indicator
+Date: Mon, 22 Jan 2024 15:52:58 -0800
+Message-ID: <20240122235816.022707353@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 9a260f2dd827bbc82cc60eb4f4d8c22707d80742 ]
+[ Upstream commit 0c90c75e663246203a2b7f6dd9e08a110f4c3c43 ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
-Add a null pointer check, and release 'ent' to avoid memory leaks.
+There is no "panic-indicator" default trigger but a property with that
+name:
 
-Fixes: bfd2f0d49aef ("powerpc/powernv: Get rid of old scom_controller abstraction")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231208085937.107210-1-chentao@kylinos.cn
+  sdm845-db845c.dtb: leds: led-0: Unevaluated properties are not allowed ('linux,default-trigger' was unexpected)
+
+Fixes: 3f72e2d3e682 ("arm64: dts: qcom: Add Dragonboard 845c")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231111095617.16496-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/powernv/opal-xscom.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm64/boot/dts/qcom/sdm845-db845c.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/powernv/opal-xscom.c b/arch/powerpc/platforms/powernv/opal-xscom.c
-index 6b4eed2ef4fa..f67235d1ba2c 100644
---- a/arch/powerpc/platforms/powernv/opal-xscom.c
-+++ b/arch/powerpc/platforms/powernv/opal-xscom.c
-@@ -165,6 +165,11 @@ static int scom_debug_init_one(struct dentry *root, struct device_node *dn,
- 	ent->chip = chip;
- 	snprintf(ent->name, 16, "%08x", chip);
- 	ent->path.data = (void *)kasprintf(GFP_KERNEL, "%pOF", dn);
-+	if (!ent->path.data) {
-+		kfree(ent);
-+		return -ENOMEM;
-+	}
-+
- 	ent->path.size = strlen((char *)ent->path.data);
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
+index c7eba6c491be..7e7bf3fb3be6 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
++++ b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
+@@ -67,8 +67,8 @@ led-0 {
+ 			function = LED_FUNCTION_INDICATOR;
+ 			color = <LED_COLOR_ID_GREEN>;
+ 			gpios = <&pm8998_gpios 13 GPIO_ACTIVE_HIGH>;
+-			linux,default-trigger = "panic-indicator";
+ 			default-state = "off";
++			panic-indicator;
+ 		};
  
- 	dir = debugfs_create_dir(ent->name, root);
+ 		led-1 {
 -- 
 2.43.0
 
