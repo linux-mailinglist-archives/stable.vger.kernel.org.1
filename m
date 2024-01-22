@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-14867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 448D2838326
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B076837C08
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D6F5B2BA8B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B576A1F2AE94
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A35A60265;
-	Tue, 23 Jan 2024 01:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF91FED0;
+	Tue, 23 Jan 2024 00:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejkY2G4N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HuLcKLoW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386C82AD38;
-	Tue, 23 Jan 2024 01:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C95E185B;
+	Tue, 23 Jan 2024 00:24:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974668; cv=none; b=cGAtia4dkqFWOs99z/uuvKVdn5KnpIBWhNrzbKy8/rYxnyvGW6qJCc1mWIudzus6gUNV3zwTB9ZjCenhCmi46NA07+fEDgREIdPHlw5JVOyMnI+QtDF+3FTc1PMWnEJNO/9aiedDP8gHIk8g0FUVy3etsRCb8g0cc6Wf1ufrQO0=
+	t=1705969477; cv=none; b=EdhddFzraLBEYYwD4/w7iDp2qBJvUAtr9Z7K4uerC+RdTSAZILhOWWmoTTAJA3HOorKOIYX8jybKZt0v+CcGZZKkdrUFbXSICKsH8uMiTbvAGQ2hTQlfWSEUmSnUBHFyegh/cu/NbTZxr3gnx0UjkjaEXWPXWah2mnS8vQHOtfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974668; c=relaxed/simple;
-	bh=okVFb234r66UrNod3dBeFsg1SOJ4k/w9tNI7KE2mpA0=;
+	s=arc-20240116; t=1705969477; c=relaxed/simple;
+	bh=M+PHo5stwb56/miUnGhkC0WoXmzP8SW7RbsGvjRAufA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PthNAnaF/AAc7VyLHaUEmbFbUKzAwh4/7+oODLSh1Fn8iYQMXvxdIx/gw7yMVsxbmpTkEEObF2JXhcPclnljey4vWZ1vWhaWUnJQhX6Wl+D2vFQXu0A8DHkEDFjxr79a6DUNPfssjdSwdqr3bGAR0IGkqqjOnVqrs6NA7OMlPrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejkY2G4N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F08E0C43390;
-	Tue, 23 Jan 2024 01:51:07 +0000 (UTC)
+	 MIME-Version; b=g8cZCmTcti2/OR7YvT6TL9pGMLEWF8ScfCYWiILFz6nwtXIubeW3W/nl8/a0ybMrrorRD9UirVU3pNIrbYMZOL7rlhvARsh0iZwqFS+RdYA029fhuWUsOfTb9WmXVRJe1sqR+lxRtPI4OHOHVmu1T79Gs7FHRsq+O8OqQiz8oEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HuLcKLoW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47BF2C433F1;
+	Tue, 23 Jan 2024 00:24:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974668;
-	bh=okVFb234r66UrNod3dBeFsg1SOJ4k/w9tNI7KE2mpA0=;
+	s=korg; t=1705969477;
+	bh=M+PHo5stwb56/miUnGhkC0WoXmzP8SW7RbsGvjRAufA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ejkY2G4NQ+oU0dRjPdw6kW6bSa6E09S46dPFMd1nBsSx+Rg3owuijE3VDvNQc60Th
-	 sHM8BRbhpvVw2GR6EDfPl+bQuZ5flhzHJgYz4qPj2NXj5ip2twIk57q3aTdw6Y3VbK
-	 xsq/nH8PwrMCo1Bp5QUK11YxCvuOt3ptnBRB60Hw=
+	b=HuLcKLoWjZaimToq/IlOTxYpX/kTFq1AGnusx27dYq4GDokhPhsgA2MDq2cIIiqze
+	 t3WtBQxkGP6V9cFDMbJ/TUqgmeknd/mrx4HWCQP76N/reiA/WbYmFi6Pb93zpnZGcL
+	 D/4BYnlt9v5fPGMYmWUFBUv8P5/mdTUBzStfnGxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 115/583] arm64: dts: qcom: sm8250: Make watchdog bark interrupt edge triggered
-Date: Mon, 22 Jan 2024 15:52:46 -0800
-Message-ID: <20240122235815.675187176@linuxfoundation.org>
+Subject: [PATCH 6.7 263/641] f2fs: fix to avoid dirent corruption
+Date: Mon, 22 Jan 2024 15:52:47 -0800
+Message-ID: <20240122235826.162045667@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 735d80e2e8e5d073ae8b1fff8b1589ea284aa5af ]
+[ Upstream commit 53edb549565f55ccd0bdf43be3d66ce4c2d48b28 ]
 
-As described in the patch ("arm64: dts: qcom: sc7180: Make watchdog
-bark interrupt edge triggered"), the Qualcomm watchdog timer's bark
-interrupt should be configured as edge triggered. Make the change.
+As Al reported in link[1]:
 
-Fixes: 46a4359f9156 ("arm64: dts: qcom: sm8250: Add watchdog bark interrupt")
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://lore.kernel.org/r/20231106144335.v2.5.I2910e7c10493d896841e9785c1817df9b9a58701@changeid
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+f2fs_rename()
+...
+	if (old_dir != new_dir && !whiteout)
+		f2fs_set_link(old_inode, old_dir_entry,
+					old_dir_page, new_dir);
+	else
+		f2fs_put_page(old_dir_page, 0);
+
+You want correct inumber in the ".." link.  And cross-directory
+rename does move the source to new parent, even if you'd been asked
+to leave a whiteout in the old place.
+
+[1] https://lore.kernel.org/all/20231017055040.GN800259@ZenIV/
+
+With below testcase, it may cause dirent corruption, due to it missed
+to call f2fs_set_link() to update ".." link to new directory.
+- mkdir -p dir/foo
+- renameat2 -w dir/foo bar
+
+[ASSERT] (__chk_dots_dentries:1421)  --> Bad inode number[0x4] for '..', parent parent ino is [0x3]
+[FSCK] other corrupted bugs                           [Fail]
+
+Fixes: 7e01e7ad746b ("f2fs: support RENAME_WHITEOUT")
+Cc: Jan Kara <jack@suse.cz>
+Reported-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8250.dtsi | 2 +-
+ fs/f2fs/namei.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-index a4e58ad731c3..1a98481d0c7f 100644
---- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
-@@ -5664,7 +5664,7 @@ watchdog@17c10000 {
- 			compatible = "qcom,apss-wdt-sm8250", "qcom,kpss-wdt";
- 			reg = <0 0x17c10000 0 0x1000>;
- 			clocks = <&sleep_clk>;
--			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupts = <GIC_SPI 0 IRQ_TYPE_EDGE_RISING>;
- 		};
+diff --git a/fs/f2fs/namei.c b/fs/f2fs/namei.c
+index d0053b0284d8..7f71bae2c83b 100644
+--- a/fs/f2fs/namei.c
++++ b/fs/f2fs/namei.c
+@@ -1106,7 +1106,7 @@ static int f2fs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 	}
  
- 		timer@17c20000 {
+ 	if (old_dir_entry) {
+-		if (old_dir != new_dir && !whiteout)
++		if (old_dir != new_dir)
+ 			f2fs_set_link(old_inode, old_dir_entry,
+ 						old_dir_page, new_dir);
+ 		else
 -- 
 2.43.0
 
