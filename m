@@ -1,140 +1,129 @@
-Return-Path: <stable+bounces-12389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A13483676A
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 16:14:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB74F836857
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 16:33:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4A91B2AA9C
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 15:08:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A7F21C22311
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 15:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7CD53E46D;
-	Mon, 22 Jan 2024 14:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A9D47F74;
+	Mon, 22 Jan 2024 15:04:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hj/Bptzw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZM5kM0s4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E664C3A6;
-	Mon, 22 Jan 2024 14:57:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 149AD47764;
+	Mon, 22 Jan 2024 15:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705935440; cv=none; b=gJq6AnnZUlxDOtrH9EzbPBzPg2PbvtYIV/qfH4CRTZJKyT1TzybV++hx2ZqAQeXYEfZwTvJRLGSOlC5GDojwD9bt4b8RNvl7B90bv0J+cE1b5I1ZvRxqx929hjRYxzo14KPuNfjvmLbLr1nX+j7hOVv/h5DeC2De8wwJVc4O/2k=
+	t=1705935875; cv=none; b=O3emkjJgJqCJn5aquGqLn+34OEmHx0lbe74cITCKYXAd0zoohdN3Gekj3cMrRElrZBNMTSNQl5M2Yw43Uezf4TQnOxR7KxOqekCqC8Xh6Rsko08gjjI9r8UKg4F/tdCKKXY2s1yx81ztgTC3/aY4QvGQlJs9WHMOlX2+AsGfNsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705935440; c=relaxed/simple;
-	bh=BgvNZY/QfTSwVEzDHP++RDFUZNQcr14FA9g3T5+LBvQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u+S1sgtvcQekDFNoFjJQz7TOMHBlZmrLcYN6afRny5r8rxjtKcSmXsKIFpKq+o8vOHjrQf0rL2u4TZpZRanslCQtU1vWQgpM59LFyMY4ChYmBldPwQrqaBHkFWiqZxKGafw0W6Kwx9RV4Ns3dNWnkf1uelrKYqV5yP/0o6q4riI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hj/Bptzw; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-5c65ca2e1eeso1403942a12.2;
-        Mon, 22 Jan 2024 06:57:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1705935439; x=1706540239; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kUlc9dFtmFNVMMileb59mVC2b8uuORrgFOa/X7tkua0=;
-        b=hj/BptzwW/KQ/71/3u3J5xnfkVnNR0vR/Tjgz5zyBm5+BksFTeAc8nz9sGpH9mGXBF
-         mXLEZaQ/T0PFBx1t+JnhyGLk8DVNNprrdjPfDn6fqkhhR6Do4mpFrjMGYdNX6WFx4mFz
-         LR0RxKpUPpisjYQU9u3Gam9x114b0Ozy+XCIG9fCZ6n7050huyZdODilf0l11Nu8uNio
-         TsrGbIrv1jQ6jfTgJ19nDGvPLCEAzLecbMFeZzw6v45qqcbmCVDkmU2oQDmEhJYzOUao
-         uTngJ/I/OoLwmM+HscLv+PRdgVMwbzRbOPYa9iJLtNIXwfJ8YG8yYPt0B1a+6Ov9p+Er
-         Yy0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705935439; x=1706540239;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kUlc9dFtmFNVMMileb59mVC2b8uuORrgFOa/X7tkua0=;
-        b=DYXRnUEfvYeF1z8UGgT3pbToyPSY76H6WKf2HvQwSfPWSMxDX2XeqW2cuetNivu273
-         YOsWMMXh61P/Bc5bbUaEtU2Lu/lImJDqMo9Wl2maYx2LRPjwrfkYqpS+ctDrkPj/qOiy
-         Ja28OvL2y0FF7o4mDcD2QkDFDQleb2ykwaDleNt8nnSkiZjpNb8HoBz+qUaTzPTGkusn
-         om8g8PGd/jkDgqeQXO47x1SFKEldE7MhdbMx34yXs1GElqEla3JPKpUPUZWtKL+LZDNJ
-         CZ1KDjzG0RTF6ZopRu4O8yFF88Aymjgp2oIbt0rt5ijt1MrBGxhWHsVN9loGTFdnG2dc
-         rh3A==
-X-Gm-Message-State: AOJu0Yxa0EQAOcHJZieQHaxl+VxImy5tNqb8M/EalzyJB3uNWq6pZe5R
-	08VAdzSBqkouoIdaKvga/JyLKhLvbFhAPsxISLoDHb4qVnOUNsY2kAPdTBfs278KTY5lpEMY2gU
-	WOu3er/vv5ADTCnZa+7oacRPifcyLC6sqL18=
-X-Google-Smtp-Source: AGHT+IEYlSZ6qlXw1uFfqh8Gk1pP+G/35ntlZveWkUpzEBpJ5/GxWOpj2lv8H3YRYiZwdDTFTI7rPQAd7CvBLwEyQG8=
-X-Received: by 2002:a17:90b:3786:b0:290:666f:7be2 with SMTP id
- mz6-20020a17090b378600b00290666f7be2mr1006216pjb.82.1705935438597; Mon, 22
- Jan 2024 06:57:18 -0800 (PST)
+	s=arc-20240116; t=1705935875; c=relaxed/simple;
+	bh=TUoRPDeyxb9QXB0MVg5ZmATCPGDnkl1LaY1FN21NJ6M=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nMQgAfzeVC3VP0f19FMA/Qm5P5WzHoU/acbO/xkBEJP1NPrJNJs+EZO2I7VfkZamGBFxU5whx9IOPRchi9PbllISSXfRt06XML5zNdV2eJMCSyPYzsw5v4BEr3LHEuxslqNUSn5wYA+wPsrFNoaSe3VSIwHJi++bdgWVFokdBr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZM5kM0s4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E9ECC43394;
+	Mon, 22 Jan 2024 15:04:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705935874;
+	bh=TUoRPDeyxb9QXB0MVg5ZmATCPGDnkl1LaY1FN21NJ6M=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ZM5kM0s4MlHA/7v3cXSYTodLfgy0F7kaBf0cXP1jkKZxBmv1ueKLP3+/LuozAnStg
+	 aibLVy5UnvA74Q6EtlW/s6eNLckgL66KszNopBVOCTecvzjoxHHrxwmbjaTD87Tdg+
+	 jVRp1rkrK+0rM5ibhzI2k8Tw+nOwVwc4NU6vpRDIyI3/S7YAlb9FCNrIiHPEnBJPOD
+	 Baz4+bYlFQEtqACgihGUFfJfeaei2Qe+BseGNfaOu0JdD1C4uNrtw5UhtiBGvcnT5n
+	 3c6uUkoZ98bDaoK5b9KIEU4tUFP9HkzgBB0p3OOERUu2gkRrk+6WuOJc1OLS7WPOa1
+	 HXzg9JMY88wWg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-f2fs-devel@lists.sourceforge.net
+Subject: [PATCH AUTOSEL 6.6 01/73] f2fs: fix to check return value of f2fs_reserve_new_block()
+Date: Mon, 22 Jan 2024 10:01:15 -0500
+Message-ID: <20240122150432.992458-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240119113319.54158-1-mario.limonciello@amd.com>
-In-Reply-To: <20240119113319.54158-1-mario.limonciello@amd.com>
-From: Wyes Karny <wkarny@gmail.com>
-Date: Mon, 22 Jan 2024 20:27:07 +0530
-Message-ID: <CAAE01kHEperoassBmLwM3pWhJmWpjRS2fcE8VPkLAgvz7yAuQA@mail.gmail.com>
-Subject: Re: [PATCH] cpufreq/amd-pstate: Fix setting scaling max/min freq values
-To: Mario Limonciello <mario.limonciello@amd.com>
-Cc: ray.huang@amd.com, rafael@kernel.org, viresh.kumar@linaro.org, 
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.13
+Content-Transfer-Encoding: 8bit
 
-On Sat, Jan 20, 2024 at 5:49=E2=80=AFAM Mario Limonciello
-<mario.limonciello@amd.com> wrote:
->
-> Scaling min/max freq values were being cached and lagging a setting
-> each time.  Fix the ordering of the clamp call to ensure they work.
->
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217931
-> Cc: stable@vger.kernel.org
-> Cc: wkarny@gmail.com
-> Fixes: febab20caeba ("cpufreq/amd-pstate: Fix scaling_min_freq and scalin=
-g_max_freq update")
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+From: Chao Yu <chao@kernel.org>
 
-Reviewed-by: Wyes Karny <wkarny@gmail.com>
+[ Upstream commit 956fa1ddc132e028f3b7d4cf17e6bfc8cb36c7fd ]
 
-> ---
->  drivers/cpufreq/amd-pstate.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
->
-> diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
-> index 1f6186475715..1791d37fbc53 100644
-> --- a/drivers/cpufreq/amd-pstate.c
-> +++ b/drivers/cpufreq/amd-pstate.c
-> @@ -1232,14 +1232,13 @@ static void amd_pstate_epp_update_limit(struct cp=
-ufreq_policy *policy)
->         max_limit_perf =3D div_u64(policy->max * cpudata->highest_perf, c=
-pudata->max_freq);
->         min_limit_perf =3D div_u64(policy->min * cpudata->highest_perf, c=
-pudata->max_freq);
->
-> +       WRITE_ONCE(cpudata->max_limit_perf, max_limit_perf);
-> +       WRITE_ONCE(cpudata->min_limit_perf, min_limit_perf);
-> +
->         max_perf =3D clamp_t(unsigned long, max_perf, cpudata->min_limit_=
-perf,
->                         cpudata->max_limit_perf);
->         min_perf =3D clamp_t(unsigned long, min_perf, cpudata->min_limit_=
-perf,
->                         cpudata->max_limit_perf);
-> -
-> -       WRITE_ONCE(cpudata->max_limit_perf, max_limit_perf);
-> -       WRITE_ONCE(cpudata->min_limit_perf, min_limit_perf);
-> -
->         value =3D READ_ONCE(cpudata->cppc_req_cached);
->
->         if (cpudata->policy =3D=3D CPUFREQ_POLICY_PERFORMANCE)
-> --
-> 2.34.1
->
+Let's check return value of f2fs_reserve_new_block() in do_recover_data()
+rather than letting it fails silently.
 
+Also refactoring check condition on return value of f2fs_reserve_new_block()
+as below:
+- trigger f2fs_bug_on() only for ENOSPC case;
+- use do-while statement to avoid redundant codes;
 
---=20
-Thanks & Regards
-Wyes
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/f2fs/recovery.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
+
+diff --git a/fs/f2fs/recovery.c b/fs/f2fs/recovery.c
+index 7be60df277a5..f0de36ef73c2 100644
+--- a/fs/f2fs/recovery.c
++++ b/fs/f2fs/recovery.c
+@@ -712,7 +712,16 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
+ 		 */
+ 		if (dest == NEW_ADDR) {
+ 			f2fs_truncate_data_blocks_range(&dn, 1);
+-			f2fs_reserve_new_block(&dn);
++			do {
++				err = f2fs_reserve_new_block(&dn);
++				if (err == -ENOSPC) {
++					f2fs_bug_on(sbi, 1);
++					break;
++				}
++			} while (err &&
++				IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION));
++			if (err)
++				goto err;
+ 			continue;
+ 		}
+ 
+@@ -720,12 +729,14 @@ static int do_recover_data(struct f2fs_sb_info *sbi, struct inode *inode,
+ 		if (f2fs_is_valid_blkaddr(sbi, dest, META_POR)) {
+ 
+ 			if (src == NULL_ADDR) {
+-				err = f2fs_reserve_new_block(&dn);
+-				while (err &&
+-				       IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION))
++				do {
+ 					err = f2fs_reserve_new_block(&dn);
+-				/* We should not get -ENOSPC */
+-				f2fs_bug_on(sbi, err);
++					if (err == -ENOSPC) {
++						f2fs_bug_on(sbi, 1);
++						break;
++					}
++				} while (err &&
++					IS_ENABLED(CONFIG_F2FS_FAULT_INJECTION));
+ 				if (err)
+ 					goto err;
+ 			}
+-- 
+2.43.0
+
 
