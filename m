@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-13135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EFA0837AA5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 461208379FC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F4CC1C24A9F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:54:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA2001F28566
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E87E12FF81;
-	Tue, 23 Jan 2024 00:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD983FFE;
+	Tue, 23 Jan 2024 00:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OboMgV+J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXbYCPtX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C42812FF7D;
-	Tue, 23 Jan 2024 00:17:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E4F566A;
+	Tue, 23 Jan 2024 00:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969034; cv=none; b=hF9K6dVXc0M5n0h9kPLL8iUgSQqZSKfD8eHUA0qXoZUUaexRy1W+FW8D4XCtgwpxKTXZx0ybS2D2LqUi/Sw3AxKxhfzHU9gyr3017jlB2FzvxknH5BWrF207/fZK8fxO7AVyAw2cLx5SIPv9bwKJmjcKUoBdEjerB0b0LPk3bk4=
+	t=1705968697; cv=none; b=tH8npa1/i3aJ5oyDQeRYFyVL0MYePQMP4PpxxeIHKoYaFo1g6Olg/QOAFtwXN0G+tbHdcXnlTRnmQgqnzSGNs59FCCG5LlijfMeY5dqm1wf9GsG2l2y4YuYepAHdPbvZ/d0yd27y9ZXG0YDMoSltNIzGdfigRQ+mg+0OoYPb44Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969034; c=relaxed/simple;
-	bh=IGVk8EKpb6HJlxhGpVTGxLvlcvvZTbWZzJxtVZY4kvc=;
+	s=arc-20240116; t=1705968697; c=relaxed/simple;
+	bh=l9kPzN3xqk4Lz4p00i+VR1o1H3x6TSb8q2yixgvRFEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lidEE5dTwP0V8NbNf7D0oiG4AUqokmUy0p0NXl1OI+w+QFglVI0TU12DOEnK6gV0GIIjbvm9kQ9imoK8QwXkhpku4oAiiy+wHexVmEempAgI62UAjuQaxF6/RhpZkKoerj7iD+rS38Jl6g3pUZk5GGP2RBlrqclfIZK2lSrL2a4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OboMgV+J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2CEAC433F1;
-	Tue, 23 Jan 2024 00:17:13 +0000 (UTC)
+	 MIME-Version; b=mVATCrop62MgvF3IzI4d0D8RsGH7Hmv1UvutOQBpwnYS8U8uKDma9/4zYOhdc5XAJ/h4p1HFnCqnaDV5+3UTpmu7mXQxbB1EjCnc8TUJXwgnV0YAE/Xga95nZipcis7xSMWe/F2VhU7apZa/RHnarp4jlkvhteNfbA613tP1toA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXbYCPtX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E24FC433C7;
+	Tue, 23 Jan 2024 00:11:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969033;
-	bh=IGVk8EKpb6HJlxhGpVTGxLvlcvvZTbWZzJxtVZY4kvc=;
+	s=korg; t=1705968696;
+	bh=l9kPzN3xqk4Lz4p00i+VR1o1H3x6TSb8q2yixgvRFEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OboMgV+JKSkxlehZGbRKZQ/kzLkO6VyrkbY8Qo096UIO4AG9yXAy7Y+xyzk5OWkVu
-	 763I0bY5HMga+3Cx3OeByJHJ1yVIs1KoAVQwdj0Tc27enW0EmkAxpU7tmBBOpGHxgl
-	 G0J1VX1cc5eUuE+G2sGQG3Z9mM1jcsD7FtiM+hcw=
+	b=tXbYCPtXlsgsmoVPOelOD9MjFAcKdA/sR9DElLWBh3eBhVDg9Pqw+FvJyYNdkujYh
+	 UFkH2ddq5CnveuiFUps47tD4PfxByCcMI9xr8aj9pgu8ERf3+Ba0fP0HwfypX2b5ST
+	 opIP4PI9c4SEb3Uxiz0U5c1e4E4uhFPrVmsEAq/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Chanho Park <chanho61.park@samsung.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 171/194] nvmet-tcp: Fix a kernel panic when host sends an invalid H2C PDU length
+Subject: [PATCH 4.19 145/148] i2c: s3c24xx: fix read transfers in polling mode
 Date: Mon, 22 Jan 2024 15:58:21 -0800
-Message-ID: <20240122235726.536393426@linuxfoundation.org>
+Message-ID: <20240122235718.478431086@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit efa56305908ba20de2104f1b8508c6a7401833be ]
+[ Upstream commit 0d9cf23ed55d7ba3ab26d617a3ae507863674c8f ]
 
-If the host sends an H2CData command with an invalid DATAL,
-the kernel may crash in nvmet_tcp_build_pdu_iovec().
+To properly handle read transfers in polling mode, no waiting for the ACK
+state is needed as it will never come. Just wait a bit to ensure start
+state is on the bus and continue processing next bytes.
 
-Unable to handle kernel NULL pointer dereference at
-virtual address 0000000000000000
-lr : nvmet_tcp_io_work+0x6ac/0x718 [nvmet_tcp]
-Call trace:
-  process_one_work+0x174/0x3c8
-  worker_thread+0x2d0/0x3e8
-  kthread+0x104/0x110
-
-Fix the bug by raising a fatal error if DATAL isn't coherent
-with the packet size.
-Also, the PDU length should never exceed the MAXH2CDATA parameter which
-has been communicated to the host in nvmet_tcp_handle_icreq().
-
-Fixes: 872d26a391da ("nvmet-tcp: add NVMe over TCP target driver")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 117053f77a5a ("i2c: s3c2410: Add polling mode support")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Chanho Park <chanho61.park@samsung.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/tcp.c | 13 ++++++++++++-
- 1 file changed, 12 insertions(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-s3c2410.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index e8c7135c4c11..1747d3c4fa32 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -18,6 +18,7 @@
- #include "nvmet.h"
+diff --git a/drivers/i2c/busses/i2c-s3c2410.c b/drivers/i2c/busses/i2c-s3c2410.c
+index 4c6036920388..8186af573a02 100644
+--- a/drivers/i2c/busses/i2c-s3c2410.c
++++ b/drivers/i2c/busses/i2c-s3c2410.c
+@@ -233,8 +233,17 @@ static bool is_ack(struct s3c24xx_i2c *i2c)
+ 	int tries;
  
- #define NVMET_TCP_DEF_INLINE_DATA_SIZE	(4 * PAGE_SIZE)
-+#define NVMET_TCP_MAXH2CDATA		0x400000 /* 16M arbitrary limit */
- 
- #define NVMET_TCP_RECV_BUDGET		8
- #define NVMET_TCP_SEND_BUDGET		8
-@@ -818,7 +819,7 @@ static int nvmet_tcp_handle_icreq(struct nvmet_tcp_queue *queue)
- 	icresp->hdr.pdo = 0;
- 	icresp->hdr.plen = cpu_to_le32(icresp->hdr.hlen);
- 	icresp->pfv = cpu_to_le16(NVME_TCP_PFV_1_0);
--	icresp->maxdata = cpu_to_le32(0x400000); /* 16M arbitrary limit */
-+	icresp->maxdata = cpu_to_le32(NVMET_TCP_MAXH2CDATA);
- 	icresp->cpda = 0;
- 	if (queue->hdr_digest)
- 		icresp->digest |= NVME_TCP_HDR_DIGEST_ENABLE;
-@@ -866,6 +867,7 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- {
- 	struct nvme_tcp_data_pdu *data = &queue->pdu.data;
- 	struct nvmet_tcp_cmd *cmd;
-+	unsigned int plen;
- 
- 	if (likely(queue->nr_cmds)) {
- 		if (unlikely(data->ttag >= queue->nr_cmds)) {
-@@ -889,7 +891,16 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- 		return -EPROTO;
- 	}
- 
-+	plen = le32_to_cpu(data->hdr.plen);
- 	cmd->pdu_len = le32_to_cpu(data->data_length);
-+	if (unlikely(cmd->pdu_len != (plen - sizeof(*data)) ||
-+		     cmd->pdu_len == 0 ||
-+		     cmd->pdu_len > NVMET_TCP_MAXH2CDATA)) {
-+		pr_err("H2CData PDU len %u is invalid\n", cmd->pdu_len);
-+		/* FIXME: use proper transport errors */
-+		nvmet_tcp_fatal_error(queue);
-+		return -EPROTO;
-+	}
- 	cmd->pdu_recv = 0;
- 	nvmet_tcp_map_pdu_iovec(cmd);
- 	queue->cmd = cmd;
+ 	for (tries = 50; tries; --tries) {
+-		if (readl(i2c->regs + S3C2410_IICCON)
+-			& S3C2410_IICCON_IRQPEND) {
++		unsigned long tmp = readl(i2c->regs + S3C2410_IICCON);
++
++		if (!(tmp & S3C2410_IICCON_ACKEN)) {
++			/*
++			 * Wait a bit for the bus to stabilize,
++			 * delay estimated experimentally.
++			 */
++			usleep_range(100, 200);
++			return true;
++		}
++		if (tmp & S3C2410_IICCON_IRQPEND) {
+ 			if (!(readl(i2c->regs + S3C2410_IICSTAT)
+ 				& S3C2410_IICSTAT_LASTBIT))
+ 				return true;
 -- 
 2.43.0
 
