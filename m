@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-15152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18E1583841D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83126837F28
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C73A8297E4B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AA4429BDA9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D457D67E70;
-	Tue, 23 Jan 2024 02:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B5A7E760;
+	Tue, 23 Jan 2024 00:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e6Bd5zdQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1IeXYto"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910A367E69;
-	Tue, 23 Jan 2024 02:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83CC960DE3;
+	Tue, 23 Jan 2024 00:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975306; cv=none; b=HGdvrI9KhfbhUpMRzeTD6/5n1v39NeSgNxJO0IIFYTtZe1Wob5ucDH2A13WELw65SDZQpTmJMVVOYa2npkQRWse5urnrnYWvtJRs/g8MrIcvf4ZADcTI/zXQfdfQ3lZNuhC4jrYQNqJCJOESN8XixcRRUhElMjtHgufrQ41/qrs=
+	t=1705970972; cv=none; b=QbYaoK+9si9z+aBLPGVvDHZ2bQfkbvv+i3gKoyf1y3/M4ghs1Di5STttUql1T7YU8YyW88nlkqIeIx1RBKcrFdM2WWcpw9c93bKYWYtRKOJcEMQygNmJABp+kueNajtxiJebKx5RGAtvTzYYew6J2+ZiOV0D8HOrRC3VrFxP0Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975306; c=relaxed/simple;
-	bh=rtNRy6K9p9et3fzo3hAlcYC68+KBgiAUHZQ5ki0YBwE=;
+	s=arc-20240116; t=1705970972; c=relaxed/simple;
+	bh=vtcOood/aFT3r9+uLlM5GQINbV89cKnrIG3X0Wtt5YQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UKAtWPa0kSgAAFcW1vcBQt0B6JWf/znU0l0Y+vpBwzk0+mDj0tygYh7IiIkktwHzAovqqM27bqLzWgZbVmIDErWQwl72R19/8rnuoJnPgog5oMw7kJRNjwZeI46VHh/IWKPQhEtULG0x0jHK6nC9++hPcebOa9U0yq7U/cSPpLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e6Bd5zdQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BBB5C43390;
-	Tue, 23 Jan 2024 02:01:46 +0000 (UTC)
+	 MIME-Version; b=Usnn3ziilCw7Pgt84jGGLdX5BHY0Pk2QMJl13cgi95Chw6iKZAN1g5E3Fw3ficGXqAgs2Lybmvvv6CAoOalPRfqJx4Lmj+e7FaoFZ0ZSkr8wwTdMwqj9SGfKVDDtBEXQDSxBbbpLMcmRcUODlfhgPgc3LfiyPhkIWkLfz8WVW4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1IeXYto; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F5CC43394;
+	Tue, 23 Jan 2024 00:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975306;
-	bh=rtNRy6K9p9et3fzo3hAlcYC68+KBgiAUHZQ5ki0YBwE=;
+	s=korg; t=1705970971;
+	bh=vtcOood/aFT3r9+uLlM5GQINbV89cKnrIG3X0Wtt5YQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e6Bd5zdQ6iPfZrKaO1qanD8yp1KvdnI0awKEAWxTsVJ2lNAZGIV8At+TW82+s4U7u
-	 j970/KfyneGBVVyxYgs/mHWpZRX2OkVj4B4Y8eaFBjOqqgduOUPHyFtI2KaED0Yn74
-	 pf2cfQG9uSUTFSrbCyVkqyVu1bc9wge5GgbqnKtU=
+	b=Z1IeXYtoBLxJk2I7n0nrUkOt8eMmkt70WacS6EHh56CTEQ2tsqgPsqpQfl33yby4C
+	 o93VEMm6StmXITpn3C3uMFra4AaPY29BoUTMH7EAPXZTv/qmRHhUQ2NiqcOmj3AtqE
+	 7euRyQ2S3b41X7AYA5cgBDQWks/Gcy0G2ubU5ON0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	"Dr. David Alan Gilbert" <dave@treblig.org>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	David Thompson <davthompson@nvidia.com>,
+	Asmaa Mnebhi <asmaa@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 269/583] media: bttv: add back vbi hack
+Subject: [PATCH 6.1 152/417] mlxbf_gige: Fix intermittent no ip issue
 Date: Mon, 22 Jan 2024 15:55:20 -0800
-Message-ID: <20240122235820.231492705@linuxfoundation.org>
+Message-ID: <20240122235757.104277697@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Asmaa Mnebhi <asmaa@nvidia.com>
 
-[ Upstream commit 3f1faa154a4316b1b585a25394697504b3c24e98 ]
+[ Upstream commit ef210ef85d5cb543ce34a57803ed856d0c8c08c2 ]
 
-The old (now removed) videobuf framework had an optional vbi hack where
-the sequence number of the frame counter was copied in the last 4 bytes
-of the buffer. This hack was active only for the read() interface
-(so not for streaming I/O), and it was enabled by bttv. This allowed
-applications that used read() for the VBI data to match it with the
-corresponding video frame.
+Although the link is up, there is no ip assigned on setups with high background
+traffic. Nothing is transmitted nor received. The RX error count keeps on
+increasing. After several minutes, the RX error count stagnates and the
+GigE interface finally gets an ip.
 
-When bttv was converted to vb2 this hack was forgotten, but some old
-applications rely on this.
+The issue is that mlxbf_gige_rx_init() is called before phy_start().
+As soon as the RX DMA is enabled in mlxbf_gige_rx_init(), the RX CI reaches the max
+of 128, and becomes equal to RX PI. RX CI doesn't decrease since the code hasn't
+ran phy_start yet.
+Bring the PHY up before starting the RX.
 
-So add this back, but this time in the bttv driver rather than in the
-vb2 framework.
-
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Fixes: b7ec3212a73a ("media: bttv: convert to vb2")
-Tested-by: Dr. David Alan Gilbert <dave@treblig.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
+Reviewed-by: David Thompson <davthompson@nvidia.com>
+Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/bt8xx/bttv-driver.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c | 14 +++++++-------
+ .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c   |  6 +++---
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/media/pci/bt8xx/bttv-driver.c b/drivers/media/pci/bt8xx/bttv-driver.c
-index 8e8c9dada67a..49a3dd70ec0f 100644
---- a/drivers/media/pci/bt8xx/bttv-driver.c
-+++ b/drivers/media/pci/bt8xx/bttv-driver.c
-@@ -2772,6 +2772,27 @@ bttv_irq_wakeup_vbi(struct bttv *btv, struct bttv_buffer *wakeup,
- 		return;
- 	wakeup->vbuf.vb2_buf.timestamp = ktime_get_ns();
- 	wakeup->vbuf.sequence = btv->field_count >> 1;
+diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+index 2292d63a279c..eafc0d3313fd 100644
+--- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
++++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
+@@ -147,14 +147,14 @@ static int mlxbf_gige_open(struct net_device *netdev)
+ 	 */
+ 	priv->valid_polarity = 0;
+ 
+-	err = mlxbf_gige_rx_init(priv);
++	phy_start(phydev);
 +
-+	/*
-+	 * Ugly hack for backwards compatibility.
-+	 * Some applications expect that the last 4 bytes of
-+	 * the VBI data contains the sequence number.
-+	 *
-+	 * This makes it possible to associate the VBI data
-+	 * with the video frame if you use read() to get the
-+	 * VBI data.
-+	 */
-+	if (vb2_fileio_is_active(wakeup->vbuf.vb2_buf.vb2_queue)) {
-+		u32 *vaddr = vb2_plane_vaddr(&wakeup->vbuf.vb2_buf, 0);
-+		unsigned long size =
-+			vb2_get_plane_payload(&wakeup->vbuf.vb2_buf, 0) / 4;
++	err = mlxbf_gige_tx_init(priv);
+ 	if (err)
+ 		goto free_irqs;
+-	err = mlxbf_gige_tx_init(priv);
++	err = mlxbf_gige_rx_init(priv);
+ 	if (err)
+-		goto rx_deinit;
+-
+-	phy_start(phydev);
++		goto tx_deinit;
+ 
+ 	netif_napi_add(netdev, &priv->napi, mlxbf_gige_poll);
+ 	napi_enable(&priv->napi);
+@@ -176,8 +176,8 @@ static int mlxbf_gige_open(struct net_device *netdev)
+ 
+ 	return 0;
+ 
+-rx_deinit:
+-	mlxbf_gige_rx_deinit(priv);
++tx_deinit:
++	mlxbf_gige_tx_deinit(priv);
+ 
+ free_irqs:
+ 	mlxbf_gige_free_irqs(priv);
+diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
+index 227d01cace3f..699984358493 100644
+--- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
++++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
+@@ -142,6 +142,9 @@ int mlxbf_gige_rx_init(struct mlxbf_gige *priv)
+ 	writeq(MLXBF_GIGE_RX_MAC_FILTER_COUNT_PASS_EN,
+ 	       priv->base + MLXBF_GIGE_RX_MAC_FILTER_COUNT_PASS);
+ 
++	writeq(ilog2(priv->rx_q_entries),
++	       priv->base + MLXBF_GIGE_RX_WQE_SIZE_LOG2);
 +
-+		if (vaddr && size) {
-+			vaddr += size - 1;
-+			*vaddr = wakeup->vbuf.sequence;
-+		}
-+	}
-+
- 	vb2_buffer_done(&wakeup->vbuf.vb2_buf, state);
- 	if (btv->field_count == 0)
- 		btor(BT848_INT_VSYNC, BT848_INT_MASK);
+ 	/* Clear MLXBF_GIGE_INT_MASK 'receive pkt' bit to
+ 	 * indicate readiness to receive interrupts
+ 	 */
+@@ -154,9 +157,6 @@ int mlxbf_gige_rx_init(struct mlxbf_gige *priv)
+ 	data |= MLXBF_GIGE_RX_DMA_EN;
+ 	writeq(data, priv->base + MLXBF_GIGE_RX_DMA);
+ 
+-	writeq(ilog2(priv->rx_q_entries),
+-	       priv->base + MLXBF_GIGE_RX_WQE_SIZE_LOG2);
+-
+ 	return 0;
+ 
+ free_wqe_and_skb:
 -- 
 2.43.0
 
