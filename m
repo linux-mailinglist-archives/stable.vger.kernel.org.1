@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-12926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAD318379B7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:44:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FC7E837B47
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BA601C26C52
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:44:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EE8EB2D63E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:53:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD1F2C1A4;
-	Tue, 23 Jan 2024 00:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD6AD12FF64;
+	Tue, 23 Jan 2024 00:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uqIMM9eS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4h9MiDl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0AD6FB3;
-	Tue, 23 Jan 2024 00:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCF912F5A7;
+	Tue, 23 Jan 2024 00:16:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968442; cv=none; b=VI94bhwjKbFE2HdpJKpUsf0m0T2KDevaxB0VxYOgmE9diyDiIqyiwUNvRmAJHT9PhpJ8mcHc1pGVk3p0+cc3wQLqsvlMDcauP3QERTK7/cvENlbimvov2u0QTUghaIoTGDpYYw5fg3kVf/4iqPl3RfERJAJluikWAffZqZbqQo8=
+	t=1705969015; cv=none; b=qvpr6XcOl+5rijFYBBJk+shRrDZGobQay5WS/2lrqw7zkzeXQleHV+sn3N/XnLGrufCDgloMoNSVmiuyTqb4mSAmbOVejA+9PMkQ5FXqlzacYO+FQXJ/agTeYk5hc48xIwcJVoOxYQHg8hoydUUVyKQR201CJ0HxLZSXhKmkguU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968442; c=relaxed/simple;
-	bh=int2PYtUx8i16+7XLmJ9LodhfOQUlEcZK2lif6CXJeM=;
+	s=arc-20240116; t=1705969015; c=relaxed/simple;
+	bh=GbdwCxX9xta8Vvu07jwLxpMR6yZVGeiGET7KIwNklnk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NRCn0PIpHbY8hekNtLruL/b9HzoL74+0Y6zepbEQlyyFm40lMfBYj8U2RVl+QKGBwjYOf1zCDS+komnu86yucCY/Qe78AhFkPgJoElVUCyPufC88ezejPooQn7jEdR8PoQgrkk1ZekllWgL66eLedIIl5IgxPh2Wtpa9QdiYGO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uqIMM9eS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E2C6C433C7;
-	Tue, 23 Jan 2024 00:07:20 +0000 (UTC)
+	 MIME-Version; b=Jpf6CaWAUSyAf5N+n0/Fblgw3c4UfFBKxXJleaotl50jxVEjFfP+WbOYoGc9xsSi88efLjk9lE0u8lw4mSr7ADOmgVwftNZ0tvuPCIX3bYFieJe8luU64meiaXfmqkN+dctyeV5JJrArnmev/pUylzRLe0+sUKw7Ziv4oX8I0FQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4h9MiDl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17452C433F1;
+	Tue, 23 Jan 2024 00:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968441;
-	bh=int2PYtUx8i16+7XLmJ9LodhfOQUlEcZK2lif6CXJeM=;
+	s=korg; t=1705969015;
+	bh=GbdwCxX9xta8Vvu07jwLxpMR6yZVGeiGET7KIwNklnk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uqIMM9eSj73CNr7wvxUtu7fOJxpFfJcSAn2V90Yhe01mNBm+Oh7ycd1N5aj4p3M1D
-	 IWdBSl7LoaGVMd0DyieuTgMzjwBgOZ+DgAGT+jMqRsFS9NCrADc7kRJOsIlVcJL2LW
-	 +KyGIZLIN747j0e2YUukkU2CbOu6BgbpFd2gb6p4=
+	b=v4h9MiDlodJQlNN3n3UtiGst62s2Kfg3eIbBT9ku7IShVtaGBCx54VDNP+5Pjn+vV
+	 Qog+G/8RjwcSo1XNSfKUkbB7r9oC3eYgLvbc23E1N19RA+brKUU5XHtIC1B1VR0ahR
+	 DRse/ujRU6eUSR2H4Fg0AjNOxGGXR7Kp1GlRPOPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Christian A. Ehrhardt" <lk@c--e.de>,
 	Rob Herring <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 110/148] of: Fix double free in of_parse_phandle_with_args_map
-Date: Mon, 22 Jan 2024 15:57:46 -0800
-Message-ID: <20240122235716.890168237@linuxfoundation.org>
+Subject: [PATCH 5.4 137/194] of: Fix double free in of_parse_phandle_with_args_map
+Date: Mon, 22 Jan 2024 15:57:47 -0800
+Message-ID: <20240122235725.106498173@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -96,10 +96,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  3 files changed, 53 insertions(+), 32 deletions(-)
 
 diff --git a/drivers/of/base.c b/drivers/of/base.c
-index f0dbb7ad88cf..3925da5690d3 100644
+index c8af9a65f98b..6fa209b3557b 100644
 --- a/drivers/of/base.c
 +++ b/drivers/of/base.c
-@@ -1634,6 +1634,7 @@ int of_parse_phandle_with_args_map(const struct device_node *np,
+@@ -1744,6 +1744,7 @@ int of_parse_phandle_with_args_map(const struct device_node *np,
  		out_args->np = new;
  		of_node_put(cur);
  		cur = new;
@@ -136,10 +136,10 @@ index 6b33be4c4416..aa0d7027ffa6 100644
  				phandle-list-bad-args = <&provider2 1 0>,
  							<&provider4 0>;
 diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-index 2515ce393005..52f2943be5b5 100644
+index 42acbb3668b2..b1924062c939 100644
 --- a/drivers/of/unittest.c
 +++ b/drivers/of/unittest.c
-@@ -426,6 +426,9 @@ static void __init of_unittest_parse_phandle_with_args(void)
+@@ -430,6 +430,9 @@ static void __init of_unittest_parse_phandle_with_args(void)
  
  		unittest(passed, "index %i - data error on node %pOF rc=%i\n",
  			 i, args.np, rc);
@@ -149,7 +149,7 @@ index 2515ce393005..52f2943be5b5 100644
  	}
  
  	/* Check for missing list property */
-@@ -467,8 +470,9 @@ static void __init of_unittest_parse_phandle_with_args(void)
+@@ -471,8 +474,9 @@ static void __init of_unittest_parse_phandle_with_args(void)
  
  static void __init of_unittest_parse_phandle_with_args_map(void)
  {
@@ -160,7 +160,7 @@ index 2515ce393005..52f2943be5b5 100644
  	int i, rc;
  
  	np = of_find_node_by_path("/testcase-data/phandle-tests/consumer-b");
-@@ -477,34 +481,24 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
+@@ -481,34 +485,24 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
  		return;
  	}
  
@@ -209,7 +209,7 @@ index 2515ce393005..52f2943be5b5 100644
  		bool passed = true;
  
  		memset(&args, 0, sizeof(args));
-@@ -515,13 +509,13 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
+@@ -519,13 +513,13 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
  		switch (i) {
  		case 0:
  			passed &= !rc;
@@ -225,7 +225,7 @@ index 2515ce393005..52f2943be5b5 100644
  			passed &= (args.args_count == 3);
  			passed &= (args.args[0] == 2);
  			passed &= (args.args[1] == 5);
-@@ -532,28 +526,36 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
+@@ -536,28 +530,36 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
  			break;
  		case 3:
  			passed &= !rc;
@@ -266,7 +266,7 @@ index 2515ce393005..52f2943be5b5 100644
  			passed &= (rc == -ENOENT);
  			break;
  		default:
-@@ -562,6 +564,9 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
+@@ -566,6 +568,9 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
  
  		unittest(passed, "index %i - data error on node %s rc=%i\n",
  			 i, args.np->full_name, rc);
@@ -276,7 +276,7 @@ index 2515ce393005..52f2943be5b5 100644
  	}
  
  	/* Check for missing list property */
-@@ -587,6 +592,13 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
+@@ -591,6 +596,13 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
  	rc = of_parse_phandle_with_args_map(np, "phandle-list-bad-args",
  					    "phandle", 1, &args);
  	unittest(rc == -EINVAL, "expected:%i got:%i\n", -EINVAL, rc);
