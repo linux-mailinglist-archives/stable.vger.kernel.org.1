@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822498381EF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D24AB837F08
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 391FD28C69C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A06529BDB6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E7854F80;
-	Tue, 23 Jan 2024 01:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76537605B8;
+	Tue, 23 Jan 2024 00:48:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5jAxRbM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPrYG0zD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE3D14F20D;
-	Tue, 23 Jan 2024 01:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B7E60261;
+	Tue, 23 Jan 2024 00:48:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974009; cv=none; b=BgKF7qF+ad0r4tVqA2pEksoFJYmcvFJLj/gzj0kXKGARmn7vX9fT+iFRtkX3RUUGBYRq8FbB4jp+dfWmbG4Ct1E90Syr2g/Hofm+8IHhxJkLb+AErV/FjwNJEaJYmUNaiRoELzjJR/DOiygkIeC7naV/mBykP20RqfEnMlRyoao=
+	t=1705970895; cv=none; b=P/uMcShl0chI7Th8MSgK/2W/P3UyC6UE/Idsx1JGFfrp/igzh0QXWRzcO0yymyQwvGVO7+SlrnJchAq0sgaWYCSchonE2AZ5FZGi8H+Idc2b8iZgOvIUf7oRiYPnDU5UOPNyms/gHiDXw+w1Pw2+WuElQj1Ew8ceicfXHHETBUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974009; c=relaxed/simple;
-	bh=vQJqG7GAQiGnlO1Wq6eJLSr6DdevrxEJS1eScIKzk/w=;
+	s=arc-20240116; t=1705970895; c=relaxed/simple;
+	bh=hABojjeCaazRy+1jm6aN7wYwscOuZ0btt5iPNjoZr0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a1S8wmg07EnYWmQNrA1XWuz2Vnv3BevddprzYuO8xihUYzLItIWx4j9m3+m2K+ObQRpVZ5E4xAZYUnT3DIPcPful7+KarA07VY46Pua09MYIJJVylsmGmdlQ7otvTJycKxAw1+OvgDMPaibfiiFZu/mFFX2aWM3WzPS2mba+BKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5jAxRbM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E49C43390;
-	Tue, 23 Jan 2024 01:40:08 +0000 (UTC)
+	 MIME-Version; b=RMtPGSHUWm1GSrTTlALj40EDYjPbRExxY/wkujLDXPVELwnGKjS+/T00YPIC3Xkfuvq0e2PGZEixy7Llcm8wkv4VFxr0t2oIPK+yJgMIsUxBU/ekoT9rR3qDrwg+ff+rAS63Va31YHmvEYvyDe2/igqVEnQJxZRCwJyUzSZEQ+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jPrYG0zD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9D3C43390;
+	Tue, 23 Jan 2024 00:48:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974009;
-	bh=vQJqG7GAQiGnlO1Wq6eJLSr6DdevrxEJS1eScIKzk/w=;
+	s=korg; t=1705970895;
+	bh=hABojjeCaazRy+1jm6aN7wYwscOuZ0btt5iPNjoZr0M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G5jAxRbMM0aky85siHyCzh9zj87L4T72dAQVqxx8veMnCjTpyg80q28xr4WVB81Ch
-	 P7MZ0GMMuay4WgIGb3dgsXR0hQJH6UIcMT0KPqoOsTrPkqRYn9qrg2J2Jbrk3rNjF1
-	 3xgJbug/AmokfsR9eQTATcSuiYJB5zgd9vYDDCaE=
+	b=jPrYG0zD5FXUR/AfWujPvPbD8RYA8hXLGYuf2C1wZtwc1STxpJb8oGbkhMeycbTEv
+	 C116/Fm4UtmDsaKTUPc+AN7l5IXtvdpfrG4svXdOCygr3tSlFxje6m5OV5RjSuAKVE
+	 1l1le3gtQRe+96LGTNfou8cR88uq7ekRAcDY5BxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erwin Tsaur <erwin.tsaur@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 090/374] ACPI: extlog: Clear Extended Error Log status when RAS_CEC handled the error
+	Luis Acuna <ldacuna@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.10 040/286] ACPI: resource: Add another DMI match for the TongFang GMxXGxx
 Date: Mon, 22 Jan 2024 15:55:46 -0800
-Message-ID: <20240122235747.745398592@linuxfoundation.org>
+Message-ID: <20240122235733.557161759@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Luck <tony.luck@intel.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 38c872a9e96f72f2947affc0526cc05659367d3d ]
+commit df0cced74159c79e36ce7971f0bf250673296d93 upstream.
 
-When both CONFIG_RAS_CEC and CONFIG_ACPI_EXTLOG are enabled, Linux does
-not clear the status word of the BIOS supplied error record for corrected
-errors. This may prevent logging of subsequent uncorrected errors.
+The TongFang GMxXGxx, which needs IRQ overriding for the keyboard to work,
+is also sold as the Eluktronics RP-15 which does not use the standard
+TongFang GMxXGxx DMI board_name.
 
-Fix by clearing the status.
+Add an entry for this laptop to the irq1_edge_low_force_override[] DMI
+table to make the internal keyboard functional.
 
-Fixes: 23ba710a0864 ("x86/mce: Fix all mce notifiers to update the mce->kflags bitmask")
-Reported-by: Erwin Tsaur <erwin.tsaur@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
+Reported-by: Luis Acuna <ldacuna@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Cc: All applicable <stable@vger.kernel.org>
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpi_extlog.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/acpi/resource.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-index e648158368a7..088db2356998 100644
---- a/drivers/acpi/acpi_extlog.c
-+++ b/drivers/acpi/acpi_extlog.c
-@@ -145,9 +145,14 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
- 	static u32 err_seq;
- 
- 	estatus = extlog_elog_entry_check(cpu, bank);
--	if (estatus == NULL || (mce->kflags & MCE_HANDLED_CEC))
-+	if (!estatus)
- 		return NOTIFY_DONE;
- 
-+	if (mce->kflags & MCE_HANDLED_CEC) {
-+		estatus->block_status = 0;
-+		return NOTIFY_DONE;
-+	}
-+
- 	memcpy(elog_buf, (void *)estatus, ELOG_ENTRY_LEN);
- 	/* clear record status to enable BIOS to update it again */
- 	estatus->block_status = 0;
--- 
-2.43.0
-
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -456,6 +456,13 @@ static const struct dmi_system_id asus_l
+ 		},
+ 	},
+ 	{
++		/* TongFang GMxXGxx sold as Eluktronics Inc. RP-15 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Eluktronics Inc."),
++			DMI_MATCH(DMI_BOARD_NAME, "RP-15"),
++		},
++	},
++	{
+ 		/* TongFang GM6XGxX/TUXEDO Stellaris 16 Gen5 AMD */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "GM6XGxX"),
 
 
 
