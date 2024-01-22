@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D679837D53
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BDD683822F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FDC91C245F2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 238D71F24123
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1773650A98;
-	Tue, 23 Jan 2024 00:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3872959B5E;
+	Tue, 23 Jan 2024 01:41:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cO/qbym1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJnCtM8h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE494F5E9;
-	Tue, 23 Jan 2024 00:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F338359B78;
+	Tue, 23 Jan 2024 01:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969892; cv=none; b=QOM5U501znu/UzPdrwxXCsWTUsfEExcHypDSmwALU2myi6Ypt3mRYJCE9khd/Ft6rG+6OWEW5kJQvkgglDTg+Qy2FUUh1gUz9MQXMOZUanzBRvReJQNTdBUiTYMliaqOgEB/VFmQvqD7TYqoUAL19lFi/kKl/UYIYHSLaa1aSlo=
+	t=1705974087; cv=none; b=LKAu8paOTTCqo0d7XMoGqTtRoRvDqi+0EUjA4PsxyWmHnChD7x+52B0x1sHVXw6ELpk1eooxYJhFXdt6y8c9uPSEnArUcnLeVVR4iH34GuV8PLVeA1NbKlVzTY0BtdoDpAyc2cx2J3j06jJDLAvxj64wrkuGAgbgK84oYpKlNKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969892; c=relaxed/simple;
-	bh=yHqLBVsuTscQkU1DYIHjNBlxuiTVOOjY5kHifHYDGiI=;
+	s=arc-20240116; t=1705974087; c=relaxed/simple;
+	bh=/mxLaEAUbaNnKsbfl6or7es4PTwkiazKzZQzTM6GpCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gf79C8AR1sJ7dA+kJw8+XZt6Szof2OZVRLtscnfPB4EHWUAxVNBvP/Cea4xti5G7tPQQHOl4mciAuqURLuqJwuFGH7s8qhb04pEF9vKzjvtD/bZ/CzN8qwhhPApf3VSruAa1n0dCvhZfSXvtLflBzMDas+th5O7RaLGkzGk/zzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cO/qbym1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A79C43390;
-	Tue, 23 Jan 2024 00:31:32 +0000 (UTC)
+	 MIME-Version; b=q2MvihXS+V/a3ehl8G8A0eEJuw247HVhRnI3DIjgqvH+5JR15jNBSf3wZwCThIui4SyE9iWuhu3Dch1tpDHW3GOerD8WBEpJvsWfyefTKaO8X1AB+sJ2H8uTvrfYoQdvLD+XlYgcT/gs0wYf6WlLSbyCQrvEP1eUpolJKnrjspk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJnCtM8h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38755C43390;
+	Tue, 23 Jan 2024 01:41:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969892;
-	bh=yHqLBVsuTscQkU1DYIHjNBlxuiTVOOjY5kHifHYDGiI=;
+	s=korg; t=1705974086;
+	bh=/mxLaEAUbaNnKsbfl6or7es4PTwkiazKzZQzTM6GpCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cO/qbym1mykUiu/XQrDPQEMUfVngnhGUa1fRiYtfKAyG6RSNifqrZ0TtpXGciXfyo
-	 19Lb70iwt15JvIK6HwIQHFXQaQtR0Yk9xC6Z/LtrkSO6fMgu2XaL1ooWxz3jxrJMYk
-	 FtJrhkPxa+rUn5XDwU7DXt1iWdukdr3L7Mp9G4Uk=
+	b=iJnCtM8hgmJ4n9vPQSfCDAOI+4zXs8cCQ09CFIb/E5g1zOxSkFH5qY/DXIVDqQhiY
+	 Fwv6yv6hmKgkjUwW1jew9xTDH0/Dk8YT+BqVpqlwEfpCgi+JhlC0wGX2Ad0Cjlik3C
+	 /XLZXchK7IV4tYhzqyGNhbDRGqn9RCEQnK2nNymc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ricardo B. Marliere" <ricardo@marliere.net>,
-	Umang Jain <umang.jain@ideasonboard.com>,
+	Su Hui <suhui@nfschina.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 510/641] staging: vc04_services: vchiq_core: Log through struct vchiq_instance
+Subject: [PATCH 5.15 158/374] wifi: rtlwifi: rtl8192cu: using calculate_bit_shift()
 Date: Mon, 22 Jan 2024 15:56:54 -0800
-Message-ID: <20240122235834.041260627@linuxfoundation.org>
+Message-ID: <20240122235750.104579171@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Umang Jain <umang.jain@ideasonboard.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit f9c42898830383aff4fdc723828fa93a6abec02d ]
+[ Upstream commit f4088c8fcbabadad9dd17d17ae9ba24e9e3221ec ]
 
-The handle_to_service() helper can return NULL, so `service` pointer
-can indeed be set to NULL. So, do not log through service pointer
-(which can cause NULL-deference), instead, use the vchiq_instance
-function argument to get access to the struct device.
+Using calculate_bit_shift() to replace _rtl92c_phy_calculate_bit_shift().
+And fix an undefined bitwise shift behavior problem.
 
-Fixes: f67af5940d6d ("staging: vc04: Convert(and rename) vchiq_log_info() to use dynamic debug")
-Reviewed-by: Ricardo B. Marliere <ricardo@marliere.net>
-Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
-Link: https://lore.kernel.org/r/20231128201845.489237-1-umang.jain@ideasonboard.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f0a39ae738d6 ("rtlwifi: rtl8192cu: Add routine phy")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-6-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../staging/vc04_services/interface/vchiq_arm/vchiq_core.c  | 6 +++---
+ drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_core.c b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_core.c
-index 39b857da2d42..8a9eb0101c2e 100644
---- a/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_core.c
-+++ b/drivers/staging/vc04_services/interface/vchiq_arm/vchiq_core.c
-@@ -245,7 +245,7 @@ find_service_by_handle(struct vchiq_instance *instance, unsigned int handle)
- 		return service;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c
+index a8d9fe269f31..0b8cb7e61fd8 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c
+@@ -32,7 +32,7 @@ u32 rtl92cu_phy_query_rf_reg(struct ieee80211_hw *hw,
+ 		original_value = _rtl92c_phy_fw_rf_serial_read(hw,
+ 							       rfpath, regaddr);
  	}
- 	rcu_read_unlock();
--	vchiq_log_debug(service->state->dev, VCHIQ_CORE,
-+	vchiq_log_debug(instance->state->dev, VCHIQ_CORE,
- 			"Invalid service handle 0x%x", handle);
- 	return NULL;
- }
-@@ -287,7 +287,7 @@ find_service_for_instance(struct vchiq_instance *instance, unsigned int handle)
- 		return service;
- 	}
- 	rcu_read_unlock();
--	vchiq_log_debug(service->state->dev, VCHIQ_CORE,
-+	vchiq_log_debug(instance->state->dev, VCHIQ_CORE,
- 			"Invalid service handle 0x%x", handle);
- 	return NULL;
- }
-@@ -310,7 +310,7 @@ find_closed_service_for_instance(struct vchiq_instance *instance, unsigned int h
- 		return service;
- 	}
- 	rcu_read_unlock();
--	vchiq_log_debug(service->state->dev, VCHIQ_CORE,
-+	vchiq_log_debug(instance->state->dev, VCHIQ_CORE,
- 			"Invalid service handle 0x%x", handle);
- 	return service;
- }
+-	bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	readback_value = (original_value & bitmask) >> bitshift;
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+ 		"regaddr(%#x), rfpath(%#x), bitmask(%#x), original_value(%#x)\n",
+@@ -56,7 +56,7 @@ void rtl92cu_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 			original_value = _rtl92c_phy_rf_serial_read(hw,
+ 								    rfpath,
+ 								    regaddr);
+-			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data =
+ 			    ((original_value & (~bitmask)) |
+ 			     (data << bitshift));
+@@ -67,7 +67,7 @@ void rtl92cu_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 			original_value = _rtl92c_phy_fw_rf_serial_read(hw,
+ 								       rfpath,
+ 								       regaddr);
+-			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data =
+ 			    ((original_value & (~bitmask)) |
+ 			     (data << bitshift));
 -- 
 2.43.0
 
