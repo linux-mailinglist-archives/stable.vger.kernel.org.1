@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-14557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 177ED8381D8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:14:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9656837EF5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0356B2D981
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 692911F2B7E3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B731420B2;
-	Tue, 23 Jan 2024 01:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF683604B0;
+	Tue, 23 Jan 2024 00:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9JZDF+q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BeBGYVfH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 909711420A7;
-	Tue, 23 Jan 2024 01:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F32E60254;
+	Tue, 23 Jan 2024 00:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972118; cv=none; b=TUGECm3Bbo06kVPiaV/5lP3VEp+kjEYg7Ov5aEDUYb2sqZB9ol7guE5+U/xqtXhljHrm4Bv76pK7zqqAzpCnNdEZD6/VAfWABD0R/77kydrx8T/WE31a9GZZf8tuw6gwS24rsCZ+b2Wf/Hhb5gV16Bsc84L/gcF3Aw/K6UwO7Qw=
+	t=1705970850; cv=none; b=lE3x0PgvFaK5Efo4cX+tLAs+Bq/A0vdoqjUH3h/YjPfvzpORnBtrsLbOJfDp3e9dNuNIdVhcHgLWkxR+MHBuH0D0CV+CMqW66Cb32//eiIBQ7sINhVfsO3BDN1yoh5dj7mbeFR36kYPYnZOxbpvEyZBRFCT6Y5GlchXpbD0QFyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972118; c=relaxed/simple;
-	bh=7jq9Bj0J01V3NWPNk46+xBdaahRC76FA3UjPFsZzOyw=;
+	s=arc-20240116; t=1705970850; c=relaxed/simple;
+	bh=kbQLxoovu+uEZNhJaQqfnbza66Q7zMBCU4oJosMpeEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MlTCR6zFByp1a57rq+iyq0PWwVZrYJPaDTe3iY2btGoDVLFjrI1Ha4js0WmSXWp69s56qaAoIRJmosi6DU1DO6XEG2vNO5/L1fAOE1elFdKbjsrrdvxhX3ourncrdQBcr22sNDlZYPQc+jafK+6YovsgnMX1Kr0uTbf2pToAG28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9JZDF+q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F05EC43399;
-	Tue, 23 Jan 2024 01:08:38 +0000 (UTC)
+	 MIME-Version; b=sOftRUN6k/qtmEw1DY0p4/jPZWzrgjyHCaAozzETxLvTIl/yWLsVQCnkVnYoiTZQfYkjCaNxcdaR1VSQSHQaIFLz891+Oc0M/Tg78whmf1Z9HbS+7cYsektE8DyB0TRlaGPIybSeKIhBKfJ3MD21bOCay17gV2Zj7JFW3KebG7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BeBGYVfH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E253CC43390;
+	Tue, 23 Jan 2024 00:47:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972118;
-	bh=7jq9Bj0J01V3NWPNk46+xBdaahRC76FA3UjPFsZzOyw=;
+	s=korg; t=1705970850;
+	bh=kbQLxoovu+uEZNhJaQqfnbza66Q7zMBCU4oJosMpeEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D9JZDF+q3KuMORncsNDuxJOzo+CHd7FrqF4QD9v5jTLkG7RfignzH0uc64nxUxoSL
-	 y0R1vsI4nwh78swPVvyg2Il7ITnGK3sT7ecFhOPd7HZetgD+hAVISBbZW+Em5Vj6qd
-	 AaqzOjZ5vUEmL5Snq/n5w/LjRnoTrS9F7tt+yFf0=
+	b=BeBGYVfH1Lr2GTbdDbqqLaGMnp4R3EjmAllXKXGgUByp+LvXnADdrpVy+lGOa9tF0
+	 kDrDdsYsIMahy0w3J3ZfFKHPrnc++4chZWKqICdBtMWNxlYr88Z+OzPXCMtPCmHaFr
+	 UDU2DQIPibt3/w5QOdulsW4n0ZElggLNHrIMejeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Judy Hsiao <judyhsiao@chromium.org>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Yihang Li <liyihang9@huawei.com>,
+	Xiang Chen <chenxiang66@hisilicon.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 028/374] neighbour: Dont let neigh_forced_gc() disable preemption for long
+Subject: [PATCH 6.1 116/417] scsi: hisi_sas: Replace with standard error code return value
 Date: Mon, 22 Jan 2024 15:54:44 -0800
-Message-ID: <20240122235745.616749539@linuxfoundation.org>
+Message-ID: <20240122235755.795689242@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,66 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judy Hsiao <judyhsiao@chromium.org>
+From: Yihang Li <liyihang9@huawei.com>
 
-[ Upstream commit e5dc5afff62f3e97e86c3643ec9fcad23de4f2d3 ]
+[ Upstream commit d34ee535705eb43885bc0f561c63046f697355ad ]
 
-We are seeing cases where neigh_cleanup_and_release() is called by
-neigh_forced_gc() many times in a row with preemption turned off.
-When running on a low powered CPU at a low CPU frequency, this has
-been measured to keep preemption off for ~10 ms. That's not great on a
-system with HZ=1000 which expects tasks to be able to schedule in
-with ~1ms latency.
+In function hisi_sas_controller_prereset(), -ENOSYS (Function not
+implemented) should be returned if the driver does not support .soft_reset.
+Returns -EPERM (Operation not permitted) if HISI_SAS_RESETTING_BIT is
+already be set.
 
-Suggested-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Judy Hsiao <judyhsiao@chromium.org>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+In function _suspend_v3_hw(), returns -EPERM (Operation not permitted) if
+HISI_SAS_RESETTING_BIT is already be set.
+
+Fixes: 4522204ab218 ("scsi: hisi_sas: tidy host controller reset function a bit")
+Signed-off-by: Yihang Li <liyihang9@huawei.com>
+Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
+Link: https://lore.kernel.org/r/1702525516-51258-3-git-send-email-chenxiang66@hisilicon.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/neighbour.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/scsi/hisi_sas/hisi_sas_main.c  | 4 ++--
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/neighbour.c b/net/core/neighbour.c
-index 927c4db2703f..5829477efbba 100644
---- a/net/core/neighbour.c
-+++ b/net/core/neighbour.c
-@@ -225,9 +225,11 @@ static int neigh_forced_gc(struct neigh_table *tbl)
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
+index a8142e2b9643..450a8578157c 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_main.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
+@@ -1502,12 +1502,12 @@ EXPORT_SYMBOL_GPL(hisi_sas_controller_reset_done);
+ static int hisi_sas_controller_prereset(struct hisi_hba *hisi_hba)
  {
- 	int max_clean = atomic_read(&tbl->gc_entries) -
- 			READ_ONCE(tbl->gc_thresh2);
-+	u64 tmax = ktime_get_ns() + NSEC_PER_MSEC;
- 	unsigned long tref = jiffies - 5 * HZ;
- 	struct neighbour *n, *tmp;
- 	int shrunk = 0;
-+	int loop = 0;
+ 	if (!hisi_hba->hw->soft_reset)
+-		return -1;
++		return -ENOENT;
  
- 	NEIGH_CACHE_STAT_INC(tbl, forced_gc_runs);
- 
-@@ -250,11 +252,16 @@ static int neigh_forced_gc(struct neigh_table *tbl)
- 				shrunk++;
- 			if (shrunk >= max_clean)
- 				break;
-+			if (++loop == 16) {
-+				if (ktime_get_ns() > tmax)
-+					goto unlock;
-+				loop = 0;
-+			}
- 		}
+ 	down(&hisi_hba->sem);
+ 	if (test_and_set_bit(HISI_SAS_RESETTING_BIT, &hisi_hba->flags)) {
+ 		up(&hisi_hba->sem);
+-		return -1;
++		return -EPERM;
  	}
  
- 	WRITE_ONCE(tbl->last_flush, jiffies);
--
-+unlock:
- 	write_unlock_bh(&tbl->lock);
+ 	if (hisi_sas_debugfs_enable && hisi_hba->debugfs_itct[0].itct)
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+index c4305ec38ebf..4f816b2cfa49 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+@@ -4981,7 +4981,7 @@ static int _suspend_v3_hw(struct device *device)
+ 	}
  
- 	return shrunk;
+ 	if (test_and_set_bit(HISI_SAS_RESETTING_BIT, &hisi_hba->flags))
+-		return -1;
++		return -EPERM;
+ 
+ 	dev_warn(dev, "entering suspend state\n");
+ 
 -- 
 2.43.0
 
