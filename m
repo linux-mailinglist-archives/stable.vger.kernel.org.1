@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-15236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2C7B83846C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFD1E838257
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:19:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01FBE1C2A346
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2F2F1C27586
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:19:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085C36DCE5;
-	Tue, 23 Jan 2024 02:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01B965B1F9;
+	Tue, 23 Jan 2024 01:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGJ0iFfU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dt/d+Nn4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2616D1D7;
-	Tue, 23 Jan 2024 02:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F1D5B5B5;
+	Tue, 23 Jan 2024 01:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975392; cv=none; b=dRJWjQAw/NaNZqmPQM0GM0s3vJR7SBWaHWKRHstSvQOIti156RjCvuOUI8D443dfLJMWpEpqUhaANdxOyK1t0Ea7RqklOawDq6/StIfSE9TGYwU6Ipz2w3rTG320iDfmreeb5lSuEZOIwbeQ2tfy4lEJb77vC87M/7QlTHYM2Uc=
+	t=1705974327; cv=none; b=Grd08qT2HWAwJorIgXWWV33M5OQEgiicm1Ornk8foh6KDt6HmkY8qcl7WDds2LCf4K8KaqopNp2rzjWGviHXAQDA8XLkZ1uzhCQHkN0auw8fcO7dc10Nfy3mGt+jHuCjO+aLsE3P2/XB/JGrz6wnqZp+7BC8U/f4Hy09FuaOGMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975392; c=relaxed/simple;
-	bh=3SdE4aOUqdyewTKbQK3zlH7SCmp9Clbq//rDLIoYYQA=;
+	s=arc-20240116; t=1705974327; c=relaxed/simple;
+	bh=1hg6wwNo7PSIqFxJE3Zl8f7G32A8mwWY6AwruPd93RA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KC93oka6Jpe3xQzT5RKa/Nnseri9qxBveIyZ8WRJ15FdzjaSON4T4MEbDMUdqOX9Ea7PveU7kZML5mJXN0D/DUVFjM6kZPdx+xQydY+4mf5u345No+ng7HpSWHlO1Ol9ISojzziNyCmzWUI2ziy0NiEdSIt8rLH1DY2MLltmryc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGJ0iFfU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84009C43394;
-	Tue, 23 Jan 2024 02:03:12 +0000 (UTC)
+	 MIME-Version; b=d8ckPn0Bk7dEeBcHrkV6ED6YYV+CY8h1yE5SZNJt9h5a4EQyjAH79I65xxo1TL672w2xfOtOEckrAeDtgFKfFQ7Eyc3jOQCFtdZSWi6DTxYYG9T3tIxP4wIb7CoBEhptLxCcgVR63myxgvb51Vy+yCUJIG4VlHpd22Y7z+htMWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dt/d+Nn4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19C78C433F1;
+	Tue, 23 Jan 2024 01:45:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975392;
-	bh=3SdE4aOUqdyewTKbQK3zlH7SCmp9Clbq//rDLIoYYQA=;
+	s=korg; t=1705974327;
+	bh=1hg6wwNo7PSIqFxJE3Zl8f7G32A8mwWY6AwruPd93RA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TGJ0iFfU+PyTgGGPIgzpebFwl+YW/ZF8VXv6r5Twb/a8txw9WMKa4Xhgj+TnOJxFZ
-	 77grnhq+ziew/r+3vfS0KdWZXe4laMHPxP2duxkwdkc+Qk9Ex/2t9RGHLZYjGSoCr7
-	 QQ1iDos/VAw5bD1P8DUnfYwdGSgsxg8BEtZzbPGM=
+	b=Dt/d+Nn4qAKyh2PW+zJTOqLSctWQIZ/hCn/erLDn2OMUvyzTBqq4UVckR+joq322+
+	 N5KaJe7pAc/aKpAYYLVSHY0cnbVCJobHHE9zIYm0SnWqVggZ20P4gRjKK56EVC7fZC
+	 Bc9S2PSO8fgo2tUibAdYGHJEFyKxq7s7PMu4kJdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 6.6 353/583] binder: fix race between mmput() and do_exit()
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 148/374] virtio/vsock: fix logic which reduces credit update messages
 Date: Mon, 22 Jan 2024 15:56:44 -0800
-Message-ID: <20240122235822.821515325@linuxfoundation.org>
+Message-ID: <20240122235749.779577353@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Arseniy Krasnov <avkrasnov@salutedevices.com>
 
-commit 9a9ab0d963621d9d12199df9817e66982582d5a5 upstream.
+[ Upstream commit 93b80887668226180ea5f5349cc728ca6dc700ab ]
 
-Task A calls binder_update_page_range() to allocate and insert pages on
-a remote address space from Task B. For this, Task A pins the remote mm
-via mmget_not_zero() first. This can race with Task B do_exit() and the
-final mmput() refcount decrement will come from Task A.
+Add one more condition for sending credit update during dequeue from
+stream socket: when number of bytes in the rx queue is smaller than
+SO_RCVLOWAT value of the socket. This is actual for non-default value
+of SO_RCVLOWAT (e.g. not 1) - idea is to "kick" peer to continue data
+transmission, because we need at least SO_RCVLOWAT bytes in our rx
+queue to wake up user for reading data (in corner case it is also
+possible to stuck both tx and rx sides, this is why 'Fixes' is used).
 
-  Task A            | Task B
-  ------------------+------------------
-  mmget_not_zero()  |
-                    |  do_exit()
-                    |    exit_mm()
-                    |      mmput()
-  mmput()           |
-    exit_mmap()     |
-      remove_vma()  |
-        fput()      |
-
-In this case, the work of ____fput() from Task B is queued up in Task A
-as TWA_RESUME. So in theory, Task A returns to userspace and the cleanup
-work gets executed. However, Task A instead sleep, waiting for a reply
-from Task B that never comes (it's dead).
-
-This means the binder_deferred_release() is blocked until an unrelated
-binder event forces Task A to go back to userspace. All the associated
-death notifications will also be delayed until then.
-
-In order to fix this use mmput_async() that will schedule the work in
-the corresponding mm->async_put_work WQ instead of Task A.
-
-Fixes: 457b9a6f09f0 ("Staging: android: add binder driver")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-4-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b89d882dc9fc ("vsock/virtio: reduce credit update messages")
+Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder_alloc.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/vmw_vsock/virtio_transport_common.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -271,7 +271,7 @@ static int binder_update_page_range(stru
- 	}
- 	if (mm) {
- 		mmap_write_unlock(mm);
--		mmput(mm);
-+		mmput_async(mm);
- 	}
- 	return 0;
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 00e8b60af0f8..b490f832439e 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -355,6 +355,8 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
+ 	struct virtio_vsock_pkt *pkt;
+ 	size_t bytes, total = 0;
+ 	u32 free_space;
++	u32 fwd_cnt_delta;
++	bool low_rx_bytes;
+ 	int err = -EFAULT;
  
-@@ -304,7 +304,7 @@ err_page_ptr_cleared:
- err_no_vma:
- 	if (mm) {
- 		mmap_write_unlock(mm);
--		mmput(mm);
-+		mmput_async(mm);
+ 	spin_lock_bh(&vvs->rx_lock);
+@@ -386,7 +388,10 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
+ 		}
  	}
- 	return vma ? -ENOMEM : -ESRCH;
- }
+ 
+-	free_space = vvs->buf_alloc - (vvs->fwd_cnt - vvs->last_fwd_cnt);
++	fwd_cnt_delta = vvs->fwd_cnt - vvs->last_fwd_cnt;
++	free_space = vvs->buf_alloc - fwd_cnt_delta;
++	low_rx_bytes = (vvs->rx_bytes <
++			sock_rcvlowat(sk_vsock(vsk), 0, INT_MAX));
+ 
+ 	spin_unlock_bh(&vvs->rx_lock);
+ 
+@@ -396,9 +401,11 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
+ 	 * too high causes extra messages. Too low causes transmitter
+ 	 * stalls. As stalls are in theory more expensive than extra
+ 	 * messages, we set the limit to a high value. TODO: experiment
+-	 * with different values.
++	 * with different values. Also send credit update message when
++	 * number of bytes in rx queue is not enough to wake up reader.
+ 	 */
+-	if (free_space < VIRTIO_VSOCK_MAX_PKT_BUF_SIZE)
++	if (fwd_cnt_delta &&
++	    (free_space < VIRTIO_VSOCK_MAX_PKT_BUF_SIZE || low_rx_bytes))
+ 		virtio_transport_send_credit_update(vsk);
+ 
+ 	return total;
+-- 
+2.43.0
+
 
 
 
