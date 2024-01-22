@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-14285-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007D583804B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6003B837D7F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32FF91C2969C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 936791C23A70
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BDA765BCF;
-	Tue, 23 Jan 2024 01:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE50E5C61E;
+	Tue, 23 Jan 2024 00:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTh9P7U3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IDTcDRj/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B17E65193;
-	Tue, 23 Jan 2024 01:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0A94E1D8;
+	Tue, 23 Jan 2024 00:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971649; cv=none; b=uybC0bzsymC946ycIuH+E275fG2jyFwAmkPr83bHi9pO1pqwHA3/oB4bEM7mZhqjbSqHugQm0DpOKvM4qps7pDjhkz8+YfGHvFKy0cCFY/LP3VQn7lm4GBG2LgBufLrwrLF9bU6QYCryL3Y7XVAeyRb33FRM8yg+J6we54TCi9w=
+	t=1705969985; cv=none; b=kXMJXszdt+E8zzDVUOkVnaJVz/pTUZCTiK5b2OhovBLM/Z7kD/TRFQCv5hPawffz+WHfvs5LbQ1+mFMm+IkpHD8CJPxqvNs9YqpHFlNI/vGV3uDjBqknKec367iUTvS4DGFqKNMZKnRtCD9XIm5yzDtocWxmXrqBhYBXHVuSrts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971649; c=relaxed/simple;
-	bh=2GSERM8zkjdJJEmW0GrdH6qd0hysEQNRzNpm9GCSKAM=;
+	s=arc-20240116; t=1705969985; c=relaxed/simple;
+	bh=qffpP7hfvNJFv3sfr5ybEsyilsyo+397Mbb1DeIjQ8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MjiZXTdsjrGGz1hIDZdkkCnntwEzRBDwzCx92MsICmpGN2FamOh6gZK18IWgJQ4+SXOggbNVtp/JfWmWDgfE21LqckPkwQh2HdbrR4yTYVHFGnRppg6p1os3ik672nmrWa0kEVrAltd7rZ0mNMrtFRFv7VKDMMEA55Nf29bKnxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTh9P7U3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD708C433F1;
-	Tue, 23 Jan 2024 01:00:48 +0000 (UTC)
+	 MIME-Version; b=UmTf2J5/NCIfarJiQ8svrr1cgOHzRjgzDpnilye7fa8EbCb85wu+IxLhBSrfqBqLM4qwHIfVjQEcbSdXUB/JcyDC18gz/27T2MAAMjMj4Z/xFjtcoXS250RLpod5P6u09FYhrvW5pMgNHJuUOxrSiY6xLf0lCs80ETbBuNzYAbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IDTcDRj/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61289C433F1;
+	Tue, 23 Jan 2024 00:33:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971649;
-	bh=2GSERM8zkjdJJEmW0GrdH6qd0hysEQNRzNpm9GCSKAM=;
+	s=korg; t=1705969985;
+	bh=qffpP7hfvNJFv3sfr5ybEsyilsyo+397Mbb1DeIjQ8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QTh9P7U3Y1ycFnrEcerBsS1l50QpBjYtMBVc631cV0nYexecfJKUSwXyzFoSfSrV6
-	 Giu7tv2APRwK8BdoZVpMZVfLZBByRYmBMH3Ug88Z2rfOehM5QaJFa86a/LiFsfE386
-	 Eue/z5G2yg9SJqLjD8+eNLsWDwGm2TUDOd5WnJWA=
+	b=IDTcDRj/BRJBH+SLU8zJgPMJkCTAKUVTven62ntYVZG4yiynPIjam0qKxrJrp/kLd
+	 QX0+0Gp/rzDvxk7HDMLHXI9iOjQ9m2xxVc1YayHElrE9mS8KC3FnEkMRi0uRiD5BwX
+	 VIwtTvxBcXCXtsDCBEyG+qYxXi/kKrH0doAfpeCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	xingwei lee <xrivendell7@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 286/417] io_uring/rw: ensure io->bytes_done is always initialized
-Date: Mon, 22 Jan 2024 15:57:34 -0800
-Message-ID: <20240122235801.747394156@linuxfoundation.org>
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 551/641] vdpa: Fix an error handling path in eni_vdpa_probe()
+Date: Mon, 22 Jan 2024 15:57:35 -0800
+Message-ID: <20240122235835.393892773@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 0a535eddbe0dc1de4386046ab849f08aeb2f8faf upstream.
+[ Upstream commit c1b9f2c66eed3261db76cccd8a22a9affae8dcbf ]
 
-If IOSQE_ASYNC is set and we fail importing an iovec for a readv or
-writev request, then we leave ->bytes_done uninitialized and hence the
-eventual failure CQE posted can potentially have a random res value
-rather than the expected -EINVAL.
+After a successful vp_legacy_probe() call, vp_legacy_remove() should be
+called in the error handling path, as already done in the remove function.
 
-Setup ->bytes_done before potentially failing, so we have a consistent
-value if we fail the request early.
+Add the missing call.
 
-Cc: stable@vger.kernel.org
-Reported-by: xingwei lee <xrivendell7@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e85087beedca ("eni_vdpa: add vDPA driver for Alibaba ENI")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Message-Id: <a7b0ef1eabd081f1c7c894e9b11de01678e85dee.1666293559.git.christophe.jaillet@wanadoo.fr>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/rw.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/vdpa/alibaba/eni_vdpa.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/io_uring/rw.c
-+++ b/io_uring/rw.c
-@@ -534,15 +534,19 @@ static inline int io_rw_prep_async(struc
- 	struct iovec *iov;
- 	int ret;
+diff --git a/drivers/vdpa/alibaba/eni_vdpa.c b/drivers/vdpa/alibaba/eni_vdpa.c
+index 5a09a09cca70..cce3d1837104 100644
+--- a/drivers/vdpa/alibaba/eni_vdpa.c
++++ b/drivers/vdpa/alibaba/eni_vdpa.c
+@@ -497,7 +497,7 @@ static int eni_vdpa_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	if (!eni_vdpa->vring) {
+ 		ret = -ENOMEM;
+ 		ENI_ERR(pdev, "failed to allocate virtqueues\n");
+-		goto err;
++		goto err_remove_vp_legacy;
+ 	}
  
-+	iorw->bytes_done = 0;
-+	iorw->free_iovec = NULL;
-+
- 	/* submission path, ->uring_lock should already be taken */
- 	ret = io_import_iovec(rw, req, &iov, &iorw->s, 0);
- 	if (unlikely(ret < 0))
- 		return ret;
+ 	for (i = 0; i < eni_vdpa->queues; i++) {
+@@ -509,11 +509,13 @@ static int eni_vdpa_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	ret = vdpa_register_device(&eni_vdpa->vdpa, eni_vdpa->queues);
+ 	if (ret) {
+ 		ENI_ERR(pdev, "failed to register to vdpa bus\n");
+-		goto err;
++		goto err_remove_vp_legacy;
+ 	}
  
--	iorw->bytes_done = 0;
--	iorw->free_iovec = iov;
--	if (iov)
-+	if (iov) {
-+		iorw->free_iovec = iov;
- 		req->flags |= REQ_F_NEED_CLEANUP;
-+	}
-+
  	return 0;
- }
  
++err_remove_vp_legacy:
++	vp_legacy_remove(&eni_vdpa->ldev);
+ err:
+ 	put_device(&eni_vdpa->vdpa.dev);
+ 	return ret;
+-- 
+2.43.0
+
 
 
 
