@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-13976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 439A5837F06
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D2E98381EE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF24029B91A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC061287A86
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 354886025F;
-	Tue, 23 Jan 2024 00:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1FFC51006;
+	Tue, 23 Jan 2024 01:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KzdbdJkH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udYDdQt2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E735A4E1BC;
-	Tue, 23 Jan 2024 00:48:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD3F54BCE;
+	Tue, 23 Jan 2024 01:40:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970890; cv=none; b=B8u4PR6SzHs2JHNH/jeLLrRNAue3OINw078KQZmSm45wKQIRvZIg2Zj5yRWoCKER77dMo9yuz++BFen/6k99PKBYtxSZYdzWOloVvwBA65Gq3ri+ZTuDGLXCpSr/JTk6MrhOOdZkE98ik8Nz+9fdcrXIIYQJF+W53WbG8qsbfpQ=
+	t=1705974008; cv=none; b=bRs8Pzp2C+joUkfqtb4OqxtKrvrLtTUQ7jY2/kmTtr7lrneEMufMsQJR/cU9oiTODMa/phWwOKsdcLlUBrL5ZOVA5unWPkZvIgkW+BbIJQNlaOwzaIdB6rN7qzGY8KXCde/CBgVSL9DXPLd7pQ5fdSbVWlW1a6fd0qYvEiC2xBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970890; c=relaxed/simple;
-	bh=SEE9sJ4ibXlwrun+N+xzM/wku9jDcnERRkHux28eXQU=;
+	s=arc-20240116; t=1705974008; c=relaxed/simple;
+	bh=K6JPH35hNIKgK4ySHRZws6uTkfcipBQ6SKYuqI91PrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uMMdYwFXjWKyB+95VvfXTPuczPP4E+LF8qlomqECWwRIr5zr0SKz9SOIs1rHX8eujB4fQJvaNmw5TDvVgMj3TkZOEvQrMZLAWefv/ydYQj+c9xT196J8Z55T661vups5gBqWm5PDXARKo7pqUZfGTMuOs6tFPQzLShYpfkKXnpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KzdbdJkH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97A3AC433C7;
-	Tue, 23 Jan 2024 00:48:09 +0000 (UTC)
+	 MIME-Version; b=bHVIXZPT/4O4yncvy/OgsI+ZVtd/CX0GykPpVLpc62cp1aGj27vyUXP+riLlHYymTtn3Lwyxf7mEj3DeWquuZHu82jY703e9fAH+B2Ffu002e5BJLHWWcsfVVubW9FlwC1DK3h9oWKZXyavvZoAr2Blm9c39s3w1vKHqCBcJNTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udYDdQt2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1419DC433C7;
+	Tue, 23 Jan 2024 01:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970889;
-	bh=SEE9sJ4ibXlwrun+N+xzM/wku9jDcnERRkHux28eXQU=;
+	s=korg; t=1705974008;
+	bh=K6JPH35hNIKgK4ySHRZws6uTkfcipBQ6SKYuqI91PrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KzdbdJkH57AHDotEm+eL8PIxuFLUFp7/cx+eBrtXL96QVHP6QO26894SndEV80wxy
-	 ik1ip6NiCedG5fk3eQD4RkvXBTLFa3e4pIATU0EB1ykgDDVBp2oJnp3LAJiuTXFe1x
-	 o2MWwjoZbI/aCFi1xywh+mW+AVgJxZt/yHowWDhU=
+	b=udYDdQt2558+vk4YmfgQy/qVupVAQ51tbwC4EyCANeMJ98xuvbwzO6xDAkX5i+6bO
+	 K5ysXPOepSqcWYN0252FESi6JuIxZ5E7NJpnx1lJ12rw55p0qV1gzYLj9bICEkerVJ
+	 rUvsPJt0AD2/Lg8HZB58ySD/ZLnwgqfywxWukFfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com,
-	Ziqi Zhao <astrajoan@yahoo.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Alex Vinarskis <alex.vinarskis@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 039/286] drm/crtc: fix uninitialized variable use
+Subject: [PATCH 5.15 089/374] ACPI: LPSS: Fix the fractional clock divider flags
 Date: Mon, 22 Jan 2024 15:55:45 -0800
-Message-ID: <20240122235733.522397654@linuxfoundation.org>
+Message-ID: <20240122235747.711027210@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,56 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 6e455f5dcdd15fa28edf0ffb5b44d3508512dccf ]
+[ Upstream commit 3ebccf1d1ca74bbb78e6f8c38d1d172e468d91f8 ]
 
-Commit 3823119b9c2b ("drm/crtc: Fix uninit-value bug in
-drm_mode_setcrtc") was supposed to fix use of an uninitialized variable,
-but introduced another.
+The conversion to CLK_FRAC_DIVIDER_POWER_OF_TWO_PS uses wrong flags
+in the parameters and hence miscalculates the values in the clock
+divider. Fix this by applying the flag to the proper parameter.
 
-num_connectors is only initialized if crtc_req->count_connectors > 0,
-but it's used regardless. Fix it.
-
-Fixes: 3823119b9c2b ("drm/crtc: Fix uninit-value bug in drm_mode_setcrtc")
-Cc: syzbot+4fad2e57beb6397ab2fc@syzkaller.appspotmail.com
-Cc: Ziqi Zhao <astrajoan@yahoo.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231208131238.2924571-1-jani.nikula@intel.com
+Fixes: 82f53f9ee577 ("clk: fractional-divider: Introduce POWER_OF_TWO_PS flag")
+Reported-by: Alex Vinarskis <alex.vinarskis@gmail.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_crtc.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/acpi/acpi_lpss.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/drm_crtc.c b/drivers/gpu/drm/drm_crtc.c
-index b3c0a9ea8c6f..4ed3fc28d4da 100644
---- a/drivers/gpu/drm/drm_crtc.c
-+++ b/drivers/gpu/drm/drm_crtc.c
-@@ -562,7 +562,7 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 	struct drm_mode_set set;
- 	uint32_t __user *set_connectors_ptr;
- 	struct drm_modeset_acquire_ctx ctx;
--	int ret, i, num_connectors;
-+	int ret, i, num_connectors = 0;
+diff --git a/drivers/acpi/acpi_lpss.c b/drivers/acpi/acpi_lpss.c
+index f609f9d62efd..332befb5f579 100644
+--- a/drivers/acpi/acpi_lpss.c
++++ b/drivers/acpi/acpi_lpss.c
+@@ -439,8 +439,9 @@ static int register_device_clock(struct acpi_device *adev,
+ 		if (!clk_name)
+ 			return -ENOMEM;
+ 		clk = clk_register_fractional_divider(NULL, clk_name, parent,
++						      0, prv_base, 1, 15, 16, 15,
+ 						      CLK_FRAC_DIVIDER_POWER_OF_TWO_PS,
+-						      prv_base, 1, 15, 16, 15, 0, NULL);
++						      NULL);
+ 		parent = clk_name;
  
- 	if (!drm_core_check_feature(dev, DRIVER_MODESET))
- 		return -EOPNOTSUPP;
-@@ -700,7 +700,6 @@ int drm_mode_setcrtc(struct drm_device *dev, void *data,
- 			goto out;
- 		}
- 
--		num_connectors = 0;
- 		for (i = 0; i < crtc_req->count_connectors; i++) {
- 			connector_set[i] = NULL;
- 			set_connectors_ptr = (uint32_t __user *)(unsigned long)crtc_req->set_connectors_ptr;
+ 		clk_name = kasprintf(GFP_KERNEL, "%s-update", devname);
 -- 
 2.43.0
 
