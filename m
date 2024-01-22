@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-14059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B1FB837F56
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59A74837D0A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:23:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA22328CF2A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 122E829130E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 755CE12AAE3;
-	Tue, 23 Jan 2024 00:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E6F15E27F;
+	Tue, 23 Jan 2024 00:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVw+hFoQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n+/nsQ/d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351B812AAE0;
-	Tue, 23 Jan 2024 00:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 037845FDAB;
+	Tue, 23 Jan 2024 00:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971071; cv=none; b=I0qtumVkq2TgZ7DgpFmMJBDk1KVacL4vpTapv1L8yqzyzGcZf95Nl09lDbMl5dfmsSuKCkwWxo/EWFZNS1nyTqXRw+k/NnfcPtvX58FRZ3OQ6IBkjbvBZohifI8hFs50QLiZ09YzdMQhER82wydyhdvs6IZRnWI5kyd44IPqnZk=
+	t=1705969774; cv=none; b=AhxPaOQKRCGg/e7VonxRo+C+HxOMdj/UYBrso5LPd9BkZxmpvhbCer4RtxOP4IjGcA2luR10YMiqRfhkPQO7/NhooxHecM2Za37b/JbfwkBS3IMgNnVQ0WFBj9Kr07YwhFPriYqZUpSN2TSBvIdHRuLTIufWDYfRKp+hoHG9pWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971071; c=relaxed/simple;
-	bh=SancLkbnlsFSNSBMxgSWHEBNQ6+GHi0y2pJwkZ2rOe0=;
+	s=arc-20240116; t=1705969774; c=relaxed/simple;
+	bh=DAIQeojWJFn/gU7IZkIQhZSIB2BC+NcKw1aT1mM4b4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TWKxaLQaTUQdGKXAH8E3flLRnyn9OvuLxUvlXPTiJ8Yog+117QXZdbvWP4Ouc3yzBtaxMVbEdhzIdi/K+gAVuTZ3FjVdMKFBIHR8P6SDVrMEN1GHoTUTIuEyC/YlhuVKtp29/Wc22FH9m8LWcTxzZ7dszUJPmH+zINcaUDEsWD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVw+hFoQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94E1FC43390;
-	Tue, 23 Jan 2024 00:51:10 +0000 (UTC)
+	 MIME-Version; b=Ofn7/vgWzO9zoeWsaX3nEUvQBckiSSQph9fKZ8gp03tn4J/OU6CvSBEEt6XZzixfrlzbm7awiWrZxb49lBIc/YjPR8tH7Ey67ACf+uvpbjfn5/usgOOgk6o96nv1sEcVtD33t5l4yxM5CEx36Q3946ceItH/FRYko+0XIwTM/0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n+/nsQ/d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C06B9C433F1;
+	Tue, 23 Jan 2024 00:29:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971071;
-	bh=SancLkbnlsFSNSBMxgSWHEBNQ6+GHi0y2pJwkZ2rOe0=;
+	s=korg; t=1705969773;
+	bh=DAIQeojWJFn/gU7IZkIQhZSIB2BC+NcKw1aT1mM4b4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xVw+hFoQJHyZikpMyvOJgU9FOCDNZU1Ihl4RYtNGCxc7XSgJB3jAurmf6y2DjwKG/
-	 zvMeSIDEwjF8/hziFeEnq9pByIHjWHekRjXiHn6d+AJWfwy9nQedgvt8T1Qafohzdq
-	 zzPnWTzC5PHl1kIgO1Fkp/4Wem4Irm/KlCdh1Qi4=
+	b=n+/nsQ/dvKY35niQL50wHKhpfRaUCksCOZXS1mpwGjZrZLmWTapsazuc+PgDL9fqu
+	 yHxvzJP5KaFvZI8LTTqQ1T/326tklqjoNHnQVnh9IAOLyvz5QWHLwsMFELciXuLllW
+	 1+C/7JcnGQpyyCxic8YQ8YSg0bi0Z21Db0CAPHRY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 175/417] drm/tidss: Move reset to the end of dispc_init()
-Date: Mon, 22 Jan 2024 15:55:43 -0800
-Message-ID: <20240122235757.929391336@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.7 440/641] drm/amd: Enable PCIe PME from D3
+Date: Mon, 22 Jan 2024 15:55:44 -0800
+Message-ID: <20240122235831.784271104@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 36d1e0852680aa038e2428d450673390111b165c ]
+commit bd1f6a31e7762ebc99b97f3eda5e5ea3708fa792 upstream.
 
-We do a DSS reset in the middle of the dispc_init(). While that happens
-to work now, we should really make sure that e..g the fclk, which is
-acquired only later in the function, is enabled when doing a reset. This
-will be handled in a later patch, but for now, let's move the
-dispc_softreset() call to the end of dispc_init(), which is a sensible
-place for it anyway.
+When dGPU is put into BOCO it may be in D3cold but still able send
+PME on display hotplug event. For this to work it must be enabled
+as wake source from D3.
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Link: https://lore.kernel.org/r/20231109-tidss-probe-v2-4-ac91b5ea35c0@ideasonboard.com
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Stable-dep-of: bc288a927815 ("drm/tidss: Fix dss reset")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When runpm is enabled use pci_wake_from_d3() to mark wakeup as
+enabled by default.
+
+Cc: stable@vger.kernel.org # 6.1+
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tidss/tidss_dispc.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
-index 16301bdfead1..9ce452288c9e 100644
---- a/drivers/gpu/drm/tidss/tidss_dispc.c
-+++ b/drivers/gpu/drm/tidss/tidss_dispc.c
-@@ -2726,10 +2726,6 @@ int dispc_init(struct tidss_device *tidss)
- 			return r;
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -2265,6 +2265,8 @@ retry_init:
  
--	/* K2G display controller does not support soft reset */
--	if (feat->subrev != DISPC_K2G)
--		dispc_softreset(dispc);
--
- 	for (i = 0; i < dispc->feat->num_vps; i++) {
- 		u32 gamma_size = dispc->feat->vp_feat.color.gamma_size;
- 		u32 *gamma_table;
-@@ -2778,6 +2774,10 @@ int dispc_init(struct tidss_device *tidss)
- 	of_property_read_u32(dispc->dev->of_node, "max-memory-bandwidth",
- 			     &dispc->memory_bandwidth_limit);
+ 		pci_wake_from_d3(pdev, TRUE);
  
-+	/* K2G display controller does not support soft reset */
-+	if (feat->subrev != DISPC_K2G)
-+		dispc_softreset(dispc);
++		pci_wake_from_d3(pdev, TRUE);
 +
- 	tidss->dispc = dispc;
- 
- 	return 0;
--- 
-2.43.0
-
+ 		/*
+ 		 * For runpm implemented via BACO, PMFW will handle the
+ 		 * timing for BACO in and out:
 
 
 
