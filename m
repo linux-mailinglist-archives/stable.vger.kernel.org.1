@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-13529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1EB9837C7A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB12837E8E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89B612854C6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50FF11C21D61
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D81F1353FB;
-	Tue, 23 Jan 2024 00:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 307F04EB2A;
+	Tue, 23 Jan 2024 00:44:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="baKxC6DC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBEdNZw8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B21133097;
-	Tue, 23 Jan 2024 00:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B172F4A;
+	Tue, 23 Jan 2024 00:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969633; cv=none; b=lGCENS/my/l1WNg36+YFi4efsiitYZZd01FXs7GGj8s9GNiPFNqswmBSPjqD0cT8HQUkGGOll2+bcLM+s202vixOO4RloY6Ph7ldyjNBg74V5Cdq96Gfa3L37IO2bX1P6lfjFxOpcpHdVT/8uHpZrZoBWTa20LssXz37E9nJt/s=
+	t=1705970666; cv=none; b=qMsIGZbukdVhDb84Nz9j8eHufT7JpysZp5H4gfVH+D6w/CesptJ6sIm+WpN+yMPAV+Vf7TWbDOt32mjGMH95Wj0U/JuWrAlGP6smztaj2o12Uy/xZpHp9y66R71FdUH3D1XzN0ZB8vBj7LCIx9bsRId6UPivQnt/pcJEQEqjT1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969633; c=relaxed/simple;
-	bh=lyWubrrxWPnWUPr9JjmNsosqiFMIGFyBuym922sV6go=;
+	s=arc-20240116; t=1705970666; c=relaxed/simple;
+	bh=dFhj9PvsMSaWlbi+3pIMSC34T4ej3fsSyOPMoOUEDFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ILS6hvmNclMAQG+WwiYw7LRftsPP1kI91RpaQfmM+irHdJs1uK7ydBpwlhWb912XxnGVO98LnZCjpYJmnFXa+FYI/RoLxAEn7iXXIDQ7TkBR2Of08GUQWmUW0HurbHsEEG+Ln/RQ8jdGKXrQ18qIXrEVKiXnIx2NsGpZy43nCXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=baKxC6DC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06DAC433F1;
-	Tue, 23 Jan 2024 00:27:12 +0000 (UTC)
+	 MIME-Version; b=MhCdtQqfG5rdeWCsf4PhqhRxCzbjgty5NbeGzKUXjOmTu5ywH/sZaMKPlXO4rSAJlUl1uRzR+hhusNLZiNL3y0dTf9nJVAb54N8fIyPiO2Tn3xDgknZRvONjr81f3xF2ueaiqEV6svM32T1nvmJvzxM9i/dgaZDiJ3a0cWqIb2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBEdNZw8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6EA4C433C7;
+	Tue, 23 Jan 2024 00:44:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969633;
-	bh=lyWubrrxWPnWUPr9JjmNsosqiFMIGFyBuym922sV6go=;
+	s=korg; t=1705970665;
+	bh=dFhj9PvsMSaWlbi+3pIMSC34T4ej3fsSyOPMoOUEDFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=baKxC6DCN85uw13Nceeh6QzsyKRj/Ok0+FM1p+6GzWiRVj+yMZ3C28gBBkxtNyFkR
-	 RBY87/y+hV+Nz+fy13noop2wXKZGVhX1cJ+5d8qe/aC7t+V2cs6MGNQ0O+TlVjuAYU
-	 2X+0vh2tjKSczJ7nz1KnNIfXSgQBj/D3hc9JzgK4=
+	b=IBEdNZw8rX8QdhUAbW6YBFfWvF0CDmThK96jbepFoas+ItW/aSSoxvvRaGgz2beaQ
+	 WxSv8S9iYYfQtV+Hj8mAlvoPca5NSSTgzl+Qaxs+QbJ91s+M91OqCCy4B7iluDaRXd
+	 Erqvr6/FRd04LyNr75vsFIfD6W1/tD03TRejRJBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 347/641] clk: qcom: gcc-sm8550: Add the missing RETAIN_FF_ENABLE GDSC flag
+Subject: [PATCH 6.1 083/417] bpf: enforce precision of R0 on callback return
 Date: Mon, 22 Jan 2024 15:54:11 -0800
-Message-ID: <20240122235828.786680530@linuxfoundation.org>
+Message-ID: <20240122235754.579408564@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 1fe8273c8d4088dd68faaab8640ec95f381cbf1e ]
+[ Upstream commit 0acd03a5bd188b0c501d285d938439618bd855c4 ]
 
-All of the 8550's GCC GDSCs can and should use the retain registers so
-as not to lose their state when entering lower power modes.
+Given verifier checks actual value, r0 has to be precise, so we need to
+propagate precision properly. r0 also has to be marked as read,
+otherwise subsequent state comparisons will ignore such register as
+unimportant and precision won't really help here.
 
-Fixes: 955f2ea3b9e9 ("clk: qcom: Add GCC driver for SM8550")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231218-topic-8550_fixes-v1-3-ce1272d77540@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 69c087ba6225 ("bpf: Add bpf_for_each_map_elem() helper")
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Acked-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20231202175705.885270-4-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sm8550.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ kernel/bpf/verifier.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/clk/qcom/gcc-sm8550.c b/drivers/clk/qcom/gcc-sm8550.c
-index 586126c4dd90..1c3d78500392 100644
---- a/drivers/clk/qcom/gcc-sm8550.c
-+++ b/drivers/clk/qcom/gcc-sm8550.c
-@@ -3002,7 +3002,7 @@ static struct gdsc pcie_0_gdsc = {
- 		.name = "pcie_0_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = POLL_CFG_GDSCR,
-+	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc pcie_0_phy_gdsc = {
-@@ -3011,7 +3011,7 @@ static struct gdsc pcie_0_phy_gdsc = {
- 		.name = "pcie_0_phy_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = POLL_CFG_GDSCR,
-+	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc pcie_1_gdsc = {
-@@ -3020,7 +3020,7 @@ static struct gdsc pcie_1_gdsc = {
- 		.name = "pcie_1_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = POLL_CFG_GDSCR,
-+	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc pcie_1_phy_gdsc = {
-@@ -3029,7 +3029,7 @@ static struct gdsc pcie_1_phy_gdsc = {
- 		.name = "pcie_1_phy_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = POLL_CFG_GDSCR,
-+	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc ufs_phy_gdsc = {
-@@ -3038,7 +3038,7 @@ static struct gdsc ufs_phy_gdsc = {
- 		.name = "ufs_phy_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = POLL_CFG_GDSCR,
-+	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc ufs_mem_phy_gdsc = {
-@@ -3047,7 +3047,7 @@ static struct gdsc ufs_mem_phy_gdsc = {
- 		.name = "ufs_mem_phy_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = POLL_CFG_GDSCR,
-+	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc usb30_prim_gdsc = {
-@@ -3056,7 +3056,7 @@ static struct gdsc usb30_prim_gdsc = {
- 		.name = "usb30_prim_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = POLL_CFG_GDSCR,
-+	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc usb3_phy_gdsc = {
-@@ -3065,7 +3065,7 @@ static struct gdsc usb3_phy_gdsc = {
- 		.name = "usb3_phy_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = POLL_CFG_GDSCR,
-+	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
- };
- 
- static struct clk_regmap *gcc_sm8550_clocks[] = {
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 142e10d49fd8..024a2393613f 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -7284,6 +7284,13 @@ static int prepare_func_exit(struct bpf_verifier_env *env, int *insn_idx)
+ 			verbose(env, "R0 not a scalar value\n");
+ 			return -EACCES;
+ 		}
++
++		/* we are going to rely on register's precise value */
++		err = mark_reg_read(env, r0, r0->parent, REG_LIVE_READ64);
++		err = err ?: mark_chain_precision(env, BPF_REG_0);
++		if (err)
++			return err;
++
+ 		if (!tnum_in(range, r0->var_off)) {
+ 			verbose_invalid_scalar(env, r0, &range, "callback return", "R0");
+ 			return -EINVAL;
 -- 
 2.43.0
 
