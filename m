@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-13183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28720837B40
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDDE4837AFF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 895F4B2D90B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:55:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 918CC28C2BC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:57:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516AB132C07;
-	Tue, 23 Jan 2024 00:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 734061487DE;
+	Tue, 23 Jan 2024 00:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NfgNScbw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I53z3oey"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1159B131E54;
-	Tue, 23 Jan 2024 00:18:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 338061487DB;
+	Tue, 23 Jan 2024 00:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969108; cv=none; b=ZzbZaIzv+EwTUIYWPyztE5eezX41vl8KNoaA96iazCwAGmxE5KTTZSJi8meU8OAofVXxKi96ZNVFH/hLFriiuMnCoYRuB4syEG/GgunRLr+OQoPYt4J9Z0u/YvZ+Oc2F7j5D/smVV5DbVsdUmQbzO8yMpvcZWFy2jFK5pmN/io0=
+	t=1705969156; cv=none; b=Hvn2sDnx/QVq10aQSQJaKsYsBOTw7t+gB7+1iAS5EEfd0mCrYjf4sJmlx3PyiJ0ZPhpKPxgBPrNhSlYdFx4y3pF48sfG40+nJNRCR/5soWcsoNfZC/CCga5e7s8kioNIfBx0zLWkjQCR9k39knnDgwhph3kSH1YkKbKCyNGD0BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969108; c=relaxed/simple;
-	bh=bQniYTNceiKHXMM+f/qF2mhx77uEt7W+q7hW6+tWg58=;
+	s=arc-20240116; t=1705969156; c=relaxed/simple;
+	bh=3UORLJF23EX2cz/4UzIgd772ZEusQ8GKgCKrSCZYMNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QDFiHcnV+bq+SP8KSx9LW7yY6i2T4BLeU+GOvR7+aCQuxvQDzCgDQWdMNP6iX7xgTVYXdXh4kUuaMEJ+SwiyOq52LqMM7q5xicjpBUdX1bhoE7Z3Z67nL019G5JoanzHOrCNIgQ0f0gYCh3B58Gn6VPg2BDyEqf7xYvIObw4i8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfgNScbw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E8CC433C7;
-	Tue, 23 Jan 2024 00:18:27 +0000 (UTC)
+	 MIME-Version; b=PmQR9j0Ec4HFEaPjQXzrGHQ3LpIpexEf2Gd2EdBGPwXZRwpBPKOPQCJVLtoPhTyRdP+TFrDNbgTBZs4+gSxqwQztz1SsirPiiaqPxXzQx9WQf6W1PYUlUBZT+jFrnaulfQ3FqA5nl4o2XYd6L9RWhtbdYQeoukFweDzo0HyQdrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I53z3oey; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F01C43399;
+	Tue, 23 Jan 2024 00:19:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969107;
-	bh=bQniYTNceiKHXMM+f/qF2mhx77uEt7W+q7hW6+tWg58=;
+	s=korg; t=1705969156;
+	bh=3UORLJF23EX2cz/4UzIgd772ZEusQ8GKgCKrSCZYMNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NfgNScbwmGundT2nVq4HBZe/cyLBMy31pkSyAKXtvm9vbxCtQd5kbJwu782nPkqH/
-	 rFPSI49nIHeAI0Y4tKjPmsnfesOUahM+teP0v2uuu9jT7IG+jYftp4TwCWFQC4xhvl
-	 cgzxiyH7gry9VH71LSwojhZoHv+T80lLTo/KeEgE=
+	b=I53z3oeyVXyQl7LEcwYBgIXXRUUykLYuSao7NqIIyuRVtDnyF/L9SGETiuMOf9UfM
+	 UgPnqrcW/KEzKj5LfIDAsE3pth5kGoQCdfAYSHkR/Xiyuen2MeEAMN2uWs8TPCKE2b
+	 menY5245/pmbxCjZSKIr8xs0bYmij3GV3QXzPndA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Kiryushin <kiryushin@ancud.ru>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Chen Ni <nichen@iscas.ac.cn>,
+	Mimi Zohar <zohar@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 025/641] ACPI: LPIT: Avoid u32 multiplication overflow
-Date: Mon, 22 Jan 2024 15:48:49 -0800
-Message-ID: <20240122235818.885852475@linuxfoundation.org>
+Subject: [PATCH 6.7 026/641] KEYS: encrypted: Add check for strsep
+Date: Mon, 22 Jan 2024 15:48:50 -0800
+Message-ID: <20240122235818.914706597@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -66,38 +66,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nikita Kiryushin <kiryushin@ancud.ru>
+From: Chen Ni <nichen@iscas.ac.cn>
 
-[ Upstream commit 56d2eeda87995245300836ee4dbd13b002311782 ]
+[ Upstream commit b4af096b5df5dd131ab796c79cedc7069d8f4882 ]
 
-In lpit_update_residency() there is a possibility of overflow
-in multiplication, if tsc_khz is large enough (> UINT_MAX/1000).
+Add check for strsep() in order to transfer the error.
 
-Change multiplication to mul_u32_u32().
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: eeb2d80d502a ("ACPI / LPIT: Add Low Power Idle Table (LPIT) support")
-Signed-off-by: Nikita Kiryushin <kiryushin@ancud.ru>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: cd3bc044af48 ("KEYS: encrypted: Instantiate key with user-provided decrypted data")
+Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_lpit.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/keys/encrypted-keys/encrypted.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/acpi/acpi_lpit.c b/drivers/acpi/acpi_lpit.c
-index c5598b6d5db8..794962c5c88e 100644
---- a/drivers/acpi/acpi_lpit.c
-+++ b/drivers/acpi/acpi_lpit.c
-@@ -105,7 +105,7 @@ static void lpit_update_residency(struct lpit_residency_info *info,
- 		return;
- 
- 	info->frequency = lpit_native->counter_frequency ?
--				lpit_native->counter_frequency : tsc_khz * 1000;
-+				lpit_native->counter_frequency : mul_u32_u32(tsc_khz, 1000U);
- 	if (!info->frequency)
- 		info->frequency = 1;
- 
+diff --git a/security/keys/encrypted-keys/encrypted.c b/security/keys/encrypted-keys/encrypted.c
+index 8af2136069d2..76f55dd13cb8 100644
+--- a/security/keys/encrypted-keys/encrypted.c
++++ b/security/keys/encrypted-keys/encrypted.c
+@@ -237,6 +237,10 @@ static int datablob_parse(char *datablob, const char **format,
+ 			break;
+ 		}
+ 		*decrypted_data = strsep(&datablob, " \t");
++		if (!*decrypted_data) {
++			pr_info("encrypted_key: decrypted_data is missing\n");
++			break;
++		}
+ 		ret = 0;
+ 		break;
+ 	case Opt_load:
 -- 
 2.43.0
 
