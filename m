@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7845837EFF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:29 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A1D837D04
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:23:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06BFA1C28A5E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA2EA1F2939D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D61A605B6;
-	Tue, 23 Jan 2024 00:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 137B115E275;
+	Tue, 23 Jan 2024 00:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZGrzVJk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ngHZ98nf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03A560252;
-	Tue, 23 Jan 2024 00:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74195D909;
+	Tue, 23 Jan 2024 00:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970869; cv=none; b=cmFjroHHy0/Su8o9KmyFlGWkf+tqMT2NcBKWdzJ3s+iW07xPJZbKTpqlypZTgzjSpM5iXdXfQF8OI+t8c7d8548te1n+19huzcqtusDJiKfIf8GRgezvMiNtZeBNEfFxNfAucuctYN8T/wBxKEtenH9tNKv1kHLOTEfj4na8uDg=
+	t=1705969766; cv=none; b=P1sT4L7DBNkBV1ASrpThrPyk5X3+x92bE8GerlEBePOzjedE+Ypj5yEWGEtizgohvnG+bOoa0zUAycU0Bm4jk2q2V82n4XY64URESGUGI0uNaeR+3/G0JfSMn8WbQbMcPQn8ErIKKb4JovP3eRqROFNk2WL38U5iX8u2mgvvdig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970869; c=relaxed/simple;
-	bh=zyT0Ky1w2G1HVCDDlATBMbPk9e17QY438tXbjhTwZug=;
+	s=arc-20240116; t=1705969766; c=relaxed/simple;
+	bh=6JMaMJ5LKzmatSmTLrYFXf+fxmWKGs87uaXsMu63bNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dERfRUi1ed09ScpTr4K8hl2FLZKfpAk1PjDTArfsnDw/arO+FLZUPYrLNuomGroImSCKeWs0cUP40xStoCbFf5U4yeNIgJGgY9E993bTQ0TdRUi+xjp7wCFn0OUDXrr0V1jowPFwGULKjEct8fJvMlrgaEfvtXr7g/B5rxTO/N0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZGrzVJk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71294C433C7;
-	Tue, 23 Jan 2024 00:47:49 +0000 (UTC)
+	 MIME-Version; b=MAmr8aF86jxH2J9ZYi60VNxWngyXIQcH4vNhm47kiSvwDQBZ6CTPS7tf44gjJwFYkiMDeVQoVp1ryu01LjD+RABkYrQgefp2RRH9i5rxwuhAwOfzm2sB8ay9+mBwMEyPgaNH54/qS5JMGh6uxXR18/9grlDYPx6HG7KoJqsZZwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ngHZ98nf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEBA2C433F1;
+	Tue, 23 Jan 2024 00:29:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970869;
-	bh=zyT0Ky1w2G1HVCDDlATBMbPk9e17QY438tXbjhTwZug=;
+	s=korg; t=1705969766;
+	bh=6JMaMJ5LKzmatSmTLrYFXf+fxmWKGs87uaXsMu63bNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WZGrzVJkBe4HAFBiAjWZo2HCQ+NB3Ejxw18fvq0H6JMpynhelpaRWJPZO4TYnBBPz
-	 YmIZjQ3Wxy8gUGFLiuzcprT6R5rXDKJcwWpzpARe4zM5TfVD0eWMifDpHYmqYPlRSP
-	 IHvr9kaD+wKBry0RqfnnmBKAkXBhPKHCEbmgnvSY=
+	b=ngHZ98nfWfB3surYVM+hF2IIFAyl95GmJbCimjBesgQ/VzRotCQ9p1KxbGw+1nQSJ
+	 QzK5HTRREYsixrDn0PaBzeAvyITDOz77c95iYIlHtqN53vFnn1n+86dwTRI+efGgNj
+	 DVUWeTlP5PC9CCFKv1E8ITwhouZ5tzuh9LGubWME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jensen Huang <jensenhuang@friendlyarm.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Wolfram Sang <wsa@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 035/286] i2c: rk3x: fix potential spinlock recursion on poll
+	Sathya Prakash <sathya.prakash@broadcom.com>,
+	Chandrakanth patil <chandrakanth.patil@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.7 437/641] scsi: mpi3mr: Block PEL Enable Command on Controller Reset and Unrecoverable State
 Date: Mon, 22 Jan 2024 15:55:41 -0800
-Message-ID: <20240122235733.368503229@linuxfoundation.org>
+Message-ID: <20240122235831.678510456@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,89 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jensen Huang <jensenhuang@friendlyarm.com>
+From: Chandrakanth patil <chandrakanth.patil@broadcom.com>
 
-[ Upstream commit 19cde9c92b8d3b7ee555d0da3bcb0232d3a784f4 ]
+commit f8fb3f39148e8010479e4b2003ba4728818ec661 upstream.
 
-Possible deadlock scenario (on reboot):
-rk3x_i2c_xfer_common(polling)
-    -> rk3x_i2c_wait_xfer_poll()
-        -> rk3x_i2c_irq(0, i2c);
-            --> spin_lock(&i2c->lock);
-            ...
-        <rk3x i2c interrupt>
-        -> rk3x_i2c_irq(0, i2c);
-            --> spin_lock(&i2c->lock); (deadlock here)
+If a controller reset is underway or the controller is in an unrecoverable
+state, the PEL enable management command will be returned as EAGAIN or
+EFAULT.
 
-Store the IRQ number and disable/enable it around the polling transfer.
-This patch has been tested on NanoPC-T4.
-
-Signed-off-by: Jensen Huang <jensenhuang@friendlyarm.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org> # v6.1+
+Co-developed-by: Sathya Prakash <sathya.prakash@broadcom.com>
+Signed-off-by: Sathya Prakash <sathya.prakash@broadcom.com>
+Signed-off-by: Chandrakanth patil <chandrakanth.patil@broadcom.com>
+Link: https://lore.kernel.org/r/20231126053134.10133-4-chandrakanth.patil@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-rk3x.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/scsi/mpi3mr/mpi3mr_app.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-rk3x.c b/drivers/i2c/busses/i2c-rk3x.c
-index 13c14eb175e9..6abcf975a2db 100644
---- a/drivers/i2c/busses/i2c-rk3x.c
-+++ b/drivers/i2c/busses/i2c-rk3x.c
-@@ -178,6 +178,7 @@ struct rk3x_i2c_soc_data {
-  * @clk: function clk for rk3399 or function & Bus clks for others
-  * @pclk: Bus clk for rk3399
-  * @clk_rate_nb: i2c clk rate change notify
-+ * @irq: irq number
-  * @t: I2C known timing information
-  * @lock: spinlock for the i2c bus
-  * @wait: the waitqueue to wait for i2c transfer
-@@ -200,6 +201,7 @@ struct rk3x_i2c {
- 	struct clk *clk;
- 	struct clk *pclk;
- 	struct notifier_block clk_rate_nb;
-+	int irq;
- 
- 	/* Settings */
- 	struct i2c_timings t;
-@@ -1087,13 +1089,18 @@ static int rk3x_i2c_xfer_common(struct i2c_adapter *adap,
- 
- 		spin_unlock_irqrestore(&i2c->lock, flags);
- 
--		rk3x_i2c_start(i2c);
--
- 		if (!polling) {
-+			rk3x_i2c_start(i2c);
-+
- 			timeout = wait_event_timeout(i2c->wait, !i2c->busy,
- 						     msecs_to_jiffies(WAIT_TIMEOUT));
- 		} else {
-+			disable_irq(i2c->irq);
-+			rk3x_i2c_start(i2c);
-+
- 			timeout = rk3x_i2c_wait_xfer_poll(i2c);
-+
-+			enable_irq(i2c->irq);
- 		}
- 
- 		spin_lock_irqsave(&i2c->lock, flags);
-@@ -1301,6 +1308,8 @@ static int rk3x_i2c_probe(struct platform_device *pdev)
- 		return ret;
+--- a/drivers/scsi/mpi3mr/mpi3mr_app.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_app.c
+@@ -223,6 +223,22 @@ static long mpi3mr_bsg_pel_enable(struct
+ 		return rval;
  	}
  
-+	i2c->irq = irq;
++	if (mrioc->unrecoverable) {
++		dprint_bsg_err(mrioc, "%s: unrecoverable controller\n",
++			       __func__);
++		return -EFAULT;
++	}
 +
- 	platform_set_drvdata(pdev, i2c);
- 
- 	if (i2c->soc_data->calc_timings == rk3x_i2c_v0_calc_timings) {
--- 
-2.43.0
-
++	if (mrioc->reset_in_progress) {
++		dprint_bsg_err(mrioc, "%s: reset in progress\n", __func__);
++		return -EAGAIN;
++	}
++
++	if (mrioc->stop_bsgs) {
++		dprint_bsg_err(mrioc, "%s: bsgs are blocked\n", __func__);
++		return -EAGAIN;
++	}
++
+ 	sg_copy_to_buffer(job->request_payload.sg_list,
+ 			  job->request_payload.sg_cnt,
+ 			  &pel_enable, sizeof(pel_enable));
 
 
 
