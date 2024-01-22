@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C2FD837BE7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C87F838289
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3426B294946
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C7EC1F276B4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5381813DBB8;
-	Tue, 23 Jan 2024 00:23:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD9A5C912;
+	Tue, 23 Jan 2024 01:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gsGXBWHt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BG+CD0mQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC8C13BEA7;
-	Tue, 23 Jan 2024 00:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3115BAFD;
+	Tue, 23 Jan 2024 01:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969432; cv=none; b=AbuMfwjNt/zGFKq+pAYeRo+hXuqbJEPrHY1Ok2JTlx/QSIpz2z3hbqoFY+U3fVwkiUb8JuYRl1UnhhrLSvQnuObFB+C07yffv2kTGQktf+thH9NeCMmNL1nMCeie9QAqD5SiD2jI/n0vhZ0UwtFtWOP1ooJAo+5sDW1eWKMIT4w=
+	t=1705974374; cv=none; b=FZs4HV/8IE6eeHQSHRNcwXmKnu6Te0nf8QSyUPRBhCTVP8r2ydHn6i1REnYGjLCD3cMNxLVZovISa+QaWb+EX099nGixmuR7uy5pq8KpgzUcKYkwVyTcX7maKMIUFhhKcuj0pXEOeLD1QSQL9BzUUA9kvOVbso/FlJf6Ptr7DFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969432; c=relaxed/simple;
-	bh=uzYQy4NT+HMjvMrSiKiJNL7fWfOVF6HGxSTC7dvAAao=;
+	s=arc-20240116; t=1705974374; c=relaxed/simple;
+	bh=xqBhWhFpgNEugVu7Q1fvNGG6jrJfT2gzDn9evWPbZh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZrP/Mkf9OjVbY6GDQkGpch+5l03qKEwz31aP3fGIYT0yNVrIAXwefkuih890qVlDnlEWn6xYi3LF4ZFKM/0BaVvhzsOF7nkHmULZjDD5x/bcBOrmii28+fPKlPHhjuU/wLxSOEZ5YczOKBzjsd6WK8neIJ2vByW9GtwaDyA53uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gsGXBWHt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97EA9C43390;
-	Tue, 23 Jan 2024 00:23:51 +0000 (UTC)
+	 MIME-Version; b=kUd2/3lGPOc8vCGQQXnX7u6Zmr5BjFWj7MUO+wKkzppLFIOGnmO7/z2S56INg6mobYw5X2QsqMxEEsR8p1uy9vpiA6I04rzbbLqxLVUsHnnuFXEZ6XnAwXhnCwUseWk2HpsB+B0ZxV+2kIgjpjK+1l/L/AV4C7/lSoJczsJuj1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BG+CD0mQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15ECFC433C7;
+	Tue, 23 Jan 2024 01:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969431;
-	bh=uzYQy4NT+HMjvMrSiKiJNL7fWfOVF6HGxSTC7dvAAao=;
+	s=korg; t=1705974374;
+	bh=xqBhWhFpgNEugVu7Q1fvNGG6jrJfT2gzDn9evWPbZh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gsGXBWHtdIqY+V9YOyRBtbwWIsdRci2husnLl/ytjwv1b9gFSTCEd18cANb15/4Nu
-	 qUigA87YvL6/lb7Akfx28kCWU7XIQaVA5Zzx2DScQgpO8gBLbmn4phRkBNHybIsDgu
-	 zglK5FaBZ8TNwbcfkaLNiWUO8LpsdvxeglSNbTx4=
+	b=BG+CD0mQOmvvWlMiYtGQvpLxHolKycQFBFF5rQqKvD9GM6BSotkU2rfrdYZob8jG2
+	 hBTxu5YYIY2jItsvUQ6Av+Sp8DYw7Z5KBJaEbGS5aTqYugaaU/wnRBp9ukq7eC6tUo
+	 TE3XY4HXI39kkmPvIfCoZLkKWmovZCrLYzncrFbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 217/641] wifi: iwlwifi: mvm: send TX path flush in rfkill
-Date: Mon, 22 Jan 2024 15:52:01 -0800
-Message-ID: <20240122235824.732984473@linuxfoundation.org>
+Subject: [PATCH 6.6 071/583] crypto: sahara - improve error handling in sahara_sha_process()
+Date: Mon, 22 Jan 2024 15:52:02 -0800
+Message-ID: <20240122235814.328227766@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit 2afc3dad39ea84a072d04ff40a417234326adc47 ]
+[ Upstream commit 5deff027fca49a1eb3b20359333cf2ae562a2343 ]
 
-If we want to drop packets, that's surely a good thing to
-do when we want to enter rfkill. Send this command despite
-rfkill so we can successfully clean up everything, we need
-to handle it separately since it has CMD_WANT_SKB, so it's
-not going to automatically return success when in rfkill.
+sahara_sha_hw_data_descriptor_create() returns negative error codes on
+failure, so make sure the errors are correctly handled / propagated.
 
-Fixes: d4e3a341b87b ("iwlwifi: mvm: add support for new flush queue response")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20231219215605.c528a6fa6cec.Ibe5e9560359ccc0fba60c35e01de285c376748a2@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/sahara.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index ae5cd13cd6dd..db986bfc4dc3 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -2256,7 +2256,7 @@ int iwl_mvm_flush_sta_tids(struct iwl_mvm *mvm, u32 sta_id, u16 tids)
- 	WARN_ON(!iwl_mvm_has_new_tx_api(mvm));
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index 86ff5add2e15..117aa4296c2a 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -987,7 +987,10 @@ static int sahara_sha_process(struct ahash_request *req)
+ 		return ret;
  
- 	if (iwl_fw_lookup_notif_ver(mvm->fw, LONG_GROUP, TXPATH_FLUSH, 0) > 0)
--		cmd.flags |= CMD_WANT_SKB;
-+		cmd.flags |= CMD_WANT_SKB | CMD_SEND_IN_RFKILL;
+ 	if (rctx->first) {
+-		sahara_sha_hw_data_descriptor_create(dev, rctx, req, 0);
++		ret = sahara_sha_hw_data_descriptor_create(dev, rctx, req, 0);
++		if (ret)
++			return ret;
++
+ 		dev->hw_desc[0]->next = 0;
+ 		rctx->first = 0;
+ 	} else {
+@@ -995,7 +998,10 @@ static int sahara_sha_process(struct ahash_request *req)
  
- 	IWL_DEBUG_TX_QUEUES(mvm, "flush for sta id %d tid mask 0x%x\n",
- 			    sta_id, tids);
+ 		sahara_sha_hw_context_descriptor_create(dev, rctx, req, 0);
+ 		dev->hw_desc[0]->next = dev->hw_phys_desc[1];
+-		sahara_sha_hw_data_descriptor_create(dev, rctx, req, 1);
++		ret = sahara_sha_hw_data_descriptor_create(dev, rctx, req, 1);
++		if (ret)
++			return ret;
++
+ 		dev->hw_desc[1]->next = 0;
+ 	}
+ 
 -- 
 2.43.0
 
