@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-13497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 924BB837C5A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 291F2837E84
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C7B329699A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4EF0AB22CEB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5F34432;
-	Tue, 23 Jan 2024 00:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEA525FF0D;
+	Tue, 23 Jan 2024 00:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yPYdv/Se"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpjG9wHC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E002C23C6;
-	Tue, 23 Jan 2024 00:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D35D51005;
+	Tue, 23 Jan 2024 00:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969588; cv=none; b=uO/6NOgdwUyGquf+kv5esyNbLC35bJPF3ORXeWzaeRCgvuhllG8Nc5y/9vyjfwwBC9P/gUmt3eAQDLReXcNJqNQD8N3NCDd/QU+GRMzWzZjMQNI0M4wFiXfujSFxx/CX3UokTInszNswq00YJENaEkxzPOKatpl8AKqoBhIct7U=
+	t=1705970637; cv=none; b=hHrQ0eCmDf3fiwYafx9fWA2g534VHYrwlzVCqmZLfZGfpZ6+PJCslh9tEXYrQZE0AM1eqD0F5RxhG3jCzTYbaswhqMYY9S2gPuuv3WKJ9C4iQHtqMpxYUs0uk9LWGg75UhCxvWjPDpYmuifI4HXRbI0kaJn1qDZsOOizIY+7XpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969588; c=relaxed/simple;
-	bh=rbXyK/0UIDTai+bd6ahCwnWpBeLar12wyJ80HsXHrJQ=;
+	s=arc-20240116; t=1705970637; c=relaxed/simple;
+	bh=NyldA+oDy25811cS/90giu26VKk3FiugtDYgSUlrlTM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Txcvpyj0/GYvpibJDcqzGi+z0kqsA8rZ5CuMHfhtk+ASxnqyHXhBFS6F2XDcXnF1Ztco3znYkhEvS7WvQvq7Cks+j8Oac5dnwdZtbwwdjsoQO/bEKwa8tYYihZVNjw5+cYaJyqGpCM5toAUTD9VfrRzpF9ip5IiQwz39+MMf6Pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yPYdv/Se; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BC2EC43390;
-	Tue, 23 Jan 2024 00:26:27 +0000 (UTC)
+	 MIME-Version; b=a7bpb3owm1KoL1ToTZbfYNvKher4L8819F3csI1t8dvUTxByfEj+TgY6H6FXpbwWR1po73sXfvbXb9i2Tlbcqn6tgsMYsm/+wF8y+4oCaokRtz9Ih8l5v0uh4uqbPoS460fCZ1qlcMYjSZfRbfbXvivzZOgBEEncbUCdVi5VwwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpjG9wHC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342AAC433C7;
+	Tue, 23 Jan 2024 00:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969587;
-	bh=rbXyK/0UIDTai+bd6ahCwnWpBeLar12wyJ80HsXHrJQ=;
+	s=korg; t=1705970637;
+	bh=NyldA+oDy25811cS/90giu26VKk3FiugtDYgSUlrlTM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yPYdv/SekgV6031Hor67snsXS4bUbKpxhf0gih16uTeJMPLkpV1kD/fSWum0O0nB6
-	 p4iZHBm5pwt6j0Qkz7asTtG/0jLsJmsQLXmDhaE58Kwf8uemWyFI2dRowiWX/U0CAN
-	 0EKc/YQROmp9r/zoAXYnNHF7o29F0G7Kp9mS/clo=
+	b=cpjG9wHCjscJ5AtyAGA5XSAFr/kZwyze2sQUZt08trI3R3PwUOCD3nBnx4DlNpcsf
+	 hmEnn8Xqhzl4BgRF/6Chz+yXITLd+Jd2p+zpIseepeqBFHWHbXS5NP5n1Noswlb5Zm
+	 pjIKjry0lKbvbmnBBI8gh9H0qlchHoPMKj4B+SYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Peter Delevoryas <peter@pjd.dev>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 339/641] watchdog: bcm2835_wdt: Fix WDIOC_SETTIMEOUT handling
+Subject: [PATCH 6.1 075/417] net/ncsi: Fix netlink major/minor version numbers
 Date: Mon, 22 Jan 2024 15:54:03 -0800
-Message-ID: <20240122235828.521100566@linuxfoundation.org>
+Message-ID: <20240122235754.310712686@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,204 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Peter Delevoryas <peter@pjd.dev>
 
-[ Upstream commit f33f5b1fd1be5f5106d16f831309648cb0f1c31d ]
+[ Upstream commit 3084b58bfd0b9e4b5e034f31f31b42977db35f12 ]
 
-Users report about the unexpected behavior for setting timeouts above
-15 sec on Raspberry Pi. According to watchdog-api.rst the ioctl
-WDIOC_SETTIMEOUT shouldn't fail because of hardware limitations.
-But looking at the code shows that max_timeout based on the
-register value PM_WDOG_TIME_SET, which is the maximum.
+The netlink interface for major and minor version numbers doesn't actually
+return the major and minor version numbers.
 
-Since 664a39236e71 ("watchdog: Introduce hardware maximum heartbeat
-in watchdog core") the watchdog core is able to handle this problem.
+It reports a u32 that contains the (major, minor, update, alpha1)
+components as the major version number, and then alpha2 as the minor
+version number.
 
-This fix has been tested with watchdog-test from selftests.
+For whatever reason, the u32 byte order was reversed (ntohl): maybe it was
+assumed that the encoded value was a single big-endian u32, and alpha2 was
+the minor version.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217374
-Fixes: 664a39236e71 ("watchdog: Introduce hardware maximum heartbeat in watchdog core")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20231112173251.4827-1-wahrenst@gmx.net
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+The correct way to get the supported NC-SI version from the network
+controller is to parse the Get Version ID response as described in 8.4.44
+of the NC-SI spec[1].
+
+    Get Version ID Response Packet Format
+
+              Bits
+            +--------+--------+--------+--------+
+     Bytes  | 31..24 | 23..16 | 15..8  | 7..0   |
+    +-------+--------+--------+--------+--------+
+    | 0..15 | NC-SI Header                      |
+    +-------+--------+--------+--------+--------+
+    | 16..19| Response code   | Reason code     |
+    +-------+--------+--------+--------+--------+
+    |20..23 | Major  | Minor  | Update | Alpha1 |
+    +-------+--------+--------+--------+--------+
+    |24..27 |         reserved         | Alpha2 |
+    +-------+--------+--------+--------+--------+
+    |            .... other stuff ....          |
+
+The major, minor, and update fields are all binary-coded decimal (BCD)
+encoded [2]. The spec provides examples below the Get Version ID response
+format in section 8.4.44.1, but for practical purposes, this is an example
+from a live network card:
+
+    root@bmc:~# ncsi-util 0x15
+    NC-SI Command Response:
+    cmd: GET_VERSION_ID(0x15)
+    Response: COMMAND_COMPLETED(0x0000)  Reason: NO_ERROR(0x0000)
+    Payload length = 40
+
+    20: 0xf1 0xf1 0xf0 0x00 <<<<<<<<< (major, minor, update, alpha1)
+    24: 0x00 0x00 0x00 0x00 <<<<<<<<< (_, _, _, alpha2)
+
+    28: 0x6d 0x6c 0x78 0x30
+    32: 0x2e 0x31 0x00 0x00
+    36: 0x00 0x00 0x00 0x00
+    40: 0x16 0x1d 0x07 0xd2
+    44: 0x10 0x1d 0x15 0xb3
+    48: 0x00 0x17 0x15 0xb3
+    52: 0x00 0x00 0x81 0x19
+
+This should be parsed as "1.1.0".
+
+"f" in the upper-nibble means to ignore it, contributing zero.
+
+If both nibbles are "f", I think the whole field is supposed to be ignored.
+Major and minor are "required", meaning they're not supposed to be "ff",
+but the update field is "optional" so I think it can be ff. I think the
+simplest thing to do is just set the major and minor to zero instead of
+juggling some conditional logic or something.
+
+bcd2bin() from "include/linux/bcd.h" seems to assume both nibbles are 0-9,
+so I've provided a custom BCD decoding function.
+
+Alpha1 and alpha2 are ISO/IEC 8859-1 encoded, which just means ASCII
+characters as far as I can tell, although the full encoding table for
+non-alphabetic characters is slightly different (I think).
+
+I imagine the alpha fields are just supposed to be alphabetic characters,
+but I haven't seen any network cards actually report a non-zero value for
+either.
+
+If people wrote software against this netlink behavior, and were parsing
+the major and minor versions themselves from the u32, then this would
+definitely break their code.
+
+[1] https://www.dmtf.org/sites/default/files/standards/documents/DSP0222_1.0.0.pdf
+[2] https://en.wikipedia.org/wiki/Binary-coded_decimal
+[2] https://en.wikipedia.org/wiki/ISO/IEC_8859-1
+
+Signed-off-by: Peter Delevoryas <peter@pjd.dev>
+Fixes: 138635cc27c9 ("net/ncsi: NCSI response packet handler")
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/bcm2835_wdt.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ncsi/internal.h     |  7 +++++--
+ net/ncsi/ncsi-netlink.c |  4 ++--
+ net/ncsi/ncsi-pkt.h     |  7 +++++--
+ net/ncsi/ncsi-rsp.c     | 26 ++++++++++++++++++++++++--
+ 4 files changed, 36 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/watchdog/bcm2835_wdt.c b/drivers/watchdog/bcm2835_wdt.c
-index 7a855289ff5e..bb001c5d7f17 100644
---- a/drivers/watchdog/bcm2835_wdt.c
-+++ b/drivers/watchdog/bcm2835_wdt.c
-@@ -42,6 +42,7 @@
+diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
+index 03757e76bb6b..374412ed780b 100644
+--- a/net/ncsi/internal.h
++++ b/net/ncsi/internal.h
+@@ -105,8 +105,11 @@ enum {
  
- #define SECS_TO_WDOG_TICKS(x) ((x) << 16)
- #define WDOG_TICKS_TO_SECS(x) ((x) >> 16)
-+#define WDOG_TICKS_TO_MSECS(x) ((x) * 1000 >> 16)
  
- struct bcm2835_wdt {
- 	void __iomem		*base;
-@@ -140,7 +141,7 @@ static struct watchdog_device bcm2835_wdt_wdd = {
- 	.info =		&bcm2835_wdt_info,
- 	.ops =		&bcm2835_wdt_ops,
- 	.min_timeout =	1,
--	.max_timeout =	WDOG_TICKS_TO_SECS(PM_WDOG_TIME_SET),
-+	.max_hw_heartbeat_ms =	WDOG_TICKS_TO_MSECS(PM_WDOG_TIME_SET),
- 	.timeout =	WDOG_TICKS_TO_SECS(PM_WDOG_TIME_SET),
- };
+ struct ncsi_channel_version {
+-	u32 version;		/* Supported BCD encoded NCSI version */
+-	u32 alpha2;		/* Supported BCD encoded NCSI version */
++	u8   major;		/* NCSI version major */
++	u8   minor;		/* NCSI version minor */
++	u8   update;		/* NCSI version update */
++	char alpha1;		/* NCSI version alpha1 */
++	char alpha2;		/* NCSI version alpha2 */
+ 	u8  fw_name[12];	/* Firmware name string                */
+ 	u32 fw_version;		/* Firmware version                   */
+ 	u16 pci_ids[4];		/* PCI identification                 */
+diff --git a/net/ncsi/ncsi-netlink.c b/net/ncsi/ncsi-netlink.c
+index d27f4eccce6d..fe681680b5d9 100644
+--- a/net/ncsi/ncsi-netlink.c
++++ b/net/ncsi/ncsi-netlink.c
+@@ -71,8 +71,8 @@ static int ncsi_write_channel_info(struct sk_buff *skb,
+ 	if (nc == nc->package->preferred_channel)
+ 		nla_put_flag(skb, NCSI_CHANNEL_ATTR_FORCED);
  
+-	nla_put_u32(skb, NCSI_CHANNEL_ATTR_VERSION_MAJOR, nc->version.version);
+-	nla_put_u32(skb, NCSI_CHANNEL_ATTR_VERSION_MINOR, nc->version.alpha2);
++	nla_put_u32(skb, NCSI_CHANNEL_ATTR_VERSION_MAJOR, nc->version.major);
++	nla_put_u32(skb, NCSI_CHANNEL_ATTR_VERSION_MINOR, nc->version.minor);
+ 	nla_put_string(skb, NCSI_CHANNEL_ATTR_VERSION_STR, nc->version.fw_name);
+ 
+ 	vid_nest = nla_nest_start_noflag(skb, NCSI_CHANNEL_ATTR_VLAN_LIST);
+diff --git a/net/ncsi/ncsi-pkt.h b/net/ncsi/ncsi-pkt.h
+index ba66c7dc3a21..c9d1da34dc4d 100644
+--- a/net/ncsi/ncsi-pkt.h
++++ b/net/ncsi/ncsi-pkt.h
+@@ -197,9 +197,12 @@ struct ncsi_rsp_gls_pkt {
+ /* Get Version ID */
+ struct ncsi_rsp_gvi_pkt {
+ 	struct ncsi_rsp_pkt_hdr rsp;          /* Response header */
+-	__be32                  ncsi_version; /* NCSI version    */
++	unsigned char           major;        /* NCSI version major */
++	unsigned char           minor;        /* NCSI version minor */
++	unsigned char           update;       /* NCSI version update */
++	unsigned char           alpha1;       /* NCSI version alpha1 */
+ 	unsigned char           reserved[3];  /* Reserved        */
+-	unsigned char           alpha2;       /* NCSI version    */
++	unsigned char           alpha2;       /* NCSI version alpha2 */
+ 	unsigned char           fw_name[12];  /* f/w name string */
+ 	__be32                  fw_version;   /* f/w version     */
+ 	__be16                  pci_ids[4];   /* PCI IDs         */
+diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
+index 069c2659074b..480e80e3c283 100644
+--- a/net/ncsi/ncsi-rsp.c
++++ b/net/ncsi/ncsi-rsp.c
+@@ -19,6 +19,19 @@
+ #include "ncsi-pkt.h"
+ #include "ncsi-netlink.h"
+ 
++/* Nibbles within [0xA, 0xF] add zero "0" to the returned value.
++ * Optional fields (encoded as 0xFF) will default to zero.
++ */
++static u8 decode_bcd_u8(u8 x)
++{
++	int lo = x & 0xF;
++	int hi = x >> 4;
++
++	lo = lo < 0xA ? lo : 0;
++	hi = hi < 0xA ? hi : 0;
++	return lo + hi * 10;
++}
++
+ static int ncsi_validate_rsp_pkt(struct ncsi_request *nr,
+ 				 unsigned short payload)
+ {
+@@ -755,9 +768,18 @@ static int ncsi_rsp_handler_gvi(struct ncsi_request *nr)
+ 	if (!nc)
+ 		return -ENODEV;
+ 
+-	/* Update to channel's version info */
++	/* Update channel's version info
++	 *
++	 * Major, minor, and update fields are supposed to be
++	 * unsigned integers encoded as packed BCD.
++	 *
++	 * Alpha1 and alpha2 are ISO/IEC 8859-1 characters.
++	 */
+ 	ncv = &nc->version;
+-	ncv->version = ntohl(rsp->ncsi_version);
++	ncv->major = decode_bcd_u8(rsp->major);
++	ncv->minor = decode_bcd_u8(rsp->minor);
++	ncv->update = decode_bcd_u8(rsp->update);
++	ncv->alpha1 = rsp->alpha1;
+ 	ncv->alpha2 = rsp->alpha2;
+ 	memcpy(ncv->fw_name, rsp->fw_name, 12);
+ 	ncv->fw_version = ntohl(rsp->fw_version);
 -- 
 2.43.0
 
