@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A4FB8381EA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E23838450
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7FAB288BAF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CD811C2A162
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 562CE524D0;
-	Tue, 23 Jan 2024 01:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78406BB3C;
+	Tue, 23 Jan 2024 02:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wsDP52gp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6I7VM1o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064124E1CD;
-	Tue, 23 Jan 2024 01:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BFB6BB3A;
+	Tue, 23 Jan 2024 02:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974004; cv=none; b=B0OLUZYL1OHEeC8Td9VIvdSCrY4Q1KnuJBSWQx4DaWsExObkSHmoHyoco8Cc+f854vRAL9+gPAiv2ns5fydza6eUK0b6iTURDMPXJ07QsMDhZGiuL3AHG2fKSIDusDQ7zDbP3ngNZpK6/Kc7yzDLxkIq39wDbCCxYZy3Cyre/HI=
+	t=1705975359; cv=none; b=cUDbYlAK4EFqnXdT3XDWccnneJEshu2ADse03yHAj+FyfOeK3SW+KQ/GlhZR7iYx5kK4egn11EHwj8An6xCah+d3FkI/WcfUVrKvnKg8azXSOHapqzVwmydlVKqo2XOpuBryZMDQHKQiu6AjG0UaowfToSrGCVTTyF6xeGeqgZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974004; c=relaxed/simple;
-	bh=eqWZT8JHWsIt3uaiM7Z8m+D89fD29zMi9kSTCG7dkUo=;
+	s=arc-20240116; t=1705975359; c=relaxed/simple;
+	bh=EkGVycmBKI9n6wB3MotGnCwqRLjl75pmc3+UPvn6Q7U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ln69clOC5RAKXGOUF5xdteORiRKmDPcjtrI8ygooymutJBKr9ILc2iSK8G+elwzejMfdU7VJJmNANtKHYxjlyxy3cyni66n7dVj7rQjYir9vMMYiRoIZWBA1sPgw+0sSjRKC91JfcO2vy0A7I1AND3VehZ4W8+0K8yJ2pCHaVgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wsDP52gp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AC5C43390;
-	Tue, 23 Jan 2024 01:40:03 +0000 (UTC)
+	 MIME-Version; b=tk4nFRniAw11PqQYcXbHvNoJz2ETOFT9blP3bCK6q1BYr2SlOrUfmv+tbwxG/I+Ms4n41shT64SNoUaNg9Gmllu5eoHv9juOUJe5xo599UovT69exN9Jq465CQnAUk3xqJpCYhGfp/802E6au6rJN83c1xuK48E5hJtFqzfwIZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6I7VM1o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C457C43390;
+	Tue, 23 Jan 2024 02:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974003;
-	bh=eqWZT8JHWsIt3uaiM7Z8m+D89fD29zMi9kSTCG7dkUo=;
+	s=korg; t=1705975359;
+	bh=EkGVycmBKI9n6wB3MotGnCwqRLjl75pmc3+UPvn6Q7U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wsDP52gpedPLZmsyI7cDZMye3MkqkZWpFddiiGXgRa5RAm/WMWOpG5kLWzNdFEOqM
-	 TzxBly7kFminZHj4Uz6ix78r1cRhgJNkccmxhF7ierkePRa7N2Boz5PMGf5NC4qg6S
-	 RWK3pGGe6G3zfijn6Vvb0bYqqYD48aMJPHQDKGxE=
+	b=j6I7VM1oe1EzQsie9mD+/uwZnFErWOlkn9vNZjfdBXS8RzxqLCvNMaPF4g6ca/2DX
+	 gsorFD/LsJDXX+VlomdIhT/U02W2TUTe/jOdOnGpu84NtaTRAS9Q0QuJZ37UTdaU/m
+	 0r4zktXzPYCawahoFgfAn6OVInTbXsfBqh/3R5ec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	"Geoffrey D. Bennett" <g@b4.vu>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 116/374] NFSv4.1/pnfs: Ensure we handle the error NFS4ERR_RETURNCONFLICT
+Subject: [PATCH 6.6 321/583] ALSA: scarlett2: Allow passing any output to line_out_remap()
 Date: Mon, 22 Jan 2024 15:56:12 -0800
-Message-ID: <20240122235748.670789949@linuxfoundation.org>
+Message-ID: <20240122235821.872308397@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Geoffrey D. Bennett <g@b4.vu>
 
-[ Upstream commit 037e56a22ff37f9a9c2330b66cff55d3d1ff9b90 ]
+[ Upstream commit 2190b9aea4eb92ccf3176e35c17c959e40f1a81b ]
 
-Once the client has processed the CB_LAYOUTRECALL, but has not yet
-successfully returned the layout, the server is supposed to switch to
-returning NFS4ERR_RETURNCONFLICT. This patch ensures that we handle
-that return value correctly.
+Line outputs 3 & 4 on the Gen 3 18i8 are internally the analogue 7 and
+8 outputs, and this renumbering is hidden from the user by
+line_out_remap(). By allowing higher values (representing non-analogue
+outputs) to be passed to line_out_remap(), repeated code from
+scarlett2_mux_src_enum_ctl_get() and scarlett2_mux_src_enum_ctl_put()
+can be removed.
 
-Fixes: 183d9e7b112a ("pnfs: rework LAYOUTGET retry handling")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
+Link: https://lore.kernel.org/r/3b70267931f5994628ab27306c73cddd17b93c8f.1698342632.git.g@b4.vu
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Stable-dep-of: 50603a67daef ("ALSA: scarlett2: Add missing error checks to *_ctl_get()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/usb/mixer_scarlett_gen2.c | 25 +++++++++----------------
+ 1 file changed, 9 insertions(+), 16 deletions(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index d65af9a60c35..a865b384f0fc 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -173,6 +173,7 @@ static int nfs4_map_errors(int err)
- 	case -NFS4ERR_RESOURCE:
- 	case -NFS4ERR_LAYOUTTRYLATER:
- 	case -NFS4ERR_RECALLCONFLICT:
-+	case -NFS4ERR_RETURNCONFLICT:
- 		return -EREMOTEIO;
- 	case -NFS4ERR_WRONGSEC:
- 	case -NFS4ERR_WRONG_CRED:
-@@ -560,6 +561,7 @@ static int nfs4_do_handle_exception(struct nfs_server *server,
- 		case -NFS4ERR_GRACE:
- 		case -NFS4ERR_LAYOUTTRYLATER:
- 		case -NFS4ERR_RECALLCONFLICT:
-+		case -NFS4ERR_RETURNCONFLICT:
- 			exception->delay = 1;
- 			return 0;
+diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
+index 834b936e7106..5e3118bd0dc1 100644
+--- a/sound/usb/mixer_scarlett_gen2.c
++++ b/sound/usb/mixer_scarlett_gen2.c
+@@ -1901,9 +1901,16 @@ static int scarlett2_master_volume_ctl_get(struct snd_kcontrol *kctl,
+ static int line_out_remap(struct scarlett2_data *private, int index)
+ {
+ 	const struct scarlett2_device_info *info = private->info;
++	const int (*port_count)[SCARLETT2_PORT_DIRNS] = info->port_count;
++	int line_out_count =
++		port_count[SCARLETT2_PORT_TYPE_ANALOGUE][SCARLETT2_PORT_OUT];
  
-@@ -9588,6 +9590,7 @@ nfs4_layoutget_handle_exception(struct rpc_task *task,
- 		status = -EBUSY;
- 		break;
- 	case -NFS4ERR_RECALLCONFLICT:
-+	case -NFS4ERR_RETURNCONFLICT:
- 		status = -ERECALLCONFLICT;
- 		break;
- 	case -NFS4ERR_DELEG_REVOKED:
+ 	if (!info->line_out_remap_enable)
+ 		return index;
++
++	if (index >= line_out_count)
++		return index;
++
+ 	return info->line_out_remap[index];
+ }
+ 
+@@ -3388,14 +3395,7 @@ static int scarlett2_mux_src_enum_ctl_get(struct snd_kcontrol *kctl,
+ 	struct usb_mixer_elem_info *elem = kctl->private_data;
+ 	struct usb_mixer_interface *mixer = elem->head.mixer;
+ 	struct scarlett2_data *private = mixer->private_data;
+-	const struct scarlett2_device_info *info = private->info;
+-	const int (*port_count)[SCARLETT2_PORT_DIRNS] = info->port_count;
+-	int line_out_count =
+-		port_count[SCARLETT2_PORT_TYPE_ANALOGUE][SCARLETT2_PORT_OUT];
+-	int index = elem->control;
+-
+-	if (index < line_out_count)
+-		index = line_out_remap(private, index);
++	int index = line_out_remap(private, elem->control);
+ 
+ 	mutex_lock(&private->data_mutex);
+ 	if (private->mux_updated)
+@@ -3412,16 +3412,9 @@ static int scarlett2_mux_src_enum_ctl_put(struct snd_kcontrol *kctl,
+ 	struct usb_mixer_elem_info *elem = kctl->private_data;
+ 	struct usb_mixer_interface *mixer = elem->head.mixer;
+ 	struct scarlett2_data *private = mixer->private_data;
+-	const struct scarlett2_device_info *info = private->info;
+-	const int (*port_count)[SCARLETT2_PORT_DIRNS] = info->port_count;
+-	int line_out_count =
+-		port_count[SCARLETT2_PORT_TYPE_ANALOGUE][SCARLETT2_PORT_OUT];
+-	int index = elem->control;
++	int index = line_out_remap(private, elem->control);
+ 	int oval, val, err = 0;
+ 
+-	if (index < line_out_count)
+-		index = line_out_remap(private, index);
+-
+ 	mutex_lock(&private->data_mutex);
+ 
+ 	oval = private->mux[index];
 -- 
 2.43.0
 
