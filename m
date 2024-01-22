@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49478838318
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0592837BF1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0304D28B89D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 219721C2444C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6D0A605B2;
-	Tue, 23 Jan 2024 01:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D6A1420BD;
+	Tue, 23 Jan 2024 00:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tCsky05n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvz7rJKD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97486604B5;
-	Tue, 23 Jan 2024 01:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C530E131748;
+	Tue, 23 Jan 2024 00:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974701; cv=none; b=kWPcmoqYfdeN39dllCEN9QTsx+wuRoGuehVUjnu/e+IFoiHIUrTbYMdPQT7nULV563fPvucjo4nt2qPVen5dGmpE+pv1HvU01KDrldxEeZC2s0x/9pAnMf7sChvv+riN3N3pe2AhuCHLS9yLgKBhxaLRm1c3s6OVmwsiGSPE6vg=
+	t=1705969446; cv=none; b=n+6vLuLzexh2ZmulSNlGODlsvdvyYKFtseouCjnzz8hp12Hh0rGho/Krsh/Tn00aPfichEJdikvFHxnlH4XoQzJlKtoAzUPbgIS8PzyraQo5MyyoGUJEpfXadXoW8Mu4FFetDwrafAGvf/gcp4x6OfmeJzjCq4wqFxzRYtnVHec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974701; c=relaxed/simple;
-	bh=rK96Vhz1x4dbFJK0v139ZCWNU4iTs0RD6P8Sl/RLTQg=;
+	s=arc-20240116; t=1705969446; c=relaxed/simple;
+	bh=AkWFk+dQ/yew7wVjQWTdJ16FboIHwpseWZ7D5eMyFeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ckJBuQxNQFqum6mKdRY+zY+GsIHTC34IImwB5Sxm8zkkZz1HfTXRdPlI0uzBDcNMUkljHjGcbqNOd+2KX9b4SNej9ZLzd2xYi/4hs1MmZCCJC3ZjzYchww/rUzIvAAWI7nrhSIFDgu5PJHh2TwVMLosa8MZJlPFz/Fngk0PTuWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tCsky05n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E63DC433F1;
-	Tue, 23 Jan 2024 01:51:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kH2AuHA4WREDBuLHQGHyJ1aIVrbmukrqZP2fgPVRtacvKsPUTgg0e5sFtckxoX9VHEDz3BbMnMIgqTFfyFYp/jPhWJwfTuZOUVn9c0R5duy6AyIC4PeQNfKv55IYxcYv3I4rGP/mjZ+996KbCazy5WcDTUOIV1t4WvwV40oS+sU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvz7rJKD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A969C433F1;
+	Tue, 23 Jan 2024 00:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974701;
-	bh=rK96Vhz1x4dbFJK0v139ZCWNU4iTs0RD6P8Sl/RLTQg=;
+	s=korg; t=1705969446;
+	bh=AkWFk+dQ/yew7wVjQWTdJ16FboIHwpseWZ7D5eMyFeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tCsky05n4CU+POHZIjRtt4f3YbZr57hZYY7GmYGzygtAJf4kxb/7ZWGr/2sPh/h0y
-	 5KnnblqDU/TzQ46A3QYRnEGSfdWPH8L1dKw7cT9TvA2kqbb5VgecJ7pzeOsHmxz0en
-	 jhIGv16fJtEsJT+EZeyyFx6PwUyNytt2uNgaESOM=
+	b=vvz7rJKDwniGKqhGZsiOww2LtoV5qTuG43ts4+SCjLM73WoAgDx0tZ5pn6clJkCi2
+	 Tgp2QfkQaEysGBwhW/R9PhKqr/uSq378cVlbo5L7YCPReXJKVFrASMtgWhCLeqq8do
+	 0NLa/gf6I6OMMsBriTGWkgSMrKU/eNMEnR20q5/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 105/583] ARM: dts: qcom: sdx65: correct SPMI node name
+Subject: [PATCH 6.7 252/641] drm/bridge: tpd12s015: Drop buggy __exit annotation for remove function
 Date: Mon, 22 Jan 2024 15:52:36 -0800
-Message-ID: <20240122235815.382006727@linuxfoundation.org>
+Message-ID: <20240122235825.806907435@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit a900ad783f507cb396e402827052e70c0c565ae9 ]
+[ Upstream commit ce3e112e7ae854249d8755906acc5f27e1542114 ]
 
-Node names should not have vendor prefixes:
+With tpd12s015_remove() marked with __exit this function is discarded
+when the driver is compiled as a built-in. The result is that when the
+driver unbinds there is no cleanup done which results in resource
+leakage or worse.
 
-  qcom-sdx65-mtp.dtb: qcom,spmi@c440000: $nodename:0: 'qcom,spmi@c440000' does not match '^spmi@.*
-
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230924183103.49487-3-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: cff5e6f7e83f ("drm/bridge: Add driver for the TI TPD12S015 HDMI level shifter")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231102165640.3307820-19-u.kleine-koenig@pengutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom/qcom-sdx65.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/ti-tpd12s015.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/qcom/qcom-sdx65.dtsi b/arch/arm/boot/dts/qcom/qcom-sdx65.dtsi
-index 35a887176b3c..271899c861c0 100644
---- a/arch/arm/boot/dts/qcom/qcom-sdx65.dtsi
-+++ b/arch/arm/boot/dts/qcom/qcom-sdx65.dtsi
-@@ -530,7 +530,7 @@ restart@c264000 {
- 			reg = <0x0c264000 0x1000>;
- 		};
+diff --git a/drivers/gpu/drm/bridge/ti-tpd12s015.c b/drivers/gpu/drm/bridge/ti-tpd12s015.c
+index e0e015243a60..b588fea12502 100644
+--- a/drivers/gpu/drm/bridge/ti-tpd12s015.c
++++ b/drivers/gpu/drm/bridge/ti-tpd12s015.c
+@@ -179,7 +179,7 @@ static int tpd12s015_probe(struct platform_device *pdev)
+ 	return 0;
+ }
  
--		spmi_bus: qcom,spmi@c440000 {
-+		spmi_bus: spmi@c440000 {
- 			compatible = "qcom,spmi-pmic-arb";
- 			reg = <0xc440000 0xd00>,
- 				<0xc600000 0x2000000>,
+-static int __exit tpd12s015_remove(struct platform_device *pdev)
++static int tpd12s015_remove(struct platform_device *pdev)
+ {
+ 	struct tpd12s015_device *tpd = platform_get_drvdata(pdev);
+ 
+@@ -197,7 +197,7 @@ MODULE_DEVICE_TABLE(of, tpd12s015_of_match);
+ 
+ static struct platform_driver tpd12s015_driver = {
+ 	.probe	= tpd12s015_probe,
+-	.remove	= __exit_p(tpd12s015_remove),
++	.remove = tpd12s015_remove,
+ 	.driver	= {
+ 		.name	= "tpd12s015",
+ 		.of_match_table = tpd12s015_of_match,
 -- 
 2.43.0
 
