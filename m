@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-13928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4D5837EDA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB9E838172
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95FF729BBED
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D30C1C288DB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D944C60251;
-	Tue, 23 Jan 2024 00:46:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BBB045001;
+	Tue, 23 Jan 2024 01:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uYty6Fh3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MkYYvwiY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D216024F;
-	Tue, 23 Jan 2024 00:46:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA077F4;
+	Tue, 23 Jan 2024 01:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970784; cv=none; b=DMVuj6GhhNoDwTLdY5t4JlVU1WqkBU9lcFj+Jud+qHhov3wAPMtZWYS6hblYOpDm65KVoIFzUKsv15kgP++QbGjyK8VVs1MLngqZhXL05UgNTRGGhpZLO5G3v21OXRWx93Y3xA3i3RrZYf1J4ItGcrJ4iYY9ilDZwPePN+Y7NGw=
+	t=1705972135; cv=none; b=ArW/A7ugLwPM7dqc/KuU6ZE8KQTHFktnzW6QovsRsJ3zcJlkyHzj3EJT2H/Z+o84BXVk2bGnIHNPoXo4iJu/FSb+l7g11JrqSVHefPlSlNcG+Mw/2t9HETjolibDUgyNypgVo/4K1Ff8BRoY/xhfGyPHgK9MwRkb9chuGV3petE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970784; c=relaxed/simple;
-	bh=kJsqIo7zQbb40na+suNhl3zV0IRbdTpqohIXYPXZGP8=;
+	s=arc-20240116; t=1705972135; c=relaxed/simple;
+	bh=AbXbEpwhZnXARX0TfrLI3SGe9eqXVHzrG4x6lDX506k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l20nk/5QkAhvcKDCqxi/J+IchJXze4w8KYP9jzpHcYV32oK+xi6+5TjblWuhVDRGhW09Czts7HhXYWzrvlDLRj1mx86fF5O9E4lLW/kMIKY8XK6aDn45FjnfCpJoJVp/rzuNhq/ghgTtBT5RkjtGd7ufwrcr60L9vba+LCKPSTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uYty6Fh3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBF0C433C7;
-	Tue, 23 Jan 2024 00:46:23 +0000 (UTC)
+	 MIME-Version; b=nn86wzLBO2BnFMiONIzqHb/FtZmrmO3P04RaF9iIL0iWLEJ5bS/nQb99o7cjdLE4fd5Hd+7nkgW/wmVgVTFObngrQtbiTlpgn2HQdaSA3jsRnBnecIhVLeIuRHDR4LdPuzB079OlmMTxcIQhhPlJJ+RxiaCFu+prCpUOj5E9I88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MkYYvwiY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD99C433C7;
+	Tue, 23 Jan 2024 01:08:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970783;
-	bh=kJsqIo7zQbb40na+suNhl3zV0IRbdTpqohIXYPXZGP8=;
+	s=korg; t=1705972134;
+	bh=AbXbEpwhZnXARX0TfrLI3SGe9eqXVHzrG4x6lDX506k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uYty6Fh3Cn4v0x1zZBxH0Syt1NzGY1Ia8bfGiBwUtR7vdGqmLcLZnjAC5CsDIo21r
-	 LzhXscuq3niN8WZ2u2lzK3o5gmL46ceJtrbd0CV2d915Jrl9f+IS5dJ795w7wEAWmt
-	 D+mWf1HpSbG2t0stz5mduyd/rlggbuupy/LIzQ1A=
+	b=MkYYvwiYLLwsijBrLIumkr72c7Oir362FiDOgScHddDpFXVULqwn4PFqmsyUG3pT7
+	 K/wxtHYEA7cdrgiY/W1GWQwHwgiSGEq7JOtgBkYmHHuCbQgsyV1akST2+4OBO9V6Ri
+	 mFfn36fj/pFKeVocDOVJI+xtYUqqqGdItNEfXbxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Tran <thinhtr@linux.vnet.ibm.com>,
-	Venkata Sai Duggi <venkata.sai.duggi@ibm.com>,
-	David Christensen <drc@linux.vnet.ibm.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 016/286] net/tg3: fix race condition in tg3_reset_task()
+Subject: [PATCH 5.15 066/374] EDAC/thunderx: Fix possible out-of-bounds string access
 Date: Mon, 22 Jan 2024 15:55:22 -0800
-Message-ID: <20240122235732.640402797@linuxfoundation.org>
+Message-ID: <20240122235746.912831115@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,96 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Tran <thinhtr@linux.vnet.ibm.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 16b55b1f2269962fb6b5154b8bf43f37c9a96637 ]
+[ Upstream commit 475c58e1a471e9b873e3e39958c64a2d278275c8 ]
 
-When an EEH error is encountered by a PCI adapter, the EEH driver
-modifies the PCI channel's state as shown below:
+Enabling -Wstringop-overflow globally exposes a warning for a common bug
+in the usage of strncat():
 
-   enum {
-      /* I/O channel is in normal state */
-      pci_channel_io_normal = (__force pci_channel_state_t) 1,
+  drivers/edac/thunderx_edac.c: In function 'thunderx_ocx_com_threaded_isr':
+  drivers/edac/thunderx_edac.c:1136:17: error: 'strncat' specified bound 1024 equals destination size [-Werror=stringop-overflow=]
+   1136 |                 strncat(msg, other, OCX_MESSAGE_SIZE);
+        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   ...
+   1145 |                                 strncat(msg, other, OCX_MESSAGE_SIZE);
+   ...
+   1150 |                                 strncat(msg, other, OCX_MESSAGE_SIZE);
 
-      /* I/O to channel is blocked */
-      pci_channel_io_frozen = (__force pci_channel_state_t) 2,
+   ...
 
-      /* PCI card is dead */
-      pci_channel_io_perm_failure = (__force pci_channel_state_t) 3,
-   };
+Apparently the author of this driver expected strncat() to behave the
+way that strlcat() does, which uses the size of the destination buffer
+as its third argument rather than the length of the source buffer. The
+result is that there is no check on the size of the allocated buffer.
 
-If the same EEH error then causes the tg3 driver's transmit timeout
-logic to execute, the tg3_tx_timeout() function schedules a reset
-task via tg3_reset_task_schedule(), which may cause a race condition
-between the tg3 and EEH driver as both attempt to recover the HW via
-a reset action.
+Change it to strlcat().
 
-EEH driver gets error event
---> eeh_set_channel_state()
-    and set device to one of
-    error state above           scheduler: tg3_reset_task() get
-                                returned error from tg3_init_hw()
-                             --> dev_close() shuts down the interface
-tg3_io_slot_reset() and
-tg3_io_resume() fail to
-reset/resume the device
+  [ bp: Trim compiler output, fixup commit message. ]
 
-To resolve this issue, we avoid the race condition by checking the PCI
-channel state in the tg3_reset_task() function and skip the tg3 driver
-initiated reset when the PCI channel is not in the normal state.  (The
-driver has no access to tg3 device registers at this point and cannot
-even complete the reset task successfully without external assistance.)
-We'll leave the reset procedure to be managed by the EEH driver which
-calls the tg3_io_error_detected(), tg3_io_slot_reset() and
-tg3_io_resume() functions as appropriate.
-
-Adding the same checking in tg3_dump_state() to avoid dumping all
-device registers when the PCI channel is not in the normal state.
-
-Signed-off-by: Thinh Tran <thinhtr@linux.vnet.ibm.com>
-Tested-by: Venkata Sai Duggi <venkata.sai.duggi@ibm.com>
-Reviewed-by: David Christensen <drc@linux.vnet.ibm.com>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://lore.kernel.org/r/20231201001911.656-1-thinhtr@linux.vnet.ibm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 41003396f932 ("EDAC, thunderx: Add Cavium ThunderX EDAC driver")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/20231122222007.3199885-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/tg3.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/edac/thunderx_edac.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/tg3.c b/drivers/net/ethernet/broadcom/tg3.c
-index b010f28b0abf..fe2c9b110e60 100644
---- a/drivers/net/ethernet/broadcom/tg3.c
-+++ b/drivers/net/ethernet/broadcom/tg3.c
-@@ -6454,6 +6454,14 @@ static void tg3_dump_state(struct tg3 *tp)
- 	int i;
- 	u32 *regs;
+diff --git a/drivers/edac/thunderx_edac.c b/drivers/edac/thunderx_edac.c
+index f13674081cb6..4dca21b39bf7 100644
+--- a/drivers/edac/thunderx_edac.c
++++ b/drivers/edac/thunderx_edac.c
+@@ -1133,7 +1133,7 @@ static irqreturn_t thunderx_ocx_com_threaded_isr(int irq, void *irq_id)
+ 		decode_register(other, OCX_OTHER_SIZE,
+ 				ocx_com_errors, ctx->reg_com_int);
  
-+	/* If it is a PCI error, all registers will be 0xffff,
-+	 * we don't dump them out, just report the error and return
-+	 */
-+	if (tp->pdev->error_state != pci_channel_io_normal) {
-+		netdev_err(tp->dev, "PCI channel ERROR!\n");
-+		return;
-+	}
-+
- 	regs = kzalloc(TG3_REG_BLK_SIZE, GFP_ATOMIC);
- 	if (!regs)
- 		return;
-@@ -11195,7 +11203,8 @@ static void tg3_reset_task(struct work_struct *work)
- 	rtnl_lock();
- 	tg3_full_lock(tp, 0);
+-		strncat(msg, other, OCX_MESSAGE_SIZE);
++		strlcat(msg, other, OCX_MESSAGE_SIZE);
  
--	if (tp->pcierr_recovery || !netif_running(tp->dev)) {
-+	if (tp->pcierr_recovery || !netif_running(tp->dev) ||
-+	    tp->pdev->error_state != pci_channel_io_normal) {
- 		tg3_flag_clear(tp, RESET_TASK_PENDING);
- 		tg3_full_unlock(tp);
- 		rtnl_unlock();
+ 		for (lane = 0; lane < OCX_RX_LANES; lane++)
+ 			if (ctx->reg_com_int & BIT(lane)) {
+@@ -1142,12 +1142,12 @@ static irqreturn_t thunderx_ocx_com_threaded_isr(int irq, void *irq_id)
+ 					 lane, ctx->reg_lane_int[lane],
+ 					 lane, ctx->reg_lane_stat11[lane]);
+ 
+-				strncat(msg, other, OCX_MESSAGE_SIZE);
++				strlcat(msg, other, OCX_MESSAGE_SIZE);
+ 
+ 				decode_register(other, OCX_OTHER_SIZE,
+ 						ocx_lane_errors,
+ 						ctx->reg_lane_int[lane]);
+-				strncat(msg, other, OCX_MESSAGE_SIZE);
++				strlcat(msg, other, OCX_MESSAGE_SIZE);
+ 			}
+ 
+ 		if (ctx->reg_com_int & OCX_COM_INT_CE)
+@@ -1217,7 +1217,7 @@ static irqreturn_t thunderx_ocx_lnk_threaded_isr(int irq, void *irq_id)
+ 		decode_register(other, OCX_OTHER_SIZE,
+ 				ocx_com_link_errors, ctx->reg_com_link_int);
+ 
+-		strncat(msg, other, OCX_MESSAGE_SIZE);
++		strlcat(msg, other, OCX_MESSAGE_SIZE);
+ 
+ 		if (ctx->reg_com_link_int & OCX_COM_LINK_INT_UE)
+ 			edac_device_handle_ue(ocx->edac_dev, 0, 0, msg);
+@@ -1896,7 +1896,7 @@ static irqreturn_t thunderx_l2c_threaded_isr(int irq, void *irq_id)
+ 
+ 		decode_register(other, L2C_OTHER_SIZE, l2_errors, ctx->reg_int);
+ 
+-		strncat(msg, other, L2C_MESSAGE_SIZE);
++		strlcat(msg, other, L2C_MESSAGE_SIZE);
+ 
+ 		if (ctx->reg_int & mask_ue)
+ 			edac_device_handle_ue(l2c->edac_dev, 0, 0, msg);
 -- 
 2.43.0
 
