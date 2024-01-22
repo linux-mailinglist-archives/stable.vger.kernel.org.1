@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FFF8838452
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C0A1837FC8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B39F51C2A0E5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 070DFB2AA46
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958536BB42;
-	Tue, 23 Jan 2024 02:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90362129A65;
+	Tue, 23 Jan 2024 00:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p3nFgs/H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdKBM2Mm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53AF46BB31;
-	Tue, 23 Jan 2024 02:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBD51292EC;
+	Tue, 23 Jan 2024 00:50:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975361; cv=none; b=A76P+0q0ccp/SKsI3PNNxJMAvEFTvAt5v1XXTHwh7JMLEDjiZEQKUMme33PElWUxXpuKKb7cPbOZ2OyOlDqC3fuueCVa54d1oD8wHNANQH1qjXQCJRXwkIzlCQU5LS/EPyHa3YOL3tunmfmK7st4tqhb4SZzfsSZoaCSlqFO0gg=
+	t=1705971003; cv=none; b=ibvq4IULo37dnZGwedS4+uwoniMOeSOwOgliYTymDh84CtcHN3VhQIHN5dJ2Hx7EeNJWJ8EH25RKt0ORNJFCg3A+6GEAICsL/9dJ1iIdYwcf4w6b+E9bg3HBdyQ6U46Vi0ymjr0VF9B1Y6W1xO6anlw0verkeAkAxwcCvEn6xB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975361; c=relaxed/simple;
-	bh=nS5zCwqV29egVWnTWxTEFZxvjBV/SkjIm7Vx58LQsOk=;
+	s=arc-20240116; t=1705971003; c=relaxed/simple;
+	bh=ubUFFKf4x680k7HOn3qGMivDVS/q1wGBj/VjGMPf06k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iJLMyBAOi2MHpPKDQqko5JBBFUomPlLmfp9+vjm6eHGem7Vc2tzHv7Aq8Y/VrSVaZIK3Mh/6P+lIVH88mJdr+iyau0/+/4rHr+GOfR0mFdVvJFdrUI0gJipeZSEkTadoNc8T4ZSm3aIy0NUViuVuNmTL4Rqo4XVTwCkWeYZPOoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p3nFgs/H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19534C43394;
-	Tue, 23 Jan 2024 02:02:41 +0000 (UTC)
+	 MIME-Version; b=WAUX/O09HJVQedw9bnSXZE9lpXTxqxWHyJXcU94nb1DRI0DR3G4PUELiDUS5tZGBwZwdWPPvx7hT+ddcnNClr3QzmaSK7KVP2fSNMN8AM2Srm6glsaJrMMShaK3Py4S7dzcrgWq3TzKSkEPYOeAd/t0eTU0f1Rzp+QSTCA9WK0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdKBM2Mm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F117AC43390;
+	Tue, 23 Jan 2024 00:50:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975361;
-	bh=nS5zCwqV29egVWnTWxTEFZxvjBV/SkjIm7Vx58LQsOk=;
+	s=korg; t=1705971003;
+	bh=ubUFFKf4x680k7HOn3qGMivDVS/q1wGBj/VjGMPf06k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p3nFgs/HqgzazXhWuykNXdGg1GhKmqSPYdFa0QztyzUjxKwVhlA8FkdFNdLJ352u8
-	 kYlIvPhZny5niPfzQ9f7lGg09I3m2LDgzEpQPZTQNQ9dm5off37Q1MMVw52t/xcwSd
-	 hRoE5C/0Gje/IOXt/LnmSnMPzwTHFKw2PeBiXwl0=
+	b=EdKBM2Mmsv+Q87zC80ho7oBBPTM0tPWTDlrdEDizqUpmgBgasYIKGvNfJLyWLybNF
+	 H13aFIBiWHYC2LHVt12XGw9nj+/0DLLO9P/Z8nGb361wtXv2My2Y0vESPRM0PJN1Sg
+	 y0lVXH68uVJrLyKVJdo/J5RJ+PevIAH2WlpYHTeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>,
+	Alexandra Diupina <adiupina@astralinux.ru>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 323/583] ALSA: scarlett2: Add clamp() in scarlett2_mixer_ctl_put()
+Subject: [PATCH 5.10 068/286] cpufreq: scmi: process the result of devm_of_clk_add_hw_provider()
 Date: Mon, 22 Jan 2024 15:56:14 -0800
-Message-ID: <20240122235821.933674468@linuxfoundation.org>
+Message-ID: <20240122235734.640691337@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Alexandra Diupina <adiupina@astralinux.ru>
 
-[ Upstream commit 04f8f053252b86c7583895c962d66747ecdc61b7 ]
+[ Upstream commit c4a5118a3ae1eadc687d84eef9431f9e13eb015c ]
 
-Ensure the value passed to scarlett2_mixer_ctl_put() is between 0 and
-SCARLETT2_MIXER_MAX_VALUE so we don't attempt to access outside
-scarlett2_mixer_values[].
+devm_of_clk_add_hw_provider() may return an errno, so
+add a return value check
 
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Fixes: 9e4d5c1be21f ("ALSA: usb-audio: Scarlett Gen 2 mixer interface")
-Link: https://lore.kernel.org/r/3b19fb3da641b587749b85fe1daa1b4e696c0c1b.1703001053.git.g@b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 8410e7f3b31e ("cpufreq: scmi: Fix OPP addition failure with a dummy clock provider")
+Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_scarlett_gen2.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/cpufreq/scmi-cpufreq.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/sound/usb/mixer_scarlett_gen2.c b/sound/usb/mixer_scarlett_gen2.c
-index 087e120d7103..c04cff722541 100644
---- a/sound/usb/mixer_scarlett_gen2.c
-+++ b/sound/usb/mixer_scarlett_gen2.c
-@@ -3361,7 +3361,8 @@ static int scarlett2_mixer_ctl_put(struct snd_kcontrol *kctl,
- 	mutex_lock(&private->data_mutex);
+diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
+index ca95b538c48a..bb1389f276d7 100644
+--- a/drivers/cpufreq/scmi-cpufreq.c
++++ b/drivers/cpufreq/scmi-cpufreq.c
+@@ -238,8 +238,11 @@ static int scmi_cpufreq_probe(struct scmi_device *sdev)
  
- 	oval = private->mix[index];
--	val = ucontrol->value.integer.value[0];
-+	val = clamp(ucontrol->value.integer.value[0],
-+		    0L, (long)SCARLETT2_MIXER_MAX_VALUE);
- 	num_mixer_in = port_count[SCARLETT2_PORT_TYPE_MIX][SCARLETT2_PORT_OUT];
- 	mix_num = index / num_mixer_in;
+ #ifdef CONFIG_COMMON_CLK
+ 	/* dummy clock provider as needed by OPP if clocks property is used */
+-	if (of_property_present(dev->of_node, "#clock-cells"))
+-		devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, NULL);
++	if (of_property_present(dev->of_node, "#clock-cells")) {
++		ret = devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, NULL);
++		if (ret)
++			return dev_err_probe(dev, ret, "%s: registering clock provider failed\n", __func__);
++	}
+ #endif
  
+ 	ret = cpufreq_register_driver(&scmi_cpufreq_driver);
 -- 
 2.43.0
 
