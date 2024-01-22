@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB03F838340
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:27:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC35F837E4D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 707AC28FD65
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A7421C27C67
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:38:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9B9960BBB;
-	Tue, 23 Jan 2024 01:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA3352F71;
+	Tue, 23 Jan 2024 00:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RWO5Yz5U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+7OiQ8/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68EF529403;
-	Tue, 23 Jan 2024 01:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E63950A8E;
+	Tue, 23 Jan 2024 00:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974749; cv=none; b=ow6LFEjWnXfsYN+ZEX8MvXWtRYpBUPKbJA8i2dMfBFOiV21en1VbYi+CwNW3MWUibXQJqxvbmAJTeEPc7eJp3LXLuDREifRZz5/M3wBlWMk+W00wYd1uZ8mKB0t3jSM9GqZHW/X99NG9RtpjTSjzfOKhyMhGUQQpbozttGbzfNs=
+	t=1705970508; cv=none; b=cC6bI5fbnl0112U5138NPZNns3R7CX9lvvgvMn6ftMGmwGbYajptsqVez2wc66awgiy6Fb4C7Ehq0rYEX2hEFLJslIHDTr3SZI1eMo0ESBofL/mToX/SAStSTc2RN6O6vgqPSUgtMR7HT+BgpaJ595IxidnA4xkTUj9jgbCSZN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974749; c=relaxed/simple;
-	bh=J39zBbUDAzxslJBVoj1Enz16+7P3BUiH1ObnGqlXTtw=;
+	s=arc-20240116; t=1705970508; c=relaxed/simple;
+	bh=bZk/QSxnr8D5Ct4asj631uz0Yx1RTDd+aozi9VPPoQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GyyNUDAkpwTty0pcdJs7awW46qjL2iZQT0p8DE4W6BfH+FP5ZgFeZ7bYMB1mUHDU59nv7MNgXpe8V7BAKoZ93gvueHxWajwMVwqB7uxIgGuTL7jwNrQ4ZmizeWoKA4yziiu28HzZkyvArSiA2qjKKb17gilBQTPfLJfJyQsf2C0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RWO5Yz5U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 118DBC433C7;
-	Tue, 23 Jan 2024 01:52:29 +0000 (UTC)
+	 MIME-Version; b=HqTJPSxe7t+UzrNDwjA5voIJdmJ2HrI9kqZIs1JPP66DwVyNNNkGCXVEtI4a3QM7ch9f+Mj+DJ3rAzWnUlfGUHLzCDUJ+W7DWPLZfNgMDj7+lGM1WpB9p1AuHByJo8Qs2gFM7u44OF7RcrioUikpDpGb/wpSQWZjOlL9YB/bj1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+7OiQ8/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F62C433C7;
+	Tue, 23 Jan 2024 00:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974749;
-	bh=J39zBbUDAzxslJBVoj1Enz16+7P3BUiH1ObnGqlXTtw=;
+	s=korg; t=1705970507;
+	bh=bZk/QSxnr8D5Ct4asj631uz0Yx1RTDd+aozi9VPPoQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RWO5Yz5UgzZbwzIyMXddUxjSMKRfd7w38AlJvPLkVh6SuXcX1UV9fwpchyTXs2yNy
-	 gq3sNZ983NR/x7QPjZX9PHt0zMVrL8YfWsu9R+tvEPN4+P6xroYPTxp0lwkw3TFQRQ
-	 yWfIDJQl+P0Qt5++FoEIPi/bFIwQGIDOA8oHuGmE=
+	b=V+7OiQ8/be41CNnT4PFIXLKS1Gqo/SdQgM7xZpA9ahgE6GFm0MH5pyQxNzycsoMeJ
+	 H7IVn5PbhG3MfL09cAv/cZf6SS+x+NQZTEdpS4VjLwGHIAXF3obIamq9SE097jOEq2
+	 o0Jd5IvFoHcsg0F0T022QNyBkjoqbyo3Ey+zMmus=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Michal Simek <michal.simek@amd.com>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Antoine Tenart <atenart@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 155/583] arm64: dts: xilinx: Apply overlays to base dtbs
+Subject: [PATCH 6.1 038/417] crypto: safexcel - Add error handling for dma_map_sg() calls
 Date: Mon, 22 Jan 2024 15:53:26 -0800
-Message-ID: <20240122235816.796210226@linuxfoundation.org>
+Message-ID: <20240122235752.938797245@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 23b697ec85f3e7beed271b9f344c54821de2251e ]
+[ Upstream commit 87e02063d07708cac5bfe9fd3a6a242898758ac8 ]
 
-DT overlays in tree need to be applied to a base DTB to validate they
-apply, to run schema checks on them, and to catch any errors at compile
-time. Defining the "-dtbs" variable is not enough as the combined DT must
-be added to dtbs-y.
+Macro dma_map_sg() may return 0 on error. This patch enables
+checks in case of the macro failure and ensures unmapping of
+previously mapped buffers with dma_unmap_sg().
 
-zynqmp-sck-kr-g-revA.dtso and zynqmp-sck-kr-g-revB.dtso don't exist, so drop
-them.
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
 
-Signed-off-by: Rob Herring <robh@kernel.org>
-Fixes: 45fe0dc4ea2e ("arm64: xilinx: Use zynqmp prefix for SOM dt overlays")
-Link: https://lore.kernel.org/r/20230911214751.2202913-1-robh@kernel.org
-Signed-off-by: Michal Simek <michal.simek@amd.com>
+Fixes: 49186a7d9e46 ("crypto: inside_secure - Avoid dma map if size is zero")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Reviewed-by: Antoine Tenart <atenart@kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/xilinx/Makefile | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ .../crypto/inside-secure/safexcel_cipher.c    | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/xilinx/Makefile b/arch/arm64/boot/dts/xilinx/Makefile
-index 5e40c0b4fa0a..1068b0fa8e98 100644
---- a/arch/arm64/boot/dts/xilinx/Makefile
-+++ b/arch/arm64/boot/dts/xilinx/Makefile
-@@ -22,11 +22,10 @@ dtb-$(CONFIG_ARCH_ZYNQMP) += zynqmp-sm-k26-revA.dtb
- dtb-$(CONFIG_ARCH_ZYNQMP) += zynqmp-smk-k26-revA.dtb
+diff --git a/drivers/crypto/inside-secure/safexcel_cipher.c b/drivers/crypto/inside-secure/safexcel_cipher.c
+index 32a37e3850c5..f59e32115268 100644
+--- a/drivers/crypto/inside-secure/safexcel_cipher.c
++++ b/drivers/crypto/inside-secure/safexcel_cipher.c
+@@ -742,9 +742,9 @@ static int safexcel_send_req(struct crypto_async_request *base, int ring,
+ 				max(totlen_src, totlen_dst));
+ 			return -EINVAL;
+ 		}
+-		if (sreq->nr_src > 0)
+-			dma_map_sg(priv->dev, src, sreq->nr_src,
+-				   DMA_BIDIRECTIONAL);
++		if (sreq->nr_src > 0 &&
++		    !dma_map_sg(priv->dev, src, sreq->nr_src, DMA_BIDIRECTIONAL))
++			return -EIO;
+ 	} else {
+ 		if (unlikely(totlen_src && (sreq->nr_src <= 0))) {
+ 			dev_err(priv->dev, "Source buffer not large enough (need %d bytes)!",
+@@ -752,8 +752,9 @@ static int safexcel_send_req(struct crypto_async_request *base, int ring,
+ 			return -EINVAL;
+ 		}
  
- zynqmp-sm-k26-revA-sck-kv-g-revA-dtbs := zynqmp-sm-k26-revA.dtb zynqmp-sck-kv-g-revA.dtbo
-+dtb-$(CONFIG_ARCH_ZYNQMP) += zynqmp-sm-k26-revA-sck-kv-g-revA.dtb
- zynqmp-sm-k26-revA-sck-kv-g-revB-dtbs := zynqmp-sm-k26-revA.dtb zynqmp-sck-kv-g-revB.dtbo
-+dtb-$(CONFIG_ARCH_ZYNQMP) += zynqmp-sm-k26-revA-sck-kv-g-revB.dtb
- zynqmp-smk-k26-revA-sck-kv-g-revA-dtbs := zynqmp-smk-k26-revA.dtb zynqmp-sck-kv-g-revA.dtbo
-+dtb-$(CONFIG_ARCH_ZYNQMP) += zynqmp-smk-k26-revA-sck-kv-g-revA.dtb
- zynqmp-smk-k26-revA-sck-kv-g-revB-dtbs := zynqmp-smk-k26-revA.dtb zynqmp-sck-kv-g-revB.dtbo
--
--zynqmp-sm-k26-revA-sck-kr-g-revA-dtbs := zynqmp-sm-k26-revA.dtb zynqmp-sck-kr-g-revA.dtbo
--zynqmp-sm-k26-revA-sck-kr-g-revB-dtbs := zynqmp-sm-k26-revA.dtb zynqmp-sck-kr-g-revB.dtbo
--zynqmp-smk-k26-revA-sck-kr-g-revA-dtbs := zynqmp-smk-k26-revA.dtb zynqmp-sck-kr-g-revA.dtbo
--zynqmp-smk-k26-revA-sck-kr-g-revB-dtbs := zynqmp-smk-k26-revA.dtb zynqmp-sck-kr-g-revB.dtbo
-+dtb-$(CONFIG_ARCH_ZYNQMP) += zynqmp-smk-k26-revA-sck-kv-g-revB.dtb
+-		if (sreq->nr_src > 0)
+-			dma_map_sg(priv->dev, src, sreq->nr_src, DMA_TO_DEVICE);
++		if (sreq->nr_src > 0 &&
++		    !dma_map_sg(priv->dev, src, sreq->nr_src, DMA_TO_DEVICE))
++			return -EIO;
+ 
+ 		if (unlikely(totlen_dst && (sreq->nr_dst <= 0))) {
+ 			dev_err(priv->dev, "Dest buffer not large enough (need %d bytes)!",
+@@ -762,9 +763,11 @@ static int safexcel_send_req(struct crypto_async_request *base, int ring,
+ 			goto unmap;
+ 		}
+ 
+-		if (sreq->nr_dst > 0)
+-			dma_map_sg(priv->dev, dst, sreq->nr_dst,
+-				   DMA_FROM_DEVICE);
++		if (sreq->nr_dst > 0 &&
++		    !dma_map_sg(priv->dev, dst, sreq->nr_dst, DMA_FROM_DEVICE)) {
++			ret = -EIO;
++			goto unmap;
++		}
+ 	}
+ 
+ 	memcpy(ctx->base.ctxr->data, ctx->key, ctx->key_len);
 -- 
 2.43.0
 
