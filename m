@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 381F3838027
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C57538382BF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC27EB254B4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DFF8B25BFB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1764F657CF;
-	Tue, 23 Jan 2024 00:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9B35F564;
+	Tue, 23 Jan 2024 01:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZKVOanh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XwgTVVdS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC32264CF2;
-	Tue, 23 Jan 2024 00:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796525F54F;
+	Tue, 23 Jan 2024 01:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971540; cv=none; b=ZbfkPNlS0Ymhc7JDp5faWXfdvl1QcOAaRclqrDBiaKGJyYPsq7VBRTk+KGyZVig2vJE0PSuoe9IdAdsQpFE4D8VxmPealqYvN+cELsn+XLYBhVY+8fiJn6AmSA9Ze8k2R3clpI5vFPEEozIUhzNxgcvkW2nlOarILrZL5Js6QD8=
+	t=1705974422; cv=none; b=tpLzWOIMZipSFGZ+++5L6KDekXo8yPTFRMHJekgk7vNTbZqCd14drzbDLINiFvYfmg4IjeOhIyCPYXYsNZYtdl+SEw571cQlaC5jq4A28L+c8PHvnlTi61ESTEJc4h4C3i7lM3dtIIPxi/Q13bNk9UaU9Kxqxbkr6QoVRaOOPQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971540; c=relaxed/simple;
-	bh=+7VUuJj5flWFXQAXMk6MXBfnDvIvDOrPyWXS4lLeZAc=;
+	s=arc-20240116; t=1705974422; c=relaxed/simple;
+	bh=3XmD3dXSmcgjJsw+Of9PU1fTrrdAAht5DpgiqskDWlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fis5/BM+KctzieF+usAp5ue1/kZpX7vZvLzFooKKO65Vglwq8Bz4L7VgVx+k0Insfg3DYNhnYXkQmTAZ1hP+IwNLhl3bVRjP720OLOt6i5P4HpFCtaVd2PxOyUZA34wBVNF5dCz5csMcjcMbl11Rl1j6YkgEEmt8df6KQqomZFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aZKVOanh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E92C433C7;
-	Tue, 23 Jan 2024 00:59:00 +0000 (UTC)
+	 MIME-Version; b=Un1h5kvzzXq923WmPmCaQXy4zkE0QvGuYYmEKEsy2d+pPayXqCsjH3xkg5jZK3qDE9hDUWRxdhR8NvKs6+HUolLygaZjAtx6ThfzPPkAot91AJaJhKGjvuZfuAI0tfhMwyzBXeMVA6OLMMZL0b1U/XdX6q6QPvaDwNIHdsoMvRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XwgTVVdS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B618C43399;
+	Tue, 23 Jan 2024 01:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971540;
-	bh=+7VUuJj5flWFXQAXMk6MXBfnDvIvDOrPyWXS4lLeZAc=;
+	s=korg; t=1705974422;
+	bh=3XmD3dXSmcgjJsw+Of9PU1fTrrdAAht5DpgiqskDWlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aZKVOanhKoOjur1XMTRUUfMWbIe9xvxn1Mn6rOS3Faq7Y4MYXunRuRZTbJirNg4bx
-	 EHVGFQdiL0YjL1RMglAsMcD/uZqULAIvd4UxTARq6ry+G5lygRPtR58UkWrAFQPCer
-	 GW6ipTotWB1m3KRmJYZ2NFuhdLknh6TVUoNXuDqs=
+	b=XwgTVVdSRB6d93CdOoDHyS1OIVCQIx1hc90noDHzgntu8VokqV/6zYZocJEXQ2hF6
+	 dtHKVbFEn3yO+Wo0il85PfPqEvXJjHZCA42B+Knwhs3RblMietVRUKmWAe8p+Hc1mw
+	 l1AZO2rTJiJuhpMHAAyY4/KG7Buj/cNL6xDnZeW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Curtis Klein <curtis.klein@hpe.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 169/286] media: dvbdev: drop refcount on error path in dvb_device_open()
+Subject: [PATCH 5.15 219/374] watchdog: set cdev owner before adding
 Date: Mon, 22 Jan 2024 15:57:55 -0800
-Message-ID: <20240122235738.684283273@linuxfoundation.org>
+Message-ID: <20240122235752.272063232@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Curtis Klein <curtis.klein@hpe.com>
 
-[ Upstream commit a2dd235df435a05d389240be748909ada91201d2 ]
+[ Upstream commit 38d75297745f04206db9c29bdd75557f0344c7cc ]
 
-If call to file->f_op->open() fails, then call dvb_device_put(dvbdev).
+When the new watchdog character device is registered, it becomes
+available for opening. This creates a race where userspace may open the
+device before the character device's owner is set. This results in an
+imbalance in module_get calls as the cdev_get in cdev_open will not
+increment the reference count on the watchdog driver module.
 
-Fixes: 0fc044b2b5e2 ("media: dvbdev: adopts refcnt to avoid UAF")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+This causes problems when the watchdog character device is released as
+the module loader's reference will also be released. This makes it
+impossible to open the watchdog device later on as it now appears that
+the module is being unloaded. The open will fail with -ENXIO from
+chrdev_open.
+
+The legacy watchdog device will fail with -EBUSY from the try_module_get
+in watchdog_open because it's module owner is the watchdog core module
+so it can still be opened but it will fail to get a refcount on the
+underlying watchdog device driver.
+
+Fixes: 72139dfa2464 ("watchdog: Fix the race between the release of watchdog_core_data and cdev")
+Signed-off-by: Curtis Klein <curtis.klein@hpe.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20231205190522.55153-1-curtis.klein@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-core/dvbdev.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/watchdog/watchdog_dev.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/media/dvb-core/dvbdev.c b/drivers/media/dvb-core/dvbdev.c
-index 2ff8a1b776fb..3a83e8e09256 100644
---- a/drivers/media/dvb-core/dvbdev.c
-+++ b/drivers/media/dvb-core/dvbdev.c
-@@ -114,6 +114,8 @@ static int dvb_device_open(struct inode *inode, struct file *file)
- 			err = file->f_op->open(inode, file);
- 		up_read(&minor_rwsem);
- 		mutex_unlock(&dvbdev_mutex);
-+		if (err)
-+			dvb_device_put(dvbdev);
+diff --git a/drivers/watchdog/watchdog_dev.c b/drivers/watchdog/watchdog_dev.c
+index 5eec84fa6517..d3b5aa87c141 100644
+--- a/drivers/watchdog/watchdog_dev.c
++++ b/drivers/watchdog/watchdog_dev.c
+@@ -1035,6 +1035,7 @@ static int watchdog_cdev_register(struct watchdog_device *wdd)
+ 
+ 	/* Fill in the data structures */
+ 	cdev_init(&wd_data->cdev, &watchdog_fops);
++	wd_data->cdev.owner = wdd->ops->owner;
+ 
+ 	/* Add the device */
+ 	err = cdev_device_add(&wd_data->cdev, &wd_data->dev);
+@@ -1049,8 +1050,6 @@ static int watchdog_cdev_register(struct watchdog_device *wdd)
  		return err;
  	}
- fail:
+ 
+-	wd_data->cdev.owner = wdd->ops->owner;
+-
+ 	/* Record time of most recent heartbeat as 'just before now'. */
+ 	wd_data->last_hw_keepalive = ktime_sub(ktime_get(), 1);
+ 	watchdog_set_open_deadline(wd_data);
 -- 
 2.43.0
 
