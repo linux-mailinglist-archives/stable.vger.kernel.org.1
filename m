@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EFF7837E51
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C26837C2F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF3451F26DA7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:38:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 222251C28826
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804EB5730B;
-	Tue, 23 Jan 2024 00:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D0B4D5AB;
+	Tue, 23 Jan 2024 00:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DtgPDHlo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yPmjaxI1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400E753E1D;
-	Tue, 23 Jan 2024 00:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D1B2C687;
+	Tue, 23 Jan 2024 00:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970521; cv=none; b=Qp7DJoGSOuBRz6rY8oMkhfqAkNgi2moqnqX/5x+EynVExrRuo+0UlYfOBOZ8bMbeoXfsZ73n1APjWyqU4V7X1UC3DERzWbSYKvgJDSvvoXGObTvpJiug1IDv4bKzAC4WflDGiWl+ofwaPq/lhOpBDWFYkF/Z9TLemTfVQOoQyOs=
+	t=1705969528; cv=none; b=OfLtGDDSYGPR213rXCtPrLSa+z1aQnuTaFILRNyvfJW+FJKyatJ2z0UK/ZoQYVMERH4gltJ/gcMZYoEh8cqM9veZ6XWlGfeU9S6Fw41yTgbhfhwAx9IE7vLbByJeD4CbGgxmRqy0qgrP8nkf82bLI6Ukz5SL/efNfT3cjLRRcKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970521; c=relaxed/simple;
-	bh=KHfzVisP/Q8a3sqB8Z0bwmOt3rxiHje4ZPGniRPDo8A=;
+	s=arc-20240116; t=1705969528; c=relaxed/simple;
+	bh=97W6G7Ijd7Kejit2msU96t8NNkppR9gIcFmWgK0nnXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RTaPyFfnPJbrwknzL7QMeR5Gxa6BCiiRv5ce/KnIdsEAZCjzsbRbFJJOi8lT79ljY3+ckOUE68BvlmOK8XeybTa4zzuDCkXIR3YBUZt/g7eBBhnrdYGhNJkz2H8rTjwbVCssqkXqVXveZPtp2AnA4HKnUQbwjYR6eCqqpshacnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DtgPDHlo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7D09C43399;
-	Tue, 23 Jan 2024 00:42:00 +0000 (UTC)
+	 MIME-Version; b=bod8QIRruzUdIbX+GAOCVmaxFbL4CCP2H7pQkqSH0Cgf04KtAuM//cQHkFLQ9jkDOUsv0nE+412AVJw3CmhaJaDAG+nOz5gYZkn46zU6f69x6NqCLfgxjpLIK/sVkQc2v2WjJtt3JIwxcTooQ8vI0GDv8DZLVLSW/onIlOxluEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yPmjaxI1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EAE4C43390;
+	Tue, 23 Jan 2024 00:25:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970521;
-	bh=KHfzVisP/Q8a3sqB8Z0bwmOt3rxiHje4ZPGniRPDo8A=;
+	s=korg; t=1705969528;
+	bh=97W6G7Ijd7Kejit2msU96t8NNkppR9gIcFmWgK0nnXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DtgPDHloQDebkw7GIAIAkD94fWZACP747NZoVyqv9za4Uq6zFcaoiq+JLCAs8GHXS
-	 u0Ob0u5Q62d0nLNjYZhQKmiuL5ZkgycB0+PvyAbnJFnvN+lgHm8qz+qWVZnKHD6eMi
-	 pLOFNbkW9taXK4dqPgr6yhEY44CHy6qJkrAQca9A=
+	b=yPmjaxI1+cuDr38uaGwUvBl4vU7t+hN2+tVbQvfhljRkzUnQ8+FN0L2a6nD5UXzY/
+	 0e0xtLFq2YIVDE3CmucwH+KcVla4uDr6rUhFOzjv3g4ZqMdTpT2/X/v9gUT8oLZkf5
+	 bVG4Xeax7Shd+mv9pGkyC3QPENL0vt7wcXkLAEJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	"Dr. David Alan Gilbert" <dave@treblig.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 042/417] crypto: sahara - fix processing requests with cryptlen < sg->length
+Subject: [PATCH 6.7 306/641] media: videobuf2: request more buffers for vb2_read
 Date: Mon, 22 Jan 2024 15:53:30 -0800
-Message-ID: <20240122235753.102236177@linuxfoundation.org>
+Message-ID: <20240122235827.490836863@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 5b8668ce3452827d27f8c34ff6ba080a8f983ed0 ]
+[ Upstream commit 350ab13e1382f2afcc2285041a1e75b80d771c2c ]
 
-It's not always the case that the entire sg entry needs to be processed.
-Currently, when cryptlen is less than sg->legth, "Descriptor length" errors
-are encountered.
+The vb2 read support requests 1 buffer, leaving it to the driver
+to increase this number to something that works.
 
-The error was noticed when testing xts(sahara-ecb-aes) with arbitrary sized
-input data. To fix this, take the actual request size into account when
-populating the hw links.
+Unfortunately, drivers do not deal with this reliably, and in fact
+this caused problems for the bttv driver and reading from /dev/vbiX,
+causing every other VBI frame to be all 0.
 
-Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Instead, request as the number of buffers whatever is the maximum of
+2 and q->min_buffers_needed+1.
+
+In order to start streaming you need at least q->min_buffers_needed
+queued buffers, so add 1 buffer for processing. And if that field
+is 0, then choose 2 (again, one buffer is being filled while the
+other one is being processed).
+
+This certainly makes more sense than requesting just 1 buffer, and
+the VBI bttv support is now working again.
+
+It turns out that the old videobuf1 behavior of bttv was to allocate
+8 (video) and 4 (vbi) buffers when used with read(). After the vb2
+conversion that changed to 2 for both. With this patch it is 3, which
+is really all you need.
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: b7ec3212a73a ("media: bttv: convert to vb2")
+Tested-by: Dr. David Alan Gilbert <dave@treblig.org>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 9 +++++++--
+ drivers/media/common/videobuf2/videobuf2-core.c | 9 +++++++--
  1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 5e0b26f36319..e25636904aca 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -445,6 +445,7 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
- 	int ret;
- 	int i, j;
- 	int idx = 0;
-+	u32 len;
+diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/media/common/videobuf2/videobuf2-core.c
+index 27aee92f3eea..19f80ff497b7 100644
+--- a/drivers/media/common/videobuf2/videobuf2-core.c
++++ b/drivers/media/common/videobuf2/videobuf2-core.c
+@@ -2648,9 +2648,14 @@ static int __vb2_init_fileio(struct vb2_queue *q, int read)
+ 		return -EBUSY;
  
- 	memcpy(dev->key_base, ctx->key, ctx->keylen);
+ 	/*
+-	 * Start with count 1, driver can increase it in queue_setup()
++	 * Start with q->min_buffers_needed + 1, driver can increase it in
++	 * queue_setup()
++	 *
++	 * 'min_buffers_needed' buffers need to be queued up before you
++	 * can start streaming, plus 1 for userspace (or in this case,
++	 * kernelspace) processing.
+ 	 */
+-	count = 1;
++	count = max(2, q->min_buffers_needed + 1);
  
-@@ -495,12 +496,14 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
- 	/* Create input links */
- 	dev->hw_desc[idx]->p1 = dev->hw_phys_link[0];
- 	sg = dev->in_sg;
-+	len = dev->total;
- 	for (i = 0; i < dev->nb_in_sg; i++) {
--		dev->hw_link[i]->len = sg->length;
-+		dev->hw_link[i]->len = min(len, sg->length);
- 		dev->hw_link[i]->p = sg->dma_address;
- 		if (i == (dev->nb_in_sg - 1)) {
- 			dev->hw_link[i]->next = 0;
- 		} else {
-+			len -= min(len, sg->length);
- 			dev->hw_link[i]->next = dev->hw_phys_link[i + 1];
- 			sg = sg_next(sg);
- 		}
-@@ -509,12 +512,14 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
- 	/* Create output links */
- 	dev->hw_desc[idx]->p2 = dev->hw_phys_link[i];
- 	sg = dev->out_sg;
-+	len = dev->total;
- 	for (j = i; j < dev->nb_out_sg + i; j++) {
--		dev->hw_link[j]->len = sg->length;
-+		dev->hw_link[j]->len = min(len, sg->length);
- 		dev->hw_link[j]->p = sg->dma_address;
- 		if (j == (dev->nb_out_sg + i - 1)) {
- 			dev->hw_link[j]->next = 0;
- 		} else {
-+			len -= min(len, sg->length);
- 			dev->hw_link[j]->next = dev->hw_phys_link[j + 1];
- 			sg = sg_next(sg);
- 		}
+ 	dprintk(q, 3, "setting up file io: mode %s, count %d, read_once %d, write_immediately %d\n",
+ 		(read) ? "read" : "write", count, q->fileio_read_once,
 -- 
 2.43.0
 
