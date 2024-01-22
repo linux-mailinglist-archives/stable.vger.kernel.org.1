@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F94883822A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8F80838492
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBAE22894D6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59FEC299C18
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4CFE59178;
-	Tue, 23 Jan 2024 01:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EBDA73179;
+	Tue, 23 Jan 2024 02:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yxmY9zsG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mJkCqCH8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7706121;
-	Tue, 23 Jan 2024 01:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2C66EB61;
+	Tue, 23 Jan 2024 02:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974081; cv=none; b=UoeI2XDmb0UxA/G/vmJVz5fhVkDb9+HL81sG/iYdQDqqNW+H3WNe8+yB+p2HYq6iAuQZCLDKW8GczaZZ5wS7laIy/XlyQOKTTvjpsO74pa5oy/RXswxr6cL2gguN5ZfuHfmmCYDt6tby+HuZ9xqkqQksT2Z3RAAuTmxABhYniCw=
+	t=1705975428; cv=none; b=EqHZZdA3n6h16+hDIsdl0FsZRQRVOXdSqKUIcBYUJP67mbISk5D9jXZ8tKHa0+kzxMCF+8p+AA5XvRD6C7WBIDgzxsMxGbyhevA77qXRPkFEmqVMJHcZmI1SvzkNzYWrdcWWNCMJ4SB35b0YCL5W7VIdO0mxs0HCHzO+1LjSeS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974081; c=relaxed/simple;
-	bh=ILQo4Ku2ySJdM45pb7NYipOw0+w3TRRYg0JYlQ/NQKk=;
+	s=arc-20240116; t=1705975428; c=relaxed/simple;
+	bh=i5//6djdP2awJ3gRjKNfmsRdSPJ/Ot5onaia6K1b1bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qxO9fK7XZLPGFVUgMmBoxYyT6WbVBszOEkdXcgQ526zSqDhLgpr/q1HNn+MlLBiK/UnYCkjxuzyCkalk8eKvFDttIhVL+Pl9KGwynjoN2X1JkAQ/IOwo5wiDKChY9Ob9yhVFhC4wwnFdb8quKhLMTSt2yX2eXQpDkPYSocnoabA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yxmY9zsG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B31B2C43394;
-	Tue, 23 Jan 2024 01:41:20 +0000 (UTC)
+	 MIME-Version; b=UMflMMCdt2WNMipeOKA8vpVOjoL1MpwZHwhNWOtRiFogGb4ozamDdSjaEHLeBw6WUzb8w3ylzmkb04b+fNKPMdXjOEGFzyR2vtaKO+PNfB68PsNoNKsQWI2AWwnVmulJekjnLVr3irlDUCWLxR/SJlKzpsypdM1rzSS3HZP/YME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mJkCqCH8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E14C43390;
+	Tue, 23 Jan 2024 02:03:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974080;
-	bh=ILQo4Ku2ySJdM45pb7NYipOw0+w3TRRYg0JYlQ/NQKk=;
+	s=korg; t=1705975428;
+	bh=i5//6djdP2awJ3gRjKNfmsRdSPJ/Ot5onaia6K1b1bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yxmY9zsG5whqRTK9EpRAi314+3Jdt723BBYh0ai/pHxKWG3dc1Wfq1OppWsyZ9zaQ
-	 TipgHiRLUS73PWU41WSyETK4zlfklRBZ9vPCmL++BFACyL/f5FYibk57ZPxUQOixZ8
-	 pgpqrpB5Z0LVxdPVoXLUUuaQ4WvJqdRVk7NQsxRI=
+	b=mJkCqCH8+GMi5Oe21Nck+16Xgwr0lM3mJwZM/YES2Aa3dWQeafq9q7QgP4xrUuHDT
+	 aCi4nQXXAgTblgEC1An3PPmj3T2BQg41dSDzItTgeWLoWsoW7SklxGhujcNNR27A1e
+	 rHDtQOB6pr1hqsq/sIu3b3snlpfK5cayfLN/q890=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 155/374] wifi: rtlwifi: add calculate_bit_shift()
+	stable <stable@kernel.org>,
+	Wesley Cheng <quic_wcheng@quicinc.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.6 360/583] usb: dwc3: gadget: Handle EP0 request dequeuing properly
 Date: Mon, 22 Jan 2024 15:56:51 -0800
-Message-ID: <20240122235750.006541978@linuxfoundation.org>
+Message-ID: <20240122235823.037608321@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-[ Upstream commit 52221dfddbbfb5b4e029bb2efe9bb7da33ec1e46 ]
+commit 730e12fbec53ab59dd807d981a204258a4cfb29a upstream.
 
-There are many same functions like _rtl88e_phy_calculate_bit_shift(),
-_rtl92c_phy_calculate_bit_shift() and so on. And these functions can
-cause undefined bitwise shift behavior. Add calculate_bit_shift() to
-replace them and fix undefined behavior in subsequent patches.
+Current EP0 dequeue path will share the same as other EPs.  However, there
+are some special considerations that need to be made for EP0 transfers:
 
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-2-suhui@nfschina.com
-Stable-dep-of: 969bc926f04b ("wifi: rtlwifi: rtl8188ee: phy: using calculate_bit_shift()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  - EP0 transfers never transition into the started_list
+  - EP0 only has one active request at a time
+
+In case there is a vendor specific control message for a function over USB
+FFS, then there is no guarantee on the timeline which the DATA/STATUS stage
+is responded to.  While this occurs, any attempt to end transfers on
+non-control EPs will end up having the DWC3_EP_DELAY_STOP flag set, and
+defer issuing of the end transfer command.  If the USB FFS application
+decides to timeout the control transfer, or if USB FFS AIO path exits, the
+USB FFS driver will issue a call to usb_ep_dequeue() for the ep0 request.
+
+In case of the AIO exit path, the AIO FS blocks until all pending USB
+requests utilizing the AIO path is completed.  However, since the dequeue
+of ep0 req does not happen properly, all non-control EPs with the
+DWC3_EP_DELAY_STOP flag set will not be handled, and the AIO exit path will
+be stuck waiting for the USB FFS data endpoints to receive a completion
+callback.
+
+Fix is to utilize dwc3_ep0_reset_state() in the dequeue API to ensure EP0
+is brought back to the SETUP state, and ensures that any deferred end
+transfer commands are handled.  This also will end any active transfers
+on EP0, compared to the previous implementation which directly called
+giveback only.
+
+Fixes: fcd2def66392 ("usb: dwc3: gadget: Refactor dwc3_gadget_ep_dequeue")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20231206201814.32664-1-quic_wcheng@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/wifi.h | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/dwc3/gadget.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/wifi.h b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-index aa07856411b1..a1f223c8848b 100644
---- a/drivers/net/wireless/realtek/rtlwifi/wifi.h
-+++ b/drivers/net/wireless/realtek/rtlwifi/wifi.h
-@@ -3106,4 +3106,11 @@ static inline struct ieee80211_sta *rtl_find_sta(struct ieee80211_hw *hw,
- 	return ieee80211_find_sta(mac->vif, mac_addr);
- }
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -2103,7 +2103,17 @@ static int dwc3_gadget_ep_dequeue(struct
  
-+static inline u32 calculate_bit_shift(u32 bitmask)
-+{
-+	if (WARN_ON_ONCE(!bitmask))
-+		return 0;
-+
-+	return __ffs(bitmask);
-+}
- #endif
--- 
-2.43.0
-
+ 	list_for_each_entry(r, &dep->pending_list, list) {
+ 		if (r == req) {
+-			dwc3_gadget_giveback(dep, req, -ECONNRESET);
++			/*
++			 * Explicitly check for EP0/1 as dequeue for those
++			 * EPs need to be handled differently.  Control EP
++			 * only deals with one USB req, and giveback will
++			 * occur during dwc3_ep0_stall_and_restart().  EP0
++			 * requests are never added to started_list.
++			 */
++			if (dep->number > 1)
++				dwc3_gadget_giveback(dep, req, -ECONNRESET);
++			else
++				dwc3_ep0_reset_state(dwc);
+ 			goto out;
+ 		}
+ 	}
 
 
 
