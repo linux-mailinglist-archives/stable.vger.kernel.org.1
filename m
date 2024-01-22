@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD83B838135
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76EF6837E19
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58478B23B10
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 46F8E283E29
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14CC134723;
-	Tue, 23 Jan 2024 01:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481CD50A85;
+	Tue, 23 Jan 2024 00:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qD8fzLbo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkh+UIQJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FEE2134721;
-	Tue, 23 Jan 2024 01:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055764F204;
+	Tue, 23 Jan 2024 00:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971899; cv=none; b=TneMcWY94gKvOqt2Lzo/R7jTNUmhVq1KEeocrah6J9+wey50HpjMqced0PpBzK3D7H7IgVJbowItFEtfEUcsxptKyheFj15HFsfjfnRav5pDGcJ767zMKxlO2soGYiqjZa8cPWC5HT+pulLb3Bc1QhwT5lrmxeutqEOUG1V2cwM=
+	t=1705970329; cv=none; b=g+q4u/lBxMek9a63bXGmOzv6I0aBoqxiev//0ljbPAM5NLRURBrTveLmgu25E0JQnbKc/5tB8ktciK+8CsgYT/EiA+aKIO4z+Ry132lWpO55cwo6JzK19Jyatsdq2Kk2GMkfOxcP7pRfJwwRre5BHfoWCiMyyRbLhRAqtVH15YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971899; c=relaxed/simple;
-	bh=sYe+bmP46EovBsZpVFw1V1qxYPna20oxUlc0BlsQsXw=;
+	s=arc-20240116; t=1705970329; c=relaxed/simple;
+	bh=yNj3eO+prH+xoJSIMmYUFtKEsLhWu6oCATHyqriDFhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gqp73uU9KIFgXxswq46N/1J0TXSrcZR0ZDfmXTMsaSxMeRtVZvK/Crh4l8EoilK66Q/E1A/502kxNysw5a9G9UiO0dW5TnrG3uusFSf2OndRE1bWh/9OpATW0s8d9LA8aqseW5VPfjB50VJiDjDF5k8BDPTiOEf0SM2qd6WsLCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qD8fzLbo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C66C433C7;
-	Tue, 23 Jan 2024 01:04:59 +0000 (UTC)
+	 MIME-Version; b=PHHfvEMsUrHzzMT604w91o7qeyHgji9GPsAPZbqGU/1zQOw8few7jb/JLFARb3o3PBIAJUlkQMJtyOEuXJwjOqWROqMJLc41m+MHBelqw7JCoGXKPiLnn22ndEf3xAZCulKkDh/AoOwXDCwbrw4lNyvsCN5ysUeSgtJ74eMj5EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkh+UIQJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3DEC433C7;
+	Tue, 23 Jan 2024 00:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971899;
-	bh=sYe+bmP46EovBsZpVFw1V1qxYPna20oxUlc0BlsQsXw=;
+	s=korg; t=1705970328;
+	bh=yNj3eO+prH+xoJSIMmYUFtKEsLhWu6oCATHyqriDFhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qD8fzLbofs5UqMZw9U9Wy085xbaSHzCzEtgcVBlO/L6sHLyV3C1KUv7xO+cAu65Xa
-	 c2Apra9WvvQEs2zmNpIKpJaoe8y2Fzma0STTDdFc6fibaVIGSRWBMgEaVEpTvZ+jXy
-	 XOM3YLc1KdLpEODWBOTJywoHE7Os/1c+jqXlH5Bw=
+	b=mkh+UIQJJgBAk4++7MmI08FK6F2yZ2BqAE5yRDFbL6I4yGieyTssRUduuw9olCa8i
+	 dBNbod+Jg6Sr7KYz4/eCdx5jlscrSa2sz7YnUBl844k48+CgJ5KNNXCVtSxLcGX6lu
+	 k3O3a4fx5Cl3FtxS01Jh3EpXBWVoyOW/sto2c6W0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Geurts <paul_geurts@live.nl>,
-	Rasmus Villemoes <rasmus.villemoes@prevas.dk>,
-	Eberhard Stoll <eberhard.stoll@gmx.de>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Dafna Hirschfeld <dhirschfeld@habana.ai>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 345/417] serial: imx: fix tx statemachine deadlock
-Date: Mon, 22 Jan 2024 15:58:33 -0800
-Message-ID: <20240122235803.740766623@linuxfoundation.org>
+Subject: [PATCH 6.7 610/641] drm/amdkfd: fixes for HMM mem allocation
+Date: Mon, 22 Jan 2024 15:58:34 -0800
+Message-ID: <20240122235837.321719710@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Geurts <paul_geurts@live.nl>
+From: Dafna Hirschfeld <dhirschfeld@habana.ai>
 
-[ Upstream commit 78d60dae9a0c9f09aa3d6477c94047df2fe6f7b0 ]
+[ Upstream commit 02eed83abc1395a1207591aafad9bcfc5cb1abcb ]
 
-When using the serial port as RS485 port, the tx statemachine is used to
-control the RTS pin to drive the RS485 transceiver TX_EN pin. When the
-TTY port is closed in the middle of a transmission (for instance during
-userland application crash), imx_uart_shutdown disables the interface
-and disables the Transmission Complete interrupt. afer that,
-imx_uart_stop_tx bails on an incomplete transmission, to be retriggered
-by the TC interrupt. This interrupt is disabled and therefore the tx
-statemachine never transitions out of SEND. The statemachine is in
-deadlock now, and the TX_EN remains low, making the interface useless.
+Fix err return value and reset pgmap->type after checking it.
 
-imx_uart_stop_tx now checks for incomplete transmission AND whether TC
-interrupts are enabled before bailing to be retriggered. This makes sure
-the state machine handling is reached, and is properly set to
-WAIT_AFTER_SEND.
-
-Fixes: cb1a60923609 ("serial: imx: implement rts delaying for rs485")
-Signed-off-by: Paul Geurts <paul_geurts@live.nl>
-Tested-by: Rasmus Villemoes <rasmus.villemoes@prevas.dk>
-Tested-by: Eberhard Stoll <eberhard.stoll@gmx.de>
-Link: https://lore.kernel.org/r/AM0PR09MB26758F651BC1B742EB45775995B8A@AM0PR09MB2675.eurprd09.prod.outlook.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c83dee9b6394 ("drm/amdkfd: add SPM support for SVM")
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Dafna Hirschfeld <dhirschfeld@habana.ai>
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/imx.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_migrate.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 48c05fc1064e..c2cc104225ec 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -450,13 +450,13 @@ static void imx_uart_stop_tx(struct uart_port *port)
- 	ucr1 = imx_uart_readl(sport, UCR1);
- 	imx_uart_writel(sport, ucr1 & ~UCR1_TRDYEN, UCR1);
- 
-+	ucr4 = imx_uart_readl(sport, UCR4);
- 	usr2 = imx_uart_readl(sport, USR2);
--	if (!(usr2 & USR2_TXDC)) {
-+	if ((!(usr2 & USR2_TXDC)) && (ucr4 & UCR4_TCEN)) {
- 		/* The shifter is still busy, so retry once TC triggers */
- 		return;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+index 6c25dab051d5..b8680e0753ca 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+@@ -1021,7 +1021,7 @@ int kgd2kfd_init_zone_device(struct amdgpu_device *adev)
+ 	} else {
+ 		res = devm_request_free_mem_region(adev->dev, &iomem_resource, size);
+ 		if (IS_ERR(res))
+-			return -ENOMEM;
++			return PTR_ERR(res);
+ 		pgmap->range.start = res->start;
+ 		pgmap->range.end = res->end;
+ 		pgmap->type = MEMORY_DEVICE_PRIVATE;
+@@ -1037,10 +1037,10 @@ int kgd2kfd_init_zone_device(struct amdgpu_device *adev)
+ 	r = devm_memremap_pages(adev->dev, pgmap);
+ 	if (IS_ERR(r)) {
+ 		pr_err("failed to register HMM device memory\n");
+-		/* Disable SVM support capability */
+-		pgmap->type = 0;
+ 		if (pgmap->type == MEMORY_DEVICE_PRIVATE)
+ 			devm_release_mem_region(adev->dev, res->start, resource_size(res));
++		/* Disable SVM support capability */
++		pgmap->type = 0;
+ 		return PTR_ERR(r);
  	}
- 
--	ucr4 = imx_uart_readl(sport, UCR4);
- 	ucr4 &= ~UCR4_TCEN;
- 	imx_uart_writel(sport, ucr4, UCR4);
  
 -- 
 2.43.0
