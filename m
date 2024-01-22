@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-13457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D39837C24
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F7B4837E4B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1708295C03
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC2211F26565
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:37:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4981E25632;
-	Tue, 23 Jan 2024 00:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE1A5F57E;
+	Tue, 23 Jan 2024 00:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LeeZDGui"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C9ZNuobh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093021E4AB;
-	Tue, 23 Jan 2024 00:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6525F574;
+	Tue, 23 Jan 2024 00:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969518; cv=none; b=C7Nr5bs0HeyWj7sD9ST0vaLT6xUkR5PorJVrRlIh3xA4yKw9y1RqQJx/QlgZIkpUz6F+ajVvLNVy0otwJoOjZtRpk5ptbNyho/302//MVEQMqPIGhiso9wi0dF+zZLIpNmwQsH9QOmJ0Aly7m9pqWqU6YcxG72XWpv21RSNKxZw=
+	t=1705970501; cv=none; b=UqquzqPhkvTqsN6Y45VCh0asSLAGupnGYhcIlxBHhdlJoYcsvRvj1C/Iiyno7+PxT9GO3t/WOG9kpXj7hY+PiJPU9MPEFH1+MAP/ha88G1Y7tzLvfXt6MnlrbslffLDj2kTJ3Bby1bJeYysFk3XmV9fNZFPzJRzj74sFNSLqFG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969518; c=relaxed/simple;
-	bh=xMjOU2WRJ4z8wXENuyBaIMFzsizVeoX4ZYcsbirmc1s=;
+	s=arc-20240116; t=1705970501; c=relaxed/simple;
+	bh=t3NLT5Rc/t78/jemK3dQvnz4XIDK6v8HwVkzNqJlf6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ks/ujm2PzLVEs4QLymD9VpzpYlfyFmL0cLGNi0HN6Tjj6ca92lDs7lx3un7xk2jUouXWfJ/enjOrBQKtS3q5yhHGmz9E4Z/c1S7jFs+r5p+Cqp8LWElqadie9y0zcbOrfYJR6wllc+H888m2kZTsKKTgD/wyDslytzq4RpIks10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LeeZDGui; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8B5C433A6;
-	Tue, 23 Jan 2024 00:25:17 +0000 (UTC)
+	 MIME-Version; b=hXnYy8zIslIgEtbQYcOaUXCNCgSoXr/TOKoNgKbj4pN8WT2kTj7WEKUfcEas5tu+IraDi8ubeiMjDLOMTQZK9WKflra8cJF7Ca8CLtq+xKidDmZszmDmgegzKirtzGeN++CdZaQgN0nCCPmxdKZ8E7lMI6SGs1wqr6H7fgPajVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C9ZNuobh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8089FC433C7;
+	Tue, 23 Jan 2024 00:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969517;
-	bh=xMjOU2WRJ4z8wXENuyBaIMFzsizVeoX4ZYcsbirmc1s=;
+	s=korg; t=1705970501;
+	bh=t3NLT5Rc/t78/jemK3dQvnz4XIDK6v8HwVkzNqJlf6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LeeZDGuiLxsap153pfViD7yeCBYNmrRrYTwo3bkgN97EVy39tBvQyte76x/h2QYpb
-	 5rvt3jBETLQbEOcf7eKyNvrgrXQuS4yy266+ofd0/Ua5vtgqTQ2FytwI+2/wZgtvyx
-	 4+VDNR+Gz8t04ZPXUR/CeFk00q6xlpmCXOmxqOHA=
+	b=C9ZNuobhF9C7VZmt4ggLvXdpb4BZ2yprckIbgI3t6UfrXVtTzzGTP69f9L0SH9KoX
+	 g02g+MtUfmrscvLHu5Fa5aVlW4DyJrwj0IlOFceEISvd6WltownIlVgcXkFDiwIcgu
+	 CHAwQRdJc7EU4tNH1aTkg9oDzq6aC4Dp2C0ES3f0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Takashi Iwai <tiwai@suse.de>,
+	Dinghao Liu <dinghao.liu@zju.edu.cn>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 300/641] ASoC: SOF: Intel: pci-mtl: fix ARL-S definitions
+Subject: [PATCH 6.1 036/417] crypto: ccp - fix memleak in ccp_init_dm_workarea
 Date: Mon, 22 Jan 2024 15:53:24 -0800
-Message-ID: <20240122235827.293843803@linuxfoundation.org>
+Message-ID: <20240122235752.861539484@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,131 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-[ Upstream commit a00be6dc9bb80796244196033aa5eb258b6af47a ]
+[ Upstream commit a1c95dd5bc1d6a5d7a75a376c2107421b7d6240d ]
 
-The initial copy/paste from MTL was incorrect, the hardware is
-different and requires different descriptors along with a dedicated
-firmware binary.
+When dma_map_single() fails, wa->address is supposed to be freed
+by the callers of ccp_init_dm_workarea() through ccp_dm_free().
+However, many of the call spots don't expect to have to call
+ccp_dm_free() on failure of ccp_init_dm_workarea(), which may
+lead to a memleak. Let's free wa->address in ccp_init_dm_workarea()
+when dma_map_single() fails.
 
-Fixes: 3851831f529e ("ASoC: SOF: Intel: pci-mtl: use ARL specific firmware definitions")
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Link: https://lore.kernel.org/r/20231204212710.185976-5-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 63b945091a07 ("crypto: ccp - CCP device driver and interface support")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/intel/hda.h     |  1 +
- sound/soc/sof/intel/mtl.c     | 28 ++++++++++++++++++++++++++++
- sound/soc/sof/intel/pci-mtl.c | 12 ++++++------
- 3 files changed, 35 insertions(+), 6 deletions(-)
+ drivers/crypto/ccp/ccp-ops.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/sof/intel/hda.h b/sound/soc/sof/intel/hda.h
-index d628d6a3a7e5..1592e27bc14d 100644
---- a/sound/soc/sof/intel/hda.h
-+++ b/sound/soc/sof/intel/hda.h
-@@ -882,6 +882,7 @@ extern const struct sof_intel_dsp_desc ehl_chip_info;
- extern const struct sof_intel_dsp_desc jsl_chip_info;
- extern const struct sof_intel_dsp_desc adls_chip_info;
- extern const struct sof_intel_dsp_desc mtl_chip_info;
-+extern const struct sof_intel_dsp_desc arl_s_chip_info;
- extern const struct sof_intel_dsp_desc lnl_chip_info;
+diff --git a/drivers/crypto/ccp/ccp-ops.c b/drivers/crypto/ccp/ccp-ops.c
+index aa4e1a500691..cb8e99936abb 100644
+--- a/drivers/crypto/ccp/ccp-ops.c
++++ b/drivers/crypto/ccp/ccp-ops.c
+@@ -179,8 +179,11 @@ static int ccp_init_dm_workarea(struct ccp_dm_workarea *wa,
  
- /* Probes support */
-diff --git a/sound/soc/sof/intel/mtl.c b/sound/soc/sof/intel/mtl.c
-index 254dbbeac1d0..7946110e7adf 100644
---- a/sound/soc/sof/intel/mtl.c
-+++ b/sound/soc/sof/intel/mtl.c
-@@ -746,3 +746,31 @@ const struct sof_intel_dsp_desc mtl_chip_info = {
- 	.hw_ip_version = SOF_INTEL_ACE_1_0,
- };
- EXPORT_SYMBOL_NS(mtl_chip_info, SND_SOC_SOF_INTEL_HDA_COMMON);
-+
-+const struct sof_intel_dsp_desc arl_s_chip_info = {
-+	.cores_num = 2,
-+	.init_core_mask = BIT(0),
-+	.host_managed_cores_mask = BIT(0),
-+	.ipc_req = MTL_DSP_REG_HFIPCXIDR,
-+	.ipc_req_mask = MTL_DSP_REG_HFIPCXIDR_BUSY,
-+	.ipc_ack = MTL_DSP_REG_HFIPCXIDA,
-+	.ipc_ack_mask = MTL_DSP_REG_HFIPCXIDA_DONE,
-+	.ipc_ctl = MTL_DSP_REG_HFIPCXCTL,
-+	.rom_status_reg = MTL_DSP_ROM_STS,
-+	.rom_init_timeout	= 300,
-+	.ssp_count = MTL_SSP_COUNT,
-+	.ssp_base_offset = CNL_SSP_BASE_OFFSET,
-+	.sdw_shim_base = SDW_SHIM_BASE_ACE,
-+	.sdw_alh_base = SDW_ALH_BASE_ACE,
-+	.d0i3_offset = MTL_HDA_VS_D0I3C,
-+	.read_sdw_lcount =  hda_sdw_check_lcount_common,
-+	.enable_sdw_irq = mtl_enable_sdw_irq,
-+	.check_sdw_irq = mtl_dsp_check_sdw_irq,
-+	.check_sdw_wakeen_irq = hda_sdw_check_wakeen_irq_common,
-+	.check_ipc_irq = mtl_dsp_check_ipc_irq,
-+	.cl_init = mtl_dsp_cl_init,
-+	.power_down_dsp = mtl_power_down_dsp,
-+	.disable_interrupts = mtl_dsp_disable_interrupts,
-+	.hw_ip_version = SOF_INTEL_ACE_1_0,
-+};
-+EXPORT_SYMBOL_NS(arl_s_chip_info, SND_SOC_SOF_INTEL_HDA_COMMON);
-diff --git a/sound/soc/sof/intel/pci-mtl.c b/sound/soc/sof/intel/pci-mtl.c
-index 0f378f45486d..60d5e73cdad2 100644
---- a/sound/soc/sof/intel/pci-mtl.c
-+++ b/sound/soc/sof/intel/pci-mtl.c
-@@ -50,7 +50,7 @@ static const struct sof_dev_desc mtl_desc = {
- 	.ops_free = hda_ops_free,
- };
+ 		wa->dma.address = dma_map_single(wa->dev, wa->address, len,
+ 						 dir);
+-		if (dma_mapping_error(wa->dev, wa->dma.address))
++		if (dma_mapping_error(wa->dev, wa->dma.address)) {
++			kfree(wa->address);
++			wa->address = NULL;
+ 			return -ENOMEM;
++		}
  
--static const struct sof_dev_desc arl_desc = {
-+static const struct sof_dev_desc arl_s_desc = {
- 	.use_acpi_target_states = true,
- 	.machines               = snd_soc_acpi_intel_arl_machines,
- 	.alt_machines           = snd_soc_acpi_intel_arl_sdw_machines,
-@@ -58,21 +58,21 @@ static const struct sof_dev_desc arl_desc = {
- 	.resindex_pcicfg_base   = -1,
- 	.resindex_imr_base      = -1,
- 	.irqindex_host_ipc      = -1,
--	.chip_info = &mtl_chip_info,
-+	.chip_info = &arl_s_chip_info,
- 	.ipc_supported_mask     = BIT(SOF_IPC_TYPE_4),
- 	.ipc_default            = SOF_IPC_TYPE_4,
- 	.dspless_mode_supported = true,         /* Only supported for HDaudio */
- 	.default_fw_path = {
--		[SOF_IPC_TYPE_4] = "intel/sof-ipc4/arl",
-+		[SOF_IPC_TYPE_4] = "intel/sof-ipc4/arl-s",
- 	},
- 	.default_lib_path = {
--		[SOF_IPC_TYPE_4] = "intel/sof-ipc4-lib/arl",
-+		[SOF_IPC_TYPE_4] = "intel/sof-ipc4-lib/arl-s",
- 	},
- 	.default_tplg_path = {
- 		[SOF_IPC_TYPE_4] = "intel/sof-ace-tplg",
- 	},
- 	.default_fw_filename = {
--		[SOF_IPC_TYPE_4] = "sof-arl.ri",
-+		[SOF_IPC_TYPE_4] = "sof-arl-s.ri",
- 	},
- 	.nocodec_tplg_filename = "sof-arl-nocodec.tplg",
- 	.ops = &sof_mtl_ops,
-@@ -83,7 +83,7 @@ static const struct sof_dev_desc arl_desc = {
- /* PCI IDs */
- static const struct pci_device_id sof_pci_ids[] = {
- 	{ PCI_DEVICE_DATA(INTEL, HDA_MTL, &mtl_desc) },
--	{ PCI_DEVICE_DATA(INTEL, HDA_ARL_S, &arl_desc) },
-+	{ PCI_DEVICE_DATA(INTEL, HDA_ARL_S, &arl_s_desc) },
- 	{ 0, }
- };
- MODULE_DEVICE_TABLE(pci, sof_pci_ids);
+ 		wa->dma.length = len;
+ 	}
 -- 
 2.43.0
 
