@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-13882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 245D1837E8C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7632C837C78
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57BEC1C2100B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:40:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A633F1C288B7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649C05FBA1;
-	Tue, 23 Jan 2024 00:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC22F1353F5;
+	Tue, 23 Jan 2024 00:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B998zwTE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfyvEZKe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 228155732A;
-	Tue, 23 Jan 2024 00:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FC22581;
+	Tue, 23 Jan 2024 00:27:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970661; cv=none; b=IDdvaMEkT6S7xqZPNhxbmeU7rK3yE9GNpPOWEwZO6ZIFZPMwmI7TTbiwFc4NmZwVIxp75EYSgX3irmmWhBIvmkxqNisrH+00RqmVCtS/6NvlflGmA580QSXIUUTD7VDC5mwhQde1TePDRMq0M30nHdpLq4a1nRYfbQAIXsMcpVk=
+	t=1705969629; cv=none; b=IvCH6KVz15LUwknCkAoX8vweTEsS2NvrXZK4BTF0hy4CwRndMHIx+oP6fhtYpRgv//khyjXJ1a0XurB60blP6AF5lcyVsDFrOgnZuhLDB8ydgsherb3MEvAz2wLeCBKIGyALLQ0KM3YIfjDdvx5CIdRmFEPEUX5OmtvBdGBAwms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970661; c=relaxed/simple;
-	bh=oFPErOmnTzGFyqg3vSDPVQyEZpX5NEtaE5eXtNpmv8E=;
+	s=arc-20240116; t=1705969629; c=relaxed/simple;
+	bh=q5Hj4yTXIuyYQY2sZ2YExLrx9QOjbH6vxZyyK2CG2aM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fkv4J6CIf3zi9IBml0Hj63yYmk4q/Nj16TvM/MXzj6KC9oCv/F7PRmjY7SdvsGbKkrMWJBqhpauV/2bl6LkQ1z71GAg8YOLhUDkkCURBEk1AQjz2TIO2GQocWWdxFupceLw2fRb1dm6mD7CD+9qUR6WM1qzMzfUM3EYdE7lZKEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B998zwTE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2868CC433F1;
-	Tue, 23 Jan 2024 00:44:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Tf1SBAAf8a48PGQ/HbWa2fMMu+vyJ0nToL7/jCXPEHBs2S+qUjdcVAYmA8xIHitGhq0h6APllsRT/zfKUuNTBIg03B7afiWkQqv1nudoec9plM58cyf8qQH8+MkCfhdSDOAZIl7lvxhL88sCIh8oELiEueK6Zstw0T6T8yd3lws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfyvEZKe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E94FC433F1;
+	Tue, 23 Jan 2024 00:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970661;
-	bh=oFPErOmnTzGFyqg3vSDPVQyEZpX5NEtaE5eXtNpmv8E=;
+	s=korg; t=1705969629;
+	bh=q5Hj4yTXIuyYQY2sZ2YExLrx9QOjbH6vxZyyK2CG2aM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B998zwTEEOd2YuJNIQNer3OzLa8MyJ+90ePqctz8V9qhKSE5iVvRabw8s29qUNUQU
-	 nTw2ncGIcWlhKb7abFF7SuJN/k7yXXMUA6ZCNfXzmuS/4ElRiIOkI3tyV57AjmprIU
-	 o2QUgzcY+x9fNG+iVzc561tP6uQYPT5Txo2CjRvA=
+	b=IfyvEZKeQJGG5h+I+tjCkZYub79wJegbcX0AGk+AKt3WIRqeOzDz9UNS8sACY5Ib3
+	 Fq1mGLpjnpJsbPwAV0nT75WasM6o2cMs+1blXMxrBq9Ly7zY6a7KwuJOJsbFYjNLG3
+	 gXzqXaajSij3ve6bCPHUt7ZtG1rgDgnhbzxuUotc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeroen van Ingen Schenau <jeroen.vaningenschenau@novoserve.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Minh Le Hoang <minh.lehoang@novoserve.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Guillaume Ranquet <granquet@baylibre.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 081/417] selftests/bpf: Fix erroneous bitmask operation
+Subject: [PATCH 6.7 345/641] drm/mediatek: dp: Add phy_mtk_dp module as pre-dependency
 Date: Mon, 22 Jan 2024 15:54:09 -0800
-Message-ID: <20240122235754.511663085@linuxfoundation.org>
+Message-ID: <20240122235828.721520989@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeroen van Ingen Schenau <jeroen.vaningenschenau@novoserve.com>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit b6a3451e0847d5d70fb5fa2b2a80ab9f80bf2c7b ]
+[ Upstream commit c8048dd0b07df68724805254b9e994d99e9a7af4 ]
 
-xdp_synproxy_kern.c is a BPF program that generates SYN cookies on
-allowed TCP ports and sends SYNACKs to clients, accelerating synproxy
-iptables module.
+The mtk_dp driver registers a phy device which is handled by the
+phy_mtk_dp driver and assumes that the phy probe will complete
+synchronously, proceeding to make use of functionality exposed by that
+driver right away. This assumption however is false when the phy driver
+is built as a module, causing the mtk_dp driver to fail probe in this
+case.
 
-Fix the bitmask operation when checking the status of an existing
-conntrack entry within tcp_lookup() function. Do not AND with the bit
-position number, but with the bitmask value to check whether the entry
-found has the IPS_CONFIRMED flag set.
+Add the phy_mtk_dp module as a pre-dependency to the mtk_dp module to
+ensure the phy module has been loaded before the dp, so that the phy
+probe happens synchrounously and the mtk_dp driver can probe
+successfully even with the phy driver built as a module.
 
-Fixes: fb5cd0ce70d4 ("selftests/bpf: Add selftests for raw syncookie helpers")
-Signed-off-by: Jeroen van Ingen Schenau <jeroen.vaningenschenau@novoserve.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Minh Le Hoang <minh.lehoang@novoserve.com>
-Link: https://lore.kernel.org/xdp-newbies/CAAi1gX7owA+Tcxq-titC-h-KPM7Ri-6ZhTNMhrnPq5gmYYwKow@mail.gmail.com/T/#u
-Link: https://lore.kernel.org/bpf/20231130120353.3084-1-jeroen.vaningenschenau@novoserve.com
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Guillaume Ranquet <granquet@baylibre.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20231121142938.460846-1-nfraprado@collabora.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_dp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c b/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c
-index 736686e903f6..26bfbc73d129 100644
---- a/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c
-+++ b/tools/testing/selftests/bpf/progs/xdp_synproxy_kern.c
-@@ -447,13 +447,13 @@ static __always_inline int tcp_lookup(void *ctx, struct header_pointers *hdr, bo
- 		unsigned long status = ct->status;
- 
- 		bpf_ct_release(ct);
--		if (status & IPS_CONFIRMED_BIT)
-+		if (status & IPS_CONFIRMED)
- 			return XDP_PASS;
- 	} else if (ct_lookup_opts.error != -ENOENT) {
- 		return XDP_ABORTED;
- 	}
- 
--	/* error == -ENOENT || !(status & IPS_CONFIRMED_BIT) */
-+	/* error == -ENOENT || !(status & IPS_CONFIRMED) */
- 	return XDP_TX;
- }
- 
+diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
+index e4c16ba9902d..2136a596efa1 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dp.c
++++ b/drivers/gpu/drm/mediatek/mtk_dp.c
+@@ -2818,3 +2818,4 @@ MODULE_AUTHOR("Markus Schneider-Pargmann <msp@baylibre.com>");
+ MODULE_AUTHOR("Bo-Chen Chen <rex-bc.chen@mediatek.com>");
+ MODULE_DESCRIPTION("MediaTek DisplayPort Driver");
+ MODULE_LICENSE("GPL");
++MODULE_SOFTDEP("pre: phy_mtk_dp");
 -- 
 2.43.0
 
