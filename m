@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-13904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0121E837EA3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D716B838413
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 571A1B21CFD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E88C1F2289C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EFE960B98;
-	Tue, 23 Jan 2024 00:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 311D067755;
+	Tue, 23 Jan 2024 02:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qcvQAZoO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0hWfhnq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D236860B8C;
-	Tue, 23 Jan 2024 00:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51586772E;
+	Tue, 23 Jan 2024 02:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970714; cv=none; b=KTgIIysRc546gtkqixa/uLkhAThIRrefp+pVb15eqDKRZINDumNeFoZXVKHds/F+s3tSyhKJqKWq8ByRKZxu7+8yrO4kZ6Grx4EkG2WQJEo2xdcqHATh94oxow/+YL/eYGwt4mlmESHtcsM9sU2aIoFnVPdSj91nuP4+N3AM1VM=
+	t=1705975296; cv=none; b=XvqXj7alqjpo59mE/aLlQxN2KARKMoGIWQUa5RdGi15j4YzMDXSU1dlX/VgUSAR58PjkZcqa91D1XkJosUuP2Sm0ZHyroVsoGcbrgtfv0RyYhuPEYXdQ9YV17lzLCTzRCNL2A65W8yx9DMFr4pobgfUYfewSHBKNfFxrAK5LQ1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970714; c=relaxed/simple;
-	bh=vg4LlBN3/gGjvY6M9NPj5CXMxmUHgbv1uINwrZNOqcY=;
+	s=arc-20240116; t=1705975296; c=relaxed/simple;
+	bh=0XbKgeMh1op5oPG1iu2T44JCu/zNICjl6j7gmpZZZz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jo18Fkgr+izTGhiMwsIQmxvH1rqCVIdZ38gnWb0OuDSXkeLuCBoJclUM4zQxE35r28mq+8bJD/PF+AAuMiduB+xRTeEUOrLzBQfrSQa6slpW2eTDygCLdglytjI5Xzx6PKXgLwmNoggPod9iGnjJf0mh8z8uSnyaoonDkNv8LMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qcvQAZoO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C0AAC433F1;
-	Tue, 23 Jan 2024 00:45:14 +0000 (UTC)
+	 MIME-Version; b=NrQsf22SeeUdzr5jY4muLVQGTEhtOSe4eggW65N7BVgbs/Ee45zZD88SxGmRZzusr8siG2qLhMOnJ51cw16ZhqNiPfyn8RKwsTTIHCkJVo4kZw/uJA7piQqhYTjRUwsHGQkUgtRn+T66ipT9W5cGPZjl4DxHWaIvZLO+ZAvJzCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0hWfhnq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D6AC43394;
+	Tue, 23 Jan 2024 02:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970714;
-	bh=vg4LlBN3/gGjvY6M9NPj5CXMxmUHgbv1uINwrZNOqcY=;
+	s=korg; t=1705975295;
+	bh=0XbKgeMh1op5oPG1iu2T44JCu/zNICjl6j7gmpZZZz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qcvQAZoOSSJTuL5qhXK701m8/Kf0wMvR0VOvLjTNuaAi0mZw42+pBr0sSToG31i35
-	 his/12k0mzU8YAUMYZ3MpmMWw4b/R20RCM6eHEulPbMkyBPD82/E7gootxi1NWVJgU
-	 3GvbG/XEshMkqA2Fjnm3XQCDi03qDoJFeVEkGp7k=
+	b=y0hWfhnq0d5OfpvZ5eCUFxo2pNxGa5uBm6gm0prMLoB6TYEM+//E+KAMsEFbQekio
+	 oSCF+VURQ0Qf5XKpzLtbX99mBehpVBbLDckMgq3omeDlV7R++DZDXF6SwZsSx8sR7N
+	 QE353dyA7ae3OGLhNr0MEkrae+7yfFbAe50ovdQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 005/286] debugfs: fix automount d_fsdata usage
+Subject: [PATCH 6.6 260/583] drm/radeon: check the alloc_workqueue return value in radeon_crtc_init()
 Date: Mon, 22 Jan 2024 15:55:11 -0800
-Message-ID: <20240122235732.214131613@linuxfoundation.org>
+Message-ID: <20240122235819.962766605@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,151 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 0ed04a1847a10297595ac24dc7d46b35fb35f90a ]
+[ Upstream commit 7a2464fac80d42f6f8819fed97a553e9c2f43310 ]
 
-debugfs_create_automount() stores a function pointer in d_fsdata,
-but since commit 7c8d469877b1 ("debugfs: add support for more
-elaborate ->d_fsdata") debugfs_release_dentry() will free it, now
-conditionally on DEBUGFS_FSDATA_IS_REAL_FOPS_BIT, but that's not
-set for the function pointer in automount. As a result, removing
-an automount dentry would attempt to free the function pointer.
-Luckily, the only user of this (tracing) never removes it.
+check the alloc_workqueue return value in radeon_crtc_init()
+to avoid null-ptr-deref.
 
-Nevertheless, it's safer if we just handle the fsdata in one way,
-namely either DEBUGFS_FSDATA_IS_REAL_FOPS_BIT or allocated. Thus,
-change the automount to allocate it, and use the real_fops in the
-data to indicate whether or not automount is filled, rather than
-adding a type tag. At least for now this isn't actually needed,
-but the next changes will require it.
-
-Also check in debugfs_file_get() that it gets only called
-on regular files, just to make things clearer.
-
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: fa7f517cb26e ("drm/radeon: rework page flip handling v4")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/debugfs/file.c     |  8 ++++++++
- fs/debugfs/inode.c    | 27 ++++++++++++++++++++-------
- fs/debugfs/internal.h | 10 ++++++++--
- 3 files changed, 36 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/radeon/radeon_display.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/debugfs/file.c b/fs/debugfs/file.c
-index 42bab9270e7d..9c0aadedfbff 100644
---- a/fs/debugfs/file.c
-+++ b/fs/debugfs/file.c
-@@ -84,6 +84,14 @@ int debugfs_file_get(struct dentry *dentry)
- 	struct debugfs_fsdata *fsd;
- 	void *d_fsd;
+diff --git a/drivers/gpu/drm/radeon/radeon_display.c b/drivers/gpu/drm/radeon/radeon_display.c
+index 901e75ec70ff..efd18c8d84c8 100644
+--- a/drivers/gpu/drm/radeon/radeon_display.c
++++ b/drivers/gpu/drm/radeon/radeon_display.c
+@@ -687,11 +687,16 @@ static void radeon_crtc_init(struct drm_device *dev, int index)
+ 	if (radeon_crtc == NULL)
+ 		return;
  
-+	/*
-+	 * This could only happen if some debugfs user erroneously calls
-+	 * debugfs_file_get() on a dentry that isn't even a file, let
-+	 * them know about it.
-+	 */
-+	if (WARN_ON(!d_is_reg(dentry)))
-+		return -EINVAL;
-+
- 	d_fsd = READ_ONCE(dentry->d_fsdata);
- 	if (!((unsigned long)d_fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT)) {
- 		fsd = d_fsd;
-diff --git a/fs/debugfs/inode.c b/fs/debugfs/inode.c
-index f47f0a7d2c3b..d04930c199cb 100644
---- a/fs/debugfs/inode.c
-+++ b/fs/debugfs/inode.c
-@@ -210,17 +210,19 @@ static const struct super_operations debugfs_super_operations = {
- 
- static void debugfs_release_dentry(struct dentry *dentry)
- {
--	void *fsd = dentry->d_fsdata;
-+	struct debugfs_fsdata *fsd = dentry->d_fsdata;
- 
--	if (!((unsigned long)fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT))
--		kfree(dentry->d_fsdata);
-+	if ((unsigned long)fsd & DEBUGFS_FSDATA_IS_REAL_FOPS_BIT)
++	radeon_crtc->flip_queue = alloc_workqueue("radeon-crtc", WQ_HIGHPRI, 0);
++	if (!radeon_crtc->flip_queue) {
++		kfree(radeon_crtc);
 +		return;
-+
-+	kfree(fsd);
- }
- 
- static struct vfsmount *debugfs_automount(struct path *path)
- {
--	debugfs_automount_t f;
--	f = (debugfs_automount_t)path->dentry->d_fsdata;
--	return f(path->dentry, d_inode(path->dentry)->i_private);
-+	struct debugfs_fsdata *fsd = path->dentry->d_fsdata;
-+
-+	return fsd->automount(path->dentry, d_inode(path->dentry)->i_private);
- }
- 
- static const struct dentry_operations debugfs_dops = {
-@@ -598,13 +600,23 @@ struct dentry *debugfs_create_automount(const char *name,
- 					void *data)
- {
- 	struct dentry *dentry = start_creating(name, parent);
-+	struct debugfs_fsdata *fsd;
- 	struct inode *inode;
- 
- 	if (IS_ERR(dentry))
- 		return dentry;
- 
-+	fsd = kzalloc(sizeof(*fsd), GFP_KERNEL);
-+	if (!fsd) {
-+		failed_creating(dentry);
-+		return ERR_PTR(-ENOMEM);
 +	}
 +
-+	fsd->automount = f;
-+
- 	if (!(debugfs_allow & DEBUGFS_ALLOW_API)) {
- 		failed_creating(dentry);
-+		kfree(fsd);
- 		return ERR_PTR(-EPERM);
- 	}
+ 	drm_crtc_init(dev, &radeon_crtc->base, &radeon_crtc_funcs);
  
-@@ -612,13 +624,14 @@ struct dentry *debugfs_create_automount(const char *name,
- 	if (unlikely(!inode)) {
- 		pr_err("out of free dentries, can not create automount '%s'\n",
- 		       name);
-+		kfree(fsd);
- 		return failed_creating(dentry);
- 	}
+ 	drm_mode_crtc_set_gamma_size(&radeon_crtc->base, 256);
+ 	radeon_crtc->crtc_id = index;
+-	radeon_crtc->flip_queue = alloc_workqueue("radeon-crtc", WQ_HIGHPRI, 0);
+ 	rdev->mode_info.crtcs[index] = radeon_crtc;
  
- 	make_empty_dir_inode(inode);
- 	inode->i_flags |= S_AUTOMOUNT;
- 	inode->i_private = data;
--	dentry->d_fsdata = (void *)f;
-+	dentry->d_fsdata = fsd;
- 	/* directory inodes start off with i_nlink == 2 (for "." entry) */
- 	inc_nlink(inode);
- 	d_instantiate(dentry, inode);
-diff --git a/fs/debugfs/internal.h b/fs/debugfs/internal.h
-index 92af8ae31313..f7c489b5a368 100644
---- a/fs/debugfs/internal.h
-+++ b/fs/debugfs/internal.h
-@@ -17,8 +17,14 @@ extern const struct file_operations debugfs_full_proxy_file_operations;
- 
- struct debugfs_fsdata {
- 	const struct file_operations *real_fops;
--	refcount_t active_users;
--	struct completion active_users_drained;
-+	union {
-+		/* automount_fn is used when real_fops is NULL */
-+		debugfs_automount_t automount;
-+		struct {
-+			refcount_t active_users;
-+			struct completion active_users_drained;
-+		};
-+	};
- };
- 
- /*
+ 	if (rdev->family >= CHIP_BONAIRE) {
 -- 
 2.43.0
 
