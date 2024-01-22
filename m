@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBD19837E9C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC683837C4B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B2BF28BFD0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 754D0296A22
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A6E63AF;
-	Tue, 23 Jan 2024 00:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9B0145341;
+	Tue, 23 Jan 2024 00:26:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DngHCphA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yANhtUKn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFCD60B86;
-	Tue, 23 Jan 2024 00:44:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF68145338;
+	Tue, 23 Jan 2024 00:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970691; cv=none; b=JT2n+boM7UG6vRtR0qU4H83OkXy28a4pGnfm40jajDwp11W5iYAmKUggS3vf+TFoNtlB+C0vBwDSyBr99O5chrFitGZ5aAW5WKVoYBgjx7uimvbauZSGb6+ir/E/ClphCTBwGMzQ+LT6e0PWIEADbS7wttrQTsooXOITTeNt3hs=
+	t=1705969573; cv=none; b=roxeQKskFPTx48CoQbd6/uAyZskMq6H6oTC8FHpBnPscDXwT8vPUKXg5V83xBab9fzcCMIYnynXv8s9k75iB51AcRzKO4G8APmtKJ+Vuo8RQZLI4Nes2s89a4vc4DtAB/dlebnTJsnYc/0WPxK4wNSCk9M9N6Y52M7gbKeqRQQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970691; c=relaxed/simple;
-	bh=zmFFmBvsL6V+28c0tIqgk5bPnypi4oZHiFEznWqkNYs=;
+	s=arc-20240116; t=1705969573; c=relaxed/simple;
+	bh=8FSu8sGthVfwCoUyG8acwJGBq5iF/3VrwKosFSzh3Ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nTAaL5UDMzqAMV5cXjggyFthgKjGdtTOBhwtX9TPFHdA6ZH7wB1iBrF0o0ziBlhD9YddVzFRMBDk2V+V5LO88jZQMs74bXc62YkhrC5iCf9o4BAx+aP+g1jm/GISwOlmHVtGbYFY+lw26bEpXNcmmBgh2vIfTLoVzgg4Fla3XLw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DngHCphA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6156EC433F1;
-	Tue, 23 Jan 2024 00:44:51 +0000 (UTC)
+	 MIME-Version; b=alnhBjv+hVn2qbgwlaUs8fBbgPELyTySeyCTXowb7Nafgu6oAtRs//37jjMRTGsjHybhEYB8fqRHbR1r0KlWf1F2DkCYb8OLPrNbzsXql451gN7FjwiwISXgWoNFLqSBF2TqOjI6091kxGXUvQhmG9z+fS9e5IkgDcYm6YnPBBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yANhtUKn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29AB9C43399;
+	Tue, 23 Jan 2024 00:26:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970691;
-	bh=zmFFmBvsL6V+28c0tIqgk5bPnypi4oZHiFEznWqkNYs=;
+	s=korg; t=1705969572;
+	bh=8FSu8sGthVfwCoUyG8acwJGBq5iF/3VrwKosFSzh3Ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DngHCphA1GMMZ+rMAVwdpv/QYoBtwyftPUYTxFoMCgeiq0BmyrKHs0MzEO02nw5aj
-	 MaTwaG27SmH4uO5BOjqqjjN37aEafn72qfRinkytSkEchICOAJRqKxuMM1rPDhcQep
-	 DfOOFUNbKaAH0TBGOqvp0hBFL6M7jz8A8Y7waQzc=
+	b=yANhtUKnmGsgo3nL7cuEnUHYi9gUDvXZN0YVR7w0B0cmzN6pgUX+aFMRUNTMdNGdv
+	 eyk3epGBz6SYwSAtfAYbO/CVkTao9ZiQAbe7Ffjua7MUMXiu/sTs1rRo4YMxzKFtgX
+	 EtXhwMcrj5JJuYvc0yXqNYSoohY9m3Yks7AzbJ3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <kolga@netapp.com>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 066/417] SUNRPC: fix _xprt_switch_find_current_entry logic
+Subject: [PATCH 6.7 330/641] gpu/drm/radeon: fix two memleaks in radeon_vm_init
 Date: Mon, 22 Jan 2024 15:53:54 -0800
-Message-ID: <20240122235753.987910581@linuxfoundation.org>
+Message-ID: <20240122235828.226182227@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <kolga@netapp.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 98b4e5137504a5bd9346562b1310cdc13486603b ]
+[ Upstream commit c2709b2d6a537ca0fa0f1da36fdaf07e48ef447d ]
 
-Fix the logic for picking current transport entry.
+When radeon_bo_create and radeon_vm_clear_bo fail, the vm->page_tables
+allocated before need to be freed. However, neither radeon_vm_init
+itself nor its caller have done such deallocation.
 
-Fixes: 95d0d30c66b8 ("SUNRPC create an iterator to list only OFFLINE xprts")
-Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Fixes: 6d2f2944e95e ("drm/radeon: use normal BOs for the page tables v4")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/xprtmultipath.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/radeon/radeon_vm.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/sunrpc/xprtmultipath.c b/net/sunrpc/xprtmultipath.c
-index 701250b305db..74ee2271251e 100644
---- a/net/sunrpc/xprtmultipath.c
-+++ b/net/sunrpc/xprtmultipath.c
-@@ -284,7 +284,7 @@ struct rpc_xprt *_xprt_switch_find_current_entry(struct list_head *head,
- 		if (cur == pos)
- 			found = true;
- 		if (found && ((find_active && xprt_is_active(pos)) ||
--			      (!find_active && xprt_is_active(pos))))
-+			      (!find_active && !xprt_is_active(pos))))
- 			return pos;
+diff --git a/drivers/gpu/drm/radeon/radeon_vm.c b/drivers/gpu/drm/radeon/radeon_vm.c
+index 987cabbf1318..c38b4d5d6a14 100644
+--- a/drivers/gpu/drm/radeon/radeon_vm.c
++++ b/drivers/gpu/drm/radeon/radeon_vm.c
+@@ -1204,13 +1204,17 @@ int radeon_vm_init(struct radeon_device *rdev, struct radeon_vm *vm)
+ 	r = radeon_bo_create(rdev, pd_size, align, true,
+ 			     RADEON_GEM_DOMAIN_VRAM, 0, NULL,
+ 			     NULL, &vm->page_directory);
+-	if (r)
++	if (r) {
++		kfree(vm->page_tables);
++		vm->page_tables = NULL;
+ 		return r;
+-
++	}
+ 	r = radeon_vm_clear_bo(rdev, vm->page_directory);
+ 	if (r) {
+ 		radeon_bo_unref(&vm->page_directory);
+ 		vm->page_directory = NULL;
++		kfree(vm->page_tables);
++		vm->page_tables = NULL;
+ 		return r;
  	}
- 	return NULL;
+ 
 -- 
 2.43.0
 
