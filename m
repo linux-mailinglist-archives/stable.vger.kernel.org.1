@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-15377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B58598385AB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:46:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3AE8380E1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E665B2626F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 911111C2902C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B41917A709;
-	Tue, 23 Jan 2024 02:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A018D1350CF;
+	Tue, 23 Jan 2024 01:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqG64PdA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uc3s3WPZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7470A77636;
-	Tue, 23 Jan 2024 02:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609511350CA;
+	Tue, 23 Jan 2024 01:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975544; cv=none; b=Lw2h30YVBkGBhONxq2wqYgcF/gssdGnuYZUvYF99Nqr0swr884k+CYFpIpytF/9jnpgHwFu0RNNjKk6bSYbUUf58UG+tfnMyOegP5qo3iu9ohv4mVcqhbY9DXEqo9PNSAzAoqMR7ot/kgVENy4lw2SZTFwV56fMnP0/xmWIAgH8=
+	t=1705971935; cv=none; b=jct7GelI39MoYH54Mr7zeNJtWXSSxlRb4NHZKVOxNLtQlXYBuKr/FLusvhaL303qI3Num3QnABAraArXB6G48fknUhbQY2xdATUBOnNNbnrx40qyqyG+wFz39kFjN1NDqjmf9dLz3eSEXOTqOIIv39jqb59GRtIUOA2t+uNzG7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975544; c=relaxed/simple;
-	bh=KsC3vpopOTuPfrSyqJ7CpmvsmC5gUerHtI8+QakqFgE=;
+	s=arc-20240116; t=1705971935; c=relaxed/simple;
+	bh=Yc/LKOxVvXv9SwdvsarZ4bIt3BrGxQilVEOjtkjOW4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U1IS22xG1CNqndZGN9KCFNmlK9oAt3f4OG2Q2/sR9OpDh+ZQtBobIJV/jkNcdrX4nNydkadnSJOeo/nxAurOnBwiyy7JSd9V24qJNlLQvh298J2EXWEFnhoQnWSfN1bBJVCXSbuxDI6sXUtA1fak1Pq8h9blP3yB2Y2TwSCrLgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqG64PdA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 271CBC433F1;
-	Tue, 23 Jan 2024 02:05:44 +0000 (UTC)
+	 MIME-Version; b=cznWuknXTBZpqfkCXsTLz5OZhICc7UbnojLiwGPkVagOHvsVObty5KYQR3In+WHzrgkJKQQqO/KnZMaP8o2VlGI/Xh1r5yHsK2LmfVVoiOAYnMW3oR2vX+rImJTDvpk8KAf3lIKRyBnihP2EWwkQul7MDMb1ng/kIgmtPCRSP24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uc3s3WPZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6E45C433C7;
+	Tue, 23 Jan 2024 01:05:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975544;
-	bh=KsC3vpopOTuPfrSyqJ7CpmvsmC5gUerHtI8+QakqFgE=;
+	s=korg; t=1705971935;
+	bh=Yc/LKOxVvXv9SwdvsarZ4bIt3BrGxQilVEOjtkjOW4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eqG64PdAMr5OZScRzVAdZWCHpVKUGAEwB65R9smffowfsidaVfOXRgfMY4FQW+s09
-	 UwQD/2hmM6MxhLJfFdUjFBmId5+QtOZXgbLS7rh6TdnE17AGaFFm9//BiXleVvhlwu
-	 ziAq3jNDgFsfegKREN3lt0b3uW2OsapDCsNnyBp4=
+	b=Uc3s3WPZtaO1rdNx+iAui2zFRn7jB30z64sh3M+yFdsrAzjmVU5ZLkfBp9KpbKAja
+	 54kkDP4LMGFRrAAWZ7JFgrF7QFPbvsoUi3L5Q+Nyy1J+QXjLFSETik+fvfK25ISaFX
+	 So4W/kGEyKbl5bYc4i3M1W/dx/Y7P4qKo4Ahxj/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Fangrui Song <maskray@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Lieven Hey <lieven.hey@kdab.com>,
+	Milian Wolff <milian.wolff@kdab.com>,
+	Pablo Galindo <pablogsal@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 472/583] acpi: property: Let args be NULL in __acpi_node_get_property_reference
+Subject: [PATCH 6.1 355/417] perf genelf: Set ELF program header addresses properly
 Date: Mon, 22 Jan 2024 15:58:43 -0800
-Message-ID: <20240122235826.429950810@linuxfoundation.org>
+Message-ID: <20240122235804.100405683@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +71,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Namhyung Kim <namhyung@kernel.org>
 
-[ Upstream commit bef52aa0f3de1b7d8c258c13b16e577361dabf3a ]
+[ Upstream commit 1af478903fc48c1409a8dd6b698383b62387adf1 ]
 
-fwnode_get_property_reference_args() may not be called with args argument
-NULL on ACPI, OF already supports this. Add the missing NULL checks and
-document this.
+The text section starts after the ELF headers so PHDR.p_vaddr and
+others should have the correct addresses.
 
-The purpose is to be able to count the references.
-
-Fixes: 977d5ad39f3e ("ACPI: Convert ACPI reference args to generic fwnode reference args")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20231109101010.1329587-2-sakari.ailus@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: babd04386b1df8c3 ("perf jit: Include program header in ELF files")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Fangrui Song <maskray@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Lieven Hey <lieven.hey@kdab.com>
+Cc: Milian Wolff <milian.wolff@kdab.com>
+Cc: Pablo Galindo <pablogsal@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20231212070547.612536-2-namhyung@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/property.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/perf/util/genelf.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
-index 99b4e3355435..4d958a165da0 100644
---- a/drivers/acpi/property.c
-+++ b/drivers/acpi/property.c
-@@ -851,6 +851,7 @@ static int acpi_get_ref_args(struct fwnode_reference_args *args,
-  * @index: Index of the reference to return
-  * @num_args: Maximum number of arguments after each reference
-  * @args: Location to store the returned reference with optional arguments
-+ *	  (may be NULL)
-  *
-  * Find property with @name, verifify that it is a package containing at least
-  * one object reference and if so, store the ACPI device object pointer to the
-@@ -907,6 +908,9 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
- 		if (!device)
- 			return -EINVAL;
- 
-+		if (!args)
-+			return 0;
-+
- 		args->fwnode = acpi_fwnode_handle(device);
- 		args->nargs = 0;
- 		return 0;
+diff --git a/tools/perf/util/genelf.c b/tools/perf/util/genelf.c
+index fefc72066c4e..ac17a3cb59dc 100644
+--- a/tools/perf/util/genelf.c
++++ b/tools/perf/util/genelf.c
+@@ -293,9 +293,9 @@ jit_write_elf(int fd, uint64_t load_addr, const char *sym,
+ 	 */
+ 	phdr = elf_newphdr(e, 1);
+ 	phdr[0].p_type = PT_LOAD;
+-	phdr[0].p_offset = 0;
+-	phdr[0].p_vaddr = 0;
+-	phdr[0].p_paddr = 0;
++	phdr[0].p_offset = GEN_ELF_TEXT_OFFSET;
++	phdr[0].p_vaddr = GEN_ELF_TEXT_OFFSET;
++	phdr[0].p_paddr = GEN_ELF_TEXT_OFFSET;
+ 	phdr[0].p_filesz = csize;
+ 	phdr[0].p_memsz = csize;
+ 	phdr[0].p_flags = PF_X | PF_R;
 -- 
 2.43.0
 
