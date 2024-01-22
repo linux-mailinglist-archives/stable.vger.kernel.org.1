@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-12792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B3618373B0
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 21:26:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7FB28373CD
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 21:31:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02D0328A5B0
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:26:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 717F2282EE6
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 20:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4352405D6;
-	Mon, 22 Jan 2024 20:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD9C2208C3;
+	Mon, 22 Jan 2024 20:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2hbj+WK8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zDsTMlXV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948C94174E
-	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 20:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD752CA8
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 20:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705955176; cv=none; b=txve/ernqNBbVSm50qcxuzXaaYMrpueomhzyRLNGFyUfmaJMqHcN6gQ3Woxy22YQnDjQywMzntkM9aUiphF8FbKPg5z/3n9D0EAR/njObJ+8k1mhW2Hy+0M35kZpH5Xat3ft5q4KxyzlIarNVmqZRWDRgwxSs5c+LMscIQ3Z9fE=
+	t=1705955503; cv=none; b=h5XsSAYmQmFnlkyJL0XYQcsASu3ev/shuHK3OD3FrtdLBeQG6UGXS0BAbdI5VIvEDByoRrV2V8ZK4wNKb8D5WfFS2HzslVGZVHGefafyQ22sKs5Eu6DaXTghNWuWyu9bKe5kFqlyTgm4012I++pZMROS0FK6wnqDgibFOK4k5Qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705955176; c=relaxed/simple;
-	bh=jZjfftC1p6XupClWxZaOcKNtHTfrQe8e0wM+PThFnf0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NHweQ5nuBNw+0EEw42Irf2Jz3aSv1ogFTYhmLyPehr7Mw6/DI/oQ8Im2IztgoVbO6ZKEgVPfsc0aFQ3gdTrS6RkpFgAKSJiYqoueH3O5oOs9E7bcE9UOlaWgsUQ9ETnTJfSz2sxI9jnPyJtS8OHAf/SoeJuHfgvsuYuEjJtfycM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2hbj+WK8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E82C433F1;
-	Mon, 22 Jan 2024 20:26:16 +0000 (UTC)
+	s=arc-20240116; t=1705955503; c=relaxed/simple;
+	bh=YByg9BbD4Fxn59FezxxYuoXqEu2h3ZCSGMzqLTPhEtU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kp884whgrxRpnml3ZP1ZO2WKkAQZvIl9B06XH6XYXIMxG7vOaSOJ06m1RMHR3lg/mWIldQNM+T7wv0usNNALDzJ/MLUO6eVS5lEpsq+5B69XmliJYT7ag5a+aTy/gKSht/EIH3Dv//nRobqBB1FvzLQ4JrsDUiWLsGZAZbZBOrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zDsTMlXV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCACBC433C7;
+	Mon, 22 Jan 2024 20:31:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705955176;
-	bh=jZjfftC1p6XupClWxZaOcKNtHTfrQe8e0wM+PThFnf0=;
+	s=korg; t=1705955503;
+	bh=YByg9BbD4Fxn59FezxxYuoXqEu2h3ZCSGMzqLTPhEtU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=2hbj+WK8QUIm9IQSG1VrEwM8iPi/z37DgnUSBwefHf8ADjS+fKNdFb9oCiFayBvlb
-	 sWICMGE8jyPEWh7t6bymFMsAgxcmsnp1Cglh/96p09RosKu39yvS4Nt8OxyYbdnXUZ
-	 ddZ6RaVVOC53m69ibHxPVq1OxGDbAhii2hHjR6vc=
-Subject: FAILED: patch "[PATCH] soundwire: fix initializing sysfs for same devices on" failed to apply to 6.7-stable tree
-To: krzysztof.kozlowski@linaro.org,Vijendar.Mukunda@amd.com,broonie@kernel.org,pierre-louis.bossart@linux.intel.com,srinivas.kandagatla@linaro.org,vkoul@kernel.org,yung-chuan.liao@linux.intel.com
+	b=zDsTMlXVbDuQo8BGeeFfs6WW64Cp/qdcCXHvN6dm/dWCam0MGELubBm9gmU7k/fea
+	 HE4vPOyDIecXXMy7tWClErYbFuy5/6V6CSF0TDQACimC5BkBJ0IaD6cKGZbspHjzjQ
+	 h4V0fU2izoQSzaAIfjCVNOc4kJHSKT4VWDsyWy3g=
+Subject: FAILED: patch "[PATCH] serial: sc16is7xx: set safe default SPI clock frequency" failed to apply to 4.19-stable tree
+To: hvilleneuve@dimonoff.com,gregkh@linuxfoundation.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 22 Jan 2024 12:26:07 -0800
-Message-ID: <2024012207-armadillo-skies-4cbf@gregkh>
+Date: Mon, 22 Jan 2024 12:31:41 -0800
+Message-ID: <2024012241-tactile-unison-0225@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.7-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.7.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
-git cherry-pick -x 8a8a9ac8a4972ee69d3dd3d1ae43963ae39cee18
+git cherry-pick -x 3ef79cd1412236d884ab0c46b4d1921380807b48
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012207-armadillo-skies-4cbf@gregkh' --subject-prefix 'PATCH 6.7.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024012241-tactile-unison-0225@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
-8a8a9ac8a497 ("soundwire: fix initializing sysfs for same devices on different buses")
+3ef79cd14122 ("serial: sc16is7xx: set safe default SPI clock frequency")
 
 thanks,
 
@@ -77,83 +77,44 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 8a8a9ac8a4972ee69d3dd3d1ae43963ae39cee18 Mon Sep 17 00:00:00 2001
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Tue, 17 Oct 2023 11:09:33 -0500
-Subject: [PATCH] soundwire: fix initializing sysfs for same devices on
- different buses
+From 3ef79cd1412236d884ab0c46b4d1921380807b48 Mon Sep 17 00:00:00 2001
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Date: Thu, 21 Dec 2023 18:18:10 -0500
+Subject: [PATCH] serial: sc16is7xx: set safe default SPI clock frequency
 
-If same devices with same device IDs are present on different soundwire
-buses, the probe fails due to conflicting device names and sysfs
-entries:
+15 MHz is supported only by 76x variants.
 
-  sysfs: cannot create duplicate filename '/bus/soundwire/devices/sdw:0:0217:0204:00:0'
+If the SPI clock frequency is not specified, use a safe default clock value
+of 4 MHz that is supported by all variants.
 
-The link ID is 0 for both devices, so they should be differentiated by
-the controller ID. Add the controller ID so, the device names and sysfs entries look
-like:
+Also use HZ_PER_MHZ macro to improve readability.
 
-  sdw:1:0:0217:0204:00:0 -> ../../../devices/platform/soc@0/6ab0000.soundwire-controller/sdw-master-1-0/sdw:1:0:0217:0204:00:0
-  sdw:3:0:0217:0204:00:0 -> ../../../devices/platform/soc@0/6b10000.soundwire-controller/sdw-master-3-0/sdw:3:0:0217:0204:00:0
+Fixes: 2c837a8a8f9f ("sc16is7xx: spi interface is added")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231221231823.2327894-4-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[PLB changes: use bus->controller_id instead of bus->id]
-
-Fixes: 7c3cd189b86d ("soundwire: Add Master registration")
-Cc: stable@vger.kernel.org
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Co-developed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Tested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Mark Brown <broonie@kernel.org>
-Tested-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20231017160933.12624-3-pierre-louis.bossart@linux.intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-
-diff --git a/drivers/soundwire/slave.c b/drivers/soundwire/slave.c
-index c1c1a2ac293a..060c2982e26b 100644
---- a/drivers/soundwire/slave.c
-+++ b/drivers/soundwire/slave.c
-@@ -39,14 +39,14 @@ int sdw_slave_add(struct sdw_bus *bus,
- 	slave->dev.fwnode = fwnode;
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index 798fa115b28a..ced2446909a2 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -24,6 +24,7 @@
+ #include <linux/tty_flip.h>
+ #include <linux/spi/spi.h>
+ #include <linux/uaccess.h>
++#include <linux/units.h>
+ #include <uapi/linux/sched/types.h>
  
- 	if (id->unique_id == SDW_IGNORED_UNIQUE_ID) {
--		/* name shall be sdw:link:mfg:part:class */
--		dev_set_name(&slave->dev, "sdw:%01x:%04x:%04x:%02x",
--			     bus->link_id, id->mfg_id, id->part_id,
-+		/* name shall be sdw:ctrl:link:mfg:part:class */
-+		dev_set_name(&slave->dev, "sdw:%01x:%01x:%04x:%04x:%02x",
-+			     bus->controller_id, bus->link_id, id->mfg_id, id->part_id,
- 			     id->class_id);
- 	} else {
--		/* name shall be sdw:link:mfg:part:class:unique */
--		dev_set_name(&slave->dev, "sdw:%01x:%04x:%04x:%02x:%01x",
--			     bus->link_id, id->mfg_id, id->part_id,
-+		/* name shall be sdw:ctrl:link:mfg:part:class:unique */
-+		dev_set_name(&slave->dev, "sdw:%01x:%01x:%04x:%04x:%02x:%01x",
-+			     bus->controller_id, bus->link_id, id->mfg_id, id->part_id,
- 			     id->class_id, id->unique_id);
- 	}
+ #define SC16IS7XX_NAME			"sc16is7xx"
+@@ -1738,7 +1739,7 @@ static int sc16is7xx_spi_probe(struct spi_device *spi)
+ 		return dev_err_probe(&spi->dev, -EINVAL, "Unsupported SPI mode\n");
  
-diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
-index 3312ad8a563b..690c279bbb88 100644
---- a/sound/soc/intel/boards/sof_sdw.c
-+++ b/sound/soc/intel/boards/sof_sdw.c
-@@ -1232,11 +1232,11 @@ static int fill_sdw_codec_dlc(struct device *dev,
- 	else if (is_unique_device(adr_link, sdw_version, mfg_id, part_id,
- 				  class_id, adr_index))
- 		codec->name = devm_kasprintf(dev, GFP_KERNEL,
--					     "sdw:%01x:%04x:%04x:%02x", link_id,
-+					     "sdw:0:%01x:%04x:%04x:%02x", link_id,
- 					     mfg_id, part_id, class_id);
- 	else
- 		codec->name = devm_kasprintf(dev, GFP_KERNEL,
--					     "sdw:%01x:%04x:%04x:%02x:%01x", link_id,
-+					     "sdw:0:%01x:%04x:%04x:%02x:%01x", link_id,
- 					     mfg_id, part_id, class_id, unique_id);
- 
- 	if (!codec->name)
+ 	spi->mode		= spi->mode ? : SPI_MODE_0;
+-	spi->max_speed_hz	= spi->max_speed_hz ? : 15000000;
++	spi->max_speed_hz	= spi->max_speed_hz ? : 4 * HZ_PER_MHZ;
+ 	ret = spi_setup(spi);
+ 	if (ret)
+ 		return ret;
 
 
