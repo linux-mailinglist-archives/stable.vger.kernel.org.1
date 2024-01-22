@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07D55838002
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F0F837F98
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A235F28DFD1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F5AD28E386
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA4212DD9A;
-	Tue, 23 Jan 2024 00:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EFC563418;
+	Tue, 23 Jan 2024 00:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u96iSaUg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9C7STY0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5954C12DD97;
-	Tue, 23 Jan 2024 00:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DEF162806;
+	Tue, 23 Jan 2024 00:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971495; cv=none; b=RIw0stjWWxSYIhCl4mloGycIlfC+JH1D3fNk52UENHlJu7ajJsxNx1iJgN/uHUfMuhravww3EroEg8YMHtnR5tgo2RkAMVIX5KIgkXe+9mPOWjJM5V7lqXdQ1/q8diJSMF4izga4knUqc3cJBgJYT5nCObTodCbnafV+VjafnYg=
+	t=1705971226; cv=none; b=ME10w/V85EmfzDXHVWcPTKPdihCQ2mjVz2n5ewLkqFFbJwsTYrZiintdjtWWAgz8Nho59fK5SBTjrgamCsG5DcW4YSNRTLknkxx0pDSVPoR9TI+QXah/R2g49schhezAzOYEEZeD8puRkxgyO1xQngllIwcniD5AalmI6WyqhIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971495; c=relaxed/simple;
-	bh=KpVzk19zAxz2dwFDbWJZMt3hUgo+6RRV4YgeGoLi/jw=;
+	s=arc-20240116; t=1705971226; c=relaxed/simple;
+	bh=rSS0waQTvRC0KdiL8YBksBaKSLJq81fg7m/Xw00nMNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qhj14/sqWAALCVjaYQmrwY1mnCWPcqrnUvt0rleE3h4PnJC+1lrLt1bnFHAwVMpLX+W4VEyAJcN0Af83ua/Vc7iLyuanZf2zUVB7OqSlA1yTcK/lrzIIZ32hIE5VrZI9cLrPLHMPXgoeIg3WYXMPaYAKo9Bhne9IOUFoNswSdi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u96iSaUg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B8EC433C7;
-	Tue, 23 Jan 2024 00:58:14 +0000 (UTC)
+	 MIME-Version; b=UBQnvVx1fv3T+Q9Cs4ZL+sOlEINb60bXqalKKpKrlUHcwYXuqUidoCYVYMV+/x5qkbj8J3qt1Bge7EFM8Kg7qlhOoMi0bRadm/DNhvdfTDGGJ4mJwdbTM0u4Mt1dl+Ck1GZrXHfbGwGpm9RevF9mjyNitIFz+Ow4m/7gCZRMmEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9C7STY0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D501EC43390;
+	Tue, 23 Jan 2024 00:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971495;
-	bh=KpVzk19zAxz2dwFDbWJZMt3hUgo+6RRV4YgeGoLi/jw=;
+	s=korg; t=1705971226;
+	bh=rSS0waQTvRC0KdiL8YBksBaKSLJq81fg7m/Xw00nMNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u96iSaUgn12dwkl+8aHTZMTfBHe311c2EOb8jLEwftEVvCaZzhiM7pPYKF4ueYUov
-	 A11CdydTKOOCbVSqLHvHqI+dwuo2JVYtOLWC0oGCYg1yw+lqXLYYB6H+YRJNoxKSIa
-	 i5bUTxB6jSd3V34xBULJp3amNQ8fHquqW+kUjxgY=
+	b=W9C7STY0ioR11C9kvKKYssy/BE0pk4qEsZji86zm6Ilo0UJ4yt5xTstAJY1OJ4w5J
+	 3jMQJcOQSyws6/B0cHgZyM3RT6vJZGCA92Nzk9fpGEDxcHUk1ajwvZJt8zVSYN+Bd4
+	 xVLrZ4OT/103DfTjNbgSqdXkaI1PUtNTZEVr3m7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wiehler <stefan.wiehler@nokia.com>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.1 252/417] mips/smp: Call rcutree_report_cpu_starting() earlier
+	Bhaskar Chowdhury <unixbhaskar@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 114/286] ncsi: internal.h: Fix a spello
 Date: Mon, 22 Jan 2024 15:57:00 -0800
-Message-ID: <20240122235800.607332620@linuxfoundation.org>
+Message-ID: <20240122235736.495950782@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wiehler <stefan.wiehler@nokia.com>
+From: Bhaskar Chowdhury <unixbhaskar@gmail.com>
 
-commit 55702ec9603ebeffb15e6f7b113623fe1d8872f4 upstream.
+[ Upstream commit 195a8ec4033b4124f6864892e71dcef24ba74a5a ]
 
-rcutree_report_cpu_starting() must be called before
-clockevents_register_device() to avoid the following lockdep splat triggered by
-calling list_add() when CONFIG_PROVE_RCU_LIST=y:
+s/Firware/Firmware/
 
-  WARNING: suspicious RCU usage
-  ...
-  -----------------------------
-  kernel/locking/lockdep.c:3680 RCU-list traversed in non-reader section!!
-
-  other info that might help us debug this:
-
-  RCU used illegally from offline CPU!
-  rcu_scheduler_active = 1, debug_locks = 1
-  no locks held by swapper/1/0.
-  ...
-  Call Trace:
-  [<ffffffff8012a434>] show_stack+0x64/0x158
-  [<ffffffff80a93d98>] dump_stack_lvl+0x90/0xc4
-  [<ffffffff801c9e9c>] __lock_acquire+0x1404/0x2940
-  [<ffffffff801cbf3c>] lock_acquire+0x14c/0x448
-  [<ffffffff80aa4260>] _raw_spin_lock_irqsave+0x50/0x88
-  [<ffffffff8021e0c8>] clockevents_register_device+0x60/0x1e8
-  [<ffffffff80130ff0>] r4k_clockevent_init+0x220/0x3a0
-  [<ffffffff801339d0>] start_secondary+0x50/0x3b8
-
-raw_smp_processor_id() is required in order to avoid calling into lockdep
-before RCU has declared the CPU to be watched for readers.
-
-See also commit 29368e093921 ("x86/smpboot:  Move rcu_cpu_starting() earlier"),
-commit de5d9dae150c ("s390/smp: move rcu_cpu_starting() earlier") and commit
-99f070b62322 ("powerpc/smp: Call rcu_cpu_starting() earlier").
-
-Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 3084b58bfd0b ("net/ncsi: Fix netlink major/minor version numbers")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/smp.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ncsi/internal.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -333,10 +333,11 @@ early_initcall(mips_smp_ipi_init);
-  */
- asmlinkage void start_secondary(void)
- {
--	unsigned int cpu;
-+	unsigned int cpu = raw_smp_processor_id();
- 
- 	cpu_probe();
- 	per_cpu_trap_init(false);
-+	rcu_cpu_starting(cpu);
- 	mips_clockevent_init();
- 	mp_ops->init_secondary();
- 	cpu_report();
-@@ -348,7 +349,6 @@ asmlinkage void start_secondary(void)
- 	 */
- 
- 	calibrate_delay();
--	cpu = smp_processor_id();
- 	cpu_data[cpu].udelay_val = loops_per_jiffy;
- 
- 	set_cpu_sibling_map(cpu);
+diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
+index e37102546be6..49031f804276 100644
+--- a/net/ncsi/internal.h
++++ b/net/ncsi/internal.h
+@@ -100,7 +100,7 @@ enum {
+ struct ncsi_channel_version {
+ 	u32 version;		/* Supported BCD encoded NCSI version */
+ 	u32 alpha2;		/* Supported BCD encoded NCSI version */
+-	u8  fw_name[12];	/* Firware name string                */
++	u8  fw_name[12];	/* Firmware name string                */
+ 	u32 fw_version;		/* Firmware version                   */
+ 	u16 pci_ids[4];		/* PCI identification                 */
+ 	u32 mf_id;		/* Manufacture ID                     */
+-- 
+2.43.0
+
 
 
 
