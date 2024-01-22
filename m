@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F7B4837E4B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:57 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64F20837C25
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC2211F26565
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:37:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A8F61F2B2FB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBE1A5F57E;
-	Tue, 23 Jan 2024 00:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D5E1EF1E;
+	Tue, 23 Jan 2024 00:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C9ZNuobh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCrzu8Ne"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6525F574;
-	Tue, 23 Jan 2024 00:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F3EEEBB;
+	Tue, 23 Jan 2024 00:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970501; cv=none; b=UqquzqPhkvTqsN6Y45VCh0asSLAGupnGYhcIlxBHhdlJoYcsvRvj1C/Iiyno7+PxT9GO3t/WOG9kpXj7hY+PiJPU9MPEFH1+MAP/ha88G1Y7tzLvfXt6MnlrbslffLDj2kTJ3Bby1bJeYysFk3XmV9fNZFPzJRzj74sFNSLqFG4=
+	t=1705969519; cv=none; b=KfD5GmiUIHbiKvJcMfGyMNCUU05zVjbNNCjNinUDR7wUJSbU5tLzjErwEjjfF/RMxuoxO8yln15CD6XHYJCdtDgsXalrv+0g3Q+v1kviBQHxECR8cOIHZvBKb8YknBfsSjhgpmPrM/pWx7xu0B0G0m+/ShjgbKWudEGEp/KKJUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970501; c=relaxed/simple;
-	bh=t3NLT5Rc/t78/jemK3dQvnz4XIDK6v8HwVkzNqJlf6s=;
+	s=arc-20240116; t=1705969519; c=relaxed/simple;
+	bh=FzIvI0Ps9eWdo3Qfy+pUihPcgp++mvl50uMW1AyMNWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hXnYy8zIslIgEtbQYcOaUXCNCgSoXr/TOKoNgKbj4pN8WT2kTj7WEKUfcEas5tu+IraDi8ubeiMjDLOMTQZK9WKflra8cJF7Ca8CLtq+xKidDmZszmDmgegzKirtzGeN++CdZaQgN0nCCPmxdKZ8E7lMI6SGs1wqr6H7fgPajVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C9ZNuobh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8089FC433C7;
-	Tue, 23 Jan 2024 00:41:40 +0000 (UTC)
+	 MIME-Version; b=DGOO8oD38gjozVnHCzQi8MQbkZQJhgK28IL9YWo54NmnY+NZ9c1T/tbgQ+CgptbDxnIb+xGgYhr616cR+OcdP4wnSzUdJy16245U07tj7x5XjHN2wPin2dP5zouJkp66yIFKGqw1nxQ2iZgTQN7CsCoaOJoEiQ+KczS8BAq49+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCrzu8Ne; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD5BC433B1;
+	Tue, 23 Jan 2024 00:25:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970501;
-	bh=t3NLT5Rc/t78/jemK3dQvnz4XIDK6v8HwVkzNqJlf6s=;
+	s=korg; t=1705969519;
+	bh=FzIvI0Ps9eWdo3Qfy+pUihPcgp++mvl50uMW1AyMNWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C9ZNuobhF9C7VZmt4ggLvXdpb4BZ2yprckIbgI3t6UfrXVtTzzGTP69f9L0SH9KoX
-	 g02g+MtUfmrscvLHu5Fa5aVlW4DyJrwj0IlOFceEISvd6WltownIlVgcXkFDiwIcgu
-	 CHAwQRdJc7EU4tNH1aTkg9oDzq6aC4Dp2C0ES3f0=
+	b=NCrzu8NeVPmyKMcKrylx62tdbarjHl9xY/0S1EPOmnOFwo/d1UqiBo+/aekuagmJ7
+	 4BNYkMkmX9XIUPWkyTDdoAXvRvgYQNoGlHeuwFFFrX1PeYIHjsIZHY/0FovnlOOdPJ
+	 VfiidRjtofWKeE0IUvOtNk//Sq0NQdMYNeFnCGwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dinghao Liu <dinghao.liu@zju.edu.cn>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Chengchang Tang <tangchengchang@huawei.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/417] crypto: ccp - fix memleak in ccp_init_dm_workarea
-Date: Mon, 22 Jan 2024 15:53:24 -0800
-Message-ID: <20240122235752.861539484@linuxfoundation.org>
+Subject: [PATCH 6.7 301/641] RDMA/hns: Fix memory leak in free_mr_init()
+Date: Mon, 22 Jan 2024 15:53:25 -0800
+Message-ID: <20240122235827.330264236@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dinghao Liu <dinghao.liu@zju.edu.cn>
+From: Chengchang Tang <tangchengchang@huawei.com>
 
-[ Upstream commit a1c95dd5bc1d6a5d7a75a376c2107421b7d6240d ]
+[ Upstream commit 288f535951aa81ed674f5e5477ab11b9d9351b8c ]
 
-When dma_map_single() fails, wa->address is supposed to be freed
-by the callers of ccp_init_dm_workarea() through ccp_dm_free().
-However, many of the call spots don't expect to have to call
-ccp_dm_free() on failure of ccp_init_dm_workarea(), which may
-lead to a memleak. Let's free wa->address in ccp_init_dm_workarea()
-when dma_map_single() fails.
+When a reserved QP fails to be created, the memory of the remaining
+created reserved QPs is leaked.
 
-Fixes: 63b945091a07 ("crypto: ccp - CCP device driver and interface support")
-Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 70f92521584f ("RDMA/hns: Use the reserved loopback QPs to free MR before destroying MPT")
+Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20231207114231.2872104-6-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccp/ccp-ops.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/crypto/ccp/ccp-ops.c b/drivers/crypto/ccp/ccp-ops.c
-index aa4e1a500691..cb8e99936abb 100644
---- a/drivers/crypto/ccp/ccp-ops.c
-+++ b/drivers/crypto/ccp/ccp-ops.c
-@@ -179,8 +179,11 @@ static int ccp_init_dm_workarea(struct ccp_dm_workarea *wa,
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index e4753c802942..aa9527ac2fe0 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -2698,6 +2698,10 @@ static int free_mr_alloc_res(struct hns_roce_dev *hr_dev)
+ 	return 0;
  
- 		wa->dma.address = dma_map_single(wa->dev, wa->address, len,
- 						 dir);
--		if (dma_mapping_error(wa->dev, wa->dma.address))
-+		if (dma_mapping_error(wa->dev, wa->dma.address)) {
-+			kfree(wa->address);
-+			wa->address = NULL;
- 			return -ENOMEM;
-+		}
+ create_failed_qp:
++	for (i--; i >= 0; i--) {
++		hns_roce_v2_destroy_qp(&free_mr->rsv_qp[i]->ibqp, NULL);
++		kfree(free_mr->rsv_qp[i]);
++	}
+ 	hns_roce_destroy_cq(cq, NULL);
+ 	kfree(cq);
  
- 		wa->dma.length = len;
- 	}
 -- 
 2.43.0
 
