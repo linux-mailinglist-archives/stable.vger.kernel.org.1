@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65F15837F34
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C93EC837F95
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D6A61F2B99A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F19F285411
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BBBA129A6C;
-	Tue, 23 Jan 2024 00:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E403C62812;
+	Tue, 23 Jan 2024 00:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="puvUmZqa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lIFwOTDk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A56C129A64;
-	Tue, 23 Jan 2024 00:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A244D627F3;
+	Tue, 23 Jan 2024 00:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971000; cv=none; b=RhCe3y88IuI9QiyAPm7X7zbsDTAFWAu0Z4OvdaHw4NyUzf/M8Dx41sQb38ABgCyBsv0gRJHkb27+99lOH4dvHmY3RfG4LD6FjAUzEu570u9baHbJPOCb39Qm3/avvMF5KEDTD5nKg1Uiu4+jvP7P7ax59/JxL1b2xs7eQvAlu2w=
+	t=1705971209; cv=none; b=HZVVvbXX2VyOQ683BzM+GpIl16yfDUXfTObwkuG6EsXfFaOpmPTEzxzDnYhmQAGEy4LWAQD6eyOaV4V8yowlhCMec4CqKjHdo1G0QLVhVxelF5DnQCmf4gB+knkTo/Kcq9pc0g3mKQGWG1HUPigBQLxfHD6xRooQCPd/km5DuzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971000; c=relaxed/simple;
-	bh=hFmXZfjB1Ei9PiqGZEUONe1E/5l+sGDcxPtUuCwAG54=;
+	s=arc-20240116; t=1705971209; c=relaxed/simple;
+	bh=SclRKJGOJ4oeojuCSVJzYOS98Pu0rDF57Lfhla3niws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=McZZdcYk23m3I7DdV0X6d7vHpbiw56SIzOuAusBTg4ic+4NXiotm8YLt70B7v5FsDmBiVNGdQcscMnmAGPrzl+wDz+hfK7FNg9JWhKbYWVLUJMxBG4iqYwv9Y/YN2woYC3r2iUG54M5DVMp05mxf2tVP/znSuFuW3UB8iAV2Yw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=puvUmZqa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF057C43390;
-	Tue, 23 Jan 2024 00:49:59 +0000 (UTC)
+	 MIME-Version; b=bpp49rCXZXU1roRABFf2HCYe40DqL8X38jam7MYgOnCSAjh7vNOqjebYwy8rdnL+AzPmXgCGgIAA6rbY/NigMLV1n04sbIkTcqKIPu3tt3O5/H+G/w5TOUNahBb/nym3r1zRXc9K4sHGgCTmvoQg/2AZfo/utiCuj7uBMTptBvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lIFwOTDk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EAE1C433F1;
+	Tue, 23 Jan 2024 00:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970999;
-	bh=hFmXZfjB1Ei9PiqGZEUONe1E/5l+sGDcxPtUuCwAG54=;
+	s=korg; t=1705971209;
+	bh=SclRKJGOJ4oeojuCSVJzYOS98Pu0rDF57Lfhla3niws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=puvUmZqasohVnx1Icc30cLrlZHJGNjqaqclUr3cHIs6lBxohJbACH7hPXiQoEwZUm
-	 PNelgpkONFHt55ECoaYZqYdKN6NUdOVhvaWLOaYizDqyj0jw0hZlnZu1jse8sgpDo5
-	 s70ge5SozdCy+pM1oVyw1FVur7LEmhP0ndFZw9/s=
+	b=lIFwOTDk7mi3WpUEXz6CX1GNwM0p2E/l4+mYkyjAPtsGNBONiOSvqMVYx124nOITo
+	 nbQyWSSHGqquVpnGfF0HZFaCOFdNujJiqBW1MvgZYik8xyOL2m5adv/w0duFO5zGzG
+	 YdGKJvKzMEgt7q32m1NSyHlLjLtfvwX9JAbYXKyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Rob Clark <robdclark@gmail.com>,
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 067/286] cpufreq: Use of_property_present() for testing DT property presence
+Subject: [PATCH 6.1 205/417] drm/msm/dpu: Set input_sel bit for INTF
 Date: Mon, 22 Jan 2024 15:56:13 -0800
-Message-ID: <20240122235734.602325541@linuxfoundation.org>
+Message-ID: <20240122235759.036674546@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Jessica Zhang <quic_jesszhan@quicinc.com>
 
-[ Upstream commit b8f3a396a7ee43e6079176cc0fb8de2b95a23681 ]
+[ Upstream commit 980fffd0c69e5df0f67ee089d405899d532aeeab ]
 
-It is preferred to use typed property access functions (i.e.
-of_property_read_<type> functions) rather than low-level
-of_get_property/of_find_property functions for reading properties. As
-part of this, convert of_get_property/of_find_property calls to the
-recently added of_property_present() helper when we just want to test
-for presence of a property and nothing more.
+Set the input_sel bit for encoders as it was missed in the initial
+implementation.
 
-Signed-off-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Stable-dep-of: c4a5118a3ae1 ("cpufreq: scmi: process the result of devm_of_clk_add_hw_provider()")
+Reported-by: Rob Clark <robdclark@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/39
+Fixes: 91143873a05d ("drm/msm/dpu: Add MISR register support for interface")
+Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/572007/
+Link: https://lore.kernel.org/r/20231213-encoder-fixup-v4-1-6da6cd1bf118@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq-dt-platdev.c | 2 +-
- drivers/cpufreq/imx-cpufreq-dt.c     | 2 +-
- drivers/cpufreq/imx6q-cpufreq.c      | 4 ++--
- drivers/cpufreq/scmi-cpufreq.c       | 2 +-
- drivers/cpufreq/tegra20-cpufreq.c    | 2 +-
- 5 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c | 2 +-
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.c   | 2 +-
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.c | 9 +++++++--
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.h | 3 ++-
+ 4 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/cpufreq/cpufreq-dt-platdev.c b/drivers/cpufreq/cpufreq-dt-platdev.c
-index aea285651fba..e1dcdb0ea1c4 100644
---- a/drivers/cpufreq/cpufreq-dt-platdev.c
-+++ b/drivers/cpufreq/cpufreq-dt-platdev.c
-@@ -163,7 +163,7 @@ static bool __init cpu0_node_has_opp_v2_prop(void)
- 	struct device_node *np = of_cpu_device_node_get(0);
- 	bool ret = false;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c
+index b9dddf576c02..7e210ba0b104 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_intf.c
+@@ -324,7 +324,7 @@ static u32 dpu_hw_intf_get_line_count(struct dpu_hw_intf *intf)
  
--	if (of_get_property(np, "operating-points-v2", NULL))
-+	if (of_property_present(np, "operating-points-v2"))
- 		ret = true;
+ static void dpu_hw_intf_setup_misr(struct dpu_hw_intf *intf, bool enable, u32 frame_count)
+ {
+-	dpu_hw_setup_misr(&intf->hw, INTF_MISR_CTRL, enable, frame_count);
++	dpu_hw_setup_misr(&intf->hw, INTF_MISR_CTRL, enable, frame_count, 0x1);
+ }
  
- 	of_node_put(np);
-diff --git a/drivers/cpufreq/imx-cpufreq-dt.c b/drivers/cpufreq/imx-cpufreq-dt.c
-index 3fe9125156b4..0942498b348c 100644
---- a/drivers/cpufreq/imx-cpufreq-dt.c
-+++ b/drivers/cpufreq/imx-cpufreq-dt.c
-@@ -89,7 +89,7 @@ static int imx_cpufreq_dt_probe(struct platform_device *pdev)
+ static int dpu_hw_intf_collect_misr(struct dpu_hw_intf *intf, u32 *misr_value)
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.c
+index f5120ea91ede..2dd9f9185cfc 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_lm.c
+@@ -101,7 +101,7 @@ static void dpu_hw_lm_setup_border_color(struct dpu_hw_mixer *ctx,
  
- 	cpu_dev = get_cpu_device(0);
+ static void dpu_hw_lm_setup_misr(struct dpu_hw_mixer *ctx, bool enable, u32 frame_count)
+ {
+-	dpu_hw_setup_misr(&ctx->hw, LM_MISR_CTRL, enable, frame_count);
++	dpu_hw_setup_misr(&ctx->hw, LM_MISR_CTRL, enable, frame_count, 0x0);
+ }
  
--	if (!of_find_property(cpu_dev->of_node, "cpu-supply", NULL))
-+	if (!of_property_present(cpu_dev->of_node, "cpu-supply"))
- 		return -ENODEV;
+ static int dpu_hw_lm_collect_misr(struct dpu_hw_mixer *ctx, u32 *misr_value)
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.c
+index 8062228eada6..119dc07d6ab5 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.c
+@@ -450,9 +450,13 @@ u64 _dpu_hw_get_qos_lut(const struct dpu_qos_lut_tbl *tbl,
+ 	return 0;
+ }
  
- 	if (of_machine_is_compatible("fsl,imx7ulp")) {
-diff --git a/drivers/cpufreq/imx6q-cpufreq.c b/drivers/cpufreq/imx6q-cpufreq.c
-index 00f7ad746668..49cbc43f1fa9 100644
---- a/drivers/cpufreq/imx6q-cpufreq.c
-+++ b/drivers/cpufreq/imx6q-cpufreq.c
-@@ -230,7 +230,7 @@ static int imx6q_opp_check_speed_grading(struct device *dev)
- 	u32 val;
- 	int ret;
++/*
++ * note: Aside from encoders, input_sel should be set to 0x0 by default
++ */
+ void dpu_hw_setup_misr(struct dpu_hw_blk_reg_map *c,
+ 		u32 misr_ctrl_offset,
+-		bool enable, u32 frame_count)
++		bool enable, u32 frame_count,
++		u8 input_sel)
+ {
+ 	u32 config = 0;
  
--	if (of_find_property(dev->of_node, "nvmem-cells", NULL)) {
-+	if (of_property_present(dev->of_node, "nvmem-cells")) {
- 		ret = nvmem_cell_read_u32(dev, "speed_grade", &val);
- 		if (ret)
- 			return ret;
-@@ -285,7 +285,7 @@ static int imx6ul_opp_check_speed_grading(struct device *dev)
- 	u32 val;
- 	int ret = 0;
+@@ -463,7 +467,8 @@ void dpu_hw_setup_misr(struct dpu_hw_blk_reg_map *c,
  
--	if (of_find_property(dev->of_node, "nvmem-cells", NULL)) {
-+	if (of_property_present(dev->of_node, "nvmem-cells")) {
- 		ret = nvmem_cell_read_u32(dev, "speed_grade", &val);
- 		if (ret)
- 			return ret;
-diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
-index 8286205c7165..ca95b538c48a 100644
---- a/drivers/cpufreq/scmi-cpufreq.c
-+++ b/drivers/cpufreq/scmi-cpufreq.c
-@@ -238,7 +238,7 @@ static int scmi_cpufreq_probe(struct scmi_device *sdev)
+ 	if (enable) {
+ 		config = (frame_count & MISR_FRAME_COUNT_MASK) |
+-			MISR_CTRL_ENABLE | MISR_CTRL_FREE_RUN_MASK;
++			MISR_CTRL_ENABLE | MISR_CTRL_FREE_RUN_MASK |
++			((input_sel & 0xF) << 24);
  
- #ifdef CONFIG_COMMON_CLK
- 	/* dummy clock provider as needed by OPP if clocks property is used */
--	if (of_find_property(dev->of_node, "#clock-cells", NULL))
-+	if (of_property_present(dev->of_node, "#clock-cells"))
- 		devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, NULL);
- #endif
+ 		DPU_REG_WRITE(c, misr_ctrl_offset, config);
+ 	} else {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.h
+index 27f4c39e35ab..dffad0a83781 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_util.h
+@@ -352,7 +352,8 @@ u64 _dpu_hw_get_qos_lut(const struct dpu_qos_lut_tbl *tbl,
+ void dpu_hw_setup_misr(struct dpu_hw_blk_reg_map *c,
+ 		u32 misr_ctrl_offset,
+ 		bool enable,
+-		u32 frame_count);
++		u32 frame_count,
++		u8 input_sel);
  
-diff --git a/drivers/cpufreq/tegra20-cpufreq.c b/drivers/cpufreq/tegra20-cpufreq.c
-index 8c893043953e..111d4ff6fe86 100644
---- a/drivers/cpufreq/tegra20-cpufreq.c
-+++ b/drivers/cpufreq/tegra20-cpufreq.c
-@@ -25,7 +25,7 @@ static bool cpu0_node_has_opp_v2_prop(void)
- 	struct device_node *np = of_cpu_device_node_get(0);
- 	bool ret = false;
- 
--	if (of_get_property(np, "operating-points-v2", NULL))
-+	if (of_property_present(np, "operating-points-v2"))
- 		ret = true;
- 
- 	of_node_put(np);
+ int dpu_hw_collect_misr(struct dpu_hw_blk_reg_map *c,
+ 		u32 misr_ctrl_offset,
 -- 
 2.43.0
 
