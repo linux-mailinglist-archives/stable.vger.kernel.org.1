@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-13762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E96F837DDC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D9FA838534
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E04491F23EFF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:31:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BC7EB29371
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BB415F327;
-	Tue, 23 Jan 2024 00:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08045768E7;
+	Tue, 23 Jan 2024 02:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6KMFyv5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K9DjNNfk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4934C5F875;
-	Tue, 23 Jan 2024 00:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9BDD73176;
+	Tue, 23 Jan 2024 02:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970175; cv=none; b=miyX+3fiElRv6JBoqQ78bLzbQjsi7O2jRHCb+Mkt6RdkliEXH/f1YGeQhQJy02Bh2KDFrHE06GFVFl7yNvgDpeV2tghbloxS5SwUHcMW1bTkktGlpkha5TD4JDTzOhb4lMJ5Zn9SV/iojf9ECSF581ju1+MNQ2DvypqnTdzipfA=
+	t=1705975481; cv=none; b=rA7++ZYrWTk1P3jacsFF8IE8oj7LCYcWde+5K3IWZj1qTC4S65QUIJLT2cJvTXjR7vzfVHbPUbZB59aW1fT7D1SyIF5QZ6H64NROQErYQLlDY3jmHf6kWn4IhlVxPpkhg6LSvalLiP8ZZTxR3GYRi9yXsB6B2KqpWhCVcP/vB40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970175; c=relaxed/simple;
-	bh=XxaMc/KcPxjwYVg0sUFjkeG2Bbi9dy7HTXMzAQ4lEm4=;
+	s=arc-20240116; t=1705975481; c=relaxed/simple;
+	bh=UM/7y/E8xtraaL/XMbr703yOQnRmAYiRvC7wqJzRaR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SUY1xugu4APJDTSWuXLgMJTqsyckYAhxhwgmlK+GD0BsJboJV0LvY6FxuKPigF3LgQKUcrN7MO+IrgfMgwXVWjmG5KmOYzd0dA3piAiDCt2/tvU0mPqmOPrmEBtuBN3LvnLg6QBuZ/sJ3+zFzOP7COr9ZpbXC0Hy54YSaXmHb/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6KMFyv5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D55CAC433C7;
-	Tue, 23 Jan 2024 00:36:14 +0000 (UTC)
+	 MIME-Version; b=sPfv/xx2QGFDS9uPI9Rw5TlCm3KqDUKQYx6omAdUONSE/M8d1MOBpTL3LDNIGZktEXmqjAFlBc1rrId0Z/gxDttNCvQB5//aY8y+KDdbWqW0N/TqFBHB6fgfichcOvOnSbEhRKVAtuXbzU02Ijvr8et+vjTg6vfHavVOERi+t/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K9DjNNfk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81892C433C7;
+	Tue, 23 Jan 2024 02:04:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970175;
-	bh=XxaMc/KcPxjwYVg0sUFjkeG2Bbi9dy7HTXMzAQ4lEm4=;
+	s=korg; t=1705975481;
+	bh=UM/7y/E8xtraaL/XMbr703yOQnRmAYiRvC7wqJzRaR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6KMFyv5jGFvjhaiQLWCVp35bvc3BKk6+6rWzFgGkObl+cV7HOjHM3ub+s8r6CSd9
-	 UpvULcy0ECYRLt7c7cQuIK9LBEBMFZh9YrStc0D3wyXqh/GxPtu9GoEM+btywooOfW
-	 6iMPt9BBSvYFtlCMsEvbjEI47dWLRHe+uR0L07rk=
+	b=K9DjNNfkOuyf0ClGkmUxwrgB4PPymkUCbi5Wuy+YQ2Co13FFBG0lI7hQod3Hdh1NP
+	 vDa+s8/OsTZYls71dTEx4e06uwU+hE4CmqpRB8WUJxTmxRJiuBBtlrZgCH6RJzx7Z2
+	 gMYrbx7p81Y9z3lsYx8cCJbXZLsZGoRaxXOaCGIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Dionne <marc.dionne@auristor.com>,
-	David Howells <dhowells@redhat.com>,
-	linux-afs@lists.infradead.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 583/641] rxrpc: Fix use of Dont Fragment flag
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Subject: [PATCH 6.6 436/583] serial: sc16is7xx: set safe default SPI clock frequency
 Date: Mon, 22 Jan 2024 15:58:07 -0800
-Message-ID: <20240122235836.430153523@linuxfoundation.org>
+Message-ID: <20240122235825.323534800@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,126 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit 8722014311e613244f33952354956a82fa4b0472 ]
+commit 3ef79cd1412236d884ab0c46b4d1921380807b48 upstream.
 
-rxrpc normally has the Don't Fragment flag set on the UDP packets it
-transmits, except when it has decided that DATA packets aren't getting
-through - in which case it turns it off just for the DATA transmissions.
-This can be a problem, however, for RESPONSE packets that convey
-authentication and crypto data from the client to the server as ticket may
-be larger than can fit in the MTU.
+15 MHz is supported only by 76x variants.
 
-In such a case, rxrpc gets itself into an infinite loop as the sendmsg
-returns an error (EMSGSIZE), which causes rxkad_send_response() to return
--EAGAIN - and the CHALLENGE packet is put back on the Rx queue to retry,
-leading to the I/O thread endlessly attempting to perform the transmission.
+If the SPI clock frequency is not specified, use a safe default clock value
+of 4 MHz that is supported by all variants.
 
-Fix this by disabling DF on RESPONSE packets for now.  The use of DF and
-best data MTU determination needs reconsidering at some point in the
-future.
+Also use HZ_PER_MHZ macro to improve readability.
 
-Fixes: 17926a79320a ("[AF_RXRPC]: Provide secure RxRPC sockets for use by userspace and kernel both")
-Reported-by: Marc Dionne <marc.dionne@auristor.com>
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: linux-afs@lists.infradead.org
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://lore.kernel.org/r/1581852.1704813048@warthog.procyon.org.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2c837a8a8f9f ("sc16is7xx: spi interface is added")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Link: https://lore.kernel.org/r/20231221231823.2327894-4-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rxrpc/ar-internal.h  |  1 +
- net/rxrpc/local_object.c | 13 ++++++++++++-
- net/rxrpc/output.c       |  6 ++----
- net/rxrpc/rxkad.c        |  2 ++
- 4 files changed, 17 insertions(+), 5 deletions(-)
+ drivers/tty/serial/sc16is7xx.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/rxrpc/ar-internal.h b/net/rxrpc/ar-internal.h
-index e8e14c6f904d..e8b43408136a 100644
---- a/net/rxrpc/ar-internal.h
-+++ b/net/rxrpc/ar-internal.h
-@@ -1076,6 +1076,7 @@ void rxrpc_send_version_request(struct rxrpc_local *local,
- /*
-  * local_object.c
-  */
-+void rxrpc_local_dont_fragment(const struct rxrpc_local *local, bool set);
- struct rxrpc_local *rxrpc_lookup_local(struct net *, const struct sockaddr_rxrpc *);
- struct rxrpc_local *rxrpc_get_local(struct rxrpc_local *, enum rxrpc_local_trace);
- struct rxrpc_local *rxrpc_get_local_maybe(struct rxrpc_local *, enum rxrpc_local_trace);
-diff --git a/net/rxrpc/local_object.c b/net/rxrpc/local_object.c
-index c553a30e9c83..34d307368135 100644
---- a/net/rxrpc/local_object.c
-+++ b/net/rxrpc/local_object.c
-@@ -36,6 +36,17 @@ static void rxrpc_encap_err_rcv(struct sock *sk, struct sk_buff *skb, int err,
- 		return ipv6_icmp_error(sk, skb, err, port, info, payload);
- }
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -24,6 +24,7 @@
+ #include <linux/tty_flip.h>
+ #include <linux/spi/spi.h>
+ #include <linux/uaccess.h>
++#include <linux/units.h>
+ #include <uapi/linux/sched/types.h>
  
-+/*
-+ * Set or clear the Don't Fragment flag on a socket.
-+ */
-+void rxrpc_local_dont_fragment(const struct rxrpc_local *local, bool set)
-+{
-+	if (set)
-+		ip_sock_set_mtu_discover(local->socket->sk, IP_PMTUDISC_DO);
-+	else
-+		ip_sock_set_mtu_discover(local->socket->sk, IP_PMTUDISC_DONT);
-+}
-+
- /*
-  * Compare a local to an address.  Return -ve, 0 or +ve to indicate less than,
-  * same or greater than.
-@@ -203,7 +214,7 @@ static int rxrpc_open_socket(struct rxrpc_local *local, struct net *net)
- 		ip_sock_set_recverr(usk);
+ #define SC16IS7XX_NAME			"sc16is7xx"
+@@ -1719,7 +1720,7 @@ static int sc16is7xx_spi_probe(struct sp
+ 		return dev_err_probe(&spi->dev, -EINVAL, "Unsupported SPI mode\n");
  
- 		/* we want to set the don't fragment bit */
--		ip_sock_set_mtu_discover(usk, IP_PMTUDISC_DO);
-+		rxrpc_local_dont_fragment(local, true);
- 
- 		/* We want receive timestamps. */
- 		sock_enable_timestamps(usk);
-diff --git a/net/rxrpc/output.c b/net/rxrpc/output.c
-index 5e53429c6922..a0906145e829 100644
---- a/net/rxrpc/output.c
-+++ b/net/rxrpc/output.c
-@@ -494,14 +494,12 @@ int rxrpc_send_data_packet(struct rxrpc_call *call, struct rxrpc_txbuf *txb)
- 	switch (conn->local->srx.transport.family) {
- 	case AF_INET6:
- 	case AF_INET:
--		ip_sock_set_mtu_discover(conn->local->socket->sk,
--					 IP_PMTUDISC_DONT);
-+		rxrpc_local_dont_fragment(conn->local, false);
- 		rxrpc_inc_stat(call->rxnet, stat_tx_data_send_frag);
- 		ret = do_udp_sendmsg(conn->local->socket, &msg, len);
- 		conn->peer->last_tx_at = ktime_get_seconds();
- 
--		ip_sock_set_mtu_discover(conn->local->socket->sk,
--					 IP_PMTUDISC_DO);
-+		rxrpc_local_dont_fragment(conn->local, true);
- 		break;
- 
- 	default:
-diff --git a/net/rxrpc/rxkad.c b/net/rxrpc/rxkad.c
-index 1bf571a66e02..b52dedcebce0 100644
---- a/net/rxrpc/rxkad.c
-+++ b/net/rxrpc/rxkad.c
-@@ -724,7 +724,9 @@ static int rxkad_send_response(struct rxrpc_connection *conn,
- 	serial = atomic_inc_return(&conn->serial);
- 	whdr.serial = htonl(serial);
- 
-+	rxrpc_local_dont_fragment(conn->local, false);
- 	ret = kernel_sendmsg(conn->local->socket, &msg, iov, 3, len);
-+	rxrpc_local_dont_fragment(conn->local, true);
- 	if (ret < 0) {
- 		trace_rxrpc_tx_fail(conn->debug_id, serial, ret,
- 				    rxrpc_tx_point_rxkad_response);
--- 
-2.43.0
-
+ 	spi->mode		= spi->mode ? : SPI_MODE_0;
+-	spi->max_speed_hz	= spi->max_speed_hz ? : 15000000;
++	spi->max_speed_hz	= spi->max_speed_hz ? : 4 * HZ_PER_MHZ;
+ 	ret = spi_setup(spi);
+ 	if (ret)
+ 		return ret;
 
 
 
