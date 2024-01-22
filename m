@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-13467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48759837C33
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C632A83848B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3C73296218
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2AB59B2B54E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C127D14460B;
-	Tue, 23 Jan 2024 00:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE3E61698;
+	Tue, 23 Jan 2024 01:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N020bz3u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tgd9/+U3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FAB144609;
-	Tue, 23 Jan 2024 00:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB21E6168A;
+	Tue, 23 Jan 2024 01:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969534; cv=none; b=CWta+AdquvecGR4FQOmct8ot3CZYdCOb0fxKrMDJmJKvWUwYZoYrGlnj1IhYcqHU+0x2wol2WsNlCTIbOXmFNINjy1IqeHAlp9ppprTyZ9boF1IVmnDG9EPeHAkYYp+ryanwdcbXb1CZKNLy/iTC8O4R+C+HfdJgquEUgIyRH2k=
+	t=1705974945; cv=none; b=ozHUh2AkRYk6O8MrSSLIxLy0iOvl19OC76tHGEniXJMytHFeUUo86SvOvx/ij1jlCk0obnjyO+gjn4yWW5w6pSOPcX+tZQ7FFTIdoULq/oqO7gJ5soiyFy3BgaA4jzQqNYbsoXF1lUnG7Et4lziXPqWO6sBjxKICVrMQG+z8UY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969534; c=relaxed/simple;
-	bh=xQH5g176OSWTOmxHC+vUzRLVjK7mBATMaW8d/VP2GAY=;
+	s=arc-20240116; t=1705974945; c=relaxed/simple;
+	bh=nTzWqHn2STCqN2Td9mHisQPxHUw5dOESestZvFR4lhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QNIt4wtdGIGVYxyhYPVylsnkdeahv+LcE1dBa+cBgoB3kjrVM7a5sdlCDb+tVH6GGdJdwN30Cc7rBYoNzyzt1Somw9gVz6INYvQGfznqX6j7yEpnZZINHEje/KhKbXmhvhOZS66b4uTJ8hd+kY8UbzxVaIYH7HjJ4X6WKH9qako=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N020bz3u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D76C43394;
-	Tue, 23 Jan 2024 00:25:33 +0000 (UTC)
+	 MIME-Version; b=aLplthHSJ+GCr1g8qZyc0auIZwEPGyWthbUPoLcXlIU3VD2qTmF+u2Sq6xoWlWw/pknx3cMpKk+GiT9/2XOzFV6Uhl4GVHp+J6pipQNCUpb0IJ5gc/iO87KSXWhns23wolbSltwx2aGc3dpZFMANJoQ0uv19nYnG8A4oRzy40U8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tgd9/+U3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E2B4C433F1;
+	Tue, 23 Jan 2024 01:55:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969534;
-	bh=xQH5g176OSWTOmxHC+vUzRLVjK7mBATMaW8d/VP2GAY=;
+	s=korg; t=1705974944;
+	bh=nTzWqHn2STCqN2Td9mHisQPxHUw5dOESestZvFR4lhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N020bz3ubgVzKTMOfcNYILcTVq7w4uOjxuoCc96wscSt+a5fHMVpjhqoUXMTXQFl6
-	 /TV+9OJP8EYwidoaBzvbY1JfBTYygaXlS82Q52p7TCG/+Q/k7r7yxXYUBCb0698zeK
-	 v1XmXxg4AIpkZki907SBQNmLYn9JyLBaz7eE5l1w=
+	b=tgd9/+U3rElgNt50pPD19T9YcYv5guO6JKLXyRyMuHUmbgicGeir8lOqWMlMCsNX5
+	 OTxz8edQ9S9p3VJCdgRn1G5U7V38quNvFhaiDVEuMir8h/oOXcEOg5pIHa6/5ISD+C
+	 fFGbP004EbgdWMb16gQoa07W6hADPC/K+M8dmfx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mehdi Djait <mehdi.djait@bootlin.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Yihang Li <liyihang9@huawei.com>,
+	Xiang Chen <chenxiang66@hisilicon.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 309/641] media: dt-bindings: media: rkisp1: Fix the port description for the parallel interface
+Subject: [PATCH 6.6 162/583] scsi: hisi_sas: Rollback some operations if FLR failed
 Date: Mon, 22 Jan 2024 15:53:33 -0800
-Message-ID: <20240122235827.581693949@linuxfoundation.org>
+Message-ID: <20240122235817.001579156@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mehdi Djait <mehdi.djait@bootlin.com>
+From: Yihang Li <liyihang9@huawei.com>
 
-[ Upstream commit 25bf28b25a2afa1864b7143259443160d9163ea0 ]
+[ Upstream commit 7ea3e7763c50b20a8bd25cf524ea0c6463de69be ]
 
-The bus-type belongs to the endpoint's properties and should therefore
-be moved.
+We obtain the semaphore and set HISI_SAS_RESETTING_BIT in
+hisi_sas_reset_prepare_v3_hw(), block the scsi host and set
+HISI_SAS_REJECT_CMD_BIT in hisi_sas_controller_reset_prepare(), released
+them in hisi_sas_controller_reset_done(). However, if the HW reset failure
+in FLR results in early return, the semaphore and flag bits will not be
+release.
 
-Link: https://lore.kernel.org/r/20231115164407.99876-1-mehdi.djait@bootlin.com
+Rollback some operations including clearing flags / releasing semaphore
+when FLR is failed.
 
-Fixes: 6a0eaa25bf36 ("media: dt-bindings: media: rkisp1: Add port for parallel interface")
-Signed-off-by: Mehdi Djait <mehdi.djait@bootlin.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: e5ea48014adc ("scsi: hisi_sas: Implement handlers of PCIe FLR for v3 hw")
+Signed-off-by: Yihang Li <liyihang9@huawei.com>
+Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
+Link: https://lore.kernel.org/r/1702525516-51258-5-git-send-email-chenxiang66@hisilicon.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/media/rockchip-isp1.yaml      | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/media/rockchip-isp1.yaml b/Documentation/devicetree/bindings/media/rockchip-isp1.yaml
-index e466dff8286d..afcaa427d48b 100644
---- a/Documentation/devicetree/bindings/media/rockchip-isp1.yaml
-+++ b/Documentation/devicetree/bindings/media/rockchip-isp1.yaml
-@@ -90,15 +90,16 @@ properties:
-         description: connection point for input on the parallel interface
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+index 568bd8052639..53c955c4f080 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+@@ -5098,6 +5098,7 @@ static void hisi_sas_reset_done_v3_hw(struct pci_dev *pdev)
+ {
+ 	struct sas_ha_struct *sha = pci_get_drvdata(pdev);
+ 	struct hisi_hba *hisi_hba = sha->lldd_ha;
++	struct Scsi_Host *shost = hisi_hba->shost;
+ 	struct device *dev = hisi_hba->dev;
+ 	int rc;
  
-         properties:
--          bus-type:
--            enum: [5, 6]
--
-           endpoint:
-             $ref: video-interfaces.yaml#
-             unevaluatedProperties: false
+@@ -5106,6 +5107,10 @@ static void hisi_sas_reset_done_v3_hw(struct pci_dev *pdev)
+ 	rc = hw_init_v3_hw(hisi_hba);
+ 	if (rc) {
+ 		dev_err(dev, "FLR: hw init failed rc=%d\n", rc);
++		clear_bit(HISI_SAS_REJECT_CMD_BIT, &hisi_hba->flags);
++		scsi_unblock_requests(shost);
++		clear_bit(HISI_SAS_RESETTING_BIT, &hisi_hba->flags);
++		up(&hisi_hba->sem);
+ 		return;
+ 	}
  
--        required:
--          - bus-type
-+            properties:
-+              bus-type:
-+                enum: [5, 6]
-+
-+            required:
-+              - bus-type
- 
-     anyOf:
-       - required:
 -- 
 2.43.0
 
