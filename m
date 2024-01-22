@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-14875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14BE78382FB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:25:36 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A713837DAF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47C0C1C25428
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 528BC284306
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 491BF604B1;
-	Tue, 23 Jan 2024 01:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824C552F9D;
+	Tue, 23 Jan 2024 00:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+FFawOZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXIL1w7y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07048604AA;
-	Tue, 23 Jan 2024 01:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E1151008;
+	Tue, 23 Jan 2024 00:35:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974677; cv=none; b=sxe6mCTOvxCPZ/T4PY3y5wlmAzu2Olb72CccLPs+DTmOxD8QlZsJXda+tlBfUyYXX/P5n7VCwW57Ld5/RP5UMm7GwUn531vNvPa8XhnLuY0RriCtNvr3Pg2dKcZind7w4UEswKotE7Z576wYBJyagcR0R7s3G9kLRUNLJEF7E74=
+	t=1705970138; cv=none; b=dPy+4sPdIuG2C5UuL4QdBUC2UXi/w7M2ouWTKkMOlLZXUJSJvEhNwaHHr3gYag5WbQ2LTRlBPDyXiUw74dtmpp2rmusMqGifyuGphscxxc5J5SixO9lVj9YU9uta+39cae7OlsV4u7RKu9VNdOG+EpP/09l7DgA9KQXEpEkTqFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974677; c=relaxed/simple;
-	bh=9kkv2p362I5Sg6MT8qi44AlzsAIH8dvrZTXoQBskAuE=;
+	s=arc-20240116; t=1705970138; c=relaxed/simple;
+	bh=ExfK1FQ2wB/uzX1vbHOFj1zFy5t4jII+GINI3DEoKOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FnmRXbZkGxyScV9QFYODiVSlciHV6Ja/rQQQdmG89udLgX68a5dzZ2odtvPFuvxHlwECUNSGMpymakoky4cc6QL4ExZlbwbNtueoaWd+ZvMATH4ZdFVnwWCRIdz0xm3NAfCXykspYoNptezR7GJm3DJL57P5DTDXOFKr8TdP3b8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+FFawOZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D45C433C7;
-	Tue, 23 Jan 2024 01:51:16 +0000 (UTC)
+	 MIME-Version; b=fm7ScgEVJbBiungRSSx90CrpuIWQdPkDXUZpgp6+ICin1uTE2CuJ4HqRr7h7M2QCOU0lwOtO+Dwf9Dc44wDQ5EjN+wl03OJd1FBii25FPtpLb7nNQAHzGaA0UzNFqaSQouUDJKtiFHJuEoEfglhJ191mH/TUgu9kudGIemeiCfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXIL1w7y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68CE3C433C7;
+	Tue, 23 Jan 2024 00:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974676;
-	bh=9kkv2p362I5Sg6MT8qi44AlzsAIH8dvrZTXoQBskAuE=;
+	s=korg; t=1705970137;
+	bh=ExfK1FQ2wB/uzX1vbHOFj1zFy5t4jII+GINI3DEoKOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k+FFawOZPTvEF0KimOEd3Pw9eSyTo22GW12W6dhSs4IIHtA27KLTA9J2mBuuTQwPz
-	 7GSsgkSF51gnYVJcoC4H3cHnVbFQbRSeER2hucIhdayfNobrYmv+3cIi8h4fGORNml
-	 jJHzgRlBwrB8VASn9wE6CYIew70vk3Hq/IU6cXyw=
+	b=LXIL1w7yX6ZDmks/ym0+Q8TY3JxkEFdnRale8bV7+62/RLq9utpur1z4jf0Cipemv
+	 ceeFTzAgs1vRSCFbvzgzamF5C3VscnqPxuC2FI2F76SzzBfrGofkSJbq4uy8AT82eb
+	 XxMjSXIojsvlo/jDDCOGFZex2fyutFPX+Npet9AU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 5.15 245/374] binder: fix async space check for 0-sized buffers
+	Sneh Shah <quic_snehshah@quicinc.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	Andrew Halaney <ahalaney@redhat.com>
+Subject: [PATCH 6.7 597/641] net: stmmac: Fix ethool link settings ops for integrated PCS
 Date: Mon, 22 Jan 2024 15:58:21 -0800
-Message-ID: <20240122235753.287317475@linuxfoundation.org>
+Message-ID: <20240122235836.886484889@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Sneh Shah <quic_snehshah@quicinc.com>
 
-commit 3091c21d3e9322428691ce0b7a0cfa9c0b239eeb upstream.
+[ Upstream commit 08300adac3b8dab9e2fd3be0155c7d3093c755f4 ]
 
-Move the padding of 0-sized buffers to an earlier stage to account for
-this round up during the alloc->free_async_space check.
+Currently get/set_link_ksettings ethtool ops are dependent on PCS.
+When PCS is integrated, it will not have separate link config.
+Bypass configuring and checking PCS for integrated PCS.
 
-Fixes: 74310e06be4d ("android: binder: Move buffer out of area shared with user space")
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-5-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: aa571b6275fb ("net: stmmac: add new switch to struct plat_stmmacenet_data")
+Tested-by: Andrew Halaney <ahalaney@redhat.com> # sa8775p-ride
+Signed-off-by: Sneh Shah <quic_snehshah@quicinc.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder_alloc.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -407,6 +407,10 @@ static struct binder_buffer *binder_allo
- 				alloc->pid, extra_buffers_size);
- 		return ERR_PTR(-EINVAL);
- 	}
-+
-+	/* Pad 0-size buffers so they get assigned unique addresses */
-+	size = max(size, sizeof(void *));
-+
- 	if (is_async &&
- 	    alloc->free_async_space < size + sizeof(struct binder_buffer)) {
- 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
-@@ -415,9 +419,6 @@ static struct binder_buffer *binder_allo
- 		return ERR_PTR(-ENOSPC);
- 	}
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+index 112a36a698f1..bfd146ad6937 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+@@ -311,8 +311,9 @@ static int stmmac_ethtool_get_link_ksettings(struct net_device *dev,
+ {
+ 	struct stmmac_priv *priv = netdev_priv(dev);
  
--	/* Pad 0-size buffers so they get assigned unique addresses */
--	size = max(size, sizeof(void *));
--
- 	while (n) {
- 		buffer = rb_entry(n, struct binder_buffer, rb_node);
- 		BUG_ON(!buffer->free);
+-	if (priv->hw->pcs & STMMAC_PCS_RGMII ||
+-	    priv->hw->pcs & STMMAC_PCS_SGMII) {
++	if (!(priv->plat->flags & STMMAC_FLAG_HAS_INTEGRATED_PCS) &&
++	    (priv->hw->pcs & STMMAC_PCS_RGMII ||
++	     priv->hw->pcs & STMMAC_PCS_SGMII)) {
+ 		struct rgmii_adv adv;
+ 		u32 supported, advertising, lp_advertising;
+ 
+@@ -397,8 +398,9 @@ stmmac_ethtool_set_link_ksettings(struct net_device *dev,
+ {
+ 	struct stmmac_priv *priv = netdev_priv(dev);
+ 
+-	if (priv->hw->pcs & STMMAC_PCS_RGMII ||
+-	    priv->hw->pcs & STMMAC_PCS_SGMII) {
++	if (!(priv->plat->flags & STMMAC_FLAG_HAS_INTEGRATED_PCS) &&
++	    (priv->hw->pcs & STMMAC_PCS_RGMII ||
++	     priv->hw->pcs & STMMAC_PCS_SGMII)) {
+ 		/* Only support ANE */
+ 		if (cmd->base.autoneg != AUTONEG_ENABLE)
+ 			return -EINVAL;
+-- 
+2.43.0
+
 
 
 
