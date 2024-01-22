@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F96B837D8A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C8B68382A8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B15651F22A49
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B132028CAA5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9AAE5576F;
-	Tue, 23 Jan 2024 00:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 259EC5DF3F;
+	Tue, 23 Jan 2024 01:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGsVTW5p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oA4p61w2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689CD4E1D8;
-	Tue, 23 Jan 2024 00:33:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86D14F8AE;
+	Tue, 23 Jan 2024 01:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970015; cv=none; b=g5/iL4klA+rXpFuEYUw80O2F+E9dGBV6LydO0YC7svOCHVl7aoHIaitOjGphG2xRwiOT3Qk4VK0sHS0KNW8TbMsuUIeR/naoMOhhBVt8BO5uaL3AMvD9zsPnduis8QR2UoUv5ZMarVlKVyoqOQCHWxzMS7nD8aI78XnZzhNhxQY=
+	t=1705974401; cv=none; b=pDe75aU6JY613IyTyGaPR2/Kbuv+OlnEmfzllErgZyIT+8z1CIq5He7vp2zwSOqD+lX/hgEtpy69eh0f/eiZFBL19dbpvxRzoShzX9NcDIKkCFgFkcolGrNN2ITeJ3CYg4zPf4IbSVYJN8BbVwXjbUd81kZH3IbVEUO70tn9w6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970015; c=relaxed/simple;
-	bh=KPHNmeWFCPcl2u9XDCFWBVpFt3VUX3wzPsAqqi82kRo=;
+	s=arc-20240116; t=1705974401; c=relaxed/simple;
+	bh=+MJIQO9/jmxHy7Ff/qPQI4apcj7E1QIHUjhwWHFUstg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kzyoRqRpQKTLMerwZlIkX69QXTLPK1qQNPVqTGhy9vFA8VTF5TOhfhVtZWX4HbtWGTKKPYu4maIcvnFym1CcWFl9HM2jtbEuE1YiUIN74MD2HQAu53+wOi4eaOtNAL73xokNVGZm7EFYp+7WNis0ktUCpWEtFvl1YNTthjbNaoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGsVTW5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 114B1C433F1;
-	Tue, 23 Jan 2024 00:33:34 +0000 (UTC)
+	 MIME-Version; b=TXnqgxecRdk+wLGo6UdiBlSMnCs+12WVTXcsadOfepqQSKK2pd1hQ1hd16zOoMzv4qNW2WZjnwqz5MZX+t/dMZTQRWxfIvbwKP0d1RrO8gc0JTgKCneN4wWimfOdsNOoKSZSFUpTEWh4a4KTGl0y09uNZFnO428Px5S0blcEZV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oA4p61w2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E488C43399;
+	Tue, 23 Jan 2024 01:46:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970015;
-	bh=KPHNmeWFCPcl2u9XDCFWBVpFt3VUX3wzPsAqqi82kRo=;
+	s=korg; t=1705974401;
+	bh=+MJIQO9/jmxHy7Ff/qPQI4apcj7E1QIHUjhwWHFUstg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LGsVTW5p6l/o9+DNMTgt7+R0vMMGD520V2T8W5maoWrS4wSXrAt7CAB0KYSq0efd7
-	 gt4yUyeWowsDibkrYxa8Bi8c0Cw86H+FEEEEn4JDvvX4Gx7vc5OFEmI5Hab6jH3FIF
-	 ogQj0ksfY0RgzLgJqHT6gjiMOR4pEozq2vZCAUhI=
+	b=oA4p61w2TNpVMOwpiHh1uNN0BosfuYwoaQIWzxdqPwKmsAPM0F0AM4QnVO8HfqV8Q
+	 gk+Wl5JB2k5l1LsNI7l9H2Res4kf+I5GIItaieG57sZfDGyMGQT2YOmUbtM8OxPMmX
+	 DrIuBTnQ2VWBImCQ5VpuBLFIpL4MBL83E2crGBwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 563/641] serial: imx: Correct clock error message in function probe()
+Subject: [PATCH 5.15 211/374] gpu/drm/radeon: fix two memleaks in radeon_vm_init
 Date: Mon, 22 Jan 2024 15:57:47 -0800
-Message-ID: <20240122235835.774270526@linuxfoundation.org>
+Message-ID: <20240122235751.976448986@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +60,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 3e189470cad27d41a3a9dc02649f965b7ed1c90f ]
+[ Upstream commit c2709b2d6a537ca0fa0f1da36fdaf07e48ef447d ]
 
-Correct the clock error message by changing the clock name.
+When radeon_bo_create and radeon_vm_clear_bo fail, the vm->page_tables
+allocated before need to be freed. However, neither radeon_vm_init
+itself nor its caller have done such deallocation.
 
-Fixes: 1e512d45332b ("serial: imx: add error messages when .probe fails")
-Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20231224093209.2612-1-cniedermaier@dh-electronics.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6d2f2944e95e ("drm/radeon: use normal BOs for the page tables v4")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/imx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/radeon/radeon_vm.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
-index 16207b9a8c81..81557a58f86f 100644
---- a/drivers/tty/serial/imx.c
-+++ b/drivers/tty/serial/imx.c
-@@ -2315,7 +2315,7 @@ static int imx_uart_probe(struct platform_device *pdev)
- 	/* For register access, we only need to enable the ipg clock. */
- 	ret = clk_prepare_enable(sport->clk_ipg);
- 	if (ret) {
--		dev_err(&pdev->dev, "failed to enable per clk: %d\n", ret);
-+		dev_err(&pdev->dev, "failed to enable ipg clk: %d\n", ret);
- 		return ret;
+diff --git a/drivers/gpu/drm/radeon/radeon_vm.c b/drivers/gpu/drm/radeon/radeon_vm.c
+index bb53016f3138..f2fc8ef99139 100644
+--- a/drivers/gpu/drm/radeon/radeon_vm.c
++++ b/drivers/gpu/drm/radeon/radeon_vm.c
+@@ -1204,13 +1204,17 @@ int radeon_vm_init(struct radeon_device *rdev, struct radeon_vm *vm)
+ 	r = radeon_bo_create(rdev, pd_size, align, true,
+ 			     RADEON_GEM_DOMAIN_VRAM, 0, NULL,
+ 			     NULL, &vm->page_directory);
+-	if (r)
++	if (r) {
++		kfree(vm->page_tables);
++		vm->page_tables = NULL;
+ 		return r;
+-
++	}
+ 	r = radeon_vm_clear_bo(rdev, vm->page_directory);
+ 	if (r) {
+ 		radeon_bo_unref(&vm->page_directory);
+ 		vm->page_directory = NULL;
++		kfree(vm->page_tables);
++		vm->page_tables = NULL;
+ 		return r;
  	}
  
 -- 
