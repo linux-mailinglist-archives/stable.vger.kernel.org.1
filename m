@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B680B837F02
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:32 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC6BE83840B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F0CE29BD6F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81E111F28FF2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7173605B3;
-	Tue, 23 Jan 2024 00:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38DCB67721;
+	Tue, 23 Jan 2024 02:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZzMq6ey/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GXEwt+45"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673B560252;
-	Tue, 23 Jan 2024 00:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943C867727;
+	Tue, 23 Jan 2024 02:01:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970874; cv=none; b=eSJBckdzgkGTLEael2+h/VjShbIdAboXbkhGwo464HktKVYccF/YGufbkNr9qeEbYBPY7uyY8l45sTfLya1pPOF5Lir2YUFuqq11u0TdPXX8ZMOOufTzdjplqB5xwn1lo/SsefKVu4pKrDJ2bNMNZlj1a/RLiblR+rmnrKYzP0M=
+	t=1705975286; cv=none; b=kKzU0cHbDKuLOOOZWQ8zn6qYjXoJDD0n/7IzzDJR8M9aW5Wartl/Th/j2FLK7D52o48+wAeuQiD/iiMbdhAVJiFxygbYY6p6w6tYw9V6AEo/4vtIa2OgjZI/wli5n/KPKqy8nbKLrVpbPc0ujR3njVlOOdN2d1lS+yvmoHKlwpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970874; c=relaxed/simple;
-	bh=/e9pw0zPZ/YU6V4koy/j2NKkuw+1C9txEzY3PhfApTs=;
+	s=arc-20240116; t=1705975286; c=relaxed/simple;
+	bh=rCkw2SIp3NXDuvoCwwMF0HL2lneWALL4JzyQiS46K14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tPaqxHqVkxX7fcUKqG8z+TElPFZ/Wy+8QW1qhJxG5VJsImo1zjnyrH8hncev+JYWIGQd+quHcY0pk/0ZHz0cx+FN7T2TT3fUoBiHVp6AiSKrx5uGCYEwNYt225tQ9GfDJ6NhkVoJgg72pmQXD6R32pLDeKo+ntH8eRouwVjq4cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZzMq6ey/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6AD6C433C7;
-	Tue, 23 Jan 2024 00:47:53 +0000 (UTC)
+	 MIME-Version; b=qmj3FWRzSN4flmHRyNgyN/zBBhgVgFklbTcE5sr4rU7d0ewOxm7zYcn/XhMeiaoz5B+qJv6hy1eASqJBAXRf2sif1CxnpdCD50lCL9yMtYmknsDDns3OZgB4gzoB6eQ6pr1zbylPTIXtg/JAHkuIiUUyLoyu+0KRerj12iNM0jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GXEwt+45; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D1EC43390;
+	Tue, 23 Jan 2024 02:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970873;
-	bh=/e9pw0zPZ/YU6V4koy/j2NKkuw+1C9txEzY3PhfApTs=;
+	s=korg; t=1705975286;
+	bh=rCkw2SIp3NXDuvoCwwMF0HL2lneWALL4JzyQiS46K14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZzMq6ey/qY1KWg+oQiYUHAQ2EGQPyxbb6ZTf1RG/vl+YF0lJS/+o2RVQmTzRtisd4
-	 DbHz+n/mLAyWENXGq5W4QHRVxhwdoIl9Ut/fWxEkVX4u+F8bfntCJb/LvZAQRwuZHB
-	 iyFW63cs888/mQMcjA5fJZq68Cm3uPp3tbJ0KRIs=
+	b=GXEwt+45py78MzNlK+wcby96vubjLa1rj0YmLeOUhkhInWSy58Dv4hhRQn6sEfuRF
+	 YaDFi88VJbHT/Ob8myc2PVnfUaGFydgyakv9Xvfj+X0leZrQ7IX10QzB8UPBGgUMf1
+	 SePs9VURg1RySO3jL6fNjDGbW5km9FsQ7hI+LQrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Aradhya Bhatia <a-bhatia1@ti.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 130/417] arm64: dts: qcom: ipq6018: Use lowercase hex
+Subject: [PATCH 6.6 247/583] drm/tidss: Fix dss reset
 Date: Mon, 22 Jan 2024 15:54:58 -0800
-Message-ID: <20240122235756.318243514@linuxfoundation.org>
+Message-ID: <20240122235819.552655115@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 0431dba3733bf52dacf7382e7b0c1b4c0b59e88d ]
+[ Upstream commit bc288a927815efcf9d7f4a54d4d89c5df478c635 ]
 
-Use lowercase hex, as that's the preferred and overwhermingly present
-style.
+The probe function calls dispc_softreset() before runtime PM is enabled
+and without enabling any of the DSS clocks. This happens to work by
+luck, and we need to make sure the DSS HW is active and the fclk is
+enabled.
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20221212111037.98160-2-konrad.dybcio@linaro.org
-Stable-dep-of: 5c0dbe8b0584 ("arm64: dts: qcom: ipq6018: fix clock rates for GCC_USB0_MOCK_UTMI_CLK")
+To fix the above, add a new function, dispc_init_hw(), which does:
+
+- pm_runtime_set_active()
+- clk_prepare_enable(fclk)
+- dispc_softreset().
+
+This ensures that the reset can be successfully accomplished.
+
+Note that we use pm_runtime_set_active(), not the normal
+pm_runtime_get(). The reason for this is that at this point we haven't
+enabled the runtime PM yet and also we don't want the normal resume
+callback to be called: the dispc resume callback does some initial HW
+setup, and it expects that the HW was off (no video ports are
+streaming). If the bootloader has enabled the DSS and has set up a
+boot time splash-screen, the DSS would be enabled and streaming which
+might lead to issues with the normal resume callback.
+
+Fixes: c9b2d923befd ("drm/tidss: Soft Reset DISPC on startup")
+Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
+Link: https://lore.kernel.org/r/20231109-tidss-probe-v2-8-ac91b5ea35c0@ideasonboard.com
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/ipq6018.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/tidss/tidss_dispc.c | 45 ++++++++++++++++++++++++++++-
+ 1 file changed, 44 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/ipq6018.dtsi b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-index f3743ef7354f..55f685f51c71 100644
---- a/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq6018.dtsi
-@@ -685,7 +685,7 @@ dwc_1: usb@7000000 {
+diff --git a/drivers/gpu/drm/tidss/tidss_dispc.c b/drivers/gpu/drm/tidss/tidss_dispc.c
+index 2af623842cfb..98efbaf3b0c2 100644
+--- a/drivers/gpu/drm/tidss/tidss_dispc.c
++++ b/drivers/gpu/drm/tidss/tidss_dispc.c
+@@ -2724,6 +2724,49 @@ static int dispc_softreset(struct dispc_device *dispc)
+ 	return 0;
+ }
  
- 		ssphy_0: ssphy@78000 {
- 			compatible = "qcom,ipq6018-qmp-usb3-phy";
--			reg = <0x0 0x78000 0x0 0x1C4>;
-+			reg = <0x0 0x78000 0x0 0x1c4>;
- 			#address-cells = <2>;
- 			#size-cells = <2>;
- 			ranges;
-@@ -702,7 +702,7 @@ ssphy_0: ssphy@78000 {
- 			usb0_ssphy: phy@78200 {
- 				reg = <0x0 0x00078200 0x0 0x130>, /* Tx */
- 				      <0x0 0x00078400 0x0 0x200>, /* Rx */
--				      <0x0 0x00078800 0x0 0x1F8>, /* PCS */
-+				      <0x0 0x00078800 0x0 0x1f8>, /* PCS */
- 				      <0x0 0x00078600 0x0 0x044>; /* PCS misc */
- 				#phy-cells = <0>;
- 				#clock-cells = <0>;
-@@ -727,7 +727,7 @@ qusb_phy_0: qusb@79000 {
++static int dispc_init_hw(struct dispc_device *dispc)
++{
++	struct device *dev = dispc->dev;
++	int ret;
++
++	ret = pm_runtime_set_active(dev);
++	if (ret) {
++		dev_err(dev, "Failed to set DSS PM to active\n");
++		return ret;
++	}
++
++	ret = clk_prepare_enable(dispc->fclk);
++	if (ret) {
++		dev_err(dev, "Failed to enable DSS fclk\n");
++		goto err_runtime_suspend;
++	}
++
++	ret = dispc_softreset(dispc);
++	if (ret)
++		goto err_clk_disable;
++
++	clk_disable_unprepare(dispc->fclk);
++	ret = pm_runtime_set_suspended(dev);
++	if (ret) {
++		dev_err(dev, "Failed to set DSS PM to suspended\n");
++		return ret;
++	}
++
++	return 0;
++
++err_clk_disable:
++	clk_disable_unprepare(dispc->fclk);
++
++err_runtime_suspend:
++	ret = pm_runtime_set_suspended(dev);
++	if (ret) {
++		dev_err(dev, "Failed to set DSS PM to suspended\n");
++		return ret;
++	}
++
++	return ret;
++}
++
+ int dispc_init(struct tidss_device *tidss)
+ {
+ 	struct device *dev = tidss->dev;
+@@ -2833,7 +2876,7 @@ int dispc_init(struct tidss_device *tidss)
+ 	of_property_read_u32(dispc->dev->of_node, "max-memory-bandwidth",
+ 			     &dispc->memory_bandwidth_limit);
  
- 		usb3: usb@8af8800 {
- 			compatible = "qcom,ipq6018-dwc3", "qcom,dwc3";
--			reg = <0x0 0x8AF8800 0x0 0x400>;
-+			reg = <0x0 0x8af8800 0x0 0x400>;
- 			#address-cells = <2>;
- 			#size-cells = <2>;
- 			ranges;
-@@ -753,7 +753,7 @@ usb3: usb@8af8800 {
+-	r = dispc_softreset(dispc);
++	r = dispc_init_hw(dispc);
+ 	if (r)
+ 		return r;
  
- 			dwc_0: usb@8a00000 {
- 				compatible = "snps,dwc3";
--				reg = <0x0 0x8A00000 0x0 0xcd00>;
-+				reg = <0x0 0x8a00000 0x0 0xcd00>;
- 				interrupts = <GIC_SPI 140 IRQ_TYPE_LEVEL_HIGH>;
- 				phys = <&qusb_phy_0>, <&usb0_ssphy>;
- 				phy-names = "usb2-phy", "usb3-phy";
 -- 
 2.43.0
 
