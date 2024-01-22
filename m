@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-13228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72EF8837B07
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDEF6837B09
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24E44292FB7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:57:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77C00292E73
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:57:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10067148FF4;
-	Tue, 23 Jan 2024 00:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39678148FF2;
+	Tue, 23 Jan 2024 00:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHUcKr0i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFTLHB/6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF05148FF0;
-	Tue, 23 Jan 2024 00:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB471487F4;
+	Tue, 23 Jan 2024 00:19:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969170; cv=none; b=GAHt3zbGQR5ruTYeI3KILqNpoPe82KnbuAPLT3iA2Fz8HUG2BGA38tvzDMAB2cMO1Lhuw3WCYBav9aXRKIB/UD7QcQ2G6FQE4ZI8rxAXx7dLYppDx5V1UnnjSjzwTjT2Js6vL5gJKiJfmDq5bio0jn/2daJ/Ks9/LSEEh4gHdTA=
+	t=1705969173; cv=none; b=Y8WcrrRjWfpNBDzZY0Xwk4OcQa1ZFswaQ65Y4Tzr2n2Sr7Yj7kXT0BvpfXEewIN8OBVYYxNLoSkJHTFzqEM80Bnxvjfui8vjF/4T9TV4Jd3irjbn9hF3myuW0uKv7HuPscU7zFqpLbCIRY2+9s01tVWsMjsSJ5Di+HhSsorssr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969170; c=relaxed/simple;
-	bh=RrYC75jwtZLLWeHF+ZJHNnx3XnxTO8GPD7CeZCF2sWc=;
+	s=arc-20240116; t=1705969173; c=relaxed/simple;
+	bh=UCNd7kHbAkz1hSlNwNhL77OLDoU+jrwL6bTou5pl9bg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kz6Y1uQuOoKJRyMRgZMTvl8DswHIWXnWzmkkyYkaEOknqSnB9+xcgRbCToaQYsfHgCtedJGlSY5ohq90wwSZS/BtHENdERuugmKbAahhAI4bFSy5/8Y37SCnRMOA90gGIbpP9qizQ8J6XhRS0GkGnCUKdV6zf7BZL3fOGgBPd4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHUcKr0i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 617DBC433F1;
-	Tue, 23 Jan 2024 00:19:30 +0000 (UTC)
+	 MIME-Version; b=GkBPkUCE2XroqDheUmuuV3sWpB7Wdsgjk2IB/JHWO94SUpncsXU9Qzo7NlLqmOuerA8yCvEIHJUnGnq2VGSo+KpFef5t9ZdfBNqLi/znZ0v6E/p+g2Ab6hDlrp6uQAwDXjiSQdG+dqzipNehyRmrt5xfatCkNQ9voZ4aDNW537Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFTLHB/6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD9DCC433F1;
+	Tue, 23 Jan 2024 00:19:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969170;
-	bh=RrYC75jwtZLLWeHF+ZJHNnx3XnxTO8GPD7CeZCF2sWc=;
+	s=korg; t=1705969172;
+	bh=UCNd7kHbAkz1hSlNwNhL77OLDoU+jrwL6bTou5pl9bg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QHUcKr0i/g8PfI/AebL28nRv44A1PAlmoyhmeQZ9bBboCISL+WfIRuqBfvpZFdh39
-	 3eMHkPo+soIXNrLZkzEgWTgPhZM59l5QoLKiZ+72yfT0JVpRzZjtctuS9fM5Cx4PVM
-	 ZceyW6UYx4x039CSKgS56QcJvSGb9IGuHrJ5ERaA=
+	b=WFTLHB/6iCqBZdAWw59DzOGN30l9TV8Ts501nsCtxwqDPLnsdf//j8Gn5BCcfJCAk
+	 FH2VXzdE9AuVBA83T1P9E5+jHjK28bPFVIHQL/AFm57Co3pPksULeRpqCPeB3TnvT6
+	 yAMkq0de+ZBhCMOzNwX9FELUCcte6Gej2bI8wuzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Osama Muhammad <osmtendev@gmail.com>,
+	Edward Adam Davis <eadavis@qq.com>,
 	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	syzbot+da0fc229cc1ff4bb2e6d@syzkaller.appspotmail.com
-Subject: [PATCH 6.7 071/641] gfs2: Fix kernel NULL pointer dereference in gfs2_rgrp_dump
-Date: Mon, 22 Jan 2024 15:49:35 -0800
-Message-ID: <20240122235820.264037098@linuxfoundation.org>
+	syzbot+3b6e67ac2b646da57862@syzkaller.appspotmail.com
+Subject: [PATCH 6.7 072/641] gfs2: fix kernel BUG in gfs2_quota_cleanup
+Date: Mon, 22 Jan 2024 15:49:36 -0800
+Message-ID: <20240122235820.294215797@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -67,38 +67,93 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Osama Muhammad <osmtendev@gmail.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 8877243beafa7c6bfc42022cbfdf9e39b25bd4fa ]
+[ Upstream commit 71733b4922007500ae259af9e96017080f5d36d9 ]
 
-Syzkaller has reported a NULL pointer dereference when accessing
-rgd->rd_rgl in gfs2_rgrp_dump().  This can happen when creating
-rgd->rd_gl fails in read_rindex_entry().  Add a NULL pointer check in
-gfs2_rgrp_dump() to prevent that.
+[Syz report]
+kernel BUG at fs/gfs2/quota.c:1508!
+invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+CPU: 0 PID: 5060 Comm: syz-executor505 Not tainted 6.7.0-rc3-syzkaller-00134-g994d5c58e50e #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/10/2023
+RIP: 0010:gfs2_quota_cleanup+0x6b5/0x6c0 fs/gfs2/quota.c:1508
+Code: fe e9 cf fd ff ff 44 89 e9 80 e1 07 80 c1 03 38 c1 0f 8c 2d fe ff ff 4c 89 ef e8 b6 19 23 fe e9 20 fe ff ff e8 ec 11 c7 fd 90 <0f> 0b e8 84 9c 4f 07 0f 1f 40 00 66 0f 1f 00 55 41 57 41 56 41 54
+RSP: 0018:ffffc9000409f9e0 EFLAGS: 00010293
+RAX: ffffffff83c76854 RBX: 0000000000000002 RCX: ffff888026001dc0
+RDX: 0000000000000000 RSI: 0000000000000002 RDI: 0000000000000000
+RBP: ffffc9000409fb00 R08: ffffffff83c762b0 R09: 1ffff1100fd38015
+R10: dffffc0000000000 R11: ffffed100fd38016 R12: dffffc0000000000
+R13: ffff88807e9c0828 R14: ffff888014693580 R15: ffff88807e9c0000
+FS:  0000000000000000(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f16d1bd70f8 CR3: 0000000027199000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ gfs2_put_super+0x2e1/0x940 fs/gfs2/super.c:611
+ generic_shutdown_super+0x13a/0x2c0 fs/super.c:696
+ kill_block_super+0x44/0x90 fs/super.c:1667
+ deactivate_locked_super+0xc1/0x130 fs/super.c:484
+ cleanup_mnt+0x426/0x4c0 fs/namespace.c:1256
+ task_work_run+0x24a/0x300 kernel/task_work.c:180
+ exit_task_work include/linux/task_work.h:38 [inline]
+ do_exit+0xa34/0x2750 kernel/exit.c:871
+ do_group_exit+0x206/0x2c0 kernel/exit.c:1021
+ __do_sys_exit_group kernel/exit.c:1032 [inline]
+ __se_sys_exit_group kernel/exit.c:1030 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1030
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x45/0x110 arch/x86/entry/common.c:82
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
+...
 
-Reported-and-tested-by: syzbot+da0fc229cc1ff4bb2e6d@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=da0fc229cc1ff4bb2e6d
-Fixes: 72244b6bc752 ("gfs2: improve debug information when lvb mismatches are found")
-Signed-off-by: Osama Muhammad <osmtendev@gmail.com>
+[pid  5060] fsconfig(4, FSCONFIG_CMD_RECONFIGURE, NULL, NULL, 0) = 0
+[pid  5060] exit_group(1)               = ?
+...
+
+[Analysis]
+When the task exits, it will execute cleanup_mnt() to recycle the mounted gfs2
+file system, but it performs a system call fsconfig(4, FSCONFIG_CMD_RECONFIGURE,
+NULL, NULL, 0) before executing the task exit operation.
+
+This will execute the following kernel path to complete the setting of
+SDF_JOURNAL_LIVE for sd_flags:
+
+SYSCALL_DEFINE5(fsconfig, ..)->
+	vfs_fsconfig_locked()->
+		vfs_cmd_reconfigure()->
+			gfs2_reconfigure()->
+				gfs2_make_fs_rw()->
+					set_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags);
+
+[Fix]
+Add SDF_NORECOVERY check in gfs2_quota_cleanup() to avoid checking
+SDF_JOURNAL_LIVE on the path where gfs2 is being unmounted.
+
+Reported-and-tested-by: syzbot+3b6e67ac2b646da57862@syzkaller.appspotmail.com
+Fixes: f66af88e3321 ("gfs2: Stop using gfs2_make_fs_ro for withdraw")
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
 Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/rgrp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/quota.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
-index c2060203b98a..396d0f4a259d 100644
---- a/fs/gfs2/rgrp.c
-+++ b/fs/gfs2/rgrp.c
-@@ -2306,7 +2306,7 @@ void gfs2_rgrp_dump(struct seq_file *seq, struct gfs2_rgrpd *rgd,
- 		       (unsigned long long)rgd->rd_addr, rgd->rd_flags,
- 		       rgd->rd_free, rgd->rd_free_clone, rgd->rd_dinodes,
- 		       rgd->rd_requested, rgd->rd_reserved, rgd->rd_extfail_pt);
--	if (rgd->rd_sbd->sd_args.ar_rgrplvb) {
-+	if (rgd->rd_sbd->sd_args.ar_rgrplvb && rgd->rd_rgl) {
- 		struct gfs2_rgrp_lvb *rgl = rgd->rd_rgl;
+diff --git a/fs/gfs2/quota.c b/fs/gfs2/quota.c
+index 95dae7838b4e..f139ce8cf5ce 100644
+--- a/fs/gfs2/quota.c
++++ b/fs/gfs2/quota.c
+@@ -1505,7 +1505,8 @@ void gfs2_quota_cleanup(struct gfs2_sbd *sdp)
+ 	LIST_HEAD(dispose);
+ 	int count;
  
- 		gfs2_print_dbg(seq, "%s  L: f:%02x b:%u i:%u\n", fs_id_buf,
+-	BUG_ON(test_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags));
++	BUG_ON(!test_bit(SDF_NORECOVERY, &sdp->sd_flags) &&
++		test_bit(SDF_JOURNAL_LIVE, &sdp->sd_flags));
+ 
+ 	spin_lock(&qd_lock);
+ 	list_for_each_entry(qd, &sdp->sd_quota_list, qd_list) {
 -- 
 2.43.0
 
