@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-15004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3CDA83837E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BCB983850E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CAB928539D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CD391F29482
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D08E56311D;
-	Tue, 23 Jan 2024 01:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 521BC7CF28;
+	Tue, 23 Jan 2024 02:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g3PQgVZZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CV0aMHrC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B86962A1F;
-	Tue, 23 Jan 2024 01:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119ED7CF23;
+	Tue, 23 Jan 2024 02:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974989; cv=none; b=AWdFQ3x8fAJVaocnYKbB8VsVhXuHgCu75oz8hBFyRNBzGwhoBHLobYWTvPGfo8S2m66iEbVXZsT6WerMIgZvUjkjhgJkFVq8PIHlx8AifbPquVR6/Ptol9FzIkOty8nUHrC9FlNXFRPBo29Rl7sinPCz8+XyJgElzJ6YNXUiu7E=
+	t=1705975731; cv=none; b=bBXrAO99hofaIfvhRKZ8L0VA3RFZQYS1HhQFBBBMl4slb2yg0CZOEgDt/JVOCXJLCzOIvPov45iVpGvGXDnbntaftzbgGa1E0PNpQRmnsOGUzsLZThjqf95OJkC6NyH95upcbMvN2FjomQcXakmjq2DCDaWv+uMK7Z7U+JSZf2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974989; c=relaxed/simple;
-	bh=cv0KTf1DjTwyIKNIExnH3TSwIGDhacdTilrAiluiasc=;
+	s=arc-20240116; t=1705975731; c=relaxed/simple;
+	bh=SwsN6L0TGbsnhDbYwJeBngGYdY0Cwe2kpmGA6+7RCX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ccyUAUQPWS/sFAKJ6PKgIZyFRk1iQIiKIlB5WMeNF1RHehzuSTMD/FjFvTG08YSFvF6Fe/AzH5nStAUvxZwFvQpqj3ZNvoxZNFChpO+76HT5GBnN30VGPb/UP5uW2nWqPK0u4lxUC3UPanO83JV53UnBlZ6h6MGT8bpHfY0tTtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g3PQgVZZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 547CDC43390;
-	Tue, 23 Jan 2024 01:56:29 +0000 (UTC)
+	 MIME-Version; b=QwVj8YSlLX8tt+8VHqSd0qrqz+Sdp6mxv6V9iTjZIHXzup5e2GAkZPWgvtqRvER5vNCU9LPpIznhLxyrmx9nl+2mmoijbw0b26VA9fpsbpZ9GFG6RfqdT5hDaGF3pH95uqagZE/I1snhpZyV9cnkxRVDevE+Y87bqqOcRRj3Gw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CV0aMHrC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92F9C43394;
+	Tue, 23 Jan 2024 02:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974989;
-	bh=cv0KTf1DjTwyIKNIExnH3TSwIGDhacdTilrAiluiasc=;
+	s=korg; t=1705975730;
+	bh=SwsN6L0TGbsnhDbYwJeBngGYdY0Cwe2kpmGA6+7RCX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g3PQgVZZ0CO1BwQC688Hewz57rp9rFbFbhXuvSI5//UYEB6YEVKQjkF1UWGPbRDhn
-	 k7WZYMt7kUR8TEB6eNdEFFDItf2NBxHIRLfuWTkCZQ/0JhtBuidNTxZxPDdPcHSXsV
-	 sRssv+1z8jrk/1y2Gt80ihMjU1Dn+bRMDIekHLdw=
+	b=CV0aMHrCGIaF1ayUOTSOZAQBTRr29Hjf5v57HoGqfJRD48T2KCw4S5oRGRQtGA4lH
+	 s+o5M9h1tfkCA0UnnBl0CSFgkXFzg4kEslTEgsqZwPSMPZyde02ocLLz6va4CfHWOa
+	 AAkQW7JqkiA454r+JPJ5FkjkntMvmCwrYN0avHqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhao Mengmeng <zhaomengmeng@kylinos.cn>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 310/374] selftests/sgx: Skip non X86_64 platform
+Subject: [PATCH 6.6 515/583] spi: coldfire-qspi: Remove an erroneous clk_disable_unprepare() from the remove function
 Date: Mon, 22 Jan 2024 15:59:26 -0800
-Message-ID: <20240122235755.654658632@linuxfoundation.org>
+Message-ID: <20240122235827.840545347@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 981cf568a8644161c2f15c02278ebc2834b51ba6 ]
+[ Upstream commit 17dc11a02d8dacc7e78968daa2a8c16281eb7d1e ]
 
-When building whole selftests on arm64, rsync gives an erorr about sgx:
+The commit in Fixes has changed a devm_clk_get()/clk_prepare_enable() into
+a devm_clk_get_enabled().
+It has updated the error handling path of the probe accordingly, but the
+remove has been left unchanged.
 
-rsync: [sender] link_stat "/root/linux-next/tools/testing/selftests/sgx/test_encl.elf" failed: No such file or directory (2)
-rsync error: some files/attrs were not transferred (see previous errors) (code 23) at main.c(1327) [sender=3.2.5]
+Remove now the redundant clk_disable_unprepare() call from the remove
+function.
 
-The root casue is sgx only used on X86_64, and shall be skipped on other
-platforms.
-
-Fix this by moving TEST_CUSTOM_PROGS and TEST_FILES inside the if check,
-then the build result will be "Skipping non-existent dir: sgx".
-
-Fixes: 2adcba79e69d ("selftests/x86: Add a selftest for SGX")
-Signed-off-by: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Link: https://lore.kernel.org/all/20231206025605.3965302-1-zhaomzhao%40126.com
+Fixes: a90a987ebe00 ("spi: use devm_clk_get_enabled() in mcfqspi_probe()")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://msgid.link/r/6670aed303e1f7680e0911387606a8ae069e2cef.1704464447.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/sgx/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-coldfire-qspi.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/tools/testing/selftests/sgx/Makefile b/tools/testing/selftests/sgx/Makefile
-index 472b27ccd7dc..394d0dde479b 100644
---- a/tools/testing/selftests/sgx/Makefile
-+++ b/tools/testing/selftests/sgx/Makefile
-@@ -16,9 +16,9 @@ HOST_CFLAGS := -Wall -Werror -g $(INCLUDES) -fPIC -z noexecstack
- ENCL_CFLAGS := -Wall -Werror -static -nostdlib -nostartfiles -fPIC \
- 	       -fno-stack-protector -mrdrnd $(INCLUDES)
+diff --git a/drivers/spi/spi-coldfire-qspi.c b/drivers/spi/spi-coldfire-qspi.c
+index f0b630fe16c3..b341b6908df0 100644
+--- a/drivers/spi/spi-coldfire-qspi.c
++++ b/drivers/spi/spi-coldfire-qspi.c
+@@ -441,7 +441,6 @@ static void mcfqspi_remove(struct platform_device *pdev)
+ 	mcfqspi_wr_qmr(mcfqspi, MCFQSPI_QMR_MSTR);
  
-+ifeq ($(CAN_BUILD_X86_64), 1)
- TEST_CUSTOM_PROGS := $(OUTPUT)/test_sgx
+ 	mcfqspi_cs_teardown(mcfqspi);
+-	clk_disable_unprepare(mcfqspi->clk);
+ }
  
--ifeq ($(CAN_BUILD_X86_64), 1)
- all: $(TEST_CUSTOM_PROGS) $(OUTPUT)/test_encl.elf
- endif
- 
+ #ifdef CONFIG_PM_SLEEP
 -- 
 2.43.0
 
