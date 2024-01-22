@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-13455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C46FF837C22
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE130837E49
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 665CF1F2B319
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E09131C276F7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:37:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F241EF0D;
-	Tue, 23 Jan 2024 00:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE1105F553;
+	Tue, 23 Jan 2024 00:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNm8Iq2s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oM05JoKB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C3C15EB0;
-	Tue, 23 Jan 2024 00:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4275EE9F;
+	Tue, 23 Jan 2024 00:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969516; cv=none; b=FXbD2F5ilQrWOzbqfgTBH+07J7UTt4QnXFtnGZ1fR5c0OLmaUTsudSWRaKS4ao/GmJFg+vQFr9U+eP3yWe3S5IJqfbYuZqXSwEL5gTgcQ2hm1I18nF+p9HJzy4H/Cm7NWR125NZ2dFQdk1O7tDrtMyMwwZkWvVLWBdBR22yLavU=
+	t=1705970496; cv=none; b=GieFLwvX6wJoETuIsWnUTeid4pyGm+jaAiTtBYtde7uWiN8hYW1uGwAAwNBXxC6V5CFy40PhS7bvVzqrwQm+fylDiEt70iF0u2/8U653xX+pxR/GKe8OU0wN5g2NqOPw+e5OVp3/6gqusTldiK/co055lg48XcfQQ7RqvprU86A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969516; c=relaxed/simple;
-	bh=lbm3RSRAPDbyuxDNzL5+OuEsly4QMTF4mesMamjDZXY=;
+	s=arc-20240116; t=1705970496; c=relaxed/simple;
+	bh=kHpFF7XuOnjNOm6YWyj7pKq/mos1r+LLvUlOxrbkAys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nsmvy0gi2uRNL7M2Q9HGFUONUeTRXf7pZ8xYiRcIsa+DOkqQMxaSiDsXBJudr8xFXpLtc4T0D10N4wx1QuaSzTqCPc8V5wNXTO6250LMrg2wWVvEaa5hX3mV28nFcegfwjtVFKNYyncRIn0j/vUkzU3eDkM/7L4RVVDd2JYRqsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNm8Iq2s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3B5C433A6;
-	Tue, 23 Jan 2024 00:25:15 +0000 (UTC)
+	 MIME-Version; b=uZiqfApKAPg0lkFKEJ5uK5ssjEZRPd1G7LpUJ9ZVzc6rsgIFoiFaH4gzjwHxeakEZ9d1QDpqFFmYp5MZZypV1FJXIzXFahqXqNrNHrv9ra2QRyGuwd3RtinyTt6kb2wiKqm5gFnxjTF1xwrUgRHls4rY4iKmmPI+qEi6c9gb6Yo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oM05JoKB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9849EC433F1;
+	Tue, 23 Jan 2024 00:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969515;
-	bh=lbm3RSRAPDbyuxDNzL5+OuEsly4QMTF4mesMamjDZXY=;
+	s=korg; t=1705970496;
+	bh=kHpFF7XuOnjNOm6YWyj7pKq/mos1r+LLvUlOxrbkAys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zNm8Iq2sejnGUV2eBvJUKsKtUEI0Jf4tAKiCabtw+hwOtjblJmxcSr5J0sCgbFwei
-	 w+u6j4/h6KM/jSe2PTm1mUinceHAT1Pt9Tsgnq05e3+dJOOctobuwINSwQk7oNx0rI
-	 ge+SxiNUx9H1Xj8BhN+Xjd9MkylPfsnzRi6qWsaA=
+	b=oM05JoKBrI7/VU0rENqw8Tf5FxmvNPlTS1tsLGLq4XPnhu0ZpKnwkNNL7jMG5PtM4
+	 P+pII1D7l6GKXXc5gocAdeHE3U1rbv7HK5rslA5hhk18G5qwyFclJvuCX92xeNyfb3
+	 mA/GnyVYHKifBY2cUY+uxAjcOl9pqsR74zJ9V2HI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	wangyangxin <wangyangxin1@huawei.com>,
+	Gonglei <arei.gonglei@huawei.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 298/641] drm/bridge: tc358767: Fix return value on error case
+Subject: [PATCH 6.1 034/417] crypto: virtio - Handle dataq logic with tasklet
 Date: Mon, 22 Jan 2024 15:53:22 -0800
-Message-ID: <20240122235827.233565195@linuxfoundation.org>
+Message-ID: <20240122235752.787597888@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Gonglei (Arei) <arei.gonglei@huawei.com>
 
-[ Upstream commit 32bd29b619638256c5b75fb021d6d9f12fc4a984 ]
+[ Upstream commit fed93fb62e05c38152b0fc1dc9609639e63eed76 ]
 
-If the hpd_pin is invalid, the driver returns 'ret'. But 'ret' contains
-0, instead of an error value.
+Doing ipsec produces a spinlock recursion warning.
+This is due to crypto_finalize_request() being called in the upper half.
+Move virtual data queue processing of virtio-crypto driver to tasklet.
 
-Return -EINVAL instead.
-
-Fixes: f25ee5017e4f ("drm/bridge: tc358767: add IRQ and HPD support")
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231103-uninit-fixes-v2-4-c22b2444f5f5@ideasonboard.com
+Fixes: dbaf0624ffa57 ("crypto: add virtio-crypto driver")
+Reported-by: Halil Pasic <pasic@linux.ibm.com>
+Signed-off-by: wangyangxin <wangyangxin1@huawei.com>
+Signed-off-by: Gonglei <arei.gonglei@huawei.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/tc358767.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/virtio/virtio_crypto_common.h |  2 ++
+ drivers/crypto/virtio/virtio_crypto_core.c   | 23 +++++++++++---------
+ 2 files changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/tc358767.c b/drivers/gpu/drm/bridge/tc358767.c
-index ef2e373606ba..615cc8f950d7 100644
---- a/drivers/gpu/drm/bridge/tc358767.c
-+++ b/drivers/gpu/drm/bridge/tc358767.c
-@@ -2273,7 +2273,7 @@ static int tc_probe(struct i2c_client *client)
- 	} else {
- 		if (tc->hpd_pin < 0 || tc->hpd_pin > 1) {
- 			dev_err(dev, "failed to parse HPD number\n");
--			return ret;
-+			return -EINVAL;
+diff --git a/drivers/crypto/virtio/virtio_crypto_common.h b/drivers/crypto/virtio/virtio_crypto_common.h
+index 154590e1f764..7059bbe5a2eb 100644
+--- a/drivers/crypto/virtio/virtio_crypto_common.h
++++ b/drivers/crypto/virtio/virtio_crypto_common.h
+@@ -10,6 +10,7 @@
+ #include <linux/virtio.h>
+ #include <linux/crypto.h>
+ #include <linux/spinlock.h>
++#include <linux/interrupt.h>
+ #include <crypto/aead.h>
+ #include <crypto/aes.h>
+ #include <crypto/engine.h>
+@@ -28,6 +29,7 @@ struct data_queue {
+ 	char name[32];
+ 
+ 	struct crypto_engine *engine;
++	struct tasklet_struct done_task;
+ };
+ 
+ struct virtio_crypto {
+diff --git a/drivers/crypto/virtio/virtio_crypto_core.c b/drivers/crypto/virtio/virtio_crypto_core.c
+index 3842915ea743..856daf05341c 100644
+--- a/drivers/crypto/virtio/virtio_crypto_core.c
++++ b/drivers/crypto/virtio/virtio_crypto_core.c
+@@ -72,27 +72,28 @@ int virtio_crypto_ctrl_vq_request(struct virtio_crypto *vcrypto, struct scatterl
+ 	return 0;
+ }
+ 
+-static void virtcrypto_dataq_callback(struct virtqueue *vq)
++static void virtcrypto_done_task(unsigned long data)
+ {
+-	struct virtio_crypto *vcrypto = vq->vdev->priv;
++	struct data_queue *data_vq = (struct data_queue *)data;
++	struct virtqueue *vq = data_vq->vq;
+ 	struct virtio_crypto_request *vc_req;
+-	unsigned long flags;
+ 	unsigned int len;
+-	unsigned int qid = vq->index;
+ 
+-	spin_lock_irqsave(&vcrypto->data_vq[qid].lock, flags);
+ 	do {
+ 		virtqueue_disable_cb(vq);
+ 		while ((vc_req = virtqueue_get_buf(vq, &len)) != NULL) {
+-			spin_unlock_irqrestore(
+-				&vcrypto->data_vq[qid].lock, flags);
+ 			if (vc_req->alg_cb)
+ 				vc_req->alg_cb(vc_req, len);
+-			spin_lock_irqsave(
+-				&vcrypto->data_vq[qid].lock, flags);
  		}
+ 	} while (!virtqueue_enable_cb(vq));
+-	spin_unlock_irqrestore(&vcrypto->data_vq[qid].lock, flags);
++}
++
++static void virtcrypto_dataq_callback(struct virtqueue *vq)
++{
++	struct virtio_crypto *vcrypto = vq->vdev->priv;
++	struct data_queue *dq = &vcrypto->data_vq[vq->index];
++
++	tasklet_schedule(&dq->done_task);
+ }
+ 
+ static int virtcrypto_find_vqs(struct virtio_crypto *vi)
+@@ -150,6 +151,8 @@ static int virtcrypto_find_vqs(struct virtio_crypto *vi)
+ 			ret = -ENOMEM;
+ 			goto err_engine;
+ 		}
++		tasklet_init(&vi->data_vq[i].done_task, virtcrypto_done_task,
++				(unsigned long)&vi->data_vq[i]);
  	}
  
+ 	kfree(names);
 -- 
 2.43.0
 
