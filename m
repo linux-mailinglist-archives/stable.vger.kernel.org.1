@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14591-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DDDA837F8B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 534A7838185
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67735B231B4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 866F11C2927F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E9B60873;
-	Tue, 23 Jan 2024 00:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619E21FBE;
+	Tue, 23 Jan 2024 01:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vQMASRKR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sAFQxNKE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3287566A;
-	Tue, 23 Jan 2024 00:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DEC01FC4;
+	Tue, 23 Jan 2024 01:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970921; cv=none; b=R4dcQMVMvNjT/FpVa0KdSzjLsbdUUTJ9hCaxDFaj86yEgN5mp4fZ4Oz2oYcyC2D+JZRP7Mn/42oR5hb0bTcLY8SMfXlTh1xN0C83JC+1cBz44mnc9kz3wrA0LmYi76T+ggg6O8EQ55t8IDnK5WSdn1076YADjmJ083i9v0rBukU=
+	t=1705972159; cv=none; b=Mwycuhnfbh8PYbvB2YlW6LRVlGAuMyJKjmHZ4pBzk0YdWUXmBmwBoGKP1MsiSMvhzFHIzCE6Rm0Gqy5fAZE4GqbqimOVupJhcvfR5BooFiWVUIkVVvr8VCJfN1dzQShcxrKorsgCFqmb6QBV+Wscwnu3aUN8+YBFShMdqPlSGvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970921; c=relaxed/simple;
-	bh=9MIigRzMKCD/Hw0C19dGRR7sGBDsSX636O4phF+rIGk=;
+	s=arc-20240116; t=1705972159; c=relaxed/simple;
+	bh=//PaD9DJg5sU4LghpbQ7e4vz3mQ49GnOHLpmUUh1dgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/BGUt1jbuddVGMOpq7qD+9Iwqr0PGmAkdNR1IsclJrWk0bFvRKMRK29IX4ZI4bq/8H18O95LoO+gZuaIRmY0s32/etPOb4hT5b31Ct8q7/7Rdszosc0RF25Mvw/4akH9fXpu7RLm22AWrrnI3PAsWSdU5jQMiUVavCM7i3IeNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vQMASRKR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A29DC433C7;
-	Tue, 23 Jan 2024 00:48:40 +0000 (UTC)
+	 MIME-Version; b=FdJs+o+FLe6tjuPkdwJmsNa4mg/BBdmTU0PZMvaPl+hVu/cGK4XoJwjTny4D2PoXeNVi9jDYdpeBrwH2sJ6ZcphK3aWU7UZ1WcENyHK/Qu4przCCOmcbqnE+fbQ5ZqGZI92lnxGtq3Bw40sMcvevEjhSiC8C/Uxq9Y5Nr5Gp+0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sAFQxNKE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2082C43394;
+	Tue, 23 Jan 2024 01:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970921;
-	bh=9MIigRzMKCD/Hw0C19dGRR7sGBDsSX636O4phF+rIGk=;
+	s=korg; t=1705972159;
+	bh=//PaD9DJg5sU4LghpbQ7e4vz3mQ49GnOHLpmUUh1dgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vQMASRKRUzAz9H5ndBDvA3xuqFGZoPHpVJ6ZpolLbpw5SzapFsHfe4gH1+b+4iYTt
-	 jmSQEdAsnLhLTnZ4b0WewbI39sT5rCz5TNSsl1A849uSLksTuu8+BUbu0CjWNtQ2vU
-	 Qkwbz3IGqLGWZ1VHUUKWRsSZWn6eKzJkbsugtpFo=
+	b=sAFQxNKE8UIs7vYhfSvOb5YdtTNCBhgjV4Z0sIhIQiUPT9obznWvC4GU4z/PKfTz9
+	 sXHfjqOl+jpUSAV8AP5D36D1VMTOD2ntnHHwV8OpNUg5qWu3bgIQFdxbL5fDXFH3Fl
+	 H7Ju7DH5xfQQHyaj8Lb1frI7343Fztd7zw+sYRFo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 140/417] wifi: rtlwifi: rtl8192se: using calculate_bit_shift()
+	Alan Maguire <alan.maguire@oracle.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 5.15 052/374] bpf: Add --skip_encoding_btf_inconsistent_proto, --btf_gen_optimized to pahole flags for v1.25
 Date: Mon, 22 Jan 2024 15:55:08 -0800
-Message-ID: <20240122235756.675664380@linuxfoundation.org>
+Message-ID: <20240122235746.410163500@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Alan Maguire <alan.maguire@oracle.com>
 
-[ Upstream commit ac32b9317063b101a8ff3d3e885f76f87a280419 ]
+commit 7b99f75942da332e3f4f865e55a10fec95a30d4f upstream.
 
-Using calculate_bit_shift() to replace _rtl92s_phy_calculate_bit_shift().
-And fix the undefined bitwise shift behavior problem.
+v1.25 of pahole supports filtering out functions with multiple inconsistent
+function prototypes or optimized-out parameters from the BTF representation.
+These present problems because there is no additional info in BTF saying which
+inconsistent prototype matches which function instance to help guide attachment,
+and functions with optimized-out parameters can lead to incorrect assumptions
+about register contents.
 
-Fixes: d15853163bea ("rtlwifi: rtl8192se: Merge phy routines")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-10-suhui@nfschina.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So for now, filter out such functions while adding BTF representations for
+functions that have "."-suffixes (foo.isra.0) but not optimized-out parameters.
+This patch assumes that below linked changes land in pahole for v1.25.
+
+Issues with pahole filtering being too aggressive in removing functions
+appear to be resolved now, but CI and further testing will confirm.
+
+Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20230510130241.1696561-1-alan.maguire@oracle.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+[ small context conflict because of not backported --lang_exclude=rust
+option, which is not needed in 5.15 ]
+Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/wireless/realtek/rtlwifi/rtl8192se/phy.c  | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ scripts/pahole-flags.sh |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
-index aaa004d4d6d0..0e2b9698088b 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192se/phy.c
-@@ -14,13 +14,6 @@
- #include "hw.h"
- #include "table.h"
+--- a/scripts/pahole-flags.sh
++++ b/scripts/pahole-flags.sh
+@@ -20,5 +20,8 @@ fi
+ if [ "${pahole_ver}" -ge "124" ]; then
+ 	extra_paholeopt="${extra_paholeopt} --skip_encoding_btf_enum64"
+ fi
++if [ "${pahole_ver}" -ge "125" ]; then
++	extra_paholeopt="${extra_paholeopt} --skip_encoding_btf_inconsistent_proto --btf_gen_optimized"
++fi
  
--static u32 _rtl92s_phy_calculate_bit_shift(u32 bitmask)
--{
--	u32 i = ffs(bitmask);
--
--	return i ? i - 1 : 32;
--}
--
- u32 rtl92s_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
-@@ -30,7 +23,7 @@ u32 rtl92s_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- 		regaddr, bitmask);
- 
- 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
--	bitshift = _rtl92s_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	returnvalue = (originalvalue & bitmask) >> bitshift;
- 
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE, "BBR MASK=0x%x Addr[0x%x]=0x%x\n",
-@@ -52,7 +45,7 @@ void rtl92s_phy_set_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask,
- 
- 	if (bitmask != MASKDWORD) {
- 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
--		bitshift = _rtl92s_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
- 	}
- 
-@@ -160,7 +153,7 @@ u32 rtl92s_phy_query_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
- 
- 	original_value = _rtl92s_phy_rf_serial_read(hw, rfpath, regaddr);
- 
--	bitshift = _rtl92s_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 
- 	spin_unlock(&rtlpriv->locks.rf_lock);
-@@ -191,7 +184,7 @@ void rtl92s_phy_set_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
- 	if (bitmask != RFREG_OFFSET_MASK) {
- 		original_value = _rtl92s_phy_rf_serial_read(hw, rfpath,
- 							    regaddr);
--		bitshift = _rtl92s_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = ((original_value & (~bitmask)) | (data << bitshift));
- 	}
- 
--- 
-2.43.0
-
+ echo ${extra_paholeopt}
 
 
 
