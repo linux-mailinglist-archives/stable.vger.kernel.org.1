@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31275837EE4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A076F838438
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6516A1C283CE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBE0C1C2A1F9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 790CA568D;
-	Tue, 23 Jan 2024 00:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A843B6A037;
+	Tue, 23 Jan 2024 02:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RmyMkTbD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NIGUmezT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3934D5384;
-	Tue, 23 Jan 2024 00:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 666D66A03B;
+	Tue, 23 Jan 2024 02:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970810; cv=none; b=CmgE4r5kuelBV58Yka5krp/wAA6xbGZ7YkL9bhAIHHeiU/pYRfYu2d04SydvOiT9trmCKphiEGP1qVW9ztRJFYNLVZT/GsQKyi8CmUN3znQ1K4JrUoEgRj+TOmk7ukaMypd+RmWrvhZYm89IRp33oGY8O6kbsUzcd4PlpI9kMgM=
+	t=1705975330; cv=none; b=AEvB6Se6M/JeDdVi6Sf5h3B0gLr9f9F5mMS/sf08Oy0vjFikCv//Ya+jfpUr6YBnsEm864SnUxZEdmdBR19SNnaA1b+DMepdnZ7GkcgNuYOokiQ4e5St9Lz4daQoLzKojcfhknFyL/N4Mrdr36iL88r6aT8mIkHsk7ctiwRrXwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970810; c=relaxed/simple;
-	bh=wBaD62AKbqe8sIB9a9kvEhIS5fefZ1v8Ub42dOBaHuY=;
+	s=arc-20240116; t=1705975330; c=relaxed/simple;
+	bh=aLUQAG31w2kJKmaxpHrfDue6/eVH9L8uPXnUgaq13cs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U5k+Z+VIptyoaPoinOdUxTvNbzQw1KdL9qtoDJq0lc/HoolV3rZW0oQC7fotJOgXH/MJwLDymzi9npGlHwCWhahTD0o2lAZeHbOJuM3EIm/3+kn1i5SInj7gUscca+sC0ijG+kDz8nMRR44uUQCheS7tLWsWJf15l3jTBAH1CPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RmyMkTbD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87249C433F1;
-	Tue, 23 Jan 2024 00:46:49 +0000 (UTC)
+	 MIME-Version; b=UvsNuJrAOX9ZZgCETQDN+cvcJ9714zGjQy9EZ1e+rpq3O6pufX8MHQdaoE4FGFTpXthLdNzYcitUmL6XSh5a6BGZKjKjVkmvxFoYUKXWEKbfRQ/yy8f2mWBBuG3afp94zuu+7g5/OjsoCn4eMV5LxFWqf5vO2BUKz4UCvmGFuwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NIGUmezT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBE0C433C7;
+	Tue, 23 Jan 2024 02:02:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970809;
-	bh=wBaD62AKbqe8sIB9a9kvEhIS5fefZ1v8Ub42dOBaHuY=;
+	s=korg; t=1705975330;
+	bh=aLUQAG31w2kJKmaxpHrfDue6/eVH9L8uPXnUgaq13cs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RmyMkTbD1X2Ju3UAv4oVLXmUp+4MWI7cwglccHNXN+hjHrZ+RXhs71xKTSN1A94yN
-	 s7BCr8jJNLi5OwEtaN3aMx4evojJ2fY31jaFQuA8KYrHkljfoJOx/uJ5gPZmavVQGQ
-	 OlOXBNwcl3eEJwjSb2lHS4JEZ5Ba+r1+qS7M11xY=
+	b=NIGUmezTK2/Cmo12AIBXCwzyJjm3RS3Oux0fWKipGulnyMbE7BrqqaGdWE5dSXfbH
+	 BTFIu+661pe5uaf1NXeAbBbYrlUnHwuQ3QAshxzdxtDXd85DebVSBH4VNqx5t7Zw4Z
+	 C+SrVQg92/5nClvwgbXKJ7MKRHqKspRNhwFQTikg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Weihao Li <cn.liweihao@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 021/286] clk: rockchip: rk3128: Fix HCLK_OTG gate register
+Subject: [PATCH 6.6 276/583] f2fs: fix to wait on block writeback for post_read case
 Date: Mon, 22 Jan 2024 15:55:27 -0800
-Message-ID: <20240122235732.842237409@linuxfoundation.org>
+Message-ID: <20240122235820.443379431@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weihao Li <cn.liweihao@gmail.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit c6c5a5580dcb6631aa6369dabe12ef3ce784d1d2 ]
+[ Upstream commit 55fdc1c24a1d6229fe0ecf31335fb9a2eceaaa00 ]
 
-The HCLK_OTG gate control is in CRU_CLKGATE5_CON, not CRU_CLKGATE3_CON.
+If inode is compressed, but not encrypted, it missed to call
+f2fs_wait_on_block_writeback() to wait for GCed page writeback
+in IPU write path.
 
-Signed-off-by: Weihao Li <cn.liweihao@gmail.com>
-Link: https://lore.kernel.org/r/20231031111816.8777-1-cn.liweihao@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Thread A				GC-Thread
+					- f2fs_gc
+					 - do_garbage_collect
+					  - gc_data_segment
+					   - move_data_block
+					    - f2fs_submit_page_write
+					     migrate normal cluster's block via
+					     meta_inode's page cache
+- f2fs_write_single_data_page
+ - f2fs_do_write_data_page
+  - f2fs_inplace_write_data
+   - f2fs_submit_page_bio
+
+IRQ
+- f2fs_read_end_io
+					IRQ
+					old data overrides new data due to
+					out-of-order GC and common IO.
+					- f2fs_read_end_io
+
+Fixes: 4c8ff7095bef ("f2fs: support data compression")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/rockchip/clk-rk3128.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/data.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/rockchip/clk-rk3128.c b/drivers/clk/rockchip/clk-rk3128.c
-index 4b1122e98e16..ddfe1c402e80 100644
---- a/drivers/clk/rockchip/clk-rk3128.c
-+++ b/drivers/clk/rockchip/clk-rk3128.c
-@@ -489,7 +489,7 @@ static struct rockchip_clk_branch common_clk_branches[] __initdata = {
- 	GATE(HCLK_I2S_2CH, "hclk_i2s_2ch", "hclk_peri", 0, RK2928_CLKGATE_CON(7), 2, GFLAGS),
- 	GATE(0, "hclk_usb_peri", "hclk_peri", CLK_IGNORE_UNUSED, RK2928_CLKGATE_CON(9), 13, GFLAGS),
- 	GATE(HCLK_HOST2, "hclk_host2", "hclk_peri", 0, RK2928_CLKGATE_CON(7), 3, GFLAGS),
--	GATE(HCLK_OTG, "hclk_otg", "hclk_peri", 0, RK2928_CLKGATE_CON(3), 13, GFLAGS),
-+	GATE(HCLK_OTG, "hclk_otg", "hclk_peri", 0, RK2928_CLKGATE_CON(5), 13, GFLAGS),
- 	GATE(0, "hclk_peri_ahb", "hclk_peri", CLK_IGNORE_UNUSED, RK2928_CLKGATE_CON(9), 14, GFLAGS),
- 	GATE(HCLK_SPDIF, "hclk_spdif", "hclk_peri", 0, RK2928_CLKGATE_CON(10), 9, GFLAGS),
- 	GATE(HCLK_TSP, "hclk_tsp", "hclk_peri", 0, RK2928_CLKGATE_CON(10), 12, GFLAGS),
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 1ac34eb49a0e..f5f33926acf8 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -2568,9 +2568,6 @@ int f2fs_encrypt_one_page(struct f2fs_io_info *fio)
+ 
+ 	page = fio->compressed_page ? fio->compressed_page : fio->page;
+ 
+-	/* wait for GCed page writeback via META_MAPPING */
+-	f2fs_wait_on_block_writeback(inode, fio->old_blkaddr);
+-
+ 	if (fscrypt_inode_uses_inline_crypto(inode))
+ 		return 0;
+ 
+@@ -2752,6 +2749,10 @@ int f2fs_do_write_data_page(struct f2fs_io_info *fio)
+ 		goto out_writepage;
+ 	}
+ 
++	/* wait for GCed page writeback via META_MAPPING */
++	if (fio->post_read)
++		f2fs_wait_on_block_writeback(inode, fio->old_blkaddr);
++
+ 	/*
+ 	 * If current allocation needs SSR,
+ 	 * it had better in-place writes for updated data.
 -- 
 2.43.0
 
