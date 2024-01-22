@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DB96838188
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91DAE837F07
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A05C61C29267
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48A3429BD79
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A681423BC;
-	Tue, 23 Jan 2024 01:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C397460266;
+	Tue, 23 Jan 2024 00:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AYp5+AHT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCtMdsVj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6677937C;
-	Tue, 23 Jan 2024 01:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831BF4E1BC;
+	Tue, 23 Jan 2024 00:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972163; cv=none; b=fF+KKTV2JsVrBhj/rBdNiNAYezeUrbnU5up7z3NePfJwZ1kdZL3mujCjZt2ca6ZqqJwwciEsZHameTe0hzH4QJwjCtthCj2n9+6ppwjDCSGmfaoVbdBbNs+YlPYV08J6xzcT0cI2y5ChqvyLezxqilGOV1J/eXPqQAhI1ku3AOg=
+	t=1705970893; cv=none; b=RHndCBriKA6LAWMPLiXyn8G2qRiWRVD1yv+dUGysqg1ctY/ZXlkeuX0jKhtJnmimKHdsXXyH//bVd5eYXImfsEWYX5xfvGw/mueylQVVUlIDQ8KerWStpv11zq7dcCcYnfR5U8+tq5WJpr1JW4g4ZnzGwyb0766YOs8z+42Vh/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972163; c=relaxed/simple;
-	bh=2AcKw7uRjM6U9qLY25KDNNAluC9QnnMZyqi6c3eyYUA=;
+	s=arc-20240116; t=1705970893; c=relaxed/simple;
+	bh=XyAxJFkGr7pnxxXk+2W6EGW6RTR62gSJdwGUBYYI6jM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uO0uPNbSztmJdy+S/ghnZlIOXFhpTtHVNlc0pe/L+kjrIXEO5ytSMg2BG0VxLnMp6Yg6C5y8acuf2EwH077Fc6++S/hFPlL3Keh82RA/SZ8qnOZ675t5WufPxSUJqrFTHpNgIqZN9gjFp7vgppsCqLdSGb2VmP2SIxxY7RejI5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AYp5+AHT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24530C433C7;
-	Tue, 23 Jan 2024 01:09:23 +0000 (UTC)
+	 MIME-Version; b=cBm8LNGCSlmx2WCfLL49ueJGL7lhHVKp2CzQaQ+QamF3Mhoqh4eMN7BeAnxv3f3oYhLs53t3gwfiWEU9DflhjpQf9uuEJbmEwCquZZtyaG4WvsmBRRJnhHOold64GIrhb2LdWe4hMbJEOtasR65pt26jvH3mRwEh2ALyvBKirnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCtMdsVj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB46C433C7;
+	Tue, 23 Jan 2024 00:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972163;
-	bh=2AcKw7uRjM6U9qLY25KDNNAluC9QnnMZyqi6c3eyYUA=;
+	s=korg; t=1705970893;
+	bh=XyAxJFkGr7pnxxXk+2W6EGW6RTR62gSJdwGUBYYI6jM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AYp5+AHTV0+N1r/XKXIMRN1p1nolqkw0K23s0gpsTgxWXKenjOjZt4xF395fqTlE3
-	 PdKNjNzkC7pltMImYMbpwFLuCMEjA6NKMou4mBcI+SiMdvTnZh1/IihvAmBGC3CWLH
-	 wXDf1raKQZG6sH0sJvL6F9qLdbz5i8DKxAkjfXqE=
+	b=yCtMdsVjPLrrY+0tYxDrXshOjiNOdVlMOxXrchrnigstqh9Mkn1f8qeOqVlwKIG3e
+	 BhYd73kqf7ZJRE3PVoGWLUF2npF5uVX9IV8QKapUMV+Jq0XetQ+Zzkth+/LF48ykBR
+	 nmt40ZFysnsJyfZUEZBsCg/I707GSKNxNf1WEdr8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhenghan Wang <wzhmmmmm@gmail.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Su Hui <suhui@nfschina.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 046/374] ida: Fix crash in ida_free when the bitmap is empty
+Subject: [PATCH 6.1 134/417] wifi: rtlwifi: rtl8188ee: phy: using calculate_bit_shift()
 Date: Mon, 22 Jan 2024 15:55:02 -0800
-Message-ID: <20240122235746.215139538@linuxfoundation.org>
+Message-ID: <20240122235756.470644296@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +62,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit af73483f4e8b6f5c68c9aa63257bdd929a9c194a ]
+[ Upstream commit 969bc926f04b438676768aeffffffb050e480b62 ]
 
-The IDA usually detects double-frees, but that detection failed to
-consider the case when there are no nearby IDs allocated and so we have a
-NULL bitmap rather than simply having a clear bit.  Add some tests to the
-test-suite to be sure we don't inadvertently reintroduce this problem.
-Unfortunately they're quite noisy so include a message to disregard
-the warnings.
+Using calculate_bit_shift() to replace _rtl88e_phy_calculate_bit_shift().
+And fix the undefined bitwise shift behavior problem.
 
-Reported-by: Zhenghan Wang <wzhmmmmm@gmail.com>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: f0eb856e0b6c ("rtlwifi: rtl8188ee: Add new driver")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-4-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/idr.c      |  2 +-
- lib/test_ida.c | 40 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 41 insertions(+), 1 deletion(-)
+ .../net/wireless/realtek/rtlwifi/rtl8188ee/phy.c   | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/lib/idr.c b/lib/idr.c
-index 13f2758c2377..da36054c3ca0 100644
---- a/lib/idr.c
-+++ b/lib/idr.c
-@@ -508,7 +508,7 @@ void ida_free(struct ida *ida, unsigned int id)
- 			goto delete;
- 		xas_store(&xas, xa_mk_value(v));
- 	} else {
--		if (!test_bit(bit, bitmap->bitmap))
-+		if (!bitmap || !test_bit(bit, bitmap->bitmap))
- 			goto err;
- 		__clear_bit(bit, bitmap->bitmap);
- 		xas_set_mark(&xas, XA_FREE_MARK);
-diff --git a/lib/test_ida.c b/lib/test_ida.c
-index b06880625961..55105baa19da 100644
---- a/lib/test_ida.c
-+++ b/lib/test_ida.c
-@@ -150,6 +150,45 @@ static void ida_check_conv(struct ida *ida)
- 	IDA_BUG_ON(ida, !ida_is_empty(ida));
- }
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c
+index 12d0b3a87af7..0fab3a0c7d49 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c
+@@ -16,12 +16,6 @@ static u32 _rtl88e_phy_rf_serial_read(struct ieee80211_hw *hw,
+ static void _rtl88e_phy_rf_serial_write(struct ieee80211_hw *hw,
+ 					enum radio_path rfpath, u32 offset,
+ 					u32 data);
+-static u32 _rtl88e_phy_calculate_bit_shift(u32 bitmask)
+-{
+-	u32 i = ffs(bitmask);
+-
+-	return i ? i - 1 : 32;
+-}
+ static bool _rtl88e_phy_bb8188e_config_parafile(struct ieee80211_hw *hw);
+ static bool _rtl88e_phy_config_mac_with_headerfile(struct ieee80211_hw *hw);
+ static bool phy_config_bb_with_headerfile(struct ieee80211_hw *hw,
+@@ -51,7 +45,7 @@ u32 rtl88e_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+ 		"regaddr(%#x), bitmask(%#x)\n", regaddr, bitmask);
+ 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-	bitshift = _rtl88e_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	returnvalue = (originalvalue & bitmask) >> bitshift;
  
-+/*
-+ * Check various situations where we attempt to free an ID we don't own.
-+ */
-+static void ida_check_bad_free(struct ida *ida)
-+{
-+	unsigned long i;
-+
-+	printk("vvv Ignore \"not allocated\" warnings\n");
-+	/* IDA is empty; all of these will fail */
-+	ida_free(ida, 0);
-+	for (i = 0; i < 31; i++)
-+		ida_free(ida, 1 << i);
-+
-+	/* IDA contains a single value entry */
-+	IDA_BUG_ON(ida, ida_alloc_min(ida, 3, GFP_KERNEL) != 3);
-+	ida_free(ida, 0);
-+	for (i = 0; i < 31; i++)
-+		ida_free(ida, 1 << i);
-+
-+	/* IDA contains a single bitmap */
-+	IDA_BUG_ON(ida, ida_alloc_min(ida, 1023, GFP_KERNEL) != 1023);
-+	ida_free(ida, 0);
-+	for (i = 0; i < 31; i++)
-+		ida_free(ida, 1 << i);
-+
-+	/* IDA contains a tree */
-+	IDA_BUG_ON(ida, ida_alloc_min(ida, (1 << 20) - 1, GFP_KERNEL) != (1 << 20) - 1);
-+	ida_free(ida, 0);
-+	for (i = 0; i < 31; i++)
-+		ida_free(ida, 1 << i);
-+	printk("^^^ \"not allocated\" warnings over\n");
-+
-+	ida_free(ida, 3);
-+	ida_free(ida, 1023);
-+	ida_free(ida, (1 << 20) - 1);
-+
-+	IDA_BUG_ON(ida, !ida_is_empty(ida));
-+}
-+
- static DEFINE_IDA(ida);
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+@@ -74,7 +68,7 @@ void rtl88e_phy_set_bb_reg(struct ieee80211_hw *hw,
  
- static int ida_checks(void)
-@@ -162,6 +201,7 @@ static int ida_checks(void)
- 	ida_check_leaf(&ida, 1024 * 64);
- 	ida_check_max(&ida);
- 	ida_check_conv(&ida);
-+	ida_check_bad_free(&ida);
+ 	if (bitmask != MASKDWORD) {
+ 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-		bitshift = _rtl88e_phy_calculate_bit_shift(bitmask);
++		bitshift = calculate_bit_shift(bitmask);
+ 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
+ 	}
  
- 	printk("IDA: %u of %u tests passed\n", tests_passed, tests_run);
- 	return (tests_run != tests_passed) ? 0 : -EINVAL;
+@@ -99,7 +93,7 @@ u32 rtl88e_phy_query_rf_reg(struct ieee80211_hw *hw,
+ 
+ 
+ 	original_value = _rtl88e_phy_rf_serial_read(hw, rfpath, regaddr);
+-	bitshift = _rtl88e_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	readback_value = (original_value & bitmask) >> bitshift;
+ 
+ 	spin_unlock(&rtlpriv->locks.rf_lock);
+@@ -127,7 +121,7 @@ void rtl88e_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 			original_value = _rtl88e_phy_rf_serial_read(hw,
+ 								    rfpath,
+ 								    regaddr);
+-			bitshift = _rtl88e_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data =
+ 			    ((original_value & (~bitmask)) |
+ 			     (data << bitshift));
 -- 
 2.43.0
 
