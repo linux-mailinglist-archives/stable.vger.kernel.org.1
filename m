@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-15412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 930A3838521
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:19 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 763D98381A1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:10:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5DCE1C2A538
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 587A1B26A00
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B29C7E575;
-	Tue, 23 Jan 2024 02:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC1191419A6;
+	Tue, 23 Jan 2024 01:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oubv/w0V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mw6zSTkr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBB47380;
-	Tue, 23 Jan 2024 02:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C22141981;
+	Tue, 23 Jan 2024 01:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975747; cv=none; b=cOEOdYXRm52ZJInEDhPsWbPSA4/LBVGmkB/ziAecKjIF9SsgNmaefWYJl8HTLQUOHitQI6f0XmliUHyaHWs0Te8pmcoIKIrDpw4DJhGEY3uksmupY433B8LR1CfUU9zeGADW7a6wxzJ5b/0gXWuxRddO759AoFyEOmaEa0jDGc8=
+	t=1705972050; cv=none; b=GQrrBj8cU0VXK2S9hlYUrgrNm2iNU5Ln7EqVeaxQUwDkvJyzJQ81d8hEMKwG1WZ6mJLG1z771v9cmS5GELiQQvgL0rF8kaEoj4CByjcGYitoQY+qS6WZuTAGvCHPvrID55t6dU3SEJziOal/4Juw9F94QrwN78wNMJB4RBNfe+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975747; c=relaxed/simple;
-	bh=BHQhFvi6Z14u7q1CVYFQ94J/rotwdabJ9Jre3PRkSmM=;
+	s=arc-20240116; t=1705972050; c=relaxed/simple;
+	bh=C7hGC0ZePoRPqEnWeatdPmo8qM9mBZWFJUDEqx0oQWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f6eLZGjfHWvksXVWNwwypAnPeyFPCnaBdq3lBxC1avHYEDYsOS946mYjKOSd/71qiAaVvgd6SfNQwTIAWpdHKijymxGEbXYCxM7Qr5OUBb5N0WLAKh+kCbUOU4AX8tIWbpYMvyeTijKYgW9MnvNOv4hsnbkgzuPRi+Xdn+N+s8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oubv/w0V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FB59C433F1;
-	Tue, 23 Jan 2024 02:09:07 +0000 (UTC)
+	 MIME-Version; b=sLeSLMI6FOD+K4Shqmu7SwkG9OCsHFfyK8Is4bPd62zFQyipgYkwXds5+BUVbULjox00q7thkNB5EE/7a6itu3Vh4XL7pgoBtplv0v5k6svD43TKVsyKNj+mPTdz7g27RCKBjqE/YMivDEoQKnngCMPlK5KZAickBjlUibzH58o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mw6zSTkr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43395C433F1;
+	Tue, 23 Jan 2024 01:07:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975747;
-	bh=BHQhFvi6Z14u7q1CVYFQ94J/rotwdabJ9Jre3PRkSmM=;
+	s=korg; t=1705972050;
+	bh=C7hGC0ZePoRPqEnWeatdPmo8qM9mBZWFJUDEqx0oQWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oubv/w0VxYcDpHtveyKfKh3qOkDv2d08TiIhQEWTaAH4yROJ10n0+y8B1mlu8ypbZ
-	 yddQ83DXcFDObSZxeBVf6xXTOchSHcpOi+ou0dii3L1DuhHvf4n0MjwxaXAtxl9bAp
-	 nLmIrD/p3tFNnmFeOo4Su+Kp2uoqyg2WDTsZ9qT8=
+	b=Mw6zSTkrtaXdjvAh0/ceGrbRmChdzjP/7fMUX+sOqyYxEy/jAXnd9cO2G/jrK7wyT
+	 Cfsv9j7zKZnldQiP9F5RqQXEeLCUVFWMumZjfTGNfG4lnriEocLhwqROYjMgdPilRq
+	 AyEeojSk6fw5q6zCSfXzeCtWZ8J7JNCsDyzqLxRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Florian Westphal <fw@strlen.de>,
-	Peter Krystad <peter.krystad@linux.intel.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang.tang@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 532/583] mptcp: mptcp_parse_option() fix for MPTCPOPT_MP_JOIN
+Subject: [PATCH 6.1 415/417] i2c: s3c24xx: fix transferring more than one message in polling mode
 Date: Mon, 22 Jan 2024 15:59:43 -0800
-Message-ID: <20240122235828.391050578@linuxfoundation.org>
+Message-ID: <20240122235806.065317608@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,79 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit 89e23277f9c16df6f9f9c1a1a07f8f132339c15c ]
+[ Upstream commit 990489e1042c6c5d6bccf56deca68f8dbeed8180 ]
 
-mptcp_parse_option() currently sets OPTIONS_MPTCP_MPJ, for the three
-possible cases handled for MPTCPOPT_MP_JOIN option.
+To properly handle ACK on the bus when transferring more than one
+message in polling mode, move the polling handling loop from
+s3c24xx_i2c_message_start() to s3c24xx_i2c_doxfer(). This way
+i2c_s3c_irq_nextbyte() is always executed till the end, properly
+acknowledging the IRQ bits and no recursive calls to
+i2c_s3c_irq_nextbyte() are made.
 
-OPTIONS_MPTCP_MPJ is the combination of three flags:
-- OPTION_MPTCP_MPJ_SYN
-- OPTION_MPTCP_MPJ_SYNACK
-- OPTION_MPTCP_MPJ_ACK
+While touching this, also fix finishing transfers in polling mode by
+using common code path and always waiting for the bus to become idle
+and disabled.
 
-This is a problem, because backup, join_id, token, nonce and/or hmac fields
-could be left uninitialized in some cases.
-
-Distinguish the three cases, as following patches will need this step.
-
-Fixes: f296234c98a8 ("mptcp: Add handling of incoming MP_JOIN requests")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Florian Westphal <fw@strlen.de>
-Cc: Peter Krystad <peter.krystad@linux.intel.com>
-Cc: Matthieu Baerts <matttbe@kernel.org>
-Cc: Mat Martineau <martineau@kernel.org>
-Cc: Geliang Tang <geliang.tang@linux.dev>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20240111194917.4044654-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 117053f77a5a ("i2c: s3c2410: Add polling mode support")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/options.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/i2c/busses/i2c-s3c2410.c | 27 ++++++++++-----------------
+ 1 file changed, 10 insertions(+), 17 deletions(-)
 
-diff --git a/net/mptcp/options.c b/net/mptcp/options.c
-index c53914012d01..d2527d189a79 100644
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -123,8 +123,8 @@ static void mptcp_parse_option(const struct sk_buff *skb,
- 		break;
+diff --git a/drivers/i2c/busses/i2c-s3c2410.c b/drivers/i2c/busses/i2c-s3c2410.c
+index 2e43b6ccef2a..8e3838c42a8c 100644
+--- a/drivers/i2c/busses/i2c-s3c2410.c
++++ b/drivers/i2c/busses/i2c-s3c2410.c
+@@ -283,16 +283,6 @@ static void s3c24xx_i2c_message_start(struct s3c24xx_i2c *i2c,
  
- 	case MPTCPOPT_MP_JOIN:
--		mp_opt->suboptions |= OPTIONS_MPTCP_MPJ;
- 		if (opsize == TCPOLEN_MPTCP_MPJ_SYN) {
-+			mp_opt->suboptions |= OPTION_MPTCP_MPJ_SYN;
- 			mp_opt->backup = *ptr++ & MPTCPOPT_BACKUP;
- 			mp_opt->join_id = *ptr++;
- 			mp_opt->token = get_unaligned_be32(ptr);
-@@ -135,6 +135,7 @@ static void mptcp_parse_option(const struct sk_buff *skb,
- 				 mp_opt->backup, mp_opt->join_id,
- 				 mp_opt->token, mp_opt->nonce);
- 		} else if (opsize == TCPOLEN_MPTCP_MPJ_SYNACK) {
-+			mp_opt->suboptions |= OPTION_MPTCP_MPJ_SYNACK;
- 			mp_opt->backup = *ptr++ & MPTCPOPT_BACKUP;
- 			mp_opt->join_id = *ptr++;
- 			mp_opt->thmac = get_unaligned_be64(ptr);
-@@ -145,11 +146,10 @@ static void mptcp_parse_option(const struct sk_buff *skb,
- 				 mp_opt->backup, mp_opt->join_id,
- 				 mp_opt->thmac, mp_opt->nonce);
- 		} else if (opsize == TCPOLEN_MPTCP_MPJ_ACK) {
-+			mp_opt->suboptions |= OPTION_MPTCP_MPJ_ACK;
- 			ptr += 2;
- 			memcpy(mp_opt->hmac, ptr, MPTCPOPT_HMAC_LEN);
- 			pr_debug("MP_JOIN hmac");
--		} else {
--			mp_opt->suboptions &= ~OPTIONS_MPTCP_MPJ;
- 		}
- 		break;
+ 	stat |= S3C2410_IICSTAT_START;
+ 	writel(stat, i2c->regs + S3C2410_IICSTAT);
+-
+-	if (i2c->quirks & QUIRK_POLL) {
+-		while ((i2c->msg_num != 0) && is_ack(i2c)) {
+-			i2c_s3c_irq_nextbyte(i2c, stat);
+-			stat = readl(i2c->regs + S3C2410_IICSTAT);
+-
+-			if (stat & S3C2410_IICSTAT_ARBITR)
+-				dev_err(i2c->dev, "deal with arbitration loss\n");
+-		}
+-	}
+ }
  
+ static inline void s3c24xx_i2c_stop(struct s3c24xx_i2c *i2c, int ret)
+@@ -699,7 +689,7 @@ static void s3c24xx_i2c_wait_idle(struct s3c24xx_i2c *i2c)
+ static int s3c24xx_i2c_doxfer(struct s3c24xx_i2c *i2c,
+ 			      struct i2c_msg *msgs, int num)
+ {
+-	unsigned long timeout;
++	unsigned long timeout = 0;
+ 	int ret;
+ 
+ 	ret = s3c24xx_i2c_set_master(i2c);
+@@ -719,16 +709,19 @@ static int s3c24xx_i2c_doxfer(struct s3c24xx_i2c *i2c,
+ 	s3c24xx_i2c_message_start(i2c, msgs);
+ 
+ 	if (i2c->quirks & QUIRK_POLL) {
+-		ret = i2c->msg_idx;
++		while ((i2c->msg_num != 0) && is_ack(i2c)) {
++			unsigned long stat = readl(i2c->regs + S3C2410_IICSTAT);
+ 
+-		if (ret != num)
+-			dev_dbg(i2c->dev, "incomplete xfer (%d)\n", ret);
++			i2c_s3c_irq_nextbyte(i2c, stat);
+ 
+-		goto out;
++			stat = readl(i2c->regs + S3C2410_IICSTAT);
++			if (stat & S3C2410_IICSTAT_ARBITR)
++				dev_err(i2c->dev, "deal with arbitration loss\n");
++		}
++	} else {
++		timeout = wait_event_timeout(i2c->wait, i2c->msg_num == 0, HZ * 5);
+ 	}
+ 
+-	timeout = wait_event_timeout(i2c->wait, i2c->msg_num == 0, HZ * 5);
+-
+ 	ret = i2c->msg_idx;
+ 
+ 	/*
 -- 
 2.43.0
 
