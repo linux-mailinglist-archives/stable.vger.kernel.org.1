@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-15376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0BC28384F4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2DBA838328
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80D881F279B0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A98AC28C8AE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B98F7A702;
-	Tue, 23 Jan 2024 02:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 358F660883;
+	Tue, 23 Jan 2024 01:52:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vy4SO4O/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aicyVnkc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C69277636;
-	Tue, 23 Jan 2024 02:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9731605DF;
+	Tue, 23 Jan 2024 01:51:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975543; cv=none; b=T5af4hFv2l3efN8YtvuwBQVlo38monUKk/yKHhIR4hDvVHqBXrN0S8TSkUHpMkV6DvBonAxfV61N1Tj1C70ZRmtbjoOML4rWRJySASBvbY26Du3LuvybjCRS0pn82F/RBMNRGA8yZkivd04t0hUsQRwjQG3GOO2HJDb69azB6g0=
+	t=1705974720; cv=none; b=iI5j8TI5BaDN1XVEA0NKeotazoThbmnc8EeQids+zOZzU9uZRJQ95qVGuybBuiJfNSqKfyLayL5atYS+ymFTLptdMxpnLcVRh5ZgzjvO8gbvmikvPjeRqy3iSXi47el3tLqmZzUAcMsSuh9r1l62ejQpWXDue0yMMEsDCdbhnxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975543; c=relaxed/simple;
-	bh=dXF0GNEGTdyE8O8M1jSSzui8TwY41Mo3uhGh4XDdBAk=;
+	s=arc-20240116; t=1705974720; c=relaxed/simple;
+	bh=AecCS3PVnwh5PUo+yVpHnQxtA0GaCqcJA/QDXQVdjD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kmAI3GqgbuuPVvqEdXCV+xRztnDnx5RbQ3pLYuxEtrOnXpN6CKlguBSfNEG+1lN90i8hEQk4S5GFCc6049FsxCifTI8tbBca6OoiR8WWGk43o84sx5Q00HUoE3RM71rE6nl8D5j19aJI88fXlpDsDd27cC3hOkVOlXLkaBI3m8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vy4SO4O/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBB2C433C7;
-	Tue, 23 Jan 2024 02:05:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pyKlUb7kbw8fMYZ2XBvR4ggwxcOf3mjIv0/X3k3mvWOF4/MRJP2CKp6E0h2qCT7shUYIGNK7kVDp2M6UxKHCcbbx2BpvVwAezKvuCeddLhy7h49dX+noUTXdtAiOTtgseN4fvK2rZHqlNGmVp/i2+HnFdQvWbcT40pUAm4jXbOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aicyVnkc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC97C433C7;
+	Tue, 23 Jan 2024 01:51:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975542;
-	bh=dXF0GNEGTdyE8O8M1jSSzui8TwY41Mo3uhGh4XDdBAk=;
+	s=korg; t=1705974719;
+	bh=AecCS3PVnwh5PUo+yVpHnQxtA0GaCqcJA/QDXQVdjD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vy4SO4O/sy5MXxbExX7UKRMyksVP8NPzBIijmMUSRiZFLh4A16zD3S2/zv8iJM/EU
-	 nn/qp7UXeAXtD67cCg3ximAlJHTHMsEUy+NkiM4GL1tj/3Tq3RCb35jlpohZNaHNHy
-	 AgppBa/jKqK7OZPbIL2oht8QWQt2EsrMIJIuviTw=
+	b=aicyVnkcvcDc3DdtVEbIckChyRY810N4c9fk0G3OxDJ/xy0hEpeBRwQ+kBjeDf9+Y
+	 nxxU2PhbXUBryKx9o3HFlybssiikxLnqwBvgciYcU2Uups5RHjtDkmaSGm1ufj83qY
+	 xbGUxPuYMpm1zye2ILXnxIic2vZu9P9ybSDTXxi4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory Price <gregory.price@memverge.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 471/583] base/node.c: initialize the accessor list before registering
+	=?UTF-8?q?=C3=87a=C4=9Fhan=20Demir?= <caghandemir@marun.edu.tr>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 266/374] ALSA: hda/relatek: Enable Mute LED on HP Laptop 15s-fq2xxx
 Date: Mon, 22 Jan 2024 15:58:42 -0800
-Message-ID: <20240122235826.399625393@linuxfoundation.org>
+Message-ID: <20240122235754.019725179@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,71 +59,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregory Price <gourry.memverge@gmail.com>
+From: Çağhan Demir <caghandemir@marun.edu.tr>
 
-[ Upstream commit 48b5928e18dc27e05cab3dc4c78cd8a15baaf1e5 ]
+commit bc7863d18677df66b2c7a0e172c91296ff380f11 upstream.
 
-The current code registers the node as available in the node array
-before initializing the accessor list.  This makes it so that
-anything which might access the accessor list as a result of
-allocations will cause an undefined memory access.
+This HP Laptop uses ALC236 codec with COEF 0x07 idx 1 controlling
+the mute LED. This patch enables the already existing quirk for
+this device.
 
-In one example, an extension to access hmat data during interleave
-caused this undefined access as a result of a bulk allocation
-that occurs during node initialization but before the accessor
-list is initialized.
-
-Initialize the accessor list before making the node generally
-available to the global system.
-
-Fixes: 08d9dbe72b1f ("node: Link memory nodes to their compute nodes")
-Signed-off-by: Gregory Price <gregory.price@memverge.com>
-Link: https://lore.kernel.org/r/20231030044239.971756-1-gregory.price@memverge.com
+Signed-off-by: Çağhan Demir <caghandemir@marun.edu.tr>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240115172303.4718-1-caghandemir@marun.edu.tr
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/node.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/base/node.c b/drivers/base/node.c
-index 493d533f8375..4d588f4658c8 100644
---- a/drivers/base/node.c
-+++ b/drivers/base/node.c
-@@ -868,11 +868,15 @@ int __register_one_node(int nid)
- {
- 	int error;
- 	int cpu;
-+	struct node *node;
- 
--	node_devices[nid] = kzalloc(sizeof(struct node), GFP_KERNEL);
--	if (!node_devices[nid])
-+	node = kzalloc(sizeof(struct node), GFP_KERNEL);
-+	if (!node)
- 		return -ENOMEM;
- 
-+	INIT_LIST_HEAD(&node->access_list);
-+	node_devices[nid] = node;
-+
- 	error = register_node(node_devices[nid], nid);
- 
- 	/* link cpu under this node */
-@@ -881,7 +885,6 @@ int __register_one_node(int nid)
- 			register_cpu_under_node(cpu, nid);
- 	}
- 
--	INIT_LIST_HEAD(&node_devices[nid]->access_list);
- 	node_init_caches(nid);
- 
- 	return error;
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9098,6 +9098,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x87f5, "HP", ALC287_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87f6, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
+ 	SND_PCI_QUIRK(0x103c, 0x87f7, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
++	SND_PCI_QUIRK(0x103c, 0x87fe, "HP Laptop 15s-fq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x8805, "HP ProBook 650 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x880d, "HP EliteBook 830 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8811, "HP Spectre x360 15-eb1xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
 
 
 
