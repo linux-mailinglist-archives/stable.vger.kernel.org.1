@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-13746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B42C1837DA8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8D8F83809A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:00:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6F621C252CF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F87C1F2CDC1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D7295A109;
-	Tue, 23 Jan 2024 00:35:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87B57130E2A;
+	Tue, 23 Jan 2024 01:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HabYbRiP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGB1Im9n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4155914C;
-	Tue, 23 Jan 2024 00:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45ED112FF73;
+	Tue, 23 Jan 2024 01:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970114; cv=none; b=aErfibuvaA6spImpiwWNivh7LO2EJhl5lVBdnVALBPvainzUS4/+9MK5oSHVGNlFIgDCqnDkZmghXDaFOGN1SvBquCopXUhEWJyrI6hcyrus+oCEkwnkUYUdsMR33/cYb8LI435crJsDiuOVsSujTkub60rKE1hGTejS6AF7kQc=
+	t=1705971814; cv=none; b=n1h0yV+tE1tszcQ5Je7kEQDfiyZWigQYLlHKLOBwIDg/eU7BiFA+lHIPk1m+u6u8jQDOllmYKWdctfeB184QideBN/UNC0oOmjD+yOkpBWWSF3lubEgi+bKIE5ZqN2MnF4DbHcTbbGGeC8QrdzrR/nPu+xY9gaNPSYwoYjCvaog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970114; c=relaxed/simple;
-	bh=T3BRsa7ZnyAi3YPmN7TXuMh6EU/LYsvM2zjCLH9GlJE=;
+	s=arc-20240116; t=1705971814; c=relaxed/simple;
+	bh=MBxQfqbflByCGHzmeqMLgWEUtQdsmf81oVh6Yu0POKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JbDrOF2TrnPHMqfuMWkZb4dv1+7RC3313awLDJdSfVJmfj0W7nBYq78xNuFodB9vewOAWx5m4gNullA0xHKM+ZQXnJH0K64q+9goR1Yb3Q6sd09Q5i0YtB8aOJHfWm3GRGUqqz16il94sUNCSEbmf77jgsGHHv5eHKDyIgbXb1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HabYbRiP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F5AC433F1;
-	Tue, 23 Jan 2024 00:35:13 +0000 (UTC)
+	 MIME-Version; b=V0Dm5ZqGZP1HzVW2a/9u4SLGTF7jmycHTdoq8mRu6lpwcBb03Uqp1GPfq5+2X3foOpKiffM+tB9dH8J6KpMKYhaX6hkeT8VxnK13Ojg9yuVAX2gPqJMRryJwz+XrNc2eY9mAE/MORxc2kSSGHup3aU7q97D0EJRUIonsBRxchCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGB1Im9n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F5BC433F1;
+	Tue, 23 Jan 2024 01:03:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970113;
-	bh=T3BRsa7ZnyAi3YPmN7TXuMh6EU/LYsvM2zjCLH9GlJE=;
+	s=korg; t=1705971814;
+	bh=MBxQfqbflByCGHzmeqMLgWEUtQdsmf81oVh6Yu0POKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HabYbRiPyxMOqKZxMhmcVmBFoaFm26AvfxLQZHpJtFevBP7jLUDymxLQLQLzm6q6o
-	 Y/pO5DlRlMFRP91kJ2jDxVXdp4qR0w2KNDki2rXfRFVY0gWSCEJrA+vOO2SjxvyGlN
-	 4A1HznxfQjSyvtkP/iF1G4EW4y5BTHlARhPyvIik=
+	b=RGB1Im9naT/KLNPPLlwyV+gUqMQr5vw7BWHEjGFe6SSl07xvdsT/KTvn2V+WEEub4
+	 xpZyiqrAVhFDiIo7krfSUaOL8Rs9OFW7zHMCqGjmPyLxBU56vAdKWJ6qVu+O79aVfA
+	 sniJoP7yOlR4jTbgvigN832d2eb7ljLs/945Az9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Florian Westphal <fw@strlen.de>,
-	Peter Krystad <peter.krystad@linux.intel.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	Geliang Tang <geliang.tang@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 591/641] mptcp: mptcp_parse_option() fix for MPTCPOPT_MP_JOIN
+Subject: [PATCH 6.1 327/417] mips: dmi: Fix early remap on MIPS32
 Date: Mon, 22 Jan 2024 15:58:15 -0800
-Message-ID: <20240122235836.713298691@linuxfoundation.org>
+Message-ID: <20240122235803.125920022@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,79 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Serge Semin <fancer.lancer@gmail.com>
 
-[ Upstream commit 89e23277f9c16df6f9f9c1a1a07f8f132339c15c ]
+[ Upstream commit 0d0a3748a2cb38f9da1f08d357688ebd982eb788 ]
 
-mptcp_parse_option() currently sets OPTIONS_MPTCP_MPJ, for the three
-possible cases handled for MPTCPOPT_MP_JOIN option.
+dmi_early_remap() has been defined as ioremap_cache() which on MIPS32 gets
+to be converted to the VM-based mapping. DMI early remapping is performed
+at the setup_arch() stage with no VM available. So calling the
+dmi_early_remap() for MIPS32 causes the system to crash at the early boot
+time. Fix that by converting dmi_early_remap() to the uncached remapping
+which is always available on both 32 and 64-bits MIPS systems.
 
-OPTIONS_MPTCP_MPJ is the combination of three flags:
-- OPTION_MPTCP_MPJ_SYN
-- OPTION_MPTCP_MPJ_SYNACK
-- OPTION_MPTCP_MPJ_ACK
+Note this change shall not cause any regressions on the current DMI
+support implementation because on the early boot-up stage neither MIPS32
+nor MIPS64 has the cacheable ioremapping support anyway.
 
-This is a problem, because backup, join_id, token, nonce and/or hmac fields
-could be left uninitialized in some cases.
-
-Distinguish the three cases, as following patches will need this step.
-
-Fixes: f296234c98a8 ("mptcp: Add handling of incoming MP_JOIN requests")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Florian Westphal <fw@strlen.de>
-Cc: Peter Krystad <peter.krystad@linux.intel.com>
-Cc: Matthieu Baerts <matttbe@kernel.org>
-Cc: Mat Martineau <martineau@kernel.org>
-Cc: Geliang Tang <geliang.tang@linux.dev>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Link: https://lore.kernel.org/r/20240111194917.4044654-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: be8fa1cb444c ("MIPS: Add support for Desktop Management Interface (DMI)")
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/options.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/include/asm/dmi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mptcp/options.c b/net/mptcp/options.c
-index c53914012d01..d2527d189a79 100644
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -123,8 +123,8 @@ static void mptcp_parse_option(const struct sk_buff *skb,
- 		break;
+diff --git a/arch/mips/include/asm/dmi.h b/arch/mips/include/asm/dmi.h
+index 27415a288adf..dc397f630c66 100644
+--- a/arch/mips/include/asm/dmi.h
++++ b/arch/mips/include/asm/dmi.h
+@@ -5,7 +5,7 @@
+ #include <linux/io.h>
+ #include <linux/memblock.h>
  
- 	case MPTCPOPT_MP_JOIN:
--		mp_opt->suboptions |= OPTIONS_MPTCP_MPJ;
- 		if (opsize == TCPOLEN_MPTCP_MPJ_SYN) {
-+			mp_opt->suboptions |= OPTION_MPTCP_MPJ_SYN;
- 			mp_opt->backup = *ptr++ & MPTCPOPT_BACKUP;
- 			mp_opt->join_id = *ptr++;
- 			mp_opt->token = get_unaligned_be32(ptr);
-@@ -135,6 +135,7 @@ static void mptcp_parse_option(const struct sk_buff *skb,
- 				 mp_opt->backup, mp_opt->join_id,
- 				 mp_opt->token, mp_opt->nonce);
- 		} else if (opsize == TCPOLEN_MPTCP_MPJ_SYNACK) {
-+			mp_opt->suboptions |= OPTION_MPTCP_MPJ_SYNACK;
- 			mp_opt->backup = *ptr++ & MPTCPOPT_BACKUP;
- 			mp_opt->join_id = *ptr++;
- 			mp_opt->thmac = get_unaligned_be64(ptr);
-@@ -145,11 +146,10 @@ static void mptcp_parse_option(const struct sk_buff *skb,
- 				 mp_opt->backup, mp_opt->join_id,
- 				 mp_opt->thmac, mp_opt->nonce);
- 		} else if (opsize == TCPOLEN_MPTCP_MPJ_ACK) {
-+			mp_opt->suboptions |= OPTION_MPTCP_MPJ_ACK;
- 			ptr += 2;
- 			memcpy(mp_opt->hmac, ptr, MPTCPOPT_HMAC_LEN);
- 			pr_debug("MP_JOIN hmac");
--		} else {
--			mp_opt->suboptions &= ~OPTIONS_MPTCP_MPJ;
- 		}
- 		break;
- 
+-#define dmi_early_remap(x, l)		ioremap_cache(x, l)
++#define dmi_early_remap(x, l)		ioremap(x, l)
+ #define dmi_early_unmap(x, l)		iounmap(x)
+ #define dmi_remap(x, l)			ioremap_cache(x, l)
+ #define dmi_unmap(x)			iounmap(x)
 -- 
 2.43.0
 
