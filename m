@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-15403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12130838515
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 003F68380B9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:02:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD39D1F294BF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 332961C23A59
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEECB7E563;
-	Tue, 23 Jan 2024 02:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4B313342F;
+	Tue, 23 Jan 2024 01:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiSc9mWA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrYBvlCJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5CD7E560;
-	Tue, 23 Jan 2024 02:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E99133419;
+	Tue, 23 Jan 2024 01:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975737; cv=none; b=hvUhasvGiDqT4CemI6RR9eM/1tkTAzgtXhpM4+5Kmb9MOpplqu7iWjYwK2IjvUJK3ga5JBJdNvaEmcOhcQvavTUAS2XlHsUz7dYvcW7PnKxVaCDHbCzAcCQrlriUhi/Q7iKJJva2hmkfqRa+7/4kpw65V3PGXQQHLrPeyvv+Unc=
+	t=1705971853; cv=none; b=PAl7DpELQ44SOXfuQWwCzGy4TXs6mFOhmZRfvnY861vt3hkq7nk11anfszYaVVR8sN1D8lJLx+huf7K4Cu0rBZDuCjdq2SoA+mPe/wWKjJiUN72lKtvaw5/9hnRb6sHhAqav6fJTZukgXMILibd54w63Y0iXcfzFxgnitRxmV6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975737; c=relaxed/simple;
-	bh=MJpWfcsQRfy1Wi2m/mXLdTzu91yTcaucPTRtUj1if34=;
+	s=arc-20240116; t=1705971853; c=relaxed/simple;
+	bh=6eLs79bqc0S3ADdftTsq0hJHhYbBg/hKnWmWE1LdC1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mZTsZGNoT+xpwKIjxmBLb5FtyKfZ10W3Hylp014DMyawIw/BZaAXFqp4I9l5BVNIL7hJVjngV+TiVorD0P/5AIMb1vwxAb7evFcmyDrJT0QXhGKfZKCiYh9pwkXMlTch57QwKx5fTfh8F4GVc5SctU18wWJx8b1JM4S69/ZIYgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiSc9mWA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 404FAC433C7;
-	Tue, 23 Jan 2024 02:08:57 +0000 (UTC)
+	 MIME-Version; b=fMWOStoxFEEJitwkNkZlQVIEZ3D88s0/R/FDPKlQxseJE2imls5/pFnWM0OEwVIviMwc3vkVLROkOoNyDownC1P/z46vCgXd9O45aY7L0UOEpCSGZmGOkIYbW5AEIQ8F6tLAAs7SyQa2p7BxY8edZ+hs8xT888vAuNRdnLJ6uOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrYBvlCJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 100C1C433F1;
+	Tue, 23 Jan 2024 01:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975737;
-	bh=MJpWfcsQRfy1Wi2m/mXLdTzu91yTcaucPTRtUj1if34=;
+	s=korg; t=1705971853;
+	bh=6eLs79bqc0S3ADdftTsq0hJHhYbBg/hKnWmWE1LdC1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TiSc9mWAtitZ2X1hWeIffT6DE0UaE2sy9zzHLsy766Iq7OpwvKUYx0nFUNi9RJbL2
-	 0rH/P7eb2JwEJT/ZSlywiN31gyT4yF6iJiUKYxpFKzJ3Z/bdMhZY73iJOJZsMRKWIC
-	 oYY9sMDYMJF0GPEJphI3GYUCjB08DQyQkNCkQng8=
+	b=nrYBvlCJAsl1NhJAkUFe6uOORWI/dpWfEhfcXFc8Rj9N6XTCCG9RzRx1ilEtESnvq
+	 Yoba+/KK5HiHr3ATHxNfuFC3cmozxf/pV9AEjbSeDZfenBFLyB3X9mO935iZfInY1K
+	 LsD2bvllOaeFwqCqQx8chdXgHgrWAfzDGbdLxAT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ashish Mhetre <amhetre@nvidia.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 499/583] iommu: Dont reserve 0-length IOVA region
+Subject: [PATCH 5.10 244/286] libapi: Add missing linux/types.h header to get the __u64 type on io.h
 Date: Mon, 22 Jan 2024 15:59:10 -0800
-Message-ID: <20240122235827.308394680@linuxfoundation.org>
+Message-ID: <20240122235741.457859217@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +65,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashish Mhetre <amhetre@nvidia.com>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit bb57f6705960bebeb832142ce9abf43220c3eab1 ]
+[ Upstream commit af76b2dec0984a079d8497bfa37d29a9b55932e1 ]
 
-When the bootloader/firmware doesn't setup the framebuffers, their
-address and size are 0 in "iommu-addresses" property. If IOVA region is
-reserved with 0 length, then it ends up corrupting the IOVA rbtree with
-an entry which has pfn_hi < pfn_lo.
-If we intend to use display driver in kernel without framebuffer then
-it's causing the display IOMMU mappings to fail as entire valid IOVA
-space is reserved when address and length are passed as 0.
-An ideal solution would be firmware removing the "iommu-addresses"
-property and corresponding "memory-region" if display is not present.
-But the kernel should be able to handle this by checking for size of
-IOVA region and skipping the IOVA reservation if size is 0. Also, add
-a warning if firmware is requesting 0-length IOVA region reservation.
+There are functions using __u64, so we need to have the linux/types.h
+header otherwise we'll break when its not included before api/io.h.
 
-Fixes: a5bf3cfce8cb ("iommu: Implement of_iommu_get_resv_regions()")
-Signed-off-by: Ashish Mhetre <amhetre@nvidia.com>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/20231205065656.9544-1-amhetre@nvidia.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: e95770af4c4a280f ("tools api: Add a lightweight buffered reading api")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/lkml/ZWjDPL+IzPPsuC3X@kernel.org
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/of_iommu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/lib/api/io.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
-index 47302b637cc0..42cffb0ee5e2 100644
---- a/drivers/iommu/of_iommu.c
-+++ b/drivers/iommu/of_iommu.c
-@@ -264,6 +264,10 @@ void of_iommu_get_resv_regions(struct device *dev, struct list_head *list)
- 					prot |= IOMMU_CACHE;
+diff --git a/tools/lib/api/io.h b/tools/lib/api/io.h
+index 777c20f6b604..458acd294237 100644
+--- a/tools/lib/api/io.h
++++ b/tools/lib/api/io.h
+@@ -9,6 +9,7 @@
  
- 				maps = of_translate_dma_region(np, maps, &iova, &length);
-+				if (length == 0) {
-+					dev_warn(dev, "Cannot reserve IOVA region of 0 size\n");
-+					continue;
-+				}
- 				type = iommu_resv_region_get_type(dev, &phys, iova, length);
+ #include <stdlib.h>
+ #include <unistd.h>
++#include <linux/types.h>
  
- 				region = iommu_alloc_resv_region(iova, length, prot, type,
+ struct io {
+ 	/* File descriptor being read/ */
 -- 
 2.43.0
 
