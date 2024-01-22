@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F170783833C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:27:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D67A7837C23
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30FDB1C29743
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FC16295BAC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11DAD60B9E;
-	Tue, 23 Jan 2024 01:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E60C1EF1C;
+	Tue, 23 Jan 2024 00:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+lulWvW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T1aIB9If"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62B429403;
-	Tue, 23 Jan 2024 01:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E90C1E4AB;
+	Tue, 23 Jan 2024 00:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974742; cv=none; b=lUvWeMK+WsvpYu1E0ZVHbQ7H6bYq/jA0XlgrB3XBEhYkC/XU5AzmN+cQPrEy/BUUxKh3dF17o5KUh8KoRK54/ZcUoJZAytJsVJhFy58fj8cCXN6e1E83NZGytPOIne8IxTx5VuvQt9ElrIWW/qrD5B704ZngT1WIOu98glAvoLg=
+	t=1705969517; cv=none; b=f/C5lWIg1qgs0W1D2xYWEskucLn84rEx1HLFz0iKkTiobzumUAfyzgMcJi4l9nPe62RaqPAFOA3InXLqobsj7er9K0yHLW3QSwF1IMCvb76RefstSc2NBAKrUnnfzShUJkM61Rk2kKhTykL32efoMBLloRbsAX10DDx0KDq06Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974742; c=relaxed/simple;
-	bh=4uMabi3SBiTieTnM3vxtY5i6FyhAvuwkWiYTZYqKS70=;
+	s=arc-20240116; t=1705969517; c=relaxed/simple;
+	bh=nvAYVEYYB4G2MJKe1U8bjf4pMj77J3cZ+hzD/l4MGBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d0LG5yRPGP5JWZ1SEppSOkOkN4en3vAxFsc3VndFempPmG+96JaivK3OJfKd5nmlOasFMbFQQvphgPPaQsXs1Ho5CcG7gBfFfoW1UpmC4+/cLqymyvF6PM1EVYX1F3O4i4oI0g8fZ7wW8kv0CUWaIMf4XaJy0vKt9TDy8mCjNMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+lulWvW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB18C433C7;
-	Tue, 23 Jan 2024 01:52:22 +0000 (UTC)
+	 MIME-Version; b=ggP01ItyoRjgne9UScTAv/2bVoTTxIBlQ8n7Gbd9JGKxtpaXN+Rxiw/g5mceVcfOChuUN61DX+2IV15ttQx91sE4FiNGFvb9PeJV49qx3vpPW8mVXtC2Cz3pDtBUyHix4V+q+KXkX3xMTkrMkhYWyheOa5+Vud2A9B6PpyxRzPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T1aIB9If; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB16C433A6;
+	Tue, 23 Jan 2024 00:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974742;
-	bh=4uMabi3SBiTieTnM3vxtY5i6FyhAvuwkWiYTZYqKS70=;
+	s=korg; t=1705969516;
+	bh=nvAYVEYYB4G2MJKe1U8bjf4pMj77J3cZ+hzD/l4MGBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M+lulWvWBTDCJeAgw29DHyBE/LM38zy6wIzmxwK92TD6elUhmvFMgGAFAo+HNOkTs
-	 1EMJN/frUZUUGSPvA33aMqwCU90r713ZU1CS+LyKgzDq7goASvwiU4G6cfs6bpV3Qo
-	 07BDj4Q6Ki1yoHTxvwPSOy5oRc7mj7FbmUC2mjzI=
+	b=T1aIB9IfUoaKUoBMXKRvChiodyif9RQ4950A56dKY6ionxbnJeNQNhnCboF4j2+pY
+	 1uY6dvNkTI7TRkTkRRnh+2jVg1OQvUuLV7FEBhs+dKxF0f+FHH0xw+dLUlA/YPKSY7
+	 rZc+LbknOoo2Ba98mnGOeCT3NFNLLp0Q1InKCmbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 152/583] wifi: iwlwifi: dont support triggered EHT CQI feedback
+Subject: [PATCH 6.7 299/641] media: cx231xx: fix a memleak in cx231xx_init_isoc
 Date: Mon, 22 Jan 2024 15:53:23 -0800
-Message-ID: <20240122235816.721133690@linuxfoundation.org>
+Message-ID: <20240122235827.261671011@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 637bbd5b3cbd0fc6945ebd2e311315b6cca1f9c5 ]
+[ Upstream commit 5d3c8990e2bbf929cb211563dadd70708f42e4e6 ]
 
-EHT CQI is one of the EHT PHY capabilities. We don't support EHT CQI.
-The non-triggered CQI feedback bit was unset in a previous patch,
-but the triggered CQI feedback bit wasn't. Unset it.
+The dma_q->p_left_data alloced by kzalloc should be freed in all the
+following error handling paths. However, it hasn't been freed in the
+allocation error paths of dev->video_mode.isoc_ctl.urb and
+dev->video_mode.isoc_ctl.transfer_buffer.
 
-Fixes: 0e21ec6edbb5 ("wifi: iwlwifi: nvm: Update EHT capabilities for GL device")
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20231207044813.092528daf59e.I5715769490835819beddb00c91bbc9e806e170cb@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+On the other hand, the dma_q->p_left_data did be freed in the
+error-handling paths after that of dev->video_mode.isoc_ctl.urb and
+dev->video_mode.isoc_ctl.transfer_buffer, by calling
+cx231xx_uninit_isoc(dev). So the same free operation should be done in
+error-handling paths of those two allocation.
+
+Fixes: 64fbf4445526 ("[media] cx231xx: Added support for Carraera, Shelby, RDx_253S and VIDEO_GRABBER")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/usb/cx231xx/cx231xx-core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-index 31176897b746..e3120ab893f4 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-nvm-parse.c
-@@ -1012,7 +1012,8 @@ iwl_nvm_fixup_sband_iftd(struct iwl_trans *trans,
- 			  IEEE80211_EHT_PHY_CAP3_NG_16_MU_FEEDBACK |
- 			  IEEE80211_EHT_PHY_CAP3_CODEBOOK_4_2_SU_FDBK |
- 			  IEEE80211_EHT_PHY_CAP3_CODEBOOK_7_5_MU_FDBK |
--			  IEEE80211_EHT_PHY_CAP3_TRIG_MU_BF_PART_BW_FDBK);
-+			  IEEE80211_EHT_PHY_CAP3_TRIG_MU_BF_PART_BW_FDBK |
-+			  IEEE80211_EHT_PHY_CAP3_TRIG_CQI_FDBK);
- 		iftype_data->eht_cap.eht_cap_elem.phy_cap_info[4] &=
- 			~(IEEE80211_EHT_PHY_CAP4_PART_BW_DL_MU_MIMO |
- 			  IEEE80211_EHT_PHY_CAP4_POWER_BOOST_FACT_SUPP);
+diff --git a/drivers/media/usb/cx231xx/cx231xx-core.c b/drivers/media/usb/cx231xx/cx231xx-core.c
+index 7b7e2a26ef93..d8312201694f 100644
+--- a/drivers/media/usb/cx231xx/cx231xx-core.c
++++ b/drivers/media/usb/cx231xx/cx231xx-core.c
+@@ -1023,6 +1023,7 @@ int cx231xx_init_isoc(struct cx231xx *dev, int max_packets,
+ 	if (!dev->video_mode.isoc_ctl.urb) {
+ 		dev_err(dev->dev,
+ 			"cannot alloc memory for usb buffers\n");
++		kfree(dma_q->p_left_data);
+ 		return -ENOMEM;
+ 	}
+ 
+@@ -1032,6 +1033,7 @@ int cx231xx_init_isoc(struct cx231xx *dev, int max_packets,
+ 		dev_err(dev->dev,
+ 			"cannot allocate memory for usbtransfer\n");
+ 		kfree(dev->video_mode.isoc_ctl.urb);
++		kfree(dma_q->p_left_data);
+ 		return -ENOMEM;
+ 	}
+ 
 -- 
 2.43.0
 
