@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-15372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C19DB8384EF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12723838320
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 001161C28E9C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF9E228C132
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93F2177F38;
-	Tue, 23 Jan 2024 02:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B3660865;
+	Tue, 23 Jan 2024 01:51:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1+N86or"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pPPp7QP2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5416277636;
-	Tue, 23 Jan 2024 02:05:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2C36025E;
+	Tue, 23 Jan 2024 01:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975539; cv=none; b=qKh/CR8UgiV+zSFThmaiFPRJ3E8MowsL8B8yRlmChvFMRtHX0W0jFeUcRuApkyQaipp663Aq6SiGIMX0xOeQPdlQDw3JXYF+/ryKOfGWjHueA5nTWfdKHh75xYNypzT93DRShUN6TmaSKBVTpI8olMlAh1mkkpZ2kiWJSgRJ0do=
+	t=1705974710; cv=none; b=q/UYKzrortbfil5TKmF+qn2N/C2Y2JZHJA5NU/wQrPSKQ8Gkom2qrWHQxJuP9BzdB9uoOaydwK1RQpZgyNJSOnW1y8iZecfklhXX3moBc+xdgrT18C8iShr5y3PRWXYKTmPOmjKfxRXnLVk2A2GS5mLOOYk+M9bhAiRtIyYFZnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975539; c=relaxed/simple;
-	bh=dBeIJBYuSTO0RAEU7ip6Y2bANWWGZZkRuxl+XcOB60E=;
+	s=arc-20240116; t=1705974710; c=relaxed/simple;
+	bh=ZVHqVav/VE11gFIW46c87C5Nj3NwFnRGcqrYCjYJSJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UMFwO18Wz+AvVT29ZpXqSoQT7EpwMAY6oLq/r+M1vMqIMF5j2pcjHPEP3VhbS2eONzB+Wfr1IQBTMe99MxA1FCCSnL5a9l9X3DN7OO5zxW2DE3x/P2IeFDK8sN8zrj80Kf8R2Z1dbn+7Wo8KKnAmTWbQIE45uYo/nbp0+JmjEXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1+N86or; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ABC7C433B2;
-	Tue, 23 Jan 2024 02:05:39 +0000 (UTC)
+	 MIME-Version; b=nhDofDc0RRE5BryXPbrFxMFmaTHEetdrFxek52HUDabghHIIvzS2wQG92YjJilHGLDiSDrOdEClVBgrJVdb21CcWXZddhd8yJWfx12q+NPkelJW1fREslIlm7hFpkABXZj7b6IToR/oZ97g8Q7enP15gp2u8hmGRnEZN56LAK9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pPPp7QP2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83C5DC433F1;
+	Tue, 23 Jan 2024 01:51:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975539;
-	bh=dBeIJBYuSTO0RAEU7ip6Y2bANWWGZZkRuxl+XcOB60E=;
+	s=korg; t=1705974710;
+	bh=ZVHqVav/VE11gFIW46c87C5Nj3NwFnRGcqrYCjYJSJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t1+N86ordwj2XxP7/MC5nDb5ITUn/QZH1QCIcQjoJU/MC3HHt+qD/sVMfxJsljDvX
-	 GxiKxHHqIW223rNgIhN/2C702cGe9K0K4T3dblGmBJ/9JQKQN1SzLOb9i1ola3GMxk
-	 UY5IRuON0sRFA1gg5iZNbV2TjRobSDyPsFv/HgkA=
+	b=pPPp7QP28vuhPSV0mtbZNM+qAlNRavq5kuWul3QJgfcvFlEzO2EW1BORx6JI/Zb6+
+	 Q5o6loXEpBWuTnXDU0H1CfZtsEmMzdlBPXwC3Y5UUadMaV7pqGy9ro/0njb/j6hRr3
+	 ryAsfGl3whD36HpJ3yFtx4hw53N5+I8rYBAPCvq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brett Creeley <brett.creeley@amd.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 467/583] vfio/pds: Fix calculations in pds_vfio_dirty_sync
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	RD Babiera <rdbabiera@google.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.15 262/374] usb: typec: class: fix typec_altmode_put_partner to put plugs
 Date: Mon, 22 Jan 2024 15:58:38 -0800
-Message-ID: <20240122235826.289075290@linuxfoundation.org>
+Message-ID: <20240122235753.876853060@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brett Creeley <brett.creeley@amd.com>
+From: RD Babiera <rdbabiera@google.com>
 
-[ Upstream commit 4004497cec3093d7b0087bc70709b45969fa07b6 ]
+commit 5962ded777d689cd8bf04454273e32228d7fb71f upstream.
 
-The incorrect check is being done for comparing the
-iova/length being requested to sync. This can cause
-the dirty sync operation to fail. Fix this by making
-sure the iova offset added to the requested sync
-length doesn't exceed the region_size.
+When typec_altmode_put_partner is called by a plug altmode upon release,
+the port altmode the plug belongs to will not remove its reference to the
+plug. The check to see if the altmode being released is a plug evaluates
+against the released altmode's partner instead of the calling altmode, so
+change adev in typec_altmode_put_partner to properly refer to the altmode
+being released.
 
-Also, the region_start is assumed to always be at 0.
-This can cause dirty tracking to fail because the
-device/driver bitmap offset always starts at 0,
-however, the region_start/iova may not. Fix this by
-determining the iova offset from region_start to
-determine the bitmap offset.
+Because typec_altmode_set_partner calls get_device() on the port altmode,
+add partner_adev that points to the port altmode in typec_put_partner to
+call put_device() on. typec_altmode_set_partner is not called for port
+altmodes, so add a check in typec_altmode_release to prevent
+typec_altmode_put_partner() calls on port altmode release.
 
-Fixes: f232836a9152 ("vfio/pds: Add support for dirty page tracking")
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Link: https://lore.kernel.org/r/20231117001207.2793-2-brett.creeley@amd.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
+Cc:  <stable@vger.kernel.org>
+Co-developed-by: Christian A. Ehrhardt <lk@c--e.de>
+Signed-off-by: Christian A. Ehrhardt <lk@c--e.de>
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Tested-by: Christian A. Ehrhardt <lk@c--e.de>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240103181754.2492492-2-rdbabiera@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/pci/pds/dirty.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/typec/class.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/vfio/pci/pds/dirty.c b/drivers/vfio/pci/pds/dirty.c
-index c937aa6f3954..27607d7b9030 100644
---- a/drivers/vfio/pci/pds/dirty.c
-+++ b/drivers/vfio/pci/pds/dirty.c
-@@ -478,8 +478,7 @@ static int pds_vfio_dirty_sync(struct pds_vfio_pci_device *pds_vfio,
- 		pds_vfio->vf_id, iova, length, pds_vfio->dirty.region_page_size,
- 		pages, bitmap_size);
+--- a/drivers/usb/typec/class.c
++++ b/drivers/usb/typec/class.c
+@@ -261,11 +261,13 @@ static void typec_altmode_put_partner(st
+ {
+ 	struct altmode *partner = altmode->partner;
+ 	struct typec_altmode *adev;
++	struct typec_altmode *partner_adev;
  
--	if (!length || ((dirty->region_start + iova + length) >
--			(dirty->region_start + dirty->region_size))) {
-+	if (!length || ((iova - dirty->region_start + length) > dirty->region_size)) {
- 		dev_err(dev, "Invalid iova 0x%lx and/or length 0x%lx to sync\n",
- 			iova, length);
- 		return -EINVAL;
-@@ -496,7 +495,8 @@ static int pds_vfio_dirty_sync(struct pds_vfio_pci_device *pds_vfio,
- 		return -EINVAL;
+ 	if (!partner)
+ 		return;
+ 
+-	adev = &partner->adev;
++	adev = &altmode->adev;
++	partner_adev = &partner->adev;
+ 
+ 	if (is_typec_plug(adev->dev.parent)) {
+ 		struct typec_plug *plug = to_typec_plug(adev->dev.parent);
+@@ -274,7 +276,7 @@ static void typec_altmode_put_partner(st
+ 	} else {
+ 		partner->partner = NULL;
  	}
+-	put_device(&adev->dev);
++	put_device(&partner_adev->dev);
+ }
  
--	bmp_offset = DIV_ROUND_UP(iova / dirty->region_page_size, sizeof(u64));
-+	bmp_offset = DIV_ROUND_UP((iova - dirty->region_start) /
-+				  dirty->region_page_size, sizeof(u64));
+ /**
+@@ -495,7 +497,8 @@ static void typec_altmode_release(struct
+ {
+ 	struct altmode *alt = to_altmode(to_typec_altmode(dev));
  
- 	dev_dbg(dev,
- 		"Syncing dirty bitmap, iova 0x%lx length 0x%lx, bmp_offset %llu bmp_bytes %llu\n",
--- 
-2.43.0
-
+-	typec_altmode_put_partner(alt);
++	if (!is_typec_port(dev->parent))
++		typec_altmode_put_partner(alt);
+ 
+ 	altmode_id_remove(alt->adev.dev.parent, alt->id);
+ 	kfree(alt);
 
 
 
