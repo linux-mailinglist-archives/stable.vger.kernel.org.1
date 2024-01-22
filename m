@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-14696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A29C8382AB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A7BC83822E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:18:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A32B1B2A321
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7124283F7F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8034759B67;
-	Tue, 23 Jan 2024 01:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF2059179;
+	Tue, 23 Jan 2024 01:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QC53l+8G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pwDRDndj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68AF62B9B8;
-	Tue, 23 Jan 2024 01:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E648359B56;
+	Tue, 23 Jan 2024 01:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974084; cv=none; b=p68AbxAGHN4+ojG/57M1lQDZXqJTXdSM83yE5ZPmyWoHjUisNZbqPnRpIB1o5XB7aoEVW0nLpJM2t0OLfHGWJRucFMig9LDgBCa5iybjzNvKsCbhhxU8r7HLO0EQh3QV5m7O4Quedgdb9Q8YWROSsgW/tJHrfE/4Z8cDrLedZwA=
+	t=1705974086; cv=none; b=o1bP8A030gMNZZrgkvAfcs8hUN7jFeGOk6ZAN18ddluDo0J9eeyNeHfzuB3aOY0uuI5Omx46xPgetl2toTo2GzrM0VpDm//2Re4Php7nWCKJE/X+I2DdoV7G6ct0oCMefL2L6eQKPlmyq910PkGxc7P2q7M3tDX01awcMNKXV78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974084; c=relaxed/simple;
-	bh=DW6cWvNrhDcYFo9kcEzZqZeXDmmaEKlcUp7IpGaRkpE=;
+	s=arc-20240116; t=1705974086; c=relaxed/simple;
+	bh=DkcdAOdA4sq+ZzpcQVfJk6mMIzLnyW9E2Eo4O0D9NC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=igH3pCQKcc5TtdS3fztZyvciHNvSaZwBazlsTNaO9EvxTcyyZQ4ooMNsDkMpAq2nLLyjQ7zeyxWY5S+Kqb/eGxQWn8jB+5LoNZ1n9jD4ThrS3yShi/7PSWzBZ8xv8whuyRpvxaHygoYphgCqp1WOAkLfiat/58/cX7s/yE0MJsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QC53l+8G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9925BC43390;
-	Tue, 23 Jan 2024 01:41:23 +0000 (UTC)
+	 MIME-Version; b=fWm7yBcv7Wj2IzCSUBrH3rhjCnD2/BYepi+S3AoAvSIR+curFEHS4iC44CE+ckT5mT9LhpGd27E9yGde6b4iZBlUpIDZ9B7arVif0aiBaGBynVe0Et1hAHz1wmwbQ8AFd7VHo2s91TE9SUOrULjJSXfpDDsZdm1APaR2ZV1hIss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pwDRDndj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FEC1C43394;
+	Tue, 23 Jan 2024 01:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974083;
-	bh=DW6cWvNrhDcYFo9kcEzZqZeXDmmaEKlcUp7IpGaRkpE=;
+	s=korg; t=1705974085;
+	bh=DkcdAOdA4sq+ZzpcQVfJk6mMIzLnyW9E2Eo4O0D9NC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QC53l+8GpRWzZlrvgJi0bG1vxja0PJ9U2A79TEVduIc8pdkLzxx/bXIkdDLihujYF
-	 pUQ3y6X2ocNdSQna2OZDc3oIMb5T4tdmS5m3d70+QjNE70GKNx1G3bkpC2dPc3BXE9
-	 OL4WmNNZEi0GOfNe+k8bTp8Q87UmkiGS16vt6xc4=
+	b=pwDRDndj7WVRlD6zHdHOv3rkw6jj5c7WGh0kaIqa7MgKVR/ILRu3p2+fDhXWkVzM8
+	 AJhzB+KXUY7wY1/UXTYwZPrvOC/rTPTsmdC3u+pvqHe1pAJfq10s6JRIl/heedWUJz
+	 7GWMn9W/9LnIbN5SYZ5QTdVVSuSde/7z4dnUMNPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 032/583] efivarfs: Free s_fs_info on unmount
-Date: Mon, 22 Jan 2024 15:51:23 -0800
-Message-ID: <20240122235813.155872932@linuxfoundation.org>
+Subject: [PATCH 6.6 033/583] spi: sh-msiof: Enforce fixed DTDL for R-Car H3
+Date: Mon, 22 Jan 2024 15:51:24 -0800
+Message-ID: <20240122235813.183116999@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
 References: <20240122235812.238724226@linuxfoundation.org>
@@ -65,41 +68,78 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 547713d502f7b4b8efccd409cff84d731a23853b ]
+[ Upstream commit e5c7bcb499840551cfbe85c6df177ebc50432bf0 ]
 
-Now that we allocate a s_fs_info struct on fs context creation, we
-should ensure that we free it again when the superblock goes away.
+Documentation says only DTDL of 200 is allowed for this SoC.
 
-Fixes: 5329aa5101f7 ("efivarfs: Add uid/gid mount options")
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Fixes: 4286db8456f4 ("spi: sh-msiof: Add R-Car Gen 2 and 3 fallback bindings")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Link: https://msgid.link/r/20231212081239.14254-1-wsa+renesas@sang-engineering.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/efivarfs/super.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/spi/spi-sh-msiof.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 05c01694e852..d59d9670965c 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -299,6 +299,8 @@ static int efivarfs_init_fs_context(struct fs_context *fc)
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index fb452bc78372..cfc3b1ddbd22 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -29,12 +29,15 @@
  
- static void efivarfs_kill_sb(struct super_block *sb)
- {
-+	struct efivarfs_fs_info *sfi = sb->s_fs_info;
+ #include <asm/unaligned.h>
+ 
++#define SH_MSIOF_FLAG_FIXED_DTDL_200	BIT(0)
 +
- 	kill_litter_super(sb);
+ struct sh_msiof_chipdata {
+ 	u32 bits_per_word_mask;
+ 	u16 tx_fifo_size;
+ 	u16 rx_fifo_size;
+ 	u16 ctlr_flags;
+ 	u16 min_div_pow;
++	u32 flags;
+ };
  
- 	if (!efivar_is_available())
-@@ -306,6 +308,7 @@ static void efivarfs_kill_sb(struct super_block *sb)
+ struct sh_msiof_spi_priv {
+@@ -1072,6 +1075,16 @@ static const struct sh_msiof_chipdata rcar_gen3_data = {
+ 	.min_div_pow = 1,
+ };
  
- 	/* Remove all entries and destroy */
- 	efivar_entry_iter(efivarfs_destroy, &efivarfs_list, NULL);
-+	kfree(sfi);
- }
++static const struct sh_msiof_chipdata rcar_r8a7795_data = {
++	.bits_per_word_mask = SPI_BPW_MASK(8) | SPI_BPW_MASK(16) |
++			      SPI_BPW_MASK(24) | SPI_BPW_MASK(32),
++	.tx_fifo_size = 64,
++	.rx_fifo_size = 64,
++	.ctlr_flags = SPI_CONTROLLER_MUST_TX,
++	.min_div_pow = 1,
++	.flags = SH_MSIOF_FLAG_FIXED_DTDL_200,
++};
++
+ static const struct of_device_id sh_msiof_match[] __maybe_unused = {
+ 	{ .compatible = "renesas,sh-mobile-msiof", .data = &sh_data },
+ 	{ .compatible = "renesas,msiof-r8a7743",   .data = &rcar_gen2_data },
+@@ -1082,6 +1095,7 @@ static const struct of_device_id sh_msiof_match[] __maybe_unused = {
+ 	{ .compatible = "renesas,msiof-r8a7793",   .data = &rcar_gen2_data },
+ 	{ .compatible = "renesas,msiof-r8a7794",   .data = &rcar_gen2_data },
+ 	{ .compatible = "renesas,rcar-gen2-msiof", .data = &rcar_gen2_data },
++	{ .compatible = "renesas,msiof-r8a7795",   .data = &rcar_r8a7795_data },
+ 	{ .compatible = "renesas,msiof-r8a7796",   .data = &rcar_gen3_data },
+ 	{ .compatible = "renesas,rcar-gen3-msiof", .data = &rcar_gen3_data },
+ 	{ .compatible = "renesas,rcar-gen4-msiof", .data = &rcar_gen3_data },
+@@ -1279,6 +1293,9 @@ static int sh_msiof_spi_probe(struct platform_device *pdev)
+ 		return -ENXIO;
+ 	}
  
- static struct file_system_type efivarfs_type = {
++	if (chipdata->flags & SH_MSIOF_FLAG_FIXED_DTDL_200)
++		info->dtdl = 200;
++
+ 	if (info->mode == MSIOF_SPI_TARGET)
+ 		ctlr = spi_alloc_target(&pdev->dev,
+ 				        sizeof(struct sh_msiof_spi_priv));
 -- 
 2.43.0
 
