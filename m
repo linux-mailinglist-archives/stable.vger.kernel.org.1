@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-13959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 089B9837EF7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 546A6837F6F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B631329BCCF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 869BA1C29056
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1922560254;
-	Tue, 23 Jan 2024 00:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 736C663138;
+	Tue, 23 Jan 2024 00:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqfF5khf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rh3qdb5a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCDE460252;
-	Tue, 23 Jan 2024 00:47:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B0662A0F;
+	Tue, 23 Jan 2024 00:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970855; cv=none; b=Hn0AurJSUYpnmSTbD0jravowrWH/66HJrTFUEXsQkjeT7FuIsK+nfkONTFpqqJzzZeH32XI1KTgpck30usncMpFM/Qkex9d/EU1YDrpqVGgJuSoH7mxQe1ukxyB3K7aebZ4qXBuoReunMTsSKYhsffYjt4Zw8h1tpt95vnaj0D0=
+	t=1705971130; cv=none; b=A9yN+ZVdPuAC1lhDosN017K4f7eFOKMndhDueOPoBOSCPp5RvxfWTMn7hBTGtfoWY77WcPH7MfPhrXYdHxrCTeG/NwGnfCEZr/p0bIxCU20Gqksw+PZ0aikDFRyHJB6b1auf5P4fOvAdmfj/jTTX9kz/OF2lIIVeLaMtj1BLtPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970855; c=relaxed/simple;
-	bh=Szby5sHJsyWSqC3RibumbK9HR7pqGf1Xf7CWgbNoXHY=;
+	s=arc-20240116; t=1705971130; c=relaxed/simple;
+	bh=4/4+US68vJiWJt1tfkE0R2/V7jdtxifGgcRzsFZhSTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oBEQao4pZ4qBEtQLv/QQRd5mLgPb47EDNfKJzbUjp4/gqM06m/qqo9kOjZ1g5TgaohvGOBs8wdeGk/UfnHVJj+NLwLjpZmZlEUne2PufhtgrBoRvXqOudAwo3qABNJ4GjNUyyFkbRvLW+KkFYZ9wVLfJnY9ghd3w1RKoDD39fcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KqfF5khf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24B8CC43399;
-	Tue, 23 Jan 2024 00:47:35 +0000 (UTC)
+	 MIME-Version; b=XFo0+/i15xwZSkJH+lAcXi4UBSnT5Wi4vU/0ddBFmYDq2SlhB0RJyS/h041QMbocUJZoXeTZBmrejIQoxD3ZeJ6keitmnxyrbjS+RrPz0KUQdfKpZCY3DQu/muIbTy3R5ifpLOfSKJn7HtGyHqh3CsXmV5yGDooghhFXf0cJvWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rh3qdb5a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B99C43390;
+	Tue, 23 Jan 2024 00:52:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970855;
-	bh=Szby5sHJsyWSqC3RibumbK9HR7pqGf1Xf7CWgbNoXHY=;
+	s=korg; t=1705971130;
+	bh=4/4+US68vJiWJt1tfkE0R2/V7jdtxifGgcRzsFZhSTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KqfF5khfYHRCS20a/muKYLPENp9mxpF24q52sQb30Lt8Zs9T/3dA7E+eJfQ+YjCPI
-	 MBsUdA37nKH/6Q+8g4Ynkofdged/1k0WvccqsXOBGnX7LNVsic1T93oAC7P+WNN5Sw
-	 sMBnQ2k8vwzealduajKVg/szGXDU1k2eWnFWEmF8=
+	b=Rh3qdb5avVJ/U9mfTNIhqa1oq6Vpt8rF5uW5G8nKp99Rjj9P1svXt3VT3w/tnAydM
+	 tC8k86ACDW/LC9hE2WHUdMCErlPxVy7hrPVDpeF7c8PRW97mSuPygXcvZ5sK4goLrt
+	 1wzC3ELxXYYW8yDHtC/j84U1We1TLmN6S0rksfpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Esther Shimanovich <eshimanovich@chromium.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 031/286] Input: i8042 - add nomux quirk for Acer P459-G2-M
+Subject: [PATCH 6.1 169/417] media: rkvdec: Hook the (TRY_)DECODER_CMD stateless ioctls
 Date: Mon, 22 Jan 2024 15:55:37 -0800
-Message-ID: <20240122235733.221720540@linuxfoundation.org>
+Message-ID: <20240122235757.706525484@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Esther Shimanovich <eshimanovich@chromium.org>
+From: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
 
-[ Upstream commit 335fe00319e030d481a54d5e0e68d50c5e672c0e ]
+[ Upstream commit 1fb7b5ab62113b29ce331464048d8c39e58fd08a ]
 
-After the laptop lid is opened, and the device resumes from S3 deep
-sleep, if the user presses a keyboard key while the screen is still black,
-the mouse and keyboard become unusable.
+The (TRY_)DECODER_CMD ioctls are used to support flushing when holding
+capture buffers is supported. This is the case of this driver but the
+ioctls were never hooked to the ioctl ops.
 
-Enabling this quirk prevents this behavior from occurring.
+Add them to correctly support flushing.
 
-Signed-off-by: Esther Shimanovich <eshimanovich@chromium.org>
-Link: https://lore.kernel.org/r/20231130195615.v2.1.Ibe78a9df97ecd18dc227a5cff67d3029631d9c11@changeid
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: ed7bb87d3d03 ("media: rkvdec: Enable capture buffer holding for H264")
+Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/staging/media/rkvdec/rkvdec.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
-index 09528c0a8a34..124ab98ea43a 100644
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -351,6 +351,14 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
- 		},
- 		.driver_data = (void *)(SERIO_QUIRK_DRITEK)
- 	},
-+	{
-+		/* Acer TravelMate P459-G2-M */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Acer"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "TravelMate P459-G2-M"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOMUX)
-+	},
- 	{
- 		/* Amoi M636/A737 */
- 		.matches = {
+diff --git a/drivers/staging/media/rkvdec/rkvdec.c b/drivers/staging/media/rkvdec/rkvdec.c
+index a9bd1e71ea48..d16cf4115d03 100644
+--- a/drivers/staging/media/rkvdec/rkvdec.c
++++ b/drivers/staging/media/rkvdec/rkvdec.c
+@@ -461,6 +461,9 @@ static const struct v4l2_ioctl_ops rkvdec_ioctl_ops = {
+ 
+ 	.vidioc_streamon = v4l2_m2m_ioctl_streamon,
+ 	.vidioc_streamoff = v4l2_m2m_ioctl_streamoff,
++
++	.vidioc_decoder_cmd = v4l2_m2m_ioctl_stateless_decoder_cmd,
++	.vidioc_try_decoder_cmd = v4l2_m2m_ioctl_stateless_try_decoder_cmd,
+ };
+ 
+ static int rkvdec_queue_setup(struct vb2_queue *vq, unsigned int *num_buffers,
 -- 
 2.43.0
 
