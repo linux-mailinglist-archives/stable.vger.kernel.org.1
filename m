@@ -1,162 +1,137 @@
-Return-Path: <stable+bounces-12361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6F78836218
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 12:40:41 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAF2283620C
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 12:39:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40FAD1F28210
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 11:40:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83AFF28E1E3
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 11:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B13B4643E;
-	Mon, 22 Jan 2024 11:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52BC541776;
+	Mon, 22 Jan 2024 11:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="C1E3gLN+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PkrZTEWO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D429D4643B;
-	Mon, 22 Jan 2024 11:31:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E4944383;
+	Mon, 22 Jan 2024 11:30:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705923113; cv=none; b=TaLlfO12iiAQtPUR9PfBJb7lspgbZFKz4lubn2nAYuBdS0dTbtLI5CuzZBDRGzZMOvWPbkG0nj0a2x6R7nZg9clNnwN5cURftPbTQHrukhgTjsU7fJiWrOkbXc85nWWVW6rVbKOU08Xk29MxCuzViBE4BdFZFRgjUkoTt8NAt6g=
+	t=1705923058; cv=none; b=m+DKwlEPI87nAvOa5DWviZWzgQ0b2YG59qNVINuwxfNQZQkFFf/jsqRnNQNIWvIORgKTAEAoIBWRB4nBrAhoRrlYrcXpeVIpc542d3QpxhEfFycKA5K2YVsV5DJAMvYmE9hTcdH+ej2mTuq2v86XN7UhoPYMtSinf7NGk8Z8XZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705923113; c=relaxed/simple;
-	bh=QJRXftv5htaGrRJpvd/RlmMy4vOMeaylsoskctG39LU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gX3/GpBvvT80WmIoBcc29aZeTk3JV7KxNvM39od8a/hFHnBaRVLsKXUeVMc7ar4UcHZk/wcx3YLweMLUqiXQX+WqsDKNAQA6B970m3AGIB+ykIxkcpy0WzMkzN7uFu28WtqFO12T0dthjVowa91zWKoFE69mq8Bgxx18xPTl/ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=C1E3gLN+; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from fpc.intra.ispras.ru (unknown [10.10.165.9])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 8FEF940F1DE6;
-	Mon, 22 Jan 2024 11:31:47 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 8FEF940F1DE6
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1705923107;
-	bh=GIiZsYrmgQCjlr/AmrPL2dhePcSW3bDC4ZjkPnqyyw0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C1E3gLN+RWBe7hsAeyUQlphmiR9c466+8dSVYEblMCzqS096G05/SIHIJ50sdsViT
-	 9oj+VIuEvcLmepxPBbJAtSP8QgJ5stFMZ6AMLZLuhusSDjh2DD1JwNZDjFsb4XW3yd
-	 DuVI9tm0XSPDosXsRJ384m3RSMUWcLM6VwdOzFts=
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org
-Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Pengfei Xu <pengfei.xu@intel.com>
-Subject: [PATCH 5.10/5.15 1/1] kprobes: Fix to handle forcibly unoptimized kprobes on freeing_list
-Date: Mon, 22 Jan 2024 14:30:31 +0300
-Message-Id: <20240122113031.301202-2-pchelkin@ispras.ru>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240122113031.301202-1-pchelkin@ispras.ru>
-References: <20240122113031.301202-1-pchelkin@ispras.ru>
+	s=arc-20240116; t=1705923058; c=relaxed/simple;
+	bh=zcVAxKfwOUmbMO3DAhPWLyj3eObc61sh4i9Uz8AGnCM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=o7OV9GHJ0vBQxfjV2rTmoc97LMZ3iZpbP66UZZWDvoUm7C7HFrIYOMP/68wzedB87/97DmDym3hpUreymRLCBjlR8zhAfYLpcwdYbwbacTtQe8PEJUuqS5o5Dwut2RevcN9wF0rRc3p6IuwvEv+Lh9CdIWr/HVaugjAuBTnTmFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PkrZTEWO; arc=none smtp.client-ip=209.85.221.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-4b71e8790efso691872e0c.3;
+        Mon, 22 Jan 2024 03:30:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1705923055; x=1706527855; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=zcVAxKfwOUmbMO3DAhPWLyj3eObc61sh4i9Uz8AGnCM=;
+        b=PkrZTEWOnblMw5bi0A+MYH5inyYywPwFRuPpGqy1YUNYZHFN0V1X/GWkDoNzv62XTo
+         42q7/QHU/d+QJ/mBjBJ1GDjLY9p9DLmzUaq/LELTBnNeuZE7HutxGLHdt40Y7Zs28GF1
+         enOTDP11hFD5UcElmNaahh5DwQO+LSME/mKAU5sPQvpxld94IrMT+bOaFJG2w/fCEn1O
+         pQMkhVL1EgLvXRWXpshMHc1FmKvTmwgAOSJU9TnBuwIeGz+brbP18gbEB8LjN/q/GrSD
+         DlQwifTAlegu//liolPYNHXD1sn5wO2SwOmMKVkqA6WECbH7y1FA6kfyTdlni259+82r
+         ktPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1705923055; x=1706527855;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zcVAxKfwOUmbMO3DAhPWLyj3eObc61sh4i9Uz8AGnCM=;
+        b=Pk8BDPM0Vc9BwBuuUyZiDxH0Z9SqGqpzzZ4mXGdmNQZUa64LaMeCtYPSB/1ELuswQ0
+         ql+SUAcJ8IB4gK6wBoTQehdzCA/a/b3/kY2fxIdp3x5h7GuvbCJGt6xaY7bgiNWU2B/e
+         yYQUF8/19cEv2Makdb6oSggUvVE2OZnITLGHpWDHsPMosmmyB6PLMovhwaEFrAuhQ/32
+         aubyARuxTN0JCGZwPeI5sHEnfLYqyHuKXo2xilSkWVqQ/E7Y4di2REemwm2ZVWLLUy/U
+         RZO/QTFDnD2AYMcBt+3+iLUlOuhc8Qm7wsr8BSTJ4QJwn6dWvkZ90wdY7hIkLyFcVl5U
+         9o7w==
+X-Gm-Message-State: AOJu0YxhGR1QZmiFieD15a7MXwyFbpDIMKYKaw+AoNOxSc0/xHMGl1UW
+	rmnib3WBXLOZMKEULoCCNykI/aYNARxYhp4DFwNfV3NVpdcpho83WKfgt1LOYHAMnuuMtyyKgZC
+	9g4kDslV4EXMprDDRmB9Y9wFR5LDbw1l4Es04wQ==
+X-Google-Smtp-Source: AGHT+IEi3nxGy7jjlcg0ZIYvmFU3xW6Uvz+kXbQpX+9XFZdTuB4+WUJm+uu8jld+pvbIEAETbV7tgQhf+5E/8LwkTNY=
+X-Received: by 2002:a05:6122:1789:b0:4b7:1685:9f99 with SMTP id
+ o9-20020a056122178900b004b716859f99mr1353510vkf.12.1705923055546; Mon, 22 Jan
+ 2024 03:30:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240119101454.532809-1-mszeredi@redhat.com> <CAOQ4uxiWtdgCQ+kBJemAYbwNR46ogP7DhjD29cqAw0qqLvQn4A@mail.gmail.com>
+ <5ee3a210f8f4fc89cb750b3d1a378a0ff0187c9f.camel@redhat.com>
+ <CAOQ4uxj_EWqa716+9xxu0zEd-ziEFpoGsv2OggUrb8_eGGkDDw@mail.gmail.com> <0473f5389dd1ada08c73479612a4e054c8023d94.camel@redhat.com>
+In-Reply-To: <0473f5389dd1ada08c73479612a4e054c8023d94.camel@redhat.com>
+From: Amir Goldstein <amir73il@gmail.com>
+Date: Mon, 22 Jan 2024 13:30:43 +0200
+Message-ID: <CAOQ4uxiYQp_1ftooE0z6MR4iqjf392QpaaptgRwT4ogaefo8aw@mail.gmail.com>
+Subject: Re: [PATCH v2] ovl: require xwhiteout feature flag on layer roots
+To: Alexander Larsson <alexl@redhat.com>
+Cc: Miklos Szeredi <mszeredi@redhat.com>, linux-unionfs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
+> > Alex,
+> >
+> > As you can see, I posted v3 with an alternative approach that would
+> > not
+> > require marking all possible lower layer roots.
+> >
+> > However, I cannot help wondering if it wouldn't be better practice,
+> > when
+> > composing layers, to always be explicit, per-directory about whether
+> > the
+> > composed directory is a "base" or a "diff" layer.
+> >
+> > Isn't this information always known at composing time?
+>
+> Currently, composefs images are not layered as such. They normally only
+> have one or more lowerdata layers, and then the actual image as a
+> single lowerdir, and on top of that an optional upper if you want some
+> kind of writability.
+>
+> But, when composing the composefs the content of the image is opaque to
+> us. We're just given a directory with some files in it for the image.
+> It might contain some other lowerdirs, but the details are not know to
+> us at compose time.
+>
 
-commit 4fbd2f83fda0ca44a2ec6421ca3508b355b31858 upstream.
+Got it, though I may need you to explain this again to me next time ;)
 
-Since forcibly unoptimized kprobes will be put on the freeing_list directly
-in the unoptimize_kprobe(), do_unoptimize_kprobes() must continue to check
-the freeing_list even if unoptimizing_list is empty.
+If we were to change the tools that pack/extract overlayfs images to
+mark directories more explicitly, we would need to change other tools,
+not composefs.
 
-This bug can happen if a kprobe is put in an instruction which is in the
-middle of the jump-replaced instruction sequence of an optprobe, *and* the
-optprobe is recently unregistered and queued on unoptimizing_list.
-In this case, the optprobe will be unoptimized forcibly (means immediately)
-and put it into the freeing_list, expecting the optprobe will be handled in
-do_unoptimize_kprobe().
-But if there is no other optprobes on the unoptimizing_list, current code
-returns from the do_unoptimize_kprobe() soon and does not handle the
-optprobe which is on the freeing_list. Then the optprobe will hit the
-WARN_ON_ONCE() in the do_free_cleaned_kprobes(), because it is not handled
-in the latter loop of the do_unoptimize_kprobe().
+composefs has no knowledge of the fact that it is packing an overlayfs
+image, until it is asked to pack a whiteout or a file/dir that happens to
+have an overlay.* xattr, but lower layers do not typically have to contain
+files/dir with overlay.* xattrs.
 
-To solve this issue, do not return from do_unoptimize_kprobes() immediately
-even if unoptimizing_list is empty.
+> However, I think it may make sense to be able to mark non-lowest-layer
+> directories with either n or y.
 
-Moreover, this change affects another case. kill_optimized_kprobes() expects
-kprobe_optimizer() will just free the optprobe on freeing_list.
-So I changed it to just do list_move() to freeing_list if optprobes are on
-unoptimizing list. And the do_unoptimize_kprobe() will skip
-arch_disarm_kprobe() if the probe on freeing_list has gone flag.
+There is nothing stopping you from setting opaque=y on lowest layer dirs
+or setting opaque=n on merge dirs when packing composefs.
+Old kernels will not be bothered by these marks.
 
-Link: https://lore.kernel.org/all/Y8URdIfVr3pq2X8w@xpf.sh.intel.com/
-Link: https://lore.kernel.org/all/167448024501.3253718.13037333683110512967.stgit@devnote3/
+However, I forgot about the consideration of xattr lookup performance that
+was the drive for erofs xattr bloom filter support.
 
-Fixes: e4add247789e ("kprobes: Fix optimize_kprobe()/unoptimize_kprobe() cancellation logic")
-Reported-by: Pengfei Xu <pengfei.xu@intel.com>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Cc: stable@vger.kernel.org
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-[fp: adjust comment conflict regarding commit 223a76b268c9 ("kprobes: Fix
- coding style issues")]
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
----
- kernel/kprobes.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+I guess erofs will pack much smaller without those explicit annotations and
+getxattr(opaque) will have better performance for no xattr case then with
+opaque=n.
 
-diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-index 07d36cee2a80..5d713a7d7e87 100644
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -549,17 +549,15 @@ static void do_unoptimize_kprobes(void)
- 	/* See comment in do_optimize_kprobes() */
- 	lockdep_assert_cpus_held();
- 
--	/* Unoptimization must be done anytime */
--	if (list_empty(&unoptimizing_list))
--		return;
-+	if (!list_empty(&unoptimizing_list))
-+		arch_unoptimize_kprobes(&unoptimizing_list, &freeing_list);
- 
--	arch_unoptimize_kprobes(&unoptimizing_list, &freeing_list);
--	/* Loop free_list for disarming */
-+	/* Loop on 'freeing_list' for disarming and removing from kprobe hash list */
- 	list_for_each_entry_safe(op, tmp, &freeing_list, list) {
- 		/* Switching from detour code to origin */
- 		op->kp.flags &= ~KPROBE_FLAG_OPTIMIZED;
--		/* Disarm probes if marked disabled */
--		if (kprobe_disabled(&op->kp))
-+		/* Disarm probes if marked disabled and not gone */
-+		if (kprobe_disabled(&op->kp) && !kprobe_gone(&op->kp))
- 			arch_disarm_kprobe(&op->kp);
- 		if (kprobe_unused(&op->kp)) {
- 			/*
-@@ -788,14 +786,13 @@ static void kill_optimized_kprobe(struct kprobe *p)
- 	op->kp.flags &= ~KPROBE_FLAG_OPTIMIZED;
- 
- 	if (kprobe_unused(p)) {
--		/* Enqueue if it is unused */
--		list_add(&op->list, &freeing_list);
- 		/*
--		 * Remove unused probes from the hash list. After waiting
--		 * for synchronization, this probe is reclaimed.
--		 * (reclaiming is done by do_free_cleaned_kprobes().)
-+		 * Unused kprobe is on unoptimizing or freeing list. We move it
-+		 * to freeing_list and let the kprobe_optimizer() remove it from
-+		 * the kprobe hash list and free it.
- 		 */
--		hlist_del_rcu(&op->kp.hlist);
-+		if (optprobe_queued_unopt(op))
-+			list_move(&op->list, &freeing_list);
- 	}
- 
- 	/* Don't touch the code, because it is already freed. */
--- 
-2.39.2
-
+Thanks,
+Amir.
 
