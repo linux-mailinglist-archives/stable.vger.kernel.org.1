@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-15399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1FC8838511
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5E8E838109
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69F2328C719
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84DD728AAFC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 259E57CF36;
-	Tue, 23 Jan 2024 02:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D91413E234;
+	Tue, 23 Jan 2024 01:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHnDJ1N5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5f6YJdz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66537CF21;
-	Tue, 23 Jan 2024 02:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D002313DBB7;
+	Tue, 23 Jan 2024 01:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975733; cv=none; b=uQtWHPO8Voo+AhUGGdvB1OWtoWcO1ySLYL1qPcJMXwhsijJ2VLYUt3triGi/i/Wb4cnqS8VF2xQWkoIjaJGAxn8tNd6HOS0vRvYWsBwB3QA5xvDaM7BRx67BVXTdVii5kUeo5w5F9PlzKO+PP1ZX8BLFmiqBLZcyvBq12ws811k=
+	t=1705972002; cv=none; b=rI0HyKOIj/ySrc8k9XZ7ZkQH7KekpeuABvhdPUH5x6sDfEfnLXJnQYUiagJI2K1wIPoVLAJJ98pSm34DmBkckDCXa4PevpjMRalMEHzztZ6zuw1flaAePBcV+esH7Dimkdg05ipRXa5ji2aIU/TiGxB+8DMA2aXkAfC+jb26ScI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975733; c=relaxed/simple;
-	bh=WNmPayOZVp7vMy5g9BFKt3TRx8Baw3X4cYoUkmgbcY0=;
+	s=arc-20240116; t=1705972002; c=relaxed/simple;
+	bh=lLMA/BUDsIAZjkC0oU75ultpDegZ42KXMESTmacqgtg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OZFo1WxxzOY4sDaCDuKmqMJkCDgNhFzZbe+TV5yf9JkEJL4vw/Zko4A5RWTK4Iibusn9cblAiryP7ee/Cpw2hlQMrzglwGdbN2KT3u1LTanLmd9R6087534ExUWpxIxTWDNikqGUmIZxUDVfGBUQv3BsF9ZFjSREshXygLwWoVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHnDJ1N5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 975A0C43390;
-	Tue, 23 Jan 2024 02:08:53 +0000 (UTC)
+	 MIME-Version; b=rC/J0YW2U1lw+aQvd2kzWvHAoJeaWScTlrpwN74SPaKAEucSTZPQS61hdrpHw63VARw1jrvOiw4bjazMTj1LWI9DDhNLq9LLSBIR959gSuqHrso+NFdp4/QwU1HPN9Z6l+BpK8y/Mu70zVZLihYJ9vXGwxQdgilPohwmPuGTxno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5f6YJdz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78DA0C433F1;
+	Tue, 23 Jan 2024 01:06:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975733;
-	bh=WNmPayOZVp7vMy5g9BFKt3TRx8Baw3X4cYoUkmgbcY0=;
+	s=korg; t=1705972002;
+	bh=lLMA/BUDsIAZjkC0oU75ultpDegZ42KXMESTmacqgtg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NHnDJ1N5bh+cLzYtCPIyNrmkBKjNV9ZOnp1RBqOJ2lopTgwdd6WNk4ler5+YSjc5I
-	 +KfoV4AOc0SgJKLv7u2kbMTnH5X9BB3GaiImfcVxbyIn7V+Wg1GSsUqmx/nqq8TYcm
-	 cSOpARuH3j3xMBQgw2Upas2wWwf+XfMrCkB0WRi0=
+	b=A5f6YJdzy04gVqdwqVyfm5x6g4feDCVQqQ0vRmy7HNdzEWHkGFucfGhqOAJYSRFgd
+	 g5ZqwNsMOQyWNMhqx4lpyNbxwmQ+aICLpoDLrVnT9xwc601C553RNrUpeiNlKshOhb
+	 Bq5+PWEdU7o8iaRfnF79kstt1srGsnB8InMmXJQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
+	Lin Ma <linma@zju.edu.cn>,
+	Subash Abhinov Kasiviswanathan <quic_subashab@quicinc.com>,
+	Simon Horman <horms@kernel.org>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 495/583] usb: cdc-acm: return correct error code on unsupported break
+Subject: [PATCH 6.1 378/417] net: qualcomm: rmnet: fix global oob in rmnet_policy
 Date: Mon, 22 Jan 2024 15:59:06 -0800
-Message-ID: <20240122235827.162559175@linuxfoundation.org>
+Message-ID: <20240122235804.883668218@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +65,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 66aad7d8d3ec5a3a8ec2023841bcec2ded5f65c9 ]
+[ Upstream commit b33fb5b801c6db408b774a68e7c8722796b59ecc ]
 
-In ACM support for sending breaks to devices is optional.
-If a device says that it doenot support sending breaks,
-the host must respect that.
-Given the number of optional features providing tty operations
-for each combination is not practical and errors need to be
-returned dynamically if unsupported features are requested.
+The variable rmnet_link_ops assign a *bigger* maxtype which leads to a
+global out-of-bounds read when parsing the netlink attributes. See bug
+trace below:
 
-In case a device does not support break, we want the tty layer
-to treat that like it treats drivers that statically cannot
-support sending a break. It ignores the inability and does nothing.
-This patch uses EOPNOTSUPP to indicate that.
+==================================================================
+BUG: KASAN: global-out-of-bounds in validate_nla lib/nlattr.c:386 [inline]
+BUG: KASAN: global-out-of-bounds in __nla_validate_parse+0x24af/0x2750 lib/nlattr.c:600
+Read of size 1 at addr ffffffff92c438d0 by task syz-executor.6/84207
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Fixes: 9e98966c7bb94 ("tty: rework break handling")
-Link: https://lore.kernel.org/r/20231207132639.18250-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CPU: 0 PID: 84207 Comm: syz-executor.6 Tainted: G                 N 6.1.0 #3
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x8b/0xb3 lib/dump_stack.c:106
+ print_address_description mm/kasan/report.c:284 [inline]
+ print_report+0x172/0x475 mm/kasan/report.c:395
+ kasan_report+0xbb/0x1c0 mm/kasan/report.c:495
+ validate_nla lib/nlattr.c:386 [inline]
+ __nla_validate_parse+0x24af/0x2750 lib/nlattr.c:600
+ __nla_parse+0x3e/0x50 lib/nlattr.c:697
+ nla_parse_nested_deprecated include/net/netlink.h:1248 [inline]
+ __rtnl_newlink+0x50a/0x1880 net/core/rtnetlink.c:3485
+ rtnl_newlink+0x64/0xa0 net/core/rtnetlink.c:3594
+ rtnetlink_rcv_msg+0x43c/0xd70 net/core/rtnetlink.c:6091
+ netlink_rcv_skb+0x14f/0x410 net/netlink/af_netlink.c:2540
+ netlink_unicast_kernel net/netlink/af_netlink.c:1319 [inline]
+ netlink_unicast+0x54e/0x800 net/netlink/af_netlink.c:1345
+ netlink_sendmsg+0x930/0xe50 net/netlink/af_netlink.c:1921
+ sock_sendmsg_nosec net/socket.c:714 [inline]
+ sock_sendmsg+0x154/0x190 net/socket.c:734
+ ____sys_sendmsg+0x6df/0x840 net/socket.c:2482
+ ___sys_sendmsg+0x110/0x1b0 net/socket.c:2536
+ __sys_sendmsg+0xf3/0x1c0 net/socket.c:2565
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3b/0x90 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7fdcf2072359
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 f1 19 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fdcf13e3168 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007fdcf219ff80 RCX: 00007fdcf2072359
+RDX: 0000000000000000 RSI: 0000000020000200 RDI: 0000000000000003
+RBP: 00007fdcf20bd493 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fffbb8d7bdf R14: 00007fdcf13e3300 R15: 0000000000022000
+ </TASK>
+
+The buggy address belongs to the variable:
+ rmnet_policy+0x30/0xe0
+
+The buggy address belongs to the physical page:
+page:0000000065bdeb3c refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x155243
+flags: 0x200000000001000(reserved|node=0|zone=2)
+raw: 0200000000001000 ffffea00055490c8 ffffea00055490c8 0000000000000000
+raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ ffffffff92c43780: f9 f9 f9 f9 00 00 00 02 f9 f9 f9 f9 00 00 00 07
+ ffffffff92c43800: f9 f9 f9 f9 00 00 00 05 f9 f9 f9 f9 06 f9 f9 f9
+>ffffffff92c43880: f9 f9 f9 f9 00 00 00 00 00 00 f9 f9 f9 f9 f9 f9
+                                                 ^
+ ffffffff92c43900: 00 00 00 00 00 00 00 00 07 f9 f9 f9 f9 f9 f9 f9
+ ffffffff92c43980: 00 00 00 07 f9 f9 f9 f9 00 00 00 05 f9 f9 f9 f9
+
+According to the comment of `nla_parse_nested_deprecated`, the maxtype
+should be len(destination array) - 1. Hence use `IFLA_RMNET_MAX` here.
+
+Fixes: 14452ca3b5ce ("net: qualcomm: rmnet: Export mux_id and flags to netlink")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Reviewed-by: Subash Abhinov Kasiviswanathan <quic_subashab@quicinc.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Link: https://lore.kernel.org/r/20240110061400.3356108-1-linma@zju.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/tty_io.c        | 3 +++
- drivers/usb/class/cdc-acm.c | 3 +++
- 2 files changed, 6 insertions(+)
+ drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
-index 724ebf82f2cd..493fc4742895 100644
---- a/drivers/tty/tty_io.c
-+++ b/drivers/tty/tty_io.c
-@@ -2485,6 +2485,9 @@ static int send_break(struct tty_struct *tty, unsigned int duration)
- 	if (!retval) {
- 		msleep_interruptible(duration);
- 		retval = tty->ops->break_ctl(tty, 0);
-+	} else if (retval == -EOPNOTSUPP) {
-+		/* some drivers can tell only dynamically */
-+		retval = 0;
- 	}
- 	tty_write_unlock(tty);
+diff --git a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+index 27b1663c476e..64b209a0ad21 100644
+--- a/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
++++ b/drivers/net/ethernet/qualcomm/rmnet/rmnet_config.c
+@@ -391,7 +391,7 @@ static int rmnet_fill_info(struct sk_buff *skb, const struct net_device *dev)
  
-diff --git a/drivers/usb/class/cdc-acm.c b/drivers/usb/class/cdc-acm.c
-index a1f4e1ead97f..0e7439dba8fe 100644
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -916,6 +916,9 @@ static int acm_tty_break_ctl(struct tty_struct *tty, int state)
- 	struct acm *acm = tty->driver_data;
- 	int retval;
- 
-+	if (!(acm->ctrl_caps & USB_CDC_CAP_BRK))
-+		return -EOPNOTSUPP;
-+
- 	retval = acm_send_break(acm, state ? 0xffff : 0);
- 	if (retval < 0)
- 		dev_dbg(&acm->control->dev,
+ struct rtnl_link_ops rmnet_link_ops __read_mostly = {
+ 	.kind		= "rmnet",
+-	.maxtype	= __IFLA_RMNET_MAX,
++	.maxtype	= IFLA_RMNET_MAX,
+ 	.priv_size	= sizeof(struct rmnet_priv),
+ 	.setup		= rmnet_vnd_setup,
+ 	.validate	= rmnet_rtnl_validate,
 -- 
 2.43.0
 
