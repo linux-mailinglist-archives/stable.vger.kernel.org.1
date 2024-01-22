@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 617B1837F8C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D349F837D23
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0B8429148C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AC281F2951B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8FB63409;
-	Tue, 23 Jan 2024 00:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143805A7AC;
+	Tue, 23 Jan 2024 00:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RFo75rJ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ykRQObfU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE31627E3;
-	Tue, 23 Jan 2024 00:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CEF59B72;
+	Tue, 23 Jan 2024 00:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971183; cv=none; b=cZbvSGzKHdlEEBvzasVr4USWioesuCg1vKh+uMxovNk5jiBIuri92JYHQA6knsAoF9a57VVqiEf+mQIlBSudSrvdocDK7wwYZG2ZtX75FGv+ZkhJ6IfZ9KmKj4yrSxlj+gr5P1JOhXdx8xAxALk37XxyjeGYA33teaXZzFiS9fI=
+	t=1705969808; cv=none; b=cBEvDoJMYMTdL8nS2RKQNjVaB7qqCImolo+b60GGzxYmIwpvSoS+CGYxc08qOVIE9f7Mx9KTiq2WQJMkSzlIXr87ayQ0I0JZqjM1GHHKDrT7F2l2e1eQC7wKaBLP1dHg5/3ANmsGwkyA+ArGQUyzF+4m+T05VwWqm8A2IY2nDuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971183; c=relaxed/simple;
-	bh=FxX1+vH7VlhfXN6e04ssZ6Rsn7pGbprokYW55PC0HaE=;
+	s=arc-20240116; t=1705969808; c=relaxed/simple;
+	bh=QSkMfCFYnnIUwzr4f9d5QhxDyYyeHC6tx+8+OdMkvBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LAgxawzfEcT8cwTFvaTmOpeeKXFit/Cs7AVjtyxqfj5faVZ4Xwl6JIoeCPz6WxTWCqZRMuwrPvOfMSoAbmm+jvPL0JgzL0RXHiLFVRAO/mkvs5wIF1SRVmdvgTXNJwUInaUv3ehGqZew7Bt83LBZ3e0pbzfsjuKs2Hr3EwlWSt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RFo75rJ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67FD7C433F1;
-	Tue, 23 Jan 2024 00:53:03 +0000 (UTC)
+	 MIME-Version; b=c7KWmFYtktmxJVhsACBO1I9X10nr8yXLOeGI6H4xoKFHprj22d82MuJOc0IudvRV8v1BzuxV8d+Aragx63mZpUVidbLFJ0w7iZicwIj1d5NI6IGicN5bMH7RJmdTl4eyag/yu5gviYvEVhuWsdPG18eMg6xoGnV3chyRCC3ZgTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ykRQObfU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777CEC433C7;
+	Tue, 23 Jan 2024 00:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971183;
-	bh=FxX1+vH7VlhfXN6e04ssZ6Rsn7pGbprokYW55PC0HaE=;
+	s=korg; t=1705969808;
+	bh=QSkMfCFYnnIUwzr4f9d5QhxDyYyeHC6tx+8+OdMkvBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RFo75rJ9vf8mAHVP3TY+wiD+i+SBvHQr88ZBQaIob2/4IzrYQiEkuWnH1CcZJoIZx
-	 VXHnEzubgjLwc2WuUnrv2B3lcD1lygENVAode1/JeVWMxmnPtgx81rkN/rvQjIKEU6
-	 MSOyJ0VQdHGO9tma+pg0n7AwIhUbqO6mozgxUSrk=
+	b=ykRQObfUprA06ta7hJC7sfpBrXL7aCmX2LC8HtZg4eJeH4Hc1mrPgI3F7f4fgKplV
+	 lSwEU4HnJyCiPvSdzoEBssNj/gwvi7YDe6E+VPg12RkqoZnZBv8iM77Zbti8YSG2ik
+	 23bixkdeFp6e94gIrw09SwOT/MWOsuVJtbGUdZqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 199/417] f2fs: fix to check compress file in f2fs_move_file_range()
+	Stefan Sterz <s.sterz@proxmox.com>,
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.7 463/641] Revert "nSVM: Check for reserved encodings of TLB_CONTROL in nested VMCB"
 Date: Mon, 22 Jan 2024 15:56:07 -0800
-Message-ID: <20240122235758.826052750@linuxfoundation.org>
+Message-ID: <20240122235832.528055551@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit fb9b65340c818875ea86464faf3c744bdce0055c ]
+commit a484755ab2526ebdbe042397cdd6e427eb4b1a68 upstream.
 
-f2fs_move_file_range() doesn't support migrating compressed cluster
-data, let's add the missing check condition and return -EOPNOTSUPP
-for the case until we support it.
+Revert KVM's made-up consistency check on SVM's TLB control.  The APM says
+that unsupported encodings are reserved, but the APM doesn't state that
+VMRUN checks for a supported encoding.  Unless something is called out
+in "Canonicalization and Consistency Checks" or listed as MBZ (Must Be
+Zero), AMD behavior is typically to let software shoot itself in the foot.
 
-Fixes: 4c8ff7095bef ("f2fs: support data compression")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This reverts commit 174a921b6975ef959dd82ee9e8844067a62e3ec1.
+
+Fixes: 174a921b6975 ("nSVM: Check for reserved encodings of TLB_CONTROL in nested VMCB")
+Reported-by: Stefan Sterz <s.sterz@proxmox.com>
+Closes: https://lkml.kernel.org/r/b9915c9c-4cf6-051a-2d91-44cc6380f455%40proxmox.com
+Cc: stable@vger.kernel.org
+Reviewed-by: Maxim Levitsky <mlevitsk@redhat.com>
+Link: https://lore.kernel.org/r/20231018194104.1896415-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/file.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/kvm/svm/nested.c |   15 ---------------
+ 1 file changed, 15 deletions(-)
 
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 9b9fb3c57ec6..3f2c55b9aa8a 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -2821,6 +2821,11 @@ static int f2fs_move_file_range(struct file *file_in, loff_t pos_in,
- 			goto out;
- 	}
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -247,18 +247,6 @@ static bool nested_svm_check_bitmap_pa(s
+ 	    kvm_vcpu_is_legal_gpa(vcpu, addr + size - 1);
+ }
  
-+	if (f2fs_compressed_file(src) || f2fs_compressed_file(dst)) {
-+		ret = -EOPNOTSUPP;
-+		goto out_unlock;
-+	}
-+
- 	ret = -EINVAL;
- 	if (pos_in + len > src->i_size || pos_in + len < pos_in)
- 		goto out_unlock;
--- 
-2.43.0
-
+-static bool nested_svm_check_tlb_ctl(struct kvm_vcpu *vcpu, u8 tlb_ctl)
+-{
+-	/* Nested FLUSHBYASID is not supported yet.  */
+-	switch(tlb_ctl) {
+-		case TLB_CONTROL_DO_NOTHING:
+-		case TLB_CONTROL_FLUSH_ALL_ASID:
+-			return true;
+-		default:
+-			return false;
+-	}
+-}
+-
+ static bool __nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
+ 					 struct vmcb_ctrl_area_cached *control)
+ {
+@@ -278,9 +266,6 @@ static bool __nested_vmcb_check_controls
+ 					   IOPM_SIZE)))
+ 		return false;
+ 
+-	if (CC(!nested_svm_check_tlb_ctl(vcpu, control->tlb_ctl)))
+-		return false;
+-
+ 	if (CC((control->int_ctl & V_NMI_ENABLE_MASK) &&
+ 	       !vmcb12_is_intercept(control, INTERCEPT_NMI))) {
+ 		return false;
 
 
 
