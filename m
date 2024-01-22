@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-15408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A2383851D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:15 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A987838187
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F5EF1F294A3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3073B24BF8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554907E56E;
-	Tue, 23 Jan 2024 02:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43D4E13DBB2;
+	Tue, 23 Jan 2024 01:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2eWQuH32"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNZuFIq6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131267E562;
-	Tue, 23 Jan 2024 02:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F1013E224;
+	Tue, 23 Jan 2024 01:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975744; cv=none; b=ssKUo7RZY7UQWsTjGG00VkPJEWspvLWUtkBLIRUPfvQNcGxyH68tYpq+FzcmlczQ9e9nGUMvs7s/ZgacM3I0Lp1RWd6UlRIxenHeUqqy1zB+39/oJw56BIoBghagrgF25VsC9D0ZSMocmn4heR2mdMIF3+ej8WYmEKpEgiURYe0=
+	t=1705971998; cv=none; b=Yn3m/gapdV9ZMoNMn9yVKlTJWXGddxusETjtNJJbyyZroSpUW/P/UnRlL1BB4tBJ9ttIVeXM/zjZq5NzF7d/Yzsud/sBK+m2JLrRydR896vfhTG76W8xQhreJK0XnPh3hnj5dEMzhbcxswBpgx5W4JCEmL2wLPA9ehuu/fX9oLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975744; c=relaxed/simple;
-	bh=eUEREUW863k9qwK2ucoBLFHpLu1mRE8gBLJO0xU/npU=;
+	s=arc-20240116; t=1705971998; c=relaxed/simple;
+	bh=9qUwHSu+ptr9WUP1vPD1vchIwkPzJFhYnm/wpJXoMbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g9pMZXJEesrJDF7HKThQNVgCrfvpqqI6q7D6HZK+BDVOP69XV9PbF+PFYrHmokLtCZ4Ukuvj1Rj6/jOSK+4g9tJI1ncK8X0fMMCK6w1vIqJKw7ohfP09+2Odn6Np/4BYgT+rc7ChxzdIfl27A32gvy8mQQkwnzDsuMVY/kmWDYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2eWQuH32; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE072C433F1;
-	Tue, 23 Jan 2024 02:09:03 +0000 (UTC)
+	 MIME-Version; b=dvl6Oy6FFI9xhKidFiXYSp9ApYOJ4i6btPcnSkbAo33scSxH5iS+HeF0cEXnVLTO7RRKTT2mszBNZ3noFz1YXgLZ8mvS3PaCh0qjRXGC28KcAUrMS9v1yvHALWRld20b68zlOCfGHgvganlWX0qhEwQQQGE+IBPQf1KxfOq9k5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNZuFIq6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C1BC433C7;
+	Tue, 23 Jan 2024 01:06:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975743;
-	bh=eUEREUW863k9qwK2ucoBLFHpLu1mRE8gBLJO0xU/npU=;
+	s=korg; t=1705971997;
+	bh=9qUwHSu+ptr9WUP1vPD1vchIwkPzJFhYnm/wpJXoMbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2eWQuH3221lL8G1oME/qs5uda7HOouk56pdLF4kkiQu4lj3BpejdOSe/aC97DmiAD
-	 yi6oaMkc2IuFQ19kBWKDfZ943OSQU119p29qjlJUpd1xjCveQ+tuCklVZC+oYFJkP1
-	 8/ZGCNjsqSwWPlqnLYvbN+lFriym6nx78TS/ijLc=
+	b=LNZuFIq6Bvt5YcRtOOrlTTQ4DUZLCooPrQtxIoHTPTfN0NVrDBsd+YTYE4+stNddd
+	 5spCs9ZLkjD6uY7Fma7T14ThlS+FOc2+RSUwh0a0WImY1XpQ5u+X6gc7PwDyBpkXog
+	 cKDDSMVrgEjR8h9bDtO4CLF/8GvMiC8W00U40bD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taehee Yoo <ap420073@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 528/583] amt: do not use overwrapped cb area
+Subject: [PATCH 5.10 273/286] netfilter: nf_tables: reject NFT_SET_CONCAT with not field length description
 Date: Mon, 22 Jan 2024 15:59:39 -0800
-Message-ID: <20240122235828.261606422@linuxfoundation.org>
+Message-ID: <20240122235742.564882086@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taehee Yoo <ap420073@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit bec161add35b478a7746bf58bcdea6faa19129ef ]
+[ Upstream commit 113661e07460a6604aacc8ae1b23695a89e7d4b3 ]
 
-amt driver uses skb->cb for storing tunnel information.
-This job is worked before TC layer and then amt driver load tunnel info
-from skb->cb after TC layer.
-So, its cb area should not be overwrapped with CB area used by TC.
-In order to not use cb area used by TC, it skips the biggest cb
-structure used by TC, which was qdisc_skb_cb.
-But it's not anymore.
-Currently, biggest structure of TC's CB is tc_skb_cb.
-So, it should skip size of tc_skb_cb instead of qdisc_skb_cb.
+It is still possible to set on the NFT_SET_CONCAT flag by specifying a
+set size and no field description, report EINVAL in such case.
 
-Fixes: ec624fe740b4 ("net/sched: Extend qdisc control block with tc control block")
-Signed-off-by: Taehee Yoo <ap420073@gmail.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://lore.kernel.org/r/20240107144241.4169520-1-ap420073@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1b6345d4160e ("netfilter: nf_tables: check NFT_SET_CONCAT flag if field_count is specified")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/amt.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/netfilter/nf_tables_api.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/amt.c b/drivers/net/amt.c
-index 2d20be6ffb7e..ddd087c2c3ed 100644
---- a/drivers/net/amt.c
-+++ b/drivers/net/amt.c
-@@ -11,7 +11,7 @@
- #include <linux/net.h>
- #include <linux/igmp.h>
- #include <linux/workqueue.h>
--#include <net/sch_generic.h>
-+#include <net/pkt_sched.h>
- #include <net/net_namespace.h>
- #include <net/ip.h>
- #include <net/udp.h>
-@@ -80,11 +80,11 @@ static struct mld2_grec mldv2_zero_grec;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 7a1a21cde760..fca8f9a36063 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4466,8 +4466,12 @@ static int nf_tables_newset(struct net *net, struct sock *nlsk,
+ 		if (err < 0)
+ 			return err;
  
- static struct amt_skb_cb *amt_skb_cb(struct sk_buff *skb)
- {
--	BUILD_BUG_ON(sizeof(struct amt_skb_cb) + sizeof(struct qdisc_skb_cb) >
-+	BUILD_BUG_ON(sizeof(struct amt_skb_cb) + sizeof(struct tc_skb_cb) >
- 		     sizeof_field(struct sk_buff, cb));
- 
- 	return (struct amt_skb_cb *)((void *)skb->cb +
--		sizeof(struct qdisc_skb_cb));
-+		sizeof(struct tc_skb_cb));
- }
- 
- static void __amt_source_gc_work(void)
+-		if (desc.field_count > 1 && !(flags & NFT_SET_CONCAT))
++		if (desc.field_count > 1) {
++			if (!(flags & NFT_SET_CONCAT))
++				return -EINVAL;
++		} else if (flags & NFT_SET_CONCAT) {
+ 			return -EINVAL;
++		}
+ 	} else if (flags & NFT_SET_CONCAT) {
+ 		return -EINVAL;
+ 	}
 -- 
 2.43.0
 
