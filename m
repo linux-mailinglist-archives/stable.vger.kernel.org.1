@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-14381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 003F68380B9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:02:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8F658380BB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:02:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 332961C23A59
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:02:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 181CD1C23D8D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4B313342F;
-	Tue, 23 Jan 2024 01:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6669133437;
+	Tue, 23 Jan 2024 01:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrYBvlCJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q9p6MQiU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E99133419;
-	Tue, 23 Jan 2024 01:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AC1133435;
+	Tue, 23 Jan 2024 01:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971853; cv=none; b=PAl7DpELQ44SOXfuQWwCzGy4TXs6mFOhmZRfvnY861vt3hkq7nk11anfszYaVVR8sN1D8lJLx+huf7K4Cu0rBZDuCjdq2SoA+mPe/wWKjJiUN72lKtvaw5/9hnRb6sHhAqav6fJTZukgXMILibd54w63Y0iXcfzFxgnitRxmV6k=
+	t=1705971859; cv=none; b=AYa4WkrsBA4q9nl/FldEpBo/AOHTSpqixA0HP8lVGsXHCVOXIdmTZniuPPOsUmJtKFc+1rf/wwLSx4hMzlOK9tHHmu3eoPA2/Knt9WuDCd3BOr+O7PjjxwX3QJlBtD606lLNt1AmeobSCsyM7LXraPD/sn1MspQ4uvqdIrGU+LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971853; c=relaxed/simple;
-	bh=6eLs79bqc0S3ADdftTsq0hJHhYbBg/hKnWmWE1LdC1w=;
+	s=arc-20240116; t=1705971859; c=relaxed/simple;
+	bh=Rw1G3U4pMk2fFUTIoeOT3DXXQwdhLttm9bksex2HSQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fMWOStoxFEEJitwkNkZlQVIEZ3D88s0/R/FDPKlQxseJE2imls5/pFnWM0OEwVIviMwc3vkVLROkOoNyDownC1P/z46vCgXd9O45aY7L0UOEpCSGZmGOkIYbW5AEIQ8F6tLAAs7SyQa2p7BxY8edZ+hs8xT888vAuNRdnLJ6uOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrYBvlCJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 100C1C433F1;
-	Tue, 23 Jan 2024 01:04:12 +0000 (UTC)
+	 MIME-Version; b=rLaqBCS1WB2YgKmSZsy4WeRYcWYULyAoBymkHwjA1YK+tggrxv4MqikapT62iJfC0gsZLwTBkL8GCrexFzDzAf5RhXnUjVtFG/8QiZ7EIs0KzAW2bwkuX0QSjBqD+P9Vn7RU/pyT1slEZCEivPTVltXygRo8U47Zfx7v5/sEaew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q9p6MQiU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9CDC433F1;
+	Tue, 23 Jan 2024 01:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971853;
-	bh=6eLs79bqc0S3ADdftTsq0hJHhYbBg/hKnWmWE1LdC1w=;
+	s=korg; t=1705971859;
+	bh=Rw1G3U4pMk2fFUTIoeOT3DXXQwdhLttm9bksex2HSQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nrYBvlCJAsl1NhJAkUFe6uOORWI/dpWfEhfcXFc8Rj9N6XTCCG9RzRx1ilEtESnvq
-	 Yoba+/KK5HiHr3ATHxNfuFC3cmozxf/pV9AEjbSeDZfenBFLyB3X9mO935iZfInY1K
-	 LsD2bvllOaeFwqCqQx8chdXgHgrWAfzDGbdLxAT8=
+	b=Q9p6MQiUjp7ddampM4nzc1hsOaLhP4wDixOQtt7+zOnhr+no51/B+SEmaGn6p3t0q
+	 bh2nCUa4ZR2V/a18eyGsvLUYHNFb4cA7355Atesipz+8X+ekTqu6L6lqu6pq/Dlf/H
+	 dhD7H5YyyxIX3fOjvGdJ21mHq1KvuYsyYv0QqAP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 244/286] libapi: Add missing linux/types.h header to get the __u64 type on io.h
-Date: Mon, 22 Jan 2024 15:59:10 -0800
-Message-ID: <20240122235741.457859217@linuxfoundation.org>
+Subject: [PATCH 5.10 245/286] acpi: property: Let args be NULL in __acpi_node_get_property_reference
+Date: Mon, 22 Jan 2024 15:59:11 -0800
+Message-ID: <20240122235741.493358299@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
 References: <20240122235732.009174833@linuxfoundation.org>
@@ -69,37 +67,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit af76b2dec0984a079d8497bfa37d29a9b55932e1 ]
+[ Upstream commit bef52aa0f3de1b7d8c258c13b16e577361dabf3a ]
 
-There are functions using __u64, so we need to have the linux/types.h
-header otherwise we'll break when its not included before api/io.h.
+fwnode_get_property_reference_args() may not be called with args argument
+NULL on ACPI, OF already supports this. Add the missing NULL checks and
+document this.
 
-Fixes: e95770af4c4a280f ("tools api: Add a lightweight buffered reading api")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/lkml/ZWjDPL+IzPPsuC3X@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+The purpose is to be able to count the references.
+
+Fixes: 977d5ad39f3e ("ACPI: Convert ACPI reference args to generic fwnode reference args")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20231109101010.1329587-2-sakari.ailus@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/api/io.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/property.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/lib/api/io.h b/tools/lib/api/io.h
-index 777c20f6b604..458acd294237 100644
---- a/tools/lib/api/io.h
-+++ b/tools/lib/api/io.h
-@@ -9,6 +9,7 @@
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 80e92c298055..cf872dc5b07a 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -639,6 +639,7 @@ acpi_fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
+  * @index: Index of the reference to return
+  * @num_args: Maximum number of arguments after each reference
+  * @args: Location to store the returned reference with optional arguments
++ *	  (may be NULL)
+  *
+  * Find property with @name, verifify that it is a package containing at least
+  * one object reference and if so, store the ACPI device object pointer to the
+@@ -697,6 +698,9 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
+ 		if (ret)
+ 			return ret == -ENODEV ? -EINVAL : ret;
  
- #include <stdlib.h>
- #include <unistd.h>
-+#include <linux/types.h>
- 
- struct io {
- 	/* File descriptor being read/ */
++		if (!args)
++			return 0;
++
+ 		args->fwnode = acpi_fwnode_handle(device);
+ 		args->nargs = 0;
+ 		return 0;
 -- 
 2.43.0
 
