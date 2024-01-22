@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-13933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B386837EDF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:48:28 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B1A837D1B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B48631F2B838
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04E171C2865A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18DE45392;
-	Tue, 23 Jan 2024 00:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84DAB55C12;
+	Tue, 23 Jan 2024 00:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MASaJQdP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZMZcLyEE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB3C5384;
-	Tue, 23 Jan 2024 00:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434F855C09;
+	Tue, 23 Jan 2024 00:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970795; cv=none; b=h2wklDiSq0fgpByNLjV1ZVCozgQO/HiGkZoX2osf4lsQxLQ30srPAEUTru/Ngacs1LN4nOOxKYk7KGl4/ITrwRTFZ1ic3FGywlBTBq9V4NvEzQCTjzobq1HesTLgf51cyzLK6fnuFqh4KMlIqwq13z7kyN4+nrjZYbOvYAJOYLo=
+	t=1705969795; cv=none; b=dWnXxqOgd9UhLz/9Y/hqeJgRQfAcJ+q4fr8bmZv0H0IY8mWBn10Z359/g7kG3CcvvAJnVDcfrQZIdM8QIyckosDhE6vmVzHxwR62Fy79fQw6+wWJZXMG6fwR2CrPd1M1j/nORu1lM2J33Q3k7V7b650CscYDQ+eilID/AGT8a8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970795; c=relaxed/simple;
-	bh=N2c+abrP7ilTsTZLZJw2UusklnrZuyYMqhSkcoRzBj8=;
+	s=arc-20240116; t=1705969795; c=relaxed/simple;
+	bh=sQHw0GcVo/iUGzCE4qy94qzGrPJQigaSu/kXepFtLbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nH6cYk2b94iEwB8/4G8f4ke37Epdy6RbBfpJdMio0orkfjK6jJrP10DLtj4KO+XFla2Z1hurfJbsrPPPAS94G7BM4N3stgHiQmzuNJsyqG0/ze6/JKJ1iOo7VMrEJVuovHuU8HgGdx7+H14Ka/kZFQe4S/fiIAU1/Ke68nOzFy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MASaJQdP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0695EC43390;
-	Tue, 23 Jan 2024 00:46:34 +0000 (UTC)
+	 MIME-Version; b=ZfzsoqF0RiZDD/Z6CLB5XJXbaCwraoiHK2VfHwOHL6FZGJbi67J4jFfqIDoWYhBm6l9TFrrpOyTvR4CTN/PqJ4ly19WN94bDK3Zz8IAkRx0Y9UW/Dr0OlRNF7nHfquceceQ5u+rrYzXF4W1YaIlGoFd0enf662KdY5K+jZ2snoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZMZcLyEE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB20DC433F1;
+	Tue, 23 Jan 2024 00:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970795;
-	bh=N2c+abrP7ilTsTZLZJw2UusklnrZuyYMqhSkcoRzBj8=;
+	s=korg; t=1705969795;
+	bh=sQHw0GcVo/iUGzCE4qy94qzGrPJQigaSu/kXepFtLbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MASaJQdPe0nC/W4/WopOBLTacd2RwO4A1WWTmKvUW/Z67bo9tnYGoJVzYLlK8W3BI
-	 qVeXAhSwldfhjm/ZFJwyp1HKivANJkZpw+5qU9v9rpOeEwlw81ge+sFDWNPgRvAFrm
-	 uYAVHGJ19bMbPToLbhacr1Ucpa2qA/HOeZADl3Z0=
+	b=ZMZcLyEEp6AoDRFtBh245RJ8YtyovlriitqvBgS0P9lzMQHUaAN6JRgT4i9lGwutF
+	 gf315ubEkzpoHiHDHXcQ2i9Y2di0TUk1jOFx3DdIvaDJgNwPIM6Ib+uojHfPbcO1JC
+	 kRDUReaHiPnM1jfq+SZ3aYcdqqVKePV6mzONYJ1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 018/286] nvme: introduce helper function to get ctrl state
+	Yo-Jung Lin <leo.lin@canonical.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.7 420/641] ALSA: hda/realtek: Enable mute/micmute LEDs and limit mic boost on HP ZBook
 Date: Mon, 22 Jan 2024 15:55:24 -0800
-Message-ID: <20240122235732.727419692@linuxfoundation.org>
+Message-ID: <20240122235831.139996076@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Yo-Jung Lin <leo.lin@canonical.com>
 
-[ Upstream commit 5c687c287c46fadb14644091823298875a5216aa ]
+commit b018cee7369896c7a15bfdbe88f168f3dbd8ba27 upstream.
 
-The controller state is typically written by another CPU, so reading it
-should ensure no optimizations are taken. This is a repeated pattern in
-the driver, so start with adding a convenience function that returns the
-controller state with READ_ONCE().
+On some HP ZBooks, the audio LEDs can be enabled by
+ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF. So use it accordingly.
 
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Yo-Jung Lin <leo.lin@canonical.com>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240116020722.27236-1-leo.lin@canonical.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/nvme.h | 5 +++++
- 1 file changed, 5 insertions(+)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
-index c3e4d9b6f9c0..1e56fe8e8157 100644
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -354,6 +354,11 @@ struct nvme_ctrl {
- 	struct nvme_fault_inject fault_inject;
- };
- 
-+static inline enum nvme_ctrl_state nvme_ctrl_state(struct nvme_ctrl *ctrl)
-+{
-+	return READ_ONCE(ctrl->state);
-+}
-+
- enum nvme_iopolicy {
- 	NVME_IOPOLICY_NUMA,
- 	NVME_IOPOLICY_RR,
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9943,6 +9943,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8c71, "HP EliteBook 845 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c72, "HP EliteBook 865 G11", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8c96, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
++	SND_PCI_QUIRK(0x103c, 0x8c97, "HP ZBook", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8ca7, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8cf5, "HP ZBook Studio 16", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
 
 
 
