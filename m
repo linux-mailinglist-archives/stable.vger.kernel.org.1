@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B2E2838040
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACF31837DA7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F09BD1F2CAC5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFD2B1C26646
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A824465190;
-	Tue, 23 Jan 2024 01:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BDE859B61;
+	Tue, 23 Jan 2024 00:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dxOFZn9r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3LA4bl6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6832C4E1AD;
-	Tue, 23 Jan 2024 01:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A98E5914C;
+	Tue, 23 Jan 2024 00:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971626; cv=none; b=DIk9hdSfQAoLMhQTrzesG+1vFwRDz2toSiRirSJ9ZnsEeuGwiE6DDC3Nw9vUgXz/nPxU6UyvbAI9MLMeH7wUwBkz2osJfW8HGOZ77fpbNKd2nGoKG4zaIpv4q5WYUsOhANNZ042Y4uq9rihHKt5lrP/qgA0yxFsEFGEBNP6y7XY=
+	t=1705970107; cv=none; b=XJSz4QBE3S/0z+4CJM6R5vzhlbDqoYHbL/EFFJrkRWAcd+qaZKz6cPfnvq+kOsDu2X1/6maOCTXVrJDCbgaHtZOJA0aHVWfM5Fhh/3K47xmXK/3zjxdB8OGdHdro850f74WgOzmqhRaB5kN2mnO/UYZ2Uysg316Hi2ijurcmWAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971626; c=relaxed/simple;
-	bh=jc7j0ggAkd2cP3evenRSycxGSVMytnEwI/IkUpXO9JE=;
+	s=arc-20240116; t=1705970107; c=relaxed/simple;
+	bh=REZaYdpOqw7EuGlUgmzBpgeDxX+JyGGVH/nh1N2jQ/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HKG8xpCrhv7KKfX+EltHMSqphWWUsdFSuGeFoVzfMtw2weP/Z1D0zBcPDNyxshCwSuCAmZwkr+NZ0hI3XCona34frqcF1udYbasFXO3enV3r3jwsg0HsYFQNq0EZS/ypyMBrP04ELqJbBb8XaIAW77dN/omYLwUHGXIb2txLoMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxOFZn9r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F052CC433C7;
-	Tue, 23 Jan 2024 01:00:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aK0eatYmOcoz5e4cqsIv/72WiURBIl44wLbcueMp2iGnEdeeazES071tjSMK/J56NkABEJ8b93uOz22fKQ6CgpOLaMepRd5ihAuQqceuh/waSwhqhcRgfoLzi8nvEPfzTe1EI8nmJrRDFeVAtjxdt+gOAEfetXxOt3KlOTgUeik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3LA4bl6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E9FC433F1;
+	Tue, 23 Jan 2024 00:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971626;
-	bh=jc7j0ggAkd2cP3evenRSycxGSVMytnEwI/IkUpXO9JE=;
+	s=korg; t=1705970107;
+	bh=REZaYdpOqw7EuGlUgmzBpgeDxX+JyGGVH/nh1N2jQ/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dxOFZn9rEA7XQwnZUP0qo3NS5K5BvE/B9aq7G+NcDNbiKXVU4zlI8ihZ+fhqZjAQY
-	 u+zxQJsypcbzatmKTt/wAH3wNhPtZdKh+x80+h1DeMS3VLxwPld2lwbRayFeDpdnfB
-	 j2OtcW36zQ0C23cAXllqjz/08c/1Zdmlyfu7JcpY=
+	b=D3LA4bl6GoLsIv1X03TQ2gjy3Ykw6v1i0xor+ab84pvEIhdmBphvJCSRylHHA6gqh
+	 ZxDX2S6vp4+7vqoFLpXtB9IiJ/mP/CxOmw2IaizMaPNiZ+rX95Dk8GD//5KsuYN+P3
+	 tdOfslUTcBh+bYYn1eDq1IiwgJ1TiPFt2YKVbnpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 188/286] clk: fixed-rate: fix clk_hw_register_fixed_rate_with_accuracy_parent_hw
+Subject: [PATCH 6.7 590/641] ALSA: hda: Properly setup HDMI stream
 Date: Mon, 22 Jan 2024 15:58:14 -0800
-Message-ID: <20240122235739.368847921@linuxfoundation.org>
+Message-ID: <20240122235836.681159604@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,53 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Théo Lebrun <theo.lebrun@bootlin.com>
+From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
 
-[ Upstream commit ee0cf5e07f44a10fce8f1bfa9db226c0b5ecf880 ]
+[ Upstream commit 454abb80e26ab85323a30e52aa7b0ee9aae1d38a ]
 
-Add missing comma and remove extraneous NULL argument. The macro is
-currently used by no one which explains why the typo slipped by.
+Since commit 4005d1ba0a7e ("ASoC: soc-dai: don't call PCM audio ops if
+the stream is not supported") HDMI playback is broken with avs driver.
+This happens because for HDMI stream (unlike generic HDA one)
+channels_min for stream is not set when creating PCMs. Fix this by
+setting the value based on first available converter.
 
-Fixes: 2d34f09e79c9 ("clk: fixed-rate: Add support for specifying parents via DT/pointers")
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Link: https://lore.kernel.org/r/20231218-mbly-clk-v1-1-44ce54108f06@bootlin.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 4005d1ba0a7e ("ASoC: soc-dai: don't call PCM audio ops if the stream is not supported")
+Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://lore.kernel.org/r/20240112113349.2905328-1-amadeuszx.slawinski@linux.intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/clk-provider.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_hdmi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/include/linux/clk-provider.h b/include/linux/clk-provider.h
-index 76f02b214f39..6fa85be64b89 100644
---- a/include/linux/clk-provider.h
-+++ b/include/linux/clk-provider.h
-@@ -434,8 +434,8 @@ struct clk *clk_register_fixed_rate(struct device *dev, const char *name,
-  */
- #define clk_hw_register_fixed_rate_with_accuracy_parent_hw(dev, name,	      \
- 		parent_hw, flags, fixed_rate, fixed_accuracy)		      \
--	__clk_hw_register_fixed_rate((dev), NULL, (name), NULL, (parent_hw)   \
--				     NULL, NULL, (flags), (fixed_rate),	      \
-+	__clk_hw_register_fixed_rate((dev), NULL, (name), NULL, (parent_hw),  \
-+				     NULL, (flags), (fixed_rate),	      \
- 				     (fixed_accuracy), 0, false)
- /**
-  * clk_hw_register_fixed_rate_with_accuracy_parent_data - register fixed-rate
+diff --git a/sound/pci/hda/patch_hdmi.c b/sound/pci/hda/patch_hdmi.c
+index 78cee53fee02..038db8902c9e 100644
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -2301,6 +2301,7 @@ static int generic_hdmi_build_pcms(struct hda_codec *codec)
+ 	codec_dbg(codec, "hdmi: pcm_num set to %d\n", pcm_num);
+ 
+ 	for (idx = 0; idx < pcm_num; idx++) {
++		struct hdmi_spec_per_cvt *per_cvt;
+ 		struct hda_pcm *info;
+ 		struct hda_pcm_stream *pstr;
+ 
+@@ -2316,6 +2317,11 @@ static int generic_hdmi_build_pcms(struct hda_codec *codec)
+ 		pstr = &info->stream[SNDRV_PCM_STREAM_PLAYBACK];
+ 		pstr->substreams = 1;
+ 		pstr->ops = generic_ops;
++
++		per_cvt = get_cvt(spec, 0);
++		pstr->channels_min = per_cvt->channels_min;
++		pstr->channels_max = per_cvt->channels_max;
++
+ 		/* pcm number is less than pcm_rec array size */
+ 		if (spec->pcm_used >= ARRAY_SIZE(spec->pcm_rec))
+ 			break;
 -- 
 2.43.0
 
