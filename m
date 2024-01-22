@@ -1,58 +1,67 @@
-Return-Path: <stable+bounces-14444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EA288380F1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A15A8384EA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA1F6289EC6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 205D41F26E0D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B99E13AA2D;
-	Tue, 23 Jan 2024 01:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748B577F27;
+	Tue, 23 Jan 2024 02:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uW+ODIlG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QEQuAHF3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02ED1350CA;
-	Tue, 23 Jan 2024 01:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3363277F23;
+	Tue, 23 Jan 2024 02:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971972; cv=none; b=XqOq0HXbOSd4eXku1dyIYxEvWj63WKlFMp8haubp5K5cDNFatsuGUI6b4XYIBMHCJWUS59Q68eJUizwARuMDhZSLdV8rQ/pubf+RNBL44ZQXS5HRACPeVekVjA8PvcOEpWGM9CFt7jfkJTAZLR0mDciBeFgvnuETYSWpI952cWg=
+	t=1705975534; cv=none; b=ZZrxYX1NagpNHFjUK676hUCXFL/hmeGEKBQNjvy0nn3xqKLTNPwiAAaqDIMVof3vxJV1sx3XZuxHWu0jATocaJgUpq6RGFx/3KJCaGPBAKrwcKg2wEG1XUMAtqeBV07+Ci3FpV9H2u/dEsadz2VOEa4wdHidQ7p64GZOuyjx6Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971972; c=relaxed/simple;
-	bh=Nqcwc2vJDbf7boSZmSCQ9jzXxhKJThbcj2iBXy6LCYE=;
+	s=arc-20240116; t=1705975534; c=relaxed/simple;
+	bh=k8SrcaUi8yz025xytcjJu2TNcXoc5JEBpyl985XPKJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gvWgFG5iToie71O1U/GWWtZZ4Unyy1zYp23GzCE7AggkGRRjmErpIiDrmUa7Ljxzp4Y2jh58+XY3tzoINfCCg3LXyri6FhS6iS748bJCVdJf6CbTGEPdnVd4f6oBLiDXjzm9gSGF8FEBL+/ud27HiSLJy/Q9AkxwxpP3xd455EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uW+ODIlG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60EADC433C7;
-	Tue, 23 Jan 2024 01:06:12 +0000 (UTC)
+	 MIME-Version; b=p3izmusBdOdVZE30FEhZgWy1k1szPrKYxiUVOj4iZC0MFmP7FH76sHbwwTS1KS8oCy3dsdTl3/4gxLMsl6R+6bBJ7o4tEV4mauuV1Q7kfwbpfTfKdeliapN9PxT7AX3RsKmw3mp5TJdMsRk/hPZXTDv9hgT1cnpPuhRDBgobnG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QEQuAHF3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8098C43399;
+	Tue, 23 Jan 2024 02:05:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971972;
-	bh=Nqcwc2vJDbf7boSZmSCQ9jzXxhKJThbcj2iBXy6LCYE=;
+	s=korg; t=1705975534;
+	bh=k8SrcaUi8yz025xytcjJu2TNcXoc5JEBpyl985XPKJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uW+ODIlGsMlvr0CzSvLOjZCv7FhdqcvHIFhX/2ATUJC8bra++juKlL3HFTtptuaZB
-	 X0LSWorr9LjZya2ka/BV+8cDzrBy6PKAulcWHwCIYNReQa7F9mDW86uIp8Jvk34qX8
-	 /Xg+PHRfVZrhejoljZVE+iwp96u3B4N7TgY90Ah0=
+	b=QEQuAHF3uRMxhl/vaRvhpKy5E7RdCOBMtPVrNs/8PQyBz1hDz99xTW3+aH1+6rwT6
+	 pS/tWPYreTv9Ktj0EwgZdDumfb9Ym26EsELB+qNYsIvbgR/kMsw6xsVaL1AjODjfW4
+	 vPnnRariop/A1lJvyLG2fj7e/2tGqW/4pXJQs5G0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Harris <jim.harris@samsung.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Fan Ni <fan.ni@samsung.com>,
-	Dan Williams <dan.j.williams@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Namhyung Kim <Namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Junhao He <hejunhao3@huawei.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Qi Liu <liuqi115@huawei.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 367/417] cxl/region: fix x9 interleave typo
+Subject: [PATCH 6.6 484/583] perf hisi-ptt: Fix one memory leakage in hisi_ptt_process_auxtrace_event()
 Date: Mon, 22 Jan 2024 15:58:55 -0800
-Message-ID: <20240122235804.531553215@linuxfoundation.org>
+Message-ID: <20240122235826.816023919@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +73,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Harris <jim.harris@samsung.com>
+From: Yicong Yang <yangyicong@hisilicon.com>
 
-[ Upstream commit c7ad3dc3649730af483ee1e78be5d0362da25bfe ]
+[ Upstream commit 1bc479d665bc25a9a4e8168d5b400a47491511f9 ]
 
-CXL supports x3, x6 and x12 - not x9.
+ASan complains a memory leakage in hisi_ptt_process_auxtrace_event()
+that the data buffer is not freed. Since currently we only support the
+raw dump trace mode, the data buffer is used only within this function.
+So fix this by freeing the data buffer before going out.
 
-Fixes: 80d10a6cee050 ("cxl/region: Add interleave geometry attributes")
-Signed-off-by: Jim Harris <jim.harris@samsung.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Reviewed-by: Fan Ni <fan.ni@samsung.com>
-Link: https://lore.kernel.org/r/169904271254.204936.8580772404462743630.stgit@ubuntu
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Fixes: 5e91e57e68090c0e ("perf auxtrace arm64: Add support for parsing HiSilicon PCIe Trace packet")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+Acked-by: Namhyung Kim <Namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
+Cc: Junhao He <hejunhao3@huawei.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Qi Liu <liuqi115@huawei.com>
+Link: https://lore.kernel.org/r/20231207081635.8427-3-yangyicong@huawei.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/region.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/hisi-ptt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
-index ebc1b028555c..2f7187dbfa2d 100644
---- a/drivers/cxl/core/region.c
-+++ b/drivers/cxl/core/region.c
-@@ -331,7 +331,7 @@ static ssize_t interleave_ways_store(struct device *dev,
- 		return rc;
+diff --git a/tools/perf/util/hisi-ptt.c b/tools/perf/util/hisi-ptt.c
+index 45b614bb73bf..764d660d30e2 100644
+--- a/tools/perf/util/hisi-ptt.c
++++ b/tools/perf/util/hisi-ptt.c
+@@ -121,6 +121,7 @@ static int hisi_ptt_process_auxtrace_event(struct perf_session *session,
+ 	if (dump_trace)
+ 		hisi_ptt_dump_event(ptt, data, size);
  
- 	/*
--	 * Even for x3, x9, and x12 interleaves the region interleave must be a
-+	 * Even for x3, x6, and x12 interleaves the region interleave must be a
- 	 * power of 2 multiple of the host bridge interleave.
- 	 */
- 	if (!is_power_of_2(val / cxld->interleave_ways) ||
++	free(data);
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
