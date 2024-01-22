@@ -1,211 +1,209 @@
-Return-Path: <stable+bounces-12733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3B23837138
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:56:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21EEB837155
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 19:58:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22AB91C29B02
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 18:56:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1333928C324
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 18:57:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE334C63C;
-	Mon, 22 Jan 2024 18:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8254D118;
+	Mon, 22 Jan 2024 18:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="S42M0xr7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sbF57wLp"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C50D64C62D
-	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 18:23:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EE24D10E;
+	Mon, 22 Jan 2024 18:26:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705947788; cv=none; b=HfEgkK0o3rwW8saFYAQ0aXIbX8kueLh4cuDzqkilGx6zazzpOnXwvcvXWJrPqWX8VMszdo9Y81Ae+RyK7yn/U2ud5FeitW7UMgtrUyxd3qnlMB4QGyDVFaAFKuTlTqKK7+nCOs4FlTSw6tsBE6PDoXpKL0rGpIlaOtD6ei34UFg=
+	t=1705947977; cv=none; b=m04GXNAyYGtrC+z93+dE6i2lm9nM8txf3aByv7nwd+ZbPTtupdfX1zU//SGHxgAVPeMO8dBDkGIr4or+50peMJZHqzP2mCnRLu7RsOZLTcif/sgejgmBac6rgeEFZxQts6soaL0HAWOZgTEBsDVtv2futT4qqzHorP/nAJSe/TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705947788; c=relaxed/simple;
-	bh=MEW5d+779EpaSh3J+cQL13xl8RKqWQdYIyKAMo1f1B0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ql7XbTcX7dRs4YDx62EbEggldaDEmrIOYczcWPddrlnnWJxPntL6Hq7y52o8GWpu+5/YBHSaw6qysNMOZVwmVWwRBh7FqZBwoFAPQWqoD7kgjQGUjWmcy5H4fc59C8IAmplZsbrJKgnSm8Z2QCU4r6XMREuMYGUS2vDxEEXEe24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=S42M0xr7; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1705947784;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=u+h+8Ws5ampbuVbsEr/yuuau7lwHpAgGkopNi0+tbUU=;
-	b=S42M0xr7Qdr3R7W8U+sG2GggNLx+6F8RLCE+AE7WITJZRwDOpS0d3kDmHGq+DkgRge5U+M
-	devwxO+CRUpoE7EJ8BGsw+XVKBrP332+Qo38zsh87X/sJghlysBHjeZ8y2jzYcXFjdGmMH
-	97TYtUaJi6XqhBDLqQ0NSEWBNrXY0wY=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-414-76xy8_G0PYmiHLAn6641xg-1; Mon, 22 Jan 2024 13:23:01 -0500
-X-MC-Unique: 76xy8_G0PYmiHLAn6641xg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 768E885A588;
-	Mon, 22 Jan 2024 18:23:00 +0000 (UTC)
-Received: from fedora.redhat.com (unknown [10.39.192.175])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id DCEED1C060AF;
-	Mon, 22 Jan 2024 18:22:57 +0000 (UTC)
-From: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
-To: masahiroy@kernel.org
-Cc: dcavalca@meta.com,
-	jtornosm@redhat.com,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	nathan@kernel.org,
-	ndesaulniers@google.com,
-	nicolas@fjasle.eu,
-	stable@vger.kernel.org
-Subject: [PATCH] rpm-pkg: simplify installkernel %post
-Date: Mon, 22 Jan 2024 19:22:53 +0100
-Message-ID: <20240122182253.17973-1-jtornosm@redhat.com>
-In-Reply-To: <CAK7LNAQCiBtQ3kQznPDKtkD83wpCzodPVDs8eFnfnx5=Y8E5Cw@mail.gmail.com>
-References: <CAK7LNAQCiBtQ3kQznPDKtkD83wpCzodPVDs8eFnfnx5=Y8E5Cw@mail.gmail.com>
+	s=arc-20240116; t=1705947977; c=relaxed/simple;
+	bh=xqaElstZ6Be2KexYuJuX9vmqnmJZ8Y7gmDJsiNOQ56Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=Wo/96XAL3APwKThy/wSaTZmAjibcnyquk1LWdobjDYwgPU4sCmVaCwsBOgK9XE2U2QL0NcOuTYtw0NmmNwpAjD++qSaJZxatxH6AVMhwoYq1xUAGqtzFctdh2onVX4zF/YcatYXWpZ81oBEGxYa4pkCKrvBHHAQtTQNo8X1n3rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sbF57wLp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1769C433C7;
+	Mon, 22 Jan 2024 18:26:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705947977;
+	bh=xqaElstZ6Be2KexYuJuX9vmqnmJZ8Y7gmDJsiNOQ56Q=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=sbF57wLpzO4Po/5GpjgYQjSECzQjLbxSiNv/RKB8wRHfNNYDrfybv1BM0T+rwpu13
+	 WXBW4KZf0YWrt1XaNQpp3Hl67mdkmKjBMm10UrSe1YtlB/jlWvemQbqfZuLtOPugV7
+	 w7zmscDHsgJyt9pCLUdy4K+WKwdOJJpQ3FOQmgSkL2jGVV98ELA1IJyO15yK9on5jV
+	 VC9xEDPpXQjYMabsXM2bkSsDb+HZW462zvO1CPzN+F7m0wmEkizHIv1x1NG7IONcso
+	 8MTlsPoksu0gnKedabN5/EDAjZJhLwQE5iKmSugXt0ALOpa2XjuZhtiIBNbXTIbBTi
+	 EA0XaD5Y4jSgA==
+Date: Mon, 22 Jan 2024 12:26:15 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Johan Hovold <johan@kernel.org>
+Cc: Michael Schaller <michael@5challer.de>,
+	Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	regressions@lists.linux.dev,
+	"Maciej W . Rozycki" <macro@orcam.me.uk>,
+	Ajay Agarwal <ajayagarwal@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, stable@vger.kernel.org,
+	regressions@leemhuis.info
+Subject: Re: PCI/ASPM locking regression in 6.7-final (was: Re: [PATCH]
+ Revert "PCI/ASPM: Remove pcie_aspm_pm_state_change()")
+Message-ID: <20240122182615.GA277100@bhelgaas>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Za5JLxRC-K20sIfG@hovoldconsulting.com>
 
-The new installkernel application that is now included in systemd-udev
-package allows installation although destination files are already present
-in the boot directory of the kernel package, but is failing with the
-implemented workaround for the old installkernel application from grubby
-package.
+On Mon, Jan 22, 2024 at 11:53:35AM +0100, Johan Hovold wrote:
+> Hi Bjorn,
+> 
+> I never got a reply to this one so resending with updated Subject in
+> case it got buried in your inbox.
 
-For the new installkernel application, as Davide says:
-<<The %post currently does a shuffling dance before calling installkernel.
-This isn't actually necessary afaict, and the current implementation
-ends up triggering downstream issues such as
-https://github.com/systemd/systemd/issues/29568
-This commit simplifies the logic to remove the shuffling. For reference,
-the original logic was added in commit 3c9c7a14b627("rpm-pkg: add %post
-section to create initramfs and grub hooks").>>
+I did see it but decided it was better to fix the problem with resume
+causing an unintended reboot, even though fixing that meant breaking
+lockdep again, since I don't think we have user reports of the
+potential deadlock lockdep finds.
 
-But we need to keep the old behavior as well, because the old installkernel
-application from grubby package, does not allow this simplification and
-we need to be backward compatible to avoid issues with the different
-packages.
+08d0cc5f3426 ("PCI/ASPM: Remove pcie_aspm_pm_state_change()") was a
+start at fixing other problems and also improving the ASPM style, so I
+hope somebody steps up to fix both it and the lockdep issue.  I
+haven't looked at it enough to have a preference for *how* to fix it.
 
-Mimic Fedora shipping process and store vmlinuz, config amd System.map
-in the module directory instead of the boot directory. In this way, we will
-avoid the commented problem for all the cases, because the new destination
-files are not going to exist in the boot directory of the kernel package.
+Bjorn
 
-Replace installkernel tool with kernel-install tool, because the latter is
-more complete.
-
-Besides, after installkernel tool execution, check to complete if the
-correct package files vmlinuz, System.map and config files are present
-in /boot directory, and if necessary, copy manually for install operation.
-In this way, take into account if  files were not previously copied from
-/usr/lib/kernel/install.d/* scripts and if the suitable files for the
-requested package are present (it could be others if the rpm files were
-replace with a new pacakge with the same release and a different build).
-
-Tested with Fedora 38, Fedora 39, RHEL 9, Oracle Linux 9.3,
-openSUSE Tumbleweed and openMandrive ROME, using dnf/zypper and rpm tools.
-
-cc: stable@vger.kernel.org
-Co-Developed-by: Davide Cavalca <dcavalca@meta.com>
-Signed-off-by: Jose Ignacio Tornos Martinez <jtornosm@redhat.com>
----
-V1 -> V2:
-- Complete to be backward compatible with the previous installkernel
-application.
-V2 -> V3:
-- Follow the suggestions from Masahiro Yamada and change the installation
-destination to avoid problems instead of checking the package.
-V3 -> V4:
-- Make the patch applicable to linux-kbuild/for-next (ia64 support was
-already removed).
-V4 -> V5:
-- Complete for other Linux distributions.
-V5 -> V6
-- Simplify and do more compatible checks when copied files wants to be
-  replaced.
-- Remove %preun because it will be better done with another patch.
-- Add indentation and quotation
-
- scripts/package/kernel.spec | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
-
-diff --git a/scripts/package/kernel.spec b/scripts/package/kernel.spec
-index 89298983a169..0bff257ec3d4 100644
---- a/scripts/package/kernel.spec
-+++ b/scripts/package/kernel.spec
-@@ -55,12 +55,12 @@ patch -p1 < %{SOURCE2}
- %{make} %{makeflags} KERNELRELEASE=%{KERNELRELEASE} KBUILD_BUILD_VERSION=%{release}
- 
- %install
--mkdir -p %{buildroot}/boot
--cp $(%{make} %{makeflags} -s image_name) %{buildroot}/boot/vmlinuz-%{KERNELRELEASE}
-+mkdir -p %{buildroot}/lib/modules/%{KERNELRELEASE}
-+cp $(%{make} %{makeflags} -s image_name) %{buildroot}/lib/modules/%{KERNELRELEASE}/vmlinuz
- %{make} %{makeflags} INSTALL_MOD_PATH=%{buildroot} modules_install
- %{make} %{makeflags} INSTALL_HDR_PATH=%{buildroot}/usr headers_install
--cp System.map %{buildroot}/boot/System.map-%{KERNELRELEASE}
--cp .config %{buildroot}/boot/config-%{KERNELRELEASE}
-+cp System.map %{buildroot}/lib/modules/%{KERNELRELEASE}
-+cp .config %{buildroot}/lib/modules/%{KERNELRELEASE}/config
- ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot}/lib/modules/%{KERNELRELEASE}/build
- %if %{with_devel}
- %{make} %{makeflags} run-command KBUILD_RUN_COMMAND='${srctree}/scripts/package/install-extmod-build %{buildroot}/usr/src/kernels/%{KERNELRELEASE}'
-@@ -70,31 +70,31 @@ ln -fns /usr/src/kernels/%{KERNELRELEASE} %{buildroot}/lib/modules/%{KERNELRELEA
- rm -rf %{buildroot}
- 
- %post
--if [ -x /sbin/installkernel -a -r /boot/vmlinuz-%{KERNELRELEASE} -a -r /boot/System.map-%{KERNELRELEASE} ]; then
--cp /boot/vmlinuz-%{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm
--cp /boot/System.map-%{KERNELRELEASE} /boot/.System.map-%{KERNELRELEASE}-rpm
--rm -f /boot/vmlinuz-%{KERNELRELEASE} /boot/System.map-%{KERNELRELEASE}
--/sbin/installkernel %{KERNELRELEASE} /boot/.vmlinuz-%{KERNELRELEASE}-rpm /boot/.System.map-%{KERNELRELEASE}-rpm
--rm -f /boot/.vmlinuz-%{KERNELRELEASE}-rpm /boot/.System.map-%{KERNELRELEASE}-rpm
-+if [ -x /usr/bin/kernel-install ]; then
-+	/usr/bin/kernel-install add %{KERNELRELEASE} /lib/modules/%{KERNELRELEASE}/vmlinuz
- fi
-+for file in vmlinuz System.map config; do
-+	if [ ! -e "/boot/${file}-%{KERNELRELEASE}" ] || ! cmp --silent "/lib/modules/%{KERNELRELEASE}/${file}" "/boot/${file}-%{KERNELRELEASE}"; then
-+		cp "/lib/modules/%{KERNELRELEASE}/${file}" "/boot/${file}-%{KERNELRELEASE}"
-+	fi
-+done
- 
- %preun
- if [ -x /sbin/new-kernel-pkg ]; then
--new-kernel-pkg --remove %{KERNELRELEASE} --rminitrd --initrdfile=/boot/initramfs-%{KERNELRELEASE}.img
-+	new-kernel-pkg --remove %{KERNELRELEASE} --rminitrd --initrdfile=/boot/initramfs-%{KERNELRELEASE}.img
- elif [ -x /usr/bin/kernel-install ]; then
--kernel-install remove %{KERNELRELEASE}
-+	/usr/bin/kernel-install remove %{KERNELRELEASE}
- fi
- 
- %postun
- if [ -x /sbin/update-bootloader ]; then
--/sbin/update-bootloader --remove %{KERNELRELEASE}
-+	/sbin/update-bootloader --remove %{KERNELRELEASE}
- fi
- 
- %files
- %defattr (-, root, root)
- /lib/modules/%{KERNELRELEASE}
- %exclude /lib/modules/%{KERNELRELEASE}/build
--/boot/*
- 
- %files headers
- %defattr (-, root, root)
--- 
-2.43.0
-
+> On Mon, Jan 08, 2024 at 09:39:07AM +0100, Johan Hovold wrote:
+>  
+> > On Tue, Jan 02, 2024 at 05:25:50PM -0600, Bjorn Helgaas wrote:
+> > > From: Bjorn Helgaas <bhelgaas@google.com>
+> > > 
+> > > This reverts commit 08d0cc5f34265d1a1e3031f319f594bd1970976c.
+> > > 
+> > > Michael reported that when attempting to resume from suspend to RAM on ASUS
+> > > mini PC PN51-BB757MDE1 (DMI model: MINIPC PN51-E1), 08d0cc5f3426
+> > > ("PCI/ASPM: Remove pcie_aspm_pm_state_change()") caused a 12-second delay
+> > > with no output, followed by a reboot.
+> > > 
+> > > Workarounds include:
+> > > 
+> > >   - Reverting 08d0cc5f3426 ("PCI/ASPM: Remove pcie_aspm_pm_state_change()")
+> > >   - Booting with "pcie_aspm=off"
+> > >   - Booting with "pcie_aspm.policy=performance"
+> > >   - "echo 0 | sudo tee /sys/bus/pci/devices/0000:03:00.0/link/l1_aspm"
+> > >     before suspending
+> > >   - Connecting a USB flash drive
+> > > 
+> > > Fixes: 08d0cc5f3426 ("PCI/ASPM: Remove pcie_aspm_pm_state_change()")
+> > > Reported-by: Michael Schaller <michael@5challer.de>
+> > > Link: https://lore.kernel.org/r/76c61361-b8b4-435f-a9f1-32b716763d62@5challer.de
+> > > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> > > Cc: <stable@vger.kernel.org>
+> > > ---
+> >  
+> > > +/* @pdev: the root port or switch downstream port */
+> > > +void pcie_aspm_pm_state_change(struct pci_dev *pdev)
+> > > +{
+> > > +	struct pcie_link_state *link = pdev->link_state;
+> > > +
+> > > +	if (aspm_disabled || !link)
+> > > +		return;
+> > > +	/*
+> > > +	 * Devices changed PM state, we should recheck if latency
+> > > +	 * meets all functions' requirement
+> > > +	 */
+> > > +	down_read(&pci_bus_sem);
+> > > +	mutex_lock(&aspm_lock);
+> > > +	pcie_update_aspm_capable(link->root);
+> > > +	pcie_config_aspm_path(link);
+> > > +	mutex_unlock(&aspm_lock);
+> > > +	up_read(&pci_bus_sem);
+> > > +}
+> > 
+> > This function is now restored in 6.7 final and is called in paths which
+> > already hold the pci_bus_sem as reported by lockdep (see splat below).
+> > 
+> > This can potentially lead to a deadlock and specifically prevents using
+> > lockdep on Qualcomm platforms.
+> > 
+> > Not sure if you want to propagate whether the bus semaphore is held to
+> > pcie_aspm_pm_state_change() or if there was some alternative to
+> > restoring this function which should be explored instead.
+> 
+> So to summarise, this patch, which is now commit
+> 
+> 	f93e71aea6c6 ("Revert "PCI/ASPM: Remove pcie_aspm_pm_state_change()"")
+> 
+> introduced a regression in 6.7-final for Qualcomm platforms (and some
+> Intel platforms) similar to the one recently fixed by commit
+> 
+> 	f352ce999260 ("PCI: qcom: Fix potential deadlock when enabling ASPM").
+> 
+> Johan
+> 
+> 
+> #regzbot introduced: f93e71aea6c6
+> 
+> >    ============================================
+> >    WARNING: possible recursive locking detected
+> >    6.7.0 #40 Not tainted
+> >    --------------------------------------------
+> >    kworker/u16:5/90 is trying to acquire lock:
+> >    ffffacfa78ced000 (pci_bus_sem){++++}-{3:3}, at: pcie_aspm_pm_state_change+0x58/0xdc
+> >    pcieport 0002:00:00.0: PME: Signaling with IRQ 197
+> >    
+> >                but task is already holding lock:
+> >    ffffacfa78ced000 (pci_bus_sem){++++}-{3:3}, at: pci_walk_bus+0x34/0xbc
+> >    
+> >                other info that might help us debug this:
+> >     Possible unsafe locking scenario:
+> > 
+> >           CPU0
+> >           ----
+> >      lock(pci_bus_sem);
+> >      lock(pci_bus_sem);
+> >    
+> >                 *** DEADLOCK ***
+> > 
+> >     May be due to missing lock nesting notation
+> > 
+> >    4 locks held by kworker/u16:5/90:
+> >     #0: ffff06c5c0008d38 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x150/0x53c
+> >     #1: ffff800081c0bdd0 ((work_completion)(&entry->work)){+.+.}-{0:0}, at: process_one_work+0x150/0x53c
+> >     #2: ffff06c5c0b7d0f8 (&dev->mutex){....}-{3:3}, at: __driver_attach_async_helper+0x3c/0xf4
+> >     #3: ffffacfa78ced000 (pci_bus_sem){++++}-{3:3}, at: pci_walk_bus+0x34/0xbc
+> >    
+> >                stack backtrace:
+> >    CPU: 1 PID: 90 Comm: kworker/u16:5 Not tainted 6.7.0 #40
+> >    Hardware name: LENOVO 21BYZ9SRUS/21BYZ9SRUS, BIOS N3HET53W (1.25 ) 10/12/2022
+> >    Workqueue: events_unbound async_run_entry_fn
+> >    Call trace:
+> >     dump_backtrace+0x9c/0x11c
+> >     show_stack+0x18/0x24
+> >     dump_stack_lvl+0x60/0xac
+> >     dump_stack+0x18/0x24
+> >     print_deadlock_bug+0x25c/0x348
+> >     __lock_acquire+0x10a4/0x2064
+> >     lock_acquire+0x1e8/0x318
+> >     down_read+0x60/0x184
+> >     pcie_aspm_pm_state_change+0x58/0xdc
+> >     pci_set_full_power_state+0xa8/0x114
+> >     pci_set_power_state+0xc4/0x120
+> >     qcom_pcie_enable_aspm+0x1c/0x3c [pcie_qcom]
+> >     pci_walk_bus+0x64/0xbc
+> >     qcom_pcie_host_post_init_2_7_0+0x28/0x34 [pcie_qcom]
 
