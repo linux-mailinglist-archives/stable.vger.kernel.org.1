@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-14169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54648837FCB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A11BF83848E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:35:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C0251F2A9B4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5902D299A82
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 393A012BE9B;
-	Tue, 23 Jan 2024 00:55:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112BD73165;
+	Tue, 23 Jan 2024 02:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0T8TCPYX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dTXk4XZ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0BA64CDA;
-	Tue, 23 Jan 2024 00:55:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CD26EB68;
+	Tue, 23 Jan 2024 02:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971352; cv=none; b=VTprhIDouoFu7x6B3IvHNQO5bTe9vOUoJxATFjMG0gkWC11o37O/Bx4UA/bxM5qpNNDSYdJiFms+eTjswXjgbyukNmLzQhpTzZNXq1RckyLCQ+0KnG4JiFrBzNIoHdAiHPNPnDRh1NwYnfzzhG+H7p9i507aFwS9V1etI260a+k=
+	t=1705975421; cv=none; b=uik4TWpx8l9bhlbSrrg/PYMD94GaGZMnpDvjSc4LKC3o0EUJHwj7+NhwwB89hy7T1yUQ1mBGbyK9d1E+r7PC6LMs6y8tFBwYxE/UOvQB85XWF6V2ftrPqFPdR/ih0omKQg0ScDBg6eznqtZ9ICV8d5HGzjMQVwb94Nbg9nbKGuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971352; c=relaxed/simple;
-	bh=+psj2OCeobZLFsF4iDD5m8lGQFE2kVyuDf0xfsogGvg=;
+	s=arc-20240116; t=1705975421; c=relaxed/simple;
+	bh=1T4SPQjZWjfSvE8LUvM1gtsF2l2mh41IvUMbVh3NEnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YR9S5Q+DkgyJBMdI58wMi+rMYAjPad2l17DuI6LCcHAlclWZeC2TdJ8lDspw3IVCl7QM4hOoA5a+pGjS27U48AMbrAuRVI/gBPOp492MQP0x80s/uJXW1q4xwyNCJnW+KEzwpwzbYjx0tHK8JqvXLrz2FoGtJEmDhONiCifTn5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0T8TCPYX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F6D8C43390;
-	Tue, 23 Jan 2024 00:55:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BDs+5vdSmytAVPJW2Rvtpr4x/R70vwTHdZbG2lxwcat5uZxGFBnZZifDfJ5NVIkBx7w3b4sJdC4LpXl2FZxwYoAQ2FEalv2fxhyIe2qC9RQB7ynhHlaaIHyqdOVajlPWr69wm+ACc7YNTrmhIoxP+GY9q/KkT1TsHfsHjFr8hiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dTXk4XZ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E0EC433C7;
+	Tue, 23 Jan 2024 02:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971351;
-	bh=+psj2OCeobZLFsF4iDD5m8lGQFE2kVyuDf0xfsogGvg=;
+	s=korg; t=1705975421;
+	bh=1T4SPQjZWjfSvE8LUvM1gtsF2l2mh41IvUMbVh3NEnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0T8TCPYXetQc+GlAbdRMfixiTAtJ+bKvrKAr9mMOROzdRg1REZBMWtOnozKrOXuns
-	 Ii79Lbmz1rb1OQBPZovtmdGz8zgGIUyEhN4BA/3iU9Vw0jhl3Lzg1ciONwcXIRrHOE
-	 /KR/CLvcMWWNdbZut12keLazN9sGo0Wc0Eoo2JqI=
+	b=dTXk4XZ/Bx78d5BUMlGuD6bIxEih/FbjoTYMFCd88J2bYLKHihabpD1wnaYXcGVFI
+	 wNhSHSRDYVQlgtzPvgyJdvDyWLDxetYrDDwriwjmu0Ob2m9+LgF2ZDBjRVm8FmtJDA
+	 ZxEPeALWGE2qXRRGx+S/5XDHEBda2sn4tafrJqUE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 125/286] scsi: hisi_sas: Replace with standard error code return value
+	=?UTF-8?q?=C3=87a=C4=9Fhan=20Demir?= <caghandemir@marun.edu.tr>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 380/583] ALSA: hda/relatek: Enable Mute LED on HP Laptop 15s-fq2xxx
 Date: Mon, 22 Jan 2024 15:57:11 -0800
-Message-ID: <20240122235736.941961690@linuxfoundation.org>
+Message-ID: <20240122235823.629074350@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +59,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Çağhan Demir <caghandemir@marun.edu.tr>
 
-[ Upstream commit d34ee535705eb43885bc0f561c63046f697355ad ]
+commit bc7863d18677df66b2c7a0e172c91296ff380f11 upstream.
 
-In function hisi_sas_controller_prereset(), -ENOSYS (Function not
-implemented) should be returned if the driver does not support .soft_reset.
-Returns -EPERM (Operation not permitted) if HISI_SAS_RESETTING_BIT is
-already be set.
+This HP Laptop uses ALC236 codec with COEF 0x07 idx 1 controlling
+the mute LED. This patch enables the already existing quirk for
+this device.
 
-In function _suspend_v3_hw(), returns -EPERM (Operation not permitted) if
-HISI_SAS_RESETTING_BIT is already be set.
-
-Fixes: 4522204ab218 ("scsi: hisi_sas: tidy host controller reset function a bit")
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
-Link: https://lore.kernel.org/r/1702525516-51258-3-git-send-email-chenxiang66@hisilicon.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Çağhan Demir <caghandemir@marun.edu.tr>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20240115172303.4718-1-caghandemir@marun.edu.tr
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_main.c  | 4 ++--
- drivers/scsi/hisi_sas/hisi_sas_v3_hw.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index e5b9229310a0..8e5d23c6b8de 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -1584,10 +1584,10 @@ static int hisi_sas_controller_reset(struct hisi_hba *hisi_hba)
- 		queue_work(hisi_hba->wq, &hisi_hba->debugfs_work);
- 
- 	if (!hisi_hba->hw->soft_reset)
--		return -1;
-+		return -ENOENT;
- 
- 	if (test_and_set_bit(HISI_SAS_RESET_BIT, &hisi_hba->flags))
--		return -1;
-+		return -EPERM;
- 
- 	dev_info(dev, "controller resetting...\n");
- 	hisi_sas_controller_reset_prepare(hisi_hba);
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-index 0d21c64efa81..f03a09c9e865 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
-@@ -3479,7 +3479,7 @@ static int _suspend_v3_hw(struct device *device)
- 	}
- 
- 	if (test_and_set_bit(HISI_SAS_RESET_BIT, &hisi_hba->flags))
--		return -1;
-+		return -EPERM;
- 
- 	scsi_block_requests(shost);
- 	set_bit(HISI_SAS_REJECT_CMD_BIT, &hisi_hba->flags);
--- 
-2.43.0
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9754,6 +9754,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x87f5, "HP", ALC287_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x87f6, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
+ 	SND_PCI_QUIRK(0x103c, 0x87f7, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
++	SND_PCI_QUIRK(0x103c, 0x87fe, "HP Laptop 15s-fq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x8805, "HP ProBook 650 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x880d, "HP EliteBook 830 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8811, "HP Spectre x360 15-eb1xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
 
 
 
