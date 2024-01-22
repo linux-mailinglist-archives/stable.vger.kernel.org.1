@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2C158380FA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB213838367
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3919EB2B86E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF6EE1C29B48
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F821353E2;
-	Tue, 23 Jan 2024 01:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7393262814;
+	Tue, 23 Jan 2024 01:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkeMJJ4G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xsyOIgNX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 429861350CA;
-	Tue, 23 Jan 2024 01:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330F562802;
+	Tue, 23 Jan 2024 01:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971965; cv=none; b=ILi/vwe8OZYZEPIB9pdBTVkf+7UQvcOE8TCCeWu9p+DqJRXZ8PqDOlCBdCI7kkqx+hCEbrRQpOsGcxrB8zyCZg6sc7uMA783pvJEzbOo+9XmV3MxmV4DGmCMHQxVXOfkm/WrvdjyF8mNh8pgLdUFjc7C/mfxqmhnTOr+8Rz63Cg=
+	t=1705974961; cv=none; b=NL0tLVj28W1tLiRy/Eitr16mp4R/xs9tQLvvmPmnIp9SBUUQimb0D5W5nLMl0jeYofMc6mdy8WMbyBF0a9m+1UhiRfB8QHtHpYCCAEwqLvrOz9k4TWczO3YN2GlfDzz9YzzjckNH48Yr1Wh4OK4+7j+Mnow/OoHnaamfwUe4ut4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971965; c=relaxed/simple;
-	bh=LW7l1vK+jkH+uViXMkVxG1vglDlSkHKPHy3nanluptY=;
+	s=arc-20240116; t=1705974961; c=relaxed/simple;
+	bh=1DH0bgOwtVF3kT1YGSHqPnsHy7qIQQig1BbLFfUeGR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YMoHIPzZllAxplhFETg/p3/lvWOYBTmhgEciOQHV5/e1uNmNQMxy+0JGlz7M8iGI00Pi8CgDuc4jmGG774ZFVovwk+159ZIZTFnIMO2WJU1Ku58U+7gXh8bFKdqPNSqGZJr+ZiS4/N2H0EJOlkIQDlulxpvZNFPJ9aQqMqtadqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkeMJJ4G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B394BC433F1;
-	Tue, 23 Jan 2024 01:06:04 +0000 (UTC)
+	 MIME-Version; b=pOWy3PANNXyxSaQRPpwXO5XExEaYEPo3wEqWi/h4T445QbqDYfdsveMzdpvfQlEwS4fHfPl/vYRkG1MG2dKh+kSUMAcfFWRJYkuzprkQiptfYC6jHodugDzfYNZpJFEGcms7ip3wbZiDzofFNUQtfbxzqDrmRfrXo7vBuFEjfMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xsyOIgNX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D25C433B1;
+	Tue, 23 Jan 2024 01:56:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971965;
-	bh=LW7l1vK+jkH+uViXMkVxG1vglDlSkHKPHy3nanluptY=;
+	s=korg; t=1705974961;
+	bh=1DH0bgOwtVF3kT1YGSHqPnsHy7qIQQig1BbLFfUeGR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mkeMJJ4G8Z7wDKkS+475gumrc2+o+c4xmbmS9ZA6fFlXMrYO0a04UdlVPKoxWHSPN
-	 wy6ieEkK/ZQHU/qc2BEtCs6AABW1ZlAOwKcTZ3wwZyhI0vXoRCT3CjVS7Q+zd9EehS
-	 +tMkzWXFf6SD+kOBammfBuNGvVTjQvzMyFgdIebU=
+	b=xsyOIgNX0OhmPzXGO5Q4iBknEx+QeI+F2i/JrtGVWAcKgj/XJGIoRSP3NdPEucnsQ
+	 0hQAAZ7vQHuuTJgnwaAj2eET7PMT3AxmE12FrWcZulGCQWEmYnuVFCNSydhknMR+qr
+	 gy++EyMCDNnLwXBFVKe/XtQ0Fp/gsZD2z38tYZMU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 246/286] software node: Let args be NULL in software_node_get_reference_args
-Date: Mon, 22 Jan 2024 15:59:12 -0800
-Message-ID: <20240122235741.534867479@linuxfoundation.org>
+Subject: [PATCH 5.15 297/374] riscv: Check if the code to patch lies in the exit section
+Date: Mon, 22 Jan 2024 15:59:13 -0800
+Message-ID: <20240122235755.116673792@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit 1eaea4b3604eb9ca7d9a1e73d88fc121bb4061f5 ]
+[ Upstream commit 420370f3ae3d3b883813fd3051a38805160b2b9f ]
 
-fwnode_get_property_reference_args() may not be called with args argument
-NULL and while OF already supports this. Add the missing NULL check.
+Otherwise we fall through to vmalloc_to_page() which panics since the
+address does not lie in the vmalloc region.
 
-The purpose is to be able to count the references.
-
-Fixes: b06184acf751 ("software node: Add software_node_get_reference_args()")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20231109101010.1329587-3-sakari.ailus@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 043cb41a85de ("riscv: introduce interfaces to patch kernel code")
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Link: https://lore.kernel.org/r/20231214091926.203439-1-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/swnode.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/riscv/include/asm/sections.h   |  1 +
+ arch/riscv/kernel/patch.c           | 11 ++++++++++-
+ arch/riscv/kernel/vmlinux-xip.lds.S |  2 ++
+ arch/riscv/kernel/vmlinux.lds.S     |  2 ++
+ 4 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-index d2fb3eb5816c..b664c36388e2 100644
---- a/drivers/base/swnode.c
-+++ b/drivers/base/swnode.c
-@@ -531,6 +531,9 @@ software_node_get_reference_args(const struct fwnode_handle *fwnode,
- 	if (nargs > NR_FWNODE_REFERENCE_ARGS)
- 		return -EINVAL;
+diff --git a/arch/riscv/include/asm/sections.h b/arch/riscv/include/asm/sections.h
+index 32336e8a17cb..a393d5035c54 100644
+--- a/arch/riscv/include/asm/sections.h
++++ b/arch/riscv/include/asm/sections.h
+@@ -13,6 +13,7 @@ extern char _start_kernel[];
+ extern char __init_data_begin[], __init_data_end[];
+ extern char __init_text_begin[], __init_text_end[];
+ extern char __alt_start[], __alt_end[];
++extern char __exittext_begin[], __exittext_end[];
  
-+	if (!args)
-+		return 0;
+ static inline bool is_va_kernel_text(uintptr_t va)
+ {
+diff --git a/arch/riscv/kernel/patch.c b/arch/riscv/kernel/patch.c
+index e099961453cc..160e5c1caa9c 100644
+--- a/arch/riscv/kernel/patch.c
++++ b/arch/riscv/kernel/patch.c
+@@ -13,6 +13,7 @@
+ #include <asm/fixmap.h>
+ #include <asm/ftrace.h>
+ #include <asm/patch.h>
++#include <asm/sections.h>
+ 
+ struct patch_insn {
+ 	void *addr;
+@@ -23,6 +24,14 @@ struct patch_insn {
+ int riscv_patch_in_stop_machine = false;
+ 
+ #ifdef CONFIG_MMU
 +
- 	args->fwnode = software_node_get(refnode);
- 	args->nargs = nargs;
++static inline bool is_kernel_exittext(uintptr_t addr)
++{
++	return system_state < SYSTEM_RUNNING &&
++		addr >= (uintptr_t)__exittext_begin &&
++		addr < (uintptr_t)__exittext_end;
++}
++
+ /*
+  * The fix_to_virt(, idx) needs a const value (not a dynamic variable of
+  * reg-a0) or BUILD_BUG_ON failed with "idx >= __end_of_fixed_addresses".
+@@ -33,7 +42,7 @@ static __always_inline void *patch_map(void *addr, const unsigned int fixmap)
+ 	uintptr_t uintaddr = (uintptr_t) addr;
+ 	struct page *page;
  
+-	if (core_kernel_text(uintaddr))
++	if (core_kernel_text(uintaddr) || is_kernel_exittext(uintaddr))
+ 		page = phys_to_page(__pa_symbol(addr));
+ 	else if (IS_ENABLED(CONFIG_STRICT_MODULE_RWX))
+ 		page = vmalloc_to_page(addr);
+diff --git a/arch/riscv/kernel/vmlinux-xip.lds.S b/arch/riscv/kernel/vmlinux-xip.lds.S
+index 9c9f35091ef0..5407eafa166b 100644
+--- a/arch/riscv/kernel/vmlinux-xip.lds.S
++++ b/arch/riscv/kernel/vmlinux-xip.lds.S
+@@ -29,10 +29,12 @@ SECTIONS
+ 	HEAD_TEXT_SECTION
+ 	INIT_TEXT_SECTION(PAGE_SIZE)
+ 	/* we have to discard exit text and such at runtime, not link time */
++	__exittext_begin = .;
+ 	.exit.text :
+ 	{
+ 		EXIT_TEXT
+ 	}
++	__exittext_end = .;
+ 
+ 	.text : {
+ 		_text = .;
+diff --git a/arch/riscv/kernel/vmlinux.lds.S b/arch/riscv/kernel/vmlinux.lds.S
+index 5104f3a871e3..adcfe9c6a7bf 100644
+--- a/arch/riscv/kernel/vmlinux.lds.S
++++ b/arch/riscv/kernel/vmlinux.lds.S
+@@ -73,10 +73,12 @@ SECTIONS
+ 		__soc_builtin_dtb_table_end = .;
+ 	}
+ 	/* we have to discard exit text and such at runtime, not link time */
++	__exittext_begin = .;
+ 	.exit.text :
+ 	{
+ 		EXIT_TEXT
+ 	}
++	__exittext_end = .;
+ 
+ 	__init_text_end = .;
+ 	. = ALIGN(SECTION_ALIGN);
 -- 
 2.43.0
 
