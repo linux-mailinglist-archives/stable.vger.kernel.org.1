@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-15179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2400F83843B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D9C7837F0D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9006298C22
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8A5B29BDE4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4E0C6A326;
-	Tue, 23 Jan 2024 02:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0197B605AF;
+	Tue, 23 Jan 2024 00:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2apc2yUc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfhGwypI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AF66A03B;
-	Tue, 23 Jan 2024 02:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B643B60257;
+	Tue, 23 Jan 2024 00:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975333; cv=none; b=ZPtXf9r0tPhgt/dYAh0DB/GXlIsdSiljrJfXkWkszf5cAgFIszHzcAJs3snBNeo3cs4RJ3ci5Oq9mMqMuuW/oLGtbhEJxc5ySFO4nIO5yY+q8/jhSpfBYOMf7ZFV0lp0cEJOvInXiUl8AASxozd6v1lM6C+OfhDvVEBLgd43VNw=
+	t=1705970903; cv=none; b=Ny7NGbqKtdwY2KSbRhL0foxBgRuYqMhr1CVXS6m9MdYXxJAVNWz2QYD+4JxC3owM/lldvlmBdmzXnU9NVu0+o4WAs8c8OEuyidVESyyzQ2ihPdPS7Bx3eNJQ/cjRd7HhPLN+ZA/8LdMHNEzrexhFDtKJk3riEHApCmZAOISQ2yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975333; c=relaxed/simple;
-	bh=ucO3nlOV+gW1wpSIaDPw2iFZ0kn/58eFGxy45m99CDg=;
+	s=arc-20240116; t=1705970903; c=relaxed/simple;
+	bh=G3j12jLVap1Up/ldGp14ZP7mzPOcTSxYCnmCdzly5lc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hXg4bqchY1hon2JIAbwxHzULRIDGI5nanCInKsWzuxPN1CBisCyW2ot9IOV0UyWK2bwaQPq/3W8xMK2BiizrArK0ixO7KHDcua9tHiZ6InIk/n12UAbAYQQP0dte8lSLVBgWw3PKaEmlpswBlzXacKP3HUOhpft7AshioIc798U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2apc2yUc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29C65C43390;
-	Tue, 23 Jan 2024 02:02:13 +0000 (UTC)
+	 MIME-Version; b=cgXH+j8yZgbQK7oEuKMinipZoE2Dfqtn0wJmd1RcEUG2r990dyiDG9v+cc0Y48rnBvZHjyvOXQfxygvj/K3nfSJ8AclHrz8WpAHKZe5jVCJEAtzB4YbykLkrEsSKnlHTbVIRqwJs4wJV5xTMoVEueyjuJAyKALw4d7CbJwkn73c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UfhGwypI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C5CEC43390;
+	Tue, 23 Jan 2024 00:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975333;
-	bh=ucO3nlOV+gW1wpSIaDPw2iFZ0kn/58eFGxy45m99CDg=;
+	s=korg; t=1705970903;
+	bh=G3j12jLVap1Up/ldGp14ZP7mzPOcTSxYCnmCdzly5lc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2apc2yUcvVu+32UI8+Q+rwEYZqivyjBm9y+F1gZ62vyDoK52cqJSl8oV5dZl3D93l
-	 kulcd197GcXklRbXOOUZtL32tXwt52cHnOC0zBam35fTV3Rp5sptKQe99MHByYT9p3
-	 A9yfwEQbhlzIms3tdOeQlzK07LV3U/Mzmb1E3OZw=
+	b=UfhGwypIcm7mu0p1eRwgpVdLqRIdYH6XSlytY9TGMoFRH04twWpryAOR2PKVkV6LY
+	 jy0yay0iJrIsxRO4H7sb+Ycx+B70Hpj/l6AJF7vm5rG8mL4EBWnOY+ToCWySBN0xqT
+	 nwUiI82aa/BZ9aA/EYipwYKuLs2uJUoiYZd+00I8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 296/583] clk: qcom: videocc-sm8150: Add missing PLL config property
-Date: Mon, 22 Jan 2024 15:55:47 -0800
-Message-ID: <20240122235821.075454099@linuxfoundation.org>
+	Alice Ryhl <aliceryhl@google.com>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 5.10 042/286] binder: fix trivial typo of binder_free_buf_locked()
+Date: Mon, 22 Jan 2024 15:55:48 -0800
+Message-ID: <20240122235733.639204593@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit 71f130c9193f613d497f7245365ed05ffdb0a401 ]
+commit 122a3c1cb0ff304c2b8934584fcfea4edb2fe5e3 upstream.
 
-When the driver was ported upstream, PLL test_ctl_hi1 register value
-was omitted. Add it to ensure the PLLs are fully configured.
+Fix minor misspelling of the function in the comment section.
 
-Fixes: 5658e8cf1a8a ("clk: qcom: add video clock controller driver for SM8150")
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20231201-videocc-8150-v3-3-56bec3a5e443@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+No functional changes in this patch.
+
+Cc: stable@vger.kernel.org
+Fixes: 0f966cba95c7 ("binder: add flag to clear buffer on txn complete")
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20231201172212.1813387-7-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/qcom/videocc-sm8150.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/android/binder_alloc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/videocc-sm8150.c b/drivers/clk/qcom/videocc-sm8150.c
-index 6a5f89f53da8..52a9a453a143 100644
---- a/drivers/clk/qcom/videocc-sm8150.c
-+++ b/drivers/clk/qcom/videocc-sm8150.c
-@@ -33,6 +33,7 @@ static struct alpha_pll_config video_pll0_config = {
- 	.config_ctl_val = 0x20485699,
- 	.config_ctl_hi_val = 0x00002267,
- 	.config_ctl_hi1_val = 0x00000024,
-+	.test_ctl_hi1_val = 0x00000020,
- 	.user_ctl_val = 0x00000000,
- 	.user_ctl_hi_val = 0x00000805,
- 	.user_ctl_hi1_val = 0x000000D0,
--- 
-2.43.0
-
+--- a/drivers/android/binder_alloc.c
++++ b/drivers/android/binder_alloc.c
+@@ -711,7 +711,7 @@ void binder_alloc_free_buf(struct binder
+ 	/*
+ 	 * We could eliminate the call to binder_alloc_clear_buf()
+ 	 * from binder_alloc_deferred_release() by moving this to
+-	 * binder_alloc_free_buf_locked(). However, that could
++	 * binder_free_buf_locked(). However, that could
+ 	 * increase contention for the alloc mutex if clear_on_free
+ 	 * is used frequently for large buffers. The mutex is not
+ 	 * needed for correctness here.
 
 
 
