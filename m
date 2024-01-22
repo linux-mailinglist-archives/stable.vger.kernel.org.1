@@ -1,65 +1,57 @@
-Return-Path: <stable+bounces-14392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D9BE83813F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89315838114
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:05:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1032B20E85
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:02:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B951F1C21DC4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:05:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06765133996;
-	Tue, 23 Jan 2024 01:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77A68140772;
+	Tue, 23 Jan 2024 01:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkBBuW5u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/IfxMf/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA277133435;
-	Tue, 23 Jan 2024 01:04:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C0F14076D;
+	Tue, 23 Jan 2024 01:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971878; cv=none; b=TluuxuNUKQ8QOm+dhtDYivlYnsrIbL1ZfnAEOXMaMxRYBZIjrVQ/wgxc2twkuAxpn2JSoEEij7lEDFlr5saajdMhrRRiOi8f+r5U4+v70Qf7R+RqNlCHsk1DAaYPhz7GOtN3nxCgSEkJ7rncWBI/R2zfTX/iRJ7oqQg80jxl8aE=
+	t=1705972020; cv=none; b=FHyhwFy20DoFLVqDnGJNTrS0e88J/ZCo65fPuhmclBIKeCnuB4zNyuj5TuD/1sVM/IkSWG8OeXI2nH1BeMdVooGqbfR7/c7HSOM+bnh+Pfa1jLMg5TrtYMcFdSLtj3uqI/LRy1dlF5Fx4rgm3q1nov9b2wM/lCvzDZwIsh8nau8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971878; c=relaxed/simple;
-	bh=nj0nT/YAqBBze8KYgv+Z8gKrZ+AhZCtnvXAPQnq+26M=;
+	s=arc-20240116; t=1705972020; c=relaxed/simple;
+	bh=ywTn0/C42hr1G8GKR1Soau/qHM7ZRjlC4fOTUZCC+v8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FqcygKyC7yj8IqhiLIyBz+G9065geVy/KUCxwV4AOF3/NzbNYqwTMI642xEw8HGRuTpj7CAS+RGxj5UpqkYCm3n+CVeXgqyc2UvP4Zg50QL4oProZ60/HLrWOFhcsgqWmf3sV9AcsrOSeC/3Ux58t1PHDjkOIIDRDtq+bWMvrvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkBBuW5u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36950C433C7;
-	Tue, 23 Jan 2024 01:04:38 +0000 (UTC)
+	 MIME-Version; b=lsdyg6LgBGbF8xQfkKLBmOXP1AKcHYHgiHvrmDlUNprxJ5An0Is0yoQYlNggm2GowTBH/BOdZo4pm1oASibPpXnbpN5MX0l4GEkszmAgDjHah7zGBoF5W62V9jgTGKQYS/AXUauOY7WW5Gr/5PaVSez+80+mHC3YwyabcrgCFtA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/IfxMf/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF6F2C433F1;
+	Tue, 23 Jan 2024 01:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971878;
-	bh=nj0nT/YAqBBze8KYgv+Z8gKrZ+AhZCtnvXAPQnq+26M=;
+	s=korg; t=1705972020;
+	bh=ywTn0/C42hr1G8GKR1Soau/qHM7ZRjlC4fOTUZCC+v8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lkBBuW5u5ucu5uPLSg8/IigUJDpdfIsNutMitTyyid+yMu9KSzPTobwBtyB+orf0B
-	 eUbunrZss7C+W4CFtg3JqY1EkMBSdl5Izj5UxlGsaZCZUAmhOF2RNIrYjuzTOg6wZa
-	 grDzvfkVLiTPfwd0d3T2Ge4ozroSIFvv8zKRNYTc=
+	b=p/IfxMf/oo5jisbveTpVrUfsUnicuOqaUiihwDk28zRBaLYtGEkfSantVQ70n0lOh
+	 Vib48hI8kZW6ZjO1uqmh1wx1tvt+lsdAKDueEjMGFnCsy1ktoWwLG8N4+HzaGXh/Ww
+	 cKpWjGBASqOrJAByJYkO7+EfqNqwocqhAYqQ+vFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Fangrui Song <maskray@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Lieven Hey <lieven.hey@kdab.com>,
-	Milian Wolff <milian.wolff@kdab.com>,
-	Pablo Galindo <pablogsal@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Deepak R Varma <drv@mailo.com>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 252/286] perf genelf: Set ELF program header addresses properly
-Date: Mon, 22 Jan 2024 15:59:18 -0800
-Message-ID: <20240122235741.754720179@linuxfoundation.org>
+Subject: [PATCH 6.1 391/417] drm/amdkfd: Use resource_size() helper function
+Date: Mon, 22 Jan 2024 15:59:19 -0800
+Message-ID: <20240122235805.308729869@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -71,52 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Deepak R Varma <drv@mailo.com>
 
-[ Upstream commit 1af478903fc48c1409a8dd6b698383b62387adf1 ]
+[ Upstream commit 9d086e0ddaeb08876f4df3a1485166bfd7483252 ]
 
-The text section starts after the ELF headers so PHDR.p_vaddr and
-others should have the correct addresses.
+Use the resource_size() function instead of a open coded computation
+resource size. It makes the code more readable.
 
-Fixes: babd04386b1df8c3 ("perf jit: Include program header in ELF files")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Fangrui Song <maskray@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Lieven Hey <lieven.hey@kdab.com>
-Cc: Milian Wolff <milian.wolff@kdab.com>
-Cc: Pablo Galindo <pablogsal@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20231212070547.612536-2-namhyung@kernel.org
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Issue identified using resource_size.cocci coccinelle semantic patch.
+
+Signed-off-by: Deepak R Varma <drv@mailo.com>
+Signed-off-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 02eed83abc13 ("drm/amdkfd: fixes for HMM mem allocation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/genelf.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_migrate.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/genelf.c b/tools/perf/util/genelf.c
-index 02cd9f75e3d2..89a85601485d 100644
---- a/tools/perf/util/genelf.c
-+++ b/tools/perf/util/genelf.c
-@@ -291,9 +291,9 @@ jit_write_elf(int fd, uint64_t load_addr, const char *sym,
- 	 */
- 	phdr = elf_newphdr(e, 1);
- 	phdr[0].p_type = PT_LOAD;
--	phdr[0].p_offset = 0;
--	phdr[0].p_vaddr = 0;
--	phdr[0].p_paddr = 0;
-+	phdr[0].p_offset = GEN_ELF_TEXT_OFFSET;
-+	phdr[0].p_vaddr = GEN_ELF_TEXT_OFFSET;
-+	phdr[0].p_paddr = GEN_ELF_TEXT_OFFSET;
- 	phdr[0].p_filesz = csize;
- 	phdr[0].p_memsz = csize;
- 	phdr[0].p_flags = PF_X | PF_R;
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+index 88bf6221d4be..2d011daf5a39 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_migrate.c
+@@ -1038,8 +1038,7 @@ int svm_migrate_init(struct amdgpu_device *adev)
+ 		/* Disable SVM support capability */
+ 		pgmap->type = 0;
+ 		if (pgmap->type == MEMORY_DEVICE_PRIVATE)
+-			devm_release_mem_region(adev->dev, res->start,
+-						res->end - res->start + 1);
++			devm_release_mem_region(adev->dev, res->start, resource_size(res));
+ 		return PTR_ERR(r);
+ 	}
+ 
 -- 
 2.43.0
 
