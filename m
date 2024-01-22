@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-15040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16D828383A3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5C74837C7C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49C851C29CCF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9B5A1C2894B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE06B634E2;
-	Tue, 23 Jan 2024 01:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB429135404;
+	Tue, 23 Jan 2024 00:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZw4aOc7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m+zcSr5I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ED5562805;
-	Tue, 23 Jan 2024 01:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79D601353F6;
+	Tue, 23 Jan 2024 00:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975026; cv=none; b=H7jAO33FSmCQtWLHQi7M4fg5TPg+vbZzG/SKUkHrTtn4dMgK0KwZ1CdHuAO7TRXeL7AAnUy9bMg6nDNJcT/n6Av8X7KtVKaHblflFjrbPE46lNV0mx6+5E+sFLMO35moNMDsvd1kQvPA6YPpETKmn+3DZTgUo05ANfWSqruGy4s=
+	t=1705969636; cv=none; b=gXA0s9yhRrqTLfkr1NeKv96Emut1z/gMPTZ5qvf1qOcfYgdHSjKkQ7G+0Z4VrPbLTdRVnavJUe6MvFuC3lvcwBGlFEbzr8BmSGISb745iCV71vijXl2xmmItmw7974icdR/w7tMByeogF6tWWBzktPSC/iqn5ubvjR7pVqoy188=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975026; c=relaxed/simple;
-	bh=nb8Laz0XxKjPQV07DCwHHqPNxJzMEf/osc4w3WZikck=;
+	s=arc-20240116; t=1705969636; c=relaxed/simple;
+	bh=JvTul+SWomYj7T6vkGzYGi6S1HD/rkUVsXCGPPs+2EE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JbldfiIlbpwyou+n4YVtpwHZlJ+LNRD0OuCfNtlHbOWGcFCiIyp7sjv4ASVGJyDD7oo0C/y38DmRVq/ste4R19Q3JGr+PIq/6DrdVyBv8Qa1Ys3WPhn1hzj0i9+Qi6/1T0HfMAWF/B0L35xrWbk2BiQY67r2gip2M0LJV8gCPpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZw4aOc7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34524C43390;
-	Tue, 23 Jan 2024 01:57:06 +0000 (UTC)
+	 MIME-Version; b=W+9zLkO6uHfGU1s7qmSyHFT07MCjub1JNkOlObdP2AGL1DHf7lA0EWctz6c/leEV4QqR+uxStwkCkBmvnLhjz00xsFQlCat399vI+86EebvJMlDvLp4r5j6KXz35aa2iQxEL7uuGfc/t+3cxKerNMAjVlHBk3pVwWnjEvw2Y4Vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m+zcSr5I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE49C43399;
+	Tue, 23 Jan 2024 00:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975026;
-	bh=nb8Laz0XxKjPQV07DCwHHqPNxJzMEf/osc4w3WZikck=;
+	s=korg; t=1705969636;
+	bh=JvTul+SWomYj7T6vkGzYGi6S1HD/rkUVsXCGPPs+2EE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WZw4aOc7gQsgFDExA0S6JwZL6D564HeOTvqDnMRH05UU+WdmZ7GHdmQIYmCq62ucu
-	 Zm5qOUR4iADvmocXkMaIsLjea4BhVv26ZYAg2ng074gnUUOQOQ3NhMBvAiqoPnhQQv
-	 O/M0BRLTo6HZBml5msGw+UsjlAWDKwJh3x9Js5QE=
+	b=m+zcSr5INLQg9Z0x75LsDrYiwTlDBfj0NgO2lxVxUfO/PfzpRKCWfl+MXvH1jAVdn
+	 VVjkhrav/nHeDvf3IFDfzb7oSLkdK+CtXftRS7sCnMDdPs8qYUSBncsCKNP15fCy8m
+	 OAVOCgzHl8WP3xgaQ3nPFV9/mVFBXELRgE/+nQy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 202/583] wifi: iwlwifi: assign phy_ctxt before eSR activation
+Subject: [PATCH 6.7 349/641] clk: qcom: gcc-sm8550: use collapse-voting for PCIe GDSCs
 Date: Mon, 22 Jan 2024 15:54:13 -0800
-Message-ID: <20240122235818.171712139@linuxfoundation.org>
+Message-ID: <20240122235828.842953465@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 9b6614e5ead5d19a71893bcca3f1a6569ca0c456 ]
+[ Upstream commit 7e77a39265293ea4f05e20fff180755503c49918 ]
 
-eSR is activated when a chanctx is assigned to more than one link.
-During eSR activation we should disable RLC for both phys, and configure
-the FW with a special phy command for both phys.
-Currently we assign the phy_ctxt to the link only after eSR activation,
-so RLC is not disabled for the new phy_ctxt, and a cmd is not sent to FW.
-Fix this by first assigning the new phy_ctxt to the link and then
-doing the eSR activation.
+The PCIe GDSCs can be shared with other masters and should use the APCS
+collapse-vote register when updating the power state.
 
-Fixes: 12bacfc2c065 ("wifi: iwlwifi: handle eSR transitions")
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20231219215605.3d94507f5d9a.I537fcd73aedf94c7348c03157e486f24301fef14@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+This is specifically also needed to be able to disable power domains
+that have been enabled by boot firmware using the vote register.
+
+Following other recent Qualcomm platforms, describe this register and
+the corresponding mask for the PCIe (and _phy) GDSCs.
+
+Fixes: 955f2ea3b9e9 ("clk: qcom: Add GCC driver for SM8550")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231218-topic-8550_fixes-v1-5-ce1272d77540@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/clk/qcom/gcc-sm8550.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-index 2ddb6f763a0b..1e58f0234293 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-mac80211.c
-@@ -269,17 +269,17 @@ __iwl_mvm_mld_assign_vif_chanctx(struct iwl_mvm *mvm,
- 		}
- 	}
+diff --git a/drivers/clk/qcom/gcc-sm8550.c b/drivers/clk/qcom/gcc-sm8550.c
+index a16d07426b71..73bda0d03aa7 100644
+--- a/drivers/clk/qcom/gcc-sm8550.c
++++ b/drivers/clk/qcom/gcc-sm8550.c
+@@ -2998,6 +2998,8 @@ static struct clk_branch gcc_video_axi1_clk = {
  
-+	mvmvif->link[link_id]->phy_ctxt = phy_ctxt;
-+
- 	if (iwl_mvm_is_esr_supported(mvm->fwrt.trans) && n_active > 1) {
- 		mvmvif->link[link_id]->listen_lmac = true;
- 		ret = iwl_mvm_esr_mode_active(mvm, vif);
- 		if (ret) {
- 			IWL_ERR(mvm, "failed to activate ESR mode (%d)\n", ret);
--			return ret;
-+			goto out;
- 		}
- 	}
+ static struct gdsc pcie_0_gdsc = {
+ 	.gdscr = 0x6b004,
++	.collapse_ctrl = 0x52020,
++	.collapse_mask = BIT(0),
+ 	.pd = {
+ 		.name = "pcie_0_gdsc",
+ 	},
+@@ -3007,6 +3009,8 @@ static struct gdsc pcie_0_gdsc = {
  
--	mvmvif->link[link_id]->phy_ctxt = phy_ctxt;
--
- 	if (switching_chanctx) {
- 		/* reactivate if we turned this off during channel switch */
- 		if (vif->type == NL80211_IFTYPE_AP)
+ static struct gdsc pcie_0_phy_gdsc = {
+ 	.gdscr = 0x6c000,
++	.collapse_ctrl = 0x52020,
++	.collapse_mask = BIT(3),
+ 	.pd = {
+ 		.name = "pcie_0_phy_gdsc",
+ 	},
+@@ -3016,6 +3020,8 @@ static struct gdsc pcie_0_phy_gdsc = {
+ 
+ static struct gdsc pcie_1_gdsc = {
+ 	.gdscr = 0x8d004,
++	.collapse_ctrl = 0x52020,
++	.collapse_mask = BIT(1),
+ 	.pd = {
+ 		.name = "pcie_1_gdsc",
+ 	},
+@@ -3025,6 +3031,8 @@ static struct gdsc pcie_1_gdsc = {
+ 
+ static struct gdsc pcie_1_phy_gdsc = {
+ 	.gdscr = 0x8e000,
++	.collapse_ctrl = 0x52020,
++	.collapse_mask = BIT(4),
+ 	.pd = {
+ 		.name = "pcie_1_phy_gdsc",
+ 	},
 -- 
 2.43.0
 
