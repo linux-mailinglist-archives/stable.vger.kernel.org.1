@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-15312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3785B838576
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:42:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67113837BCB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C93FB2DA75
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 855E7B2C20E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADFA674E30;
-	Tue, 23 Jan 2024 02:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE0012F5BA;
+	Tue, 23 Jan 2024 00:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTesbHAL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qiu3a/Vb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C83D745D6;
-	Tue, 23 Jan 2024 02:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD4D12F5A7;
+	Tue, 23 Jan 2024 00:16:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975475; cv=none; b=OxHZsZZNs1IlDDoL5Dzbo7NoEdT4tjBk6zduGAyOT460SLjOcFZYfpUIf0pHo8msJUFojKcRP5KlcasLEH1tHa9cT8zbCYroQLonk2TOH0tnXnpzbIZ5fhK8/C1Rl17JbILme6pb1oLD6Q0jV8YnPBs73lh8ZQxwJ9EQvc6aPgY=
+	t=1705969009; cv=none; b=DexOGDCg4XtEDatGl7emWxfWc8b9PeGsbI1YNm+xNSKi7+RfjzUDb4UdYD6fPf6iB7Xh0HgO5Y7e8vWVOnsNRznJ5d+/iPOgZlkUnKuzkIbpdd0FBQn4WO9uOUsBqBTwwcoyH5Sw++9xcAwpog1SbIoyooL2RoHjJHW7Wn7lQ7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975475; c=relaxed/simple;
-	bh=+GqPlwj2KbaimJ/xHrLkb405N9p1GKNICmbTgAYMp6k=;
+	s=arc-20240116; t=1705969009; c=relaxed/simple;
+	bh=snfAg+fX5k6KqtwQ3b6GBFughf8+hm4K19OsAS92PL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sxGNlMRRz+nSl11waB12Frq/48Z3mtsmqeJnC8+O+vSK4SMGu68sURUCUnMA4gbpmdMC3bYITqDCeZYSoelG2yqqOu4T5cCzqWKsKZG7Fkj8clEbu3EOiTWOsTrmchc5kpB5k+cwnVGhgg+cAKDHBOxVEMCeIy+A8X15kFNnRW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTesbHAL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F793C43390;
-	Tue, 23 Jan 2024 02:04:35 +0000 (UTC)
+	 MIME-Version; b=Ko+eGLA4gGdoTM/Q27lLPSjQ97imQ5EPDFg7GKCYeD47GTbwYckP1GW8/lvB3vSRnaaOwp9oPoK5P9Su20D3hoSdvJQCZmxJ0GxXmOBcIBoTN2xjPiCGyV8faL5Z4pC75dfw4i2N7rVO/qHo3w5uRUcbNzLiaIilEKk+1nu81xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qiu3a/Vb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EF85C433F1;
+	Tue, 23 Jan 2024 00:16:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975475;
-	bh=+GqPlwj2KbaimJ/xHrLkb405N9p1GKNICmbTgAYMp6k=;
+	s=korg; t=1705969009;
+	bh=snfAg+fX5k6KqtwQ3b6GBFughf8+hm4K19OsAS92PL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yTesbHALp9eqb1z/Ze0whFE28ku0H62GkKIvFiAUOuubFA1hcHpsiypnEx3DmOlsT
-	 PGmUlKSSX8fYjNSRXwI8tjOgPHWJmJ9kyTbD3jD7g7YF55A3SFaijuGInVJZQoZBMo
-	 lZluNG5WvcKAjhiOXofr4cGIzivjH5P/CpCp78wc=
+	b=Qiu3a/VbtLSkHyeTpNDAIUoluucXh/ULtTl9NwMVBvLnfHSOrk+yW3fLNsqy0tcaA
+	 bokmBJvl3hxJJHwSR/p5H4uKdX5PqX36W24+/et1ZFeNbwUX+qNJdX5WdLm5jsR2Ul
+	 DvfqPCxMFxlTxS3h64pVN/dwRZP5xDPmJeamFaU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Murphy <murphyt7@tcd.ie>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Saravana Kannan <saravanak@google.com>,
-	"Isaac J. Manjarres" <isaacmanjarres@google.com>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.6 412/583] iommu/dma: Trace bounce buffer usage when mapping buffers
+	Jerry Hoemann <jerry.hoemann@hpe.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 133/194] watchdog/hpwdt: Only claim UNKNOWN NMI if from iLO
 Date: Mon, 22 Jan 2024 15:57:43 -0800
-Message-ID: <20240122235824.578784319@linuxfoundation.org>
+Message-ID: <20240122235724.932077268@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Isaac J. Manjarres <isaacmanjarres@google.com>
+From: Jerry Hoemann <jerry.hoemann@hpe.com>
 
-commit a63c357b9fd56ad5fe64616f5b22835252c6a76a upstream.
+[ Upstream commit dced0b3e51dd2af3730efe14dd86b5e3173f0a65 ]
 
-When commit 82612d66d51d ("iommu: Allow the dma-iommu api to
-use bounce buffers") was introduced, it did not add the logic
-for tracing the bounce buffer usage from iommu_dma_map_page().
+Avoid unnecessary crashes by claiming only NMIs that are due to
+ERROR signalling or generated by the hpwdt hardware device.
 
-All of the users of swiotlb_tbl_map_single() trace their bounce
-buffer usage, except iommu_dma_map_page(). This makes it difficult
-to track SWIOTLB usage from that function. Thus, trace bounce buffer
-usage from iommu_dma_map_page().
+The code does this, but only for iLO5.
 
-Fixes: 82612d66d51d ("iommu: Allow the dma-iommu api to use bounce buffers")
-Cc: stable@vger.kernel.org # v5.15+
-Cc: Tom Murphy <murphyt7@tcd.ie>
-Cc: Lu Baolu <baolu.lu@linux.intel.com>
-Cc: Saravana Kannan <saravanak@google.com>
-Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-Link: https://lore.kernel.org/r/20231208234141.2356157-1-isaacmanjarres@google.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The intent was to preserve legacy, Gen9 and earlier, semantics of
+using hpwdt for error containtment as hardware/firmware would signal
+fatal IO errors as an NMI with the expectation of hpwdt crashing
+the system.  Howerver, these IO errors should be received by hpwdt
+as an NMI_IO_CHECK.  So the test is overly permissive and should
+not be limited to only ilo5.
+
+We need to enable this protection for future iLOs not matching the
+current PCI IDs.
+
+Fixes: 62290a5c194b ("watchdog: hpwdt: Claim NMIs generated by iLO5")
+Signed-off-by: Jerry Hoemann <jerry.hoemann@hpe.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20231213215340.495734-2-jerry.hoemann@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/dma-iommu.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/watchdog/hpwdt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -29,6 +29,7 @@
- #include <linux/spinlock.h>
- #include <linux/swiotlb.h>
- #include <linux/vmalloc.h>
-+#include <trace/events/swiotlb.h>
+diff --git a/drivers/watchdog/hpwdt.c b/drivers/watchdog/hpwdt.c
+index 7d34bcf1c45b..53573c3ddd1a 100644
+--- a/drivers/watchdog/hpwdt.c
++++ b/drivers/watchdog/hpwdt.c
+@@ -174,7 +174,7 @@ static int hpwdt_pretimeout(unsigned int ulReason, struct pt_regs *regs)
+ 		"3. OA Forward Progress Log\n"
+ 		"4. iLO Event Log";
  
- #include "dma-iommu.h"
+-	if (ilo5 && ulReason == NMI_UNKNOWN && !mynmi)
++	if (ulReason == NMI_UNKNOWN && !mynmi)
+ 		return NMI_DONE;
  
-@@ -1052,6 +1053,8 @@ static dma_addr_t iommu_dma_map_page(str
- 			return DMA_MAPPING_ERROR;
- 		}
- 
-+		trace_swiotlb_bounced(dev, phys, size);
-+
- 		aligned_size = iova_align(iovad, size);
- 		phys = swiotlb_tbl_map_single(dev, phys, size, aligned_size,
- 					      iova_mask(iovad), dir, attrs);
+ 	if (ilo5 && !pretimeout && !mynmi)
+-- 
+2.43.0
+
 
 
 
