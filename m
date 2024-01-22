@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-14660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2DE583820A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:17:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D85A78382B8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5FE31C2223C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CC63B2A51F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 250A456B81;
-	Tue, 23 Jan 2024 01:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B2456B79;
+	Tue, 23 Jan 2024 01:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xW5lGjxK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ieru0Q74"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B225351C44;
-	Tue, 23 Jan 2024 01:40:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F14C51C44;
+	Tue, 23 Jan 2024 01:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974041; cv=none; b=Vpz3CE2d0WU9iqtakBlT3Z2KvxumPKlsyWL/qa+xXmWJxRrDbM9n6jbKT0q3xPS1fX/CZG6rpzxtkWGj0GjvsN2zgScFebs0s79VEKjtimM+HsoSt/7q+bUxLplRfMQ3uj4B8q0sO60bKEgm9dDogi+4tj2mcA7C+OElgKuI4Yk=
+	t=1705974044; cv=none; b=sBmgZNdaz4Ii81MTRtREVKknCQM7iS4n7HQbAyogItyb4w16iZhNRnKw1XzEQ4CGFaHojzz3qDh9VfkJsp3dsk7cY6gfAcZSWkmYvDbttl9UHm2I+7EfZ9hODZ6o/zQ25+RFNIxEPkmi4/ZfZ7Td02vc5Q95jOIbr7PIe3bwj1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974041; c=relaxed/simple;
-	bh=jXESM8dxoUhx546fUFHqYxmxAcE6RGCF50RsRKRqnx8=;
+	s=arc-20240116; t=1705974044; c=relaxed/simple;
+	bh=vD4FmNhDUIfx4aSxpYKr05eQhMrXne6BjyvsdYRBhPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H+21Y3ep8rAniH2N6wVJlfGW6eXZ6IzHmpq7t4dsuaZk9lna5L7iOjGPqZRl8ryF0yYZOall0TJ8UwNjVynR50o+zkZ9E7//a/GWwe6e1C5ruP59h0nJXYtihU25AMLS6QtuytJ9fBPYDX0iuymHCg0/HXzC0NBaHOE64/JXLZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xW5lGjxK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60A53C43394;
-	Tue, 23 Jan 2024 01:40:41 +0000 (UTC)
+	 MIME-Version; b=YUp5FXkvz53SkrYoS7BKH0M7AlEuhEKBg70fWZrPi9xpwKi1aqKcyX+jpl928R9oIYMZ22pJt19shyT+r/1iRSeae+kNL6K/LFzVH4DYnlkR6OTE5O1kcvY4c512a+8SaBiP2ekRb6NvQ9FE/iZlDZhZbLXMgH8U6zFD/rNRJP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ieru0Q74; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE35BC43390;
+	Tue, 23 Jan 2024 01:40:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974041;
-	bh=jXESM8dxoUhx546fUFHqYxmxAcE6RGCF50RsRKRqnx8=;
+	s=korg; t=1705974044;
+	bh=vD4FmNhDUIfx4aSxpYKr05eQhMrXne6BjyvsdYRBhPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xW5lGjxKWjTFVjZuLWCzggwMYkHp/TtMx1Y51wTIL/5t/2Ci77WFXg1zmpijFsjpK
-	 NaTQ7+rKdFj3R2V4r/K0OcewDx/I+dBn0SX8ZjKFdN0PqvJy6ZNH7KITo21TVEDC0e
-	 qPd/t9DKXgfBcisKxCk1dQyL/SLcH7s4gSWs9Jig=
+	b=Ieru0Q74XQuwp5QtJgA6h/S7G1HRJ1f71nN2VAp+Fad2syjiCboPQuOsusKc6xlgt
+	 KKWyTsVSJqKr+TAavMer/VepO8Y9TnmFNrdFf5qaFwi3fCRsf5pNeADmdvippHVUNb
+	 e7kQRSiI/ta86g5Ghtmg3JeIb1BjBmZyhctc3oew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Disha Goel <disgoel@linux.vnet.ibm.com>,
-	Kajol Jain <kjain@linux.ibm.com>,
+	Nathan Lynch <nathanl@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 014/583] powerpc/hv-gpci: Add return value check in affinity_domain_via_partition_show function
-Date: Mon, 22 Jan 2024 15:51:05 -0800
-Message-ID: <20240122235812.659876241@linuxfoundation.org>
+Subject: [PATCH 6.6 015/583] powerpc/rtas: Avoid warning on invalid token argument to sys_rtas()
+Date: Mon, 22 Jan 2024 15:51:06 -0800
+Message-ID: <20240122235812.686882590@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
 References: <20240122235812.238724226@linuxfoundation.org>
@@ -67,64 +66,92 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kajol Jain <kjain@linux.ibm.com>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-[ Upstream commit 070b71f428facd9130319707db854ed8bd24637a ]
+[ Upstream commit 01e346ffefda3a7088afebf02b940614179688e7 ]
 
-To access hv-gpci kernel interface files data, the
-"Enable Performance Information Collection" option has to be set
-in hmc. Incase that option is not set and user try to read
-the interface files, it should give error message as
-operation not permitted.
+rtas_token_to_function() WARNs when passed an invalid token; it's
+meant to catch bugs in kernel-based users of RTAS functions. However,
+user space controls the token value passed to rtas_token_to_function()
+by block_rtas_call(), so user space with sufficient privilege to use
+sys_rtas() can trigger the warnings at will:
 
-Result of accessing added interface files with disabled
-performance collection option:
+  unexpected failed lookup for token 2048
+  WARNING: CPU: 20 PID: 2247 at arch/powerpc/kernel/rtas.c:556
+    rtas_token_to_function+0xfc/0x110
+  ...
+  NIP rtas_token_to_function+0xfc/0x110
+  LR  rtas_token_to_function+0xf8/0x110
+  Call Trace:
+    rtas_token_to_function+0xf8/0x110 (unreliable)
+    sys_rtas+0x188/0x880
+    system_call_exception+0x268/0x530
+    system_call_common+0x160/0x2c4
 
-[command]# cat processor_bus_topology
-cat: processor_bus_topology: Operation not permitted
+It's desirable to continue warning on bogus tokens in
+rtas_token_to_function(). Currently it is used to look up RTAS
+function descriptors when tracing, where we know there has to have
+been a successful descriptor lookup by different means already, and it
+would be a serious inconsistency for the reverse lookup to fail.
 
-[command]# cat processor_config
-cat: processor_config: Operation not permitted
+So instead of weakening rtas_token_to_function()'s contract by
+removing the warnings, introduce rtas_token_to_function_untrusted(),
+which has no opinion on failed lookups. Convert block_rtas_call() and
+rtas_token_to_function() to use it.
 
-[command]# cat affinity_domain_via_domain
-cat: affinity_domain_via_domain: Operation not permitted
-
-[command]# cat affinity_domain_via_virtual_processor
-cat: affinity_domain_via_virtual_processor: Operation not permitted
-
-[command]# cat affinity_domain_via_partition
-
-Based on above result there is no error message when reading
-affinity_domain_via_partition file because of missing
-check for failed hcall. Fix this issue by adding
-a check in the start of affinity_domain_via_partition_show
-function, to return error incase hcall fails, with error type
-other then H_PARAMETER.
-
-Fixes: a15e0d6a6929 ("powerpc/hv_gpci: Add sysfs file inside hv_gpci device to show affinity domain via partition information")
-Reported-by: Disha Goel <disgoel@linux.vnet.ibm.com>
-Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+Fixes: 8252b88294d2 ("powerpc/rtas: improve function information lookups")
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231116122033.160964-1-kjain@linux.ibm.com
+Link: https://msgid.link/20231212-papr-sys_rtas-vs-lockdown-v6-1-e9eafd0c8c6c@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/perf/hv-gpci.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/kernel/rtas.c | 19 +++++++++++++++++--
+ 1 file changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/perf/hv-gpci.c b/arch/powerpc/perf/hv-gpci.c
-index 39dbe6b348df..27f18119fda1 100644
---- a/arch/powerpc/perf/hv-gpci.c
-+++ b/arch/powerpc/perf/hv-gpci.c
-@@ -534,6 +534,9 @@ static ssize_t affinity_domain_via_partition_show(struct device *dev, struct dev
- 	if (!ret)
- 		goto parse_result;
+diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
+index eddc031c4b95..87d65bdd3eca 100644
+--- a/arch/powerpc/kernel/rtas.c
++++ b/arch/powerpc/kernel/rtas.c
+@@ -544,6 +544,21 @@ static int __init rtas_token_to_function_xarray_init(void)
+ }
+ arch_initcall(rtas_token_to_function_xarray_init);
  
-+	if (ret && (ret != H_PARAMETER))
-+		goto out;
++/*
++ * For use by sys_rtas(), where the token value is provided by user
++ * space and we don't want to warn on failed lookups.
++ */
++static const struct rtas_function *rtas_token_to_function_untrusted(s32 token)
++{
++	return xa_load(&rtas_token_to_function_xarray, token);
++}
 +
++/*
++ * Reverse lookup for deriving the function descriptor from a
++ * known-good token value in contexts where the former is not already
++ * available. @token must be valid, e.g. derived from the result of a
++ * prior lookup against the function table.
++ */
+ static const struct rtas_function *rtas_token_to_function(s32 token)
+ {
+ 	const struct rtas_function *func;
+@@ -551,7 +566,7 @@ static const struct rtas_function *rtas_token_to_function(s32 token)
+ 	if (WARN_ONCE(token < 0, "invalid token %d", token))
+ 		return NULL;
+ 
+-	func = xa_load(&rtas_token_to_function_xarray, token);
++	func = rtas_token_to_function_untrusted(token);
+ 
+ 	if (WARN_ONCE(!func, "unexpected failed lookup for token %d", token))
+ 		return NULL;
+@@ -1726,7 +1741,7 @@ static bool block_rtas_call(int token, int nargs,
+ 	 * If this token doesn't correspond to a function the kernel
+ 	 * understands, you're not allowed to call it.
+ 	 */
+-	func = rtas_token_to_function(token);
++	func = rtas_token_to_function_untrusted(token);
+ 	if (!func)
+ 		goto err;
  	/*
- 	 * ret value as 'H_PARAMETER' implies that the current buffer size
- 	 * can't accommodate all the information, and a partial buffer
 -- 
 2.43.0
 
