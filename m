@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBCD88382BC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2AEF8384BA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EED681C2914F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2231C1C28DF1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91DEA5D8F2;
-	Tue, 23 Jan 2024 01:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 314E974E16;
+	Tue, 23 Jan 2024 02:04:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6GXXHMz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QiPi/DaG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE9B5F569;
-	Tue, 23 Jan 2024 01:47:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5534745D6;
+	Tue, 23 Jan 2024 02:04:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974424; cv=none; b=FxYWhVtp8Bxm3YW6d/I1oFMrYaLhubexSwfDXMZK0u662QjYiLohrOFzv5gjvMaNsvbfEfPiHBHCKSM7cVvzOOY4znHHWL76X3hHQLwIj10/PDOpQJe9TDlmDOsJW9F4YOw1HkS4pOVxHqhDAPyiGrJttYCs+CY0cs0zAPyXEL0=
+	t=1705975470; cv=none; b=oDB1QWjBjQc71v14ESn+9oZZBnCjagznxXMdsM3CZGrMPo7/VTlqkgY3nwDW+vQKg+YqVwvR79Fqep/LnI9qdjPY3uBAcOFZAIj1QJ5Tdurr/lqNHDj2e+dlLyEd1duo0n5uqSNRvFBemEYI9iFurp1AymQ6//FsUMQXPLvO9gQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974424; c=relaxed/simple;
-	bh=DX417kBxFhczjvQoLVMwlcFEWFa0OWfzzlASyWhJ1g8=;
+	s=arc-20240116; t=1705975470; c=relaxed/simple;
+	bh=GpqWp0C4RbMQtzOZzZfATpaX/Z1N4R1DQ/EjswjtRYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CqvYmofCv8/6zKu3HNz2brzIsIskRPAezO31UOg8D5TphyL3/WO7jdNXSmyRRmifoW6AyUA8bzsI+QOHQl2ZHkEW52YCRBpTppOBKQcJqd5dxbPSszYGG/9vBjHs5P5pfE2c3LcBkoIXPZ3MJ0Kmp5X4zaUi2kBe26rBsAqXU+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6GXXHMz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14E1CC433F1;
-	Tue, 23 Jan 2024 01:47:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Sr0b1IIqRSRr32toXwnzb4yitarLBef3UdU5eGx2Z7nC9bgTuusyCDR58uStk7jt55DU4bbTvqBHvVZ7mJLbxMBtiznTr0CwgYXncWm9IEGKfVJkruIyh/vvxAQyoLD4sGQK1x8+Im7wjypTR2Ln9M7P+8lm9EYSmcttnQyZzXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QiPi/DaG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B1AAC433F1;
+	Tue, 23 Jan 2024 02:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974424;
-	bh=DX417kBxFhczjvQoLVMwlcFEWFa0OWfzzlASyWhJ1g8=;
+	s=korg; t=1705975469;
+	bh=GpqWp0C4RbMQtzOZzZfATpaX/Z1N4R1DQ/EjswjtRYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j6GXXHMze28RCdmUzJxlO2bTIoTLE4SdyWFjxP7rpv+kZ690O7UJohJox4lkvVXi6
-	 lYXJEz8jwvI1WxFGroAI82vUFC3tKYzW7SK2JYp1V1Fx8+iBzBL7v6xfvgWeZXbPON
-	 UVIiTSvHO4ElGLO4+/H0UsLigmmBm8oMRKWhxyyo=
+	b=QiPi/DaGJGTUD+rGcan565DyEPWuHCp44PwTfobGOulGvDTYDgE63I2ovPssAbotD
+	 TElLcnH6bxWtfZVvlSe9WLUeZ0uDZZEFK7oR1k5HiR43xBABG+PqThom3YeU+CFmxQ
+	 fWINcDt+4XsSdJhV6wJ+cup9+ZN+vFaW+R5OIN7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerry Hoemann <jerry.hoemann@hpe.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 220/374] watchdog/hpwdt: Only claim UNKNOWN NMI if from iLO
+	Niklas Cassel <niklas.cassel@wdc.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>
+Subject: [PATCH 6.6 425/583] PCI: dwc: endpoint: Fix dw_pcie_ep_raise_msix_irq() alignment support
 Date: Mon, 22 Jan 2024 15:57:56 -0800
-Message-ID: <20240122235752.312677273@linuxfoundation.org>
+Message-ID: <20240122235824.991665077@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerry Hoemann <jerry.hoemann@hpe.com>
+From: Niklas Cassel <niklas.cassel@wdc.com>
 
-[ Upstream commit dced0b3e51dd2af3730efe14dd86b5e3173f0a65 ]
+commit 2217fffcd63f86776c985d42e76daa43a56abdf1 upstream.
 
-Avoid unnecessary crashes by claiming only NMIs that are due to
-ERROR signalling or generated by the hpwdt hardware device.
+Commit 6f5e193bfb55 ("PCI: dwc: Fix dw_pcie_ep_raise_msix_irq() to get
+correct MSI-X table address") modified dw_pcie_ep_raise_msix_irq() to
+support iATUs which require a specific alignment.
 
-The code does this, but only for iLO5.
+However, this support cannot have been properly tested.
 
-The intent was to preserve legacy, Gen9 and earlier, semantics of
-using hpwdt for error containtment as hardware/firmware would signal
-fatal IO errors as an NMI with the expectation of hpwdt crashing
-the system.  Howerver, these IO errors should be received by hpwdt
-as an NMI_IO_CHECK.  So the test is overly permissive and should
-not be limited to only ilo5.
+The whole point is for the iATU to map an address that is aligned,
+using dw_pcie_ep_map_addr(), and then let the writel() write to
+ep->msi_mem + aligned_offset.
 
-We need to enable this protection for future iLOs not matching the
-current PCI IDs.
+Thus, modify the address that is mapped such that it is aligned.
+With this change, dw_pcie_ep_raise_msix_irq() matches the logic in
+dw_pcie_ep_raise_msi_irq().
 
-Fixes: 62290a5c194b ("watchdog: hpwdt: Claim NMIs generated by iLO5")
-Signed-off-by: Jerry Hoemann <jerry.hoemann@hpe.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20231213215340.495734-2-jerry.hoemann@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/linux-pci/20231128132231.2221614-1-nks@flawful.org
+Fixes: 6f5e193bfb55 ("PCI: dwc: Fix dw_pcie_ep_raise_msix_irq() to get correct MSI-X table address")
+Signed-off-by: Niklas Cassel <niklas.cassel@wdc.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: stable@vger.kernel.org # 5.7
+Cc: Kishon Vijay Abraham I <kishon@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/watchdog/hpwdt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-designware-ep.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/watchdog/hpwdt.c b/drivers/watchdog/hpwdt.c
-index a5006a58e0db..39fc209f799e 100644
---- a/drivers/watchdog/hpwdt.c
-+++ b/drivers/watchdog/hpwdt.c
-@@ -176,7 +176,7 @@ static int hpwdt_pretimeout(unsigned int ulReason, struct pt_regs *regs)
- 		"3. OA Forward Progress Log\n"
- 		"4. iLO Event Log";
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -598,6 +598,7 @@ int dw_pcie_ep_raise_msix_irq(struct dw_
+ 	}
  
--	if (ilo5 && ulReason == NMI_UNKNOWN && !mynmi)
-+	if (ulReason == NMI_UNKNOWN && !mynmi)
- 		return NMI_DONE;
- 
- 	if (ilo5 && !pretimeout && !mynmi)
--- 
-2.43.0
-
+ 	aligned_offset = msg_addr & (epc->mem->window.page_size - 1);
++	msg_addr &= ~aligned_offset;
+ 	ret = dw_pcie_ep_map_addr(epc, func_no, 0, ep->msi_mem_phys, msg_addr,
+ 				  epc->mem->window.page_size);
+ 	if (ret)
 
 
 
