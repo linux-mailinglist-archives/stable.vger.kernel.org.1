@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-13270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE5DF837B34
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E2F837B15
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DE291C26F3F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:59:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 406831F27EA3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F6814A4F0;
-	Tue, 23 Jan 2024 00:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41EFE14A088;
+	Tue, 23 Jan 2024 00:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T2uBR3D0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4kXbcX9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027CD14A4CF;
-	Tue, 23 Jan 2024 00:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02796149010;
+	Tue, 23 Jan 2024 00:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969229; cv=none; b=PAKodAf1/ZppvNvnLVCNtoGN+lMJrvOk5lBmKVc20J45THibDLQ7pc2SsmF44iQ/zYTHkcHWuhLbQk6VzlctTLw0uxOxp62Ij+1rAT3krN2Oft61JMBvy/T1TwKHTLwDZG+7I+5R2ZiIg1caeB//jhwIFh4UDGBePA4iN3FDAjg=
+	t=1705969190; cv=none; b=gMZjcdRTnaSfxcxTE9eGurdM/uNB4RnK97DlumH6an/2lLu6mbt7t5aqa0IkYl11ecka/nMmYlofKhwuzU+u5oumyQGmVlaElb7k5QbfY7RhOoq2e1rbuLe8152AeVBQOp+WZ2ltiK3/HjaulCmxCkMrytUtJvFJ3oZdKVazkOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969229; c=relaxed/simple;
-	bh=EJhMUQFAfxA6imdWC0thriRMmex2pI2NIcN4+fH62ok=;
+	s=arc-20240116; t=1705969190; c=relaxed/simple;
+	bh=cmiiN/CJG2UTMh61cwJb8/71mFUi9bRC64Hs3H0pTZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HlRustMhTyWgUKt6kFNe3p60rFmXPgyqX83ZTmPlq4JEjjJqK6uXvQ0MMtlC7QjYmDlELoNWD0EhUd9rnf7ZAO9nMYHwWp6SIqFqfDMSmjBCRvrD2O+Q62rrHHz+im4ihgOSYLSE5a+g8dTvZiUNM8SHJ02rPhoe2QkCHWXo95I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T2uBR3D0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD0D2C433C7;
-	Tue, 23 Jan 2024 00:20:28 +0000 (UTC)
+	 MIME-Version; b=hMpLSfNK7vnI9Hp38+qSgsoVS/v+k5Zt5CdmExcpAelOnGG5kSOay7bFBh9C7/ko5nnllf/xAz2Crs+QA5v9Cf6ADSDkglt/0ebFBGlMBAHXh2TgPxkF6XyYJv2gz51cKAPptJZU7dJB4WoZRTpOvCuiKU0PQR/WPACsTaWSREA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4kXbcX9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B677EC433C7;
+	Tue, 23 Jan 2024 00:19:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969228;
-	bh=EJhMUQFAfxA6imdWC0thriRMmex2pI2NIcN4+fH62ok=;
+	s=korg; t=1705969189;
+	bh=cmiiN/CJG2UTMh61cwJb8/71mFUi9bRC64Hs3H0pTZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T2uBR3D0bPHKJFnzpE1W26tLOusUtcMyPNPfIWMJgWgKhvkflbVT2rLwI4CX36H1J
-	 goUdIUTg6sANDnCd2jUGdwncNWe/UELy+7JMuQE5+mAjXv9lqxOZSkHAWcqUxW19vr
-	 pz/jaMUI4sGCUmEBqUNaBvcBC/PX9JqnijZ3suVA=
+	b=g4kXbcX9X4IZAW+ssPn/J19H8XcYokPSXTtz27ZLNlmbmi+ODAcf3TyiJJxz++Puv
+	 c+AjfYsod3358JaTofXYgjM9SEY/i7EDhTqPVbLyodHBpwtO5tvhwJFQhe1Deskl3s
+	 efTFGEk6VoNNPIyc7BQPXV4det2jqlJeZJNE7olg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Ovidiu Panait <ovidiu.panait@windriver.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 078/641] crypto: sahara - fix wait_for_completion_timeout() error handling
-Date: Mon, 22 Jan 2024 15:49:42 -0800
-Message-ID: <20240122235820.476573075@linuxfoundation.org>
+Subject: [PATCH 6.7 079/641] crypto: sahara - improve error handling in sahara_sha_process()
+Date: Mon, 22 Jan 2024 15:49:43 -0800
+Message-ID: <20240122235820.502137818@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -68,66 +68,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit 2dba8e1d1a7957dcbe7888846268538847b471d1 ]
+[ Upstream commit 5deff027fca49a1eb3b20359333cf2ae562a2343 ]
 
-The sg lists are not unmapped in case of timeout errors. Fix this.
+sahara_sha_hw_data_descriptor_create() returns negative error codes on
+failure, so make sure the errors are correctly handled / propagated.
 
 Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
-Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
 Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ drivers/crypto/sahara.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 31973e6ce520..3661f02d131a 100644
+index 3661f02d131a..cfb02905c1ab 100644
 --- a/drivers/crypto/sahara.c
 +++ b/drivers/crypto/sahara.c
-@@ -607,16 +607,17 @@ static int sahara_aes_process(struct skcipher_request *req)
+@@ -987,7 +987,10 @@ static int sahara_sha_process(struct ahash_request *req)
+ 		return ret;
  
- 	timeout = wait_for_completion_timeout(&dev->dma_completion,
- 				msecs_to_jiffies(SAHARA_TIMEOUT_MS));
--	if (!timeout) {
--		dev_err(dev->device, "AES timeout\n");
--		return -ETIMEDOUT;
--	}
- 
- 	dma_unmap_sg(dev->device, dev->out_sg, dev->nb_out_sg,
- 		DMA_FROM_DEVICE);
- 	dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
- 		DMA_TO_DEVICE);
- 
-+	if (!timeout) {
-+		dev_err(dev->device, "AES timeout\n");
-+		return -ETIMEDOUT;
-+	}
+ 	if (rctx->first) {
+-		sahara_sha_hw_data_descriptor_create(dev, rctx, req, 0);
++		ret = sahara_sha_hw_data_descriptor_create(dev, rctx, req, 0);
++		if (ret)
++			return ret;
 +
- 	if ((dev->flags & FLAGS_CBC) && req->iv)
- 		sahara_aes_cbc_update_iv(req);
+ 		dev->hw_desc[0]->next = 0;
+ 		rctx->first = 0;
+ 	} else {
+@@ -995,7 +998,10 @@ static int sahara_sha_process(struct ahash_request *req)
  
-@@ -1007,15 +1008,16 @@ static int sahara_sha_process(struct ahash_request *req)
- 
- 	timeout = wait_for_completion_timeout(&dev->dma_completion,
- 				msecs_to_jiffies(SAHARA_TIMEOUT_MS));
--	if (!timeout) {
--		dev_err(dev->device, "SHA timeout\n");
--		return -ETIMEDOUT;
--	}
- 
- 	if (rctx->sg_in_idx)
- 		dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
- 			     DMA_TO_DEVICE);
- 
-+	if (!timeout) {
-+		dev_err(dev->device, "SHA timeout\n");
-+		return -ETIMEDOUT;
-+	}
+ 		sahara_sha_hw_context_descriptor_create(dev, rctx, req, 0);
+ 		dev->hw_desc[0]->next = dev->hw_phys_desc[1];
+-		sahara_sha_hw_data_descriptor_create(dev, rctx, req, 1);
++		ret = sahara_sha_hw_data_descriptor_create(dev, rctx, req, 1);
++		if (ret)
++			return ret;
 +
- 	memcpy(rctx->context, dev->context_base, rctx->context_size);
+ 		dev->hw_desc[1]->next = 0;
+ 	}
  
- 	if (req->result && rctx->last)
 -- 
 2.43.0
 
