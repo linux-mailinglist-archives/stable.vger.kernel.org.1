@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-13874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88EEA837E81
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:40:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 540B7837C57
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F302A1F288E0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:40:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C21C296A8A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571DD5FEEF;
-	Tue, 23 Jan 2024 00:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 690AC145B00;
+	Tue, 23 Jan 2024 00:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BarxmrBv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJ02s7GN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1766651C50;
-	Tue, 23 Jan 2024 00:43:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290DB3C36;
+	Tue, 23 Jan 2024 00:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970633; cv=none; b=IftBwqiNhgL1FxurwQZoT4EqU9KVq36AjCpP32ddbSHA2RZ6+kPkDfRIbAeFWODmOnwAvOmFrIMMTa9RBG2ekMGI1hWeXmO1w3HhGEarIgFuMC2ADwhXq2Atfj4PGi8wY4pQHm1b3JBGivHYnHQZf9WMqOpFQt42S9mgSCml6rE=
+	t=1705969585; cv=none; b=FufZm+carUXWzlQTNJj4GsT1G1UnyPb4vvW+KzZBRomuqaUxlCWKUiPBg8LeZDrLAL75nvZr+yJHxP9nWqniFdewoEYlQPN6N3obfk8khq7j5L1pyaw40bBkah4R6Ui0xMRucOj1RN8IvMH5MsaLkygXCwstejB2nuGsCq+xdkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970633; c=relaxed/simple;
-	bh=+MCCNiiugFKnxjpki/H9UwI6dZTeakgX2nzV6ffoP60=;
+	s=arc-20240116; t=1705969585; c=relaxed/simple;
+	bh=iIUKqXZkP4Ag1FBf9zAQvnQuaHq3yBc4YRBov2c92Mg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I540h3l5xAYKx7if/P/4KumG4eUep0rHQ1nmMxCAawZu6F4D4CsKcs0vSqlUiZd7kTh4ApFFx+Xqw5a05P7yo/WRRX/pstRjwufEYjqobxB10UTQszkTQd/2PkScKcMkKOMv0egUiCeYBi7QvoAt7BiDRCiNa0g/XBj9zN7LFjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BarxmrBv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 025CBC43390;
-	Tue, 23 Jan 2024 00:43:51 +0000 (UTC)
+	 MIME-Version; b=frL4pwWxn04mSu6dlvqGGOjsr5JAMha8OU50UiQAqtYgX2/FZ/71nKYLIaglaecSZlLqEuja/eXKbkfQh54DyH2olkuPsPSZ2Zvof4XY1X9SY4/m4xYbaIDK/W/GMhj9KSL+85vHWhxU6juSFHRaXpDR/k2TE9IyNxTBunXGfhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJ02s7GN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7A9C433A6;
+	Tue, 23 Jan 2024 00:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970632;
-	bh=+MCCNiiugFKnxjpki/H9UwI6dZTeakgX2nzV6ffoP60=;
+	s=korg; t=1705969585;
+	bh=iIUKqXZkP4Ag1FBf9zAQvnQuaHq3yBc4YRBov2c92Mg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BarxmrBvlMuVAq1GgGz/0dk32ZpLTn0qlFnvB9+IQBEb3b4yadfInYTVGOmx7HIqj
-	 3P/4POmdb8Fl9qjGbMspJqxIijq1ybeuVFeGNVx9/VwRNj421AdOT0gha6EzspyMiL
-	 MGezIUpfIuL5dsQhT9DWqLT1f1ihZuSDMbrjhjOQ=
+	b=kJ02s7GNkWuP+tcueyiSdtESHWX4o0rQDxzsF8g2G1TuO4+zp4CWTKRpArf2mt3rp
+	 zvwNtHwCFcKlhMBU/X+Q5jY/QWPPEcW+gC0rxzvCuAF5pyjU7HTaQxqLEPBE+l8b7b
+	 yPgvxuQZ47UO8G5rqWapIq4+SGJdOw6YFbZ3woRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Jerry Hoemann <jerry.hoemann@hpe.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 074/417] ARM: dts: qcom: apq8064: correct XOADC register address
+Subject: [PATCH 6.7 338/641] watchdog/hpwdt: Only claim UNKNOWN NMI if from iLO
 Date: Mon, 22 Jan 2024 15:54:02 -0800
-Message-ID: <20240122235754.276751109@linuxfoundation.org>
+Message-ID: <20240122235828.493764544@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Jerry Hoemann <jerry.hoemann@hpe.com>
 
-[ Upstream commit 554557542e709e190eff8a598f0cde02647d533a ]
+[ Upstream commit dced0b3e51dd2af3730efe14dd86b5e3173f0a65 ]
 
-The XOADC is present at the address 0x197 rather than just 197. It
-doesn't change a lot (since the driver hardcodes all register
-addresses), but the DT should present correct address anyway.
+Avoid unnecessary crashes by claiming only NMIs that are due to
+ERROR signalling or generated by the hpwdt hardware device.
 
-Fixes: c4b70883ee33 ("ARM: dts: add XOADC and IIO HWMON to APQ8064")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230928110309.1212221-3-dmitry.baryshkov@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+The code does this, but only for iLO5.
+
+The intent was to preserve legacy, Gen9 and earlier, semantics of
+using hpwdt for error containtment as hardware/firmware would signal
+fatal IO errors as an NMI with the expectation of hpwdt crashing
+the system.  Howerver, these IO errors should be received by hpwdt
+as an NMI_IO_CHECK.  So the test is overly permissive and should
+not be limited to only ilo5.
+
+We need to enable this protection for future iLOs not matching the
+current PCI IDs.
+
+Fixes: 62290a5c194b ("watchdog: hpwdt: Claim NMIs generated by iLO5")
+Signed-off-by: Jerry Hoemann <jerry.hoemann@hpe.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20231213215340.495734-2-jerry.hoemann@hpe.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom-apq8064.dtsi | 2 +-
+ drivers/watchdog/hpwdt.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/qcom-apq8064.dtsi b/arch/arm/boot/dts/qcom-apq8064.dtsi
-index 4b57e9f5bc64..2b3927a829b7 100644
---- a/arch/arm/boot/dts/qcom-apq8064.dtsi
-+++ b/arch/arm/boot/dts/qcom-apq8064.dtsi
-@@ -750,7 +750,7 @@ pwrkey@1c {
+diff --git a/drivers/watchdog/hpwdt.c b/drivers/watchdog/hpwdt.c
+index f79f932bca14..79ed1626d8ea 100644
+--- a/drivers/watchdog/hpwdt.c
++++ b/drivers/watchdog/hpwdt.c
+@@ -178,7 +178,7 @@ static int hpwdt_pretimeout(unsigned int ulReason, struct pt_regs *regs)
+ 		"3. OA Forward Progress Log\n"
+ 		"4. iLO Event Log";
  
- 				xoadc: xoadc@197 {
- 					compatible = "qcom,pm8921-adc";
--					reg = <197>;
-+					reg = <0x197>;
- 					interrupts-extended = <&pmicintc 78 IRQ_TYPE_EDGE_RISING>;
- 					#address-cells = <2>;
- 					#size-cells = <0>;
+-	if (ilo5 && ulReason == NMI_UNKNOWN && !mynmi)
++	if (ulReason == NMI_UNKNOWN && !mynmi)
+ 		return NMI_DONE;
+ 
+ 	if (ilo5 && !pretimeout && !mynmi)
 -- 
 2.43.0
 
