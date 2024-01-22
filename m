@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F138D8381AF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:11:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE200838416
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:32:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16197B2195E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BFC8DB22041
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:32:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEE581420A3;
-	Tue, 23 Jan 2024 01:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1426773D;
+	Tue, 23 Jan 2024 02:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2ciXU+E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mu+M6F72"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBAC1487CF;
-	Tue, 23 Jan 2024 01:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661146772E;
+	Tue, 23 Jan 2024 02:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972072; cv=none; b=YgiX+ZVaWdLodGkO4J2ZsolhnQI4dHMDxgfsp9qUAktRdfd8tQdDL+vss9BnNQbDWyrd2CDkavWHkP7AgIQbIaepIfjnOCNyuCPmgWCpOp6TLgAxkUoibySKMw4m52HSp8wclWBMhbE4hR+UiSb+aepK49XXJy7WSjhLRbfpPBU=
+	t=1705975288; cv=none; b=nDhE+yeSmF4S1ZMBxNqVhypmG9smgAdY6P48ZyddryM9hMxLPmzbm+TDeunvsaLf0pWy+azuDVdOOrtr99+y7q2frF9X+ITqkYf5E1Pmz7xa01VdwfsCaTU2pl4edm8o6mJql1dv3aKsOlrh4Vv+bfKbSZHWLrZCe5duMRFulu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972072; c=relaxed/simple;
-	bh=NFQyQaORWnc9XDWtL8PciVP5J8u3cYgFHXDJYDBp0XA=;
+	s=arc-20240116; t=1705975288; c=relaxed/simple;
+	bh=cZ15Rj1JqkDdos4+5Hu7lGeoDO5KTXV+k+1yH2wrHlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U5V5/sy65NO6XXC2rvTScP3JoZmNu0xzC/BzLvPCdo5VuCvyQIa+We6pTFscH+1t9soKDbLvNk7R2sHwCFuYqlir/IIFkD49Th1g7S88qU1rXkvkenaKrpFa8/CEhy0o0yVWZgrqqTkDziz0NRQKxCHumKtRVdEwlik+FDoml2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2ciXU+E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC4CC43390;
-	Tue, 23 Jan 2024 01:07:52 +0000 (UTC)
+	 MIME-Version; b=VGLjk9alBa/mpZ2JxRSRkIHH52tkomjcvPtKAiqF1Gt8VqvT/bM29Hy83TiK7WQDTC3nMu/tll5qj4vbJ9KWD8/EfVRp5jp70HrS7Gx5RZSIYvk7qhcEmYDz4l6mtCSLXDG+TY6oTw0zb7139LqfuGN1VH2fibOV8E43sz0u9g8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mu+M6F72; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF418C43399;
+	Tue, 23 Jan 2024 02:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972072;
-	bh=NFQyQaORWnc9XDWtL8PciVP5J8u3cYgFHXDJYDBp0XA=;
+	s=korg; t=1705975288;
+	bh=cZ15Rj1JqkDdos4+5Hu7lGeoDO5KTXV+k+1yH2wrHlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d2ciXU+EEioS6znEUSvUB1V//BZe5qxt3Hcss2SweHCymEMxbWqyzvGryKqwMJJWD
-	 JaMcGOolR+lHipiJ7MgQEW5B4GtrOkTqFojp/eGgKRXBeHIi1X4MVE/pHO3xZspEzM
-	 x18VTM/hRcRiZ8boAaIDdqBPxj1TnQDEJks7BXtE=
+	b=Mu+M6F72s5OdZC1pnosfMtwSh7Kwz0aCzBBH1HfsD5lciRWHDEojY1gGrL0I+sajV
+	 vAtDU2esqfU0uouUoofwG2PmIn5n2cWv1LoXDYb/XF57KpAnV4l3ZlHip/80461o3Z
+	 1Og0RUCdm/OIXODEMDnQ7t7XzL+YvkkAL7yzzASw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Airlie <airlied@redhat.com>,
-	Danilo Krummrich <dakr@redhat.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 016/374] nouveau/tu102: flush all pdbs on vmm flush
+Subject: [PATCH 6.6 221/583] ARM: davinci: always select CONFIG_CPU_ARM926T
 Date: Mon, 22 Jan 2024 15:54:32 -0800
-Message-ID: <20240122235745.193655119@linuxfoundation.org>
+Message-ID: <20240122235818.762568032@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Airlie <airlied@redhat.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit cb9c919364653eeafb49e7ff5cd32f1ad64063ac ]
+[ Upstream commit 40974ee421b4d1fc74ac733d86899ce1b83d8f65 ]
 
-This is a hack around a bug exposed with the GSP code, I'm not sure
-what is happening exactly, but it appears some of our flushes don't
-result in proper tlb invalidation for out BAR2 and we get a BAR2
-fault from GSP and it all dies.
+The select was lost by accident during the multiplatform conversion.
+Any davinci-only
 
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231130010852.4034774-1-airlied@gmail.com
+arm-linux-gnueabi-ld: arch/arm/mach-davinci/sleep.o: in function `CACHE_FLUSH':
+(.text+0x168): undefined reference to `arm926_flush_kern_cache_all'
+
+Fixes: f962396ce292 ("ARM: davinci: support multiplatform build for ARM v5")
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://lore.kernel.org/r/20240108110055.1531153-1-arnd@kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/subdev/mmu/vmmtu102.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mach-davinci/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/mmu/vmmtu102.c b/drivers/gpu/drm/nouveau/nvkm/subdev/mmu/vmmtu102.c
-index 6cb5eefa45e9..5a08458fe1b7 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/mmu/vmmtu102.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/mmu/vmmtu102.c
-@@ -31,7 +31,7 @@ tu102_vmm_flush(struct nvkm_vmm *vmm, int depth)
- 
- 	type |= 0x00000001; /* PAGE_ALL */
- 	if (atomic_read(&vmm->engref[NVKM_SUBDEV_BAR]))
--		type |= 0x00000004; /* HUB_ONLY */
-+		type |= 0x00000006; /* HUB_ONLY | ALL PDB (hack) */
- 
- 	mutex_lock(&vmm->mmu->mutex);
- 
+diff --git a/arch/arm/mach-davinci/Kconfig b/arch/arm/mach-davinci/Kconfig
+index 4316e1370627..59de137c6f53 100644
+--- a/arch/arm/mach-davinci/Kconfig
++++ b/arch/arm/mach-davinci/Kconfig
+@@ -4,6 +4,7 @@ menuconfig ARCH_DAVINCI
+ 	bool "TI DaVinci"
+ 	depends on ARCH_MULTI_V5
+ 	depends on CPU_LITTLE_ENDIAN
++	select CPU_ARM926T
+ 	select DAVINCI_TIMER
+ 	select ZONE_DMA
+ 	select PM_GENERIC_DOMAINS if PM
 -- 
 2.43.0
 
