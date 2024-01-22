@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-13068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12BAE837A63
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4E6A8378B3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8B761F28ABB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E493D1C273D6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835EA12C531;
-	Tue, 23 Jan 2024 00:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0A31846;
+	Tue, 23 Jan 2024 00:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTNFEKUa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="auHesldm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41FA712BF3D;
-	Tue, 23 Jan 2024 00:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8EB1845;
+	Tue, 23 Jan 2024 00:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968928; cv=none; b=pA6lHjbRRFEdCNP/9gc/fwHWdLbEFWorOUxN9OOZmXKBIHbZ2+d6BorURLb47oqQQmfFTdXYX1rdfG6CJtDgfHZhkASoESibMWwcndujEyDFlLQZa28IzZcVLncYOABR5eKbjJjEVKMBzLH/d3h4xvamAlV6bFI9wOSvK+T0sgw=
+	t=1705968206; cv=none; b=tCLqS0pK/wYOxSLu/thgjXpG2hHTl6v9s1OIiKEkdadt2TFrfUx5Xuy0yPJXidxD0u7PYlP+jNiHbfA/hnShlj6XTGWkZ+WPY5JWYJ5FUynlZeaYVXhsjdMgHv+L+gFuOq+KAK9WvWn6t+1ffCZLJq1t4M2yAHsv0ICzzU3xgMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968928; c=relaxed/simple;
-	bh=QNtGr+QTKDn6V8fFTj4ODp6DWrSMzFSO+jQdDWLAaW0=;
+	s=arc-20240116; t=1705968206; c=relaxed/simple;
+	bh=Oo3n235QM13HIIRhFal+Y/d7lekL/PaZ6NE7uIHiuZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lalUW2S9+alXzn/I4UmbIh5ImNJind35Q33asRU/Ba4lhYsLuKHYRN3+jSSBWrvltRhuiTd9OqMJdjFys1SyTt+YAz0I+IlqYuSVOkBGWDCXPcVWPIkNTQOpg6gTrdXqoyovhhW4XVbV79u4cwbxvfosBWWo4eyt4ACCtThqYOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTNFEKUa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2618C433F1;
-	Tue, 23 Jan 2024 00:15:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=q5wmA6fmWm9eT+ZXA5fIbRkleUf923ySTTqg2HOMYaVcNSWbNeFni0j3nCPxwo8gTGn42rXZJOPlrYfEifF+q4YsXT3HG7pr6ljRKJIQZKMumU2AAKEM9tKTL7Y9vjk+ypMBtAz/gb1J7GFnxMupFmdam67JFXN7cn/YMFacKnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=auHesldm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94827C433C7;
+	Tue, 23 Jan 2024 00:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968928;
-	bh=QNtGr+QTKDn6V8fFTj4ODp6DWrSMzFSO+jQdDWLAaW0=;
+	s=korg; t=1705968206;
+	bh=Oo3n235QM13HIIRhFal+Y/d7lekL/PaZ6NE7uIHiuZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mTNFEKUaVSw9AbMD8F7tossuhc0Ixav9r4SjPMkadrgDpZ8NdJYOW0J0t69ZI0pMv
-	 7sOQw61VYteF8JYi9P4c6z00d5ZgI96BrUTqGZXOR9XTT0eSIiWV7h6s53ZvJo42JE
-	 B6iriu/Iv/iP3uNBgn0Qf3oxDPd88DMh9MpjVeLU=
+	b=auHesldmrJCsyd7YMjPvnJGpoxYvbY7/psymtpZTZ467Bz/DZKlv+q3lJ7i9ZPITl
+	 TBUrPdrjLMJJht0s0hN9CJiCj4Nq43BY8Bboq5d8r03Z6ce/41T5gDgPRKs0iD9Sl5
+	 iz5QUTnGLdL3UioimhBLIJQW2+r2Re8rxDQMROHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Osama Muhammad <osmtendev@gmail.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+da0fc229cc1ff4bb2e6d@syzkaller.appspotmail.com
-Subject: [PATCH 5.4 070/194] gfs2: Fix kernel NULL pointer dereference in gfs2_rgrp_dump
+	Eric Paris <eparis@parisplace.org>,
+	Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 044/148] selinux: Fix error priority for bind with AF_UNSPEC on PF_INET6 socket
 Date: Mon, 22 Jan 2024 15:56:40 -0800
-Message-ID: <20240122235722.228982375@linuxfoundation.org>
+Message-ID: <20240122235714.195925799@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +64,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Osama Muhammad <osmtendev@gmail.com>
+From: Mickaël Salaün <mic@digikod.net>
 
-[ Upstream commit 8877243beafa7c6bfc42022cbfdf9e39b25bd4fa ]
+[ Upstream commit bbf5a1d0e5d0fb3bdf90205aa872636122692a50 ]
 
-Syzkaller has reported a NULL pointer dereference when accessing
-rgd->rd_rgl in gfs2_rgrp_dump().  This can happen when creating
-rgd->rd_gl fails in read_rindex_entry().  Add a NULL pointer check in
-gfs2_rgrp_dump() to prevent that.
+The IPv6 network stack first checks the sockaddr length (-EINVAL error)
+before checking the family (-EAFNOSUPPORT error).
 
-Reported-and-tested-by: syzbot+da0fc229cc1ff4bb2e6d@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=da0fc229cc1ff4bb2e6d
-Fixes: 72244b6bc752 ("gfs2: improve debug information when lvb mismatches are found")
-Signed-off-by: Osama Muhammad <osmtendev@gmail.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+This was discovered thanks to commit a549d055a22e ("selftests/landlock:
+Add network tests").
+
+Cc: Eric Paris <eparis@parisplace.org>
+Cc: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+Cc: Paul Moore <paul@paul-moore.com>
+Cc: Stephen Smalley <stephen.smalley.work@gmail.com>
+Reported-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Closes: https://lore.kernel.org/r/0584f91c-537c-4188-9e4f-04f192565667@collabora.com
+Fixes: 0f8db8cc73df ("selinux: add AF_UNSPEC and INADDR_ANY checks to selinux_socket_bind()")
+Signed-off-by: Mickaël Salaün <mic@digikod.net>
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/rgrp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/selinux/hooks.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
-index 8153a3eac540..f0a135a48cc3 100644
---- a/fs/gfs2/rgrp.c
-+++ b/fs/gfs2/rgrp.c
-@@ -2275,7 +2275,7 @@ void gfs2_rgrp_dump(struct seq_file *seq, struct gfs2_glock *gl,
- 		       (unsigned long long)rgd->rd_addr, rgd->rd_flags,
- 		       rgd->rd_free, rgd->rd_free_clone, rgd->rd_dinodes,
- 		       rgd->rd_reserved, rgd->rd_extfail_pt);
--	if (rgd->rd_sbd->sd_args.ar_rgrplvb) {
-+	if (rgd->rd_sbd->sd_args.ar_rgrplvb && rgd->rd_rgl) {
- 		struct gfs2_rgrp_lvb *rgl = rgd->rd_rgl;
- 
- 		gfs2_print_dbg(seq, "%s  L: f:%02x b:%u i:%u\n", fs_id_buf,
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 41e24df986eb..749dbf9f2cfc 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -4700,6 +4700,13 @@ static int selinux_socket_bind(struct socket *sock, struct sockaddr *address, in
+ 				return -EINVAL;
+ 			addr4 = (struct sockaddr_in *)address;
+ 			if (family_sa == AF_UNSPEC) {
++				if (family == PF_INET6) {
++					/* Length check from inet6_bind_sk() */
++					if (addrlen < SIN6_LEN_RFC2133)
++						return -EINVAL;
++					/* Family check from __inet6_bind() */
++					goto err_af;
++				}
+ 				/* see __inet_bind(), we only want to allow
+ 				 * AF_UNSPEC if the address is INADDR_ANY
+ 				 */
 -- 
 2.43.0
 
