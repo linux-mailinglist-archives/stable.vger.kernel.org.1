@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97EB4837EEC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:02 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7B68837C84
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5228229BBED
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EC0B287BB8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13DD2604D6;
-	Tue, 23 Jan 2024 00:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59F8D135A44;
+	Tue, 23 Jan 2024 00:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAVNawZ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DGh+v0oo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70E4604CF;
-	Tue, 23 Jan 2024 00:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1909A13541C;
+	Tue, 23 Jan 2024 00:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970827; cv=none; b=M/G4SfpINPbmkd/K6bl7K7BtQXsCbQpu9aEjEZaC8hVzrtpzjGjTERmYgY6vAzJTSjVIXDIDvdOmxp8zkoS0RnjWcgQb6Dd9ZSEEdmbsuBXWjpHQ3y3ptGhwC/Q1x1w9AyfOP+g8QPj3GB00Gj80oa1HlbrJgW6DRaP57XHcq3k=
+	t=1705969652; cv=none; b=C17soy37ermYrBUzdx6k2q0OqqiIZs9naDSL8k9tDKShUrWPqVivw53GOLzSm7LqF4TSTD4bbnT0BrMmlW2IWA7EvYR8cfMp1O6bln6kAinJu53n/d27YFPHA+WTtE1uDBR4A4gkBOrtzAtyW50pERaxR/siVzL5nacziWw5Mec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970827; c=relaxed/simple;
-	bh=jW7JYoa+gsgmZE0LfONEv/NStTIAUpWKkgr8Iy/JT88=;
+	s=arc-20240116; t=1705969652; c=relaxed/simple;
+	bh=UVj/X4Ef3VwNvMXFR6VMRdzAR/EEsON8HbK06X2TILo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PhUJzkMusBSaoV6DHjA28l9eHQHhNpX+szmCAj9oJB9ueUHb80DK4o2d+r2GxZf42H0wsAJhwYUqj9hnh7j+SCsGHhrF+FMPf/nwOo9oDiaY34TglDkwUiePvFeRdy+hOoHUU851C7D3uQ3BelC6kXD96TRLV2TmiZDSPzkVz/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAVNawZ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC91DC433F1;
-	Tue, 23 Jan 2024 00:47:06 +0000 (UTC)
+	 MIME-Version; b=FqH+02sSZBaqAU30OQ2ahiShyplZrVy3pftzvNyu3noF3X2/y2EJ0Nh0o0anbUm+V1AtsI36sBdps8CkVF9WCMgwMbJAj5y3JlPGnRRqJabEXcYbNmsQEXD0/uwEzfnYc7jzDBCaLzPhRsDeKc7h0df8+JW7g7c2SSuif4b3nis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DGh+v0oo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4516C433F1;
+	Tue, 23 Jan 2024 00:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970827;
-	bh=jW7JYoa+gsgmZE0LfONEv/NStTIAUpWKkgr8Iy/JT88=;
+	s=korg; t=1705969651;
+	bh=UVj/X4Ef3VwNvMXFR6VMRdzAR/EEsON8HbK06X2TILo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nAVNawZ30HyQhnhhNrTlkDMcjYbifWG44e6uCXbO0JPKdAYEqWigP0/XOf81ALD0K
-	 EREIXwm8eK/uoQsNZTldwr0G9tSzRq3+oeSJiTHFAlNA2nUbbncWipDNeneJShQtix
-	 TlhjLqGoUYCf4bcAy8lQfKh5m82evs7gA9xQU1ms=
+	b=DGh+v0ooQo+t5Aa8J61kWOICGBVYdIjaG0p23dEn0pVZOG3h5MOQPlTSsbQamPCJE
+	 /fvsCfVAAn30EA8vxN6r+asLs/qhuzew9+TXl0MN38W5kNj0QhdLf0FAhljEf0HlrO
+	 NeJBtF6SBhoziciwLfEkbR88i7OewtRLM3rSBh5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 120/417] selftests/net: fix grep checking for fib_nexthop_multiprefix
+	Matthew Maurer <mmaurer@google.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.7 384/641] rust: Ignore preserve-most functions
 Date: Mon, 22 Jan 2024 15:54:48 -0800
-Message-ID: <20240122235755.940330961@linuxfoundation.org>
+Message-ID: <20240122235829.968546534@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Matthew Maurer <mmaurer@google.com>
 
-[ Upstream commit a33e9da3470499e9ff476138f271fb52d6bfe767 ]
+commit bad098d76835c1379e1cf6afc935f8a7e050f83c upstream.
 
-When running fib_nexthop_multiprefix test I saw all IPv6 test failed.
-e.g.
+Neither bindgen nor Rust know about the preserve-most calling
+convention, and Clang describes it as unstable. Since we aren't using
+functions with this calling convention from Rust, blocklist them.
 
- ]# ./fib_nexthop_multiprefix.sh
- TEST: IPv4: host 0 to host 1, mtu 1300                              [ OK ]
- TEST: IPv6: host 0 to host 1, mtu 1300                              [FAIL]
+These functions are only added to the build when list hardening is
+enabled, which is likely why others didn't notice this yet.
 
- With -v it shows
-
- COMMAND: ip netns exec h0 /usr/sbin/ping6 -s 1350 -c5 -w5 2001:db8:101::1
- PING 2001:db8:101::1(2001:db8:101::1) 1350 data bytes
- From 2001:db8:100::64 icmp_seq=1 Packet too big: mtu=1300
-
- --- 2001:db8:101::1 ping statistics ---
- 1 packets transmitted, 0 received, +1 errors, 100% packet loss, time 0ms
-
- Route get
- 2001:db8:101::1 via 2001:db8:100::64 dev eth0 src 2001:db8:100::1 metric 1024 expires 599sec mtu 1300 pref medium
- Searching for:
-     2001:db8:101::1 from :: via 2001:db8:100::64 dev eth0 src 2001:db8:100::1 .* mtu 1300
-
-The reason is when CONFIG_IPV6_SUBTREES is not enabled, rt6_fill_node() will
-not put RTA_SRC info. After fix:
-
-]# ./fib_nexthop_multiprefix.sh
-TEST: IPv4: host 0 to host 1, mtu 1300                              [ OK ]
-TEST: IPv6: host 0 to host 1, mtu 1300                              [ OK ]
-
-Fixes: 735ab2f65dce ("selftests: Add test with multiple prefixes using single nexthop")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://lore.kernel.org/r/20231213060856.4030084-7-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Matthew Maurer <mmaurer@google.com>
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Link: https://lore.kernel.org/r/20231031201945.1412345-1-mmaurer@google.com
+[ Used Markdown for consistency with the other comments in the file. ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/fib_nexthop_multiprefix.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ rust/bindgen_parameters |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/tools/testing/selftests/net/fib_nexthop_multiprefix.sh b/tools/testing/selftests/net/fib_nexthop_multiprefix.sh
-index 51df5e305855..b52d59547fc5 100755
---- a/tools/testing/selftests/net/fib_nexthop_multiprefix.sh
-+++ b/tools/testing/selftests/net/fib_nexthop_multiprefix.sh
-@@ -209,12 +209,12 @@ validate_v6_exception()
- 		echo "Route get"
- 		ip -netns h0 -6 ro get ${dst}
- 		echo "Searching for:"
--		echo "    ${dst} from :: via ${r1} dev eth0 src ${h0} .* mtu ${mtu}"
-+		echo "    ${dst}.* via ${r1} dev eth0 src ${h0} .* mtu ${mtu}"
- 		echo
- 	fi
+--- a/rust/bindgen_parameters
++++ b/rust/bindgen_parameters
+@@ -20,3 +20,7 @@
  
- 	ip -netns h0 -6 ro get ${dst} | \
--	grep -q "${dst} from :: via ${r1} dev eth0 src ${h0} .* mtu ${mtu}"
-+	grep -q "${dst}.* via ${r1} dev eth0 src ${h0} .* mtu ${mtu}"
- 	rc=$?
- 
- 	log_test $rc 0 "IPv6: host 0 to host ${i}, mtu ${mtu}"
--- 
-2.43.0
-
+ # `seccomp`'s comment gets understood as a doctest
+ --no-doc-comments
++
++# These functions use the `__preserve_most` calling convention, which neither bindgen
++# nor Rust currently understand, and which Clang currently declares to be unstable.
++--blocklist-function __list_.*_report
 
 
 
