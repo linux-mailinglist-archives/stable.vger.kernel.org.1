@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD55837C01
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD448382BD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D555294E82
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1032B1F24F0E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604CD17E8;
-	Tue, 23 Jan 2024 00:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7255C5F56D;
+	Tue, 23 Jan 2024 01:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0Y8xnoe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bcP+5dgD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7CE15C6;
-	Tue, 23 Jan 2024 00:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F655F565;
+	Tue, 23 Jan 2024 01:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969471; cv=none; b=RyJBrlx8UZczKSe17umD7XEVJoomcdiRKsgie7V64rMNHMLQJmKibTFv5PoYt6jDo82qUpopipJCjzdzGlS38x18HZi2b15V+x8c9PhYj7P7dMFzmZWJpbr6S0mMVCVm5OF4Wjch28sO7K7ukN/aKrNaLXPCfXF1hHk26MNDp5U=
+	t=1705974425; cv=none; b=C5uEwrtYp0WkomLcQiGpaT80RIMYFL1wZeZFrVhnlrXFSevD6mbpplKpKG1Jb6gBbAEeJBQmFPmlAxMLlgQXPKQNohDJVSf8AjJ4wG9PvwFNgAN4tvRv7nyLpfRI3LUndKRrMUelJanDu9BoFw/q6z3qpGTEst34K7akRRu9ouw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969471; c=relaxed/simple;
-	bh=T2dTm+S4D597wphIUkXx84WGQym49nMfVoETUl8lmu0=;
+	s=arc-20240116; t=1705974425; c=relaxed/simple;
+	bh=s/tOjp38lDw60i1uapWF3nQEF52xoTYr697Jfkw1WWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=COki0nRue8mJ7nIJYcY7oe9ByWtTOG2mLEq+yIAmHTtXK44fzxtfJWcLqACzrQoB+H4pC4kiPDoSGRXZ0WWQrj9qpdXMjTkDSYh/xPzEY7x5zsiiRDiOE37ZNUV1GYSXoP6SSvkkdkC1ncR3r6nbSZtf0jQxItOkG3uzIbkfwGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0Y8xnoe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D75CDC433F1;
-	Tue, 23 Jan 2024 00:24:30 +0000 (UTC)
+	 MIME-Version; b=rJicLUgLs0oXaReGGoFyQPSQoq0gyi/LaGIdP6wd/21c1st/3iR8MEK6BxV0ucb29lS5pOdWMaZhyCU3x/ExQIncaXeOXu0uHfOosNKyrmg3+n1XNTxgMXQS0NturCpVxKA4Vzcbq06t7NqHem12Qv3cHUy4zm9QgiIgjP6htcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bcP+5dgD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEF2C43390;
+	Tue, 23 Jan 2024 01:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969471;
-	bh=T2dTm+S4D597wphIUkXx84WGQym49nMfVoETUl8lmu0=;
+	s=korg; t=1705974425;
+	bh=s/tOjp38lDw60i1uapWF3nQEF52xoTYr697Jfkw1WWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I0Y8xnoef4pGepeQejjx7P58Lr0F9e1m/uM2XNY97e4PQAnbex7JDABFta2LvTETy
-	 1RMZHjF2LFvhKznXOCWXIp5OoB8YXWpppBs8UHkpaKRx4EROzn1uO6+00cU2Nx4ifr
-	 UO5GM2CFhCEHeekc1W8ZJuBlIyZWmtq1SBfcFNEk=
+	b=bcP+5dgDns0LsJB3OdUHVTqlH5Jb5G+vUZ7Sy7xxOnv9c7fT/rmuWV5UfCPGm3BR6
+	 nqDOzGZOzq9V/DYC/tYNY4uuyN48cm+l1O3yNINocb61a1di74il8UlqaWRZ9SCt6U
+	 OrQ46wCdNh5AqKL/aLMlJys3CKjXxhI0DQ+7/xbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Su Hui <suhui@nfschina.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 242/641] Revert "drm/tidss: Annotate dma-fence critical section in commit path"
-Date: Mon, 22 Jan 2024 15:52:26 -0800
-Message-ID: <20240122235825.498283452@linuxfoundation.org>
+Subject: [PATCH 6.6 096/583] wifi: rtlwifi: rtl8821ae: phy: fix an undefined bitwise shift behavior
+Date: Mon, 22 Jan 2024 15:52:27 -0800
+Message-ID: <20240122235815.117215495@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,177 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit ca34d816558c3e4c3f8fe037b5a6b16c944693de ]
+[ Upstream commit bc8263083af60e7e57c6120edbc1f75d6c909a35 ]
 
-This reverts commit 4d56a4f08391857ba93465de489707b66adad114.
+Clang static checker warns:
 
-The DMA-fence annotations cause a lockdep warning (see below). As per
-https://patchwork.freedesktop.org/patch/462170/ it sounds like the
-annotations don't work correctly.
+drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c:184:49:
+	The result of the left shift is undefined due to shifting by '32',
+	which is greater or equal to the width of type 'u32'.
+	[core.UndefinedBinaryOperatorResult]
 
-======================================================
-WARNING: possible circular locking dependency detected
-6.6.0-rc2+ #1 Not tainted
-------------------------------------------------------
-kmstest/733 is trying to acquire lock:
-ffff8000819377f0 (fs_reclaim){+.+.}-{0:0}, at: __kmem_cache_alloc_node+0x58/0x2d4
+If the value of the right operand is negative or is greater than or
+equal to the width of the promoted left operand, the behavior is
+undefined.[1][2]
 
-but task is already holding lock:
-ffff800081a06aa0 (dma_fence_map){++++}-{0:0}, at: tidss_atomic_commit_tail+0x20/0xc0 [tidss]
+For example, when using different gcc's compilation optimization options
+(-O0 or -O2), the result of '(u32)data << 32' is different. One is 0, the
+other is old value of data. Let _rtl8821ae_phy_calculate_bit_shift()'s
+return value less than 32 to fix this problem. Warn if bitmask is zero.
 
-which lock already depends on the new lock.
+[1] https://stackoverflow.com/questions/11270492/what-does-the-c-standard-say-about-bitshifting-more-bits-than-the-width-of-type
+[2] https://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf
 
-the existing dependency chain (in reverse order) is:
-
--> #2 (dma_fence_map){++++}-{0:0}:
-       __dma_fence_might_wait+0x5c/0xd0
-       dma_resv_lockdep+0x1a4/0x32c
-       do_one_initcall+0x84/0x2fc
-       kernel_init_freeable+0x28c/0x4c4
-       kernel_init+0x24/0x1dc
-       ret_from_fork+0x10/0x20
-
--> #1 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}:
-       fs_reclaim_acquire+0x70/0xe4
-       __kmem_cache_alloc_node+0x58/0x2d4
-       kmalloc_trace+0x38/0x78
-       __kthread_create_worker+0x3c/0x150
-       kthread_create_worker+0x64/0x8c
-       workqueue_init+0x1e8/0x2f0
-       kernel_init_freeable+0x11c/0x4c4
-       kernel_init+0x24/0x1dc
-       ret_from_fork+0x10/0x20
-
--> #0 (fs_reclaim){+.+.}-{0:0}:
-       __lock_acquire+0x1370/0x20d8
-       lock_acquire+0x1e8/0x308
-       fs_reclaim_acquire+0xd0/0xe4
-       __kmem_cache_alloc_node+0x58/0x2d4
-       __kmalloc_node_track_caller+0x58/0xf0
-       kmemdup+0x34/0x60
-       regmap_bulk_write+0x64/0x2c0
-       tc358768_bridge_pre_enable+0x8c/0x12d0 [tc358768]
-       drm_atomic_bridge_call_pre_enable+0x68/0x80 [drm]
-       drm_atomic_bridge_chain_pre_enable+0x50/0x158 [drm]
-       drm_atomic_helper_commit_modeset_enables+0x164/0x264 [drm_kms_helper]
-       tidss_atomic_commit_tail+0x58/0xc0 [tidss]
-       commit_tail+0xa0/0x188 [drm_kms_helper]
-       drm_atomic_helper_commit+0x1a8/0x1c0 [drm_kms_helper]
-       drm_atomic_commit+0xa8/0xe0 [drm]
-       drm_mode_atomic_ioctl+0x9ec/0xc80 [drm]
-       drm_ioctl_kernel+0xc4/0x170 [drm]
-       drm_ioctl+0x234/0x4b0 [drm]
-       drm_compat_ioctl+0x110/0x12c [drm]
-       __arm64_compat_sys_ioctl+0x128/0x150
-       invoke_syscall+0x48/0x110
-       el0_svc_common.constprop.0+0x40/0xe0
-       do_el0_svc_compat+0x1c/0x38
-       el0_svc_compat+0x48/0xb4
-       el0t_32_sync_handler+0xb0/0x138
-       el0t_32_sync+0x194/0x198
-
-other info that might help us debug this:
-
-Chain exists of:
-  fs_reclaim --> mmu_notifier_invalidate_range_start --> dma_fence_map
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  rlock(dma_fence_map);
-                               lock(mmu_notifier_invalidate_range_start);
-                               lock(dma_fence_map);
-  lock(fs_reclaim);
-
- *** DEADLOCK ***
-
-3 locks held by kmstest/733:
- #0: ffff800082e5bba0 (crtc_ww_class_acquire){+.+.}-{0:0}, at: drm_mode_atomic_ioctl+0x118/0xc80 [drm]
- #1: ffff000004224c88 (crtc_ww_class_mutex){+.+.}-{3:3}, at: modeset_lock+0xdc/0x1a0 [drm]
- #2: ffff800081a06aa0 (dma_fence_map){++++}-{0:0}, at: tidss_atomic_commit_tail+0x20/0xc0 [tidss]
-
-stack backtrace:
-CPU: 0 PID: 733 Comm: kmstest Not tainted 6.6.0-rc2+ #1
-Hardware name: Toradex Verdin AM62 on Verdin Development Board (DT)
-Call trace:
- dump_backtrace+0x98/0x118
- show_stack+0x18/0x24
- dump_stack_lvl+0x60/0xac
- dump_stack+0x18/0x24
- print_circular_bug+0x288/0x368
- check_noncircular+0x168/0x17c
- __lock_acquire+0x1370/0x20d8
- lock_acquire+0x1e8/0x308
- fs_reclaim_acquire+0xd0/0xe4
- __kmem_cache_alloc_node+0x58/0x2d4
- __kmalloc_node_track_caller+0x58/0xf0
- kmemdup+0x34/0x60
- regmap_bulk_write+0x64/0x2c0
- tc358768_bridge_pre_enable+0x8c/0x12d0 [tc358768]
- drm_atomic_bridge_call_pre_enable+0x68/0x80 [drm]
- drm_atomic_bridge_chain_pre_enable+0x50/0x158 [drm]
- drm_atomic_helper_commit_modeset_enables+0x164/0x264 [drm_kms_helper]
- tidss_atomic_commit_tail+0x58/0xc0 [tidss]
- commit_tail+0xa0/0x188 [drm_kms_helper]
- drm_atomic_helper_commit+0x1a8/0x1c0 [drm_kms_helper]
- drm_atomic_commit+0xa8/0xe0 [drm]
- drm_mode_atomic_ioctl+0x9ec/0xc80 [drm]
- drm_ioctl_kernel+0xc4/0x170 [drm]
- drm_ioctl+0x234/0x4b0 [drm]
- drm_compat_ioctl+0x110/0x12c [drm]
- __arm64_compat_sys_ioctl+0x128/0x150
- invoke_syscall+0x48/0x110
- el0_svc_common.constprop.0+0x40/0xe0
- do_el0_svc_compat+0x1c/0x38
- el0_svc_compat+0x48/0xb4
- el0t_32_sync_handler+0xb0/0x138
- el0t_32_sync+0x194/0x198
-
-Fixes: 4d56a4f08391 ("drm/tidss: Annotate dma-fence critical section in commit path")
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230920-dma-fence-annotation-revert-v1-1-7ebf6f7f5bf6@ideasonboard.com
+Fixes: 21e4b0726dc6 ("rtlwifi: rtl8821ae: Move driver from staging to regular tree")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20231127013511.26694-2-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tidss/tidss_kms.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/tidss/tidss_kms.c b/drivers/gpu/drm/tidss/tidss_kms.c
-index c979ad1af236..d096d8d2bc8f 100644
---- a/drivers/gpu/drm/tidss/tidss_kms.c
-+++ b/drivers/gpu/drm/tidss/tidss_kms.c
-@@ -4,8 +4,6 @@
-  * Author: Tomi Valkeinen <tomi.valkeinen@ti.com>
-  */
- 
--#include <linux/dma-fence.h>
--
- #include <drm/drm_atomic.h>
- #include <drm/drm_atomic_helper.h>
- #include <drm/drm_bridge.h>
-@@ -25,7 +23,6 @@ static void tidss_atomic_commit_tail(struct drm_atomic_state *old_state)
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+index 5323ead30db0..fa1839d8ee55 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8821ae/phy.c
+@@ -29,9 +29,10 @@ static void _rtl8821ae_phy_rf_serial_write(struct ieee80211_hw *hw,
+ 					   u32 data);
+ static u32 _rtl8821ae_phy_calculate_bit_shift(u32 bitmask)
  {
- 	struct drm_device *ddev = old_state->dev;
- 	struct tidss_device *tidss = to_tidss(ddev);
--	bool fence_cookie = dma_fence_begin_signalling();
+-	u32 i = ffs(bitmask);
++	if (WARN_ON_ONCE(!bitmask))
++		return 0;
  
- 	dev_dbg(ddev->dev, "%s\n", __func__);
- 
-@@ -36,7 +33,6 @@ static void tidss_atomic_commit_tail(struct drm_atomic_state *old_state)
- 	drm_atomic_helper_commit_modeset_enables(ddev, old_state);
- 
- 	drm_atomic_helper_commit_hw_done(old_state);
--	dma_fence_end_signalling(fence_cookie);
- 	drm_atomic_helper_wait_for_flip_done(ddev, old_state);
- 
- 	drm_atomic_helper_cleanup_planes(ddev, old_state);
+-	return i ? i - 1 : 32;
++	return __ffs(bitmask);
+ }
+ static bool _rtl8821ae_phy_bb8821a_config_parafile(struct ieee80211_hw *hw);
+ /*static bool _rtl8812ae_phy_config_mac_with_headerfile(struct ieee80211_hw *hw);*/
 -- 
 2.43.0
 
