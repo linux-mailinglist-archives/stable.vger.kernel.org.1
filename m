@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDF1E8382E9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:25:01 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A6D8837BF9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82DF5288790
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA41B1F2AC3A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80EE5FEF1;
-	Tue, 23 Jan 2024 01:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3413C0C;
+	Tue, 23 Jan 2024 00:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wk/ABxux"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="edheryGw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772255FEE3;
-	Tue, 23 Jan 2024 01:50:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1423C24;
+	Tue, 23 Jan 2024 00:24:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974659; cv=none; b=dz9GYDMek/oMlz2F60KePJ8ysiqKtXwUfFysPGAfWrj7UsRpkzCB8D3t992YVgM5xrhDKkWMI9CzRFln70e1ov0HjbqQ8yz4cokZ2KyDcfy90lEq+2KJba2d7xwZT5usM6FslqOrMdqgIyVrN+SB2v2TLdbG8Iet/RCkF3olPAc=
+	t=1705969459; cv=none; b=IxLDFd9OgQggkRQJlsV4uKJKRDAi85h28m83J8pbV9OPkPrO/yiEST1xxXaU4WGwQX+luVIHCXgzGj8mGWUIndEK+CD+bOa0HGOccZzJzxSHef3RpUcMRa3cjad7LONkgX75zMRLJnKjbkP+gNDGryom87lplG5RlKEMh0sxgEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974659; c=relaxed/simple;
-	bh=E1gdM4A27ZhTx9V+clqBdN0h77vB6zAc0o1niM4r2dI=;
+	s=arc-20240116; t=1705969459; c=relaxed/simple;
+	bh=PdAMRBuZeIh8yDnAcXX34z3E9kNlJCcSevDaUdHrYXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XUJqymFVXJ9XdDLPDdkWEXqEdZo+DlC/0DuseBM/3OWAu33qb8jZwPym94tABVM7rkeoKeyZPmUSwDBLM08qU1tqBpW6WOMGnnBVfG4c+AwQYQEvBcZqHbNs77onrdUCGmQVMiADL5eKuK+lFnY6Gokb1PsqMi8t4uGhCYgs/hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wk/ABxux; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 214AAC43394;
-	Tue, 23 Jan 2024 01:50:58 +0000 (UTC)
+	 MIME-Version; b=JKB1D8Rz9iGeAn2PxUliAaG0QxaAXH+Z4MOkHgnL4bb4MHoeqWPmdtlBymYZ+hDsO8zQL9/ac2hY5Io3TAJJ4dDXekONjqeQJhQXA5Z6LkFd4tDyC+7OwbDuGfxjQbR9j6klN5vOm7N6WtyagOLk8BLnf2P4053a+NouJXJ7gsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=edheryGw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7F8C43390;
+	Tue, 23 Jan 2024 00:24:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974659;
-	bh=E1gdM4A27ZhTx9V+clqBdN0h77vB6zAc0o1niM4r2dI=;
+	s=korg; t=1705969458;
+	bh=PdAMRBuZeIh8yDnAcXX34z3E9kNlJCcSevDaUdHrYXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wk/ABxuxDBe94bwwsf2N0X+dhgfNw9iEsQHHqDRyxG6/WCO4Sbl34Sh1j5IUw3Uv3
-	 UAbGiaLS8uFMzck8IRqWqUdU07jL16ikd3eUC3x8rmsrWj6RPqh9/SBIwMukrFAtyR
-	 65MAHp+3RIVKJzNRZIG7ZGq59Hitg1zZ0l9AbGqU=
+	b=edheryGwpGcMreH4vmrpe6nMu20ZgtZfEM4H8eS5EWDihEW+T5fnd59+ktET5nceG
+	 T2wvO4pbUmoeQ4GNtPfSob9Lza8nkW04mz9+RH76ExOsWqr2GPfJDa3SZWZvLEtEKf
+	 0//USqzzBwABFlvdeFe5Ao+dfaLMyUaM21IHkYcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 111/583] arm64: dts: qcom: sc7280: Mark some nodes as reserved
+Subject: [PATCH 6.7 258/641] media: rkvdec: Hook the (TRY_)DECODER_CMD stateless ioctls
 Date: Mon, 22 Jan 2024 15:52:42 -0800
-Message-ID: <20240122235815.562090986@linuxfoundation.org>
+Message-ID: <20240122235826.003283258@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,128 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
 
-[ Upstream commit 6da24ba932082bae110feb917a64bb54637fa7c0 ]
+[ Upstream commit 1fb7b5ab62113b29ce331464048d8c39e58fd08a ]
 
-With the standard Qualcomm TrustZone setup, components such as lpasscc,
-pdc_reset and watchdog shouldn't be touched by Linux. Mark them with
-the status 'reserved' and reenable them in the chrome-common dtsi.
+The (TRY_)DECODER_CMD ioctls are used to support flushing when holding
+capture buffers is supported. This is the case of this driver but the
+ioctls were never hooked to the ioctl ops.
 
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Link: https://lore.kernel.org/r/20230919-fp5-initial-v2-1-14bb7cedadf5@fairphone.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 6897fac411db ("arm64: dts: qcom: sc7280: Make watchdog bark interrupt edge triggered")
+Add them to correctly support flushing.
+
+Fixes: ed7bb87d3d03 ("media: rkvdec: Enable capture buffer holding for H264")
+Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/qcom/sc7280-chrome-common.dtsi   | 24 +++++++++++++++++++
- arch/arm64/boot/dts/qcom/sc7280.dtsi          |  8 ++++++-
- 2 files changed, 31 insertions(+), 1 deletion(-)
+ drivers/staging/media/rkvdec/rkvdec.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi b/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
-index 2e1cd219fc18..5d462ae14ba1 100644
---- a/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280-chrome-common.dtsi
-@@ -46,6 +46,26 @@ wpss_mem: memory@9ae00000 {
- 	};
+diff --git a/drivers/staging/media/rkvdec/rkvdec.c b/drivers/staging/media/rkvdec/rkvdec.c
+index 84a41792cb4b..ac398b5a9736 100644
+--- a/drivers/staging/media/rkvdec/rkvdec.c
++++ b/drivers/staging/media/rkvdec/rkvdec.c
+@@ -461,6 +461,9 @@ static const struct v4l2_ioctl_ops rkvdec_ioctl_ops = {
+ 
+ 	.vidioc_streamon = v4l2_m2m_ioctl_streamon,
+ 	.vidioc_streamoff = v4l2_m2m_ioctl_streamoff,
++
++	.vidioc_decoder_cmd = v4l2_m2m_ioctl_stateless_decoder_cmd,
++	.vidioc_try_decoder_cmd = v4l2_m2m_ioctl_stateless_try_decoder_cmd,
  };
  
-+&lpass_aon {
-+	status = "okay";
-+};
-+
-+&lpass_core {
-+	status = "okay";
-+};
-+
-+&lpass_hm {
-+	status = "okay";
-+};
-+
-+&lpasscc {
-+	status = "okay";
-+};
-+
-+&pdc_reset {
-+	status = "okay";
-+};
-+
- /* The PMIC PON code isn't compatible w/ how Chrome EC/BIOS handle things. */
- &pmk8350_pon {
- 	status = "disabled";
-@@ -84,6 +104,10 @@ &scm {
- 	dma-coherent;
- };
- 
-+&watchdog {
-+	status = "okay";
-+};
-+
- &wifi {
- 	status = "okay";
- 
-diff --git a/arch/arm64/boot/dts/qcom/sc7280.dtsi b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-index 91bb58c6b1a6..6f2a8f60856d 100644
---- a/arch/arm64/boot/dts/qcom/sc7280.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc7280.dtsi
-@@ -2255,6 +2255,7 @@ lpasscc: lpasscc@3000000 {
- 			clocks = <&gcc GCC_CFG_NOC_LPASS_CLK>;
- 			clock-names = "iface";
- 			#clock-cells = <1>;
-+			status = "reserved"; /* Owned by ADSP firmware */
- 		};
- 
- 		lpass_rx_macro: codec@3200000 {
-@@ -2406,6 +2407,7 @@ lpass_aon: clock-controller@3380000 {
- 			clock-names = "bi_tcxo", "bi_tcxo_ao", "iface";
- 			#clock-cells = <1>;
- 			#power-domain-cells = <1>;
-+			status = "reserved"; /* Owned by ADSP firmware */
- 		};
- 
- 		lpass_core: clock-controller@3900000 {
-@@ -2416,6 +2418,7 @@ lpass_core: clock-controller@3900000 {
- 			power-domains = <&lpass_hm LPASS_CORE_CC_LPASS_CORE_HM_GDSC>;
- 			#clock-cells = <1>;
- 			#power-domain-cells = <1>;
-+			status = "reserved"; /* Owned by ADSP firmware */
- 		};
- 
- 		lpass_cpu: audio@3987000 {
-@@ -2486,6 +2489,7 @@ lpass_hm: clock-controller@3c00000 {
- 			clock-names = "bi_tcxo";
- 			#clock-cells = <1>;
- 			#power-domain-cells = <1>;
-+			status = "reserved"; /* Owned by ADSP firmware */
- 		};
- 
- 		lpass_ag_noc: interconnect@3c40000 {
-@@ -4199,6 +4203,7 @@ pdc_reset: reset-controller@b5e0000 {
- 			compatible = "qcom,sc7280-pdc-global";
- 			reg = <0 0x0b5e0000 0 0x20000>;
- 			#reset-cells = <1>;
-+			status = "reserved"; /* Owned by firmware */
- 		};
- 
- 		tsens0: thermal-sensor@c263000 {
-@@ -5195,11 +5200,12 @@ msi-controller@17a40000 {
- 			};
- 		};
- 
--		watchdog@17c10000 {
-+		watchdog: watchdog@17c10000 {
- 			compatible = "qcom,apss-wdt-sc7280", "qcom,kpss-wdt";
- 			reg = <0 0x17c10000 0 0x1000>;
- 			clocks = <&sleep_clk>;
- 			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
-+			status = "reserved"; /* Owned by Gunyah hyp */
- 		};
- 
- 		timer@17c20000 {
+ static int rkvdec_queue_setup(struct vb2_queue *vq, unsigned int *num_buffers,
 -- 
 2.43.0
 
