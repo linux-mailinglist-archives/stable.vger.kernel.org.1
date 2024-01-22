@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-13645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D4BE837D3D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3C5D838209
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:17:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1582B292189
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8520C1F23109
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80B25101F;
-	Tue, 23 Jan 2024 00:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A97657334;
+	Tue, 23 Jan 2024 01:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQazztGp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AlqhVKr1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7707D3A8F4;
-	Tue, 23 Jan 2024 00:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053F457323;
+	Tue, 23 Jan 2024 01:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969859; cv=none; b=BwD/mdTH5sClpsTs89CGUcAH/G20+NKqQHvvLag+AwAfA/M2KaRda495h9L+50cJS0g62o4sl1twSI9a4ve1kZ6OWiPx2z3egd1s8490eSNtrj/qwuTbAH9AdH2uuNMc03sRRq3qxKOYaW6Hsq0b8RZNxLmabc0ieAqTJF/6mxE=
+	t=1705974041; cv=none; b=Udp/9vGO925ME9LiVU4SnBx39QgJhXNTnn9hEwYuB3Xm2hS4HnLucziJLXejxrEtzjtsS++pEfPKudeH1x6mFNVlnIjPDnOu9+y50t7D4oAa9N9l7E9G6p4ECAfIgRzuteMNzD/aedicgDn4BkRFtF6EfvlXjyoFs2i4uWb5uhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969859; c=relaxed/simple;
-	bh=/nBreDkfSTp/5/oRtvmFe7pcKhudwGvv8F3HhNUJTag=;
+	s=arc-20240116; t=1705974041; c=relaxed/simple;
+	bh=dmayhOpcW+2iK/8Nci1101tTVku6UsspyIfRPTQPXOg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FhzwZHSLuwRl4BIfLsCzbnhiwVZ5ylBcK2U0iDfSsQBxRya9HU4jsEcFH3yShg3bZWRGtM1v57sqXK3zASFIhsjt1uYg9tvEycwIt8uJV67jzAPzH+l9KUbSL44OvKSmT5QDrsR1iLa7yrDr6GIt1cdxRjdXEQfZxiSOVFoYJRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQazztGp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD5EFC433F1;
-	Tue, 23 Jan 2024 00:30:57 +0000 (UTC)
+	 MIME-Version; b=ufsIHlTpNtDZYtF0CIPzejm0UixiDTLJc4P0QiDeW91ZJMT/8qZ8JZrY2IpWP4xn3gC6stYY31R8ftAXP5IFYH4OP6ldOahLWlvJBUzJc44cJjeR87s+yWw6I+vK860znMEOIjDCdLlU9BT4u6T3HfjXfBRdvnFtRv0ovwjNQCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AlqhVKr1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65873C433C7;
+	Tue, 23 Jan 2024 01:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969857;
-	bh=/nBreDkfSTp/5/oRtvmFe7pcKhudwGvv8F3HhNUJTag=;
+	s=korg; t=1705974040;
+	bh=dmayhOpcW+2iK/8Nci1101tTVku6UsspyIfRPTQPXOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AQazztGp53AoDlKp+Rr2lA2CtXRkz1KLp52u3S0Nqg7T4Zualgc81yLNVUsFCbgW8
-	 H4k9nf/81ypNVV5env/gBT/Wocu/VfhsCf0kJiPoy5QOrkG296fMJvMnc5I4DIyFYu
-	 0rSpfWiYBTFPyAlh/zLWBIwGv0H/HhaUrU2JkkFM=
+	b=AlqhVKr1ug85SjhJBJK3690A5Iqjr+rXdO38xKJiwthZTjtzNwNgzPXmvjzv8l7kX
+	 pdWam2zO2AhfxKRXCxAX9z4/BMpuQu5e9QlaI6WbIQcmzNZJzd4Nryq4f7eOFkR9MY
+	 t+Zc0mN24/8kSMlL6ft+jXAqJtf89GlF1THoGdmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Alex Vinarskis <alex.vinarskis@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 489/641] mfd: intel-lpss: Fix the fractional clock divider flags
+Subject: [PATCH 5.15 137/374] arm64: dts: qcom: qrb5165-rb5: correct LED panic indicator
 Date: Mon, 22 Jan 2024 15:56:33 -0800
-Message-ID: <20240122235833.378605423@linuxfoundation.org>
+Message-ID: <20240122235749.409248255@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 03d790f04fb2507173913cad9c213272ac983a60 ]
+[ Upstream commit dc6b5562acbac0285ab3b2dad23930b6434bdfc6 ]
 
-The conversion to CLK_FRAC_DIVIDER_POWER_OF_TWO_PS uses wrong flags
-in the parameters and hence miscalculates the values in the clock
-divider. Fix this by applying the flag to the proper parameter.
+There is no "panic-indicator" default trigger but a property with that
+name:
 
-Fixes: 82f53f9ee577 ("clk: fractional-divider: Introduce POWER_OF_TWO_PS flag")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reported-by: Alex Vinarskis <alex.vinarskis@gmail.com>
-Link: https://lore.kernel.org/r/20231211111441.3910083-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+  qrb5165-rb5.dtb: leds: led-user4: Unevaluated properties are not allowed ('linux,default-trigger' was unexpected)
+
+Fixes: b5cbd84e499a ("arm64: dts: qcom: qrb5165-rb5: Add onboard LED support")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231111094623.12476-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/intel-lpss.c | 2 +-
+ arch/arm64/boot/dts/qcom/qrb5165-rb5.dts | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/intel-lpss.c b/drivers/mfd/intel-lpss.c
-index 9591b354072a..00e7b578bb3e 100644
---- a/drivers/mfd/intel-lpss.c
-+++ b/drivers/mfd/intel-lpss.c
-@@ -301,8 +301,8 @@ static int intel_lpss_register_clock_divider(struct intel_lpss *lpss,
+diff --git a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
+index d3449cb52def..9ef0afdae148 100644
+--- a/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
++++ b/arch/arm64/boot/dts/qcom/qrb5165-rb5.dts
+@@ -58,8 +58,8 @@ leds {
+ 		user4 {
+ 			label = "green:user4";
+ 			gpios = <&pm8150_gpios 10 GPIO_ACTIVE_HIGH>;
+-			linux,default-trigger = "panic-indicator";
+ 			default-state = "off";
++			panic-indicator;
+ 		};
  
- 	snprintf(name, sizeof(name), "%s-div", devname);
- 	tmp = clk_register_fractional_divider(NULL, name, __clk_get_name(tmp),
-+					      0, lpss->priv, 1, 15, 16, 15,
- 					      CLK_FRAC_DIVIDER_POWER_OF_TWO_PS,
--					      lpss->priv, 1, 15, 16, 15, 0,
- 					      NULL);
- 	if (IS_ERR(tmp))
- 		return PTR_ERR(tmp);
+ 		wlan {
 -- 
 2.43.0
 
