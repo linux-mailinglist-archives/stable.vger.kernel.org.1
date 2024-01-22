@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADFE4838175
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7567837D07
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:23:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1A9E1C29288
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 317931F29434
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93EF57F4;
-	Tue, 23 Jan 2024 01:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4685FB99;
+	Tue, 23 Jan 2024 00:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YFmFihqN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wdHD3UHB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542BA37A;
-	Tue, 23 Jan 2024 01:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C2C5D909;
+	Tue, 23 Jan 2024 00:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972141; cv=none; b=dow5ZmmfzjvxOup9b0UMTTa15QWFM5jm5xVxOgs/s0hCXYSPr2lV7ziWNpjcYtRD+z2IPIlLc5IFT47A+Ci4ZExqpBZ6/qZtqIZ4QN4/Klh0PaJHZ1cMk4PS3u1AEaS9VsUTgDbF5ynHZqE1TVD83WUp8inMT2jKvzK+bFYRohs=
+	t=1705969773; cv=none; b=XTMnu/J4bzsSGut6N0Ygjof3HH0PDEXkZrgr8JzlzhmZnwkgSdC3/nRPDiAISJHTILbodQ+/Jlt3WA0Pzv6y/kmifr4cgrvmg2d/ljGgf2OBGNWr4LVLXOW+p6LIYOs+PDMU6mwdj98SXsdvno4wGCP0t6b/S/CVl4k84oe/SeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972141; c=relaxed/simple;
-	bh=Bq3bbHr5/NXJiJt/Eww5ce3fwBUkvxhoK4hL+qu6qcw=;
+	s=arc-20240116; t=1705969773; c=relaxed/simple;
+	bh=FlJ0f8aJuojNFhghDUKFrT3yCnAgcmom7GWmxIDhr9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DjX5Mnpzf7snRmJ2wBXJGXABTnNpRHnEMr8isSdY6pRkUP3Y3Caa/fp/fS4vXTMdXUSaKdvija/Bqy0vIhn8DZFAyTt9xHfGajiJ6rufhe6/nM4MjlPTSZ7qe11NS4DUNHXSC4jEBMnFySy+amw0otjUecZrQc8f3DDgSyVNJEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YFmFihqN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA979C43390;
-	Tue, 23 Jan 2024 01:09:00 +0000 (UTC)
+	 MIME-Version; b=AvETF9dG3/74mdWtsqY3vxMATcMxg1icMK13+Ib4VZGo5AMBFqtXpaTB/x8LXJwxRE4MV6eZos5v6ZZJ3M2faF9YfSg0qpWfrknfQPhOMSzSbDhvEHfozLvb8Xm043D9r6WslS0ut4bXTn+1EqZvjTnoWO1pOql/0Hz+5X5C6nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wdHD3UHB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B9B7C433C7;
+	Tue, 23 Jan 2024 00:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972140;
-	bh=Bq3bbHr5/NXJiJt/Eww5ce3fwBUkvxhoK4hL+qu6qcw=;
+	s=korg; t=1705969772;
+	bh=FlJ0f8aJuojNFhghDUKFrT3yCnAgcmom7GWmxIDhr9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YFmFihqN9e6fnR3k0e3wyqiufsJh/JCFUANhlnPoF4nOfia7qnLFqzWHpSZxidFkT
-	 2kdi9QSzmZOyr2t6SlmV4kDgEJKkROaLmNTkMNj2uFsxWsKRKIoAbzF8wHoCfL19t8
-	 tRIp6oPccUsF3wkaeqEg5aenh2xcYmRTRmSNm4KA=
+	b=wdHD3UHBHZzPu2LjTezmD02Gl3sxXShpyLaam8LC1au3p+UBdsnb5BEWiUXzZF8HQ
+	 P9NfYbyw/LNtK6Pf8e4rP8DxzUKSHKQld/K8ng+MHAheD0sqYgb4ta6kTOpRQlvcz6
+	 hYgqldClEaFTkuSuJJHtjwKM787zfkp+OvNDlmm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 070/374] powerpc: add crtsavres.o to always-y instead of extra-y
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.7 422/641] ksmbd: validate mech token in session setup
 Date: Mon, 22 Jan 2024 15:55:26 -0800
-Message-ID: <20240122235747.050006879@linuxfoundation.org>
+Message-ID: <20240122235831.201093402@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 1b1e38002648819c04773647d5242990e2824264 ]
+commit 92e470163d96df8db6c4fa0f484e4a229edb903d upstream.
 
-crtsavres.o is linked to modules. However, as explained in commit
-d0e628cd817f ("kbuild: doc: clarify the difference between extra-y
-and always-y"), 'make modules' does not build extra-y.
+If client send invalid mech token in session setup request, ksmbd
+validate and make the error if it is invalid.
 
-For example, the following command fails:
-
-  $ make ARCH=powerpc LLVM=1 KBUILD_MODPOST_WARN=1 mrproper ps3_defconfig modules
-    [snip]
-    LD [M]  arch/powerpc/platforms/cell/spufs/spufs.ko
-  ld.lld: error: cannot open arch/powerpc/lib/crtsavres.o: No such file or directory
-  make[3]: *** [scripts/Makefile.modfinal:56: arch/powerpc/platforms/cell/spufs/spufs.ko] Error 1
-  make[2]: *** [Makefile:1844: modules] Error 2
-  make[1]: *** [/home/masahiro/workspace/linux-kbuild/Makefile:350: __build_one_by_one] Error 2
-  make: *** [Makefile:234: __sub-make] Error 2
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Fixes: baa25b571a16 ("powerpc/64: Do not link crtsavres.o in vmlinux")
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231120232332.4100288-1-masahiroy@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-22890
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/lib/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/asn1.c       |    5 +++++
+ fs/smb/server/connection.h |    1 +
+ fs/smb/server/smb2pdu.c    |   22 +++++++++++++++++-----
+ 3 files changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-index cb8a66743a02..6448de85f738 100644
---- a/arch/powerpc/lib/Makefile
-+++ b/arch/powerpc/lib/Makefile
-@@ -38,7 +38,7 @@ obj-$(CONFIG_FUNCTION_ERROR_INJECTION)	+= error-inject.o
- # so it is only needed for modules, and only for older linkers which
- # do not support --save-restore-funcs
- ifndef CONFIG_LD_IS_BFD
--extra-$(CONFIG_PPC64)	+= crtsavres.o
-+always-$(CONFIG_PPC64)	+= crtsavres.o
- endif
+--- a/fs/smb/server/asn1.c
++++ b/fs/smb/server/asn1.c
+@@ -214,10 +214,15 @@ static int ksmbd_neg_token_alloc(void *c
+ {
+ 	struct ksmbd_conn *conn = context;
  
- obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
--- 
-2.43.0
-
++	if (!vlen)
++		return -EINVAL;
++
+ 	conn->mechToken = kmemdup_nul(value, vlen, GFP_KERNEL);
+ 	if (!conn->mechToken)
+ 		return -ENOMEM;
+ 
++	conn->mechTokenLen = (unsigned int)vlen;
++
+ 	return 0;
+ }
+ 
+--- a/fs/smb/server/connection.h
++++ b/fs/smb/server/connection.h
+@@ -88,6 +88,7 @@ struct ksmbd_conn {
+ 	__u16				dialect;
+ 
+ 	char				*mechToken;
++	unsigned int			mechTokenLen;
+ 
+ 	struct ksmbd_conn_ops	*conn_ops;
+ 
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1414,7 +1414,10 @@ static struct ksmbd_user *session_user(s
+ 	char *name;
+ 	unsigned int name_off, name_len, secbuf_len;
+ 
+-	secbuf_len = le16_to_cpu(req->SecurityBufferLength);
++	if (conn->use_spnego && conn->mechToken)
++		secbuf_len = conn->mechTokenLen;
++	else
++		secbuf_len = le16_to_cpu(req->SecurityBufferLength);
+ 	if (secbuf_len < sizeof(struct authenticate_message)) {
+ 		ksmbd_debug(SMB, "blob len %d too small\n", secbuf_len);
+ 		return NULL;
+@@ -1505,7 +1508,10 @@ static int ntlm_authenticate(struct ksmb
+ 		struct authenticate_message *authblob;
+ 
+ 		authblob = user_authblob(conn, req);
+-		sz = le16_to_cpu(req->SecurityBufferLength);
++		if (conn->use_spnego && conn->mechToken)
++			sz = conn->mechTokenLen;
++		else
++			sz = le16_to_cpu(req->SecurityBufferLength);
+ 		rc = ksmbd_decode_ntlmssp_auth_blob(authblob, sz, conn, sess);
+ 		if (rc) {
+ 			set_user_flag(sess->user, KSMBD_USER_FLAG_BAD_PASSWORD);
+@@ -1778,8 +1784,7 @@ int smb2_sess_setup(struct ksmbd_work *w
+ 
+ 	negblob_off = le16_to_cpu(req->SecurityBufferOffset);
+ 	negblob_len = le16_to_cpu(req->SecurityBufferLength);
+-	if (negblob_off < offsetof(struct smb2_sess_setup_req, Buffer) ||
+-	    negblob_len < offsetof(struct negotiate_message, NegotiateFlags)) {
++	if (negblob_off < offsetof(struct smb2_sess_setup_req, Buffer)) {
+ 		rc = -EINVAL;
+ 		goto out_err;
+ 	}
+@@ -1788,8 +1793,15 @@ int smb2_sess_setup(struct ksmbd_work *w
+ 			negblob_off);
+ 
+ 	if (decode_negotiation_token(conn, negblob, negblob_len) == 0) {
+-		if (conn->mechToken)
++		if (conn->mechToken) {
+ 			negblob = (struct negotiate_message *)conn->mechToken;
++			negblob_len = conn->mechTokenLen;
++		}
++	}
++
++	if (negblob_len < offsetof(struct negotiate_message, NegotiateFlags)) {
++		rc = -EINVAL;
++		goto out_err;
+ 	}
+ 
+ 	if (server_conf.auth_mechs & conn->auth_mechs) {
 
 
 
