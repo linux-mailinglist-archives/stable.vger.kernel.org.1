@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-13483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9816837C46
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA0B7838379
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81AE01F2B7A0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18BED1C29BEE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3440145325;
-	Tue, 23 Jan 2024 00:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CD463120;
+	Tue, 23 Jan 2024 01:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCt8RYZd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7rlR8OQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A335823C6;
-	Tue, 23 Jan 2024 00:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DA1463109;
+	Tue, 23 Jan 2024 01:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969564; cv=none; b=aNT5TJPhNBZpIkPdvWOyMZAk7du2QjRLdsxjQXEn5kT/XdC517yVo+C1SfXZ8pfAFovnesTFh9NPG7iDTvcYczcVVwtGBKBC7eu2OwSH4TDj9Cf9p7eIrDt2KDkQGfzB6wk/4w56k63G5okm1CdUOyEJ/lJjo//UaSMzOHcBosg=
+	t=1705974984; cv=none; b=AjfKGnQZYUt+TS+8gCu4qTEGYvocjpk7hsmFFl7lwJx/FSUxVaONckg96XMxUORY+k51VPmqTMgkESudCpM0zbBAMk7YVC3grt3Z0i6ydC6pT8ugp8VPfPDw39VMIRD8uboRDp65zhK+4XdezJKNx/trrR+xrpseD/CTCtAck+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969564; c=relaxed/simple;
-	bh=mq3xviUyv1GCt/SKgvGpEp28mdFkcIk77r7jbRyPx24=;
+	s=arc-20240116; t=1705974984; c=relaxed/simple;
+	bh=/1zb43z/KqNGTVzzRRBRux8lvk7xUwFdQwJeYYlsJwI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e3di0FMMdJ1Hx0i2Lau9/C2W4puAGXVl4TTeR1W3DwNM+lNFTD2z4mtbCUF64QF6bfbPEczpTOrzyTOBJSBGDsEorq7GMuf9w3aR963gI3KEEOfQw10Syc0GuC6r3vEP8hkiq4q/Wdip16MYy5ArHShfLBN7wlblvCGA3yqEosE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCt8RYZd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DD4C433F1;
-	Tue, 23 Jan 2024 00:26:04 +0000 (UTC)
+	 MIME-Version; b=QewmLwaUzwxiZu+l/OSPvfpMb7tG8Y4gnTfWcYxVAKsJfraeRBId9y7lUo3D1CLQU2e/3ZLsYR2Odg+DiCKk3ZZgPgk3MDGyj1UwNdFFqpL5Cbl1Ev8HlHeoeEHD9wvvS1rRaFoEzWkbVPRx/CYs4ObSIgdEfo5d4mpwlokqnm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7rlR8OQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A4CC433C7;
+	Tue, 23 Jan 2024 01:56:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969564;
-	bh=mq3xviUyv1GCt/SKgvGpEp28mdFkcIk77r7jbRyPx24=;
+	s=korg; t=1705974983;
+	bh=/1zb43z/KqNGTVzzRRBRux8lvk7xUwFdQwJeYYlsJwI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uCt8RYZdTx73qpSLbia5bGIft8P8SbvmyyFlnJPUixfGaIBr+Iuxjn8bo6oiFlYiq
-	 1hKOs21g2PPkox8UucoFCfQhuvgQEVpv3qy/6+oHPZoT5JQOJdRhC+OsTufpVXgHOd
-	 kEX4qe6+AMbWwaR9yLtsajjhyWje4WC0JU2Jk1P8=
+	b=t7rlR8OQEPu8raV5suDTVXq6HbEZEPaqdS2jbFHI0DorpAWhOlqswdBbY+DYz9EUi
+	 R7NgMjvbMbeeN97/2KVmcqoKvP/jTfZ7g14eLN6NGUVc/+vgIBigGFUjCIilhOJ/VT
+	 Hvs06fJ4B3XcBdziidasY8dveYW4QGlYu4L6H5Xk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Hsiao Chien Sung <shawn.sung@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	Li Nan <linan122@huawei.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 326/641] drm/mediatek: Fix underrun in VDO1 when switches off the layer
-Date: Mon, 22 Jan 2024 15:53:50 -0800
-Message-ID: <20240122235828.089845944@linuxfoundation.org>
+Subject: [PATCH 6.6 180/583] block: add check of minors and first_minor in device_add_disk()
+Date: Mon, 22 Jan 2024 15:53:51 -0800
+Message-ID: <20240122235817.522379655@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsiao Chien Sung <shawn.sung@mediatek.com>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit 73b5ab27ab2ee616f2709dc212c2b0007894a12e ]
+[ Upstream commit 4c434392c4777881d01beada6701eff8c76b43fe ]
 
-Do not reset Merge while using CMDQ because reset API doesn't
-wait for frame done event as CMDQ does and could lead to
-underrun when the layer is switching off.
+'first_minor' represents the starting minor number of disks, and
+'minors' represents the number of partitions in the device. Neither
+of them can be greater than MINORMASK + 1.
 
-Fixes: aaf94f7c3ae6 ("drm/mediatek: Add display merge async reset control")
+Commit e338924bd05d ("block: check minor range in device_add_disk()")
+only added the check of 'first_minor + minors'. However, their sum might
+be less than MINORMASK but their values are wrong. Complete the checks now.
 
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20231214055847.4936-23-shawn.sung@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: e338924bd05d ("block: check minor range in device_add_disk()")
+Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20231219075942.840255-1-linan666@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_disp_merge.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/genhd.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_disp_merge.c b/drivers/gpu/drm/mediatek/mtk_disp_merge.c
-index e525a6b9e5b0..22f768d923d5 100644
---- a/drivers/gpu/drm/mediatek/mtk_disp_merge.c
-+++ b/drivers/gpu/drm/mediatek/mtk_disp_merge.c
-@@ -103,7 +103,7 @@ void mtk_merge_stop_cmdq(struct device *dev, struct cmdq_pkt *cmdq_pkt)
- 	mtk_ddp_write(cmdq_pkt, 0, &priv->cmdq_reg, priv->regs,
- 		      DISP_REG_MERGE_CTRL);
- 
--	if (priv->async_clk)
-+	if (!cmdq_pkt && priv->async_clk)
- 		reset_control_reset(priv->reset_ctl);
- }
- 
+diff --git a/block/genhd.c b/block/genhd.c
+index 95a4b8ae2aea..f9b81be6c761 100644
+--- a/block/genhd.c
++++ b/block/genhd.c
+@@ -432,7 +432,9 @@ int __must_check device_add_disk(struct device *parent, struct gendisk *disk,
+ 				DISK_MAX_PARTS);
+ 			disk->minors = DISK_MAX_PARTS;
+ 		}
+-		if (disk->first_minor + disk->minors > MINORMASK + 1)
++		if (disk->first_minor > MINORMASK ||
++		    disk->minors > MINORMASK + 1 ||
++		    disk->first_minor + disk->minors > MINORMASK + 1)
+ 			goto out_exit_elevator;
+ 	} else {
+ 		if (WARN_ON(disk->minors))
 -- 
 2.43.0
 
