@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237BA838004
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F96B837D8A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA4151F2B998
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B15651F22A49
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9BDD12DD98;
-	Tue, 23 Jan 2024 00:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9AAE5576F;
+	Tue, 23 Jan 2024 00:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oxyEPfSi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGsVTW5p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9878212DD97;
-	Tue, 23 Jan 2024 00:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689CD4E1D8;
+	Tue, 23 Jan 2024 00:33:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971497; cv=none; b=i+3yHGAn2pZttO7NE7IXfdiWzdVW/LpcuEy+d45vU2aUMbnNpvGtFG9dDyHjLMpJiZOPDdrPCMC9DbyMP69uNaz29Gl5ZZ6S/G05llg+M7iP9y13YDaUy2mM+TSoObBXG9leQFO9PA6Ic1bKgdEWyYEnKIqAyTVlRZdUdoRhDdI=
+	t=1705970015; cv=none; b=g5/iL4klA+rXpFuEYUw80O2F+E9dGBV6LydO0YC7svOCHVl7aoHIaitOjGphG2xRwiOT3Qk4VK0sHS0KNW8TbMsuUIeR/naoMOhhBVt8BO5uaL3AMvD9zsPnduis8QR2UoUv5ZMarVlKVyoqOQCHWxzMS7nD8aI78XnZzhNhxQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971497; c=relaxed/simple;
-	bh=fsTz/IzbLsg0/J1MKWx6NpUML/6fJmz6CTmwWHKMTkk=;
+	s=arc-20240116; t=1705970015; c=relaxed/simple;
+	bh=KPHNmeWFCPcl2u9XDCFWBVpFt3VUX3wzPsAqqi82kRo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eTh9jUvVn214ZnJmL2DBo5btbqJDtXmDKwxi2opgOaaHsbqBVU9pBxTWMV3Jvh1RWbIYHYeBBM4GOD3zTp3n9sRrNRj/3Z7V6ptW6n+tem8W2lq5wDwbxNiH1q6bt7cAZrOEjR5bVA7L+M56a5YZWvw6dH7QNQkjvGHHHAXtYxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oxyEPfSi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31724C433F1;
-	Tue, 23 Jan 2024 00:58:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kzyoRqRpQKTLMerwZlIkX69QXTLPK1qQNPVqTGhy9vFA8VTF5TOhfhVtZWX4HbtWGTKKPYu4maIcvnFym1CcWFl9HM2jtbEuE1YiUIN74MD2HQAu53+wOi4eaOtNAL73xokNVGZm7EFYp+7WNis0ktUCpWEtFvl1YNTthjbNaoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGsVTW5p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 114B1C433F1;
+	Tue, 23 Jan 2024 00:33:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971497;
-	bh=fsTz/IzbLsg0/J1MKWx6NpUML/6fJmz6CTmwWHKMTkk=;
+	s=korg; t=1705970015;
+	bh=KPHNmeWFCPcl2u9XDCFWBVpFt3VUX3wzPsAqqi82kRo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oxyEPfSi8vXizqMMLr1WL0qm9KFavcDidAycaMwg7MOi8A9k964CBWoIcZQQ2SlRF
-	 CRYs/g+vNMiN9RkELZztIQyTxikP44UFrPNlhEz0TpSBNGrz246s+fLMdRmx5T0qUh
-	 MzuA4W4o1vdC7JG0GQiY63EtzOJZJdGvZIVmjSjM=
+	b=LGsVTW5p6l/o9+DNMTgt7+R0vMMGD520V2T8W5maoWrS4wSXrAt7CAB0KYSq0efd7
+	 gt4yUyeWowsDibkrYxa8Bi8c0Cw86H+FEEEEn4JDvvX4Gx7vc5OFEmI5Hab6jH3FIF
+	 ogQj0ksfY0RgzLgJqHT6gjiMOR4pEozq2vZCAUhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 161/286] drm/radeon/dpm: fix a memleak in sumo_parse_power_table
+Subject: [PATCH 6.7 563/641] serial: imx: Correct clock error message in function probe()
 Date: Mon, 22 Jan 2024 15:57:47 -0800
-Message-ID: <20240122235738.369812300@linuxfoundation.org>
+Message-ID: <20240122235835.774270526@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Christoph Niedermaier <cniedermaier@dh-electronics.com>
 
-[ Upstream commit 0737df9ed0997f5b8addd6e2b9699a8c6edba2e4 ]
+[ Upstream commit 3e189470cad27d41a3a9dc02649f965b7ed1c90f ]
 
-The rdev->pm.dpm.ps allocated by kcalloc should be freed in every
-following error-handling path. However, in the error-handling of
-rdev->pm.power_state[i].clock_info the rdev->pm.dpm.ps is not freed,
-resulting in a memleak in this function.
+Correct the clock error message by changing the clock name.
 
-Fixes: 80ea2c129c76 ("drm/radeon/kms: add dpm support for sumo asics (v2)")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 1e512d45332b ("serial: imx: add error messages when .probe fails")
+Signed-off-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20231224093209.2612-1-cniedermaier@dh-electronics.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/sumo_dpm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/tty/serial/imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/radeon/sumo_dpm.c b/drivers/gpu/drm/radeon/sumo_dpm.c
-index b95d5d390caf..45d04996adf5 100644
---- a/drivers/gpu/drm/radeon/sumo_dpm.c
-+++ b/drivers/gpu/drm/radeon/sumo_dpm.c
-@@ -1493,8 +1493,10 @@ static int sumo_parse_power_table(struct radeon_device *rdev)
- 		non_clock_array_index = power_state->v2.nonClockInfoIndex;
- 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
- 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
--		if (!rdev->pm.power_state[i].clock_info)
-+		if (!rdev->pm.power_state[i].clock_info) {
-+			kfree(rdev->pm.dpm.ps);
- 			return -EINVAL;
-+		}
- 		ps = kzalloc(sizeof(struct sumo_ps), GFP_KERNEL);
- 		if (ps == NULL) {
- 			kfree(rdev->pm.dpm.ps);
+diff --git a/drivers/tty/serial/imx.c b/drivers/tty/serial/imx.c
+index 16207b9a8c81..81557a58f86f 100644
+--- a/drivers/tty/serial/imx.c
++++ b/drivers/tty/serial/imx.c
+@@ -2315,7 +2315,7 @@ static int imx_uart_probe(struct platform_device *pdev)
+ 	/* For register access, we only need to enable the ipg clock. */
+ 	ret = clk_prepare_enable(sport->clk_ipg);
+ 	if (ret) {
+-		dev_err(&pdev->dev, "failed to enable per clk: %d\n", ret);
++		dev_err(&pdev->dev, "failed to enable ipg clk: %d\n", ret);
+ 		return ret;
+ 	}
+ 
 -- 
 2.43.0
 
