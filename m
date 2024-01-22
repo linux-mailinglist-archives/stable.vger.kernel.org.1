@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-14433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F363C8380E6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:49 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3C3C83845E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32F751C28710
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDDF4B219CD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 037771350ED;
-	Tue, 23 Jan 2024 01:05:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23B2A5FBAD;
+	Tue, 23 Jan 2024 01:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11bFDg9X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ChGveJD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B586F1350E3;
-	Tue, 23 Jan 2024 01:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A275025C;
+	Tue, 23 Jan 2024 01:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971950; cv=none; b=A4Jb6GGBQwldrbIuJwymXxvk+0iTylt+RAdng+ODVSFza9i4N20yoxwM6XHGK+se2zAp+JTDSKqXTHCu4Bdse36YQ4q/epeUfNM7cNG/vFvHNTLEfrY5EQ+7Da9DHBxBgAeJyroCaDJ2iywkwlNFK48uNJFYwnGifpwlBUzMWnQ=
+	t=1705974730; cv=none; b=rg8WG+6PJq4pYh2cAJl8TynVDiG2Jg4CWP5RTMror9eFTCiQc8VHTWodHg4QKkZ/1UjIZsaRYyVbAgPrVSm5acECYCYNUp9lLaagSu4CH4Y/qZgkVL2wU1LtBY2Dmp3e1uCNH4GJtueX2kc6qk2INhfUH/75rZajrjnwUUP8yfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971950; c=relaxed/simple;
-	bh=JdKJGqwnp4Nq2SZhSt4ykXhoNRAOAzCFmfNeUaV89JU=;
+	s=arc-20240116; t=1705974730; c=relaxed/simple;
+	bh=SM2FJC7LXdgWu7oleTk/yOU8/KGdQz1mczlOKywJoE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ST0nZjDWf+BO1lI6zaVyeHtIQSth9X1mqsptabhSgtaEHPzqS1M0+Z7ifG4litb/CPV7f1PMjqqnIJn2gCa1ODbWT6q5qGRekgiTPm+OtNOh16fojc0a0tntqu2TKMOekzzquDdDRPNUMbxklqKpNdd0IgLB9BEDcN4AiGyDmY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11bFDg9X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A396C433C7;
-	Tue, 23 Jan 2024 01:05:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cKOtdKAs9EUrnY4ENkEYxjWzvkOMo4xhgk2KA8mcmEAeq/vTReq77gMQjyjrRgsLk7+MuF5HSYRtT65xDQooy6VWAddO0UOmW0De6AwCccAU0nKAcFUcy5zkjPiNUl6dPL0nv1u8Q2OVS99OAiN3jFlatDBhqm1gaVafO5bruPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ChGveJD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F417C433C7;
+	Tue, 23 Jan 2024 01:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971950;
-	bh=JdKJGqwnp4Nq2SZhSt4ykXhoNRAOAzCFmfNeUaV89JU=;
+	s=korg; t=1705974730;
+	bh=SM2FJC7LXdgWu7oleTk/yOU8/KGdQz1mczlOKywJoE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=11bFDg9X8wLI/EzkPDavwdzOTS/yKX5SETo7Rqq9f7bJ2yjdXpLpq+jdil5zLqNNg
-	 MXKR37TVCbZU+hZdpqzH9PykFKwzRuH1OW3MQJnDoRI3GEdTO74j+GzWFe9rKhpUT5
-	 er6+bWiAS35nt65+oMTczgxvChpH2Znz9nHUB2SU=
+	b=2ChGveJDaWe06U21heu73r4WpT/iKd2gnayUJHdiNi42A+AWVFxT47C/ps7CdnJMa
+	 GfC8EYg0PtFRusGPn6gVywJ45i5d5UFj7DJDXHXhDiGRFTezjZ9oLFCcFDD6NFVIui
+	 sSnXHKTXcgLlmWQdPnRat42fgL0CpeOGTHI8JMbk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 359/417] tty: use if in send_break() instead of goto
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 5.15 271/374] pwm: jz4740: Dont use dev_err_probe() in .request()
 Date: Mon, 22 Jan 2024 15:58:47 -0800
-Message-ID: <20240122235804.253233028@linuxfoundation.org>
+Message-ID: <20240122235754.194481678@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,51 +59,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 24f2cd019946fc2e88e632d2e24a34c2cc3f2be4 ]
+commit 9320fc509b87b4d795fb37112931e2f4f8b5c55f upstream.
 
-Now, the "jumped-over" code is simple enough to be put inside an 'if'.
-Do so to make it 'goto'-less.
+dev_err_probe() is only supposed to be used in probe functions. While it
+probably doesn't hurt, both the EPROBE_DEFER handling and calling
+device_set_deferred_probe_reason() are conceptually wrong in the request
+callback. So replace the call by dev_err() and a separate return
+statement.
 
-Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20230919085156.1578-16-jirislaby@kernel.org
+This effectively reverts commit c0bfe9606e03 ("pwm: jz4740: Simplify
+with dev_err_probe()").
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240106141302.1253365-2-u.kleine-koenig@pengutronix.de
+Fixes: c0bfe9606e03 ("pwm: jz4740: Simplify with dev_err_probe()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 66aad7d8d3ec ("usb: cdc-acm: return correct error code on unsupported break")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/tty_io.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ drivers/pwm/pwm-jz4740.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
-index 41e01a8ccc4c..43be3b42aaaf 100644
---- a/drivers/tty/tty_io.c
-+++ b/drivers/tty/tty_io.c
-@@ -2479,11 +2479,10 @@ static int send_break(struct tty_struct *tty, unsigned int duration)
- 		return -EINTR;
+--- a/drivers/pwm/pwm-jz4740.c
++++ b/drivers/pwm/pwm-jz4740.c
+@@ -60,9 +60,10 @@ static int jz4740_pwm_request(struct pwm
+ 	snprintf(name, sizeof(name), "timer%u", pwm->hwpwm);
  
- 	retval = tty->ops->break_ctl(tty, -1);
--	if (retval)
--		goto out;
--	msleep_interruptible(duration);
--	retval = tty->ops->break_ctl(tty, 0);
--out:
-+	if (!retval) {
-+		msleep_interruptible(duration);
-+		retval = tty->ops->break_ctl(tty, 0);
+ 	clk = clk_get(chip->dev, name);
+-	if (IS_ERR(clk))
+-		return dev_err_probe(chip->dev, PTR_ERR(clk),
+-				     "Failed to get clock\n");
++	if (IS_ERR(clk)) {
++		dev_err(chip->dev, "error %pe: Failed to get clock\n", clk);
++		return PTR_ERR(clk);
 +	}
- 	tty_write_unlock(tty);
  
- 	if (signal_pending(current))
--- 
-2.43.0
-
+ 	err = clk_prepare_enable(clk);
+ 	if (err < 0) {
 
 
 
