@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-14250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83C6783802C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:24 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98FE6838262
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3290F28E3AB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5019C1F277FC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF2AA64CEC;
-	Tue, 23 Jan 2024 00:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 357E55BACB;
+	Tue, 23 Jan 2024 01:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MuqSYHNT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZN6LL193"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B44C651B3;
-	Tue, 23 Jan 2024 00:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65D75B5D5;
+	Tue, 23 Jan 2024 01:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971570; cv=none; b=InUKi0gW9xcpfHogAXSFrPp3+HnTM9S30vDVWXBjQmVoNJutyHgvUcUqP51ZHMAP4JOazcYKG4JynRybmCBthfo6aAHENhQXNvBSSFy2enNk/P50je3Ix29xuDg/v6eFkxrFiwGJZcfYKQMg96hGKnkOOmfmawRYH8pedIkbr5c=
+	t=1705974339; cv=none; b=hF8jcxj7WAWbpwRKwmWZG5Gc4N4QbQvcoU1lYvmOP10bXb7fjwzZzqlxagdAowhf+yw3cFlrSroXNyB528LpoLIF2wwg7HmDUcQLfvRp1Jq9r5bZAYtTT5PTMPguqZOixqq+xfBIlz+3QaqjAsDx2FzhBmq7AznrC8b2GsPs93c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971570; c=relaxed/simple;
-	bh=xCJbNeqg/40B0MN/xR4oyY3EYnZd7nsKGFdmVO4PGCI=;
+	s=arc-20240116; t=1705974339; c=relaxed/simple;
+	bh=lo3ovHxrEtFbo8yist3VLhFK1u80DChUemkVTLDk9VM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nVzXP3zhOEQlZDkxGMIV8O7A31GJ1eRu6ATOsLY3DpHAu5xbccEy/fV+F85XHqFHx1DSdbmDiVwmYSknpySGZIH0TQMPcjbYm90YkfnATSShUUe8qQKgW2AIC+jdrA9trWcccK+ApP53jJDCHBNdonWuXglYbzANFf5T+A9d9Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MuqSYHNT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC67C433C7;
-	Tue, 23 Jan 2024 00:59:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jk3jL/6ACJ14fCsajD2TYedDBNJ2irodNN6PsZ7kuBrjBq2k6GEhFJXuM5mym6FfUUxtTRki/3Xp/+O5ejk6rC4hJjEXqSMllCcv8o6g/tzusq7t4FcCb6K1EJQ/zsyjhN/pFVhFzYAtjiiQA2dzaaIbgpF84gM1uiuWMCqeDCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZN6LL193; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A81C4C433F1;
+	Tue, 23 Jan 2024 01:45:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971570;
-	bh=xCJbNeqg/40B0MN/xR4oyY3EYnZd7nsKGFdmVO4PGCI=;
+	s=korg; t=1705974338;
+	bh=lo3ovHxrEtFbo8yist3VLhFK1u80DChUemkVTLDk9VM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MuqSYHNTBL8WyYuIDNVYs0KQVyUCTiBHzMxFnB7/BeW+zauCnuf5+d13LvscgDYHz
-	 jNUbQEPLfVPVERNHoFmB0X1zI5NUvCIFmbagzOgRR3m6D9tKw/zrkP3cSjTjh9B8uU
-	 nIHct5QwkNyszN+EMhU34heDdBQEfIFhI4QW1YRE=
+	b=ZN6LL193bHSmD1biK1Y8EGdjSg+DslRNE3Rim3842CvEzfFvfKiATdswOOdLk31lZ
+	 pafY4UgYxfAVOSt8/XP1rABDdJRsvU+SivGqKrjtz5eVDvhp4r55zfK3IJ1CgfVIXR
+	 KzSzoM5E/rBRAEAO1TqiqUY7kcqU4Cm+lBnxK9Pc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Subject: [PATCH 6.1 270/417] serial: core: fix sanitizing check for RTS settings
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 182/374] drm/bridge: tpd12s015: Drop buggy __exit annotation for remove function
 Date: Mon, 22 Jan 2024 15:57:18 -0800
-Message-ID: <20240122235801.205865967@linuxfoundation.org>
+Message-ID: <20240122235750.965066035@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +63,53 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit 4afeced55baa391490b61ed9164867e2927353ed upstream.
+[ Upstream commit ce3e112e7ae854249d8755906acc5f27e1542114 ]
 
-Among other things uart_sanitize_serial_rs485() tests the sanity of the RTS
-settings in a RS485 configuration that has been passed by userspace.
-If RTS-on-send and RTS-after-send are both set or unset the configuration
-is adjusted and RTS-after-send is disabled and RTS-on-send enabled.
+With tpd12s015_remove() marked with __exit this function is discarded
+when the driver is compiled as a built-in. The result is that when the
+driver unbinds there is no cleanup done which results in resource
+leakage or worse.
 
-This however makes only sense if both RTS modes are actually supported by
-the driver.
-
-With commit be2e2cb1d281 ("serial: Sanitize rs485_struct") the code does
-take the driver support into account but only checks if one of both RTS
-modes are supported. This may lead to the errorneous result of RTS-on-send
-being set even if only RTS-after-send is supported.
-
-Fix this by changing the implemented logic: First clear all unsupported
-flags in the RS485 configuration, then adjust an invalid RTS setting by
-taking into account which RTS mode is supported.
-
-Cc:  <stable@vger.kernel.org>
-Fixes: be2e2cb1d281 ("serial: Sanitize rs485_struct")
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Link: https://lore.kernel.org/r/20240103061818.564-4-l.sanfilippo@kunbus.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cff5e6f7e83f ("drm/bridge: Add driver for the TI TPD12S015 HDMI level shifter")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231102165640.3307820-19-u.kleine-koenig@pengutronix.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/serial_core.c |   28 ++++++++++++++++++----------
- 1 file changed, 18 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/bridge/ti-tpd12s015.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/serial_core.c
-+++ b/drivers/tty/serial/serial_core.c
-@@ -1353,19 +1353,27 @@ static void uart_sanitize_serial_rs485(s
- 		return;
- 	}
+diff --git a/drivers/gpu/drm/bridge/ti-tpd12s015.c b/drivers/gpu/drm/bridge/ti-tpd12s015.c
+index e0e015243a60..b588fea12502 100644
+--- a/drivers/gpu/drm/bridge/ti-tpd12s015.c
++++ b/drivers/gpu/drm/bridge/ti-tpd12s015.c
+@@ -179,7 +179,7 @@ static int tpd12s015_probe(struct platform_device *pdev)
+ 	return 0;
+ }
  
-+	rs485->flags &= supported_flags;
-+
- 	/* Pick sane settings if the user hasn't */
--	if ((supported_flags & (SER_RS485_RTS_ON_SEND|SER_RS485_RTS_AFTER_SEND)) &&
--	    !(rs485->flags & SER_RS485_RTS_ON_SEND) ==
-+	if (!(rs485->flags & SER_RS485_RTS_ON_SEND) ==
- 	    !(rs485->flags & SER_RS485_RTS_AFTER_SEND)) {
--		dev_warn_ratelimited(port->dev,
--			"%s (%d): invalid RTS setting, using RTS_ON_SEND instead\n",
--			port->name, port->line);
--		rs485->flags |= SER_RS485_RTS_ON_SEND;
--		rs485->flags &= ~SER_RS485_RTS_AFTER_SEND;
--		supported_flags |= SER_RS485_RTS_ON_SEND|SER_RS485_RTS_AFTER_SEND;
--	}
-+		if (supported_flags & SER_RS485_RTS_ON_SEND) {
-+			rs485->flags |= SER_RS485_RTS_ON_SEND;
-+			rs485->flags &= ~SER_RS485_RTS_AFTER_SEND;
+-static int __exit tpd12s015_remove(struct platform_device *pdev)
++static int tpd12s015_remove(struct platform_device *pdev)
+ {
+ 	struct tpd12s015_device *tpd = platform_get_drvdata(pdev);
  
--	rs485->flags &= supported_flags;
-+			dev_warn_ratelimited(port->dev,
-+				"%s (%d): invalid RTS setting, using RTS_ON_SEND instead\n",
-+				port->name, port->line);
-+		} else {
-+			rs485->flags |= SER_RS485_RTS_AFTER_SEND;
-+			rs485->flags &= ~SER_RS485_RTS_ON_SEND;
-+
-+			dev_warn_ratelimited(port->dev,
-+				"%s (%d): invalid RTS setting, using RTS_AFTER_SEND instead\n",
-+				port->name, port->line);
-+		}
-+	}
+@@ -197,7 +197,7 @@ MODULE_DEVICE_TABLE(of, tpd12s015_of_match);
  
- 	uart_sanitize_serial_rs485_delays(port, rs485);
- 
+ static struct platform_driver tpd12s015_driver = {
+ 	.probe	= tpd12s015_probe,
+-	.remove	= __exit_p(tpd12s015_remove),
++	.remove = tpd12s015_remove,
+ 	.driver	= {
+ 		.name	= "tpd12s015",
+ 		.of_match_table = tpd12s015_of_match,
+-- 
+2.43.0
+
 
 
 
