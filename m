@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-14308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51BFC83805E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B5D68382A6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C20D8288A62
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DEBD1C28A49
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D088567746;
-	Tue, 23 Jan 2024 01:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7800C5DF2D;
+	Tue, 23 Jan 2024 01:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cTfvTX/N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1LjFmMo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901D367726;
-	Tue, 23 Jan 2024 01:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3629B5DF2F;
+	Tue, 23 Jan 2024 01:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971689; cv=none; b=Fkv3tu/2XcX8W9tohjVxy0yIIk6TAu2ofuuboFvx6oZ+4IsPGXPOLFCgHfSZiYr1MwVoqR6Lk6eTpjuxNu0cLop7uHEIFKtjmApiaIqZxQjiZ5BckLAVpOBHnQGUt9DsKzdx6qjQtsBujDf0PDfyJDPYW6hUZ6rzS8Ntz8JQkPw=
+	t=1705974400; cv=none; b=gMvCNykDy/o7oYQaN1Aksz0VtzPMlT2OWN1re1OK61FnKJaznjw8JKuwPDkBz52Xjwq+SoUowKHpQNRk1LBIKT5DOn0YxAbQT4I2rYsaOmZE+haQpwcsnkvbJYKow6WfhD5zQ6n0RDUNQlRKE8ySPiHle4rtafElXVRiS/2qRdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971689; c=relaxed/simple;
-	bh=y3AhwCcAekpecAb5xZ9vx8PONw+MyqqJpuHY4cTw3v4=;
+	s=arc-20240116; t=1705974400; c=relaxed/simple;
+	bh=OM3RlWDoXPxh4UIYFW44b5y9tf9jEoJYlBc/YM9mpRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kVwQNB8v8D3ea5FEkw1t9TcfUCau0SDrYkoKHxw2+GIebfplZ11IIUtJ6ro4gXD5iWhe+LMs/m5Mx/eRnKXvT4S3YRbUoyj3AwEXVTjgSSErpfLXeTBy+twRVXVM0LE6Ejl/bAa2SF48kJSoKjQfeTO45zXF+lV7uihr5lOK6YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cTfvTX/N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF4BC433C7;
-	Tue, 23 Jan 2024 01:01:29 +0000 (UTC)
+	 MIME-Version; b=DACX7hcjErFVZHrrVa5og8mDyTfjIl1xjYN95PLBgelqqqfnCUafzoDo8pFeYlpSINaW5ztexmLHDodEo8cAXnk4nLqmw0yPcSCaUCTX2Q+eTo/7l2ar3lfdpNVecdFuigOltrkIHHyPxlfg5lPDHU/D2hXL0h/qdJDehWNCM3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1LjFmMo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFF86C433C7;
+	Tue, 23 Jan 2024 01:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971689;
-	bh=y3AhwCcAekpecAb5xZ9vx8PONw+MyqqJpuHY4cTw3v4=;
+	s=korg; t=1705974400;
+	bh=OM3RlWDoXPxh4UIYFW44b5y9tf9jEoJYlBc/YM9mpRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cTfvTX/NgAcQlg7Dy8vOU/Csl4+0J59x8tGMUaBr8j94n3sim45KHAuu6OBDXuYnp
-	 JNnBKHE/5r4Wxr9Z+By/gWbcUWpLxcfR0rTa0vbn2qndvsLKIVDPn2RpyR0zTCcwv2
-	 4+wM++GIGz/E7knaeQKHO+5TqXKe1AgfsEgTSROM=
+	b=z1LjFmMogkq0wPJTCWB1VEZH54RSSYW/YgbMGALxq1xT9Gp0vQ5Ya+bQOWokXMo+m
+	 BXWx8fneDxuyECnA9XJgskYKXSUU8psrVutQ4uOuyQRw8/hv65YsceKeGlZ4u39b3g
+	 SvVCLaNN+IWqm+/BhgUs3tZp0fDg/npRYmWk0U2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-Subject: [PATCH 6.1 298/417] pwm: jz4740: Dont use dev_err_probe() in .request()
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 210/374] drivers/amd/pm: fix a use-after-free in kv_parse_power_table
 Date: Mon, 22 Jan 2024 15:57:46 -0800
-Message-ID: <20240122235802.151907766@linuxfoundation.org>
+Message-ID: <20240122235751.941642647@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,52 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-commit 9320fc509b87b4d795fb37112931e2f4f8b5c55f upstream.
+[ Upstream commit 28dd788382c43b330480f57cd34cde0840896743 ]
 
-dev_err_probe() is only supposed to be used in probe functions. While it
-probably doesn't hurt, both the EPROBE_DEFER handling and calling
-device_set_deferred_probe_reason() are conceptually wrong in the request
-callback. So replace the call by dev_err() and a separate return
-statement.
+When ps allocated by kzalloc equals to NULL, kv_parse_power_table
+frees adev->pm.dpm.ps that allocated before. However, after the control
+flow goes through the following call chains:
 
-This effectively reverts commit c0bfe9606e03 ("pwm: jz4740: Simplify
-with dev_err_probe()").
+kv_parse_power_table
+  |-> kv_dpm_init
+        |-> kv_dpm_sw_init
+	      |-> kv_dpm_fini
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240106141302.1253365-2-u.kleine-koenig@pengutronix.de
-Fixes: c0bfe9606e03 ("pwm: jz4740: Simplify with dev_err_probe()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The adev->pm.dpm.ps is used in the for loop of kv_dpm_fini after its
+first free in kv_parse_power_table and causes a use-after-free bug.
+
+Fixes: a2e73f56fa62 ("drm/amdgpu: Add support for CIK parts")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-jz4740.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/kv_dpm.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/pwm/pwm-jz4740.c
-+++ b/drivers/pwm/pwm-jz4740.c
-@@ -60,9 +60,10 @@ static int jz4740_pwm_request(struct pwm
- 	snprintf(name, sizeof(name), "timer%u", pwm->hwpwm);
- 
- 	clk = clk_get(chip->dev, name);
--	if (IS_ERR(clk))
--		return dev_err_probe(chip->dev, PTR_ERR(clk),
--				     "Failed to get clock\n");
-+	if (IS_ERR(clk)) {
-+		dev_err(chip->dev, "error %pe: Failed to get clock\n", clk);
-+		return PTR_ERR(clk);
-+	}
- 
- 	err = clk_prepare_enable(clk);
- 	if (err < 0) {
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/kv_dpm.c b/drivers/gpu/drm/amd/pm/powerplay/kv_dpm.c
+index 6ba4c2ae69a6..309c9f0b8f83 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/kv_dpm.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/kv_dpm.c
+@@ -2731,10 +2731,8 @@ static int kv_parse_power_table(struct amdgpu_device *adev)
+ 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
+ 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
+ 		ps = kzalloc(sizeof(struct kv_ps), GFP_KERNEL);
+-		if (ps == NULL) {
+-			kfree(adev->pm.dpm.ps);
++		if (ps == NULL)
+ 			return -ENOMEM;
+-		}
+ 		adev->pm.dpm.ps[i].ps_priv = ps;
+ 		k = 0;
+ 		idx = (u8 *)&power_state->v2.clockInfoIndex[0];
+-- 
+2.43.0
+
 
 
 
