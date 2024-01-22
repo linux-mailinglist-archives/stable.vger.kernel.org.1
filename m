@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-15423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01AC783852C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C666838386
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF90D288F10
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A09251C29D2C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF597E582;
-	Tue, 23 Jan 2024 02:09:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD2A663133;
+	Tue, 23 Jan 2024 01:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jd3mFKnN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ihNz4uZE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8F3110A;
-	Tue, 23 Jan 2024 02:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4756312E;
+	Tue, 23 Jan 2024 01:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975759; cv=none; b=XjrGZ0ZpcUnZGhqYApbjXdbYTZ+mGDq1ztxedUz0CFMdhhuoJ03A56arXuQMmicD6Apgm7txpK8KblJpdlIonqFuU1R93Y/HPBYNff0fkIVLW9kwbWd3LgM9xbN6sKThn+iRlLqzkbh6FPZBP+QzQEkaRMg1e8+j2E8hbyb3q6c=
+	t=1705974997; cv=none; b=ad11SUIwfkcXgMnHyeF6+Bi8Cy0DLGJby9cYNw/TevXb61nzF/ff+5e9CH0F3jl56mOpUqQaQOXdyzS2jLHd9Ud9JL/H39FLC9tHtEVJzHxs8P9Rl+mXl3cn/eHIJ8QmwXXN8UBQaFhYvj8MYN33mI64SBbLnJKBFes9nM3xGeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975759; c=relaxed/simple;
-	bh=DFpd0iQggj+gP2gogvA0yALDmpvcuDOG/XjRkp0iMyM=;
+	s=arc-20240116; t=1705974997; c=relaxed/simple;
+	bh=JO8l6y6ssQJMvnfeYlu7drHflOrnRT2mohv4RJWWOmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kTxGGL07kzcq9pl0TUXJK/mKyE1UPMPjELjnNuUMiXRw2X2TVylzq+c6u0vmr7GUmS4e8OYbDExpMGVYBcGqyPZ0qPhZuEVNamXqGeU4J6kLbNsrKE9za8Xf+oOf2Usu2wLUJR+JxuyxaFJxqgHa71/mw1zoynt2tZW9F+A8Xy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jd3mFKnN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81612C43394;
-	Tue, 23 Jan 2024 02:09:19 +0000 (UTC)
+	 MIME-Version; b=mqS1svejdFXbsSwn+UvAyECWFzGZjjkeNzo+BUfbTFdRzwwljPjYTHIddQ9XBKwb2laComdFdb6omikKIbpFDfTEn6R4O5bRuo41/LowBLrvzjxwQYHvXgPjSyJwZ//LBdOMrAgd4rk8qroKcdEqt1rKfni3BFI1kmdTdl7Zh44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ihNz4uZE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 617B1C433F1;
+	Tue, 23 Jan 2024 01:56:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975759;
-	bh=DFpd0iQggj+gP2gogvA0yALDmpvcuDOG/XjRkp0iMyM=;
+	s=korg; t=1705974997;
+	bh=JO8l6y6ssQJMvnfeYlu7drHflOrnRT2mohv4RJWWOmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jd3mFKnN5x5fVpTH8pwz8Lj3Ezrc3zggdsNdVnMSYzJassX0AyZqvANzVbm1gV+pW
-	 gF91C7JKpfP32KzWdglXcs8rAKkn0DcgVEBZmqogNAyJ5ojcy3YJ39DnoQsY98ge+f
-	 P1taTzrLmd+P+5OG8q1U1vAGIxxTu3ZOzzRiE134=
+	b=ihNz4uZE/qVm/kNDH/lNXRwsSBihRtd3ZkEfH75AHGvRfvjx0vmuWU9f4C38WhA6p
+	 addXLHoaCMJrXwVEsDzFVlWmqN7EM5t6IV4i1KwhoODZTV9W6JDqhWvGok/208V+5v
+	 lrQ8USYBolRhR3RrnNVIMPLus9v9QZ537lB6v5bY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Keith Busch <kbusch@kernel.org>,
+	Nuno Sa <nuno.sa@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 519/583] nvmet-tcp: Fix the H2C expected PDU len calculation
+Subject: [PATCH 5.15 314/374] iio: adc: ad9467: fix scale setting
 Date: Mon, 22 Jan 2024 15:59:30 -0800
-Message-ID: <20240122235827.958337405@linuxfoundation.org>
+Message-ID: <20240122235755.800750414@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,257 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-[ Upstream commit 9a1abc24850eb759e36a2f8869161c3b7254c904 ]
+[ Upstream commit b73f08bb7fe5a0901646ca5ceaa1e7a2d5ee6293 ]
 
-The nvmet_tcp_handle_h2c_data_pdu() function should take into
-consideration the possibility that the header digest and/or the data
-digests are enabled when calculating the expected PDU length, before
-comparing it to the value stored in cmd->pdu_len.
+When reading in_voltage_scale we can get something like:
 
-Fixes: efa56305908b ("nvmet-tcp: Fix a kernel panic when host sends an invalid H2C PDU length")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+root@analog:/sys/bus/iio/devices/iio:device2# cat in_voltage_scale
+0.038146
+
+However, when reading the available options:
+
+root@analog:/sys/bus/iio/devices/iio:device2# cat
+in_voltage_scale_available
+2000.000000 2100.000006 2200.000007 2300.000008 2400.000009 2500.000010
+
+which does not make sense. Moreover, when trying to set a new scale we
+get an error because there's no call to __ad9467_get_scale() to give us
+values as given when reading in_voltage_scale. Fix it by computing the
+available scales during probe and properly pass the list when
+.read_available() is called.
+
+While at it, change to use .read_available() from iio_info. Also note
+that to properly fix this, adi-axi-adc.c has to be changed accordingly.
+
+Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://lore.kernel.org/r/20231207-iio-backend-prep-v2-4-a4a33bc4d70e@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/tcp.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/iio/adc/ad9467.c            | 47 ++++++++++++++++++
+ drivers/iio/adc/adi-axi-adc.c       | 74 ++++++-----------------------
+ include/linux/iio/adc/adi-axi-adc.h |  4 ++
+ 3 files changed, 66 insertions(+), 59 deletions(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 7f7fa78f0698..a4f802790ca0 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -954,7 +954,7 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- {
- 	struct nvme_tcp_data_pdu *data = &queue->pdu.data;
- 	struct nvmet_tcp_cmd *cmd;
--	unsigned int plen;
-+	unsigned int exp_data_len;
+diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+index 09ff5b27cee5..ad94f0abc402 100644
+--- a/drivers/iio/adc/ad9467.c
++++ b/drivers/iio/adc/ad9467.c
+@@ -119,6 +119,7 @@ struct ad9467_state {
+ 	struct spi_device		*spi;
+ 	struct clk			*clk;
+ 	unsigned int			output_mode;
++	unsigned int                    (*scales)[2];
  
- 	if (likely(queue->nr_cmds)) {
- 		if (unlikely(data->ttag >= queue->nr_cmds)) {
-@@ -977,9 +977,13 @@ static int nvmet_tcp_handle_h2c_data_pdu(struct nvmet_tcp_queue *queue)
- 		return -EPROTO;
+ 	struct gpio_desc		*pwrdown_gpio;
+ };
+@@ -212,6 +213,7 @@ static void __ad9467_get_scale(struct adi_axi_adc_conv *conv, int index,
+ 	.channel = _chan,						\
+ 	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
+ 		BIT(IIO_CHAN_INFO_SAMP_FREQ),				\
++	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE), \
+ 	.scan_index = _si,						\
+ 	.scan_type = {							\
+ 		.sign = _sign,						\
+@@ -365,6 +367,26 @@ static int ad9467_write_raw(struct adi_axi_adc_conv *conv,
  	}
+ }
  
--	plen = le32_to_cpu(data->hdr.plen);
-+	exp_data_len = le32_to_cpu(data->hdr.plen) -
-+			nvmet_tcp_hdgst_len(queue) -
-+			nvmet_tcp_ddgst_len(queue) -
-+			sizeof(*data);
++static int ad9467_read_avail(struct adi_axi_adc_conv *conv,
++			     struct iio_chan_spec const *chan,
++			     const int **vals, int *type, int *length,
++			     long mask)
++{
++	const struct adi_axi_adc_chip_info *info = conv->chip_info;
++	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
 +
- 	cmd->pdu_len = le32_to_cpu(data->data_length);
--	if (unlikely(cmd->pdu_len != (plen - sizeof(*data)) ||
-+	if (unlikely(cmd->pdu_len != exp_data_len ||
- 		     cmd->pdu_len == 0 ||
- 		     cmd->pdu_len > NVMET_TCP_MAXH2CDATA)) {
- 		pr_err("H2CData PDU len %u is invalid\n", cmd->pdu_len);
++	switch (mask) {
++	case IIO_CHAN_INFO_SCALE:
++		*vals = (const int *)st->scales;
++		*type = IIO_VAL_INT_PLUS_MICRO;
++		/* Values are stored in a 2D matrix */
++		*length = info->num_scales * 2;
++		return IIO_AVAIL_LIST;
++	default:
++		return -EINVAL;
++	}
++}
++
+ static int ad9467_outputmode_set(struct spi_device *spi, unsigned int mode)
+ {
+ 	int ret;
+@@ -377,6 +399,26 @@ static int ad9467_outputmode_set(struct spi_device *spi, unsigned int mode)
+ 				AN877_ADC_TRANSFER_SYNC);
+ }
+ 
++static int ad9467_scale_fill(struct adi_axi_adc_conv *conv)
++{
++	const struct adi_axi_adc_chip_info *info = conv->chip_info;
++	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
++	unsigned int i, val1, val2;
++
++	st->scales = devm_kmalloc_array(&st->spi->dev, info->num_scales,
++					sizeof(*st->scales), GFP_KERNEL);
++	if (!st->scales)
++		return -ENOMEM;
++
++	for (i = 0; i < info->num_scales; i++) {
++		__ad9467_get_scale(conv, i, &val1, &val2);
++		st->scales[i][0] = val1;
++		st->scales[i][1] = val2;
++	}
++
++	return 0;
++}
++
+ static int ad9467_preenable_setup(struct adi_axi_adc_conv *conv)
+ {
+ 	struct ad9467_state *st = adi_axi_adc_conv_priv(conv);
+@@ -433,6 +475,10 @@ static int ad9467_probe(struct spi_device *spi)
+ 
+ 	conv->chip_info = &info->axi_adc_info;
+ 
++	ret = ad9467_scale_fill(conv);
++	if (ret)
++		return ret;
++
+ 	id = ad9467_spi_read(spi, AN877_ADC_REG_CHIP_ID);
+ 	if (id != conv->chip_info->id) {
+ 		dev_err(&spi->dev, "Mismatch CHIP_ID, got 0x%X, expected 0x%X\n",
+@@ -443,6 +489,7 @@ static int ad9467_probe(struct spi_device *spi)
+ 	conv->reg_access = ad9467_reg_access;
+ 	conv->write_raw = ad9467_write_raw;
+ 	conv->read_raw = ad9467_read_raw;
++	conv->read_avail = ad9467_read_avail;
+ 	conv->preenable_setup = ad9467_preenable_setup;
+ 
+ 	st->output_mode = info->default_output_mode |
+diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+index a9e655e69eaa..c6dac4c10c31 100644
+--- a/drivers/iio/adc/adi-axi-adc.c
++++ b/drivers/iio/adc/adi-axi-adc.c
+@@ -142,6 +142,20 @@ static int adi_axi_adc_write_raw(struct iio_dev *indio_dev,
+ 	return conv->write_raw(conv, chan, val, val2, mask);
+ }
+ 
++static int adi_axi_adc_read_avail(struct iio_dev *indio_dev,
++				  struct iio_chan_spec const *chan,
++				  const int **vals, int *type, int *length,
++				  long mask)
++{
++	struct adi_axi_adc_state *st = iio_priv(indio_dev);
++	struct adi_axi_adc_conv *conv = &st->client->conv;
++
++	if (!conv->read_avail)
++		return -EOPNOTSUPP;
++
++	return conv->read_avail(conv, chan, vals, type, length, mask);
++}
++
+ static int adi_axi_adc_update_scan_mode(struct iio_dev *indio_dev,
+ 					const unsigned long *scan_mask)
+ {
+@@ -226,69 +240,11 @@ struct adi_axi_adc_conv *devm_adi_axi_adc_conv_register(struct device *dev,
+ }
+ EXPORT_SYMBOL_GPL(devm_adi_axi_adc_conv_register);
+ 
+-static ssize_t in_voltage_scale_available_show(struct device *dev,
+-					       struct device_attribute *attr,
+-					       char *buf)
+-{
+-	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+-	struct adi_axi_adc_state *st = iio_priv(indio_dev);
+-	struct adi_axi_adc_conv *conv = &st->client->conv;
+-	size_t len = 0;
+-	int i;
+-
+-	for (i = 0; i < conv->chip_info->num_scales; i++) {
+-		const unsigned int *s = conv->chip_info->scale_table[i];
+-
+-		len += scnprintf(buf + len, PAGE_SIZE - len,
+-				 "%u.%06u ", s[0], s[1]);
+-	}
+-	buf[len - 1] = '\n';
+-
+-	return len;
+-}
+-
+-static IIO_DEVICE_ATTR_RO(in_voltage_scale_available, 0);
+-
+-enum {
+-	ADI_AXI_ATTR_SCALE_AVAIL,
+-};
+-
+-#define ADI_AXI_ATTR(_en_, _file_)			\
+-	[ADI_AXI_ATTR_##_en_] = &iio_dev_attr_##_file_.dev_attr.attr
+-
+-static struct attribute *adi_axi_adc_attributes[] = {
+-	ADI_AXI_ATTR(SCALE_AVAIL, in_voltage_scale_available),
+-	NULL
+-};
+-
+-static umode_t axi_adc_attr_is_visible(struct kobject *kobj,
+-				       struct attribute *attr, int n)
+-{
+-	struct device *dev = kobj_to_dev(kobj);
+-	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+-	struct adi_axi_adc_state *st = iio_priv(indio_dev);
+-	struct adi_axi_adc_conv *conv = &st->client->conv;
+-
+-	switch (n) {
+-	case ADI_AXI_ATTR_SCALE_AVAIL:
+-		if (!conv->chip_info->num_scales)
+-			return 0;
+-		return attr->mode;
+-	default:
+-		return attr->mode;
+-	}
+-}
+-
+-static const struct attribute_group adi_axi_adc_attribute_group = {
+-	.attrs = adi_axi_adc_attributes,
+-	.is_visible = axi_adc_attr_is_visible,
+-};
+-
+ static const struct iio_info adi_axi_adc_info = {
+ 	.read_raw = &adi_axi_adc_read_raw,
+ 	.write_raw = &adi_axi_adc_write_raw,
+-	.attrs = &adi_axi_adc_attribute_group,
+ 	.update_scan_mode = &adi_axi_adc_update_scan_mode,
++	.read_avail = &adi_axi_adc_read_avail,
+ };
+ 
+ static const struct adi_axi_adc_core_info adi_axi_adc_10_0_a_info = {
+diff --git a/include/linux/iio/adc/adi-axi-adc.h b/include/linux/iio/adc/adi-axi-adc.h
+index 52620e5b8052..b7904992d561 100644
+--- a/include/linux/iio/adc/adi-axi-adc.h
++++ b/include/linux/iio/adc/adi-axi-adc.h
+@@ -41,6 +41,7 @@ struct adi_axi_adc_chip_info {
+  * @reg_access		IIO debugfs_reg_access hook for the client ADC
+  * @read_raw		IIO read_raw hook for the client ADC
+  * @write_raw		IIO write_raw hook for the client ADC
++ * @read_avail		IIO read_avail hook for the client ADC
+  */
+ struct adi_axi_adc_conv {
+ 	const struct adi_axi_adc_chip_info		*chip_info;
+@@ -54,6 +55,9 @@ struct adi_axi_adc_conv {
+ 	int (*write_raw)(struct adi_axi_adc_conv *conv,
+ 			 struct iio_chan_spec const *chan,
+ 			 int val, int val2, long mask);
++	int (*read_avail)(struct adi_axi_adc_conv *conv,
++			  struct iio_chan_spec const *chan,
++			  const int **val, int *type, int *length, long mask);
+ };
+ 
+ struct adi_axi_adc_conv *devm_adi_axi_adc_conv_register(struct device *dev,
 -- 
 2.43.0
 
