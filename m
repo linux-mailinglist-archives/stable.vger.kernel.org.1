@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-14307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26CE58380A5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:01:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD618384A8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8349AB275F5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF8311C214D4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B725A67731;
-	Tue, 23 Jan 2024 01:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8AC745E0;
+	Tue, 23 Jan 2024 02:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5Q6wxh+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9cDv/Z2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7766A66B52;
-	Tue, 23 Jan 2024 01:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2F4745D6;
+	Tue, 23 Jan 2024 02:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971687; cv=none; b=Vk08IGPc+pSweDSDD7w4vOBUnCdSkKMx8iYqcORSAWr9td6mScw6Gs773yBYiPyoy7O5LHV4n0ygKme21ICDZ4APSfG16Hxs0Ln80SN638cX6fnxfWFDhNGhJYg9zddgrrk5BZCSiJeW2Y+swoEuMnckFrWZQ1HzCSjCwvYgWyw=
+	t=1705975450; cv=none; b=hUgTTsfyB0UT3InFhNCj4CYsTbHauRtRWmoEAJ73XffeZrFV6fmrvLDsZtpglECR/EqOJY9gSje7AfJ3G1O+qsYl+WP94cKI/bnuGg74N45gM/QmilCfds2Ht8M1uvvyuNi9ik4TlXDzYVv2WN9/EEX/TO35gbLfiJLo22hoXaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971687; c=relaxed/simple;
-	bh=cnTtTnV5nNdfkh8lwe8BfsZCgFjisAXu6hTjUdsVmsM=;
+	s=arc-20240116; t=1705975450; c=relaxed/simple;
+	bh=GjfZkZZaEkXFiPVyGwah3+VPn3ETD24KD4tWZ3QONfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=igxqZOwllx70bL+1+lhduietzuIYXBZ43RifTda84XHdUS3Ko7qozxg8iQm9wh/gdhlELVJX1DzIyTEdi4L5PsOEhUnh1T/YuC76tWiCFN30u4o8poxSTpwN/4OHUj8qDvwqLAjodwzGKttvI7S+OAqt+IM5Ymztu9vqHLo+9XA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5Q6wxh+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEEDEC433C7;
-	Tue, 23 Jan 2024 01:01:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=d9oiHa2wlKKS5pDMZ0isPzHFGQftwCwjy7npL3s3qSnav9nfgYPBgDIJUMwogkFpjY9SP1RlKc3VjEW3tB7+3RcUBRPpKWQeL03tfn130sE1J27ezGChnLCrSAy9IrAn+C63ySBF6kZh/WNkXcfHY4W0dXYmXQpdrWKu/QwOh4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9cDv/Z2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E62C433F1;
+	Tue, 23 Jan 2024 02:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971687;
-	bh=cnTtTnV5nNdfkh8lwe8BfsZCgFjisAXu6hTjUdsVmsM=;
+	s=korg; t=1705975450;
+	bh=GjfZkZZaEkXFiPVyGwah3+VPn3ETD24KD4tWZ3QONfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a5Q6wxh+8B0LqO2myq8Z55jNw/aus/Ox+RKyPFsdMgIo1DVFcyreC9CbFmy20yzcu
-	 1LQSQF8Y8GCNjuZ4UqsGo2fK6z9EbIaRVn0q96RYZG5a/5gR7S7GYgogUgDqOa/M/D
-	 3GKdha/LBVJfkHj8M7Acj874KlsE5443KoSnolp8=
+	b=R9cDv/Z2FQZQ4nzP0vBE2Ooi12I75xm3Oh2zNpRgclnsp7qDrZoS5va4SfzWtRsgl
+	 wIM3mr0BwCzBFkSh6WXlh+BfNh6tThG/OTVSVb117PGIW/RyHvsnZHIqam64SFiL0d
+	 23/Graisu2s3pSQWotBsaYK5gu7Tak7oydG3fPac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bart Van Assche <bvanassche@acm.org>,
-	Can Guo <quic_cang@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 289/417] scsi: ufs: core: Simplify power management during async scan
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+Subject: [PATCH 6.6 406/583] pwm: Fix out-of-bounds access in of_pwm_single_xlate()
 Date: Mon, 22 Jan 2024 15:57:37 -0800
-Message-ID: <20240122235801.844884547@linuxfoundation.org>
+Message-ID: <20240122235824.400884078@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +58,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit daf7795406bf307997366f694888bd317ae5b5fa upstream.
+commit a297d07b9a1e4fb8cda25a4a2363a507d294b7c9 upstream.
 
-ufshcd_init() calls pm_runtime_get_sync() before it calls
-async_schedule(). ufshcd_async_scan() calls pm_runtime_put_sync() directly
-or indirectly from ufshcd_add_lus(). Simplify ufshcd_async_scan() by always
-calling pm_runtime_put_sync() from ufshcd_async_scan().
+With args->args_count == 2 args->args[2] is not defined. Actually the
+flags are contained in args->args[1].
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20231218225229.2542156-2-bvanassche@acm.org
-Reviewed-by: Can Guo <quic_cang@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 3ab7b6ac5d82 ("pwm: Introduce single-PWM of_xlate function")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/243908750d306e018a3d4bf2eb745d53ab50f663.1704835845.git.u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ufs/core/ufshcd.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/pwm/core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -8204,7 +8204,6 @@ static int ufshcd_add_lus(struct ufs_hba
- 	ufs_bsg_probe(hba);
- 	ufshpb_init(hba);
- 	scsi_scan_host(hba->host);
--	pm_runtime_put_sync(hba->dev);
+--- a/drivers/pwm/core.c
++++ b/drivers/pwm/core.c
+@@ -176,7 +176,7 @@ of_pwm_single_xlate(struct pwm_chip *chi
+ 	pwm->args.period = args->args[0];
+ 	pwm->args.polarity = PWM_POLARITY_NORMAL;
  
- out:
- 	return ret;
-@@ -8331,15 +8330,15 @@ static void ufshcd_async_scan(void *data
+-	if (args->args_count == 2 && args->args[2] & PWM_POLARITY_INVERTED)
++	if (args->args_count == 2 && args->args[1] & PWM_POLARITY_INVERTED)
+ 		pwm->args.polarity = PWM_POLARITY_INVERSED;
  
- 	/* Probe and add UFS logical units  */
- 	ret = ufshcd_add_lus(hba);
-+
- out:
-+	pm_runtime_put_sync(hba->dev);
- 	/*
- 	 * If we failed to initialize the device or the device is not
- 	 * present, turn off the power/clocks etc.
- 	 */
--	if (ret) {
--		pm_runtime_put_sync(hba->dev);
-+	if (ret)
- 		ufshcd_hba_exit(hba);
--	}
- }
- 
- static const struct attribute_group *ufshcd_driver_groups[] = {
+ 	return pwm;
 
 
 
