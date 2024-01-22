@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-15405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5A30838517
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:11 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0044E83817C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 256321C2A4C1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B460B2C542
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E48E57E569;
-	Tue, 23 Jan 2024 02:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81D281419BF;
+	Tue, 23 Jan 2024 01:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcEhH66P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mssQG+nH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCEB3C0C;
-	Tue, 23 Jan 2024 02:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 411D1141981;
+	Tue, 23 Jan 2024 01:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975740; cv=none; b=kxRywfoDOrArEDnDNAep4MwWNe5Wy11QIQ/ZZe26k380blOfxbPQ+UvYlLzomYrTAz2ENAQJpK88W6wWRioXH9378Ef+/Wm3CcXqj7iBmKccFgJDU0Xp6y4lqVoz1z1EQ5AXEMKSdtvRDvxxXrnBWfonJ9CMMzABUZos7xQYHz4=
+	t=1705972059; cv=none; b=RyW0fMTGh4hlLYTvQlUQGxtCgSdQynoGRYoZsZ+N2AlVPkQCL9tK5laWMFmg7ap7Bz8JiN+0ZAHw1CmSCfHeNNuQKNxkxZspF/GZ2W3P3Kyog6cNMOhj14eIkAa8dXDPJ1zVbv7szVDawqmtQZaNuNuq2qJB6XEJRJn7lQzfHbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975740; c=relaxed/simple;
-	bh=DgOFD4cDI6eoe9zQJvaB4Xg1nJAJwZO7WglOTtjLKOs=;
+	s=arc-20240116; t=1705972059; c=relaxed/simple;
+	bh=FDWtFTpHNwMqimopcYOw2+asdZtPfu2mDaTzQiXzWdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TdBt2/3YabB2Z3Cxg4h0sddNsA1h+EPJWRJeF+QKyMqXMRwMurfbOqZbojj8C4+6J21cRtm6sIPTyDH8CWmSODyw0oTwoMhvHuEeD08BpCx1NkzTa5UnLfPSlraGod7imTiIR5g9+wHvPs2oT3QX/A3NVVsGR3YHEN32moCSkzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcEhH66P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E537C43390;
-	Tue, 23 Jan 2024 02:09:00 +0000 (UTC)
+	 MIME-Version; b=kQMdowQpxpkPQ4B2qRaLzqvkguBeLSkSwPmUY6SwCM9EeQKEy67/djzABR0bbsOAUCKEITVIvAtyfEvxrglYSRy80AfSY2k7Z6PjpmcD54pICx7qC9/Ta/RpVdq/wNmrF2/7lnd549StsQ0TmzPt7Xs3iPrn7MEyKUvJu+cL200=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mssQG+nH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E57E1C43390;
+	Tue, 23 Jan 2024 01:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975740;
-	bh=DgOFD4cDI6eoe9zQJvaB4Xg1nJAJwZO7WglOTtjLKOs=;
+	s=korg; t=1705972059;
+	bh=FDWtFTpHNwMqimopcYOw2+asdZtPfu2mDaTzQiXzWdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zcEhH66PPnyhhx68lxFs1LGdwCECgqIbO2ARJ8bbqyDWFtQFWCmUwDYItv3vJOLkY
-	 B6XzNhyH1t8J408OeoKeEL7nqEHskUB4qsU9+m7l6MLeBx2txZB5+TSmdAihkXk/Kx
-	 4/SIN8E7O2kCFS5xbhZxqlyYuUirPm628yBHjLnM=
+	b=mssQG+nH1wQzHHCCcTbeLZXWW/LUQx7AIg5UqbHcAve/N/pW7Wf/gFjI86ki0o6mS
+	 Wur6Nk9QDlzjzk+aKbpFCD3ac7hd1SgMnlyWley6xXIUrq8uVLqjqdswKNbNCcrcKO
+	 eCRdXEg1lPCZa1O3T5UU4FXj5ZeVxJgFiO+QJ1yE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 517/583] nvmet: re-fix tracing strncpy() warning
+Subject: [PATCH 6.1 400/417] netfilter: nfnetlink_log: use proper helper for fetching physinif
 Date: Mon, 22 Jan 2024 15:59:28 -0800
-Message-ID: <20240122235827.896190818@linuxfoundation.org>
+Message-ID: <20240122235805.584163670@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
 
-[ Upstream commit 4ee7ffeb4ce50c80bc4504db6f39b25a2df6bcf4 ]
+[ Upstream commit c3f9fd54cd87233f53bdf0e191a86b3a5e960e02 ]
 
-An earlier patch had tried to address a warning about a string copy with
-missing zero termination:
+We don't use physindev in __build_packet_message except for getting
+physinif from it. So let's switch to nf_bridge_get_physinif to get what
+we want directly.
 
-drivers/nvme/target/trace.h:52:3: warning: ‘strncpy’ specified bound 32 equals destination size [-Wstringop-truncation]
-
-The new version causes a different warning with some compiler versions, notably
-gcc-9 and gcc-10, and also misses the zero padding that was apparently done
-intentionally in the original code:
-
-drivers/nvme/target/trace.h:56:2: error: 'strncpy' specified bound depends on the length of the source argument [-Werror=stringop-overflow=]
-
-Change it to use strscpy_pad() with the original length, which will give
-a properly padded and zero-terminated string as well as avoiding the warning.
-
-Fixes: d86481e924a7 ("nvmet: use min of device_path and disk len")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 9874808878d9 ("netfilter: bridge: replace physindev with physinif in nf_bridge_info")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/trace.h | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/netfilter/nfnetlink_log.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nvme/target/trace.h b/drivers/nvme/target/trace.h
-index 6109b3806b12..155334ddc13f 100644
---- a/drivers/nvme/target/trace.h
-+++ b/drivers/nvme/target/trace.h
-@@ -53,8 +53,7 @@ static inline void __assign_req_name(char *name, struct nvmet_req *req)
- 		return;
- 	}
+diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
+index c5ff699e3046..200a82a8f943 100644
+--- a/net/netfilter/nfnetlink_log.c
++++ b/net/netfilter/nfnetlink_log.c
+@@ -499,7 +499,7 @@ __build_packet_message(struct nfnl_log_net *log,
+ 					 htonl(br_port_get_rcu(indev)->br->dev->ifindex)))
+ 				goto nla_put_failure;
+ 		} else {
+-			struct net_device *physindev;
++			int physinif;
  
--	strncpy(name, req->ns->device_path,
--		min_t(size_t, DISK_NAME_LEN, strlen(req->ns->device_path)));
-+	strscpy_pad(name, req->ns->device_path, DISK_NAME_LEN);
- }
+ 			/* Case 2: indev is bridge group, we need to look for
+ 			 * physical device (when called from ipv4) */
+@@ -507,10 +507,10 @@ __build_packet_message(struct nfnl_log_net *log,
+ 					 htonl(indev->ifindex)))
+ 				goto nla_put_failure;
+ 
+-			physindev = nf_bridge_get_physindev(skb);
+-			if (physindev &&
++			physinif = nf_bridge_get_physinif(skb);
++			if (physinif &&
+ 			    nla_put_be32(inst->skb, NFULA_IFINDEX_PHYSINDEV,
+-					 htonl(physindev->ifindex)))
++					 htonl(physinif)))
+ 				goto nla_put_failure;
+ 		}
  #endif
- 
 -- 
 2.43.0
 
