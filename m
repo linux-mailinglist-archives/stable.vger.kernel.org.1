@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-14919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2DBA838328
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 881EF837DF8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A98AC28C8AE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DEDE1F29BB5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 358F660883;
-	Tue, 23 Jan 2024 01:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3531455C21;
+	Tue, 23 Jan 2024 00:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aicyVnkc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nXtUuaUx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9731605DF;
-	Tue, 23 Jan 2024 01:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B54524BD;
+	Tue, 23 Jan 2024 00:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974720; cv=none; b=iI5j8TI5BaDN1XVEA0NKeotazoThbmnc8EeQids+zOZzU9uZRJQ95qVGuybBuiJfNSqKfyLayL5atYS+ymFTLptdMxpnLcVRh5ZgzjvO8gbvmikvPjeRqy3iSXi47el3tLqmZzUAcMsSuh9r1l62ejQpWXDue0yMMEsDCdbhnxE=
+	t=1705970228; cv=none; b=ukQkcViWf28WS+iUb/HtfA5pxesyO3N2p8e7e4yTFpl9D1FteRnzRAmxxZQYmWlqq5KA9e3aoXinBS0yqJGfl85weC+gQCRPHQvsqeET/nePKl/S5dsLqG86qDXpEYFSTCS7ytMXNkpCzba/jYaL7P2bChDYyqJX+Ep3OZx4mwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974720; c=relaxed/simple;
-	bh=AecCS3PVnwh5PUo+yVpHnQxtA0GaCqcJA/QDXQVdjD0=;
+	s=arc-20240116; t=1705970228; c=relaxed/simple;
+	bh=TndkChpOZECioYWZ9E5Jq7WskBr1Ov3fZyyLliWoOe4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pyKlUb7kbw8fMYZ2XBvR4ggwxcOf3mjIv0/X3k3mvWOF4/MRJP2CKp6E0h2qCT7shUYIGNK7kVDp2M6UxKHCcbbx2BpvVwAezKvuCeddLhy7h49dX+noUTXdtAiOTtgseN4fvK2rZHqlNGmVp/i2+HnFdQvWbcT40pUAm4jXbOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aicyVnkc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC97C433C7;
-	Tue, 23 Jan 2024 01:51:59 +0000 (UTC)
+	 MIME-Version; b=mj9iPWbqOOqlFwiRfR3vqSQOpNxANr7re92tNiwzMf2wABCIKPpWdp3KLXkN20qwnUCzzzKWvP8OxQM+oMMIOpp6GIxrGbAclfTilg1EHHPxl8ouS29367rkqgkMwQ4vFBqphHV2xle2nNNwL2upQLqk3RyRjRxwKAIAt8G8AzY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nXtUuaUx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5F2C433C7;
+	Tue, 23 Jan 2024 00:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974719;
-	bh=AecCS3PVnwh5PUo+yVpHnQxtA0GaCqcJA/QDXQVdjD0=;
+	s=korg; t=1705970227;
+	bh=TndkChpOZECioYWZ9E5Jq7WskBr1Ov3fZyyLliWoOe4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aicyVnkcvcDc3DdtVEbIckChyRY810N4c9fk0G3OxDJ/xy0hEpeBRwQ+kBjeDf9+Y
-	 nxxU2PhbXUBryKx9o3HFlybssiikxLnqwBvgciYcU2Uups5RHjtDkmaSGm1ufj83qY
-	 xbGUxPuYMpm1zye2ILXnxIic2vZu9P9ybSDTXxi4=
+	b=nXtUuaUxI8eSnxB+fZ43HAhIN/usgndwXs47wfZc1F8UCWhyx4UdhdxUtiU9xHm3J
+	 yyvgrOlNk93kWOfIAE3oTPnjnvxqqbiC3t/I4ko7OPM06k+3MrWLyNftCwCgpxUR+m
+	 3krx+X2URRcvqkfHnZm+WQKVlCTnR1WBQnlaGnuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=C3=87a=C4=9Fhan=20Demir?= <caghandemir@marun.edu.tr>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 266/374] ALSA: hda/relatek: Enable Mute LED on HP Laptop 15s-fq2xxx
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 618/641] net: netdevsim: dont try to destroy PHC on VFs
 Date: Mon, 22 Jan 2024 15:58:42 -0800
-Message-ID: <20240122235754.019725179@linuxfoundation.org>
+Message-ID: <20240122235837.583789943@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +61,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Çağhan Demir <caghandemir@marun.edu.tr>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit bc7863d18677df66b2c7a0e172c91296ff380f11 upstream.
+[ Upstream commit ea937f77208323d35ffe2f8d8fc81b00118bfcda ]
 
-This HP Laptop uses ALC236 codec with COEF 0x07 idx 1 controlling
-the mute LED. This patch enables the already existing quirk for
-this device.
+PHC gets initialized in nsim_init_netdevsim(), which
+is only called if (nsim_dev_port_is_pf()).
 
-Signed-off-by: Çağhan Demir <caghandemir@marun.edu.tr>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240115172303.4718-1-caghandemir@marun.edu.tr
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Create a counterpart of nsim_init_netdevsim() and
+move the mock_phc_destroy() there.
+
+This fixes a crash trying to destroy netdevsim with
+VFs instantiated, as caught by running the devlink.sh test:
+
+    BUG: kernel NULL pointer dereference, address: 00000000000000b8
+    RIP: 0010:mock_phc_destroy+0xd/0x30
+    Call Trace:
+     <TASK>
+     nsim_destroy+0x4a/0x70 [netdevsim]
+     __nsim_dev_port_del+0x47/0x70 [netdevsim]
+     nsim_dev_reload_destroy+0x105/0x120 [netdevsim]
+     nsim_drv_remove+0x2f/0xb0 [netdevsim]
+     device_release_driver_internal+0x1a1/0x210
+     bus_remove_device+0xd5/0x120
+     device_del+0x159/0x490
+     device_unregister+0x12/0x30
+     del_device_store+0x11a/0x1a0 [netdevsim]
+     kernfs_fop_write_iter+0x130/0x1d0
+     vfs_write+0x30b/0x4b0
+     ksys_write+0x69/0xf0
+     do_syscall_64+0xcc/0x1e0
+     entry_SYSCALL_64_after_hwframe+0x6f/0x77
+
+Fixes: b63e78fca889 ("net: netdevsim: use mock PHC driver")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/netdevsim/netdev.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9098,6 +9098,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x87f5, "HP", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87f6, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
- 	SND_PCI_QUIRK(0x103c, 0x87f7, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
-+	SND_PCI_QUIRK(0x103c, 0x87fe, "HP Laptop 15s-fq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8805, "HP ProBook 650 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x880d, "HP EliteBook 830 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8811, "HP Spectre x360 15-eb1xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+index aecaf5f44374..77e8250282a5 100644
+--- a/drivers/net/netdevsim/netdev.c
++++ b/drivers/net/netdevsim/netdev.c
+@@ -369,6 +369,12 @@ static int nsim_init_netdevsim_vf(struct netdevsim *ns)
+ 	return err;
+ }
+ 
++static void nsim_exit_netdevsim(struct netdevsim *ns)
++{
++	nsim_udp_tunnels_info_destroy(ns->netdev);
++	mock_phc_destroy(ns->phc);
++}
++
+ struct netdevsim *
+ nsim_create(struct nsim_dev *nsim_dev, struct nsim_dev_port *nsim_dev_port)
+ {
+@@ -417,8 +423,7 @@ void nsim_destroy(struct netdevsim *ns)
+ 	}
+ 	rtnl_unlock();
+ 	if (nsim_dev_port_is_pf(ns->nsim_dev_port))
+-		nsim_udp_tunnels_info_destroy(dev);
+-	mock_phc_destroy(ns->phc);
++		nsim_exit_netdevsim(ns);
+ 	free_netdev(dev);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
