@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA197837FBD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01525838268
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 178A61C291D1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 969991F27836
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0CF12AAE7;
-	Tue, 23 Jan 2024 00:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6485BADC;
+	Tue, 23 Jan 2024 01:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="It0FRXYj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OyveFkao"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E73864CDA;
-	Tue, 23 Jan 2024 00:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB2F5BAD4;
+	Tue, 23 Jan 2024 01:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971331; cv=none; b=RctMotesnxS8OhZnXgO9RKa/YZNSQsBVFQvmJdrgK3BPBfxSQyo7hwXj0lffusen8wTgmDygt2ria2+9iUAPgPP+sSTLXBwTqvx0bozq5kzZ60CGew6R2YPOClhLVmAxeBOzzpi7EznYnZeeHL3GdqQZAfYDbg5VXbSM3VbD3Mk=
+	t=1705974347; cv=none; b=nFO7eWS22pR5WUXUFa5v1iWTGO0sqJfB6nVTEuAQ5pH+YROHPIuGEcrMTG+4SoBpofp+OAfFl74EM9jN69+SZGlyKklVJEruZDg3BavRRIBphHrPuSeBBOHUBsimjqAya2Q9SK6VhNBoYCPlze77QIwMjBbsidjVif6eIK303w8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971331; c=relaxed/simple;
-	bh=kSo3OZOpkXFJyFJP2PWukdqrmANEdag8uZh3HM/FoUE=;
+	s=arc-20240116; t=1705974347; c=relaxed/simple;
+	bh=GYx27Q2NYzhAAorbE1NMGBHWs8ISlh8JFduknWjHETY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n/3dkPNb3Aeu2P/O/tZ+2jYJuDKbkJ+gIG6tJ8p/MYkeL+uRp9JRRTIKEH2W+aau6djfbpBLnXN2rSigr+vF6WeiirreBll+fcPzLfCs3v477j9iKerDvU55WSC5kkwflJb31dSRdlmVYzp51YJh6FHh5Tqt+8wD/t6xOJmqCc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=It0FRXYj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF49C433C7;
-	Tue, 23 Jan 2024 00:55:31 +0000 (UTC)
+	 MIME-Version; b=cCISAvpISv7mfHzbNW6mdVojXNZ2wAwdJk4fmjYvyjr4nVa/qG3qWMDUqHuB0JeUjBrjGAgYZwwWEXysdA6sK+5TfZfbZPBihhgHL0CDvWJSg540E1lSfWDg4bIwFcaPpek2Bdk64XBKPDmk6NW+9tzRU+3tdpyx0UW3JrpWLe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OyveFkao; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF18C433F1;
+	Tue, 23 Jan 2024 01:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971331;
-	bh=kSo3OZOpkXFJyFJP2PWukdqrmANEdag8uZh3HM/FoUE=;
+	s=korg; t=1705974347;
+	bh=GYx27Q2NYzhAAorbE1NMGBHWs8ISlh8JFduknWjHETY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=It0FRXYj48VWhth7WxoSzw62GCIyvZDKin6Jrw2TQzdh7CE1t8I093m9+OU3V6Rvp
-	 hpIpYJzUDGsMAdX4wP+OdwZdNUQxZzLm0161AX8BPWGdsSVCvmDal5WB92hcud32Yp
-	 blMzK+tXhmWnehNNsVLpFSkKFizDkDCdSn2K6vM0=
+	b=OyveFkaoy44whm4l4hvV5BltAu/XcXZul8bSXXThiBciaIFmGGxl8YSn4lwr+G6QJ
+	 OvQ6fLm5VwrCRwllcK+dOwWyXcuiKjQQXeGB6JX4jxAcqi8/2R71XQhg5qskIR/JtE
+	 9+c0RRT9sSK9XLfuPfb+9m4qFkCa4F/mwQwYgcow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Ian King <colin.king@canonical.com>,
-	Kalle Valo <kvalo@codeaurora.org>,
+	Dario Binacchi <dario.binacchi@amarulasolutions.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 135/286] rtlwifi: rtl8192de: make arrays static const, makes object smaller
+Subject: [PATCH 5.15 185/374] drm/bridge: Fix typo in post_disable() description
 Date: Mon, 22 Jan 2024 15:57:21 -0800
-Message-ID: <20240122235737.343840578@linuxfoundation.org>
+Message-ID: <20240122235751.063135782@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,121 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.king@canonical.com>
+From: Dario Binacchi <dario.binacchi@amarulasolutions.com>
 
-[ Upstream commit b05897ca8c821a16ac03850c4704fe460b3f21a0 ]
+[ Upstream commit 288b039db225676e0c520c981a1b5a2562d893a3 ]
 
-Don't populate arrays the stack but instead make them static const. Replace
-array channel_info with channel_all since it contains the same data as
-channel_all. Makes object code smaller by 961 bytes.
+s/singals/signals/
 
-Before:
-   text	   data	    bss	    dec	   hex	filename
- 128147	  44250	   1024	 173421	 2a56d	../realtek/rtlwifi/rtl8192de/phy.o
-
-After
-   text	   data	    bss	    dec	   hex	filename
- 127122	  44314	   1024	 172460	 2a1ac	../realtek/rtlwifi/rtl8192de/phy.o
-
-(gcc version 10.2.0)
-
-Signed-off-by: Colin Ian King <colin.king@canonical.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20210803144949.79433-2-colin.king@canonical.com
-Stable-dep-of: b8b2baad2e65 ("wifi: rtlwifi: rtl8192de: using calculate_bit_shift()")
+Fixes: 199e4e967af4 ("drm: Extract drm_bridge.h")
+Signed-off-by: Dario Binacchi <dario.binacchi@amarulasolutions.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231124094253.658064-1-dario.binacchi@amarulasolutions.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/realtek/rtlwifi/rtl8192de/phy.c  | 48 ++++++++-----------
- 1 file changed, 20 insertions(+), 28 deletions(-)
+ include/drm/drm_bridge.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-index d3027f8fbd38..f0692d67b300 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-@@ -160,6 +160,15 @@ static u32 targetchnl_2g[TARGET_CHNL_NUM_2G] = {
- 	25711, 25658, 25606, 25554, 25502, 25451, 25328
- };
- 
-+static const u8 channel_all[59] = {
-+	1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-+	36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58,
-+	60, 62, 64, 100, 102, 104, 106, 108, 110, 112,
-+	114, 116, 118, 120, 122, 124, 126, 128,	130,
-+	132, 134, 136, 138, 140, 149, 151, 153, 155,
-+	157, 159, 161, 163, 165
-+};
-+
- static u32 _rtl92d_phy_calculate_bit_shift(u32 bitmask)
- {
- 	u32 i = ffs(bitmask);
-@@ -1354,14 +1363,6 @@ static void _rtl92d_phy_switch_rf_setting(struct ieee80211_hw *hw, u8 channel)
- 
- u8 rtl92d_get_rightchnlplace_for_iqk(u8 chnl)
- {
--	u8 channel_all[59] = {
--		1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
--		36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58,
--		60, 62, 64, 100, 102, 104, 106, 108, 110, 112,
--		114, 116, 118, 120, 122, 124, 126, 128,	130,
--		132, 134, 136, 138, 140, 149, 151, 153, 155,
--		157, 159, 161, 163, 165
--	};
- 	u8 place = chnl;
- 
- 	if (chnl > 14) {
-@@ -3216,37 +3217,28 @@ void rtl92d_phy_config_macphymode_info(struct ieee80211_hw *hw)
- u8 rtl92d_get_chnlgroup_fromarray(u8 chnl)
- {
- 	u8 group;
--	u8 channel_info[59] = {
--		1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
--		36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56,
--		58, 60, 62, 64, 100, 102, 104, 106, 108,
--		110, 112, 114, 116, 118, 120, 122, 124,
--		126, 128, 130, 132, 134, 136, 138, 140,
--		149, 151, 153, 155, 157, 159, 161, 163,
--		165
--	};
- 
--	if (channel_info[chnl] <= 3)
-+	if (channel_all[chnl] <= 3)
- 		group = 0;
--	else if (channel_info[chnl] <= 9)
-+	else if (channel_all[chnl] <= 9)
- 		group = 1;
--	else if (channel_info[chnl] <= 14)
-+	else if (channel_all[chnl] <= 14)
- 		group = 2;
--	else if (channel_info[chnl] <= 44)
-+	else if (channel_all[chnl] <= 44)
- 		group = 3;
--	else if (channel_info[chnl] <= 54)
-+	else if (channel_all[chnl] <= 54)
- 		group = 4;
--	else if (channel_info[chnl] <= 64)
-+	else if (channel_all[chnl] <= 64)
- 		group = 5;
--	else if (channel_info[chnl] <= 112)
-+	else if (channel_all[chnl] <= 112)
- 		group = 6;
--	else if (channel_info[chnl] <= 126)
-+	else if (channel_all[chnl] <= 126)
- 		group = 7;
--	else if (channel_info[chnl] <= 140)
-+	else if (channel_all[chnl] <= 140)
- 		group = 8;
--	else if (channel_info[chnl] <= 153)
-+	else if (channel_all[chnl] <= 153)
- 		group = 9;
--	else if (channel_info[chnl] <= 159)
-+	else if (channel_all[chnl] <= 159)
- 		group = 10;
- 	else
- 		group = 11;
+diff --git a/include/drm/drm_bridge.h b/include/drm/drm_bridge.h
+index c84783cd5abd..3188b7a1d2c7 100644
+--- a/include/drm/drm_bridge.h
++++ b/include/drm/drm_bridge.h
+@@ -191,7 +191,7 @@ struct drm_bridge_funcs {
+ 	 * or &drm_encoder_helper_funcs.dpms hook.
+ 	 *
+ 	 * The bridge must assume that the display pipe (i.e. clocks and timing
+-	 * singals) feeding it is no longer running when this callback is
++	 * signals) feeding it is no longer running when this callback is
+ 	 * called.
+ 	 *
+ 	 * The @post_disable callback is optional.
 -- 
 2.43.0
 
