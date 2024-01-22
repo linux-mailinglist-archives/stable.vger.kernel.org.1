@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A626F837F89
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:13 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E66837D22
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D92E41C28FB6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71CC81F292A5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A868629F3;
-	Tue, 23 Jan 2024 00:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B9C15EA87;
+	Tue, 23 Jan 2024 00:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trWa6SAu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uHXOf1Fg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBEA1627EA;
-	Tue, 23 Jan 2024 00:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC70C5B5A1;
+	Tue, 23 Jan 2024 00:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971181; cv=none; b=WbBq9+zJFhyNcvVYal7c6JnBhQ5Vrs6UZJGM3SieUshSM5+nNBy/wT0meTGG2dMNF9s0E5mK0bk9CB528h0EbbvLVgS9ymYN5oXpefPJjFnXWatZ3FE3VJO4ASPmD90iId6V55yCGhm5HsWww1y8b8leozL/oLHvd3vepTvChO8=
+	t=1705969808; cv=none; b=RKpFioXQtU1Dd0NN+D9mKvXSl4Sv5EfdpFodHwseTbLjLIsRD2EQmT+yooYJIj6K/rhPIWFGu08pSbfvel4EGwkFRw2maSxsv/dxZaTo7I43wsp/6U2zrdxzYxSCUUvwavwt5Hn+2iTd6+lMisz4zcAEGs5o4CPFSAgiQeNMZLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971181; c=relaxed/simple;
-	bh=q0RgdLH61vzH9xnClr702oglOURilGUPz0Jnm1avVrA=;
+	s=arc-20240116; t=1705969808; c=relaxed/simple;
+	bh=VdWkLRRjmmd8qFOLbwjIwZ6LizXZXjeBZ9xGy3LVdMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZTa24LbcOpQde92lD7f6r2H1mzcq7rkARyVzjBrRu6UmmDS1cX6Zx8Py/aJupru2QxGI2fc+4wVsuWAW56ywpiHyuiMgGAc3CnEzCj3YdnC2dWnIyIbghw5PwbKBeHsBOiBUIPra2rkU4A6nY1elsmSb/atOmBLlaIzffNq243c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trWa6SAu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D6E3C433F1;
-	Tue, 23 Jan 2024 00:53:00 +0000 (UTC)
+	 MIME-Version; b=Hz00KKPRD2APNzgniuogKh8b7gmqa/qiCNeXbJEHDi7G0qaTdSha+XrLvNhKKJ4F5WtGwC1mcdAw+5qffVLq3FFdfqoNl4ODe11A43XuD3PJtfEt+SdG55fQ1QAuDweYEoGWIyrlfkcTiBVCT5MnmoSn+xi3+5FcoDGdr2Qj5Oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uHXOf1Fg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41548C433B1;
+	Tue, 23 Jan 2024 00:30:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971180;
-	bh=q0RgdLH61vzH9xnClr702oglOURilGUPz0Jnm1avVrA=;
+	s=korg; t=1705969807;
+	bh=VdWkLRRjmmd8qFOLbwjIwZ6LizXZXjeBZ9xGy3LVdMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=trWa6SAucuCP7zScLVK+sDnnAJUrGELFSDfgjlTl/+FZs9HGD79CT9e2mCngI2ueZ
-	 VYL2BsfbLKRyKu+3aMURZEIWCT/Q+/M7legysZF1joRGi6DsL8/0bUBrq/2CDbLZ16
-	 ooUC2CYBxP9eJGFOlCMr0l4H5URx4FS+E4+iZBTA=
+	b=uHXOf1FgJdFuMUOE9vwyBPoiBhQXs35/pkfrfLK/hE1+FCy3b6SC+FnFlLTABQx77
+	 nGUb1Q7cm3Y3EBIUjwekj3Piw/b6UJETwWwPIWnBW3YWmqDBDLh0KDyp26jvorNHEn
+	 YZ9Krv24+z3qyofWJZuFzni2DOk42hsEVCBjpVeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 198/417] f2fs: fix to wait on block writeback for post_read case
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.7 462/641] Revert "net: rtnetlink: Enslave device before bringing it up"
 Date: Mon, 22 Jan 2024 15:56:06 -0800
-Message-ID: <20240122235758.795244398@linuxfoundation.org>
+Message-ID: <20240122235832.496336255@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 
-[ Upstream commit 55fdc1c24a1d6229fe0ecf31335fb9a2eceaaa00 ]
+commit ec4ffd100ffb396eca13ebe7d18938ea80f399c3 upstream.
 
-If inode is compressed, but not encrypted, it missed to call
-f2fs_wait_on_block_writeback() to wait for GCed page writeback
-in IPU write path.
+This reverts commit a4abfa627c3865c37e036bccb681619a50d3d93c.
 
-Thread A				GC-Thread
-					- f2fs_gc
-					 - do_garbage_collect
-					  - gc_data_segment
-					   - move_data_block
-					    - f2fs_submit_page_write
-					     migrate normal cluster's block via
-					     meta_inode's page cache
-- f2fs_write_single_data_page
- - f2fs_do_write_data_page
-  - f2fs_inplace_write_data
-   - f2fs_submit_page_bio
+The patch broke:
+> ip link set dummy0 up
+> ip link set dummy0 master bond0 down
 
-IRQ
-- f2fs_read_end_io
-					IRQ
-					old data overrides new data due to
-					out-of-order GC and common IO.
-					- f2fs_read_end_io
+This last command is useful to be able to enslave an interface with only
+one netlink message.
 
-Fixes: 4c8ff7095bef ("f2fs: support data compression")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+After discussion, there is no good reason to support:
+> ip link set dummy0 down
+> ip link set dummy0 master bond0 up
+because the bond interface already set the slave up when it is up.
+
+Cc: stable@vger.kernel.org
+Fixes: a4abfa627c38 ("net: rtnetlink: Enslave device before bringing it up")
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://lore.kernel.org/r/20240108094103.2001224-2-nicolas.dichtel@6wind.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/data.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/core/rtnetlink.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index 3666c1fd77a6..8b561af37974 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -2490,9 +2490,6 @@ int f2fs_encrypt_one_page(struct f2fs_io_info *fio)
- 
- 	page = fio->compressed_page ? fio->compressed_page : fio->page;
- 
--	/* wait for GCed page writeback via META_MAPPING */
--	f2fs_wait_on_block_writeback(inode, fio->old_blkaddr);
--
- 	if (fscrypt_inode_uses_inline_crypto(inode))
- 		return 0;
- 
-@@ -2681,6 +2678,10 @@ int f2fs_do_write_data_page(struct f2fs_io_info *fio)
- 		goto out_writepage;
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -2905,13 +2905,6 @@ static int do_setlink(const struct sk_bu
+ 		call_netdevice_notifiers(NETDEV_CHANGEADDR, dev);
  	}
  
-+	/* wait for GCed page writeback via META_MAPPING */
-+	if (fio->post_read)
-+		f2fs_wait_on_block_writeback(inode, fio->old_blkaddr);
+-	if (tb[IFLA_MASTER]) {
+-		err = do_set_master(dev, nla_get_u32(tb[IFLA_MASTER]), extack);
+-		if (err)
+-			goto errout;
+-		status |= DO_SETLINK_MODIFIED;
+-	}
+-
+ 	if (ifm->ifi_flags || ifm->ifi_change) {
+ 		err = dev_change_flags(dev, rtnl_dev_combine_flags(dev, ifm),
+ 				       extack);
+@@ -2919,6 +2912,13 @@ static int do_setlink(const struct sk_bu
+ 			goto errout;
+ 	}
+ 
++	if (tb[IFLA_MASTER]) {
++		err = do_set_master(dev, nla_get_u32(tb[IFLA_MASTER]), extack);
++		if (err)
++			goto errout;
++		status |= DO_SETLINK_MODIFIED;
++	}
 +
- 	/*
- 	 * If current allocation needs SSR,
- 	 * it had better in-place writes for updated data.
--- 
-2.43.0
-
+ 	if (tb[IFLA_CARRIER]) {
+ 		err = dev_change_carrier(dev, nla_get_u8(tb[IFLA_CARRIER]));
+ 		if (err)
 
 
 
