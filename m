@@ -1,53 +1,59 @@
-Return-Path: <stable+bounces-13439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32124837C12
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C99837CE1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DDFAD295443
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A465B2A957
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77DAF3C0D;
-	Tue, 23 Jan 2024 00:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACAAE101D2;
+	Tue, 23 Jan 2024 00:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uuF4Obmz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GwQQcsbO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37FE42114;
-	Tue, 23 Jan 2024 00:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BFF5662;
+	Tue, 23 Jan 2024 00:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969493; cv=none; b=Y1G0VVu2PyR2ScgkZo2+e7Mwhkw/Q95ptwwPDUJekztUEWUbTQ4MtFk0g9dYmv7IOKlj4GtWKDLRLHYm8KQQheEkxjYj35a/qMQ2wTxSErjZj88XEWxr7Vy2nbEiQF6hluEsWDVOhFOh6mNSViN4+9tuNLZAtOMFkpErSjDpzrk=
+	t=1705969503; cv=none; b=C4vagdQRmTx+k+7+NFXYSIHbywew26FdI4vacelhy8FR5xn6PLPSot5Fs5M5Rd6kluBudFNNw6qYEfllHY5DKXCeeoGxa0kzomBHr27Q7Z5hM2kL+apEwQksY7LVQEDKLfSGJLG+I76DszY7S1dy5sUfz+aBmTBaaeQiKYBjVdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969493; c=relaxed/simple;
-	bh=bYr5SI3DL8Pi4VmQJnTkmGcW+Xc7y8sHf2jVWKpy22Q=;
+	s=arc-20240116; t=1705969503; c=relaxed/simple;
+	bh=0DXwUaR0VggXMxYkKz32oLwLHF1KUpZrtX3PhcO0yeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+BHZtvck54PeVlMq4oDFDdK96Qb0DeHcwXl553HBXLdLpwaA76bstDvfOSBvE7pWohrNY77q4htLumlELaccrX44L2qAm5ng86G2+V7L0ozzVUwEo3guVmaIRqKmPM4grSZO2O8LyZU3nS/KVfc2+GpEOtM9hdhfOjq+FFDdHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uuF4Obmz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC059C43390;
-	Tue, 23 Jan 2024 00:24:52 +0000 (UTC)
+	 MIME-Version; b=j44/Y73E0acvX6KLUNXBKCv7wY+OMdQobuqvD0ck1fGc+gpGrrDxMbmLNU9iZ/71MSgI9648utpYU4bk/Y/n1FrwlDwGo5DOHr3a0kHPk1SO4/+RPiFKd6+MjShHREZoI6yv/C99oNfddDPrz+O4GTVXXrajxhpf9PDQHPq1LgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GwQQcsbO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19174C433A6;
+	Tue, 23 Jan 2024 00:25:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969493;
-	bh=bYr5SI3DL8Pi4VmQJnTkmGcW+Xc7y8sHf2jVWKpy22Q=;
+	s=korg; t=1705969503;
+	bh=0DXwUaR0VggXMxYkKz32oLwLHF1KUpZrtX3PhcO0yeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uuF4ObmzLjeHItjmDkm23/vi1z04N7W5BR1F9zQotJTQosuHhQ7AmFzobknCybzcf
-	 PO12JPhXNCr5XgTttKn4lhnFbs8qL7HG6KWVYKWGa19iQjYQu5TcKzIJPTZsEeFRzj
-	 IWwAXx7SWTtGm3BfLNXmGMA9dJlFloIkKxhtVKbI=
+	b=GwQQcsbOn68XpQvyN6no3Hw5Xv1xRduXnSx51LllB4vvAPvYFF/LhA1YuJv7ZLWEr
+	 b288lJrkT0AFJoVEUIhlaX26CF7Ec79y4AJr8Tv1D8qiqoW1sI8ij0wvMb89V92VPv
+	 RllGbY4cF58/nFt83o47xn3XtT3pVkw1chABmD6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Ji <xji@analogixsemi.com>,
-	Robert Foss <rfoss@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
+	Teddy Wang <teddy.wang@siliconmotion.com>,
+	Sam Ravnborg <sam@ravnborg.org>,
+	Helge Deller <deller@gmx.de>,
+	Arnd Bergmann <arnd@arndb.de>,
+	linux-fbdev@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 264/641] Revert "drm/bridge: Add 200ms delay to wait FW HPD status stable"
-Date: Mon, 22 Jan 2024 15:52:48 -0800
-Message-ID: <20240122235826.188201133@linuxfoundation.org>
+Subject: [PATCH 6.7 265/641] fbdev/sm712fb: Use correct initializer macros for struct fb_ops
+Date: Mon, 22 Jan 2024 15:52:49 -0800
+Message-ID: <20240122235826.218003281@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -66,39 +72,75 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xin Ji <xji@analogixsemi.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit af3145aa142c92409d3b123ff87ff0b5fd0bf849 ]
+[ Upstream commit 12d55c013a09a2d490f004a324c20800e4ff35ec ]
 
-This reverts commit 330140d7319fcc4ec68bd924ea212e476bf12275
+Only initialize mmap and draw helpers with macros; leave read/write
+callbacks to driver implementations. Fixes the following warnings:
 
-200ms delay will cause panel display image later than backlight
-turn on, revert this patch.
+  CC [M]  drivers/video/fbdev/sm712fb.o
+  sm712fb.c:1355:25: warning: initialized field overwritten [-Woverride-init]
+  1355 |         .fb_fillrect  = cfb_fillrect,
+       |                         ^~~~~~~~~~~~
+  sm712fb.c:1355:25: note: (near initialization for 'smtcfb_ops.fb_fillrect')
+  sm712fb.c:1356:25: warning: initialized field overwritten [-Woverride-init]
+  1356 |         .fb_imageblit = cfb_imageblit,
+       |                         ^~~~~~~~~~~~~
+  sm712fb.c:1356:25: note: (near initialization for 'smtcfb_ops.fb_imageblit')
+  sm712fb.c:1357:25: warning: initialized field overwritten [-Woverride-init]
+  1357 |         .fb_copyarea  = cfb_copyarea,
+       |                         ^~~~~~~~~~~~
+  sm712fb.c:1357:25: note: (near initialization for 'smtcfb_ops.fb_copyarea')
+  sm712fb.c:1358:25: warning: initialized field overwritten [-Woverride-init]
+  1358 |         .fb_read      = smtcfb_read,
+       |                         ^~~~~~~~~~~
+  sm712fb.c:1358:25: note: (near initialization for 'smtcfb_ops.fb_read')
+  sm712fb.c:1359:25: warning: initialized field overwritten [-Woverride-init]
+  1359 |         .fb_write     = smtcfb_write,
+       |                         ^~~~~~~~~~~~
+  sm712fb.c:1359:25: note: (near initialization for 'smtcfb_ops.fb_write')
 
-Fixes: 330140d7319fcc ("drm/bridge: Add 200ms delay to wait FW HPD status stable")
-Signed-off-by: Xin Ji <xji@analogixsemi.com>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231120091038.284825-1-xji@analogixsemi.com
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 586132cf1d38 ("fbdev/sm712fb: Initialize fb_ops to fbdev I/O-memory helpers")
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Cc: Teddy Wang <teddy.wang@siliconmotion.com>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: linux-fbdev@vger.kernel.org
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231127131655.4020-3-tzimmermann@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/analogix/anx7625.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/video/fbdev/sm712fb.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
-index 8f740154707d..51abe42c639e 100644
---- a/drivers/gpu/drm/bridge/analogix/anx7625.c
-+++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
-@@ -1464,9 +1464,6 @@ static int _anx7625_hpd_polling(struct anx7625_data *ctx,
- 	if (ctx->pdata.intp_irq)
- 		return 0;
+diff --git a/drivers/video/fbdev/sm712fb.c b/drivers/video/fbdev/sm712fb.c
+index 3f8ef50e3209..104f122e0f27 100644
+--- a/drivers/video/fbdev/sm712fb.c
++++ b/drivers/video/fbdev/sm712fb.c
+@@ -1347,16 +1347,14 @@ static int smtc_set_par(struct fb_info *info)
  
--	/* Delay 200ms for FW HPD de-bounce */
--	msleep(200);
--
- 	ret = readx_poll_timeout(anx7625_read_hpd_status_p0,
- 				 ctx, val,
- 				 ((val & HPD_STATUS) || (val < 0)),
+ static const struct fb_ops smtcfb_ops = {
+ 	.owner        = THIS_MODULE,
+-	FB_DEFAULT_IOMEM_OPS,
+ 	.fb_check_var = smtc_check_var,
+ 	.fb_set_par   = smtc_set_par,
+ 	.fb_setcolreg = smtc_setcolreg,
+ 	.fb_blank     = smtc_blank,
+-	.fb_fillrect  = cfb_fillrect,
+-	.fb_imageblit = cfb_imageblit,
+-	.fb_copyarea  = cfb_copyarea,
++	__FB_DEFAULT_IOMEM_OPS_DRAW,
+ 	.fb_read      = smtcfb_read,
+ 	.fb_write     = smtcfb_write,
++	__FB_DEFAULT_IOMEM_OPS_MMAP,
+ };
+ 
+ /*
 -- 
 2.43.0
 
