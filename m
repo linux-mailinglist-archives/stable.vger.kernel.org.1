@@ -1,251 +1,203 @@
-Return-Path: <stable+bounces-12355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4576D835FF1
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 11:44:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BEDD836021
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 11:53:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E84CA2871A1
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 10:44:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8101D1C215A9
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 10:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8849F3A1BE;
-	Mon, 22 Jan 2024 10:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A60E3A8D6;
+	Mon, 22 Jan 2024 10:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eYGojwrZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D0uU6dC/"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA8C3B29A
-	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 10:44:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6353A8C6;
+	Mon, 22 Jan 2024 10:53:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705920259; cv=none; b=NOBsBI3CPQZv6wLIkx+m4lr//G87LMpnx65/QCl5pmR10T7jwNOHldaK7Qrv05Hmt+HUx+O3ZfPVJ8Ryoh/m45A6baA2Y70t+cb5riXMhUSFu2Wj31xCR8qA+C0gBbn6PZV3dneYsIRCdKJVl5Ao24fc6pkGtICz2VZO0Fw0MqE=
+	t=1705920806; cv=none; b=cZVMhHKRe6PkFQtCp/SucLcCDjQQjyH8ZYFTrp8hwempsZlUseUr3rwt1tUp46iLtQQ+EELyO0oBSzldGh22JsfaFXCVl/QV9sSuMnDFRUTGXDjGnCtlJZtx5cWjYGuE3PP7Cf+Hb55zupoQsHQ+Jne7v0ZyBMBP3PUcBfDyaaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705920259; c=relaxed/simple;
-	bh=75RNHEd3QE7gIzvGvWHo+Tndj79A20I47U4jnEJC/Uk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=I6hA+ylox6J++h8zBsE3HLDxz7Q7tji1BvhiD/Sa5FsiqiVWE6ONbuVEpEvI5/whpjNhWKkU7DP/iGDEMtaz2E4WAARpIfLPGYcc5VHe/XStO7S2d/FFIXJtId/4+KtQIt7mp0PE9mhA571JpyCbLDpdn9GaYvauIM1d8Fy15uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eYGojwrZ; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1705920256;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9MSfqqZBv9iIzLzMb9UtcrF62L0l0jyngmzyv+1aP34=;
-	b=eYGojwrZeN2VWNjzKK9dVgIuIOilloXk3DdRI0jY8eh+jL74WCNJUYFs6CsPaBPW2+7LZv
-	LAeFbbYoC8OIdBaDDqufsDhq2TPFcW/KcNJZMes7dhHE6Zv9B3uRggZ14vKwdY1wPUifif
-	M4JMx5goFYlpJbvCsT/4zLb6FP3GaCQ=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-453-7QbWp728Mq2VN5pCC2nAug-1; Mon, 22 Jan 2024 05:44:14 -0500
-X-MC-Unique: 7QbWp728Mq2VN5pCC2nAug-1
-Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-50eec1c173eso1832195e87.2
-        for <stable@vger.kernel.org>; Mon, 22 Jan 2024 02:44:13 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705920253; x=1706525053;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9MSfqqZBv9iIzLzMb9UtcrF62L0l0jyngmzyv+1aP34=;
-        b=weQlVdFDUuKnt97wppR/PAcP5q0CYsLzdVeBs+E3MgYeUY/veg0tmqZk9nO+E2wSvm
-         TNpV7B5WPParIXPJB7wdxC/tVa5eQsrmQfS4naTkg2vfjJo2Xzxbja4XZ+Mr4O5ejXQ/
-         sfOFJaxKuqMXsxzRXbuXhuHN07aihHxIBigTqeOxEK93Sr+912mtwQROhMckQSObNPAj
-         wYkd3ySJcpGYX4FX5Fr3lH1JWUeLZPPOr+j7WFA6F23xAdZUu0T/mKuENKQpznj5WyHz
-         XZxwIcj47l3wMBx1/YO3Ex5t4FSkEoCIQJQkkSy14YWlfegmH/XOZRukInOn+XpqlCsH
-         2ZDw==
-X-Gm-Message-State: AOJu0Yz8X/Sbb6qpdZBt5laeWbPBBdf/uqHF2di6fLFl9bYAA9J1vH2u
-	R6Oh3lwSPhVUZ89mJWL7NwKPYnVtlb9k3Vu7emlV7Tn4eBmdxeGLSbbIKzJXLBI7Wp3yDC7xocs
-	31Xc2PFHGCxTMyfjKcgWDrXHwBO2zIInz4u3qgvMhD2Dvg9JW8Yek1A==
-X-Received: by 2002:a05:6512:280b:b0:50e:93fa:336 with SMTP id cf11-20020a056512280b00b0050e93fa0336mr1660134lfb.95.1705920252709;
-        Mon, 22 Jan 2024 02:44:12 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFSyafjAvUrgBL812daMCiTvLXqGtcRPNXO7YMx11noQHfb8e1ePlfoM+yVc11NAd2Z5DkLxQ==
-X-Received: by 2002:a05:6512:280b:b0:50e:93fa:336 with SMTP id cf11-20020a056512280b00b0050e93fa0336mr1660127lfb.95.1705920252231;
-        Mon, 22 Jan 2024 02:44:12 -0800 (PST)
-Received: from [172.31.0.10] (c-e6a5e255.022-110-73746f36.bbcust.telenor.se. [85.226.165.230])
-        by smtp.gmail.com with ESMTPSA id b5-20020a056512060500b0050e6bf65b2asm1966347lfe.288.2024.01.22.02.44.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jan 2024 02:44:11 -0800 (PST)
-Message-ID: <0473f5389dd1ada08c73479612a4e054c8023d94.camel@redhat.com>
-Subject: Re: [PATCH v2] ovl: require xwhiteout feature flag on layer roots
-From: Alexander Larsson <alexl@redhat.com>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Miklos Szeredi <mszeredi@redhat.com>, linux-unionfs@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Date: Mon, 22 Jan 2024 11:44:11 +0100
-In-Reply-To: <CAOQ4uxj_EWqa716+9xxu0zEd-ziEFpoGsv2OggUrb8_eGGkDDw@mail.gmail.com>
-References: <20240119101454.532809-1-mszeredi@redhat.com>
-	 <CAOQ4uxiWtdgCQ+kBJemAYbwNR46ogP7DhjD29cqAw0qqLvQn4A@mail.gmail.com>
-	 <5ee3a210f8f4fc89cb750b3d1a378a0ff0187c9f.camel@redhat.com>
-	 <CAOQ4uxj_EWqa716+9xxu0zEd-ziEFpoGsv2OggUrb8_eGGkDDw@mail.gmail.com>
-Autocrypt: addr=alexl@redhat.com; prefer-encrypt=mutual; keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
+	s=arc-20240116; t=1705920806; c=relaxed/simple;
+	bh=Mv/eIsF4cLBVJCplW6zKFPzyppMCYU3H18HJx+nE56g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YZwn7EkET5hW6fjn3spvbpGUa3f/HAsZSIi3nZSrHm5O3fI0WaT+eP582DColb4XmVNzCVXEjKsDOg6JsrF+MpZ04JGVatx3iYiCGk0VXZoowT9qaaw9LlXLssImT8FN3K3X3w8ow7xFcRXGb2L1ogkwQqnNYymvaQvk7wEIUtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D0uU6dC/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C55C43394;
+	Mon, 22 Jan 2024 10:53:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1705920805;
+	bh=Mv/eIsF4cLBVJCplW6zKFPzyppMCYU3H18HJx+nE56g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=D0uU6dC/KV/ygNWsBOXmuRkS0ZTgQ4EIO/qOPHGKTn91hN9t82/Zci8gvPikvww/Y
+	 9h5mZtDXIBoTuF7y8TFSCvBaY/Im0kugIQrwJn/wtgLNpB94s1enWwg/ASF0joLwno
+	 +TiyD4dVPTE13d0xQLUvlegXkYwothIhOM8vzINL2AuXtxha1Po/n1Rd++QeDibWvk
+	 ZyAAnCHxB6fZ01cRC5anq28UN/tnPQsq1+FgXqEAN+R5PCQ9MN8Aws04NavnFMFp7F
+	 gu9dTGs6aVF2iJWyw9BS5pZvGF5MNitihUImN8Bto9kMeT6zhw3NebN234dYb++NXp
+	 T+mX+WOYxVJqw==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1rRrvr-000000007a8-3dba;
+	Mon, 22 Jan 2024 11:53:36 +0100
+Date: Mon, 22 Jan 2024 11:53:35 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Bjorn Helgaas <helgaas@kernel.org>
+Cc: Michael Schaller <michael@5challer.de>,
+	Kai-Heng Feng <kai.heng.feng@canonical.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	regressions@lists.linux.dev,
+	"Maciej W . Rozycki" <macro@orcam.me.uk>,
+	Ajay Agarwal <ajayagarwal@google.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, stable@vger.kernel.org,
+	regressions@leemhuis.info
+Subject: PCI/ASPM locking regression in 6.7-final (was: Re: [PATCH] Revert
+ "PCI/ASPM: Remove pcie_aspm_pm_state_change()")
+Message-ID: <Za5JLxRC-K20sIfG@hovoldconsulting.com>
+References: <76c61361-b8b4-435f-a9f1-32b716763d62@5challer.de>
+ <20240102232550.1751655-1-helgaas@kernel.org>
+ <ZZu0qx2cmn7IwTyQ@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZZu0qx2cmn7IwTyQ@hovoldconsulting.com>
 
-On Mon, 2024-01-22 at 10:38 +0200, Amir Goldstein wrote:
-> On Fri, Jan 19, 2024 at 6:35=E2=80=AFPM Alexander Larsson <alexl@redhat.c=
-om>
-> wrote:
-> >=20
-> > On Fri, 2024-01-19 at 13:08 +0200, Amir Goldstein wrote:
-> > > On Fri, Jan 19, 2024 at 12:14=E2=80=AFPM Miklos Szeredi
-> > > <mszeredi@redhat.com>
-> > > wrote:
-> > >=20
-> > >=20
-> > > Do you want me to fix/test and send this to Linus?
-> > >=20
-> > > Alex, can we add your RVB to v2?
-> >=20
-> > I ran into an issue converting composefs to use this.
-> >=20
-> > Suppose we have a chroot of files containing some upper dirs and we
-> > want to make a composefs of this. For example, say
-> > /foo/lower/dir/whiteout is a traditional whiteout.
-> >=20
-> > Previously, what happened is that I marked the whiteout file with
-> > trusted.overlay.overlay.whiteout, and the /foo/lower/dir with
-> > trusted.overlay.overlay.whiteouts.
-> >=20
-> > Them when I mounted then entire chroot with overlayfs these xattrs
-> > would get unescaped and I would get a $mnt/foo/lower/dir/whiteout
-> > with
-> > a trusted.overlay.whiteout xattr, and a $mnt/foo/lower/dir with a
-> > trusted.overlay.whiteout. When I then mounted another overlayfs
-> > with a
-> > lowerdir of $mnt/foo/lower it would treat the whiteout as a
-> > xwhiteout.
-> >=20
-> > However, now I need the lowerdir toplevel dir to also have a
-> > trusted.overlay.whiteouts xattr. But when I'm converting the entire
-> > chroot I do not know which of the directories is going to be used
-> > as
-> > the toplevel lower dir, so I don't know where to put this marker.
-> >=20
-> > The only solution I see is to put it on *all* parent directories.
-> > Is
-> > there a better approach here?
-> >=20
->=20
-> Alex,
->=20
-> As you can see, I posted v3 with an alternative approach that would
-> not
-> require marking all possible lower layer roots.
->=20
-> However, I cannot help wondering if it wouldn't be better practice,
-> when
-> composing layers, to always be explicit, per-directory about whether
-> the
-> composed directory is a "base" or a "diff" layer.
->=20
-> Isn't this information always known at composing time?
+Hi Bjorn,
 
-Currently, composefs images are not layered as such. They normally only
-have one or more lowerdata layers, and then the actual image as a
-single lowerdir, and on top of that an optional upper if you want some
-kind of writability.=20
+I never got a reply to this one so resending with updated Subject in
+case it got buried in your inbox.
 
-But, when composing the composefs the content of the image is opaque to
-us. We're just given a directory with some files in it for the image.
-It might contain some other lowerdirs, but the details are not know to
-us at compose time.
+On Mon, Jan 08, 2024 at 09:39:07AM +0100, Johan Hovold wrote:
+ 
+> On Tue, Jan 02, 2024 at 05:25:50PM -0600, Bjorn Helgaas wrote:
+> > From: Bjorn Helgaas <bhelgaas@google.com>
+> > 
+> > This reverts commit 08d0cc5f34265d1a1e3031f319f594bd1970976c.
+> > 
+> > Michael reported that when attempting to resume from suspend to RAM on ASUS
+> > mini PC PN51-BB757MDE1 (DMI model: MINIPC PN51-E1), 08d0cc5f3426
+> > ("PCI/ASPM: Remove pcie_aspm_pm_state_change()") caused a 12-second delay
+> > with no output, followed by a reboot.
+> > 
+> > Workarounds include:
+> > 
+> >   - Reverting 08d0cc5f3426 ("PCI/ASPM: Remove pcie_aspm_pm_state_change()")
+> >   - Booting with "pcie_aspm=off"
+> >   - Booting with "pcie_aspm.policy=performance"
+> >   - "echo 0 | sudo tee /sys/bus/pci/devices/0000:03:00.0/link/l1_aspm"
+> >     before suspending
+> >   - Connecting a USB flash drive
+> > 
+> > Fixes: 08d0cc5f3426 ("PCI/ASPM: Remove pcie_aspm_pm_state_change()")
+> > Reported-by: Michael Schaller <michael@5challer.de>
+> > Link: https://lore.kernel.org/r/76c61361-b8b4-435f-a9f1-32b716763d62@5challer.de
+> > Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+> > Cc: <stable@vger.kernel.org>
+> > ---
+>  
+> > +/* @pdev: the root port or switch downstream port */
+> > +void pcie_aspm_pm_state_change(struct pci_dev *pdev)
+> > +{
+> > +	struct pcie_link_state *link = pdev->link_state;
+> > +
+> > +	if (aspm_disabled || !link)
+> > +		return;
+> > +	/*
+> > +	 * Devices changed PM state, we should recheck if latency
+> > +	 * meets all functions' requirement
+> > +	 */
+> > +	down_read(&pci_bus_sem);
+> > +	mutex_lock(&aspm_lock);
+> > +	pcie_update_aspm_capable(link->root);
+> > +	pcie_config_aspm_path(link);
+> > +	mutex_unlock(&aspm_lock);
+> > +	up_read(&pci_bus_sem);
+> > +}
+> 
+> This function is now restored in 6.7 final and is called in paths which
+> already hold the pci_bus_sem as reported by lockdep (see splat below).
+> 
+> This can potentially lead to a deadlock and specifically prevents using
+> lockdep on Qualcomm platforms.
+> 
+> Not sure if you want to propagate whether the bus semaphore is held to
+> pcie_aspm_pm_state_change() or if there was some alternative to
+> restoring this function which should be explored instead.
 
-That said, I can see that in some cases it may make sense to use
-multiple lower dirs, for example when using composefs for multi-layer
-container images. When generating such layers we typically have the
-lower levels available, so we could probably extract the base/dir
-status for each directory.
+So to summarise, this patch, which is now commit
 
-> In legacy overlayfs, there is an explicit mark for "this is a base
-> dir" -
-> namely, the opaque xattr, but there is no such explicit mark on
-> directories without an entry with the same name in layers below them.
->=20
-> The lack of explicit mark "merge" vs. "opaque" in all directories in
-> all
-> the layers had led to problems in the past, for example, this is the
-> reason that this fix was needed:
->=20
-> =C2=A0 b79e05aaa166 ovl: no direct iteration for dir with origin xattr
->=20
-> In conclusion, since composefs is the first tool, that I know of, to
-> compose "non-legacy" overlayfs layers (i.e. with overlay xattrs),
-> I think the correct design decision would mark every directory in
-> every layer explicitly as at exactly one of "merge"/"opaque".
->=20
-> Note that non-dir are always marked explicitly as "metacopy",
-> so there is no ambiguity with non-dirs and we also error out
-> if a non-dir stack does not end with an "opaque" entry.
->=20
-> Additionally, when composing layers, since all the children of
-> a directory should be explicitly marked as "merge" vs. "opaque"
-> then the parent's "impure" (meaning contains "merge" children)
-> can also be set at composing time.
->=20
-> Failing to set "impure" correctly when composing layers could
-> result in wrong readdir d_ino results.
->=20
-> My proposition in v3 for an explicit mark was to
-> "reinterpret the opaque xattr from boolean to enum".
-> My proposal included only the states 'y' (opaque) and 'x' (contains
-> xwhiteouts), but for composefs, I would extend this to also mark
-> a merge dir explicitly with opaque=3D'n' and explicitly mark all the
-> directories in a "base layer" with opaque=3D'y'.
->=20
-> Implementation-wise, composefs could start by marking each directory
-> with either 'y'/'n' state based on the lowerstack, and if xwhiteout
-> entries
-> are added, 'n' state could be changed to 'x' state.
+	f93e71aea6c6 ("Revert "PCI/ASPM: Remove pcie_aspm_pm_state_change()"")
 
-We never add xwhiteout entries to the composefs, all directories in the
-base layer would be overlay=3Dn or y, and any directory containing an
-escaped xwhiteout would have an escaped opaque xattr with 'x'.
+introduced a regression in 6.7-final for Qualcomm platforms (and some
+Intel platforms) similar to the one recently fixed by commit
 
-> What do you think?
+	f352ce999260 ("PCI: qcom: Fix potential deadlock when enabling ASPM").
 
-I feel it may be overkill, as most composefs images would be a one-
-layer thing, and adding opaque=3Dn to every directory in the lowermost
-layer would just waste space and makes little sense (being in the
-lowest layer means we already know if the directory is merged or not).
-However, I think it may make sense to be able to mark non-lowest-layer
-directories with either n or y.
+Johan
 
-> Does it make sense from composefs POV?
-> Am I correct to assume that at composing time, every directory
-> state is known (base 'y' vs. diff 'n')?
->=20
-> Thanks,
-> Amir.
->=20
 
---=20
-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D=
--=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
-=3D-=3D-=3D
- Alexander Larsson                                            Red Hat,
-Inc=20
-       alexl@redhat.com            alexander.larsson@gmail.com=20
-He's a globe-trotting crooked cyborg in drag. She's an elegant=20
-streetsmart socialite prone to fits of savage, blood-crazed rage. They=20
-fight crime!=20
+#regzbot introduced: f93e71aea6c6
 
+>    ============================================
+>    WARNING: possible recursive locking detected
+>    6.7.0 #40 Not tainted
+>    --------------------------------------------
+>    kworker/u16:5/90 is trying to acquire lock:
+>    ffffacfa78ced000 (pci_bus_sem){++++}-{3:3}, at: pcie_aspm_pm_state_change+0x58/0xdc
+>    pcieport 0002:00:00.0: PME: Signaling with IRQ 197
+>    
+>                but task is already holding lock:
+>    ffffacfa78ced000 (pci_bus_sem){++++}-{3:3}, at: pci_walk_bus+0x34/0xbc
+>    
+>                other info that might help us debug this:
+>     Possible unsafe locking scenario:
+> 
+>           CPU0
+>           ----
+>      lock(pci_bus_sem);
+>      lock(pci_bus_sem);
+>    
+>                 *** DEADLOCK ***
+> 
+>     May be due to missing lock nesting notation
+> 
+>    4 locks held by kworker/u16:5/90:
+>     #0: ffff06c5c0008d38 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x150/0x53c
+>     #1: ffff800081c0bdd0 ((work_completion)(&entry->work)){+.+.}-{0:0}, at: process_one_work+0x150/0x53c
+>     #2: ffff06c5c0b7d0f8 (&dev->mutex){....}-{3:3}, at: __driver_attach_async_helper+0x3c/0xf4
+>     #3: ffffacfa78ced000 (pci_bus_sem){++++}-{3:3}, at: pci_walk_bus+0x34/0xbc
+>    
+>                stack backtrace:
+>    CPU: 1 PID: 90 Comm: kworker/u16:5 Not tainted 6.7.0 #40
+>    Hardware name: LENOVO 21BYZ9SRUS/21BYZ9SRUS, BIOS N3HET53W (1.25 ) 10/12/2022
+>    Workqueue: events_unbound async_run_entry_fn
+>    Call trace:
+>     dump_backtrace+0x9c/0x11c
+>     show_stack+0x18/0x24
+>     dump_stack_lvl+0x60/0xac
+>     dump_stack+0x18/0x24
+>     print_deadlock_bug+0x25c/0x348
+>     __lock_acquire+0x10a4/0x2064
+>     lock_acquire+0x1e8/0x318
+>     down_read+0x60/0x184
+>     pcie_aspm_pm_state_change+0x58/0xdc
+>     pci_set_full_power_state+0xa8/0x114
+>     pci_set_power_state+0xc4/0x120
+>     qcom_pcie_enable_aspm+0x1c/0x3c [pcie_qcom]
+>     pci_walk_bus+0x64/0xbc
+>     qcom_pcie_host_post_init_2_7_0+0x28/0x34 [pcie_qcom]
 
