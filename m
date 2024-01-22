@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-14539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 999EF83814B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:07:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51604837C89
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCC2A1C27ABB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6E751F25031
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B15714A08F;
-	Tue, 23 Jan 2024 01:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8752135A53;
+	Tue, 23 Jan 2024 00:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vaRugg1a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/owo0ls"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBA814A085;
-	Tue, 23 Jan 2024 01:08:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFA9135A50;
+	Tue, 23 Jan 2024 00:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972097; cv=none; b=GpG/mfJenHqAOez1qAjsvPgaZ9vgkuu+a7nXJn0Bn0htN2fUTGqOUpVzYcVQwd/R63AJ12OLrrqqLkuvM62eRuJwhweW4pkTBQxSFhgA02LE5OeVPwlZPZ7cP2N+VRx8pjgpamDZmgBJk8aSxI/so9AGTwBEWQe7zrzp/SSz8Ss=
+	t=1705969658; cv=none; b=khV3smLftHKnqTzigu94T4PTyJKhr2NrEaaK85RXvS4SomCVrXIVNEbEeqdgMAQ5cjMpa0t7baHnKPM4GlglgHbn7PN62SstljvhsBqAQvsGRpd11Yi4TFYWEYj7JdIdz7v30IYtJXS699MZP/EeR2dCX4YBcmv0YPTrZOUHqZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972097; c=relaxed/simple;
-	bh=jLX/ITKIZpub7DXccc6VLYPpHtkDpH2o02iygJTIXTk=;
+	s=arc-20240116; t=1705969658; c=relaxed/simple;
+	bh=13o+lABzbsEz7d4N0rJMYPo/9dzka3PVPNxYTPAIAPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j1H54qYdTjbXuv81qsn3w54BxFEWq6SZhFznHA7IcnBVrqTB6Yu9zwPmIuJIyu+Gp9IAQZnrHLPSLAVfZlGkATr0oDD0N1q5S9UdTiMyyY4e2jOOJQCOx483UiPA6wjhgyV1UMr0nHLPiWpF+gO7i34FH9v3f3QmtRSda5Q3fO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vaRugg1a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B26C43390;
-	Tue, 23 Jan 2024 01:08:17 +0000 (UTC)
+	 MIME-Version; b=kX1R9GslSsShSRAg/Y/PhILZJGwmmwFm32mcOwPz4/vpb9YJdBpxNXn/uqjr+L6+uJM4i4607kg+Q3EY/CH8QYSXJSFIrD+l/fI5QWSLV1/9v2Y1UpSLo2urPPTkNWj2X1uFWi1d5/FptefdAEQy1W60Hn+I9S/D31mUVxJPnCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/owo0ls; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D12BC43399;
+	Tue, 23 Jan 2024 00:27:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972097;
-	bh=jLX/ITKIZpub7DXccc6VLYPpHtkDpH2o02iygJTIXTk=;
+	s=korg; t=1705969658;
+	bh=13o+lABzbsEz7d4N0rJMYPo/9dzka3PVPNxYTPAIAPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vaRugg1adAu1FyoEPBLScuQrmay3IJddLc2+gZfFT4fYDi8ZJhU/rqbCVu5z3ul+f
-	 tT3C0TEsmi2TvOPrXgdk8UpBV0nmwlcHYzu8KpFj2yc3SDugRzb4MLU3VA7GX6pWmz
-	 FaYvFvIbUMecyYpAikq4JgUPs1NTIh8cyQB9zguo=
+	b=c/owo0lsfHkvFZwrjI+onGroBzIVxyFM7yR29S9JU6ChvcZvizvwDVmkmLmuZ7bQt
+	 X/dnnAYgtQ0Dio954HGPFLWA4go/JbI/Ut7gx8UTt5tO2TDwtxKwP3Tc6euT9KE1tw
+	 ooYtEUkow0p62jMo869C6TS20iLoQYWeX5DbRqxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 036/374] ring-buffer: Do not record in NMI if the arch does not support cmpxchg in NMI
+	kernel test robot <lkp@intel.com>,
+	Tony Lindgren <tony@atomide.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.7 388/641] clocksource/drivers/timer-ti-dm: Fix make W=n kerneldoc warnings
 Date: Mon, 22 Jan 2024 15:54:52 -0800
-Message-ID: <20240122235745.895235753@linuxfoundation.org>
+Message-ID: <20240122235830.098774764@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt (Google) <rostedt@goodmis.org>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 712292308af2265cd9b126aedfa987f10f452a33 ]
+commit b99a212a7697c542b460adaa15d4a98abf8223f0 upstream.
 
-As the ring buffer recording requires cmpxchg() to work, if the
-architecture does not support cmpxchg in NMI, then do not do any recording
-within an NMI.
+Kernel test robot reports of kerneldoc related warnings that happen with
+make W=n for "parameter or member not described".
 
-Link: https://lore.kernel.org/linux-trace-kernel/20231213175403.6fc18540@gandalf.local.home
+These were caused by changes to function parameter names with
+earlier commits where the kerneldoc parts were not updated.
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 49cd16bb573e ("clocksource/drivers/timer-ti-dm: Simplify register writes with dmtimer_write()")
+Fixes: a6e543f61531 ("clocksource/drivers/timer-ti-dm: Move struct omap_dm_timer fields to driver")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202311040403.DzIiBuwU-lkp@intel.com/
+Closes: https://lore.kernel.org/oe-kbuild-all/202311040606.XL5OcR9O-lkp@intel.com/
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20231114072930.40615-1-tony@atomide.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ring_buffer.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/clocksource/timer-ti-dm.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 65a728b89574..374cfba6c306 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -3603,6 +3603,12 @@ rb_reserve_next_event(struct trace_buffer *buffer,
- 	int nr_loops = 0;
- 	int add_ts_default;
+--- a/drivers/clocksource/timer-ti-dm.c
++++ b/drivers/clocksource/timer-ti-dm.c
+@@ -183,7 +183,7 @@ static inline u32 dmtimer_read(struct dm
+  * dmtimer_write - write timer registers in posted and non-posted mode
+  * @timer:      timer pointer over which write operation is to perform
+  * @reg:        lowest byte holds the register offset
+- * @value:      data to write into the register
++ * @val:        data to write into the register
+  *
+  * The posted mode bit is encoded in reg. Note that in posted mode, the write
+  * pending bit must be checked. Otherwise a write on a register which has a
+@@ -949,7 +949,7 @@ static int omap_dm_timer_set_int_enable(
  
-+	/* ring buffer does cmpxchg, make sure it is safe in NMI context */
-+	if (!IS_ENABLED(CONFIG_ARCH_HAVE_NMI_SAFE_CMPXCHG) &&
-+	    (unlikely(in_nmi()))) {
-+		return NULL;
-+	}
-+
- 	rb_start_commit(cpu_buffer);
- 	/* The commit page can not change after this */
- 
--- 
-2.43.0
-
+ /**
+  * omap_dm_timer_set_int_disable - disable timer interrupts
+- * @timer:	pointer to timer handle
++ * @cookie:	pointer to timer cookie
+  * @mask:	bit mask of interrupts to be disabled
+  *
+  * Disables the specified timer interrupts for a timer.
 
 
 
