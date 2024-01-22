@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-14229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87D3A838011
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 386CE837FAB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB45C1C2950F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8561C2937F7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3776064CFA;
-	Tue, 23 Jan 2024 00:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBD564A9C;
+	Tue, 23 Jan 2024 00:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HD5io+MQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EKqHNP/a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA54564CF5;
-	Tue, 23 Jan 2024 00:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C56064A80;
+	Tue, 23 Jan 2024 00:54:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971529; cv=none; b=VCJIqgzbawS7yXM3RROWyj65K7mBdVGtkcHysKWVCxISqAiHUM9NGiBq4gKiHwrJAiJJS008QWGV6ZpGP8MdEz6Rxr64wxBJq4dPN3EB+MzRLGImzsGivhBSPXQfuHWpuC00Hmwce52sBXdKy9T3OB1tFnP/XgeRoZigGXWxpuM=
+	t=1705971277; cv=none; b=b1Gr9k3UmYUDyEKOJppMffrv3lFX/UF8EXq8NLpBc4qvedCQnbly2SSePuyLUA3iyQFB804+3PcNZtvXvYtueMRb8MG+WK/h4CgNqOVk5XWazPJCmLk/JyxWiRPSasvA4qpSH+PP11IJZDkuB703Z4VCPSt+x472FJo+Ws5Qi5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971529; c=relaxed/simple;
-	bh=6i+3HgelJanc/SloyjVPiesdUHwmdp33jt7lgq6PKNY=;
+	s=arc-20240116; t=1705971277; c=relaxed/simple;
+	bh=jclE65WoMfMo6/EYEh4Oi3qlNMye/emCgEbec2zSiR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bwSTfPKyVdFWaygv6MOzf4stPoZm+uZBRZbUm3jbhndzR7yKv6whDdpmNJlEdnKmBLGfsaP3HZvMKexd7y33W3MKqESDVEUkDFmxgzoKlZK+wXEbqlqgbJePTjV7GNgSAG5WVqjk8+Q6C1INsNk6EZUrLOoaJME4IlNr0UG0kQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HD5io+MQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6461FC433C7;
-	Tue, 23 Jan 2024 00:58:48 +0000 (UTC)
+	 MIME-Version; b=Qw/cd9WhBnygOWpoNHQsnBQ+3g7FF3uPcRssKbl/TBkNCc7qHoj4/aXgcfL3SkiAIOr8+izy2lZrOufWTNg7Y32ZrGnD5eGuLmGzVcAsZChj7kEVdIL1SRo4QbFWriUDCoexYeNyD168MafCp3K7sBLhZCCc6QHUAgODn/8+Kz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EKqHNP/a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C63FC433F1;
+	Tue, 23 Jan 2024 00:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971528;
-	bh=6i+3HgelJanc/SloyjVPiesdUHwmdp33jt7lgq6PKNY=;
+	s=korg; t=1705971277;
+	bh=jclE65WoMfMo6/EYEh4Oi3qlNMye/emCgEbec2zSiR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HD5io+MQ5FSm847mjLRwbDKUq58yAz2V/9hCMRlNEUz0Q/vE/tLE0ky05chRZwSa8
-	 XMtPe4SxMoVOOtaMqlbbBAqgVWwVKmUf9jPh65BXSqXgQrVOjPdKUfPXar7smC7l80
-	 ktsnV9LXNMbI/Hup8AkWwNo6nTtw0Mney1KMrLkg=
+	b=EKqHNP/aDHJZW5ybpNJUjz5QZz3W6hj+RfJmZeC1o5C5yF4/4q623W/U5d38aVJbV
+	 X+R543Tw+typZJ45gNB349NgsasVz0qvn1J4lt06FEroyO4fXxakilA77IywsFUNp0
+	 aF+lAZI95+tpJ13HInKZSUpDH1exHP/KGIPkfAlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Felix Kuehling <felix.kuehling@amd.com>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 240/417] drm/amdkfd: Confirm list is non-empty before utilizing list_first_entry in kfd_topology.c
+Subject: [PATCH 5.10 102/286] crypto: sahara - improve error handling in sahara_sha_process()
 Date: Mon, 22 Jan 2024 15:56:48 -0800
-Message-ID: <20240122235800.199217770@linuxfoundation.org>
+Message-ID: <20240122235736.010609768@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit 499839eca34ad62d43025ec0b46b80e77065f6d8 ]
+[ Upstream commit 5deff027fca49a1eb3b20359333cf2ae562a2343 ]
 
-Before using list_first_entry, make sure to check that list is not
-empty, if list is empty return -ENODATA.
+sahara_sha_hw_data_descriptor_create() returns negative error codes on
+failure, so make sure the errors are correctly handled / propagated.
 
-Fixes the below:
-drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:1347 kfd_create_indirect_link_prop() warn: can 'gpu_link' even be NULL?
-drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:1428 kfd_add_peer_prop() warn: can 'iolink1' even be NULL?
-drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_topology.c:1433 kfd_add_peer_prop() warn: can 'iolink2' even be NULL?
-
-Fixes: 0f28cca87e9a ("drm/amdkfd: Extend KFD device topology to surface peer-to-peer links")
-Cc: Felix Kuehling <Felix.Kuehling@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Suggested-by: Felix Kuehling <Felix.Kuehling@amd.com>
-Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 21 ++++++++++++---------
- 1 file changed, 12 insertions(+), 9 deletions(-)
+ drivers/crypto/sahara.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-index 713f893d2530..705d9e91b5aa 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-@@ -1403,10 +1403,11 @@ static int kfd_create_indirect_link_prop(struct kfd_topology_device *kdev, int g
- 		num_cpu++;
- 	}
- 
-+	if (list_empty(&kdev->io_link_props))
-+		return -ENODATA;
-+
- 	gpu_link = list_first_entry(&kdev->io_link_props,
--					struct kfd_iolink_properties, list);
--	if (!gpu_link)
--		return -ENOMEM;
-+				    struct kfd_iolink_properties, list);
- 
- 	for (i = 0; i < num_cpu; i++) {
- 		/* CPU <--> GPU */
-@@ -1484,15 +1485,17 @@ static int kfd_add_peer_prop(struct kfd_topology_device *kdev,
- 				peer->gpu->adev))
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index 67960acd786a..0ac793f03e28 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -987,7 +987,10 @@ static int sahara_sha_process(struct ahash_request *req)
  		return ret;
  
-+	if (list_empty(&kdev->io_link_props))
-+		return -ENODATA;
+ 	if (rctx->first) {
+-		sahara_sha_hw_data_descriptor_create(dev, rctx, req, 0);
++		ret = sahara_sha_hw_data_descriptor_create(dev, rctx, req, 0);
++		if (ret)
++			return ret;
 +
- 	iolink1 = list_first_entry(&kdev->io_link_props,
--							struct kfd_iolink_properties, list);
--	if (!iolink1)
--		return -ENOMEM;
-+				   struct kfd_iolink_properties, list);
+ 		dev->hw_desc[0]->next = 0;
+ 		rctx->first = 0;
+ 	} else {
+@@ -995,7 +998,10 @@ static int sahara_sha_process(struct ahash_request *req)
+ 
+ 		sahara_sha_hw_context_descriptor_create(dev, rctx, req, 0);
+ 		dev->hw_desc[0]->next = dev->hw_phys_desc[1];
+-		sahara_sha_hw_data_descriptor_create(dev, rctx, req, 1);
++		ret = sahara_sha_hw_data_descriptor_create(dev, rctx, req, 1);
++		if (ret)
++			return ret;
 +
-+	if (list_empty(&peer->io_link_props))
-+		return -ENODATA;
+ 		dev->hw_desc[1]->next = 0;
+ 	}
  
- 	iolink2 = list_first_entry(&peer->io_link_props,
--							struct kfd_iolink_properties, list);
--	if (!iolink2)
--		return -ENOMEM;
-+				   struct kfd_iolink_properties, list);
- 
- 	props = kfd_alloc_struct(props);
- 	if (!props)
 -- 
 2.43.0
 
