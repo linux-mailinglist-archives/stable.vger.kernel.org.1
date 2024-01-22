@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-14267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBE5D83803C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:46 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1194483849A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D9EA1C295FD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCD9F299C52
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85AA2651BA;
-	Tue, 23 Jan 2024 01:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939307317B;
+	Tue, 23 Jan 2024 02:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I11T/QTD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WDpBAaZB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450F84E1AD;
-	Tue, 23 Jan 2024 01:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D0073178;
+	Tue, 23 Jan 2024 02:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971611; cv=none; b=W82/Yr1SICWgp2g8ecGznOHlkKgQ12vuAyc95PVWkuuU0clKCA395VgAPtvpIrjeTgxhKNZHGCIKcNivYiFlwEgeEaMTa7QB2Yq3QAwtxYspiReErr+X4rm8z55OykT9jiWVA4PUNfRThZkBWl1tSDB8ZnGGrlPce7ST6EPsKic=
+	t=1705975436; cv=none; b=t6FjZ7YoN5Teavp6ndc/Q5HpY2L805NDLNx+eOwoUTDX0rLgC13Nx4OOUBDGAWIQLPUiuXKWf7pCOSFMWz3i4QtpEIhLQEZoqH5EuNo+JDQRQ7KSsV1wmLDSevbdCw7j4G0uNWheMnpDAHzhn2SRs3ijf5pNfgf1pQeuT/Pr6J0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971611; c=relaxed/simple;
-	bh=0PilGLDuNrcsKsVY9R1jyJ6ZKBm0TcgEmk3pcrFx9Lw=;
+	s=arc-20240116; t=1705975436; c=relaxed/simple;
+	bh=eg9/4ukqphh6o1+WKlaNbs4t+S7ByDmPg3ldDNu/qTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kcsZN+1o6EiqDGJJpHPpWFvEGN2KmRkZo7qprSwCTOxR+EEHWePdbhqnmQr/VywhCXazbqCxOmDdm/e5RmwUuG7f4yCKj/RQqJ6Cot0WT2OgdnCf84IxvuYHQQx2Ok3miZL+/+GOA5yIdkHwOb2yX3HCTl/Mjk4VaXDo8tZW0nE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I11T/QTD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5922DC433F1;
-	Tue, 23 Jan 2024 01:00:10 +0000 (UTC)
+	 MIME-Version; b=HUg20/MwWXS8yG19tbiMQQ8I4C3r4cpGfyxu/mE9UeOMDHPfQPbl/hlZ86WRC0aRsPIL6C/NZj6Q8lvXinxBGrECb/16AhOMIeJpr1TB/x7kQcPeMwzT2yIpvOgYTvXjbVGdTWRdQKcGc+4sH5ic4fyoIoWXp4NFt7tmJMbOLfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WDpBAaZB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19EC1C433C7;
+	Tue, 23 Jan 2024 02:03:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971611;
-	bh=0PilGLDuNrcsKsVY9R1jyJ6ZKBm0TcgEmk3pcrFx9Lw=;
+	s=korg; t=1705975436;
+	bh=eg9/4ukqphh6o1+WKlaNbs4t+S7ByDmPg3ldDNu/qTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I11T/QTDig8cWGXbjqBH3t63m5GAxQvgogbPHb/vRY9Q1UmK5AVIlEFe+8xeQXefq
-	 P6k/77To+BTVN3un5FLcjAzeRbjzHJ+S5puK/70Y3Pc84hjSiHFXZgSaAAEuIvLmWA
-	 M7lJwQp9jbWeJCWKPRN6Sls8kKJ4Kp7OxKjhO0nQ=
+	b=WDpBAaZB9erRuouxekfnOijRTqQSOgpGEQnARYWLZLFcmDcAgPJ+2pMZ7kfbnyETv
+	 WYYTLDOVxmCn/rzOPSWctxd05TQmsKKFt8bdXD3230piYVcbSvBlGHt8F0ME8CCJiW
+	 bBN5V97plm47hZLZ6tfhNRMltbCxmo2xjev/nNyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murray McAllister <murray.mcallister@gmail.com>,
-	Ian Forbes <iforbes@vmware.com>,
-	Zack Rusin <zackr@vmware.com>,
-	Martin Krastev <krastevm@vmware.com>,
-	Jocelyn Falempe <jfalempe@redhat.com>
-Subject: [PATCH 6.1 278/417] drm/vmwgfx: Keep a gem reference to user bos in surfaces
+	Christoph Hellwig <hch@lst.de>,
+	Amir Goldstein <amir73il@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.6 395/583] scsi: target: core: add missing file_{start,end}_write()
 Date: Mon, 22 Jan 2024 15:57:26 -0800
-Message-ID: <20240122235801.471809353@linuxfoundation.org>
+Message-ID: <20240122235824.071173632@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,463 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zack Rusin <zackr@vmware.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-commit 91398b413d03660fd5828f7b4abc64e884b98069 upstream.
+commit 0db1d53937fafa8bb96e077375691e16902f4899 upstream.
 
-Surfaces can be backed (i.e. stored in) memory objects (mob's) which
-are created and managed by the userspace as GEM buffers. Surfaces
-grab only a ttm reference which means that the gem object can
-be deleted underneath us, especially in cases where prime buffer
-export is used.
+The callers of vfs_iter_write() are required to hold file_start_write().
+file_start_write() is a no-op for the S_ISBLK() case, but it is really
+needed when the backing file is a regular file.
 
-Make sure that all userspace surfaces which are backed by gem objects
-hold a gem reference to make sure they're not deleted before vmw
-surfaces are done with them, which fixes:
-------------[ cut here ]------------
-refcount_t: underflow; use-after-free.
-WARNING: CPU: 2 PID: 2632 at lib/refcount.c:28 refcount_warn_saturate+0xfb/0x150
-Modules linked in: overlay vsock_loopback vmw_vsock_virtio_transport_common vmw_vsock_vmci_transport vsock snd_ens1371 snd_ac97_codec ac97_bus snd_pcm gameport>
-CPU: 2 PID: 2632 Comm: vmw_ref_count Not tainted 6.5.0-rc2-vmwgfx #1
-Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-RIP: 0010:refcount_warn_saturate+0xfb/0x150
-Code: eb 9e 0f b6 1d 8b 5b a6 01 80 fb 01 0f 87 ba e4 80 00 83 e3 01 75 89 48 c7 c7 c0 3c f9 a3 c6 05 6f 5b a6 01 01 e8 15 81 98 ff <0f> 0b e9 6f ff ff ff 0f b>
-RSP: 0018:ffffbdc34344bba0 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000027
-RDX: ffff960475ea1548 RSI: 0000000000000001 RDI: ffff960475ea1540
-RBP: ffffbdc34344bba8 R08: 0000000000000003 R09: 65646e75203a745f
-R10: ffffffffa5b32b20 R11: 72657466612d6573 R12: ffff96037d6a6400
-R13: ffff9603484805b0 R14: 000000000000000b R15: ffff9603bed06060
-FS:  00007f5fd8520c40(0000) GS:ffff960475e80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f5fda755000 CR3: 000000010d012005 CR4: 00000000003706e0
-Call Trace:
- <TASK>
- ? show_regs+0x6e/0x80
- ? refcount_warn_saturate+0xfb/0x150
- ? __warn+0x91/0x150
- ? refcount_warn_saturate+0xfb/0x150
- ? report_bug+0x19d/0x1b0
- ? handle_bug+0x46/0x80
- ? exc_invalid_op+0x1d/0x80
- ? asm_exc_invalid_op+0x1f/0x30
- ? refcount_warn_saturate+0xfb/0x150
- drm_gem_object_handle_put_unlocked+0xba/0x110 [drm]
- drm_gem_object_release_handle+0x6e/0x80 [drm]
- drm_gem_handle_delete+0x6a/0xc0 [drm]
- ? __pfx_vmw_bo_unref_ioctl+0x10/0x10 [vmwgfx]
- vmw_bo_unref_ioctl+0x33/0x40 [vmwgfx]
- drm_ioctl_kernel+0xbc/0x160 [drm]
- drm_ioctl+0x2d2/0x580 [drm]
- ? __pfx_vmw_bo_unref_ioctl+0x10/0x10 [vmwgfx]
- ? do_vmi_munmap+0xee/0x180
- vmw_generic_ioctl+0xbd/0x180 [vmwgfx]
- vmw_unlocked_ioctl+0x19/0x20 [vmwgfx]
- __x64_sys_ioctl+0x99/0xd0
- do_syscall_64+0x5d/0x90
- ? syscall_exit_to_user_mode+0x2a/0x50
- ? do_syscall_64+0x6d/0x90
- ? handle_mm_fault+0x16e/0x2f0
- ? exit_to_user_mode_prepare+0x34/0x170
- ? irqentry_exit_to_user_mode+0xd/0x20
- ? irqentry_exit+0x3f/0x50
- ? exc_page_fault+0x8e/0x190
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-RIP: 0033:0x7f5fda51aaff
-Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 00 00 48 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <41> 89 c0 3d 00 f0 ff ff 7>
-RSP: 002b:00007ffd536a4d30 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007ffd536a4de0 RCX: 00007f5fda51aaff
-RDX: 00007ffd536a4de0 RSI: 0000000040086442 RDI: 0000000000000003
-RBP: 0000000040086442 R08: 000055fa603ada50 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000246 R12: 00007ffd536a51b8
-R13: 0000000000000003 R14: 000055fa5ebb4c80 R15: 00007f5fda90f040
- </TASK>
----[ end trace 0000000000000000 ]---
+We are going to move file_{start,end}_write() into vfs_iter_write(), but
+we need to fix this first, so that the fix could be backported to stable
+kernels.
 
-A lot of the analyis on the bug was done by Murray McAllister and
-Ian Forbes.
-
-Reported-by: Murray McAllister <murray.mcallister@gmail.com>
-Cc: Ian Forbes <iforbes@vmware.com>
-Signed-off-by: Zack Rusin <zackr@vmware.com>
-Fixes: a950b989ea29 ("drm/vmwgfx: Do not drop the reference to the handle too soon")
-Cc: <stable@vger.kernel.org> # v6.2+
-Reviewed-by: Martin Krastev <krastevm@vmware.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230928041355.737635-1-zack@kde.org
-Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+Suggested-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/ZV8ETIpM+wZa33B5@infradead.org/
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Link: https://lore.kernel.org/r/20231123092000.2665902-1-amir73il@gmail.com
+Acked-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_bo.c       |    5 ++---
- drivers/gpu/drm/vmwgfx/vmwgfx_cotable.c  |    8 ++++----
- drivers/gpu/drm/vmwgfx/vmwgfx_drv.h      |   22 +++++++++++++++++-----
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c  |   10 ++++++----
- drivers/gpu/drm/vmwgfx/vmwgfx_gem.c      |   24 +++++++++++++++++++-----
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.c      |    6 +++---
- drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c  |    2 +-
- drivers/gpu/drm/vmwgfx/vmwgfx_resource.c |   18 +++++++++---------
- drivers/gpu/drm/vmwgfx/vmwgfx_shader.c   |    4 ++--
- drivers/gpu/drm/vmwgfx/vmwgfx_surface.c  |   27 ++++++++-------------------
- 10 files changed, 71 insertions(+), 55 deletions(-)
+ drivers/target/target_core_file.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-@@ -595,7 +595,7 @@ static int vmw_user_bo_synccpu_release(s
- 		if (!(flags & drm_vmw_synccpu_allow_cs)) {
- 			atomic_dec(&vmw_bo->cpu_writers);
- 		}
--		vmw_user_bo_unref(vmw_bo);
-+		vmw_user_bo_unref(&vmw_bo);
+--- a/drivers/target/target_core_file.c
++++ b/drivers/target/target_core_file.c
+@@ -332,11 +332,13 @@ static int fd_do_rw(struct se_cmd *cmd,
  	}
  
- 	return ret;
-@@ -637,7 +637,7 @@ int vmw_user_bo_synccpu_ioctl(struct drm
- 			return ret;
- 
- 		ret = vmw_user_bo_synccpu_grab(vbo, arg->flags);
--		vmw_user_bo_unref(vbo);
-+		vmw_user_bo_unref(&vbo);
- 		if (unlikely(ret != 0)) {
- 			if (ret == -ERESTARTSYS || ret == -EBUSY)
- 				return -EBUSY;
-@@ -711,7 +711,6 @@ int vmw_user_bo_lookup(struct drm_file *
- 	}
- 
- 	*out = gem_to_vmw_bo(gobj);
--	ttm_bo_get(&(*out)->base);
- 
- 	return 0;
- }
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_cotable.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_cotable.c
-@@ -407,8 +407,8 @@ static int vmw_cotable_resize(struct vmw
- 	 * for the new COTable. Initially pin the buffer object to make sure
- 	 * we can use tryreserve without failure.
- 	 */
--	ret = vmw_bo_create(dev_priv, new_size, &vmw_mob_placement,
--			    true, true, vmw_bo_bo_free, &buf);
-+	ret = vmw_gem_object_create(dev_priv, new_size, &vmw_mob_placement,
-+				    true, true, vmw_bo_bo_free, &buf);
- 	if (ret) {
- 		DRM_ERROR("Failed initializing new cotable MOB.\n");
- 		return ret;
-@@ -475,7 +475,7 @@ static int vmw_cotable_resize(struct vmw
- 
- 	vmw_resource_mob_attach(res);
- 	/* Let go of the old mob. */
--	vmw_bo_unreference(&old_buf);
-+	vmw_user_bo_unref(&old_buf);
- 	res->id = vcotbl->type;
- 
- 	ret = dma_resv_reserve_fences(bo->base.resv, 1);
-@@ -492,7 +492,7 @@ out_map_new:
- out_wait:
- 	ttm_bo_unpin(bo);
- 	ttm_bo_unreserve(bo);
--	vmw_bo_unreference(&buf);
-+	vmw_user_bo_unref(&buf);
- 
- 	return ret;
- }
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-@@ -969,6 +969,11 @@ static inline void vmw_bo_prio_del(struc
- /**
-  * GEM related functionality - vmwgfx_gem.c
-  */
-+extern int vmw_gem_object_create(struct vmw_private *dev_priv,
-+				  size_t size, struct ttm_placement *placement,
-+				  bool interruptible, bool pin,
-+				  void (*bo_free)(struct ttm_buffer_object *bo),
-+				  struct vmw_buffer_object **p_bo);
- extern int vmw_gem_object_create_with_handle(struct vmw_private *dev_priv,
- 					     struct drm_file *filp,
- 					     uint32_t size,
-@@ -1600,12 +1605,19 @@ vmw_bo_reference(struct vmw_buffer_objec
- 	return buf;
- }
- 
--static inline void vmw_user_bo_unref(struct vmw_buffer_object *vbo)
-+static inline struct vmw_buffer_object *vmw_user_bo_ref(struct vmw_buffer_object *vbo)
- {
--	if (vbo) {
--		ttm_bo_put(&vbo->base);
--		drm_gem_object_put(&vbo->base.base);
--	}
-+	drm_gem_object_get(&vbo->base.base);
-+	return vbo;
-+}
-+
-+static inline void vmw_user_bo_unref(struct vmw_buffer_object **buf)
-+{
-+	struct vmw_buffer_object *tmp_buf = *buf;
-+
-+	*buf = NULL;
-+	if (tmp_buf)
-+		drm_gem_object_put(&tmp_buf->base.base);
- }
- 
- static inline void vmw_fifo_resource_inc(struct vmw_private *dev_priv)
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -1147,7 +1147,7 @@ static int vmw_translate_mob_ptr(struct
- 				 SVGAMobId *id,
- 				 struct vmw_buffer_object **vmw_bo_p)
- {
--	struct vmw_buffer_object *vmw_bo;
-+	struct vmw_buffer_object *vmw_bo, *tmp_bo;
- 	uint32_t handle = *id;
- 	struct vmw_relocation *reloc;
- 	int ret;
-@@ -1159,7 +1159,8 @@ static int vmw_translate_mob_ptr(struct
- 		return PTR_ERR(vmw_bo);
- 	}
- 	ret = vmw_validation_add_bo(sw_context->ctx, vmw_bo, true, false);
--	vmw_user_bo_unref(vmw_bo);
-+	tmp_bo = vmw_bo;
-+	vmw_user_bo_unref(&tmp_bo);
- 	if (unlikely(ret != 0))
- 		return ret;
- 
-@@ -1201,7 +1202,7 @@ static int vmw_translate_guest_ptr(struc
- 				   SVGAGuestPtr *ptr,
- 				   struct vmw_buffer_object **vmw_bo_p)
- {
--	struct vmw_buffer_object *vmw_bo;
-+	struct vmw_buffer_object *vmw_bo, *tmp_bo;
- 	uint32_t handle = ptr->gmrId;
- 	struct vmw_relocation *reloc;
- 	int ret;
-@@ -1213,7 +1214,8 @@ static int vmw_translate_guest_ptr(struc
- 		return PTR_ERR(vmw_bo);
- 	}
- 	ret = vmw_validation_add_bo(sw_context->ctx, vmw_bo, false, false);
--	vmw_user_bo_unref(vmw_bo);
-+	tmp_bo = vmw_bo;
-+	vmw_user_bo_unref(&tmp_bo);
- 	if (unlikely(ret != 0))
- 		return ret;
- 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_gem.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_gem.c
-@@ -133,6 +133,22 @@ void vmw_gem_destroy(struct ttm_buffer_o
- 	kfree(vbo);
- }
- 
-+int vmw_gem_object_create(struct vmw_private *vmw,
-+			  size_t size, struct ttm_placement *placement,
-+			  bool interruptible, bool pin,
-+			  void (*bo_free)(struct ttm_buffer_object *bo),
-+			  struct vmw_buffer_object **p_bo)
-+{
-+	int ret = vmw_bo_create(vmw, size, placement, interruptible, pin, bo_free, p_bo);
-+
-+	if (ret != 0)
-+		goto out_no_bo;
-+
-+	(*p_bo)->base.base.funcs = &vmw_gem_object_funcs;
-+out_no_bo:
-+	return ret;
-+}
-+
- int vmw_gem_object_create_with_handle(struct vmw_private *dev_priv,
- 				      struct drm_file *filp,
- 				      uint32_t size,
-@@ -141,16 +157,14 @@ int vmw_gem_object_create_with_handle(st
- {
- 	int ret;
- 
--	ret = vmw_bo_create(dev_priv, size,
--			    (dev_priv->has_mob) ?
-+	ret = vmw_gem_object_create(dev_priv, size,
-+				    (dev_priv->has_mob) ?
- 				    &vmw_sys_placement :
- 				    &vmw_vram_sys_placement,
--			    true, false, &vmw_gem_destroy, p_vbo);
-+				    true, false, &vmw_gem_destroy, p_vbo);
- 	if (ret != 0)
- 		goto out_no_bo;
- 
--	(*p_vbo)->base.base.funcs = &vmw_gem_object_funcs;
+ 	iov_iter_bvec(&iter, is_write, bvec, sgl_nents, len);
+-	if (is_write)
++	if (is_write) {
++		file_start_write(fd);
+ 		ret = vfs_iter_write(fd, &iter, &pos, 0);
+-	else
++		file_end_write(fd);
++	} else {
+ 		ret = vfs_iter_read(fd, &iter, &pos, 0);
 -
- 	ret = drm_gem_handle_create(filp, &(*p_vbo)->base.base, handle);
- out_no_bo:
- 	return ret;
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-@@ -1402,8 +1402,8 @@ static int vmw_create_bo_proxy(struct dr
- 	/* Reserve and switch the backing mob. */
- 	mutex_lock(&res->dev_priv->cmdbuf_mutex);
- 	(void) vmw_resource_reserve(res, false, true);
--	vmw_bo_unreference(&res->backup);
--	res->backup = vmw_bo_reference(bo_mob);
-+	vmw_user_bo_unref(&res->backup);
-+	res->backup = vmw_user_bo_ref(bo_mob);
- 	res->backup_offset = 0;
- 	vmw_resource_unreserve(res, false, false, false, NULL, 0);
- 	mutex_unlock(&res->dev_priv->cmdbuf_mutex);
-@@ -1600,7 +1600,7 @@ static struct drm_framebuffer *vmw_kms_f
- err_out:
- 	/* vmw_user_lookup_handle takes one ref so does new_fb */
- 	if (bo)
--		vmw_user_bo_unref(bo);
-+		vmw_user_bo_unref(&bo);
- 	if (surface)
- 		vmw_surface_unreference(&surface);
- 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
-@@ -457,7 +457,7 @@ int vmw_overlay_ioctl(struct drm_device
- 
- 	ret = vmw_overlay_update_stream(dev_priv, buf, arg, true);
- 
--	vmw_user_bo_unref(buf);
-+	vmw_user_bo_unref(&buf);
- 
- out_unlock:
- 	mutex_unlock(&overlay->mutex);
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_resource.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_resource.c
-@@ -140,7 +140,7 @@ static void vmw_resource_release(struct
- 		if (res->coherent)
- 			vmw_bo_dirty_release(res->backup);
- 		ttm_bo_unreserve(bo);
--		vmw_bo_unreference(&res->backup);
-+		vmw_user_bo_unref(&res->backup);
++	}
+ 	if (is_write) {
+ 		if (ret < 0 || ret != data_length) {
+ 			pr_err("%s() write returned %d\n", __func__, ret);
+@@ -467,7 +469,9 @@ fd_execute_write_same(struct se_cmd *cmd
  	}
  
- 	if (likely(res->hw_destroy != NULL)) {
-@@ -330,10 +330,10 @@ static int vmw_resource_buf_alloc(struct
- 		return 0;
- 	}
+ 	iov_iter_bvec(&iter, ITER_SOURCE, bvec, nolb, len);
++	file_start_write(fd_dev->fd_file);
+ 	ret = vfs_iter_write(fd_dev->fd_file, &iter, &pos, 0);
++	file_end_write(fd_dev->fd_file);
  
--	ret = vmw_bo_create(res->dev_priv, res->backup_size,
--			    res->func->backup_placement,
--			    interruptible, false,
--			    &vmw_bo_bo_free, &backup);
-+	ret = vmw_gem_object_create(res->dev_priv, res->backup_size,
-+				    res->func->backup_placement,
-+				    interruptible, false,
-+				    &vmw_bo_bo_free, &backup);
- 	if (unlikely(ret != 0))
- 		goto out_no_bo;
- 
-@@ -452,11 +452,11 @@ void vmw_resource_unreserve(struct vmw_r
- 			vmw_resource_mob_detach(res);
- 			if (res->coherent)
- 				vmw_bo_dirty_release(res->backup);
--			vmw_bo_unreference(&res->backup);
-+			vmw_user_bo_unref(&res->backup);
- 		}
- 
- 		if (new_backup) {
--			res->backup = vmw_bo_reference(new_backup);
-+			res->backup = vmw_user_bo_ref(new_backup);
- 
- 			/*
- 			 * The validation code should already have added a
-@@ -544,7 +544,7 @@ out_no_reserve:
- 	ttm_bo_put(val_buf->bo);
- 	val_buf->bo = NULL;
- 	if (backup_dirty)
--		vmw_bo_unreference(&res->backup);
-+		vmw_user_bo_unref(&res->backup);
- 
- 	return ret;
- }
-@@ -719,7 +719,7 @@ int vmw_resource_validate(struct vmw_res
- 		goto out_no_validate;
- 	else if (!res->func->needs_backup && res->backup) {
- 		WARN_ON_ONCE(vmw_resource_mob_attached(res));
--		vmw_bo_unreference(&res->backup);
-+		vmw_user_bo_unref(&res->backup);
- 	}
- 
- 	return 0;
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-@@ -177,7 +177,7 @@ static int vmw_gb_shader_init(struct vmw
- 
- 	res->backup_size = size;
- 	if (byte_code) {
--		res->backup = vmw_bo_reference(byte_code);
-+		res->backup = vmw_user_bo_ref(byte_code);
- 		res->backup_offset = offset;
- 	}
- 	shader->size = size;
-@@ -806,7 +806,7 @@ static int vmw_shader_define(struct drm_
- 				    shader_type, num_input_sig,
- 				    num_output_sig, tfile, shader_handle);
- out_bad_arg:
--	vmw_user_bo_unref(buffer);
-+	vmw_user_bo_unref(&buffer);
- 	return ret;
- }
- 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
-@@ -683,9 +683,6 @@ static void vmw_user_surface_base_releas
- 	    container_of(base, struct vmw_user_surface, prime.base);
- 	struct vmw_resource *res = &user_srf->srf.res;
- 
--	if (res && res->backup)
--		drm_gem_object_put(&res->backup->base.base);
--
- 	*p_base = NULL;
- 	vmw_resource_unreference(&res);
- }
-@@ -848,23 +845,17 @@ int vmw_surface_define_ioctl(struct drm_
- 	 * expect a backup buffer to be present.
- 	 */
- 	if (dev_priv->has_mob && req->shareable) {
--		uint32_t backup_handle;
--
--		ret = vmw_gem_object_create_with_handle(dev_priv,
--							file_priv,
--							res->backup_size,
--							&backup_handle,
--							&res->backup);
-+		ret = vmw_gem_object_create(dev_priv,
-+					    res->backup_size,
-+					    &vmw_sys_placement,
-+					    true,
-+					    false,
-+					    &vmw_gem_destroy,
-+					    &res->backup);
- 		if (unlikely(ret != 0)) {
- 			vmw_resource_unreference(&res);
- 			goto out_unlock;
- 		}
--		vmw_bo_reference(res->backup);
--		/*
--		 * We don't expose the handle to the userspace and surface
--		 * already holds a gem reference
--		 */
--		drm_gem_handle_delete(file_priv, backup_handle);
- 	}
- 
- 	tmp = vmw_resource_reference(&srf->res);
-@@ -1505,7 +1496,7 @@ vmw_gb_surface_define_internal(struct dr
- 		if (ret == 0) {
- 			if (res->backup->base.base.size < res->backup_size) {
- 				VMW_DEBUG_USER("Surface backup buffer too small.\n");
--				vmw_bo_unreference(&res->backup);
-+				vmw_user_bo_unref(&res->backup);
- 				ret = -EINVAL;
- 				goto out_unlock;
- 			} else {
-@@ -1519,8 +1510,6 @@ vmw_gb_surface_define_internal(struct dr
- 							res->backup_size,
- 							&backup_handle,
- 							&res->backup);
--		if (ret == 0)
--			vmw_bo_reference(res->backup);
- 	}
- 
- 	if (unlikely(ret != 0)) {
+ 	kfree(bvec);
+ 	if (ret < 0 || ret != len) {
 
 
 
