@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-13898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F576837EA2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:41:43 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A739F837CF4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1D86B24B1E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:41:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DFF4B294AE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F05F35026B;
-	Tue, 23 Jan 2024 00:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832D4145B28;
+	Tue, 23 Jan 2024 00:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7eL6Icu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MH1C/jlr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE99C2B9D2;
-	Tue, 23 Jan 2024 00:44:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420E8136658;
+	Tue, 23 Jan 2024 00:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970699; cv=none; b=Y2zMc2j6xx4gzkgbHqsIbPO8TstPljfnh1XOYQaDVGqlrbPrFFBxvvR99I1vxNLW7XDQeL8DR5LKC03ca4hbf3iMiuoUt7FWAlwVbJ5iY1ppqWxRnYijS1hefhYoSXlSbjzRKjDjRNSgA7VFz2cQ4a7SftXb3K3/8+kvt8JHa/o=
+	t=1705969685; cv=none; b=HOiqpSjD8jgmD0EJXUddkbdx8OGyjDMbF3x6FJyl8J5aKZrNgx8NH41gNl3TRHBO0g450S5YlsNa9EFpZSDBRH3yUxXyeK9/2ujIheawpfsnTI5E2AmHUW5X8d24dXmygse/kNMQ5RlsQiqV38YSJgyAtfUbWfFOMJ56xqmAcgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970699; c=relaxed/simple;
-	bh=XrdWh6FVakHCADOaVzhw9s5KDB043Wb9G8niKyXKwrM=;
+	s=arc-20240116; t=1705969685; c=relaxed/simple;
+	bh=Q3DAm0ddTFYv5ilP5SMfZFL4UlJUoUuLJBeSrrjZQWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LZpiVkft8r1nddsLErLUYQhF19SNF7Did/rPpQ9z+pLU2zk6pTWsfLSVlk8HEZ3H5WXj9OhRycO/akHcqnMl2NBZ5WLpgbgrroiMzX/4iaoCOjhiNT3kcqeD/66kdmdpoCKmHTi8t89uVoYRCqixWAx7wzd+krc6tok+uELYw0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7eL6Icu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC44C433F1;
-	Tue, 23 Jan 2024 00:44:59 +0000 (UTC)
+	 MIME-Version; b=HlEo4oYxrjoSI9YcNMxCZB26/UveoXg2PbtzFbm2bVEzbdDuSZSJUmppTmrq1yTSPveF+llJqD4yNxn9bHdc2q8ZAxBJhm0l1lPhvnhrI2PtwKr0ecBLfXXyd8VUwSQMyKXt7A65FX0JUyDdKr9w9x90CVQlash2vWRSuIWuj9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MH1C/jlr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F04CFC433F1;
+	Tue, 23 Jan 2024 00:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970699;
-	bh=XrdWh6FVakHCADOaVzhw9s5KDB043Wb9G8niKyXKwrM=;
+	s=korg; t=1705969685;
+	bh=Q3DAm0ddTFYv5ilP5SMfZFL4UlJUoUuLJBeSrrjZQWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F7eL6Icu468ihr/T6m+mijekUv3xFO+x8mfFREbpRDgHPgec2cjKycKxpIy1yGRZ9
-	 iTT7Xsb2M2VKNlBDoef1mp3Yya/niFNYQzMcLqFIrHVhMrjGvlS0IjkMcilp8S8G5j
-	 oTHsHlaEizISCKSYqSj0mzNRuW+sAbRjuq34OCA4=
+	b=MH1C/jlrMD++cg0zFJTU1qH3gLRTI76XfyPcLjsRMHmxnQepEJ7kr6k4USocTzn2V
+	 ZaixCJgImKiflfVSY+g3mXaWcn/ASomMU9fEgZBRRAuxqNEwcGj69mqTu08+yPjbe7
+	 GAYl/TH/w6zNamjPRdzQPpvdhhLPSlWalG+PGZyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 002/286] pinctrl: lochnagar: Dont build on MIPS
+	Frank Li <Frank.Li@nxp.com>
+Subject: [PATCH 6.7 404/641] usb: cdns3: Fix uvc fail when DMA cross 4k boundery since sg enabled
 Date: Mon, 22 Jan 2024 15:55:08 -0800
-Message-ID: <20240122235732.094446572@linuxfoundation.org>
+Message-ID: <20240122235830.622909036@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +60,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Keepax <ckeepax@opensource.cirrus.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 6588732445ff19f6183f0fa72ddedf67e5a5be32 ]
+commit 40c304109e866a7dc123661a5c8ca72f6b5e14e0 upstream.
 
-MIPS appears to define a RST symbol at a high level, which clashes
-with some register naming in the driver. Since there is currently
-no case for running this driver on MIPS devices simply cut off the
-build of this driver on MIPS.
+Supposed DMA cross 4k bounder problem should be fixed at DEV_VER_V2, but
+still met problem when do ISO transfer if sg enabled.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311071303.JJMAOjy4-lkp@intel.com/
-Suggested-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://lore.kernel.org/r/20231115162853.1891940-1-ckeepax@opensource.cirrus.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Data pattern likes below when sg enabled, package size is 1k and mult is 2
+	[UVC Header(8B) ] [data(3k - 8)] ...
+
+The received data at offset 0xd000 will get 0xc000 data, len 0x70. Error
+happen position as below pattern:
+	0xd000: wrong
+	0xe000: wrong
+	0xf000: correct
+	0x10000: wrong
+	0x11000: wrong
+	0x12000: correct
+	...
+
+To avoid DMA cross 4k bounder at ISO transfer, reduce burst len according
+to start DMA address's alignment.
+
+Cc:  <stable@vger.kernel.org>
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20231224153816.1664687-4-Frank.Li@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/cirrus/Kconfig | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/cdns3/cdns3-gadget.c |   32 +++++++++++++++++++++++++++++++-
+ 1 file changed, 31 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/cirrus/Kconfig b/drivers/pinctrl/cirrus/Kconfig
-index 530426a74f75..b3cea8d56c4f 100644
---- a/drivers/pinctrl/cirrus/Kconfig
-+++ b/drivers/pinctrl/cirrus/Kconfig
-@@ -1,7 +1,8 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config PINCTRL_LOCHNAGAR
- 	tristate "Cirrus Logic Lochnagar pinctrl driver"
--	depends on MFD_LOCHNAGAR
-+	# Avoid clash caused by MIPS defining RST, which is used in the driver
-+	depends on MFD_LOCHNAGAR && !MIPS
- 	select GPIOLIB
- 	select PINMUX
- 	select PINCONF
--- 
-2.43.0
-
+--- a/drivers/usb/cdns3/cdns3-gadget.c
++++ b/drivers/usb/cdns3/cdns3-gadget.c
+@@ -1120,6 +1120,7 @@ static int cdns3_ep_run_transfer(struct
+ 	u32 togle_pcs = 1;
+ 	int sg_iter = 0;
+ 	int num_trb_req;
++	int trb_burst;
+ 	int num_trb;
+ 	int address;
+ 	u32 control;
+@@ -1242,7 +1243,36 @@ static int cdns3_ep_run_transfer(struct
+ 			total_tdl += DIV_ROUND_UP(length,
+ 					       priv_ep->endpoint.maxpacket);
+ 
+-		trb->length |= cpu_to_le32(TRB_BURST_LEN(priv_ep->trb_burst_size) |
++		trb_burst = priv_ep->trb_burst_size;
++
++		/*
++		 * Supposed DMA cross 4k bounder problem should be fixed at DEV_VER_V2, but still
++		 * met problem when do ISO transfer if sg enabled.
++		 *
++		 * Data pattern likes below when sg enabled, package size is 1k and mult is 2
++		 *       [UVC Header(8B) ] [data(3k - 8)] ...
++		 *
++		 * The received data at offset 0xd000 will get 0xc000 data, len 0x70. Error happen
++		 * as below pattern:
++		 *	0xd000: wrong
++		 *	0xe000: wrong
++		 *	0xf000: correct
++		 *	0x10000: wrong
++		 *	0x11000: wrong
++		 *	0x12000: correct
++		 *	...
++		 *
++		 * But it is still unclear about why error have not happen below 0xd000, it should
++		 * cross 4k bounder. But anyway, the below code can fix this problem.
++		 *
++		 * To avoid DMA cross 4k bounder at ISO transfer, reduce burst len according to 16.
++		 */
++		if (priv_ep->type == USB_ENDPOINT_XFER_ISOC && priv_dev->dev_ver <= DEV_VER_V2)
++			if (ALIGN_DOWN(trb->buffer, SZ_4K) !=
++			    ALIGN_DOWN(trb->buffer + length, SZ_4K))
++				trb_burst = 16;
++
++		trb->length |= cpu_to_le32(TRB_BURST_LEN(trb_burst) |
+ 					TRB_LEN(length));
+ 		pcs = priv_ep->pcs ? TRB_CYCLE : 0;
+ 
 
 
 
