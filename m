@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4867838307
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:00 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B398B8384D1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64D3B1F28399
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E52D81C235F9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495BE604D9;
-	Tue, 23 Jan 2024 01:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0AC777622;
+	Tue, 23 Jan 2024 02:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjQ3mHPA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WXyK/vCS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5BD5604C8;
-	Tue, 23 Jan 2024 01:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603217691F;
+	Tue, 23 Jan 2024 02:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974684; cv=none; b=ug458bXAq1z0vQEsywyPE1fKogsqEXZC1TeAsBERcZyTQPWcD5h5d0DNfsn1V2E8WQJQuFd5sMycrZBttIqBs7AGvXy0h4a4lCVYlAzSmJQdhh54A4r8TAQXRauvg1z8hgKZNFzLEJW1F+JsFQ9Cz2Vtcd914FfDJH0EgHbAFUc=
+	t=1705975501; cv=none; b=fy+Ko583x5bgRCE79I/ZO7vAn12pBj2u/G1kDr68SiFGedLPck8jA1GQjC16dNOW/60f1anLY9k87K1I0qfs1d//OdzPYk4/zkt74S5Egv3q5/JWifKdlfnNNNd29+3bdtEMNS+SooUNc1xjrd0YVAW2MhftLwLjRq0kkHUa964=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974684; c=relaxed/simple;
-	bh=KoEGDonQtc1WRBiAVRcEBd1FmMMEK+cXjgOgpaOJDok=;
+	s=arc-20240116; t=1705975501; c=relaxed/simple;
+	bh=KLwb2cyEbI1+bHtUBJMl+gjNXPufeCGCMMPCUwIVu9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HXT8Ni7o4gVAJ15kwHVTAo1MmRxd0v1iFmouNe90TT/IFtvBOClYJmUzkuZG810yHZz2fc4NevwDraV2EDFSifeiGQBoHqYgNuqQPAsBKpwt3NhN+YPyETOzkimsmmL1nQ2kD1WcSqFeE/9T9JBmRLfjmvFa8UYJ/zF/S8T0qIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjQ3mHPA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95FFDC433C7;
-	Tue, 23 Jan 2024 01:51:24 +0000 (UTC)
+	 MIME-Version; b=YEJ6kSAYqiozho7bsbuhcy8E3H988v30Bet6clo1Xl1a98XxUHW3CedMmBkMJZEKdv60kH0n/6qCbYXCWdeYofwnwFO+4/9+fPubefMbqrPtuE7fE1AhrSfXtqVhRnF/5W1Dpoiph2Hx325g4UeXEuUhM36Krg2bq//+A/KwQUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WXyK/vCS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBA4C433F1;
+	Tue, 23 Jan 2024 02:05:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974684;
-	bh=KoEGDonQtc1WRBiAVRcEBd1FmMMEK+cXjgOgpaOJDok=;
+	s=korg; t=1705975501;
+	bh=KLwb2cyEbI1+bHtUBJMl+gjNXPufeCGCMMPCUwIVu9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XjQ3mHPAIue4+hfzdyllSH9DSdrh5IY/aOszoBbnVmx9/mxsybdLi0cEeRwOKybOP
-	 WvWp2b6U+fqOAS8lUzQ+F/yml7TU6AG+osK/SutoQu/odnYpGPLVq8YT/enV66u8NX
-	 bKI/OBMqt5PRB0YG+paxWOvZNo48W1irzGQVC8NI=
+	b=WXyK/vCSsZMejwdZAwAUZRDbp/shcqLks23ZD7atdcQQiDZXcKwfWGknJShRypD6/
+	 DG+IvjaYa3Z/VsBClCriOHatVQJf7PvRQLokKcEMWvdlHuVSwCu8XxbGXdbD9GQcGc
+	 Jezh+dSEN3PkoBIkKej0CzWX65dcadA64ZotNngo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Yongjun <weiyongjun1@huawei.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Gonglei <arei.gonglei@huawei.com>,
-	zhenwei pi <pizhenwei@bytedance.com>,
-	Jason Wang <jasowang@redhat.com>
-Subject: [PATCH 5.15 249/374] virtio-crypto: fix memory leak in virtio_crypto_alg_skcipher_close_session()
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 454/583] MIPS: Alchemy: Fix an out-of-bound access in db1200_dev_setup()
 Date: Mon, 22 Jan 2024 15:58:25 -0800
-Message-ID: <20240122235753.435385022@linuxfoundation.org>
+Message-ID: <20240122235825.868396080@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Yongjun <weiyongjun1@huawei.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit b1d65f717cd6305a396a8738e022c6f7c65cfbe8 upstream.
+[ Upstream commit 89c4b588d11e9acf01d604de4b0c715884f59213 ]
 
-'vc_ctrl_req' is alloced in virtio_crypto_alg_skcipher_close_session(),
-and should be freed in the invalid ctrl_status->status error handling
-case. Otherwise there is a memory leak.
+When calling spi_register_board_info(), we should pass the number of
+elements in 'db1200_spi_devs', not 'db1200_i2c_devs'.
 
-Fixes: 0756ad15b1fe ("virtio-crypto: use private buffer for control request")
-Signed-off-by: Wei Yongjun <weiyongjun1@huawei.com>
-Message-Id: <20221114110740.537276-1-weiyongjun@huaweicloud.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Reviewed-by: Gonglei <arei.gonglei@huawei.com>
-Acked-by: zhenwei pi<pizhenwei@bytedance.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 63323ec54a7e ("MIPS: Alchemy: Extended DB1200 board support.")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/virtio/virtio_crypto_algs.c |    2 +-
+ arch/mips/alchemy/devboards/db1200.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/virtio/virtio_crypto_algs.c
-+++ b/drivers/crypto/virtio/virtio_crypto_algs.c
-@@ -255,7 +255,7 @@ static int virtio_crypto_alg_skcipher_cl
- 			vcrypto->ctrl_status.status,
- 			destroy_session->session_id);
+diff --git a/arch/mips/alchemy/devboards/db1200.c b/arch/mips/alchemy/devboards/db1200.c
+index f521874ebb07..67f067706af2 100644
+--- a/arch/mips/alchemy/devboards/db1200.c
++++ b/arch/mips/alchemy/devboards/db1200.c
+@@ -847,7 +847,7 @@ int __init db1200_dev_setup(void)
+ 	i2c_register_board_info(0, db1200_i2c_devs,
+ 				ARRAY_SIZE(db1200_i2c_devs));
+ 	spi_register_board_info(db1200_spi_devs,
+-				ARRAY_SIZE(db1200_i2c_devs));
++				ARRAY_SIZE(db1200_spi_devs));
  
--		return -EINVAL;
-+		err = -EINVAL;
- 	}
- 	spin_unlock(&vcrypto->ctrl_lock);
- 
+ 	/* SWITCHES:	S6.8 I2C/SPI selector  (OFF=I2C	 ON=SPI)
+ 	 *		S6.7 AC97/I2S selector (OFF=AC97 ON=I2S)
+-- 
+2.43.0
+
 
 
 
