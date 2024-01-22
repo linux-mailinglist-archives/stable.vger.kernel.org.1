@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-15111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2F4A8383EC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97EB4837EEC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C2A82963DD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5228229BBED
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816F365BB7;
-	Tue, 23 Jan 2024 01:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13DD2604D6;
+	Tue, 23 Jan 2024 00:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KoIfAayx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nAVNawZ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4137465BB4;
-	Tue, 23 Jan 2024 01:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70E4604CF;
+	Tue, 23 Jan 2024 00:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975099; cv=none; b=UhXBBgWYbbQdeT+ClmGsRxs9UeuTvrW9PjPDeq9gOh7g1AY03pOfABxXLL46J+gRARQ7dKBLM3NU9knKNlzlEd5/xda5IHZJCKso7iW4rOIYLcrJorQkO0Lu/KNHCsFGGEyHKse/zhpZhKyWfw79zUc+1gbSkD7QSwgurX3htoc=
+	t=1705970827; cv=none; b=M/G4SfpINPbmkd/K6bl7K7BtQXsCbQpu9aEjEZaC8hVzrtpzjGjTERmYgY6vAzJTSjVIXDIDvdOmxp8zkoS0RnjWcgQb6Dd9ZSEEdmbsuBXWjpHQ3y3ptGhwC/Q1x1w9AyfOP+g8QPj3GB00Gj80oa1HlbrJgW6DRaP57XHcq3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975099; c=relaxed/simple;
-	bh=Ygyrgc1hR8X4hvXURxBovbnOzFguLAOGaE8j2QEBeT8=;
+	s=arc-20240116; t=1705970827; c=relaxed/simple;
+	bh=jW7JYoa+gsgmZE0LfONEv/NStTIAUpWKkgr8Iy/JT88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g+CKHiwuUHmF/vrRQSWYoskurxRYD7jJI7Mzp1KRcjQteKgkrBaN4mKE5/xYHHRDO6XWAm2ng7kObewkP9XdyYRfgMoH6GV1FaojQlT372BNlVX2/X3e3Zk6jaVQ69Mg8efEl2tUiefuCOKkemoXymwSGBjQT47C/+i67XS5eV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KoIfAayx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E16DC433C7;
-	Tue, 23 Jan 2024 01:58:18 +0000 (UTC)
+	 MIME-Version; b=PhUJzkMusBSaoV6DHjA28l9eHQHhNpX+szmCAj9oJB9ueUHb80DK4o2d+r2GxZf42H0wsAJhwYUqj9hnh7j+SCsGHhrF+FMPf/nwOo9oDiaY34TglDkwUiePvFeRdy+hOoHUU851C7D3uQ3BelC6kXD96TRLV2TmiZDSPzkVz/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nAVNawZ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC91DC433F1;
+	Tue, 23 Jan 2024 00:47:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975098;
-	bh=Ygyrgc1hR8X4hvXURxBovbnOzFguLAOGaE8j2QEBeT8=;
+	s=korg; t=1705970827;
+	bh=jW7JYoa+gsgmZE0LfONEv/NStTIAUpWKkgr8Iy/JT88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KoIfAayxyktc9XjL/0usRt82TzwBShhTgII0Q2flyibdRdP7vpMNw4Er6u+b++Twt
-	 jdgpJ3yuhLHUcxMC0HZkV2soNNvDcN8Rvvj20BuXZNuwFYgE83bFRKHhL6dGXu7kHq
-	 3mHncHdoGS03XoI/fmDn+CWKy1qEJId3rwUhtrNg=
+	b=nAVNawZ30HyQhnhhNrTlkDMcjYbifWG44e6uCXbO0JPKdAYEqWigP0/XOf81ALD0K
+	 EREIXwm8eK/uoQsNZTldwr0G9tSzRq3+oeSJiTHFAlNA2nUbbncWipDNeneJShQtix
+	 TlhjLqGoUYCf4bcAy8lQfKh5m82evs7gA9xQU1ms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 237/583] media: rkvdec: Hook the (TRY_)DECODER_CMD stateless ioctls
+Subject: [PATCH 6.1 120/417] selftests/net: fix grep checking for fib_nexthop_multiprefix
 Date: Mon, 22 Jan 2024 15:54:48 -0800
-Message-ID: <20240122235819.241962117@linuxfoundation.org>
+Message-ID: <20240122235755.940330961@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 1fb7b5ab62113b29ce331464048d8c39e58fd08a ]
+[ Upstream commit a33e9da3470499e9ff476138f271fb52d6bfe767 ]
 
-The (TRY_)DECODER_CMD ioctls are used to support flushing when holding
-capture buffers is supported. This is the case of this driver but the
-ioctls were never hooked to the ioctl ops.
+When running fib_nexthop_multiprefix test I saw all IPv6 test failed.
+e.g.
 
-Add them to correctly support flushing.
+ ]# ./fib_nexthop_multiprefix.sh
+ TEST: IPv4: host 0 to host 1, mtu 1300                              [ OK ]
+ TEST: IPv6: host 0 to host 1, mtu 1300                              [FAIL]
 
-Fixes: ed7bb87d3d03 ("media: rkvdec: Enable capture buffer holding for H264")
-Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+ With -v it shows
+
+ COMMAND: ip netns exec h0 /usr/sbin/ping6 -s 1350 -c5 -w5 2001:db8:101::1
+ PING 2001:db8:101::1(2001:db8:101::1) 1350 data bytes
+ From 2001:db8:100::64 icmp_seq=1 Packet too big: mtu=1300
+
+ --- 2001:db8:101::1 ping statistics ---
+ 1 packets transmitted, 0 received, +1 errors, 100% packet loss, time 0ms
+
+ Route get
+ 2001:db8:101::1 via 2001:db8:100::64 dev eth0 src 2001:db8:100::1 metric 1024 expires 599sec mtu 1300 pref medium
+ Searching for:
+     2001:db8:101::1 from :: via 2001:db8:100::64 dev eth0 src 2001:db8:100::1 .* mtu 1300
+
+The reason is when CONFIG_IPV6_SUBTREES is not enabled, rt6_fill_node() will
+not put RTA_SRC info. After fix:
+
+]# ./fib_nexthop_multiprefix.sh
+TEST: IPv4: host 0 to host 1, mtu 1300                              [ OK ]
+TEST: IPv6: host 0 to host 1, mtu 1300                              [ OK ]
+
+Fixes: 735ab2f65dce ("selftests: Add test with multiple prefixes using single nexthop")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://lore.kernel.org/r/20231213060856.4030084-7-liuhangbin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/media/rkvdec/rkvdec.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/net/fib_nexthop_multiprefix.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/staging/media/rkvdec/rkvdec.c b/drivers/staging/media/rkvdec/rkvdec.c
-index 84a41792cb4b..ac398b5a9736 100644
---- a/drivers/staging/media/rkvdec/rkvdec.c
-+++ b/drivers/staging/media/rkvdec/rkvdec.c
-@@ -461,6 +461,9 @@ static const struct v4l2_ioctl_ops rkvdec_ioctl_ops = {
+diff --git a/tools/testing/selftests/net/fib_nexthop_multiprefix.sh b/tools/testing/selftests/net/fib_nexthop_multiprefix.sh
+index 51df5e305855..b52d59547fc5 100755
+--- a/tools/testing/selftests/net/fib_nexthop_multiprefix.sh
++++ b/tools/testing/selftests/net/fib_nexthop_multiprefix.sh
+@@ -209,12 +209,12 @@ validate_v6_exception()
+ 		echo "Route get"
+ 		ip -netns h0 -6 ro get ${dst}
+ 		echo "Searching for:"
+-		echo "    ${dst} from :: via ${r1} dev eth0 src ${h0} .* mtu ${mtu}"
++		echo "    ${dst}.* via ${r1} dev eth0 src ${h0} .* mtu ${mtu}"
+ 		echo
+ 	fi
  
- 	.vidioc_streamon = v4l2_m2m_ioctl_streamon,
- 	.vidioc_streamoff = v4l2_m2m_ioctl_streamoff,
-+
-+	.vidioc_decoder_cmd = v4l2_m2m_ioctl_stateless_decoder_cmd,
-+	.vidioc_try_decoder_cmd = v4l2_m2m_ioctl_stateless_try_decoder_cmd,
- };
+ 	ip -netns h0 -6 ro get ${dst} | \
+-	grep -q "${dst} from :: via ${r1} dev eth0 src ${h0} .* mtu ${mtu}"
++	grep -q "${dst}.* via ${r1} dev eth0 src ${h0} .* mtu ${mtu}"
+ 	rc=$?
  
- static int rkvdec_queue_setup(struct vb2_queue *vq, unsigned int *num_buffers,
+ 	log_test $rc 0 "IPv6: host 0 to host ${i}, mtu ${mtu}"
 -- 
 2.43.0
 
