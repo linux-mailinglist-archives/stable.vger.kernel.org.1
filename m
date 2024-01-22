@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B9D6837F61
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D4BE837D3D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDBCD28DDCC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1582B292189
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9239A627F2;
-	Tue, 23 Jan 2024 00:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B80B25101F;
+	Tue, 23 Jan 2024 00:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dmqn3UkK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQazztGp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5281B29424;
-	Tue, 23 Jan 2024 00:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7707D3A8F4;
+	Tue, 23 Jan 2024 00:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971096; cv=none; b=dRg4ClIcN4bwkc5rsUh3R69i3JES9pt3JAaccxtsCD04DcdBgge/tPHmeMpOXEXiH9kOPqcDet+eQDYSrPzOm7U0HqcHWq34VZHQsIa++reS5pzuJv36+0vxO7fbKONXlB0HFjrkWSl2rhksg9uXma2+pDZYO+hRZTPnvcOgv1U=
+	t=1705969859; cv=none; b=BwD/mdTH5sClpsTs89CGUcAH/G20+NKqQHvvLag+AwAfA/M2KaRda495h9L+50cJS0g62o4sl1twSI9a4ve1kZ6OWiPx2z3egd1s8490eSNtrj/qwuTbAH9AdH2uuNMc03sRRq3qxKOYaW6Hsq0b8RZNxLmabc0ieAqTJF/6mxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971096; c=relaxed/simple;
-	bh=UkTCM2TsWEUAidI+Si5rHumOx0B7zWWJHUzzuiUlvnE=;
+	s=arc-20240116; t=1705969859; c=relaxed/simple;
+	bh=/nBreDkfSTp/5/oRtvmFe7pcKhudwGvv8F3HhNUJTag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fZWCuAOoHivYb350N3Bb61156frlDulgwhW/q8hluz+GW+UIlm6XXWdU1KEJEGH4mxaGzqrvnYJGYdwaHcsZGbQAjsblqN3HpTb9nuIG4Zx725DSLNYKUrwiZCGcvae60tFUFO/Gua+O/UGMd1j5h4YbUOX8VQPLe+UQzrxFxVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dmqn3UkK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA678C43394;
-	Tue, 23 Jan 2024 00:51:35 +0000 (UTC)
+	 MIME-Version; b=FhzwZHSLuwRl4BIfLsCzbnhiwVZ5ylBcK2U0iDfSsQBxRya9HU4jsEcFH3yShg3bZWRGtM1v57sqXK3zASFIhsjt1uYg9tvEycwIt8uJV67jzAPzH+l9KUbSL44OvKSmT5QDrsR1iLa7yrDr6GIt1cdxRjdXEQfZxiSOVFoYJRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQazztGp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD5EFC433F1;
+	Tue, 23 Jan 2024 00:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971095;
-	bh=UkTCM2TsWEUAidI+Si5rHumOx0B7zWWJHUzzuiUlvnE=;
+	s=korg; t=1705969857;
+	bh=/nBreDkfSTp/5/oRtvmFe7pcKhudwGvv8F3HhNUJTag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dmqn3UkK/DxJuhIrYXudHqP+HBkSuMS3N768vC8PtJfuCxvO/+9tT54i2eVe/zvuH
-	 43ZEoU4JoN5MXoATvVw8s5nd4gu3/XKInRx/zmpTfK8+ZNuX7hswDt44ontR0gLXs9
-	 nwMN/UfQWtKEnqLo6rCHWCpvrUm/4hhffHDrQfNA=
+	b=AQazztGp53AoDlKp+Rr2lA2CtXRkz1KLp52u3S0Nqg7T4Zualgc81yLNVUsFCbgW8
+	 H4k9nf/81ypNVV5env/gBT/Wocu/VfhsCf0kJiPoy5QOrkG296fMJvMnc5I4DIyFYu
+	 0rSpfWiYBTFPyAlh/zLWBIwGv0H/HhaUrU2JkkFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Alex Vinarskis <alex.vinarskis@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 087/286] crypto: sahara - remove FLAGS_NEW_KEY logic
+Subject: [PATCH 6.7 489/641] mfd: intel-lpss: Fix the fractional clock divider flags
 Date: Mon, 22 Jan 2024 15:56:33 -0800
-Message-ID: <20240122235735.381612682@linuxfoundation.org>
+Message-ID: <20240122235833.378605423@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 8fd183435728b139248a77978ea3732039341779 ]
+[ Upstream commit 03d790f04fb2507173913cad9c213272ac983a60 ]
 
-Remove the FLAGS_NEW_KEY logic as it has the following issues:
-- the wrong key may end up being used when there are multiple data streams:
-       t1            t2
-    setkey()
-    encrypt()
-                   setkey()
-                   encrypt()
+The conversion to CLK_FRAC_DIVIDER_POWER_OF_TWO_PS uses wrong flags
+in the parameters and hence miscalculates the values in the clock
+divider. Fix this by applying the flag to the proper parameter.
 
-    encrypt() <--- key from t2 is used
-- switching between encryption and decryption with the same key is not
-  possible, as the hdr flags are only updated when a new setkey() is
-  performed
-
-With this change, the key is always sent along with the cryptdata when
-performing encryption/decryption operations.
-
-Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 82f53f9ee577 ("clk: fractional-divider: Introduce POWER_OF_TWO_PS flag")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reported-by: Alex Vinarskis <alex.vinarskis@gmail.com>
+Link: https://lore.kernel.org/r/20231211111441.3910083-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 34 +++++++++++++---------------------
- 1 file changed, 13 insertions(+), 21 deletions(-)
+ drivers/mfd/intel-lpss.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 2043dd061121..0ae95767bb76 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -43,7 +43,6 @@
- #define FLAGS_MODE_MASK		0x000f
- #define FLAGS_ENCRYPT		BIT(0)
- #define FLAGS_CBC		BIT(1)
--#define FLAGS_NEW_KEY		BIT(3)
+diff --git a/drivers/mfd/intel-lpss.c b/drivers/mfd/intel-lpss.c
+index 9591b354072a..00e7b578bb3e 100644
+--- a/drivers/mfd/intel-lpss.c
++++ b/drivers/mfd/intel-lpss.c
+@@ -301,8 +301,8 @@ static int intel_lpss_register_clock_divider(struct intel_lpss *lpss,
  
- #define SAHARA_HDR_BASE			0x00800000
- #define SAHARA_HDR_SKHA_ALG_AES	0
-@@ -141,8 +140,6 @@ struct sahara_hw_link {
- };
- 
- struct sahara_ctx {
--	unsigned long flags;
--
- 	/* AES-specific context */
- 	int keylen;
- 	u8 key[AES_KEYSIZE_128];
-@@ -447,26 +444,22 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
- 	int i, j;
- 	int idx = 0;
- 
--	/* Copy new key if necessary */
--	if (ctx->flags & FLAGS_NEW_KEY) {
--		memcpy(dev->key_base, ctx->key, ctx->keylen);
--		ctx->flags &= ~FLAGS_NEW_KEY;
-+	memcpy(dev->key_base, ctx->key, ctx->keylen);
- 
--		if (dev->flags & FLAGS_CBC) {
--			dev->hw_desc[idx]->len1 = AES_BLOCK_SIZE;
--			dev->hw_desc[idx]->p1 = dev->iv_phys_base;
--		} else {
--			dev->hw_desc[idx]->len1 = 0;
--			dev->hw_desc[idx]->p1 = 0;
--		}
--		dev->hw_desc[idx]->len2 = ctx->keylen;
--		dev->hw_desc[idx]->p2 = dev->key_phys_base;
--		dev->hw_desc[idx]->next = dev->hw_phys_desc[1];
-+	if (dev->flags & FLAGS_CBC) {
-+		dev->hw_desc[idx]->len1 = AES_BLOCK_SIZE;
-+		dev->hw_desc[idx]->p1 = dev->iv_phys_base;
-+	} else {
-+		dev->hw_desc[idx]->len1 = 0;
-+		dev->hw_desc[idx]->p1 = 0;
-+	}
-+	dev->hw_desc[idx]->len2 = ctx->keylen;
-+	dev->hw_desc[idx]->p2 = dev->key_phys_base;
-+	dev->hw_desc[idx]->next = dev->hw_phys_desc[1];
-+	dev->hw_desc[idx]->hdr = sahara_aes_key_hdr(dev);
- 
--		dev->hw_desc[idx]->hdr = sahara_aes_key_hdr(dev);
-+	idx++;
- 
--		idx++;
--	}
- 
- 	dev->nb_in_sg = sg_nents_for_len(dev->in_sg, dev->total);
- 	if (dev->nb_in_sg < 0) {
-@@ -608,7 +601,6 @@ static int sahara_aes_setkey(struct crypto_skcipher *tfm, const u8 *key,
- 	/* SAHARA only supports 128bit keys */
- 	if (keylen == AES_KEYSIZE_128) {
- 		memcpy(ctx->key, key, keylen);
--		ctx->flags |= FLAGS_NEW_KEY;
- 		return 0;
- 	}
- 
+ 	snprintf(name, sizeof(name), "%s-div", devname);
+ 	tmp = clk_register_fractional_divider(NULL, name, __clk_get_name(tmp),
++					      0, lpss->priv, 1, 15, 16, 15,
+ 					      CLK_FRAC_DIVIDER_POWER_OF_TWO_PS,
+-					      lpss->priv, 1, 15, 16, 15, 0,
+ 					      NULL);
+ 	if (IS_ERR(tmp))
+ 		return PTR_ERR(tmp);
 -- 
 2.43.0
 
