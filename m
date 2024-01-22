@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-15079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CE448383C9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC9D28383E2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 904F91C2551C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9569E295DFC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02F1664CFD;
-	Tue, 23 Jan 2024 01:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE6EA657CD;
+	Tue, 23 Jan 2024 01:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U2dJoQEJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C614+0v3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6EEE64CE8;
-	Tue, 23 Jan 2024 01:57:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C22B4E1AD;
+	Tue, 23 Jan 2024 01:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975064; cv=none; b=JPLZNtM4Jc+O69wIhYjCe0C+MQlpFLvKAZULEiJMjZGxknTZ4kF1u9Qfv22Z7eZ1eS3FQrIGQ2BsTcLOOxASxayLr4vnD6oGzuaoTeaG8nkcMbYUlYG3zKuojuw0Y3jjnEC+ynwbHHGIERDGNUsLhJWFGGkt2fC6NdBUaBJkN9Y=
+	t=1705975087; cv=none; b=FAWq1fkH1C3Tc/2dNoXqRcr8kfCNH1DPDHQcGQBZzKHxs+1w6Jc0LpmTFfaQGL7Si/DLCqTYOgXU35Q740tXaYn+S1ZmXRGihIVvcSTCncKxHYRQeEaDInH6FHtPCXB5kZa81RRS17Ixn9VZDjb20Ia07rnIPjsEZoO3LhT2ob8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975064; c=relaxed/simple;
-	bh=+ch1KoI5E01CykkHAhw2DoV91SMqNRoe/OUQcQJvThw=;
+	s=arc-20240116; t=1705975087; c=relaxed/simple;
+	bh=iVY1TzcuO4Cyuf0UOnawI7Amn1utTnfZG4w20lJDqCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kn3B2+JfmA9ztnCrC195N9k1v0spoRCsWFGuv39fgbYHvHovtggNzjEjmBtWrWvtN0Rv+EKbKGvmVdgo4lT/t253qWnC86qE8ykhM3YwiU1jGNKpv080HZrIaWrgaYKEwdRAwqPFQwrKFaG5SdvXaDbFtHjXwmpokLoe+1yErd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U2dJoQEJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4416DC433C7;
-	Tue, 23 Jan 2024 01:57:44 +0000 (UTC)
+	 MIME-Version; b=bBoTpsZnyJVKTyfNEuxqm7g3u8KUm9Z9XB2DUOw06JnxwXbd2SRKyTNT13wH3nepmHhJcsykd8sRX+Md9BXzogVrWI/SVYywppUfUqEQ5BsGuLI6fNnElymGsqplKTrCEiySmUU/IWBU1tWPYXkksoFzz/BgFuMKRcykP677Cps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C614+0v3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40936C433F1;
+	Tue, 23 Jan 2024 01:58:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975064;
-	bh=+ch1KoI5E01CykkHAhw2DoV91SMqNRoe/OUQcQJvThw=;
+	s=korg; t=1705975087;
+	bh=iVY1TzcuO4Cyuf0UOnawI7Amn1utTnfZG4w20lJDqCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U2dJoQEJy6O8gWbGvhoVWCKlHKAfZkAz4xa2KLoJLAzJ8uF1YdQrMm4NYqb/ZPb9Z
-	 gXXkaAPl+ulXQlQ3HMl96YIJLuIVFxvFgJr89KWqA3H7qjg6/pwTzOTGgm57LGZzmR
-	 m6AAA1NmChb16PsT7HCAoZdX1fzUkbAXdgiZUvIo=
+	b=C614+0v3WSdV1nrICY3FRvadL3bhw/qo/lsiDveM32KwtnaBbQ11vizxJdz3/CoUY
+	 Lgpy9tNGW8kSG5Eawe7iJQ1i0PhzQSrcVpaK7lMfusXfi87t2Dpk3NcoBnA4e6XhEp
+	 14apqUhpu2ha35ZylztS60vTvlaYvuioBIZ6wNI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Thompson <davthompson@nvidia.com>,
-	Asmaa Mnebhi <asmaa@nvidia.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	David Howells <dhowells@redhat.com>,
 	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-afs@lists.infradead.org,
+	netdev@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 218/583] mlxbf_gige: Enable the GigE port in mlxbf_gige_open
-Date: Mon, 22 Jan 2024 15:54:29 -0800
-Message-ID: <20240122235818.675806438@linuxfoundation.org>
+Subject: [PATCH 6.6 219/583] rxrpc: Fix skbuff cleanup of calls recvmsg_queue and rx_oos_queue
+Date: Mon, 22 Jan 2024 15:54:30 -0800
+Message-ID: <20240122235818.703132870@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
 References: <20240122235812.238724226@linuxfoundation.org>
@@ -68,66 +72,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Asmaa Mnebhi <asmaa@nvidia.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit a460f4a684511e007bbf1700758a41f05d9981e6 ]
+[ Upstream commit 4fc68c4c1a114ba597b4f3b082f04622dfa0e0f6 ]
 
-At the moment, the GigE port is enabled in the mlxbf_gige_probe
-function. If the mlxbf_gige_open is not executed, this could cause
-pause frames to increase in the case where there is high backgroud
-traffic. This results in clogging the port.
-So move enabling the OOB port to mlxbf_gige_open.
+Fix rxrpc_cleanup_ring() to use rxrpc_purge_queue() rather than
+skb_queue_purge() so that the count of outstanding skbuffs is correctly
+updated when a failed call is cleaned up.
 
-Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
-Reviewed-by: David Thompson <davthompson@nvidia.com>
-Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Without this rmmod may hang waiting for rxrpc_n_rx_skbs to become zero.
+
+Fixes: 5d7edbc9231e ("rxrpc: Get rid of the Rx ring")
+Reported-by: Marc Dionne <marc.dionne@auristor.com>
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Eric Dumazet <edumazet@google.com>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: linux-afs@lists.infradead.org
+cc: netdev@vger.kernel.org
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c   | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/rxrpc/call_object.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-index 7d132a132a29..aaf1faed4133 100644
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-+++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-@@ -130,9 +130,15 @@ static int mlxbf_gige_open(struct net_device *netdev)
+diff --git a/net/rxrpc/call_object.c b/net/rxrpc/call_object.c
+index 773eecd1e979..f10b37c14772 100644
+--- a/net/rxrpc/call_object.c
++++ b/net/rxrpc/call_object.c
+@@ -545,8 +545,8 @@ void rxrpc_get_call(struct rxrpc_call *call, enum rxrpc_call_trace why)
+  */
+ static void rxrpc_cleanup_ring(struct rxrpc_call *call)
  {
- 	struct mlxbf_gige *priv = netdev_priv(netdev);
- 	struct phy_device *phydev = netdev->phydev;
-+	u64 control;
- 	u64 int_en;
- 	int err;
+-	skb_queue_purge(&call->recvmsg_queue);
+-	skb_queue_purge(&call->rx_oos_queue);
++	rxrpc_purge_queue(&call->recvmsg_queue);
++	rxrpc_purge_queue(&call->rx_oos_queue);
+ }
  
-+	/* Perform general init of GigE block */
-+	control = readq(priv->base + MLXBF_GIGE_CONTROL);
-+	control |= MLXBF_GIGE_CONTROL_PORT_EN;
-+	writeq(control, priv->base + MLXBF_GIGE_CONTROL);
-+
- 	err = mlxbf_gige_request_irqs(priv);
- 	if (err)
- 		return err;
-@@ -365,7 +371,6 @@ static int mlxbf_gige_probe(struct platform_device *pdev)
- 	void __iomem *plu_base;
- 	void __iomem *base;
- 	int addr, phy_irq;
--	u64 control;
- 	int err;
- 
- 	base = devm_platform_ioremap_resource(pdev, MLXBF_GIGE_RES_MAC);
-@@ -380,11 +385,6 @@ static int mlxbf_gige_probe(struct platform_device *pdev)
- 	if (IS_ERR(plu_base))
- 		return PTR_ERR(plu_base);
- 
--	/* Perform general init of GigE block */
--	control = readq(base + MLXBF_GIGE_CONTROL);
--	control |= MLXBF_GIGE_CONTROL_PORT_EN;
--	writeq(control, base + MLXBF_GIGE_CONTROL);
--
- 	netdev = devm_alloc_etherdev(&pdev->dev, sizeof(*priv));
- 	if (!netdev)
- 		return -ENOMEM;
+ /*
 -- 
 2.43.0
 
