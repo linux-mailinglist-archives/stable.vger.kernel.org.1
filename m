@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-13315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8956E837B60
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:00:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F978837B61
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:00:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 401801F288BC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:00:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17C57293126
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E96A1339B2;
-	Tue, 23 Jan 2024 00:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1C51339B9;
+	Tue, 23 Jan 2024 00:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfUutdSC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="msbqsTy0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2871339A9;
-	Tue, 23 Jan 2024 00:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD29F13398C;
+	Tue, 23 Jan 2024 00:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969301; cv=none; b=YiM9LtikGwpSUe3jmX+8PfgooQs6wcnWo5slIf4GC/BH3Jp6vhyVQrId0YXjF2WRHyNx0fTLlKpyJUBWbV3rTARoUhXV7rkK40ZZAOa6UGghMlJgUK9Z1ij/+q/dQ2sl98v4sYV8wyxbOLBTUx6ABeTlkpbujRt7Yu6Qg3RNAgQ=
+	t=1705969303; cv=none; b=ldQVnhn1fqhVz9XsNJCSLUUZXlZ160kepO9ePd+fp8nsPGpSZAOlWBy/aDbiDJHCZwSnMnEawam4xoiWa2pXnP33YjAX8BAtiRRKixbrZAwtKVqleM+SPHq0l7KW/jbB+bSsW9Se6dR4HEtC5lU2wiYivWNZ7nYyFu+t9CwmyeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969301; c=relaxed/simple;
-	bh=qtemqpwavAEfT34To54KPe9EsXcnCmwIYc1RDfXwx0Q=;
+	s=arc-20240116; t=1705969303; c=relaxed/simple;
+	bh=clZv+p+NHOzB2qNnCIOVl68KGWy3s4BGBlY4s7rVUt4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZTB28LzqJ1My3QWczEBjQeflJ1KOhfVVJBwfAwfjr0qE7To0wRoa7i+2ys5JPEUfiV8EUgG9K+yZ5IR3uFe587hNYCEK9Oh/TuO8Big/oWmx4VUmnxoOpdwBjSie+LAQQ2lHcQdaTqTMRJLV7GxYAUyKQ/w2+ebzTB/bnoPrm4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfUutdSC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD37C43399;
-	Tue, 23 Jan 2024 00:21:40 +0000 (UTC)
+	 MIME-Version; b=BvwQa3T8rUONgApUH+zP6PsSnMDo3tG+DDGkVgi+1uYo1bxPVqk4gKIVCQ0ar525+XQL+K0NfF3wgHXE8t4cqVEHATQSHJ+IZJrG/PA1A/WmIQbdzhyogjKYXxBE8LBMKZ9aJ6njbSMpdhVy2AuebUFqlTSdgoEmmrp/vly81LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=msbqsTy0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771ADC43394;
+	Tue, 23 Jan 2024 00:21:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969300;
-	bh=qtemqpwavAEfT34To54KPe9EsXcnCmwIYc1RDfXwx0Q=;
+	s=korg; t=1705969303;
+	bh=clZv+p+NHOzB2qNnCIOVl68KGWy3s4BGBlY4s7rVUt4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wfUutdSCHkBGiJPhH9xtjCFUBFVA9duOO2exDOFCYUNaCChKsaH6FV18XPc84fXAZ
-	 31jDT6sBI7LWWPhkcOyvchlDAchSP6QBPsZiTv/yfYu9Sf7wcAbOqhu/jr6aUdg1+Y
-	 alNuiu2MmWSQoyrtW7i3i59DBVviEUS7ClDnakjc=
+	b=msbqsTy0t9+5ARzg8DNnmQJ54DgK+40hpdELWL1QrTNPDC5pMGA7uNxexKAEr3CLj
+	 s1Yk1y08stNayZ5/hynClG3rNci5IuLKXLDtkiVjp+oVx6OozFBc2QoYeNMUNdtC25
+	 orlBN8Ed+ZGa53eKMMCjwSJVZNtmkOffenYHf2qg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 134/641] bpf: fix check for attempt to corrupt spilled pointer
-Date: Mon, 22 Jan 2024 15:50:38 -0800
-Message-ID: <20240122235822.242868048@linuxfoundation.org>
+Subject: [PATCH 6.7 136/641] arm64: dts: qcom: qrb2210-rb1: use USB host mode
+Date: Mon, 22 Jan 2024 15:50:40 -0800
+Message-ID: <20240122235822.310120979@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -66,40 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Caleb Connolly <caleb.connolly@linaro.org>
 
-[ Upstream commit ab125ed3ec1c10ccc36bc98c7a4256ad114a3dae ]
+[ Upstream commit e0cee8dc6757f9f18718eec553be9fffa503e103 ]
 
-When register is spilled onto a stack as a 1/2/4-byte register, we set
-slot_type[BPF_REG_SIZE - 1] (plus potentially few more below it,
-depending on actual spill size). So to check if some stack slot has
-spilled register we need to consult slot_type[7], not slot_type[0].
+The default for the QCM2290 platform that this board is based on is OTG
+mode, however the role detection logic is not hooked up for this board
+and the dwc3 driver is configured to not allow role switching from
+userspace.
 
-To avoid the need to remember and double-check this in the future, just
-use is_spilled_reg() helper.
+Force this board to host mode as this is the preferred usecase until we
+get role switching hooked up.
 
-Fixes: 27113c59b6d0 ("bpf: Check the other end of slot_type for STACK_SPILL")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20231205184248.1502704-4-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: e18771961336 ("arm64: dts: qcom: Add initial QTI RB1 device tree")
+Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231025-b4-rb1-usb-host-v1-1-522616c575ef@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/qrb2210-rb1.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 4d59b200e898..c4fbfe499475 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -4676,7 +4676,7 @@ static int check_stack_write_fixed_off(struct bpf_verifier_env *env,
- 	 * so it's aligned access and [off, off + size) are within stack limits
- 	 */
- 	if (!env->allow_ptr_leaks &&
--	    state->stack[spi].slot_type[0] == STACK_SPILL &&
-+	    is_spilled_reg(&state->stack[spi]) &&
- 	    size != BPF_REG_SIZE) {
- 		verbose(env, "attempt to corrupt spilled pointer on stack\n");
- 		return -EACCES;
+diff --git a/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts b/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
+index 94885b9c21c8..fd38a6278f2f 100644
+--- a/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
++++ b/arch/arm64/boot/dts/qcom/qrb2210-rb1.dts
+@@ -415,6 +415,10 @@ &usb_qmpphy {
+ 	status = "okay";
+ };
+ 
++&usb_dwc3 {
++	dr_mode = "host";
++};
++
+ &usb_hsphy {
+ 	vdd-supply = <&pm2250_l12>;
+ 	vdda-pll-supply = <&pm2250_l13>;
 -- 
 2.43.0
 
