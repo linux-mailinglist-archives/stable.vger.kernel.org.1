@@ -1,91 +1,89 @@
-Return-Path: <stable+bounces-12354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 035DA835EE9
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 11:01:34 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4576D835FF1
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 11:44:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 881991F23380
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 10:01:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E84CA2871A1
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 10:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D7739FD8;
-	Mon, 22 Jan 2024 10:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8849F3A1BE;
+	Mon, 22 Jan 2024 10:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z+hFOTlK"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eYGojwrZ"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE7C39FEA
-	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 10:01:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA8C3B29A
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 10:44:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705917678; cv=none; b=XQ4V1uzs1J4qT561UYOPATDC5t+O922+Yz17Db0Db6WGRtkxele6S3hVMtcyyHptBVOX6hlLS6kDvaBVh/39MqYs49OIooQFNYdYnD2W6m38UuM1WbbZD7VV9icI73ynWz2C2ytG46Pf4RJzkivNJ3NNfew9OyEh0RV33yLv3OQ=
+	t=1705920259; cv=none; b=NOBsBI3CPQZv6wLIkx+m4lr//G87LMpnx65/QCl5pmR10T7jwNOHldaK7Qrv05Hmt+HUx+O3ZfPVJ8Ryoh/m45A6baA2Y70t+cb5riXMhUSFu2Wj31xCR8qA+C0gBbn6PZV3dneYsIRCdKJVl5Ao24fc6pkGtICz2VZO0Fw0MqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705917678; c=relaxed/simple;
-	bh=jf4yKSzlqqbyUEc6YGETM2QKbR10sPDe2DBRx+D5MRg=;
+	s=arc-20240116; t=1705920259; c=relaxed/simple;
+	bh=75RNHEd3QE7gIzvGvWHo+Tndj79A20I47U4jnEJC/Uk=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=P0NxFlNfhOZPZxviVnT77RA8/JLhq4+bPBYeWo5FfKMY2/LCAP1hVT3aSYr4b43+v44LoRCtJx9wu9qvoDso6VCRZ08+5uegQjJ7H3KWBtfL/PTDy96MUGQtocmYP3KqN6rZt5t6aeKFwurILfqReLhNzwTy51MTvEPzg1HcFwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z+hFOTlK; arc=none smtp.client-ip=170.10.133.124
+	 Content-Type:MIME-Version; b=I6hA+ylox6J++h8zBsE3HLDxz7Q7tji1BvhiD/Sa5FsiqiVWE6ONbuVEpEvI5/whpjNhWKkU7DP/iGDEMtaz2E4WAARpIfLPGYcc5VHe/XStO7S2d/FFIXJtId/4+KtQIt7mp0PE9mhA571JpyCbLDpdn9GaYvauIM1d8Fy15uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eYGojwrZ; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1705917675;
+	s=mimecast20190719; t=1705920256;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jYyhFaRmFtpWxmu2ZytE1Jd2nh2JmIcnia5u3w5cavE=;
-	b=Z+hFOTlKMbw6LsvslWLsHL/2hCWHjZXALy4xdc+7V3sTBEFOlTsj+SzHrE0x+PWMRuqCE9
-	ODl6WzijWxZDYHU1Yl4slcwYcdcUL8cYThP2FG8/1nafd077uvGo6sPSVCC6aUITh1XepZ
-	/gbw0BRNUkQny3MZVuXPtfpSZO0ThnU=
+	bh=9MSfqqZBv9iIzLzMb9UtcrF62L0l0jyngmzyv+1aP34=;
+	b=eYGojwrZeN2VWNjzKK9dVgIuIOilloXk3DdRI0jY8eh+jL74WCNJUYFs6CsPaBPW2+7LZv
+	LAeFbbYoC8OIdBaDDqufsDhq2TPFcW/KcNJZMes7dhHE6Zv9B3uRggZ14vKwdY1wPUifif
+	M4JMx5goFYlpJbvCsT/4zLb6FP3GaCQ=
 Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
  [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-354-Pyqc1TfDPNC56qCyjzcO3A-1; Mon, 22 Jan 2024 05:01:12 -0500
-X-MC-Unique: Pyqc1TfDPNC56qCyjzcO3A-1
-Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-50e73a71c8aso1576144e87.3
-        for <stable@vger.kernel.org>; Mon, 22 Jan 2024 02:01:12 -0800 (PST)
+ us-mta-453-7QbWp728Mq2VN5pCC2nAug-1; Mon, 22 Jan 2024 05:44:14 -0500
+X-MC-Unique: 7QbWp728Mq2VN5pCC2nAug-1
+Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-50eec1c173eso1832195e87.2
+        for <stable@vger.kernel.org>; Mon, 22 Jan 2024 02:44:13 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705917671; x=1706522471;
+        d=1e100.net; s=20230601; t=1705920253; x=1706525053;
         h=mime-version:user-agent:content-transfer-encoding:autocrypt
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=jYyhFaRmFtpWxmu2ZytE1Jd2nh2JmIcnia5u3w5cavE=;
-        b=kBgyqkBVt7YmwokkjczmE70EjCOZ+varYaHrkCoMujnEJsJ+PPX3eUm/Pb4IuzhK8s
-         1TUAnonCBz4q3o576qYZso8/X71SPZLtnHIf1BQ0rliENws2ornz+gxHVBxR5FysTV12
-         U6e70VGgtSYkPbemy4TIKkv2Uq2pL/YuXVrymbeil3AVg3Fq0bhAdycq/pJORuzDtMHa
-         QssZzNuprF4uQWbuCErg8J2k5nJ4g3kjA5heRBIc4XKC+0soSHY2WC6t8V80pAq2M6G9
-         /+c+wENuot+J1sX7Yh7jbWBmjA4H1sAzYouWblbu/q2ACOFdGdFSskgc0Bv7tB05jXtm
-         JHDw==
-X-Gm-Message-State: AOJu0Yz2fSJvdaYgK2OKePPRBUIghdr0XODGen7kh25MnYqOlWhjmTcI
-	uvFP5CT85Wzc4Ovg6tlGfXpJXXqg0zlxz7O3bbCwLh7caxBuFYL5z9RqEPdxrdB3YtC82oMNGrC
-	6VA8MzMNbnDIfSAAmlznZm8bbJt1vWpIGOhCy0biwpLzY2HT2wYiT4w==
-X-Received: by 2002:a2e:9f44:0:b0:2cd:f896:fb0d with SMTP id v4-20020a2e9f44000000b002cdf896fb0dmr784361ljk.33.1705917670617;
-        Mon, 22 Jan 2024 02:01:10 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEMcOQaGW+jKYJE4kpzjr0tA1+2WlJYdfFWcNTFIW3o21pi7ekxsqSJRcxOTu5efaPgtRwvcQ==
-X-Received: by 2002:a2e:9f44:0:b0:2cd:f896:fb0d with SMTP id v4-20020a2e9f44000000b002cdf896fb0dmr784356ljk.33.1705917670235;
-        Mon, 22 Jan 2024 02:01:10 -0800 (PST)
+        bh=9MSfqqZBv9iIzLzMb9UtcrF62L0l0jyngmzyv+1aP34=;
+        b=weQlVdFDUuKnt97wppR/PAcP5q0CYsLzdVeBs+E3MgYeUY/veg0tmqZk9nO+E2wSvm
+         TNpV7B5WPParIXPJB7wdxC/tVa5eQsrmQfS4naTkg2vfjJo2Xzxbja4XZ+Mr4O5ejXQ/
+         sfOFJaxKuqMXsxzRXbuXhuHN07aihHxIBigTqeOxEK93Sr+912mtwQROhMckQSObNPAj
+         wYkd3ySJcpGYX4FX5Fr3lH1JWUeLZPPOr+j7WFA6F23xAdZUu0T/mKuENKQpznj5WyHz
+         XZxwIcj47l3wMBx1/YO3Ex5t4FSkEoCIQJQkkSy14YWlfegmH/XOZRukInOn+XpqlCsH
+         2ZDw==
+X-Gm-Message-State: AOJu0Yz8X/Sbb6qpdZBt5laeWbPBBdf/uqHF2di6fLFl9bYAA9J1vH2u
+	R6Oh3lwSPhVUZ89mJWL7NwKPYnVtlb9k3Vu7emlV7Tn4eBmdxeGLSbbIKzJXLBI7Wp3yDC7xocs
+	31Xc2PFHGCxTMyfjKcgWDrXHwBO2zIInz4u3qgvMhD2Dvg9JW8Yek1A==
+X-Received: by 2002:a05:6512:280b:b0:50e:93fa:336 with SMTP id cf11-20020a056512280b00b0050e93fa0336mr1660134lfb.95.1705920252709;
+        Mon, 22 Jan 2024 02:44:12 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFSyafjAvUrgBL812daMCiTvLXqGtcRPNXO7YMx11noQHfb8e1ePlfoM+yVc11NAd2Z5DkLxQ==
+X-Received: by 2002:a05:6512:280b:b0:50e:93fa:336 with SMTP id cf11-20020a056512280b00b0050e93fa0336mr1660127lfb.95.1705920252231;
+        Mon, 22 Jan 2024 02:44:12 -0800 (PST)
 Received: from [172.31.0.10] (c-e6a5e255.022-110-73746f36.bbcust.telenor.se. [85.226.165.230])
-        by smtp.gmail.com with ESMTPSA id x7-20020a2e8387000000b002ce0198f8ecsm967144ljg.17.2024.01.22.02.01.09
+        by smtp.gmail.com with ESMTPSA id b5-20020a056512060500b0050e6bf65b2asm1966347lfe.288.2024.01.22.02.44.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Jan 2024 02:01:09 -0800 (PST)
-Message-ID: <ce5d443e5cd2088e00d433780302cce9623d738c.camel@redhat.com>
+        Mon, 22 Jan 2024 02:44:11 -0800 (PST)
+Message-ID: <0473f5389dd1ada08c73479612a4e054c8023d94.camel@redhat.com>
 Subject: Re: [PATCH v2] ovl: require xwhiteout feature flag on layer roots
 From: Alexander Larsson <alexl@redhat.com>
-To: Amir Goldstein <amir73il@gmail.com>, Miklos Szeredi <miklos@szeredi.hu>
+To: Amir Goldstein <amir73il@gmail.com>
 Cc: Miklos Szeredi <mszeredi@redhat.com>, linux-unionfs@vger.kernel.org, 
 	linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
-Date: Mon, 22 Jan 2024 11:01:09 +0100
-In-Reply-To: <CAOQ4uxgBuhx_ae=+R1LrEkkSctf9MdyZzW=WWsHD6J2ZKSJgww@mail.gmail.com>
+Date: Mon, 22 Jan 2024 11:44:11 +0100
+In-Reply-To: <CAOQ4uxj_EWqa716+9xxu0zEd-ziEFpoGsv2OggUrb8_eGGkDDw@mail.gmail.com>
 References: <20240119101454.532809-1-mszeredi@redhat.com>
 	 <CAOQ4uxiWtdgCQ+kBJemAYbwNR46ogP7DhjD29cqAw0qqLvQn4A@mail.gmail.com>
 	 <5ee3a210f8f4fc89cb750b3d1a378a0ff0187c9f.camel@redhat.com>
-	 <CAOQ4uxiob0t4YDpEZ4urfro=NrXF+FH_Bvt9DbD1cHbJAWf88A@mail.gmail.com>
-	 <CAJfpeguFY8KX9kXPBgz5imVTV4A0R+aqS_SRiwdoPXPqR_B_xg@mail.gmail.com>
-	 <CAOQ4uxgBuhx_ae=+R1LrEkkSctf9MdyZzW=WWsHD6J2ZKSJgww@mail.gmail.com>
+	 <CAOQ4uxj_EWqa716+9xxu0zEd-ziEFpoGsv2OggUrb8_eGGkDDw@mail.gmail.com>
 Autocrypt: addr=alexl@redhat.com; prefer-encrypt=mutual; keydata=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
@@ -102,132 +100,142 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Sat, 2024-01-20 at 12:32 +0200, Amir Goldstein wrote:
-> On Fri, Jan 19, 2024 at 10:30=E2=80=AFPM Miklos Szeredi <miklos@szeredi.h=
-u>
+On Mon, 2024-01-22 at 10:38 +0200, Amir Goldstein wrote:
+> On Fri, Jan 19, 2024 at 6:35=E2=80=AFPM Alexander Larsson <alexl@redhat.c=
+om>
 > wrote:
 > >=20
-> > On Fri, 19 Jan 2024 at 20:06, Amir Goldstein <amir73il@gmail.com>
-> > wrote:
-> >=20
-> > > How about checking xwhiteouts xattrs along with impure and
-> > > origin xattrs in ovl_get_inode()?
+> > On Fri, 2024-01-19 at 13:08 +0200, Amir Goldstein wrote:
+> > > On Fri, Jan 19, 2024 at 12:14=E2=80=AFPM Miklos Szeredi
+> > > <mszeredi@redhat.com>
+> > > wrote:
 > > >=20
->=20
-> That was not a very good suggestion on my part.
-> ovl_get_inode() only checks impure xattr on upper dir and origin
-> xattr
-> on non-merge non-multi lower dir.
->=20
-> If we change the location of xwhiteout xattr check, it should be in
-> ovl_lookup_single() next to checking opaque xattr, which makes
-> me think - hey, why don't we overload opaque xattr, just like we
-> did with metacopy xattr?
->=20
-> An overlay.opaque xattr with empty string means "may have xwhiteouts"
-> and that is backward compatible, because ovl_is_opaquedir() checks
-> for xattr of length 1.
->=20
-> The only extra getxattr() needed would be for the d->last case...
->=20
-> > > Then there will be no overhead in readdir and no need for
-> > > marking the layer root?
 > > >=20
-> > > Miklos, would that be acceptable?
+> > > Do you want me to fix/test and send this to Linus?
+> > >=20
+> > > Alex, can we add your RVB to v2?
 > >=20
-> > It's certainly a good idea, but doesn't really address my worry.=C2=A0
-> > The
-> > minor performance impact is not what bothers me most.=C2=A0 It's the
-> > fact
-> > that in the common case the result of these calls are discarded.
-> > That's just plain ugly, IMO.
->=20
-> ...so the question boils down to, whether you find it too ugly
-> to always getxattr(opaque) on lookup of the last lower layer and
-> whether you find the overloading of opaque xattr too hacky?
->=20
-> As a precedent, we *always* check metacopy xattr in last lower layer
-> to check for error conditions, even if user did not opt-in to
-> metacopy
-> at all, while we could just as easily have ignored it.
->=20
+> > I ran into an issue converting composefs to use this.
 > >=20
-> > My preferred alternative would be a mount option.=C2=A0 Amir, Alex,
-> > would
-> > you both be okay with that?
+> > Suppose we have a chroot of files containing some upper dirs and we
+> > want to make a composefs of this. For example, say
+> > /foo/lower/dir/whiteout is a traditional whiteout.
+> >=20
+> > Previously, what happened is that I marked the whiteout file with
+> > trusted.overlay.overlay.whiteout, and the /foo/lower/dir with
+> > trusted.overlay.overlay.whiteouts.
+> >=20
+> > Them when I mounted then entire chroot with overlayfs these xattrs
+> > would get unescaped and I would get a $mnt/foo/lower/dir/whiteout
+> > with
+> > a trusted.overlay.whiteout xattr, and a $mnt/foo/lower/dir with a
+> > trusted.overlay.whiteout. When I then mounted another overlayfs
+> > with a
+> > lowerdir of $mnt/foo/lower it would treat the whiteout as a
+> > xwhiteout.
+> >=20
+> > However, now I need the lowerdir toplevel dir to also have a
+> > trusted.overlay.whiteouts xattr. But when I'm converting the entire
+> > chroot I do not know which of the directories is going to be used
+> > as
+> > the toplevel lower dir, so I don't know where to put this marker.
+> >=20
+> > The only solution I see is to put it on *all* parent directories.
+> > Is
+> > there a better approach here?
 > >=20
 >=20
-> I think I had suggested that escaped private xattrs would also
-> require
-> an opt-in mount option, but Alex explained that the users mounting
+> Alex,
+>=20
+> As you can see, I posted v3 with an alternative approach that would
+> not
+> require marking all possible lower layer roots.
+>=20
+> However, I cannot help wondering if it wouldn't be better practice,
+> when
+> composing layers, to always be explicit, per-directory about whether
 > the
-> overlay are not always aware of the fact that the layers were
-> composed
-> this way, but I admit that I do not remember all the exact details.
+> composed directory is a "base" or a "diff" layer.
 >=20
-> Alex, do I remember correctly that the overlay instance where
-> xwhiteouts
-> needs to be checked does NOT necessarily have a lowerdata layers?
-> The composefs instance with lowerdata layers is the one exposing the
-> (escaped) xwhiteout entries as xwhiteouts. Is that correct?
+> Isn't this information always known at composing time?
+
+Currently, composefs images are not layered as such. They normally only
+have one or more lowerdata layers, and then the actual image as a
+single lowerdir, and on top of that an optional upper if you want some
+kind of writability.=20
+
+But, when composing the composefs the content of the image is opaque to
+us. We're just given a directory with some files in it for the image.
+It might contain some other lowerdirs, but the details are not know to
+us at compose time.
+
+That said, I can see that in some cases it may make sense to use
+multiple lower dirs, for example when using composefs for multi-layer
+container images. When generating such layers we typically have the
+lower levels available, so we could probably extract the base/dir
+status for each directory.
+
+> In legacy overlayfs, there is an explicit mark for "this is a base
+> dir" -
+> namely, the opaque xattr, but there is no such explicit mark on
+> directories without an entry with the same name in layers below them.
 >=20
-> Is there even a use case for xwhiteouts NOT inside another lower
-> overlayfs?
-
-No. Strictly speaking regular whiteouts are always preferable to
-xwhiteouts (as they work for both user and system ovl mounts and are
-supported by older kernels and existing software, etc). The only place
-where xwhiteouts are useful is when we need to escape them to put
-inside an overlayfs mount.
-
-The best way to think about the composefs usecase is:=C2=A0
-
-  Suppose you had a pre-existing system image that someone installed a
-multi layer container image in. This means that somewhere inside this
-image is a set of lowerdirs, and one of them may have a traditional
-whiteout. Now we want to create an overlayfs mount that when used,
-works just like the above image would work, including when you mount
-the sub-overlayfs mounts from the container image lowerdirs.=C2=A0
-
-
-Fallout of this:
-
-The composefs overlay lowerdir will need to contain escaped xwhiteouts,
-so that the mount will have unescaped xwhiteouts. These escaped
-whiteouts can be anywhere, even in a "single layer" overlayfs. But the
-unescaped xwhiteouts will never be in a lowermost lowerdir.
-
-In the composefs case we will be using lowerdata for the outer
-overlayfs, but the actual unescaped xwhiteouts in the container image
-lowerdirs don't need to have a lowerdata involved at all.
-
-The container mount will be done by pre-existing software (say docker)
-that isn't aware that we converted the regular whiteouts to xwhiteouts,
-so having to use a mount option is not ideal (would require docker
-changes).
-
-> If we limit the check for xwhiteouts only to nested overlayfs, then
-> maybe
-> Miklos will care less about an extra getxattr on lookup?
+> The lack of explicit mark "merge" vs. "opaque" in all directories in
+> all
+> the layers had led to problems in the past, for example, this is the
+> reason that this fix was needed:
 >=20
-> Attached patch implements both xwhiteout and opaque checks during
-> lookup - we can later choose only one of them to keep.
-
-Seems like you attached the wrong patch, but I will comment on the
-other patch you sent to the list.
-
-> Note that is changes the optimization to per-dentry, not per-layer,
-> so in the common case (no layers have xwhiteouts) xwhiteouts will not
-> be checked, but if xwhiteouts exist in any lower layer in the stack,
-> then
-> xwhiteouts will be checked in all the layers of the merged dir (*).
+> =C2=A0 b79e05aaa166 ovl: no direct iteration for dir with origin xattr
 >=20
-> (*) still need to optimize away lookup of xwhiteouts in upperdir.
+> In conclusion, since composefs is the first tool, that I know of, to
+> compose "non-legacy" overlayfs layers (i.e. with overlay xattrs),
+> I think the correct design decision would mark every directory in
+> every layer explicitly as at exactly one of "merge"/"opaque".
 >=20
-> Let me know what you think.
+> Note that non-dir are always marked explicitly as "metacopy",
+> so there is no ambiguity with non-dirs and we also error out
+> if a non-dir stack does not end with an "opaque" entry.
+>=20
+> Additionally, when composing layers, since all the children of
+> a directory should be explicitly marked as "merge" vs. "opaque"
+> then the parent's "impure" (meaning contains "merge" children)
+> can also be set at composing time.
+>=20
+> Failing to set "impure" correctly when composing layers could
+> result in wrong readdir d_ino results.
+>=20
+> My proposition in v3 for an explicit mark was to
+> "reinterpret the opaque xattr from boolean to enum".
+> My proposal included only the states 'y' (opaque) and 'x' (contains
+> xwhiteouts), but for composefs, I would extend this to also mark
+> a merge dir explicitly with opaque=3D'n' and explicitly mark all the
+> directories in a "base layer" with opaque=3D'y'.
+>=20
+> Implementation-wise, composefs could start by marking each directory
+> with either 'y'/'n' state based on the lowerstack, and if xwhiteout
+> entries
+> are added, 'n' state could be changed to 'x' state.
+
+We never add xwhiteout entries to the composefs, all directories in the
+base layer would be overlay=3Dn or y, and any directory containing an
+escaped xwhiteout would have an escaped opaque xattr with 'x'.
+
+> What do you think?
+
+I feel it may be overkill, as most composefs images would be a one-
+layer thing, and adding opaque=3Dn to every directory in the lowermost
+layer would just waste space and makes little sense (being in the
+lowest layer means we already know if the directory is merged or not).
+However, I think it may make sense to be able to mark non-lowest-layer
+directories with either n or y.
+
+> Does it make sense from composefs POV?
+> Am I correct to assume that at composing time, every directory
+> state is known (base 'y' vs. diff 'n')?
 >=20
 > Thanks,
 > Amir.
+>=20
 
 --=20
 =3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D=
@@ -236,10 +244,8 @@ other patch you sent to the list.
  Alexander Larsson                                            Red Hat,
 Inc=20
        alexl@redhat.com            alexander.larsson@gmail.com=20
-He's a benighted bohemian waffle chef on the wrong side of the law.
-She's=20
-an enchanted junkie safe cracker from the wrong side of the tracks.
-They=20
+He's a globe-trotting crooked cyborg in drag. She's an elegant=20
+streetsmart socialite prone to fits of savage, blood-crazed rage. They=20
 fight crime!=20
 
 
