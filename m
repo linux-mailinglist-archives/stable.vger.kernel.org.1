@@ -1,104 +1,68 @@
-Return-Path: <stable+bounces-12460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1CEA836840
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 16:31:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83FA6836875
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 16:37:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2EAB1C237A2
-	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 15:31:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EA0AB2BA35
+	for <lists+stable@lfdr.de>; Mon, 22 Jan 2024 15:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3F45FF1A;
-	Mon, 22 Jan 2024 15:02:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A86547A4D;
+	Mon, 22 Jan 2024 15:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PtQvFDUJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SAcmZxfx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33835FF0C;
-	Mon, 22 Jan 2024 15:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2FD47A48
+	for <stable@vger.kernel.org>; Mon, 22 Jan 2024 15:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705935754; cv=none; b=QL7aqc3jzU8gNLvwPaZ1yLcdzjsWC7vMiZJ6evKV+ezp7HzohipULnkYBJvrSTWVE+qqKzF5mi8qAWZezdcmI0kOpKFZJ6QPOu4PkhqkeB0eyr7Fn8P60JBv/9WCN40ZjaTTeSq2/QDqgYPs4yN0guMUKseg++Wbcshgt/2XixQ=
+	t=1705935818; cv=none; b=foti/cHaDeProWxKxNoB2zACT6a18PGfqqCrChB321Nufw0HQQW8PIPuDmtz+P/SqZ5prg9K/o1KSfDcu19w1VeXjlzzHIATYeaoq0eAMTHSFLzMV7DVPTxWFFU80oO1Wg428UhdtfpGI9Zc6nF0Ss+BwardD47B0+GuDSXXRLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705935754; c=relaxed/simple;
-	bh=kyWsi1lflAk62F6EHmBXI3C2GexH6zr3BdO3AakAaSg=;
+	s=arc-20240116; t=1705935818; c=relaxed/simple;
+	bh=PA4e0SLz1rgwyvmNffmUASMKElthouXdbqptqInDN5Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C0VT3xQqPn+IEOz4o/WBoRvrUqUUmZTiXE9CqzUYnhWf/4p7ey3nqeEzRhZVvSKx1vU1A16qp2IVNh54e3hcRm6STcNflgKqvLW/vQ2DZXYLtQ8PESL1NqmjPPs0B2FEyKZ6sIyPTsX5P7YhEJccGOmz+yBhqulNZfHqmkNR0og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PtQvFDUJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7FB7C433B1;
-	Mon, 22 Jan 2024 15:02:32 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z+Qbk8vZxJ82jFC2B9Ao9XoR/bvifmn+PQL9X9JhGaMJtbyz3ymlNfSFDvSlaWLASwjbMwCmhtAl2Spsfph9wx/utMtE9GnsCkql+2DKJdRpqbyP0OC/qCVNsnySysh5fgYiCIMwPBaxPN/mdEAkMBvSw7oIBW6yQ303GezDvAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SAcmZxfx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4B0EC43399;
+	Mon, 22 Jan 2024 15:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705935753;
-	bh=kyWsi1lflAk62F6EHmBXI3C2GexH6zr3BdO3AakAaSg=;
+	s=korg; t=1705935817;
+	bh=PA4e0SLz1rgwyvmNffmUASMKElthouXdbqptqInDN5Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PtQvFDUJAtrOcjflFRQ0iI04ZPcVZ541fBxhg8XqTxh6yY2C+z6QU7W5ScDPb9nk0
-	 bmfPyQqnEFrrhI86mtQz6gY3jag4IJGcXFTw2q442B4O+YY5nrV20ay69AUTfXSgST
-	 jbQEosMvABiE2as/ZBbnGG7cII6G3ltI46of09ik=
-Date: Mon, 22 Jan 2024 07:02:32 -0800
+	b=SAcmZxfxq8QH7fEz6PBfuRLL+Qcnlycr8A2dyI5qJXIZydcW+cyN/ZyzSTHLyVb3D
+	 RWgeOFDAtukCCCQBqA9hXPfntBem4qePXHBAJTScO7QpNCLgcrI1wVjyyRxDYF+yL9
+	 q/SE/dAKnFTjTrjhqOnZsiNI4aI0aBW9boZ7C0Dw=
+Date: Mon, 22 Jan 2024 07:03:27 -0800
 From: Greg KH <gregkh@linuxfoundation.org>
-To: sedat.dilek@gmail.com
-Cc: David Howells <dhowells@redhat.com>, ceph-devel@vger.kernel.org,
-	davem@davemloft.net, eadavis@qq.com, edumazet@google.com,
-	horms@kernel.org, jaltman@auristor.com, jarkko@kernel.org,
-	jlayton@redhat.com, keyrings@vger.kernel.org, kuba@kernel.org,
-	linux-afs@lists.infradead.org, linux-cifs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-nfs@vger.kernel.org, marc.dionne@auristor.com,
-	markus.suvanto@gmail.com, netdev@vger.kernel.org, pabeni@redhat.com,
-	pengfei.xu@intel.com, smfrench@gmail.com, stable@vger.kernel.org,
-	torvalds@linux-foundation.org, wang840925@gmail.com,
-	sashal@kernel.org, pvorel@suse.cz
-Subject: Re: [PATCH] keys, dns: Fix size check of V1 server-list header
-Message-ID: <2024012218-unlocking-pushy-c7e6@gregkh>
-References: <1850031.1704921100@warthog.procyon.org.uk>
- <CA+icZUUc_0M_6JU3dZzVqrUUrWJceY1uD8dO2yFMCwtHtkaa_Q@mail.gmail.com>
+To: Namjae Jeon <linkinjeon@kernel.org>
+Cc: sashal@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 5.15.y 00/11] ksmbd: backport patches from 6.8-rc1
+Message-ID: <2024012246-rematch-magnify-ec8b@gregkh>
+References: <20240121143038.10589-1-linkinjeon@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+icZUUc_0M_6JU3dZzVqrUUrWJceY1uD8dO2yFMCwtHtkaa_Q@mail.gmail.com>
+In-Reply-To: <20240121143038.10589-1-linkinjeon@kernel.org>
 
-On Mon, Jan 22, 2024 at 08:32:20AM +0100, Petr Vorel wrote:
-> From: Sedat Dilek <sedat.dilek@gmail.com>
-> 
-> On Wed, Jan 10, 2024 at 10:12 PM David Howells <dhowells@redhat.com> wrote:
-> >
-> >
-> > Fix the size check added to dns_resolver_preparse() for the V1 server-list
-> > header so that it doesn't give EINVAL if the size supplied is the same as
-> > the size of the header struct (which should be valid).
-> >
-> > This can be tested with:
-> >
-> >         echo -n -e '\0\0\01\xff\0\0' | keyctl padd dns_resolver desc @p
-> >
-> > which will give "add_key: Invalid argument" without this fix.
-> >
-> > Fixes: 1997b3cb4217 ("keys, dns: Fix missing size check of V1 server-list header")
-> 
-> [ CC stable@vger.kernel.org ]
-> 
-> Your (follow-up) patch is now upstream.
-> 
-> https://git.kernel.org/linus/acc657692aed438e9931438f8c923b2b107aebf9
-> 
-> This misses CC: Stable Tag as suggested by Linus.
-> 
-> Looks like linux-6.1.y and linux-6.6.y needs it, too.
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.6.11&id=da89365158f6f656b28bcdbcbbe9eaf97c63c474
-> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.1.72&id=079eefaecfd7bbb8fcc30eccb0dfdf50c91f1805
+On Sun, Jan 21, 2024 at 11:30:27PM +0900, Namjae Jeon wrote:
+> This patchset is backport patches from 6.8-rc1.
 
-And 5.10.y and 5.15.y.  Now queued up, thanks.
+Nice, but we obviously can not take patches only to 5.15.y as that would
+be a regression when people upgrade to a newer kernel.  Can you also
+provide the needed backports for 6.1.y and 6.6.y and 6.7.y?
+
+thanks,
 
 greg k-h
 
