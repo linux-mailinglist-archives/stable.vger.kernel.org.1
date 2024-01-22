@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-14524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5428C83813E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:06:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68201837F40
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:51:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 877AC1C26F05
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:06:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2DE1B2A755
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51671487E6;
-	Tue, 23 Jan 2024 01:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2295D285;
+	Tue, 23 Jan 2024 00:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="elo+XmVm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nLrSAQ2C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 929E51487D4;
-	Tue, 23 Jan 2024 01:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920EE5384;
+	Tue, 23 Jan 2024 00:46:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972079; cv=none; b=u8oijnqY81R5Du9GFu4NilsPpe5d9vwwqn7kW+IXSt8A1DpRYcNvYbZfZAcY5UNb9BRdTIBkZiHJHT202IlplWBGjTuI8eVEudhLk0W/iVwSD9YnhNa7MWBc/5RMeYZ90LU7Z+UDT2mVIN9OK36PiYTt3N8afSXIyq8yOsvsPVU=
+	t=1705970811; cv=none; b=nQ2phtfNduf0Jd4j1bSG1wPq4F/kLA4MD5CQHxzzoAJrTW7P9aTq5pCDnrmbTIHs51Z/ltIxrobg3MjTUXLPbcq36HT2CxOh0zaj76lI5LK84UXDh4/427AlMGvtfp01v5jQrXoNFI5tE2V/p86XIknt7KZOMy0tO/jpIAej51A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972079; c=relaxed/simple;
-	bh=O5yPergo4AQa1Tx1k119NWlAkAlRhzzcaY2+TqWfjCM=;
+	s=arc-20240116; t=1705970811; c=relaxed/simple;
+	bh=Em+Nwcbn6YMykwTVRfmCLQ0hX+CpwpswwSP77hUiMQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fKg/Z96p68Uucz24uYNZLLC4ENFZ2QPfHv/8OvyX+w4zXFkXVDvNt5QNU0Yo8SxvzBnpgir8f32vuaaQ1znQ3bn8Z5Ic9ci+ZMS8l488YAzpBE4ZA/9fA7hrT+Mm2Yamgy5Rb14Xmgl5YjpsbYz9PAzNK0ZLEzSOekENCHplJas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=elo+XmVm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DCBDC43330;
-	Tue, 23 Jan 2024 01:07:59 +0000 (UTC)
+	 MIME-Version; b=j4pbeq2YLoIx0V8izq4iphU2YX9kt4n857iIfIfSy2mxmeOJbj9YduDJUS1747hKuuCTZs44OeDNZ5OX3m4jhuZf7rIJkC3SCWp9XZ81SwJRrzLLtl3E+e4kd1uBYTV9ndScNtBPgmDDnkgr6NgJp0UH6G/agyc09c3jAeLMZnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nLrSAQ2C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C5DBC433C7;
+	Tue, 23 Jan 2024 00:46:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972079;
-	bh=O5yPergo4AQa1Tx1k119NWlAkAlRhzzcaY2+TqWfjCM=;
+	s=korg; t=1705970811;
+	bh=Em+Nwcbn6YMykwTVRfmCLQ0hX+CpwpswwSP77hUiMQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=elo+XmVmnE/yMeqlECHLiqNjvAxxa7zHl8+qP8Ug9xEXRM3QNT5NWUgEIYRTgjkTw
-	 lfxIkFIPHduA2qAywk2weuByyPDCqlR+AktRhqMBaVRmL2qYWL99Tk+x7kUpt2ZI3C
-	 hb+o7qiCjL2kbSn/tIOc06Dz8X2eEP+wg3eMph04=
+	b=nLrSAQ2CfoSW4pGBgsfDCLrYyi0IlVAwiYRUvxG0NpBQldZ/pFBRnuBZCdgE9jKXo
+	 euerCUJZEWHbi3/naqnbiNQResiM/d18f07ICijxhdVyIPH+0KzP3YKIih0QYrmRrw
+	 rBO9JH+9XtpHLUT15/xmI16iq7CtzruT4b3Y4Dt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b834a6b2decad004cfa1@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 004/374] mptcp: fix uninit-value in mptcp_incoming_options
+Subject: [PATCH 6.1 092/417] arm64: dts: qcom: sm6350: Make watchdog bark interrupt edge triggered
 Date: Mon, 22 Jan 2024 15:54:20 -0800
-Message-ID: <20240122235744.777885366@linuxfoundation.org>
+Message-ID: <20240122235754.883958781@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,37 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 237ff253f2d4f6307b7b20434d7cbcc67693298b ]
+[ Upstream commit 5b84bb2b8d86595544fc8272364b0f1a34b68a4f ]
 
-Added initialization use_ack to mptcp_parse_option().
+As described in the patch ("arm64: dts: qcom: sc7180: Make watchdog
+bark interrupt edge triggered"), the Qualcomm watchdog timer's bark
+interrupt should be configured as edge triggered. Make the change.
 
-Reported-by: syzbot+b834a6b2decad004cfa1@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 5f82b9cda61e ("arm64: dts: qcom: Add SM6350 device tree")
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20231106144335.v2.8.Ic1d4402e99c70354d501ccd98105e908a902f671@changeid
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/options.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sm6350.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mptcp/options.c b/net/mptcp/options.c
-index aa4b0cf7c638..012e0e352276 100644
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -103,6 +103,7 @@ static void mptcp_parse_option(const struct sk_buff *skb,
- 			mp_opt->suboptions |= OPTION_MPTCP_DSS;
- 			mp_opt->use_map = 1;
- 			mp_opt->mpc_map = 1;
-+			mp_opt->use_ack = 0;
- 			mp_opt->data_len = get_unaligned_be16(ptr);
- 			ptr += 2;
- 		}
+diff --git a/arch/arm64/boot/dts/qcom/sm6350.dtsi b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+index cea7ca3f326f..9da373090593 100644
+--- a/arch/arm64/boot/dts/qcom/sm6350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm6350.dtsi
+@@ -1462,7 +1462,7 @@ watchdog@17c10000 {
+ 			compatible = "qcom,apss-wdt-sm6350", "qcom,kpss-wdt";
+ 			reg = <0 0x17c10000 0 0x1000>;
+ 			clocks = <&sleep_clk>;
+-			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_SPI 0 IRQ_TYPE_EDGE_RISING>;
+ 		};
+ 
+ 		timer@17c20000 {
 -- 
 2.43.0
 
