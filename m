@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-14714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 488988382C8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:23:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0A81837BCA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9D90B23F4D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:18:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E138A1C2780D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB0459B5D;
-	Tue, 23 Jan 2024 01:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C247154BE5;
+	Tue, 23 Jan 2024 00:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGmCbcA3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGAJoBl2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7C84EB52;
-	Tue, 23 Jan 2024 01:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9E0154BE1;
+	Tue, 23 Jan 2024 00:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974105; cv=none; b=asLbBcEMTi1etRt/1za2yHbji8LUhIwmTuUeQyS9SK9EMlPvfIBvSHWsI7fN2Jd+Zb7xxMSTSu3BjW0+rQCBzv2eOGlY8Bfd+cHOWSJT3KOfQf75Lxm7L7mlfC07y2HYRNuFeBNcuEnjf18PzzHg6A+R2tywpiTiYQR8fxmltJE=
+	t=1705969386; cv=none; b=IJZ+aLUcmaIYMlV/fyDJSkxste2KRVJEjO8njh8XotQSLKFJQsi8iN/gmJdB7icCyuUA2aX1RpK5tfJ+WPi72FMp1apI29idwU3GTA02L0qh681HJQfryDu484oMpr8c7ncfcrww6oG2m1XdEs+x17jTZ2uyiHthsxbt6bFRpMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974105; c=relaxed/simple;
-	bh=AGz8RIdaW7988L0YOvKEN31AhG/QF40gjfDw9q7++AI=;
+	s=arc-20240116; t=1705969386; c=relaxed/simple;
+	bh=ulcSw1SrjZqWscwgSKUzoRXGyYFicJJlbUR9DBlziyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t5SSLCyC4nd4xyrtND1d0Qa5eDDnbpfBlCmKWIErqXsvVwFVvsPjtRLZArnY0AlH+J6LECHnTKbJ63aakLsiHb5G2NQVTOVmZn5UJevd3zeFqVpsRa03JCd15/zj8Cz4xUcR58n5uYr4CcRoLSy94pPOITf2YNNCBe/emtn93rs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGmCbcA3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D8B6C43394;
-	Tue, 23 Jan 2024 01:41:44 +0000 (UTC)
+	 MIME-Version; b=tZsDvFsI97TyDlxsOwByJBnSw/1+loiN8WeF36Uu/G2HZOtsjD/14qi106Bf8Frymhtx8rUPeRKgBZ+83WgwzXuXAtM/arfnSdisoJZb2nZhrH76D8IpeBeOsz96VtCGX7BWg/CwH0YDGMey7Y3IawbhPB51wOx4SQSxVblWISI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGAJoBl2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FF98C43399;
+	Tue, 23 Jan 2024 00:23:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974104;
-	bh=AGz8RIdaW7988L0YOvKEN31AhG/QF40gjfDw9q7++AI=;
+	s=korg; t=1705969385;
+	bh=ulcSw1SrjZqWscwgSKUzoRXGyYFicJJlbUR9DBlziyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OGmCbcA3ju7bWHf3UHsKGWeIWtGpMppgZOj0JBtr9OGTMBBcI6AYagQz+Pvh18Rld
-	 3Twy9oryVZDeDjLFLyGMWSjxDHhrLfuPSX2wBgmvAKHULhay58jRe26hi8TRzgsZvw
-	 s5efPSVDueZepXDPZYJtdEd+sZJXDCFjXVIdMxyo=
+	b=LGAJoBl241wYoYJWbf8/yaK1bU3GaxJGkG+RMba2FAF32yszKNKAv8qJ1D2seCzx4
+	 z+CnGdOIFKAi2Ww0yFTEGxe4VF7mzBLq8OIKjroL3xGbauqwlaw83Caak5AV81xk/R
+	 bDRNy/OEYCX6bDH+IQetK7YOinJ8cAKDy3amZp2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yinbo Zhu <zhuyinbo@loongson.cn>,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 040/583] drivers/thermal/loongson2_thermal: Fix incorrect PTR_ERR() judgment
+Subject: [PATCH 6.7 187/641] virtio/vsock: send credit update during setting SO_RCVLOWAT
 Date: Mon, 22 Jan 2024 15:51:31 -0800
-Message-ID: <20240122235813.375915692@linuxfoundation.org>
+Message-ID: <20240122235823.829985444@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +64,191 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Binbin Zhou <zhoubinbin@loongson.cn>
+From: Arseniy Krasnov <avkrasnov@salutedevices.com>
 
-[ Upstream commit 15ef92e9c41124ee9d88b01208364f3fe1f45f84 ]
+[ Upstream commit 0fe1798968115488c0c02f4633032a015b1faf97 ]
 
-PTR_ERR() returns -ENODEV when thermal-zones are undefined, and we need
--ENODEV as the right value for comparison.
+Send credit update message when SO_RCVLOWAT is updated and it is bigger
+than number of bytes in rx queue. It is needed, because 'poll()' will
+wait until number of bytes in rx queue will be not smaller than
+O_RCVLOWAT, so kick sender to send more data. Otherwise mutual hungup
+for tx/rx is possible: sender waits for free space and receiver is
+waiting data in 'poll()'.
 
-Otherwise, tz->type is NULL when thermal-zones is undefined, resulting
-in the following error:
+Rename 'set_rcvlowat' callback to 'notify_set_rcvlowat' and set
+'sk->sk_rcvlowat' only in one place (i.e. 'vsock_set_rcvlowat'), so the
+transport doesn't need to do it.
 
-[   12.290030] CPU 1 Unable to handle kernel paging request at virtual address fffffffffffffff1, era == 900000000355f410, ra == 90000000031579b8
-[   12.302877] Oops[#1]:
-[   12.305190] CPU: 1 PID: 181 Comm: systemd-udevd Not tainted 6.6.0-rc7+ #5385
-[   12.312304] pc 900000000355f410 ra 90000000031579b8 tp 90000001069e8000 sp 90000001069eba10
-[   12.320739] a0 0000000000000000 a1 fffffffffffffff1 a2 0000000000000014 a3 0000000000000001
-[   12.329173] a4 90000001069eb990 a5 0000000000000001 a6 0000000000001001 a7 900000010003431c
-[   12.337606] t0 fffffffffffffff1 t1 54567fd5da9b4fd4 t2 900000010614ec40 t3 00000000000dc901
-[   12.346041] t4 0000000000000000 t5 0000000000000004 t6 900000010614ee20 t7 900000000d00b790
-[   12.354472] t8 00000000000dc901 u0 54567fd5da9b4fd4 s9 900000000402ae10 s0 900000010614ec40
-[   12.362916] s1 90000000039fced0 s2 ffffffffffffffed s3 ffffffffffffffed s4 9000000003acc000
-[   12.362931] s5 0000000000000004 s6 fffffffffffff000 s7 0000000000000490 s8 90000001028b2ec8
-[   12.362938]    ra: 90000000031579b8 thermal_add_hwmon_sysfs+0x258/0x300
-[   12.386411]   ERA: 900000000355f410 strscpy+0xf0/0x160
-[   12.391626]  CRMD: 000000b0 (PLV0 -IE -DA +PG DACF=CC DACM=CC -WE)
-[   12.397898]  PRMD: 00000004 (PPLV0 +PIE -PWE)
-[   12.403678]  EUEN: 00000000 (-FPE -SXE -ASXE -BTE)
-[   12.409859]  ECFG: 00071c1c (LIE=2-4,10-12 VS=7)
-[   12.415882] ESTAT: 00010000 [PIL] (IS= ECode=1 EsubCode=0)
-[   12.415907]  BADV: fffffffffffffff1
-[   12.415911]  PRID: 0014a000 (Loongson-64bit, Loongson-2K1000)
-[   12.415917] Modules linked in: loongson2_thermal(+) vfat fat uio_pdrv_genirq uio fuse zram zsmalloc
-[   12.415950] Process systemd-udevd (pid: 181, threadinfo=00000000358b9718, task=00000000ace72fe3)
-[   12.415961] Stack : 0000000000000dc0 54567fd5da9b4fd4 900000000402ae10 9000000002df9358
-[   12.415982]         ffffffffffffffed 0000000000000004 9000000107a10aa8 90000001002a3410
-[   12.415999]         ffffffffffffffed ffffffffffffffed 9000000107a11268 9000000003157ab0
-[   12.416016]         9000000107a10aa8 ffffff80020fc0c8 90000001002a3410 ffffffffffffffed
-[   12.416032]         0000000000000024 ffffff80020cc1e8 900000000402b2a0 9000000003acc000
-[   12.416048]         90000001002a3410 0000000000000000 ffffff80020f4030 90000001002a3410
-[   12.416065]         0000000000000000 9000000002df6808 90000001002a3410 0000000000000000
-[   12.416081]         ffffff80020f4030 0000000000000000 90000001002a3410 9000000002df2ba8
-[   12.416097]         00000000000000b4 90000001002a34f4 90000001002a3410 0000000000000002
-[   12.416114]         ffffff80020f4030 fffffffffffffff0 90000001002a3410 9000000002df2f30
-[   12.416131]         ...
-[   12.416138] Call Trace:
-[   12.416142] [<900000000355f410>] strscpy+0xf0/0x160
-[   12.416167] [<90000000031579b8>] thermal_add_hwmon_sysfs+0x258/0x300
-[   12.416183] [<9000000003157ab0>] devm_thermal_add_hwmon_sysfs+0x50/0xe0
-[   12.416200] [<ffffff80020cc1e8>] loongson2_thermal_probe+0x128/0x200 [loongson2_thermal]
-[   12.416232] [<9000000002df6808>] platform_probe+0x68/0x140
-[   12.416249] [<9000000002df2ba8>] really_probe+0xc8/0x3c0
-[   12.416269] [<9000000002df2f30>] __driver_probe_device+0x90/0x180
-[   12.416286] [<9000000002df3058>] driver_probe_device+0x38/0x160
-[   12.416302] [<9000000002df33a8>] __driver_attach+0xa8/0x200
-[   12.416314] [<9000000002deffec>] bus_for_each_dev+0x8c/0x120
-[   12.416330] [<9000000002df198c>] bus_add_driver+0x10c/0x2a0
-[   12.416346] [<9000000002df46b4>] driver_register+0x74/0x160
-[   12.416358] [<90000000022201a4>] do_one_initcall+0x84/0x220
-[   12.416372] [<90000000022f3ab8>] do_init_module+0x58/0x2c0
-[   12.416386] [<90000000022f6538>] init_module_from_file+0x98/0x100
-[   12.416399] [<90000000022f67f0>] sys_finit_module+0x230/0x3c0
-[   12.416412] [<900000000358f7c8>] do_syscall+0x88/0xc0
-[   12.416431] [<900000000222137c>] handle_syscall+0xbc/0x158
-
-Fixes: e7e3a7c35791 ("thermal/drivers/loongson-2: Add thermal management support")
-Cc: Yinbo Zhu <zhuyinbo@loongson.cn>
-Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/343c14de98216636a47b43e8bfd47b70d0a8e068.1700817227.git.zhoubinbin@loongson.cn
+Fixes: b89d882dc9fc ("vsock/virtio: reduce credit update messages")
+Signed-off-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/loongson2_thermal.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/vhost/vsock.c                   |  1 +
+ include/linux/virtio_vsock.h            |  1 +
+ include/net/af_vsock.h                  |  2 +-
+ net/vmw_vsock/af_vsock.c                |  9 ++++++--
+ net/vmw_vsock/hyperv_transport.c        |  4 ++--
+ net/vmw_vsock/virtio_transport.c        |  1 +
+ net/vmw_vsock/virtio_transport_common.c | 30 +++++++++++++++++++++++++
+ net/vmw_vsock/vsock_loopback.c          |  1 +
+ 8 files changed, 44 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/thermal/loongson2_thermal.c b/drivers/thermal/loongson2_thermal.c
-index 133098dc0854..99ca0c7bc41c 100644
---- a/drivers/thermal/loongson2_thermal.c
-+++ b/drivers/thermal/loongson2_thermal.c
-@@ -127,7 +127,7 @@ static int loongson2_thermal_probe(struct platform_device *pdev)
- 		if (!IS_ERR(tzd))
- 			break;
+diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+index f75731396b7e..ec20ecff85c7 100644
+--- a/drivers/vhost/vsock.c
++++ b/drivers/vhost/vsock.c
+@@ -449,6 +449,7 @@ static struct virtio_transport vhost_transport = {
+ 		.notify_send_pre_enqueue  = virtio_transport_notify_send_pre_enqueue,
+ 		.notify_send_post_enqueue = virtio_transport_notify_send_post_enqueue,
+ 		.notify_buffer_size       = virtio_transport_notify_buffer_size,
++		.notify_set_rcvlowat      = virtio_transport_notify_set_rcvlowat,
  
--		if (PTR_ERR(tzd) != ENODEV)
-+		if (PTR_ERR(tzd) != -ENODEV)
- 			continue;
+ 		.read_skb = virtio_transport_read_skb,
+ 	},
+diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
+index ebb3ce63d64d..c82089dee0c8 100644
+--- a/include/linux/virtio_vsock.h
++++ b/include/linux/virtio_vsock.h
+@@ -256,4 +256,5 @@ void virtio_transport_put_credit(struct virtio_vsock_sock *vvs, u32 credit);
+ void virtio_transport_deliver_tap_pkt(struct sk_buff *skb);
+ int virtio_transport_purge_skbs(void *vsk, struct sk_buff_head *list);
+ int virtio_transport_read_skb(struct vsock_sock *vsk, skb_read_actor_t read_actor);
++int virtio_transport_notify_set_rcvlowat(struct vsock_sock *vsk, int val);
+ #endif /* _LINUX_VIRTIO_VSOCK_H */
+diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
+index e302c0e804d0..535701efc1e5 100644
+--- a/include/net/af_vsock.h
++++ b/include/net/af_vsock.h
+@@ -137,7 +137,6 @@ struct vsock_transport {
+ 	u64 (*stream_rcvhiwat)(struct vsock_sock *);
+ 	bool (*stream_is_active)(struct vsock_sock *);
+ 	bool (*stream_allow)(u32 cid, u32 port);
+-	int (*set_rcvlowat)(struct vsock_sock *vsk, int val);
  
- 		return dev_err_probe(dev, PTR_ERR(tzd), "failed to register");
+ 	/* SEQ_PACKET. */
+ 	ssize_t (*seqpacket_dequeue)(struct vsock_sock *vsk, struct msghdr *msg,
+@@ -168,6 +167,7 @@ struct vsock_transport {
+ 		struct vsock_transport_send_notify_data *);
+ 	/* sk_lock held by the caller */
+ 	void (*notify_buffer_size)(struct vsock_sock *, u64 *);
++	int (*notify_set_rcvlowat)(struct vsock_sock *vsk, int val);
+ 
+ 	/* Shutdown. */
+ 	int (*shutdown)(struct vsock_sock *, int);
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 816725af281f..54ba7316f808 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -2264,8 +2264,13 @@ static int vsock_set_rcvlowat(struct sock *sk, int val)
+ 
+ 	transport = vsk->transport;
+ 
+-	if (transport && transport->set_rcvlowat)
+-		return transport->set_rcvlowat(vsk, val);
++	if (transport && transport->notify_set_rcvlowat) {
++		int err;
++
++		err = transport->notify_set_rcvlowat(vsk, val);
++		if (err)
++			return err;
++	}
+ 
+ 	WRITE_ONCE(sk->sk_rcvlowat, val ? : 1);
+ 	return 0;
+diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
+index 7cb1a9d2cdb4..e2157e387217 100644
+--- a/net/vmw_vsock/hyperv_transport.c
++++ b/net/vmw_vsock/hyperv_transport.c
+@@ -816,7 +816,7 @@ int hvs_notify_send_post_enqueue(struct vsock_sock *vsk, ssize_t written,
+ }
+ 
+ static
+-int hvs_set_rcvlowat(struct vsock_sock *vsk, int val)
++int hvs_notify_set_rcvlowat(struct vsock_sock *vsk, int val)
+ {
+ 	return -EOPNOTSUPP;
+ }
+@@ -856,7 +856,7 @@ static struct vsock_transport hvs_transport = {
+ 	.notify_send_pre_enqueue  = hvs_notify_send_pre_enqueue,
+ 	.notify_send_post_enqueue = hvs_notify_send_post_enqueue,
+ 
+-	.set_rcvlowat             = hvs_set_rcvlowat
++	.notify_set_rcvlowat      = hvs_notify_set_rcvlowat
+ };
+ 
+ static bool hvs_check_transport(struct vsock_sock *vsk)
+diff --git a/net/vmw_vsock/virtio_transport.c b/net/vmw_vsock/virtio_transport.c
+index af5bab1acee1..f495b9e5186b 100644
+--- a/net/vmw_vsock/virtio_transport.c
++++ b/net/vmw_vsock/virtio_transport.c
+@@ -537,6 +537,7 @@ static struct virtio_transport virtio_transport = {
+ 		.notify_send_pre_enqueue  = virtio_transport_notify_send_pre_enqueue,
+ 		.notify_send_post_enqueue = virtio_transport_notify_send_post_enqueue,
+ 		.notify_buffer_size       = virtio_transport_notify_buffer_size,
++		.notify_set_rcvlowat      = virtio_transport_notify_set_rcvlowat,
+ 
+ 		.read_skb = virtio_transport_read_skb,
+ 	},
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index b35306dfcebe..16ff976a86e3 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1690,6 +1690,36 @@ int virtio_transport_read_skb(struct vsock_sock *vsk, skb_read_actor_t recv_acto
+ }
+ EXPORT_SYMBOL_GPL(virtio_transport_read_skb);
+ 
++int virtio_transport_notify_set_rcvlowat(struct vsock_sock *vsk, int val)
++{
++	struct virtio_vsock_sock *vvs = vsk->trans;
++	bool send_update;
++
++	spin_lock_bh(&vvs->rx_lock);
++
++	/* If number of available bytes is less than new SO_RCVLOWAT value,
++	 * kick sender to send more data, because sender may sleep in its
++	 * 'send()' syscall waiting for enough space at our side. Also
++	 * don't send credit update when peer already knows actual value -
++	 * such transmission will be useless.
++	 */
++	send_update = (vvs->rx_bytes < val) &&
++		      (vvs->fwd_cnt != vvs->last_fwd_cnt);
++
++	spin_unlock_bh(&vvs->rx_lock);
++
++	if (send_update) {
++		int err;
++
++		err = virtio_transport_send_credit_update(vsk);
++		if (err < 0)
++			return err;
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(virtio_transport_notify_set_rcvlowat);
++
+ MODULE_LICENSE("GPL v2");
+ MODULE_AUTHOR("Asias He");
+ MODULE_DESCRIPTION("common code for virtio vsock");
+diff --git a/net/vmw_vsock/vsock_loopback.c b/net/vmw_vsock/vsock_loopback.c
+index 048640167411..6dea6119f5b2 100644
+--- a/net/vmw_vsock/vsock_loopback.c
++++ b/net/vmw_vsock/vsock_loopback.c
+@@ -96,6 +96,7 @@ static struct virtio_transport loopback_transport = {
+ 		.notify_send_pre_enqueue  = virtio_transport_notify_send_pre_enqueue,
+ 		.notify_send_post_enqueue = virtio_transport_notify_send_post_enqueue,
+ 		.notify_buffer_size       = virtio_transport_notify_buffer_size,
++		.notify_set_rcvlowat      = virtio_transport_notify_set_rcvlowat,
+ 
+ 		.read_skb = virtio_transport_read_skb,
+ 	},
 -- 
 2.43.0
 
