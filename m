@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E81F837D26
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FFF5837F91
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCA83291C56
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAF5D1C2915A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04AAA5BAF2;
-	Tue, 23 Jan 2024 00:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37A0629F8;
+	Tue, 23 Jan 2024 00:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GrE5vbsR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bG8Ow9Kz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B962B39AC0;
-	Tue, 23 Jan 2024 00:30:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8271463122;
+	Tue, 23 Jan 2024 00:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969813; cv=none; b=N2lrQQSuiZuaoOHbE75UqZaqgZx7gL9tl6yJh+OB6DYQIXjVFBZCjtNI2/9xMpL3Frr77QcZT9jUE06IPZiH5sVUOPvbpJAPLZVjbK5GqsqMpKxPlGRd64Ob2YlOCWm/1Dy1rMjKcQyNUaYaj+Jtoc9ohiX34nk1nQR6DBAiHs0=
+	t=1705971197; cv=none; b=fQeEEXI+3RHJ9K16HYVwXL0ls4cL6orNPS7g0v6H3qwoAtnFEQI2V4xZtKqF/l/s+6bBEDfBYvPPz6HhJJzGYayxbX1xGt8b/Q+cJSUWcbC0R7xVxlyjYXhrbWv3ZRSv1E47FEL+BnzT+o/iGi8xieNO5W+xZJTMRtt1u2qv8HQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969813; c=relaxed/simple;
-	bh=8sfcjKGjBC9d2ie1m/VLYS3zqQs88uyeE26EMK5MZPI=;
+	s=arc-20240116; t=1705971197; c=relaxed/simple;
+	bh=kP9SJIHo6RfJL665ypiiGzTz72ez0UkkOWUSQgzU8oo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZJdztjKy83PSR9JozM5hPRJl//fxoijZMOhcHJ47FRC5SwVSPxO1gUoYl8pHKueimPrPXUig+1DsiX02FDBvE3AD/N/e9BNzdEPv1xPFmkoeb4anzZeBKJ7cbIfp/Z7+t0do7TzM+u+j/rHqeZzMTMtNbAQrOSZZoMzg/CFDH5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GrE5vbsR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 795A0C433C7;
-	Tue, 23 Jan 2024 00:30:13 +0000 (UTC)
+	 MIME-Version; b=rS60SHXNWr8v1x4IB0noZqU1qzA5WE/UJIX1YvGmmsDiQVLrn3M8/WQ2k4B8tFTWdj2WNbTbWp5HO26nNxv0evijc9SLm8W0t2mLd7Wad+FXOGhNuf1i4omJ0FQBLPXD5SBf1W1foD9h50X3iux7rs6JjDLvjAwbbWq6FPi1b2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bG8Ow9Kz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4112BC433F1;
+	Tue, 23 Jan 2024 00:53:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969813;
-	bh=8sfcjKGjBC9d2ie1m/VLYS3zqQs88uyeE26EMK5MZPI=;
+	s=korg; t=1705971197;
+	bh=kP9SJIHo6RfJL665ypiiGzTz72ez0UkkOWUSQgzU8oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GrE5vbsRMHC+EgKbPPVk5MgGT7fCBr5UwSGX202eg9uV5GUiLE0+xjAV+FRAdoNzM
-	 QJeuJM+kCUKrwL68qoWIpEYrQ9N4LL3GFQak53Pam5CV6NohN6cCqJpaxb4hLKfdrx
-	 nXecY2+baFtdS5E+y5rcCnEgwGKEfi6C4oD0SmpA=
+	b=bG8Ow9Kzj1v3IvO9G+gPCTXCHetQcIouqOhbDQMiE3i+eaOV0dndsRKpo6SwnfoCc
+	 9QTMw9yFle1VJu1cwnh134ilompxDEBOrLtUaqphr/4yAvHw/nft1LY6wxd9+NP3z/
+	 E5JoLqosbSa+34n0HfwRCsxuLSl+E3vI/hBc9zhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tadeusz Struk <tstruk@gigaio.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>,
-	stable@kernel.org
-Subject: [PATCH 6.7 466/641] PCI/P2PDMA: Remove reference to pci_p2pdma_map_sg()
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 202/417] media: dvb-frontends: m88ds3103: Fix a memory leak in an error handling path of m88ds3103_probe()
 Date: Mon, 22 Jan 2024 15:56:10 -0800
-Message-ID: <20240122235832.626346157@linuxfoundation.org>
+Message-ID: <20240122235758.929456472@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tadeusz Struk <tstruk@gigaio.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 9a000a72af75886e5de13f4edef7f0d788622e7d upstream.
+[ Upstream commit 5b2f885e2f6f482d05c23f04c8240f7b4fc5bdb5 ]
 
-Update Documentation/driver-api/pci/p2pdma.rst doc and remove references to
-obsolete p2pdma mapping functions.
+If an error occurs after a successful i2c_mux_add_adapter(), then
+i2c_mux_del_adapters() should be called to free some resources, as
+already done in the remove function.
 
-Fixes: 0d06132fc84b ("PCI/P2PDMA: Remove pci_p2pdma_[un]map_sg()")
-Link: https://lore.kernel.org/r/20231113180325.444692-1-tstruk@gmail.com
-Signed-off-by: Tadeusz Struk <tstruk@gigaio.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e6089feca460 ("media: m88ds3103: Add support for ds3103b demod")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/driver-api/pci/p2pdma.rst |   16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ drivers/media/dvb-frontends/m88ds3103.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/Documentation/driver-api/pci/p2pdma.rst
-+++ b/Documentation/driver-api/pci/p2pdma.rst
-@@ -83,19 +83,9 @@ this to include other types of resources
- Client Drivers
- --------------
+diff --git a/drivers/media/dvb-frontends/m88ds3103.c b/drivers/media/dvb-frontends/m88ds3103.c
+index 9a0d43c7ba9e..ce99f7dfb5a5 100644
+--- a/drivers/media/dvb-frontends/m88ds3103.c
++++ b/drivers/media/dvb-frontends/m88ds3103.c
+@@ -1894,7 +1894,7 @@ static int m88ds3103_probe(struct i2c_client *client,
+ 		/* get frontend address */
+ 		ret = regmap_read(dev->regmap, 0x29, &utmp);
+ 		if (ret)
+-			goto err_kfree;
++			goto err_del_adapters;
+ 		dev->dt_addr = ((utmp & 0x80) == 0) ? 0x42 >> 1 : 0x40 >> 1;
+ 		dev_dbg(&client->dev, "dt addr is 0x%02x\n", dev->dt_addr);
  
--A client driver typically only has to conditionally change its DMA map
--routine to use the mapping function :c:func:`pci_p2pdma_map_sg()` instead
--of the usual :c:func:`dma_map_sg()` function. Memory mapped in this
--way does not need to be unmapped.
--
--The client may also, optionally, make use of
--:c:func:`is_pci_p2pdma_page()` to determine when to use the P2P mapping
--functions and when to use the regular mapping functions. In some
--situations, it may be more appropriate to use a flag to indicate a
--given request is P2P memory and map appropriately. It is important to
--ensure that struct pages that back P2P memory stay out of code that
--does not have support for them as other code may treat the pages as
--regular memory which may not be appropriate.
-+A client driver only has to use the mapping API :c:func:`dma_map_sg()`
-+and :c:func:`dma_unmap_sg()` functions as usual, and the implementation
-+will do the right thing for the P2P capable memory.
+@@ -1902,11 +1902,14 @@ static int m88ds3103_probe(struct i2c_client *client,
+ 						      dev->dt_addr);
+ 		if (IS_ERR(dev->dt_client)) {
+ 			ret = PTR_ERR(dev->dt_client);
+-			goto err_kfree;
++			goto err_del_adapters;
+ 		}
+ 	}
  
- 
- Orchestrator Drivers
+ 	return 0;
++
++err_del_adapters:
++	i2c_mux_del_adapters(dev->muxc);
+ err_kfree:
+ 	kfree(dev);
+ err:
+-- 
+2.43.0
+
 
 
 
