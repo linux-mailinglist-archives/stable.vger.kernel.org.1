@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-13076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D729E837A7F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89DA383790C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8196B257E0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:52:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD01B1C27E0F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF4A812C54C;
-	Tue, 23 Jan 2024 00:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C353D145B21;
+	Tue, 23 Jan 2024 00:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mmeSGuXP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vtrVxDtJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7E312BF3D;
-	Tue, 23 Jan 2024 00:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E41145B1F;
+	Tue, 23 Jan 2024 00:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968939; cv=none; b=bsg8bgtC5ry51s7TT1NzW/a3zEgc0XTpSlU1QcPAfz8RtjUEWoZjmMi/cEKsT+/9oW5FYQIncMvVSIbLPL8QxcisDbPoYT1BZ0VZ7DkXzrtMFhaNuqb2I1L9R3jisT5xMG9fcbR+T7z1Q3xhuor/g/Nv2QlF74/7uxsIAmM8T/M=
+	t=1705968368; cv=none; b=fjInstLP2xUiMFb0jPJ56juKV4JNFLv8xMDAsAvrCUWJUeAqck5NExGLOc9CS5zcY8l27aEM8ICEQ3tcjwCaLPBdVQ5Y4THMKDWn/vtfsbUcyRazLMC4ApEHSTFV2Dl4dH4nqZxfgeGWhvsJtr2cPa2r+rbk0DxB64O9jbVyrAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968939; c=relaxed/simple;
-	bh=Oh8nBS8EEv3ov9iIKgHgw8wUGg/ueVm4JlRmUuNBQa4=;
+	s=arc-20240116; t=1705968368; c=relaxed/simple;
+	bh=ok2TpC7/ZRxb+HdfGm0NRt4ZU5YPs/NnFhd6pJiBOx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rTAlArj7JX/fMLbdTfkSMBSugLQSXXBz8DRxMn2rq8rrFEuNmPvZeFavqjprYRgH6qp6s4xRxxsMMOFJeBKkIF3KE44DV1IV0kXGOK9gz7eJAPuKiaJEOPHxEbtPCcOB3YDndtOGsAJO4Wc80kTz2XhK+MiyUYods7fdOBb5XyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mmeSGuXP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11FABC43390;
-	Tue, 23 Jan 2024 00:15:39 +0000 (UTC)
+	 MIME-Version; b=FCiwXDdNS3BVe8pfcLSw9vVcKxwXneG89lUy1RVBaTAUaEke1TF9g6NPCf8Mk3jywC50bs14XmtiYZmciPjlztR3bHqleUsqQ7iZ1KIxH1Ns2/ufHi8y3XoBod2O3BWaGNq7xLqcKC8ikytcwIjU1fK7/G8iuJWBsTdlnEzMfhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vtrVxDtJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E86C43390;
+	Tue, 23 Jan 2024 00:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968939;
-	bh=Oh8nBS8EEv3ov9iIKgHgw8wUGg/ueVm4JlRmUuNBQa4=;
+	s=korg; t=1705968368;
+	bh=ok2TpC7/ZRxb+HdfGm0NRt4ZU5YPs/NnFhd6pJiBOx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmeSGuXPfI79TAealvGqWLZvn4EcX+UwkFbdn+wEZ2H0Lxkx5LbUfsLLXkEBUBswP
-	 XlRrqox0OnxmDDtkvnIAqllHMJ1yADm6VmT8gqIUnbib+slhMZ2RrzNZ2Ay6FZSlHX
-	 ammwgX/pohg9DfqjTontQfrDfkSJiyVQ+AfZe6Y4=
+	b=vtrVxDtJldP0/Ve7A3yIlEIfJV9m6yvuFAO9T0gGK/I9HXi/0N76gbYBJ7Ws0rUwq
+	 Rg8QWtYF2NhM83cGuu9lUw5YjPtjJWT/Uu9TKRqll0dHx/gGbiYfxzmv8Trup/ViL9
+	 vMGM7N+dI6VrazBOmN2TCe2Wtx/rnxDKXYbJkoDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 112/194] f2fs: fix to avoid dirent corruption
-Date: Mon, 22 Jan 2024 15:57:22 -0800
-Message-ID: <20240122235724.034323853@linuxfoundation.org>
+	"Ricardo B. Marliere" <ricardo@marliere.net>,
+	Mike Isely <isely@pobox.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+621409285c4156a009b3@syzkaller.appspotmail.com
+Subject: [PATCH 4.19 087/148] media: pvrusb2: fix use after free on context disconnection
+Date: Mon, 22 Jan 2024 15:57:23 -0800
+Message-ID: <20240122235715.912033157@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Ricardo B. Marliere <ricardo@marliere.net>
 
-[ Upstream commit 53edb549565f55ccd0bdf43be3d66ce4c2d48b28 ]
+[ Upstream commit ded85b0c0edd8f45fec88783d7555a5b982449c1 ]
 
-As Al reported in link[1]:
+Upon module load, a kthread is created targeting the
+pvr2_context_thread_func function, which may call pvr2_context_destroy
+and thus call kfree() on the context object. However, that might happen
+before the usb hub_event handler is able to notify the driver. This
+patch adds a sanity check before the invalid read reported by syzbot,
+within the context disconnection call stack.
 
-f2fs_rename()
-...
-	if (old_dir != new_dir && !whiteout)
-		f2fs_set_link(old_inode, old_dir_entry,
-					old_dir_page, new_dir);
-	else
-		f2fs_put_page(old_dir_page, 0);
+Reported-and-tested-by: syzbot+621409285c4156a009b3@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000a02a4205fff8eb92@google.com/
 
-You want correct inumber in the ".." link.  And cross-directory
-rename does move the source to new parent, even if you'd been asked
-to leave a whiteout in the old place.
-
-[1] https://lore.kernel.org/all/20231017055040.GN800259@ZenIV/
-
-With below testcase, it may cause dirent corruption, due to it missed
-to call f2fs_set_link() to update ".." link to new directory.
-- mkdir -p dir/foo
-- renameat2 -w dir/foo bar
-
-[ASSERT] (__chk_dots_dentries:1421)  --> Bad inode number[0x4] for '..', parent parent ino is [0x3]
-[FSCK] other corrupted bugs                           [Fail]
-
-Fixes: 7e01e7ad746b ("f2fs: support RENAME_WHITEOUT")
-Cc: Jan Kara <jack@suse.cz>
-Reported-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: e5be15c63804 ("V4L/DVB (7711): pvrusb2: Fix race on module unload")
+Signed-off-by: Ricardo B. Marliere <ricardo@marliere.net>
+Acked-by: Mike Isely <isely@pobox.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/namei.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/usb/pvrusb2/pvrusb2-context.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/namei.c b/fs/f2fs/namei.c
-index ed95c27e9302..99a91c746b39 100644
---- a/fs/f2fs/namei.c
-+++ b/fs/f2fs/namei.c
-@@ -1009,7 +1009,7 @@ static int f2fs_rename(struct inode *old_dir, struct dentry *old_dentry,
- 	}
+diff --git a/drivers/media/usb/pvrusb2/pvrusb2-context.c b/drivers/media/usb/pvrusb2/pvrusb2-context.c
+index d9e8481e9e28..9236463ba269 100644
+--- a/drivers/media/usb/pvrusb2/pvrusb2-context.c
++++ b/drivers/media/usb/pvrusb2/pvrusb2-context.c
+@@ -277,7 +277,8 @@ void pvr2_context_disconnect(struct pvr2_context *mp)
+ {
+ 	pvr2_hdw_disconnect(mp->hdw);
+ 	mp->disconnect_flag = !0;
+-	pvr2_context_notify(mp);
++	if (!pvr2_context_shutok())
++		pvr2_context_notify(mp);
+ }
  
- 	if (old_dir_entry) {
--		if (old_dir != new_dir && !whiteout)
-+		if (old_dir != new_dir)
- 			f2fs_set_link(old_inode, old_dir_entry,
- 						old_dir_page, new_dir);
- 		else
+ 
 -- 
 2.43.0
 
