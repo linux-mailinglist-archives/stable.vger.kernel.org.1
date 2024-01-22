@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 487B18384C9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B59483826D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57F6CB2C64C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3399C285E64
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8094745FC;
-	Tue, 23 Jan 2024 02:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054D15BAEC;
+	Tue, 23 Jan 2024 01:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Anu54OE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hBfDvI9R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8280745F2;
-	Tue, 23 Jan 2024 02:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78B85A7B8;
+	Tue, 23 Jan 2024 01:45:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975460; cv=none; b=f6fQL9ddkowW+K3i1RTA2yla+Lr4ChuYnTzvasAU08Yh61Gtomo4uPggbVT+u7cx03RuojmhrEsMnTrT0SBtT2gaq7qo1aUSmDEtkmVPYqpZtyh8P/N36EbaVAePudaZC0zhK3DHFNC0JOvK7CJRbvkHgFTSEEgBknV7BArEnyw=
+	t=1705974350; cv=none; b=uhLFZfXb1+7dM20aeU1GCTWewsHNyFdS4Ud8FN9YEeintNy1aUm2/hKNPi3FIv+CCdEvisvYetkJi23iX0cT2pPRUR3hZnn3f9W+N58zG+900hItWgnl1OAVhPqmfK+q8eTlyNZZa0Ebmz6A8/5xDe3jjbZu95C5uzHeJkyqLhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975460; c=relaxed/simple;
-	bh=BW+2JAltHpNkJvsjFwOXYWkjZjuAjdaJoXrIR3cNaQA=;
+	s=arc-20240116; t=1705974350; c=relaxed/simple;
+	bh=WXKGPf0EKTDeshpwou60I3rhaS6fJ5AlRnHdTPw3gmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KauAvjKZR+BwJKtoEBRPGR1v7cnptI4q1KOrwWqd1SpZpPEjQ2UkLBrTX5YQvh//cCQ8aE68ytdKHhvHN9xKseymzK8z7yBMm2HuMoDhaZoDd5ObpGoc3UsAOb+uOm3/N35h5mtVN+BR83jYjWuIi9nlJY8vxqQIxQKcvoz3O8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Anu54OE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623DFC43399;
-	Tue, 23 Jan 2024 02:04:20 +0000 (UTC)
+	 MIME-Version; b=ajBJ21kdunWBREvMk3oxySKUKCsHJMgW5BQTPFNRp4tsLCfJ6CHBk1cR7406TzP//Q8Qwoyx0RxNna7Odz0tjXqXOa/4u0O7PqdgzY95v29ydZ7nPqea8mobwLjtDer2DRnrsLZaREP3aJFP18Pjod2Rulo6Z+X161serPrt62o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hBfDvI9R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D2B8C433C7;
+	Tue, 23 Jan 2024 01:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975460;
-	bh=BW+2JAltHpNkJvsjFwOXYWkjZjuAjdaJoXrIR3cNaQA=;
+	s=korg; t=1705974350;
+	bh=WXKGPf0EKTDeshpwou60I3rhaS6fJ5AlRnHdTPw3gmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Anu54OEfpjadt/4MQ4dlDO0L/qjWS1anLJQMlKNQcOG24hRTK2ei43Q+zovaS4zY
-	 CctZSRB0zIyEWklDiw07h01HpC0tVIWFr0g+ZqaKJMQsjtrmaLqIcyzLoHLECtu1Oa
-	 OFA7lXqYi9VzG8oGBwtuhPjnM6SvPSPfWBUpG7G0=
+	b=hBfDvI9RT+ug1+8VawrINyXXTcUxnftkQZI7wggkwMo4Rx2ftWHXfjtoWCcvh4bUA
+	 qAjZnhhVReNj1XUtz4p/t1LpzwkQainA3k47nUtzSh1xJKjLiMBCH6I7i5C3rlqsrW
+	 HQ7/Ok60D8qjpPW0SfXCxitNydzoStmIefDtDYag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 392/583] fbdev: flush deferred work in fb_deferred_io_fsync()
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 187/374] drm/radeon/r600_cs: Fix possible int overflows in r600_cs_check_reg()
 Date: Mon, 22 Jan 2024 15:57:23 -0800
-Message-ID: <20240122235823.981268028@linuxfoundation.org>
+Message-ID: <20240122235751.126874678@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-commit 15e4c1f462279b4e128f27de48133e0debe9e0df upstream.
+[ Upstream commit 39c960bbf9d9ea862398759e75736cfb68c3446f ]
 
-The driver's fsync() is supposed to flush any pending operation to
-hardware. It is implemented in this driver by cancelling the queued
-deferred IO first, then schedule it for "immediate execution" by calling
-schedule_delayed_work() again with delay=0. However, setting delay=0
-only means the work is scheduled immediately, it does not mean the work
-is executed immediately. There is no guarantee that the work is finished
-after schedule_delayed_work() returns. After this driver's fsync()
-returns, there can still be pending work. Furthermore, if close() is
-called by users immediately after fsync(), the pending work gets
-cancelled and fsync() may do nothing.
+While improbable, there may be a chance of hitting integer
+overflow when the result of radeon_get_ib_value() gets shifted
+left.
 
-To ensure that the deferred IO completes, use flush_delayed_work()
-instead. Write operations to this driver either write to the device
-directly, or invoke schedule_delayed_work(); so by flushing the
-workqueue, it can be guaranteed that all previous writes make it to the
-device.
+Avoid it by casting one of the operands to larger data type (u64).
 
-Fixes: 5e841b88d23d ("fb: fsync() method for deferred I/O flush.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
+
+Fixes: 1729dd33d20b ("drm/radeon/kms: r600 CS parser fixes")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fb_defio.c |    6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/gpu/drm/radeon/r600_cs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/video/fbdev/core/fb_defio.c
-+++ b/drivers/video/fbdev/core/fb_defio.c
-@@ -132,11 +132,7 @@ int fb_deferred_io_fsync(struct file *fi
- 		return 0;
- 
- 	inode_lock(inode);
--	/* Kill off the delayed work */
--	cancel_delayed_work_sync(&info->deferred_work);
--
--	/* Run it immediately */
--	schedule_delayed_work(&info->deferred_work, 0);
-+	flush_delayed_work(&info->deferred_work);
- 	inode_unlock(inode);
- 
- 	return 0;
+diff --git a/drivers/gpu/drm/radeon/r600_cs.c b/drivers/gpu/drm/radeon/r600_cs.c
+index 8be4799a98ef..6ade5dd470d5 100644
+--- a/drivers/gpu/drm/radeon/r600_cs.c
++++ b/drivers/gpu/drm/radeon/r600_cs.c
+@@ -1277,7 +1277,7 @@ static int r600_cs_check_reg(struct radeon_cs_parser *p, u32 reg, u32 idx)
+ 			return -EINVAL;
+ 		}
+ 		tmp = (reg - CB_COLOR0_BASE) / 4;
+-		track->cb_color_bo_offset[tmp] = radeon_get_ib_value(p, idx) << 8;
++		track->cb_color_bo_offset[tmp] = (u64)radeon_get_ib_value(p, idx) << 8;
+ 		ib[idx] += (u32)((reloc->gpu_offset >> 8) & 0xffffffff);
+ 		track->cb_color_base_last[tmp] = ib[idx];
+ 		track->cb_color_bo[tmp] = reloc->robj;
+@@ -1304,7 +1304,7 @@ static int r600_cs_check_reg(struct radeon_cs_parser *p, u32 reg, u32 idx)
+ 					"0x%04X\n", reg);
+ 			return -EINVAL;
+ 		}
+-		track->htile_offset = radeon_get_ib_value(p, idx) << 8;
++		track->htile_offset = (u64)radeon_get_ib_value(p, idx) << 8;
+ 		ib[idx] += (u32)((reloc->gpu_offset >> 8) & 0xffffffff);
+ 		track->htile_bo = reloc->robj;
+ 		track->db_dirty = true;
+-- 
+2.43.0
+
 
 
 
