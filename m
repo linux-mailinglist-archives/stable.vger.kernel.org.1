@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F655837EF6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50979837C8A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A33551C28459
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 066AB1F28B1E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E20605AB;
-	Tue, 23 Jan 2024 00:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A9C3135A55;
+	Tue, 23 Jan 2024 00:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLbJI8Za"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jDsVmBR6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168B260252;
-	Tue, 23 Jan 2024 00:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27EBD33097;
+	Tue, 23 Jan 2024 00:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970853; cv=none; b=npqVYeRJN/SmYhhNBrsmJ6CBsnGpiXpMUXBZRoZaouVEJ0l0FWXO3155W8P7BNwxxMWg7qijqcpfU0qr6aBIi+FhjBSXb9r1KxwRM2DMgJrwxqzdELD7CMw4zFORDmYFDnQUHxYeY5nw5S2zz87o2Oo08aZV3M1FPiBxQzJ2B2E=
+	t=1705969660; cv=none; b=EwVy6Zf8W+TNHjjPPYSXlEUvjoiwuO5BoLARRjfl3cCfQ4qeOyyt9e4YyhGg3Pzdbi3nzba2sPBmQPQDlzennUV4XW+/GisNRFCCp4aR+eP7f522FVqb1eegkUThPDQQledP+w04613AyIGSz5TkBYKhyslrC6fMfSyRAgRh7ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970853; c=relaxed/simple;
-	bh=ZY+lknEH/rkQPnGcWWWBLaRlII1cicnzkLOvpx01CRQ=;
+	s=arc-20240116; t=1705969660; c=relaxed/simple;
+	bh=n4YEv7gEp2CjJUb0lhEYZ5Fb1+QefdJtWBMqfkj3KiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MfIyWPEM4bhQpt36Ahgf7M95iwIzUCFLegKx0lJ0uw9jI9pLT27NO3H967k7G/XnjeE3PF1t4+XFCPogCC7dGcmBfo10CCRoF8I+reqsmDws9yvACv6wiVaY8EyH0fU5rFYDPQ5q49cNntAygRj0nWKCpVKuwPIiDexnihdaM9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLbJI8Za; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B56C43390;
-	Tue, 23 Jan 2024 00:47:32 +0000 (UTC)
+	 MIME-Version; b=VNtXwSY4507K6EjZa51JGUFjdzRiqPdx8Gk40MjU8WR/gs/9i/gr+ehbOynkixykZe90KSU1IYuvMIgIr9XFwIoZKnCo/LA+X6MrqwXWoKx3rZhMOyxjT2JVIBTRnQmF6BbmZmQ+vuc1zbup5YYdOWIBRPChuuFZJDz4FEJ1brk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jDsVmBR6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C48F1C433F1;
+	Tue, 23 Jan 2024 00:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970852;
-	bh=ZY+lknEH/rkQPnGcWWWBLaRlII1cicnzkLOvpx01CRQ=;
+	s=korg; t=1705969660;
+	bh=n4YEv7gEp2CjJUb0lhEYZ5Fb1+QefdJtWBMqfkj3KiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BLbJI8ZaVNhKj8vvc87veBQRPmHcxtp5ZvezFKigDwu/tijyjylpFEKQ7C4bKZ/pK
-	 kSf77RKSrVIdkHH8VM9g/JTQFmBR2bvstl3DMqGWwIknrz+tTCrLkyrjrIgNYTITDU
-	 ODk+O93Bht2FhgDcDoWgS1OS6s4lrogdedeAux0M=
+	b=jDsVmBR6Dkm4LKY/iJt+hENgHTSJ/bMdMb4wVjKvFCkIv330eANLxREzbFfeMqw8K
+	 gEa5jDR1Y/iVLc0Ie/pAPDyUEUB1PuWIhv5vU7gndmptcDQW7PpMqssGWXuylyUBWD
+	 9l5PueL0/g3jpPv6L9Dh4TvLGb9qaXxtTsaXMqKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 125/417] arm64: dts: qcom: sm8150-hdk: fix SS USB regulators
+	Inochi Amaoto <inochiama@outlook.com>,
+	Guo Ren <guoren@kernel.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.7 389/641] dt-bindings: timer: thead,c900-aclint-mtimer: separate mtime and mtimecmp regs
 Date: Mon, 22 Jan 2024 15:54:53 -0800
-Message-ID: <20240122235756.136418157@linuxfoundation.org>
+Message-ID: <20240122235830.124966554@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Inochi Amaoto <inochiama@outlook.com>
 
-[ Upstream commit a509adf05b2aac31b22781f5aa09e4768a5b6c39 ]
+commit b91cf01cf3e63a627b3b65f4284dcf9a4deb80f9 upstream.
 
-The SM8150-HDK uses two different regulators to power up SuperSpeed USB
-PHYs. The L5A regulator is used for the second USB host, while the first
-(OTG) USB host uses different regulator, L18A. Fix the regulator for the
-usb_1 QMPPHY and (to remove possible confusion) drop the
-usb_ss_dp_core_1/_2 labels.
+The timer registers of aclint don't follow the clint layout and can
+be mapped on any different offset. As sg2042 uses separated timer
+and mswi for its clint, it should follow the aclint spec and have
+separated registers.
 
-Fixes: 0ab1b2d10afe ("arm64: dts: qcom: add sm8150 hdk dts")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20231215174152.315403-4-dmitry.baryshkov@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The previous patch introduced a new type of T-HEAD aclint timer which
+has clint timer layout. Although it has the clint timer layout, it
+should follow the aclint spec and uses the separated mtime and mtimecmp
+regs. So a ABI change is needed to make the timer fit the aclint spec.
+
+To make T-HEAD aclint timer more closer to the aclint spec, use
+regs-names to represent the mtimecmp register, which can avoid hack
+for unsupport mtime register of T-HEAD aclint timer.
+
+Also, as T-HEAD aclint only supports mtimecmp, it is unnecessary to
+implement the whole aclint spec. To make this binding T-HEAD specific,
+only add reg-name for existed register. For details, see the discussion
+in the last link.
+
+Signed-off-by: Inochi Amaoto <inochiama@outlook.com>
+Fixes: 4734449f7311 ("dt-bindings: timer: Add Sophgo sg2042 CLINT timer")
+Link: https://lists.infradead.org/pipermail/opensbi/2023-October/005693.html
+Link: https://github.com/riscv/riscv-aclint/blob/main/riscv-aclint.adoc
+Link: https://lore.kernel.org/all/IA1PR20MB4953F9D77FFC76A9D236922DBBB6A@IA1PR20MB4953.namprd20.prod.outlook.com/
+Acked-by: Guo Ren <guoren@kernel.org>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/IA1PR20MB49531ED1BCC00D6B265C2D10BB86A@IA1PR20MB4953.namprd20.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sm8150-hdk.dts | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ .../bindings/timer/thead,c900-aclint-mtimer.yaml         | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8150-hdk.dts b/arch/arm64/boot/dts/qcom/sm8150-hdk.dts
-index 3331ee957d64..368da4c7f41b 100644
---- a/arch/arm64/boot/dts/qcom/sm8150-hdk.dts
-+++ b/arch/arm64/boot/dts/qcom/sm8150-hdk.dts
-@@ -126,8 +126,6 @@ vdda_qrefs_0p875_5:
- 		vdda_sp_sensor:
- 		vdda_ufs_2ln_core_1:
- 		vdda_ufs_2ln_core_2:
--		vdda_usb_ss_dp_core_1:
--		vdda_usb_ss_dp_core_2:
- 		vdda_qlink_lv:
- 		vdda_qlink_lv_ck:
- 		vreg_l5a_0p875: ldo5 {
-@@ -209,6 +207,12 @@ vreg_l17a_3p0: ldo17 {
- 			regulator-max-microvolt = <3008000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
- 		};
+diff --git a/Documentation/devicetree/bindings/timer/thead,c900-aclint-mtimer.yaml b/Documentation/devicetree/bindings/timer/thead,c900-aclint-mtimer.yaml
+index fbd235650e52..2e92bcdeb423 100644
+--- a/Documentation/devicetree/bindings/timer/thead,c900-aclint-mtimer.yaml
++++ b/Documentation/devicetree/bindings/timer/thead,c900-aclint-mtimer.yaml
+@@ -17,7 +17,12 @@ properties:
+       - const: thead,c900-aclint-mtimer
+ 
+   reg:
+-    maxItems: 1
++    items:
++      - description: MTIMECMP Registers
 +
-+		vreg_l18a_0p8: ldo18 {
-+			regulator-min-microvolt = <880000>;
-+			regulator-max-microvolt = <880000>;
-+			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-+		};
- 	};
++  reg-names:
++    items:
++      - const: mtimecmp
  
- 	pm8150l-rpmh-regulators {
-@@ -439,13 +443,13 @@ &usb_2_hsphy {
- &usb_1_qmpphy {
- 	status = "okay";
- 	vdda-phy-supply = <&vreg_l3c_1p2>;
--	vdda-pll-supply = <&vdda_usb_ss_dp_core_1>;
-+	vdda-pll-supply = <&vreg_l18a_0p8>;
- };
+   interrupts-extended:
+     minItems: 1
+@@ -28,6 +33,7 @@ additionalProperties: false
+ required:
+   - compatible
+   - reg
++  - reg-names
+   - interrupts-extended
  
- &usb_2_qmpphy {
- 	status = "okay";
- 	vdda-phy-supply = <&vreg_l3c_1p2>;
--	vdda-pll-supply = <&vdda_usb_ss_dp_core_1>;
-+	vdda-pll-supply = <&vreg_l5a_0p875>;
- };
- 
- &usb_1 {
+ examples:
+@@ -39,5 +45,6 @@ examples:
+                             <&cpu3intc 7>,
+                             <&cpu4intc 7>;
+       reg = <0xac000000 0x00010000>;
++      reg-names = "mtimecmp";
+     };
+ ...
 -- 
 2.43.0
 
