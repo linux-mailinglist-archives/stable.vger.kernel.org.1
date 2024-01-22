@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB5F783833A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:27:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C46FF837C22
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A59B1C298A4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 665CF1F2B319
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5115E60B9D;
-	Tue, 23 Jan 2024 01:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F241EF0D;
+	Tue, 23 Jan 2024 00:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEyP1Gw5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNm8Iq2s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E97B29403;
-	Tue, 23 Jan 2024 01:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C3C15EB0;
+	Tue, 23 Jan 2024 00:25:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974741; cv=none; b=eQcCherWbopWSYyoYINOJrEnok5/wsz/OTlUxt36CnU7/yica4eOm18HeHZFyLWyf4zGOW8vn3XypNQ3dQMMYBKf5ki5/ysUkhICtzD76X9qSPdjyJMYFWfQrrGfNoAiC8sgAmkIX+5F1NQuSfUGxf5wtcvuT4+3SiqufyvY85Q=
+	t=1705969516; cv=none; b=FXbD2F5ilQrWOzbqfgTBH+07J7UTt4QnXFtnGZ1fR5c0OLmaUTsudSWRaKS4ao/GmJFg+vQFr9U+eP3yWe3S5IJqfbYuZqXSwEL5gTgcQ2hm1I18nF+p9HJzy4H/Cm7NWR125NZ2dFQdk1O7tDrtMyMwwZkWvVLWBdBR22yLavU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974741; c=relaxed/simple;
-	bh=9IOhxyCy5PxRRFQh37yfyPMTEK2OO+XFWIi9Bd7gzLU=;
+	s=arc-20240116; t=1705969516; c=relaxed/simple;
+	bh=lbm3RSRAPDbyuxDNzL5+OuEsly4QMTF4mesMamjDZXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ePEEkJFWIi+Bw+o6ikPyPmvxQvB856+6DwtyOyZEhKIpEvJmAmmBM5S6y8caDBt2j/OId/L2EfqZzyz3Mfvp+Cck3lnBLu3eT5KrVpMrBn/vRPw9dpq85RX3KKVutq5RqmXM3Yb9SZ0TnsEX989Qquk7KqEHo4X9zEHxFjyZinM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEyP1Gw5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7FD3C43390;
-	Tue, 23 Jan 2024 01:52:20 +0000 (UTC)
+	 MIME-Version; b=nsmvy0gi2uRNL7M2Q9HGFUONUeTRXf7pZ8xYiRcIsa+DOkqQMxaSiDsXBJudr8xFXpLtc4T0D10N4wx1QuaSzTqCPc8V5wNXTO6250LMrg2wWVvEaa5hX3mV28nFcegfwjtVFKNYyncRIn0j/vUkzU3eDkM/7L4RVVDd2JYRqsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNm8Iq2s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3B5C433A6;
+	Tue, 23 Jan 2024 00:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974740;
-	bh=9IOhxyCy5PxRRFQh37yfyPMTEK2OO+XFWIi9Bd7gzLU=;
+	s=korg; t=1705969515;
+	bh=lbm3RSRAPDbyuxDNzL5+OuEsly4QMTF4mesMamjDZXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BEyP1Gw5d+yOGau3gqK3TT0CeriKvw/90F/ZxzA5jYgE9z09rA4EEX3pA39Sn2SS6
-	 5DgVenFuCu5vshK6nQgLlfOmP6oWml/x21LT/grDgYP2e15z4zLyD4SwVgj01Eq8x0
-	 oRnvEGpZsFHS7rd6Cg2mO+VmPaH0RjnSRz5/eT5Q=
+	b=zNm8Iq2sejnGUV2eBvJUKsKtUEI0Jf4tAKiCabtw+hwOtjblJmxcSr5J0sCgbFwei
+	 w+u6j4/h6KM/jSe2PTm1mUinceHAT1Pt9Tsgnq05e3+dJOOctobuwINSwQk7oNx0rI
+	 ge+SxiNUx9H1Xj8BhN+Xjd9MkylPfsnzRi6qWsaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Maxime Ripard <mripard@kernel.org>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 151/583] wifi: mt76: mt7921: fix country count limitation for CLC
+Subject: [PATCH 6.7 298/641] drm/bridge: tc358767: Fix return value on error case
 Date: Mon, 22 Jan 2024 15:53:22 -0800
-Message-ID: <20240122235816.692913771@linuxfoundation.org>
+Message-ID: <20240122235827.233565195@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit fa6ad88e023ddfa6c5dcdb466d159e89f451e305 ]
+[ Upstream commit 32bd29b619638256c5b75fb021d6d9f12fc4a984 ]
 
-Due to the increase in the number of power tables for 6Ghz on CLC,
-the variable nr_country is no longer sufficient to represent the
-total quantity. Therefore, we have switched to calculating the
-length of clc buf to obtain the correct power table. Additionally,
-the version number has been incremented to 1.
+If the hpd_pin is invalid, the driver returns 'ret'. But 'ret' contains
+0, instead of an error value.
 
-Fixes: 23bdc5d8cadf ("wifi: mt76: mt7921: introduce Country Location Control support")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Return -EINVAL instead.
+
+Fixes: f25ee5017e4f ("drm/bridge: tc358767: add IRQ and HPD support")
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231103-uninit-fixes-v2-4-c22b2444f5f5@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/mcu.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/bridge/tc358767.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-index 90c93970acab..d1b1b8f767fc 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/mcu.c
-@@ -1136,22 +1136,27 @@ int __mt7921_mcu_set_clc(struct mt792x_dev *dev, u8 *alpha2,
- 		u8 type[2];
- 		u8 rsvd[64];
- 	} __packed req = {
-+		.ver = 1,
- 		.idx = idx,
- 		.env = env_cap,
- 		.acpi_conf = mt792x_acpi_get_flags(&dev->phy),
- 	};
- 	int ret, valid_cnt = 0;
--	u8 i, *pos;
-+	u16 buf_len = 0;
-+	u8 *pos;
+diff --git a/drivers/gpu/drm/bridge/tc358767.c b/drivers/gpu/drm/bridge/tc358767.c
+index ef2e373606ba..615cc8f950d7 100644
+--- a/drivers/gpu/drm/bridge/tc358767.c
++++ b/drivers/gpu/drm/bridge/tc358767.c
+@@ -2273,7 +2273,7 @@ static int tc_probe(struct i2c_client *client)
+ 	} else {
+ 		if (tc->hpd_pin < 0 || tc->hpd_pin > 1) {
+ 			dev_err(dev, "failed to parse HPD number\n");
+-			return ret;
++			return -EINVAL;
+ 		}
+ 	}
  
- 	if (!clc)
- 		return 0;
- 
-+	buf_len = le16_to_cpu(clc->len) - sizeof(*clc);
- 	pos = clc->data;
--	for (i = 0; i < clc->nr_country; i++) {
-+	while (buf_len > 16) {
- 		struct mt7921_clc_rule *rule = (struct mt7921_clc_rule *)pos;
- 		u16 len = le16_to_cpu(rule->len);
-+		u16 offset = len + sizeof(*rule);
- 
--		pos += len + sizeof(*rule);
-+		pos += offset;
-+		buf_len -= offset;
- 		if (rule->alpha2[0] != alpha2[0] ||
- 		    rule->alpha2[1] != alpha2[1])
- 			continue;
 -- 
 2.43.0
 
