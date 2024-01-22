@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-15034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5ACF83839C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:37 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D48A837C79
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04B5C1C29E07
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF0B91C28864
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB1F63417;
-	Tue, 23 Jan 2024 01:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A75E51353F0;
+	Tue, 23 Jan 2024 00:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+f8rbGa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TjJW/eaU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C20B46313F;
-	Tue, 23 Jan 2024 01:57:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673422581;
+	Tue, 23 Jan 2024 00:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975020; cv=none; b=hydyL3100+0uuRpIgDrdEoUmJJSo9wJrNx8X4dztBxB2mIrs27BaQMwASNwWVAANUmoE2prJcKi9bBvHSy+Ljq+Ks3HoP7AAC9ZQC2znYoK4m2OvXOC444MCQZNCXPVygLeGxkmpvaSRbQUG8Z38gccv4vjBGzVI7zDaNjvpQHw=
+	t=1705969631; cv=none; b=aVZM/pYh6TZaKxyCIMIyzoIOceuh4UMu3CjO3h6fPGJhatYgIBwQ1PThOo223gNtp7wJAUZzKkcvnb+CJNe4ME+4i2Z3/TRK10xNx8dKGvyfVUg7jMqt8HNhaYTSjwP8PuZ6d8uBRZ8u113xpzPNtXD9aDc9FAYijqipf8T0Jqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975020; c=relaxed/simple;
-	bh=Np3qn2IkeW42qhktV/o1y5UHPprgaNnFLAgeGC0drTc=;
+	s=arc-20240116; t=1705969631; c=relaxed/simple;
+	bh=BHM0avGNNUxruQKH7nxGd2ODEwOoZq1ekisH53K43UE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=shm0j01TabDh8N+8mS5GWdqi17/YnKYFaZVHa6JiqeXXiFvLBrupV02m2LOqVWprjF913S52PuDSSup5nYsSkfYGlqLwi1hH7AjxYp455+5OcAgqaRRchIh0+vgn1dWXJltevhlEyVMFNSsE/++Z+sjDtswI6m9uFhaBZdX+l+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+f8rbGa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C864C43394;
-	Tue, 23 Jan 2024 01:57:00 +0000 (UTC)
+	 MIME-Version; b=i+b0y5mjA3D1gzRokd9fu6dDI3oKerjNRJ7IgoP/pZjWW23LNjFMQGY44CQ7gMoP69Eimu1d4uSs+g85h7GvWpT+8RRKu7Mea5Gl1i3x9Hq+Pe2DWgU6M52t9MNf7LGdDe9EftL6jJtnXbrKaIf3Qk/uyru+7djoGJz3uORm838=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TjJW/eaU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1716FC433F1;
+	Tue, 23 Jan 2024 00:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975020;
-	bh=Np3qn2IkeW42qhktV/o1y5UHPprgaNnFLAgeGC0drTc=;
+	s=korg; t=1705969631;
+	bh=BHM0avGNNUxruQKH7nxGd2ODEwOoZq1ekisH53K43UE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f+f8rbGa/Xk++tuWT9YOGeA5Ns7aS4YulGDW6NtktbPsUk+cX1u0FBrwW4Ylx9mXG
-	 M34SEt4BVQsQC67uL37QjPPg5MKHQg8WzkkVIufelhPTpHPhqw9bMmzal+yTvZy0Gy
-	 3VZLS7LxsmT7ghq0gyCcLZ9GnFZ0e9FCtPB3jIxM=
+	b=TjJW/eaUSh+Yk9K17ze3fkxegya9FDS3wlcInq51n/yWqIMDF/JrQKxyILEH6TcIq
+	 GPuQc4gIV3I2+1vCUoSuo1PvWc7PmtyPUdYRDWiCdb8BahE6vVNGqMZ3Vz+LTSEFzV
+	 r/TOzJcMigXcZepXs1EcpGEyAFIai1MgJwLv73EY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Luciano Coelho <luciano.coelho@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Xingyuan Mo <hdthky0@gmail.com>,
+	Oded Gabbay <ogabbay@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 199/583] wifi: iwlwifi: mvm: set siso/mimo chains to 1 in FW SMPS request
+Subject: [PATCH 6.7 346/641] accel/habanalabs: fix information leak in sec_attest_info()
 Date: Mon, 22 Jan 2024 15:54:10 -0800
-Message-ID: <20240122235818.063873304@linuxfoundation.org>
+Message-ID: <20240122235828.754167044@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Xingyuan Mo <hdthky0@gmail.com>
 
-[ Upstream commit b1a2e5c310e063560760806d2cc5d2233c596067 ]
+[ Upstream commit a9f07790a4b2250f0140e9a61c7f842fd9b618c7 ]
 
-The firmware changed their mind, don't set the chains to zero,
-instead set them to 1 as we normally would for connections to
-APs that don't use MIMO.
+This function may copy the pad0 field of struct hl_info_sec_attest to user
+mode which has not been initialized, resulting in leakage of kernel heap
+data to user mode. To prevent this, use kzalloc() to allocate and zero out
+the buffer, which can also eliminate other uninitialized holes, if any.
 
-Fixes: 2a7ce54ccc23 ("iwlwifi: mvm: honour firmware SMPS requests")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20231219215605.7f031f1a127f.Idc816e0f604b07d22a9d5352bc23c445512fad14@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 0c88760f8f5e ("habanalabs/gaudi2: add secured attestation info uapi")
+Signed-off-by: Xingyuan Mo <hdthky0@gmail.com>
+Reviewed-by: Oded Gabbay <ogabbay@kernel.org>
+Signed-off-by: Oded Gabbay <ogabbay@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c | 11 -----------
- 1 file changed, 11 deletions(-)
+ drivers/accel/habanalabs/common/habanalabs_ioctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-index a5b432bc9e2f..9c582e23ebba 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-@@ -99,17 +99,6 @@ static void iwl_mvm_phy_ctxt_set_rxchain(struct iwl_mvm *mvm,
- 		active_cnt = 2;
- 	}
+diff --git a/drivers/accel/habanalabs/common/habanalabs_ioctl.c b/drivers/accel/habanalabs/common/habanalabs_ioctl.c
+index 8ef36effb95b..a7cd625d82c0 100644
+--- a/drivers/accel/habanalabs/common/habanalabs_ioctl.c
++++ b/drivers/accel/habanalabs/common/habanalabs_ioctl.c
+@@ -685,7 +685,7 @@ static int sec_attest_info(struct hl_fpriv *hpriv, struct hl_info_args *args)
+ 	if (!sec_attest_info)
+ 		return -ENOMEM;
  
--	/*
--	 * If the firmware requested it, then we know that it supports
--	 * getting zero for the values to indicate "use one, but pick
--	 * which one yourself", which means it can dynamically pick one
--	 * that e.g. has better RSSI.
--	 */
--	if (mvm->fw_static_smps_request && active_cnt == 1 && idle_cnt == 1) {
--		idle_cnt = 0;
--		active_cnt = 0;
--	}
--
- 	*rxchain_info = cpu_to_le32(iwl_mvm_get_valid_rx_ant(mvm) <<
- 					PHY_RX_CHAIN_VALID_POS);
- 	*rxchain_info |= cpu_to_le32(idle_cnt << PHY_RX_CHAIN_CNT_POS);
+-	info = kmalloc(sizeof(*info), GFP_KERNEL);
++	info = kzalloc(sizeof(*info), GFP_KERNEL);
+ 	if (!info) {
+ 		rc = -ENOMEM;
+ 		goto free_sec_attest_info;
 -- 
 2.43.0
 
