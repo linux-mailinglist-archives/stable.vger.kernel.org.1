@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 291C5837FC3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:39 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9579E837D71
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 225A51C29470
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B76721C225C9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7123012BE8E;
-	Tue, 23 Jan 2024 00:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49B2A51C39;
+	Tue, 23 Jan 2024 00:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OvgedSKj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oKXGIThn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3051964CDA;
-	Tue, 23 Jan 2024 00:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077C14E1D7;
+	Tue, 23 Jan 2024 00:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971339; cv=none; b=fxaVtAzyv1wFjPqKnBzW6DO5UHs7xS2ZWn89U9dggbcwrXllG/+qQR0s5JtNQ0SQvN/xxNyUahK760XXjxIgI7mQC5DuD73fdSsLKPlwiCl93RijFYL3GtMDp15F3iGoSfPWofhwDyq/kUje1H4GekGwR+lZThNQwrhBdJ5nW+Q=
+	t=1705969954; cv=none; b=nvcROFbToIYmXVTahBdum+fBEwFzP2gfDW9axcdUhpnwHJVCtINI4H4OlzdoQ/LJYq/VLD9dPBh6mba6JLCf2qarFojM+hT2BfMa/UhCnMUF2Efn6uMhCypKEbVET8ht1UTysBWkcRCTYTkxfspIWkVSCH+/cxaTlnBb4w5lfk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971339; c=relaxed/simple;
-	bh=rGviWj301eZ+9WMl4gwflRkF0kvr8GuOPscjv4UoiNI=;
+	s=arc-20240116; t=1705969954; c=relaxed/simple;
+	bh=w0ON2+R4mKjZNUJ1bjBfdyMXOnjFuzrqVVkZ1XmeloQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z/eJtbJH9enpYqRLCQ35TM3EFMMRgPS/Z5WTiEnL/3lBS0eO6FENfBNquAuITfNiR7j2Un+psdCFJnhhsYHO040xCsIk4Cl7P2mQ4gtUxzZnl0uAir+OqH//dOBb7Ef27AcFw8R7bR29bEiEm0O9zTZ8uyKbNAYorrhoODsCXEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OvgedSKj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7711DC433C7;
-	Tue, 23 Jan 2024 00:55:38 +0000 (UTC)
+	 MIME-Version; b=UzIVMxeLfFZCfNRN/eE6Wolwtiqrcc3bbjCpsTVJQFTx3yyBevutl41L5nf+muYiYb8rJGJrqc3VMNeWE296kga54VNU/va59FUs0F2CuSVzCpp5IZi+WQ02aliVlqIWd+7XO1gujj7gxkPH4isaQPxW5KtvXSJC7ieUmn4tDPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oKXGIThn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A952FC433F1;
+	Tue, 23 Jan 2024 00:32:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971339;
-	bh=rGviWj301eZ+9WMl4gwflRkF0kvr8GuOPscjv4UoiNI=;
+	s=korg; t=1705969953;
+	bh=w0ON2+R4mKjZNUJ1bjBfdyMXOnjFuzrqVVkZ1XmeloQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OvgedSKjnHBis9qu6+EQFKXqddLoEVJIYI1uoptsvdiY5RhEs9xVnvr2UR1re5ExP
-	 WCy9MpKwz8sH0XHIwHU1kmfkZhRhek4/RY9lXbkEo9yOGJOWYNM6HMp4NJowbNrcVU
-	 8Swp+QDGRoTl6ULh6FejRfqXYSQKCSBKKCgMeNLE=
+	b=oKXGIThn/gxSup8KbVcyAHI/JdGSz7i/tNi2kknpu1pXXXiW9fiP7GjETvrqXwlvH
+	 ryWDKfQc65g45VQMpl9gb+WxEXJRRCknNKI6MXpeszdKAPdqiHQtwmyp/v9EmkcIKk
+	 29RSTkVBAayl1rgJeQCq+lKgjjxd119FoHkOV4O8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Alex Elder <elder@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 136/286] wifi: rtlwifi: rtl8192de: using calculate_bit_shift()
+Subject: [PATCH 6.7 538/641] bus: mhi: ep: Use slab allocator where applicable
 Date: Mon, 22 Jan 2024 15:57:22 -0800
-Message-ID: <20240122235737.379815159@linuxfoundation.org>
+Message-ID: <20240122235834.964802182@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,248 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit b8b2baad2e652042cf8b6339939ac2f4e6f53de4 ]
+[ Upstream commit 62210a26cd4f8ad52683a71c0226dfe85de1144d ]
 
-Using calculate_bit_shift() to replace _rtl92d_phy_calculate_bit_shift().
-And fix the undefined bitwise shift behavior problem.
+Use slab allocator for allocating the memory for objects used frequently
+and are of fixed size. This reduces the overheard associated with
+kmalloc().
 
-Fixes: 7274a8c22980 ("rtlwifi: rtl8192de: Merge phy routines")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-8-suhui@nfschina.com
+Suggested-by: Alex Elder <elder@linaro.org>
+Link: https://lore.kernel.org/r/20231018122812.47261-1-manivannan.sadhasivam@linaro.org
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Stable-dep-of: 327ec5f70609 ("PCI: epf-mhi: Fix the DMA data direction of dma_unmap_single()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/wireless/realtek/rtlwifi/rtl8192de/phy.c  | 15 ++++-----------
- 1 file changed, 4 insertions(+), 11 deletions(-)
+ drivers/bus/mhi/ep/main.c | 66 +++++++++++++++++++++++++++++----------
+ include/linux/mhi_ep.h    |  3 ++
+ 2 files changed, 52 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-index f0692d67b300..af0c7d74b3f5 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/phy.c
-@@ -169,13 +169,6 @@ static const u8 channel_all[59] = {
- 	157, 159, 161, 163, 165
- };
+diff --git a/drivers/bus/mhi/ep/main.c b/drivers/bus/mhi/ep/main.c
+index e2513f5f47a6..517279600645 100644
+--- a/drivers/bus/mhi/ep/main.c
++++ b/drivers/bus/mhi/ep/main.c
+@@ -74,7 +74,7 @@ static int mhi_ep_send_completion_event(struct mhi_ep_cntrl *mhi_cntrl, struct m
+ 	struct mhi_ring_element *event;
+ 	int ret;
  
--static u32 _rtl92d_phy_calculate_bit_shift(u32 bitmask)
--{
--	u32 i = ffs(bitmask);
--
--	return i ? i - 1 : 32;
--}
--
- u32 rtl92d_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- {
- 	struct rtl_priv *rtlpriv = rtl_priv(hw);
-@@ -198,7 +191,7 @@ u32 rtl92d_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
+-	event = kzalloc(sizeof(struct mhi_ring_element), GFP_KERNEL);
++	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL | GFP_DMA);
+ 	if (!event)
+ 		return -ENOMEM;
+ 
+@@ -83,7 +83,7 @@ static int mhi_ep_send_completion_event(struct mhi_ep_cntrl *mhi_cntrl, struct m
+ 	event->dword[1] = MHI_TRE_EV_DWORD1(ring->ch_id, MHI_PKT_TYPE_TX_EVENT);
+ 
+ 	ret = mhi_ep_send_event(mhi_cntrl, ring->er_index, event, MHI_TRE_DATA_GET_BEI(tre));
+-	kfree(event);
++	kmem_cache_free(mhi_cntrl->ev_ring_el_cache, event);
+ 
+ 	return ret;
+ }
+@@ -93,7 +93,7 @@ int mhi_ep_send_state_change_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_stat
+ 	struct mhi_ring_element *event;
+ 	int ret;
+ 
+-	event = kzalloc(sizeof(struct mhi_ring_element), GFP_KERNEL);
++	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL | GFP_DMA);
+ 	if (!event)
+ 		return -ENOMEM;
+ 
+@@ -101,7 +101,7 @@ int mhi_ep_send_state_change_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_stat
+ 	event->dword[1] = MHI_SC_EV_DWORD1(MHI_PKT_TYPE_STATE_CHANGE_EVENT);
+ 
+ 	ret = mhi_ep_send_event(mhi_cntrl, 0, event, 0);
+-	kfree(event);
++	kmem_cache_free(mhi_cntrl->ev_ring_el_cache, event);
+ 
+ 	return ret;
+ }
+@@ -111,7 +111,7 @@ int mhi_ep_send_ee_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_ee_type exec_e
+ 	struct mhi_ring_element *event;
+ 	int ret;
+ 
+-	event = kzalloc(sizeof(struct mhi_ring_element), GFP_KERNEL);
++	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL | GFP_DMA);
+ 	if (!event)
+ 		return -ENOMEM;
+ 
+@@ -119,7 +119,7 @@ int mhi_ep_send_ee_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_ee_type exec_e
+ 	event->dword[1] = MHI_SC_EV_DWORD1(MHI_PKT_TYPE_EE_EVENT);
+ 
+ 	ret = mhi_ep_send_event(mhi_cntrl, 0, event, 0);
+-	kfree(event);
++	kmem_cache_free(mhi_cntrl->ev_ring_el_cache, event);
+ 
+ 	return ret;
+ }
+@@ -130,7 +130,7 @@ static int mhi_ep_send_cmd_comp_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_e
+ 	struct mhi_ring_element *event;
+ 	int ret;
+ 
+-	event = kzalloc(sizeof(struct mhi_ring_element), GFP_KERNEL);
++	event = kmem_cache_zalloc(mhi_cntrl->ev_ring_el_cache, GFP_KERNEL | GFP_DMA);
+ 	if (!event)
+ 		return -ENOMEM;
+ 
+@@ -139,7 +139,7 @@ static int mhi_ep_send_cmd_comp_event(struct mhi_ep_cntrl *mhi_cntrl, enum mhi_e
+ 	event->dword[1] = MHI_CC_EV_DWORD1(MHI_PKT_TYPE_CMD_COMPLETION_EVENT);
+ 
+ 	ret = mhi_ep_send_event(mhi_cntrl, 0, event, 0);
+-	kfree(event);
++	kmem_cache_free(mhi_cntrl->ev_ring_el_cache, event);
+ 
+ 	return ret;
+ }
+@@ -451,7 +451,7 @@ static int mhi_ep_process_ch_ring(struct mhi_ep_ring *ring, struct mhi_ring_elem
+ 		mhi_chan->xfer_cb(mhi_chan->mhi_dev, &result);
  	} else {
- 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
+ 		/* UL channel */
+-		result.buf_addr = kzalloc(len, GFP_KERNEL);
++		result.buf_addr = kmem_cache_zalloc(mhi_cntrl->tre_buf_cache, GFP_KERNEL | GFP_DMA);
+ 		if (!result.buf_addr)
+ 			return -ENOMEM;
+ 
+@@ -459,7 +459,7 @@ static int mhi_ep_process_ch_ring(struct mhi_ep_ring *ring, struct mhi_ring_elem
+ 			ret = mhi_ep_read_channel(mhi_cntrl, ring, &result, len);
+ 			if (ret < 0) {
+ 				dev_err(&mhi_chan->mhi_dev->dev, "Failed to read channel\n");
+-				kfree(result.buf_addr);
++				kmem_cache_free(mhi_cntrl->tre_buf_cache, result.buf_addr);
+ 				return ret;
+ 			}
+ 
+@@ -471,7 +471,7 @@ static int mhi_ep_process_ch_ring(struct mhi_ep_ring *ring, struct mhi_ring_elem
+ 			/* Read until the ring becomes empty */
+ 		} while (!mhi_ep_queue_is_empty(mhi_chan->mhi_dev, DMA_TO_DEVICE));
+ 
+-		kfree(result.buf_addr);
++		kmem_cache_free(mhi_cntrl->tre_buf_cache, result.buf_addr);
  	}
--	bitshift = _rtl92d_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	returnvalue = (originalvalue & bitmask) >> bitshift;
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
- 		"BBR MASK=0x%x Addr[0x%x]=0x%x\n",
-@@ -230,7 +223,7 @@ void rtl92d_phy_set_bb_reg(struct ieee80211_hw *hw,
- 					dbi_direct);
- 		else
- 			originalvalue = rtl_read_dword(rtlpriv, regaddr);
--		bitshift = _rtl92d_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
- 	}
- 	if (rtlhal->during_mac1init_radioa || rtlhal->during_mac0init_radiob)
-@@ -317,7 +310,7 @@ u32 rtl92d_phy_query_rf_reg(struct ieee80211_hw *hw,
- 		regaddr, rfpath, bitmask);
- 	spin_lock(&rtlpriv->locks.rf_lock);
- 	original_value = _rtl92d_phy_rf_serial_read(hw, rfpath, regaddr);
--	bitshift = _rtl92d_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 	spin_unlock(&rtlpriv->locks.rf_lock);
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
-@@ -343,7 +336,7 @@ void rtl92d_phy_set_rf_reg(struct ieee80211_hw *hw, enum radio_path rfpath,
- 		if (bitmask != RFREG_OFFSET_MASK) {
- 			original_value = _rtl92d_phy_rf_serial_read(hw,
- 				rfpath, regaddr);
--			bitshift = _rtl92d_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data = ((original_value & (~bitmask)) |
- 				(data << bitshift));
+ 
+ 	return 0;
+@@ -780,14 +780,14 @@ static void mhi_ep_ch_ring_worker(struct work_struct *work)
+ 		if (ret) {
+ 			dev_err(dev, "Error updating write offset for ring\n");
+ 			mutex_unlock(&chan->lock);
+-			kfree(itr);
++			kmem_cache_free(mhi_cntrl->ring_item_cache, itr);
+ 			continue;
  		}
+ 
+ 		/* Sanity check to make sure there are elements in the ring */
+ 		if (ring->rd_offset == ring->wr_offset) {
+ 			mutex_unlock(&chan->lock);
+-			kfree(itr);
++			kmem_cache_free(mhi_cntrl->ring_item_cache, itr);
+ 			continue;
+ 		}
+ 
+@@ -799,12 +799,12 @@ static void mhi_ep_ch_ring_worker(struct work_struct *work)
+ 			dev_err(dev, "Error processing ring for channel (%u): %d\n",
+ 				ring->ch_id, ret);
+ 			mutex_unlock(&chan->lock);
+-			kfree(itr);
++			kmem_cache_free(mhi_cntrl->ring_item_cache, itr);
+ 			continue;
+ 		}
+ 
+ 		mutex_unlock(&chan->lock);
+-		kfree(itr);
++		kmem_cache_free(mhi_cntrl->ring_item_cache, itr);
+ 	}
+ }
+ 
+@@ -860,7 +860,7 @@ static void mhi_ep_queue_channel_db(struct mhi_ep_cntrl *mhi_cntrl, unsigned lon
+ 		u32 ch_id = ch_idx + i;
+ 
+ 		ring = &mhi_cntrl->mhi_chan[ch_id].ring;
+-		item = kzalloc(sizeof(*item), GFP_ATOMIC);
++		item = kmem_cache_zalloc(mhi_cntrl->ring_item_cache, GFP_ATOMIC);
+ 		if (!item)
+ 			return;
+ 
+@@ -1407,6 +1407,29 @@ int mhi_ep_register_controller(struct mhi_ep_cntrl *mhi_cntrl,
+ 		goto err_free_ch;
+ 	}
+ 
++	mhi_cntrl->ev_ring_el_cache = kmem_cache_create("mhi_ep_event_ring_el",
++							sizeof(struct mhi_ring_element), 0,
++							SLAB_CACHE_DMA, NULL);
++	if (!mhi_cntrl->ev_ring_el_cache) {
++		ret = -ENOMEM;
++		goto err_free_cmd;
++	}
++
++	mhi_cntrl->tre_buf_cache = kmem_cache_create("mhi_ep_tre_buf", MHI_EP_DEFAULT_MTU, 0,
++						      SLAB_CACHE_DMA, NULL);
++	if (!mhi_cntrl->tre_buf_cache) {
++		ret = -ENOMEM;
++		goto err_destroy_ev_ring_el_cache;
++	}
++
++	mhi_cntrl->ring_item_cache = kmem_cache_create("mhi_ep_ring_item",
++							sizeof(struct mhi_ep_ring_item), 0,
++							0, NULL);
++	if (!mhi_cntrl->ev_ring_el_cache) {
++		ret = -ENOMEM;
++		goto err_destroy_tre_buf_cache;
++	}
++
+ 	INIT_WORK(&mhi_cntrl->state_work, mhi_ep_state_worker);
+ 	INIT_WORK(&mhi_cntrl->reset_work, mhi_ep_reset_worker);
+ 	INIT_WORK(&mhi_cntrl->cmd_ring_work, mhi_ep_cmd_ring_worker);
+@@ -1415,7 +1438,7 @@ int mhi_ep_register_controller(struct mhi_ep_cntrl *mhi_cntrl,
+ 	mhi_cntrl->wq = alloc_workqueue("mhi_ep_wq", 0, 0);
+ 	if (!mhi_cntrl->wq) {
+ 		ret = -ENOMEM;
+-		goto err_free_cmd;
++		goto err_destroy_ring_item_cache;
+ 	}
+ 
+ 	INIT_LIST_HEAD(&mhi_cntrl->st_transition_list);
+@@ -1474,6 +1497,12 @@ int mhi_ep_register_controller(struct mhi_ep_cntrl *mhi_cntrl,
+ 	ida_free(&mhi_ep_cntrl_ida, mhi_cntrl->index);
+ err_destroy_wq:
+ 	destroy_workqueue(mhi_cntrl->wq);
++err_destroy_ring_item_cache:
++	kmem_cache_destroy(mhi_cntrl->ring_item_cache);
++err_destroy_ev_ring_el_cache:
++	kmem_cache_destroy(mhi_cntrl->ev_ring_el_cache);
++err_destroy_tre_buf_cache:
++	kmem_cache_destroy(mhi_cntrl->tre_buf_cache);
+ err_free_cmd:
+ 	kfree(mhi_cntrl->mhi_cmd);
+ err_free_ch:
+@@ -1495,6 +1524,9 @@ void mhi_ep_unregister_controller(struct mhi_ep_cntrl *mhi_cntrl)
+ 
+ 	free_irq(mhi_cntrl->irq, mhi_cntrl);
+ 
++	kmem_cache_destroy(mhi_cntrl->tre_buf_cache);
++	kmem_cache_destroy(mhi_cntrl->ev_ring_el_cache);
++	kmem_cache_destroy(mhi_cntrl->ring_item_cache);
+ 	kfree(mhi_cntrl->mhi_cmd);
+ 	kfree(mhi_cntrl->mhi_chan);
+ 
+diff --git a/include/linux/mhi_ep.h b/include/linux/mhi_ep.h
+index f198a8ac7ee7..ce85d42b685d 100644
+--- a/include/linux/mhi_ep.h
++++ b/include/linux/mhi_ep.h
+@@ -128,6 +128,9 @@ struct mhi_ep_cntrl {
+ 	struct work_struct reset_work;
+ 	struct work_struct cmd_ring_work;
+ 	struct work_struct ch_ring_work;
++	struct kmem_cache *ring_item_cache;
++	struct kmem_cache *ev_ring_el_cache;
++	struct kmem_cache *tre_buf_cache;
+ 
+ 	void (*raise_irq)(struct mhi_ep_cntrl *mhi_cntrl, u32 vector);
+ 	int (*alloc_map)(struct mhi_ep_cntrl *mhi_cntrl, u64 pci_addr, phys_addr_t *phys_ptr,
 -- 
 2.43.0
 
