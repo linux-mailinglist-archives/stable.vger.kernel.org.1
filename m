@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-15229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B18838466
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13757837F6B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 39DD4299892
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B590528F68F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F506D1CA;
-	Tue, 23 Jan 2024 02:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA80B62A10;
+	Tue, 23 Jan 2024 00:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z9XUwf5p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7I9BaLG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5491A6A354;
-	Tue, 23 Jan 2024 02:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A64462A0D;
+	Tue, 23 Jan 2024 00:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975386; cv=none; b=clSjQTXvGSsGFbXgkVs7vPVqA/uzlKRT7Vzo0nVTtX5uBwXM5I9phVteERmMLfD3OYYKqSMxqsLz0sEhPAZbbLVoLQ9yrpOwTWr12FKQmPedFLOA/FhIs3nCOK7D4qgskmoogBjFWWAgfYgG1g/eI8VxcKBxa1R98Ptz/TLqOA8=
+	t=1705971121; cv=none; b=ePqdclmDB4Ovh9ps8+bbNCMBetc+0KXR2ju14VkHEAO+1xI80RXi6/guYdqdN9ULJkWL46PdoqOx+/2u2166rAQROvDcvDZjPTkkoaYU5rg4ne9U8pn8YVSHDGKrZmF7MxUu3Dfy840pPU08IOmMOdvx1LP8ojE+hG26O6A7QLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975386; c=relaxed/simple;
-	bh=OXaCuYi9gZUHq5JgRyvCo8mBcX+OV2a0ryD5YxK7d6w=;
+	s=arc-20240116; t=1705971121; c=relaxed/simple;
+	bh=+0oHt1DOldmgmSlkGfnEuFkresg8Me9ny/jkth/sisE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MMyUWOUgvbWmXNxJgAUGcF9oZWMuaRXzZr7+BfHG/zv+kOxIaDTSS2EwHj7k3KEs14qQ0SE9Cyn7fdfw15tu/gWYS2l03sTx7HIIrH6Vgx4+SHNFA11fM3X5Od3mvlmMm7tHf2fWj2HyXNvrgg/ZXi41KYHbdnwb55rXCxWDkic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z9XUwf5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A39C43394;
-	Tue, 23 Jan 2024 02:03:06 +0000 (UTC)
+	 MIME-Version; b=M5J0JWqsLFPC5b9S04kb5ECoGhkG6FE7xRt3THrLW/Sc7HfoG9mmbUu8q0px86TFIFp62xkuhrt61qwJYjokWwDz5eiAHwLP6iO6xYXjKVCDg32jJfvbHNp1GCWZ1RbDS9gZ3zctX00qj/IxK782WXKLPT9MlqGJq0xFVD96ilY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7I9BaLG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29D73C433A6;
+	Tue, 23 Jan 2024 00:52:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975386;
-	bh=OXaCuYi9gZUHq5JgRyvCo8mBcX+OV2a0ryD5YxK7d6w=;
+	s=korg; t=1705971121;
+	bh=+0oHt1DOldmgmSlkGfnEuFkresg8Me9ny/jkth/sisE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z9XUwf5p8K8qMmoBag/WX+3JxFXY4ADcEidhQbIkez9e4dHYIQP1ADGjokCNVIS0/
-	 2GHecNcI3gO9re4vM9UlPBs+5loOY6odNB0tI20/1UxVxc/Zq/I1qPOUO9MqpUptFJ
-	 dwe/cPuBfCNxukVqa5Vg9udawyN+V3FN6IMNlLK8=
+	b=Y7I9BaLGa8VXnMl3UXRez5J0wCf764I9+pKNluuKynqgBMGefSwJVj2/2pSEukPkd
+	 n/qTJFYScxmmeKlkqnKr9E0Vefl3WMbSdBKMBu8eba8cZcCkqwh5kAfHVmz7CLfoux
+	 LhsR2fk5ZGTICBMCuBWYpfi5LN6ZMGaSOFBbQNlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Llamas <cmllamas@google.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: [PATCH 6.6 347/583] binder: fix unused alloc->free_async_space
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Kees Cook <keescook@chromium.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 092/286] pstore: ram_core: fix possible overflow in persistent_ram_init_ecc()
 Date: Mon, 22 Jan 2024 15:56:38 -0800
-Message-ID: <20240122235822.644359162@linuxfoundation.org>
+Message-ID: <20240122235735.586389180@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-commit c6d05e0762ab276102246d24affd1e116a46aa0c upstream.
+[ Upstream commit 86222a8fc16ec517de8da2604d904c9df3a08e5d ]
 
-Each transaction is associated with a 'struct binder_buffer' that stores
-the metadata about its buffer area. Since commit 74310e06be4d ("android:
-binder: Move buffer out of area shared with user space") this struct is
-no longer embedded within the buffer itself but is instead allocated on
-the heap to prevent userspace access to this driver-exclusive info.
+In persistent_ram_init_ecc(), on 64-bit arches DIV_ROUND_UP() will return
+64-bit value since persistent_ram_zone::buffer_size has type size_t which
+is derived from the 64-bit *unsigned long*, while the ecc_blocks variable
+this value gets assigned to has (always 32-bit) *int* type.  Even if that
+value fits into *int* type, an overflow is still possible when calculating
+the size_t typed ecc_total variable further below since there's no cast to
+any 64-bit type before multiplication.  Declaring the ecc_blocks variable
+as *size_t* should fix this mess...
 
-Unfortunately, the space of this struct is still being accounted for in
-the total buffer size calculation, specifically for async transactions.
-This results in an additional 104 bytes added to every async buffer
-request, and this area is never used.
+Found by Linux Verification Center (linuxtesting.org) with the SVACE static
+analysis tool.
 
-This wasted space can be substantial. If we consider the maximum mmap
-buffer space of SZ_4M, the driver will reserve half of it for async
-transactions, or 0x200000. This area should, in theory, accommodate up
-to 262,144 buffers of the minimum 8-byte size. However, after adding
-the extra 'sizeof(struct binder_buffer)', the total number of buffers
-drops to only 18,724, which is a sad 7.14% of the actual capacity.
-
-This patch fixes the buffer size calculation to enable the utilization
-of the entire async buffer space. This is expected to reduce the number
-of -ENOSPC errors that are seen on the field.
-
-Fixes: 74310e06be4d ("android: binder: Move buffer out of area shared with user space")
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20231201172212.1813387-6-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9cc05ad97c57 ("staging: android: persistent_ram: refactor ecc support")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20231105202936.25694-1-s.shtylyov@omp.ru
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder_alloc.c |   11 ++++-------
- 1 file changed, 4 insertions(+), 7 deletions(-)
+ fs/pstore/ram_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/android/binder_alloc.c
-+++ b/drivers/android/binder_alloc.c
-@@ -344,8 +344,7 @@ static bool debug_low_async_space_locked
- 			continue;
- 		if (!buffer->async_transaction)
- 			continue;
--		total_alloc_size += binder_alloc_buffer_size(alloc, buffer)
--			+ sizeof(struct binder_buffer);
-+		total_alloc_size += binder_alloc_buffer_size(alloc, buffer);
- 		num_buffers++;
- 	}
+diff --git a/fs/pstore/ram_core.c b/fs/pstore/ram_core.c
+index a0fa3820ef2a..5ac9b1f155a8 100644
+--- a/fs/pstore/ram_core.c
++++ b/fs/pstore/ram_core.c
+@@ -190,7 +190,7 @@ static int persistent_ram_init_ecc(struct persistent_ram_zone *prz,
+ {
+ 	int numerr;
+ 	struct persistent_ram_buffer *buffer = prz->buffer;
+-	int ecc_blocks;
++	size_t ecc_blocks;
+ 	size_t ecc_total;
  
-@@ -411,8 +410,7 @@ static struct binder_buffer *binder_allo
- 	/* Pad 0-size buffers so they get assigned unique addresses */
- 	size = max(size, sizeof(void *));
- 
--	if (is_async &&
--	    alloc->free_async_space < size + sizeof(struct binder_buffer)) {
-+	if (is_async && alloc->free_async_space < size) {
- 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC,
- 			     "%d: binder_alloc_buf size %zd failed, no async space left\n",
- 			      alloc->pid, size);
-@@ -520,7 +518,7 @@ static struct binder_buffer *binder_allo
- 	buffer->pid = pid;
- 	buffer->oneway_spam_suspect = false;
- 	if (is_async) {
--		alloc->free_async_space -= size + sizeof(struct binder_buffer);
-+		alloc->free_async_space -= size;
- 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC_ASYNC,
- 			     "%d: binder_alloc_buf size %zd async free %zd\n",
- 			      alloc->pid, size, alloc->free_async_space);
-@@ -658,8 +656,7 @@ static void binder_free_buf_locked(struc
- 	BUG_ON(buffer->user_data > alloc->buffer + alloc->buffer_size);
- 
- 	if (buffer->async_transaction) {
--		alloc->free_async_space += buffer_size + sizeof(struct binder_buffer);
--
-+		alloc->free_async_space += buffer_size;
- 		binder_alloc_debug(BINDER_DEBUG_BUFFER_ALLOC_ASYNC,
- 			     "%d: binder_free_buf size %zd async free %zd\n",
- 			      alloc->pid, size, alloc->free_async_space);
+ 	if (!ecc_info || !ecc_info->ecc_size)
+-- 
+2.43.0
+
 
 
 
