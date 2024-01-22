@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-13010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4614A837A9C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97F6C8378AA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8873BB2CA41
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54BDA1F24BB9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8218B12AADD;
-	Tue, 23 Jan 2024 00:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 570131420DE;
+	Tue, 23 Jan 2024 00:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A5IDn+mK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWD7odDE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD4112AAC7;
-	Tue, 23 Jan 2024 00:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1310E4500F;
+	Tue, 23 Jan 2024 00:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968779; cv=none; b=DVJ+grxMGcvc8EdDX7JKM9OqQyrME3HKOd2f4ow0xUItR/W9dwEHtK68xr2ovk/aL2FYPDmzrxzkEhHtNftVerhJoegL7VF7C5t2p9TWit18JAWxsXShMciDzPR/p7VBUqkrlhNqe7rwzm/Pd14ZbDVd/H1Zlf1wDsHM/vEayEs=
+	t=1705968189; cv=none; b=LRGlwhKHfixSt5QKFBXMYR2rHLtk5FOB0WEW9aa7bHJrYpcF9SsNzhds7mMhIyVzcRwAofAlmRNA3V/AeRftzlLRqoV0uYbPF9IbrgkU27p0KFvLz8jwzCvEKzyOOijRflyIpExf9dy2rlN0B4MLGdtubSYM5v103e08nINZJzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968779; c=relaxed/simple;
-	bh=dn6igBDVUyOVo+ZePPxfb30FDpszRu+MW5DCtvAxyn8=;
+	s=arc-20240116; t=1705968189; c=relaxed/simple;
+	bh=PSjm5odUUTBx5/4KeCpclMvn5NEeYT5ZL1NPiYQKsU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rg1b9kxrcTH6MkeWG4ISiSWgjQcEGAyIRmM+0IgaGgMt5COvP34hDC7lsMs/7XpdMV6E7qy69JUoB0X9wy0onebly78We3Xzl7+t+UBE4lBgXJRzn/zmkLZd00qsFriBKApD6oO6E4bXmM+p3QBPEDqkRkJAiMeBTceqyUaRgHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A5IDn+mK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFACAC43390;
-	Tue, 23 Jan 2024 00:12:58 +0000 (UTC)
+	 MIME-Version; b=hUi+l5CrtfsPBidu5Zmi36CH/WMg8l0FWmaB0t4YtGm2SGlWGbQ8o3Q8sFbLwk0r1SAvsPv/TGhYZoLQro4djqHtaY2u7SDep7vSX6P7N4vCV2/NyD2glcoa9AH0YjdgiYjAxcuWTgeN6JTvzEsW6w6OJ1yV7uupvzLVt1a5x2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWD7odDE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829A4C433C7;
+	Tue, 23 Jan 2024 00:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968779;
-	bh=dn6igBDVUyOVo+ZePPxfb30FDpszRu+MW5DCtvAxyn8=;
+	s=korg; t=1705968188;
+	bh=PSjm5odUUTBx5/4KeCpclMvn5NEeYT5ZL1NPiYQKsU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A5IDn+mKxcyvIR8zAtJtrq+a+HmV59zQq6OHvTPAU6ar2U/gAkeHHuIzD+xt5V3aE
-	 3nsXzHTprFQzuTAhH/THbBoS2vBoAmHEs0gcdF8d7F0zX2f4j20UUho12TsH5oB9dK
-	 GsOUWqqxIza3flZ7uidxAocTQka6mmxB1KV5YPZo=
+	b=BWD7odDEo1FS9X+ENdT3jG3ujJED0ChWOF7G4QcNXK5ga+8289/UYOj12OasgYu7A
+	 QLcNQbiNm9UhpuuibztRKcajS5qq5qw6+fN4XL5dafRMo0jsNil1OZjO0QHAwymZnt
+	 2FhKshMGWN/BnRFpnz/8UZtKyXADzUcyhsh/mIyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Chen-Yu Tsai <wens@csie.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 046/194] selftests/powerpc: Fix error handling in FPU/VMX preemption tests
-Date: Mon, 22 Jan 2024 15:56:16 -0800
-Message-ID: <20240122235721.196693199@linuxfoundation.org>
+Subject: [PATCH 4.19 021/148] ARM: sun9i: smp: fix return code check of of_property_match_string
+Date: Mon, 22 Jan 2024 15:56:17 -0800
+Message-ID: <20240122235713.284530218@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 9dbd5927408c4a0707de73ae9dd9306b184e8fee ]
+[ Upstream commit 643fe70e7bcdcc9e2d96952f7fc2bab56385cce5 ]
 
-The FPU & VMX preemption tests do not check for errors returned by the
-low-level asm routines, preempt_fpu() / preempt_vsx() respectively.
-That means any register corruption detected by the asm routines does not
-result in a test failure.
+of_property_match_string returns an int; either an index from 0 or
+greater if successful or negative on failure. Even it's very
+unlikely that the DT CPU node contains multiple enable-methods
+these checks should be fixed.
 
-Fix it by returning the return value of the asm routines from the
-pthread child routines.
+This patch was inspired by the work of Nick Desaulniers.
 
-Fixes: e5ab8be68e44 ("selftests/powerpc: Test preservation of FPU and VMX regs across preemption")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231128132748.1990179-1-mpe@ellerman.id.au
+Link: https://lore.kernel.org/lkml/20230516-sunxi-v1-1-ac4b9651a8c1@google.com/T/
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://lore.kernel.org/r/20231228193903.9078-2-wahrenst@gmx.net
+Reviewed-by: Chen-Yu Tsai <wens@csie.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/powerpc/math/fpu_preempt.c |  9 +++++----
- tools/testing/selftests/powerpc/math/vmx_preempt.c | 10 ++++++----
- 2 files changed, 11 insertions(+), 8 deletions(-)
+ arch/arm/mach-sunxi/mc_smp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/powerpc/math/fpu_preempt.c b/tools/testing/selftests/powerpc/math/fpu_preempt.c
-index 5235bdc8c0b1..3e5b5663d244 100644
---- a/tools/testing/selftests/powerpc/math/fpu_preempt.c
-+++ b/tools/testing/selftests/powerpc/math/fpu_preempt.c
-@@ -37,19 +37,20 @@ __thread double darray[] = {0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0,
- int threads_starting;
- int running;
+diff --git a/arch/arm/mach-sunxi/mc_smp.c b/arch/arm/mach-sunxi/mc_smp.c
+index 527bb82072d9..e30ac09930cf 100644
+--- a/arch/arm/mach-sunxi/mc_smp.c
++++ b/arch/arm/mach-sunxi/mc_smp.c
+@@ -801,12 +801,12 @@ static int __init sunxi_mc_smp_init(void)
+ 	for (i = 0; i < ARRAY_SIZE(sunxi_mc_smp_data); i++) {
+ 		ret = of_property_match_string(node, "enable-method",
+ 					       sunxi_mc_smp_data[i].enable_method);
+-		if (!ret)
++		if (ret >= 0)
+ 			break;
+ 	}
  
--extern void preempt_fpu(double *darray, int *threads_starting, int *running);
-+extern int preempt_fpu(double *darray, int *threads_starting, int *running);
+ 	of_node_put(node);
+-	if (ret)
++	if (ret < 0)
+ 		return -ENODEV;
  
- void *preempt_fpu_c(void *p)
- {
-+	long rc;
- 	int i;
-+
- 	srand(pthread_self());
- 	for (i = 0; i < 21; i++)
- 		darray[i] = rand();
- 
--	/* Test failed if it ever returns */
--	preempt_fpu(darray, &threads_starting, &running);
-+	rc = preempt_fpu(darray, &threads_starting, &running);
- 
--	return p;
-+	return (void *)rc;
- }
- 
- int test_preempt_fpu(void)
-diff --git a/tools/testing/selftests/powerpc/math/vmx_preempt.c b/tools/testing/selftests/powerpc/math/vmx_preempt.c
-index 2e059f154e77..397f9da8f1c3 100644
---- a/tools/testing/selftests/powerpc/math/vmx_preempt.c
-+++ b/tools/testing/selftests/powerpc/math/vmx_preempt.c
-@@ -37,19 +37,21 @@ __thread vector int varray[] = {{1, 2, 3, 4}, {5, 6, 7, 8}, {9, 10,11,12},
- int threads_starting;
- int running;
- 
--extern void preempt_vmx(vector int *varray, int *threads_starting, int *running);
-+extern int preempt_vmx(vector int *varray, int *threads_starting, int *running);
- 
- void *preempt_vmx_c(void *p)
- {
- 	int i, j;
-+	long rc;
-+
- 	srand(pthread_self());
- 	for (i = 0; i < 12; i++)
- 		for (j = 0; j < 4; j++)
- 			varray[i][j] = rand();
- 
--	/* Test fails if it ever returns */
--	preempt_vmx(varray, &threads_starting, &running);
--	return p;
-+	rc = preempt_vmx(varray, &threads_starting, &running);
-+
-+	return (void *)rc;
- }
- 
- int test_preempt_vmx(void)
+ 	is_a83t = sunxi_mc_smp_data[i].is_a83t;
 -- 
 2.43.0
 
