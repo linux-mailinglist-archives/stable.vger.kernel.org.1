@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-14962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9FA683835B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3340C83810A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70ED81F28A43
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E239028E0EB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71222627E8;
-	Tue, 23 Jan 2024 01:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E3213E237;
+	Tue, 23 Jan 2024 01:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Va0c+wHx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GrrnYh/3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBD7627E7;
-	Tue, 23 Jan 2024 01:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0323413DBB7;
+	Tue, 23 Jan 2024 01:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974948; cv=none; b=NfbVuOnwkh3nUB3ss6EJ1EXyHipWNHQ3+TKJBvgIoYSCSzSetQLBTxjBkZRMXyqTUtS0KLX1hNsSLeajN4ed+HYPwPUFnF95J3K6pRCa4qneHpdhKAL276qiMua/KFOzIVa823T5RDjIhemuAS0mS9k1PgPQuDyvLcQZCLNyqX0=
+	t=1705972004; cv=none; b=NfjHBb/mNeJWEBaRkFfUjs5nLiftaGPpF7EOTscNFtQX66PXBn6fV3Rau7OfT34i1acCE1zD8x/YGLLJ8JigNMarkAg2xyFqS0JKsc07P1bepvklTKR5YAaZ278FPtnUKNDbHmKme/t0SJtjT2gJAJg37I0tbRQId+VAxNmJOfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974948; c=relaxed/simple;
-	bh=4yoSgJYKhq7oSYl4B/kv9wKnaSgR34XM2/TO2b+NSTA=;
+	s=arc-20240116; t=1705972004; c=relaxed/simple;
+	bh=afe1r1OK053vI8xW7aGFQ9GrarnBifkIaMf5WXtm+/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=caQ6/5rMEeYw5R/c8n6daHjv0Pf0TFG2YzjaBvzp92Nz5XnqtVXg6b3XEPdUkaR0xSy3HFlEMUmS9I4m9EzvF4S7FBcUSoKX+vfbHpuTGRIdFCvZwAEfydQ61ijWL6aXLgCLjvD72EPt32ab8Y9nCksI2WcjQrhQsWgfbfETaAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Va0c+wHx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF0DFC43399;
-	Tue, 23 Jan 2024 01:55:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kfpj32DiSRK4f249/mgUtQJKdkteGyyKfKoL4/nck1ndkBQdXmxq0UFb/Euy9Tbt7dc1h9lBSvkcMf8cipBEWW8NRMJjGJrWXlHb2UiFJIY8t8lDmRylO5sBWt8A0egzWad/BW+CjGu1Ha3XnLc/oosZZmAXrhDj5nUQuVqVcuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GrrnYh/3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6631C433F1;
+	Tue, 23 Jan 2024 01:06:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974948;
-	bh=4yoSgJYKhq7oSYl4B/kv9wKnaSgR34XM2/TO2b+NSTA=;
+	s=korg; t=1705972003;
+	bh=afe1r1OK053vI8xW7aGFQ9GrarnBifkIaMf5WXtm+/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Va0c+wHxzwkVU57HCr9ptetTylQ/SpaC9/WyT3/KT9DcQJ4gSsqdys0ARF1ImOpmH
-	 khv0EdfZbou1OaCjl54Ob/CT+gnNe494kLwgFAm2oNwNy8xZQh2VTRd9fldQixATTi
-	 FiH4ZGLr81UkZf+kxu1QlFQqvKsZ2+Rur6uITfB4=
+	b=GrrnYh/3hoPeNp/yqavTAQr6E9UPpud5ad2qJKpvtogwltWh7RUzY8B8D8HFcx/mI
+	 6mf/qFWuTNP/OeS5A26GmMaDzXEDGq7nZJ3RvS2yZOAvutDVf6gBlu7DKXPkhp9zXt
+	 zoSHu+MFw4z3KvcuBfb8s2KegDRmIQoomwSa5bnU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	kernel test robot <lkp@intel.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Arnd Bergmann <arnd@arndb.de>,
-	linux-arm-kernel@lists.infradead.org,
-	patches@armlinux.org.uk,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 291/374] ARM: 9330/1: davinci: also select PINCTRL
+Subject: [PATCH 6.1 379/417] net: ethernet: ti: am65-cpsw: Fix max mtu to fit ethernet frames
 Date: Mon, 22 Jan 2024 15:59:07 -0800
-Message-ID: <20240122235754.911250742@linuxfoundation.org>
+Message-ID: <20240122235804.913471651@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,52 +62,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Sanjuán García, Jorge <Jorge.SanjuanGarcia@duagon.com>
 
-[ Upstream commit f54e8634d1366926c807e2af6125b33cff555fa7 ]
+[ Upstream commit 64e47d8afb5ca533b27efc006405e5bcae2c4a7b ]
 
-kconfig warns when PINCTRL_SINGLE is selected but PINCTRL is not
-set, so also set PINCTRL for ARCH_DAVINCI. This prevents a
-kconfig/build warning:
+The value of AM65_CPSW_MAX_PACKET_SIZE represents the maximum length
+of a received frame. This value is written to the register
+AM65_CPSW_PORT_REG_RX_MAXLEN.
 
-   WARNING: unmet direct dependencies detected for PINCTRL_SINGLE
-     Depends on [n]: PINCTRL [=n] && OF [=y] && HAS_IOMEM [=y]
-     Selected by [y]:
-     - ARCH_DAVINCI [=y] && ARCH_MULTI_V5 [=y]
+The maximum MTU configured on the network device should then leave
+some room for the ethernet headers and frame check. Otherwise, if
+the network interface is configured to its maximum mtu possible,
+the frames will be larger than AM65_CPSW_MAX_PACKET_SIZE and will
+get dropped as oversized.
 
-Closes: lore.kernel.org/r/202311070548.0f6XfBrh-lkp@intel.com
+The switch supports ethernet frame sizes between 64 and 2024 bytes
+(including VLAN) as stated in the technical reference manual, so
+define AM65_CPSW_MAX_PACKET_SIZE with that maximum size.
 
-Fixes: f962396ce292 ("ARM: davinci: support multiplatform build for ARM v5")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: patches@armlinux.org.uk
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Fixes: 93a76530316a ("net: ethernet: ti: introduce am65x/j721e gigabit eth subsystem driver")
+Signed-off-by: Jorge Sanjuan Garcia <jorge.sanjuangarcia@duagon.com>
+Reviewed-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Link: https://lore.kernel.org/r/20240105085530.14070-2-jorge.sanjuangarcia@duagon.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-davinci/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-davinci/Kconfig b/arch/arm/mach-davinci/Kconfig
-index 01684347da9b..889f3b9255c7 100644
---- a/arch/arm/mach-davinci/Kconfig
-+++ b/arch/arm/mach-davinci/Kconfig
-@@ -10,6 +10,7 @@ menuconfig ARCH_DAVINCI
- 	select PM_GENERIC_DOMAINS_OF if PM && OF
- 	select REGMAP_MMIO
- 	select RESET_CONTROLLER
-+	select PINCTRL
- 	select PINCTRL_SINGLE
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 9f2553799895..76fabeae512d 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -54,7 +54,7 @@
+ #define AM65_CPSW_MAX_PORTS	8
  
- if ARCH_DAVINCI
+ #define AM65_CPSW_MIN_PACKET_SIZE	VLAN_ETH_ZLEN
+-#define AM65_CPSW_MAX_PACKET_SIZE	(VLAN_ETH_FRAME_LEN + ETH_FCS_LEN)
++#define AM65_CPSW_MAX_PACKET_SIZE	2024
+ 
+ #define AM65_CPSW_REG_CTL		0x004
+ #define AM65_CPSW_REG_STAT_PORT_EN	0x014
+@@ -1990,7 +1990,8 @@ am65_cpsw_nuss_init_port_ndev(struct am65_cpsw_common *common, u32 port_idx)
+ 	eth_hw_addr_set(port->ndev, port->slave.mac_addr);
+ 
+ 	port->ndev->min_mtu = AM65_CPSW_MIN_PACKET_SIZE;
+-	port->ndev->max_mtu = AM65_CPSW_MAX_PACKET_SIZE;
++	port->ndev->max_mtu = AM65_CPSW_MAX_PACKET_SIZE -
++			      (VLAN_ETH_HLEN + ETH_FCS_LEN);
+ 	port->ndev->hw_features = NETIF_F_SG |
+ 				  NETIF_F_RXCSUM |
+ 				  NETIF_F_HW_CSUM |
 -- 
 2.43.0
 
