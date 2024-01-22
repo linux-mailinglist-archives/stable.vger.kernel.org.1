@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-15212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42535838459
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:09 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF3E837F74
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E53AD299604
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19F671C2903B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0106BB54;
-	Tue, 23 Jan 2024 02:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A111633E1;
+	Tue, 23 Jan 2024 00:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZlQk2gvv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="en+xl5a9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0036A354;
-	Tue, 23 Jan 2024 02:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3706280A;
+	Tue, 23 Jan 2024 00:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975368; cv=none; b=oeDB+zOB6e8H52gxmUyMApvKCoTdKGYljkr2dcD6fJ2BCOY60OJunG5chuQLK5Q5uc3/yKnQO54/KsCY7W3eKtDp+AMC246HXnRdwo/fFFiATXy02YYX4TMLG8qV7Jkit+9U/Lknr8MEcTYFvOZXP78+h3fpzYXtZvGhpfM5J4Q=
+	t=1705971139; cv=none; b=EnMFHCa+O33/wDVbAPEIo5QC0ZQTVhGRhLQ29D7JFX3d8/EoWsjCJ5x38O6Bn8O3Jtsl3U3MjPxnV2EMWi4Z3IgBQ/Sjkp2qDsMXbZTVdcP6Jc2LQNO+8oqFyK6VCChg1dUcuw5tmj5kSvdNxI8HijZZa95ajuL5WrPc/3t5XpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975368; c=relaxed/simple;
-	bh=DEvTQC0gKGWHLSTymDSg+yplk7T4Zj/w/zievL2wPSM=;
+	s=arc-20240116; t=1705971139; c=relaxed/simple;
+	bh=3dtQpsyoN6XXyp15C61A3Mt1ee9qdX/lcaVlwyXLJbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NtZBk764+uD1Qpbb0dUxgp9z0DIja/7N6XksI5hkh4dfqnMSR38iQO19gjF3P85IwTDb7zVA2Wjk+RdhsZrtZjVtQQaQr58Es49RS6qxC+JfwrBp2SI2SzfKVE5ShNN3oyPjOeqrc854Q7dotGLHKoYYkTnNR2mlkCcDiDwyYtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZlQk2gvv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3788C43390;
-	Tue, 23 Jan 2024 02:02:47 +0000 (UTC)
+	 MIME-Version; b=Stx7BDJil1BHbMJPEDFMbkL8NJnazt+eIJVAkWDRO+aeGge21hLn1uRCSUrLPY8YehhMErOaAEf7p5cxbT4zlxUneoe9VA8PCsU54cjAYCA3aGJHcADCKT4aHSvL4Sc89pFozqcc1WuIUYjOSpeedOJwoNqmnlKNdwHXYxCJcFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=en+xl5a9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9F6C433F1;
+	Tue, 23 Jan 2024 00:52:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975368;
-	bh=DEvTQC0gKGWHLSTymDSg+yplk7T4Zj/w/zievL2wPSM=;
+	s=korg; t=1705971139;
+	bh=3dtQpsyoN6XXyp15C61A3Mt1ee9qdX/lcaVlwyXLJbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZlQk2gvvgxXTKw6ldHWXPdrFb8DFredSKCayq/mEKCJlCJk/cgUjAMd6/MDAYbI7u
-	 NvnVSvCm/9pEbgsYQA9eH3MJatyzx6WsO4IcjThl2+kiD6vDLgD4/F1czkphvAHZz+
-	 ZgRx3OKJYcKJL5hvAoB7GS04f0GczXJcZAfTAMtg=
+	b=en+xl5a9fIBtukh9lWz+jvjrq8DOzTWj39hUfMbqHXxYwn+uL7wyNImv3f6nUG0oS
+	 BO+DY2dzCrnwQ6ckiEa8L7WB64J5Y45gLEohDz+jOs3/L4BDvuuptnhE0PDS9Bcrzw
+	 9PNkQUZdkF9u8ZMYfK+ZcZ6jjGwE+vAmdVENLaNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	Su Hui <suhui@nfschina.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Maxime Ripard <mripard@kernel.org>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 305/583] clk: si5341: fix an error code problem in si5341_output_clk_set_rate
-Date: Mon, 22 Jan 2024 15:55:56 -0800
-Message-ID: <20240122235821.361732844@linuxfoundation.org>
+Subject: [PATCH 6.1 189/417] drm/bridge: cdns-mhdp8546: Fix use of uninitialized variable
+Date: Mon, 22 Jan 2024 15:55:57 -0800
+Message-ID: <20240122235758.457044038@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 5607068ae5ab02c3ac9cabc6859d36e98004c341 ]
+[ Upstream commit 155d6fb61270dd297f128731cd155080deee8f3a ]
 
-regmap_bulk_write() return zero or negative error code, return the value
-of regmap_bulk_write() rather than '0'.
+'ret' could be uninitialized at the end of the function, although it's
+not clear if that can happen in practice.
 
-Fixes: 3044a860fd09 ("clk: Add Si5341/Si5340 driver")
-Acked-by: Mike Looijmans <mike.looijmans@topic.nl>
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://lore.kernel.org/r/20231101031633.996124-1-suhui@nfschina.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 6a3608eae6d3 ("drm: bridge: cdns-mhdp8546: Enable HDCP")
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231103-uninit-fixes-v2-3-c22b2444f5f5@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-si5341.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/clk-si5341.c b/drivers/clk/clk-si5341.c
-index 9599857842c7..2920fe2e5e8b 100644
---- a/drivers/clk/clk-si5341.c
-+++ b/drivers/clk/clk-si5341.c
-@@ -895,10 +895,8 @@ static int si5341_output_clk_set_rate(struct clk_hw *hw, unsigned long rate,
- 	r[0] = r_div ? (r_div & 0xff) : 1;
- 	r[1] = (r_div >> 8) & 0xff;
- 	r[2] = (r_div >> 16) & 0xff;
--	err = regmap_bulk_write(output->data->regmap,
-+	return regmap_bulk_write(output->data->regmap,
- 			SI5341_OUT_R_REG(output), r, 3);
--
--	return 0;
- }
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c
+index 946212a95598..5e3b8edcf794 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-mhdp8546-hdcp.c
+@@ -403,7 +403,8 @@ static int _cdns_mhdp_hdcp_disable(struct cdns_mhdp_device *mhdp)
  
- static int si5341_output_reparent(struct clk_si5341_output *output, u8 index)
+ static int _cdns_mhdp_hdcp_enable(struct cdns_mhdp_device *mhdp, u8 content_type)
+ {
+-	int ret, tries = 3;
++	int ret = -EINVAL;
++	int tries = 3;
+ 	u32 i;
+ 
+ 	for (i = 0; i < tries; i++) {
 -- 
 2.43.0
 
