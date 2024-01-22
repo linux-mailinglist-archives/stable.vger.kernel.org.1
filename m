@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-13602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8C3D837D0E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:23:59 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B633837FF9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FDB6287D00
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:23:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 86BFCB29DD0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 020C95A0F6;
-	Tue, 23 Jan 2024 00:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56C562A05;
+	Tue, 23 Jan 2024 00:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mm2P/sRV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QtCe6coY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB3A4E1D5;
-	Tue, 23 Jan 2024 00:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B9122062;
+	Tue, 23 Jan 2024 00:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969779; cv=none; b=n3zagJrq0E1XvoHdq7qvnqIC0XkSI1PDRpGrSRkNabOxnUd3JGYBSoK9yWYy/aWrKuHlMuwwITj3PuCWoFP3Mwk2mhOyKtZleQ+kwYw+x2Wzwms3O7xJfofjRhfzT3v+HWjb41BICnZZmYJceqqKLEUh4KDv8V7P/R3sjBnU7eg=
+	t=1705971105; cv=none; b=smj1K6d6nue/IzV/2CgXyF5HOlJM95e9ofT4Jo2adwh0A0QgZ9dxeBCl1MNxsw4Y88P/gOgU9YgoBBTpQuNYsQrgwaYVbDn3tBi0LBRJAfTgkFycvdBe5o65IS9aBtNkYE0E06w6QdiQMPAjPVeFAZKi12sPWPdTel9MbMOJ5zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969779; c=relaxed/simple;
-	bh=L10JW2MnL3F7lL75ZHTM9ArefxfiuZV9iH+SY36MUmI=;
+	s=arc-20240116; t=1705971105; c=relaxed/simple;
+	bh=h2hajZE9GaV0JVlkUKg3BInbgO/7MNEPyVnWePTj4+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J0aUzgEhWTG618qX2nY2k7uOi9AmvsWEI8Shm8TMJ4fWxTPLN4y1q1BPlEvAo4+PgjcQ7bh06OMztiS461sl0j6SXv/cB3KOrwy1nkZcNGWAuaFFvFqLGwtYooCextR3h+P7qYUwcIVPpxslSwOqcIt5FFRObCcDfI0z7kboaLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mm2P/sRV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7236DC433C7;
-	Tue, 23 Jan 2024 00:29:39 +0000 (UTC)
+	 MIME-Version; b=nfm3cQflImSWeM2HcJFXNVK0GWLlWPevmMBxh8G2pbbhdoozKzK0TqZ9cRGUv+FmGFP03vp14m6YJu/aFmXcjiQ6gnP/Ov1MF6u+c8p1YFNcdM+mM/cvYJz+xr2dukv+Xs4TiKa1TDSswnKgl7waD8BETEbYkbcKFHX/sPsJmO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QtCe6coY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19D81C43390;
+	Tue, 23 Jan 2024 00:51:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969779;
-	bh=L10JW2MnL3F7lL75ZHTM9ArefxfiuZV9iH+SY36MUmI=;
+	s=korg; t=1705971105;
+	bh=h2hajZE9GaV0JVlkUKg3BInbgO/7MNEPyVnWePTj4+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mm2P/sRVEquKhO+nj5NCumOnEarDfT7JnBYt8qrmc5ja1DT5k+RKiajRVI+FyHjaa
-	 GnY021Ie5boQCNMMeKQvl8C/oLolx3PlODvAfluPMzpsr8yGBN4L7E7+RDS+YKVx02
-	 OZdt+O5cEb62vNsCVr0MC3tg/nxyLXguO8ZTD87U=
+	b=QtCe6coYpqmb950h5BkTVtxt2HEixkmINWh5cFafNWLcRkhxCZ93sGMlNq+S3dCxC
+	 2/ETKtkx9fz6gFpio/1VxHQGDEURaIPObImyO0xsFL15aKa5jx7fMVmijlMdCWk8Sn
+	 /DiPgwhO0TxSWqUwZ8ih3LNTpycjo6VYzPC0Kd+c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lonial con <kongln9170@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.7 444/641] netfilter: nf_tables: check if catch-all set element is active in next generation
-Date: Mon, 22 Jan 2024 15:55:48 -0800
-Message-ID: <20240122235831.916874964@linuxfoundation.org>
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 181/417] drm/msm/mdp4: flush vblank event on disable
+Date: Mon, 22 Jan 2024 15:55:49 -0800
+Message-ID: <20240122235758.138462680@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit b1db244ffd041a49ecc9618e8feb6b5c1afcdaa7 upstream.
+[ Upstream commit c6721b3c6423d8a348ae885a0f4c85e14f9bf85c ]
 
-When deactivating the catch-all set element, check the state in the next
-generation that represents this transaction.
+Flush queued events when disabling the crtc. This avoids timeouts when
+we come back and wait for dependencies (like the previous frame's
+flip_done).
 
-This bug uncovered after the recent removal of the element busy mark
-a2dd0233cbc4 ("netfilter: nf_tables: remove busy mark and gc batch API").
-
-Fixes: aaa31047a6d2 ("netfilter: nftables: add catch-all set element support")
-Cc: stable@vger.kernel.org
-Reported-by: lonial con <kongln9170@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c8afe684c95c ("drm/msm: basic KMS driver for snapdragon")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/569127/
+Link: https://lore.kernel.org/r/20231127215401.4064128-1-dmitry.baryshkov@linaro.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6487,7 +6487,7 @@ static int nft_setelem_catchall_deactiva
+diff --git a/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c b/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
+index 169f9de4a12a..3100957225a7 100644
+--- a/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
++++ b/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
+@@ -269,6 +269,7 @@ static void mdp4_crtc_atomic_disable(struct drm_crtc *crtc,
+ {
+ 	struct mdp4_crtc *mdp4_crtc = to_mdp4_crtc(crtc);
+ 	struct mdp4_kms *mdp4_kms = get_kms(crtc);
++	unsigned long flags;
  
- 	list_for_each_entry(catchall, &set->catchall_list, list) {
- 		ext = nft_set_elem_ext(set, catchall->elem);
--		if (!nft_is_active(net, ext))
-+		if (!nft_is_active_next(net, ext))
- 			continue;
+ 	DBG("%s", mdp4_crtc->name);
  
- 		kfree(elem->priv);
+@@ -281,6 +282,14 @@ static void mdp4_crtc_atomic_disable(struct drm_crtc *crtc,
+ 	mdp_irq_unregister(&mdp4_kms->base, &mdp4_crtc->err);
+ 	mdp4_disable(mdp4_kms);
+ 
++	if (crtc->state->event && !crtc->state->active) {
++		WARN_ON(mdp4_crtc->event);
++		spin_lock_irqsave(&mdp4_kms->dev->event_lock, flags);
++		drm_crtc_send_vblank_event(crtc, crtc->state->event);
++		crtc->state->event = NULL;
++		spin_unlock_irqrestore(&mdp4_kms->dev->event_lock, flags);
++	}
++
+ 	mdp4_crtc->enabled = false;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
