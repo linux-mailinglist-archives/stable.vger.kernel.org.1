@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C0A1837FC8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:43 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33BDF837D2C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 070DFB2AA46
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1706291DC9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90362129A65;
-	Tue, 23 Jan 2024 00:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 008C73B1AC;
+	Tue, 23 Jan 2024 00:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdKBM2Mm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1yI0zt7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EBD51292EC;
-	Tue, 23 Jan 2024 00:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59F947A53;
+	Tue, 23 Jan 2024 00:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971003; cv=none; b=ibvq4IULo37dnZGwedS4+uwoniMOeSOwOgliYTymDh84CtcHN3VhQIHN5dJ2Hx7EeNJWJ8EH25RKt0ORNJFCg3A+6GEAICsL/9dJ1iIdYwcf4w6b+E9bg3HBdyQ6U46Vi0ymjr0VF9B1Y6W1xO6anlw0verkeAkAxwcCvEn6xB8=
+	t=1705969822; cv=none; b=NZXrFyx6mx/yZGN5sAjMDOMuhSqXwcV5/zYkNKLuB/3Fr+l0BQZBWWIuzwj2AEH4vNM7BRAFFx6HFqJRKlCPjTTzp6YUfPrb1+SYpLUXGAVCg5qq9qhA9Q5baWg2S1rHp9YwCT/QKa6CWtA2tZADwtvXvW0VMaCY2PxM5JmCYUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971003; c=relaxed/simple;
-	bh=ubUFFKf4x680k7HOn3qGMivDVS/q1wGBj/VjGMPf06k=;
+	s=arc-20240116; t=1705969822; c=relaxed/simple;
+	bh=RFlxzlC3GSmyAKF+d4JTTk2KvdN8/OytA33Zc/HFGjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WAUX/O09HJVQedw9bnSXZE9lpXTxqxWHyJXcU94nb1DRI0DR3G4PUELiDUS5tZGBwZwdWPPvx7hT+ddcnNClr3QzmaSK7KVP2fSNMN8AM2Srm6glsaJrMMShaK3Py4S7dzcrgWq3TzKSkEPYOeAd/t0eTU0f1Rzp+QSTCA9WK0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdKBM2Mm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F117AC43390;
-	Tue, 23 Jan 2024 00:50:02 +0000 (UTC)
+	 MIME-Version; b=lqv1aPa+vjQa2xZHPJ/g3ymxoVAAQTKdLqTry6GfikI7EO74LPXeuH70aNRDLGHIyzhKM72PCvrheLmwMW/yqasZsguYeZui9k/R1DJB5h38ZBzy20vUxCF0vHHkJen7vAuOSBv3RYvc5ifVvwWGU0UqDtnAaJRYjPV+FHnICtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1yI0zt7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A4EBC43390;
+	Tue, 23 Jan 2024 00:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971003;
-	bh=ubUFFKf4x680k7HOn3qGMivDVS/q1wGBj/VjGMPf06k=;
+	s=korg; t=1705969822;
+	bh=RFlxzlC3GSmyAKF+d4JTTk2KvdN8/OytA33Zc/HFGjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EdKBM2Mmsv+Q87zC80ho7oBBPTM0tPWTDlrdEDizqUpmgBgasYIKGvNfJLyWLybNF
-	 H13aFIBiWHYC2LHVt12XGw9nj+/0DLLO9P/Z8nGb361wtXv2My2Y0vESPRM0PJN1Sg
-	 y0lVXH68uVJrLyKVJdo/J5RJ+PevIAH2WlpYHTeE=
+	b=Q1yI0zt7YTamuXpY24ymj+tNZzh9lU5Gr7gqlYDkqwRn7A1KoeJKt+xB4W+5wSrSq
+	 UAVW1GtjtAslBypO+DzFDuOpC4VVHuh+lz3CkaPC3fKgagWM04b1Tl/RIb2vIkm6Sq
+	 WQp3g4omo+mSMpuy1P1NgzFUECmh43BwzbdNRFd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandra Diupina <adiupina@astralinux.ru>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 068/286] cpufreq: scmi: process the result of devm_of_clk_add_hw_provider()
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.7 470/641] ARM: dts: qcom: sdx55: Fix the base address of PCIe PHY
 Date: Mon, 22 Jan 2024 15:56:14 -0800
-Message-ID: <20240122235734.640691337@linuxfoundation.org>
+Message-ID: <20240122235832.753027106@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandra Diupina <adiupina@astralinux.ru>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit c4a5118a3ae1eadc687d84eef9431f9e13eb015c ]
+commit cc6fc55c7ae04ab19b3972f78d3a8b1be32bf533 upstream.
 
-devm_of_clk_add_hw_provider() may return an errno, so
-add a return value check
+While convering the binding to new format, serdes address specified in the
+old binding was used as the base address. This causes a boot hang as the
+driver tries to access memory region outside of the specified address. Fix
+it!
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 8410e7f3b31e ("cpufreq: scmi: Fix OPP addition failure with a dummy clock provider")
-Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: stable@vger.kernel.org # 6.6
+Fixes: bb56cff4ac03 ("ARM: dts: qcom-sdx55: switch PCIe QMP PHY to new style of bindings")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20231211172411.141289-1-manivannan.sadhasivam@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/scmi-cpufreq.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/qcom/qcom-sdx55.dtsi |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
-index ca95b538c48a..bb1389f276d7 100644
---- a/drivers/cpufreq/scmi-cpufreq.c
-+++ b/drivers/cpufreq/scmi-cpufreq.c
-@@ -238,8 +238,11 @@ static int scmi_cpufreq_probe(struct scmi_device *sdev)
+--- a/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-sdx55.dtsi
+@@ -436,9 +436,9 @@
+ 			status = "disabled";
+ 		};
  
- #ifdef CONFIG_COMMON_CLK
- 	/* dummy clock provider as needed by OPP if clocks property is used */
--	if (of_property_present(dev->of_node, "#clock-cells"))
--		devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, NULL);
-+	if (of_property_present(dev->of_node, "#clock-cells")) {
-+		ret = devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get, NULL);
-+		if (ret)
-+			return dev_err_probe(dev, ret, "%s: registering clock provider failed\n", __func__);
-+	}
- #endif
- 
- 	ret = cpufreq_register_driver(&scmi_cpufreq_driver);
--- 
-2.43.0
-
+-		pcie_phy: phy@1c07000 {
++		pcie_phy: phy@1c06000 {
+ 			compatible = "qcom,sdx55-qmp-pcie-phy";
+-			reg = <0x01c07000 0x2000>;
++			reg = <0x01c06000 0x2000>;
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			ranges;
 
 
 
