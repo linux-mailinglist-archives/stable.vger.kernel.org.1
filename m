@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35903838030
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:31 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C641D838304
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:25:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAEF028B001
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E5A7285938
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAA34664AB;
-	Tue, 23 Jan 2024 00:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FBA950260;
+	Tue, 23 Jan 2024 01:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u0yF8OwE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kr+TGyvq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E2864CEB;
-	Tue, 23 Jan 2024 00:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C8A3604D9;
+	Tue, 23 Jan 2024 01:51:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971578; cv=none; b=heSh3qmL5+Q3mr5a+yOBu1oWZX8VDUaVjgU3dcnjadgN5tS7bjvediSjYxjIcIDkwUpVqeDiD1qbaJ7as2YxlEq3Wkr9bVnzHuAWhEvNfymq01KMsrntacZCu+aZD8QPpPVv+Kc9kaduTg76idYUYFe59SXTrNam4Yissttwpzc=
+	t=1705974682; cv=none; b=FrZsoynDadZTaAmvq9dElcOF+lBExK86vkZDRfHHT+Hn6Yd0Wuqcl0+NN/A0qo9AcR8/IXLWsYR6OfHhKbd0YnNGCyLtlO6LSEcnqtHlFdkmyoh071dR3AiUqq07TVtY7mnvXfFFy2GxrRytpntbNGJUKBIyfJXcgje1PhIejkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971578; c=relaxed/simple;
-	bh=5H9ltRwB0R4ivQrsSRok9pl7q6I9V3V9JlLQgmknM7k=;
+	s=arc-20240116; t=1705974682; c=relaxed/simple;
+	bh=CtrMdcLzEKXbnKu4HVEKtjuU0v88+WrowJLOv0XVfYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SY9uSun9uZis63l3BKLcAWiBo8XYMr9f92j/Up1lHz04kN6ju29AuUFGUdnuFrC7V+qmVgHEeLe5jLnU3z11QJgR9JMTl0yK9h89AU+v/gyvPGRm8O1VGxPY19H0+xhmsqPqDr5YYc77j/Hbz3eMN1yF0EjZ8CAdAD5ew72Niho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u0yF8OwE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42160C433C7;
-	Tue, 23 Jan 2024 00:59:38 +0000 (UTC)
+	 MIME-Version; b=oNaMAEFnYj9Oq6/Ba2EwF9i/nuknsGxWcigKVDU/Pc7TKTEMsYg+u2lPk5Bpd1u7IE4pqBVZDV872CZVWXI6ijXscn4MDgkl7HeRKXKjq9HeCh+Wcnmt8T9HQf/xcXivRYmgg18mLISwAwoiUO/+q2UaV+bX/wvSnQJ13zm9rVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kr+TGyvq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C495C43394;
+	Tue, 23 Jan 2024 01:51:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971578;
-	bh=5H9ltRwB0R4ivQrsSRok9pl7q6I9V3V9JlLQgmknM7k=;
+	s=korg; t=1705974682;
+	bh=CtrMdcLzEKXbnKu4HVEKtjuU0v88+WrowJLOv0XVfYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u0yF8OwEPB5M6dxzhNpiM2im8mqS7fLm0wzOklKrwAIg4Iby6B2fRWk8ttINOruLa
-	 6SHjsPFEZUo12fiCbi9gh1QRYJtOnne2IBMd95YP2Tui/Ze0lW+z3PDHWZY3SAa+Hi
-	 PoQpw/CuyRJ3num5ktir2Y+m5hJnBfdPheYy9XB8=
+	b=kr+TGyvqJTdajMkiP9Fzdcw56mgk2S2+HDsHdiZFZiPHNVq9dY4uYmh+9TBbF7FL7
+	 gJIRICLwdrOvmgQy1r9iUVX57NTD6sXCjo7LxJb7I4au5/ci1a1VwxLIfu+EM03f8R
+	 2EaxC40cozdVxMUuS6dZFEd48H9kj//v3M3htn+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Chris Chiu <chiu@endlessos.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 180/286] clk: zynqmp: Add a check for NULL pointer
+Subject: [PATCH 5.15 230/374] ASoC: rt5645: Drop double EF20 entry from dmi_platform_data[]
 Date: Mon, 22 Jan 2024 15:58:06 -0800
-Message-ID: <20240122235739.085753757@linuxfoundation.org>
+Message-ID: <20240122235752.700626416@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 6ab9810cfe6c8f3d8b8750c827d7870abd3751b9 ]
+[ Upstream commit 51add1687f39292af626ac3c2046f49241713273 ]
 
-Add a NULL pointer check as clk_hw_get_parent can return NULL.
+dmi_platform_data[] first contains a DMI entry matching:
 
-Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta@xilinx.com>
-Link: https://lore.kernel.org/r/20220518055314.2486-1-shubhrajyoti.datta@xilinx.com
-Acked-by: Michal Simek <michal.simek@amd.com>
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Stable-dep-of: 1fe15be1fb61 ("drivers: clk: zynqmp: update divider round rate logic")
+   DMI_MATCH(DMI_PRODUCT_NAME, "EF20"),
+
+and then contains an identical entry except for the match being:
+
+   DMI_MATCH(DMI_PRODUCT_NAME, "EF20EA"),
+
+Since these are partial (non exact) DMI matches the first match
+will also match any board with "EF20EA" in their DMI product-name,
+drop the second, redundant, entry.
+
+Fixes: a4dae468cfdd ("ASoC: rt5645: Add ACPI-defined GPIO for ECS EF20 series")
+Cc: Chris Chiu <chiu@endlessos.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://msgid.link/r/20231126214024.300505-2-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/zynqmp/divider.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ sound/soc/codecs/rt5645.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/clk/zynqmp/divider.c b/drivers/clk/zynqmp/divider.c
-index 57bf381f630d..acdd5e48e147 100644
---- a/drivers/clk/zynqmp/divider.c
-+++ b/drivers/clk/zynqmp/divider.c
-@@ -119,10 +119,13 @@ static void zynqmp_get_divider2_val(struct clk_hw *hw,
- 	long error = LONG_MAX;
- 	unsigned long div1_prate;
- 	struct clk_hw *div1_parent_hw;
-+	struct zynqmp_clk_divider *pdivider;
- 	struct clk_hw *div2_parent_hw = clk_hw_get_parent(hw);
--	struct zynqmp_clk_divider *pdivider =
--				to_zynqmp_clk_divider(div2_parent_hw);
- 
-+	if (!div2_parent_hw)
-+		return;
-+
-+	pdivider = to_zynqmp_clk_divider(div2_parent_hw);
- 	if (!pdivider)
- 		return;
+diff --git a/sound/soc/codecs/rt5645.c b/sound/soc/codecs/rt5645.c
+index e7009f704b99..2fdfec505192 100644
+--- a/sound/soc/codecs/rt5645.c
++++ b/sound/soc/codecs/rt5645.c
+@@ -3828,14 +3828,6 @@ static const struct dmi_system_id dmi_platform_data[] = {
+ 		},
+ 		.driver_data = (void *)&ecs_ef20_platform_data,
+ 	},
+-	{
+-		.ident = "EF20EA",
+-		.callback = cht_rt5645_ef20_quirk_cb,
+-		.matches = {
+-			DMI_MATCH(DMI_PRODUCT_NAME, "EF20EA"),
+-		},
+-		.driver_data = (void *)&ecs_ef20_platform_data,
+-	},
+ 	{ }
+ };
  
 -- 
 2.43.0
