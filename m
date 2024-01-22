@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-14543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4449838154
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:08:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76FC7837CED
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D72781C2917B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EAC94B2763E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7143214A0BD;
-	Tue, 23 Jan 2024 01:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FDF2135A7A;
+	Tue, 23 Jan 2024 00:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="veL8+8jA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGRXeUOQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 319A014A0B5;
-	Tue, 23 Jan 2024 01:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6A9145B07;
+	Tue, 23 Jan 2024 00:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972102; cv=none; b=OT7wI+d3tIZUdvP4XfoOdqN9Jo67IhZhaFxfzk76lS28S2uNzbUT6zpxjzFgeRS7NS1tleiIPg7t1AT0u2PI7qW09DCy5Pj3PuBIsk22gpkMRsph0PWXNZU63WXBJxpe9jcUstWwlbayAd8PxMhNO9aRwe3DbGeBWYf6AxXv7BE=
+	t=1705969676; cv=none; b=XKJA33sgHiLtI6LB8zdrKkAgarmVumTXE0fR+T325DsuaG3a4hMPM6Dtr/pTla7998A7Cja/cdptkKnH9Vb5vTTQn9Bjq7QK6+Bz+8365lCWCC+BtZnXMYz+DnqXwFJzWSCguxmjpAkXBeKHS4UVlKnUaIIv6CqVYriQ3vF/qEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972102; c=relaxed/simple;
-	bh=x2F03w3h0EO7EnuiM24/ncnyVO5+UpoMkDTkoBU1rdA=;
+	s=arc-20240116; t=1705969676; c=relaxed/simple;
+	bh=iVPfVDj3lgQwTdQFyjaAQPXfFKnWQ8ePWhoPIv6oINE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=POBfa11ZZP+ggvwuL/asYKmM4eBm0S1auF6Q2xoV08tzoqrOvyrZM52N/O1HinguBS6sQnrRsYVtM+8YGxQV+9cK6I6OqVTe6SK4x14nwUE8eagCQ6p3tZuhsZ4cP8WBdcBiCS7s3Muvmh86eQulS4K15687XBaxF61S9Y6TM1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=veL8+8jA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17798C43399;
-	Tue, 23 Jan 2024 01:08:20 +0000 (UTC)
+	 MIME-Version; b=BDuJk4+/xjRS4TXXIVdfXqNr5fZrwuEd3gK5fXe4a5Oujm+MdmhWAYNEonOzqwV5XEk3b7uZF1/HQOV0pE6lb+n2UQbquq7fmYH5wIpLM1ex5Tzpr3Wc2PGW0xu/C2OUD6DMiEi8/EYf+FALgVkXzYDQPi03eXlpFcw56Us29EQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGRXeUOQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA22C433F1;
+	Tue, 23 Jan 2024 00:27:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972101;
-	bh=x2F03w3h0EO7EnuiM24/ncnyVO5+UpoMkDTkoBU1rdA=;
+	s=korg; t=1705969676;
+	bh=iVPfVDj3lgQwTdQFyjaAQPXfFKnWQ8ePWhoPIv6oINE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=veL8+8jANauTpw4w+0/4mvEWCkVIs7w9WWOfVhU7hiAqCrJJQOTOJg6srZh3tBJ9r
-	 tiy+4ZgcwkE2MNPTfJumZCupsu+34VpVQQifv1Db/chI120FXpjkwxb6xqewIHMqos
-	 VAIvp7h4ClRGhU8YwM3yMTfVHVHBf2LJVlLH23eQ=
+	b=iGRXeUOQ6oaEkKY8f8vTnWA0VT9m5Hr7Ov94PZMnfLEu31jd2mK1kqEIAdxDER9tM
+	 cf/CZRELxtdS6tHb9srByMEBG5X6wKF3hg9X/0O/a99L9AFjG+lXEWOacVgt0I21p9
+	 +FaHsFlztx4CDiFvoaQIAPVGuAY4BTMHIXzaS5Xw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Li Nan <linan122@huawei.com>,
+	Tom Talpey <tom@talpey.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 021/374] drm/amdgpu: Add NULL checks for function pointers
+Subject: [PATCH 6.7 373/641] ksmbd: validate the zero field of packet header
 Date: Mon, 22 Jan 2024 15:54:37 -0800
-Message-ID: <20240122235745.362171641@linuxfoundation.org>
+Message-ID: <20240122235829.635063167@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit 81577503efb49f4ad76af22f9941d72900ef4aab ]
+[ Upstream commit 516b3eb8c8065f7465f87608d37a7ed08298c7a5 ]
 
-Check if function is implemented before making the call.
+The SMB2 Protocol requires that "The first byte of the Direct TCP
+transport packet header MUST be zero (0x00)"[1]. Commit 1c1bcf2d3ea0
+("ksmbd: validate smb request protocol id") removed the validation of
+this 1-byte zero. Add the validation back now.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[1]: [MS-SMB2] - v20230227, page 30.
+https://winprotocoldoc.blob.core.windows.net/productionwindowsarchives/MS-SMB2/%5bMS-SMB2%5d-230227.pdf
+
+Fixes: 1c1bcf2d3ea0 ("ksmbd: validate smb request protocol id")
+Signed-off-by: Li Nan <linan122@huawei.com>
+Acked-by: Tom Talpey <tom@talpey.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/soc15.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ fs/smb/server/smb_common.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/soc15.c b/drivers/gpu/drm/amd/amdgpu/soc15.c
-index 529bb6c6ac6f..e8c0e77e1b01 100644
---- a/drivers/gpu/drm/amd/amdgpu/soc15.c
-+++ b/drivers/gpu/drm/amd/amdgpu/soc15.c
-@@ -1615,9 +1615,11 @@ static void soc15_common_get_clockgating_state(void *handle, u32 *flags)
- 	if (amdgpu_sriov_vf(adev))
- 		*flags = 0;
+diff --git a/fs/smb/server/smb_common.c b/fs/smb/server/smb_common.c
+index 6691ae68af0c..7c98bf699772 100644
+--- a/fs/smb/server/smb_common.c
++++ b/fs/smb/server/smb_common.c
+@@ -158,8 +158,12 @@ int ksmbd_verify_smb_message(struct ksmbd_work *work)
+  */
+ bool ksmbd_smb_request(struct ksmbd_conn *conn)
+ {
+-	__le32 *proto = (__le32 *)smb2_get_msg(conn->request_buf);
++	__le32 *proto;
  
--	adev->nbio.funcs->get_clockgating_state(adev, flags);
-+	if (adev->nbio.funcs && adev->nbio.funcs->get_clockgating_state)
-+		adev->nbio.funcs->get_clockgating_state(adev, flags);
- 
--	adev->hdp.funcs->get_clock_gating_state(adev, flags);
-+	if (adev->hdp.funcs && adev->hdp.funcs->get_clock_gating_state)
-+		adev->hdp.funcs->get_clock_gating_state(adev, flags);
- 
- 	if (adev->asic_type != CHIP_ALDEBARAN) {
- 
-@@ -1633,9 +1635,11 @@ static void soc15_common_get_clockgating_state(void *handle, u32 *flags)
- 	}
- 
- 	/* AMD_CG_SUPPORT_ROM_MGCG */
--	adev->smuio.funcs->get_clock_gating_state(adev, flags);
-+	if (adev->smuio.funcs && adev->smuio.funcs->get_clock_gating_state)
-+		adev->smuio.funcs->get_clock_gating_state(adev, flags);
- 
--	adev->df.funcs->get_clockgating_state(adev, flags);
-+	if (adev->df.funcs && adev->df.funcs->get_clockgating_state)
-+		adev->df.funcs->get_clockgating_state(adev, flags);
- }
- 
- static int soc15_common_set_powergating_state(void *handle,
++	if (conn->request_buf[0] != 0)
++		return false;
++
++	proto = (__le32 *)smb2_get_msg(conn->request_buf);
+ 	if (*proto == SMB2_COMPRESSION_TRANSFORM_ID) {
+ 		pr_err_ratelimited("smb2 compression not support yet");
+ 		return false;
 -- 
 2.43.0
 
