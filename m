@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-14358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3BD5838092
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:55 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F85E83803D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6646B2878EF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52F3F1F2C9E9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A680B12FF85;
-	Tue, 23 Jan 2024 01:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13477651BE;
+	Tue, 23 Jan 2024 01:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kicYbP11"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XcvPtoLg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F91657B3;
-	Tue, 23 Jan 2024 01:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C625D4E1AD;
+	Tue, 23 Jan 2024 01:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971801; cv=none; b=JgntpMiS0aJPQ0gpHVGo4ou9KxqjEOKCPqvrxk4hlAYLtLP8WNaSJrRAiCcAeKO92JilxcpWhvcCX3mwBj/1ABgb7WhUzxlmdMR3AhoT8a7xRDzzasria2YWMv5G7Tepi77noPz6veIvd+f1YLgELQQ0wfFf7XVWZo9gxMg0jkY=
+	t=1705971613; cv=none; b=P0QTUGcTRXF2Zr2JiYwdQOJjUt/ZBOXB4Zr73q8TQpKc2VoeJ8X4nuw78/Uc1DA/Y8QmPBovp1qB5jRUqQ0ClfjFHDcWnVyLs9+x85mg5Qjk9NiRM48baJCcoMiBMMIWWVlXKOPYaz5lnwwKlQdI1gddqrUbiuVmVEX4xFepHG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971801; c=relaxed/simple;
-	bh=GqTqKEfkirhImzZTZ+culhOdfdUfOfwcTlNQoVPdU3A=;
+	s=arc-20240116; t=1705971613; c=relaxed/simple;
+	bh=mlIe1XKf52MEQKShZdLi+ND6VwOzUXJrJw68y9xP7NY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ErgiziGS2nzw4eyr1njNHGxGhOmFQ6wkTxlX1DqS+1dBqIjqzTUwU3fN+a32FV54EECp83KQcmsA/DMymtpvCDMgB9TbbhSlVVswBA6lEs1MXyBknQkiH9TkjMaZ/Q/eGZgFVz9x2P1zwC6pqeYJHrFaRT1FobMVBSiPvI382hE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kicYbP11; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA0AC433C7;
-	Tue, 23 Jan 2024 01:03:20 +0000 (UTC)
+	 MIME-Version; b=lReIZ9X3vPcttEsSyfoMcbvvoQ8e1qsCd3Jqnv2dSyMbk11F2GklOzBHIeIfz06zVcqVI1ZVLMJ5FQfGTr/LwRryY/xTFlNxUjKbcWDo24S77o1lLxUJyxBaHAfEWYWcTqfxh3qo7uvT+Jra4uqrxNxey4Bbtp4I1Z0xjjblXiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XcvPtoLg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B5C5C433F1;
+	Tue, 23 Jan 2024 01:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971801;
-	bh=GqTqKEfkirhImzZTZ+culhOdfdUfOfwcTlNQoVPdU3A=;
+	s=korg; t=1705971613;
+	bh=mlIe1XKf52MEQKShZdLi+ND6VwOzUXJrJw68y9xP7NY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kicYbP11OazhfpTK0lYT6IPcn6e9h5ppfTbCD8olP+HiDHwbLSyo2FLlFZrmHYOv9
-	 4FoygBFFqejVHrdu/C/F1LrB0IS68Tw/F2zm7bcZqxzY5brVBJ9Pl/6J7sNLKhoN6z
-	 ErOSCHVxNJVBZJfAYJtPuw2gr+TLoq82H+oX4XjU=
+	b=XcvPtoLgT99AYFppk4bIKGfZviSHEktv8pKrgpVzhi1O+iN77gHBOIPaj1VZFJuAM
+	 nbXFFf46ViPeH3XPbTgf6by26ERzcTL11uFDpmOwEyhPe+3d2US6UlRKb7Xk3WP3Ei
+	 gTKkVPenozJ28skOZhtA7plM6u9ohkjQcbJaFtec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	kernel test robot <lkp@intel.com>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Arnd Bergmann <arnd@arndb.de>,
-	linux-arm-kernel@lists.infradead.org,
-	patches@armlinux.org.uk,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Su Hui <suhui@nfschina.com>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 323/417] ARM: 9330/1: davinci: also select PINCTRL
-Date: Mon, 22 Jan 2024 15:58:11 -0800
-Message-ID: <20240122235802.990549429@linuxfoundation.org>
+Subject: [PATCH 5.10 186/286] clk: si5341: fix an error code problem in si5341_output_clk_set_rate
+Date: Mon, 22 Jan 2024 15:58:12 -0800
+Message-ID: <20240122235739.297311533@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,50 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit f54e8634d1366926c807e2af6125b33cff555fa7 ]
+[ Upstream commit 5607068ae5ab02c3ac9cabc6859d36e98004c341 ]
 
-kconfig warns when PINCTRL_SINGLE is selected but PINCTRL is not
-set, so also set PINCTRL for ARCH_DAVINCI. This prevents a
-kconfig/build warning:
+regmap_bulk_write() return zero or negative error code, return the value
+of regmap_bulk_write() rather than '0'.
 
-   WARNING: unmet direct dependencies detected for PINCTRL_SINGLE
-     Depends on [n]: PINCTRL [=n] && OF [=y] && HAS_IOMEM [=y]
-     Selected by [y]:
-     - ARCH_DAVINCI [=y] && ARCH_MULTI_V5 [=y]
-
-Closes: lore.kernel.org/r/202311070548.0f6XfBrh-lkp@intel.com
-
-Fixes: f962396ce292 ("ARM: davinci: support multiplatform build for ARM v5")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Cc: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: patches@armlinux.org.uk
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Fixes: 3044a860fd09 ("clk: Add Si5341/Si5340 driver")
+Acked-by: Mike Looijmans <mike.looijmans@topic.nl>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Link: https://lore.kernel.org/r/20231101031633.996124-1-suhui@nfschina.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-davinci/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/clk-si5341.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-davinci/Kconfig b/arch/arm/mach-davinci/Kconfig
-index 0b54ca56555b..672ffb0b5f3a 100644
---- a/arch/arm/mach-davinci/Kconfig
-+++ b/arch/arm/mach-davinci/Kconfig
-@@ -11,6 +11,7 @@ menuconfig ARCH_DAVINCI
- 	select PM_GENERIC_DOMAINS_OF if PM && OF
- 	select REGMAP_MMIO
- 	select RESET_CONTROLLER
-+	select PINCTRL
- 	select PINCTRL_SINGLE
+diff --git a/drivers/clk/clk-si5341.c b/drivers/clk/clk-si5341.c
+index 4dea29fa901d..d6515661580c 100644
+--- a/drivers/clk/clk-si5341.c
++++ b/drivers/clk/clk-si5341.c
+@@ -888,10 +888,8 @@ static int si5341_output_clk_set_rate(struct clk_hw *hw, unsigned long rate,
+ 	r[0] = r_div ? (r_div & 0xff) : 1;
+ 	r[1] = (r_div >> 8) & 0xff;
+ 	r[2] = (r_div >> 16) & 0xff;
+-	err = regmap_bulk_write(output->data->regmap,
++	return regmap_bulk_write(output->data->regmap,
+ 			SI5341_OUT_R_REG(output), r, 3);
+-
+-	return 0;
+ }
  
- if ARCH_DAVINCI
+ static int si5341_output_reparent(struct clk_si5341_output *output, u8 index)
 -- 
 2.43.0
 
