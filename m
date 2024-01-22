@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03B36837FFB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCDA1837D76
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85785B240CD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF5331C20F6E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43E712BEB2;
-	Tue, 23 Jan 2024 00:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01EF957322;
+	Tue, 23 Jan 2024 00:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aq4XxF9K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOqJiXag"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93FC04E1AD;
-	Tue, 23 Jan 2024 00:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CCB4E1D7;
+	Tue, 23 Jan 2024 00:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971368; cv=none; b=txQSmUGgoxh1F1MPJ3a3iju+wRoY4Opx65iovCEgdZNrUdqgF8gLLjZs7GXYYf1Gy/5M9QcOxF3VtTn0kJx2QNMCd9ecmflDXaFpkwiCQNhftUX+AXuLr2U+1pFR+hR16vWKqnlbPOXGIVf5PkRZvVR63IpNnMuP85y7m2+B9hc=
+	t=1705969968; cv=none; b=Z7SIXjK4PbZTzwvppI1c/fKEH87Nzl1DYdiKWeanDHJD/4z10x/5Nhm+Qen3sqrOqVTvtG5pIeeVPeyVFjn3PiVR4+QSx98K57W8XFjKg4qln/91PqKI5NmrzvGKwDffi2Ym5qLk5a3mYszp4YSo8PoFLxsh9TDwLANmRM4ccvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971368; c=relaxed/simple;
-	bh=78gfodtCcHCVtvxeG9WL72YqVaXM27Ymgb8OKWdrgMM=;
+	s=arc-20240116; t=1705969968; c=relaxed/simple;
+	bh=YZIe/uJ+7/dGBSJLwtujx8m/A3S4ofK8rQJLW0Xt/hU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I3Qd/yCIRWXzQ3d3C66daB0qJQ2bCA/LlSiKqoagzH3ms/j4p6fFocmkHKv8JSi31TH4HfPI12BloFXfHDmix058zOkroGoLPaHD5umxj/OaWFWFJdSLlEV9x1WgvKhfCyxWSsrKVkHwdT6fAIwQ58uxGZjGDlUmslM3JQY53jM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aq4XxF9K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F2AAC433C7;
-	Tue, 23 Jan 2024 00:56:08 +0000 (UTC)
+	 MIME-Version; b=VcbC5ZkeF3Y9Yo4mkJQTEWrBH4U2ZLtWldlewrok9SP+qvxC6EC1nb9kq1miH/zW4+FSLzxRr1mpuTTA28Y5X6CNa5gOn6KAI9IJAH6GNSSZIu4uySF2fIzhC/2QFkYgye271liSEzkPW4uj3ZWEJOV316+q0KAykL3LUqBYVA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOqJiXag; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706B8C433F1;
+	Tue, 23 Jan 2024 00:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971368;
-	bh=78gfodtCcHCVtvxeG9WL72YqVaXM27Ymgb8OKWdrgMM=;
+	s=korg; t=1705969968;
+	bh=YZIe/uJ+7/dGBSJLwtujx8m/A3S4ofK8rQJLW0Xt/hU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aq4XxF9KENBziLREh6SD5W+eJkSz26s6gBFCJADmSBJetolKqPWF6DIrWxL6Kk+UA
-	 XhFNLi2PY4mey7ypjTQn0JkuQ+BnSCY74BZcGKAzmJAoOlhgv/HU9y1HhFEUpiIQXR
-	 Ribtavsh6K+gLd2KQxff71qpj8TLUZfytuSXMWUU=
+	b=eOqJiXagQoBXsYcKckMhaVoqp9w+eoALzxOhXdXChM+2SkizRAkv1GFDJc1jT6hUX
+	 nAF/M27pPMQpBspngPPQ100s5qdUTAGcC6CEgSwrn7vADN3y6i/AdC7hiu46dZEoJ/
+	 3v5MnoK1bcbQs/9lAKdc7dM7kFsmjnbBd0gf8Wz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Douglas Anderson <dianders@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 141/286] Bluetooth: btmtkuart: fix recv_buf() return value
+Subject: [PATCH 6.7 543/641] usb: core: Fix crash w/ usb_choose_configuration() if no driver
 Date: Mon, 22 Jan 2024 15:57:27 -0800
-Message-ID: <20240122235737.571205195@linuxfoundation.org>
+Message-ID: <20240122235835.128782937@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Dolcini <francesco.dolcini@toradex.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 64057f051f20c2a2184b9db7f8037d928d68a4f4 ]
+[ Upstream commit 44995e6f07028f798efd0c3c11a1efc78330f600 ]
 
-Serdev recv_buf() callback is supposed to return the amount of bytes
-consumed, therefore an int in between 0 and count.
+It's possible that usb_choose_configuration() can get called when a
+USB device has no driver. In this case the recent commit a87b8e3be926
+("usb: core: Allow subclassed USB drivers to override
+usb_choose_configuration()") can cause a crash since it dereferenced
+the driver structure without checking for NULL. Let's add a check.
 
-Do not return negative number in case of issue, just print an error and
-return count. This fixes a WARN in ttyport_receive_buf().
+A USB device with no driver is an anomaly, so make
+usb_choose_configuration() return immediately if there is no driver.
 
-Link: https://lore.kernel.org/all/087be419-ec6b-47ad-851a-5e1e3ea5cfcc@kernel.org/
-Fixes: 7237c4c9ec92 ("Bluetooth: mediatek: Add protocol support for MediaTek serial devices")
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+This was seen in the real world when usbguard got ahold of a r8152
+device at the wrong time. It can also be simulated via this on a
+computer with one r8152-based USB Ethernet adapter:
+  cd /sys/bus/usb/drivers/r8152-cfgselector
+  to_unbind="$(ls -d *-*)"
+  real_dir="$(readlink -f "${to_unbind}")"
+  echo "${to_unbind}" > unbind
+  cd "${real_dir}"
+  echo 0 > authorized
+  echo 1 > authorized
+
+Fixes: a87b8e3be926 ("usb: core: Allow subclassed USB drivers to override usb_choose_configuration()")
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20231211073237.v3.1.If27eb3bf7812f91ab83810f232292f032f4203e0@changeid
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btmtkuart.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/usb/core/generic.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btmtkuart.c b/drivers/bluetooth/btmtkuart.c
-index 719d4685a2dd..1a908827b1f2 100644
---- a/drivers/bluetooth/btmtkuart.c
-+++ b/drivers/bluetooth/btmtkuart.c
-@@ -471,7 +471,7 @@ mtk_stp_split(struct btmtkuart_dev *bdev, const unsigned char *data, int count,
- 	return data;
- }
+diff --git a/drivers/usb/core/generic.c b/drivers/usb/core/generic.c
+index dcb897158228..b134bff5c3fe 100644
+--- a/drivers/usb/core/generic.c
++++ b/drivers/usb/core/generic.c
+@@ -59,7 +59,16 @@ int usb_choose_configuration(struct usb_device *udev)
+ 	int num_configs;
+ 	int insufficient_power = 0;
+ 	struct usb_host_config *c, *best;
+-	struct usb_device_driver *udriver = to_usb_device_driver(udev->dev.driver);
++	struct usb_device_driver *udriver;
++
++	/*
++	 * If a USB device (not an interface) doesn't have a driver then the
++	 * kernel has no business trying to select or install a configuration
++	 * for it.
++	 */
++	if (!udev->dev.driver)
++		return -1;
++	udriver = to_usb_device_driver(udev->dev.driver);
  
--static int btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
-+static void btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
- {
- 	struct btmtkuart_dev *bdev = hci_get_drvdata(hdev);
- 	const unsigned char *p_left = data, *p_h4;
-@@ -510,25 +510,20 @@ static int btmtkuart_recv(struct hci_dev *hdev, const u8 *data, size_t count)
- 			bt_dev_err(bdev->hdev,
- 				   "Frame reassembly failed (%d)", err);
- 			bdev->rx_skb = NULL;
--			return err;
-+			return;
- 		}
- 
- 		sz_left -= sz_h4;
- 		p_left += sz_h4;
- 	}
--
--	return 0;
- }
- 
- static int btmtkuart_receive_buf(struct serdev_device *serdev, const u8 *data,
- 				 size_t count)
- {
- 	struct btmtkuart_dev *bdev = serdev_device_get_drvdata(serdev);
--	int err;
- 
--	err = btmtkuart_recv(bdev->hdev, data, count);
--	if (err < 0)
--		return err;
-+	btmtkuart_recv(bdev->hdev, data, count);
- 
- 	bdev->hdev->stat.byte_rx += count;
- 
+ 	if (usb_device_is_owned(udev))
+ 		return 0;
 -- 
 2.43.0
 
