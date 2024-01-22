@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B32837E66
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75383837C5B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6CE01F2811F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:39:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8FAD1C242AE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF9F5FEFA;
-	Tue, 23 Jan 2024 00:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 764A4442F;
+	Tue, 23 Jan 2024 00:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZdXVQWh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w9gFJ/dW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1654E1D1;
-	Tue, 23 Jan 2024 00:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D84442E;
+	Tue, 23 Jan 2024 00:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970565; cv=none; b=VNpXb1QJ39TFuxjgEt31a33TsC4s18OulUIaicJGp18yoWyFQk5ggDxC+i53MBLicrZj0+1GzbdUFV2TxVfA/abIoI2pyjBDRzJrrsQ40VBCEFe3PLA5qdNdyRoZTlenVttA3igWRAzos6Hw1IJiIp6IJJ9Tp+BWbm4T7G75o6I=
+	t=1705969591; cv=none; b=IoUZTWAMXGdEW2a1BGNwGAxGyqhrwRUK8hVHCqv1Nd4kkivNagZl1pGcF0uZHjQAYq6yLx+xWh/l/q+4pBmzrmmX/qIUnXXQHL3OWQUPebZ1zvqt/yVfDodoYWw6IH3b6Vi5PUSbrgd3TUXsfyceHGzFSLLyLmNeauJGGbvqFCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970565; c=relaxed/simple;
-	bh=pbzTVdD8QJLXLFuXAnZm6SCP2rNIAPc3TC6iBMHtH1o=;
+	s=arc-20240116; t=1705969591; c=relaxed/simple;
+	bh=EVZ2VrUJuios9yHW31Lt+ySYvNDg3pMxW0N5FcWzoio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=imn05/DSRjazXwEoYlMWbAC9Agh+2O8o24rLPg+h+CrpGRwlvnZAXhj99hdXLH2+FM5K+fX8NCa+YQaCq4OnIEq9Y754vpjAz0KJ90mjGCTRWEyFFURPOjcrtfxCt3xfbJPjePnhY1OAbcipD5UJq7We4I1YLpZhihgk6XrQ6nI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZdXVQWh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980C7C433C7;
-	Tue, 23 Jan 2024 00:42:44 +0000 (UTC)
+	 MIME-Version; b=Tn/+8kYhnAMWkqgCzANxRRk9ZrUeGwhiB/6yg3qIsiR9ach0xVMSEusvH44RsIfUuiJgNZdxQJgj2FrkBWKkK+eRotkk7E0xX3nedExcYNXCFeuC2+vF2dO5EP7FFXRH5UkLy7x/jGcqg0n+FVxhsJvkySrJsn5PbH24vCXQCLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w9gFJ/dW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7344C43390;
+	Tue, 23 Jan 2024 00:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970565;
-	bh=pbzTVdD8QJLXLFuXAnZm6SCP2rNIAPc3TC6iBMHtH1o=;
+	s=korg; t=1705969591;
+	bh=EVZ2VrUJuios9yHW31Lt+ySYvNDg3pMxW0N5FcWzoio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZdXVQWhRhS8lbq2CAuCVuKFxe09bLfyT38qXaL6K8diOfmk6BcizrVeHt/GlE1la
-	 p0sGMhruhZ6JIXWQLpx3w/Jn4D2th2DEM7gkf/wEBWKnxIyruxpQBRysK3R1lOLLiu
-	 QxwffOudETPzQD5SPJ9wnvvYVzMdoKrrxXMJHsLQ=
+	b=w9gFJ/dW4n82H+634AY+SobIqFMcgTyeJDV814GsD7jh+9m2ALtkctvf7vtCEfluT
+	 cq6aQj0ufrVlsL/xbPjs6t4IbyKvqPG40UWjYHpqn/Duypjioi/ICY8uS84mwbiYAK
+	 wevP5WteaWYmzs17glMlc1Djcy1elKxTHrTQWrtA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Osama Muhammad <osmtendev@gmail.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	syzbot+da0fc229cc1ff4bb2e6d@syzkaller.appspotmail.com
-Subject: [PATCH 6.1 053/417] gfs2: Fix kernel NULL pointer dereference in gfs2_rgrp_dump
-Date: Mon, 22 Jan 2024 15:53:41 -0800
-Message-ID: <20240122235753.512825209@linuxfoundation.org>
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 318/641] media: dvb-frontends: m88ds3103: Fix a memory leak in an error handling path of m88ds3103_probe()
+Date: Mon, 22 Jan 2024 15:53:42 -0800
+Message-ID: <20240122235827.831294549@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Osama Muhammad <osmtendev@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 8877243beafa7c6bfc42022cbfdf9e39b25bd4fa ]
+[ Upstream commit 5b2f885e2f6f482d05c23f04c8240f7b4fc5bdb5 ]
 
-Syzkaller has reported a NULL pointer dereference when accessing
-rgd->rd_rgl in gfs2_rgrp_dump().  This can happen when creating
-rgd->rd_gl fails in read_rindex_entry().  Add a NULL pointer check in
-gfs2_rgrp_dump() to prevent that.
+If an error occurs after a successful i2c_mux_add_adapter(), then
+i2c_mux_del_adapters() should be called to free some resources, as
+already done in the remove function.
 
-Reported-and-tested-by: syzbot+da0fc229cc1ff4bb2e6d@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=da0fc229cc1ff4bb2e6d
-Fixes: 72244b6bc752 ("gfs2: improve debug information when lvb mismatches are found")
-Signed-off-by: Osama Muhammad <osmtendev@gmail.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Fixes: e6089feca460 ("media: m88ds3103: Add support for ds3103b demod")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/rgrp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/dvb-frontends/m88ds3103.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/gfs2/rgrp.c b/fs/gfs2/rgrp.c
-index f602fb844951..dcaaa32efc4a 100644
---- a/fs/gfs2/rgrp.c
-+++ b/fs/gfs2/rgrp.c
-@@ -2306,7 +2306,7 @@ void gfs2_rgrp_dump(struct seq_file *seq, struct gfs2_rgrpd *rgd,
- 		       (unsigned long long)rgd->rd_addr, rgd->rd_flags,
- 		       rgd->rd_free, rgd->rd_free_clone, rgd->rd_dinodes,
- 		       rgd->rd_requested, rgd->rd_reserved, rgd->rd_extfail_pt);
--	if (rgd->rd_sbd->sd_args.ar_rgrplvb) {
-+	if (rgd->rd_sbd->sd_args.ar_rgrplvb && rgd->rd_rgl) {
- 		struct gfs2_rgrp_lvb *rgl = rgd->rd_rgl;
+diff --git a/drivers/media/dvb-frontends/m88ds3103.c b/drivers/media/dvb-frontends/m88ds3103.c
+index 26c67ef05d13..e0272054fca5 100644
+--- a/drivers/media/dvb-frontends/m88ds3103.c
++++ b/drivers/media/dvb-frontends/m88ds3103.c
+@@ -1894,7 +1894,7 @@ static int m88ds3103_probe(struct i2c_client *client)
+ 		/* get frontend address */
+ 		ret = regmap_read(dev->regmap, 0x29, &utmp);
+ 		if (ret)
+-			goto err_kfree;
++			goto err_del_adapters;
+ 		dev->dt_addr = ((utmp & 0x80) == 0) ? 0x42 >> 1 : 0x40 >> 1;
+ 		dev_dbg(&client->dev, "dt addr is 0x%02x\n", dev->dt_addr);
  
- 		gfs2_print_dbg(seq, "%s  L: f:%02x b:%u i:%u\n", fs_id_buf,
+@@ -1902,11 +1902,14 @@ static int m88ds3103_probe(struct i2c_client *client)
+ 						      dev->dt_addr);
+ 		if (IS_ERR(dev->dt_client)) {
+ 			ret = PTR_ERR(dev->dt_client);
+-			goto err_kfree;
++			goto err_del_adapters;
+ 		}
+ 	}
+ 
+ 	return 0;
++
++err_del_adapters:
++	i2c_mux_del_adapters(dev->muxc);
+ err_kfree:
+ 	kfree(dev);
+ err:
 -- 
 2.43.0
 
