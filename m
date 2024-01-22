@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-15417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 629A5838526
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E91D838116
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:05:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B78128A5AE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDF8BB215E3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80421A2D;
-	Tue, 23 Jan 2024 02:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF78113AA39;
+	Tue, 23 Jan 2024 01:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FWb6VpWl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fj4jORHe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F72B380;
-	Tue, 23 Jan 2024 02:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2E913E204;
+	Tue, 23 Jan 2024 01:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975752; cv=none; b=a9q9tNaa6R9+xS2BJ04jTvNLkdz2OfZtnZFvkOEzfNDyRxbSUKf37xZD+BPRt+BFtNdlYwyCudA4bnw2ORO+PFav3mczTs5ZCs59qj4/Rlbw2u+D+I3x4o/yKonyqzUUvL33cGG+RC5Kh/2ahQFVHo2hpiPrcqYvfNsW1L9tg+Y=
+	t=1705971982; cv=none; b=MtfgdbYTxrBfgRP5x+OZWRSSenLkoNC0m941MGoHfRUxXDFXqLE+VOi9S4HdNfMJYfsolbtO9xkQTipW3rYtGudin6cSKHSXPPuK3QwJNwRdesDghWnsICMQbqC52MZfsxx0J9m3qpRr46IC7LilI1zXuR0aQVjx8Rf5r94eZ4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975752; c=relaxed/simple;
-	bh=sbjQTydDSZObAUBAjozMEFfos4rzJgoUT8cQAMwy4IY=;
+	s=arc-20240116; t=1705971982; c=relaxed/simple;
+	bh=aQHPbnPMv2EDr5J17mdrmULTWE5p640PFHzIY4cacE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pq8QJrv9ei5eQDxjAaCXStcGSYVBQMhQiywK8qsKC0G0gXjr++e6NXsh086FC0QxlZuTmPOd5ZqHl0lCQxXFrj84yMn/BGUE1tN9GRn/SrfowDhSFbNoHaD+BsUJt3ZHNWCDYeU1VVTZviuWczj+AHgUX9217FCn/3a6UD+ppm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FWb6VpWl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0188FC43390;
-	Tue, 23 Jan 2024 02:09:11 +0000 (UTC)
+	 MIME-Version; b=B1G0YMvnLd3NZO8UkKesLm0Vhp+vFsqCuJApsgw0fmBYNrOhO1iULu9O82LpZwiXf3jB8gCL1evqDNv17MPD0fFHW+hSKXo+6gKR63nB450i1Hdifh6EyiwmN77Vz3nm7CB2SibBzc0LL6dWm9OJ2cJf6e3ThaYgEn0/HwsILso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fj4jORHe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C35DC433C7;
+	Tue, 23 Jan 2024 01:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975752;
-	bh=sbjQTydDSZObAUBAjozMEFfos4rzJgoUT8cQAMwy4IY=;
+	s=korg; t=1705971982;
+	bh=aQHPbnPMv2EDr5J17mdrmULTWE5p640PFHzIY4cacE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FWb6VpWl2DfwS1CPb+xZhLjhIvzRtC9nnOIIVrp5wYCdGh5P1OEhrpNBZPsWexWHB
-	 /3fuwoNgRZVTumx0/iH6voCm3qsFemGv4Ao45tlCSae84FinJIBu8gBGlaKkVu0ydq
-	 LR5jq2MHPPc86NcT83ZSxNz3TYpfRif/tFGMQgvo=
+	b=Fj4jORHeRx7dFdhIEu/7cG7iMnFln+b1Ca5iImlvLWGIiEEG28Ykyf28l+E39jBPt
+	 /fM/U7Vy81B7nrND4E7LnF4B27AOnJzh81wlaShw5f2WzZohayD4rTQ7xO3O4ZYCSc
+	 z3MZpu6VkCqAArdR/elQP1xHhX2w/T3YPplFQ1fI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 536/583] mptcp: refine opt_mp_capable determination
+Subject: [PATCH 5.10 281/286] mlxsw: spectrum_acl_tcam: Reorder functions to avoid forward declarations
 Date: Mon, 22 Jan 2024 15:59:47 -0800
-Message-ID: <20240122235828.523199100@linuxfoundation.org>
+Message-ID: <20240122235742.884210382@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,82 +65,177 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 724b00c12957973656d312dce2a110c75ae2c680 ]
+[ Upstream commit 194ab9476089bbfc021073214e071a404e375ee6 ]
 
-OPTIONS_MPTCP_MPC is a combination of three flags.
+Move the initialization and de-initialization code further below in
+order to avoid forward declarations in the next patch. No functional
+changes.
 
-It would be better to be strict about testing what
-flag is expected, at least for code readability.
-
-mptcp_parse_option() already makes the distinction.
-
-- subflow_check_req() should use OPTION_MPTCP_MPC_SYN.
-
-- mptcp_subflow_init_cookie_req() should use OPTION_MPTCP_MPC_ACK.
-
-- subflow_finish_connect() should use OPTION_MPTCP_MPC_SYNACK
-
-- subflow_syn_recv_sock should use OPTION_MPTCP_MPC_ACK
-
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Fixes: 74c7dfbee3e1 ("mptcp: consolidate in_opt sub-options fields in a bitmask")
-Link: https://lore.kernel.org/r/20240111194917.4044654-6-edumazet@google.com
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 483ae90d8f97 ("mlxsw: spectrum_acl_tcam: Fix stack corruption")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/subflow.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ .../mellanox/mlxsw/spectrum_acl_tcam.c        | 130 +++++++++---------
+ 1 file changed, 65 insertions(+), 65 deletions(-)
 
-diff --git a/net/mptcp/subflow.c b/net/mptcp/subflow.c
-index 93f43a5cce40..70b7a47a53c7 100644
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -157,7 +157,7 @@ static int subflow_check_req(struct request_sock *req,
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+index 08d91bfa7b39..ab897b8be39f 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_tcam.c
+@@ -29,71 +29,6 @@ size_t mlxsw_sp_acl_tcam_priv_size(struct mlxsw_sp *mlxsw_sp)
+ #define MLXSW_SP_ACL_TCAM_VREGION_REHASH_INTRVL_MIN 3000 /* ms */
+ #define MLXSW_SP_ACL_TCAM_VREGION_REHASH_CREDITS 100 /* number of entries */
  
- 	mptcp_get_options(skb, &mp_opt);
+-int mlxsw_sp_acl_tcam_init(struct mlxsw_sp *mlxsw_sp,
+-			   struct mlxsw_sp_acl_tcam *tcam)
+-{
+-	const struct mlxsw_sp_acl_tcam_ops *ops = mlxsw_sp->acl_tcam_ops;
+-	u64 max_tcam_regions;
+-	u64 max_regions;
+-	u64 max_groups;
+-	int err;
+-
+-	mutex_init(&tcam->lock);
+-	tcam->vregion_rehash_intrvl =
+-			MLXSW_SP_ACL_TCAM_VREGION_REHASH_INTRVL_DFLT;
+-	INIT_LIST_HEAD(&tcam->vregion_list);
+-
+-	max_tcam_regions = MLXSW_CORE_RES_GET(mlxsw_sp->core,
+-					      ACL_MAX_TCAM_REGIONS);
+-	max_regions = MLXSW_CORE_RES_GET(mlxsw_sp->core, ACL_MAX_REGIONS);
+-
+-	/* Use 1:1 mapping between ACL region and TCAM region */
+-	if (max_tcam_regions < max_regions)
+-		max_regions = max_tcam_regions;
+-
+-	tcam->used_regions = bitmap_zalloc(max_regions, GFP_KERNEL);
+-	if (!tcam->used_regions) {
+-		err = -ENOMEM;
+-		goto err_alloc_used_regions;
+-	}
+-	tcam->max_regions = max_regions;
+-
+-	max_groups = MLXSW_CORE_RES_GET(mlxsw_sp->core, ACL_MAX_GROUPS);
+-	tcam->used_groups = bitmap_zalloc(max_groups, GFP_KERNEL);
+-	if (!tcam->used_groups) {
+-		err = -ENOMEM;
+-		goto err_alloc_used_groups;
+-	}
+-	tcam->max_groups = max_groups;
+-	tcam->max_group_size = MLXSW_CORE_RES_GET(mlxsw_sp->core,
+-						 ACL_MAX_GROUP_SIZE);
+-
+-	err = ops->init(mlxsw_sp, tcam->priv, tcam);
+-	if (err)
+-		goto err_tcam_init;
+-
+-	return 0;
+-
+-err_tcam_init:
+-	bitmap_free(tcam->used_groups);
+-err_alloc_used_groups:
+-	bitmap_free(tcam->used_regions);
+-err_alloc_used_regions:
+-	mutex_destroy(&tcam->lock);
+-	return err;
+-}
+-
+-void mlxsw_sp_acl_tcam_fini(struct mlxsw_sp *mlxsw_sp,
+-			    struct mlxsw_sp_acl_tcam *tcam)
+-{
+-	const struct mlxsw_sp_acl_tcam_ops *ops = mlxsw_sp->acl_tcam_ops;
+-
+-	ops->fini(mlxsw_sp, tcam->priv);
+-	bitmap_free(tcam->used_groups);
+-	bitmap_free(tcam->used_regions);
+-	mutex_destroy(&tcam->lock);
+-}
+-
+ int mlxsw_sp_acl_tcam_priority_get(struct mlxsw_sp *mlxsw_sp,
+ 				   struct mlxsw_sp_acl_rule_info *rulei,
+ 				   u32 *priority, bool fillup_priority)
+@@ -1546,6 +1481,71 @@ mlxsw_sp_acl_tcam_vregion_rehash(struct mlxsw_sp *mlxsw_sp,
+ 		mlxsw_sp_acl_tcam_vregion_rehash_end(mlxsw_sp, vregion, ctx);
+ }
  
--	opt_mp_capable = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPC);
-+	opt_mp_capable = !!(mp_opt.suboptions & OPTION_MPTCP_MPC_SYN);
- 	opt_mp_join = !!(mp_opt.suboptions & OPTION_MPTCP_MPJ_SYN);
- 	if (opt_mp_capable) {
- 		SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_MPCAPABLEPASSIVE);
-@@ -254,7 +254,7 @@ int mptcp_subflow_init_cookie_req(struct request_sock *req,
- 	subflow_init_req(req, sk_listener);
- 	mptcp_get_options(skb, &mp_opt);
- 
--	opt_mp_capable = !!(mp_opt.suboptions & OPTIONS_MPTCP_MPC);
-+	opt_mp_capable = !!(mp_opt.suboptions & OPTION_MPTCP_MPC_ACK);
- 	opt_mp_join = !!(mp_opt.suboptions & OPTION_MPTCP_MPJ_ACK);
- 	if (opt_mp_capable && opt_mp_join)
- 		return -EINVAL;
-@@ -486,7 +486,7 @@ static void subflow_finish_connect(struct sock *sk, const struct sk_buff *skb)
- 
- 	mptcp_get_options(skb, &mp_opt);
- 	if (subflow->request_mptcp) {
--		if (!(mp_opt.suboptions & OPTIONS_MPTCP_MPC)) {
-+		if (!(mp_opt.suboptions & OPTION_MPTCP_MPC_SYNACK)) {
- 			MPTCP_INC_STATS(sock_net(sk),
- 					MPTCP_MIB_MPCAPABLEACTIVEFALLBACK);
- 			mptcp_do_fallback(sk);
-@@ -783,7 +783,7 @@ static struct sock *subflow_syn_recv_sock(const struct sock *sk,
- 		 * options.
- 		 */
- 		mptcp_get_options(skb, &mp_opt);
--		if (!(mp_opt.suboptions & OPTIONS_MPTCP_MPC))
-+		if (!(mp_opt.suboptions & OPTION_MPTCP_MPC_ACK))
- 			fallback = true;
- 
- 	} else if (subflow_req->mp_join) {
++int mlxsw_sp_acl_tcam_init(struct mlxsw_sp *mlxsw_sp,
++			   struct mlxsw_sp_acl_tcam *tcam)
++{
++	const struct mlxsw_sp_acl_tcam_ops *ops = mlxsw_sp->acl_tcam_ops;
++	u64 max_tcam_regions;
++	u64 max_regions;
++	u64 max_groups;
++	int err;
++
++	mutex_init(&tcam->lock);
++	tcam->vregion_rehash_intrvl =
++			MLXSW_SP_ACL_TCAM_VREGION_REHASH_INTRVL_DFLT;
++	INIT_LIST_HEAD(&tcam->vregion_list);
++
++	max_tcam_regions = MLXSW_CORE_RES_GET(mlxsw_sp->core,
++					      ACL_MAX_TCAM_REGIONS);
++	max_regions = MLXSW_CORE_RES_GET(mlxsw_sp->core, ACL_MAX_REGIONS);
++
++	/* Use 1:1 mapping between ACL region and TCAM region */
++	if (max_tcam_regions < max_regions)
++		max_regions = max_tcam_regions;
++
++	tcam->used_regions = bitmap_zalloc(max_regions, GFP_KERNEL);
++	if (!tcam->used_regions) {
++		err = -ENOMEM;
++		goto err_alloc_used_regions;
++	}
++	tcam->max_regions = max_regions;
++
++	max_groups = MLXSW_CORE_RES_GET(mlxsw_sp->core, ACL_MAX_GROUPS);
++	tcam->used_groups = bitmap_zalloc(max_groups, GFP_KERNEL);
++	if (!tcam->used_groups) {
++		err = -ENOMEM;
++		goto err_alloc_used_groups;
++	}
++	tcam->max_groups = max_groups;
++	tcam->max_group_size = MLXSW_CORE_RES_GET(mlxsw_sp->core,
++						  ACL_MAX_GROUP_SIZE);
++
++	err = ops->init(mlxsw_sp, tcam->priv, tcam);
++	if (err)
++		goto err_tcam_init;
++
++	return 0;
++
++err_tcam_init:
++	bitmap_free(tcam->used_groups);
++err_alloc_used_groups:
++	bitmap_free(tcam->used_regions);
++err_alloc_used_regions:
++	mutex_destroy(&tcam->lock);
++	return err;
++}
++
++void mlxsw_sp_acl_tcam_fini(struct mlxsw_sp *mlxsw_sp,
++			    struct mlxsw_sp_acl_tcam *tcam)
++{
++	const struct mlxsw_sp_acl_tcam_ops *ops = mlxsw_sp->acl_tcam_ops;
++
++	ops->fini(mlxsw_sp, tcam->priv);
++	bitmap_free(tcam->used_groups);
++	bitmap_free(tcam->used_regions);
++	mutex_destroy(&tcam->lock);
++}
++
+ static const enum mlxsw_afk_element mlxsw_sp_acl_tcam_pattern_ipv4[] = {
+ 	MLXSW_AFK_ELEMENT_SRC_SYS_PORT,
+ 	MLXSW_AFK_ELEMENT_DMAC_32_47,
 -- 
 2.43.0
 
