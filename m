@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-15346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9428C8384D9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B04E7838086
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DCDA29082F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6AC0B227C8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504BA77646;
-	Tue, 23 Jan 2024 02:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF256518C;
+	Tue, 23 Jan 2024 01:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQ5qRh7M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6uMgigx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF5D77636;
-	Tue, 23 Jan 2024 02:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DFD4E1AD;
+	Tue, 23 Jan 2024 01:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975512; cv=none; b=L+ZF+l3cPtfBneof/hgM0vPv/uuw4V1ziEHgfuQ8mu2gXqKbwMFPJQj3quv2bxJOWt13kJiVmZDdmwEkivOFaqSxmD22xjfjeu2ccglCroCX6bmcZcDSEvnpcFQGmJYfD35PJwYkhOvPWT+9a2qze6sFPqYHCevKT3Mo/PPILbw=
+	t=1705971608; cv=none; b=lOWTOMppYrpUA9Uz90k7GQktkpP+Du2biFk4j7TIl0iXCqYnmhe2IhrSQ2P01ixzGaXrKXYg480dpmJVF3FZnKenh66fbcZxhQXPGVgSiEjulqE1MlibsAnHGjkWdmCsES0rPITOa54ifc+ar9kJlnTcnUOzMuV9aGUnLq5tx0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975512; c=relaxed/simple;
-	bh=0G6LILvVxTYkwbPTSBP6ygx+Y2YxS2XUD7MYStiNvk0=;
+	s=arc-20240116; t=1705971608; c=relaxed/simple;
+	bh=nYL7TS3YCDoGivL77dQccEjKYyuSbz2MDHGwTbsf8kI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qDuC3oWMH1jwyJ43DGixr7otY0mtcGQeEZckpo9pV/d7/4MmQ/E/gaoJg9zK5pcOc0k+o913lLC6UZlBE27YaTgUHs8TQvO1xoO8P7d9z5F2zP4LB/R7qp3Qzt6a3XdyhEuTZukYBaqDIYXRBh2/ZDMXys9UDfw/pS2GJWbtk7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQ5qRh7M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E84C43399;
-	Tue, 23 Jan 2024 02:05:11 +0000 (UTC)
+	 MIME-Version; b=DxE/PQRsMFrmKqcr/avPgyZOBtRrIDPROw+sTc+VE2Rc//lU8SiQ8wFICA538xDrKmDu/C7T+/uo77uhFyiYIuQAGI99IiYNdJEjKYRAvFiSIUJQ5qFyAEywAC2JyKe54gaX9uG4TNxxKGEXzBg2G09n+/0B89mKLywR6VRWFAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6uMgigx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D705C433C7;
+	Tue, 23 Jan 2024 01:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975511;
-	bh=0G6LILvVxTYkwbPTSBP6ygx+Y2YxS2XUD7MYStiNvk0=;
+	s=korg; t=1705971607;
+	bh=nYL7TS3YCDoGivL77dQccEjKYyuSbz2MDHGwTbsf8kI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PQ5qRh7Ml1nkzoqf0CoOXcgBngK8+0k8WBTShC/0wtP10deA6pwiFWuP95z0CWYJa
-	 IoU3Db1dP35BI/7WWNiqJWLJe7bKehSaSodVi8RR5K86SMiiv6NP0yctSt9Cveawhw
-	 h333TX8T0rAWv7TQ/owAZWApqS6xPOgIN87C42BY=
+	b=D6uMgigxsimFAphJqLslFaReT3xk7q2oG/wVx/9A0diUjqccWTTeabo5DhK+r0+cy
+	 jHM9K0/ZUpsXGs9I5+n98+RijHbRFVrIKzlqH9CjJatitn6/8KYy0ktbtUwfK7TzR1
+	 Gbu1tKegZZtOWM/x1blbI+mckyvEdxqShCRqrXXY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Lee Jones <lee@kernel.org>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Manorit Chawdhry <m-chawdhry@ti.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 440/583] mfd: syscon: Fix null pointer dereference in of_syscon_register()
+Subject: [PATCH 5.10 185/286] watchdog: rti_wdt: Drop runtime pm reference count when watchdog is unused
 Date: Mon, 22 Jan 2024 15:58:11 -0800
-Message-ID: <20240122235825.446705216@linuxfoundation.org>
+Message-ID: <20240122235739.263864956@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Vignesh Raghavendra <vigneshr@ti.com>
 
-[ Upstream commit 41673c66b3d0c09915698fec5c13b24336f18dd1 ]
+[ Upstream commit c1a6edf3b541e44e78f10bc6024df779715723f1 ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+Call runtime_pm_put*() if watchdog is not already started during probe and re
+enable it in watchdog start as required.
 
-Fixes: e15d7f2b81d2 ("mfd: syscon: Use a unique name with regmap_config")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20231204092443.2462115-1-chentao@kylinos.cn
-Signed-off-by: Lee Jones <lee@kernel.org>
+On K3 SoCs, watchdogs and their corresponding CPUs are under same
+power-domain, so if the reference count of unused watchdogs aren't
+dropped, it will lead to CPU hotplug failures as Device Management
+firmware won't allow to turn off the power-domain due to dangling
+reference count.
+
+Fixes: 2d63908bdbfb ("watchdog: Add K3 RTI watchdog support")
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Tested-by: Manorit Chawdhry <m-chawdhry@ti.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20231213140110.938129-1-vigneshr@ti.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/syscon.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/watchdog/rti_wdt.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index 57b29c325131..c9550368d9ea 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -105,6 +105,10 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_res)
- 	}
+diff --git a/drivers/watchdog/rti_wdt.c b/drivers/watchdog/rti_wdt.c
+index 46c2a4bd9ebe..daa00f3c5a6a 100644
+--- a/drivers/watchdog/rti_wdt.c
++++ b/drivers/watchdog/rti_wdt.c
+@@ -70,6 +70,11 @@ static int rti_wdt_start(struct watchdog_device *wdd)
+ {
+ 	u32 timer_margin;
+ 	struct rti_wdt_device *wdt = watchdog_get_drvdata(wdd);
++	int ret;
++
++	ret = pm_runtime_resume_and_get(wdd->parent);
++	if (ret)
++		return ret;
  
- 	syscon_config.name = kasprintf(GFP_KERNEL, "%pOFn@%pa", np, &res.start);
-+	if (!syscon_config.name) {
-+		ret = -ENOMEM;
-+		goto err_regmap;
-+	}
- 	syscon_config.reg_stride = reg_io_width;
- 	syscon_config.val_bits = reg_io_width * 8;
- 	syscon_config.max_register = resource_size(&res) - reg_io_width;
+ 	/* set timeout period */
+ 	timer_margin = (u64)wdd->timeout * wdt->freq;
+@@ -296,6 +301,9 @@ static int rti_wdt_probe(struct platform_device *pdev)
+ 	if (last_ping)
+ 		watchdog_set_last_hw_keepalive(wdd, last_ping);
+ 
++	if (!watchdog_hw_running(wdd))
++		pm_runtime_put_sync(&pdev->dev);
++
+ 	return 0;
+ 
+ err_iomap:
+@@ -310,7 +318,10 @@ static int rti_wdt_remove(struct platform_device *pdev)
+ 	struct rti_wdt_device *wdt = platform_get_drvdata(pdev);
+ 
+ 	watchdog_unregister_device(&wdt->wdd);
+-	pm_runtime_put(&pdev->dev);
++
++	if (!pm_runtime_suspended(&pdev->dev))
++		pm_runtime_put(&pdev->dev);
++
+ 	pm_runtime_disable(&pdev->dev);
+ 
+ 	return 0;
 -- 
 2.43.0
 
