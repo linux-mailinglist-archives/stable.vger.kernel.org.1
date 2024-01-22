@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 256898381FA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:40 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E464B837BBE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5869E1C23481
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBC85B2F5E5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:00:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57E3956775;
-	Tue, 23 Jan 2024 01:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F6491339A4;
+	Tue, 23 Jan 2024 00:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/APKJ7U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NLHmKBlN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D38256754;
-	Tue, 23 Jan 2024 01:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E16713398C;
+	Tue, 23 Jan 2024 00:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974023; cv=none; b=JrWIrEdaFtOfReyYjuOXbqiNT99hJJrfcWjIBq3Ssztdj7Y8kSY36cddLAdq9GAIQKnsxQeIeOS6Lij47V3zc/nGdJh3fvFqWj+8pluBJA4lvtqLKrJYvXXtQaqSbbgg6b0moyAk2Vy6vjK4013m0SWpfGhAlzRxARn8JFDfQ5c=
+	t=1705969297; cv=none; b=KDWUOu/4NSLwXCuoPC65ahtUSGF+hCmMxjgXYQI7rmLufcAu04BKpk01F1Zrmzt+hUJTWIOsPtH+UaLQ43SmOBm5THQFuC5n9iwYEGmUOFaigG42QW0XVRRRpSbE5qK/ybWxvC3GsxWhXk+VC9DwKuFhHfkIBx7wTgY+UK02Ig0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974023; c=relaxed/simple;
-	bh=2Jp3aKiq6qrikJzGCNSej93OQ8xeN4sg5nM2c8uHMzQ=;
+	s=arc-20240116; t=1705969297; c=relaxed/simple;
+	bh=8Mj7bNhQYmHpXBo+0Nb6bj0seg6tu0bb4r2vER/lq7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l9M+p9xFxvbN4zjBl8LrlmRI/ekTAhOqGI5EvKzjLUEfC3AX0qYoYPpi7kriqMcC/jBSzEO6o1Eoa/wVEr8PyeGA/nqxOtlaT6e3r84aRJPYVJydozxJCGSvLs+Zlra+/YlRPuyWrtO9v6wWK1Xzt2Pw7BSSglTUUg72wQFN1AM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/APKJ7U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F75C433A6;
-	Tue, 23 Jan 2024 01:40:22 +0000 (UTC)
+	 MIME-Version; b=cBnrIBPxtUwrn3JCKVKW996gj1W89w8gINVy4Q8oTmcKO6f/FBv26SJ+qVezaJMRMXwzgVYCpaQXkxIWYWZ+t3MCkljjM5e14JDSA39lLFVu2jeyxbWlctqEBxPRs5XfvULHHGPuYGBDmc5bt2EMQZh3mcojjwbGLQZxk9TcvVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NLHmKBlN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D047C43399;
+	Tue, 23 Jan 2024 00:21:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974022;
-	bh=2Jp3aKiq6qrikJzGCNSej93OQ8xeN4sg5nM2c8uHMzQ=;
+	s=korg; t=1705969297;
+	bh=8Mj7bNhQYmHpXBo+0Nb6bj0seg6tu0bb4r2vER/lq7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a/APKJ7Ug1XWFVlSilWGO9IqPJNRjtfqLSFoK/9qUyAv3AYiFsV11Y6W2eVTsKQiv
-	 0bKqje4FN3MkM8wE6KZ+7yAxs2tgRB2KKL3QK5TIhmdYCoAI17REZTHRoXIyQJpa3A
-	 cGISv+epkexgcYPKzHUi2/hFN95saVwAfsc6wunI=
+	b=NLHmKBlNK1UE3g6V77wIp2paxBNsxhmieuCwkTF11MyDo1F9nwZsfadxMkSD4mx1u
+	 pLjPAIqP0Nsma5aHY8UEb+/sQ0l26wuPqR9cU3HVVyn3AXndkL09XinK4I6YTKBtb6
+	 MpbxSnm18Wl8bP1SvvKuVy8+qe2zSBqya0Tj1W8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	kernel test robot <lkp@intel.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 006/583] powerpc/44x: select I2C for CURRITUCK
-Date: Mon, 22 Jan 2024 15:50:57 -0800
-Message-ID: <20240122235812.429422327@linuxfoundation.org>
+Subject: [PATCH 6.7 154/641] wifi: mt76: mt7996: fix mt7996_mcu_all_sta_info_event struct packing
+Date: Mon, 22 Jan 2024 15:50:58 -0800
+Message-ID: <20240122235822.852499908@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 4a74197b65e69c46fe6e53f7df2f4d6ce9ffe012 ]
+[ Upstream commit 2ee1c40daeb9a33e25c460bf87feca58e91af879 ]
 
-Fix build errors when CURRITUCK=y and I2C is not builtin (=m or is
-not set). Fixes these build errors:
+The internal struct and union inside mt7996_mcu_all_sta_info_event is
+marked as being aligned, which conflicts with it being unaligned
+within that structure:
 
-powerpc-linux-ld: arch/powerpc/platforms/44x/ppc476.o: in function `avr_halt_system':
-ppc476.c:(.text+0x58): undefined reference to `i2c_smbus_write_byte_data'
-powerpc-linux-ld: arch/powerpc/platforms/44x/ppc476.o: in function `ppc47x_device_probe':
-ppc476.c:(.init.text+0x18): undefined reference to `i2c_register_driver'
+drivers/net/wireless/mediatek/mt76/mt7996/mcu.h:165:2: error: field  within 'struct mt7996_mcu_all_sta_info_event' is less aligned than 'union mt7996_mcu_all_sta_info_event::(anonymous at ../drivers/net/wireless/mediatek/mt76/mt7996/mcu.h:165:2)' and is usually due to 'struct mt7996_mcu_all_sta_info_event' being packed, which can lead to unaligned accesses [-Werror,-Wunaligned-access]
 
-Fixes: 2a2c74b2efcb ("IBM Akebono: Add the Akebono platform")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: lore.kernel.org/r/202312010820.cmdwF5X9-lkp@intel.com
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231201055159.8371-1-rdunlap@infradead.org
+Mark all three as being packed as well to ensure byte packing for
+the entire thing.
+
+Fixes: adde3eed4a75 ("wifi: mt76: mt7996: Add mcu commands for getting sta tx statistic")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/44x/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/platforms/44x/Kconfig b/arch/powerpc/platforms/44x/Kconfig
-index 1624ebf95497..35a1f4b9f827 100644
---- a/arch/powerpc/platforms/44x/Kconfig
-+++ b/arch/powerpc/platforms/44x/Kconfig
-@@ -173,6 +173,7 @@ config ISS4xx
- config CURRITUCK
- 	bool "IBM Currituck (476fpe) Support"
- 	depends on PPC_47x
-+	select I2C
- 	select SWIOTLB
- 	select 476FPE
- 	select FORCE_PCI
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+index 14c0dd31387a..9300cd8eeb76 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
+@@ -168,15 +168,15 @@ struct mt7996_mcu_all_sta_info_event {
+ 			u8 rsv[2];
+ 			__le32 tx_bytes[IEEE80211_NUM_ACS];
+ 			__le32 rx_bytes[IEEE80211_NUM_ACS];
+-		} adm_stat[0];
++		} adm_stat[0] __packed;
+ 
+ 		struct {
+ 			__le16 wlan_idx;
+ 			u8 rsv[2];
+ 			__le32 tx_msdu_cnt;
+ 			__le32 rx_msdu_cnt;
+-		} msdu_cnt[0];
+-	};
++		} msdu_cnt[0] __packed;
++	} __packed;
+ } __packed;
+ 
+ enum mt7996_chan_mib_offs {
 -- 
 2.43.0
 
