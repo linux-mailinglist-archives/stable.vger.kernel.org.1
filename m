@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E5CB837C50
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:04 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94B3A838383
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5794D296874
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C3881F28D23
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3769715531B;
-	Tue, 23 Jan 2024 00:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A326563107;
+	Tue, 23 Jan 2024 01:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2u/EN9eZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XguwHM6/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB959155316;
-	Tue, 23 Jan 2024 00:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632E462A0B;
+	Tue, 23 Jan 2024 01:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969576; cv=none; b=W2YkEsiIKuZCb67M3IZKPOZD+vLldDXCVLQD8xEMmxhIiInI/uo8fwxfzAMQOqt0jGyAtZytiVKDLD+CY0lzYRhLEBv5d7rrqb4lRVfczIPXhxdZPrm7worAohs8OjQaBtsyKEybbDEQKtmw8k3fm/0eqJ4/1PEu06Zo6pIt7fc=
+	t=1705974995; cv=none; b=SAqTE2q7grs+l+6HvAdZ38v9Req1gCTt56ES0nFXhQoOGPdb75V8zNznFhjIheTnSLQeDxzOJZrGLnE7ui3WVByIjaWkEfiyCk3oT3znm5O9HcJMCP5Mw3mmgGy2DwlRBp0z9NMrOc5mXu7W6aRWd2SRIBjQhZIC3m3EYNDZEvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969576; c=relaxed/simple;
-	bh=c6uMW6n16CUKl+tgAjmnjUJzR4ZxReQ+c9ndBc+zF84=;
+	s=arc-20240116; t=1705974995; c=relaxed/simple;
+	bh=+KrHzyFrJ9aJBebAWvLeIx9Bmn1N6fgQK2+9dYxxf9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZCX7IbCGul6J1vP83vFdN1Jb6Uomgk2F9jX+sKFEtQEYV/dOulOnpy3gzE973P/lILShJ39EJiW83vFg0EEtC2oq/bMPnydqAo2YJ8tLxr1fOyLwF1gSl3dyHj+xT2gibRePEKo/AYHr1dMxgf57b0kCia4rblJsUUvp6fiNY30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2u/EN9eZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0BDC433F1;
-	Tue, 23 Jan 2024 00:26:15 +0000 (UTC)
+	 MIME-Version; b=WYMZYBF5am+XnRb7JlGX3FtSzm+Tmypw6NYtV9WzQigVpVzCNxLe5VIkvNQeV34giEUZyeZytpRWT+J8Dw5k+PyNxYd0Y0yhrbFe6wbRs7NqM2FMnr6E/b2UzO7HcXbTWxvWXYoW2CvyLj1k885uXsUq1Ak92hEcZXoOsJd6uj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XguwHM6/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4B45C433F1;
+	Tue, 23 Jan 2024 01:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969575;
-	bh=c6uMW6n16CUKl+tgAjmnjUJzR4ZxReQ+c9ndBc+zF84=;
+	s=korg; t=1705974994;
+	bh=+KrHzyFrJ9aJBebAWvLeIx9Bmn1N6fgQK2+9dYxxf9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2u/EN9eZwXJ73uYJ9tvx5U49b0Uo5X5FFpaguGHVz6Hw6r0MGFGgbe0HY+QvpUfKP
-	 2MZZGE1PSvVfOOzHCYUVpKHof+GwD2BAReI9YYAh16mITW4BVGTa1rKJnE1yBruvbb
-	 n82qWJLtRYa3/wLZd1+fZs9yzJH93TIw95BcZ9Vc=
+	b=XguwHM6/+/isPm6iZL4gbLvzzuKhwHz/xZZhN6S+TyrWLK2qwJ+pQd+Bo3UKA4Jm6
+	 MTL6yIQ7KrOL7nF7m7HqeLKN2RGPvKRDLwhiKYJCEkdxpFjtN5qBlsc2HiyNS/OcCL
+	 k+hclzAEJkh5aGkiU0KVPgvJuGIJnSlZ8Bo9G5oU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 332/641] f2fs: fix to check return value of f2fs_recover_xattr_data
+Subject: [PATCH 6.6 185/583] arm64: dts: qcom: sc8180x: Mark PCIe hosts cache-coherent
 Date: Mon, 22 Jan 2024 15:53:56 -0800
-Message-ID: <20240122235828.293368156@linuxfoundation.org>
+Message-ID: <20240122235817.662141608@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 86d7d57a3f096c8349b32a0cd5f6f314e4416a6d ]
+[ Upstream commit 45e8c72712345263208f7c94f334fa718634f557 ]
 
-Should check return value of f2fs_recover_xattr_data in
-__f2fs_setxattr rather than doing invalid retry if error happen.
+The PCIe controllers on 8180 are cache-coherent. Mark them as such.
 
-Also just do set_page_dirty in f2fs_recover_xattr_data when
-page is changed really.
-
-Fixes: 50a472bbc79f ("f2fs: do not return EFSCORRUPTED, but try to run online repair")
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: d20b6c84f56a ("arm64: dts: qcom: sc8180x: Add PCIe instances")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231219-topic-8180_pcie_dmac-v1-1-5d00fc1b23fd@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/node.c  |  6 +++---
- fs/f2fs/xattr.c | 11 +++++++----
- 2 files changed, 10 insertions(+), 7 deletions(-)
+ arch/arm64/boot/dts/qcom/sc8180x.dtsi | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index 6c7f6a649d27..9b546fd21010 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -2751,11 +2751,11 @@ int f2fs_recover_xattr_data(struct inode *inode, struct page *page)
- 	f2fs_update_inode_page(inode);
+diff --git a/arch/arm64/boot/dts/qcom/sc8180x.dtsi b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
+index 486f7ffef43b..0d85bdec5a82 100644
+--- a/arch/arm64/boot/dts/qcom/sc8180x.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
+@@ -1751,6 +1751,7 @@ pcie0: pci@1c00000 {
  
- 	/* 3: update and set xattr node page dirty */
--	if (page)
-+	if (page) {
- 		memcpy(F2FS_NODE(xpage), F2FS_NODE(page),
- 				VALID_XATTR_BLOCK_SIZE);
--
--	set_page_dirty(xpage);
-+		set_page_dirty(xpage);
-+	}
- 	f2fs_put_page(xpage, 1);
+ 			phys = <&pcie0_lane>;
+ 			phy-names = "pciephy";
++			dma-coherent;
  
- 	return 0;
-diff --git a/fs/f2fs/xattr.c b/fs/f2fs/xattr.c
-index a8fc2cac6879..f290fe9327c4 100644
---- a/fs/f2fs/xattr.c
-+++ b/fs/f2fs/xattr.c
-@@ -660,11 +660,14 @@ static int __f2fs_setxattr(struct inode *inode, int index,
- 	here = __find_xattr(base_addr, last_base_addr, NULL, index, len, name);
- 	if (!here) {
- 		if (!F2FS_I(inode)->i_xattr_nid) {
-+			error = f2fs_recover_xattr_data(inode, NULL);
- 			f2fs_notice(F2FS_I_SB(inode),
--				"recover xattr in inode (%lu)", inode->i_ino);
--			f2fs_recover_xattr_data(inode, NULL);
--			kfree(base_addr);
--			goto retry;
-+				"recover xattr in inode (%lu), error(%d)",
-+					inode->i_ino, error);
-+			if (!error) {
-+				kfree(base_addr);
-+				goto retry;
-+			}
- 		}
- 		f2fs_err(F2FS_I_SB(inode), "set inode (%lu) has corrupted xattr",
- 								inode->i_ino);
+ 			status = "disabled";
+ 		};
+@@ -1858,6 +1859,7 @@ pcie3: pci@1c08000 {
+ 
+ 			phys = <&pcie3_lane>;
+ 			phy-names = "pciephy";
++			dma-coherent;
+ 
+ 			status = "disabled";
+ 		};
+@@ -1965,6 +1967,7 @@ pcie1: pci@1c10000 {
+ 
+ 			phys = <&pcie1_lane>;
+ 			phy-names = "pciephy";
++			dma-coherent;
+ 
+ 			status = "disabled";
+ 		};
+@@ -2072,6 +2075,7 @@ pcie2: pci@1c18000 {
+ 
+ 			phys = <&pcie2_lane>;
+ 			phy-names = "pciephy";
++			dma-coherent;
+ 
+ 			status = "disabled";
+ 		};
 -- 
 2.43.0
 
