@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-13415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B24E3837BF7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 842638382E7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:24:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B6C4294D14
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F5901F27E80
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A54CC2B9BC;
-	Tue, 23 Jan 2024 00:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4895FEE9;
+	Tue, 23 Jan 2024 01:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bpWr14LY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VihqnvLy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6349C2574B;
-	Tue, 23 Jan 2024 00:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F088D5FDC1;
+	Tue, 23 Jan 2024 01:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969457; cv=none; b=RIvgnlydWz5lggfdQVm4/shun4UPdACDP+CWIsw2mgn3hZoa65b3/+kNYYccQUfOSAcRoXIqRz3vREMVhg5gYergq6abCnDCpqL7ogC8u2BGKKvoZoSuWizsBdDyiqUEmfFR9zxHWkBw4D/PE3wHrw45MKXUWujzeaedtVTcZ4Q=
+	t=1705974657; cv=none; b=Y/N6W0aTOsDsgrZvyBd26x0PojvAMvYqOLn17MFkRmb7+twTVuQ+gQwGrgVcuyTqNkucU6Ze4II027HbjHuV8mV+ARw/9nbXBbA+i1+TXY2r982M0wHQjU59RcwnCdycPAYWyLZY/T41Nf8LawFtgbdqn7dWjP2LXBk8xj9+3Y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969457; c=relaxed/simple;
-	bh=xZ1Bft6xeieXTg0J0xKofyMvY4tSSFsO8Z/TaYsh038=;
+	s=arc-20240116; t=1705974657; c=relaxed/simple;
+	bh=KwN0+fsQo9KSULS2LPT0XOfpbO0YGMb+tWAmtCAo2dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eZr1FQFDD8tcvzpmv+LmRk/d3w09pQTpgw447sTDnMexaZQ+fvsJr/WjN4vMcKJWNvxHmIiD88w1FsyQJRwazaGouZmUeuOiayqq2YrPJQA/UsYUZs+qCaN1mumKRJ48CYbtwT8v1vgIFiU2jLhBtYLlXJGpPZzDfFH+PKzReMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bpWr14LY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CECAFC43399;
-	Tue, 23 Jan 2024 00:24:16 +0000 (UTC)
+	 MIME-Version; b=fUGUc46ZO2FjVcJMb9AyGZd5ODg+Kra17hU6czOKINF2+ZFrXez6E/SqxKARnatMEcOixLA8pLwxyQW85dhYlw1ODiv5ucyM5xYWnJLheZ4gk10ewqzL3DTjvh04zbBugdHurJG6YxerqhxAsmGX7G69+dUK9Bh1IjrZDTHt/RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VihqnvLy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B5EC433F1;
+	Tue, 23 Jan 2024 01:50:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969457;
-	bh=xZ1Bft6xeieXTg0J0xKofyMvY4tSSFsO8Z/TaYsh038=;
+	s=korg; t=1705974656;
+	bh=KwN0+fsQo9KSULS2LPT0XOfpbO0YGMb+tWAmtCAo2dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bpWr14LYwS+r+W5I1sM9TnhzLVmwZOTCgXfDk10g+aD5F+ywga8iaQopweiBf+R4Q
-	 yBaUi0a5wRImNVUIkHRO3Zl8TDS1QnKUCIC6+6e977LlYOTyR8WckeMP4v08W0XO2a
-	 2y2k258kW2QftR/4m6vTkVv0NsgQrxoHaZwvBA5g=
+	b=VihqnvLycMxaAEzeZiEsgospXYOWOKnjTiYylMegbOKAvxiZkYhbJ9/DkMSQrPHkX
+	 K9M4u4p3u619r8LyhvaK3JHwapLrXOf9tY8OV2LmwI5bHf3AWnxtBjUPcNhVXZFlO7
+	 Cpknz/dl2o9/+PWgOcRIn9q/fdydiRYnInh5OAqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 257/641] media: verisilicon: Hook the (TRY_)DECODER_CMD stateless ioctls
+Subject: [PATCH 6.6 110/583] arm64: dts: qcom: sc7180: Make watchdog bark interrupt edge triggered
 Date: Mon, 22 Jan 2024 15:52:41 -0800
-Message-ID: <20240122235825.969903317@linuxfoundation.org>
+Message-ID: <20240122235815.531756882@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 6c0d9e12b1d12bbd95484e4b99f63feeb423765f ]
+[ Upstream commit 7ac90b4cf107a3999b30844d7899e0331686b33b ]
 
-The (TRY_)DECODER_CMD ioctls are used to support flushing when holding
-capture buffers is supported. This is the case of this driver but the
-ioctls were never hooked to the ioctl ops.
+On sc7180 when the watchdog timer fires your logs get filled with:
+  watchdog0: pretimeout event
+  watchdog0: pretimeout event
+  watchdog0: pretimeout event
+  ...
+  watchdog0: pretimeout event
 
-Add them to correctly support flushing.
+If you're using console-ramoops to debug crashes the above gets quite
+annoying since it blows away any other log messages that might have
+been there.
 
-Fixes: 340ce50f75a6 ("media: hantro: Enable HOLD_CAPTURE_BUF for H.264")
-Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+The issue is that the "bark" interrupt (AKA the "pretimeout"
+interrupt) remains high until the watchdog is pet. Since we've got
+things configured as "level" triggered we'll keep getting interrupted
+over and over.
+
+Let's switch to edge triggered. Now we'll get one interrupt when the
+"bark" interrupt goes off and won't get another one until the "bark"
+interrupt is cleared and asserts again.
+
+This matches how many older Qualcomm SoCs have things configured.
+
+Fixes: 28cc13e4060c ("arm64: dts: qcom: sc7180: Add watchdog bark interrupt")
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20231106144335.v2.1.Ic7577567baff921347d423b722de8b857602efb1@changeid
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/verisilicon/hantro_drv.c  | 2 ++
- drivers/media/platform/verisilicon/hantro_v4l2.c | 3 +++
- 2 files changed, 5 insertions(+)
+ arch/arm64/boot/dts/qcom/sc7180.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/verisilicon/hantro_drv.c b/drivers/media/platform/verisilicon/hantro_drv.c
-index a9fa05ac56a9..3a2a0f28cbfe 100644
---- a/drivers/media/platform/verisilicon/hantro_drv.c
-+++ b/drivers/media/platform/verisilicon/hantro_drv.c
-@@ -905,6 +905,8 @@ static int hantro_add_func(struct hantro_dev *vpu, unsigned int funcid)
+diff --git a/arch/arm64/boot/dts/qcom/sc7180.dtsi b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+index a79c0f2e1879..589ae40cd3cc 100644
+--- a/arch/arm64/boot/dts/qcom/sc7180.dtsi
++++ b/arch/arm64/boot/dts/qcom/sc7180.dtsi
+@@ -3587,7 +3587,7 @@ watchdog@17c10000 {
+ 			compatible = "qcom,apss-wdt-sc7180", "qcom,kpss-wdt";
+ 			reg = <0 0x17c10000 0 0x1000>;
+ 			clocks = <&sleep_clk>;
+-			interrupts = <GIC_SPI 0 IRQ_TYPE_LEVEL_HIGH>;
++			interrupts = <GIC_SPI 0 IRQ_TYPE_EDGE_RISING>;
+ 		};
  
- 	if (funcid == MEDIA_ENT_F_PROC_VIDEO_ENCODER) {
- 		vpu->encoder = func;
-+		v4l2_disable_ioctl(vfd, VIDIOC_TRY_DECODER_CMD);
-+		v4l2_disable_ioctl(vfd, VIDIOC_DECODER_CMD);
- 	} else {
- 		vpu->decoder = func;
- 		v4l2_disable_ioctl(vfd, VIDIOC_TRY_ENCODER_CMD);
-diff --git a/drivers/media/platform/verisilicon/hantro_v4l2.c b/drivers/media/platform/verisilicon/hantro_v4l2.c
-index b3ae037a50f6..db145519fc5d 100644
---- a/drivers/media/platform/verisilicon/hantro_v4l2.c
-+++ b/drivers/media/platform/verisilicon/hantro_v4l2.c
-@@ -785,6 +785,9 @@ const struct v4l2_ioctl_ops hantro_ioctl_ops = {
- 	.vidioc_g_selection = vidioc_g_selection,
- 	.vidioc_s_selection = vidioc_s_selection,
- 
-+	.vidioc_decoder_cmd = v4l2_m2m_ioctl_stateless_decoder_cmd,
-+	.vidioc_try_decoder_cmd = v4l2_m2m_ioctl_stateless_try_decoder_cmd,
-+
- 	.vidioc_try_encoder_cmd = v4l2_m2m_ioctl_try_encoder_cmd,
- 	.vidioc_encoder_cmd = vidioc_encoder_cmd,
- };
+ 		timer@17c20000 {
 -- 
 2.43.0
 
