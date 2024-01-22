@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D1D183846A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:32 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69BF6837D47
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF8B61C2A355
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2140729138E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E32B6D1DC;
-	Tue, 23 Jan 2024 02:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5425787C;
+	Tue, 23 Jan 2024 00:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXnuU6NV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hpu5bNqV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E146BB56;
-	Tue, 23 Jan 2024 02:03:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CFE03A8F4;
+	Tue, 23 Jan 2024 00:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975391; cv=none; b=GXxVlKcKFI+h1OgFzdo/+d3/WFCVjzoT6mLPc8QsLrVAPqLG2u0iOu+RTt7tFIWW+9UUFICwpXd5ossopU9gqlF3tzyV3OXX6UxDDI57VkIqbhb5Ofaffv7hsgblime5jfHKnIKUhT/v0ZJvVBCb5DqUsf0P9bYyX7Fs1uQOqmw=
+	t=1705969874; cv=none; b=EyABf8EF3OcdUdTUcNLbKJUDl37ck4nHxYSiRjj3UeNrpi5bf4IFpO14S0HsSJ8FS8LpLSuW+bGpHVNSMUUvXZkA6/P2qFgmNOSU8xt3H5YGmedWqCE44LzsfmdYKCmnCMI9eC+SHt9Yd0UpYbX1IC1/pa6m+zYb2n3s+SV72Ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975391; c=relaxed/simple;
-	bh=3gSlDXo+f3JnD0JXd+zsJZ7Obl547L4QKXVbZxy1PSo=;
+	s=arc-20240116; t=1705969874; c=relaxed/simple;
+	bh=RuyR1dhoDyAE5wAenub33PwHN/bibOV1Wj5xxPXnvq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ax7u0J42hp/HehJt41haxjgmfzVrd4Z5M0YhPHXOUAenZQKG2MrD1RZMbswn+EYl3+qbaoWjTpaW9sGyC47k71PJe0y2f6VBfwUaf+87cqMT5X4AJfElYP7A353U2ntyA22bzc0tIJ14ZoAvkVMscgMYfs+onl3OZMsUp+tDlFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXnuU6NV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB461C433C7;
-	Tue, 23 Jan 2024 02:03:10 +0000 (UTC)
+	 MIME-Version; b=idX9bX1lzpakz9wGCpMR3pMAzStm2qTwRUb9ixgYm1BwnBexgAOlh0M4IlPCzZNjCr7SvVsbkVcXh/SUcY97Tv/qsl9iccRph77QaAFJx1/54g3R9lkqUvm79IlGMGWr9H305xGhdECEUqQNnfjnJb9/z0xjp4fcZdPvjW+ufnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hpu5bNqV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6182DC433C7;
+	Tue, 23 Jan 2024 00:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975390;
-	bh=3gSlDXo+f3JnD0JXd+zsJZ7Obl547L4QKXVbZxy1PSo=;
+	s=korg; t=1705969873;
+	bh=RuyR1dhoDyAE5wAenub33PwHN/bibOV1Wj5xxPXnvq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bXnuU6NVWncVUreSdY6hOEa59IhxSP7ddszUMmhduF2u4dyp4D0URN/pzsZrw577C
-	 KNU6biAlP8bQPSdLNPVyKqtlgcFuFZy9PgVKPmWTdqHgKJqxRUlT1frArFNZkkYrbj
-	 vpgnQNWwc8UFhR0peWNwOyqU2YW9tua6CogSLIl8=
+	b=hpu5bNqVH4/KljYs33O1Bg+gFyfVEvfhzkfRMHYQLCNqn3pY4y1kiXqdpxmBPc14m
+	 rb/tiLAyngONchJP1xC66LisOQo3J6q52u0W+Bzy20NlatnBNhXdh7VNv6dhLfSMVO
+	 DuyWUO3m+YEIoybGo5dIG2GDZ0XodmLHEhNE9HQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Cornwall <jay.cornwall@amd.com>,
-	Kaibo Ma <ent3rm4n@gmail.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 351/583] Revert "drm/amdkfd: Relocate TBA/TMA to opposite side of VM hole"
+	Frederik Haxel <haxel@fzi.de>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 498/641] riscv: Fixed wrong register in XIP_FIXUP_FLASH_OFFSET macro
 Date: Mon, 22 Jan 2024 15:56:42 -0800
-Message-ID: <20240122235822.760979587@linuxfoundation.org>
+Message-ID: <20240122235833.645271726@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kaibo Ma <ent3rm4n@gmail.com>
+From: Frederik Haxel <haxel@fzi.de>
 
-commit 0f35b0a7b8fa402adbffa2565047cdcc4c480153 upstream.
+[ Upstream commit 5daa3726410288075ba73c336bb2e80d6b06aa4d ]
 
-That commit causes NULL pointer dereferences in dmesgs when
-running applications using ROCm, including clinfo, blender,
-and PyTorch, since v6.6.1. Revert it to fix blender again.
+During the refactoring, a bug was introduced in the rarly used
+XIP_FIXUP_FLASH_OFFSET macro.
 
-This reverts commit 96c211f1f9ef82183493f4ceed4e347b52849149.
+Fixes: bee7fbc38579 ("RISC-V CPU Idle Support")
+Fixes: e7681beba992 ("RISC-V: Split out the XIP fixups into their own file")
 
-Closes: https://github.com/ROCm/ROCm/issues/2596
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2991
-Reviewed-by: Jay Cornwall <jay.cornwall@amd.com>
-Signed-off-by: Kaibo Ma <ent3rm4n@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Frederik Haxel <haxel@fzi.de>
+Link: https://lore.kernel.org/r/20231212130116.848530-3-haxel@fzi.de
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c |   26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ arch/riscv/include/asm/xip_fixup.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_flat_memory.c
-@@ -330,12 +330,6 @@ static void kfd_init_apertures_vi(struct
- 	pdd->gpuvm_limit =
- 		pdd->dev->kfd->shared_resources.gpuvm_size - 1;
- 
--	/* dGPUs: the reserved space for kernel
--	 * before SVM
--	 */
--	pdd->qpd.cwsr_base = SVM_CWSR_BASE;
--	pdd->qpd.ib_base = SVM_IB_BASE;
--
- 	pdd->scratch_base = MAKE_SCRATCH_APP_BASE_VI();
- 	pdd->scratch_limit = MAKE_SCRATCH_APP_LIMIT(pdd->scratch_base);
- }
-@@ -345,18 +339,18 @@ static void kfd_init_apertures_v9(struct
- 	pdd->lds_base = MAKE_LDS_APP_BASE_V9();
- 	pdd->lds_limit = MAKE_LDS_APP_LIMIT(pdd->lds_base);
- 
--	pdd->gpuvm_base = PAGE_SIZE;
-+        /* Raven needs SVM to support graphic handle, etc. Leave the small
-+         * reserved space before SVM on Raven as well, even though we don't
-+         * have to.
-+         * Set gpuvm_base and gpuvm_limit to CANONICAL addresses so that they
-+         * are used in Thunk to reserve SVM.
-+         */
-+        pdd->gpuvm_base = SVM_USER_BASE;
- 	pdd->gpuvm_limit =
- 		pdd->dev->kfd->shared_resources.gpuvm_size - 1;
- 
- 	pdd->scratch_base = MAKE_SCRATCH_APP_BASE_V9();
- 	pdd->scratch_limit = MAKE_SCRATCH_APP_LIMIT(pdd->scratch_base);
--
--	/*
--	 * Place TBA/TMA on opposite side of VM hole to prevent
--	 * stray faults from triggering SVM on these pages.
--	 */
--	pdd->qpd.cwsr_base = pdd->dev->kfd->shared_resources.gpuvm_size;
- }
- 
- int kfd_init_apertures(struct kfd_process *process)
-@@ -413,6 +407,12 @@ int kfd_init_apertures(struct kfd_proces
- 					return -EINVAL;
- 				}
- 			}
-+
-+                        /* dGPUs: the reserved space for kernel
-+                         * before SVM
-+                         */
-+                        pdd->qpd.cwsr_base = SVM_CWSR_BASE;
-+                        pdd->qpd.ib_base = SVM_IB_BASE;
- 		}
- 
- 		dev_dbg(kfd_device, "node id %u\n", id);
+diff --git a/arch/riscv/include/asm/xip_fixup.h b/arch/riscv/include/asm/xip_fixup.h
+index d4ffc3c37649..b65bf6306f69 100644
+--- a/arch/riscv/include/asm/xip_fixup.h
++++ b/arch/riscv/include/asm/xip_fixup.h
+@@ -13,7 +13,7 @@
+         add \reg, \reg, t0
+ .endm
+ .macro XIP_FIXUP_FLASH_OFFSET reg
+-	la t1, __data_loc
++	la t0, __data_loc
+ 	REG_L t1, _xip_phys_offset
+ 	sub \reg, \reg, t1
+ 	add \reg, \reg, t0
+-- 
+2.43.0
+
 
 
 
