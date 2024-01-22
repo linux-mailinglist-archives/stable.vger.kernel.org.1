@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-13925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FACE837F63
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A93E837C91
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F29AB25B9B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:48:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1369B28B083
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D951657CC;
-	Tue, 23 Jan 2024 00:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C32E136645;
+	Tue, 23 Jan 2024 00:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f7T4kMlU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1UqVKyBG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD8064AAF;
-	Tue, 23 Jan 2024 00:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2183E135A7A;
+	Tue, 23 Jan 2024 00:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970776; cv=none; b=atLWmCL71KoOsGlMQPzxOz0ai0kHqzsf7FegZoBd2wQkTdHSGDBnNE1R+j7GoOOFJt8Pme6+LptBvZU/L0vUv6JfNQBXEPizDKTpXhxD3trFgtP+qAF+hXp3C32G8ZNzopB08x5DaRnHVlJyC7PVK6RLKHuqC13HuE8EakXdHVo=
+	t=1705969673; cv=none; b=p2LOabqKkGYWdt6U29TFwF8enkVAT91cPdIsIjQsrgfi9AyfD4cVD7wFjfUlb62v7BjJag/WGQdT/sgWUNQyQc0f2/p1NHC5ipNVwptf94Uq3hwUG1iUBOomOLDo37Mwot+jk9v7IyNV6fI0vnFFvOEDnQGrajvS7gbsRXmEj8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970776; c=relaxed/simple;
-	bh=l0Iv1A+ILgwhQTqecSE1ZZIHUo17wWfM+dFLglCU0u8=;
+	s=arc-20240116; t=1705969673; c=relaxed/simple;
+	bh=0FNrusc4PLat6vAf0NRD8TEgqwzb2lCIG2ku+GSVspU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RiEOWsXwZiiWqSJcqgp/e29oeF7NqrAcN6RfyFDgxzDj2flSUYBsVbg0YTx9TehxmAIf2zvgU12xvRd3QU7gHPk5yIcOViphS/iEi7DS6PSvzj7Neue8ftbR0C1mgiGETdX2G83Cxf/g8tOpCe8sVC5cN4kHb9YeKWZQQ4nuRIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f7T4kMlU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16429C433F1;
-	Tue, 23 Jan 2024 00:46:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Cr+20AUjhx8R/yw9CQ3a9YbN+f9TQSQmzqMzVmn/4n1cqGr1Dacg6211jV2Nex4f+QxpUV0vtInJKFnwj/0nNvDAPIKsUwxMMcCPN6sh39onAi+onaeVIVMl/kUj4AYCnd2DPTIkQDVR5IlcgZ38MwD6m/uVyFJI+W4s43pxS2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1UqVKyBG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2363C433C7;
+	Tue, 23 Jan 2024 00:27:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970776;
-	bh=l0Iv1A+ILgwhQTqecSE1ZZIHUo17wWfM+dFLglCU0u8=;
+	s=korg; t=1705969673;
+	bh=0FNrusc4PLat6vAf0NRD8TEgqwzb2lCIG2ku+GSVspU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f7T4kMlUiKFyyAGKJbw/Z+2mylIgb/y0T+7jgd8wMlMdZAJsL2gMkJfuZ7MNF1X8I
-	 VAWti5cF5nOvsp9wlygWle1yWSQer3hADcYTqdaxev8Wzo2VgyLY2jw9f81DKDoayP
-	 fGE9NyuwIH/rC//fvj1zzCPx9AjkBs/DTL8Kawpw=
+	b=1UqVKyBG1Tqune6XnFgAwWTNAP27tidlsY97ScMX5D6XexEzNLLCDipkfJDkghB7N
+	 His7ZSZ3q5R8jReq4WRHAFWp6ogsmOWYTULRmT659WVANIfjESc2Yywg/FqnNyPgy0
+	 jIdlhiEmta4YvS3TZwX7ILJ2uKlqDmIhn/8Ksjvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Sun <sunhao.th@gmail.com>,
-	Andrei Matei <andreimatei1@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-sound@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 107/417] bpf: Fix verification of indirect var-off stack access
+Subject: [PATCH 6.7 371/641] kselftest/alsa - mixer-test: Fix the print format specifier warning
 Date: Mon, 22 Jan 2024 15:54:35 -0800
-Message-ID: <20240122235755.429341809@linuxfoundation.org>
+Message-ID: <20240122235829.563209643@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +67,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Matei <andreimatei1@gmail.com>
+From: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
 
-[ Upstream commit a833a17aeac73b33f79433d7cee68d5cafd71e4f ]
+[ Upstream commit 3f47c1ebe5ca9c5883e596c7888dec4bec0176d8 ]
 
-This patch fixes a bug around the verification of possibly-zero-sized
-stack accesses. When the access was done through a var-offset stack
-pointer, check_stack_access_within_bounds was incorrectly computing the
-maximum-offset of a zero-sized read to be the same as the register's min
-offset. Instead, we have to take in account the register's maximum
-possible value. The patch also simplifies how the max offset is checked;
-the check is now simpler than for min offset.
+The GCC 13.2.0 compiler issued the following warning:
 
-The bug was allowing accesses to erroneously pass the
-check_stack_access_within_bounds() checks, only to later crash in
-check_stack_range_initialized() when all the possibly-affected stack
-slots are iterated (this time with a correct max offset).
-check_stack_range_initialized() is relying on
-check_stack_access_within_bounds() for its accesses to the
-stack-tracking vector to be within bounds; in the case of zero-sized
-accesses, we were essentially only verifying that the lowest possible
-slot was within bounds. We would crash when the max-offset of the stack
-pointer was >= 0 (which shouldn't pass verification, and hopefully is
-not something anyone's code attempts to do in practice).
+mixer-test.c: In function ‘ctl_value_index_valid’:
+mixer-test.c:322:79: warning: format ‘%lld’ expects argument of type ‘long long int’, \
+			      but argument 5 has type ‘long int’ [-Wformat=]
+  322 |                         ksft_print_msg("%s.%d value %lld more than maximum %lld\n",
+      |                                                                            ~~~^
+      |                                                                               |
+      |                                                                               long long int
+      |                                                                            %ld
+  323 |                                        ctl->name, index, int64_val,
+  324 |                                        snd_ctl_elem_info_get_max(ctl->info));
+      |                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      |                                        |
+      |                                        long int
 
-Thanks Hao for reporting!
+Fixing the format specifier as advised by the compiler suggestion removes the
+warning.
 
-Fixes: 01f810ace9ed3 ("bpf: Allow variable-offset stack access")
-Reported-by: Hao Sun <sunhao.th@gmail.com>
-Signed-off-by: Andrei Matei <andreimatei1@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20231207041150.229139-2-andreimatei1@gmail.com
-
-Closes: https://lore.kernel.org/bpf/CACkBjsZGEUaRCHsmaX=h-efVogsRfK1FPxmkgb0Os_frnHiNdw@mail.gmail.com/
+Fixes: 3f48b137d88e7 ("kselftest: alsa: Factor out check that values meet constraints")
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: linux-sound@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Acked-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20240107173704.937824-3-mirsad.todorovac@alu.unizg.hr
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ tools/testing/selftests/alsa/mixer-test.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index adadf8546270..95e7b638418e 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -4950,10 +4950,7 @@ static int check_stack_access_within_bounds(
- 
- 	if (tnum_is_const(reg->var_off)) {
- 		min_off = reg->var_off.value + off;
--		if (access_size > 0)
--			max_off = min_off + access_size - 1;
--		else
--			max_off = min_off;
-+		max_off = min_off + access_size;
- 	} else {
- 		if (reg->smax_value >= BPF_MAX_VAR_OFF ||
- 		    reg->smin_value <= -BPF_MAX_VAR_OFF) {
-@@ -4962,15 +4959,12 @@ static int check_stack_access_within_bounds(
- 			return -EACCES;
+diff --git a/tools/testing/selftests/alsa/mixer-test.c b/tools/testing/selftests/alsa/mixer-test.c
+index 208c2170c074..df942149c6f6 100644
+--- a/tools/testing/selftests/alsa/mixer-test.c
++++ b/tools/testing/selftests/alsa/mixer-test.c
+@@ -319,7 +319,7 @@ static bool ctl_value_index_valid(struct ctl_data *ctl,
  		}
- 		min_off = reg->smin_value + off;
--		if (access_size > 0)
--			max_off = reg->smax_value + off + access_size - 1;
--		else
--			max_off = min_off;
-+		max_off = reg->smax_value + off + access_size;
- 	}
  
- 	err = check_stack_slot_within_bounds(min_off, state, type);
--	if (!err)
--		err = check_stack_slot_within_bounds(max_off, state, type);
-+	if (!err && max_off > 0)
-+		err = -EINVAL; /* out of stack access into non-negative offsets */
- 
- 	if (err) {
- 		if (tnum_is_const(reg->var_off)) {
+ 		if (int64_val > snd_ctl_elem_info_get_max64(ctl->info)) {
+-			ksft_print_msg("%s.%d value %lld more than maximum %lld\n",
++			ksft_print_msg("%s.%d value %lld more than maximum %ld\n",
+ 				       ctl->name, index, int64_val,
+ 				       snd_ctl_elem_info_get_max(ctl->info));
+ 			return false;
 -- 
 2.43.0
 
