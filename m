@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E5BB838065
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9993E8384C6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40431284E18
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5421228D402
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAFE312CDA5;
-	Tue, 23 Jan 2024 01:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5C7C768F1;
+	Tue, 23 Jan 2024 02:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G416DMoB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbDhbYtG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D4766B52;
-	Tue, 23 Jan 2024 01:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7652B768F9;
+	Tue, 23 Jan 2024 02:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971698; cv=none; b=XWj5teoWNVhnTQJuHpAC5AmXij2m0mjLWiKjM8yluNMI5bF1yLEFXElkqPHZCKN9bdgQys+GoDpTOzZgWzRRhppneS0FQx9SV/5PO8qSCCCc3SI0whGWI4L0Bt6YZITk86LLZMWU0f+nu2im0UPCqDVy0Hn9ljr7ckVWQTJXmT4=
+	t=1705975489; cv=none; b=DBIN8ZmqAntIkMf+KEbAOVSFdg3+CNRnDeoNijugR8oZjtwr1QJ8e5krfO+frjOltl0cn0j3tI6uzGuLLj/fwQ0vhPNSNxGvfPkE9RnXnxADDx89umnaHcsfi4yj7LcSBWNX4JZBNfdQDVM6cDZBNW4mF8A+DyxJNyR3qzdYUlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971698; c=relaxed/simple;
-	bh=t2r2Lb1uwgL0rNgpIWnWx7Bf7osBVwCe4UO43qn/oew=;
+	s=arc-20240116; t=1705975489; c=relaxed/simple;
+	bh=s0QC7/OKRsVK4L/y9SZ9RLJ9Abrcy+veHpkZIo7e0xg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y/oqGtsYl0s9+vWAXCNpoux2rhYbj5lSg9l3NxYta4TfantiLGDdziHNQ+vpI0h3gbdMTkym/M30IS1WmF9rR75SqYYTXsFHY41KZ6Hu8XVSgn2NZJ+hRCb4fuq4e1hExvXIRuVmfQ03gOZPhpZvskzwPEM3X2ofxxixzJQ7Ujk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G416DMoB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C38F2C43390;
-	Tue, 23 Jan 2024 01:01:37 +0000 (UTC)
+	 MIME-Version; b=fFQve0PlYSEhIK5JnlDnPM49cl0rVOWxvQp0zTkuai8UE17Cp6R/bWcaAQ+Z+2cTeu/XjFuSNoi/aw//wuKR6mMZNFx8vf4K0vZKyVD9tDF2nwLh3B1/Ys5fAjZ/wk23iWLS5LyWaUqCltyFs1WoGRnwpgpsT/LnxX6aW7R/s44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbDhbYtG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C26DC43390;
+	Tue, 23 Jan 2024 02:04:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971698;
-	bh=t2r2Lb1uwgL0rNgpIWnWx7Bf7osBVwCe4UO43qn/oew=;
+	s=korg; t=1705975489;
+	bh=s0QC7/OKRsVK4L/y9SZ9RLJ9Abrcy+veHpkZIo7e0xg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G416DMoB/r4ueY+6x5kDA+ndubThWwBWwneb3PmrCdxwgVkcooJs5Q/LYOnC3G3cC
-	 aGqO4fk0H34bAZTzHZyP1lcuuX7tc/lxJJvy6QdwYrj79/7QVrcgQQD1l8COJgQ66Q
-	 OtL/jKIws+wBYIRqyW6Bk/8JVlWr5cgTzsV36eXA=
+	b=nbDhbYtGeUBDk+/R7lr6G1wDVK7wB8OGfn3W9d5UdrAtgdxlfOlyzP9iJQ7c5VZlO
+	 5w4QpuHzs/3WexSVhBLP/H2x7DtDyfVYaE8CQuuwFB+g+7sO4W7MtDzdAmPXImtsGw
+	 E7RLYYUn6gO0zHkQFR6GjQ0CGBLen9LSj5bhRsK8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Landley <rob@landley.net>,
-	Stefan Berger <stefanb@linux.ibm.com>,
-	Mimi Zohar <zohar@linux.ibm.com>
-Subject: [PATCH 6.1 301/417] rootfs: Fix support for rootfstype= when root= is given
+	David Lin <yu-hao.lin@nxp.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.6 418/583] wifi: mwifiex: fix uninitialized firmware_stat
 Date: Mon, 22 Jan 2024 15:57:49 -0800
-Message-ID: <20240122235802.259761221@linuxfoundation.org>
+Message-ID: <20240122235824.755793809@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Berger <stefanb@linux.ibm.com>
+From: David Lin <yu-hao.lin@nxp.com>
 
-commit 21528c69a0d8483f7c6345b1a0bc8d8975e9a172 upstream.
+commit 3df95e265924ac898c1a38a0c01846dd0bd3b354 upstream.
 
-Documentation/filesystems/ramfs-rootfs-initramfs.rst states:
+Variable firmware_stat is possible to be used without initialization.
 
-  If CONFIG_TMPFS is enabled, rootfs will use tmpfs instead of ramfs by
-  default.  To force ramfs, add "rootfstype=ramfs" to the kernel command
-  line.
-
-This currently does not work when root= is provided since then
-saved_root_name contains a string and rootfstype= is ignored. Therefore,
-ramfs is currently always chosen when root= is provided.
-
-The current behavior for rootfs's filesystem is:
-
-   root=       | rootfstype= | chosen rootfs filesystem
-   ------------+-------------+--------------------------
-   unspecified | unspecified | tmpfs
-   unspecified | tmpfs       | tmpfs
-   unspecified | ramfs       | ramfs
-    provided   | ignored     | ramfs
-
-rootfstype= should be respected regardless whether root= is given,
-as shown below:
-
-   root=       | rootfstype= | chosen rootfs filesystem
-   ------------+-------------+--------------------------
-   unspecified | unspecified | tmpfs  (as before)
-   unspecified | tmpfs       | tmpfs  (as before)
-   unspecified | ramfs       | ramfs  (as before)
-    provided   | unspecified | ramfs  (compatibility with before)
-    provided   | tmpfs       | tmpfs  (new)
-    provided   | ramfs       | ramfs  (new)
-
-This table represents the new behavior.
-
-Fixes: 6e19eded3684 ("initmpfs: use initramfs if rootfstype= or root= specified")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Rob Landley <rob@landley.net>
-Link: https://lore.kernel.org/lkml/8244c75f-445e-b15b-9dbf-266e7ca666e2@landley.net/
-Reviewed-and-Tested-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Stefan Berger <stefanb@linux.ibm.com>
-Link: https://lore.kernel.org/r/20231120011248.396012-1-stefanb@linux.ibm.com
+Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+Fixes: 1c5d463c0770 ("wifi: mwifiex: add extra delay for firmware ready")
+Cc: stable@vger.kernel.org
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202312192236.ZflaWYCw-lkp@intel.com/
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231221015511.1032128-1-yu-hao.lin@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- init/do_mounts.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/sdio.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/init/do_mounts.c
-+++ b/init/do_mounts.c
-@@ -665,7 +665,10 @@ struct file_system_type rootfs_fs_type =
- 
- void __init init_rootfs(void)
+--- a/drivers/net/wireless/marvell/mwifiex/sdio.c
++++ b/drivers/net/wireless/marvell/mwifiex/sdio.c
+@@ -779,7 +779,7 @@ static int mwifiex_check_fw_status(struc
  {
--	if (IS_ENABLED(CONFIG_TMPFS) && !saved_root_name[0] &&
--		(!root_fs_names || strstr(root_fs_names, "tmpfs")))
--		is_tmpfs = true;
-+	if (IS_ENABLED(CONFIG_TMPFS)) {
-+		if (!saved_root_name[0] && !root_fs_names)
-+			is_tmpfs = true;
-+		else if (root_fs_names && !!strstr(root_fs_names, "tmpfs"))
-+			is_tmpfs = true;
-+	}
- }
+ 	struct sdio_mmc_card *card = adapter->card;
+ 	int ret = 0;
+-	u16 firmware_stat;
++	u16 firmware_stat = 0;
+ 	u32 tries;
+ 
+ 	for (tries = 0; tries < poll_num; tries++) {
 
 
 
