@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF88838433
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:24 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E4C78381F2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2357D298953
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE75428BFC8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F356A02C;
-	Tue, 23 Jan 2024 02:02:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A8456757;
+	Tue, 23 Jan 2024 01:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUtvfPyG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vH0Iq8fF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01BC266B3C;
-	Tue, 23 Jan 2024 02:02:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F54E56468;
+	Tue, 23 Jan 2024 01:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975325; cv=none; b=EOxyiEasH5NTpK0Gr+/Nikoaeqj7+wmY/coo+ZH3fihgkNOe4q9fKZS27pUmr4NQhI6n02PANH52eC7UrSf0JoipMPMox9uqJPPVEXIBwWHCka6q0xAYEKAcZFvi1K7isHpaqkh9XyUJXVjQsLY1frIz9RmBXJehNs3eU6dCSn0=
+	t=1705974012; cv=none; b=kyt8PAcGQ2OBpJ0U2EjLX1d2//7vHIL21rBrfHEbUgurXQlGFCZ8N7faGLUNfc9HcqGNbfh0FRO7nD5hZGCfWa6OA/OzI5SVK0oNkBz3Lvf8gtLcs6uy1Is4LwRkEd83aVDjeZv/NITQbQhdbtBEorz3e1rIgDW00WoAepv54hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975325; c=relaxed/simple;
-	bh=29yXy8qZdB8aNri4+sQjgsO3z4T88dicOrVfignEzwM=;
+	s=arc-20240116; t=1705974012; c=relaxed/simple;
+	bh=H0olwTkixWLWX9nNBI8F73Kl52+nPwFG4K/dLIQph5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SzrC9bC1codwgOwdejZagD/VPmFg4/CgMq6gesIFQ3TfCnAlimuER08MsuiD5Tp9HGhElYjD1aV10swUVtqqw0zgL+gC7lPzrlt7GKPThsj0c9VIxJR8+bGkeb4pY9yoyxGWxH4AXGw6e/uKk3wYN0BDRcMY5Ll/ERZdOR2JLgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUtvfPyG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCDA7C433C7;
-	Tue, 23 Jan 2024 02:02:04 +0000 (UTC)
+	 MIME-Version; b=QvNv5Qy8378oIAuGYp87CfLIF41iAB1YvmzcmVhkGK2OdigD0L/SWDd0N5iivob0cA7l9ODGMtwPcDswJMn/uHTXpgdKOyC6hPjMbX8wQQclLr9/SaV92sfTf1dWIkwCzjYzz+jv3txmfNk+JTt8dB2y1wi7qXr8mfPsUjWuadc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vH0Iq8fF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6BEC433C7;
+	Tue, 23 Jan 2024 01:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975324;
-	bh=29yXy8qZdB8aNri4+sQjgsO3z4T88dicOrVfignEzwM=;
+	s=korg; t=1705974011;
+	bh=H0olwTkixWLWX9nNBI8F73Kl52+nPwFG4K/dLIQph5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bUtvfPyGUVBP8UKB9YMrj4CwvWpk/sv7vnIkw4kEMBpp31QC/DR2XALv2aBPJupYh
-	 E/ZsiTwChks/o8rHT7YJ1anZ7Toyj6y/QSgijFZG7Qdb0n1LhiUi7UXfN/0NIl/UWr
-	 WxcQf/J09dOMdiANghd4kA6WI8HNPpT2jKMA34v0=
+	b=vH0Iq8fFQqxh1PWB7jcMDpBYbEr3zN4ngVyoQugriymslEwSauyeJooU0vZ0D7CYO
+	 GIoTAMCuRHoB3QrX7VIWwI8G64afgqFyollilbrYiQzL1akYYzS5A7tPazbIK7dNPZ
+	 p+q7zkxEzGaFDoHfbvIvMGUfP69Z5PLRKfNndsJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Rob Herring <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 288/583] drm/amdgpu/debugfs: fix error code when smc register accessors are NULL
+Subject: [PATCH 5.15 083/374] of: Add of_property_present() helper
 Date: Mon, 22 Jan 2024 15:55:39 -0800
-Message-ID: <20240122235820.821753347@linuxfoundation.org>
+Message-ID: <20240122235747.510105597@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +60,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Rob Herring <robh@kernel.org>
 
-[ Upstream commit afe58346d5d3887b3e49ff623d2f2e471f232a8d ]
+[ Upstream commit 9cbad37ce8122de32a1529e394b468bc101c9e7f ]
 
-Should be -EOPNOTSUPP.
+Add an of_property_present() function similar to
+fwnode_property_present(). of_property_read_bool() could be used
+directly, but it is cleaner to not use it on non-boolean properties.
 
-Fixes: 5104fdf50d32 ("drm/amdgpu: Fix a null pointer access when the smc_rreg pointer is NULL")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Frank Rowand <frowand.list@gmail.com>
+Tested-by: Frank Rowand <frowand.list@gmail.com>
+Link: https://lore.kernel.org/all/20230215215547.691573-1-robh@kernel.org/
+Signed-off-by: Rob Herring <robh@kernel.org>
+Stable-dep-of: c4a5118a3ae1 ("cpufreq: scmi: process the result of devm_of_clk_add_hw_provider()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/of.h | 17 ++++++++++++++++-
+ 1 file changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-index 3f2126f99923..418ff7cd662d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-@@ -755,7 +755,7 @@ static ssize_t amdgpu_debugfs_regs_smc_read(struct file *f, char __user *buf,
- 	int r;
+diff --git a/include/linux/of.h b/include/linux/of.h
+index 4403e8fc764a..29f657101f4f 100644
+--- a/include/linux/of.h
++++ b/include/linux/of.h
+@@ -1073,7 +1073,8 @@ static inline int of_property_read_string_index(const struct device_node *np,
+  * @np:		device node from which the property value is to be read.
+  * @propname:	name of the property to be searched.
+  *
+- * Search for a property in a device node.
++ * Search for a boolean property in a device node. Usage on non-boolean
++ * property types is deprecated.
+  *
+  * Return: true if the property exists false otherwise.
+  */
+@@ -1085,6 +1086,20 @@ static inline bool of_property_read_bool(const struct device_node *np,
+ 	return prop ? true : false;
+ }
  
- 	if (!adev->smc_rreg)
--		return -EPERM;
-+		return -EOPNOTSUPP;
- 
- 	if (size & 0x3 || *pos & 0x3)
- 		return -EINVAL;
-@@ -814,7 +814,7 @@ static ssize_t amdgpu_debugfs_regs_smc_write(struct file *f, const char __user *
- 	int r;
- 
- 	if (!adev->smc_wreg)
--		return -EPERM;
-+		return -EOPNOTSUPP;
- 
- 	if (size & 0x3 || *pos & 0x3)
- 		return -EINVAL;
++/**
++ * of_property_present - Test if a property is present in a node
++ * @np:		device node to search for the property.
++ * @propname:	name of the property to be searched.
++ *
++ * Test for a property present in a device node.
++ *
++ * Return: true if the property exists false otherwise.
++ */
++static inline bool of_property_present(const struct device_node *np, const char *propname)
++{
++	return of_property_read_bool(np, propname);
++}
++
+ /**
+  * of_property_read_u8_array - Find and read an array of u8 from a property.
+  *
 -- 
 2.43.0
 
