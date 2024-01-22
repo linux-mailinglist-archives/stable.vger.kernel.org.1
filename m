@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-14645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A34468381FC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:44 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 718F6837D51
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BFB1285929
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A46D01C28DD7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C495730B;
-	Tue, 23 Jan 2024 01:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B81995C5FC;
+	Tue, 23 Jan 2024 00:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSjyQ32T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VPgkQVvW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEB656768;
-	Tue, 23 Jan 2024 01:40:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E8B4F5E9;
+	Tue, 23 Jan 2024 00:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974027; cv=none; b=ah6rKOTWGywjfOIuRVp5zBc5beYXficCePtOSc1xfZ+xxE9NVMjIR2BKZsRtQBmPvWE46ggG3wDuzoSalEE5FXvZC0hnRCfFULUjrRRSU0BjM3i9TKpGwOrT07TtFrk+RY4mfeZJb0uy6VLxkX3SCz8dGkE/7U2PuL+Og5TzxxM=
+	t=1705969888; cv=none; b=qywJ1DScVUe1PM5uJtdvw+BEwRV3b+CTAdou9PRcL+RnKz2m7IYGWzJXyVqqCb5N7h+GhuVpaeeF3uci+Vf8pmKj8rGgEtX1ZdU3vyuTHQWhzx9hnAnyz+VDoLHKFZtsZQlR/aiOghAwtGQ3AGT6Roq1ze8k0HCwfKvWUjNqj/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974027; c=relaxed/simple;
-	bh=9Be0dcLTR+3xg8xW82GDcHPfiJ//YLkCtlFASA2sEqQ=;
+	s=arc-20240116; t=1705969888; c=relaxed/simple;
+	bh=nmJ8kHU2vBl5mwipPZs3eZ6Y+xU3HrAOb9MjpqkgptM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iDI09Zp18nzOO2mNSxvzZc6lCUgYbZK1x/KMBEtuH6HAH1ElIBiBKGIOZK/Bedfyo+JeQVV1P7SSrfWQMdEbLIQf67OeyDJSs48VZmVcETKIdfBh+9WkzxFYtMxHE9/pLgNW3Kz90ikDYiIq0OvUfEDk98kbPBhx+Snrg+fjKv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSjyQ32T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8155CC43394;
-	Tue, 23 Jan 2024 01:40:25 +0000 (UTC)
+	 MIME-Version; b=YDk8DVEi4dLC04WSM04I80ffV+4nMn1LoqGNIDhiHnrGbB09wYXp2sZfKXgiaUXDqbOs7+6Dx9k4O1g1hWCnFjKkahwuttOFiNRxczA6U+nfOc8dRRVmoYpQOfN3g5HwqQ9cu+oZe2CPabEDhllrscE1n7RxjdfT9gBxXFKe0LA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VPgkQVvW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B5EEC433F1;
+	Tue, 23 Jan 2024 00:31:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974025;
-	bh=9Be0dcLTR+3xg8xW82GDcHPfiJ//YLkCtlFASA2sEqQ=;
+	s=korg; t=1705969888;
+	bh=nmJ8kHU2vBl5mwipPZs3eZ6Y+xU3HrAOb9MjpqkgptM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JSjyQ32T+rNxyoguiHWMUWeQsf5Skv5eMvyYGYuofRkCxNUe4vWAPp5xek1htHhac
-	 NtviIYa2z8SVEZt6fZ/n81NkVyhBBWHV/fH5a32n4neOUo2sNTn6zkgiVKCJDkAKAD
-	 Bj40xKcEVr/Alq2RHk1JkpSb/FbzocDyFnm5pyao=
+	b=VPgkQVvWlXr3MXz7HR9bH7HtHWdsCyypLCzpoMDYucnapTLBH6iUZ32xDI3MZkkaG
+	 NHQXIo7waSsGon+mtHj+DifNV5bDJwHrSbnvY7HYnKnVUfZbd047vhSK0WYfVqKwW4
+	 pEUfyIh6kZOtz7HoWvsajWH+hAtze/d4B0NNLX5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 121/374] wifi: libertas: stop selecting wext
+	Oliver Upton <oliver.upton@linux.dev>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.7 473/641] KVM: arm64: vgic-its: Avoid potential UAF in LPI translation cache
 Date: Mon, 22 Jan 2024 15:56:17 -0800
-Message-ID: <20240122235748.841732990@linuxfoundation.org>
+Message-ID: <20240122235832.863358016@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Oliver Upton <oliver.upton@linux.dev>
 
-[ Upstream commit 8170b04c2c92eee52ea50b96db4c54662197e512 ]
+commit ad362fe07fecf0aba839ff2cc59a3617bd42c33f upstream.
 
-Libertas no longer references the iw_handler infrastructure or wext_spy,
-so neither of the 'select' statements are used any more.
+There is a potential UAF scenario in the case of an LPI translation
+cache hit racing with an operation that invalidates the cache, such
+as a DISCARD ITS command. The root of the problem is that
+vgic_its_check_cache() does not elevate the refcount on the vgic_irq
+before dropping the lock that serializes refcount changes.
 
-Fixes: e86dc1ca4676 ("Libertas: cfg80211 support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20231108153409.1065286-1-arnd@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Have vgic_its_check_cache() raise the refcount on the returned vgic_irq
+and add the corresponding decrement after queueing the interrupt.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20240104183233.3560639-1-oliver.upton@linux.dev
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/libertas/Kconfig | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm64/kvm/vgic/vgic-its.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/marvell/libertas/Kconfig b/drivers/net/wireless/marvell/libertas/Kconfig
-index 6d62ab49aa8d..c7d02adb3eea 100644
---- a/drivers/net/wireless/marvell/libertas/Kconfig
-+++ b/drivers/net/wireless/marvell/libertas/Kconfig
-@@ -2,8 +2,6 @@
- config LIBERTAS
- 	tristate "Marvell 8xxx Libertas WLAN driver support"
- 	depends on CFG80211
--	select WIRELESS_EXT
--	select WEXT_SPY
- 	select LIB80211
- 	select FW_LOADER
- 	help
--- 
-2.43.0
-
+--- a/arch/arm64/kvm/vgic/vgic-its.c
++++ b/arch/arm64/kvm/vgic/vgic-its.c
+@@ -590,7 +590,11 @@ static struct vgic_irq *vgic_its_check_c
+ 	unsigned long flags;
+ 
+ 	raw_spin_lock_irqsave(&dist->lpi_list_lock, flags);
++
+ 	irq = __vgic_its_check_cache(dist, db, devid, eventid);
++	if (irq)
++		vgic_get_irq_kref(irq);
++
+ 	raw_spin_unlock_irqrestore(&dist->lpi_list_lock, flags);
+ 
+ 	return irq;
+@@ -769,6 +773,7 @@ int vgic_its_inject_cached_translation(s
+ 	raw_spin_lock_irqsave(&irq->irq_lock, flags);
+ 	irq->pending_latch = true;
+ 	vgic_queue_irq_unlock(kvm, irq, flags);
++	vgic_put_irq(kvm, irq);
+ 
+ 	return 0;
+ }
 
 
 
