@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-13446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19C99837CE1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3D1D837E22
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3A465B2A957
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 816941F29CAF
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACAAE101D2;
-	Tue, 23 Jan 2024 00:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E3558238;
+	Tue, 23 Jan 2024 00:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GwQQcsbO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TCLNEO6i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BFF5662;
-	Tue, 23 Jan 2024 00:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2D051C49;
+	Tue, 23 Jan 2024 00:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969503; cv=none; b=C4vagdQRmTx+k+7+NFXYSIHbywew26FdI4vacelhy8FR5xn6PLPSot5Fs5M5Rd6kluBudFNNw6qYEfllHY5DKXCeeoGxa0kzomBHr27Q7Z5hM2kL+apEwQksY7LVQEDKLfSGJLG+I76DszY7S1dy5sUfz+aBmTBaaeQiKYBjVdU=
+	t=1705970395; cv=none; b=UV5WZUBy6gbfryj2SY6cEL64arUDxU1TUA7VqYxP88DIGMsdfcI7bp/Sio4x+StPeRqfHowpPWlC5yg54JwYWtTvblh+676oouUcDLE4Z9qvGnssarD/zh4SoQ9nI4Q1Htf5enk36Eqse9mm0xvX/aTAGLbnTXmxceb+avjpRck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969503; c=relaxed/simple;
-	bh=0DXwUaR0VggXMxYkKz32oLwLHF1KUpZrtX3PhcO0yeI=;
+	s=arc-20240116; t=1705970395; c=relaxed/simple;
+	bh=Kt8sW6jke+9ufAg4Wv/+9SjjBx4rllEm97NQU/MvB00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j44/Y73E0acvX6KLUNXBKCv7wY+OMdQobuqvD0ck1fGc+gpGrrDxMbmLNU9iZ/71MSgI9648utpYU4bk/Y/n1FrwlDwGo5DOHr3a0kHPk1SO4/+RPiFKd6+MjShHREZoI6yv/C99oNfddDPrz+O4GTVXXrajxhpf9PDQHPq1LgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GwQQcsbO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19174C433A6;
-	Tue, 23 Jan 2024 00:25:02 +0000 (UTC)
+	 MIME-Version; b=lyUb0oTZRkY/IlJyVlfRIIR1VK7pHTVWyi3R4fSSHYXvYuRnnDluSwg4XWHaK05vCdHyjLGOpidOAfhRri5czPrJJF4CpTeNHe/IaCmhpBDgL6o5mPHGS+qcKYMCcGnpWAk7N1Vehu62UTyL8krZP7BiqozbPyRvZdQs+it9ZM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TCLNEO6i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBBEC433F1;
+	Tue, 23 Jan 2024 00:39:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969503;
-	bh=0DXwUaR0VggXMxYkKz32oLwLHF1KUpZrtX3PhcO0yeI=;
+	s=korg; t=1705970395;
+	bh=Kt8sW6jke+9ufAg4Wv/+9SjjBx4rllEm97NQU/MvB00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GwQQcsbOn68XpQvyN6no3Hw5Xv1xRduXnSx51LllB4vvAPvYFF/LhA1YuJv7ZLWEr
-	 b288lJrkT0AFJoVEUIhlaX26CF7Ec79y4AJr8Tv1D8qiqoW1sI8ij0wvMb89V92VPv
-	 RllGbY4cF58/nFt83o47xn3XtT3pVkw1chABmD6Y=
+	b=TCLNEO6iiADn1i02paUrwN7nwdK7zYgUcYCeiL1sfNAh/2FEaojclkLdy3srqnWf9
+	 SV9PC6+frfqyP0YnFNS6/GA+36/EWyb5nsDBIhklB6+MnD2Ktpot42UW0yau/IwMS0
+	 3lgvyzJtHQROnhCrwj6O7jgwYoD1S1kFdKas8JVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-	Teddy Wang <teddy.wang@siliconmotion.com>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Helge Deller <deller@gmx.de>,
-	Arnd Bergmann <arnd@arndb.de>,
-	linux-fbdev@vger.kernel.org,
+	Colin Ian King <colin.i.king@gmail.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 265/641] fbdev/sm712fb: Use correct initializer macros for struct fb_ops
+Subject: [PATCH 6.1 001/417] x86/lib: Fix overflow when counting digits
 Date: Mon, 22 Jan 2024 15:52:49 -0800
-Message-ID: <20240122235826.218003281@linuxfoundation.org>
+Message-ID: <20240122235751.532178624@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,79 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit 12d55c013a09a2d490f004a324c20800e4ff35ec ]
+[ Upstream commit a24d61c609813963aacc9f6ec8343f4fcaac7243 ]
 
-Only initialize mmap and draw helpers with macros; leave read/write
-callbacks to driver implementations. Fixes the following warnings:
+tl;dr: The num_digits() function has a theoretical overflow issue.
+But it doesn't affect any actual in-tree users.  Fix it by using
+a larger type for one of the local variables.
 
-  CC [M]  drivers/video/fbdev/sm712fb.o
-  sm712fb.c:1355:25: warning: initialized field overwritten [-Woverride-init]
-  1355 |         .fb_fillrect  = cfb_fillrect,
-       |                         ^~~~~~~~~~~~
-  sm712fb.c:1355:25: note: (near initialization for 'smtcfb_ops.fb_fillrect')
-  sm712fb.c:1356:25: warning: initialized field overwritten [-Woverride-init]
-  1356 |         .fb_imageblit = cfb_imageblit,
-       |                         ^~~~~~~~~~~~~
-  sm712fb.c:1356:25: note: (near initialization for 'smtcfb_ops.fb_imageblit')
-  sm712fb.c:1357:25: warning: initialized field overwritten [-Woverride-init]
-  1357 |         .fb_copyarea  = cfb_copyarea,
-       |                         ^~~~~~~~~~~~
-  sm712fb.c:1357:25: note: (near initialization for 'smtcfb_ops.fb_copyarea')
-  sm712fb.c:1358:25: warning: initialized field overwritten [-Woverride-init]
-  1358 |         .fb_read      = smtcfb_read,
-       |                         ^~~~~~~~~~~
-  sm712fb.c:1358:25: note: (near initialization for 'smtcfb_ops.fb_read')
-  sm712fb.c:1359:25: warning: initialized field overwritten [-Woverride-init]
-  1359 |         .fb_write     = smtcfb_write,
-       |                         ^~~~~~~~~~~~
-  sm712fb.c:1359:25: note: (near initialization for 'smtcfb_ops.fb_write')
+Long version:
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 586132cf1d38 ("fbdev/sm712fb: Initialize fb_ops to fbdev I/O-memory helpers")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Cc: Teddy Wang <teddy.wang@siliconmotion.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: linux-fbdev@vger.kernel.org
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20231127131655.4020-3-tzimmermann@suse.de
+There is an overflow in variable m in function num_digits when val
+is >= 1410065408 which leads to the digit calculation loop to
+iterate more times than required. This results in either more
+digits being counted or in some cases (for example where val is
+1932683193) the value of m eventually overflows to zero and the
+while loop spins forever).
+
+Currently the function num_digits is currently only being used for
+small values of val in the SMP boot stage for digit counting on the
+number of cpus and NUMA nodes, so the overflow is never encountered.
+However it is useful to fix the overflow issue in case the function
+is used for other purposes in the future. (The issue was discovered
+while investigating the digit counting performance in various
+kernel helper functions rather than any real-world use-case).
+
+The simplest fix is to make m a long long, the overhead in
+multiplication speed for a long long is very minor for small values
+of val less than 10000 on modern processors. The alternative
+fix is to replace the multiplication with a constant division
+by 10 loop (this compiles down to an multiplication and shift)
+without needing to make m a long long, but this is slightly slower
+than the fix in this commit when measured on a range of x86
+processors).
+
+[ dhansen: subject and changelog tweaks ]
+
+Fixes: 646e29a1789a ("x86: Improve the printout of the SMP bootup CPU table")
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/20231102174901.2590325-1-colin.i.king%40gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/sm712fb.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/x86/lib/misc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/sm712fb.c b/drivers/video/fbdev/sm712fb.c
-index 3f8ef50e3209..104f122e0f27 100644
---- a/drivers/video/fbdev/sm712fb.c
-+++ b/drivers/video/fbdev/sm712fb.c
-@@ -1347,16 +1347,14 @@ static int smtc_set_par(struct fb_info *info)
+diff --git a/arch/x86/lib/misc.c b/arch/x86/lib/misc.c
+index a018ec4fba53..c97be9a1430a 100644
+--- a/arch/x86/lib/misc.c
++++ b/arch/x86/lib/misc.c
+@@ -6,7 +6,7 @@
+  */
+ int num_digits(int val)
+ {
+-	int m = 10;
++	long long m = 10;
+ 	int d = 1;
  
- static const struct fb_ops smtcfb_ops = {
- 	.owner        = THIS_MODULE,
--	FB_DEFAULT_IOMEM_OPS,
- 	.fb_check_var = smtc_check_var,
- 	.fb_set_par   = smtc_set_par,
- 	.fb_setcolreg = smtc_setcolreg,
- 	.fb_blank     = smtc_blank,
--	.fb_fillrect  = cfb_fillrect,
--	.fb_imageblit = cfb_imageblit,
--	.fb_copyarea  = cfb_copyarea,
-+	__FB_DEFAULT_IOMEM_OPS_DRAW,
- 	.fb_read      = smtcfb_read,
- 	.fb_write     = smtcfb_write,
-+	__FB_DEFAULT_IOMEM_OPS_MMAP,
- };
- 
- /*
+ 	if (val < 0) {
 -- 
 2.43.0
 
