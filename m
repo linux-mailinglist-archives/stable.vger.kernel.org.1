@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-13451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A451837CF8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D336C838308
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88EF1B2A00D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 754161F284C0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6041D134C2;
-	Tue, 23 Jan 2024 00:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B4A850257;
+	Tue, 23 Jan 2024 01:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gkde0/AB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCE2Uc6Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1262A23BD;
-	Tue, 23 Jan 2024 00:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3088660268;
+	Tue, 23 Jan 2024 01:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969510; cv=none; b=Cx0PJE1uuh8ebwL07McBWuJ2ulb+1dxun7uCZZ4pnA11sjl1e8OjGvQovQl0n8ql1JMBnQZgR17imgl91RnpaGBKKkvcbvoxCBgvFVCNSHAc3+DBx3T2V9y+heWfkAviGmbXWvET4m/hkJ6MqWX0TaoRq1636BgYuJut6rE3xZs=
+	t=1705974686; cv=none; b=IsS0gBhBtKbtwlTA+AW14wSFg5DofYjUMIDrEFo5p3bb4NiDFHNrGOHHmB8VYjzb6RA7K0V0Jd9Ij702qzj1J0I5DIgeEbRY1UoJ7Z+5npYHifEN1oYmUr/UO3fv8kZ/IDdc4ZjAr282j2ax19EvZp//TMCasYZxGbYxmwvwl7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969510; c=relaxed/simple;
-	bh=2EVzQju/kqnPcfeZ52LjgHEWlk6C07DE96Xtxf/3Zeo=;
+	s=arc-20240116; t=1705974686; c=relaxed/simple;
+	bh=ECZpO4FV5Ds4PPDAegsz8K2ScNxhvP+E47kWBH38IkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i+u120ePEZadwCwjPh6a6Gt0TFG3rv9bttKpwUrqZsmTn3GyzQwKZx7eMAhhIDTofUJY9lUlYGLETYFfD4HUbz8YqAL0s1n/e60I8RnLBR4slWwxBu/Y1D4A5YGDMISJrPDC/lG/b9U3HgZONMyrbeityeB5i3pNPoey2AmkxAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gkde0/AB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DE47C43399;
-	Tue, 23 Jan 2024 00:25:09 +0000 (UTC)
+	 MIME-Version; b=UaCO1aLvij4EvypDKSYduG1AOzA4cY0kOEumacmnMtJZzHL87CjROWCzLjqAPg82AFwj0NDBEXpwmvYQxIMkPWAtT+paUlT3rPDNawaVYsAAf+5pzWCDtsnNipPqN03xnMYqy6d5tAdLfKuRi4SF6iRl5quVBxcCjIl3zfxDrVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCE2Uc6Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F2D4C433F1;
+	Tue, 23 Jan 2024 01:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969509;
-	bh=2EVzQju/kqnPcfeZ52LjgHEWlk6C07DE96Xtxf/3Zeo=;
+	s=korg; t=1705974685;
+	bh=ECZpO4FV5Ds4PPDAegsz8K2ScNxhvP+E47kWBH38IkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gkde0/ABvi6gtE8uixLcuE0IU8uBK+BmqvtX2pt6wasfHc/ucKcsTn8/lm6kOUS9T
-	 ZvhdoltNPeP1VRGo0QUitj8s23cZknZc0XeiAESCCUihqyh5icTAFo2phppKTDZ7nS
-	 6WXMl5+VN7c6tUazxq6dL0O9tc6Dyud1y4AnP+WM=
+	b=eCE2Uc6ZsXjDNQZ3DQya0hp1xjlw/HLI1cYjDaXrp/e820iqVF66dAI1Gy+DHJf9L
+	 NW8ruAx8aIPRVcssUxk56b5Ooo0vRoYH0r5gSHE58jO2hk6rcNw6EkBOM2anMrcNeM
+	 8sfWFb5i9uSCHwA6ZtFzWIydIlfvZqQyy4os610Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Artem Chernyshev <artem.chernyshev@red-soft.ru>,
+	Karan Tilak Kumar <kartilak@cisco.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 270/641] drm/amd/display: Fix NULL pointer dereference at hibernate
+Subject: [PATCH 6.6 123/583] scsi: fnic: Return error if vmalloc() failed
 Date: Mon, 22 Jan 2024 15:52:54 -0800
-Message-ID: <20240122235826.366473565@linuxfoundation.org>
+Message-ID: <20240122235815.902129864@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
 
-[ Upstream commit b719a9c15d52d4f56bdea8241a5d90fd9197ce99 ]
+[ Upstream commit f5f27a332a14f43463aa0075efa3a0c662c0f4a8 ]
 
-During hibernate sequence the source context might not have a clk_mgr.
-So don't use it to look for DML2 support.
+In fnic_init_module() exists redundant check for return value from
+fnic_debugfs_init(), because at moment it only can return zero. It make
+sense to process theoretical vmalloc() failure.
 
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2980
-Fixes: 7966f319c66d ("drm/amd/display: Introduce DML2")
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 9730ddfb123d ("scsi: fnic: remove redundant assignment of variable rc")
+Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+Link: https://lore.kernel.org/r/20231128111008.2280507-1-artem.chernyshev@red-soft.ru
+Reviewed-by: Karan Tilak Kumar <kartilak@cisco.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/fnic/fnic_debugfs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-index a1f1d1003992..e4bb1e25ee3b 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -4512,7 +4512,7 @@ void dc_resource_state_copy_construct(
- 	struct dml2_context *dml2 = NULL;
+diff --git a/drivers/scsi/fnic/fnic_debugfs.c b/drivers/scsi/fnic/fnic_debugfs.c
+index c4d9ed0d7d75..2619a2d4f5f1 100644
+--- a/drivers/scsi/fnic/fnic_debugfs.c
++++ b/drivers/scsi/fnic/fnic_debugfs.c
+@@ -52,9 +52,10 @@ int fnic_debugfs_init(void)
+ 		fc_trc_flag->fnic_trace = 2;
+ 		fc_trc_flag->fc_trace = 3;
+ 		fc_trc_flag->fc_clear = 4;
++		return 0;
+ 	}
  
- 	// Need to preserve allocated dml2 context
--	if (src_ctx->clk_mgr->ctx->dc->debug.using_dml2)
-+	if (src_ctx->clk_mgr && src_ctx->clk_mgr->ctx->dc->debug.using_dml2)
- 		dml2 = dst_ctx->bw_ctx.dml2;
- #endif
+-	return 0;
++	return -ENOMEM;
+ }
  
-@@ -4520,7 +4520,7 @@ void dc_resource_state_copy_construct(
- 
- #ifdef CONFIG_DRM_AMD_DC_FP
- 	// Preserve allocated dml2 context
--	if (src_ctx->clk_mgr->ctx->dc->debug.using_dml2)
-+	if (src_ctx->clk_mgr && src_ctx->clk_mgr->ctx->dc->debug.using_dml2)
- 		dst_ctx->bw_ctx.dml2 = dml2;
- #endif
- 
+ /*
 -- 
 2.43.0
 
