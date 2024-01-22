@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-13376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 473F7837BD2
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1E3A83828E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFEC81F2A4FD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:07:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B3EB28C3E5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB166154C02;
-	Tue, 23 Jan 2024 00:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 292275D752;
+	Tue, 23 Jan 2024 01:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rB0fZg0B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ul+8AZda"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A14415445E;
-	Tue, 23 Jan 2024 00:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F8F5C8FC;
+	Tue, 23 Jan 2024 01:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969397; cv=none; b=H8UdrO1+9eufcOH+xB//H0DHUNAqcSU/F10YMMVTq2suPCnf0yjfAI6Ah303RnTxfhl1BIuK3YlPduP45S0DNbpcQIpdKDi2NCTdJO0wBlCklo64XOpmiT7RL35p6gQa2gyRhnnVGUVGLlrxODAbS0KLV3uuVVP8tx2xM/WPdLE=
+	t=1705974378; cv=none; b=gNHlQT5Dnbv/BG9jrtgWmr22+S0Q35TYvDi0/e+6qa14ClQ+/F9EAIIblZM4khKySjvxyOgJ74qAOQkyHmkPjHfg7Vrx6V7R2rqLABxIe5JRQdNVuVxH7lhScQfbeCxrJw+aypsyp1UV3eRydkv+HRQsK9f2TFoYR/Gplo80KXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969397; c=relaxed/simple;
-	bh=fpfSuPRF9xMEUwV96O4LkJNwfJnOe2HplD3DbaCiTUQ=;
+	s=arc-20240116; t=1705974378; c=relaxed/simple;
+	bh=zF6zwedgcHaBN1+aFzcwh/pOqmVXZmxksmYWNFV5CeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VWEaEXjk751pS8arc9hg7oiCRQJ69HzrfpBLjYsGMMchpI3U+JbRVkBRtvif8KUn2+v2+7CZ7v0YEiKQ1ium0AgldMqOBi+LaAdQ+OueAgEOXTr53a7SYr6+XH4+baYZbttmxOhU5TtjY8Y9OWf2V41Jn9/2QlnQXPNMI/fjvD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rB0fZg0B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E4A2C43394;
-	Tue, 23 Jan 2024 00:23:17 +0000 (UTC)
+	 MIME-Version; b=XUfgTYxgeNm+bKj5fsvgtMbeBRG7ijVeUupgWuOPsiNHMgET7YBFj0ZekeBm8QvcTmcMoLAeO9HnkTFdn2DZIRIfaIpwW0HRVqFAFqwSC3l9eXalTuJzn+v4zh9O9D0pBmztOacKocXUIF8zBmt9b87dtGoSP1MHUXFHbt95Xkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ul+8AZda; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 891D3C43390;
+	Tue, 23 Jan 2024 01:46:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969397;
-	bh=fpfSuPRF9xMEUwV96O4LkJNwfJnOe2HplD3DbaCiTUQ=;
+	s=korg; t=1705974378;
+	bh=zF6zwedgcHaBN1+aFzcwh/pOqmVXZmxksmYWNFV5CeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rB0fZg0BNSUYrejYr0cl5UxbDXs0on2+L2zRONvCkbfLGV1Ui4xNmnRiXpHNJ7vlT
-	 bwgwRWqJQKdWLGNELG/wfmFICaTe/K/5oyTsXRHR5g+YojnW+svElXvgOJkw49QDYL
-	 xVWcCsyZWk6rFfvzq7R4Ubgu+fqcOe2nOzxCyR98=
+	b=Ul+8AZdaczkYLjCiyQBuI4ySSfyjvy2hHR4GkoMLCQZdbTNvRxvdiw6GXpyDIySbr
+	 Jo+dAMAWrf3FslGTrYW4sCWXdeKT2tWCSjCq0yO6ZWwjR26vsUrfs9fsWe/ffa+5Hc
+	 oT43OWLaydsKrNJDy9huOpQwvPBBufJ56gs9VE5M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 219/641] wifi: iwlwifi: fix out of bound copy_from_user
+Subject: [PATCH 6.6 072/583] crypto: sahara - fix processing hash requests with req->nbytes < sg->length
 Date: Mon, 22 Jan 2024 15:52:03 -0800
-Message-ID: <20240122235824.788395977@linuxfoundation.org>
+Message-ID: <20240122235814.357309253@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit cb2dfacb197bed0241fbb4f84bd0995a47f4465e ]
+[ Upstream commit 7bafa74d1ba35dcc173e1ce915e983d65905f77e ]
 
-The driver copies the userspace buffer into an internal NUL
-byte terminated buffer. While doing so, it was reading beyond
-the end of the userspace buffer, overwriting its own NUL
-termination in the process.
+It's not always the case that the entire sg entry needs to be processed.
+Currently, when nbytes is less than sg->length, "Descriptor length" errors
+are encountered.
 
-Fix this by only copying the correct number of bytes.
+To fix this, take the actual request size into account when populating the
+hw links.
 
-Fixes: 3f244876ef73 ("wifi: iwlwifi: make debugfs entries link specific")
-Signed-off-by: Anjaneyulu <pagadala.yesu.anjaneyulu@intel.com>
-Reviewed-by: Gregory Greenman <gregory.greenman@intel.com>
-Reviewed-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20231219215605.e4913deb2ad4.Idcf6a7e909ff4b7801cd49c2f691f84a2f68eff9@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/sahara.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-index 329c545f65fd..7737650e56cb 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/debugfs.c
-@@ -1815,7 +1815,7 @@ static ssize_t _iwl_dbgfs_link_sta_##name##_write(struct file *file,	\
- 	char buf[buflen] = {};						\
- 	size_t buf_size = min(count, sizeof(buf) -  1);			\
- 									\
--	if (copy_from_user(buf, user_buf, sizeof(buf)))			\
-+	if (copy_from_user(buf, user_buf, buf_size))			\
- 		return -EFAULT;						\
- 									\
- 	return _iwl_dbgfs_link_sta_wrap_write(iwl_dbgfs_##name##_write,	\
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index 117aa4296c2a..477b4d8b450d 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -776,6 +776,7 @@ static int sahara_sha_hw_links_create(struct sahara_dev *dev,
+ 				       int start)
+ {
+ 	struct scatterlist *sg;
++	unsigned int len;
+ 	unsigned int i;
+ 	int ret;
+ 
+@@ -797,12 +798,14 @@ static int sahara_sha_hw_links_create(struct sahara_dev *dev,
+ 	if (!ret)
+ 		return -EFAULT;
+ 
++	len = rctx->total;
+ 	for (i = start; i < dev->nb_in_sg + start; i++) {
+-		dev->hw_link[i]->len = sg->length;
++		dev->hw_link[i]->len = min(len, sg->length);
+ 		dev->hw_link[i]->p = sg->dma_address;
+ 		if (i == (dev->nb_in_sg + start - 1)) {
+ 			dev->hw_link[i]->next = 0;
+ 		} else {
++			len -= min(len, sg->length);
+ 			dev->hw_link[i]->next = dev->hw_phys_link[i + 1];
+ 			sg = sg_next(sg);
+ 		}
 -- 
 2.43.0
 
