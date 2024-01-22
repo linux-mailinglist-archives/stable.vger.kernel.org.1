@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-14944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D06B783833E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:27:05 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16D39837C24
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DB811F252AD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1708295C03
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A897E60BB4;
-	Tue, 23 Jan 2024 01:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4981E25632;
+	Tue, 23 Jan 2024 00:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="da5mx2+p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LeeZDGui"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690D329408;
-	Tue, 23 Jan 2024 01:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093021E4AB;
+	Tue, 23 Jan 2024 00:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974744; cv=none; b=HvPN6ptAFYtphSEDPtj5mnQkARm2baUpZreVSIQIFQNL+lJjA4jVQEX9t8y5QdwR56SPYpmwRIYWZkC4j6BxTtoPLlzx2DMuZRfs4YJyLcHXv/MN3jsHjWOIXhox0Itqfnm1f42CqJKtGBm/C5Mu0HJFg9TismXssITuYbloDPk=
+	t=1705969518; cv=none; b=C7Nr5bs0HeyWj7sD9ST0vaLT6xUkR5PorJVrRlIh3xA4yKw9y1RqQJx/QlgZIkpUz6F+ajVvLNVy0otwJoOjZtRpk5ptbNyho/302//MVEQMqPIGhiso9wi0dF+zZLIpNmwQsH9QOmJ0Aly7m9pqWqU6YcxG72XWpv21RSNKxZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974744; c=relaxed/simple;
-	bh=qbFsM7nQcCuivhtYqLBVY8CntLP4Zw95fTZkeX8Ava0=;
+	s=arc-20240116; t=1705969518; c=relaxed/simple;
+	bh=xMjOU2WRJ4z8wXENuyBaIMFzsizVeoX4ZYcsbirmc1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dGwOZojgNpK2YqC9sqiqmy3RPO0qn2Gt9vIrK1Vhm9F36i3/s8tFb4DLNX2QK+m4dm5zEmjxNllS+qmf0+HXNtk5YtYu74T1iWa8fxe6ZeNfpzSchcuQb+0wRWDKbdGQxrRvQRuPueIer3WtqAy2HQfKJj9Owh7ZHOsVMLXaico=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=da5mx2+p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D63CC43390;
-	Tue, 23 Jan 2024 01:52:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ks/ujm2PzLVEs4QLymD9VpzpYlfyFmL0cLGNi0HN6Tjj6ca92lDs7lx3un7xk2jUouXWfJ/enjOrBQKtS3q5yhHGmz9E4Z/c1S7jFs+r5p+Cqp8LWElqadie9y0zcbOrfYJR6wllc+H888m2kZTsKKTgD/wyDslytzq4RpIks10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LeeZDGui; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD8B5C433A6;
+	Tue, 23 Jan 2024 00:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974744;
-	bh=qbFsM7nQcCuivhtYqLBVY8CntLP4Zw95fTZkeX8Ava0=;
+	s=korg; t=1705969517;
+	bh=xMjOU2WRJ4z8wXENuyBaIMFzsizVeoX4ZYcsbirmc1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=da5mx2+puIl9zMSSW9PAPg4dgJclvYahpcwGN0tzGwQNUKQAYrzBs5SXU3ex1nnRf
-	 7vvvu6JsJDA8Es/3FEby6CGnOIjCEkXW4hTQeSOLJvZVCHLB1g5OGbiz0e5J1GXUO8
-	 LoWHlhgTpZOM/ImiJ+VkWtRG6vk5PBAJDNWjbASM=
+	b=LeeZDGuiLxsap153pfViD7yeCBYNmrRrYTwo3bkgN97EVy39tBvQyte76x/h2QYpb
+	 5rvt3jBETLQbEOcf7eKyNvrgrXQuS4yy266+ofd0/Ua5vtgqTQ2FytwI+2/wZgtvyx
+	 4+VDNR+Gz8t04ZPXUR/CeFk00q6xlpmCXOmxqOHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	YiFei Zhu <zhuyifei@google.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 153/583] selftests/bpf: Relax time_tai test for equal timestamps in tai_forward
+Subject: [PATCH 6.7 300/641] ASoC: SOF: Intel: pci-mtl: fix ARL-S definitions
 Date: Mon, 22 Jan 2024 15:53:24 -0800
-Message-ID: <20240122235816.748052917@linuxfoundation.org>
+Message-ID: <20240122235827.293843803@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +63,131 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YiFei Zhu <zhuyifei@google.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit e1ba7f64b192f083b4423644be03bb9e3dc8ae84 ]
+[ Upstream commit a00be6dc9bb80796244196033aa5eb258b6af47a ]
 
-We're observing test flakiness on an arm64 platform which might not
-have timestamps as precise as x86. The test log looks like:
+The initial copy/paste from MTL was incorrect, the hardware is
+different and requires different descriptors along with a dedicated
+firmware binary.
 
-  test_time_tai:PASS:tai_open 0 nsec
-  test_time_tai:PASS:test_run 0 nsec
-  test_time_tai:PASS:tai_ts1 0 nsec
-  test_time_tai:PASS:tai_ts2 0 nsec
-  test_time_tai:FAIL:tai_forward unexpected tai_forward: actual 1702348135471494160 <= expected 1702348135471494160
-  test_time_tai:PASS:tai_gettime 0 nsec
-  test_time_tai:PASS:tai_future_ts1 0 nsec
-  test_time_tai:PASS:tai_future_ts2 0 nsec
-  test_time_tai:PASS:tai_range_ts1 0 nsec
-  test_time_tai:PASS:tai_range_ts2 0 nsec
-  #199     time_tai:FAIL
-
-This patch changes ASSERT_GT to ASSERT_GE in the tai_forward assertion
-so that equal timestamps are permitted.
-
-Fixes: 64e15820b987 ("selftests/bpf: Add BPF-helper test for CLOCK_TAI access")
-Signed-off-by: YiFei Zhu <zhuyifei@google.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20231212182911.3784108-1-zhuyifei@google.com
+Fixes: 3851831f529e ("ASoC: SOF: Intel: pci-mtl: use ARL specific firmware definitions")
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Acked-by: Mark Brown <broonie@kernel.org>
+Link: https://lore.kernel.org/r/20231204212710.185976-5-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/time_tai.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sof/intel/hda.h     |  1 +
+ sound/soc/sof/intel/mtl.c     | 28 ++++++++++++++++++++++++++++
+ sound/soc/sof/intel/pci-mtl.c | 12 ++++++------
+ 3 files changed, 35 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/time_tai.c b/tools/testing/selftests/bpf/prog_tests/time_tai.c
-index a31119823666..f45af1b0ef2c 100644
---- a/tools/testing/selftests/bpf/prog_tests/time_tai.c
-+++ b/tools/testing/selftests/bpf/prog_tests/time_tai.c
-@@ -56,7 +56,7 @@ void test_time_tai(void)
- 	ASSERT_NEQ(ts2, 0, "tai_ts2");
+diff --git a/sound/soc/sof/intel/hda.h b/sound/soc/sof/intel/hda.h
+index d628d6a3a7e5..1592e27bc14d 100644
+--- a/sound/soc/sof/intel/hda.h
++++ b/sound/soc/sof/intel/hda.h
+@@ -882,6 +882,7 @@ extern const struct sof_intel_dsp_desc ehl_chip_info;
+ extern const struct sof_intel_dsp_desc jsl_chip_info;
+ extern const struct sof_intel_dsp_desc adls_chip_info;
+ extern const struct sof_intel_dsp_desc mtl_chip_info;
++extern const struct sof_intel_dsp_desc arl_s_chip_info;
+ extern const struct sof_intel_dsp_desc lnl_chip_info;
  
- 	/* TAI is moving forward only */
--	ASSERT_GT(ts2, ts1, "tai_forward");
-+	ASSERT_GE(ts2, ts1, "tai_forward");
+ /* Probes support */
+diff --git a/sound/soc/sof/intel/mtl.c b/sound/soc/sof/intel/mtl.c
+index 254dbbeac1d0..7946110e7adf 100644
+--- a/sound/soc/sof/intel/mtl.c
++++ b/sound/soc/sof/intel/mtl.c
+@@ -746,3 +746,31 @@ const struct sof_intel_dsp_desc mtl_chip_info = {
+ 	.hw_ip_version = SOF_INTEL_ACE_1_0,
+ };
+ EXPORT_SYMBOL_NS(mtl_chip_info, SND_SOC_SOF_INTEL_HDA_COMMON);
++
++const struct sof_intel_dsp_desc arl_s_chip_info = {
++	.cores_num = 2,
++	.init_core_mask = BIT(0),
++	.host_managed_cores_mask = BIT(0),
++	.ipc_req = MTL_DSP_REG_HFIPCXIDR,
++	.ipc_req_mask = MTL_DSP_REG_HFIPCXIDR_BUSY,
++	.ipc_ack = MTL_DSP_REG_HFIPCXIDA,
++	.ipc_ack_mask = MTL_DSP_REG_HFIPCXIDA_DONE,
++	.ipc_ctl = MTL_DSP_REG_HFIPCXCTL,
++	.rom_status_reg = MTL_DSP_ROM_STS,
++	.rom_init_timeout	= 300,
++	.ssp_count = MTL_SSP_COUNT,
++	.ssp_base_offset = CNL_SSP_BASE_OFFSET,
++	.sdw_shim_base = SDW_SHIM_BASE_ACE,
++	.sdw_alh_base = SDW_ALH_BASE_ACE,
++	.d0i3_offset = MTL_HDA_VS_D0I3C,
++	.read_sdw_lcount =  hda_sdw_check_lcount_common,
++	.enable_sdw_irq = mtl_enable_sdw_irq,
++	.check_sdw_irq = mtl_dsp_check_sdw_irq,
++	.check_sdw_wakeen_irq = hda_sdw_check_wakeen_irq_common,
++	.check_ipc_irq = mtl_dsp_check_ipc_irq,
++	.cl_init = mtl_dsp_cl_init,
++	.power_down_dsp = mtl_power_down_dsp,
++	.disable_interrupts = mtl_dsp_disable_interrupts,
++	.hw_ip_version = SOF_INTEL_ACE_1_0,
++};
++EXPORT_SYMBOL_NS(arl_s_chip_info, SND_SOC_SOF_INTEL_HDA_COMMON);
+diff --git a/sound/soc/sof/intel/pci-mtl.c b/sound/soc/sof/intel/pci-mtl.c
+index 0f378f45486d..60d5e73cdad2 100644
+--- a/sound/soc/sof/intel/pci-mtl.c
++++ b/sound/soc/sof/intel/pci-mtl.c
+@@ -50,7 +50,7 @@ static const struct sof_dev_desc mtl_desc = {
+ 	.ops_free = hda_ops_free,
+ };
  
- 	/* Check for future */
- 	ret = clock_gettime(CLOCK_TAI, &now_tai);
+-static const struct sof_dev_desc arl_desc = {
++static const struct sof_dev_desc arl_s_desc = {
+ 	.use_acpi_target_states = true,
+ 	.machines               = snd_soc_acpi_intel_arl_machines,
+ 	.alt_machines           = snd_soc_acpi_intel_arl_sdw_machines,
+@@ -58,21 +58,21 @@ static const struct sof_dev_desc arl_desc = {
+ 	.resindex_pcicfg_base   = -1,
+ 	.resindex_imr_base      = -1,
+ 	.irqindex_host_ipc      = -1,
+-	.chip_info = &mtl_chip_info,
++	.chip_info = &arl_s_chip_info,
+ 	.ipc_supported_mask     = BIT(SOF_IPC_TYPE_4),
+ 	.ipc_default            = SOF_IPC_TYPE_4,
+ 	.dspless_mode_supported = true,         /* Only supported for HDaudio */
+ 	.default_fw_path = {
+-		[SOF_IPC_TYPE_4] = "intel/sof-ipc4/arl",
++		[SOF_IPC_TYPE_4] = "intel/sof-ipc4/arl-s",
+ 	},
+ 	.default_lib_path = {
+-		[SOF_IPC_TYPE_4] = "intel/sof-ipc4-lib/arl",
++		[SOF_IPC_TYPE_4] = "intel/sof-ipc4-lib/arl-s",
+ 	},
+ 	.default_tplg_path = {
+ 		[SOF_IPC_TYPE_4] = "intel/sof-ace-tplg",
+ 	},
+ 	.default_fw_filename = {
+-		[SOF_IPC_TYPE_4] = "sof-arl.ri",
++		[SOF_IPC_TYPE_4] = "sof-arl-s.ri",
+ 	},
+ 	.nocodec_tplg_filename = "sof-arl-nocodec.tplg",
+ 	.ops = &sof_mtl_ops,
+@@ -83,7 +83,7 @@ static const struct sof_dev_desc arl_desc = {
+ /* PCI IDs */
+ static const struct pci_device_id sof_pci_ids[] = {
+ 	{ PCI_DEVICE_DATA(INTEL, HDA_MTL, &mtl_desc) },
+-	{ PCI_DEVICE_DATA(INTEL, HDA_ARL_S, &arl_desc) },
++	{ PCI_DEVICE_DATA(INTEL, HDA_ARL_S, &arl_s_desc) },
+ 	{ 0, }
+ };
+ MODULE_DEVICE_TABLE(pci, sof_pci_ids);
 -- 
 2.43.0
 
