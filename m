@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-15304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8E378384B7
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AADFE837D92
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9853D1F2193E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5622228A137
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71EA674E12;
-	Tue, 23 Jan 2024 02:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B345A0FD;
+	Tue, 23 Jan 2024 00:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpWhfyiv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jUgId/8J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3162974E09;
-	Tue, 23 Jan 2024 02:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B6F56B68;
+	Tue, 23 Jan 2024 00:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975466; cv=none; b=IU+8XKNpks0dzkob8/Onmztv2BJmemqVGcO/q6xE10AlGrlZ6vYVBcQZMWua6GpKfIuL/bN27QglQzPlFMau5hLnREQ8B934zOGACnkn3zNELVlCRCtLLi/VsNRGkZVHS/d3FQ+XE6fsud/mdArwWI7BaD3/+IY0JcVKnv6tP/4=
+	t=1705970031; cv=none; b=BEtpu697Sp0Ea233mNUpE/qKdl6G0sCoHrSQYg3FNm0EiA1VAUNDEguYqgYtHAdgoixSuv75m72RxPsxOQq16rAEm/aj9Sj9oallhCNGftniwOFmrOVqeGK0onW+JNYv44z/JJH1ZoH8llNshxHsHeJ9ZAcwKr21kBov7rF4bp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975466; c=relaxed/simple;
-	bh=M5ByOedDjmyGpICglvXWyjB2EZuPydmdz34xzeI8gwI=;
+	s=arc-20240116; t=1705970031; c=relaxed/simple;
+	bh=/xxEQmI2fBMe2vOyx6q3OiE8cm5A9QSBT+Pif5RZjD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oM+DsVUwamw5iMIdOTGLdXtfmMOskPTrseYpE/aevxOd7bgwk6nRmk0zRW1fhiIF7eF78Hz8bSguSlSi+PgS7a/WpWvmuFfqtuCMZLCDP2bbwRK05ml2tXyEzNTSwutjNknjNNGpw3SNojf+pcgap4Y9VxhbNThrU9I/39x8+gQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpWhfyiv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B40C43399;
-	Tue, 23 Jan 2024 02:04:25 +0000 (UTC)
+	 MIME-Version; b=NmOj8XNXvqlowfIbCH9yBEkpsYUBXrkUUcUmbCYdMztsAfiMs/OwJcwK5MrPlp2DsMsL4L410+rfGQdRmv/U0RYgsoYhq4yrYdC/z3DZJH+02DmTlZm8pp8ixY1baBYjilOLY4zLPmYZhDOooWv24brm4+5DLcqDpkkKtMtEkj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jUgId/8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97A47C433F1;
+	Tue, 23 Jan 2024 00:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975466;
-	bh=M5ByOedDjmyGpICglvXWyjB2EZuPydmdz34xzeI8gwI=;
+	s=korg; t=1705970031;
+	bh=/xxEQmI2fBMe2vOyx6q3OiE8cm5A9QSBT+Pif5RZjD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wpWhfyivBdt7zsBgXXZrB2IQQOBFBhpU+5BFelTQDFcK2kSuLjYpxNwIyU/6TOjza
-	 BlXERNRG7vQix0FpE5VARcc+1FJyZTfXPdSk+SwVVHN4LQd20UKeynOCgxPqkTYYHn
-	 VpPJHObIUTYZRq3Y8MGmduzpT6JKVBSV/F0K44nI=
+	b=jUgId/8J55GbjdTsjNxkkgtmfhkRHEz6054bTPUMmH++JKcAkNX1RFX+d1U3bdbpN
+	 QZD3BuukIqDJpNuMxPXEtVYYQrI7TNZFcJ6SdkmbsrU72s62oWKgg7SzW7tRO+mL79
+	 SG30pZZudDkF0RLmSZyR6jM9IM7y1+VyC84igF8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev, "Huang, Ying" <ying.huang@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>, Huang@web.codeaurora.org
-Subject: [PATCH 6.6 422/583] cxl/port: Fix decoder initialization when nr_targets > interleave_ways
+	patches@lists.linux.dev,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.7 569/641] spi: coldfire-qspi: Remove an erroneous clk_disable_unprepare() from the remove function
 Date: Mon, 22 Jan 2024 15:57:53 -0800
-Message-ID: <20240122235824.888818941@linuxfoundation.org>
+Message-ID: <20240122235835.966208125@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang Ying <ying.huang@intel.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit d6488fee66472b468ed88d265b14aa3f04dc3bdf upstream.
+[ Upstream commit 17dc11a02d8dacc7e78968daa2a8c16281eb7d1e ]
 
-The decoder_populate_targets() helper walks all of the targets in a port
-and makes sure they can be looked up in @target_map. Where @target_map
-is a lookup table from target position to target id (corresponding to a
-cxl_dport instance). However @target_map is only responsible for
-conveying the active dport instances as indicated by interleave_ways.
+The commit in Fixes has changed a devm_clk_get()/clk_prepare_enable() into
+a devm_clk_get_enabled().
+It has updated the error handling path of the probe accordingly, but the
+remove has been left unchanged.
 
-When nr_targets > interleave_ways it results in
-decoder_populate_targets() walking off the end of the valid entries in
-@target_map. Given target_map is initialized to 0 it results in the
-dport lookup failing if position 0 is not mapped to a dport with an id
-of 0:
+Remove now the redundant clk_disable_unprepare() call from the remove
+function.
 
-  cxl_port port3: Failed to populate active decoder targets
-  cxl_port port3: Failed to add decoder
-  cxl_port port3: Failed to add decoder3.0
-  cxl_bus_probe: cxl_port port3: probe: -6
-
-This bug also highlights that when the decoder's ->targets[] array is
-written in cxl_port_setup_targets() it is missing a hold of the
-targets_lock to synchronize against sysfs readers of the target list. A
-fix for that is saved for a later patch.
-
-Fixes: a5c258021689 ("cxl/bus: Populate the target list at decoder create")
-Cc:  <stable@vger.kernel.org>
-Signed-off-by: Huang, Ying <ying.huang@intel.com>
-[djbw: rewrite the changelog, find the Fixes: tag]
-Co-developed-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a90a987ebe00 ("spi: use devm_clk_get_enabled() in mcfqspi_probe()")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://msgid.link/r/6670aed303e1f7680e0911387606a8ae069e2cef.1704464447.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/port.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-coldfire-qspi.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/cxl/core/port.c
-+++ b/drivers/cxl/core/port.c
-@@ -1590,7 +1590,7 @@ static int decoder_populate_targets(stru
- 		return -EINVAL;
+diff --git a/drivers/spi/spi-coldfire-qspi.c b/drivers/spi/spi-coldfire-qspi.c
+index f0b630fe16c3..b341b6908df0 100644
+--- a/drivers/spi/spi-coldfire-qspi.c
++++ b/drivers/spi/spi-coldfire-qspi.c
+@@ -441,7 +441,6 @@ static void mcfqspi_remove(struct platform_device *pdev)
+ 	mcfqspi_wr_qmr(mcfqspi, MCFQSPI_QMR_MSTR);
  
- 	write_seqlock(&cxlsd->target_lock);
--	for (i = 0; i < cxlsd->nr_targets; i++) {
-+	for (i = 0; i < cxlsd->cxld.interleave_ways; i++) {
- 		struct cxl_dport *dport = find_dport(port, target_map[i]);
+ 	mcfqspi_cs_teardown(mcfqspi);
+-	clk_disable_unprepare(mcfqspi->clk);
+ }
  
- 		if (!dport) {
+ #ifdef CONFIG_PM_SLEEP
+-- 
+2.43.0
+
 
 
 
