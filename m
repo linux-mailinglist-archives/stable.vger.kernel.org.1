@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-13688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D52E837D6C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 016CB837F88
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B7141F23A92
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A80741F28A07
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10645C5E5;
-	Tue, 23 Jan 2024 00:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90FA86340D;
+	Tue, 23 Jan 2024 00:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WlNY1O1Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hbtTOzlZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAAF52F7C;
-	Tue, 23 Jan 2024 00:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F68963409;
+	Tue, 23 Jan 2024 00:52:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969938; cv=none; b=qYMqsEP/FSL9bio155uNU/+i2p/Fx0H/bgkdYO+RYw5yEVpB+T9+BKVqy0bH7shv+G3RA8ednSLi6lM6tP+elufL8a7WD7hr0Pgta8/5aAXa1yiUxVrkHv/BgUDYpcY7ub3fja3A+89ydlC8WOcXwpUIJJhY2QpJzMsEKkJdEOc=
+	t=1705971179; cv=none; b=IUZNYqxiokIFJ4XNIk0LHV56f4D9m4O0X8nKWAg0sp9bOTWEOx4SZqc4t/sD3bTVjXrU8eigZVr1szzZfkFJLiQmPFc0dWP54Cx/GtJ8Okd1BHjvs5qXGyfK5Fpn9cYT5hClHGphCCUdW1y02nVzLaxnN4aJyJnvkqPh9dlqJjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969938; c=relaxed/simple;
-	bh=RGbJ14mPK3fOA56Ar21PRf3IwBEi9s84Vjit/FazBfg=;
+	s=arc-20240116; t=1705971179; c=relaxed/simple;
+	bh=3tsJPZszjcbkqklgwkMyoX8JmX1OBIGVFyHKNGk9/DA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qJ50tTehBsH/KDpfuY8HyN33iXwMO6tIxeLZtPxTd/N0dv8whxNRu0kSVidrbgqz2LrbReSJFMGfesRxL2r9D3Nk0gg8mx8fgC1xZDhMRbvssavchpOptOOS5jAgGw4RPDDfIcKI0RixQBiZGLhlI2vHb7/S4TzEso6PJG3Togo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WlNY1O1Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E2ECC433C7;
-	Tue, 23 Jan 2024 00:32:17 +0000 (UTC)
+	 MIME-Version; b=b+Zf2apkPeKDv7etw3oBERIZ/Vm1SlCkAgMyoNRo8MmfHvmWHD4R4zT+kbphq6dKibIethnkFbUnkW2/uZa5nTzuiNgEVJxzL5OQEigxmDcrVdFLKOzHhZj5Bwv2AimJVmC/lv3KW82/JjUhOsIhG+gBBXLpntZixsflPwEJtDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hbtTOzlZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6F85C43390;
+	Tue, 23 Jan 2024 00:52:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969938;
-	bh=RGbJ14mPK3fOA56Ar21PRf3IwBEi9s84Vjit/FazBfg=;
+	s=korg; t=1705971179;
+	bh=3tsJPZszjcbkqklgwkMyoX8JmX1OBIGVFyHKNGk9/DA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WlNY1O1Ybxcv5o/1YvDYYjHdZi1l6T3wXscTAv5YJNFdFfYzeEdpTNTGWhisRnf4Z
-	 rd6v7FaDdmPd+hBP4YgJN67aoho419jVnO14GCIC5OVplIS4VxpvtmFwKxuBURMwvq
-	 nLdGDg6jz2QXkhz4uoBmwfPHhk7A6pVoANrC85to=
+	b=hbtTOzlZs6A/qvt/rrfnDSCiUfTZVTLDIlxIAc7LGq/8yMcdKV/mdfjXtrd99xLpb
+	 CDgXK57yDtlmiwy3axtdodN4EtOwDxsXqcbAsGc6RCredjsOTG1Ple48ylDAGvxPIK
+	 vRzWgFojjbJ4xjptdx4E9Gl5M0yzFgf5t91LSEQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@arm.com>,
-	Nick Forrington <nick.forrington@arm.com>,
-	Leo Yan <leo.yan@linaro.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ian Rogers <irogers@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	syzbot+3eff5e51bf1db122a16e@syzkaller.appspotmail.com,
+	Chengming Zhou <zhouchengming@bytedance.com>,
+	Barry Song <v-songbaohua@oppo.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 507/641] perf test: Remove atomics from test_loop to avoid test failures
+Subject: [PATCH 5.10 105/286] crypto: scomp - fix req->dst buffer overflow
 Date: Mon, 22 Jan 2024 15:56:51 -0800
-Message-ID: <20240122235833.935898924@linuxfoundation.org>
+Message-ID: <20240122235736.136974149@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,60 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Forrington <nick.forrington@arm.com>
+From: Chengming Zhou <zhouchengming@bytedance.com>
 
-[ Upstream commit 72b4ca7e993e94f09bcf6d19fc385a2e8060c71f ]
+[ Upstream commit 744e1885922a9943458954cfea917b31064b4131 ]
 
-The current use of atomics can lead to test failures, as tests (such as
-tests/shell/record.sh) search for samples with "test_loop" as the
-top-most stack frame, but find frames related to the atomic operation
-(e.g. __aarch64_ldadd4_relax).
+The req->dst buffer size should be checked before copying from the
+scomp_scratch->dst to avoid req->dst buffer overflow problem.
 
-This change simply removes the "count" variable, as it is not necessary.
-
-Fixes: 1962ab6f6e0b39e4 ("perf test workload thloop: Make count increments atomic")
-Reviewed-by: James Clark <james.clark@arm.com>
-Signed-off-by: Nick Forrington <nick.forrington@arm.com>
-Acked-by: Leo Yan <leo.yan@linaro.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20231102162225.50028-1-nick.forrington@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 1ab53a77b772 ("crypto: acomp - add driver-side scomp interface")
+Reported-by: syzbot+3eff5e51bf1db122a16e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/0000000000000b05cd060d6b5511@google.com/
+Signed-off-by: Chengming Zhou <zhouchengming@bytedance.com>
+Reviewed-by: Barry Song <v-songbaohua@oppo.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/tests/workloads/thloop.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ crypto/scompress.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/tools/perf/tests/workloads/thloop.c b/tools/perf/tests/workloads/thloop.c
-index af05269c2eb8..457b29f91c3e 100644
---- a/tools/perf/tests/workloads/thloop.c
-+++ b/tools/perf/tests/workloads/thloop.c
-@@ -7,7 +7,6 @@
- #include "../tests.h"
+diff --git a/crypto/scompress.c b/crypto/scompress.c
+index 738f4f8f0f41..4d6366a44400 100644
+--- a/crypto/scompress.c
++++ b/crypto/scompress.c
+@@ -124,6 +124,7 @@ static int scomp_acomp_comp_decomp(struct acomp_req *req, int dir)
+ 	struct crypto_scomp *scomp = *tfm_ctx;
+ 	void **ctx = acomp_request_ctx(req);
+ 	struct scomp_scratch *scratch;
++	unsigned int dlen;
+ 	int ret;
  
- static volatile sig_atomic_t done;
--static volatile unsigned count;
+ 	if (!req->src || !req->slen || req->slen > SCOMP_SCRATCH_SIZE)
+@@ -135,6 +136,8 @@ static int scomp_acomp_comp_decomp(struct acomp_req *req, int dir)
+ 	if (!req->dlen || req->dlen > SCOMP_SCRATCH_SIZE)
+ 		req->dlen = SCOMP_SCRATCH_SIZE;
  
- /* We want to check this symbol in perf report */
- noinline void test_loop(void);
-@@ -19,8 +18,7 @@ static void sighandler(int sig __maybe_unused)
++	dlen = req->dlen;
++
+ 	scratch = raw_cpu_ptr(&scomp_scratch);
+ 	spin_lock(&scratch->lock);
  
- noinline void test_loop(void)
- {
--	while (!done)
--		__atomic_fetch_add(&count, 1, __ATOMIC_RELAXED);
-+	while (!done);
- }
- 
- static void *thfunc(void *arg)
+@@ -152,6 +155,9 @@ static int scomp_acomp_comp_decomp(struct acomp_req *req, int dir)
+ 				ret = -ENOMEM;
+ 				goto out;
+ 			}
++		} else if (req->dlen > dlen) {
++			ret = -ENOSPC;
++			goto out;
+ 		}
+ 		scatterwalk_map_and_copy(scratch->dst, req->dst, 0, req->dlen,
+ 					 1);
 -- 
 2.43.0
 
