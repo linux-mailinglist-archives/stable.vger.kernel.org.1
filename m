@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33E4E837E58
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:38:39 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D327837CE5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D39F28A057
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:38:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71E2BB27CBA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9D259B44;
-	Tue, 23 Jan 2024 00:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26517144605;
+	Tue, 23 Jan 2024 00:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQ0hN65t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwRqyAGC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AF5856773;
-	Tue, 23 Jan 2024 00:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5814500F;
+	Tue, 23 Jan 2024 00:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970526; cv=none; b=hFNKyTP+M2jZ4xfCc5k7jeErLqHaJ4h75JTB10dNySLjvUf065eRmDwgEXRAL3w6LTig2GXFP+ukndPEqv1G/MCvcWzFsMZ5JGdRcHRgDp92uiqgZ7XUKh+eIGR5fetMX9Ukrpr4dchoZm9mkwCS7pQknoQwGZPbUxASw2E795A=
+	t=1705969529; cv=none; b=f7DVIRCxa5xi3eV5emOrSenEPxhGEW83l5Q0IcyklWnJXHXthaTpPmT7kPbHoznXE/QCtYR/cvqO7fVZV/Ej3PLOMXFJ1LGqAGnwioC+yHwY1O1xsGGrFCmc1TZc/GGVkNUqlk//VfEFkPR+A9yQC05TunpPl10SB7TQ35K8JJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970526; c=relaxed/simple;
-	bh=8znq1RDz5wcuFpGNo49SGyiEIEaa7vmDk408a9/JLo4=;
+	s=arc-20240116; t=1705969529; c=relaxed/simple;
+	bh=C59Hm4u9B2esjic0HoEBLtI6XcIWWOT9gL9pogO6ee8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CGwz0tq3hfkWvwMvcPXmqC9aLRchiBJyZP4Y4vmQOjT44WYsH2u1GPfy9HL2QFSf8fjWFQmx0T7O/kcgL2r/h1/M8EslWNlpweoiU1yCQI29aBxQVH0kSFVfRgv9SjhrDx6uy5SgdMck6IfHWKu0aPA+RpWKZfs0Q1ELbUK0YK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQ0hN65t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1DC1C43390;
-	Tue, 23 Jan 2024 00:42:05 +0000 (UTC)
+	 MIME-Version; b=XmkMgfXvZWx0vp7gY1dWuaprlX7tBsKDPv85jp8lsMeHEiXRFOwbVIiIVbF+62bbORv67iShdQobp2DYBa/trIPe+PytdTq0ibpGlQlE961Zv/lGB5tF5Am5t7FKH5ESZPJlbmt1ksE9L9zyobwTZPeSrFKg9HVakv9iJS54U2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zwRqyAGC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C38C433B1;
+	Tue, 23 Jan 2024 00:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970526;
-	bh=8znq1RDz5wcuFpGNo49SGyiEIEaa7vmDk408a9/JLo4=;
+	s=korg; t=1705969529;
+	bh=C59Hm4u9B2esjic0HoEBLtI6XcIWWOT9gL9pogO6ee8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xQ0hN65t9zGmHnb9E0pA4ZoaJ2bLg/3S1ZJQ7Hz0UWUP6tZdSLYLD6hRrzB1tVylf
-	 W9SosiBGRmqwfo+gpmi+sgiSFyRxGXhzNhdmqxiBvorXIDiws5iE35naqUoA+VvEWm
-	 +r/szl/tRxgRrLeiYiDVwjG3R4Eoil4YI17eYw3E=
+	b=zwRqyAGClYsWBgIwWPtLQDIbgQMuQGJBQy7OO+nCdVoMEFx6Vpir8K6BIUyEUIcg3
+	 chPOuuAprAbjTYmZkrv32czSiP9LY5NEgP8JZvRqL7D2EAgis9QKzr4s+fG/WSVtg8
+	 LrsepVPtGuXm61wJhMvuT0x9zh1gzbX7YQPeLOic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/417] crypto: sahara - fix error handling in sahara_hw_descriptor_create()
+Subject: [PATCH 6.7 307/641] media: imx-mipi-csis: Fix clock handling in remove()
 Date: Mon, 22 Jan 2024 15:53:31 -0800
-Message-ID: <20240122235753.142058735@linuxfoundation.org>
+Message-ID: <20240122235827.525649517@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit ee6e6f0a7f5b39d50a5ef5fcc006f4f693db18a7 ]
+[ Upstream commit 5705b0e0eb550ff834125a46a4ef99b62093d83d ]
 
-Do not call dma_unmap_sg() for scatterlists that were not mapped
-successfully.
+The driver always calls mipi_csis_runtime_suspend() and
+mipi_csis_clk_disable() in remove(). This causes multiple WARNs from the
+kernel, as the clocks get disabled too many times.
 
-Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fix the remove() to call mipi_csis_runtime_suspend() and
+mipi_csis_clk_disable() in a way that reverses what is done in probe().
+
+Link: https://lore.kernel.org/r/20231122-imx-csis-v2-1-e44b8dc4cb66@ideasonboard.com
+
+Fixes: 7807063b862b ("media: staging/imx7: add MIPI CSI-2 receiver subdev for i.MX7")
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/media/platform/nxp/imx-mipi-csis.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index e25636904aca..0b7a95dae9fe 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -484,13 +484,14 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
- 			 DMA_TO_DEVICE);
- 	if (!ret) {
- 		dev_err(dev->device, "couldn't map in sg\n");
--		goto unmap_in;
-+		return -EINVAL;
- 	}
+diff --git a/drivers/media/platform/nxp/imx-mipi-csis.c b/drivers/media/platform/nxp/imx-mipi-csis.c
+index 6cb20b45e0a1..b39d7aeba750 100644
+--- a/drivers/media/platform/nxp/imx-mipi-csis.c
++++ b/drivers/media/platform/nxp/imx-mipi-csis.c
+@@ -1502,8 +1502,10 @@ static void mipi_csis_remove(struct platform_device *pdev)
+ 	v4l2_async_nf_cleanup(&csis->notifier);
+ 	v4l2_async_unregister_subdev(&csis->sd);
+ 
++	if (!pm_runtime_enabled(&pdev->dev))
++		mipi_csis_runtime_suspend(&pdev->dev);
 +
- 	ret = dma_map_sg(dev->device, dev->out_sg, dev->nb_out_sg,
- 			 DMA_FROM_DEVICE);
- 	if (!ret) {
- 		dev_err(dev->device, "couldn't map out sg\n");
--		goto unmap_out;
-+		goto unmap_in;
- 	}
- 
- 	/* Create input links */
-@@ -538,9 +539,6 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
- 
- 	return 0;
- 
--unmap_out:
--	dma_unmap_sg(dev->device, dev->out_sg, dev->nb_out_sg,
--		DMA_FROM_DEVICE);
- unmap_in:
- 	dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
- 		DMA_TO_DEVICE);
+ 	pm_runtime_disable(&pdev->dev);
+-	mipi_csis_runtime_suspend(&pdev->dev);
+ 	mipi_csis_clk_disable(csis);
+ 	v4l2_subdev_cleanup(&csis->sd);
+ 	media_entity_cleanup(&csis->sd.entity);
 -- 
 2.43.0
 
