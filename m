@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-14316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85003838067
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BB5A83800C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2077D1F2CA19
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02C821F2BD6C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41ADE12DDA1;
-	Tue, 23 Jan 2024 01:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 570D56519B;
+	Tue, 23 Jan 2024 00:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K9Mmjy/l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L5ORLyoU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CDF6772B;
-	Tue, 23 Jan 2024 01:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B79657A3;
+	Tue, 23 Jan 2024 00:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971703; cv=none; b=PI8B5KFO7b1kPWmOH90T5KlLkI3sQ8NIFwItAYuJNPEdDB9H5265Ztf+GVGv6Ex7qgPwR3HrCBs0bLrig49xtO+2mbnmyOpp8F59Zf19WiVSHFkNtv7NV2Q2Xtikf34f4HIvsGxZuWFPvynVN7tJQG1KDG8ruUYK5XLCzPpF56w=
+	t=1705971519; cv=none; b=DB/9T/B50AdoYSBUrI+Bs1wGz3kw9XEgYtD5G7XfoYF4xeH4TajJ1RoI0hdJXhQFg/N1sPrmkiJOfkqp1NlIY8feHbDRKqQF0eI7HLx23U8Xrf1KMdd0eVF11Scov3KuQoZDYUj3YCnvumTXttQdqbY80OxHezrIwDZGKd6dyHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971703; c=relaxed/simple;
-	bh=fJzDlFVRJ67yCivJ55YXmnVKhQEWmAtOMsz7BsKYuRA=;
+	s=arc-20240116; t=1705971519; c=relaxed/simple;
+	bh=DFuP1XSrQgoqOAXkA83ZFEQ2dR3XQF644d3364YxPaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pmhfVuvIST9HI2yqysOUxJ40PvRRSPoaER4+6jdk/K71hoWlJ7edGh/hq74EUyM1srjhZHkJqUiLwfDN9Li/YY6NVL10p9JMMW7sOgqGXk1LyWfW0CzBnDFni7sT+qEUCFpDUiWHnIJyi82mzcw9E8ZwvvvvL1uIxUntE5ikxKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K9Mmjy/l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACAB5C433F1;
-	Tue, 23 Jan 2024 01:01:42 +0000 (UTC)
+	 MIME-Version; b=sQcX1exAqYZj4bLZW3wNiPYudFlSz1INySXOswZwH37Do+4F+LJX4VwW/Vi3MJvhnmp+YXLemqL1n0ZoUqbJcIWJqrHd4VIij88M/0WvThjmfifAtThHvKnb0I0jYTqWNg/Dhne3BPaHfb7cy14JmKbogiW6ATRqFHogXt1Xbww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5ORLyoU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 487D1C433C7;
+	Tue, 23 Jan 2024 00:58:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971702;
-	bh=fJzDlFVRJ67yCivJ55YXmnVKhQEWmAtOMsz7BsKYuRA=;
+	s=korg; t=1705971518;
+	bh=DFuP1XSrQgoqOAXkA83ZFEQ2dR3XQF644d3364YxPaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K9Mmjy/lcVHzDOPatW5fcElg84QE6stxCRduF7XsSUb07IgI85JgBiu6twMbLL6jQ
-	 7rP6quNFiEATV5nS3mEzhdLuNo9K4LOtqSkji6b4eiSG3QHEV8514MC09TK4ipAwcH
-	 9UVHlix8IKLmI1XSP31sxUfRVDZbqdNb+MJ10exw=
+	b=L5ORLyoUD5YxAMFdG0xzYOKcQGiAYteF06po8uEZa2LhqyVDaGQx8wGtYUqN/YsaN
+	 EmglTPH112Gvr9YOoNo1q4mydhDwic6N6RK4bVYmEwW7Moz/rbsGePNl8uqxuCYDO2
+	 kTcTUtbVVjMaKeLxB8+4YB7V1nK7Ru479ZdS/Iwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <2045gemini@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 302/417] Bluetooth: Fix atomicity violation in {min,max}_key_size_set
-Date: Mon, 22 Jan 2024 15:57:50 -0800
-Message-ID: <20240122235802.295814621@linuxfoundation.org>
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 165/286] clk: qcom: gpucc-sm8150: Update the gpu_cc_pll1 config
+Date: Mon, 22 Jan 2024 15:57:51 -0800
+Message-ID: <20240122235738.531561699@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,97 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <2045gemini@gmail.com>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-commit da9065caa594d19b26e1a030fd0cc27bd365d685 upstream.
+[ Upstream commit 6ebd9a4f8b8d2b35cf965a04849c4ba763722f13 ]
 
-In min_key_size_set():
-    if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE)
-        return -EINVAL;
-    hci_dev_lock(hdev);
-    hdev->le_min_key_size = val;
-    hci_dev_unlock(hdev);
+Update the test_ctl_hi_val and test_ctl_hi1_val of gpu_cc_pll1
+as per latest HW recommendation.
 
-In max_key_size_set():
-    if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size)
-        return -EINVAL;
-    hci_dev_lock(hdev);
-    hdev->le_max_key_size = val;
-    hci_dev_unlock(hdev);
-
-The atomicity violation occurs due to concurrent execution of set_min and
-set_max funcs.Consider a scenario where setmin writes a new, valid 'min'
-value, and concurrently, setmax writes a value that is greater than the
-old 'min' but smaller than the new 'min'. In this case, setmax might check
-against the old 'min' value (before acquiring the lock) but write its
-value after the 'min' has been updated by setmin. This leads to a
-situation where the 'max' value ends up being smaller than the 'min'
-value, which is an inconsistency.
-
-This possible bug is found by an experimental static analysis tool
-developed by our team, BassCheck[1]. This tool analyzes the locking APIs
-to extract function pairs that can be concurrently executed, and then
-analyzes the instructions in the paired functions to identify possible
-concurrency bugs including data races and atomicity violations. The above
-possible bug is reported when our tool analyzes the source code of
-Linux 5.17.
-
-To resolve this issue, it is suggested to encompass the validity checks
-within the locked sections in both set_min and set_max funcs. The
-modification ensures that the validation of 'val' against the
-current min/max values is atomic, thus maintaining the integrity of the
-settings. With this patch applied, our tool no longer reports the bug,
-with the kernel configuration allyesconfig for x86_64. Due to the lack of
-associated hardware, we cannot test the patch in runtime testing, and just
-verify it according to the code logic.
-
-[1] https://sites.google.com/view/basscheck/
-
-Fixes: 18f81241b74f ("Bluetooth: Move {min,max}_key_size debugfs ...")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0cef71f2ccc8 ("clk: qcom: Add graphics clock controller driver for SM8150")
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20231122042814.4158076-1-quic_skakitap@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_debugfs.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/clk/qcom/gpucc-sm8150.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/bluetooth/hci_debugfs.c
-+++ b/net/bluetooth/hci_debugfs.c
-@@ -1045,10 +1045,12 @@ static int min_key_size_set(void *data,
- {
- 	struct hci_dev *hdev = data;
- 
--	if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE)
-+	hci_dev_lock(hdev);
-+	if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->le_min_key_size = val;
- 	hci_dev_unlock(hdev);
- 
-@@ -1073,10 +1075,12 @@ static int max_key_size_set(void *data,
- {
- 	struct hci_dev *hdev = data;
- 
--	if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size)
-+	hci_dev_lock(hdev);
-+	if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size) {
-+		hci_dev_unlock(hdev);
- 		return -EINVAL;
-+	}
- 
--	hci_dev_lock(hdev);
- 	hdev->le_max_key_size = val;
- 	hci_dev_unlock(hdev);
- 
+diff --git a/drivers/clk/qcom/gpucc-sm8150.c b/drivers/clk/qcom/gpucc-sm8150.c
+index 27c40754b2c7..3d9b296a6e4a 100644
+--- a/drivers/clk/qcom/gpucc-sm8150.c
++++ b/drivers/clk/qcom/gpucc-sm8150.c
+@@ -38,8 +38,8 @@ static struct alpha_pll_config gpu_cc_pll1_config = {
+ 	.config_ctl_hi_val = 0x00002267,
+ 	.config_ctl_hi1_val = 0x00000024,
+ 	.test_ctl_val = 0x00000000,
+-	.test_ctl_hi_val = 0x00000002,
+-	.test_ctl_hi1_val = 0x00000000,
++	.test_ctl_hi_val = 0x00000000,
++	.test_ctl_hi1_val = 0x00000020,
+ 	.user_ctl_val = 0x00000000,
+ 	.user_ctl_hi_val = 0x00000805,
+ 	.user_ctl_hi1_val = 0x000000d0,
+-- 
+2.43.0
+
 
 
 
