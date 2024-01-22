@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-15209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD7DE838457
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6804B837F9D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0F311C2A234
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B0251F29E89
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C2B6BB4C;
-	Tue, 23 Jan 2024 02:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF65634F3;
+	Tue, 23 Jan 2024 00:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lj9KM8ny"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTjeE7oU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 106016BB44;
-	Tue, 23 Jan 2024 02:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EED5627F3;
+	Tue, 23 Jan 2024 00:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975365; cv=none; b=Rq54mQy9qPKOD0QyLtIV8aUVJk6i8wx70UOIMXscVTSPIT8NSvgSFEtMtSyt4JZFAQrqahc0kBOUuMeg/dzF+C4Sjqlr73NiGyf9o3+7gofMD0UvChJINpP7tGcl+oVL5PufZXaKVAwnXuIi1ncvhg9zFSwazqBdAgVHpsVNNTM=
+	t=1705971240; cv=none; b=K2ffz3awZrSBb9jLHp7BPElWzyVgyednTVR9lnjktPmhD2yhBr+oiM37q15s+XucL1KsvsxVkpJIbSa93Y745SvtawrgO8QmekNB1YeXDgVByQX46UeCtpAkeo++ZV0SLQ9xBMhGrb6USCcaxmMmaeFcJN8um+quCwl4NLfM9Ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975365; c=relaxed/simple;
-	bh=aU5kX4TSPwKHFzPTMvnnWyIq4gTXbdGq0QubJJp5w4w=;
+	s=arc-20240116; t=1705971240; c=relaxed/simple;
+	bh=X/h+3iwal6ngr/iUz5oBcY8FlMwYPXDrfdcRYpG/w3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H/GuR+quTneaPLshsAV5hJ6PYWMLaPTO6oZW6fJ9tTBFMUucyf7KSmjQAmkRZm7XE+0Q4ulqSGtLkG9IAjpI8lanpO5Q4Zf+hPQuizs0dqcAiYE2ObWWJ4PpYdUVMV24r7vtxRSNyouYV0R770v3F/ygAJzAGu/SNyn7AoAM6yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lj9KM8ny; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD866C43390;
-	Tue, 23 Jan 2024 02:02:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=j23H/ScWulM+G/GqTg/2hckPFKh0+Qj5z7bqrtRCPu15wTEjNzEX2mC21gvakAsVp9ZiN82Wp49nI5OcpbPkvXhgjjaYBmFdZT+OuUNbY7VJT6rMlgZYJ0jwdW0bWCzWQSsOQBbJNOXdPCL5lWFqH1Nm9cNiPbekD8kbc4SyZaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTjeE7oU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DC16C43399;
+	Tue, 23 Jan 2024 00:54:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975364;
-	bh=aU5kX4TSPwKHFzPTMvnnWyIq4gTXbdGq0QubJJp5w4w=;
+	s=korg; t=1705971240;
+	bh=X/h+3iwal6ngr/iUz5oBcY8FlMwYPXDrfdcRYpG/w3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lj9KM8ny7h0ASYooIfEM3Nrrlfp0O/n4SbYCjGk+DgzRYiI96qmHlYw7dm0h7+Yw9
-	 4XfsL+YdNarwyen91saMaag9Zfy4RHPY403CAVLH2oPN5VYHpZM49oK+jbYJscCUWF
-	 QAOEOzi0wb2XL/idqrhTg+jr7UefkE/v7VvstqDk=
+	b=fTjeE7oUPf5MUcSMAG4+bamX9kHF7pZgSgAhOq9dq1GKScakb/dJcErVxz8FVfLDV
+	 Fu3d6BfA+Bi3s4zQs6hL+rZLrt54t8iB3b4sMhM0C5TLEW+xmQZBnrd+UdGW3zFIPx
+	 osXudxUwXwLBbnyz8U2xUoKj3PYz/cOpZ27pIvoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
 	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 326/583] drm/amdkfd: Fix type of dbg_flags in struct kfd_process
+Subject: [PATCH 6.1 209/417] drm/amdgpu/debugfs: fix error code when smc register accessors are NULL
 Date: Mon, 22 Jan 2024 15:56:17 -0800
-Message-ID: <20240122235822.028403397@linuxfoundation.org>
+Message-ID: <20240122235759.170948037@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,47 +63,46 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 217e85f97031791fb48a2d374c7bdcf439365b21 ]
+[ Upstream commit afe58346d5d3887b3e49ff623d2f2e471f232a8d ]
 
-dbg_flags looks to be defined with incorrect data type; to process
-multiple debug flag options, and hence defined dbg_flags as u32.
+Should be -EOPNOTSUPP.
 
-Fixes the below:
-
-drivers/gpu/drm/amd/amdgpu/../amdkfd/kfd_packet_manager_v9.c:117 pm_map_process_aldebaran() warn: maybe use && instead of &
-
-Fixes: 0de4ec9a0353 ("drm/amdgpu: prepare map process for multi-process debug devices")
-Suggested-by: Lijo Lazar <lijo.lazar@amd.com>
-Cc: Felix Kuehling <Felix.Kuehling@amd.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Fixes: 5104fdf50d32 ("drm/amdgpu: Fix a null pointer access when the smc_rreg pointer is NULL")
+Reviewed-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_priv.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-index df7a5cdb8693..3287a3961395 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_priv.h
-@@ -971,7 +971,7 @@ struct kfd_process {
- 	struct work_struct debug_event_workarea;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+index 8123feb1a116..06ab6066da61 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+@@ -596,7 +596,7 @@ static ssize_t amdgpu_debugfs_regs_smc_read(struct file *f, char __user *buf,
+ 	int r;
  
- 	/* Tracks debug per-vmid request for debug flags */
--	bool dbg_flags;
-+	u32 dbg_flags;
+ 	if (!adev->smc_rreg)
+-		return -EPERM;
++		return -EOPNOTSUPP;
  
- 	atomic_t poison;
- 	/* Queues are in paused stated because we are in the process of doing a CRIU checkpoint */
+ 	if (size & 0x3 || *pos & 0x3)
+ 		return -EINVAL;
+@@ -655,7 +655,7 @@ static ssize_t amdgpu_debugfs_regs_smc_write(struct file *f, const char __user *
+ 	int r;
+ 
+ 	if (!adev->smc_wreg)
+-		return -EPERM;
++		return -EOPNOTSUPP;
+ 
+ 	if (size & 0x3 || *pos & 0x3)
+ 		return -EINVAL;
 -- 
 2.43.0
 
