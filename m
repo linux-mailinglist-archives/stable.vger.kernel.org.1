@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-13789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15344-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E524837E0C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B14D8384D8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 124FF1F29C56
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E78EA28C34E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E4750A86;
-	Tue, 23 Jan 2024 00:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B2877630;
+	Tue, 23 Jan 2024 02:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O5AvcyNq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N5WBoEJ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47A34F204;
-	Tue, 23 Jan 2024 00:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33BA777638;
+	Tue, 23 Jan 2024 02:05:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970323; cv=none; b=jMG3jezemn+IOq7wbTj5HhFSAs894Sc2IWCpDHNMIsJuTVEn0D7gLEycvvaYYZoEe7VvCsqXVPF+k7aRxWlx373INbml7QKpGrFM0XVlY0jDu/k+6gfa0JJVMM5yBvVmufXdEWRzDPT0Xv5c+lzQTOYbmbOB/CJBpL4Vc71yrwg=
+	t=1705975510; cv=none; b=dlmjxH1KJzY+aZIE1z3jwoJB4eTQ3rey1xFFcmH1NNJbpznxqqxKfi1duDc2/GEax4eK3zd+yOmWLY6Jj4xI6VYsmoecJgiIgJIn3giyWShpLNQl09cFkdd6Um9IRlWlx8gVg92KCw9UMFdarM1NymNaZUqMGSlcCflzRLoXNuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970323; c=relaxed/simple;
-	bh=H9+0ixVc1l8G5NewfttagVtFBG/vj9ReMwimT/nFXFI=;
+	s=arc-20240116; t=1705975510; c=relaxed/simple;
+	bh=JURhskW7KAK3qIpRBal2k3uZa33LZP1eH10g7IfFn1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L5VLl8+tZOPsQ9Acaj3zK+76XFj8sU5n6mxpNBdWSrHLpuhxsoWEBD8ITRpkuTJ0ekMqG980QYxgb4DKj9xYr6IAoo+WipTrngVRUQ/xY9bUs0l6a/h6T8uZZw9EVKoJy7AoSqjJDrN8pa2v1RKJpQC5p5xUpGwuI6b1CliWHFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O5AvcyNq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD1AC433F1;
-	Tue, 23 Jan 2024 00:38:43 +0000 (UTC)
+	 MIME-Version; b=DrX2t91Bmnl2c0UcUjJr05WlPFvREDllgtbZufAcqCcy8VbA6m2MgvAJvKhl/p8ZyobgiarjZqLzx6HZFDTPwRETxVep6iKrpMgjw8H35e8rvtyBBxZvZ4Utkr65ZghtM5T76AvXhKird27BXskVIvZhHD3lTq3HHb+ACyilyKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N5WBoEJ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFFEC433F1;
+	Tue, 23 Jan 2024 02:05:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970323;
-	bh=H9+0ixVc1l8G5NewfttagVtFBG/vj9ReMwimT/nFXFI=;
+	s=korg; t=1705975510;
+	bh=JURhskW7KAK3qIpRBal2k3uZa33LZP1eH10g7IfFn1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O5AvcyNq78s+0oqeaMIBWsYfrYpgTIsIie/61TBVhB7BMTQS9O7qJeX4GaCsmU5B9
-	 yxxAgtSvNg71gAyAgScBOmjdEvwGalkESg8U6yPtWCvBXFR1BQElKv0mio6wxM4wko
-	 ro8xiF7n2FrSnzOt09AJbig7YN3andHi4RPVJZUk=
+	b=N5WBoEJ1fVLxohQGk9bYdHtEusQe3S455guVA6mgh0RAT6qhS0nRgC81tdQs5gqKz
+	 5fbNcAk8QL6ps75RWKt9GRWEHaUqxyxh1QUduikZU6y4xyi2PpozesMQYxyzpzClru
+	 ERTzTpVW4wxA7gQgw+PVSOkqrRs2VpyiQzMyVLlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	German Gomez <german.gomez@arm.com>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Leo Yan <leo.yan@linaro.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 609/641] gpiolib: Fix scope-based gpio_device refcounting
+Subject: [PATCH 6.6 462/583] perf header: Fix segfault on build_mem_topology() error path
 Date: Mon, 22 Jan 2024 15:58:33 -0800
-Message-ID: <20240122235837.293587150@linuxfoundation.org>
+Message-ID: <20240122235826.113286533@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +68,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 832b371097eb928d077c827b8f117bf5b99d35c0 ]
+[ Upstream commit 70df07838fc1c0acfab3325ae79014e241a88bdf ]
 
-Commit 9e4555d1e54a ("gpiolib: add support for scope-based management to
-gpio_device") sought to add scope-based gpio_device refcounting, but
-erroneously forgot a negation of IS_ERR_OR_NULL().
+Do not increase the node count unless a node has been successfully read,
+because it can lead to a segfault if an error occurs.
 
-As a result, gpio_device_put() is not called if the gpio_device pointer
-is valid (meaning the ref is leaked), but only called if the pointer is
-NULL or an ERR_PTR().
+For example, if perf exceeds the open file limit in memory_node__read(),
+which, on a test system, could be made to happen by setting the file limit
+to exactly 32:
 
-While at it drop a superfluous trailing semicolon.
+ Before:
 
-Fixes: 9e4555d1e54a ("gpiolib: add support for scope-based management to gpio_device")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+  $ ulimit -n 32
+  $ perf mem record --all-user -- sleep 1
+  [ perf record: Woken up 1 times to write data ]
+  failed: can't open memory sysfs data
+  perf: Segmentation fault
+  Obtained 14 stack frames.
+  perf(sighandler_dump_stack+0x48) [0x55f4b1f59558]
+  /lib/x86_64-linux-gnu/libc.so.6(+0x42520) [0x7f4ba1c42520]
+  /lib/x86_64-linux-gnu/libc.so.6(free+0x1e) [0x7f4ba1ca53fe]
+  perf(+0x178ff4) [0x55f4b1f48ff4]
+  perf(+0x179a70) [0x55f4b1f49a70]
+  perf(+0x17ef5d) [0x55f4b1f4ef5d]
+  perf(+0x85c0b) [0x55f4b1e55c0b]
+  perf(cmd_record+0xe1d) [0x55f4b1e5920d]
+  perf(cmd_mem+0xc96) [0x55f4b1e80e56]
+  perf(+0x130460) [0x55f4b1f00460]
+  perf(main+0x689) [0x55f4b1e427d9]
+  /lib/x86_64-linux-gnu/libc.so.6(+0x29d90) [0x7f4ba1c29d90]
+  /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x80) [0x7f4ba1c29e40]
+  perf(_start+0x25) [0x55f4b1e42a25]
+  Segmentation fault (core dumped)
+  $
+
+After:
+
+  $ ulimit -n 32
+  $ perf mem record --all-user -- sleep 1
+  [ perf record: Woken up 1 times to write data ]
+  failed: can't open memory sysfs data
+  [ perf record: Captured and wrote 0.005 MB perf.data (11 samples) ]
+  $
+
+Fixes: f8e502b9d1b3b197 ("perf header: Ensure bitmaps are freed")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Acked-by: Ian Rogers <irogers@google.com>
+Cc: German Gomez <german.gomez@arm.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Leo Yan <leo.yan@linaro.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20231123075848.9652-2-adrian.hunter@intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/gpio/driver.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/perf/util/header.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
-index 0aed62f0c633..f2878b361463 100644
---- a/include/linux/gpio/driver.h
-+++ b/include/linux/gpio/driver.h
-@@ -614,7 +614,7 @@ struct gpio_device *gpio_device_get(struct gpio_device *gdev);
- void gpio_device_put(struct gpio_device *gdev);
- 
- DEFINE_FREE(gpio_device_put, struct gpio_device *,
--	    if (IS_ERR_OR_NULL(_T)) gpio_device_put(_T));
-+	    if (!IS_ERR_OR_NULL(_T)) gpio_device_put(_T))
- 
- struct device *gpio_device_to_device(struct gpio_device *gdev);
- 
+diff --git a/tools/perf/util/header.c b/tools/perf/util/header.c
+index d812e1e371a7..41032243774e 100644
+--- a/tools/perf/util/header.c
++++ b/tools/perf/util/header.c
+@@ -1444,7 +1444,9 @@ static int build_mem_topology(struct memory_node **nodesp, u64 *cntp)
+ 			nodes = new_nodes;
+ 			size += 4;
+ 		}
+-		ret = memory_node__read(&nodes[cnt++], idx);
++		ret = memory_node__read(&nodes[cnt], idx);
++		if (!ret)
++			cnt += 1;
+ 	}
+ out:
+ 	closedir(dir);
 -- 
 2.43.0
 
