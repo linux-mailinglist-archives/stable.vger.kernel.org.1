@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEE6A83805B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06165837DA5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1114B236D0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 698701F26144
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63BF657DB;
-	Tue, 23 Jan 2024 00:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D19558102;
+	Tue, 23 Jan 2024 00:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlsjpQ9J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JIua29Ae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6708C651AD;
-	Tue, 23 Jan 2024 00:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD6255797;
+	Tue, 23 Jan 2024 00:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971572; cv=none; b=YIUQvbxjgILLhQOr35hBR6LsepihVFEr6GuW4hcVxvLNc44+ExRXR7lvj+nTXSZleae6qqs0JnRP6WiSHN5OiWGJBNhxh6DP2vNtHkMenX8bhrJHHRiOC/UHzhNkzrypgbVuoQZfNkxwW8m6p8e3oImt59as3+5gH6LhZiJpKjo=
+	t=1705970100; cv=none; b=C51AezAgfp2E0bCwvisrYGR5NHnI1NNRqeAUpyaaWlur27JikGb4np9NBttJkgZ18orLhfTfLarp15NCKbVDpdR1Gy71OBHGPUv382xJhNtN8sBDVp1YmfiY2DgVkX7tT1hwWwknCrzKsmu0VXb1+/0BzS+vKjQzIyqatrEg/4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971572; c=relaxed/simple;
-	bh=avsU0DXmb3q6D0Dv2uzRP7T7OP3qJilcq0fVALbfYt0=;
+	s=arc-20240116; t=1705970100; c=relaxed/simple;
+	bh=f51o+7MsNEyFDIbIlmNucRAxm2jKdXrJ8bElYzbH8rw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=daAUzWXPgg+cYb3VLfsbIvqn31rOTCVdxhuWco9n2xVkptzwqNJFemvLcuZmAt/OeTgki18LfFnc4RYVV2MRBeYn0c5tYCLJt4RLHT3n5J9lS41cPl1KfqcQX8CxHDVNLPX9O+QKmATiQYhpAONszHSFsgAQ23Hi/dz6kxHOGvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlsjpQ9J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24ED0C433F1;
-	Tue, 23 Jan 2024 00:59:32 +0000 (UTC)
+	 MIME-Version; b=F1X8ZhApMpDuZSIKflOYTpnAQM3/jLEqyw0Y1C/ioNCAwSLcnIAMsXYXM9bDkSEaMGdACiNiHkDRgT/5o8c/YRP/xozkddOXnkPfYvR9NzVJY98kjLHcxGjdJCIRB9vm1zJsExSPaV/DMRKuBcUPysr/ZvGPiV1wCXyOXHj8r98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JIua29Ae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE7C6C433C7;
+	Tue, 23 Jan 2024 00:34:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971572;
-	bh=avsU0DXmb3q6D0Dv2uzRP7T7OP3qJilcq0fVALbfYt0=;
+	s=korg; t=1705970100;
+	bh=f51o+7MsNEyFDIbIlmNucRAxm2jKdXrJ8bElYzbH8rw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UlsjpQ9JgCBJHsBClS+odLee6HO9XitnlHWbTZbwNRFQOsyAabKirZ21SXsGKeiuh
-	 fpgr+p8UnCIw+G4wNKYr7vpeY8FqL7XwMx6NkmSDD9T4q6NZzpW5Daz9g7yO8bWI5g
-	 mO/d2Ofi5bG17xkngKBU4EgXM9b2eSV/ZYny2PEE=
+	b=JIua29AePbg9JjKei3bOv5DHsP3m4WbPaIfcdKBYOCS9Tnm+MgXlq4w41aDfItRtN
+	 YHnz3P9h7fEItuGYcf7Az7m7ZrXfcKJmyZoDPbCdYT8DhK2v6DblSN0HxwGZsQSSOH
+	 NqE3pg3rLGXLHAQhkz3XG6zuL58rpmDuP82hogec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jay Buddhabhatti <jay.buddhabhatti@amd.com>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 178/286] drivers: clk: zynqmp: calculate closest mux rate
+Subject: [PATCH 6.7 580/641] s390/pci: fix max size calculation in zpci_memcpy_toio()
 Date: Mon, 22 Jan 2024 15:58:04 -0800
-Message-ID: <20240122235739.017144952@linuxfoundation.org>
+Message-ID: <20240122235836.333450013@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit b782921ddd7f84f524723090377903f399fdbbcb ]
+[ Upstream commit 80df7d6af7f6d229b34cf237b2cc9024c07111cd ]
 
-Currently zynqmp clock driver is not calculating closest mux rate and
-because of that Linux is not setting proper frequency for CPU and
-not able to set given frequency for dynamic frequency scaling.
+The zpci_get_max_write_size() helper is used to determine the maximum
+size a PCI store or load can use at a given __iomem address.
 
-E.g., In current logic initial acpu clock parent and frequency as below
-apll1                  0    0    0  2199999978    0     0  50000      Y
-    acpu0_mux          0    0    0  2199999978    0     0  50000      Y
-        acpu0_idiv1    0    0    0  2199999978    0     0  50000      Y
-            acpu0      0    0    0  2199999978    0     0  50000      Y
+For the PCI block store the following restrictions apply:
 
-After changing acpu frequency to 549999994 Hz using CPU freq scaling its
-selecting incorrect parent which is not closest frequency.
-rpll_to_xpd            0    0    0  1599999984    0     0  50000      Y
-    acpu0_mux          0    0    0  1599999984    0     0  50000      Y
-        acpu0_div1     0    0    0   533333328    0     0  50000      Y
-            acpu0      0    0    0   533333328    0     0  50000      Y
+1. The dst + len must not cross a 4K boundary in the (pseudo-)MMIO space
+2. len must not exceed ZPCI_MAX_WRITE_SIZE
+3. len must be a multiple of 8 bytes
+4. The src address must be double word (8 byte) aligned
+5. The dst address must be double word (8 byte) aligned
 
-Parent should remain same since 549999994 = 2199999978 / 4.
+Otherwise only a normal PCI store which takes its src value from
+a register can be used. For these PCI store restriction 1 still applies.
+Similarly 1 also applies to PCI loads.
 
-So use __clk_mux_determine_rate_closest() generic function to calculate
-closest rate for mux clock. After this change its selecting correct
-parent and correct clock rate.
-apll1                  0    0    0  2199999978    0     0  50000      Y
-    acpu0_mux          0    0    0  2199999978    0     0  50000      Y
-        acpu0_div1     0    0    0   549999995    0     0  50000      Y
-            acpu0      0    0    0   549999995    0     0  50000      Y
+It turns out zpci_max_write_size() instead implements stricter
+conditions which prevents PCI block stores from being used where they
+can and should be used. In particular instead of conditions 4 and 5 it
+wrongly enforces both dst and src to be size aligned. This indirectly
+covers condition 1 but also prevents many legal PCI block stores.
 
-Fixes: 3fde0e16d016 ("drivers: clk: Add ZynqMP clock driver")
-Signed-off-by: Jay Buddhabhatti <jay.buddhabhatti@amd.com>
-Link: https://lore.kernel.org/r/20231129112916.23125-2-jay.buddhabhatti@amd.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+On top of the functional shortcomings the zpci_get_max_write_size() is
+misnamed as it is used for both read and write size calculations. Rename
+it to zpci_get_max_io_size() and implement the listed conditions
+explicitly.
+
+Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Fixes: cd24834130ac ("s390/pci: base support")
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+[agordeev@linux.ibm.com replaced spaces with tabs]
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/zynqmp/clk-mux-zynqmp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/include/asm/pci_io.h | 32 ++++++++++++++++++--------------
+ arch/s390/pci/pci_mmio.c       | 12 ++++++------
+ 2 files changed, 24 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/clk/zynqmp/clk-mux-zynqmp.c b/drivers/clk/zynqmp/clk-mux-zynqmp.c
-index 06194149be83..46ff5cb733ee 100644
---- a/drivers/clk/zynqmp/clk-mux-zynqmp.c
-+++ b/drivers/clk/zynqmp/clk-mux-zynqmp.c
-@@ -83,7 +83,7 @@ static int zynqmp_clk_mux_set_parent(struct clk_hw *hw, u8 index)
- static const struct clk_ops zynqmp_clk_mux_ops = {
- 	.get_parent = zynqmp_clk_mux_get_parent,
- 	.set_parent = zynqmp_clk_mux_set_parent,
--	.determine_rate = __clk_mux_determine_rate,
-+	.determine_rate = __clk_mux_determine_rate_closest,
- };
+diff --git a/arch/s390/include/asm/pci_io.h b/arch/s390/include/asm/pci_io.h
+index 287bb88f7698..2686bee800e3 100644
+--- a/arch/s390/include/asm/pci_io.h
++++ b/arch/s390/include/asm/pci_io.h
+@@ -11,6 +11,8 @@
+ /* I/O size constraints */
+ #define ZPCI_MAX_READ_SIZE	8
+ #define ZPCI_MAX_WRITE_SIZE	128
++#define ZPCI_BOUNDARY_SIZE	(1 << 12)
++#define ZPCI_BOUNDARY_MASK	(ZPCI_BOUNDARY_SIZE - 1)
  
- static const struct clk_ops zynqmp_clk_mux_ro_ops = {
+ /* I/O Map */
+ #define ZPCI_IOMAP_SHIFT		48
+@@ -125,16 +127,18 @@ static inline int zpci_read_single(void *dst, const volatile void __iomem *src,
+ int zpci_write_block(volatile void __iomem *dst, const void *src,
+ 		     unsigned long len);
+ 
+-static inline u8 zpci_get_max_write_size(u64 src, u64 dst, int len, int max)
++static inline int zpci_get_max_io_size(u64 src, u64 dst, int len, int max)
+ {
+-	int count = len > max ? max : len, size = 1;
++	int offset = dst & ZPCI_BOUNDARY_MASK;
++	int size;
+ 
+-	while (!(src & 0x1) && !(dst & 0x1) && ((size << 1) <= count)) {
+-		dst = dst >> 1;
+-		src = src >> 1;
+-		size = size << 1;
+-	}
+-	return size;
++	size = min3(len, ZPCI_BOUNDARY_SIZE - offset, max);
++	if (IS_ALIGNED(src, 8) && IS_ALIGNED(dst, 8) && IS_ALIGNED(size, 8))
++		return size;
++
++	if (size >= 8)
++		return 8;
++	return rounddown_pow_of_two(size);
+ }
+ 
+ static inline int zpci_memcpy_fromio(void *dst,
+@@ -144,9 +148,9 @@ static inline int zpci_memcpy_fromio(void *dst,
+ 	int size, rc = 0;
+ 
+ 	while (n > 0) {
+-		size = zpci_get_max_write_size((u64 __force) src,
+-					       (u64) dst, n,
+-					       ZPCI_MAX_READ_SIZE);
++		size = zpci_get_max_io_size((u64 __force) src,
++					    (u64) dst, n,
++					    ZPCI_MAX_READ_SIZE);
+ 		rc = zpci_read_single(dst, src, size);
+ 		if (rc)
+ 			break;
+@@ -166,9 +170,9 @@ static inline int zpci_memcpy_toio(volatile void __iomem *dst,
+ 		return -EINVAL;
+ 
+ 	while (n > 0) {
+-		size = zpci_get_max_write_size((u64 __force) dst,
+-					       (u64) src, n,
+-					       ZPCI_MAX_WRITE_SIZE);
++		size = zpci_get_max_io_size((u64 __force) dst,
++					    (u64) src, n,
++					    ZPCI_MAX_WRITE_SIZE);
+ 		if (size > 8) /* main path */
+ 			rc = zpci_write_block(dst, src, size);
+ 		else
+diff --git a/arch/s390/pci/pci_mmio.c b/arch/s390/pci/pci_mmio.c
+index 588089332931..a90499c087f0 100644
+--- a/arch/s390/pci/pci_mmio.c
++++ b/arch/s390/pci/pci_mmio.c
+@@ -97,9 +97,9 @@ static inline int __memcpy_toio_inuser(void __iomem *dst,
+ 		return -EINVAL;
+ 
+ 	while (n > 0) {
+-		size = zpci_get_max_write_size((u64 __force) dst,
+-					       (u64 __force) src, n,
+-					       ZPCI_MAX_WRITE_SIZE);
++		size = zpci_get_max_io_size((u64 __force) dst,
++					    (u64 __force) src, n,
++					    ZPCI_MAX_WRITE_SIZE);
+ 		if (size > 8) /* main path */
+ 			rc = __pcistb_mio_inuser(dst, src, size, &status);
+ 		else
+@@ -242,9 +242,9 @@ static inline int __memcpy_fromio_inuser(void __user *dst,
+ 	u8 status;
+ 
+ 	while (n > 0) {
+-		size = zpci_get_max_write_size((u64 __force) src,
+-					       (u64 __force) dst, n,
+-					       ZPCI_MAX_READ_SIZE);
++		size = zpci_get_max_io_size((u64 __force) src,
++					    (u64 __force) dst, n,
++					    ZPCI_MAX_READ_SIZE);
+ 		rc = __pcilg_mio_inuser(dst, src, size, &status);
+ 		if (rc)
+ 			break;
 -- 
 2.43.0
 
