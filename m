@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-12939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04CBC8379DD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:46:18 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EEF2837A8D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACF92B2440F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:45:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2895328FE33
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:53:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 195D81272B3;
-	Tue, 23 Jan 2024 00:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA46312F59C;
+	Tue, 23 Jan 2024 00:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dNMHe6nx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNqxou8b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD55750272;
-	Tue, 23 Jan 2024 00:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A3AC12CDB0;
+	Tue, 23 Jan 2024 00:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968486; cv=none; b=iSN5adNVSrBPnpgiDlOMnim1XgmWUHQMgOmOSl0O89+5Xwb1VfYsCtyBVRpWN+OZOUnMv3kPjT7oUPRTwabiQDsPRWWbOpUcLwhtRrTLheRlHvCDbO0cYarosDriW6qPmlf4VubselmNwbeOmoI1yJwzEqMlYuyPZ69k3+puDK0=
+	t=1705968995; cv=none; b=QbXjyT1PRd+4hwM/Qud9D79VbiE+C65gQnlNuDPx6wnnAykUnjjlZpVId099TJ1tpN/mcJJw7btjgcPJY4nlZB+mRtHasjcu5BV/vHXicmjTOAKFpfwKArDCWrV4uOf7qsMuZu0nG9XxaKzhwXtuYnQUksyahe0vvzLAGjCDPXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968486; c=relaxed/simple;
-	bh=RxRlx9WxguPEQYt4iTZOsNaBYPUvoClbFeCn/uLj8cM=;
+	s=arc-20240116; t=1705968995; c=relaxed/simple;
+	bh=LCSFfkzZi7dAOcdfCa1XSXTciN6bedYNz+YSOIB0Q38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b80v9o0sObH7ODslqddbK5FyuKll/udfUeXW2AibhtfdEzFm0tIKIY8rndwv7uwhHYtvlDRXEE93LFvMMPkG+lFYG3ZndzKMtUEYaoAT1zsnd7Q/6mFp7qctMXLDJgrpGDJl5AxPVXlWs64dvu5BA/S6xt4BOSeMjYeza85JjDs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dNMHe6nx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F429C433C7;
-	Tue, 23 Jan 2024 00:08:06 +0000 (UTC)
+	 MIME-Version; b=r22DJl/yVctq/iEe9eIsSNR8/DQ/pnBCUwcN4jYz5C004x5sj57Fv6e7iez/mQsrvCnAL27iOD9XAkroM598x8BDiJYbtF55hPMQGEo1Kf3N8jrdZWceeJaeykulCxK3Nno1WQf4zrcqAY/bmi78ox6cRF+GlSzrGFmkN7O3X20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNqxou8b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 383E5C433F1;
+	Tue, 23 Jan 2024 00:16:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968486;
-	bh=RxRlx9WxguPEQYt4iTZOsNaBYPUvoClbFeCn/uLj8cM=;
+	s=korg; t=1705968995;
+	bh=LCSFfkzZi7dAOcdfCa1XSXTciN6bedYNz+YSOIB0Q38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dNMHe6nxmVL59zboQ3TxAv6rIPdwYc8zcyXqiGwruOBgiRJNuKO1/3DCG8BXDM/s0
-	 ZHbfnIT6qs/bQRve6asHL8SYl6UnbQ8qWF02SKwhpQUgbWFu/B9GqTJmCZ+I3ulsQo
-	 t9o3vzRM1/PtkU1FsM6RVvgb6M4x5vkkcx7FthBc=
+	b=tNqxou8bjFOLt68767njw2QtWVag38Ey/sggY2BpZdqZu1UirMnjWRtlQKrlUcnuk
+	 aHF+59DwuBAV+L5dOm2RrkVJLRW8M6SAt2eaEgtG+WbmoqC0n+x7yAXpeRoGZOBd5y
+	 ysNSOKdTiSg+iuXRf0USIYFad4ycPWS7Wl7eOb4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 4.19 122/148] Revert "usb: dwc3: dont reset device side if dwc3 was configured as host-only"
+	Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Subject: [PATCH 5.4 148/194] usb: dwc: ep0: Update request status in dwc3_ep0_stall_restart
 Date: Mon, 22 Jan 2024 15:57:58 -0800
-Message-ID: <20240122235717.433373549@linuxfoundation.org>
+Message-ID: <20240122235725.566602375@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
 
-commit afe28cd686aeb77e8d9140d50fb1cf06a7ecb731 upstream.
+commit e9d40b215e38480fd94c66b06d79045717a59e9c upstream.
 
-This reverts commit e835c0a4e23c38531dcee5ef77e8d1cf462658c7.
+Current implementation blocks the running operations when Plug-out and
+Plug-In is performed continuously, process gets stuck in
+dwc3_thread_interrupt().
 
-Don't omit soft-reset. During initialization, the driver may need to
-perform a soft reset to ensure the phy is ready when the controller
-updates the GCTL.PRTCAPDIR or other settings by issuing phy soft-reset.
-Many platforms often have access to DCTL register for soft-reset despite
-being host-only. If there are actual reported issues from the platforms
-that don't expose DCTL registers, then we will need to revisit (perhaps
-to teach dwc3 to perform xhci's soft-reset USBCMD.HCRST).
+Code Flow:
+
+	CPU1
+
+	->Gadget_start
+	->dwc3_interrupt
+	->dwc3_thread_interrupt
+	->dwc3_process_event_buf
+	->dwc3_process_event_entry
+	->dwc3_endpoint_interrupt
+	->dwc3_ep0_interrupt
+	->dwc3_ep0_inspect_setup
+	->dwc3_ep0_stall_and_restart
+
+By this time if pending_list is not empty, it will get the next request
+on the given list and calls dwc3_gadget_giveback which will unmap request
+and call its complete() callback to notify upper layers that it has
+completed. Currently dwc3_gadget_giveback status is set to -ECONNRESET,
+whereas it should be -ESHUTDOWN based on condition if not dwc->connected
+is true.
 
 Cc:  <stable@vger.kernel.org>
-Fixes: e835c0a4e23c ("usb: dwc3: don't reset device side if dwc3 was configured as host-only")
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/7668ab11a48f260820825274976eb41fec7f54d1.1703282469.git.Thinh.Nguyen@synopsys.com
+Fixes: d742220b3577 ("usb: dwc3: ep0: giveback requests on stall_and_restart")
+Signed-off-by: Uttkarsh Aggarwal <quic_uaggarwa@quicinc.com>
+Link: https://lore.kernel.org/r/20231222094704.20276-1-quic_uaggarwa@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/core.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/dwc3/ep0.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -242,9 +242,9 @@ static int dwc3_core_soft_reset(struct d
- 	/*
- 	 * We're resetting only the device side because, if we're in host mode,
- 	 * XHCI driver will reset the host block. If dwc3 was configured for
--	 * host-only mode or current role is host, then we can return early.
-+	 * host-only mode, then we can return early.
- 	 */
--	if (dwc->dr_mode == USB_DR_MODE_HOST || dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
-+	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
- 		return 0;
+--- a/drivers/usb/dwc3/ep0.c
++++ b/drivers/usb/dwc3/ep0.c
+@@ -236,7 +236,10 @@ static void dwc3_ep0_stall_and_restart(s
+ 		struct dwc3_request	*req;
  
- 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
+ 		req = next_request(&dep->pending_list);
+-		dwc3_gadget_giveback(dep, req, -ECONNRESET);
++		if (!dwc->connected)
++			dwc3_gadget_giveback(dep, req, -ESHUTDOWN);
++		else
++			dwc3_gadget_giveback(dep, req, -ECONNRESET);
+ 	}
+ 
+ 	dwc->ep0state = EP0_SETUP_PHASE;
 
 
 
