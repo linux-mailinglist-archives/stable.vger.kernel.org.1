@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-13721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D4D6837D8F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85003838067
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FC8C1C2488B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2077D1F2CA19
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD3975811F;
-	Tue, 23 Jan 2024 00:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41ADE12DDA1;
+	Tue, 23 Jan 2024 01:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9mYgvLD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K9Mmjy/l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D4A656B68;
-	Tue, 23 Jan 2024 00:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CDF6772B;
+	Tue, 23 Jan 2024 01:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970023; cv=none; b=gS9pnYq0vDIOtTD5z/FkvUd83TFYrcvMpeXGoCs5YcW8yfr4KLpsfy6vc/fD2v4cGGBCmqVJHlYaXLWC5ABnP3CoofFeJImfLZ7rVgs07KDBVvQx2Fn6hU+sRDCXgXFGyzc9dEbw1IZD8SUFcsyWrd2c5nM7bmIsIUiZaRUMzp8=
+	t=1705971703; cv=none; b=PI8B5KFO7b1kPWmOH90T5KlLkI3sQ8NIFwItAYuJNPEdDB9H5265Ztf+GVGv6Ex7qgPwR3HrCBs0bLrig49xtO+2mbnmyOpp8F59Zf19WiVSHFkNtv7NV2Q2Xtikf34f4HIvsGxZuWFPvynVN7tJQG1KDG8ruUYK5XLCzPpF56w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970023; c=relaxed/simple;
-	bh=MGFNuJiwz/kSfgt9kjrTOZTKUMW8dQI1YnTfeGIdyA8=;
+	s=arc-20240116; t=1705971703; c=relaxed/simple;
+	bh=fJzDlFVRJ67yCivJ55YXmnVKhQEWmAtOMsz7BsKYuRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B4YcdR9K+lKkigoBjIo72RlT54HSm6gfvdGz169BDVDI4VJ1GE5sdQb956FnuwHU4xLNTdJds1lGwpkwV1JZAtrTDKJ0lnsgTOkK2JaIpj1rr3LqZZX3wr/pg13twNj0inSqYMTP8odChlN5QjbtKWpU0s0aGBRd9Wbd0DW1nbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9mYgvLD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 279BFC433F1;
-	Tue, 23 Jan 2024 00:33:42 +0000 (UTC)
+	 MIME-Version; b=pmhfVuvIST9HI2yqysOUxJ40PvRRSPoaER4+6jdk/K71hoWlJ7edGh/hq74EUyM1srjhZHkJqUiLwfDN9Li/YY6NVL10p9JMMW7sOgqGXk1LyWfW0CzBnDFni7sT+qEUCFpDUiWHnIJyi82mzcw9E8ZwvvvvL1uIxUntE5ikxKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K9Mmjy/l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACAB5C433F1;
+	Tue, 23 Jan 2024 01:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970023;
-	bh=MGFNuJiwz/kSfgt9kjrTOZTKUMW8dQI1YnTfeGIdyA8=;
+	s=korg; t=1705971702;
+	bh=fJzDlFVRJ67yCivJ55YXmnVKhQEWmAtOMsz7BsKYuRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m9mYgvLDxq2QgpIFtXJjXTviXkZxrfe6OyYvt1+xTzQ/MY8wD+uVILqJMk86OJfLV
-	 nEc9cmWbLR9rBjRl0rZ8cJmn+ShOyAQ9HB5tux1FsZkH4zQqrlFCRvUUdg+DK5wH9R
-	 J25K8+OqtknSmMl2mooMwagD1xRXGNFCIajW5H2U=
+	b=K9Mmjy/lcVHzDOPatW5fcElg84QE6stxCRduF7XsSUb07IgI85JgBiu6twMbLL6jQ
+	 7rP6quNFiEATV5nS3mEzhdLuNo9K4LOtqSkji6b4eiSG3QHEV8514MC09TK4ipAwcH
+	 9UVHlix8IKLmI1XSP31sxUfRVDZbqdNb+MJ10exw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Abhijit Gangurde <abhijit.gangurde@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 566/641] cdx: Unlock on error path in rescan_store()
+	Gui-Dong Han <2045gemini@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 302/417] Bluetooth: Fix atomicity violation in {min,max}_key_size_set
 Date: Mon, 22 Jan 2024 15:57:50 -0800
-Message-ID: <20240122235835.872971768@linuxfoundation.org>
+Message-ID: <20240122235802.295814621@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Gui-Dong Han <2045gemini@gmail.com>
 
-[ Upstream commit 1960932eef9183e2dab662fe75126f7fa46e0e6d ]
+commit da9065caa594d19b26e1a030fd0cc27bd365d685 upstream.
 
-We added locking to this function but these two error paths were
-accidentally overlooked.
+In min_key_size_set():
+    if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE)
+        return -EINVAL;
+    hci_dev_lock(hdev);
+    hdev->le_min_key_size = val;
+    hci_dev_unlock(hdev);
 
-Fixes: f0af81683466 ("cdx: Introduce lock to protect controller ops")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Abhijit Gangurde <abhijit.gangurde@amd.com>
-Link: https://lore.kernel.org/r/a7994b47-6f78-4e2c-a30a-ee5995d428ec@moroto.mountain
+In max_key_size_set():
+    if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size)
+        return -EINVAL;
+    hci_dev_lock(hdev);
+    hdev->le_max_key_size = val;
+    hci_dev_unlock(hdev);
+
+The atomicity violation occurs due to concurrent execution of set_min and
+set_max funcs.Consider a scenario where setmin writes a new, valid 'min'
+value, and concurrently, setmax writes a value that is greater than the
+old 'min' but smaller than the new 'min'. In this case, setmax might check
+against the old 'min' value (before acquiring the lock) but write its
+value after the 'min' has been updated by setmin. This leads to a
+situation where the 'max' value ends up being smaller than the 'min'
+value, which is an inconsistency.
+
+This possible bug is found by an experimental static analysis tool
+developed by our team, BassCheck[1]. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations. The above
+possible bug is reported when our tool analyzes the source code of
+Linux 5.17.
+
+To resolve this issue, it is suggested to encompass the validity checks
+within the locked sections in both set_min and set_max funcs. The
+modification ensures that the validation of 'val' against the
+current min/max values is atomic, thus maintaining the integrity of the
+settings. With this patch applied, our tool no longer reports the bug,
+with the kernel configuration allyesconfig for x86_64. Due to the lack of
+associated hardware, we cannot test the patch in runtime testing, and just
+verify it according to the code logic.
+
+[1] https://sites.google.com/view/basscheck/
+
+Fixes: 18f81241b74f ("Bluetooth: Move {min,max}_key_size debugfs ...")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <2045gemini@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cdx/cdx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_debugfs.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/cdx/cdx.c b/drivers/cdx/cdx.c
-index 40035dd2e299..7c1c1f82a326 100644
---- a/drivers/cdx/cdx.c
-+++ b/drivers/cdx/cdx.c
-@@ -575,7 +575,8 @@ static ssize_t rescan_store(const struct bus_type *bus,
- 		pd = of_find_device_by_node(np);
- 		if (!pd) {
- 			of_node_put(np);
--			return -EINVAL;
-+			count = -EINVAL;
-+			goto unlock;
- 		}
+--- a/net/bluetooth/hci_debugfs.c
++++ b/net/bluetooth/hci_debugfs.c
+@@ -1045,10 +1045,12 @@ static int min_key_size_set(void *data,
+ {
+ 	struct hci_dev *hdev = data;
  
- 		cdx = platform_get_drvdata(pd);
-@@ -585,6 +586,7 @@ static ssize_t rescan_store(const struct bus_type *bus,
- 		put_device(&pd->dev);
- 	}
+-	if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE)
++	hci_dev_lock(hdev);
++	if (val > hdev->le_max_key_size || val < SMP_MIN_ENC_KEY_SIZE) {
++		hci_dev_unlock(hdev);
+ 		return -EINVAL;
++	}
  
-+unlock:
- 	mutex_unlock(&cdx_controller_lock);
+-	hci_dev_lock(hdev);
+ 	hdev->le_min_key_size = val;
+ 	hci_dev_unlock(hdev);
  
- 	return count;
--- 
-2.43.0
-
+@@ -1073,10 +1075,12 @@ static int max_key_size_set(void *data,
+ {
+ 	struct hci_dev *hdev = data;
+ 
+-	if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size)
++	hci_dev_lock(hdev);
++	if (val > SMP_MAX_ENC_KEY_SIZE || val < hdev->le_min_key_size) {
++		hci_dev_unlock(hdev);
+ 		return -EINVAL;
++	}
+ 
+-	hci_dev_lock(hdev);
+ 	hdev->le_max_key_size = val;
+ 	hci_dev_unlock(hdev);
+ 
 
 
 
