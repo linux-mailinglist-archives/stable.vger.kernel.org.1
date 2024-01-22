@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-13253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A777837C58
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43A05837CAE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:14:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68597B2F109
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:58:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C8663B2140A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:59:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F69F14A0AE;
-	Tue, 23 Jan 2024 00:20:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024E214A4EF;
+	Tue, 23 Jan 2024 00:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A3IG+T/C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aY9xG6DK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3FD414A0A7;
-	Tue, 23 Jan 2024 00:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F6B14A4CF;
+	Tue, 23 Jan 2024 00:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969203; cv=none; b=r04+ojBM/dXyKy6MeedrfWDE8I6El4x6y4twCzuOVI/CyQ83/xiceEJ91t9P9A4P0lQRtZjS5KX5SXBnoHggqylLqUr5hfX1MgPDIVIBlGr+MrpqGTWvde3mbRJ9q6wuAy69V2pr/m8O4134DACfi8ZKAYQ+1ducs8zhgNK/uNM=
+	t=1705969230; cv=none; b=DIJZPoX5nlHFUFG14hNsSRpNlADNyDBWNcd1JLpMfystvBAXaMFqWmFz8oy+xrWLPuISOoTINERWeFnoz1KKxMGwGBqtUTBK9+LpeoCeT+l3TG2CEdGWjEZLjdY4xbCTnouoS0SWwsSedNdOKGoAmVhLDO17ewucEimnINZeHl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969203; c=relaxed/simple;
-	bh=OWpi9J6c+GCWtPYLq2i0+ClriN4ZRficWN/3r6KVJjs=;
+	s=arc-20240116; t=1705969230; c=relaxed/simple;
+	bh=Qvu+UPf/r4swf/teRwK4K4qAxxMUCc5WeTyrVAvG8X0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Or8no5vkESTzVjOe+KYE4LF+sLdiM7Oqo9kbs41EaMrfl9r4RAQanFkJG62I382lz6UQso4aDFctaEhq06mUbOCdghceVXb2lPeGG2g5RqQsjj50sKD2/HzU53JNRY/s3kUjikl/ziL7e1IdqntMGlbsWRztKk4ReahfuG+ufm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A3IG+T/C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF5B6C43399;
-	Tue, 23 Jan 2024 00:20:02 +0000 (UTC)
+	 MIME-Version; b=ktRYMSWAhD+zK/lO4RIbfyJ8Z+M+Jq+N0X8+2pbbV5ZsmZaCVz2VqSYgoiHXahAuXMWGJHibi0iSBrVMgFFc7j/Ianx0DMxryrJMaNBMDQzG7+8S+s9YsLeLzOL2rfJOKzdrdVlFISb+MDNx5qy/3xiW7x62Y90uf3CYY5TFrAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aY9xG6DK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BA2BC433B2;
+	Tue, 23 Jan 2024 00:20:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969202;
-	bh=OWpi9J6c+GCWtPYLq2i0+ClriN4ZRficWN/3r6KVJjs=;
+	s=korg; t=1705969230;
+	bh=Qvu+UPf/r4swf/teRwK4K4qAxxMUCc5WeTyrVAvG8X0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A3IG+T/CeYkosE+aeSGmD+9oJGPkV0JKQ94xQ1HvnmsGImTslQBVL6o/FkCu9+SBV
-	 LaS4L9+rwH12JyaTJ7OvEjPs5c+2C4Psujm5p5rVIzwEXVZxVkmF3dhqz3B62XmOxh
-	 6cRHAVBs+od6RLfzlhGNC1U1QCja/tuFki9XPI4o=
+	b=aY9xG6DKsd5uu81RmGGBobX98uKLb45XK2dfXD4M7q46j2mJkWuEUeo6f4uD5Kta8
+	 heB0hDbTH/9unQjTwa5WKsOsj1AxcAIcFUpH4FZzodOdN39cUL5/U5fkHsy8JsOHoy
+	 X2aAoDKFoZQTAGrJER+wWMhasnENmCouXw5XdR4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
 	Dan Carpenter <dan.carpenter@linaro.org>,
-	Kalle Valo <kvalo@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 096/641] wifi: plfxlc: check for allocation failure in plfxlc_usb_wreq_async()
-Date: Mon, 22 Jan 2024 15:50:00 -0800
-Message-ID: <20240122235821.044663490@linuxfoundation.org>
+Subject: [PATCH 6.7 106/641] firmware: ti_sci: Fix an off-by-one in ti_sci_debugfs_create()
+Date: Mon, 22 Jan 2024 15:50:10 -0800
+Message-ID: <20240122235821.358260728@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -66,38 +67,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 40018a8fa9aa63ca5b26e803502138158fb0ff96 ]
+[ Upstream commit 964946b88887089f447a9b6a28c39ee97dc76360 ]
 
-Check for if the usb_alloc_urb() failed.
+The ending NULL is not taken into account by strncat(), so switch to
+snprintf() to correctly build 'debug_name'.
 
-Fixes: 68d57a07bfe5 ("wireless: add plfxlc driver for pureLiFi X, XL, XC devices")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/e8d4a19a-f251-4101-a89b-607345e938cb@moroto.mountain
+Using snprintf() also makes the code more readable.
+
+Fixes: aa276781a64a ("firmware: Add basic support for TI System Control Interface (TI-SCI) protocol")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/7158db0a4d7b19855ddd542ec61b666973aad8dc.1698660720.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/purelifi/plfxlc/usb.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/firmware/ti_sci.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/purelifi/plfxlc/usb.c b/drivers/net/wireless/purelifi/plfxlc/usb.c
-index 76d0a778636a..311676c1ece0 100644
---- a/drivers/net/wireless/purelifi/plfxlc/usb.c
-+++ b/drivers/net/wireless/purelifi/plfxlc/usb.c
-@@ -493,9 +493,12 @@ int plfxlc_usb_wreq_async(struct plfxlc_usb *usb, const u8 *buffer,
- 			  void *context)
+diff --git a/drivers/firmware/ti_sci.c b/drivers/firmware/ti_sci.c
+index 7041befc756a..8b9a2556de16 100644
+--- a/drivers/firmware/ti_sci.c
++++ b/drivers/firmware/ti_sci.c
+@@ -164,7 +164,7 @@ static int ti_sci_debugfs_create(struct platform_device *pdev,
  {
- 	struct usb_device *udev = interface_to_usbdev(usb->ez_usb);
--	struct urb *urb = usb_alloc_urb(0, GFP_ATOMIC);
-+	struct urb *urb;
- 	int r;
+ 	struct device *dev = &pdev->dev;
+ 	struct resource *res;
+-	char debug_name[50] = "ti_sci_debug@";
++	char debug_name[50];
  
-+	urb = usb_alloc_urb(0, GFP_ATOMIC);
-+	if (!urb)
-+		return -ENOMEM;
- 	usb_fill_bulk_urb(urb, udev, usb_sndbulkpipe(udev, EP_DATA_OUT),
- 			  (void *)buffer, buffer_len, complete_fn, context);
+ 	/* Debug region is optional */
+ 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
+@@ -181,10 +181,10 @@ static int ti_sci_debugfs_create(struct platform_device *pdev,
+ 	/* Setup NULL termination */
+ 	info->debug_buffer[info->debug_region_size] = 0;
+ 
+-	info->d = debugfs_create_file(strncat(debug_name, dev_name(dev),
+-					      sizeof(debug_name) -
+-					      sizeof("ti_sci_debug@")),
+-				      0444, NULL, info, &ti_sci_debug_fops);
++	snprintf(debug_name, sizeof(debug_name), "ti_sci_debug@%s",
++		 dev_name(dev));
++	info->d = debugfs_create_file(debug_name, 0444, NULL, info,
++				      &ti_sci_debug_fops);
+ 	if (IS_ERR(info->d))
+ 		return PTR_ERR(info->d);
  
 -- 
 2.43.0
