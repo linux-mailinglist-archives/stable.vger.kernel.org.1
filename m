@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2362D837BA0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C6C483828B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56FC01C26700
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:04:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 033B528BC4C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39BD150994;
-	Tue, 23 Jan 2024 00:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14015D735;
+	Tue, 23 Jan 2024 01:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l7KsiYMD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GQ/gtlZm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7D5150980;
-	Tue, 23 Jan 2024 00:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65E4C5D72F;
+	Tue, 23 Jan 2024 01:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969364; cv=none; b=Bs+MF+lYAxbH5bhr9TuaJla9zguokX4aorHIGll5vN/jYrqGU42Z2tN0qZ9idqfbbeo0P5nG5Cy5PHLnAIJNPTjlWwrfaeuAbsF1ccbnmyIcgz9cwxPNOc/i8Vhh5lHgBnIUighyoDVhfRZbAxTI24/qehslg1DL2cLElzSnOAA=
+	t=1705974376; cv=none; b=qkw9uOQmGph9w43Y7mf9wGwbTYhHFRMC8cti61xvheGWlxbF2SiMGDyZx32Z91a1SV7PhD8b865+Iwxa5SsFw7aXTVFLfK+DHSDlsvhlsdxM46I3F2n4Kg7V1RQW9Tk2/UfOoswz+vmv7LEyEaFxcW4wD1aKE12L5x5Kle9x1x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969364; c=relaxed/simple;
-	bh=GJH8d20lVHcRx7xSyWXvYtfQDTtvachZQSfy3fQmhKc=;
+	s=arc-20240116; t=1705974376; c=relaxed/simple;
+	bh=o+qEUXyWO6sQetSKUoTW5i2Bjtmxxr4gHItNDcViKtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PWdA/QNKjsOTF4/b4eqtKsKc5/soJO6m+epkan51tP1pkbqPlFG2NKFlwXUX3cvyriSRcJlQLlj5wgUjcLmYE+MHjJpFZkVq0hVHaSJLMSgguOJ1bKKavFItKiEh1Xotx5452nOSQJ4eDuGnNYIjPUU1wy1zkrsx1Rg9Vsskzt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l7KsiYMD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90A9C433F1;
-	Tue, 23 Jan 2024 00:22:43 +0000 (UTC)
+	 MIME-Version; b=t4ztmo3RnB6mSzvP7vAkL7LyckYKUs1JOOqx/+DIO/kDo6Dtu9G/xySzxbpJ8rr+KTypjxRI+Rd38mrabSFJcC2FgdjMQC0bnMk93CbUJQDJwzK8bLdWudFekHOtSXsT8w6SS7MapRzjB/yi6NWcamDh6mvqN6vO3X+cHlYuUcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GQ/gtlZm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5032C43390;
+	Tue, 23 Jan 2024 01:46:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969364;
-	bh=GJH8d20lVHcRx7xSyWXvYtfQDTtvachZQSfy3fQmhKc=;
+	s=korg; t=1705974376;
+	bh=o+qEUXyWO6sQetSKUoTW5i2Bjtmxxr4gHItNDcViKtw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l7KsiYMDQzCh14Kx8ssXP7nVOM9xQDsortR8JwjliCsVJHOHyZJz3RxtE3BBtvEPw
-	 tS9QEy3dkEyb62xVj6zjstCdsyb48WpDBTiTnTVsD49hZbdlBJxIKSRbqf7UxVUAfb
-	 nYL3e7k6jObocdeQGhJuHkQChjtTl/ueMh8RhkA0=
+	b=GQ/gtlZm/8osaqs5PhA6g5h3quyU9lR2toW8/BIcu5NauL45J+IX4LQ7JOzy+Ad4M
+	 XX1tzqVaC9wfUA7mvRYYWSEp/TqDghigwyX62V4rNzuYjrXb95aSrPWK5a4W0fNCv8
+	 aS43BAJRlRdZ4Q5Oh9HVz0ixkh9DlkgLGarUl1Zw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 196/641] arm64: dts: qcom: sm8150-hdk: fix SS USB regulators
+Subject: [PATCH 6.6 049/583] crypto: sahara - remove FLAGS_NEW_KEY logic
 Date: Mon, 22 Jan 2024 15:51:40 -0800
-Message-ID: <20240122235824.099366855@linuxfoundation.org>
+Message-ID: <20240122235813.632940824@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit a509adf05b2aac31b22781f5aa09e4768a5b6c39 ]
+[ Upstream commit 8fd183435728b139248a77978ea3732039341779 ]
 
-The SM8150-HDK uses two different regulators to power up SuperSpeed USB
-PHYs. The L5A regulator is used for the second USB host, while the first
-(OTG) USB host uses different regulator, L18A. Fix the regulator for the
-usb_1 QMPPHY and (to remove possible confusion) drop the
-usb_ss_dp_core_1/_2 labels.
+Remove the FLAGS_NEW_KEY logic as it has the following issues:
+- the wrong key may end up being used when there are multiple data streams:
+       t1            t2
+    setkey()
+    encrypt()
+                   setkey()
+                   encrypt()
 
-Fixes: 0ab1b2d10afe ("arm64: dts: qcom: add sm8150 hdk dts")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20231215174152.315403-4-dmitry.baryshkov@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+    encrypt() <--- key from t2 is used
+- switching between encryption and decryption with the same key is not
+  possible, as the hdr flags are only updated when a new setkey() is
+  performed
+
+With this change, the key is always sent along with the cryptdata when
+performing encryption/decryption operations.
+
+Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8150-hdk.dts | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/crypto/sahara.c | 34 +++++++++++++---------------------
+ 1 file changed, 13 insertions(+), 21 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8150-hdk.dts b/arch/arm64/boot/dts/qcom/sm8150-hdk.dts
-index bb161b536da4..f4c6e1309a7e 100644
---- a/arch/arm64/boot/dts/qcom/sm8150-hdk.dts
-+++ b/arch/arm64/boot/dts/qcom/sm8150-hdk.dts
-@@ -127,8 +127,6 @@ vdda_qrefs_0p875_5:
- 		vdda_sp_sensor:
- 		vdda_ufs_2ln_core_1:
- 		vdda_ufs_2ln_core_2:
--		vdda_usb_ss_dp_core_1:
--		vdda_usb_ss_dp_core_2:
- 		vdda_qlink_lv:
- 		vdda_qlink_lv_ck:
- 		vreg_l5a_0p875: ldo5 {
-@@ -210,6 +208,12 @@ vreg_l17a_3p0: ldo17 {
- 			regulator-max-microvolt = <3008000>;
- 			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
- 		};
-+
-+		vreg_l18a_0p8: ldo18 {
-+			regulator-min-microvolt = <880000>;
-+			regulator-max-microvolt = <880000>;
-+			regulator-initial-mode = <RPMH_REGULATOR_MODE_HPM>;
-+		};
- 	};
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index 62d93526920f..79708919260a 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -43,7 +43,6 @@
+ #define FLAGS_MODE_MASK		0x000f
+ #define FLAGS_ENCRYPT		BIT(0)
+ #define FLAGS_CBC		BIT(1)
+-#define FLAGS_NEW_KEY		BIT(3)
  
- 	regulators-1 {
-@@ -445,13 +449,13 @@ &usb_2_hsphy {
- &usb_1_qmpphy {
- 	status = "okay";
- 	vdda-phy-supply = <&vreg_l3c_1p2>;
--	vdda-pll-supply = <&vdda_usb_ss_dp_core_1>;
-+	vdda-pll-supply = <&vreg_l18a_0p8>;
+ #define SAHARA_HDR_BASE			0x00800000
+ #define SAHARA_HDR_SKHA_ALG_AES	0
+@@ -141,8 +140,6 @@ struct sahara_hw_link {
  };
  
- &usb_2_qmpphy {
- 	status = "okay";
- 	vdda-phy-supply = <&vreg_l3c_1p2>;
--	vdda-pll-supply = <&vdda_usb_ss_dp_core_1>;
-+	vdda-pll-supply = <&vreg_l5a_0p875>;
- };
+ struct sahara_ctx {
+-	unsigned long flags;
+-
+ 	/* AES-specific context */
+ 	int keylen;
+ 	u8 key[AES_KEYSIZE_128];
+@@ -447,26 +444,22 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
+ 	int i, j;
+ 	int idx = 0;
  
- &usb_1 {
+-	/* Copy new key if necessary */
+-	if (ctx->flags & FLAGS_NEW_KEY) {
+-		memcpy(dev->key_base, ctx->key, ctx->keylen);
+-		ctx->flags &= ~FLAGS_NEW_KEY;
++	memcpy(dev->key_base, ctx->key, ctx->keylen);
+ 
+-		if (dev->flags & FLAGS_CBC) {
+-			dev->hw_desc[idx]->len1 = AES_BLOCK_SIZE;
+-			dev->hw_desc[idx]->p1 = dev->iv_phys_base;
+-		} else {
+-			dev->hw_desc[idx]->len1 = 0;
+-			dev->hw_desc[idx]->p1 = 0;
+-		}
+-		dev->hw_desc[idx]->len2 = ctx->keylen;
+-		dev->hw_desc[idx]->p2 = dev->key_phys_base;
+-		dev->hw_desc[idx]->next = dev->hw_phys_desc[1];
++	if (dev->flags & FLAGS_CBC) {
++		dev->hw_desc[idx]->len1 = AES_BLOCK_SIZE;
++		dev->hw_desc[idx]->p1 = dev->iv_phys_base;
++	} else {
++		dev->hw_desc[idx]->len1 = 0;
++		dev->hw_desc[idx]->p1 = 0;
++	}
++	dev->hw_desc[idx]->len2 = ctx->keylen;
++	dev->hw_desc[idx]->p2 = dev->key_phys_base;
++	dev->hw_desc[idx]->next = dev->hw_phys_desc[1];
++	dev->hw_desc[idx]->hdr = sahara_aes_key_hdr(dev);
+ 
+-		dev->hw_desc[idx]->hdr = sahara_aes_key_hdr(dev);
++	idx++;
+ 
+-		idx++;
+-	}
+ 
+ 	dev->nb_in_sg = sg_nents_for_len(dev->in_sg, dev->total);
+ 	if (dev->nb_in_sg < 0) {
+@@ -608,7 +601,6 @@ static int sahara_aes_setkey(struct crypto_skcipher *tfm, const u8 *key,
+ 	/* SAHARA only supports 128bit keys */
+ 	if (keylen == AES_KEYSIZE_128) {
+ 		memcpy(ctx->key, key, keylen);
+-		ctx->flags |= FLAGS_NEW_KEY;
+ 		return 0;
+ 	}
+ 
 -- 
 2.43.0
 
