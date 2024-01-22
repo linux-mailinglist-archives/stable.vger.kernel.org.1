@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-14981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46B8083836B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA11837C5D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:11:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78FBC1C29BA8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F5811F28A29
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D7C629EE;
-	Tue, 23 Jan 2024 01:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B53446B7;
+	Tue, 23 Jan 2024 00:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZ7Vc/iO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UK55KOR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5287C62802;
-	Tue, 23 Jan 2024 01:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B56A46AB;
+	Tue, 23 Jan 2024 00:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974967; cv=none; b=TVqRL5Yw38kO9U83Tsom5gqeo65/J0vwGw5FaYZ5fYb4xMacPlLY3pHtY1M77pJj6Wh4LzCUD5BqC5+Vew6PMiZfk+el/RUi5FqsZgVvxhxFeiKRO0NSCtThDlnc+zgA41qkzyklMkD4DgBLhtWwVBKZrNSroF4Ub+IFJwXRsvE=
+	t=1705969592; cv=none; b=G1L9f9LVvfoJbjv4Ddr5pgo7T/3OLgckwmEq9kA2iBLyDohVfRhO6q4O2L/H/dzsTHfAqbpF4VJGmsQS++DzrL+HVFHlbfejaW16jcL6gJ3nNfTEnHmSuwIH3E1vMR7yEELy5BaAXn7o1OQeaLQJuhcGczQVoYCWzrxwVuiHd/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974967; c=relaxed/simple;
-	bh=9euEvJDHHCKRYYfvlVPZjpLF246FPE37+8xxsWd/d3Q=;
+	s=arc-20240116; t=1705969592; c=relaxed/simple;
+	bh=AbMro5CdaBH6WD73EaMHskp32iEEY9KfBTvNKlNHTBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kH6Oanj4uvGNbfBmtV7TpB4hZf7SuuDTShbgz+ubKO81rvKC9i79gi3L6BC0NiyBeqnWTH1/Fh2uQeo13koXQ0P+ffYS3KKHfvqAS9xFbVCdHYCGWz+T6hOaQOOA3nBMee1Vjyl6HCS+LeUJ7xS5KHXLTswM6lx56iltARXjrHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZ7Vc/iO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18676C433F1;
-	Tue, 23 Jan 2024 01:56:07 +0000 (UTC)
+	 MIME-Version; b=Ub0nm//95ApHSksV1Wb9CriEYd9OI5Q0EVsYI2HycgJhyxwAa+wztMEEMfNiaDoJhqwB/5hZ54DdFSjoVI2izR8Ptk/xUQOLxhoEIKpDfBcr6Khq/XmgZKdA6Uvl+e49mSf5RhQn4owMiIhZRdw2yBbnCN9GjV2jCBEkYXw5MNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0UK55KOR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016A8C433A6;
+	Tue, 23 Jan 2024 00:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974967;
-	bh=9euEvJDHHCKRYYfvlVPZjpLF246FPE37+8xxsWd/d3Q=;
+	s=korg; t=1705969592;
+	bh=AbMro5CdaBH6WD73EaMHskp32iEEY9KfBTvNKlNHTBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SZ7Vc/iOEaPxEymLIHZM/XNYEsp0uXYnFq9WyJj9KB0k+8lzFve+uIP0/FDLm5XWo
-	 /shizZbl+OPUxncI1oa2DMl+II8A7oBP8ylEYPDZC9nNLV3MUAJ7ls9kLPVbGqoNiW
-	 2z2FarRIJGDE2lwfMAOJxTiocyPwNt0nfKfpCvWw=
+	b=0UK55KOR9gzsZKvMMzLyf5cC/gneq8XcitqIoRFePLyTprAL2gJAXOlkhEryfjpzL
+	 WskAVp+gnVsXBEUP/uTNGG6Y/E+5ePStbjoiNS/Cn0x8DkPauw72v3tQlX0YaH6hOA
+	 33lk45fTKduXhhuTbP+7DRxL7b++Pmlelb43vvyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hou Tao <houtao1@huawei.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 172/583] bpf: Limit the number of kprobes when attaching program to multiple kprobes
+Subject: [PATCH 6.7 319/641] clk: renesas: rzg2l-cpg: Reuse code in rzg2l_cpg_reset()
 Date: Mon, 22 Jan 2024 15:53:43 -0800
-Message-ID: <20240122235817.292147893@linuxfoundation.org>
+Message-ID: <20240122235827.858735495@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit d6d1e6c17cab2dcb7b8530c599f00e7de906d380 ]
+[ Upstream commit 5f9e29b9159a41fcf6733c3b59fa46a90ce3ae20 ]
 
-An abnormally big cnt may also be assigned to kprobe_multi.cnt when
-attaching multiple kprobes. It will trigger the following warning in
-kvmalloc_node():
+Code in rzg2l_cpg_reset() is equivalent with the combined code of
+rzg2l_cpg_assert() and rzg2l_cpg_deassert(). There is no need to have
+different versions thus re-use rzg2l_cpg_assert() and rzg2l_cpg_deassert().
 
-	if (unlikely(size > INT_MAX)) {
-	    WARN_ON_ONCE(!(flags & __GFP_NOWARN));
-	    return NULL;
-	}
-
-Fix the warning by limiting the maximal number of kprobes in
-bpf_kprobe_multi_link_attach(). If the number of kprobes is greater than
-MAX_KPROBE_MULTI_CNT, the attachment will fail and return -E2BIG.
-
-Fixes: 0dcac2725406 ("bpf: Add multi kprobe link")
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20231215100708.2265609-3-houtao@huaweicloud.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20231120070024.4079344-2-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Stable-dep-of: da235d2fac21 ("clk: renesas: rzg2l: Check reset monitor registers")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/bpf_trace.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/renesas/rzg2l-cpg.c | 38 +++++++++++++--------------------
+ 1 file changed, 15 insertions(+), 23 deletions(-)
 
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index 39c4cef98b95..1d76f3b014ae 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -42,6 +42,7 @@
- 	rcu_dereference_protected(p, lockdep_is_held(&bpf_event_mutex))
+diff --git a/drivers/clk/renesas/rzg2l-cpg.c b/drivers/clk/renesas/rzg2l-cpg.c
+index 764bd72cf059..3189c3167ba8 100644
+--- a/drivers/clk/renesas/rzg2l-cpg.c
++++ b/drivers/clk/renesas/rzg2l-cpg.c
+@@ -1410,29 +1410,6 @@ rzg2l_cpg_register_mod_clk(const struct rzg2l_mod_clk *mod,
  
- #define MAX_UPROBE_MULTI_CNT (1U << 20)
-+#define MAX_KPROBE_MULTI_CNT (1U << 20)
+ #define rcdev_to_priv(x)	container_of(x, struct rzg2l_cpg_priv, rcdev)
  
- #ifdef CONFIG_MODULES
- struct bpf_trace_module {
-@@ -2897,6 +2898,8 @@ int bpf_kprobe_multi_link_attach(const union bpf_attr *attr, struct bpf_prog *pr
- 	cnt = attr->link_create.kprobe_multi.cnt;
- 	if (!cnt)
- 		return -EINVAL;
-+	if (cnt > MAX_KPROBE_MULTI_CNT)
-+		return -E2BIG;
+-static int rzg2l_cpg_reset(struct reset_controller_dev *rcdev,
+-			   unsigned long id)
+-{
+-	struct rzg2l_cpg_priv *priv = rcdev_to_priv(rcdev);
+-	const struct rzg2l_cpg_info *info = priv->info;
+-	unsigned int reg = info->resets[id].off;
+-	u32 dis = BIT(info->resets[id].bit);
+-	u32 we = dis << 16;
+-
+-	dev_dbg(rcdev->dev, "reset id:%ld offset:0x%x\n", id, CLK_RST_R(reg));
+-
+-	/* Reset module */
+-	writel(we, priv->base + CLK_RST_R(reg));
+-
+-	/* Wait for at least one cycle of the RCLK clock (@ ca. 32 kHz) */
+-	udelay(35);
+-
+-	/* Release module from reset state */
+-	writel(we | dis, priv->base + CLK_RST_R(reg));
+-
+-	return 0;
+-}
+-
+ static int rzg2l_cpg_assert(struct reset_controller_dev *rcdev,
+ 			    unsigned long id)
+ {
+@@ -1463,6 +1440,21 @@ static int rzg2l_cpg_deassert(struct reset_controller_dev *rcdev,
+ 	return 0;
+ }
  
- 	size = cnt * sizeof(*addrs);
- 	addrs = kvmalloc_array(cnt, sizeof(*addrs), GFP_KERNEL);
++static int rzg2l_cpg_reset(struct reset_controller_dev *rcdev,
++			   unsigned long id)
++{
++	int ret;
++
++	ret = rzg2l_cpg_assert(rcdev, id);
++	if (ret)
++		return ret;
++
++	/* Wait for at least one cycle of the RCLK clock (@ ca. 32 kHz) */
++	udelay(35);
++
++	return rzg2l_cpg_deassert(rcdev, id);
++}
++
+ static int rzg2l_cpg_status(struct reset_controller_dev *rcdev,
+ 			    unsigned long id)
+ {
 -- 
 2.43.0
 
