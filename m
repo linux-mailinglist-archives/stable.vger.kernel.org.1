@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-15317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9571A8384BF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65AEE837DD5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8BEF1C2619C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 692651C28C9B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45C94768E9;
-	Tue, 23 Jan 2024 02:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DE161386AC;
+	Tue, 23 Jan 2024 00:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvwqWdpJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k85NqKjB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0461C73176;
-	Tue, 23 Jan 2024 02:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8A7137C54;
+	Tue, 23 Jan 2024 00:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975480; cv=none; b=sOUhuvJOoc/LORuGHa7SVjsOo8w49SXWib9pG3lJG0lqETmJYTdbeAO6alomhg06w1pnmVUpWeEBX+roKErBf2hm17XzdQr25uWInHRRpFRAT84WckGcHA44CAwXat3qBwDtwuv8DNtthnuEL3L3bF7cZG3zhXrONAtqb2usxEY=
+	t=1705970170; cv=none; b=mdzPZgLOZpmQMtCr/JFhBKBAjrcPHefpkojk4vl4J2qhAPbTtl5gPGBI4muNaBKReu9GHuDuI4+s1YBnbV+akMvAXdkcY9ZnLMYB8CSBMVvF/vJoADV/nTwB8vbhoi3cVto+sqceHU9NboACQUrGtaxWN6b0PwEc7vLk2H4p4cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975480; c=relaxed/simple;
-	bh=E2vPj8iPPpTS5G1ZsBLhy/TYW5MS/GnfG3lR+VW44vA=;
+	s=arc-20240116; t=1705970170; c=relaxed/simple;
+	bh=QxfyFBH40O1u02K1Dm0kYJ2/hSPkkXtn4N3xaiglyxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eK/aou3yYcDYn8YIILzDPbPvGMj51dwz3F5aObs+3KsSAYZnXP4SnvnIpABXwKR4s2TbYnimE9uLd58PXPXQljHNnHBM0o0TsT3BU8eK5Wt6KJhuRyNHe+lq9AvyL3VSXhNH1iWPs65pZ/6Bz4O/09aRYo7UVuEpI76VeytV9wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvwqWdpJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9830C43390;
-	Tue, 23 Jan 2024 02:04:39 +0000 (UTC)
+	 MIME-Version; b=UQmYF3xq44Lrmul03gmgDyALXmN6hFhHQUCntlwdyrSS14qFZ3POabv7uiUzjAnDLgKxdyK7ZfAl/wJ2kVtQQhVDWSARa2OcD47vMvypKW5hVlfv0qRvB6iMeCKnKSpUlMUGnrUuFweHOGn+cJ7RtfiRuHp1nqzYuTAfdNzfgjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k85NqKjB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DD4FC43394;
+	Tue, 23 Jan 2024 00:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975479;
-	bh=E2vPj8iPPpTS5G1ZsBLhy/TYW5MS/GnfG3lR+VW44vA=;
+	s=korg; t=1705970169;
+	bh=QxfyFBH40O1u02K1Dm0kYJ2/hSPkkXtn4N3xaiglyxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wvwqWdpJRLCBVYE8wr2n2heL43hHUuBzbEfCYjh03zqXe8Lsue9MPTMg94KIO71hz
-	 0qNYy/KiY0bu2FfA5MqV1D/hG8XNF3ENLOmIT28KD5pTzfQb9YrhhMLXvnZimuf3XF
-	 7jO5Ky6639kaitXD9SLvy9J6VAjgdmDvP26xP3Sc=
+	b=k85NqKjBcShbRfMStuj+R3RIwO8Md+JC8A6Evbj8cLyl+hBkIKqCNfGuXC9cGd3SL
+	 aD8icnrj1RdSK2dOJdPlAJ0ePiIHNnEJ30otNY7Z44VhFLo1GJgIyufIaVDy3uv0ke
+	 2Rj3dA9UJpaNZm04hRNuyZ1KXOlQYSyoeUH6tzAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>,
-	Ping Cheng <ping.cheng@wacom.com>,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.6 434/583] HID: wacom: Correct behavior when processing some confidence == false touches
-Date: Mon, 22 Jan 2024 15:58:05 -0800
-Message-ID: <20240122235825.263364665@linuxfoundation.org>
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+d81bcd883824180500c8@syzkaller.appspotmail.com
+Subject: [PATCH 6.7 582/641] net: dsa: fix netdev_priv() dereference before check on non-DSA netdevice events
+Date: Mon, 22 Jan 2024 15:58:06 -0800
+Message-ID: <20240122235836.397757504@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +65,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gerecke <jason.gerecke@wacom.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit 502296030ec6b0329e00f9fb15018e170cc63037 upstream.
+[ Upstream commit 844f104790bd69c2e4dbb9ee3eba46fde1fcea7b ]
 
-There appear to be a few different ways that Wacom devices can deal with
-confidence:
+After the blamed commit, we started doing this dereference for every
+NETDEV_CHANGEUPPER and NETDEV_PRECHANGEUPPER event in the system.
 
-  1. If the device looses confidence in a touch, it will first clear
-     the tipswitch flag in one report, and then clear the confidence
-     flag in a second report. This behavior is used by e.g. DTH-2452.
+static inline struct dsa_port *dsa_user_to_port(const struct net_device *dev)
+{
+	struct dsa_user_priv *p = netdev_priv(dev);
 
-  2. If the device looses confidence in a touch, it will clear both
-     the tipswitch and confidence flags within the same report. This
-     behavior is used by some AES devices.
+	return p->dp;
+}
 
-  3. If the device looses confidence in a touch, it will clear *only*
-     the confidence bit. The tipswitch bit will remain set so long as
-     the touch is tracked. This behavior may be used in future devices.
+Which is obviously bogus, because not all net_devices have a netdev_priv()
+of type struct dsa_user_priv. But struct dsa_user_priv is fairly small,
+and p->dp means dereferencing 8 bytes starting with offset 16. Most
+drivers allocate that much private memory anyway, making our access not
+fault, and we discard the bogus data quickly afterwards, so this wasn't
+caught.
 
-The driver does not currently handle situation 3 properly. Touches that
-loose confidence will remain "in prox" and essentially frozen in place
-until the tipswitch bit is finally cleared. Not only does this result
-in userspace seeing a stuck touch, but it also prevents pen arbitration
-from working properly (the pen won't send events until all touches are
-up, but we don't currently process events from non-confident touches).
+But the dummy interface is somewhat special in that it calls
+alloc_netdev() with a priv size of 0. So every netdev_priv() dereference
+is invalid, and we get this when we emit a NETDEV_PRECHANGEUPPER event
+with a VLAN as its new upper:
 
-This commit centralizes the checking of the confidence bit in the
-wacom_wac_finger_slot() function and has 'prox' depend on it. In the
-case where situation 3 is encountered, the treat the touch as though
-it was removed, allowing both userspace and the pen arbitration to
-act normally.
+$ ip link add dummy1 type dummy
+$ ip link add link dummy1 name dummy1.100 type vlan id 100
+[   43.309174] ==================================================================
+[   43.316456] BUG: KASAN: slab-out-of-bounds in dsa_user_prechangeupper+0x30/0xe8
+[   43.323835] Read of size 8 at addr ffff3f86481d2990 by task ip/374
+[   43.330058]
+[   43.342436] Call trace:
+[   43.366542]  dsa_user_prechangeupper+0x30/0xe8
+[   43.371024]  dsa_user_netdevice_event+0xb38/0xee8
+[   43.375768]  notifier_call_chain+0xa4/0x210
+[   43.379985]  raw_notifier_call_chain+0x24/0x38
+[   43.384464]  __netdev_upper_dev_link+0x3ec/0x5d8
+[   43.389120]  netdev_upper_dev_link+0x70/0xa8
+[   43.393424]  register_vlan_dev+0x1bc/0x310
+[   43.397554]  vlan_newlink+0x210/0x248
+[   43.401247]  rtnl_newlink+0x9fc/0xe30
+[   43.404942]  rtnetlink_rcv_msg+0x378/0x580
 
-Signed-off-by: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
-Signed-off-by: Ping Cheng <ping.cheng@wacom.com>
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Fixes: 7fb0413baa7f ("HID: wacom: Use "Confidence" flag to prevent reporting invalid contacts")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Avoid the kernel oops by dereferencing after the type check, as customary.
+
+Fixes: 4c3f80d22b2e ("net: dsa: walk through all changeupper notifier functions")
+Reported-and-tested-by: syzbot+d81bcd883824180500c8@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/0000000000001d4255060e87545c@google.com/
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240110003354.2796778-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c |   32 ++++----------------------------
- 1 file changed, 4 insertions(+), 28 deletions(-)
+ net/dsa/user.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -2649,8 +2649,8 @@ static void wacom_wac_finger_slot(struct
+diff --git a/net/dsa/user.c b/net/dsa/user.c
+index d438884a4eb0..a82c7f5a1a12 100644
+--- a/net/dsa/user.c
++++ b/net/dsa/user.c
+@@ -2829,13 +2829,14 @@ EXPORT_SYMBOL_GPL(dsa_user_dev_check);
+ static int dsa_user_changeupper(struct net_device *dev,
+ 				struct netdev_notifier_changeupper_info *info)
  {
- 	struct hid_data *hid_data = &wacom_wac->hid_data;
- 	bool mt = wacom_wac->features.touch_max > 1;
--	bool prox = hid_data->tipswitch &&
--		    report_touch_events(wacom_wac);
-+	bool touch_down = hid_data->tipswitch && hid_data->confidence;
-+	bool prox = touch_down && report_touch_events(wacom_wac);
+-	struct dsa_port *dp = dsa_user_to_port(dev);
+ 	struct netlink_ext_ack *extack;
+ 	int err = NOTIFY_DONE;
++	struct dsa_port *dp;
  
- 	if (touch_is_muted(wacom_wac)) {
- 		if (!wacom_wac->shared->touch_down)
-@@ -2700,24 +2700,6 @@ static void wacom_wac_finger_slot(struct
- 	}
- }
+ 	if (!dsa_user_dev_check(dev))
+ 		return err;
  
--static bool wacom_wac_slot_is_active(struct input_dev *dev, int key)
--{
--	struct input_mt *mt = dev->mt;
--	struct input_mt_slot *s;
--
--	if (!mt)
--		return false;
--
--	for (s = mt->slots; s != mt->slots + mt->num_slots; s++) {
--		if (s->key == key &&
--			input_mt_get_value(s, ABS_MT_TRACKING_ID) >= 0) {
--			return true;
--		}
--	}
--
--	return false;
--}
--
- static void wacom_wac_finger_event(struct hid_device *hdev,
- 		struct hid_field *field, struct hid_usage *usage, __s32 value)
++	dp = dsa_user_to_port(dev);
+ 	extack = netdev_notifier_info_to_extack(&info->info);
+ 
+ 	if (netif_is_bridge_master(info->upper_dev)) {
+@@ -2888,11 +2889,13 @@ static int dsa_user_changeupper(struct net_device *dev,
+ static int dsa_user_prechangeupper(struct net_device *dev,
+ 				   struct netdev_notifier_changeupper_info *info)
  {
-@@ -2768,14 +2750,8 @@ static void wacom_wac_finger_event(struc
- 	}
+-	struct dsa_port *dp = dsa_user_to_port(dev);
++	struct dsa_port *dp;
  
- 	if (usage->usage_index + 1 == field->report_count) {
--		if (equivalent_usage == wacom_wac->hid_data.last_slot_field) {
--			bool touch_removed = wacom_wac_slot_is_active(wacom_wac->touch_input,
--				wacom_wac->hid_data.id) && !wacom_wac->hid_data.tipswitch;
--
--			if (wacom_wac->hid_data.confidence || touch_removed) {
--				wacom_wac_finger_slot(wacom_wac, wacom_wac->touch_input);
--			}
--		}
-+		if (equivalent_usage == wacom_wac->hid_data.last_slot_field)
-+			wacom_wac_finger_slot(wacom_wac, wacom_wac->touch_input);
- 	}
- }
+ 	if (!dsa_user_dev_check(dev))
+ 		return NOTIFY_DONE;
  
++	dp = dsa_user_to_port(dev);
++
+ 	if (netif_is_bridge_master(info->upper_dev) && !info->linking)
+ 		dsa_port_pre_bridge_leave(dp, info->upper_dev);
+ 	else if (netif_is_lag_master(info->upper_dev) && !info->linking)
+-- 
+2.43.0
+
 
 
 
