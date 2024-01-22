@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD7C1837E73
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:29 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F0D7837C3D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A5881F2711F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:39:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 588E02965B3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:10:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA5C713A266;
-	Tue, 23 Jan 2024 00:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE234144631;
+	Tue, 23 Jan 2024 00:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dweqbige"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QI3wwE69"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8903A59175;
-	Tue, 23 Jan 2024 00:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D34614462B;
+	Tue, 23 Jan 2024 00:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970592; cv=none; b=Jm+DP1MqA2Xj6KWfoiEWDal+/thzTDTAJarg2FZK2bd7nl8ul8LO4ZVtze7KYSsaE20nJ+ACTvSZy9iOj5BF7Tc9WnOr6kRTNmtjF1Z09r2sd4vmgrA2MMcTVemYZIHhj3WDnDcNN9vxiWeJ5Zlo6izJFEKJ/4rBy22mKQUOliU=
+	t=1705969547; cv=none; b=IXKcYpfmvUiEBgBqTEHH2CWdVnbgRVdxcPbaB3dQjOAeHviD0Vdf1i5/Ya0ChQmPkXXlFEZxpW6sIAcCgm6bvzmi4SUGkjZhqjgeiMyiKOJt2OO+NJuF+KJy+NfzHhW112yHYo7vI5hAr2e6KvQBDR/JoSDJ46P2/0f6dAYbNf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970592; c=relaxed/simple;
-	bh=s03/Tm5PrATMTDmGa0GoUxTyKPMck0MMbqKN3hND3kM=;
+	s=arc-20240116; t=1705969547; c=relaxed/simple;
+	bh=myIKsyB7GbanUc4mZAsIgHSnMEvMclo7PWP8bCjzIZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WcSgnr0x9G81y7aVq/q89bCaL4QP0jTOjqWMHJZ2fevmh50mrtZT2uS+ztn9GhprkLMAQz/hZDwdIgDVbc2+PA7BV8mCHblrnQpzBm3j20zbFgXzVlPtOBY6FEKnsA23Y7+A2UeLp8iccvkmcmRvHtica1PtdVNRJ/eUu3f0dxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dweqbige; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F636C43390;
-	Tue, 23 Jan 2024 00:43:10 +0000 (UTC)
+	 MIME-Version; b=YWNN8pKAsvUWln/FCa7rQRsDET11CUgpOXOt/2OCOOebu+f3/2/Owxk0eQK13EjPAJrAWCugaH9uMMgUyogHZjJ4lV/FjH8HO+TJTbXU9obAzlj/OJt3sNN+PesKdBgCLVqJVD8k5btzakPcu0RkDEKHhPKabUgJTUu/GQwyOkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QI3wwE69; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41687C43394;
+	Tue, 23 Jan 2024 00:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970592;
-	bh=s03/Tm5PrATMTDmGa0GoUxTyKPMck0MMbqKN3hND3kM=;
+	s=korg; t=1705969547;
+	bh=myIKsyB7GbanUc4mZAsIgHSnMEvMclo7PWP8bCjzIZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dweqbigefuaG/8aOQHnjrVFxZZGijNkeAoHEz09BdSDVh8zwO7d97ocoS0gnXOy7z
-	 jHA1l3Us3MCRRtiBzyzJE2mkYpG25Vf5NXOVRUOFB1k/r6HNV2aRLvyOuusyBOImcU
-	 B37XVero2IF2rpyX2c9hHITgX4KLSu+hZciEM9xE=
+	b=QI3wwE69P2qWAgMMnYPlVOMtjEbA5VQFMvYI8OUXGWUqomJU6zaJbIcpUT530qTqM
+	 Pv1fmhcJKQZJocBtOTZ3ZpYoV35zIijHMn3Vgy3DVZQGfcqorvGfw7JIqCs2612sYX
+	 Jkv/xfhMC/CKsdwxqUO1CvzBgQnlQH1HgOfgim8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erwin Tsaur <erwin.tsaur@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Yang Yingliang <yangyingliang@huawei.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 030/417] ACPI: extlog: Clear Extended Error Log status when RAS_CEC handled the error
+Subject: [PATCH 6.7 294/641] drm/radeon: check the alloc_workqueue return value in radeon_crtc_init()
 Date: Mon, 22 Jan 2024 15:53:18 -0800
-Message-ID: <20240122235752.631352652@linuxfoundation.org>
+Message-ID: <20240122235827.093171571@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Luck <tony.luck@intel.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit 38c872a9e96f72f2947affc0526cc05659367d3d ]
+[ Upstream commit 7a2464fac80d42f6f8819fed97a553e9c2f43310 ]
 
-When both CONFIG_RAS_CEC and CONFIG_ACPI_EXTLOG are enabled, Linux does
-not clear the status word of the BIOS supplied error record for corrected
-errors. This may prevent logging of subsequent uncorrected errors.
+check the alloc_workqueue return value in radeon_crtc_init()
+to avoid null-ptr-deref.
 
-Fix by clearing the status.
-
-Fixes: 23ba710a0864 ("x86/mce: Fix all mce notifiers to update the mce->kflags bitmask")
-Reported-by: Erwin Tsaur <erwin.tsaur@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: fa7f517cb26e ("drm/radeon: rework page flip handling v4")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpi_extlog.c | 7 ++++++-
+ drivers/gpu/drm/radeon/radeon_display.c | 7 ++++++-
  1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpi_extlog.c b/drivers/acpi/acpi_extlog.c
-index e648158368a7..088db2356998 100644
---- a/drivers/acpi/acpi_extlog.c
-+++ b/drivers/acpi/acpi_extlog.c
-@@ -145,9 +145,14 @@ static int extlog_print(struct notifier_block *nb, unsigned long val,
- 	static u32 err_seq;
+diff --git a/drivers/gpu/drm/radeon/radeon_display.c b/drivers/gpu/drm/radeon/radeon_display.c
+index 901e75ec70ff..efd18c8d84c8 100644
+--- a/drivers/gpu/drm/radeon/radeon_display.c
++++ b/drivers/gpu/drm/radeon/radeon_display.c
+@@ -687,11 +687,16 @@ static void radeon_crtc_init(struct drm_device *dev, int index)
+ 	if (radeon_crtc == NULL)
+ 		return;
  
- 	estatus = extlog_elog_entry_check(cpu, bank);
--	if (estatus == NULL || (mce->kflags & MCE_HANDLED_CEC))
-+	if (!estatus)
- 		return NOTIFY_DONE;
- 
-+	if (mce->kflags & MCE_HANDLED_CEC) {
-+		estatus->block_status = 0;
-+		return NOTIFY_DONE;
++	radeon_crtc->flip_queue = alloc_workqueue("radeon-crtc", WQ_HIGHPRI, 0);
++	if (!radeon_crtc->flip_queue) {
++		kfree(radeon_crtc);
++		return;
 +	}
 +
- 	memcpy(elog_buf, (void *)estatus, ELOG_ENTRY_LEN);
- 	/* clear record status to enable BIOS to update it again */
- 	estatus->block_status = 0;
+ 	drm_crtc_init(dev, &radeon_crtc->base, &radeon_crtc_funcs);
+ 
+ 	drm_mode_crtc_set_gamma_size(&radeon_crtc->base, 256);
+ 	radeon_crtc->crtc_id = index;
+-	radeon_crtc->flip_queue = alloc_workqueue("radeon-crtc", WQ_HIGHPRI, 0);
+ 	rdev->mode_info.crtcs[index] = radeon_crtc;
+ 
+ 	if (rdev->family >= CHIP_BONAIRE) {
 -- 
 2.43.0
 
