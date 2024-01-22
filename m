@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-13977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91DAE837F07
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C35A837CBE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 48A3429BD79
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F0E81C22718
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C397460266;
-	Tue, 23 Jan 2024 00:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C37752F74;
+	Tue, 23 Jan 2024 00:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCtMdsVj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWraXx7q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831BF4E1BC;
-	Tue, 23 Jan 2024 00:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA3915704E;
+	Tue, 23 Jan 2024 00:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970893; cv=none; b=RHndCBriKA6LAWMPLiXyn8G2qRiWRVD1yv+dUGysqg1ctY/ZXlkeuX0jKhtJnmimKHdsXXyH//bVd5eYXImfsEWYX5xfvGw/mueylQVVUlIDQ8KerWStpv11zq7dcCcYnfR5U8+tq5WJpr1JW4g4ZnzGwyb0766YOs8z+42Vh/8=
+	t=1705969731; cv=none; b=elaUuAsBnpt8hctIVhp7haci3+5qhFPmk6Tv2CO4CCw1blfgxRAx3mIDthnOoDGCXttaK8AXmxOgRSIWSXHWCahBAuyXpz1Va2pnIhsknCoyZkgLo+VotbpbrsgoGN1C7o7bD2V3tE5KCfdvCXEvMWccB6P3qww236LtsvtvOqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970893; c=relaxed/simple;
-	bh=XyAxJFkGr7pnxxXk+2W6EGW6RTR62gSJdwGUBYYI6jM=;
+	s=arc-20240116; t=1705969731; c=relaxed/simple;
+	bh=4o1StubQ2A0cjBh7MbZjv7RQhe9sYOJ4910JPjvkdHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cBm8LNGCSlmx2WCfLL49ueJGL7lhHVKp2CzQaQ+QamF3Mhoqh4eMN7BeAnxv3f3oYhLs53t3gwfiWEU9DflhjpQf9uuEJbmEwCquZZtyaG4WvsmBRRJnhHOold64GIrhb2LdWe4hMbJEOtasR65pt26jvH3mRwEh2ALyvBKirnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCtMdsVj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB46C433C7;
-	Tue, 23 Jan 2024 00:48:13 +0000 (UTC)
+	 MIME-Version; b=ERA48wzyR8nkdWzRLVCQau57xRhGlfIvafO/MGENalN5oFu0SVVDLkAtizmLXNr4oaGZ2JTfJCpbab2LraNsv0gxErxSfDyANZp8JWlo5DYi/ZF3mBMWk60MBYHsoUztz74p/zPEYSncO+icfhJVtJExfC0Yi/tRBGEzSDvzQSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWraXx7q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D96ECC433C7;
+	Tue, 23 Jan 2024 00:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970893;
-	bh=XyAxJFkGr7pnxxXk+2W6EGW6RTR62gSJdwGUBYYI6jM=;
+	s=korg; t=1705969731;
+	bh=4o1StubQ2A0cjBh7MbZjv7RQhe9sYOJ4910JPjvkdHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yCtMdsVjPLrrY+0tYxDrXshOjiNOdVlMOxXrchrnigstqh9Mkn1f8qeOqVlwKIG3e
-	 BhYd73kqf7ZJRE3PVoGWLUF2npF5uVX9IV8QKapUMV+Jq0XetQ+Zzkth+/LF48ykBR
-	 nmt40ZFysnsJyfZUEZBsCg/I707GSKNxNf1WEdr8=
+	b=BWraXx7qniZX9VG2tNQPK78PyZGRGAOFGjs2iThMvNMHEaIqavHgVomhh8ZKgvjRD
+	 EOkMuRuwOffQlDIcPGrW9c/xkkDnMIy5cHW7UVBXrFi1kFOd1g7qpn1YaDRuXXurDX
+	 1G0g/KHmLoScUvmdS2sTCl0+DWq385BMMfW3ZJ04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 134/417] wifi: rtlwifi: rtl8188ee: phy: using calculate_bit_shift()
+	Wesley Cheng <quic_wcheng@quicinc.com>
+Subject: [PATCH 6.7 398/641] usb: dwc3: gadget: Queue PM runtime idle on disconnect event
 Date: Mon, 22 Jan 2024 15:55:02 -0800
-Message-ID: <20240122235756.470644296@linuxfoundation.org>
+Message-ID: <20240122235830.421167083@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-[ Upstream commit 969bc926f04b438676768aeffffffb050e480b62 ]
+commit 3c7af52c7616c3aa6dacd2336ec748d4a65df8f4 upstream.
 
-Using calculate_bit_shift() to replace _rtl88e_phy_calculate_bit_shift().
-And fix the undefined bitwise shift behavior problem.
+There is a scenario where DWC3 runtime suspend is blocked due to the
+dwc->connected flag still being true while PM usage_count is zero after
+DWC3 giveback is completed and the USB gadget session is being terminated.
+This leads to a case where nothing schedules a PM runtime idle for the
+device.
 
-Fixes: f0eb856e0b6c ("rtlwifi: rtl8188ee: Add new driver")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20231219065739.1895666-4-suhui@nfschina.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The exact condition is seen with the following sequence:
+  1.  USB bus reset is issued by the host
+  2.  Shortly after, or concurrently, a USB PD DR SWAP request is received
+      (sink->source)
+  3.  USB bus reset event handler runs and issues
+      dwc3_stop_active_transfers(), and pending transfer are stopped
+  4.  DWC3 usage_count decremented to 0, and runtime idle occurs while
+      dwc->connected == true, returns -EBUSY
+  5.  DWC3 disconnect event seen, dwc->connected set to false due to DR
+      swap handling
+  6.  No runtime idle after this point
+
+Address this by issuing an asynchronous PM runtime idle call after the
+disconnect event is completed, as it modifies the dwc->connected flag,
+which is what blocks the initial runtime idle.
+
+Fixes: fc8bb91bc83e ("usb: dwc3: implement runtime PM")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20240103214946.2596-1-quic_wcheng@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/wireless/realtek/rtlwifi/rtl8188ee/phy.c   | 14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ drivers/usb/dwc3/gadget.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c
-index 12d0b3a87af7..0fab3a0c7d49 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8188ee/phy.c
-@@ -16,12 +16,6 @@ static u32 _rtl88e_phy_rf_serial_read(struct ieee80211_hw *hw,
- static void _rtl88e_phy_rf_serial_write(struct ieee80211_hw *hw,
- 					enum radio_path rfpath, u32 offset,
- 					u32 data);
--static u32 _rtl88e_phy_calculate_bit_shift(u32 bitmask)
--{
--	u32 i = ffs(bitmask);
--
--	return i ? i - 1 : 32;
--}
- static bool _rtl88e_phy_bb8188e_config_parafile(struct ieee80211_hw *hw);
- static bool _rtl88e_phy_config_mac_with_headerfile(struct ieee80211_hw *hw);
- static bool phy_config_bb_with_headerfile(struct ieee80211_hw *hw,
-@@ -51,7 +45,7 @@ u32 rtl88e_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
- 		"regaddr(%#x), bitmask(%#x)\n", regaddr, bitmask);
- 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
--	bitshift = _rtl88e_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	returnvalue = (originalvalue & bitmask) >> bitshift;
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -3983,6 +3983,13 @@ static void dwc3_gadget_disconnect_inter
+ 	usb_gadget_set_state(dwc->gadget, USB_STATE_NOTATTACHED);
  
- 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
-@@ -74,7 +68,7 @@ void rtl88e_phy_set_bb_reg(struct ieee80211_hw *hw,
+ 	dwc3_ep0_reset_state(dwc);
++
++	/*
++	 * Request PM idle to address condition where usage count is
++	 * already decremented to zero, but waiting for the disconnect
++	 * interrupt to set dwc->connected to FALSE.
++	 */
++	pm_request_idle(dwc->dev);
+ }
  
- 	if (bitmask != MASKDWORD) {
- 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
--		bitshift = _rtl88e_phy_calculate_bit_shift(bitmask);
-+		bitshift = calculate_bit_shift(bitmask);
- 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
- 	}
- 
-@@ -99,7 +93,7 @@ u32 rtl88e_phy_query_rf_reg(struct ieee80211_hw *hw,
- 
- 
- 	original_value = _rtl88e_phy_rf_serial_read(hw, rfpath, regaddr);
--	bitshift = _rtl88e_phy_calculate_bit_shift(bitmask);
-+	bitshift = calculate_bit_shift(bitmask);
- 	readback_value = (original_value & bitmask) >> bitshift;
- 
- 	spin_unlock(&rtlpriv->locks.rf_lock);
-@@ -127,7 +121,7 @@ void rtl88e_phy_set_rf_reg(struct ieee80211_hw *hw,
- 			original_value = _rtl88e_phy_rf_serial_read(hw,
- 								    rfpath,
- 								    regaddr);
--			bitshift = _rtl88e_phy_calculate_bit_shift(bitmask);
-+			bitshift = calculate_bit_shift(bitmask);
- 			data =
- 			    ((original_value & (~bitmask)) |
- 			     (data << bitshift));
--- 
-2.43.0
-
+ static void dwc3_gadget_reset_interrupt(struct dwc3 *dwc)
 
 
 
