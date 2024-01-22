@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-13385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E45CB837D09
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:23:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD49838299
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0E2FB2EB96
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 236B328CC4B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B75E1552E5;
-	Tue, 23 Jan 2024 00:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B5E45D903;
+	Tue, 23 Jan 2024 01:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JkoLrNI/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQ6d9Dmg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE627154C05;
-	Tue, 23 Jan 2024 00:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 474AA5D8F9;
+	Tue, 23 Jan 2024 01:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969410; cv=none; b=ue7/Gf11qpb7jkuocLdGLT/lKH2OFfFOF36eHj1flDvN2Xzn/iGBROWq6PGXE5TkrUcMBsrTS8r9z5D0p9EI3Y9EgNPoieeWHStjERC1KEyMrijTRqgE2WKArJGSbMKCCxTHUI8oubMmlz4c+dtEho1thg26tIm2HTSsICgnnRM=
+	t=1705974391; cv=none; b=KNB+fOiyu+u5icCSLeVt9ZtPfGZNam6oXSrBSD9x+rq0aeIKu1MThSGoSr1cY/nqWQ5i3cDjjA1EFBi0Ywj3x5aA09JvlPasxVcWYXAnc/4TcEp10txA+rQi5usB4uFbuRJT8lxO/BFGJO+T8qt/NIukEGaPKXjcUNn/n9hZTqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969410; c=relaxed/simple;
-	bh=5sAz/AUaNQP9YwcMsMbEQEZKdtyyGT48e9dbOTnOxbI=;
+	s=arc-20240116; t=1705974391; c=relaxed/simple;
+	bh=FPA65sa25pXIEJ1GT9KuHhIK4ZwWFBvQmAkHq6+9e44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X2LzwxrNC8SUlOVcYc0WAgye0R2OX6RwrO0fkubBxgKYZgN18pTbY2g8jlwR6f5CoRz4Tlre9Wm4LVvPZRjjjs0hsnCC0wQbMrBAsZY/jKUgGK160niHyetQ2SnhPTbf+4UANRquI59hkDLcsegl9cCmlkh5e7C4KWgCFH/XEMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JkoLrNI/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75FF9C43394;
-	Tue, 23 Jan 2024 00:23:30 +0000 (UTC)
+	 MIME-Version; b=UHR0chMDuXCpFJUkdpdkaN6OOWN0g1DU9WcreZXpwXqbsR0xxeRTGOF1QCXDSmRIc0mtBXOzT683Qz+ZfiqxE5WtqHR27tffsRcu8KMO9ZV+SNeBFH+Yho9yeO9gOfl5hG3AOKyVblGEGH/cDsNLpVsaU9EFVREcWtpBM2I6RjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQ6d9Dmg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11876C433C7;
+	Tue, 23 Jan 2024 01:46:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969410;
-	bh=5sAz/AUaNQP9YwcMsMbEQEZKdtyyGT48e9dbOTnOxbI=;
+	s=korg; t=1705974390;
+	bh=FPA65sa25pXIEJ1GT9KuHhIK4ZwWFBvQmAkHq6+9e44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JkoLrNI/WF6nZoWxYoie4eKg/xqOWc3EznszE6XFoghevU7yy8Ffo2y29k6GtLlDB
-	 2R0X8dy4dZCr6NtDHkuN//XQ6uNObQFzZFkj8qzU6ZZbLwANOLGsgrBl+L8HFauYAl
-	 1d4EhXtFVFAPBihdo+l/iZT7rULdXIgMzo7WSTL0=
+	b=yQ6d9Dmga5gVes18z8Vm2h/+MGDkVbYp7EF1ay5hlXHiyAf74eSx2BGZvarkmE/0G
+	 RTSOl78nfBj547RPkW+xvOWR9r9WrHJ8mOPvKUMg3HpIoJn3IB66Pj8uH++mqpzrN+
+	 FYU14a6jgZt6lPNodHYhiHSqaYVirDuIb/lB8OpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <kunwu.chan@hotmail.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.7 228/641] ice: Fix some null pointer dereference issues in ice_ptp.c
+	David McKay <david.mckay@codasip.com>,
+	Stuart Menefy <stuart.menefy@codasip.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 081/583] asm-generic: Fix 32 bit __generic_cmpxchg_local
 Date: Mon, 22 Jan 2024 15:52:12 -0800
-Message-ID: <20240122235825.071008020@linuxfoundation.org>
+Message-ID: <20240122235814.632397807@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,52 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: David McKay <david.mckay@codasip.com>
 
-[ Upstream commit 3027e7b15b02d2d37e3f82d6b8404f6d37e3b8cf ]
+[ Upstream commit d93cca2f3109f88c94a32d3322ec8b2854a9c339 ]
 
-devm_kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+Commit 656e9007ef58 ("asm-generic: avoid __generic_cmpxchg_local
+warnings") introduced a typo that means the code is incorrect for 32 bit
+values. It will work fine for postive numbers, but will fail for
+negative numbers on a system where longs are 64 bit.
 
-Fixes: d938a8cca88a ("ice: Auxbus devices & driver for E822 TS")
-Cc: Kunwu Chan <kunwu.chan@hotmail.com>
-Suggested-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 656e9007ef58 ("asm-generic: avoid __generic_cmpxchg_local warnings")
+Signed-off-by: David McKay <david.mckay@codasip.com>
+Signed-off-by: Stuart Menefy <stuart.menefy@codasip.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/asm-generic/cmpxchg-local.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-index 71f405f8a6fe..e6b1ce76ca8a 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -2692,6 +2692,8 @@ static int ice_ptp_register_auxbus_driver(struct ice_pf *pf)
- 	name = devm_kasprintf(dev, GFP_KERNEL, "ptp_aux_dev_%u_%u_clk%u",
- 			      pf->pdev->bus->number, PCI_SLOT(pf->pdev->devfn),
- 			      ice_get_ptp_src_clock_index(&pf->hw));
-+	if (!name)
-+		return -ENOMEM;
- 
- 	aux_driver->name = name;
- 	aux_driver->shutdown = ice_ptp_auxbus_shutdown;
-@@ -2938,6 +2940,8 @@ static int ice_ptp_create_auxbus_device(struct ice_pf *pf)
- 	name = devm_kasprintf(dev, GFP_KERNEL, "ptp_aux_dev_%u_%u_clk%u",
- 			      pf->pdev->bus->number, PCI_SLOT(pf->pdev->devfn),
- 			      ice_get_ptp_src_clock_index(&pf->hw));
-+	if (!name)
-+		return -ENOMEM;
- 
- 	aux_dev->name = name;
- 	aux_dev->id = id;
+diff --git a/include/asm-generic/cmpxchg-local.h b/include/asm-generic/cmpxchg-local.h
+index 3df9f59a544e..f27d66fdc00a 100644
+--- a/include/asm-generic/cmpxchg-local.h
++++ b/include/asm-generic/cmpxchg-local.h
+@@ -34,7 +34,7 @@ static inline unsigned long __generic_cmpxchg_local(volatile void *ptr,
+ 			*(u16 *)ptr = (new & 0xffffu);
+ 		break;
+ 	case 4: prev = *(u32 *)ptr;
+-		if (prev == (old & 0xffffffffffu))
++		if (prev == (old & 0xffffffffu))
+ 			*(u32 *)ptr = (new & 0xffffffffu);
+ 		break;
+ 	case 8: prev = *(u64 *)ptr;
 -- 
 2.43.0
 
