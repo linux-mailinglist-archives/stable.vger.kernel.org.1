@@ -1,67 +1,55 @@
-Return-Path: <stable+bounces-14422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82E758380DE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:34 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0BC28384F4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A9AD28DBCD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80D881F279B0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C483613475E;
-	Tue, 23 Jan 2024 01:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B98F7A702;
+	Tue, 23 Jan 2024 02:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="viOAiX6f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vy4SO4O/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E7513474E;
-	Tue, 23 Jan 2024 01:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C69277636;
+	Tue, 23 Jan 2024 02:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971929; cv=none; b=pZ61sD326u+ocF+/nmvjb+/U2wZNyIq6Qh0bCiJ2lCcWaibL9I9vprJ3g+CGyZDtkAiSWZYnoKKcSzhd4ZntSIX+OMt9LqCDZwPAFdAkntv6jnrySDAQ50x9AvVoa8qTyspg+hEU4WtPrYb6OFr2zL3XM/4S9XAAw9jf4ZeyS+Y=
+	t=1705975543; cv=none; b=T5af4hFv2l3efN8YtvuwBQVlo38monUKk/yKHhIR4hDvVHqBXrN0S8TSkUHpMkV6DvBonAxfV61N1Tj1C70ZRmtbjoOML4rWRJySASBvbY26Du3LuvybjCRS0pn82F/RBMNRGA8yZkivd04t0hUsQRwjQG3GOO2HJDb69azB6g0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971929; c=relaxed/simple;
-	bh=pH9YZwNCIgsfgcvEeq0joIHvFLIcY+vwekZ3xrGCPS0=;
+	s=arc-20240116; t=1705975543; c=relaxed/simple;
+	bh=dXF0GNEGTdyE8O8M1jSSzui8TwY41Mo3uhGh4XDdBAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fqhe8nIwF6I6KalwQha7oUH6rRco49vdP1uOz4Jhs3RKwJwGs3ohzNnS7I3adQ8H69J4euaPxxKglX0iUkE2qF51Ri84ul541pNZ8L0x3/6CzdywDpGLrs+jZGimC7FxmKXMHOTHKLFIaJ4yQo3mkMAaKm+dsMYJ/CekupG9pN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=viOAiX6f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A9F6C433F1;
-	Tue, 23 Jan 2024 01:05:29 +0000 (UTC)
+	 MIME-Version; b=kmAI3GqgbuuPVvqEdXCV+xRztnDnx5RbQ3pLYuxEtrOnXpN6CKlguBSfNEG+1lN90i8hEQk4S5GFCc6049FsxCifTI8tbBca6OoiR8WWGk43o84sx5Q00HUoE3RM71rE6nl8D5j19aJI88fXlpDsDd27cC3hOkVOlXLkaBI3m8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vy4SO4O/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EBB2C433C7;
+	Tue, 23 Jan 2024 02:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971929;
-	bh=pH9YZwNCIgsfgcvEeq0joIHvFLIcY+vwekZ3xrGCPS0=;
+	s=korg; t=1705975542;
+	bh=dXF0GNEGTdyE8O8M1jSSzui8TwY41Mo3uhGh4XDdBAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=viOAiX6fagkly3di26QHBps1JCM36nZWbUcfi3zv7Pu6/UJhbcM16Y2Q7o8xKkJPg
-	 H2VQVbmeiX6S2NEQJD5VFciALSLWLYODrb2xU9Mt0gduYlhQ1MLK2FgrzqO1m7ut20
-	 N6Lzk7h3qxOYpIuOIwvT9TXEP27ZJAlMDff/7DV8=
+	b=Vy4SO4O/sy5MXxbExX7UKRMyksVP8NPzBIijmMUSRiZFLh4A16zD3S2/zv8iJM/EU
+	 nn/qp7UXeAXtD67cCg3ximAlJHTHMsEUy+NkiM4GL1tj/3Tq3RCb35jlpohZNaHNHy
+	 AgppBa/jKqK7OZPbIL2oht8QWQt2EsrMIJIuviTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Namhyung Kim <Namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Junhao He <hejunhao3@huawei.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Qi Liu <liuqi115@huawei.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Gregory Price <gregory.price@memverge.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 354/417] perf hisi-ptt: Fix one memory leakage in hisi_ptt_process_auxtrace_event()
+Subject: [PATCH 6.6 471/583] base/node.c: initialize the accessor list before registering
 Date: Mon, 22 Jan 2024 15:58:42 -0800
-Message-ID: <20240122235804.057925163@linuxfoundation.org>
+Message-ID: <20240122235826.399625393@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,51 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yicong Yang <yangyicong@hisilicon.com>
+From: Gregory Price <gourry.memverge@gmail.com>
 
-[ Upstream commit 1bc479d665bc25a9a4e8168d5b400a47491511f9 ]
+[ Upstream commit 48b5928e18dc27e05cab3dc4c78cd8a15baaf1e5 ]
 
-ASan complains a memory leakage in hisi_ptt_process_auxtrace_event()
-that the data buffer is not freed. Since currently we only support the
-raw dump trace mode, the data buffer is used only within this function.
-So fix this by freeing the data buffer before going out.
+The current code registers the node as available in the node array
+before initializing the accessor list.  This makes it so that
+anything which might access the accessor list as a result of
+allocations will cause an undefined memory access.
 
-Fixes: 5e91e57e68090c0e ("perf auxtrace arm64: Add support for parsing HiSilicon PCIe Trace packet")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-Acked-by: Namhyung Kim <Namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: Junhao He <hejunhao3@huawei.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Qi Liu <liuqi115@huawei.com>
-Link: https://lore.kernel.org/r/20231207081635.8427-3-yangyicong@huawei.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+In one example, an extension to access hmat data during interleave
+caused this undefined access as a result of a bulk allocation
+that occurs during node initialization but before the accessor
+list is initialized.
+
+Initialize the accessor list before making the node generally
+available to the global system.
+
+Fixes: 08d9dbe72b1f ("node: Link memory nodes to their compute nodes")
+Signed-off-by: Gregory Price <gregory.price@memverge.com>
+Link: https://lore.kernel.org/r/20231030044239.971756-1-gregory.price@memverge.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/hisi-ptt.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/base/node.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/tools/perf/util/hisi-ptt.c b/tools/perf/util/hisi-ptt.c
-index 45b614bb73bf..764d660d30e2 100644
---- a/tools/perf/util/hisi-ptt.c
-+++ b/tools/perf/util/hisi-ptt.c
-@@ -121,6 +121,7 @@ static int hisi_ptt_process_auxtrace_event(struct perf_session *session,
- 	if (dump_trace)
- 		hisi_ptt_dump_event(ptt, data, size);
+diff --git a/drivers/base/node.c b/drivers/base/node.c
+index 493d533f8375..4d588f4658c8 100644
+--- a/drivers/base/node.c
++++ b/drivers/base/node.c
+@@ -868,11 +868,15 @@ int __register_one_node(int nid)
+ {
+ 	int error;
+ 	int cpu;
++	struct node *node;
  
-+	free(data);
- 	return 0;
- }
+-	node_devices[nid] = kzalloc(sizeof(struct node), GFP_KERNEL);
+-	if (!node_devices[nid])
++	node = kzalloc(sizeof(struct node), GFP_KERNEL);
++	if (!node)
+ 		return -ENOMEM;
  
++	INIT_LIST_HEAD(&node->access_list);
++	node_devices[nid] = node;
++
+ 	error = register_node(node_devices[nid], nid);
+ 
+ 	/* link cpu under this node */
+@@ -881,7 +885,6 @@ int __register_one_node(int nid)
+ 			register_cpu_under_node(cpu, nid);
+ 	}
+ 
+-	INIT_LIST_HEAD(&node_devices[nid]->access_list);
+ 	node_init_caches(nid);
+ 
+ 	return error;
 -- 
 2.43.0
 
