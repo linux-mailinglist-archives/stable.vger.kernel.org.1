@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3D64838162
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:08:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 215A4837F0A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A8BB1F21805
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 558171C28D54
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD6C1420B3;
-	Tue, 23 Jan 2024 01:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB7360262;
+	Tue, 23 Jan 2024 00:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LyuJwBNw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iucXV7Vb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ABBA1339A7;
-	Tue, 23 Jan 2024 01:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A67860258;
+	Tue, 23 Jan 2024 00:48:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972121; cv=none; b=sRX+4AkIdB9lCJBj8qEcdraRiU80+51WkZ1oZ8Y9iCPAVD4vFVMIHpQ7ZcvHU8IHK3jFCTcgXRUXo3Z6AEUg+M0WmpZdFl43rLHn4IDGrCiZOqFLGH8C4uTtoFB9iU2d5jh1MBjZXdMX7TRvp1hAW+68Xez5/b11alNHE9N30dg=
+	t=1705970898; cv=none; b=mT51LUYHsRq7lSK86dUqIsBVAm72AmX/M6nxyzzODyDYpCmc03SJ0Iqy5BpFbik0eR2KE2lQxmaNSlcz0V9U9vyG9y1Fo43ze64YonSHSX2Y/YkYusE+/nuOFwIjaj5AhVVfjuWnlURE6lj/CVaOoDMxvr18NpILLKw9KtETPhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972121; c=relaxed/simple;
-	bh=gUPOWLOZe+rrlWCruekLxC+yYxAmeBx7dd/mWw9XnLA=;
+	s=arc-20240116; t=1705970898; c=relaxed/simple;
+	bh=uP5BoSd4iyrAg4yd8B08c/DKxQDgKUJitv00qgBWV/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IPKh7Ci5y/khRYXbaVVlNDOvzXUwdbwDlJjuRT6pT0e2Jwwe9D9p770WdNL25xDwaGg+c55h2yofO2h5vQZJG1JHWbXjdSYNow/rGZypHNon7aW7e+8DddjX0H55C0d7erCiFQwm9jfXn5MzNiEGc+F2l2aJr0nTMmIC0MIzbeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LyuJwBNw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB981C433C7;
-	Tue, 23 Jan 2024 01:08:40 +0000 (UTC)
+	 MIME-Version; b=o4eea9EnGtutYDHaNaFPLLr+YhrHNCiEzqRKucwMGPlpokLR4KPfmfyBjStoyLn+1MppUOr7QMUIqbeWFyE7gtsD6o0eHihZ8YM2npS6hvVhsquBJ0UYO3Kz3is7dL2kqaJFvtyCBUip+mTnUXtZkPrTzPeSzLdmKHqaoivQo/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iucXV7Vb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38ED0C43390;
+	Tue, 23 Jan 2024 00:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972120;
-	bh=gUPOWLOZe+rrlWCruekLxC+yYxAmeBx7dd/mWw9XnLA=;
+	s=korg; t=1705970898;
+	bh=uP5BoSd4iyrAg4yd8B08c/DKxQDgKUJitv00qgBWV/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LyuJwBNwOuhCisB+/O3KjLZt44Xw0DYkh0VAbuL5A9Mr5p/QytJdCdxVQXraCQVO4
-	 PCT3KrlekNvdbmF6z12yDEH2r7RjE0ctkXoBoWfF5ZVd4mO+88KMZ4mvVGCN99PdMR
-	 ZU9jjHAQ6X09mF4HNaRvcLWlhhWvwSToE2Gxga7w=
+	b=iucXV7VbKJmIqz/cybjBNIxtkFVOVUIVCqWnBC8mCu7FAPVPScDQdJYfyLUgKHb3S
+	 4QUbb3GynVDXy4/hXDO0sL8YfO1SGWOYWxb0zTBNAV8o16qsAzmehtM/rtN+qN0vzb
+	 KgwVk3RmAi8/TifY7kOFJCfQ+qQLzxFASgwHLakE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarannya Sasikumar <quic_sarannya@quicinc.com>,
-	Simon Horman <horms@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Su Hui <suhui@nfschina.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 047/374] net: qrtr: ns: Return 0 if server port is not present
+Subject: [PATCH 6.1 135/417] wifi: rtlwifi: rtl8192c: using calculate_bit_shift()
 Date: Mon, 22 Jan 2024 15:55:03 -0800
-Message-ID: <20240122235746.247167906@linuxfoundation.org>
+Message-ID: <20240122235756.506383506@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarannya S <quic_sarannya@quicinc.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 9bf2e9165f90dc9f416af53c902be7e33930f728 ]
+[ Upstream commit 1dedc3a6699d827d345019e921b8d8f37f694333 ]
 
-When a 'DEL_CLIENT' message is received from the remote, the corresponding
-server port gets deleted. A DEL_SERVER message is then announced for this
-server. As part of handling the subsequent DEL_SERVER message, the name-
-server attempts to delete the server port which results in a '-ENOENT' error.
-The return value from server_del() is then propagated back to qrtr_ns_worker,
-causing excessive error prints.
-To address this, return 0 from control_cmd_del_server() without checking the
-return value of server_del(), since the above scenario is not an error case
-and hence server_del() doesn't have any other error return value.
+Using calculate_bit_shift() to replace _rtl92c_phy_calculate_bit_shift().
+And fix the undefined bitwise shift behavior problem.
 
-Signed-off-by: Sarannya Sasikumar <quic_sarannya@quicinc.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 4295cd254af3 ("rtlwifi: Move common parts of rtl8192ce/phy.c")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-5-suhui@nfschina.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/qrtr/ns.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../wireless/realtek/rtlwifi/rtl8192c/phy_common.c   | 12 ++----------
+ .../wireless/realtek/rtlwifi/rtl8192c/phy_common.h   |  1 -
+ 2 files changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/net/qrtr/ns.c b/net/qrtr/ns.c
-index 3e40a1ba48f7..4a13b9f7abb4 100644
---- a/net/qrtr/ns.c
-+++ b/net/qrtr/ns.c
-@@ -569,7 +569,9 @@ static int ctrl_cmd_del_server(struct sockaddr_qrtr *from,
- 	if (!node)
- 		return -ENOENT;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
+index 3d29c8dbb255..144ee780e1b6 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.c
+@@ -17,7 +17,7 @@ u32 rtl92c_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE, "regaddr(%#x), bitmask(%#x)\n",
+ 		regaddr, bitmask);
+ 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-	bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	returnvalue = (originalvalue & bitmask) >> bitshift;
  
--	return server_del(node, port, true);
-+	server_del(node, port, true);
-+
-+	return 0;
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+@@ -40,7 +40,7 @@ void rtl92c_phy_set_bb_reg(struct ieee80211_hw *hw,
+ 
+ 	if (bitmask != MASKDWORD) {
+ 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-		bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++		bitshift = calculate_bit_shift(bitmask);
+ 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
+ 	}
+ 
+@@ -143,14 +143,6 @@ void _rtl92c_phy_rf_serial_write(struct ieee80211_hw *hw,
  }
+ EXPORT_SYMBOL(_rtl92c_phy_rf_serial_write);
  
- static int ctrl_cmd_new_lookup(struct sockaddr_qrtr *from,
+-u32 _rtl92c_phy_calculate_bit_shift(u32 bitmask)
+-{
+-	u32 i = ffs(bitmask);
+-
+-	return i ? i - 1 : 32;
+-}
+-EXPORT_SYMBOL(_rtl92c_phy_calculate_bit_shift);
+-
+ static void _rtl92c_phy_bb_config_1t(struct ieee80211_hw *hw)
+ {
+ 	rtl_set_bbreg(hw, RFPGA0_TXINFO, 0x3, 0x2);
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.h b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.h
+index 75afa6253ad0..e64d377dfe9e 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.h
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192c/phy_common.h
+@@ -196,7 +196,6 @@ bool rtl92c_phy_set_rf_power_state(struct ieee80211_hw *hw,
+ void rtl92ce_phy_set_rf_on(struct ieee80211_hw *hw);
+ void rtl92c_phy_set_io(struct ieee80211_hw *hw);
+ void rtl92c_bb_block_on(struct ieee80211_hw *hw);
+-u32 _rtl92c_phy_calculate_bit_shift(u32 bitmask);
+ long _rtl92c_phy_txpwr_idx_to_dbm(struct ieee80211_hw *hw,
+ 				  enum wireless_mode wirelessmode,
+ 				  u8 txpwridx);
 -- 
 2.43.0
 
