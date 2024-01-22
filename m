@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-12826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBBC8837ECE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:46:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6D46837F29
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED0DA1C23ED4
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:46:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80A4329BE1E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47609130E40;
-	Tue, 23 Jan 2024 00:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2AE6A008;
+	Tue, 23 Jan 2024 00:49:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqBbLuXf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J8aGOlnj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F1A130E3B;
-	Tue, 23 Jan 2024 00:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E262B128394;
+	Tue, 23 Jan 2024 00:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968096; cv=none; b=IPYP/ug/g0MBUpVgcvcLWybqrif576Fs9LnozSUCH1FGE1fBRWnNLNWZM5C/sNWtw3zy8BQdF9PplzX3aw4qK7VaCjUtKT2DizFG/tU2DkncHycLCmjSyu5MfBhg9cwAKP3DOdZlizaNP0lu4Hx5WBgfOxT//fRQoBFZEKrZLFE=
+	t=1705970973; cv=none; b=bfP2aunsmo/gHIwCkduTNNMgPWQEVtnAgvHy9+2PmAEKCcKK+qFTzzgIQoNJwQ8yWMu5RsRsf/p/jF6IrQVn5/4u5H79c80A9CRXDOMoQQBHmumbYSyKRS5LIF4n1Bv0zuqia7jBstIaaPpzLS+bFZWvxxBMtOig0+CnwL8jwkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968096; c=relaxed/simple;
-	bh=rWaXDadMo6bzkcy7PvTqT5GNXlgohuENfoIRi5Jvra0=;
+	s=arc-20240116; t=1705970973; c=relaxed/simple;
+	bh=n5KKsXnqQYkfKQy7qeRoFKYw70NSKh1uIfU5mZLKgcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nXB7CF/7Z/RfZ+twMT0UfGhybxmwW9AXAoP6ViH69isxuSLri/Tik/Bq5WSsKnIAj3sPerlTi04oQcIvButPih+NSoHFspDjHu74T7D3aj+HDx/0iDgcx52LmUrckRGvEZ4Y5QUcnb5g61y5RhPH4wvP/5uw9uBQOzt8A50qMNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqBbLuXf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E2DC433F1;
-	Tue, 23 Jan 2024 00:01:34 +0000 (UTC)
+	 MIME-Version; b=Vrrtx+E+xP4VMl0M/wt/KG132VI/8ZcfwCR0RqzqQ2FbftkNa417hdKPF+6ywaCIFYZ5xT1aZHbTrVPSemv7dBXEOw1Q3tESAfHZZi0bllcXZ5fffYhFKUW0b/qLlnyqqGhrXdVgTwXHYFRZWUYviN5eIdcuAnPn6LqjfTefXRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J8aGOlnj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596B4C433C7;
+	Tue, 23 Jan 2024 00:49:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968095;
-	bh=rWaXDadMo6bzkcy7PvTqT5GNXlgohuENfoIRi5Jvra0=;
+	s=korg; t=1705970972;
+	bh=n5KKsXnqQYkfKQy7qeRoFKYw70NSKh1uIfU5mZLKgcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EqBbLuXff5qGxdWZpS/M5E19TIk6guQcQHVwoZb28F1IM0NUxbB4VR1xHF2ox4E/O
-	 A5+k8tXrDi09BD+O8kRJ7g78XYh3aLU4A6bNm2nr+GPJcjJgtc2KzuzWuY0eyWCez4
-	 x2z80PaKyJ1m8/JvXwE57tKSpjMheEoPW+rAvp0s=
+	b=J8aGOlnj3lE52Gly1RNVV9XTp5N20BRD2NgUoMfE8lK0PY3JHFaEDsuSc1LqNc8tr
+	 QTILW0aZBf4O/bKGpXTcsgJ4AwueH6SxmJWo4+cinWbqPj6g3NNxoFY1nPAgfUm7s6
+	 PsDS5CkZFbVRWQgY7rWsaHhSdBwmRQ5unGA1c+L0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 010/148] jbd2: correct the printing of write_flags in jbd2_write_superblock()
+Subject: [PATCH 5.10 060/286] powerpc/imc-pmu: Add a null pointer check in update_events_in_group()
 Date: Mon, 22 Jan 2024 15:56:06 -0800
-Message-ID: <20240122235712.848182261@linuxfoundation.org>
+Message-ID: <20240122235734.342465150@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit 85559227211020b270728104c3b89918f7af27ac ]
+[ Upstream commit 0a233867a39078ebb0f575e2948593bbff5826b3 ]
 
-The write_flags print in the trace of jbd2_write_superblock() is not
-real, so move the modification before the trace.
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20231129114740.2686201-1-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 885dcd709ba9 ("powerpc/perf: Add nest IMC PMU support")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231126093719.1440305-1-chentao@kylinos.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/journal.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/powerpc/perf/imc-pmu.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
-index 8a50722bca29..629928b19e48 100644
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -1375,9 +1375,11 @@ static int jbd2_write_superblock(journal_t *journal, int write_flags)
- 		return -EIO;
- 	}
+diff --git a/arch/powerpc/perf/imc-pmu.c b/arch/powerpc/perf/imc-pmu.c
+index 3e15d0d054b2..5464c87511fa 100644
+--- a/arch/powerpc/perf/imc-pmu.c
++++ b/arch/powerpc/perf/imc-pmu.c
+@@ -292,6 +292,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
+ 	attr_group->attrs = attrs;
+ 	do {
+ 		ev_val_str = kasprintf(GFP_KERNEL, "event=0x%x", pmu->events[i].value);
++		if (!ev_val_str)
++			continue;
+ 		dev_str = device_str_attr_create(pmu->events[i].name, ev_val_str);
+ 		if (!dev_str)
+ 			continue;
+@@ -299,6 +301,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
+ 		attrs[j++] = dev_str;
+ 		if (pmu->events[i].scale) {
+ 			ev_scale_str = kasprintf(GFP_KERNEL, "%s.scale", pmu->events[i].name);
++			if (!ev_scale_str)
++				continue;
+ 			dev_str = device_str_attr_create(ev_scale_str, pmu->events[i].scale);
+ 			if (!dev_str)
+ 				continue;
+@@ -308,6 +312,8 @@ static int update_events_in_group(struct device_node *node, struct imc_pmu *pmu)
  
--	trace_jbd2_write_superblock(journal, write_flags);
- 	if (!(journal->j_flags & JBD2_BARRIER))
- 		write_flags &= ~(REQ_FUA | REQ_PREFLUSH);
-+
-+	trace_jbd2_write_superblock(journal, write_flags);
-+
- 	if (buffer_write_io_error(bh)) {
- 		/*
- 		 * Oh, dear.  A previous attempt to write the journal
+ 		if (pmu->events[i].unit) {
+ 			ev_unit_str = kasprintf(GFP_KERNEL, "%s.unit", pmu->events[i].name);
++			if (!ev_unit_str)
++				continue;
+ 			dev_str = device_str_attr_create(ev_unit_str, pmu->events[i].unit);
+ 			if (!dev_str)
+ 				continue;
 -- 
 2.43.0
 
