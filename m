@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-13707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D684837D7E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 007D583804B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80BBB1C21F6F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32FF91C2969C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7935C61A;
-	Tue, 23 Jan 2024 00:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BDA765BCF;
+	Tue, 23 Jan 2024 01:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AHOogEKN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTh9P7U3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6594E1D8;
-	Tue, 23 Jan 2024 00:33:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B17E65193;
+	Tue, 23 Jan 2024 01:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969983; cv=none; b=m2a4n2axaWaZfY2TUkdoak150qwQkid/438uIW1mo8otSfuq3d2hG94+Kx5wnSl2z5TbhMA80S+UKp4RRwrfNN1kbeLP62fsbG92RAf46pHu/MwcYRJkrjwOfc8psLsNXXXHOzsOrxwg9hB7CEVfKplje6RUrzWtVjjHaj9SFVo=
+	t=1705971649; cv=none; b=uybC0bzsymC946ycIuH+E275fG2jyFwAmkPr83bHi9pO1pqwHA3/oB4bEM7mZhqjbSqHugQm0DpOKvM4qps7pDjhkz8+YfGHvFKy0cCFY/LP3VQn7lm4GBG2LgBufLrwrLF9bU6QYCryL3Y7XVAeyRb33FRM8yg+J6we54TCi9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969983; c=relaxed/simple;
-	bh=77zxqxUR5h65KVON6jw943z8wZUnKoWNVRo7i9pP2Ms=;
+	s=arc-20240116; t=1705971649; c=relaxed/simple;
+	bh=2GSERM8zkjdJJEmW0GrdH6qd0hysEQNRzNpm9GCSKAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fY3c/TFZ5ljtPwlWNHP0Qlw6+LUPYHxJr1lUyPe1wF2r7fMqHZjGYoKWpIFABzHX+Be2v3Vro/L2aUKKZWizwZGBv8e63D68pj5bXr2HxAz8cqzXuyIjB5nI0+w+OcOvTZ5eiIMSgC0hhiiLPNicuM2afERCZZudTAIW/lne/bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AHOogEKN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC066C433C7;
-	Tue, 23 Jan 2024 00:33:02 +0000 (UTC)
+	 MIME-Version; b=MjiZXTdsjrGGz1hIDZdkkCnntwEzRBDwzCx92MsICmpGN2FamOh6gZK18IWgJQ4+SXOggbNVtp/JfWmWDgfE21LqckPkwQh2HdbrR4yTYVHFGnRppg6p1os3ik672nmrWa0kEVrAltd7rZ0mNMrtFRFv7VKDMMEA55Nf29bKnxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTh9P7U3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD708C433F1;
+	Tue, 23 Jan 2024 01:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969982;
-	bh=77zxqxUR5h65KVON6jw943z8wZUnKoWNVRo7i9pP2Ms=;
+	s=korg; t=1705971649;
+	bh=2GSERM8zkjdJJEmW0GrdH6qd0hysEQNRzNpm9GCSKAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AHOogEKNzjCHe7P1WZ6li9eKEy1lPL2c7ncgsjkn4YUaK6RGpIrGej6JgFTQlggeQ
-	 6Yya2Dk7EmMpolbp2bJD26wtnW5ag546yp/jJRezc5iT2fvxrdnZsKcO821cc0lUof
-	 +niyrZ8FiEBAwcPnUG2ULknyJci8EEkGOTFIxsn8=
+	b=QTh9P7U3Y1ycFnrEcerBsS1l50QpBjYtMBVc631cV0nYexecfJKUSwXyzFoSfSrV6
+	 Giu7tv2APRwK8BdoZVpMZVfLZBByRYmBMH3Ug88Z2rfOehM5QaJFa86a/LiFsfE386
+	 Eue/z5G2yg9SJqLjD8+eNLsWDwGm2TUDOd5WnJWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 550/641] power: supply: Fix null pointer dereference in smb2_probe
+	xingwei lee <xrivendell7@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 286/417] io_uring/rw: ensure io->bytes_done is always initialized
 Date: Mon, 22 Jan 2024 15:57:34 -0800
-Message-ID: <20240122235835.356136298@linuxfoundation.org>
+Message-ID: <20240122235801.747394156@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 88f04bc3e737155e13caddf0ba8ed19db87f0212 ]
+commit 0a535eddbe0dc1de4386046ab849f08aeb2f8faf upstream.
 
-devm_kasprintf and devm_kzalloc return a pointer to dynamically
-allocated memory which can be NULL upon failure.
+If IOSQE_ASYNC is set and we fail importing an iovec for a readv or
+writev request, then we leave ->bytes_done uninitialized and hence the
+eventual failure CQE posted can potentially have a random res value
+rather than the expected -EINVAL.
 
-Fixes: 8648aeb5d7b7 ("power: supply: add Qualcomm PMI8998 SMB2 Charger driver")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Link: https://lore.kernel.org/r/20231124075021.1335289-1-chentao@kylinos.cn
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Setup ->bytes_done before potentially failing, so we have a consistent
+value if we fail the request early.
+
+Cc: stable@vger.kernel.org
+Reported-by: xingwei lee <xrivendell7@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/qcom_pmi8998_charger.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ io_uring/rw.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/power/supply/qcom_pmi8998_charger.c b/drivers/power/supply/qcom_pmi8998_charger.c
-index 8acf63ee6897..9bb777406013 100644
---- a/drivers/power/supply/qcom_pmi8998_charger.c
-+++ b/drivers/power/supply/qcom_pmi8998_charger.c
-@@ -972,10 +972,14 @@ static int smb2_probe(struct platform_device *pdev)
- 	supply_config.of_node = pdev->dev.of_node;
+--- a/io_uring/rw.c
++++ b/io_uring/rw.c
+@@ -534,15 +534,19 @@ static inline int io_rw_prep_async(struc
+ 	struct iovec *iov;
+ 	int ret;
  
- 	desc = devm_kzalloc(chip->dev, sizeof(smb2_psy_desc), GFP_KERNEL);
-+	if (!desc)
-+		return -ENOMEM;
- 	memcpy(desc, &smb2_psy_desc, sizeof(smb2_psy_desc));
- 	desc->name =
- 		devm_kasprintf(chip->dev, GFP_KERNEL, "%s-charger",
- 			       (const char *)device_get_match_data(chip->dev));
-+	if (!desc->name)
-+		return -ENOMEM;
++	iorw->bytes_done = 0;
++	iorw->free_iovec = NULL;
++
+ 	/* submission path, ->uring_lock should already be taken */
+ 	ret = io_import_iovec(rw, req, &iov, &iorw->s, 0);
+ 	if (unlikely(ret < 0))
+ 		return ret;
  
- 	chip->chg_psy =
- 		devm_power_supply_register(chip->dev, desc, &supply_config);
--- 
-2.43.0
-
+-	iorw->bytes_done = 0;
+-	iorw->free_iovec = iov;
+-	if (iov)
++	if (iov) {
++		iorw->free_iovec = iov;
+ 		req->flags |= REQ_F_NEED_CLEANUP;
++	}
++
+ 	return 0;
+ }
+ 
 
 
 
