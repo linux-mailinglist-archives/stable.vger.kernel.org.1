@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-13777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93BA3837DFB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F363C8380E6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33FBD1F29C16
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:34:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32F751C28710
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF80C50A6E;
-	Tue, 23 Jan 2024 00:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 037771350ED;
+	Tue, 23 Jan 2024 01:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzbS7QsX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="11bFDg9X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2C24E1D0;
-	Tue, 23 Jan 2024 00:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B586F1350E3;
+	Tue, 23 Jan 2024 01:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970262; cv=none; b=J8GQWs8w/bwJQ5Y2vt6cDP+UKlDZ/xWvm+8ZXON6AOySnZW12ncY8sCnsAyjZz7+siC7x3G+KlLMTo8K8tbfWj0/+Y7tsF0j4HD2apeoN6ih7kDsh4DBLFETXemE7YSB4rDWBMTw4/oZ4N58IXMoqg1jMz+x+3HtmvZXO63y+Zs=
+	t=1705971950; cv=none; b=A4Jb6GGBQwldrbIuJwymXxvk+0iTylt+RAdng+ODVSFza9i4N20yoxwM6XHGK+se2zAp+JTDSKqXTHCu4Bdse36YQ4q/epeUfNM7cNG/vFvHNTLEfrY5EQ+7Da9DHBxBgAeJyroCaDJ2iywkwlNFK48uNJFYwnGifpwlBUzMWnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970262; c=relaxed/simple;
-	bh=rZNLVV1kC+EcnF+A9r927mwcXMwonbMfhqkDgGl+dcw=;
+	s=arc-20240116; t=1705971950; c=relaxed/simple;
+	bh=JdKJGqwnp4Nq2SZhSt4ykXhoNRAOAzCFmfNeUaV89JU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PtOI8VA9o1DMW8byBWEByktlOtT418VWTvNVHsEHzNKqv1+INteePw/S02oa4CpuJB5d1DDUhiLRXvj5AXwmUgMvsknl+bmuwlSqMQ0qhMZ5yXNshnXcnbY8TwaZWDNRR00qg0YHzF/OKeRYyQBfa5UxRUW7vSrIhRZZ/5deVWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzbS7QsX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76544C43394;
-	Tue, 23 Jan 2024 00:37:40 +0000 (UTC)
+	 MIME-Version; b=ST0nZjDWf+BO1lI6zaVyeHtIQSth9X1mqsptabhSgtaEHPzqS1M0+Z7ifG4litb/CPV7f1PMjqqnIJn2gCa1ODbWT6q5qGRekgiTPm+OtNOh16fojc0a0tntqu2TKMOekzzquDdDRPNUMbxklqKpNdd0IgLB9BEDcN4AiGyDmY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=11bFDg9X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A396C433C7;
+	Tue, 23 Jan 2024 01:05:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970262;
-	bh=rZNLVV1kC+EcnF+A9r927mwcXMwonbMfhqkDgGl+dcw=;
+	s=korg; t=1705971950;
+	bh=JdKJGqwnp4Nq2SZhSt4ykXhoNRAOAzCFmfNeUaV89JU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jzbS7QsXL2ZHI+blx8KMdqHUWW4vNSTgtgZOjcyVAeXLa0bPRlkr4iMS/FRcFHic2
-	 yKRDYztw34xeE0Os17a67HYbqFnYY02rsqaMFKuOM0F9h0rwTsNN5o6s+UtS0vr0BV
-	 urE8Hbi0MfXaS3JQDAk/eeVQb8z/2AV6x+9Jv0pg=
+	b=11bFDg9X8wLI/EzkPDavwdzOTS/yKX5SETo7Rqq9f7bJ2yjdXpLpq+jdil5zLqNNg
+	 MXKR37TVCbZU+hZdpqzH9PykFKwzRuH1OW3MQJnDoRI3GEdTO74j+GzWFe9rKhpUT5
+	 er6+bWiAS35nt65+oMTczgxvChpH2Znz9nHUB2SU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 622/641] netfilter: nf_queue: remove excess nf_bridge variable
-Date: Mon, 22 Jan 2024 15:58:46 -0800
-Message-ID: <20240122235837.720150187@linuxfoundation.org>
+Subject: [PATCH 6.1 359/417] tty: use if in send_break() instead of goto
+Date: Mon, 22 Jan 2024 15:58:47 -0800
+Message-ID: <20240122235804.253233028@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit aeaa44075f8e49e2e0ad4507d925e690b7950145 ]
+[ Upstream commit 24f2cd019946fc2e88e632d2e24a34c2cc3f2be4 ]
 
-We don't really need nf_bridge variable here. And nf_bridge_info_exists
-is better replacement for nf_bridge_info_get in case we are only
-checking for existence.
+Now, the "jumped-over" code is simple enough to be put inside an 'if'.
+Do so to make it 'goto'-less.
 
-Signed-off-by: Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 9874808878d9 ("netfilter: bridge: replace physindev with physinif in nf_bridge_info")
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20230919085156.1578-16-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 66aad7d8d3ec ("usb: cdc-acm: return correct error code on unsupported break")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_queue.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/tty/tty_io.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/nf_queue.c b/net/netfilter/nf_queue.c
-index 63d1516816b1..3dfcb3ac5cb4 100644
---- a/net/netfilter/nf_queue.c
-+++ b/net/netfilter/nf_queue.c
-@@ -82,10 +82,8 @@ static void __nf_queue_entry_init_physdevs(struct nf_queue_entry *entry)
- {
- #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
- 	const struct sk_buff *skb = entry->skb;
--	struct nf_bridge_info *nf_bridge;
+diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
+index 41e01a8ccc4c..43be3b42aaaf 100644
+--- a/drivers/tty/tty_io.c
++++ b/drivers/tty/tty_io.c
+@@ -2479,11 +2479,10 @@ static int send_break(struct tty_struct *tty, unsigned int duration)
+ 		return -EINTR;
  
--	nf_bridge = nf_bridge_info_get(skb);
--	if (nf_bridge) {
-+	if (nf_bridge_info_exists(skb)) {
- 		entry->physin = nf_bridge_get_physindev(skb);
- 		entry->physout = nf_bridge_get_physoutdev(skb);
- 	} else {
+ 	retval = tty->ops->break_ctl(tty, -1);
+-	if (retval)
+-		goto out;
+-	msleep_interruptible(duration);
+-	retval = tty->ops->break_ctl(tty, 0);
+-out:
++	if (!retval) {
++		msleep_interruptible(duration);
++		retval = tty->ops->break_ctl(tty, 0);
++	}
+ 	tty_write_unlock(tty);
+ 
+ 	if (signal_pending(current))
 -- 
 2.43.0
 
