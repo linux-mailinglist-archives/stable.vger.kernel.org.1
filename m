@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-15378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C2E38384F5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:58 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF7C283832C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6EEB1F28186
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E76D1C2990E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288267A70C;
-	Tue, 23 Jan 2024 02:05:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE86D50266;
+	Tue, 23 Jan 2024 01:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CX68/MGr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qjgfSzKY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC65677F2F;
-	Tue, 23 Jan 2024 02:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4214E1CC;
+	Tue, 23 Jan 2024 01:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975545; cv=none; b=naKxoOJ/P+JcLz9TfFYc2/cf9IZhM9B+CyK9HKvioLF0lWxIyx73JwfLAsKy4bNNwt9d6KJLNmzdUkmGAzGQ6lJmtonrENfI/CuorGWb8QET1BIOOd1IITSsdkEyIdQ857BnhbCBZ+iCCev0O51cOxgJPXM46S+ek951C7eIyKs=
+	t=1705974724; cv=none; b=bE8404IlflBGicP30C/v45KQEopPzsRcHYbwnZ4yiPJNqg0KHoYTqFP3JpedDCjVZ1Cd2iq8wr+PSAfHRsliaT9RqvBbHsNcz6SRAu5NxMGP3Tzw5CrYdadhOD9O0KaK9NzWJ1L18++Cf30ihuUkUuLc3BBppkzPaGLACdIsHzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975545; c=relaxed/simple;
-	bh=YZUYCJ3iC90OBJldgIAVmxMVRH1b6q2phmnvkEf7H78=;
+	s=arc-20240116; t=1705974724; c=relaxed/simple;
+	bh=GD0bgRSWDpDfHKjneyDHxKnLKPU569RcCwEUTIeH0B4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sDQfo2+LjFDMoMdGhLE6MRIOHNBfk074rhfymKGk1/1G3JpbmSusY9+4z416D2Oh9lgBwEHBEaO2M+muvj+Qmh3qDX/3D4fxWRpgB3IIo6UbRxXDcU1DWseKLpE/bkPbIIK4qVzjWuvfa7mc+abWixww3J+O9U/YicPcpBBaDrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CX68/MGr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DA3C43390;
-	Tue, 23 Jan 2024 02:05:45 +0000 (UTC)
+	 MIME-Version; b=g1MoEbTcEm0aI5FVhYQc/q+V7IjS8juSBgUrQ2h8qVitrCiaArcHTauJsYrB3atqlEN5DjF82fWze55tQy0nks40GF4K/O3Iss5DkfW7S7zClYW5BoeDm3NfNbqSsZWisZOPR3EM611CUrLH8k+JQzsB1kQqK1CXsjFi+jRimoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qjgfSzKY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DDF9C433C7;
+	Tue, 23 Jan 2024 01:52:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975545;
-	bh=YZUYCJ3iC90OBJldgIAVmxMVRH1b6q2phmnvkEf7H78=;
+	s=korg; t=1705974724;
+	bh=GD0bgRSWDpDfHKjneyDHxKnLKPU569RcCwEUTIeH0B4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CX68/MGrV3aTrnDka6PKYlNDOtZBQT5Q80Gi53gu4fR2cEKOQLvHztntJdfBzvxTb
-	 sHmWxFRpFK9fs+NYGdI2TiiJPefG/sG0l3wRYr825qs+1W1OcF/qBiYlObGDhyY2UF
-	 0nTvoiJOeAupAeghK1J/5IH5dYC2SBxIh72hM58Q=
+	b=qjgfSzKYI71VgTXcQ2UlwmzRKK9xua0P/BnqhNjfMjbQ6dn94Ym6UjeyXy1ihaf2z
+	 Pha2z7QiuwN4yDK9INSER+lN2KaMzXBP34GgxdyxbwbC3Xnn7qNauSLChSGq/qBguM
+	 1FhYRr95Hek/6WoRWl6ZCcucYofNU01IdxzGjPI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 473/583] software node: Let args be NULL in software_node_get_reference_args
+	Sathya Prakash <sathya.prakash@broadcom.com>,
+	Chandrakanth patil <chandrakanth.patil@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 268/374] scsi: mpi3mr: Refresh sdev queue depth after controller reset
 Date: Mon, 22 Jan 2024 15:58:44 -0800
-Message-ID: <20240122235826.463788614@linuxfoundation.org>
+Message-ID: <20240122235754.093472601@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Chandrakanth patil <chandrakanth.patil@broadcom.com>
 
-[ Upstream commit 1eaea4b3604eb9ca7d9a1e73d88fc121bb4061f5 ]
+commit e5aab848dfdf7996d20ece4d28d2733c732c5e5a upstream.
 
-fwnode_get_property_reference_args() may not be called with args argument
-NULL and while OF already supports this. Add the missing NULL check.
+After a controller reset, the firmware may modify the device queue depth.
+Therefore, update the device queue depth accordingly.
 
-The purpose is to be able to count the references.
-
-Fixes: b06184acf751 ("software node: Add software_node_get_reference_args()")
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20231109101010.1329587-3-sakari.ailus@linux.intel.com
+Cc: <stable@vger.kernel.org> # v5.15+
+Co-developed-by: Sathya Prakash <sathya.prakash@broadcom.com>
+Signed-off-by: Sathya Prakash <sathya.prakash@broadcom.com>
+Signed-off-by: Chandrakanth patil <chandrakanth.patil@broadcom.com>
+Link: https://lore.kernel.org/r/20231126053134.10133-2-chandrakanth.patil@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/swnode.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/mpi3mr/mpi3mr_os.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-index 1886995a0b3a..079bd14bdedc 100644
---- a/drivers/base/swnode.c
-+++ b/drivers/base/swnode.c
-@@ -541,6 +541,9 @@ software_node_get_reference_args(const struct fwnode_handle *fwnode,
- 	if (nargs > NR_FWNODE_REFERENCE_ARGS)
- 		return -EINVAL;
+--- a/drivers/scsi/mpi3mr/mpi3mr_os.c
++++ b/drivers/scsi/mpi3mr/mpi3mr_os.c
+@@ -781,8 +781,14 @@ void mpi3mr_rfresh_tgtdevs(struct mpi3mr
+ 	tgtdev = NULL;
+ 	list_for_each_entry(tgtdev, &mrioc->tgtdev_list, list) {
+ 		if ((tgtdev->dev_handle != MPI3MR_INVALID_DEV_HANDLE) &&
+-		    !tgtdev->is_hidden && !tgtdev->host_exposed)
+-			mpi3mr_report_tgtdev_to_host(mrioc, tgtdev->perst_id);
++		    !tgtdev->is_hidden) {
++			if (!tgtdev->host_exposed)
++				mpi3mr_report_tgtdev_to_host(mrioc,
++							     tgtdev->perst_id);
++			else if (tgtdev->starget)
++				starget_for_each_device(tgtdev->starget,
++							(void *)tgtdev, mpi3mr_update_sdev);
++	}
+ 	}
+ }
  
-+	if (!args)
-+		return 0;
-+
- 	args->fwnode = software_node_get(refnode);
- 	args->nargs = nargs;
- 
--- 
-2.43.0
-
 
 
 
