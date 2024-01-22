@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-14784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A903838290
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:28 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 902A2837BA9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 528051F25C8E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E3FD28D4C8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66D25D8EB;
-	Tue, 23 Jan 2024 01:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08039151458;
+	Tue, 23 Jan 2024 00:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DYURG26k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yp5hVTip"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F5A5C908;
-	Tue, 23 Jan 2024 01:46:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B163714DB4A;
+	Tue, 23 Jan 2024 00:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974381; cv=none; b=Jp9QFdnHP/EieVMQJ6jL7lVKYzlaTGeU3jRv1pLL5T8lzj2Cb9D1QGSOaIgWzy72EINHxFfmlmbGfAFwv2NKtSLIFTzQBotJCSjQdazWvJgEulOVMLIA4O0TcxPXyIozgLMruWR/iZ+zsPtLb3nE4BiHG8UdTzk8VMKdfVy2MSs=
+	t=1705969365; cv=none; b=bDQGLRexjTOjpn4cMphUSgHc+TeUDafGY4by+VfjqcnlVwZLppUP0dA+k7iWdcYvhM6rYBLAOid5c/otBMMEUk2n2Y/d39lM4dAovA8zeRbS+dIx9MMH6Wa1SYEcEmf/uevTIm3RBt8DCkAVksJmFfORazI+HdyAsxlygQA4SNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974381; c=relaxed/simple;
-	bh=p4PDCaaA+piD2IpXoEVPvGEPLBBSpd0i0tBpOZFGhYc=;
+	s=arc-20240116; t=1705969365; c=relaxed/simple;
+	bh=HzM0q1sLMLW+/SAyGxXdsdvN51eH8QX2zHn/WNnydtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HR9erOd8yvvho9Cig+UkDsFGKfWBAamb0YymLv/IUwIM7QM3YoRM4AQtjidCy2CUMrtQqGB+q1KNnZuUUxTkaqMbC+C5D4OO894284/J26m1odlLuLX5Gc0Qr1BwR1tJXatL6DKNTYYlxUEiQNa/Mf3LRXaNWgtzpA4453w/b/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DYURG26k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DA8EC433F1;
-	Tue, 23 Jan 2024 01:46:21 +0000 (UTC)
+	 MIME-Version; b=QlveFMsnlNqCa5Gy76cXtgv8dWti/TQa1Y3tjCDK53IoXHiYhO5ktCuZJDimZeU6F4irE9CL+zt50AKbBqNu2jqd+LIYBQT2Q5hPK/ONPX7TGbDB8NC5BVJIx8OTqwodpjt96qv2amQ1FNjMD3x9d+LLle9ngfmHY3yJ/xaDsRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yp5hVTip; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C45C433F1;
+	Tue, 23 Jan 2024 00:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974381;
-	bh=p4PDCaaA+piD2IpXoEVPvGEPLBBSpd0i0tBpOZFGhYc=;
+	s=korg; t=1705969365;
+	bh=HzM0q1sLMLW+/SAyGxXdsdvN51eH8QX2zHn/WNnydtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DYURG26kS/cgECCBCftQownQyC02JPwaW4y5df5qaj/siBDJquK08nySHJGgZEO0i
-	 fTUaRU+YsfYOM4fqJbJQsD2ItkG0A7QABz6BFPFBtRjVibcx8LDZXzs60KNxtwMduV
-	 3tsw/F7kursdDEPPfj3GUQw9cxMLuGMvQP18Sc/I=
+	b=yp5hVTipUjVplAfYABEEpYTVGWDggcAQXvhkmyzP13m1JJ96HbxQwAO3FD90BQTqj
+	 1y4vAw+81KJjR4bsKkQ8JohejuPzkVj6wbf9mXltdT+pOt+7PJtP4cwhck5cTsw4+T
+	 v7Gso4eyJAVCRtAsQDhDPCHdWCeg0ZrqmuNG6/Bc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/583] crypto: sahara - fix cbc selftest failure
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Maximilian Luz <luzmaximilian@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Deepti Jaggi <quic_djaggi@quicinc.com>
+Subject: [PATCH 6.7 197/641] firmware: qcom: qseecom: fix memory leaks in error paths
 Date: Mon, 22 Jan 2024 15:51:41 -0800
-Message-ID: <20240122235813.666774103@linuxfoundation.org>
+Message-ID: <20240122235824.128478448@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +66,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 9f10bc28c0fb676ae58aa3bfa358db8f5de124bb ]
+[ Upstream commit 6c57d7b593c4a4e60db65d5ce0fe1d9f79ccbe9b ]
 
-The kernel crypto API requires that all CBC implementations update the IV
-buffer to contain the last ciphertext block.
+Fix instances of returning error codes directly instead of jumping to
+the relevant labels where memory allocated for the SCM calls would be
+freed.
 
-This fixes the following cbc selftest error:
-alg: skcipher: sahara-cbc-aes encryption test failed (wrong output IV) on
-test vector 0, cfg="in-place (one sglist)"
-
-Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 759e7a2b62eb ("firmware: Add support for Qualcomm UEFI Secure Application")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202311270828.k4HGcjiL-lkp@intel.com/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Maximilian Luz <luzmaximilian@gmail.com>
+Tested-by: Deepti Jaggi <quic_djaggi@quicinc.com> #sa8775p-ride
+Link: https://lore.kernel.org/r/20231127141600.20929-2-brgl@bgdev.pl
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 33 +++++++++++++++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
+ .../firmware/qcom/qcom_qseecom_uefisecapp.c   | 20 ++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 79708919260a..037a623271f3 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -148,6 +148,7 @@ struct sahara_ctx {
+diff --git a/drivers/firmware/qcom/qcom_qseecom_uefisecapp.c b/drivers/firmware/qcom/qcom_qseecom_uefisecapp.c
+index a33acdaf7b78..32188f098ef3 100644
+--- a/drivers/firmware/qcom/qcom_qseecom_uefisecapp.c
++++ b/drivers/firmware/qcom/qcom_qseecom_uefisecapp.c
+@@ -325,8 +325,10 @@ static efi_status_t qsee_uefi_get_variable(struct qcuefi_client *qcuefi, const e
+ 	req_data->length = req_size;
  
- struct sahara_aes_reqctx {
- 	unsigned long mode;
-+	u8 iv_out[AES_BLOCK_SIZE];
- 	struct skcipher_request fallback_req;	// keep at the end
- };
- 
-@@ -541,8 +542,24 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
- 	return -EINVAL;
- }
- 
-+static void sahara_aes_cbc_update_iv(struct skcipher_request *req)
-+{
-+	struct crypto_skcipher *skcipher = crypto_skcipher_reqtfm(req);
-+	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
-+	unsigned int ivsize = crypto_skcipher_ivsize(skcipher);
-+
-+	/* Update IV buffer to contain the last ciphertext block */
-+	if (rctx->mode & FLAGS_ENCRYPT) {
-+		sg_pcopy_to_buffer(req->dst, sg_nents(req->dst), req->iv,
-+				   ivsize, req->cryptlen - ivsize);
-+	} else {
-+		memcpy(req->iv, rctx->iv_out, ivsize);
-+	}
-+}
-+
- static int sahara_aes_process(struct skcipher_request *req)
- {
-+	struct crypto_skcipher *skcipher = crypto_skcipher_reqtfm(req);
- 	struct sahara_dev *dev = dev_ptr;
- 	struct sahara_ctx *ctx;
- 	struct sahara_aes_reqctx *rctx;
-@@ -564,8 +581,17 @@ static int sahara_aes_process(struct skcipher_request *req)
- 	rctx->mode &= FLAGS_MODE_MASK;
- 	dev->flags = (dev->flags & ~FLAGS_MODE_MASK) | rctx->mode;
- 
--	if ((dev->flags & FLAGS_CBC) && req->iv)
--		memcpy(dev->iv_base, req->iv, AES_KEYSIZE_128);
-+	if ((dev->flags & FLAGS_CBC) && req->iv) {
-+		unsigned int ivsize = crypto_skcipher_ivsize(skcipher);
-+
-+		memcpy(dev->iv_base, req->iv, ivsize);
-+
-+		if (!(dev->flags & FLAGS_ENCRYPT)) {
-+			sg_pcopy_to_buffer(req->src, sg_nents(req->src),
-+					   rctx->iv_out, ivsize,
-+					   req->cryptlen - ivsize);
-+		}
+ 	status = ucs2_strscpy(((void *)req_data) + req_data->name_offset, name, name_length);
+-	if (status < 0)
+-		return EFI_INVALID_PARAMETER;
++	if (status < 0) {
++		efi_status = EFI_INVALID_PARAMETER;
++		goto out_free;
 +	}
  
- 	/* assign new context to device */
- 	dev->ctx = ctx;
-@@ -588,6 +614,9 @@ static int sahara_aes_process(struct skcipher_request *req)
- 	dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
- 		DMA_TO_DEVICE);
+ 	memcpy(((void *)req_data) + req_data->guid_offset, guid, req_data->guid_size);
  
-+	if ((dev->flags & FLAGS_CBC) && req->iv)
-+		sahara_aes_cbc_update_iv(req);
-+
- 	return 0;
- }
+@@ -471,8 +473,10 @@ static efi_status_t qsee_uefi_set_variable(struct qcuefi_client *qcuefi, const e
+ 	req_data->length = req_size;
  
+ 	status = ucs2_strscpy(((void *)req_data) + req_data->name_offset, name, name_length);
+-	if (status < 0)
+-		return EFI_INVALID_PARAMETER;
++	if (status < 0) {
++		efi_status = EFI_INVALID_PARAMETER;
++		goto out_free;
++	}
+ 
+ 	memcpy(((void *)req_data) + req_data->guid_offset, guid, req_data->guid_size);
+ 
+@@ -563,8 +567,10 @@ static efi_status_t qsee_uefi_get_next_variable(struct qcuefi_client *qcuefi,
+ 	memcpy(((void *)req_data) + req_data->guid_offset, guid, req_data->guid_size);
+ 	status = ucs2_strscpy(((void *)req_data) + req_data->name_offset, name,
+ 			      *name_size / sizeof(*name));
+-	if (status < 0)
+-		return EFI_INVALID_PARAMETER;
++	if (status < 0) {
++		efi_status = EFI_INVALID_PARAMETER;
++		goto out_free;
++	}
+ 
+ 	status = qcom_qseecom_app_send(qcuefi->client, req_data, req_size, rsp_data, rsp_size);
+ 	if (status) {
+@@ -635,7 +641,7 @@ static efi_status_t qsee_uefi_get_next_variable(struct qcuefi_client *qcuefi,
+ 		 * have already been validated above, causing this function to
+ 		 * bail with EFI_BUFFER_TOO_SMALL.
+ 		 */
+-		return EFI_DEVICE_ERROR;
++		efi_status = EFI_DEVICE_ERROR;
+ 	}
+ 
+ out_free:
 -- 
 2.43.0
 
