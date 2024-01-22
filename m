@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-15192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06F79838444
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:33:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40A9B83818C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:09:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAA05298F79
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:33:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECF3F28C7A4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC3F6A355;
-	Tue, 23 Jan 2024 02:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D86F3FDB;
+	Tue, 23 Jan 2024 01:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0j9m1ee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rVCyhOQt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6FF6A320;
-	Tue, 23 Jan 2024 02:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF42A3D63;
+	Tue, 23 Jan 2024 01:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975347; cv=none; b=WR3fzKjjwgbRQmaBAGswsRIEEUGeqsGa1lB5ER9okrZZlonMXJfgUBPSxycnNFlrrzLcK0SUPqi1qBb027YfOgfHpHRMw2F+BTflkRADb1rvjppM8mzQjv0T01DqmGHkxedJLtgjGK/JkXhaPs6z20LdX7VvisFQcC9BwhPxhI4=
+	t=1705972171; cv=none; b=EtSTYszJz86PeMQuC7JRmGKClFgfxG9zRhBwKtQIjDkryDj4FtRXflvnRPvac6McQrk7M5uiyRaGO1bKcHkoD++WMlOXGAyIjF1c903t+0R+6LXx/GrcWg4FtZh/5LGvVg84D5sg3IMmHugBo1OUszYccsU9VELkjPPmfdwA/rU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975347; c=relaxed/simple;
-	bh=JEZdAveXQvZIrfbl1eW4eI4EqtVM3lZLvkmqCdRdVNU=;
+	s=arc-20240116; t=1705972171; c=relaxed/simple;
+	bh=j6CC5zup8YltpHywoGFbheBt1qkJX2ZKJyMaF6DNzIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tWxstLh5RDyYhLq1lko169MC3VNOwg/wTzLq/ElCTKwrC5nVg5FSjfM7AFnrcgQhA+pcBwATTS7gYCIL2QYVf0o/KdVe905/kbdj/Lqfef155ovrjd4AHBFFnu+z1ehXGHMvGruT1gkJZEE4YlfFG1iPsGvJOusjed3rM7gFxaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0j9m1ee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A36DC433C7;
-	Tue, 23 Jan 2024 02:02:27 +0000 (UTC)
+	 MIME-Version; b=NMCHFC5NIyJh74ZowrGH+uzYidsniyCPn22zGz7fNkOtHwQyOUNF/0teujn46+FpRs7URDSk/p3Tzoea190fZbijEgjV50Rzl7IOVXiYwwQQiLnXJ7LExhBuLkDvkcoWDZKHUf6WRvWsvFxApJoFpHU6x37Tl+dUT+dKTwgcv8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rVCyhOQt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD6DC433C7;
+	Tue, 23 Jan 2024 01:09:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975347;
-	bh=JEZdAveXQvZIrfbl1eW4eI4EqtVM3lZLvkmqCdRdVNU=;
+	s=korg; t=1705972171;
+	bh=j6CC5zup8YltpHywoGFbheBt1qkJX2ZKJyMaF6DNzIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F0j9m1eeKP5n03uoPec2BQM8fxCuIkm+BJY3/dxXffgEaMRJGtT9T0tMZRQLe7PE1
-	 q9fjgsvy50Ck4+BZIB8Sxisx1pMYOx4ahtR8cbKJ8m9wQvBCr2YsOfXnuISElkUp4D
-	 xFqr8b+w2+2EGyDh7DNgALgfIyQkN9h/OFAWmqfk=
+	b=rVCyhOQtUH40fF8l07qyHFlEJrZjRjJWoLmPaoWYt0HUXfZuQGIEGtkH8h4WX5yQ3
+	 u6Vv4gNe3OiyLaTDjHuS2LuEttTly9xsoNbZ84vgs+IgxMoqzxZTVWSuTuNwQ74Tq+
+	 ueuPKaFY7JeIv2yLMqJVQEsE1Mh+tYcJ6fesqwuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 302/583] watchdog: bcm2835_wdt: Fix WDIOC_SETTIMEOUT handling
+Subject: [PATCH 5.15 097/374] crypto: af_alg - Disallow multiple in-flight AIO requests
 Date: Mon, 22 Jan 2024 15:55:53 -0800
-Message-ID: <20240122235821.261132452@linuxfoundation.org>
+Message-ID: <20240122235747.971767473@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit f33f5b1fd1be5f5106d16f831309648cb0f1c31d ]
+[ Upstream commit 67b164a871af1d736f131fd6fe78a610909f06f3 ]
 
-Users report about the unexpected behavior for setting timeouts above
-15 sec on Raspberry Pi. According to watchdog-api.rst the ioctl
-WDIOC_SETTIMEOUT shouldn't fail because of hardware limitations.
-But looking at the code shows that max_timeout based on the
-register value PM_WDOG_TIME_SET, which is the maximum.
+Having multiple in-flight AIO requests results in unpredictable
+output because they all share the same IV.  Fix this by only allowing
+one request at a time.
 
-Since 664a39236e71 ("watchdog: Introduce hardware maximum heartbeat
-in watchdog core") the watchdog core is able to handle this problem.
-
-This fix has been tested with watchdog-test from selftests.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217374
-Fixes: 664a39236e71 ("watchdog: Introduce hardware maximum heartbeat in watchdog core")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20231112173251.4827-1-wahrenst@gmx.net
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Fixes: 83094e5e9e49 ("crypto: af_alg - add async support to algif_aead")
+Fixes: a596999b7ddf ("crypto: algif - change algif_skcipher to be asynchronous")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/bcm2835_wdt.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ crypto/af_alg.c         | 14 +++++++++++++-
+ include/crypto/if_alg.h |  3 +++
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/bcm2835_wdt.c b/drivers/watchdog/bcm2835_wdt.c
-index 7a855289ff5e..bb001c5d7f17 100644
---- a/drivers/watchdog/bcm2835_wdt.c
-+++ b/drivers/watchdog/bcm2835_wdt.c
-@@ -42,6 +42,7 @@
+diff --git a/crypto/af_alg.c b/crypto/af_alg.c
+index 8bd288d2b089..aa93501e27b9 100644
+--- a/crypto/af_alg.c
++++ b/crypto/af_alg.c
+@@ -1045,9 +1045,13 @@ EXPORT_SYMBOL_GPL(af_alg_sendpage);
+ void af_alg_free_resources(struct af_alg_async_req *areq)
+ {
+ 	struct sock *sk = areq->sk;
++	struct af_alg_ctx *ctx;
  
- #define SECS_TO_WDOG_TICKS(x) ((x) << 16)
- #define WDOG_TICKS_TO_SECS(x) ((x) >> 16)
-+#define WDOG_TICKS_TO_MSECS(x) ((x) * 1000 >> 16)
+ 	af_alg_free_areq_sgls(areq);
+ 	sock_kfree_s(sk, areq, areq->areqlen);
++
++	ctx = alg_sk(sk)->private;
++	ctx->inflight = false;
+ }
+ EXPORT_SYMBOL_GPL(af_alg_free_resources);
  
- struct bcm2835_wdt {
- 	void __iomem		*base;
-@@ -140,7 +141,7 @@ static struct watchdog_device bcm2835_wdt_wdd = {
- 	.info =		&bcm2835_wdt_info,
- 	.ops =		&bcm2835_wdt_ops,
- 	.min_timeout =	1,
--	.max_timeout =	WDOG_TICKS_TO_SECS(PM_WDOG_TIME_SET),
-+	.max_hw_heartbeat_ms =	WDOG_TICKS_TO_MSECS(PM_WDOG_TIME_SET),
- 	.timeout =	WDOG_TICKS_TO_SECS(PM_WDOG_TIME_SET),
+@@ -1117,11 +1121,19 @@ EXPORT_SYMBOL_GPL(af_alg_poll);
+ struct af_alg_async_req *af_alg_alloc_areq(struct sock *sk,
+ 					   unsigned int areqlen)
+ {
+-	struct af_alg_async_req *areq = sock_kmalloc(sk, areqlen, GFP_KERNEL);
++	struct af_alg_ctx *ctx = alg_sk(sk)->private;
++	struct af_alg_async_req *areq;
++
++	/* Only one AIO request can be in flight. */
++	if (ctx->inflight)
++		return ERR_PTR(-EBUSY);
+ 
++	areq = sock_kmalloc(sk, areqlen, GFP_KERNEL);
+ 	if (unlikely(!areq))
+ 		return ERR_PTR(-ENOMEM);
+ 
++	ctx->inflight = true;
++
+ 	areq->areqlen = areqlen;
+ 	areq->sk = sk;
+ 	areq->last_rsgl = NULL;
+diff --git a/include/crypto/if_alg.h b/include/crypto/if_alg.h
+index a5db86670bdf..a406e281ae57 100644
+--- a/include/crypto/if_alg.h
++++ b/include/crypto/if_alg.h
+@@ -138,6 +138,7 @@ struct af_alg_async_req {
+  *			recvmsg is invoked.
+  * @init:		True if metadata has been sent.
+  * @len:		Length of memory allocated for this data structure.
++ * @inflight:		Non-zero when AIO requests are in flight.
+  */
+ struct af_alg_ctx {
+ 	struct list_head tsgl_list;
+@@ -156,6 +157,8 @@ struct af_alg_ctx {
+ 	bool init;
+ 
+ 	unsigned int len;
++
++	unsigned int inflight;
  };
  
+ int af_alg_register_type(const struct af_alg_type *type);
 -- 
 2.43.0
 
