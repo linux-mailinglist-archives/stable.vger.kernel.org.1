@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3272837FF3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:55:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F05B5838298
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C5DC1C24D76
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:55:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2FBF21C27896
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC9C712CDA7;
-	Tue, 23 Jan 2024 00:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441355D904;
+	Tue, 23 Jan 2024 01:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2aZYYHR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLpbGzCl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A75C62805;
-	Tue, 23 Jan 2024 00:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F28005C8F6;
+	Tue, 23 Jan 2024 01:46:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971462; cv=none; b=MsvHiANgpIguhBQu7JeBmmm19kcbFHfdfpWzPAm8nbHOcvjBSU9PQc4UBeT8MyqLu6HsY3EW7DmuxjChDD6eAbiP0w2WhTtGm3zk8OgKAalRrEi+E60I83iMSIut5jHL6nIPwp/BrGRCHV2HZL0jiYuVk4G1oF2yc9V5AzYjTE4=
+	t=1705974389; cv=none; b=Ffca6QBNOuJ4296bKIvwJ+ziCVMGXLIZiV7y/n98PkTpU3troaQC0dkSEDZQbsF7NZuYSX6wJ+KBa/7yqMNM4naSn5FhdeALTI5VpiFGWWBmNxk+K0fxMhyHFxRtEZAfRE8RhzmV/i8EClH7XJJV+iNR/zCH8EoFnYwHylmPJic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971462; c=relaxed/simple;
-	bh=9v8qw1T3EyLUhZaR9RXlgRSKlDaCKZn5NJ9hWbtp0ag=;
+	s=arc-20240116; t=1705974389; c=relaxed/simple;
+	bh=OPrm+JpSEWTxC0d2TjigFf8+QVnyoKGOsnzcf87nah0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TcH1+/dfsO11anry5lWtZ36FVtf65vzUJFL49cgcO60P/7n6q9rlzNG/j5gdph5+6v8/4tkx4cEWapmTkZvXxu+7DCekyoI3vipRHNu2R1t1LcuQ1oOn8/a51AfcpB/7t8jJXL8e2AYUiWh0oT+r43jHkzsW457r2pLsQj2yzUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2aZYYHR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1096C433F1;
-	Tue, 23 Jan 2024 00:57:41 +0000 (UTC)
+	 MIME-Version; b=Hk7lUSzS0nIOE9OEszdAomory9eHbJflIiYkbyyAXwzGXGTYVmt+DEZBdpvBVb3nNzkBFiiupQfjrZq48ZU9LaWjwCvcWxX64TVseTDkiz6fue6SVPvYrll3jYWTwh4sHGf+wZY8S3zd81/PgQU66WXKujEdAEc5AsHdXOuH9JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLpbGzCl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80425C433F1;
+	Tue, 23 Jan 2024 01:46:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971462;
-	bh=9v8qw1T3EyLUhZaR9RXlgRSKlDaCKZn5NJ9hWbtp0ag=;
+	s=korg; t=1705974388;
+	bh=OPrm+JpSEWTxC0d2TjigFf8+QVnyoKGOsnzcf87nah0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W2aZYYHR4cbN/u7Vc1CpJA8VF6t9X1DnDjstn/S+upRns8nG9YoSh8Rh0OflgEDxK
-	 yUL30QNN3+PQhAZBCbNrK+W3ycw63v/Txf2QJSh8ISM3Dszz15JPm2e5BWipntxZ1y
-	 jqA/12/bef7GSFlJycNc8/XwDi8goT07uL/2N+9s=
+	b=YLpbGzClOi6JFuRiQ6MhZmeOiis+QD78Baqm9wCXyCBez3OYV781GJeIkDZRyK0rT
+	 ChLBAkjKfQiTpzxoQHWCc1iPGsCcOV79JltjFvp6BWb3pLxr6udqZ3MLdTQKA0KAtq
+	 J8tEBLuSSP4coOQ9fMCiVqFIfzeyA11AopyCe94A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Eric Biggers <ebiggers@google.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 155/286] ASoC: cs35l33: Fix GPIO name and drop legacy include
+Subject: [PATCH 5.15 205/374] f2fs: fix the f2fs_file_write_iter tracepoint
 Date: Mon, 22 Jan 2024 15:57:41 -0800
-Message-ID: <20240122235738.135553019@linuxfoundation.org>
+Message-ID: <20240122235751.742914230@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Eric Biggers <ebiggers@google.com>
 
-[ Upstream commit 50678d339d670a92658e5538ebee30447c88ccb3 ]
+[ Upstream commit ccf7cf92373d1a53166582013430b3b9c05a6ba2 ]
 
-This driver includes the legacy GPIO APIs <linux/gpio.h> and
-<linux/of_gpio.h> but does not use any symbols from any of
-them.
+Pass in the original position and count rather than the position and
+count that were updated by the write.  Also use the correct types for
+all arguments, in particular the file offset which was being truncated
+to 32 bits on 32-bit platforms.
 
-Drop the includes.
-
-Further the driver is requesting "reset-gpios" rather than
-just "reset" from the GPIO framework. This is wrong because
-the gpiolib core will add "-gpios" before processing the
-request from e.g. device tree. Drop the suffix.
-
-The last problem means that the optional RESET GPIO has
-never been properly retrieved and used even if it existed,
-but nobody noticed.
-
-Fixes: 3333cb7187b9 ("ASoC: cs35l33: Initial commit of the cs35l33 CODEC driver.")
-Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20231201-descriptors-sound-cirrus-v2-2-ee9f9d4655eb@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: bb34cc6ca87f ("f2fs: fix to update iostat correctly in f2fs_filemap_fault()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs35l33.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/f2fs/file.c              |  5 +++--
+ include/trace/events/f2fs.h | 12 ++++++------
+ 2 files changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/sound/soc/codecs/cs35l33.c b/sound/soc/codecs/cs35l33.c
-index 8894369e329a..87b299d24bd8 100644
---- a/sound/soc/codecs/cs35l33.c
-+++ b/sound/soc/codecs/cs35l33.c
-@@ -22,13 +22,11 @@
- #include <sound/soc-dapm.h>
- #include <sound/initval.h>
- #include <sound/tlv.h>
--#include <linux/gpio.h>
- #include <linux/gpio/consumer.h>
- #include <sound/cs35l33.h>
- #include <linux/pm_runtime.h>
- #include <linux/regulator/consumer.h>
- #include <linux/regulator/machine.h>
--#include <linux/of_gpio.h>
- #include <linux/of.h>
- #include <linux/of_device.h>
- #include <linux/of_irq.h>
-@@ -1168,7 +1166,7 @@ static int cs35l33_i2c_probe(struct i2c_client *i2c_client,
+diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
+index 533ab259ce01..d220c4523982 100644
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -4255,6 +4255,8 @@ static ssize_t f2fs_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
+ {
+ 	struct file *file = iocb->ki_filp;
+ 	struct inode *inode = file_inode(file);
++	const loff_t orig_pos = iocb->ki_pos;
++	const size_t orig_count = iov_iter_count(from);
+ 	ssize_t ret;
  
- 	/* We could issue !RST or skip it based on AMP topology */
- 	cs35l33->reset_gpio = devm_gpiod_get_optional(&i2c_client->dev,
--			"reset-gpios", GPIOD_OUT_HIGH);
-+			"reset", GPIOD_OUT_HIGH);
- 	if (IS_ERR(cs35l33->reset_gpio)) {
- 		dev_err(&i2c_client->dev, "%s ERROR: Can't get reset GPIO\n",
- 			__func__);
+ 	if (unlikely(f2fs_cp_error(F2FS_I_SB(inode)))) {
+@@ -4358,8 +4360,7 @@ static ssize_t f2fs_file_write_iter(struct kiocb *iocb, struct iov_iter *from)
+ unlock:
+ 	inode_unlock(inode);
+ out:
+-	trace_f2fs_file_write_iter(inode, iocb->ki_pos,
+-					iov_iter_count(from), ret);
++	trace_f2fs_file_write_iter(inode, orig_pos, orig_count, ret);
+ 	if (ret > 0)
+ 		ret = generic_write_sync(iocb, ret);
+ 	return ret;
+diff --git a/include/trace/events/f2fs.h b/include/trace/events/f2fs.h
+index f5dcf7c9b707..6033eaddcb74 100644
+--- a/include/trace/events/f2fs.h
++++ b/include/trace/events/f2fs.h
+@@ -540,17 +540,17 @@ TRACE_EVENT(f2fs_truncate_partial_nodes,
+ 
+ TRACE_EVENT(f2fs_file_write_iter,
+ 
+-	TP_PROTO(struct inode *inode, unsigned long offset,
+-		unsigned long length, int ret),
++	TP_PROTO(struct inode *inode, loff_t offset, size_t length,
++		 ssize_t ret),
+ 
+ 	TP_ARGS(inode, offset, length, ret),
+ 
+ 	TP_STRUCT__entry(
+ 		__field(dev_t,	dev)
+ 		__field(ino_t,	ino)
+-		__field(unsigned long, offset)
+-		__field(unsigned long, length)
+-		__field(int,	ret)
++		__field(loff_t, offset)
++		__field(size_t, length)
++		__field(ssize_t, ret)
+ 	),
+ 
+ 	TP_fast_assign(
+@@ -562,7 +562,7 @@ TRACE_EVENT(f2fs_file_write_iter,
+ 	),
+ 
+ 	TP_printk("dev = (%d,%d), ino = %lu, "
+-		"offset = %lu, length = %lu, written(err) = %d",
++		"offset = %lld, length = %zu, written(err) = %zd",
+ 		show_dev_ino(__entry),
+ 		__entry->offset,
+ 		__entry->length,
 -- 
 2.43.0
 
