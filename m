@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99B12837F27
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33F5983819D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:10:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B8751F2B908
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA3421F2450E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E097A712;
-	Tue, 23 Jan 2024 00:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A0FD313;
+	Tue, 23 Jan 2024 01:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvGtX3A5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dA2s1UEJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3BE60DE3;
-	Tue, 23 Jan 2024 00:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FB91852;
+	Tue, 23 Jan 2024 01:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970969; cv=none; b=TuOxZ0mCVlkEcGceLKfZtT1eDndtA/kt8AmvMHP/8DahthxmF/9h2g31QdinFjsFuxST+Ow5im1jR4yCiTaD7DCL8GzHQ9fV8rDZAx9+fOGB1bMWlAh/9VS7dyU1ikunnhHkSH1WoaHXwjXFKuFh8htO8fSRu+FVwt+yrXNzaNA=
+	t=1705972188; cv=none; b=rwTb07Ltkcam/EjPIz5mYOVkfGvsWu2/fSRjiC958dHSuJoNAibcg+WTwU1YG/8MJ8/1zR0PO2CE2xXRzU6q4M3LB4hNHsfNK4mrFpHZsiUTfgEkV69YNq2ztVrUqck5WzCzt1aIUoR4jZX7TxiXwckH1UXg9bhpGXrKwBpw9dY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970969; c=relaxed/simple;
-	bh=gXE26gBYhVIS+YRZMRkKVcnnvWZ2nEZu/cv3wtQ9XeI=;
+	s=arc-20240116; t=1705972188; c=relaxed/simple;
+	bh=h1Xp0LCkLbCcPWV+k4R1mwiqbTjReqghzBXCFSTUdNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kSh1fB1zM12XMslBnATmFvAsp0Rk+IpzK75IA1iTu/zcFhujOmrkzAKgjbG8qxteEcYvL3oTKPAVFLpf/BfMlDezuFP3uRLCidNw0E0geUVLUxs3m80SEJHbXdx1xARRgwoi3+DJ4LwEYNCrz1j5uUO+KM6HVjrby9XZr+Wo3js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvGtX3A5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E786C433C7;
-	Tue, 23 Jan 2024 00:49:29 +0000 (UTC)
+	 MIME-Version; b=GVKo2St9jD9f2pgwSW+J9n1x9Vn2aplO597wfr0biMx/nldEiHKtkxD440jDM8ZH1ZibPEv+jLojLwQLYw7d+fioLd5LjgPX/2WspfnNvFlP1RO6h/rYXe1HKrzZJBPTIjoWqhHKPzOJ/0kFhQQot3ZYI6Cs5Zsqx8jXZEdputQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dA2s1UEJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16D5C43394;
+	Tue, 23 Jan 2024 01:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970969;
-	bh=gXE26gBYhVIS+YRZMRkKVcnnvWZ2nEZu/cv3wtQ9XeI=;
+	s=korg; t=1705972187;
+	bh=h1Xp0LCkLbCcPWV+k4R1mwiqbTjReqghzBXCFSTUdNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gvGtX3A5tHMwa4kwVJncn1nYg5tQsoiDYG/mTs+em4ed6mKq2aFb5Xdyg+taAqHCH
-	 g/PWgfFBxHSU1H4g9SqEXxarRnLwqs4sk+Hs0qJ3GxiXf1TJg/lEzTG3ExNL43Imu3
-	 dMIxDAEtdAuNe29BT9PagTiL+DxJat4W7V7o2mXg=
+	b=dA2s1UEJbgisySi43e6wJsPIWnDAgVIdtjBSfXaZzV0l8uzVtY7/UFlDHvFaNNk2H
+	 KkN2Krw6ZXXkUidF4Ep65DcTan7uVgS9tqb0dIwT7QaROwkOHdLUG7FlhWKVjtsH5r
+	 O8B3wks4f2ExxQeU10ddG+u+W+fjKODa2hxh61iA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 059/286] powerpc/powernv: Add a null pointer check in opal_powercap_init()
-Date: Mon, 22 Jan 2024 15:56:05 -0800
-Message-ID: <20240122235734.303716581@linuxfoundation.org>
+Subject: [PATCH 5.15 110/374] crypto: sahara - fix wait_for_completion_timeout() error handling
+Date: Mon, 22 Jan 2024 15:56:06 -0800
+Message-ID: <20240122235748.447450628@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit e123015c0ba859cf48aa7f89c5016cc6e98e018d ]
+[ Upstream commit 2dba8e1d1a7957dcbe7888846268538847b471d1 ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+The sg lists are not unmapped in case of timeout errors. Fix this.
 
-Fixes: b9ef7b4b867f ("powerpc: Convert to using %pOFn instead of device_node.name")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231126095739.1501990-1-chentao@kylinos.cn
+Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
+Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/powernv/opal-powercap.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/crypto/sahara.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/platforms/powernv/opal-powercap.c b/arch/powerpc/platforms/powernv/opal-powercap.c
-index c16d44f6f1d1..ce9ec3962cef 100644
---- a/arch/powerpc/platforms/powernv/opal-powercap.c
-+++ b/arch/powerpc/platforms/powernv/opal-powercap.c
-@@ -196,6 +196,12 @@ void __init opal_powercap_init(void)
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index d31ccaffebb8..a5c40ef6d8af 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -608,16 +608,17 @@ static int sahara_aes_process(struct skcipher_request *req)
  
- 		j = 0;
- 		pcaps[i].pg.name = kasprintf(GFP_KERNEL, "%pOFn", node);
-+		if (!pcaps[i].pg.name) {
-+			kfree(pcaps[i].pattrs);
-+			kfree(pcaps[i].pg.attrs);
-+			goto out_pcaps_pattrs;
-+		}
+ 	timeout = wait_for_completion_timeout(&dev->dma_completion,
+ 				msecs_to_jiffies(SAHARA_TIMEOUT_MS));
+-	if (!timeout) {
+-		dev_err(dev->device, "AES timeout\n");
+-		return -ETIMEDOUT;
+-	}
+ 
+ 	dma_unmap_sg(dev->device, dev->out_sg, dev->nb_out_sg,
+ 		DMA_FROM_DEVICE);
+ 	dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
+ 		DMA_TO_DEVICE);
+ 
++	if (!timeout) {
++		dev_err(dev->device, "AES timeout\n");
++		return -ETIMEDOUT;
++	}
 +
- 		if (has_min) {
- 			powercap_add_attr(min, "powercap-min",
- 					  &pcaps[i].pattrs[j]);
+ 	if ((dev->flags & FLAGS_CBC) && req->iv)
+ 		sahara_aes_cbc_update_iv(req);
+ 
+@@ -1008,15 +1009,16 @@ static int sahara_sha_process(struct ahash_request *req)
+ 
+ 	timeout = wait_for_completion_timeout(&dev->dma_completion,
+ 				msecs_to_jiffies(SAHARA_TIMEOUT_MS));
+-	if (!timeout) {
+-		dev_err(dev->device, "SHA timeout\n");
+-		return -ETIMEDOUT;
+-	}
+ 
+ 	if (rctx->sg_in_idx)
+ 		dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
+ 			     DMA_TO_DEVICE);
+ 
++	if (!timeout) {
++		dev_err(dev->device, "SHA timeout\n");
++		return -ETIMEDOUT;
++	}
++
+ 	memcpy(rctx->context, dev->context_base, rctx->context_size);
+ 
+ 	if (req->result && rctx->last)
 -- 
 2.43.0
 
