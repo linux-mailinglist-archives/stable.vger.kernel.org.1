@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-14465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73133838108
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:53 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DFBD838510
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24F7528E0E8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 558B428526B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D35D13E230;
-	Tue, 23 Jan 2024 01:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CCB7CF2E;
+	Tue, 23 Jan 2024 02:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcC/KxTk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JrVRQ9HA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C114413DBB7;
-	Tue, 23 Jan 2024 01:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6F2D7CF21;
+	Tue, 23 Jan 2024 02:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972000; cv=none; b=FPyYWEnQ1HevhGCRrtAyfTv9xDnBDL+H+vKQP8NexWRt1vsVCBQ+/I5ERjtzKLPTgPZxOzxEOZ7mhzmK9ao1Gqfx/rgZCickyRT1lcfBjA2nyla+2Rp0N/1j3NdrU+VxxAQDF7iig1YAhuyesPKQYks1svnzLrFmcuOcITWZlyY=
+	t=1705975733; cv=none; b=QN+q14h8MoOGoRU/Dm13RttM2KPtek8u5vObE1E9fqskv9VB6oNDk0DfBN9iagTxPf5h57R6gZchIu0XYJsW1MdKXyeNEDfIxWO2Jp4owQ+mdnGLpkhcUNtlStahbLNdkPtcPtRfq6DRCwf4pb8DPOP5Jvkcah3L53NwRWqfdMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972000; c=relaxed/simple;
-	bh=3vs82NL0Y0BFBEusrYIbhnW1V7y7KxMTLuf8hkhqNl8=;
+	s=arc-20240116; t=1705975733; c=relaxed/simple;
+	bh=7EVPGNX/bHS82MgR9xbFpzJFrDd0a5QaTOghO5nzSdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aAMP/C1qeraBWLbddLoisvwJh/kY9D0bHusZ+9oVhm9MNRWcEvkoH2bqdrQ9Zc+cR7uCxFcFXI8iIj/HsWnbfDg3m1yVh99bMdmPL10Ep7AofuaYodc0ANF7mNRnrILROMrnv/aXI0nGPB/9ZQSgI3lIU1ftCmo5IDYuHOLrfLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VcC/KxTk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74A60C433C7;
-	Tue, 23 Jan 2024 01:06:40 +0000 (UTC)
+	 MIME-Version; b=n3ybOBM8xpnR21dCo825FfSfswMVXUa5Epcf4mcnxo1xRLhRNE01nool+xC+wwqMh90tGY/fBYv0dPYJObMhwOmQmldddOXMWraoeIhHjQifVyxM58iMZLLdUCAGOStu1L77qtvTu/yK/TcYN7zCjHB79P8J4zsr/WM8FL921VQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JrVRQ9HA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F66C433F1;
+	Tue, 23 Jan 2024 02:08:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972000;
-	bh=3vs82NL0Y0BFBEusrYIbhnW1V7y7KxMTLuf8hkhqNl8=;
+	s=korg; t=1705975732;
+	bh=7EVPGNX/bHS82MgR9xbFpzJFrDd0a5QaTOghO5nzSdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VcC/KxTkZhacHTlhw+d1E8vrWDNWJfJkcZ0puqJzDH0GDqj0opjk1K0fc93nUaPNk
-	 nB1qgwkGiql8vgOS3GDa7N2gaseGHY2h+W7JaZgiQ4SuKU3qiB0CZruv7AkzMcEUs4
-	 ZlQKsYZ6Hq6v/14ijpn6usET2qgT/qg1TTOI5v+U=
+	b=JrVRQ9HA3iCfH8/XJdOJS3t+iCqUjO4vaOUBeIu/2DzttXNJJLLLYz/7RA7/FOpWo
+	 dyd/vklo4aMdMcTX9DpCmt6NgUKYwNRRUlvuZgQuwquWj6bj37cS4fvEkMZWxkcfUG
+	 ycoxCIcwnywquzfkece99H0zehEb8AHspcDr118Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Rosato <mjrosato@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 377/417] s390/pci: fix max size calculation in zpci_memcpy_toio()
+Subject: [PATCH 6.6 494/583] tty: use if in send_break() instead of goto
 Date: Mon, 22 Jan 2024 15:59:05 -0800
-Message-ID: <20240122235804.850973555@linuxfoundation.org>
+Message-ID: <20240122235827.130587912@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,147 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-[ Upstream commit 80df7d6af7f6d229b34cf237b2cc9024c07111cd ]
+[ Upstream commit 24f2cd019946fc2e88e632d2e24a34c2cc3f2be4 ]
 
-The zpci_get_max_write_size() helper is used to determine the maximum
-size a PCI store or load can use at a given __iomem address.
+Now, the "jumped-over" code is simple enough to be put inside an 'if'.
+Do so to make it 'goto'-less.
 
-For the PCI block store the following restrictions apply:
-
-1. The dst + len must not cross a 4K boundary in the (pseudo-)MMIO space
-2. len must not exceed ZPCI_MAX_WRITE_SIZE
-3. len must be a multiple of 8 bytes
-4. The src address must be double word (8 byte) aligned
-5. The dst address must be double word (8 byte) aligned
-
-Otherwise only a normal PCI store which takes its src value from
-a register can be used. For these PCI store restriction 1 still applies.
-Similarly 1 also applies to PCI loads.
-
-It turns out zpci_max_write_size() instead implements stricter
-conditions which prevents PCI block stores from being used where they
-can and should be used. In particular instead of conditions 4 and 5 it
-wrongly enforces both dst and src to be size aligned. This indirectly
-covers condition 1 but also prevents many legal PCI block stores.
-
-On top of the functional shortcomings the zpci_get_max_write_size() is
-misnamed as it is used for both read and write size calculations. Rename
-it to zpci_get_max_io_size() and implement the listed conditions
-explicitly.
-
-Reviewed-by: Matthew Rosato <mjrosato@linux.ibm.com>
-Fixes: cd24834130ac ("s390/pci: base support")
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-[agordeev@linux.ibm.com replaced spaces with tabs]
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Link: https://lore.kernel.org/r/20230919085156.1578-16-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 66aad7d8d3ec ("usb: cdc-acm: return correct error code on unsupported break")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/pci_io.h | 32 ++++++++++++++++++--------------
- arch/s390/pci/pci_mmio.c       | 12 ++++++------
- 2 files changed, 24 insertions(+), 20 deletions(-)
+ drivers/tty/tty_io.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/arch/s390/include/asm/pci_io.h b/arch/s390/include/asm/pci_io.h
-index 287bb88f7698..2686bee800e3 100644
---- a/arch/s390/include/asm/pci_io.h
-+++ b/arch/s390/include/asm/pci_io.h
-@@ -11,6 +11,8 @@
- /* I/O size constraints */
- #define ZPCI_MAX_READ_SIZE	8
- #define ZPCI_MAX_WRITE_SIZE	128
-+#define ZPCI_BOUNDARY_SIZE	(1 << 12)
-+#define ZPCI_BOUNDARY_MASK	(ZPCI_BOUNDARY_SIZE - 1)
+diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
+index ddcaf967f64b..724ebf82f2cd 100644
+--- a/drivers/tty/tty_io.c
++++ b/drivers/tty/tty_io.c
+@@ -2482,11 +2482,10 @@ static int send_break(struct tty_struct *tty, unsigned int duration)
+ 		return -EINTR;
  
- /* I/O Map */
- #define ZPCI_IOMAP_SHIFT		48
-@@ -125,16 +127,18 @@ static inline int zpci_read_single(void *dst, const volatile void __iomem *src,
- int zpci_write_block(volatile void __iomem *dst, const void *src,
- 		     unsigned long len);
+ 	retval = tty->ops->break_ctl(tty, -1);
+-	if (retval)
+-		goto out;
+-	msleep_interruptible(duration);
+-	retval = tty->ops->break_ctl(tty, 0);
+-out:
++	if (!retval) {
++		msleep_interruptible(duration);
++		retval = tty->ops->break_ctl(tty, 0);
++	}
+ 	tty_write_unlock(tty);
  
--static inline u8 zpci_get_max_write_size(u64 src, u64 dst, int len, int max)
-+static inline int zpci_get_max_io_size(u64 src, u64 dst, int len, int max)
- {
--	int count = len > max ? max : len, size = 1;
-+	int offset = dst & ZPCI_BOUNDARY_MASK;
-+	int size;
- 
--	while (!(src & 0x1) && !(dst & 0x1) && ((size << 1) <= count)) {
--		dst = dst >> 1;
--		src = src >> 1;
--		size = size << 1;
--	}
--	return size;
-+	size = min3(len, ZPCI_BOUNDARY_SIZE - offset, max);
-+	if (IS_ALIGNED(src, 8) && IS_ALIGNED(dst, 8) && IS_ALIGNED(size, 8))
-+		return size;
-+
-+	if (size >= 8)
-+		return 8;
-+	return rounddown_pow_of_two(size);
- }
- 
- static inline int zpci_memcpy_fromio(void *dst,
-@@ -144,9 +148,9 @@ static inline int zpci_memcpy_fromio(void *dst,
- 	int size, rc = 0;
- 
- 	while (n > 0) {
--		size = zpci_get_max_write_size((u64 __force) src,
--					       (u64) dst, n,
--					       ZPCI_MAX_READ_SIZE);
-+		size = zpci_get_max_io_size((u64 __force) src,
-+					    (u64) dst, n,
-+					    ZPCI_MAX_READ_SIZE);
- 		rc = zpci_read_single(dst, src, size);
- 		if (rc)
- 			break;
-@@ -166,9 +170,9 @@ static inline int zpci_memcpy_toio(volatile void __iomem *dst,
- 		return -EINVAL;
- 
- 	while (n > 0) {
--		size = zpci_get_max_write_size((u64 __force) dst,
--					       (u64) src, n,
--					       ZPCI_MAX_WRITE_SIZE);
-+		size = zpci_get_max_io_size((u64 __force) dst,
-+					    (u64) src, n,
-+					    ZPCI_MAX_WRITE_SIZE);
- 		if (size > 8) /* main path */
- 			rc = zpci_write_block(dst, src, size);
- 		else
-diff --git a/arch/s390/pci/pci_mmio.c b/arch/s390/pci/pci_mmio.c
-index 588089332931..a90499c087f0 100644
---- a/arch/s390/pci/pci_mmio.c
-+++ b/arch/s390/pci/pci_mmio.c
-@@ -97,9 +97,9 @@ static inline int __memcpy_toio_inuser(void __iomem *dst,
- 		return -EINVAL;
- 
- 	while (n > 0) {
--		size = zpci_get_max_write_size((u64 __force) dst,
--					       (u64 __force) src, n,
--					       ZPCI_MAX_WRITE_SIZE);
-+		size = zpci_get_max_io_size((u64 __force) dst,
-+					    (u64 __force) src, n,
-+					    ZPCI_MAX_WRITE_SIZE);
- 		if (size > 8) /* main path */
- 			rc = __pcistb_mio_inuser(dst, src, size, &status);
- 		else
-@@ -242,9 +242,9 @@ static inline int __memcpy_fromio_inuser(void __user *dst,
- 	u8 status;
- 
- 	while (n > 0) {
--		size = zpci_get_max_write_size((u64 __force) src,
--					       (u64 __force) dst, n,
--					       ZPCI_MAX_READ_SIZE);
-+		size = zpci_get_max_io_size((u64 __force) src,
-+					    (u64 __force) dst, n,
-+					    ZPCI_MAX_READ_SIZE);
- 		rc = __pcilg_mio_inuser(dst, src, size, &status);
- 		if (rc)
- 			break;
+ 	if (signal_pending(current))
 -- 
 2.43.0
 
