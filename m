@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-14656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3407838206
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 299EC838458
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D76D71C2223C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3ADD299543
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ACE056743;
-	Tue, 23 Jan 2024 01:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D7F36BB4B;
+	Tue, 23 Jan 2024 02:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5dpq8+T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkqTCxxw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399683984D;
-	Tue, 23 Jan 2024 01:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8F16A354;
+	Tue, 23 Jan 2024 02:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974038; cv=none; b=azyHtADMjNr3syQffvlSApb/GhFgIxoVsTu4UddRs0VaRUtGcl7tdg9anQDzFbJjUyZ/3IGChL3xbZjM8u3AfE0qGOZGH5TWEax/qc4NVO7TBsrNpt60AGaqn3TqqhyBgXRqNqyVGE3CPwBIzw4oj80WcKDYpuJC2p1j3D5g+xc=
+	t=1705975366; cv=none; b=EUvvVEmxu3kNqw1Q8qmMXUBC81aPH5OGR8mbrTwueCe0ezLWo6a1epj20tTsQupdb4OiHISVMaHkJ/FJWA7K4IyEcs4pHn7EEWBtgOrN7Hho/sPAbsC4dByNj43jtbWCNjFa2FYP3fgw9Z/lAGehnzGz2hUxYw/Lw+r42uMjBl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974038; c=relaxed/simple;
-	bh=Sb8kstc03dvf+jyYyA0/nMObdLG4diGYUtVcvwG6snI=;
+	s=arc-20240116; t=1705975366; c=relaxed/simple;
+	bh=C56x3KfeIS2Mpt/xXf1g6otvcJp6erG7Rf2XgCTxdjo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tIj4CMEppkoBVTODvuZOwKPL3rICS2gYWFUNapy9fGHzoizK0qq9wKtCXmgBbf+skZ0hAbRZB7O5hqJ5k83O6Rof6ymoEXhNFTowQcD38fhfGNY5ahEuLvyfq++HcWS1XQ18wE7xgYI+uT6/iu2OT7zjtI473U/BpQ4MLcO951g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5dpq8+T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94DB9C43390;
-	Tue, 23 Jan 2024 01:40:37 +0000 (UTC)
+	 MIME-Version; b=mjhbhD+ZdqGHiYcMtY0WI9VibSBnJaukSL5K63wKevPdTBhO5iM+ZWsItjdqL2lgA4vFm3Y5V35qPcfAgiBphDP6jMLeGn3srv7saN5OqVBZKeNQhzotqPpxsUjVgK85W8ghm8823XyX8Praq+8m/j0eVM2n2JhpWDDIe7IPPBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkqTCxxw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AC22C433C7;
+	Tue, 23 Jan 2024 02:02:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974037;
-	bh=Sb8kstc03dvf+jyYyA0/nMObdLG4diGYUtVcvwG6snI=;
+	s=korg; t=1705975366;
+	bh=C56x3KfeIS2Mpt/xXf1g6otvcJp6erG7Rf2XgCTxdjo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H5dpq8+T+qeHhgBsaspYeVPrDDHJ2zJXotFml6wsQUCtrQfq/hSOFTaZqCYBfk1Ry
-	 XdQexa5/mlcA1MqeIckBtukVpObnUl6bYe0FVlWzFe+pHWzzmejoF61zHw7G2FSavN
-	 yVpNI3s8m28NTzJqtvS/Bmgv9jOKaCpfCGpaWLIE=
+	b=EkqTCxxwgJq4rsxx5twl2wfH2HfLSG1jN9LSdAt0B/x8sccAoYEwuGIUJhI7Rw+9r
+	 jF+25CaQt8Ql0zGxMn3ggw2JU0Z/XePcyyhez2N0sX8D/O8rVQcgT1znV0HeOOU6d8
+	 j/XE9F6n4Xm8Rl6ZM+OZYMyHBZl06MnfXcL2sSVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 122/374] ARM: dts: qcom: apq8064: correct XOADC register address
+Subject: [PATCH 6.6 327/583] gpiolib: make gpio_device_get() and gpio_device_put() public
 Date: Mon, 22 Jan 2024 15:56:18 -0800
-Message-ID: <20240122235748.881965535@linuxfoundation.org>
+Message-ID: <20240122235822.057957168@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 554557542e709e190eff8a598f0cde02647d533a ]
+[ Upstream commit 36aa129f221c9070afd8dff03154ab49702a5b1b ]
 
-The XOADC is present at the address 0x197 rather than just 197. It
-doesn't change a lot (since the driver hardcodes all register
-addresses), but the DT should present correct address anyway.
+In order to start migrating away from accessing struct gpio_chip by
+users other than their owners, let's first make the reference management
+functions for the opaque struct gpio_device public in the driver.h
+header.
 
-Fixes: c4b70883ee33 ("ARM: dts: add XOADC and IIO HWMON to APQ8064")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230928110309.1212221-3-dmitry.baryshkov@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Stable-dep-of: 48e1b4d369cf ("gpiolib: remove the GPIO device from the list when it's unregistered")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom-apq8064.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpiolib.c      | 24 ++++++++++++++++++++++++
+ drivers/gpio/gpiolib.h      | 10 ----------
+ include/linux/gpio/driver.h |  3 +++
+ 3 files changed, 27 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/boot/dts/qcom-apq8064.dtsi b/arch/arm/boot/dts/qcom-apq8064.dtsi
-index 0e830476fefd..d70f071fd830 100644
---- a/arch/arm/boot/dts/qcom-apq8064.dtsi
-+++ b/arch/arm/boot/dts/qcom-apq8064.dtsi
-@@ -760,7 +760,7 @@ pwrkey@1c {
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 40a0022ea719..c2b40d7138fa 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -1058,6 +1058,30 @@ static struct gpio_chip *find_chip_by_name(const char *name)
+ 	return gpiochip_find((void *)name, gpiochip_match_name);
+ }
  
- 				xoadc: xoadc@197 {
- 					compatible = "qcom,pm8921-adc";
--					reg = <197>;
-+					reg = <0x197>;
- 					interrupts-extended = <&pmicintc 78 IRQ_TYPE_EDGE_RISING>;
- 					#address-cells = <2>;
- 					#size-cells = <0>;
++/**
++ * gpio_device_get() - Increase the reference count of this GPIO device
++ * @gdev: GPIO device to increase the refcount for
++ *
++ * Returns:
++ * Pointer to @gdev.
++ */
++struct gpio_device *gpio_device_get(struct gpio_device *gdev)
++{
++	return to_gpio_device(get_device(&gdev->dev));
++}
++EXPORT_SYMBOL_GPL(gpio_device_get);
++
++/**
++ * gpio_device_put() - Decrease the reference count of this GPIO device and
++ *                     possibly free all resources associated with it.
++ * @gdev: GPIO device to decrease the reference count for
++ */
++void gpio_device_put(struct gpio_device *gdev)
++{
++	put_device(&gdev->dev);
++}
++EXPORT_SYMBOL_GPL(gpio_device_put);
++
+ #ifdef CONFIG_GPIOLIB_IRQCHIP
+ 
+ /*
+diff --git a/drivers/gpio/gpiolib.h b/drivers/gpio/gpiolib.h
+index a0a67569300b..aa1926083689 100644
+--- a/drivers/gpio/gpiolib.h
++++ b/drivers/gpio/gpiolib.h
+@@ -86,16 +86,6 @@ static inline struct gpio_device *to_gpio_device(struct device *dev)
+ 	return container_of(dev, struct gpio_device, dev);
+ }
+ 
+-static inline struct gpio_device *gpio_device_get(struct gpio_device *gdev)
+-{
+-	return to_gpio_device(get_device(&gdev->dev));
+-}
+-
+-static inline void gpio_device_put(struct gpio_device *gdev)
+-{
+-	put_device(&gdev->dev);
+-}
+-
+ /* gpio suffixes used for ACPI and device tree lookup */
+ static __maybe_unused const char * const gpio_suffixes[] = { "gpios", "gpio" };
+ 
+diff --git a/include/linux/gpio/driver.h b/include/linux/gpio/driver.h
+index 4f0c5d62c8f3..64c214317a83 100644
+--- a/include/linux/gpio/driver.h
++++ b/include/linux/gpio/driver.h
+@@ -607,6 +607,9 @@ extern int devm_gpiochip_add_data_with_key(struct device *dev, struct gpio_chip
+ extern struct gpio_chip *gpiochip_find(void *data,
+ 			      int (*match)(struct gpio_chip *gc, void *data));
+ 
++struct gpio_device *gpio_device_get(struct gpio_device *gdev);
++void gpio_device_put(struct gpio_device *gdev);
++
+ bool gpiochip_line_is_irq(struct gpio_chip *gc, unsigned int offset);
+ int gpiochip_reqres_irq(struct gpio_chip *gc, unsigned int offset);
+ void gpiochip_relres_irq(struct gpio_chip *gc, unsigned int offset);
 -- 
 2.43.0
 
