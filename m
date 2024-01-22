@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-13069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BBBD837A64
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:55 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC3408378B4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EC321F28B51
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:51:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF3121C2745E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1810412C536;
-	Tue, 23 Jan 2024 00:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B67731845;
+	Tue, 23 Jan 2024 00:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2yCIZnn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3/95vcT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCC1612BF3D;
-	Tue, 23 Jan 2024 00:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760C51852;
+	Tue, 23 Jan 2024 00:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968929; cv=none; b=VSoh/VdvouiCpyPCHwN2pWl/H5QPhQM4tG5C9UyWzDRzd2mSEb0W89M2n08S8jndQfQf8VmeAsd8j02hX4vkFSddOV6VoURKn9XDexKWxqF0TM4rtMTEt3AnbGBQB8dyLsQ0sqh6grMA0jB8a4/ew2b6mT9P9KMB7bVAUP6UGJU=
+	t=1705968209; cv=none; b=BJGiZusPJgIGNVjLEybkmW2Vu0zTX1nd9TEw7CMPnxVgAs4kuT2Ia80zfNrgndSGBvrN8tC4Orl4Zvh+BI+AZ9yjqYuKsiluaYhjeJ1MF8ETYpTcs5qDXP3v8nHodXK9Tpd/Zm7Z2rqMc7Zlt/6VTdgn8/NlTuIsjGh6wffGjZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968929; c=relaxed/simple;
-	bh=L+uQorPjA+9cGjMgTrgP+N7g8gvBa0HdhIgB8upmWMU=;
+	s=arc-20240116; t=1705968209; c=relaxed/simple;
+	bh=+1oW31Ikkz2fdchoaVMBgpECCjFG+WZSpdRgVWOcej8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FD98GJL5fQIfp3nJA51yz7DMIfYJwuWAUviAhR4RdYTa08xSmtyY2XZv4CHPNAkZOOrN1tENQMQRqLQlnISHdRFB/W/P+LQaEhEl1Q0XqZFbdAnoRNrK7lMopYNca2L55tZJJcVSFNuruZndN+OSjzmBzTkDbUONCx/uMux7v6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2yCIZnn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A2EDC433F1;
-	Tue, 23 Jan 2024 00:15:29 +0000 (UTC)
+	 MIME-Version; b=saWTpaDeH5j9UCTflSdbYxkk13B0fPJ4SaHGR0qZuCLhubKgxrwh6z5kge2+akJkiHzA6Qb8ljLOFgQgpZ93TsqIGTpGn88bqIhimsUqsgtn94tbPMMCg/9nQE7u+qwD0+EK3DnerE1my466EiZLW8YI25DUo5AzCEhEvzp8GAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3/95vcT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286FAC433F1;
+	Tue, 23 Jan 2024 00:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968929;
-	bh=L+uQorPjA+9cGjMgTrgP+N7g8gvBa0HdhIgB8upmWMU=;
+	s=korg; t=1705968209;
+	bh=+1oW31Ikkz2fdchoaVMBgpECCjFG+WZSpdRgVWOcej8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P2yCIZnnSjEH1qVkWxDuBr9abtjV36c34wxVM3Kel1qTpLS5dJut15lutc3bgeaHk
-	 jwIGtNHjx+wjZfcIA+Qs6++Gf2NH+oP1jcUzFCr6tuRSLRX80DTFs9qlPwR5QWnUSj
-	 bONJFt2wa3omVUOAdtMiR/OrU3rN4WXy6SdtChKQ=
+	b=G3/95vcTMdlUSFJ50c8MhqKWf6BBqpBvrXjlw958AAtCQASFwRtGIcNQqBsPCmsNH
+	 64ThMGEiYjf4+NnOLE3Zvk42HA0VNcYgrc/vPMo8brWwO9byDOhNZR8hXZqGwixrjL
+	 Vj4ZTnLJY7aD1tXWgY3EoaUVevyA8LZPRasNfN7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Halil Pasic <pasic@linux.ibm.com>,
 	wangyangxin <wangyangxin1@huawei.com>,
 	Gonglei <arei.gonglei@huawei.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 071/194] crypto: virtio - Wait for tasklet to complete on device remove
+Subject: [PATCH 4.19 045/148] crypto: virtio - Handle dataq logic with tasklet
 Date: Mon, 22 Jan 2024 15:56:41 -0800
-Message-ID: <20240122235722.277630139@linuxfoundation.org>
+Message-ID: <20240122235714.242905571@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangyangxin <wangyangxin1@huawei.com>
+From: Gonglei (Arei) <arei.gonglei@huawei.com>
 
-[ Upstream commit 67cc511e8d436456cc98033e6d4ba83ebfc8e672 ]
+[ Upstream commit fed93fb62e05c38152b0fc1dc9609639e63eed76 ]
 
-The scheduled tasklet needs to be executed on device remove.
+Doing ipsec produces a spinlock recursion warning.
+This is due to crypto_finalize_request() being called in the upper half.
+Move virtual data queue processing of virtio-crypto driver to tasklet.
 
-Fixes: fed93fb62e05 ("crypto: virtio - Handle dataq logic with tasklet")
+Fixes: dbaf0624ffa57 ("crypto: add virtio-crypto driver")
+Reported-by: Halil Pasic <pasic@linux.ibm.com>
 Signed-off-by: wangyangxin <wangyangxin1@huawei.com>
 Signed-off-by: Gonglei <arei.gonglei@huawei.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/virtio/virtio_crypto_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/crypto/virtio/virtio_crypto_common.h |  2 ++
+ drivers/crypto/virtio/virtio_crypto_core.c   | 23 +++++++++++---------
+ 2 files changed, 15 insertions(+), 10 deletions(-)
 
+diff --git a/drivers/crypto/virtio/virtio_crypto_common.h b/drivers/crypto/virtio/virtio_crypto_common.h
+index 63ef7f7924ea..5b94c60ca461 100644
+--- a/drivers/crypto/virtio/virtio_crypto_common.h
++++ b/drivers/crypto/virtio/virtio_crypto_common.h
+@@ -22,6 +22,7 @@
+ #include <linux/virtio.h>
+ #include <linux/crypto.h>
+ #include <linux/spinlock.h>
++#include <linux/interrupt.h>
+ #include <crypto/aead.h>
+ #include <crypto/aes.h>
+ #include <crypto/engine.h>
+@@ -39,6 +40,7 @@ struct data_queue {
+ 	char name[32];
+ 
+ 	struct crypto_engine *engine;
++	struct tasklet_struct done_task;
+ };
+ 
+ struct virtio_crypto {
 diff --git a/drivers/crypto/virtio/virtio_crypto_core.c b/drivers/crypto/virtio/virtio_crypto_core.c
-index 7c64862f1194..469da86c4084 100644
+index 3c9e120287af..c21770345f5f 100644
 --- a/drivers/crypto/virtio/virtio_crypto_core.c
 +++ b/drivers/crypto/virtio/virtio_crypto_core.c
-@@ -434,11 +434,14 @@ static void virtcrypto_free_unused_reqs(struct virtio_crypto *vcrypto)
- static void virtcrypto_remove(struct virtio_device *vdev)
+@@ -34,27 +34,28 @@ virtcrypto_clear_request(struct virtio_crypto_request *vc_req)
+ 	}
+ }
+ 
+-static void virtcrypto_dataq_callback(struct virtqueue *vq)
++static void virtcrypto_done_task(unsigned long data)
  {
- 	struct virtio_crypto *vcrypto = vdev->priv;
-+	int i;
+-	struct virtio_crypto *vcrypto = vq->vdev->priv;
++	struct data_queue *data_vq = (struct data_queue *)data;
++	struct virtqueue *vq = data_vq->vq;
+ 	struct virtio_crypto_request *vc_req;
+-	unsigned long flags;
+ 	unsigned int len;
+-	unsigned int qid = vq->index;
  
- 	dev_info(&vdev->dev, "Start virtcrypto_remove.\n");
+-	spin_lock_irqsave(&vcrypto->data_vq[qid].lock, flags);
+ 	do {
+ 		virtqueue_disable_cb(vq);
+ 		while ((vc_req = virtqueue_get_buf(vq, &len)) != NULL) {
+-			spin_unlock_irqrestore(
+-				&vcrypto->data_vq[qid].lock, flags);
+ 			if (vc_req->alg_cb)
+ 				vc_req->alg_cb(vc_req, len);
+-			spin_lock_irqsave(
+-				&vcrypto->data_vq[qid].lock, flags);
+ 		}
+ 	} while (!virtqueue_enable_cb(vq));
+-	spin_unlock_irqrestore(&vcrypto->data_vq[qid].lock, flags);
++}
++
++static void virtcrypto_dataq_callback(struct virtqueue *vq)
++{
++	struct virtio_crypto *vcrypto = vq->vdev->priv;
++	struct data_queue *dq = &vcrypto->data_vq[vq->index];
++
++	tasklet_schedule(&dq->done_task);
+ }
  
- 	if (virtcrypto_dev_started(vcrypto))
- 		virtcrypto_dev_stop(vcrypto);
-+	for (i = 0; i < vcrypto->max_data_queues; i++)
-+		tasklet_kill(&vcrypto->data_vq[i].done_task);
- 	vdev->config->reset(vdev);
- 	virtcrypto_free_unused_reqs(vcrypto);
- 	virtcrypto_clear_crypto_engines(vcrypto);
+ static int virtcrypto_find_vqs(struct virtio_crypto *vi)
+@@ -111,6 +112,8 @@ static int virtcrypto_find_vqs(struct virtio_crypto *vi)
+ 			ret = -ENOMEM;
+ 			goto err_engine;
+ 		}
++		tasklet_init(&vi->data_vq[i].done_task, virtcrypto_done_task,
++				(unsigned long)&vi->data_vq[i]);
+ 	}
+ 
+ 	kfree(names);
 -- 
 2.43.0
 
