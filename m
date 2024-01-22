@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07FA838278
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44749837E11
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A98B11F27C24
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7B1FB25831
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:26:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2595D5C5F4;
-	Tue, 23 Jan 2024 01:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD1A59B4F;
+	Tue, 23 Jan 2024 00:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/eL2Xvg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n5FTYqxl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79D45C5EF;
-	Tue, 23 Jan 2024 01:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA41758AD8;
+	Tue, 23 Jan 2024 00:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974361; cv=none; b=s7hT2Ogeygw2GQLcNf6K1FHkKO7T3uuMdY27sNPa4FE7l5suKAANGlbkZOUavp28vxCUMeqg9PIhaJJZ5hoJD3fyaQeLDAltCEDEB9flnJgF6gkPKeU7EgGIgzw06kNrXKd3OBZvk2r4VNTpRFmSs1fDRIwgPYUrCUiIYQuMyhA=
+	t=1705969971; cv=none; b=T5SYl1LvjpMXse8fKUnQSQuqi6T0J9CD6s5OAHEpmsrAztR+KgFKNXav4PwrT959ZUesJ8G+wgT1jTIEbL2alONvPo5t7z4yIeyD2oq3YGudOlFXyDFL/dUl4NM10JXg6osq5KIgry/TTNJkWQBpDHq0E012rvbzduAqXSB2WVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974361; c=relaxed/simple;
-	bh=khOPx1ttPv9ZWuTLz1t4ipbbC/JsLb/H1mAdKKZQbHc=;
+	s=arc-20240116; t=1705969971; c=relaxed/simple;
+	bh=iFkvGjZ331CD6TaUmXR5mMFBD+aBzM9Kr2Q2eCBcMMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cz/0vCGspOWORzjzLYjhNTj/HESXDr2z/1iHBGj5igw8n/tr3nwrBr2QRt5amGvBAOn2+DQc+Hc1M/pkrV+INYn0ZRiUBp7NiaEW4wtVS+9mfKdFV6GzCGMxXk+UOihX0R4GzK2CiXABB2NYNV+yFuWuVQ3BLh8ei+APa2MYY8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/eL2Xvg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A289C433F1;
-	Tue, 23 Jan 2024 01:46:01 +0000 (UTC)
+	 MIME-Version; b=pKTUqkxcTdH8EEzwByUNwI7Bl9o/ePHeKXSDrfDi9JWpCSZgLWVsMz6yE42jK9JrYYCM2W6nA8/qxzggRmfTYlIMdvIGYqpc5zx12J1uh9oPS/8JuGPQTZTPbovQ0zNS49OT8bYT76NWenHyqxHtfeDKnNGhAKTxRfQvRhpwK6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n5FTYqxl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBAF4C433C7;
+	Tue, 23 Jan 2024 00:32:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974361;
-	bh=khOPx1ttPv9ZWuTLz1t4ipbbC/JsLb/H1mAdKKZQbHc=;
+	s=korg; t=1705969971;
+	bh=iFkvGjZ331CD6TaUmXR5mMFBD+aBzM9Kr2Q2eCBcMMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C/eL2Xvg85f7F500LM8nsMCLckbyaw8drsUqfZy/LDv9cct0Jc4yYvKRQMqau/LgB
-	 vulAF4yFO2McIUIl/TXEu3SVa5+/GjuKtd+LV0R76xie8jY1Ye05t4Ksi1fwNCl9J7
-	 05u4jlo3avB78en3F8dreBRrdbmCFskDo59BNZC8=
+	b=n5FTYqxlYL9eKvQkB76n+fPMvuvIyMT9ra3KuyA9vpdZ1t7CPCbX/4nOphW01Fkw4
+	 Y4r7deh0ipcaEW30k89DBzM1bO/zyRDUL+OQEgZb5iHBz8MQU2Rb+L66mmfX37uTSk
+	 gg+9MdtBv5Bkj9a/zEojaP/KHC8E97z+kDBul4Vc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Rob Herring <robh@kernel.org>,
+	Nikhil Agarwal <Nikhil.agarwal@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 192/374] drm/msm/mdp4: flush vblank event on disable
+Subject: [PATCH 6.7 544/641] cdx: Explicitly include correct DT includes, again
 Date: Mon, 22 Jan 2024 15:57:28 -0800
-Message-ID: <20240122235751.291132128@linuxfoundation.org>
+Message-ID: <20240122235835.165671685@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Rob Herring <robh@kernel.org>
 
-[ Upstream commit c6721b3c6423d8a348ae885a0f4c85e14f9bf85c ]
+[ Upstream commit aaee477e3e2c7305a95ffc528bf831a13da3dacb ]
 
-Flush queued events when disabling the crtc. This avoids timeouts when
-we come back and wait for dependencies (like the previous frame's
-flip_done).
+The DT of_device.h and of_platform.h date back to the separate
+of_platform_bus_type before it was merged into the regular platform bus.
+As part of that merge prepping Arm DT support 13 years ago, they
+"temporarily" include each other. They also include platform_device.h
+and of.h. As a result, there's a pretty much random mix of those include
+files used throughout the tree. In order to detangle these headers and
+replace the implicit includes with struct declarations, users need to
+explicitly include the correct includes.
 
-Fixes: c8afe684c95c ("drm/msm: basic KMS driver for snapdragon")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/569127/
-Link: https://lore.kernel.org/r/20231127215401.4064128-1-dmitry.baryshkov@linaro.org
+CDX was fixed once, but commit ("cdx: Remove cdx controller list from cdx
+bus system") added another occurrence.
+
+Fixes: 54b406e10f03 ("cdx: Remove cdx controller list from cdx bus system")
+Signed-off-by: Rob Herring <robh@kernel.org>
+Acked-by: Nikhil Agarwal <Nikhil.agarwal@amd.com>
+Link: https://lore.kernel.org/r/20231207163128.2707993-2-robh@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/cdx/cdx.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c b/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
-index 169f9de4a12a..3100957225a7 100644
---- a/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
-+++ b/drivers/gpu/drm/msm/disp/mdp4/mdp4_crtc.c
-@@ -269,6 +269,7 @@ static void mdp4_crtc_atomic_disable(struct drm_crtc *crtc,
- {
- 	struct mdp4_crtc *mdp4_crtc = to_mdp4_crtc(crtc);
- 	struct mdp4_kms *mdp4_kms = get_kms(crtc);
-+	unsigned long flags;
+diff --git a/drivers/cdx/cdx.c b/drivers/cdx/cdx.c
+index 4461c6c9313f..d84d153078d7 100644
+--- a/drivers/cdx/cdx.c
++++ b/drivers/cdx/cdx.c
+@@ -57,7 +57,10 @@
  
- 	DBG("%s", mdp4_crtc->name);
- 
-@@ -281,6 +282,14 @@ static void mdp4_crtc_atomic_disable(struct drm_crtc *crtc,
- 	mdp_irq_unregister(&mdp4_kms->base, &mdp4_crtc->err);
- 	mdp4_disable(mdp4_kms);
- 
-+	if (crtc->state->event && !crtc->state->active) {
-+		WARN_ON(mdp4_crtc->event);
-+		spin_lock_irqsave(&mdp4_kms->dev->event_lock, flags);
-+		drm_crtc_send_vblank_event(crtc, crtc->state->event);
-+		crtc->state->event = NULL;
-+		spin_unlock_irqrestore(&mdp4_kms->dev->event_lock, flags);
-+	}
-+
- 	mdp4_crtc->enabled = false;
- }
- 
+ #include <linux/init.h>
+ #include <linux/kernel.h>
++#include <linux/of.h>
+ #include <linux/of_device.h>
++#include <linux/of_platform.h>
++#include <linux/platform_device.h>
+ #include <linux/slab.h>
+ #include <linux/mm.h>
+ #include <linux/idr.h>
 -- 
 2.43.0
 
