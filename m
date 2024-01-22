@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-13805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2169C837E1D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:35:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB6B383834F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:28:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6D5E1F29A6A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 871D828E1F2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB9E65101A;
-	Tue, 23 Jan 2024 00:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7005A61669;
+	Tue, 23 Jan 2024 01:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ELF7YSp1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dEU40uIW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6853150A75;
-	Tue, 23 Jan 2024 00:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289DC612D1;
+	Tue, 23 Jan 2024 01:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970389; cv=none; b=ljMH1lvXl2p0xChEiv5VWcjCdaqBzULsrJJGmRt0rnzHeMVa0MOUo9vfVMbb4h6Ev+2ndSZG0ccZjKOiMZn9WxETyjOk8j69lIQsLp+UMqqqjVTFmfQNDGUnHxmlGNlAy5JhWiOd7td6NVp8UvNBQm/4ci6C2nbjaOOIzaOEvCM=
+	t=1705974934; cv=none; b=UiS+hJ9z9E+ZjAwuiYzj0+M6vJpeZXN9m+++YSHEMj/iX09k0xRuRZd7TiSai/FYuSnKso4P3SmwawXOcVofQ5nSomtMq4HYMeE27VK3oPnG9Lw1jFkyt9J7hYPz3Q2hb74D2z8KALN/Hdtjend14TNCguaHqr8DKT05RNR7nRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970389; c=relaxed/simple;
-	bh=qt06AEzndtFWNw/11YLickqloyK+Z7K4H33TyO2uU98=;
+	s=arc-20240116; t=1705974934; c=relaxed/simple;
+	bh=P07ghF+71t7SbO0Z1FuAwYw9dGYKit76rjQP2lijz10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qYeO+B5nMq99+/VPE7zYj9eqD5ykft7X0A3afd8RLb0IgyZf7t4amyjt5k6R7Vs2xp2lHpp9fz/ddJ9wTpBxeWxMIKlWktzk4ei21uKatJqFnmnB9Ke1vUW5WZLI0XfX2Qm3VDX8GRRu+H7IByS7X15DcpvRFp7nribwAOM8muU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ELF7YSp1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C005BC433F1;
-	Tue, 23 Jan 2024 00:39:48 +0000 (UTC)
+	 MIME-Version; b=eE1xprjqi568GpY97vQ+wLnpgDs2oZtHzD3lKzFbptQmXAS8XdJ5YUQoOabR4/osu+yM8x62t7Q4UNJIsqT7rO7unWKt+o7UGPqbvj/Ne/hMJXB6wS97zVWepWSnoNAzecIg/wAaVATlowjuKtrtNLTpjWtxhEjsCb29c0ZxJu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dEU40uIW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D60EAC433C7;
+	Tue, 23 Jan 2024 01:55:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970389;
-	bh=qt06AEzndtFWNw/11YLickqloyK+Z7K4H33TyO2uU98=;
+	s=korg; t=1705974934;
+	bh=P07ghF+71t7SbO0Z1FuAwYw9dGYKit76rjQP2lijz10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ELF7YSp18SPIXigfdNWnk2dPY8ZdkILFKNL+uvdsG3I5DkShrVM5d/n/i0Mi35PiA
-	 4zIxnf+tSbqIsUp2lyGloHwdVNKdSgT2Z0csWvBNozPQ3EyKpDn5fKjIxN6poJz4VY
-	 fRDbTdEBbp5MzhSqYoH06iuOIxHENVxv1c1VT1Jw=
+	b=dEU40uIWVW2GqiCOuhsnUHOAA0pvOZrE5ttP/I+Upc1DWK1nNz+dIB5udjpc8PIkO
+	 6Yiex4ECRSv3LXnaXdVtUZGqLYoXCjJFh98gRbfMCROeENBqKlw3BmNVpSNNKNW8XV
+	 H5xPJQZyho7tXyMuD4Cei2yIjkEjDd8GV/f35+zo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ludvig=20P=C3=A4rsson?= <ludvig.parsson@axis.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 632/641] ethtool: netlink: Add missing ethnl_ops_begin/complete
+	David Lin <yu-hao.lin@nxp.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>,
+	Rafael Beims <rafael.beims@toradex.com>
+Subject: [PATCH 5.15 280/374] wifi: mwifiex: configure BSSID consistently when starting AP
 Date: Mon, 22 Jan 2024 15:58:56 -0800
-Message-ID: <20240122235838.051842301@linuxfoundation.org>
+Message-ID: <20240122235754.505613903@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +62,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ludvig Pärsson <ludvig.parsson@axis.com>
+From: David Lin <yu-hao.lin@nxp.com>
 
-[ Upstream commit f1172f3ee3a98754d95b968968920a7d03fdebcc ]
+commit f0dd488e11e71ac095df7638d892209c629d9af2 upstream.
 
-Accessing an ethernet device that is powered off or clock gated might
-cause the CPU to hang. Add ethnl_ops_begin/complete in
-ethnl_set_features() to protect against this.
+AP BSSID configuration is missing at AP start.  Without this fix, FW returns
+STA interface MAC address after first init.  When hostapd restarts, it gets MAC
+address from netdev before driver sets STA MAC to netdev again. Now MAC address
+between hostapd and net interface are different causes STA cannot connect to
+AP.  After that MAC address of uap0 mlan0 become the same. And issue disappears
+after following hostapd restart (another issue is AP/STA MAC address become the
+same).
 
-Fixes: 0980bfcd6954 ("ethtool: set netdev features with FEATURES_SET request")
-Signed-off-by: Ludvig Pärsson <ludvig.parsson@axis.com>
-Link: https://lore.kernel.org/r/20240117-etht2-v2-1-1a96b6e8c650@axis.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch fixes the issue cleanly.
+
+Signed-off-by: David Lin <yu-hao.lin@nxp.com>
+Fixes: 12190c5d80bd ("mwifiex: add cfg80211 start_ap and stop_ap handlers")
+Cc: stable@vger.kernel.org
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Tested-by: Rafael Beims <rafael.beims@toradex.com> # Verdin iMX8MP/SD8997 SD
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231215005118.17031-1-yu-hao.lin@nxp.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ethtool/features.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c |    2 ++
+ drivers/net/wireless/marvell/mwifiex/fw.h       |    1 +
+ drivers/net/wireless/marvell/mwifiex/ioctl.h    |    1 +
+ drivers/net/wireless/marvell/mwifiex/uap_cmd.c  |    8 ++++++++
+ 4 files changed, 12 insertions(+)
 
-diff --git a/net/ethtool/features.c b/net/ethtool/features.c
-index a79af8c25a07..b6cb101d7f19 100644
---- a/net/ethtool/features.c
-+++ b/net/ethtool/features.c
-@@ -234,17 +234,20 @@ int ethnl_set_features(struct sk_buff *skb, struct genl_info *info)
- 	dev = req_info.dev;
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -1980,6 +1980,8 @@ static int mwifiex_cfg80211_start_ap(str
  
- 	rtnl_lock();
-+	ret = ethnl_ops_begin(dev);
-+	if (ret < 0)
-+		goto out_rtnl;
- 	ethnl_features_to_bitmap(old_active, dev->features);
- 	ethnl_features_to_bitmap(old_wanted, dev->wanted_features);
- 	ret = ethnl_parse_bitset(req_wanted, req_mask, NETDEV_FEATURE_COUNT,
- 				 tb[ETHTOOL_A_FEATURES_WANTED],
- 				 netdev_features_strings, info->extack);
- 	if (ret < 0)
--		goto out_rtnl;
-+		goto out_ops;
- 	if (ethnl_bitmap_to_features(req_mask) & ~NETIF_F_ETHTOOL_BITS) {
- 		GENL_SET_ERR_MSG(info, "attempt to change non-ethtool features");
- 		ret = -EINVAL;
--		goto out_rtnl;
-+		goto out_ops;
- 	}
+ 	mwifiex_set_sys_config_invalid_data(bss_cfg);
  
- 	/* set req_wanted bits not in req_mask from old_wanted */
-@@ -281,6 +284,8 @@ int ethnl_set_features(struct sk_buff *skb, struct genl_info *info)
- 	if (mod)
- 		netdev_features_change(dev);
++	memcpy(bss_cfg->mac_addr, priv->curr_addr, ETH_ALEN);
++
+ 	if (params->beacon_interval)
+ 		bss_cfg->beacon_period = params->beacon_interval;
+ 	if (params->dtim_period)
+--- a/drivers/net/wireless/marvell/mwifiex/fw.h
++++ b/drivers/net/wireless/marvell/mwifiex/fw.h
+@@ -177,6 +177,7 @@ enum MWIFIEX_802_11_PRIVACY_FILTER {
+ #define TLV_TYPE_STA_MAC_ADDR       (PROPRIETARY_TLV_BASE_ID + 32)
+ #define TLV_TYPE_BSSID              (PROPRIETARY_TLV_BASE_ID + 35)
+ #define TLV_TYPE_CHANNELBANDLIST    (PROPRIETARY_TLV_BASE_ID + 42)
++#define TLV_TYPE_UAP_MAC_ADDRESS    (PROPRIETARY_TLV_BASE_ID + 43)
+ #define TLV_TYPE_UAP_BEACON_PERIOD  (PROPRIETARY_TLV_BASE_ID + 44)
+ #define TLV_TYPE_UAP_DTIM_PERIOD    (PROPRIETARY_TLV_BASE_ID + 45)
+ #define TLV_TYPE_UAP_BCAST_SSID     (PROPRIETARY_TLV_BASE_ID + 48)
+--- a/drivers/net/wireless/marvell/mwifiex/ioctl.h
++++ b/drivers/net/wireless/marvell/mwifiex/ioctl.h
+@@ -119,6 +119,7 @@ struct mwifiex_uap_bss_param {
+ 	u8 qos_info;
+ 	u8 power_constraint;
+ 	struct mwifiex_types_wmm_info wmm_info;
++	u8 mac_addr[ETH_ALEN];
+ };
  
-+out_ops:
-+	ethnl_ops_complete(dev);
- out_rtnl:
- 	rtnl_unlock();
- 	ethnl_parse_header_dev_put(&req_info);
--- 
-2.43.0
-
+ enum {
+--- a/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
++++ b/drivers/net/wireless/marvell/mwifiex/uap_cmd.c
+@@ -480,6 +480,7 @@ void mwifiex_config_uap_11d(struct mwifi
+ static int
+ mwifiex_uap_bss_param_prepare(u8 *tlv, void *cmd_buf, u16 *param_size)
+ {
++	struct host_cmd_tlv_mac_addr *mac_tlv;
+ 	struct host_cmd_tlv_dtim_period *dtim_period;
+ 	struct host_cmd_tlv_beacon_period *beacon_period;
+ 	struct host_cmd_tlv_ssid *ssid;
+@@ -499,6 +500,13 @@ mwifiex_uap_bss_param_prepare(u8 *tlv, v
+ 	int i;
+ 	u16 cmd_size = *param_size;
+ 
++	mac_tlv = (struct host_cmd_tlv_mac_addr *)tlv;
++	mac_tlv->header.type = cpu_to_le16(TLV_TYPE_UAP_MAC_ADDRESS);
++	mac_tlv->header.len = cpu_to_le16(ETH_ALEN);
++	memcpy(mac_tlv->mac_addr, bss_cfg->mac_addr, ETH_ALEN);
++	cmd_size += sizeof(struct host_cmd_tlv_mac_addr);
++	tlv += sizeof(struct host_cmd_tlv_mac_addr);
++
+ 	if (bss_cfg->ssid.ssid_len) {
+ 		ssid = (struct host_cmd_tlv_ssid *)tlv;
+ 		ssid->header.type = cpu_to_le16(TLV_TYPE_UAP_SSID);
 
 
 
