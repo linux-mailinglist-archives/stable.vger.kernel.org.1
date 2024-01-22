@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-14060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE8A8837F57
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 718A5838461
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E9051F279A8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 973DA1C2A2D2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68FBB12AAE2;
-	Tue, 23 Jan 2024 00:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21B6B6D1B1;
+	Tue, 23 Jan 2024 02:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8T49bKS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jP62I/54"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E7212AADB;
-	Tue, 23 Jan 2024 00:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5A716BB56;
+	Tue, 23 Jan 2024 02:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971074; cv=none; b=nHixFm9bsLs5cJR4jkJnTxpacp8a0vm7JJ+hg2dRzDmY7bdCBK5G6qJnfdqjwmFZkNtgWXfdRCvRgjXetKyMo9ZkqHtA41RCNYzXXcjiM2IHcECO1ZjadMFIVu2pjFnHPgc1ikxF7YQx4o+AM8G3lF4qrBqJUntM3nFFhQOifVA=
+	t=1705975375; cv=none; b=B9unlskg+seRtFvdpCpEEYflPRKFZTTKmZZFL8La7dAIvV2fTY/B/cZSZrgI1LXPhSA+3bETQKUGgwH+HTuXhl3hBrA1Nu7H0Md4DCqrsQCxJJlqPbjGg+4BQwqf7JvMcOFRCbWA/uNMjWyPPFSmgbqHwOSbvjbIhQ/yrI2dwsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971074; c=relaxed/simple;
-	bh=MlayqDiewZodKyRxpEvTI5gxhITxhaaPM6MNCa5nQj4=;
+	s=arc-20240116; t=1705975375; c=relaxed/simple;
+	bh=c9OJkjFaidb38QdJuPI2vzsIWYFU2xc7M09H9f1gKBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FWpgMKDyPP//WE6bBYLLHKj4hJrgqqk4v7UweF4wpJQ6Qw1O0tGj2UxGyN044Dv94bU2vLAf+rT4uH6YMK5w/7HSBZ0uCu/exL3hXJh+SnX0e8QOklv9c4dIhcVIAWXmYdPRN99v8yJwcMa4bJ1EC9GjFADzY/H8tPCr1e2nqQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8T49bKS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8388EC43390;
-	Tue, 23 Jan 2024 00:51:13 +0000 (UTC)
+	 MIME-Version; b=gpebe5SQ5ld+J3rmw2Mm/G7u5Lqz9+vLI8H4GB6tCHq1XjQQ82OaZ3p2QmCnm39HXl50OTBBC8FPwazn9wqqx0OCgq0zSgrHRsKuQzEPojpmrPKFkGk/KF9vJO7iPwUcb4NaoYRivIBieuAhuCI9cb8UKJph3pMrkXnW3IIz7EY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jP62I/54; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E5DC43390;
+	Tue, 23 Jan 2024 02:02:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971074;
-	bh=MlayqDiewZodKyRxpEvTI5gxhITxhaaPM6MNCa5nQj4=;
+	s=korg; t=1705975375;
+	bh=c9OJkjFaidb38QdJuPI2vzsIWYFU2xc7M09H9f1gKBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n8T49bKSeTpqTVliXnWqC7fEfCPMX3pJzNxaGjQnwYll4AoPFpB00xN75VeUtscS0
-	 Jy1wqprpOvmzS2/Vzu48DlGE6+AUFx8DCj0UbF0XSSe8Qm1W9Zalzpmb3vatyK9U/l
-	 WYw5WxmGNT8lMMGVQLo3HnEFO0Ov+pcHc9QWqIXI=
+	b=jP62I/54uIGFI3qUMCN5cJlaFy9kzHJsAAzphqnFgZ0pV4rECdNW7bAO0AxwKnyV1
+	 Cm3MvuS7/lFpvZX8gwEK20Pxa6BJmL+oBwTj6S6fVlmn9Mh2a/5EgodWlXiHmqLeMp
+	 hCKn+DseOSOpbTBIvItLWQaLlTG+LzLeakLI0lyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Halil Pasic <pasic@linux.ibm.com>,
-	wangyangxin <wangyangxin1@huawei.com>,
-	Gonglei <arei.gonglei@huawei.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Stephen Boyd <stephen.boyd@linaro.org>,
+	"Christian A. Ehrhardt" <lk@c--e.de>,
+	Rob Herring <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 083/286] crypto: virtio - Handle dataq logic with tasklet
+Subject: [PATCH 6.6 338/583] of: Fix double free in of_parse_phandle_with_args_map
 Date: Mon, 22 Jan 2024 15:56:29 -0800
-Message-ID: <20240122235735.238619092@linuxfoundation.org>
+Message-ID: <20240122235822.369828605@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,101 +63,233 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gonglei (Arei) <arei.gonglei@huawei.com>
+From: Christian A. Ehrhardt <lk@c--e.de>
 
-[ Upstream commit fed93fb62e05c38152b0fc1dc9609639e63eed76 ]
+[ Upstream commit 4dde83569832f9377362e50f7748463340c5db6b ]
 
-Doing ipsec produces a spinlock recursion warning.
-This is due to crypto_finalize_request() being called in the upper half.
-Move virtual data queue processing of virtio-crypto driver to tasklet.
+In of_parse_phandle_with_args_map() the inner loop that
+iterates through the map entries calls of_node_put(new)
+to free the reference acquired by the previous iteration
+of the inner loop. This assumes that the value of "new" is
+NULL on the first iteration of the inner loop.
 
-Fixes: dbaf0624ffa57 ("crypto: add virtio-crypto driver")
-Reported-by: Halil Pasic <pasic@linux.ibm.com>
-Signed-off-by: wangyangxin <wangyangxin1@huawei.com>
-Signed-off-by: Gonglei <arei.gonglei@huawei.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Make sure that this is true in all iterations of the outer
+loop by setting "new" to NULL after its value is assigned to "cur".
+
+Extend the unittest to detect the double free and add an additional
+test case that actually triggers this path.
+
+Fixes: bd6f2fd5a1 ("of: Support parsing phandle argument lists through a nexus node")
+Cc: Stephen Boyd <stephen.boyd@linaro.org>
+Signed-off-by: "Christian A. Ehrhardt" <lk@c--e.de>
+Link: https://lore.kernel.org/r/20231229105411.1603434-1-lk@c--e.de
+Signed-off-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/virtio/virtio_crypto_common.h |  2 ++
- drivers/crypto/virtio/virtio_crypto_core.c   | 23 +++++++++++---------
- 2 files changed, 15 insertions(+), 10 deletions(-)
+ drivers/of/base.c                           |  1 +
+ drivers/of/unittest-data/tests-phandle.dtsi | 10 ++-
+ drivers/of/unittest.c                       | 74 ++++++++++++---------
+ 3 files changed, 53 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/crypto/virtio/virtio_crypto_common.h b/drivers/crypto/virtio/virtio_crypto_common.h
-index e0dcb247840a..d61c991d7773 100644
---- a/drivers/crypto/virtio/virtio_crypto_common.h
-+++ b/drivers/crypto/virtio/virtio_crypto_common.h
-@@ -10,6 +10,7 @@
- #include <linux/virtio.h>
- #include <linux/crypto.h>
- #include <linux/spinlock.h>
-+#include <linux/interrupt.h>
- #include <crypto/aead.h>
- #include <crypto/aes.h>
- #include <crypto/engine.h>
-@@ -28,6 +29,7 @@ struct data_queue {
- 	char name[32];
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index 8d93cb6ea9cd..b0ad8fc06e80 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1464,6 +1464,7 @@ int of_parse_phandle_with_args_map(const struct device_node *np,
+ 		out_args->np = new;
+ 		of_node_put(cur);
+ 		cur = new;
++		new = NULL;
+ 	}
+ put:
+ 	of_node_put(cur);
+diff --git a/drivers/of/unittest-data/tests-phandle.dtsi b/drivers/of/unittest-data/tests-phandle.dtsi
+index d01f92f0f0db..554a996b2ef1 100644
+--- a/drivers/of/unittest-data/tests-phandle.dtsi
++++ b/drivers/of/unittest-data/tests-phandle.dtsi
+@@ -40,6 +40,13 @@ provider4: provider4 {
+ 				phandle-map-pass-thru = <0x0 0xf0>;
+ 			};
  
- 	struct crypto_engine *engine;
-+	struct tasklet_struct done_task;
- };
- 
- struct virtio_crypto {
-diff --git a/drivers/crypto/virtio/virtio_crypto_core.c b/drivers/crypto/virtio/virtio_crypto_core.c
-index 94624f469985..630af33929ef 100644
---- a/drivers/crypto/virtio/virtio_crypto_core.c
-+++ b/drivers/crypto/virtio/virtio_crypto_core.c
-@@ -72,27 +72,28 @@ int virtio_crypto_ctrl_vq_request(struct virtio_crypto *vcrypto, struct scatterl
- 	return 0;
- }
- 
--static void virtcrypto_dataq_callback(struct virtqueue *vq)
-+static void virtcrypto_done_task(unsigned long data)
- {
--	struct virtio_crypto *vcrypto = vq->vdev->priv;
-+	struct data_queue *data_vq = (struct data_queue *)data;
-+	struct virtqueue *vq = data_vq->vq;
- 	struct virtio_crypto_request *vc_req;
--	unsigned long flags;
- 	unsigned int len;
--	unsigned int qid = vq->index;
- 
--	spin_lock_irqsave(&vcrypto->data_vq[qid].lock, flags);
- 	do {
- 		virtqueue_disable_cb(vq);
- 		while ((vc_req = virtqueue_get_buf(vq, &len)) != NULL) {
--			spin_unlock_irqrestore(
--				&vcrypto->data_vq[qid].lock, flags);
- 			if (vc_req->alg_cb)
- 				vc_req->alg_cb(vc_req, len);
--			spin_lock_irqsave(
--				&vcrypto->data_vq[qid].lock, flags);
- 		}
- 	} while (!virtqueue_enable_cb(vq));
--	spin_unlock_irqrestore(&vcrypto->data_vq[qid].lock, flags);
-+}
++			provider5: provider5 {
++				#phandle-cells = <2>;
++				phandle-map = <2 7 &provider4 2 3>;
++				phandle-map-mask = <0xff 0xf>;
++				phandle-map-pass-thru = <0x0 0xf0>;
++			};
 +
-+static void virtcrypto_dataq_callback(struct virtqueue *vq)
-+{
-+	struct virtio_crypto *vcrypto = vq->vdev->priv;
-+	struct data_queue *dq = &vcrypto->data_vq[vq->index];
-+
-+	tasklet_schedule(&dq->done_task);
- }
+ 			consumer-a {
+ 				phandle-list =	<&provider1 1>,
+ 						<&provider2 2 0>,
+@@ -66,7 +73,8 @@ consumer-b {
+ 						<&provider4 4 0x100>,
+ 						<&provider4 0 0x61>,
+ 						<&provider0>,
+-						<&provider4 19 0x20>;
++						<&provider4 19 0x20>,
++						<&provider5 2 7>;
+ 				phandle-list-bad-phandle = <12345678 0 0>;
+ 				phandle-list-bad-args = <&provider2 1 0>,
+ 							<&provider4 0>;
+diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
+index ad2b7879cc67..c63f5963751b 100644
+--- a/drivers/of/unittest.c
++++ b/drivers/of/unittest.c
+@@ -456,6 +456,9 @@ static void __init of_unittest_parse_phandle_with_args(void)
  
- static int virtcrypto_find_vqs(struct virtio_crypto *vi)
-@@ -149,6 +150,8 @@ static int virtcrypto_find_vqs(struct virtio_crypto *vi)
- 			ret = -ENOMEM;
- 			goto err_engine;
- 		}
-+		tasklet_init(&vi->data_vq[i].done_task, virtcrypto_done_task,
-+				(unsigned long)&vi->data_vq[i]);
+ 		unittest(passed, "index %i - data error on node %pOF rc=%i\n",
+ 			 i, args.np, rc);
++
++		if (rc == 0)
++			of_node_put(args.np);
  	}
  
- 	kfree(names);
+ 	/* Check for missing list property */
+@@ -545,8 +548,9 @@ static void __init of_unittest_parse_phandle_with_args(void)
+ 
+ static void __init of_unittest_parse_phandle_with_args_map(void)
+ {
+-	struct device_node *np, *p0, *p1, *p2, *p3;
++	struct device_node *np, *p[6] = {};
+ 	struct of_phandle_args args;
++	unsigned int prefs[6];
+ 	int i, rc;
+ 
+ 	np = of_find_node_by_path("/testcase-data/phandle-tests/consumer-b");
+@@ -555,34 +559,24 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
+ 		return;
+ 	}
+ 
+-	p0 = of_find_node_by_path("/testcase-data/phandle-tests/provider0");
+-	if (!p0) {
+-		pr_err("missing testcase data\n");
+-		return;
+-	}
+-
+-	p1 = of_find_node_by_path("/testcase-data/phandle-tests/provider1");
+-	if (!p1) {
+-		pr_err("missing testcase data\n");
+-		return;
+-	}
+-
+-	p2 = of_find_node_by_path("/testcase-data/phandle-tests/provider2");
+-	if (!p2) {
+-		pr_err("missing testcase data\n");
+-		return;
+-	}
+-
+-	p3 = of_find_node_by_path("/testcase-data/phandle-tests/provider3");
+-	if (!p3) {
+-		pr_err("missing testcase data\n");
+-		return;
++	p[0] = of_find_node_by_path("/testcase-data/phandle-tests/provider0");
++	p[1] = of_find_node_by_path("/testcase-data/phandle-tests/provider1");
++	p[2] = of_find_node_by_path("/testcase-data/phandle-tests/provider2");
++	p[3] = of_find_node_by_path("/testcase-data/phandle-tests/provider3");
++	p[4] = of_find_node_by_path("/testcase-data/phandle-tests/provider4");
++	p[5] = of_find_node_by_path("/testcase-data/phandle-tests/provider5");
++	for (i = 0; i < ARRAY_SIZE(p); ++i) {
++		if (!p[i]) {
++			pr_err("missing testcase data\n");
++			return;
++		}
++		prefs[i] = kref_read(&p[i]->kobj.kref);
+ 	}
+ 
+ 	rc = of_count_phandle_with_args(np, "phandle-list", "#phandle-cells");
+-	unittest(rc == 7, "of_count_phandle_with_args() returned %i, expected 7\n", rc);
++	unittest(rc == 8, "of_count_phandle_with_args() returned %i, expected 7\n", rc);
+ 
+-	for (i = 0; i < 8; i++) {
++	for (i = 0; i < 9; i++) {
+ 		bool passed = true;
+ 
+ 		memset(&args, 0, sizeof(args));
+@@ -593,13 +587,13 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
+ 		switch (i) {
+ 		case 0:
+ 			passed &= !rc;
+-			passed &= (args.np == p1);
++			passed &= (args.np == p[1]);
+ 			passed &= (args.args_count == 1);
+ 			passed &= (args.args[0] == 1);
+ 			break;
+ 		case 1:
+ 			passed &= !rc;
+-			passed &= (args.np == p3);
++			passed &= (args.np == p[3]);
+ 			passed &= (args.args_count == 3);
+ 			passed &= (args.args[0] == 2);
+ 			passed &= (args.args[1] == 5);
+@@ -610,28 +604,36 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
+ 			break;
+ 		case 3:
+ 			passed &= !rc;
+-			passed &= (args.np == p0);
++			passed &= (args.np == p[0]);
+ 			passed &= (args.args_count == 0);
+ 			break;
+ 		case 4:
+ 			passed &= !rc;
+-			passed &= (args.np == p1);
++			passed &= (args.np == p[1]);
+ 			passed &= (args.args_count == 1);
+ 			passed &= (args.args[0] == 3);
+ 			break;
+ 		case 5:
+ 			passed &= !rc;
+-			passed &= (args.np == p0);
++			passed &= (args.np == p[0]);
+ 			passed &= (args.args_count == 0);
+ 			break;
+ 		case 6:
+ 			passed &= !rc;
+-			passed &= (args.np == p2);
++			passed &= (args.np == p[2]);
+ 			passed &= (args.args_count == 2);
+ 			passed &= (args.args[0] == 15);
+ 			passed &= (args.args[1] == 0x20);
+ 			break;
+ 		case 7:
++			passed &= !rc;
++			passed &= (args.np == p[3]);
++			passed &= (args.args_count == 3);
++			passed &= (args.args[0] == 2);
++			passed &= (args.args[1] == 5);
++			passed &= (args.args[2] == 3);
++			break;
++		case 8:
+ 			passed &= (rc == -ENOENT);
+ 			break;
+ 		default:
+@@ -640,6 +642,9 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
+ 
+ 		unittest(passed, "index %i - data error on node %s rc=%i\n",
+ 			 i, args.np->full_name, rc);
++
++		if (rc == 0)
++			of_node_put(args.np);
+ 	}
+ 
+ 	/* Check for missing list property */
+@@ -686,6 +691,13 @@ static void __init of_unittest_parse_phandle_with_args_map(void)
+ 		   "OF: /testcase-data/phandle-tests/consumer-b: #phandle-cells = 2 found 1");
+ 
+ 	unittest(rc == -EINVAL, "expected:%i got:%i\n", -EINVAL, rc);
++
++	for (i = 0; i < ARRAY_SIZE(p); ++i) {
++		unittest(prefs[i] == kref_read(&p[i]->kobj.kref),
++			 "provider%d: expected:%d got:%d\n",
++			 i, prefs[i], kref_read(&p[i]->kobj.kref));
++		of_node_put(p[i]);
++	}
+ }
+ 
+ static void __init of_unittest_property_string(void)
 -- 
 2.43.0
 
