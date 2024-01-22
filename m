@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-14898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7966838314
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:26:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A90C8380C6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:03:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AF941F27DA8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:26:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D64E1F2A030
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA5D604BD;
-	Tue, 23 Jan 2024 01:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34BB51339B0;
+	Tue, 23 Jan 2024 01:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1H8QHYet"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ysQpUN7q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD796025E;
-	Tue, 23 Jan 2024 01:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E925A133435;
+	Tue, 23 Jan 2024 01:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974698; cv=none; b=mYb4+IQDJfJAxK04fEklu2aldNUFTWmCWS8fzvZa+Zh5bK1ZMMzHBBp0GZ0uWfeEiMELeo1oQjIh+zwDP8Smd0MQkytiva0F8EZUNxtKKobYfU5JVi8Kn/NQUXat0DVaAGaqbeVDRz5L+dm+J+rSoN3IEY0U8XlMgG8yAhXB6b0=
+	t=1705971891; cv=none; b=qmDJcK8kG5XxkydvO3yL9FfmIue5q8f3keXQrN3DIAJls600SJWINzd3+ZNJrbAbD8wsLdlbWbj2km0qo9lPNhHTYhpPJf+ICmwE5/shItq4uv3WL/IatybNEw9Cjakja5ufZBpSd8wTsuY+3GeBPZqSC2Lh93cAB0khM3H2C3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974698; c=relaxed/simple;
-	bh=NleCEMcPphWq0pbzd5QRPVd+KKmhQDyEaq1XgFycVPQ=;
+	s=arc-20240116; t=1705971891; c=relaxed/simple;
+	bh=ipH2dBz8ESGoXGai6r17zMzq8fEmv7U5X7McE3zEZ2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gDtjltkFg8R1gE9APwulKcME597hJNd3FLbW2dVHC2QDWfrWmN0/nze5BYlvbHrXoRDDwgH6d9xuQfUUDnKlXupxoqphgAKqvRKI7cfxcwuTZraoRxv8fE0XEXC9zew5eOCTdObgXQIXM5Ne2q8vlFQEqVXH6Z0JjlyyczapucA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1H8QHYet; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4DDCC433A6;
-	Tue, 23 Jan 2024 01:51:37 +0000 (UTC)
+	 MIME-Version; b=JPwrQ/qn4QenlSgCSEQmAGLmq+VSX5bWThfIGEannCgEFGy2xRYkHS0h+BpD6SCkqC+oVzy7o7LcTBj5tJV1ot0EOChiT529clQdZr1h+Fohj9kg04zOiVdhUPW6tqdz/Zfw/p4fQ1oQWQNp5+lI9rGJ5iEsxjoKxoXptaqPQjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ysQpUN7q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92FB4C433F1;
+	Tue, 23 Jan 2024 01:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974697;
-	bh=NleCEMcPphWq0pbzd5QRPVd+KKmhQDyEaq1XgFycVPQ=;
+	s=korg; t=1705971890;
+	bh=ipH2dBz8ESGoXGai6r17zMzq8fEmv7U5X7McE3zEZ2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1H8QHYett8k3mhcpe6SGHS2jsP7x6zxpvXM2t6AdIas88SXmqOFooJdRDrCi8wix0
-	 47Ff33KbpoKqf+KMzqJU6v/fT3bfMi2GrHb4atqx5zhIO+gCta898bWawaM6jRQiRr
-	 P2n2zed7DJ4uv8MjUmbcJxFWriY3ONu4+qua6XEc=
+	b=ysQpUN7qfZF2SzgQcdysTXsc5dTpL0IlkQRSa+qgWkHPGpyt1bLKKzHZAbLz05Qzp
+	 NY5LfBvvdl9HzSCt5j8sfYIjAeA+TiNolPGfthAqx7tWxdTgyEFQ2+gJsCkmGJxxum
+	 8naOWIRnjY9soPLwjU9EU4J1lxRmMpkr95NoUFBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.15 255/374] Revert "usb: dwc3: Soft reset phy on probe for host"
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 343/417] acpi: property: Let args be NULL in __acpi_node_get_property_reference
 Date: Mon, 22 Jan 2024 15:58:31 -0800
-Message-ID: <20240122235753.640500041@linuxfoundation.org>
+Message-ID: <20240122235803.675128221@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,83 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit 7059fbebcb00554c3f31e5b5d93ef6d2d96dc7b4 upstream.
+[ Upstream commit bef52aa0f3de1b7d8c258c13b16e577361dabf3a ]
 
-This reverts commit 8bea147dfdf823eaa8d3baeccc7aeb041b41944b.
+fwnode_get_property_reference_args() may not be called with args argument
+NULL on ACPI, OF already supports this. Add the missing NULL checks and
+document this.
 
-The phy soft reset GUSB2PHYCFG.PHYSOFTRST only applies to UTMI phy, not
-ULPI. This fix is incomplete.
+The purpose is to be able to count the references.
 
-Cc:  <stable@vger.kernel.org>
-Fixes: 8bea147dfdf8 ("usb: dwc3: Soft reset phy on probe for host")
-Reported-by: Köry Maincent <kory.maincent@bootlin.com>
-Closes: https://lore.kernel.org/linux-usb/20231205151959.5236c231@kmaincent-XPS-13-7390
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/29a26593a60eba727de872a3e580a674807b3339.1703282469.git.Thinh.Nguyen@synopsys.com
+Fixes: 977d5ad39f3e ("ACPI: Convert ACPI reference args to generic fwnode reference args")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20231109101010.1329587-2-sakari.ailus@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/core.c |   39 +--------------------------------------
- 1 file changed, 1 insertion(+), 38 deletions(-)
+ drivers/acpi/property.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -277,46 +277,9 @@ int dwc3_core_soft_reset(struct dwc3 *dw
- 	 * XHCI driver will reset the host block. If dwc3 was configured for
- 	 * host-only mode or current role is host, then we can return early.
- 	 */
--	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
-+	if (dwc->dr_mode == USB_DR_MODE_HOST || dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
- 		return 0;
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 0565c18c2ee3..62aee900af3d 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -851,6 +851,7 @@ static int acpi_get_ref_args(struct fwnode_reference_args *args,
+  * @index: Index of the reference to return
+  * @num_args: Maximum number of arguments after each reference
+  * @args: Location to store the returned reference with optional arguments
++ *	  (may be NULL)
+  *
+  * Find property with @name, verifify that it is a package containing at least
+  * one object reference and if so, store the ACPI device object pointer to the
+@@ -907,6 +908,9 @@ int __acpi_node_get_property_reference(const struct fwnode_handle *fwnode,
+ 		if (!device)
+ 			return -EINVAL;
  
--	/*
--	 * If the dr_mode is host and the dwc->current_dr_role is not the
--	 * corresponding DWC3_GCTL_PRTCAP_HOST, then the dwc3_core_init_mode
--	 * isn't executed yet. Ensure the phy is ready before the controller
--	 * updates the GCTL.PRTCAPDIR or other settings by soft-resetting
--	 * the phy.
--	 *
--	 * Note: GUSB3PIPECTL[n] and GUSB2PHYCFG[n] are port settings where n
--	 * is port index. If this is a multiport host, then we need to reset
--	 * all active ports.
--	 */
--	if (dwc->dr_mode == USB_DR_MODE_HOST) {
--		u32 usb3_port;
--		u32 usb2_port;
--
--		usb3_port = dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
--		usb3_port |= DWC3_GUSB3PIPECTL_PHYSOFTRST;
--		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
--
--		usb2_port = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
--		usb2_port |= DWC3_GUSB2PHYCFG_PHYSOFTRST;
--		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
--
--		/* Small delay for phy reset assertion */
--		usleep_range(1000, 2000);
--
--		usb3_port &= ~DWC3_GUSB3PIPECTL_PHYSOFTRST;
--		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
--
--		usb2_port &= ~DWC3_GUSB2PHYCFG_PHYSOFTRST;
--		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
--
--		/* Wait for clock synchronization */
--		msleep(50);
--		return 0;
--	}
--
- 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
- 	reg |= DWC3_DCTL_CSFTRST;
- 	reg &= ~DWC3_DCTL_RUN_STOP;
++		if (!args)
++			return 0;
++
+ 		args->fwnode = acpi_fwnode_handle(device);
+ 		args->nargs = 0;
+ 		return 0;
+-- 
+2.43.0
+
 
 
 
