@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-13242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4EBD837CA3
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:13:16 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75EB1837C30
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:10:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39B85B2F005
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:58:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96AA2B2C140
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0310E14A081;
-	Tue, 23 Jan 2024 00:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F31914A098;
+	Tue, 23 Jan 2024 00:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nTRooFbK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P8JJgyiS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B635D14901D;
-	Tue, 23 Jan 2024 00:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C314A14A09C;
+	Tue, 23 Jan 2024 00:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969187; cv=none; b=taNwqbZWIcZbncDVHjpJFMOnmc+cciJ36F6Am/iV8imrByCCLo/kwsqgB3KFFfNUkm1UmOmrjD3sVN4jvVlTmb8e1xJ3lXW8Im76OleWf52UsD02DSreaG+XAV34YmBx3hHW+nUes8FI/EvLGvFTnJBpbdffUnMxeYy6KFJMiDA=
+	t=1705969201; cv=none; b=BQfD63UAWcg2E3BOdPaYQG0EuuF4g5DzqM1UWOemuI6DHp8f1SqHhR7mosxwLzKwed9b8/d11OHJDcAJL2wRlzhSfvTqxxxqMqe8emneL8ObKi6RiiMaTrdfEUI2ge46wAVqXb+ed5ySLK5av1iVU/6j3V5Y62MirLb7AI1urqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969187; c=relaxed/simple;
-	bh=m343+3DhgM0X0cM5H1ma0syOfQhx0aJHz8NGvxu6OO8=;
+	s=arc-20240116; t=1705969201; c=relaxed/simple;
+	bh=Ljj6bdXYK4qSklYzfTA7bLBg4PYHb5j1Wd/UOc4h7u8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IeyEr26JhN0nrskT5cywkcZu3X8VYLLPf/Fh+pPU5BsNy4pbrp8iiMSoBe6l1gMWyDqg0KQ5nDymAiVlNY5RX2j3wyjJt4ULXaOMjoS23ysGefp6qpgBqNckpdKHScqgQJ1js6jxcNZFA7ihKJ/ISfwu/ayaB9UDSWEgsFyCCoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nTRooFbK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B6FBC43399;
-	Tue, 23 Jan 2024 00:19:47 +0000 (UTC)
+	 MIME-Version; b=ptzDA6/hfYWl/tmozPw5ZQzqg6kf/6b5qyOHBjoY81wkXLbwoQvDtaJF36LE/ehJsUeHW8MU2ZjZZTSC28qvR9jSC4EoBG/z4r5B8j/z/DXEW2Xq1AKVwflFvTJVBJ8gtLAuSVVLKzz69MLgOB9wH1k3F8mCWlStV9Pa2O2ctWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P8JJgyiS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DEF7C433F1;
+	Tue, 23 Jan 2024 00:20:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969187;
-	bh=m343+3DhgM0X0cM5H1ma0syOfQhx0aJHz8NGvxu6OO8=;
+	s=korg; t=1705969201;
+	bh=Ljj6bdXYK4qSklYzfTA7bLBg4PYHb5j1Wd/UOc4h7u8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nTRooFbKYC7Li7DYw/Zp0ZyIJYvmP8rQrQPAfnszlRmW5gPhvOiHfXwlwkZxD/pno
-	 y8gt0DAmPEmeIWqnEK+Nv1kqfqeEKiSeAy4tUIpbI89HntmY+3AoT/3eoUrmMwJYLg
-	 EAWzODztt4WP62VQrM4a3mPCCWTvHPsmA2FQC8zU=
+	b=P8JJgyiSm7xkwkjQjkIBehj/wgqfkdnayqupiXfp1elU/RtdUEGXj8vAaNYbBSx3h
+	 lsFX9c5UlgXkp3pfumq2R2hrUeynoDNbpaabRjhWs6xluIzkXTU3xyX7xeQ0uRFcEt
+	 LXa4KWDOHgWYstWq60982f+GYJ1AHhjk7lQhMAU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Luca Weiss <luca@z3ntu.xyz>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 061/641] crypto: sahara - fix error handling in sahara_hw_descriptor_create()
-Date: Mon, 22 Jan 2024 15:49:25 -0800
-Message-ID: <20240122235819.972102515@linuxfoundation.org>
+Subject: [PATCH 6.7 095/641] ARM: dts: qcom: msm8226: provide dsi phy clocks to mmcc
+Date: Mon, 22 Jan 2024 15:49:59 -0800
+Message-ID: <20240122235821.010816820@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -66,52 +68,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Luca Weiss <luca@z3ntu.xyz>
 
-[ Upstream commit ee6e6f0a7f5b39d50a5ef5fcc006f4f693db18a7 ]
+[ Upstream commit 836d083524888069cd358776a4e6c4ceec04962e ]
 
-Do not call dma_unmap_sg() for scatterlists that were not mapped
-successfully.
+Some mmcc clocks have dsi0pll & dsi0pllbyte as clock parents so we
+should provide them in the dt, which I missed in the commit adding the
+mdss nodes.
 
-Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: d5fb01ad5eb4 ("ARM: dts: qcom: msm8226: Add mdss nodes")
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230712-msm8226-dsi-clock-fixup-v1-1-71010b0b89ca@z3ntu.xyz
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ arch/arm/boot/dts/qcom/qcom-msm8226.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index cbb7153e4162..c4eb66d2e08d 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -483,13 +483,14 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
- 			 DMA_TO_DEVICE);
- 	if (!ret) {
- 		dev_err(dev->device, "couldn't map in sg\n");
--		goto unmap_in;
-+		return -EINVAL;
- 	}
-+
- 	ret = dma_map_sg(dev->device, dev->out_sg, dev->nb_out_sg,
- 			 DMA_FROM_DEVICE);
- 	if (!ret) {
- 		dev_err(dev->device, "couldn't map out sg\n");
--		goto unmap_out;
-+		goto unmap_in;
- 	}
- 
- 	/* Create input links */
-@@ -537,9 +538,6 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
- 
- 	return 0;
- 
--unmap_out:
--	dma_unmap_sg(dev->device, dev->out_sg, dev->nb_out_sg,
--		DMA_FROM_DEVICE);
- unmap_in:
- 	dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
- 		DMA_TO_DEVICE);
+diff --git a/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi b/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
+index 97a377b5a0ec..5cd03ea7b084 100644
+--- a/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
++++ b/arch/arm/boot/dts/qcom/qcom-msm8226.dtsi
+@@ -442,8 +442,8 @@ mmcc: clock-controller@fd8c0000 {
+ 				 <&gcc GPLL0_VOTE>,
+ 				 <&gcc GPLL1_VOTE>,
+ 				 <&rpmcc RPM_SMD_GFX3D_CLK_SRC>,
+-				 <0>,
+-				 <0>;
++				 <&mdss_dsi0_phy 1>,
++				 <&mdss_dsi0_phy 0>;
+ 			clock-names = "xo",
+ 				      "mmss_gpll0_vote",
+ 				      "gpll0_vote",
 -- 
 2.43.0
 
