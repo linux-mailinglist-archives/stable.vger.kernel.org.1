@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-12851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21708837A3F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C1CB8378A6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A94211F2899E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:50:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1388028D199
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E1812BE91;
-	Tue, 23 Jan 2024 00:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1863E2574B;
+	Tue, 23 Jan 2024 00:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OypnQINU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okntFTN0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3481412A17F;
-	Tue, 23 Jan 2024 00:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA5133C0C;
+	Tue, 23 Jan 2024 00:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968825; cv=none; b=cpTY9PO3QT2zluvqGzX8zPUZbFvxNxP3Q7QN6sgCTNjXy9o8l20JVE3hM84PlK6LZEXst+UNcqb1Vcn7K5uwy8fHEVQbJIrOcFVtl0VwSume59KCN1GUDlTqqR6oSfrOQL7iY7KOT8euUMqDsB6zWC0zVvmOGg6dnQLXha6TAxg=
+	t=1705968178; cv=none; b=fKH8LJmLRrnWrt8SVXy0NBo2o/rGOudkTcR7iotZljgm2/AhSS+46mTbsKmkpn/C5ArPwd/9TehBNn0YR6Zqe0peOgWBNmI+3KVW8+91ZzWqnVR69QQJdLwKleOdeDiMM4yQjR/zI5gQDdMplNnWgBSmd82GKhu7D4mXqnJ/hwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968825; c=relaxed/simple;
-	bh=jxaj6XBD57FrPjSRZDWlK1oAk9QiylVDLEa35vsCCpQ=;
+	s=arc-20240116; t=1705968178; c=relaxed/simple;
+	bh=jGHd4BrGmaEaU9flj73qq5ZwKwvXHts0LQKsYKcwheU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BezFzfvVtlaDvZI+yvjn75g5ZTfmV/JIhKQYRPiwLzljYaaW4odZ12txwKUE01qGKGGEtm6Y4OCO1xFkauo3jq0gk64mMjtGuZmRCki3opzs9ACp2BTdCjKxVkhnOb77MneGPk9vQJfuqagQ2o5G9oNRdgcRhFaUOWzR30+DiE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OypnQINU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C4BC433C7;
-	Tue, 23 Jan 2024 00:13:44 +0000 (UTC)
+	 MIME-Version; b=HFSfeDkSks4dEt/fWc6wQUmd9oV1E6BJDBgRo7A679qYcxIOTnmAXHYgiWfHYrRqFyObO4BoexXk3XDU+K/5gDtPdiWO3WeKcyQDjU05mf8SCkppUPlRSdrXyzFBotSc3eW+xRuyOqs1YM1X5ubXVerCnifFlrO0g5Pv8g+d0UU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okntFTN0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A2FC433F1;
+	Tue, 23 Jan 2024 00:02:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968825;
-	bh=jxaj6XBD57FrPjSRZDWlK1oAk9QiylVDLEa35vsCCpQ=;
+	s=korg; t=1705968178;
+	bh=jGHd4BrGmaEaU9flj73qq5ZwKwvXHts0LQKsYKcwheU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OypnQINU3g2dpYED5sBx7P4EBTIxbuatHFyOBXeOH3JF/wA0KF9KHn14EaKp8Q/kA
-	 vP3QV/donR6BUygVnc1ANfnnPQiig94AILqdLHmltActqzMb9sWfxdBuURHpYsZxU/
-	 n/bGqMMaZVIQXCZsvMILXFU22oTb0X3CAipPma6s=
+	b=okntFTN0hXRBGNXo9tRyHddakhzJPRc2q1H9aqPn/1j1boOtAOb1lyKDrFURBdwNl
+	 r4eSYzhuMQObjgpSCtYVEhXQNC+/NEjC14RUIlK+XPvIA0pB9Gr3SfqGRysnA+VxVX
+	 iaN2gI9U+MxDllw+KFflhmAmOWSszsVuvw45v5Dg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ram Muthiah <rammuthiah@google.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 061/194] crypto: virtio - dont use default m
+Subject: [PATCH 4.19 035/148] powerpc/powernv: Add a null pointer check in opal_event_init()
 Date: Mon, 22 Jan 2024 15:56:31 -0800
-Message-ID: <20240122235721.822465805@linuxfoundation.org>
+Message-ID: <20240122235713.824299387@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
-References: <20240122235719.206965081@linuxfoundation.org>
+In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
+References: <20240122235712.442097787@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ram Muthiah <rammuthiah@google.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit b1a5c9a620f2b1792e51ae3961b16943e4f874f2 ]
+[ Upstream commit 8649829a1dd25199bbf557b2621cedb4bf9b3050 ]
 
-Drivers shouldn't be enabled by default unless there is a very good
-reason to do so.  There doesn't seem to be any such reason for the
-virtio crypto driver, so change it to the default of 'n'.
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure.
 
-Signed-off-by: Ram Muthiah <rammuthiah@google.com>
-[EB: adjusted commit message]
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Stable-dep-of: fed93fb62e05 ("crypto: virtio - Handle dataq logic with tasklet")
+Fixes: 2717a33d6074 ("powerpc/opal-irqchip: Use interrupt names if present")
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231127030755.1546750-1-chentao@kylinos.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/virtio/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ arch/powerpc/platforms/powernv/opal-irqchip.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/crypto/virtio/Kconfig b/drivers/crypto/virtio/Kconfig
-index 01b625e4e5ad..6d3deb025b2a 100644
---- a/drivers/crypto/virtio/Kconfig
-+++ b/drivers/crypto/virtio/Kconfig
-@@ -5,7 +5,6 @@ config CRYPTO_DEV_VIRTIO
- 	select CRYPTO_AEAD
- 	select CRYPTO_BLKCIPHER
- 	select CRYPTO_ENGINE
--	default m
- 	help
- 	  This driver provides support for virtio crypto device. If you
- 	  choose 'M' here, this module will be called virtio_crypto.
+diff --git a/arch/powerpc/platforms/powernv/opal-irqchip.c b/arch/powerpc/platforms/powernv/opal-irqchip.c
+index bc97770a67db..e71f2111c8c0 100644
+--- a/arch/powerpc/platforms/powernv/opal-irqchip.c
++++ b/arch/powerpc/platforms/powernv/opal-irqchip.c
+@@ -282,6 +282,8 @@ int __init opal_event_init(void)
+ 		else
+ 			name = kasprintf(GFP_KERNEL, "opal");
+ 
++		if (!name)
++			continue;
+ 		/* Install interrupt handler */
+ 		rc = request_irq(r->start, opal_interrupt, r->flags & IRQD_TRIGGER_MASK,
+ 				 name, NULL);
 -- 
 2.43.0
 
