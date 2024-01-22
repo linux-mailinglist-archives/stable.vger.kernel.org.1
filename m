@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-14456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 776088380FF
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:41 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8250C838561
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:40:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18ADE1F21582
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B154B2DEF9
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9498E13E215;
-	Tue, 23 Jan 2024 01:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D532574B;
+	Tue, 23 Jan 2024 02:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZSfmP/L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+Y5tQA9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5395013DBB7;
-	Tue, 23 Jan 2024 01:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220BA811;
+	Tue, 23 Jan 2024 02:09:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971990; cv=none; b=Amg5vVh0c8R44eH1HULLsGsTNMBhtBoxiDNAFzHr7zdbCSYpKmTmLUv7CfTZT1jkqXew+2qmGV8p5MjZNQw9QGgl7zKpsid7sGnhQUSRXIofGYLDsqu6kdAhTA5CtrcDKicdVGzDSyM/cswq5V2ljys4R/qyxsUCi3lt7V2ERPc=
+	t=1705975755; cv=none; b=N8VqufkiG3lX64X7l4RZdSHnrqhp55LTVIy4a+3GLc5NmMAd+PI3gNNeWI4/+R8Ze7SZ7KWuBcTmNr9k+i46XD845XGzQhaIvoggSMmMxI6I1qAjaTzaZcdd3m+hSdJXUfiVbW0fmsCYaIiK2AoJE6V9XEmpXGyXq/MHZGN/sr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971990; c=relaxed/simple;
-	bh=pad0kKlZpHtnVm3ErMmz0hmNi2+DKs/wuMgmw/WK/tU=;
+	s=arc-20240116; t=1705975755; c=relaxed/simple;
+	bh=G7FmfiFr3TNFy8FNmDiG+qF0/LrsN25G/rPILIyNGUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GiONP0DBc43CQtXdxu6YwKsR73+o6mA81mqKSKAKEo+KvG+nhCDmnRIUhm7OUKWR0bp2fqfn9Nb1XS2DNmu0EufLl3jHHky7bd9t6Z2Std4SyIxl3AqD6qEKLTViN6FkeWpcK+e68tTmNRwVQTywDfErjH8yNiVmgcyw8w5l/5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZSfmP/L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E1EC43394;
-	Tue, 23 Jan 2024 01:06:29 +0000 (UTC)
+	 MIME-Version; b=FinUcKHf9AHjmMQ0ZteK8eecMTpw9oK7itjvJ26DggUiamfHwoDcF+XKbrMfrq8ausWVpFYHUN6F+jY4XvSkk2hyCxXvwMbwV2fq7fExUYWe8JoSSBeYARA3o6b8kLgdngGO1/d1TcgweaVdZ0j0jPdTAUpfSr73LHNrj90jxdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+Y5tQA9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4505C433F1;
+	Tue, 23 Jan 2024 02:09:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971990;
-	bh=pad0kKlZpHtnVm3ErMmz0hmNi2+DKs/wuMgmw/WK/tU=;
+	s=korg; t=1705975755;
+	bh=G7FmfiFr3TNFy8FNmDiG+qF0/LrsN25G/rPILIyNGUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mZSfmP/L+GvB9NJKhPugIe379mz8jeb86SCPTchpDZvtA80q5N4sa6qNhaAHA915U
-	 ylxlytLh13U/ObHHKtu4t72tLN96cvxzw8Q7FOntP5iT3s575JuPxkl8ABcA85gF3K
-	 Tj+Pc+uwl3TfNgN4rGt/jL+Q6FwgGf9pFiavFw40=
+	b=r+Y5tQA9kNvgZdSaSibID8/ckOEl0bn4Mh+vnpk5xBObg4zCamBFindTIug8+bUTR
+	 tlBBOt9EN7vYZazybn2O6ipXNZ/0fD5kovnj4VNLK2xx5VBZgnQLRxUsipGW/1s07x
+	 zSL9kwSKm83w8jIJXfafVudOdARwxatfOLYljQg4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
+	Sneh Shah <quic_snehshah@quicinc.com>,
+	Simon Horman <horms@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 283/286] selftests: mlxsw: qos_pfc: Convert to iproute2 dcb
+	Sasha Levin <sashal@kernel.org>,
+	Andrew Halaney <ahalaney@redhat.com>
+Subject: [PATCH 6.6 538/583] net: stmmac: Fix ethool link settings ops for integrated PCS
 Date: Mon, 22 Jan 2024 15:59:49 -0800
-Message-ID: <20240122235742.951214549@linuxfoundation.org>
+Message-ID: <20240122235828.581138548@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Sneh Shah <quic_snehshah@quicinc.com>
 
-[ Upstream commit b0bab2298ec9b3a837f8ef4a0cae4b42a4d03365 ]
+[ Upstream commit 08300adac3b8dab9e2fd3be0155c7d3093c755f4 ]
 
-There is a dedicated tool for configuration of DCB in iproute2 now. Use it
-in the selftest instead of mlnx_qos.
+Currently get/set_link_ksettings ethtool ops are dependent on PCS.
+When PCS is integrated, it will not have separate link config.
+Bypass configuring and checking PCS for integrated PCS.
 
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Fixes: aa571b6275fb ("net: stmmac: add new switch to struct plat_stmmacenet_data")
+Tested-by: Andrew Halaney <ahalaney@redhat.com> # sa8775p-ride
+Signed-off-by: Sneh Shah <quic_snehshah@quicinc.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: b34f4de6d30c ("selftests: mlxsw: qos_pfc: Adjust the test to support 8 lanes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/drivers/net/mlxsw/qos_pfc.sh    | 24 +++++++++----------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh b/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh
-index 5c7700212f75..5d5622fc2758 100755
---- a/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh
-+++ b/tools/testing/selftests/drivers/net/mlxsw/qos_pfc.sh
-@@ -171,7 +171,7 @@ switch_create()
- 	# assignment.
- 	tc qdisc replace dev $swp1 root handle 1: \
- 	   ets bands 8 strict 8 priomap 7 6
--	__mlnx_qos -i $swp1 --prio2buffer=0,1,0,0,0,0,0,0 >/dev/null
-+	dcb buffer set dev $swp1 prio-buffer all:0 1:1
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+index aea5f898ebf4..419efe43951e 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_ethtool.c
+@@ -311,8 +311,9 @@ static int stmmac_ethtool_get_link_ksettings(struct net_device *dev,
+ {
+ 	struct stmmac_priv *priv = netdev_priv(dev);
  
- 	# $swp2
- 	# -----
-@@ -209,8 +209,8 @@ switch_create()
- 	# the lossless prio into a buffer of its own. Don't bother with buffer
- 	# sizes though, there is not going to be any pressure in the "backward"
- 	# direction.
--	__mlnx_qos -i $swp3 --prio2buffer=0,1,0,0,0,0,0,0 >/dev/null
--	__mlnx_qos -i $swp3 --pfc=0,1,0,0,0,0,0,0 >/dev/null
-+	dcb buffer set dev $swp3 prio-buffer all:0 1:1
-+	dcb pfc set dev $swp3 prio-pfc all:off 1:on
+-	if (priv->hw->pcs & STMMAC_PCS_RGMII ||
+-	    priv->hw->pcs & STMMAC_PCS_SGMII) {
++	if (!(priv->plat->flags & STMMAC_FLAG_HAS_INTEGRATED_PCS) &&
++	    (priv->hw->pcs & STMMAC_PCS_RGMII ||
++	     priv->hw->pcs & STMMAC_PCS_SGMII)) {
+ 		struct rgmii_adv adv;
+ 		u32 supported, advertising, lp_advertising;
  
- 	# $swp4
- 	# -----
-@@ -226,11 +226,11 @@ switch_create()
- 	# Configure qdisc so that we can hand-tune headroom.
- 	tc qdisc replace dev $swp4 root handle 1: \
- 	   ets bands 8 strict 8 priomap 7 6
--	__mlnx_qos -i $swp4 --prio2buffer=0,1,0,0,0,0,0,0 >/dev/null
--	__mlnx_qos -i $swp4 --pfc=0,1,0,0,0,0,0,0 >/dev/null
-+	dcb buffer set dev $swp4 prio-buffer all:0 1:1
-+	dcb pfc set dev $swp4 prio-pfc all:off 1:on
- 	# PG0 will get autoconfigured to Xoff, give PG1 arbitrarily 100K, which
- 	# is (-2*MTU) about 80K of delay provision.
--	__mlnx_qos -i $swp4 --buffer_size=0,$_100KB,0,0,0,0,0,0 >/dev/null
-+	dcb buffer set dev $swp4 buffer-size all:0 1:$_100KB
+@@ -397,8 +398,9 @@ stmmac_ethtool_set_link_ksettings(struct net_device *dev,
+ {
+ 	struct stmmac_priv *priv = netdev_priv(dev);
  
- 	# bridges
- 	# -------
-@@ -273,9 +273,9 @@ switch_destroy()
- 	# $swp4
- 	# -----
- 
--	__mlnx_qos -i $swp4 --buffer_size=0,0,0,0,0,0,0,0 >/dev/null
--	__mlnx_qos -i $swp4 --pfc=0,0,0,0,0,0,0,0 >/dev/null
--	__mlnx_qos -i $swp4 --prio2buffer=0,0,0,0,0,0,0,0 >/dev/null
-+	dcb buffer set dev $swp4 buffer-size all:0
-+	dcb pfc set dev $swp4 prio-pfc all:off
-+	dcb buffer set dev $swp4 prio-buffer all:0
- 	tc qdisc del dev $swp4 root
- 
- 	devlink_tc_bind_pool_th_restore $swp4 1 ingress
-@@ -288,8 +288,8 @@ switch_destroy()
- 	# $swp3
- 	# -----
- 
--	__mlnx_qos -i $swp3 --pfc=0,0,0,0,0,0,0,0 >/dev/null
--	__mlnx_qos -i $swp3 --prio2buffer=0,0,0,0,0,0,0,0 >/dev/null
-+	dcb pfc set dev $swp3 prio-pfc all:off
-+	dcb buffer set dev $swp3 prio-buffer all:0
- 	tc qdisc del dev $swp3 root
- 
- 	devlink_tc_bind_pool_th_restore $swp3 1 egress
-@@ -315,7 +315,7 @@ switch_destroy()
- 	# $swp1
- 	# -----
- 
--	__mlnx_qos -i $swp1 --prio2buffer=0,0,0,0,0,0,0,0 >/dev/null
-+	dcb buffer set dev $swp1 prio-buffer all:0
- 	tc qdisc del dev $swp1 root
- 
- 	devlink_tc_bind_pool_th_restore $swp1 1 ingress
+-	if (priv->hw->pcs & STMMAC_PCS_RGMII ||
+-	    priv->hw->pcs & STMMAC_PCS_SGMII) {
++	if (!(priv->plat->flags & STMMAC_FLAG_HAS_INTEGRATED_PCS) &&
++	    (priv->hw->pcs & STMMAC_PCS_RGMII ||
++	     priv->hw->pcs & STMMAC_PCS_SGMII)) {
+ 		/* Only support ANE */
+ 		if (cmd->base.autoneg != AUTONEG_ENABLE)
+ 			return -EINVAL;
 -- 
 2.43.0
 
