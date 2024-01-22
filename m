@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-13620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D349F837D23
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:32 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99DA7837F3F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:51:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AC281F2951B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F38D7B290E3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143805A7AC;
-	Tue, 23 Jan 2024 00:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFF61292C1;
+	Tue, 23 Jan 2024 00:49:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ykRQObfU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQ5VWZbQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CEF59B72;
-	Tue, 23 Jan 2024 00:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A95128394;
+	Tue, 23 Jan 2024 00:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969808; cv=none; b=cBEvDoJMYMTdL8nS2RKQNjVaB7qqCImolo+b60GGzxYmIwpvSoS+CGYxc08qOVIE9f7Mx9KTiq2WQJMkSzlIXr87ayQ0I0JZqjM1GHHKDrT7F2l2e1eQC7wKaBLP1dHg5/3ANmsGwkyA+ArGQUyzF+4m+T05VwWqm8A2IY2nDuA=
+	t=1705970976; cv=none; b=O1X6gest1xqgHI9x+BXIS0uU5hOcQNPvGiYJb+1YbjI8PIWi0ky2LuCeyCCHbAFvWXW4+TG0yg7Ln8OxQAgHqypmEth/y07kvXybUzPPTdnB0xu2JOK76hz5kZyPV8pmTH48gcVLFITmyrcG1WgJ9zvhkOQAOQyczSoiHBI3kRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969808; c=relaxed/simple;
-	bh=QSkMfCFYnnIUwzr4f9d5QhxDyYyeHC6tx+8+OdMkvBc=;
+	s=arc-20240116; t=1705970976; c=relaxed/simple;
+	bh=Gie9Dr4QIx6F6UALF7zkcNYCgY+hFd/4Dxth1ex+pWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c7KWmFYtktmxJVhsACBO1I9X10nr8yXLOeGI6H4xoKFHprj22d82MuJOc0IudvRV8v1BzuxV8d+Aragx63mZpUVidbLFJ0w7iZicwIj1d5NI6IGicN5bMH7RJmdTl4eyag/yu5gviYvEVhuWsdPG18eMg6xoGnV3chyRCC3ZgTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ykRQObfU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777CEC433C7;
-	Tue, 23 Jan 2024 00:30:08 +0000 (UTC)
+	 MIME-Version; b=a5uG96WkxIikul7tlJx7jYn+YxOVcSavM1QYeGWagj7uFsA37r9xlBAe7lENmQ2F6CHBW/Zbekc4pQTQ9PwWrEmngdGJpWJ0ZrfMDMS5xeL6SamvLapx/CfTK+VU+YSKio9KgKwJEqhatMYdQKNOfpxY0U3uJ6FQqG4RKiP+ADs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQ5VWZbQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6669C43390;
+	Tue, 23 Jan 2024 00:49:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969808;
-	bh=QSkMfCFYnnIUwzr4f9d5QhxDyYyeHC6tx+8+OdMkvBc=;
+	s=korg; t=1705970975;
+	bh=Gie9Dr4QIx6F6UALF7zkcNYCgY+hFd/4Dxth1ex+pWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ykRQObfUprA06ta7hJC7sfpBrXL7aCmX2LC8HtZg4eJeH4Hc1mrPgI3F7f4fgKplV
-	 lSwEU4HnJyCiPvSdzoEBssNj/gwvi7YDe6E+VPg12RkqoZnZBv8iM77Zbti8YSG2ik
-	 23bixkdeFp6e94gIrw09SwOT/MWOsuVJtbGUdZqM=
+	b=HQ5VWZbQpkt/l7eVfsX11hHf4YFkHza4/Ek4y7xJ0VSic5BoU7gSeN4zcSN9WMEtn
+	 TBLaogdl1kVSVxtWg745yrfLi1w3dV5/2NEwSDlGnUM45lbBTuorLoHomIJXvbSkHo
+	 d6Uggbps5bKMM2uHLXMci51zWLCZx1zFKJwl2O8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Sterz <s.sterz@proxmox.com>,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.7 463/641] Revert "nSVM: Check for reserved encodings of TLB_CONTROL in nested VMCB"
+	Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 061/286] spi: spi-zynqmp-gqspi: fix driver kconfig dependencies
 Date: Mon, 22 Jan 2024 15:56:07 -0800
-Message-ID: <20240122235832.528055551@linuxfoundation.org>
+Message-ID: <20240122235734.382071853@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
 
-commit a484755ab2526ebdbe042397cdd6e427eb4b1a68 upstream.
+[ Upstream commit 424a8166764e462258fdccaaefbdeb07517c8b21 ]
 
-Revert KVM's made-up consistency check on SVM's TLB control.  The APM says
-that unsupported encodings are reserved, but the APM doesn't state that
-VMRUN checks for a supported encoding.  Unless something is called out
-in "Canonicalization and Consistency Checks" or listed as MBZ (Must Be
-Zero), AMD behavior is typically to let software shoot itself in the foot.
+ZynqMP GQSPI driver no longer uses spi-master framework. It had been
+converted to use spi-mem framework. So remove driver dependency from
+spi-master and replace it with spi-mem.
 
-This reverts commit 174a921b6975ef959dd82ee9e8844067a62e3ec1.
-
-Fixes: 174a921b6975 ("nSVM: Check for reserved encodings of TLB_CONTROL in nested VMCB")
-Reported-by: Stefan Sterz <s.sterz@proxmox.com>
-Closes: https://lkml.kernel.org/r/b9915c9c-4cf6-051a-2d91-44cc6380f455%40proxmox.com
-Cc: stable@vger.kernel.org
-Reviewed-by: Maxim Levitsky <mlevitsk@redhat.com>
-Link: https://lore.kernel.org/r/20231018194104.1896415-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1c26372e5aa9 ("spi: spi-zynqmp-gqspi: Update driver to use spi-mem framework")
+Signed-off-by: Amit Kumar Mahapatra <amit.kumar-mahapatra@amd.com>
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Link: https://lore.kernel.org/r/1699282435-884917-1-git-send-email-radhey.shyam.pandey@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/nested.c |   15 ---------------
- 1 file changed, 15 deletions(-)
+ drivers/spi/Kconfig | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -247,18 +247,6 @@ static bool nested_svm_check_bitmap_pa(s
- 	    kvm_vcpu_is_legal_gpa(vcpu, addr + size - 1);
- }
+diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
+index 5fd9b515f6f1..74ea6b6b5f74 100644
+--- a/drivers/spi/Kconfig
++++ b/drivers/spi/Kconfig
+@@ -957,9 +957,10 @@ config SPI_ZYNQ_QSPI
  
--static bool nested_svm_check_tlb_ctl(struct kvm_vcpu *vcpu, u8 tlb_ctl)
--{
--	/* Nested FLUSHBYASID is not supported yet.  */
--	switch(tlb_ctl) {
--		case TLB_CONTROL_DO_NOTHING:
--		case TLB_CONTROL_FLUSH_ALL_ASID:
--			return true;
--		default:
--			return false;
--	}
--}
--
- static bool __nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
- 					 struct vmcb_ctrl_area_cached *control)
- {
-@@ -278,9 +266,6 @@ static bool __nested_vmcb_check_controls
- 					   IOPM_SIZE)))
- 		return false;
+ config SPI_ZYNQMP_GQSPI
+ 	tristate "Xilinx ZynqMP GQSPI controller"
+-	depends on (SPI_MASTER && HAS_DMA) || COMPILE_TEST
++	depends on (SPI_MEM && HAS_DMA) || COMPILE_TEST
+ 	help
+ 	  Enables Xilinx GQSPI controller driver for Zynq UltraScale+ MPSoC.
++	  This controller only supports SPI memory interface.
  
--	if (CC(!nested_svm_check_tlb_ctl(vcpu, control->tlb_ctl)))
--		return false;
--
- 	if (CC((control->int_ctl & V_NMI_ENABLE_MASK) &&
- 	       !vmcb12_is_intercept(control, INTERCEPT_NMI))) {
- 		return false;
+ config SPI_AMD
+ 	tristate "AMD SPI controller"
+-- 
+2.43.0
+
 
 
 
