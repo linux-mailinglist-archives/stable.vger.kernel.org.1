@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-13580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97CC2837CC0
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:43 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 871FD837F0C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:49:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DA68285C35
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:16:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABEBB1C28F09
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFCF8157E91;
-	Tue, 23 Jan 2024 00:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733D86086F;
+	Tue, 23 Jan 2024 00:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rfba29E7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhEA3Z3D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF89157E8A;
-	Tue, 23 Jan 2024 00:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D0D60257;
+	Tue, 23 Jan 2024 00:48:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969733; cv=none; b=WAQSCxt4KM1mktIItKTBHIQok8a4RLbY2EdUh3nSny2jam+hYWV08Tgoy8YneTBzt5oL1O6uWzMyPfwd6u3bdB/BOSR/QXmLyQrQVc1fGxRF3U7/aCFxG9790VnQQukDpD2F5gzmLmKDm5wZN4L9lJS4EaTMdaezZDrgFltlHFA=
+	t=1705970902; cv=none; b=uXNAP6skaGp0LUcm3WZBy9XU/c7af3Lwf5hnjmGiZ8qn1v+5jPNwNq5AGwSZydJgKhaM2/aNq86FSP0+/1JT8dngWoEmot00joW14PSy3/Hi/nn7p1d/FjK1dmbinkiWYioOvVCZ64I74bT/cT5gZWOx8Fg1BomOfIl7lI0MaIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969733; c=relaxed/simple;
-	bh=X7Y6hHm5AZgVsfL83JpCQDmLJCEVR5LoNvZ5EZQ3HlA=;
+	s=arc-20240116; t=1705970902; c=relaxed/simple;
+	bh=jlJIgy0K6zzsvNgepoeR2P7aQplOs606W9QjLFTrsWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FMzFUd8VQKJKnf61Vb9T1I/nIgB+1sXmFLukGvH8PFJDtCeH1J/buDNXSvWYJ8+zVgWSl+0fomK1uf04pQPkcPSCyXjpBRqjk+UT5V+v4aGycAheZhOVUtkYYZsqzHYTol1Q+7s4I/wyMjYkWEEG0UsMNWb8QrWgR60fZ1D1+eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rfba29E7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7ACBC433F1;
-	Tue, 23 Jan 2024 00:28:52 +0000 (UTC)
+	 MIME-Version; b=dKKtNDTqFMyYoGYig0z5ew6U5zOP718BQBMEGuxBUvn8q1/ygAbFbsV+Xlbjvr4KlaQqa/MhzZlUVm7L9iilHLD4wEM/gZ9S+qx1B+ccX8S6QaBKz1V2oD2c98TfhT8a9A26Qe0EUr2V345e2bBTzq2gUnwehBedgCvSAB2/cOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhEA3Z3D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF39C433C7;
+	Tue, 23 Jan 2024 00:48:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969733;
-	bh=X7Y6hHm5AZgVsfL83JpCQDmLJCEVR5LoNvZ5EZQ3HlA=;
+	s=korg; t=1705970902;
+	bh=jlJIgy0K6zzsvNgepoeR2P7aQplOs606W9QjLFTrsWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rfba29E7V/N9lfx7FaFPWG68NOtV4xlUH2BfIzQN2w8SAewxo7PKUlltOyKgxoJt5
-	 EvGHcP/g9lTJ6UFm6Qk0K36VGqDMZ8hQSxDO+jjAsmHaTDQN2y3N1yFLGGOee0kKLu
-	 yGwj9vi0fSRiqb+N/vgXyf8ZqKVKLH+AWA2sveAs=
+	b=vhEA3Z3DQOYEngGu+2gaFAfVwChJQwpj40NA0aUGQpxUcSgs2niTTn0J4baJXCeKq
+	 pAVCPqFG5UWjK4AS8Gs49azWBWNg8oqVHl5qTqfQlZVStIjjjvt2KANsYAcLLh/Eax
+	 W3pEwTnzPaeeK8cDN56bHJeNlwobOtaLN4Yx7yho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?K=C3=B6ry=20Maincent?= <kory.maincent@bootlin.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.7 399/641] Revert "usb: dwc3: Soft reset phy on probe for host"
-Date: Mon, 22 Jan 2024 15:55:03 -0800
-Message-ID: <20240122235830.456715914@linuxfoundation.org>
+	Su Hui <suhui@nfschina.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 136/417] wifi: rtlwifi: rtl8192cu: using calculate_bit_shift()
+Date: Mon, 22 Jan 2024 15:55:04 -0800
+Message-ID: <20240122235756.542936818@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,83 +60,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+From: Su Hui <suhui@nfschina.com>
 
-commit 7059fbebcb00554c3f31e5b5d93ef6d2d96dc7b4 upstream.
+[ Upstream commit f4088c8fcbabadad9dd17d17ae9ba24e9e3221ec ]
 
-This reverts commit 8bea147dfdf823eaa8d3baeccc7aeb041b41944b.
+Using calculate_bit_shift() to replace _rtl92c_phy_calculate_bit_shift().
+And fix an undefined bitwise shift behavior problem.
 
-The phy soft reset GUSB2PHYCFG.PHYSOFTRST only applies to UTMI phy, not
-ULPI. This fix is incomplete.
-
-Cc:  <stable@vger.kernel.org>
-Fixes: 8bea147dfdf8 ("usb: dwc3: Soft reset phy on probe for host")
-Reported-by: Köry Maincent <kory.maincent@bootlin.com>
-Closes: https://lore.kernel.org/linux-usb/20231205151959.5236c231@kmaincent-XPS-13-7390
-Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/29a26593a60eba727de872a3e580a674807b3339.1703282469.git.Thinh.Nguyen@synopsys.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f0a39ae738d6 ("rtlwifi: rtl8192cu: Add routine phy")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-6-suhui@nfschina.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/core.c |   39 +--------------------------------------
- 1 file changed, 1 insertion(+), 38 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -279,46 +279,9 @@ int dwc3_core_soft_reset(struct dwc3 *dw
- 	 * XHCI driver will reset the host block. If dwc3 was configured for
- 	 * host-only mode or current role is host, then we can return early.
- 	 */
--	if (dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
-+	if (dwc->dr_mode == USB_DR_MODE_HOST || dwc->current_dr_role == DWC3_GCTL_PRTCAP_HOST)
- 		return 0;
- 
--	/*
--	 * If the dr_mode is host and the dwc->current_dr_role is not the
--	 * corresponding DWC3_GCTL_PRTCAP_HOST, then the dwc3_core_init_mode
--	 * isn't executed yet. Ensure the phy is ready before the controller
--	 * updates the GCTL.PRTCAPDIR or other settings by soft-resetting
--	 * the phy.
--	 *
--	 * Note: GUSB3PIPECTL[n] and GUSB2PHYCFG[n] are port settings where n
--	 * is port index. If this is a multiport host, then we need to reset
--	 * all active ports.
--	 */
--	if (dwc->dr_mode == USB_DR_MODE_HOST) {
--		u32 usb3_port;
--		u32 usb2_port;
--
--		usb3_port = dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
--		usb3_port |= DWC3_GUSB3PIPECTL_PHYSOFTRST;
--		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
--
--		usb2_port = dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
--		usb2_port |= DWC3_GUSB2PHYCFG_PHYSOFTRST;
--		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
--
--		/* Small delay for phy reset assertion */
--		usleep_range(1000, 2000);
--
--		usb3_port &= ~DWC3_GUSB3PIPECTL_PHYSOFTRST;
--		dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), usb3_port);
--
--		usb2_port &= ~DWC3_GUSB2PHYCFG_PHYSOFTRST;
--		dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), usb2_port);
--
--		/* Wait for clock synchronization */
--		msleep(50);
--		return 0;
--	}
--
- 	reg = dwc3_readl(dwc->regs, DWC3_DCTL);
- 	reg |= DWC3_DCTL_CSFTRST;
- 	reg &= ~DWC3_DCTL_RUN_STOP;
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c
+index a8d9fe269f31..0b8cb7e61fd8 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192cu/phy.c
+@@ -32,7 +32,7 @@ u32 rtl92cu_phy_query_rf_reg(struct ieee80211_hw *hw,
+ 		original_value = _rtl92c_phy_fw_rf_serial_read(hw,
+ 							       rfpath, regaddr);
+ 	}
+-	bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	readback_value = (original_value & bitmask) >> bitshift;
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+ 		"regaddr(%#x), rfpath(%#x), bitmask(%#x), original_value(%#x)\n",
+@@ -56,7 +56,7 @@ void rtl92cu_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 			original_value = _rtl92c_phy_rf_serial_read(hw,
+ 								    rfpath,
+ 								    regaddr);
+-			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data =
+ 			    ((original_value & (~bitmask)) |
+ 			     (data << bitshift));
+@@ -67,7 +67,7 @@ void rtl92cu_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 			original_value = _rtl92c_phy_fw_rf_serial_read(hw,
+ 								       rfpath,
+ 								       regaddr);
+-			bitshift = _rtl92c_phy_calculate_bit_shift(bitmask);
++			bitshift = calculate_bit_shift(bitmask);
+ 			data =
+ 			    ((original_value & (~bitmask)) |
+ 			     (data << bitshift));
+-- 
+2.43.0
+
 
 
 
