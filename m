@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-14806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 230968382A9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:22:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6E72837BE0
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD2F928CF85
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 583E01F2A814
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFF85D753;
-	Tue, 23 Jan 2024 01:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA4C154C05;
+	Tue, 23 Jan 2024 00:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d5psUq5p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ir3oUwyi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE734F8AE;
-	Tue, 23 Jan 2024 01:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C00131741;
+	Tue, 23 Jan 2024 00:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974402; cv=none; b=f7nN9lHNpTnvvVo06wx2tqV3m98UKOtosc5e1VOgP78uMjW9JvtdCK0YMo2a6Dqm2mr9TmWWB8VOAhaL2mDt1fkTgd2nSrV4+FHMTK50SF1Ch80FVuRbBEKdCrjCJrryfkckPDuBWSeUIXuav4TKwWt4K0JxFPPAQmcYiesQJxw=
+	t=1705969420; cv=none; b=iUvEfgy1N4usjAcrtVTkRo/Ope7Juve/+PCwk4yncl/xFHjwySrJeN5napSP2Acrx6UuqNdI4Su41aYwmtPCSaPSmMuQDpzd46N1sxxMdYQPATvd/dN7Bc5ol8BgrFSajSsqoMj9+ixT9zj1VcWcm8xljv6nOLB8gUgt1kHh6FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974402; c=relaxed/simple;
-	bh=LbIYW61W5RziZ8fKB1QDaCJXdF3nOWi58w/3WCfKLZE=;
+	s=arc-20240116; t=1705969420; c=relaxed/simple;
+	bh=FC+ddltwdPhEoGWlL+Jiwwmf6eOG5zzdAnCR+elJXws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hyx+7zOx1Yb0Lpipi9TArih76oj6A7dIm08uWQNPoeUarhH+JWrQdjQqpMPIgqEGjHswGEq9aBhipGHT++meFVm0zlgR6gjX6PLAr7yCH593M0ftJdAMoG5Zu86BRwCErlVJ8flww4A516EvqxCAMWleSg/I7vTuHvPBTejaAoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d5psUq5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72495C433F1;
-	Tue, 23 Jan 2024 01:46:42 +0000 (UTC)
+	 MIME-Version; b=HAwNiodVrRweOvoxLHeMYIxsGtZow78razn5A01oT4FwGg1Ydib+VdvXMHTisi6TDDxS2SzJIeK9AwEHyhrI7jAWmBEKRrCTMH8tdIhmnwgdOsH9NKxAod5O/WJUmYtZR5yE0pr58+63ND/+BdGqlIOmTCXyvOugMEmP6NwsfVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ir3oUwyi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7326C433F1;
+	Tue, 23 Jan 2024 00:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974402;
-	bh=LbIYW61W5RziZ8fKB1QDaCJXdF3nOWi58w/3WCfKLZE=;
+	s=korg; t=1705969419;
+	bh=FC+ddltwdPhEoGWlL+Jiwwmf6eOG5zzdAnCR+elJXws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d5psUq5pgKa5WxwoeFkuN0d7Zcwnr4xOZt+sGZVFONp/cj1k7k72ICvsqF7h6Rayd
-	 znVNaL+TUIcLXdlQ3m+4klkfvRdS1j6SJaK59+rSLC2t9a76WqtPRPk3epQV4H7yQG
-	 B6NA8eldPLdTQgs7YeZnYqrZmhHYFkfUKBtwawXo=
+	b=Ir3oUwyiBcdYsmdCf/Cj046wHjA7iLjaghJ4DDRCQE9UbAz2+LIyEYLuuHnOyMSpp
+	 iYr926DfgGDHJ0RABI5duX1HAqN4AJCFBIWzAJyk2EM5qKRq8wydLRR2dt+ugOefRC
+	 rmetC6HRChaGx+uvXUkfRLbgS1/coiNcG1j/ghpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chih-Kang Chang <gary.chang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 087/583] wifi: rtw88: fix RX filter in FIF_ALLMULTI flag
+Subject: [PATCH 6.7 234/641] s390/bpf: Fix gotol with large offsets
 Date: Mon, 22 Jan 2024 15:52:18 -0800
-Message-ID: <20240122235814.831343487@linuxfoundation.org>
+Message-ID: <20240122235825.251983845@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chih-Kang Chang <gary.chang@realtek.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-[ Upstream commit 53ee0b3b99edc6a47096bffef15695f5a895386f ]
+[ Upstream commit ecba66cb36e3428e9f0c2362b45e213ad43ba8d0 ]
 
-The broadcast packets will be filtered in the FIF_ALLMULTI flag in
-the original code, which causes beacon packets to be filtered out
-and disconnection. Therefore, we fix it.
+The gotol implementation uses a wrong data type for the offset: it
+should be s32, not s16.
 
-Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
-Signed-off-by: Chih-Kang Chang <gary.chang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20231103020851.102238-1-pkshih@realtek.com
+Fixes: c690191e23d8 ("s390/bpf: Implement unconditional jump with 32-bit offset")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20240102193531.3169422-2-iii@linux.ibm.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/mac80211.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/s390/net/bpf_jit_comp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
-index a99b53d44267..d8d68f16014e 100644
---- a/drivers/net/wireless/realtek/rtw88/mac80211.c
-+++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
-@@ -280,9 +280,9 @@ static void rtw_ops_configure_filter(struct ieee80211_hw *hw,
- 
- 	if (changed_flags & FIF_ALLMULTI) {
- 		if (*new_flags & FIF_ALLMULTI)
--			rtwdev->hal.rcr |= BIT_AM | BIT_AB;
-+			rtwdev->hal.rcr |= BIT_AM;
- 		else
--			rtwdev->hal.rcr &= ~(BIT_AM | BIT_AB);
-+			rtwdev->hal.rcr &= ~(BIT_AM);
- 	}
- 	if (changed_flags & FIF_FCSFAIL) {
- 		if (*new_flags & FIF_FCSFAIL)
+diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
+index bf06b7283f0c..c7fbeedeb0a4 100644
+--- a/arch/s390/net/bpf_jit_comp.c
++++ b/arch/s390/net/bpf_jit_comp.c
+@@ -779,7 +779,7 @@ static noinline int bpf_jit_insn(struct bpf_jit *jit, struct bpf_prog *fp,
+ 				 int i, bool extra_pass, u32 stack_depth)
+ {
+ 	struct bpf_insn *insn = &fp->insnsi[i];
+-	s16 branch_oc_off = insn->off;
++	s32 branch_oc_off = insn->off;
+ 	u32 dst_reg = insn->dst_reg;
+ 	u32 src_reg = insn->src_reg;
+ 	int last, insn_count = 1;
 -- 
 2.43.0
 
