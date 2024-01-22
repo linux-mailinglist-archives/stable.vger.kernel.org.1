@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-14427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F92E838101
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:04:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C2E38384F5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:37:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A2F6B26C35
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:03:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6EEB1F28186
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE96A1350D6;
-	Tue, 23 Jan 2024 01:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 288267A70C;
+	Tue, 23 Jan 2024 02:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVm3F2he"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CX68/MGr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0F91350CA;
-	Tue, 23 Jan 2024 01:05:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC65677F2F;
+	Tue, 23 Jan 2024 02:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971938; cv=none; b=sZcx6+Cb9SmDfC//SRPHcT34PeqE1jUhjS0dawEiZin1nkqXR+jWtkjhua4dzuuIZg3hzOSHSJR4OQO+92CSztRQZYiZqe20tPj3YcUWBzFyxe8Q0ghesbCGiTXM+8ThntXU5vUdLYr5Tko5VpAiYBiApprBPqQvSmpUGhtHPUo=
+	t=1705975545; cv=none; b=naKxoOJ/P+JcLz9TfFYc2/cf9IZhM9B+CyK9HKvioLF0lWxIyx73JwfLAsKy4bNNwt9d6KJLNmzdUkmGAzGQ6lJmtonrENfI/CuorGWb8QET1BIOOd1IITSsdkEyIdQ857BnhbCBZ+iCCev0O51cOxgJPXM46S+ek951C7eIyKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971938; c=relaxed/simple;
-	bh=J7hyuUdyHtBM5X46H3cUanTRLME4igCwM26WT2qNOfc=;
+	s=arc-20240116; t=1705975545; c=relaxed/simple;
+	bh=YZUYCJ3iC90OBJldgIAVmxMVRH1b6q2phmnvkEf7H78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQzhWDUOpswWX7znKOLR4J3uW1o4vLxkllXEVwZbRYhqXDOU4kNqzBxtxmA+TVryjr9jHqtHDHlqx4pCHmdkAA9xe1fgH1iNIjnBDmmVy2O8grKL4ONQN+I0NVq5pLdk1Ja7/pMzuYZUs4rsWxdLiNuBUTC6p/H0pzsAP+Xp3Hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVm3F2he; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8EDC433F1;
-	Tue, 23 Jan 2024 01:05:38 +0000 (UTC)
+	 MIME-Version; b=sDQfo2+LjFDMoMdGhLE6MRIOHNBfk074rhfymKGk1/1G3JpbmSusY9+4z416D2Oh9lgBwEHBEaO2M+muvj+Qmh3qDX/3D4fxWRpgB3IIo6UbRxXDcU1DWseKLpE/bkPbIIK4qVzjWuvfa7mc+abWixww3J+O9U/YicPcpBBaDrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CX68/MGr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DA3C43390;
+	Tue, 23 Jan 2024 02:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971938;
-	bh=J7hyuUdyHtBM5X46H3cUanTRLME4igCwM26WT2qNOfc=;
+	s=korg; t=1705975545;
+	bh=YZUYCJ3iC90OBJldgIAVmxMVRH1b6q2phmnvkEf7H78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LVm3F2hegpE5F6OflQw65SZAlyjLowZo5WMfeaBuBu9ox1BnNsIOtvM4tJdsPYA54
-	 ZG1IiDaAKviKIAsEArG13SRkH+OA2LzeG8YEk9fSMCClKln5LkblxNUgol/J+aPlsp
-	 +HZPCc1/f6awFGRGx+V6CUTUm5FVbisDGtSpW+Sc=
+	b=CX68/MGrV3aTrnDka6PKYlNDOtZBQT5Q80Gi53gu4fR2cEKOQLvHztntJdfBzvxTb
+	 sHmWxFRpFK9fs+NYGdI2TiiJPefG/sG0l3wRYr825qs+1W1OcF/qBiYlObGDhyY2UF
+	 0nTvoiJOeAupAeghK1J/5IH5dYC2SBxIh72hM58Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 356/417] tty: change tty_write_lock()s ndelay parameter to bool
+Subject: [PATCH 6.6 473/583] software node: Let args be NULL in software_node_get_reference_args
 Date: Mon, 22 Jan 2024 15:58:44 -0800
-Message-ID: <20240122235804.142544683@linuxfoundation.org>
+Message-ID: <20240122235826.463788614@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit af815336556df28f800669c58ab3bdad7d786b98 ]
+[ Upstream commit 1eaea4b3604eb9ca7d9a1e73d88fc121bb4061f5 ]
 
-It's a yes-no parameter, so convert it to bool to be obvious.
+fwnode_get_property_reference_args() may not be called with args argument
+NULL and while OF already supports this. Add the missing NULL check.
 
-Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
-Link: https://lore.kernel.org/r/20230810091510.13006-6-jirislaby@kernel.org
+The purpose is to be able to count the references.
+
+Fixes: b06184acf751 ("software node: Add software_node_get_reference_args()")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20231109101010.1329587-3-sakari.ailus@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 66aad7d8d3ec ("usb: cdc-acm: return correct error code on unsupported break")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/tty.h       | 2 +-
- drivers/tty/tty_io.c    | 6 +++---
- drivers/tty/tty_ioctl.c | 2 +-
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/base/swnode.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/tty/tty.h b/drivers/tty/tty.h
-index c5ee21912755..91515e1ebc8d 100644
---- a/drivers/tty/tty.h
-+++ b/drivers/tty/tty.h
-@@ -63,7 +63,7 @@ int tty_check_change(struct tty_struct *tty);
- void __stop_tty(struct tty_struct *tty);
- void __start_tty(struct tty_struct *tty);
- void tty_write_unlock(struct tty_struct *tty);
--int tty_write_lock(struct tty_struct *tty, int ndelay);
-+int tty_write_lock(struct tty_struct *tty, bool ndelay);
- void tty_vhangup_session(struct tty_struct *tty);
- void tty_open_proc_set_tty(struct file *filp, struct tty_struct *tty);
- int tty_signal_session_leader(struct tty_struct *tty, int exit_session);
-diff --git a/drivers/tty/tty_io.c b/drivers/tty/tty_io.c
-index 8fb6c6853556..860990719d14 100644
---- a/drivers/tty/tty_io.c
-+++ b/drivers/tty/tty_io.c
-@@ -939,7 +939,7 @@ void tty_write_unlock(struct tty_struct *tty)
- 	wake_up_interruptible_poll(&tty->write_wait, EPOLLOUT);
- }
+diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+index 1886995a0b3a..079bd14bdedc 100644
+--- a/drivers/base/swnode.c
++++ b/drivers/base/swnode.c
+@@ -541,6 +541,9 @@ software_node_get_reference_args(const struct fwnode_handle *fwnode,
+ 	if (nargs > NR_FWNODE_REFERENCE_ARGS)
+ 		return -EINVAL;
  
--int tty_write_lock(struct tty_struct *tty, int ndelay)
-+int tty_write_lock(struct tty_struct *tty, bool ndelay)
- {
- 	if (!mutex_trylock(&tty->atomic_write_lock)) {
- 		if (ndelay)
-@@ -1153,7 +1153,7 @@ int tty_send_xchar(struct tty_struct *tty, char ch)
- 		return 0;
- 	}
++	if (!args)
++		return 0;
++
+ 	args->fwnode = software_node_get(refnode);
+ 	args->nargs = nargs;
  
--	if (tty_write_lock(tty, 0) < 0)
-+	if (tty_write_lock(tty, false) < 0)
- 		return -ERESTARTSYS;
- 
- 	down_read(&tty->termios_rwsem);
-@@ -2475,7 +2475,7 @@ static int send_break(struct tty_struct *tty, unsigned int duration)
- 		retval = tty->ops->break_ctl(tty, duration);
- 	else {
- 		/* Do the work ourselves */
--		if (tty_write_lock(tty, 0) < 0)
-+		if (tty_write_lock(tty, false) < 0)
- 			return -EINTR;
- 		retval = tty->ops->break_ctl(tty, -1);
- 		if (retval)
-diff --git a/drivers/tty/tty_ioctl.c b/drivers/tty/tty_ioctl.c
-index ad1cf51ecd11..8767c504b95d 100644
---- a/drivers/tty/tty_ioctl.c
-+++ b/drivers/tty/tty_ioctl.c
-@@ -506,7 +506,7 @@ static int set_termios(struct tty_struct *tty, void __user *arg, int opt)
- 		if (retval < 0)
- 			return retval;
- 
--		if (tty_write_lock(tty, 0) < 0)
-+		if (tty_write_lock(tty, false) < 0)
- 			goto retry_write_wait;
- 
- 		/* Racing writer? */
 -- 
 2.43.0
 
