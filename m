@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-15050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C56E88383AC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:29:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5A7A838528
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:39:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66A6F1F28DDD
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:29:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56887289969
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D42B163510;
-	Tue, 23 Jan 2024 01:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276DF810;
+	Tue, 23 Jan 2024 02:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPV/TQ4e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oR5OY7t5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94081634FB;
-	Tue, 23 Jan 2024 01:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA26810F1;
+	Tue, 23 Jan 2024 02:09:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975036; cv=none; b=CRmqJK3WwUkMACJZbB/Pjh/jJi/Nq9mxR+3EaLy8bPPvMCMv+X+FloHa8By313Kgfo3YdaWe8odhtMiqiWhWirhfzvAmq7IY+GOQPsdvt8zW2VuGJc2PrM2Il+wOV7W3CobpMJwP5Wujg0G2ARlkTGTX6JmFvSzLvTGYR78tcDE=
+	t=1705975756; cv=none; b=CJHc06RLiP6clOWPDY+Q4VE5tarNv5USKuCJGy4iLoH3ZMXnzt4E4HCrjfMBg6MhUqea/XRhICDGxzlbiktvPO/7I/CTdr9hJOK+4TDdT3rWXBOKKgOTgmvA95oq6qoZJ0spT24vXqG4dmGEkVV0ss+nElQCrEll5azdJEkssuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975036; c=relaxed/simple;
-	bh=YdFkNt9qDB4kBRJq02mMfnDCYRvS/w/aGX5AAoIhpFk=;
+	s=arc-20240116; t=1705975756; c=relaxed/simple;
+	bh=Ei4L1UFuZPq3ECkFBLcMX564J2F76Me8tNORyTT3aRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dXSdatxKzShgJpuMmg6REtRWiuo1bxYao/N5pOWP3GrZQtvO35Yj1+yKwMqFV9T5B3PPykQL2Bfnoyqr22KaiUzwF8AFP3nv3Rtar5IWlKYtA+7nmG8H3+AdwZRlSbGjpjVkQ5hiQs5OQ5ZYhd4pF3CzvwG+kfcLpa3zGRctqyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPV/TQ4e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54AB6C433C7;
-	Tue, 23 Jan 2024 01:57:16 +0000 (UTC)
+	 MIME-Version; b=b0NCKx2+0Ky1OOplumDlxrFrHyIB3rMJGlgOmnG6CQnRkyYj/INubEztcbs0qXnfy+jS66D9Q5twLUYrH2pAxYhMRdi7V+aeSOoyIf4Cx/0aO1N9So5w7UdktOfzIpvTzjj4ZpATrO/v+g70iBy4x2e01+j16gSvgvJv91ynLNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oR5OY7t5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D319C433C7;
+	Tue, 23 Jan 2024 02:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975036;
-	bh=YdFkNt9qDB4kBRJq02mMfnDCYRvS/w/aGX5AAoIhpFk=;
+	s=korg; t=1705975756;
+	bh=Ei4L1UFuZPq3ECkFBLcMX564J2F76Me8tNORyTT3aRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gPV/TQ4ehbuv5aSc9bKn02JmyBseXPEZ3q9x4CAtBM9hoy0vL3J3i4KjbYsFvT8Gc
-	 gXwgU/bleMA6/+P5N/kSxNBljD62a6IE3Wfx+PA39kdXbbP+3M7NPAgOiVJg8ev9M4
-	 nXcxWrRTy0A1q4ao5qQvO61IIx2lqhsT4TKwNNbQ=
+	b=oR5OY7t5eM9PH7lBCZgd2xAcN3Xch6Gx0fgJQX2vtycvlafcHSw7p5f6Z7ODK6KvR
+	 0CqFTwLNfr0019WX+FQ4juor6KBB1Xh/mRrBqQaqug48X2fW2u4jlWnPAtux5eyaZR
+	 QKL4BH18Sg/PsMHrYitg9YRZ/o6BIavWBZ33F3ik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Andrew Lunn <andrew@lunn.ch>,
+	syzbot+8d482d0e407f665d9d10@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jiri Pirko <jiri@nvidia.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 334/374] net: phy: micrel: populate .soft_reset for KSZ9131
+Subject: [PATCH 6.6 539/583] udp: annotate data-races around up->pending
 Date: Mon, 22 Jan 2024 15:59:50 -0800
-Message-ID: <20240122235756.516596980@linuxfoundation.org>
+Message-ID: <20240122235828.613727698@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,102 +64,196 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e398822c4751017fe401f57409488f5948d12fb5 ]
+[ Upstream commit 482521d8e0c6520429478aa6866cd44128b33d5d ]
 
-The RZ/G3S SMARC Module has 2 KSZ9131 PHYs. In this setup, the KSZ9131 PHY
-is used with the ravb Ethernet driver. It has been discovered that when
-bringing the Ethernet interface down/up continuously, e.g., with the
-following sh script:
+up->pending can be read without holding the socket lock,
+as pointed out by syzbot [1]
 
-$ while :; do ifconfig eth0 down; ifconfig eth0 up; done
+Add READ_ONCE() in lockless contexts, and WRITE_ONCE()
+on write side.
 
-the link speed and duplex are wrong after interrupting the bring down/up
-operation even though the Ethernet interface is up. To recover from this
-state the following configuration sequence is necessary (executed
-manually):
+[1]
+BUG: KCSAN: data-race in udpv6_sendmsg / udpv6_sendmsg
 
-$ ifconfig eth0 down
-$ ifconfig eth0 up
+write to 0xffff88814e5eadf0 of 4 bytes by task 15547 on cpu 1:
+ udpv6_sendmsg+0x1405/0x1530 net/ipv6/udp.c:1596
+ inet6_sendmsg+0x63/0x80 net/ipv6/af_inet6.c:657
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ __sock_sendmsg net/socket.c:745 [inline]
+ __sys_sendto+0x257/0x310 net/socket.c:2192
+ __do_sys_sendto net/socket.c:2204 [inline]
+ __se_sys_sendto net/socket.c:2200 [inline]
+ __x64_sys_sendto+0x78/0x90 net/socket.c:2200
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-The behavior has been identified also on the Microchip SAMA7G5-EK board
-which runs the macb driver and uses the same PHY.
+read to 0xffff88814e5eadf0 of 4 bytes by task 15551 on cpu 0:
+ udpv6_sendmsg+0x22c/0x1530 net/ipv6/udp.c:1373
+ inet6_sendmsg+0x63/0x80 net/ipv6/af_inet6.c:657
+ sock_sendmsg_nosec net/socket.c:730 [inline]
+ __sock_sendmsg net/socket.c:745 [inline]
+ ____sys_sendmsg+0x37c/0x4d0 net/socket.c:2586
+ ___sys_sendmsg net/socket.c:2640 [inline]
+ __sys_sendmmsg+0x269/0x500 net/socket.c:2726
+ __do_sys_sendmmsg net/socket.c:2755 [inline]
+ __se_sys_sendmmsg net/socket.c:2752 [inline]
+ __x64_sys_sendmmsg+0x57/0x60 net/socket.c:2752
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x44/0x110 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x63/0x6b
 
-The order of PHY-related operations in ravb_open() is as follows:
-ravb_open() ->
-  ravb_phy_start() ->
-    ravb_phy_init() ->
-      of_phy_connect() ->
-        phy_connect_direct() ->
-	  phy_attach_direct() ->
-	    phy_init_hw() ->
-	      phydev->drv->soft_reset()
-	      phydev->drv->config_init()
-	      phydev->drv->config_intr()
-	    phy_resume()
-	      kszphy_resume()
+value changed: 0x00000000 -> 0x0000000a
 
-The order of PHY-related operations in ravb_close is as follows:
-ravb_close() ->
-  phy_stop() ->
-    phy_suspend() ->
-      kszphy_suspend() ->
-        genphy_suspend()
-	  // set BMCR_PDOWN bit in MII_BMCR
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 PID: 15551 Comm: syz-executor.1 Tainted: G        W          6.7.0-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 11/17/2023
 
-In genphy_suspend() setting the BMCR_PDWN bit in MII_BMCR switches the PHY
-to Software Power-Down (SPD) mode (according to the KSZ9131 datasheet).
-Thus, when opening the interface after it has been  previously closed (via
-ravb_close()), the phydev->drv->config_init() and
-phydev->drv->config_intr() reach the KSZ9131 PHY driver via the
-ksz9131_config_init() and kszphy_config_intr() functions.
-
-KSZ9131 specifies that the MII management interface remains operational
-during SPD (Software Power-Down), but (according to manual):
-- Only access to the standard registers (0 through 31) is supported.
-- Access to MMD address spaces other than MMD address space 1 is possible
-  if the spd_clock_gate_override bit is set.
-- Access to MMD address space 1 is not possible.
-
-The spd_clock_gate_override bit is not used in the KSZ9131 driver.
-
-ksz9131_config_init() configures RGMII delay, pad skews and LEDs by
-accessesing MMD registers other than those in address space 1.
-
-The datasheet for the KSZ9131 does not specify what happens if registers
-from an unsupported address space are accessed while the PHY is in SPD.
-
-To fix the issue the .soft_reset method has been instantiated for KSZ9131,
-too. This resets the PHY to the default state before doing any
-configurations to it, thus switching it out of SPD.
-
-Fixes: bff5b4b37372 ("net: phy: micrel: add Microchip KSZ9131 initial driver")
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+8d482d0e407f665d9d10@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/netdev/0000000000009e46c3060ebcdffd@google.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/micrel.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/udp.c | 12 ++++++------
+ net/ipv6/udp.c | 16 ++++++++--------
+ 2 files changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 05a8985d7107..dc209ad8a0fe 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -1728,6 +1728,7 @@ static struct phy_driver ksphy_driver[] = {
- 	/* PHY_GBIT_FEATURES */
- 	.driver_data	= &ksz9021_type,
- 	.probe		= kszphy_probe,
-+	.soft_reset	= genphy_soft_reset,
- 	.config_init	= ksz9131_config_init,
- 	.config_intr	= kszphy_config_intr,
- 	.handle_interrupt = kszphy_handle_interrupt,
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index c3ff984b6354..bd12a7658213 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -805,7 +805,7 @@ void udp_flush_pending_frames(struct sock *sk)
+ 
+ 	if (up->pending) {
+ 		up->len = 0;
+-		up->pending = 0;
++		WRITE_ONCE(up->pending, 0);
+ 		ip_flush_pending_frames(sk);
+ 	}
+ }
+@@ -993,7 +993,7 @@ int udp_push_pending_frames(struct sock *sk)
+ 
+ out:
+ 	up->len = 0;
+-	up->pending = 0;
++	WRITE_ONCE(up->pending, 0);
+ 	return err;
+ }
+ EXPORT_SYMBOL(udp_push_pending_frames);
+@@ -1069,7 +1069,7 @@ int udp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 	getfrag = is_udplite ? udplite_getfrag : ip_generic_getfrag;
+ 
+ 	fl4 = &inet->cork.fl.u.ip4;
+-	if (up->pending) {
++	if (READ_ONCE(up->pending)) {
+ 		/*
+ 		 * There are pending frames.
+ 		 * The socket lock must be held while it's corked.
+@@ -1265,7 +1265,7 @@ int udp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 	fl4->saddr = saddr;
+ 	fl4->fl4_dport = dport;
+ 	fl4->fl4_sport = inet->inet_sport;
+-	up->pending = AF_INET;
++	WRITE_ONCE(up->pending, AF_INET);
+ 
+ do_append_data:
+ 	up->len += ulen;
+@@ -1277,7 +1277,7 @@ int udp_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 	else if (!corkreq)
+ 		err = udp_push_pending_frames(sk);
+ 	else if (unlikely(skb_queue_empty(&sk->sk_write_queue)))
+-		up->pending = 0;
++		WRITE_ONCE(up->pending, 0);
+ 	release_sock(sk);
+ 
+ out:
+@@ -1315,7 +1315,7 @@ void udp_splice_eof(struct socket *sock)
+ 	struct sock *sk = sock->sk;
+ 	struct udp_sock *up = udp_sk(sk);
+ 
+-	if (!up->pending || udp_test_bit(CORK, sk))
++	if (!READ_ONCE(up->pending) || udp_test_bit(CORK, sk))
+ 		return;
+ 
+ 	lock_sock(sk);
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index f60ba4295435..f1170dcc21d9 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -1134,7 +1134,7 @@ static void udp_v6_flush_pending_frames(struct sock *sk)
+ 		udp_flush_pending_frames(sk);
+ 	else if (up->pending) {
+ 		up->len = 0;
+-		up->pending = 0;
++		WRITE_ONCE(up->pending, 0);
+ 		ip6_flush_pending_frames(sk);
+ 	}
+ }
+@@ -1312,7 +1312,7 @@ static int udp_v6_push_pending_frames(struct sock *sk)
+ 			      &inet_sk(sk)->cork.base);
+ out:
+ 	up->len = 0;
+-	up->pending = 0;
++	WRITE_ONCE(up->pending, 0);
+ 	return err;
+ }
+ 
+@@ -1369,7 +1369,7 @@ int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 		default:
+ 			return -EINVAL;
+ 		}
+-	} else if (!up->pending) {
++	} else if (!READ_ONCE(up->pending)) {
+ 		if (sk->sk_state != TCP_ESTABLISHED)
+ 			return -EDESTADDRREQ;
+ 		daddr = &sk->sk_v6_daddr;
+@@ -1400,8 +1400,8 @@ int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 		return -EMSGSIZE;
+ 
+ 	getfrag  =  is_udplite ?  udplite_getfrag : ip_generic_getfrag;
+-	if (up->pending) {
+-		if (up->pending == AF_INET)
++	if (READ_ONCE(up->pending)) {
++		if (READ_ONCE(up->pending) == AF_INET)
+ 			return udp_sendmsg(sk, msg, len);
+ 		/*
+ 		 * There are pending frames.
+@@ -1591,7 +1591,7 @@ int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 		goto out;
+ 	}
+ 
+-	up->pending = AF_INET6;
++	WRITE_ONCE(up->pending, AF_INET6);
+ 
+ do_append_data:
+ 	if (ipc6.dontfrag < 0)
+@@ -1605,7 +1605,7 @@ int udpv6_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ 	else if (!corkreq)
+ 		err = udp_v6_push_pending_frames(sk);
+ 	else if (unlikely(skb_queue_empty(&sk->sk_write_queue)))
+-		up->pending = 0;
++		WRITE_ONCE(up->pending, 0);
+ 
+ 	if (err > 0)
+ 		err = np->recverr ? net_xmit_errno(err) : 0;
+@@ -1646,7 +1646,7 @@ static void udpv6_splice_eof(struct socket *sock)
+ 	struct sock *sk = sock->sk;
+ 	struct udp_sock *up = udp_sk(sk);
+ 
+-	if (!up->pending || udp_test_bit(CORK, sk))
++	if (!READ_ONCE(up->pending) || udp_test_bit(CORK, sk))
+ 		return;
+ 
+ 	lock_sock(sk);
 -- 
 2.43.0
 
