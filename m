@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-14014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83126837F28
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:27 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F7F0837CAA
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:13:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AA4429BDA9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0BC41C2898C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B5A7E760;
-	Tue, 23 Jan 2024 00:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B1DC1474BE;
+	Tue, 23 Jan 2024 00:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z1IeXYto"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gzMm/Kn9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83CC960DE3;
-	Tue, 23 Jan 2024 00:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B931E1474B5;
+	Tue, 23 Jan 2024 00:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970972; cv=none; b=QbYaoK+9si9z+aBLPGVvDHZ2bQfkbvv+i3gKoyf1y3/M4ghs1Di5STttUql1T7YU8YyW88nlkqIeIx1RBKcrFdM2WWcpw9c93bKYWYtRKOJcEMQygNmJABp+kueNajtxiJebKx5RGAtvTzYYew6J2+ZiOV0D8HOrRC3VrFxP0Lw=
+	t=1705969715; cv=none; b=LxZHPEwqNJnbMDBrEKzEGyH3rJHEawJNA0iohszln1caCuM1uxNzsTF+e7Ey5yHF9JK8ubKQNtGQn/u+8h66Hnv+UdHH41/zxCjMHxGRZry8hrLzUhYKbIK8Xd4AU7M5Ixqagl6nX5DEX/ubGxE2sXYY1wzHhGaNI1YxvK8JaaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970972; c=relaxed/simple;
-	bh=vtcOood/aFT3r9+uLlM5GQINbV89cKnrIG3X0Wtt5YQ=;
+	s=arc-20240116; t=1705969715; c=relaxed/simple;
+	bh=hwhH6eEFQZCtBsZDk4V3mKNkw09/uHpxp2ObkgyIpWY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Usnn3ziilCw7Pgt84jGGLdX5BHY0Pk2QMJl13cgi95Chw6iKZAN1g5E3Fw3ficGXqAgs2Lybmvvv6CAoOalPRfqJx4Lmj+e7FaoFZ0ZSkr8wwTdMwqj9SGfKVDDtBEXQDSxBbbpLMcmRcUODlfhgPgc3LfiyPhkIWkLfz8WVW4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z1IeXYto; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F5CC43394;
-	Tue, 23 Jan 2024 00:49:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WgoybfnX8ObKSgKbtp4d5+leK3bFNXEGpynQdAzV6OFCXxopMj3kE1lkJYjA+cK3Id0RFD0lLsg29clOve5jpOCBLEgMUM50CmWFYlPusCqT35cdQidfKrXOPlQaudNFAe0Zw78IfIc0+ktcBp6k800HT8mJvrXPOzeueuv1bPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gzMm/Kn9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 633F2C433C7;
+	Tue, 23 Jan 2024 00:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970971;
-	bh=vtcOood/aFT3r9+uLlM5GQINbV89cKnrIG3X0Wtt5YQ=;
+	s=korg; t=1705969715;
+	bh=hwhH6eEFQZCtBsZDk4V3mKNkw09/uHpxp2ObkgyIpWY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z1IeXYtoBLxJk2I7n0nrUkOt8eMmkt70WacS6EHh56CTEQ2tsqgPsqpQfl33yby4C
-	 o93VEMm6StmXITpn3C3uMFra4AaPY29BoUTMH7EAPXZTv/qmRHhUQ2NiqcOmj3AtqE
-	 7euRyQ2S3b41X7AYA5cgBDQWks/Gcy0G2ubU5ON0=
+	b=gzMm/Kn9FjSYQmBhtAf4w2fLBmbg9oHABb20ODYgko33rmN/lfqEDExlXGFa9GFNG
+	 yh0ur2gb6oL+e/ObQZeral6/B25fXzFV6vb9oTKEDHnFuUYgk5CNhDo/475TWs8U+b
+	 LsDFXF12fvFOI+VqvhxfiNPdmPs+alo2azwTIqXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Thompson <davthompson@nvidia.com>,
-	Asmaa Mnebhi <asmaa@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 152/417] mlxbf_gige: Fix intermittent no ip issue
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Subject: [PATCH 6.7 416/641] serial: 8250_exar: Set missing rs485_supported flag
 Date: Mon, 22 Jan 2024 15:55:20 -0800
-Message-ID: <20240122235757.104277697@linuxfoundation.org>
+Message-ID: <20240122235830.992990144@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +59,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asmaa Mnebhi <asmaa@nvidia.com>
+From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
 
-[ Upstream commit ef210ef85d5cb543ce34a57803ed856d0c8c08c2 ]
+commit 0c2a5f471ce58bca8f8ab5fcb911aff91eaaa5eb upstream.
 
-Although the link is up, there is no ip assigned on setups with high background
-traffic. Nothing is transmitted nor received. The RX error count keeps on
-increasing. After several minutes, the RX error count stagnates and the
-GigE interface finally gets an ip.
+The UART supports an auto-RTS mode in which the RTS pin is automatically
+activated during transmission. So mark this mode as being supported even
+if RTS is not controlled by the driver but the UART.
 
-The issue is that mlxbf_gige_rx_init() is called before phy_start().
-As soon as the RX DMA is enabled in mlxbf_gige_rx_init(), the RX CI reaches the max
-of 128, and becomes equal to RX PI. RX CI doesn't decrease since the code hasn't
-ran phy_start yet.
-Bring the PHY up before starting the RX.
+Also the serial core expects now at least one of both modes rts-on-send or
+rts-after-send to be supported. This is since during sanitization
+unsupported flags are deleted from a RS485 configuration set by userspace.
+However if the configuration ends up with both flags unset, the core prints
+a warning since it considers such a configuration invalid (see
+uart_sanitize_serial_rs485()).
 
-Fixes: f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
-Reviewed-by: David Thompson <davthompson@nvidia.com>
-Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc:  <stable@vger.kernel.org>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+Link: https://lore.kernel.org/r/20240103061818.564-8-l.sanfilippo@kunbus.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c | 14 +++++++-------
- .../ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c   |  6 +++---
- 2 files changed, 10 insertions(+), 10 deletions(-)
+ drivers/tty/serial/8250/8250_exar.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-index 2292d63a279c..eafc0d3313fd 100644
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-+++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-@@ -147,14 +147,14 @@ static int mlxbf_gige_open(struct net_device *netdev)
- 	 */
- 	priv->valid_polarity = 0;
+--- a/drivers/tty/serial/8250/8250_exar.c
++++ b/drivers/tty/serial/8250/8250_exar.c
+@@ -480,7 +480,7 @@ static int sealevel_rs485_config(struct
+ }
  
--	err = mlxbf_gige_rx_init(priv);
-+	phy_start(phydev);
-+
-+	err = mlxbf_gige_tx_init(priv);
- 	if (err)
- 		goto free_irqs;
--	err = mlxbf_gige_tx_init(priv);
-+	err = mlxbf_gige_rx_init(priv);
- 	if (err)
--		goto rx_deinit;
--
--	phy_start(phydev);
-+		goto tx_deinit;
+ static const struct serial_rs485 generic_rs485_supported = {
+-	.flags = SER_RS485_ENABLED,
++	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND,
+ };
  
- 	netif_napi_add(netdev, &priv->napi, mlxbf_gige_poll);
- 	napi_enable(&priv->napi);
-@@ -176,8 +176,8 @@ static int mlxbf_gige_open(struct net_device *netdev)
+ static const struct exar8250_platform exar8250_default_platform = {
+@@ -524,7 +524,8 @@ static int iot2040_rs485_config(struct u
+ }
  
- 	return 0;
+ static const struct serial_rs485 iot2040_rs485_supported = {
+-	.flags = SER_RS485_ENABLED | SER_RS485_RX_DURING_TX | SER_RS485_TERMINATE_BUS,
++	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND |
++		 SER_RS485_RX_DURING_TX | SER_RS485_TERMINATE_BUS,
+ };
  
--rx_deinit:
--	mlxbf_gige_rx_deinit(priv);
-+tx_deinit:
-+	mlxbf_gige_tx_deinit(priv);
- 
- free_irqs:
- 	mlxbf_gige_free_irqs(priv);
-diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
-index 227d01cace3f..699984358493 100644
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
-+++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_rx.c
-@@ -142,6 +142,9 @@ int mlxbf_gige_rx_init(struct mlxbf_gige *priv)
- 	writeq(MLXBF_GIGE_RX_MAC_FILTER_COUNT_PASS_EN,
- 	       priv->base + MLXBF_GIGE_RX_MAC_FILTER_COUNT_PASS);
- 
-+	writeq(ilog2(priv->rx_q_entries),
-+	       priv->base + MLXBF_GIGE_RX_WQE_SIZE_LOG2);
-+
- 	/* Clear MLXBF_GIGE_INT_MASK 'receive pkt' bit to
- 	 * indicate readiness to receive interrupts
- 	 */
-@@ -154,9 +157,6 @@ int mlxbf_gige_rx_init(struct mlxbf_gige *priv)
- 	data |= MLXBF_GIGE_RX_DMA_EN;
- 	writeq(data, priv->base + MLXBF_GIGE_RX_DMA);
- 
--	writeq(ilog2(priv->rx_q_entries),
--	       priv->base + MLXBF_GIGE_RX_WQE_SIZE_LOG2);
--
- 	return 0;
- 
- free_wqe_and_skb:
--- 
-2.43.0
-
+ static const struct property_entry iot2040_gpio_properties[] = {
 
 
 
