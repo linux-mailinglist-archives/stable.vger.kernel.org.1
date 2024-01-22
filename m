@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-14220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE472838007
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71104838024
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B39C28CB0F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50AE2B22C1A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20BD966B22;
-	Tue, 23 Jan 2024 00:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8AF65197;
+	Tue, 23 Jan 2024 00:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iY7L8Khs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ee6OjS0L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D397062805;
-	Tue, 23 Jan 2024 00:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39421657C7;
+	Tue, 23 Jan 2024 00:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971503; cv=none; b=thWhWYEYEAaFLk03ShaKHw5dIDoY+6M25UD7AFSEh/Z+1XoM/sq1XmBrNfNSBw/pMpOMaHVQGjfUnCCK1j59A3GhyrpVmgKRnGi3PCeyLDTn9jpXsluP+A5MFUQD9P0aD+tvAKDXSr8c92K74VipK7Z4fVN35SJ8HHQk5YjsPvM=
+	t=1705971508; cv=none; b=JcLqkUiVmApzMcvJhDyZ5pSKKElBcQ0iMib/QMemrq1ym/USHh44QqA3j2scmtZZWe/WLvEs1D65SZY3Ri9pkLvVlr7oSMJ+j1jRyLyG7OxIBWrRIClTeM3rJWf5iYFiLCayqsfbq0Pl+rXp9ZUcUw8qvEbMxNcTNfXdtCC4FRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971503; c=relaxed/simple;
-	bh=bNGJAnoRVgvcmOBHcdbjDChNFSPuTS5tT2zFLY1TEAc=;
+	s=arc-20240116; t=1705971508; c=relaxed/simple;
+	bh=8Lhdt5BTFOaXCFewjpCr2wEyz4gIo0ZyUgViOvIz6z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BHUz0MzGpb/mxwSjs0VfC+ybVXN4M8rDnRjaFsHDzxWXcHooZDBXq4mdBTw2/fxNkV+9SyrTxVv1LDI7Ulw6B60tb5npQys67qX5WZBatHO03xaZhLe1PwtcZDEpsgmnKhosid7mKvOtEQ9UJpmOlxMKAnu9JihzHLz1hFnsH3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iY7L8Khs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DD45C433C7;
-	Tue, 23 Jan 2024 00:58:23 +0000 (UTC)
+	 MIME-Version; b=G4skm8bVUoubXnMTp9JqywBysp/Wf1DAKCY12L6Bey1JDV+uGYME+x2VxyujxCF72qgMGme+fGtFtRNtNeIH15+4IubzKxQvZqQ8G7Lya6kSx82/wn5+6h1P9dWoc5/b+PiyJ2Q9ku5ZP2xx+P+kG9efDjmqLQibCan9BYA4O7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ee6OjS0L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6562C433C7;
+	Tue, 23 Jan 2024 00:58:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971503;
-	bh=bNGJAnoRVgvcmOBHcdbjDChNFSPuTS5tT2zFLY1TEAc=;
+	s=korg; t=1705971508;
+	bh=8Lhdt5BTFOaXCFewjpCr2wEyz4gIo0ZyUgViOvIz6z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iY7L8Khsq92oPaI0AG9nlTd8Qf22RCcuDl8btRDTlytLIOi3/G2dk85bxlviVDqpm
-	 Yzk/cUUhFJJo+zJG83ii8S31vXksg569mMMjvz7u35m99aKkUZpUgazPPv0Qy2Ibo0
-	 fxEdbeMBtBMYMlyONTRCUqBM96FO0AvYWcG1GIj0=
+	b=Ee6OjS0LMyH8NaOntYyUVUbe7ZFKuuiuyYlAY86pb/J75+nvURX0LuGCSZ/KhZJKg
+	 nHNqoTPyMuSHuRvOqztRXcoVdKT3ZHqJGiCQC+N9eYnjH+PltYkDwmZmvgnR9HB8HS
+	 LI4ccnwhRW9HxV60iApoSfGvbg6+3usgXB9He8u4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhipeng Lu <alexious@zju.edu.cn>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 162/286] drm/radeon/trinity_dpm: fix a memleak in trinity_parse_power_table
-Date: Mon, 22 Jan 2024 15:57:48 -0800
-Message-ID: <20240122235738.407718281@linuxfoundation.org>
+Subject: [PATCH 5.10 163/286] drm/bridge: tc358767: Fix return value on error case
+Date: Mon, 22 Jan 2024 15:57:49 -0800
+Message-ID: <20240122235738.445710116@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
 References: <20240122235732.009174833@linuxfoundation.org>
@@ -66,39 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhipeng Lu <alexious@zju.edu.cn>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit 28c28d7f77c06ac2c0b8f9c82bc04eba22912b3b ]
+[ Upstream commit 32bd29b619638256c5b75fb021d6d9f12fc4a984 ]
 
-The rdev->pm.dpm.ps allocated by kcalloc should be freed in every
-following error-handling path. However, in the error-handling of
-rdev->pm.power_state[i].clock_info the rdev->pm.dpm.ps is not freed,
-resulting in a memleak in this function.
+If the hpd_pin is invalid, the driver returns 'ret'. But 'ret' contains
+0, instead of an error value.
 
-Fixes: d70229f70447 ("drm/radeon/kms: add dpm support for trinity asics")
-Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Return -EINVAL instead.
+
+Fixes: f25ee5017e4f ("drm/bridge: tc358767: add IRQ and HPD support")
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231103-uninit-fixes-v2-4-c22b2444f5f5@ideasonboard.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/trinity_dpm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/tc358767.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/radeon/trinity_dpm.c b/drivers/gpu/drm/radeon/trinity_dpm.c
-index 4d93b84aa739..49c28fbe366e 100644
---- a/drivers/gpu/drm/radeon/trinity_dpm.c
-+++ b/drivers/gpu/drm/radeon/trinity_dpm.c
-@@ -1770,8 +1770,10 @@ static int trinity_parse_power_table(struct radeon_device *rdev)
- 		non_clock_array_index = power_state->v2.nonClockInfoIndex;
- 		non_clock_info = (struct _ATOM_PPLIB_NONCLOCK_INFO *)
- 			&non_clock_info_array->nonClockInfo[non_clock_array_index];
--		if (!rdev->pm.power_state[i].clock_info)
-+		if (!rdev->pm.power_state[i].clock_info) {
-+			kfree(rdev->pm.dpm.ps);
- 			return -EINVAL;
-+		}
- 		ps = kzalloc(sizeof(struct sumo_ps), GFP_KERNEL);
- 		if (ps == NULL) {
- 			kfree(rdev->pm.dpm.ps);
+diff --git a/drivers/gpu/drm/bridge/tc358767.c b/drivers/gpu/drm/bridge/tc358767.c
+index b4f7e7a7f7c5..9c905634fec7 100644
+--- a/drivers/gpu/drm/bridge/tc358767.c
++++ b/drivers/gpu/drm/bridge/tc358767.c
+@@ -1637,7 +1637,7 @@ static int tc_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 	} else {
+ 		if (tc->hpd_pin < 0 || tc->hpd_pin > 1) {
+ 			dev_err(dev, "failed to parse HPD number\n");
+-			return ret;
++			return -EINVAL;
+ 		}
+ 	}
+ 
 -- 
 2.43.0
 
