@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F07A9837BE6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:08:25 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4595838284
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:20:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BEFE1C28485
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:08:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DE6A28AD6D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:20:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F99913AA21;
-	Tue, 23 Jan 2024 00:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A5945C8E9;
+	Tue, 23 Jan 2024 01:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fn9o4Qfh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bg8jNNLP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3728135A6D;
-	Tue, 23 Jan 2024 00:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCF85C8F3;
+	Tue, 23 Jan 2024 01:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969431; cv=none; b=R+a3JL+eeNi7b3UNxeHgkZ9h7aqyeRS4T22GR+1UFpGM2ADwrhHBtIvovNogjCuY7/2wPvVdG9HWh9yksn5dbvwmcEda6kuvbQjZE/aUH+1rcFqJmevQGlytVrkbLyGSOwZsJC8O60n88dqeHj5HyFQvI9xSimxsobVmT8nI4I8=
+	t=1705974372; cv=none; b=csqTu/UF1LfDpPUPqd6hcJbJoQ5IQgWCeqqybbfCbCRIP7wn/qMU2GnyZhy16JhAlQxYSKXjUkkAgkXkhbmTSa6BsV7gVvQs39G7KkUFcIdk9zAiEJzS6NQCjQgm2zZcbxNuBkG9EgE4t737xiAtW5Rvk8KWTE9tQ5+vX6vtMPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969431; c=relaxed/simple;
-	bh=LHu4U9gfXQHPHIZcIxc2oHwQXxljAWdi6exjAQO8txE=;
+	s=arc-20240116; t=1705974372; c=relaxed/simple;
+	bh=8ars6G2/19OestMGYX/DwX0sPeMwcfLJPUcML8bMNDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ug242XN8ePYXgOz2nBkmjuLocem+C6TX0nHjMfYTtF8UKNMMmPSN7gnOysxLtH8YGfrf8U/b3ML9/glgX+yy0KYz5VCRc2L4b9Ak1er2PxTlV5VmtzwGlnRITMC8ay1nfMlWB6yE/PVEJgRBmbPqoFJ3o7jGKLN72OCIoFFOnZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fn9o4Qfh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C7C5C43399;
-	Tue, 23 Jan 2024 00:23:50 +0000 (UTC)
+	 MIME-Version; b=Cgpqjp4R9R1DFjJf2QDAn7h55shM7O01uzVn+qZZOQUZvcQfvrGIb9C/KnRYKfdG7uIVQkaSnHN8OaZ96HWQDiyXhCuCucCWtFsFwwT4/ARgYD2jxWvmr14av62MCA2snDVZZ4nRw5B2wbT9lu0LhGO22KWHpQMVV/bF0bhUozc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bg8jNNLP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A16FDC43394;
+	Tue, 23 Jan 2024 01:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969430;
-	bh=LHu4U9gfXQHPHIZcIxc2oHwQXxljAWdi6exjAQO8txE=;
+	s=korg; t=1705974371;
+	bh=8ars6G2/19OestMGYX/DwX0sPeMwcfLJPUcML8bMNDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fn9o4Qfh4M7Xfli/FVdtAUvg+dj6qjewXifso8xiqSndi7FRNbIT47939AG07qypq
-	 sOWaG+BEa8G1+Za8gWx4+6XdvL60DS+TPs2asxAV/ISxRdOk5JPGzGBQENZoL4KjZV
-	 EqXBXOhyeeOrO7oYCcf0ThZ+Xv5ewINv0vs0yK9c=
+	b=Bg8jNNLPVWeW3naX9OtOmAtwk67WQ5q6CSww/SDjK3UJgnLvJVpS+fTE50WALB361
+	 KNyQGiOZ2i+chu7amC35qMrREPs+6eB/tSTM2ZrT5IvmLjkrdA6mGqbNrUPM2cpZQd
+	 moGvAo220BxChEyKnV5BY+rhHmzDgsfBPqTcPy9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Luciano Coelho <luciano.coelho@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Ovidiu Panait <ovidiu.panait@windriver.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 216/641] wifi: iwlwifi: mvm: set siso/mimo chains to 1 in FW SMPS request
-Date: Mon, 22 Jan 2024 15:52:00 -0800
-Message-ID: <20240122235824.707718309@linuxfoundation.org>
+Subject: [PATCH 6.6 070/583] crypto: sahara - fix wait_for_completion_timeout() error handling
+Date: Mon, 22 Jan 2024 15:52:01 -0800
+Message-ID: <20240122235814.296116091@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ovidiu Panait <ovidiu.panait@windriver.com>
 
-[ Upstream commit b1a2e5c310e063560760806d2cc5d2233c596067 ]
+[ Upstream commit 2dba8e1d1a7957dcbe7888846268538847b471d1 ]
 
-The firmware changed their mind, don't set the chains to zero,
-instead set them to 1 as we normally would for connections to
-APs that don't use MIMO.
+The sg lists are not unmapped in case of timeout errors. Fix this.
 
-Fixes: 2a7ce54ccc23 ("iwlwifi: mvm: honour firmware SMPS requests")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20231219215605.7f031f1a127f.Idc816e0f604b07d22a9d5352bc23c445512fad14@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 5a2bb93f5992 ("crypto: sahara - add support for SHA1/256")
+Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
+Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c | 11 -----------
- 1 file changed, 11 deletions(-)
+ drivers/crypto/sahara.c | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-index 4e1fccff3987..334d1f59f6e4 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/phy-ctxt.c
-@@ -99,17 +99,6 @@ static void iwl_mvm_phy_ctxt_set_rxchain(struct iwl_mvm *mvm,
- 		active_cnt = 2;
- 	}
+diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
+index 80d419d6a609..86ff5add2e15 100644
+--- a/drivers/crypto/sahara.c
++++ b/drivers/crypto/sahara.c
+@@ -607,16 +607,17 @@ static int sahara_aes_process(struct skcipher_request *req)
  
--	/*
--	 * If the firmware requested it, then we know that it supports
--	 * getting zero for the values to indicate "use one, but pick
--	 * which one yourself", which means it can dynamically pick one
--	 * that e.g. has better RSSI.
--	 */
--	if (mvm->fw_static_smps_request && active_cnt == 1 && idle_cnt == 1) {
--		idle_cnt = 0;
--		active_cnt = 0;
+ 	timeout = wait_for_completion_timeout(&dev->dma_completion,
+ 				msecs_to_jiffies(SAHARA_TIMEOUT_MS));
+-	if (!timeout) {
+-		dev_err(dev->device, "AES timeout\n");
+-		return -ETIMEDOUT;
 -	}
--
- 	*rxchain_info = cpu_to_le32(iwl_mvm_get_valid_rx_ant(mvm) <<
- 					PHY_RX_CHAIN_VALID_POS);
- 	*rxchain_info |= cpu_to_le32(idle_cnt << PHY_RX_CHAIN_CNT_POS);
+ 
+ 	dma_unmap_sg(dev->device, dev->out_sg, dev->nb_out_sg,
+ 		DMA_FROM_DEVICE);
+ 	dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
+ 		DMA_TO_DEVICE);
+ 
++	if (!timeout) {
++		dev_err(dev->device, "AES timeout\n");
++		return -ETIMEDOUT;
++	}
++
+ 	if ((dev->flags & FLAGS_CBC) && req->iv)
+ 		sahara_aes_cbc_update_iv(req);
+ 
+@@ -1007,15 +1008,16 @@ static int sahara_sha_process(struct ahash_request *req)
+ 
+ 	timeout = wait_for_completion_timeout(&dev->dma_completion,
+ 				msecs_to_jiffies(SAHARA_TIMEOUT_MS));
+-	if (!timeout) {
+-		dev_err(dev->device, "SHA timeout\n");
+-		return -ETIMEDOUT;
+-	}
+ 
+ 	if (rctx->sg_in_idx)
+ 		dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
+ 			     DMA_TO_DEVICE);
+ 
++	if (!timeout) {
++		dev_err(dev->device, "SHA timeout\n");
++		return -ETIMEDOUT;
++	}
++
+ 	memcpy(rctx->context, dev->context_base, rctx->context_size);
+ 
+ 	if (req->result && rctx->last)
 -- 
 2.43.0
 
