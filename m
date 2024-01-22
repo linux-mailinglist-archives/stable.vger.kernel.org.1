@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-14327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83259838073
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 381F3838027
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36B4D1F2CCFC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC27EB254B4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F0512F587;
-	Tue, 23 Jan 2024 01:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1764F657CF;
+	Tue, 23 Jan 2024 00:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BxbqXtPq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZKVOanh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1061F12DDB0;
-	Tue, 23 Jan 2024 01:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC32264CF2;
+	Tue, 23 Jan 2024 00:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971728; cv=none; b=KRLN7MGfKobssFsBQG2+FTws2F+JW4JBJGfXxU/9JojA2ok4sVpbtdXvWxCXvGrB/R/6eSFSuhhUPQsudwrno99A1R01T4ZsslgQwwiT04xIkH1FsNWox8xd8DCJj9WdI06tY2flCnL4Sx5/kZiPZXbk7/qSCSkePiRctZBEO5w=
+	t=1705971540; cv=none; b=ZbfkPNlS0Ymhc7JDp5faWXfdvl1QcOAaRclqrDBiaKGJyYPsq7VBRTk+KGyZVig2vJE0PSuoe9IdAdsQpFE4D8VxmPealqYvN+cELsn+XLYBhVY+8fiJn6AmSA9Ze8k2R3clpI5vFPEEozIUhzNxgcvkW2nlOarILrZL5Js6QD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971728; c=relaxed/simple;
-	bh=R/ddnG+c1aT8Bn/RPb9GgB2h1WwMncdmu1c565jGtLw=;
+	s=arc-20240116; t=1705971540; c=relaxed/simple;
+	bh=+7VUuJj5flWFXQAXMk6MXBfnDvIvDOrPyWXS4lLeZAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U2e1E86pHybevMDyWfMWlHfgHhrx7uVh+056vBCKLfxCYlMjSODU5GXBbVEap2CmcAnlgsEKDoRxbwl6IVLpTdbgJ7YW95LsRkaCUy02LvFSBGehuEGZ4lyyfM4GrTfRoRRLWxzp70mfZMmz06dJ8ZM91JlAIFe/8HvqHq+hLRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BxbqXtPq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1E18C433F1;
-	Tue, 23 Jan 2024 01:02:07 +0000 (UTC)
+	 MIME-Version; b=fis5/BM+KctzieF+usAp5ue1/kZpX7vZvLzFooKKO65Vglwq8Bz4L7VgVx+k0Insfg3DYNhnYXkQmTAZ1hP+IwNLhl3bVRjP720OLOt6i5P4HpFCtaVd2PxOyUZA34wBVNF5dCz5csMcjcMbl11Rl1j6YkgEEmt8df6KQqomZFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aZKVOanh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E92C433C7;
+	Tue, 23 Jan 2024 00:59:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971727;
-	bh=R/ddnG+c1aT8Bn/RPb9GgB2h1WwMncdmu1c565jGtLw=;
+	s=korg; t=1705971540;
+	bh=+7VUuJj5flWFXQAXMk6MXBfnDvIvDOrPyWXS4lLeZAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BxbqXtPqCELQBA5OI+FjwyE4NpLXLH1icaBNsv3jDUwuvv89dFuhWRLHnA9lc5zae
-	 4t2MzPSHFC/c4BDCJzItz55426CyGKBvDRsFVEpNf2tgZ+NV8O/nTybUhlR1NEYcv2
-	 2Y528ut6rOCPh+P0+InD7Srd7Uc/LXf/3+T5VMYY=
+	b=aZKVOanhKoOjur1XMTRUUfMWbIe9xvxn1Mn6rOS3Faq7Y4MYXunRuRZTbJirNg4bx
+	 EHVGFQdiL0YjL1RMglAsMcD/uZqULAIvd4UxTARq6ry+G5lygRPtR58UkWrAFQPCer
+	 GW6ipTotWB1m3KRmJYZ2NFuhdLknh6TVUoNXuDqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Marangi <ansuelsmth@gmail.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.1 307/417] wifi: mt76: fix broken precal loading from MTD for mt7915
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 169/286] media: dvbdev: drop refcount on error path in dvb_device_open()
 Date: Mon, 22 Jan 2024 15:57:55 -0800
-Message-ID: <20240122235802.460042745@linuxfoundation.org>
+Message-ID: <20240122235738.684283273@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Marangi <ansuelsmth@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit e874a79250b39447765ac13272b67ac36ccf2a75 upstream.
+[ Upstream commit a2dd235df435a05d389240be748909ada91201d2 ]
 
-Commit 495184ac91bb ("mt76: mt7915: add support for applying
-pre-calibration data") was fundamentally broken and never worked.
+If call to file->f_op->open() fails, then call dvb_device_put(dvbdev).
 
-The idea (before NVMEM support) was to expand the MTD function and pass
-an additional offset. For normal EEPROM load the offset would always be
-0. For the purpose of precal loading, an offset was passed that was
-internally the size of EEPROM, since precal data is right after the
-EEPROM.
-
-Problem is that the offset value passed is never handled and is actually
-overwrite by
-
-	offset = be32_to_cpup(list);
-	ret = mtd_read(mtd, offset, len, &retlen, eep);
-
-resulting in the passed offset value always ingnored. (and even passing
-garbage data as precal as the start of the EEPROM is getting read)
-
-Fix this by adding to the current offset value, the offset from DT to
-correctly read the piece of data at the requested location.
-
-Cc: stable@vger.kernel.org
-Fixes: 495184ac91bb ("mt76: mt7915: add support for applying pre-calibration data")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0fc044b2b5e2 ("media: dvbdev: adopts refcnt to avoid UAF")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/eeprom.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/dvb-core/dvbdev.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/wireless/mediatek/mt76/eeprom.c
-+++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
-@@ -62,7 +62,7 @@ int mt76_get_of_eeprom(struct mt76_dev *
- 		goto out_put_node;
+diff --git a/drivers/media/dvb-core/dvbdev.c b/drivers/media/dvb-core/dvbdev.c
+index 2ff8a1b776fb..3a83e8e09256 100644
+--- a/drivers/media/dvb-core/dvbdev.c
++++ b/drivers/media/dvb-core/dvbdev.c
+@@ -114,6 +114,8 @@ static int dvb_device_open(struct inode *inode, struct file *file)
+ 			err = file->f_op->open(inode, file);
+ 		up_read(&minor_rwsem);
+ 		mutex_unlock(&dvbdev_mutex);
++		if (err)
++			dvb_device_put(dvbdev);
+ 		return err;
  	}
- 
--	offset = be32_to_cpup(list);
-+	offset += be32_to_cpup(list);
- 	ret = mtd_read(mtd, offset, len, &retlen, eep);
- 	put_mtd_device(mtd);
- 	if (mtd_is_bitflip(ret))
+ fail:
+-- 
+2.43.0
+
 
 
 
