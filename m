@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF49A838212
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:17:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7945E837FA4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E23C1C24C55
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:17:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADA131C2918F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B4058106;
-	Tue, 23 Jan 2024 01:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B6FD63513;
+	Tue, 23 Jan 2024 00:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WvtjLyL1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tX+7t+5l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E845733D;
-	Tue, 23 Jan 2024 01:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF64463512;
+	Tue, 23 Jan 2024 00:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974057; cv=none; b=Null5XJjkca5EN8HNyGD+1QyMBjjkZmHMAMQ3ApkaT/pWcCOHvm6HCa7WsuhYIzkZeWJnOps8QfH3yhhQM6mA8epHPx4GpvS1/zI3bvTJ8ouYkRQF5A+UTPz+1lr4JsVZUvXJ0yU6R96LU/kBIpo1SvFPBP0qEH70BE4gJrJddk=
+	t=1705971260; cv=none; b=YtOlOdQ7wbL4AR7TOW/FzXx9git82gqgzmZHaqKn+j7PfzLdL/pHTIZ2cworPN4S93mcHUXwDcIeEDbIONuG9fZnZQGZXW63herqWGvtl+CWaPOIdFy3HhOLS198L9w5Jxq3Rmm7RePwMArLNT1iiXLXJBivF9+bZmQFaiP6pIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974057; c=relaxed/simple;
-	bh=wnn4XEZCDOpzouXIWjzOoZJkWxt8rdG08eZ0+E3yjD8=;
+	s=arc-20240116; t=1705971260; c=relaxed/simple;
+	bh=G2PflnOaxwDdK1hOnjm3jFFouoF2BPAgr0FsZ3tWE4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qRLNk9RSjn/0OmCLDe/5mU34SdN0TI+kkBxUE9bH9B3bEShY18pq5eV7KLIw5MJkfhxhFvE1SDzeTF0hLYX5epPV+cIDQstb/iRAvTmPKYfL2nTW3Xoij4HhyXlzg1SGkOK74pSdRc4TgCOz+7TZU0iUSTY9eXefjURwjza49NE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WvtjLyL1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4174AC433C7;
-	Tue, 23 Jan 2024 01:40:57 +0000 (UTC)
+	 MIME-Version; b=b3YiDINXw/rAnluKOlNK06A8Jc5iLMJNdbXWRwoyqO8gxYR353jqBjX9cFOk5uce2jxXWHLdeDZlGb7mX/Uzdiz+kitRYwklTPkQAVSTbNiF6xRnOogoQEFw/fzzJ4ZxfX7FEBKvKXtmMaC4SbpCFD+TX5BuVh5fEpDwy1eoyt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tX+7t+5l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FAF3C433F1;
+	Tue, 23 Jan 2024 00:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974057;
-	bh=wnn4XEZCDOpzouXIWjzOoZJkWxt8rdG08eZ0+E3yjD8=;
+	s=korg; t=1705971259;
+	bh=G2PflnOaxwDdK1hOnjm3jFFouoF2BPAgr0FsZ3tWE4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WvtjLyL1DA1a5SEEt+ECdFNHXg1/ueQ06KRElQWuiFfXTAtnMxeBcvnQBEj0hJqRa
-	 +mrxxsCVLEzJrNvWFbKMcVkbb198T9kAJLage6eOGE0fyEkOaNU+o+VgazxXztde+Y
-	 nDMQOS73NxcQo+/W8FT+/GOZ3LZxSi5KHGl41QUg=
+	b=tX+7t+5lHmxLd1Q8UoC3n6SrY+bq3Kr+HkpbtVqtx05kthSDRlXZaJMIj6dmCd/MP
+	 9k+zdbIg5ogxbD4f9TtjWiZj6+/tWahTV9rABWSPWn1mFqskIJyr8x4PXwE/12YReM
+	 2hrL3q/sCOA0yDsGGR6oGC4D/1/ytDkS8i8Cp128=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Nishanth Menon <nm@ti.com>,
+	Zhipeng Lu <alexious@zju.edu.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 124/374] firmware: ti_sci: Fix an off-by-one in ti_sci_debugfs_create()
+Subject: [PATCH 6.1 212/417] gpu/drm/radeon: fix two memleaks in radeon_vm_init
 Date: Mon, 22 Jan 2024 15:56:20 -0800
-Message-ID: <20240122235748.960153993@linuxfoundation.org>
+Message-ID: <20240122235759.262137329@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Zhipeng Lu <alexious@zju.edu.cn>
 
-[ Upstream commit 964946b88887089f447a9b6a28c39ee97dc76360 ]
+[ Upstream commit c2709b2d6a537ca0fa0f1da36fdaf07e48ef447d ]
 
-The ending NULL is not taken into account by strncat(), so switch to
-snprintf() to correctly build 'debug_name'.
+When radeon_bo_create and radeon_vm_clear_bo fail, the vm->page_tables
+allocated before need to be freed. However, neither radeon_vm_init
+itself nor its caller have done such deallocation.
 
-Using snprintf() also makes the code more readable.
-
-Fixes: aa276781a64a ("firmware: Add basic support for TI System Control Interface (TI-SCI) protocol")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/7158db0a4d7b19855ddd542ec61b666973aad8dc.1698660720.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Fixes: 6d2f2944e95e ("drm/radeon: use normal BOs for the page tables v4")
+Signed-off-by: Zhipeng Lu <alexious@zju.edu.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/ti_sci.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/radeon/radeon_vm.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/ti_sci.c b/drivers/firmware/ti_sci.c
-index c2fafe49c2e8..b313337e4f19 100644
---- a/drivers/firmware/ti_sci.c
-+++ b/drivers/firmware/ti_sci.c
-@@ -161,7 +161,7 @@ static int ti_sci_debugfs_create(struct platform_device *pdev,
- {
- 	struct device *dev = &pdev->dev;
- 	struct resource *res;
--	char debug_name[50] = "ti_sci_debug@";
-+	char debug_name[50];
- 
- 	/* Debug region is optional */
- 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM,
-@@ -178,10 +178,10 @@ static int ti_sci_debugfs_create(struct platform_device *pdev,
- 	/* Setup NULL termination */
- 	info->debug_buffer[info->debug_region_size] = 0;
- 
--	info->d = debugfs_create_file(strncat(debug_name, dev_name(dev),
--					      sizeof(debug_name) -
--					      sizeof("ti_sci_debug@")),
--				      0444, NULL, info, &ti_sci_debug_fops);
-+	snprintf(debug_name, sizeof(debug_name), "ti_sci_debug@%s",
-+		 dev_name(dev));
-+	info->d = debugfs_create_file(debug_name, 0444, NULL, info,
-+				      &ti_sci_debug_fops);
- 	if (IS_ERR(info->d))
- 		return PTR_ERR(info->d);
+diff --git a/drivers/gpu/drm/radeon/radeon_vm.c b/drivers/gpu/drm/radeon/radeon_vm.c
+index 987cabbf1318..c38b4d5d6a14 100644
+--- a/drivers/gpu/drm/radeon/radeon_vm.c
++++ b/drivers/gpu/drm/radeon/radeon_vm.c
+@@ -1204,13 +1204,17 @@ int radeon_vm_init(struct radeon_device *rdev, struct radeon_vm *vm)
+ 	r = radeon_bo_create(rdev, pd_size, align, true,
+ 			     RADEON_GEM_DOMAIN_VRAM, 0, NULL,
+ 			     NULL, &vm->page_directory);
+-	if (r)
++	if (r) {
++		kfree(vm->page_tables);
++		vm->page_tables = NULL;
+ 		return r;
+-
++	}
+ 	r = radeon_vm_clear_bo(rdev, vm->page_directory);
+ 	if (r) {
+ 		radeon_bo_unref(&vm->page_directory);
+ 		vm->page_directory = NULL;
++		kfree(vm->page_tables);
++		vm->page_tables = NULL;
+ 		return r;
+ 	}
  
 -- 
 2.43.0
