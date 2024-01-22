@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 241038381F5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:16:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37D0F837F77
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1B3C2876DB
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:16:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BBB41C2904B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8EC5675F;
-	Tue, 23 Jan 2024 01:40:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C74B63110;
+	Tue, 23 Jan 2024 00:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqU529bt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VZkkfcnO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940D956468;
-	Tue, 23 Jan 2024 01:40:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD0F6280B;
+	Tue, 23 Jan 2024 00:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705974018; cv=none; b=fupqqjYcB7SrnaAl4Ap0DXMo6M34E9zpl0yVdgt5gHIoOJg6vyceZQnRNTHzUi54H696vG9HyLTdqGOUd1/OcsjcxYQNtjfUkATMCh5sDl4bWLjaprAWY7Ptt8TMGf/gi0kotDO9WEpR9zHo3Aqb3j2HzEa6a8nkgjrVo+gEVZY=
+	t=1705971148; cv=none; b=TyVZUg4jS2NYQJX25/PY14zf/cXIVJC5BwoAoLJRDRBrytiej2djcshOt6PuOKHXYRA+shRUdsQjBe58HZ68cGMQpfcTOguLlUAgmiIBPIukFbl3cderhktifu//V25cB26EKls0Zk20gngXdAmRI92TqsAkcl1w+LlchiskOAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705974018; c=relaxed/simple;
-	bh=goDER4i0VgZxh8LJbhLV7LGNXZt3bZronhLQR5qnsGk=;
+	s=arc-20240116; t=1705971148; c=relaxed/simple;
+	bh=GtAo4309ZWeBWBrshP6ezGI0uZR1vlrKmwa1jospWyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CFFCl9pusNXRRQswLadLzW+JAHD0fKkBETqF0MTCSIpeuBtstXz7okHRm640TL4EoRXQrEGkNhlEbg8eIfrcNdNIhgH+gLiNPJrSCgP+t0GhgyXQwqrOxsiXszjtKfXr5PC6CsdNtoXQU/Wh84E2rwmpV3r/YtIzdNAr7oTXbxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqU529bt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5BEC43399;
-	Tue, 23 Jan 2024 01:40:17 +0000 (UTC)
+	 MIME-Version; b=l1RWwt8AVLpJ4KVxgfg25vsMww521hDM08N3EnQQ4OOAfmwStfgSOu04j1m4SHgwULc0duT000/2/3IPY+YmoZ9AkTGkZ4Qivt3xN8L9hW/8AiRCeAG3wSJSqiC6JbQykmLlwcdX4b6tcDAYTkPDO9at6UmWqo4EbYia7V1xltM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VZkkfcnO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082CBC433F1;
+	Tue, 23 Jan 2024 00:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705974018;
-	bh=goDER4i0VgZxh8LJbhLV7LGNXZt3bZronhLQR5qnsGk=;
+	s=korg; t=1705971148;
+	bh=GtAo4309ZWeBWBrshP6ezGI0uZR1vlrKmwa1jospWyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oqU529btEjbO1jF5P9h2Qvt+elY0JhHxaYbW9gGB/7a/mMsDVy2INQF1Dzw7mhfXn
-	 hADvan9zYoSWw1TMMiz/+ktrMwf0WE9NP9piHMaObneDkNe6WX/zedM9YjfuUciy96
-	 r8+YU7OhaCg4qyy3bu0T5yZZuPDQ2JkOZMS1fYg4=
+	b=VZkkfcnOfFhrSU4ShNWTo/JuMXKgpPA8VuSzYsqxGe4NUmlu085dhE0za5dc+rYZG
+	 MLbfmPCeSJ036H5cKXLFa7nzEZvgY92p2IJJVjiZQ7qjgyqwQ0garz9TQRl1jaxN5G
+	 IRB1BotGT+BleagHC965vBV9UDjpCBrt9rtEtT+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Aradhya Bhatia <a-bhatia1@ti.com>,
-	Nishanth Menon <nm@ti.com>,
+	Gonglei <arei.gonglei@huawei.com>,
+	zhenwei pi <pizhenwei@bytedance.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 127/374] arm64: dts: ti: k3-am65-main: Fix DSS irq trigger type
+Subject: [PATCH 5.10 077/286] virtio_crypto: Introduce VIRTIO_CRYPTO_NOSPC
 Date: Mon, 22 Jan 2024 15:56:23 -0800
-Message-ID: <20240122235749.056444297@linuxfoundation.org>
+Message-ID: <20240122235735.001277733@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: zhenwei pi <pizhenwei@bytedance.com>
 
-[ Upstream commit b57160859263c083c49482b0d083a586b1517f78 ]
+[ Upstream commit 13d640a3e9a3ac7ec694843d3d3b785e85fb8cb8 ]
 
-DSS irq trigger type is set to IRQ_TYPE_EDGE_RISING in the DT file, but
-the TRM says it is level triggered.
+Base on the lastest virtio crypto spec, define VIRTIO_CRYPTO_NOSPC.
 
-For some reason triggering on rising edge results in double the amount
-of expected interrupts, e.g. for normal page flipping test the number of
-interrupts per second is 2 * fps. It is as if the IRQ triggers on both
-edges. There are no other side effects to this issue than slightly
-increased CPU & power consumption due to the extra interrupt.
-
-Switching to IRQ_TYPE_LEVEL_HIGH is correct and fixes the issue, so
-let's do that.
-
-Fixes: fc539b90eda2 ("arm64: dts: ti: am654: Add DSS node")
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Reviewed-by: Aradhya Bhatia <a-bhatia1@ti.com>
-Link: https://lore.kernel.org/r/20231106-am65-dss-clk-edge-v1-1-4a959fec0e1e@ideasonboard.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Reviewed-by: Gonglei <arei.gonglei@huawei.com>
+Signed-off-by: zhenwei pi <pizhenwei@bytedance.com>
+Link: https://lore.kernel.org/r/20220302033917.1295334-2-pizhenwei@bytedance.com
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Stable-dep-of: fed93fb62e05 ("crypto: virtio - Handle dataq logic with tasklet")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am65-main.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/uapi/linux/virtio_crypto.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
-index 4f232f575ab2..b729d2dee209 100644
---- a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
-@@ -855,7 +855,7 @@ dss: dss@4a00000 {
- 		assigned-clocks = <&k3_clks 67 2>;
- 		assigned-clock-parents = <&k3_clks 67 5>;
+diff --git a/include/uapi/linux/virtio_crypto.h b/include/uapi/linux/virtio_crypto.h
+index a03932f10565..1166a49084b0 100644
+--- a/include/uapi/linux/virtio_crypto.h
++++ b/include/uapi/linux/virtio_crypto.h
+@@ -408,6 +408,7 @@ struct virtio_crypto_op_data_req {
+ #define VIRTIO_CRYPTO_BADMSG    2
+ #define VIRTIO_CRYPTO_NOTSUPP   3
+ #define VIRTIO_CRYPTO_INVSESS   4 /* Invalid session id */
++#define VIRTIO_CRYPTO_NOSPC     5 /* no free session ID */
  
--		interrupts = <GIC_SPI 166 IRQ_TYPE_EDGE_RISING>;
-+		interrupts = <GIC_SPI 166 IRQ_TYPE_LEVEL_HIGH>;
- 
- 		dma-coherent;
- 
+ /* The accelerator hardware is ready */
+ #define VIRTIO_CRYPTO_S_HW_READY  (1 << 0)
 -- 
 2.43.0
 
