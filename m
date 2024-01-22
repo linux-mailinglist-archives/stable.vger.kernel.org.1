@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF2383801A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:47 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09F3E8384BB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:36:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ABC61F2C062
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D3981C282E3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD0A664BF;
-	Tue, 23 Jan 2024 00:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB5D74E22;
+	Tue, 23 Jan 2024 02:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CzIK5Zp5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5NL5niW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2D1651A1;
-	Tue, 23 Jan 2024 00:59:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD2474E09;
+	Tue, 23 Jan 2024 02:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971547; cv=none; b=OKblmopU+AA8ZY14e9q9Evjymh0kVzlpXrtjoK2GW8O1Mhd7CmBwHnY5s6YfOTaUyfgcWksHLZJz5p1x1kV4lGvs3P/TCcS0+xwUEx2TnLcgPFrU7iTb20ddqeYD6p/Pb3tlmhcxnInKXf7/XzVJCnxiGqV1bJtmCY6ber2Xo1c=
+	t=1705975471; cv=none; b=CfoQFK2mSnPgWNJGLGqiQdA53gurJnv9f4nV6kejtbb8oK8N29gORLudX5zkuri34DcixJO3M8+c1/LwadbJxupyyUTGXYkjWQBGiYujTjELsU5RWniFF1QvPKlKzPyIabQNTSnlgYF4E0LUOlrWVDZCAEksInlZcmXqsb+ddls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971547; c=relaxed/simple;
-	bh=u8NJiZf2aAw098PwQUNm08SSo9UV2/t1zoTUossJ3Qk=;
+	s=arc-20240116; t=1705975471; c=relaxed/simple;
+	bh=bMWW2DmhEYyGVJkOBcvo9GPnHkpUEPmXT8kujwoCrSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VhF5VUXOSdBJeWACgt+RIY4bfUrpYxo5aheVijgI0GbzM9KgD/4FtzMEFdVF71cpfq2isuGT9ca9OwrR4Fo7GoTCb3LNj6L8CIXvVRvO7VqDMqjUGYjACBgx4b4TQgSlJsNB4UqcDFSeUolJczbFsSdclkmZBohrrON0o8KbWs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CzIK5Zp5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060BAC433F1;
-	Tue, 23 Jan 2024 00:59:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Yb4FcaSA7lMAUbyUXrzUQ4T6BFRSOhq9OZoD5tCsZqJIfFbezznxHxUaBNK9kBtEX7P6h0+B6ym4Q62pL11fdOimdkufZ9lNeDdDGbMpyL+09nAspOvuBnyULCqaAuOUmTzjhRWgC7L4JJVsnoInSZRUp8qrFaOvh8d15MWqRlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5NL5niW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00CC9C433C7;
+	Tue, 23 Jan 2024 02:04:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971547;
-	bh=u8NJiZf2aAw098PwQUNm08SSo9UV2/t1zoTUossJ3Qk=;
+	s=korg; t=1705975471;
+	bh=bMWW2DmhEYyGVJkOBcvo9GPnHkpUEPmXT8kujwoCrSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CzIK5Zp5CfJWq+RNxqeKfbHX7C0v6ran77lZNhZygttGAoifHvkJeW+OesJ6Na5yh
-	 v/04VjSC5ZFeiqHt2B0RKAIMjJnMGhoaWnePOw2A5XMb9jsVdSKdol3rDvTJevo1Q5
-	 0AlplDFif3HkQSoHLwawcNuIr6+LQYTsrwWm5icA=
+	b=F5NL5niWD/L6a/93/IyhmpsjExwsK9MiaJcPlJD+YihpaPvVAnzv3OtXEO2IeCGP8
+	 QOj0WlsRMlOeHQgwWYFmsGP4wAVxOVpXD3yn1A5Af7+6CV0HGUS4MFa9BkLUJx7GbA
+	 Bh/ZWOhD2szxyM4q2vp33TnJU+ZaUcfbVLnJOjUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 171/286] drm/amdgpu/debugfs: fix error code when smc register accessors are NULL
+	qizhong cheng <qizhong.cheng@mediatek.com>,
+	Jianjun Wang <jianjun.wang@mediatek.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 6.6 426/583] PCI: mediatek: Clear interrupt status before dispatching handler
 Date: Mon, 22 Jan 2024 15:57:57 -0800
-Message-ID: <20240122235738.765620570@linuxfoundation.org>
+Message-ID: <20240122235825.021362605@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +65,60 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: qizhong cheng <qizhong.cheng@mediatek.com>
 
-[ Upstream commit afe58346d5d3887b3e49ff623d2f2e471f232a8d ]
+commit 4e11c29873a8a296a20f99b3e03095e65ebf897d upstream.
 
-Should be -EOPNOTSUPP.
+We found a failure when using the iperf tool during WiFi performance
+testing, where some MSIs were received while clearing the interrupt
+status, and these MSIs cannot be serviced.
 
-Fixes: 5104fdf50d32 ("drm/amdgpu: Fix a null pointer access when the smc_rreg pointer is NULL")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The interrupt status can be cleared even if the MSI status remains pending.
+As such, given the edge-triggered interrupt type, its status should be
+cleared before being dispatched to the handler of the underling device.
+
+[kwilczynski: commit log, code comment wording]
+Link: https://lore.kernel.org/linux-pci/20231211094923.31967-1-jianjun.wang@mediatek.com
+Fixes: 43e6409db64d ("PCI: mediatek: Add MSI support for MT2712 and MT7622")
+Signed-off-by: qizhong cheng <qizhong.cheng@mediatek.com>
+Signed-off-by: Jianjun Wang <jianjun.wang@mediatek.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+[bhelgaas: rewrap comment]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/controller/pcie-mediatek.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-index 3e573077368b..8a1cb1de2b13 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
-@@ -582,7 +582,7 @@ static ssize_t amdgpu_debugfs_regs_smc_read(struct file *f, char __user *buf,
- 	int r;
+--- a/drivers/pci/controller/pcie-mediatek.c
++++ b/drivers/pci/controller/pcie-mediatek.c
+@@ -617,12 +617,18 @@ static void mtk_pcie_intr_handler(struct
+ 		if (status & MSI_STATUS){
+ 			unsigned long imsi_status;
  
- 	if (!adev->smc_rreg)
--		return -EPERM;
-+		return -EOPNOTSUPP;
++			/*
++			 * The interrupt status can be cleared even if the
++			 * MSI status remains pending. As such, given the
++			 * edge-triggered interrupt type, its status should
++			 * be cleared before being dispatched to the
++			 * handler of the underlying device.
++			 */
++			writel(MSI_STATUS, port->base + PCIE_INT_STATUS);
+ 			while ((imsi_status = readl(port->base + PCIE_IMSI_STATUS))) {
+ 				for_each_set_bit(bit, &imsi_status, MTK_MSI_IRQS_NUM)
+ 					generic_handle_domain_irq(port->inner_domain, bit);
+ 			}
+-			/* Clear MSI interrupt status */
+-			writel(MSI_STATUS, port->base + PCIE_INT_STATUS);
+ 		}
+ 	}
  
- 	if (size & 0x3 || *pos & 0x3)
- 		return -EINVAL;
-@@ -644,7 +644,7 @@ static ssize_t amdgpu_debugfs_regs_smc_write(struct file *f, const char __user *
- 	int r;
- 
- 	if (!adev->smc_wreg)
--		return -EPERM;
-+		return -EOPNOTSUPP;
- 
- 	if (size & 0x3 || *pos & 0x3)
- 		return -EINVAL;
--- 
-2.43.0
-
 
 
 
