@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBF4C838095
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:59:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D16D8382E6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:24:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BE761F2CB6B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:59:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9BDA287DD1
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 618F212FF8C;
-	Tue, 23 Jan 2024 01:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6445FEE4;
+	Tue, 23 Jan 2024 01:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/Z64qaS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JaaShOmZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190CA657B3;
-	Tue, 23 Jan 2024 01:03:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D9735FDC1;
+	Tue, 23 Jan 2024 01:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971804; cv=none; b=KEpwQOUw83pDY+Aqxjhms5UAtiAauEoLozp09RA6NrUV9NLEOvOwFS5Gzb8ZtDtBAg0eCh2WF93VaJKK/o9OMUQmkW7rXVxV0fe/ORTEFXLq5Iuapsa0KL72vleMdB8O+C8FMWLYQcrUFem2TqTmL2e1rfJnquHVcj7CdmDvdnc=
+	t=1705974656; cv=none; b=GFrqMabzpSTBrONOXHLE8owJy9QJ2PbPg0PHAHVnWhD9uF36v2OEXPSyCd3rYsvhisJOok3VCBwW80qr2L0bX9whwZFoBPbEslIbkEseyLuvMTUJD9XTedGXT3DkdolwJ/VMXL25AhpN7R+UmSnWXbccjC7bPSd/c1guUpgbqQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971804; c=relaxed/simple;
-	bh=th+8Mt5GAeUsSH9c2LOA9AT94Jh2Gc/wvIYclWubokY=;
+	s=arc-20240116; t=1705974656; c=relaxed/simple;
+	bh=SoCvfap5NBBYX8wYntjujWJA7mk6N7s3QX7tr0/wqus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iPdWLvg9y7yZJh0QFraCNcC96rI/70rCk2QcQaN2z/fKavhxaWq6i5XN3elWwJkauIJewyFXbwhL+kdDcUqkBEKSEDz+QKxkLyTejeh3voSVV469V1uF3mNa6M/+4h7u17x0anRybys0jZqPojTkeOJo5F6vVHxuU2uXiiqYUqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/Z64qaS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26B5C433C7;
-	Tue, 23 Jan 2024 01:03:23 +0000 (UTC)
+	 MIME-Version; b=MgkbiAfIE0Z0O/CmgSAE6QZB7Y4IYBT9h6U9lCiCAyoP1P1LZRPWoxgRxE87a0euVEcYm3C4+cGhG1u3brzBwoc6rj+2OB00dljmsMA5sz+LXY+5GddzlfHwCKVu1RYjBiHsYlSEuga0TocGT60AJOPoy6ZTJgJQV2ih4aG0+4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JaaShOmZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B12C43390;
+	Tue, 23 Jan 2024 01:50:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971803;
-	bh=th+8Mt5GAeUsSH9c2LOA9AT94Jh2Gc/wvIYclWubokY=;
+	s=korg; t=1705974656;
+	bh=SoCvfap5NBBYX8wYntjujWJA7mk6N7s3QX7tr0/wqus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z/Z64qaSBJ6Ph7JExWp6aFxUjGKXsq85GWvhoi8U8FTub+t5ec333QlOg+wfQ6DEb
-	 Feo0D3j4gDLmgPL5KB0sVGgMya1m44sCZzPa5vW/C1ybnnsZngUxFoJAbSLnTwA1WD
-	 t9Rj5Qv7Pmebeq4Jeu3mYcjvWHB7261l6ZckY83Q=
+	b=JaaShOmZn0dmlqQXvXkdAN9cOQ4UG8NiRK9CoPDexBdMzkvXausp+GSQTG3d8RaUJ
+	 uH26NP6mlP0rxBDDZ5sN2gDSaerUMmSW9riXBnwaE5nEN/AYepSR/teFKYtDFi2eVa
+	 ZfNFa6bVfVCHhEbCrNCbe9SprnKu3S/Guxu69iXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Lee Jones <lee@kernel.org>,
+	Peter Robinson <pbrobinson@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 324/417] mfd: syscon: Fix null pointer dereference in of_syscon_register()
+Subject: [PATCH 5.15 236/374] mmc: sdhci_am654: Fix TI SoC dependencies
 Date: Mon, 22 Jan 2024 15:58:12 -0800
-Message-ID: <20240122235803.024724908@linuxfoundation.org>
+Message-ID: <20240122235752.946055852@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Peter Robinson <pbrobinson@gmail.com>
 
-[ Upstream commit 41673c66b3d0c09915698fec5c13b24336f18dd1 ]
+[ Upstream commit cb052da7f031b0d2309a4895ca236afb3b4bbf50 ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure.
+The sdhci_am654 is specific to recent TI SoCs, update the
+dependencies for those SoCs and compile testing. While we're
+at it update the text to reflect the wider range of
+supported TI SoCS the driver now supports.
 
-Fixes: e15d7f2b81d2 ("mfd: syscon: Use a unique name with regmap_config")
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20231204092443.2462115-1-chentao@kylinos.cn
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 41fd4caeb00b ("mmc: sdhci_am654: Add Initial Support for AM654 SDHCI driver")
+Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
+Link: https://lore.kernel.org/r/20231220135950.433588-1-pbrobinson@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/syscon.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/mmc/host/Kconfig | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
-index bdb2ce7ff03b..6196724ef39b 100644
---- a/drivers/mfd/syscon.c
-+++ b/drivers/mfd/syscon.c
-@@ -102,6 +102,10 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_clk)
- 	}
+diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+index a281df78d168..ef36a0095211 100644
+--- a/drivers/mmc/host/Kconfig
++++ b/drivers/mmc/host/Kconfig
+@@ -1070,14 +1070,15 @@ config MMC_SDHCI_OMAP
  
- 	syscon_config.name = kasprintf(GFP_KERNEL, "%pOFn@%pa", np, &res.start);
-+	if (!syscon_config.name) {
-+		ret = -ENOMEM;
-+		goto err_regmap;
-+	}
- 	syscon_config.reg_stride = reg_io_width;
- 	syscon_config.val_bits = reg_io_width * 8;
- 	syscon_config.max_register = resource_size(&res) - reg_io_width;
+ config MMC_SDHCI_AM654
+ 	tristate "Support for the SDHCI Controller in TI's AM654 SOCs"
++	depends on ARCH_K3 || COMPILE_TEST
+ 	depends on MMC_SDHCI_PLTFM && OF
+ 	select MMC_SDHCI_IO_ACCESSORS
+ 	select MMC_CQHCI
+ 	select REGMAP_MMIO
+ 	help
+ 	  This selects the Secure Digital Host Controller Interface (SDHCI)
+-	  support present in TI's AM654 SOCs. The controller supports
+-	  SD/MMC/SDIO devices.
++	  support present in TI's AM65x/AM64x/AM62x/J721E SOCs. The controller
++	  supports SD/MMC/SDIO devices.
+ 
+ 	  If you have a controller with this interface, say Y or M here.
+ 
 -- 
 2.43.0
 
