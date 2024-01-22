@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-14000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10C60837F1C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:50:10 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 293378383DE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:30:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C5491C27486
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:50:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6ECA295E36
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA68160884;
-	Tue, 23 Jan 2024 00:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2525D657AE;
+	Tue, 23 Jan 2024 01:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmsoNDyD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZJcJO/F/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6828760887;
-	Tue, 23 Jan 2024 00:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9805651AD;
+	Tue, 23 Jan 2024 01:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970944; cv=none; b=B/Oak9PFN6Tj4Y+4/r9vRzy0Ux+XnBfkKcfACJp89cMjgCsvjqauXLdYwW63dH3sRna+1DDjiSRC0JsZ/Ja0WJ81UW/Pj6v+UxfNRQTDZ7HH6h5GHrbyGbSnq0WKWb5M+7AO1hVia/F5YcBo+jdws1wvGa7Re78CJgaps3SdX/I=
+	t=1705975084; cv=none; b=jRlTDabQ66i90/N0RrcBfhJMBBDvJ0R1x0iaPG2MzSJuzZv0QxQCxJ9030yTK1N+XyNi/R5zFxbaKddD0QNggfKsg8Zag1kwOK1cwqX170+LkbzCP7VIzE0vEEpivoaVBpFxQElRobcWLojhjEwqoWQ8rih0UwyGuQ/5g/Llffw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970944; c=relaxed/simple;
-	bh=mVw0bpTvq/x/ZrG8rNKoQx3B1IuYcc+3mgWwJqc0Iuc=;
+	s=arc-20240116; t=1705975084; c=relaxed/simple;
+	bh=LkxSEO6jE4rvsb7RnFL0a8rcJnxk9nAttYoV0lgTIqQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R7CIuoIhhyEq1Y6kVgVXrK68ZerDWGf6IRG8ag9vpaqTnc9MVB2XCLxB6HrPrVt/TxzM5n8xw/mzbZeTdX4HmropwQKTu76Cdgc+/2isW6vc8tjB3xqcU5pD72cgS6ROdpcVaHF8/HI/snuxyI2k6yFsvHFtRalEHkpLqXHFl0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmsoNDyD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A232C43390;
-	Tue, 23 Jan 2024 00:49:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Uu9dD3ida+xto4bF9LFprPBv2ylgjVa4cpq0uEG2UXUgeoT3Fr7FUfCaMWki1BqcknZTuHg93740jQ61RgyCeZ5JGzE8BkKx94lZ5jnryHwuXTvzJQPNjFmOgBPYK2oqj2BDe06W3deCfWCr7s2pocXkCIiO36RHMvS/jD7rQ2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZJcJO/F/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F435C433A6;
+	Tue, 23 Jan 2024 01:58:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970944;
-	bh=mVw0bpTvq/x/ZrG8rNKoQx3B1IuYcc+3mgWwJqc0Iuc=;
+	s=korg; t=1705975084;
+	bh=LkxSEO6jE4rvsb7RnFL0a8rcJnxk9nAttYoV0lgTIqQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kmsoNDyD2uQI/iX/P0tbX3TwX1JLcjHPFrb5+0kyhfb2GYEV8ZyExzP8awf+6wYlK
-	 jWnfBUCSdRr23qJx6VgSxQsMYTF48UDHXSdDt45FMUrSoHf7pQwsPG/L+ch4X0GkVF
-	 HZA+jEuxtOQjAY3pOafABzksWLdHeMP9y49h5dTU=
+	b=ZJcJO/F/CIzR+FO9tcfS5diH5AKRqOHwPDsE31tC9TkmOxrMR2QoOOxKdNq14XIYH
+	 saeHKRkeLcSkOsm/jF2whf9aK4ZfOShTYR6woGyjegzEiT7/3rNb+eB/j6UbI13wOF
+	 +3JHaMIRXCZCMlWBMtwWdzdjd0henUQ1ACLzca6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 114/417] arm64: dts: renesas: white-hawk-cpu: Fix missing serial console pin control
+Subject: [PATCH 6.6 231/583] drm/bridge: tpd12s015: Drop buggy __exit annotation for remove function
 Date: Mon, 22 Jan 2024 15:54:42 -0800
-Message-ID: <20240122235755.717511677@linuxfoundation.org>
+Message-ID: <20240122235819.058492930@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit fc67495680f60e88bb8ca43421c1dd628928d581 ]
+[ Upstream commit ce3e112e7ae854249d8755906acc5f27e1542114 ]
 
-The pin control description for the serial console was added, but not
-enabled, due to missing pinctrl properties in the serial port device
-node.
+With tpd12s015_remove() marked with __exit this function is discarded
+when the driver is compiled as a built-in. The result is that when the
+driver unbinds there is no cleanup done which results in resource
+leakage or worse.
 
-Fixes: 7a8d590de8132853 ("arm64: dts: renesas: white-hawk-cpu: Add serial port pin control")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/8a51516581cd71ecbfa174af9c7cebad1fc83c5b.1702459865.git.geert+renesas@glider.be
+Fixes: cff5e6f7e83f ("drm/bridge: Add driver for the TI TPD12S015 HDMI level shifter")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231102165640.3307820-19-u.kleine-koenig@pengutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-cpu.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/bridge/ti-tpd12s015.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-cpu.dtsi b/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-cpu.dtsi
-index 895f0bd9f754..541b1e73b65e 100644
---- a/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-cpu.dtsi
-+++ b/arch/arm64/boot/dts/renesas/r8a779g0-white-hawk-cpu.dtsi
-@@ -125,6 +125,9 @@ &extalr_clk {
- };
+diff --git a/drivers/gpu/drm/bridge/ti-tpd12s015.c b/drivers/gpu/drm/bridge/ti-tpd12s015.c
+index e0e015243a60..b588fea12502 100644
+--- a/drivers/gpu/drm/bridge/ti-tpd12s015.c
++++ b/drivers/gpu/drm/bridge/ti-tpd12s015.c
+@@ -179,7 +179,7 @@ static int tpd12s015_probe(struct platform_device *pdev)
+ 	return 0;
+ }
  
- &hscif0 {
-+	pinctrl-0 = <&hscif0_pins>;
-+	pinctrl-names = "default";
-+
- 	status = "okay";
- };
+-static int __exit tpd12s015_remove(struct platform_device *pdev)
++static int tpd12s015_remove(struct platform_device *pdev)
+ {
+ 	struct tpd12s015_device *tpd = platform_get_drvdata(pdev);
  
+@@ -197,7 +197,7 @@ MODULE_DEVICE_TABLE(of, tpd12s015_of_match);
+ 
+ static struct platform_driver tpd12s015_driver = {
+ 	.probe	= tpd12s015_probe,
+-	.remove	= __exit_p(tpd12s015_remove),
++	.remove = tpd12s015_remove,
+ 	.driver	= {
+ 		.name	= "tpd12s015",
+ 		.of_match_table = tpd12s015_of_match,
 -- 
 2.43.0
 
