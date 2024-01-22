@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-13643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61090837D3B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:03 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F56B837F5C
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17600292118
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DB4428DCF8
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6009123DB;
-	Tue, 23 Jan 2024 00:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324716312A;
+	Tue, 23 Jan 2024 00:51:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HA45cvq1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5W4zPkl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC4048CDD;
-	Tue, 23 Jan 2024 00:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E73CB627F2;
+	Tue, 23 Jan 2024 00:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969853; cv=none; b=Ds421/NgsUaxGTWoR7dh0cGDz4bDXWufrnuu1Tztd7LrLIElYS3pJZGZ/bhJSSqUx5x+18BHDVNxCa+NZIySlePU3wopWchqRidiXiKTYMBjcVcagILZQWCIMedezkMUeLcd6gNXla5fuy2pBoSUEOPMhU+pmlcTZeGKJCzssqI=
+	t=1705971086; cv=none; b=brGGbjPICDr6kv7MPlnK5yK6az/HgGOW6SpsI5QWx0j867gBKXmk5i1kCcOYbLbZ0RhvkDgDNhGggKtZ5llHY7iqCFSB046AQuPAF38mZIfrqIxn1MS1g08y0fr3yronnY2ICg+vZznQa3hf8Ht6bDUvmEqpOFz4hvXjRKIyV/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969853; c=relaxed/simple;
-	bh=Yjx6dfb4oW3axsOCN5iwNE/fLNeTsC+6bAXpVFKk92Q=;
+	s=arc-20240116; t=1705971086; c=relaxed/simple;
+	bh=kI0Gv9MYb9r7+g0qBRCvzryxNzHgKAxjUYgGrky2hFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RDHjTFzZc0CJvsM8TZrynZvX4BjORmu5gdO3RFdlYcruZZ/oK8IfwFCdONMxsOyOsZ7XGSC+zdBYBOBzUy3wyzqvOMJBG2UlztlsEyethmmRA78db1RrGJj5m62kQvA3+BLZGzDU4huguLQFIm7xaIxMdULSpXUvRhATPcwYj64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HA45cvq1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C546DC433C7;
-	Tue, 23 Jan 2024 00:30:51 +0000 (UTC)
+	 MIME-Version; b=gm7tXQUXUaS2bGZmemuJLDdtWEQ0nxe+QkS9s/yq9HhzAHo9x3W5iZAnjoEYQ9hL3b29CO+/B1od955PJUwUdqtXhd95857fqULPDauhPLEA2E/3QG6+PnyoMTx1EMZGuZevtfkaspxdxU2ovQ+McJ43zUdJkEtANipfyogw5wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5W4zPkl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8CAC433F1;
+	Tue, 23 Jan 2024 00:51:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969853;
-	bh=Yjx6dfb4oW3axsOCN5iwNE/fLNeTsC+6bAXpVFKk92Q=;
+	s=korg; t=1705971085;
+	bh=kI0Gv9MYb9r7+g0qBRCvzryxNzHgKAxjUYgGrky2hFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HA45cvq12VQAIiaCUPEUVUYISeKTUhHBSVRZsdAfx4ejFd1GPx7diaEiFQaO1jARE
-	 9OD81RiTuL+s8N5aMBlZRyiWGBZqVZxFH6GK0l6j8wBtrZedBDvumHrKPaIoC0dNWJ
-	 pwaH7hDvPVyQBJaKdINnMBomrrelIKOd8e/tJLUk=
+	b=x5W4zPklcZmdOYHfxDZBISEMnT1/Fuei08JnGlHLqf8bIUliBshT1I3ipsGuqDVgF
+	 tyQhP7LAv452uURIh8mMRm8/hvpWP2oyVy2SI0Ve2+HQOe6JvCspLTR47Z8Q6md9ay
+	 HIccAwauWY2C04cc9FFwz36t4bt8pLf4K+YzRsh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Kurbanov <mmkurbanov@salutedevices.com>,
-	Dmitry Rokosov <ddrokosov@salutedevices.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	Dinghao Liu <dinghao.liu@zju.edu.cn>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 487/641] leds: aw200xx: Fix write to DIM parameter
+Subject: [PATCH 5.10 085/286] crypto: ccp - fix memleak in ccp_init_dm_workarea
 Date: Mon, 22 Jan 2024 15:56:31 -0800
-Message-ID: <20240122235833.325168548@linuxfoundation.org>
+Message-ID: <20240122235735.308520465@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Kurbanov <mmkurbanov@salutedevices.com>
+From: Dinghao Liu <dinghao.liu@zju.edu.cn>
 
-[ Upstream commit adfd4621b78d0c02da91335da2b9ad847cb7b39e ]
+[ Upstream commit a1c95dd5bc1d6a5d7a75a376c2107421b7d6240d ]
 
-If write only DIM value to the page 4, LED brightness will not be
-updated, as both DIM and FADE need to be written to the page 4.
-Therefore, write DIM to the page 1.
+When dma_map_single() fails, wa->address is supposed to be freed
+by the callers of ccp_init_dm_workarea() through ccp_dm_free().
+However, many of the call spots don't expect to have to call
+ccp_dm_free() on failure of ccp_init_dm_workarea(), which may
+lead to a memleak. Let's free wa->address in ccp_init_dm_workarea()
+when dma_map_single() fails.
 
-Fixes: 36a87f371b7a ("leds: Add AW20xx driver")
-Signed-off-by: Martin Kurbanov <mmkurbanov@salutedevices.com>
-Signed-off-by: Dmitry Rokosov <ddrokosov@salutedevices.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Link: https://lore.kernel.org/r/20231125200519.1750-2-ddrokosov@salutedevices.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 63b945091a07 ("crypto: ccp - CCP device driver and interface support")
+Signed-off-by: Dinghao Liu <dinghao.liu@zju.edu.cn>
+Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-aw200xx.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/crypto/ccp/ccp-ops.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/leds/leds-aw200xx.c b/drivers/leds/leds-aw200xx.c
-index 14ca236ce29e..f3bed4f05b34 100644
---- a/drivers/leds/leds-aw200xx.c
-+++ b/drivers/leds/leds-aw200xx.c
-@@ -74,6 +74,10 @@
- #define AW200XX_LED2REG(x, columns) \
- 	((x) + (((x) / (columns)) * (AW200XX_DSIZE_COLUMNS_MAX - (columns))))
+diff --git a/drivers/crypto/ccp/ccp-ops.c b/drivers/crypto/ccp/ccp-ops.c
+index c15625e8ff66..7e2fbba945cd 100644
+--- a/drivers/crypto/ccp/ccp-ops.c
++++ b/drivers/crypto/ccp/ccp-ops.c
+@@ -179,8 +179,11 @@ static int ccp_init_dm_workarea(struct ccp_dm_workarea *wa,
  
-+/* DIM current configuration register on page 1 */
-+#define AW200XX_REG_DIM_PAGE1(x, columns) \
-+	AW200XX_REG(AW200XX_PAGE1, AW200XX_LED2REG(x, columns))
-+
- /*
-  * DIM current configuration register (page 4).
-  * The even address for current DIM configuration.
-@@ -153,7 +157,8 @@ static ssize_t dim_store(struct device *dev, struct device_attribute *devattr,
+ 		wa->dma.address = dma_map_single(wa->dev, wa->address, len,
+ 						 dir);
+-		if (dma_mapping_error(wa->dev, wa->dma.address))
++		if (dma_mapping_error(wa->dev, wa->dma.address)) {
++			kfree(wa->address);
++			wa->address = NULL;
+ 			return -ENOMEM;
++		}
  
- 	if (dim >= 0) {
- 		ret = regmap_write(chip->regmap,
--				   AW200XX_REG_DIM(led->num, columns), dim);
-+				   AW200XX_REG_DIM_PAGE1(led->num, columns),
-+				   dim);
- 		if (ret)
- 			goto out_unlock;
+ 		wa->dma.length = len;
  	}
 -- 
 2.43.0
