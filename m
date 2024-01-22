@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-15109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA7208383EA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F4A8383EC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64B022959EA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C2A82963DD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCDE65BA3;
-	Tue, 23 Jan 2024 01:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816F365BB7;
+	Tue, 23 Jan 2024 01:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWBqQ49W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KoIfAayx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC3B8657D6;
-	Tue, 23 Jan 2024 01:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4137465BB4;
+	Tue, 23 Jan 2024 01:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975096; cv=none; b=LmgHQlB+SZwac0Obxg3DegqgY2WhvU4uaHSkKLxroYd2GRyKdRW5rIlgifAgwG17dxXwsKhKdx1C6T5Udu5gHv2Do5ndrq1y8kYrq0WOab5X/jdEGy6uXVbU0BJNGCCDNOD5ec/HZavrNpCyrDshyBrQw4qW8lyQzvJghy0tPlw=
+	t=1705975099; cv=none; b=UhXBBgWYbbQdeT+ClmGsRxs9UeuTvrW9PjPDeq9gOh7g1AY03pOfABxXLL46J+gRARQ7dKBLM3NU9knKNlzlEd5/xda5IHZJCKso7iW4rOIYLcrJorQkO0Lu/KNHCsFGGEyHKse/zhpZhKyWfw79zUc+1gbSkD7QSwgurX3htoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975096; c=relaxed/simple;
-	bh=H+D6oSkASw7LpeZbS+E1qQDaN+e7e6NQhp+ckvaqvjE=;
+	s=arc-20240116; t=1705975099; c=relaxed/simple;
+	bh=Ygyrgc1hR8X4hvXURxBovbnOzFguLAOGaE8j2QEBeT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PzJQTox2cd4XTMvJc+BEs4iuAayyFP98Uz9trUdDIeOGCQhxt6FgBp1+Ck74mTGaVEzzxYHyCd+ON2JlYehPC0JDimE5WFceKIVzTzm8vASV3KhhU3Si/Tdvj/nS4g22Hke5p2ulG0d8yyiXtrA+uE6jc1ZP8sg4czwqMamjaEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWBqQ49W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36A74C433C7;
-	Tue, 23 Jan 2024 01:58:16 +0000 (UTC)
+	 MIME-Version; b=g+CKHiwuUHmF/vrRQSWYoskurxRYD7jJI7Mzp1KRcjQteKgkrBaN4mKE5/xYHHRDO6XWAm2ng7kObewkP9XdyYRfgMoH6GV1FaojQlT372BNlVX2/X3e3Zk6jaVQ69Mg8efEl2tUiefuCOKkemoXymwSGBjQT47C/+i67XS5eV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KoIfAayx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E16DC433C7;
+	Tue, 23 Jan 2024 01:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975096;
-	bh=H+D6oSkASw7LpeZbS+E1qQDaN+e7e6NQhp+ckvaqvjE=;
+	s=korg; t=1705975098;
+	bh=Ygyrgc1hR8X4hvXURxBovbnOzFguLAOGaE8j2QEBeT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qWBqQ49WrjrBDpECFJD0nwMJY7ZB0pp6aaT1A8N5zP1D/mikzpxu8AYqGlnsE9kL/
-	 spedCKv5pQx9RbZLIloKKG1bM93j0FCAG33zpl3WCz49Qk/Q0npBzhXoD4EjM8emCf
-	 WHCASgTumV93e2RUFeFtAgixi5Bg501mjyJKx2dY=
+	b=KoIfAayxyktc9XjL/0usRt82TzwBShhTgII0Q2flyibdRdP7vpMNw4Er6u+b++Twt
+	 jdgpJ3yuhLHUcxMC0HZkV2soNNvDcN8Rvvj20BuXZNuwFYgE83bFRKHhL6dGXu7kHq
+	 3mHncHdoGS03XoI/fmDn+CWKy1qEJId3rwUhtrNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 236/583] media: verisilicon: Hook the (TRY_)DECODER_CMD stateless ioctls
-Date: Mon, 22 Jan 2024 15:54:47 -0800
-Message-ID: <20240122235819.212825154@linuxfoundation.org>
+Subject: [PATCH 6.6 237/583] media: rkvdec: Hook the (TRY_)DECODER_CMD stateless ioctls
+Date: Mon, 22 Jan 2024 15:54:48 -0800
+Message-ID: <20240122235819.241962117@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
 References: <20240122235812.238724226@linuxfoundation.org>
@@ -70,7 +70,7 @@ Content-Transfer-Encoding: 8bit
 
 From: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
 
-[ Upstream commit 6c0d9e12b1d12bbd95484e4b99f63feeb423765f ]
+[ Upstream commit 1fb7b5ab62113b29ce331464048d8c39e58fd08a ]
 
 The (TRY_)DECODER_CMD ioctls are used to support flushing when holding
 capture buffers is supported. This is the case of this driver but the
@@ -78,44 +78,30 @@ ioctls were never hooked to the ioctl ops.
 
 Add them to correctly support flushing.
 
-Fixes: 340ce50f75a6 ("media: hantro: Enable HOLD_CAPTURE_BUF for H.264")
+Fixes: ed7bb87d3d03 ("media: rkvdec: Enable capture buffer holding for H264")
 Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
 Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/verisilicon/hantro_drv.c  | 2 ++
- drivers/media/platform/verisilicon/hantro_v4l2.c | 3 +++
- 2 files changed, 5 insertions(+)
+ drivers/staging/media/rkvdec/rkvdec.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/media/platform/verisilicon/hantro_drv.c b/drivers/media/platform/verisilicon/hantro_drv.c
-index 50ec24c753e9..1874c976081f 100644
---- a/drivers/media/platform/verisilicon/hantro_drv.c
-+++ b/drivers/media/platform/verisilicon/hantro_drv.c
-@@ -904,6 +904,8 @@ static int hantro_add_func(struct hantro_dev *vpu, unsigned int funcid)
+diff --git a/drivers/staging/media/rkvdec/rkvdec.c b/drivers/staging/media/rkvdec/rkvdec.c
+index 84a41792cb4b..ac398b5a9736 100644
+--- a/drivers/staging/media/rkvdec/rkvdec.c
++++ b/drivers/staging/media/rkvdec/rkvdec.c
+@@ -461,6 +461,9 @@ static const struct v4l2_ioctl_ops rkvdec_ioctl_ops = {
  
- 	if (funcid == MEDIA_ENT_F_PROC_VIDEO_ENCODER) {
- 		vpu->encoder = func;
-+		v4l2_disable_ioctl(vfd, VIDIOC_TRY_DECODER_CMD);
-+		v4l2_disable_ioctl(vfd, VIDIOC_DECODER_CMD);
- 	} else {
- 		vpu->decoder = func;
- 		v4l2_disable_ioctl(vfd, VIDIOC_TRY_ENCODER_CMD);
-diff --git a/drivers/media/platform/verisilicon/hantro_v4l2.c b/drivers/media/platform/verisilicon/hantro_v4l2.c
-index b3ae037a50f6..db145519fc5d 100644
---- a/drivers/media/platform/verisilicon/hantro_v4l2.c
-+++ b/drivers/media/platform/verisilicon/hantro_v4l2.c
-@@ -785,6 +785,9 @@ const struct v4l2_ioctl_ops hantro_ioctl_ops = {
- 	.vidioc_g_selection = vidioc_g_selection,
- 	.vidioc_s_selection = vidioc_s_selection,
- 
+ 	.vidioc_streamon = v4l2_m2m_ioctl_streamon,
+ 	.vidioc_streamoff = v4l2_m2m_ioctl_streamoff,
++
 +	.vidioc_decoder_cmd = v4l2_m2m_ioctl_stateless_decoder_cmd,
 +	.vidioc_try_decoder_cmd = v4l2_m2m_ioctl_stateless_try_decoder_cmd,
-+
- 	.vidioc_try_encoder_cmd = v4l2_m2m_ioctl_try_encoder_cmd,
- 	.vidioc_encoder_cmd = vidioc_encoder_cmd,
  };
+ 
+ static int rkvdec_queue_setup(struct vb2_queue *vq, unsigned int *num_buffers,
 -- 
 2.43.0
 
