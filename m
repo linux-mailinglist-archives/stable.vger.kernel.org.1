@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-14049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41C7A837F4C
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:51:49 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DEA683845D
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:34:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F97D1C283AA
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:51:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3CD551F291DB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5C412AAC1;
-	Tue, 23 Jan 2024 00:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A62F6D1A3;
+	Tue, 23 Jan 2024 02:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6goiCSI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IfyAYJYM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4770A129A86;
-	Tue, 23 Jan 2024 00:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386076A354;
+	Tue, 23 Jan 2024 02:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971049; cv=none; b=RjjK1jLQ69NrrrdQty98SxM+DDLOEPYGtdEPKGjtUeOqjdmi8ynmlflpEqICPRhGvtPlaMQcAZrMw2/4yQQHIaQkcRvm8JsAJ1+r7DZR6E7Wl697GZ14oxULJqXrS/S8s4Bjs4Q9/utwsT1b+/SuknLrRwgOPCSzuVghw2X/snQ=
+	t=1705975372; cv=none; b=RfpknnYyMtHAj40L+BT6BWlmHhZJUrcaLSI067sEb9SLk0O7cYcQSGgcrbV7dPwJnx7v9QedA7A/M4DDA3/XU6XFqEUEjNwPHxFXySQ7o2Cw4Ddk6bINojbzYPcOOSEROvhuD5vAyVnx6iu+ECPeeP7P1kWkPsiyh3Hqg4r5NPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971049; c=relaxed/simple;
-	bh=2KZ1YydOHFggzT7omPdVSeq6KeRGaq/o4qjuOBwJU8M=;
+	s=arc-20240116; t=1705975372; c=relaxed/simple;
+	bh=eLeU5xlDBPy/kD//MsCCBsu6RNKMyBYHzhp/eCNwpJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SE2i9F6hVsVgGAETnkl3tyRHDGXbUvKgePX5rU8LKqEx3N9vkQUBR/VFAZpoMJKUmu1WxjNS771qFTMQp8jM4HGJF2xxjyaze0kkJxkDQYOOWvAEYAcRMXY29O9ytMmpSsATSEKQlixddfG1u+UthOEAcjQBHrO6JU/tyAexv+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6goiCSI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA7EC43394;
-	Tue, 23 Jan 2024 00:50:48 +0000 (UTC)
+	 MIME-Version; b=OzlzZvmDKh3N/nE6t38Txh2itYgQdNXPqetirDY/huC9FDmYmwefy8uRjux2d0RPfL8a1XTtk7P667qLVzdc/GjoDEVFQzVw4049gg3ZDKe/OIyu+HLJUfzv0+WF5TwPn2ZTeGryvW2mEu5uPD/s5s7Bh+rnwIEZWNdiKcoPTgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IfyAYJYM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5ED5C433C7;
+	Tue, 23 Jan 2024 02:02:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971049;
-	bh=2KZ1YydOHFggzT7omPdVSeq6KeRGaq/o4qjuOBwJU8M=;
+	s=korg; t=1705975372;
+	bh=eLeU5xlDBPy/kD//MsCCBsu6RNKMyBYHzhp/eCNwpJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y6goiCSIxf5sF7IfxpwpwXQzqNGMhuO+DROoa2m8DQ33BnaJdDjJRPhmctSdO+sLO
-	 YyPIpyUg0XZaryvhlQIExkPjWv4oWl5DRrVvKGFMssOAcxI1NlZfA2iKtQ3etgaU8P
-	 EYC715GwgZx50iJGJo/7UxSnvcPvCAvYc91S5x/A=
+	b=IfyAYJYMV2GsvdTDVaTmhxZIoJerQfcOPL9ywrvMPnVYgxtbgeZO/G1HCCPFsWEiU
+	 q1BnokPaCpCWduLrGzMNGcRjOeJp4oSMKOtpH/Ed5OSJSPOPAMyvSfhBixbCIGvWzt
+	 ccqJMiHIHrfyB/MeXqYKBS8fY7tToZhKV956jIC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	kernel test robot <lkp@intel.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Xingyuan Mo <hdthky0@gmail.com>,
+	Oded Gabbay <ogabbay@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 053/286] powerpc/44x: select I2C for CURRITUCK
-Date: Mon, 22 Jan 2024 15:55:59 -0800
-Message-ID: <20240122235734.075462409@linuxfoundation.org>
+Subject: [PATCH 6.6 309/583] accel/habanalabs: fix information leak in sec_attest_info()
+Date: Mon, 22 Jan 2024 15:56:00 -0800
+Message-ID: <20240122235821.482251221@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Xingyuan Mo <hdthky0@gmail.com>
 
-[ Upstream commit 4a74197b65e69c46fe6e53f7df2f4d6ce9ffe012 ]
+[ Upstream commit a9f07790a4b2250f0140e9a61c7f842fd9b618c7 ]
 
-Fix build errors when CURRITUCK=y and I2C is not builtin (=m or is
-not set). Fixes these build errors:
+This function may copy the pad0 field of struct hl_info_sec_attest to user
+mode which has not been initialized, resulting in leakage of kernel heap
+data to user mode. To prevent this, use kzalloc() to allocate and zero out
+the buffer, which can also eliminate other uninitialized holes, if any.
 
-powerpc-linux-ld: arch/powerpc/platforms/44x/ppc476.o: in function `avr_halt_system':
-ppc476.c:(.text+0x58): undefined reference to `i2c_smbus_write_byte_data'
-powerpc-linux-ld: arch/powerpc/platforms/44x/ppc476.o: in function `ppc47x_device_probe':
-ppc476.c:(.init.text+0x18): undefined reference to `i2c_register_driver'
-
-Fixes: 2a2c74b2efcb ("IBM Akebono: Add the Akebono platform")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: lore.kernel.org/r/202312010820.cmdwF5X9-lkp@intel.com
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231201055159.8371-1-rdunlap@infradead.org
+Fixes: 0c88760f8f5e ("habanalabs/gaudi2: add secured attestation info uapi")
+Signed-off-by: Xingyuan Mo <hdthky0@gmail.com>
+Reviewed-by: Oded Gabbay <ogabbay@kernel.org>
+Signed-off-by: Oded Gabbay <ogabbay@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/44x/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/accel/habanalabs/common/habanalabs_ioctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/44x/Kconfig b/arch/powerpc/platforms/44x/Kconfig
-index 78ac6d67a935..9bc852c7e92f 100644
---- a/arch/powerpc/platforms/44x/Kconfig
-+++ b/arch/powerpc/platforms/44x/Kconfig
-@@ -177,6 +177,7 @@ config ISS4xx
- config CURRITUCK
- 	bool "IBM Currituck (476fpe) Support"
- 	depends on PPC_47x
-+	select I2C
- 	select SWIOTLB
- 	select 476FPE
- 	select FORCE_PCI
+diff --git a/drivers/accel/habanalabs/common/habanalabs_ioctl.c b/drivers/accel/habanalabs/common/habanalabs_ioctl.c
+index 6a45a92344e9..a7f6c54c123e 100644
+--- a/drivers/accel/habanalabs/common/habanalabs_ioctl.c
++++ b/drivers/accel/habanalabs/common/habanalabs_ioctl.c
+@@ -682,7 +682,7 @@ static int sec_attest_info(struct hl_fpriv *hpriv, struct hl_info_args *args)
+ 	if (!sec_attest_info)
+ 		return -ENOMEM;
+ 
+-	info = kmalloc(sizeof(*info), GFP_KERNEL);
++	info = kzalloc(sizeof(*info), GFP_KERNEL);
+ 	if (!info) {
+ 		rc = -ENOMEM;
+ 		goto free_sec_attest_info;
 -- 
 2.43.0
 
