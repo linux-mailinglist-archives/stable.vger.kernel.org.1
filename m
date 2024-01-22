@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-15287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2E62838505
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:38:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D01F883828F
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:21:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7273DB291F9
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F1381C27D2B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B1E745D8;
-	Tue, 23 Jan 2024 02:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E00305C91F;
+	Tue, 23 Jan 2024 01:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHqHFC7d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QeWQaida"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847236A024;
-	Tue, 23 Jan 2024 02:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965CB5D756;
+	Tue, 23 Jan 2024 01:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705975448; cv=none; b=ZdFfYaZwdImO+2/KyvYoEROsdhmQktwb/LAWSrOCsbTiSyMbMZsVoE8wKR5/efVe5+I+jJRna11Yboic/nSqCjDqfXxr+IDwXhoaZZe4OVR0Vz74NOUKwhdMX6owC7oMoccRUDNHcUTBON8Wu/0wsmJ/4l1tSfn/ei6hhxGudPM=
+	t=1705974379; cv=none; b=GMQQmOjFQt4UVRWYA1jZabs1NmNXhfSEme71+oKbssBnFbjZJDIm8GXk4PXI6WqI6NsTFwLpEyzJgvMYHut9ettJGnA+t5rwSKLRBojJTuZNn+hs0yEJONq+Rbxh745FS0WSUH6TkJWUKKnFSB450nu1z+jBasV0I2JBn9dLtKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705975448; c=relaxed/simple;
-	bh=OrKk9yYcOOt09DtiUFGogMNLG1jV54Wsoff2qvap3Og=;
+	s=arc-20240116; t=1705974379; c=relaxed/simple;
+	bh=Qc1uHyfphXvWwaNGdLuTqfXeCfHiO0q+YNyTvOkrrx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PzHNfQTX6ktzSYCDV3ewArP0dVeIU9Rf+IRNnJ8ZxS4Lq2KViQYBntDv2sO/jFVY7JCEX5VAXoej7JKC1lX1fJ+JqCb7W66lhpqmFU/l/KkNYDthyHtLcnwh60UUMolRT0UVgHYKyi4iQwE3B2JHkVGVzdfFzd/K1j8fg6+8OoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iHqHFC7d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B12CC433F1;
-	Tue, 23 Jan 2024 02:04:08 +0000 (UTC)
+	 MIME-Version; b=eB1fiuwi7JoGack/5NktOu+OuCdMIpkhP5G/9aDkihO7AmmUZ+4WuUaYOY8RoD/GchRGqypYhfHhVzvBVmzsWEsJ90q4cblCJmZk0lFcdaZ5QRUKLeNOEwwilXSqna7kQM37Crl+3Ww/K9gjV3Dz4WYAuElhktM1vheOFVCl6SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QeWQaida; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579C1C43399;
+	Tue, 23 Jan 2024 01:46:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705975448;
-	bh=OrKk9yYcOOt09DtiUFGogMNLG1jV54Wsoff2qvap3Og=;
+	s=korg; t=1705974379;
+	bh=Qc1uHyfphXvWwaNGdLuTqfXeCfHiO0q+YNyTvOkrrx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iHqHFC7dYU9RFcbK6ap0wz7eNgPzXy7pHZphHHEHlorp8H/VgUMto6v16sHiNTinF
-	 TR8K0KFwdoesLdcnDnY+tmKaa4Dh7U9iryx13uNC0pfkGAsJyxE8gRMiLenZwEbhBo
-	 e0GbtqUg450z2X7VDXbCTc6QRUsYMVDbKkVYAiKg=
+	b=QeWQaidarPGWa5NXSIS2EQmWLIMXiJU+wNI0eNCEogkGvN3KqCN5SK7W7/4VtwCJ0
+	 wppNJyl+VTswyvcwTlW/cvhM8G7rGKHFLbG5L5X99x4F/9xhiqwRmFlqHPtSz3aOca
+	 vX9BvmFuP7hIi5UiGSJWctJC74IoKr0vqXmNdzcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	lonial con <kongln9170@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.6 404/583] netfilter: nf_tables: check if catch-all set element is active in next generation
+	Maxime Ripard <mripard@kernel.org>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 199/374] drm/bridge: tc358767: Fix return value on error case
 Date: Mon, 22 Jan 2024 15:57:35 -0800
-Message-ID: <20240122235824.344659912@linuxfoundation.org>
+Message-ID: <20240122235751.523768567@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
-References: <20240122235812.238724226@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-commit b1db244ffd041a49ecc9618e8feb6b5c1afcdaa7 upstream.
+[ Upstream commit 32bd29b619638256c5b75fb021d6d9f12fc4a984 ]
 
-When deactivating the catch-all set element, check the state in the next
-generation that represents this transaction.
+If the hpd_pin is invalid, the driver returns 'ret'. But 'ret' contains
+0, instead of an error value.
 
-This bug uncovered after the recent removal of the element busy mark
-a2dd0233cbc4 ("netfilter: nf_tables: remove busy mark and gc batch API").
+Return -EINVAL instead.
 
-Fixes: aaa31047a6d2 ("netfilter: nftables: add catch-all set element support")
-Cc: stable@vger.kernel.org
-Reported-by: lonial con <kongln9170@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f25ee5017e4f ("drm/bridge: tc358767: add IRQ and HPD support")
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231103-uninit-fixes-v2-4-c22b2444f5f5@ideasonboard.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c |    2 +-
+ drivers/gpu/drm/bridge/tc358767.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6431,7 +6431,7 @@ static int nft_setelem_catchall_deactiva
+diff --git a/drivers/gpu/drm/bridge/tc358767.c b/drivers/gpu/drm/bridge/tc358767.c
+index 14d671742963..4c6f3052156b 100644
+--- a/drivers/gpu/drm/bridge/tc358767.c
++++ b/drivers/gpu/drm/bridge/tc358767.c
+@@ -1633,7 +1633,7 @@ static int tc_probe(struct i2c_client *client, const struct i2c_device_id *id)
+ 	} else {
+ 		if (tc->hpd_pin < 0 || tc->hpd_pin > 1) {
+ 			dev_err(dev, "failed to parse HPD number\n");
+-			return ret;
++			return -EINVAL;
+ 		}
+ 	}
  
- 	list_for_each_entry(catchall, &set->catchall_list, list) {
- 		ext = nft_set_elem_ext(set, catchall->elem);
--		if (!nft_is_active(net, ext))
-+		if (!nft_is_active_next(net, ext))
- 			continue;
- 
- 		kfree(elem->priv);
+-- 
+2.43.0
+
 
 
 
