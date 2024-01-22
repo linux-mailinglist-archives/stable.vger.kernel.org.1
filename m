@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A57E1837D95
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:27:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAF2383801A
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:56:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8FEB1C24FAC
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:27:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ABC61F2C062
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519135B5B9;
-	Tue, 23 Jan 2024 00:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD0A664BF;
+	Tue, 23 Jan 2024 00:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e/XCIujr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CzIK5Zp5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1229256B68;
-	Tue, 23 Jan 2024 00:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2D1651A1;
+	Tue, 23 Jan 2024 00:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970041; cv=none; b=dAfb/qBCYhijy8w+0QjPGia4WMVIa+uTOYh7NC6RaMiFz0vLsmxo6oUHcyeqBCB7FWUf8f7VKH/WUey+L7i+pAS3fojaVE8PWVRlo0Ra36PIsTsIvcomMBQyqReNyde8TV5LTK54J/Fi+RkvhfiVkpGcm70kt1ndOCbbfl33gQg=
+	t=1705971547; cv=none; b=OKblmopU+AA8ZY14e9q9Evjymh0kVzlpXrtjoK2GW8O1Mhd7CmBwHnY5s6YfOTaUyfgcWksHLZJz5p1x1kV4lGvs3P/TCcS0+xwUEx2TnLcgPFrU7iTb20ddqeYD6p/Pb3tlmhcxnInKXf7/XzVJCnxiGqV1bJtmCY6ber2Xo1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970041; c=relaxed/simple;
-	bh=lLQHYWRiYh1PpCVAhR4EJXnuDKv+/Z6+pexwg+6hTxU=;
+	s=arc-20240116; t=1705971547; c=relaxed/simple;
+	bh=u8NJiZf2aAw098PwQUNm08SSo9UV2/t1zoTUossJ3Qk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TUb6ECzezU40Z4fDjuAK2kWopJxbllEH68uaZwLtUZh3Oq39O/MaEFI1Ryn8Mhvvsev8MvLzd7veaN7yXCOEqg/kSKwepn4k2CXMiA5PZ2jXMvkD7FbVcjzlEouJmwmwV/dK9vLROSi/6YfRALrsqTa4hJpcUX2MJsyEHr4bTt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e/XCIujr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A829AC433F1;
-	Tue, 23 Jan 2024 00:34:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VhF5VUXOSdBJeWACgt+RIY4bfUrpYxo5aheVijgI0GbzM9KgD/4FtzMEFdVF71cpfq2isuGT9ca9OwrR4Fo7GoTCb3LNj6L8CIXvVRvO7VqDMqjUGYjACBgx4b4TQgSlJsNB4UqcDFSeUolJczbFsSdclkmZBohrrON0o8KbWs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CzIK5Zp5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 060BAC433F1;
+	Tue, 23 Jan 2024 00:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970040;
-	bh=lLQHYWRiYh1PpCVAhR4EJXnuDKv+/Z6+pexwg+6hTxU=;
+	s=korg; t=1705971547;
+	bh=u8NJiZf2aAw098PwQUNm08SSo9UV2/t1zoTUossJ3Qk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e/XCIujrHqYl3NRPFuo4g5uhE8C+w+RipLTmgt8j8243PLRq4Hm0kbN/5jPCiVk/M
-	 UxqJeJ01QUvCpBKqEK2X3aPuStgtH8tbiH1/yNUT7zuK+114HKE6uY3l1ZFhrCDiVA
-	 QsPg9SwgZuoIvjIWp6Mu4chwAP5442j9denQxl7Y=
+	b=CzIK5Zp5CfJWq+RNxqeKfbHX7C0v6ran77lZNhZygttGAoifHvkJeW+OesJ6Na5yh
+	 v/04VjSC5ZFeiqHt2B0RKAIMjJnMGhoaWnePOw2A5XMb9jsVdSKdol3rDvTJevo1Q5
+	 0AlplDFif3HkQSoHLwawcNuIr6+LQYTsrwWm5icA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Keith Busch <kbusch@kernel.org>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 572/641] nvme: trace: avoid memcpy overflow warning
-Date: Mon, 22 Jan 2024 15:57:56 -0800
-Message-ID: <20240122235836.054873388@linuxfoundation.org>
+Subject: [PATCH 5.10 171/286] drm/amdgpu/debugfs: fix error code when smc register accessors are NULL
+Date: Mon, 22 Jan 2024 15:57:57 -0800
+Message-ID: <20240122235738.765620570@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +60,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit a7de1dea76cd6a3707707af4ea2f8bc3cdeaeb11 ]
+[ Upstream commit afe58346d5d3887b3e49ff623d2f2e471f232a8d ]
 
-A previous patch introduced a struct_group() in nvme_common_command to help
-stringop fortification figure out the length of the fields, but one function
-is not currently using them:
+Should be -EOPNOTSUPP.
 
-In file included from drivers/nvme/target/core.c:7:
-In file included from include/linux/string.h:254:
-include/linux/fortify-string.h:592:4: error: call to '__read_overflow2_field' declared with 'warning' attribute: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
-                        __read_overflow2_field(q_size_field, size);
-                        ^
-
-Change this one to use the correct field name to avoid the warning.
-
-Fixes: 5c629dc9609dc ("nvme: use struct group for generic command dwords")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 5104fdf50d32 ("drm/amdgpu: Fix a null pointer access when the smc_rreg pointer is NULL")
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/trace.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/target/trace.h b/drivers/nvme/target/trace.h
-index 155334ddc13f..974d99d47f51 100644
---- a/drivers/nvme/target/trace.h
-+++ b/drivers/nvme/target/trace.h
-@@ -84,7 +84,7 @@ TRACE_EVENT(nvmet_req_init,
- 		__entry->flags = cmd->common.flags;
- 		__entry->nsid = le32_to_cpu(cmd->common.nsid);
- 		__entry->metadata = le64_to_cpu(cmd->common.metadata);
--		memcpy(__entry->cdw10, &cmd->common.cdw10,
-+		memcpy(__entry->cdw10, &cmd->common.cdws,
- 			sizeof(__entry->cdw10));
- 	),
- 	TP_printk("nvmet%s: %sqid=%d, cmdid=%u, nsid=%u, flags=%#x, "
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+index 3e573077368b..8a1cb1de2b13 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_debugfs.c
+@@ -582,7 +582,7 @@ static ssize_t amdgpu_debugfs_regs_smc_read(struct file *f, char __user *buf,
+ 	int r;
+ 
+ 	if (!adev->smc_rreg)
+-		return -EPERM;
++		return -EOPNOTSUPP;
+ 
+ 	if (size & 0x3 || *pos & 0x3)
+ 		return -EINVAL;
+@@ -644,7 +644,7 @@ static ssize_t amdgpu_debugfs_regs_smc_write(struct file *f, const char __user *
+ 	int r;
+ 
+ 	if (!adev->smc_wreg)
+-		return -EPERM;
++		return -EOPNOTSUPP;
+ 
+ 	if (size & 0x3 || *pos & 0x3)
+ 		return -EINVAL;
 -- 
 2.43.0
 
