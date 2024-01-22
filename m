@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-14154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BD20837FB5
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 163CA837D39
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 680891C2921D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3F892920F2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E4F64CCD;
-	Tue, 23 Jan 2024 00:55:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49DA347A53;
+	Tue, 23 Jan 2024 00:30:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t2aZnqYO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUSvTEkd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C8E64CC5;
-	Tue, 23 Jan 2024 00:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0A223DB;
+	Tue, 23 Jan 2024 00:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971308; cv=none; b=XsIVDd8zBXzjj+FNyUCvIEJzrVQ2zDKcUvu73g9C6D3WrT0ILTkhrXTU0B6JuvhCNbkx6PjpnQEfXYNNnzTc3ZSDmYKtKLN1oRYhV6f3o/K+5002taDj4OmoDY8DiAwJ9fqJwfbMtKXXy17NHkoremaNMKUOi8fF+Oi2vsrTisM=
+	t=1705969850; cv=none; b=SHyuEuwPc207RubtfVB25/pGu9Dn6o0+tDuPbPZNQmspmKS5TrWjdD2y/EpVh8q5moQoVACHSpuNkbDSLaP1NEnutSt9Mk7Mo6+reCKLX/GRA+kLT4tNB9pJYxmKgYXvM9TpiSkLD8uG5SXuPheQ0H8/gJq261VLkySb+64aj2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971308; c=relaxed/simple;
-	bh=PzoXdWF3xmz4vpVNmGbOkzTaa8e1+MRvYfkW8tjIggM=;
+	s=arc-20240116; t=1705969850; c=relaxed/simple;
+	bh=POcDwr0ZC+5Tus/tHxZb7l1PdVXit0IEuan//9IsNxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=opXyw5GLCbJ0s/vhnMD6rjBSzTHm5ncXO8QvIFNFTjOPt0jNan30tP3u4bMbMGcVohYbQ1JR9HnRE5wGJC23LbEYuZyAT4jifMSuihkkDmBD22Wll/f7MPNqQ8Sn3IHjrf1fTpgJY0o1FzbMQwPr0ZwKiWkEf1dhQ3ykOmxaQPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t2aZnqYO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0603BC43390;
-	Tue, 23 Jan 2024 00:55:06 +0000 (UTC)
+	 MIME-Version; b=jjLf27syo6nZ0sS3qH9yrpF8bk9HLT8S+i/z11PVPCtgmJW7VYwCpppovR+bEOyZBVIBUSIHv4pnC/CFQOLAvxYWe3Rz0CRHgCcOCkhy1ZsY7NOg9UpitHu9c6PmJj1ZgY2SY+srh1WXYQlk4tcuFO+aFlcqtePOxhA2bwZBiCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUSvTEkd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B380C43390;
+	Tue, 23 Jan 2024 00:30:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971307;
-	bh=PzoXdWF3xmz4vpVNmGbOkzTaa8e1+MRvYfkW8tjIggM=;
+	s=korg; t=1705969849;
+	bh=POcDwr0ZC+5Tus/tHxZb7l1PdVXit0IEuan//9IsNxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t2aZnqYOzX3uqfKUdW6r7gwMpY80Ah+5vVAbMr/HRLjzVELRR6+HfA5P2++Pjal2v
-	 1PKuaBrSbnCkwYSoaMLZA8vv4S5C1isu3dDb1SCvEI1Flr4Jfmazdvm04JZU84NnPi
-	 ELUsVy+JvibTIel23IMZWuJhTfjeekv0S9gRZipY=
+	b=PUSvTEkdy100mL3NppGnAn9MOFRkxcPJ4uVOMBE4rTjL3sDZv/nJ68rhnvhlzcWEo
+	 +f1Ru5WOsBBugtHHHbJDvzucOqaFw+ufZMuxs2miCaI+mDg1h+tahARmn+5A2eoFL+
+	 r6KLw2BQ/60BGn5UUOtlhH3BUX1uimn17nXoDtpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerry Hoemann <jerry.hoemann@hpe.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Dang Huynh <danct12@riseup.net>,
+	Nikita Travkin <nikita@trvn.ru>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 221/417] watchdog/hpwdt: Only claim UNKNOWN NMI if from iLO
-Date: Mon, 22 Jan 2024 15:56:29 -0800
-Message-ID: <20240122235759.575299125@linuxfoundation.org>
+Subject: [PATCH 6.7 486/641] leds: aw2013: Select missing dependency REGMAP_I2C
+Date: Mon, 22 Jan 2024 15:56:30 -0800
+Message-ID: <20240122235833.293945364@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerry Hoemann <jerry.hoemann@hpe.com>
+From: Dang Huynh <danct12@riseup.net>
 
-[ Upstream commit dced0b3e51dd2af3730efe14dd86b5e3173f0a65 ]
+[ Upstream commit 75469bb0537ad2ab0fc1fb6e534a79cfc03f3b3f ]
 
-Avoid unnecessary crashes by claiming only NMIs that are due to
-ERROR signalling or generated by the hpwdt hardware device.
+The AW2013 driver uses devm_regmap_init_i2c, so REGMAP_I2C needs to
+be selected.
 
-The code does this, but only for iLO5.
+Otherwise build process may fail with:
+  ld: drivers/leds/leds-aw2013.o: in function `aw2013_probe':
+    leds-aw2013.c:345: undefined reference to `__devm_regmap_init_i2c'
 
-The intent was to preserve legacy, Gen9 and earlier, semantics of
-using hpwdt for error containtment as hardware/firmware would signal
-fatal IO errors as an NMI with the expectation of hpwdt crashing
-the system.  Howerver, these IO errors should be received by hpwdt
-as an NMI_IO_CHECK.  So the test is overly permissive and should
-not be limited to only ilo5.
-
-We need to enable this protection for future iLOs not matching the
-current PCI IDs.
-
-Fixes: 62290a5c194b ("watchdog: hpwdt: Claim NMIs generated by iLO5")
-Signed-off-by: Jerry Hoemann <jerry.hoemann@hpe.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20231213215340.495734-2-jerry.hoemann@hpe.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Dang Huynh <danct12@riseup.net>
+Acked-by: Nikita Travkin <nikita@trvn.ru>
+Fixes: 59ea3c9faf32 ("leds: add aw2013 driver")
+Link: https://lore.kernel.org/r/20231103114203.1108922-1-danct12@riseup.net
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/hpwdt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/leds/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/watchdog/hpwdt.c b/drivers/watchdog/hpwdt.c
-index f79f932bca14..79ed1626d8ea 100644
---- a/drivers/watchdog/hpwdt.c
-+++ b/drivers/watchdog/hpwdt.c
-@@ -178,7 +178,7 @@ static int hpwdt_pretimeout(unsigned int ulReason, struct pt_regs *regs)
- 		"3. OA Forward Progress Log\n"
- 		"4. iLO Event Log";
- 
--	if (ilo5 && ulReason == NMI_UNKNOWN && !mynmi)
-+	if (ulReason == NMI_UNKNOWN && !mynmi)
- 		return NMI_DONE;
- 
- 	if (ilo5 && !pretimeout && !mynmi)
+diff --git a/drivers/leds/Kconfig b/drivers/leds/Kconfig
+index 6292fddcc55c..a3a9ac5b5338 100644
+--- a/drivers/leds/Kconfig
++++ b/drivers/leds/Kconfig
+@@ -110,6 +110,7 @@ config LEDS_AW200XX
+ config LEDS_AW2013
+ 	tristate "LED support for Awinic AW2013"
+ 	depends on LEDS_CLASS && I2C && OF
++	select REGMAP_I2C
+ 	help
+ 	  This option enables support for the AW2013 3-channel
+ 	  LED driver.
 -- 
 2.43.0
 
