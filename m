@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-14076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ABD4837F68
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:25 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C363837FCC
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D6CA1C28FF1
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7269D1C29183
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07BE162801;
-	Tue, 23 Jan 2024 00:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE0F12BEA1;
+	Tue, 23 Jan 2024 00:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="El22qeEo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H3MSp6nM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDFD62800;
-	Tue, 23 Jan 2024 00:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7900364CDA;
+	Tue, 23 Jan 2024 00:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971111; cv=none; b=Fvoikh8z8+S3TgfmeG60EtJ1n5ne/H7y/382pApEukmRxh8QMjk2t3qIaf6rBg6JEPjaQyenOdPSxFK3sps0jN7LrqSOchQhoC0qxb3L3pMLi7+QWUwFJfdrzB5SHe3ICJROVsRliL0MWdv4P9d94GN5YNv4nN1sbozh0RPvR8Y=
+	t=1705971355; cv=none; b=Qz7Lve+/XUsYJT0wJ86yw69lQeWHgZ0nbUoDpHQ21B6bC1Xe4hPWbbZoNXHz8j0E8qblFv4Z91iW61wBFrP/OD7cwbArQqVdSn/CGp77P1g/Eci9DshDoldPEkWjVPkjNp1w758xJZG6wJ+NUS9Rd1j0WB96Ayo7bZ82aj7MR0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971111; c=relaxed/simple;
-	bh=phKcP3kRgQkNpTFPw6GL7GGIg7LyK9ZWqgG/icySZ30=;
+	s=arc-20240116; t=1705971355; c=relaxed/simple;
+	bh=guq6HyedpCgIMgbeWJjX+56YacbzZKuIb8d86CRC+FM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kUXOSS7XMOepYqhfz0QNrRfr2Nlh3u/RZBWM26LRFCyRx3sQA/6ARIRHw30Imsnrgi/wStSCTqScbKCu5tZm1MywQ6Fy2B4CUV7fVENiF2cYbgxo9uTO/Wc7FgZTIk8/YA9AumwbSUSumwpwePfahISaMCBkNPn9I9sPweizbO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=El22qeEo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72444C433F1;
-	Tue, 23 Jan 2024 00:51:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=o+gy5wrjALiqGmfJ1aoibiEF/n7H/rWi1CeESZ+KJ2ykcXZnhOmX/Q4HSm4ob9IHxiCBWLZqxhUd36syXLBqR67oI2UNtrVzKrzbjOzp4ZTvKBRY/IBNKd0dSBK1UiuVExijwoC4SiCgR/Vyxg9vjAWagPpCHivWE66mQZF6lNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H3MSp6nM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF71C433C7;
+	Tue, 23 Jan 2024 00:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971111;
-	bh=phKcP3kRgQkNpTFPw6GL7GGIg7LyK9ZWqgG/icySZ30=;
+	s=korg; t=1705971355;
+	bh=guq6HyedpCgIMgbeWJjX+56YacbzZKuIb8d86CRC+FM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=El22qeEopDSxt5O5bYhDDaLGmYSEfdckBWHzT4tH6SXp6FbaoRrKlB+NriAUpTIYC
-	 03wyoiWUHxNtrjlxaLrR7m+AwrqPPQk3SreUaMVEt8TrJ0hrsM2ZfabWkYFA2P90N3
-	 THydZn2fDOrqQR/Pg0XPfZyN05ep67q0Jve/1mXo=
+	b=H3MSp6nMJo20ItR54lsxQm1rItBgqtFDp8bG2QlsQc0jgvQ2+QH8IdZKU7ZwMSfSe
+	 BrW9be2nK10bpxuTFJW+ZxC54tC4CA26WWEm4/mQAp4nd1mQn0B+ouVLnHyRSf15kS
+	 /S5jVkTYkp52TayYO3jkFeoGxDjzl+i+kZQJ0Sl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Thierry Reding <thierry.reding@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 090/286] crypto: sahara - fix processing requests with cryptlen < sg->length
+Subject: [PATCH 6.1 228/417] pwm: stm32: Use regmap_clear_bits and regmap_set_bits where applicable
 Date: Mon, 22 Jan 2024 15:56:36 -0800
-Message-ID: <20240122235735.493483151@linuxfoundation.org>
+Message-ID: <20240122235759.802957845@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,76 +61,151 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 5b8668ce3452827d27f8c34ff6ba080a8f983ed0 ]
+[ Upstream commit 632ae5d7eb348b3ef88552ec0999260b6f9d6ab1 ]
 
-It's not always the case that the entire sg entry needs to be processed.
-Currently, when cryptlen is less than sg->legth, "Descriptor length" errors
-are encountered.
+Found using coccinelle and the following semantic patch:
 
-The error was noticed when testing xts(sahara-ecb-aes) with arbitrary sized
-input data. To fix this, take the actual request size into account when
-populating the hw links.
+@@
+expression map, reg, bits;
+@@
 
-Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+- regmap_update_bits(map, reg, bits, bits)
++ regmap_set_bits(map, reg, bits)
+
+@@
+expression map, reg, bits;
+@@
+
+- regmap_update_bits(map, reg, bits, 0)
++ regmap_clear_bits(map, reg, bits)
+
+Tested-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Link: https://lore.kernel.org/r/20221115111347.3705732-6-u.kleine-koenig@pengutronix.de
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
+Stable-dep-of: 19f1016ea960 ("pwm: stm32: Fix enable count for clk in .probe()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/pwm/pwm-stm32.c | 34 ++++++++++++++++------------------
+ 1 file changed, 16 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 2ef177680b2f..855c232d66a2 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -444,6 +444,7 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
+diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
+index 794ca5b02968..21e4a34dfff3 100644
+--- a/drivers/pwm/pwm-stm32.c
++++ b/drivers/pwm/pwm-stm32.c
+@@ -115,14 +115,14 @@ static int stm32_pwm_raw_capture(struct stm32_pwm *priv, struct pwm_device *pwm,
  	int ret;
- 	int i, j;
- 	int idx = 0;
-+	u32 len;
  
- 	memcpy(dev->key_base, ctx->key, ctx->keylen);
+ 	/* Ensure registers have been updated, enable counter and capture */
+-	regmap_update_bits(priv->regmap, TIM_EGR, TIM_EGR_UG, TIM_EGR_UG);
+-	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, TIM_CR1_CEN);
++	regmap_set_bits(priv->regmap, TIM_EGR, TIM_EGR_UG);
++	regmap_set_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
  
-@@ -494,12 +495,14 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
- 	/* Create input links */
- 	dev->hw_desc[idx]->p1 = dev->hw_phys_link[0];
- 	sg = dev->in_sg;
-+	len = dev->total;
- 	for (i = 0; i < dev->nb_in_sg; i++) {
--		dev->hw_link[i]->len = sg->length;
-+		dev->hw_link[i]->len = min(len, sg->length);
- 		dev->hw_link[i]->p = sg->dma_address;
- 		if (i == (dev->nb_in_sg - 1)) {
- 			dev->hw_link[i]->next = 0;
- 		} else {
-+			len -= min(len, sg->length);
- 			dev->hw_link[i]->next = dev->hw_phys_link[i + 1];
- 			sg = sg_next(sg);
- 		}
-@@ -508,12 +511,14 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
- 	/* Create output links */
- 	dev->hw_desc[idx]->p2 = dev->hw_phys_link[i];
- 	sg = dev->out_sg;
-+	len = dev->total;
- 	for (j = i; j < dev->nb_out_sg + i; j++) {
--		dev->hw_link[j]->len = sg->length;
-+		dev->hw_link[j]->len = min(len, sg->length);
- 		dev->hw_link[j]->p = sg->dma_address;
- 		if (j == (dev->nb_out_sg + i - 1)) {
- 			dev->hw_link[j]->next = 0;
- 		} else {
-+			len -= min(len, sg->length);
- 			dev->hw_link[j]->next = dev->hw_phys_link[j + 1];
- 			sg = sg_next(sg);
- 		}
+ 	/* Use cc1 or cc3 DMA resp for PWM input channels 1 & 2 or 3 & 4 */
+ 	dma_id = pwm->hwpwm < 2 ? STM32_TIMERS_DMA_CH1 : STM32_TIMERS_DMA_CH3;
+ 	ccen = pwm->hwpwm < 2 ? TIM_CCER_CC12E : TIM_CCER_CC34E;
+ 	ccr = pwm->hwpwm < 2 ? TIM_CCR1 : TIM_CCR3;
+-	regmap_update_bits(priv->regmap, TIM_CCER, ccen, ccen);
++	regmap_set_bits(priv->regmap, TIM_CCER, ccen);
+ 
+ 	/*
+ 	 * Timer DMA burst mode. Request 2 registers, 2 bursts, to get both
+@@ -160,8 +160,8 @@ static int stm32_pwm_raw_capture(struct stm32_pwm *priv, struct pwm_device *pwm,
+ 	}
+ 
+ stop:
+-	regmap_update_bits(priv->regmap, TIM_CCER, ccen, 0);
+-	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, 0);
++	regmap_clear_bits(priv->regmap, TIM_CCER, ccen);
++	regmap_clear_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
+ 
+ 	return ret;
+ }
+@@ -359,7 +359,7 @@ static int stm32_pwm_config(struct stm32_pwm *priv, int ch,
+ 
+ 	regmap_write(priv->regmap, TIM_PSC, prescaler);
+ 	regmap_write(priv->regmap, TIM_ARR, prd - 1);
+-	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_ARPE, TIM_CR1_ARPE);
++	regmap_set_bits(priv->regmap, TIM_CR1, TIM_CR1_ARPE);
+ 
+ 	/* Calculate the duty cycles */
+ 	dty = prd * duty_ns;
+@@ -377,7 +377,7 @@ static int stm32_pwm_config(struct stm32_pwm *priv, int ch,
+ 	else
+ 		regmap_update_bits(priv->regmap, TIM_CCMR2, mask, ccmr);
+ 
+-	regmap_update_bits(priv->regmap, TIM_BDTR, TIM_BDTR_MOE, TIM_BDTR_MOE);
++	regmap_set_bits(priv->regmap, TIM_BDTR, TIM_BDTR_MOE);
+ 
+ 	return 0;
+ }
+@@ -411,13 +411,13 @@ static int stm32_pwm_enable(struct stm32_pwm *priv, int ch)
+ 	if (priv->have_complementary_output)
+ 		mask |= TIM_CCER_CC1NE << (ch * 4);
+ 
+-	regmap_update_bits(priv->regmap, TIM_CCER, mask, mask);
++	regmap_set_bits(priv->regmap, TIM_CCER, mask);
+ 
+ 	/* Make sure that registers are updated */
+-	regmap_update_bits(priv->regmap, TIM_EGR, TIM_EGR_UG, TIM_EGR_UG);
++	regmap_set_bits(priv->regmap, TIM_EGR, TIM_EGR_UG);
+ 
+ 	/* Enable controller */
+-	regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, TIM_CR1_CEN);
++	regmap_set_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
+ 
+ 	return 0;
+ }
+@@ -431,11 +431,11 @@ static void stm32_pwm_disable(struct stm32_pwm *priv, int ch)
+ 	if (priv->have_complementary_output)
+ 		mask |= TIM_CCER_CC1NE << (ch * 4);
+ 
+-	regmap_update_bits(priv->regmap, TIM_CCER, mask, 0);
++	regmap_clear_bits(priv->regmap, TIM_CCER, mask);
+ 
+ 	/* When all channels are disabled, we can disable the controller */
+ 	if (!active_channels(priv))
+-		regmap_update_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN, 0);
++		regmap_clear_bits(priv->regmap, TIM_CR1, TIM_CR1_CEN);
+ 
+ 	clk_disable(priv->clk);
+ }
+@@ -568,10 +568,9 @@ static void stm32_pwm_detect_complementary(struct stm32_pwm *priv)
+ 	 * If complementary bit doesn't exist writing 1 will have no
+ 	 * effect so we can detect it.
+ 	 */
+-	regmap_update_bits(priv->regmap,
+-			   TIM_CCER, TIM_CCER_CC1NE, TIM_CCER_CC1NE);
++	regmap_set_bits(priv->regmap, TIM_CCER, TIM_CCER_CC1NE);
+ 	regmap_read(priv->regmap, TIM_CCER, &ccer);
+-	regmap_update_bits(priv->regmap, TIM_CCER, TIM_CCER_CC1NE, 0);
++	regmap_clear_bits(priv->regmap, TIM_CCER, TIM_CCER_CC1NE);
+ 
+ 	priv->have_complementary_output = (ccer != 0);
+ }
+@@ -585,10 +584,9 @@ static int stm32_pwm_detect_channels(struct stm32_pwm *priv)
+ 	 * If channels enable bits don't exist writing 1 will have no
+ 	 * effect so we can detect and count them.
+ 	 */
+-	regmap_update_bits(priv->regmap,
+-			   TIM_CCER, TIM_CCER_CCXE, TIM_CCER_CCXE);
++	regmap_set_bits(priv->regmap, TIM_CCER, TIM_CCER_CCXE);
+ 	regmap_read(priv->regmap, TIM_CCER, &ccer);
+-	regmap_update_bits(priv->regmap, TIM_CCER, TIM_CCER_CCXE, 0);
++	regmap_clear_bits(priv->regmap, TIM_CCER, TIM_CCER_CCXE);
+ 
+ 	if (ccer & TIM_CCER_CC1E)
+ 		npwm++;
 -- 
 2.43.0
 
