@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-12958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1688837A9F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:59 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3722837AA3
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C252CB2BD0B
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:48:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B5B6290688
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 00:54:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C115326ACB;
-	Tue, 23 Jan 2024 00:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16B1012FF79;
+	Tue, 23 Jan 2024 00:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Km03q860"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FyMaugGq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F7CE3FFE;
-	Tue, 23 Jan 2024 00:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C885712F5A7;
+	Tue, 23 Jan 2024 00:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705968694; cv=none; b=Jw+WwMdN3bSG1mbHYke/uGHqtRln5JM8Nz8AZd0lOE0NBo5DQX5mNtaVJzJ4USiQlTeLWrJJjGv4AmqH9ysJrdBW2lM+o48DBbTsr52nht0AaejC+ZPIuM6AeuNfXOQqSvwhZQkCzAf2x0rhOD1b/Npwu6zdcaexH5iLx5CPXYg=
+	t=1705969028; cv=none; b=QCNMMHspuo9u7EfKgjUUBcihT332XG0R0a57MDeM9YAu6pemX/m3J0ckWSzaXOiWDmyPmfYsRtFHeNron7OIanhqjOo1auOY4ZrwjsTjfDvbIY01tfhogwAkX5CZeg0FYdm8JPKExxGYVrMmyoYmemxv4HRnWnXqNfU054GsDXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705968694; c=relaxed/simple;
-	bh=OzWqp4Hrw9krY1bDFRo6DRYHw4R0Sks9t7crT05JB9Q=;
+	s=arc-20240116; t=1705969028; c=relaxed/simple;
+	bh=zWsVDbQ+Cy8uiMzruxed2ifcRodh1MPboaIdpwc2tKI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HdLIeHsQjpwglUjH4VJANlHB+H5UAXEF/cKrmiXuprcTv+2VivASz7GDw3NoIiTkNP1h+HelNroIyL+IZrTBGf5JXuEAbvuffRrV3EpwNv6/trNLSpZWTkFdigNqQMENdwuszmAxkVrhwdDiklxG+GgMOsO+EUlAMhEl7cDz/LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Km03q860; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B1ADC433F1;
-	Tue, 23 Jan 2024 00:11:34 +0000 (UTC)
+	 MIME-Version; b=nlGNE0eqieA6X/AJAeCmkGYxVhM3G063WqfJ2NeD3eJatWsJdmYrVIVIysnZHQe9ptOL1fHaIhIrHinh0a6HOOaFFaYg/iJ2duxpSJlPWY0iE9J6qbUtPu0cZ1Pjg5zIfnLoq0lfxu3Ym8sMGQ7bs4gv7b5XlmK7tCCbBBcJsJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FyMaugGq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E8BC433F1;
+	Tue, 23 Jan 2024 00:17:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705968694;
-	bh=OzWqp4Hrw9krY1bDFRo6DRYHw4R0Sks9t7crT05JB9Q=;
+	s=korg; t=1705969028;
+	bh=zWsVDbQ+Cy8uiMzruxed2ifcRodh1MPboaIdpwc2tKI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Km03q860r7nMYQgYVnE+hcJi1S09X4sG8pUmc2WgPZmd5JE6jsOZkDVbnBd51MztT
-	 oiD1SY0hHCSqlHaJ+bg3wdGUMAZVs30K19j3uIylHyN0TDOalTR1tvMM2obF9/UHgW
-	 EetV5PGb59x25tAGlWubFvPUyBPdywUKGezW+Mfc=
+	b=FyMaugGqQes05yn0B6rHiq4pbFeFaBYHRBPA4nDTwzYRLss9HuwVlncOmDeDkTC3A
+	 9vDLapfWkVha36HjlwuW7wRG5zfseX3ojiT4d51TwhfnP4zj+BnHxqemVOaI/qgnFO
+	 HyXOMSoGgIqYHetzyMq2BGJvI1hZ3XNtKMXiZf7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Xiayang <xywang.sjtu@sjtu.edu.cn>,
-	Daniel Thompson <daniel.thompson@linaro.org>,
-	Douglas Anderson <dianders@chromium.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 143/148] kdb: Censor attempts to set PROMPT without ENABLE_MEM_READ
+Subject: [PATCH 5.4 169/194] software node: Let args be NULL in software_node_get_reference_args
 Date: Mon, 22 Jan 2024 15:58:19 -0800
-Message-ID: <20240122235718.398448224@linuxfoundation.org>
+Message-ID: <20240122235726.453889657@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235712.442097787@linuxfoundation.org>
-References: <20240122235712.442097787@linuxfoundation.org>
+In-Reply-To: <20240122235719.206965081@linuxfoundation.org>
+References: <20240122235719.206965081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Thompson <daniel.thompson@linaro.org>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit ad99b5105c0823ff02126497f4366e6a8009453e ]
+[ Upstream commit 1eaea4b3604eb9ca7d9a1e73d88fc121bb4061f5 ]
 
-Currently the PROMPT variable could be abused to provoke the printf()
-machinery to read outside the current stack frame. Normally this
-doesn't matter becaues md is already a much better tool for reading
-from memory.
+fwnode_get_property_reference_args() may not be called with args argument
+NULL and while OF already supports this. Add the missing NULL check.
 
-However the md command can be disabled by not setting KDB_ENABLE_MEM_READ.
-Let's also prevent PROMPT from being modified in these circumstances.
+The purpose is to be able to count the references.
 
-Whilst adding a comment to help future code reviewers we also remove
-the #ifdef where PROMPT in consumed. There is no problem passing an
-unused (0) to snprintf when !CONFIG_SMP.
-argument
-
-Reported-by: Wang Xiayang <xywang.sjtu@sjtu.edu.cn>
-Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Stable-dep-of: 4f41d30cd6dc ("kdb: Fix a potential buffer overflow in kdb_local()")
+Fixes: b06184acf751 ("software node: Add software_node_get_reference_args()")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20231109101010.1329587-3-sakari.ailus@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/debug/kdb/kdb_main.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/base/swnode.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/debug/kdb/kdb_main.c b/kernel/debug/kdb/kdb_main.c
-index dc6bf35e7884..8f31d472384f 100644
---- a/kernel/debug/kdb/kdb_main.c
-+++ b/kernel/debug/kdb/kdb_main.c
-@@ -399,6 +399,13 @@ int kdb_set(int argc, const char **argv)
- 	if (argc != 2)
- 		return KDB_ARGCOUNT;
+diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+index 4c3b9813b284..636d52d1a1b8 100644
+--- a/drivers/base/swnode.c
++++ b/drivers/base/swnode.c
+@@ -604,6 +604,9 @@ software_node_get_reference_args(const struct fwnode_handle *fwnode,
+ 	if (nargs > NR_FWNODE_REFERENCE_ARGS)
+ 		return -EINVAL;
  
-+	/*
-+	 * Censor sensitive variables
-+	 */
-+	if (strcmp(argv[1], "PROMPT") == 0 &&
-+	    !kdb_check_flags(KDB_ENABLE_MEM_READ, kdb_cmd_enabled, false))
-+		return KDB_NOPERM;
++	if (!args)
++		return 0;
 +
- 	/*
- 	 * Check for internal variables
- 	 */
-@@ -1299,12 +1306,9 @@ static int kdb_local(kdb_reason_t reason, int error, struct pt_regs *regs,
- 		*(cmd_hist[cmd_head]) = '\0';
- 
- do_full_getstr:
--#if defined(CONFIG_SMP)
-+		/* PROMPT can only be set if we have MEM_READ permission. */
- 		snprintf(kdb_prompt_str, CMD_BUFLEN, kdbgetenv("PROMPT"),
- 			 raw_smp_processor_id());
--#else
--		snprintf(kdb_prompt_str, CMD_BUFLEN, kdbgetenv("PROMPT"));
--#endif
- 		if (defcmd_in_progress)
- 			strncat(kdb_prompt_str, "[defcmd]", CMD_BUFLEN);
+ 	args->fwnode = software_node_get(refnode);
+ 	args->nargs = nargs;
  
 -- 
 2.43.0
