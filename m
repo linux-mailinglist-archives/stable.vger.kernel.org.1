@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-14085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 546A6837F6F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:35 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAA31837CFB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:22:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 869BA1C29056
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9300228FF4B
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 736C663138;
-	Tue, 23 Jan 2024 00:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D524B15D5AC;
+	Tue, 23 Jan 2024 00:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rh3qdb5a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJ0J9xcM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B0662A0F;
-	Tue, 23 Jan 2024 00:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9484F15D5C5;
+	Tue, 23 Jan 2024 00:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971130; cv=none; b=A9yN+ZVdPuAC1lhDosN017K4f7eFOKMndhDueOPoBOSCPp5RvxfWTMn7hBTGtfoWY77WcPH7MfPhrXYdHxrCTeG/NwGnfCEZr/p0bIxCU20Gqksw+PZ0aikDFRyHJB6b1auf5P4fOvAdmfj/jTTX9kz/OF2lIIVeLaMtj1BLtPE=
+	t=1705969760; cv=none; b=irpCM17Vz+PW5FE2mKAKmZn83AomFMP9fMofsYWBExodCIeRZMnqXjBW49MWXrHuVE5F1R5HpKPls6xvxN8mYN89g7J3ck9DBrUdHMmphV3JR6VwqYIbJAOeIkebvqMB5vOqZVYRF0egRTXQ/YP2mH0mHjhEJFHzC7CzMRHxXTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971130; c=relaxed/simple;
-	bh=4/4+US68vJiWJt1tfkE0R2/V7jdtxifGgcRzsFZhSTo=;
+	s=arc-20240116; t=1705969760; c=relaxed/simple;
+	bh=rfdLBq3PM0LwH0AoW6dkdFu00U6fN5KuCzI+KIx05l0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XFo0+/i15xwZSkJH+lAcXi4UBSnT5Wi4vU/0ddBFmYDq2SlhB0RJyS/h041QMbocUJZoXeTZBmrejIQoxD3ZeJ6keitmnxyrbjS+RrPz0KUQdfKpZCY3DQu/muIbTy3R5ifpLOfSKJn7HtGyHqh3CsXmV5yGDooghhFXf0cJvWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rh3qdb5a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1B99C43390;
-	Tue, 23 Jan 2024 00:52:09 +0000 (UTC)
+	 MIME-Version; b=S1rjooMelk7VoWseDohgjSmIvfDwp/Hk75pb5EiSMVWlYzyguvzhaWcJxhP5xc98tkqIRXsqx2Pk2InnbTApDjnDmoJqaYFXm0q2L/7TX3BomrRkJl+IT7NWpnJTq7h267RPDTuq9tb4zehlDNs54iQCmmokG5BoIz/J48XAxfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJ0J9xcM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54694C43390;
+	Tue, 23 Jan 2024 00:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971130;
-	bh=4/4+US68vJiWJt1tfkE0R2/V7jdtxifGgcRzsFZhSTo=;
+	s=korg; t=1705969760;
+	bh=rfdLBq3PM0LwH0AoW6dkdFu00U6fN5KuCzI+KIx05l0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rh3qdb5avVJ/U9mfTNIhqa1oq6Vpt8rF5uW5G8nKp99Rjj9P1svXt3VT3w/tnAydM
-	 tC8k86ACDW/LC9hE2WHUdMCErlPxVy7hrPVDpeF7c8PRW97mSuPygXcvZ5sK4goLrt
-	 1wzC3ELxXYYW8yDHtC/j84U1We1TLmN6S0rksfpM=
+	b=AJ0J9xcM9rYEn/EuvJvx6ilFXwtl//EusqtfyyI3bqW/rrsL6EhwZpk57wqwk8+uL
+	 ZBEcZo7t6f19yhWlh2FklebJ1AZJS1lpUh6C5WZsBx8nVMxD/lURiArru3Ef2nKH18
+	 pr8RdVyYIdWTNPhnCCCiV4Cq+MgzuOkI/01/maew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Kocialkowski <paul.kocialkowski@bootlin.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 169/417] media: rkvdec: Hook the (TRY_)DECODER_CMD stateless ioctls
+	Bart Van Assche <bvanassche@acm.org>,
+	Can Guo <quic_cang@quicinc.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.7 433/641] scsi: ufs: core: Simplify power management during async scan
 Date: Mon, 22 Jan 2024 15:55:37 -0800
-Message-ID: <20240122235757.706525484@linuxfoundation.org>
+Message-ID: <20240122235831.542207587@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 1fb7b5ab62113b29ce331464048d8c39e58fd08a ]
+commit daf7795406bf307997366f694888bd317ae5b5fa upstream.
 
-The (TRY_)DECODER_CMD ioctls are used to support flushing when holding
-capture buffers is supported. This is the case of this driver but the
-ioctls were never hooked to the ioctl ops.
+ufshcd_init() calls pm_runtime_get_sync() before it calls
+async_schedule(). ufshcd_async_scan() calls pm_runtime_put_sync() directly
+or indirectly from ufshcd_add_lus(). Simplify ufshcd_async_scan() by always
+calling pm_runtime_put_sync() from ufshcd_async_scan().
 
-Add them to correctly support flushing.
-
-Fixes: ed7bb87d3d03 ("media: rkvdec: Enable capture buffer holding for H264")
-Signed-off-by: Paul Kocialkowski <paul.kocialkowski@bootlin.com>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20231218225229.2542156-2-bvanassche@acm.org
+Reviewed-by: Can Guo <quic_cang@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/media/rkvdec/rkvdec.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/ufs/core/ufshcd.c |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/staging/media/rkvdec/rkvdec.c b/drivers/staging/media/rkvdec/rkvdec.c
-index a9bd1e71ea48..d16cf4115d03 100644
---- a/drivers/staging/media/rkvdec/rkvdec.c
-+++ b/drivers/staging/media/rkvdec/rkvdec.c
-@@ -461,6 +461,9 @@ static const struct v4l2_ioctl_ops rkvdec_ioctl_ops = {
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -8646,7 +8646,6 @@ static int ufshcd_add_lus(struct ufs_hba
  
- 	.vidioc_streamon = v4l2_m2m_ioctl_streamon,
- 	.vidioc_streamoff = v4l2_m2m_ioctl_streamoff,
+ 	ufs_bsg_probe(hba);
+ 	scsi_scan_host(hba->host);
+-	pm_runtime_put_sync(hba->dev);
+ 
+ out:
+ 	return ret;
+@@ -8914,15 +8913,15 @@ static void ufshcd_async_scan(void *data
+ 
+ 	/* Probe and add UFS logical units  */
+ 	ret = ufshcd_add_lus(hba);
 +
-+	.vidioc_decoder_cmd = v4l2_m2m_ioctl_stateless_decoder_cmd,
-+	.vidioc_try_decoder_cmd = v4l2_m2m_ioctl_stateless_try_decoder_cmd,
- };
+ out:
++	pm_runtime_put_sync(hba->dev);
+ 	/*
+ 	 * If we failed to initialize the device or the device is not
+ 	 * present, turn off the power/clocks etc.
+ 	 */
+-	if (ret) {
+-		pm_runtime_put_sync(hba->dev);
++	if (ret)
+ 		ufshcd_hba_exit(hba);
+-	}
+ }
  
- static int rkvdec_queue_setup(struct vb2_queue *vq, unsigned int *num_buffers,
--- 
-2.43.0
-
+ static enum scsi_timeout_action ufshcd_eh_timed_out(struct scsi_cmnd *scmd)
 
 
 
