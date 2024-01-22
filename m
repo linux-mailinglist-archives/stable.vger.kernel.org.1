@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-13449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AEEC837C1D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:40 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1544838302
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:25:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB082295783
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAE5D28A459
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC8F15530C;
-	Tue, 23 Jan 2024 00:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56A3604D8;
+	Tue, 23 Jan 2024 01:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RuZ8Luto"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wldw5GWF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D58155300;
-	Tue, 23 Jan 2024 00:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72921604CC;
+	Tue, 23 Jan 2024 01:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969507; cv=none; b=a0k0Q122tumrBLWdoDMJDYC41/OTrhfK64pf09Ilhi/S+uVK70By/maAVLtmZ50AU186veLbB8EQZK1MMsLfsQ680Nl3zueVAl13cwaY8t4w/02tvVcYG1scabk5hdyubuquYxKoPmOFP2ABoGLNCHc3sW5LEEcDYyYJu+BP+uI=
+	t=1705974681; cv=none; b=E5q6dK8v8Wh+ne+nkkW+31m61PKf0DdEtk7FK70T0uWoBGXsGzXV15VeBLxUl9hYYE5zD/OqMTTXAVoNPwAwbNB9puECrJRGbRI5/oxj46otqrj6I5JbSmfeZdGGO9yVGep8Inrby3yDMwSTFw42COwbfB66Mwv4vwhbjUf2WlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969507; c=relaxed/simple;
-	bh=V8FD1PM2VHZ9SbQtrJzSEDUSDE5bSoNJHdny5j3aVTM=;
+	s=arc-20240116; t=1705974681; c=relaxed/simple;
+	bh=SdHTSdp9Z+rcnA94uOKm7zxIOrtYWLuhXZS5/aQLGDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n68VAhO+hrrbe68G3QzcKioCh2UUvhSShurQm5ZnHc2HcnWVknNXPz64dPmyXM2CvXTRrgUu2xPmQii2Wa+aBb6btLc68DViHYvc9AGQok4voh42ISah0It8IDAt0XduZsBM+JY5HSsgoRy84pEXS1RKHhcJ++oDSuWrzDRj8pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RuZ8Luto; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD8DC43399;
-	Tue, 23 Jan 2024 00:25:06 +0000 (UTC)
+	 MIME-Version; b=Pqe4JDImqFI7sMdZAFe92hS6gK2jTLhaq5LWvhB3ayghVLx3Y6xt1UzpKvJYsbC2adW94oUeeafsDNPqNGV0PWzKgZSd6gf/kKayg4NYy9mIFyizRfkha1VfFwsfYcv+k3Xdkx9A9IcNwb6LF1KOp5eXu67jFgvM0ZR5yHGMnOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wldw5GWF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35769C43390;
+	Tue, 23 Jan 2024 01:51:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969506;
-	bh=V8FD1PM2VHZ9SbQtrJzSEDUSDE5bSoNJHdny5j3aVTM=;
+	s=korg; t=1705974681;
+	bh=SdHTSdp9Z+rcnA94uOKm7zxIOrtYWLuhXZS5/aQLGDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RuZ8LutoXY24m1AZ6dVF3YCmOfN0ZH8oq5wAHbHzfWK4r6pRDbe+y0IMEfIpCiYcE
-	 dL7LYq0ALLeJe5hPiLo8GRbm1ffr1G5Gwv/YCCx0C0vO8OwFtADIRaAiX0abckNDbZ
-	 CALN+G+/yB16GbuHLsYfby+0wYteAfkk4yjmPVjo=
+	b=wldw5GWFAVghmomBGDQQSesYzqyHwtUikDUo0CCa6uKtQdpb4eYPt0rnzYc+T9qME
+	 9FQE2UuH7XGoSSf+lIZ1BlYn5BcL+pi3omBUl3c34p08iauWt0W6UNxA+i4Q1DVjGg
+	 SZqNAVxd6NbD5i+JDL3R2kqFjVAaILDCnBwXzqQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 268/641] drm/radeon/r100: Fix integer overflow issues in r100_cs_track_check()
+Subject: [PATCH 6.6 121/583] selftests/net: specify the interface when do arping
 Date: Mon, 22 Jan 2024 15:52:52 -0800
-Message-ID: <20240122235826.309730370@linuxfoundation.org>
+Message-ID: <20240122235815.849748568@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit b5c5baa458faa5430c445acd9a17481274d77ccf ]
+[ Upstream commit 7f770d28f2e5abfd442ad689ba1129dd66593529 ]
 
-It may be possible, albeit unlikely, to encounter integer overflow
-during the multiplication of several unsigned int variables, the
-result being assigned to a variable 'size' of wider type.
+When do arping, the interface need to be specified. Or we will
+get error: Interface "lo" is not ARPable. And the test failed.
+]# ./arp_ndisc_untracked_subnets.sh
+    TEST: test_arp:  accept_arp=0                                       [ OK ]
+    TEST: test_arp:  accept_arp=1                                       [FAIL]
+    TEST: test_arp:  accept_arp=2  same_subnet=0                        [ OK ]
+    TEST: test_arp:  accept_arp=2  same_subnet=1                        [FAIL]
 
-Prevent this potential behaviour by converting one of the multiples
-to unsigned long.
+After fix:
+]# ./arp_ndisc_untracked_subnets.sh
+    TEST: test_arp:  accept_arp=0                                       [ OK ]
+    TEST: test_arp:  accept_arp=1                                       [ OK ]
+    TEST: test_arp:  accept_arp=2  same_subnet=0                        [ OK ]
+    TEST: test_arp:  accept_arp=2  same_subnet=1                        [ OK ]
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
-
-Fixes: 0242f74d29df ("drm/radeon: clean up CS functions in r100.c")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 0ea7b0a454ca ("selftests: net: arp_ndisc_untracked_subnets: test for arp_accept and accept_untracked_na")
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/r100.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/arp_ndisc_untracked_subnets.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/radeon/r100.c b/drivers/gpu/drm/radeon/r100.c
-index affa9e0309b2..cfeca2694d5f 100644
---- a/drivers/gpu/drm/radeon/r100.c
-+++ b/drivers/gpu/drm/radeon/r100.c
-@@ -2321,7 +2321,7 @@ int r100_cs_track_check(struct radeon_device *rdev, struct r100_cs_track *track)
- 	switch (prim_walk) {
- 	case 1:
- 		for (i = 0; i < track->num_arrays; i++) {
--			size = track->arrays[i].esize * track->max_indx * 4;
-+			size = track->arrays[i].esize * track->max_indx * 4UL;
- 			if (track->arrays[i].robj == NULL) {
- 				DRM_ERROR("(PW %u) Vertex array %u no buffer "
- 					  "bound\n", prim_walk, i);
-@@ -2340,7 +2340,7 @@ int r100_cs_track_check(struct radeon_device *rdev, struct r100_cs_track *track)
- 		break;
- 	case 2:
- 		for (i = 0; i < track->num_arrays; i++) {
--			size = track->arrays[i].esize * (nverts - 1) * 4;
-+			size = track->arrays[i].esize * (nverts - 1) * 4UL;
- 			if (track->arrays[i].robj == NULL) {
- 				DRM_ERROR("(PW %u) Vertex array %u no buffer "
- 					  "bound\n", prim_walk, i);
+diff --git a/tools/testing/selftests/net/arp_ndisc_untracked_subnets.sh b/tools/testing/selftests/net/arp_ndisc_untracked_subnets.sh
+index c899b446acb6..327427ec10f5 100755
+--- a/tools/testing/selftests/net/arp_ndisc_untracked_subnets.sh
++++ b/tools/testing/selftests/net/arp_ndisc_untracked_subnets.sh
+@@ -150,7 +150,7 @@ arp_test_gratuitous() {
+ 	fi
+ 	# Supply arp_accept option to set up which sets it in sysctl
+ 	setup ${arp_accept}
+-	ip netns exec ${HOST_NS} arping -A -U ${HOST_ADDR} -c1 2>&1 >/dev/null
++	ip netns exec ${HOST_NS} arping -A -I ${HOST_INTF} -U ${HOST_ADDR} -c1 2>&1 >/dev/null
+ 
+ 	if verify_arp $1 $2; then
+ 		printf "    TEST: %-60s  [ OK ]\n" "${test_msg[*]}"
 -- 
 2.43.0
 
