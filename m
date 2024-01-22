@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC1C3837F64
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:52:19 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A51837FC4
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EBA31F29EED
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:52:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37B6B28F2D2
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34C50627FE;
-	Tue, 23 Jan 2024 00:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C70012BE93;
+	Tue, 23 Jan 2024 00:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIxXh3o2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s9eU5rZA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5FC0627FB;
-	Tue, 23 Jan 2024 00:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE50064CDA;
+	Tue, 23 Jan 2024 00:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971103; cv=none; b=c6Xh3w3NYMHwPlQDI0b3qQnB5zBEB0+Wez+gRHJjt38Pnt6t4oxfYEuQbr4YW+YUnOvyAIV5EsH/OTSs2KkSZ7PI8hlNaYn57GfXamCVAL7+u+4llJoeIxRVQ+TirvewwKaV0wqhgsYyHOK9GK/gkwigXUax5Jey+FYa+XyNj7I=
+	t=1705971343; cv=none; b=GnD1DLVT7N/u8DBb0J2ksId/xrv5DFYannJ9HLAsOtG8+/FeyJjyVwbodFGzmgc5bTIOwfq+U9YBqNCuZuWZvahzf7lKg6AWhFoF9q5hveEnBWPQPlkKZHoDcLJg+xhtHleqNfv4T+rAnrnvZ/+VHkLPkwPURG4prB7Fae8HIsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971103; c=relaxed/simple;
-	bh=mtrWedbnCErhmeoIRnSgqj5Uj5IMRI3HyL6gZ6NjHa0=;
+	s=arc-20240116; t=1705971343; c=relaxed/simple;
+	bh=Rk70To/34dzhv8aXOUJRPhl4CO89h6JCzDCip1ph1hE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CHTEDaxx9L6Xgpva2xMdPa9XYvIlmRgcLfbA5tWExfwjzMpzh0PzKR5x196j0pAsDfAC7zn8aB/sLbmehoMagEWAAjCAVKuWkhoDD1owBH0rV9gONXaomLvl+ydHekSXjZF1BQUH7AKvh8bgjTFBt7JUD8ndYI4uu3IbyPBzy4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIxXh3o2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 961C6C43390;
-	Tue, 23 Jan 2024 00:51:41 +0000 (UTC)
+	 MIME-Version; b=I3PRllkfgLoqt092S7WPsuaGtUQUXuHC6VXfLQxtaa0WCEZiQbfUFKXHsemjBBicn1uml83rjp9so2JFtI4HRmnRueF0Zl6ONFuHEDPzDoqIPeS7AM5u+uYO7neLG77l7YL4xsVAelzuZZukWJzkV/IRUCgP+soVQFeyxP6Qzkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s9eU5rZA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF28C433F1;
+	Tue, 23 Jan 2024 00:55:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971102;
-	bh=mtrWedbnCErhmeoIRnSgqj5Uj5IMRI3HyL6gZ6NjHa0=;
+	s=korg; t=1705971342;
+	bh=Rk70To/34dzhv8aXOUJRPhl4CO89h6JCzDCip1ph1hE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IIxXh3o2VzACwwWDYs22P9M/SXJ/rA91d45WtRJed8zZsikCA8kVTya062sd2ixv0
-	 acLDOKblBiKqyJAIepYM+1ZBDvwSkG2ewGT2Fejd/Dtc15UULksD2iitsGlYSkcQhP
-	 bmE0wEmPwHpDK0ubbwN67UUSzFFgP2k9mwiwk3WY=
+	b=s9eU5rZA2H6sBZZiImNcCBXIf/abiEWxfJCSU5vTgVImQesNTMJsXsFBFw8N5nGEg
+	 /mK//xB9Sqdd2mvKTmTAAwox4/azXyeNWX21HwV4BAjck3VGqJV/Xf6DkX7bdD7+CW
+	 jtbpnfKYYXclKXh9cyga5Os/Bj+FX9Wx1s9tNwL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait@windriver.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Xingyuan Mo <hdthky0@gmail.com>,
+	Oded Gabbay <ogabbay@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 088/286] crypto: sahara - fix cbc selftest failure
+Subject: [PATCH 6.1 226/417] accel/habanalabs: fix information leak in sec_attest_info()
 Date: Mon, 22 Jan 2024 15:56:34 -0800
-Message-ID: <20240122235735.423061701@linuxfoundation.org>
+Message-ID: <20240122235759.740806369@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
+From: Xingyuan Mo <hdthky0@gmail.com>
 
-[ Upstream commit 9f10bc28c0fb676ae58aa3bfa358db8f5de124bb ]
+[ Upstream commit a9f07790a4b2250f0140e9a61c7f842fd9b618c7 ]
 
-The kernel crypto API requires that all CBC implementations update the IV
-buffer to contain the last ciphertext block.
+This function may copy the pad0 field of struct hl_info_sec_attest to user
+mode which has not been initialized, resulting in leakage of kernel heap
+data to user mode. To prevent this, use kzalloc() to allocate and zero out
+the buffer, which can also eliminate other uninitialized holes, if any.
 
-This fixes the following cbc selftest error:
-alg: skcipher: sahara-cbc-aes encryption test failed (wrong output IV) on
-test vector 0, cfg="in-place (one sglist)"
-
-Fixes: 5de8875281e1 ("crypto: sahara - Add driver for SAHARA2 accelerator.")
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 0c88760f8f5e ("habanalabs/gaudi2: add secured attestation info uapi")
+Signed-off-by: Xingyuan Mo <hdthky0@gmail.com>
+Reviewed-by: Oded Gabbay <ogabbay@kernel.org>
+Signed-off-by: Oded Gabbay <ogabbay@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/sahara.c | 33 +++++++++++++++++++++++++++++++--
- 1 file changed, 31 insertions(+), 2 deletions(-)
+ drivers/misc/habanalabs/common/habanalabs_ioctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/sahara.c b/drivers/crypto/sahara.c
-index 0ae95767bb76..0b6e63a763ca 100644
---- a/drivers/crypto/sahara.c
-+++ b/drivers/crypto/sahara.c
-@@ -148,6 +148,7 @@ struct sahara_ctx {
+diff --git a/drivers/misc/habanalabs/common/habanalabs_ioctl.c b/drivers/misc/habanalabs/common/habanalabs_ioctl.c
+index 43afe40966e5..1ea1ae34b7a7 100644
+--- a/drivers/misc/habanalabs/common/habanalabs_ioctl.c
++++ b/drivers/misc/habanalabs/common/habanalabs_ioctl.c
+@@ -677,7 +677,7 @@ static int sec_attest_info(struct hl_fpriv *hpriv, struct hl_info_args *args)
+ 	if (!sec_attest_info)
+ 		return -ENOMEM;
  
- struct sahara_aes_reqctx {
- 	unsigned long mode;
-+	u8 iv_out[AES_BLOCK_SIZE];
- 	struct skcipher_request fallback_req;	// keep at the end
- };
- 
-@@ -541,8 +542,24 @@ static int sahara_hw_descriptor_create(struct sahara_dev *dev)
- 	return -EINVAL;
- }
- 
-+static void sahara_aes_cbc_update_iv(struct skcipher_request *req)
-+{
-+	struct crypto_skcipher *skcipher = crypto_skcipher_reqtfm(req);
-+	struct sahara_aes_reqctx *rctx = skcipher_request_ctx(req);
-+	unsigned int ivsize = crypto_skcipher_ivsize(skcipher);
-+
-+	/* Update IV buffer to contain the last ciphertext block */
-+	if (rctx->mode & FLAGS_ENCRYPT) {
-+		sg_pcopy_to_buffer(req->dst, sg_nents(req->dst), req->iv,
-+				   ivsize, req->cryptlen - ivsize);
-+	} else {
-+		memcpy(req->iv, rctx->iv_out, ivsize);
-+	}
-+}
-+
- static int sahara_aes_process(struct skcipher_request *req)
- {
-+	struct crypto_skcipher *skcipher = crypto_skcipher_reqtfm(req);
- 	struct sahara_dev *dev = dev_ptr;
- 	struct sahara_ctx *ctx;
- 	struct sahara_aes_reqctx *rctx;
-@@ -564,8 +581,17 @@ static int sahara_aes_process(struct skcipher_request *req)
- 	rctx->mode &= FLAGS_MODE_MASK;
- 	dev->flags = (dev->flags & ~FLAGS_MODE_MASK) | rctx->mode;
- 
--	if ((dev->flags & FLAGS_CBC) && req->iv)
--		memcpy(dev->iv_base, req->iv, AES_KEYSIZE_128);
-+	if ((dev->flags & FLAGS_CBC) && req->iv) {
-+		unsigned int ivsize = crypto_skcipher_ivsize(skcipher);
-+
-+		memcpy(dev->iv_base, req->iv, ivsize);
-+
-+		if (!(dev->flags & FLAGS_ENCRYPT)) {
-+			sg_pcopy_to_buffer(req->src, sg_nents(req->src),
-+					   rctx->iv_out, ivsize,
-+					   req->cryptlen - ivsize);
-+		}
-+	}
- 
- 	/* assign new context to device */
- 	dev->ctx = ctx;
-@@ -588,6 +614,9 @@ static int sahara_aes_process(struct skcipher_request *req)
- 	dma_unmap_sg(dev->device, dev->in_sg, dev->nb_in_sg,
- 		DMA_TO_DEVICE);
- 
-+	if ((dev->flags & FLAGS_CBC) && req->iv)
-+		sahara_aes_cbc_update_iv(req);
-+
- 	return 0;
- }
- 
+-	info = kmalloc(sizeof(*info), GFP_KERNEL);
++	info = kzalloc(sizeof(*info), GFP_KERNEL);
+ 	if (!info) {
+ 		rc = -ENOMEM;
+ 		goto free_sec_attest_info;
 -- 
 2.43.0
 
