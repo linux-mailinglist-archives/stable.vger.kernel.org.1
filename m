@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF01F83804A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:58:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62C278382F7
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:25:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E21DA1C296BE
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:58:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95D821C26CDD
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:25:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03B765BC8;
-	Tue, 23 Jan 2024 01:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1540160266;
+	Tue, 23 Jan 2024 01:51:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pKFn/ugb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TlFPlmST"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8F665189;
-	Tue, 23 Jan 2024 01:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C972D6026F;
+	Tue, 23 Jan 2024 01:51:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971647; cv=none; b=T/t6hv2VTbqn07Xcpx6b6JPmO9Wr5uLsL0aPvUDiHrc6uS26RwVdH31iCEzc6/7E/pD0j8wxOXtSE/ssr317SmLxQtpB/RbG0xN2cS8BlcV8W4c0jbYWLfRFE8c5cJDLsjnjsTAjxdgzYOAfiTXGoga9QT/JQOkTL9mfweI48MY=
+	t=1705974671; cv=none; b=E00wRADG7jzsOdBFnZcDrhuusBQZaNcAeNCKTv65NVRKcnoMZgHboGTHhpDM3qkoXg+O2tNHkyzH2nkEa7a0yc2PmbkGTJOlEkVSjj67qR+T/5W6xIDDOoTRffk09hUu7SaMoifOTvsmnLfkJ9lLdzxxHbMlH740anVtn0LnFhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971647; c=relaxed/simple;
-	bh=gMp54bHlf5ww9xcwiCjho/K0JX5uny3HMpB4v79WARM=;
+	s=arc-20240116; t=1705974671; c=relaxed/simple;
+	bh=fMEbnxoaubSk9Z6MKcvKuldqhcHCE48EHUoAHw/bNmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GReW1SpqjtZlqRT0LPYVji167vD1xizU3l+M32CSD1bQtmcGzx7UtWmlvqnG6GWHgAu32IkioT7FaUxTnsfdTB87u60yp2R5zeV36uDENpB2VsGCKbuQZInEPnnV41QQ737Uv4/fq29q/mjdFc9E8da/vxzx2oK/eHXl6nYl2TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKFn/ugb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129C2C433F1;
-	Tue, 23 Jan 2024 01:00:46 +0000 (UTC)
+	 MIME-Version; b=pwmujFvX4oXbqLy/IEwV/7o4xMPDF1JdZIlG/lKOzkgexDEIM+OZlQB+LP5p/1PJM4U9xlcpwLgcex0OQ0myS4gtVx8dh4TbWGw/JfsDFpuqN092Ke01PpRAd+8/hE60Eh/KG7WU01HrMuOOnn+F+P7VjaKqJTnfzKdBqEsb5EA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TlFPlmST; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C549C43399;
+	Tue, 23 Jan 2024 01:51:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971647;
-	bh=gMp54bHlf5ww9xcwiCjho/K0JX5uny3HMpB4v79WARM=;
+	s=korg; t=1705974671;
+	bh=fMEbnxoaubSk9Z6MKcvKuldqhcHCE48EHUoAHw/bNmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pKFn/ugbDbUviVu+qd+EZ8jLWDQXZEltWey1/cD/SZ3bvKBsLHxFTGe5Nt0cW/Lnx
-	 rLX1u7udMWh2kAoZmXTGsHSXYXEJxQoZpbgW+trtlVoHlfvm14vRM7357ZVOXLcyQQ
-	 tJhccPg0Q3FrsBq1bwfbKZNZS6tK+37thjztZqkM=
+	b=TlFPlmSTJmR3qWJReLXtHYgHIwz3hdlzgOUPZ2h1sMM7XLreslEyZ68XBXKVL/kss
+	 UctrSa/6HmGwci3heBGYqfFLaqBO5ReiLVExcciUiWIlnYm8choqVamLCXOLVXKXzg
+	 eGq8lV5Wjfy7TlFH/Dj8icR9SvJYgaQ8FpalvSTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Robinson <pbrobinson@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 193/286] mmc: sdhci_omap: Fix TI SoC dependencies
+	Jordan Rome <linux@jordanrome.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Stanislav Fomichev <sdf@google.com>
+Subject: [PATCH 5.15 243/374] selftests/bpf: Add assert for user stacks in test_task_stack
 Date: Mon, 22 Jan 2024 15:58:19 -0800
-Message-ID: <20240122235739.555675143@linuxfoundation.org>
+Message-ID: <20240122235753.203822318@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
-References: <20240122235732.009174833@linuxfoundation.org>
+In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
+References: <20240122235744.598274724@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Robinson <pbrobinson@gmail.com>
+From: Jordan Rome <linux@jordanrome.com>
 
-[ Upstream commit 09f164d393a6671e5ff8342ba6b3cb7fe3f20208 ]
+commit 727a92d62fd6a382b4c5972008e45667e707b0e4 upstream.
 
-The sdhci_omap is specific to  older TI SoCs, update the
-dependencies for those SoCs and compile testing. While we're
-at it update the text to reflect the wider range of
-supported TI SoCS the driver now supports.
+This is a follow up to:
+commit b8e3a87a627b ("bpf: Add crosstask check to __bpf_get_stack").
 
-Fixes: 7d326930d352 ("mmc: sdhci-omap: Add OMAP SDHCI driver")
-Signed-off-by: Peter Robinson <pbrobinson@gmail.com>
-Link: https://lore.kernel.org/r/20231220135950.433588-2-pbrobinson@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This test ensures that the task iterator only gets a single
+user stack (for the current task).
+
+Signed-off-by: Jordan Rome <linux@jordanrome.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Stanislav Fomichev <sdf@google.com>
+Link: https://lore.kernel.org/bpf/20231112023010.144675-1-linux@jordanrome.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/Kconfig | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/bpf_iter.c       |    2 ++
+ tools/testing/selftests/bpf/progs/bpf_iter_task_stack.c |    5 +++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index 1b12c9fa3048..8fe4a0fd6ef1 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -1065,14 +1065,15 @@ config MMC_SDHCI_XENON
+--- a/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
++++ b/tools/testing/selftests/bpf/prog_tests/bpf_iter.c
+@@ -150,6 +150,8 @@ static void test_task_stack(void)
+ 	do_dummy_read(skel->progs.dump_task_stack);
+ 	do_dummy_read(skel->progs.get_task_user_stacks);
  
- config MMC_SDHCI_OMAP
- 	tristate "TI SDHCI Controller Support"
-+	depends on ARCH_OMAP2PLUS || ARCH_KEYSTONE || COMPILE_TEST
- 	depends on MMC_SDHCI_PLTFM && OF
- 	select THERMAL
- 	imply TI_SOC_THERMAL
- 	select MMC_SDHCI_EXTERNAL_DMA if DMA_ENGINE
- 	help
- 	  This selects the Secure Digital Host Controller Interface (SDHCI)
--	  support present in TI's DRA7 SOCs. The controller supports
--	  SD/MMC/SDIO devices.
-+	  support present in TI's Keystone/OMAP2+/DRA7 SOCs. The controller
-+	  supports SD/MMC/SDIO devices.
++	ASSERT_EQ(skel->bss->num_user_stacks, 1, "num_user_stacks");
++
+ 	bpf_iter_task_stack__destroy(skel);
+ }
  
- 	  If you have a controller with this interface, say Y or M here.
+--- a/tools/testing/selftests/bpf/progs/bpf_iter_task_stack.c
++++ b/tools/testing/selftests/bpf/progs/bpf_iter_task_stack.c
+@@ -35,6 +35,8 @@ int dump_task_stack(struct bpf_iter__tas
+ 	return 0;
+ }
  
--- 
-2.43.0
-
++int num_user_stacks = 0;
++
+ SEC("iter/task")
+ int get_task_user_stacks(struct bpf_iter__task *ctx)
+ {
+@@ -51,6 +53,9 @@ int get_task_user_stacks(struct bpf_iter
+ 	if (res <= 0)
+ 		return 0;
+ 
++	/* Only one task, the current one, should succeed */
++	++num_user_stacks;
++
+ 	buf_sz += res;
+ 
+ 	/* If the verifier doesn't refine bpf_get_task_stack res, and instead
 
 
 
