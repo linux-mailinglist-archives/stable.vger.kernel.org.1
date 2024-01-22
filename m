@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-14464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C06F83815A
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:08:21 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 705CE837E24
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:36:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 114D7B2B261
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:04:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92284286821
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6B9313E231;
-	Tue, 23 Jan 2024 01:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03AA5A11B;
+	Tue, 23 Jan 2024 00:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gv3Pb7I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8+Qy7H1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B1013E22E;
-	Tue, 23 Jan 2024 01:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E3D050A77;
+	Tue, 23 Jan 2024 00:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971999; cv=none; b=DwpYFBahl1CCyzIWt6mf7ud263L2mWZ8pelPUQS+ObSR/T0aOqoUh/ezVx7o3ZGGpIKW3ru04anFzc8a0lIp6FCqvGKx7GOfONUBCJmRiodtQN6uEEIFI/BzK+N24nQTEyCFCNQIdmKojEOf72gcVCCene1Ggy+3MwzeLaWZZpU=
+	t=1705970379; cv=none; b=bqo1DLnAV0iNWOhCqoXHHzHE7sCA23pWawaEnZRsUxfutCUf73I3cLL3L6pAyskWQ5FC5pBN9utf5/xkDuGOFeaJjBNwo/stJx0jTrVsgpLiPf8yhSPTLt+iFVZDXN2x7PvCQ9Zx+wYcQccF9gtcKCTib/9ACq/NvjCmoOLrOf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971999; c=relaxed/simple;
-	bh=Ij1fFahgDjnnQX/dxb7YZAqiV0wEZxeAoQdZV8kapb8=;
+	s=arc-20240116; t=1705970379; c=relaxed/simple;
+	bh=RS/x/BOVIRZ8kzoRzmHvbAOJjtyAEzwHr1i0kQC3eCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FR4yTQePg50QR3KLTaNahYdqNv0onHVgfHCGqw+iGCszO/xSv83oFoKmHjk82MpA/PaS396Zw8FCe8ZcVlRZkRvytCt2M2Fei97P2B1zQu+VxjjQ9fj+6BZlm13XfDMOWP2ULDrZYrsMipanv38/zSCiqiE38mCOvV1u07an8iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gv3Pb7I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26E1CC433F1;
-	Tue, 23 Jan 2024 01:06:39 +0000 (UTC)
+	 MIME-Version; b=kal7cvzrTWrpw87iGA2RxHVwa5u/abIRwfey+tJYWT9PSQzqxLMbptPVk1kvNQsi7GGBDgTw4P2cAEYtQx55dQH88zIwfYxxRKm3Tn+fSyUuBLFPNF6g/an1XLWzc/SOqARpZgtFa9A/EqZD4hG6ebOqpAZjFbQ5tVKoSUVZWUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8+Qy7H1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3DB8C433F1;
+	Tue, 23 Jan 2024 00:39:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971999;
-	bh=Ij1fFahgDjnnQX/dxb7YZAqiV0wEZxeAoQdZV8kapb8=;
+	s=korg; t=1705970379;
+	bh=RS/x/BOVIRZ8kzoRzmHvbAOJjtyAEzwHr1i0kQC3eCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1gv3Pb7I9ioVzEAx1qGwD/FV55WtNHb7lwPBEQ132qAATtOaR3YVftKTjs71bJZGy
-	 /tWqbBk7LSmoaPcJDgLEMrqKt+J9niO6q+xvsduv9ThQo4dG0rqy9wWoySJ8uZ2pjr
-	 3Q5h7ifiKB926b2ZbA8ql2+evJqZH1sY8qu9ulgY=
+	b=Y8+Qy7H1qdoAXWHunB+eioZ20zYtxYD9fqVBbebr7aGswCBfZpx35di2+YkRCdIQH
+	 W7hE5jXkvwEMmBWcNXXHtO5dya+UjLh7zOHj3C4dNiWEaz0HQvKBeMayszbda44gfN
+	 X7WZHAYewNXJ1MIftsEiTB1yjQQHmB5x5/wqBz7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Chanho Park <chanho61.park@samsung.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 376/417] ASoC: mediatek: sof-common: Add NULL check for normal_link string
+Subject: [PATCH 6.7 640/641] i2c: s3c24xx: fix read transfers in polling mode
 Date: Mon, 22 Jan 2024 15:59:04 -0800
-Message-ID: <20240122235804.814349417@linuxfoundation.org>
+Message-ID: <20240122235838.306631307@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit e3b3ec967a7d93b9010a5af9a2394c8b5c8f31ed ]
+[ Upstream commit 0d9cf23ed55d7ba3ab26d617a3ae507863674c8f ]
 
-It's not granted that all entries of struct sof_conn_stream declare
-a `normal_link` (a non-SOF, direct link) string, and this is the case
-for SoCs that support only SOF paths (hence do not support both direct
-and SOF usecases).
+To properly handle read transfers in polling mode, no waiting for the ACK
+state is needed as it will never come. Just wait a bit to ensure start
+state is on the bus and continue processing next bytes.
 
-For example, in the case of MT8188 there is no normal_link string in
-any of the sof_conn_stream entries and there will be more drivers
-doing that in the future.
-
-To avoid possible NULL pointer KPs, add a NULL check for `normal_link`.
-
-Fixes: 0caf1120c583 ("ASoC: mediatek: mt8195: extract SOF common code")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://msgid.link/r/20240111105226.117603-1-angelogioacchino.delregno@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 117053f77a5a ("i2c: s3c2410: Add polling mode support")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Chanho Park <chanho61.park@samsung.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/common/mtk-dsp-sof-common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-s3c2410.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/mediatek/common/mtk-dsp-sof-common.c b/sound/soc/mediatek/common/mtk-dsp-sof-common.c
-index 8b1b623207be..d4d1d3b9572a 100644
---- a/sound/soc/mediatek/common/mtk-dsp-sof-common.c
-+++ b/sound/soc/mediatek/common/mtk-dsp-sof-common.c
-@@ -24,7 +24,7 @@ int mtk_sof_dai_link_fixup(struct snd_soc_pcm_runtime *rtd,
- 		struct snd_soc_dai_link *sof_dai_link = NULL;
- 		const struct sof_conn_stream *conn = &sof_priv->conn_streams[i];
+diff --git a/drivers/i2c/busses/i2c-s3c2410.c b/drivers/i2c/busses/i2c-s3c2410.c
+index c56886af724e..bf9a5670ef33 100644
+--- a/drivers/i2c/busses/i2c-s3c2410.c
++++ b/drivers/i2c/busses/i2c-s3c2410.c
+@@ -216,8 +216,17 @@ static bool is_ack(struct s3c24xx_i2c *i2c)
+ 	int tries;
  
--		if (strcmp(rtd->dai_link->name, conn->normal_link))
-+		if (conn->normal_link && strcmp(rtd->dai_link->name, conn->normal_link))
- 			continue;
- 
- 		for_each_card_rtds(card, runtime) {
+ 	for (tries = 50; tries; --tries) {
+-		if (readl(i2c->regs + S3C2410_IICCON)
+-			& S3C2410_IICCON_IRQPEND) {
++		unsigned long tmp = readl(i2c->regs + S3C2410_IICCON);
++
++		if (!(tmp & S3C2410_IICCON_ACKEN)) {
++			/*
++			 * Wait a bit for the bus to stabilize,
++			 * delay estimated experimentally.
++			 */
++			usleep_range(100, 200);
++			return true;
++		}
++		if (tmp & S3C2410_IICCON_IRQPEND) {
+ 			if (!(readl(i2c->regs + S3C2410_IICSTAT)
+ 				& S3C2410_IICSTAT_LASTBIT))
+ 				return true;
 -- 
 2.43.0
 
