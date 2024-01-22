@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-14537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-15118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E58B8381B6
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:12:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94C8C8383F6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 03:31:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E0E9B26148
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:07:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F6031F24414
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C563414A08B;
-	Tue, 23 Jan 2024 01:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 715FD664B1;
+	Tue, 23 Jan 2024 01:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaytkMb7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zWKGwzys"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A3714901A;
-	Tue, 23 Jan 2024 01:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314DF664A6;
+	Tue, 23 Jan 2024 01:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705972095; cv=none; b=Xd2O9QF5glvqCyH0rc+APVnmlr96Xs7pVJYQ3oOP3MkCwJ+NQBHmNdBzEBD9U6oK0iPUcfyY3u2frAUq8s3PgYCfxwjs0TxfLgqsOwLXhAiFNFksW3jVZSMo3lhPu/yVA5pnrGQKfRKxFMN6kfMT9gXecF6L0h2BlxLyoHP0xoE=
+	t=1705975105; cv=none; b=Sc/cwLiy+3+nqNlJbSf9O1GWFrLW4kUgfN1kkIjAfgLZTHRxsoILR3XgP8CMf2auZiWvu67BmFSyaQtYmeNXUfGXceTkUkGPzsFWMQXdCwRGIPMqggtPl1wpEkujauRSDPRgPW8pYvuASSPEGYOuluuRkfoK6Jca7r2gT2/qtwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705972095; c=relaxed/simple;
-	bh=Ufke1clUGDsFUGtyHVE4P12AflyIoI0r9EGtAo7k33M=;
+	s=arc-20240116; t=1705975105; c=relaxed/simple;
+	bh=t/w17yUKIbwoUFo5iyripnqEI4Xw5LMIyDlihZAgtqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fYjP92rlfGRCIy7SiQPuYvtnMiTra2hq83ktm3QqocE88DQGzphVEvyLjeu2FkCyXJ0wvTIbMzZG/mfzX9hEVmDXpKFY8FwzGU1gxDEQEG9NEXuRsqudoZHJLVRBD7jh4S3MBrN6axnHZY9T3TcK1XWphfrOjeKCwJKifrOdxzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaytkMb7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4019AC433C7;
-	Tue, 23 Jan 2024 01:08:15 +0000 (UTC)
+	 MIME-Version; b=QBX0n6x8870VnPnqc+E1mkd8TppDQsUba2IxREajDwEaS6+qDuQYfAt/iriwN6nYS3Ydo248NYZgP5RI9hyBIRqPA/Ljk4wASmvaNBCuirUQPxtVU9LSjr4z5+p1657VJHe2X6u/yuGmFpO2U0uoQ+sAYdLjsCBWR4uVuM5FpzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zWKGwzys; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B80C433C7;
+	Tue, 23 Jan 2024 01:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705972095;
-	bh=Ufke1clUGDsFUGtyHVE4P12AflyIoI0r9EGtAo7k33M=;
+	s=korg; t=1705975105;
+	bh=t/w17yUKIbwoUFo5iyripnqEI4Xw5LMIyDlihZAgtqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TaytkMb7QuaODW9xJYYt34JyCg2JwrXbF52m+EDwPlp7btIf07bO4VJdRXBlECScU
-	 rYCJMkgZh9BJrVWjXB+4RA2FntdFnLkcQ0O39ROX6PSV5TL62brDmFerUprSsfMTTg
-	 dZljbMf15i7Po98lnVRn2cHwqrWdUGM/eALFTD14=
+	b=zWKGwzysVAMOJGlvmvyWMfgg4OIjkWArVjbxOaAUnZfpY9e0766XwsJv/Ou8woQuj
+	 lPOqKDIutujYEi+v0k3BVVubN83jC2DzYiXI1iutK/HIPu/rXfW/v1RpmMAhvDGjYB
+	 XRjKP/qENhquxcIKnww1Ik982Kqn6afHzExnT5SE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Yanteng Si <siyanteng@loongson.cn>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jan Kara <jack@suse.cz>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 034/374] MIPS: dts: loongson: drop incorrect dwmac fallback compatible
-Date: Mon, 22 Jan 2024 15:54:50 -0800
-Message-ID: <20240122235745.838629979@linuxfoundation.org>
+Subject: [PATCH 6.6 240/583] f2fs: fix to avoid dirent corruption
+Date: Mon, 22 Jan 2024 15:54:51 -0800
+Message-ID: <20240122235819.344227992@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235744.598274724@linuxfoundation.org>
-References: <20240122235744.598274724@linuxfoundation.org>
+In-Reply-To: <20240122235812.238724226@linuxfoundation.org>
+References: <20240122235812.238724226@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 4907a3f54b12b8209864572a312cf967befcae80 ]
+[ Upstream commit 53edb549565f55ccd0bdf43be3d66ce4c2d48b28 ]
 
-Device binds to proper PCI ID (LOONGSON, 0x7a03), already listed in DTS,
-so checking for some other compatible does not make sense.  It cannot be
-bound to unsupported platform.
+As Al reported in link[1]:
 
-Drop useless, incorrect (space in between) and undocumented compatible.
+f2fs_rename()
+...
+	if (old_dir != new_dir && !whiteout)
+		f2fs_set_link(old_inode, old_dir_entry,
+					old_dir_page, new_dir);
+	else
+		f2fs_put_page(old_dir_page, 0);
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Yanteng Si <siyanteng@loongson.cn>
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Acked-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+You want correct inumber in the ".." link.  And cross-directory
+rename does move the source to new parent, even if you'd been asked
+to leave a whiteout in the old place.
+
+[1] https://lore.kernel.org/all/20231017055040.GN800259@ZenIV/
+
+With below testcase, it may cause dirent corruption, due to it missed
+to call f2fs_set_link() to update ".." link to new directory.
+- mkdir -p dir/foo
+- renameat2 -w dir/foo bar
+
+[ASSERT] (__chk_dots_dentries:1421)  --> Bad inode number[0x4] for '..', parent parent ino is [0x3]
+[FSCK] other corrupted bugs                           [Fail]
+
+Fixes: 7e01e7ad746b ("f2fs: support RENAME_WHITEOUT")
+Cc: Jan Kara <jack@suse.cz>
+Reported-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi | 3 +--
- arch/mips/boot/dts/loongson/ls7a-pch.dtsi          | 3 +--
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ fs/f2fs/namei.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-index bfc3d3243ee7..d73d8f4fd78e 100644
---- a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-+++ b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-@@ -118,8 +118,7 @@ gmac@3,0 {
- 				compatible = "pci0014,7a03.0",
- 						   "pci0014,7a03",
- 						   "pciclass0c0320",
--						   "pciclass0c03",
--						   "loongson, pci-gmac";
-+						   "pciclass0c03";
+diff --git a/fs/f2fs/namei.c b/fs/f2fs/namei.c
+index 193b22a2d6bf..02d9c47797be 100644
+--- a/fs/f2fs/namei.c
++++ b/fs/f2fs/namei.c
+@@ -1106,7 +1106,7 @@ static int f2fs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 	}
  
- 				reg = <0x1800 0x0 0x0 0x0 0x0>;
- 				interrupts = <12 IRQ_TYPE_LEVEL_LOW>,
-diff --git a/arch/mips/boot/dts/loongson/ls7a-pch.dtsi b/arch/mips/boot/dts/loongson/ls7a-pch.dtsi
-index 2f45fce2cdc4..ed99ee316feb 100644
---- a/arch/mips/boot/dts/loongson/ls7a-pch.dtsi
-+++ b/arch/mips/boot/dts/loongson/ls7a-pch.dtsi
-@@ -186,8 +186,7 @@ gmac@3,0 {
- 				compatible = "pci0014,7a03.0",
- 						   "pci0014,7a03",
- 						   "pciclass020000",
--						   "pciclass0200",
--						   "loongson, pci-gmac";
-+						   "pciclass0200";
- 
- 				reg = <0x1800 0x0 0x0 0x0 0x0>;
- 				interrupts = <12 IRQ_TYPE_LEVEL_HIGH>,
+ 	if (old_dir_entry) {
+-		if (old_dir != new_dir && !whiteout)
++		if (old_dir != new_dir)
+ 			f2fs_set_link(old_inode, old_dir_entry,
+ 						old_dir_page, new_dir);
+ 		else
 -- 
 2.43.0
 
