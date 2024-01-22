@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-14112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D9EA837F8F
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:53:21 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2854A837D25
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:24:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7044E1C2903E
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:53:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD0881F29497
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C394563120;
-	Tue, 23 Jan 2024 00:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF15E15EA8C;
+	Tue, 23 Jan 2024 00:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bVhLH+08"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OIcLblbJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82982627E3;
-	Tue, 23 Jan 2024 00:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB765BAF2;
+	Tue, 23 Jan 2024 00:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971194; cv=none; b=arql+qqHqxLa4kYmSM1ZdEUqraYGNhnc6lN+YzWzsMLNVJfPQZCL7vlfOoULbARd+Q9YO3MfQHfoyrTH8nL0W51DkmHOmsu9gAM5VpkvIWzhiU1IlhNRPBkEuB/4gUicshzgAM1Hg8RX6552ENYgacbPE4eRT+AM2x5g77vLBEE=
+	t=1705969812; cv=none; b=nztJ3eoaSBdJVjncLOG9t7gK0kdeeaJqS0thTI5pzwclyFzf2Wz+/TQRkj/SGaWSaWPd3kRjzoVWyxWOI3WLA+pLTBhZmAzbdccflUbOOf5T5ibdhCEZpXND/sbuT/zqOL2kjC5VsPdiMEu5PwNEPfGXehEew7PZuAYKYyH1BWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971194; c=relaxed/simple;
-	bh=vE9axcSn3gWwW7+xS1kjRMWBd25tFIuGal6mwq6uqfc=;
+	s=arc-20240116; t=1705969812; c=relaxed/simple;
+	bh=s9kp4RH5KtHyGtM5n8fKIiDkS0vglMKZo7rtKQOMW+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y8Ho5bnCqikniABilABumm/bL3ffw9nrAPr7WnJNVYOxpgTl2nD6lAONi343MyKF6EDbx4/ZFAeFhrq13TiPA7cK3w0g97DAyNoQwrjr0TFc4U1yZg70LWVkx4lRRR9WAWl/xG69Mg/JZibyEVDzhDg9MKl+qA+KJqq1gCFB9Bc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bVhLH+08; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE85C43390;
-	Tue, 23 Jan 2024 00:53:13 +0000 (UTC)
+	 MIME-Version; b=I1hBBhDEz+5kmVibqMgpSH11IsgUb/VLK8+CPeFCiyb8FbMcYGQtM885a+kOui0IOh02yHH5qkAGhVSw4IvQDGV9DgHZQOY4dDm7m3/OoulEhEVcCy8C8fm1ywZFlXriNPAxLxdW4ghwK1zQ6kg6YeUCFk7ufqHPzWxK6oPa6qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OIcLblbJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7D8C433F1;
+	Tue, 23 Jan 2024 00:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971194;
-	bh=vE9axcSn3gWwW7+xS1kjRMWBd25tFIuGal6mwq6uqfc=;
+	s=korg; t=1705969812;
+	bh=s9kp4RH5KtHyGtM5n8fKIiDkS0vglMKZo7rtKQOMW+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bVhLH+08DXE5/94xFpURhkT8hSyGJHSB5e3kzki2VUp50P5eZzdwBjsy1NUkXqEzS
-	 U/OCpoUKdY6xjRcbd+LpWpsXKYa5xbSjTnAKQnjU46Rn4DMxz+rZX5IBQ5nOxfcboE
-	 49evgiGWvmmONor39x/Hd9LssdgcPoq+LIO0zc/I=
+	b=OIcLblbJnzOWNzh9ycOAr1tmzWNuAHPGb/0Pttvw/sgCEh18dl39u3ox+CcdJXVfI
+	 3mrmHBXYjppCxLeFj+cnQUZ6O9eiEGDEjzAM9gEKBCRtvnASE1l9g/oIujkAWA8VEw
+	 +Bmq7jYo6NI81VqgEShfeP+Dut3xCapaGhouIT/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 201/417] media: dvbdev: drop refcount on error path in dvb_device_open()
+	patches@lists.linux.dev, "Huang, Ying" <ying.huang@intel.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>, Huang@web.codeaurora.org
+Subject: [PATCH 6.7 465/641] cxl/port: Fix decoder initialization when nr_targets > interleave_ways
 Date: Mon, 22 Jan 2024 15:56:09 -0800
-Message-ID: <20240122235758.895494870@linuxfoundation.org>
+Message-ID: <20240122235832.593845233@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Huang Ying <ying.huang@intel.com>
 
-[ Upstream commit a2dd235df435a05d389240be748909ada91201d2 ]
+commit d6488fee66472b468ed88d265b14aa3f04dc3bdf upstream.
 
-If call to file->f_op->open() fails, then call dvb_device_put(dvbdev).
+The decoder_populate_targets() helper walks all of the targets in a port
+and makes sure they can be looked up in @target_map. Where @target_map
+is a lookup table from target position to target id (corresponding to a
+cxl_dport instance). However @target_map is only responsible for
+conveying the active dport instances as indicated by interleave_ways.
 
-Fixes: 0fc044b2b5e2 ("media: dvbdev: adopts refcnt to avoid UAF")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When nr_targets > interleave_ways it results in
+decoder_populate_targets() walking off the end of the valid entries in
+@target_map. Given target_map is initialized to 0 it results in the
+dport lookup failing if position 0 is not mapped to a dport with an id
+of 0:
+
+  cxl_port port3: Failed to populate active decoder targets
+  cxl_port port3: Failed to add decoder
+  cxl_port port3: Failed to add decoder3.0
+  cxl_bus_probe: cxl_port port3: probe: -6
+
+This bug also highlights that when the decoder's ->targets[] array is
+written in cxl_port_setup_targets() it is missing a hold of the
+targets_lock to synchronize against sysfs readers of the target list. A
+fix for that is saved for a later patch.
+
+Fixes: a5c258021689 ("cxl/bus: Populate the target list at decoder create")
+Cc:  <stable@vger.kernel.org>
+Signed-off-by: Huang, Ying <ying.huang@intel.com>
+[djbw: rewrite the changelog, find the Fixes: tag]
+Co-developed-by: Dan Williams <dan.j.williams@intel.com>
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/dvb-core/dvbdev.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/cxl/core/port.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/dvb-core/dvbdev.c b/drivers/media/dvb-core/dvbdev.c
-index 9f9a97652708..d352e028491a 100644
---- a/drivers/media/dvb-core/dvbdev.c
-+++ b/drivers/media/dvb-core/dvbdev.c
-@@ -104,6 +104,8 @@ static int dvb_device_open(struct inode *inode, struct file *file)
- 			err = file->f_op->open(inode, file);
- 		up_read(&minor_rwsem);
- 		mutex_unlock(&dvbdev_mutex);
-+		if (err)
-+			dvb_device_put(dvbdev);
- 		return err;
- 	}
- fail:
--- 
-2.43.0
-
+--- a/drivers/cxl/core/port.c
++++ b/drivers/cxl/core/port.c
+@@ -1644,7 +1644,7 @@ static int decoder_populate_targets(stru
+ 		return -EINVAL;
+ 
+ 	write_seqlock(&cxlsd->target_lock);
+-	for (i = 0; i < cxlsd->nr_targets; i++) {
++	for (i = 0; i < cxlsd->cxld.interleave_ways; i++) {
+ 		struct cxl_dport *dport = find_dport(port, target_map[i]);
+ 
+ 		if (!dport) {
 
 
 
