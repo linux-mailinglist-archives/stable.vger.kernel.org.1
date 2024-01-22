@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-13546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51604837C89
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:12:10 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F11DD837FAE
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6E751F25031
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:12:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0197B2AC7E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8752135A53;
-	Tue, 23 Jan 2024 00:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAABA60275;
+	Tue, 23 Jan 2024 00:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/owo0ls"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pz5sWF2K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFA9135A50;
-	Tue, 23 Jan 2024 00:27:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 792F760253;
+	Tue, 23 Jan 2024 00:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969658; cv=none; b=khV3smLftHKnqTzigu94T4PTyJKhr2NrEaaK85RXvS4SomCVrXIVNEbEeqdgMAQ5cjMpa0t7baHnKPM4GlglgHbn7PN62SstljvhsBqAQvsGRpd11Yi4TFYWEYj7JdIdz7v30IYtJXS699MZP/EeR2dCX4YBcmv0YPTrZOUHqZs=
+	t=1705970845; cv=none; b=MQnWfyEwEpN6e4ugD3uzIo21gFrPCU6Q1GvpbsXyTHBIReaH2Xf3hi6kOrfwCDIzzAL6qCmiCQM66YeNeok7JbP2MvqAyxbpjyMITVpt+J2c77NU+seMHp/gIMSuq0YPItODT4SSI9I+hujgQru35hvXMVOQSrFmEOYfqQULG7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969658; c=relaxed/simple;
-	bh=13o+lABzbsEz7d4N0rJMYPo/9dzka3PVPNxYTPAIAPs=;
+	s=arc-20240116; t=1705970845; c=relaxed/simple;
+	bh=nXsRDvxALK9l8icRHc09fMJ28GeEm6VlmPNJTWgiY7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kX1R9GslSsShSRAg/Y/PhILZJGwmmwFm32mcOwPz4/vpb9YJdBpxNXn/uqjr+L6+uJM4i4607kg+Q3EY/CH8QYSXJSFIrD+l/fI5QWSLV1/9v2Y1UpSLo2urPPTkNWj2X1uFWi1d5/FptefdAEQy1W60Hn+I9S/D31mUVxJPnCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/owo0ls; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D12BC43399;
-	Tue, 23 Jan 2024 00:27:37 +0000 (UTC)
+	 MIME-Version; b=GH2Os7MOUmH4dq+lfIeogAnozQylES4NzwGc9f9fY1ofiM4nGYLvbTspo56fuct29Uolwo5qfZIZdK8vAAo8REVE8UVSd8tUpmxejRzM10cPf2dCmhY9rVcr+JADfAjXZvSnjk/7F6HRyW+7U+IBgemCobKkQmvmWCIaSw8pFVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pz5sWF2K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6A6FC433C7;
+	Tue, 23 Jan 2024 00:47:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969658;
-	bh=13o+lABzbsEz7d4N0rJMYPo/9dzka3PVPNxYTPAIAPs=;
+	s=korg; t=1705970845;
+	bh=nXsRDvxALK9l8icRHc09fMJ28GeEm6VlmPNJTWgiY7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c/owo0lsfHkvFZwrjI+onGroBzIVxyFM7yR29S9JU6ChvcZvizvwDVmkmLmuZ7bQt
-	 X/dnnAYgtQ0Dio954HGPFLWA4go/JbI/Ut7gx8UTt5tO2TDwtxKwP3Tc6euT9KE1tw
-	 ooYtEUkow0p62jMo869C6TS20iLoQYWeX5DbRqxg=
+	b=pz5sWF2KYfBcpKg0HC6kmTwCXbIcpiT0ha5ZTY45TTjHhDJyYgjX7RuWdx/kiuVL4
+	 MvwSYx1cXgvyuN2uO8SBKNIVeiZnrzmoB0SmGoITVaCBNT2LnSzvFG866jyhGcfxt1
+	 Vvjai5LWWNItsqXIqeM52NAwCMnixuNXL2EmJX1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Tony Lindgren <tony@atomide.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 6.7 388/641] clocksource/drivers/timer-ti-dm: Fix make W=n kerneldoc warnings
+	Atul Dhudase <quic_adhudase@quicinc.com>,
+	Mukesh Ojha <quic_mojha@quicinc.com>,
+	Douglas Anderson <dianders@chromium.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 124/417] soc: qcom: llcc: Fix dis_cap_alloc and retain_on_pc configuration
 Date: Mon, 22 Jan 2024 15:54:52 -0800
-Message-ID: <20240122235830.098774764@linuxfoundation.org>
+Message-ID: <20240122235756.103230348@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
-References: <20240122235818.091081209@linuxfoundation.org>
+In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
+References: <20240122235751.480367507@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.7-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Atul Dhudase <quic_adhudase@quicinc.com>
 
-commit b99a212a7697c542b460adaa15d4a98abf8223f0 upstream.
+[ Upstream commit eed6e57e9f3e2beac37563eb6a0129549daa330e ]
 
-Kernel test robot reports of kerneldoc related warnings that happen with
-make W=n for "parameter or member not described".
+Commit c14e64b46944 ("soc: qcom: llcc: Support chipsets that can
+ write to llcc") add the support for chipset where capacity based
+allocation and retention through power collapse can be programmed
+based on content of SCT table mentioned in the llcc driver where
+the target like sdm845 where the entire programming related to it
+is controlled in firmware. However, the commit introduces a bug
+where capacity/retention register get overwritten each time it
+gets programmed for each slice and that results in misconfiguration
+of the register based on SCT table and that is not expected
+behaviour instead it should be read modify write to retain the
+configuration of other slices.
 
-These were caused by changes to function parameter names with
-earlier commits where the kerneldoc parts were not updated.
+This issue is totally caught from code review and programming test
+and not through any power/perf numbers so, it is not known what
+impact this could make if we don't have this change however,
+this feature are for these targets and they should have been
+programmed accordingly as per their configuration mentioned in
+SCT table like others bits information.
 
-Fixes: 49cd16bb573e ("clocksource/drivers/timer-ti-dm: Simplify register writes with dmtimer_write()")
-Fixes: a6e543f61531 ("clocksource/drivers/timer-ti-dm: Move struct omap_dm_timer fields to driver")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202311040403.DzIiBuwU-lkp@intel.com/
-Closes: https://lore.kernel.org/oe-kbuild-all/202311040606.XL5OcR9O-lkp@intel.com/
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20231114072930.40615-1-tony@atomide.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This change brings one difference where it keeps capacity/retention
+bits of the slices that are not mentioned in SCT table in unknown
+state where as earlier it was initialized to zero.
+
+Fixes: c14e64b46944 ("soc: qcom: llcc: Support chipsets that can write to llcc")
+Signed-off-by: Atul Dhudase <quic_adhudase@quicinc.com>
+Signed-off-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/1701876771-10695-1-git-send-email-quic_mojha@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-ti-dm.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/soc/qcom/llcc-qcom.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/clocksource/timer-ti-dm.c
-+++ b/drivers/clocksource/timer-ti-dm.c
-@@ -183,7 +183,7 @@ static inline u32 dmtimer_read(struct dm
-  * dmtimer_write - write timer registers in posted and non-posted mode
-  * @timer:      timer pointer over which write operation is to perform
-  * @reg:        lowest byte holds the register offset
-- * @value:      data to write into the register
-+ * @val:        data to write into the register
-  *
-  * The posted mode bit is encoded in reg. Note that in posted mode, the write
-  * pending bit must be checked. Otherwise a write on a register which has a
-@@ -949,7 +949,7 @@ static int omap_dm_timer_set_int_enable(
+diff --git a/drivers/soc/qcom/llcc-qcom.c b/drivers/soc/qcom/llcc-qcom.c
+index bc400669ee02..16a05143d0d6 100644
+--- a/drivers/soc/qcom/llcc-qcom.c
++++ b/drivers/soc/qcom/llcc-qcom.c
+@@ -680,14 +680,14 @@ static int _qcom_llcc_cfg_program(const struct llcc_slice_config *config,
+ 		u32 disable_cap_alloc, retain_pc;
  
- /**
-  * omap_dm_timer_set_int_disable - disable timer interrupts
-- * @timer:	pointer to timer handle
-+ * @cookie:	pointer to timer cookie
-  * @mask:	bit mask of interrupts to be disabled
-  *
-  * Disables the specified timer interrupts for a timer.
+ 		disable_cap_alloc = config->dis_cap_alloc << config->slice_id;
+-		ret = regmap_write(drv_data->bcast_regmap,
+-				LLCC_TRP_SCID_DIS_CAP_ALLOC, disable_cap_alloc);
++		ret = regmap_update_bits(drv_data->bcast_regmap, LLCC_TRP_SCID_DIS_CAP_ALLOC,
++					 BIT(config->slice_id), disable_cap_alloc);
+ 		if (ret)
+ 			return ret;
+ 
+ 		retain_pc = config->retain_on_pc << config->slice_id;
+-		ret = regmap_write(drv_data->bcast_regmap,
+-				LLCC_TRP_PCB_ACT, retain_pc);
++		ret = regmap_update_bits(drv_data->bcast_regmap, LLCC_TRP_PCB_ACT,
++					 BIT(config->slice_id), retain_pc);
+ 		if (ret)
+ 			return ret;
+ 	}
+-- 
+2.43.0
+
 
 
 
