@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-13309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78F46837B5D
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:00:47 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC368837B5E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:00:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2ECC71F282F8
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:00:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E8851F288BB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:00:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684C2133994;
-	Tue, 23 Jan 2024 00:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C61061339A0;
+	Tue, 23 Jan 2024 00:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TPphcDnW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rR6wvW4e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2839913398C;
-	Tue, 23 Jan 2024 00:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8619E13398C;
+	Tue, 23 Jan 2024 00:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705969294; cv=none; b=dgKKo59yMMq7IVtBt0EhFQ7SyjlBq+hm3SyZ+rkxNOZTB7OrFlxvBOfL5LZiM0orvKbagJnWOsu+0hRXTKZo2RjCavU3e4sDl4v1Zq5+MsO42Dox+1bmH13jh6Fxeb89YuNZoWSYeTP9U7/y1VdrPwkjlXs4f2+qa4TYTAQp7qs=
+	t=1705969296; cv=none; b=kIUKYiYsFJ7lJzx312jG4PFCRVWORnzPEOY9uI9EJEdNLP/5EvVC7YWGYEh/ePcKqg3+mSEsr2KoEIKTfZeoHGGrsPy4+c+k+nczg94PoLKQ3ZcV4658B41l15xAvXt7DvWEqaKiIFi74dkq6yJcDgYKa1bnGDMXXHTcoOjAjEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705969294; c=relaxed/simple;
-	bh=aIR8gdg9xDvNpSlk67EA9tUBzuxl9QhkzzmfrGP06S0=;
+	s=arc-20240116; t=1705969296; c=relaxed/simple;
+	bh=BaWiGXo036Gn9iamq47EAT+tysA/4ln6fv67DwZDtF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lXAuSVVzWZZgGQ38+mBBSatY/KdzzYzfyNRtlKWKYXaGRKhYqcW9GlvdGO0LmxrNGl62+tgntvEHMXLkgQf7yKnSMzPa3uOIWkMIHJQzbRtU/4aVXWezVssnxCZNFU2tt/ol13zZCF/0JoJOZ2BxpNAUFP0cBVVgp0ssvFip/is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TPphcDnW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E7FC433C7;
-	Tue, 23 Jan 2024 00:21:33 +0000 (UTC)
+	 MIME-Version; b=Kju4Tlp5eZ0rvjbkikGpyNW9dax70fFatc5WHDDseRnDf5VssVDsdjyB8OLgdhGFvNoN4DiHejn+wH80zDc1dq/alfOApanNF7ihnutMnICa8KxdwHTBymrd6YV1PImIUkz8hEeeKX0nZKqpAyeeCr+cNK2VvwcxN8J0xowB1cA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rR6wvW4e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A4DEC43399;
+	Tue, 23 Jan 2024 00:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705969294;
-	bh=aIR8gdg9xDvNpSlk67EA9tUBzuxl9QhkzzmfrGP06S0=;
+	s=korg; t=1705969296;
+	bh=BaWiGXo036Gn9iamq47EAT+tysA/4ln6fv67DwZDtF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TPphcDnWOUfyWRgCLGT/rOQ7EbgGDBuicCsq8nJ0NFvelj2OvReF/WgmdNZY8vv70
-	 hgi8N0r3VEE8rNUOqKcAm+TyzkOZmiWFoIH3IZsspcTf8PHecbpIdpHZfd7exsa8S4
-	 9z7z3ZG7Pmv0zOoLUOb33aUmYC7jOsspmTzQ1sFY=
+	b=rR6wvW4eA6ISh1KwJmgdqVc0+fbkK3ARAvvhMSgQBMmpye/1vVSxS98pbKedyCrA3
+	 8XX8g3sezJqVXSLzlc08d0Kmau0Hfp3Q2g5m/Rt2MCSyscgINZkEHsRwvH8e/wcnbp
+	 hePnKDmMKSiI45ytU3pjqHTktBHE3X8fMpCHTHdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
+	Daniel Golle <daniel@makrotopia.org>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.7 151/641] wifi: mt76: mt7996: fix alignment of sta info event
-Date: Mon, 22 Jan 2024 15:50:55 -0800
-Message-ID: <20240122235822.763349637@linuxfoundation.org>
+Subject: [PATCH 6.7 153/641] wifi: mt76: mt7915: also MT7981 is 3T3R but nss2 on 5 GHz band
+Date: Mon, 22 Jan 2024 15:50:57 -0800
+Message-ID: <20240122235822.821076757@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
 References: <20240122235818.091081209@linuxfoundation.org>
@@ -69,32 +69,37 @@ Content-Transfer-Encoding: 8bit
 
 From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
 
-[ Upstream commit d58a9778f7ca0634622d2fc2e9f76163467bdf5b ]
+[ Upstream commit ff434cc129d6907e6dbc89dd0ebc59fd3646d4c2 ]
 
-Fix the alignment of struct mt7996_mcu_all_sta_info_event.
+Just like MT7916 also MT7981 can handle 3T3R DBDC frontend and should
+hence be included in the corresponding conditional expression in the
+driver. Add it.
 
-Fixes: adde3eed4a75 ("wifi: mt76: mt7996: Add mcu commands for getting sta tx statistic")
+Fixes: 6bad146d162e ("wifi: mt76: mt7915: add support for MT7981")
 Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
 Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
-index ebe96a85ca9e..14c0dd31387a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.h
-@@ -160,7 +160,7 @@ struct mt7996_mcu_all_sta_info_event {
- 	u8 more;
- 	u8 rsv2;
- 	__le16 sta_num;
--	u8 rsv3[2];
-+	u8 rsv3[4];
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/main.c b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+index a3fd54cc1911..9d747eb8ab82 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/main.c
+@@ -1059,8 +1059,9 @@ mt7915_set_antenna(struct ieee80211_hw *hw, u32 tx_ant, u32 rx_ant)
  
- 	union {
- 		struct {
+ 	phy->mt76->antenna_mask = tx_ant;
+ 
+-	/* handle a variant of mt7916 which has 3T3R but nss2 on 5 GHz band */
+-	if (is_mt7916(&dev->mt76) && band && hweight8(tx_ant) == max_nss)
++	/* handle a variant of mt7916/mt7981 which has 3T3R but nss2 on 5 GHz band */
++	if ((is_mt7916(&dev->mt76) || is_mt7981(&dev->mt76)) &&
++	    band && hweight8(tx_ant) == max_nss)
+ 		phy->mt76->chainmask = (dev->chainmask >> chainshift) << chainshift;
+ 	else
+ 		phy->mt76->chainmask = tx_ant << (chainshift * band);
 -- 
 2.43.0
 
