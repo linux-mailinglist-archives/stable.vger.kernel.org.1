@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-13823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-13450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA352837E46
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:37:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E82F837C1E
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:09:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 33999B20F66
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:36:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 554341F2B1DB
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:09:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096AC5A0ED;
-	Tue, 23 Jan 2024 00:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A3D15530D;
+	Tue, 23 Jan 2024 00:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/m3Pgxk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3C1jyfM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCC2C5A0E7;
-	Tue, 23 Jan 2024 00:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF04134C2;
+	Tue, 23 Jan 2024 00:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705970464; cv=none; b=qlHuRcf2xHKlguL8cKuugGnwmvERusFFiMbky9BuTVAQzdQEO9mHhI4+V0nMdb98muYuA4JpUag4UPKUWdhb+N/MX1hRB/DXiyWaN/3VmiKjjXP1nq52sa2XBIb2mlppuPcX72oy2p7CEqT3VsqQPMx371QaiJfLEttMZz9n0Pc=
+	t=1705969508; cv=none; b=EIS0T3xn0B3RLeUUjiswd4hOn+h+l4QqdZtfDgi8NeNpvLXreYiEn9FbGyHvI851tk8SO5+knbwNKnro06gdOKYd4Jhl0M7pMCWNaWcVrpFNzhAxrgjoogO8nhpwx/FU9DLM5XgZqq8Ny23ZzY7JaP4V7nDknvSejTfCN0QBcQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705970464; c=relaxed/simple;
-	bh=XyxWhuik/DbUhHr1it0+KzDgfNNsLZU7zRp4O4yegKc=;
+	s=arc-20240116; t=1705969508; c=relaxed/simple;
+	bh=NdIODz7VJOMt9w0wJy64BL25ZMNX9fM13kCG2o6yaJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oTKR9t4WZpzwETPiXiVmXvWvhneQEofcJ48BXarcwD3zuztzoasbNcvoK1qLaFUFQ3MrffGLPMx1RnQzsJ9iT5oK+JA2KKIv9Dq0cq0OANde2PgyBBFwhtpZt4cMOkNXwqm0T/j8J1RBkeHTHGxsTXbQgKH/MN96VghqSMeyKaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/m3Pgxk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B9D4C433C7;
-	Tue, 23 Jan 2024 00:41:03 +0000 (UTC)
+	 MIME-Version; b=sRrpwCUnYUIJoPdtUfQWt14FLLRvovfPGXMrQlRh+0Xs+V8UR/aBLPqSRRxuAh2S2ctMV90QP0/00PBCTzsioA2hPbw9zAUXJE17pW91Yx+HamAEAWtwjmA97w8yWApugpNiXUIiNfmDOjVSp+ksuJ/AOGGoSbzYd+pOmoqLrys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3C1jyfM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE99C433A6;
+	Tue, 23 Jan 2024 00:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705970464;
-	bh=XyxWhuik/DbUhHr1it0+KzDgfNNsLZU7zRp4O4yegKc=;
+	s=korg; t=1705969508;
+	bh=NdIODz7VJOMt9w0wJy64BL25ZMNX9fM13kCG2o6yaJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k/m3PgxkqFjJsiJnrTWDSHk3L8ZtrqoTPZZSBhQxv3ol/MLdqoKZjNEXCwBNmbvoV
-	 bX0SuhTBIj0tyib3dgnfPB/6eYX/mcIaf39iDZR98MbMvJI2sUvg7Q41n3TxmWNTbl
-	 jDZfArMS5Y5AAFHfBBF+7/KBZihAMIz6RPosOxIs=
+	b=s3C1jyfMp0d0POaqvEkV2i+Dhaz0iLJ9HOcQTdyujiF9OuspfVNUiSZmjRKPOQMCs
+	 oJMzL8h94v1DYQ56qo5LI98gXVAjy+yx3zZkfLc7ScUGu9PNFdP2vY+YLgrM3ofjcQ
+	 el9e2vLnvByWhpC5o8HtpBzogOOAnr8OMXsaSuRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 005/417] powerpc: add crtsavres.o to always-y instead of extra-y
+Subject: [PATCH 6.7 269/641] drm/radeon: check return value of radeon_ring_lock()
 Date: Mon, 22 Jan 2024 15:52:53 -0800
-Message-ID: <20240122235751.666442864@linuxfoundation.org>
+Message-ID: <20240122235826.338110754@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235818.091081209@linuxfoundation.org>
+References: <20240122235818.091081209@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.7-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 1b1e38002648819c04773647d5242990e2824264 ]
+[ Upstream commit 71225e1c930942cb1e042fc08c5cc0c4ef30e95e ]
 
-crtsavres.o is linked to modules. However, as explained in commit
-d0e628cd817f ("kbuild: doc: clarify the difference between extra-y
-and always-y"), 'make modules' does not build extra-y.
+In the unlikely event of radeon_ring_lock() failing, its errno return
+value should be processed. This patch checks said return value and
+prints a debug message in case of an error.
 
-For example, the following command fails:
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
 
-  $ make ARCH=powerpc LLVM=1 KBUILD_MODPOST_WARN=1 mrproper ps3_defconfig modules
-    [snip]
-    LD [M]  arch/powerpc/platforms/cell/spufs/spufs.ko
-  ld.lld: error: cannot open arch/powerpc/lib/crtsavres.o: No such file or directory
-  make[3]: *** [scripts/Makefile.modfinal:56: arch/powerpc/platforms/cell/spufs/spufs.ko] Error 1
-  make[2]: *** [Makefile:1844: modules] Error 2
-  make[1]: *** [/home/masahiro/workspace/linux-kbuild/Makefile:350: __build_one_by_one] Error 2
-  make: *** [Makefile:234: __sub-make] Error 2
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Fixes: baa25b571a16 ("powerpc/64: Do not link crtsavres.o in vmlinux")
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231120232332.4100288-1-masahiroy@kernel.org
+Fixes: 48c0c902e2e6 ("drm/radeon/kms: add support for CP setup on SI")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/lib/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/radeon/si.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/powerpc/lib/Makefile b/arch/powerpc/lib/Makefile
-index b705c89f3e21..9b394bab17eb 100644
---- a/arch/powerpc/lib/Makefile
-+++ b/arch/powerpc/lib/Makefile
-@@ -43,7 +43,7 @@ obj-$(CONFIG_FUNCTION_ERROR_INJECTION)	+= error-inject.o
- # so it is only needed for modules, and only for older linkers which
- # do not support --save-restore-funcs
- ifndef CONFIG_LD_IS_BFD
--extra-$(CONFIG_PPC64)	+= crtsavres.o
-+always-$(CONFIG_PPC64)	+= crtsavres.o
- endif
+diff --git a/drivers/gpu/drm/radeon/si.c b/drivers/gpu/drm/radeon/si.c
+index a91012447b56..85e9cba49cec 100644
+--- a/drivers/gpu/drm/radeon/si.c
++++ b/drivers/gpu/drm/radeon/si.c
+@@ -3611,6 +3611,10 @@ static int si_cp_start(struct radeon_device *rdev)
+ 	for (i = RADEON_RING_TYPE_GFX_INDEX; i <= CAYMAN_RING_TYPE_CP2_INDEX; ++i) {
+ 		ring = &rdev->ring[i];
+ 		r = radeon_ring_lock(rdev, ring, 2);
++		if (r) {
++			DRM_ERROR("radeon: cp failed to lock ring (%d).\n", r);
++			return r;
++		}
  
- obj-$(CONFIG_PPC_BOOK3S_64) += copyuser_power7.o copypage_power7.o \
+ 		/* clear the compute context state */
+ 		radeon_ring_write(ring, PACKET3_COMPUTE(PACKET3_CLEAR_STATE, 0));
 -- 
 2.43.0
 
