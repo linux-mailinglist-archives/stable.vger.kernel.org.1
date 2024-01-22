@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-14261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-14166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78A03838036
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:57:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B3D6837FC5
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 02:54:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 285A8281B21
-	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:57:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F4642901C6
+	for <lists+stable@lfdr.de>; Tue, 23 Jan 2024 01:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F75651B8;
-	Tue, 23 Jan 2024 00:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD2312BE96;
+	Tue, 23 Jan 2024 00:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s70aRrJu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u19q9QCw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0834E64CFD;
-	Tue, 23 Jan 2024 00:59:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB3E12BE8D;
+	Tue, 23 Jan 2024 00:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1705971591; cv=none; b=hiMYXeOUM9tEQcdx9Mpeu46SoS5fNC9uZQx7/U4da6bL18nkDeTBjVGy2F5Vbtx7akQiIa9PiogcoMGWFEYDfWHfAkYs2B4GW9KLiuTFYEXlajkqrt60nJ+XZk563c+tTXxIM4HFdFLbTFeDUSauw5xuyVAoVJk4Ru4dN5KieS0=
+	t=1705971344; cv=none; b=aPzNS9a9joWXXYJVFFgvT16eIBp/SZmWRwLRDMODEVbXjmX9Z9KjKG2rJUmuOvFq3lGHGQxni9oIhKptosZDthMhU5JaLhN5lNOtxQNPt/Lt+YXmlkRMDn2S2WNWokgGlfCacLMKe1sJxDoiG3Y4AQTlWOq1p7bcn3zc8AH29+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1705971591; c=relaxed/simple;
-	bh=WdU9xLpKsf5M8/OxwKQGXXd+d7qtdIR5OZK6UEyuxVA=;
+	s=arc-20240116; t=1705971344; c=relaxed/simple;
+	bh=KJNdLBQj2HNoO05xONwtOMpL9ZyGzIIEDm55jAw9WZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NjV5UBob3Ovg9gwutfWIQoEc5DAbU8RxFjVGeAzgU75K+nIxYJip7UAiHDyZHYbv9/K3+P26cHBckXJQPFM6fRxAH7WMQxlvswp8c5WmWZpQdXeMx49zDu1/+bRfvXfLuwXJf5nQEyWVTFXvqdT01HpBS8csw67wBZTF/mW9Om4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s70aRrJu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE391C433C7;
-	Tue, 23 Jan 2024 00:59:50 +0000 (UTC)
+	 MIME-Version; b=IvXDQuOqyPO19inn3AXe6hLIWWI+ikUUb+Y5D/JMcEWC1/8bYKSTIGqfyk0lmrK09Z+tsN7WJzGX84HFyI19R+dli89uRJZK6QEBCEED9GoTf34T2bNITGkHs4RrFxpQ8sCotbH+hB2BtzqWMX/S90J7uVuf3YcaDAPp3b3yavM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u19q9QCw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FF82C433F1;
+	Tue, 23 Jan 2024 00:55:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1705971590;
-	bh=WdU9xLpKsf5M8/OxwKQGXXd+d7qtdIR5OZK6UEyuxVA=;
+	s=korg; t=1705971344;
+	bh=KJNdLBQj2HNoO05xONwtOMpL9ZyGzIIEDm55jAw9WZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s70aRrJuA09/3uDmP6LMGbCxiE2/ZZ6exvQTGZI99Yrer/l+xiQq923lhsjhSWUSI
-	 ZxVi76g3BLocB85EVciV7WCtoiV0uxLOdSNV5jSEDSKrMsOa2apiKsXiazgBlb7rQF
-	 xGK1OEMkNVU3Jwt3V54Y+dOxbZ0AL2/dmaLCN74U=
+	b=u19q9QCw/bU1f7i4dxibO3wNjyiqOrYJbN9h9Tx2sYrnH8lY0PG0Eg/rhqKg4F3+B
+	 MyTMtPRrBhFIT8TtGikgsJw7CZmzm/cUg8AjJqW+88XGeSRAoQ51TnyaeGJe2Y9k5/
+	 j8Arh03AEhne4tww1HFrcvLs+mtHdRNBWsdKH+U8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Subject: [PATCH 6.1 275/417] serial: 8250_exar: Set missing rs485_supported flag
+	Su Hui <suhui@nfschina.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 137/286] wifi: rtlwifi: rtl8192ee: using calculate_bit_shift()
 Date: Mon, 22 Jan 2024 15:57:23 -0800
-Message-ID: <20240122235801.375814402@linuxfoundation.org>
+Message-ID: <20240122235737.418478201@linuxfoundation.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240122235751.480367507@linuxfoundation.org>
-References: <20240122235751.480367507@linuxfoundation.org>
+In-Reply-To: <20240122235732.009174833@linuxfoundation.org>
+References: <20240122235732.009174833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,58 +60,93 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lino Sanfilippo <l.sanfilippo@kunbus.com>
+From: Su Hui <suhui@nfschina.com>
 
-commit 0c2a5f471ce58bca8f8ab5fcb911aff91eaaa5eb upstream.
+[ Upstream commit 63526897fc0d086069bcab67c3a112caaec751cb ]
 
-The UART supports an auto-RTS mode in which the RTS pin is automatically
-activated during transmission. So mark this mode as being supported even
-if RTS is not controlled by the driver but the UART.
+Using calculate_bit_shift() to replace _rtl92ee_phy_calculate_bit_shift().
+And fix the undefined bitwise shift behavior problem.
 
-Also the serial core expects now at least one of both modes rts-on-send or
-rts-after-send to be supported. This is since during sanitization
-unsupported flags are deleted from a RS485 configuration set by userspace.
-However if the configuration ends up with both flags unset, the core prints
-a warning since it considers such a configuration invalid (see
-uart_sanitize_serial_rs485()).
-
-Cc:  <stable@vger.kernel.org>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Lino Sanfilippo <l.sanfilippo@kunbus.com>
-Link: https://lore.kernel.org/r/20240103061818.564-8-l.sanfilippo@kunbus.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b1a3bfc97cd9 ("rtlwifi: rtl8192ee: Move driver from staging to the regular tree")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20231219065739.1895666-9-suhui@nfschina.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_exar.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ .../net/wireless/realtek/rtlwifi/rtl8192ee/phy.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
---- a/drivers/tty/serial/8250/8250_exar.c
-+++ b/drivers/tty/serial/8250/8250_exar.c
-@@ -442,7 +442,7 @@ static int generic_rs485_config(struct u
+diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
+index cc0bcaf13e96..73ef602bfb01 100644
+--- a/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
++++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192ee/phy.c
+@@ -16,7 +16,6 @@ static u32 _rtl92ee_phy_rf_serial_read(struct ieee80211_hw *hw,
+ static void _rtl92ee_phy_rf_serial_write(struct ieee80211_hw *hw,
+ 					 enum radio_path rfpath, u32 offset,
+ 					 u32 data);
+-static u32 _rtl92ee_phy_calculate_bit_shift(u32 bitmask);
+ static bool _rtl92ee_phy_bb8192ee_config_parafile(struct ieee80211_hw *hw);
+ static bool _rtl92ee_phy_config_mac_with_headerfile(struct ieee80211_hw *hw);
+ static bool phy_config_bb_with_hdr_file(struct ieee80211_hw *hw,
+@@ -46,7 +45,7 @@ u32 rtl92ee_phy_query_bb_reg(struct ieee80211_hw *hw, u32 regaddr, u32 bitmask)
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+ 		"regaddr(%#x), bitmask(%#x)\n", regaddr, bitmask);
+ 	originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-	bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	returnvalue = (originalvalue & bitmask) >> bitshift;
+ 
+ 	rtl_dbg(rtlpriv, COMP_RF, DBG_TRACE,
+@@ -68,7 +67,7 @@ void rtl92ee_phy_set_bb_reg(struct ieee80211_hw *hw, u32 regaddr,
+ 
+ 	if (bitmask != MASKDWORD) {
+ 		originalvalue = rtl_read_dword(rtlpriv, regaddr);
+-		bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
++		bitshift = calculate_bit_shift(bitmask);
+ 		data = ((originalvalue & (~bitmask)) | (data << bitshift));
+ 	}
+ 
+@@ -92,7 +91,7 @@ u32 rtl92ee_phy_query_rf_reg(struct ieee80211_hw *hw,
+ 	spin_lock(&rtlpriv->locks.rf_lock);
+ 
+ 	original_value = _rtl92ee_phy_rf_serial_read(hw , rfpath, regaddr);
+-	bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
++	bitshift = calculate_bit_shift(bitmask);
+ 	readback_value = (original_value & bitmask) >> bitshift;
+ 
+ 	spin_unlock(&rtlpriv->locks.rf_lock);
+@@ -119,7 +118,7 @@ void rtl92ee_phy_set_rf_reg(struct ieee80211_hw *hw,
+ 
+ 	if (bitmask != RFREG_OFFSET_MASK) {
+ 		original_value = _rtl92ee_phy_rf_serial_read(hw, rfpath, addr);
+-		bitshift = _rtl92ee_phy_calculate_bit_shift(bitmask);
++		bitshift = calculate_bit_shift(bitmask);
+ 		data = (original_value & (~bitmask)) | (data << bitshift);
+ 	}
+ 
+@@ -201,13 +200,6 @@ static void _rtl92ee_phy_rf_serial_write(struct ieee80211_hw *hw,
+ 		pphyreg->rf3wire_offset, data_and_addr);
  }
  
- static const struct serial_rs485 generic_rs485_supported = {
--	.flags = SER_RS485_ENABLED,
-+	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND,
- };
- 
- static const struct exar8250_platform exar8250_default_platform = {
-@@ -486,7 +486,8 @@ static int iot2040_rs485_config(struct u
- }
- 
- static const struct serial_rs485 iot2040_rs485_supported = {
--	.flags = SER_RS485_ENABLED | SER_RS485_RX_DURING_TX | SER_RS485_TERMINATE_BUS,
-+	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND |
-+		 SER_RS485_RX_DURING_TX | SER_RS485_TERMINATE_BUS,
- };
- 
- static const struct property_entry iot2040_gpio_properties[] = {
+-static u32 _rtl92ee_phy_calculate_bit_shift(u32 bitmask)
+-{
+-	u32 i = ffs(bitmask);
+-
+-	return i ? i - 1 : 32;
+-}
+-
+ bool rtl92ee_phy_mac_config(struct ieee80211_hw *hw)
+ {
+ 	return _rtl92ee_phy_config_mac_with_headerfile(hw);
+-- 
+2.43.0
+
 
 
 
